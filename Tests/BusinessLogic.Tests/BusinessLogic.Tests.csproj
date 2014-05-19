@@ -55,16 +55,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IntegrationTests\DataAccess\NerdScorekeeperInitializerIntegrationTests\CreatePlayedGames.cs" />
+    <Compile Include="IntegrationTests\DataAccess\NerdScorekeeperInitializerIntegrationTests\CreatePlayedGameTests.cs" />
+    <Compile Include="IntegrationTests\Logic\PlayedGameTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="IntegrationTests\Logic\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\..\Source\BusinessLogic\BusinessLogic.csproj">
       <Project>{b1184b6a-9c68-48b6-814c-0667b69f89d2}</Project>

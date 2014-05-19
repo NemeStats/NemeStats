@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace Models.Tests.IntegrationTests.DataAccess.NerdScorekeeperInitializerIntegrationTests
 {
     [TestFixture]
-    public class CreatePlayedGames
+    public class CreatePlayedGameTests
     {
         private NerdScorekeeperDbContext dbContext = new NerdScorekeeperDbContext();
         private NerdScorekeeperInitializer initializer = new NerdScorekeeperInitializer();
