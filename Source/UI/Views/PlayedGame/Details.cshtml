@@ -1,0 +1,34 @@
+﻿@model BusinessLogic.Models.PlayedGame
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>PlayedGame</h4>
+	<hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.GameDefinition.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.GameDefinition.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NumberOfPlayers)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NumberOfPlayers)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

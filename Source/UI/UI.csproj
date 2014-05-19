@@ -45,6 +45,9 @@
     <Reference Include="Microsoft.Practices.ServiceLocation">
       <HintPath>..\..\..\..\..\Users\COGORD\Documents\Visual Studio 2013\Projects\NerdScorekeeper\packages\CommonServiceLocator.1.0\lib\NET35\Microsoft.Practices.ServiceLocation.dll</HintPath>
     </Reference>
+    <Reference Include="Mindscape.Raygun4Net">
+      <HintPath>..\..\packages\Mindscape.Raygun4Net.2.0.5\lib\net35\Mindscape.Raygun4Net.dll</HintPath>
+    </Reference>
     <Reference Include="StructureMap">
       <HintPath>..\..\..\..\..\Users\COGORD\Documents\Visual Studio 2013\Projects\NerdScorekeeper\packages\structuremap.3.0.3.116\lib\net40\StructureMap.dll</HintPath>
     </Reference>
@@ -194,6 +197,9 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\GameDefinitionController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\PlayedGameController.cs" />
+    <Compile Include="Controllers\PlayerController.cs" />
+    <Compile Include="Controllers\PlayerGameResultController.cs" />
     <Compile Include="DependencyResolution\IoC.cs" />
     <Compile Include="DependencyResolution\StructureMapDependencyResolver.cs" />
     <Compile Include="DependencyResolution\StructureMapDependencyScope.cs" />
@@ -273,6 +279,21 @@
     <Content Include="Views\GameDefinition\Details.cshtml" />
     <Content Include="Views\GameDefinition\Edit.cshtml" />
     <Content Include="Views\GameDefinition\Index.cshtml" />
+    <Content Include="Views\Player\Create.cshtml" />
+    <Content Include="Views\Player\Delete.cshtml" />
+    <Content Include="Views\Player\Details.cshtml" />
+    <Content Include="Views\Player\Edit.cshtml" />
+    <Content Include="Views\Player\Index.cshtml" />
+    <Content Include="Views\PlayedGame\Create.cshtml" />
+    <Content Include="Views\PlayedGame\Delete.cshtml" />
+    <Content Include="Views\PlayedGame\Details.cshtml" />
+    <Content Include="Views\PlayedGame\Edit.cshtml" />
+    <Content Include="Views\PlayedGame\Index.cshtml" />
+    <Content Include="Views\PlayerGameResult\Create.cshtml" />
+    <Content Include="Views\PlayerGameResult\Delete.cshtml" />
+    <Content Include="Views\PlayerGameResult\Details.cshtml" />
+    <Content Include="Views\PlayerGameResult\Edit.cshtml" />
+    <Content Include="Views\PlayerGameResult\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

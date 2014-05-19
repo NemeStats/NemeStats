@@ -22,6 +22,15 @@ namespace BusinessLogic.DataAccess
 
         protected override void Seed(NerdScorekeeperDbContext context)
         {
+            CreateGameDefinitions(context);
+
+            CreatePlayers(context);
+
+            CreatePlayedGames(context);
+        }
+
+        private void CreateGameDefinitions(NerdScorekeeperDbContext context)
+        {
             var gameDefinitions = new List<GameDefinition>
             {
                 new GameDefinition(){Id = smallWorldGameDefinitionID, Name = "Small World", Description="Dominate the small world."},
@@ -31,7 +40,10 @@ namespace BusinessLogic.DataAccess
 
             gameDefinitions.ForEach(game => context.GameDefinitions.Add(game));
             context.SaveChanges();
+        }
 
+        private void CreatePlayers(NerdScorekeeperDbContext context)
+        {
             var players = new List<Player>
             {
                 new Player(){Id = playerDave, Name = "Big Boss Dave"},
@@ -43,17 +55,28 @@ namespace BusinessLogic.DataAccess
 
             players.ForEach(player => context.Players.Add(player));
             context.SaveChanges();
+        }
 
-            var playedGames = new List<PlayedGame>();
-            
+        private void CreatePlayedGames(NerdScorekeeperDbContext context)
+        {
             List<Player> playersInSmallWorldGame = new List<Player>()
             {
                 new Player(){ Id = playerDave },
                 new Player(){ Id = playerGrant }
             };
 
-            playedGames.Add(new PlayedGame(){ GameDefinitionId = smallWorldGameDefinitionID, Players = playersInSmallWorldGame, NumberOfPlayers = playersInSmallWorldGame.Count()});
+            PlayedGame playedGame = new PlayedGame() { GameDefinitionId = smallWorldGameDefinitionID, Players = playersInSmallWorldGame, NumberOfPlayers = playersInSmallWorldGame.Count() };
+            context.PlayedGames.Add(playedGame);
+            context.SaveChanges();
 
+            playedGame.PlayerGameResults = new List<PlayerGameResult>();
+            playedGame.PlayerGameResults.Add(new PlayerGameResult(){ PlayedGameId = smallWorldGameDefinitionID, PlayerId = playerGrant, GameRank = 1});
+            playedGame.PlayerGameResults.Add(new PlayerGameResult(){ PlayedGameId = smallWorldGameDefinitionID, PlayerId = playerDave, GameRank = 2});
+            context.SaveChanges();
+
+            
+            //TODO testing the above before i commit to changing the below
+            /*
             List<Player> playersInRaceForTheGalaxyGame = new List<Player>()
             {
                 new Player(){ Id = playerDave },
@@ -72,8 +95,8 @@ namespace BusinessLogic.DataAccess
             };
 
             playedGames.Add(new PlayedGame() { GameDefinitionId = settlersOfCatanGameDefinitionID, Players = playersInSettlersOfCatanGame, NumberOfPlayers = playersInSettlersOfCatanGame.Count() });
-
             playedGames.ForEach(playedGame => context.PlayedGames.Add(playedGame));
+            */
             context.SaveChanges();
         }
     }
