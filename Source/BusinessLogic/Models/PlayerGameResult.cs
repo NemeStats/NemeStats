@@ -9,11 +9,12 @@ namespace BusinessLogic.Models
 {
     public class PlayerGameResult
     {
-        public int ID { get; set; }
-        public int PlayedGameID { get; set; }
-        public int PlayerID { get; set; }
+        public int Id { get; set; }
 
-        public virtual PlayedGame CompletedGame { get; set; }
-        public virtual Player PlayerOfGame { get; set; }
+        public int PlayedGameId { get; set; }
+        public int PlayerId { get; set; }
+
+        public virtual PlayedGame PlayedGame { get; set; }
+        public virtual Player Player { get; set; }
     }
 }

@@ -14,13 +14,19 @@ namespace BusinessLogic.DataAccess
         private int raceForTheGalaxyGameDefinitionID = 2;
         private int settlersOfCatanGameDefinitionID = 3;
 
+        private int playerDave = 10;
+        private int playerGrant = 11;
+        private int playerGarrett = 12;
+        private int playerKyle = 13;
+        private int playerJoey = 14;
+
         protected override void Seed(NerdScorekeeperDbContext context)
         {
             var gameDefinitions = new List<GameDefinition>
             {
-                new GameDefinition(){ID = smallWorldGameDefinitionID, Name = "Small World", Description="Dominate the small world."},
-                new GameDefinition(){ID = raceForTheGalaxyGameDefinitionID, Name = "Race For The Galaxy", Description="Win the race for the galaxy."},
-                new GameDefinition(){ID = settlersOfCatanGameDefinitionID, Name = "Settlers of Catan", Description="Go settle Catan."}
+                new GameDefinition(){Id = smallWorldGameDefinitionID, Name = "Small World", Description="Dominate the small world."},
+                new GameDefinition(){Id = raceForTheGalaxyGameDefinitionID, Name = "Race For The Galaxy", Description="Win the race for the galaxy."},
+                new GameDefinition(){Id = settlersOfCatanGameDefinitionID, Name = "Settlers of Catan", Description="Go settle Catan."}
             };
 
             gameDefinitions.ForEach(game => context.GameDefinitions.Add(game));
@@ -28,11 +34,11 @@ namespace BusinessLogic.DataAccess
 
             var players = new List<Player>
             {
-                new Player(){ID = 10, Name = "Big Boss Dave"},
-                new Player(){ID = 11, Name = "El Granto"},
-                new Player(){ID = 12, Name = "The Openshaw"},
-                new Player(){ID = 13, Name = "The Slink"},
-                new Player(){ID = 14, Name = "Gooseman"}
+                new Player(){Id = playerDave, Name = "Big Boss Dave"},
+                new Player(){Id = playerGrant, Name = "El Granto"},
+                new Player(){Id = playerGarrett, Name = "The Openshaw"},
+                new Player(){Id = playerKyle, Name = "The Slink"},
+                new Player(){Id = playerJoey, Name = "Gooseman"}
             };
 
             players.ForEach(player => context.Players.Add(player));
@@ -42,30 +48,30 @@ namespace BusinessLogic.DataAccess
             
             List<Player> playersInSmallWorldGame = new List<Player>()
             {
-                new Player(){ ID = 10 },
-                new Player(){ ID = 11 }
+                new Player(){ Id = playerDave },
+                new Player(){ Id = playerGrant }
             };
 
-            playedGames.Add(new PlayedGame(){ GameDefinitionID = smallWorldGameDefinitionID, Players = playersInSmallWorldGame, NumberOfPlayers = playersInSmallWorldGame.Count()});
+            playedGames.Add(new PlayedGame(){ GameDefinitionId = smallWorldGameDefinitionID, Players = playersInSmallWorldGame, NumberOfPlayers = playersInSmallWorldGame.Count()});
 
             List<Player> playersInRaceForTheGalaxyGame = new List<Player>()
             {
-                new Player(){ ID = 10 },
-                new Player(){ ID = 13 },
-                new Player(){ ID = 14}
+                new Player(){ Id = playerDave },
+                new Player(){ Id = playerGarrett },
+                new Player(){ Id = playerJoey}
             };
 
-            playedGames.Add(new PlayedGame() { GameDefinitionID = raceForTheGalaxyGameDefinitionID, Players = playersInRaceForTheGalaxyGame, NumberOfPlayers = playersInRaceForTheGalaxyGame.Count() });
+            playedGames.Add(new PlayedGame() { GameDefinitionId = raceForTheGalaxyGameDefinitionID, Players = playersInRaceForTheGalaxyGame, NumberOfPlayers = playersInRaceForTheGalaxyGame.Count() });
 
             List<Player> playersInSettlersOfCatanGame = new List<Player>()
             {
-                new Player(){ ID = 12 },
-                new Player(){ ID = 13 },
-                new Player(){ ID = 14 },
-                new Player(){ ID = 10 }
+                new Player(){ Id = playerGarrett },
+                new Player(){ Id = playerKyle },
+                new Player(){ Id = playerJoey },
+                new Player(){ Id = playerGrant }
             };
 
-            playedGames.Add(new PlayedGame() { GameDefinitionID = settlersOfCatanGameDefinitionID, Players = playersInSettlersOfCatanGame, NumberOfPlayers = playersInSettlersOfCatanGame.Count() });
+            playedGames.Add(new PlayedGame() { GameDefinitionId = settlersOfCatanGameDefinitionID, Players = playersInSettlersOfCatanGame, NumberOfPlayers = playersInSettlersOfCatanGame.Count() });
 
             playedGames.ForEach(playedGame => context.PlayedGames.Add(playedGame));
             context.SaveChanges();
