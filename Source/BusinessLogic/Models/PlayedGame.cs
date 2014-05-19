@@ -8,9 +8,11 @@ namespace BusinessLogic.Models
 {
     public class PlayedGame
     {
+        public int ID { get; set; }
         public int GameDefinitionID { get; set; }
         public int NumberOfPlayers { get; set; }
 
         public virtual ICollection<Player> Players { get; set; }
+        public virtual GameDefinition Game { get; set; }
     }
 }
