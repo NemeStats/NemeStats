@@ -24,22 +24,41 @@ namespace BusinessLogic.Logic
 
         public PlayedGame CreatePlayedGame(NewlyCompletedGame newlyCompletedGame)
         {
-            if(newlyCompletedGame.GameDefinitionId == 0)
+            int numberOfPlayers = newlyCompletedGame.PlayerRanks.Count();
+
+            Validate(newlyCompletedGame, numberOfPlayers);
+
+            var playerGameResults = newlyCompletedGame.PlayerRanks.Select(x =>  new PlayerGameResult() { Id = x.PlayerId, GameRank = x.GameRank} ).ToList();
+
+            PlayedGame playedGame = new PlayedGame()
+            {
+                GameDefinitionId = newlyCompletedGame.GameDefinitionId,
+                NumberOfPlayers = numberOfPlayers,
+                PlayerGameResults = playerGameResults
+            };
+
+            dbContext.PlayedGames.Add(playedGame);
+            dbContext.SaveChanges();
+
+            return playedGame;
+        }
+
+        private static void Validate(NewlyCompletedGame newlyCompletedGame, int numberOfPlayers)
+        {
+            if (newlyCompletedGame.GameDefinitionId == 0)
             {
                 throw new ArgumentException(EXCEPTION_MESSAGE_MUST_PASS_VALID_GAME_DEFINITION_ID);
             }
-            
-            if(newlyCompletedGame.PlayerRanks.Count < 1)
+
+            if (newlyCompletedGame.PlayerRanks.Count < 1)
             {
                 throw new ArgumentException(EXCEPTION_MESSAGE_MUST_PASS_AT_LEAST_ONE_PLAYER);
             }
 
-            if(newlyCompletedGame.PlayerRanks.FirstOrDefault(x => x.GameRank == 1) == null)
+            if (newlyCompletedGame.PlayerRanks.FirstOrDefault(x => x.GameRank == 1) == null)
             {
                 throw new ArgumentException(EXCEPTION_MESSAGE_GAME_MUST_HAVE_A_WINNER);
             }
-
-            int numberOfPlayers = newlyCompletedGame.PlayerRanks.Count();
 
             int numberOfPlayersCoveredSoFar = 0;
 
@@ -55,20 +74,6 @@ namespace BusinessLogic.Logic
 
                 numberOfPlayersCoveredSoFar += numberOfPlayersWithThisRank;
             }
-
-            var playerGameResults = newlyCompletedGame.PlayerRanks.Select(x =>  new PlayerGameResult() { Id = x.PlayerId, GameRank = x.GameRank} ).ToList();
-
-            PlayedGame playedGame = new PlayedGame()
-            {
-                GameDefinitionId = newlyCompletedGame.GameDefinitionId,
-                NumberOfPlayers = numberOfPlayers,
-                PlayerGameResults = playerGameResults
-            };
-
-            dbContext.PlayedGames.Add(playedGame);
-            dbContext.SaveChanges();
-
-            return playedGame;
         }
     }
 }

@@ -12,7 +12,6 @@ namespace BusinessLogic.Models
         public int Id { get; set; }
 
         public string Name { get; set; }
-        [DefaultValue("true")]
         public bool Active { get; set; }
     }
 }
