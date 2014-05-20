@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.DataAccess;
+using BusinessLogic.Logic;
 using BusinessLogic.Models;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BusinessLogic.DataAccess
 {
-    public class NerdScorekeeperInitializer : System.Data.Entity.DropCreateDatabaseIfModelChanges<NerdScorekeeperDbContext>
+    public class NerdScorekeeperInitializer : System.Data.Entity.DropCreateDatabaseAlways<NerdScorekeeperDbContext>
     {
         private int smallWorldGameDefinitionID = 1;
         private int raceForTheGalaxyGameDefinitionID = 2;
@@ -20,13 +21,13 @@ namespace BusinessLogic.DataAccess
         private int playerKyle = 13;
         private int playerJoey = 14;
 
-        protected override void Seed(NerdScorekeeperDbContext context)
+        protected override void Seed(NerdScorekeeperDbContext dbContext)
         {
-            CreateGameDefinitions(context);
+            CreateGameDefinitions(dbContext);
 
-            CreatePlayers(context);
+            CreatePlayers(dbContext);
 
-            CreatePlayedGames(context);
+            CreatePlayedGames(dbContext);
         }
 
         private void CreateGameDefinitions(NerdScorekeeperDbContext context)
@@ -42,7 +43,7 @@ namespace BusinessLogic.DataAccess
             context.SaveChanges();
         }
 
-        private void CreatePlayers(NerdScorekeeperDbContext context)
+        private void CreatePlayers(NerdScorekeeperDbContext dbContext)
         {
             var players = new List<Player>
             {
@@ -53,51 +54,53 @@ namespace BusinessLogic.DataAccess
                 new Player(){Id = playerJoey, Name = "Gooseman"}
             };
 
-            players.ForEach(player => context.Players.Add(player));
-            context.SaveChanges();
+            players.ForEach(player => dbContext.Players.Add(player));
+            dbContext.SaveChanges();
         }
 
-        private void CreatePlayedGames(NerdScorekeeperDbContext context)
+        private void CreatePlayedGames(NerdScorekeeperDbContext dbContext)
         {
-            List<Player> playersInSmallWorldGame = new List<Player>()
-            {
-                new Player(){ Id = playerDave },
-                new Player(){ Id = playerGrant }
+            CompletedGame completedGame = new CompletedGame(dbContext);
+
+            CreateSmallWorldPlayedGame(completedGame);
+            CreateRaceForTheGalaxyGameDefinitionId(completedGame);
+            CreateSettlersOfCatanPlayedGame(completedGame);
+        }
+
+        private void CreateSettlersOfCatanPlayedGame(CompletedGame completedGame)
+        {
+            List<PlayerRank> playerRanks = new List<PlayerRank>() 
+            { 
+                new PlayerRank() { GameRank = 1, PlayerId = playerGarrett },
+                new PlayerRank() { GameRank = 2, PlayerId = playerKyle }, 
+                new PlayerRank() { GameRank = 3, PlayerId = playerJoey },
+                new PlayerRank() { GameRank = 4, PlayerId = playerKyle }
             };
 
-            PlayedGame playedGame = new PlayedGame() { GameDefinitionId = smallWorldGameDefinitionID, Players = playersInSmallWorldGame, NumberOfPlayers = playersInSmallWorldGame.Count() };
-            context.PlayedGames.Add(playedGame);
-            context.SaveChanges();
+            completedGame.CreatePlayedGame(new NewlyCompletedGame() { GameDefinitionId = settlersOfCatanGameDefinitionID, PlayerRanks = playerRanks });
+        }
 
-            playedGame.PlayerGameResults = new List<PlayerGameResult>();
-            playedGame.PlayerGameResults.Add(new PlayerGameResult(){ PlayedGameId = smallWorldGameDefinitionID, PlayerId = playerGrant, GameRank = 1});
-            playedGame.PlayerGameResults.Add(new PlayerGameResult(){ PlayedGameId = smallWorldGameDefinitionID, PlayerId = playerDave, GameRank = 2});
-            context.SaveChanges();
-
-            
-            //TODO testing the above before i commit to changing the below
-            /*
-            List<Player> playersInRaceForTheGalaxyGame = new List<Player>()
-            {
-                new Player(){ Id = playerDave },
-                new Player(){ Id = playerGarrett },
-                new Player(){ Id = playerJoey}
+        private void CreateRaceForTheGalaxyGameDefinitionId(CompletedGame completedGame)
+        {
+            List<PlayerRank> playerRanks = new List<PlayerRank>() 
+            { 
+                new PlayerRank() { GameRank = 1, PlayerId = playerDave },
+                new PlayerRank() { GameRank = 2, PlayerId = playerJoey }, 
+                new PlayerRank() { GameRank = 3, PlayerId = playerGarrett } 
             };
 
-            playedGames.Add(new PlayedGame() { GameDefinitionId = raceForTheGalaxyGameDefinitionID, Players = playersInRaceForTheGalaxyGame, NumberOfPlayers = playersInRaceForTheGalaxyGame.Count() });
+            completedGame.CreatePlayedGame(new NewlyCompletedGame() { GameDefinitionId = raceForTheGalaxyGameDefinitionID, PlayerRanks = playerRanks });
+        }
 
-            List<Player> playersInSettlersOfCatanGame = new List<Player>()
-            {
-                new Player(){ Id = playerGarrett },
-                new Player(){ Id = playerKyle },
-                new Player(){ Id = playerJoey },
-                new Player(){ Id = playerGrant }
+        private void CreateSmallWorldPlayedGame(CompletedGame completedGame)
+        {
+            List<PlayerRank> playerRanks = new List<PlayerRank>() 
+            { 
+                new PlayerRank() { GameRank = 1, PlayerId = playerDave }, 
+                new PlayerRank() { GameRank = 2, PlayerId = playerGrant } 
             };
 
-            playedGames.Add(new PlayedGame() { GameDefinitionId = settlersOfCatanGameDefinitionID, Players = playersInSettlersOfCatanGame, NumberOfPlayers = playersInSettlersOfCatanGame.Count() });
-            playedGames.ForEach(playedGame => context.PlayedGames.Add(playedGame));
-            */
-            context.SaveChanges();
+            completedGame.CreatePlayedGame(new NewlyCompletedGame() { GameDefinitionId = smallWorldGameDefinitionID, PlayerRanks = playerRanks });
         }
     }
 }

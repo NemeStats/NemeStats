@@ -7,7 +7,7 @@
     <ProjectGuid>{F58E10C5-089C-48A0-9D4F-1F932268A5B7}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Models.Tests</RootNamespace>
+    <RootNamespace>BusinessLogic.Tests</RootNamespace>
     <AssemblyName>BusinessLogic.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -55,15 +55,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IntegrationTests\DataAccess\NerdScorekeeperInitializerIntegrationTests\CreatePlayedGameTests.cs" />
-    <Compile Include="IntegrationTests\Logic\PlayedGameTests.cs" />
+    <Compile Include="IntegrationTests\DataAccessTests\NerdScorekeeperInitializerIntegrationTests\CreatePlayedGameIntegrationTests.cs" />
+    <Compile Include="IntegrationTests\Logic\CompletedGameTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UnitTests\Logic\CompletedGameTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="UnitTests\DataAccessTests\NerdScorekeeperInitializerTests\" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Source\BusinessLogic\BusinessLogic.csproj">
       <Project>{b1184b6a-9c68-48b6-814c-0667b69f89d2}</Project>

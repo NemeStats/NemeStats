@@ -7,7 +7,7 @@
     <ProjectGuid>{B1184B6A-9C68-48B6-814C-0667B69F89D2}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Models</RootNamespace>
+    <RootNamespace>BusinessLogic</RootNamespace>
     <AssemblyName>BusinessLogic</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -52,9 +52,11 @@
     <Compile Include="DataAccess\NerdScorekeeperInitializer.cs" />
     <Compile Include="Logic\CompletedGame.cs" />
     <Compile Include="Models\GameDefinition.cs" />
+    <Compile Include="Models\NewlyCompletedGame.cs" />
     <Compile Include="Models\PlayedGame.cs" />
     <Compile Include="Models\Player.cs" />
     <Compile Include="Models\PlayerGameResult.cs" />
+    <Compile Include="Models\PlayerRank.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -7,10 +7,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Models.Tests.IntegrationTests.DataAccess.NerdScorekeeperInitializerIntegrationTests
+namespace BusinessLogic.Tests.IntegrationTests.DataAccess.NerdScorekeeperInitializerIntegrationTests
 {
+    //TODO Will i keep this test?
+    /*
     [TestFixture]
-    public class CreatePlayedGameTests
+    public class CreatePlayedGameIntegrationTests
     {
         private NerdScorekeeperDbContext dbContext = new NerdScorekeeperDbContext();
         private NerdScorekeeperInitializer initializer = new NerdScorekeeperInitializer();
@@ -27,4 +29,5 @@ namespace Models.Tests.IntegrationTests.DataAccess.NerdScorekeeperInitializerInt
             Assert.IsTrue(dbContext.PlayedGames.Count() > 0, "No played game was created");
         }
     }
+     * */
 }

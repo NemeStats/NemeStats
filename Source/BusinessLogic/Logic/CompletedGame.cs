@@ -6,24 +6,42 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Models.Logic
+namespace BusinessLogic.Logic
 {
     public class CompletedGame
     {
-        NerdScorekeeperDbContext context = null;
+        NerdScorekeeperDbContext dbContext = null;
 
-        public CompletedGame(NerdScorekeeperDbContext dbContext)
+        public CompletedGame(NerdScorekeeperDbContext context)
         {
-            context = dbContext;
+            dbContext = context;
         }
 
-        public PlayedGame CreatePlayedGame(PlayedGame playedGame)
+        public PlayedGame CreatePlayedGame(NewlyCompletedGame newlyCompletedGame)
         {
-            if(playedGame.Id != 0)
+            if(newlyCompletedGame.GameDefinitionId == 0)
             {
-                throw new ArgumentException("Cannot pass an existing PlayedGame to this method.");
+                throw new ArgumentException("Must pass a valid GameDefinitionId.");
             }
-            return null;
+            
+            if(newlyCompletedGame.PlayerRanks.Count < 1)
+            {
+                throw new ArgumentException("Must pass in at least one player");
+            }
+
+            var playerList = newlyCompletedGame.PlayerRanks.Select(x =>  new Player() { Id = x.PlayerId} ).ToList();
+
+            PlayedGame playedGame = new PlayedGame()
+            {
+                GameDefinitionId = newlyCompletedGame.GameDefinitionId,
+                NumberOfPlayers = newlyCompletedGame.PlayerRanks.Count(),
+                Players = playerList
+            };
+
+            dbContext.PlayedGames.Add(playedGame);
+            dbContext.SaveChanges();
+
+            return playedGame;
         }
     }
 }
