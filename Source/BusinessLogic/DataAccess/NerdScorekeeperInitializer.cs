@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BusinessLogic.DataAccess
 {
-    public class NerdScorekeeperInitializer : System.Data.Entity.DropCreateDatabaseAlways<NerdScorekeeperDbContext>
+    public class NerdScorekeeperInitializer : System.Data.Entity.DropCreateDatabaseIfModelChanges<NerdScorekeeperDbContext>
     {
         private int smallWorldGameDefinitionID = 1;
         private int raceForTheGalaxyGameDefinitionID = 2;
@@ -21,16 +21,21 @@ namespace BusinessLogic.DataAccess
         private int playerKyle = 13;
         private int playerJoey = 14;
 
-        protected override void Seed(NerdScorekeeperDbContext dbContext)
+        private NerdScorekeeperDbContext dbContext;
+        private CompletedGame completedGame;
+
+        //TODO review with Clean Code book club
+        protected override void Seed(NerdScorekeeperDbContext context)
         {
-            CreateGameDefinitions(dbContext);
+            dbContext = context;
+            completedGame = new CompletedGame(dbContext);
 
-            CreatePlayers(dbContext);
-
-            CreatePlayedGames(dbContext);
+            CreateGameDefinitions();
+            CreatePlayers();
+            CreatePlayedGames();
         }
 
-        private void CreateGameDefinitions(NerdScorekeeperDbContext context)
+        private void CreateGameDefinitions()
         {
             var gameDefinitions = new List<GameDefinition>
             {
@@ -39,11 +44,11 @@ namespace BusinessLogic.DataAccess
                 new GameDefinition(){Id = settlersOfCatanGameDefinitionID, Name = "Settlers of Catan", Description="Go settle Catan."}
             };
 
-            gameDefinitions.ForEach(game => context.GameDefinitions.Add(game));
-            context.SaveChanges();
+            gameDefinitions.ForEach(game => dbContext.GameDefinitions.Add(game));
+            dbContext.SaveChanges();
         }
 
-        private void CreatePlayers(NerdScorekeeperDbContext dbContext)
+        private void CreatePlayers()
         {
             var players = new List<Player>
             {
@@ -58,16 +63,14 @@ namespace BusinessLogic.DataAccess
             dbContext.SaveChanges();
         }
 
-        private void CreatePlayedGames(NerdScorekeeperDbContext dbContext)
+        private void CreatePlayedGames()
         {
-            CompletedGame completedGame = new CompletedGame(dbContext);
-
-            CreateSmallWorldPlayedGame(completedGame);
-            CreateRaceForTheGalaxyGameDefinitionId(completedGame);
-            CreateSettlersOfCatanPlayedGame(completedGame);
+            CreateSmallWorldPlayedGame();
+            CreateRaceForTheGalaxyGameDefinitionId();
+            CreateSettlersOfCatanPlayedGame();
         }
 
-        private void CreateSettlersOfCatanPlayedGame(CompletedGame completedGame)
+        private void CreateSettlersOfCatanPlayedGame()
         {
             List<PlayerRank> playerRanks = new List<PlayerRank>() 
             { 
@@ -80,7 +83,7 @@ namespace BusinessLogic.DataAccess
             completedGame.CreatePlayedGame(new NewlyCompletedGame() { GameDefinitionId = settlersOfCatanGameDefinitionID, PlayerRanks = playerRanks });
         }
 
-        private void CreateRaceForTheGalaxyGameDefinitionId(CompletedGame completedGame)
+        private void CreateRaceForTheGalaxyGameDefinitionId()
         {
             List<PlayerRank> playerRanks = new List<PlayerRank>() 
             { 
@@ -92,7 +95,7 @@ namespace BusinessLogic.DataAccess
             completedGame.CreatePlayedGame(new NewlyCompletedGame() { GameDefinitionId = raceForTheGalaxyGameDefinitionID, PlayerRanks = playerRanks });
         }
 
-        private void CreateSmallWorldPlayedGame(CompletedGame completedGame)
+        private void CreateSmallWorldPlayedGame()
         {
             List<PlayerRank> playerRanks = new List<PlayerRank>() 
             { 

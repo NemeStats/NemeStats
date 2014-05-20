@@ -17,7 +17,7 @@ namespace BusinessLogic.Tests.UnitTests.Logic
         CompletedGame playedGameLogic = null;
         private int playedGameId = 2;
 
-        [SetUp]
+        [TestFixtureSetUp]
         public void SetUp()
         {
             dbContext = MockRepository.GenerateMock<NerdScorekeeperDbContext>();

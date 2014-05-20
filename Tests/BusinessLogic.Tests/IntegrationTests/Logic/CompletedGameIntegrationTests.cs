@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 namespace BusinessLogic.Tests.IntegrationTests.Logic
 {
     [TestFixture]
-    public class CompletedGameTests
+    public class CompletedGameIntegrationTests
     {
         private NerdScorekeeperDbContext dbContext;
         private CompletedGame playedGameLogic;
@@ -22,7 +22,7 @@ namespace BusinessLogic.Tests.IntegrationTests.Logic
         private Player player1;
         private Player player2;
 
-        [SetUp]
+        [TestFixtureSetUp]
         public void SetUp()
         {
             dbContext = new NerdScorekeeperDbContext();
@@ -41,12 +41,28 @@ namespace BusinessLogic.Tests.IntegrationTests.Logic
             playedGameLogic = new CompletedGame(dbContext);
         }
 
-        [TearDown]
+        [Test]
+        public void ItCreatesATwoPlayerPlayedGame()
+        {
+            List<Player> players = new List<Player>() { player1, player2 };
+            List<PlayerRank> playerRanks = new List<PlayerRank>() 
+            { 
+                new PlayerRank() { GameRank = 1, PlayerId = player1.Id }, 
+                new PlayerRank() { GameRank = 1, PlayerId = player2.Id } 
+            };
+            NewlyCompletedGame newlyCompletedGame = new NewlyCompletedGame() { GameDefinitionId = playedGameId, PlayerRanks = playerRanks };
+
+            playedGame = playedGameLogic.CreatePlayedGame(newlyCompletedGame);
+
+            Assert.IsTrue(playedGame.NumberOfPlayers == 2);
+        }
+
+        [TestFixtureTearDown]
         public void TearDown()
         {
             dbContext.GameDefinitions.Remove(gameDefinition);
             try
-            { 
+            {
                 dbContext.Players.Remove(player1);
             }
             catch (Exception) { }
@@ -62,24 +78,8 @@ namespace BusinessLogic.Tests.IntegrationTests.Logic
                 dbContext.PlayedGames.Remove(playedGame);
             }
             catch (Exception) { }
-            
+
             dbContext.SaveChanges();
-        }
-
-        [Test]
-        public void ItCreatesATwoPlayerPlayedGame()
-        {
-            List<Player> players = new List<Player>() { player1, player2 };
-            List<PlayerRank> playerRanks = new List<PlayerRank>() 
-            { 
-                new PlayerRank() { GameRank = 1, PlayerId = player1.Id }, 
-                new PlayerRank() { GameRank = 1, PlayerId = player2.Id } 
-            };
-            NewlyCompletedGame newlyCompletedGame = new NewlyCompletedGame() { GameDefinitionId = playedGameId, PlayerRanks = playerRanks };
-
-            playedGame = playedGameLogic.CreatePlayedGame(newlyCompletedGame);
-
-            Assert.IsTrue(playedGame.NumberOfPlayers == 2);
         }
     }
 }
