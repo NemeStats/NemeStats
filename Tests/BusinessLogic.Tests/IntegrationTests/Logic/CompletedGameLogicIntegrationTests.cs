@@ -12,10 +12,10 @@ using System.Threading.Tasks;
 namespace BusinessLogic.Tests.IntegrationTests.Logic
 {
     [TestFixture]
-    public class CompletedGameIntegrationTests
+    public class CompletedGameLogicIntegrationTests
     {
         private NerdScorekeeperDbContext dbContext;
-        private CompletedGame playedGameLogic;
+        private CompletedGameLogic playedGameLogic;
         private PlayedGame playedGame;
         private int playedGameId;
         private GameDefinition gameDefinition;
@@ -38,7 +38,7 @@ namespace BusinessLogic.Tests.IntegrationTests.Logic
             dbContext.SaveChanges();
             playedGameId = gameDefinition.Id;
 
-            playedGameLogic = new CompletedGame(dbContext);
+            playedGameLogic = new CompletedGameLogic(dbContext);
         }
 
         [Test]

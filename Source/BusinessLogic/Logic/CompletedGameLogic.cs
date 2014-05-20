@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BusinessLogic.Logic
 {
-    public class CompletedGame
+    public class CompletedGameLogic
     {
         internal const string EXCEPTION_MESSAGE_MUST_PASS_VALID_GAME_DEFINITION_ID = "Must pass a valid GameDefinitionId.";
         internal const string EXCEPTION_MESSAGE_MUST_PASS_AT_LEAST_ONE_PLAYER = "Must pass in at least one player";
@@ -17,7 +17,7 @@ namespace BusinessLogic.Logic
 
         private NerdScorekeeperDbContext dbContext = null;
 
-        public CompletedGame(NerdScorekeeperDbContext context)
+        public CompletedGameLogic(NerdScorekeeperDbContext context)
         {
             dbContext = context;
         }
@@ -56,13 +56,13 @@ namespace BusinessLogic.Logic
                 numberOfPlayersCoveredSoFar += numberOfPlayersWithThisRank;
             }
 
-            var playerList = newlyCompletedGame.PlayerRanks.Select(x =>  new Player() { Id = x.PlayerId} ).ToList();
+            var playerGameResults = newlyCompletedGame.PlayerRanks.Select(x =>  new PlayerGameResult() { Id = x.PlayerId, GameRank = x.GameRank} ).ToList();
 
             PlayedGame playedGame = new PlayedGame()
             {
                 GameDefinitionId = newlyCompletedGame.GameDefinitionId,
                 NumberOfPlayers = numberOfPlayers,
-                Players = playerList
+                PlayerGameResults = playerGameResults
             };
 
             dbContext.PlayedGames.Add(playedGame);

@@ -50,7 +50,12 @@
   <ItemGroup>
     <Compile Include="DataAccess\NerdScorekeeperDbContext.cs" />
     <Compile Include="DataAccess\NerdScorekeeperInitializer.cs" />
-    <Compile Include="Logic\CompletedGame.cs" />
+    <Compile Include="Logic\CompletedGameLogic.cs" />
+    <Compile Include="Migrations\201405190343067_InitialCreate.cs" />
+    <Compile Include="Migrations\201405190343067_InitialCreate.Designer.cs">
+      <DependentUpon>201405190343067_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\GameDefinition.cs" />
     <Compile Include="Models\NewlyCompletedGame.cs" />
     <Compile Include="Models\PlayedGame.cs" />
@@ -66,7 +71,11 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201405190343067_InitialCreate.resx">
+      <DependentUpon>201405190343067_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
