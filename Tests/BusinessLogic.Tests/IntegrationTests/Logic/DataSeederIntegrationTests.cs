@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessLogic.Tests.IntegrationTests.DataAccess.NerdScorekeeperInitializerIntegrationTests
+namespace BusinessLogic.Tests.IntegrationTests.Logic.DataSeederIntegrationTests
 {
     [TestFixture]
     public class NerdScorekeeperInitializerIntegrationTests
@@ -31,7 +31,7 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccess.NerdScorekeeperInitial
         public void ItCreatesThreePlayedGames()
         {
             List<PlayedGame> playedGames = dbContext.PlayedGames.ToList<PlayedGame>();
-            Assert.IsTrue(dbContext.PlayedGames.Count() >= 3, "No played game was created.");
+            Assert.GreaterOrEqual(dbContext.PlayedGames.Count(), 3, "Not enough played games were created.");
         }
 
         [Test]

@@ -1,15 +1,14 @@
-namespace BusinessLogic.Migrations
-{
-    using BusinessLogic.DataAccess;
-    using BusinessLogic.Logic;
-    using BusinessLogic.Models;
-    using System;
-    using System.Collections.Generic;
-    using System.Data.Entity;
-    using System.Data.Entity.Migrations;
-    using System.Linq;
+﻿using BusinessLogic.DataAccess;
+using BusinessLogic.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<BusinessLogic.DataAccess.NerdScorekeeperDbContext>
+namespace BusinessLogic.Logic
+{
+    public class DataSeeder
     {
         private int smallWorldGameDefinitionID = 1;
         private int raceForTheGalaxyGameDefinitionID = 2;
@@ -24,16 +23,13 @@ namespace BusinessLogic.Migrations
         private NerdScorekeeperDbContext dbContext;
         private CompletedGameLogic completedGame;
 
-        public Configuration()
-        {
-            AutomaticMigrationsEnabled = false;
-            ContextKey = "BusinessLogic.DataAccess.NerdScorekeeperDbContext";
-        }
-
-        //TODO review with Clean Code book club
-        protected override void Seed(NerdScorekeeperDbContext context)
+        public DataSeeder(NerdScorekeeperDbContext context)
         {
             dbContext = context;
+        }
+
+        public void SeedData()
+        {
             completedGame = new CompletedGameLogic(dbContext);
 
             CreateGameDefinitions();
@@ -72,8 +68,31 @@ namespace BusinessLogic.Migrations
         private void CreatePlayedGames()
         {
             CreateSmallWorldPlayedGame();
-            CreateRaceForTheGalaxyGameDefinitionId();
+            CreateRaceForTheGalaxyPlayedGame();
             CreateSettlersOfCatanPlayedGame();
+        }
+
+        private void CreateSmallWorldPlayedGame()
+        {
+            List<PlayerRank> playerRanks = new List<PlayerRank>() 
+            { 
+                new PlayerRank() { GameRank = 1, PlayerId = playerDave }, 
+                new PlayerRank() { GameRank = 2, PlayerId = playerGrant } 
+            };
+
+            completedGame.CreatePlayedGame(new NewlyCompletedGame() { GameDefinitionId = smallWorldGameDefinitionID, PlayerRanks = playerRanks });
+        }
+
+        private void CreateRaceForTheGalaxyPlayedGame()
+        {
+            List<PlayerRank> playerRanks = new List<PlayerRank>() 
+            { 
+                new PlayerRank() { GameRank = 1, PlayerId = playerDave },
+                new PlayerRank() { GameRank = 2, PlayerId = playerJoey }, 
+                new PlayerRank() { GameRank = 3, PlayerId = playerGarrett } 
+            };
+
+            completedGame.CreatePlayedGame(new NewlyCompletedGame() { GameDefinitionId = raceForTheGalaxyGameDefinitionID, PlayerRanks = playerRanks });
         }
 
         private void CreateSettlersOfCatanPlayedGame()
@@ -87,29 +106,6 @@ namespace BusinessLogic.Migrations
             };
 
             completedGame.CreatePlayedGame(new NewlyCompletedGame() { GameDefinitionId = settlersOfCatanGameDefinitionID, PlayerRanks = playerRanks });
-        }
-
-        private void CreateRaceForTheGalaxyGameDefinitionId()
-        {
-            List<PlayerRank> playerRanks = new List<PlayerRank>() 
-            { 
-                new PlayerRank() { GameRank = 1, PlayerId = playerDave },
-                new PlayerRank() { GameRank = 2, PlayerId = playerJoey }, 
-                new PlayerRank() { GameRank = 3, PlayerId = playerGarrett } 
-            };
-
-            completedGame.CreatePlayedGame(new NewlyCompletedGame() { GameDefinitionId = raceForTheGalaxyGameDefinitionID, PlayerRanks = playerRanks });
-        }
-
-        private void CreateSmallWorldPlayedGame()
-        {
-            List<PlayerRank> playerRanks = new List<PlayerRank>() 
-            { 
-                new PlayerRank() { GameRank = 1, PlayerId = playerDave }, 
-                new PlayerRank() { GameRank = 2, PlayerId = playerGrant } 
-            };
-
-            completedGame.CreatePlayedGame(new NewlyCompletedGame() { GameDefinitionId = smallWorldGameDefinitionID, PlayerRanks = playerRanks });
         }
     }
 }

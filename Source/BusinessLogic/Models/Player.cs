@@ -13,5 +13,7 @@ namespace BusinessLogic.Models
 
         public string Name { get; set; }
         public bool Active { get; set; }
+
+        public ICollection<PlayerGameResult> PlayerGameResults { get; set; }
     }
 }
