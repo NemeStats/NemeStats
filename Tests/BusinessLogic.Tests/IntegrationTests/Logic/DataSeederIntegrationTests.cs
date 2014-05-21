@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.DataAccess;
+using BusinessLogic.Logic;
 using BusinessLogic.Models;
 using NUnit.Framework;
 using System;
@@ -19,6 +20,7 @@ namespace BusinessLogic.Tests.IntegrationTests.Logic.DataSeederIntegrationTests
         public void SetUp()
         {
             dbContext = new NerdScorekeeperDbContext();
+            new DataSeeder(dbContext).SeedData();
         }
 
         [Test]

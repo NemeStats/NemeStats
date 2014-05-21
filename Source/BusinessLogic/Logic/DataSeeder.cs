@@ -14,6 +14,8 @@ namespace BusinessLogic.Logic
         private int raceForTheGalaxyGameDefinitionID = 2;
         private int settlersOfCatanGameDefinitionID = 3;
 
+        private List<Player> savedPlayers;
+
         private int playerDave = 10;
         private int playerGrant = 11;
         private int playerGarrett = 12;
@@ -54,15 +56,17 @@ namespace BusinessLogic.Logic
         {
             var players = new List<Player>
             {
-                new Player(){Id = playerDave, Name = "Big Boss Dave"},
-                new Player(){Id = playerGrant, Name = "El Granto"},
-                new Player(){Id = playerGarrett, Name = "The Openshaw"},
-                new Player(){Id = playerKyle, Name = "The Slink"},
-                new Player(){Id = playerJoey, Name = "Gooseman"}
+                new Player(){ Name = "Big Boss Dave"},
+                new Player(){ Name = "El Granto"},
+                new Player(){ Name = "The Openshaw"},
+                new Player(){ Name = "The Slink"},
+                new Player(){ Name = "Gooseman"}
             };
 
             players.ForEach(player => dbContext.Players.Add(player));
             dbContext.SaveChanges();
+
+            savedPlayers = players;
         }
 
         private void CreatePlayedGames()
@@ -76,8 +80,8 @@ namespace BusinessLogic.Logic
         {
             List<PlayerRank> playerRanks = new List<PlayerRank>() 
             { 
-                new PlayerRank() { GameRank = 1, PlayerId = playerDave }, 
-                new PlayerRank() { GameRank = 2, PlayerId = playerGrant } 
+                new PlayerRank() { GameRank = 1, PlayerId = savedPlayers[0].Id }, 
+                new PlayerRank() { GameRank = 2, PlayerId = savedPlayers[1].Id } 
             };
 
             completedGame.CreatePlayedGame(new NewlyCompletedGame() { GameDefinitionId = smallWorldGameDefinitionID, PlayerRanks = playerRanks });
@@ -87,9 +91,9 @@ namespace BusinessLogic.Logic
         {
             List<PlayerRank> playerRanks = new List<PlayerRank>() 
             { 
-                new PlayerRank() { GameRank = 1, PlayerId = playerDave },
-                new PlayerRank() { GameRank = 2, PlayerId = playerJoey }, 
-                new PlayerRank() { GameRank = 3, PlayerId = playerGarrett } 
+                new PlayerRank() { GameRank = 1, PlayerId = savedPlayers[2].Id },
+                new PlayerRank() { GameRank = 2, PlayerId = savedPlayers[3].Id }, 
+                new PlayerRank() { GameRank = 3, PlayerId = savedPlayers[4].Id } 
             };
 
             completedGame.CreatePlayedGame(new NewlyCompletedGame() { GameDefinitionId = raceForTheGalaxyGameDefinitionID, PlayerRanks = playerRanks });
@@ -99,10 +103,10 @@ namespace BusinessLogic.Logic
         {
             List<PlayerRank> playerRanks = new List<PlayerRank>() 
             { 
-                new PlayerRank() { GameRank = 1, PlayerId = playerGarrett },
-                new PlayerRank() { GameRank = 2, PlayerId = playerKyle }, 
-                new PlayerRank() { GameRank = 3, PlayerId = playerJoey },
-                new PlayerRank() { GameRank = 4, PlayerId = playerKyle }
+                new PlayerRank() { GameRank = 1, PlayerId = savedPlayers[4].Id },
+                new PlayerRank() { GameRank = 2, PlayerId = savedPlayers[2].Id }, 
+                new PlayerRank() { GameRank = 3, PlayerId = savedPlayers[1].Id },
+                new PlayerRank() { GameRank = 4, PlayerId = savedPlayers[3].Id }
             };
 
             completedGame.CreatePlayedGame(new NewlyCompletedGame() { GameDefinitionId = settlersOfCatanGameDefinitionID, PlayerRanks = playerRanks });

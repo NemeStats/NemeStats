@@ -3,7 +3,7 @@ namespace BusinessLogic.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class InitialCreate : DbMigration
+    public partial class Initial : DbMigration
     {
         public override void Up()
         {
@@ -37,12 +37,15 @@ namespace BusinessLogic.Migrations
                         PlayedGameId = c.Int(nullable: false),
                         PlayerId = c.Int(nullable: false),
                         GameRank = c.Int(nullable: false),
+                        GameDefinition_Id = c.Int(),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.PlayedGame", t => t.PlayedGameId, cascadeDelete: true)
                 .ForeignKey("dbo.Player", t => t.PlayerId, cascadeDelete: true)
+                .ForeignKey("dbo.GameDefinition", t => t.GameDefinition_Id)
                 .Index(t => t.PlayedGameId)
-                .Index(t => t.PlayerId);
+                .Index(t => t.PlayerId)
+                .Index(t => t.GameDefinition_Id);
             
             CreateTable(
                 "dbo.Player",
@@ -50,21 +53,19 @@ namespace BusinessLogic.Migrations
                     {
                         Id = c.Int(nullable: false, identity: true),
                         Name = c.String(),
-                        PlayedGame_Id = c.Int(),
+                        Active = c.Boolean(nullable: false),
                     })
-                .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.PlayedGame", t => t.PlayedGame_Id)
-                .Index(t => t.PlayedGame_Id);
+                .PrimaryKey(t => t.Id);
             
         }
         
         public override void Down()
         {
-            DropForeignKey("dbo.Player", "PlayedGame_Id", "dbo.PlayedGame");
+            DropForeignKey("dbo.PlayerGameResult", "GameDefinition_Id", "dbo.GameDefinition");
             DropForeignKey("dbo.PlayerGameResult", "PlayerId", "dbo.Player");
             DropForeignKey("dbo.PlayerGameResult", "PlayedGameId", "dbo.PlayedGame");
             DropForeignKey("dbo.PlayedGame", "GameDefinitionId", "dbo.GameDefinition");
-            DropIndex("dbo.Player", new[] { "PlayedGame_Id" });
+            DropIndex("dbo.PlayerGameResult", new[] { "GameDefinition_Id" });
             DropIndex("dbo.PlayerGameResult", new[] { "PlayerId" });
             DropIndex("dbo.PlayerGameResult", new[] { "PlayedGameId" });
             DropIndex("dbo.PlayedGame", new[] { "GameDefinitionId" });
