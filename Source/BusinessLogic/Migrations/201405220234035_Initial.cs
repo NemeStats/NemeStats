@@ -37,15 +37,12 @@ namespace BusinessLogic.Migrations
                         PlayedGameId = c.Int(nullable: false),
                         PlayerId = c.Int(nullable: false),
                         GameRank = c.Int(nullable: false),
-                        GameDefinition_Id = c.Int(),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.PlayedGame", t => t.PlayedGameId, cascadeDelete: true)
                 .ForeignKey("dbo.Player", t => t.PlayerId, cascadeDelete: true)
-                .ForeignKey("dbo.GameDefinition", t => t.GameDefinition_Id)
                 .Index(t => t.PlayedGameId)
-                .Index(t => t.PlayerId)
-                .Index(t => t.GameDefinition_Id);
+                .Index(t => t.PlayerId);
             
             CreateTable(
                 "dbo.Player",
@@ -61,11 +58,9 @@ namespace BusinessLogic.Migrations
         
         public override void Down()
         {
-            DropForeignKey("dbo.PlayerGameResult", "GameDefinition_Id", "dbo.GameDefinition");
             DropForeignKey("dbo.PlayerGameResult", "PlayerId", "dbo.Player");
             DropForeignKey("dbo.PlayerGameResult", "PlayedGameId", "dbo.PlayedGame");
             DropForeignKey("dbo.PlayedGame", "GameDefinitionId", "dbo.GameDefinition");
-            DropIndex("dbo.PlayerGameResult", new[] { "GameDefinition_Id" });
             DropIndex("dbo.PlayerGameResult", new[] { "PlayerId" });
             DropIndex("dbo.PlayerGameResult", new[] { "PlayedGameId" });
             DropIndex("dbo.PlayedGame", new[] { "GameDefinitionId" });

@@ -14,6 +14,5 @@ namespace BusinessLogic.Models
         public string Description { get; set; }
 
         public ICollection<PlayedGame> PlayedGames { get; set; }
-        public ICollection<PlayerGameResult> PlayerGameResults { get; set; }
     }
 }
