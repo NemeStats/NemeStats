@@ -57,6 +57,8 @@ namespace BusinessLogic.Tests.IntegrationTests.Logic
             Assert.IsTrue(playedGame.NumberOfPlayers == 2);
         }
 
+        //TODO need more integration tests, but have been looking at the database manually and it looks OK.
+
         [TestFixtureTearDown]
         public void TearDown()
         {
