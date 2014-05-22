@@ -28,7 +28,7 @@ namespace BusinessLogic.Logic
 
             Validate(newlyCompletedGame, numberOfPlayers);
 
-            var playerGameResults = newlyCompletedGame.PlayerRanks.Select(x =>  new PlayerGameResult() { Id = x.PlayerId, GameRank = x.GameRank} ).ToList();
+            var playerGameResults = newlyCompletedGame.PlayerRanks.Select(x =>  new PlayerGameResult() { PlayerId = x.PlayerId, GameRank = x.GameRank} ).ToList();
 
             PlayedGame playedGame = new PlayedGame()
             {

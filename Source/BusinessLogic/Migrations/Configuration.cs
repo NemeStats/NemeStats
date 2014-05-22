@@ -15,8 +15,7 @@ namespace BusinessLogic.Migrations
 
         protected override void Seed(BusinessLogic.DataAccess.NerdScorekeeperDbContext context)
         {
-            DataSeeder dataSeeder = new DataSeeder(context);
-            dataSeeder.SeedData();
+            new DataSeeder(context).SeedData();
         }
     }
 }

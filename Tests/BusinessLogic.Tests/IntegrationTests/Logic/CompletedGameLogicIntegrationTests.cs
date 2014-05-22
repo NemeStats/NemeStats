@@ -39,11 +39,7 @@ namespace BusinessLogic.Tests.IntegrationTests.Logic
             playedGameId = gameDefinition.Id;
 
             playedGameLogic = new CompletedGameLogic(dbContext);
-        }
 
-        [Test]
-        public void ItCreatesATwoPlayerPlayedGame()
-        {
             List<Player> players = new List<Player>() { player1, player2 };
             List<PlayerRank> playerRanks = new List<PlayerRank>() 
             { 
@@ -53,7 +49,11 @@ namespace BusinessLogic.Tests.IntegrationTests.Logic
             NewlyCompletedGame newlyCompletedGame = new NewlyCompletedGame() { GameDefinitionId = playedGameId, PlayerRanks = playerRanks };
 
             playedGame = playedGameLogic.CreatePlayedGame(newlyCompletedGame);
+        }
 
+        [Test]
+        public void ItCreatesATwoPlayerPlayedGame()
+        {
             Assert.IsTrue(playedGame.NumberOfPlayers == 2);
         }
 
@@ -79,7 +79,14 @@ namespace BusinessLogic.Tests.IntegrationTests.Logic
             }
             catch (Exception) { }
 
-            dbContext.SaveChanges();
+            try 
+            {
+                dbContext.SaveChanges();
+            }finally
+            {
+                dbContext.Dispose();
+            }
+            
         }
     }
 }

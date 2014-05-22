@@ -52,9 +52,9 @@
     <Compile Include="DataAccess\NerdScorekeeperInitializer.cs" />
     <Compile Include="Logic\CompletedGameLogic.cs" />
     <Compile Include="Logic\DataSeeder.cs" />
-    <Compile Include="Migrations\201405212105582_Initial.cs" />
-    <Compile Include="Migrations\201405212105582_Initial.Designer.cs">
-      <DependentUpon>201405212105582_Initial.cs</DependentUpon>
+    <Compile Include="Migrations\201405220155458_Initial.cs" />
+    <Compile Include="Migrations\201405220155458_Initial.Designer.cs">
+      <DependentUpon>201405220155458_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\GameDefinition.cs" />
@@ -73,8 +73,8 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201405212105582_Initial.resx">
-      <DependentUpon>201405212105582_Initial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201405220155458_Initial.resx">
+      <DependentUpon>201405220155458_Initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
