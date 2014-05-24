@@ -64,9 +64,7 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="UnitTests\DataAccessTests\NerdScorekeeperInitializerTests\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\..\Source\BusinessLogic\BusinessLogic.csproj">
       <Project>{b1184b6a-9c68-48b6-814c-0667b69f89d2}</Project>
