@@ -25,10 +25,16 @@
         <dd>
             @Html.DisplayFor(model => model.Active)
         </dd>
-
     </dl>
 </div>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
+<div>
+    <h4>Recent Games</h4>
+    @foreach (var playerGameResult in @Model.PlayerGameResults)
+    {
+        @playerGameResult.PlayedGame.GameDefinition.Name @Html.ActionLink("View Game Details", "Details", "GameDefinition", new { id = @playerGameResult.PlayedGame.GameDefinitionId })
+    }
+</div>
