@@ -199,7 +199,6 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PlayedGameController.cs" />
     <Compile Include="Controllers\PlayerController.cs" />
-    <Compile Include="Controllers\PlayerGameResultController.cs" />
     <Compile Include="DependencyResolution\IoC.cs" />
     <Compile Include="DependencyResolution\StructureMapDependencyResolver.cs" />
     <Compile Include="DependencyResolution\StructureMapDependencyScope.cs" />
@@ -274,26 +273,22 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>T4MVC.cs</LastGenOutput>
     </None>
-    <Content Include="Views\GameDefinition\Create.cshtml" />
-    <Content Include="Views\GameDefinition\Delete.cshtml" />
-    <Content Include="Views\GameDefinition\Details.cshtml" />
-    <Content Include="Views\GameDefinition\Edit.cshtml" />
-    <Content Include="Views\GameDefinition\Index.cshtml" />
     <Content Include="Views\Player\Create.cshtml" />
     <Content Include="Views\Player\Delete.cshtml" />
     <Content Include="Views\Player\Details.cshtml" />
     <Content Include="Views\Player\Edit.cshtml" />
     <Content Include="Views\Player\Index.cshtml" />
+    <Content Include="Views\GameDefinition\Create.cshtml" />
+    <Content Include="Views\GameDefinition\Delete.cshtml" />
+    <Content Include="Views\GameDefinition\Details.cshtml" />
+    <Content Include="Views\GameDefinition\Edit.cshtml" />
+    <Content Include="Views\GameDefinition\Index.cshtml" />
     <Content Include="Views\PlayedGame\Create.cshtml" />
     <Content Include="Views\PlayedGame\Delete.cshtml" />
     <Content Include="Views\PlayedGame\Details.cshtml" />
     <Content Include="Views\PlayedGame\Edit.cshtml" />
     <Content Include="Views\PlayedGame\Index.cshtml" />
-    <Content Include="Views\PlayerGameResult\Create.cshtml" />
-    <Content Include="Views\PlayerGameResult\Delete.cshtml" />
-    <Content Include="Views\PlayerGameResult\Details.cshtml" />
-    <Content Include="Views\PlayerGameResult\Edit.cshtml" />
-    <Content Include="Views\PlayerGameResult\Index.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\PlayerGameResult.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

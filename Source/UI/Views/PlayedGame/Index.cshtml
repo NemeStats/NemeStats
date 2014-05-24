@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<BusinessLogic.Models.PlayedGame>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Recent Games";
 }
 
-<h2>Index</h2>
+<h2>Recent Games</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
@@ -17,12 +17,13 @@
         <th>
             @Html.DisplayNameFor(model => model.NumberOfPlayers)
         </th>
+        <th>Result</th>
         <th></th>
     </tr>
 
 @foreach (var item in Model) {
     <tr>
-        <td>
+        <td style='font-weight: 300'>
             @Html.DisplayFor(modelItem => item.GameDefinition.Name)
         </td>
         <td>
@@ -32,6 +33,13 @@
             @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
             @Html.ActionLink("Details", "Details", new { id=item.Id }) |
             @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+        </td>
+        <td>
+            @foreach (var result in item.PlayerGameResults)
+            {
+                @Html.DisplayFor(modelItem => result)
+                <br/>
+            }
         </td>
     </tr>
 }

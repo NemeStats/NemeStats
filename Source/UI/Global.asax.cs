@@ -1,6 +1,8 @@
-﻿using Mindscape.Raygun4Net;
+﻿using BusinessLogic.DataAccess;
+using Mindscape.Raygun4Net;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -17,6 +19,9 @@ namespace UI
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+            //  don't want to set an initializer since we are doing code first with migrations 
+            //  and the Configuration will call the DataSeeder.
+            Database.SetInitializer<NerdScorekeeperDbContext>(null);
         }
 
         protected void Application_Error()
