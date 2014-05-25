@@ -52,6 +52,7 @@
     <Compile Include="DataAccess\NerdScorekeeperInitializer.cs" />
     <Compile Include="Logic\CompletedGameLogic.cs" />
     <Compile Include="Logic\DataSeeder.cs" />
+    <Compile Include="Logic\PlayerLogic.cs" />
     <Compile Include="Migrations\201405220234035_Initial.cs" />
     <Compile Include="Migrations\201405220234035_Initial.Designer.cs">
       <DependentUpon>201405220234035_Initial.cs</DependentUpon>
@@ -59,6 +60,14 @@
     <Compile Include="Migrations\201405240208102_Version2.cs" />
     <Compile Include="Migrations\201405240208102_Version2.Designer.cs">
       <DependentUpon>201405240208102_Version2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201405250232587_LowerCharacterLimitOfPlayerNameAndAddUniqueIndex.cs" />
+    <Compile Include="Migrations\201405250232587_LowerCharacterLimitOfPlayerNameAndAddUniqueIndex.Designer.cs">
+      <DependentUpon>201405250232587_LowerCharacterLimitOfPlayerNameAndAddUniqueIndex.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201405250234593_LowerCharacterLimitOfPlayerNameTo255.cs" />
+    <Compile Include="Migrations\201405250234593_LowerCharacterLimitOfPlayerNameTo255.Designer.cs">
+      <DependentUpon>201405250234593_LowerCharacterLimitOfPlayerNameTo255.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\GameDefinition.cs" />
@@ -82,6 +91,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201405240208102_Version2.resx">
       <DependentUpon>201405240208102_Version2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201405250232587_LowerCharacterLimitOfPlayerNameAndAddUniqueIndex.resx">
+      <DependentUpon>201405250232587_LowerCharacterLimitOfPlayerNameAndAddUniqueIndex.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201405250234593_LowerCharacterLimitOfPlayerNameTo255.resx">
+      <DependentUpon>201405250234593_LowerCharacterLimitOfPlayerNameTo255.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

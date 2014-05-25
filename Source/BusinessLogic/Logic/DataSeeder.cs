@@ -10,6 +10,8 @@ namespace BusinessLogic.Logic
 {
     public class DataSeeder
     {
+        internal static string DAVE_PLAYER_NAME = "Big Boss Dave";
+
         private Player bigBossDave;
         private Player elGranto;
         private Player theOpenshaw;
@@ -58,7 +60,7 @@ namespace BusinessLogic.Logic
 
         private void CreatePlayers()
         {
-            bigBossDave = new Player(){ Name = "Big Boss Dave"};
+            bigBossDave = new Player() { Name = DAVE_PLAYER_NAME };
             elGranto = new Player(){ Name = "El Granto"};
             theOpenshaw = new Player(){ Name = "The Openshaw"};
             theSlink = new Player(){ Name = "The Slink"};

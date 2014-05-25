@@ -5,6 +5,8 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Core;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -40,6 +42,14 @@ namespace BusinessLogic.Tests.IntegrationTests.Logic.DataSeederIntegrationTests
         public void ItCreatesFivePlayers()
         {
             Assert.IsTrue(dbContext.Players.Count() >= 5, "No players were created.");
+        }
+
+        [Test]
+        [ExpectedException(typeof(DbUpdateException))]
+        public void ItDoesntAllowDuplicatePlayerNames()
+        {
+            dbContext.Players.Add(new Player() { Name = DataSeeder.DAVE_PLAYER_NAME });
+            dbContext.SaveChanges();
         }
 
         [Test]
