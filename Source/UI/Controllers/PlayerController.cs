@@ -8,12 +8,20 @@ using System.Web;
 using System.Web.Mvc;
 using BusinessLogic.Models;
 using BusinessLogic.DataAccess;
+using BusinessLogic.Logic;
 
 namespace UI.Controllers
 {
     public class PlayerController : Controller
     {
-        private NerdScorekeeperDbContext db = new NerdScorekeeperDbContext();
+        internal NerdScorekeeperDbContext db;
+        internal PlayerLogic playerLogic;
+
+        public PlayerController(NerdScorekeeperDbContext dbContext, PlayerLogic logic)
+        {
+            db = dbContext;
+            playerLogic = logic;
+        }
 
         // GET: /Player/
         public ActionResult Index()

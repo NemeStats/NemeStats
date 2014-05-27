@@ -22,7 +22,7 @@ namespace BusinessLogic.Tests.IntegrationTests.Logic
         {
             dbContext = new NerdScorekeeperDbContext();
             int davePlayerId = dbContext.Players.First(x => x.Name == DataSeeder.DAVE_PLAYER_NAME).Id;
-            dave = new PlayerLogic(dbContext).GetPlayerDetails(davePlayerId);
+            dave = new PlayerLogicImpl(dbContext).GetPlayerDetails(davePlayerId);
         }
 
         [Test]

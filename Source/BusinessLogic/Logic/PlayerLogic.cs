@@ -1,30 +1,8 @@
-﻿using BusinessLogic.DataAccess;
-using BusinessLogic.Models;
-using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿using System;
 namespace BusinessLogic.Logic
 {
-    public class PlayerLogic
+    public interface PlayerLogic
     {
-        private NerdScorekeeperDbContext dbContext = null;
-
-        public PlayerLogic(NerdScorekeeperDbContext context)
-        {
-            dbContext = context;
-        }
-
-        public Player GetPlayerDetails(int playerID)
-        {
-            return dbContext.Players
-                .Where(player => player.Id == playerID)
-                .Include("PlayerGameResults")
-                .FirstOrDefault();
-
-        }
+        BusinessLogic.Models.Player GetPlayerDetails(int playerID);
     }
 }
