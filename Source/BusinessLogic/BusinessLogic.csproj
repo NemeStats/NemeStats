@@ -53,6 +53,7 @@
     <Compile Include="Logic\CompletedGameLogic.cs" />
     <Compile Include="Logic\DataSeeder.cs" />
     <Compile Include="Logic\PlayerLogic.cs" />
+    <Compile Include="Logic\PlayerLogicImpl.cs" />
     <Compile Include="Migrations\201405220234035_Initial.cs" />
     <Compile Include="Migrations\201405220234035_Initial.Designer.cs">
       <DependentUpon>201405220234035_Initial.cs</DependentUpon>

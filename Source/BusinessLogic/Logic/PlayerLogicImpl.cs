@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BusinessLogic.Logic
 {
-    public class PlayerLogicImpl
+    public class PlayerLogicImpl : BusinessLogic.Logic.PlayerLogic
     {
         private NerdScorekeeperDbContext dbContext = null;
 
