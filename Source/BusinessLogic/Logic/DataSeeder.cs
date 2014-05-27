@@ -46,10 +46,11 @@ namespace BusinessLogic.Logic
         {
             smallWorld = new GameDefinition()
             {
-                Name = "Small World", Description="Dominate the small world."
+                Name = "Small World",
+                Description = "Dominate the small world."
             };
-            raceForTheGalaxy = new GameDefinition(){Name = "Race For The Galaxy", Description="Win the race for the galaxy."};
-            settlersOfCatan = new GameDefinition(){Name = "Settlers of Catan", Description="Go settle Catan."};
+            raceForTheGalaxy = new GameDefinition() { Name = "Race For The Galaxy", Description = "Win the race for the galaxy." };
+            settlersOfCatan = new GameDefinition() { Name = "Settlers of Catan", Description = "Go settle Catan." };
             var gameDefinitions = new List<GameDefinition>
             {
                 smallWorld,
@@ -64,10 +65,10 @@ namespace BusinessLogic.Logic
         private void CreatePlayers()
         {
             bigBossDave = new Player() { Name = DAVE_PLAYER_NAME };
-            elGranto = new Player(){ Name = "El Granto"};
-            theOpenshaw = new Player(){ Name = "The Openshaw"};
-            theSlink = new Player(){ Name = "The Slink"};
-            gooseman = new Player(){ Name = "Gooseman"};
+            elGranto = new Player() { Name = "El Granto" };
+            theOpenshaw = new Player() { Name = "The Openshaw" };
+            theSlink = new Player() { Name = "The Slink" };
+            gooseman = new Player() { Name = "Gooseman" };
 
             var players = new List<Player>
             {

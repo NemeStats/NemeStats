@@ -20,13 +20,11 @@ namespace BusinessLogic.Logic
 
         public Player GetPlayerDetails(int playerID)
         {
-            //IQueryable<Player> playerQueryable = from player in dbContext.Players
-            //                                        select new 
             return dbContext.Players
                 .Where(player => player.Id == playerID)
                 .Include("PlayerGameResults")
                 .FirstOrDefault();
-                
+
         }
     }
 }

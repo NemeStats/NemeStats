@@ -11,7 +11,8 @@ namespace BusinessLogic.DataAccess
 {
     public class NerdScorekeeperDbContext : DbContext
     {
-        public NerdScorekeeperDbContext() : base("DefaultConnection")
+        public NerdScorekeeperDbContext()
+            : base("DefaultConnection")
         {
         }
 

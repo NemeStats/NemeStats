@@ -81,14 +81,15 @@ namespace BusinessLogic.Tests.IntegrationTests.Logic
             }
             catch (Exception) { }
 
-            try 
+            try
             {
                 dbContext.SaveChanges();
-            }finally
+            }
+            finally
             {
                 dbContext.Dispose();
             }
-            
+
         }
     }
 }
