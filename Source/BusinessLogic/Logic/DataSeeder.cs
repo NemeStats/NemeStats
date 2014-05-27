@@ -44,7 +44,10 @@ namespace BusinessLogic.Logic
 
         private void CreateGameDefinitions()
         {
-            smallWorld = new GameDefinition(){Name = "Small World", Description="Dominate the small world."};
+            smallWorld = new GameDefinition()
+            {
+                Name = "Small World", Description="Dominate the small world."
+            };
             raceForTheGalaxy = new GameDefinition(){Name = "Race For The Galaxy", Description="Win the race for the galaxy."};
             settlersOfCatan = new GameDefinition(){Name = "Settlers of Catan", Description="Go settle Catan."};
             var gameDefinitions = new List<GameDefinition>

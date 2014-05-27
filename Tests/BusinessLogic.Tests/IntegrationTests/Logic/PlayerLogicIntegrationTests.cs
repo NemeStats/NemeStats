@@ -38,9 +38,15 @@ namespace BusinessLogic.Tests.IntegrationTests.Logic
         }
 
         [Test]
-        public void ItReturnsTheGame()
+        public void ItRetrievesThePlayedGame()
         {
-            Assert.GreaterOrEqual(2, dave.PlayerGameResults.Count());
+            Assert.NotNull(dave.PlayerGameResults.First().PlayedGame);
+        }
+
+        [Test]
+        public void ItRetrievesTheGameDefinition()
+        {
+            Assert.NotNull(dave.PlayerGameResults.First().PlayedGame.GameDefinition);
         }
 
         [TestFixtureTearDown]
