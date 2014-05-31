@@ -23,7 +23,7 @@ using System.Web.Routing;
 using T4MVC;
 namespace T4MVC
 {
-    public class SharedController
+    public class PlayerController
     {
 
         static readonly ViewsClass s_views = new ViewsClass();
@@ -36,20 +36,17 @@ namespace T4MVC
             public _ViewNamesClass ViewNames { get { return s_ViewNames; } }
             public class _ViewNamesClass
             {
-                public readonly string _Layout = "_Layout";
-                public readonly string _LoginPartial = "_LoginPartial";
-                public readonly string Error = "Error";
+                public readonly string Create = "Create";
+                public readonly string Delete = "Delete";
+                public readonly string Details = "Details";
+                public readonly string Edit = "Edit";
+                public readonly string Index = "Index";
             }
-            public readonly string _Layout = "~/Views/Shared/_Layout.cshtml";
-            public readonly string _LoginPartial = "~/Views/Shared/_LoginPartial.cshtml";
-            public readonly string Error = "~/Views/Shared/Error.cshtml";
-            static readonly _DisplayTemplatesClass s_DisplayTemplates = new _DisplayTemplatesClass();
-            public _DisplayTemplatesClass DisplayTemplates { get { return s_DisplayTemplates; } }
-            [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-            public partial class _DisplayTemplatesClass
-            {
-                public readonly string PlayerGameResult = "PlayerGameResult";
-            }
+            public readonly string Create = "~/Views/Player/Create.cshtml";
+            public readonly string Delete = "~/Views/Player/Delete.cshtml";
+            public readonly string Details = "~/Views/Player/Details.cshtml";
+            public readonly string Edit = "~/Views/Player/Edit.cshtml";
+            public readonly string Index = "~/Views/Player/Index.cshtml";
         }
     }
 

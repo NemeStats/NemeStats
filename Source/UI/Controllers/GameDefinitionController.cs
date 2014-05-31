@@ -11,18 +11,18 @@ using BusinessLogic.DataAccess;
 
 namespace UI.Controllers
 {
-    public class GameDefinitionController : Controller
+    public partial class GameDefinitionController : Controller
     {
         private NerdScorekeeperDbContext db = new NerdScorekeeperDbContext();
 
         // GET: /GameDefinition/
-        public ActionResult Index()
+        public virtual ActionResult Index()
         {
             return View(db.GameDefinitions.ToList());
         }
 
         // GET: /GameDefinition/Details/5
-        public ActionResult Details(int? id)
+        public virtual ActionResult Details(int? id)
         {
             if (id == null)
             {
@@ -37,7 +37,7 @@ namespace UI.Controllers
         }
 
         // GET: /GameDefinition/Create
-        public ActionResult Create()
+        public virtual ActionResult Create()
         {
             return View();
         }
@@ -47,7 +47,7 @@ namespace UI.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include="Id,Name,Description")] GameDefinition gamedefinition)
+        public virtual ActionResult Create([Bind(Include = "Id,Name,Description")] GameDefinition gamedefinition)
         {
             if (ModelState.IsValid)
             {
@@ -60,7 +60,7 @@ namespace UI.Controllers
         }
 
         // GET: /GameDefinition/Edit/5
-        public ActionResult Edit(int? id)
+        public virtual ActionResult Edit(int? id)
         {
             if (id == null)
             {
@@ -79,7 +79,7 @@ namespace UI.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include="Id,Name,Description")] GameDefinition gamedefinition)
+        public virtual ActionResult Edit([Bind(Include = "Id,Name,Description")] GameDefinition gamedefinition)
         {
             if (ModelState.IsValid)
             {
@@ -91,7 +91,7 @@ namespace UI.Controllers
         }
 
         // GET: /GameDefinition/Delete/5
-        public ActionResult Delete(int? id)
+        public virtual ActionResult Delete(int? id)
         {
             if (id == null)
             {
@@ -108,7 +108,7 @@ namespace UI.Controllers
         // POST: /GameDefinition/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public virtual ActionResult DeleteConfirmed(int id)
         {
             GameDefinition gamedefinition = db.GameDefinitions.Find(id);
             db.GameDefinitions.Remove(gamedefinition);

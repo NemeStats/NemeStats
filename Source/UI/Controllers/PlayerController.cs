@@ -36,7 +36,6 @@ namespace UI.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            
 
             Player player = playerLogic.GetPlayerDetails(id.Value);
 

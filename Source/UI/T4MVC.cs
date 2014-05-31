@@ -26,7 +26,10 @@ using T4MVC;
 public static partial class MVC
 {
     public static UI.Controllers.AccountController Account = new UI.Controllers.T4MVC_AccountController();
+    public static UI.Controllers.GameDefinitionController GameDefinition = new UI.Controllers.T4MVC_GameDefinitionController();
     public static UI.Controllers.HomeController Home = new UI.Controllers.T4MVC_HomeController();
+    public static UI.Controllers.PlayedGameController PlayedGame = new UI.Controllers.T4MVC_PlayedGameController();
+    public static T4MVC.PlayerController Player = new T4MVC.PlayerController();
     public static T4MVC.SharedController Shared = new T4MVC.SharedController();
 }
 
