@@ -35,6 +35,9 @@
     <h4>Recent Games</h4>
     @foreach (var playerGameResult in @Model.PlayerGameResults)
     {
-        @playerGameResult.PlayedGame.GameDefinition.Name @Html.ActionLink("View Game Details", "Details", "GameDefinition", new { id = @playerGameResult.PlayedGame.GameDefinitionId })
+        <span>@playerGameResult.PlayedGame.GameDefinition.Name</span>
+        
+        @Html.ActionLink("View Game Details", "Details", "GameDefinition", new { id = @playerGameResult.PlayedGame.GameDefinitionId })
+        <br/><br/>
     }
 </div>
