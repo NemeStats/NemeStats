@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 namespace BusinessLogic.Tests.IntegrationTests.Logic
 {
     [TestFixture]
-    public class PlayerLogicIntegrationTests
+    public class PlayerRepositoryIntegrationTests
     {
         private NerdScorekeeperDbContext dbContext;
         private Player dave;
@@ -22,7 +22,7 @@ namespace BusinessLogic.Tests.IntegrationTests.Logic
         {
             dbContext = new NerdScorekeeperDbContext();
             int davePlayerId = dbContext.Players.First(x => x.Name == DataSeeder.DAVE_PLAYER_NAME).Id;
-            dave = new PlayerLogicImpl(dbContext).GetPlayerDetails(davePlayerId);
+            dave = new PlayerRepository(dbContext).GetPlayerDetails(davePlayerId);
         }
 
         [Test]
@@ -47,6 +47,13 @@ namespace BusinessLogic.Tests.IntegrationTests.Logic
         public void ItRetrievesTheGameDefinition()
         {
             Assert.NotNull(dave.PlayerGameResults.First().PlayedGame.GameDefinition);
+        }
+
+        [Test]
+        public void ItReturnsNullIfNoPlayerFound()
+        {
+            Player notFoundPlayer = new PlayerRepository(dbContext).GetPlayerDetails(-1);
+            Assert.Null(notFoundPlayer);
         }
 
         [TestFixtureTearDown]

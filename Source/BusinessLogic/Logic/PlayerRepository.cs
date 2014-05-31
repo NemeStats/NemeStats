@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace BusinessLogic.Logic
 {
-    public class PlayerLogicImpl : BusinessLogic.Logic.PlayerLogic
+    public class PlayerRepository : BusinessLogic.Logic.PlayerLogic
     {
         private NerdScorekeeperDbContext dbContext = null;
 
-        public PlayerLogicImpl(NerdScorekeeperDbContext context)
+        public PlayerRepository(NerdScorekeeperDbContext context)
         {
             dbContext = context;
         }

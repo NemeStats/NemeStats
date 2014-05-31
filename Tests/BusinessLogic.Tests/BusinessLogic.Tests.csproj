@@ -57,7 +57,7 @@
   <ItemGroup>
     <Compile Include="IntegrationTests\Logic\DataSeederIntegrationTests.cs" />
     <Compile Include="IntegrationTests\Logic\CompletedGameLogicIntegrationTests.cs" />
-    <Compile Include="IntegrationTests\Logic\PlayerLogicIntegrationTests.cs" />
+    <Compile Include="IntegrationTests\Logic\PlayerRepositoryIntegrationTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UnitTests\Logic\CompletedGameLogicTests.cs" />
   </ItemGroup>

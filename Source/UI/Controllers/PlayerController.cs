@@ -32,15 +32,19 @@ namespace UI.Controllers
         // GET: /Player/Details/5
         public ActionResult Details(int? id)
         {
-            if (id == null)
+            if(!id.HasValue)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Player player = db.Players.Find(id);
-            if (player == null)
+            
+
+            Player player = playerLogic.GetPlayerDetails(id.Value);
+
+            if(player == null)
             {
-                return HttpNotFound();
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
             }
+
             return View(player);
         }
 

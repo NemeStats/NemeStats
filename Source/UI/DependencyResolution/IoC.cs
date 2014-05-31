@@ -16,6 +16,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 
+using BusinessLogic.Logic;
 using StructureMap;
 using StructureMap.Graph;
 namespace UI.DependencyResolution {
@@ -28,7 +29,7 @@ namespace UI.DependencyResolution {
                                         scan.TheCallingAssembly();
                                         scan.WithDefaultConventions();
                                     });
-            //                x.For<IExample>().Use<Example>();
+                            x.For<PlayerLogic>().Use<PlayerRepository>();
                         });
             return ObjectFactory.Container;
         }
