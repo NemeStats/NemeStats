@@ -31,13 +31,12 @@
     @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
+<br/>
 <div>
     <h4>Recent Games</h4>
     @foreach (var playerGameResult in @Model.PlayerGameResults)
     {
-        <span>@playerGameResult.PlayedGame.GameDefinition.Name</span>
-        
-        @Html.ActionLink("View Game Details", "Details", "GameDefinition", new { id = @playerGameResult.PlayedGame.GameDefinitionId })
+        @Html.Partial("~/Views/Shared/DisplayTemplates/PlayerGameResult.cshtml", playerGameResult);
         <br/><br/>
     }
 </div>

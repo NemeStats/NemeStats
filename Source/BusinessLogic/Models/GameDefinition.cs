@@ -13,6 +13,6 @@ namespace BusinessLogic.Models
         public string Name { get; set; }
         public string Description { get; set; }
 
-        public ICollection<PlayedGame> PlayedGames { get; set; }
+        public virtual ICollection<PlayedGame> PlayedGames { get; set; }
     }
 }

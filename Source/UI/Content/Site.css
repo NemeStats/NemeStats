@@ -40,3 +40,12 @@ input[type="checkbox"].input-validation-error {
 .validation-summary-valid {
     display: none;
 }
+
+.gamename {
+   
+}
+
+.gamerank .firstplace {
+    color: darkgreen;
+    font-weight: bold;
+}

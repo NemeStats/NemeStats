@@ -10,6 +10,7 @@ namespace BusinessLogic.Models
     public class NewlyCompletedGame
     {
         public int GameDefinitionId { get; set; }
-        public List<PlayerRank> PlayerRanks { get; set; }
+
+        public virtual List<PlayerRank> PlayerRanks { get; set; }
     }
 }
