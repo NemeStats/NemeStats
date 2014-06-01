@@ -4,6 +4,36 @@
     ViewBag.Title = "Create";
 }
 
+<script language="javascript">
+    var playerRank = 1;
+    var playerIndex = 0;
+
+    function addPlayer()
+    {
+        var selectedOption = $("#Players").find(":selected");
+
+        if (selectedOption.text() == "Add A Player")
+        {
+            return alert("You must pick a player.");
+        }
+
+        var playerId = selectedOption.val();
+        var playerName = selectedOption.text();
+        var rank = playerRank++;
+
+        var playerRow = "<div playerId='" + playerId + "'>" + playerName + " - Rank: " + rank
+            + "<input type='hidden' name='PlayerGameResults[" + playerIndex + "].PlayerId' value='" + playerId + "'/>"
+            + "<input type='hidden' name='PlayerGameResults[" + playerIndex + "].GameRank' value='" + rank + "'/>"
+            + "<input type='hidden' name='test' value='testvalue' />"
+            + "</div>";
+
+        playerIndex++;
+
+        $("#rankedPlayers").append(playerRow);
+        selectedOption.remove();
+    }
+
+</script>
 <h2>Create</h2>
 
 
@@ -24,12 +54,9 @@
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.NumberOfPlayers, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.NumberOfPlayers)
-                @Html.ValidationMessageFor(model => model.NumberOfPlayers)
-            </div>
+        <div class="form-group" id="playerDiv">
+            @Html.DropDownList("Players", "Add A Player") <a href="javascript:addPlayer();">Add Player</a>
+            <div id="rankedPlayers"></div>
         </div>
 
         <div class="form-group">

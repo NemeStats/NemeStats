@@ -8,12 +8,20 @@ using System.Web;
 using System.Web.Mvc;
 using BusinessLogic.Models;
 using BusinessLogic.DataAccess;
+using BusinessLogic.Logic;
 
 namespace UI.Controllers
 {
     public partial class PlayedGameController : Controller
     {
-        private NerdScorekeeperDbContext db = new NerdScorekeeperDbContext();
+        internal NerdScorekeeperDbContext db;
+        internal CompletedGameLogic completedGameLogic;
+
+        public PlayedGameController(NerdScorekeeperDbContext dbContext, CompletedGameLogic logic)
+        {
+            db = dbContext;
+            completedGameLogic = logic;
+        }
 
         // GET: /PlayedGame/
         public virtual ActionResult Index()
@@ -41,7 +49,22 @@ namespace UI.Controllers
         public virtual ActionResult Create()
         {
             ViewBag.GameDefinitionId = new SelectList(db.GameDefinitions, "Id", "Name");
+
+            AddAllPlayersToViewBag();
+
             return View();
+        }
+
+        private void AddAllPlayersToViewBag()
+        {
+            List<Player> allPlayers = db.Players.Where(player => player.Active).ToList();
+            List<SelectListItem> allPlayersSelectList = allPlayers.Select(item => new SelectListItem()
+            {
+                Text = item.Name,
+                Value = item.Id.ToString()
+            }).ToList();
+
+            ViewBag.Players = allPlayersSelectList;
         }
 
         // POST: /PlayedGame/Create
@@ -49,18 +72,44 @@ namespace UI.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public virtual ActionResult Create([Bind(Include = "Id,GameDefinitionId,NumberOfPlayers")] PlayedGame playedgame)
+        public virtual ActionResult Create(/*[Bind(Include = "Id,GameDefinitionId,PlayerGameResult")]*/ PlayedGame playedgame)
         {
             if (ModelState.IsValid)
             {
-                db.PlayedGames.Add(playedgame);
-                db.SaveChanges();
+                //TODO NEED TESTS
+                NewlyCompletedGame newlyCompletedGame = new NewlyCompletedGame()
+                {
+                    GameDefinitionId = playedgame.GameDefinitionId,
+                    PlayerRanks = playedgame.PlayerGameResults.Select(x => new PlayerRank() 
+                                    { 
+                                        PlayerId = x.PlayerId, 
+                                        GameRank = x.GameRank
+                                    }).ToList()
+                };
+                completedGameLogic.CreatePlayedGame(newlyCompletedGame);
+
                 return RedirectToAction("Index");
             }
+
+            AddAllPlayersToViewBag();
 
             ViewBag.GameDefinitionId = new SelectList(db.GameDefinitions, "Id", "Name", playedgame.GameDefinitionId);
             return View(playedgame);
         }
+
+        //public ActionResult GetAllPlayers()
+        //{
+        //    List<Player> allPlayers = db.Players.Where(player => player.Active).ToList();
+        //    List<SelectListItem> allPlayersSelectList = allPlayers.Select(item => new SelectListItem()
+        //        {
+        //            Text = item.Name,
+        //            Value = item.Id.ToString()
+        //        }).ToList();
+
+        //    ViewBag.Players = allPlayersSelectList;
+
+        //    return View();
+        //}
 
         // GET: /PlayedGame/Edit/5
         public virtual ActionResult Edit(int? id)
