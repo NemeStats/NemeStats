@@ -35,20 +35,20 @@ namespace BusinessLogic.Tests.IntegrationTests.Logic
         {
             Assert.GreaterOrEqual(2, playedGame.PlayerGameResults.Count());
         }
-        /*
+
         [Test]
         public void ItRetrievesTheGameDefinition()
         {
-            Assert.NotNull(dave.PlayerGameResults.First().PlayedGame.GameDefinition);
+            Assert.NotNull(playedGame.GameDefinition);
         }
 
         [Test]
-        public void ItReturnsNullIfNoPlayerFound()
+        public void ItReturnsNullIfNoPlayedGameFound()
         {
-            Player notFoundPlayer = new PlayerRepository(dbContext).GetPlayerDetails(-1);
-            Assert.Null(notFoundPlayer);
+            PlayedGame notFoundPlayedGame = new PlayedGameRepository(dbContext).GetPlayedGameDetails(-1);
+            Assert.Null(notFoundPlayedGame);
         }
-        */
+
         [TestFixtureTearDown]
         public void TearDown()
         {
