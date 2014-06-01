@@ -37,6 +37,8 @@
     @foreach (var playerGameResult in @Model.PlayerGameResults)
     {
         @Html.Partial("~/Views/Shared/DisplayTemplates/PlayerGameResult.cshtml", playerGameResult);
+        <!--TODO THIS ISNT WORKING YET-->
+        @Html.ActionLink("[Details]", "Details", "PlayedGame", new { id = playerGameResult.PlayedGame.Id }, new { })
         <br/><br/>
     }
 </div>
