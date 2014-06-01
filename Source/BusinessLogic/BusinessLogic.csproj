@@ -52,6 +52,8 @@
     <Compile Include="DataAccess\NerdScorekeeperInitializer.cs" />
     <Compile Include="Logic\CompletedGameLogic.cs" />
     <Compile Include="Logic\DataSeeder.cs" />
+    <Compile Include="Logic\PlayedGameLogic.cs" />
+    <Compile Include="Logic\PlayedGameRepository.cs" />
     <Compile Include="Logic\PlayerLogic.cs" />
     <Compile Include="Logic\PlayerRepository.cs" />
     <Compile Include="Migrations\201405220234035_Initial.cs" />

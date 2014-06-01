@@ -22,7 +22,7 @@ namespace BusinessLogic.Logic
         {
             return dbContext.Players
                 .Where(player => player.Id == playerID)
-                .Include("PlayerGameResults")
+                //.Include("PlayerGameResults")
                 .FirstOrDefault();
 
         }

@@ -8,41 +8,34 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-//  These tests assume that the DataSeeder has run so that there is some baseline data.
 namespace BusinessLogic.Tests.IntegrationTests.Logic
 {
     [TestFixture]
-    public class PlayerRepositoryIntegrationTests
+    public class PlayedGameRepositoryIntegrationTests
     {
         private NerdScorekeeperDbContext dbContext;
-        private Player dave;
+        private PlayedGame playedGame;
 
         [TestFixtureSetUp]
         public void SetUp()
         {
             dbContext = new NerdScorekeeperDbContext();
-            int davePlayerId = dbContext.Players.First(x => x.Name == DataSeeder.PLAYER_NAME_DAVE).Id;
-            dave = new PlayerRepository(dbContext).GetPlayerDetails(davePlayerId);
-        }
-
-        [Test]
-        public void ItRetrievesPlayerGameResultsInfo()
-        {
-            Assert.NotNull(dave.PlayerGameResults, "Failed to retrieve PlayerGameResults.");
-        }
-
-        [Test]
-        public void DaveHasAtLeastOneTwoPlayedGames()
-        {
-            Assert.GreaterOrEqual(2, dave.PlayerGameResults.Count());
+            int playedGameId = dbContext.GameDefinitions.First(x => x.Name == DataSeeder.GAME_NAME_SMALL_WORLD).PlayedGames.First().Id;
+            playedGame = new PlayedGameRepository(dbContext).GetPlayedGameDetails(playedGameId);
         }
 
         [Test]
         public void ItRetrievesThePlayedGame()
         {
-            Assert.NotNull(dave.PlayerGameResults.First().PlayedGame);
+            Assert.NotNull(playedGame);
         }
-
+       
+        [Test]
+        public void ItHasBeenSeededWithAtLeastTwoPlayerGameResults()
+        {
+            Assert.GreaterOrEqual(2, playedGame.PlayerGameResults.Count());
+        }
+        /*
         [Test]
         public void ItRetrievesTheGameDefinition()
         {
@@ -55,12 +48,11 @@ namespace BusinessLogic.Tests.IntegrationTests.Logic
             Player notFoundPlayer = new PlayerRepository(dbContext).GetPlayerDetails(-1);
             Assert.Null(notFoundPlayer);
         }
-
+        */
         [TestFixtureTearDown]
         public void TearDown()
         {
             dbContext.Dispose();
         }
-
     }
 }

@@ -36,8 +36,7 @@
     <h4>Recent Games</h4>
     @foreach (var playerGameResult in @Model.PlayerGameResults)
     {
-        @Html.Partial("~/Views/Shared/DisplayTemplates/PlayerGameResult.cshtml", playerGameResult);
-        <!--TODO THIS ISNT WORKING YET-->
+        @MyHelpers.ShowGameResult(playerGameResult, true);
         @Html.ActionLink("[Details]", "Details", "PlayedGame", new { id = playerGameResult.PlayedGame.Id }, new { })
         <br/><br/>
     }

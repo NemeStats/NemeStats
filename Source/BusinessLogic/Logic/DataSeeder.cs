@@ -10,7 +10,8 @@ namespace BusinessLogic.Logic
 {
     public class DataSeeder
     {
-        internal static string DAVE_PLAYER_NAME = "Big Boss Dave";
+        internal static string PLAYER_NAME_DAVE = "Big Boss Dave";
+        internal static string GAME_NAME_SMALL_WORLD = "Small World";
 
         private Player bigBossDave;
         private Player elGranto;
@@ -32,7 +33,7 @@ namespace BusinessLogic.Logic
 
         public void SeedData()
         {
-            if (dbContext.GameDefinitions.FirstOrDefault(x => x.Name == "Small World") == null)
+            if (dbContext.GameDefinitions.FirstOrDefault(x => x.Name == GAME_NAME_SMALL_WORLD) == null)
             {
                 completedGame = new CompletedGameLogic(dbContext);
 
@@ -64,7 +65,7 @@ namespace BusinessLogic.Logic
 
         private void CreatePlayers()
         {
-            bigBossDave = new Player() { Name = DAVE_PLAYER_NAME };
+            bigBossDave = new Player() { Name = PLAYER_NAME_DAVE };
             elGranto = new Player() { Name = "El Granto" };
             theOpenshaw = new Player() { Name = "The Openshaw" };
             theSlink = new Player() { Name = "The Slink" };

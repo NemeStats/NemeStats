@@ -48,7 +48,7 @@ namespace BusinessLogic.Tests.IntegrationTests.Logic.DataSeederIntegrationTests
         [ExpectedException(typeof(DbUpdateException))]
         public void ItDoesntAllowDuplicatePlayerNames()
         {
-            dbContext.Players.Add(new Player() { Name = DataSeeder.DAVE_PLAYER_NAME });
+            dbContext.Players.Add(new Player() { Name = DataSeeder.PLAYER_NAME_DAVE });
             dbContext.SaveChanges();
         }
 

@@ -1,8 +1,15 @@
-﻿@model BusinessLogic.Models.PlayerGameResult
-
-<span class="gamename">@Model.PlayedGame.GameDefinition.Name</span> <text>- </text>
-<span class="gamerank">
-    @switch (@Model.GameRank)
+﻿@helper ShowGameResult(BusinessLogic.Models.PlayerGameResult playerGameResult, bool showGameName){
+    <span class="gamename">
+    @if(showGameName)
+    {
+        @playerGameResult.PlayedGame.GameDefinition.Name
+    }else
+    {
+        @playerGameResult.Player.Name
+    }
+    </span> <text>- </text>
+    <span class="gamerank">
+    @switch (playerGameResult.GameRank)
     {
         case 1:
             <span class="firstplace">1st Place</span>
@@ -21,3 +28,5 @@
             break;
     }
 </span>
+
+}
