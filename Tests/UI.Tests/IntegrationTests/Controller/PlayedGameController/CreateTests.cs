@@ -22,7 +22,7 @@ namespace UI.Tests.IntegrationTests.Controller.PlayedGameController
         [Test]
         public void ItRequiresAGame()
         {
-
+            //TODO THE SHAME!!!
         }
 
         [TestFixtureTearDown]
