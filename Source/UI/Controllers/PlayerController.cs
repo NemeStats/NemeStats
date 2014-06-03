@@ -39,12 +39,12 @@ namespace UI.Controllers
 
             Player player = playerLogic.GetPlayerDetails(id.Value);
 
-            if(player == null)
+            if (player == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+                return new HttpNotFoundResult();
             }
 
-            return View(player);
+            return View(MVC.Player.Views.Details, player);
         }
 
         // GET: /Player/Create

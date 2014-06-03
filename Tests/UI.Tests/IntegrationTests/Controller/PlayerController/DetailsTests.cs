@@ -1,5 +1,6 @@
 ﻿using BusinessLogic.DataAccess;
 using BusinessLogic.Logic;
+using BusinessLogic.Models;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System;
@@ -57,6 +58,31 @@ namespace UI.Tests.UnitTests.Controller
             playerController.Details(playerId);
 
             playerLogicMock.AssertWasCalled(x => x.GetPlayerDetails(playerId));
+        }
+
+        [Test]
+        public void ItReturnsThePlayerDetailsViewWhenThePlayerIsFound()
+        {
+            int playerId = 1351;
+            playerLogicMock.Expect(playerLogic => playerLogic.GetPlayerDetails(playerId))
+                .Repeat.Once()
+                .Return(new Player());
+            ViewResult playerDetails = playerController.Details(playerId) as ViewResult;
+
+            Assert.AreEqual(MVC.Player.Views.Details, playerDetails.ViewName);
+        }
+
+        [Test]
+        public void ItReturnsThePlayerDetailsViewForTheFoundPlayer()
+        {
+            int playerId = 1351;
+            Player player = new Player() { Id = playerId };
+            playerLogicMock.Expect(playerLogic => playerLogic.GetPlayerDetails(playerId))
+                .Repeat.Once()
+                .Return(player);
+            ViewResult playerDetails = playerController.Details(playerId) as ViewResult;
+
+            Assert.AreEqual(player, playerDetails.Model);
         }
 
         [TestFixtureTearDown]

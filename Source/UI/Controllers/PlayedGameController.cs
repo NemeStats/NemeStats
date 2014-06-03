@@ -97,20 +97,6 @@ namespace UI.Controllers
             return View(playedgame);
         }
 
-        //public ActionResult GetAllPlayers()
-        //{
-        //    List<Player> allPlayers = db.Players.Where(player => player.Active).ToList();
-        //    List<SelectListItem> allPlayersSelectList = allPlayers.Select(item => new SelectListItem()
-        //        {
-        //            Text = item.Name,
-        //            Value = item.Id.ToString()
-        //        }).ToList();
-
-        //    ViewBag.Players = allPlayersSelectList;
-
-        //    return View();
-        //}
-
         // GET: /PlayedGame/Edit/5
         public virtual ActionResult Edit(int? id)
         {
