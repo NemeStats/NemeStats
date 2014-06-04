@@ -16,12 +16,12 @@ namespace BusinessLogic.Tests.IntegrationTests.Logic.DataSeederIntegrationTests
     [TestFixture]
     public class SeedDataIntegrationTests
     {
-        private NerdScorekeeperDbContext dbContext;
+        private NemeStatsDbContext dbContext;
 
         [TestFixtureSetUp]
         public void SetUp()
         {
-            dbContext = new NerdScorekeeperDbContext();
+            dbContext = new NemeStatsDbContext();
             new DataSeeder(dbContext).SeedData();
         }
 

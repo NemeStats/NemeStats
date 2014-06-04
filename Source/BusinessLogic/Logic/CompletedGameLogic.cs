@@ -15,9 +15,9 @@ namespace BusinessLogic.Logic
         internal const string EXCEPTION_MESSAGE_GAME_MUST_HAVE_A_WINNER = "The game must have at least one winner (GameRank = 1)";
         internal const string EXCEPTION_MESSAGE_GAME_MUST_NOT_HAVE_A_GAP_IN_RANKS = "The game must not have gaps in the ranks. E.g. 1,1,2,3 is valid but 1,1,3,4 is not.";
 
-        private NerdScorekeeperDbContext dbContext = null;
+        private NemeStatsDbContext dbContext = null;
 
-        public CompletedGameLogic(NerdScorekeeperDbContext context)
+        public CompletedGameLogic(NemeStatsDbContext context)
         {
             dbContext = context;
         }

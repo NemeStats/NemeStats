@@ -13,14 +13,14 @@ namespace BusinessLogic.Tests.UnitTests.Logic
 {
     public class CompletedGameLogicTests
     {
-        private NerdScorekeeperDbContext dbContext = null;
+        private NemeStatsDbContext dbContext = null;
         CompletedGameLogic playedGameLogic = null;
         private int playedGameId = 2;
 
         [TestFixtureSetUp]
         public void SetUp()
         {
-            dbContext = MockRepository.GenerateMock<NerdScorekeeperDbContext>();
+            dbContext = MockRepository.GenerateMock<NemeStatsDbContext>();
             playedGameLogic = new CompletedGameLogic(dbContext);
         }
 

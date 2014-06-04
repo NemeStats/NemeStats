@@ -13,7 +13,7 @@ namespace UI.Controllers
 {
     public partial class GameDefinitionController : Controller
     {
-        private NerdScorekeeperDbContext db = new NerdScorekeeperDbContext();
+        private NemeStatsDbContext db = new NemeStatsDbContext();
 
         // GET: /GameDefinition/
         public virtual ActionResult Index()

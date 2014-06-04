@@ -14,7 +14,7 @@ namespace BusinessLogic.Tests.IntegrationTests.Logic
     [TestFixture]
     public class CreatePlayedGameIntegrationTests
     {
-        private NerdScorekeeperDbContext dbContext;
+        private NemeStatsDbContext dbContext;
         private CompletedGameLogic playedGameLogic;
         private PlayedGame playedGame;
         private int playedGameId;
@@ -27,7 +27,7 @@ namespace BusinessLogic.Tests.IntegrationTests.Logic
         [TestFixtureSetUp]
         public void SetUp()
         {
-            dbContext = new NerdScorekeeperDbContext();
+            dbContext = new NemeStatsDbContext();
 
             gameDefinition = new GameDefinition() { Name = "TestName", Description = "TestDescription" };
             dbContext.GameDefinitions.Add(gameDefinition);

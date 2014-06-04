@@ -14,13 +14,13 @@ namespace BusinessLogic.Tests.IntegrationTests.Logic
     [TestFixture]
     public class GetPlayerDetailsIntegrationTests
     {
-        private NerdScorekeeperDbContext dbContext;
+        private NemeStatsDbContext dbContext;
         private Player dave;
 
         [TestFixtureSetUp]
         public void SetUp()
         {
-            dbContext = new NerdScorekeeperDbContext();
+            dbContext = new NemeStatsDbContext();
             int davePlayerId = dbContext.Players.First(x => x.Name == DataSeeder.PLAYER_NAME_DAVE).Id;
             dave = new PlayerRepository(dbContext).GetPlayerDetails(davePlayerId);
         }

@@ -14,10 +14,10 @@ namespace UI.Controllers
 {
     public partial class PlayedGameController : Controller
     {
-        internal NerdScorekeeperDbContext db;
+        internal NemeStatsDbContext db;
         internal CompletedGameLogic completedGameLogic;
 
-        public PlayedGameController(NerdScorekeeperDbContext dbContext, CompletedGameLogic logic)
+        public PlayedGameController(NemeStatsDbContext dbContext, CompletedGameLogic logic)
         {
             db = dbContext;
             completedGameLogic = logic;

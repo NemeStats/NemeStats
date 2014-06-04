@@ -23,10 +23,10 @@ namespace BusinessLogic.Logic
         private GameDefinition raceForTheGalaxy;
         private GameDefinition settlersOfCatan;
 
-        private NerdScorekeeperDbContext dbContext;
+        private NemeStatsDbContext dbContext;
         private CompletedGameLogic completedGame;
 
-        public DataSeeder(NerdScorekeeperDbContext context)
+        public DataSeeder(NemeStatsDbContext context)
         {
             dbContext = context;
         }

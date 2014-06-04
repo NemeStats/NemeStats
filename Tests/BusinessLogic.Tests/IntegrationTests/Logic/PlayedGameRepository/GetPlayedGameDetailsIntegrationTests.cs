@@ -13,13 +13,13 @@ namespace BusinessLogic.Tests.IntegrationTests.Logic.PlayedGameRepository
     [TestFixture]
     public class PlayedGameRepositoryIntegrationTests
     {
-        private NerdScorekeeperDbContext dbContext;
+        private NemeStatsDbContext dbContext;
         private PlayedGame playedGame;
 
         [TestFixtureSetUp]
         public void SetUp()
         {
-            dbContext = new NerdScorekeeperDbContext();
+            dbContext = new NemeStatsDbContext();
             int playedGameId = dbContext.GameDefinitions.First(x => x.Name == DataSeeder.GAME_NAME_SMALL_WORLD).PlayedGames.First().Id;
             playedGame = new BusinessLogic.Logic.PlayedGameRepository(dbContext).GetPlayedGameDetails(playedGameId);
         }

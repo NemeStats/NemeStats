@@ -10,9 +10,9 @@ namespace BusinessLogic.Logic
 {
     public class PlayedGameRepository : BusinessLogic.Logic.PlayedGameLogic
     {
-        private NerdScorekeeperDbContext dbContext;
+        private NemeStatsDbContext dbContext;
 
-        public PlayedGameRepository(NerdScorekeeperDbContext context)
+        public PlayedGameRepository(NemeStatsDbContext context)
         {
             dbContext = context;
         }

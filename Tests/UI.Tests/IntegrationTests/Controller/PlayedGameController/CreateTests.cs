@@ -11,12 +11,12 @@ namespace UI.Tests.IntegrationTests.Controller.PlayedGameController
     [TestFixture]
     public class CreateTests
     {
-        private NerdScorekeeperDbContext dbContext;
+        private NemeStatsDbContext dbContext;
 
         [TestFixtureSetUp]
         public void SetUp()
         {
-            dbContext = new NerdScorekeeperDbContext();
+            dbContext = new NemeStatsDbContext();
         }
 
         [Test]

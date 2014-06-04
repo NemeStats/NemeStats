@@ -14,10 +14,10 @@ namespace UI.Controllers
 {
     public class PlayerController : Controller
     {
-        internal NerdScorekeeperDbContext db;
+        internal NemeStatsDbContext db;
         internal PlayerLogic playerLogic;
 
-        public PlayerController(NerdScorekeeperDbContext dbContext, PlayerLogic logic)
+        public PlayerController(NemeStatsDbContext dbContext, PlayerLogic logic)
         {
             db = dbContext;
             playerLogic = logic;

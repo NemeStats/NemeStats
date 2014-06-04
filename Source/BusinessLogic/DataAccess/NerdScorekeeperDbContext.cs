@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace BusinessLogic.DataAccess
 {
-    public class NerdScorekeeperDbContext : DbContext
+    public class NemeStatsDbContext : DbContext
     {
-        public NerdScorekeeperDbContext()
+        public NemeStatsDbContext()
             : base("DefaultConnection")
         {
         }

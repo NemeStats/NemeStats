@@ -17,14 +17,14 @@ namespace UI.Tests.UnitTests.Controller
     [TestFixture]
     public class PlayerControllerTests
     {
-        private NerdScorekeeperDbContext dbContextMock;
+        private NemeStatsDbContext dbContextMock;
         private PlayerLogic playerLogicMock;
         private PlayerController playerController;
 
         [TestFixtureSetUp]
         public void SetUp()
         {
-            dbContextMock = MockRepository.GenerateMock<NerdScorekeeperDbContext>();
+            dbContextMock = MockRepository.GenerateMock<NemeStatsDbContext>();
             playerLogicMock = MockRepository.GenerateMock<PlayerLogic>();
             playerController = new PlayerController(dbContextMock, playerLogicMock);
         }

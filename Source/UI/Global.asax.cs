@@ -21,7 +21,7 @@ namespace UI
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             //  don't want to set an initializer since we are doing code first with migrations 
             //  and the Configuration will call the DataSeeder.
-            Database.SetInitializer<NerdScorekeeperDbContext>(null);
+            Database.SetInitializer<NemeStatsDbContext>(null);
         }
 
         protected void Application_Error()

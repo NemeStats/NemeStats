@@ -11,9 +11,9 @@ namespace BusinessLogic.Logic
 {
     public class PlayerRepository : BusinessLogic.Logic.PlayerLogic
     {
-        private NerdScorekeeperDbContext dbContext = null;
+        private NemeStatsDbContext dbContext = null;
 
-        public PlayerRepository(NerdScorekeeperDbContext context)
+        public PlayerRepository(NemeStatsDbContext context)
         {
             dbContext = context;
         }
