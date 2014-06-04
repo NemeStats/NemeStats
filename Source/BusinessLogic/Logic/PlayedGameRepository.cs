@@ -19,8 +19,7 @@ namespace BusinessLogic.Logic
 
         public PlayedGame GetPlayedGameDetails(int playedGameId)
         {
-            return dbContext.PlayedGames.Where(playedGame => playedGame.Id == playedGameId).FirstOrDefault();
-                                
+            return dbContext.PlayedGames.Where(playedGame => playedGame.Id == playedGameId).FirstOrDefault();                
         }
     }
 }
