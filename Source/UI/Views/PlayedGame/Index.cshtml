@@ -15,6 +15,9 @@
             @Html.DisplayNameFor(model => model.GameDefinition.Name)
         </th>
         <th>
+            @Html.DisplayNameFor(model => model.DatePlayed)
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.NumberOfPlayers)
         </th>
         <th>Result</th>
@@ -25,6 +28,9 @@
     <tr>
         <td style='font-weight: 300'>
             @Html.DisplayFor(modelItem => item.GameDefinition.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DatePlayed)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.NumberOfPlayers)

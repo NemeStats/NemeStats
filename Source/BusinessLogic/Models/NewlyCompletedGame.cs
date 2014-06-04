@@ -11,6 +11,6 @@ namespace BusinessLogic.Models
     {
         public int GameDefinitionId { get; set; }
 
-        public virtual List<PlayerRank> PlayerRanks { get; set; }
+        public List<PlayerRank> PlayerRanks { get; set; }
     }
 }

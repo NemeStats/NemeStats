@@ -72,6 +72,14 @@
     <Compile Include="Migrations\201405250234593_LowerCharacterLimitOfPlayerNameTo255.Designer.cs">
       <DependentUpon>201405250234593_LowerCharacterLimitOfPlayerNameTo255.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201406040157590_AddDateCreatedToPlayedGame.cs" />
+    <Compile Include="Migrations\201406040157590_AddDateCreatedToPlayedGame.Designer.cs">
+      <DependentUpon>201406040157590_AddDateCreatedToPlayedGame.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201406040204575_FixPreviousAndAddDateCreatedToPlayedGame.cs" />
+    <Compile Include="Migrations\201406040204575_FixPreviousAndAddDateCreatedToPlayedGame.Designer.cs">
+      <DependentUpon>201406040204575_FixPreviousAndAddDateCreatedToPlayedGame.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\GameDefinition.cs" />
     <Compile Include="Models\NewlyCompletedGame.cs" />
@@ -100,6 +108,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201405250234593_LowerCharacterLimitOfPlayerNameTo255.resx">
       <DependentUpon>201405250234593_LowerCharacterLimitOfPlayerNameTo255.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201406040157590_AddDateCreatedToPlayedGame.resx">
+      <DependentUpon>201406040157590_AddDateCreatedToPlayedGame.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201406040204575_FixPreviousAndAddDateCreatedToPlayedGame.resx">
+      <DependentUpon>201406040204575_FixPreviousAndAddDateCreatedToPlayedGame.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

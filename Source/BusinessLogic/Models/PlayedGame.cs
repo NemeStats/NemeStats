@@ -13,6 +13,7 @@ namespace BusinessLogic.Models
 
         public int GameDefinitionId { get; set; }
         public int NumberOfPlayers { get; set; }
+        public DateTime DatePlayed { get; set; }
 
         public virtual GameDefinition GameDefinition { get; set; }
         public virtual ICollection<PlayerGameResult> PlayerGameResults { get; set; }
