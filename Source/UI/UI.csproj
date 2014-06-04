@@ -302,6 +302,7 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="App_Code\MyHelpers.cshtml" />
+    <None Include="Properties\PublishProfiles\nerdscorekeeper.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\CreatePlayedGame\createplayedgame.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
