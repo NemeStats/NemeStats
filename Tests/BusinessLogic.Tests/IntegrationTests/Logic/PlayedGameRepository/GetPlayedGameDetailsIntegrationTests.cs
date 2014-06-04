@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessLogic.Tests.IntegrationTests.Logic
+namespace BusinessLogic.Tests.IntegrationTests.Logic.PlayedGameRepository
 {
     [TestFixture]
     public class PlayedGameRepositoryIntegrationTests
@@ -21,7 +21,7 @@ namespace BusinessLogic.Tests.IntegrationTests.Logic
         {
             dbContext = new NerdScorekeeperDbContext();
             int playedGameId = dbContext.GameDefinitions.First(x => x.Name == DataSeeder.GAME_NAME_SMALL_WORLD).PlayedGames.First().Id;
-            playedGame = new PlayedGameRepository(dbContext).GetPlayedGameDetails(playedGameId);
+            playedGame = new BusinessLogic.Logic.PlayedGameRepository(dbContext).GetPlayedGameDetails(playedGameId);
         }
 
         [Test]
@@ -29,7 +29,7 @@ namespace BusinessLogic.Tests.IntegrationTests.Logic
         {
             Assert.NotNull(playedGame);
         }
-       
+
         [Test]
         public void ItHasBeenSeededWithAtLeastTwoPlayerGameResults()
         {
@@ -45,7 +45,7 @@ namespace BusinessLogic.Tests.IntegrationTests.Logic
         [Test]
         public void ItReturnsNullIfNoPlayedGameFound()
         {
-            PlayedGame notFoundPlayedGame = new PlayedGameRepository(dbContext).GetPlayedGameDetails(-1);
+            PlayedGame notFoundPlayedGame = new BusinessLogic.Logic.PlayedGameRepository(dbContext).GetPlayedGameDetails(-1);
             Assert.Null(notFoundPlayedGame);
         }
 

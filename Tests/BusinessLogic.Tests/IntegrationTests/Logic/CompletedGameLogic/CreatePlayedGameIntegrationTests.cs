@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 namespace BusinessLogic.Tests.IntegrationTests.Logic
 {
     [TestFixture]
-    public class CompletedGameLogicIntegrationTests
+    public class CreatePlayedGameIntegrationTests
     {
         private NerdScorekeeperDbContext dbContext;
         private CompletedGameLogic playedGameLogic;
@@ -21,6 +21,8 @@ namespace BusinessLogic.Tests.IntegrationTests.Logic
         private GameDefinition gameDefinition;
         private Player player1;
         private Player player2;
+
+        //TODO When there are failures sometimes test data gets left in the DB. What is the best solution to this?
 
         [TestFixtureSetUp]
         public void SetUp()

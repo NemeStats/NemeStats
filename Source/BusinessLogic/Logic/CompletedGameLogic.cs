@@ -34,7 +34,8 @@ namespace BusinessLogic.Logic
             {
                 GameDefinitionId = newlyCompletedGame.GameDefinitionId,
                 NumberOfPlayers = numberOfPlayers,
-                PlayerGameResults = playerGameResults
+                PlayerGameResults = playerGameResults,
+                DatePlayed = DateTime.UtcNow
             };
 
             dbContext.PlayedGames.Add(playedGame);

@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 namespace BusinessLogic.Tests.IntegrationTests.Logic
 {
     [TestFixture]
-    public class PlayerRepositoryIntegrationTests
+    public class GetPlayerDetailsIntegrationTests
     {
         private NerdScorekeeperDbContext dbContext;
         private Player dave;
@@ -34,7 +34,7 @@ namespace BusinessLogic.Tests.IntegrationTests.Logic
         [Test]
         public void DaveHasAtLeastOneTwoPlayedGames()
         {
-            Assert.GreaterOrEqual(2, dave.PlayerGameResults.Count());
+            Assert.GreaterOrEqual(dave.PlayerGameResults.Count(), 2);
         }
 
         [Test]

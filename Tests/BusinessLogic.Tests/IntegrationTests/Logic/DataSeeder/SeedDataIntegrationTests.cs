@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 namespace BusinessLogic.Tests.IntegrationTests.Logic.DataSeederIntegrationTests
 {
     [TestFixture]
-    public class NerdScorekeeperInitializerIntegrationTests
+    public class SeedDataIntegrationTests
     {
         private NerdScorekeeperDbContext dbContext;
 
