@@ -84,6 +84,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IntegrationTests\Controller\PlayedGameController\CreateTests.cs" />
+    <Compile Include="IntegrationTests\Controller\Transformations\PlayedGameTransformations\MakeNewlyCompletedGameIntegrationTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="IntegrationTests\Controller\PlayerController\DetailsTests.cs" />
   </ItemGroup>

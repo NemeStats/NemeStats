@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using BusinessLogic.Models;
 using BusinessLogic.DataAccess;
 using BusinessLogic.Logic;
+using UI.Controllers.Transformations;
 
 namespace UI.Controllers
 {
@@ -76,16 +77,8 @@ namespace UI.Controllers
         {
             if (ModelState.IsValid)
             {
-                //TODO NEED TESTS
-                NewlyCompletedGame newlyCompletedGame = new NewlyCompletedGame()
-                {
-                    GameDefinitionId = playedgame.GameDefinitionId,
-                    PlayerRanks = playedgame.PlayerGameResults.Select(x => new PlayerRank() 
-                                    { 
-                                        PlayerId = x.PlayerId, 
-                                        GameRank = x.GameRank
-                                    }).ToList()
-                };
+                NewlyCompletedGame newlyCompletedGame = PlayedGameTransformations.MakeNewlyCompletedGame(playedgame.GameDefinitionId, 
+                    playedgame.PlayerGameResults);
                 completedGameLogic.CreatePlayedGame(newlyCompletedGame);
 
                 return RedirectToAction("Index");
@@ -96,6 +89,7 @@ namespace UI.Controllers
             ViewBag.GameDefinitionId = new SelectList(db.GameDefinitions, "Id", "Name", playedgame.GameDefinitionId);
             return View(playedgame);
         }
+
 
         // GET: /PlayedGame/Edit/5
         public virtual ActionResult Edit(int? id)
