@@ -1,8 +1,11 @@
-﻿using System;
+﻿using BusinessLogic.Models;
+using System;
+using System.Collections.Generic;
 namespace BusinessLogic.Logic
 {
     public interface PlayerLogic
     {
-        BusinessLogic.Models.Player GetPlayerDetails(int playerID);
+        Player GetPlayerDetails(int playerID);
+        List<Player> GetAllPlayers(bool active);
     }
 }

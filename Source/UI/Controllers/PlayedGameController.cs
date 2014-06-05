@@ -16,12 +16,14 @@ namespace UI.Controllers
     public partial class PlayedGameController : Controller
     {
         internal NemeStatsDbContext db;
-        internal CompletedGameLogic completedGameLogic;
+        internal CompletedGameRepository completedGameLogic;
+        internal PlayerLogic playerLogic;
 
-        public PlayedGameController(NemeStatsDbContext dbContext, CompletedGameLogic logic)
+        public PlayedGameController(NemeStatsDbContext dbContext, CompletedGameRepository gameLogic, PlayerLogic playLogic)
         {
             db = dbContext;
-            completedGameLogic = logic;
+            completedGameLogic = gameLogic;
+            playerLogic = playLogic;
         }
 
         // GET: /PlayedGame/
@@ -58,7 +60,8 @@ namespace UI.Controllers
 
         private void AddAllPlayersToViewBag()
         {
-            List<Player> allPlayers = db.Players.Where(player => player.Active).ToList();
+            //TODO Clean Code said something about boolean parameters not being good. Come back to this...
+            List<Player> allPlayers = playerLogic.GetAllPlayers(true);
             List<SelectListItem> allPlayersSelectList = allPlayers.Select(item => new SelectListItem()
             {
                 Text = item.Name,

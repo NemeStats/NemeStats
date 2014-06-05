@@ -22,7 +22,7 @@ namespace BusinessLogic.Tests.IntegrationTests.Logic
         {
             dbContext = new NemeStatsDbContext();
             int davePlayerId = dbContext.Players.First(x => x.Name == DataSeeder.PLAYER_NAME_DAVE).Id;
-            dave = new PlayerRepository(dbContext).GetPlayerDetails(davePlayerId);
+            dave = new BusinessLogic.Logic.PlayerRepository(dbContext).GetPlayerDetails(davePlayerId);
         }
 
         [Test]
@@ -52,7 +52,7 @@ namespace BusinessLogic.Tests.IntegrationTests.Logic
         [Test]
         public void ItReturnsNullIfNoPlayerFound()
         {
-            Player notFoundPlayer = new PlayerRepository(dbContext).GetPlayerDetails(-1);
+            Player notFoundPlayer = new BusinessLogic.Logic.PlayerRepository(dbContext).GetPlayerDetails(-1);
             Assert.Null(notFoundPlayer);
         }
 

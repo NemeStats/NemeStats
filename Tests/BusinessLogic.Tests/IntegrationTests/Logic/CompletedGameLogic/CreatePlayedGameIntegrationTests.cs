@@ -15,7 +15,7 @@ namespace BusinessLogic.Tests.IntegrationTests.Logic
     public class CreatePlayedGameIntegrationTests
     {
         private NemeStatsDbContext dbContext;
-        private CompletedGameLogic playedGameLogic;
+        private CompletedGameRepository playedGameLogic;
         private PlayedGame playedGame;
         private int playedGameId;
         private GameDefinition gameDefinition;
@@ -40,7 +40,7 @@ namespace BusinessLogic.Tests.IntegrationTests.Logic
             dbContext.SaveChanges();
             playedGameId = gameDefinition.Id;
 
-            playedGameLogic = new CompletedGameLogic(dbContext);
+            playedGameLogic = new CompletedGameRepository(dbContext);
 
             List<Player> players = new List<Player>() { player1, player2 };
             List<PlayerRank> playerRanks = new List<PlayerRank>() 

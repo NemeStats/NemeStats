@@ -22,9 +22,12 @@ namespace BusinessLogic.Logic
         {
             return dbContext.Players
                 .Where(player => player.Id == playerID)
-                //.Include("PlayerGameResults")
                 .FirstOrDefault();
+        }
 
+        public List<Player> GetAllPlayers(bool active)
+        {
+            return dbContext.Players.Where(player => player.Active == active).ToList();
         }
     }
 }

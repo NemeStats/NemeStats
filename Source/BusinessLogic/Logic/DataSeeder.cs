@@ -24,7 +24,7 @@ namespace BusinessLogic.Logic
         private GameDefinition settlersOfCatan;
 
         private NemeStatsDbContext dbContext;
-        private CompletedGameLogic completedGame;
+        private CompletedGameRepository completedGame;
 
         public DataSeeder(NemeStatsDbContext context)
         {
@@ -35,7 +35,7 @@ namespace BusinessLogic.Logic
         {
             if (dbContext.GameDefinitions.FirstOrDefault(x => x.Name == GAME_NAME_SMALL_WORLD) == null)
             {
-                completedGame = new CompletedGameLogic(dbContext);
+                completedGame = new CompletedGameRepository(dbContext);
 
                 CreateGameDefinitions();
                 CreatePlayers();
