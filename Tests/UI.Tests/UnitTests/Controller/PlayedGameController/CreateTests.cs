@@ -31,7 +31,7 @@ namespace UI.Tests.UnitTests.Controller.PlayedGameController
         [SetUp]
         public void TestSetUp()
         {
-            playedGameController = new Controllers.PlayedGameController(dbContexMock, completedGameLogic, playerLogic);
+            playedGameController = new Controllers.PlayedGameController(dbContexMock, completedGameLogic, null, playerLogic);
         }
 
         [Test]

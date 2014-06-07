@@ -17,20 +17,25 @@ namespace UI.Controllers
     {
         internal NemeStatsDbContext db;
         internal CompletedGameLogic completedGameLogic;
+        internal PlayedGameLogic playedGameLogic;
         internal PlayerLogic playerLogic;
 
-        public PlayedGameController(NemeStatsDbContext dbContext, CompletedGameLogic gameLogic, PlayerLogic playLogic)
+        internal const int NUMBER_OF_RECENT_GAMES_TO_DISPLAY = 10;
+
+        public PlayedGameController(NemeStatsDbContext dbContext, CompletedGameLogic gameLogic, PlayedGameLogic playedLogic, PlayerLogic playLogic)
         {
             db = dbContext;
             completedGameLogic = gameLogic;
+            playedGameLogic = playedLogic;
             playerLogic = playLogic;
         }
 
         // GET: /PlayedGame/
         public virtual ActionResult Index()
         {
-            var playedgames = db.PlayedGames.Include(p => p.GameDefinition);
-            return View(playedgames.ToList());
+            List<PlayedGame> playedgames = playedGameLogic.GetRecentGames(NUMBER_OF_RECENT_GAMES_TO_DISPLAY);
+
+            return View(MVC.PlayedGame.Views.Index, playedgames);
         }
 
         // GET: /PlayedGame/Details/5

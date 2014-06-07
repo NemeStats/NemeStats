@@ -89,6 +89,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="IntegrationTests\Controller\PlayerController\DetailsTests.cs" />
     <Compile Include="UnitTests\Controller\PlayedGameController\CreateWithNoParameters.cs" />
+    <Compile Include="UnitTests\Controller\PlayedGameController\IndexTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

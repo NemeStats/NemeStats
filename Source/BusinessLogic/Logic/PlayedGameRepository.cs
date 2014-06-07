@@ -21,5 +21,13 @@ namespace BusinessLogic.Logic
         {
             return dbContext.PlayedGames.Where(playedGame => playedGame.Id == playedGameId).FirstOrDefault();                
         }
+
+        public List<PlayedGame> GetRecentGames(int numberOfGames)
+        {
+            return dbContext.PlayedGames.Include(p => p.GameDefinition)
+                .Take(numberOfGames)
+                .OrderByDescending(x => x.DatePlayed)
+                .ToList();
+        }
     }
 }
