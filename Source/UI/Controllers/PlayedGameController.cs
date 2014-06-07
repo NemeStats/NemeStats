@@ -16,10 +16,10 @@ namespace UI.Controllers
     public partial class PlayedGameController : Controller
     {
         internal NemeStatsDbContext db;
-        internal CompletedGameRepository completedGameLogic;
+        internal CompletedGameLogic completedGameLogic;
         internal PlayerLogic playerLogic;
 
-        public PlayedGameController(NemeStatsDbContext dbContext, CompletedGameRepository gameLogic, PlayerLogic playLogic)
+        public PlayedGameController(NemeStatsDbContext dbContext, CompletedGameLogic gameLogic, PlayerLogic playLogic)
         {
             db = dbContext;
             completedGameLogic = gameLogic;
@@ -55,7 +55,7 @@ namespace UI.Controllers
 
             AddAllPlayersToViewBag();
 
-            return View();
+            return View(MVC.PlayedGame.Views.Create);
         }
 
         private void AddAllPlayersToViewBag()
@@ -84,13 +84,13 @@ namespace UI.Controllers
                     playedgame.PlayerGameResults);
                 completedGameLogic.CreatePlayedGame(newlyCompletedGame);
 
-                return RedirectToAction("Index");
+                return RedirectToAction(MVC.PlayedGame.ActionNames.Index);
             }
 
             AddAllPlayersToViewBag();
 
             ViewBag.GameDefinitionId = new SelectList(db.GameDefinitions, "Id", "Name", playedgame.GameDefinitionId);
-            return View(playedgame);
+            return View(MVC.PlayedGame.Views.Create, playedgame);
         }
 
 

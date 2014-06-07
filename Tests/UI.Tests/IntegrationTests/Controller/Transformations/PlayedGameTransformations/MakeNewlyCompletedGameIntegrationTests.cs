@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace UI.Tests.IntegrationTests.Controller.Transformations.PlayedGameTransformations
+namespace UI.Tests.UnitTests.Controller.Transformations.PlayedGameTransformations
 {
     [TestFixture]
     public class MakeNewlyCompletedGameIntegrationTests

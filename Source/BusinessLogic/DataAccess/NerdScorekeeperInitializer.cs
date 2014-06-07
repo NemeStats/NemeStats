@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BusinessLogic.DataAccess
 {
-    public class NemeStatsInitializer : System.Data.Entity.DropCreateDatabaseAlways<NemeStatsDbContext>
+    public class NemeStatsInitializer : System.Data.Entity.CreateDatabaseIfNotExists<NemeStatsDbContext>
     {
         //TODO review with Clean Code book club
         protected override void Seed(NemeStatsDbContext context)
