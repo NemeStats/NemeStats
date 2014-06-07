@@ -30,6 +30,7 @@ namespace UI.DependencyResolution {
                                         scan.WithDefaultConventions();
                                     });
                             x.For<PlayerLogic>().Use<PlayerRepository>();
+                            x.For<PlayedGameLogic>().Use<PlayedGameRepository>();
                             x.For<CompletedGameLogic>().Use<CompletedGameRepository>();
                         });
             return ObjectFactory.Container;
