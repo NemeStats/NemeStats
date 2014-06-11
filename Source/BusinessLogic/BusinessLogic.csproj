@@ -82,6 +82,8 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\GameDefinition.cs" />
     <Compile Include="Models\Games\NewlyCompletedGame.cs" />
+    <Compile Include="Models\Games\Validation\PlayerRankValidationAttribute.cs" />
+    <Compile Include="Models\Games\Validation\PlayerRankValidator.cs" />
     <Compile Include="Models\PlayedGame.cs" />
     <Compile Include="Models\Player.cs" />
     <Compile Include="Models\PlayerGameResult.cs" />
@@ -115,9 +117,7 @@
       <DependentUpon>201406040204575_FixPreviousAndAddDateCreatedToPlayedGame.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Models\Games\Validators\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

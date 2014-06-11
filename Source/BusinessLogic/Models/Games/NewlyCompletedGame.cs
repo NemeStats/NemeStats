@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.Models;
+using BusinessLogic.Models.Games.Validation;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -14,6 +15,7 @@ namespace BusinessLogic.Models.Games
         public int? GameDefinitionId { get; set; }
 
         //TODO google custom validation attribute, check out common MVC
+        [PlayerRankValidationAttribute]
         public List<PlayerRank> PlayerRanks { get; set; }
     }
 }
