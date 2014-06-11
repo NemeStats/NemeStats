@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 //  These tests assume that the DataSeeder has run so that there is some baseline data.
-namespace BusinessLogic.Tests.IntegrationTests.Logic
+namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayerRepositoryTests
 {
     [TestFixture]
     public class GetPlayerDetailsIntegrationTests

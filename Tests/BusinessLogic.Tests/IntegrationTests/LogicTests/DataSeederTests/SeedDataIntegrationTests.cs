@@ -11,7 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessLogic.Tests.IntegrationTests.Logic.DataSeederIntegrationTests
+namespace BusinessLogic.Tests.IntegrationTests.LogicTests.DataSeederTests
 {
     [TestFixture]
     public class SeedDataIntegrationTests

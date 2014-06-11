@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 using System.Web.Mvc;
 using UI.Controllers;
 
-namespace UI.Tests.UnitTests.Controller
+namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
 {
     [TestFixture]
     public class PlayerControllerTests

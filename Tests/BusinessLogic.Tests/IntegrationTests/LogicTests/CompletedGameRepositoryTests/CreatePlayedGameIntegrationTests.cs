@@ -8,8 +8,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BusinessLogic.Models.Games;
 
-namespace BusinessLogic.Tests.IntegrationTests.Logic
+namespace BusinessLogic.Tests.IntegrationTests.LogicTests
 {
     [TestFixture]
     public class CreatePlayedGameIntegrationTests
@@ -22,7 +23,8 @@ namespace BusinessLogic.Tests.IntegrationTests.Logic
         private Player player1;
         private Player player2;
 
-        //TODO When there are failures sometimes test data gets left in the DB. What is the best solution to this?
+        //TODO When there are failures sometimes test data gets left in the DB. What is the best solution to this? Possibly make very unique names and descriptions and clean up
+        // both during test fixture setup and teardown?
 
         [TestFixtureSetUp]
         public void SetUp()

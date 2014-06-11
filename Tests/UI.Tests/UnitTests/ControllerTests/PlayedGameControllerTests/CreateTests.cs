@@ -1,6 +1,7 @@
 ﻿using BusinessLogic.DataAccess;
 using BusinessLogic.Logic;
 using BusinessLogic.Models;
+using BusinessLogic.Models.Games;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System;
@@ -10,7 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
-namespace UI.Tests.UnitTests.Controller.PlayedGameController
+namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 {
     [TestFixture]
     public class CreateTests

@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessLogic.Tests.IntegrationTests.Logic.PlayerRepository
+namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayerRepositoryTests
 {
     [TestFixture]
     public class GetAllPlayersIntegrationTests

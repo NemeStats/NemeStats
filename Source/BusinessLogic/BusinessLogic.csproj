@@ -83,11 +83,11 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\GameDefinition.cs" />
-    <Compile Include="Models\NewlyCompletedGame.cs" />
+    <Compile Include="Models\Games\NewlyCompletedGame.cs" />
     <Compile Include="Models\PlayedGame.cs" />
     <Compile Include="Models\Player.cs" />
     <Compile Include="Models\PlayerGameResult.cs" />
-    <Compile Include="Models\PlayerRank.cs" />
+    <Compile Include="Models\Games\PlayerRank.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

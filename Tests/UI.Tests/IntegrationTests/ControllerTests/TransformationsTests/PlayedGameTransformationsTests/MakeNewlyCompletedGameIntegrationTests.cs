@@ -1,5 +1,6 @@
 ﻿using BusinessLogic.DataAccess;
 using BusinessLogic.Models;
+using BusinessLogic.Models.Games;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace UI.Tests.UnitTests.Controller.Transformations.PlayedGameTransformations
+namespace UI.Tests.UnitTests.ControllerTests.TransformationsTests.PlayedGameTransformationsTests
 {
     [TestFixture]
     public class MakeNewlyCompletedGameIntegrationTests

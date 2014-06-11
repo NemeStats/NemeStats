@@ -1,5 +1,6 @@
 ﻿using BusinessLogic.DataAccess;
 using BusinessLogic.Models;
+using BusinessLogic.Models.Games;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,8 +12,10 @@ namespace BusinessLogic.Logic
     public class CompletedGameRepository : BusinessLogic.Logic.CompletedGameLogic
     {
         internal const string EXCEPTION_MESSAGE_MUST_PASS_VALID_GAME_DEFINITION_ID = "Must pass a valid GameDefinitionId.";
-        internal const string EXCEPTION_MESSAGE_MUST_PASS_AT_LEAST_ONE_PLAYER = "Must pass in at least one player";
-        internal const string EXCEPTION_MESSAGE_GAME_MUST_HAVE_A_WINNER = "The game must have at least one winner (GameRank = 1)";
+        internal const string EXCEPTION_MESSAGE_EACH_PLAYER_RANK_MUST_HAVE_A_PLAYER_ID = "Each PlayerRank must have a valid PlayerId.";
+        internal const string EXCEPTION_MESSAGE_EACH_PLAYER_RANK_MUST_HAVE_A_GAME_RANK = "Each PlayerRank must have a valid GameRank.";
+        internal const string EXCEPTION_MESSAGE_MUST_PASS_AT_LEAST_ONE_PLAYER = "Must pass in at least one player.";
+        internal const string EXCEPTION_MESSAGE_GAME_MUST_HAVE_A_WINNER = "The game must have at least one winner (GameRank = 1).";
         internal const string EXCEPTION_MESSAGE_GAME_MUST_NOT_HAVE_A_GAP_IN_RANKS = "The game must not have gaps in the ranks. E.g. 1,1,2,3 is valid but 1,1,3,4 is not.";
 
         private NemeStatsDbContext dbContext = null;
@@ -24,15 +27,21 @@ namespace BusinessLogic.Logic
 
         public PlayedGame CreatePlayedGame(NewlyCompletedGame newlyCompletedGame)
         {
+            //TODO MOVE TO SEPARATE VALIDATOR OBJECT. Talk to Ryan.
+            Validate(newlyCompletedGame);
+
+            var playerGameResults = newlyCompletedGame.PlayerRanks
+                                        .Select(playerRank => new PlayerGameResult() 
+                                        {
+                                            PlayerId = playerRank.PlayerId.Value,
+                                            GameRank = playerRank.GameRank.Value 
+                                        })
+                                        .ToList();
+
             int numberOfPlayers = newlyCompletedGame.PlayerRanks.Count();
-
-            Validate(newlyCompletedGame, numberOfPlayers);
-
-            var playerGameResults = newlyCompletedGame.PlayerRanks.Select(x => new PlayerGameResult() { PlayerId = x.PlayerId, GameRank = x.GameRank }).ToList();
-
             PlayedGame playedGame = new PlayedGame()
             {
-                GameDefinitionId = newlyCompletedGame.GameDefinitionId,
+                GameDefinitionId = newlyCompletedGame.GameDefinitionId.Value,
                 NumberOfPlayers = numberOfPlayers,
                 PlayerGameResults = playerGameResults,
                 DatePlayed = DateTime.UtcNow
@@ -44,29 +53,70 @@ namespace BusinessLogic.Logic
             return playedGame;
         }
 
-        private static void Validate(NewlyCompletedGame newlyCompletedGame, int numberOfPlayers)
+        private static void Validate(NewlyCompletedGame newlyCompletedGame)
         {
-            if (newlyCompletedGame.GameDefinitionId == 0)
+            ValidateGameDefinition(newlyCompletedGame);
+            ValidatePlayerRanks(newlyCompletedGame.PlayerRanks);
+        }
+
+        private static void ValidateGameDefinition(NewlyCompletedGame newlyCompletedGame)
+        {
+            if (!newlyCompletedGame.GameDefinitionId.HasValue)
             {
+                //TODO possibly include extra data to be helpful (e.g. the game definition that caused the problem)
                 throw new ArgumentException(EXCEPTION_MESSAGE_MUST_PASS_VALID_GAME_DEFINITION_ID);
             }
+        }
 
-            if (newlyCompletedGame.PlayerRanks.Count < 1)
+        private static void ValidatePlayerRanks(List<PlayerRank> playerRanks)
+        {
+            ValidateThatAllPlayerIdsAreSet(playerRanks);
+            ValidateThatAllGameRanksAreSet(playerRanks);
+            ValidateThatThereAreAtLeastTwoPlayers(playerRanks);
+            ValidateThatThereIsAWinner(playerRanks);
+            ValidateContiguousGameRanks(playerRanks);
+        }
+
+        private static void ValidateThatAllPlayerIdsAreSet(List<PlayerRank> playerRanks)
+        {
+            if(playerRanks.Any(playerRank => playerRank.PlayerId == null))
+            {
+                throw new ArgumentException(EXCEPTION_MESSAGE_EACH_PLAYER_RANK_MUST_HAVE_A_PLAYER_ID);
+            }
+        }
+
+        private static void ValidateThatAllGameRanksAreSet(List<PlayerRank> playerRanks)
+        {
+            if (playerRanks.Any(playerRank => playerRank.GameRank == null))
+            {
+                throw new ArgumentException(EXCEPTION_MESSAGE_EACH_PLAYER_RANK_MUST_HAVE_A_GAME_RANK);
+            }
+        }
+
+        private static void ValidateThatThereAreAtLeastTwoPlayers(List<PlayerRank> playerRanks)
+        {
+            if (playerRanks.Count < 1)
             {
                 throw new ArgumentException(EXCEPTION_MESSAGE_MUST_PASS_AT_LEAST_ONE_PLAYER);
             }
+        }
 
-            if (newlyCompletedGame.PlayerRanks.FirstOrDefault(x => x.GameRank == 1) == null)
+        private static void ValidateThatThereIsAWinner(List<PlayerRank> playerRanks)
+        {
+            if (!playerRanks.Any(playerRank => playerRank.GameRank == 1))
             {
                 throw new ArgumentException(EXCEPTION_MESSAGE_GAME_MUST_HAVE_A_WINNER);
             }
+        }
 
+        private static void ValidateContiguousGameRanks(List<PlayerRank> playerRanks)
+        {
+            int numberOfPlayers = playerRanks.Count();
             int numberOfPlayersCoveredSoFar = 0;
-
             //TODO review with Clean Code book club
             for (int i = 1; numberOfPlayersCoveredSoFar < numberOfPlayers; i++)
             {
-                int numberOfPlayersWithThisRank = newlyCompletedGame.PlayerRanks.Count(x => x.GameRank == i);
+                int numberOfPlayersWithThisRank = playerRanks.Count(x => x.GameRank == i);
 
                 if (numberOfPlayersWithThisRank == 0)
                 {
