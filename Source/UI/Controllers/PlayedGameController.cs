@@ -17,16 +17,14 @@ namespace UI.Controllers
     public partial class PlayedGameController : Controller
     {
         internal NemeStatsDbContext db;
-        internal CompletedGameLogic completedGameLogic;
         internal PlayedGameLogic playedGameLogic;
         internal PlayerLogic playerLogic;
 
         internal const int NUMBER_OF_RECENT_GAMES_TO_DISPLAY = 10;
 
-        public PlayedGameController(NemeStatsDbContext dbContext, CompletedGameLogic gameLogic, PlayedGameLogic playedLogic, PlayerLogic playLogic)
+        public PlayedGameController(NemeStatsDbContext dbContext, PlayedGameLogic playedLogic, PlayerLogic playLogic)
         {
             db = dbContext;
-            completedGameLogic = gameLogic;
             playedGameLogic = playedLogic;
             playerLogic = playLogic;
         }
@@ -88,7 +86,7 @@ namespace UI.Controllers
             {
                 NewlyCompletedGame newlyCompletedGame = PlayedGameTransformations.MakeNewlyCompletedGame(playedgame.GameDefinitionId, 
                     playedgame.PlayerGameResults);
-                completedGameLogic.CreatePlayedGame(newlyCompletedGame);
+                playedGameLogic.CreatePlayedGame(newlyCompletedGame);
 
                 return RedirectToAction(MVC.PlayedGame.ActionNames.Index);
             }

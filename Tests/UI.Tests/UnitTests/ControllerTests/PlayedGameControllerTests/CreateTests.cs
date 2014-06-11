@@ -18,21 +18,21 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
     {
         private NemeStatsDbContext dbContexMock;
         private UI.Controllers.PlayedGameController playedGameController;
-        private CompletedGameLogic completedGameLogic;
+        private PlayedGameLogic playedGameLogic;
         private PlayerLogic playerLogic;
 
         [TestFixtureSetUp]
         public void SetUp()
         {
             dbContexMock = MockRepository.GenerateMock<NemeStatsDbContext>();
-            completedGameLogic = MockRepository.GenerateMock<CompletedGameLogic>();
+            playedGameLogic = MockRepository.GenerateMock<PlayedGameLogic>();
             playerLogic = MockRepository.GenerateMock<PlayerLogic>();
         }
 
         [SetUp]
         public void TestSetUp()
         {
-            playedGameController = new Controllers.PlayedGameController(dbContexMock, completedGameLogic, null, playerLogic);
+            playedGameController = new Controllers.PlayedGameController(dbContexMock, playedGameLogic, playerLogic);
         }
 
         [Test]
@@ -72,7 +72,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
                 GameDefinitionId = 1, 
                 PlayerGameResults = new List<PlayerGameResult>()
             };
-            completedGameLogic.Expect(x => x.CreatePlayedGame(Arg<NewlyCompletedGame>.Is.Anything)).Repeat.Once();
+            playedGameLogic.Expect(x => x.CreatePlayedGame(Arg<NewlyCompletedGame>.Is.Anything)).Repeat.Once();
             RedirectToRouteResult result = playedGameController.Create(playedGame) as RedirectToRouteResult;
 
             Assert.AreEqual(MVC.PlayedGame.ActionNames.Index, result.RouteValues["action"]);

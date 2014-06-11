@@ -17,21 +17,21 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
     {
         private NemeStatsDbContext dbContexMock;
         private UI.Controllers.PlayedGameController playedGameController;
-        private CompletedGameLogic completedGameLogic;
+        private PlayedGameLogic playedGameLogic;
         private PlayerLogic playerLogic;
 
         [TestFixtureSetUp]
         public void SetUp()
         {
             dbContexMock = MockRepository.GenerateMock<NemeStatsDbContext>();
-            completedGameLogic = MockRepository.GenerateMock<CompletedGameLogic>();
+            playedGameLogic = MockRepository.GenerateMock<PlayedGameLogic>();
             playerLogic = MockRepository.GenerateMock<PlayerLogic>();
         }
 
         [SetUp]
         public void TestSetUp()
         {
-            playedGameController = new Controllers.PlayedGameController(dbContexMock, completedGameLogic, null, playerLogic);
+            playedGameController = new Controllers.PlayedGameController(dbContexMock, playedGameLogic, playerLogic);
         }
 
         //TODO this is also tested in CreateTests. Should there be an interface? Static method? Base Class for the tests?

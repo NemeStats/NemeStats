@@ -17,7 +17,6 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
     {
         private NemeStatsDbContext dbContextMock;
         private UI.Controllers.PlayedGameController playedGameController;
-        private CompletedGameLogic completedGameLogicMock;
         private PlayedGameLogic playedGameLogic;
         private PlayerLogic playerLogicMock;
 
@@ -25,10 +24,9 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
         public void SetUp()
         {
             dbContextMock = MockRepository.GenerateMock<NemeStatsDbContext>();
-            completedGameLogicMock = MockRepository.GenerateMock<CompletedGameLogic>();
             playedGameLogic = MockRepository.GenerateMock<PlayedGameLogic>();
             playerLogicMock = MockRepository.GenerateMock<PlayerLogic>();
-            playedGameController = new UI.Controllers.PlayedGameController(dbContextMock, completedGameLogicMock, playedGameLogic, playerLogicMock);
+            playedGameController = new UI.Controllers.PlayedGameController(dbContextMock, playedGameLogic, playerLogicMock);
         }
 
         [Test]

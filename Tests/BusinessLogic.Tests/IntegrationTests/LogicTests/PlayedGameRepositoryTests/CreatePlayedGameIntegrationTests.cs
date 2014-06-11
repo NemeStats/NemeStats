@@ -10,13 +10,13 @@ using System.Text;
 using System.Threading.Tasks;
 using BusinessLogic.Models.Games;
 
-namespace BusinessLogic.Tests.IntegrationTests.LogicTests
+namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGameRepositoryTests
 {
     [TestFixture]
     public class CreatePlayedGameIntegrationTests
     {
         private NemeStatsDbContext dbContext;
-        private CompletedGameRepository playedGameLogic;
+        private PlayedGameRepository playedGameLogic;
         private PlayedGame playedGame;
         private int playedGameId;
         private GameDefinition gameDefinition;
@@ -42,7 +42,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests
             dbContext.SaveChanges();
             playedGameId = gameDefinition.Id;
 
-            playedGameLogic = new CompletedGameRepository(dbContext);
+            playedGameLogic = new PlayedGameRepository(dbContext);
 
             List<Player> players = new List<Player>() { player1, player2 };
             List<PlayerRank> playerRanks = new List<PlayerRank>() 

@@ -10,35 +10,34 @@ using System.Text;
 using System.Threading.Tasks;
 using BusinessLogic.Models.Games;
 
-//TODO USE THIS TESTING FOLDER CONVENTION
-namespace BusinessLogic.Tests.UnitTests.LogicTests.CompletedGameRepositoryTests
+namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGameRepositoryTests
 {
     public class CompletedGameLogicTests
     {
         private NemeStatsDbContext dbContext = null;
-        CompletedGameRepository playedGameLogic = null;
+        PlayedGameLogic playedGameLogic = null;
         private int playedGameId = 2;
 
         [TestFixtureSetUp]
         public void SetUp()
         {
             dbContext = MockRepository.GenerateMock<NemeStatsDbContext>();
-            playedGameLogic = new CompletedGameRepository(dbContext);
+            playedGameLogic = new PlayedGameRepository(dbContext);
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException), ExpectedMessage = CompletedGameRepository.EXCEPTION_MESSAGE_MUST_PASS_AT_LEAST_ONE_PLAYER)]
+        [ExpectedException(typeof(ArgumentException), ExpectedMessage = PlayedGameRepository.EXCEPTION_MESSAGE_MUST_PASS_AT_LEAST_TWO_PLAYERS)]
         public void ItRequiresMoreThanOnePlayer()
         {
             NewlyCompletedGame newlyCompletedGameThatHasNoPlayers = new NewlyCompletedGame();
             newlyCompletedGameThatHasNoPlayers.GameDefinitionId = playedGameId;
-            newlyCompletedGameThatHasNoPlayers.PlayerRanks = new List<PlayerRank>();
+            newlyCompletedGameThatHasNoPlayers.PlayerRanks = new List<PlayerRank>() { new PlayerRank { GameRank = 1, PlayerId = 1 }};
 
             playedGameLogic.CreatePlayedGame(newlyCompletedGameThatHasNoPlayers);
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException), ExpectedMessage = CompletedGameRepository.EXCEPTION_MESSAGE_MUST_PASS_VALID_GAME_DEFINITION_ID)]
+        [ExpectedException(typeof(ArgumentException), ExpectedMessage = PlayedGameRepository.EXCEPTION_MESSAGE_MUST_PASS_VALID_GAME_DEFINITION_ID)]
         public void ItRequiresAGame()
         {
             NewlyCompletedGame newlyCompletedGameThatHasNoGameDefinitionId = new NewlyCompletedGame();
@@ -48,7 +47,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.CompletedGameRepositoryTests
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException), ExpectedMessage = CompletedGameRepository.EXCEPTION_MESSAGE_EACH_PLAYER_RANK_MUST_HAVE_A_PLAYER_ID)]
+        [ExpectedException(typeof(ArgumentException), ExpectedMessage = PlayedGameRepository.EXCEPTION_MESSAGE_EACH_PLAYER_RANK_MUST_HAVE_A_PLAYER_ID)]
         public void ItRequiresEachPlayerRankToHaveAPlayer()
         {
             NewlyCompletedGame newlyCompletedGameThatHasNoPlayerId = new NewlyCompletedGame() { GameDefinitionId = 1 };
@@ -58,7 +57,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.CompletedGameRepositoryTests
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException), ExpectedMessage = CompletedGameRepository.EXCEPTION_MESSAGE_EACH_PLAYER_RANK_MUST_HAVE_A_GAME_RANK)]
+        [ExpectedException(typeof(ArgumentException), ExpectedMessage = PlayedGameRepository.EXCEPTION_MESSAGE_EACH_PLAYER_RANK_MUST_HAVE_A_GAME_RANK)]
         public void ItRequiresEachPlayerRankToAGameRank()
         {
             NewlyCompletedGame newlyCompletedGameThatHasNoGameRank = new NewlyCompletedGame() { GameDefinitionId = 1 };
@@ -72,7 +71,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.CompletedGameRepositoryTests
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException), ExpectedMessage = CompletedGameRepository.EXCEPTION_MESSAGE_GAME_MUST_HAVE_A_WINNER)]
+        [ExpectedException(typeof(ArgumentException), ExpectedMessage = PlayedGameRepository.EXCEPTION_MESSAGE_GAME_MUST_HAVE_A_WINNER)]
         public void ItRequiresAWinner()
         {
             NewlyCompletedGame newlyCompletedGameWithoutAWinner = new NewlyCompletedGame() { GameDefinitionId = 1 };
@@ -87,7 +86,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.CompletedGameRepositoryTests
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException), ExpectedMessage = CompletedGameRepository.EXCEPTION_MESSAGE_GAME_MUST_NOT_HAVE_A_GAP_IN_RANKS)]
+        [ExpectedException(typeof(ArgumentException), ExpectedMessage = PlayedGameRepository.EXCEPTION_MESSAGE_GAME_MUST_NOT_HAVE_A_GAP_IN_RANKS)]
         public void ItRequiresContiguousRankingOfPlayers()
         {
             NewlyCompletedGame newlyCompletedGameWithUncontiguousGameRanks = new NewlyCompletedGame() { GameDefinitionId = 1 };

@@ -25,7 +25,7 @@ namespace BusinessLogic.Logic
         private GameDefinition settlersOfCatan;
 
         private NemeStatsDbContext dbContext;
-        private CompletedGameRepository completedGame;
+        private PlayedGameRepository playedGame;
 
         public DataSeeder(NemeStatsDbContext context)
         {
@@ -36,7 +36,7 @@ namespace BusinessLogic.Logic
         {
             if (dbContext.GameDefinitions.FirstOrDefault(x => x.Name == GAME_NAME_SMALL_WORLD) == null)
             {
-                completedGame = new CompletedGameRepository(dbContext);
+                playedGame = new PlayedGameRepository(dbContext);
 
                 CreateGameDefinitions();
                 CreatePlayers();
@@ -100,7 +100,7 @@ namespace BusinessLogic.Logic
                 new PlayerRank() { GameRank = 2, PlayerId = elGranto.Id } 
             };
 
-            completedGame.CreatePlayedGame(new NewlyCompletedGame() { GameDefinitionId = smallWorld.Id, PlayerRanks = playerRanks });
+            playedGame.CreatePlayedGame(new NewlyCompletedGame() { GameDefinitionId = smallWorld.Id, PlayerRanks = playerRanks });
         }
 
         private void CreateRaceForTheGalaxyPlayedGame()
@@ -112,7 +112,7 @@ namespace BusinessLogic.Logic
                 new PlayerRank() { GameRank = 3, PlayerId = elGranto.Id } 
             };
 
-            completedGame.CreatePlayedGame(new NewlyCompletedGame() { GameDefinitionId = raceForTheGalaxy.Id, PlayerRanks = playerRanks });
+            playedGame.CreatePlayedGame(new NewlyCompletedGame() { GameDefinitionId = raceForTheGalaxy.Id, PlayerRanks = playerRanks });
         }
 
         private void CreateSettlersOfCatanPlayedGame()
@@ -125,7 +125,7 @@ namespace BusinessLogic.Logic
                 new PlayerRank() { GameRank = 4, PlayerId = elGranto.Id }
             };
 
-            completedGame.CreatePlayedGame(new NewlyCompletedGame() { GameDefinitionId = settlersOfCatan.Id, PlayerRanks = playerRanks });
+            playedGame.CreatePlayedGame(new NewlyCompletedGame() { GameDefinitionId = settlersOfCatan.Id, PlayerRanks = playerRanks });
         }
     }
 }
