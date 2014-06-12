@@ -35,11 +35,6 @@ namespace BusinessLogic.Logic
 
         public PlayedGame CreatePlayedGame(NewlyCompletedGame newlyCompletedGame)
         {
-            if(!newlyCompletedGame.GameDefinitionId.HasValue)
-            {
-                throw new ArgumentException(EXCEPTION_MESSAGE_MUST_PASS_VALID_GAME_DEFINITION_ID);
-            }
-            
             var playerGameResults = newlyCompletedGame.PlayerRanks
                                         .Select(playerRank => new PlayerGameResult()
                                         {
