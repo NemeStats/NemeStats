@@ -41,7 +41,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
             playerLogic.Expect(x => x.GetAllPlayers(true)).Repeat.Once().Return(new List<Player>());
             playedGameController.ModelState.AddModelError("Test error", "this is a test error to make model state invalid");
 
-            ViewResult result = playedGameController.Create(new PlayedGame()) as ViewResult;
+            ViewResult result = playedGameController.Create(new NewlyCompletedGame()) as ViewResult;
 
             Assert.AreEqual(MVC.PlayedGame.Views.Create, result.ViewName);
         }
@@ -56,7 +56,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
             playerLogic.Expect(x => x.GetAllPlayers(true)).Repeat.Once().Return(allPlayers);
             playedGameController.ModelState.AddModelError("Test error", "this is a test error to make model state invalid");
 
-            playedGameController.Create(new PlayedGame());
+            playedGameController.Create(new NewlyCompletedGame());
 
             playerLogic.VerifyAllExpectations();
 
@@ -67,10 +67,10 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
         [Test]
         public void ItLoadsTheIndexPageIfSaveIsSuccessful()
         {
-            PlayedGame playedGame = new PlayedGame()
+            NewlyCompletedGame playedGame = new NewlyCompletedGame()
             { 
                 GameDefinitionId = 1, 
-                PlayerGameResults = new List<PlayerGameResult>()
+                PlayerRanks = new List<PlayerRank>()
             };
             playedGameLogic.Expect(x => x.CreatePlayedGame(Arg<NewlyCompletedGame>.Is.Anything)).Repeat.Once();
             RedirectToRouteResult result = playedGameController.Create(playedGame) as RedirectToRouteResult;

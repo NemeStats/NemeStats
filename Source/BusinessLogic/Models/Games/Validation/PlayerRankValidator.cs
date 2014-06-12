@@ -16,11 +16,20 @@ namespace BusinessLogic.Models.Games.Validation
 
         public static void ValidatePlayerRanks(List<PlayerRank> playerRanks)
         {
+            ValidateThatPlayerRanksIsNotNull(playerRanks);
             ValidateThatAllPlayerIdsAreSet(playerRanks);
             ValidateThatAllGameRanksAreSet(playerRanks);
             ValidateThatThereAreAtLeastTwoPlayers(playerRanks);
             ValidateThatThereIsAWinner(playerRanks);
             ValidateContiguousGameRanks(playerRanks);
+        }
+
+        private static void ValidateThatPlayerRanksIsNotNull(List<PlayerRank> playerRanks)
+        {
+            if (playerRanks == null)
+            {
+                throw new ArgumentException(EXCEPTION_MESSAGE_MUST_PASS_AT_LEAST_TWO_PLAYERS);
+            }
         }
 
         private static void ValidateThatAllPlayerIdsAreSet(List<PlayerRank> playerRanks)

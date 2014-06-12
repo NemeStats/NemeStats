@@ -9,6 +9,7 @@ namespace UI.Controllers.Transformations
 {
     public class PlayedGameTransformations
     {
+        //TODO Tosho says to use Automapper instead of doing this manually.
         public static NewlyCompletedGame MakeNewlyCompletedGame(int gameDefinitionId, ICollection<PlayerGameResult> playerGameResults)
         {
             if(playerGameResults == null)

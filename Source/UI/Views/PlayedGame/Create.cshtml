@@ -1,4 +1,4 @@
-﻿@model BusinessLogic.Models.PlayedGame
+﻿@model BusinessLogic.Models.Games.NewlyCompletedGame
 
 @{
     ViewBag.Title = "Create";
@@ -27,6 +27,7 @@
         <div class="form-group" id="playerDiv">
             <span class ="control-label col-md-2">The Players</span>
             @Html.DropDownList("Players", "Add A Player")
+            @Html.ValidationMessageFor(model => model.PlayerRanks)
             <ul id="rankedPlayers" class="sortable"></ul>
             <span id="playerFormData"></span>
         </div>

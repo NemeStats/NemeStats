@@ -14,6 +14,15 @@ namespace BusinessLogic.Tests.UnitTests.ModelsTests.GamesTests.ValidationTests
     {
         [Test]
         [ExpectedException(typeof(ArgumentException), ExpectedMessage = PlayerRankValidator.EXCEPTION_MESSAGE_MUST_PASS_AT_LEAST_TWO_PLAYERS)]
+        public void ItRequiresPlayerRanks()
+        {
+            List<PlayerRank> playerRanks = null;
+
+            PlayerRankValidator.ValidatePlayerRanks(playerRanks);
+        }
+
+        [Test]
+        [ExpectedException(typeof(ArgumentException), ExpectedMessage = PlayerRankValidator.EXCEPTION_MESSAGE_MUST_PASS_AT_LEAST_TWO_PLAYERS)]
         public void ItRequiresMoreThanOnePlayer()
         {
             List<PlayerRank> playerRanks = new List<PlayerRank>() { new PlayerRank { GameRank = 1, PlayerId = 1 } };

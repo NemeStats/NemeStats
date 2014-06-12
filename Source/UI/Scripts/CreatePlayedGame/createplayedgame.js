@@ -58,10 +58,10 @@
 
             var playerId = selectedOption.val();
             var playerName = selectedOption.text();
-            var playerRow = "<input type='hidden' name='PlayerGameResults[" + this._playerIndex +
+            var playerRow = "<input type='hidden' name='PlayerRanks[" + this._playerIndex +
                             "].PlayerId' value='" + playerId + "'/>" +
                             "<input type='hidden' id='" + playerId +
-                            "' name='PlayerGameResults[" + this._playerIndex +
+                            "' name='PlayerRanks[" + this._playerIndex +
                             "].GameRank' value='" + this._playerRank + "'/>";
 
             this.$playerFormData.append(playerRow);

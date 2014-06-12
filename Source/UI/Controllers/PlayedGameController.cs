@@ -80,12 +80,12 @@ namespace UI.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public virtual ActionResult Create(/*[Bind(Include = "Id,GameDefinitionId,PlayerGameResult")]*/ PlayedGame playedgame)
+        public virtual ActionResult Create(/*[Bind(Include = "Id,GameDefinitionId,PlayerGameResult")]*/ NewlyCompletedGame newlyCompletedGame)
         {
             if (ModelState.IsValid)
             {
-                NewlyCompletedGame newlyCompletedGame = PlayedGameTransformations.MakeNewlyCompletedGame(playedgame.GameDefinitionId, 
-                    playedgame.PlayerGameResults);
+                //NewlyCompletedGame newlyCompletedGame = PlayedGameTransformations.MakeNewlyCompletedGame(playedgame.GameDefinitionId, 
+                //    playedgame.PlayerGameResults);
                 playedGameLogic.CreatePlayedGame(newlyCompletedGame);
 
                 return RedirectToAction(MVC.PlayedGame.ActionNames.Index);
@@ -93,8 +93,8 @@ namespace UI.Controllers
 
             AddAllPlayersToViewBag();
 
-            ViewBag.GameDefinitionId = new SelectList(db.GameDefinitions, "Id", "Name", playedgame.GameDefinitionId);
-            return View(MVC.PlayedGame.Views.Create, playedgame);
+            ViewBag.GameDefinitionId = new SelectList(db.GameDefinitions, "Id", "Name", newlyCompletedGame.GameDefinitionId);
+            return View(MVC.PlayedGame.Views.Create, newlyCompletedGame);
         }
 
 
