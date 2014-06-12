@@ -9,10 +9,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BusinessLogic.Models.Games;
+using System.Data.Entity;
 
 namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGameRepositoryTests
 {
-    public class CompletedGameLogicTests
+    [TestFixture]
+    public class CreatePlayedGameTests
     {
         private NemeStatsDbContext dbContext = null;
         PlayedGameLogic playedGameLogic = null;
@@ -25,6 +27,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGameRepositoryTests
             playedGameLogic = new PlayedGameRepository(dbContext);
         }
 
+        /*
         [Test]
         [ExpectedException(typeof(ArgumentException), ExpectedMessage = PlayedGameRepository.EXCEPTION_MESSAGE_MUST_PASS_AT_LEAST_TWO_PLAYERS)]
         public void ItRequiresMoreThanOnePlayer()
@@ -110,6 +113,51 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGameRepositoryTests
             newlyCompletedGameWithUncontiguousGameRanks.PlayerRanks = playerRanks;
 
             playedGameLogic.CreatePlayedGame(newlyCompletedGameWithUncontiguousGameRanks);
+        }
+         */
+
+        [Test]
+        public void ItRequiresAGameDefinition()
+        {
+            NewlyCompletedGame newlyCompletedGameWithoutAGameDefinition = new NewlyCompletedGame();
+            List<PlayerRank> playerRanks = new List<PlayerRank>();
+            playerRanks.Add(new PlayerRank() { PlayerId = 1, GameRank = 1 });
+            playerRanks.Add(new PlayerRank() { PlayerId = 2, GameRank = 2 });
+            newlyCompletedGameWithoutAGameDefinition.PlayerRanks = playerRanks;
+
+            //TODO possibly implement this way instead of ExpectedExceptions
+            ArgumentException argumentException = Assert.Throws<ArgumentException>(()=> 
+                                            playedGameLogic.CreatePlayedGame(newlyCompletedGameWithoutAGameDefinition));
+            Assert.AreEqual(PlayedGameRepository.EXCEPTION_MESSAGE_MUST_PASS_VALID_GAME_DEFINITION_ID, argumentException.Message);
+        }
+
+        [Test, Ignore("need to check this with someone who knows how to test EF stuff. "
+            + "Doesn't look like I'm setting my expectations right. Also need clarification on how many separate tests there should be.")]
+        public void ItSavesAPlayedGameIfThereIsAGameDefinition()
+        {
+            int gameDefinitionId = 1354;
+            int playerOneId = 3515;
+            int playerTwoId = 15151;
+            int playerOneRank = 1;
+            int playerTwoRank = 2;
+            NewlyCompletedGame newlyCompletedGame = new NewlyCompletedGame() { GameDefinitionId = gameDefinitionId };
+            List<PlayerRank> playerRanks = new List<PlayerRank>();
+            playerRanks.Add(new PlayerRank() { PlayerId = playerOneId, GameRank = playerOneRank });
+            playerRanks.Add(new PlayerRank() { PlayerId = playerTwoId, GameRank = playerTwoRank });
+            newlyCompletedGame.PlayerRanks = playerRanks;
+            
+            DbSet<PlayedGame> playedGamesDbSet = MockRepository.GenerateMock<DbSet<PlayedGame>>();
+            dbContext.Expect(context => context.PlayedGames).Repeat.Once().Return(playedGamesDbSet);
+            playedGamesDbSet.Expect(dbSet => dbSet.Add(Arg<PlayedGame>.Is.Anything));
+
+            playedGameLogic.CreatePlayedGame(newlyCompletedGame);
+
+            dbContext.AssertWasCalled(context => context.PlayedGames);
+            //TODO need grant help on this test
+            playedGamesDbSet.AssertWasCalled(dbSet => dbSet.Add(
+                    Arg<PlayedGame>.Matches(game => game.GameDefinitionId == gameDefinitionId
+                                                && game.NumberOfPlayers == playerRanks.Count()
+                                                && game.DatePlayed.Date.Equals(DateTime.UtcNow))));
         }
     }
 }

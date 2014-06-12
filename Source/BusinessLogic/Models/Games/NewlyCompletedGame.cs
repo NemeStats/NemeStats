@@ -14,8 +14,10 @@ namespace BusinessLogic.Models.Games
         [Required]
         public int? GameDefinitionId { get; set; }
 
-        //TODO google custom validation attribute, check out common MVC
+        //TODO my validation attribute works for a List<PlayerRank>, not PlayerGameResult. How to get validation that works for
+        // both a NewlyCompletedGame and a PlayedGame....
         [PlayerRankValidationAttribute]
+        [Required]
         public List<PlayerRank> PlayerRanks { get; set; }
     }
 }
