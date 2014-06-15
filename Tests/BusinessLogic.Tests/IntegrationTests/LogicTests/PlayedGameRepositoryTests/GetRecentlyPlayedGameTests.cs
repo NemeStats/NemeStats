@@ -11,12 +11,12 @@ using System.Threading.Tasks;
 namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGameRepositoryTests
 {
     [TestFixture]
-    public class GetPlayedGameTests
+    public class GetRecentlyPlayedGameTests
     {
         private NemeStatsDbContext dbContext;
         private PlayedGameLogic playedGameLogic;
 
-        [TestFixtureSetUp]
+        [SetUp]
         public void SetUp()
         {
             dbContext = new NemeStatsDbContext();
@@ -24,7 +24,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGameRepositoryTe
         }
 
         [Test]
-        public void ItGetsPlayedGamesWithGameDefinitionEagerlyFetched()
+        public void ItEagerlyFetchesGameDefinitions()
         {
             dbContext.Configuration.LazyLoadingEnabled = false;
             dbContext.Configuration.ProxyCreationEnabled = false;
@@ -33,6 +33,36 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGameRepositoryTe
             GameDefinition gameDefinition = playedGames[0].GameDefinition;
 
             Assert.NotNull(gameDefinition);
+        }
+
+        [Test]
+        public void ItEagerlyFetchesPlayerGameResults()
+        {
+            dbContext.Configuration.LazyLoadingEnabled = false;
+            dbContext.Configuration.ProxyCreationEnabled = false;
+
+            List<PlayedGame> playedGames = playedGameLogic.GetRecentGames(1);
+            ICollection<PlayerGameResult> playerGameResults = playedGames[0].PlayerGameResults;
+
+            Assert.NotNull(playerGameResults);
+        }
+
+        [Test]
+        public void ItEagerlyFetchesPlayers()
+        {
+            dbContext.Configuration.LazyLoadingEnabled = false;
+            dbContext.Configuration.ProxyCreationEnabled = false;
+
+            List<PlayedGame> playedGames = playedGameLogic.GetRecentGames(1);
+            List<Player> players = playedGames[0].PlayerGameResults.Select(
+                playerGameResult => new Player()
+                                        {
+                                            Id = playerGameResult.PlayerId,
+                                            Name = playerGameResult.Player.Name,
+                                            Active = playerGameResult.Player.Active
+                                        }).ToList();
+                                            
+            Assert.NotNull(players);
         }
 
         [Test]
@@ -67,6 +97,26 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGameRepositoryTe
                 nextGameDate = playedGames[i].DatePlayed;
                 Assert.True(lastGameDate >= nextGameDate);
                 lastGameDate = nextGameDate;
+            }
+        }
+
+        [Test]
+        public void ItReturnsOrderedPlayerRankDescendingWithinAGivenGame()
+        {
+            int five = 5;
+            List<PlayedGame> playedGames = playedGameLogic.GetRecentGames(five);
+
+            int lastRank = -1;
+
+            foreach(PlayedGame playedGame in playedGames)
+            {
+                foreach(PlayerGameResult playerGameResult in playedGame.PlayerGameResults)
+                {
+                    Assert.True(lastRank <= playerGameResult.GameRank);
+                    lastRank = playerGameResult.GameRank;
+                }
+
+                lastRank = -1;
             }
         }
 

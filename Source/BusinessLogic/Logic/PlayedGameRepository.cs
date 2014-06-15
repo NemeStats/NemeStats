@@ -28,10 +28,20 @@ namespace BusinessLogic.Logic
 
         public List<PlayedGame> GetRecentGames(int numberOfGames)
         {
-            return dbContext.PlayedGames.Include(p => p.GameDefinition)
+            List<PlayedGame> playedGames = dbContext.PlayedGames.Include(playedGame => playedGame.GameDefinition)
+                .Include(playedGame => playedGame.PlayerGameResults
+                    .Select(playerGameResult => playerGameResult.Player))
                 .Take(numberOfGames)
-                .OrderByDescending(x => x.DatePlayed)
+                .OrderByDescending(orderBy => orderBy.DatePlayed)
                 .ToList();
+
+            //TODO this seems ridiculous but I can't see how to order a related entity in Entity Framework :(
+            foreach(PlayedGame playedGame in playedGames)
+            {
+                playedGame.PlayerGameResults = playedGame.PlayerGameResults.OrderBy(orderBy => orderBy.GameRank).ToList();
+            }
+
+            return playedGames;
         }
 
         //TODO need to have validation logic here (or on PlayedGame similar to what is on NewlyCompletedGame)

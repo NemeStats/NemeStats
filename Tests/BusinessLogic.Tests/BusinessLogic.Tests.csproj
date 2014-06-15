@@ -58,7 +58,7 @@
     <Compile Include="IntegrationTests\LogicTests\DataSeederTests\SeedDataIntegrationTests.cs" />
     <Compile Include="IntegrationTests\LogicTests\PlayedGameRepositoryTests\CreatePlayedGameIntegrationTests.cs" />
     <Compile Include="IntegrationTests\LogicTests\PlayedGameRepositoryTests\GetPlayedGameDetailsIntegrationTests.cs" />
-    <Compile Include="IntegrationTests\LogicTests\PlayedGameRepositoryTests\GetPlayedGameTests.cs" />
+    <Compile Include="IntegrationTests\LogicTests\PlayedGameRepositoryTests\GetRecentlyPlayedGameTests.cs" />
     <Compile Include="IntegrationTests\LogicTests\PlayerRepositoryTests\GetAllPlayersIntegrationTests.cs" />
     <Compile Include="IntegrationTests\LogicTests\PlayerRepositoryTests\GetPlayerDetailsIntegrationTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
