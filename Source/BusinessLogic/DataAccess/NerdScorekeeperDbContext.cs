@@ -16,10 +16,10 @@ namespace BusinessLogic.DataAccess
         {
         }
 
-        public DbSet<Player> Players { get; set; }
-        public DbSet<GameDefinition> GameDefinitions { get; set; }
-        public DbSet<PlayedGame> PlayedGames { get; set; }
-        public DbSet<PlayerGameResult> PlayerGameResults { get; set; }
+        public virtual DbSet<Player> Players { get; set; }
+        public virtual DbSet<GameDefinition> GameDefinitions { get; set; }
+        public virtual DbSet<PlayedGame> PlayedGames { get; set; }
+        public virtual DbSet<PlayerGameResult> PlayerGameResults { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

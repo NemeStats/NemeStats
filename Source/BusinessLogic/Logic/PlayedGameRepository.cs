@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Data.Entity;
 using BusinessLogic.Models.Games;
+using BusinessLogic.Logic.Points;
 
 namespace BusinessLogic.Logic
 {
@@ -33,16 +34,36 @@ namespace BusinessLogic.Logic
                 .ToList();
         }
 
+        //TODO need to have validation logic here (or on PlayedGame similar to what is on NewlyCompletedGame)
         public PlayedGame CreatePlayedGame(NewlyCompletedGame newlyCompletedGame)
         {
+            List<PlayerGameResult> playerGameResults = TransformNewlyCompletedGamePlayerRanksToPlayerGameResults(newlyCompletedGame);
+
+            PlayedGame playedGame = TransformNewlyCompletedGameIntoPlayedGame(newlyCompletedGame, playerGameResults);
+
+            dbContext.PlayedGames.Add(playedGame);
+            dbContext.SaveChanges();
+
+            return playedGame;
+        }
+
+        private static List<PlayerGameResult> TransformNewlyCompletedGamePlayerRanksToPlayerGameResults(NewlyCompletedGame newlyCompletedGame)
+        {
+            int numberOfPlayers = newlyCompletedGame.PlayerRanks.Count();
             var playerGameResults = newlyCompletedGame.PlayerRanks
                                         .Select(playerRank => new PlayerGameResult()
                                         {
                                             PlayerId = playerRank.PlayerId.Value,
-                                            GameRank = playerRank.GameRank.Value
+                                            GameRank = playerRank.GameRank.Value,
+                                            //TODO maybe too functional in style? Is there a better way?
+                                            GordonPoints = GordonPoints.CalculateGordonPoints(numberOfPlayers, playerRank.GameRank.Value)
                                         })
                                         .ToList();
+            return playerGameResults;
+        }
 
+        private static PlayedGame TransformNewlyCompletedGameIntoPlayedGame(NewlyCompletedGame newlyCompletedGame, List<PlayerGameResult> playerGameResults)
+        {
             int numberOfPlayers = newlyCompletedGame.PlayerRanks.Count();
             PlayedGame playedGame = new PlayedGame()
             {
@@ -51,10 +72,6 @@ namespace BusinessLogic.Logic
                 PlayerGameResults = playerGameResults,
                 DatePlayed = DateTime.UtcNow
             };
-
-            dbContext.PlayedGames.Add(playedGame);
-            dbContext.SaveChanges();
-
             return playedGame;
         }
     }

@@ -6,6 +6,7 @@ using NUnit.Framework;
 using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,18 +22,14 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
         private PlayedGameLogic playedGameLogic;
         private PlayerLogic playerLogic;
 
-        [TestFixtureSetUp]
-        public void SetUp()
+        [SetUp]
+        public void TestSetUp()
         {
             dbContexMock = MockRepository.GenerateMock<NemeStatsDbContext>();
             playedGameLogic = MockRepository.GenerateMock<PlayedGameLogic>();
             playerLogic = MockRepository.GenerateMock<PlayerLogic>();
-        }
-
-        [SetUp]
-        public void TestSetUp()
-        {
             playedGameController = new Controllers.PlayedGameController(dbContexMock, playedGameLogic, playerLogic);
+            dbContexMock.Expect(context => context.GameDefinitions).Repeat.Any().Return(MockRepository.GenerateMock<DbSet<GameDefinition>>());
         }
 
         [Test]

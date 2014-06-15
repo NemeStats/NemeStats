@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using BusinessLogic.Models.Games;
 using System.Data.Entity;
+using BusinessLogic.Logic.Points;
 
 namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGameRepositoryTests
 {
@@ -18,12 +19,16 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGameRepositoryTests
     {
         private NemeStatsDbContext dbContext = null;
         PlayedGameLogic playedGameLogic = null;
+        DbSet<PlayedGame> playedGamesDbSet = null;
 
-        [TestFixtureSetUp]
-        public void SetUp()
+        [SetUp]
+        public void TestSetUp()
         {
             dbContext = MockRepository.GenerateMock<NemeStatsDbContext>();
             playedGameLogic = new PlayedGameRepository(dbContext);
+            playedGamesDbSet = MockRepository.GenerateMock<DbSet<PlayedGame>>();
+            dbContext.Expect(context => context.PlayedGames).Repeat.Once().Return(playedGamesDbSet);
+            playedGamesDbSet.Expect(dbSet => dbSet.Add(Arg<PlayedGame>.Is.Anything));
         }
 
         [Test, Ignore("need to check this with someone who knows how to test EF stuff. "
@@ -40,10 +45,6 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGameRepositoryTests
             playerRanks.Add(new PlayerRank() { PlayerId = playerOneId, GameRank = playerOneRank });
             playerRanks.Add(new PlayerRank() { PlayerId = playerTwoId, GameRank = playerTwoRank });
             newlyCompletedGame.PlayerRanks = playerRanks;
-            
-            DbSet<PlayedGame> playedGamesDbSet = MockRepository.GenerateMock<DbSet<PlayedGame>>();
-            dbContext.Expect(context => context.PlayedGames).Repeat.Once().Return(playedGamesDbSet);
-            playedGamesDbSet.Expect(dbSet => dbSet.Add(Arg<PlayedGame>.Is.Anything));
 
             playedGameLogic.CreatePlayedGame(newlyCompletedGame);
 
@@ -53,6 +54,46 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGameRepositoryTests
                     Arg<PlayedGame>.Matches(game => game.GameDefinitionId == gameDefinitionId
                                                 && game.NumberOfPlayers == playerRanks.Count()
                                                 && game.DatePlayed.Date.Equals(DateTime.UtcNow))));
+        }
+
+        [Test]
+        public void ItSetsGordonPointsForEachPlayerGameResult()
+        {
+            int playerOneId = 1;
+            int playerTwoId = 2;
+            int playerOneGameRank = 1;
+            int playerTwoGameRank = 2;
+            List<PlayerRank> playerRanks = new List<PlayerRank>()
+            {
+                new PlayerRank()
+                {
+                    PlayerId = playerOneId,
+                    GameRank = playerOneGameRank
+                },
+                new PlayerRank()
+                {
+                    PlayerId = playerTwoId,
+                    GameRank = playerTwoGameRank
+                }
+            };
+            NewlyCompletedGame newlyCompletedGame = new NewlyCompletedGame()
+            {
+                GameDefinitionId = 1,
+                PlayerRanks = playerRanks
+            };
+
+            int playerOneExpectedGordonPoints = GordonPoints.CalculateGordonPoints(playerRanks.Count, playerOneGameRank);
+
+            PlayedGame playedGame = playedGameLogic.CreatePlayedGame(newlyCompletedGame);
+
+            Assert.AreEqual(playerOneExpectedGordonPoints, playedGame.PlayerGameResults
+                                                    .First(gameResult => gameResult.PlayerId == playerOneId)
+                                                    .GordonPoints);
+
+            int playerTwoExpectedGordonPoints = GordonPoints.CalculateGordonPoints(playerRanks.Count, playerTwoGameRank);
+            Assert.AreEqual(playerTwoExpectedGordonPoints, playedGame.PlayerGameResults
+                                                    .First(gameResult => gameResult.PlayerId == playerTwoId)
+                                                    .GordonPoints);
         }
     }
 }
