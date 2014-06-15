@@ -14,6 +14,7 @@ namespace BusinessLogic.Models
         public int PlayedGameId { get; set; }
         public int PlayerId { get; set; }
         public int GameRank { get; set; }
+        public int GordonPoints { get; set; }
 
         public virtual PlayedGame PlayedGame { get; set; }
         public virtual Player Player { get; set; }

@@ -55,6 +55,7 @@
     <Compile Include="Logic\PlayedGameRepository.cs" />
     <Compile Include="Logic\PlayerLogic.cs" />
     <Compile Include="Logic\PlayerRepository.cs" />
+    <Compile Include="Logic\Points\GordonPoints.cs" />
     <Compile Include="Migrations\201405220234035_Initial.cs" />
     <Compile Include="Migrations\201405220234035_Initial.Designer.cs">
       <DependentUpon>201405220234035_Initial.cs</DependentUpon>
@@ -78,6 +79,10 @@
     <Compile Include="Migrations\201406040204575_FixPreviousAndAddDateCreatedToPlayedGame.cs" />
     <Compile Include="Migrations\201406040204575_FixPreviousAndAddDateCreatedToPlayedGame.Designer.cs">
       <DependentUpon>201406040204575_FixPreviousAndAddDateCreatedToPlayedGame.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201406140253127_IntroducingGordonPoints.cs" />
+    <Compile Include="Migrations\201406140253127_IntroducingGordonPoints.Designer.cs">
+      <DependentUpon>201406140253127_IntroducingGordonPoints.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\GameDefinition.cs" />
@@ -115,6 +120,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201406040204575_FixPreviousAndAddDateCreatedToPlayedGame.resx">
       <DependentUpon>201406040204575_FixPreviousAndAddDateCreatedToPlayedGame.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201406140253127_IntroducingGordonPoints.resx">
+      <DependentUpon>201406140253127_IntroducingGordonPoints.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />
