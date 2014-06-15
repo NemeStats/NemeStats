@@ -11,14 +11,14 @@
 	<hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.GameDefinition.Name)
+            @Html.ActionLink(Model.GameDefinition.Name, "Details", "GameDefinition", new { id = Model.GameDefinition.Id }, new { })
         </dt>
 
         <dd>
             @Html.DisplayFor(model => model.GameDefinition.Name)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.DatePlayed)
+            Date Played
         </dt>
 
         <dd>

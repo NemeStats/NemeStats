@@ -2,7 +2,9 @@
     <span class="gamename">
     @if(showGameName)
     {
+        @* Cannot figure out how to call another HTML helper inside this helper....*@
         @playerGameResult.PlayedGame.GameDefinition.Name
+
     }else
     {
         @playerGameResult.Player.Name

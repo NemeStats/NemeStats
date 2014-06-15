@@ -24,7 +24,7 @@
 @foreach (var item in Model) {
     <tr>
         <td style='font-weight: 300'>
-            @Html.DisplayFor(modelItem => item.GameDefinition.Name)
+            @Html.ActionLink(item.GameDefinition.Name, "Details", "GameDefinition", new { id = item.GameDefinition.Id }, new { })
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.DatePlayed)
