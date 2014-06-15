@@ -65,6 +65,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGameRepositoryTe
         {
             CleanUpPlayerGameResults();
             CleanUpPlayedGames();
+            CleanUpGameDefinitions();
             CleanUpPlayerByPlayerName(testPlayer1Name, dbContext);
             CleanUpPlayerByPlayerName(testPlayer2Name, dbContext);
 
@@ -99,6 +100,22 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGameRepositoryTe
                 try
                 {
                     dbContext.PlayerGameResults.Remove(playerGameResult);
+                }
+                catch (Exception) { }
+            }
+        }
+
+        private void CleanUpGameDefinitions()
+        {
+            List<GameDefinition> gameDefinitionsToDelete = (from game in dbContext.GameDefinitions
+                                                            where game.Name == testGameName
+                                                                select game).ToList();
+
+            foreach(GameDefinition game in gameDefinitionsToDelete)
+            {
+                try
+                {
+                    dbContext.GameDefinitions.Remove(game);
                 }
                 catch (Exception) { }
             }
