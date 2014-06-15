@@ -17,14 +17,6 @@
         <dd>
             @Html.DisplayFor(model => model.GameDefinition.Name)
         </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.NumberOfPlayers)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.NumberOfPlayers)
-        </dd>
         <dt>
             @Html.DisplayNameFor(model => model.DatePlayed)
         </dt>
@@ -36,5 +28,15 @@
 </div>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Delete", "Delete", new { id = Model.Id }) |
     @Html.ActionLink("Back to List", "Index")
+
 </p>
+<div>
+    @foreach (var result in Model.PlayerGameResults)
+    {
+        @MyHelpers.ShowGameResult(result, false);
+        <br />
+    }
+</div>
+
