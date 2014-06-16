@@ -41,12 +41,22 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Bugsnag.Library">
+      <HintPath>..\..\packages\Bugsnag.Library.1.0.7.0\lib\net40\Bugsnag.Library.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Practices.ServiceLocation">
       <HintPath>..\..\..\..\..\Users\COGORD\Documents\Visual Studio 2013\Projects\NerdScorekeeper\packages\CommonServiceLocator.1.0\lib\NET35\Microsoft.Practices.ServiceLocation.dll</HintPath>
     </Reference>
-    <Reference Include="Mindscape.Raygun4Net">
-      <HintPath>..\..\packages\Mindscape.Raygun4Net.2.0.5\lib\net35\Mindscape.Raygun4Net.dll</HintPath>
+    <Reference Include="Mindscape.Raygun4Net, Version=2.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Mindscape.Raygun4Net.2.2.0\lib\net40\Mindscape.Raygun4Net.dll</HintPath>
+    </Reference>
+    <Reference Include="RollbarSharp">
+      <HintPath>..\..\packages\RollbarSharp.0.3.1.0\lib\net40\RollbarSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.Text">
+      <HintPath>..\..\packages\ServiceStack.Text.3.9.71\lib\net35\ServiceStack.Text.dll</HintPath>
     </Reference>
     <Reference Include="StructureMap">
       <HintPath>..\..\..\..\..\Users\COGORD\Documents\Visual Studio 2013\Projects\NerdScorekeeper\packages\structuremap.3.0.3.116\lib\net40\StructureMap.dll</HintPath>
