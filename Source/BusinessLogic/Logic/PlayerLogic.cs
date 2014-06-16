@@ -1,4 +1,5 @@
-﻿using BusinessLogic.Models;
+﻿using BusinessLogic.Logic.Statistics;
+using BusinessLogic.Models;
 using System;
 using System.Collections.Generic;
 namespace BusinessLogic.Logic
@@ -7,5 +8,6 @@ namespace BusinessLogic.Logic
     {
         Player GetPlayerDetails(int playerID);
         List<Player> GetAllPlayers(bool active);
+        PlayerStatistics GetPlayerStatistics(int playerId);
     }
 }

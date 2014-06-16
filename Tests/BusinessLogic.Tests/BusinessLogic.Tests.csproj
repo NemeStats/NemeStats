@@ -56,11 +56,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IntegrationTests\LogicTests\DataSeederTests\SeedDataIntegrationTests.cs" />
+    <Compile Include="IntegrationTests\LogicTests\IntegrationTestBase.cs" />
     <Compile Include="IntegrationTests\LogicTests\PlayedGameRepositoryTests\CreatePlayedGameIntegrationTests.cs" />
     <Compile Include="IntegrationTests\LogicTests\PlayedGameRepositoryTests\GetPlayedGameDetailsIntegrationTests.cs" />
     <Compile Include="IntegrationTests\LogicTests\PlayedGameRepositoryTests\GetRecentlyPlayedGameTests.cs" />
     <Compile Include="IntegrationTests\LogicTests\PlayerRepositoryTests\GetAllPlayersIntegrationTests.cs" />
     <Compile Include="IntegrationTests\LogicTests\PlayerRepositoryTests\GetPlayerDetailsIntegrationTests.cs" />
+    <Compile Include="IntegrationTests\LogicTests\PlayerRepositoryTests\GetPlayerStatisticsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UnitTests\LogicTests\PlayedGameRepositoryTests\CreatePlayedGameTests.cs" />
     <Compile Include="UnitTests\LogicTests\PointsTests\GordonPointsTests\CalculateGordonPointsTests.cs" />
