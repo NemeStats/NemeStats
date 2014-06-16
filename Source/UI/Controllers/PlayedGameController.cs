@@ -8,7 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using BusinessLogic.Models;
 using BusinessLogic.DataAccess;
-using BusinessLogic.Logic;
+using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
 
 namespace UI.Controllers

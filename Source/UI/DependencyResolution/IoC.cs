@@ -16,7 +16,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 
-using BusinessLogic.Logic;
+using BusinessLogic.Models;
 using StructureMap;
 using StructureMap.Graph;
 namespace UI.DependencyResolution {

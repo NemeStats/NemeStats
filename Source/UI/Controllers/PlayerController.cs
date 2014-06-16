@@ -8,7 +8,8 @@ using System.Web;
 using System.Web.Mvc;
 using BusinessLogic.Models;
 using BusinessLogic.DataAccess;
-using BusinessLogic.Logic;
+using BusinessLogic.Models;
+using BusinessLogic.Models.Players;
 
 namespace UI.Controllers
 {
@@ -37,7 +38,7 @@ namespace UI.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            Player player = playerLogic.GetPlayerDetails(id.Value);
+            PlayerDetails player = playerLogic.GetPlayerDetails(id.Value);
 
             if (player == null)
             {

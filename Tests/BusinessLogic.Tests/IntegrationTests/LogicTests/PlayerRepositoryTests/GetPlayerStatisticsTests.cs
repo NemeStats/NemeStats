@@ -1,6 +1,6 @@
 ﻿using BusinessLogic.DataAccess;
-using BusinessLogic.Logic;
-using BusinessLogic.Logic.Statistics;
+using BusinessLogic.Models;
+using BusinessLogic.Models.Players;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;

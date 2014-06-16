@@ -1,6 +1,6 @@
 namespace BusinessLogic.Migrations
 {
-    using BusinessLogic.Logic;
+    using BusinessLogic.Models;
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
@@ -11,11 +11,6 @@ namespace BusinessLogic.Migrations
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
-        }
-
-        protected override void Seed(BusinessLogic.DataAccess.NemeStatsDbContext context)
-        {
-            new DataSeeder(context).SeedData();
         }
     }
 }

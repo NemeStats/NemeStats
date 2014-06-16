@@ -2,7 +2,7 @@
 using BusinessLogic.Models.Games;
 using System;
 using System.Collections.Generic;
-namespace BusinessLogic.Logic
+namespace BusinessLogic.Models
 {
     public interface PlayedGameLogic
     {

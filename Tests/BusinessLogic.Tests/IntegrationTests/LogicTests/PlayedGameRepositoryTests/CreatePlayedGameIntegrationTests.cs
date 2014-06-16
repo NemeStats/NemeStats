@@ -1,6 +1,6 @@
 ﻿using BusinessLogic.DataAccess;
 using BusinessLogic.Models;
-using BusinessLogic.Logic;
+using BusinessLogic.Models;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System;

@@ -1,6 +1,6 @@
 ﻿using BusinessLogic.DataAccess;
-using BusinessLogic.Logic;
 using BusinessLogic.Models;
+using BusinessLogic.Models.Players;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -8,58 +8,62 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-//  These tests assume that the DataSeeder has run so that there is some baseline data.
 namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayerRepositoryTests
 {
     [TestFixture]
-    public class GetPlayerDetailsIntegrationTests
+    public class GetPlayerDetailsIntegrationTests : IntegrationTestBase
     {
-        private NemeStatsDbContext dbContext;
-        private Player dave;
+        private PlayerDetails testPlayerDetails;
 
-        [TestFixtureSetUp]
+        [SetUp]
         public void SetUp()
         {
-            dbContext = new NemeStatsDbContext();
-            int davePlayerId = dbContext.Players.First(x => x.Name == DataSeeder.PLAYER_NAME_DAVE).Id;
-            dave = new BusinessLogic.Logic.PlayerRepository(dbContext).GetPlayerDetails(davePlayerId);
+            PlayerRepository playerRepository = new PlayerRepository(dbContext);
+            testPlayerDetails = playerRepository.GetPlayerDetails(testPlayer1.Id);
         }
 
         [Test]
-        public void ItRetrievesPlayerGameResultsInfo()
+        public void ItEagerlyFetchesPlayerGameResults()
         {
-            Assert.NotNull(dave.PlayerGameResults, "Failed to retrieve PlayerGameResults.");
+            dbContext.Configuration.LazyLoadingEnabled = false;
+            dbContext.Configuration.ProxyCreationEnabled = false;
+
+            PlayerRepository playerRepository = new PlayerRepository(dbContext);
+            PlayerDetails playerDetails = playerRepository.GetPlayerDetails(testPlayer1.Id);
+            Assert.NotNull(playerDetails.PlayerGameResults, "Failed to retrieve PlayerGameResults.");
         }
 
         [Test]
-        public void DaveHasAtLeastOneTwoPlayedGames()
+        public void ItEagerlyFetchesPlayedGames()
         {
-            Assert.GreaterOrEqual(dave.PlayerGameResults.Count(), 2);
+            dbContext.Configuration.LazyLoadingEnabled = false;
+            dbContext.Configuration.ProxyCreationEnabled = false;
+
+            Assert.NotNull(testPlayerDetails.PlayerGameResults.First().PlayedGame);
         }
 
         [Test]
-        public void ItRetrievesThePlayedGame()
+        public void ItEagerlyFetchesGameDefinitions()
         {
-            Assert.NotNull(dave.PlayerGameResults.First().PlayedGame);
-        }
+            dbContext.Configuration.LazyLoadingEnabled = false;
+            dbContext.Configuration.ProxyCreationEnabled = false;
 
-        [Test]
-        public void ItRetrievesTheGameDefinition()
-        {
-            Assert.NotNull(dave.PlayerGameResults.First().PlayedGame.GameDefinition);
+            Assert.NotNull(testPlayerDetails.PlayerGameResults.First().PlayedGame.GameDefinition);
         }
 
         [Test]
         public void ItReturnsNullIfNoPlayerFound()
         {
-            Player notFoundPlayer = new BusinessLogic.Logic.PlayerRepository(dbContext).GetPlayerDetails(-1);
+            PlayerDetails notFoundPlayer = new PlayerRepository(dbContext).GetPlayerDetails(-1);
             Assert.Null(notFoundPlayer);
         }
 
-        [TestFixtureTearDown]
-        public void TearDown()
+        [Test]
+        public void ItSetsPlayerStatistics()
         {
-            dbContext.Dispose();
+            PlayerDetails playerDetails = new PlayerRepository(dbContext).GetPlayerDetails(testPlayer1.Id);
+
+            Assert.NotNull(playerDetails.PlayerStats);
         }
 
     }

@@ -6,11 +6,11 @@ using System.Linq;
 using System.Text;
 using System.Data.Entity;
 using BusinessLogic.Models.Games;
-using BusinessLogic.Logic.Points;
+using BusinessLogic.Models.Points;
 
-namespace BusinessLogic.Logic
+namespace BusinessLogic.Models
 {
-    public class PlayedGameRepository : BusinessLogic.Logic.PlayedGameLogic
+    public class PlayedGameRepository : BusinessLogic.Models.PlayedGameLogic
     {
         internal const string EXCEPTION_MESSAGE_MUST_PASS_VALID_GAME_DEFINITION_ID = "Must pass a valid GameDefinitionId.";
         

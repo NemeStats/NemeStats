@@ -1,6 +1,6 @@
 ﻿using BusinessLogic.DataAccess;
 using BusinessLogic.Models;
-using BusinessLogic.Logic;
+using BusinessLogic.Models;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System;
@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using BusinessLogic.Models.Games;
 using System.Data.Entity;
-using BusinessLogic.Logic.Points;
+using BusinessLogic.Models.Points;
 
 namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGameRepositoryTests
 {

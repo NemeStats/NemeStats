@@ -24,7 +24,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayerRepositoryTests
         public void ItOnlyReturnsActivePlayersWhenActivePlayersAreRequested()
         {
             bool active = true;
-            BusinessLogic.Logic.PlayerRepository playerRepository = new BusinessLogic.Logic.PlayerRepository(dbContext);
+            BusinessLogic.Models.PlayerRepository playerRepository = new BusinessLogic.Models.PlayerRepository(dbContext);
 
             List<Player> players = playerRepository.GetAllPlayers(active);
 
@@ -35,7 +35,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayerRepositoryTests
         public void ItOnlyReturnsInActivePlayersWhenInActivePlayersAreRequested()
         {
             bool active = false;
-            BusinessLogic.Logic.PlayerRepository playerRepository = new BusinessLogic.Logic.PlayerRepository(dbContext);
+            BusinessLogic.Models.PlayerRepository playerRepository = new BusinessLogic.Models.PlayerRepository(dbContext);
 
             List<Player> players = playerRepository.GetAllPlayers(active);
 

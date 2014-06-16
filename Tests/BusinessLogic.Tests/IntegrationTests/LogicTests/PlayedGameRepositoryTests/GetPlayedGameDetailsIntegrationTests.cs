@@ -1,5 +1,5 @@
 ﻿using BusinessLogic.DataAccess;
-using BusinessLogic.Logic;
+using BusinessLogic.Models;
 using BusinessLogic.Models;
 using NUnit.Framework;
 using System;
@@ -11,17 +11,14 @@ using System.Threading.Tasks;
 namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGameRepositoryTests
 {
     [TestFixture]
-    public class PlayedGameRepositoryIntegrationTests
+    public class PlayedGameRepositoryIntegrationTests : IntegrationTestBase
     {
-        private NemeStatsDbContext dbContext;
         private PlayedGame playedGame;
 
-        [TestFixtureSetUp]
+        [SetUp]
         public void SetUp()
         {
-            dbContext = new NemeStatsDbContext();
-            int playedGameId = dbContext.GameDefinitions.First(x => x.Name == DataSeeder.GAME_NAME_SMALL_WORLD).PlayedGames.First().Id;
-            playedGame = new BusinessLogic.Logic.PlayedGameRepository(dbContext).GetPlayedGameDetails(playedGameId);
+            playedGame = new BusinessLogic.Models.PlayedGameRepository(dbContext).GetPlayedGameDetails(testPlayedGames[0].Id);
         }
 
         [Test]
@@ -31,9 +28,9 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGameRepositoryTe
         }
 
         [Test]
-        public void ItHasBeenSeededWithAtLeastTwoPlayerGameResults()
+        public void ItRetrievesTheGameResults()
         {
-            Assert.GreaterOrEqual(2, playedGame.PlayerGameResults.Count());
+            Assert.GreaterOrEqual(testPlayedGames[0].PlayerGameResults.Count, playedGame.PlayerGameResults.Count());
         }
 
         [Test]
@@ -45,14 +42,8 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGameRepositoryTe
         [Test]
         public void ItReturnsNullIfNoPlayedGameFound()
         {
-            PlayedGame notFoundPlayedGame = new BusinessLogic.Logic.PlayedGameRepository(dbContext).GetPlayedGameDetails(-1);
+            PlayedGame notFoundPlayedGame = new BusinessLogic.Models.PlayedGameRepository(dbContext).GetPlayedGameDetails(-1);
             Assert.Null(notFoundPlayedGame);
-        }
-
-        [TestFixtureTearDown]
-        public void TearDown()
-        {
-            dbContext.Dispose();
         }
     }
 }

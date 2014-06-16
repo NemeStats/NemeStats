@@ -86,7 +86,7 @@
   <ItemGroup>
     <Compile Include="UnitTests\ControllerTests\PlayedGameControllerTests\CreateTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="IntegrationTests\ControllerTests\PlayerControllerTests\DetailsTests.cs" />
+    <Compile Include="UnitTests\ControllerTests\PlayerControllerTests\DetailsTests.cs" />
     <Compile Include="UnitTests\ControllerTests\PlayedGameControllerTests\CreateWithNoParameters.cs" />
     <Compile Include="UnitTests\ControllerTests\PlayedGameControllerTests\IndexTests.cs" />
   </ItemGroup>
@@ -104,9 +104,7 @@
       <Name>UI</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="IntegrationTests\ControllerTests\PlayedGameControllerTests\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

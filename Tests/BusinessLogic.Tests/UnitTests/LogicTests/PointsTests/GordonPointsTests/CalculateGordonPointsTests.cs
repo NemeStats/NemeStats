@@ -1,4 +1,4 @@
-﻿using BusinessLogic.Logic.Points;
+﻿using BusinessLogic.Models.Points;
 using BusinessLogic.Models.Games;
 using NUnit.Framework;
 using System;

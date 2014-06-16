@@ -1,5 +1,5 @@
 ﻿using BusinessLogic.DataAccess;
-using BusinessLogic.Logic;
+using BusinessLogic.Models;
 using BusinessLogic.Models;
 using NUnit.Framework;
 using System;
@@ -20,7 +20,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGameRepositoryTe
         public void SetUp()
         {
             dbContext = new NemeStatsDbContext();
-            playedGameLogic = new BusinessLogic.Logic.PlayedGameRepository(dbContext);
+            playedGameLogic = new BusinessLogic.Models.PlayedGameRepository(dbContext);
         }
 
         [Test]

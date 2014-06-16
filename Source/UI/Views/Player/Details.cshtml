@@ -1,4 +1,4 @@
-﻿@model BusinessLogic.Models.Player
+﻿@model BusinessLogic.Models.Players.PlayerDetails
 
 @{
     ViewBag.Title = "Details";
@@ -40,4 +40,8 @@
         @Html.ActionLink("[Details]", "Details", "PlayedGame", new { id = playerGameResult.PlayedGame.Id }, new { })
         <br/><br/>
     }
+</div>
+<div>
+    <h4>Statistics</h4>
+    Total Games: @Model.PlayerStats.TotalGames
 </div>

@@ -19,7 +19,7 @@ using System.Web.Http;
 using System.Web.Mvc;
 using StructureMap;
 using UI.DependencyResolution;
-using BusinessLogic.Logic;
+using BusinessLogic.Models;
 
 [assembly: WebActivator.PreApplicationStartMethod(typeof(UI.App_Start.StructuremapMvc), "Start")]
 

@@ -1,7 +1,7 @@
 namespace BusinessLogic.Migrations
 {
     using BusinessLogic.DataAccess;
-    using BusinessLogic.Logic.Points;
+    using BusinessLogic.Models.Points;
     using BusinessLogic.Models;
     using System.Collections.Generic;
     using System.Data.Entity;

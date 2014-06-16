@@ -1,5 +1,5 @@
 ﻿using BusinessLogic.DataAccess;
-using BusinessLogic.Logic.Statistics;
+using BusinessLogic.Models.Players;
 using BusinessLogic.Models;
 using System;
 using System.Collections.Generic;
@@ -8,9 +8,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessLogic.Logic
+namespace BusinessLogic.Models
 {
-    public class PlayerRepository : BusinessLogic.Logic.PlayerLogic
+    public class PlayerRepository : BusinessLogic.Models.PlayerLogic
     {
         private NemeStatsDbContext dbContext = null;
 
@@ -19,11 +19,31 @@ namespace BusinessLogic.Logic
             dbContext = context;
         }
 
-        public Player GetPlayerDetails(int playerID)
+        public PlayerDetails GetPlayerDetails(int playerID)
         {
-            return dbContext.Players
+            Player returnPlayer = dbContext.Players
                 .Where(player => player.Id == playerID)
-                .FirstOrDefault();
+                .Include(player => player.PlayerGameResults
+                    .Select(playerGameResult => playerGameResult.PlayedGame)
+                        .Select(playedGame => playedGame.GameDefinition)).FirstOrDefault();
+
+            PlayerDetails playerDetails = null;
+            
+            if(returnPlayer != null)
+            {
+                PlayerStatistics playerStatistics = GetPlayerStatistics(playerID);
+
+                playerDetails = new PlayerDetails()
+                {
+                    Active = returnPlayer.Active,
+                    Id = returnPlayer.Id,
+                    Name = returnPlayer.Name,
+                    PlayerGameResults = returnPlayer.PlayerGameResults.ToList(),
+                    PlayerStats = playerStatistics
+                };
+            }
+            
+            return playerDetails;
         }
 
         public List<Player> GetAllPlayers(bool active)
