@@ -42,7 +42,8 @@ namespace BusinessLogic.Tests.IntegrationTests
             }
         }
 
-        public void ItLazyLoadsForeverIfYouLazyLoadSomethingEvenOnce()
+        [Test]
+        public void ItPullsObjectsFromMemoryIfTheyHaveAlreadyBeenLoaded()
         {
             using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
             {
@@ -56,7 +57,8 @@ namespace BusinessLogic.Tests.IntegrationTests
 
                 Player player2 = dbContext.Players.First();
 
-                //even though LazyLoadingEnabled is false, it will lazy load since it's already executed a query
+                //even though LazyLoadingEnabled is false, it will fetch since this player has already been loaded into
+                // memory before
                 Assert.NotNull(player2.PlayerGameResults);
             }
         }
