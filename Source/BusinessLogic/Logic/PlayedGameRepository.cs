@@ -34,8 +34,8 @@ namespace BusinessLogic.Models
             List<PlayedGame> playedGames = dbContext.PlayedGames.Include(playedGame => playedGame.GameDefinition)
                 .Include(playedGame => playedGame.PlayerGameResults
                     .Select(playerGameResult => playerGameResult.Player))
+                    .OrderByDescending(orderBy => orderBy.DatePlayed)
                 .Take(numberOfGames)
-                .OrderByDescending(orderBy => orderBy.DatePlayed)
                 .ToList();
 
             //TODO this seems ridiculous but I can't see how to order a related entity in Entity Framework :(

@@ -16,7 +16,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
     public class IndexTests : TestBase
     {
         [Test]
-        public void ItGetsTheLastTenPlayedGames()
+        public void ItGetsRecentlyPlayedGames()
         {
             playedGameController.Index();
 
@@ -42,6 +42,12 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 
             List<PlayedGame> playedGamesOnViewModel = (List<PlayedGame>)result.ViewData.Model;
             Assert.AreEqual(playedGameId, playedGamesOnViewModel[0].Id);
+        }
+
+        [Test]
+        public void ItGeneratesTheViewModel()
+        {
+            //TODO test the transformation
         }
     }
 }

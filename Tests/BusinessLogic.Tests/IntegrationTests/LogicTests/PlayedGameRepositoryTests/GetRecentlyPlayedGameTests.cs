@@ -11,18 +11,8 @@ using System.Threading.Tasks;
 namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGameRepositoryTests
 {
     [TestFixture]
-    public class GetRecentlyPlayedGameTests
+    public class GetRecentlyPlayedGameTests : IntegrationTestBase
     {
-        private NemeStatsDbContext dbContext;
-        private PlayedGameLogic playedGameLogic;
-
-        [SetUp]
-        public void SetUp()
-        {
-            dbContext = new NemeStatsDbContext();
-            playedGameLogic = new BusinessLogic.Models.PlayedGameRepository(dbContext);
-        }
-
         [Test]
         public void ItEagerlyFetchesGameDefinitions()
         {
@@ -88,15 +78,10 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGameRepositoryTe
         {
             int five = 5;
             List<PlayedGame> playedGames = playedGameLogic.GetRecentGames(five);
-
-            DateTime lastGameDate = playedGames[0].DatePlayed;
-            DateTime nextGameDate;
-
-            for (int i = 1; i < five; i++ )
+            List<PlayedGame> allPlayedGames = dbContext.PlayedGames.ToList().OrderByDescending(playedGame => playedGame.DatePlayed).ToList();
+            for(int i = 0; i<five; i++)
             {
-                nextGameDate = playedGames[i].DatePlayed;
-                Assert.True(lastGameDate >= nextGameDate);
-                lastGameDate = nextGameDate;
+                Assert.AreEqual(allPlayedGames[i].Id, playedGames[i].Id);
             }
         }
 
@@ -118,12 +103,6 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGameRepositoryTe
 
                 lastRank = -1;
             }
-        }
-
-        [TestFixtureTearDown]
-        public void TearDown()
-        {
-            dbContext.Dispose();
         }
     }
 }
