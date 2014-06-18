@@ -57,14 +57,22 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
             Assert.AreEqual(MVC.PlayedGame.Views.Details, playedGameDetails.ViewName);
         }
 
-        //TODO this test is where i left off at 11:25 on Tuesday. Need to finish updating this to point to new model.
+        //TODO better name for this?
+        [Test]
+        public void ItTransformsThePlayerBusinessObjectToTheViewModel()
+        {
+
+
+        }
+
         [Test]
         public void ItReturnsThePlayedGameDetailsViewForTheFoundPlayedGame()
         {
             int playedGameId = 1351;
             PlayedGame playedGame = new PlayedGame() 
             { 
-                Id = playedGameId 
+                Id = playedGameId,
+                
             };
             playedGameLogicMock.Expect(playedGameLogic => playedGameLogic.GetPlayedGameDetails(playedGameId))
                 .Repeat.Once()
