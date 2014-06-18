@@ -85,12 +85,5 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
 
             Assert.AreEqual(playerDetails, player.Model);
         }
-
-        [TestFixtureTearDown]
-        public void TearDown()
-        {
-            dbContextMock.Dispose();
-        }
-  
     }
 }

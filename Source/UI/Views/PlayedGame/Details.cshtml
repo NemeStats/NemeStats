@@ -1,4 +1,4 @@
-﻿@model BusinessLogic.Models.PlayedGame
+﻿@model UI.Models.PlayedGame.PlayedGameDetails
 
 @{
     ViewBag.Title = "Details";
@@ -11,11 +11,11 @@
 	<hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.ActionLink(Model.GameDefinition.Name, "Details", "GameDefinition", new { id = Model.GameDefinition.Id }, new { })
+            @Html.ActionLink(Model.GameDefinitionName, "Details", "GameDefinition", new { id = Model.GameDefinitionId }, new { })
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.GameDefinition.Name)
+            @Html.DisplayFor(model => model.GameDefinitionName)
         </dd>
         <dt>
             Date Played

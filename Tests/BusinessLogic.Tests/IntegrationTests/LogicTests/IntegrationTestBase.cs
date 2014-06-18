@@ -14,6 +14,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests
     public class IntegrationTestBase
     {
         protected NemeStatsDbContext dbContext;
+        protected NemeStatsDbContext dbContextWithLazyLoadingDisabled;
         protected PlayedGameRepository playedGameLogic;
         protected List<PlayedGame> testPlayedGames = new List<PlayedGame>();
         protected GameDefinition testGameDefinition;
@@ -30,6 +31,8 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests
         public void FixtureSetUp()
         {
             dbContext = new NemeStatsDbContext();
+            dbContextWithLazyLoadingDisabled = new NemeStatsDbContext();
+            dbContextWithLazyLoadingDisabled.Configuration.LazyLoadingEnabled = false;
 
             CleanUpTestData();
 
@@ -164,6 +167,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests
         {
             CleanUpTestData();
             dbContext.Dispose();
+            dbContextWithLazyLoadingDisabled.Dispose();
         }
     }
 }

@@ -43,12 +43,12 @@ namespace UI.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            PlayedGame playedgame = db.PlayedGames.Find(id);
+            PlayedGame playedgame = playedGameLogic.GetPlayedGameDetails(id.Value);
             if (playedgame == null)
             {
                 return HttpNotFound();
             }
-            return View(playedgame);
+            return View(MVC.PlayedGame.Views.Details, playedgame);
         }
 
         // GET: /PlayedGame/Create

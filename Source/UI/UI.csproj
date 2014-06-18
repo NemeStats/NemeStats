@@ -240,6 +240,7 @@
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\PlayedGame\PlayedGameDetails.cs" />
     <Compile Include="PlayedGameController.generated.cs">
       <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>

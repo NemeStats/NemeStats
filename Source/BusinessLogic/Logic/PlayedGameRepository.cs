@@ -22,8 +22,11 @@ namespace BusinessLogic.Models
         }
 
         public PlayedGame GetPlayedGameDetails(int playedGameId)
-        {
-            return dbContext.PlayedGames.Where(playedGame => playedGame.Id == playedGameId).FirstOrDefault();                
+        {         
+            return dbContext.PlayedGames.Where(playedGame => playedGame.Id == playedGameId)
+                .Include(playedGame => playedGame.GameDefinition)
+                .Include(playedGame => playedGame.PlayerGameResults)
+                .FirstOrDefault();   
         }
 
         public List<PlayedGame> GetRecentGames(int numberOfGames)

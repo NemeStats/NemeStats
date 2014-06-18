@@ -11,31 +11,32 @@ using System.Threading.Tasks;
 namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGameRepositoryTests
 {
     [TestFixture]
-    public class PlayedGameRepositoryIntegrationTests : IntegrationTestBase
+    public class GetPlayedGameDetailsIntegrationTests : IntegrationTestBase
     {
-        private PlayedGame playedGame;
-
-        [SetUp]
-        public void SetUp()
+        private PlayedGame GetTestSubjectPlayedGame(NemeStatsDbContext dbContextToTestWith)
         {
-            playedGame = new BusinessLogic.Models.PlayedGameRepository(dbContext).GetPlayedGameDetails(testPlayedGames[0].Id);
+            return new BusinessLogic.Models.PlayedGameRepository(dbContextToTestWith)
+                .GetPlayedGameDetails(testPlayedGames[0].Id);
         }
 
         [Test]
         public void ItRetrievesThePlayedGame()
         {
+            PlayedGame playedGame = GetTestSubjectPlayedGame(dbContext);
             Assert.NotNull(playedGame);
         }
 
         [Test]
-        public void ItRetrievesTheGameResults()
+        public void ItEagerlyFetchesTheGameResults()
         {
+            PlayedGame playedGame = GetTestSubjectPlayedGame(dbContextWithLazyLoadingDisabled);
             Assert.GreaterOrEqual(testPlayedGames[0].PlayerGameResults.Count, playedGame.PlayerGameResults.Count());
         }
 
         [Test]
-        public void ItRetrievesTheGameDefinition()
+        public void ItEagerlyFetchesTheGameDefinition()
         {
+            PlayedGame playedGame = GetTestSubjectPlayedGame(dbContextWithLazyLoadingDisabled);
             Assert.NotNull(playedGame.GameDefinition);
         }
 

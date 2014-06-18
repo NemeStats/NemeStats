@@ -1,41 +1,29 @@
 ﻿using BusinessLogic.DataAccess;
 using BusinessLogic.Models;
-using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
 using NUnit.Framework;
 using Rhino.Mocks;
-using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 {
     [TestFixture]
-    public class CreateTests
+    public class CreateTests : TestBase
     {
-        private NemeStatsDbContext dbContexMock;
-        private UI.Controllers.PlayedGameController playedGameController;
-        private PlayedGameLogic playedGameLogic;
-        private PlayerLogic playerLogic;
-
         [SetUp]
-        public void TestSetUp()
+        public override void TestSetUp()
         {
-            dbContexMock = MockRepository.GenerateMock<NemeStatsDbContext>();
-            playedGameLogic = MockRepository.GenerateMock<PlayedGameLogic>();
-            playerLogic = MockRepository.GenerateMock<PlayerLogic>();
-            playedGameController = new Controllers.PlayedGameController(dbContexMock, playedGameLogic, playerLogic);
+            base.TestSetUp();
             dbContexMock.Expect(context => context.GameDefinitions).Repeat.Any().Return(MockRepository.GenerateMock<DbSet<GameDefinition>>());
         }
 
         [Test]
         public void ItRemainsOnTheCreatePageIfTheModelIsNotValid()
         {
-            playerLogic.Expect(x => x.GetAllPlayers(true)).Repeat.Once().Return(new List<Player>());
+            playerLogicMock.Expect(x => x.GetAllPlayers(true)).Repeat.Once().Return(new List<Player>());
             playedGameController.ModelState.AddModelError("Test error", "this is a test error to make model state invalid");
 
             ViewResult result = playedGameController.Create(new NewlyCompletedGame()) as ViewResult;
@@ -50,12 +38,12 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
             string playerName = "Herb";
             List<Player> allPlayers = new List<Player>() { new Player() { Id = playerId, Name = playerName } };
 
-            playerLogic.Expect(x => x.GetAllPlayers(true)).Repeat.Once().Return(allPlayers);
+            playerLogicMock.Expect(x => x.GetAllPlayers(true)).Repeat.Once().Return(allPlayers);
             playedGameController.ModelState.AddModelError("Test error", "this is a test error to make model state invalid");
 
             playedGameController.Create(new NewlyCompletedGame());
 
-            playerLogic.VerifyAllExpectations();
+            playerLogicMock.VerifyAllExpectations();
 
             List<SelectListItem> selectListItems = playedGameController.ViewBag.Players;
             Assert.True(selectListItems.All(x => x.Value == playerId.ToString() && x.Text == playerName));
@@ -69,7 +57,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
                 GameDefinitionId = 1, 
                 PlayerRanks = new List<PlayerRank>()
             };
-            playedGameLogic.Expect(x => x.CreatePlayedGame(Arg<NewlyCompletedGame>.Is.Anything)).Repeat.Once();
+            playedGameLogicMock.Expect(x => x.CreatePlayedGame(Arg<NewlyCompletedGame>.Is.Anything)).Repeat.Once();
             RedirectToRouteResult result = playedGameController.Create(playedGame) as RedirectToRouteResult;
 
             Assert.AreEqual(MVC.PlayedGame.ActionNames.Index, result.RouteValues["action"]);

@@ -55,6 +55,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IntegrationTests\EntityFramework6EagerLoadingTests.cs" />
     <Compile Include="IntegrationTests\LogicTests\IntegrationTestBase.cs" />
     <Compile Include="IntegrationTests\LogicTests\PlayedGameRepositoryTests\CreatePlayedGameIntegrationTests.cs" />
     <Compile Include="IntegrationTests\LogicTests\PlayedGameRepositoryTests\GetPlayedGameDetailsIntegrationTests.cs" />
