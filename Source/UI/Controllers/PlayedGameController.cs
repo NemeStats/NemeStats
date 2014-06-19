@@ -1,15 +1,13 @@
-﻿using System;
+﻿using BusinessLogic.DataAccess;
+using BusinessLogic.Models;
+using BusinessLogic.Models.Games;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using BusinessLogic.Models;
-using BusinessLogic.DataAccess;
-using BusinessLogic.Models;
-using BusinessLogic.Models.Games;
+using UI.Models.PlayedGame;
+using UI.Transformations;
 
 namespace UI.Controllers
 {
@@ -18,22 +16,32 @@ namespace UI.Controllers
         internal NemeStatsDbContext db;
         internal PlayedGameLogic playedGameLogic;
         internal PlayerLogic playerLogic;
+        internal PlayedGameDetailsBuilder recentGamesSummaryBuilder;
 
         internal const int NUMBER_OF_RECENT_GAMES_TO_DISPLAY = 10;
 
-        public PlayedGameController(NemeStatsDbContext dbContext, PlayedGameLogic playedLogic, PlayerLogic playLogic)
+        public PlayedGameController(NemeStatsDbContext dbContext, 
+            PlayedGameLogic playedLogic, 
+            PlayerLogic playLogic, 
+            PlayedGameDetailsBuilder builder)
         {
             db = dbContext;
             playedGameLogic = playedLogic;
             playerLogic = playLogic;
+            recentGamesSummaryBuilder = builder;
         }
 
         // GET: /PlayedGame/
         public virtual ActionResult Index()
         {
-            List<PlayedGame> playedgames = playedGameLogic.GetRecentGames(NUMBER_OF_RECENT_GAMES_TO_DISPLAY);
-
-            return View(MVC.PlayedGame.Views.Index, playedgames);
+            List<PlayedGame> playedGames = playedGameLogic.GetRecentGames(NUMBER_OF_RECENT_GAMES_TO_DISPLAY);
+            List<PlayedGameDetails> details = new List<PlayedGameDetails>();
+            for(int i = 0; i < playedGames.Count(); i++)
+            {
+                details[i] = recentGamesSummaryBuilder.Build(playedGames[i]);
+            }
+            
+            return View(MVC.PlayedGame.Views.Index, details);
         }
 
         // GET: /PlayedGame/Details/5

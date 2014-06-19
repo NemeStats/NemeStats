@@ -11,6 +11,6 @@ namespace UI.Models.PlayedGame
         public string GameDefinitionName { get; set; }
         public int GameDefinitionId { get; set; }
         public DateTime DatePlayed { get; set; }
-        //TODO add equivalent to playergameresult
+        List<PlayerResultSummary> PlayerResultSummaries { get; set; }
     }
 }

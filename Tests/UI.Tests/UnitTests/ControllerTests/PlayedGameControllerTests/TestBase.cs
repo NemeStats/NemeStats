@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UI.Controllers;
+using UI.Transformations;
 
 namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 {
@@ -17,6 +18,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
         protected PlayedGameController playedGameController;
         protected PlayedGameLogic playedGameLogicMock;
         protected PlayerLogic playerLogicMock;
+        protected PlayedGameDetailsBuilder recentGamesSummaryBuilder;
 
         [SetUp]
         public virtual void TestSetUp()
@@ -24,7 +26,8 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
             dbContexMock = MockRepository.GenerateMock<NemeStatsDbContext>();
             playedGameLogicMock = MockRepository.GenerateMock<PlayedGameLogic>();
             playerLogicMock = MockRepository.GenerateMock<PlayerLogic>();
-            playedGameController = new Controllers.PlayedGameController(dbContexMock, playedGameLogicMock, playerLogicMock);
+            recentGamesSummaryBuilder = MockRepository.GenerateMock<PlayedGameDetailsBuilder>();
+            playedGameController = new Controllers.PlayedGameController(dbContexMock, playedGameLogicMock, playerLogicMock, recentGamesSummaryBuilder);
         }
     }
 }

@@ -246,7 +246,9 @@
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\PlayedGame\PlayerResultSummary.cs" />
     <Compile Include="Models\PlayedGame\PlayedGameDetails.cs" />
+    <Compile Include="Transformations\PlayedGameDetailsBuilderImpl.cs" />
     <Compile Include="PlayedGameController.generated.cs">
       <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>
@@ -263,6 +265,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>
+    <Compile Include="Transformations\PlayedGameDetailsBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
@@ -403,7 +406,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Transformations\" />
     <Folder Include="Views\Shared\DisplayTemplates\" />
   </ItemGroup>
   <ItemGroup>

@@ -19,6 +19,8 @@
 using BusinessLogic.Models;
 using StructureMap;
 using StructureMap.Graph;
+using UI.Models.PlayedGame;
+using UI.Transformations;
 namespace UI.DependencyResolution {
     public static class IoC {
         public static IContainer Initialize() {
@@ -31,6 +33,7 @@ namespace UI.DependencyResolution {
                                     });
                             x.For<PlayerLogic>().Use<PlayerRepository>();
                             x.For<PlayedGameLogic>().Use<PlayedGameRepository>();
+                            x.For<PlayedGameDetailsBuilder>().Use<PlayedGameDetailsBuilderImpl>();
                         });
             return ObjectFactory.Container;
         }

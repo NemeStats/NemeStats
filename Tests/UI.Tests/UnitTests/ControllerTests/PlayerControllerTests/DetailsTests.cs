@@ -1,15 +1,9 @@
 ﻿using BusinessLogic.DataAccess;
 using BusinessLogic.Models;
-using BusinessLogic.Models;
 using BusinessLogic.Models.Players;
 using NUnit.Framework;
 using Rhino.Mocks;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Mvc;
 using UI.Controllers;
 

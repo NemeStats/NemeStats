@@ -1,14 +1,10 @@
-﻿using BusinessLogic.DataAccess;
-using BusinessLogic.Models;
-using BusinessLogic.Models;
+﻿using BusinessLogic.Models;
 using NUnit.Framework;
 using Rhino.Mocks;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Mvc;
+using UI.Models.PlayedGame;
+using UI.Transformations;
 
 namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 {
@@ -37,17 +33,30 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
             int playedGameId = 13541;
 
             List<PlayedGame> playedGames = new List<PlayedGame>() { new PlayedGame() { Id = playedGameId } };
-            playedGameLogicMock.Expect(x => x.GetRecentGames(Controllers.PlayedGameController.NUMBER_OF_RECENT_GAMES_TO_DISPLAY)).Repeat.Once().Return(playedGames);
+            playedGameLogicMock.Expect(x => x.GetRecentGames(Controllers.PlayedGameController.NUMBER_OF_RECENT_GAMES_TO_DISPLAY))
+                .Repeat.Once()
+                .Return(playedGames);
+            List<PlayedGameDetails> summaries = new List<PlayedGameDetails>();
+            recentGamesSummaryBuilder.Expect(builder => builder.Build(playedGames)).Repeat.Once()
+                .Return(summaries);
             ViewResult result = playedGameController.Index() as ViewResult;
 
-            List<PlayedGame> playedGamesOnViewModel = (List<PlayedGame>)result.ViewData.Model;
-            Assert.AreEqual(playedGameId, playedGamesOnViewModel[0].Id);
+            PlayedGameDetails viewModel = (PlayedGameDetails)result.ViewData.Model;
+            Assert.AreEqual(summaries, viewModel);
         }
+
 
         [Test]
         public void ItGeneratesTheViewModel()
         {
-            //TODO test the transformation
+            List<BusinessLogic.Models.PlayedGame> recentlyPlayedGames = new List<BusinessLogic.Models.PlayedGame>();
+            playedGameLogicMock.Expect(playedGameLogic => playedGameLogic.GetRecentGames(Arg<int>.Is.Anything))
+                .Repeat.Once()
+                .Return(recentlyPlayedGames);
+          
+            playedGameController.Index();
+            
+            recentGamesSummaryBuilder.AssertWasCalled(builder => builder.Build(recentlyPlayedGames));
         }
     }
 }
