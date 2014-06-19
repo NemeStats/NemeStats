@@ -1,21 +1,15 @@
 ﻿using BusinessLogic.DataAccess;
 using BusinessLogic.Models;
-using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BusinessLogic.Tests.IntegrationTests.LogicTests
 {
     public class IntegrationTestBase
     {
-        protected NemeStatsDbContext dbContext;
-        protected NemeStatsDbContext dbContextWithLazyLoadingDisabled;
-        protected PlayedGameRepository playedGameLogic;
         protected List<PlayedGame> testPlayedGames = new List<PlayedGame>();
         protected GameDefinition testGameDefinition;
         protected Player testPlayer1;
@@ -30,42 +24,41 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests
         [TestFixtureSetUp]
         public void FixtureSetUp()
         {
-            dbContext = new NemeStatsDbContext();
-            dbContextWithLazyLoadingDisabled = new NemeStatsDbContext();
-            dbContextWithLazyLoadingDisabled.Configuration.LazyLoadingEnabled = false;
+            using(NemeStatsDbContext dbContext = new NemeStatsDbContext())
+            {
+                CleanUpTestData();
 
-            CleanUpTestData();
+                testGameDefinition = new GameDefinition() { Name = testGameName, Description = testGameDescription };
+                dbContext.GameDefinitions.Add(testGameDefinition);
 
-            testGameDefinition = new GameDefinition() { Name = testGameName, Description = testGameDescription };
-            dbContext.GameDefinitions.Add(testGameDefinition);
+                testPlayer1 = new Player() { Name = testPlayer1Name };
+                dbContext.Players.Add(testPlayer1);
+                testPlayer2 = new Player() { Name = testPlayer2Name };
+                dbContext.Players.Add(testPlayer2);
+                testPlayer3 = new Player() { Name = testPlayer3Name };
+                dbContext.Players.Add(testPlayer3);
+                dbContext.SaveChanges();
 
-            testPlayer1 = new Player() { Name = testPlayer1Name };
-            dbContext.Players.Add(testPlayer1);
-            testPlayer2 = new Player() { Name = testPlayer2Name };
-            dbContext.Players.Add(testPlayer2);
-            testPlayer3 = new Player() { Name = testPlayer3Name };
-            dbContext.Players.Add(testPlayer3);
-            dbContext.SaveChanges();
+                PlayedGameLogic playedGameLogic = new PlayedGameRepository(dbContext);
 
-            playedGameLogic = new PlayedGameRepository(dbContext);
+                List<Player> players = new List<Player>() { testPlayer1, testPlayer2 };
+                List<int> playerRanks = new List<int>() { 1, 1 };
+                PlayedGame playedGame = CreateTestPlayedGame(players, playerRanks, playedGameLogic);
+                testPlayedGames.Add(playedGame);
 
-            List<Player> players = new List<Player>() { testPlayer1, testPlayer2 };
-            List<int> playerRanks = new List<int>() { 1, 1 };
-            PlayedGame playedGame = CreateTestPlayedGame(players, playerRanks);
-            testPlayedGames.Add(playedGame);
+                players = new List<Player>() { testPlayer1, testPlayer2, testPlayer3 };
+                playerRanks = new List<int>() { 1, 2, 3 };
+                playedGame = CreateTestPlayedGame(players, playerRanks, playedGameLogic);
+                testPlayedGames.Add(playedGame);
 
-            players = new List<Player>() { testPlayer1, testPlayer2, testPlayer3 };
-            playerRanks = new List<int>() { 1, 2, 3 };
-            playedGame = CreateTestPlayedGame(players, playerRanks);
-            testPlayedGames.Add(playedGame);
-
-            players = new List<Player>() { testPlayer1, testPlayer3 };
-            playerRanks = new List<int>() { 2, 1 };
-            playedGame = CreateTestPlayedGame(players, playerRanks);
-            testPlayedGames.Add(playedGame);
+                players = new List<Player>() { testPlayer1, testPlayer3 };
+                playerRanks = new List<int>() { 2, 1 };
+                playedGame = CreateTestPlayedGame(players, playerRanks, playedGameLogic);
+                testPlayedGames.Add(playedGame);
+            }
         }
 
-        private PlayedGame CreateTestPlayedGame(List<Player> players, List<int> correspondingPlayerRanks)
+        private PlayedGame CreateTestPlayedGame(List<Player> players, List<int> correspondingPlayerRanks, PlayedGameLogic playedGameLogic)
         {
             List<PlayerRank> playerRanks = new List<PlayerRank>();
 
@@ -89,18 +82,20 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests
 
         private void CleanUpTestData()
         {
-            CleanUpPlayerGameResults();
-            CleanUpPlayedGames();
-            CleanUpGameDefinitions();
-            CleanUpPlayerByPlayerName(testPlayer1Name, dbContext);
-            CleanUpPlayerByPlayerName(testPlayer2Name, dbContext);
-            CleanUpPlayerByPlayerName(testPlayer3Name, dbContext);
+            using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
+            {
+                CleanUpPlayerGameResults(dbContext);
+                CleanUpPlayedGames(dbContext);
+                CleanUpGameDefinitions(dbContext);
+                CleanUpPlayerByPlayerName(testPlayer1Name, dbContext);
+                CleanUpPlayerByPlayerName(testPlayer2Name, dbContext);
+                CleanUpPlayerByPlayerName(testPlayer3Name, dbContext);
 
-
-            dbContext.SaveChanges();
+                dbContext.SaveChanges();
+            }
         }
 
-        private void CleanUpPlayedGames()
+        private void CleanUpPlayedGames(NemeStatsDbContext dbContext)
         {
             List<PlayedGame> playedGamesToDelete = (from playedGame in dbContext.PlayedGames
                                                     where playedGame.GameDefinition.Name == testGameName
@@ -116,7 +111,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests
             }
         }
 
-        private void CleanUpPlayerGameResults()
+        private void CleanUpPlayerGameResults(NemeStatsDbContext dbContext)
         {
             List<PlayerGameResult> playerGameResultsToDelete = (from playerGameResult in dbContext.PlayerGameResults
                                                                 where playerGameResult.PlayedGame.GameDefinition.Name == testGameName
@@ -132,7 +127,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests
             }
         }
 
-        private void CleanUpGameDefinitions()
+        private void CleanUpGameDefinitions(NemeStatsDbContext dbContext)
         {
             List<GameDefinition> gameDefinitionsToDelete = (from game in dbContext.GameDefinitions
                                                             where game.Name == testGameName
@@ -163,11 +158,9 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests
         }
 
         [TestFixtureTearDown]
-        public void TearDown()
+        public void FixtureTearDown()
         {
             CleanUpTestData();
-            dbContext.Dispose();
-            dbContextWithLazyLoadingDisabled.Dispose();
         }
     }
 }

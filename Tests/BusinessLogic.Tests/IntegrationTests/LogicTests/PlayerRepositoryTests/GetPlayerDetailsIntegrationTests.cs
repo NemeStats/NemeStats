@@ -13,57 +13,70 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayerRepositoryTests
     [TestFixture]
     public class GetPlayerDetailsIntegrationTests : IntegrationTestBase
     {
-        private PlayerDetails testPlayerDetails;
-
-        [SetUp]
-        public void SetUp()
-        {
-            PlayerRepository playerRepository = new PlayerRepository(dbContext);
-            testPlayerDetails = playerRepository.GetPlayerDetails(testPlayer1.Id);
-        }
-
         [Test]
         public void ItEagerlyFetchesPlayerGameResults()
         {
-            dbContext.Configuration.LazyLoadingEnabled = false;
-            dbContext.Configuration.ProxyCreationEnabled = false;
+            using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
+            {
+                PlayerRepository playerRepository = new PlayerRepository(dbContext);
 
-            PlayerRepository playerRepository = new PlayerRepository(dbContext);
-            PlayerDetails playerDetails = playerRepository.GetPlayerDetails(testPlayer1.Id);
-            Assert.NotNull(playerDetails.PlayerGameResults, "Failed to retrieve PlayerGameResults.");
+                dbContext.Configuration.LazyLoadingEnabled = false;
+                dbContext.Configuration.ProxyCreationEnabled = false;
+
+                PlayerDetails playerDetails = playerRepository.GetPlayerDetails(testPlayer1.Id);
+                Assert.NotNull(playerDetails.PlayerGameResults, "Failed to retrieve PlayerGameResults.");
+            }
         }
 
         [Test]
         public void ItEagerlyFetchesPlayedGames()
         {
-            dbContext.Configuration.LazyLoadingEnabled = false;
-            dbContext.Configuration.ProxyCreationEnabled = false;
+            using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
+            {
+                dbContext.Configuration.LazyLoadingEnabled = false;
+                dbContext.Configuration.ProxyCreationEnabled = false;
+                PlayerRepository playerRepository = new PlayerRepository(dbContext);
 
-            Assert.NotNull(testPlayerDetails.PlayerGameResults.First().PlayedGame);
+                PlayerDetails testPlayerDetails = playerRepository.GetPlayerDetails(testPlayer1.Id);
+
+                Assert.NotNull(testPlayerDetails.PlayerGameResults.First().PlayedGame);
+            }
         }
 
         [Test]
         public void ItEagerlyFetchesGameDefinitions()
         {
-            dbContext.Configuration.LazyLoadingEnabled = false;
-            dbContext.Configuration.ProxyCreationEnabled = false;
+            using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
+            {
+                dbContext.Configuration.LazyLoadingEnabled = false;
+                dbContext.Configuration.ProxyCreationEnabled = false;
+                PlayerRepository playerRepository = new PlayerRepository(dbContext);
 
-            Assert.NotNull(testPlayerDetails.PlayerGameResults.First().PlayedGame.GameDefinition);
+                PlayerDetails testPlayerDetails = playerRepository.GetPlayerDetails(testPlayer1.Id);
+
+                Assert.NotNull(testPlayerDetails.PlayerGameResults.First().PlayedGame.GameDefinition);
+            }
         }
 
         [Test]
         public void ItReturnsNullIfNoPlayerFound()
         {
-            PlayerDetails notFoundPlayer = new PlayerRepository(dbContext).GetPlayerDetails(-1);
-            Assert.Null(notFoundPlayer);
+            using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
+            {
+                PlayerDetails notFoundPlayer = new PlayerRepository(dbContext).GetPlayerDetails(-1);
+                Assert.Null(notFoundPlayer);
+            }
         }
 
         [Test]
         public void ItSetsPlayerStatistics()
         {
-            PlayerDetails playerDetails = new PlayerRepository(dbContext).GetPlayerDetails(testPlayer1.Id);
+            using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
+            {
+                PlayerDetails playerDetails = new PlayerRepository(dbContext).GetPlayerDetails(testPlayer1.Id);
 
-            Assert.NotNull(playerDetails.PlayerStats);
+                Assert.NotNull(playerDetails.PlayerStats);
+            }
         }
 
     }

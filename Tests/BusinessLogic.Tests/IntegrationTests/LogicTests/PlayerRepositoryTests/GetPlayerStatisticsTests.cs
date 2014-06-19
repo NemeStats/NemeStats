@@ -13,22 +13,18 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayerRepositoryTests
     [TestFixture]
     public class GetPlayerStatisticsTests : IntegrationTestBase
     {
-        private PlayerRepository playerRepository;
-
-        [SetUp]
-        public void SetUp()
-        {
-            playerRepository = new PlayerRepository(dbContext);
-        }
-
         [Test]
         public void ItGetsTheNumberOfTotalGamesPlayed()
         {
-            PlayerStatistics playerStatistics = playerRepository.GetPlayerStatistics(testPlayer1.Id);
-            int totalGamesForPlayer1 = testPlayedGames
-                    .Count(playedGame => playedGame.PlayerGameResults
-                        .Any(playerGameResult => playerGameResult.PlayerId == testPlayer1.Id));
-            Assert.AreEqual(totalGamesForPlayer1, playerStatistics.TotalGames);
+            using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
+            {
+                PlayerRepository playerRepository = new PlayerRepository(dbContext);
+                PlayerStatistics playerStatistics = playerRepository.GetPlayerStatistics(testPlayer1.Id);
+                int totalGamesForPlayer1 = testPlayedGames
+                        .Count(playedGame => playedGame.PlayerGameResults
+                            .Any(playerGameResult => playerGameResult.PlayerId == testPlayer1.Id));
+                Assert.AreEqual(totalGamesForPlayer1, playerStatistics.TotalGames);
+            }
         }  
     }
 }

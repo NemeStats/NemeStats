@@ -1,16 +1,13 @@
 ﻿using BusinessLogic.DataAccess;
 using BusinessLogic.Models;
-using BusinessLogic.Models;
+using BusinessLogic.Models.Games;
+using BusinessLogic.Models.Points;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BusinessLogic.Models.Games;
 using System.Data.Entity;
-using BusinessLogic.Models.Points;
+using System.Linq;
 
 namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGameRepositoryTests
 {

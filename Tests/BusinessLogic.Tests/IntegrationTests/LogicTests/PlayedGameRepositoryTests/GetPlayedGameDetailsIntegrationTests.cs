@@ -1,12 +1,7 @@
 ﻿using BusinessLogic.DataAccess;
 using BusinessLogic.Models;
-using BusinessLogic.Models;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGameRepositoryTests
 {
@@ -22,29 +17,43 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGameRepositoryTe
         [Test]
         public void ItRetrievesThePlayedGame()
         {
-            PlayedGame playedGame = GetTestSubjectPlayedGame(dbContext);
-            Assert.NotNull(playedGame);
+            using(NemeStatsDbContext dbContext = new NemeStatsDbContext())
+            {
+                PlayedGame playedGame = GetTestSubjectPlayedGame(dbContext);
+                Assert.NotNull(playedGame);
+            }
         }
 
         [Test]
         public void ItEagerlyFetchesTheGameResults()
         {
-            PlayedGame playedGame = GetTestSubjectPlayedGame(dbContextWithLazyLoadingDisabled);
-            Assert.GreaterOrEqual(testPlayedGames[0].PlayerGameResults.Count, playedGame.PlayerGameResults.Count());
+            using(NemeStatsDbContext dbContext = new NemeStatsDbContext())
+            {
+                dbContext.Configuration.LazyLoadingEnabled = false;
+                PlayedGame playedGame = GetTestSubjectPlayedGame(dbContext);
+                Assert.GreaterOrEqual(testPlayedGames[0].PlayerGameResults.Count, playedGame.PlayerGameResults.Count());
+            }
         }
 
         [Test]
         public void ItEagerlyFetchesTheGameDefinition()
         {
-            PlayedGame playedGame = GetTestSubjectPlayedGame(dbContextWithLazyLoadingDisabled);
-            Assert.NotNull(playedGame.GameDefinition);
+            using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
+            {
+                dbContext.Configuration.LazyLoadingEnabled = false;
+                PlayedGame playedGame = GetTestSubjectPlayedGame(dbContext);
+                Assert.NotNull(playedGame.GameDefinition);
+            }
         }
 
         [Test]
         public void ItReturnsNullIfNoPlayedGameFound()
         {
-            PlayedGame notFoundPlayedGame = new BusinessLogic.Models.PlayedGameRepository(dbContext).GetPlayedGameDetails(-1);
-            Assert.Null(notFoundPlayedGame);
+            using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
+            {
+                PlayedGame notFoundPlayedGame = new BusinessLogic.Models.PlayedGameRepository(dbContext).GetPlayedGameDetails(-1);
+                Assert.Null(notFoundPlayedGame);
+            }
         }
     }
 }

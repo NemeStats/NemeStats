@@ -1,12 +1,8 @@
 ﻿using BusinessLogic.DataAccess;
 using BusinessLogic.Models;
-using BusinessLogic.Models;
 using NUnit.Framework;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGameRepositoryTests
 {
@@ -16,92 +12,120 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGameRepositoryTe
         [Test]
         public void ItEagerlyFetchesGameDefinitions()
         {
-            dbContext.Configuration.LazyLoadingEnabled = false;
-            dbContext.Configuration.ProxyCreationEnabled = false;
+            using(NemeStatsDbContext dbContext = new NemeStatsDbContext())
+            {
+                PlayedGameLogic playedGameLogic = new PlayedGameRepository(dbContext);
+                dbContext.Configuration.LazyLoadingEnabled = false;
+                dbContext.Configuration.ProxyCreationEnabled = false;
 
-            List<PlayedGame> playedGames = playedGameLogic.GetRecentGames(1);
-            GameDefinition gameDefinition = playedGames[0].GameDefinition;
+                List<PlayedGame> playedGames = playedGameLogic.GetRecentGames(1);
+                GameDefinition gameDefinition = playedGames[0].GameDefinition;
 
-            Assert.NotNull(gameDefinition);
+                Assert.NotNull(gameDefinition);
+            }
         }
 
         [Test]
         public void ItEagerlyFetchesPlayerGameResults()
         {
-            dbContext.Configuration.LazyLoadingEnabled = false;
-            dbContext.Configuration.ProxyCreationEnabled = false;
+            using(NemeStatsDbContext dbContext = new NemeStatsDbContext())
+            {
+                PlayedGameLogic playedGameLogic = new PlayedGameRepository(dbContext);
+                dbContext.Configuration.LazyLoadingEnabled = false;
+                dbContext.Configuration.ProxyCreationEnabled = false;
 
-            List<PlayedGame> playedGames = playedGameLogic.GetRecentGames(1);
-            ICollection<PlayerGameResult> playerGameResults = playedGames[0].PlayerGameResults;
+                List<PlayedGame> playedGames = playedGameLogic.GetRecentGames(1);
+                ICollection<PlayerGameResult> playerGameResults = playedGames[0].PlayerGameResults;
 
-            Assert.NotNull(playerGameResults);
+                Assert.NotNull(playerGameResults);
+            }
         }
 
         [Test]
         public void ItEagerlyFetchesPlayers()
         {
-            dbContext.Configuration.LazyLoadingEnabled = false;
-            dbContext.Configuration.ProxyCreationEnabled = false;
+            using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
+            {
+                PlayedGameLogic playedGameLogic = new PlayedGameRepository(dbContext);
+                dbContext.Configuration.LazyLoadingEnabled = false;
+                dbContext.Configuration.ProxyCreationEnabled = false;
 
-            List<PlayedGame> playedGames = playedGameLogic.GetRecentGames(1);
-            List<Player> players = playedGames[0].PlayerGameResults.Select(
-                playerGameResult => new Player()
-                                        {
-                                            Id = playerGameResult.PlayerId,
-                                            Name = playerGameResult.Player.Name,
-                                            Active = playerGameResult.Player.Active
-                                        }).ToList();
+                List<PlayedGame> playedGames = playedGameLogic.GetRecentGames(1);
+                List<Player> players = playedGames[0].PlayerGameResults.Select(
+                    playerGameResult => new Player()
+                                            {
+                                                Id = playerGameResult.PlayerId,
+                                                Name = playerGameResult.Player.Name,
+                                                Active = playerGameResult.Player.Active
+                                            }).ToList();
                                             
-            Assert.NotNull(players);
+                Assert.NotNull(players);
+            }
         }
 
         [Test]
         public void ItReturnsOnlyOneGameIfOneGameIsSpecified()
         {
-            int one = 1;
-            List<PlayedGame> playedGames = playedGameLogic.GetRecentGames(one);
+            using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
+            {
+                PlayedGameLogic playedGameLogic = new PlayedGameRepository(dbContext);
+                int one = 1;
+                List<PlayedGame> playedGames = playedGameLogic.GetRecentGames(one);
 
-            Assert.AreEqual(one, playedGames.Count());
+                Assert.AreEqual(one, playedGames.Count());
+            }
         }
 
         [Test]
         public void ItReturnsOnlyTwoGamesIfTwoGamesAreSpecified()
         {
-            int two = 2;
-            List<PlayedGame> playedGames = playedGameLogic.GetRecentGames(two);
+            using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
+            {
+                PlayedGameLogic playedGameLogic = new PlayedGameRepository(dbContext);
+                int two = 2;
+                List<PlayedGame> playedGames = playedGameLogic.GetRecentGames(two);
 
-            Assert.AreEqual(two, playedGames.Count());
+                Assert.AreEqual(two, playedGames.Count());
+            }
         }
 
         [Test]
         public void ItReturnsGamesInDescendingOrderByDatePlayed()
         {
-            int five = 5;
-            List<PlayedGame> playedGames = playedGameLogic.GetRecentGames(five);
-            List<PlayedGame> allPlayedGames = dbContext.PlayedGames.ToList().OrderByDescending(playedGame => playedGame.DatePlayed).ToList();
-            for(int i = 0; i<five; i++)
+            using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
             {
-                Assert.AreEqual(allPlayedGames[i].Id, playedGames[i].Id);
+                PlayedGameLogic playedGameLogic = new PlayedGameRepository(dbContext);
+                int five = 5;
+                List<PlayedGame> playedGames = playedGameLogic.GetRecentGames(five);
+                List<PlayedGame> allPlayedGames = dbContext.PlayedGames.ToList().OrderByDescending(playedGame => playedGame.DatePlayed).ToList();
+                for(int i = 0; i<five; i++)
+                {
+                    Assert.AreEqual(allPlayedGames[i].Id, playedGames[i].Id);
+                }
             }
         }
 
         [Test]
         public void ItReturnsOrderedPlayerRankDescendingWithinAGivenGame()
         {
-            int five = 5;
-            List<PlayedGame> playedGames = playedGameLogic.GetRecentGames(five);
-
-            int lastRank = -1;
-
-            foreach(PlayedGame playedGame in playedGames)
+            using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
             {
-                foreach(PlayerGameResult playerGameResult in playedGame.PlayerGameResults)
-                {
-                    Assert.True(lastRank <= playerGameResult.GameRank);
-                    lastRank = playerGameResult.GameRank;
-                }
+                PlayedGameLogic playedGameLogic = new PlayedGameRepository(dbContext);
+                int five = 5;
+                List<PlayedGame> playedGames = playedGameLogic.GetRecentGames(five);
 
-                lastRank = -1;
+                int lastRank = -1;
+
+                foreach(PlayedGame playedGame in playedGames)
+                {
+                    foreach(PlayerGameResult playerGameResult in playedGame.PlayerGameResults)
+                    {
+                        Assert.True(lastRank <= playerGameResult.GameRank);
+                        lastRank = playerGameResult.GameRank;
+                    }
+
+                    lastRank = -1;
+                }
             }
         }
     }
