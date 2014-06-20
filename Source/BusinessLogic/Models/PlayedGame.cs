@@ -16,6 +16,6 @@ namespace BusinessLogic.Models
         public DateTime DatePlayed { get; set; }
 
         public virtual GameDefinition GameDefinition { get; set; }
-        public virtual ICollection<PlayerGameResult> PlayerGameResults { get; set; }
+        public virtual IList<PlayerGameResult> PlayerGameResults { get; set; }
     }
 }

@@ -35,10 +35,11 @@ namespace UI.Controllers
         public virtual ActionResult Index()
         {
             List<PlayedGame> playedGames = playedGameLogic.GetRecentGames(NUMBER_OF_RECENT_GAMES_TO_DISPLAY);
-            List<PlayedGameDetails> details = new List<PlayedGameDetails>();
-            for(int i = 0; i < playedGames.Count(); i++)
+            int totalGames = playedGames.Count();
+            List<PlayedGameDetails> details = new List<PlayedGameDetails>(totalGames);
+            for (int i = 0; i < totalGames; i++)
             {
-                details[i] = recentGamesSummaryBuilder.Build(playedGames[i]);
+                details.Add(recentGamesSummaryBuilder.Build(playedGames[i]));
             }
             
             return View(MVC.PlayedGame.Views.Index, details);

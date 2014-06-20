@@ -60,8 +60,6 @@ namespace BusinessLogic.Tests.UnitTests.ModelsTests.GamesTests.ValidationTests
             playerRanks.Add(new PlayerRank() { PlayerId = 1, GameRank = 2 });
             playerRanks.Add(new PlayerRank() { PlayerId = 1, GameRank = 3 });
 
-            //TODO possibly implement this way instead of ExpectedExceptions
-            //Assert.Throws<ArgumentException>(()=> PlayerRankValidator.ValidatePlayerRanks(newlyCompletedGameWithoutAWinner))
             PlayerRankValidator.ValidatePlayerRanks(playerRanks);
         }
 

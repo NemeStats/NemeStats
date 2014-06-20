@@ -5,8 +5,8 @@ using System.Text;
 
 namespace UI.Models.PlayedGame
 {
-    public class PlayerResultSummary
+    public class PlayerGameResultDetails
     {
-        int PlayerId { get; set; }
+        public int PlayerId { get; set; }
     }
 }

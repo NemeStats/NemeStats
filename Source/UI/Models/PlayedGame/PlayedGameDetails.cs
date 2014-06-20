@@ -11,6 +11,6 @@ namespace UI.Models.PlayedGame
         public string GameDefinitionName { get; set; }
         public int GameDefinitionId { get; set; }
         public DateTime DatePlayed { get; set; }
-        List<PlayerResultSummary> PlayerResultSummaries { get; set; }
+        public IList<PlayerGameResultDetails> PlayerResults { get; set; }
     }
 }

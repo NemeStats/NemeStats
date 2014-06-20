@@ -14,6 +14,9 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
         [Test]
         public void ItGetsRecentlyPlayedGames()
         {
+            playedGameLogicMock.Expect(x => x.GetRecentGames(Controllers.PlayedGameController.NUMBER_OF_RECENT_GAMES_TO_DISPLAY))
+                .Repeat.Once()
+                .Return(new List<PlayedGame>());
             playedGameController.Index();
 
             playedGameLogicMock.AssertWasCalled(x => x.GetRecentGames(Controllers.PlayedGameController.NUMBER_OF_RECENT_GAMES_TO_DISPLAY));
@@ -22,6 +25,9 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
         [Test]
         public void ItReturnsTheIndexView()
         {
+            playedGameLogicMock.Expect(x => x.GetRecentGames(Controllers.PlayedGameController.NUMBER_OF_RECENT_GAMES_TO_DISPLAY))
+                .Repeat.Once()
+                .Return(new List<PlayedGame>());
             ViewResult result = playedGameController.Index() as ViewResult;
 
             Assert.AreEqual(MVC.PlayedGame.Views.Index, result.ViewName);
@@ -36,12 +42,15 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
             playedGameLogicMock.Expect(x => x.GetRecentGames(Controllers.PlayedGameController.NUMBER_OF_RECENT_GAMES_TO_DISPLAY))
                 .Repeat.Once()
                 .Return(playedGames);
-            List<PlayedGameDetails> summaries = new List<PlayedGameDetails>();
-            recentGamesSummaryBuilder.Expect(builder => builder.Build(playedGames)).Repeat.Once()
-                .Return(summaries);
+            List<PlayedGameDetails> summaries = new List<PlayedGameDetails>()
+            {
+                new PlayedGameDetails() { PlayedGameId = playedGameId }
+            };
+            recentGamesSummaryBuilder.Expect(builder => builder.Build(playedGames[0])).Repeat.Once()
+                .Return(summaries[0]);
             ViewResult result = playedGameController.Index() as ViewResult;
 
-            PlayedGameDetails viewModel = (PlayedGameDetails)result.ViewData.Model;
+            List<PlayedGameDetails> viewModel = (List<PlayedGameDetails>)result.ViewData.Model;
             Assert.AreEqual(summaries, viewModel);
         }
 
@@ -49,14 +58,21 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
         [Test]
         public void ItGeneratesTheViewModel()
         {
-            List<BusinessLogic.Models.PlayedGame> recentlyPlayedGames = new List<BusinessLogic.Models.PlayedGame>();
+            List<BusinessLogic.Models.PlayedGame> recentlyPlayedGames = new List<BusinessLogic.Models.PlayedGame>()
+            {
+                new PlayedGame(){ Id = 1 },
+                new PlayedGame(){ Id = 2 }
+            };
             playedGameLogicMock.Expect(playedGameLogic => playedGameLogic.GetRecentGames(Arg<int>.Is.Anything))
                 .Repeat.Once()
                 .Return(recentlyPlayedGames);
           
             playedGameController.Index();
             
-            recentGamesSummaryBuilder.AssertWasCalled(builder => builder.Build(recentlyPlayedGames));
+            foreach(var playedgame in recentlyPlayedGames)
+            {
+                recentGamesSummaryBuilder.AssertWasCalled(builder => builder.Build(playedgame));
+            };
         }
     }
 }
