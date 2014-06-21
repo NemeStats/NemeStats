@@ -8,5 +8,8 @@ namespace UI.Models.PlayedGame
     public class PlayerGameResultDetails
     {
         public int PlayerId { get; set; }
+        public string PlayerName { get; set; }
+        public int GameRank { get; set; }
+        public int GordonPoints { get; set; }
     }
 }

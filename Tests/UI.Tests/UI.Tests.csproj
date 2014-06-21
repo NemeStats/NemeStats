@@ -98,6 +98,7 @@
     <Compile Include="UnitTests\ControllerTests\PlayedGameControllerTests\CreateWithNoParameters.cs" />
     <Compile Include="UnitTests\ControllerTests\PlayedGameControllerTests\IndexTests.cs" />
     <Compile Include="UnitTests\TransformationsTests\PlayedGameDetailsBuilderImplTests.cs" />
+    <Compile Include="UnitTests\TransformationsTests\PlayerGameResultDetailsBuilderImplTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

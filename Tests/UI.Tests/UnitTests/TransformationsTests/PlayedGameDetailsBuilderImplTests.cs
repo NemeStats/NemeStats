@@ -19,6 +19,7 @@ namespace UI.Tests.UnitTests.TransformationsTests
         private PlayedGameDetails playedGameDetails;
         private PlayerGameResultDetailsBuilder detailsBuilder;
 
+        //TODO is it OK to have SetUps that are used in less than 100% of the test cases?
         [SetUp]
         public void SetUp()
         {
@@ -74,16 +75,25 @@ namespace UI.Tests.UnitTests.TransformationsTests
         }
 
         [Test]
+        public void ItRequiresAPlayedGame()
+        {
+            var exception = Assert.Throws<ArgumentNullException>(() =>
+                    builder.Build(null)
+                );
+
+            Assert.AreEqual("playedGame", exception.ParamName);
+        }
+
+        [Test]
         public void ItRequiresAGameDefinitionOnThePlayedGame()
         {
             PlayedGame playedGameWithNoGameDefinition = new PlayedGame();
 
-            PlayedGameDetailsBuilderImpl newBuilder = new PlayedGameDetailsBuilderImpl(detailsBuilder);
-            var exception = Assert.Throws<ArgumentNullException>(() =>
-                    newBuilder.Build(playedGameWithNoGameDefinition)
+            var exception = Assert.Throws<ArgumentException>(() =>
+                    builder.Build(playedGameWithNoGameDefinition)
                 );
 
-            Assert.AreEqual("PlayedGame.GameDefinition", exception.ParamName);
+            Assert.AreEqual(PlayedGameDetailsBuilderImpl.EXCEPTION_GAME_DEFINITION_CANNOT_BE_NULL, exception.Message);
         }
 
         [Test]
@@ -91,12 +101,11 @@ namespace UI.Tests.UnitTests.TransformationsTests
         {
             PlayedGame playedGameWithNoPlayerGameResults = new PlayedGame() { GameDefinition = new GameDefinition() };
 
-            PlayedGameDetailsBuilderImpl newBuilder = new PlayedGameDetailsBuilderImpl(detailsBuilder);
-            var exception = Assert.Throws<ArgumentNullException>(() =>
-                    newBuilder.Build(playedGameWithNoPlayerGameResults)
+            var exception = Assert.Throws<ArgumentException>(() =>
+                    builder.Build(playedGameWithNoPlayerGameResults)
                 );
 
-            Assert.AreEqual("PlayedGame.PlayerGameResults", exception.ParamName);
+            Assert.AreEqual(PlayedGameDetailsBuilderImpl.EXCEPTION_PLAYER_GAME_RESULTS_CANNOT_BE_NULL, exception.Message);
         }
 
         [Test]

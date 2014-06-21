@@ -79,5 +79,6 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayerRepositoryTests
             }
         }
 
+        //TODO add test to ensure it orders by date descending
     }
 }

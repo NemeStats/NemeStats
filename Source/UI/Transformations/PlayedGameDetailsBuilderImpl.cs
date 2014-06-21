@@ -10,7 +10,10 @@ namespace UI.Transformations
 {
     public class PlayedGameDetailsBuilderImpl : PlayedGameDetailsBuilder
     {
-        PlayerGameResultDetailsBuilder playerResultBuilder;
+        internal const string EXCEPTION_GAME_DEFINITION_CANNOT_BE_NULL = "PlayedGame.GameDefintion cannot be null.";
+        internal const string EXCEPTION_PLAYER_GAME_RESULTS_CANNOT_BE_NULL = "PlayedGame.PlayerGameResults cannot be null.";
+
+        private PlayerGameResultDetailsBuilder playerResultBuilder;
 
         public PlayedGameDetailsBuilderImpl(PlayerGameResultDetailsBuilder playerGameResultBuilder)
         {
@@ -19,15 +22,19 @@ namespace UI.Transformations
 
         public PlayedGameDetails Build(PlayedGame playedGame)
         {
-            //TODO add validation logic to transformations??
+            if(playedGame == null)
+            {
+                throw new ArgumentNullException("playedGame");
+            }
+
             if(playedGame.GameDefinition == null)
             {
-                throw new ArgumentNullException("PlayedGame.GameDefinition");
+                throw new ArgumentException(EXCEPTION_GAME_DEFINITION_CANNOT_BE_NULL);
             }
 
             if (playedGame.PlayerGameResults == null)
             {
-                throw new ArgumentNullException("PlayedGame.PlayerGameResults");
+                throw new ArgumentException(EXCEPTION_PLAYER_GAME_RESULTS_CANNOT_BE_NULL);
             }
             
             PlayedGameDetails summary = new PlayedGameDetails();
