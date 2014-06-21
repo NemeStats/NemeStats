@@ -36,6 +36,7 @@
 <div>
     @foreach (var result in Model.PlayerResults)
     {
+        @result.PlayerName <text>- </text>
         @Html.GameResults(result);
         <br />
     }

@@ -52,12 +52,13 @@ namespace UI.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            PlayedGame playedgame = playedGameLogic.GetPlayedGameDetails(id.Value);
-            if (playedgame == null)
+            PlayedGame playedGame = playedGameLogic.GetPlayedGameDetails(id.Value);
+            if (playedGame == null)
             {
                 return HttpNotFound();
             }
-            return View(MVC.PlayedGame.Views.Details, playedgame);
+            PlayedGameDetails playedGameDetails = playedGameDetailsBuilder.Build(playedGame);
+            return View(MVC.PlayedGame.Views.Details, playedGameDetails);
         }
 
         // GET: /PlayedGame/Create

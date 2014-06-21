@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Web.Mvc;
 using Rhino.Mocks;
 using BusinessLogic.Models;
+using UI.Models.PlayedGame;
 
 namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 {
@@ -57,29 +58,22 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
             Assert.AreEqual(MVC.PlayedGame.Views.Details, playedGameDetails.ViewName);
         }
 
-        //TODO better name for this?
-        [Test]
-        public void ItTransformsThePlayerBusinessObjectToTheViewModel()
-        {
-
-
-        }
-
         [Test]
         public void ItReturnsThePlayedGameDetailsViewForTheFoundPlayedGame()
         {
-            int playedGameId = 1351;
-            PlayedGame playedGame = new PlayedGame() 
-            { 
-                Id = playedGameId,
-                
-            };
-            playedGameLogicMock.Expect(playedGameLogic => playedGameLogic.GetPlayedGameDetails(playedGameId))
+            int playedGameId = 13541;
+
+            PlayedGame playedGame = new PlayedGame() { Id = 123 };
+            playedGameLogicMock.Expect(x => x.GetPlayedGameDetails(playedGameId))
                 .Repeat.Once()
                 .Return(playedGame);
-            ViewResult viewResult = playedGameController.Details(playedGameId) as ViewResult;
+            PlayedGameDetails playedGameDetails = new PlayedGameDetails();
+            playedGameDetailsBuilder.Expect(builder => builder.Build(playedGame)).Repeat.Once()
+                .Return(playedGameDetails);
+            ViewResult result = playedGameController.Details(playedGameId) as ViewResult;
 
-            Assert.AreEqual(playedGame, viewResult.Model);
+            PlayedGameDetails viewModel = (PlayedGameDetails)result.ViewData.Model;
+            Assert.AreEqual(playedGameDetails, viewModel);
         }
     }
 }
