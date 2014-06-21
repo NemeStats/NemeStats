@@ -1,4 +1,5 @@
-﻿@model List<UI.Models.PlayedGame.PlayedGameDetails>
+﻿@using UI.HtmlHelpers
+@model List<UI.Models.PlayedGame.PlayedGameDetails>
 
 @{
     ViewBag.Title = "Recent Games";
@@ -21,25 +22,27 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
+@foreach (var item in Model)
+{
     <tr>
         <td style='font-weight: 300'>
-            @Html.ActionLink(item.GameDefinition.Name, "Details", "GameDefinition", new { id = item.GameDefinition.Id }, new { })
+            @Html.ActionLink(item.GameDefinitionName, "Details", "GameDefinition", new { id = item.GameDefinitionId }, new { })
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.DatePlayed)
         </td>
         <td>
-            @foreach (var result in item.PlayerGameResults)
+            @foreach (var result in item.PlayerResults)
             {
-                @MyHelpers.ShowGameResult(result, false);
+                @result.PlayerName <text>:</text>
+                @Html.GameResults(result);
                 <br/>
             }
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+            @Html.ActionLink("Edit", "Edit", new { id = item.PlayedGameId }) |
+            @Html.ActionLink("Details", "Details", new { id = item.PlayedGameId }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.PlayedGameId })
         </td>
     </tr>
 }

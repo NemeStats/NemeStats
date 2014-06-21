@@ -36,7 +36,7 @@
     <h4>Recent Games</h4>
     @foreach (var playerGameResult in @Model.PlayerGameResults)
     {
-        @MyHelpers.ShowGameResult(playerGameResult, true);
+        @*//TODO Fix this! MyHelpers.ShowGameResult(playerGameResult, playerGameResult.PlayedGame.GameDefinition.Name);*@
         @Html.ActionLink("[Details]", "Details", "PlayedGame", new { id = playerGameResult.PlayedGame.Id }, new { })
         <br/><br/>
     }

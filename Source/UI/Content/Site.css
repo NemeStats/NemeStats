@@ -45,7 +45,7 @@ input[type="checkbox"].input-validation-error {
    
 }
 
-.gamerank .firstplace {
+.firstplace {
     color: darkgreen;
     font-weight: bold;
 }

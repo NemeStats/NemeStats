@@ -1,13 +1,14 @@
-﻿@helper ShowGameResult(BusinessLogic.Models.PlayerGameResult playerGameResult, bool showGameName){
+﻿@helper ShowGameResult(UI.Models.PlayedGame.PlayerGameResultDetails playerGameResult, string gameNameToShow){
+    @* //TODO need to convert this to a static method and unit test.*@
     <span class="gamename">
-    @if(showGameName)
+    @if (gameNameToShow != null && gameNameToShow != "")
     {
         @* Cannot figure out how to call another HTML helper inside this helper....*@
-        @playerGameResult.PlayedGame.GameDefinition.Name
+        @gameNameToShow
 
     }else
     {
-        @playerGameResult.Player.Name
+        @playerGameResult.PlayerName
     }
     </span> <text>- </text>
     <span class="gamerank">

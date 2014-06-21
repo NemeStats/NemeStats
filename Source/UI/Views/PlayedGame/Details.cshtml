@@ -1,4 +1,5 @@
-﻿@model UI.Models.PlayedGame.PlayedGameDetails
+﻿@using UI.HtmlHelpers
+@model UI.Models.PlayedGame.PlayedGameDetails
 
 @{
     ViewBag.Title = "Details";
@@ -27,15 +28,15 @@
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Delete", "Delete", new { id = Model.Id }) |
+    @Html.ActionLink("Edit", "Edit", new { id = Model.PlayedGameId }) |
+    @Html.ActionLink("Delete", "Delete", new { id = Model.PlayedGameId }) |
     @Html.ActionLink("Back to List", "Index")
 
 </p>
 <div>
-    @foreach (var result in Model.PlayerGameResults)
+    @foreach (var result in Model.PlayerResults)
     {
-        @MyHelpers.ShowGameResult(result, false);
+        @Html.GameResults(result);
         <br />
     }
 </div>
