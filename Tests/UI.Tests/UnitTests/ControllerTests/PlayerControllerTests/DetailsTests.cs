@@ -3,9 +3,14 @@ using BusinessLogic.Models;
 using BusinessLogic.Models.Players;
 using NUnit.Framework;
 using Rhino.Mocks;
+using System.Collections.Generic;
 using System.Net;
 using System.Web.Mvc;
 using UI.Controllers;
+using UI.Models;
+using UI.Models.Players;
+using UI.Transformations;
+using UI.Transformations.Player;
 
 namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
 {
@@ -14,6 +19,8 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
     {
         private NemeStatsDbContext dbContextMock;
         private PlayerLogic playerLogicMock;
+        private PlayerGameResultDetailsViewModelBuilder playerGameResultDetailsBuilder;
+        private PlayerDetailsViewModelBuilder playerDetailsViewModelBuilder;
         private PlayerController playerController;
 
         [TestFixtureSetUp]
@@ -21,7 +28,13 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         {
             dbContextMock = MockRepository.GenerateMock<NemeStatsDbContext>();
             playerLogicMock = MockRepository.GenerateMock<PlayerLogic>();
-            playerController = new PlayerController(dbContextMock, playerLogicMock);
+            playerGameResultDetailsBuilder = MockRepository.GenerateMock<PlayerGameResultDetailsViewModelBuilder>();
+            playerDetailsViewModelBuilder = MockRepository.GenerateMock<PlayerDetailsViewModelBuilder>();
+            playerController = new PlayerController(
+                                dbContextMock, 
+                                playerLogicMock, 
+                                playerGameResultDetailsBuilder, 
+                                playerDetailsViewModelBuilder);
         }
 
         [Test]
@@ -59,25 +72,47 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         public void ItReturnsThePlayerDetailsViewWhenThePlayerIsFound()
         {
             int playerId = 1351;
-            playerLogicMock.Expect(playerLogic => playerLogic.GetPlayerDetails(playerId))
-                .Repeat.Once()
-                .Return(new PlayerDetails());
-            ViewResult playerDetails = playerController.Details(playerId) as ViewResult;
-
-            Assert.AreEqual(MVC.Player.Views.Details, playerDetails.ViewName);
-        }
-
-        [Test]
-        public void ItReturnsThePlayerDetailsViewForTheFoundPlayer()
-        {
-            int playerId = 1351;
-            PlayerDetails playerDetails = new PlayerDetails() { Id = playerId };
+            PlayerDetails playerDetails = new PlayerDetails(){ PlayerGameResults = new List<PlayerGameResult>() };
             playerLogicMock.Expect(playerLogic => playerLogic.GetPlayerDetails(playerId))
                 .Repeat.Once()
                 .Return(playerDetails);
-            ViewResult player = playerController.Details(playerId) as ViewResult;
 
-            Assert.AreEqual(playerDetails, player.Model);
+            PlayerDetailsViewModel playerDetailsViewModel = new PlayerDetailsViewModel()
+            {
+                PlayerId = playerId,
+                PlayerGameSummaries = new List<Models.PlayedGame.IndividualPlayerGameSummaryViewModel>()
+            };
+            playerDetailsViewModelBuilder.Expect(viewModelBuilder => viewModelBuilder.Build(playerDetails))
+                .Repeat
+                .Once()
+                .Return(playerDetailsViewModel);
+            ViewResult viewResult = playerController.Details(playerId) as ViewResult;
+
+            Assert.AreEqual(MVC.Player.Views.Details, viewResult.ViewName);
+        }
+
+        [Test]
+        public void ItSetsThePlayerDetailsViewModelForTheFoundPlayer()
+        {
+            int playerId = 1351;
+            PlayerDetails playerDetails = new PlayerDetails() { Id = playerId, PlayerGameResults = new List<PlayerGameResult>() };
+            playerLogicMock.Expect(playerLogic => playerLogic.GetPlayerDetails(playerId))
+                .Repeat.Once()
+                .Return(playerDetails);
+
+            PlayerDetailsViewModel playerDetailsViewModel = new PlayerDetailsViewModel()
+            {
+                PlayerId = playerId,
+                PlayerGameSummaries = new List<Models.PlayedGame.IndividualPlayerGameSummaryViewModel>()
+            };
+            playerDetailsViewModelBuilder.Expect(viewModelBuilder => viewModelBuilder.Build(playerDetails))
+                .Repeat
+                .Once()
+                .Return(playerDetailsViewModel);
+
+            ViewResult viewResult = playerController.Details(playerId) as ViewResult;
+
+            Assert.AreEqual(playerDetailsViewModel, viewResult.Model);
         }
     }
 }

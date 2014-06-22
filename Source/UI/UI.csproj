@@ -230,6 +230,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\GameDefinitionController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\List.cs" />
     <Compile Include="Controllers\PlayedGameController.cs" />
     <Compile Include="Controllers\PlayerController.cs" />
     <Compile Include="DependencyResolution\IoC.cs" />
@@ -248,9 +249,12 @@
     <Compile Include="HtmlHelpers\PlayedGameHelper.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
-    <Compile Include="Models\PlayedGame\PlayerGameResultDetails.cs" />
-    <Compile Include="Models\PlayedGame\PlayedGameDetails.cs" />
-    <Compile Include="Transformations\PlayedGameDetailsBuilderImpl.cs" />
+    <Compile Include="Models\PlayedGame\IndividualPlayerGameSummaryViewModel.cs" />
+    <Compile Include="Transformations\Player\IndividualPlayerGameSummaryViewModelBuilderImpl.cs" />
+    <Compile Include="Models\PlayedGame\PlayerGameResultDetailsViewModel.cs" />
+    <Compile Include="Models\PlayedGame\PlayedGameDetailsViewModel.cs" />
+    <Compile Include="Models\Players\PlayerDetailsViewModel.cs" />
+    <Compile Include="Transformations\PlayedGameDetailsViewModelBuilderImpl.cs" />
     <Compile Include="PlayedGameController.generated.cs">
       <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>
@@ -267,9 +271,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>
-    <Compile Include="Transformations\PlayedGameDetailsBuilder.cs" />
-    <Compile Include="Transformations\PlayerGameResultDetailsBuilder.cs" />
-    <Compile Include="Transformations\PlayerGameResultDetailsBuilderImpl.cs" />
+    <Compile Include="Transformations\PlayedGameDetailsViewModelBuilder.cs" />
+    <Compile Include="Transformations\PlayerGameResultDetailsViewModelBuilder.cs" />
+    <Compile Include="Transformations\PlayerGameResultDetailsViewModelBuilderImpl.cs" />
+    <Compile Include="Transformations\Player\IndividualPlayerGameSummaryViewModelBuilder.cs" />
+    <Compile Include="Transformations\Player\PlayerDetailsViewModelBuilder.cs" />
+    <Compile Include="Transformations\Player\PlayerDetailsViewModelBuilderImpl.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
@@ -342,7 +349,6 @@
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="App_Code\MyHelpers.cshtml" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
@@ -409,6 +415,7 @@
     <Content Include="Views\PlayedGame\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="App_Code\" />
     <Folder Include="App_Data\" />
     <Folder Include="Views\Shared\DisplayTemplates\" />
   </ItemGroup>

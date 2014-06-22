@@ -7,11 +7,11 @@ using UI.Models.PlayedGame;
 
 namespace UI.Transformations
 {
-    public class PlayerGameResultDetailsBuilderImpl : PlayerGameResultDetailsBuilder
+    public class PlayerGameResultDetailsViewModelBuilderImpl : PlayerGameResultDetailsViewModelBuilder
     {
         internal const string EXCEPTION_PLAYER_CANNOT_BE_NULL = "PlayerGameResult.Player cannot be null.";
 
-        public PlayerGameResultDetails Build(PlayerGameResult playerGameResult)
+        public PlayerGameResultDetailsViewModel Build(PlayerGameResult playerGameResult)
         {
             if (playerGameResult == null)
             {
@@ -23,7 +23,7 @@ namespace UI.Transformations
                 throw new ArgumentException(EXCEPTION_PLAYER_CANNOT_BE_NULL);
             }
 
-            PlayerGameResultDetails result = new PlayerGameResultDetails();
+            PlayerGameResultDetailsViewModel result = new PlayerGameResultDetailsViewModel();
             result.PlayerId = playerGameResult.PlayerId;
             result.PlayerName = playerGameResult.Player.Name;
             result.GameRank = playerGameResult.GameRank;

@@ -1,4 +1,7 @@
-﻿@model BusinessLogic.Models.Players.PlayerDetails
+﻿@using UI.HtmlHelpers
+@using System.Collections.Generic;
+@using UI.Models.PlayedGame;
+@model UI.Models.Players.PlayerDetailsViewModel
 
 @{
     ViewBag.Title = "Details";
@@ -11,11 +14,11 @@
 	<hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Name)
+            @Html.DisplayNameFor(model => model.PlayerName)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Name)
+            @Html.DisplayFor(model => model.PlayerName)
         </dd>
 
         <dt>
@@ -28,20 +31,21 @@
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Edit", "Edit", new { id = Model.PlayerId }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
 <br/>
 <div>
     <h4>Recent Games</h4>
-    @foreach (var playerGameResult in @Model.PlayerGameResults)
+    @for (int i = 0; i < @Model.PlayerGameSummaries.Count; i++)
     {
-        @*//TODO Fix this! MyHelpers.ShowGameResult(playerGameResult, playerGameResult.PlayedGame.GameDefinition.Name);*@
-        @Html.ActionLink("[Details]", "Details", "PlayedGame", new { id = playerGameResult.PlayedGame.Id }, new { })
+        @Model.PlayerGameSummaries[i].GameName <text>- </text>
+        @Html.GameResults(((List<PlayerGameResultDetailsViewModel>)ViewBag.PlayerGameResultDetails)[i]) 
+        @Html.ActionLink("[Details]", "Details", "PlayedGame", new { id = Model.PlayerGameSummaries[i].PlayedGameId }, new { })
         <br/><br/>
     }
 </div>
 <div>
     <h4>Statistics</h4>
-    Total Games: @Model.PlayerStats.TotalGames
+    Total Games: @Model.TotalGamesPlayed
 </div>

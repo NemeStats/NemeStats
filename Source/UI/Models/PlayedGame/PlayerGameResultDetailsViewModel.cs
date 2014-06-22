@@ -5,7 +5,7 @@ using System.Text;
 
 namespace UI.Models.PlayedGame
 {
-    public class PlayerGameResultDetails
+    public class PlayerGameResultDetailsViewModel
     {
         public int PlayerId { get; set; }
         public string PlayerName { get; set; }

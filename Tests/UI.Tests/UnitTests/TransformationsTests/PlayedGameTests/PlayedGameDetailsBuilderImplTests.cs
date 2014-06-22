@@ -9,15 +9,15 @@ using System.Threading.Tasks;
 using UI.Models.PlayedGame;
 using UI.Transformations;
 
-namespace UI.Tests.UnitTests.TransformationsTests
+namespace UI.Tests.UnitTests.TransformationsTests.PlayedGameTests
 {
     [TestFixture]
     public class PlayedGameDetailsBuilderImplTests
     {
-        private PlayedGameDetailsBuilderImpl builder;
+        private PlayedGameDetailsViewModelBuilderImpl builder;
         private PlayedGame playedGame;
-        private PlayedGameDetails playedGameDetails;
-        private PlayerGameResultDetailsBuilder detailsBuilder;
+        private PlayedGameDetailsViewModel playedGameDetails;
+        private PlayerGameResultDetailsViewModelBuilder detailsBuilder;
 
         //TODO is it OK to have SetUps that are used in less than 100% of the test cases?
         [SetUp]
@@ -58,8 +58,8 @@ namespace UI.Tests.UnitTests.TransformationsTests
                 PlayerId = 3
             });
 
-            detailsBuilder = MockRepository.GenerateMock<PlayerGameResultDetailsBuilder>();
-            builder = new PlayedGameDetailsBuilderImpl(detailsBuilder);
+            detailsBuilder = MockRepository.GenerateMock<PlayerGameResultDetailsViewModelBuilder>();
+            builder = new PlayedGameDetailsViewModelBuilderImpl(detailsBuilder);
 
             int totalPlayerGameResults = playedGame.PlayerGameResults.Count;
             for (int i = 0; i < totalPlayerGameResults; i++)
@@ -68,7 +68,7 @@ namespace UI.Tests.UnitTests.TransformationsTests
                     x => x.Build(playedGame.PlayerGameResults[i]))
                     .Repeat
                     .Once()
-                    .Return(new PlayerGameResultDetails() { PlayerId = playedGame.PlayerGameResults[i].PlayerId });
+                    .Return(new PlayerGameResultDetailsViewModel() { PlayerId = playedGame.PlayerGameResults[i].PlayerId });
             }
 
             playedGameDetails = builder.Build(playedGame);
@@ -93,7 +93,7 @@ namespace UI.Tests.UnitTests.TransformationsTests
                     builder.Build(playedGameWithNoGameDefinition)
                 );
 
-            Assert.AreEqual(PlayedGameDetailsBuilderImpl.EXCEPTION_GAME_DEFINITION_CANNOT_BE_NULL, exception.Message);
+            Assert.AreEqual(PlayedGameDetailsViewModelBuilderImpl.EXCEPTION_GAME_DEFINITION_CANNOT_BE_NULL, exception.Message);
         }
 
         [Test]
@@ -105,7 +105,7 @@ namespace UI.Tests.UnitTests.TransformationsTests
                     builder.Build(playedGameWithNoPlayerGameResults)
                 );
 
-            Assert.AreEqual(PlayedGameDetailsBuilderImpl.EXCEPTION_PLAYER_GAME_RESULTS_CANNOT_BE_NULL, exception.Message);
+            Assert.AreEqual(PlayedGameDetailsViewModelBuilderImpl.EXCEPTION_PLAYER_GAME_RESULTS_CANNOT_BE_NULL, exception.Message);
         }
 
         [Test]

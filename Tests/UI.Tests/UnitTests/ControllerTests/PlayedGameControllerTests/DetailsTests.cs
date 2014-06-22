@@ -67,12 +67,12 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
             playedGameLogicMock.Expect(x => x.GetPlayedGameDetails(playedGameId))
                 .Repeat.Once()
                 .Return(playedGame);
-            PlayedGameDetails playedGameDetails = new PlayedGameDetails();
+            PlayedGameDetailsViewModel playedGameDetails = new PlayedGameDetailsViewModel();
             playedGameDetailsBuilder.Expect(builder => builder.Build(playedGame)).Repeat.Once()
                 .Return(playedGameDetails);
             ViewResult result = playedGameController.Details(playedGameId) as ViewResult;
 
-            PlayedGameDetails viewModel = (PlayedGameDetails)result.ViewData.Model;
+            PlayedGameDetailsViewModel viewModel = (PlayedGameDetailsViewModel)result.ViewData.Model;
             Assert.AreEqual(playedGameDetails, viewModel);
         }
     }

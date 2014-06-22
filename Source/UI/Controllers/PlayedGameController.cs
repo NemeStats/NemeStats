@@ -16,14 +16,14 @@ namespace UI.Controllers
         internal NemeStatsDbContext db;
         internal PlayedGameLogic playedGameLogic;
         internal PlayerLogic playerLogic;
-        internal PlayedGameDetailsBuilder playedGameDetailsBuilder;
+        internal PlayedGameDetailsViewModelBuilder playedGameDetailsBuilder;
 
         internal const int NUMBER_OF_RECENT_GAMES_TO_DISPLAY = 10;
 
         public PlayedGameController(NemeStatsDbContext dbContext, 
             PlayedGameLogic playedLogic, 
             PlayerLogic playLogic,
-            PlayedGameDetailsBuilder builder)
+            PlayedGameDetailsViewModelBuilder builder)
         {
             db = dbContext;
             playedGameLogic = playedLogic;
@@ -36,7 +36,7 @@ namespace UI.Controllers
         {
             List<PlayedGame> playedGames = playedGameLogic.GetRecentGames(NUMBER_OF_RECENT_GAMES_TO_DISPLAY);
             int totalGames = playedGames.Count();
-            List<PlayedGameDetails> details = new List<PlayedGameDetails>(totalGames);
+            List<PlayedGameDetailsViewModel> details = new List<PlayedGameDetailsViewModel>(totalGames);
             for (int i = 0; i < totalGames; i++)
             {
                 details.Add(playedGameDetailsBuilder.Build(playedGames[i]));
@@ -57,7 +57,7 @@ namespace UI.Controllers
             {
                 return HttpNotFound();
             }
-            PlayedGameDetails playedGameDetails = playedGameDetailsBuilder.Build(playedGame);
+            PlayedGameDetailsViewModel playedGameDetails = playedGameDetailsBuilder.Build(playedGame);
             return View(MVC.PlayedGame.Views.Details, playedGameDetails);
         }
 

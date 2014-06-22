@@ -7,8 +7,8 @@ using UI.Models.PlayedGame;
 
 namespace UI.Transformations
 {
-    public interface PlayerGameResultDetailsBuilder
+    public interface PlayerGameResultDetailsViewModelBuilder
     {
-        PlayerGameResultDetails Build(PlayerGameResult playerGameResult);
+        PlayerGameResultDetailsViewModel Build(PlayerGameResult playerGameResult);
     }
 }

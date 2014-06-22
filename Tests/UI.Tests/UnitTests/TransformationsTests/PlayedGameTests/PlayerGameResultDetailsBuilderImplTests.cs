@@ -8,19 +8,19 @@ using System.Threading.Tasks;
 using UI.Models.PlayedGame;
 using UI.Transformations;
 
-namespace UI.Tests.UnitTests.TransformationsTests
+namespace UI.Tests.UnitTests.TransformationsTests.PlayedGameTests
 {
     [TestFixture]
     public class PlayerGameResultDetailsBuilderImplTests
     {
-        PlayerGameResultDetailsBuilderImpl builder;
+        PlayerGameResultDetailsViewModelBuilderImpl builder;
         PlayerGameResult playerGameResult;
-        PlayerGameResultDetails playerGameResultDetails;
+        PlayerGameResultDetailsViewModel playerGameResultDetails;
 
         [SetUp]
         public void SetUp()
         {
-            builder = new PlayerGameResultDetailsBuilderImpl();
+            builder = new PlayerGameResultDetailsViewModelBuilderImpl();
 
             playerGameResult = new PlayerGameResult()
             {
@@ -56,7 +56,7 @@ namespace UI.Tests.UnitTests.TransformationsTests
                     builder.Build(playerGameResultWithNoPlayer)
                 );
 
-            Assert.AreEqual(PlayerGameResultDetailsBuilderImpl.EXCEPTION_PLAYER_CANNOT_BE_NULL, exception.Message);
+            Assert.AreEqual(PlayerGameResultDetailsViewModelBuilderImpl.EXCEPTION_PLAYER_CANNOT_BE_NULL, exception.Message);
         }
 
         [Test]

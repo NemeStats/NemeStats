@@ -21,6 +21,7 @@ using StructureMap;
 using StructureMap.Graph;
 using UI.Models.PlayedGame;
 using UI.Transformations;
+using UI.Transformations.Player;
 namespace UI.DependencyResolution {
     public static class IoC {
         public static IContainer Initialize() {
@@ -33,8 +34,10 @@ namespace UI.DependencyResolution {
                                     });
                             x.For<PlayerLogic>().Use<PlayerRepository>();
                             x.For<PlayedGameLogic>().Use<PlayedGameRepository>();
-                            x.For<PlayedGameDetailsBuilder>().Use<PlayedGameDetailsBuilderImpl>();
-                            x.For<PlayerGameResultDetailsBuilder>().Use<PlayerGameResultDetailsBuilderImpl>();
+                            x.For<PlayedGameDetailsViewModelBuilder>().Use<PlayedGameDetailsViewModelBuilderImpl>();
+                            x.For<PlayerGameResultDetailsViewModelBuilder>().Use<PlayerGameResultDetailsViewModelBuilderImpl>();
+                            x.For<PlayerDetailsViewModelBuilder>().Use<PlayerDetailsViewModelBuilderImpl>();
+                            x.For<IndividualPlayerGameSummaryViewModelBuilder>().Use<IndividualPlayerGameSummaryViewModelBuilderImpl>();
                         });
             return ObjectFactory.Container;
         }

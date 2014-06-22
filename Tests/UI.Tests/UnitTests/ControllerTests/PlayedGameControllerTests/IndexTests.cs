@@ -42,15 +42,15 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
             playedGameLogicMock.Expect(x => x.GetRecentGames(Controllers.PlayedGameController.NUMBER_OF_RECENT_GAMES_TO_DISPLAY))
                 .Repeat.Once()
                 .Return(playedGames);
-            List<PlayedGameDetails> summaries = new List<PlayedGameDetails>()
+            List<PlayedGameDetailsViewModel> summaries = new List<PlayedGameDetailsViewModel>()
             {
-                new PlayedGameDetails() { PlayedGameId = playedGameId }
+                new PlayedGameDetailsViewModel() { PlayedGameId = playedGameId }
             };
             playedGameDetailsBuilder.Expect(builder => builder.Build(playedGames[0])).Repeat.Once()
                 .Return(summaries[0]);
             ViewResult result = playedGameController.Index() as ViewResult;
 
-            List<PlayedGameDetails> viewModel = (List<PlayedGameDetails>)result.ViewData.Model;
+            List<PlayedGameDetailsViewModel> viewModel = (List<PlayedGameDetailsViewModel>)result.ViewData.Model;
             Assert.AreEqual(summaries, viewModel);
         }
 

@@ -8,19 +8,25 @@ using UI.Transformations;
 
 namespace UI.Transformations
 {
-    public class PlayedGameDetailsBuilderImpl : PlayedGameDetailsBuilder
+    public class PlayedGameDetailsViewModelBuilderImpl : PlayedGameDetailsViewModelBuilder
     {
         internal const string EXCEPTION_GAME_DEFINITION_CANNOT_BE_NULL = "PlayedGame.GameDefintion cannot be null.";
         internal const string EXCEPTION_PLAYER_GAME_RESULTS_CANNOT_BE_NULL = "PlayedGame.PlayerGameResults cannot be null.";
 
-        private PlayerGameResultDetailsBuilder playerResultBuilder;
+        private PlayerGameResultDetailsViewModelBuilder playerResultBuilder;
 
-        public PlayedGameDetailsBuilderImpl(PlayerGameResultDetailsBuilder playerGameResultBuilder)
+        //TODO is it OK to do this to satisfy MVC's need for parameterless constructors?
+        public PlayedGameDetailsViewModelBuilderImpl()
+        {
+            playerResultBuilder = new PlayerGameResultDetailsViewModelBuilderImpl();
+        }
+
+        public PlayedGameDetailsViewModelBuilderImpl(PlayerGameResultDetailsViewModelBuilder playerGameResultBuilder)
         {
             playerResultBuilder = playerGameResultBuilder;
         }
 
-        public PlayedGameDetails Build(PlayedGame playedGame)
+        public PlayedGameDetailsViewModel Build(PlayedGame playedGame)
         {
             if(playedGame == null)
             {
@@ -37,12 +43,12 @@ namespace UI.Transformations
                 throw new ArgumentException(EXCEPTION_PLAYER_GAME_RESULTS_CANNOT_BE_NULL);
             }
             
-            PlayedGameDetails summary = new PlayedGameDetails();
+            PlayedGameDetailsViewModel summary = new PlayedGameDetailsViewModel();
             summary.GameDefinitionName = playedGame.GameDefinition.Name;
             summary.GameDefinitionId = playedGame.GameDefinitionId;
             summary.PlayedGameId = playedGame.Id;
             summary.DatePlayed = playedGame.DatePlayed;
-            summary.PlayerResults = new List<PlayerGameResultDetails>();
+            summary.PlayerResults = new List<PlayerGameResultDetailsViewModel>();
             
             foreach(PlayerGameResult playerGameResult in playedGame.PlayerGameResults)
             {

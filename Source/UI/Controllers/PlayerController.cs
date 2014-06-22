@@ -1,10 +1,15 @@
 ﻿using BusinessLogic.DataAccess;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Players;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using UI.Models.PlayedGame;
+using UI.Models.Players;
+using UI.Transformations;
+using UI.Transformations.Player;
 
 namespace UI.Controllers
 {
@@ -12,11 +17,27 @@ namespace UI.Controllers
     {
         internal NemeStatsDbContext db;
         internal PlayerLogic playerLogic;
+        internal PlayerGameResultDetailsViewModelBuilder builder;
+        internal PlayerDetailsViewModelBuilder playerDetailsViewModelBuilder;
+        
+        //TODO something happened and all of the sudden i had to add this because MVC was complaining about lack of a parameterless default contructor. why???
+        public PlayerController()
+        {
+            db = new NemeStatsDbContext();
+            playerLogic = new PlayerRepository(db);
+            builder = new PlayerGameResultDetailsViewModelBuilderImpl();
+            playerDetailsViewModelBuilder = new PlayerDetailsViewModelBuilderImpl();
+        }
 
-        public PlayerController(NemeStatsDbContext dbContext, PlayerLogic logic)
+        public PlayerController(NemeStatsDbContext dbContext, 
+            PlayerLogic logic, 
+            PlayerGameResultDetailsViewModelBuilder resultBuilder,
+            PlayerDetailsViewModelBuilder playerDetailsBuilder)
         {
             db = dbContext;
             playerLogic = logic;
+            builder = resultBuilder;
+            playerDetailsViewModelBuilder = playerDetailsBuilder;
         }
 
         // GET: /Player/
@@ -40,7 +61,24 @@ namespace UI.Controllers
                 return new HttpNotFoundResult();
             }
 
-            return View(MVC.Player.Views.Details, player);
+            PlayerDetailsViewModel playerDetailsViewModel = playerDetailsViewModelBuilder.Build(player);
+
+            //TODO need a transformation and tests for this. Was desparate to get the page fixed/working.
+            List<PlayerGameResultDetailsViewModel> playerGameResultDetails = new List<PlayerGameResultDetailsViewModel>();
+            foreach(IndividualPlayerGameSummaryViewModel result in playerDetailsViewModel.PlayerGameSummaries)
+            {
+                playerGameResultDetails.Add(new PlayerGameResultDetailsViewModel()
+                {
+                    GameRank = result.GameRank,
+                    GordonPoints = result.GordonPoints,
+                    PlayerId = player.Id,
+                    PlayerName = player.Name
+                });
+            }
+
+            ViewBag.PlayerGameResultDetails = playerGameResultDetails;
+
+            return View(MVC.Player.Views.Details, playerDetailsViewModel);
         }
 
         // GET: /Player/Create
