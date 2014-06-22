@@ -20,15 +20,6 @@ namespace UI.Controllers
         internal PlayerGameResultDetailsViewModelBuilder builder;
         internal PlayerDetailsViewModelBuilder playerDetailsViewModelBuilder;
         
-        //TODO something happened and all of the sudden i had to add this because MVC was complaining about lack of a parameterless default contructor. why???
-        public PlayerController()
-        {
-            db = new NemeStatsDbContext();
-            playerLogic = new PlayerRepository(db);
-            builder = new PlayerGameResultDetailsViewModelBuilderImpl();
-            playerDetailsViewModelBuilder = new PlayerDetailsViewModelBuilderImpl();
-        }
-
         public PlayerController(NemeStatsDbContext dbContext, 
             PlayerLogic logic, 
             PlayerGameResultDetailsViewModelBuilder resultBuilder,
