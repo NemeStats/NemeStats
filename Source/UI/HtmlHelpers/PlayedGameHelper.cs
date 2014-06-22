@@ -25,7 +25,7 @@ namespace UI.HtmlHelpers
         internal static string HTML_TEMPLATE = "<span class=\"{0} {1}\">{2}{3}</span>";
         
         public static MvcHtmlString GameResults(this HtmlHelper htmlHelper, 
-            PlayerGameResultDetailsViewModel playerGameResultDetails)
+            GameResultViewModel playerGameResultDetails)
         {
             Validate(playerGameResultDetails);
 
@@ -64,12 +64,12 @@ namespace UI.HtmlHelpers
                 gordonPointsComponent));
         }
 
-        private static void Validate(PlayerGameResultDetailsViewModel playerGameResultDetails)
+        private static void Validate(GameResultViewModel playerGameResultDetails)
         {
             ValidatePlayerGameResultsDetailsAreNotNull(playerGameResultDetails);
         }
 
-        private static void ValidatePlayerGameResultsDetailsAreNotNull(PlayerGameResultDetailsViewModel playerGameResultDetails)
+        private static void ValidatePlayerGameResultsDetailsAreNotNull(GameResultViewModel playerGameResultDetails)
         {
             if (playerGameResultDetails == null)
             {

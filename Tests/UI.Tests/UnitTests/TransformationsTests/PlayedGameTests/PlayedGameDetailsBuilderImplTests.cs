@@ -17,7 +17,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayedGameTests
         private PlayedGameDetailsViewModelBuilderImpl builder;
         private PlayedGame playedGame;
         private PlayedGameDetailsViewModel playedGameDetails;
-        private PlayerGameResultDetailsViewModelBuilder detailsBuilder;
+        private GameResultViewModelBuilder detailsBuilder;
 
         //TODO is it OK to have SetUps that are used in less than 100% of the test cases?
         [SetUp]
@@ -55,20 +55,21 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayedGameTests
                 GordonPoints = 1,
                 Id = 3,
                 PlayedGameId = playedGame.Id,
-                PlayerId = 3
+                PlayerId = 3,
+                PlayedGame = new PlayedGame() { GameDefinition = new GameDefinition() {  Id = 135, Name = "Test game name"} }
             });
 
-            detailsBuilder = MockRepository.GenerateMock<PlayerGameResultDetailsViewModelBuilder>();
+            detailsBuilder = MockRepository.GenerateMock<GameResultViewModelBuilder>();
             builder = new PlayedGameDetailsViewModelBuilderImpl(detailsBuilder);
 
             int totalPlayerGameResults = playedGame.PlayerGameResults.Count;
             for (int i = 0; i < totalPlayerGameResults; i++)
             {
                 detailsBuilder.Expect(
-                    x => x.Build(playedGame.PlayerGameResults[i]))
+                    x => x.Build(playedGame.GameDefinition.Id, playedGame.GameDefinition.Name, playedGame.PlayerGameResults[i]))
                     .Repeat
                     .Once()
-                    .Return(new PlayerGameResultDetailsViewModel() { PlayerId = playedGame.PlayerGameResults[i].PlayerId });
+                    .Return(new GameResultViewModel() { PlayerId = playedGame.PlayerGameResults[i].PlayerId });
             }
 
             playedGameDetails = builder.Build(playedGame);

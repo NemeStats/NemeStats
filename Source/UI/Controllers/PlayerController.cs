@@ -17,12 +17,12 @@ namespace UI.Controllers
     {
         internal NemeStatsDbContext db;
         internal PlayerLogic playerLogic;
-        internal PlayerGameResultDetailsViewModelBuilder builder;
+        internal GameResultViewModelBuilder builder;
         internal PlayerDetailsViewModelBuilder playerDetailsViewModelBuilder;
         
         public PlayerController(NemeStatsDbContext dbContext, 
             PlayerLogic logic, 
-            PlayerGameResultDetailsViewModelBuilder resultBuilder,
+            GameResultViewModelBuilder resultBuilder,
             PlayerDetailsViewModelBuilder playerDetailsBuilder)
         {
             db = dbContext;
@@ -53,21 +53,6 @@ namespace UI.Controllers
             }
 
             PlayerDetailsViewModel playerDetailsViewModel = playerDetailsViewModelBuilder.Build(player);
-
-            //TODO need a transformation and tests for this. Was desparate to get the page fixed/working.
-            List<PlayerGameResultDetailsViewModel> playerGameResultDetails = new List<PlayerGameResultDetailsViewModel>();
-            foreach(IndividualPlayerGameSummaryViewModel result in playerDetailsViewModel.PlayerGameSummaries)
-            {
-                playerGameResultDetails.Add(new PlayerGameResultDetailsViewModel()
-                {
-                    GameRank = result.GameRank,
-                    GordonPoints = result.GordonPoints,
-                    PlayerId = player.Id,
-                    PlayerName = player.Name
-                });
-            }
-
-            ViewBag.PlayerGameResultDetails = playerGameResultDetails;
 
             return View(MVC.Player.Views.Details, playerDetailsViewModel);
         }

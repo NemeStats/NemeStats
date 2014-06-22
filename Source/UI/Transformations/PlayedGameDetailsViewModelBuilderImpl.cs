@@ -13,15 +13,15 @@ namespace UI.Transformations
         internal const string EXCEPTION_GAME_DEFINITION_CANNOT_BE_NULL = "PlayedGame.GameDefintion cannot be null.";
         internal const string EXCEPTION_PLAYER_GAME_RESULTS_CANNOT_BE_NULL = "PlayedGame.PlayerGameResults cannot be null.";
 
-        private PlayerGameResultDetailsViewModelBuilder playerResultBuilder;
+        private GameResultViewModelBuilder playerResultBuilder;
 
         //TODO is it OK to do this to satisfy MVC's need for parameterless constructors?
         public PlayedGameDetailsViewModelBuilderImpl()
         {
-            playerResultBuilder = new PlayerGameResultDetailsViewModelBuilderImpl();
+            playerResultBuilder = new GameResultViewModelBuilderImpl();
         }
 
-        public PlayedGameDetailsViewModelBuilderImpl(PlayerGameResultDetailsViewModelBuilder playerGameResultBuilder)
+        public PlayedGameDetailsViewModelBuilderImpl(GameResultViewModelBuilder playerGameResultBuilder)
         {
             playerResultBuilder = playerGameResultBuilder;
         }
@@ -48,11 +48,13 @@ namespace UI.Transformations
             summary.GameDefinitionId = playedGame.GameDefinitionId;
             summary.PlayedGameId = playedGame.Id;
             summary.DatePlayed = playedGame.DatePlayed;
-            summary.PlayerResults = new List<PlayerGameResultDetailsViewModel>();
+            summary.PlayerResults = new List<GameResultViewModel>();
             
             foreach(PlayerGameResult playerGameResult in playedGame.PlayerGameResults)
             {
-                summary.PlayerResults.Add(playerResultBuilder.Build(playerGameResult));
+                summary.PlayerResults.Add(playerResultBuilder.Build(playedGame.GameDefinition.Id, 
+                    playedGame.GameDefinition.Name, 
+                    playerGameResult));
             }
 
             return summary;

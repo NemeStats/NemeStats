@@ -29,7 +29,7 @@ namespace UI.Tests.UnitTests.HtmlHelperTests.MyHelpersTests
         public void ItRendersTheGameRankInASpanWithTheGameRankClass()
         {
             HtmlHelper helper = new HtmlHelper(new ViewContext(), new ViewPage());
-            PlayerGameResultDetailsViewModel playerGameResultDetails = new PlayerGameResultDetailsViewModel()
+            GameResultViewModel playerGameResultDetails = new GameResultViewModel()
             {
                 GameRank = 1151
             };
@@ -43,7 +43,7 @@ namespace UI.Tests.UnitTests.HtmlHelperTests.MyHelpersTests
         private void TestRenderingForGivenRank(int gameRank, string expectedCSSClass, string expectedRankText)
         {
             HtmlHelper helper = new HtmlHelper(new ViewContext(), new ViewPage());
-            PlayerGameResultDetailsViewModel playerGameResultDetails = new PlayerGameResultDetailsViewModel()
+            GameResultViewModel playerGameResultDetails = new GameResultViewModel()
             {
                 GameRank = gameRank
             };
@@ -90,7 +90,7 @@ namespace UI.Tests.UnitTests.HtmlHelperTests.MyHelpersTests
         public void ItRendersGordonPoints()
         {
             HtmlHelper helper = new HtmlHelper(new ViewContext(), new ViewPage());
-            PlayerGameResultDetailsViewModel playerGameResultDetails = new PlayerGameResultDetailsViewModel()
+            GameResultViewModel playerGameResultDetails = new GameResultViewModel()
             {
                 GordonPoints = 9
             };

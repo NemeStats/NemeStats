@@ -250,8 +250,7 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\PlayedGame\IndividualPlayerGameSummaryViewModel.cs" />
-    <Compile Include="Transformations\Player\IndividualPlayerGameSummaryViewModelBuilderImpl.cs" />
-    <Compile Include="Models\PlayedGame\PlayerGameResultDetailsViewModel.cs" />
+    <Compile Include="Models\PlayedGame\GameResultViewModel.cs" />
     <Compile Include="Models\PlayedGame\PlayedGameDetailsViewModel.cs" />
     <Compile Include="Models\Players\PlayerDetailsViewModel.cs" />
     <Compile Include="Transformations\PlayedGameDetailsViewModelBuilderImpl.cs" />
@@ -272,9 +271,8 @@
       <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>
     <Compile Include="Transformations\PlayedGameDetailsViewModelBuilder.cs" />
-    <Compile Include="Transformations\PlayerGameResultDetailsViewModelBuilder.cs" />
-    <Compile Include="Transformations\PlayerGameResultDetailsViewModelBuilderImpl.cs" />
-    <Compile Include="Transformations\Player\IndividualPlayerGameSummaryViewModelBuilder.cs" />
+    <Compile Include="Transformations\GameResultViewModelBuilder.cs" />
+    <Compile Include="Transformations\GameResultViewModelBuilderImpl.cs" />
     <Compile Include="Transformations\Player\PlayerDetailsViewModelBuilder.cs" />
     <Compile Include="Transformations\Player\PlayerDetailsViewModelBuilderImpl.cs" />
   </ItemGroup>

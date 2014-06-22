@@ -35,9 +35,8 @@ namespace UI.DependencyResolution {
                             x.For<PlayerLogic>().Use<PlayerRepository>();
                             x.For<PlayedGameLogic>().Use<PlayedGameRepository>();
                             x.For<PlayedGameDetailsViewModelBuilder>().Use<PlayedGameDetailsViewModelBuilderImpl>();
-                            x.For<PlayerGameResultDetailsViewModelBuilder>().Use<PlayerGameResultDetailsViewModelBuilderImpl>();
+                            x.For<GameResultViewModelBuilder>().Use<GameResultViewModelBuilderImpl>();
                             x.For<PlayerDetailsViewModelBuilder>().Use<PlayerDetailsViewModelBuilderImpl>();
-                            x.For<IndividualPlayerGameSummaryViewModelBuilder>().Use<IndividualPlayerGameSummaryViewModelBuilderImpl>();
                         });
             return ObjectFactory.Container;
         }

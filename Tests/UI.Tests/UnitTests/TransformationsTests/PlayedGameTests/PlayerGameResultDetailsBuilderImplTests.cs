@@ -13,14 +13,16 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayedGameTests
     [TestFixture]
     public class PlayerGameResultDetailsBuilderImplTests
     {
-        PlayerGameResultDetailsViewModelBuilderImpl builder;
+        GameResultViewModelBuilderImpl builder;
         PlayerGameResult playerGameResult;
-        PlayerGameResultDetailsViewModel playerGameResultDetails;
+        GameResultViewModel playerGameResultDetails;
+        int gameDefinitionId = 1;
+        string gameName = "Test Game Name";
 
         [SetUp]
         public void SetUp()
         {
-            builder = new PlayerGameResultDetailsViewModelBuilderImpl();
+            builder = new GameResultViewModelBuilderImpl();
 
             playerGameResult = new PlayerGameResult()
             {
@@ -34,14 +36,14 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayedGameTests
                 }
             };
 
-            playerGameResultDetails = builder.Build(playerGameResult);
+            playerGameResultDetails = builder.Build(gameDefinitionId, gameName, playerGameResult);
         }
 
         [Test]
         public void ItRequiresAPlayerGameResult()
         {
             var exception = Assert.Throws<ArgumentNullException>(() =>
-                    builder.Build(null)
+                    builder.Build(0, null, null)
                 );
 
             Assert.AreEqual("playerGameResult", exception.ParamName);
@@ -53,10 +55,10 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayedGameTests
             PlayerGameResult playerGameResultWithNoPlayer = new PlayerGameResult();
 
             var exception = Assert.Throws<ArgumentException>(() =>
-                    builder.Build(playerGameResultWithNoPlayer)
+                    builder.Build(0, null, playerGameResultWithNoPlayer)
                 );
 
-            Assert.AreEqual(PlayerGameResultDetailsViewModelBuilderImpl.EXCEPTION_PLAYER_CANNOT_BE_NULL, exception.Message);
+            Assert.AreEqual(GameResultViewModelBuilderImpl.EXCEPTION_PLAYER_CANNOT_BE_NULL, exception.Message);
         }
 
         [Test]

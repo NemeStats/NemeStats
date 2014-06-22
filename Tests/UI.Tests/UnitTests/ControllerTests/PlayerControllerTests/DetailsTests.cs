@@ -8,6 +8,7 @@ using System.Net;
 using System.Web.Mvc;
 using UI.Controllers;
 using UI.Models;
+using UI.Models.PlayedGame;
 using UI.Models.Players;
 using UI.Transformations;
 using UI.Transformations.Player;
@@ -19,7 +20,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
     {
         private NemeStatsDbContext dbContextMock;
         private PlayerLogic playerLogicMock;
-        private PlayerGameResultDetailsViewModelBuilder playerGameResultDetailsBuilder;
+        private GameResultViewModelBuilder playerGameResultDetailsBuilder;
         private PlayerDetailsViewModelBuilder playerDetailsViewModelBuilder;
         private PlayerController playerController;
 
@@ -28,7 +29,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         {
             dbContextMock = MockRepository.GenerateMock<NemeStatsDbContext>();
             playerLogicMock = MockRepository.GenerateMock<PlayerLogic>();
-            playerGameResultDetailsBuilder = MockRepository.GenerateMock<PlayerGameResultDetailsViewModelBuilder>();
+            playerGameResultDetailsBuilder = MockRepository.GenerateMock<GameResultViewModelBuilder>();
             playerDetailsViewModelBuilder = MockRepository.GenerateMock<PlayerDetailsViewModelBuilder>();
             playerController = new PlayerController(
                                 dbContextMock, 
@@ -80,7 +81,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
             PlayerDetailsViewModel playerDetailsViewModel = new PlayerDetailsViewModel()
             {
                 PlayerId = playerId,
-                PlayerGameSummaries = new List<Models.PlayedGame.IndividualPlayerGameSummaryViewModel>()
+                PlayerGameResultDetails = new List<GameResultViewModel>()
             };
             playerDetailsViewModelBuilder.Expect(viewModelBuilder => viewModelBuilder.Build(playerDetails))
                 .Repeat
@@ -103,7 +104,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
             PlayerDetailsViewModel playerDetailsViewModel = new PlayerDetailsViewModel()
             {
                 PlayerId = playerId,
-                PlayerGameSummaries = new List<Models.PlayedGame.IndividualPlayerGameSummaryViewModel>()
+                PlayerGameResultDetails = new List<GameResultViewModel>()
             };
             playerDetailsViewModelBuilder.Expect(viewModelBuilder => viewModelBuilder.Build(playerDetails))
                 .Repeat

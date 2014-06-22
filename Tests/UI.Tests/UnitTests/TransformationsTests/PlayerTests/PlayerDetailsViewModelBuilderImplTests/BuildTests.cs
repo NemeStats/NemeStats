@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UI.Models.Players;
+using UI.Transformations;
 using UI.Transformations.Player;
 
 namespace UI.Tests.UnitTests.TransformationsTests.PlayerTests.PlayerDetailsViewModelBuilderImplTests
@@ -23,8 +24,8 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTests.PlayerDetailsViewM
         {
             List<PlayerGameResult> playerGameResults = new List<PlayerGameResult>()
             {
-                new PlayerGameResult(){ PlayedGameId = 1513 },
-                new PlayerGameResult(){ PlayedGameId = 1111 }
+                new PlayerGameResult(){ PlayedGameId = 1513, PlayedGame = new PlayedGame(){ GameDefinition = new GameDefinition(){ Id = 1, Name = "test game 1" }}},
+                new PlayerGameResult(){ PlayedGameId = 1111, PlayedGame = new PlayedGame(){ GameDefinition = new GameDefinition(){ Id = 1, Name = "test game 1" }}}
             };
 
             playerDetails = new PlayerDetails()
@@ -35,17 +36,17 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTests.PlayerDetailsViewM
                 PlayerGameResults = playerGameResults
             };
 
-            IndividualPlayerGameSummaryViewModelBuilder playerGameSummaryBuilder 
-                = MockRepository.GenerateMock<IndividualPlayerGameSummaryViewModelBuilder>();
-            playerGameSummaryBuilder.Expect(summaryBuilder => summaryBuilder.Build(playerGameResults[0]))
+            GameResultViewModelBuilder relatedEntityBuilder
+                = MockRepository.GenerateMock<GameResultViewModelBuilder>();
+            relatedEntityBuilder.Expect(build => build.Build(playerGameResults[0].PlayedGame.GameDefinition.Id, playerGameResults[0].PlayedGame.GameDefinition.Name, playerGameResults[0]))
                 .Repeat
                 .Once()
-                .Return(new Models.PlayedGame.IndividualPlayerGameSummaryViewModel() { PlayedGameId = playerGameResults[0].PlayedGameId });
-            playerGameSummaryBuilder.Expect(summaryBuilder => summaryBuilder.Build(playerGameResults[1]))
+                .Return(new Models.PlayedGame.GameResultViewModel() { PlayedGameId = playerGameResults[0].PlayedGameId });
+            relatedEntityBuilder.Expect(build => build.Build(playerGameResults[1].PlayedGame.GameDefinition.Id, playerGameResults[0].PlayedGame.GameDefinition.Name, playerGameResults[0]))
                 .Repeat
                 .Once()
-                .Return(new Models.PlayedGame.IndividualPlayerGameSummaryViewModel() { PlayedGameId = playerGameResults[1].PlayedGameId });
-            PlayerDetailsViewModelBuilderImpl builder = new PlayerDetailsViewModelBuilderImpl(playerGameSummaryBuilder);
+                .Return(new Models.PlayedGame.GameResultViewModel() { PlayedGameId = playerGameResults[1].PlayedGameId });
+            PlayerDetailsViewModelBuilderImpl builder = new PlayerDetailsViewModelBuilderImpl(relatedEntityBuilder);
 
             playerDetailsViewModel = builder.Build(playerDetails);
         }
@@ -97,7 +98,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTests.PlayerDetailsViewM
             for(int i = 0; i < numberOfPlayerGameResults; i++)
             {
                 Assert.AreEqual(playerDetails.PlayerGameResults[i].PlayedGameId,
-                    playerDetailsViewModel.PlayerGameSummaries[i].PlayedGameId);
+                    playerDetailsViewModel.PlayerGameResultDetails[i].PlayedGameId);
             }
         }
     }

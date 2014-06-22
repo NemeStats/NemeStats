@@ -98,7 +98,6 @@
     <Compile Include="UnitTests\ControllerTests\PlayedGameControllerTests\CreateWithNoParameters.cs" />
     <Compile Include="UnitTests\ControllerTests\PlayedGameControllerTests\IndexTests.cs" />
     <Compile Include="UnitTests\HtmlHelperTests\MyHelpersTests\GameResultsTests.cs" />
-    <Compile Include="UnitTests\TransformationsTests\PlayedGameTests\IndividualPlayerGameSummaryViewModelBuilderImplTests\BuildTests.cs" />
     <Compile Include="UnitTests\TransformationsTests\PlayedGameTests\PlayedGameDetailsBuilderImplTests.cs" />
     <Compile Include="UnitTests\TransformationsTests\PlayedGameTests\PlayerGameResultDetailsBuilderImplTests.cs" />
     <Compile Include="UnitTests\TransformationsTests\PlayerTests\PlayerDetailsViewModelBuilderImplTests\BuildTests.cs" />
