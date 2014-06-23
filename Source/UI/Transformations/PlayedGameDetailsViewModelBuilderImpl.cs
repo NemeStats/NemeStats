@@ -52,9 +52,7 @@ namespace UI.Transformations
             
             foreach(PlayerGameResult playerGameResult in playedGame.PlayerGameResults)
             {
-                summary.PlayerResults.Add(playerResultBuilder.Build(playedGame.GameDefinition.Id, 
-                    playedGame.GameDefinition.Name, 
-                    playerGameResult));
+                summary.PlayerResults.Add(playerResultBuilder.Build(playerGameResult));
             }
 
             return summary;

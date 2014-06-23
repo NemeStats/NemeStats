@@ -8,22 +8,28 @@ using System.Threading.Tasks;
 using UI.Models.PlayedGame;
 using UI.Transformations;
 
-namespace UI.Tests.UnitTests.TransformationsTests.PlayedGameTests
+namespace UI.Tests.UnitTests.TransformationsTests.PlayedGameTests.GameResultViewModelBuilderTests
 {
     [TestFixture]
-    public class PlayerGameResultDetailsBuilderImplTests
+    public class GameResultViewModelBuilderImplTests
     {
         GameResultViewModelBuilderImpl builder;
         PlayerGameResult playerGameResult;
         GameResultViewModel playerGameResultDetails;
-        int gameDefinitionId = 1;
-        string gameName = "Test Game Name";
 
         [SetUp]
         public void SetUp()
         {
             builder = new GameResultViewModelBuilderImpl();
-
+            GameDefinition gameDefinition = new GameDefinition()
+            {
+                Id = 15131,
+                Name = "Yodle-masters 2014"
+            };
+            PlayedGame playedGame = new PlayedGame()
+            {
+                GameDefinition = gameDefinition
+            };
             playerGameResult = new PlayerGameResult()
             {
                 GameRank = 1,
@@ -33,17 +39,19 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayedGameTests
                 Player = new Player()
                 {
                     Name = "Test Player"
-                }
+                },
+                PlayedGameId = 1432,
+                PlayedGame = playedGame
             };
 
-            playerGameResultDetails = builder.Build(gameDefinitionId, gameName, playerGameResult);
+            playerGameResultDetails = builder.Build(playerGameResult);
         }
 
         [Test]
         public void ItRequiresAPlayerGameResult()
         {
             var exception = Assert.Throws<ArgumentNullException>(() =>
-                    builder.Build(0, null, null)
+                    builder.Build(null)
                 );
 
             Assert.AreEqual("playerGameResult", exception.ParamName);
@@ -55,10 +63,38 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayedGameTests
             PlayerGameResult playerGameResultWithNoPlayer = new PlayerGameResult();
 
             var exception = Assert.Throws<ArgumentException>(() =>
-                    builder.Build(0, null, playerGameResultWithNoPlayer)
+                    builder.Build(playerGameResultWithNoPlayer)
                 );
 
             Assert.AreEqual(GameResultViewModelBuilderImpl.EXCEPTION_PLAYER_CANNOT_BE_NULL, exception.Message);
+        }
+
+        [Test]
+        public void ItRequiresAPlayedGameOnThePlayedGameResult()
+        {
+            PlayerGameResult playerGameResultWithNoPlayedGame = new PlayerGameResult() { Player = new Player() };
+
+            var exception = Assert.Throws<ArgumentException>(() =>
+                    builder.Build(playerGameResultWithNoPlayedGame)
+                );
+
+            Assert.AreEqual(GameResultViewModelBuilderImpl.EXCEPTION_PLAYED_GAME_CANNOT_BE_NULL, exception.Message);
+        }
+
+        [Test]
+        public void ItRequiresAGameDefinitionOnThePlayedGameResult()
+        {
+            PlayerGameResult playerGameResultWithNoGameDefinition = new PlayerGameResult() 
+            {
+                Player = new Player(),
+                PlayedGame = new PlayedGame()
+            };
+
+            var exception = Assert.Throws<ArgumentException>(() =>
+                    builder.Build(playerGameResultWithNoGameDefinition)
+                );
+
+            Assert.AreEqual(GameResultViewModelBuilderImpl.EXCEPTION_GAME_DEFINITION_CANNOT_BE_NULL, exception.Message);
         }
 
         [Test]
@@ -83,6 +119,12 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayedGameTests
         public void ItCopiesTheGordonPoints()
         {
             Assert.AreEqual(playerGameResult.GordonPoints, playerGameResultDetails.GordonPoints);
+        }
+
+        [Test]
+        public void ItCopiesThePlayedGameId()
+        {
+            Assert.AreEqual(playerGameResult.PlayedGameId, playerGameResultDetails.PlayedGameId);
         }
     }
 }

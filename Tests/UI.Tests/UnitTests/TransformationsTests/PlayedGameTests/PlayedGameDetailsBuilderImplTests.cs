@@ -66,7 +66,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayedGameTests
             for (int i = 0; i < totalPlayerGameResults; i++)
             {
                 detailsBuilder.Expect(
-                    x => x.Build(playedGame.GameDefinition.Id, playedGame.GameDefinition.Name, playedGame.PlayerGameResults[i]))
+                    x => x.Build(playedGame.PlayerGameResults[i]))
                     .Repeat
                     .Once()
                     .Return(new GameResultViewModel() { PlayerId = playedGame.PlayerGameResults[i].PlayerId });

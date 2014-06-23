@@ -13,17 +13,17 @@ namespace UI.Transformations.Player
     {
         internal const string EXCEPTION_PLAYER_GAME_RESULTS_CANNOT_BE_NULL = "PlayerGameResults cannot be null.";
 
-        internal GameResultViewModelBuilder playerGameResultDetailsViewModelBuilder;
+        internal GameResultViewModelBuilder gameResultViewModelBuilder;
 
-        //TODO is this correct? MVC complained that I didn't have a parameterless constructor.
+        //TODO is this correct? MVC complained that I didn't have a parameterless constructor. Maybe called Mapper.Get or something like that?
         public PlayerDetailsViewModelBuilderImpl()
         {
-            playerGameResultDetailsViewModelBuilder = new GameResultViewModelBuilderImpl();
+            gameResultViewModelBuilder = new GameResultViewModelBuilderImpl();
         }
 
         public PlayerDetailsViewModelBuilderImpl(GameResultViewModelBuilder builder)
         {
-            playerGameResultDetailsViewModelBuilder = builder;
+            gameResultViewModelBuilder = builder;
         }
 
         public PlayerDetailsViewModel Build(PlayerDetails playerDetails)
@@ -65,12 +65,11 @@ namespace UI.Transformations.Player
         private void PopulatePlayerGameSummaries(PlayerDetails playerDetails, PlayerDetailsViewModel playerDetailsViewModel)
         {
             playerDetailsViewModel.PlayerGameResultDetails = new List<GameResultViewModel>();
+            GameResultViewModel gameResultViewModel;
             foreach (PlayerGameResult playerGameResult in playerDetails.PlayerGameResults)
             {
-                playerDetailsViewModel.PlayerGameResultDetails.Add(playerGameResultDetailsViewModelBuilder.Build(
-                    1,
-                    "NOT FINISHED //TODO finish this",
-                    playerGameResult));
+                gameResultViewModel = gameResultViewModelBuilder.Build(playerGameResult);
+                playerDetailsViewModel.PlayerGameResultDetails.Add(gameResultViewModel);
             }
         }
     }

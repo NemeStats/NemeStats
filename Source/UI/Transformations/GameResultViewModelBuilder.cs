@@ -9,6 +9,6 @@ namespace UI.Transformations
 {
     public interface GameResultViewModelBuilder
     {
-        GameResultViewModel Build(int gameDefinitionId, string gameName, PlayerGameResult playerGameResult);
+        GameResultViewModel Build(PlayerGameResult playerGameResult);
     }
 }
