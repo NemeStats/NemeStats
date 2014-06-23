@@ -53,7 +53,8 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTests.PlayerDetailsViewM
                 Id = 134,
                 Active = true,
                 Name = "Skipper",
-                PlayerGameResults = playerGameResults
+                PlayerGameResults = playerGameResults,
+                PlayerStats = new PlayerStatistics() { TotalGames = 71 }
             };
 
             GameResultViewModelBuilder relatedEntityBuilder
@@ -94,6 +95,17 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTests.PlayerDetailsViewM
         }
 
         [Test]
+        public void ItRequiresPlayerStatistics()
+        {
+            PlayerDetailsViewModelBuilderImpl builder = new PlayerDetailsViewModelBuilderImpl(null);
+            PlayerDetails playerDetailsWithNoStatistics = new PlayerDetails() { PlayerGameResults = new List<PlayerGameResult>() };
+            var exception = Assert.Throws<ArgumentException>(() =>
+                    builder.Build(playerDetailsWithNoStatistics));
+
+            Assert.AreEqual(PlayerDetailsViewModelBuilderImpl.EXCEPTION_PLAYER_STATISTICS_CANNOT_BE_NULL, exception.Message);
+        }
+
+        [Test]
         public void ItCopiesThePlayerId()
         {
             Assert.AreEqual(playerDetails.Id, playerDetailsViewModel.PlayerId);
@@ -109,6 +121,12 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTests.PlayerDetailsViewM
         public void ItCopiesTheActiveFlag()
         {
             Assert.AreEqual(playerDetails.Active, playerDetailsViewModel.Active);
+        }
+
+        [Test]
+        public void ItCopiesTheTotalPlayers()
+        {
+            Assert.AreEqual(playerDetails.PlayerStats.TotalGames, playerDetailsViewModel.TotalGamesPlayed);
         }
 
         [Test]

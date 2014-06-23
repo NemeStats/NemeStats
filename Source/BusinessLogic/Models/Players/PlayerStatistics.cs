@@ -8,6 +8,6 @@ namespace BusinessLogic.Models.Players
 {
     public class PlayerStatistics
     {
-        public object TotalGames { get; set; }
+        public int TotalGames { get; set; }
     }
 }

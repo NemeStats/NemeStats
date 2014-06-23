@@ -11,8 +11,8 @@ namespace UI.Transformations.Player
 {
     public class PlayerDetailsViewModelBuilderImpl : PlayerDetailsViewModelBuilder
     {
-        internal const string EXCEPTION_PLAYER_GAME_RESULTS_CANNOT_BE_NULL = "PlayerGameResults cannot be null.";
-
+        internal const string EXCEPTION_PLAYER_GAME_RESULTS_CANNOT_BE_NULL = "PlayerDetails.PlayerGameResults cannot be null.";
+        internal const string EXCEPTION_PLAYER_STATISTICS_CANNOT_BE_NULL = "PlayerDetails.PlayerStatistics cannot be null.";
         internal GameResultViewModelBuilder gameResultViewModelBuilder;
 
         //TODO is this correct? MVC complained that I didn't have a parameterless constructor. Maybe called Mapper.Get or something like that?
@@ -34,6 +34,7 @@ namespace UI.Transformations.Player
             playerDetailsViewModel.PlayerId = playerDetails.Id;
             playerDetailsViewModel.PlayerName = playerDetails.Name;
             playerDetailsViewModel.Active = playerDetails.Active;
+            playerDetailsViewModel.TotalGamesPlayed = playerDetails.PlayerStats.TotalGames;
 
             PopulatePlayerGameSummaries(playerDetails, playerDetailsViewModel);
 
@@ -44,6 +45,7 @@ namespace UI.Transformations.Player
         {
             ValidatePlayerDetailsIsNotNull(playerDetails);
             ValidatePlayerGameResultsIsNotNull(playerDetails);
+            ValidatePlayerStatisticsIsNotNull(playerDetails);
         }
 
         private static void ValidatePlayerDetailsIsNotNull(PlayerDetails playerDetails)
@@ -59,6 +61,14 @@ namespace UI.Transformations.Player
             if (playerDetails.PlayerGameResults == null)
             {
                 throw new ArgumentException(EXCEPTION_PLAYER_GAME_RESULTS_CANNOT_BE_NULL);
+            }
+        }
+
+        private static void ValidatePlayerStatisticsIsNotNull(PlayerDetails playerDetails)
+        {
+            if (playerDetails.PlayerStats == null)
+            {
+                throw new ArgumentException(EXCEPTION_PLAYER_STATISTICS_CANNOT_BE_NULL);
             }
         }
 
