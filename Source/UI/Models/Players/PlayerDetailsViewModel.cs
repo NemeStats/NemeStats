@@ -12,7 +12,6 @@ namespace UI.Models.Players
         public int PlayerId { get; set; }
         public string PlayerName { get; set; }
         public bool Active { get; set; }
-        //public List<IndividualPlayerGameSummaryViewModel> PlayerGameSummaries { get; set; }
         public List<GameResultViewModel> PlayerGameResultDetails { get; set; }
         public int TotalGamesPlayed { get; set; }
     }

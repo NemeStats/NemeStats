@@ -249,7 +249,6 @@
     <Compile Include="HtmlHelpers\PlayedGameHelper.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
-    <Compile Include="Models\PlayedGame\IndividualPlayerGameSummaryViewModel.cs" />
     <Compile Include="Models\PlayedGame\GameResultViewModel.cs" />
     <Compile Include="Models\PlayedGame\PlayedGameDetailsViewModel.cs" />
     <Compile Include="Models\Players\PlayerDetailsViewModel.cs" />
