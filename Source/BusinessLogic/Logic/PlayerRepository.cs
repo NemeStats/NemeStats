@@ -19,13 +19,14 @@ namespace BusinessLogic.Models
             dbContext = context;
         }
 
-        public PlayerDetails GetPlayerDetails(int playerID)
+        public PlayerDetails GetPlayerDetails(int playerID, int numberOfRecentGamesToRetrieve)
         {
             Player returnPlayer = dbContext.Players
                 .Where(player => player.Id == playerID)
                 .Include(player => player.PlayerGameResults
                     .Select(playerGameResult => playerGameResult.PlayedGame)
-                        .Select(playedGame => playedGame.GameDefinition)).FirstOrDefault();
+                        .Select(playedGame => playedGame.GameDefinition))
+                        .FirstOrDefault();
 
             PlayerDetails playerDetails = null;
             
@@ -38,7 +39,8 @@ namespace BusinessLogic.Models
                     Active = returnPlayer.Active,
                     Id = returnPlayer.Id,
                     Name = returnPlayer.Name,
-                    PlayerGameResults = returnPlayer.PlayerGameResults.ToList(),
+                    //TODO this should happen in the query above rather than after the query. Need help with this though.
+                    PlayerGameResults = returnPlayer.PlayerGameResults.Take(numberOfRecentGamesToRetrieve).ToList(),
                     PlayerStats = playerStatistics
                 };
             }

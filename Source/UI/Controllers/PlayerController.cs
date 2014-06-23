@@ -15,6 +15,10 @@ namespace UI.Controllers
 {
     public class PlayerController : Controller
     {
+        public static readonly int NUMBER_OF_RECENT_GAMES_TO_RETRIEVE = 10;
+        public static readonly string RECENT_GAMES_MESSAGE_FORMAT = "(Last {0} Games)";
+
+
         internal NemeStatsDbContext db;
         internal PlayerLogic playerLogic;
         internal GameResultViewModelBuilder builder;
@@ -45,7 +49,7 @@ namespace UI.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            PlayerDetails player = playerLogic.GetPlayerDetails(id.Value);
+            PlayerDetails player = playerLogic.GetPlayerDetails(id.Value, NUMBER_OF_RECENT_GAMES_TO_RETRIEVE);
 
             if (player == null)
             {
@@ -54,6 +58,12 @@ namespace UI.Controllers
 
             PlayerDetailsViewModel playerDetailsViewModel = playerDetailsViewModelBuilder.Build(player);
 
+            int numberOfRecentGames = player.PlayerGameResults.Count;
+            if(numberOfRecentGames >= NUMBER_OF_RECENT_GAMES_TO_RETRIEVE)
+            {
+                ViewBag.RecentGamesMessage = string.Format(RECENT_GAMES_MESSAGE_FORMAT, player.PlayerGameResults.Count);
+            }
+            
             return View(MVC.Player.Views.Details, playerDetailsViewModel);
         }
 

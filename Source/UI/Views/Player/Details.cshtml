@@ -36,7 +36,7 @@
 </p>
 <br/>
 <div>
-    <h4>Recent Games</h4>
+    <h4>Recent Games @ViewBag.RecentGamesMessage</h4>
     @foreach(var playerResult in @Model.PlayerGameResultDetails)
     {
         @playerResult.GameName <text>- </text>

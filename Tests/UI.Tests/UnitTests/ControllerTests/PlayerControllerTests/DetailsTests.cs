@@ -24,7 +24,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         private PlayerDetailsViewModelBuilder playerDetailsViewModelBuilder;
         private PlayerController playerController;
 
-        [TestFixtureSetUp]
+        [SetUp]
         public void SetUp()
         {
             dbContextMock = MockRepository.GenerateMock<NemeStatsDbContext>();
@@ -66,7 +66,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
             int playerId = 1351;
             playerController.Details(playerId);
 
-            playerLogicMock.AssertWasCalled(x => x.GetPlayerDetails(playerId));
+            playerLogicMock.AssertWasCalled(x => x.GetPlayerDetails(playerId, PlayerController.NUMBER_OF_RECENT_GAMES_TO_RETRIEVE));
         }
 
         [Test]
@@ -74,7 +74,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         {
             int playerId = 1351;
             PlayerDetails playerDetails = new PlayerDetails(){ PlayerGameResults = new List<PlayerGameResult>() };
-            playerLogicMock.Expect(playerLogic => playerLogic.GetPlayerDetails(playerId))
+            playerLogicMock.Expect(playerLogic => playerLogic.GetPlayerDetails(playerId, PlayerController.NUMBER_OF_RECENT_GAMES_TO_RETRIEVE))
                 .Repeat.Once()
                 .Return(playerDetails);
 
@@ -97,7 +97,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         {
             int playerId = 1351;
             PlayerDetails playerDetails = new PlayerDetails() { Id = playerId, PlayerGameResults = new List<PlayerGameResult>() };
-            playerLogicMock.Expect(playerLogic => playerLogic.GetPlayerDetails(playerId))
+            playerLogicMock.Expect(playerLogic => playerLogic.GetPlayerDetails(playerId, PlayerController.NUMBER_OF_RECENT_GAMES_TO_RETRIEVE))
                 .Repeat.Once()
                 .Return(playerDetails);
 
@@ -114,6 +114,56 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
             ViewResult viewResult = playerController.Details(playerId) as ViewResult;
 
             Assert.AreEqual(playerDetailsViewModel, viewResult.Model);
+        }
+
+        [Test]
+        public void ItOnlyRetrievesTheSpecifiedNumberOfPlayers()
+        {
+            int playerId = 1;
+
+            playerController.Details(playerId);
+
+            playerLogicMock.AssertWasCalled(mock => mock.GetPlayerDetails(playerId, PlayerController.NUMBER_OF_RECENT_GAMES_TO_RETRIEVE));
+        }
+
+        [Test]
+        public void ItShowsMessageStatingThatOnlyALimitedListOfRecentGamesAreShowingIfAtMaxGames()
+        {
+            List<PlayerGameResult> playerGameResults = new List<PlayerGameResult>();
+            for(int i = 0; i < PlayerController.NUMBER_OF_RECENT_GAMES_TO_RETRIEVE; i++)
+            {
+                playerGameResults.Add(new PlayerGameResult());
+            }
+            PlayerDetails details = new PlayerDetails(){
+                PlayerGameResults = playerGameResults
+            };
+            int playerId = 1;
+
+            playerLogicMock.Expect(mock => mock.GetPlayerDetails(playerId, PlayerController.NUMBER_OF_RECENT_GAMES_TO_RETRIEVE))
+                .Repeat
+                .Once()
+                .Return(details);
+
+            playerController.Details(playerId);
+
+            string expectedMessage = string.Format(PlayerController.RECENT_GAMES_MESSAGE_FORMAT,
+                PlayerController.NUMBER_OF_RECENT_GAMES_TO_RETRIEVE);
+            Assert.AreEqual(expectedMessage, playerController.ViewBag.RecentGamesMessage);
+        }
+
+        [Test]
+        public void ItDoesntShowTheRecentGamesMessageIfThereAreLessThanTheRequestedMaxNumberOfGames()
+        {
+            PlayerDetails playerDetails = new PlayerDetails() { PlayerGameResults = new List<PlayerGameResult>() };
+            int playerId = 1;
+            playerLogicMock.Expect(mock => mock.GetPlayerDetails(playerId, PlayerController.NUMBER_OF_RECENT_GAMES_TO_RETRIEVE))
+                .Repeat
+                .Once()
+                .Return(playerDetails);
+
+            playerController.Details(1);
+
+            Assert.IsNull(playerController.ViewBag.RecentGamesMessage);
         }
     }
 }

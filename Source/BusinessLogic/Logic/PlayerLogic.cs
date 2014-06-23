@@ -6,7 +6,7 @@ namespace BusinessLogic.Models
 {
     public interface PlayerLogic
     {
-        PlayerDetails GetPlayerDetails(int playerID);
+        PlayerDetails GetPlayerDetails(int playerID, int numberOfRecentGamesToRetrieve);
         List<Player> GetAllPlayers(bool active);
         PlayerStatistics GetPlayerStatistics(int playerId);
     }

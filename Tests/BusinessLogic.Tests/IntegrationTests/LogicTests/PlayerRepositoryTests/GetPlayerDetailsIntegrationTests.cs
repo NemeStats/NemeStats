@@ -23,7 +23,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayerRepositoryTests
                 dbContext.Configuration.LazyLoadingEnabled = false;
                 dbContext.Configuration.ProxyCreationEnabled = false;
 
-                PlayerDetails playerDetails = playerRepository.GetPlayerDetails(testPlayer1.Id);
+                PlayerDetails playerDetails = playerRepository.GetPlayerDetails(testPlayer1.Id, 1);
                 Assert.NotNull(playerDetails.PlayerGameResults, "Failed to retrieve PlayerGameResults.");
             }
         }
@@ -37,7 +37,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayerRepositoryTests
                 dbContext.Configuration.ProxyCreationEnabled = false;
                 PlayerRepository playerRepository = new PlayerRepository(dbContext);
 
-                PlayerDetails testPlayerDetails = playerRepository.GetPlayerDetails(testPlayer1.Id);
+                PlayerDetails testPlayerDetails = playerRepository.GetPlayerDetails(testPlayer1.Id, 1);
 
                 Assert.NotNull(testPlayerDetails.PlayerGameResults.First().PlayedGame);
             }
@@ -52,7 +52,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayerRepositoryTests
                 dbContext.Configuration.ProxyCreationEnabled = false;
                 PlayerRepository playerRepository = new PlayerRepository(dbContext);
 
-                PlayerDetails testPlayerDetails = playerRepository.GetPlayerDetails(testPlayer1.Id);
+                PlayerDetails testPlayerDetails = playerRepository.GetPlayerDetails(testPlayer1.Id, 1);
 
                 Assert.NotNull(testPlayerDetails.PlayerGameResults.First().PlayedGame.GameDefinition);
             }
@@ -63,7 +63,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayerRepositoryTests
         {
             using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
             {
-                PlayerDetails notFoundPlayer = new PlayerRepository(dbContext).GetPlayerDetails(-1);
+                PlayerDetails notFoundPlayer = new PlayerRepository(dbContext).GetPlayerDetails(-1, 1);
                 Assert.Null(notFoundPlayer);
             }
         }
@@ -73,9 +73,22 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayerRepositoryTests
         {
             using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
             {
-                PlayerDetails playerDetails = new PlayerRepository(dbContext).GetPlayerDetails(testPlayer1.Id);
+                PlayerDetails playerDetails = new PlayerRepository(dbContext).GetPlayerDetails(testPlayer1.Id, 1);
 
                 Assert.NotNull(playerDetails.PlayerStats);
+            }
+        }
+
+        [Test]
+        public void ItOnlyGetsTheSpecifiedNumberOfRecentGames()
+        {
+            using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
+            {
+                int numberOfGamesToRetrieve = 1;
+
+                PlayerDetails playerDetails = new PlayerRepository(dbContext).GetPlayerDetails(testPlayer1.Id, numberOfGamesToRetrieve);
+
+                Assert.AreEqual(numberOfGamesToRetrieve, playerDetails.PlayerGameResults.Count);
             }
         }
 
