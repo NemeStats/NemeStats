@@ -28,7 +28,8 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayedGameTests.GameResultView
             };
             PlayedGame playedGame = new PlayedGame()
             {
-                GameDefinition = gameDefinition
+                GameDefinition = gameDefinition,
+                DatePlayed = new DateTime(2014, 09, 15)
             };
             playerGameResult = new PlayerGameResult()
             {
@@ -125,6 +126,12 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayedGameTests.GameResultView
         public void ItCopiesThePlayedGameId()
         {
             Assert.AreEqual(playerGameResult.PlayedGameId, playerGameResultDetails.PlayedGameId);
+        }
+
+        [Test]
+        public void ItCopiesTheDatePlayed()
+        {
+            Assert.AreEqual(playerGameResult.PlayedGame.DatePlayed, playerGameResultDetails.DatePlayed);
         }
     }
 }

@@ -25,6 +25,7 @@ namespace UI.Transformations
             result.GameDefinitionId = playerGameResult.PlayedGame.GameDefinition.Id;
             result.GameName = playerGameResult.PlayedGame.GameDefinition.Name;
             result.PlayedGameId = playerGameResult.PlayedGameId;
+            result.DatePlayed = playerGameResult.PlayedGame.DatePlayed;
 
             return result;
         }

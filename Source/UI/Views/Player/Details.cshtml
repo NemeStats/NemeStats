@@ -39,6 +39,7 @@
     <h4>Recent Games @ViewBag.RecentGamesMessage</h4>
     @foreach(var playerResult in @Model.PlayerGameResultDetails)
     {
+        @playerResult.DatePlayed.ToShortDateString() <text>: </text>
         @playerResult.GameName <text>- </text>
         @Html.GameResults(playerResult) 
         @Html.ActionLink("[Details]", "Details", "PlayedGame", new { id = playerResult.PlayedGameId }, new { })
