@@ -92,6 +92,23 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayerRepositoryTests
             }
         }
 
-        //TODO add test to ensure it orders by date descending
+        [Test]
+        public void ItOrdersPlayerGameResultsByTheDatePlayedDescending()
+        {
+            using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
+            {
+                int numberOfGamesToRetrieve = 3;
+
+                PlayerDetails playerDetails = new PlayerRepository(dbContext).GetPlayerDetails(testPlayer1.Id, numberOfGamesToRetrieve);
+                long lastTicks = long.MaxValue; ;
+                Assert.IsTrue(playerDetails.PlayerGameResults.Count == numberOfGamesToRetrieve);
+                foreach(PlayerGameResult result in playerDetails.PlayerGameResults)
+                {
+                    Assert.GreaterOrEqual(lastTicks, result.PlayedGame.DatePlayed.Ticks);
+
+                    lastTicks = result.PlayedGame.DatePlayed.Ticks;
+                }
+            }
+        }
     }
 }

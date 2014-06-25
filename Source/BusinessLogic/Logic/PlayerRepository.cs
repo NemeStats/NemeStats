@@ -21,12 +21,7 @@ namespace BusinessLogic.Models
 
         public PlayerDetails GetPlayerDetails(int playerID, int numberOfRecentGamesToRetrieve)
         {
-            Player returnPlayer = dbContext.Players
-                .Where(player => player.Id == playerID)
-                .Include(player => player.PlayerGameResults
-                    .Select(playerGameResult => playerGameResult.PlayedGame)
-                        .Select(playedGame => playedGame.GameDefinition))
-                        .FirstOrDefault();
+            Player returnPlayer = GetPlayer(playerID);
 
             PlayerDetails playerDetails = null;
             
@@ -34,18 +29,39 @@ namespace BusinessLogic.Models
             {
                 PlayerStatistics playerStatistics = GetPlayerStatistics(playerID);
 
+                List<PlayerGameResult> playerGameResults = GetPlayerGameResultsWithPlayedGameAndGameDefinition(playerID, numberOfRecentGamesToRetrieve);
+
                 playerDetails = new PlayerDetails()
                 {
                     Active = returnPlayer.Active,
                     Id = returnPlayer.Id,
                     Name = returnPlayer.Name,
-                    //TODO this should happen in the query above rather than after the query. Need help with this though.
-                    PlayerGameResults = returnPlayer.PlayerGameResults.Take(numberOfRecentGamesToRetrieve).ToList(),
+                    PlayerGameResults = playerGameResults,
                     PlayerStats = playerStatistics
                 };
             }
             
             return playerDetails;
+        }
+
+        private Player GetPlayer(int playerID)
+        {
+            Player returnPlayer = dbContext.Players
+                .Where(player => player.Id == playerID)
+                    .FirstOrDefault();
+            return returnPlayer;
+        }
+
+        private List<PlayerGameResult> GetPlayerGameResultsWithPlayedGameAndGameDefinition(int playerID, int numberOfRecentGamesToRetrieve)
+        {
+            List<PlayerGameResult> playerGameResults = dbContext.PlayerGameResults
+                        .Where(result => result.PlayerId == playerID)
+                        .OrderByDescending(result => result.PlayedGame.DatePlayed)
+                        .Take(numberOfRecentGamesToRetrieve)
+                        .Include(result => result.PlayedGame)
+                        .Include(result => result.PlayedGame.GameDefinition)
+                        .ToList();
+            return playerGameResults;
         }
 
         public List<Player> GetAllPlayers(bool active)
