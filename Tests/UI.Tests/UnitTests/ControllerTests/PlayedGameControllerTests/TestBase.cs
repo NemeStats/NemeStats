@@ -16,6 +16,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
     {
         protected NemeStatsDbContext dbContexMock;
         protected PlayedGameController playedGameController;
+        protected PlayedGameController playedGameControllerPartialMock;
         protected PlayedGameLogic playedGameLogicMock;
         protected PlayerLogic playerLogicMock;
         protected PlayedGameDetailsViewModelBuilder playedGameDetailsBuilder;
@@ -28,6 +29,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
             playerLogicMock = MockRepository.GenerateMock<PlayerLogic>();
             playedGameDetailsBuilder = MockRepository.GenerateMock<PlayedGameDetailsViewModelBuilder>();
             playedGameController = new Controllers.PlayedGameController(dbContexMock, playedGameLogicMock, playerLogicMock, playedGameDetailsBuilder);
+            playedGameControllerPartialMock = MockRepository.GeneratePartialMock<PlayedGameController>(dbContexMock, playedGameLogicMock, playerLogicMock, playedGameDetailsBuilder);
         }
     }
 }

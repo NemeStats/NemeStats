@@ -98,11 +98,7 @@ namespace UI.Controllers
                 return RedirectToAction(MVC.PlayedGame.ActionNames.Index);
             }
 
-            AddAllPlayersToViewBag();
-
-            ViewBag.GameDefinitionId = new SelectList(db.GameDefinitions, "Id", "Name", newlyCompletedGame.GameDefinitionId);
-            //TODO If validation fails, should not lose all of the players that have been added already.
-            return View(MVC.PlayedGame.Views.Create, newlyCompletedGame);
+            return Create();
         }
 
 

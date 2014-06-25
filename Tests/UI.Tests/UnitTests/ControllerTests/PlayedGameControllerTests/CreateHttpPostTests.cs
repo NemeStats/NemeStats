@@ -11,7 +11,7 @@ using System.Web.Mvc;
 namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 {
     [TestFixture]
-    public class CreateTests : TestBase
+    public class CreateHttpPostTests : TestBase
     {
         [SetUp]
         public override void TestSetUp()
@@ -23,12 +23,17 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
         [Test]
         public void ItRemainsOnTheCreatePageIfTheModelIsNotValid()
         {
+            ViewResult expectedViewResult = new ViewResult();
             playerLogicMock.Expect(x => x.GetAllPlayers(true)).Repeat.Once().Return(new List<Player>());
-            playedGameController.ModelState.AddModelError("Test error", "this is a test error to make model state invalid");
+            playedGameControllerPartialMock.Expect(controller => controller.Create())
+                    .Repeat.Once()
+                    .Return(expectedViewResult);
 
-            ViewResult result = playedGameController.Create(new NewlyCompletedGame()) as ViewResult;
+            playedGameControllerPartialMock.ModelState.AddModelError("Test error", "this is a test error to make model state invalid");
 
-            Assert.AreEqual(MVC.PlayedGame.Views.Create, result.ViewName);
+            ViewResult actualResult = playedGameControllerPartialMock.Create(new NewlyCompletedGame()) as ViewResult;
+
+            Assert.AreSame(expectedViewResult, actualResult);
         }
 
         [Test]
@@ -61,6 +66,20 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
             RedirectToRouteResult result = playedGameController.Create(playedGame) as RedirectToRouteResult;
 
             Assert.AreEqual(MVC.PlayedGame.ActionNames.Index, result.RouteValues["action"]);
+        }
+
+        [Test]
+        public void ItSavesTheNewGame()
+        {
+            NewlyCompletedGame playedGame = new NewlyCompletedGame()
+            {
+                GameDefinitionId = 1,
+                PlayerRanks = new List<PlayerRank>()
+            };
+
+            playedGameController.Create(playedGame);
+
+            playedGameLogicMock.AssertWasCalled(mock => mock.CreatePlayedGame(playedGame));
         }
     }
 }

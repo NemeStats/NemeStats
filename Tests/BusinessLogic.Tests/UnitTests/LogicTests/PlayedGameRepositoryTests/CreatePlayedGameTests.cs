@@ -28,8 +28,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGameRepositoryTests
             playedGamesDbSet.Expect(dbSet => dbSet.Add(Arg<PlayedGame>.Is.Anything));
         }
 
-        [Test, Ignore("need to check this with someone who knows how to test EF stuff. "
-            + "Doesn't look like I'm setting my expectations right. Also need clarification on how many separate tests there should be.")]
+        [Test]
         public void ItSavesAPlayedGameIfThereIsAGameDefinition()
         {
             int gameDefinitionId = 1354;
@@ -46,11 +45,11 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGameRepositoryTests
             playedGameLogic.CreatePlayedGame(newlyCompletedGame);
 
             dbContext.AssertWasCalled(context => context.PlayedGames);
-            //TODO need grant help on this test
+
             playedGamesDbSet.AssertWasCalled(dbSet => dbSet.Add(
                     Arg<PlayedGame>.Matches(game => game.GameDefinitionId == gameDefinitionId
                                                 && game.NumberOfPlayers == playerRanks.Count()
-                                                && game.DatePlayed.Date.Equals(DateTime.UtcNow))));
+                                                && game.DatePlayed.Date.Equals(DateTime.UtcNow.Date))));
         }
 
         [Test]

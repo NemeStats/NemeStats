@@ -9,7 +9,7 @@ using System.Web.Mvc;
 namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 {
     [TestFixture]
-    public class CreateWithNoParametersTests : TestBase
+    public class CreateHttpGetTests : TestBase
     {
         [SetUp]
         public override void TestSetUp()
@@ -18,7 +18,6 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
             dbContexMock.Expect(context => context.GameDefinitions).Repeat.Any().Return(MockRepository.GenerateMock<DbSet<GameDefinition>>());
         }
 
-        //TODO this is also tested in CreateTests. Should there be an interface? Static method? Base Class for the tests?
         [Test]
         public void ItAddsAllActivePlayersToTheViewBag()
         {
