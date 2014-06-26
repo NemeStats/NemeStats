@@ -23,6 +23,7 @@
             this.$rankedPlayers = $("#rankedPlayers");
             this.$players = $("#Players");
             this.$playerFormData = $("#playerFormData");
+            this.$playerDiv = $("#playerDiv");
 
             //Event handlers
             this.$players.change(function () { parent.addPlayer(); });
@@ -43,11 +44,16 @@
                 $("#" + playerId).val(rank);
 
                 var playerName = listItem.attr("data-playerName");
-                listItem.html(parent.generatePlayerRankListItemString(playerName, rank));
+                listItem.html(parent.generatePlayerRankListItemString(index, playerId, playerName, rank));
             });
         },
-        generatePlayerRankListItemString: function (playerName, playerRank) {
-            return playerName + " - Rank: " + playerRank;
+        generatePlayerRankListItemString: function (playerIndex, playerId, playerName, playerRank) {
+
+            return playerName + " - Rank: <input type='text' id='" + playerId +
+            "' name='PlayerRanks[" + playerIndex +
+            "].GameRank' value='" + playerRank + "'/>"
+            + "<input type='hidden' name='PlayerRanks[" + playerIndex +
+                            "].PlayerId' value='" + playerId + "'/>";
         },
         addPlayer: function () {
             var selectedOption = this.$players.find(":selected");
@@ -58,18 +64,11 @@
 
             var playerId = selectedOption.val();
             var playerName = selectedOption.text();
-            var playerRow = "<input type='hidden' name='PlayerRanks[" + this._playerIndex +
-                            "].PlayerId' value='" + playerId + "'/>" +
-                            "<input type='hidden' id='" + playerId +
-                            "' name='PlayerRanks[" + this._playerIndex +
-                            "].GameRank' value='" + this._playerRank + "'/>";
-
-            this.$playerFormData.append(playerRow);
 
             var playerItem = "<li id='li" + playerId +
                               "' data-playerId='" + playerId +
                               "' data-playerName='" + playerName +
-                              "'>" + this.generatePlayerRankListItemString(playerName, this._playerRank) + "</li>";
+                              "'>" + this.generatePlayerRankListItemString(this._playerIndex, playerId, playerName, this._playerRank) + "</li>";
 
             this.$rankedPlayers.append(playerItem);
             this._playerIndex++;

@@ -19,7 +19,6 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayedGameTests
         private PlayedGameDetailsViewModel playedGameDetails;
         private GameResultViewModelBuilder detailsBuilder;
 
-        //TODO is it OK to have SetUps that are used in less than 100% of the test cases?
         [SetUp]
         public void SetUp()
         {

@@ -64,8 +64,8 @@ namespace BusinessLogic.Tests.UnitTests.ModelsTests.GamesTests.ValidationTests
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException), ExpectedMessage = PlayerRankValidator.EXCEPTION_MESSAGE_GAME_MUST_NOT_HAVE_A_GAP_IN_RANKS)]
-        public void ItRequiresContiguousRankingOfPlayers()
+        [ExpectedException(typeof(ArgumentException), ExpectedMessage = PlayerRankValidator.EXCEPTION_MESSAGE_NO_PLAYER_CAN_HAVE_A_HIGHER_RANK_THAN_THE_NUMBER_OF_PLAYERS)]
+        public void NoPlayerMayHaveARankGreaterThanTheTotalNumberOfPlayers()
         {
             List<PlayerRank> playerRanks = new List<PlayerRank>();
             playerRanks.Add(new PlayerRank() { PlayerId = 1, GameRank = 1 });
