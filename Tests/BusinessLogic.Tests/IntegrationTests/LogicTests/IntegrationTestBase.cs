@@ -13,11 +13,17 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests
         protected List<PlayedGame> testPlayedGames = new List<PlayedGame>();
         protected GameDefinition testGameDefinition;
         protected Player testPlayer1;
-        protected string testPlayer1Name = "this is player 1 test 123abc";
+        protected string testPlayer1Name = "testPlayer1";
         protected Player testPlayer2;
-        protected string testPlayer2Name = "this is player 2 test 123abc";
+        protected string testPlayer2Name = "testPlayer2";
         protected Player testPlayer3;
-        protected string testPlayer3Name = "this is player 3 test 123abc";
+        protected string testPlayer3Name = "testPlayer3";
+        protected Player testPlayer4;
+        protected string testPlayer4Name = "testPlayer4";
+        protected Player testPlayer5;
+        protected string testPlayer5Name = "testPlayer5";
+        protected Player testPlayer6;
+        protected string testPlayer6Name = "testPlayer6";
         protected string testGameName = "this is a test game name 123abc";
         protected string testGameDescription = "this is a test game description 123abc";
         
@@ -31,12 +37,19 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests
                 testGameDefinition = new GameDefinition() { Name = testGameName, Description = testGameDescription };
                 dbContext.GameDefinitions.Add(testGameDefinition);
 
-                testPlayer1 = new Player() { Name = testPlayer1Name };
+                testPlayer1 = new Player() { Name = testPlayer1Name, Active = true };
                 dbContext.Players.Add(testPlayer1);
-                testPlayer2 = new Player() { Name = testPlayer2Name };
+                testPlayer2 = new Player() { Name = testPlayer2Name, Active = true };
                 dbContext.Players.Add(testPlayer2);
-                testPlayer3 = new Player() { Name = testPlayer3Name };
+                testPlayer3 = new Player() { Name = testPlayer3Name, Active = true };
                 dbContext.Players.Add(testPlayer3);
+                testPlayer4 = new Player() { Name = testPlayer4Name, Active = true };
+                dbContext.Players.Add(testPlayer4);
+                testPlayer5 = new Player() { Name = testPlayer5Name, Active = false };
+                dbContext.Players.Add(testPlayer5);
+                testPlayer6 = new Player() { Name = testPlayer6Name, Active = true };
+                dbContext.Players.Add(testPlayer6);
+                
                 dbContext.SaveChanges();
 
                 PlayedGameLogic playedGameLogic = new PlayedGameRepository(dbContext);
@@ -51,8 +64,51 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests
                 playedGame = CreateTestPlayedGame(players, playerRanks, playedGameLogic);
                 testPlayedGames.Add(playedGame);
 
-                players = new List<Player>() { testPlayer1, testPlayer3 };
-                playerRanks = new List<int>() { 2, 1 };
+                players = new List<Player>() { testPlayer1, testPlayer3, testPlayer2 };
+                playerRanks = new List<int>() { 1, 2, 3 };
+                playedGame = CreateTestPlayedGame(players, playerRanks, playedGameLogic);
+                testPlayedGames.Add(playedGame);
+
+                players = new List<Player>() { testPlayer3, testPlayer1 };
+                playerRanks = new List<int>() { 1, 2 };
+                playedGame = CreateTestPlayedGame(players, playerRanks, playedGameLogic);
+                testPlayedGames.Add(playedGame);
+
+                //make player4 beat player 1 three times
+                players = new List<Player>() { testPlayer4, testPlayer1, testPlayer2, testPlayer3 };
+                playerRanks = new List<int>() { 1, 2, 3, 4 };
+                playedGame = CreateTestPlayedGame(players, playerRanks, playedGameLogic);
+                testPlayedGames.Add(playedGame);
+
+                players = new List<Player>() { testPlayer4, testPlayer1 };
+                playerRanks = new List<int>() { 1, 2 };
+                playedGame = CreateTestPlayedGame(players, playerRanks, playedGameLogic);
+                testPlayedGames.Add(playedGame);
+
+                players = new List<Player>() { testPlayer4, testPlayer1 };
+                playerRanks = new List<int>() { 1, 2 };
+                playedGame = CreateTestPlayedGame(players, playerRanks, playedGameLogic);
+                testPlayedGames.Add(playedGame);
+                
+                //--make the inactive player5 beat player1 3 times
+                players = new List<Player>() { testPlayer5, testPlayer1 };
+                playerRanks = new List<int>() { 1, 2 };
+                playedGame = CreateTestPlayedGame(players, playerRanks, playedGameLogic);
+                testPlayedGames.Add(playedGame);
+
+                players = new List<Player>() { testPlayer5, testPlayer1 };
+                playerRanks = new List<int>() { 1, 2 };
+                playedGame = CreateTestPlayedGame(players, playerRanks, playedGameLogic);
+                testPlayedGames.Add(playedGame);
+
+                players = new List<Player>() { testPlayer5, testPlayer1 };
+                playerRanks = new List<int>() { 1, 2 };
+                playedGame = CreateTestPlayedGame(players, playerRanks, playedGameLogic);
+                testPlayedGames.Add(playedGame);
+
+                //make player 2 be the only one who beat player 5
+                players = new List<Player>() { testPlayer2, testPlayer5 };
+                playerRanks = new List<int>() { 1, 2 };
                 playedGame = CreateTestPlayedGame(players, playerRanks, playedGameLogic);
                 testPlayedGames.Add(playedGame);
             }
@@ -90,6 +146,9 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests
                 CleanUpPlayerByPlayerName(testPlayer1Name, dbContext);
                 CleanUpPlayerByPlayerName(testPlayer2Name, dbContext);
                 CleanUpPlayerByPlayerName(testPlayer3Name, dbContext);
+                CleanUpPlayerByPlayerName(testPlayer4Name, dbContext);
+                CleanUpPlayerByPlayerName(testPlayer5Name, dbContext);
+                CleanUpPlayerByPlayerName(testPlayer6Name, dbContext);
 
                 dbContext.SaveChanges();
             }

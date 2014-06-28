@@ -58,11 +58,15 @@
   <ItemGroup>
     <Compile Include="DataAccess\NerdScorekeeperDbContext.cs" />
     <Compile Include="DataAccess\NerdScorekeeperInitializer.cs" />
+    <Compile Include="DataAccess\PlayerDataAccess\StatisticsDataAccessImpl.cs" />
+    <Compile Include="DataAccess\PlayerDataAccess\StatisticsDataAccess.cs" />
     <Compile Include="Logic\PlayedGameLogic.cs" />
     <Compile Include="Logic\PlayedGameRepository.cs" />
     <Compile Include="Logic\PlayerLogic.cs" />
     <Compile Include="Logic\PlayerRepository.cs" />
     <Compile Include="Logic\Points\GordonPoints.cs" />
+    <Compile Include="Models\Players\Nemesis.cs" />
+    <Compile Include="Models\Players\NullNemesis.cs" />
     <Compile Include="Models\Players\PlayerStatistics.cs" />
     <Compile Include="Migrations\201405220234035_Initial.cs" />
     <Compile Include="Migrations\201405220234035_Initial.Designer.cs">
@@ -102,6 +106,7 @@
     <Compile Include="Models\PlayerGameResult.cs" />
     <Compile Include="Models\Games\PlayerRank.cs" />
     <Compile Include="Models\Players\PlayerDetails.cs" />
+    <Compile Include="Models\Players\WinLossStatistics.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

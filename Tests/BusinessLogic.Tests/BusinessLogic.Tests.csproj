@@ -63,6 +63,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IntegrationTests\DataAccessTests\StatisticsRepositoryTests\GetNemesisTests.cs" />
     <Compile Include="IntegrationTests\EntityFramework6EagerLoadingTests.cs" />
     <Compile Include="IntegrationTests\LogicTests\IntegrationTestBase.cs" />
     <Compile Include="IntegrationTests\LogicTests\PlayedGameRepositoryTests\CreatePlayedGameIntegrationTests.cs" />
