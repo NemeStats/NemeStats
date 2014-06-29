@@ -83,6 +83,7 @@ namespace UI.Controllers
                 if (result.Succeeded)
                 {
                     await SignInAsync(user, isPersistent: false);
+                    UserManager.SetEmail(user.Id, model.EmailAddress);
                     return RedirectToAction("Index", "Home");
                 }
                 else
