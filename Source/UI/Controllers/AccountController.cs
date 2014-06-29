@@ -127,10 +127,15 @@ namespace UI.Controllers
                 : "";
             ViewBag.HasLocalPassword = HasPassword();
             ViewBag.ReturnUrl = Url.Action("Manage");
-            return View();
+
+            ManageUserViewModel viewModel = new ManageUserViewModel();
+            string currentUserId = User.Identity.GetUserId();
+            ApplicationUser user = UserManager.FindById(currentUserId);
+            viewModel.EmailAddress = user.Email;
+            return View(MVC.Account.Views.Manage, viewModel);
         }
 
-        //
+        //TODO how to test async methods?
         // POST: /Account/Manage
         [HttpPost]
         [ValidateAntiForgeryToken]

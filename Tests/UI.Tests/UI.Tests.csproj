@@ -92,6 +92,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="UnitTests\ControllerTests\AccountControllerTests\ManageTests.cs" />
     <Compile Include="UnitTests\ControllerTests\AccountControllerTests\RegisterTests.cs" />
     <Compile Include="UnitTests\ControllerTests\PlayedGameControllerTests\CreateHttpPostTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
