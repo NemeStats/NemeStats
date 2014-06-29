@@ -231,7 +231,6 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\GameDefinitionController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\List.cs" />
     <Compile Include="Controllers\PlayedGameController.cs" />
     <Compile Include="Controllers\PlayerController.cs" />
     <Compile Include="DependencyResolution\IoC.cs" />

@@ -13,6 +13,7 @@ using UI.Transformations.Player;
 
 namespace UI.Controllers
 {
+    [Authorize]
     public class PlayerController : Controller
     {
         public static readonly int NUMBER_OF_RECENT_GAMES_TO_RETRIEVE = 10;

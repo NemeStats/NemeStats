@@ -11,6 +11,7 @@ using UI.Transformations;
 
 namespace UI.Controllers
 {
+    [Authorize]
     public partial class PlayedGameController : Controller
     {
         internal NemeStatsDbContext db;

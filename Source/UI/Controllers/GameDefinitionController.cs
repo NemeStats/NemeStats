@@ -11,6 +11,7 @@ using BusinessLogic.DataAccess;
 
 namespace UI.Controllers
 {
+    [Authorize]
     public partial class GameDefinitionController : Controller
     {
         private NemeStatsDbContext db = new NemeStatsDbContext();
