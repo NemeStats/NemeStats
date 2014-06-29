@@ -14,5 +14,10 @@ namespace UI.Models.Players
         public bool Active { get; set; }
         public List<GameResultViewModel> PlayerGameResultDetails { get; set; }
         public int TotalGamesPlayed { get; set; }
+        public bool HasNemesis { get; set; }
+        public int NemesisPlayerId { get; set; }
+        public string NemesisName { get; set; }
+        public int LossPercentageVersusPlayer { get; set; }
+        public int NumberOfGamesLostVersusNemesis { get; set; }
     }
 }

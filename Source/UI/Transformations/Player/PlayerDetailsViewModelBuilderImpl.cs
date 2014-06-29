@@ -38,7 +38,19 @@ namespace UI.Transformations.Player
 
             PopulatePlayerGameSummaries(playerDetails, playerDetailsViewModel);
 
+            PopulateNemesisData(playerDetails.Nemesis, playerDetailsViewModel);
+
             return playerDetailsViewModel;
+        }
+
+        private static void PopulateNemesisData(Nemesis nemesis, PlayerDetailsViewModel playerDetailsViewModel)
+        {
+            //TODO should there be another 'normal' type that extends Nemesis?
+            playerDetailsViewModel.HasNemesis = !(nemesis is NullNemesis);
+            playerDetailsViewModel.NemesisPlayerId = nemesis.NemesisPlayerId;
+            playerDetailsViewModel.NemesisName = nemesis.NemesisPlayerName;
+            playerDetailsViewModel.NumberOfGamesLostVersusNemesis = nemesis.GamesLostVersusNemesis;
+            playerDetailsViewModel.LossPercentageVersusPlayer = nemesis.LossPercentageVersusNemesis;
         }
 
         private static void Validate(PlayerDetails playerDetails)

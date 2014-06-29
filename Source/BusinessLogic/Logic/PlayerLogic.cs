@@ -9,5 +9,6 @@ namespace BusinessLogic.Models
         PlayerDetails GetPlayerDetails(int playerID, int numberOfRecentGamesToRetrieve);
         List<Player> GetAllPlayers(bool active);
         PlayerStatistics GetPlayerStatistics(int playerId);
+        Nemesis GetNemesis(int playerId);
     }
 }

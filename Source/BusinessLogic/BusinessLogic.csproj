@@ -58,8 +58,6 @@
   <ItemGroup>
     <Compile Include="DataAccess\NerdScorekeeperDbContext.cs" />
     <Compile Include="DataAccess\NerdScorekeeperInitializer.cs" />
-    <Compile Include="DataAccess\PlayerDataAccess\StatisticsDataAccessImpl.cs" />
-    <Compile Include="DataAccess\PlayerDataAccess\StatisticsDataAccess.cs" />
     <Compile Include="Logic\PlayedGameLogic.cs" />
     <Compile Include="Logic\PlayedGameRepository.cs" />
     <Compile Include="Logic\PlayerLogic.cs" />
@@ -139,7 +137,9 @@
       <DependentUpon>201406140253127_IntroducingGordonPoints.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="DataAccess\PlayerDataAccess\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -18,6 +18,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayerRepositoryTests
         {
             using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
             {
+                PlayerLogic playerLogic = new PlayerRepository(dbContext);
                 PlayerRepository playerRepository = new PlayerRepository(dbContext);
                 PlayerStatistics playerStatistics = playerRepository.GetPlayerStatistics(testPlayer1.Id);
                 int totalGamesForPlayer1 = testPlayedGames

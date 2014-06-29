@@ -13,7 +13,7 @@ namespace BusinessLogic.Models.Players
         public bool Active { get; set; }
 
         public PlayerStatistics PlayerStats { get; set; }
-
         public List<PlayerGameResult> PlayerGameResults { get; set; }
+        public Nemesis Nemesis { get; set; }
     }
 }

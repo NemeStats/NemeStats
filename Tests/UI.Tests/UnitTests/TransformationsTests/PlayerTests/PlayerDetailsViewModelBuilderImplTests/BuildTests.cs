@@ -48,13 +48,22 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTests.PlayerDetailsViewM
                 new PlayerGameResult(){ PlayedGameId = 13, PlayedGame = playedGame2 }
             };
 
+            Nemesis nemesis = new Nemesis() 
+            { 
+                NemesisPlayerId = 123, 
+                GamesLostVersusNemesis = 3, 
+                LossPercentageVersusNemesis = 75, 
+                NemesisPlayerName = "Ace Nemesis" 
+            };
+
             playerDetails = new PlayerDetails()
             {
                 Id = 134,
                 Active = true,
                 Name = "Skipper",
                 PlayerGameResults = playerGameResults,
-                PlayerStats = new PlayerStatistics() { TotalGames = 71 }
+                PlayerStats = new PlayerStatistics() { TotalGames = 71 },
+                Nemesis = nemesis
             };
 
             GameResultViewModelBuilder relatedEntityBuilder
@@ -141,6 +150,36 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTests.PlayerDetailsViewM
                 actualPlayedGameId = playerDetailsViewModel.PlayerGameResultDetails[i].PlayedGameId;
                 Assert.AreEqual(expectedPlayedGameId, actualPlayedGameId);
             }
+        }
+
+        [Test]
+        public void ItPopulatesTheHasNemesisFlagIfTheNemesisIsNotNull()
+        {
+            Assert.IsTrue(playerDetailsViewModel.HasNemesis);
+        }
+
+        [Test]
+        public void ItPopulatesTheNemesisPlayerId()
+        {
+            Assert.AreEqual(playerDetails.Nemesis.NemesisPlayerId, playerDetailsViewModel.NemesisPlayerId);
+        }
+
+        [Test]
+        public void ItPopulatesTheNemesisName()
+        {
+            Assert.AreEqual(playerDetails.Nemesis.NemesisPlayerName, playerDetailsViewModel.NemesisName);
+        }
+
+        [Test]
+        public void ItPopulatesTheGamesLostVersusTheNemesis()
+        {
+            Assert.AreEqual(playerDetails.Nemesis.GamesLostVersusNemesis, playerDetailsViewModel.NumberOfGamesLostVersusNemesis);
+        }
+
+        [Test]
+        public void ItPopulatesTheLostPercentageVersusTheNemesis()
+        {
+            Assert.AreEqual(playerDetails.Nemesis.LossPercentageVersusNemesis, playerDetailsViewModel.LossPercentageVersusPlayer);
         }
     }
 }

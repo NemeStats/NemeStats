@@ -46,6 +46,33 @@
         <br/><br/>
     }
 </div>
+@if(@Model.HasNemesis)
+{
+    <div>
+        <h4>Nemesis</h4>
+        <dl class="dl-horizontal">
+            <dt>
+               Player Name
+            </dt>
+            <dd>
+                @Model.NemesisName
+            </dd>
+            <dt>
+                Games Lost
+            </dt>
+            <dd>
+                @Model.NumberOfGamesLostVersusNemesis
+            </dd>
+            <dt>
+                % Lost
+            </dt>
+            <dd>
+                @Model.LossPercentageVersusPlayer
+            </dd>
+        </dl>
+    </div>    
+}
+
 <div>
     <h4>Statistics</h4>
     Total Games: @Model.TotalGamesPlayed

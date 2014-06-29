@@ -59,16 +59,6 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayerRepositoryTests
         }
 
         [Test]
-        public void ItReturnsNullIfNoPlayerFound()
-        {
-            using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
-            {
-                PlayerDetails notFoundPlayer = new PlayerRepository(dbContext).GetPlayerDetails(-1, 1);
-                Assert.Null(notFoundPlayer);
-            }
-        }
-
-        [Test]
         public void ItSetsPlayerStatistics()
         {
             using (NemeStatsDbContext dbContext = new NemeStatsDbContext())

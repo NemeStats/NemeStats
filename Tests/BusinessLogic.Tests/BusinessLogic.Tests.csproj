@@ -74,6 +74,7 @@
     <Compile Include="IntegrationTests\LogicTests\PlayerRepositoryTests\GetPlayerStatisticsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UnitTests\LogicTests\PlayedGameRepositoryTests\CreatePlayedGameTests.cs" />
+    <Compile Include="UnitTests\LogicTests\PlayerRepositoryTests\GetPlayerDetailsTests.cs" />
     <Compile Include="UnitTests\LogicTests\PointsTests\GordonPointsTests\CalculateGordonPointsTests.cs" />
     <Compile Include="UnitTests\ModelsTests\GamesTests\ValidationTests\ValidatePlayerRanksTests.cs" />
   </ItemGroup>
