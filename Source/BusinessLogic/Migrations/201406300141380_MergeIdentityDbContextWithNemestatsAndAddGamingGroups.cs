@@ -12,14 +12,11 @@ namespace BusinessLogic.Migrations
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
-                        Name = c.String(),
-                        OwningUserId = c.String(maxLength: 128),
+                        Name = c.String()
                     })
-                .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.AspNetUsers", t => t.OwningUserId)
-                .Index(t => t.OwningUserId);
+                .PrimaryKey(t => t.Id);
 
-            Sql("INSERT INTO GamingGroup (Name, OwningUserId) VALUES ('RIDGID Board Gamers', (SELECT TOP 1 Id FROM AspNetUsers)) ");
+            Sql("INSERT INTO GamingGroup (Name) VALUES ('RIDGID Board Gamers') ");
 
             AddColumn("dbo.GameDefinition", "GamingGroupId", c => c.Int(nullable: true));
             Sql("UPDATE dbo.GameDefinition SET GamingGroupId = (SELECT TOP 1 Id FROM GamingGroup)");
@@ -52,12 +49,10 @@ namespace BusinessLogic.Migrations
             DropForeignKey("dbo.Player", "GamingGroupId", "dbo.GamingGroup");
             DropForeignKey("dbo.PlayerGameResult", "GamingGroupId", "dbo.GamingGroup");
             DropForeignKey("dbo.PlayedGame", "GamingGroupId", "dbo.GamingGroup");
-            DropForeignKey("dbo.GamingGroup", "OwningUserId", "dbo.IdentityUser");
             DropForeignKey("dbo.GameDefinition", "GamingGroupId", "dbo.GamingGroup");
             DropIndex("dbo.Player", new[] { "GamingGroupId" });
             DropIndex("dbo.PlayerGameResult", new[] { "GamingGroupId" });
             DropIndex("dbo.PlayedGame", new[] { "GamingGroupId" });
-            DropIndex("dbo.GamingGroup", new[] { "OwningUserId" });
             DropIndex("dbo.GameDefinition", new[] { "GamingGroupId" });
             DropColumn("dbo.Player", "GamingGroupId");
             DropColumn("dbo.PlayerGameResult", "GamingGroupId");

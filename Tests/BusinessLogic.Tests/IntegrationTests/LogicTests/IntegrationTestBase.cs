@@ -1,6 +1,7 @@
 ﻿using BusinessLogic.DataAccess;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
+using BusinessLogic.Models.Identity;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -34,20 +35,29 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests
             {
                 CleanUpTestData();
 
-                testGameDefinition = new GameDefinition() { Name = testGameName, Description = testGameDescription };
+                //ApplicationUser user = new ApplicationUser() { Email = "testemail@mailinator.com", UserName = "test user name 123abc" };
+                //dbContext.Users.Add(user);
+                //dbContext.SaveChanges();
+
+                GamingGroup gamingGroup = new GamingGroup() { Name = "this is a test gaming group" };
+                dbContext.GamingGroups.Add(gamingGroup);
+                dbContext.SaveChanges();
+                int gamingGroupId = gamingGroup.Id;
+
+                testGameDefinition = new GameDefinition() { Name = testGameName, Description = testGameDescription, GamingGroupId = gamingGroupId };
                 dbContext.GameDefinitions.Add(testGameDefinition);
 
-                testPlayer1 = new Player() { Name = testPlayer1Name, Active = true };
+                testPlayer1 = new Player() { Name = testPlayer1Name, Active = true, GamingGroupId = gamingGroupId };
                 dbContext.Players.Add(testPlayer1);
-                testPlayer2 = new Player() { Name = testPlayer2Name, Active = true };
+                testPlayer2 = new Player() { Name = testPlayer2Name, Active = true, GamingGroupId = gamingGroupId };
                 dbContext.Players.Add(testPlayer2);
-                testPlayer3 = new Player() { Name = testPlayer3Name, Active = true };
+                testPlayer3 = new Player() { Name = testPlayer3Name, Active = true, GamingGroupId = gamingGroupId };
                 dbContext.Players.Add(testPlayer3);
-                testPlayer4 = new Player() { Name = testPlayer4Name, Active = true };
+                testPlayer4 = new Player() { Name = testPlayer4Name, Active = true, GamingGroupId = gamingGroupId };
                 dbContext.Players.Add(testPlayer4);
-                testPlayer5 = new Player() { Name = testPlayer5Name, Active = false };
+                testPlayer5 = new Player() { Name = testPlayer5Name, Active = false, GamingGroupId = gamingGroupId };
                 dbContext.Players.Add(testPlayer5);
-                testPlayer6 = new Player() { Name = testPlayer6Name, Active = true };
+                testPlayer6 = new Player() { Name = testPlayer6Name, Active = true, GamingGroupId = gamingGroupId };
                 dbContext.Players.Add(testPlayer6);
                 
                 dbContext.SaveChanges();

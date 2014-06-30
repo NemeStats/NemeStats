@@ -94,6 +94,10 @@
     <Compile Include="Migrations\201406300141380_MergeIdentityDbContextWithNemestatsAndAddGamingGroups.Designer.cs">
       <DependentUpon>201406300141380_MergeIdentityDbContextWithNemestatsAndAddGamingGroups.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201406300240211_IdentityStuff.cs" />
+    <Compile Include="Migrations\201406300240211_IdentityStuff.Designer.cs">
+      <DependentUpon>201406300240211_IdentityStuff.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\GamingGroup.cs" />
     <Compile Include="Models\Identity\ApplicationUser.cs" />
     <Compile Include="Models\Players\Nemesis.cs" />
@@ -171,6 +175,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201406300141380_MergeIdentityDbContextWithNemestatsAndAddGamingGroups.resx">
       <DependentUpon>201406300141380_MergeIdentityDbContextWithNemestatsAndAddGamingGroups.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201406300240211_IdentityStuff.resx">
+      <DependentUpon>201406300240211_IdentityStuff.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
