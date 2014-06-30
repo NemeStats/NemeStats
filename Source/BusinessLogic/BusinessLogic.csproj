@@ -46,6 +46,33 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core">
+      <HintPath>..\..\packages\Microsoft.AspNet.Identity.Core.2.0.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework">
+      <HintPath>..\..\packages\Microsoft.AspNet.Identity.EntityFramework.2.0.1\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Owin">
+      <HintPath>..\..\packages\Microsoft.AspNet.Identity.Owin.2.0.1\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin">
+      <HintPath>..\..\packages\Microsoft.Owin.2.1.0\lib\net45\Microsoft.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security">
+      <HintPath>..\..\packages\Microsoft.Owin.Security.2.1.0\lib\net45\Microsoft.Owin.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Cookies">
+      <HintPath>..\..\packages\Microsoft.Owin.Security.Cookies.2.1.0\lib\net45\Microsoft.Owin.Security.Cookies.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.OAuth">
+      <HintPath>..\..\packages\Microsoft.Owin.Security.OAuth.2.1.0\lib\net45\Microsoft.Owin.Security.OAuth.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Owin">
+      <HintPath>..\..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -56,13 +83,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataAccess\NerdScorekeeperDbContext.cs" />
-    <Compile Include="DataAccess\NerdScorekeeperInitializer.cs" />
+    <Compile Include="DataAccess\NemeStatsDbContext.cs" />
+    <Compile Include="DataAccess\NemeStatsInitializer.cs" />
     <Compile Include="Logic\PlayedGameLogic.cs" />
     <Compile Include="Logic\PlayedGameRepository.cs" />
     <Compile Include="Logic\PlayerLogic.cs" />
     <Compile Include="Logic\PlayerRepository.cs" />
     <Compile Include="Logic\Points\GordonPoints.cs" />
+    <Compile Include="Migrations\201406300141380_MergeIdentityDbContextWithNemestatsAndAddGamingGroups.cs" />
+    <Compile Include="Migrations\201406300141380_MergeIdentityDbContextWithNemestatsAndAddGamingGroups.Designer.cs">
+      <DependentUpon>201406300141380_MergeIdentityDbContextWithNemestatsAndAddGamingGroups.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\GamingGroup.cs" />
+    <Compile Include="Models\Identity\ApplicationUser.cs" />
     <Compile Include="Models\Players\Nemesis.cs" />
     <Compile Include="Models\Players\NullNemesis.cs" />
     <Compile Include="Models\Players\PlayerStatistics.cs" />
@@ -135,6 +168,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201406140253127_IntroducingGordonPoints.resx">
       <DependentUpon>201406140253127_IntroducingGordonPoints.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201406300141380_MergeIdentityDbContextWithNemestatsAndAddGamingGroups.resx">
+      <DependentUpon>201406300141380_MergeIdentityDbContextWithNemestatsAndAddGamingGroups.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

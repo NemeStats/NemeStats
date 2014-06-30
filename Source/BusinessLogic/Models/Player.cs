@@ -12,10 +12,13 @@ namespace BusinessLogic.Models
     {
         public int Id { get; set; }
 
+        public int GamingGroupId { get; set; }
+
         [StringLength(255)]
         public string Name { get; set; }
         public bool Active { get; set; }
 
+        public virtual GamingGroup GamingGroup { get; set; }
         public virtual IList<PlayerGameResult> PlayerGameResults { get; set; }
     }
 }
