@@ -7,6 +7,8 @@ using Rhino.Mocks;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Security.Principal;
+using System.Web;
 using System.Web.Mvc;
 
 namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
@@ -65,7 +67,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
             };
             UserContext user = new UserContext();
             playedGameLogicMock.Expect(x => x.CreatePlayedGame(Arg<NewlyCompletedGame>.Is.Anything, Arg<UserContext>.Is.Anything)).Repeat.Once();
-            RedirectToRouteResult result = playedGameController.Create(playedGame) as RedirectToRouteResult;
+            RedirectToRouteResult result = playedGameControllerPartialMock.Create(playedGame) as RedirectToRouteResult;
 
             Assert.AreEqual(MVC.PlayedGame.ActionNames.Index, result.RouteValues["action"]);
         }
@@ -79,10 +81,34 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
                 PlayerRanks = new List<PlayerRank>()
             };
 
-            playedGameController.Create(newlyCompletedGame);
+            playedGameControllerPartialMock.Create(newlyCompletedGame);
 
             playedGameLogicMock.AssertWasCalled(mock => mock.CreatePlayedGame(Arg<NewlyCompletedGame>.Is.Equal(newlyCompletedGame), 
                 Arg<UserContext>.Is.Anything));
+        }
+
+        [Test]
+        public void ItPassesTheUserContext()
+        {
+            NewlyCompletedGame newlyCompletedGame = new NewlyCompletedGame()
+            {
+                GameDefinitionId = 1,
+                PlayerRanks = new List<PlayerRank>()
+            };
+            UserContext userContext = new UserContext()
+            {
+                ApplicationUserId = "1"
+            };
+
+            userContextBuilder.Expect(builder => builder.GetUserContext(Arg<HttpRequestBase>.Is.Anything, Arg<IIdentity>.Is.Anything))
+                .Repeat.Once()
+                .Return(userContext);
+
+            playedGameControllerPartialMock.Create(newlyCompletedGame);
+
+            playedGameLogicMock.AssertWasCalled(logic => logic.CreatePlayedGame(
+                Arg<NewlyCompletedGame>.Is.Anything, 
+                Arg<UserContext>.Is.Same(userContext)));
         }
     }
 }

@@ -7,6 +7,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using UI.Logic;
 using UI.Models.PlayedGame;
 using UI.Transformations;
 
@@ -19,18 +20,21 @@ namespace UI.Controllers
         internal PlayedGameLogic playedGameLogic;
         internal PlayerLogic playerLogic;
         internal PlayedGameDetailsViewModelBuilder playedGameDetailsBuilder;
+        internal UserContextBuilder userContextBuilder;
 
         internal const int NUMBER_OF_RECENT_GAMES_TO_DISPLAY = 10;
 
         public PlayedGameController(NemeStatsDbContext dbContext, 
             PlayedGameLogic playedLogic, 
             PlayerLogic playLogic,
-            PlayedGameDetailsViewModelBuilder builder)
+            PlayedGameDetailsViewModelBuilder builder,
+            UserContextBuilder userContextBuilder)
         {
             db = dbContext;
             playedGameLogic = playedLogic;
             playerLogic = playLogic;
             playedGameDetailsBuilder = builder;
+            this.userContextBuilder = userContextBuilder;
         }
 
         // GET: /PlayedGame/
@@ -96,7 +100,7 @@ namespace UI.Controllers
             if (ModelState.IsValid)
             {
                 //TODO finish this
-                UserContext user = null;
+                UserContext user = userContextBuilder.GetUserContext(Request, User.Identity);
                 playedGameLogic.CreatePlayedGame(newlyCompletedGame, user);
 
                 return RedirectToAction(MVC.PlayedGame.ActionNames.Index);

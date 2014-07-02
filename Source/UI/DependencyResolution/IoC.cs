@@ -19,6 +19,7 @@
 using BusinessLogic.Models;
 using StructureMap;
 using StructureMap.Graph;
+using UI.Logic;
 using UI.Models.PlayedGame;
 using UI.Transformations;
 using UI.Transformations.Player;
@@ -37,6 +38,7 @@ namespace UI.DependencyResolution {
                             x.For<PlayedGameDetailsViewModelBuilder>().Use<PlayedGameDetailsViewModelBuilderImpl>();
                             x.For<GameResultViewModelBuilder>().Use<GameResultViewModelBuilderImpl>();
                             x.For<PlayerDetailsViewModelBuilder>().Use<PlayerDetailsViewModelBuilderImpl>();
+                            x.For<UserContextBuilder>().Use<UserContextBuilderImpl>();
                         });
             return ObjectFactory.Container;
         }
