@@ -90,16 +90,26 @@
     <Compile Include="Logic\PlayerLogic.cs" />
     <Compile Include="Logic\PlayerRepository.cs" />
     <Compile Include="Logic\Points\GordonPoints.cs" />
-    <Compile Include="Migrations\201406300141380_MergeIdentityDbContextWithNemestatsAndAddGamingGroups.cs" />
-    <Compile Include="Migrations\201406300141380_MergeIdentityDbContextWithNemestatsAndAddGamingGroups.Designer.cs">
-      <DependentUpon>201406300141380_MergeIdentityDbContextWithNemestatsAndAddGamingGroups.cs</DependentUpon>
+    <Compile Include="Migrations\201407011153551_GamingGroupsAndAspNetAuth.cs" />
+    <Compile Include="Migrations\201407011153551_GamingGroupsAndAspNetAuth.Designer.cs">
+      <DependentUpon>201407011153551_GamingGroupsAndAspNetAuth.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201406300240211_IdentityStuff.cs" />
-    <Compile Include="Migrations\201406300240211_IdentityStuff.Designer.cs">
-      <DependentUpon>201406300240211_IdentityStuff.cs</DependentUpon>
+    <Compile Include="Migrations\201407011201381_OwningUserToGamingGroup.cs" />
+    <Compile Include="Migrations\201407011201381_OwningUserToGamingGroup.Designer.cs">
+      <DependentUpon>201407011201381_OwningUserToGamingGroup.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201407012115300_RemoveGamingGroupFromPlayerGameResult.cs" />
+    <Compile Include="Migrations\201407012115300_RemoveGamingGroupFromPlayerGameResult.Designer.cs">
+      <DependentUpon>201407012115300_RemoveGamingGroupFromPlayerGameResult.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201407012130179_AddUserGamingGroupsToApplicationUser.cs" />
+    <Compile Include="Migrations\201407012130179_AddUserGamingGroupsToApplicationUser.Designer.cs">
+      <DependentUpon>201407012130179_AddUserGamingGroupsToApplicationUser.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\GamingGroup.cs" />
     <Compile Include="Models\Identity\ApplicationUser.cs" />
+    <Compile Include="Models\Identity\UserContext.cs" />
+    <Compile Include="Models\Identity\UserGamingGroup.cs" />
     <Compile Include="Models\Players\Nemesis.cs" />
     <Compile Include="Models\Players\NullNemesis.cs" />
     <Compile Include="Models\Players\PlayerStatistics.cs" />
@@ -173,11 +183,17 @@
     <EmbeddedResource Include="Migrations\201406140253127_IntroducingGordonPoints.resx">
       <DependentUpon>201406140253127_IntroducingGordonPoints.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201406300141380_MergeIdentityDbContextWithNemestatsAndAddGamingGroups.resx">
-      <DependentUpon>201406300141380_MergeIdentityDbContextWithNemestatsAndAddGamingGroups.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201407011153551_GamingGroupsAndAspNetAuth.resx">
+      <DependentUpon>201407011153551_GamingGroupsAndAspNetAuth.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201406300240211_IdentityStuff.resx">
-      <DependentUpon>201406300240211_IdentityStuff.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201407011201381_OwningUserToGamingGroup.resx">
+      <DependentUpon>201407011201381_OwningUserToGamingGroup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201407012115300_RemoveGamingGroupFromPlayerGameResult.resx">
+      <DependentUpon>201407012115300_RemoveGamingGroupFromPlayerGameResult.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201407012130179_AddUserGamingGroupsToApplicationUser.resx">
+      <DependentUpon>201407012130179_AddUserGamingGroupsToApplicationUser.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

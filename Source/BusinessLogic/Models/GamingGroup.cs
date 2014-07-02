@@ -14,10 +14,10 @@ namespace BusinessLogic.Models
         public int Id { get; set; }
         public string Name { get; set; }
 
-        //public string OwningUserId { get; set; }
+        public string OwningUserId { get; set; }
 
-        //[ForeignKey("OwningUserId")]
-        //public virtual ApplicationUser OwningUser { get; set; }
+        [ForeignKey("OwningUserId")]
+        public virtual ApplicationUser OwningUser { get; set; }
         public virtual IList<Player> Players { get; set; }
         public virtual IList<GameDefinition> GameDefinitions { get; set; }
         public virtual IList<PlayedGame> PlayedGames { get; set; }

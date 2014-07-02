@@ -1,6 +1,7 @@
 ﻿using BusinessLogic.DataAccess;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
+using BusinessLogic.Models.Identity;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System.Collections.Generic;
@@ -62,7 +63,8 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
                 GameDefinitionId = 1, 
                 PlayerRanks = new List<PlayerRank>()
             };
-            playedGameLogicMock.Expect(x => x.CreatePlayedGame(Arg<NewlyCompletedGame>.Is.Anything)).Repeat.Once();
+            UserContext user = new UserContext();
+            playedGameLogicMock.Expect(x => x.CreatePlayedGame(Arg<NewlyCompletedGame>.Is.Anything, Arg<UserContext>.Is.Anything)).Repeat.Once();
             RedirectToRouteResult result = playedGameController.Create(playedGame) as RedirectToRouteResult;
 
             Assert.AreEqual(MVC.PlayedGame.ActionNames.Index, result.RouteValues["action"]);
@@ -71,15 +73,16 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
         [Test]
         public void ItSavesTheNewGame()
         {
-            NewlyCompletedGame playedGame = new NewlyCompletedGame()
+            NewlyCompletedGame newlyCompletedGame = new NewlyCompletedGame()
             {
                 GameDefinitionId = 1,
                 PlayerRanks = new List<PlayerRank>()
             };
 
-            playedGameController.Create(playedGame);
+            playedGameController.Create(newlyCompletedGame);
 
-            playedGameLogicMock.AssertWasCalled(mock => mock.CreatePlayedGame(playedGame));
+            playedGameLogicMock.AssertWasCalled(mock => mock.CreatePlayedGame(Arg<NewlyCompletedGame>.Is.Equal(newlyCompletedGame), 
+                Arg<UserContext>.Is.Anything));
         }
     }
 }

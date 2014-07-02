@@ -7,13 +7,13 @@ namespace BusinessLogic.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.1-30610")]
-    public sealed partial class MergeIdentityDbContextWithNemestatsAndAddGamingGroups : IMigrationMetadata
+    public sealed partial class OwningUserToGamingGroup : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(MergeIdentityDbContextWithNemestatsAndAddGamingGroups));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(OwningUserToGamingGroup));
         
         string IMigrationMetadata.Id
         {
-            get { return "201406300141380_MergeIdentityDbContextWithNemestatsAndAddGamingGroups"; }
+            get { return "201407011201381_OwningUserToGamingGroup"; }
         }
         
         string IMigrationMetadata.Source

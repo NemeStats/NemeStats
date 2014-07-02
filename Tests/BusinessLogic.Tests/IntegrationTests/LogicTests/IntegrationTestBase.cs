@@ -27,6 +27,10 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests
         protected string testPlayer6Name = "testPlayer6";
         protected string testGameName = "this is a test game name 123abc";
         protected string testGameDescription = "this is a test game description 123abc";
+        protected string testApplicationUserName = "this is a test user name 123abc";
+        protected string testGamingGroupName = "this is a test gaming group name 123abc";
+        ApplicationUser user;
+        GamingGroup gamingGroup;
         
         [TestFixtureSetUp]
         public void FixtureSetUp()
@@ -35,11 +39,19 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests
             {
                 CleanUpTestData();
 
-                //ApplicationUser user = new ApplicationUser() { Email = "testemail@mailinator.com", UserName = "test user name 123abc" };
-                //dbContext.Users.Add(user);
-                //dbContext.SaveChanges();
+                user = new ApplicationUser() 
+                { 
+                    Email = "testemail@mailinator.com", 
+                    UserName = testApplicationUserName,
+                    EmailConfirmed = false,
+                    PhoneNumberConfirmed = false,
+                    LockoutEnabled = false,
+                    AccessFailedCount = 0
+                };
+                dbContext.Users.Add(user);
+                dbContext.SaveChanges();
 
-                GamingGroup gamingGroup = new GamingGroup() { Name = "this is a test gaming group" };
+                gamingGroup = new GamingGroup() { Name = testGamingGroupName };
                 dbContext.GamingGroups.Add(gamingGroup);
                 dbContext.SaveChanges();
                 int gamingGroupId = gamingGroup.Id;
@@ -142,8 +154,13 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests
                     GameDefinitionId = testGameDefinition.Id, 
                     PlayerRanks = playerRanks 
                 };
+            UserContext userContext = new UserContext()
+            {
+                ApplicationUserId = user.Id,
+                GamingGroupId = gamingGroup.Id
+            };
 
-            return playedGameLogic.CreatePlayedGame(newlyCompletedGame);
+            return playedGameLogic.CreatePlayedGame(newlyCompletedGame, userContext);
         }
 
         private void CleanUpTestData()
@@ -159,8 +176,42 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests
                 CleanUpPlayerByPlayerName(testPlayer4Name, dbContext);
                 CleanUpPlayerByPlayerName(testPlayer5Name, dbContext);
                 CleanUpPlayerByPlayerName(testPlayer6Name, dbContext);
+                CleanUpGamingGroup(testGamingGroupName, dbContext);
+                CleanUpApplicationUser(testApplicationUserName, dbContext);
 
                 dbContext.SaveChanges();
+            }
+        }
+
+        private void CleanUpApplicationUser(string testApplicationUserName, NemeStatsDbContext dbContext)
+        {
+            ApplicationUser applicationUserToDelete = (from applicationUser in dbContext.Users
+                                               where applicationUser.UserName == testApplicationUserName
+                                               select applicationUser).FirstOrDefault();
+
+            if (applicationUserToDelete != null)
+            {
+                try
+                {
+                    dbContext.Users.Remove(applicationUserToDelete);
+                }
+                catch (Exception) { }
+            }
+        }
+
+        private void CleanUpGamingGroup(string testGamingGroupName, NemeStatsDbContext dbContext)
+        {
+            GamingGroup gamingGroupToDelete = (from gamingGroup in dbContext.GamingGroups
+                                               where gamingGroup.Name == testGamingGroupName
+                                               select gamingGroup).FirstOrDefault();
+
+            if(gamingGroupToDelete != null)
+            {
+                try
+                {
+                    dbContext.GamingGroups.Remove(gamingGroupToDelete);
+                }
+                catch (Exception) { }
             }
         }
 

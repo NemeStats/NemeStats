@@ -1,6 +1,7 @@
 ﻿using BusinessLogic.DataAccess;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
+using BusinessLogic.Models.Identity;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -94,7 +95,9 @@ namespace UI.Controllers
         {
             if (ModelState.IsValid)
             {
-                playedGameLogic.CreatePlayedGame(newlyCompletedGame);
+                //TODO finish this
+                UserContext user = null;
+                playedGameLogic.CreatePlayedGame(newlyCompletedGame, user);
 
                 return RedirectToAction(MVC.PlayedGame.ActionNames.Index);
             }

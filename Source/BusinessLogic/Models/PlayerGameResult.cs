@@ -11,13 +11,11 @@ namespace BusinessLogic.Models
     {
         public int Id { get; set; }
 
-        public int GamingGroupId { get; set; }
         public int PlayedGameId { get; set; }
         public int PlayerId { get; set; }
         public int GameRank { get; set; }
         public int GordonPoints { get; set; }
 
-        public virtual GamingGroup GamingGroup { get; set; }
         public virtual PlayedGame PlayedGame { get; set; }
         public virtual Player Player { get; set; }
     }
