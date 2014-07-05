@@ -85,7 +85,6 @@
   <ItemGroup>
     <Compile Include="DataAccess\NemeStatsDbContext.cs" />
     <Compile Include="DataAccess\NemeStatsInitializer.cs" />
-    <Compile Include="Exceptions\NoCurrentGamingGroupException.cs" />
     <Compile Include="Logic\PlayedGameLogic.cs" />
     <Compile Include="Logic\PlayedGameRepository.cs" />
     <Compile Include="Logic\PlayerLogic.cs" />
@@ -101,10 +100,6 @@
     <Compile Include="Migrations\201407011201381_OwningUserToGamingGroup.Designer.cs">
       <DependentUpon>201407011201381_OwningUserToGamingGroup.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201407012115300_RemoveGamingGroupFromPlayerGameResult.cs" />
-    <Compile Include="Migrations\201407012115300_RemoveGamingGroupFromPlayerGameResult.Designer.cs">
-      <DependentUpon>201407012115300_RemoveGamingGroupFromPlayerGameResult.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\201407012130179_AddUserGamingGroupsToApplicationUser.cs" />
     <Compile Include="Migrations\201407012130179_AddUserGamingGroupsToApplicationUser.Designer.cs">
       <DependentUpon>201407012130179_AddUserGamingGroupsToApplicationUser.cs</DependentUpon>
@@ -112,6 +107,10 @@
     <Compile Include="Migrations\201407032126067_AddCurrentGamingGroupIdToUser.cs" />
     <Compile Include="Migrations\201407032126067_AddCurrentGamingGroupIdToUser.Designer.cs">
       <DependentUpon>201407032126067_AddCurrentGamingGroupIdToUser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201407050348013_CurrentGamingGroupIdIsNotNullable.cs" />
+    <Compile Include="Migrations\201407050348013_CurrentGamingGroupIdIsNotNullable.Designer.cs">
+      <DependentUpon>201407050348013_CurrentGamingGroupIdIsNotNullable.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\GamingGroup.cs" />
     <Compile Include="Models\User\ApplicationUser.cs" />
@@ -196,14 +195,14 @@
     <EmbeddedResource Include="Migrations\201407011201381_OwningUserToGamingGroup.resx">
       <DependentUpon>201407011201381_OwningUserToGamingGroup.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201407012115300_RemoveGamingGroupFromPlayerGameResult.resx">
-      <DependentUpon>201407012115300_RemoveGamingGroupFromPlayerGameResult.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201407012130179_AddUserGamingGroupsToApplicationUser.resx">
       <DependentUpon>201407012130179_AddUserGamingGroupsToApplicationUser.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201407032126067_AddCurrentGamingGroupIdToUser.resx">
       <DependentUpon>201407032126067_AddCurrentGamingGroupIdToUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201407050348013_CurrentGamingGroupIdIsNotNullable.resx">
+      <DependentUpon>201407050348013_CurrentGamingGroupIdIsNotNullable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

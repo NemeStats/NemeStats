@@ -2,7 +2,7 @@ namespace BusinessLogic.Migrations
 {
     using System;
     using System.Data.Entity.Migrations;
-    
+
     public partial class GamingGroupsAndAspNetAuth : DbMigration
     {
         public override void Up()
@@ -16,7 +16,7 @@ namespace BusinessLogic.Migrations
                     })
                 .PrimaryKey(t => t.Id)
                 .Index(t => t.Name, unique: true, name: "RoleNameIndex");
-            
+
             CreateTable(
                 "dbo.AspNetUserRoles",
                 c => new
@@ -29,7 +29,7 @@ namespace BusinessLogic.Migrations
                 .ForeignKey("dbo.AspNetUsers", t => t.UserId, cascadeDelete: true)
                 .Index(t => t.UserId)
                 .Index(t => t.RoleId);
-            
+
             CreateTable(
                 "dbo.AspNetUsers",
                 c => new
@@ -49,7 +49,7 @@ namespace BusinessLogic.Migrations
                     })
                 .PrimaryKey(t => t.Id)
                 .Index(t => t.UserName, unique: true, name: "UserNameIndex");
-            
+
             CreateTable(
                 "dbo.AspNetUserClaims",
                 c => new
@@ -62,7 +62,7 @@ namespace BusinessLogic.Migrations
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.AspNetUsers", t => t.UserId, cascadeDelete: true)
                 .Index(t => t.UserId);
-            
+
             CreateTable(
                 "dbo.AspNetUserLogins",
                 c => new
@@ -74,15 +74,48 @@ namespace BusinessLogic.Migrations
                 .PrimaryKey(t => new { t.LoginProvider, t.ProviderKey, t.UserId })
                 .ForeignKey("dbo.AspNetUsers", t => t.UserId, cascadeDelete: true)
                 .Index(t => t.UserId);
+
+            CreateTable(
+                "dbo.GamingGroup",
+                c => new
+                {
+                    Id = c.Int(nullable: false, identity: true),
+                    Name = c.String()
+                })
+                .PrimaryKey(t => t.Id);
+
+            Sql("INSERT INTO GamingGroup (Name) VALUES ('Initial Gaming Group')");
+
+            AddColumn("dbo.Player", "GamingGroupId", c => c.Int(nullable: true));
+            AddForeignKey("dbo.Player", "GamingGroupId", "dbo.GamingGroup", "Id");
+            Sql("UPDATE dbo.Player SET GamingGroupID = (SELECT TOP 1 Id FROM GamingGroup)");
+            AlterColumn("dbo.Player", "GamingGroupId", c => c.Int(nullable: false));
+
+            AddColumn("dbo.GameDefinition", "GamingGroupId", c => c.Int(nullable: true));
+            AddForeignKey("dbo.GameDefinition", "GamingGroupId", "dbo.GamingGroup", "Id");
+            Sql("UPDATE dbo.GameDefinition SET GamingGroupID = (SELECT TOP 1 Id FROM GamingGroup)");
+            AlterColumn("dbo.GameDefinition", "GamingGroupId", c => c.Int(nullable: false));
+
+            AddColumn("dbo.PlayedGame", "GamingGroupId", c => c.Int(nullable: true));
+            AddForeignKey("dbo.PlayedGame", "GamingGroupId", "dbo.GamingGroup", "Id");
+            Sql("UPDATE dbo.PlayedGame SET GamingGroupID = (SELECT TOP 1 Id FROM GamingGroup)");
+            AddColumn("dbo.PlayedGame", "GamingGroupId", c => c.Int(nullable: false));
         }
-        
+
         public override void Down()
         {
             DropForeignKey("dbo.AspNetUserRoles", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserLogins", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserClaims", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserRoles", "RoleId", "dbo.AspNetRoles");
-           
+            DropForeignKey("dbo.Player", "GamingGroupId", "dbo.GamingGroup");
+            DropForeignKey("dbo.GameDefinition", "GamingGroupId", "dbo.GamingGroup");
+            DropForeignKey("dbo.PlayedGame", "GamingGroupId", "dbo.GamingGroup");
+
+            DropColumn("dbo.Player", "GamingGroupId");
+            DropColumn("dbo.GameDefinition", "GamingGroupId");
+            DropColumn("dbo.PlayedGame", "GamingGroupId");
+
             DropIndex("dbo.AspNetUserLogins", new[] { "UserId" });
             DropIndex("dbo.AspNetUserClaims", new[] { "UserId" });
             DropIndex("dbo.AspNetUsers", "UserNameIndex");
@@ -94,6 +127,7 @@ namespace BusinessLogic.Migrations
             DropTable("dbo.AspNetUsers");
             DropTable("dbo.AspNetUserRoles");
             DropTable("dbo.AspNetRoles");
+            DropTable("dbo.GamingGroup");
         }
     }
 }

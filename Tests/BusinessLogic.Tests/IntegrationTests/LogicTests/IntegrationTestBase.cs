@@ -28,10 +28,8 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests
         protected string testGameName = "this is a test game name 123abc";
         protected string testGameDescription = "this is a test game description 123abc";
         protected string testApplicationUserNameForUserWithDefaultGamingGroup = "username with default gaming group";
-        protected string testApplicationUserNameForUserWithoutDefaultGamingGroup = "username without default gaming group";
         protected string testGamingGroupName = "this is a test gaming group name 123abc";
         protected ApplicationUser testApplicationUserWithDefaultGamingGroup;
-        protected ApplicationUser testApplicationUserWithoutDefaultGamingGroup;
         protected GamingGroup gamingGroup;
         
         [TestFixtureSetUp]
@@ -150,19 +148,6 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests
             };
             dbContext.Users.Add(testApplicationUserWithDefaultGamingGroup);
             dbContext.SaveChanges();
-
-            testApplicationUserWithoutDefaultGamingGroup = new ApplicationUser()
-            {
-                Email = "otheremail@mailinator.com",
-                UserName = testApplicationUserNameForUserWithoutDefaultGamingGroup,
-                EmailConfirmed = false,
-                PhoneNumberConfirmed = false,
-                LockoutEnabled = false,
-                AccessFailedCount = 0,
-                CurrentGamingGroupId = null
-            };
-            dbContext.Users.Add(testApplicationUserWithoutDefaultGamingGroup);
-            dbContext.SaveChanges();
         }
 
         private int SaveDefaultGamingGroup(NemeStatsDbContext dbContext)
@@ -216,7 +201,6 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests
                 CleanUpPlayerByPlayerName(testPlayer6Name, dbContext);
                 CleanUpGamingGroup(testGamingGroupName, dbContext);
                 CleanUpApplicationUser(testApplicationUserNameForUserWithDefaultGamingGroup, dbContext);
-                CleanUpApplicationUser(testApplicationUserNameForUserWithoutDefaultGamingGroup, dbContext);
 
                 dbContext.SaveChanges();
             }

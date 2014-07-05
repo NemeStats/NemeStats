@@ -20,7 +20,9 @@ namespace BusinessLogic.Migrations
                 .ForeignKey("dbo.AspNetUsers", t => t.ApplicationUserId)
                 .Index(t => t.ApplicationUserId)
                 .Index(t => t.GamingGroupId);
-            
+
+            Sql("INSERT INTO [dbo].[UserGamingGroup] (ApplicationUserId, GamingGroupId)"
+                + "SELECT Id, (SELECT TOP 1 Id FROM GamingGroup) FROM AspNetUsers");
         }
         
         public override void Down()
