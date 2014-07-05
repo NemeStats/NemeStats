@@ -9,7 +9,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Security;
 using UI.Models;
-using BusinessLogic.Models.Identity;
+using BusinessLogic.Models.User;
 using BusinessLogic.DataAccess;
 
 namespace UI.Controllers

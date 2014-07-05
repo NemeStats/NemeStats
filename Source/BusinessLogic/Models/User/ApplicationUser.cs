@@ -6,10 +6,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessLogic.Models.Identity
+namespace BusinessLogic.Models.User
 {
     public class ApplicationUser : IdentityUser
     {
+        public int? CurrentGamingGroupId { get; set; }
+
         [ForeignKey("ApplicationUserId")]
         public virtual IList<UserGamingGroup> UserGamingGroups { get; set; }
     }

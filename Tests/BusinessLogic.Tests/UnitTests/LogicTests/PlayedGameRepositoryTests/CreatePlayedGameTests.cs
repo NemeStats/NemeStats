@@ -1,7 +1,7 @@
 ﻿using BusinessLogic.DataAccess;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
-using BusinessLogic.Models.Identity;
+using BusinessLogic.Models.User;
 using BusinessLogic.Models.Points;
 using NUnit.Framework;
 using Rhino.Mocks;

@@ -7,7 +7,7 @@ using System.Text;
 using System.Data.Entity;
 using BusinessLogic.Models.Games;
 using BusinessLogic.Models.Points;
-using BusinessLogic.Models.Identity;
+using BusinessLogic.Models.User;
 
 namespace BusinessLogic.Models
 {

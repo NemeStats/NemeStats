@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.DataAccess;
+using BusinessLogic.Logic;
 using BusinessLogic.Models;
 using NUnit.Framework;
 using Rhino.Mocks;
@@ -11,7 +12,6 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Routing;
 using UI.Controllers;
-using UI.Logic;
 using UI.Transformations;
 
 namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
@@ -28,6 +28,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
         protected HttpRequestBase httpRequestBase;
         protected IPrincipal principal;
         protected IIdentity identity;
+        protected string testUserName = "the test user name";
 
         [SetUp]
         public virtual void TestSetUp()
@@ -60,9 +61,14 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
             contextBase.Expect(cb => cb.User)
                 .Repeat.Once()
                 .Return(principal);
+            identity = MockRepository.GenerateMock<IIdentity>();
             principal.Expect(x => x.Identity)
                 .Repeat.Once()
                 .Return(identity);
+            identity.Expect(x => x.Name)
+                .Repeat.Once()
+                .Return(testUserName);
+
             playedGameControllerPartialMock.ControllerContext = new System.Web.Mvc.ControllerContext(
                 contextBase,
                 new RouteData(),

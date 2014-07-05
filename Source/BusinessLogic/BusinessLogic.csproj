@@ -85,11 +85,14 @@
   <ItemGroup>
     <Compile Include="DataAccess\NemeStatsDbContext.cs" />
     <Compile Include="DataAccess\NemeStatsInitializer.cs" />
+    <Compile Include="Exceptions\NoCurrentGamingGroupException.cs" />
     <Compile Include="Logic\PlayedGameLogic.cs" />
     <Compile Include="Logic\PlayedGameRepository.cs" />
     <Compile Include="Logic\PlayerLogic.cs" />
     <Compile Include="Logic\PlayerRepository.cs" />
     <Compile Include="Logic\Points\GordonPoints.cs" />
+    <Compile Include="Logic\UserContextBuilder.cs" />
+    <Compile Include="Logic\UserContextBuilderImpl.cs" />
     <Compile Include="Migrations\201407011153551_GamingGroupsAndAspNetAuth.cs" />
     <Compile Include="Migrations\201407011153551_GamingGroupsAndAspNetAuth.Designer.cs">
       <DependentUpon>201407011153551_GamingGroupsAndAspNetAuth.cs</DependentUpon>
@@ -106,10 +109,14 @@
     <Compile Include="Migrations\201407012130179_AddUserGamingGroupsToApplicationUser.Designer.cs">
       <DependentUpon>201407012130179_AddUserGamingGroupsToApplicationUser.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201407032126067_AddCurrentGamingGroupIdToUser.cs" />
+    <Compile Include="Migrations\201407032126067_AddCurrentGamingGroupIdToUser.Designer.cs">
+      <DependentUpon>201407032126067_AddCurrentGamingGroupIdToUser.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\GamingGroup.cs" />
-    <Compile Include="Models\Identity\ApplicationUser.cs" />
-    <Compile Include="Models\Identity\UserContext.cs" />
-    <Compile Include="Models\Identity\UserGamingGroup.cs" />
+    <Compile Include="Models\User\ApplicationUser.cs" />
+    <Compile Include="Models\User\UserContext.cs" />
+    <Compile Include="Models\User\UserGamingGroup.cs" />
     <Compile Include="Models\Players\Nemesis.cs" />
     <Compile Include="Models\Players\NullNemesis.cs" />
     <Compile Include="Models\Players\PlayerStatistics.cs" />
@@ -194,6 +201,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201407012130179_AddUserGamingGroupsToApplicationUser.resx">
       <DependentUpon>201407012130179_AddUserGamingGroupsToApplicationUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201407032126067_AddCurrentGamingGroupIdToUser.resx">
+      <DependentUpon>201407032126067_AddCurrentGamingGroupIdToUser.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

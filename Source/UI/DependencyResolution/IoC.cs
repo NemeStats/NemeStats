@@ -16,10 +16,10 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 
+using BusinessLogic.Logic;
 using BusinessLogic.Models;
 using StructureMap;
 using StructureMap.Graph;
-using UI.Logic;
 using UI.Models.PlayedGame;
 using UI.Transformations;
 using UI.Transformations.Player;

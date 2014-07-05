@@ -1,6 +1,6 @@
 ﻿using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
-using BusinessLogic.Models.Identity;
+using BusinessLogic.Models.User;
 using System;
 using System.Collections.Generic;
 namespace BusinessLogic.Models

@@ -247,8 +247,6 @@
     </Compile>
     <Compile Include="HtmlHelpers\MvcHtmlStringExtension.cs" />
     <Compile Include="HtmlHelpers\PlayedGameHelper.cs" />
-    <Compile Include="Logic\UserContextBuilder.cs" />
-    <Compile Include="Logic\UserContextBuilderImpl.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\PlayedGame\GameResultViewModel.cs" />
     <Compile Include="Models\PlayedGame\PlayedGameDetailsViewModel.cs" />

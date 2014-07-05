@@ -1,7 +1,7 @@
 ﻿using BusinessLogic.DataAccess;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
-using BusinessLogic.Models.Identity;
+using BusinessLogic.Models.User;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System.Collections.Generic;
@@ -100,7 +100,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
                 ApplicationUserId = "1"
             };
 
-            userContextBuilder.Expect(builder => builder.GetUserContext(Arg<HttpRequestBase>.Is.Anything, Arg<IIdentity>.Is.Anything))
+            userContextBuilder.Expect(builder => builder.GetUserContext(Arg<string>.Is.Anything, Arg<NemeStatsDbContext>.Is.Anything))
                 .Repeat.Once()
                 .Return(userContext);
 
