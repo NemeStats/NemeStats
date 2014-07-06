@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayerRepositoryTests
 {
     [TestFixture]
-    public class GetAllPlayersIntegrationTests
+    public class GetAllPlayersIntegrationTests : IntegrationTestBase
     {
         private NemeStatsDbContext dbContext;
 
@@ -32,7 +32,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayerRepositoryTests
         }
 
         [Test]
-        public void ItOnlyReturnsInActivePlayersWhenInActivePlayersAreRequested()
+        public void ItOnlyReturnsInactivePlayersWhenInActivePlayersAreRequested()
         {
             bool active = false;
             BusinessLogic.Models.PlayerRepository playerRepository = new BusinessLogic.Models.PlayerRepository(dbContext);
@@ -41,6 +41,17 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayerRepositoryTests
 
             Assert.True(players.All(x => x.Active == active));
         }
+
+        //[Test]
+        //public void ItOnlyReturnsPlayersForTheGivenGamingGroupId()
+        //{
+        //    bool active = false;
+        //    BusinessLogic.Models.PlayerRepository playerRepository = new BusinessLogic.Models.PlayerRepository(dbContext);
+
+        //    List<Player> players = playerRepository.GetAllPlayers(active, );
+
+        //    Assert.True(players.All(x => x.Active == active));
+        //}
 
         [TestFixtureTearDown]
         public void TearDown()
