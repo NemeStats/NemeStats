@@ -20,21 +20,18 @@ namespace UI.Controllers
         internal PlayedGameLogic playedGameLogic;
         internal PlayerLogic playerLogic;
         internal PlayedGameDetailsViewModelBuilder playedGameDetailsBuilder;
-        internal UserContextBuilder userContextBuilder;
 
         internal const int NUMBER_OF_RECENT_GAMES_TO_DISPLAY = 10;
 
         public PlayedGameController(NemeStatsDbContext dbContext, 
             PlayedGameLogic playedLogic, 
             PlayerLogic playLogic,
-            PlayedGameDetailsViewModelBuilder builder,
-            UserContextBuilder userContextBuilder)
+            PlayedGameDetailsViewModelBuilder builder)
         {
             db = dbContext;
             playedGameLogic = playedLogic;
             playerLogic = playLogic;
             playedGameDetailsBuilder = builder;
-            this.userContextBuilder = userContextBuilder;
         }
 
         // GET: /PlayedGame/
@@ -80,7 +77,7 @@ namespace UI.Controllers
         private void AddAllPlayersToViewBag()
         {
             //TODO Clean Code said something about boolean parameters not being good. Come back to this...
-            List<Player> allPlayers = playerLogic.GetAllPlayers(true);
+            List<Player> allPlayers = playerLogic.GetAllPlayers(true, User.Identity.Name);
             List<SelectListItem> allPlayersSelectList = allPlayers.Select(item => new SelectListItem()
             {
                 Text = item.Name,
@@ -99,8 +96,7 @@ namespace UI.Controllers
         {
             if (ModelState.IsValid)
             {
-                UserContext user = userContextBuilder.GetUserContext(User.Identity.Name, db);
-                playedGameLogic.CreatePlayedGame(newlyCompletedGame, user);
+                playedGameLogic.CreatePlayedGame(newlyCompletedGame, User.Identity.Name);
 
                 return RedirectToAction(MVC.PlayedGame.ActionNames.Index);
             }

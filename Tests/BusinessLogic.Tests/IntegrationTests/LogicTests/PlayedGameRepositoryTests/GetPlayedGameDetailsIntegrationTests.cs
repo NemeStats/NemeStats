@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.DataAccess;
+using BusinessLogic.Logic;
 using BusinessLogic.Models;
 using NUnit.Framework;
 using System.Linq;
@@ -8,9 +9,17 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGameRepositoryTe
     [TestFixture]
     public class GetPlayedGameDetailsIntegrationTests : IntegrationTestBase
     {
+        private UserContextBuilder userContextBuilder;
+
+        [TestFixtureSetUp]
+        public void TestFixtureSetUp()
+        {
+            userContextBuilder = new UserContextBuilderImpl();
+        }
+
         private PlayedGame GetTestSubjectPlayedGame(NemeStatsDbContext dbContextToTestWith)
         {
-            return new BusinessLogic.Models.PlayedGameRepository(dbContextToTestWith)
+            return new BusinessLogic.Models.PlayedGameRepository(dbContextToTestWith, userContextBuilder)
                 .GetPlayedGameDetails(testPlayedGames[0].Id);
         }
 
@@ -51,7 +60,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGameRepositoryTe
         {
             using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
             {
-                PlayedGame notFoundPlayedGame = new BusinessLogic.Models.PlayedGameRepository(dbContext).GetPlayedGameDetails(-1);
+                PlayedGame notFoundPlayedGame = new PlayedGameRepository(dbContext, userContextBuilder).GetPlayedGameDetails(-1);
                 Assert.Null(notFoundPlayedGame);
             }
         }

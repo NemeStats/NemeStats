@@ -1,25 +1,26 @@
 ﻿using BusinessLogic.DataAccess;
-using BusinessLogic.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Data.Entity;
+using BusinessLogic.Logic;
 using BusinessLogic.Models.Games;
 using BusinessLogic.Models.Points;
 using BusinessLogic.Models.User;
+using System;
+using System.Collections.Generic;
+using System.Data.Entity;
+using System.Linq;
 
 namespace BusinessLogic.Models
 {
-    public class PlayedGameRepository : BusinessLogic.Models.PlayedGameLogic
+    public class PlayedGameRepository : PlayedGameLogic
     {
         internal const string EXCEPTION_MESSAGE_MUST_PASS_VALID_GAME_DEFINITION_ID = "Must pass a valid GameDefinitionId.";
         
         private NemeStatsDbContext dbContext;
+        private UserContextBuilder userContextBuilder;
 
-        public PlayedGameRepository(NemeStatsDbContext context)
+        public PlayedGameRepository(NemeStatsDbContext context, UserContextBuilder userContextBuilder)
         {
             dbContext = context;
+            this.userContextBuilder = userContextBuilder;
         }
 
         public PlayedGame GetPlayedGameDetails(int playedGameId)
@@ -49,11 +50,12 @@ namespace BusinessLogic.Models
         }
 
         //TODO need to have validation logic here (or on PlayedGame similar to what is on NewlyCompletedGame)
-        public PlayedGame CreatePlayedGame(NewlyCompletedGame newlyCompletedGame, UserContext user)
+        public PlayedGame CreatePlayedGame(NewlyCompletedGame newlyCompletedGame, string requestingUserName)
         {
+            UserContext userContext = userContextBuilder.GetUserContext(requestingUserName, dbContext);
             List<PlayerGameResult> playerGameResults = TransformNewlyCompletedGamePlayerRanksToPlayerGameResults(newlyCompletedGame);
 
-            PlayedGame playedGame = TransformNewlyCompletedGameIntoPlayedGame(newlyCompletedGame, user, playerGameResults);
+            PlayedGame playedGame = TransformNewlyCompletedGameIntoPlayedGame(newlyCompletedGame, userContext.GamingGroupId, playerGameResults);
 
             dbContext.PlayedGames.Add(playedGame);
             dbContext.SaveChanges();
@@ -80,7 +82,7 @@ namespace BusinessLogic.Models
         //TODO this should be in its own class
         public PlayedGame TransformNewlyCompletedGameIntoPlayedGame(
             NewlyCompletedGame newlyCompletedGame,
-            UserContext user,
+            int gamingGroupId,
             List<PlayerGameResult> playerGameResults)
         {
             int numberOfPlayers = newlyCompletedGame.PlayerRanks.Count();
@@ -90,7 +92,7 @@ namespace BusinessLogic.Models
                 NumberOfPlayers = numberOfPlayers,
                 PlayerGameResults = playerGameResults,
                 DatePlayed = DateTime.UtcNow,
-                GamingGroupId = user.GamingGroupId
+                GamingGroupId = gamingGroupId
             };
             return playedGame;
         }

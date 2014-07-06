@@ -9,12 +9,11 @@ using System.Web.Mvc;
 namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 {
     [TestFixture]
-    public class CreateHttpGetTests : TestBase
+    public class CreateHttpGetTests : PlayedGameControllerTestBase
     {
         [SetUp]
-        public override void TestSetUp()
+        public void SetUp()
         {
-            base.TestSetUp();
             dbContexMock.Expect(context => context.GameDefinitions).Repeat.Any().Return(MockRepository.GenerateMock<DbSet<GameDefinition>>());
         }
 
@@ -25,7 +24,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
             string playerName = "Herb";
             List<Player> allPlayers = new List<Player>() { new Player() { Id = playerId, Name = playerName } };
 
-            playerLogicMock.Expect(x => x.GetAllPlayers(true)).Repeat.Once().Return(allPlayers);
+            playerLogicMock.Expect(x => x.GetAllPlayers(true, testUserName)).Repeat.Once().Return(allPlayers);
 
             playedGameController.Create();
 
@@ -38,7 +37,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
         [Test]
         public void ItLoadsTheCreateView()
         {
-            playerLogicMock.Expect(x => x.GetAllPlayers(true)).Repeat.Once().Return(new List<Player>());
+            playerLogicMock.Expect(x => x.GetAllPlayers(true, testUserName)).Repeat.Once().Return(new List<Player>());
 
             ViewResult result = playedGameController.Create() as ViewResult;
 

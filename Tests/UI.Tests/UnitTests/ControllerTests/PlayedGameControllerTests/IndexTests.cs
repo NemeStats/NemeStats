@@ -9,7 +9,7 @@ using UI.Transformations;
 namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 {
     [TestFixture]
-    public class IndexTests : TestBase
+    public class IndexTests : PlayedGameControllerTestBase
     {
         [Test]
         public void ItGetsRecentlyPlayedGames()

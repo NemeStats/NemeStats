@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.DataAccess;
+using BusinessLogic.Logic;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Players;
 using NUnit.Framework;
@@ -15,6 +16,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayerRepositoryTests
     public class GetPlayerDetailsTests
     {
         private NemeStatsDbContext dbContextMock;
+        private UserContextBuilder userContextBuilderMock;
         private PlayerRepository playerRepository;
         private Player player;
         private int numberOfRecentGames = 1;
@@ -24,7 +26,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayerRepositoryTests
         public void SetUp()
         {
             dbContextMock = MockRepository.GenerateMock<NemeStatsDbContext>();
-            playerRepository = MockRepository.GeneratePartialMock<PlayerRepository>(dbContextMock);
+            userContextBuilderMock = MockRepository.GenerateMock<UserContextBuilder>();
+            playerRepository = MockRepository.GeneratePartialMock<PlayerRepository>(dbContextMock, userContextBuilderMock);
             player = new Player()
             {
                 Id = 1351,

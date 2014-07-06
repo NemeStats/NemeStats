@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.DataAccess;
+using BusinessLogic.Logic;
 using BusinessLogic.Models;
 using NUnit.Framework;
 using System;
@@ -13,20 +14,28 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayerRepositoryTests
     public class GetAllPlayersIntegrationTests : IntegrationTestBase
     {
         private NemeStatsDbContext dbContext;
+        private PlayerRepository playerRepository;
+        private UserContextBuilder userContextBuilder;
 
         [TestFixtureSetUp]
         public void SetUp()
         {
             dbContext = new NemeStatsDbContext();
+            userContextBuilder = new UserContextBuilderImpl();
+        }
+
+        [SetUp]
+        public void TestSetUp()
+        {
+            playerRepository = new BusinessLogic.Models.PlayerRepository(dbContext, userContextBuilder);
         }
 
         [Test]
         public void ItOnlyReturnsActivePlayersWhenActivePlayersAreRequested()
         {
             bool active = true;
-            BusinessLogic.Models.PlayerRepository playerRepository = new BusinessLogic.Models.PlayerRepository(dbContext);
 
-            List<Player> players = playerRepository.GetAllPlayers(active);
+            List<Player> players = playerRepository.GetAllPlayers(active, testApplicationUserNameForUserWithDefaultGamingGroup);
 
             Assert.True(players.All(x => x.Active == active));
         }
@@ -35,23 +44,19 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayerRepositoryTests
         public void ItOnlyReturnsInactivePlayersWhenInActivePlayersAreRequested()
         {
             bool active = false;
-            BusinessLogic.Models.PlayerRepository playerRepository = new BusinessLogic.Models.PlayerRepository(dbContext);
 
-            List<Player> players = playerRepository.GetAllPlayers(active);
+            List<Player> players = playerRepository.GetAllPlayers(active, testApplicationUserNameForUserWithDefaultGamingGroup);
 
             Assert.True(players.All(x => x.Active == active));
         }
 
-        //[Test]
-        //public void ItOnlyReturnsPlayersForTheGivenGamingGroupId()
-        //{
-        //    bool active = false;
-        //    BusinessLogic.Models.PlayerRepository playerRepository = new BusinessLogic.Models.PlayerRepository(dbContext);
+        [Test]
+        public void ItOnlyReturnsPlayersForTheGivenGamingGroupId()
+        {
+            List<Player> players = playerRepository.GetAllPlayers(true, testApplicationUserNameForUserWithDefaultGamingGroup);
 
-        //    List<Player> players = playerRepository.GetAllPlayers(active, );
-
-        //    Assert.True(players.All(x => x.Active == active));
-        //}
+            Assert.True(players.All(x => x.GamingGroupId == gamingGroup.Id));
+        }
 
         [TestFixtureTearDown]
         public void TearDown()

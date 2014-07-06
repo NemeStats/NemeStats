@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.DataAccess;
+using BusinessLogic.Logic;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Players;
 using NUnit.Framework;
@@ -18,9 +19,9 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayerRepositoryTests
         {
             using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
             {
-                PlayerLogic playerLogic = new PlayerRepository(dbContext);
-                PlayerRepository playerRepository = new PlayerRepository(dbContext);
-                PlayerStatistics playerStatistics = playerRepository.GetPlayerStatistics(testPlayer1.Id);
+                UserContextBuilder userContextBuilder = new UserContextBuilderImpl();
+                PlayerLogic playerLogic = new PlayerRepository(dbContext, userContextBuilder);
+                PlayerStatistics playerStatistics = playerLogic.GetPlayerStatistics(testPlayer1.Id);
                 int totalGamesForPlayer1 = testPlayedGames
                         .Count(playedGame => playedGame.PlayerGameResults
                             .Any(playerGameResult => playerGameResult.PlayerId == testPlayer1.Id));

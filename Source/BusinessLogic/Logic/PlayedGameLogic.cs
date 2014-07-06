@@ -9,11 +9,11 @@ namespace BusinessLogic.Models
     {
         PlayedGame GetPlayedGameDetails(int playedGameId);
         List<PlayedGame> GetRecentGames(int numberOfGames);
-        PlayedGame CreatePlayedGame(NewlyCompletedGame newlyCompletedGame, UserContext user);
+        PlayedGame CreatePlayedGame(NewlyCompletedGame newlyCompletedGame, string requestingUserName);
         List<PlayerGameResult> TransformNewlyCompletedGamePlayerRanksToPlayerGameResults(NewlyCompletedGame newlyCompletedGame);
         PlayedGame TransformNewlyCompletedGameIntoPlayedGame(
             NewlyCompletedGame newlyCompletedGame,
-            UserContext user,
+            int gamingGroupId,
             List<PlayerGameResult> playerGameResults);
     }
 }

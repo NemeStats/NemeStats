@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.DataAccess;
+using BusinessLogic.Logic;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
 using BusinessLogic.Models.User;
@@ -71,82 +72,71 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests
 
         private void CreatePlayedGames(NemeStatsDbContext dbContext)
         {
-            PlayedGameLogic playedGameLogic = new PlayedGameRepository(dbContext);
-
-            UserContext userContext = new UserContext()
-            {
-                ApplicationUserId = testApplicationUserWithDefaultGamingGroup.Id,
-                GamingGroupId = gamingGroup.Id
-            };
+            UserContextBuilder userContextBuilder = new UserContextBuilderImpl();
+            PlayedGameLogic playedGameLogic = new PlayedGameRepository(dbContext, userContextBuilder);
 
             List<Player> players = new List<Player>() { testPlayer1, testPlayer2 };
             List<int> playerRanks = new List<int>() { 1, 1 };
-            PlayedGame playedGame = CreateTestPlayedGame(players, playerRanks, userContext, playedGameLogic);
+            PlayedGame playedGame = CreateTestPlayedGame(players, playerRanks, testApplicationUserNameForUserWithDefaultGamingGroup, playedGameLogic);
             testPlayedGames.Add(playedGame);
 
             players = new List<Player>() { testPlayer1, testPlayer2, testPlayer3 };
             playerRanks = new List<int>() { 1, 2, 3 };
-            playedGame = CreateTestPlayedGame(players, playerRanks, userContext, playedGameLogic);
+            playedGame = CreateTestPlayedGame(players, playerRanks, testApplicationUserNameForUserWithDefaultGamingGroup, playedGameLogic);
             testPlayedGames.Add(playedGame);
 
             players = new List<Player>() { testPlayer1, testPlayer3, testPlayer2 };
             playerRanks = new List<int>() { 1, 2, 3 };
-            playedGame = CreateTestPlayedGame(players, playerRanks, userContext, playedGameLogic);
+            playedGame = CreateTestPlayedGame(players, playerRanks, testApplicationUserNameForUserWithDefaultGamingGroup, playedGameLogic);
             testPlayedGames.Add(playedGame);
 
             players = new List<Player>() { testPlayer3, testPlayer1 };
             playerRanks = new List<int>() { 1, 2 };
-            playedGame = CreateTestPlayedGame(players, playerRanks, userContext, playedGameLogic);
+            playedGame = CreateTestPlayedGame(players, playerRanks, testApplicationUserNameForUserWithDefaultGamingGroup, playedGameLogic);
             testPlayedGames.Add(playedGame);
 
             //make player4 beat player 1 three times
             players = new List<Player>() { testPlayer4, testPlayer1, testPlayer2, testPlayer3 };
             playerRanks = new List<int>() { 1, 2, 3, 4 };
-            playedGame = CreateTestPlayedGame(players, playerRanks, userContext, playedGameLogic);
+            playedGame = CreateTestPlayedGame(players, playerRanks, testApplicationUserNameForUserWithDefaultGamingGroup, playedGameLogic);
             testPlayedGames.Add(playedGame);
 
             players = new List<Player>() { testPlayer4, testPlayer1 };
             playerRanks = new List<int>() { 1, 2 };
-            playedGame = CreateTestPlayedGame(players, playerRanks, userContext, playedGameLogic);
+            playedGame = CreateTestPlayedGame(players, playerRanks, testApplicationUserNameForUserWithDefaultGamingGroup, playedGameLogic);
             testPlayedGames.Add(playedGame);
 
             players = new List<Player>() { testPlayer4, testPlayer1 };
             playerRanks = new List<int>() { 1, 2 };
-            playedGame = CreateTestPlayedGame(players, playerRanks, userContext, playedGameLogic);
+            playedGame = CreateTestPlayedGame(players, playerRanks, testApplicationUserNameForUserWithDefaultGamingGroup, playedGameLogic);
             testPlayedGames.Add(playedGame);
 
             //--make the inactive player5 beat player1 3 times
             players = new List<Player>() { testPlayer5, testPlayer1 };
             playerRanks = new List<int>() { 1, 2 };
-            playedGame = CreateTestPlayedGame(players, playerRanks, userContext, playedGameLogic);
+            playedGame = CreateTestPlayedGame(players, playerRanks, testApplicationUserNameForUserWithDefaultGamingGroup, playedGameLogic);
             testPlayedGames.Add(playedGame);
 
             players = new List<Player>() { testPlayer5, testPlayer1 };
             playerRanks = new List<int>() { 1, 2 };
-            playedGame = CreateTestPlayedGame(players, playerRanks, userContext, playedGameLogic);
+            playedGame = CreateTestPlayedGame(players, playerRanks, testApplicationUserNameForUserWithDefaultGamingGroup, playedGameLogic);
             testPlayedGames.Add(playedGame);
 
             players = new List<Player>() { testPlayer5, testPlayer1 };
             playerRanks = new List<int>() { 1, 2 };
-            playedGame = CreateTestPlayedGame(players, playerRanks, userContext, playedGameLogic);
+            playedGame = CreateTestPlayedGame(players, playerRanks, testApplicationUserNameForUserWithDefaultGamingGroup, playedGameLogic);
             testPlayedGames.Add(playedGame);
 
             //make player 2 be the only one who beat player 5
             players = new List<Player>() { testPlayer2, testPlayer5 };
             playerRanks = new List<int>() { 1, 2 };
-            playedGame = CreateTestPlayedGame(players, playerRanks, userContext, playedGameLogic);
+            playedGame = CreateTestPlayedGame(players, playerRanks, testApplicationUserNameForUserWithDefaultGamingGroup, playedGameLogic);
             testPlayedGames.Add(playedGame);
-
-            UserContext userContextWithOtherGamingGroup = new UserContext()
-            {
-                ApplicationUserId = testApplicationUserWithOtherGamingGroup.Id,
-                GamingGroupId = testApplicationUserWithOtherGamingGroup.CurrentGamingGroupId
-            };
 
             //--create a game that has a different GamingGroupId
             players = new List<Player>() { testPlayer7WithOtherGamingGroupId };
             playerRanks = new List<int>() { 1 };
-            playedGame = CreateTestPlayedGame(players, playerRanks, userContextWithOtherGamingGroup, playedGameLogic);
+            playedGame = CreateTestPlayedGame(players, playerRanks, testApplicationUserNameForUserWithOtherGamingGroup, playedGameLogic);
             testPlayedGames.Add(playedGame);
         }
 
@@ -209,7 +199,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests
         private PlayedGame CreateTestPlayedGame(
             List<Player> players,
             List<int> correspondingPlayerRanks,
-            UserContext userContext,
+            string userName,
             PlayedGameLogic playedGameLogic)
         {
             List<PlayerRank> playerRanks = new List<PlayerRank>();
@@ -229,7 +219,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests
                     PlayerRanks = playerRanks,
                 };
 
-            return playedGameLogic.CreatePlayedGame(newlyCompletedGame, userContext);
+            return playedGameLogic.CreatePlayedGame(newlyCompletedGame, userName);
         }
 
         private void CleanUpTestData()

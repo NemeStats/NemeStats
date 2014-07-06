@@ -1,18 +1,17 @@
 ﻿using BusinessLogic.DataAccess;
+using BusinessLogic.Logic;
 using BusinessLogic.Models.Players;
-using BusinessLogic.Models;
+using BusinessLogic.Models.User;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Data.SqlClient;
 using System.Data.Entity.Infrastructure;
+using System.Data.SqlClient;
+using System.Linq;
 
 namespace BusinessLogic.Models
 {
-    public class PlayerRepository : BusinessLogic.Models.PlayerLogic
+    public class PlayerRepository : PlayerLogic
     {
         internal const string EXCEPTION_PLAYER_NOT_FOUND = "The specified player does not exist.";
         public int MINIMUM_NUMBER_OF_GAMES_TO_BE_A_NEMESIS = 3;
@@ -62,10 +61,12 @@ namespace BusinessLogic.Models
             GROUP BY PlayerId";
 
         private NemeStatsDbContext dbContext;
+        private UserContextBuilder userContextBuilder;
 
-        public PlayerRepository(NemeStatsDbContext context)
+        public PlayerRepository(NemeStatsDbContext context, UserContextBuilder userContextBuilder)
         {
             dbContext = context;
+            this.userContextBuilder = userContextBuilder;
         }
 
         public PlayerDetails GetPlayerDetails(int playerID, int numberOfRecentGamesToRetrieve)
@@ -121,9 +122,11 @@ namespace BusinessLogic.Models
             return playerGameResults;
         }
 
-        public List<Player> GetAllPlayers(bool active)
+        public List<Player> GetAllPlayers(bool active, string requestingUserName)
         {
-            return dbContext.Players.Where(player => player.Active == active).ToList();
+            UserContext userContext = userContextBuilder.GetUserContext(requestingUserName, dbContext);
+            return dbContext.Players.Where(player => player.Active == active
+                && player.GamingGroupId == userContext.GamingGroupId).ToList();
         }
 
         public virtual PlayerStatistics GetPlayerStatistics(int playerId)

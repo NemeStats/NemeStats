@@ -1,6 +1,7 @@
 ﻿using BusinessLogic.DataAccess;
 using BusinessLogic.Logic;
 using BusinessLogic.Models;
+using BusinessLogic.Models.User;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System;
@@ -16,7 +17,7 @@ using UI.Transformations;
 
 namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 {
-    public class TestBase
+    public class PlayedGameControllerTestBase
     {
         protected NemeStatsDbContext dbContexMock;
         protected PlayedGameController playedGameController;
@@ -29,6 +30,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
         protected IPrincipal principal;
         protected IIdentity identity;
         protected string testUserName = "the test user name";
+        protected UserContext userContext;
 
         [SetUp]
         public virtual void TestSetUp()
@@ -38,21 +40,27 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
             playerLogicMock = MockRepository.GenerateMock<PlayerLogic>();
             playedGameDetailsBuilder = MockRepository.GenerateMock<PlayedGameDetailsViewModelBuilder>();
             userContextBuilder = MockRepository.GenerateMock<UserContextBuilder>();
+            userContext = new UserContext()
+            {
+                ApplicationUserId = "abc",
+                GamingGroupId = 123
+            };
+            userContextBuilder.Expect(builder => builder.GetUserContext(testUserName, dbContexMock))
+                .Repeat.Once()
+                .Return(userContext);
             playedGameController = new Controllers.PlayedGameController(dbContexMock,
                 playedGameLogicMock, 
                 playerLogicMock, 
-                playedGameDetailsBuilder, 
-                userContextBuilder);
+                playedGameDetailsBuilder);
             httpRequestBase = MockRepository.GenerateMock<HttpRequestBase>();
-            
             playedGameControllerPartialMock = MockRepository.GeneratePartialMock<PlayedGameController>(
                 dbContexMock, 
                 playedGameLogicMock, 
                 playerLogicMock, 
-                playedGameDetailsBuilder,
-                userContextBuilder);
+                playedGameDetailsBuilder);
 
             HttpContextBase contextBase = MockRepository.GenerateMock<HttpContextBase>();
+            
             contextBase.Expect(cb => cb.Request)
                 .Repeat.Once()
                 .Return(httpRequestBase);

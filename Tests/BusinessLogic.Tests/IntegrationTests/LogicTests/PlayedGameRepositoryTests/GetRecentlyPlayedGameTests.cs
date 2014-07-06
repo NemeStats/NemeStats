@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.DataAccess;
+using BusinessLogic.Logic;
 using BusinessLogic.Models;
 using NUnit.Framework;
 using System.Collections.Generic;
@@ -9,12 +10,20 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGameRepositoryTe
     [TestFixture]
     public class GetRecentlyPlayedGameTests : IntegrationTestBase
     {
+        private UserContextBuilder userContextBuilder;
+
+        [TestFixtureSetUp]
+        public void TestFixtureSetUp()
+        {
+            userContextBuilder = new UserContextBuilderImpl();
+        }
+
         [Test]
         public void ItEagerlyFetchesGameDefinitions()
         {
             using(NemeStatsDbContext dbContext = new NemeStatsDbContext())
             {
-                PlayedGameLogic playedGameLogic = new PlayedGameRepository(dbContext);
+                PlayedGameLogic playedGameLogic = new PlayedGameRepository(dbContext, userContextBuilder);
                 dbContext.Configuration.LazyLoadingEnabled = false;
                 dbContext.Configuration.ProxyCreationEnabled = false;
 
@@ -30,7 +39,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGameRepositoryTe
         {
             using(NemeStatsDbContext dbContext = new NemeStatsDbContext())
             {
-                PlayedGameLogic playedGameLogic = new PlayedGameRepository(dbContext);
+                PlayedGameLogic playedGameLogic = new PlayedGameRepository(dbContext, userContextBuilder);
                 dbContext.Configuration.LazyLoadingEnabled = false;
                 dbContext.Configuration.ProxyCreationEnabled = false;
 
@@ -46,7 +55,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGameRepositoryTe
         {
             using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
             {
-                PlayedGameLogic playedGameLogic = new PlayedGameRepository(dbContext);
+                PlayedGameLogic playedGameLogic = new PlayedGameRepository(dbContext, userContextBuilder);
                 dbContext.Configuration.LazyLoadingEnabled = false;
                 dbContext.Configuration.ProxyCreationEnabled = false;
 
@@ -68,7 +77,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGameRepositoryTe
         {
             using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
             {
-                PlayedGameLogic playedGameLogic = new PlayedGameRepository(dbContext);
+                PlayedGameLogic playedGameLogic = new PlayedGameRepository(dbContext, userContextBuilder);
                 int one = 1;
                 List<PlayedGame> playedGames = playedGameLogic.GetRecentGames(one);
 
@@ -81,7 +90,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGameRepositoryTe
         {
             using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
             {
-                PlayedGameLogic playedGameLogic = new PlayedGameRepository(dbContext);
+                PlayedGameLogic playedGameLogic = new PlayedGameRepository(dbContext, userContextBuilder);
                 int two = 2;
                 List<PlayedGame> playedGames = playedGameLogic.GetRecentGames(two);
 
@@ -94,7 +103,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGameRepositoryTe
         {
             using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
             {
-                PlayedGameLogic playedGameLogic = new PlayedGameRepository(dbContext);
+                PlayedGameLogic playedGameLogic = new PlayedGameRepository(dbContext, userContextBuilder);
                 int five = 5;
                 List<PlayedGame> playedGames = playedGameLogic.GetRecentGames(five);
                 List<PlayedGame> allPlayedGames = dbContext.PlayedGames.ToList().OrderByDescending(playedGame => playedGame.DatePlayed).ToList();
@@ -110,7 +119,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGameRepositoryTe
         {
             using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
             {
-                PlayedGameLogic playedGameLogic = new PlayedGameRepository(dbContext);
+                PlayedGameLogic playedGameLogic = new PlayedGameRepository(dbContext, userContextBuilder);
                 int five = 5;
                 List<PlayedGame> playedGames = playedGameLogic.GetRecentGames(five);
 

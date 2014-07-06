@@ -14,8 +14,6 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.UserContextBuilderImpl
         [TestFixtureSetUp]
         public void SetUp()
         {
-            base.FixtureSetUp();
-
             using(NemeStatsDbContext dbContext = new NemeStatsDbContext())
             {
                 contextBuilder = new UserContextBuilderImpl();

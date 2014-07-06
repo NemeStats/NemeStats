@@ -13,7 +13,7 @@ using UI.Models.PlayedGame;
 namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 {
     [TestFixture]
-    public class DetailsTests : TestBase
+    public class DetailsTests : PlayedGameControllerTestBase
     {
         [Test]
         public void ItNeverReturnsNull()
