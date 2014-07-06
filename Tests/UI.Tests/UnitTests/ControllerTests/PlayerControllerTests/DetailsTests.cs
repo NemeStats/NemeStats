@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.DataAccess;
+using BusinessLogic.Logic;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Players;
 using NUnit.Framework;
@@ -20,8 +21,9 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
     {
         private NemeStatsDbContext dbContextMock;
         private PlayerLogic playerLogicMock;
-        private GameResultViewModelBuilder playerGameResultDetailsBuilder;
-        private PlayerDetailsViewModelBuilder playerDetailsViewModelBuilder;
+        private GameResultViewModelBuilder playerGameResultDetailsBuilderMock;
+        private PlayerDetailsViewModelBuilder playerDetailsViewModelBuilderMock;
+        private UserContextBuilder userContextBuilderMock;
         private PlayerController playerController;
 
         [SetUp]
@@ -29,13 +31,15 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         {
             dbContextMock = MockRepository.GenerateMock<NemeStatsDbContext>();
             playerLogicMock = MockRepository.GenerateMock<PlayerLogic>();
-            playerGameResultDetailsBuilder = MockRepository.GenerateMock<GameResultViewModelBuilder>();
-            playerDetailsViewModelBuilder = MockRepository.GenerateMock<PlayerDetailsViewModelBuilder>();
+            playerGameResultDetailsBuilderMock = MockRepository.GenerateMock<GameResultViewModelBuilder>();
+            playerDetailsViewModelBuilderMock = MockRepository.GenerateMock<PlayerDetailsViewModelBuilder>();
+            userContextBuilderMock = MockRepository.GenerateMock<UserContextBuilder>();
             playerController = new PlayerController(
                                 dbContextMock, 
                                 playerLogicMock, 
-                                playerGameResultDetailsBuilder, 
-                                playerDetailsViewModelBuilder);
+                                playerGameResultDetailsBuilderMock, 
+                                playerDetailsViewModelBuilderMock,
+                                userContextBuilderMock);
         }
 
         [Test]
@@ -83,7 +87,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
                 PlayerId = playerId,
                 PlayerGameResultDetails = new List<GameResultViewModel>()
             };
-            playerDetailsViewModelBuilder.Expect(viewModelBuilder => viewModelBuilder.Build(playerDetails))
+            playerDetailsViewModelBuilderMock.Expect(viewModelBuilder => viewModelBuilder.Build(playerDetails))
                 .Repeat
                 .Once()
                 .Return(playerDetailsViewModel);
@@ -106,7 +110,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
                 PlayerId = playerId,
                 PlayerGameResultDetails = new List<GameResultViewModel>()
             };
-            playerDetailsViewModelBuilder.Expect(viewModelBuilder => viewModelBuilder.Build(playerDetails))
+            playerDetailsViewModelBuilderMock.Expect(viewModelBuilder => viewModelBuilder.Build(playerDetails))
                 .Repeat
                 .Once()
                 .Return(playerDetailsViewModel);

@@ -1,6 +1,8 @@
 ﻿using BusinessLogic.DataAccess;
+using BusinessLogic.Logic;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Players;
+using BusinessLogic.Models.User;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -24,16 +26,19 @@ namespace UI.Controllers
         internal PlayerLogic playerLogic;
         internal GameResultViewModelBuilder builder;
         internal PlayerDetailsViewModelBuilder playerDetailsViewModelBuilder;
+        internal UserContextBuilder userContextBuilder;
         
         public PlayerController(NemeStatsDbContext dbContext, 
             PlayerLogic logic, 
             GameResultViewModelBuilder resultBuilder,
-            PlayerDetailsViewModelBuilder playerDetailsBuilder)
+            PlayerDetailsViewModelBuilder playerDetailsBuilder,
+            UserContextBuilder userContextBuilder)
         {
             db = dbContext;
             playerLogic = logic;
             builder = resultBuilder;
             playerDetailsViewModelBuilder = playerDetailsBuilder;
+            this.userContextBuilder = userContextBuilder;
         }
 
         // GET: /Player/
@@ -83,6 +88,9 @@ namespace UI.Controllers
         {
             if (ModelState.IsValid)
             {
+                //TODO need tests for this action
+                UserContext userContext = userContextBuilder.GetUserContext(User.Identity.Name, db);
+                player.GamingGroupId = userContext.GamingGroupId;
                 db.Players.Add(player);
                 db.SaveChanges();
                 return RedirectToAction("Index");

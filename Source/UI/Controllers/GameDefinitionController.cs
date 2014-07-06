@@ -8,13 +8,21 @@ using System.Web;
 using System.Web.Mvc;
 using BusinessLogic.Models;
 using BusinessLogic.DataAccess;
+using BusinessLogic.Models.User;
+using BusinessLogic.Logic;
 
 namespace UI.Controllers
 {
     [Authorize]
     public partial class GameDefinitionController : Controller
     {
-        private NemeStatsDbContext db = new NemeStatsDbContext();
+        internal NemeStatsDbContext db;
+        internal UserContextBuilder userContextBuilder;
+
+        public GameDefinitionController(NemeStatsDbContext dbContext, UserContextBuilder userContextBuilder)
+        {
+            this.userContextBuilder = userContextBuilder;
+        }
 
         // GET: /GameDefinition/
         public virtual ActionResult Index()
@@ -48,16 +56,18 @@ namespace UI.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public virtual ActionResult Create([Bind(Include = "Id,Name,Description")] GameDefinition gamedefinition)
+        public virtual ActionResult Create([Bind(Include = "Id,Name,Description")] GameDefinition gameDefinition)
         {
             if (ModelState.IsValid)
             {
-                db.GameDefinitions.Add(gamedefinition);
+                UserContext userContext = userContextBuilder.GetUserContext(User.Identity.Name, db);
+                gameDefinition.GamingGroupId = userContext.GamingGroupId;
+                db.GameDefinitions.Add(gameDefinition);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(gamedefinition);
+            return View(gameDefinition);
         }
 
         // GET: /GameDefinition/Edit/5
