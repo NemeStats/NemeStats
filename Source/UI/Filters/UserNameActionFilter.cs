@@ -6,6 +6,7 @@ using System.Web.Mvc;
 
 namespace UI.Filters
 {
+    //TODO turn this into UserIdActionFilter. no need to use username since you can get the ID off identity.
     public class UserNameActionFilter : ActionFilterAttribute
     {
         internal const string UserNameKey = "userName";
