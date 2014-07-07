@@ -8,6 +8,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using UI.Filters;
 using UI.Models.PlayedGame;
 using UI.Transformations;
 
@@ -65,19 +66,38 @@ namespace UI.Controllers
         }
 
         // GET: /PlayedGame/Create
-        public virtual ActionResult Create()
+        [UserNameActionFilter]
+        public virtual ActionResult Create(string userName)
         {
             ViewBag.GameDefinitionId = new SelectList(db.GameDefinitions, "Id", "Name");
 
-            AddAllPlayersToViewBag();
+            AddAllPlayersToViewBag(userName);
 
             return View(MVC.PlayedGame.Views.Create);
         }
 
-        private void AddAllPlayersToViewBag()
+        // POST: /PlayedGame/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [UserNameActionFilter]
+        public virtual ActionResult Create(NewlyCompletedGame newlyCompletedGame, string userName)
+        {
+            if (ModelState.IsValid)
+            {
+                playedGameLogic.CreatePlayedGame(newlyCompletedGame, userName);
+
+                return RedirectToAction(MVC.PlayedGame.ActionNames.Index);
+            }
+
+            return Create(userName);
+        }
+
+        private void AddAllPlayersToViewBag(string userName)
         {
             //TODO Clean Code said something about boolean parameters not being good. Come back to this...
-            List<Player> allPlayers = playerLogic.GetAllPlayers(true, User.Identity.Name);
+            List<Player> allPlayers = playerLogic.GetAllPlayers(true, userName);
             List<SelectListItem> allPlayersSelectList = allPlayers.Select(item => new SelectListItem()
             {
                 Text = item.Name,
@@ -86,24 +106,6 @@ namespace UI.Controllers
 
             ViewBag.Players = allPlayersSelectList;
         }
-
-        // POST: /PlayedGame/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public virtual ActionResult Create(NewlyCompletedGame newlyCompletedGame)
-        {
-            if (ModelState.IsValid)
-            {
-                playedGameLogic.CreatePlayedGame(newlyCompletedGame, User.Identity.Name);
-
-                return RedirectToAction(MVC.PlayedGame.ActionNames.Index);
-            }
-
-            return Create();
-        }
-
 
         // GET: /PlayedGame/Edit/5
         public virtual ActionResult Edit(int? id)

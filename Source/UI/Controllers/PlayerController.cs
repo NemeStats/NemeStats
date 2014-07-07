@@ -8,6 +8,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using UI.Filters;
 using UI.Models.PlayedGame;
 using UI.Models.Players;
 using UI.Transformations;
@@ -16,7 +17,7 @@ using UI.Transformations.Player;
 namespace UI.Controllers
 {
     [Authorize]
-    public class PlayerController : Controller
+    public partial class PlayerController : Controller
     {
         public static readonly int NUMBER_OF_RECENT_GAMES_TO_RETRIEVE = 10;
         public static readonly string RECENT_GAMES_MESSAGE_FORMAT = "(Last {0} Games)";
@@ -42,13 +43,13 @@ namespace UI.Controllers
         }
 
         // GET: /Player/
-        public ActionResult Index()
+        public virtual ActionResult Index()
         {
             return View(db.Players.ToList());
         }
 
         // GET: /Player/Details/5
-        public ActionResult Details(int? id)
+        public virtual ActionResult Details(int? id)
         {
             if(!id.HasValue)
             {
@@ -74,7 +75,7 @@ namespace UI.Controllers
         }
 
         // GET: /Player/Create
-        public ActionResult Create()
+        public virtual ActionResult Create()
         {
             return View();
         }
@@ -84,12 +85,13 @@ namespace UI.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include="Id,Name,Active")] Player player)
+        [UserNameActionFilter]
+        public virtual ActionResult Create([Bind(Include = "Id,Name,Active")] Player player, string userName)
         {
             if (ModelState.IsValid)
             {
                 //TODO need tests for this action
-                UserContext userContext = userContextBuilder.GetUserContext(User.Identity.Name, db);
+                UserContext userContext = userContextBuilder.GetUserContext(userName, db);
                 player.GamingGroupId = userContext.GamingGroupId;
                 db.Players.Add(player);
                 db.SaveChanges();
@@ -100,7 +102,7 @@ namespace UI.Controllers
         }
 
         // GET: /Player/Edit/5
-        public ActionResult Edit(int? id)
+        public virtual ActionResult Edit(int? id)
         {
             if (id == null)
             {
@@ -119,7 +121,7 @@ namespace UI.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include="Id,Name,Active")] Player player)
+        public virtual ActionResult Edit([Bind(Include = "Id,Name,Active")] Player player)
         {
             if (ModelState.IsValid)
             {
@@ -131,7 +133,7 @@ namespace UI.Controllers
         }
 
         // GET: /Player/Delete/5
-        public ActionResult Delete(int? id)
+        public virtual ActionResult Delete(int? id)
         {
             if (id == null)
             {
@@ -148,7 +150,7 @@ namespace UI.Controllers
         // POST: /Player/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public virtual ActionResult DeleteConfirmed(int id)
         {
             Player player = db.Players.Find(id);
             db.Players.Remove(player);

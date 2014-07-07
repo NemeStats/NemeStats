@@ -21,11 +21,141 @@ using System.Web.Mvc.Ajax;
 using System.Web.Mvc.Html;
 using System.Web.Routing;
 using T4MVC;
-namespace T4MVC
+namespace UI.Controllers
 {
-    public class PlayerController
+    public partial class PlayerController
     {
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected PlayerController(Dummy d) { }
 
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToAction(ActionResult result)
+        {
+            var callInfo = result.GetT4MVCResult();
+            return RedirectToRoute(callInfo.RouteValueDictionary);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToAction(Task<ActionResult> taskResult)
+        {
+            return RedirectToAction(taskResult.Result);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToActionPermanent(ActionResult result)
+        {
+            var callInfo = result.GetT4MVCResult();
+            return RedirectToRoutePermanent(callInfo.RouteValueDictionary);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToActionPermanent(Task<ActionResult> taskResult)
+        {
+            return RedirectToActionPermanent(taskResult.Result);
+        }
+
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult Details()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Details);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult Edit()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Edit);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult Delete()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Delete);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult DeleteConfirmed()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.DeleteConfirmed);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public PlayerController Actions { get { return MVC.Player; } }
+        [GeneratedCode("T4MVC", "2.0")]
+        public readonly string Area = "";
+        [GeneratedCode("T4MVC", "2.0")]
+        public readonly string Name = "Player";
+        [GeneratedCode("T4MVC", "2.0")]
+        public const string NameConst = "Player";
+
+        static readonly ActionNamesClass s_actions = new ActionNamesClass();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionNamesClass ActionNames { get { return s_actions; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionNamesClass
+        {
+            public readonly string Index = "Index";
+            public readonly string Details = "Details";
+            public readonly string Create = "Create";
+            public readonly string Edit = "Edit";
+            public readonly string Delete = "Delete";
+            public readonly string DeleteConfirmed = "Delete";
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionNameConstants
+        {
+            public const string Index = "Index";
+            public const string Details = "Details";
+            public const string Create = "Create";
+            public const string Edit = "Edit";
+            public const string Delete = "Delete";
+            public const string DeleteConfirmed = "Delete";
+        }
+
+
+        static readonly ActionParamsClass_Details s_params_Details = new ActionParamsClass_Details();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_Details DetailsParams { get { return s_params_Details; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_Details
+        {
+            public readonly string id = "id";
+        }
+        static readonly ActionParamsClass_Create s_params_Create = new ActionParamsClass_Create();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_Create CreateParams { get { return s_params_Create; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_Create
+        {
+            public readonly string player = "player";
+            public readonly string userName = "userName";
+        }
+        static readonly ActionParamsClass_Edit s_params_Edit = new ActionParamsClass_Edit();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_Edit EditParams { get { return s_params_Edit; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_Edit
+        {
+            public readonly string id = "id";
+            public readonly string player = "player";
+        }
+        static readonly ActionParamsClass_Delete s_params_Delete = new ActionParamsClass_Delete();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_Delete DeleteParams { get { return s_params_Delete; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_Delete
+        {
+            public readonly string id = "id";
+        }
+        static readonly ActionParamsClass_DeleteConfirmed s_params_DeleteConfirmed = new ActionParamsClass_DeleteConfirmed();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_DeleteConfirmed DeleteConfirmedParams { get { return s_params_DeleteConfirmed; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_DeleteConfirmed
+        {
+            public readonly string id = "id";
+        }
         static readonly ViewsClass s_views = new ViewsClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ViewsClass Views { get { return s_views; } }
@@ -50,6 +180,107 @@ namespace T4MVC
         }
     }
 
+    [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+    public partial class T4MVC_PlayerController : UI.Controllers.PlayerController
+    {
+        public T4MVC_PlayerController() : base(Dummy.Instance) { }
+
+        [NonAction]
+        partial void IndexOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult Index()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Index);
+            IndexOverride(callInfo);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void DetailsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int? id);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult Details(int? id)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Details);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            DetailsOverride(callInfo, id);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void CreateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult Create()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Create);
+            CreateOverride(callInfo);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void CreateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, BusinessLogic.Models.Player player, string userName);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult Create(BusinessLogic.Models.Player player, string userName)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Create);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "player", player);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "userName", userName);
+            CreateOverride(callInfo, player, userName);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void EditOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int? id);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult Edit(int? id)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Edit);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            EditOverride(callInfo, id);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void EditOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, BusinessLogic.Models.Player player);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult Edit(BusinessLogic.Models.Player player)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Edit);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "player", player);
+            EditOverride(callInfo, player);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void DeleteOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int? id);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult Delete(int? id)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Delete);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            DeleteOverride(callInfo, id);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void DeleteConfirmedOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult DeleteConfirmed(int id)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.DeleteConfirmed);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            DeleteConfirmedOverride(callInfo, id);
+            return callInfo;
+        }
+
+    }
 }
 
 #endregion T4MVC

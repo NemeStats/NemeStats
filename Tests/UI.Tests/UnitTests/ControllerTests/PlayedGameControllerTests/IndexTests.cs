@@ -46,7 +46,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
             {
                 new PlayedGameDetailsViewModel() { PlayedGameId = playedGameId }
             };
-            playedGameDetailsBuilder.Expect(builder => builder.Build(playedGames[0])).Repeat.Once()
+            playedGameDetailsBuilderMock.Expect(builder => builder.Build(playedGames[0])).Repeat.Once()
                 .Return(summaries[0]);
             ViewResult result = playedGameController.Index() as ViewResult;
 
@@ -71,7 +71,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
             
             foreach(var playedgame in recentlyPlayedGames)
             {
-                playedGameDetailsBuilder.AssertWasCalled(builder => builder.Build(playedgame));
+                playedGameDetailsBuilderMock.AssertWasCalled(builder => builder.Build(playedgame));
             };
         }
     }

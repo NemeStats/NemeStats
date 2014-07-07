@@ -26,9 +26,6 @@ namespace UI.Controllers
     public partial class GameDefinitionController
     {
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public GameDefinitionController() { }
-
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         protected GameDefinitionController(Dummy d) { }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -131,7 +128,7 @@ namespace UI.Controllers
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionParamsClass_Create
         {
-            public readonly string gamedefinition = "gamedefinition";
+            public readonly string gameDefinition = "gameDefinition";
         }
         static readonly ActionParamsClass_Edit s_params_Edit = new ActionParamsClass_Edit();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -222,14 +219,14 @@ namespace UI.Controllers
         }
 
         [NonAction]
-        partial void CreateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, BusinessLogic.Models.GameDefinition gamedefinition);
+        partial void CreateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, BusinessLogic.Models.GameDefinition gameDefinition);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult Create(BusinessLogic.Models.GameDefinition gamedefinition)
+        public override System.Web.Mvc.ActionResult Create(BusinessLogic.Models.GameDefinition gameDefinition)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Create);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "gamedefinition", gamedefinition);
-            CreateOverride(callInfo, gamedefinition);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "gameDefinition", gameDefinition);
+            CreateOverride(callInfo, gameDefinition);
             return callInfo;
         }
 

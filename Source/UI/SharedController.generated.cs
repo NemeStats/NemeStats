@@ -48,7 +48,11 @@ namespace T4MVC
             [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
             public partial class _DisplayTemplatesClass
             {
-                public readonly string PlayerGameResult = "PlayerGameResult";
+                static readonly _ViewNamesClass s_ViewNames = new _ViewNamesClass();
+                public _ViewNamesClass ViewNames { get { return s_ViewNames; } }
+                public class _ViewNamesClass
+                {
+                }
             }
         }
     }

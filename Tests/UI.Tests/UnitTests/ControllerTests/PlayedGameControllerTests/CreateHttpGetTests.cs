@@ -26,7 +26,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 
             playerLogicMock.Expect(x => x.GetAllPlayers(true, testUserName)).Repeat.Once().Return(allPlayers);
 
-            playedGameController.Create();
+            playedGameController.Create(testUserName);
 
             playerLogicMock.VerifyAllExpectations();
 
@@ -39,7 +39,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
         {
             playerLogicMock.Expect(x => x.GetAllPlayers(true, testUserName)).Repeat.Once().Return(new List<Player>());
 
-            ViewResult result = playedGameController.Create() as ViewResult;
+            ViewResult result = playedGameController.Create(testUserName) as ViewResult;
 
             Assert.AreEqual(MVC.PlayedGame.Views.Create, result.ViewName);
         }

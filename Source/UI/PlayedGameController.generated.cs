@@ -26,9 +26,6 @@ namespace UI.Controllers
     public partial class PlayedGameController
     {
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public PlayedGameController() { }
-
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         protected PlayedGameController(Dummy d) { }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -62,6 +59,12 @@ namespace UI.Controllers
         public virtual System.Web.Mvc.ActionResult Details()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Details);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult Create()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Create);
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -131,7 +134,8 @@ namespace UI.Controllers
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionParamsClass_Create
         {
-            public readonly string playedgame = "playedgame";
+            public readonly string userName = "userName";
+            public readonly string newlyCompletedGame = "newlyCompletedGame";
         }
         static readonly ActionParamsClass_Edit s_params_Edit = new ActionParamsClass_Edit();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -211,26 +215,27 @@ namespace UI.Controllers
         }
 
         [NonAction]
-        partial void CreateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+        partial void CreateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string userName);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult Create()
+        public override System.Web.Mvc.ActionResult Create(string userName)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Create);
-            CreateOverride(callInfo);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "userName", userName);
+            CreateOverride(callInfo, userName);
             return callInfo;
         }
 
-        //TODO check with someone to understand this madness.
         [NonAction]
-        partial void CreateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, BusinessLogic.Models.Games.NewlyCompletedGame newlyCompletedGame);
+        partial void CreateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, BusinessLogic.Models.Games.NewlyCompletedGame newlyCompletedGame, string userName);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult Create(BusinessLogic.Models.Games.NewlyCompletedGame newlyCompletedGame)
+        public override System.Web.Mvc.ActionResult Create(BusinessLogic.Models.Games.NewlyCompletedGame newlyCompletedGame, string userName)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Create);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "newlyCompletedGame", newlyCompletedGame);
-            CreateOverride(callInfo, newlyCompletedGame);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "userName", userName);
+            CreateOverride(callInfo, newlyCompletedGame, userName);
             return callInfo;
         }
 

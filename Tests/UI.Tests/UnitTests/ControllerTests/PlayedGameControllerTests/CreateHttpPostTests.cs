@@ -27,14 +27,12 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
         public void ItRemainsOnTheCreatePageIfTheModelIsNotValid()
         {
             ViewResult expectedViewResult = new ViewResult();
-            playerLogicMock.Expect(x => x.GetAllPlayers(true, testUserName)).Repeat.Once().Return(new List<Player>());
-            playedGameControllerPartialMock.Expect(controller => controller.Create())
+            playedGameControllerPartialMock.Expect(controller => controller.Create(testUserName))
                     .Repeat.Once()
                     .Return(expectedViewResult);
-
             playedGameControllerPartialMock.ModelState.AddModelError("Test error", "this is a test error to make model state invalid");
 
-            ViewResult actualResult = playedGameControllerPartialMock.Create(new NewlyCompletedGame()) as ViewResult;
+            ViewResult actualResult = playedGameControllerPartialMock.Create(new NewlyCompletedGame(), testUserName) as ViewResult;
 
             Assert.AreSame(expectedViewResult, actualResult);
         }
@@ -49,7 +47,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
             playerLogicMock.Expect(x => x.GetAllPlayers(true, testUserName)).Repeat.Once().Return(allPlayers);
             playedGameController.ModelState.AddModelError("Test error", "this is a test error to make model state invalid");
 
-            playedGameController.Create(new NewlyCompletedGame());
+            playedGameController.Create(new NewlyCompletedGame(), testUserName);
 
             playerLogicMock.VerifyAllExpectations();
 
@@ -67,7 +65,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
             };
             UserContext user = new UserContext();
             playedGameLogicMock.Expect(x => x.CreatePlayedGame(Arg<NewlyCompletedGame>.Is.Anything, Arg<string>.Is.Anything)).Repeat.Once();
-            RedirectToRouteResult result = playedGameControllerPartialMock.Create(playedGame) as RedirectToRouteResult;
+            RedirectToRouteResult result = playedGameController.Create(playedGame, null) as RedirectToRouteResult;
 
             Assert.AreEqual(MVC.PlayedGame.ActionNames.Index, result.RouteValues["action"]);
         }
@@ -81,7 +79,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
                 PlayerRanks = new List<PlayerRank>()
             };
 
-            playedGameControllerPartialMock.Create(newlyCompletedGame);
+            playedGameController.Create(newlyCompletedGame, null);
 
             playedGameLogicMock.AssertWasCalled(mock => mock.CreatePlayedGame(Arg<NewlyCompletedGame>.Is.Equal(newlyCompletedGame), 
                 Arg<string>.Is.Anything));
@@ -95,16 +93,8 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
                 GameDefinitionId = 1,
                 PlayerRanks = new List<PlayerRank>()
             };
-            UserContext userContext = new UserContext()
-            {
-                ApplicationUserId = "1"
-            };
 
-            userContextBuilder.Expect(builder => builder.GetUserContext(Arg<string>.Is.Anything, Arg<NemeStatsDbContext>.Is.Anything))
-                .Repeat.Once()
-                .Return(userContext);
-
-            playedGameControllerPartialMock.Create(newlyCompletedGame);
+            playedGameController.Create(newlyCompletedGame, testUserName);
 
             playedGameLogicMock.AssertWasCalled(logic => logic.CreatePlayedGame(
                 Arg<NewlyCompletedGame>.Is.Anything, 
