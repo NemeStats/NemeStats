@@ -27,13 +27,13 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.StatisticsReposit
         {
             dbContext = new NemeStatsDbContext();
             userContextBuilder = new UserContextBuilderImpl();
-            playerLogic = new PlayerRepository(dbContext, userContextBuilder);
+            playerLogic = new PlayerRepository(dbContext);
         }
 
         [Test]
         public void ItGetsThePlayerWithTheHighestWinPercentageAgainstMe()
         {
-            Nemesis nemesis = playerLogic.GetNemesis(testPlayer1.Id);
+            Nemesis nemesis = playerLogic.GetNemesis(testPlayer1.Id, testUserContextForUserWithDefaultGamingGroup);
 
             Assert.AreEqual(testPlayer4.Id, nemesis.NemesisPlayerId);
         }
@@ -42,7 +42,7 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.StatisticsReposit
         public void ANemesisMustBeActive()
         {
             //player 5 is inactive but beat player 1 three times
-            Nemesis nemesis = playerLogic.GetNemesis(testPlayer1.Id);
+            Nemesis nemesis = playerLogic.GetNemesis(testPlayer1.Id, testUserContextForUserWithDefaultGamingGroup);
 
             Assert.AreNotEqual(testPlayer5.Id, nemesis.NemesisPlayerId);
         }
@@ -51,7 +51,7 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.StatisticsReposit
         public void ItReturnsANullNemesisIfThereIsNoNemesis()
         {
             //player 5 is inactive but beat player 1 three times
-            Nemesis nemesis = playerLogic.GetNemesis(testPlayer5.Id);
+            Nemesis nemesis = playerLogic.GetNemesis(testPlayer5.Id, testUserContextForUserWithDefaultGamingGroup);
 
             Assert.True(nemesis is NullNemesis);
         }
@@ -60,7 +60,7 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.StatisticsReposit
         public void ANemesisMustHaveWonAtLeastACertainNumberOfGames()
         {
             //player2 beat player5 once (100% of the time) but this isn't enough to be a nemesis
-            Nemesis nemesis = playerLogic.GetNemesis(testPlayer5.Id);
+            Nemesis nemesis = playerLogic.GetNemesis(testPlayer5.Id, testUserContextForUserWithDefaultGamingGroup);
 
             Assert.AreNotEqual(testPlayer2.Id, nemesis.NemesisPlayerId);
         }
@@ -68,7 +68,7 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.StatisticsReposit
         [Test]
         public void ItSetsTheNemesisPlayerId()
         {
-            Nemesis nemesis = playerLogic.GetNemesis(testPlayer1.Id);
+            Nemesis nemesis = playerLogic.GetNemesis(testPlayer1.Id, testUserContextForUserWithDefaultGamingGroup);
 
             Assert.AreEqual(testPlayer4.Id, nemesis.NemesisPlayerId);
         }
@@ -76,7 +76,7 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.StatisticsReposit
         [Test]
         public void ItSetsTheNemesisPlayerName()
         {
-            Nemesis nemesis = playerLogic.GetNemesis(testPlayer1.Id);
+            Nemesis nemesis = playerLogic.GetNemesis(testPlayer1.Id, testUserContextForUserWithDefaultGamingGroup);
 
             Assert.AreEqual(testPlayer4.Name, nemesis.NemesisPlayerName);
         }
@@ -84,7 +84,7 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.StatisticsReposit
         [Test]
         public void ItSetsTheLossPercentageVersusTheNemesis()
         {
-            Nemesis nemesis = playerLogic.GetNemesis(testPlayer1.Id);
+            Nemesis nemesis = playerLogic.GetNemesis(testPlayer1.Id, testUserContextForUserWithDefaultGamingGroup);
 
             Assert.AreEqual(100, nemesis.LossPercentageVersusNemesis);
         }
@@ -92,7 +92,7 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.StatisticsReposit
         [Test]
         public void ItSetsTheNumberOfGamesLostVersusTheNemesis()
         {
-            Nemesis nemesis = playerLogic.GetNemesis(testPlayer1.Id);
+            Nemesis nemesis = playerLogic.GetNemesis(testPlayer1.Id, testUserContextForUserWithDefaultGamingGroup);
 
             Assert.AreEqual(3, nemesis.GamesLostVersusNemesis);
         }

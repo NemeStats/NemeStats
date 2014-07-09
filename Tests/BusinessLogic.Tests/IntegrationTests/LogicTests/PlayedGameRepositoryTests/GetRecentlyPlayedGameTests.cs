@@ -27,7 +27,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGameRepositoryTe
                 dbContext.Configuration.LazyLoadingEnabled = false;
                 dbContext.Configuration.ProxyCreationEnabled = false;
 
-                List<PlayedGame> playedGames = playedGameLogic.GetRecentGames(1);
+                List<PlayedGame> playedGames = playedGameLogic.GetRecentGames(1, testUserContextForUserWithDefaultGamingGroup);
                 GameDefinition gameDefinition = playedGames[0].GameDefinition;
 
                 Assert.NotNull(gameDefinition);
@@ -43,7 +43,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGameRepositoryTe
                 dbContext.Configuration.LazyLoadingEnabled = false;
                 dbContext.Configuration.ProxyCreationEnabled = false;
 
-                List<PlayedGame> playedGames = playedGameLogic.GetRecentGames(1);
+                List<PlayedGame> playedGames = playedGameLogic.GetRecentGames(1, testUserContextForUserWithDefaultGamingGroup);
                 ICollection<PlayerGameResult> playerGameResults = playedGames[0].PlayerGameResults;
 
                 Assert.NotNull(playerGameResults);
@@ -59,7 +59,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGameRepositoryTe
                 dbContext.Configuration.LazyLoadingEnabled = false;
                 dbContext.Configuration.ProxyCreationEnabled = false;
 
-                List<PlayedGame> playedGames = playedGameLogic.GetRecentGames(1);
+                List<PlayedGame> playedGames = playedGameLogic.GetRecentGames(1, testUserContextForUserWithDefaultGamingGroup);
                 List<Player> players = playedGames[0].PlayerGameResults.Select(
                     playerGameResult => new Player()
                                             {
@@ -79,7 +79,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGameRepositoryTe
             {
                 PlayedGameLogic playedGameLogic = new PlayedGameRepository(dbContext, userContextBuilder);
                 int one = 1;
-                List<PlayedGame> playedGames = playedGameLogic.GetRecentGames(one);
+                List<PlayedGame> playedGames = playedGameLogic.GetRecentGames(one, testUserContextForUserWithDefaultGamingGroup);
 
                 Assert.AreEqual(one, playedGames.Count());
             }
@@ -92,7 +92,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGameRepositoryTe
             {
                 PlayedGameLogic playedGameLogic = new PlayedGameRepository(dbContext, userContextBuilder);
                 int two = 2;
-                List<PlayedGame> playedGames = playedGameLogic.GetRecentGames(two);
+                List<PlayedGame> playedGames = playedGameLogic.GetRecentGames(two, testUserContextForUserWithDefaultGamingGroup);
 
                 Assert.AreEqual(two, playedGames.Count());
             }
@@ -105,7 +105,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGameRepositoryTe
             {
                 PlayedGameLogic playedGameLogic = new PlayedGameRepository(dbContext, userContextBuilder);
                 int five = 5;
-                List<PlayedGame> playedGames = playedGameLogic.GetRecentGames(five);
+                List<PlayedGame> playedGames = playedGameLogic.GetRecentGames(five, testUserContextForUserWithDefaultGamingGroup);
                 List<PlayedGame> allPlayedGames = dbContext.PlayedGames.ToList().OrderByDescending(playedGame => playedGame.DatePlayed).ToList();
                 for(int i = 0; i<five; i++)
                 {
@@ -121,7 +121,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGameRepositoryTe
             {
                 PlayedGameLogic playedGameLogic = new PlayedGameRepository(dbContext, userContextBuilder);
                 int five = 5;
-                List<PlayedGame> playedGames = playedGameLogic.GetRecentGames(five);
+                List<PlayedGame> playedGames = playedGameLogic.GetRecentGames(five, testUserContextForUserWithDefaultGamingGroup);
 
                 int lastRank = -1;
 

@@ -7,9 +7,9 @@ namespace BusinessLogic.Models
 {
     public interface PlayedGameLogic
     {
-        PlayedGame GetPlayedGameDetails(int playedGameId);
-        List<PlayedGame> GetRecentGames(int numberOfGames);
-        PlayedGame CreatePlayedGame(NewlyCompletedGame newlyCompletedGame, string requestingUserName);
+        PlayedGame GetPlayedGameDetails(int playedGameId, UserContext requestingUserContext);
+        List<PlayedGame> GetRecentGames(int numberOfGames, UserContext requestingUserContext);
+        PlayedGame CreatePlayedGame(NewlyCompletedGame newlyCompletedGame, UserContext requestingUserContext);
         List<PlayerGameResult> TransformNewlyCompletedGamePlayerRanksToPlayerGameResults(NewlyCompletedGame newlyCompletedGame);
         PlayedGame TransformNewlyCompletedGameIntoPlayedGame(
             NewlyCompletedGame newlyCompletedGame,

@@ -10,6 +10,6 @@ namespace BusinessLogic.Logic
 {
     public interface UserContextBuilder
     {
-        UserContext GetUserContext(string userName, NemeStatsDbContext dbContext);
+        UserContext GetUserContext(string userId, NemeStatsDbContext dbContext);
     }
 }

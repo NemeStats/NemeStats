@@ -121,6 +121,7 @@ namespace UI.Controllers
         public class ActionParamsClass_Details
         {
             public readonly string id = "id";
+            public readonly string userContext = "userContext";
         }
         static readonly ActionParamsClass_Create s_params_Create = new ActionParamsClass_Create();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -129,7 +130,7 @@ namespace UI.Controllers
         public class ActionParamsClass_Create
         {
             public readonly string player = "player";
-            public readonly string userName = "userName";
+            public readonly string userContext = "userContext";
         }
         static readonly ActionParamsClass_Edit s_params_Edit = new ActionParamsClass_Edit();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -138,6 +139,7 @@ namespace UI.Controllers
         public class ActionParamsClass_Edit
         {
             public readonly string id = "id";
+            public readonly string userContext = "userContext";
             public readonly string player = "player";
         }
         static readonly ActionParamsClass_Delete s_params_Delete = new ActionParamsClass_Delete();
@@ -147,6 +149,7 @@ namespace UI.Controllers
         public class ActionParamsClass_Delete
         {
             public readonly string id = "id";
+            public readonly string userContext = "userContext";
         }
         static readonly ActionParamsClass_DeleteConfirmed s_params_DeleteConfirmed = new ActionParamsClass_DeleteConfirmed();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -155,6 +158,7 @@ namespace UI.Controllers
         public class ActionParamsClass_DeleteConfirmed
         {
             public readonly string id = "id";
+            public readonly string userContext = "userContext";
         }
         static readonly ViewsClass s_views = new ViewsClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -197,14 +201,15 @@ namespace UI.Controllers
         }
 
         [NonAction]
-        partial void DetailsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int? id);
+        partial void DetailsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int? id, BusinessLogic.Models.User.UserContext userContext);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult Details(int? id)
+        public override System.Web.Mvc.ActionResult Details(int? id, BusinessLogic.Models.User.UserContext userContext)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Details);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
-            DetailsOverride(callInfo, id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "userContext", userContext);
+            DetailsOverride(callInfo, id, userContext);
             return callInfo;
         }
 
@@ -220,63 +225,67 @@ namespace UI.Controllers
         }
 
         [NonAction]
-        partial void CreateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, BusinessLogic.Models.Player player, string userName);
+        partial void CreateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, BusinessLogic.Models.Player player, BusinessLogic.Models.User.UserContext userContext);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult Create(BusinessLogic.Models.Player player, string userName)
+        public override System.Web.Mvc.ActionResult Create(BusinessLogic.Models.Player player, BusinessLogic.Models.User.UserContext userContext)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Create);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "player", player);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "userName", userName);
-            CreateOverride(callInfo, player, userName);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "userContext", userContext);
+            CreateOverride(callInfo, player, userContext);
             return callInfo;
         }
 
         [NonAction]
-        partial void EditOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int? id);
+        partial void EditOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int? id, BusinessLogic.Models.User.UserContext userContext);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult Edit(int? id)
+        public override System.Web.Mvc.ActionResult Edit(int? id, BusinessLogic.Models.User.UserContext userContext)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Edit);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
-            EditOverride(callInfo, id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "userContext", userContext);
+            EditOverride(callInfo, id, userContext);
             return callInfo;
         }
 
         [NonAction]
-        partial void EditOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, BusinessLogic.Models.Player player);
+        partial void EditOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, BusinessLogic.Models.Player player, BusinessLogic.Models.User.UserContext userContext);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult Edit(BusinessLogic.Models.Player player)
+        public override System.Web.Mvc.ActionResult Edit(BusinessLogic.Models.Player player, BusinessLogic.Models.User.UserContext userContext)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Edit);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "player", player);
-            EditOverride(callInfo, player);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "userContext", userContext);
+            EditOverride(callInfo, player, userContext);
             return callInfo;
         }
 
         [NonAction]
-        partial void DeleteOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int? id);
+        partial void DeleteOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int? id, BusinessLogic.Models.User.UserContext userContext);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult Delete(int? id)
+        public override System.Web.Mvc.ActionResult Delete(int? id, BusinessLogic.Models.User.UserContext userContext)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Delete);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
-            DeleteOverride(callInfo, id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "userContext", userContext);
+            DeleteOverride(callInfo, id, userContext);
             return callInfo;
         }
 
         [NonAction]
-        partial void DeleteConfirmedOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id);
+        partial void DeleteConfirmedOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, BusinessLogic.Models.User.UserContext userContext);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult DeleteConfirmed(int id)
+        public override System.Web.Mvc.ActionResult DeleteConfirmed(int id, BusinessLogic.Models.User.UserContext userContext)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.DeleteConfirmed);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
-            DeleteConfirmedOverride(callInfo, id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "userContext", userContext);
+            DeleteConfirmedOverride(callInfo, id, userContext);
             return callInfo;
         }
 

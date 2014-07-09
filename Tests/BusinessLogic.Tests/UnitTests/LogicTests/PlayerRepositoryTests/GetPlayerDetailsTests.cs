@@ -2,6 +2,7 @@
 using BusinessLogic.Logic;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Players;
+using BusinessLogic.Models.User;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System;
@@ -16,18 +17,22 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayerRepositoryTests
     public class GetPlayerDetailsTests
     {
         private NemeStatsDbContext dbContextMock;
-        private UserContextBuilder userContextBuilderMock;
         private PlayerRepository playerRepository;
         private Player player;
         private int numberOfRecentGames = 1;
         private Nemesis nemesis;
+        private UserContext userContext;
 
         [SetUp]
         public void SetUp()
         {
+            userContext = new UserContext()
+            {
+                ApplicationUserId = "123",
+                GamingGroupId = 15151
+            };
             dbContextMock = MockRepository.GenerateMock<NemeStatsDbContext>();
-            userContextBuilderMock = MockRepository.GenerateMock<UserContextBuilder>();
-            playerRepository = MockRepository.GeneratePartialMock<PlayerRepository>(dbContextMock, userContextBuilderMock);
+            playerRepository = MockRepository.GeneratePartialMock<PlayerRepository>(dbContextMock);
             player = new Player()
             {
                 Id = 1351,
@@ -36,12 +41,12 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayerRepositoryTests
                 Active = true
             };
 
-            playerRepository.Expect(repo => repo.GetPlayer(player.Id))
+            playerRepository.Expect(repo => repo.GetPlayer(player.Id, userContext))
                 .Repeat.Once()
                 .Return(player);
 
             PlayerStatistics playerStatistics = new PlayerStatistics();
-            playerRepository.Expect(repo => repo.GetPlayerStatistics(player.Id))
+            playerRepository.Expect(repo => repo.GetPlayerStatistics(player.Id, userContext))
                 .Repeat.Once()
                 .Return(playerStatistics);
             
@@ -49,11 +54,11 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayerRepositoryTests
             {
                 NemesisPlayerId = 151541
             };
-            playerRepository.Expect(mock => mock.GetNemesis(player.Id))
+            playerRepository.Expect(mock => mock.GetNemesis(player.Id, userContext))
                 .Repeat.Once()
                 .Return(nemesis);
 
-            playerRepository.Expect(mock => mock.GetPlayerGameResultsWithPlayedGameAndGameDefinition(player.Id, numberOfRecentGames))
+            playerRepository.Expect(mock => mock.GetPlayerGameResultsWithPlayedGameAndGameDefinition(player.Id, numberOfRecentGames, userContext))
                             .Repeat.Once()
                             .Return(player.PlayerGameResults.ToList());
         }
@@ -62,12 +67,12 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayerRepositoryTests
         public void ItThrowsArgumentExceptionIfThePlayerDoesntExist()
         {
             int playerId = 1;
-            playerRepository.Expect(mock => mock.GetPlayer(playerId))
+            playerRepository.Expect(mock => mock.GetPlayer(playerId, userContext))
                 .Repeat.Once()
                 .Return(null);
 
             var exception = Assert.Throws<ArgumentException>(() =>
-                    playerRepository.GetPlayerDetails(playerId, numberOfRecentGames)
+                    playerRepository.GetPlayerDetails(playerId, numberOfRecentGames, userContext)
                 );
 
             Assert.AreEqual(PlayerRepository.EXCEPTION_PLAYER_NOT_FOUND, exception.Message);
@@ -78,7 +83,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayerRepositoryTests
         [Test]
         public void ItGetsThePlayersNemesis()
         {
-            PlayerDetails playerDetails = playerRepository.GetPlayerDetails(player.Id, numberOfRecentGames);
+            PlayerDetails playerDetails = playerRepository.GetPlayerDetails(player.Id, numberOfRecentGames, userContext);
 
             Assert.AreEqual(nemesis, playerDetails.Nemesis);
         }

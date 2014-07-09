@@ -20,7 +20,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGameRepositoryTe
         private PlayedGame GetTestSubjectPlayedGame(NemeStatsDbContext dbContextToTestWith)
         {
             return new BusinessLogic.Models.PlayedGameRepository(dbContextToTestWith, userContextBuilder)
-                .GetPlayedGameDetails(testPlayedGames[0].Id);
+                .GetPlayedGameDetails(testPlayedGames[0].Id, testUserContextForUserWithDefaultGamingGroup);
         }
 
         [Test]
@@ -60,7 +60,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGameRepositoryTe
         {
             using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
             {
-                PlayedGame notFoundPlayedGame = new PlayedGameRepository(dbContext, userContextBuilder).GetPlayedGameDetails(-1);
+                PlayedGame notFoundPlayedGame = new PlayedGameRepository(dbContext, userContextBuilder).GetPlayedGameDetails(-1, testUserContextForUserWithDefaultGamingGroup);
                 Assert.Null(notFoundPlayedGame);
             }
         }

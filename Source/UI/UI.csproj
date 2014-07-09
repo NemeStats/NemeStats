@@ -236,7 +236,8 @@
     <Compile Include="DependencyResolution\IoC.cs" />
     <Compile Include="DependencyResolution\StructureMapDependencyResolver.cs" />
     <Compile Include="DependencyResolution\StructureMapDependencyScope.cs" />
-    <Compile Include="Filters\UserNameActionFilter.cs" />
+    <Compile Include="Filters\InjectingActionInvoker.cs" />
+    <Compile Include="Filters\UserContextActionFilter.cs" />
     <Compile Include="GameDefinitionController.generated.cs">
       <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>

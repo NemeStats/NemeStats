@@ -23,7 +23,7 @@ namespace BusinessLogic.Models
             this.userContextBuilder = userContextBuilder;
         }
 
-        public PlayedGame GetPlayedGameDetails(int playedGameId)
+        public PlayedGame GetPlayedGameDetails(int playedGameId, UserContext requestingUserContext)
         {         
             return dbContext.PlayedGames.Where(playedGame => playedGame.Id == playedGameId)
                 .Include(playedGame => playedGame.GameDefinition)
@@ -31,7 +31,7 @@ namespace BusinessLogic.Models
                 .FirstOrDefault();   
         }
 
-        public List<PlayedGame> GetRecentGames(int numberOfGames)
+        public List<PlayedGame> GetRecentGames(int numberOfGames, UserContext requestingUserContext)
         {
             List<PlayedGame> playedGames = dbContext.PlayedGames.Include(playedGame => playedGame.GameDefinition)
                 .Include(playedGame => playedGame.PlayerGameResults
@@ -50,12 +50,11 @@ namespace BusinessLogic.Models
         }
 
         //TODO need to have validation logic here (or on PlayedGame similar to what is on NewlyCompletedGame)
-        public PlayedGame CreatePlayedGame(NewlyCompletedGame newlyCompletedGame, string requestingUserName)
+        public PlayedGame CreatePlayedGame(NewlyCompletedGame newlyCompletedGame, UserContext requestingUserContext)
         {
-            UserContext userContext = userContextBuilder.GetUserContext(requestingUserName, dbContext);
             List<PlayerGameResult> playerGameResults = TransformNewlyCompletedGamePlayerRanksToPlayerGameResults(newlyCompletedGame);
 
-            PlayedGame playedGame = TransformNewlyCompletedGameIntoPlayedGame(newlyCompletedGame, userContext.GamingGroupId, playerGameResults);
+            PlayedGame playedGame = TransformNewlyCompletedGameIntoPlayedGame(newlyCompletedGame, requestingUserContext.GamingGroupId, playerGameResults);
 
             dbContext.PlayedGames.Add(playedGame);
             dbContext.SaveChanges();

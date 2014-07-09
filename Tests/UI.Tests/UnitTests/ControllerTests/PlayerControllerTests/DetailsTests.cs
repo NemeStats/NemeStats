@@ -2,6 +2,7 @@
 using BusinessLogic.Logic;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Players;
+using BusinessLogic.Models.User;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System.Collections.Generic;
@@ -23,35 +24,38 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         private PlayerLogic playerLogicMock;
         private GameResultViewModelBuilder playerGameResultDetailsBuilderMock;
         private PlayerDetailsViewModelBuilder playerDetailsViewModelBuilderMock;
-        private UserContextBuilder userContextBuilderMock;
         private PlayerController playerController;
+        private UserContext userContext;
 
         [SetUp]
         public void SetUp()
         {
+            userContext = new UserContext()
+            {
+                GamingGroupId = 123,
+                ApplicationUserId = "app user id"
+            };
             dbContextMock = MockRepository.GenerateMock<NemeStatsDbContext>();
             playerLogicMock = MockRepository.GenerateMock<PlayerLogic>();
             playerGameResultDetailsBuilderMock = MockRepository.GenerateMock<GameResultViewModelBuilder>();
             playerDetailsViewModelBuilderMock = MockRepository.GenerateMock<PlayerDetailsViewModelBuilder>();
-            userContextBuilderMock = MockRepository.GenerateMock<UserContextBuilder>();
             playerController = new PlayerController(
                                 dbContextMock, 
                                 playerLogicMock, 
                                 playerGameResultDetailsBuilderMock, 
-                                playerDetailsViewModelBuilderMock,
-                                userContextBuilderMock);
+                                playerDetailsViewModelBuilderMock);
         }
 
         [Test]
         public void ItNeverReturnsNull()
         {
-            Assert.NotNull(playerController.Details(null));
+            Assert.NotNull(playerController.Details(null, null));
         }
 
         [Test]
         public void ItReturnsBadHttpStatusWhenNoPlayerIdGiven()
         {
-            HttpStatusCodeResult actualResult = playerController.Details(null) as HttpStatusCodeResult;
+            HttpStatusCodeResult actualResult = playerController.Details(null, null) as HttpStatusCodeResult;
 
             Assert.AreEqual((int)HttpStatusCode.BadRequest, actualResult.StatusCode);
         }
@@ -59,7 +63,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         [Test]
         public void ItReturns404StatusWhenNoPlayerIsFound()
         {
-            HttpStatusCodeResult actualResult = playerController.Details(-1) as HttpStatusCodeResult;
+            HttpStatusCodeResult actualResult = playerController.Details(-1, null) as HttpStatusCodeResult;
 
             Assert.AreEqual((int)HttpStatusCode.NotFound, actualResult.StatusCode);
         }
@@ -68,9 +72,9 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         public void ItRetrievesRequestedPlayer()
         {
             int playerId = 1351;
-            playerController.Details(playerId);
+            playerController.Details(playerId, userContext);
 
-            playerLogicMock.AssertWasCalled(x => x.GetPlayerDetails(playerId, PlayerController.NUMBER_OF_RECENT_GAMES_TO_RETRIEVE));
+            playerLogicMock.AssertWasCalled(x => x.GetPlayerDetails(playerId, PlayerController.NUMBER_OF_RECENT_GAMES_TO_RETRIEVE, userContext));
         }
 
         [Test]
@@ -78,7 +82,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         {
             int playerId = 1351;
             PlayerDetails playerDetails = new PlayerDetails(){ PlayerGameResults = new List<PlayerGameResult>() };
-            playerLogicMock.Expect(playerLogic => playerLogic.GetPlayerDetails(playerId, PlayerController.NUMBER_OF_RECENT_GAMES_TO_RETRIEVE))
+            playerLogicMock.Expect(playerLogic => playerLogic.GetPlayerDetails(playerId, PlayerController.NUMBER_OF_RECENT_GAMES_TO_RETRIEVE, userContext))
                 .Repeat.Once()
                 .Return(playerDetails);
 
@@ -91,7 +95,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
                 .Repeat
                 .Once()
                 .Return(playerDetailsViewModel);
-            ViewResult viewResult = playerController.Details(playerId) as ViewResult;
+            ViewResult viewResult = playerController.Details(playerId, userContext) as ViewResult;
 
             Assert.AreEqual(MVC.Player.Views.Details, viewResult.ViewName);
         }
@@ -101,7 +105,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         {
             int playerId = 1351;
             PlayerDetails playerDetails = new PlayerDetails() { Id = playerId, PlayerGameResults = new List<PlayerGameResult>() };
-            playerLogicMock.Expect(playerLogic => playerLogic.GetPlayerDetails(playerId, PlayerController.NUMBER_OF_RECENT_GAMES_TO_RETRIEVE))
+            playerLogicMock.Expect(playerLogic => playerLogic.GetPlayerDetails(playerId, PlayerController.NUMBER_OF_RECENT_GAMES_TO_RETRIEVE, userContext))
                 .Repeat.Once()
                 .Return(playerDetails);
 
@@ -115,7 +119,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
                 .Once()
                 .Return(playerDetailsViewModel);
 
-            ViewResult viewResult = playerController.Details(playerId) as ViewResult;
+            ViewResult viewResult = playerController.Details(playerId, userContext) as ViewResult;
 
             Assert.AreEqual(playerDetailsViewModel, viewResult.Model);
         }
@@ -125,9 +129,9 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         {
             int playerId = 1;
 
-            playerController.Details(playerId);
+            playerController.Details(playerId, userContext);
 
-            playerLogicMock.AssertWasCalled(mock => mock.GetPlayerDetails(playerId, PlayerController.NUMBER_OF_RECENT_GAMES_TO_RETRIEVE));
+            playerLogicMock.AssertWasCalled(mock => mock.GetPlayerDetails(playerId, PlayerController.NUMBER_OF_RECENT_GAMES_TO_RETRIEVE, userContext));
         }
 
         [Test]
@@ -143,12 +147,12 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
             };
             int playerId = 1;
 
-            playerLogicMock.Expect(mock => mock.GetPlayerDetails(playerId, PlayerController.NUMBER_OF_RECENT_GAMES_TO_RETRIEVE))
+            playerLogicMock.Expect(mock => mock.GetPlayerDetails(playerId, PlayerController.NUMBER_OF_RECENT_GAMES_TO_RETRIEVE, userContext))
                 .Repeat
                 .Once()
                 .Return(details);
 
-            playerController.Details(playerId);
+            playerController.Details(playerId, userContext);
 
             string expectedMessage = string.Format(PlayerController.RECENT_GAMES_MESSAGE_FORMAT,
                 PlayerController.NUMBER_OF_RECENT_GAMES_TO_RETRIEVE);
@@ -160,12 +164,12 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         {
             PlayerDetails playerDetails = new PlayerDetails() { PlayerGameResults = new List<PlayerGameResult>() };
             int playerId = 1;
-            playerLogicMock.Expect(mock => mock.GetPlayerDetails(playerId, PlayerController.NUMBER_OF_RECENT_GAMES_TO_RETRIEVE))
+            playerLogicMock.Expect(mock => mock.GetPlayerDetails(playerId, PlayerController.NUMBER_OF_RECENT_GAMES_TO_RETRIEVE, userContext))
                 .Repeat
                 .Once()
                 .Return(playerDetails);
 
-            playerController.Details(1);
+            playerController.Details(1, userContext);
 
             Assert.IsNull(playerController.ViewBag.RecentGamesMessage);
         }

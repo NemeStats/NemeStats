@@ -15,19 +15,17 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayerRepositoryTests
     {
         private NemeStatsDbContext dbContext;
         private PlayerRepository playerRepository;
-        private UserContextBuilder userContextBuilder;
 
         [TestFixtureSetUp]
         public void SetUp()
         {
             dbContext = new NemeStatsDbContext();
-            userContextBuilder = new UserContextBuilderImpl();
         }
 
         [SetUp]
         public void TestSetUp()
         {
-            playerRepository = new BusinessLogic.Models.PlayerRepository(dbContext, userContextBuilder);
+            playerRepository = new BusinessLogic.Models.PlayerRepository(dbContext);
         }
 
         [Test]
@@ -35,7 +33,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayerRepositoryTests
         {
             bool active = true;
 
-            List<Player> players = playerRepository.GetAllPlayers(active, testApplicationUserNameForUserWithDefaultGamingGroup);
+            List<Player> players = playerRepository.GetAllPlayers(active, testUserContextForUserWithDefaultGamingGroup);
 
             Assert.True(players.All(x => x.Active == active));
         }
@@ -45,7 +43,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayerRepositoryTests
         {
             bool active = false;
 
-            List<Player> players = playerRepository.GetAllPlayers(active, testApplicationUserNameForUserWithDefaultGamingGroup);
+            List<Player> players = playerRepository.GetAllPlayers(active, testUserContextForUserWithDefaultGamingGroup);
 
             Assert.True(players.All(x => x.Active == active));
         }
@@ -53,7 +51,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayerRepositoryTests
         [Test]
         public void ItOnlyReturnsPlayersForTheGivenGamingGroupId()
         {
-            List<Player> players = playerRepository.GetAllPlayers(true, testApplicationUserNameForUserWithDefaultGamingGroup);
+            List<Player> players = playerRepository.GetAllPlayers(true, testUserContextForUserWithDefaultGamingGroup);
 
             Assert.True(players.All(x => x.GamingGroupId == gamingGroup.Id));
         }

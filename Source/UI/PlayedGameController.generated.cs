@@ -56,6 +56,12 @@ namespace UI.Controllers
 
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult Index()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Index);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult Details()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Details);
@@ -120,6 +126,14 @@ namespace UI.Controllers
         }
 
 
+        static readonly ActionParamsClass_Index s_params_Index = new ActionParamsClass_Index();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_Index IndexParams { get { return s_params_Index; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_Index
+        {
+            public readonly string userContext = "userContext";
+        }
         static readonly ActionParamsClass_Details s_params_Details = new ActionParamsClass_Details();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ActionParamsClass_Details DetailsParams { get { return s_params_Details; } }
@@ -127,6 +141,7 @@ namespace UI.Controllers
         public class ActionParamsClass_Details
         {
             public readonly string id = "id";
+            public readonly string userContext = "userContext";
         }
         static readonly ActionParamsClass_Create s_params_Create = new ActionParamsClass_Create();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -134,7 +149,7 @@ namespace UI.Controllers
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionParamsClass_Create
         {
-            public readonly string userName = "userName";
+            public readonly string userContext = "userContext";
             public readonly string newlyCompletedGame = "newlyCompletedGame";
         }
         static readonly ActionParamsClass_Edit s_params_Edit = new ActionParamsClass_Edit();
@@ -192,50 +207,52 @@ namespace UI.Controllers
         public T4MVC_PlayedGameController() : base(Dummy.Instance) { }
 
         [NonAction]
-        partial void IndexOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+        partial void IndexOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, BusinessLogic.Models.User.UserContext userContext);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult Index()
+        public override System.Web.Mvc.ActionResult Index(BusinessLogic.Models.User.UserContext userContext)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Index);
-            IndexOverride(callInfo);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "userContext", userContext);
+            IndexOverride(callInfo, userContext);
             return callInfo;
         }
 
         [NonAction]
-        partial void DetailsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int? id);
+        partial void DetailsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int? id, BusinessLogic.Models.User.UserContext userContext);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult Details(int? id)
+        public override System.Web.Mvc.ActionResult Details(int? id, BusinessLogic.Models.User.UserContext userContext)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Details);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
-            DetailsOverride(callInfo, id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "userContext", userContext);
+            DetailsOverride(callInfo, id, userContext);
             return callInfo;
         }
 
         [NonAction]
-        partial void CreateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string userName);
+        partial void CreateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, BusinessLogic.Models.User.UserContext userContext);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult Create(string userName)
+        public override System.Web.Mvc.ActionResult Create(BusinessLogic.Models.User.UserContext userContext)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Create);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "userName", userName);
-            CreateOverride(callInfo, userName);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "userContext", userContext);
+            CreateOverride(callInfo, userContext);
             return callInfo;
         }
 
         [NonAction]
-        partial void CreateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, BusinessLogic.Models.Games.NewlyCompletedGame newlyCompletedGame, string userName);
+        partial void CreateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, BusinessLogic.Models.Games.NewlyCompletedGame newlyCompletedGame, BusinessLogic.Models.User.UserContext userContext);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult Create(BusinessLogic.Models.Games.NewlyCompletedGame newlyCompletedGame, string userName)
+        public override System.Web.Mvc.ActionResult Create(BusinessLogic.Models.Games.NewlyCompletedGame newlyCompletedGame, BusinessLogic.Models.User.UserContext userContext)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Create);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "newlyCompletedGame", newlyCompletedGame);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "userName", userName);
-            CreateOverride(callInfo, newlyCompletedGame, userName);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "userContext", userContext);
+            CreateOverride(callInfo, newlyCompletedGame, userContext);
             return callInfo;
         }
 

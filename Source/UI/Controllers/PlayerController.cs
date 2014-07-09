@@ -27,19 +27,16 @@ namespace UI.Controllers
         internal PlayerLogic playerLogic;
         internal GameResultViewModelBuilder builder;
         internal PlayerDetailsViewModelBuilder playerDetailsViewModelBuilder;
-        internal UserContextBuilder userContextBuilder;
         
         public PlayerController(NemeStatsDbContext dbContext, 
             PlayerLogic logic, 
             GameResultViewModelBuilder resultBuilder,
-            PlayerDetailsViewModelBuilder playerDetailsBuilder,
-            UserContextBuilder userContextBuilder)
+            PlayerDetailsViewModelBuilder playerDetailsBuilder)
         {
             db = dbContext;
             playerLogic = logic;
             builder = resultBuilder;
             playerDetailsViewModelBuilder = playerDetailsBuilder;
-            this.userContextBuilder = userContextBuilder;
         }
 
         // GET: /Player/
@@ -49,14 +46,15 @@ namespace UI.Controllers
         }
 
         // GET: /Player/Details/5
-        public virtual ActionResult Details(int? id)
+        [UserContextActionFilter]
+        public virtual ActionResult Details(int? id, UserContext userContext)
         {
             if(!id.HasValue)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            PlayerDetails player = playerLogic.GetPlayerDetails(id.Value, NUMBER_OF_RECENT_GAMES_TO_RETRIEVE);
+            PlayerDetails player = playerLogic.GetPlayerDetails(id.Value, NUMBER_OF_RECENT_GAMES_TO_RETRIEVE, userContext);
 
             if (player == null)
             {
@@ -85,13 +83,12 @@ namespace UI.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [UserNameActionFilter]
-        public virtual ActionResult Create([Bind(Include = "Id,Name,Active")] Player player, string userName)
+        [UserContextActionFilter]
+        public virtual ActionResult Create([Bind(Include = "Id,Name,Active")] Player player, UserContext userContext)
         {
             if (ModelState.IsValid)
             {
                 //TODO need tests for this action
-                UserContext userContext = userContextBuilder.GetUserContext(userName, db);
                 player.GamingGroupId = userContext.GamingGroupId;
                 db.Players.Add(player);
                 db.SaveChanges();
@@ -102,7 +99,8 @@ namespace UI.Controllers
         }
 
         // GET: /Player/Edit/5
-        public virtual ActionResult Edit(int? id)
+        [UserContextActionFilter]
+        public virtual ActionResult Edit(int? id, UserContext userContext)
         {
             if (id == null)
             {
@@ -121,7 +119,8 @@ namespace UI.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public virtual ActionResult Edit([Bind(Include = "Id,Name,Active")] Player player)
+        [UserContextActionFilter]
+        public virtual ActionResult Edit([Bind(Include = "Id,Name,Active")] Player player, UserContext userContext)
         {
             if (ModelState.IsValid)
             {
@@ -133,7 +132,8 @@ namespace UI.Controllers
         }
 
         // GET: /Player/Delete/5
-        public virtual ActionResult Delete(int? id)
+        [UserContextActionFilter]
+        public virtual ActionResult Delete(int? id, UserContext userContext)
         {
             if (id == null)
             {
@@ -150,7 +150,8 @@ namespace UI.Controllers
         // POST: /Player/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public virtual ActionResult DeleteConfirmed(int id)
+        [UserContextActionFilter]
+        public virtual ActionResult DeleteConfirmed(int id, UserContext userContext)
         {
             Player player = db.Players.Find(id);
             db.Players.Remove(player);

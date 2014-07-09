@@ -20,6 +20,8 @@ using BusinessLogic.Logic;
 using BusinessLogic.Models;
 using StructureMap;
 using StructureMap.Graph;
+using System.Web.Mvc;
+using UI.Filters;
 using UI.Models.PlayedGame;
 using UI.Transformations;
 using UI.Transformations.Player;
@@ -39,6 +41,8 @@ namespace UI.DependencyResolution {
                             x.For<GameResultViewModelBuilder>().Use<GameResultViewModelBuilderImpl>();
                             x.For<PlayerDetailsViewModelBuilder>().Use<PlayerDetailsViewModelBuilderImpl>();
                             x.For<UserContextBuilder>().Use<UserContextBuilderImpl>();
+                            //TODO finish implementing http://lostechies.com/jimmybogard/2010/05/03/dependency-injection-in-asp-net-mvc-filters/
+                            //x.For<IActionInvoker>().Use<InjectingActionInvoker>();
                         });
             return ObjectFactory.Container;
         }

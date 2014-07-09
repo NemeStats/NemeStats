@@ -61,25 +61,23 @@ namespace BusinessLogic.Models
             GROUP BY PlayerId";
 
         private NemeStatsDbContext dbContext;
-        private UserContextBuilder userContextBuilder;
 
-        public PlayerRepository(NemeStatsDbContext context, UserContextBuilder userContextBuilder)
+        public PlayerRepository(NemeStatsDbContext context)
         {
             dbContext = context;
-            this.userContextBuilder = userContextBuilder;
         }
 
-        public PlayerDetails GetPlayerDetails(int playerID, int numberOfRecentGamesToRetrieve)
+        public PlayerDetails GetPlayerDetails(int playerID, int numberOfRecentGamesToRetrieve, UserContext requestingUserContext)
         {
-            Player returnPlayer = GetPlayer(playerID);
+            Player returnPlayer = GetPlayer(playerID, requestingUserContext);
 
             ValidatePlayerWasFound(returnPlayer);
 
-            PlayerStatistics playerStatistics = GetPlayerStatistics(playerID);
+            PlayerStatistics playerStatistics = GetPlayerStatistics(playerID, requestingUserContext);
 
-            List<PlayerGameResult> playerGameResults = GetPlayerGameResultsWithPlayedGameAndGameDefinition(playerID, numberOfRecentGamesToRetrieve);
+            List<PlayerGameResult> playerGameResults = GetPlayerGameResultsWithPlayedGameAndGameDefinition(playerID, numberOfRecentGamesToRetrieve, requestingUserContext);
 
-            Nemesis nemesis = GetNemesis(playerID);
+            Nemesis nemesis = GetNemesis(playerID, requestingUserContext);
 
             PlayerDetails playerDetails = new PlayerDetails()
             {
@@ -102,7 +100,7 @@ namespace BusinessLogic.Models
             }
         }
 
-        internal virtual Player GetPlayer(int playerID)
+        internal virtual Player GetPlayer(int playerID, UserContext requestingUserContext)
         {
             Player returnPlayer = dbContext.Players
                 .Where(player => player.Id == playerID)
@@ -110,7 +108,7 @@ namespace BusinessLogic.Models
             return returnPlayer;
         }
 
-        internal virtual List<PlayerGameResult> GetPlayerGameResultsWithPlayedGameAndGameDefinition(int playerID, int numberOfRecentGamesToRetrieve)
+        internal virtual List<PlayerGameResult> GetPlayerGameResultsWithPlayedGameAndGameDefinition(int playerID, int numberOfRecentGamesToRetrieve, UserContext requestingUserContext)
         {
             List<PlayerGameResult> playerGameResults = dbContext.PlayerGameResults
                         .Where(result => result.PlayerId == playerID)
@@ -122,14 +120,13 @@ namespace BusinessLogic.Models
             return playerGameResults;
         }
 
-        public List<Player> GetAllPlayers(bool active, string requestingUserName)
+        public List<Player> GetAllPlayers(bool active, UserContext requestingUserContext)
         {
-            UserContext userContext = userContextBuilder.GetUserContext(requestingUserName, dbContext);
             return dbContext.Players.Where(player => player.Active == active
-                && player.GamingGroupId == userContext.GamingGroupId).ToList();
+                && player.GamingGroupId == requestingUserContext.GamingGroupId).ToList();
         }
 
-        public virtual PlayerStatistics GetPlayerStatistics(int playerId)
+        public virtual PlayerStatistics GetPlayerStatistics(int playerId, UserContext requestingUserContext)
         {
             //TODO could hard code the below to get my integration test to pass. 
             //How do I do a 2nd test so that this would need to be fixed?
@@ -140,7 +137,7 @@ namespace BusinessLogic.Models
         }
 
         //TODO refactor this. Might be tricky with anonymous data types. Should I create concrete types?
-        public virtual Nemesis GetNemesis(int playerId)
+        public virtual Nemesis GetNemesis(int playerId, UserContext requestingUserContext)
         {
             DbRawSqlQuery<WinLossStatistics> data = dbContext.Database.SqlQuery<WinLossStatistics>(SQL_GET_WIN_LOSS_GAMES_COUNT,
                 new SqlParameter("PlayerId", playerId));

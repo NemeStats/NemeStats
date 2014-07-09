@@ -17,14 +17,14 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.UserContextBuilderImpl
             using(NemeStatsDbContext dbContext = new NemeStatsDbContext())
             {
                 contextBuilder = new UserContextBuilderImpl();
-                userContext = contextBuilder.GetUserContext(testApplicationUserNameForUserWithDefaultGamingGroup, dbContext);
+                userContext = contextBuilder.GetUserContext(testUserContextForUserWithDefaultGamingGroup.ApplicationUserId, dbContext);
             }
         }
 
         [Test]
         public void ItSetsTheUserId()
         {
-            Assert.AreEqual(testApplicationUserWithDefaultGamingGroup.Id, userContext.ApplicationUserId);
+            Assert.AreEqual(testUserContextForUserWithDefaultGamingGroup.ApplicationUserId, userContext.ApplicationUserId);
         }
 
         [Test]
