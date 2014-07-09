@@ -40,7 +40,8 @@ namespace UI.Controllers
         }
 
         // GET: /Player/
-        public virtual ActionResult Index()
+        [UserContextActionFilter]
+        public virtual ActionResult Index(UserContext userContext)
         {
             return View(db.Players.ToList());
         }

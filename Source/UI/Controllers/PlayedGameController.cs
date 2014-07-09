@@ -110,7 +110,8 @@ namespace UI.Controllers
         }
 
         // GET: /PlayedGame/Edit/5
-        public virtual ActionResult Edit(int? id)
+        [UserContextActionFilter]
+        public virtual ActionResult Edit(int? id, UserContext userContext)
         {
             if (id == null)
             {
@@ -130,7 +131,8 @@ namespace UI.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public virtual ActionResult Edit([Bind(Include = "Id,GameDefinitionId,NumberOfPlayers")] PlayedGame playedgame)
+        [UserContextActionFilter]
+        public virtual ActionResult Edit([Bind(Include = "Id,GameDefinitionId,NumberOfPlayers")] PlayedGame playedgame, UserContext userContext)
         {
             if (ModelState.IsValid)
             {
@@ -143,7 +145,8 @@ namespace UI.Controllers
         }
 
         // GET: /PlayedGame/Delete/5
-        public virtual ActionResult Delete(int? id)
+        [UserContextActionFilter]
+        public virtual ActionResult Delete(int? id, UserContext userContext)
         {
             if (id == null)
             {
@@ -160,7 +163,8 @@ namespace UI.Controllers
         // POST: /PlayedGame/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public virtual ActionResult DeleteConfirmed(int id)
+        [UserContextActionFilter]
+        public virtual ActionResult DeleteConfirmed(int id, UserContext userContext)
         {
             PlayedGame playedgame = db.PlayedGames.Find(id);
             db.PlayedGames.Remove(playedgame);

@@ -10,6 +10,7 @@ using BusinessLogic.Models;
 using BusinessLogic.DataAccess;
 using BusinessLogic.Models.User;
 using BusinessLogic.Logic;
+using UI.Filters;
 
 namespace UI.Controllers
 {
@@ -17,21 +18,22 @@ namespace UI.Controllers
     public partial class GameDefinitionController : Controller
     {
         internal NemeStatsDbContext db;
-        internal UserContextBuilder userContextBuilder;
 
-        public GameDefinitionController(NemeStatsDbContext dbContext, UserContextBuilder userContextBuilder)
+        public GameDefinitionController(NemeStatsDbContext dbContext)
         {
-            this.userContextBuilder = userContextBuilder;
+            this.db = dbContext;
         }
 
         // GET: /GameDefinition/
-        public virtual ActionResult Index()
+        [UserContextActionFilter]
+        public virtual ActionResult Index(UserContext userContext)
         {
             return View(db.GameDefinitions.ToList());
         }
 
         // GET: /GameDefinition/Details/5
-        public virtual ActionResult Details(int? id)
+        [UserContextActionFilter]
+        public virtual ActionResult Details(int? id, UserContext userContext)
         {
             if (id == null)
             {
@@ -56,11 +58,11 @@ namespace UI.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public virtual ActionResult Create([Bind(Include = "Id,Name,Description")] GameDefinition gameDefinition)
+        [UserContextActionFilter]
+        public virtual ActionResult Create([Bind(Include = "Id,Name,Description")] GameDefinition gameDefinition, UserContext userContext)
         {
             if (ModelState.IsValid)
             {
-                UserContext userContext = userContextBuilder.GetUserContext(User.Identity.Name, db);
                 gameDefinition.GamingGroupId = userContext.GamingGroupId;
                 db.GameDefinitions.Add(gameDefinition);
                 db.SaveChanges();
@@ -71,7 +73,8 @@ namespace UI.Controllers
         }
 
         // GET: /GameDefinition/Edit/5
-        public virtual ActionResult Edit(int? id)
+        [UserContextActionFilter]
+        public virtual ActionResult Edit(int? id, UserContext userContext)
         {
             if (id == null)
             {
@@ -90,7 +93,8 @@ namespace UI.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public virtual ActionResult Edit([Bind(Include = "Id,Name,Description")] GameDefinition gamedefinition)
+        [UserContextActionFilter]
+        public virtual ActionResult Edit([Bind(Include = "Id,Name,Description")] GameDefinition gamedefinition, UserContext userContext)
         {
             if (ModelState.IsValid)
             {
@@ -102,7 +106,8 @@ namespace UI.Controllers
         }
 
         // GET: /GameDefinition/Delete/5
-        public virtual ActionResult Delete(int? id)
+        [UserContextActionFilter]
+        public virtual ActionResult Delete(int? id, UserContext userContext)
         {
             if (id == null)
             {
@@ -119,7 +124,8 @@ namespace UI.Controllers
         // POST: /GameDefinition/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public virtual ActionResult DeleteConfirmed(int id)
+        [UserContextActionFilter]
+        public virtual ActionResult DeleteConfirmed(int id, UserContext userContext)
         {
             GameDefinition gamedefinition = db.GameDefinitions.Find(id);
             db.GameDefinitions.Remove(gamedefinition);
