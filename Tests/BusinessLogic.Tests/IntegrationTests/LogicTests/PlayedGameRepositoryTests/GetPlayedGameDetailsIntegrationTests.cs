@@ -9,17 +9,9 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGameRepositoryTe
     [TestFixture]
     public class GetPlayedGameDetailsIntegrationTests : IntegrationTestBase
     {
-        private UserContextBuilder userContextBuilder;
-
-        [TestFixtureSetUp]
-        public void TestFixtureSetUp()
-        {
-            userContextBuilder = new UserContextBuilderImpl();
-        }
-
         private PlayedGame GetTestSubjectPlayedGame(NemeStatsDbContext dbContextToTestWith)
         {
-            return new BusinessLogic.Models.PlayedGameRepository(dbContextToTestWith, userContextBuilder)
+            return new BusinessLogic.Models.PlayedGameRepository(dbContextToTestWith)
                 .GetPlayedGameDetails(testPlayedGames[0].Id, testUserContextForUserWithDefaultGamingGroup);
         }
 
@@ -60,7 +52,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGameRepositoryTe
         {
             using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
             {
-                PlayedGame notFoundPlayedGame = new PlayedGameRepository(dbContext, userContextBuilder).GetPlayedGameDetails(-1, testUserContextForUserWithDefaultGamingGroup);
+                PlayedGame notFoundPlayedGame = new PlayedGameRepository(dbContext).GetPlayedGameDetails(-1, testUserContextForUserWithDefaultGamingGroup);
                 Assert.Null(notFoundPlayedGame);
             }
         }

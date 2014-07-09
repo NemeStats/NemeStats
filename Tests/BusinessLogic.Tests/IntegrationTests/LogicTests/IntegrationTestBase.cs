@@ -73,8 +73,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests
 
         protected void CreatePlayedGames(NemeStatsDbContext dbContext)
         {
-            UserContextBuilder userContextBuilder = new UserContextBuilderImpl();
-            PlayedGameLogic playedGameLogic = new PlayedGameRepository(dbContext, userContextBuilder);
+            PlayedGameLogic playedGameLogic = new PlayedGameRepository(dbContext);
 
             List<Player> players = new List<Player>() { testPlayer1, testPlayer2 };
             List<int> playerRanks = new List<int>() { 1, 1 };

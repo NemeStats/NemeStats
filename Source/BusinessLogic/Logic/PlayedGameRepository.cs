@@ -15,12 +15,10 @@ namespace BusinessLogic.Models
         internal const string EXCEPTION_MESSAGE_MUST_PASS_VALID_GAME_DEFINITION_ID = "Must pass a valid GameDefinitionId.";
         
         private NemeStatsDbContext dbContext;
-        private UserContextBuilder userContextBuilder;
 
-        public PlayedGameRepository(NemeStatsDbContext context, UserContextBuilder userContextBuilder)
+        public PlayedGameRepository(NemeStatsDbContext context)
         {
             dbContext = context;
-            this.userContextBuilder = userContextBuilder;
         }
 
         public PlayedGame GetPlayedGameDetails(int playedGameId, UserContext requestingUserContext)

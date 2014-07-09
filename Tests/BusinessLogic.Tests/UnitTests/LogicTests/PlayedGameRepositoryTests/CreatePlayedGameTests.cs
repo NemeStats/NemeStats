@@ -36,7 +36,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGameRepositoryTests
             userContextBuilder.Expect(builder => builder.GetUserContext(currentUserId, dbContext))
                 .Repeat.Once()
                 .Return(userContext);
-            playedGameLogicPartialMock = MockRepository.GeneratePartialMock<PlayedGameRepository>(dbContext, userContextBuilder);
+            playedGameLogicPartialMock = MockRepository.GeneratePartialMock<PlayedGameRepository>(dbContext);
             playedGamesDbSet = MockRepository.GenerateMock<DbSet<PlayedGame>>();
             dbContext.Expect(context => context.PlayedGames)
                 .Repeat.Once()
