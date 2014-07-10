@@ -103,7 +103,8 @@ namespace BusinessLogic.Models
         internal virtual Player GetPlayer(int playerID, UserContext requestingUserContext)
         {
             Player returnPlayer = dbContext.Players
-                .Where(player => player.Id == playerID)
+                .Where(player => player.Id == playerID
+                        && player.GamingGroupId == requestingUserContext.GamingGroupId)
                     .FirstOrDefault();
             return returnPlayer;
         }

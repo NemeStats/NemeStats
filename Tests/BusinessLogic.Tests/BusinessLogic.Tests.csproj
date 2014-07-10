@@ -98,6 +98,7 @@
     <Compile Include="IntegrationTests\LogicTests\PlayedGameRepositoryTests\GetRecentlyPlayedGameTests.cs" />
     <Compile Include="IntegrationTests\LogicTests\PlayerRepositoryTests\GetAllPlayersIntegrationTests.cs" />
     <Compile Include="IntegrationTests\LogicTests\PlayerRepositoryTests\GetPlayerDetailsIntegrationTests.cs" />
+    <Compile Include="IntegrationTests\LogicTests\PlayerRepositoryTests\GetPlayerIntegrationTests.cs" />
     <Compile Include="IntegrationTests\LogicTests\PlayerRepositoryTests\GetPlayerStatisticsTests.cs" />
     <Compile Include="IntegrationTests\LogicTests\UserContextBuilderImplTests\GetUserContextTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
