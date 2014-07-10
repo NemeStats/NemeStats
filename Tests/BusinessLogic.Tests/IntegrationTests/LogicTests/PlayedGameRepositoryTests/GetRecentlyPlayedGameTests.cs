@@ -98,7 +98,11 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGameRepositoryTe
                 PlayedGameLogic playedGameLogic = new PlayedGameRepository(dbContext);
                 int five = 5;
                 List<PlayedGame> playedGames = playedGameLogic.GetRecentGames(five, testUserContextForUserWithDefaultGamingGroup);
-                List<PlayedGame> allPlayedGames = dbContext.PlayedGames.ToList().OrderByDescending(playedGame => playedGame.DatePlayed).ToList();
+                List<PlayedGame> allPlayedGames = dbContext.PlayedGames
+                    .Where(game => game.GamingGroupId == testUserContextForUserWithDefaultGamingGroup.GamingGroupId)
+                    .ToList()
+                    .OrderByDescending(playedGame => playedGame.DatePlayed)
+                    .ToList();
                 for(int i = 0; i<five; i++)
                 {
                     Assert.AreEqual(allPlayedGames[i].Id, playedGames[i].Id);
@@ -127,6 +131,19 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGameRepositoryTe
 
                     lastRank = -1;
                 }
+            }
+        }
+
+        [Test]
+        public void ItOnlyReturnsGamesForTheCurrentUsersGamingGroup()
+        {
+            using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
+            {
+                PlayedGameLogic playedGameLogic = new PlayedGameRepository(dbContext);
+                
+                List<PlayedGame> playedGames = playedGameLogic.GetRecentGames(20, testUserContextForUserWithOtherGamingGroup);
+
+                Assert.True(playedGames.All(game => game.GamingGroupId == testUserContextForUserWithOtherGamingGroup.GamingGroupId));
             }
         }
     }

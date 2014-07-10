@@ -112,5 +112,17 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayerRepositoryTests
                 }
             }
         }
+
+        //[Test]
+        //public void ItThrowsAn()
+        //{
+        //    using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
+        //    {
+        //        PlayerDetails playerDetails = new PlayerRepository(dbContext)
+        //            .GetPlayerDetails(-1, 1, testUserContextForUserWithDefaultGamingGroup);
+
+        //        Assert.Null(playerDetails);
+        //    }
+        //}
     }
 }

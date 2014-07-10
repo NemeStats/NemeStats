@@ -52,7 +52,24 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGameRepositoryTe
         {
             using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
             {
-                PlayedGame notFoundPlayedGame = new PlayedGameRepository(dbContext).GetPlayedGameDetails(-1, testUserContextForUserWithDefaultGamingGroup);
+                PlayedGameRepository playedGameRepository = new PlayedGameRepository(dbContext);
+
+                PlayedGame notFoundPlayedGame = playedGameRepository.GetPlayedGameDetails(-1, testUserContextForUserWithDefaultGamingGroup);
+                Assert.Null(notFoundPlayedGame);
+            }
+        }
+
+        [Test]
+        public void ItThrowsANotAuthorizedExceptionIfTheGameIsntInThePlayersGamingGroup()
+        {
+            using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
+            {
+                PlayedGame gameWithMismatchedGamingGroupId = testPlayedGames.First(
+                    playedGame => playedGame.GamingGroupId != testUserContextForUserWithDefaultGamingGroup.GamingGroupId);
+
+                PlayedGameRepository playedGameRepository = new PlayedGameRepository(dbContext);
+
+                PlayedGame notFoundPlayedGame = playedGameRepository.GetPlayedGameDetails(gameWithMismatchedGamingGroupId.Id, testUserContextForUserWithDefaultGamingGroup);
                 Assert.Null(notFoundPlayedGame);
             }
         }

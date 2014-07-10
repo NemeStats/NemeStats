@@ -23,8 +23,7 @@ namespace BusinessLogic.Models
 
         public PlayedGame GetPlayedGameDetails(int playedGameId, UserContext requestingUserContext)
         {         
-            return dbContext.PlayedGames.Where(playedGame => playedGame.Id == playedGameId
-                && playedGame.GamingGroupId == requestingUserContext.GamingGroupId)
+            return dbContext.PlayedGames.Where(playedGame => playedGame.Id == playedGameId)
                 .Include(playedGame => playedGame.GameDefinition)
                 .Include(playedGame => playedGame.PlayerGameResults)
                 .FirstOrDefault();   
@@ -32,8 +31,7 @@ namespace BusinessLogic.Models
 
         public List<PlayedGame> GetRecentGames(int numberOfGames, UserContext requestingUserContext)
         {
-            List<PlayedGame> playedGames = dbContext.PlayedGames.Where(game => game.GamingGroupId == requestingUserContext.GamingGroupId)
-                .Include(playedGame => playedGame.GameDefinition)
+            List<PlayedGame> playedGames = dbContext.PlayedGames.Include(playedGame => playedGame.GameDefinition)
                 .Include(playedGame => playedGame.PlayerGameResults
                     .Select(playerGameResult => playerGameResult.Player))
                     .OrderByDescending(orderBy => orderBy.DatePlayed)
