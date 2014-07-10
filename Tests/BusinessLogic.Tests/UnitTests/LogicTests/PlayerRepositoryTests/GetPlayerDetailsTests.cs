@@ -17,7 +17,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayerRepositoryTests
     public class GetPlayerDetailsTests
     {
         private NemeStatsDbContext dbContextMock;
-        private PlayerRepository playerRepository;
+        private PlayerRepository playerRepositoryPartialMock;
         private Player player;
         private int numberOfRecentGames = 1;
         private Nemesis nemesis;
@@ -32,7 +32,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayerRepositoryTests
                 GamingGroupId = 15151
             };
             dbContextMock = MockRepository.GenerateMock<NemeStatsDbContext>();
-            playerRepository = MockRepository.GeneratePartialMock<PlayerRepository>(dbContextMock);
+            playerRepositoryPartialMock = MockRepository.GeneratePartialMock<PlayerRepository>(dbContextMock);
             player = new Player()
             {
                 Id = 1351,
@@ -41,12 +41,12 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayerRepositoryTests
                 Active = true
             };
 
-            playerRepository.Expect(repo => repo.GetPlayer(player.Id, userContext))
+            playerRepositoryPartialMock.Expect(repo => repo.GetPlayer(player.Id, userContext))
                 .Repeat.Once()
                 .Return(player);
 
             PlayerStatistics playerStatistics = new PlayerStatistics();
-            playerRepository.Expect(repo => repo.GetPlayerStatistics(player.Id, userContext))
+            playerRepositoryPartialMock.Expect(repo => repo.GetPlayerStatistics(player.Id, userContext))
                 .Repeat.Once()
                 .Return(playerStatistics);
             
@@ -54,11 +54,11 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayerRepositoryTests
             {
                 NemesisPlayerId = 151541
             };
-            playerRepository.Expect(mock => mock.GetNemesis(player.Id, userContext))
+            playerRepositoryPartialMock.Expect(mock => mock.GetNemesis(player.Id, userContext))
                 .Repeat.Once()
                 .Return(nemesis);
 
-            playerRepository.Expect(mock => mock.GetPlayerGameResultsWithPlayedGameAndGameDefinition(player.Id, numberOfRecentGames, userContext))
+            playerRepositoryPartialMock.Expect(mock => mock.GetPlayerGameResultsWithPlayedGameAndGameDefinition(player.Id, numberOfRecentGames, userContext))
                             .Repeat.Once()
                             .Return(player.PlayerGameResults.ToList());
         }
@@ -67,12 +67,12 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayerRepositoryTests
         public void ItThrowsArgumentExceptionIfThePlayerDoesntExist()
         {
             int playerId = 1;
-            playerRepository.Expect(mock => mock.GetPlayer(playerId, userContext))
+            playerRepositoryPartialMock.Expect(mock => mock.GetPlayer(playerId, userContext))
                 .Repeat.Once()
                 .Return(null);
 
             var exception = Assert.Throws<ArgumentException>(() =>
-                    playerRepository.GetPlayerDetails(playerId, numberOfRecentGames, userContext)
+                    playerRepositoryPartialMock.GetPlayerDetails(playerId, numberOfRecentGames, userContext)
                 );
 
             Assert.AreEqual(PlayerRepository.EXCEPTION_PLAYER_NOT_FOUND, exception.Message);
@@ -83,9 +83,19 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayerRepositoryTests
         [Test]
         public void ItGetsThePlayersNemesis()
         {
-            PlayerDetails playerDetails = playerRepository.GetPlayerDetails(player.Id, numberOfRecentGames, userContext);
+            PlayerDetails playerDetails = playerRepositoryPartialMock.GetPlayerDetails(player.Id, numberOfRecentGames, userContext);
 
             Assert.AreEqual(nemesis, playerDetails.Nemesis);
+        }
+
+        [Test]
+        public void ItThrowsAnUnauthorizedExceptionIfTheUserDoesntHaveAccessToThePlayer()
+        {
+            playerRepositoryPartialMock = MockRepository.GeneratePartialMock<PlayerRepository>(dbContextMock);
+            playerRepositoryPartialMock.Expect(partialMock => partialMock.GetPlayer(player.Id, userContext))
+                .Throw(new UnauthorizedAccessException());
+
+            Assert.Throws<UnauthorizedAccessException>(() => playerRepositoryPartialMock.GetPlayerDetails(player.Id, 0, userContext));
         }
     }
 }
