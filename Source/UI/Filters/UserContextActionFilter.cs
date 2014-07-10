@@ -16,11 +16,20 @@ namespace UI.Filters
         internal const string USER_CONTEXT_KEY = "userContext";
         internal const string EXCEPTION_MESSAGE_USER_NOT_AUTHENTICATED = "User is not authenticated.";
 
-        //TODO So very hacky, need to figure out how to implement something like this: http://lostechies.com/jimmybogard/2010/05/03/dependency-injection-in-asp-net-mvc-filters/
         internal UserContextBuilder userContextBuilder = new UserContextBuilderImpl();
-        internal NemeStatsDbContext dbContext;
 
+        //TODO get this dependency injection working through StructureMap instead of this hackiness.
         public override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+            using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
+            {
+                OnActionExecuting(filterContext, dbContext);
+            }
+
+            base.OnActionExecuting(filterContext);
+        }
+
+        internal void OnActionExecuting(ActionExecutingContext filterContext, NemeStatsDbContext dbContext)
         {
             if (!filterContext.HttpContext.User.Identity.IsAuthenticated)
             {
@@ -29,26 +38,12 @@ namespace UI.Filters
 
             if (filterContext.ActionParameters.ContainsKey(USER_CONTEXT_KEY))
             {
-                bool injectedDbContext = true;
-                if(dbContext == null)
-                {
-                    injectedDbContext = false;
-                    dbContext = new NemeStatsDbContext();
-                }
-
                 UserContext userContext = userContextBuilder.GetUserContext(filterContext.HttpContext.User.Identity.GetUserId(), dbContext);
-
-                if(!injectedDbContext)
-                {
-                    dbContext.Dispose();
-                }
 
                 filterContext.ActionParameters[USER_CONTEXT_KEY] = userContext;
             }
 
             base.OnActionExecuting(filterContext);
-        }
-
-        
+        } 
     }
 }

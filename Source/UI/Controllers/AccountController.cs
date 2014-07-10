@@ -11,12 +11,15 @@ using Microsoft.Owin.Security;
 using UI.Models;
 using BusinessLogic.Models.User;
 using BusinessLogic.DataAccess;
+using StructureMap;
 
 namespace UI.Controllers
 {
     [Authorize]
     public partial class AccountController : Controller
     {
+        //TODO had to do this because StructureMap kept trying to use the other constructor.
+        [DefaultConstructor]
         public AccountController()
             : this(new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new NemeStatsDbContext())))
         {

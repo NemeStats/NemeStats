@@ -24,6 +24,7 @@ namespace UI.Tests.UnitTests.FiltersTests.UserNameActionFilterTests
         private UserContextActionFilter userContextActionFilter;
         private IIdentity identity;
         private UserContext userContext;
+        private NemeStatsDbContext dbContextMock;
 
         [SetUp]
         public void SetUp()
@@ -51,19 +52,19 @@ namespace UI.Tests.UnitTests.FiltersTests.UserNameActionFilterTests
                 .Return(true);
 
             userContextActionFilter = new UserContextActionFilter();
-            userContextActionFilter.dbContext = MockRepository.GenerateMock<NemeStatsDbContext>();
+            dbContextMock = MockRepository.GenerateMock<NemeStatsDbContext>();
 
-            UserContextBuilder userContextBuilder = MockRepository.GenerateMock<UserContextBuilder>();
+            UserContextBuilder userContextBuilderMock = MockRepository.GenerateMock<UserContextBuilder>();
             userContext = new UserContext()
             {
                 ApplicationUserId = "user id",
                 GamingGroupId = 135151
             };
-            userContextBuilder.Expect(mock => mock.GetUserContext(Arg<string>.Is.Anything, Arg<NemeStatsDbContext>.Is.Same(userContextActionFilter.dbContext)))
+            userContextBuilderMock.Expect(mock => mock.GetUserContext(Arg<string>.Is.Anything, Arg<NemeStatsDbContext>.Is.Same(dbContextMock)))
                 .Repeat.Once()
                 .Return(userContext);
 
-            userContextActionFilter.userContextBuilder = userContextBuilder;
+            userContextActionFilter.userContextBuilder = userContextBuilderMock;
         }
 
         [Test]
@@ -74,14 +75,14 @@ namespace UI.Tests.UnitTests.FiltersTests.UserNameActionFilterTests
                 .Repeat.Once()
                 .Return(false);
 
-            var exception = Assert.Throws<InvalidOperationException>(() => userContextActionFilter.OnActionExecuting(actionExecutingContext));
+            var exception = Assert.Throws<InvalidOperationException>(() => userContextActionFilter.OnActionExecuting(actionExecutingContext, dbContextMock));
             Assert.AreEqual(UserContextActionFilter.EXCEPTION_MESSAGE_USER_NOT_AUTHENTICATED, exception.Message);
         }
 
         [Test]
         public void ItSetsTheUserConextActionParameterIfItIsntAlreadySet()
         {
-            userContextActionFilter.OnActionExecuting(actionExecutingContext);
+            userContextActionFilter.OnActionExecuting(actionExecutingContext, dbContextMock);
 
             Assert.AreEqual(userContext, actionExecutingContext.ActionParameters[UserContextActionFilter.USER_CONTEXT_KEY]);
         }
