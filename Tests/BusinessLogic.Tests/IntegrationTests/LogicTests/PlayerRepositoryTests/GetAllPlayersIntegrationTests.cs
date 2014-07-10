@@ -16,15 +16,10 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayerRepositoryTests
         private NemeStatsDbContext dbContext;
         private PlayerRepository playerRepository;
 
-        [TestFixtureSetUp]
-        public void SetUp()
-        {
-            dbContext = new NemeStatsDbContext();
-        }
-
         [SetUp]
         public void TestSetUp()
         {
+            dbContext = new NemeStatsDbContext();
             playerRepository = new BusinessLogic.Models.PlayerRepository(dbContext);
         }
 
@@ -56,7 +51,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayerRepositoryTests
             Assert.True(players.All(x => x.GamingGroupId == gamingGroup.Id));
         }
 
-        [TestFixtureTearDown]
+        [TearDown]
         public void TearDown()
         {
             dbContext.Dispose();

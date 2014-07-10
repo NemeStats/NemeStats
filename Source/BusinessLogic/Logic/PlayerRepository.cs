@@ -112,7 +112,8 @@ namespace BusinessLogic.Models
         internal virtual List<PlayerGameResult> GetPlayerGameResultsWithPlayedGameAndGameDefinition(int playerID, int numberOfRecentGamesToRetrieve, UserContext requestingUserContext)
         {
             List<PlayerGameResult> playerGameResults = dbContext.PlayerGameResults
-                        .Where(result => result.PlayerId == playerID)
+                        .Where(result => result.PlayerId == playerID
+                            && result.Player.GamingGroupId == requestingUserContext.GamingGroupId)
                         .OrderByDescending(result => result.PlayedGame.DatePlayed)
                         .Take(numberOfRecentGamesToRetrieve)
                         .Include(result => result.PlayedGame)
