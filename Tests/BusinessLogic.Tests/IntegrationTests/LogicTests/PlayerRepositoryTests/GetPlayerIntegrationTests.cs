@@ -36,11 +36,15 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayerRepositoryTests
         }
 
         [Test]
-        public void ItReturnsNullIfThePlayersGamingGroupIdDoesntMatchTheUserContext()
+        public void ItThrowsAnUnauthorizedAccessExceptionIfTheRequestedPlayerIsNotInTheCurrentUsersGamingGroup()
         {
-            Player player = playerRepository.GetPlayer(testPlayer1.Id, testUserContextForUserWithOtherGamingGroup);
+            Exception exception = Assert.Throws<UnauthorizedAccessException>(() => playerRepository
+                .GetPlayer(testPlayer1.Id, testUserContextForUserWithOtherGamingGroup));
 
-            Assert.Null(player);
+            string expectedMessage = string.Format(PlayerRepository.EXCEPTION_USER_DOES_NOT_HAVE_ACCESS_TO_THIS_PLAYER,
+                testUserContextForUserWithOtherGamingGroup.ApplicationUserId,
+                testPlayer1.Id);
+            Assert.AreEqual(expectedMessage, exception.Message);
         }
 
         [Test]

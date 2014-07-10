@@ -14,6 +14,8 @@ namespace BusinessLogic.Models
     public class PlayerRepository : PlayerLogic
     {
         internal const string EXCEPTION_PLAYER_NOT_FOUND = "The specified player does not exist.";
+        internal const string EXCEPTION_USER_DOES_NOT_HAVE_ACCESS_TO_THIS_PLAYER = 
+            "User with user id '{0}' does not have access to player with player id '{1}'";
         public int MINIMUM_NUMBER_OF_GAMES_TO_BE_A_NEMESIS = 3;
 
         private static readonly string SQL_GET_WIN_LOSS_GAMES_COUNT =
@@ -67,6 +69,31 @@ namespace BusinessLogic.Models
             dbContext = context;
         }
 
+        internal virtual Player GetPlayer(int playerID, UserContext requestingUserContext)
+        {
+            Player returnPlayer = dbContext.Players
+                .Where(player => player.Id == playerID)
+                    .FirstOrDefault();
+
+            ValidateAccessToPlayer(requestingUserContext, returnPlayer);
+
+            return returnPlayer;
+        }
+
+        private static void ValidateAccessToPlayer(UserContext requestingUserContext, Player desiredPlayer)
+        {
+            if (desiredPlayer != null)
+            {
+                if (desiredPlayer.GamingGroupId != requestingUserContext.GamingGroupId)
+                {
+                    string message = string.Format(EXCEPTION_USER_DOES_NOT_HAVE_ACCESS_TO_THIS_PLAYER,
+                        requestingUserContext.ApplicationUserId,
+                        desiredPlayer.Id);
+                    throw new UnauthorizedAccessException(message);
+                }
+            }
+        }
+
         public PlayerDetails GetPlayerDetails(int playerID, int numberOfRecentGamesToRetrieve, UserContext requestingUserContext)
         {
             Player returnPlayer = GetPlayer(playerID, requestingUserContext);
@@ -100,16 +127,10 @@ namespace BusinessLogic.Models
             }
         }
 
-        internal virtual Player GetPlayer(int playerID, UserContext requestingUserContext)
-        {
-            Player returnPlayer = dbContext.Players
-                .Where(player => player.Id == playerID
-                        && player.GamingGroupId == requestingUserContext.GamingGroupId)
-                    .FirstOrDefault();
-            return returnPlayer;
-        }
-
-        internal virtual List<PlayerGameResult> GetPlayerGameResultsWithPlayedGameAndGameDefinition(int playerID, int numberOfRecentGamesToRetrieve, UserContext requestingUserContext)
+        internal virtual List<PlayerGameResult> GetPlayerGameResultsWithPlayedGameAndGameDefinition(
+            int playerID, 
+            int numberOfRecentGamesToRetrieve, 
+            UserContext requestingUserContext)
         {
             List<PlayerGameResult> playerGameResults = dbContext.PlayerGameResults
                         .Where(result => result.PlayerId == playerID
@@ -134,13 +155,16 @@ namespace BusinessLogic.Models
             //How do I do a 2nd test so that this would need to be fixed?
             //return new PlayerStatistics() { TotalGames = 3 };
             PlayerStatistics playerStatistics = new PlayerStatistics();
-            playerStatistics.TotalGames = dbContext.PlayerGameResults.Count(playerGameResults => playerGameResults.PlayerId == playerId);
+            playerStatistics.TotalGames = dbContext.PlayerGameResults.Count(playerGameResults => playerGameResults.PlayerId == playerId
+                && playerGameResults.Player.GamingGroupId == requestingUserContext.GamingGroupId);
             return playerStatistics;
         }
 
         //TODO refactor this. Might be tricky with anonymous data types. Should I create concrete types?
         public virtual Nemesis GetNemesis(int playerId, UserContext requestingUserContext)
         {
+            //call GetPlayer just to ensure that the requesting user has access
+            GetPlayer(playerId, requestingUserContext);
             DbRawSqlQuery<WinLossStatistics> data = dbContext.Database.SqlQuery<WinLossStatistics>(SQL_GET_WIN_LOSS_GAMES_COUNT,
                 new SqlParameter("PlayerId", playerId));
 

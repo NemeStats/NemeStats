@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayerRepositoryTests
 {
     [TestFixture]
-    public class GetPlayerStatisticsTests : IntegrationTestBase
+    public class GetPlayerStatisticsIntegrationTests : IntegrationTestBase
     {
         [Test]
         public void ItGetsTheNumberOfTotalGamesPlayed()
@@ -26,6 +26,18 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayerRepositoryTests
                             .Any(playerGameResult => playerGameResult.PlayerId == testPlayer1.Id));
                 Assert.AreEqual(totalGamesForPlayer1, playerStatistics.TotalGames);
             }
-        }  
+        }
+
+        [Test]
+        public void ItOnlyIncludesStatisticsForPlayersWhoShareTheSameGamingGroupAsTheCurrentUser()
+        {
+            using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
+            {
+                PlayerLogic playerLogic = new PlayerRepository(dbContext);
+                PlayerStatistics playerStatistics = playerLogic.GetPlayerStatistics(testPlayer1.Id, testUserContextForUserWithOtherGamingGroup);
+                
+                Assert.AreEqual(0, playerStatistics.TotalGames);
+            }
+        } 
     }
 }
