@@ -90,7 +90,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IntegrationTests\DataAccessTests\GameDefinitionRepositoryTests\GameDefinitionRepositoryTestBase.cs" />
     <Compile Include="IntegrationTests\DataAccessTests\GameDefinitionRepositoryTests\GetAllGamesIntegrationTests.cs" />
+    <Compile Include="IntegrationTests\DataAccessTests\GameDefinitionRepositoryTests\GetGameDefinitionTest.cs" />
     <Compile Include="IntegrationTests\DataAccessTests\StatisticsRepositoryTests\GetNemesisTests.cs" />
     <Compile Include="IntegrationTests\EntityFramework6EagerLoadingTests.cs" />
     <Compile Include="IntegrationTests\IntegrationTestBase.cs" />

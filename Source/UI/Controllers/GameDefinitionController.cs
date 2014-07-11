@@ -43,12 +43,22 @@ namespace UI.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            GameDefinition gamedefinition = db.GameDefinitions.Find(id);
-            if (gamedefinition == null)
+
+            GameDefinition gameDefinition;
+
+            try
             {
-                return HttpNotFound();
+                gameDefinition = gameDefinitionRepository.GetGameDefinition(id.Value, db, userContext);
+            }catch(KeyNotFoundException)
+            {
+                return new HttpNotFoundResult(); ;
             }
-            return View(gamedefinition);
+            catch (UnauthorizedAccessException)
+            {
+                return new HttpUnauthorizedResult();
+            }
+
+            return View(MVC.GameDefinition.Views.Details, gameDefinition);
         }
 
         // GET: /GameDefinition/Create

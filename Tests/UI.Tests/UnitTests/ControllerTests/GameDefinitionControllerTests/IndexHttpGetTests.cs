@@ -15,26 +15,8 @@ using UI.Controllers;
 namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
 {
     [TestFixture]
-    public class IndexHttpGetTests
+    public class IndexHttpGetTests : GameDefinitionControllerTestBase
     {
-        private GameDefinitionController gameDefinitionController;
-        private GameDefinitionRepository gameDefinitionRepository;
-        private NemeStatsDbContext dbContext;
-        private UserContext userContext;
-
-        [SetUp]
-        public void SetUp()
-        {
-            gameDefinitionRepository = MockRepository.GenerateMock<GameDefinitionRepository>();
-            dbContext = MockRepository.GenerateMock<NemeStatsDbContext>();
-            gameDefinitionController = new GameDefinitionController(dbContext, gameDefinitionRepository);
-            userContext = new UserContext()
-            {
-                ApplicationUserId = "user id",
-                GamingGroupId = 15151
-            };
-        }
-
         [Test]
         public void ItReturnsAnIndexView()
         {

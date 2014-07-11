@@ -16,6 +16,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 
+using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.Logic;
 using BusinessLogic.Models;
 using BusinessLogic.Models.User;
@@ -43,6 +44,7 @@ namespace UI.DependencyResolution {
                             x.For<GameResultViewModelBuilder>().Use<GameResultViewModelBuilderImpl>();
                             x.For<PlayerDetailsViewModelBuilder>().Use<PlayerDetailsViewModelBuilderImpl>();
                             x.For<UserContextBuilder>().Use<UserContextBuilderImpl>();
+                            x.For<GameDefinitionRepository>().Use<EntityFrameworkGameDefinitionRepository>();
 
                             //TODO finish implementing http://lostechies.com/jimmybogard/2010/05/03/dependency-injection-in-asp-net-mvc-filters/
                             //x.For<IActionInvoker>().Use<InjectingActionInvoker>();

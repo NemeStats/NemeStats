@@ -12,26 +12,8 @@ using System.Threading.Tasks;
 namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.GameDefinitionRepositoryTests
 {
     [TestFixture]
-    public class GetAllGamesIntegrationTests : IntegrationTestBase
+    public class GetAllGamesIntegrationTests : GameDefinitionRepositoryTestBase
     {
-        private NemeStatsDbContext dbContext;
-        private GameDefinitionRepository gameDefinitionRepository;
-
-        [SetUp]
-        public void TestSetUp()
-        {
-            dbContext = new NemeStatsDbContext();
-            gameDefinitionRepository = new EntityFrameworkGameDefinitionRepository(dbContext);
-        }
-
-        //[Test]
-        //public void ItOnlyGetsActiveGameDefinitions()
-        //{
-        //    List<GameDefinition> gameDefinitions = gameDefinitionRepository.GetAllGameDefinitions(dbContext, testUserContextForUserWithDefaultGamingGroup);
-
-        //    Assert.True(gameDefinitions.All(game => game.Active))
-        //}
-
         [Test]
         public void ItOnlyGetsGameDefinitionsForTheCurrentPlayersGamingGroup()
         {
@@ -40,12 +22,6 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.GameDefinitionRep
                 testUserContextForUserWithDefaultGamingGroup);
 
             Assert.True(gameDefinitions.All(game => game.GamingGroupId == testUserContextForUserWithDefaultGamingGroup.GamingGroupId));
-        }
-
-        [TearDown]
-        public void TearDown()
-        {
-            dbContext.Dispose();
         }
     }
 }

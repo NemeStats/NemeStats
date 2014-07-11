@@ -11,5 +11,6 @@ namespace BusinessLogic.DataAccess.Repositories
     public interface GameDefinitionRepository
     {
         List<GameDefinition> GetAllGameDefinitions(NemeStatsDbContext dbContext, UserContext userContext);
+        GameDefinition GetGameDefinition(int gameDefinitionId, NemeStatsDbContext dbContext, UserContext userContext);
     }
 }
