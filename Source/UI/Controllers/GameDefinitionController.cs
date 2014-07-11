@@ -11,6 +11,7 @@ using BusinessLogic.DataAccess;
 using BusinessLogic.Models.User;
 using BusinessLogic.Logic;
 using UI.Filters;
+using BusinessLogic.DataAccess.Repositories;
 
 namespace UI.Controllers
 {
@@ -18,17 +19,20 @@ namespace UI.Controllers
     public partial class GameDefinitionController : Controller
     {
         internal NemeStatsDbContext db;
+        internal GameDefinitionRepository gameDefinitionRepository;
 
-        public GameDefinitionController(NemeStatsDbContext dbContext)
+        public GameDefinitionController(NemeStatsDbContext dbContext, GameDefinitionRepository gameDefinitionRepository)
         {
             this.db = dbContext;
+            this.gameDefinitionRepository = gameDefinitionRepository;
         }
 
         // GET: /GameDefinition/
         [UserContextActionFilter]
         public virtual ActionResult Index(UserContext userContext)
         {
-            return View(db.GameDefinitions.ToList());
+            List<GameDefinition> games = gameDefinitionRepository.GetAllGameDefinitions(db, userContext);
+            return View(MVC.GameDefinition.Views.Index, games);
         }
 
         // GET: /GameDefinition/Details/5

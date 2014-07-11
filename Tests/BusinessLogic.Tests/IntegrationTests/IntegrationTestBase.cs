@@ -8,7 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace BusinessLogic.Tests.IntegrationTests.LogicTests
+namespace BusinessLogic.Tests.IntegrationTests
 {
     public class IntegrationTestBase
     {

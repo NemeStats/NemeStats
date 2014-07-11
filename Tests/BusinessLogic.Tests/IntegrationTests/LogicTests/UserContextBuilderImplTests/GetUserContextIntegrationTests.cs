@@ -6,7 +6,7 @@ using NUnit.Framework;
 namespace BusinessLogic.Tests.IntegrationTests.LogicTests.UserContextBuilderImplTests
 {
     [TestFixture]
-    public class GetUserContextTests : IntegrationTestBase
+    public class GetUserContextIntegrationTests : IntegrationTestBase
     {
         private UserContextBuilderImpl contextBuilder;
         private UserContext userContext;
