@@ -64,7 +64,7 @@ namespace UI.Controllers
         // GET: /GameDefinition/Create
         public virtual ActionResult Create()
         {
-            return View();
+            return View(MVC.GameDefinition.Views.Create);
         }
 
         // POST: /GameDefinition/Create
@@ -77,13 +77,11 @@ namespace UI.Controllers
         {
             if (ModelState.IsValid)
             {
-                gameDefinition.GamingGroupId = userContext.GamingGroupId;
-                db.GameDefinitions.Add(gameDefinition);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                gameDefinitionRepository.Save(gameDefinition, userContext);
+                return RedirectToAction(MVC.GameDefinition.ActionNames.Index);
             }
 
-            return View(gameDefinition);
+            return View(MVC.GameDefinition.Views.Create, gameDefinition);
         }
 
         // GET: /GameDefinition/Edit/5

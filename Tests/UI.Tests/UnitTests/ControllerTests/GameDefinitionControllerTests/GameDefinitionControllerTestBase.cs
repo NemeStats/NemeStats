@@ -15,7 +15,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
     [TestFixture]
     public class GameDefinitionControllerTestBase
     {
-        protected GameDefinitionController gameDefinitionController;
+        protected GameDefinitionController gameDefinitionControllerPartialMock;
         protected GameDefinitionRepository gameDefinitionRepository;
         protected NemeStatsDbContext dbContext;
         protected UserContext userContext;
@@ -25,7 +25,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
         {
             gameDefinitionRepository = MockRepository.GenerateMock<GameDefinitionRepository>();
             dbContext = MockRepository.GenerateMock<NemeStatsDbContext>();
-            gameDefinitionController = new GameDefinitionController(dbContext, gameDefinitionRepository);
+            gameDefinitionControllerPartialMock = MockRepository.GeneratePartialMock<GameDefinitionController>(dbContext, gameDefinitionRepository);
             userContext = new UserContext()
             {
                 ApplicationUserId = "user id",

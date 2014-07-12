@@ -36,7 +36,7 @@ namespace BusinessLogic.DataAccess.Repositories
             GameDefinition game = dbContext.GameDefinitions.Where(gameDefinition => gameDefinition.Id == gameDefinitionId).FirstOrDefault();
             ValidateGameDefinitionIsFound(gameDefinitionId, game);
 
-            ValidateUserHasAccessToGameDefinition(gameDefinitionId, userContext, game);
+            ValidateUserHasAccessToGameDefinition(userContext, game);
 
             return game;
         }
@@ -50,16 +50,29 @@ namespace BusinessLogic.DataAccess.Repositories
             }
         }
 
-        private static void ValidateUserHasAccessToGameDefinition(int gameDefinitionId, UserContext userContext, GameDefinition game)
+        internal virtual void ValidateUserHasAccessToGameDefinition(UserContext userContext, GameDefinition game)
         {
             if (game.GamingGroupId != userContext.GamingGroupId)
             {
                 string notAuthorizedMessage = string.Format(
                     EXCEPTION_MESSAGE_USER_DOES_NOT_HAVE_ACCESS_TO_GAME_DEFINITION,
                     userContext.ApplicationUserId,
-                    gameDefinitionId);
+                    game.Id);
                 throw new UnauthorizedAccessException(notAuthorizedMessage);
             }
+        }
+
+        public GameDefinition Save(GameDefinition gameDefinition, UserContext userContext)
+        {
+            if(gameDefinition.AlreadyInDatabase())
+            {
+                ValidateUserHasAccessToGameDefinition(userContext, gameDefinition);
+            }
+            gameDefinition.GamingGroupId = userContext.GamingGroupId;
+            dbContext.GameDefinitions.Add(gameDefinition);
+            dbContext.SaveChanges();
+
+            return gameDefinition;
         }
     }
 }

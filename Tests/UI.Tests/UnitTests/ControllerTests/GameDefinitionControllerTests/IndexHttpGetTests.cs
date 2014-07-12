@@ -22,7 +22,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
         {
             gameDefinitionRepository.Expect(repo => repo.GetAllGameDefinitions(Arg<NemeStatsDbContext>.Is.Anything, Arg<UserContext>.Is.Anything));
 
-            ViewResult viewResult = gameDefinitionController.Index(userContext) as ViewResult;
+            ViewResult viewResult = gameDefinitionControllerPartialMock.Index(userContext) as ViewResult;
 
             Assert.AreEqual(MVC.GameDefinition.Views.Index, viewResult.ViewName);
         }
@@ -35,7 +35,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
                 .Repeat.Once()
                 .Return(games);
 
-            ViewResult viewResult = gameDefinitionController.Index(userContext) as ViewResult;
+            ViewResult viewResult = gameDefinitionControllerPartialMock.Index(userContext) as ViewResult;
             List<GameDefinition> viewModel = (List<GameDefinition>)viewResult.ViewData.Model;
 
             Assert.AreSame(games, viewModel);

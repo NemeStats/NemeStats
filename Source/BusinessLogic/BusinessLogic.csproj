@@ -87,6 +87,7 @@
     <Compile Include="DataAccess\Repositories\GameDefinitionRepository.cs" />
     <Compile Include="DataAccess\NemeStatsDbContext.cs" />
     <Compile Include="DataAccess\NemeStatsInitializer.cs" />
+    <Compile Include="DataAccess\SingleColumnTechnicalKey.cs" />
     <Compile Include="Logic\PlayedGameLogic.cs" />
     <Compile Include="Logic\PlayedGameRepository.cs" />
     <Compile Include="Logic\PlayerLogic.cs" />
@@ -114,6 +115,7 @@
     <Compile Include="Migrations\201407050348013_CurrentGamingGroupIdIsNotNullable.Designer.cs">
       <DependentUpon>201407050348013_CurrentGamingGroupIdIsNotNullable.cs</DependentUpon>
     </Compile>
+    <Compile Include="DataAccess\EntityWithTechnicalKey.cs" />
     <Compile Include="Models\GamingGroup.cs" />
     <Compile Include="Models\User\ApplicationUser.cs" />
     <Compile Include="Models\User\UserContext.cs" />
