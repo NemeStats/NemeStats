@@ -116,8 +116,6 @@ namespace UI.Controllers
             if (ModelState.IsValid)
             {
                 gameDefinitionRepository.Save(gamedefinition, userContext);
-                //db.Entry(gamedefinition).State = EntityState.Modified;
-                //db.SaveChanges();
                 return RedirectToAction(MVC.GameDefinition.ActionNames.Index);
             }
             return View(MVC.GameDefinition.Views.Edit, gamedefinition);
@@ -131,12 +129,18 @@ namespace UI.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            GameDefinition gamedefinition = db.GameDefinitions.Find(id);
-            if (gamedefinition == null)
+            GameDefinition gameDefinition;
+            try
+            {
+                gameDefinition = gameDefinitionRepository.GetGameDefinition(id.Value, db, userContext);
+            }catch(KeyNotFoundException)
             {
                 return HttpNotFound();
+            }catch (UnauthorizedAccessException)
+            {
+                return new HttpUnauthorizedResult();
             }
-            return View(gamedefinition);
+            return View(MVC.GameDefinition.Views.Delete, gameDefinition);
         }
 
         // POST: /GameDefinition/Delete/5
