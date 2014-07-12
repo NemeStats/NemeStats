@@ -1,5 +1,6 @@
 ﻿using BusinessLogic.DataAccess;
 using BusinessLogic.Logic;
+using BusinessLogic.Models;
 using BusinessLogic.Models.Players;
 using BusinessLogic.Models.User;
 using System;
@@ -9,9 +10,9 @@ using System.Data.Entity.Infrastructure;
 using System.Data.SqlClient;
 using System.Linq;
 
-namespace BusinessLogic.Models
+namespace BusinessLogic.DataAccess.Repositories
 {
-    public class PlayerRepository : PlayerLogic
+    public class EntityFrameworkPlayerRepository : PlayerLogic
     {
         internal const string EXCEPTION_PLAYER_NOT_FOUND = "The specified player does not exist.";
         internal const string EXCEPTION_USER_DOES_NOT_HAVE_ACCESS_TO_THIS_PLAYER = 
@@ -64,7 +65,7 @@ namespace BusinessLogic.Models
 
         private NemeStatsDbContext dbContext;
 
-        public PlayerRepository(NemeStatsDbContext context)
+        public EntityFrameworkPlayerRepository(NemeStatsDbContext context)
         {
             dbContext = context;
         }

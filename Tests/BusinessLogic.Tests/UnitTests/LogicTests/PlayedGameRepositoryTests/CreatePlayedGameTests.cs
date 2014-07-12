@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using BusinessLogic.Logic;
+using BusinessLogic.DataAccess.Repositories;
 
 namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGameRepositoryTests
 {
@@ -36,7 +37,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGameRepositoryTests
             userContextBuilder.Expect(builder => builder.GetUserContext(currentUserId, dbContext))
                 .Repeat.Once()
                 .Return(userContext);
-            playedGameLogicPartialMock = MockRepository.GeneratePartialMock<PlayedGameRepository>(dbContext);
+            playedGameLogicPartialMock = MockRepository.GeneratePartialMock<EntityFrameworkPlayedGameRepository>(dbContext);
             playedGamesDbSet = MockRepository.GenerateMock<DbSet<PlayedGame>>();
             dbContext.Expect(context => context.PlayedGames)
                 .Repeat.Once()

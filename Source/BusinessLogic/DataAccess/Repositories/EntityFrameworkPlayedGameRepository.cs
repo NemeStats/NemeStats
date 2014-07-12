@@ -1,5 +1,6 @@
 ﻿using BusinessLogic.DataAccess;
 using BusinessLogic.Logic;
+using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
 using BusinessLogic.Models.Points;
 using BusinessLogic.Models.User;
@@ -8,15 +9,15 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 
-namespace BusinessLogic.Models
+namespace BusinessLogic.DataAccess.Repositories
 {
-    public class PlayedGameRepository : PlayedGameLogic
+    public class EntityFrameworkPlayedGameRepository : PlayedGameLogic
     {
         internal const string EXCEPTION_MESSAGE_MUST_PASS_VALID_GAME_DEFINITION_ID = "Must pass a valid GameDefinitionId.";
         
         private NemeStatsDbContext dbContext;
 
-        public PlayedGameRepository(NemeStatsDbContext context)
+        public EntityFrameworkPlayedGameRepository(NemeStatsDbContext context)
         {
             dbContext = context;
         }

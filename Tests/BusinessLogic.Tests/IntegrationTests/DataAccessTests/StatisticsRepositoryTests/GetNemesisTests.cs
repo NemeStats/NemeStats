@@ -12,6 +12,7 @@ using Rhino.Mocks;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using BusinessLogic.Logic;
+using BusinessLogic.DataAccess.Repositories;
 
 namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.StatisticsRepositoryTests
 {
@@ -27,7 +28,7 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.StatisticsReposit
         {
             dbContext = new NemeStatsDbContext();
             userContextBuilder = new UserContextBuilderImpl();
-            playerLogic = new PlayerRepository(dbContext);
+            playerLogic = new EntityFrameworkPlayerRepository(dbContext);
         }
 
         [Test]

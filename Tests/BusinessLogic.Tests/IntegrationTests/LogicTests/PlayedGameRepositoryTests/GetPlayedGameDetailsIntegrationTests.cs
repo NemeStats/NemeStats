@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.DataAccess;
+using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.Logic;
 using BusinessLogic.Models;
 using NUnit.Framework;
@@ -11,7 +12,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGameRepositoryTe
     {
         private PlayedGame GetTestSubjectPlayedGame(NemeStatsDbContext dbContextToTestWith)
         {
-            return new BusinessLogic.Models.PlayedGameRepository(dbContextToTestWith)
+            return new EntityFrameworkPlayedGameRepository(dbContextToTestWith)
                 .GetPlayedGameDetails(testPlayedGames[0].Id, testUserContextForUserWithDefaultGamingGroup);
         }
 
@@ -52,7 +53,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGameRepositoryTe
         {
             using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
             {
-                PlayedGameRepository playedGameRepository = new PlayedGameRepository(dbContext);
+                EntityFrameworkPlayedGameRepository playedGameRepository = new EntityFrameworkPlayedGameRepository(dbContext);
 
                 PlayedGame notFoundPlayedGame = playedGameRepository.GetPlayedGameDetails(-1, testUserContextForUserWithDefaultGamingGroup);
                 Assert.Null(notFoundPlayedGame);
@@ -67,7 +68,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGameRepositoryTe
                 PlayedGame gameWithMismatchedGamingGroupId = testPlayedGames.First(
                     playedGame => playedGame.GamingGroupId != testUserContextForUserWithDefaultGamingGroup.GamingGroupId);
 
-                PlayedGameRepository playedGameRepository = new PlayedGameRepository(dbContext);
+                EntityFrameworkPlayedGameRepository playedGameRepository = new EntityFrameworkPlayedGameRepository(dbContext);
 
                 PlayedGame notFoundPlayedGame = playedGameRepository.GetPlayedGameDetails(gameWithMismatchedGamingGroupId.Id, testUserContextForUserWithDefaultGamingGroup);
                 Assert.Null(notFoundPlayedGame);

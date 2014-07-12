@@ -3,7 +3,7 @@ using BusinessLogic.Models.Games;
 using BusinessLogic.Models.User;
 using System;
 using System.Collections.Generic;
-namespace BusinessLogic.Models
+namespace BusinessLogic.DataAccess.Repositories
 {
     public interface PlayedGameLogic
     {

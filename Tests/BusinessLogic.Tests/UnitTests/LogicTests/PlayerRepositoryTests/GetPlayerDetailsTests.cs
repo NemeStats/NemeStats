@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.DataAccess;
+using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.Logic;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Players;
@@ -17,7 +18,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayerRepositoryTests
     public class GetPlayerDetailsTests
     {
         private NemeStatsDbContext dbContextMock;
-        private PlayerRepository playerRepositoryPartialMock;
+        private EntityFrameworkPlayerRepository playerRepositoryPartialMock;
         private Player player;
         private int numberOfRecentGames = 1;
         private Nemesis nemesis;
@@ -32,7 +33,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayerRepositoryTests
                 GamingGroupId = 15151
             };
             dbContextMock = MockRepository.GenerateMock<NemeStatsDbContext>();
-            playerRepositoryPartialMock = MockRepository.GeneratePartialMock<PlayerRepository>(dbContextMock);
+            playerRepositoryPartialMock = MockRepository.GeneratePartialMock<EntityFrameworkPlayerRepository>(dbContextMock);
             player = new Player()
             {
                 Id = 1351,
@@ -75,7 +76,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayerRepositoryTests
                     playerRepositoryPartialMock.GetPlayerDetails(playerId, numberOfRecentGames, userContext)
                 );
 
-            Assert.AreEqual(PlayerRepository.EXCEPTION_PLAYER_NOT_FOUND, exception.Message);
+            Assert.AreEqual(EntityFrameworkPlayerRepository.EXCEPTION_PLAYER_NOT_FOUND, exception.Message);
         }
 
         //TODO need tests for the transformation... which should probably be refactored into a different class
@@ -91,7 +92,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayerRepositoryTests
         [Test]
         public void ItThrowsAnUnauthorizedExceptionIfTheUserDoesntHaveAccessToThePlayer()
         {
-            playerRepositoryPartialMock = MockRepository.GeneratePartialMock<PlayerRepository>(dbContextMock);
+            playerRepositoryPartialMock = MockRepository.GeneratePartialMock<EntityFrameworkPlayerRepository>(dbContextMock);
             playerRepositoryPartialMock.Expect(partialMock => partialMock.GetPlayer(player.Id, userContext))
                 .Throw(new UnauthorizedAccessException());
 

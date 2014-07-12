@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.DataAccess;
+using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.Models;
 using NUnit.Framework;
 using System;
@@ -13,7 +14,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayerRepositoryTests
     public class GetPlayerIntegrationTests : IntegrationTestBase
     {
         private NemeStatsDbContext dbContext;
-        private PlayerRepository playerRepository;
+        private EntityFrameworkPlayerRepository playerRepository;
 
         [TestFixtureSetUp]
         public void SetUp()
@@ -24,7 +25,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayerRepositoryTests
         [SetUp]
         public void TestSetUp()
         {
-            playerRepository = new BusinessLogic.Models.PlayerRepository(dbContext);
+            playerRepository = new EntityFrameworkPlayerRepository(dbContext);
         }
 
         [Test]
@@ -41,7 +42,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayerRepositoryTests
             Exception exception = Assert.Throws<UnauthorizedAccessException>(() => playerRepository
                 .GetPlayer(testPlayer1.Id, testUserContextForUserWithOtherGamingGroup));
 
-            string expectedMessage = string.Format(PlayerRepository.EXCEPTION_USER_DOES_NOT_HAVE_ACCESS_TO_THIS_PLAYER,
+            string expectedMessage = string.Format(EntityFrameworkPlayerRepository.EXCEPTION_USER_DOES_NOT_HAVE_ACCESS_TO_THIS_PLAYER,
                 testUserContextForUserWithOtherGamingGroup.ApplicationUserId,
                 testPlayer1.Id);
             Assert.AreEqual(expectedMessage, exception.Message);

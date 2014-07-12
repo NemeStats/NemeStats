@@ -88,10 +88,10 @@
     <Compile Include="DataAccess\NemeStatsDbContext.cs" />
     <Compile Include="DataAccess\NemeStatsInitializer.cs" />
     <Compile Include="DataAccess\SingleColumnTechnicalKey.cs" />
-    <Compile Include="Logic\PlayedGameLogic.cs" />
-    <Compile Include="Logic\PlayedGameRepository.cs" />
-    <Compile Include="Logic\PlayerLogic.cs" />
-    <Compile Include="Logic\PlayerRepository.cs" />
+    <Compile Include="DataAccess\Repositories\PlayedGameLogic.cs" />
+    <Compile Include="DataAccess\Repositories\EntityFrameworkPlayedGameRepository.cs" />
+    <Compile Include="DataAccess\Repositories\PlayerLogic.cs" />
+    <Compile Include="DataAccess\Repositories\EntityFrameworkPlayerRepository.cs" />
     <Compile Include="Logic\Points\GordonPoints.cs" />
     <Compile Include="Logic\UserContextBuilder.cs" />
     <Compile Include="Logic\UserContextBuilderImpl.cs" />

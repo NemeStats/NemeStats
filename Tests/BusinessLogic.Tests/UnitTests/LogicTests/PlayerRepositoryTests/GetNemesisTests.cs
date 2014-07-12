@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.DataAccess;
+using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.Models;
 using BusinessLogic.Models.User;
 using NUnit.Framework;
@@ -14,7 +15,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayerRepositoryTests
     [TestFixture]
     public class GetNemesisTests
     {
-        private PlayerRepository playerRepositoryPartialMock;
+        private EntityFrameworkPlayerRepository playerRepositoryPartialMock;
         private NemeStatsDbContext dbContext;
         private UserContext userContext;
 
@@ -22,7 +23,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayerRepositoryTests
         public void SetUp()
         {
             dbContext = MockRepository.GenerateMock<NemeStatsDbContext>();
-            playerRepositoryPartialMock = MockRepository.GeneratePartialMock<PlayerRepository>(dbContext);
+            playerRepositoryPartialMock = MockRepository.GeneratePartialMock<EntityFrameworkPlayerRepository>(dbContext);
             userContext = new UserContext()
             {
                 GamingGroupId = 1881

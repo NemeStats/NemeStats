@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.DataAccess;
+using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.Logic;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
@@ -73,7 +74,7 @@ namespace BusinessLogic.Tests.IntegrationTests
 
         protected void CreatePlayedGames(NemeStatsDbContext dbContext)
         {
-            PlayedGameLogic playedGameLogic = new PlayedGameRepository(dbContext);
+            PlayedGameLogic playedGameLogic = new EntityFrameworkPlayedGameRepository(dbContext);
 
             List<Player> players = new List<Player>() { testPlayer1, testPlayer2 };
             List<int> playerRanks = new List<int>() { 1, 1 };

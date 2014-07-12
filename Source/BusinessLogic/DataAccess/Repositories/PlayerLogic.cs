@@ -3,7 +3,7 @@ using BusinessLogic.Models;
 using System;
 using System.Collections.Generic;
 using BusinessLogic.Models.User;
-namespace BusinessLogic.Models
+namespace BusinessLogic.DataAccess.Repositories
 {
     public interface PlayerLogic
     {

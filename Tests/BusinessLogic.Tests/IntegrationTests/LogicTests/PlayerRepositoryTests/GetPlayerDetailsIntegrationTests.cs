@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.DataAccess;
+using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.Logic;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Players;
@@ -27,7 +28,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayerRepositoryTests
         {
             using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
             {
-                PlayerRepository playerRepository = new PlayerRepository(dbContext);
+                EntityFrameworkPlayerRepository playerRepository = new EntityFrameworkPlayerRepository(dbContext);
 
                 dbContext.Configuration.LazyLoadingEnabled = false;
                 dbContext.Configuration.ProxyCreationEnabled = false;
@@ -44,7 +45,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayerRepositoryTests
             {
                 dbContext.Configuration.LazyLoadingEnabled = false;
                 dbContext.Configuration.ProxyCreationEnabled = false;
-                PlayerRepository playerRepository = new PlayerRepository(dbContext);
+                EntityFrameworkPlayerRepository playerRepository = new EntityFrameworkPlayerRepository(dbContext);
 
                 PlayerDetails testPlayerDetails = playerRepository.GetPlayerDetails(testPlayer1.Id, 1, testUserContextForUserWithDefaultGamingGroup);
 
@@ -59,7 +60,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayerRepositoryTests
             {
                 dbContext.Configuration.LazyLoadingEnabled = false;
                 dbContext.Configuration.ProxyCreationEnabled = false;
-                PlayerRepository playerRepository = new PlayerRepository(dbContext);
+                EntityFrameworkPlayerRepository playerRepository = new EntityFrameworkPlayerRepository(dbContext);
 
                 PlayerDetails testPlayerDetails = playerRepository.GetPlayerDetails(testPlayer1.Id, 1, testUserContextForUserWithDefaultGamingGroup);
 
@@ -72,7 +73,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayerRepositoryTests
         {
             using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
             {
-                PlayerDetails playerDetails = new PlayerRepository(dbContext)
+                PlayerDetails playerDetails = new EntityFrameworkPlayerRepository(dbContext)
                     .GetPlayerDetails(testPlayer1.Id, 1, testUserContextForUserWithDefaultGamingGroup);
 
                 Assert.NotNull(playerDetails.PlayerStats);
@@ -86,7 +87,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayerRepositoryTests
             {
                 int numberOfGamesToRetrieve = 1;
 
-                PlayerDetails playerDetails = new PlayerRepository(dbContext)
+                PlayerDetails playerDetails = new EntityFrameworkPlayerRepository(dbContext)
                     .GetPlayerDetails(testPlayer1.Id, numberOfGamesToRetrieve, testUserContextForUserWithDefaultGamingGroup);
 
                 Assert.AreEqual(numberOfGamesToRetrieve, playerDetails.PlayerGameResults.Count);
@@ -100,7 +101,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayerRepositoryTests
             {
                 int numberOfGamesToRetrieve = 3;
 
-                PlayerDetails playerDetails = new PlayerRepository(dbContext)
+                PlayerDetails playerDetails = new EntityFrameworkPlayerRepository(dbContext)
                     .GetPlayerDetails(testPlayer1.Id, numberOfGamesToRetrieve, testUserContextForUserWithDefaultGamingGroup);
                 long lastTicks = long.MaxValue; ;
                 Assert.IsTrue(playerDetails.PlayerGameResults.Count == numberOfGamesToRetrieve);

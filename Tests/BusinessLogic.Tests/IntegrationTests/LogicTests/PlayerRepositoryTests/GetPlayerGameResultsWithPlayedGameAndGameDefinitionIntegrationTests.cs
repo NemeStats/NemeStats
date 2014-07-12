@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.DataAccess;
+using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.Models;
 using NUnit.Framework;
 using System;
@@ -13,13 +14,13 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayerRepositoryTests
     public class GetPlayerGameResultsWithPlayedGameAndGameDefinitionIntegrationTests : IntegrationTestBase
     {
         private NemeStatsDbContext dbContext;
-        private PlayerRepository playerRepository;
+        private EntityFrameworkPlayerRepository playerRepository;
 
         [SetUp]
         public void TestSetUp()
         {
             dbContext = new NemeStatsDbContext();
-            playerRepository = new BusinessLogic.Models.PlayerRepository(dbContext);
+            playerRepository = new EntityFrameworkPlayerRepository(dbContext);
         }
 
         //TODO need more integration tests
