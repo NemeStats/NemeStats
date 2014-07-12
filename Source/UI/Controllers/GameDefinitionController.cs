@@ -92,12 +92,17 @@ namespace UI.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            GameDefinition gamedefinition = db.GameDefinitions.Find(id);
-            if (gamedefinition == null)
+
+            GameDefinition gameDefinition;
+            try
+            {
+                gameDefinition = gameDefinitionRepository.GetGameDefinition(id.Value, db, userContext);
+            }catch(KeyNotFoundException)
             {
                 return HttpNotFound();
             }
-            return View(gamedefinition);
+
+            return View(MVC.GameDefinition.Views.Edit, gameDefinition);
         }
 
         // POST: /GameDefinition/Edit/5

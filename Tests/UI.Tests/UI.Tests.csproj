@@ -132,6 +132,7 @@
     <Compile Include="UnitTests\ControllerTests\GameDefinitionControllerTests\CreateHttpGetTests.cs" />
     <Compile Include="UnitTests\ControllerTests\GameDefinitionControllerTests\CreateHttpPostTests.cs" />
     <Compile Include="UnitTests\ControllerTests\GameDefinitionControllerTests\DetailsTests.cs" />
+    <Compile Include="UnitTests\ControllerTests\GameDefinitionControllerTests\EditHttpGetTests.cs" />
     <Compile Include="UnitTests\ControllerTests\GameDefinitionControllerTests\GameDefinitionControllerTestBase.cs" />
     <Compile Include="UnitTests\ControllerTests\GameDefinitionControllerTests\IndexHttpGetTests.cs" />
     <Compile Include="UnitTests\ControllerTests\PlayedGameControllerTests\CreateHttpPostTests.cs" />
