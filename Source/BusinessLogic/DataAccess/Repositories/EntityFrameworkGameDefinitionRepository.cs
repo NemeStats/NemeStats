@@ -67,9 +67,13 @@ namespace BusinessLogic.DataAccess.Repositories
             if(gameDefinition.AlreadyInDatabase())
             {
                 ValidateUserHasAccessToGameDefinition(userContext, gameDefinition);
+                dbContext.Entry(gameDefinition).State = System.Data.Entity.EntityState.Modified;
+            }else
+            {
+                gameDefinition.GamingGroupId = userContext.GamingGroupId;
+                dbContext.GameDefinitions.Add(gameDefinition);
             }
-            gameDefinition.GamingGroupId = userContext.GamingGroupId;
-            dbContext.GameDefinitions.Add(gameDefinition);
+            
             dbContext.SaveChanges();
 
             return gameDefinition;

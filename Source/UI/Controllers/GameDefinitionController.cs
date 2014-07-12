@@ -111,15 +111,16 @@ namespace UI.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [UserContextActionFilter]
-        public virtual ActionResult Edit([Bind(Include = "Id,Name,Description")] GameDefinition gamedefinition, UserContext userContext)
+        public virtual ActionResult Edit([Bind(Include = "Id,Name,Description,GamingGroupId")] GameDefinition gamedefinition, UserContext userContext)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(gamedefinition).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                gameDefinitionRepository.Save(gamedefinition, userContext);
+                //db.Entry(gamedefinition).State = EntityState.Modified;
+                //db.SaveChanges();
+                return RedirectToAction(MVC.GameDefinition.ActionNames.Index);
             }
-            return View(gamedefinition);
+            return View(MVC.GameDefinition.Views.Edit, gamedefinition);
         }
 
         // GET: /GameDefinition/Delete/5

@@ -7,6 +7,7 @@ using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -46,11 +47,28 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests
         }
 
         [Test]
-        public void ItSavesTheGameDefinition()
+        public void ItAddsTheGameDefinitionIfItIsntAlreadyInTheDatabase()
         {
             gameDefinitionRepositoryPartialMock.Save(gameDefinition, userContext);
 
             gameDefinitionsDbSetMock.AssertWasCalled(mock => mock.Add(gameDefinition));
+            dbContextMock.AssertWasCalled(mock => mock.SaveChanges());
+        }
+
+        //TODO having trouble mocking dbEntityEntry. One more reason I need to implement a real repository pattern.
+        /*
+        [Test]
+        public void ItMarksTheEntityAsModifiedIfItIsAlreadyInTheDatabase()
+        {
+            DbEntityEntry<GameDefinition> dbEntityEntry = MockRepository.GenerateMock<DbEntityEntry<GameDefinition>>();
+            dbContextMock.Expect(mock => mock.Entry(gameDefinition))
+                .Repeat.Once()
+                .Return(dbEntityEntry);
+            dbEntityEntry.Expect(mock => mock.State = EntityState.Modified);
+
+            gameDefinitionRepositoryPartialMock.Save(gameDefinition, userContext);
+
+            dbEntityEntry.VerifyAllExpectations();
             dbContextMock.AssertWasCalled(mock => mock.SaveChanges());
         }
 
@@ -63,12 +81,16 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests
                 .Repeat.Once()
                 .Return(true);
             gameDefinitionRepositoryPartialMock.Expect(mock => mock.ValidateUserHasAccessToGameDefinition(userContext, mismatchedGameDefinition));
+            DbEntityEntry<GameDefinition> dbEntityEntry = MockRepository.GeneratePartialMock<DbEntityEntry<GameDefinition>>();
+            dbContextMock.Expect(mock => mock.Entry(mismatchedGameDefinition))
+                .Repeat.Once()
+                .Return(dbEntityEntry);
 
             gameDefinitionRepositoryPartialMock.Save(mismatchedGameDefinition, userContext);
 
             gameDefinitionRepositoryPartialMock.AssertWasCalled(
                 mock => mock.ValidateUserHasAccessToGameDefinition(userContext, mismatchedGameDefinition));
-        }
+        }*/
 
         [Test]
         public void ItSetsTheGamingGroupIdToThatOfTheCurrentUser()
