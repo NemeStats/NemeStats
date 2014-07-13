@@ -4,6 +4,7 @@ using BusinessLogic.Logic;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Players;
 using BusinessLogic.Models.User;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -105,12 +106,19 @@ namespace UI.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Player player = db.Players.Find(id);
-            if (player == null)
+            PlayerDetails player;
+            try
             {
-                return HttpNotFound();
+                player = playerRepository.GetPlayerDetails(id.Value, 0, userContext);
+            }catch(UnauthorizedAccessException)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
+            }catch(KeyNotFoundException)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
             }
-            return View(player);
+
+            return View(MVC.Player.Views.Edit, player);
         }
 
         // POST: /Player/Edit/5
