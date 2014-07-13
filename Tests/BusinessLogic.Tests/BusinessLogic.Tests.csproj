@@ -109,9 +109,9 @@
     <Compile Include="UnitTests\DataAccessTests\EntityFrameworkGameDefinitionRepositoryTests\DeleteTests.cs" />
     <Compile Include="UnitTests\DataAccessTests\EntityFrameworkGameDefinitionRepositoryTests\EntityFrameworkGameDefinitionRepositoryTestBase.cs" />
     <Compile Include="UnitTests\DataAccessTests\EntityFrameworkGameDefinitionRepositoryTests\SaveTests.cs" />
-    <Compile Include="UnitTests\DataAccessTests\PlayedGameRepositoryTests\CreatePlayedGameTests.cs" />
-    <Compile Include="UnitTests\DataAccessTests\PlayerRepositoryTests\GetNemesisTests.cs" />
-    <Compile Include="UnitTests\DataAccessTests\PlayerRepositoryTests\GetPlayerDetailsTests.cs" />
+    <Compile Include="UnitTests\DataAccessTests\EntityFrameworkPlayedGameRepositoryTests\CreatePlayedGameTests.cs" />
+    <Compile Include="UnitTests\DataAccessTests\EntityFrameworkPlayerRepositoryTests\GetNemesisTests.cs" />
+    <Compile Include="UnitTests\DataAccessTests\EntityFrameworkPlayerRepositoryTests\GetPlayerDetailsTests.cs" />
     <Compile Include="UnitTests\LogicTests\PointsTests\GordonPointsTests\CalculateGordonPointsTests.cs" />
     <Compile Include="UnitTests\ModelsTests\GamesTests\ValidationTests\ValidatePlayerRanksTests.cs" />
   </ItemGroup>

@@ -95,7 +95,7 @@ namespace BusinessLogic.DataAccess.Repositories
             }
         }
 
-        public PlayerDetails GetPlayerDetails(int playerID, int numberOfRecentGamesToRetrieve, UserContext requestingUserContext)
+        public virtual PlayerDetails GetPlayerDetails(int playerID, int numberOfRecentGamesToRetrieve, UserContext requestingUserContext)
         {
             Player returnPlayer = GetPlayer(playerID, requestingUserContext);
 
@@ -215,6 +215,16 @@ namespace BusinessLogic.DataAccess.Repositories
             dbContext.SaveChanges();
 
             return player;
+        }
+
+        //TODO I did not write tests for this as its tested in GameDefinitionRepository and this needs to be refactored out as part
+        //of a real repository base class
+        public virtual void Delete(int playerId, UserContext userContext)
+        {
+            Player player = GetPlayer(playerId, userContext);
+
+            dbContext.Players.Remove(player);
+            dbContext.SaveChanges();
         }
     }
 }

@@ -166,9 +166,13 @@ namespace UI.Controllers
         [UserContextActionFilter]
         public virtual ActionResult DeleteConfirmed(int id, UserContext userContext)
         {
-            Player player = db.Players.Find(id);
-            db.Players.Remove(player);
-            db.SaveChanges();
+            try
+            {
+                playerRepository.Delete(id, userContext);
+            }catch(UnauthorizedAccessException)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
+            }
             return RedirectToAction("Index");
         }
 
