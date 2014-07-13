@@ -145,12 +145,19 @@ namespace UI.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Player player = db.Players.Find(id);
-            if (player == null)
+            PlayerDetails playerDetails;
+            try
             {
-                return HttpNotFound();
+                playerDetails = playerRepository.GetPlayerDetails(id.Value, 0, userContext);
+            }catch(UnauthorizedAccessException)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
+            }catch (KeyNotFoundException)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
             }
-            return View(player);
+            
+            return View(MVC.Player.Views.Delete, playerDetails);
         }
 
         // POST: /Player/Delete/5
