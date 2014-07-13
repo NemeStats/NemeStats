@@ -18,7 +18,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGameRepositoryTests
     public class CreatePlayedGameTests
     {
         private NemeStatsDbContext dbContext;
-        private PlayedGameLogic playedGameLogicPartialMock;
+        private PlayedGameRepository playedGameLogicPartialMock;
         private DbSet<PlayedGame> playedGamesDbSet ;
         private UserContextBuilder userContextBuilder;
         private string currentUserId = "id of current user";

@@ -112,6 +112,7 @@ namespace BusinessLogic.DataAccess.Repositories
                 Active = returnPlayer.Active,
                 Id = returnPlayer.Id,
                 Name = returnPlayer.Name,
+                GamingGroupId = returnPlayer.GamingGroupId,
                 PlayerGameResults = playerGameResults,
                 PlayerStats = playerStatistics,
                 Nemesis = nemesis

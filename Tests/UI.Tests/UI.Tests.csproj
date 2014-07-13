@@ -146,7 +146,8 @@
     <Compile Include="UnitTests\ControllerTests\PlayerControllerTests\DetailsTests.cs" />
     <Compile Include="UnitTests\ControllerTests\PlayedGameControllerTests\CreateHttpGetTests.cs" />
     <Compile Include="UnitTests\ControllerTests\PlayedGameControllerTests\IndexTests.cs" />
-    <Compile Include="UnitTests\ControllerTests\PlayerControllerTests\EditTests.cs" />
+    <Compile Include="UnitTests\ControllerTests\PlayerControllerTests\EditHttpGetTests.cs" />
+    <Compile Include="UnitTests\ControllerTests\PlayerControllerTests\EditHttpPostTests.cs" />
     <Compile Include="UnitTests\ControllerTests\PlayerControllerTests\IndexTests.cs" />
     <Compile Include="UnitTests\ControllerTests\PlayerControllerTests\PlayerControllerTestBase.cs" />
     <Compile Include="UnitTests\FiltersTests\UserNameActionFilterTests\OnActionExecutingTests.cs" />

@@ -16,7 +16,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGameRepositoryTe
         {
             using(NemeStatsDbContext dbContext = new NemeStatsDbContext())
             {
-                PlayedGameLogic playedGameLogic = new EntityFrameworkPlayedGameRepository(dbContext);
+                PlayedGameRepository playedGameLogic = new EntityFrameworkPlayedGameRepository(dbContext);
                 dbContext.Configuration.LazyLoadingEnabled = false;
                 dbContext.Configuration.ProxyCreationEnabled = false;
 
@@ -32,7 +32,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGameRepositoryTe
         {
             using(NemeStatsDbContext dbContext = new NemeStatsDbContext())
             {
-                PlayedGameLogic playedGameLogic = new EntityFrameworkPlayedGameRepository(dbContext);
+                PlayedGameRepository playedGameLogic = new EntityFrameworkPlayedGameRepository(dbContext);
                 dbContext.Configuration.LazyLoadingEnabled = false;
                 dbContext.Configuration.ProxyCreationEnabled = false;
 
@@ -48,7 +48,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGameRepositoryTe
         {
             using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
             {
-                PlayedGameLogic playedGameLogic = new EntityFrameworkPlayedGameRepository(dbContext);
+                PlayedGameRepository playedGameLogic = new EntityFrameworkPlayedGameRepository(dbContext);
                 dbContext.Configuration.LazyLoadingEnabled = false;
                 dbContext.Configuration.ProxyCreationEnabled = false;
 
@@ -70,7 +70,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGameRepositoryTe
         {
             using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
             {
-                PlayedGameLogic playedGameLogic = new EntityFrameworkPlayedGameRepository(dbContext);
+                PlayedGameRepository playedGameLogic = new EntityFrameworkPlayedGameRepository(dbContext);
                 int one = 1;
                 List<PlayedGame> playedGames = playedGameLogic.GetRecentGames(one, testUserContextForUserWithDefaultGamingGroup);
 
@@ -83,7 +83,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGameRepositoryTe
         {
             using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
             {
-                PlayedGameLogic playedGameLogic = new EntityFrameworkPlayedGameRepository(dbContext);
+                PlayedGameRepository playedGameLogic = new EntityFrameworkPlayedGameRepository(dbContext);
                 int two = 2;
                 List<PlayedGame> playedGames = playedGameLogic.GetRecentGames(two, testUserContextForUserWithDefaultGamingGroup);
 
@@ -96,7 +96,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGameRepositoryTe
         {
             using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
             {
-                PlayedGameLogic playedGameLogic = new EntityFrameworkPlayedGameRepository(dbContext);
+                PlayedGameRepository playedGameLogic = new EntityFrameworkPlayedGameRepository(dbContext);
                 int five = 5;
                 List<PlayedGame> playedGames = playedGameLogic.GetRecentGames(five, testUserContextForUserWithDefaultGamingGroup);
                 List<PlayedGame> allPlayedGames = dbContext.PlayedGames
@@ -116,7 +116,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGameRepositoryTe
         {
             using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
             {
-                PlayedGameLogic playedGameLogic = new EntityFrameworkPlayedGameRepository(dbContext);
+                PlayedGameRepository playedGameLogic = new EntityFrameworkPlayedGameRepository(dbContext);
                 int five = 5;
                 List<PlayedGame> playedGames = playedGameLogic.GetRecentGames(five, testUserContextForUserWithDefaultGamingGroup);
 
@@ -140,7 +140,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGameRepositoryTe
         {
             using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
             {
-                PlayedGameLogic playedGameLogic = new EntityFrameworkPlayedGameRepository(dbContext);
+                PlayedGameRepository playedGameLogic = new EntityFrameworkPlayedGameRepository(dbContext);
                 
                 List<PlayedGame> playedGames = playedGameLogic.GetRecentGames(20, testUserContextForUserWithOtherGamingGroup);
 

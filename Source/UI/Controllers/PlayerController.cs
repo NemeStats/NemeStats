@@ -127,15 +127,14 @@ namespace UI.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [UserContextActionFilter]
-        public virtual ActionResult Edit([Bind(Include = "Id,Name,Active")] Player player, UserContext userContext)
+        public virtual ActionResult Edit([Bind(Include = "Id,Name,Active,GamingGroupId")] Player player, UserContext userContext)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(player).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                playerRepository.Save(player, userContext);
+                return RedirectToAction(MVC.Player.ActionNames.Index);
             }
-            return View(player);
+            return View(MVC.Player.Views.Edit, player);
         }
 
         // GET: /Player/Delete/5

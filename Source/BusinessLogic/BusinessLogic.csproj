@@ -88,7 +88,7 @@
     <Compile Include="DataAccess\NemeStatsDbContext.cs" />
     <Compile Include="DataAccess\NemeStatsInitializer.cs" />
     <Compile Include="DataAccess\SingleColumnTechnicalKey.cs" />
-    <Compile Include="DataAccess\Repositories\PlayedGameLogic.cs" />
+    <Compile Include="DataAccess\Repositories\PlayedGameRepository.cs" />
     <Compile Include="DataAccess\Repositories\EntityFrameworkPlayedGameRepository.cs" />
     <Compile Include="DataAccess\Repositories\PlayerRepository.cs" />
     <Compile Include="DataAccess\Repositories\EntityFrameworkPlayerRepository.cs" />

@@ -12,7 +12,7 @@ using System.Web.Mvc;
 namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
 {
     [TestFixture]
-    public class EditTests : PlayerControllerTestBase
+    public class EditHttpGetTests : PlayerControllerTestBase
     {
         [Test]
         public void ItReturnsABadRequestHttpStatusCodeIfThereIsNoPlayerId()

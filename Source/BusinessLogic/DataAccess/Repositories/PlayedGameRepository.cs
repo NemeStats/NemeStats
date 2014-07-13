@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 namespace BusinessLogic.DataAccess.Repositories
 {
-    public interface PlayedGameLogic
+    public interface PlayedGameRepository
     {
         PlayedGame GetPlayedGameDetails(int playedGameId, UserContext requestingUserContext);
         List<PlayedGame> GetRecentGames(int numberOfGames, UserContext requestingUserContext);

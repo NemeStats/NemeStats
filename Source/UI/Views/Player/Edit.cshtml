@@ -22,6 +22,7 @@
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Name)
                 @Html.ValidationMessageFor(model => model.Name)
+                @Html.Hidden("GamingGroupId", @Model.GamingGroupId)
             </div>
         </div>
 

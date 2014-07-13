@@ -19,14 +19,14 @@ namespace UI.Controllers
     public partial class PlayedGameController : Controller
     {
         internal NemeStatsDbContext db;
-        internal PlayedGameLogic playedGameLogic;
+        internal PlayedGameRepository playedGameLogic;
         internal PlayerRepository playerLogic;
         internal PlayedGameDetailsViewModelBuilder playedGameDetailsBuilder;
 
         internal const int NUMBER_OF_RECENT_GAMES_TO_DISPLAY = 10;
 
         public PlayedGameController(NemeStatsDbContext dbContext, 
-            PlayedGameLogic playedLogic, 
+            PlayedGameRepository playedLogic, 
             PlayerRepository playLogic,
             PlayedGameDetailsViewModelBuilder builder)
         {
