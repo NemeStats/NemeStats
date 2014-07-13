@@ -90,14 +90,11 @@ namespace UI.Controllers
         {
             if (ModelState.IsValid)
             {
-                //TODO need tests for this action
-                player.GamingGroupId = userContext.GamingGroupId;
-                db.Players.Add(player);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                playerRepository.Save(player, userContext);
+                return RedirectToAction(MVC.Player.ActionNames.Index);
             }
 
-            return View(player);
+            return View(MVC.Player.Views.Index, player);
         }
 
         // GET: /Player/Edit/5

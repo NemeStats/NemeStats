@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BusinessLogic.DataAccess;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -8,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace BusinessLogic.Models
 {
-    public class Player
+    public class Player : EntityWithTechnicalKey
     {
-        public int Id { get; set; }
+        public override int Id { get; set; }
 
         public int GamingGroupId { get; set; }
 

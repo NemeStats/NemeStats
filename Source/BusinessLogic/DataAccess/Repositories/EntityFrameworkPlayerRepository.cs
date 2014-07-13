@@ -195,5 +195,25 @@ namespace BusinessLogic.DataAccess.Repositories
 
             return nemesis;
         }
+
+        //TODO I did not write tests for this as its tested in GameDefinitionRepository and this needs to be refactored out as part
+        //of a real repository base class
+        public virtual Player Save(Player player, UserContext userContext)
+        {
+            if (player.AlreadyInDatabase())
+            {
+                ValidateAccessToPlayer(userContext, player);
+                dbContext.Entry(player).State = System.Data.Entity.EntityState.Modified;
+            }
+            else
+            {
+                player.GamingGroupId = userContext.GamingGroupId;
+                dbContext.Players.Add(player);
+            }
+
+            dbContext.SaveChanges();
+
+            return player;
+        }
     }
 }
