@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using BusinessLogic.Models.User;
 namespace BusinessLogic.DataAccess.Repositories
 {
-    public interface PlayerLogic
+    public interface PlayerRepository
     {
         PlayerDetails GetPlayerDetails(int playerID, int numberOfRecentGamesToRetrieve, UserContext requestingUserContext);
         List<Player> GetAllPlayers(bool active, UserContext requestingUserContext);

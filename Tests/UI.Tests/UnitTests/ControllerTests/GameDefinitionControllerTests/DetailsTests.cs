@@ -22,8 +22,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
         public void ItReturnsTheDetailsView()
         {
             gameDefinitionRepository.Expect(repo => repo.GetGameDefinition(
-                Arg<int>.Is.Anything, 
-                Arg<NemeStatsDbContext>.Is.Anything, 
+                Arg<int>.Is.Anything,
                 Arg<UserContext>.Is.Anything));
 
             ViewResult viewResult = gameDefinitionControllerPartialMock.Details(gameDefinitionId, userContext) as ViewResult;
@@ -37,7 +36,6 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
             GameDefinition gameDefinition = new GameDefinition();
             gameDefinitionRepository.Expect(repo => repo.GetGameDefinition(
                 gameDefinitionId,
-                dbContext,
                 userContext))
                    .Repeat.Once()
                    .Return(gameDefinition);
@@ -61,7 +59,6 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
         {
             gameDefinitionRepository.Expect(repo => repo.GetGameDefinition(
                 Arg<int>.Is.Anything,
-                Arg<NemeStatsDbContext>.Is.Anything,
                 Arg<UserContext>.Is.Anything))
                 .Throw(new KeyNotFoundException());
 
@@ -75,7 +72,6 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
         {
             gameDefinitionRepository.Expect(repo => repo.GetGameDefinition(
                 Arg<int>.Is.Anything,
-                Arg<NemeStatsDbContext>.Is.Anything,
                 Arg<UserContext>.Is.Anything))
                 .Throw(new UnauthorizedAccessException());
 

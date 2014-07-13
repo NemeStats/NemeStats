@@ -17,7 +17,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
         public void ItReturnsAnUnauthorizedAccessHttpStatusCodeIfTheUserIsNotAuthorized()
         {
             int gameDefinitionId = 1;
-            gameDefinitionRepository.Expect(mock => mock.Delete(gameDefinitionId, dbContext, userContext))
+            gameDefinitionRepository.Expect(mock => mock.Delete(gameDefinitionId, userContext))
                 .Throw(new UnauthorizedAccessException());
 
             HttpStatusCodeResult statusCodeResult = gameDefinitionControllerPartialMock
@@ -30,7 +30,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
         public void ItDeletesTheGameDefinition()
         {
             int gameDefinitionId = 1;
-            gameDefinitionRepository.Expect(mock => mock.Delete(1, dbContext, userContext));
+            gameDefinitionRepository.Expect(mock => mock.Delete(1, userContext));
 
             gameDefinitionControllerPartialMock.DeleteConfirmed(gameDefinitionId, userContext);
 

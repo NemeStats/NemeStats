@@ -21,7 +21,7 @@ namespace BusinessLogic.DataAccess.Repositories
             this.dbContext = dbContext;
         }
 
-        public virtual List<GameDefinition> GetAllGameDefinitions(NemeStatsDbContext dbContext, UserContext userContext)
+        public virtual List<GameDefinition> GetAllGameDefinitions(UserContext userContext)
         {
             return dbContext.GameDefinitions
                 .Where(game => game.GamingGroupId == userContext.GamingGroupId)
@@ -30,7 +30,6 @@ namespace BusinessLogic.DataAccess.Repositories
         
         public virtual GameDefinition GetGameDefinition(
             int gameDefinitionId, 
-            NemeStatsDbContext dbContext, 
             UserContext userContext)
         {
             GameDefinition game = dbContext.GameDefinitions.Where(gameDefinition => gameDefinition.Id == gameDefinitionId).FirstOrDefault();
@@ -79,9 +78,9 @@ namespace BusinessLogic.DataAccess.Repositories
             return gameDefinition;
         }
 
-        public virtual void Delete(int gameDefinitionId, NemeStatsDbContext dbContext, UserContext userContext)
+        public virtual void Delete(int gameDefinitionId, UserContext userContext)
         {
-            GameDefinition gameDefinition = GetGameDefinition(gameDefinitionId, dbContext, userContext);
+            GameDefinition gameDefinition = GetGameDefinition(gameDefinitionId, userContext);
 
             dbContext.GameDefinitions.Remove(gameDefinition);
             dbContext.SaveChanges();

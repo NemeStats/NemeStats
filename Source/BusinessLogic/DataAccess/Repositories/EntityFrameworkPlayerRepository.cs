@@ -12,7 +12,7 @@ using System.Linq;
 
 namespace BusinessLogic.DataAccess.Repositories
 {
-    public class EntityFrameworkPlayerRepository : PlayerLogic
+    public class EntityFrameworkPlayerRepository : PlayerRepository
     {
         internal const string EXCEPTION_PLAYER_NOT_FOUND = "The specified player does not exist.";
         internal const string EXCEPTION_USER_DOES_NOT_HAVE_ACCESS_TO_THIS_PLAYER = 

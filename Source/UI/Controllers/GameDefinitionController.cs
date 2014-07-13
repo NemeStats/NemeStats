@@ -31,7 +31,7 @@ namespace UI.Controllers
         [UserContextActionFilter]
         public virtual ActionResult Index(UserContext userContext)
         {
-            List<GameDefinition> games = gameDefinitionRepository.GetAllGameDefinitions(db, userContext);
+            List<GameDefinition> games = gameDefinitionRepository.GetAllGameDefinitions(userContext);
             return View(MVC.GameDefinition.Views.Index, games);
         }
 
@@ -48,7 +48,7 @@ namespace UI.Controllers
 
             try
             {
-                gameDefinition = gameDefinitionRepository.GetGameDefinition(id.Value, db, userContext);
+                gameDefinition = gameDefinitionRepository.GetGameDefinition(id.Value, userContext);
             }catch(KeyNotFoundException)
             {
                 return new HttpNotFoundResult(); ;
@@ -96,7 +96,7 @@ namespace UI.Controllers
             GameDefinition gameDefinition;
             try
             {
-                gameDefinition = gameDefinitionRepository.GetGameDefinition(id.Value, db, userContext);
+                gameDefinition = gameDefinitionRepository.GetGameDefinition(id.Value, userContext);
             }catch(KeyNotFoundException)
             {
                 return HttpNotFound();
@@ -132,7 +132,7 @@ namespace UI.Controllers
             GameDefinition gameDefinition;
             try
             {
-                gameDefinition = gameDefinitionRepository.GetGameDefinition(id.Value, db, userContext);
+                gameDefinition = gameDefinitionRepository.GetGameDefinition(id.Value, userContext);
             }catch(KeyNotFoundException)
             {
                 return HttpNotFound();
@@ -151,7 +151,7 @@ namespace UI.Controllers
         {
             try
             {
-                gameDefinitionRepository.Delete(id, db, userContext);
+                gameDefinitionRepository.Delete(id, userContext);
             }catch(UnauthorizedAccessException)
             {
                 return new HttpUnauthorizedResult();

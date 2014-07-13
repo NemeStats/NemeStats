@@ -20,7 +20,7 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.StatisticsReposit
     public class GetNemesisTests : IntegrationTestBase
     {
         private NemeStatsDbContext dbContext;
-        private PlayerLogic playerLogic;
+        private PlayerRepository playerLogic;
         private UserContextBuilder userContextBuilder;
 
         [SetUp]

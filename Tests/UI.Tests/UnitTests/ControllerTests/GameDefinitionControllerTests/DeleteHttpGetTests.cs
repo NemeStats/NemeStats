@@ -19,7 +19,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
         public void ItReturnsAnEditView()
         {
             int gameDefinitionId = 15;
-            gameDefinitionRepository.Expect(mock => mock.GetGameDefinition(gameDefinitionId, dbContext, userContext))
+            gameDefinitionRepository.Expect(mock => mock.GetGameDefinition(gameDefinitionId, userContext))
                 .Repeat.Once()
                 .Return(new GameDefinition());
             ViewResult viewResult = gameDefinitionControllerPartialMock.Delete(gameDefinitionId, userContext) as ViewResult;
@@ -34,7 +34,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
             {
                 Id = 151
             };
-            gameDefinitionRepository.Expect(mock => mock.GetGameDefinition(gameDefinition.Id, dbContext, userContext))
+            gameDefinitionRepository.Expect(mock => mock.GetGameDefinition(gameDefinition.Id, userContext))
                 .Repeat.Once()
                 .Return(gameDefinition);
 
@@ -54,7 +54,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
         [Test]
         public void ItReturnsANotFoundHttpStatusCodeIfNoGameDefinitionIsFound()
         {
-            gameDefinitionRepository.Expect(mock => mock.GetGameDefinition(-1, dbContext, userContext))
+            gameDefinitionRepository.Expect(mock => mock.GetGameDefinition(-1, userContext))
                 .Throw(new KeyNotFoundException());
             HttpStatusCodeResult httpResult = gameDefinitionControllerPartialMock.Delete(-1, userContext) as HttpStatusCodeResult;
 
@@ -64,7 +64,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
         [Test]
         public void ItReturnsAnUnauthorizedAccessHttpStatusCodeIfTheUserIsNotAuthorized()
         {
-            gameDefinitionRepository.Expect(mock => mock.GetGameDefinition(1, dbContext, userContext))
+            gameDefinitionRepository.Expect(mock => mock.GetGameDefinition(1, userContext))
                 .Throw(new UnauthorizedAccessException());
             HttpStatusCodeResult httpResult = gameDefinitionControllerPartialMock.Delete(1, userContext) as HttpStatusCodeResult;
 

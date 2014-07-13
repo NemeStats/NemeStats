@@ -25,17 +25,17 @@ namespace UI.Controllers
 
 
         internal NemeStatsDbContext db;
-        internal PlayerLogic playerLogic;
+        internal PlayerRepository playerRepository;
         internal GameResultViewModelBuilder builder;
         internal PlayerDetailsViewModelBuilder playerDetailsViewModelBuilder;
         
         public PlayerController(NemeStatsDbContext dbContext, 
-            PlayerLogic logic, 
+            PlayerRepository playerRepository, 
             GameResultViewModelBuilder resultBuilder,
             PlayerDetailsViewModelBuilder playerDetailsBuilder)
         {
             db = dbContext;
-            playerLogic = logic;
+            this.playerRepository = playerRepository;
             builder = resultBuilder;
             playerDetailsViewModelBuilder = playerDetailsBuilder;
         }
@@ -44,7 +44,7 @@ namespace UI.Controllers
         [UserContextActionFilter]
         public virtual ActionResult Index(UserContext userContext)
         {
-            return View(db.Players.ToList());
+            return View(MVC.Player.Views.Index, playerRepository.GetAllPlayers(true, userContext));
         }
 
         // GET: /Player/Details/5
@@ -56,7 +56,7 @@ namespace UI.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            PlayerDetails player = playerLogic.GetPlayerDetails(id.Value, NUMBER_OF_RECENT_GAMES_TO_RETRIEVE, userContext);
+            PlayerDetails player = playerRepository.GetPlayerDetails(id.Value, NUMBER_OF_RECENT_GAMES_TO_RETRIEVE, userContext);
 
             if (player == null)
             {

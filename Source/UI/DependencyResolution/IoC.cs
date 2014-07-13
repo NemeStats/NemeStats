@@ -38,7 +38,7 @@ namespace UI.DependencyResolution {
                                         scan.TheCallingAssembly();
                                         scan.WithDefaultConventions();
                                     });
-                            x.For<PlayerLogic>().Use<EntityFrameworkPlayerRepository>();
+                            x.For<PlayerRepository>().Use<EntityFrameworkPlayerRepository>();
                             x.For<PlayedGameLogic>().Use<EntityFrameworkPlayedGameRepository>();
                             x.For<PlayedGameDetailsViewModelBuilder>().Use<PlayedGameDetailsViewModelBuilderImpl>();
                             x.For<GameResultViewModelBuilder>().Use<GameResultViewModelBuilderImpl>();

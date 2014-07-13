@@ -20,7 +20,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
         [Test]
         public void ItReturnsAnIndexView()
         {
-            gameDefinitionRepository.Expect(repo => repo.GetAllGameDefinitions(Arg<NemeStatsDbContext>.Is.Anything, Arg<UserContext>.Is.Anything));
+            gameDefinitionRepository.Expect(repo => repo.GetAllGameDefinitions(Arg<UserContext>.Is.Anything));
 
             ViewResult viewResult = gameDefinitionControllerPartialMock.Index(userContext) as ViewResult;
 
@@ -31,7 +31,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
         public void TheIndexViewHasAllGameDefinitions()
         {
             List<GameDefinition> games = new List<GameDefinition>();
-            gameDefinitionRepository.Expect(repo => repo.GetAllGameDefinitions(dbContext, userContext))
+            gameDefinitionRepository.Expect(repo => repo.GetAllGameDefinitions(userContext))
                 .Repeat.Once()
                 .Return(games);
 

@@ -20,7 +20,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayerRepositoryTests
         {
             using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
             {
-                PlayerLogic playerLogic = new EntityFrameworkPlayerRepository(dbContext);
+                PlayerRepository playerLogic = new EntityFrameworkPlayerRepository(dbContext);
                 PlayerStatistics playerStatistics = playerLogic.GetPlayerStatistics(testPlayer1.Id, testUserContextForUserWithDefaultGamingGroup);
                 int totalGamesForPlayer1 = testPlayedGames
                         .Count(playedGame => playedGame.PlayerGameResults
@@ -34,7 +34,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayerRepositoryTests
         {
             using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
             {
-                PlayerLogic playerLogic = new EntityFrameworkPlayerRepository(dbContext);
+                PlayerRepository playerLogic = new EntityFrameworkPlayerRepository(dbContext);
                 PlayerStatistics playerStatistics = playerLogic.GetPlayerStatistics(testPlayer1.Id, testUserContextForUserWithOtherGamingGroup);
                 
                 Assert.AreEqual(0, playerStatistics.TotalGames);

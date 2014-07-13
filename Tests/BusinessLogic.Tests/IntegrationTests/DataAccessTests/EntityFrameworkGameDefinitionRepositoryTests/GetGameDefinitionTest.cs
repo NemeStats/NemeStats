@@ -17,7 +17,6 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.EntityFrameworkGa
         {
             Exception exception = Assert.Throws<UnauthorizedAccessException>(() => gameDefinitionRepository.GetGameDefinition(
                 testGameDefinitionWithOtherGamingGroupId.Id,
-                dbContext, 
                 testUserContextForUserWithDefaultGamingGroup));
 
             string message = string.Format(
@@ -35,7 +34,7 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.EntityFrameworkGa
 
             Exception exception = Assert.Throws<KeyNotFoundException>(() => gameDefinitionRepository.GetGameDefinition(
                 invalidId,
-                dbContext,
+                
                 testUserContextForUserWithDefaultGamingGroup));
 
             string message = string.Format(
@@ -49,7 +48,7 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.EntityFrameworkGa
         public void ItReturnsTheSpecifiedGameDefinition()
         {
             GameDefinition gameDefinition = gameDefinitionRepository.GetGameDefinition(testGameDefinition.Id,
-                dbContext,
+                
                 testUserContextForUserWithDefaultGamingGroup);
 
             Assert.AreEqual(testGameDefinition.Id, gameDefinition.Id);

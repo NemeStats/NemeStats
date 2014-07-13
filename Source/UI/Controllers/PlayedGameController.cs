@@ -20,14 +20,14 @@ namespace UI.Controllers
     {
         internal NemeStatsDbContext db;
         internal PlayedGameLogic playedGameLogic;
-        internal PlayerLogic playerLogic;
+        internal PlayerRepository playerLogic;
         internal PlayedGameDetailsViewModelBuilder playedGameDetailsBuilder;
 
         internal const int NUMBER_OF_RECENT_GAMES_TO_DISPLAY = 10;
 
         public PlayedGameController(NemeStatsDbContext dbContext, 
             PlayedGameLogic playedLogic, 
-            PlayerLogic playLogic,
+            PlayerRepository playLogic,
             PlayedGameDetailsViewModelBuilder builder)
         {
             db = dbContext;

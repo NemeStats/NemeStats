@@ -30,7 +30,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
             {
                 Id = 135
             };
-            gameDefinitionRepository.Expect(mock => mock.GetGameDefinition(gameDefinition.Id, dbContext, userContext))
+            gameDefinitionRepository.Expect(mock => mock.GetGameDefinition(gameDefinition.Id, userContext))
                 .Repeat.Once()
                 .Return(gameDefinition);
 
@@ -52,7 +52,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
         public void ItReturnsANotFoundHttpStatusCodeIfNoGameDefinitionIsFound()
         {
             int gameDefinitionId = -1;
-            gameDefinitionRepository.Expect(mock => mock.GetGameDefinition(gameDefinitionId, dbContext, userContext))
+            gameDefinitionRepository.Expect(mock => mock.GetGameDefinition(gameDefinitionId, userContext))
                 .Repeat.Once()
                 .Throw(new KeyNotFoundException());
             HttpStatusCodeResult statusCodeResult = gameDefinitionControllerPartialMock.Edit(gameDefinitionId, userContext) as HttpStatusCodeResult;
