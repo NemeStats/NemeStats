@@ -62,7 +62,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
         }
 
         [Test]
-        public void ItReturnsAnUnauthorizedAccessHttpStatusCodeIfNoGameDefinitionIsFound()
+        public void ItReturnsAnUnauthorizedAccessHttpStatusCodeIfTheUserIsNotAuthorized()
         {
             gameDefinitionRepository.Expect(mock => mock.GetGameDefinition(1, dbContext, userContext))
                 .Throw(new UnauthorizedAccessException());

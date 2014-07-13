@@ -21,14 +21,14 @@ namespace BusinessLogic.DataAccess.Repositories
             this.dbContext = dbContext;
         }
 
-        public List<GameDefinition> GetAllGameDefinitions(NemeStatsDbContext dbContext, UserContext userContext)
+        public virtual List<GameDefinition> GetAllGameDefinitions(NemeStatsDbContext dbContext, UserContext userContext)
         {
             return dbContext.GameDefinitions
                 .Where(game => game.GamingGroupId == userContext.GamingGroupId)
                 .ToList();
         }
         
-        public GameDefinition GetGameDefinition(
+        public virtual GameDefinition GetGameDefinition(
             int gameDefinitionId, 
             NemeStatsDbContext dbContext, 
             UserContext userContext)
@@ -62,7 +62,7 @@ namespace BusinessLogic.DataAccess.Repositories
             }
         }
 
-        public GameDefinition Save(GameDefinition gameDefinition, UserContext userContext)
+        public virtual GameDefinition Save(GameDefinition gameDefinition, UserContext userContext)
         {
             if(gameDefinition.AlreadyInDatabase())
             {
@@ -77,6 +77,14 @@ namespace BusinessLogic.DataAccess.Repositories
             dbContext.SaveChanges();
 
             return gameDefinition;
+        }
+
+        public virtual void Delete(int gameDefinitionId, NemeStatsDbContext dbContext, UserContext userContext)
+        {
+            GameDefinition gameDefinition = GetGameDefinition(gameDefinitionId, dbContext, userContext);
+
+            dbContext.GameDefinitions.Remove(gameDefinition);
+            dbContext.SaveChanges();
         }
     }
 }

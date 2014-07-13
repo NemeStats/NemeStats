@@ -12,38 +12,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessLogic.Tests.UnitTests.DataAccessTests
+namespace BusinessLogic.Tests.UnitTests.DataAccessTests.EntityFrameworkGameDefinitionRepositoryTests
 {
     [TestFixture]
-    public class SaveTests
+    public class SaveTests : EntityFrameworkGameDefinitionRepositoryTestBase
     {
-        private EntityFrameworkGameDefinitionRepository gameDefinitionRepositoryPartialMock;
-        private NemeStatsDbContext dbContextMock;
-        DbSet<GameDefinition> gameDefinitionsDbSetMock;
-        private UserContext userContext;
-        private GameDefinition gameDefinition;
-
         [SetUp]
         public void SetUp()
         {
-            gameDefinition = new GameDefinition()
-            {
-                Name = "game definition",
-                Description = "game description"
-            };
-            userContext = new UserContext()
-            {
-                ApplicationUserId = "user id",
-                GamingGroupId = 999
-            };
-            dbContextMock = MockRepository.GenerateMock<NemeStatsDbContext>();
-            gameDefinitionsDbSetMock = MockRepository.GenerateMock<DbSet<GameDefinition>>();
-            dbContextMock.Expect(mock => mock.GameDefinitions)
-                .Repeat.Once()
-                .Return(gameDefinitionsDbSetMock);
             gameDefinitionsDbSetMock.Expect(mock => mock.Add(gameDefinition));
-
-            gameDefinitionRepositoryPartialMock = MockRepository.GeneratePartialMock<EntityFrameworkGameDefinitionRepository>(dbContextMock);
         }
 
         [Test]

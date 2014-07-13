@@ -9,10 +9,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.GameDefinitionRepositoryTests
+namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.EntityFrameworkGameDefinitionRepositoryTests
 {
     [TestFixture]
-    public class GetAllGamesIntegrationTests : GameDefinitionRepositoryTestBase
+    public class GetAllGamesIntegrationTests : EntityFrameworkGameDefinitionRepositoryTestBase
     {
         [Test]
         public void ItOnlyGetsGameDefinitionsForTheCurrentPlayersGamingGroup()

@@ -13,5 +13,6 @@ namespace BusinessLogic.DataAccess.Repositories
         List<GameDefinition> GetAllGameDefinitions(NemeStatsDbContext dbContext, UserContext userContext);
         GameDefinition GetGameDefinition(int gameDefinitionId, NemeStatsDbContext dbContext, UserContext userContext);
         GameDefinition Save(GameDefinition gameDefinition, UserContext userContext);
+        void Delete(int gameDefinitionId, NemeStatsDbContext dbContext, UserContext userContext);
     }
 }

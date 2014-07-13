@@ -149,10 +149,14 @@ namespace UI.Controllers
         [UserContextActionFilter]
         public virtual ActionResult DeleteConfirmed(int id, UserContext userContext)
         {
-            GameDefinition gamedefinition = db.GameDefinitions.Find(id);
-            db.GameDefinitions.Remove(gamedefinition);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            try
+            {
+                gameDefinitionRepository.Delete(id, db, userContext);
+            }catch(UnauthorizedAccessException)
+            {
+                return new HttpUnauthorizedResult();
+            }
+            return RedirectToAction(MVC.GameDefinition.ActionNames.Index);
         }
 
         protected override void Dispose(bool disposing)

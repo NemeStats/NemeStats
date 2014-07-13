@@ -7,10 +7,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.GameDefinitionRepositoryTests
+namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.EntityFrameworkGameDefinitionRepositoryTests
 {
     [TestFixture]
-    public class GetGameDefinitionTest : GameDefinitionRepositoryTestBase
+    public class GetGameDefinitionTest : EntityFrameworkGameDefinitionRepositoryTestBase
     {
         [Test]
         public void ItThrowsAnUnauthorizedAccessExceptionIfTheCurrentUsersGamingGroupDoesNotMatch()

@@ -7,12 +7,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.GameDefinitionRepositoryTests
+namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.EntityFrameworkGameDefinitionRepositoryTests
 {
-    public class GameDefinitionRepositoryTestBase : IntegrationTestBase
+    public class EntityFrameworkGameDefinitionRepositoryTestBase : IntegrationTestBase
     {
         protected NemeStatsDbContext dbContext;
-        protected GameDefinitionRepository gameDefinitionRepository;
+        protected EntityFrameworkGameDefinitionRepository gameDefinitionRepository;
 
         [SetUp]
         public void TestSetUp()
