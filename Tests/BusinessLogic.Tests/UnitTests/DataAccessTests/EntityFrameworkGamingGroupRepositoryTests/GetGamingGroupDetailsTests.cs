@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using BusinessLogic.DataAccess.Repositories;
+using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,18 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.EntityFrameworkGamingGro
     [TestFixture]
     public class GetGamingGroupDetailsTests : EntityFrameworkGamingGroupRepositoryTestBase
     {
-        //TODO write some unit tests
+        [Test]
+        public void ItThrowsAnUnauthorizedExceptionIfTheUserDoesntHaveAccess()
+        {
+            int gamingGroupId = -1;
+
+            Exception exception = Assert.Throws<UnauthorizedAccessException>(
+                () => gamingGroupRepositoryPartialMock.GetGamingGroupDetails(gamingGroupId, userContext));
+
+            string expectedMessage = string.Format(EntityFrameworkGamingGroupRepository.EXCEPTION_MESSAGE_NO_ACCESS_TO_GAMING_GROUP,
+                userContext.ApplicationUserId,
+                gamingGroupId);
+            Assert.AreEqual(expectedMessage, exception.Message);
+        }
     }
 }

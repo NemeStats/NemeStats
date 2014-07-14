@@ -45,6 +45,9 @@ namespace UI.DependencyResolution {
                             x.For<PlayerDetailsViewModelBuilder>().Use<PlayerDetailsViewModelBuilderImpl>();
                             x.For<UserContextBuilder>().Use<UserContextBuilderImpl>();
                             x.For<GameDefinitionRepository>().Use<EntityFrameworkGameDefinitionRepository>();
+                            x.For<GamingGroupRepository>().Use<EntityFrameworkGamingGroupRepository>();
+                            x.For<GamingGroupToGamingGroupViewModelTransformation>()
+                                .Use<GamingGroupToGamingGroupViewModelTransformationImpl>();
 
                             //TODO finish implementing http://lostechies.com/jimmybogard/2010/05/03/dependency-injection-in-asp-net-mvc-filters/
                             //x.For<IActionInvoker>().Use<InjectingActionInvoker>();

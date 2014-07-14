@@ -62,12 +62,6 @@ namespace UI.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public virtual System.Web.Mvc.ActionResult Edit()
-        {
-            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Edit);
-        }
-        [NonAction]
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult GrantAccess()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.GrantAccess);
@@ -89,7 +83,6 @@ namespace UI.Controllers
         public class ActionNamesClass
         {
             public readonly string Index = "Index";
-            public readonly string Edit = "Edit";
             public readonly string GrantAccess = "GrantAccess";
         }
 
@@ -97,7 +90,6 @@ namespace UI.Controllers
         public class ActionNameConstants
         {
             public const string Index = "Index";
-            public const string Edit = "Edit";
             public const string GrantAccess = "GrantAccess";
         }
 
@@ -108,15 +100,6 @@ namespace UI.Controllers
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionParamsClass_Index
         {
-            public readonly string userContext = "userContext";
-        }
-        static readonly ActionParamsClass_Edit s_params_Edit = new ActionParamsClass_Edit();
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public ActionParamsClass_Edit EditParams { get { return s_params_Edit; } }
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public class ActionParamsClass_Edit
-        {
-            public readonly string player = "player";
             public readonly string userContext = "userContext";
         }
         static readonly ActionParamsClass_GrantAccess s_params_GrantAccess = new ActionParamsClass_GrantAccess();
@@ -158,19 +141,6 @@ namespace UI.Controllers
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Index);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "userContext", userContext);
             IndexOverride(callInfo, userContext);
-            return callInfo;
-        }
-
-        [NonAction]
-        partial void EditOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, BusinessLogic.Models.GamingGroup player, BusinessLogic.Models.User.UserContext userContext);
-
-        [NonAction]
-        public override System.Web.Mvc.ActionResult Edit(BusinessLogic.Models.GamingGroup player, BusinessLogic.Models.User.UserContext userContext)
-        {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Edit);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "player", player);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "userContext", userContext);
-            EditOverride(callInfo, player, userContext);
             return callInfo;
         }
 

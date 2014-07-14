@@ -122,6 +122,10 @@
     <Compile Include="Migrations\201407140231193_MakeCurrentGamingGroupNullableOnApplicationUser.Designer.cs">
       <DependentUpon>201407140231193_MakeCurrentGamingGroupNullableOnApplicationUser.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201407141118219_SetOwningUserOnExistingGamingGroup.cs" />
+    <Compile Include="Migrations\201407141118219_SetOwningUserOnExistingGamingGroup.Designer.cs">
+      <DependentUpon>201407141118219_SetOwningUserOnExistingGamingGroup.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\GamingGroup.cs" />
     <Compile Include="Models\User\ApplicationUser.cs" />
     <Compile Include="Models\User\UserContext.cs" />
@@ -216,6 +220,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201407140231193_MakeCurrentGamingGroupNullableOnApplicationUser.resx">
       <DependentUpon>201407140231193_MakeCurrentGamingGroupNullableOnApplicationUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201407141118219_SetOwningUserOnExistingGamingGroup.resx">
+      <DependentUpon>201407141118219_SetOwningUserOnExistingGamingGroup.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

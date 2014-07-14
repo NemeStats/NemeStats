@@ -12,6 +12,8 @@ namespace BusinessLogic.DataAccess.Repositories
     public class EntityFrameworkGamingGroupRepository : GamingGroupRepository
     {
         private NemeStatsDbContext dbContext;
+        internal const string EXCEPTION_MESSAGE_NO_ACCESS_TO_GAMING_GROUP 
+            = "User with Id '{0} does not have access to Gaming Group with Id '{1}'.";
 
         public EntityFrameworkGamingGroupRepository(NemeStatsDbContext dbContext)
         {
@@ -20,6 +22,14 @@ namespace BusinessLogic.DataAccess.Repositories
 
         public GamingGroup GetGamingGroupDetails(int gamingGroupId, UserContext userContext)
         {
+            if(gamingGroupId != userContext.GamingGroupId)
+            {
+                string message = string.Format(
+                    EXCEPTION_MESSAGE_NO_ACCESS_TO_GAMING_GROUP, 
+                    userContext.ApplicationUserId, 
+                    gamingGroupId);
+                throw new UnauthorizedAccessException(message);
+            }
             GamingGroup gamingGroup = dbContext.GamingGroups
                                         .Where(group => group.Id == gamingGroupId)
                                         .Include(group => group.OwningUser)

@@ -262,6 +262,7 @@
     <Compile Include="Models\Players\PlayerDetailsViewModel.cs" />
     <Compile Include="Models\User\UserViewModel.cs" />
     <Compile Include="Transformations\GamingGroupToGamingGroupViewModelTransformation.cs" />
+    <Compile Include="Transformations\GamingGroupToGamingGroupViewModelTransformationImpl.cs" />
     <Compile Include="Transformations\PlayedGameDetailsViewModelBuilderImpl.cs" />
     <Compile Include="PlayedGameController.generated.cs">
       <DependentUpon>T4MVC.tt</DependentUpon>

@@ -139,6 +139,7 @@
     <Compile Include="UnitTests\ControllerTests\GameDefinitionControllerTests\GameDefinitionControllerTestBase.cs" />
     <Compile Include="UnitTests\ControllerTests\GameDefinitionControllerTests\IndexHttpGetTests.cs" />
     <Compile Include="UnitTests\ControllerTests\GamingGroupControllerTests\GamingGroupControllerTestBase.cs" />
+    <Compile Include="UnitTests\ControllerTests\GamingGroupControllerTests\GrantAccessTests.cs" />
     <Compile Include="UnitTests\ControllerTests\GamingGroupControllerTests\IndexTests.cs" />
     <Compile Include="UnitTests\ControllerTests\PlayedGameControllerTests\CreateHttpPostTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -156,8 +157,9 @@
     <Compile Include="UnitTests\ControllerTests\PlayerControllerTests\PlayerControllerTestBase.cs" />
     <Compile Include="UnitTests\FiltersTests\UserNameActionFilterTests\OnActionExecutingTests.cs" />
     <Compile Include="UnitTests\HtmlHelperTests\MyHelpersTests\GameResultsTests.cs" />
-    <Compile Include="UnitTests\TransformationsTests\PlayedGameTests\PlayedGameDetailsBuilderImplTests.cs" />
-    <Compile Include="UnitTests\TransformationsTests\PlayedGameTests\GameResultViewModelBuilderTests\BuildTests.cs" />
+    <Compile Include="UnitTests\TransformationsTests\GamingGroupToGamingGroupViewModelTransformationImplTests.cs" />
+    <Compile Include="UnitTests\TransformationsTests\PlayedGameDetailsBuilderImplTests.cs" />
+    <Compile Include="UnitTests\TransformationsTests\GameResultViewModelBuilderTests\BuildTests.cs" />
     <Compile Include="UnitTests\TransformationsTests\PlayerTests\PlayerDetailsViewModelBuilderImplTests\BuildTests.cs" />
   </ItemGroup>
   <ItemGroup>
