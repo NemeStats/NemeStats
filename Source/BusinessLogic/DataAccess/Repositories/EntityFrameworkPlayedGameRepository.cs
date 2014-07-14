@@ -55,7 +55,11 @@ namespace BusinessLogic.DataAccess.Repositories
         {
             List<PlayerGameResult> playerGameResults = TransformNewlyCompletedGamePlayerRanksToPlayerGameResults(newlyCompletedGame);
 
-            PlayedGame playedGame = TransformNewlyCompletedGameIntoPlayedGame(newlyCompletedGame, requestingUserContext.GamingGroupId, playerGameResults);
+            PlayedGame playedGame = TransformNewlyCompletedGameIntoPlayedGame(
+                newlyCompletedGame, 
+                //TODO should throw some kind of exception if GamingGroupId is null
+                requestingUserContext.GamingGroupId.Value, 
+                playerGameResults);
 
             dbContext.PlayedGames.Add(playedGame);
             dbContext.SaveChanges();

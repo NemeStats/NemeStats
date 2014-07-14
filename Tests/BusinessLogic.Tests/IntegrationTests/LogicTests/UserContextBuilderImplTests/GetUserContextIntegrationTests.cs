@@ -30,7 +30,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.UserContextBuilderImpl
         [Test]
         public void ItSetsTheCurrentGamingGroupId()
         {
-            Assert.AreEqual(gamingGroup.Id, userContext.GamingGroupId);
+            Assert.AreEqual(testGamingGroup.Id, userContext.GamingGroupId);
         }
     }
 }

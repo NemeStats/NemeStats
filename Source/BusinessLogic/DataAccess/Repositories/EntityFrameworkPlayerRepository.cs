@@ -208,7 +208,8 @@ namespace BusinessLogic.DataAccess.Repositories
             }
             else
             {
-                player.GamingGroupId = userContext.GamingGroupId;
+                //TODO should throw some kind of exception if GamingGroupId is null
+                player.GamingGroupId = userContext.GamingGroupId.Value;
                 dbContext.Players.Add(player);
             }
 

@@ -93,6 +93,8 @@
     <Compile Include="IntegrationTests\DataAccessTests\EntityFrameworkGameDefinitionRepositoryTests\EntityFrameworkGameDefinitionRepositoryTestBase.cs" />
     <Compile Include="IntegrationTests\DataAccessTests\EntityFrameworkGameDefinitionRepositoryTests\GetAllGamesIntegrationTests.cs" />
     <Compile Include="IntegrationTests\DataAccessTests\EntityFrameworkGameDefinitionRepositoryTests\GetGameDefinitionTest.cs" />
+    <Compile Include="IntegrationTests\DataAccessTests\EntityFrameworkGamingGroupRepositoryTests\EntityFrameworkGamingGroupRepositoryTestBase.cs" />
+    <Compile Include="IntegrationTests\DataAccessTests\EntityFrameworkGamingGroupRepositoryTests\GetGamingGroupDetailsIntegrationTests.cs" />
     <Compile Include="IntegrationTests\DataAccessTests\StatisticsRepositoryTests\GetNemesisTests.cs" />
     <Compile Include="IntegrationTests\EntityFramework6EagerLoadingTests.cs" />
     <Compile Include="IntegrationTests\IntegrationTestBase.cs" />
@@ -109,6 +111,8 @@
     <Compile Include="UnitTests\DataAccessTests\EntityFrameworkGameDefinitionRepositoryTests\DeleteTests.cs" />
     <Compile Include="UnitTests\DataAccessTests\EntityFrameworkGameDefinitionRepositoryTests\EntityFrameworkGameDefinitionRepositoryTestBase.cs" />
     <Compile Include="UnitTests\DataAccessTests\EntityFrameworkGameDefinitionRepositoryTests\SaveTests.cs" />
+    <Compile Include="UnitTests\DataAccessTests\EntityFrameworkGamingGroupRepositoryTests\EntityFrameworkGamingGroupRepositoryTestBase.cs" />
+    <Compile Include="UnitTests\DataAccessTests\EntityFrameworkGamingGroupRepositoryTests\GetGamingGroupDetailsTests.cs" />
     <Compile Include="UnitTests\DataAccessTests\EntityFrameworkPlayedGameRepositoryTests\CreatePlayedGameTests.cs" />
     <Compile Include="UnitTests\DataAccessTests\EntityFrameworkPlayerRepositoryTests\GetNemesisTests.cs" />
     <Compile Include="UnitTests\DataAccessTests\EntityFrameworkPlayerRepositoryTests\GetPlayerDetailsTests.cs" />

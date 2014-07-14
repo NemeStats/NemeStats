@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using UI.Models.PlayedGame;
 using UI.Transformations;
 
-namespace UI.Tests.UnitTests.TransformationsTests.PlayedGameTests
+namespace UI.Tests.UnitTests.TransformationsTests
 {
     [TestFixture]
     public class PlayedGameDetailsBuilderImplTests

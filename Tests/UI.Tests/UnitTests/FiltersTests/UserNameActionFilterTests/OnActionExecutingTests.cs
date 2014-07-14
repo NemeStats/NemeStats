@@ -19,7 +19,6 @@ namespace UI.Tests.UnitTests.FiltersTests.UserNameActionFilterTests
     [TestFixture]
     public class OnActionExecutingTests
     {
-        private string userName = "the user name";
         private ActionExecutingContext actionExecutingContext;
         private UserContextActionFilter userContextActionFilter;
         private IIdentity identity;

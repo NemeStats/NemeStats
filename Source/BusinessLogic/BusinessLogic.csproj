@@ -84,9 +84,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataAccess\Repositories\EntityFrameworkGameDefinitionRepository.cs" />
+    <Compile Include="DataAccess\Repositories\EntityFrameworkGamingGroupRepository.cs" />
     <Compile Include="DataAccess\Repositories\GameDefinitionRepository.cs" />
     <Compile Include="DataAccess\NemeStatsDbContext.cs" />
     <Compile Include="DataAccess\NemeStatsInitializer.cs" />
+    <Compile Include="DataAccess\Repositories\GamingGroupRepository.cs" />
     <Compile Include="DataAccess\SingleColumnTechnicalKey.cs" />
     <Compile Include="DataAccess\Repositories\PlayedGameRepository.cs" />
     <Compile Include="DataAccess\Repositories\EntityFrameworkPlayedGameRepository.cs" />
@@ -116,6 +118,10 @@
       <DependentUpon>201407050348013_CurrentGamingGroupIdIsNotNullable.cs</DependentUpon>
     </Compile>
     <Compile Include="DataAccess\EntityWithTechnicalKey.cs" />
+    <Compile Include="Migrations\201407140231193_MakeCurrentGamingGroupNullableOnApplicationUser.cs" />
+    <Compile Include="Migrations\201407140231193_MakeCurrentGamingGroupNullableOnApplicationUser.Designer.cs">
+      <DependentUpon>201407140231193_MakeCurrentGamingGroupNullableOnApplicationUser.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\GamingGroup.cs" />
     <Compile Include="Models\User\ApplicationUser.cs" />
     <Compile Include="Models\User\UserContext.cs" />
@@ -207,6 +213,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201407050348013_CurrentGamingGroupIdIsNotNullable.resx">
       <DependentUpon>201407050348013_CurrentGamingGroupIdIsNotNullable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201407140231193_MakeCurrentGamingGroupNullableOnApplicationUser.resx">
+      <DependentUpon>201407140231193_MakeCurrentGamingGroupNullableOnApplicationUser.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

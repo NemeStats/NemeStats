@@ -232,6 +232,7 @@
     <Compile Include="App_Start\StructuremapMvc.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\GameDefinitionController.cs" />
+    <Compile Include="Controllers\GamingGroupController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PlayedGameController.cs" />
     <Compile Include="Controllers\PlayerController.cs" />
@@ -243,6 +244,9 @@
     <Compile Include="GameDefinitionController.generated.cs">
       <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>
+    <Compile Include="GamingGroupController.generated.cs">
+      <DependentUpon>T4MVC.tt</DependentUpon>
+    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -252,9 +256,12 @@
     <Compile Include="HtmlHelpers\MvcHtmlStringExtension.cs" />
     <Compile Include="HtmlHelpers\PlayedGameHelper.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\GamingGroup\GamingGroupViewModel.cs" />
     <Compile Include="Models\PlayedGame\GameResultViewModel.cs" />
     <Compile Include="Models\PlayedGame\PlayedGameDetailsViewModel.cs" />
     <Compile Include="Models\Players\PlayerDetailsViewModel.cs" />
+    <Compile Include="Models\User\UserViewModel.cs" />
+    <Compile Include="Transformations\GamingGroupToGamingGroupViewModelTransformation.cs" />
     <Compile Include="Transformations\PlayedGameDetailsViewModelBuilderImpl.cs" />
     <Compile Include="PlayedGameController.generated.cs">
       <DependentUpon>T4MVC.tt</DependentUpon>
@@ -413,6 +420,7 @@
     <Content Include="Views\PlayedGame\Details.cshtml" />
     <Content Include="Views\PlayedGame\Edit.cshtml" />
     <Content Include="Views\PlayedGame\Index.cshtml" />
+    <Content Include="Views\GamingGroup\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Code\" />

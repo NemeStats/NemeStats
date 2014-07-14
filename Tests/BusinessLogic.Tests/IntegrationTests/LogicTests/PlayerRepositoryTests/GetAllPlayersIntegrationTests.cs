@@ -49,7 +49,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayerRepositoryTests
         {
             List<Player> players = playerRepository.GetAllPlayers(true, testUserContextForUserWithDefaultGamingGroup);
 
-            Assert.True(players.All(x => x.GamingGroupId == gamingGroup.Id));
+            Assert.True(players.All(x => x.GamingGroupId == testGamingGroup.Id));
         }
 
         [TearDown]

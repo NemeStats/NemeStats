@@ -11,10 +11,10 @@ namespace BusinessLogic.DataAccess.Repositories
     {
         internal const string EXCEPTION_MESSAGE_USER_DOES_NOT_HAVE_ACCESS_TO_GAME_DEFINITION 
             = "User with Id '{0} is unauthorized to access GameDefinition with Id '{1}'";
-
-        private NemeStatsDbContext dbContext;
         internal const string EXCEPTION_MESSAGE_GAME_DEFINITION_NOT_FOUND
             = "Game Definition with Id '{0}' not found.";
+
+        private NemeStatsDbContext dbContext;
 
         public EntityFrameworkGameDefinitionRepository(NemeStatsDbContext dbContext)
         {
@@ -69,7 +69,8 @@ namespace BusinessLogic.DataAccess.Repositories
                 dbContext.Entry(gameDefinition).State = System.Data.Entity.EntityState.Modified;
             }else
             {
-                gameDefinition.GamingGroupId = userContext.GamingGroupId;
+                //TODO should throw some kind of exception if GamingGroupId is null
+                gameDefinition.GamingGroupId = userContext.GamingGroupId.Value;
                 dbContext.GameDefinitions.Add(gameDefinition);
             }
             

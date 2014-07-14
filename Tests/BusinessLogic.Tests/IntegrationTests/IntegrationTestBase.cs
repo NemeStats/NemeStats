@@ -40,8 +40,8 @@ namespace BusinessLogic.Tests.IntegrationTests
         protected string testGamingGroup1Name = "this is test gaming group 1";
         protected string testGamingGroup2Name = "this is test gaming group 2";
 
-        protected GamingGroup gamingGroup;
-        protected GamingGroup otherGamingGroup;
+        protected GamingGroup testGamingGroup;
+        protected GamingGroup testOtherGamingGroup;
 
         [TestFixtureSetUp]
         public void FixtureSetUp()
@@ -50,23 +50,24 @@ namespace BusinessLogic.Tests.IntegrationTests
             {
                 CleanUpTestData();
 
-                gamingGroup = SaveGamingGroup(dbContext, testGamingGroup1Name);
-                otherGamingGroup = SaveGamingGroup(dbContext, testGamingGroup2Name);
+                testGamingGroup = SaveGamingGroup(dbContext, testGamingGroup1Name);
+                testOtherGamingGroup = SaveGamingGroup(dbContext, testGamingGroup2Name);
 
                 testUserContextForUserWithDefaultGamingGroup = SaveApplicationUser(
                     dbContext, 
                     testApplicationUserNameForUserWithDefaultGamingGroup, 
                     "a@mailinator.com",
-                    gamingGroup.Id);
+                    testGamingGroup);
                 testUserContextForUserWithOtherGamingGroup = SaveApplicationUser(
                     dbContext,
                     testApplicationUserNameForUserWithOtherGamingGroup,
                     "b@mailinator.com",
-                    otherGamingGroup.Id);
+                    testOtherGamingGroup);
 
-                testGameDefinition = SaveGameDefinition(dbContext, gamingGroup.Id, testGameName);
-                testGameDefinitionWithOtherGamingGroupId = SaveGameDefinition(dbContext, otherGamingGroup.Id, testGameNameForGameWithOtherGamingGroupId);
-                SavePlayers(dbContext, gamingGroup.Id, otherGamingGroup.Id);
+
+                testGameDefinition = SaveGameDefinition(dbContext, testGamingGroup.Id, testGameName);
+                testGameDefinitionWithOtherGamingGroupId = SaveGameDefinition(dbContext, testOtherGamingGroup.Id, testGameNameForGameWithOtherGamingGroupId);
+                SavePlayers(dbContext, testGamingGroup.Id, testOtherGamingGroup.Id);
 
                 CreatePlayedGames(dbContext);
             }
@@ -171,7 +172,7 @@ namespace BusinessLogic.Tests.IntegrationTests
             return gameDefinition;
         }
 
-        protected UserContext SaveApplicationUser(NemeStatsDbContext dbContext, string userName, string email, int gamingGroupId)
+        protected UserContext SaveApplicationUser(NemeStatsDbContext dbContext, string userName, string email, GamingGroup gamingGroup)
         {
             ApplicationUser applicationUser = new ApplicationUser()
             {
@@ -181,15 +182,18 @@ namespace BusinessLogic.Tests.IntegrationTests
                 PhoneNumberConfirmed = false,
                 LockoutEnabled = false,
                 AccessFailedCount = 0,
-                CurrentGamingGroupId = gamingGroupId
+                CurrentGamingGroupId = gamingGroup.Id
             };
             dbContext.Users.Add(applicationUser);
+            dbContext.SaveChanges();
+
+            gamingGroup.OwningUserId = applicationUser.Id;
             dbContext.SaveChanges();
 
             UserContext userContext = new UserContext()
             {
                 ApplicationUserId = applicationUser.Id,
-                GamingGroupId = gamingGroupId
+                GamingGroupId = gamingGroup.Id
             };
 
             return userContext;

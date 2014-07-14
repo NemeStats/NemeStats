@@ -8,6 +8,6 @@ namespace BusinessLogic.Models.User
     public class UserContext
     {
         public string ApplicationUserId { get; set; }
-        public int GamingGroupId { get; set; }
+        public int? GamingGroupId { get; set; }
     }
 }

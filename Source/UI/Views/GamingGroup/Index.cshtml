@@ -1,0 +1,50 @@
+﻿@model UI.Models.GamingGroup.GamingGroupViewModel
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<div>
+    <h4>GamingGroupViewModel</h4>
+	<hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OwningUserId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OwningUserId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OwningUserName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OwningUserName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.InviteeEmail)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.InviteeEmail)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
