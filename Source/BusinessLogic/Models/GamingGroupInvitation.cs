@@ -11,6 +11,7 @@ namespace BusinessLogic.Models
 {
     public class GamingGroupInvitation
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
         public int GamingGroupId { get; set; }
         [StringLength(255)]

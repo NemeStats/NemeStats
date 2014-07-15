@@ -28,7 +28,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
             gamingGroupAccessGranterMock.Expect(mock => mock.GrantAccess(email, userContext))
                 .Repeat.Once();
 
-            gamingGroupController.GrantAccess(string.Empty, userContext);
+            gamingGroupController.GrantAccess(email, userContext);
 
             gamingGroupAccessGranterMock.VerifyAllExpectations();
         }

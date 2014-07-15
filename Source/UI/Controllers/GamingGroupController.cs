@@ -49,9 +49,10 @@ namespace UI.Controllers
         //
         // POST: /GamingGroup/Delete/5
         [HttpPost]
-        public virtual ActionResult GrantAccess(string email, UserContext userContext)
+        [UserContextActionFilter]
+        public virtual ActionResult GrantAccess(string inviteeEmail, UserContext userContext)
         {
-            gamingGroupAccessGranter.GrantAccess(email, userContext);
+            gamingGroupAccessGranter.GrantAccess(inviteeEmail, userContext);
             return RedirectToAction(MVC.GamingGroup.ActionNames.Index);
         }
     }
