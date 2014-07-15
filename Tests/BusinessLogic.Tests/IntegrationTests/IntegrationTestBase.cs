@@ -50,20 +50,19 @@ namespace BusinessLogic.Tests.IntegrationTests
             {
                 CleanUpTestData();
 
-                testGamingGroup = SaveGamingGroup(dbContext, testGamingGroup1Name);
-                testOtherGamingGroup = SaveGamingGroup(dbContext, testGamingGroup2Name);
-
-                testUserContextForUserWithDefaultGamingGroup = SaveApplicationUser(
-                    dbContext, 
-                    testApplicationUserNameForUserWithDefaultGamingGroup, 
-                    "a@mailinator.com",
-                    testGamingGroup);
-                testUserContextForUserWithOtherGamingGroup = SaveApplicationUser(
+                ApplicationUser testUserWithDefaultGamingGroup = SaveApplicationUser(
+                    dbContext,
+                    testApplicationUserNameForUserWithDefaultGamingGroup,
+                    "a@mailinator.com");
+                ApplicationUser testUserWithOtherGamingGroup = SaveApplicationUser(
                     dbContext,
                     testApplicationUserNameForUserWithOtherGamingGroup,
-                    "b@mailinator.com",
-                    testOtherGamingGroup);
+                    "b@mailinator.com");
 
+                testGamingGroup = SaveGamingGroup(dbContext, testGamingGroup1Name, testUserWithDefaultGamingGroup.Id);
+                testUserContextForUserWithDefaultGamingGroup = UpdateDatefaultGamingGroupOnUser(testUserWithDefaultGamingGroup, testGamingGroup, dbContext);
+                testOtherGamingGroup = SaveGamingGroup(dbContext, testGamingGroup2Name, testUserWithOtherGamingGroup.Id);
+                testUserContextForUserWithOtherGamingGroup = UpdateDatefaultGamingGroupOnUser(testUserWithOtherGamingGroup, testOtherGamingGroup, dbContext);
 
                 testGameDefinition = SaveGameDefinition(dbContext, testGamingGroup.Id, testGameName);
                 testGameDefinitionWithOtherGamingGroupId = SaveGameDefinition(dbContext, testOtherGamingGroup.Id, testGameNameForGameWithOtherGamingGroupId);
@@ -73,7 +72,19 @@ namespace BusinessLogic.Tests.IntegrationTests
             }
         }
 
-        protected void CreatePlayedGames(NemeStatsDbContext dbContext)
+        private UserContext UpdateDatefaultGamingGroupOnUser(ApplicationUser user, GamingGroup gamingGroup, NemeStatsDbContext dbContext)
+        {
+            user.CurrentGamingGroupId = gamingGroup.Id;
+            dbContext.SaveChanges();
+
+            return new UserContext()
+            {
+                ApplicationUserId = user.Id,
+                GamingGroupId = gamingGroup.Id
+            };
+        }
+
+        private void CreatePlayedGames(NemeStatsDbContext dbContext)
         {
             PlayedGameRepository playedGameLogic = new EntityFrameworkPlayedGameRepository(dbContext);
 
@@ -142,7 +153,7 @@ namespace BusinessLogic.Tests.IntegrationTests
             testPlayedGames.Add(playedGame);
         }
 
-        protected void SavePlayers(NemeStatsDbContext dbContext, int primaryGamingGroupId, int otherGamingGroupId)
+        private void SavePlayers(NemeStatsDbContext dbContext, int primaryGamingGroupId, int otherGamingGroupId)
         {
             testPlayer1 = new Player() { Name = testPlayer1Name, Active = true, GamingGroupId = primaryGamingGroupId };
             dbContext.Players.Add(testPlayer1);
@@ -163,7 +174,7 @@ namespace BusinessLogic.Tests.IntegrationTests
             dbContext.SaveChanges();
         }
 
-        protected GameDefinition SaveGameDefinition(NemeStatsDbContext dbContext, int gamingGroupId, string gameDefinitionName)
+        private GameDefinition SaveGameDefinition(NemeStatsDbContext dbContext, int gamingGroupId, string gameDefinitionName)
         {
             GameDefinition gameDefinition = new GameDefinition() { Name = testGameName, Description = testGameDescription, GamingGroupId = gamingGroupId };
             dbContext.GameDefinitions.Add(gameDefinition);
@@ -172,7 +183,7 @@ namespace BusinessLogic.Tests.IntegrationTests
             return gameDefinition;
         }
 
-        protected UserContext SaveApplicationUser(NemeStatsDbContext dbContext, string userName, string email, GamingGroup gamingGroup)
+        private ApplicationUser SaveApplicationUser(NemeStatsDbContext dbContext, string userName, string email)
         {
             ApplicationUser applicationUser = new ApplicationUser()
             {
@@ -181,33 +192,23 @@ namespace BusinessLogic.Tests.IntegrationTests
                 EmailConfirmed = false,
                 PhoneNumberConfirmed = false,
                 LockoutEnabled = false,
-                AccessFailedCount = 0,
-                CurrentGamingGroupId = gamingGroup.Id
+                AccessFailedCount = 0
             };
             dbContext.Users.Add(applicationUser);
             dbContext.SaveChanges();
 
-            gamingGroup.OwningUserId = applicationUser.Id;
-            dbContext.SaveChanges();
-
-            UserContext userContext = new UserContext()
-            {
-                ApplicationUserId = applicationUser.Id,
-                GamingGroupId = gamingGroup.Id
-            };
-
-            return userContext;
+            return applicationUser;
         }
 
-        protected GamingGroup SaveGamingGroup(NemeStatsDbContext dbContext, string gamingGroupName)
+        private GamingGroup SaveGamingGroup(NemeStatsDbContext dbContext, string gamingGroupName, string owningUserId)
         {
-            GamingGroup gamingGroup = new GamingGroup() { Name = gamingGroupName };
+            GamingGroup gamingGroup = new GamingGroup() { Name = gamingGroupName, OwningUserId = owningUserId };
             dbContext.GamingGroups.Add(gamingGroup);
             dbContext.SaveChanges();
             return gamingGroup;
         }
 
-        protected PlayedGame CreateTestPlayedGame(
+        private PlayedGame CreateTestPlayedGame(
             List<Player> players,
             List<int> correspondingPlayerRanks,
             UserContext userContext,
@@ -233,7 +234,7 @@ namespace BusinessLogic.Tests.IntegrationTests
             return playedGameLogic.CreatePlayedGame(newlyCompletedGame, userContext);
         }
 
-        protected void CleanUpTestData()
+        private void CleanUpTestData()
         {
             using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
             {
@@ -251,7 +252,7 @@ namespace BusinessLogic.Tests.IntegrationTests
             }
         }
 
-        protected void CleanUpPlayers(NemeStatsDbContext dbContext)
+        private void CleanUpPlayers(NemeStatsDbContext dbContext)
         {
             CleanUpPlayerByPlayerName(testPlayer1Name, dbContext);
             CleanUpPlayerByPlayerName(testPlayer2Name, dbContext);
@@ -262,7 +263,7 @@ namespace BusinessLogic.Tests.IntegrationTests
             CleanUpPlayerByPlayerName(testPlayer7Name, dbContext);
         }
 
-        protected void CleanUpApplicationUser(string testApplicationUserName, NemeStatsDbContext dbContext)
+        private void CleanUpApplicationUser(string testApplicationUserName, NemeStatsDbContext dbContext)
         {
             ApplicationUser applicationUserToDelete = (from applicationUser in dbContext.Users
                                                        where applicationUser.UserName == testApplicationUserName
@@ -278,7 +279,7 @@ namespace BusinessLogic.Tests.IntegrationTests
             }
         }
 
-        protected void CleanUpGamingGroup(string testGamingGroupName, NemeStatsDbContext dbContext)
+        private void CleanUpGamingGroup(string testGamingGroupName, NemeStatsDbContext dbContext)
         {
             GamingGroup gamingGroupToDelete = (from gamingGroup in dbContext.GamingGroups
                                                where gamingGroup.Name == testGamingGroupName
@@ -294,7 +295,7 @@ namespace BusinessLogic.Tests.IntegrationTests
             }
         }
 
-        protected void CleanUpPlayedGames(NemeStatsDbContext dbContext)
+        private void CleanUpPlayedGames(NemeStatsDbContext dbContext)
         {
             List<PlayedGame> playedGamesToDelete = (from playedGame in dbContext.PlayedGames
                                                     where playedGame.GameDefinition.Name == testGameName
@@ -310,7 +311,7 @@ namespace BusinessLogic.Tests.IntegrationTests
             }
         }
 
-        protected void CleanUpPlayerGameResults(NemeStatsDbContext dbContext)
+        private void CleanUpPlayerGameResults(NemeStatsDbContext dbContext)
         {
             List<PlayerGameResult> playerGameResultsToDelete = (from playerGameResult in dbContext.PlayerGameResults
                                                                 where playerGameResult.PlayedGame.GameDefinition.Name == testGameName
@@ -326,7 +327,7 @@ namespace BusinessLogic.Tests.IntegrationTests
             }
         }
 
-        protected void CleanUpGameDefinitions(NemeStatsDbContext dbContext, string gameDefinitionName)
+        private void CleanUpGameDefinitions(NemeStatsDbContext dbContext, string gameDefinitionName)
         {
             List<GameDefinition> gameDefinitionsToDelete = (from game in dbContext.GameDefinitions
                                                             where game.Name == gameDefinitionName
@@ -342,7 +343,7 @@ namespace BusinessLogic.Tests.IntegrationTests
             }
         }
 
-        protected static void CleanUpPlayerByPlayerName(string playerName, NemeStatsDbContext nemeStatsDbContext)
+        private static void CleanUpPlayerByPlayerName(string playerName, NemeStatsDbContext nemeStatsDbContext)
         {
             Player playerToDelete = nemeStatsDbContext.Players.FirstOrDefault(player => player.Name == playerName);
 
