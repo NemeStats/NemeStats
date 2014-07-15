@@ -83,6 +83,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataAccess\GamingGroups\EntityFrameworkGamingGroupAccessGranter.cs" />
+    <Compile Include="DataAccess\GamingGroups\GamingGroupAccessGranter.cs" />
     <Compile Include="DataAccess\Repositories\EntityFrameworkGameDefinitionRepository.cs" />
     <Compile Include="DataAccess\Repositories\EntityFrameworkGamingGroupRepository.cs" />
     <Compile Include="DataAccess\Repositories\GameDefinitionRepository.cs" />
@@ -126,7 +128,12 @@
     <Compile Include="Migrations\201407141118219_SetOwningUserOnExistingGamingGroup.Designer.cs">
       <DependentUpon>201407141118219_SetOwningUserOnExistingGamingGroup.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201407151152072_AddGamingGroupInvitations.cs" />
+    <Compile Include="Migrations\201407151152072_AddGamingGroupInvitations.Designer.cs">
+      <DependentUpon>201407151152072_AddGamingGroupInvitations.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\GamingGroup.cs" />
+    <Compile Include="Models\GamingGroupInvitation.cs" />
     <Compile Include="Models\User\ApplicationUser.cs" />
     <Compile Include="Models\User\UserContext.cs" />
     <Compile Include="Models\User\UserGamingGroup.cs" />
@@ -223,6 +230,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201407141118219_SetOwningUserOnExistingGamingGroup.resx">
       <DependentUpon>201407141118219_SetOwningUserOnExistingGamingGroup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201407151152072_AddGamingGroupInvitations.resx">
+      <DependentUpon>201407151152072_AddGamingGroupInvitations.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

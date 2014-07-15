@@ -1,12 +1,9 @@
 ﻿using BusinessLogic.DataAccess;
+using BusinessLogic.DataAccess.GamingGroups;
 using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.Models.User;
 using NUnit.Framework;
 using Rhino.Mocks;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using UI.Controllers;
 using UI.Transformations;
 
@@ -19,6 +16,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
         protected GamingGroupRepository gamingGroupRepositoryMock;
         protected GamingGroupToGamingGroupViewModelTransformation gamingGroupToGamingGroupViewModelTransformationMock;
         protected GamingGroupController gamingGroupController;
+        protected GamingGroupAccessGranter gamingGroupAccessGranterMock;
         protected UserContext userContext;
 
         [SetUp]
@@ -27,10 +25,12 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
             dbContextMock = MockRepository.GenerateMock<NemeStatsDbContext>();
             gamingGroupRepositoryMock = MockRepository.GenerateMock<GamingGroupRepository>();
             gamingGroupToGamingGroupViewModelTransformationMock = MockRepository.GenerateMock<GamingGroupToGamingGroupViewModelTransformation>();
+            gamingGroupAccessGranterMock = MockRepository.GenerateMock<GamingGroupAccessGranter>();
             gamingGroupController = new GamingGroupController(
                 dbContextMock, 
                 gamingGroupToGamingGroupViewModelTransformationMock, 
-                gamingGroupRepositoryMock);
+                gamingGroupRepositoryMock,
+                gamingGroupAccessGranterMock);
             userContext = new UserContext()
             {
                 ApplicationUserId = "user  id",

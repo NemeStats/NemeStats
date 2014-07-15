@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.DataAccess;
+using BusinessLogic.DataAccess.GamingGroups;
 using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.Models;
 using BusinessLogic.Models.User;
@@ -13,20 +14,24 @@ using UI.Transformations;
 
 namespace UI.Controllers
 {
+    [Authorize]
     public partial class GamingGroupController : Controller
     {
         internal NemeStatsDbContext db;
         internal GamingGroupToGamingGroupViewModelTransformation gamingGroupToGamingGroupViewModelTransformation;
         internal GamingGroupRepository gamingGroupRepository;
+        internal GamingGroupAccessGranter gamingGroupAccessGranter;
 
         public GamingGroupController(
             NemeStatsDbContext dbContext,
             GamingGroupToGamingGroupViewModelTransformation gamingGroupToGamingGroupViewModelTransformation,
-            GamingGroupRepository gamingGroupRespository)
+            GamingGroupRepository gamingGroupRespository,
+            GamingGroupAccessGranter gamingGroupAccessGranter)
         {
             this.db = dbContext;
             this.gamingGroupToGamingGroupViewModelTransformation = gamingGroupToGamingGroupViewModelTransformation;
             this.gamingGroupRepository = gamingGroupRespository;
+            this.gamingGroupAccessGranter = gamingGroupAccessGranter;
         }
 
         //
@@ -46,14 +51,8 @@ namespace UI.Controllers
         [HttpPost]
         public virtual ActionResult GrantAccess(string email, UserContext userContext)
         {
-            try
-            {
-                return RedirectToAction(MVC.GamingGroup.ActionNames.Index);
-            }
-            catch
-            {
-                return View();
-            }
+            gamingGroupAccessGranter.GrantAccess(email, userContext);
+            return RedirectToAction(MVC.GamingGroup.ActionNames.Index);
         }
     }
 }

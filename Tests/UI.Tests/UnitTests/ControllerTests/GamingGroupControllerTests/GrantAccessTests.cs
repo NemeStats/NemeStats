@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +18,19 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
             RedirectToRouteResult redirectResult = gamingGroupController.GrantAccess(string.Empty, userContext) as RedirectToRouteResult;
 
             Assert.AreEqual(MVC.GamingGroup.ActionNames.Index, redirectResult.RouteValues["action"]);
+        }
+
+        [Test]
+        public void ItGrantsAccessToTheSpecifiedEmailAddress()
+        {
+            string email = "abc@xyz.com";
+
+            gamingGroupAccessGranterMock.Expect(mock => mock.GrantAccess(email, userContext))
+                .Repeat.Once();
+
+            gamingGroupController.GrantAccess(string.Empty, userContext);
+
+            gamingGroupAccessGranterMock.VerifyAllExpectations();
         }
     }
 }
