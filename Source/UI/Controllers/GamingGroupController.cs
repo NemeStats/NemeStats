@@ -37,6 +37,7 @@ namespace UI.Controllers
             //TODO should redirect to some other action if the user doesn't have a gaming group (rather than NPE here)
             GamingGroup gamingGroup = gamingGroupRepository.GetGamingGroupDetails(userContext.GamingGroupId.Value, userContext);
             GamingGroupViewModel viewModel = gamingGroupToGamingGroupViewModelTransformation.Build(gamingGroup);
+
             return View(MVC.GamingGroup.Views.Index, viewModel);
         }
 
@@ -47,7 +48,7 @@ namespace UI.Controllers
         {
             try
             {
-                return RedirectToAction("Index");
+                return RedirectToAction(MVC.GamingGroup.ActionNames.Index);
             }
             catch
             {

@@ -22,20 +22,28 @@ namespace BusinessLogic.DataAccess.Repositories
 
         public GamingGroup GetGamingGroupDetails(int gamingGroupId, UserContext userContext)
         {
-            if(gamingGroupId != userContext.GamingGroupId)
-            {
-                string message = string.Format(
-                    EXCEPTION_MESSAGE_NO_ACCESS_TO_GAMING_GROUP, 
-                    userContext.ApplicationUserId, 
-                    gamingGroupId);
-                throw new UnauthorizedAccessException(message);
-            }
+            ValidateUserHasAccessToGamingGroup(gamingGroupId, userContext);
             GamingGroup gamingGroup = dbContext.GamingGroups
                                         .Where(group => group.Id == gamingGroupId)
                                         .Include(group => group.OwningUser)
                                         .FirstOrDefault();
 
             return gamingGroup;
+        }
+
+        //TODO this should probably be its own class. In fact, any place where we are doing a partial mock
+        //like this then it should be busted out
+        internal virtual void ValidateUserHasAccessToGamingGroup(int gamingGroupId, UserContext userContext)
+        {
+            if (gamingGroupId != userContext.GamingGroupId)
+            {
+                //TODO Maybe do a custom exception so we don't have to do hacky testing here
+                string message = string.Format(
+                    EXCEPTION_MESSAGE_NO_ACCESS_TO_GAMING_GROUP,
+                    userContext.ApplicationUserId,
+                    gamingGroupId);
+                throw new UnauthorizedAccessException(message);
+            }
         }
     }
 }

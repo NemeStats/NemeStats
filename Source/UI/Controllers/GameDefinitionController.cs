@@ -129,10 +129,10 @@ namespace UI.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            GameDefinition gameDefinition;
             try
             {
-                gameDefinition = gameDefinitionRepository.GetGameDefinition(id.Value, userContext);
+                GameDefinition gameDefinition = gameDefinitionRepository.GetGameDefinition(id.Value, userContext);
+                return View(MVC.GameDefinition.Views.Delete, gameDefinition);
             }catch(KeyNotFoundException)
             {
                 return HttpNotFound();
@@ -140,7 +140,6 @@ namespace UI.Controllers
             {
                 return new HttpUnauthorizedResult();
             }
-            return View(MVC.GameDefinition.Views.Delete, gameDefinition);
         }
 
         // POST: /GameDefinition/Delete/5
@@ -152,11 +151,11 @@ namespace UI.Controllers
             try
             {
                 gameDefinitionRepository.Delete(id, userContext);
+                return RedirectToAction(MVC.GameDefinition.ActionNames.Index);
             }catch(UnauthorizedAccessException)
             {
                 return new HttpUnauthorizedResult();
             }
-            return RedirectToAction(MVC.GameDefinition.ActionNames.Index);
         }
 
         protected override void Dispose(bool disposing)

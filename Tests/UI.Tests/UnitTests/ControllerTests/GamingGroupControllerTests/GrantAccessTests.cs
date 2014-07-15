@@ -12,11 +12,11 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
     public class GrantAccessTests : GamingGroupControllerTestBase
     {
         [Test]
-        public void ItReturnsTheIndexView()
+        public void ItRedirectsToTheIndexAction()
         {
-            ViewResult viewResult = gamingGroupController.Index(userContext) as ViewResult;
+            RedirectToRouteResult redirectResult = gamingGroupController.GrantAccess(string.Empty, userContext) as RedirectToRouteResult;
 
-            Assert.AreEqual(MVC.GamingGroup.Views.Index, viewResult.ViewName);
+            Assert.AreEqual(MVC.GamingGroup.ActionNames.Index, redirectResult.RouteValues["action"]);
         }
     }
 }
