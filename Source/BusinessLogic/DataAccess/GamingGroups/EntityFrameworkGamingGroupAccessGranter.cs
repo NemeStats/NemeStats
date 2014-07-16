@@ -18,7 +18,7 @@ namespace BusinessLogic.DataAccess.GamingGroups
             this.dbContext = dbContext;
         }
 
-        public GamingGroupInvitation GrantAccess(string email, UserContext userContext)
+        public GamingGroupInvitation CreateInvitation(string email, UserContext userContext)
         {
             GamingGroupInvitation invitation = new GamingGroupInvitation()
             {

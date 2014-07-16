@@ -1,5 +1,5 @@
 ﻿using BusinessLogic.DataAccess;
-using BusinessLogic.Logic;
+using BusinessLogic.Logic.Users;
 using BusinessLogic.Models.User;
 using NUnit.Framework;
 

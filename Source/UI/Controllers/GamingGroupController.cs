@@ -52,7 +52,7 @@ namespace UI.Controllers
         [UserContextActionFilter]
         public virtual ActionResult GrantAccess(string inviteeEmail, UserContext userContext)
         {
-            gamingGroupAccessGranter.GrantAccess(inviteeEmail, userContext);
+            gamingGroupAccessGranter.CreateInvitation(inviteeEmail, userContext);
             return RedirectToAction(MVC.GamingGroup.ActionNames.Index);
         }
     }

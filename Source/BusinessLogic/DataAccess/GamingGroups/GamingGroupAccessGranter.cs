@@ -10,6 +10,6 @@ namespace BusinessLogic.DataAccess.GamingGroups
 {
     public interface GamingGroupAccessGranter
     {
-        GamingGroupInvitation GrantAccess(string email, UserContext userContext);
+        GamingGroupInvitation CreateInvitation(string email, UserContext userContext);
     }
 }

@@ -13,6 +13,7 @@ using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using BusinessLogic.Logic;
 using BusinessLogic.DataAccess.Repositories;
+using BusinessLogic.Logic.Users;
 
 namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.StatisticsRepositoryTests
 {

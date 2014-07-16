@@ -25,7 +25,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
         {
             string email = "abc@xyz.com";
 
-            gamingGroupAccessGranterMock.Expect(mock => mock.GrantAccess(email, userContext))
+            gamingGroupAccessGranterMock.Expect(mock => mock.CreateInvitation(email, userContext))
                 .Repeat.Once();
 
             gamingGroupController.GrantAccess(email, userContext);

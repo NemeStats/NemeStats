@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using BusinessLogic.Logic;
 using BusinessLogic.DataAccess;
+using BusinessLogic.Logic.Users;
 
 namespace UI.Filters
 {

@@ -97,8 +97,8 @@
     <Compile Include="DataAccess\Repositories\PlayerRepository.cs" />
     <Compile Include="DataAccess\Repositories\EntityFrameworkPlayerRepository.cs" />
     <Compile Include="Logic\Points\GordonPoints.cs" />
-    <Compile Include="Logic\UserContextBuilder.cs" />
-    <Compile Include="Logic\UserContextBuilderImpl.cs" />
+    <Compile Include="Logic\Users\UserContextBuilder.cs" />
+    <Compile Include="Logic\Users\UserContextBuilderImpl.cs" />
     <Compile Include="Migrations\201407011153551_GamingGroupsAndAspNetAuth.cs" />
     <Compile Include="Migrations\201407011153551_GamingGroupsAndAspNetAuth.Designer.cs">
       <DependentUpon>201407011153551_GamingGroupsAndAspNetAuth.cs</DependentUpon>

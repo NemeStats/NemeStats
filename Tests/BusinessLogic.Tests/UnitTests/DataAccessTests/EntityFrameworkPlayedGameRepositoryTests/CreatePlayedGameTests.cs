@@ -11,6 +11,7 @@ using System.Data.Entity;
 using System.Linq;
 using BusinessLogic.Logic;
 using BusinessLogic.DataAccess.Repositories;
+using BusinessLogic.Logic.Users;
 
 namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGameRepositoryTests
 {

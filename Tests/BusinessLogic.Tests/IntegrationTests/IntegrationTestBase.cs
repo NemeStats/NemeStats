@@ -17,6 +17,9 @@ namespace BusinessLogic.Tests.IntegrationTests
         protected List<PlayedGame> testPlayedGames = new List<PlayedGame>();
         protected GameDefinition testGameDefinition;
         protected GameDefinition testGameDefinitionWithOtherGamingGroupId;
+        protected ApplicationUser testUserWithDefaultGamingGroup;
+        protected ApplicationUser testUserWithOtherGamingGroup;
+        protected ApplicationUser testUserWithDefaultGamingGroupAndNoInvites;
         protected Player testPlayer1;
         protected string testPlayer1Name = "testPlayer1";
         protected Player testPlayer2;
@@ -38,6 +41,7 @@ namespace BusinessLogic.Tests.IntegrationTests
         protected UserContext testUserContextForUserWithDefaultGamingGroup;
         protected string testApplicationUserNameForUserWithOtherGamingGroup = "username with other gaming group";
         protected UserContext testUserContextForUserWithOtherGamingGroup;
+        protected string testApplicationUserNameForUserWithDefaultGamingGroupAndNoInvites = "username with default gaming group and no invites";
         protected string testGamingGroup1Name = "this is test gaming group 1";
         protected string testGamingGroup2Name = "this is test gaming group 2";
         protected GamingGroup testGamingGroup;
@@ -54,11 +58,15 @@ namespace BusinessLogic.Tests.IntegrationTests
             {
                 CleanUpTestData();
 
-                ApplicationUser testUserWithDefaultGamingGroup = SaveApplicationUser(
+                testUserWithDefaultGamingGroup = SaveApplicationUser(
                     dbContext,
                     testApplicationUserNameForUserWithDefaultGamingGroup,
                     "a@mailinator.com");
-                ApplicationUser testUserWithOtherGamingGroup = SaveApplicationUser(
+                testUserWithDefaultGamingGroupAndNoInvites = SaveApplicationUser(
+                    dbContext,
+                    testApplicationUserNameForUserWithDefaultGamingGroupAndNoInvites,
+                    "a2@mailinator.com");
+                testUserWithOtherGamingGroup = SaveApplicationUser(
                     dbContext,
                     testApplicationUserNameForUserWithOtherGamingGroup,
                     "b@mailinator.com");
@@ -81,9 +89,9 @@ namespace BusinessLogic.Tests.IntegrationTests
         private void SaveGamingGroupInvitations(NemeStatsDbContext dbContext)
         {
             EntityFrameworkGamingGroupAccessGranter accessGranter = new EntityFrameworkGamingGroupAccessGranter(dbContext);
-            testUnredeemedGamingGroupInvitation = accessGranter.GrantAccess(testInviteeEmail1, testUserContextForUserWithDefaultGamingGroup);
+            testUnredeemedGamingGroupInvitation = accessGranter.CreateInvitation(testUserWithDefaultGamingGroup.Email, testUserContextForUserWithDefaultGamingGroup);
 
-            testAlreadyRedeemedGamingGroupInvitation = accessGranter.GrantAccess(testInviteeEmail2, testUserContextForUserWithDefaultGamingGroup);
+            testAlreadyRedeemedGamingGroupInvitation = accessGranter.CreateInvitation(testUserWithOtherGamingGroup.Email, testUserContextForUserWithDefaultGamingGroup);
             //TODO simulating registration. Will need a separate method for this soon so this logic can be replaced
             testAlreadyRedeemedGamingGroupInvitation.DateRegistered = DateTime.UtcNow.AddDays(1);
             testAlreadyRedeemedGamingGroupInvitation.RegisteredUserId = testUserContextForUserWithOtherGamingGroup.ApplicationUserId;
@@ -264,10 +272,11 @@ namespace BusinessLogic.Tests.IntegrationTests
                 CleanUpPlayers(dbContext);
                 CleanUpGamingGroup(testGamingGroup1Name, dbContext);
                 CleanUpGamingGroup(testGamingGroup2Name, dbContext);
-                CleanUpApplicationUser(testApplicationUserNameForUserWithDefaultGamingGroup, dbContext);
-                CleanUpApplicationUser(testApplicationUserNameForUserWithOtherGamingGroup, dbContext);
                 CleanUpGamingGroupInvitation(testInviteeEmail1, dbContext);
                 CleanUpGamingGroupInvitation(testInviteeEmail2, dbContext);
+                CleanUpApplicationUser(testApplicationUserNameForUserWithDefaultGamingGroup, dbContext);
+                CleanUpApplicationUser(testApplicationUserNameForUserWithOtherGamingGroup, dbContext);
+                CleanUpApplicationUser(testApplicationUserNameForUserWithDefaultGamingGroupAndNoInvites, dbContext);
 
                 dbContext.SaveChanges();
             }

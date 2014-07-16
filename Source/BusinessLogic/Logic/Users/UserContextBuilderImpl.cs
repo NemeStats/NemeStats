@@ -2,7 +2,7 @@
 using BusinessLogic.Models.User;
 using System.Linq;
 
-namespace BusinessLogic.Logic
+namespace BusinessLogic.Logic.Users
 {
     public class UserContextBuilderImpl : UserContextBuilder
     {

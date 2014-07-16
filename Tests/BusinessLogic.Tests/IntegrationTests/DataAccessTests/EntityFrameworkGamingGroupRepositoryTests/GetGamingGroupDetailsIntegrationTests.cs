@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.EntityFrameworkGamingGroupRepositoryTests
 {
     [TestFixture]
-    public class GetGamingGroupDetailsIntegrationTests : EntityFrameworkGamingGroupRepositoryTestBase
+    public class GetGamingGroupDetailsIntegrationTests : EntityFrameworkGamingGroupRepositoryIntegrationTestBase
     {
         //TODO add the many to many relationship so we can get applicationUsers
         /*

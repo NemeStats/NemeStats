@@ -7,14 +7,11 @@ using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.GamingGroups.EntityFrameworkGamingGroupAccessGranterTests
 {
     [TestFixture]
-    public class GrantAccessTests
+    public class CreateInvitationTests
     {
         protected NemeStatsDbContext dbContextMock;
         protected DbSet<GamingGroupInvitation> gamingGroupInvitationDbSetMock;
@@ -41,7 +38,7 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.GamingGroups.Enti
         [Test]
         public void ItSetsTheInviteeEmail()
         {
-            gamingGroupAccessGranter.GrantAccess(inviteeEmail, userContext);
+            gamingGroupAccessGranter.CreateInvitation(inviteeEmail, userContext);
 
             gamingGroupInvitationDbSetMock.AssertWasCalled(mock => mock.Add(Arg<GamingGroupInvitation>.Matches(invitation => invitation.InviteeEmail == inviteeEmail)));
         }
@@ -49,7 +46,7 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.GamingGroups.Enti
         [Test]
         public void ItSetsTheInviterUserId()
         {
-            gamingGroupAccessGranter.GrantAccess(inviteeEmail, userContext);
+            gamingGroupAccessGranter.CreateInvitation(inviteeEmail, userContext);
 
             gamingGroupInvitationDbSetMock.AssertWasCalled(
                 mock => mock.Add(Arg<GamingGroupInvitation>.Matches(invitation => invitation.InvitingUserId == userContext.ApplicationUserId)));
@@ -58,7 +55,7 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.GamingGroups.Enti
         [Test]
         public void ItSetsTheGamingGroupId()
         {
-            gamingGroupAccessGranter.GrantAccess(inviteeEmail, userContext);
+            gamingGroupAccessGranter.CreateInvitation(inviteeEmail, userContext);
 
             gamingGroupInvitationDbSetMock.AssertWasCalled(
                 mock => mock.Add(Arg<GamingGroupInvitation>.Matches(invitation => invitation.GamingGroupId == userContext.GamingGroupId)));
@@ -66,7 +63,7 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.GamingGroups.Enti
 
         public void ItSetsTheDateInvitationWasSent()
         {
-            gamingGroupAccessGranter.GrantAccess(inviteeEmail, userContext);
+            gamingGroupAccessGranter.CreateInvitation(inviteeEmail, userContext);
 
             gamingGroupInvitationDbSetMock.AssertWasCalled(
                 mock => mock.Add(Arg<GamingGroupInvitation>.Matches(invitation => invitation.DateSent.Date == DateTime.UtcNow.Date)));
@@ -75,7 +72,7 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.GamingGroups.Enti
         [Test]
         public void ItSavesToTheDatabase()
         {
-            gamingGroupAccessGranter.GrantAccess(inviteeEmail, userContext);
+            gamingGroupAccessGranter.CreateInvitation(inviteeEmail, userContext);
 
             dbContextMock.AssertWasCalled(mock => mock.SaveChanges());
         }
@@ -83,7 +80,7 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.GamingGroups.Enti
         [Test]
         public void ItReturnsTheGamingGroupInvitation()
         {
-            GamingGroupInvitation returnedInvitation = gamingGroupAccessGranter.GrantAccess(inviteeEmail, userContext);
+            GamingGroupInvitation returnedInvitation = gamingGroupAccessGranter.CreateInvitation(inviteeEmail, userContext);
             IList<object[]> objectsPassedToAddMethod = gamingGroupInvitationDbSetMock.GetArgumentsForCallsMadeOn(
                 mock => mock.Add(Arg<GamingGroupInvitation>.Is.Anything));
             GamingGroupInvitation savedInvitation = (GamingGroupInvitation)objectsPassedToAddMethod[0][0];

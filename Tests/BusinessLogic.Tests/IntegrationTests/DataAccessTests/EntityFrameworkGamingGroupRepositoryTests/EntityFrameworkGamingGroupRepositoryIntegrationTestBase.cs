@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.EntityFrameworkGameDefinitionRepositoryTests
 {
-    public class EntityFrameworkGamingGroupRepositoryTestBase : IntegrationTestBase
+    public class EntityFrameworkGamingGroupRepositoryIntegrationTestBase : IntegrationTestBase
     {
         protected NemeStatsDbContext dbContext;
         protected EntityFrameworkGamingGroupRepository repository;

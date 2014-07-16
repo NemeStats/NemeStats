@@ -6,7 +6,7 @@ using System.Linq;
 using System.Security.Principal;
 using System.Web;
 
-namespace BusinessLogic.Logic
+namespace BusinessLogic.Logic.Users
 {
     public interface UserContextBuilder
     {

@@ -14,6 +14,7 @@ namespace BusinessLogic.DataAccess.Repositories
         private NemeStatsDbContext dbContext;
         internal const string EXCEPTION_MESSAGE_NO_ACCESS_TO_GAMING_GROUP 
             = "User with Id '{0} does not have access to Gaming Group with Id '{1}'.";
+        internal const string EXCEPTION_MESSAGE_USER_DOES_NOT_EXIST = "User with Id '{0}' does not exist.";
 
         public EntityFrameworkGamingGroupRepository(NemeStatsDbContext dbContext)
         {
@@ -45,6 +46,22 @@ namespace BusinessLogic.DataAccess.Repositories
                     gamingGroupId);
                 throw new UnauthorizedAccessException(message);
             }
+        }
+
+
+        public virtual IList<GamingGroupInvitation> GetPendingGamingGroupInvitations(UserContext userContext)
+        {
+            ApplicationUser user = dbContext.Users.Where(theUser => theUser.Id == userContext.ApplicationUserId).FirstOrDefault();
+
+            if(user == null)
+            {
+                string exceptionMessage = string.Format(EXCEPTION_MESSAGE_USER_DOES_NOT_EXIST, userContext.ApplicationUserId);
+                throw new KeyNotFoundException(exceptionMessage);
+            }
+
+            List<GamingGroupInvitation> invitations = dbContext.GamingGroupInvitations.Where(invitation => invitation.InviteeEmail == user.Email).ToList();
+
+            return invitations;
         }
     }
 }
