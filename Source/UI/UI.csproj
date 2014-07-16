@@ -257,10 +257,13 @@
     <Compile Include="HtmlHelpers\PlayedGameHelper.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\GamingGroup\GamingGroupViewModel.cs" />
+    <Compile Include="Models\GamingGroup\InvitationViewModel.cs" />
     <Compile Include="Models\PlayedGame\GameResultViewModel.cs" />
     <Compile Include="Models\PlayedGame\PlayedGameDetailsViewModel.cs" />
     <Compile Include="Models\Players\PlayerDetailsViewModel.cs" />
     <Compile Include="Models\User\UserViewModel.cs" />
+    <Compile Include="Transformations\GamingGroupInvitationToInvitationViewModelTransformation.cs" />
+    <Compile Include="Transformations\GamingGroupInvitationToInvitationViewModelTransformationImpl.cs" />
     <Compile Include="Transformations\GamingGroupToGamingGroupViewModelTransformation.cs" />
     <Compile Include="Transformations\GamingGroupToGamingGroupViewModelTransformationImpl.cs" />
     <Compile Include="Transformations\PlayedGameDetailsViewModelBuilderImpl.cs" />
@@ -289,6 +292,7 @@
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Images\NemeStats.png" />
     <Content Include="Content\themes\base\images\animated-overlay.gif" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />

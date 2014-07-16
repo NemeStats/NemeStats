@@ -157,6 +157,7 @@
     <Compile Include="UnitTests\ControllerTests\PlayerControllerTests\PlayerControllerTestBase.cs" />
     <Compile Include="UnitTests\FiltersTests\UserNameActionFilterTests\OnActionExecutingTests.cs" />
     <Compile Include="UnitTests\HtmlHelperTests\MyHelpersTests\GameResultsTests.cs" />
+    <Compile Include="UnitTests\TransformationsTests\GamingGroupInvitationToInvitationViewModelTransformationImplTests.cs" />
     <Compile Include="UnitTests\TransformationsTests\GamingGroupToGamingGroupViewModelTransformationImplTests.cs" />
     <Compile Include="UnitTests\TransformationsTests\PlayedGameDetailsBuilderImplTests.cs" />
     <Compile Include="UnitTests\TransformationsTests\GameResultViewModelBuilderTests\BuildTests.cs" />

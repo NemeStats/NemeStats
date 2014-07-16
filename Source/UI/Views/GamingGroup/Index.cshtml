@@ -27,28 +27,60 @@
         </dd>
 
     </dl>
-@using (Html.BeginForm("GrantAccess", "GamingGroup"))
-{
-    @Html.AntiForgeryToken()
-    <div class="form-group">
-        <h4>Invite Other Players</h4>
-        <hr />
+    @using (Html.BeginForm("GrantAccess", "GamingGroup"))
+    {
+        @Html.AntiForgeryToken()
         <div class="form-group">
-            @Html.Label("Invitee Email Address*", new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.InviteeEmail)
-                <span data-toggle="tooltip" title="This only allows a player to register with this email address and will place them directly into this Gaming Group.">
-                    <i class="glyphicon glyphicon-question-sign"></i>
-                </span>
-                @Html.ValidationMessageFor(model => model.InviteeEmail)
+            <h4>Invite Other Players</h4>
+            <hr />
+            <div class="form-group">
+                @Html.Label("Invitee Email Address*", new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.InviteeEmail)
+                    <span data-toggle="tooltip" title="This only allows a player to register with this email address and will place them directly into this Gaming Group.">
+                        <i class="glyphicon glyphicon-question-sign"></i>
+                    </span>
+                    @Html.ValidationMessageFor(model => model.InviteeEmail)
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Grant Access To Gaming Group" class="btn btn-default" />
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Grant Access To Gaming Group" class="btn btn-default" />
+                </div>
             </div>
-        </div>
-    </div>
-}
-</div>
+            <div class="form-group">
+                <h4>Past Invites</h4>
+                <hr />
+                <dl class="dl-horizontal">
+                    @for (int i = 0; i < Model.Invitations.Count(); i++)
+                    {
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Invitations[i].InviteeEmail)
+                        </dt>
 
+                        <dd>
+                            @Html.DisplayFor(model => model.Invitations[i].InviteeEmail)
+                        </dd>
+                        if (Model.Invitations[i].DateRegistered != null)
+                        {
+                            <dt>
+                                @Html.DisplayNameFor(model => model.Invitations[i].DateRegistered)
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.Invitations[i].DateRegistered)
+                            </dd>
+                            <dt>
+                                @Html.DisplayNameFor(model => model.Invitations[i].RegisteredUserName)
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.Invitations[i].RegisteredUserName)
+                            </dd>
+                        }
+                    }
+                </dl>
+            </div>
+        </div>
+    }
+</div>

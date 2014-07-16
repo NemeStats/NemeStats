@@ -49,6 +49,8 @@ namespace UI.DependencyResolution {
                             x.For<GamingGroupRepository>().Use<EntityFrameworkGamingGroupRepository>();
                             x.For<GamingGroupToGamingGroupViewModelTransformation>()
                                 .Use<GamingGroupToGamingGroupViewModelTransformationImpl>();
+                            x.For<GamingGroupInvitationToInvitationViewModelTransformation>()
+                                .Use<GamingGroupInvitationToInvitationViewModelTransformationImpl>();
                             x.For<GamingGroupAccessGranter>().Use<EntityFrameworkGamingGroupAccessGranter>();
 
                             //TODO finish implementing http://lostechies.com/jimmybogard/2010/05/03/dependency-injection-in-asp-net-mvc-filters/

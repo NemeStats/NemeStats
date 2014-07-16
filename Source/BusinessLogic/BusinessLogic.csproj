@@ -136,6 +136,10 @@
     <Compile Include="Migrations\201407152140386_MakeGamingGroupInvitationGuidIdentity.Designer.cs">
       <DependentUpon>201407152140386_MakeGamingGroupInvitationGuidIdentity.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201407160145234_AddedRegistrationInfoToGamingGroupInvitation.cs" />
+    <Compile Include="Migrations\201407160145234_AddedRegistrationInfoToGamingGroupInvitation.Designer.cs">
+      <DependentUpon>201407160145234_AddedRegistrationInfoToGamingGroupInvitation.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\GamingGroup.cs" />
     <Compile Include="Models\GamingGroupInvitation.cs" />
     <Compile Include="Models\User\ApplicationUser.cs" />
@@ -240,6 +244,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201407152140386_MakeGamingGroupInvitationGuidIdentity.resx">
       <DependentUpon>201407152140386_MakeGamingGroupInvitationGuidIdentity.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201407160145234_AddedRegistrationInfoToGamingGroupInvitation.resx">
+      <DependentUpon>201407160145234_AddedRegistrationInfoToGamingGroupInvitation.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

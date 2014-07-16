@@ -1,4 +1,5 @@
-﻿using BusinessLogic.Models.User;
+﻿using BusinessLogic.Models;
+using BusinessLogic.Models.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,6 @@ namespace BusinessLogic.DataAccess.GamingGroups
 {
     public interface GamingGroupAccessGranter
     {
-        void GrantAccess(string email, UserContext userContext);
+        GamingGroupInvitation GrantAccess(string email, UserContext userContext);
     }
 }

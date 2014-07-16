@@ -1,6 +1,7 @@
 ﻿using BusinessLogic.Models;
 using BusinessLogic.Models.User;
 using NUnit.Framework;
+using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,25 +16,40 @@ namespace UI.Tests.UnitTests.TransformationsTests
     public class GamingGroupToGamingGroupViewModelTransformationImplTests
     {
         private GamingGroupToGamingGroupViewModelTransformationImpl transformer;
+        private GamingGroupInvitationToInvitationViewModelTransformation invitationTransformer;
         private GamingGroup gamingGroup;
         private GamingGroupViewModel viewModel;
 
         [SetUp]
         public void SetUp()
         {
-            transformer = new GamingGroupToGamingGroupViewModelTransformationImpl();
+            invitationTransformer = MockRepository.GenerateMock<GamingGroupInvitationToInvitationViewModelTransformation>();
+            transformer = new GamingGroupToGamingGroupViewModelTransformationImpl(invitationTransformer);
             ApplicationUser owningUser = new ApplicationUser()
             {
                 Id = "owning user user Id",
                 Email = "owninguser@email.com",
                 UserName = "username"
             };
+            ApplicationUser registeredUser = new ApplicationUser()
+            {
+                Email = "registereduser@email.com",
+                Id = "registered user id",
+                UserName = "registered user name"
+            };
+            GamingGroupInvitation invitation = new GamingGroupInvitation()
+            {
+                DateRegistered = DateTime.UtcNow,
+                RegisteredUserId = "registered user id",
+                RegisteredUser = registeredUser
+            };
             gamingGroup = new GamingGroup()
             {
                 Id = 1,
                 Name = "gaming group",
                 OwningUserId = owningUser.Id,
-                OwningUser = owningUser
+                OwningUser = owningUser,
+                GamingGroupInvitations = new List<GamingGroupInvitation>() { invitation }
             };
 
             viewModel = transformer.Build(gamingGroup);
@@ -56,11 +72,28 @@ namespace UI.Tests.UnitTests.TransformationsTests
         {
             Assert.AreEqual(gamingGroup.Name, viewModel.Name);
         }
-
+        
         [Test]
         public void ItCopiesTheOwningUserName()
         {
             Assert.AreEqual(gamingGroup.OwningUser.UserName, viewModel.OwningUserName);
+        }
+
+        [Test]
+        public void ItTransformsGamingGroupInvitationsToInvitationViewModels()
+        {
+            List<InvitationViewModel> invitations = new List<InvitationViewModel>();
+            foreach(GamingGroupInvitation invitation in gamingGroup.GamingGroupInvitations)
+            {
+                InvitationViewModel invitationViewModel = new InvitationViewModel();
+                invitations.Add(invitationViewModel);
+                
+                invitationTransformer.Expect(mock => mock.Build(invitation))
+                    .Repeat.Once()
+                    .Return(invitationViewModel);
+            }
+
+            Assert.AreEqual(invitations.Count(), viewModel.Invitations.Count());
         }
     }
 }

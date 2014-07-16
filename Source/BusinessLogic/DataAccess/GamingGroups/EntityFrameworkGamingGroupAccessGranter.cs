@@ -18,7 +18,7 @@ namespace BusinessLogic.DataAccess.GamingGroups
             this.dbContext = dbContext;
         }
 
-        public void GrantAccess(string email, UserContext userContext)
+        public GamingGroupInvitation GrantAccess(string email, UserContext userContext)
         {
             GamingGroupInvitation invitation = new GamingGroupInvitation()
             {
@@ -29,6 +29,8 @@ namespace BusinessLogic.DataAccess.GamingGroups
             };
             dbContext.GamingGroupInvitations.Add(invitation);
             dbContext.SaveChanges();
+
+            return invitation;
         }
     }
 }

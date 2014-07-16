@@ -79,5 +79,16 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.GamingGroups.Enti
 
             dbContextMock.AssertWasCalled(mock => mock.SaveChanges());
         }
+
+        [Test]
+        public void ItReturnsTheGamingGroupInvitation()
+        {
+            GamingGroupInvitation returnedInvitation = gamingGroupAccessGranter.GrantAccess(inviteeEmail, userContext);
+            IList<object[]> objectsPassedToAddMethod = gamingGroupInvitationDbSetMock.GetArgumentsForCallsMadeOn(
+                mock => mock.Add(Arg<GamingGroupInvitation>.Is.Anything));
+            GamingGroupInvitation savedInvitation = (GamingGroupInvitation)objectsPassedToAddMethod[0][0];
+
+            Assert.AreSame(savedInvitation, returnedInvitation);
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.DataAccess;
+using BusinessLogic.DataAccess.GamingGroups;
 using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.Logic;
 using BusinessLogic.Models;
@@ -39,9 +40,12 @@ namespace BusinessLogic.Tests.IntegrationTests
         protected UserContext testUserContextForUserWithOtherGamingGroup;
         protected string testGamingGroup1Name = "this is test gaming group 1";
         protected string testGamingGroup2Name = "this is test gaming group 2";
-
         protected GamingGroup testGamingGroup;
         protected GamingGroup testOtherGamingGroup;
+        protected string testInviteeEmail1 = "email1@email.com";
+        protected GamingGroupInvitation testUnredeemedGamingGroupInvitation;
+        protected string testInviteeEmail2 = "email2@email.com";
+        protected GamingGroupInvitation testAlreadyRedeemedGamingGroupInvitation;
 
         [TestFixtureSetUp]
         public void FixtureSetUp()
@@ -68,8 +72,23 @@ namespace BusinessLogic.Tests.IntegrationTests
                 testGameDefinitionWithOtherGamingGroupId = SaveGameDefinition(dbContext, testOtherGamingGroup.Id, testGameNameForGameWithOtherGamingGroupId);
                 SavePlayers(dbContext, testGamingGroup.Id, testOtherGamingGroup.Id);
 
+                SaveGamingGroupInvitations(dbContext);
+
                 CreatePlayedGames(dbContext);
             }
+        }
+
+        private void SaveGamingGroupInvitations(NemeStatsDbContext dbContext)
+        {
+            EntityFrameworkGamingGroupAccessGranter accessGranter = new EntityFrameworkGamingGroupAccessGranter(dbContext);
+            testUnredeemedGamingGroupInvitation = accessGranter.GrantAccess(testInviteeEmail1, testUserContextForUserWithDefaultGamingGroup);
+
+            testAlreadyRedeemedGamingGroupInvitation = accessGranter.GrantAccess(testInviteeEmail2, testUserContextForUserWithDefaultGamingGroup);
+            //TODO simulating registration. Will need a separate method for this soon so this logic can be replaced
+            testAlreadyRedeemedGamingGroupInvitation.DateRegistered = DateTime.UtcNow.AddDays(1);
+            testAlreadyRedeemedGamingGroupInvitation.RegisteredUserId = testUserContextForUserWithOtherGamingGroup.ApplicationUserId;
+            dbContext.GamingGroupInvitations.Add(testAlreadyRedeemedGamingGroupInvitation);
+            dbContext.SaveChanges();
         }
 
         private UserContext UpdateDatefaultGamingGroupOnUser(ApplicationUser user, GamingGroup gamingGroup, NemeStatsDbContext dbContext)
@@ -247,8 +266,26 @@ namespace BusinessLogic.Tests.IntegrationTests
                 CleanUpGamingGroup(testGamingGroup2Name, dbContext);
                 CleanUpApplicationUser(testApplicationUserNameForUserWithDefaultGamingGroup, dbContext);
                 CleanUpApplicationUser(testApplicationUserNameForUserWithOtherGamingGroup, dbContext);
+                CleanUpGamingGroupInvitation(testInviteeEmail1, dbContext);
+                CleanUpGamingGroupInvitation(testInviteeEmail2, dbContext);
 
                 dbContext.SaveChanges();
+            }
+        }
+
+        private void CleanUpGamingGroupInvitation(string inviteeEmail, NemeStatsDbContext dbContext)
+        {
+            GamingGroupInvitation invitation = (from gamingGroupInvitation in dbContext.GamingGroupInvitations
+                                                       where gamingGroupInvitation.InviteeEmail == inviteeEmail
+                                                select gamingGroupInvitation).FirstOrDefault();
+
+            if (invitation != null)
+            {
+                try
+                {
+                    dbContext.GamingGroupInvitations.Remove(invitation);
+                }
+                catch (Exception) { }
             }
         }
 

@@ -43,5 +43,19 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.EntityFrameworkGa
                 Assert.AreEqual(testUserContextForUserWithDefaultGamingGroup.ApplicationUserId, gamingGroup.OwningUser.Id);
             }
         }
+
+        [Test]
+        public void ItEagerlyLoadsGamingGroupInvitations()
+        {
+            using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
+            {
+                dbContext.Configuration.LazyLoadingEnabled = false;
+                dbContext.Configuration.ProxyCreationEnabled = false;
+                EntityFrameworkGamingGroupRepository repository = new EntityFrameworkGamingGroupRepository(dbContext);
+                GamingGroup gamingGroup = repository.GetGamingGroupDetails(testGamingGroup.Id, testUserContextForUserWithDefaultGamingGroup);
+
+                Assert.AreSame(gamingGroup.GamingGroupInvitations, gamingGroup.GamingGroupInvitations);
+            }
+        }
     }
 }

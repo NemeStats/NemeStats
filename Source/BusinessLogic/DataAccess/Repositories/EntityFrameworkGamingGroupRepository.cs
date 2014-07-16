@@ -26,6 +26,7 @@ namespace BusinessLogic.DataAccess.Repositories
             GamingGroup gamingGroup = dbContext.GamingGroups
                                         .Where(group => group.Id == gamingGroupId)
                                         .Include(group => group.OwningUser)
+                                        .Include(group => group.GamingGroupInvitations)
                                         .FirstOrDefault();
 
             return gamingGroup;
