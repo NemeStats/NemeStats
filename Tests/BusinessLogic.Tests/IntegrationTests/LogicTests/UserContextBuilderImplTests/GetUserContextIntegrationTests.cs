@@ -2,6 +2,8 @@
 using BusinessLogic.Logic.Users;
 using BusinessLogic.Models.User;
 using NUnit.Framework;
+using System;
+using System.Collections.Generic;
 
 namespace BusinessLogic.Tests.IntegrationTests.LogicTests.UserContextBuilderImplTests
 {
@@ -31,6 +33,23 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.UserContextBuilderImpl
         public void ItSetsTheCurrentGamingGroupId()
         {
             Assert.AreEqual(testGamingGroup.Id, userContext.GamingGroupId);
+        }
+
+        [Test]
+        public void ItThrowsAKeyNotFoundExceptionIfTheUserDoesntExist()
+        {
+            using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
+            {
+                string userIdThatDoesntExist = "user id that doesnt exist";
+                UserContextBuilderImpl contextBuilder = new UserContextBuilderImpl();
+                Exception exception = Assert.Throws<KeyNotFoundException>(
+                    () => contextBuilder.GetUserContext(userIdThatDoesntExist, dbContext));
+
+                string message = string.Format(
+                    UserContextBuilderImpl.EXCEPTION_MESSAGE_USER_NOT_FOUND,
+                    userIdThatDoesntExist);
+                Assert.AreEqual(message, exception.Message);
+            }
         }
     }
 }

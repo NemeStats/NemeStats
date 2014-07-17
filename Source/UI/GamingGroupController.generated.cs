@@ -108,7 +108,7 @@ namespace UI.Controllers
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionParamsClass_GrantAccess
         {
-            public readonly string email = "email";
+            public readonly string inviteeEmail = "inviteeEmail";
             public readonly string userContext = "userContext";
         }
         static readonly ViewsClass s_views = new ViewsClass();
@@ -145,15 +145,15 @@ namespace UI.Controllers
         }
 
         [NonAction]
-        partial void GrantAccessOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string email, BusinessLogic.Models.User.UserContext userContext);
+        partial void GrantAccessOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string inviteeEmail, BusinessLogic.Models.User.UserContext userContext);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult GrantAccess(string email, BusinessLogic.Models.User.UserContext userContext)
+        public override System.Web.Mvc.ActionResult GrantAccess(string inviteeEmail, BusinessLogic.Models.User.UserContext userContext)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.GrantAccess);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "email", email);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "inviteeEmail", inviteeEmail);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "userContext", userContext);
-            GrantAccessOverride(callInfo, email, userContext);
+            GrantAccessOverride(callInfo, inviteeEmail, userContext);
             return callInfo;
         }
 

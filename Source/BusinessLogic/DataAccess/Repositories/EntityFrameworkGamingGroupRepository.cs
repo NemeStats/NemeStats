@@ -48,7 +48,6 @@ namespace BusinessLogic.DataAccess.Repositories
             }
         }
 
-
         public virtual IList<GamingGroupInvitation> GetPendingGamingGroupInvitations(UserContext userContext)
         {
             ApplicationUser user = dbContext.Users.Where(theUser => theUser.Id == userContext.ApplicationUserId).FirstOrDefault();

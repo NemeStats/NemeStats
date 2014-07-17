@@ -12,22 +12,36 @@ using UI.Models;
 using BusinessLogic.Models.User;
 using BusinessLogic.DataAccess;
 using StructureMap;
+using BusinessLogic.Logic.Users;
 
 namespace UI.Controllers
 {
     [Authorize]
     public partial class AccountController : Controller
     {
-        //TODO had to do this because StructureMap kept trying to use the other constructor.
-        [DefaultConstructor]
-        public AccountController()
-            : this(new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new NemeStatsDbContext())))
-        {
-        }
+        protected GamingGroupInviteConsumer gamingGroupInviteConsumer;
+        protected UserContextBuilder userContextBuilder; 
+        protected NemeStatsDbContext dbContext;
 
-        public AccountController(UserManager<ApplicationUser> userManager)
+        //TODO had to do this because StructureMap kept trying to use the other constructor.
+        //[DefaultConstructor]
+        //public AccountController()
+        //    //: this(new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new NemeStatsDbContext())))
+        //{
+        //    dbContext = new NemeStatsDbContext();
+        //    gamingGroupInviteConsumer = new GamingGroupInviteConsumerImpl()
+        //}
+
+        public AccountController(
+            UserManager<ApplicationUser> userManager, 
+            GamingGroupInviteConsumer gamingGroupInviteConsumer, 
+            UserContextBuilder userContextBuilder,
+            NemeStatsDbContext dbContext)
         {
             UserManager = userManager;
+            this.gamingGroupInviteConsumer = gamingGroupInviteConsumer;
+            this.userContextBuilder = userContextBuilder;
+            this.dbContext = dbContext;
         }
 
         public UserManager<ApplicationUser> UserManager { get; private set; }
@@ -89,7 +103,14 @@ namespace UI.Controllers
                 {
                     await SignInAsync(user, isPersistent: false);
                     UserManager.SetEmail(user.Id, model.EmailAddress);
-                    return RedirectToAction("Index", "Home");
+                    UserContext userContext = userContextBuilder.GetUserContext(user.Id, dbContext);
+                    int? gamingGroupIdToWhichTheUserWasAdded = await gamingGroupInviteConsumer.AddUserToInvitedGroupAsync(userContext);
+                    
+                    if(gamingGroupIdToWhichTheUserWasAdded.HasValue)
+                    {
+                        return RedirectToAction(MVC.GamingGroup.ActionNames.Index, "GamingGroup");
+                    }
+                    return RedirectToAction(MVC.Home.ActionNames.Index, "Home");
                 }
                 else
                 {

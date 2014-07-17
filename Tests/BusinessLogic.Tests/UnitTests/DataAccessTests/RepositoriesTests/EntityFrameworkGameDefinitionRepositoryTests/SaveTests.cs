@@ -18,8 +18,9 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.EntityFrameworkGameDefin
     public class SaveTests : EntityFrameworkGameDefinitionRepositoryTestBase
     {
         [SetUp]
-        public void SetUp()
+        public override void SetUp()
         {
+            base.SetUp();
             gameDefinitionsDbSetMock.Expect(mock => mock.Add(gameDefinition));
         }
 

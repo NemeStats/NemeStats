@@ -128,7 +128,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="UnitTests\ControllerTests\AccountControllerTests\AccountControllerTestBase.cs" />
-    <Compile Include="UnitTests\ControllerTests\AccountControllerTests\ManageTests.cs" />
     <Compile Include="UnitTests\ControllerTests\AccountControllerTests\RegisterTests.cs" />
     <Compile Include="UnitTests\ControllerTests\GameDefinitionControllerTests\CreateHttpGetTests.cs" />
     <Compile Include="UnitTests\ControllerTests\GameDefinitionControllerTests\CreateHttpPostTests.cs" />

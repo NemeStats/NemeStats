@@ -23,7 +23,7 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.EntityFrameworkGameDefin
         protected GameDefinition gameDefinition;
 
         [SetUp]
-        public void SetUp()
+        public virtual void SetUp()
         {
             gameDefinition = new GameDefinition()
             {

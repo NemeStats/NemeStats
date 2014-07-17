@@ -6,13 +6,14 @@ using System.Threading.Tasks;
 
 namespace BusinessLogic.DataAccess
 {
+    //TODO make generic
     public abstract class EntityWithTechnicalKey : SingleColumnTechnicalKey
     {
         abstract public int Id { get; set; }
 
         public virtual bool AlreadyInDatabase()
         {
-            return Id != 0;
+            return Id != default(int);
         }
     }
 }

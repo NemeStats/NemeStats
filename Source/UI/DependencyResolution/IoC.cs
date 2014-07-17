@@ -16,6 +16,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 
+using BusinessLogic.DataAccess;
 using BusinessLogic.DataAccess.GamingGroups;
 using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.Logic;
@@ -25,6 +26,7 @@ using BusinessLogic.Models.User;
 using Microsoft.AspNet.Identity;
 using StructureMap;
 using StructureMap.Graph;
+using System.Data.Entity;
 using System.Web.Mvc;
 using UI.Filters;
 using UI.Models.PlayedGame;
@@ -40,6 +42,8 @@ namespace UI.DependencyResolution {
                                         scan.TheCallingAssembly();
                                         scan.WithDefaultConventions();
                                     });
+                            //TODO MAKE THIS PER REQUEST
+                            x.For<DbContext>().Use<NemeStatsDbContext>();
                             x.For<PlayerRepository>().Use<EntityFrameworkPlayerRepository>();
                             x.For<PlayedGameRepository>().Use<EntityFrameworkPlayedGameRepository>();
                             x.For<PlayedGameDetailsViewModelBuilder>().Use<PlayedGameDetailsViewModelBuilderImpl>();
@@ -53,7 +57,9 @@ namespace UI.DependencyResolution {
                             x.For<GamingGroupInvitationToInvitationViewModelTransformation>()
                                 .Use<GamingGroupInvitationToInvitationViewModelTransformationImpl>();
                             x.For<GamingGroupAccessGranter>().Use<EntityFrameworkGamingGroupAccessGranter>();
-
+                            x.For<GamingGroupInviteConsumer>().Use<GamingGroupInviteConsumerImpl>();
+                            x.For<Microsoft.AspNet.Identity.IUserStore<ApplicationUser>>()
+                                .Use<Microsoft.AspNet.Identity.EntityFramework.UserStore<ApplicationUser>>();
                             //TODO finish implementing http://lostechies.com/jimmybogard/2010/05/03/dependency-injection-in-asp-net-mvc-filters/
                             //x.For<IActionInvoker>().Use<InjectingActionInvoker>();
                         });
