@@ -7,6 +7,7 @@ using BusinessLogic.Models.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using UI.Filters;
@@ -58,9 +59,9 @@ namespace UI.Controllers
 
         [HttpPost]
         [UserContextAttribute(RequiresGamingGroup = false)]
-        public virtual ActionResult Create(string gamingGroupName, UserContext userContext)
+        public async virtual Task<ActionResult> Create(string gamingGroupName, UserContext userContext)
         {
-            gamingGroupCreator.CreateGamingGroupAsync(gamingGroupName, userContext);
+            await gamingGroupCreator.CreateGamingGroupAsync(gamingGroupName, userContext);
             return RedirectToAction(MVC.GamingGroup.ActionNames.Index);
         }
 

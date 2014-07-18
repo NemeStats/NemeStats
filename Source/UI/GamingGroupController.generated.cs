@@ -132,8 +132,10 @@ namespace UI.Controllers
             public _ViewNamesClass ViewNames { get { return s_ViewNames; } }
             public class _ViewNamesClass
             {
+                public readonly string Create = "Create";
                 public readonly string Index = "Index";
             }
+            public readonly string Create = "~/Views/GamingGroup/Create.cshtml";
             public readonly string Index = "~/Views/GamingGroup/Index.cshtml";
         }
     }
@@ -170,13 +172,13 @@ namespace UI.Controllers
         partial void CreateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string gamingGroupName, BusinessLogic.Models.User.UserContext userContext);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult Create(string gamingGroupName, BusinessLogic.Models.User.UserContext userContext)
+        public override System.Threading.Tasks.Task<System.Web.Mvc.ActionResult> Create(string gamingGroupName, BusinessLogic.Models.User.UserContext userContext)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Create);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "gamingGroupName", gamingGroupName);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "userContext", userContext);
             CreateOverride(callInfo, gamingGroupName, userContext);
-            return callInfo;
+            return System.Threading.Tasks.Task.FromResult(callInfo as ActionResult);
         }
 
         [NonAction]
