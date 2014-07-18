@@ -99,7 +99,7 @@ namespace BusinessLogic.Migrations
             AddColumn("dbo.PlayedGame", "GamingGroupId", c => c.Int(nullable: true));
             AddForeignKey("dbo.PlayedGame", "GamingGroupId", "dbo.GamingGroup", "Id");
             Sql("UPDATE dbo.PlayedGame SET GamingGroupID = (SELECT TOP 1 Id FROM GamingGroup)");
-            AddColumn("dbo.PlayedGame", "GamingGroupId", c => c.Int(nullable: false));
+            AlterColumn("dbo.PlayedGame", "GamingGroupId", c => c.Int(nullable: false));
         }
 
         public override void Down()
