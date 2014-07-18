@@ -1,4 +1,5 @@
-﻿using BusinessLogic.Models.User;
+﻿using BusinessLogic.DataAccess;
+using BusinessLogic.Models.User;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;

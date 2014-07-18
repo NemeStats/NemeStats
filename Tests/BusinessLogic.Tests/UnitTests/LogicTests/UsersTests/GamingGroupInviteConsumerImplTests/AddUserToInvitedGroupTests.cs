@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.DataAccess;
+using BusinessLogic.DataAccess.GamingGroups;
 using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.Logic.Users;
 using BusinessLogic.Models;
@@ -22,8 +23,10 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.GamingGroupInviteC
         private IUserStore<ApplicationUser> userStoreMock;
         private UserManager<ApplicationUser> userManager;
         private GamingGroupInviteConsumerImpl inviteConsumer;
+        private GamingGroupAccessGranter gamingGroupAccessGranter;
         private List<GamingGroupInvitation> gamingGroupInvitations;
         private UserContext userContext;
+        private ApplicationUser applicationUser;
 
         [SetUp]
         public void SetUp()
@@ -32,11 +35,13 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.GamingGroupInviteC
             gamingGroupRepositoryMock = MockRepository.GenerateMock<GamingGroupRepository>();
             userStoreMock = MockRepository.GenerateMock<IUserStore<ApplicationUser>>();
             userManager = new UserManager<ApplicationUser>(userStoreMock);
-            inviteConsumer = new GamingGroupInviteConsumerImpl(gamingGroupRepositoryMock, userManager);
+            gamingGroupAccessGranter = MockRepository.GenerateMock<GamingGroupAccessGranter>();
+            inviteConsumer = new GamingGroupInviteConsumerImpl(gamingGroupRepositoryMock, userManager, gamingGroupAccessGranter);
             userContext = new UserContext()
             {
                 ApplicationUserId = "user context"
             };
+            applicationUser = new ApplicationUser() { Id = userContext.ApplicationUserId };
             gamingGroupInvitations = new List<GamingGroupInvitation>();
         }
 
@@ -100,6 +105,28 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.GamingGroupInviteC
 
             Assert.AreEqual(invite.GamingGroupId, gamingGroupId);
         }
-         * */
+
+        [Test]
+        public async Task ItConsumesTheInvitation()
+        {
+            GamingGroupInvitation invitation = new GamingGroupInvitation();
+            gamingGroupInvitations.Add(invitation);
+            gamingGroupRepositoryMock.Expect(mock => mock.GetPendingGamingGroupInvitations(userContext))
+                .Repeat.Once()
+                .Return(gamingGroupInvitations);
+ 
+            Task<ApplicationUser> task = new Task<ApplicationUser>(() => applicationUser);
+            userStoreMock.Expect(mock => mock.FindByIdAsync(userContext.ApplicationUserId))
+                .Repeat.Once()
+                .Return(task);
+
+            int? gamingGroupId = await inviteConsumer.AddUserToInvitedGroupAsync(userContext);
+
+            gamingGroupAccessGranter.AssertWasCalled(
+                mock => mock.ConsumeInvitation(Arg<GamingGroupInvitation>
+                    .Matches(invite => invite == invitation),
+                     Arg<UserContext>.Is.Equal(userContext)));
+        }
+         * * */
     }
 }

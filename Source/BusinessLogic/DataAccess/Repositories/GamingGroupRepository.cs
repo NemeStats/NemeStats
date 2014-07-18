@@ -12,5 +12,6 @@ namespace BusinessLogic.DataAccess.Repositories
     {
         GamingGroup GetGamingGroupDetails(int gamingGroupId, UserContext userContext);
         IList<GamingGroupInvitation> GetPendingGamingGroupInvitations(UserContext userContext);
+        GamingGroup Save(GamingGroup gamingGroup, UserContext userContext);
     }
 }

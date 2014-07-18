@@ -62,5 +62,22 @@ namespace BusinessLogic.DataAccess.Repositories
 
             return invitations;
         }
+
+        public GamingGroup Save(GamingGroup gamingGroup, UserContext userContext)
+        {
+            if (gamingGroup.AlreadyInDatabase())
+            {
+                ValidateUserHasAccessToGamingGroup(gamingGroup.Id, userContext);
+                dbContext.Entry(gamingGroup).State = System.Data.Entity.EntityState.Modified;
+            }
+            else
+            {
+                dbContext.GamingGroups.Add(gamingGroup);
+            }
+
+            dbContext.SaveChanges();
+
+            return gamingGroup;
+        }
     }
 }

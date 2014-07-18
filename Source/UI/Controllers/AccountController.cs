@@ -23,15 +23,6 @@ namespace UI.Controllers
         protected UserContextBuilder userContextBuilder; 
         protected NemeStatsDbContext dbContext;
 
-        //TODO had to do this because StructureMap kept trying to use the other constructor.
-        //[DefaultConstructor]
-        //public AccountController()
-        //    //: this(new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new NemeStatsDbContext())))
-        //{
-        //    dbContext = new NemeStatsDbContext();
-        //    gamingGroupInviteConsumer = new GamingGroupInviteConsumerImpl()
-        //}
-
         public AccountController(
             UserManager<ApplicationUser> userManager, 
             GamingGroupInviteConsumer gamingGroupInviteConsumer, 

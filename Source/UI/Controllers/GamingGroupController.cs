@@ -1,6 +1,7 @@
 ﻿using BusinessLogic.DataAccess;
 using BusinessLogic.DataAccess.GamingGroups;
 using BusinessLogic.DataAccess.Repositories;
+using BusinessLogic.Logic.GamingGroups;
 using BusinessLogic.Models;
 using BusinessLogic.Models.User;
 using System;
@@ -21,17 +22,20 @@ namespace UI.Controllers
         internal GamingGroupToGamingGroupViewModelTransformation gamingGroupToGamingGroupViewModelTransformation;
         internal GamingGroupRepository gamingGroupRepository;
         internal GamingGroupAccessGranter gamingGroupAccessGranter;
+        internal GamingGroupCreator gamingGroupCreator;
 
         public GamingGroupController(
             NemeStatsDbContext dbContext,
             GamingGroupToGamingGroupViewModelTransformation gamingGroupToGamingGroupViewModelTransformation,
             GamingGroupRepository gamingGroupRespository,
-            GamingGroupAccessGranter gamingGroupAccessGranter)
+            GamingGroupAccessGranter gamingGroupAccessGranter,
+            GamingGroupCreator gamingGroupCreator)
         {
             this.db = dbContext;
             this.gamingGroupToGamingGroupViewModelTransformation = gamingGroupToGamingGroupViewModelTransformation;
             this.gamingGroupRepository = gamingGroupRespository;
             this.gamingGroupAccessGranter = gamingGroupAccessGranter;
+            this.gamingGroupCreator = gamingGroupCreator;
         }
 
         //
@@ -46,6 +50,7 @@ namespace UI.Controllers
         }
 
         [HttpGet]
+        [UserContextAttribute(RequiresGamingGroup = false)]
         public virtual ActionResult Create()
         {
             return View();
@@ -55,9 +60,9 @@ namespace UI.Controllers
         [UserContextAttribute(RequiresGamingGroup = false)]
         public virtual ActionResult Create(string gamingGroupName, UserContext userContext)
         {
-            return View();
+            gamingGroupCreator.CreateGamingGroupAsync(gamingGroupName, userContext);
+            return RedirectToAction(MVC.GamingGroup.ActionNames.Index);
         }
-
 
         //
         // POST: /GamingGroup/Delete/5

@@ -11,5 +11,6 @@ namespace BusinessLogic.DataAccess.GamingGroups
     public interface GamingGroupAccessGranter
     {
         GamingGroupInvitation CreateInvitation(string email, UserContext userContext);
+        GamingGroupInvitation ConsumeInvitation(GamingGroupInvitation gamingGroupInvitation, UserContext userContext);
     }
 }
