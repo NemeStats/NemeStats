@@ -37,7 +37,7 @@ namespace UI.Controllers
         }
 
         // GET: /PlayedGame/
-        [UserContextActionFilter]
+        [UserContextAttribute]
         public virtual ActionResult Index(UserContext userContext)
         {
             List<PlayedGame> playedGames = playedGameLogic.GetRecentGames(NUMBER_OF_RECENT_GAMES_TO_DISPLAY, userContext);
@@ -52,7 +52,7 @@ namespace UI.Controllers
         }
 
         // GET: /PlayedGame/Details/5
-        [UserContextActionFilter]
+        [UserContextAttribute]
         public virtual ActionResult Details(int? id, UserContext userContext)
         {
             if (id == null)
@@ -69,7 +69,7 @@ namespace UI.Controllers
         }
 
         // GET: /PlayedGame/Create
-        [UserContextActionFilter]
+        [UserContextAttribute]
         public virtual ActionResult Create(UserContext userContext)
         {
             ViewBag.GameDefinitionId = new SelectList(db.GameDefinitions, "Id", "Name");
@@ -84,7 +84,7 @@ namespace UI.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [UserContextActionFilter]
+        [UserContextAttribute]
         public virtual ActionResult Create(NewlyCompletedGame newlyCompletedGame, UserContext userContext)
         {
             if (ModelState.IsValid)
@@ -111,7 +111,7 @@ namespace UI.Controllers
         }
 
         // GET: /PlayedGame/Edit/5
-        [UserContextActionFilter]
+        [UserContextAttribute]
         public virtual ActionResult Edit(int? id, UserContext userContext)
         {
             if (id == null)
@@ -132,7 +132,7 @@ namespace UI.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [UserContextActionFilter]
+        [UserContextAttribute]
         public virtual ActionResult Edit([Bind(Include = "Id,GameDefinitionId,NumberOfPlayers")] PlayedGame playedgame, UserContext userContext)
         {
             if (ModelState.IsValid)
@@ -146,7 +146,7 @@ namespace UI.Controllers
         }
 
         // GET: /PlayedGame/Delete/5
-        [UserContextActionFilter]
+        [UserContextAttribute]
         public virtual ActionResult Delete(int? id, UserContext userContext)
         {
             if (id == null)
@@ -164,7 +164,7 @@ namespace UI.Controllers
         // POST: /PlayedGame/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        [UserContextActionFilter]
+        [UserContextAttribute]
         public virtual ActionResult DeleteConfirmed(int id, UserContext userContext)
         {
             PlayedGame playedgame = db.PlayedGames.Find(id);

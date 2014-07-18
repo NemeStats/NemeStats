@@ -42,14 +42,14 @@ namespace UI.Controllers
         }
 
         // GET: /Player/
-        [UserContextActionFilter]
+        [UserContextAttribute]
         public virtual ActionResult Index(UserContext userContext)
         {
             return View(MVC.Player.Views.Index, playerRepository.GetAllPlayers(true, userContext));
         }
 
         // GET: /Player/Details/5
-        [UserContextActionFilter]
+        [UserContextAttribute]
         public virtual ActionResult Details(int? id, UserContext userContext)
         {
             if(!id.HasValue)
@@ -86,7 +86,7 @@ namespace UI.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [UserContextActionFilter]
+        [UserContextAttribute]
         public virtual ActionResult Create([Bind(Include = "Id,Name,Active")] Player player, UserContext userContext)
         {
             if (ModelState.IsValid)
@@ -99,7 +99,7 @@ namespace UI.Controllers
         }
 
         // GET: /Player/Edit/5
-        [UserContextActionFilter]
+        [UserContextAttribute]
         public virtual ActionResult Edit(int? id, UserContext userContext)
         {
             if (id == null)
@@ -126,7 +126,7 @@ namespace UI.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [UserContextActionFilter]
+        [UserContextAttribute]
         public virtual ActionResult Edit([Bind(Include = "Id,Name,Active,GamingGroupId")] Player player, UserContext userContext)
         {
             if (ModelState.IsValid)
@@ -138,7 +138,7 @@ namespace UI.Controllers
         }
 
         // GET: /Player/Delete/5
-        [UserContextActionFilter]
+        [UserContextAttribute]
         public virtual ActionResult Delete(int? id, UserContext userContext)
         {
             if (id == null)
@@ -163,7 +163,7 @@ namespace UI.Controllers
         // POST: /Player/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        [UserContextActionFilter]
+        [UserContextAttribute]
         public virtual ActionResult DeleteConfirmed(int id, UserContext userContext)
         {
             try

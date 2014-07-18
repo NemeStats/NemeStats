@@ -83,6 +83,7 @@ namespace UI.Controllers
         public class ActionNamesClass
         {
             public readonly string Index = "Index";
+            public readonly string Create = "Create";
             public readonly string GrantAccess = "GrantAccess";
         }
 
@@ -90,6 +91,7 @@ namespace UI.Controllers
         public class ActionNameConstants
         {
             public const string Index = "Index";
+            public const string Create = "Create";
             public const string GrantAccess = "GrantAccess";
         }
 
@@ -100,6 +102,15 @@ namespace UI.Controllers
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionParamsClass_Index
         {
+            public readonly string userContext = "userContext";
+        }
+        static readonly ActionParamsClass_Create s_params_Create = new ActionParamsClass_Create();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_Create CreateParams { get { return s_params_Create; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_Create
+        {
+            public readonly string gamingGroupName = "gamingGroupName";
             public readonly string userContext = "userContext";
         }
         static readonly ActionParamsClass_GrantAccess s_params_GrantAccess = new ActionParamsClass_GrantAccess();
@@ -141,6 +152,30 @@ namespace UI.Controllers
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Index);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "userContext", userContext);
             IndexOverride(callInfo, userContext);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void CreateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult Create()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Create);
+            CreateOverride(callInfo);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void CreateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string gamingGroupName, BusinessLogic.Models.User.UserContext userContext);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult Create(string gamingGroupName, BusinessLogic.Models.User.UserContext userContext)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Create);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "gamingGroupName", gamingGroupName);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "userContext", userContext);
+            CreateOverride(callInfo, gamingGroupName, userContext);
             return callInfo;
         }
 

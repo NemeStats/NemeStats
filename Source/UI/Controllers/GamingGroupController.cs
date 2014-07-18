@@ -36,20 +36,33 @@ namespace UI.Controllers
 
         //
         // GET: /GamingGroup
-        [UserContextActionFilter]
+        [UserContextAttribute]
         public virtual ActionResult Index(UserContext userContext)
         {
-            //TODO should redirect to some other action if the user doesn't have a gaming group (rather than NPE here)
             GamingGroup gamingGroup = gamingGroupRepository.GetGamingGroupDetails(userContext.GamingGroupId.Value, userContext);
             GamingGroupViewModel viewModel = gamingGroupToGamingGroupViewModelTransformation.Build(gamingGroup);
 
             return View(MVC.GamingGroup.Views.Index, viewModel);
         }
 
+        [HttpGet]
+        public virtual ActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [UserContextAttribute(RequiresGamingGroup = false)]
+        public virtual ActionResult Create(string gamingGroupName, UserContext userContext)
+        {
+            return View();
+        }
+
+
         //
         // POST: /GamingGroup/Delete/5
         [HttpPost]
-        [UserContextActionFilter]
+        [UserContextAttribute]
         public virtual ActionResult GrantAccess(string inviteeEmail, UserContext userContext)
         {
             gamingGroupAccessGranter.CreateInvitation(inviteeEmail, userContext);

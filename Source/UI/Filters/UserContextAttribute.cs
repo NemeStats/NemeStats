@@ -11,21 +11,25 @@ using BusinessLogic.Logic.Users;
 
 namespace UI.Filters
 {
-    //TODO turn this into UserIdActionFilter. no need to use username since you can get the ID off identity.
-    public class UserContextActionFilter : ActionFilterAttribute
+    public class UserContextAttribute : ActionFilterAttribute
     {
         internal const string USER_CONTEXT_KEY = "userContext";
         internal const string EXCEPTION_MESSAGE_USER_NOT_AUTHENTICATED = "User is not authenticated.";
 
         internal UserContextBuilder userContextBuilder = new UserContextBuilderImpl();
 
-        //TODO get this dependency injection working through StructureMap instead of this hackiness.
+        public bool RequiresGamingGroup { get; set; }
+
+        public UserContextAttribute()
+        {
+            RequiresGamingGroup = true;
+        }
+
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
-            {
-                OnActionExecuting(filterContext, dbContext);
-            }
+            NemeStatsDbContext dbContext = DependencyResolver.Current.GetService<NemeStatsDbContext>();
+
+            OnActionExecuting(filterContext, dbContext);
 
             base.OnActionExecuting(filterContext);
         }
@@ -40,6 +44,14 @@ namespace UI.Filters
             if (filterContext.ActionParameters.ContainsKey(USER_CONTEXT_KEY))
             {
                 UserContext userContext = userContextBuilder.GetUserContext(filterContext.HttpContext.User.Identity.GetUserId(), dbContext);
+
+                if(RequiresGamingGroup)
+                {
+                    if(!userContext.GamingGroupId.HasValue)
+                    {
+                        filterContext.Result = new RedirectToRouteResult(MVC.GamingGroup.Create().GetRouteValueDictionary());
+                    }
+                }
 
                 filterContext.ActionParameters[USER_CONTEXT_KEY] = userContext;
             }

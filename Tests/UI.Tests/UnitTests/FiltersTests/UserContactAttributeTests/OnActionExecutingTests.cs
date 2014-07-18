@@ -1,18 +1,14 @@
 ﻿using BusinessLogic.DataAccess;
-using BusinessLogic.Logic;
 using BusinessLogic.Logic.Users;
 using BusinessLogic.Models.User;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.Security.Principal;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 using UI.Filters;
 
 namespace UI.Tests.UnitTests.FiltersTests.UserNameActionFilterTests
@@ -21,7 +17,7 @@ namespace UI.Tests.UnitTests.FiltersTests.UserNameActionFilterTests
     public class OnActionExecutingTests
     {
         private ActionExecutingContext actionExecutingContext;
-        private UserContextActionFilter userContextActionFilter;
+        private UserContextAttribute userContextActionFilter;
         private IIdentity identity;
         private UserContext userContext;
         private NemeStatsDbContext dbContextMock;
@@ -32,7 +28,7 @@ namespace UI.Tests.UnitTests.FiltersTests.UserNameActionFilterTests
             actionExecutingContext = new ActionExecutingContext();
             actionExecutingContext.ActionParameters = new Dictionary<string, object>();
             //need to simulate like the parameter exists on the method
-            actionExecutingContext.ActionParameters[UserContextActionFilter.USER_CONTEXT_KEY] = null;
+            actionExecutingContext.ActionParameters[UserContextAttribute.USER_CONTEXT_KEY] = null;
 
             HttpContextBase httpContextBase = MockRepository.GenerateMock<HttpContextBase>();
             actionExecutingContext.HttpContext = httpContextBase;
@@ -51,7 +47,7 @@ namespace UI.Tests.UnitTests.FiltersTests.UserNameActionFilterTests
                 .Repeat.Once()
                 .Return(true);
 
-            userContextActionFilter = new UserContextActionFilter();
+            userContextActionFilter = new UserContextAttribute();
             dbContextMock = MockRepository.GenerateMock<NemeStatsDbContext>();
 
             UserContextBuilder userContextBuilderMock = MockRepository.GenerateMock<UserContextBuilder>();
@@ -76,7 +72,7 @@ namespace UI.Tests.UnitTests.FiltersTests.UserNameActionFilterTests
                 .Return(false);
 
             var exception = Assert.Throws<InvalidOperationException>(() => userContextActionFilter.OnActionExecuting(actionExecutingContext, dbContextMock));
-            Assert.AreEqual(UserContextActionFilter.EXCEPTION_MESSAGE_USER_NOT_AUTHENTICATED, exception.Message);
+            Assert.AreEqual(UserContextAttribute.EXCEPTION_MESSAGE_USER_NOT_AUTHENTICATED, exception.Message);
         }
 
         [Test]
@@ -84,7 +80,47 @@ namespace UI.Tests.UnitTests.FiltersTests.UserNameActionFilterTests
         {
             userContextActionFilter.OnActionExecuting(actionExecutingContext, dbContextMock);
 
-            Assert.AreEqual(userContext, actionExecutingContext.ActionParameters[UserContextActionFilter.USER_CONTEXT_KEY]);
+            Assert.AreEqual(userContext, actionExecutingContext.ActionParameters[UserContextAttribute.USER_CONTEXT_KEY]);
+        }
+
+        [Test]
+        public void IfAGamingGroupIsRequiredAndUserDoesntHaveAGaminGroupItRedirectsUserToTheCreateAction()
+        {
+            userContextActionFilter.RequiresGamingGroup = true;
+            userContext.GamingGroupId = null;
+
+            userContextActionFilter.OnActionExecuting(actionExecutingContext, dbContextMock);
+
+            RouteValueDictionary dictionary = new RouteValueDictionary();
+            dictionary.Add("Area", "");
+            dictionary.Add("Controller", "GamingGroup");
+            dictionary.Add("Action", "Create");
+            //TODO can't get the GetRouteValueDictionary extension method to work here  
+            //new RedirectToRouteResult(MVC.GamingGroup.Create().GetRouteValueDictionary());
+            RedirectToRouteResult actualResult = (RedirectToRouteResult)actionExecutingContext.Result;
+            Assert.AreEqual(dictionary, actualResult.RouteValues);
+        }
+
+        [Test]
+        public void ItDoesntRedirectIfTheUserHasAGamingGroup()
+        {
+            userContextActionFilter.RequiresGamingGroup = true;
+            userContext.GamingGroupId = 1;
+
+            userContextActionFilter.OnActionExecuting(actionExecutingContext, dbContextMock);
+
+            Assert.Null(actionExecutingContext.Result);
+        }
+
+        [Test]
+        public void ItDoesntRedirectIfGamingGroupIsNotRequired()
+        {
+            userContextActionFilter.RequiresGamingGroup = false;
+            userContext.GamingGroupId = null;
+
+            userContextActionFilter.OnActionExecuting(actionExecutingContext, dbContextMock);
+
+            Assert.Null(actionExecutingContext.Result);
         }
     }
 }
