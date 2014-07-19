@@ -34,7 +34,8 @@
         <td>
             @foreach (var result in item.PlayerResults)
             {
-                @result.PlayerName <text>:</text>
+                @Html.ActionLink(result.PlayerName, "Details", "Player", new { id = result.PlayerId }, new { })
+                <text>:</text>
                 @Html.GameResults(result);
                 <br/>
             }

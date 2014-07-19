@@ -12,11 +12,11 @@
 	<hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.ActionLink(Model.GameDefinitionName, "Details", "GameDefinition", new { id = Model.GameDefinitionId }, new { })
+            Game Played
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.GameDefinitionName)
+            @Html.ActionLink(Model.GameDefinitionName, "Details", "GameDefinition", new { id = Model.GameDefinitionId }, new { })
         </dd>
         <dt>
             Date Played
@@ -36,7 +36,8 @@
 <div>
     @foreach (var result in Model.PlayerResults)
     {
-        @result.PlayerName <text>- </text>
+        @Html.ActionLink(@result.PlayerName, "Details", "Player", new { id = result.PlayerId }, new { })
+        <text>- </text>
         @Html.GameResults(result);
         <br />
     }

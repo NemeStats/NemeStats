@@ -6,10 +6,14 @@
 
     <img src="~/Content/Images/NemeStats.png" style="width:100%" />
     <h2>Keep Track Of Your Nemesis</h2>
-    <p class="lead">NemeStats is a for-fun application built to learn some technologies (Entity Framework code first with migrations, OAuth 2.0, etc.)
-    as well as to deliberately practice Clean Code principles as preached by Uncle Bob Martin. The purpose of the application is to
-    record played games among a relatively stable group of players. The output will be an interesting set of metrics around game rank over
-    the dimensions of player, number of players, game played, etc.</p>
+    <p class="lead">NemeStats is a free web application for recording games played among a relatively stable group of players. 
+    The output will be an interesting set of metrics around game rank over
+    the dimensions of player, number of players, game played, etc. Just register a new account, set up your games and players, and start recording!
+    </p>
+    <p>
+    NemeStats is open source and accepting pull requests and feature requests 
+    via <a href='https://github.com/jakejgordon/NemeStats' target="_blank">GitHub</a>.
+    </p>
 </div>
 
 <div class="row">
@@ -32,13 +36,6 @@
         <p>
             Record the results of your games here.
         </p>
-        <p>@Html.ActionLink("Record Results", "Index", "PlayedGame")</p>
-    </div>
-    <div class="col-md-4">
-        <h2>View Statistics</h2>
-        <p>
-            View statistics here.
-        </p>
-        <p>@Html.ActionLink("View Statistics", "Index", "GameDefinition")</p>
+        <p>@Html.ActionLink("Game Results", "Index", "PlayedGame")</p>
     </div>
 </div>
