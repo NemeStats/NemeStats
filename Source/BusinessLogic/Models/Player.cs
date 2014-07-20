@@ -12,6 +12,11 @@ namespace BusinessLogic.Models
 {
     public class Player : EntityWithTechnicalKey
     {
+        public Player()
+        {
+            Active = true;
+        }
+
         public override int Id { get; set; }
         [Index("IX_ID_AND_NAME", 1, IsUnique = true)]
         public int GamingGroupId { get; set; }

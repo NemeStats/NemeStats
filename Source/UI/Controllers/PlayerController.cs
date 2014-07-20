@@ -79,7 +79,7 @@ namespace UI.Controllers
         // GET: /Player/Create
         public virtual ActionResult Create()
         {
-            return View();
+            return View(MVC.Player.Views.Create, new Player());
         }
 
         // POST: /Player/Create
