@@ -18,7 +18,7 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.EntityFrameworkGamingGro
     {
         protected EntityFrameworkGamingGroupRepository gamingGroupRepositoryPartialMock;
         protected NemeStatsDbContext dbContextMock;
-        protected UserContext userContext;
+        protected ApplicationUser currentUser;
         protected GamingGroup gamingGroup;
 
         [SetUp]
@@ -28,10 +28,10 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.EntityFrameworkGamingGro
             {
                 Name = "gaming group name"
             };
-            userContext = new UserContext()
+            currentUser = new ApplicationUser()
             {
-                ApplicationUserId = "user id",
-                GamingGroupId = 999
+                Id = "user id",
+                CurrentGamingGroupId = 999
             };
             dbContextMock = MockRepository.GenerateMock<NemeStatsDbContext>();
 

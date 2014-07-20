@@ -16,7 +16,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         [Test]
         public void ItRedirectsToTheIndexAction()
         {
-            RedirectToRouteResult result = playerController.Edit(new Player(), userContext) as RedirectToRouteResult;
+            RedirectToRouteResult result = playerController.Edit(new Player(), currentUser) as RedirectToRouteResult;
 
             Assert.AreEqual(MVC.Player.ActionNames.Index, result.RouteValues["action"]);
         }
@@ -26,7 +26,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         {
             playerController.ModelState.AddModelError("key", "message");
 
-            ViewResult result = playerController.Edit(new Player(), userContext) as ViewResult;
+            ViewResult result = playerController.Edit(new Player(), currentUser) as ViewResult;
 
             Assert.AreEqual(MVC.Player.Views.Edit, result.ViewName);
         }
@@ -37,7 +37,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
             Player player = new Player();
             playerController.ModelState.AddModelError("key", "message");
 
-            ViewResult result = playerController.Edit(player, userContext) as ViewResult;
+            ViewResult result = playerController.Edit(player, currentUser) as ViewResult;
 
             Assert.AreEqual(player, result.Model);
         }
@@ -47,9 +47,9 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         {
             Player player = new Player();
 
-            playerController.Edit(player, userContext);
+            playerController.Edit(player, currentUser);
 
-            playerRepositoryMock.AssertWasCalled(mock => mock.Save(player, userContext));
+            playerRepositoryMock.AssertWasCalled(mock => mock.Save(player, currentUser));
         }
     }
 }

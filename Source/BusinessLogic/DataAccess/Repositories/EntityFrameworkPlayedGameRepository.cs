@@ -22,18 +22,18 @@ namespace BusinessLogic.DataAccess.Repositories
             dbContext = context;
         }
 
-        public PlayedGame GetPlayedGameDetails(int playedGameId, UserContext requestingUserContext)
+        public PlayedGame GetPlayedGameDetails(int playedGameId, ApplicationUser currentUser)
         {         
             return dbContext.PlayedGames.Where(playedGame => playedGame.Id == playedGameId
-                && playedGame.GamingGroupId == requestingUserContext.GamingGroupId)
+                && playedGame.GamingGroupId == currentUser.CurrentGamingGroupId)
                 .Include(playedGame => playedGame.GameDefinition)
                 .Include(playedGame => playedGame.PlayerGameResults)
                 .FirstOrDefault();   
         }
 
-        public List<PlayedGame> GetRecentGames(int numberOfGames, UserContext requestingUserContext)
+        public List<PlayedGame> GetRecentGames(int numberOfGames, ApplicationUser currentUser)
         {
-            List<PlayedGame> playedGames = dbContext.PlayedGames.Where(game => game.GamingGroupId == requestingUserContext.GamingGroupId)
+            List<PlayedGame> playedGames = dbContext.PlayedGames.Where(game => game.GamingGroupId == currentUser.CurrentGamingGroupId)
                 .Include(playedGame => playedGame.GameDefinition)
                 .Include(playedGame => playedGame.PlayerGameResults
                     .Select(playerGameResult => playerGameResult.Player))
@@ -51,14 +51,14 @@ namespace BusinessLogic.DataAccess.Repositories
         }
 
         //TODO need to have validation logic here (or on PlayedGame similar to what is on NewlyCompletedGame)
-        public PlayedGame CreatePlayedGame(NewlyCompletedGame newlyCompletedGame, UserContext requestingUserContext)
+        public PlayedGame CreatePlayedGame(NewlyCompletedGame newlyCompletedGame, ApplicationUser currentUser)
         {
             List<PlayerGameResult> playerGameResults = TransformNewlyCompletedGamePlayerRanksToPlayerGameResults(newlyCompletedGame);
 
             PlayedGame playedGame = TransformNewlyCompletedGameIntoPlayedGame(
                 newlyCompletedGame, 
                 //TODO should throw some kind of exception if GamingGroupId is null
-                requestingUserContext.GamingGroupId.Value, 
+                currentUser.CurrentGamingGroupId.Value, 
                 playerGameResults);
 
             dbContext.PlayedGames.Add(playedGame);

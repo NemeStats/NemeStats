@@ -23,17 +23,17 @@ namespace BusinessLogic.Logic.GamingGroups
             this.userManager = userManager;
         }
 
-        public async Task<GamingGroup> CreateGamingGroupAsync(string gamingGroupName, UserContext userContext)
+        public async Task<GamingGroup> CreateGamingGroupAsync(string gamingGroupName, ApplicationUser currentUser)
         {
             ValidateGamingGroupName(gamingGroupName);
 
             GamingGroup gamingGroup = new GamingGroup()
             {
-                OwningUserId = userContext.ApplicationUserId,
+                OwningUserId = currentUser.Id,
                 Name = gamingGroupName
             };
-            GamingGroup returnGroup = gamingGroupRepository.Save(gamingGroup, userContext);
-            ApplicationUser user = await userManager.FindByIdAsync(userContext.ApplicationUserId);
+            GamingGroup returnGroup = gamingGroupRepository.Save(gamingGroup, currentUser);
+            ApplicationUser user = await userManager.FindByIdAsync(currentUser.Id);
             user.CurrentGamingGroupId = returnGroup.Id;
             await userManager.UpdateAsync(user);
             return returnGroup;

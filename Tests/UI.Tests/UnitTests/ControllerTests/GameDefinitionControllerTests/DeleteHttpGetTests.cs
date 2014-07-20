@@ -19,10 +19,10 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
         public void ItReturnsAnEditView()
         {
             int gameDefinitionId = 15;
-            gameDefinitionRepository.Expect(mock => mock.GetGameDefinition(gameDefinitionId, userContext))
+            gameDefinitionRepository.Expect(mock => mock.GetGameDefinition(gameDefinitionId, currentUser))
                 .Repeat.Once()
                 .Return(new GameDefinition());
-            ViewResult viewResult = gameDefinitionControllerPartialMock.Delete(gameDefinitionId, userContext) as ViewResult;
+            ViewResult viewResult = gameDefinitionControllerPartialMock.Delete(gameDefinitionId, currentUser) as ViewResult;
 
             Assert.AreEqual(MVC.GameDefinition.Views.Delete, viewResult.ViewName);
         }
@@ -34,11 +34,11 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
             {
                 Id = 151
             };
-            gameDefinitionRepository.Expect(mock => mock.GetGameDefinition(gameDefinition.Id, userContext))
+            gameDefinitionRepository.Expect(mock => mock.GetGameDefinition(gameDefinition.Id, currentUser))
                 .Repeat.Once()
                 .Return(gameDefinition);
 
-            ViewResult viewResult = gameDefinitionControllerPartialMock.Delete(gameDefinition.Id, userContext) as ViewResult;
+            ViewResult viewResult = gameDefinitionControllerPartialMock.Delete(gameDefinition.Id, currentUser) as ViewResult;
 
             Assert.AreEqual(gameDefinition, viewResult.ViewData.Model);
         }
@@ -46,7 +46,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
         [Test]
         public void ItReturnsABadRequestHttpStatusCodeIfNoIdIsPassed()
         {
-            HttpStatusCodeResult httpResult = gameDefinitionControllerPartialMock.Delete(null, userContext) as HttpStatusCodeResult;
+            HttpStatusCodeResult httpResult = gameDefinitionControllerPartialMock.Delete(null, currentUser) as HttpStatusCodeResult;
 
             Assert.AreEqual((int)HttpStatusCode.BadRequest, httpResult.StatusCode);
         }
@@ -54,9 +54,9 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
         [Test]
         public void ItReturnsANotFoundHttpStatusCodeIfNoGameDefinitionIsFound()
         {
-            gameDefinitionRepository.Expect(mock => mock.GetGameDefinition(-1, userContext))
+            gameDefinitionRepository.Expect(mock => mock.GetGameDefinition(-1, currentUser))
                 .Throw(new KeyNotFoundException());
-            HttpStatusCodeResult httpResult = gameDefinitionControllerPartialMock.Delete(-1, userContext) as HttpStatusCodeResult;
+            HttpStatusCodeResult httpResult = gameDefinitionControllerPartialMock.Delete(-1, currentUser) as HttpStatusCodeResult;
 
             Assert.AreEqual((int)HttpStatusCode.NotFound, httpResult.StatusCode);
         }
@@ -64,9 +64,9 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
         [Test]
         public void ItReturnsAnUnauthorizedAccessHttpStatusCodeIfTheUserIsNotAuthorized()
         {
-            gameDefinitionRepository.Expect(mock => mock.GetGameDefinition(1, userContext))
+            gameDefinitionRepository.Expect(mock => mock.GetGameDefinition(1, currentUser))
                 .Throw(new UnauthorizedAccessException());
-            HttpStatusCodeResult httpResult = gameDefinitionControllerPartialMock.Delete(1, userContext) as HttpStatusCodeResult;
+            HttpStatusCodeResult httpResult = gameDefinitionControllerPartialMock.Delete(1, currentUser) as HttpStatusCodeResult;
 
             Assert.AreEqual((int)HttpStatusCode.Unauthorized, httpResult.StatusCode);
         }

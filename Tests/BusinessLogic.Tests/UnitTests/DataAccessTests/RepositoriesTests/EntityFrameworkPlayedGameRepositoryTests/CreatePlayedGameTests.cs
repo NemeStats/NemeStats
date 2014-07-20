@@ -21,23 +21,19 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGameRepositoryTests
         private NemeStatsDbContext dbContext;
         private PlayedGameRepository playedGameLogicPartialMock;
         private DbSet<PlayedGame> playedGamesDbSet ;
-        private UserContextBuilder userContextBuilder;
         private string currentUserId = "id of current user";
-        private UserContext userContext;
+        private ApplicationUser currentUser;
 
         [SetUp]
         public void TestSetUp()
         {
             dbContext = MockRepository.GenerateMock<NemeStatsDbContext>();
-            userContextBuilder = MockRepository.GenerateMock<UserContextBuilder>();
-            userContext = new UserContext()
+            currentUser = new ApplicationUser()
             {
-                ApplicationUserId = "user id",
-                GamingGroupId = 1513
+                Id = "user id",
+                CurrentGamingGroupId = 1513
             };
-            userContextBuilder.Expect(builder => builder.GetUserContext(currentUserId, dbContext))
-                .Repeat.Once()
-                .Return(userContext);
+    
             playedGameLogicPartialMock = MockRepository.GeneratePartialMock<EntityFrameworkPlayedGameRepository>(dbContext);
             playedGamesDbSet = MockRepository.GenerateMock<DbSet<PlayedGame>>();
             dbContext.Expect(context => context.PlayedGames)
@@ -60,7 +56,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGameRepositoryTests
             playerRanks.Add(new PlayerRank() { PlayerId = playerTwoId, GameRank = playerTwoRank });
             newlyCompletedGame.PlayerRanks = playerRanks;
 
-            playedGameLogicPartialMock.CreatePlayedGame(newlyCompletedGame, userContext);
+            playedGameLogicPartialMock.CreatePlayedGame(newlyCompletedGame, currentUser);
 
             dbContext.AssertWasCalled(context => context.PlayedGames);
 
@@ -97,9 +93,9 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGameRepositoryTests
             };
 
             int playerOneExpectedGordonPoints = GordonPoints.CalculateGordonPoints(playerRanks.Count, playerOneGameRank);
-            UserContext user = new UserContext();
+            ApplicationUser user = new ApplicationUser();
 
-            PlayedGame playedGame = playedGameLogicPartialMock.CreatePlayedGame(newlyCompletedGame, userContext);
+            PlayedGame playedGame = playedGameLogicPartialMock.CreatePlayedGame(newlyCompletedGame, currentUser);
 
             Assert.AreEqual(playerOneExpectedGordonPoints, playedGame.PlayerGameResults
                                                     .First(gameResult => gameResult.PlayerId == playerOneId)
@@ -125,10 +121,10 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGameRepositoryTests
                 .Repeat.Once()
                 .Return(new List<PlayerGameResult>());
 
-            playedGameLogicPartialMock.CreatePlayedGame(newlyCompletedGame, userContext);
+            playedGameLogicPartialMock.CreatePlayedGame(newlyCompletedGame, currentUser);
 
             playedGamesDbSet.AssertWasCalled(dbSet => dbSet.Add(
-                    Arg<PlayedGame>.Matches(game => game.GamingGroupId == userContext.GamingGroupId)));
+                    Arg<PlayedGame>.Matches(game => game.GamingGroupId == currentUser.CurrentGamingGroupId)));
         }
     }
 }

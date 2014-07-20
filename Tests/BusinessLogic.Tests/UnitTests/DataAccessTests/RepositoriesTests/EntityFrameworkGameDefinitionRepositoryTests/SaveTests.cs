@@ -27,7 +27,7 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.EntityFrameworkGameDefin
         [Test]
         public void ItAddsTheGameDefinitionIfItIsntAlreadyInTheDatabase()
         {
-            gameDefinitionRepositoryPartialMock.Save(gameDefinition, userContext);
+            gameDefinitionRepositoryPartialMock.Save(gameDefinition, currentUser);
 
             gameDefinitionsDbSetMock.AssertWasCalled(mock => mock.Add(gameDefinition));
             dbContextMock.AssertWasCalled(mock => mock.SaveChanges());
@@ -44,7 +44,7 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.EntityFrameworkGameDefin
                 .Return(dbEntityEntry);
             dbEntityEntry.Expect(mock => mock.State = EntityState.Modified);
 
-            gameDefinitionRepositoryPartialMock.Save(gameDefinition, userContext);
+            gameDefinitionRepositoryPartialMock.Save(gameDefinition, currentUser);
 
             dbEntityEntry.VerifyAllExpectations();
             dbContextMock.AssertWasCalled(mock => mock.SaveChanges());
@@ -58,26 +58,26 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.EntityFrameworkGameDefin
             mismatchedGameDefinition.Expect(mock => mock.AlreadyInDatabase())
                 .Repeat.Once()
                 .Return(true);
-            gameDefinitionRepositoryPartialMock.Expect(mock => mock.ValidateUserHasAccessToGameDefinition(userContext, mismatchedGameDefinition));
+            gameDefinitionRepositoryPartialMock.Expect(mock => mock.ValidateUserHasAccessToGameDefinition(currentUser, mismatchedGameDefinition));
             DbEntityEntry<GameDefinition> dbEntityEntry = MockRepository.GeneratePartialMock<DbEntityEntry<GameDefinition>>();
             dbContextMock.Expect(mock => mock.Entry(mismatchedGameDefinition))
                 .Repeat.Once()
                 .Return(dbEntityEntry);
 
-            gameDefinitionRepositoryPartialMock.Save(mismatchedGameDefinition, userContext);
+            gameDefinitionRepositoryPartialMock.Save(mismatchedGameDefinition, currentUser);
 
             gameDefinitionRepositoryPartialMock.AssertWasCalled(
-                mock => mock.ValidateUserHasAccessToGameDefinition(userContext, mismatchedGameDefinition));
+                mock => mock.ValidateUserHasAccessToGameDefinition(currentUser, mismatchedGameDefinition));
         }*/
 
         [Test]
         public void ItSetsTheGamingGroupIdToThatOfTheCurrentUser()
         {
-            gameDefinitionRepositoryPartialMock.Save(gameDefinition, userContext);
+            gameDefinitionRepositoryPartialMock.Save(gameDefinition, currentUser);
 
             gameDefinitionsDbSetMock.AssertWasCalled(mock => mock.Add(
                 Arg<GameDefinition>.Matches(
-                    gameDef => gameDef.GamingGroupId == userContext.GamingGroupId)));
+                    gameDef => gameDef.GamingGroupId == currentUser.CurrentGamingGroupId)));
         }
     }
 }

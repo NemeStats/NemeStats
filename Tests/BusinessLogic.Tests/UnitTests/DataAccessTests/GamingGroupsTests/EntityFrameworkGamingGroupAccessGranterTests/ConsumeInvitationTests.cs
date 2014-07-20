@@ -18,11 +18,11 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.GamingGroupsTests.Entity
         {
             GamingGroupInvitation invitation = new GamingGroupInvitation();
 
-            gamingGroupAccessGranter.ConsumeInvitation(invitation, userContext);
+            gamingGroupAccessGranter.ConsumeInvitation(invitation, currentUser);
 
             gamingGroupInvitationRepositoryMock.AssertWasCalled(mock => mock.Save(
                 Arg<GamingGroupInvitation>.Matches(invite => invite.DateRegistered.Value.Date == DateTime.UtcNow.Date),
-                Arg<UserContext>.Is.Same(userContext)));
+                Arg<ApplicationUser>.Is.Same(currentUser)));
         }
 
         [Test]
@@ -30,11 +30,11 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.GamingGroupsTests.Entity
         {
             GamingGroupInvitation invitation = new GamingGroupInvitation();
 
-            gamingGroupAccessGranter.ConsumeInvitation(invitation, userContext);
+            gamingGroupAccessGranter.ConsumeInvitation(invitation, currentUser);
 
             gamingGroupInvitationRepositoryMock.AssertWasCalled(mock => mock.Save(
-                Arg<GamingGroupInvitation>.Matches(invite => invite.RegisteredUserId == userContext.ApplicationUserId),
-                Arg<UserContext>.Is.Same(userContext)));
+                Arg<GamingGroupInvitation>.Matches(invite => invite.RegisteredUserId == currentUser.Id),
+                Arg<ApplicationUser>.Is.Same(currentUser)));
         }
     }
 }

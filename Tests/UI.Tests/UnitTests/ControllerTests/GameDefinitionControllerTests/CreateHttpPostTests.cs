@@ -18,7 +18,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
         {
             gameDefinitionControllerPartialMock.ModelState.AddModelError("key", "message");
 
-            ViewResult actionResult = gameDefinitionControllerPartialMock.Create(null, userContext) as ViewResult;
+            ViewResult actionResult = gameDefinitionControllerPartialMock.Create(null, currentUser) as ViewResult;
 
             Assert.AreEqual(MVC.GameDefinition.Views.Create, actionResult.ViewName);
         }
@@ -29,7 +29,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
             GameDefinition gameDefinition = new GameDefinition();
             gameDefinitionControllerPartialMock.ModelState.AddModelError("key", "message");
 
-            ViewResult actionResult = gameDefinitionControllerPartialMock.Create(gameDefinition, userContext) as ViewResult;
+            ViewResult actionResult = gameDefinitionControllerPartialMock.Create(gameDefinition, currentUser) as ViewResult;
             GameDefinition actualViewModel = (GameDefinition)actionResult.ViewData.Model;
 
             Assert.AreSame(gameDefinition, actualViewModel);
@@ -40,9 +40,9 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
         {
             GameDefinition gameDefinition = new GameDefinition();
 
-            gameDefinitionControllerPartialMock.Create(gameDefinition, userContext);
+            gameDefinitionControllerPartialMock.Create(gameDefinition, currentUser);
 
-            gameDefinitionRepository.AssertWasCalled(repo => repo.Save(gameDefinition, userContext));
+            gameDefinitionRepository.AssertWasCalled(repo => repo.Save(gameDefinition, currentUser));
         }
 
         [Test]
@@ -50,7 +50,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
         {
             GameDefinition gameDefinition = new GameDefinition();
 
-            RedirectToRouteResult redirectToRouteResult = gameDefinitionControllerPartialMock.Create(gameDefinition, userContext) as RedirectToRouteResult;
+            RedirectToRouteResult redirectToRouteResult = gameDefinitionControllerPartialMock.Create(gameDefinition, currentUser) as RedirectToRouteResult;
 
             Assert.AreEqual(MVC.GameDefinition.ActionNames.Index, redirectToRouteResult.RouteValues["action"]);
         }

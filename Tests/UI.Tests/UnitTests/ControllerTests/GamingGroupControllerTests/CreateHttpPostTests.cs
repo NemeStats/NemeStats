@@ -18,7 +18,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
         [Test]
         public async Task ItRedirectsToTheGamingGroupIndexView()
         {
-            RedirectToRouteResult result = await gamingGroupController.Create(gamingGroupName, userContext) as RedirectToRouteResult;
+            RedirectToRouteResult result = await gamingGroupController.Create(gamingGroupName, currentUser) as RedirectToRouteResult;
 
             Assert.AreEqual(MVC.GamingGroup.ActionNames.Index, result.RouteValues["action"]);
         }
@@ -28,9 +28,9 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
         {
             string gamingGroupName = "name";
 
-            await gamingGroupController.Create(gamingGroupName, userContext);
+            await gamingGroupController.Create(gamingGroupName, currentUser);
 
-            gamingGroupCreator.AssertWasCalled(mock => mock.CreateGamingGroupAsync(gamingGroupName, userContext));
+            gamingGroupCreator.AssertWasCalled(mock => mock.CreateGamingGroupAsync(gamingGroupName, currentUser));
         }
     }
 }

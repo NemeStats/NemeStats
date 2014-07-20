@@ -19,7 +19,7 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.EntityFrameworkGameDefin
         protected EntityFrameworkGameDefinitionRepository gameDefinitionRepositoryPartialMock;
         protected NemeStatsDbContext dbContextMock;
         protected DbSet<GameDefinition> gameDefinitionsDbSetMock;
-        protected UserContext userContext;
+        protected ApplicationUser currentUser;
         protected GameDefinition gameDefinition;
 
         [SetUp]
@@ -30,10 +30,10 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.EntityFrameworkGameDefin
                 Name = "game definition",
                 Description = "game description"
             };
-            userContext = new UserContext()
+            currentUser = new ApplicationUser()
             {
-                ApplicationUserId = "user id",
-                GamingGroupId = 999
+                Id = "user id",
+                CurrentGamingGroupId = 999
             };
             dbContextMock = MockRepository.GenerateMock<NemeStatsDbContext>();
             gameDefinitionsDbSetMock = MockRepository.GenerateMock<DbSet<GameDefinition>>();

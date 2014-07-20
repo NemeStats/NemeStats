@@ -20,16 +20,16 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.GamingGroupsTests.Entity
         protected NemeStatsDbContext dbContextMock;
         protected GamingGroupInvitationRepository gamingGroupInvitationRepositoryMock;
         protected GamingGroupAccessGranter gamingGroupAccessGranter;
-        protected UserContext userContext;
+        protected ApplicationUser currentUser;
 
         [SetUp]
         public void SetUp()
         {
             dbContextMock = MockRepository.GenerateMock<NemeStatsDbContext>();
-            userContext = new UserContext()
+            currentUser = new ApplicationUser()
             {
-                ApplicationUserId = "user id",
-                GamingGroupId = 777
+                Id = "user id",
+                CurrentGamingGroupId = 777
             };
 
             gamingGroupInvitationRepositoryMock = MockRepository.GenerateMock<GamingGroupInvitationRepository>();

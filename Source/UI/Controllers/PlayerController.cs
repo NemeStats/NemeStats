@@ -43,21 +43,22 @@ namespace UI.Controllers
 
         // GET: /Player/
         [UserContextAttribute]
-        public virtual ActionResult Index(UserContext userContext)
+        public virtual ActionResult Index(ApplicationUser currentUser)
         {
-            return View(MVC.Player.Views.Index, playerRepository.GetAllPlayers(true, userContext));
+            List<Player> players = playerRepository.GetAllPlayers(true, currentUser);
+            return View(MVC.Player.Views.Index, players);
         }
 
         // GET: /Player/Details/5
         [UserContextAttribute]
-        public virtual ActionResult Details(int? id, UserContext userContext)
+        public virtual ActionResult Details(int? id, ApplicationUser currentUser)
         {
             if(!id.HasValue)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            PlayerDetails player = playerRepository.GetPlayerDetails(id.Value, NUMBER_OF_RECENT_GAMES_TO_RETRIEVE, userContext);
+            PlayerDetails player = playerRepository.GetPlayerDetails(id.Value, NUMBER_OF_RECENT_GAMES_TO_RETRIEVE, currentUser);
 
             if (player == null)
             {
@@ -87,11 +88,11 @@ namespace UI.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [UserContextAttribute]
-        public virtual ActionResult Create([Bind(Include = "Id,Name,Active")] Player player, UserContext userContext)
+        public virtual ActionResult Create([Bind(Include = "Id,Name,Active")] Player player, ApplicationUser currentUser)
         {
             if (ModelState.IsValid)
             {
-                playerRepository.Save(player, userContext);
+                playerRepository.Save(player, currentUser);
                 return RedirectToAction(MVC.Player.ActionNames.Index);
             }
 
@@ -100,7 +101,7 @@ namespace UI.Controllers
 
         // GET: /Player/Edit/5
         [UserContextAttribute]
-        public virtual ActionResult Edit(int? id, UserContext userContext)
+        public virtual ActionResult Edit(int? id, ApplicationUser currentUser)
         {
             if (id == null)
             {
@@ -109,7 +110,7 @@ namespace UI.Controllers
             PlayerDetails player;
             try
             {
-                player = playerRepository.GetPlayerDetails(id.Value, 0, userContext);
+                player = playerRepository.GetPlayerDetails(id.Value, 0, currentUser);
             }catch(UnauthorizedAccessException)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
@@ -127,11 +128,11 @@ namespace UI.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [UserContextAttribute]
-        public virtual ActionResult Edit([Bind(Include = "Id,Name,Active,GamingGroupId")] Player player, UserContext userContext)
+        public virtual ActionResult Edit([Bind(Include = "Id,Name,Active,GamingGroupId")] Player player, ApplicationUser currentUser)
         {
             if (ModelState.IsValid)
             {
-                playerRepository.Save(player, userContext);
+                playerRepository.Save(player, currentUser);
                 return RedirectToAction(MVC.Player.ActionNames.Index);
             }
             return View(MVC.Player.Views.Edit, player);
@@ -139,7 +140,7 @@ namespace UI.Controllers
 
         // GET: /Player/Delete/5
         [UserContextAttribute]
-        public virtual ActionResult Delete(int? id, UserContext userContext)
+        public virtual ActionResult Delete(int? id, ApplicationUser currentUser)
         {
             if (id == null)
             {
@@ -148,7 +149,7 @@ namespace UI.Controllers
             PlayerDetails playerDetails;
             try
             {
-                playerDetails = playerRepository.GetPlayerDetails(id.Value, 0, userContext);
+                playerDetails = playerRepository.GetPlayerDetails(id.Value, 0, currentUser);
             }catch(UnauthorizedAccessException)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
@@ -164,11 +165,11 @@ namespace UI.Controllers
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [UserContextAttribute]
-        public virtual ActionResult DeleteConfirmed(int id, UserContext userContext)
+        public virtual ActionResult DeleteConfirmed(int id, ApplicationUser currentUser)
         {
             try
             {
-                playerRepository.Delete(id, userContext);
+                playerRepository.Delete(id, currentUser);
             }catch(UnauthorizedAccessException)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);

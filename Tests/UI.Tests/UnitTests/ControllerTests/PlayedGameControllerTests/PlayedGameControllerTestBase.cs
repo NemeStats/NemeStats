@@ -19,7 +19,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
         protected PlayerRepository playerLogicMock;
         protected PlayedGameDetailsViewModelBuilder playedGameDetailsBuilderMock;
         protected string testUserName = "the test user name";
-        protected UserContext userContext;
+        protected ApplicationUser currentUser;
 
         [SetUp]
         public virtual void TestSetUp()

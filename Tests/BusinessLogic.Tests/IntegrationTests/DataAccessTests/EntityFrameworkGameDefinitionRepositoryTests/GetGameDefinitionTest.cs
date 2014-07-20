@@ -17,11 +17,11 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.EntityFrameworkGa
         {
             Exception exception = Assert.Throws<UnauthorizedAccessException>(() => gameDefinitionRepository.GetGameDefinition(
                 testGameDefinitionWithOtherGamingGroupId.Id,
-                testUserContextForUserWithDefaultGamingGroup));
+                testUserWithDefaultGamingGroup));
 
             string message = string.Format(
                 EntityFrameworkGameDefinitionRepository.EXCEPTION_MESSAGE_USER_DOES_NOT_HAVE_ACCESS_TO_GAME_DEFINITION,
-                testUserContextForUserWithDefaultGamingGroup.ApplicationUserId,
+                testUserWithDefaultGamingGroup.Id,
                 testGameDefinitionWithOtherGamingGroupId.Id);
 
             Assert.AreEqual(message, exception.Message);
@@ -35,7 +35,7 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.EntityFrameworkGa
             Exception exception = Assert.Throws<KeyNotFoundException>(() => gameDefinitionRepository.GetGameDefinition(
                 invalidId,
                 
-                testUserContextForUserWithDefaultGamingGroup));
+                testUserWithDefaultGamingGroup));
 
             string message = string.Format(
                 EntityFrameworkGameDefinitionRepository.EXCEPTION_MESSAGE_GAME_DEFINITION_NOT_FOUND,
@@ -49,7 +49,7 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.EntityFrameworkGa
         {
             GameDefinition gameDefinition = gameDefinitionRepository.GetGameDefinition(testGameDefinition.Id,
                 
-                testUserContextForUserWithDefaultGamingGroup);
+                testUserWithDefaultGamingGroup);
 
             Assert.AreEqual(testGameDefinition.Id, gameDefinition.Id);
         }

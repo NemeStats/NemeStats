@@ -18,7 +18,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
         public void ItReturnsAnEditView()
         {
             int gameDefinitionId = 111;
-            ViewResult viewResult = gameDefinitionControllerPartialMock.Edit(gameDefinitionId, userContext) as ViewResult;
+            ViewResult viewResult = gameDefinitionControllerPartialMock.Edit(gameDefinitionId, currentUser) as ViewResult;
 
             Assert.AreEqual(MVC.GameDefinition.Views.Edit, viewResult.ViewName);
         }
@@ -30,11 +30,11 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
             {
                 Id = 135
             };
-            gameDefinitionRepository.Expect(mock => mock.GetGameDefinition(gameDefinition.Id, userContext))
+            gameDefinitionRepository.Expect(mock => mock.GetGameDefinition(gameDefinition.Id, currentUser))
                 .Repeat.Once()
                 .Return(gameDefinition);
 
-            ViewResult viewResult = gameDefinitionControllerPartialMock.Edit(gameDefinition.Id, userContext) as ViewResult;
+            ViewResult viewResult = gameDefinitionControllerPartialMock.Edit(gameDefinition.Id, currentUser) as ViewResult;
 
             Assert.AreEqual(gameDefinition, viewResult.ViewData.Model);
         }
@@ -43,7 +43,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
         public void ItReturnsABadRequestHttpStatusCodeIfNoIdIsPassed()
         {
             int? nullGameId = null;
-            HttpStatusCodeResult statusCodeResult = gameDefinitionControllerPartialMock.Edit(nullGameId, userContext) as HttpStatusCodeResult;
+            HttpStatusCodeResult statusCodeResult = gameDefinitionControllerPartialMock.Edit(nullGameId, currentUser) as HttpStatusCodeResult;
 
             Assert.AreEqual((int)HttpStatusCode.BadRequest, statusCodeResult.StatusCode);
         }
@@ -52,10 +52,10 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
         public void ItReturnsANotFoundHttpStatusCodeIfNoGameDefinitionIsFound()
         {
             int gameDefinitionId = -1;
-            gameDefinitionRepository.Expect(mock => mock.GetGameDefinition(gameDefinitionId, userContext))
+            gameDefinitionRepository.Expect(mock => mock.GetGameDefinition(gameDefinitionId, currentUser))
                 .Repeat.Once()
                 .Throw(new KeyNotFoundException());
-            HttpStatusCodeResult statusCodeResult = gameDefinitionControllerPartialMock.Edit(gameDefinitionId, userContext) as HttpStatusCodeResult;
+            HttpStatusCodeResult statusCodeResult = gameDefinitionControllerPartialMock.Edit(gameDefinitionId, currentUser) as HttpStatusCodeResult;
 
             Assert.AreEqual((int)HttpStatusCode.NotFound, statusCodeResult.StatusCode);
         }

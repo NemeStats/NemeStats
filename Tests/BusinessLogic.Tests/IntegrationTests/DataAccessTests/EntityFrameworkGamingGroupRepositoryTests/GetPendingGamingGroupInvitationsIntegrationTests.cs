@@ -22,7 +22,7 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.EntityFrameworkGa
             {
                 EntityFrameworkGamingGroupRepository repository = new EntityFrameworkGamingGroupRepository(dbContext);
 
-                IList<GamingGroupInvitation> invitations = repository.GetPendingGamingGroupInvitations(testUserContextForUserWithDefaultGamingGroup);
+                IList<GamingGroupInvitation> invitations = repository.GetPendingGamingGroupInvitations(testUserWithDefaultGamingGroup);
 
                 Assert.True(invitations.All(invitation => invitation.InviteeEmail == testUserWithDefaultGamingGroup.Email));
             }
@@ -33,15 +33,15 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.EntityFrameworkGa
         {
             using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
             {
-                UserContext userThatDoesntExist = new UserContext()
+                ApplicationUser userThatDoesntExist = new ApplicationUser()
                 {
-                    ApplicationUserId = "this doesn't exist"
+                    Id = "this doesn't exist"
                 };
                 EntityFrameworkGamingGroupRepository repository = new EntityFrameworkGamingGroupRepository(dbContext);
 
                 Exception exception = Assert.Throws<KeyNotFoundException>(() => repository.GetPendingGamingGroupInvitations(userThatDoesntExist));
 
-                string expectedMessage = string.Format(EntityFrameworkGamingGroupRepository.EXCEPTION_MESSAGE_USER_DOES_NOT_EXIST, userThatDoesntExist.ApplicationUserId);
+                string expectedMessage = string.Format(EntityFrameworkGamingGroupRepository.EXCEPTION_MESSAGE_USER_DOES_NOT_EXIST, userThatDoesntExist.Id);
                 Assert.AreEqual(expectedMessage, exception.Message);
             }
         }
@@ -52,7 +52,7 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.EntityFrameworkGa
             using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
             {
                 EntityFrameworkGamingGroupRepository repository = new EntityFrameworkGamingGroupRepository(dbContext);
-                UserContext userWithNoInvites = new UserContext() { ApplicationUserId = testUserWithDefaultGamingGroupAndNoInvites.Id };
+                ApplicationUser userWithNoInvites = new ApplicationUser() { Id = testUserWithDefaultGamingGroupAndNoInvites.Id };
                 IList<GamingGroupInvitation> invitations = repository.GetPendingGamingGroupInvitations(userWithNoInvites);
 
                 Assert.AreEqual(0, invitations.Count);

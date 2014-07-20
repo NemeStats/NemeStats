@@ -45,9 +45,9 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         public void ItRetrievesRequestedPlayer()
         {
             int playerId = 1351;
-            playerController.Details(playerId, userContext);
+            playerController.Details(playerId, currentUser);
 
-            playerRepositoryMock.AssertWasCalled(x => x.GetPlayerDetails(playerId, PlayerController.NUMBER_OF_RECENT_GAMES_TO_RETRIEVE, userContext));
+            playerRepositoryMock.AssertWasCalled(x => x.GetPlayerDetails(playerId, PlayerController.NUMBER_OF_RECENT_GAMES_TO_RETRIEVE, currentUser));
         }
 
         [Test]
@@ -55,7 +55,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         {
             int playerId = 1351;
             PlayerDetails playerDetails = new PlayerDetails(){ PlayerGameResults = new List<PlayerGameResult>() };
-            playerRepositoryMock.Expect(playerLogic => playerLogic.GetPlayerDetails(playerId, PlayerController.NUMBER_OF_RECENT_GAMES_TO_RETRIEVE, userContext))
+            playerRepositoryMock.Expect(playerLogic => playerLogic.GetPlayerDetails(playerId, PlayerController.NUMBER_OF_RECENT_GAMES_TO_RETRIEVE, currentUser))
                 .Repeat.Once()
                 .Return(playerDetails);
 
@@ -68,7 +68,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
                 .Repeat
                 .Once()
                 .Return(playerDetailsViewModel);
-            ViewResult viewResult = playerController.Details(playerId, userContext) as ViewResult;
+            ViewResult viewResult = playerController.Details(playerId, currentUser) as ViewResult;
 
             Assert.AreEqual(MVC.Player.Views.Details, viewResult.ViewName);
         }
@@ -78,7 +78,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         {
             int playerId = 1351;
             PlayerDetails playerDetails = new PlayerDetails() { Id = playerId, PlayerGameResults = new List<PlayerGameResult>() };
-            playerRepositoryMock.Expect(playerLogic => playerLogic.GetPlayerDetails(playerId, PlayerController.NUMBER_OF_RECENT_GAMES_TO_RETRIEVE, userContext))
+            playerRepositoryMock.Expect(playerLogic => playerLogic.GetPlayerDetails(playerId, PlayerController.NUMBER_OF_RECENT_GAMES_TO_RETRIEVE, currentUser))
                 .Repeat.Once()
                 .Return(playerDetails);
 
@@ -92,7 +92,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
                 .Once()
                 .Return(playerDetailsViewModel);
 
-            ViewResult viewResult = playerController.Details(playerId, userContext) as ViewResult;
+            ViewResult viewResult = playerController.Details(playerId, currentUser) as ViewResult;
 
             Assert.AreEqual(playerDetailsViewModel, viewResult.Model);
         }
@@ -102,9 +102,9 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         {
             int playerId = 1;
 
-            playerController.Details(playerId, userContext);
+            playerController.Details(playerId, currentUser);
 
-            playerRepositoryMock.AssertWasCalled(mock => mock.GetPlayerDetails(playerId, PlayerController.NUMBER_OF_RECENT_GAMES_TO_RETRIEVE, userContext));
+            playerRepositoryMock.AssertWasCalled(mock => mock.GetPlayerDetails(playerId, PlayerController.NUMBER_OF_RECENT_GAMES_TO_RETRIEVE, currentUser));
         }
 
         [Test]
@@ -120,12 +120,12 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
             };
             int playerId = 1;
 
-            playerRepositoryMock.Expect(mock => mock.GetPlayerDetails(playerId, PlayerController.NUMBER_OF_RECENT_GAMES_TO_RETRIEVE, userContext))
+            playerRepositoryMock.Expect(mock => mock.GetPlayerDetails(playerId, PlayerController.NUMBER_OF_RECENT_GAMES_TO_RETRIEVE, currentUser))
                 .Repeat
                 .Once()
                 .Return(details);
 
-            playerController.Details(playerId, userContext);
+            playerController.Details(playerId, currentUser);
 
             string expectedMessage = string.Format(PlayerController.RECENT_GAMES_MESSAGE_FORMAT,
                 PlayerController.NUMBER_OF_RECENT_GAMES_TO_RETRIEVE);
@@ -137,12 +137,12 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         {
             PlayerDetails playerDetails = new PlayerDetails() { PlayerGameResults = new List<PlayerGameResult>() };
             int playerId = 1;
-            playerRepositoryMock.Expect(mock => mock.GetPlayerDetails(playerId, PlayerController.NUMBER_OF_RECENT_GAMES_TO_RETRIEVE, userContext))
+            playerRepositoryMock.Expect(mock => mock.GetPlayerDetails(playerId, PlayerController.NUMBER_OF_RECENT_GAMES_TO_RETRIEVE, currentUser))
                 .Repeat
                 .Once()
                 .Return(playerDetails);
 
-            playerController.Details(1, userContext);
+            playerController.Details(1, currentUser);
 
             Assert.IsNull(playerController.ViewBag.RecentGamesMessage);
         }

@@ -17,7 +17,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
         [Test]
         public void ItReturnsTheIndexView()
         {
-            ViewResult viewResult = gamingGroupController.Index(userContext) as ViewResult;
+            ViewResult viewResult = gamingGroupController.Index(currentUser) as ViewResult;
 
             Assert.AreEqual(MVC.GamingGroup.Views.Index, viewResult.ViewName);
         }
@@ -28,7 +28,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
             GamingGroupViewModel gamingGroupViewModel = new GamingGroupViewModel();
             GamingGroup gamingGroup = new GamingGroup();
 
-            gamingGroupRepositoryMock.Expect(mock => mock.GetGamingGroupDetails(userContext.GamingGroupId.Value, userContext))
+            gamingGroupRepositoryMock.Expect(mock => mock.GetGamingGroupDetails(currentUser.CurrentGamingGroupId.Value, currentUser))
                 .Repeat.Once()
                 .Return(gamingGroup);
 
@@ -36,7 +36,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
                 .Repeat.Once()
                 .Return(gamingGroupViewModel);
             
-            ViewResult viewResult = gamingGroupController.Index(userContext) as ViewResult;
+            ViewResult viewResult = gamingGroupController.Index(currentUser) as ViewResult;
 
             Assert.AreSame(gamingGroupViewModel, viewResult.Model);
         }

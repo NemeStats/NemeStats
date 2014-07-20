@@ -102,7 +102,7 @@ namespace UI.Controllers
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionParamsClass_Index
         {
-            public readonly string userContext = "userContext";
+            public readonly string currentUser = "currentUser";
         }
         static readonly ActionParamsClass_Create s_params_Create = new ActionParamsClass_Create();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -111,7 +111,7 @@ namespace UI.Controllers
         public class ActionParamsClass_Create
         {
             public readonly string gamingGroupName = "gamingGroupName";
-            public readonly string userContext = "userContext";
+            public readonly string currentUser = "currentUser";
         }
         static readonly ActionParamsClass_GrantAccess s_params_GrantAccess = new ActionParamsClass_GrantAccess();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -120,7 +120,7 @@ namespace UI.Controllers
         public class ActionParamsClass_GrantAccess
         {
             public readonly string inviteeEmail = "inviteeEmail";
-            public readonly string userContext = "userContext";
+            public readonly string currentUser = "currentUser";
         }
         static readonly ViewsClass s_views = new ViewsClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -146,14 +146,14 @@ namespace UI.Controllers
         public T4MVC_GamingGroupController() : base(Dummy.Instance) { }
 
         [NonAction]
-        partial void IndexOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, BusinessLogic.Models.User.UserContext userContext);
+        partial void IndexOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, BusinessLogic.Models.User.ApplicationUser currentUser);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult Index(BusinessLogic.Models.User.UserContext userContext)
+        public override System.Web.Mvc.ActionResult Index(BusinessLogic.Models.User.ApplicationUser currentUser)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Index);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "userContext", userContext);
-            IndexOverride(callInfo, userContext);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "currentUser", currentUser);
+            IndexOverride(callInfo, currentUser);
             return callInfo;
         }
 
@@ -169,28 +169,28 @@ namespace UI.Controllers
         }
 
         [NonAction]
-        partial void CreateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string gamingGroupName, BusinessLogic.Models.User.UserContext userContext);
+        partial void CreateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string gamingGroupName, BusinessLogic.Models.User.ApplicationUser currentUser);
 
         [NonAction]
-        public override System.Threading.Tasks.Task<System.Web.Mvc.ActionResult> Create(string gamingGroupName, BusinessLogic.Models.User.UserContext userContext)
+        public override System.Threading.Tasks.Task<System.Web.Mvc.ActionResult> Create(string gamingGroupName, BusinessLogic.Models.User.ApplicationUser currentUser)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Create);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "gamingGroupName", gamingGroupName);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "userContext", userContext);
-            CreateOverride(callInfo, gamingGroupName, userContext);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "currentUser", currentUser);
+            CreateOverride(callInfo, gamingGroupName, currentUser);
             return System.Threading.Tasks.Task.FromResult(callInfo as ActionResult);
         }
 
         [NonAction]
-        partial void GrantAccessOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string inviteeEmail, BusinessLogic.Models.User.UserContext userContext);
+        partial void GrantAccessOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string inviteeEmail, BusinessLogic.Models.User.ApplicationUser currentUser);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult GrantAccess(string inviteeEmail, BusinessLogic.Models.User.UserContext userContext)
+        public override System.Web.Mvc.ActionResult GrantAccess(string inviteeEmail, BusinessLogic.Models.User.ApplicationUser currentUser)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.GrantAccess);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "inviteeEmail", inviteeEmail);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "userContext", userContext);
-            GrantAccessOverride(callInfo, inviteeEmail, userContext);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "currentUser", currentUser);
+            GrantAccessOverride(callInfo, inviteeEmail, currentUser);
             return callInfo;
         }
 

@@ -42,9 +42,9 @@ namespace UI.Controllers
         //
         // GET: /GamingGroup
         [UserContextAttribute]
-        public virtual ActionResult Index(UserContext userContext)
+        public virtual ActionResult Index(ApplicationUser currentUser)
         {
-            GamingGroup gamingGroup = gamingGroupRepository.GetGamingGroupDetails(userContext.GamingGroupId.Value, userContext);
+            GamingGroup gamingGroup = gamingGroupRepository.GetGamingGroupDetails(currentUser.CurrentGamingGroupId.Value, currentUser);
             GamingGroupViewModel viewModel = gamingGroupToGamingGroupViewModelTransformation.Build(gamingGroup);
 
             return View(MVC.GamingGroup.Views.Index, viewModel);
@@ -59,9 +59,9 @@ namespace UI.Controllers
 
         [HttpPost]
         [UserContextAttribute(RequiresGamingGroup = false)]
-        public async virtual Task<ActionResult> Create(string gamingGroupName, UserContext userContext)
+        public async virtual Task<ActionResult> Create(string gamingGroupName, ApplicationUser currentUser)
         {
-            await gamingGroupCreator.CreateGamingGroupAsync(gamingGroupName, userContext);
+            await gamingGroupCreator.CreateGamingGroupAsync(gamingGroupName, currentUser);
             return RedirectToAction(MVC.GamingGroup.ActionNames.Index);
         }
 
@@ -69,9 +69,9 @@ namespace UI.Controllers
         // POST: /GamingGroup/Delete/5
         [HttpPost]
         [UserContextAttribute]
-        public virtual ActionResult GrantAccess(string inviteeEmail, UserContext userContext)
+        public virtual ActionResult GrantAccess(string inviteeEmail, ApplicationUser currentUser)
         {
-            gamingGroupAccessGranter.CreateInvitation(inviteeEmail, userContext);
+            gamingGroupAccessGranter.CreateInvitation(inviteeEmail, currentUser);
             return RedirectToAction(MVC.GamingGroup.ActionNames.Index);
         }
     }

@@ -17,10 +17,10 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.EntityFrameworkGamingGro
             int gamingGroupId = -1;
 
             Exception exception = Assert.Throws<UnauthorizedAccessException>(
-                () => gamingGroupRepositoryPartialMock.GetGamingGroupDetails(gamingGroupId, userContext));
+                () => gamingGroupRepositoryPartialMock.GetGamingGroupDetails(gamingGroupId, currentUser));
 
             string expectedMessage = string.Format(EntityFrameworkGamingGroupRepository.EXCEPTION_MESSAGE_NO_ACCESS_TO_GAMING_GROUP,
-                userContext.ApplicationUserId,
+                currentUser.Id,
                 gamingGroupId);
             Assert.AreEqual(expectedMessage, exception.Message);
         }

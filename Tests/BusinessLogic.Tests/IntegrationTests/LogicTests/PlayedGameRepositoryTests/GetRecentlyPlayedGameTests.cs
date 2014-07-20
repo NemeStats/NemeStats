@@ -20,7 +20,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGameRepositoryTe
                 dbContext.Configuration.LazyLoadingEnabled = false;
                 dbContext.Configuration.ProxyCreationEnabled = false;
 
-                List<PlayedGame> playedGames = playedGameLogic.GetRecentGames(1, testUserContextForUserWithDefaultGamingGroup);
+                List<PlayedGame> playedGames = playedGameLogic.GetRecentGames(1, testUserWithDefaultGamingGroup);
                 GameDefinition gameDefinition = playedGames[0].GameDefinition;
 
                 Assert.NotNull(gameDefinition);
@@ -36,7 +36,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGameRepositoryTe
                 dbContext.Configuration.LazyLoadingEnabled = false;
                 dbContext.Configuration.ProxyCreationEnabled = false;
 
-                List<PlayedGame> playedGames = playedGameLogic.GetRecentGames(1, testUserContextForUserWithDefaultGamingGroup);
+                List<PlayedGame> playedGames = playedGameLogic.GetRecentGames(1, testUserWithDefaultGamingGroup);
                 ICollection<PlayerGameResult> playerGameResults = playedGames[0].PlayerGameResults;
 
                 Assert.NotNull(playerGameResults);
@@ -52,7 +52,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGameRepositoryTe
                 dbContext.Configuration.LazyLoadingEnabled = false;
                 dbContext.Configuration.ProxyCreationEnabled = false;
 
-                List<PlayedGame> playedGames = playedGameLogic.GetRecentGames(1, testUserContextForUserWithDefaultGamingGroup);
+                List<PlayedGame> playedGames = playedGameLogic.GetRecentGames(1, testUserWithDefaultGamingGroup);
                 List<Player> players = playedGames[0].PlayerGameResults.Select(
                     playerGameResult => new Player()
                                             {
@@ -72,7 +72,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGameRepositoryTe
             {
                 PlayedGameRepository playedGameLogic = new EntityFrameworkPlayedGameRepository(dbContext);
                 int one = 1;
-                List<PlayedGame> playedGames = playedGameLogic.GetRecentGames(one, testUserContextForUserWithDefaultGamingGroup);
+                List<PlayedGame> playedGames = playedGameLogic.GetRecentGames(one, testUserWithDefaultGamingGroup);
 
                 Assert.AreEqual(one, playedGames.Count());
             }
@@ -85,7 +85,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGameRepositoryTe
             {
                 PlayedGameRepository playedGameLogic = new EntityFrameworkPlayedGameRepository(dbContext);
                 int two = 2;
-                List<PlayedGame> playedGames = playedGameLogic.GetRecentGames(two, testUserContextForUserWithDefaultGamingGroup);
+                List<PlayedGame> playedGames = playedGameLogic.GetRecentGames(two, testUserWithDefaultGamingGroup);
 
                 Assert.AreEqual(two, playedGames.Count());
             }
@@ -98,9 +98,9 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGameRepositoryTe
             {
                 PlayedGameRepository playedGameLogic = new EntityFrameworkPlayedGameRepository(dbContext);
                 int five = 5;
-                List<PlayedGame> playedGames = playedGameLogic.GetRecentGames(five, testUserContextForUserWithDefaultGamingGroup);
+                List<PlayedGame> playedGames = playedGameLogic.GetRecentGames(five, testUserWithDefaultGamingGroup);
                 List<PlayedGame> allPlayedGames = dbContext.PlayedGames
-                    .Where(game => game.GamingGroupId == testUserContextForUserWithDefaultGamingGroup.GamingGroupId)
+                    .Where(game => game.GamingGroupId == testUserWithDefaultGamingGroup.CurrentGamingGroupId)
                     .ToList()
                     .OrderByDescending(playedGame => playedGame.DatePlayed)
                     .ToList();
@@ -118,7 +118,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGameRepositoryTe
             {
                 PlayedGameRepository playedGameLogic = new EntityFrameworkPlayedGameRepository(dbContext);
                 int five = 5;
-                List<PlayedGame> playedGames = playedGameLogic.GetRecentGames(five, testUserContextForUserWithDefaultGamingGroup);
+                List<PlayedGame> playedGames = playedGameLogic.GetRecentGames(five, testUserWithDefaultGamingGroup);
 
                 int lastRank = -1;
 
@@ -142,9 +142,9 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGameRepositoryTe
             {
                 PlayedGameRepository playedGameLogic = new EntityFrameworkPlayedGameRepository(dbContext);
                 
-                List<PlayedGame> playedGames = playedGameLogic.GetRecentGames(20, testUserContextForUserWithOtherGamingGroup);
+                List<PlayedGame> playedGames = playedGameLogic.GetRecentGames(20, testUserWithOtherGamingGroup);
 
-                Assert.True(playedGames.All(game => game.GamingGroupId == testUserContextForUserWithOtherGamingGroup.GamingGroupId));
+                Assert.True(playedGames.All(game => game.GamingGroupId == testUserWithOtherGamingGroup.CurrentGamingGroupId));
             }
         }
     }

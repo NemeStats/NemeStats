@@ -24,9 +24,9 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
             string playerName = "Herb";
             List<Player> allPlayers = new List<Player>() { new Player() { Id = playerId, Name = playerName } };
 
-            playerLogicMock.Expect(x => x.GetAllPlayers(true, userContext)).Repeat.Once().Return(allPlayers);
+            playerLogicMock.Expect(x => x.GetAllPlayers(true, currentUser)).Repeat.Once().Return(allPlayers);
 
-            playedGameController.Create(userContext);
+            playedGameController.Create(currentUser);
 
             playerLogicMock.VerifyAllExpectations();
 
@@ -37,9 +37,9 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
         [Test]
         public void ItLoadsTheCreateView()
         {
-            playerLogicMock.Expect(x => x.GetAllPlayers(true, userContext)).Repeat.Once().Return(new List<Player>());
+            playerLogicMock.Expect(x => x.GetAllPlayers(true, currentUser)).Repeat.Once().Return(new List<Player>());
 
-            ViewResult result = playedGameController.Create(userContext) as ViewResult;
+            ViewResult result = playedGameController.Create(currentUser) as ViewResult;
 
             Assert.AreEqual(MVC.PlayedGame.Views.Create, result.ViewName);
         }

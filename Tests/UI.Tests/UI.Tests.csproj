@@ -156,7 +156,7 @@
     <Compile Include="UnitTests\ControllerTests\PlayerControllerTests\EditHttpPostTests.cs" />
     <Compile Include="UnitTests\ControllerTests\PlayerControllerTests\IndexTests.cs" />
     <Compile Include="UnitTests\ControllerTests\PlayerControllerTests\PlayerControllerTestBase.cs" />
-    <Compile Include="UnitTests\FiltersTests\UserContactAttributeTests\OnActionExecutingTests.cs" />
+    <Compile Include="UnitTests\FiltersTests\UserContextAttributeTests\OnActionExecutingTests.cs" />
     <Compile Include="UnitTests\HtmlHelperTests\MyHelpersTests\GameResultsTests.cs" />
     <Compile Include="UnitTests\TransformationsTests\GamingGroupInvitationToInvitationViewModelTransformationImplTests.cs" />
     <Compile Include="UnitTests\TransformationsTests\GamingGroupToGamingGroupViewModelTransformationImplTests.cs" />

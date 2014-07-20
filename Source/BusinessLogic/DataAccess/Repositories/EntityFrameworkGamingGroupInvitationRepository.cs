@@ -17,7 +17,7 @@ namespace BusinessLogic.DataAccess.Repositories
             this.dbContext = dbContext;
         }
 
-        public GamingGroupInvitation Save(GamingGroupInvitation gamingGroupInvitation, UserContext userContext)
+        public GamingGroupInvitation Save(GamingGroupInvitation gamingGroupInvitation, ApplicationUser currentUser)
         {
             //TODO GamingGroupInvitation should implement a generic EntityWithTechnicalKey so we can take advantage of this shared logic elsewhere
             if (gamingGroupInvitation.Id != default(Guid))

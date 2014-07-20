@@ -10,9 +10,9 @@ namespace BusinessLogic.DataAccess.Repositories
 {
     public interface GameDefinitionRepository
     {
-        List<GameDefinition> GetAllGameDefinitions(UserContext userContext);
-        GameDefinition GetGameDefinition(int gameDefinitionId, UserContext userContext);
-        GameDefinition Save(GameDefinition gameDefinition, UserContext userContext);
-        void Delete(int gameDefinitionId, UserContext userContext);
+        List<GameDefinition> GetAllGameDefinitions(ApplicationUser currentUser);
+        GameDefinition GetGameDefinition(int gameDefinitionId, ApplicationUser currentUser);
+        GameDefinition Save(GameDefinition gameDefinition, ApplicationUser currentUser);
+        void Delete(int gameDefinitionId, ApplicationUser currentUser);
     }
 }

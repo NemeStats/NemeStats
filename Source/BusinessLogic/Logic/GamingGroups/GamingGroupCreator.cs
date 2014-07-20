@@ -10,6 +10,6 @@ namespace BusinessLogic.Logic.GamingGroups
 {
     public interface GamingGroupCreator
     {
-        Task<GamingGroup> CreateGamingGroupAsync(string gamingGroupName, UserContext userContext);
+        Task<GamingGroup> CreateGamingGroupAsync(string gamingGroupName, ApplicationUser currentUser);
     }
 }

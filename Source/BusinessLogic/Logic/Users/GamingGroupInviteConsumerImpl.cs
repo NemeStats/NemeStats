@@ -28,22 +28,22 @@ namespace BusinessLogic.Logic.Users
             this.gamingGroupAccessGranter = gamingGroupAccessGranter;
         }
 
-        public async Task<int?> AddUserToInvitedGroupAsync(UserContext userContext)
+        public async Task<int?> AddUserToInvitedGroupAsync(ApplicationUser currentUser)
         {
             IList<GamingGroupInvitation> gamingGroupInvitations 
-                = gamingGroupRepository.GetPendingGamingGroupInvitations(userContext);
+                = gamingGroupRepository.GetPendingGamingGroupInvitations(currentUser);
             
             if(gamingGroupInvitations.Count == 0)
             {
                 return null;
             }
             
-            ApplicationUser user = await userManager.FindByIdAsync(userContext.ApplicationUserId);
+            ApplicationUser user = await userManager.FindByIdAsync(currentUser.Id);
             GamingGroupInvitation oldestInvite = gamingGroupInvitations.OrderBy(invite => invite.DateSent).First();
             user.CurrentGamingGroupId = oldestInvite.GamingGroupId;
             userManager.Update(user);
 
-            gamingGroupAccessGranter.ConsumeInvitation(oldestInvite, userContext);
+            gamingGroupAccessGranter.ConsumeInvitation(oldestInvite, currentUser);
 
             return user.CurrentGamingGroupId;
         }

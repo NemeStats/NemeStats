@@ -24,7 +24,7 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.EntityFrameworkGa
                 dbContext.Configuration.LazyLoadingEnabled = false;
                 dbContext.Configuration.ProxyCreationEnabled = false;
                 EntityFrameworkGamingGroupRepository repository = new EntityFrameworkGamingGroupRepository(dbContext);
-                GamingGroup gamingGroup = repository.GetGamingGroupDetails(testGamingGroup.Id, testUserContextForUserWithDefaultGamingGroup);
+                GamingGroup gamingGroup = repository.GetGamingGroupDetails(testGamingGroup.Id, testUserWithDefaultGamingGroup);
 
                 Assert.Greater(gamingGroup.Users.Count(), 0);
             }
@@ -38,9 +38,9 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.EntityFrameworkGa
                 dbContext.Configuration.LazyLoadingEnabled = false;
                 dbContext.Configuration.ProxyCreationEnabled = false;
                 EntityFrameworkGamingGroupRepository repository = new EntityFrameworkGamingGroupRepository(dbContext);
-                GamingGroup gamingGroup = repository.GetGamingGroupDetails(testGamingGroup.Id, testUserContextForUserWithDefaultGamingGroup);
+                GamingGroup gamingGroup = repository.GetGamingGroupDetails(testGamingGroup.Id, testUserWithDefaultGamingGroup);
 
-                Assert.AreEqual(testUserContextForUserWithDefaultGamingGroup.ApplicationUserId, gamingGroup.OwningUser.Id);
+                Assert.AreEqual(testUserWithDefaultGamingGroup.Id, gamingGroup.OwningUser.Id);
             }
         }
 
@@ -52,7 +52,7 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.EntityFrameworkGa
                 dbContext.Configuration.LazyLoadingEnabled = false;
                 dbContext.Configuration.ProxyCreationEnabled = false;
                 EntityFrameworkGamingGroupRepository repository = new EntityFrameworkGamingGroupRepository(dbContext);
-                GamingGroup gamingGroup = repository.GetGamingGroupDetails(testGamingGroup.Id, testUserContextForUserWithDefaultGamingGroup);
+                GamingGroup gamingGroup = repository.GetGamingGroupDetails(testGamingGroup.Id, testUserWithDefaultGamingGroup);
 
                 Assert.AreSame(gamingGroup.GamingGroupInvitations, gamingGroup.GamingGroupInvitations);
             }

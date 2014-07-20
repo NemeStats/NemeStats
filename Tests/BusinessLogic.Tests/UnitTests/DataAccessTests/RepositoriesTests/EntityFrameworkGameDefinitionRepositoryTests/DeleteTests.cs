@@ -16,11 +16,11 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.EntityFrameworkGameDefin
         [Test]
         public void ItRetrievesTheGameDefinitionInASecureManner()
         {
-            gameDefinitionRepositoryPartialMock.Expect(mock => mock.GetGameDefinition(gameDefinition.Id, userContext))
+            gameDefinitionRepositoryPartialMock.Expect(mock => mock.GetGameDefinition(gameDefinition.Id, currentUser))
                 .Repeat.Once()
                 .Return(gameDefinition);
 
-            gameDefinitionRepositoryPartialMock.Delete(gameDefinition.Id, userContext);
+            gameDefinitionRepositoryPartialMock.Delete(gameDefinition.Id, currentUser);
 
             //TODO calling GetGameDefinition implies that authorization validation will occur. Does this test make sense?
             gameDefinitionRepositoryPartialMock.VerifyAllExpectations();
@@ -29,12 +29,12 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.EntityFrameworkGameDefin
         [Test]
         public void ItDeletesTheEntity()
         {
-            gameDefinitionRepositoryPartialMock.Expect(mock => mock.GetGameDefinition(gameDefinition.Id, userContext))
+            gameDefinitionRepositoryPartialMock.Expect(mock => mock.GetGameDefinition(gameDefinition.Id, currentUser))
              .Repeat.Once()
              .Return(gameDefinition);
             gameDefinitionsDbSetMock.Expect(mock => mock.Remove(gameDefinition));
 
-            gameDefinitionRepositoryPartialMock.Delete(gameDefinition.Id, userContext);
+            gameDefinitionRepositoryPartialMock.Delete(gameDefinition.Id, currentUser);
 
             gameDefinitionsDbSetMock.VerifyAllExpectations();
         }

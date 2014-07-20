@@ -13,7 +13,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGameRepositoryTe
         private PlayedGame GetTestSubjectPlayedGame(NemeStatsDbContext dbContextToTestWith)
         {
             return new EntityFrameworkPlayedGameRepository(dbContextToTestWith)
-                .GetPlayedGameDetails(testPlayedGames[0].Id, testUserContextForUserWithDefaultGamingGroup);
+                .GetPlayedGameDetails(testPlayedGames[0].Id, testUserWithDefaultGamingGroup);
         }
 
         [Test]
@@ -55,7 +55,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGameRepositoryTe
             {
                 EntityFrameworkPlayedGameRepository playedGameRepository = new EntityFrameworkPlayedGameRepository(dbContext);
 
-                PlayedGame notFoundPlayedGame = playedGameRepository.GetPlayedGameDetails(-1, testUserContextForUserWithDefaultGamingGroup);
+                PlayedGame notFoundPlayedGame = playedGameRepository.GetPlayedGameDetails(-1, testUserWithDefaultGamingGroup);
                 Assert.Null(notFoundPlayedGame);
             }
         }
@@ -66,11 +66,11 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGameRepositoryTe
             using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
             {
                 PlayedGame gameWithMismatchedGamingGroupId = testPlayedGames.First(
-                    playedGame => playedGame.GamingGroupId != testUserContextForUserWithDefaultGamingGroup.GamingGroupId);
+                    playedGame => playedGame.GamingGroupId != testUserWithDefaultGamingGroup.CurrentGamingGroupId);
 
                 EntityFrameworkPlayedGameRepository playedGameRepository = new EntityFrameworkPlayedGameRepository(dbContext);
 
-                PlayedGame notFoundPlayedGame = playedGameRepository.GetPlayedGameDetails(gameWithMismatchedGamingGroupId.Id, testUserContextForUserWithDefaultGamingGroup);
+                PlayedGame notFoundPlayedGame = playedGameRepository.GetPlayedGameDetails(gameWithMismatchedGamingGroupId.Id, testUserWithDefaultGamingGroup);
                 Assert.Null(notFoundPlayedGame);
             }
         }

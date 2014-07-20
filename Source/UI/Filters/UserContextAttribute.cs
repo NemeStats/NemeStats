@@ -13,10 +13,10 @@ namespace UI.Filters
 {
     public class UserContextAttribute : ActionFilterAttribute
     {
-        internal const string USER_CONTEXT_KEY = "userContext";
+        internal const string USER_CONTEXT_KEY = "currentUser";
         internal const string EXCEPTION_MESSAGE_USER_NOT_AUTHENTICATED = "User is not authenticated.";
 
-        internal UserContextBuilder userContextBuilder = new UserContextBuilderImpl();
+        internal UserManager<ApplicationUser> userManager;
 
         public bool RequiresGamingGroup { get; set; }
 
@@ -28,13 +28,17 @@ namespace UI.Filters
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             NemeStatsDbContext dbContext = DependencyResolver.Current.GetService<NemeStatsDbContext>();
+            IUserStore<ApplicationUser> userStore = DependencyResolver.Current.GetService<IUserStore<ApplicationUser>>();
+            userManager = new UserManager<ApplicationUser>(userStore);
 
-            OnActionExecuting(filterContext, dbContext);
+            OnActionExecuting(filterContext, userManager);
 
             base.OnActionExecuting(filterContext);
         }
 
-        internal void OnActionExecuting(ActionExecutingContext filterContext, NemeStatsDbContext dbContext)
+        internal void OnActionExecuting(
+            ActionExecutingContext filterContext, 
+            UserManager<ApplicationUser> userManager)
         {
             if (!filterContext.HttpContext.User.Identity.IsAuthenticated)
             {
@@ -43,17 +47,18 @@ namespace UI.Filters
 
             if (filterContext.ActionParameters.ContainsKey(USER_CONTEXT_KEY))
             {
-                UserContext userContext = userContextBuilder.GetUserContext(filterContext.HttpContext.User.Identity.GetUserId(), dbContext);
+                string userId = filterContext.HttpContext.User.Identity.GetUserId();
+                ApplicationUser applicationUser = userManager.FindByIdAsync(userId).Result;
 
                 if(RequiresGamingGroup)
                 {
-                    if(!userContext.GamingGroupId.HasValue)
+                    if (!applicationUser.CurrentGamingGroupId.HasValue)
                     {
                         filterContext.Result = new RedirectToRouteResult(MVC.GamingGroup.Create().GetRouteValueDictionary());
                     }
                 }
 
-                filterContext.ActionParameters[USER_CONTEXT_KEY] = userContext;
+                filterContext.ActionParameters[USER_CONTEXT_KEY] = applicationUser;
             }
 
             base.OnActionExecuting(filterContext);

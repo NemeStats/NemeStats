@@ -20,7 +20,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
         private GamingGroupCreatorImpl gamingGroupCreator;
         private IUserStore<ApplicationUser> userStoreMock;
         private UserManager<ApplicationUser> userManager;
-        private UserContext userContext;
+        private ApplicationUser currentUser;
         ApplicationUser appUser;
 
         [SetUp]
@@ -30,17 +30,17 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
             userStoreMock = MockRepository.GenerateMock<IUserStore<ApplicationUser>>();
             userManager = new UserManager<ApplicationUser>(userStoreMock);
             gamingGroupCreator = new GamingGroupCreatorImpl(gamingGroupRepositoryMock, userManager);
-            userContext = new UserContext()
+            currentUser = new ApplicationUser()
             {
-                ApplicationUserId = "application user id"
+                Id = "application user id"
             };
 
             appUser = new ApplicationUser()
             {
-                Id = userContext.ApplicationUserId
+                Id = currentUser.Id
             };
             Task<ApplicationUser> task = new Task<ApplicationUser>(() => appUser);
-            userStoreMock.Expect(mock => mock.FindByIdAsync(userContext.ApplicationUserId))
+            userStoreMock.Expect(mock => mock.FindByIdAsync(currentUser.Id))
                 .Repeat.Once()
                 .Return(task);
         }
@@ -48,11 +48,11 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
         [Test]
         public async Task ItSetsTheOwnerToTheCurrentUser()
         {
-            await gamingGroupCreator.CreateGamingGroupAsync("a", userContext);
+            await gamingGroupCreator.CreateGamingGroupAsync("a", currentUser);
 
             gamingGroupRepositoryMock.AssertWasCalled(mock =>
-                mock.Save(Arg<GamingGroup>.Matches(group => group.OwningUserId == userContext.ApplicationUserId),
-                Arg<UserContext>.Is.Anything));
+                mock.Save(Arg<GamingGroup>.Matches(group => group.OwningUserId == currentUser.Id),
+                Arg<ApplicationUser>.Is.Anything));
         }
 
         [Test]
@@ -60,17 +60,17 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
         {
             string gamingGroupName = "name";
 
-            await gamingGroupCreator.CreateGamingGroupAsync(gamingGroupName, userContext);
+            await gamingGroupCreator.CreateGamingGroupAsync(gamingGroupName, currentUser);
 
             gamingGroupRepositoryMock.AssertWasCalled(mock =>
                 mock.Save(Arg<GamingGroup>.Matches(group => group.Name == gamingGroupName),
-                Arg<UserContext>.Is.Anything));
+                Arg<ApplicationUser>.Is.Anything));
         }
 
         [Test]
         public void ItThrowsAnArgumentExceptionIfTheGamingGroupNameIsEmpty()
         {
-            Exception exception = Assert.Throws<ArgumentException>(() => gamingGroupCreator.CreateGamingGroupAsync(string.Empty, userContext).RunSynchronously());
+            Exception exception = Assert.Throws<ArgumentException>(() => gamingGroupCreator.CreateGamingGroupAsync(string.Empty, currentUser).RunSynchronously());
 
             Assert.AreEqual(GamingGroupCreatorImpl.EXCEPTION_MESSAGE_GAMING_GROUP_NAME_CANNOT_BE_NULL_OR_BLANK, exception.Message);
         }
@@ -79,14 +79,14 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
         public async Task ItReturnsTheSavedGamingGroup()
         {
             GamingGroup expectedGamingGroup = new GamingGroup();
-            gamingGroupRepositoryMock.Expect(mock => mock.Save(Arg<GamingGroup>.Is.Anything, Arg<UserContext>.Is.Anything))
+            gamingGroupRepositoryMock.Expect(mock => mock.Save(Arg<GamingGroup>.Is.Anything, Arg<ApplicationUser>.Is.Anything))
                 .Repeat.Once()
                 .Return(expectedGamingGroup);
 
-            GamingGroup returnedGamingGroup = await gamingGroupCreator.CreateGamingGroupAsync("a", userContext);
+            GamingGroup returnedGamingGroup = await gamingGroupCreator.CreateGamingGroupAsync("a", currentUser);
 
             IList<object[]> objectsPassedToSaveMethod = gamingGroupRepositoryMock.GetArgumentsForCallsMadeOn(
-                mock => mock.Save(Arg<GamingGroup>.Is.Anything, Arg<UserContext>.Is.Anything));
+                mock => mock.Save(Arg<GamingGroup>.Is.Anything, Arg<ApplicationUser>.Is.Anything));
 
             Assert.AreSame(expectedGamingGroup, returnedGamingGroup);
         }
@@ -96,10 +96,10 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
         {
             GamingGroup expectedGamingGroup = new GamingGroup() { Id = 123 };
 
-            gamingGroupRepositoryMock.Expect(mock => mock.Save(Arg<GamingGroup>.Is.Anything, Arg<UserContext>.Is.Anything))
+            gamingGroupRepositoryMock.Expect(mock => mock.Save(Arg<GamingGroup>.Is.Anything, Arg<ApplicationUser>.Is.Anything))
                 .Repeat.Once()
                 .Return(expectedGamingGroup);
-            await gamingGroupCreator.CreateGamingGroupAsync("a", userContext);
+            await gamingGroupCreator.CreateGamingGroupAsync("a", currentUser);
 
             userStoreMock.AssertWasCalled(mock => mock.UpdateAsync(Arg<ApplicationUser>.Matches(user => user.CurrentGamingGroupId == expectedGamingGroup.Id && user == appUser)));
         }

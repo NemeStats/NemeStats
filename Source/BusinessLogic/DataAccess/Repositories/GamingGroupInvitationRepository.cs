@@ -10,6 +10,6 @@ namespace BusinessLogic.DataAccess.Repositories
 {
     public interface GamingGroupInvitationRepository
     {
-        GamingGroupInvitation Save(GamingGroupInvitation gamingGroupInvitation, UserContext userContext);
+        GamingGroupInvitation Save(GamingGroupInvitation gamingGroupInvitation, ApplicationUser currentUser);
     }
 }

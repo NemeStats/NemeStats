@@ -20,9 +20,9 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
         [Test]
         public void ItReturnsAnIndexView()
         {
-            gameDefinitionRepository.Expect(repo => repo.GetAllGameDefinitions(Arg<UserContext>.Is.Anything));
+            gameDefinitionRepository.Expect(repo => repo.GetAllGameDefinitions(Arg<ApplicationUser>.Is.Anything));
 
-            ViewResult viewResult = gameDefinitionControllerPartialMock.Index(userContext) as ViewResult;
+            ViewResult viewResult = gameDefinitionControllerPartialMock.Index(currentUser) as ViewResult;
 
             Assert.AreEqual(MVC.GameDefinition.Views.Index, viewResult.ViewName);
         }
@@ -31,11 +31,11 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
         public void TheIndexViewHasAllGameDefinitions()
         {
             List<GameDefinition> games = new List<GameDefinition>();
-            gameDefinitionRepository.Expect(repo => repo.GetAllGameDefinitions(userContext))
+            gameDefinitionRepository.Expect(repo => repo.GetAllGameDefinitions(currentUser))
                 .Repeat.Once()
                 .Return(games);
 
-            ViewResult viewResult = gameDefinitionControllerPartialMock.Index(userContext) as ViewResult;
+            ViewResult viewResult = gameDefinitionControllerPartialMock.Index(currentUser) as ViewResult;
             List<GameDefinition> viewModel = (List<GameDefinition>)viewResult.ViewData.Model;
 
             Assert.AreSame(games, viewModel);

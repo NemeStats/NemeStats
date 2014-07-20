@@ -17,18 +17,18 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         public void ItDeletesThePlayer()
         {
             int playerId = 1;
-            playerController.DeleteConfirmed(playerId, userContext);
+            playerController.DeleteConfirmed(playerId, currentUser);
 
-            playerRepositoryMock.AssertWasCalled(mock => mock.Delete(playerId, userContext));
+            playerRepositoryMock.AssertWasCalled(mock => mock.Delete(playerId, currentUser));
         }
 
         [Test]
         public void ItReturnsAnUnauthorizedAccessHttpStatusIfTheUserDoesntHaveAccess()
         {
             int playerId = 1351;
-            playerRepositoryMock.Expect(mock => mock.Delete(playerId, userContext))
+            playerRepositoryMock.Expect(mock => mock.Delete(playerId, currentUser))
                 .Throw(new UnauthorizedAccessException());
-            HttpStatusCodeResult result = playerController.DeleteConfirmed(playerId, userContext) as HttpStatusCodeResult;
+            HttpStatusCodeResult result = playerController.DeleteConfirmed(playerId, currentUser) as HttpStatusCodeResult;
 
             Assert.AreEqual((int)HttpStatusCode.Unauthorized, result.StatusCode);
         }
@@ -37,8 +37,8 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         public void ItRedirectsToTheIndexAction()
         {
             int playerId = 1;
-            playerRepositoryMock.Expect(mock => mock.Delete(playerId, userContext));
-            RedirectToRouteResult result = playerController.DeleteConfirmed(playerId, userContext) as RedirectToRouteResult;
+            playerRepositoryMock.Expect(mock => mock.Delete(playerId, currentUser));
+            RedirectToRouteResult result = playerController.DeleteConfirmed(playerId, currentUser) as RedirectToRouteResult;
 
             Assert.AreEqual(MVC.Player.ActionNames.Index, result.RouteValues["action"]);
         }

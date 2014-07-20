@@ -19,7 +19,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
         protected GamingGroupController gamingGroupController;
         protected GamingGroupAccessGranter gamingGroupAccessGranterMock;
         protected GamingGroupCreator gamingGroupCreator;
-        protected UserContext userContext;
+        protected ApplicationUser currentUser;
 
         [SetUp]
         public void SetUp()
@@ -35,10 +35,10 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
                 gamingGroupRepositoryMock,
                 gamingGroupAccessGranterMock,
                 gamingGroupCreator);
-            userContext = new UserContext()
+            currentUser = new ApplicationUser()
             {
-                ApplicationUserId = "user  id",
-                GamingGroupId = 1315
+                Id = "user  id",
+                CurrentGamingGroupId = 1315
             };
         }
     }

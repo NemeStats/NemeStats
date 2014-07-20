@@ -16,14 +16,6 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayerRepositoryTests
     [TestFixture]
     public class GetPlayerDetailsIntegrationTests : IntegrationTestBase
     {
-        private UserContextBuilder userContextBuilder;
-
-        [TestFixtureSetUp]
-        public void TestFixtureSetUp()
-        {
-            userContextBuilder = new UserContextBuilderImpl();
-        }
-
         [Test]
         public void ItEagerlyFetchesPlayerGameResults()
         {
@@ -34,7 +26,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayerRepositoryTests
                 dbContext.Configuration.LazyLoadingEnabled = false;
                 dbContext.Configuration.ProxyCreationEnabled = false;
 
-                PlayerDetails playerDetails = playerRepository.GetPlayerDetails(testPlayer1.Id, 1, testUserContextForUserWithDefaultGamingGroup);
+                PlayerDetails playerDetails = playerRepository.GetPlayerDetails(testPlayer1.Id, 1, testUserWithDefaultGamingGroup);
                 Assert.NotNull(playerDetails.PlayerGameResults, "Failed to retrieve PlayerGameResults.");
             }
         }
@@ -48,7 +40,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayerRepositoryTests
                 dbContext.Configuration.ProxyCreationEnabled = false;
                 EntityFrameworkPlayerRepository playerRepository = new EntityFrameworkPlayerRepository(dbContext);
 
-                PlayerDetails testPlayerDetails = playerRepository.GetPlayerDetails(testPlayer1.Id, 1, testUserContextForUserWithDefaultGamingGroup);
+                PlayerDetails testPlayerDetails = playerRepository.GetPlayerDetails(testPlayer1.Id, 1, testUserWithDefaultGamingGroup);
 
                 Assert.NotNull(testPlayerDetails.PlayerGameResults.First().PlayedGame);
             }
@@ -63,7 +55,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayerRepositoryTests
                 dbContext.Configuration.ProxyCreationEnabled = false;
                 EntityFrameworkPlayerRepository playerRepository = new EntityFrameworkPlayerRepository(dbContext);
 
-                PlayerDetails testPlayerDetails = playerRepository.GetPlayerDetails(testPlayer1.Id, 1, testUserContextForUserWithDefaultGamingGroup);
+                PlayerDetails testPlayerDetails = playerRepository.GetPlayerDetails(testPlayer1.Id, 1, testUserWithDefaultGamingGroup);
 
                 Assert.NotNull(testPlayerDetails.PlayerGameResults.First().PlayedGame.GameDefinition);
             }
@@ -75,7 +67,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayerRepositoryTests
             using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
             {
                 PlayerDetails playerDetails = new EntityFrameworkPlayerRepository(dbContext)
-                    .GetPlayerDetails(testPlayer1.Id, 1, testUserContextForUserWithDefaultGamingGroup);
+                    .GetPlayerDetails(testPlayer1.Id, 1, testUserWithDefaultGamingGroup);
 
                 Assert.NotNull(playerDetails.PlayerStats);
             }
@@ -89,7 +81,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayerRepositoryTests
                 int numberOfGamesToRetrieve = 1;
 
                 PlayerDetails playerDetails = new EntityFrameworkPlayerRepository(dbContext)
-                    .GetPlayerDetails(testPlayer1.Id, numberOfGamesToRetrieve, testUserContextForUserWithDefaultGamingGroup);
+                    .GetPlayerDetails(testPlayer1.Id, numberOfGamesToRetrieve, testUserWithDefaultGamingGroup);
 
                 Assert.AreEqual(numberOfGamesToRetrieve, playerDetails.PlayerGameResults.Count);
             }
@@ -103,7 +95,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayerRepositoryTests
                 int numberOfGamesToRetrieve = 3;
 
                 PlayerDetails playerDetails = new EntityFrameworkPlayerRepository(dbContext)
-                    .GetPlayerDetails(testPlayer1.Id, numberOfGamesToRetrieve, testUserContextForUserWithDefaultGamingGroup);
+                    .GetPlayerDetails(testPlayer1.Id, numberOfGamesToRetrieve, testUserWithDefaultGamingGroup);
                 long lastTicks = long.MaxValue; ;
                 Assert.IsTrue(playerDetails.PlayerGameResults.Count == numberOfGamesToRetrieve);
                 foreach(PlayerGameResult result in playerDetails.PlayerGameResults)
@@ -121,7 +113,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayerRepositoryTests
         //    using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
         //    {
         //        PlayerDetails playerDetails = new PlayerRepository(dbContext)
-        //            .GetPlayerDetails(-1, 1, testUserContextForUserWithDefaultGamingGroup);
+        //            .GetPlayerDetails(-1, 1, testUserWithDefaultGamingGroup);
 
         //        Assert.Null(playerDetails);
         //    }
