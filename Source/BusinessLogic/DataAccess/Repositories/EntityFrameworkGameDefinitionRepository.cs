@@ -69,7 +69,6 @@ namespace BusinessLogic.DataAccess.Repositories
                 dbContext.Entry(gameDefinition).State = System.Data.Entity.EntityState.Modified;
             }else
             {
-                //TODO should throw some kind of exception if GamingGroupId is null
                 gameDefinition.GamingGroupId = currentUser.CurrentGamingGroupId.Value;
                 dbContext.GameDefinitions.Add(gameDefinition);
             }

@@ -7,7 +7,6 @@ namespace BusinessLogic.Migrations
     {
         public override void Up()
         {
-            //TODO OwningUserId should not be nullable. Need to register a single user first before running this.
             AddColumn("dbo.GamingGroup", "OwningUserId", c => c.String(maxLength: 128, nullable: true));
             CreateIndex("dbo.GamingGroup", "OwningUserId");
             AddForeignKey("dbo.GamingGroup", "OwningUserId", "dbo.AspNetUsers", "Id");
