@@ -119,6 +119,7 @@
     <Compile Include="UnitTests\DataAccessTests\RepositoriesTests\EntityFrameworkPlayedGameRepositoryTests\CreatePlayedGameTests.cs" />
     <Compile Include="UnitTests\DataAccessTests\RepositoriesTests\EntityFrameworkPlayerRepositoryTests\GetNemesisTests.cs" />
     <Compile Include="UnitTests\DataAccessTests\RepositoriesTests\EntityFrameworkPlayerRepositoryTests\GetPlayerDetailsTests.cs" />
+    <Compile Include="UnitTests\DataAccessTests\SecurityTests\SecuredEntityValidatorTests\ValidateAccessTests.cs" />
     <Compile Include="UnitTests\LogicTests\GamingGroupsTests\GamingGroupCreatorTests\CreateGamingGroupTests.cs" />
     <Compile Include="UnitTests\LogicTests\PointsTests\GordonPointsTests\CalculateGordonPointsTests.cs" />
     <Compile Include="UnitTests\LogicTests\UsersTests\GamingGroupInviteConsumerImplTests\AddUserToInvitedGroupTests.cs" />

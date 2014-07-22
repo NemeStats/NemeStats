@@ -1,4 +1,5 @@
-﻿using BusinessLogic.DataAccess.Repositories;
+﻿using BusinessLogic.DataAccess;
+using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.Logic.GamingGroups;
 using BusinessLogic.Models;
 using BusinessLogic.Models.User;
@@ -16,20 +17,20 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
     [TestFixture, Ignore("Freezing up on async calls. Need to figure this out. and re-enable tests.")]
     public class CreateGamingGroupTests
     {
-        private GamingGroupRepository gamingGroupRepositoryMock;
         private GamingGroupCreatorImpl gamingGroupCreator;
         private IUserStore<ApplicationUser> userStoreMock;
         private UserManager<ApplicationUser> userManager;
+        private DataContext dataContext;
         private ApplicationUser currentUser;
         ApplicationUser appUser;
 
         [SetUp]
         public void SetUp()
         {
-            gamingGroupRepositoryMock = MockRepository.GenerateMock<GamingGroupRepository>();
             userStoreMock = MockRepository.GenerateMock<IUserStore<ApplicationUser>>();
             userManager = new UserManager<ApplicationUser>(userStoreMock);
-            gamingGroupCreator = new GamingGroupCreatorImpl(gamingGroupRepositoryMock, userManager);
+            dataContext = MockRepository.GenerateMock<DataContext>();
+            gamingGroupCreator = new GamingGroupCreatorImpl(dataContext, userManager);
             currentUser = new ApplicationUser()
             {
                 Id = "application user id"
@@ -50,7 +51,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
         {
             await gamingGroupCreator.CreateGamingGroupAsync("a", currentUser);
 
-            gamingGroupRepositoryMock.AssertWasCalled(mock =>
+            dataContext.AssertWasCalled(mock =>
                 mock.Save(Arg<GamingGroup>.Matches(group => group.OwningUserId == currentUser.Id),
                 Arg<ApplicationUser>.Is.Anything));
         }
@@ -62,7 +63,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
 
             await gamingGroupCreator.CreateGamingGroupAsync(gamingGroupName, currentUser);
 
-            gamingGroupRepositoryMock.AssertWasCalled(mock =>
+            dataContext.AssertWasCalled(mock =>
                 mock.Save(Arg<GamingGroup>.Matches(group => group.Name == gamingGroupName),
                 Arg<ApplicationUser>.Is.Anything));
         }
@@ -79,13 +80,13 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
         public async Task ItReturnsTheSavedGamingGroup()
         {
             GamingGroup expectedGamingGroup = new GamingGroup();
-            gamingGroupRepositoryMock.Expect(mock => mock.Save(Arg<GamingGroup>.Is.Anything, Arg<ApplicationUser>.Is.Anything))
+            dataContext.Expect(mock => mock.Save(Arg<GamingGroup>.Is.Anything, Arg<ApplicationUser>.Is.Anything))
                 .Repeat.Once()
                 .Return(expectedGamingGroup);
 
             GamingGroup returnedGamingGroup = await gamingGroupCreator.CreateGamingGroupAsync("a", currentUser);
 
-            IList<object[]> objectsPassedToSaveMethod = gamingGroupRepositoryMock.GetArgumentsForCallsMadeOn(
+            IList<object[]> objectsPassedToSaveMethod = dataContext.GetArgumentsForCallsMadeOn(
                 mock => mock.Save(Arg<GamingGroup>.Is.Anything, Arg<ApplicationUser>.Is.Anything));
 
             Assert.AreSame(expectedGamingGroup, returnedGamingGroup);
@@ -96,7 +97,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
         {
             GamingGroup expectedGamingGroup = new GamingGroup() { Id = 123 };
 
-            gamingGroupRepositoryMock.Expect(mock => mock.Save(Arg<GamingGroup>.Is.Anything, Arg<ApplicationUser>.Is.Anything))
+            dataContext.Expect(mock => mock.Save(Arg<GamingGroup>.Is.Anything, Arg<ApplicationUser>.Is.Anything))
                 .Repeat.Once()
                 .Return(expectedGamingGroup);
             await gamingGroupCreator.CreateGamingGroupAsync("a", currentUser);

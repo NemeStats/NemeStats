@@ -19,6 +19,7 @@
 using BusinessLogic.DataAccess;
 using BusinessLogic.DataAccess.GamingGroups;
 using BusinessLogic.DataAccess.Repositories;
+using BusinessLogic.DataAccess.Security;
 using BusinessLogic.Logic;
 using BusinessLogic.Logic.GamingGroups;
 using BusinessLogic.Logic.Users;
@@ -62,6 +63,7 @@ namespace UI.DependencyResolution {
                             x.For<Microsoft.AspNet.Identity.IUserStore<ApplicationUser>>()
                                 .Use<Microsoft.AspNet.Identity.EntityFramework.UserStore<ApplicationUser>>();
                             x.For<GamingGroupCreator>().Use<GamingGroupCreatorImpl>();
+                            x.For<SecuredEntityValidator>().Use<SecuredEntityValidatorImpl>();
                             //TODO finish implementing http://lostechies.com/jimmybogard/2010/05/03/dependency-injection-in-asp-net-mvc-filters/
                             //x.For<IActionInvoker>().Use<InjectingActionInvoker>();
                         });
