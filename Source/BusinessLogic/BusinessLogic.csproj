@@ -95,8 +95,8 @@
     <Compile Include="DataAccess\NemeStatsInitializer.cs" />
     <Compile Include="DataAccess\Repositories\GamingGroupInvitationRepository.cs" />
     <Compile Include="DataAccess\Repositories\GamingGroupRepository.cs" />
-    <Compile Include="DataAccess\SecuredEntity.cs" />
     <Compile Include="DataAccess\SecuredEntityWithTechnicalKey.cs" />
+    <Compile Include="DataAccess\Security\SecuredEntitySecurer.cs" />
     <Compile Include="DataAccess\Security\SecuredEntityValidator.cs" />
     <Compile Include="DataAccess\Security\SecuredEntityValidatorFactory.cs" />
     <Compile Include="DataAccess\Security\SecuredEntityValidatorImpl.cs" />

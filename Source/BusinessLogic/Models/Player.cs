@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace BusinessLogic.Models
 {
-    public class Player : EntityWithTechnicalKey
+    public class Player : SecuredEntityWithTechnicalKey
     {
         public Player()
         {
@@ -19,7 +19,7 @@ namespace BusinessLogic.Models
 
         public override int Id { get; set; }
         [Index("IX_ID_AND_NAME", 1, IsUnique = true)]
-        public int GamingGroupId { get; set; }
+        public override int GamingGroupId { get; set; }
 
         [StringLength(255)]
         [Index("IX_ID_AND_NAME", 2, IsUnique = true)]

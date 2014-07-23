@@ -1,5 +1,6 @@
 ﻿using BusinessLogic.DataAccess;
 using BusinessLogic.DataAccess.Security;
+using BusinessLogic.Models;
 using BusinessLogic.Models.User;
 using NUnit.Framework;
 using Rhino.Mocks;
@@ -14,36 +15,43 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.SecurityTests.SecuredEnt
     [TestFixture]
     public class ValidateAccessTests
     {
-        protected SecuredEntityValidatorImpl securedEntityValidator;
+        protected SecuredEntityValidatorImpl<SecuredEntityWithTechnicalKey> securedEntityValidatorForSecuredEntity;
+        protected SecuredEntityValidatorImpl<object> securedEntityValidatorForEntityThatIsNotSecured;
         protected SecuredEntityWithTechnicalKey securedEntity;
         protected ApplicationUser currentUser;
+        protected int securedEntityGamingGroupId = 1;
+        protected int securedEntityId = 9;
 
         [SetUp]
         public void SetUp()
         {
-            securedEntityValidator = new SecuredEntityValidatorImpl();
+            securedEntityValidatorForSecuredEntity = new SecuredEntityValidatorImpl<SecuredEntityWithTechnicalKey>();
+            securedEntityValidatorForEntityThatIsNotSecured = new SecuredEntityValidatorImpl<object>();
             securedEntity = MockRepository.GenerateMock<SecuredEntityWithTechnicalKey>();
             currentUser = new ApplicationUser();
+
+            securedEntity.Expect(mock => mock.GamingGroupId)
+                 .Repeat.Any()
+                 .Return(securedEntityGamingGroupId);
+            securedEntity.Expect(mock => mock.Id)
+                .Repeat.Any()
+                .Return(securedEntityId);
         }
 
         [Test]
         public void ItThrowsAnUnauthorizedAccessExceptionIfTheGamingGroupIdsDoNotMatch()
         {
-            int securedEntityGamingGroupId = 1;
             currentUser.CurrentGamingGroupId = 999999;
             Type stringType = typeof(string);
-            securedEntity.Expect(mock => mock.GamingGroupId)
-                .Repeat.Once()
-                .Return(securedEntityGamingGroupId);
 
             Exception exception = Assert.Throws<UnauthorizedAccessException>(
-                () => securedEntityValidator.ValidateAccess(securedEntity, currentUser, stringType));
+                () => securedEntityValidatorForSecuredEntity.ValidateAccess(securedEntity, currentUser, stringType));
 
             string message = string.Format(
-                SecuredEntityValidatorImpl.EXCEPTION_MESSAGE_USER_DOES_NOT_HAVE_ACCESS_TO_GAME_DEFINITION,
+                SecuredEntityValidatorImpl<SecuredEntityWithTechnicalKey>.EXCEPTION_MESSAGE_USER_DOES_NOT_HAVE_ACCESS_TO_GAME_DEFINITION,
                 currentUser.Id,
                 stringType,
-                currentUser
+                securedEntity.Id
                 );
             Assert.AreEqual(message, exception.Message);
         }

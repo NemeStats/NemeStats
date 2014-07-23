@@ -35,7 +35,7 @@ namespace BusinessLogic.Logic.GamingGroups
             };
 
             GamingGroup returnGroup = dataContext.Save<GamingGroup>(gamingGroup, currentUser);
-            ApplicationUser user = userManager.FindByIdAsync(currentUser.Id).RunSynchronously();
+            ApplicationUser user = await userManager.FindByIdAsync(currentUser.Id);
             user.CurrentGamingGroupId = returnGroup.Id;
             await userManager.UpdateAsync(user);
             return returnGroup;

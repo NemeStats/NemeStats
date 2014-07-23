@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessLogic.DataAccess
+namespace BusinessLogic.DataAccess.Security
 {
-    public interface SecuredEntity
+    public interface SecuredEntitySecurer
     {
-        int GamingGroupId { get; set; }
     }
 }

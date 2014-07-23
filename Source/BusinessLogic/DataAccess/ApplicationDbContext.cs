@@ -4,6 +4,7 @@ using BusinessLogic.Models.User;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Migrations;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Linq;
@@ -13,12 +14,13 @@ namespace BusinessLogic.DataAccess
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, DataContext
     {
         internal const string CONNECTION_NAME = "DefaultConnection";
-        private SecuredEntityValidator securedEntityValidator;
+        internal const string EXCEPTION_MESSAGE_CURRENT_GAMING_GROUP_ID_CANNOT_BE_NULL = "currentUser.CurrentGamingGroupId cannot be null";
+        private SecuredEntityValidatorFactory securedEntityValidatorFactory;
 
-        public ApplicationDbContext(SecuredEntityValidator securedEntityValidator)
+        public ApplicationDbContext(SecuredEntityValidatorFactory securedEntityValidatorFactory)
             : base(CONNECTION_NAME)
         {
-            this.securedEntityValidator = securedEntityValidator;
+            this.securedEntityValidatorFactory = securedEntityValidatorFactory;
         }
 
         public virtual DbSet<GamingGroup> GamingGroups { get; set; }
@@ -46,7 +48,35 @@ namespace BusinessLogic.DataAccess
             return Set<TEntity>();
         }
 
+        internal virtual TEntity AddOrInsertOverride<TEntity>(TEntity entity) where TEntity : class
+        {
+            Set<TEntity>().AddOrUpdate(entity);
+
+            return entity;
+        }
+
         public virtual TEntity Save<TEntity>(TEntity entity, ApplicationUser currentUser) where TEntity : EntityWithTechnicalKey
+        {
+            ValidateArguments<TEntity>(entity, currentUser);
+
+            if (entity.AlreadyInDatabase())
+            {
+                //TODO update comments to indicate it can throw an exception
+                SecuredEntityValidator<TEntity> validator = securedEntityValidatorFactory.MakeSecuredEntityValidator<TEntity>();
+                validator.ValidateAccess(entity, currentUser, typeof(TEntity));
+            }
+            else
+            {
+                //TODO refactor this out into another method
+                SetGamingGroupIdIfEntityIsSecured<TEntity>(entity, currentUser);
+            }
+
+            TEntity savedEntity = AddOrInsertOverride<TEntity>(entity);
+
+            return savedEntity;
+        }
+
+        private static void ValidateArguments<TEntity>(TEntity entity, ApplicationUser currentUser) where TEntity : EntityWithTechnicalKey
         {
             if (entity == null)
             {
@@ -60,27 +90,17 @@ namespace BusinessLogic.DataAccess
 
             if (currentUser.CurrentGamingGroupId == null)
             {
-                throw new ArgumentException("currentUser.CurrentGamingGroupId cannot be null");
+                throw new ArgumentException(EXCEPTION_MESSAGE_CURRENT_GAMING_GROUP_ID_CANNOT_BE_NULL);
             }
+        }
 
-            if (entity.AlreadyInDatabase())
+        private static void SetGamingGroupIdIfEntityIsSecured<TEntity>(TEntity entity, ApplicationUser currentUser) where TEntity : EntityWithTechnicalKey
+        {
+            if (entity is SecuredEntityWithTechnicalKey)
             {
-                //TODO update comments to indicate it can throw an exception
-                securedEntityValidator.ValidateAccess(entity, currentUser, typeof(TEntity));
-                Entry<TEntity>(entity).State = System.Data.Entity.EntityState.Modified;
+                SecuredEntityWithTechnicalKey securedEntity = entity as SecuredEntityWithTechnicalKey;
+                securedEntity.GamingGroupId = currentUser.CurrentGamingGroupId.Value;
             }
-            else
-            {
-                //TODO refactor this out into another method
-                if (entity is SecuredEntity)
-                {
-                    SecuredEntity securedEntity = (SecuredEntity)entity;
-                    securedEntity.GamingGroupId = currentUser.CurrentGamingGroupId.Value;
-                }
-                Set<TEntity>().Add(entity);
-            }
-
-            return entity;
         }
     }
 }
