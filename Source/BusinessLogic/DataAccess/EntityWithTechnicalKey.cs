@@ -7,13 +7,23 @@ using System.Threading.Tasks;
 namespace BusinessLogic.DataAccess
 {
     //TODO make generic
-    public abstract class EntityWithTechnicalKey : SingleColumnTechnicalKey
+    public abstract class EntityWithTechnicalKey<T> : EntityWithTechnicalKey, SingleColumnTechnicalKey<T>
     {
-        abstract public int Id { get; set; }
+        public abstract T Id { get; set; }
 
-        public virtual bool AlreadyInDatabase()
+        public override bool AlreadyInDatabase()
         {
-            return Id != default(int);
+            if(Id == null)
+            {
+                return false;
+            }
+
+            return Id.Equals(default(T));
         }
+    }
+
+    public abstract class EntityWithTechnicalKey
+    {
+        public abstract bool AlreadyInDatabase();
     }
 }

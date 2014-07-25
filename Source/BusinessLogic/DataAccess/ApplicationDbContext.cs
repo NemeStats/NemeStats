@@ -17,6 +17,13 @@ namespace BusinessLogic.DataAccess
         internal const string EXCEPTION_MESSAGE_CURRENT_GAMING_GROUP_ID_CANNOT_BE_NULL = "currentUser.CurrentGamingGroupId cannot be null";
         private SecuredEntityValidatorFactory securedEntityValidatorFactory;
 
+        //TODO do i really need this constructor? MockRepository.GenerateMock<ApplicationDbContext>() fails saying it needs a parameterless constructor
+        public ApplicationDbContext() 
+            : this(new SecuredEntityValidatorFactory())
+        {
+
+        }
+
         public ApplicationDbContext(SecuredEntityValidatorFactory securedEntityValidatorFactory)
             : base(CONNECTION_NAME)
         {

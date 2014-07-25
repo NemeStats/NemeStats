@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BusinessLogic.DataAccess
 {
-    public class SecuredEntityWithTechnicalKey : EntityWithTechnicalKey 
+    public class SecuredEntityWithTechnicalKey : EntityWithTechnicalKey<int>
     {
         public override int Id { get; set; }
         public virtual int GamingGroupId { get; set; }

@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace BusinessLogic.DataAccess
 {
-    //TODO make this generic
-    public interface SingleColumnTechnicalKey
+    public interface SingleColumnTechnicalKey<T>
     {
-        int Id { get; set; }
+        T Id { get; set; }
     }
 }

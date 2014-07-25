@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace BusinessLogic.Models
 {
-    public class GamingGroup : EntityWithTechnicalKey
+    public class GamingGroup : EntityWithTechnicalKey<int>
     {
         public override int Id { get; set; }
         public string Name { get; set; }

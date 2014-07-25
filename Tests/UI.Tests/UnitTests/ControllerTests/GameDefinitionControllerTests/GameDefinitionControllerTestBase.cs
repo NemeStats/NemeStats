@@ -17,15 +17,17 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
     {
         protected GameDefinitionController gameDefinitionControllerPartialMock;
         protected GameDefinitionRepository gameDefinitionRepository;
-        protected NemeStatsDbContext dbContext;
+        protected NemeStatsDbContext nemeStatsDbContext;
+        protected ApplicationDbContext dbContext;
         protected ApplicationUser currentUser;
 
         [SetUp]
         public void SetUp()
         {
             gameDefinitionRepository = MockRepository.GenerateMock<GameDefinitionRepository>();
-            dbContext = MockRepository.GenerateMock<NemeStatsDbContext>();
-            gameDefinitionControllerPartialMock = MockRepository.GeneratePartialMock<GameDefinitionController>(dbContext, gameDefinitionRepository);
+            nemeStatsDbContext = MockRepository.GenerateMock<NemeStatsDbContext>();
+            dbContext = MockRepository.GenerateMock<ApplicationDbContext>();
+            gameDefinitionControllerPartialMock = MockRepository.GeneratePartialMock<GameDefinitionController>(nemeStatsDbContext, dbContext, gameDefinitionRepository);
             currentUser = new ApplicationUser()
             {
                 Id = "user id",

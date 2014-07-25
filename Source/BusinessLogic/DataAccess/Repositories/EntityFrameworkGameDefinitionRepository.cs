@@ -61,23 +61,6 @@ namespace BusinessLogic.DataAccess.Repositories
             }
         }
 
-        public virtual GameDefinition Save(GameDefinition gameDefinition, ApplicationUser currentUser)
-        {
-            if(gameDefinition.AlreadyInDatabase())
-            {
-                ValidateUserHasAccessToGameDefinition(currentUser, gameDefinition);
-                dbContext.Entry(gameDefinition).State = System.Data.Entity.EntityState.Modified;
-            }else
-            {
-                gameDefinition.GamingGroupId = currentUser.CurrentGamingGroupId.Value;
-                dbContext.GameDefinitions.Add(gameDefinition);
-            }
-            
-            dbContext.SaveChanges();
-
-            return gameDefinition;
-        }
-
         public virtual void Delete(int gameDefinitionId, ApplicationUser currentUser)
         {
             GameDefinition gameDefinition = GetGameDefinition(gameDefinitionId, currentUser);

@@ -19,12 +19,14 @@ namespace UI.Controllers
     public partial class GameDefinitionController : Controller
     {
         internal NemeStatsDbContext db;
+        internal ApplicationDbContext dbContext;
         internal GameDefinitionRepository gameDefinitionRepository;
 
-        public GameDefinitionController(NemeStatsDbContext dbContext, GameDefinitionRepository gameDefinitionRepository)
+        public GameDefinitionController(NemeStatsDbContext db, ApplicationDbContext dbContext, GameDefinitionRepository gameDefinitionRepository)
         {
-            this.db = dbContext;
+            this.db = db;
             this.gameDefinitionRepository = gameDefinitionRepository;
+            this.dbContext = dbContext;
         }
 
         // GET: /GameDefinition/
@@ -77,7 +79,7 @@ namespace UI.Controllers
         {
             if (ModelState.IsValid)
             {
-                gameDefinitionRepository.Save(gameDefinition, currentUser);
+                dbContext.Save(gameDefinition, currentUser);
                 return RedirectToAction(MVC.GameDefinition.ActionNames.Index);
             }
 
@@ -115,7 +117,7 @@ namespace UI.Controllers
         {
             if (ModelState.IsValid)
             {
-                gameDefinitionRepository.Save(gamedefinition, currentUser);
+                dbContext.Save(gamedefinition, currentUser);
                 return RedirectToAction(MVC.GameDefinition.ActionNames.Index);
             }
             return View(MVC.GameDefinition.Views.Edit, gamedefinition);

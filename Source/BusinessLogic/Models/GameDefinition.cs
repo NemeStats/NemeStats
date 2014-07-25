@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BusinessLogic.Models
 {
-    public class GameDefinition : EntityWithTechnicalKey
+    public class GameDefinition : EntityWithTechnicalKey<int>
     {
         public override int Id { get; set; }
 

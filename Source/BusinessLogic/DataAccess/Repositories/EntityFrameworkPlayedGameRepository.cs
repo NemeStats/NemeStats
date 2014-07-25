@@ -14,8 +14,8 @@ namespace BusinessLogic.DataAccess.Repositories
     public class EntityFrameworkPlayedGameRepository : PlayedGameRepository
     {
         internal const string EXCEPTION_MESSAGE_MUST_PASS_VALID_GAME_DEFINITION_ID = "Must pass a valid GameDefinitionId.";
-        
-        private ApplicationDbContext dbContext;
+
+        private NemeStatsDbContext dbContext;
 
         public EntityFrameworkPlayedGameRepository(NemeStatsDbContext context)
         {
