@@ -18,7 +18,7 @@ namespace BusinessLogic.DataAccess
                 return false;
             }
 
-            return Id.Equals(default(T));
+            return !Id.Equals(default(T));
         }
     }
 

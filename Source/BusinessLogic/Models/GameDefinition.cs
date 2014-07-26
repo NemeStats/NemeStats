@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace BusinessLogic.Models
 {
-    public class GameDefinition : EntityWithTechnicalKey<int>
+    public class GameDefinition : SecuredEntityWithTechnicalKey<int>
     {
         public override int Id { get; set; }
 
-        public int GamingGroupId { get; set; }
+        public override int GamingGroupId { get; set; }
 
         public string Name { get; set; }
         public string Description { get; set; }

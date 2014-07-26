@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace BusinessLogic.Models
 {
-    public class Player : SecuredEntityWithTechnicalKey
+    public class Player : SecuredEntityWithTechnicalKey<int>
     {
         public Player()
         {

@@ -83,7 +83,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataAccess\ApplicationDbContext.cs" />
+    <Compile Include="DataAccess\ApplicationDataContext.cs" />
     <Compile Include="DataAccess\DataContext.cs" />
     <Compile Include="DataAccess\GamingGroups\EntityFrameworkGamingGroupAccessGranter.cs" />
     <Compile Include="DataAccess\GamingGroups\GamingGroupAccessGranter.cs" />

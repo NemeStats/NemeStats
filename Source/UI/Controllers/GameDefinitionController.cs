@@ -18,15 +18,15 @@ namespace UI.Controllers
     [Authorize]
     public partial class GameDefinitionController : Controller
     {
-        internal NemeStatsDbContext db;
-        internal ApplicationDbContext dbContext;
+        internal NemeStatsDbContext nemeStatsDbContext;
+        internal ApplicationDataContext applicationDataContext;
         internal GameDefinitionRepository gameDefinitionRepository;
 
-        public GameDefinitionController(NemeStatsDbContext db, ApplicationDbContext dbContext, GameDefinitionRepository gameDefinitionRepository)
+        public GameDefinitionController(NemeStatsDbContext db, ApplicationDataContext dbContext, GameDefinitionRepository gameDefinitionRepository)
         {
-            this.db = db;
+            this.nemeStatsDbContext = db;
             this.gameDefinitionRepository = gameDefinitionRepository;
-            this.dbContext = dbContext;
+            this.applicationDataContext = dbContext;
         }
 
         // GET: /GameDefinition/
@@ -79,7 +79,7 @@ namespace UI.Controllers
         {
             if (ModelState.IsValid)
             {
-                dbContext.Save(gameDefinition, currentUser);
+                applicationDataContext.Save(gameDefinition, currentUser);
                 return RedirectToAction(MVC.GameDefinition.ActionNames.Index);
             }
 
@@ -117,7 +117,7 @@ namespace UI.Controllers
         {
             if (ModelState.IsValid)
             {
-                dbContext.Save(gamedefinition, currentUser);
+                applicationDataContext.Save(gamedefinition, currentUser);
                 return RedirectToAction(MVC.GameDefinition.ActionNames.Index);
             }
             return View(MVC.GameDefinition.Views.Edit, gamedefinition);
@@ -164,7 +164,8 @@ namespace UI.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                applicationDataContext.Dispose();
+                nemeStatsDbContext.Dispose();
             }
             base.Dispose(disposing);
         }

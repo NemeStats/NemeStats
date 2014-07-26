@@ -1,6 +1,8 @@
 ﻿using BusinessLogic.DataAccess;
 using BusinessLogic.DataAccess.Security;
 using BusinessLogic.Models;
+using BusinessLogic.Models.User;
+using Microsoft.AspNet.Identity.EntityFramework;
 using NUnit.Framework;
 using System.Data.Entity.Migrations;
 using System.Linq;
@@ -13,7 +15,9 @@ namespace BusinessLogic.Tests.IntegrationTests
         [Test]
         public void TheAddOrInsertExtensionMethodSetsTheIdOnNewEntities()
         {
-            using(ApplicationDbContext dbContext = new ApplicationDbContext(new SecuredEntityValidatorFactory()))
+            using(ApplicationDataContext dataContext = new ApplicationDataContext(
+                new NemeStatsDbContext(), 
+                new SecuredEntityValidatorFactory()))
             {
                 GamingGroup gamingGroup = new GamingGroup()
                 {
@@ -21,23 +25,23 @@ namespace BusinessLogic.Tests.IntegrationTests
                     OwningUserId = testUserWithDefaultGamingGroup.Id
                 };
 
-                dbContext.GamingGroups.AddOrUpdate(gamingGroup);
-                dbContext.SaveChanges();
+                dataContext.Save(gamingGroup, testUserWithDefaultGamingGroup);
+                dataContext.CommitAllChanges();
 
                 int actualId = gamingGroup.Id;
-                Cleanup(dbContext, gamingGroup);
+                Cleanup(dataContext, gamingGroup, testUserWithDefaultGamingGroup);
 
                 Assert.AreNotEqual(default(int), gamingGroup.Id);
             }
         }
 
-        private static void Cleanup(ApplicationDbContext dbContext, GamingGroup gamingGroup)
+        private static void Cleanup(ApplicationDataContext dbContext, GamingGroup gamingGroup, ApplicationUser user)
         {
-            GamingGroup gamingGroupToDelete = dbContext.GamingGroups.Where(game => game.Name == gamingGroup.Name).FirstOrDefault();
+            GamingGroup gamingGroupToDelete = dbContext.GetQueryable<GamingGroup>().Where(game => game.Name == gamingGroup.Name).FirstOrDefault();
             if (gamingGroupToDelete != null)
             {
-                dbContext.GamingGroups.Remove(gamingGroupToDelete);
-                dbContext.SaveChanges();
+                dbContext.Delete(gamingGroupToDelete, user);
+                dbContext.CommitAllChanges();
             }
         }
     }

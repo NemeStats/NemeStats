@@ -33,9 +33,6 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.SecurityTests.SecuredEnt
             securedEntity.Expect(mock => mock.GamingGroupId)
                  .Repeat.Any()
                  .Return(securedEntityGamingGroupId);
-            securedEntity.Expect(mock => mock.Id)
-                .Repeat.Any()
-                .Return(securedEntityId);
         }
 
         [Test]
@@ -50,10 +47,29 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.SecurityTests.SecuredEnt
             string message = string.Format(
                 SecuredEntityValidatorImpl<SecuredEntityWithTechnicalKey>.EXCEPTION_MESSAGE_USER_DOES_NOT_HAVE_ACCESS_TO_GAME_DEFINITION,
                 currentUser.Id,
-                stringType,
-                securedEntity.Id
+                stringType
                 );
             Assert.AreEqual(message, exception.Message);
+        }
+
+        [Test]
+        public void ItDoesNotThrowAnExceptionIfTheEntityIsNotASecuredEntityWithTechnicalKey()
+        {
+            securedEntityValidatorForEntityThatIsNotSecured.ValidateAccess(
+                "some object that doesnt extend SecuredEntityWithTechnicalKey", 
+                currentUser, 
+                typeof(string));
+        }
+
+        [Test]
+        public void ItDoesNotThrowAnExceptionIfTheUserHasTheGamingGroupOfTheSecuredEntity()
+        {
+            currentUser.CurrentGamingGroupId = securedEntity.GamingGroupId;
+
+            securedEntityValidatorForEntityThatIsNotSecured.ValidateAccess(
+                securedEntity,
+                currentUser,
+                typeof(string));
         }
     }
 }

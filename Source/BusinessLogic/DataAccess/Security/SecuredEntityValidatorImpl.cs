@@ -10,16 +10,24 @@ namespace BusinessLogic.DataAccess.Security
     public class SecuredEntityValidatorImpl<TEntity> : SecuredEntityValidator<TEntity> where TEntity : class
     {
         internal const string EXCEPTION_MESSAGE_USER_DOES_NOT_HAVE_ACCESS_TO_GAME_DEFINITION
-           = "User with Id '{0}' is unauthorized to access '{1}' with Id '{2}'";
+           = "User with Id '{0}' is unauthorized to access the given entity of type '{1}'";
 
-        public void ValidateAccess(TEntity entity, ApplicationUser currentUser, Type underlyingEntityType)
+        public virtual void ValidateAccess(TEntity entity, ApplicationUser currentUser, Type underlyingEntityType)
         {
             SecuredEntityWithTechnicalKey securedEntity = entity as SecuredEntityWithTechnicalKey;
-            string message = string.Format(EXCEPTION_MESSAGE_USER_DOES_NOT_HAVE_ACCESS_TO_GAME_DEFINITION,
-                currentUser.Id,
-                underlyingEntityType.ToString(),
-                securedEntity.Id);
-            throw new UnauthorizedAccessException(message);
+
+            if (securedEntity == null)
+            {
+                return;
+            }
+
+            if(securedEntity.GamingGroupId != currentUser.CurrentGamingGroupId)
+            {
+                string message = string.Format(EXCEPTION_MESSAGE_USER_DOES_NOT_HAVE_ACCESS_TO_GAME_DEFINITION,
+                    currentUser.Id,
+                    underlyingEntityType.ToString());
+                throw new UnauthorizedAccessException(message);
+            }
         }
     }
 }

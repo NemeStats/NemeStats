@@ -14,5 +14,6 @@ namespace BusinessLogic.DataAccess
         IQueryable<TEntity> GetQueryable<TEntity>() where TEntity : class;
 
         TEntity Save<TEntity>(TEntity entity, ApplicationUser currentUser) where TEntity : EntityWithTechnicalKey;
+        void Delete<TEntity>(TEntity entity, ApplicationUser currentUser) where TEntity : EntityWithTechnicalKey;
     }
 }
