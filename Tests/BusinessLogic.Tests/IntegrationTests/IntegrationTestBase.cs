@@ -1,6 +1,7 @@
 ﻿using BusinessLogic.DataAccess;
 using BusinessLogic.DataAccess.GamingGroups;
 using BusinessLogic.DataAccess.Repositories;
+using BusinessLogic.DataAccess.Security;
 using BusinessLogic.Logic;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
@@ -15,6 +16,7 @@ namespace BusinessLogic.Tests.IntegrationTests
 {
     public class IntegrationTestBase
     {
+        protected SecuredEntityValidatorFactory securedEntityValidatorFactory = new SecuredEntityValidatorFactory();
         protected List<PlayedGame> testPlayedGames = new List<PlayedGame>();
         protected GameDefinition testGameDefinition;
         protected GameDefinition testGameDefinitionWithOtherGamingGroupId;
@@ -81,7 +83,10 @@ namespace BusinessLogic.Tests.IntegrationTests
 
                 SaveGamingGroupInvitations(nemeStatsDbContext);
 
-                CreatePlayedGames(nemeStatsDbContext);
+                using(ApplicationDataContext dataContext = new ApplicationDataContext())
+                {
+                    CreatePlayedGames(dataContext);
+                }
             }
         }
 
@@ -107,9 +112,9 @@ namespace BusinessLogic.Tests.IntegrationTests
             return user;
         }
 
-        private void CreatePlayedGames(NemeStatsDbContext nemeStatsDbContext)
+        private void CreatePlayedGames(ApplicationDataContext dataContext)
         {
-            PlayedGameRepository playedGameLogic = new EntityFrameworkPlayedGameRepository(nemeStatsDbContext);
+            PlayedGameRepository playedGameLogic = new EntityFrameworkPlayedGameRepository(dataContext);
 
             List<Player> players = new List<Player>() { testPlayer1, testPlayer2 };
             List<int> playerRanks = new List<int>() { 1, 1 };
