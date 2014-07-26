@@ -110,41 +110,6 @@ namespace UI.Controllers
             ViewBag.Players = allPlayersSelectList;
         }
 
-        // GET: /PlayedGame/Edit/5
-        [UserContextAttribute]
-        public virtual ActionResult Edit(int? id, ApplicationUser currentUser)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            PlayedGame playedgame = db.PlayedGames.Find(id);
-            if (playedgame == null)
-            {
-                return HttpNotFound();
-            }
-            ViewBag.GameDefinitionId = new SelectList(db.GameDefinitions, "Id", "Name", playedgame.GameDefinitionId);
-            return View(playedgame);
-        }
-
-        // POST: /PlayedGame/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [UserContextAttribute]
-        public virtual ActionResult Edit([Bind(Include = "Id,GameDefinitionId,NumberOfPlayers")] PlayedGame playedgame, ApplicationUser currentUser)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(playedgame).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            ViewBag.GameDefinitionId = new SelectList(db.GameDefinitions, "Id", "Name", playedgame.GameDefinitionId);
-            return View(playedgame);
-        }
-
         // GET: /PlayedGame/Delete/5
         [UserContextAttribute]
         public virtual ActionResult Delete(int? id, ApplicationUser currentUser)

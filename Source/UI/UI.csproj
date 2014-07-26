@@ -425,7 +425,6 @@
     <Content Include="Views\PlayedGame\Create.cshtml" />
     <Content Include="Views\PlayedGame\Delete.cshtml" />
     <Content Include="Views\PlayedGame\Details.cshtml" />
-    <Content Include="Views\PlayedGame\Edit.cshtml" />
     <Content Include="Views\PlayedGame\Index.cshtml" />
     <Content Include="Views\GamingGroup\Index.cshtml" />
     <Content Include="Views\GamingGroup\Create.cshtml" />
