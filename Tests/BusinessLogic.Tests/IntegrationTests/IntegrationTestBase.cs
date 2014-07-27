@@ -72,10 +72,13 @@ namespace BusinessLogic.Tests.IntegrationTests
                     testApplicationUserNameForUserWithOtherGamingGroup,
                     "b@mailinator.com");
 
-                testGamingGroup = SaveGamingGroup(nemeStatsDbContext, testGamingGroup1Name, testUserWithDefaultGamingGroup.Id);
-                testUserWithDefaultGamingGroup = UpdateDatefaultGamingGroupOnUser(testUserWithDefaultGamingGroup, testGamingGroup, nemeStatsDbContext);
-                testOtherGamingGroup = SaveGamingGroup(nemeStatsDbContext, testGamingGroup2Name, testUserWithOtherGamingGroup.Id);
-                testUserWithOtherGamingGroup = UpdateDatefaultGamingGroupOnUser(testUserWithOtherGamingGroup, testOtherGamingGroup, nemeStatsDbContext);
+                using(ApplicationDataContext dataContext = new ApplicationDataContext())
+                {
+                    testGamingGroup = SaveGamingGroup(dataContext, testGamingGroup1Name, testUserWithDefaultGamingGroup);
+                    testUserWithDefaultGamingGroup = UpdateDatefaultGamingGroupOnUser(testUserWithDefaultGamingGroup, testGamingGroup, dataContext);
+                    testOtherGamingGroup = SaveGamingGroup(dataContext, testGamingGroup2Name, testUserWithOtherGamingGroup);
+                    testUserWithOtherGamingGroup = UpdateDatefaultGamingGroupOnUser(testUserWithOtherGamingGroup, testOtherGamingGroup, dataContext);
+                }
 
                 testGameDefinition = SaveGameDefinition(nemeStatsDbContext, testGamingGroup.Id, testGameName);
                 testGameDefinitionWithOtherGamingGroupId = SaveGameDefinition(nemeStatsDbContext, testOtherGamingGroup.Id, testGameNameForGameWithOtherGamingGroupId);
@@ -104,10 +107,10 @@ namespace BusinessLogic.Tests.IntegrationTests
             nemeStatsDbContext.SaveChanges();
         }
 
-        private ApplicationUser UpdateDatefaultGamingGroupOnUser(ApplicationUser user, GamingGroup gamingGroup, NemeStatsDbContext dbContext)
+        private ApplicationUser UpdateDatefaultGamingGroupOnUser(ApplicationUser user, GamingGroup gamingGroup, ApplicationDataContext dataContext)
         {
             user.CurrentGamingGroupId = gamingGroup.Id;
-            dbContext.SaveChanges();
+            dataContext.CommitAllChanges();
 
             return user;
         }
@@ -228,11 +231,11 @@ namespace BusinessLogic.Tests.IntegrationTests
             return applicationUser;
         }
 
-        private GamingGroup SaveGamingGroup(NemeStatsDbContext nemeStatsDbContext, string gamingGroupName, string owningUserId)
+        private GamingGroup SaveGamingGroup(ApplicationDataContext dataContext, string gamingGroupName, ApplicationUser owningUser)
         {
-            GamingGroup gamingGroup = new GamingGroup() { Name = gamingGroupName, OwningUserId = owningUserId };
-            nemeStatsDbContext.GamingGroups.Add(gamingGroup);
-            nemeStatsDbContext.SaveChanges();
+            GamingGroup gamingGroup = new GamingGroup() { Name = gamingGroupName, OwningUserId = owningUser.Id };
+            dataContext.Save(gamingGroup, owningUser);
+
             return gamingGroup;
         }
 
