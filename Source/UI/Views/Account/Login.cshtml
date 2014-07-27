@@ -5,7 +5,7 @@
 }
 
 <h2>@ViewBag.Title</h2>
-<hr />
+<hr/> 
 <div class="row">
     <div class="col-md-8">
         <div class="panel panel-default">
@@ -14,40 +14,40 @@
             </div>
             <div class="panel-body">
                 @*<section id="loginForm">*@
-                @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-                {
-                    @Html.AntiForgeryToken()
-                    @Html.ValidationSummary(true)
-                    <div class="form-group">
-                        @Html.LabelFor(m => m.UserName, new { @class = "col-md-2 control-label" })
-                        <div class="col-md-10">
-                            @Html.TextBoxFor(m => m.UserName, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(m => m.UserName)
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
-                        <div class="col-md-10">
-                            @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(m => m.Password)
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div>
-                            <div class="checkbox col-md-offset-2 col-md-10">
-                                <label>
-                                    @Html.CheckBoxFor(m => m.RememberMe)
-                                    @Html.DisplayNameFor(m => m.RememberMe)
-                                </label>
+                    @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(true)
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.UserName, new { @class = "col-md-2 control-label" })
+                            <div class="col-md-10">
+                                @Html.TextBoxFor(m => m.UserName, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.UserName)
                             </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-md-offset-2 col-md-10">
-                            <input type="submit" value="Log in" class="btn btn-primary" />
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
+                            <div class="col-md-10">
+                                @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.Password)
+                            </div>
                         </div>
-                    </div>
-                }
+                        <div class="form-group">
+                            <div>
+                                <div class="checkbox col-md-offset-2 col-md-10">
+                                    <label>
+                                        @Html.CheckBoxFor(m => m.RememberMe)
+                                        @Html.DisplayNameFor(m => m.RememberMe)
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <input type="submit" value="Log in" class="btn btn-primary" />
+                            </div>
+                        </div>
+                    }
                 @*</section>*@
             </div>
         </div>
@@ -67,4 +67,5 @@
 </div>
 
 @section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")}
+    @Scripts.Render("~/bundles/jqueryval")
+}
