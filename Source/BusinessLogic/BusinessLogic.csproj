@@ -154,6 +154,10 @@
     <Compile Include="Migrations\201407182106234_AddUniqueIndexToPlayerNameAndGamingGroupIp.Designer.cs">
       <DependentUpon>201407182106234_AddUniqueIndexToPlayerNameAndGamingGroupIp.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201407270144172_DropUniqueIndexOnPlayerNameAlone.cs" />
+    <Compile Include="Migrations\201407270144172_DropUniqueIndexOnPlayerNameAlone.Designer.cs">
+      <DependentUpon>201407270144172_DropUniqueIndexOnPlayerNameAlone.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\GamingGroup.cs" />
     <Compile Include="Models\GamingGroupInvitation.cs" />
     <Compile Include="Models\User\ApplicationUser.cs" />
@@ -263,6 +267,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201407182106234_AddUniqueIndexToPlayerNameAndGamingGroupIp.resx">
       <DependentUpon>201407182106234_AddUniqueIndexToPlayerNameAndGamingGroupIp.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201407270144172_DropUniqueIndexOnPlayerNameAlone.resx">
+      <DependentUpon>201407270144172_DropUniqueIndexOnPlayerNameAlone.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />
