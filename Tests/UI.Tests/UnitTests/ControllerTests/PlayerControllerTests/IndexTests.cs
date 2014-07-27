@@ -19,7 +19,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         [Test]
         public void ItReturnsTheIndexView()
         {
-            ViewResult viewResult = playerController.Index(userContext) as ViewResult;
+            ViewResult viewResult = playerController.Index(currentUser) as ViewResult;
 
             Assert.AreEqual(MVC.Player.Views.Index, viewResult.ViewName);
         }
@@ -28,11 +28,11 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         public void ItAddsAllActivePlayersToTheView()
         {
             List<Player> players = new List<Player>();
-            playerRepositoryMock.Expect(mock => mock.GetAllPlayers(true, userContext))
+            playerRepositoryMock.Expect(mock => mock.GetAllPlayers(true, currentUser))
                 .Repeat.Once()
                 .Return(players);
 
-            ViewResult viewResult = playerController.Index(userContext) as ViewResult;
+            ViewResult viewResult = playerController.Index(currentUser) as ViewResult;
 
             Assert.AreEqual(players, viewResult.Model);
         }

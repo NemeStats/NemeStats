@@ -7,9 +7,9 @@ namespace BusinessLogic.DataAccess.Repositories
 {
     public interface PlayedGameRepository
     {
-        PlayedGame GetPlayedGameDetails(int playedGameId, UserContext requestingUserContext);
-        List<PlayedGame> GetRecentGames(int numberOfGames, UserContext requestingUserContext);
-        PlayedGame CreatePlayedGame(NewlyCompletedGame newlyCompletedGame, UserContext requestingUserContext);
+        PlayedGame GetPlayedGameDetails(int playedGameId, ApplicationUser currentUser);
+        List<PlayedGame> GetRecentGames(int numberOfGames, ApplicationUser currentUser);
+        PlayedGame CreatePlayedGame(NewlyCompletedGame newlyCompletedGame, ApplicationUser currentUser);
         List<PlayerGameResult> TransformNewlyCompletedGamePlayerRanksToPlayerGameResults(NewlyCompletedGame newlyCompletedGame);
         PlayedGame TransformNewlyCompletedGameIntoPlayedGame(
             NewlyCompletedGame newlyCompletedGame,

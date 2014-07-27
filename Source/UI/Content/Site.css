@@ -53,3 +53,11 @@ input[type="checkbox"].input-validation-error {
 .sortable { list-style-type: none; margin: 0; padding: 0; }
 
 ul input[type=text] { width:25px }
+
+.homelogo 
+{ 
+    background: url(/Content/Images/NemeStats-White.png) no-repeat top left;
+    display: block;
+    width: 150px;
+    text-indent: -9999px;
+}

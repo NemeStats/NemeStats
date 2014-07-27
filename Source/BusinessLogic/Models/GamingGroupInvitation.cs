@@ -1,4 +1,5 @@
-﻿using BusinessLogic.Models.User;
+﻿using BusinessLogic.DataAccess;
+using BusinessLogic.Models.User;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -9,11 +10,11 @@ using System.Threading.Tasks;
 
 namespace BusinessLogic.Models
 {
-    public class GamingGroupInvitation
+    public class GamingGroupInvitation : SecuredEntityWithTechnicalKey<Guid>
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public Guid Id { get; set; }
-        public int GamingGroupId { get; set; }
+        public override Guid Id { get; set; }
+        public override int GamingGroupId { get; set; }
         [StringLength(255)]
         public string InviteeEmail { get; set; }
         public string InvitingUserId { get; set; }

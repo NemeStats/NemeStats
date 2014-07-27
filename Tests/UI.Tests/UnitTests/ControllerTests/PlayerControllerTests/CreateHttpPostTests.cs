@@ -17,15 +17,15 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         public void ItSavesThePlayer()
         {
             Player player = new Player();
-            playerRepositoryMock.Expect(mock => mock.Save(player, userContext));
+            playerRepositoryMock.Expect(mock => mock.Save(player, currentUser));
 
-            playerController.Create(player, userContext);
+            playerController.Create(player, currentUser);
         }
 
         [Test]
         public void ItRedirectsToTheIndexViewAfterSaving()
         {
-            RedirectToRouteResult result = playerController.Create(new Player(), userContext) as RedirectToRouteResult;
+            RedirectToRouteResult result = playerController.Create(new Player(), currentUser) as RedirectToRouteResult;
 
             Assert.AreEqual(MVC.Player.ActionNames.Index, result.RouteValues["action"]);
         }
@@ -34,7 +34,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         public void ItRemainsOnTheCreateViewIfValidationFails()
         {
             playerController.ModelState.AddModelError("key", "message");
-            ViewResult result = playerController.Create(new Player(), userContext) as ViewResult;
+            ViewResult result = playerController.Create(new Player(), currentUser) as ViewResult;
 
             Assert.AreEqual(MVC.Player.Views.Index, result.ViewName);
         }
@@ -44,7 +44,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         {
             Player player = new Player();
             playerController.ModelState.AddModelError("key", "message");
-            ViewResult result = playerController.Create(player, userContext) as ViewResult;
+            ViewResult result = playerController.Create(player, currentUser) as ViewResult;
 
             Assert.AreEqual(player, result.Model);
         }

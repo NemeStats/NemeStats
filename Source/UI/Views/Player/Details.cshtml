@@ -40,7 +40,8 @@
     @foreach(var playerResult in @Model.PlayerGameResultDetails)
     {
         @playerResult.DatePlayed.ToShortDateString() <text>: </text>
-        @playerResult.GameName <text>- </text>
+        @Html.ActionLink(playerResult.GameName, "Details", "GameDefinition", new { id = playerResult.GameDefinitionId }, new { })
+        <text>- </text>
         @Html.GameResults(playerResult) 
         @Html.ActionLink("[Details]", "Details", "PlayedGame", new { id = playerResult.PlayedGameId }, new { })
         <br/><br/>
@@ -55,7 +56,7 @@
                Player Name
             </dt>
             <dd>
-                @Model.NemesisName
+                @Html.ActionLink(Model.NemesisName, "Details", "Player", new { id = Model.NemesisPlayerId }, new { })
             </dd>
             <dt>
                 Games Lost

@@ -37,10 +37,10 @@ namespace UI.Controllers
         }
 
         // GET: /PlayedGame/
-        [UserContextActionFilter]
-        public virtual ActionResult Index(UserContext userContext)
+        [UserContextAttribute]
+        public virtual ActionResult Index(ApplicationUser currentUser)
         {
-            List<PlayedGame> playedGames = playedGameLogic.GetRecentGames(NUMBER_OF_RECENT_GAMES_TO_DISPLAY, userContext);
+            List<PlayedGame> playedGames = playedGameLogic.GetRecentGames(NUMBER_OF_RECENT_GAMES_TO_DISPLAY, currentUser);
             int totalGames = playedGames.Count();
             List<PlayedGameDetailsViewModel> details = new List<PlayedGameDetailsViewModel>(totalGames);
             for (int i = 0; i < totalGames; i++)
@@ -52,14 +52,14 @@ namespace UI.Controllers
         }
 
         // GET: /PlayedGame/Details/5
-        [UserContextActionFilter]
-        public virtual ActionResult Details(int? id, UserContext userContext)
+        [UserContextAttribute]
+        public virtual ActionResult Details(int? id, ApplicationUser currentUser)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            PlayedGame playedGame = playedGameLogic.GetPlayedGameDetails(id.Value, userContext);
+            PlayedGame playedGame = playedGameLogic.GetPlayedGameDetails(id.Value, currentUser);
             if (playedGame == null)
             {
                 return HttpNotFound();
@@ -69,12 +69,12 @@ namespace UI.Controllers
         }
 
         // GET: /PlayedGame/Create
-        [UserContextActionFilter]
-        public virtual ActionResult Create(UserContext userContext)
+        [UserContextAttribute]
+        public virtual ActionResult Create(ApplicationUser currentUser)
         {
             ViewBag.GameDefinitionId = new SelectList(db.GameDefinitions, "Id", "Name");
 
-            AddAllPlayersToViewBag(userContext);
+            AddAllPlayersToViewBag(currentUser);
 
             return View(MVC.PlayedGame.Views.Create);
         }
@@ -84,23 +84,23 @@ namespace UI.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [UserContextActionFilter]
-        public virtual ActionResult Create(NewlyCompletedGame newlyCompletedGame, UserContext userContext)
+        [UserContextAttribute]
+        public virtual ActionResult Create(NewlyCompletedGame newlyCompletedGame, ApplicationUser currentUser)
         {
             if (ModelState.IsValid)
             {
-                playedGameLogic.CreatePlayedGame(newlyCompletedGame, userContext);
+                playedGameLogic.CreatePlayedGame(newlyCompletedGame, currentUser);
 
                 return RedirectToAction(MVC.PlayedGame.ActionNames.Index);
             }
 
-            return Create(userContext);
+            return Create(currentUser);
         }
 
-        private void AddAllPlayersToViewBag(UserContext requestingUserContext)
+        private void AddAllPlayersToViewBag(ApplicationUser currentUser)
         {
             //TODO Clean Code said something about boolean parameters not being good. Come back to this...
-            List<Player> allPlayers = playerLogic.GetAllPlayers(true, requestingUserContext);
+            List<Player> allPlayers = playerLogic.GetAllPlayers(true, currentUser);
             List<SelectListItem> allPlayersSelectList = allPlayers.Select(item => new SelectListItem()
             {
                 Text = item.Name,
@@ -110,44 +110,9 @@ namespace UI.Controllers
             ViewBag.Players = allPlayersSelectList;
         }
 
-        // GET: /PlayedGame/Edit/5
-        [UserContextActionFilter]
-        public virtual ActionResult Edit(int? id, UserContext userContext)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            PlayedGame playedgame = db.PlayedGames.Find(id);
-            if (playedgame == null)
-            {
-                return HttpNotFound();
-            }
-            ViewBag.GameDefinitionId = new SelectList(db.GameDefinitions, "Id", "Name", playedgame.GameDefinitionId);
-            return View(playedgame);
-        }
-
-        // POST: /PlayedGame/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [UserContextActionFilter]
-        public virtual ActionResult Edit([Bind(Include = "Id,GameDefinitionId,NumberOfPlayers")] PlayedGame playedgame, UserContext userContext)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(playedgame).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            ViewBag.GameDefinitionId = new SelectList(db.GameDefinitions, "Id", "Name", playedgame.GameDefinitionId);
-            return View(playedgame);
-        }
-
         // GET: /PlayedGame/Delete/5
-        [UserContextActionFilter]
-        public virtual ActionResult Delete(int? id, UserContext userContext)
+        [UserContextAttribute]
+        public virtual ActionResult Delete(int? id, ApplicationUser currentUser)
         {
             if (id == null)
             {
@@ -164,8 +129,8 @@ namespace UI.Controllers
         // POST: /PlayedGame/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        [UserContextActionFilter]
-        public virtual ActionResult DeleteConfirmed(int id, UserContext userContext)
+        [UserContextAttribute]
+        public virtual ActionResult DeleteConfirmed(int id, ApplicationUser currentUser)
         {
             PlayedGame playedgame = db.PlayedGames.Find(id);
             db.PlayedGames.Remove(playedgame);

@@ -29,7 +29,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayerRepositoryTests
         {
             bool active = true;
 
-            List<Player> players = playerRepository.GetAllPlayers(active, testUserContextForUserWithDefaultGamingGroup);
+            List<Player> players = playerRepository.GetAllPlayers(active, testUserWithDefaultGamingGroup);
 
             Assert.True(players.All(x => x.Active == active));
         }
@@ -39,7 +39,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayerRepositoryTests
         {
             bool active = false;
 
-            List<Player> players = playerRepository.GetAllPlayers(active, testUserContextForUserWithDefaultGamingGroup);
+            List<Player> players = playerRepository.GetAllPlayers(active, testUserWithDefaultGamingGroup);
 
             Assert.True(players.All(x => x.Active == active));
         }
@@ -47,7 +47,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayerRepositoryTests
         [Test]
         public void ItOnlyReturnsPlayersForTheGivenGamingGroupId()
         {
-            List<Player> players = playerRepository.GetAllPlayers(true, testUserContextForUserWithDefaultGamingGroup);
+            List<Player> players = playerRepository.GetAllPlayers(true, testUserWithDefaultGamingGroup);
 
             Assert.True(players.All(x => x.GamingGroupId == testGamingGroup.Id));
         }

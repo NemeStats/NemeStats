@@ -10,7 +10,8 @@ namespace BusinessLogic.DataAccess.Repositories
 {
     public interface GamingGroupRepository
     {
-        GamingGroup GetGamingGroupDetails(int gamingGroupId, UserContext userContext);
-        IList<GamingGroupInvitation> GetPendingGamingGroupInvitations(UserContext userContext);
+        GamingGroup GetGamingGroupDetails(int gamingGroupId, ApplicationUser currentUser);
+        IList<GamingGroupInvitation> GetPendingGamingGroupInvitations(ApplicationUser currentUser);
+        GamingGroup Save(GamingGroup gamingGroup, ApplicationUser currentUser);
     }
 }

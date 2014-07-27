@@ -20,27 +20,15 @@ namespace UI.Controllers
     public partial class AccountController : Controller
     {
         protected GamingGroupInviteConsumer gamingGroupInviteConsumer;
-        protected UserContextBuilder userContextBuilder; 
         protected NemeStatsDbContext dbContext;
-
-        //TODO had to do this because StructureMap kept trying to use the other constructor.
-        //[DefaultConstructor]
-        //public AccountController()
-        //    //: this(new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new NemeStatsDbContext())))
-        //{
-        //    dbContext = new NemeStatsDbContext();
-        //    gamingGroupInviteConsumer = new GamingGroupInviteConsumerImpl()
-        //}
 
         public AccountController(
             UserManager<ApplicationUser> userManager, 
             GamingGroupInviteConsumer gamingGroupInviteConsumer, 
-            UserContextBuilder userContextBuilder,
             NemeStatsDbContext dbContext)
         {
             UserManager = userManager;
             this.gamingGroupInviteConsumer = gamingGroupInviteConsumer;
-            this.userContextBuilder = userContextBuilder;
             this.dbContext = dbContext;
         }
 
@@ -97,14 +85,12 @@ namespace UI.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser() { UserName = model.UserName };
+                var user = new ApplicationUser() { UserName = model.UserName, Email = model.EmailAddress };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
                     await SignInAsync(user, isPersistent: false);
-                    UserManager.SetEmail(user.Id, model.EmailAddress);
-                    UserContext userContext = userContextBuilder.GetUserContext(user.Id, dbContext);
-                    int? gamingGroupIdToWhichTheUserWasAdded = await gamingGroupInviteConsumer.AddUserToInvitedGroupAsync(userContext);
+                    int? gamingGroupIdToWhichTheUserWasAdded = await gamingGroupInviteConsumer.AddUserToInvitedGroupAsync(user);
                     
                     if(gamingGroupIdToWhichTheUserWasAdded.HasValue)
                     {

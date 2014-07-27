@@ -1,4 +1,5 @@
-﻿using BusinessLogic.Models.User;
+﻿using BusinessLogic.DataAccess;
+using BusinessLogic.Models.User;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Collections.Generic;
@@ -10,9 +11,9 @@ using System.Threading.Tasks;
 
 namespace BusinessLogic.Models
 {
-    public class GamingGroup
+    public class GamingGroup : EntityWithTechnicalKey<int>
     {
-        public int Id { get; set; }
+        public override int Id { get; set; }
         public string Name { get; set; }
 
         public string OwningUserId { get; set; }

@@ -23,9 +23,9 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
         {
             gameDefinitionRepository.Expect(repo => repo.GetGameDefinition(
                 Arg<int>.Is.Anything,
-                Arg<UserContext>.Is.Anything));
+                Arg<ApplicationUser>.Is.Anything));
 
-            ViewResult viewResult = gameDefinitionControllerPartialMock.Details(gameDefinitionId, userContext) as ViewResult;
+            ViewResult viewResult = gameDefinitionControllerPartialMock.Details(gameDefinitionId, currentUser) as ViewResult;
 
             Assert.AreEqual(MVC.GameDefinition.Views.Details, viewResult.ViewName);
         }
@@ -36,11 +36,11 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
             GameDefinition gameDefinition = new GameDefinition();
             gameDefinitionRepository.Expect(repo => repo.GetGameDefinition(
                 gameDefinitionId,
-                userContext))
+                currentUser))
                    .Repeat.Once()
                    .Return(gameDefinition);
 
-            ViewResult viewResult = gameDefinitionControllerPartialMock.Details(gameDefinitionId, userContext) as ViewResult;
+            ViewResult viewResult = gameDefinitionControllerPartialMock.Details(gameDefinitionId, currentUser) as ViewResult;
             GameDefinition actualGameDefinition = (GameDefinition)viewResult.ViewData.Model;
 
             Assert.AreEqual(gameDefinition, actualGameDefinition);
@@ -49,7 +49,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
         [Test]
         public void ItReturnsABadHttpRequestStatusCodeIfTheIdIsNull()
         {
-            HttpStatusCodeResult result = gameDefinitionControllerPartialMock.Details(null, userContext) as HttpStatusCodeResult;
+            HttpStatusCodeResult result = gameDefinitionControllerPartialMock.Details(null, currentUser) as HttpStatusCodeResult;
 
             Assert.AreEqual((int)HttpStatusCode.BadRequest, result.StatusCode);
         }
@@ -59,10 +59,10 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
         {
             gameDefinitionRepository.Expect(repo => repo.GetGameDefinition(
                 Arg<int>.Is.Anything,
-                Arg<UserContext>.Is.Anything))
+                Arg<ApplicationUser>.Is.Anything))
                 .Throw(new KeyNotFoundException());
 
-            HttpStatusCodeResult result = gameDefinitionControllerPartialMock.Details(999999, userContext) as HttpStatusCodeResult;
+            HttpStatusCodeResult result = gameDefinitionControllerPartialMock.Details(999999, currentUser) as HttpStatusCodeResult;
 
             Assert.AreEqual((int)HttpStatusCode.NotFound, result.StatusCode);
         }
@@ -72,10 +72,10 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
         {
             gameDefinitionRepository.Expect(repo => repo.GetGameDefinition(
                 Arg<int>.Is.Anything,
-                Arg<UserContext>.Is.Anything))
+                Arg<ApplicationUser>.Is.Anything))
                 .Throw(new UnauthorizedAccessException());
 
-            HttpStatusCodeResult result = gameDefinitionControllerPartialMock.Details(999999, userContext) as HttpStatusCodeResult;
+            HttpStatusCodeResult result = gameDefinitionControllerPartialMock.Details(999999, currentUser) as HttpStatusCodeResult;
 
             Assert.AreEqual((int)HttpStatusCode.Unauthorized, result.StatusCode);
         }

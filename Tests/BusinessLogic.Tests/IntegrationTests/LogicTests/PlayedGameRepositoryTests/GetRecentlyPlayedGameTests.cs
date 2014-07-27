@@ -16,14 +16,18 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGameRepositoryTe
         {
             using(NemeStatsDbContext dbContext = new NemeStatsDbContext())
             {
-                PlayedGameRepository playedGameLogic = new EntityFrameworkPlayedGameRepository(dbContext);
                 dbContext.Configuration.LazyLoadingEnabled = false;
                 dbContext.Configuration.ProxyCreationEnabled = false;
 
-                List<PlayedGame> playedGames = playedGameLogic.GetRecentGames(1, testUserContextForUserWithDefaultGamingGroup);
-                GameDefinition gameDefinition = playedGames[0].GameDefinition;
+                using (ApplicationDataContext dataContext = new ApplicationDataContext(dbContext, securedEntityValidatorFactory))
+                {
+                    PlayedGameRepository playedGameLogic = new EntityFrameworkPlayedGameRepository(dataContext);
 
-                Assert.NotNull(gameDefinition);
+                    List<PlayedGame> playedGames = playedGameLogic.GetRecentGames(1, testUserWithDefaultGamingGroup);
+                    GameDefinition gameDefinition = playedGames[0].GameDefinition;
+
+                    Assert.NotNull(gameDefinition);
+                }
             }
         }
 
@@ -32,14 +36,17 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGameRepositoryTe
         {
             using(NemeStatsDbContext dbContext = new NemeStatsDbContext())
             {
-                PlayedGameRepository playedGameLogic = new EntityFrameworkPlayedGameRepository(dbContext);
                 dbContext.Configuration.LazyLoadingEnabled = false;
                 dbContext.Configuration.ProxyCreationEnabled = false;
+                using (ApplicationDataContext dataContext = new ApplicationDataContext(dbContext, securedEntityValidatorFactory))
+                {
+                    PlayedGameRepository playedGameLogic = new EntityFrameworkPlayedGameRepository(dataContext);
 
-                List<PlayedGame> playedGames = playedGameLogic.GetRecentGames(1, testUserContextForUserWithDefaultGamingGroup);
-                ICollection<PlayerGameResult> playerGameResults = playedGames[0].PlayerGameResults;
+                    List<PlayedGame> playedGames = playedGameLogic.GetRecentGames(1, testUserWithDefaultGamingGroup);
+                    ICollection<PlayerGameResult> playerGameResults = playedGames[0].PlayerGameResults;
 
-                Assert.NotNull(playerGameResults);
+                    Assert.NotNull(playerGameResults);
+                }
             }
         }
 
@@ -48,31 +55,34 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGameRepositoryTe
         {
             using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
             {
-                PlayedGameRepository playedGameLogic = new EntityFrameworkPlayedGameRepository(dbContext);
                 dbContext.Configuration.LazyLoadingEnabled = false;
                 dbContext.Configuration.ProxyCreationEnabled = false;
+                using (ApplicationDataContext dataContext = new ApplicationDataContext(dbContext, securedEntityValidatorFactory))
+                {
+                    PlayedGameRepository playedGameLogic = new EntityFrameworkPlayedGameRepository(dataContext);
 
-                List<PlayedGame> playedGames = playedGameLogic.GetRecentGames(1, testUserContextForUserWithDefaultGamingGroup);
-                List<Player> players = playedGames[0].PlayerGameResults.Select(
-                    playerGameResult => new Player()
-                                            {
-                                                Id = playerGameResult.PlayerId,
-                                                Name = playerGameResult.Player.Name,
-                                                Active = playerGameResult.Player.Active
-                                            }).ToList();
-                                            
-                Assert.NotNull(players);
+                    List<PlayedGame> playedGames = playedGameLogic.GetRecentGames(1, testUserWithDefaultGamingGroup);
+                    List<Player> players = playedGames[0].PlayerGameResults.Select(
+                        playerGameResult => new Player()
+                                                {
+                                                    Id = playerGameResult.PlayerId,
+                                                    Name = playerGameResult.Player.Name,
+                                                    Active = playerGameResult.Player.Active
+                                                }).ToList();
+
+                    Assert.NotNull(players);
+                }
             }
         }
 
         [Test]
         public void ItReturnsOnlyOneGameIfOneGameIsSpecified()
         {
-            using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
+            using (ApplicationDataContext dataContext = new ApplicationDataContext())
             {
-                PlayedGameRepository playedGameLogic = new EntityFrameworkPlayedGameRepository(dbContext);
+                PlayedGameRepository playedGameLogic = new EntityFrameworkPlayedGameRepository(dataContext);
                 int one = 1;
-                List<PlayedGame> playedGames = playedGameLogic.GetRecentGames(one, testUserContextForUserWithDefaultGamingGroup);
+                List<PlayedGame> playedGames = playedGameLogic.GetRecentGames(one, testUserWithDefaultGamingGroup);
 
                 Assert.AreEqual(one, playedGames.Count());
             }
@@ -81,11 +91,11 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGameRepositoryTe
         [Test]
         public void ItReturnsOnlyTwoGamesIfTwoGamesAreSpecified()
         {
-            using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
+            using (ApplicationDataContext dataContext = new ApplicationDataContext())
             {
-                PlayedGameRepository playedGameLogic = new EntityFrameworkPlayedGameRepository(dbContext);
+                PlayedGameRepository playedGameLogic = new EntityFrameworkPlayedGameRepository(dataContext);
                 int two = 2;
-                List<PlayedGame> playedGames = playedGameLogic.GetRecentGames(two, testUserContextForUserWithDefaultGamingGroup);
+                List<PlayedGame> playedGames = playedGameLogic.GetRecentGames(two, testUserWithDefaultGamingGroup);
 
                 Assert.AreEqual(two, playedGames.Count());
             }
@@ -94,13 +104,13 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGameRepositoryTe
         [Test]
         public void ItReturnsGamesInDescendingOrderByDatePlayed()
         {
-            using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
+            using (ApplicationDataContext dataContext = new ApplicationDataContext())
             {
-                PlayedGameRepository playedGameLogic = new EntityFrameworkPlayedGameRepository(dbContext);
+                PlayedGameRepository playedGameLogic = new EntityFrameworkPlayedGameRepository(dataContext);
                 int five = 5;
-                List<PlayedGame> playedGames = playedGameLogic.GetRecentGames(five, testUserContextForUserWithDefaultGamingGroup);
-                List<PlayedGame> allPlayedGames = dbContext.PlayedGames
-                    .Where(game => game.GamingGroupId == testUserContextForUserWithDefaultGamingGroup.GamingGroupId)
+                List<PlayedGame> playedGames = playedGameLogic.GetRecentGames(five, testUserWithDefaultGamingGroup);
+                List<PlayedGame> allPlayedGames = dataContext.GetQueryable<PlayedGame>()
+                    .Where(game => game.GamingGroupId == testUserWithDefaultGamingGroup.CurrentGamingGroupId)
                     .ToList()
                     .OrderByDescending(playedGame => playedGame.DatePlayed)
                     .ToList();
@@ -114,11 +124,11 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGameRepositoryTe
         [Test]
         public void ItReturnsOrderedPlayerRankDescendingWithinAGivenGame()
         {
-            using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
+            using (ApplicationDataContext dataContext = new ApplicationDataContext())
             {
-                PlayedGameRepository playedGameLogic = new EntityFrameworkPlayedGameRepository(dbContext);
+                PlayedGameRepository playedGameLogic = new EntityFrameworkPlayedGameRepository(dataContext);
                 int five = 5;
-                List<PlayedGame> playedGames = playedGameLogic.GetRecentGames(five, testUserContextForUserWithDefaultGamingGroup);
+                List<PlayedGame> playedGames = playedGameLogic.GetRecentGames(five, testUserWithDefaultGamingGroup);
 
                 int lastRank = -1;
 
@@ -138,13 +148,13 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGameRepositoryTe
         [Test]
         public void ItOnlyReturnsGamesForTheCurrentUsersGamingGroup()
         {
-            using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
+            using (ApplicationDataContext dataContext = new ApplicationDataContext())
             {
-                PlayedGameRepository playedGameLogic = new EntityFrameworkPlayedGameRepository(dbContext);
+                PlayedGameRepository playedGameLogic = new EntityFrameworkPlayedGameRepository(dataContext);
                 
-                List<PlayedGame> playedGames = playedGameLogic.GetRecentGames(20, testUserContextForUserWithOtherGamingGroup);
+                List<PlayedGame> playedGames = playedGameLogic.GetRecentGames(20, testUserWithOtherGamingGroup);
 
-                Assert.True(playedGames.All(game => game.GamingGroupId == testUserContextForUserWithOtherGamingGroup.GamingGroupId));
+                Assert.True(playedGames.All(game => game.GamingGroupId == testUserWithOtherGamingGroup.CurrentGamingGroupId));
             }
         }
     }

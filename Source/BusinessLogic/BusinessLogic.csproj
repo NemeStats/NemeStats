@@ -83,24 +83,32 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataAccess\ApplicationDataContext.cs" />
+    <Compile Include="DataAccess\DataContext.cs" />
     <Compile Include="DataAccess\GamingGroups\EntityFrameworkGamingGroupAccessGranter.cs" />
     <Compile Include="DataAccess\GamingGroups\GamingGroupAccessGranter.cs" />
     <Compile Include="DataAccess\Repositories\EntityFrameworkGameDefinitionRepository.cs" />
+    <Compile Include="DataAccess\Repositories\EntityFrameworkGamingGroupInvitationRepository.cs" />
     <Compile Include="DataAccess\Repositories\EntityFrameworkGamingGroupRepository.cs" />
     <Compile Include="DataAccess\Repositories\GameDefinitionRepository.cs" />
     <Compile Include="DataAccess\NemeStatsDbContext.cs" />
     <Compile Include="DataAccess\NemeStatsInitializer.cs" />
+    <Compile Include="DataAccess\Repositories\GamingGroupInvitationRepository.cs" />
     <Compile Include="DataAccess\Repositories\GamingGroupRepository.cs" />
+    <Compile Include="DataAccess\SecuredEntityWithTechnicalKey.cs" />
+    <Compile Include="DataAccess\Security\SecuredEntityValidator.cs" />
+    <Compile Include="DataAccess\Security\SecuredEntityValidatorFactory.cs" />
+    <Compile Include="DataAccess\Security\SecuredEntityValidatorImpl.cs" />
     <Compile Include="DataAccess\SingleColumnTechnicalKey.cs" />
     <Compile Include="DataAccess\Repositories\PlayedGameRepository.cs" />
     <Compile Include="DataAccess\Repositories\EntityFrameworkPlayedGameRepository.cs" />
     <Compile Include="DataAccess\Repositories\PlayerRepository.cs" />
     <Compile Include="DataAccess\Repositories\EntityFrameworkPlayerRepository.cs" />
+    <Compile Include="Logic\GamingGroups\GamingGroupCreator.cs" />
+    <Compile Include="Logic\GamingGroups\GamingGroupCreatorImpl.cs" />
     <Compile Include="Logic\Points\GordonPoints.cs" />
     <Compile Include="Logic\Users\GamingGroupInviteConsumer.cs" />
     <Compile Include="Logic\Users\GamingGroupInviteConsumerImpl.cs" />
-    <Compile Include="Logic\Users\UserContextBuilder.cs" />
-    <Compile Include="Logic\Users\UserContextBuilderImpl.cs" />
     <Compile Include="Migrations\201407011153551_GamingGroupsAndAspNetAuth.cs" />
     <Compile Include="Migrations\201407011153551_GamingGroupsAndAspNetAuth.Designer.cs">
       <DependentUpon>201407011153551_GamingGroupsAndAspNetAuth.cs</DependentUpon>
@@ -142,10 +150,13 @@
     <Compile Include="Migrations\201407160145234_AddedRegistrationInfoToGamingGroupInvitation.Designer.cs">
       <DependentUpon>201407160145234_AddedRegistrationInfoToGamingGroupInvitation.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201407182106234_AddUniqueIndexToPlayerNameAndGamingGroupIp.cs" />
+    <Compile Include="Migrations\201407182106234_AddUniqueIndexToPlayerNameAndGamingGroupIp.Designer.cs">
+      <DependentUpon>201407182106234_AddUniqueIndexToPlayerNameAndGamingGroupIp.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\GamingGroup.cs" />
     <Compile Include="Models\GamingGroupInvitation.cs" />
     <Compile Include="Models\User\ApplicationUser.cs" />
-    <Compile Include="Models\User\UserContext.cs" />
     <Compile Include="Models\User\UserGamingGroup.cs" />
     <Compile Include="Models\Players\Nemesis.cs" />
     <Compile Include="Models\Players\NullNemesis.cs" />
@@ -249,6 +260,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201407160145234_AddedRegistrationInfoToGamingGroupInvitation.resx">
       <DependentUpon>201407160145234_AddedRegistrationInfoToGamingGroupInvitation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201407182106234_AddUniqueIndexToPlayerNameAndGamingGroupIp.resx">
+      <DependentUpon>201407182106234_AddUniqueIndexToPlayerNameAndGamingGroupIp.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

@@ -70,42 +70,42 @@ namespace BusinessLogic.DataAccess.Repositories
             dbContext = context;
         }
 
-        internal virtual Player GetPlayer(int playerID, UserContext requestingUserContext)
+        internal virtual Player GetPlayer(int playerID, ApplicationUser currentUser)
         {
             Player returnPlayer = dbContext.Players
                 .Where(player => player.Id == playerID)
                     .FirstOrDefault();
 
-            ValidateAccessToPlayer(requestingUserContext, returnPlayer);
+            ValidateAccessToPlayer(currentUser, returnPlayer);
 
             return returnPlayer;
         }
 
-        private static void ValidateAccessToPlayer(UserContext requestingUserContext, Player desiredPlayer)
+        private static void ValidateAccessToPlayer(ApplicationUser currentUser, Player desiredPlayer)
         {
             if (desiredPlayer != null)
             {
-                if (desiredPlayer.GamingGroupId != requestingUserContext.GamingGroupId)
+                if (desiredPlayer.GamingGroupId != currentUser.CurrentGamingGroupId)
                 {
                     string message = string.Format(EXCEPTION_USER_DOES_NOT_HAVE_ACCESS_TO_THIS_PLAYER,
-                        requestingUserContext.ApplicationUserId,
+                        currentUser.Id,
                         desiredPlayer.Id);
                     throw new UnauthorizedAccessException(message);
                 }
             }
         }
 
-        public virtual PlayerDetails GetPlayerDetails(int playerID, int numberOfRecentGamesToRetrieve, UserContext requestingUserContext)
+        public virtual PlayerDetails GetPlayerDetails(int playerID, int numberOfRecentGamesToRetrieve, ApplicationUser currentUser)
         {
-            Player returnPlayer = GetPlayer(playerID, requestingUserContext);
+            Player returnPlayer = GetPlayer(playerID, currentUser);
 
             ValidatePlayerWasFound(returnPlayer);
 
-            PlayerStatistics playerStatistics = GetPlayerStatistics(playerID, requestingUserContext);
+            PlayerStatistics playerStatistics = GetPlayerStatistics(playerID, currentUser);
 
-            List<PlayerGameResult> playerGameResults = GetPlayerGameResultsWithPlayedGameAndGameDefinition(playerID, numberOfRecentGamesToRetrieve, requestingUserContext);
+            List<PlayerGameResult> playerGameResults = GetPlayerGameResultsWithPlayedGameAndGameDefinition(playerID, numberOfRecentGamesToRetrieve, currentUser);
 
-            Nemesis nemesis = GetNemesis(playerID, requestingUserContext);
+            Nemesis nemesis = GetNemesis(playerID, currentUser);
 
             PlayerDetails playerDetails = new PlayerDetails()
             {
@@ -132,11 +132,11 @@ namespace BusinessLogic.DataAccess.Repositories
         internal virtual List<PlayerGameResult> GetPlayerGameResultsWithPlayedGameAndGameDefinition(
             int playerID, 
             int numberOfRecentGamesToRetrieve, 
-            UserContext requestingUserContext)
+            ApplicationUser currentUser)
         {
             List<PlayerGameResult> playerGameResults = dbContext.PlayerGameResults
                         .Where(result => result.PlayerId == playerID
-                            && result.Player.GamingGroupId == requestingUserContext.GamingGroupId)
+                            && result.Player.GamingGroupId == currentUser.CurrentGamingGroupId)
                         .OrderByDescending(result => result.PlayedGame.DatePlayed)
                         .Take(numberOfRecentGamesToRetrieve)
                         .Include(result => result.PlayedGame)
@@ -145,28 +145,28 @@ namespace BusinessLogic.DataAccess.Repositories
             return playerGameResults;
         }
 
-        public List<Player> GetAllPlayers(bool active, UserContext requestingUserContext)
+        public List<Player> GetAllPlayers(bool active, ApplicationUser currentUser)
         {
             return dbContext.Players.Where(player => player.Active == active
-                && player.GamingGroupId == requestingUserContext.GamingGroupId).ToList();
+                && player.GamingGroupId == currentUser.CurrentGamingGroupId).ToList();
         }
 
-        public virtual PlayerStatistics GetPlayerStatistics(int playerId, UserContext requestingUserContext)
+        public virtual PlayerStatistics GetPlayerStatistics(int playerId, ApplicationUser currentUser)
         {
             //TODO could hard code the below to get my integration test to pass. 
             //How do I do a 2nd test so that this would need to be fixed?
             //return new PlayerStatistics() { TotalGames = 3 };
             PlayerStatistics playerStatistics = new PlayerStatistics();
             playerStatistics.TotalGames = dbContext.PlayerGameResults.Count(playerGameResults => playerGameResults.PlayerId == playerId
-                && playerGameResults.Player.GamingGroupId == requestingUserContext.GamingGroupId);
+                && playerGameResults.Player.GamingGroupId == currentUser.CurrentGamingGroupId);
             return playerStatistics;
         }
 
         //TODO refactor this. Might be tricky with anonymous data types. Should I create concrete types?
-        public virtual Nemesis GetNemesis(int playerId, UserContext requestingUserContext)
+        public virtual Nemesis GetNemesis(int playerId, ApplicationUser currentUser)
         {
             //call GetPlayer just to ensure that the requesting user has access
-            GetPlayer(playerId, requestingUserContext);
+            GetPlayer(playerId, currentUser);
             DbRawSqlQuery<WinLossStatistics> data = dbContext.Database.SqlQuery<WinLossStatistics>(SQL_GET_WIN_LOSS_GAMES_COUNT,
                 new SqlParameter("PlayerId", playerId));
 
@@ -199,17 +199,17 @@ namespace BusinessLogic.DataAccess.Repositories
 
         //TODO I did not write tests for this as its tested in GameDefinitionRepository and this needs to be refactored out as part
         //of a real repository base class
-        public virtual Player Save(Player player, UserContext userContext)
+        public virtual Player Save(Player player, ApplicationUser currentUser)
         {
             if (player.AlreadyInDatabase())
             {
-                ValidateAccessToPlayer(userContext, player);
+                ValidateAccessToPlayer(currentUser, player);
                 dbContext.Entry(player).State = System.Data.Entity.EntityState.Modified;
             }
             else
             {
                 //TODO should throw some kind of exception if GamingGroupId is null
-                player.GamingGroupId = userContext.GamingGroupId.Value;
+                player.GamingGroupId = currentUser.CurrentGamingGroupId.Value;
                 dbContext.Players.Add(player);
             }
 
@@ -220,9 +220,9 @@ namespace BusinessLogic.DataAccess.Repositories
 
         //TODO I did not write tests for this as its tested in GameDefinitionRepository and this needs to be refactored out as part
         //of a real repository base class
-        public virtual void Delete(int playerId, UserContext userContext)
+        public virtual void Delete(int playerId, ApplicationUser currentUser)
         {
-            Player player = GetPlayer(playerId, userContext);
+            Player player = GetPlayer(playerId, currentUser);
 
             dbContext.Players.Remove(player);
             dbContext.SaveChanges();

@@ -14,26 +14,28 @@ namespace BusinessLogic.DataAccess.Repositories
     public class EntityFrameworkPlayedGameRepository : PlayedGameRepository
     {
         internal const string EXCEPTION_MESSAGE_MUST_PASS_VALID_GAME_DEFINITION_ID = "Must pass a valid GameDefinitionId.";
-        
-        private NemeStatsDbContext dbContext;
 
-        public EntityFrameworkPlayedGameRepository(NemeStatsDbContext context)
+        private ApplicationDataContext applicationDataContext;
+
+        public EntityFrameworkPlayedGameRepository(ApplicationDataContext applicationDataContext)
         {
-            dbContext = context;
+            this.applicationDataContext = applicationDataContext;
         }
 
-        public PlayedGame GetPlayedGameDetails(int playedGameId, UserContext requestingUserContext)
+        public PlayedGame GetPlayedGameDetails(int playedGameId, ApplicationUser currentUser)
         {         
-            return dbContext.PlayedGames.Where(playedGame => playedGame.Id == playedGameId
-                && playedGame.GamingGroupId == requestingUserContext.GamingGroupId)
-                .Include(playedGame => playedGame.GameDefinition)
-                .Include(playedGame => playedGame.PlayerGameResults)
-                .FirstOrDefault();   
+            return applicationDataContext.GetQueryable<PlayedGame>()
+                .Where(playedGame => playedGame.Id == playedGameId
+                    && playedGame.GamingGroupId == currentUser.CurrentGamingGroupId)
+                    .Include(playedGame => playedGame.GameDefinition)
+                    .Include(playedGame => playedGame.PlayerGameResults)
+                    .FirstOrDefault();   
         }
 
-        public List<PlayedGame> GetRecentGames(int numberOfGames, UserContext requestingUserContext)
+        public List<PlayedGame> GetRecentGames(int numberOfGames, ApplicationUser currentUser)
         {
-            List<PlayedGame> playedGames = dbContext.PlayedGames.Where(game => game.GamingGroupId == requestingUserContext.GamingGroupId)
+            List<PlayedGame> playedGames = applicationDataContext.GetQueryable<PlayedGame>()
+                .Where(game => game.GamingGroupId == currentUser.CurrentGamingGroupId)
                 .Include(playedGame => playedGame.GameDefinition)
                 .Include(playedGame => playedGame.PlayerGameResults
                     .Select(playerGameResult => playerGameResult.Player))
@@ -51,18 +53,17 @@ namespace BusinessLogic.DataAccess.Repositories
         }
 
         //TODO need to have validation logic here (or on PlayedGame similar to what is on NewlyCompletedGame)
-        public PlayedGame CreatePlayedGame(NewlyCompletedGame newlyCompletedGame, UserContext requestingUserContext)
+        public PlayedGame CreatePlayedGame(NewlyCompletedGame newlyCompletedGame, ApplicationUser currentUser)
         {
             List<PlayerGameResult> playerGameResults = TransformNewlyCompletedGamePlayerRanksToPlayerGameResults(newlyCompletedGame);
 
             PlayedGame playedGame = TransformNewlyCompletedGameIntoPlayedGame(
                 newlyCompletedGame, 
                 //TODO should throw some kind of exception if GamingGroupId is null
-                requestingUserContext.GamingGroupId.Value, 
+                currentUser.CurrentGamingGroupId.Value, 
                 playerGameResults);
 
-            dbContext.PlayedGames.Add(playedGame);
-            dbContext.SaveChanges();
+            applicationDataContext.Save(playedGame, currentUser);
 
             return playedGame;
         }

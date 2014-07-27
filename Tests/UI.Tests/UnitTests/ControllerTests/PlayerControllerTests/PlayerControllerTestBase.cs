@@ -22,15 +22,15 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         protected GameResultViewModelBuilder playerGameResultDetailsBuilderMock;
         protected PlayerDetailsViewModelBuilder playerDetailsViewModelBuilderMock;
         protected PlayerController playerController;
-        protected UserContext userContext;
+        protected ApplicationUser currentUser;
 
         [SetUp]
         public void SetUp()
         {
-            userContext = new UserContext()
+            currentUser = new ApplicationUser()
             {
-                GamingGroupId = 123,
-                ApplicationUserId = "app user id"
+                CurrentGamingGroupId = 123,
+                Id = "app user id"
             };
             dbContextMock = MockRepository.GenerateMock<NemeStatsDbContext>();
             playerRepositoryMock = MockRepository.GenerateMock<PlayerRepository>();

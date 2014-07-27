@@ -17,16 +17,16 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayerRepositoryTests
     {
         private EntityFrameworkPlayerRepository playerRepositoryPartialMock;
         private NemeStatsDbContext dbContext;
-        private UserContext userContext;
+        private ApplicationUser currentUser;
 
         [SetUp]
         public void SetUp()
         {
             dbContext = MockRepository.GenerateMock<NemeStatsDbContext>();
             playerRepositoryPartialMock = MockRepository.GeneratePartialMock<EntityFrameworkPlayerRepository>(dbContext);
-            userContext = new UserContext()
+            currentUser = new ApplicationUser()
             {
-                GamingGroupId = 1881
+                CurrentGamingGroupId = 1881
             };
         }
 
@@ -34,10 +34,10 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayerRepositoryTests
         public void ItThrowsAnUnauthorizedExceptionIfTheUserDoesntHaveAccessToThePlayer()
         {
             int playerId = 123;
-            playerRepositoryPartialMock.Expect(partialMock => partialMock.GetPlayer(playerId, userContext))
+            playerRepositoryPartialMock.Expect(partialMock => partialMock.GetPlayer(playerId, currentUser))
                 .Throw(new UnauthorizedAccessException());
 
-            Assert.Throws<UnauthorizedAccessException>(() => playerRepositoryPartialMock.GetNemesis(playerId, userContext));
+            Assert.Throws<UnauthorizedAccessException>(() => playerRepositoryPartialMock.GetNemesis(playerId, currentUser));
         }
     }
 }

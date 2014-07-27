@@ -1,4 +1,5 @@
-﻿using BusinessLogic.Models;
+﻿using BusinessLogic.DataAccess;
+using BusinessLogic.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace BusinessLogic.Models
 {
-    public class PlayerGameResult
+    public class PlayerGameResult : EntityWithTechnicalKey<int>
     {
-        public int Id { get; set; }
+        public override int Id { get; set; }
 
         public int PlayedGameId { get; set; }
         public int PlayerId { get; set; }

@@ -18,9 +18,9 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.EntityFrameworkGa
         public void ItOnlyGetsGameDefinitionsForTheCurrentPlayersGamingGroup()
         {
             List<GameDefinition> gameDefinitions = gameDefinitionRepository.GetAllGameDefinitions(
-                testUserContextForUserWithDefaultGamingGroup);
+                testUserWithDefaultGamingGroup);
 
-            Assert.True(gameDefinitions.All(game => game.GamingGroupId == testUserContextForUserWithDefaultGamingGroup.GamingGroupId));
+            Assert.True(gameDefinitions.All(game => game.GamingGroupId == testUserWithDefaultGamingGroup.CurrentGamingGroupId));
         }
     }
 }

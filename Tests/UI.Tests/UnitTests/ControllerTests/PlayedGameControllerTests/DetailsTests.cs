@@ -41,19 +41,19 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
         public void ItRetrievesRequestedPlayedGame()
         {
             int playedGameId = 1351;
-            playedGameController.Details(playedGameId, userContext);
+            playedGameController.Details(playedGameId, currentUser);
 
-            playedGameLogicMock.AssertWasCalled(x => x.GetPlayedGameDetails(playedGameId, userContext));
+            playedGameLogicMock.AssertWasCalled(x => x.GetPlayedGameDetails(playedGameId, currentUser));
         }
         
         [Test]
         public void ItReturnsThePlayedGameDetailsViewWhenThePlayedGameIsFound()
         {
             int playedGameId = 1351;
-            playedGameLogicMock.Expect(playedGameLogic => playedGameLogic.GetPlayedGameDetails(playedGameId, userContext))
+            playedGameLogicMock.Expect(playedGameLogic => playedGameLogic.GetPlayedGameDetails(playedGameId, currentUser))
                 .Repeat.Once()
                 .Return(new PlayedGame());
-            ViewResult playedGameDetails = playedGameController.Details(playedGameId, userContext) as ViewResult;
+            ViewResult playedGameDetails = playedGameController.Details(playedGameId, currentUser) as ViewResult;
 
             Assert.AreEqual(MVC.PlayedGame.Views.Details, playedGameDetails.ViewName);
         }
@@ -64,13 +64,13 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
             int playedGameId = 13541;
 
             PlayedGame playedGame = new PlayedGame() { Id = 123 };
-            playedGameLogicMock.Expect(x => x.GetPlayedGameDetails(playedGameId, userContext))
+            playedGameLogicMock.Expect(x => x.GetPlayedGameDetails(playedGameId, currentUser))
                 .Repeat.Once()
                 .Return(playedGame);
             PlayedGameDetailsViewModel playedGameDetails = new PlayedGameDetailsViewModel();
             playedGameDetailsBuilderMock.Expect(builder => builder.Build(playedGame)).Repeat.Once()
                 .Return(playedGameDetails);
-            ViewResult result = playedGameController.Details(playedGameId, userContext) as ViewResult;
+            ViewResult result = playedGameController.Details(playedGameId, currentUser) as ViewResult;
 
             PlayedGameDetailsViewModel viewModel = (PlayedGameDetailsViewModel)result.ViewData.Model;
             Assert.AreEqual(playedGameDetails, viewModel);

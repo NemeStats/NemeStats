@@ -240,7 +240,7 @@
     <Compile Include="DependencyResolution\StructureMapDependencyResolver.cs" />
     <Compile Include="DependencyResolution\StructureMapDependencyScope.cs" />
     <Compile Include="Filters\InjectingActionInvoker.cs" />
-    <Compile Include="Filters\UserContextActionFilter.cs" />
+    <Compile Include="Filters\UserContextAttribute.cs" />
     <Compile Include="GameDefinitionController.generated.cs">
       <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>
@@ -290,8 +290,10 @@
     <Compile Include="Transformations\Player\PlayerDetailsViewModelBuilderImpl.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\blog.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Images\NemeStats-White.png" />
     <Content Include="Content\Images\NemeStats.png" />
     <Content Include="Content\themes\base\images\animated-overlay.gif" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
@@ -425,9 +427,9 @@
     <Content Include="Views\PlayedGame\Create.cshtml" />
     <Content Include="Views\PlayedGame\Delete.cshtml" />
     <Content Include="Views\PlayedGame\Details.cshtml" />
-    <Content Include="Views\PlayedGame\Edit.cshtml" />
     <Content Include="Views\PlayedGame\Index.cshtml" />
     <Content Include="Views\GamingGroup\Index.cshtml" />
+    <Content Include="Views\GamingGroup\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Code\" />

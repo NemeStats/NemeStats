@@ -19,7 +19,9 @@
 using BusinessLogic.DataAccess;
 using BusinessLogic.DataAccess.GamingGroups;
 using BusinessLogic.DataAccess.Repositories;
+using BusinessLogic.DataAccess.Security;
 using BusinessLogic.Logic;
+using BusinessLogic.Logic.GamingGroups;
 using BusinessLogic.Logic.Users;
 using BusinessLogic.Models;
 using BusinessLogic.Models.User;
@@ -44,14 +46,15 @@ namespace UI.DependencyResolution {
                                     });
                             //TODO MAKE THIS PER REQUEST
                             x.For<DbContext>().Use<NemeStatsDbContext>();
+                            x.For<DataContext>().Use<ApplicationDataContext>();
                             x.For<PlayerRepository>().Use<EntityFrameworkPlayerRepository>();
                             x.For<PlayedGameRepository>().Use<EntityFrameworkPlayedGameRepository>();
                             x.For<PlayedGameDetailsViewModelBuilder>().Use<PlayedGameDetailsViewModelBuilderImpl>();
                             x.For<GameResultViewModelBuilder>().Use<GameResultViewModelBuilderImpl>();
                             x.For<PlayerDetailsViewModelBuilder>().Use<PlayerDetailsViewModelBuilderImpl>();
-                            x.For<UserContextBuilder>().Use<UserContextBuilderImpl>();
                             x.For<GameDefinitionRepository>().Use<EntityFrameworkGameDefinitionRepository>();
                             x.For<GamingGroupRepository>().Use<EntityFrameworkGamingGroupRepository>();
+                            x.For<GamingGroupInvitationRepository>().Use<EntityFrameworkGamingGroupInvitationRepository>();
                             x.For<GamingGroupToGamingGroupViewModelTransformation>()
                                 .Use<GamingGroupToGamingGroupViewModelTransformationImpl>();
                             x.For<GamingGroupInvitationToInvitationViewModelTransformation>()
@@ -60,6 +63,7 @@ namespace UI.DependencyResolution {
                             x.For<GamingGroupInviteConsumer>().Use<GamingGroupInviteConsumerImpl>();
                             x.For<Microsoft.AspNet.Identity.IUserStore<ApplicationUser>>()
                                 .Use<Microsoft.AspNet.Identity.EntityFramework.UserStore<ApplicationUser>>();
+                            x.For<GamingGroupCreator>().Use<GamingGroupCreatorImpl>();
                             //TODO finish implementing http://lostechies.com/jimmybogard/2010/05/03/dependency-injection-in-asp-net-mvc-filters/
                             //x.For<IActionInvoker>().Use<InjectingActionInvoker>();
                         });

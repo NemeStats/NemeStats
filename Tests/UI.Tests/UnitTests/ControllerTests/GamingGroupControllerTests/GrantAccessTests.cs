@@ -15,7 +15,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
         [Test]
         public void ItRedirectsToTheIndexAction()
         {
-            RedirectToRouteResult redirectResult = gamingGroupController.GrantAccess(string.Empty, userContext) as RedirectToRouteResult;
+            RedirectToRouteResult redirectResult = gamingGroupController.GrantAccess(string.Empty, currentUser) as RedirectToRouteResult;
 
             Assert.AreEqual(MVC.GamingGroup.ActionNames.Index, redirectResult.RouteValues["action"]);
         }
@@ -25,10 +25,10 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
         {
             string email = "abc@xyz.com";
 
-            gamingGroupAccessGranterMock.Expect(mock => mock.CreateInvitation(email, userContext))
+            gamingGroupAccessGranterMock.Expect(mock => mock.CreateInvitation(email, currentUser))
                 .Repeat.Once();
 
-            gamingGroupController.GrantAccess(email, userContext);
+            gamingGroupController.GrantAccess(email, currentUser);
 
             gamingGroupAccessGranterMock.VerifyAllExpectations();
         }

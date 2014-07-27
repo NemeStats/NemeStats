@@ -17,11 +17,11 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
         public void ItReturnsAnUnauthorizedAccessHttpStatusCodeIfTheUserIsNotAuthorized()
         {
             int gameDefinitionId = 1;
-            gameDefinitionRepository.Expect(mock => mock.Delete(gameDefinitionId, userContext))
+            gameDefinitionRepository.Expect(mock => mock.Delete(gameDefinitionId, currentUser))
                 .Throw(new UnauthorizedAccessException());
 
             HttpStatusCodeResult statusCodeResult = gameDefinitionControllerPartialMock
-                                                        .DeleteConfirmed(gameDefinitionId, userContext) as HttpStatusCodeResult;
+                                                        .DeleteConfirmed(gameDefinitionId, currentUser) as HttpStatusCodeResult;
 
             Assert.AreEqual((int)HttpStatusCode.Unauthorized, statusCodeResult.StatusCode);
         }
@@ -30,9 +30,9 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
         public void ItDeletesTheGameDefinition()
         {
             int gameDefinitionId = 1;
-            gameDefinitionRepository.Expect(mock => mock.Delete(1, userContext));
+            gameDefinitionRepository.Expect(mock => mock.Delete(1, currentUser));
 
-            gameDefinitionControllerPartialMock.DeleteConfirmed(gameDefinitionId, userContext);
+            gameDefinitionControllerPartialMock.DeleteConfirmed(gameDefinitionId, currentUser);
 
             gameDefinitionRepository.VerifyAllExpectations();
         }
@@ -41,7 +41,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
         public void ItRedirectsToTheIndexAction()
         {
             RedirectToRouteResult redirectResult = gameDefinitionControllerPartialMock
-                .DeleteConfirmed(1, userContext) as RedirectToRouteResult;
+                .DeleteConfirmed(1, currentUser) as RedirectToRouteResult;
 
             Assert.AreEqual(MVC.GameDefinition.ActionNames.Index, redirectResult.RouteValues["action"]);
         }

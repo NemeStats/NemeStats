@@ -23,10 +23,11 @@ namespace UI.Tests.UnitTests.ControllerTests.AccountControllerTests
         //    //modelStateDictionaryMock.Expect(modelState => modelState.IsValid)
         //    //    .Repeat.Once()
         //    //    .Return(true);
-        //    Task<IdentityResult> identityResultTask = new Task<IdentityResult>(() => return //MockRepository.GenerateMock<Task<IdentityResult>>();
+
+        //    IdentityResult identityResult = new IdentityResult(new List<string>());
         //    userStoreMock.Expect(mock => mock.CreateAsync(Arg<ApplicationUser>.Is.Anything))
         //        .Repeat.Once()
-        //        .Return(identityResultTask);
+        //        .Return(identityResult);
         //    await accountControllerPartialMock.Register(registerViewModel);
 
         //    userManager.AssertWasCalled(userMgr => userMgr.SetEmail(Arg<string>.Is.Anything, Arg<string>.Is.Equal(registerViewModel.EmailAddress)));

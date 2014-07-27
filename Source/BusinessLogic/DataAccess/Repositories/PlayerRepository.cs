@@ -7,11 +7,11 @@ namespace BusinessLogic.DataAccess.Repositories
 {
     public interface PlayerRepository
     {
-        PlayerDetails GetPlayerDetails(int playerID, int numberOfRecentGamesToRetrieve, UserContext requestingUserContext);
-        List<Player> GetAllPlayers(bool active, UserContext requestingUserContext);
-        PlayerStatistics GetPlayerStatistics(int playerId, UserContext requestingUserContext);
-        Nemesis GetNemesis(int playerId, UserContext requestingUserContext);
-        Player Save(Player player, UserContext userContext);
-        void Delete(int playerId, UserContext userContext);
+        PlayerDetails GetPlayerDetails(int playerID, int numberOfRecentGamesToRetrieve, ApplicationUser currentUser);
+        List<Player> GetAllPlayers(bool active, ApplicationUser currentUser);
+        PlayerStatistics GetPlayerStatistics(int playerId, ApplicationUser currentUser);
+        Nemesis GetNemesis(int playerId, ApplicationUser currentUser);
+        Player Save(Player player, ApplicationUser currentUser);
+        void Delete(int playerId, ApplicationUser currentUser);
     }
 }

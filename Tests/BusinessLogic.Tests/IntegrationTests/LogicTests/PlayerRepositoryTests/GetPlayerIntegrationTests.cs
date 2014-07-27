@@ -31,7 +31,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayerRepositoryTests
         [Test]
         public void ItReturnsNullIfThePlayerDoesntExist()
         {
-            Player player = playerRepository.GetPlayer(-1, testUserContextForUserWithDefaultGamingGroup);
+            Player player = playerRepository.GetPlayer(-1, testUserWithDefaultGamingGroup);
 
             Assert.Null(player);
         }
@@ -40,10 +40,10 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayerRepositoryTests
         public void ItThrowsAnUnauthorizedAccessExceptionIfTheRequestedPlayerIsNotInTheCurrentUsersGamingGroup()
         {
             Exception exception = Assert.Throws<UnauthorizedAccessException>(() => playerRepository
-                .GetPlayer(testPlayer1.Id, testUserContextForUserWithOtherGamingGroup));
+                .GetPlayer(testPlayer1.Id, testUserWithOtherGamingGroup));
 
             string expectedMessage = string.Format(EntityFrameworkPlayerRepository.EXCEPTION_USER_DOES_NOT_HAVE_ACCESS_TO_THIS_PLAYER,
-                testUserContextForUserWithOtherGamingGroup.ApplicationUserId,
+                testUserWithOtherGamingGroup.Id,
                 testPlayer1.Id);
             Assert.AreEqual(expectedMessage, exception.Message);
         }
@@ -51,7 +51,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayerRepositoryTests
         [Test]
         public void ItReturnsTheSpecifiedPlayer()
         {
-            Player player = playerRepository.GetPlayer(testPlayer1.Id, testUserContextForUserWithDefaultGamingGroup);
+            Player player = playerRepository.GetPlayer(testPlayer1.Id, testUserWithDefaultGamingGroup);
 
             Assert.AreEqual(testPlayer1.Id, player.Id);
         }

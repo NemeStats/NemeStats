@@ -18,26 +18,28 @@ namespace UI.Controllers
     [Authorize]
     public partial class GameDefinitionController : Controller
     {
-        internal NemeStatsDbContext db;
+        internal NemeStatsDbContext nemeStatsDbContext;
+        internal ApplicationDataContext applicationDataContext;
         internal GameDefinitionRepository gameDefinitionRepository;
 
-        public GameDefinitionController(NemeStatsDbContext dbContext, GameDefinitionRepository gameDefinitionRepository)
+        public GameDefinitionController(NemeStatsDbContext db, ApplicationDataContext dbContext, GameDefinitionRepository gameDefinitionRepository)
         {
-            this.db = dbContext;
+            this.nemeStatsDbContext = db;
             this.gameDefinitionRepository = gameDefinitionRepository;
+            this.applicationDataContext = dbContext;
         }
 
         // GET: /GameDefinition/
-        [UserContextActionFilter]
-        public virtual ActionResult Index(UserContext userContext)
+        [UserContextAttribute]
+        public virtual ActionResult Index(ApplicationUser currentUser)
         {
-            List<GameDefinition> games = gameDefinitionRepository.GetAllGameDefinitions(userContext);
+            List<GameDefinition> games = gameDefinitionRepository.GetAllGameDefinitions(currentUser);
             return View(MVC.GameDefinition.Views.Index, games);
         }
 
         // GET: /GameDefinition/Details/5
-        [UserContextActionFilter]
-        public virtual ActionResult Details(int? id, UserContext userContext)
+        [UserContextAttribute]
+        public virtual ActionResult Details(int? id, ApplicationUser currentUser)
         {
             if (id == null)
             {
@@ -48,7 +50,7 @@ namespace UI.Controllers
 
             try
             {
-                gameDefinition = gameDefinitionRepository.GetGameDefinition(id.Value, userContext);
+                gameDefinition = gameDefinitionRepository.GetGameDefinition(id.Value, currentUser);
             }catch(KeyNotFoundException)
             {
                 return new HttpNotFoundResult(); ;
@@ -72,12 +74,12 @@ namespace UI.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [UserContextActionFilter]
-        public virtual ActionResult Create([Bind(Include = "Id,Name,Description")] GameDefinition gameDefinition, UserContext userContext)
+        [UserContextAttribute]
+        public virtual ActionResult Create([Bind(Include = "Id,Name,Description")] GameDefinition gameDefinition, ApplicationUser currentUser)
         {
             if (ModelState.IsValid)
             {
-                gameDefinitionRepository.Save(gameDefinition, userContext);
+                applicationDataContext.Save(gameDefinition, currentUser);
                 return RedirectToAction(MVC.GameDefinition.ActionNames.Index);
             }
 
@@ -85,8 +87,8 @@ namespace UI.Controllers
         }
 
         // GET: /GameDefinition/Edit/5
-        [UserContextActionFilter]
-        public virtual ActionResult Edit(int? id, UserContext userContext)
+        [UserContextAttribute]
+        public virtual ActionResult Edit(int? id, ApplicationUser currentUser)
         {
             if (id == null)
             {
@@ -96,7 +98,7 @@ namespace UI.Controllers
             GameDefinition gameDefinition;
             try
             {
-                gameDefinition = gameDefinitionRepository.GetGameDefinition(id.Value, userContext);
+                gameDefinition = gameDefinitionRepository.GetGameDefinition(id.Value, currentUser);
             }catch(KeyNotFoundException)
             {
                 return HttpNotFound();
@@ -110,20 +112,20 @@ namespace UI.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [UserContextActionFilter]
-        public virtual ActionResult Edit([Bind(Include = "Id,Name,Description,GamingGroupId")] GameDefinition gamedefinition, UserContext userContext)
+        [UserContextAttribute]
+        public virtual ActionResult Edit([Bind(Include = "Id,Name,Description,GamingGroupId")] GameDefinition gamedefinition, ApplicationUser currentUser)
         {
             if (ModelState.IsValid)
             {
-                gameDefinitionRepository.Save(gamedefinition, userContext);
+                applicationDataContext.Save(gamedefinition, currentUser);
                 return RedirectToAction(MVC.GameDefinition.ActionNames.Index);
             }
             return View(MVC.GameDefinition.Views.Edit, gamedefinition);
         }
 
         // GET: /GameDefinition/Delete/5
-        [UserContextActionFilter]
-        public virtual ActionResult Delete(int? id, UserContext userContext)
+        [UserContextAttribute]
+        public virtual ActionResult Delete(int? id, ApplicationUser currentUser)
         {
             if (id == null)
             {
@@ -131,7 +133,7 @@ namespace UI.Controllers
             }
             try
             {
-                GameDefinition gameDefinition = gameDefinitionRepository.GetGameDefinition(id.Value, userContext);
+                GameDefinition gameDefinition = gameDefinitionRepository.GetGameDefinition(id.Value, currentUser);
                 return View(MVC.GameDefinition.Views.Delete, gameDefinition);
             }catch(KeyNotFoundException)
             {
@@ -145,12 +147,12 @@ namespace UI.Controllers
         // POST: /GameDefinition/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        [UserContextActionFilter]
-        public virtual ActionResult DeleteConfirmed(int id, UserContext userContext)
+        [UserContextAttribute]
+        public virtual ActionResult DeleteConfirmed(int id, ApplicationUser currentUser)
         {
             try
             {
-                gameDefinitionRepository.Delete(id, userContext);
+                gameDefinitionRepository.Delete(id, currentUser);
                 return RedirectToAction(MVC.GameDefinition.ActionNames.Index);
             }catch(UnauthorizedAccessException)
             {
@@ -162,7 +164,8 @@ namespace UI.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                applicationDataContext.Dispose();
+                nemeStatsDbContext.Dispose();
             }
             base.Dispose(disposing);
         }

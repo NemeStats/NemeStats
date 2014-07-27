@@ -29,7 +29,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayerRepositoryTests
         public void ItReturnsAnEmptyListIfThePlayersGamingGroupDoesntMatchTheCurrentUser()
         {
             List<PlayerGameResult> playerGameResults = playerRepository
-                .GetPlayerGameResultsWithPlayedGameAndGameDefinition(testPlayer1.Id, 1, testUserContextForUserWithOtherGamingGroup);
+                .GetPlayerGameResultsWithPlayedGameAndGameDefinition(testPlayer1.Id, 1, testUserWithOtherGamingGroup);
 
             Assert.AreEqual(0, playerGameResults.Count);
         }
