@@ -19,14 +19,14 @@ namespace UI.Controllers
     [Authorize]
     public partial class GamingGroupController : Controller
     {
-        internal NemeStatsDbContext db;
+        internal DataContext db;
         internal GamingGroupToGamingGroupViewModelTransformation gamingGroupToGamingGroupViewModelTransformation;
         internal GamingGroupRepository gamingGroupRepository;
         internal GamingGroupAccessGranter gamingGroupAccessGranter;
         internal GamingGroupCreator gamingGroupCreator;
 
         public GamingGroupController(
-            NemeStatsDbContext dbContext,
+            DataContext dbContext,
             GamingGroupToGamingGroupViewModelTransformation gamingGroupToGamingGroupViewModelTransformation,
             GamingGroupRepository gamingGroupRespository,
             GamingGroupAccessGranter gamingGroupAccessGranter,

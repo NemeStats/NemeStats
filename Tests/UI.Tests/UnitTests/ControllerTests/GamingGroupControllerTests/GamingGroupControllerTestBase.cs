@@ -13,7 +13,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
     [TestFixture]
     public class GamingGroupControllerTestBase
     {
-        protected NemeStatsDbContext dbContextMock;
+        protected DataContext dataContext;
         protected GamingGroupRepository gamingGroupRepositoryMock;
         protected GamingGroupToGamingGroupViewModelTransformation gamingGroupToGamingGroupViewModelTransformationMock;
         protected GamingGroupController gamingGroupController;
@@ -24,13 +24,13 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
         [SetUp]
         public void SetUp()
         {
-            dbContextMock = MockRepository.GenerateMock<NemeStatsDbContext>();
+            dataContext = MockRepository.GenerateMock<DataContext>();
             gamingGroupRepositoryMock = MockRepository.GenerateMock<GamingGroupRepository>();
             gamingGroupToGamingGroupViewModelTransformationMock = MockRepository.GenerateMock<GamingGroupToGamingGroupViewModelTransformation>();
             gamingGroupAccessGranterMock = MockRepository.GenerateMock<GamingGroupAccessGranter>();
             gamingGroupCreator = MockRepository.GenerateMock<GamingGroupCreator>();
             gamingGroupController = new GamingGroupController(
-                dbContextMock, 
+                dataContext, 
                 gamingGroupToGamingGroupViewModelTransformationMock, 
                 gamingGroupRepositoryMock,
                 gamingGroupAccessGranterMock,

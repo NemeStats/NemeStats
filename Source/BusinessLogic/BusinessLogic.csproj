@@ -83,6 +83,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataAccess\ApplicationDataContext.cs" />
+    <Compile Include="DataAccess\DataContext.cs" />
     <Compile Include="DataAccess\GamingGroups\EntityFrameworkGamingGroupAccessGranter.cs" />
     <Compile Include="DataAccess\GamingGroups\GamingGroupAccessGranter.cs" />
     <Compile Include="DataAccess\Repositories\EntityFrameworkGameDefinitionRepository.cs" />
@@ -93,6 +95,10 @@
     <Compile Include="DataAccess\NemeStatsInitializer.cs" />
     <Compile Include="DataAccess\Repositories\GamingGroupInvitationRepository.cs" />
     <Compile Include="DataAccess\Repositories\GamingGroupRepository.cs" />
+    <Compile Include="DataAccess\SecuredEntityWithTechnicalKey.cs" />
+    <Compile Include="DataAccess\Security\SecuredEntityValidator.cs" />
+    <Compile Include="DataAccess\Security\SecuredEntityValidatorFactory.cs" />
+    <Compile Include="DataAccess\Security\SecuredEntityValidatorImpl.cs" />
     <Compile Include="DataAccess\SingleColumnTechnicalKey.cs" />
     <Compile Include="DataAccess\Repositories\PlayedGameRepository.cs" />
     <Compile Include="DataAccess\Repositories\EntityFrameworkPlayedGameRepository.cs" />

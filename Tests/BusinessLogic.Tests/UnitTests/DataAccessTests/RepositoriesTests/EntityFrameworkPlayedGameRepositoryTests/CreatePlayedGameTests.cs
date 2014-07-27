@@ -18,28 +18,21 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGameRepositoryTests
     [TestFixture]
     public class CreatePlayedGameTests
     {
-        private NemeStatsDbContext dbContext;
+        private ApplicationDataContext dataContext;
         private PlayedGameRepository playedGameLogicPartialMock;
-        private DbSet<PlayedGame> playedGamesDbSet ;
-        private string currentUserId = "id of current user";
         private ApplicationUser currentUser;
 
         [SetUp]
         public void TestSetUp()
         {
-            dbContext = MockRepository.GenerateMock<NemeStatsDbContext>();
+            dataContext = MockRepository.GenerateMock<ApplicationDataContext>();
             currentUser = new ApplicationUser()
             {
                 Id = "user id",
                 CurrentGamingGroupId = 1513
             };
-    
-            playedGameLogicPartialMock = MockRepository.GeneratePartialMock<EntityFrameworkPlayedGameRepository>(dbContext);
-            playedGamesDbSet = MockRepository.GenerateMock<DbSet<PlayedGame>>();
-            dbContext.Expect(context => context.PlayedGames)
-                .Repeat.Once()
-                .Return(playedGamesDbSet);
-            playedGamesDbSet.Expect(dbSet => dbSet.Add(Arg<PlayedGame>.Is.Anything));
+
+            playedGameLogicPartialMock = MockRepository.GeneratePartialMock<EntityFrameworkPlayedGameRepository>(dataContext);
         }
 
         [Test]
@@ -58,12 +51,11 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGameRepositoryTests
 
             playedGameLogicPartialMock.CreatePlayedGame(newlyCompletedGame, currentUser);
 
-            dbContext.AssertWasCalled(context => context.PlayedGames);
-
-            playedGamesDbSet.AssertWasCalled(dbSet => dbSet.Add(
-                    Arg<PlayedGame>.Matches(game => game.GameDefinitionId == gameDefinitionId
-                                                && game.NumberOfPlayers == playerRanks.Count()
-                                                && game.DatePlayed.Date.Equals(DateTime.UtcNow.Date))));
+            dataContext.AssertWasCalled(mock => mock.Save(
+                                                Arg<PlayedGame>.Matches(game => game.GameDefinitionId == gameDefinitionId
+                                                    && game.NumberOfPlayers == playerRanks.Count()
+                                                    && game.DatePlayed.Date.Equals(DateTime.UtcNow.Date)), 
+                                                Arg<ApplicationUser>.Is.Same(currentUser)));
         }
 
         [Test]
@@ -123,8 +115,9 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGameRepositoryTests
 
             playedGameLogicPartialMock.CreatePlayedGame(newlyCompletedGame, currentUser);
 
-            playedGamesDbSet.AssertWasCalled(dbSet => dbSet.Add(
-                    Arg<PlayedGame>.Matches(game => game.GamingGroupId == currentUser.CurrentGamingGroupId)));
+            dataContext.AssertWasCalled(mock => mock.Save(
+                Arg<PlayedGame>.Matches(game => game.GamingGroupId == currentUser.CurrentGamingGroupId),
+                Arg<ApplicationUser>.Is.Same(currentUser)));
         }
     }
 }

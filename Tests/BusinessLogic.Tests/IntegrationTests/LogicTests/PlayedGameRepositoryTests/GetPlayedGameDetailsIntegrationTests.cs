@@ -10,16 +10,16 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGameRepositoryTe
     [TestFixture]
     public class GetPlayedGameDetailsIntegrationTests : IntegrationTestBase
     {
-        private PlayedGame GetTestSubjectPlayedGame(NemeStatsDbContext dbContextToTestWith)
+        private PlayedGame GetTestSubjectPlayedGame(ApplicationDataContext dataContextToTestWith)
         {
-            return new EntityFrameworkPlayedGameRepository(dbContextToTestWith)
+            return new EntityFrameworkPlayedGameRepository(dataContextToTestWith)
                 .GetPlayedGameDetails(testPlayedGames[0].Id, testUserWithDefaultGamingGroup);
         }
 
         [Test]
         public void ItRetrievesThePlayedGame()
         {
-            using(NemeStatsDbContext dbContext = new NemeStatsDbContext())
+            using (ApplicationDataContext dbContext = new ApplicationDataContext())
             {
                 PlayedGame playedGame = GetTestSubjectPlayedGame(dbContext);
                 Assert.NotNull(playedGame);
@@ -32,8 +32,11 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGameRepositoryTe
             using(NemeStatsDbContext dbContext = new NemeStatsDbContext())
             {
                 dbContext.Configuration.LazyLoadingEnabled = false;
-                PlayedGame playedGame = GetTestSubjectPlayedGame(dbContext);
-                Assert.GreaterOrEqual(testPlayedGames[0].PlayerGameResults.Count, playedGame.PlayerGameResults.Count());
+                using (ApplicationDataContext dataContext = new ApplicationDataContext(dbContext, securedEntityValidatorFactory))
+                {
+                    PlayedGame playedGame = GetTestSubjectPlayedGame(dataContext);
+                    Assert.GreaterOrEqual(testPlayedGames[0].PlayerGameResults.Count, playedGame.PlayerGameResults.Count());
+                }
             }
         }
 
@@ -43,17 +46,20 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGameRepositoryTe
             using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
             {
                 dbContext.Configuration.LazyLoadingEnabled = false;
-                PlayedGame playedGame = GetTestSubjectPlayedGame(dbContext);
-                Assert.NotNull(playedGame.GameDefinition);
+                using (ApplicationDataContext dataContext = new ApplicationDataContext(dbContext, securedEntityValidatorFactory))
+                {
+                    PlayedGame playedGame = GetTestSubjectPlayedGame(dataContext);
+                    Assert.NotNull(playedGame.GameDefinition);
+                }
             }
         }
 
         [Test]
         public void ItReturnsNullIfNoPlayedGameFound()
         {
-            using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
+            using (ApplicationDataContext dataContext = new ApplicationDataContext())
             {
-                EntityFrameworkPlayedGameRepository playedGameRepository = new EntityFrameworkPlayedGameRepository(dbContext);
+                EntityFrameworkPlayedGameRepository playedGameRepository = new EntityFrameworkPlayedGameRepository(dataContext);
 
                 PlayedGame notFoundPlayedGame = playedGameRepository.GetPlayedGameDetails(-1, testUserWithDefaultGamingGroup);
                 Assert.Null(notFoundPlayedGame);
@@ -63,12 +69,12 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGameRepositoryTe
         [Test]
         public void ItThrowsANotAuthorizedExceptionIfTheGameIsntInThePlayersGamingGroup()
         {
-            using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
+            using (ApplicationDataContext dataContext = new ApplicationDataContext())
             {
                 PlayedGame gameWithMismatchedGamingGroupId = testPlayedGames.First(
                     playedGame => playedGame.GamingGroupId != testUserWithDefaultGamingGroup.CurrentGamingGroupId);
 
-                EntityFrameworkPlayedGameRepository playedGameRepository = new EntityFrameworkPlayedGameRepository(dbContext);
+                EntityFrameworkPlayedGameRepository playedGameRepository = new EntityFrameworkPlayedGameRepository(dataContext);
 
                 PlayedGame notFoundPlayedGame = playedGameRepository.GetPlayedGameDetails(gameWithMismatchedGamingGroupId.Id, testUserWithDefaultGamingGroup);
                 Assert.Null(notFoundPlayedGame);

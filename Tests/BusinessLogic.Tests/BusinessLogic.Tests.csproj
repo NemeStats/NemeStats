@@ -95,6 +95,9 @@
     <Compile Include="IntegrationTests\DataAccessTests\EntityFrameworkGameDefinitionRepositoryTests\GetGameDefinitionTest.cs" />
     <Compile Include="IntegrationTests\DataAccessTests\EntityFrameworkGamingGroupRepositoryTests\EntityFrameworkGamingGroupRepositoryIntegrationTestBase.cs" />
     <Compile Include="IntegrationTests\DataAccessTests\EntityFrameworkGamingGroupRepositoryTests\GetGamingGroupDetailsIntegrationTests.cs" />
+    <Compile Include="IntegrationTests\EntityFrameworkGeneralIntegrationTests.cs" />
+    <Compile Include="UnitTests\ApplicationDataContextTests\SaveTests.cs" />
+    <Compile Include="UnitTests\DataAccessTests\EntityWithTechnicalKeyTests\AlreadyInDatabaseTests.cs" />
     <Compile Include="UnitTests\DataAccessTests\GamingGroupsTests\EntityFrameworkGamingGroupAccessGranterTests\ConsumeInvitationTests.cs" />
     <Compile Include="UnitTests\DataAccessTests\GamingGroupsTests\EntityFrameworkGamingGroupAccessGranterTests\CreateInvitationTests.cs" />
     <Compile Include="IntegrationTests\DataAccessTests\EntityFrameworkGamingGroupRepositoryTests\GetPendingGamingGroupInvitationsIntegrationTests.cs" />
@@ -119,6 +122,7 @@
     <Compile Include="UnitTests\DataAccessTests\RepositoriesTests\EntityFrameworkPlayedGameRepositoryTests\CreatePlayedGameTests.cs" />
     <Compile Include="UnitTests\DataAccessTests\RepositoriesTests\EntityFrameworkPlayerRepositoryTests\GetNemesisTests.cs" />
     <Compile Include="UnitTests\DataAccessTests\RepositoriesTests\EntityFrameworkPlayerRepositoryTests\GetPlayerDetailsTests.cs" />
+    <Compile Include="UnitTests\DataAccessTests\SecurityTests\SecuredEntityValidatorTests\ValidateAccessTests.cs" />
     <Compile Include="UnitTests\LogicTests\GamingGroupsTests\GamingGroupCreatorTests\CreateGamingGroupTests.cs" />
     <Compile Include="UnitTests\LogicTests\PointsTests\GordonPointsTests\CalculateGordonPointsTests.cs" />
     <Compile Include="UnitTests\LogicTests\UsersTests\GamingGroupInviteConsumerImplTests\AddUserToInvitedGroupTests.cs" />

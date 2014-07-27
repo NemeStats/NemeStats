@@ -14,26 +14,28 @@ namespace BusinessLogic.DataAccess.Repositories
     public class EntityFrameworkPlayedGameRepository : PlayedGameRepository
     {
         internal const string EXCEPTION_MESSAGE_MUST_PASS_VALID_GAME_DEFINITION_ID = "Must pass a valid GameDefinitionId.";
-        
-        private NemeStatsDbContext dbContext;
 
-        public EntityFrameworkPlayedGameRepository(NemeStatsDbContext context)
+        private ApplicationDataContext applicationDataContext;
+
+        public EntityFrameworkPlayedGameRepository(ApplicationDataContext applicationDataContext)
         {
-            dbContext = context;
+            this.applicationDataContext = applicationDataContext;
         }
 
         public PlayedGame GetPlayedGameDetails(int playedGameId, ApplicationUser currentUser)
         {         
-            return dbContext.PlayedGames.Where(playedGame => playedGame.Id == playedGameId
-                && playedGame.GamingGroupId == currentUser.CurrentGamingGroupId)
-                .Include(playedGame => playedGame.GameDefinition)
-                .Include(playedGame => playedGame.PlayerGameResults)
-                .FirstOrDefault();   
+            return applicationDataContext.GetQueryable<PlayedGame>()
+                .Where(playedGame => playedGame.Id == playedGameId
+                    && playedGame.GamingGroupId == currentUser.CurrentGamingGroupId)
+                    .Include(playedGame => playedGame.GameDefinition)
+                    .Include(playedGame => playedGame.PlayerGameResults)
+                    .FirstOrDefault();   
         }
 
         public List<PlayedGame> GetRecentGames(int numberOfGames, ApplicationUser currentUser)
         {
-            List<PlayedGame> playedGames = dbContext.PlayedGames.Where(game => game.GamingGroupId == currentUser.CurrentGamingGroupId)
+            List<PlayedGame> playedGames = applicationDataContext.GetQueryable<PlayedGame>()
+                .Where(game => game.GamingGroupId == currentUser.CurrentGamingGroupId)
                 .Include(playedGame => playedGame.GameDefinition)
                 .Include(playedGame => playedGame.PlayerGameResults
                     .Select(playerGameResult => playerGameResult.Player))
@@ -61,8 +63,7 @@ namespace BusinessLogic.DataAccess.Repositories
                 currentUser.CurrentGamingGroupId.Value, 
                 playerGameResults);
 
-            dbContext.PlayedGames.Add(playedGame);
-            dbContext.SaveChanges();
+            applicationDataContext.Save(playedGame, currentUser);
 
             return playedGame;
         }

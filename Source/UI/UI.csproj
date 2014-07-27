@@ -290,6 +290,7 @@
     <Compile Include="Transformations\Player\PlayerDetailsViewModelBuilderImpl.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\blog.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Images\NemeStats-White.png" />
@@ -426,7 +427,6 @@
     <Content Include="Views\PlayedGame\Create.cshtml" />
     <Content Include="Views\PlayedGame\Delete.cshtml" />
     <Content Include="Views\PlayedGame\Details.cshtml" />
-    <Content Include="Views\PlayedGame\Edit.cshtml" />
     <Content Include="Views\PlayedGame\Index.cshtml" />
     <Content Include="Views\GamingGroup\Index.cshtml" />
     <Content Include="Views\GamingGroup\Create.cshtml" />
