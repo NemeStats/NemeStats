@@ -104,6 +104,8 @@
     <Compile Include="DataAccess\Repositories\EntityFrameworkPlayedGameRepository.cs" />
     <Compile Include="DataAccess\Repositories\PlayerRepository.cs" />
     <Compile Include="DataAccess\Repositories\EntityFrameworkPlayerRepository.cs" />
+    <Compile Include="Logic\GameDefinitions\GameDefinitionRetriever.cs" />
+    <Compile Include="Logic\GameDefinitions\GameDefinitionRetrieverImpl.cs" />
     <Compile Include="Logic\GamingGroups\GamingGroupCreator.cs" />
     <Compile Include="Logic\GamingGroups\GamingGroupCreatorImpl.cs" />
     <Compile Include="Logic\Points\GordonPoints.cs" />

@@ -21,6 +21,7 @@ using BusinessLogic.DataAccess.GamingGroups;
 using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.DataAccess.Security;
 using BusinessLogic.Logic;
+using BusinessLogic.Logic.GameDefinitions;
 using BusinessLogic.Logic.GamingGroups;
 using BusinessLogic.Logic.Users;
 using BusinessLogic.Models;
@@ -48,6 +49,7 @@ namespace UI.DependencyResolution {
                             x.For<DbContext>().Use<NemeStatsDbContext>();
                             x.For<DataContext>().Use<ApplicationDataContext>();
                             x.For<PlayerRepository>().Use<EntityFrameworkPlayerRepository>();
+                            x.For<GameDefinitionRetriever>().Use<GameDefinitionRetrieverImpl>();
                             x.For<PlayedGameRepository>().Use<EntityFrameworkPlayedGameRepository>();
                             x.For<PlayedGameDetailsViewModelBuilder>().Use<PlayedGameDetailsViewModelBuilderImpl>();
                             x.For<GameResultViewModelBuilder>().Use<GameResultViewModelBuilderImpl>();

@@ -1,6 +1,7 @@
 ﻿using BusinessLogic.DataAccess;
 using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.Logic;
+using BusinessLogic.Logic.GameDefinitions;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
 using BusinessLogic.Models.User;
@@ -18,22 +19,29 @@ namespace UI.Controllers
     [Authorize]
     public partial class PlayedGameController : Controller
     {
-        internal NemeStatsDbContext db;
+        internal ApplicationDataContext dataContext;
+        internal NemeStatsDbContext nemeStatsDbContext;
         internal PlayedGameRepository playedGameLogic;
         internal PlayerRepository playerLogic;
         internal PlayedGameDetailsViewModelBuilder playedGameDetailsBuilder;
+        internal GameDefinitionRetriever gameDefinitionRetriever;
 
         internal const int NUMBER_OF_RECENT_GAMES_TO_DISPLAY = 10;
 
-        public PlayedGameController(NemeStatsDbContext dbContext, 
+        public PlayedGameController(
+            ApplicationDataContext dataContext,
+            NemeStatsDbContext dbContext, 
             PlayedGameRepository playedLogic, 
             PlayerRepository playLogic,
-            PlayedGameDetailsViewModelBuilder builder)
+            PlayedGameDetailsViewModelBuilder builder,
+            GameDefinitionRetriever gameDefinitionRetriever)
         {
-            db = dbContext;
+            this.dataContext = dataContext;
+            nemeStatsDbContext = dbContext;
             playedGameLogic = playedLogic;
             playerLogic = playLogic;
             playedGameDetailsBuilder = builder;
+            this.gameDefinitionRetriever = gameDefinitionRetriever;
         }
 
         // GET: /PlayedGame/
@@ -70,9 +78,13 @@ namespace UI.Controllers
 
         // GET: /PlayedGame/Create
         [UserContextAttribute]
+        [HttpGet]
         public virtual ActionResult Create(ApplicationUser currentUser)
         {
-            ViewBag.GameDefinitionId = new SelectList(db.GameDefinitions, "Id", "Name");
+            ViewBag.GameDefinitionId = new SelectList(
+                gameDefinitionRetriever.GetAllGameDefinitions(currentUser), 
+                "Id", 
+                "Name");
 
             AddAllPlayersToViewBag(currentUser);
 
@@ -118,7 +130,7 @@ namespace UI.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            PlayedGame playedgame = db.PlayedGames.Find(id);
+            PlayedGame playedgame = nemeStatsDbContext.PlayedGames.Find(id);
             if (playedgame == null)
             {
                 return HttpNotFound();
@@ -132,9 +144,9 @@ namespace UI.Controllers
         [UserContextAttribute]
         public virtual ActionResult DeleteConfirmed(int id, ApplicationUser currentUser)
         {
-            PlayedGame playedgame = db.PlayedGames.Find(id);
-            db.PlayedGames.Remove(playedgame);
-            db.SaveChanges();
+            PlayedGame playedgame = nemeStatsDbContext.PlayedGames.Find(id);
+            nemeStatsDbContext.PlayedGames.Remove(playedgame);
+            nemeStatsDbContext.SaveChanges();
             return RedirectToAction("Index");
         }
 
@@ -142,7 +154,8 @@ namespace UI.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                dataContext.Dispose();
+                nemeStatsDbContext.Dispose();
             }
             base.Dispose(disposing);
         }
