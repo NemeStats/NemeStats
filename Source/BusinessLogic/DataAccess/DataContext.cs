@@ -11,7 +11,7 @@ namespace BusinessLogic.DataAccess
     {
         void CommitAllChanges();
 
-        IQueryable<TEntity> GetQueryable<TEntity>() where TEntity : class;
+        IQueryable<TEntity> GetQueryable<TEntity>(ApplicationUser currentUser) where TEntity : EntityWithTechnicalKey;
 
         TEntity Save<TEntity>(TEntity entity, ApplicationUser currentUser) where TEntity : EntityWithTechnicalKey;
         void Delete<TEntity>(TEntity entity, ApplicationUser currentUser) where TEntity : EntityWithTechnicalKey;

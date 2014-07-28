@@ -12,43 +12,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessLogic.Tests.UnitTests.ApplicationDataContextTests
+namespace BusinessLogic.Tests.UnitTests.DataAccessTests.ApplicationDataContextTests
 {
     [TestFixture]
-    public class SaveTests
+    public class SaveTests : ApplicationDataContextTestBase
     {
-        protected ApplicationDataContext dataContext;
-        protected SecuredEntityValidatorFactory securedEntityValidatorFactory;
-        protected SecuredEntityValidator<EntityWithTechnicalKey> securedEntityValidator;
-        protected EntityWithTechnicalKey entityWithGamingGroupAndTechnicalKey;
-        protected EntityWithTechnicalKey entityWithGamingGroup;
-        protected ApplicationUser currentUser;
-        protected DbSet<EntityWithTechnicalKey> dbSetMock;
-
-        [SetUp]
-        public void SetUp()
-        {
-            NemeStatsDbContext nemeStatsDbContext = MockRepository.GenerateMock<NemeStatsDbContext>();
-            securedEntityValidatorFactory = MockRepository.GeneratePartialMock <SecuredEntityValidatorFactory>();
-            dataContext = MockRepository.GeneratePartialMock<ApplicationDataContext>(nemeStatsDbContext, securedEntityValidatorFactory);
-            securedEntityValidator = MockRepository.GenerateMock<SecuredEntityValidator<EntityWithTechnicalKey>>();
-            securedEntityValidatorFactory.Expect(mock => mock.MakeSecuredEntityValidator<EntityWithTechnicalKey>())
-                .Repeat.Once()
-                .Return(securedEntityValidator);
-            entityWithGamingGroupAndTechnicalKey = MockRepository.GenerateStub<EntityWithTechnicalKey>();
-            entityWithGamingGroupAndTechnicalKey.Expect(mock => mock.AlreadyInDatabase())
-                .Repeat.Once()
-                .Return(true);
-            entityWithGamingGroup = MockRepository.GenerateStub<EntityWithTechnicalKey>();
-            dbSetMock = MockRepository.GenerateMock<DbSet<EntityWithTechnicalKey>>();
-
-            currentUser = new ApplicationUser()
-            {
-                Id = "application user id",
-                CurrentGamingGroupId = 1
-            };
-        }
-
         [Test]
         public void ItThrowsAnArgumentNullExceptionIfTheEntityIsNull()
         {

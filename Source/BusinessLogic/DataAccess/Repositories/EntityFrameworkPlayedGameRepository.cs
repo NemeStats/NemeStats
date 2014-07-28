@@ -24,7 +24,7 @@ namespace BusinessLogic.DataAccess.Repositories
 
         public PlayedGame GetPlayedGameDetails(int playedGameId, ApplicationUser currentUser)
         {         
-            return applicationDataContext.GetQueryable<PlayedGame>()
+            return applicationDataContext.GetQueryable<PlayedGame>(currentUser)
                 .Where(playedGame => playedGame.Id == playedGameId
                     && playedGame.GamingGroupId == currentUser.CurrentGamingGroupId)
                     .Include(playedGame => playedGame.GameDefinition)
@@ -34,7 +34,7 @@ namespace BusinessLogic.DataAccess.Repositories
 
         public List<PlayedGame> GetRecentGames(int numberOfGames, ApplicationUser currentUser)
         {
-            List<PlayedGame> playedGames = applicationDataContext.GetQueryable<PlayedGame>()
+            List<PlayedGame> playedGames = applicationDataContext.GetQueryable<PlayedGame>(currentUser)
                 .Where(game => game.GamingGroupId == currentUser.CurrentGamingGroupId)
                 .Include(playedGame => playedGame.GameDefinition)
                 .Include(playedGame => playedGame.PlayerGameResults

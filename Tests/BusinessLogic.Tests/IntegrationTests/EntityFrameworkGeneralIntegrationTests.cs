@@ -35,12 +35,16 @@ namespace BusinessLogic.Tests.IntegrationTests
             }
         }
 
-        private static void Cleanup(ApplicationDataContext dbContext, GamingGroup gamingGroup, ApplicationUser user)
+        private static void Cleanup(
+            ApplicationDataContext dbContext, 
+            GamingGroup gamingGroup, 
+            ApplicationUser currentUser)
         {
-            GamingGroup gamingGroupToDelete = dbContext.GetQueryable<GamingGroup>().Where(game => game.Name == gamingGroup.Name).FirstOrDefault();
+            GamingGroup gamingGroupToDelete = dbContext.GetQueryable<GamingGroup>(currentUser)
+                .Where(game => game.Name == gamingGroup.Name).FirstOrDefault();
             if (gamingGroupToDelete != null)
             {
-                dbContext.Delete(gamingGroupToDelete, user);
+                dbContext.Delete(gamingGroupToDelete, currentUser);
                 dbContext.CommitAllChanges();
             }
         }

@@ -1,6 +1,7 @@
 ﻿using BusinessLogic.DataAccess.Security;
 using BusinessLogic.Models.User;
 using System;
+using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using System.Linq;
 
@@ -33,8 +34,16 @@ namespace BusinessLogic.DataAccess
             nemeStatsDbContext.SaveChanges();
         }
 
-        public virtual IQueryable<TEntity> GetQueryable<TEntity>() where TEntity : class
+        public virtual IQueryable<TEntity> GetQueryable<TEntity>(ApplicationUser currentUser) where TEntity : EntityWithTechnicalKey
         {
+            //TODO this doesn't apear to be doing anything even though it compiles. Want to filter on gaming group ID automatically
+            // when appropriate
+            //if (typeof(SecuredEntityWithTechnicalKey).IsAssignableFrom(typeof(TEntity)))
+            //{
+                
+            //    queryable = dbSet.Where(securedEntitySet => ((SecuredEntityWithTechnicalKey)securedEntitySet).GamingGroupId
+            //        == currentUser.CurrentGamingGroupId.Value);
+            //}
             return nemeStatsDbContext.Set<TEntity>();
         }
 

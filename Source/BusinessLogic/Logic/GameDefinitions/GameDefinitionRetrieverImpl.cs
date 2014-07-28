@@ -20,7 +20,9 @@ namespace BusinessLogic.Logic.GameDefinitions
 
         public IList<GameDefinition> GetAllGameDefinitions(ApplicationUser currentUser)
         {
-            return dataContext.GetQueryable<GameDefinition>().ToList();
+            return dataContext.GetQueryable<GameDefinition>(currentUser)
+                .Where(gameDefinition => gameDefinition.GamingGroupId == currentUser.CurrentGamingGroupId.Value)
+                .ToList();
         }
     }
 }
