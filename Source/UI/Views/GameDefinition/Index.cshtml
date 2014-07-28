@@ -1,39 +1,54 @@
 ﻿@model IEnumerable<BusinessLogic.Models.GameDefinition>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Games";
 }
 
-<h2>Index</h2>
+<div class="row">
+    <h2>@ViewBag.Title</h2>
+    <hr />
+    @Html.ActionLink("Create New", "Create", "GameDefinition", new { @class = "btn btn-primary btn-sm" })
+</div>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Description)
-        </th>
-        <th></th>
-    </tr>
+<div class="row">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Description)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        <a href="@Url.Action("Edit", "GameDefinition", new { id = item.Id })" title="Edit">
+                            <span class="glyphicon glyphicon-pencil"></span>
+                        </a>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Description)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
-}
+                        <a href="@Url.Action("Details", "GameDefinition", new { id = item.Id })" title="Details">
+                            <span class="glyphicon glyphicon-book"></span>
+                        </a>
 
-</table>
+                        <a href="@Url.Action("Delete", "GameDefinition", new { id = item.Id })" title="Delete">
+                            <span class="glyphicon glyphicon-trash"></span>
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>    
+</div>
+

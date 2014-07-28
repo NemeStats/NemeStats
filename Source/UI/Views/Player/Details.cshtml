@@ -4,77 +4,146 @@
 @model UI.Models.Players.PlayerDetailsViewModel
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Player details";
 }
 
-<h2>Details</h2>
+<h2>@ViewBag.Title</h2>
 
-<div>
-    <h4>Player</h4>
-	<hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.PlayerName)
-        </dt>
+<div class="row">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4>Info</h4>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-1">
+                    <strong>
+                        @Html.DisplayNameFor(model => model.PlayerName)
+                    </strong>
+                </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.PlayerName)
-        </dd>
+                <div class="col-md-2">
+                    @Html.DisplayFor(model => model.PlayerName)
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-1">
+                    <strong>
+                        @Html.DisplayNameFor(model => model.Active)
+                    </strong>
+                </div>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Active)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Active)
-        </dd>
-    </dl>
+                <div class="col-md-2">
+                    @Html.DisplayFor(model => model.Active)
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-2">
+                    @Html.ActionLink("Edit", "Edit", new { id = Model.PlayerId }, new { @class = "btn btn-sm btn-primary" })
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.PlayerId }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
-<br/>
-<div>
-    <h4>Recent Games @ViewBag.RecentGamesMessage</h4>
-    @foreach(var playerResult in @Model.PlayerGameResultDetails)
+
+<div class="row">
+    @if (Model.PlayerGameResultDetails.Any())
     {
-        @playerResult.DatePlayed.ToShortDateString() <text>: </text>
-        @Html.ActionLink(playerResult.GameName, "Details", "GameDefinition", new { id = playerResult.GameDefinitionId }, new { })
-        <text>- </text>
-        @Html.GameResults(playerResult) 
-        @Html.ActionLink("[Details]", "Details", "PlayedGame", new { id = playerResult.PlayedGameId }, new { })
-        <br/><br/>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>Recent Games @ViewBag.RecentGamesMessage</h4>
+            </div>
+            <div class="panel-body">
+                @foreach (var playerGameResult in @Model.PlayerGameResultDetails)
+                {
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Date Played</th>
+                                <th>Game</th>
+                                <th>Rank</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    @playerGameResult.DatePlayed.ToShortDateString()
+                                </td>
+                                <td>
+                                    @Html.ActionLink(playerGameResult.GameName, "Details", "GameDefinition", new { id = playerGameResult.GameDefinitionId }, new { })
+                                </td>
+                                <td>
+                                    @Html.GameResults(playerGameResult)
+                                </td>
+                                <td>
+                                    <span class="glyphicon glyphicon-book"></span>
+                                    @Html.ActionLink("Details", "Details", "PlayedGame", new { id = playerGameResult.PlayedGameId }, new { })
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                }
+            </div>
+        </div>
     }
 </div>
-@if(@Model.HasNemesis)
-{
-    <div>
-        <h4>Nemesis</h4>
-        <dl class="dl-horizontal">
-            <dt>
-               Player Name
-            </dt>
-            <dd>
-                @Html.ActionLink(Model.NemesisName, "Details", "Player", new { id = Model.NemesisPlayerId }, new { })
-            </dd>
-            <dt>
-                Games Lost
-            </dt>
-            <dd>
-                @Model.NumberOfGamesLostVersusNemesis
-            </dd>
-            <dt>
-                % Lost
-            </dt>
-            <dd>
-                @Model.LossPercentageVersusPlayer
-            </dd>
-        </dl>
-    </div>    
-}
 
-<div>
-    <h4>Statistics</h4>
-    Total Games: @Model.TotalGamesPlayed
+<div class="row">
+    @if (@Model.HasNemesis)
+    {
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4>Nemesis</h4>    
+        </div>
+        <div class="panel-body">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Player Name</th>
+                        <th>Games Lost</th>
+                        <th>% Lost</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            @Html.ActionLink(Model.NemesisName, "Details", "Player", new { id = Model.NemesisPlayerId }, new { })
+                        </td>
+                        <td>
+                             @Model.NumberOfGamesLostVersusNemesis
+                        </td>
+                        <td>
+                            @Model.LossPercentageVersusPlayer
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    }
 </div>
+
+<div class="row">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4>Statistics</h4>    
+        </div>
+        <div class="panel-body">
+            Total Games: @Model.TotalGamesPlayed
+        </div>
+    </div>
+    <div>
+        @Html.ActionLink("Back to List", "Index")
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
