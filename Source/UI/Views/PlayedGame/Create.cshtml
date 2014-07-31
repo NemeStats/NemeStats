@@ -1,52 +1,66 @@
 ﻿@model BusinessLogic.Models.Games.NewlyCompletedGame
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Record a game";
 }
 
-<h2>Create</h2>
+<h2>@ViewBag.Title</h2>
+    <hr />
 
-
-@using (Html.BeginForm()) 
-{
-    @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>PlayedGame</h4>
-        <hr />
-        @Html.ValidationSummary(true)
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.GameDefinitionId, "The Game", new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("GameDefinitionId", "Pick A Game")
-                @Html.ValidationMessageFor(model => model.GameDefinitionId)
-            </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4>Game played</h4>
         </div>
+        <div class="panel-body">
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
 
-        <div class="form-group" id="playerDiv">
-            <span class ="control-label col-md-2">The Players</span>
-            @Html.DropDownList("Players", "Add A Player")
-            @Html.ValidationMessageFor(model => model.PlayerRanks)
-            <ul id="rankedPlayers" class="sortable"></ul>
-        </div>
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.GameDefinitionId, "The Game", new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.DropDownList("GameDefinitionId", (IEnumerable<SelectListItem>)null, "Pick A Game", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.GameDefinitionId)
+                        </div>
+                    </div>
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
+                    <div class="form-group" id="playerDiv">
+                        <label class="control-label col-md-2">The Players</label>
+                        <div class="col-md-10">
+                            @Html.DropDownList("Players", (IEnumerable<SelectListItem>)null, "Add A Player", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.PlayerRanks)
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <div class="col-md-2">
+                            
+                        </div>
+                        <div class="col-md-10">
+                            <ul id="rankedPlayers" class="sortable"></ul>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Create" class="btn btn-primary" />
+                        </div>
+                    </div>
+                </div>
+            }
         </div>
     </div>
-}
+            
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
+    <div>
+        @Html.ActionLink("Back to List", "Index")
+    </div>
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jquery");
-    @Scripts.Render("~/bundles/jqueryval");
-    <!--//TODO not sure why i had to do this-->
-    @Scripts.Render("~/Scripts/jquery-ui-1.10.4.js");
-    @Scripts.Render("~/bundles/custom");
-}
+    @section Scripts {
+        @Scripts.Render("~/bundles/jquery");
+        @Scripts.Render("~/bundles/jqueryval");
+        <!--//TODO not sure why i had to do this-->
+        @Scripts.Render("~/Scripts/jquery-ui-1.10.4.js");
+        @Scripts.Render("~/bundles/custom");
+    }
