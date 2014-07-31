@@ -54,37 +54,38 @@
             <div class="panel-heading">
                 <h4>Recent Games @ViewBag.RecentGamesMessage</h4>
             </div>
-            <div class="panel-body">
+        <div class="panel-body">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Date Played</th>
+                        <th>Game</th>
+                        <th>Rank</th>
+                        <th></th>
+                    </tr>
+                </thead>
                 @foreach (var playerGameResult in @Model.PlayerGameResultDetails)
                 {
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th>Date Played</th>
-                                <th>Game</th>
-                                <th>Rank</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>
-                                    @playerGameResult.DatePlayed.ToShortDateString()
-                                </td>
-                                <td>
-                                    @Html.ActionLink(playerGameResult.GameName, "Details", "GameDefinition", new { id = playerGameResult.GameDefinitionId }, new { })
-                                </td>
-                                <td>
-                                    @Html.GameResults(playerGameResult)
-                                </td>
-                                <td>
-                                    <span class="glyphicon glyphicon-book"></span>
-                                    @Html.ActionLink("Details", "Details", "PlayedGame", new { id = playerGameResult.PlayedGameId }, new { })
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <tbody>
+                        <tr>
+                            <td>
+                                @playerGameResult.DatePlayed.ToShortDateString()
+                            </td>
+                            <td>
+                                @Html.ActionLink(playerGameResult.GameName, "Details", "GameDefinition", new { id = playerGameResult.GameDefinitionId }, new { })
+                            </td>
+                            <td>
+                                @Html.GameResults(playerGameResult)
+                            </td>
+                            <td>
+                                <span class="glyphicon glyphicon-book"></span>
+                                @Html.ActionLink("Details", "Details", "PlayedGame", new { id = playerGameResult.PlayedGameId }, new { })
+                            </td>
+                        </tr>
+                    </tbody>
                 }
+            </table>
+
             </div>
         </div>
     }

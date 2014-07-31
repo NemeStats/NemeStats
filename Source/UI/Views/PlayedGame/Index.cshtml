@@ -5,46 +5,62 @@
     ViewBag.Title = "Recent Games";
 }
 
-<h2>Recent Games</h2>
+<div class="row">
+    <h2>@ViewBag.Title</h2>
+    <hr />
+    @Html.ActionLink("Create New", "Create", "PlayedGame", new { @class = "btn btn-primary btn-sm" })
+</div>
+<div class="row">
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>
+                        Game Name
+                    </th>
+                    <th>
+                        Date Played
+                    </th>
+                    <th>Result</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td style='font-weight: 300'>
+                            @Html.ActionLink(item.GameDefinitionName, "Details", "GameDefinition", new { id = item.GameDefinitionId }, new { })
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DatePlayed)
+                        </td>
+                        <td>
+                            @foreach (var result in item.PlayerResults)
+                            {
+                                <div class="row">
+                                    <div class="col-sm-2">
+                                        @Html.ActionLink(result.PlayerName, "Details", "Player", new { id = result.PlayerId }, new { })   
+                                    </div>
+                                    <div class="col-sm-5">
+                                        @Html.GameResults(result)
+                                    </div>    
+                                </div>
+                            }
+                        </td>
+                        <td>
+                            
+                            <a href="@Url.Action("Details", "PlayedGame", new { id = item.PlayedGameId })" title="Details">
+                                <span class="glyphicon glyphicon-book"></span>
+                            </a>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            Game Name
-        </th>
-        <th>
-           Date Played
-        </th>
-        <th>Result</th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model)
-{
-    <tr>
-        <td style='font-weight: 300'>
-            @Html.ActionLink(item.GameDefinitionName, "Details", "GameDefinition", new { id = item.GameDefinitionId }, new { })
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DatePlayed)
-        </td>
-        <td>
-            @foreach (var result in item.PlayerResults)
-            {
-                @Html.ActionLink(result.PlayerName, "Details", "Player", new { id = result.PlayerId }, new { })
-                <text>:</text>
-                @Html.GameResults(result);
-                <br/>
-            }
-        </td>
-        <td>
-            @Html.ActionLink("Details", "Details", new { id = item.PlayedGameId }) |
-            @Html.ActionLink("Delete", "Delete", new { id = item.PlayedGameId })
-        </td>
-    </tr>
-}
-
-</table>
+                            <a href="@Url.Action("Delete", "PlayedGame", new { id = item.PlayedGameId })" title="Delete">
+                                <span class="glyphicon glyphicon-trash"></span>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
