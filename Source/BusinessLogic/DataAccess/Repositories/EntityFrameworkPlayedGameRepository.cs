@@ -15,16 +15,16 @@ namespace BusinessLogic.DataAccess.Repositories
     {
         internal const string EXCEPTION_MESSAGE_MUST_PASS_VALID_GAME_DEFINITION_ID = "Must pass a valid GameDefinitionId.";
 
-        private DataContext applicationDataContext;
+        private DataContext dataContext;
 
         public EntityFrameworkPlayedGameRepository(DataContext applicationDataContext)
         {
-            this.applicationDataContext = applicationDataContext;
+            this.dataContext = applicationDataContext;
         }
 
         public PlayedGame GetPlayedGameDetails(int playedGameId, ApplicationUser currentUser)
         {         
-            return applicationDataContext.GetQueryable<PlayedGame>(currentUser)
+            return dataContext.GetQueryable<PlayedGame>(currentUser)
                 .Where(playedGame => playedGame.Id == playedGameId
                     && playedGame.GamingGroupId == currentUser.CurrentGamingGroupId)
                     .Include(playedGame => playedGame.GameDefinition)
@@ -34,7 +34,7 @@ namespace BusinessLogic.DataAccess.Repositories
 
         public List<PlayedGame> GetRecentGames(int numberOfGames, ApplicationUser currentUser)
         {
-            List<PlayedGame> playedGames = applicationDataContext.GetQueryable<PlayedGame>(currentUser)
+            List<PlayedGame> playedGames = dataContext.GetQueryable<PlayedGame>(currentUser)
                 .Where(game => game.GamingGroupId == currentUser.CurrentGamingGroupId)
                 .Include(playedGame => playedGame.GameDefinition)
                 .Include(playedGame => playedGame.PlayerGameResults
@@ -63,7 +63,7 @@ namespace BusinessLogic.DataAccess.Repositories
                 currentUser.CurrentGamingGroupId.Value, 
                 playerGameResults);
 
-            applicationDataContext.Save(playedGame, currentUser);
+            dataContext.Save(playedGame, currentUser);
 
             return playedGame;
         }

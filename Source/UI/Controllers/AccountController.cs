@@ -20,16 +20,13 @@ namespace UI.Controllers
     public partial class AccountController : Controller
     {
         protected GamingGroupInviteConsumer gamingGroupInviteConsumer;
-        protected NemeStatsDbContext dbContext;
 
         public AccountController(
             UserManager<ApplicationUser> userManager, 
-            GamingGroupInviteConsumer gamingGroupInviteConsumer, 
-            NemeStatsDbContext dbContext)
+            GamingGroupInviteConsumer gamingGroupInviteConsumer)
         {
             UserManager = userManager;
             this.gamingGroupInviteConsumer = gamingGroupInviteConsumer;
-            this.dbContext = dbContext;
         }
 
         public UserManager<ApplicationUser> UserManager { get; private set; }
