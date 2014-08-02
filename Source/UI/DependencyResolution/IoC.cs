@@ -56,7 +56,6 @@ namespace UI.DependencyResolution {
                             x.For<PlayerDetailsViewModelBuilder>().Use<PlayerDetailsViewModelBuilderImpl>();
                             x.For<GameDefinitionRepository>().Use<EntityFrameworkGameDefinitionRepository>();
                             x.For<GamingGroupRepository>().Use<EntityFrameworkGamingGroupRepository>();
-                            x.For<GamingGroupInvitationRepository>().Use<EntityFrameworkGamingGroupInvitationRepository>();
                             x.For<GamingGroupToGamingGroupViewModelTransformation>()
                                 .Use<GamingGroupToGamingGroupViewModelTransformationImpl>();
                             x.For<GamingGroupInvitationToInvitationViewModelTransformation>()

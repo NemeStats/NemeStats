@@ -13,12 +13,10 @@ namespace BusinessLogic.DataAccess.GamingGroups
     public class EntityFrameworkGamingGroupAccessGranter : GamingGroupAccessGranter
     {
         protected DataContext dataContext;
-        protected GamingGroupInvitationRepository gamingGroupInvitationRepository;
 
-        public EntityFrameworkGamingGroupAccessGranter(DataContext dataContext, GamingGroupInvitationRepository gamingGroupInvitationRepository)
+        public EntityFrameworkGamingGroupAccessGranter(DataContext dataContext)
         {
             this.dataContext = dataContext;
-            this.gamingGroupInvitationRepository = gamingGroupInvitationRepository;
         }
 
         public GamingGroupInvitation CreateInvitation(string email, ApplicationUser currentUser)

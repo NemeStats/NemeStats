@@ -88,12 +88,10 @@
     <Compile Include="DataAccess\GamingGroups\EntityFrameworkGamingGroupAccessGranter.cs" />
     <Compile Include="DataAccess\GamingGroups\GamingGroupAccessGranter.cs" />
     <Compile Include="DataAccess\Repositories\EntityFrameworkGameDefinitionRepository.cs" />
-    <Compile Include="DataAccess\Repositories\EntityFrameworkGamingGroupInvitationRepository.cs" />
     <Compile Include="DataAccess\Repositories\EntityFrameworkGamingGroupRepository.cs" />
     <Compile Include="DataAccess\Repositories\GameDefinitionRepository.cs" />
     <Compile Include="DataAccess\NemeStatsDbContext.cs" />
     <Compile Include="DataAccess\NemeStatsInitializer.cs" />
-    <Compile Include="DataAccess\Repositories\GamingGroupInvitationRepository.cs" />
     <Compile Include="DataAccess\Repositories\GamingGroupRepository.cs" />
     <Compile Include="DataAccess\SecuredEntityWithTechnicalKey.cs" />
     <Compile Include="DataAccess\Security\SecuredEntityValidator.cs" />

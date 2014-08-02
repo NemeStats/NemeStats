@@ -18,7 +18,6 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.GamingGroupsTests.Entity
     public class EntityFrameworkGamingGroupAccessGranterTestBase
     {
         protected DataContext dataContextMock;
-        protected GamingGroupInvitationRepository gamingGroupInvitationRepositoryMock;
         protected GamingGroupAccessGranter gamingGroupAccessGranter;
         protected ApplicationUser currentUser;
 
@@ -32,8 +31,7 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.GamingGroupsTests.Entity
                 CurrentGamingGroupId = 777
             };
 
-            gamingGroupInvitationRepositoryMock = MockRepository.GenerateMock<GamingGroupInvitationRepository>();
-            gamingGroupAccessGranter = new EntityFrameworkGamingGroupAccessGranter(dataContextMock, gamingGroupInvitationRepositoryMock);
+            gamingGroupAccessGranter = new EntityFrameworkGamingGroupAccessGranter(dataContextMock);
         }
     }
 }

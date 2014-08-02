@@ -96,8 +96,7 @@ namespace BusinessLogic.Tests.IntegrationTests
 
         private void SaveGamingGroupInvitations(NemeStatsDbContext nemeStatsDbContext, DataContext dataContext)
         {
-            EntityFrameworkGamingGroupInvitationRepository invitationRepository = new EntityFrameworkGamingGroupInvitationRepository(nemeStatsDbContext);
-            EntityFrameworkGamingGroupAccessGranter accessGranter = new EntityFrameworkGamingGroupAccessGranter(dataContext, invitationRepository);
+            EntityFrameworkGamingGroupAccessGranter accessGranter = new EntityFrameworkGamingGroupAccessGranter(dataContext);
             testUnredeemedGamingGroupInvitation = accessGranter.CreateInvitation(testUserWithDefaultGamingGroup.Email, testUserWithDefaultGamingGroup);
             dataContext.CommitAllChanges();
 
