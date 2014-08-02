@@ -9,7 +9,7 @@ namespace BusinessLogic.DataAccess.Security
 {
     public class SecuredEntityValidatorImpl<TEntity> : SecuredEntityValidator<TEntity> where TEntity : class
     {
-        internal const string EXCEPTION_MESSAGE_USER_DOES_NOT_HAVE_ACCESS_TO_GAME_DEFINITION
+        internal const string EXCEPTION_MESSAGE_USER_DOES_NOT_HAVE_ACCESS_TO_ENTITY
            = "User with Id '{0}' is unauthorized to access the given entity of type '{1}'";
         internal const string EXCEPTION_MESSAGE_CURRENT_USER_ID_CANNOT_BE_NULL
            = "currentUser.Id cannot be null";
@@ -29,7 +29,7 @@ namespace BusinessLogic.DataAccess.Security
 
             if(securedEntity.GamingGroupId != currentUser.CurrentGamingGroupId)
             {
-                string message = string.Format(EXCEPTION_MESSAGE_USER_DOES_NOT_HAVE_ACCESS_TO_GAME_DEFINITION,
+                string message = string.Format(EXCEPTION_MESSAGE_USER_DOES_NOT_HAVE_ACCESS_TO_ENTITY,
                     currentUser.Id,
                     underlyingEntityType.ToString());
                 throw new UnauthorizedAccessException(message);

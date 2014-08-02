@@ -10,20 +10,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayerRepositoryTests
+namespace BusinessLogic.Tests.UnitTests.DataAccessTests.EntityFrameworkPlayerRepositoryTests
 {
     [TestFixture]
     public class GetNemesisTests
     {
         private EntityFrameworkPlayerRepository playerRepositoryPartialMock;
-        private NemeStatsDbContext dbContext;
+        private DataContext dataContextMock;
         private ApplicationUser currentUser;
 
         [SetUp]
         public void SetUp()
         {
-            dbContext = MockRepository.GenerateMock<NemeStatsDbContext>();
-            playerRepositoryPartialMock = MockRepository.GeneratePartialMock<EntityFrameworkPlayerRepository>(dbContext);
+            dataContextMock = MockRepository.GenerateMock<DataContext>();
+            playerRepositoryPartialMock = MockRepository.GeneratePartialMock<EntityFrameworkPlayerRepository>(dataContextMock);
             currentUser = new ApplicationUser()
             {
                 CurrentGamingGroupId = 1881

@@ -1,7 +1,9 @@
 ﻿using BusinessLogic.DataAccess.Security;
 using BusinessLogic.Models.User;
 using System;
+using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Migrations;
 using System.Linq;
 
@@ -11,6 +13,8 @@ namespace BusinessLogic.DataAccess
     {
         internal const string CONNECTION_NAME = "DefaultConnection";
         internal const string EXCEPTION_MESSAGE_CURRENT_GAMING_GROUP_ID_CANNOT_BE_NULL = "currentUser.CurrentGamingGroupId cannot be null";
+        internal const string EXCEPTION_MESSAGE_NO_ENTITY_EXISTS_FOR_THIS_ID = "No entity exists for Id '{0}'";
+
         private SecuredEntityValidatorFactory securedEntityValidatorFactory;
         private NemeStatsDbContext nemeStatsDbContext;
 
@@ -109,9 +113,33 @@ namespace BusinessLogic.DataAccess
             CommitAllChanges();
         }
 
+        public virtual DbRawSqlQuery<T> MakeRawSqlQuery<T>(string sql, params object[] parameters)
+        {
+            return nemeStatsDbContext.Database.SqlQuery<T>(sql, parameters);
+        }
+
         public void Dispose()
         {
             nemeStatsDbContext.Dispose();
+        }
+
+        public void DeleteById<TEntity>(object id, ApplicationUser currentUser) where TEntity : EntityWithTechnicalKey
+        {
+            TEntity entityToDelete = nemeStatsDbContext.Set<TEntity>().Find(id);
+
+            ValidateEntityExists<TEntity>(id, entityToDelete);
+
+            SecuredEntityValidator<TEntity> validator = securedEntityValidatorFactory.MakeSecuredEntityValidator<TEntity>();
+            validator.ValidateAccess(entityToDelete, currentUser, typeof(TEntity));
+        }
+
+        private static void ValidateEntityExists<TEntity>(object id, TEntity entityToDelete) where TEntity : EntityWithTechnicalKey
+        {
+            if (entityToDelete == null)
+            {
+                string message = string.Format(EXCEPTION_MESSAGE_NO_ENTITY_EXISTS_FOR_THIS_ID, id);
+                throw new KeyNotFoundException(message);
+            }
         }
     }
 }

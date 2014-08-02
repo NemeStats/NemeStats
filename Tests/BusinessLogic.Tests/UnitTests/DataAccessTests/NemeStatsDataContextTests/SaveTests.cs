@@ -12,11 +12,23 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessLogic.Tests.UnitTests.DataAccessTests.ApplicationDataContextTests
+namespace BusinessLogic.Tests.UnitTests.DataAccessTests.NemeStatsDataContextTests
 {
     [TestFixture]
-    public class SaveTests : ApplicationDataContextTestBase
+    public class SaveTests : NemeStatsDataContextTestBase
     {
+
+        protected SecuredEntityValidator<EntityWithTechnicalKey> securedEntityValidator;
+
+        [SetUp]
+        public void SetUp()
+        {
+            securedEntityValidator = MockRepository.GenerateMock<SecuredEntityValidator<EntityWithTechnicalKey>>();
+            securedEntityValidatorFactory.Expect(mock => mock.MakeSecuredEntityValidator<EntityWithTechnicalKey>())
+                .Repeat.Once()
+                .Return(securedEntityValidator);
+        }
+
         [Test]
         public void ItThrowsAnArgumentNullExceptionIfTheEntityIsNull()
         {

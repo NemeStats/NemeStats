@@ -63,16 +63,16 @@ namespace BusinessLogic.DataAccess.Repositories
             ) AS X
             GROUP BY PlayerId";
 
-        private NemeStatsDbContext dbContext;
+        private DataContext dataContext;
 
-        public EntityFrameworkPlayerRepository(NemeStatsDbContext context)
+        public EntityFrameworkPlayerRepository(DataContext dataContext)
         {
-            dbContext = context;
+            this.dataContext = dataContext;
         }
 
         internal virtual Player GetPlayer(int playerID, ApplicationUser currentUser)
         {
-            Player returnPlayer = dbContext.Players
+            Player returnPlayer = dataContext.GetQueryable<Player>(currentUser)
                 .Where(player => player.Id == playerID)
                     .FirstOrDefault();
 
@@ -134,7 +134,7 @@ namespace BusinessLogic.DataAccess.Repositories
             int numberOfRecentGamesToRetrieve, 
             ApplicationUser currentUser)
         {
-            List<PlayerGameResult> playerGameResults = dbContext.PlayerGameResults
+            List<PlayerGameResult> playerGameResults = dataContext.GetQueryable<PlayerGameResult>(currentUser)
                         .Where(result => result.PlayerId == playerID
                             && result.Player.GamingGroupId == currentUser.CurrentGamingGroupId)
                         .OrderByDescending(result => result.PlayedGame.DatePlayed)
@@ -147,7 +147,7 @@ namespace BusinessLogic.DataAccess.Repositories
 
         public List<Player> GetAllPlayers(bool active, ApplicationUser currentUser)
         {
-            return dbContext.Players.Where(player => player.Active == active
+            return dataContext.GetQueryable<Player>(currentUser).Where(player => player.Active == active
                 && player.GamingGroupId == currentUser.CurrentGamingGroupId).ToList();
         }
 
@@ -157,7 +157,8 @@ namespace BusinessLogic.DataAccess.Repositories
             //How do I do a 2nd test so that this would need to be fixed?
             //return new PlayerStatistics() { TotalGames = 3 };
             PlayerStatistics playerStatistics = new PlayerStatistics();
-            playerStatistics.TotalGames = dbContext.PlayerGameResults.Count(playerGameResults => playerGameResults.PlayerId == playerId
+            playerStatistics.TotalGames = dataContext.GetQueryable<PlayerGameResult>(currentUser)
+                .Count(playerGameResults => playerGameResults.PlayerId == playerId
                 && playerGameResults.Player.GamingGroupId == currentUser.CurrentGamingGroupId);
             return playerStatistics;
         }
@@ -167,7 +168,7 @@ namespace BusinessLogic.DataAccess.Repositories
         {
             //call GetPlayer just to ensure that the requesting user has access
             GetPlayer(playerId, currentUser);
-            DbRawSqlQuery<WinLossStatistics> data = dbContext.Database.SqlQuery<WinLossStatistics>(SQL_GET_WIN_LOSS_GAMES_COUNT,
+            DbRawSqlQuery<WinLossStatistics> data = dataContext.MakeRawSqlQuery<WinLossStatistics>(SQL_GET_WIN_LOSS_GAMES_COUNT,
                 new SqlParameter("PlayerId", playerId));
 
             List<WinLossStatistics> winLossStatistics = data.ToList<WinLossStatistics>();
@@ -188,44 +189,13 @@ namespace BusinessLogic.DataAccess.Repositories
             }
 
             Nemesis nemesis = new Nemesis();
-            Player nemesisPlayer = dbContext.Players.Find(result.NemesisPlayerId);
+            Player nemesisPlayer = dataContext.GetQueryable<Player>(currentUser).Where(player => player.Id == result.NemesisPlayerId).First();
             nemesis.NemesisPlayerId = nemesisPlayer.Id;
             nemesis.NemesisPlayerName = nemesisPlayer.Name;
             nemesis.GamesLostVersusNemesis = result.NumberOfGamesLost;
             nemesis.LossPercentageVersusNemesis = result.LossPercentage;
 
             return nemesis;
-        }
-
-        //TODO I did not write tests for this as its tested in GameDefinitionRepository and this needs to be refactored out as part
-        //of a real repository base class
-        public virtual Player Save(Player player, ApplicationUser currentUser)
-        {
-            if (player.AlreadyInDatabase())
-            {
-                ValidateAccessToPlayer(currentUser, player);
-                dbContext.Entry(player).State = System.Data.Entity.EntityState.Modified;
-            }
-            else
-            {
-                //TODO should throw some kind of exception if GamingGroupId is null
-                player.GamingGroupId = currentUser.CurrentGamingGroupId.Value;
-                dbContext.Players.Add(player);
-            }
-
-            dbContext.SaveChanges();
-
-            return player;
-        }
-
-        //TODO I did not write tests for this as its tested in GameDefinitionRepository and this needs to be refactored out as part
-        //of a real repository base class
-        public virtual void Delete(int playerId, ApplicationUser currentUser)
-        {
-            Player player = GetPlayer(playerId, currentUser);
-
-            dbContext.Players.Remove(player);
-            dbContext.SaveChanges();
         }
     }
 }

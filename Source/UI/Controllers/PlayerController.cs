@@ -25,17 +25,17 @@ namespace UI.Controllers
         public static readonly string RECENT_GAMES_MESSAGE_FORMAT = "(Last {0} Games)";
 
 
-        internal NemeStatsDbContext db;
+        internal DataContext dataContext;
         internal PlayerRepository playerRepository;
         internal GameResultViewModelBuilder builder;
         internal PlayerDetailsViewModelBuilder playerDetailsViewModelBuilder;
         
-        public PlayerController(NemeStatsDbContext dbContext, 
+        public PlayerController(DataContext dataContext, 
             PlayerRepository playerRepository, 
             GameResultViewModelBuilder resultBuilder,
             PlayerDetailsViewModelBuilder playerDetailsBuilder)
         {
-            db = dbContext;
+            this.dataContext = dataContext;
             this.playerRepository = playerRepository;
             builder = resultBuilder;
             playerDetailsViewModelBuilder = playerDetailsBuilder;
@@ -92,7 +92,7 @@ namespace UI.Controllers
         {
             if (ModelState.IsValid)
             {
-                playerRepository.Save(player, currentUser);
+                dataContext.Save<Player>(player, currentUser);
                 return RedirectToAction(MVC.Player.ActionNames.Index);
             }
 
@@ -132,7 +132,7 @@ namespace UI.Controllers
         {
             if (ModelState.IsValid)
             {
-                playerRepository.Save(player, currentUser);
+                dataContext.Save<Player>(player, currentUser);
                 return RedirectToAction(MVC.Player.ActionNames.Index);
             }
             return View(MVC.Player.Views.Edit, player);
@@ -169,7 +169,7 @@ namespace UI.Controllers
         {
             try
             {
-                playerRepository.Delete(id, currentUser);
+                dataContext.DeleteById<Player>(id, currentUser);
             }catch(UnauthorizedAccessException)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
@@ -181,7 +181,7 @@ namespace UI.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                dataContext.Dispose();
             }
             base.Dispose(disposing);
         }

@@ -14,14 +14,14 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayerRepositoryTests
     [TestFixture]
     public class GetAllPlayersIntegrationTests : IntegrationTestBase
     {
-        private NemeStatsDbContext dbContext;
+        private DataContext dataContext;
         private EntityFrameworkPlayerRepository playerRepository;
 
         [SetUp]
         public void TestSetUp()
         {
-            dbContext = new NemeStatsDbContext();
-            playerRepository = new EntityFrameworkPlayerRepository(dbContext);
+            dataContext = new NemeStatsDataContext();
+            playerRepository = new EntityFrameworkPlayerRepository(dataContext);
         }
 
         [Test]
@@ -55,7 +55,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayerRepositoryTests
         [TearDown]
         public void TearDown()
         {
-            dbContext.Dispose();
+            dataContext.Dispose();
         }
     }
 }

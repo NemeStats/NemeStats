@@ -17,7 +17,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         public void ItSavesThePlayer()
         {
             Player player = new Player();
-            playerRepositoryMock.Expect(mock => mock.Save(player, currentUser));
+            dataContextMock.Expect(mock => mock.Save<Player>(player, currentUser));
 
             playerController.Create(player, currentUser);
         }

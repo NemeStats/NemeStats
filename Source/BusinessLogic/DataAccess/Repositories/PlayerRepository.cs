@@ -11,7 +11,5 @@ namespace BusinessLogic.DataAccess.Repositories
         List<Player> GetAllPlayers(bool active, ApplicationUser currentUser);
         PlayerStatistics GetPlayerStatistics(int playerId, ApplicationUser currentUser);
         Nemesis GetNemesis(int playerId, ApplicationUser currentUser);
-        Player Save(Player player, ApplicationUser currentUser);
-        void Delete(int playerId, ApplicationUser currentUser);
     }
 }

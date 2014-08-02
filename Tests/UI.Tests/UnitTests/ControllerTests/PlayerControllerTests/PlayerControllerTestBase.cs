@@ -17,7 +17,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
     [TestFixture]
     public class PlayerControllerTestBase
     {
-        protected NemeStatsDbContext dbContextMock;
+        protected DataContext dataContextMock;
         protected PlayerRepository playerRepositoryMock;
         protected GameResultViewModelBuilder playerGameResultDetailsBuilderMock;
         protected PlayerDetailsViewModelBuilder playerDetailsViewModelBuilderMock;
@@ -32,12 +32,12 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
                 CurrentGamingGroupId = 123,
                 Id = "app user id"
             };
-            dbContextMock = MockRepository.GenerateMock<NemeStatsDbContext>();
+            dataContextMock = MockRepository.GenerateMock<DataContext>();
             playerRepositoryMock = MockRepository.GenerateMock<PlayerRepository>();
             playerGameResultDetailsBuilderMock = MockRepository.GenerateMock<GameResultViewModelBuilder>();
             playerDetailsViewModelBuilderMock = MockRepository.GenerateMock<PlayerDetailsViewModelBuilder>();
             playerController = new PlayerController(
-                                dbContextMock,
+                                dataContextMock,
                                 playerRepositoryMock,
                                 playerGameResultDetailsBuilderMock,
                                 playerDetailsViewModelBuilderMock);

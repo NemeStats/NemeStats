@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using BusinessLogic.Models;
+using NUnit.Framework;
 using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
@@ -19,14 +20,14 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
             int playerId = 1;
             playerController.DeleteConfirmed(playerId, currentUser);
 
-            playerRepositoryMock.AssertWasCalled(mock => mock.Delete(playerId, currentUser));
+            dataContextMock.AssertWasCalled(mock => mock.DeleteById<Player>(playerId, currentUser));
         }
 
         [Test]
         public void ItReturnsAnUnauthorizedAccessHttpStatusIfTheUserDoesntHaveAccess()
         {
             int playerId = 1351;
-            playerRepositoryMock.Expect(mock => mock.Delete(playerId, currentUser))
+            dataContextMock.Expect(mock => mock.DeleteById<Player>(playerId, currentUser))
                 .Throw(new UnauthorizedAccessException());
             HttpStatusCodeResult result = playerController.DeleteConfirmed(playerId, currentUser) as HttpStatusCodeResult;
 
@@ -37,7 +38,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         public void ItRedirectsToTheIndexAction()
         {
             int playerId = 1;
-            playerRepositoryMock.Expect(mock => mock.Delete(playerId, currentUser));
+            dataContextMock.Expect(mock => mock.DeleteById<Player>(playerId, currentUser));
             RedirectToRouteResult result = playerController.DeleteConfirmed(playerId, currentUser) as RedirectToRouteResult;
 
             Assert.AreEqual(MVC.Player.ActionNames.Index, result.RouteValues["action"]);

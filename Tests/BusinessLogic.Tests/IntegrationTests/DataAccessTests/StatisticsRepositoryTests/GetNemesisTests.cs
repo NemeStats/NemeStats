@@ -20,14 +20,14 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.StatisticsReposit
     [TestFixture]
     public class GetNemesisTests : IntegrationTestBase
     {
-        private NemeStatsDbContext dbContext;
+        private DataContext dataContext;
         private PlayerRepository playerLogic;
 
         [SetUp]
         public void SetUp()
         {
-            dbContext = new NemeStatsDbContext();
-            playerLogic = new EntityFrameworkPlayerRepository(dbContext);
+            dataContext = new NemeStatsDataContext();
+            playerLogic = new EntityFrameworkPlayerRepository(dataContext);
         }
 
         [Test]
@@ -100,7 +100,7 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.StatisticsReposit
         [TearDown]
         public void TearDown()
         {
-            dbContext.Dispose();
+            dataContext.Dispose();
         }
     }
 }

@@ -10,28 +10,24 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessLogic.Tests.UnitTests.DataAccessTests.ApplicationDataContextTests
+namespace BusinessLogic.Tests.UnitTests.DataAccessTests.NemeStatsDataContextTests
 {
-    public class ApplicationDataContextTestBase
+    public class NemeStatsDataContextTestBase
     {
         protected NemeStatsDataContext dataContext;
         protected NemeStatsDbContext nemeStatsDbContext;
         protected SecuredEntityValidatorFactory securedEntityValidatorFactory;
-        protected SecuredEntityValidator<EntityWithTechnicalKey> securedEntityValidator;
         protected EntityWithTechnicalKey entityWithGamingGroupAndTechnicalKey;
         protected EntityWithTechnicalKey entityWithGamingGroup;
         protected ApplicationUser currentUser;
 
         [SetUp]
-        public void SetUp()
+        public void TestBaseSetUp()
         {
             nemeStatsDbContext = MockRepository.GenerateMock<NemeStatsDbContext>();
             securedEntityValidatorFactory = MockRepository.GeneratePartialMock<SecuredEntityValidatorFactory>();
             dataContext = MockRepository.GeneratePartialMock<NemeStatsDataContext>(nemeStatsDbContext, securedEntityValidatorFactory);
-            securedEntityValidator = MockRepository.GenerateMock<SecuredEntityValidator<EntityWithTechnicalKey>>();
-            securedEntityValidatorFactory.Expect(mock => mock.MakeSecuredEntityValidator<EntityWithTechnicalKey>())
-                .Repeat.Once()
-                .Return(securedEntityValidator);
+           
             entityWithGamingGroupAndTechnicalKey = MockRepository.GenerateStub<EntityWithTechnicalKey>();
             entityWithGamingGroupAndTechnicalKey.Expect(mock => mock.AlreadyInDatabase())
                 .Repeat.Once()

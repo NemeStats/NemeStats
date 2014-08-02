@@ -49,7 +49,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
 
             playerController.Edit(player, currentUser);
 
-            playerRepositoryMock.AssertWasCalled(mock => mock.Save(player, currentUser));
+            dataContextMock.AssertWasCalled(mock => mock.Save<Player>(player, currentUser));
         }
     }
 }

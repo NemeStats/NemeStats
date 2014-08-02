@@ -45,7 +45,7 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.SecurityTests.SecuredEnt
                 () => securedEntityValidatorForSecuredEntity.ValidateAccess(securedEntity, currentUser, stringType));
 
             string message = string.Format(
-                SecuredEntityValidatorImpl<SecuredEntityWithTechnicalKey>.EXCEPTION_MESSAGE_USER_DOES_NOT_HAVE_ACCESS_TO_GAME_DEFINITION,
+                SecuredEntityValidatorImpl<SecuredEntityWithTechnicalKey>.EXCEPTION_MESSAGE_USER_DOES_NOT_HAVE_ACCESS_TO_ENTITY,
                 currentUser.Id,
                 stringType
                 );

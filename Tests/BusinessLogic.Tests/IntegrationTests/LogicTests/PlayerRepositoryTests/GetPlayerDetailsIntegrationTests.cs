@@ -21,13 +21,16 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayerRepositoryTests
         {
             using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
             {
-                EntityFrameworkPlayerRepository playerRepository = new EntityFrameworkPlayerRepository(dbContext);
+                using (DataContext dataContext = new NemeStatsDataContext(dbContext, securedEntityValidatorFactory))
+                {
+                    EntityFrameworkPlayerRepository playerRepository = new EntityFrameworkPlayerRepository(dataContext);
 
-                dbContext.Configuration.LazyLoadingEnabled = false;
-                dbContext.Configuration.ProxyCreationEnabled = false;
+                    dbContext.Configuration.LazyLoadingEnabled = false;
+                    dbContext.Configuration.ProxyCreationEnabled = false;
 
-                PlayerDetails playerDetails = playerRepository.GetPlayerDetails(testPlayer1.Id, 1, testUserWithDefaultGamingGroup);
-                Assert.NotNull(playerDetails.PlayerGameResults, "Failed to retrieve PlayerGameResults.");
+                    PlayerDetails playerDetails = playerRepository.GetPlayerDetails(testPlayer1.Id, 1, testUserWithDefaultGamingGroup);
+                    Assert.NotNull(playerDetails.PlayerGameResults, "Failed to retrieve PlayerGameResults.");
+                }
             }
         }
 
@@ -36,13 +39,16 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayerRepositoryTests
         {
             using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
             {
-                dbContext.Configuration.LazyLoadingEnabled = false;
-                dbContext.Configuration.ProxyCreationEnabled = false;
-                EntityFrameworkPlayerRepository playerRepository = new EntityFrameworkPlayerRepository(dbContext);
+                using (DataContext dataContext = new NemeStatsDataContext(dbContext, securedEntityValidatorFactory))
+                {
+                    dbContext.Configuration.LazyLoadingEnabled = false;
+                    dbContext.Configuration.ProxyCreationEnabled = false;
+                    EntityFrameworkPlayerRepository playerRepository = new EntityFrameworkPlayerRepository(dataContext);
 
-                PlayerDetails testPlayerDetails = playerRepository.GetPlayerDetails(testPlayer1.Id, 1, testUserWithDefaultGamingGroup);
+                    PlayerDetails testPlayerDetails = playerRepository.GetPlayerDetails(testPlayer1.Id, 1, testUserWithDefaultGamingGroup);
 
-                Assert.NotNull(testPlayerDetails.PlayerGameResults.First().PlayedGame);
+                    Assert.NotNull(testPlayerDetails.PlayerGameResults.First().PlayedGame);
+                }
             }
         }
 
@@ -51,13 +57,16 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayerRepositoryTests
         {
             using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
             {
-                dbContext.Configuration.LazyLoadingEnabled = false;
-                dbContext.Configuration.ProxyCreationEnabled = false;
-                EntityFrameworkPlayerRepository playerRepository = new EntityFrameworkPlayerRepository(dbContext);
+                using (DataContext dataContext = new NemeStatsDataContext(dbContext, securedEntityValidatorFactory))
+                {
+                    dbContext.Configuration.LazyLoadingEnabled = false;
+                    dbContext.Configuration.ProxyCreationEnabled = false;
+                    EntityFrameworkPlayerRepository playerRepository = new EntityFrameworkPlayerRepository(dataContext);
 
-                PlayerDetails testPlayerDetails = playerRepository.GetPlayerDetails(testPlayer1.Id, 1, testUserWithDefaultGamingGroup);
+                    PlayerDetails testPlayerDetails = playerRepository.GetPlayerDetails(testPlayer1.Id, 1, testUserWithDefaultGamingGroup);
 
-                Assert.NotNull(testPlayerDetails.PlayerGameResults.First().PlayedGame.GameDefinition);
+                    Assert.NotNull(testPlayerDetails.PlayerGameResults.First().PlayedGame.GameDefinition);
+                }
             }
         }
 
@@ -66,10 +75,13 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayerRepositoryTests
         {
             using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
             {
-                PlayerDetails playerDetails = new EntityFrameworkPlayerRepository(dbContext)
-                    .GetPlayerDetails(testPlayer1.Id, 1, testUserWithDefaultGamingGroup);
+                using (DataContext dataContext = new NemeStatsDataContext(dbContext, securedEntityValidatorFactory))
+                {
+                    PlayerDetails playerDetails = new EntityFrameworkPlayerRepository(dataContext)
+                        .GetPlayerDetails(testPlayer1.Id, 1, testUserWithDefaultGamingGroup);
 
-                Assert.NotNull(playerDetails.PlayerStats);
+                    Assert.NotNull(playerDetails.PlayerStats);
+                }
             }
         }
 
@@ -78,12 +90,15 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayerRepositoryTests
         {
             using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
             {
-                int numberOfGamesToRetrieve = 1;
+                using (DataContext dataContext = new NemeStatsDataContext(dbContext, securedEntityValidatorFactory))
+                {
+                    int numberOfGamesToRetrieve = 1;
 
-                PlayerDetails playerDetails = new EntityFrameworkPlayerRepository(dbContext)
-                    .GetPlayerDetails(testPlayer1.Id, numberOfGamesToRetrieve, testUserWithDefaultGamingGroup);
+                    PlayerDetails playerDetails = new EntityFrameworkPlayerRepository(dataContext)
+                        .GetPlayerDetails(testPlayer1.Id, numberOfGamesToRetrieve, testUserWithDefaultGamingGroup);
 
-                Assert.AreEqual(numberOfGamesToRetrieve, playerDetails.PlayerGameResults.Count);
+                    Assert.AreEqual(numberOfGamesToRetrieve, playerDetails.PlayerGameResults.Count);
+                }
             }
         }
 
@@ -92,17 +107,20 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayerRepositoryTests
         {
             using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
             {
-                int numberOfGamesToRetrieve = 3;
-
-                PlayerDetails playerDetails = new EntityFrameworkPlayerRepository(dbContext)
-                    .GetPlayerDetails(testPlayer1.Id, numberOfGamesToRetrieve, testUserWithDefaultGamingGroup);
-                long lastTicks = long.MaxValue; ;
-                Assert.IsTrue(playerDetails.PlayerGameResults.Count == numberOfGamesToRetrieve);
-                foreach(PlayerGameResult result in playerDetails.PlayerGameResults)
+                using (DataContext dataContext = new NemeStatsDataContext(dbContext, securedEntityValidatorFactory))
                 {
-                    Assert.GreaterOrEqual(lastTicks, result.PlayedGame.DatePlayed.Ticks);
+                    int numberOfGamesToRetrieve = 3;
 
-                    lastTicks = result.PlayedGame.DatePlayed.Ticks;
+                    PlayerDetails playerDetails = new EntityFrameworkPlayerRepository(dataContext)
+                        .GetPlayerDetails(testPlayer1.Id, numberOfGamesToRetrieve, testUserWithDefaultGamingGroup);
+                    long lastTicks = long.MaxValue; ;
+                    Assert.IsTrue(playerDetails.PlayerGameResults.Count == numberOfGamesToRetrieve);
+                    foreach (PlayerGameResult result in playerDetails.PlayerGameResults)
+                    {
+                        Assert.GreaterOrEqual(lastTicks, result.PlayedGame.DatePlayed.Ticks);
+
+                        lastTicks = result.PlayedGame.DatePlayed.Ticks;
+                    }
                 }
             }
         }

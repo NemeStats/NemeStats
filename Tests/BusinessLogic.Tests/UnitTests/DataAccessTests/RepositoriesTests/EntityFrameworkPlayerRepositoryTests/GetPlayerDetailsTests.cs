@@ -12,12 +12,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayerRepositoryTests
+namespace BusinessLogic.Tests.UnitTests.DataAccessTests.RepositoriesTests.EntityFrameworkPlayerRepositoryTests
 {
     [TestFixture]
     public class GetPlayerDetailsTests
     {
-        private NemeStatsDbContext dbContextMock;
+        private DataContext dataContextMock;
         private EntityFrameworkPlayerRepository playerRepositoryPartialMock;
         private Player player;
         private int numberOfRecentGames = 1;
@@ -32,8 +32,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayerRepositoryTests
                 Id = "123",
                 CurrentGamingGroupId = 15151
             };
-            dbContextMock = MockRepository.GenerateMock<NemeStatsDbContext>();
-            playerRepositoryPartialMock = MockRepository.GeneratePartialMock<EntityFrameworkPlayerRepository>(dbContextMock);
+            dataContextMock = MockRepository.GenerateMock<DataContext>();
+            playerRepositoryPartialMock = MockRepository.GeneratePartialMock<EntityFrameworkPlayerRepository>(dataContextMock);
             player = new Player()
             {
                 Id = 1351,
@@ -92,7 +92,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayerRepositoryTests
         [Test]
         public void ItThrowsAnUnauthorizedExceptionIfTheUserDoesntHaveAccessToThePlayer()
         {
-            playerRepositoryPartialMock = MockRepository.GeneratePartialMock<EntityFrameworkPlayerRepository>(dbContextMock);
+            playerRepositoryPartialMock = MockRepository.GeneratePartialMock<EntityFrameworkPlayerRepository>(dataContextMock);
             playerRepositoryPartialMock.Expect(partialMock => partialMock.GetPlayer(player.Id, currentUser))
                 .Throw(new UnauthorizedAccessException());
 

@@ -97,9 +97,10 @@
     <Compile Include="IntegrationTests\DataAccessTests\EntityFrameworkGamingGroupRepositoryTests\EntityFrameworkGamingGroupRepositoryIntegrationTestBase.cs" />
     <Compile Include="IntegrationTests\DataAccessTests\EntityFrameworkGamingGroupRepositoryTests\GetGamingGroupDetailsIntegrationTests.cs" />
     <Compile Include="IntegrationTests\EntityFrameworkGeneralIntegrationTests.cs" />
-    <Compile Include="UnitTests\DataAccessTests\ApplicationDataContextTests\ApplicationDataContextTestBase.cs" />
-    <Compile Include="UnitTests\DataAccessTests\ApplicationDataContextTests\GetQueryableTests.cs" />
-    <Compile Include="UnitTests\DataAccessTests\ApplicationDataContextTests\SaveTests.cs" />
+    <Compile Include="UnitTests\DataAccessTests\NemeStatsDataContextTests\DeleteByIdTests.cs" />
+    <Compile Include="UnitTests\DataAccessTests\NemeStatsDataContextTests\NemeStatsDataContextTestBase.cs" />
+    <Compile Include="UnitTests\DataAccessTests\NemeStatsDataContextTests\GetQueryableTests.cs" />
+    <Compile Include="UnitTests\DataAccessTests\NemeStatsDataContextTests\SaveTests.cs" />
     <Compile Include="UnitTests\DataAccessTests\EntityWithTechnicalKeyTests\AlreadyInDatabaseTests.cs" />
     <Compile Include="UnitTests\DataAccessTests\GamingGroupsTests\EntityFrameworkGamingGroupAccessGranterTests\ConsumeInvitationTests.cs" />
     <Compile Include="UnitTests\DataAccessTests\GamingGroupsTests\EntityFrameworkGamingGroupAccessGranterTests\CreateInvitationTests.cs" />

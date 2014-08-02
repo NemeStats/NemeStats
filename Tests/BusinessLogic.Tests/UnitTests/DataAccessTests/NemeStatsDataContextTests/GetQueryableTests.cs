@@ -9,10 +9,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessLogic.Tests.UnitTests.DataAccessTests.ApplicationDataContextTests
+namespace BusinessLogic.Tests.UnitTests.DataAccessTests.NemeStatsDataContextTests
 {
     [TestFixture]
-    public class GetQueryableTests : ApplicationDataContextTestBase
+    public class GetQueryableTests : NemeStatsDataContextTestBase
     {
         [Test]
         [Ignore("Having trouble testing this. Going to try an integration test instead.")]

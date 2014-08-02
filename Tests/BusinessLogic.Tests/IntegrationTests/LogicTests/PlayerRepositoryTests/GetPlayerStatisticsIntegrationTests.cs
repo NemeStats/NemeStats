@@ -18,9 +18,9 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayerRepositoryTests
         [Test]
         public void ItGetsTheNumberOfTotalGamesPlayed()
         {
-            using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
+            using (DataContext dataContext = new NemeStatsDataContext())
             {
-                PlayerRepository playerLogic = new EntityFrameworkPlayerRepository(dbContext);
+                PlayerRepository playerLogic = new EntityFrameworkPlayerRepository(dataContext);
                 PlayerStatistics playerStatistics = playerLogic.GetPlayerStatistics(testPlayer1.Id, testUserWithDefaultGamingGroup);
                 int totalGamesForPlayer1 = testPlayedGames
                         .Count(playedGame => playedGame.PlayerGameResults
@@ -32,9 +32,9 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayerRepositoryTests
         [Test]
         public void ItOnlyIncludesStatisticsForPlayersWhoShareTheSameGamingGroupAsTheCurrentUser()
         {
-            using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
+            using (DataContext dataContext = new NemeStatsDataContext())
             {
-                PlayerRepository playerLogic = new EntityFrameworkPlayerRepository(dbContext);
+                PlayerRepository playerLogic = new EntityFrameworkPlayerRepository(dataContext);
                 PlayerStatistics playerStatistics = playerLogic.GetPlayerStatistics(testPlayer1.Id, testUserWithOtherGamingGroup);
                 
                 Assert.AreEqual(0, playerStatistics.TotalGames);
