@@ -17,7 +17,6 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.NemeStatsDataContextTest
     [TestFixture]
     public class SaveTests : NemeStatsDataContextTestBase
     {
-
         protected SecuredEntityValidator<EntityWithTechnicalKey> securedEntityValidator;
 
         [SetUp]
