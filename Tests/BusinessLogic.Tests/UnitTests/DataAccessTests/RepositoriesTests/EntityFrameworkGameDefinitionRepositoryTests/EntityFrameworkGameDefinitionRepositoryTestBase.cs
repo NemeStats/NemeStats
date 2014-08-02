@@ -17,8 +17,8 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.EntityFrameworkGameDefin
     public class EntityFrameworkGameDefinitionRepositoryTestBase
     {
         protected EntityFrameworkGameDefinitionRepository gameDefinitionRepositoryPartialMock;
-        protected NemeStatsDbContext dbContextMock;
-        protected DbSet<GameDefinition> gameDefinitionsDbSetMock;
+        protected DataContext dataContextMock;
+        protected IQueryable<GameDefinition> queryableGameDefinitions;
         protected ApplicationUser currentUser;
         protected GameDefinition gameDefinition;
 
@@ -28,20 +28,18 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.EntityFrameworkGameDefin
             gameDefinition = new GameDefinition()
             {
                 Name = "game definition",
-                Description = "game description"
+                Description = "game description",
+                GamingGroupId = 999
             };
             currentUser = new ApplicationUser()
             {
                 Id = "user id",
-                CurrentGamingGroupId = 999
+                CurrentGamingGroupId = gameDefinition.GamingGroupId
             };
-            dbContextMock = MockRepository.GenerateMock<NemeStatsDbContext>();
-            gameDefinitionsDbSetMock = MockRepository.GenerateMock<DbSet<GameDefinition>>();
-            dbContextMock.Expect(mock => mock.GameDefinitions)
-                .Repeat.Once()
-                .Return(gameDefinitionsDbSetMock);
+            dataContextMock = MockRepository.GenerateMock<DataContext>();
+            queryableGameDefinitions = MockRepository.GenerateMock<IQueryable<GameDefinition>>();
 
-            gameDefinitionRepositoryPartialMock = MockRepository.GeneratePartialMock<EntityFrameworkGameDefinitionRepository>(dbContextMock);
+            gameDefinitionRepositoryPartialMock = MockRepository.GeneratePartialMock<EntityFrameworkGameDefinitionRepository>(dataContextMock);
         }
     }
 }

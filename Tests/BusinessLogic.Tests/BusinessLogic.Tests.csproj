@@ -119,7 +119,6 @@
     <Compile Include="UnitTests\DataAccessTests\GamingGroupsTests\EntityFrameworkGamingGroupAccessGranterTests\EntityFrameworkGamingGroupAccessGranterTestBase.cs" />
     <Compile Include="UnitTests\DataAccessTests\RepositoriesTests\EntityFrameworkGameDefinitionRepositoryTests\DeleteTests.cs" />
     <Compile Include="UnitTests\DataAccessTests\RepositoriesTests\EntityFrameworkGameDefinitionRepositoryTests\EntityFrameworkGameDefinitionRepositoryTestBase.cs" />
-    <Compile Include="UnitTests\DataAccessTests\RepositoriesTests\EntityFrameworkGameDefinitionRepositoryTests\SaveTests.cs" />
     <Compile Include="UnitTests\DataAccessTests\RepositoriesTests\EntityFrameworkGamingGroupRepositoryTests\EntityFrameworkGamingGroupRepositoryTestBase.cs" />
     <Compile Include="UnitTests\DataAccessTests\RepositoriesTests\EntityFrameworkGamingGroupRepositoryTests\GetGamingGroupDetailsTests.cs" />
     <Compile Include="UnitTests\DataAccessTests\RepositoriesTests\EntityFrameworkPlayedGameRepositoryTests\CreatePlayedGameTests.cs" />

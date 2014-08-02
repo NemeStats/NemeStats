@@ -19,10 +19,10 @@ namespace UI.Controllers
     public partial class GameDefinitionController : Controller
     {
         internal NemeStatsDbContext nemeStatsDbContext;
-        internal ApplicationDataContext applicationDataContext;
+        internal NemeStatsDataContext applicationDataContext;
         internal GameDefinitionRepository gameDefinitionRepository;
 
-        public GameDefinitionController(NemeStatsDbContext db, ApplicationDataContext dbContext, GameDefinitionRepository gameDefinitionRepository)
+        public GameDefinitionController(NemeStatsDbContext db, NemeStatsDataContext dbContext, GameDefinitionRepository gameDefinitionRepository)
         {
             this.nemeStatsDbContext = db;
             this.gameDefinitionRepository = gameDefinitionRepository;

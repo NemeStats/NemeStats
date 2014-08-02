@@ -41,7 +41,7 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.ApplicationDataContextTe
         public void ItThrowsAnArgumentExceptionIfTheCurrentUsersGamingGroupIsNullAndTheEntityIsSecured()
         {
             dataContext.Expect(mock => mock.AddOrInsertOverride(Arg<GameDefinition>.Is.Anything));
-            Exception expectedException = new ArgumentException(ApplicationDataContext.EXCEPTION_MESSAGE_CURRENT_GAMING_GROUP_ID_CANNOT_BE_NULL);
+            Exception expectedException = new ArgumentException(NemeStatsDataContext.EXCEPTION_MESSAGE_CURRENT_GAMING_GROUP_ID_CANNOT_BE_NULL);
 
             Exception actualException = Assert.Throws<ArgumentException>(() => dataContext.Save<GameDefinition>(new GameDefinition(), new ApplicationUser()));
 

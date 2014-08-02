@@ -47,7 +47,7 @@ namespace UI.DependencyResolution {
                                     });
                             //TODO MAKE THIS PER REQUEST
                             x.For<DbContext>().Use<NemeStatsDbContext>();
-                            x.For<DataContext>().Use<ApplicationDataContext>();
+                            x.For<DataContext>().Use<NemeStatsDataContext>();
                             x.For<PlayerRepository>().Use<EntityFrameworkPlayerRepository>();
                             x.For<GameDefinitionRetriever>().Use<GameDefinitionRetrieverImpl>();
                             x.For<PlayedGameRepository>().Use<EntityFrameworkPlayedGameRepository>();

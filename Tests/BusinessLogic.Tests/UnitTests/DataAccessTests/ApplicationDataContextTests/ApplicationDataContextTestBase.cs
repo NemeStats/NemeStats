@@ -14,7 +14,7 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.ApplicationDataContextTe
 {
     public class ApplicationDataContextTestBase
     {
-        protected ApplicationDataContext dataContext;
+        protected NemeStatsDataContext dataContext;
         protected NemeStatsDbContext nemeStatsDbContext;
         protected SecuredEntityValidatorFactory securedEntityValidatorFactory;
         protected SecuredEntityValidator<EntityWithTechnicalKey> securedEntityValidator;
@@ -27,7 +27,7 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.ApplicationDataContextTe
         {
             nemeStatsDbContext = MockRepository.GenerateMock<NemeStatsDbContext>();
             securedEntityValidatorFactory = MockRepository.GeneratePartialMock<SecuredEntityValidatorFactory>();
-            dataContext = MockRepository.GeneratePartialMock<ApplicationDataContext>(nemeStatsDbContext, securedEntityValidatorFactory);
+            dataContext = MockRepository.GeneratePartialMock<NemeStatsDataContext>(nemeStatsDbContext, securedEntityValidatorFactory);
             securedEntityValidator = MockRepository.GenerateMock<SecuredEntityValidator<EntityWithTechnicalKey>>();
             securedEntityValidatorFactory.Expect(mock => mock.MakeSecuredEntityValidator<EntityWithTechnicalKey>())
                 .Repeat.Once()

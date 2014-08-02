@@ -14,16 +14,16 @@ namespace BusinessLogic.DataAccess.Repositories
         internal const string EXCEPTION_MESSAGE_GAME_DEFINITION_NOT_FOUND
             = "Game Definition with Id '{0}' not found.";
 
-        private NemeStatsDbContext dbContext;
+        private DataContext dataContext;
 
-        public EntityFrameworkGameDefinitionRepository(NemeStatsDbContext dbContext)
+        public EntityFrameworkGameDefinitionRepository(DataContext dataContext)
         {
-            this.dbContext = dbContext;
+            this.dataContext = dataContext;
         }
 
         public virtual List<GameDefinition> GetAllGameDefinitions(ApplicationUser currentUser)
         {
-            return dbContext.GameDefinitions
+            return dataContext.GetQueryable<GameDefinition>(currentUser)
                 .Where(game => game.GamingGroupId == currentUser.CurrentGamingGroupId)
                 .ToList();
         }
@@ -32,7 +32,9 @@ namespace BusinessLogic.DataAccess.Repositories
             int gameDefinitionId, 
             ApplicationUser currentUser)
         {
-            GameDefinition game = dbContext.GameDefinitions.Where(gameDefinition => gameDefinition.Id == gameDefinitionId).FirstOrDefault();
+            GameDefinition game = dataContext.GetQueryable<GameDefinition>(currentUser)
+                .Where(gameDefinition => gameDefinition.Id == gameDefinitionId)
+                .FirstOrDefault();
             ValidateGameDefinitionIsFound(gameDefinitionId, game);
 
             ValidateUserHasAccessToGameDefinition(currentUser, game);
@@ -65,8 +67,8 @@ namespace BusinessLogic.DataAccess.Repositories
         {
             GameDefinition gameDefinition = GetGameDefinition(gameDefinitionId, currentUser);
 
-            dbContext.GameDefinitions.Remove(gameDefinition);
-            dbContext.SaveChanges();
+            dataContext.Delete<GameDefinition>(gameDefinition, currentUser);
+            dataContext.CommitAllChanges();
         }
     }
 }

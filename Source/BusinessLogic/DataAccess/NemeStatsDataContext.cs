@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace BusinessLogic.DataAccess
 {
-    public class ApplicationDataContext : DataContext
+    public class NemeStatsDataContext : DataContext
     {
         internal const string CONNECTION_NAME = "DefaultConnection";
         internal const string EXCEPTION_MESSAGE_CURRENT_GAMING_GROUP_ID_CANNOT_BE_NULL = "currentUser.CurrentGamingGroupId cannot be null";
@@ -15,13 +15,13 @@ namespace BusinessLogic.DataAccess
         private NemeStatsDbContext nemeStatsDbContext;
 
         //TODO do i really need this constructor? MockRepository.GenerateMock<ApplicationDbContext>() fails saying it needs a parameterless constructor
-        public ApplicationDataContext() 
+        public NemeStatsDataContext() 
             : this(new NemeStatsDbContext(), new SecuredEntityValidatorFactory())
         {
 
         }
 
-        public ApplicationDataContext(
+        public NemeStatsDataContext(
             NemeStatsDbContext nemeStatsDbContext,
             SecuredEntityValidatorFactory securedEntityValidatorFactory)
         {

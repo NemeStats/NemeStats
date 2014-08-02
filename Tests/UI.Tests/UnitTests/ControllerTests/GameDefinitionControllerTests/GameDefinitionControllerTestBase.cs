@@ -18,7 +18,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
         protected GameDefinitionController gameDefinitionControllerPartialMock;
         protected GameDefinitionRepository gameDefinitionRepository;
         protected NemeStatsDbContext nemeStatsDbContext;
-        protected ApplicationDataContext dataContext;
+        protected NemeStatsDataContext dataContext;
         protected ApplicationUser currentUser;
 
         [SetUp]
@@ -26,7 +26,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
         {
             gameDefinitionRepository = MockRepository.GenerateMock<GameDefinitionRepository>();
             nemeStatsDbContext = MockRepository.GenerateMock<NemeStatsDbContext>();
-            dataContext = MockRepository.GenerateMock<ApplicationDataContext>();
+            dataContext = MockRepository.GenerateMock<NemeStatsDataContext>();
             gameDefinitionControllerPartialMock = MockRepository.GeneratePartialMock<GameDefinitionController>(nemeStatsDbContext, dataContext, gameDefinitionRepository);
             currentUser = new ApplicationUser()
             {

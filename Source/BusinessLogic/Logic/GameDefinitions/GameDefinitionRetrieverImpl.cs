@@ -11,9 +11,9 @@ namespace BusinessLogic.Logic.GameDefinitions
 {
     public class GameDefinitionRetrieverImpl : GameDefinitionRetriever
     {
-        protected ApplicationDataContext dataContext;
+        protected NemeStatsDataContext dataContext;
 
-        public GameDefinitionRetrieverImpl(ApplicationDataContext dataContext)
+        public GameDefinitionRetrieverImpl(NemeStatsDataContext dataContext)
         {
             this.dataContext = dataContext;
         }

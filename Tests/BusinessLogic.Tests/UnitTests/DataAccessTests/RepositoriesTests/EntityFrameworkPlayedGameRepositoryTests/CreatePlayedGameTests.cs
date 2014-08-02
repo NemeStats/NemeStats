@@ -18,14 +18,14 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGameRepositoryTests
     [TestFixture]
     public class CreatePlayedGameTests
     {
-        private ApplicationDataContext dataContext;
+        private NemeStatsDataContext dataContext;
         private PlayedGameRepository playedGameLogicPartialMock;
         private ApplicationUser currentUser;
 
         [SetUp]
         public void TestSetUp()
         {
-            dataContext = MockRepository.GenerateMock<ApplicationDataContext>();
+            dataContext = MockRepository.GenerateMock<NemeStatsDataContext>();
             currentUser = new ApplicationUser()
             {
                 Id = "user id",

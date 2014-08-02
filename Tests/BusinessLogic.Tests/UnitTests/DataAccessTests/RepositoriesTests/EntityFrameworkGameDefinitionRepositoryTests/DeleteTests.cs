@@ -32,11 +32,11 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.EntityFrameworkGameDefin
             gameDefinitionRepositoryPartialMock.Expect(mock => mock.GetGameDefinition(gameDefinition.Id, currentUser))
              .Repeat.Once()
              .Return(gameDefinition);
-            gameDefinitionsDbSetMock.Expect(mock => mock.Remove(gameDefinition));
+            dataContextMock.Expect(mock => mock.Delete<GameDefinition>(gameDefinition, currentUser));
 
             gameDefinitionRepositoryPartialMock.Delete(gameDefinition.Id, currentUser);
 
-            gameDefinitionsDbSetMock.VerifyAllExpectations();
+            dataContextMock.VerifyAllExpectations();
         }
     }
 }

@@ -10,7 +10,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGameRepositoryTe
     [TestFixture]
     public class GetPlayedGameDetailsIntegrationTests : IntegrationTestBase
     {
-        private PlayedGame GetTestSubjectPlayedGame(ApplicationDataContext dataContextToTestWith)
+        private PlayedGame GetTestSubjectPlayedGame(NemeStatsDataContext dataContextToTestWith)
         {
             return new EntityFrameworkPlayedGameRepository(dataContextToTestWith)
                 .GetPlayedGameDetails(testPlayedGames[0].Id, testUserWithDefaultGamingGroup);
@@ -19,7 +19,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGameRepositoryTe
         [Test]
         public void ItRetrievesThePlayedGame()
         {
-            using (ApplicationDataContext dbContext = new ApplicationDataContext())
+            using (NemeStatsDataContext dbContext = new NemeStatsDataContext())
             {
                 PlayedGame playedGame = GetTestSubjectPlayedGame(dbContext);
                 Assert.NotNull(playedGame);
@@ -32,7 +32,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGameRepositoryTe
             using(NemeStatsDbContext dbContext = new NemeStatsDbContext())
             {
                 dbContext.Configuration.LazyLoadingEnabled = false;
-                using (ApplicationDataContext dataContext = new ApplicationDataContext(dbContext, securedEntityValidatorFactory))
+                using (NemeStatsDataContext dataContext = new NemeStatsDataContext(dbContext, securedEntityValidatorFactory))
                 {
                     PlayedGame playedGame = GetTestSubjectPlayedGame(dataContext);
                     Assert.GreaterOrEqual(testPlayedGames[0].PlayerGameResults.Count, playedGame.PlayerGameResults.Count());
@@ -46,7 +46,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGameRepositoryTe
             using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
             {
                 dbContext.Configuration.LazyLoadingEnabled = false;
-                using (ApplicationDataContext dataContext = new ApplicationDataContext(dbContext, securedEntityValidatorFactory))
+                using (NemeStatsDataContext dataContext = new NemeStatsDataContext(dbContext, securedEntityValidatorFactory))
                 {
                     PlayedGame playedGame = GetTestSubjectPlayedGame(dataContext);
                     Assert.NotNull(playedGame.GameDefinition);
@@ -57,7 +57,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGameRepositoryTe
         [Test]
         public void ItReturnsNullIfNoPlayedGameFound()
         {
-            using (ApplicationDataContext dataContext = new ApplicationDataContext())
+            using (NemeStatsDataContext dataContext = new NemeStatsDataContext())
             {
                 EntityFrameworkPlayedGameRepository playedGameRepository = new EntityFrameworkPlayedGameRepository(dataContext);
 
@@ -69,7 +69,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGameRepositoryTe
         [Test]
         public void ItThrowsANotAuthorizedExceptionIfTheGameIsntInThePlayersGamingGroup()
         {
-            using (ApplicationDataContext dataContext = new ApplicationDataContext())
+            using (NemeStatsDataContext dataContext = new NemeStatsDataContext())
             {
                 PlayedGame gameWithMismatchedGamingGroupId = testPlayedGames.First(
                     playedGame => playedGame.GamingGroupId != testUserWithDefaultGamingGroup.CurrentGamingGroupId);

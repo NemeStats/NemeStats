@@ -72,7 +72,7 @@ namespace BusinessLogic.Tests.IntegrationTests
                     testApplicationUserNameForUserWithOtherGamingGroup,
                     "b@mailinator.com");
 
-                using(ApplicationDataContext dataContext = new ApplicationDataContext())
+                using(NemeStatsDataContext dataContext = new NemeStatsDataContext())
                 {
                     testGamingGroup = SaveGamingGroup(dataContext, testGamingGroup1Name, testUserWithDefaultGamingGroup);
                     testUserWithDefaultGamingGroup = UpdateDatefaultGamingGroupOnUser(testUserWithDefaultGamingGroup, testGamingGroup, dataContext);
@@ -86,7 +86,7 @@ namespace BusinessLogic.Tests.IntegrationTests
 
                 SaveGamingGroupInvitations(nemeStatsDbContext);
 
-                using(ApplicationDataContext dataContext = new ApplicationDataContext())
+                using(NemeStatsDataContext dataContext = new NemeStatsDataContext())
                 {
                     CreatePlayedGames(dataContext);
                 }
@@ -107,7 +107,7 @@ namespace BusinessLogic.Tests.IntegrationTests
             nemeStatsDbContext.SaveChanges();
         }
 
-        private ApplicationUser UpdateDatefaultGamingGroupOnUser(ApplicationUser user, GamingGroup gamingGroup, ApplicationDataContext dataContext)
+        private ApplicationUser UpdateDatefaultGamingGroupOnUser(ApplicationUser user, GamingGroup gamingGroup, NemeStatsDataContext dataContext)
         {
             user.CurrentGamingGroupId = gamingGroup.Id;
             dataContext.CommitAllChanges();
@@ -115,7 +115,7 @@ namespace BusinessLogic.Tests.IntegrationTests
             return user;
         }
 
-        private void CreatePlayedGames(ApplicationDataContext dataContext)
+        private void CreatePlayedGames(NemeStatsDataContext dataContext)
         {
             PlayedGameRepository playedGameLogic = new EntityFrameworkPlayedGameRepository(dataContext);
 
@@ -231,7 +231,7 @@ namespace BusinessLogic.Tests.IntegrationTests
             return applicationUser;
         }
 
-        private GamingGroup SaveGamingGroup(ApplicationDataContext dataContext, string gamingGroupName, ApplicationUser owningUser)
+        private GamingGroup SaveGamingGroup(NemeStatsDataContext dataContext, string gamingGroupName, ApplicationUser owningUser)
         {
             GamingGroup gamingGroup = new GamingGroup() { Name = gamingGroupName, OwningUserId = owningUser.Id };
             dataContext.Save(gamingGroup, owningUser);

@@ -19,7 +19,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGameRepositoryTe
                 dbContext.Configuration.LazyLoadingEnabled = false;
                 dbContext.Configuration.ProxyCreationEnabled = false;
 
-                using (ApplicationDataContext dataContext = new ApplicationDataContext(dbContext, securedEntityValidatorFactory))
+                using (NemeStatsDataContext dataContext = new NemeStatsDataContext(dbContext, securedEntityValidatorFactory))
                 {
                     PlayedGameRepository playedGameLogic = new EntityFrameworkPlayedGameRepository(dataContext);
 
@@ -38,7 +38,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGameRepositoryTe
             {
                 dbContext.Configuration.LazyLoadingEnabled = false;
                 dbContext.Configuration.ProxyCreationEnabled = false;
-                using (ApplicationDataContext dataContext = new ApplicationDataContext(dbContext, securedEntityValidatorFactory))
+                using (NemeStatsDataContext dataContext = new NemeStatsDataContext(dbContext, securedEntityValidatorFactory))
                 {
                     PlayedGameRepository playedGameLogic = new EntityFrameworkPlayedGameRepository(dataContext);
 
@@ -57,7 +57,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGameRepositoryTe
             {
                 dbContext.Configuration.LazyLoadingEnabled = false;
                 dbContext.Configuration.ProxyCreationEnabled = false;
-                using (ApplicationDataContext dataContext = new ApplicationDataContext(dbContext, securedEntityValidatorFactory))
+                using (NemeStatsDataContext dataContext = new NemeStatsDataContext(dbContext, securedEntityValidatorFactory))
                 {
                     PlayedGameRepository playedGameLogic = new EntityFrameworkPlayedGameRepository(dataContext);
 
@@ -78,7 +78,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGameRepositoryTe
         [Test]
         public void ItReturnsOnlyOneGameIfOneGameIsSpecified()
         {
-            using (ApplicationDataContext dataContext = new ApplicationDataContext())
+            using (NemeStatsDataContext dataContext = new NemeStatsDataContext())
             {
                 PlayedGameRepository playedGameLogic = new EntityFrameworkPlayedGameRepository(dataContext);
                 int one = 1;
@@ -91,7 +91,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGameRepositoryTe
         [Test]
         public void ItReturnsOnlyTwoGamesIfTwoGamesAreSpecified()
         {
-            using (ApplicationDataContext dataContext = new ApplicationDataContext())
+            using (NemeStatsDataContext dataContext = new NemeStatsDataContext())
             {
                 PlayedGameRepository playedGameLogic = new EntityFrameworkPlayedGameRepository(dataContext);
                 int two = 2;
@@ -104,7 +104,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGameRepositoryTe
         [Test]
         public void ItReturnsGamesInDescendingOrderByDatePlayed()
         {
-            using (ApplicationDataContext dataContext = new ApplicationDataContext())
+            using (NemeStatsDataContext dataContext = new NemeStatsDataContext())
             {
                 PlayedGameRepository playedGameLogic = new EntityFrameworkPlayedGameRepository(dataContext);
                 int five = 5;
@@ -124,7 +124,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGameRepositoryTe
         [Test]
         public void ItReturnsOrderedPlayerRankDescendingWithinAGivenGame()
         {
-            using (ApplicationDataContext dataContext = new ApplicationDataContext())
+            using (NemeStatsDataContext dataContext = new NemeStatsDataContext())
             {
                 PlayedGameRepository playedGameLogic = new EntityFrameworkPlayedGameRepository(dataContext);
                 int five = 5;
@@ -148,7 +148,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGameRepositoryTe
         [Test]
         public void ItOnlyReturnsGamesForTheCurrentUsersGamingGroup()
         {
-            using (ApplicationDataContext dataContext = new ApplicationDataContext())
+            using (NemeStatsDataContext dataContext = new NemeStatsDataContext())
             {
                 PlayedGameRepository playedGameLogic = new EntityFrameworkPlayedGameRepository(dataContext);
                 

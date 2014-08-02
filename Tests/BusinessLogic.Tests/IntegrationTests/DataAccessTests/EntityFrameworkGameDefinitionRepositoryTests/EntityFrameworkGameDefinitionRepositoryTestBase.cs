@@ -11,20 +11,20 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.EntityFrameworkGa
 {
     public class EntityFrameworkGameDefinitionRepositoryTestBase : IntegrationTestBase
     {
-        protected NemeStatsDbContext dbContext;
+        protected NemeStatsDataContext dataContext;
         protected EntityFrameworkGameDefinitionRepository gameDefinitionRepository;
 
         [SetUp]
         public void TestSetUp()
         {
-            dbContext = new NemeStatsDbContext();
-            gameDefinitionRepository = new EntityFrameworkGameDefinitionRepository(dbContext);
+            dataContext = new NemeStatsDataContext();
+            gameDefinitionRepository = new EntityFrameworkGameDefinitionRepository(dataContext);
         }
 
         [TearDown]
         public void TearDown()
         {
-            dbContext.Dispose();
+            dataContext.Dispose();
         }
     }
 }

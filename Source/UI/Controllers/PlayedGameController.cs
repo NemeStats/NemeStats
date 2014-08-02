@@ -19,7 +19,7 @@ namespace UI.Controllers
     [Authorize]
     public partial class PlayedGameController : Controller
     {
-        internal ApplicationDataContext dataContext;
+        internal NemeStatsDataContext dataContext;
         internal NemeStatsDbContext nemeStatsDbContext;
         internal PlayedGameRepository playedGameLogic;
         internal PlayerRepository playerLogic;
@@ -29,7 +29,7 @@ namespace UI.Controllers
         internal const int NUMBER_OF_RECENT_GAMES_TO_DISPLAY = 10;
 
         public PlayedGameController(
-            ApplicationDataContext dataContext,
+            NemeStatsDataContext dataContext,
             NemeStatsDbContext dbContext, 
             PlayedGameRepository playedLogic, 
             PlayerRepository playLogic,

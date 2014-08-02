@@ -15,9 +15,9 @@ namespace BusinessLogic.DataAccess.Repositories
     {
         internal const string EXCEPTION_MESSAGE_MUST_PASS_VALID_GAME_DEFINITION_ID = "Must pass a valid GameDefinitionId.";
 
-        private ApplicationDataContext applicationDataContext;
+        private NemeStatsDataContext applicationDataContext;
 
-        public EntityFrameworkPlayedGameRepository(ApplicationDataContext applicationDataContext)
+        public EntityFrameworkPlayedGameRepository(NemeStatsDataContext applicationDataContext)
         {
             this.applicationDataContext = applicationDataContext;
         }

@@ -15,7 +15,7 @@ namespace BusinessLogic.Tests.IntegrationTests
         [Test]
         public void TheAddOrInsertExtensionMethodSetsTheIdOnNewEntities()
         {
-            using(ApplicationDataContext dataContext = new ApplicationDataContext(
+            using(NemeStatsDataContext dataContext = new NemeStatsDataContext(
                 new NemeStatsDbContext(), 
                 new SecuredEntityValidatorFactory()))
             {
@@ -36,7 +36,7 @@ namespace BusinessLogic.Tests.IntegrationTests
         }
 
         private static void Cleanup(
-            ApplicationDataContext dbContext, 
+            NemeStatsDataContext dbContext, 
             GamingGroup gamingGroup, 
             ApplicationUser currentUser)
         {
