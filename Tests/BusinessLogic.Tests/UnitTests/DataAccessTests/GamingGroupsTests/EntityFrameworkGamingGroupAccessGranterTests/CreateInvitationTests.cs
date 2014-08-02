@@ -20,7 +20,8 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.GamingGroupsTests.Entity
         {
             gamingGroupAccessGranter.CreateInvitation(inviteeEmail, currentUser);
 
-            gamingGroupInvitationRepositoryMock.AssertWasCalled(mock => mock.Save(Arg<GamingGroupInvitation>.Matches(invitation => invitation.InviteeEmail == inviteeEmail), 
+            dataContextMock.AssertWasCalled(
+                mock => mock.Save<GamingGroupInvitation>(Arg<GamingGroupInvitation>.Matches(invitation => invitation.InviteeEmail == inviteeEmail), 
                 Arg<ApplicationUser>.Is.Same(currentUser)));
         }
 
@@ -29,8 +30,9 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.GamingGroupsTests.Entity
         {
             gamingGroupAccessGranter.CreateInvitation(inviteeEmail, currentUser);
 
-            gamingGroupInvitationRepositoryMock.AssertWasCalled(
-                mock => mock.Save(Arg<GamingGroupInvitation>.Matches(invitation => invitation.InvitingUserId == currentUser.Id), 
+            dataContextMock.AssertWasCalled(
+                mock => mock.Save<GamingGroupInvitation>(Arg<GamingGroupInvitation>
+                    .Matches(invitation => invitation.InvitingUserId == currentUser.Id), 
                     Arg<ApplicationUser>.Is.Same(currentUser)));
         }
 
@@ -39,8 +41,9 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.GamingGroupsTests.Entity
         {
             gamingGroupAccessGranter.CreateInvitation(inviteeEmail, currentUser);
 
-            gamingGroupInvitationRepositoryMock.AssertWasCalled(
-                mock => mock.Save(Arg<GamingGroupInvitation>.Matches(invitation => invitation.GamingGroupId == currentUser.CurrentGamingGroupId), 
+            dataContextMock.AssertWasCalled(
+                mock => mock.Save<GamingGroupInvitation>(Arg<GamingGroupInvitation>
+                    .Matches(invitation => invitation.GamingGroupId == currentUser.CurrentGamingGroupId), 
                     Arg<ApplicationUser>.Is.Same(currentUser)));
         }
 
@@ -48,8 +51,9 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.GamingGroupsTests.Entity
         {
             gamingGroupAccessGranter.CreateInvitation(inviteeEmail, currentUser);
 
-            gamingGroupInvitationRepositoryMock.AssertWasCalled(
-                mock => mock.Save(Arg<GamingGroupInvitation>.Matches(invitation => invitation.DateSent.Date == DateTime.UtcNow.Date), currentUser));
+            dataContextMock.AssertWasCalled(
+                mock => mock.Save<GamingGroupInvitation>(Arg<GamingGroupInvitation>
+                    .Matches(invitation => invitation.DateSent.Date == DateTime.UtcNow.Date), currentUser));
         }
 
         [Test]
@@ -57,7 +61,8 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.GamingGroupsTests.Entity
         {
             gamingGroupAccessGranter.CreateInvitation(inviteeEmail, currentUser);
 
-            gamingGroupInvitationRepositoryMock.AssertWasCalled(mock => mock.Save(Arg<GamingGroupInvitation>.Is.Anything, 
+            dataContextMock.AssertWasCalled(
+                mock => mock.Save<GamingGroupInvitation>(Arg<GamingGroupInvitation>.Is.Anything, 
                 Arg<ApplicationUser>.Is.Same(currentUser)));
         }
 
@@ -65,8 +70,8 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.GamingGroupsTests.Entity
         public void ItReturnsTheGamingGroupInvitation()
         {
             GamingGroupInvitation returnedInvitation = gamingGroupAccessGranter.CreateInvitation(inviteeEmail, currentUser);
-            IList<object[]> objectsPassedToAddMethod = gamingGroupInvitationRepositoryMock.GetArgumentsForCallsMadeOn(
-                mock => mock.Save(Arg<GamingGroupInvitation>.Is.Anything, Arg<ApplicationUser>.Is.Anything));
+            IList<object[]> objectsPassedToAddMethod = dataContextMock.GetArgumentsForCallsMadeOn(
+                mock => mock.Save<GamingGroupInvitation>(Arg<GamingGroupInvitation>.Is.Anything, Arg<ApplicationUser>.Is.Anything));
             GamingGroupInvitation savedInvitation = (GamingGroupInvitation)objectsPassedToAddMethod[0][0];
 
             Assert.AreSame(savedInvitation, returnedInvitation);

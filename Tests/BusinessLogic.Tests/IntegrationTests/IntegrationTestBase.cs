@@ -72,19 +72,20 @@ namespace BusinessLogic.Tests.IntegrationTests
                     testApplicationUserNameForUserWithOtherGamingGroup,
                     "b@mailinator.com");
 
-                using(NemeStatsDataContext dataContext = new NemeStatsDataContext())
+                using (NemeStatsDataContext dataContext = new NemeStatsDataContext())
                 {
                     testGamingGroup = SaveGamingGroup(dataContext, testGamingGroup1Name, testUserWithDefaultGamingGroup);
                     testUserWithDefaultGamingGroup = UpdateDatefaultGamingGroupOnUser(testUserWithDefaultGamingGroup, testGamingGroup, dataContext);
                     testOtherGamingGroup = SaveGamingGroup(dataContext, testGamingGroup2Name, testUserWithOtherGamingGroup);
                     testUserWithOtherGamingGroup = UpdateDatefaultGamingGroupOnUser(testUserWithOtherGamingGroup, testOtherGamingGroup, dataContext);
+
+
+                    testGameDefinition = SaveGameDefinition(nemeStatsDbContext, testGamingGroup.Id, testGameName);
+                    testGameDefinitionWithOtherGamingGroupId = SaveGameDefinition(nemeStatsDbContext, testOtherGamingGroup.Id, testGameNameForGameWithOtherGamingGroupId);
+                    SavePlayers(nemeStatsDbContext, testGamingGroup.Id, testOtherGamingGroup.Id);
+
+                    SaveGamingGroupInvitations(nemeStatsDbContext, dataContext);
                 }
-
-                testGameDefinition = SaveGameDefinition(nemeStatsDbContext, testGamingGroup.Id, testGameName);
-                testGameDefinitionWithOtherGamingGroupId = SaveGameDefinition(nemeStatsDbContext, testOtherGamingGroup.Id, testGameNameForGameWithOtherGamingGroupId);
-                SavePlayers(nemeStatsDbContext, testGamingGroup.Id, testOtherGamingGroup.Id);
-
-                SaveGamingGroupInvitations(nemeStatsDbContext);
 
                 using(NemeStatsDataContext dataContext = new NemeStatsDataContext())
                 {
@@ -93,11 +94,12 @@ namespace BusinessLogic.Tests.IntegrationTests
             }
         }
 
-        private void SaveGamingGroupInvitations(NemeStatsDbContext nemeStatsDbContext)
+        private void SaveGamingGroupInvitations(NemeStatsDbContext nemeStatsDbContext, DataContext dataContext)
         {
             EntityFrameworkGamingGroupInvitationRepository invitationRepository = new EntityFrameworkGamingGroupInvitationRepository(nemeStatsDbContext);
-            EntityFrameworkGamingGroupAccessGranter accessGranter = new EntityFrameworkGamingGroupAccessGranter(nemeStatsDbContext, invitationRepository);
+            EntityFrameworkGamingGroupAccessGranter accessGranter = new EntityFrameworkGamingGroupAccessGranter(dataContext, invitationRepository);
             testUnredeemedGamingGroupInvitation = accessGranter.CreateInvitation(testUserWithDefaultGamingGroup.Email, testUserWithDefaultGamingGroup);
+            dataContext.CommitAllChanges();
 
             testAlreadyRedeemedGamingGroupInvitation = accessGranter.CreateInvitation(testUserWithOtherGamingGroup.Email, testUserWithDefaultGamingGroup);
             //TODO simulating registration. Will need a separate method for this soon so this logic can be replaced

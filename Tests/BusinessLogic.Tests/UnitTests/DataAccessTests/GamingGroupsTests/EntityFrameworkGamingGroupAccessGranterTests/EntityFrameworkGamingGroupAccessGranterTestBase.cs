@@ -17,7 +17,7 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.GamingGroupsTests.Entity
     [TestFixture]
     public class EntityFrameworkGamingGroupAccessGranterTestBase
     {
-        protected NemeStatsDbContext dbContextMock;
+        protected DataContext dataContextMock;
         protected GamingGroupInvitationRepository gamingGroupInvitationRepositoryMock;
         protected GamingGroupAccessGranter gamingGroupAccessGranter;
         protected ApplicationUser currentUser;
@@ -25,7 +25,7 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.GamingGroupsTests.Entity
         [SetUp]
         public void SetUp()
         {
-            dbContextMock = MockRepository.GenerateMock<NemeStatsDbContext>();
+            dataContextMock = MockRepository.GenerateMock<DataContext>();
             currentUser = new ApplicationUser()
             {
                 Id = "user id",
@@ -33,7 +33,7 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.GamingGroupsTests.Entity
             };
 
             gamingGroupInvitationRepositoryMock = MockRepository.GenerateMock<GamingGroupInvitationRepository>();
-            gamingGroupAccessGranter = new EntityFrameworkGamingGroupAccessGranter(dbContextMock, gamingGroupInvitationRepositoryMock);
+            gamingGroupAccessGranter = new EntityFrameworkGamingGroupAccessGranter(dataContextMock, gamingGroupInvitationRepositoryMock);
         }
     }
 }

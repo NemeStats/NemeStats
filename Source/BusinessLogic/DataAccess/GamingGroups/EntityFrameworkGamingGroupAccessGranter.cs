@@ -12,12 +12,12 @@ namespace BusinessLogic.DataAccess.GamingGroups
 {
     public class EntityFrameworkGamingGroupAccessGranter : GamingGroupAccessGranter
     {
-        protected NemeStatsDbContext dbContext;
+        protected DataContext dataContext;
         protected GamingGroupInvitationRepository gamingGroupInvitationRepository;
 
-        public EntityFrameworkGamingGroupAccessGranter(NemeStatsDbContext dbContext, GamingGroupInvitationRepository gamingGroupInvitationRepository)
+        public EntityFrameworkGamingGroupAccessGranter(DataContext dataContext, GamingGroupInvitationRepository gamingGroupInvitationRepository)
         {
-            this.dbContext = dbContext;
+            this.dataContext = dataContext;
             this.gamingGroupInvitationRepository = gamingGroupInvitationRepository;
         }
 
@@ -30,7 +30,7 @@ namespace BusinessLogic.DataAccess.GamingGroups
                 InvitingUserId = currentUser.Id,
                 DateSent = DateTime.UtcNow.Date
             };
-            gamingGroupInvitationRepository.Save(invitation, currentUser);
+            dataContext.Save<GamingGroupInvitation>(invitation, currentUser);
 
             return invitation;
         }
@@ -40,9 +40,7 @@ namespace BusinessLogic.DataAccess.GamingGroups
         {
             gamingGroupInvitation.DateRegistered = DateTime.UtcNow;
             gamingGroupInvitation.RegisteredUserId = currentUser.Id;
-            gamingGroupInvitationRepository.Save(gamingGroupInvitation, currentUser);
-
-            return gamingGroupInvitation;
+            return dataContext.Save<GamingGroupInvitation>(gamingGroupInvitation, currentUser);
         }
     }
 }
