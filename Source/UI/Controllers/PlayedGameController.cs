@@ -20,7 +20,6 @@ namespace UI.Controllers
     public partial class PlayedGameController : Controller
     {
         internal NemeStatsDataContext dataContext;
-        internal NemeStatsDbContext nemeStatsDbContext;
         internal PlayedGameRepository playedGameLogic;
         internal PlayerRepository playerLogic;
         internal PlayedGameDetailsViewModelBuilder playedGameDetailsBuilder;
@@ -30,14 +29,12 @@ namespace UI.Controllers
 
         public PlayedGameController(
             NemeStatsDataContext dataContext,
-            NemeStatsDbContext dbContext, 
             PlayedGameRepository playedLogic, 
             PlayerRepository playLogic,
             PlayedGameDetailsViewModelBuilder builder,
             GameDefinitionRetriever gameDefinitionRetriever)
         {
             this.dataContext = dataContext;
-            nemeStatsDbContext = dbContext;
             playedGameLogic = playedLogic;
             playerLogic = playLogic;
             playedGameDetailsBuilder = builder;
@@ -130,7 +127,9 @@ namespace UI.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            PlayedGame playedgame = nemeStatsDbContext.PlayedGames.Find(id);
+            PlayedGame playedgame = dataContext.GetQueryable<PlayedGame>(currentUser)
+                .Where(playedGame => playedGame.Id == id.Value)
+                .FirstOrDefault();
             if (playedgame == null)
             {
                 return HttpNotFound();
@@ -144,9 +143,7 @@ namespace UI.Controllers
         [UserContextAttribute]
         public virtual ActionResult DeleteConfirmed(int id, ApplicationUser currentUser)
         {
-            PlayedGame playedgame = nemeStatsDbContext.PlayedGames.Find(id);
-            nemeStatsDbContext.PlayedGames.Remove(playedgame);
-            nemeStatsDbContext.SaveChanges();
+            dataContext.DeleteById<PlayedGame>(id, currentUser);
             return RedirectToAction("Index");
         }
 
@@ -155,7 +152,6 @@ namespace UI.Controllers
             if (disposing)
             {
                 dataContext.Dispose();
-                nemeStatsDbContext.Dispose();
             }
             base.Dispose(disposing);
         }

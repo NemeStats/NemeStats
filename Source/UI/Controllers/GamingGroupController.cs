@@ -19,20 +19,20 @@ namespace UI.Controllers
     [Authorize]
     public partial class GamingGroupController : Controller
     {
-        internal DataContext db;
+        internal DataContext dataContext;
         internal GamingGroupToGamingGroupViewModelTransformation gamingGroupToGamingGroupViewModelTransformation;
         internal GamingGroupRepository gamingGroupRepository;
         internal GamingGroupAccessGranter gamingGroupAccessGranter;
         internal GamingGroupCreator gamingGroupCreator;
 
         public GamingGroupController(
-            DataContext dbContext,
+            DataContext dataContext,
             GamingGroupToGamingGroupViewModelTransformation gamingGroupToGamingGroupViewModelTransformation,
             GamingGroupRepository gamingGroupRespository,
             GamingGroupAccessGranter gamingGroupAccessGranter,
             GamingGroupCreator gamingGroupCreator)
         {
-            this.db = dbContext;
+            this.dataContext = dataContext;
             this.gamingGroupToGamingGroupViewModelTransformation = gamingGroupToGamingGroupViewModelTransformation;
             this.gamingGroupRepository = gamingGroupRespository;
             this.gamingGroupAccessGranter = gamingGroupAccessGranter;

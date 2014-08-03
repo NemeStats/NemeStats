@@ -11,12 +11,6 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
     [TestFixture]
     public class CreateHttpGetTests : PlayedGameControllerTestBase
     {
-        [SetUp]
-        public void SetUp()
-        {
-            dbContexMock.Expect(context => context.GameDefinitions).Repeat.Any().Return(MockRepository.GenerateMock<DbSet<GameDefinition>>());
-        }
-
         [Test]
         public void ItAddsAllActivePlayersToTheViewBag()
         {

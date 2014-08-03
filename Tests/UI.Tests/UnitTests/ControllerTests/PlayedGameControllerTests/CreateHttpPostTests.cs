@@ -16,13 +16,6 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
     [TestFixture]
     public class CreateHttpPostTests : PlayedGameControllerTestBase
     {
-        [SetUp]
-        public override void TestSetUp()
-        {
-            base.TestSetUp();
-            dbContexMock.Expect(context => context.GameDefinitions).Repeat.Any().Return(MockRepository.GenerateMock<DbSet<GameDefinition>>());
-        }
-
         [Test]
         public void ItRemainsOnTheCreatePageIfTheModelIsNotValid()
         {

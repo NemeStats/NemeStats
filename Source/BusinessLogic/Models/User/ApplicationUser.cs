@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNet.Identity.EntityFramework;
+﻿using BusinessLogic.DataAccess;
+using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BusinessLogic.Models.User
 {
-    public class ApplicationUser : IdentityUser
+    public class ApplicationUser : IdentityUser, SingleColumnTechnicalKey<string>
     {
         public int? CurrentGamingGroupId { get; set; }
 

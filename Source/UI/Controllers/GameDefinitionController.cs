@@ -18,13 +18,11 @@ namespace UI.Controllers
     [Authorize]
     public partial class GameDefinitionController : Controller
     {
-        internal NemeStatsDbContext nemeStatsDbContext;
         internal NemeStatsDataContext applicationDataContext;
         internal GameDefinitionRepository gameDefinitionRepository;
 
-        public GameDefinitionController(NemeStatsDbContext db, NemeStatsDataContext dbContext, GameDefinitionRepository gameDefinitionRepository)
+        public GameDefinitionController(NemeStatsDataContext dbContext, GameDefinitionRepository gameDefinitionRepository)
         {
-            this.nemeStatsDbContext = db;
             this.gameDefinitionRepository = gameDefinitionRepository;
             this.applicationDataContext = dbContext;
         }
@@ -165,7 +163,6 @@ namespace UI.Controllers
             if (disposing)
             {
                 applicationDataContext.Dispose();
-                nemeStatsDbContext.Dispose();
             }
             base.Dispose(disposing);
         }
