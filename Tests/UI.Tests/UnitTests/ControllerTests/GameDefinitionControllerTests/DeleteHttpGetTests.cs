@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using UI.Controllers;
 
 namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
 {
@@ -16,12 +17,16 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
     public class DeleteHttpGetTests : GameDefinitionControllerTestBase
     {
         [Test]
-        public void ItReturnsAnEditView()
+        public void ItReturnsADeleteView()
         {
             int gameDefinitionId = 15;
-            gameDefinitionRepository.Expect(mock => mock.GetGameDefinition(gameDefinitionId, currentUser))
+            gameDefinitionRetrieverMock.Expect(mock => mock.GetGameDefinitionDetails(
+                gameDefinitionId, 
+                0, 
+                currentUser))
                 .Repeat.Once()
                 .Return(new GameDefinition());
+
             ViewResult viewResult = gameDefinitionControllerPartialMock.Delete(gameDefinitionId, currentUser) as ViewResult;
 
             Assert.AreEqual(MVC.GameDefinition.Views.Delete, viewResult.ViewName);
@@ -34,7 +39,10 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
             {
                 Id = 151
             };
-            gameDefinitionRepository.Expect(mock => mock.GetGameDefinition(gameDefinition.Id, currentUser))
+            gameDefinitionRetrieverMock.Expect(mock => mock.GetGameDefinitionDetails(
+                gameDefinition.Id,
+                0,
+                currentUser))
                 .Repeat.Once()
                 .Return(gameDefinition);
 
@@ -54,7 +62,10 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
         [Test]
         public void ItReturnsANotFoundHttpStatusCodeIfNoGameDefinitionIsFound()
         {
-            gameDefinitionRepository.Expect(mock => mock.GetGameDefinition(-1, currentUser))
+            gameDefinitionRetrieverMock.Expect(mock => mock.GetGameDefinitionDetails(
+                -1, 
+                0,
+                currentUser))
                 .Throw(new KeyNotFoundException());
             HttpStatusCodeResult httpResult = gameDefinitionControllerPartialMock.Delete(-1, currentUser) as HttpStatusCodeResult;
 
@@ -64,7 +75,23 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
         [Test]
         public void ItReturnsAnUnauthorizedAccessHttpStatusCodeIfTheUserIsNotAuthorized()
         {
-            gameDefinitionRepository.Expect(mock => mock.GetGameDefinition(1, currentUser))
+            gameDefinitionRetrieverMock.Expect(mock => mock.GetGameDefinitionDetails(
+                1, 
+                0, 
+                currentUser))
+                .Throw(new UnauthorizedAccessException());
+            HttpStatusCodeResult httpResult = gameDefinitionControllerPartialMock.Delete(1, currentUser) as HttpStatusCodeResult;
+
+            Assert.AreEqual((int)HttpStatusCode.Unauthorized, httpResult.StatusCode);
+        }
+
+        [Test]
+        public void ItDoesntReturnAnyPlayedGames()
+        {
+            gameDefinitionRetrieverMock.Expect(mock => mock.GetGameDefinitionDetails(
+                1,
+                0,
+                currentUser))
                 .Throw(new UnauthorizedAccessException());
             HttpStatusCodeResult httpResult = gameDefinitionControllerPartialMock.Delete(1, currentUser) as HttpStatusCodeResult;
 

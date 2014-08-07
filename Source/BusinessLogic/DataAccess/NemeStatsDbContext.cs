@@ -16,6 +16,8 @@ namespace BusinessLogic.DataAccess
         public NemeStatsDbContext()
             : base("DefaultConnection")
         {
+            this.Configuration.ProxyCreationEnabled = false;
+            this.Configuration.LazyLoadingEnabled = false;
         }
 
         public virtual DbSet<GamingGroup> GamingGroups { get; set; }

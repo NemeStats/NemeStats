@@ -118,12 +118,12 @@ namespace BusinessLogic.DataAccess
             return nemeStatsDbContext.Database.SqlQuery<T>(sql, parameters);
         }
 
-        public void Dispose()
+        public virtual void Dispose()
         {
             nemeStatsDbContext.Dispose();
         }
 
-        public void DeleteById<TEntity>(object id, ApplicationUser currentUser) where TEntity : EntityWithTechnicalKey
+        public virtual void DeleteById<TEntity>(object id, ApplicationUser currentUser) where TEntity : EntityWithTechnicalKey
         {
             TEntity entityToDelete = nemeStatsDbContext.Set<TEntity>().Find(id);
 

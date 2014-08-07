@@ -12,6 +12,5 @@ namespace BusinessLogic.DataAccess.Repositories
     {
         List<GameDefinition> GetAllGameDefinitions(ApplicationUser currentUser);
         GameDefinition GetGameDefinition(int gameDefinitionId, ApplicationUser currentUser);
-        void Delete(int gameDefinitionId, ApplicationUser currentUser);
     }
 }

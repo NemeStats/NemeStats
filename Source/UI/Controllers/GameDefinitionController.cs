@@ -12,19 +12,31 @@ using BusinessLogic.Models.User;
 using BusinessLogic.Logic;
 using UI.Filters;
 using BusinessLogic.DataAccess.Repositories;
+using BusinessLogic.Logic.GameDefinitions;
+using UI.Transformations;
+using UI.Models.GameDefinitionModels;
 
 namespace UI.Controllers
 {
     [Authorize]
     public partial class GameDefinitionController : Controller
     {
-        internal NemeStatsDataContext applicationDataContext;
-        internal GameDefinitionRepository gameDefinitionRepository;
+        internal const int NUMBER_OF_RECENT_GAMES_TO_SHOW = 5;
 
-        public GameDefinitionController(NemeStatsDataContext dbContext, GameDefinitionRepository gameDefinitionRepository)
+        internal DataContext dataContext;
+        internal GameDefinitionRepository gameDefinitionRepository;
+        internal GameDefinitionRetriever gameDefinitionRetriever;
+        internal GameDefinitionToGameDefinitionViewModelTransformation gameDefinitionTransformation;
+
+        public GameDefinitionController(DataContext dataContext, 
+            GameDefinitionRepository gameDefinitionRepository, 
+            GameDefinitionRetriever gameDefinitionRetriever,
+            GameDefinitionToGameDefinitionViewModelTransformation gameDefinitionTransformation)
         {
             this.gameDefinitionRepository = gameDefinitionRepository;
-            this.applicationDataContext = dbContext;
+            this.dataContext = dataContext;
+            this.gameDefinitionRetriever = gameDefinitionRetriever;
+            this.gameDefinitionTransformation = gameDefinitionTransformation;
         }
 
         // GET: /GameDefinition/
@@ -45,10 +57,12 @@ namespace UI.Controllers
             }
 
             GameDefinition gameDefinition;
+            GameDefinitionViewModel gameDefinitionViewModel;
 
             try
             {
-                gameDefinition = gameDefinitionRepository.GetGameDefinition(id.Value, currentUser);
+                gameDefinition = gameDefinitionRetriever.GetGameDefinitionDetails(id.Value, NUMBER_OF_RECENT_GAMES_TO_SHOW, currentUser);
+                gameDefinitionViewModel = gameDefinitionTransformation.Build(gameDefinition);
             }catch(KeyNotFoundException)
             {
                 return new HttpNotFoundResult(); ;
@@ -58,7 +72,7 @@ namespace UI.Controllers
                 return new HttpUnauthorizedResult();
             }
 
-            return View(MVC.GameDefinition.Views.Details, gameDefinition);
+            return View(MVC.GameDefinition.Views.Details, gameDefinitionViewModel);
         }
 
         // GET: /GameDefinition/Create
@@ -77,7 +91,7 @@ namespace UI.Controllers
         {
             if (ModelState.IsValid)
             {
-                applicationDataContext.Save(gameDefinition, currentUser);
+                dataContext.Save(gameDefinition, currentUser);
                 return RedirectToAction(MVC.GameDefinition.ActionNames.Index);
             }
 
@@ -96,7 +110,7 @@ namespace UI.Controllers
             GameDefinition gameDefinition;
             try
             {
-                gameDefinition = gameDefinitionRepository.GetGameDefinition(id.Value, currentUser);
+                gameDefinition = gameDefinitionRetriever.GetGameDefinitionDetails(id.Value, 0, currentUser);
             }catch(KeyNotFoundException)
             {
                 return HttpNotFound();
@@ -115,7 +129,7 @@ namespace UI.Controllers
         {
             if (ModelState.IsValid)
             {
-                applicationDataContext.Save(gamedefinition, currentUser);
+                dataContext.Save(gamedefinition, currentUser);
                 return RedirectToAction(MVC.GameDefinition.ActionNames.Index);
             }
             return View(MVC.GameDefinition.Views.Edit, gamedefinition);
@@ -131,7 +145,10 @@ namespace UI.Controllers
             }
             try
             {
-                GameDefinition gameDefinition = gameDefinitionRepository.GetGameDefinition(id.Value, currentUser);
+                GameDefinition gameDefinition = gameDefinitionRetriever.GetGameDefinitionDetails(
+                    id.Value, 
+                    0, 
+                    currentUser);
                 return View(MVC.GameDefinition.Views.Delete, gameDefinition);
             }catch(KeyNotFoundException)
             {
@@ -150,7 +167,7 @@ namespace UI.Controllers
         {
             try
             {
-                gameDefinitionRepository.Delete(id, currentUser);
+                dataContext.DeleteById<GameDefinition>(id, currentUser);
                 return RedirectToAction(MVC.GameDefinition.ActionNames.Index);
             }catch(UnauthorizedAccessException)
             {
@@ -162,7 +179,7 @@ namespace UI.Controllers
         {
             if (disposing)
             {
-                applicationDataContext.Dispose();
+                dataContext.Dispose();
             }
             base.Dispose(disposing);
         }

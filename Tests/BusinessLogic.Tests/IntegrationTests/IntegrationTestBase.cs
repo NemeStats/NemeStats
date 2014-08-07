@@ -53,7 +53,7 @@ namespace BusinessLogic.Tests.IntegrationTests
         protected GamingGroupInvitation testAlreadyRedeemedGamingGroupInvitation;
 
         [TestFixtureSetUp]
-        public void FixtureSetUp()
+        public virtual void FixtureSetUp()
         {
             using (NemeStatsDbContext nemeStatsDbContext = new NemeStatsDbContext())
             {

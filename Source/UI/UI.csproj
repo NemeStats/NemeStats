@@ -256,12 +256,14 @@
     <Compile Include="HtmlHelpers\MvcHtmlStringExtension.cs" />
     <Compile Include="HtmlHelpers\PlayedGameHelper.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\GameDefinitionModels\GameDefinitionViewModel.cs" />
     <Compile Include="Models\GamingGroup\GamingGroupViewModel.cs" />
     <Compile Include="Models\GamingGroup\InvitationViewModel.cs" />
     <Compile Include="Models\PlayedGame\GameResultViewModel.cs" />
     <Compile Include="Models\PlayedGame\PlayedGameDetailsViewModel.cs" />
     <Compile Include="Models\Players\PlayerDetailsViewModel.cs" />
     <Compile Include="Models\User\UserViewModel.cs" />
+    <Compile Include="Transformations\GameDefinitionToGameDefinitionViewModelTransformation.cs" />
     <Compile Include="Transformations\GamingGroupInvitationToInvitationViewModelTransformation.cs" />
     <Compile Include="Transformations\GamingGroupInvitationToInvitationViewModelTransformationImpl.cs" />
     <Compile Include="Transformations\GamingGroupToGamingGroupViewModelTransformation.cs" />

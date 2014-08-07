@@ -13,7 +13,7 @@ namespace BusinessLogic.Tests.IntegrationTests
     [TestFixture]
     public class EntityFramework6LazyLoadingTests
     {
-        [Test]
+        [Test, Ignore("I disabled proxy creation and lazy loading on NemeStatsDbContext in the constructor so this would fail now.")]
         public void ItLazyLoadsByDefault()
         {
             using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
@@ -42,7 +42,7 @@ namespace BusinessLogic.Tests.IntegrationTests
             }
         }
 
-        [Test]
+        [Test, Ignore("I disabled proxy creation and lazy loading on NemeStatsDbContext in the constructor so this would fail now.")]
         public void ItPullsObjectsFromMemoryIfTheyHaveAlreadyBeenLoaded()
         {
             using (NemeStatsDbContext dbContext = new NemeStatsDbContext())

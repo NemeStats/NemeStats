@@ -1,4 +1,6 @@
-﻿using NUnit.Framework;
+﻿using BusinessLogic.Models;
+using BusinessLogic.Models.User;
+using NUnit.Framework;
 using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
@@ -17,7 +19,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
         public void ItReturnsAnUnauthorizedAccessHttpStatusCodeIfTheUserIsNotAuthorized()
         {
             int gameDefinitionId = 1;
-            gameDefinitionRepository.Expect(mock => mock.Delete(gameDefinitionId, currentUser))
+            dataContext.Expect(mock => mock.DeleteById<GameDefinition>(Arg<object>.Is.Anything, Arg<ApplicationUser>.Is.Anything))
                 .Throw(new UnauthorizedAccessException());
 
             HttpStatusCodeResult statusCodeResult = gameDefinitionControllerPartialMock
@@ -30,7 +32,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
         public void ItDeletesTheGameDefinition()
         {
             int gameDefinitionId = 1;
-            gameDefinitionRepository.Expect(mock => mock.Delete(1, currentUser));
+            dataContext.Expect(mock => mock.DeleteById<GameDefinition>(1, currentUser));
 
             gameDefinitionControllerPartialMock.DeleteConfirmed(gameDefinitionId, currentUser);
 

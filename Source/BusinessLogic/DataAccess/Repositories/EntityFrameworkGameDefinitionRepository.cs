@@ -62,13 +62,5 @@ namespace BusinessLogic.DataAccess.Repositories
                 throw new UnauthorizedAccessException(notAuthorizedMessage);
             }
         }
-
-        public virtual void Delete(int gameDefinitionId, ApplicationUser currentUser)
-        {
-            GameDefinition gameDefinition = GetGameDefinition(gameDefinitionId, currentUser);
-
-            dataContext.Delete<GameDefinition>(gameDefinition, currentUser);
-            dataContext.CommitAllChanges();
-        }
     }
 }

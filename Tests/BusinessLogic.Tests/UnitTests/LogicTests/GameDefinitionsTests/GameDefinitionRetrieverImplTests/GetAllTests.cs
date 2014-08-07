@@ -13,24 +13,8 @@ using System.Threading.Tasks;
 namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefinitionRetrieverImplTests
 {
     [TestFixture]
-    public class GetAllTests
+    public class GetAllTests : GameDefinitionRetrieverImplTestBase
     {
-        protected NemeStatsDataContext dataContext;
-        protected ApplicationUser currentUser;
-        protected GameDefinitionRetriever retriever;
-
-        [SetUp]
-        public void SetUp()
-        {
-            dataContext = MockRepository.GenerateMock<NemeStatsDataContext>();
-            currentUser = new ApplicationUser()
-            {
-                Id = "user id",
-                CurrentGamingGroupId = 123
-            };
-            retriever = new GameDefinitionRetrieverImpl(dataContext);
-        }
-
         [Test]
         public void ItReturnsAListOfAllGameDefinitions()
         {

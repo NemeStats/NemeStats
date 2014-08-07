@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.Models;
+using BusinessLogic.Models.Games;
 using BusinessLogic.Models.User;
 using System;
 using System.Collections.Generic;
@@ -11,5 +12,6 @@ namespace BusinessLogic.Logic.GameDefinitions
     public interface GameDefinitionRetriever
     {
         IList<GameDefinition> GetAllGameDefinitions(ApplicationUser currentUser);
+        GameDefinition GetGameDefinitionDetails(int id, int numberOfPlayedGamesToRetrieve, ApplicationUser currentUser);
     }
 }

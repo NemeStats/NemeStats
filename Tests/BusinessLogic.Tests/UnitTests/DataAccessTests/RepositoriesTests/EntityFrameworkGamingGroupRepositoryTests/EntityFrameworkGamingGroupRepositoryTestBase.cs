@@ -11,7 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessLogic.Tests.UnitTests.DataAccessTests.EntityFrameworkGamingGroupRepositoryTests
+namespace BusinessLogic.Tests.UnitTests.DataAccessTests.RepositoriesTests.EntityFrameworkGamingGroupRepositoryTests
 {
     [TestFixture]
     public class EntityFrameworkGamingGroupRepositoryTestBase

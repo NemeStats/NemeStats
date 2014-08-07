@@ -1,4 +1,5 @@
-﻿@model BusinessLogic.Models.GameDefinition
+﻿@using UI.HtmlHelpers
+@model UI.Models.GameDefinitionModels.GameDefinitionViewModel
 
 @{
     ViewBag.Title = "Details";
@@ -25,8 +26,20 @@
         <dd>
             @Html.DisplayFor(model => model.Description)
         </dd>
-
     </dl>
+</div>
+<div>
+    @foreach (var result in @Model.PlayerResults)
+    {
+        <div class="row">
+            <div class="col-sm-2">
+                @Html.ActionLink(result.PlayerName, "Details", "Player", new { id = result.PlayerId }, new { })
+            </div>
+            <div class="col-sm-5">
+                @Html.GameResults(result)
+            </div>
+        </div>
+    }
 </div>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |

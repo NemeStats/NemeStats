@@ -54,7 +54,7 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.EntityFrameworkGa
                 EntityFrameworkGamingGroupRepository repository = new EntityFrameworkGamingGroupRepository(dbContext);
                 GamingGroup gamingGroup = repository.GetGamingGroupDetails(testGamingGroup.Id, testUserWithDefaultGamingGroup);
 
-                Assert.AreSame(gamingGroup.GamingGroupInvitations, gamingGroup.GamingGroupInvitations);
+                Assert.Greater(gamingGroup.GamingGroupInvitations.Count, 0);
             }
         }
     }
