@@ -29,16 +29,19 @@
     </dl>
 </div>
 <div>
-    @foreach (var result in @Model.PlayerResults)
+    @foreach (var playedGameViewModel in @Model.PlayedGames)
     {
+        foreach(var gameResultViewModel in playedGameViewModel.PlayerResults)
+        { 
         <div class="row">
             <div class="col-sm-2">
-                @Html.ActionLink(result.PlayerName, "Details", "Player", new { id = result.PlayerId }, new { })
+                @Html.ActionLink(gameResultViewModel.PlayerName, "Details", "Player", new { id = gameResultViewModel.PlayerId }, new { })
             </div>
             <div class="col-sm-5">
-                @Html.GameResults(result)
+                @Html.GameResults(gameResultViewModel)
             </div>
         </div>
+        }
     }
 </div>
 <p>

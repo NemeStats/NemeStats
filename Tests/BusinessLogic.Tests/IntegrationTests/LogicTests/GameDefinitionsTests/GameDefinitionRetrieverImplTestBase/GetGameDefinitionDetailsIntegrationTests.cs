@@ -53,5 +53,11 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.GameDefinitionsTests.G
         {
             Assert.Greater(gameDefinition.PlayedGames[0].PlayerGameResults.Count, 0);
         }
+
+        [Test]
+        public void ItRetrievesPlayerInfoForEachPlayerGameResult()
+        {
+            Assert.NotNull(gameDefinition.PlayedGames[0].PlayerGameResults[0].Player);
+        }
     }
 }

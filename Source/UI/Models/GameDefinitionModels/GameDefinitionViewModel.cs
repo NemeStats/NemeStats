@@ -11,6 +11,6 @@ namespace UI.Models.GameDefinitionModels
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public IList<GameResultViewModel> PlayerResults { get; set; }
+        public IList<PlayedGameDetailsViewModel> PlayedGames { get; set; }
     }
 }
