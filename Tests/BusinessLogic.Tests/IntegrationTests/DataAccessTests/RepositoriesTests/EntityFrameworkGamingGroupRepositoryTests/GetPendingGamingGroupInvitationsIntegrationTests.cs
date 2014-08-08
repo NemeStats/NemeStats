@@ -2,7 +2,7 @@
 using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.Models;
 using BusinessLogic.Models.User;
-using BusinessLogic.Tests.IntegrationTests.DataAccessTests.EntityFrameworkGameDefinitionRepositoryTests;
+using BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests.EntityFrameworkGameDefinitionRepositoryTests;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.EntityFrameworkGamingGroupRepositoryTests
+namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests.EntityFrameworkGamingGroupRepositoryTests
 {
     [TestFixture]
     public class GetPendingGamingGroupInvitationsIntegrationTests : EntityFrameworkGamingGroupRepositoryIntegrationTestBase

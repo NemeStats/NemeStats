@@ -15,7 +15,7 @@ using BusinessLogic.Logic;
 using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.Logic.Users;
 
-namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.StatisticsRepositoryTests
+namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests.EntityFrameworkPlayerRepositoryTests
 {
     [TestFixture]
     public class GetNemesisTests : IntegrationTestBase

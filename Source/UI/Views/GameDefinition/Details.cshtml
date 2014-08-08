@@ -31,6 +31,7 @@
 <div>
     @foreach (var playedGameViewModel in @Model.PlayedGames)
     {
+        <div>@playedGameViewModel.DatePlayed.ToShortDateString()</div>
         foreach(var gameResultViewModel in playedGameViewModel.PlayerResults)
         { 
         <div class="row">
@@ -42,6 +43,7 @@
             </div>
         </div>
         }
+        <br/>
     }
 </div>
 <p>

@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayerRepositoryTests
+namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests.EntityFrameworkPlayerRepositoryTests
 {
     [TestFixture]
     public class GetAllPlayersIntegrationTests : IntegrationTestBase

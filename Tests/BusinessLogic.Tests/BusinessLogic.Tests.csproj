@@ -91,13 +91,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IntegrationTests\DataAccessTests\ApplicationDataContextTests\GetQueryableIntegrationTests.cs" />
-    <Compile Include="IntegrationTests\DataAccessTests\EntityFrameworkGameDefinitionRepositoryTests\EntityFrameworkGameDefinitionRepositoryTestBase.cs" />
-    <Compile Include="IntegrationTests\DataAccessTests\EntityFrameworkGameDefinitionRepositoryTests\GetAllGamesIntegrationTests.cs" />
-    <Compile Include="IntegrationTests\DataAccessTests\EntityFrameworkGameDefinitionRepositoryTests\GetGameDefinitionTest.cs" />
-    <Compile Include="IntegrationTests\DataAccessTests\EntityFrameworkGamingGroupRepositoryTests\EntityFrameworkGamingGroupRepositoryIntegrationTestBase.cs" />
-    <Compile Include="IntegrationTests\DataAccessTests\EntityFrameworkGamingGroupRepositoryTests\GetGamingGroupDetailsIntegrationTests.cs" />
+    <Compile Include="IntegrationTests\DataAccessTests\RepositoriesTests\EntityFrameworkGameDefinitionRepositoryTests\EntityFrameworkGameDefinitionRepositoryTestBase.cs" />
+    <Compile Include="IntegrationTests\DataAccessTests\RepositoriesTests\EntityFrameworkGameDefinitionRepositoryTests\GetAllGamesIntegrationTests.cs" />
+    <Compile Include="IntegrationTests\DataAccessTests\RepositoriesTests\EntityFrameworkGameDefinitionRepositoryTests\GetGameDefinitionTest.cs" />
+    <Compile Include="IntegrationTests\DataAccessTests\RepositoriesTests\EntityFrameworkGamingGroupRepositoryTests\EntityFrameworkGamingGroupRepositoryIntegrationTestBase.cs" />
+    <Compile Include="IntegrationTests\DataAccessTests\RepositoriesTests\EntityFrameworkGamingGroupRepositoryTests\GetGamingGroupDetailsIntegrationTests.cs" />
     <Compile Include="IntegrationTests\EntityFrameworkGeneralIntegrationTests.cs" />
-    <Compile Include="IntegrationTests\LogicTests\GameDefinitionsTests\GameDefinitionRetrieverImplTestBase\GetGameDefinitionDetailsIntegrationTests.cs" />
+    <Compile Include="IntegrationTests\LogicTests\GameDefinitionsTests\GameDefinitionRetrieverImplTests\GetGameDefinitionDetailsIntegrationTests.cs" />
     <Compile Include="UnitTests\DataAccessTests\NemeStatsDataContextTests\DeleteByIdTests.cs" />
     <Compile Include="UnitTests\DataAccessTests\NemeStatsDataContextTests\NemeStatsDataContextTestBase.cs" />
     <Compile Include="UnitTests\DataAccessTests\NemeStatsDataContextTests\GetQueryableTests.cs" />
@@ -105,18 +105,18 @@
     <Compile Include="UnitTests\DataAccessTests\EntityWithTechnicalKeyTests\AlreadyInDatabaseTests.cs" />
     <Compile Include="UnitTests\DataAccessTests\GamingGroupsTests\EntityFrameworkGamingGroupAccessGranterTests\ConsumeInvitationTests.cs" />
     <Compile Include="UnitTests\DataAccessTests\GamingGroupsTests\EntityFrameworkGamingGroupAccessGranterTests\CreateInvitationTests.cs" />
-    <Compile Include="IntegrationTests\DataAccessTests\EntityFrameworkGamingGroupRepositoryTests\GetPendingGamingGroupInvitationsIntegrationTests.cs" />
-    <Compile Include="IntegrationTests\DataAccessTests\StatisticsRepositoryTests\GetNemesisTests.cs" />
+    <Compile Include="IntegrationTests\DataAccessTests\RepositoriesTests\EntityFrameworkGamingGroupRepositoryTests\GetPendingGamingGroupInvitationsIntegrationTests.cs" />
+    <Compile Include="IntegrationTests\DataAccessTests\RepositoriesTests\EntityFrameworkPlayerRepositoryTests\GetNemesisIntegrationTests.cs" />
     <Compile Include="IntegrationTests\EntityFramework6EagerLoadingTests.cs" />
     <Compile Include="IntegrationTests\IntegrationTestBase.cs" />
-    <Compile Include="IntegrationTests\LogicTests\PlayedGameRepositoryTests\CreatePlayedGameIntegrationTests.cs" />
-    <Compile Include="IntegrationTests\LogicTests\PlayedGameRepositoryTests\GetPlayedGameDetailsIntegrationTests.cs" />
-    <Compile Include="IntegrationTests\LogicTests\PlayedGameRepositoryTests\GetRecentlyPlayedGameTests.cs" />
-    <Compile Include="IntegrationTests\LogicTests\PlayerRepositoryTests\GetAllPlayersIntegrationTests.cs" />
-    <Compile Include="IntegrationTests\LogicTests\PlayerRepositoryTests\GetPlayerDetailsIntegrationTests.cs" />
-    <Compile Include="IntegrationTests\LogicTests\PlayerRepositoryTests\GetPlayerGameResultsWithPlayedGameAndGameDefinitionIntegrationTests.cs" />
-    <Compile Include="IntegrationTests\LogicTests\PlayerRepositoryTests\GetPlayerIntegrationTests.cs" />
-    <Compile Include="IntegrationTests\LogicTests\PlayerRepositoryTests\GetPlayerStatisticsIntegrationTests.cs" />
+    <Compile Include="IntegrationTests\DataAccessTests\RepositoriesTests\EntityFrameworkPlayedGameRepositoryTests\CreatePlayedGameIntegrationTests.cs" />
+    <Compile Include="IntegrationTests\DataAccessTests\RepositoriesTests\EntityFrameworkPlayedGameRepositoryTests\GetPlayedGameDetailsIntegrationTests.cs" />
+    <Compile Include="IntegrationTests\DataAccessTests\RepositoriesTests\EntityFrameworkPlayedGameRepositoryTests\GetRecentlyPlayedGameTests.cs" />
+    <Compile Include="IntegrationTests\DataAccessTests\RepositoriesTests\EntityFrameworkPlayerRepositoryTests\GetAllPlayersIntegrationTests.cs" />
+    <Compile Include="IntegrationTests\DataAccessTests\RepositoriesTests\EntityFrameworkPlayerRepositoryTests\GetPlayerDetailsIntegrationTests.cs" />
+    <Compile Include="IntegrationTests\DataAccessTests\RepositoriesTests\EntityFrameworkPlayerRepositoryTests\GetPlayerGameResultsWithPlayedGameAndGameDefinitionIntegrationTests.cs" />
+    <Compile Include="IntegrationTests\DataAccessTests\RepositoriesTests\EntityFrameworkPlayerRepositoryTests\GetPlayerIntegrationTests.cs" />
+    <Compile Include="IntegrationTests\DataAccessTests\RepositoriesTests\EntityFrameworkPlayerRepositoryTests\GetPlayerStatisticsIntegrationTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UnitTests\DataAccessTests\GamingGroupsTests\EntityFrameworkGamingGroupAccessGranterTests\EntityFrameworkGamingGroupAccessGranterTestBase.cs" />
     <Compile Include="UnitTests\DataAccessTests\RepositoriesTests\EntityFrameworkGamingGroupRepositoryTests\EntityFrameworkGamingGroupRepositoryTestBase.cs" />
@@ -143,7 +143,9 @@
       <Name>BusinessLogic</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="IntegrationTests\DataAccessTests\RepositoriesTests\StatisticsRepositoryTests\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

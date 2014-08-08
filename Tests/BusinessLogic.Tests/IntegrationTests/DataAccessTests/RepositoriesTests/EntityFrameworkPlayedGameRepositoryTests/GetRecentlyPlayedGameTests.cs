@@ -6,7 +6,7 @@ using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGameRepositoryTests
+namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests.PlayedGameRepositoryTests
 {
     [TestFixture]
     public class GetRecentlyPlayedGameTests : IntegrationTestBase

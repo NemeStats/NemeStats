@@ -2,7 +2,7 @@
 using BusinessLogic.Models;
 using NUnit.Framework;
 
-namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGameRepositoryTests
+namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests.PlayedGameRepositoryTests
 {
     [TestFixture]
     public class CreatePlayedGameIntegrationTests : IntegrationTestBase
