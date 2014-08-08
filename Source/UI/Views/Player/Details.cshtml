@@ -54,37 +54,37 @@
             <div class="panel-heading">
                 <h4>Recent Games @ViewBag.RecentGamesMessage</h4>
             </div>
-        <div class="panel-body">
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th>Date Played</th>
-                        <th>Game</th>
-                        <th>Rank</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                @foreach (var playerGameResult in @Model.PlayerGameResultDetails)
-                {
-                    <tbody>
+            <div class="panel-body">
+                <table class="table table-hover">
+                    <thead>
                         <tr>
-                            <td>
-                                @playerGameResult.DatePlayed.ToShortDateString()
-                            </td>
-                            <td>
-                                @Html.ActionLink(playerGameResult.GameName, "Details", "GameDefinition", new { id = playerGameResult.GameDefinitionId }, new { })
-                            </td>
-                            <td>
-                                @Html.GameResults(playerGameResult)
-                            </td>
-                            <td>
-                                <span class="glyphicon glyphicon-book"></span>
-                                @Html.ActionLink("Details", "Details", "PlayedGame", new { id = playerGameResult.PlayedGameId }, new { })
-                            </td>
+                            <th>Date Played</th>
+                            <th>Game</th>
+                            <th>Rank</th>
+                            <th></th>
                         </tr>
-                    </tbody>
-                }
-            </table>
+                    </thead>
+                    @foreach (var playerGameResult in @Model.PlayerGameResultDetails)
+                    {
+                        <tbody>
+                            <tr>
+                                <td>
+                                    @playerGameResult.DatePlayed.ToShortDateString()
+                                </td>
+                                <td>
+                                    @Html.ActionLink(playerGameResult.GameName, "Details", "GameDefinition", new { id = playerGameResult.GameDefinitionId }, new { })
+                                </td>
+                                <td>
+                                    @Html.GameResults(playerGameResult)
+                                </td>
+                                <td>
+                                    <span class="glyphicon glyphicon-book"></span>
+                                    @Html.ActionLink("Details", "Details", "PlayedGame", new { id = playerGameResult.PlayedGameId }, new { })
+                                </td>
+                            </tr>
+                        </tbody>
+                    }
+                </table>
 
             </div>
         </div>
@@ -94,42 +94,42 @@
 <div class="row">
     @if (@Model.HasNemesis)
     {
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <h4>Nemesis</h4>    
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>Nemesis</h4>
+            </div>
+            <div class="panel-body">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Player Name</th>
+                            <th>Games Lost</th>
+                            <th>% Lost</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                @Html.ActionLink(Model.NemesisName, "Details", "Player", new { id = Model.NemesisPlayerId }, new { })
+                            </td>
+                            <td>
+                                @Model.NumberOfGamesLostVersusNemesis
+                            </td>
+                            <td>
+                                @Model.LossPercentageVersusPlayer
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
-        <div class="panel-body">
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th>Player Name</th>
-                        <th>Games Lost</th>
-                        <th>% Lost</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>
-                            @Html.ActionLink(Model.NemesisName, "Details", "Player", new { id = Model.NemesisPlayerId }, new { })
-                        </td>
-                        <td>
-                             @Model.NumberOfGamesLostVersusNemesis
-                        </td>
-                        <td>
-                            @Model.LossPercentageVersusPlayer
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
     }
 </div>
 
 <div class="row">
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h4>Statistics</h4>    
+            <h4>Statistics</h4>
         </div>
         <div class="panel-body">
             Total Games: @Model.TotalGamesPlayed

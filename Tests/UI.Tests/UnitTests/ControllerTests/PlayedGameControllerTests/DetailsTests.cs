@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using Rhino.Mocks;
 using BusinessLogic.Models;
 using UI.Models.PlayedGame;
+using UI.Controllers;
 
 namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 {
@@ -70,10 +71,11 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
             PlayedGameDetailsViewModel playedGameDetails = new PlayedGameDetailsViewModel();
             playedGameDetailsBuilderMock.Expect(builder => builder.Build(playedGame)).Repeat.Once()
                 .Return(playedGameDetails);
+
             ViewResult result = playedGameController.Details(playedGameId, currentUser) as ViewResult;
 
             PlayedGameDetailsViewModel viewModel = (PlayedGameDetailsViewModel)result.ViewData.Model;
             Assert.AreEqual(playedGameDetails, viewModel);
-        }
+        } 
     }
 }

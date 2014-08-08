@@ -233,6 +233,8 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\GameDefinitionController.cs" />
     <Compile Include="Controllers\GamingGroupController.cs" />
+    <Compile Include="Controllers\Helpers\ShowingXResultsMessageBuilder.cs" />
+    <Compile Include="Controllers\Helpers\ShowingXResultsMessageBuilderImpl.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PlayedGameController.cs" />
     <Compile Include="Controllers\PlayerController.cs" />

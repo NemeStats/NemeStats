@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using UI.Controllers;
 using UI.Transformations;
 using UI.Transformations.Player;
+using UI.Controllers.Helpers;
 
 namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
 {
@@ -21,6 +22,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         protected PlayerRepository playerRepositoryMock;
         protected GameResultViewModelBuilder playerGameResultDetailsBuilderMock;
         protected PlayerDetailsViewModelBuilder playerDetailsViewModelBuilderMock;
+        protected ShowingXResultsMessageBuilder showingXResultsMessageBuilder;
         protected PlayerController playerController;
         protected ApplicationUser currentUser;
 
@@ -36,11 +38,13 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
             playerRepositoryMock = MockRepository.GenerateMock<PlayerRepository>();
             playerGameResultDetailsBuilderMock = MockRepository.GenerateMock<GameResultViewModelBuilder>();
             playerDetailsViewModelBuilderMock = MockRepository.GenerateMock<PlayerDetailsViewModelBuilder>();
+            showingXResultsMessageBuilder = MockRepository.GenerateMock<ShowingXResultsMessageBuilder>();
             playerController = new PlayerController(
                                 dataContextMock,
                                 playerRepositoryMock,
                                 playerGameResultDetailsBuilderMock,
-                                playerDetailsViewModelBuilderMock);
+                                playerDetailsViewModelBuilderMock,
+                                showingXResultsMessageBuilder);
         }
     }
 }

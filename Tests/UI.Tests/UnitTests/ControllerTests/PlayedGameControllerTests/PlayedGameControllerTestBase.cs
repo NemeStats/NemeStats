@@ -8,6 +8,7 @@ using NUnit.Framework;
 using Rhino.Mocks;
 using System.Collections.Generic;
 using UI.Controllers;
+using UI.Controllers.Helpers;
 using UI.Transformations;
 
 namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
@@ -21,8 +22,10 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
         protected PlayerRepository playerLogicMock;
         protected PlayedGameDetailsViewModelBuilder playedGameDetailsBuilderMock;
         protected GameDefinitionRetriever gameDefinitionRetrieverMock;
+        protected ShowingXResultsMessageBuilder showingXResultsMessageBuilderMock;
         protected string testUserName = "the test user name";
         protected ApplicationUser currentUser;
+        protected List<GameDefinition> gameDefinitions;
 
         [SetUp]
         public virtual void TestSetUp()
@@ -32,23 +35,27 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
             playerLogicMock = MockRepository.GenerateMock<PlayerRepository>();
             playedGameDetailsBuilderMock = MockRepository.GenerateMock<PlayedGameDetailsViewModelBuilder>();
             gameDefinitionRetrieverMock = MockRepository.GenerateMock<GameDefinitionRetriever>();
+            showingXResultsMessageBuilderMock = MockRepository.GenerateMock<ShowingXResultsMessageBuilder>();
             playedGameController = new Controllers.PlayedGameController(
                 dataContext,
                 playedGameLogicMock, 
                 playerLogicMock, 
                 playedGameDetailsBuilderMock,
-                gameDefinitionRetrieverMock);
+                gameDefinitionRetrieverMock,
+                showingXResultsMessageBuilderMock);
 
             playedGameControllerPartialMock = MockRepository.GeneratePartialMock<PlayedGameController>(
                 dataContext,
                 playedGameLogicMock,
                 playerLogicMock,
                 playedGameDetailsBuilderMock,
-                gameDefinitionRetrieverMock);
+                gameDefinitionRetrieverMock,
+                showingXResultsMessageBuilderMock);
 
+            gameDefinitions = new List<GameDefinition>();
             gameDefinitionRetrieverMock.Expect(mock => mock.GetAllGameDefinitions(currentUser))
                 .Repeat.Once()
-                .Return(new List<GameDefinition>());
+                .Return(gameDefinitions);
         }
     }
 }

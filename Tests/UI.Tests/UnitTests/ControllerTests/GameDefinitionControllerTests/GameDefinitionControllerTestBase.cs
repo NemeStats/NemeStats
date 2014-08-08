@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UI.Controllers;
+using UI.Controllers.Helpers;
 using UI.Transformations;
 
 namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
@@ -21,6 +22,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
         protected GameDefinitionRepository gameDefinitionRepository;
         protected GameDefinitionRetriever gameDefinitionRetrieverMock;
         protected GameDefinitionToGameDefinitionViewModelTransformation gameDefinitionTransformation;
+        protected ShowingXResultsMessageBuilder showingXResultsMessageBuilder;
         protected NemeStatsDataContext dataContext;
         protected ApplicationUser currentUser;
 
@@ -31,11 +33,13 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
             dataContext = MockRepository.GenerateMock<NemeStatsDataContext>();
             gameDefinitionRetrieverMock = MockRepository.GenerateMock<GameDefinitionRetriever>();
             gameDefinitionTransformation = MockRepository.GenerateMock<GameDefinitionToGameDefinitionViewModelTransformation>();
+            showingXResultsMessageBuilder = MockRepository.GenerateMock<ShowingXResultsMessageBuilder>();
             gameDefinitionControllerPartialMock = MockRepository.GeneratePartialMock<GameDefinitionController>(
                 dataContext, 
                 gameDefinitionRepository,
                 gameDefinitionRetrieverMock,
-                gameDefinitionTransformation);
+                gameDefinitionTransformation,
+                showingXResultsMessageBuilder);
             currentUser = new ApplicationUser()
             {
                 Id = "user id",

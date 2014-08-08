@@ -10,6 +10,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using UI.Controllers.Helpers;
 using UI.Filters;
 using UI.Models.PlayedGame;
 using UI.Transformations;
@@ -24,6 +25,7 @@ namespace UI.Controllers
         internal PlayerRepository playerLogic;
         internal PlayedGameDetailsViewModelBuilder playedGameDetailsBuilder;
         internal GameDefinitionRetriever gameDefinitionRetriever;
+        internal ShowingXResultsMessageBuilder showingXResultsMessageBuilder;
 
         internal const int NUMBER_OF_RECENT_GAMES_TO_DISPLAY = 10;
 
@@ -32,13 +34,15 @@ namespace UI.Controllers
             PlayedGameRepository playedLogic, 
             PlayerRepository playLogic,
             PlayedGameDetailsViewModelBuilder builder,
-            GameDefinitionRetriever gameDefinitionRetriever)
+            GameDefinitionRetriever gameDefinitionRetriever,
+            ShowingXResultsMessageBuilder showingXResultsMessageBuilder)
         {
             this.dataContext = dataContext;
             playedGameLogic = playedLogic;
             playerLogic = playLogic;
             playedGameDetailsBuilder = builder;
             this.gameDefinitionRetriever = gameDefinitionRetriever;
+            this.showingXResultsMessageBuilder = showingXResultsMessageBuilder;
         }
 
         // GET: /PlayedGame/
@@ -52,6 +56,10 @@ namespace UI.Controllers
             {
                 details.Add(playedGameDetailsBuilder.Build(playedGames[i]));
             }
+
+            ViewBag.RecentGamesMessage = showingXResultsMessageBuilder.BuildMessage(
+                NUMBER_OF_RECENT_GAMES_TO_DISPLAY,
+                details.Count);
             
             return View(MVC.PlayedGame.Views.Index, details);
         }

@@ -4,6 +4,7 @@ using NUnit.Framework;
 using Rhino.Mocks;
 using System.Collections.Generic;
 using System.Web.Mvc;
+using UI.Controllers;
 using UI.Models.PlayedGame;
 using UI.Transformations;
 
@@ -75,6 +76,28 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
             {
                 playedGameDetailsBuilderMock.AssertWasCalled(builder => builder.Build(playedgame));
             };
+        }
+
+        [Test]
+        public void ItPutsTheRecentGamesMessageOnTheViewBag()
+        {
+            string expectedMessage = "expected message";
+            List<BusinessLogic.Models.PlayedGame> recentlyPlayedGames = new List<BusinessLogic.Models.PlayedGame>()
+            {
+                new PlayedGame(){ Id = 1 },
+                new PlayedGame(){ Id = 2 }
+            };
+            playedGameLogicMock.Expect(playedGameLogic => playedGameLogic.GetRecentGames(Arg<int>.Is.Anything, Arg<ApplicationUser>.Is.Anything))
+                .Repeat.Once()
+                .Return(recentlyPlayedGames);
+            showingXResultsMessageBuilderMock.Expect(mock => mock.BuildMessage(
+                PlayedGameController.NUMBER_OF_RECENT_GAMES_TO_DISPLAY,
+                recentlyPlayedGames.Count))
+                    .Return(expectedMessage);
+
+            playedGameController.Index(currentUser);
+
+            Assert.AreEqual(expectedMessage, playedGameController.ViewBag.RecentGamesMessage);
         }
     }
 }

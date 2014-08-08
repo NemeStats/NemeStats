@@ -108,43 +108,35 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         }
 
         [Test]
-        public void ItShowsMessageStatingThatOnlyALimitedListOfRecentGamesAreShowingIfAtMaxGames()
+        public void ItPutsTheRecentGamesMessageOnTheViewbag()
         {
-            List<PlayerGameResult> playerGameResults = new List<PlayerGameResult>();
-            for(int i = 0; i < PlayerController.NUMBER_OF_RECENT_GAMES_TO_RETRIEVE; i++)
-            {
-                playerGameResults.Add(new PlayerGameResult());
-            }
-            PlayerDetails details = new PlayerDetails(){
-                PlayerGameResults = playerGameResults
-            };
             int playerId = 1;
+            PlayerDetails playerDetails = new PlayerDetails(){ PlayerGameResults = new List<PlayerGameResult>() };
+            playerRepositoryMock.Expect(playerLogic => playerLogic.GetPlayerDetails(
+                playerId, 
+                PlayerController.NUMBER_OF_RECENT_GAMES_TO_RETRIEVE, 
+                currentUser))
+                .Repeat.Once()
+                .Return(playerDetails);
 
-            playerRepositoryMock.Expect(mock => mock.GetPlayerDetails(playerId, PlayerController.NUMBER_OF_RECENT_GAMES_TO_RETRIEVE, currentUser))
+            PlayerDetailsViewModel playerDetailsViewModel = new PlayerDetailsViewModel()
+            {
+                PlayerId = playerId,
+                PlayerGameResultDetails = new List<GameResultViewModel>()
+            };
+            playerDetailsViewModelBuilderMock.Expect(viewModelBuilder => viewModelBuilder.Build(playerDetails))
                 .Repeat
                 .Once()
-                .Return(details);
+                .Return(playerDetailsViewModel);
+            string expectedMessage = "expected message";
+            showingXResultsMessageBuilder.Expect(mock => mock.BuildMessage(
+                PlayerController.NUMBER_OF_RECENT_GAMES_TO_RETRIEVE,
+                playerDetailsViewModel.PlayerGameResultDetails.Count))
+                    .Return(expectedMessage);
 
             playerController.Details(playerId, currentUser);
 
-            string expectedMessage = string.Format(PlayerController.RECENT_GAMES_MESSAGE_FORMAT,
-                PlayerController.NUMBER_OF_RECENT_GAMES_TO_RETRIEVE);
             Assert.AreEqual(expectedMessage, playerController.ViewBag.RecentGamesMessage);
-        }
-
-        [Test]
-        public void ItDoesntShowTheRecentGamesMessageIfThereAreLessThanTheRequestedMaxNumberOfGames()
-        {
-            PlayerDetails playerDetails = new PlayerDetails() { PlayerGameResults = new List<PlayerGameResult>() };
-            int playerId = 1;
-            playerRepositoryMock.Expect(mock => mock.GetPlayerDetails(playerId, PlayerController.NUMBER_OF_RECENT_GAMES_TO_RETRIEVE, currentUser))
-                .Repeat
-                .Once()
-                .Return(playerDetails);
-
-            playerController.Details(1, currentUser);
-
-            Assert.IsNull(playerController.ViewBag.RecentGamesMessage);
         }
     }
 }

@@ -20,13 +20,18 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
     public class DetailsTests : GameDefinitionControllerTestBase
     {
         private int gameDefinitionId = 1;
-        private GameDefinition gameDefinition = new GameDefinition();
+        private GameDefinition gameDefinition;
         private GameDefinitionViewModel expectedViewModel = new GameDefinitionViewModel();
 
         [SetUp]
         public override void SetUp()
         {
             base.SetUp();
+
+            gameDefinition = new GameDefinition()
+            {
+                PlayedGames = new List<PlayedGame>()
+            };
 
             gameDefinitionRetrieverMock.Expect(repo => repo.GetGameDefinitionDetails(
                 Arg<int>.Is.Anything,
@@ -89,6 +94,20 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
 
             HttpStatusCodeResult result = gameDefinitionControllerPartialMock.Details(999999, currentUser) as HttpStatusCodeResult;
             Assert.AreEqual((int)HttpStatusCode.Unauthorized, result.StatusCode);
+        }
+
+        [Test]
+        public void ItPutsTheRecentGamesMessageOnTheViewBag()
+        {
+            string expectedMessage = "expected message";
+            showingXResultsMessageBuilder.Expect(mock => mock.BuildMessage(
+                GameDefinitionController.NUMBER_OF_RECENT_GAMES_TO_SHOW,
+                gameDefinition.PlayedGames.Count))
+                    .Return(expectedMessage);
+                
+            gameDefinitionControllerPartialMock.Details(gameDefinitionId, currentUser);
+
+            Assert.AreEqual(expectedMessage, gameDefinitionControllerPartialMock.ViewBag.RecentGamesMessage);
         }
     }
 }

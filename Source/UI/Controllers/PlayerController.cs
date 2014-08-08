@@ -10,6 +10,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using UI.Controllers.Helpers;
 using UI.Filters;
 using UI.Models.PlayedGame;
 using UI.Models.Players;
@@ -22,23 +23,24 @@ namespace UI.Controllers
     public partial class PlayerController : Controller
     {
         public static readonly int NUMBER_OF_RECENT_GAMES_TO_RETRIEVE = 10;
-        public static readonly string RECENT_GAMES_MESSAGE_FORMAT = "(Last {0} Games)";
-
 
         internal DataContext dataContext;
         internal PlayerRepository playerRepository;
         internal GameResultViewModelBuilder builder;
         internal PlayerDetailsViewModelBuilder playerDetailsViewModelBuilder;
+        internal ShowingXResultsMessageBuilder showingXResultsMessageBuilder;
         
         public PlayerController(DataContext dataContext, 
             PlayerRepository playerRepository, 
-            GameResultViewModelBuilder resultBuilder,
-            PlayerDetailsViewModelBuilder playerDetailsBuilder)
+            GameResultViewModelBuilder builder,
+            PlayerDetailsViewModelBuilder playerDetailsViewModelBuilder,
+            ShowingXResultsMessageBuilder showingXResultsMessageBuilder)
         {
             this.dataContext = dataContext;
             this.playerRepository = playerRepository;
-            builder = resultBuilder;
-            playerDetailsViewModelBuilder = playerDetailsBuilder;
+            this.builder = builder;
+            this.playerDetailsViewModelBuilder = playerDetailsViewModelBuilder;
+            this.showingXResultsMessageBuilder = showingXResultsMessageBuilder;
         }
 
         // GET: /Player/
@@ -67,12 +69,10 @@ namespace UI.Controllers
 
             PlayerDetailsViewModel playerDetailsViewModel = playerDetailsViewModelBuilder.Build(player);
 
-            int numberOfRecentGames = player.PlayerGameResults.Count;
-            if(numberOfRecentGames >= NUMBER_OF_RECENT_GAMES_TO_RETRIEVE)
-            {
-                ViewBag.RecentGamesMessage = string.Format(RECENT_GAMES_MESSAGE_FORMAT, player.PlayerGameResults.Count);
-            }
-            
+            ViewBag.RecentGamesMessage = showingXResultsMessageBuilder.BuildMessage(
+                NUMBER_OF_RECENT_GAMES_TO_RETRIEVE, 
+                player.PlayerGameResults.Count);
+
             return View(MVC.Player.Views.Details, playerDetailsViewModel);
         }
 

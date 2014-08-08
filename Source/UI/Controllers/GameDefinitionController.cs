@@ -15,6 +15,7 @@ using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.Logic.GameDefinitions;
 using UI.Transformations;
 using UI.Models.GameDefinitionModels;
+using UI.Controllers.Helpers;
 
 namespace UI.Controllers
 {
@@ -27,16 +28,19 @@ namespace UI.Controllers
         internal GameDefinitionRepository gameDefinitionRepository;
         internal GameDefinitionRetriever gameDefinitionRetriever;
         internal GameDefinitionToGameDefinitionViewModelTransformation gameDefinitionTransformation;
+        internal ShowingXResultsMessageBuilder showingXResultsMessageBuilder;
 
         public GameDefinitionController(DataContext dataContext, 
             GameDefinitionRepository gameDefinitionRepository, 
             GameDefinitionRetriever gameDefinitionRetriever,
-            GameDefinitionToGameDefinitionViewModelTransformation gameDefinitionTransformation)
+            GameDefinitionToGameDefinitionViewModelTransformation gameDefinitionTransformation,
+            ShowingXResultsMessageBuilder showingXResultsMessageBuilder)
         {
             this.gameDefinitionRepository = gameDefinitionRepository;
             this.dataContext = dataContext;
             this.gameDefinitionRetriever = gameDefinitionRetriever;
             this.gameDefinitionTransformation = gameDefinitionTransformation;
+            this.showingXResultsMessageBuilder = showingXResultsMessageBuilder;
         }
 
         // GET: /GameDefinition/
@@ -71,6 +75,8 @@ namespace UI.Controllers
             {
                 return new HttpUnauthorizedResult();
             }
+
+            ViewBag.RecentGamesMessage = showingXResultsMessageBuilder.BuildMessage(NUMBER_OF_RECENT_GAMES_TO_SHOW, gameDefinition.PlayedGames.Count);
 
             return View(MVC.GameDefinition.Views.Details, gameDefinitionViewModel);
         }
