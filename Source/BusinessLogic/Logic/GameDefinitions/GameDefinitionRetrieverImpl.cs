@@ -49,6 +49,7 @@ namespace BusinessLogic.Logic.GameDefinitions
         {
             IList<PlayedGame> playedGames = dataContext.GetQueryable<PlayedGame>(currentUser)
                 .Where(playedGame => playedGame.GameDefinitionId == gameDefinition.Id)
+                .OrderByDescending(playedGame => playedGame.DatePlayed)
                 .Take(numberOfPlayedGamesToRetrieve)
                 .ToList();
             gameDefinition.PlayedGames = playedGames;

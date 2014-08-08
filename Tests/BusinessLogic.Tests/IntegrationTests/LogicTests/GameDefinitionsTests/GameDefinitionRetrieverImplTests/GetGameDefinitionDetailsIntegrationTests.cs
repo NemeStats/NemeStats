@@ -49,6 +49,17 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.GameDefinitionsTests.G
         }
 
         [Test]
+        public void ItRetrievesGamesOrderedByDateDescending()
+        {
+            DateTime lastDate = new DateTime(2100, 1, 1);
+            foreach(PlayedGame playedGame in gameDefinition.PlayedGames)
+            {
+                Assert.LessOrEqual(playedGame.DatePlayed, lastDate);
+                lastDate = playedGame.DatePlayed;
+            }
+        }
+
+        [Test]
         public void ItRetrievesPlayerGameResultsForEachPlayedGame()
         {
             Assert.Greater(gameDefinition.PlayedGames[0].PlayerGameResults.Count, 0);
