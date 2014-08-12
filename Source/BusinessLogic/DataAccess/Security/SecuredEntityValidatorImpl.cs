@@ -1,4 +1,5 @@
-﻿using BusinessLogic.Models.User;
+﻿using BusinessLogic.Exceptions;
+using BusinessLogic.Models.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,12 +10,12 @@ namespace BusinessLogic.DataAccess.Security
 {
     public class SecuredEntityValidatorImpl<TEntity> : SecuredEntityValidator<TEntity> where TEntity : class
     {
-        internal const string EXCEPTION_MESSAGE_USER_DOES_NOT_HAVE_ACCESS_TO_ENTITY
-           = "User with Id '{0}' is unauthorized to access the given entity of type '{1}'";
         internal const string EXCEPTION_MESSAGE_CURRENT_USER_ID_CANNOT_BE_NULL
            = "currentUser.Id cannot be null";
         internal const string EXCEPTION_MESSAGE_CURRENT_USER_GAMING_GROUP_ID_CANNOT_BE_NULL
             = "currentUser.CurrentGamingGroupId cannot be null";
+        internal const string EXCEPTION_MESSAGE_FRAGMENT_ENTITY_TYPE
+           = "<Unidentifiable entity of type \"{0}\">";
 
         public virtual void ValidateAccess(TEntity entity, ApplicationUser currentUser, Type underlyingEntityType)
         {
@@ -29,10 +30,10 @@ namespace BusinessLogic.DataAccess.Security
 
             if(securedEntity.GamingGroupId != currentUser.CurrentGamingGroupId)
             {
-                string message = string.Format(EXCEPTION_MESSAGE_USER_DOES_NOT_HAVE_ACCESS_TO_ENTITY,
-                    currentUser.Id,
-                    underlyingEntityType.ToString());
-                throw new UnauthorizedAccessException(message);
+                //TODO not sure how to enforce that TEntity is a SingleColumnWithTechnicalKey so I can get the Id, so providing
+                // as much information as I can.
+                string entityIdFragment = string.Format(EXCEPTION_MESSAGE_FRAGMENT_ENTITY_TYPE, underlyingEntityType);
+                throw new UnauthorizedEntityAccessException(currentUser.Id, entityIdFragment);
             }
         }
 

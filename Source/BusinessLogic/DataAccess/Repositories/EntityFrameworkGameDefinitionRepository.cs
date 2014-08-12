@@ -1,4 +1,6 @@
-﻿using BusinessLogic.Models;
+﻿using BusinessLogic.DataAccess.Security;
+using BusinessLogic.Exceptions;
+using BusinessLogic.Models;
 using BusinessLogic.Models.User;
 using System;
 using System.Collections.Generic;
@@ -11,14 +13,15 @@ namespace BusinessLogic.DataAccess.Repositories
     {
         internal const string EXCEPTION_MESSAGE_USER_DOES_NOT_HAVE_ACCESS_TO_GAME_DEFINITION 
             = "User with Id '{0} is unauthorized to access GameDefinition with Id '{1}'";
-        internal const string EXCEPTION_MESSAGE_GAME_DEFINITION_NOT_FOUND
-            = "Game Definition with Id '{0}' not found.";
 
         private DataContext dataContext;
+        private SecuredEntityValidatorFactory securedEntityValidatorFactory;
 
-        public EntityFrameworkGameDefinitionRepository(DataContext dataContext)
+        public EntityFrameworkGameDefinitionRepository(DataContext dataContext, 
+            SecuredEntityValidator<GameDefinition> securedEntityValidator)
         {
             this.dataContext = dataContext;
+            this.securedEntityValidatorFactory = securedEntityValidator;
         }
 
         public virtual List<GameDefinition> GetAllGameDefinitions(ApplicationUser currentUser)
@@ -32,9 +35,7 @@ namespace BusinessLogic.DataAccess.Repositories
             int gameDefinitionId, 
             ApplicationUser currentUser)
         {
-            GameDefinition game = dataContext.GetQueryable<GameDefinition>(currentUser)
-                .Where(gameDefinition => gameDefinition.Id == gameDefinitionId)
-                .FirstOrDefault();
+            GameDefinition game = dataContext.FindById<GameDefinition>(gameDefinitionId, currentUser);
             ValidateGameDefinitionIsFound(gameDefinitionId, game);
 
             ValidateUserHasAccessToGameDefinition(currentUser, game);
@@ -46,8 +47,7 @@ namespace BusinessLogic.DataAccess.Repositories
         {
             if (game == null)
             {
-                string keyNotFoundMessage = string.Format(EXCEPTION_MESSAGE_GAME_DEFINITION_NOT_FOUND, gameDefinitionId);
-                throw new KeyNotFoundException(keyNotFoundMessage);
+                throw new EntityDoesNotExistException(gameDefinitionId);
             }
         }
 

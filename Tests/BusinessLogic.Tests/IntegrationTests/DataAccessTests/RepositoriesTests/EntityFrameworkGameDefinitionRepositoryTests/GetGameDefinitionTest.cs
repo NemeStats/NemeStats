@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.DataAccess.Repositories;
+using BusinessLogic.Exceptions;
 using BusinessLogic.Models;
 using NUnit.Framework;
 using System;
@@ -15,33 +16,29 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
         [Test]
         public void ItThrowsAnUnauthorizedAccessExceptionIfTheCurrentUsersGamingGroupDoesNotMatch()
         {
-            Exception exception = Assert.Throws<UnauthorizedAccessException>(() => gameDefinitionRepository.GetGameDefinition(
-                testGameDefinitionWithOtherGamingGroupId.Id,
-                testUserWithDefaultGamingGroup));
-
-            string message = string.Format(
-                EntityFrameworkGameDefinitionRepository.EXCEPTION_MESSAGE_USER_DOES_NOT_HAVE_ACCESS_TO_GAME_DEFINITION,
+            UnauthorizedEntityAccessException expectedException = new UnauthorizedEntityAccessException(
                 testUserWithDefaultGamingGroup.Id,
                 testGameDefinitionWithOtherGamingGroupId.Id);
 
-            Assert.AreEqual(message, exception.Message);
+            UnauthorizedEntityAccessException actualException = Assert.Throws<UnauthorizedEntityAccessException>(
+                () => gameDefinitionRepository.GetGameDefinition(
+                    testGameDefinitionWithOtherGamingGroupId.Id,
+                    testUserWithDefaultGamingGroup));
+
+            Assert.AreEqual(expectedException.Message, actualException.Message);
         }
 
         [Test]
         public void ItThrowsAKeyNotFoundExceptionIfNoGameDefinitionIsFoundForThatId()
         {
             int invalidId = -1;
+            EntityDoesNotExistException expectedException = new EntityDoesNotExistException(invalidId);
 
-            Exception exception = Assert.Throws<KeyNotFoundException>(() => gameDefinitionRepository.GetGameDefinition(
+            Exception actualException = Assert.Throws<EntityDoesNotExistException>(() => gameDefinitionRepository.GetGameDefinition(
                 invalidId,
-                
                 testUserWithDefaultGamingGroup));
 
-            string message = string.Format(
-                EntityFrameworkGameDefinitionRepository.EXCEPTION_MESSAGE_GAME_DEFINITION_NOT_FOUND,
-                invalidId.ToString());
-
-            Assert.AreEqual(message, exception.Message);
+            Assert.AreEqual(expectedException.Message, actualException.Message);
         }
 
         [Test]
