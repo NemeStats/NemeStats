@@ -93,6 +93,7 @@ namespace UI.Controllers
             if (ModelState.IsValid)
             {
                 dataContext.Save<Player>(player, currentUser);
+                dataContext.CommitAllChanges();
                 return RedirectToAction(MVC.Player.ActionNames.Index);
             }
 
@@ -133,6 +134,7 @@ namespace UI.Controllers
             if (ModelState.IsValid)
             {
                 dataContext.Save<Player>(player, currentUser);
+                dataContext.CommitAllChanges();
                 return RedirectToAction(MVC.Player.ActionNames.Index);
             }
             return View(MVC.Player.Views.Edit, player);
@@ -170,6 +172,7 @@ namespace UI.Controllers
             try
             {
                 dataContext.DeleteById<Player>(id, currentUser);
+                dataContext.CommitAllChanges();
             }catch(UnauthorizedAccessException)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);

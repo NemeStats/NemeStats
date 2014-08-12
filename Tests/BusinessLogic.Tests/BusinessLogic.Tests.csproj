@@ -116,14 +116,12 @@
     <Compile Include="IntegrationTests\DataAccessTests\RepositoriesTests\EntityFrameworkPlayerRepositoryTests\GetAllPlayersIntegrationTests.cs" />
     <Compile Include="IntegrationTests\DataAccessTests\RepositoriesTests\EntityFrameworkPlayerRepositoryTests\GetPlayerDetailsIntegrationTests.cs" />
     <Compile Include="IntegrationTests\DataAccessTests\RepositoriesTests\EntityFrameworkPlayerRepositoryTests\GetPlayerGameResultsWithPlayedGameAndGameDefinitionIntegrationTests.cs" />
-    <Compile Include="IntegrationTests\DataAccessTests\RepositoriesTests\EntityFrameworkPlayerRepositoryTests\GetPlayerIntegrationTests.cs" />
     <Compile Include="IntegrationTests\DataAccessTests\RepositoriesTests\EntityFrameworkPlayerRepositoryTests\GetPlayerStatisticsIntegrationTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UnitTests\DataAccessTests\GamingGroupsTests\EntityFrameworkGamingGroupAccessGranterTests\EntityFrameworkGamingGroupAccessGranterTestBase.cs" />
     <Compile Include="UnitTests\DataAccessTests\RepositoriesTests\EntityFrameworkGamingGroupRepositoryTests\EntityFrameworkGamingGroupRepositoryTestBase.cs" />
     <Compile Include="UnitTests\DataAccessTests\RepositoriesTests\EntityFrameworkGamingGroupRepositoryTests\GetGamingGroupDetailsTests.cs" />
     <Compile Include="UnitTests\DataAccessTests\RepositoriesTests\EntityFrameworkPlayedGameRepositoryTests\CreatePlayedGameTests.cs" />
-    <Compile Include="UnitTests\DataAccessTests\RepositoriesTests\EntityFrameworkPlayerRepositoryTests\GetNemesisTests.cs" />
     <Compile Include="UnitTests\DataAccessTests\RepositoriesTests\EntityFrameworkPlayerRepositoryTests\GetPlayerDetailsTests.cs" />
     <Compile Include="UnitTests\DataAccessTests\SecurityTests\SecuredEntityValidatorTests\ValidateAccessTests.cs" />
     <Compile Include="UnitTests\LogicTests\GameDefinitionsTests\GameDefinitionRetrieverImplTests\GameDefinitionRetrieverImplTestBase.cs" />

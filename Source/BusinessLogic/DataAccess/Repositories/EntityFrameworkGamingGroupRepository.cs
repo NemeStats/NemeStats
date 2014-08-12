@@ -52,7 +52,7 @@ namespace BusinessLogic.DataAccess.Repositories
         {
             ApplicationUser user = dbContext.Users.Where(theUser => theUser.Id == currentUser.Id).FirstOrDefault();
 
-            if(user == null)
+            if (user == null)
             {
                 string exceptionMessage = string.Format(EXCEPTION_MESSAGE_USER_DOES_NOT_EXIST, currentUser.Id);
                 throw new KeyNotFoundException(exceptionMessage);
@@ -61,23 +61,6 @@ namespace BusinessLogic.DataAccess.Repositories
             List<GamingGroupInvitation> invitations = dbContext.GamingGroupInvitations.Where(invitation => invitation.InviteeEmail == user.Email).ToList();
 
             return invitations;
-        }
-
-        public GamingGroup Save(GamingGroup gamingGroup, ApplicationUser currentUser)
-        {
-            if (gamingGroup.AlreadyInDatabase())
-            {
-                ValidateUserHasAccessToGamingGroup(gamingGroup.Id, currentUser);
-                dbContext.Entry(gamingGroup).State = System.Data.Entity.EntityState.Modified;
-            }
-            else
-            {
-                dbContext.GamingGroups.Add(gamingGroup);
-            }
-
-            dbContext.SaveChanges();
-
-            return gamingGroup;
         }
     }
 }

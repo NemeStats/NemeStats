@@ -112,7 +112,6 @@ namespace BusinessLogic.DataAccess
             SecuredEntityValidator<TEntity> validator = securedEntityValidatorFactory.MakeSecuredEntityValidator<TEntity>();
             validator.ValidateAccess(entity, currentUser, typeof(TEntity), UNKNOWN_ENTITY_ID);
             nemeStatsDbContext.Set<TEntity>().Remove(entity);
-            CommitAllChanges();
         }
 
         public virtual DbRawSqlQuery<T> MakeRawSqlQuery<T>(string sql, params object[] parameters)

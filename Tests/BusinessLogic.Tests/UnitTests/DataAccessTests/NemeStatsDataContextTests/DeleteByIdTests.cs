@@ -43,6 +43,7 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.NemeStatsDataContextTest
                 .Return(group);
 
             dataContext.DeleteById<GamingGroup>(id, currentUser);
+            dataContext.CommitAllChanges();
 
             gamingGroupDbSetMock.AssertWasCalled(mock => mock.Remove(group));
         }

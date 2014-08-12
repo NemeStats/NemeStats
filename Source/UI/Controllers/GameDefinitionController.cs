@@ -98,6 +98,7 @@ namespace UI.Controllers
             if (ModelState.IsValid)
             {
                 dataContext.Save(gameDefinition, currentUser);
+                dataContext.CommitAllChanges();
                 return RedirectToAction(MVC.GameDefinition.ActionNames.Index);
             }
 
@@ -136,6 +137,7 @@ namespace UI.Controllers
             if (ModelState.IsValid)
             {
                 dataContext.Save(gamedefinition, currentUser);
+                dataContext.CommitAllChanges();
                 return RedirectToAction(MVC.GameDefinition.ActionNames.Index);
             }
             return View(MVC.GameDefinition.Views.Edit, gamedefinition);
@@ -174,6 +176,7 @@ namespace UI.Controllers
             try
             {
                 dataContext.DeleteById<GameDefinition>(id, currentUser);
+                dataContext.CommitAllChanges();
                 return RedirectToAction(MVC.GameDefinition.ActionNames.Index);
             }catch(UnauthorizedAccessException)
             {

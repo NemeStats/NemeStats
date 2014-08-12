@@ -152,6 +152,7 @@ namespace UI.Controllers
         public virtual ActionResult DeleteConfirmed(int id, ApplicationUser currentUser)
         {
             dataContext.DeleteById<PlayedGame>(id, currentUser);
+            dataContext.CommitAllChanges();
             return RedirectToAction("Index");
         }
 
