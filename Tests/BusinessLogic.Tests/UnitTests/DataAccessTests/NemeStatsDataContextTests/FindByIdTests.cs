@@ -70,7 +70,7 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.NemeStatsDataContextTest
             gameDefinitionDbSetMock.Expect(mock => mock.Find(entityId))
                 .Return(gameDefinition);
 
-            securedEntityValidator.Expect(mock => mock.ValidateAccess(gameDefinition, currentUser, typeof(GameDefinition)))
+            securedEntityValidator.Expect(mock => mock.ValidateAccess(gameDefinition, currentUser, typeof(GameDefinition), entityId))
                 .Throw(new UnauthorizedAccessException());
 
             Exception exception = Assert.Throws<UnauthorizedAccessException>(

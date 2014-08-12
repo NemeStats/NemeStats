@@ -12,6 +12,7 @@ namespace BusinessLogic.DataAccess
     public class NemeStatsDataContext : DataContext
     {
         internal const string CONNECTION_NAME = "DefaultConnection";
+        internal const string UNKNOWN_ENTITY_ID = "<unknown>";
         internal const string EXCEPTION_MESSAGE_CURRENT_GAMING_GROUP_ID_CANNOT_BE_NULL = "currentUser.CurrentGamingGroupId cannot be null";
         internal const string EXCEPTION_MESSAGE_NO_ENTITY_EXISTS_FOR_THIS_ID = "No entity exists for Id '{0}'";
 
@@ -66,7 +67,8 @@ namespace BusinessLogic.DataAccess
             {
                 //TODO update comments to indicate it can throw an exception
                 SecuredEntityValidator<TEntity> validator = securedEntityValidatorFactory.MakeSecuredEntityValidator<TEntity>();
-                validator.ValidateAccess(entity, currentUser, typeof(TEntity));
+                //TODO how do I get this to be able to pull the Id from TEntity?
+                validator.ValidateAccess(entity, currentUser, typeof(TEntity), UNKNOWN_ENTITY_ID);
             }
             else
             {
@@ -105,10 +107,10 @@ namespace BusinessLogic.DataAccess
             }
         }
 
-        public void Delete<TEntity>(TEntity entity, ApplicationUser currentUser) where TEntity : EntityWithTechnicalKey
+        public virtual void Delete<TEntity>(TEntity entity, ApplicationUser currentUser) where TEntity : EntityWithTechnicalKey
         {
             SecuredEntityValidator<TEntity> validator = securedEntityValidatorFactory.MakeSecuredEntityValidator<TEntity>();
-            validator.ValidateAccess(entity, currentUser, typeof(TEntity));
+            validator.ValidateAccess(entity, currentUser, typeof(TEntity), UNKNOWN_ENTITY_ID);
             nemeStatsDbContext.Set<TEntity>().Remove(entity);
             CommitAllChanges();
         }
@@ -125,12 +127,9 @@ namespace BusinessLogic.DataAccess
 
         public virtual void DeleteById<TEntity>(object id, ApplicationUser currentUser) where TEntity : EntityWithTechnicalKey
         {
-            TEntity entityToDelete = nemeStatsDbContext.Set<TEntity>().Find(id);
+            TEntity entityToDelete = FindById<TEntity>(id, currentUser);
 
-            ValidateEntityExists<TEntity>(id, entityToDelete);
-
-            SecuredEntityValidator<TEntity> validator = securedEntityValidatorFactory.MakeSecuredEntityValidator<TEntity>();
-            validator.ValidateAccess(entityToDelete, currentUser, typeof(TEntity));
+            nemeStatsDbContext.Set<TEntity>().Remove(entityToDelete);
         }
 
         private static void ValidateEntityExists<TEntity>(object id, TEntity entityToDelete) where TEntity : EntityWithTechnicalKey
@@ -142,7 +141,7 @@ namespace BusinessLogic.DataAccess
             }
         }
 
-        public TEntity FindById<TEntity>(object id, ApplicationUser currentUser) where TEntity : EntityWithTechnicalKey
+        public virtual TEntity FindById<TEntity>(object id, ApplicationUser currentUser) where TEntity : EntityWithTechnicalKey
         {
             TEntity entity = nemeStatsDbContext.Set<TEntity>().Find(id);
 
@@ -154,7 +153,7 @@ namespace BusinessLogic.DataAccess
 
             //TODO update comments to indicate it can throw an exception
             SecuredEntityValidator<TEntity> validator = securedEntityValidatorFactory.MakeSecuredEntityValidator<TEntity>();
-            validator.ValidateAccess(entity, currentUser, typeof(TEntity));
+            validator.ValidateAccess(entity, currentUser, typeof(TEntity), id);
 
             return entity;
         }

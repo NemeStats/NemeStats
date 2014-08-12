@@ -17,11 +17,11 @@ namespace BusinessLogic.DataAccess.Repositories
         private DataContext dataContext;
         private SecuredEntityValidatorFactory securedEntityValidatorFactory;
 
-        public EntityFrameworkGameDefinitionRepository(DataContext dataContext, 
-            SecuredEntityValidator<GameDefinition> securedEntityValidator)
+        public EntityFrameworkGameDefinitionRepository(DataContext dataContext,
+            SecuredEntityValidatorFactory securedEntityValidatorFactory)
         {
             this.dataContext = dataContext;
-            this.securedEntityValidatorFactory = securedEntityValidator;
+            this.securedEntityValidatorFactory = securedEntityValidatorFactory;
         }
 
         public virtual List<GameDefinition> GetAllGameDefinitions(ApplicationUser currentUser)
@@ -29,38 +29,6 @@ namespace BusinessLogic.DataAccess.Repositories
             return dataContext.GetQueryable<GameDefinition>(currentUser)
                 .Where(game => game.GamingGroupId == currentUser.CurrentGamingGroupId)
                 .ToList();
-        }
-        
-        public virtual GameDefinition GetGameDefinition(
-            int gameDefinitionId, 
-            ApplicationUser currentUser)
-        {
-            GameDefinition game = dataContext.FindById<GameDefinition>(gameDefinitionId, currentUser);
-            ValidateGameDefinitionIsFound(gameDefinitionId, game);
-
-            ValidateUserHasAccessToGameDefinition(currentUser, game);
-
-            return game;
-        }
-
-        private static void ValidateGameDefinitionIsFound(int gameDefinitionId, GameDefinition game)
-        {
-            if (game == null)
-            {
-                throw new EntityDoesNotExistException(gameDefinitionId);
-            }
-        }
-
-        internal virtual void ValidateUserHasAccessToGameDefinition(ApplicationUser currentUser, GameDefinition game)
-        {
-            if (game.GamingGroupId != currentUser.CurrentGamingGroupId)
-            {
-                string notAuthorizedMessage = string.Format(
-                    EXCEPTION_MESSAGE_USER_DOES_NOT_HAVE_ACCESS_TO_GAME_DEFINITION,
-                    currentUser.Id,
-                    game.Id);
-                throw new UnauthorizedAccessException(notAuthorizedMessage);
-            }
         }
     }
 }

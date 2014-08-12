@@ -35,35 +35,16 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.NemeStatsDataContextTest
         }
 
         [Test]
-        public void ItThrowsAKeyNotFoundExceptionIfTheIdDoesntHaveAMatchingEntity()
-        {
-            object emptyId = new object();
-            gamingGroupDbSetMock.Expect(mock => mock.Find(emptyId))
-                .Repeat.Once()
-                .Return(null);
-
-            Exception exception = Assert.Throws<KeyNotFoundException>(
-                () => dataContext.DeleteById<GamingGroup>(emptyId, currentUser));
-
-            string expectedMessage = string.Format(NemeStatsDataContext.EXCEPTION_MESSAGE_NO_ENTITY_EXISTS_FOR_THIS_ID, emptyId);
-            Assert.AreEqual(expectedMessage, exception.Message);
-        }
-
-        [Test]
-        public void ItValidatesThatTheUserHasAccessToDeleteTheEntity()
+        public void ItDeletesTheSpecifiedEntity()
         {
             int id = 1;
             GamingGroup group = new GamingGroup() { Id = id };
-            gamingGroupDbSetMock.Expect(mock => mock.Find(id))
-                .Repeat.Once()
+            dataContext.Expect(mock => mock.FindById<GamingGroup>(id, currentUser))
                 .Return(group);
 
             dataContext.DeleteById<GamingGroup>(id, currentUser);
 
-            securedEntityValidator.AssertWasCalled(mock => mock.ValidateAccess(
-                Arg<GamingGroup>.Is.Same(group), 
-                Arg<ApplicationUser>.Is.Same(currentUser), 
-                Arg<Type>.Is.Equal(typeof(GamingGroup))));
+            gamingGroupDbSetMock.AssertWasCalled(mock => mock.Remove(group));
         }
     }
 }

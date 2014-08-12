@@ -34,5 +34,11 @@ namespace BusinessLogic.DataAccess
 
             base.OnModelCreating(modelBuilder);
         }
+
+        protected override void Dispose(bool disposing)
+        {
+            SaveChanges();
+            base.Dispose(disposing);
+        }
     }
 }

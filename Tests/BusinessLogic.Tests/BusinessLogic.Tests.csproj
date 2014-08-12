@@ -94,7 +94,6 @@
     <Compile Include="IntegrationTests\DataAccessTests\NemeStatsDataContextTests\GetQueryableIntegrationTests.cs" />
     <Compile Include="IntegrationTests\DataAccessTests\RepositoriesTests\EntityFrameworkGameDefinitionRepositoryTests\EntityFrameworkGameDefinitionRepositoryTestBase.cs" />
     <Compile Include="IntegrationTests\DataAccessTests\RepositoriesTests\EntityFrameworkGameDefinitionRepositoryTests\GetAllGamesIntegrationTests.cs" />
-    <Compile Include="IntegrationTests\DataAccessTests\RepositoriesTests\EntityFrameworkGameDefinitionRepositoryTests\GetGameDefinitionTest.cs" />
     <Compile Include="IntegrationTests\DataAccessTests\RepositoriesTests\EntityFrameworkGamingGroupRepositoryTests\EntityFrameworkGamingGroupRepositoryIntegrationTestBase.cs" />
     <Compile Include="IntegrationTests\DataAccessTests\RepositoriesTests\EntityFrameworkGamingGroupRepositoryTests\GetGamingGroupDetailsIntegrationTests.cs" />
     <Compile Include="IntegrationTests\EntityFrameworkGeneralIntegrationTests.cs" />

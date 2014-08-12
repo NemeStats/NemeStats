@@ -1,5 +1,6 @@
 ﻿using BusinessLogic.DataAccess;
 using BusinessLogic.DataAccess.Security;
+using BusinessLogic.Exceptions;
 using BusinessLogic.Models;
 using BusinessLogic.Models.User;
 using NUnit.Framework;
@@ -40,16 +41,14 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.SecurityTests.SecuredEnt
         {
             currentUser.CurrentGamingGroupId = 999999;
             Type stringType = typeof(string);
+            UnauthorizedEntityAccessException expectedException = new UnauthorizedEntityAccessException(currentUser.Id,
+                stringType,
+                string.Empty);
 
-            Exception exception = Assert.Throws<UnauthorizedAccessException>(
-                () => securedEntityValidatorForSecuredEntity.ValidateAccess(securedEntity, currentUser, stringType));
+            UnauthorizedEntityAccessException exception = Assert.Throws<UnauthorizedEntityAccessException>(
+                () => securedEntityValidatorForSecuredEntity.ValidateAccess(securedEntity, currentUser, stringType, string.Empty));
 
-            string message = string.Format(
-                "XXX",//SecuredEntityValidatorImpl<SecuredEntityWithTechnicalKey>.EXCEPTION_MESSAGE_USER_DOES_NOT_HAVE_ACCESS_TO_ENTITY,
-                currentUser.Id,
-                stringType
-                );
-            Assert.AreEqual(message, exception.Message);
+            Assert.AreEqual(expectedException.Message, exception.Message);
         }
 
         [Test]
@@ -58,7 +57,8 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.SecurityTests.SecuredEnt
             securedEntityValidatorForEntityThatIsNotSecured.ValidateAccess(
                 "some object that doesnt extend SecuredEntityWithTechnicalKey", 
                 currentUser, 
-                typeof(string));
+                typeof(string),
+                string.Empty);
         }
 
         [Test]
@@ -69,21 +69,30 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.SecurityTests.SecuredEnt
             securedEntityValidatorForEntityThatIsNotSecured.ValidateAccess(
                 securedEntity,
                 currentUser,
-                typeof(string));
+                typeof(string),
+                string.Empty);
         }
 
         [Test]
         public void ItThrowsAnArgumentNullExceptionIfTheCurrentUserIsNullAndTheEntityIsSecured()
         {
             Exception exception = Assert.Throws<ArgumentNullException>(
-                () => securedEntityValidatorForSecuredEntity.ValidateAccess(securedEntity, null, typeof(string)));
+                () => securedEntityValidatorForSecuredEntity.ValidateAccess(
+                    securedEntity, 
+                    null, 
+                    typeof(string), 
+                    string.Empty));
         }
 
         [Test]
         public void ItThrowsAnArgumentExceptionIfTheGamingGroupIdIsNullAndTheEntityIsSecured()
         {
             Exception exception = Assert.Throws<ArgumentException>(
-                () => securedEntityValidatorForSecuredEntity.ValidateAccess(securedEntity, new ApplicationUser(), typeof(string)));
+                () => securedEntityValidatorForSecuredEntity.ValidateAccess(
+                    securedEntity, 
+                    new ApplicationUser(), 
+                    typeof(string), 
+                    string.Empty));
 
             Assert.AreEqual(
                 SecuredEntityValidatorImpl<SecuredEntityWithTechnicalKey>.EXCEPTION_MESSAGE_CURRENT_USER_GAMING_GROUP_ID_CANNOT_BE_NULL, 
