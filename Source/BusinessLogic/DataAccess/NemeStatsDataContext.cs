@@ -141,5 +141,22 @@ namespace BusinessLogic.DataAccess
                 throw new KeyNotFoundException(message);
             }
         }
+
+        public TEntity FindById<TEntity>(object id, ApplicationUser currentUser) where TEntity : EntityWithTechnicalKey
+        {
+            TEntity entity = nemeStatsDbContext.Set<TEntity>().Find(id);
+
+            if (entity == null)
+            {
+                string exceptionMessage = string.Format(EXCEPTION_MESSAGE_NO_ENTITY_EXISTS_FOR_THIS_ID, id);
+                throw new KeyNotFoundException(exceptionMessage);
+            }
+
+            //TODO update comments to indicate it can throw an exception
+            SecuredEntityValidator<TEntity> validator = securedEntityValidatorFactory.MakeSecuredEntityValidator<TEntity>();
+            validator.ValidateAccess(entity, currentUser, typeof(TEntity));
+
+            return entity;
+        }
     }
 }

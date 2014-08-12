@@ -13,7 +13,7 @@ namespace BusinessLogic.DataAccess
         void CommitAllChanges();
         DbRawSqlQuery<T> MakeRawSqlQuery<T>(string sql, params object[] parameters);
         IQueryable<TEntity> GetQueryable<TEntity>(ApplicationUser currentUser) where TEntity : EntityWithTechnicalKey;
-
+        TEntity FindById<TEntity>(object id, ApplicationUser currentUser) where TEntity : EntityWithTechnicalKey;
         TEntity Save<TEntity>(TEntity entity, ApplicationUser currentUser) where TEntity : EntityWithTechnicalKey;
         void Delete<TEntity>(TEntity entity, ApplicationUser currentUser) where TEntity : EntityWithTechnicalKey;
         void DeleteById<TEntity>(object id, ApplicationUser currentUser) where TEntity : EntityWithTechnicalKey;
