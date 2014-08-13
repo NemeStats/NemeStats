@@ -18,7 +18,8 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
         protected GamingGroupToGamingGroupViewModelTransformation gamingGroupToGamingGroupViewModelTransformationMock;
         protected GamingGroupController gamingGroupController;
         protected GamingGroupAccessGranter gamingGroupAccessGranterMock;
-        protected GamingGroupCreator gamingGroupCreator;
+        protected GamingGroupCreator gamingGroupCreatorMock;
+        protected GamingGroupRetriever gamingGroupRetrieverMock;
         protected ApplicationUser currentUser;
 
         [SetUp]
@@ -28,13 +29,15 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
             gamingGroupRepositoryMock = MockRepository.GenerateMock<GamingGroupRepository>();
             gamingGroupToGamingGroupViewModelTransformationMock = MockRepository.GenerateMock<GamingGroupToGamingGroupViewModelTransformation>();
             gamingGroupAccessGranterMock = MockRepository.GenerateMock<GamingGroupAccessGranter>();
-            gamingGroupCreator = MockRepository.GenerateMock<GamingGroupCreator>();
+            gamingGroupCreatorMock = MockRepository.GenerateMock<GamingGroupCreator>();
+            gamingGroupRetrieverMock = MockRepository.GenerateMock<GamingGroupRetriever>();
             gamingGroupController = new GamingGroupController(
                 dataContext, 
                 gamingGroupToGamingGroupViewModelTransformationMock, 
                 gamingGroupRepositoryMock,
                 gamingGroupAccessGranterMock,
-                gamingGroupCreator);
+                gamingGroupCreatorMock,
+                gamingGroupRetrieverMock);
             currentUser = new ApplicationUser()
             {
                 Id = "user  id",

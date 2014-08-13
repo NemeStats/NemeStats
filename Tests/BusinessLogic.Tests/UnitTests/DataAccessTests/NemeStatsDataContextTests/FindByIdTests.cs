@@ -47,19 +47,16 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.NemeStatsDataContextTest
         }
 
         [Test]
-        public void ItThrowsAKeyNotFoundExceptionIfTheEntityDoesntExist()
+        public void ItValidatesThatTheEntityExists()
         {
-            int invalidEntityId = -1;
-            gameDefinitionDbSetMock.Expect(mock => mock.Find(invalidEntityId))
-                .Return(null);
+            int entityId = 1;
+            GameDefinition gameDefinition = new GameDefinition() { Id = entityId };
+            gameDefinitionDbSetMock.Expect(mock => mock.Find(entityId))
+                .Return(gameDefinition);
 
-            Exception exception = Assert.Throws<KeyNotFoundException>(
-                () => dataContext.FindById<GameDefinition>(invalidEntityId, currentUser));
+            dataContext.FindById<GameDefinition>(entityId, currentUser);
 
-            string expectedMessage = string.Format(
-                NemeStatsDataContext.EXCEPTION_MESSAGE_NO_ENTITY_EXISTS_FOR_THIS_ID,
-                invalidEntityId);
-            Assert.AreEqual(expectedMessage, exception.Message);
+            dataContext.AssertWasCalled(mock => mock.ValidateEntityExists<GameDefinition>(entityId, gameDefinition));
         }
 
         [Test]

@@ -108,6 +108,8 @@
     <Compile Include="Logic\GameDefinitions\GameDefinitionRetrieverImpl.cs" />
     <Compile Include="Logic\GamingGroups\GamingGroupCreator.cs" />
     <Compile Include="Logic\GamingGroups\GamingGroupCreatorImpl.cs" />
+    <Compile Include="Logic\GamingGroups\GamingGroupRetriever.cs" />
+    <Compile Include="Logic\GamingGroups\GamingGroupRetrieverImpl.cs" />
     <Compile Include="Logic\Points\GordonPoints.cs" />
     <Compile Include="Logic\Users\GamingGroupInviteConsumer.cs" />
     <Compile Include="Logic\Users\GamingGroupInviteConsumerImpl.cs" />

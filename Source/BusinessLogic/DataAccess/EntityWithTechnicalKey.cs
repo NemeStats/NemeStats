@@ -11,7 +11,7 @@ namespace BusinessLogic.DataAccess
     {
         public abstract T Id { get; set; }
 
-        public override bool AlreadyInDatabase()
+        public bool AlreadyInDatabase()
         {
             if(Id == null)
             {
@@ -22,8 +22,8 @@ namespace BusinessLogic.DataAccess
         }
     }
 
-    public abstract class EntityWithTechnicalKey
+    public interface EntityWithTechnicalKey
     {
-        public abstract bool AlreadyInDatabase();
+        bool AlreadyInDatabase();
     }
 }

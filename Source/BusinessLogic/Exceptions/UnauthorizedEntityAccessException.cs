@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BusinessLogic.Exceptions
 {
-    public class UnauthorizedEntityAccessException : Exception
+    public class UnauthorizedEntityAccessException : UnauthorizedAccessException
     {
         internal const string EXCEPTION_MESSAGE_FORMAT = "User with Id '{0}' does not have access to entity of type '{1}' with Id '{2}";
 

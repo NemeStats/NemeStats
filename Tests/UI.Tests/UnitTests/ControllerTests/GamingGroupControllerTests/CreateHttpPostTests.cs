@@ -30,7 +30,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
 
             await gamingGroupController.Create(gamingGroupName, currentUser);
 
-            gamingGroupCreator.AssertWasCalled(mock => mock.CreateGamingGroupAsync(gamingGroupName, currentUser));
+            gamingGroupCreatorMock.AssertWasCalled(mock => mock.CreateGamingGroupAsync(gamingGroupName, currentUser));
         }
     }
 }

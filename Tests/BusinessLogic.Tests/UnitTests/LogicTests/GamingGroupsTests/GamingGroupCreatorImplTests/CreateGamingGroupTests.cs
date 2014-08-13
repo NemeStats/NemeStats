@@ -12,7 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroupCreatorTests
+namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroupCreatorImplTests
 {
     [TestFixture, Ignore("Freezing up on async calls. Need to figure this out. and re-enable tests.")]
     public class CreateGamingGroupTests

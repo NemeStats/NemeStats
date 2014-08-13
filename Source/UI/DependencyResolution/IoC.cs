@@ -69,6 +69,7 @@ namespace UI.DependencyResolution {
                             x.For<GameDefinitionToGameDefinitionViewModelTransformation>()
                                 .Use<GameDefinitionToGameDefinitionViewModelTransformationImpl>();
                             x.For<ShowingXResultsMessageBuilder>().Use<ShowingXResultsMessageBuilderImpl>();
+                            x.For<GamingGroupRetriever>().Use<GamingGroupRetrieverImpl>();
                             //TODO finish implementing http://lostechies.com/jimmybogard/2010/05/03/dependency-injection-in-asp-net-mvc-filters/
                             //x.For<IActionInvoker>().Use<InjectingActionInvoker>();
                         });

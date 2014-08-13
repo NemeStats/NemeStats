@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BusinessLogic.Exceptions
 {
-    public class EntityDoesNotExistException : Exception
+    public class EntityDoesNotExistException : KeyNotFoundException
     {
         internal const string EXCEPTION_MESSAGE_FORMAT = "Entity with Id {0} does not exist.";
 

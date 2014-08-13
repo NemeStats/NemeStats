@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.DataAccess.Security;
+using BusinessLogic.Exceptions;
 using BusinessLogic.Models.User;
 using System;
 using System.Collections.Generic;
@@ -39,7 +40,7 @@ namespace BusinessLogic.DataAccess
             nemeStatsDbContext.SaveChanges();
         }
 
-        public virtual IQueryable<TEntity> GetQueryable<TEntity>(ApplicationUser currentUser) where TEntity : EntityWithTechnicalKey
+        public virtual IQueryable<TEntity> GetQueryable<TEntity>(ApplicationUser currentUser) where TEntity : class, EntityWithTechnicalKey
         {
             //TODO this doesn't apear to be doing anything even though it compiles. Want to filter on gaming group ID automatically
             // when appropriate
@@ -59,7 +60,7 @@ namespace BusinessLogic.DataAccess
             return entity;
         }
         //TODO If the passed in TEntity that is new, the Id will not be set until SaveChanges is called
-        public virtual TEntity Save<TEntity>(TEntity entity, ApplicationUser currentUser) where TEntity : EntityWithTechnicalKey
+        public virtual TEntity Save<TEntity>(TEntity entity, ApplicationUser currentUser) where TEntity : class, EntityWithTechnicalKey
         {
             ValidateArguments<TEntity>(entity, currentUser);
 
@@ -94,7 +95,8 @@ namespace BusinessLogic.DataAccess
             }
         }
 
-        private static void SetGamingGroupIdIfEntityIsSecured<TEntity>(TEntity entity, ApplicationUser currentUser) where TEntity : EntityWithTechnicalKey
+        private static void SetGamingGroupIdIfEntityIsSecured<TEntity>(TEntity entity, ApplicationUser currentUser) 
+            where TEntity : class, EntityWithTechnicalKey
         {
             if (typeof(SecuredEntityWithTechnicalKey).IsAssignableFrom(typeof(TEntity)))
             {
@@ -107,7 +109,7 @@ namespace BusinessLogic.DataAccess
             }
         }
 
-        public virtual void Delete<TEntity>(TEntity entity, ApplicationUser currentUser) where TEntity : EntityWithTechnicalKey
+        public virtual void Delete<TEntity>(TEntity entity, ApplicationUser currentUser) where TEntity : class, EntityWithTechnicalKey
         {
             SecuredEntityValidator<TEntity> validator = securedEntityValidatorFactory.MakeSecuredEntityValidator<TEntity>();
             validator.ValidateAccess(entity, currentUser, typeof(TEntity), UNKNOWN_ENTITY_ID);
@@ -124,31 +126,26 @@ namespace BusinessLogic.DataAccess
             nemeStatsDbContext.Dispose();
         }
 
-        public virtual void DeleteById<TEntity>(object id, ApplicationUser currentUser) where TEntity : EntityWithTechnicalKey
+        public virtual void DeleteById<TEntity>(object id, ApplicationUser currentUser) where TEntity : class, EntityWithTechnicalKey
         {
             TEntity entityToDelete = FindById<TEntity>(id, currentUser);
 
             nemeStatsDbContext.Set<TEntity>().Remove(entityToDelete);
         }
 
-        private static void ValidateEntityExists<TEntity>(object id, TEntity entityToDelete) where TEntity : EntityWithTechnicalKey
+        internal virtual void ValidateEntityExists<TEntity>(object id, TEntity entity) where TEntity : class, EntityWithTechnicalKey
         {
-            if (entityToDelete == null)
+            if (entity == null)
             {
-                string message = string.Format(EXCEPTION_MESSAGE_NO_ENTITY_EXISTS_FOR_THIS_ID, id);
-                throw new KeyNotFoundException(message);
+                throw new EntityDoesNotExistException(id);
             }
         }
 
-        public virtual TEntity FindById<TEntity>(object id, ApplicationUser currentUser) where TEntity : EntityWithTechnicalKey
+        public virtual TEntity FindById<TEntity>(object id, ApplicationUser currentUser) where TEntity : class, EntityWithTechnicalKey
         {
             TEntity entity = nemeStatsDbContext.Set<TEntity>().Find(id);
 
-            if (entity == null)
-            {
-                string exceptionMessage = string.Format(EXCEPTION_MESSAGE_NO_ENTITY_EXISTS_FOR_THIS_ID, id);
-                throw new KeyNotFoundException(exceptionMessage);
-            }
+            ValidateEntityExists(id, entity);
 
             //TODO update comments to indicate it can throw an exception
             SecuredEntityValidator<TEntity> validator = securedEntityValidatorFactory.MakeSecuredEntityValidator<TEntity>();
