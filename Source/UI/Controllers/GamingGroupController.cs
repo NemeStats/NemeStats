@@ -21,7 +21,6 @@ namespace UI.Controllers
     {
         internal DataContext dataContext;
         internal GamingGroupToGamingGroupViewModelTransformation gamingGroupToGamingGroupViewModelTransformation;
-        internal GamingGroupRepository gamingGroupRepository;
         internal GamingGroupAccessGranter gamingGroupAccessGranter;
         internal GamingGroupCreator gamingGroupCreator;
         internal GamingGroupRetriever gamingGroupRetriever;
@@ -29,14 +28,12 @@ namespace UI.Controllers
         public GamingGroupController(
             DataContext dataContext,
             GamingGroupToGamingGroupViewModelTransformation gamingGroupToGamingGroupViewModelTransformation,
-            GamingGroupRepository gamingGroupRespository,
             GamingGroupAccessGranter gamingGroupAccessGranter,
             GamingGroupCreator gamingGroupCreator,
             GamingGroupRetriever gamingGroupRetriever)
         {
             this.dataContext = dataContext;
             this.gamingGroupToGamingGroupViewModelTransformation = gamingGroupToGamingGroupViewModelTransformation;
-            this.gamingGroupRepository = gamingGroupRespository;
             this.gamingGroupAccessGranter = gamingGroupAccessGranter;
             this.gamingGroupCreator = gamingGroupCreator;
             this.gamingGroupRetriever = gamingGroupRetriever;

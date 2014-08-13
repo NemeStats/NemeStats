@@ -16,7 +16,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
     public class GetGamingGroupDetailsTests
     {
         protected GamingGroupRetrieverImpl gamingGroupRetriever;
-        protected DataContext dataContext;
+        protected DataContext dataContextMock;
         protected ApplicationUser currentUser;
         protected GamingGroup expectedGamingGroup;
         protected GamingGroupInvitation expectedGamingGroupInvitation;
@@ -26,26 +26,34 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
         [SetUp]
         public void SetUp()
         {
-            dataContext = MockRepository.GenerateMock<DataContext>();
-            gamingGroupRetriever = new GamingGroupRetrieverImpl(dataContext);
+            dataContextMock = MockRepository.GenerateMock<DataContext>();
+            gamingGroupRetriever = new GamingGroupRetrieverImpl(dataContextMock);
 
-            currentUser = new ApplicationUser() { Id = "application user" };
+            currentUser = new ApplicationUser() { Id = "application user", UserName = "user name" };
             expectedGamingGroup = new GamingGroup() { Id = gamingGroupId, OwningUserId = currentUser.Id };
 
-            dataContext.Expect(mock => mock.FindById<GamingGroup>(gamingGroupId, currentUser))
+            dataContextMock.Expect(mock => mock.FindById<GamingGroup>(gamingGroupId, currentUser))
                 .Return(expectedGamingGroup);
 
             List<ApplicationUser> applicationUsers = new List<ApplicationUser>();
             applicationUsers.Add(currentUser);
 
-            dataContext.Expect(mock => mock.GetQueryable<ApplicationUser>(currentUser))
+            dataContextMock.Expect(mock => mock.GetQueryable<ApplicationUser>(currentUser))
                 .Return(applicationUsers.AsQueryable());
 
             List<GamingGroupInvitation> gamingGroupInvitations = new List<GamingGroupInvitation>();
-            expectedGamingGroupInvitation = new GamingGroupInvitation() { GamingGroupId = expectedGamingGroup.Id };
+            expectedGamingGroupInvitation = new GamingGroupInvitation() 
+            { 
+                GamingGroupId = expectedGamingGroup.Id, 
+                RegisteredUserId = currentUser.Id 
+            };
+            
             gamingGroupInvitations.Add(expectedGamingGroupInvitation);
-            dataContext.Expect(mock => mock.GetQueryable<GamingGroupInvitation>(currentUser))
+            dataContextMock.Expect(mock => mock.GetQueryable<GamingGroupInvitation>(currentUser))
                 .Return(gamingGroupInvitations.AsQueryable());
+
+            dataContextMock.Expect(mock => mock.GetQueryable<ApplicationUser>(currentUser))
+                .Return(applicationUsers.AsQueryable());
         }
 
         [Test]
@@ -70,6 +78,20 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
             GamingGroup actualGamingGroup = gamingGroupRetriever.GetGamingGroupDetails(gamingGroupId, currentUser);
 
             Assert.AreSame(expectedGamingGroup.GamingGroupInvitations[0], actualGamingGroup.GamingGroupInvitations[0]);
+        }
+        
+        [Test]
+        public void ItReturnsTheRegisteredUserNameOfAnyUsersThatRegistered()
+        {
+            GamingGroup actualGamingGroup = gamingGroupRetriever.GetGamingGroupDetails(gamingGroupId, currentUser);
+
+            foreach(GamingGroupInvitation invitation in actualGamingGroup.GamingGroupInvitations)
+            {
+                if(!string.IsNullOrEmpty(invitation.RegisteredUserId))
+                {
+                    Assert.NotNull(invitation.RegisteredUser);
+                }
+            }
         }
     }
 }

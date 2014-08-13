@@ -1,6 +1,7 @@
 ﻿using BusinessLogic.DataAccess;
 using BusinessLogic.DataAccess.GamingGroups;
 using BusinessLogic.DataAccess.Repositories;
+using BusinessLogic.Logic.GamingGroups;
 using BusinessLogic.Logic.Users;
 using BusinessLogic.Models;
 using BusinessLogic.Models.User;
@@ -19,7 +20,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.GamingGroupInviteC
     public class AddUserToInvitedGroupTests
     {
         private NemeStatsDbContext dbContextMock;
-        private GamingGroupRepository gamingGroupRepositoryMock;
+        private PendingGamingGroupInvitationRetriever pendingGamingGroupInvitationRetriever;
         private IUserStore<ApplicationUser> userStoreMock;
         private UserManager<ApplicationUser> userManager;
         private GamingGroupInviteConsumerImpl inviteConsumer;
@@ -32,11 +33,11 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.GamingGroupInviteC
         public void SetUp()
         {
             dbContextMock = MockRepository.GenerateMock<NemeStatsDbContext>();
-            gamingGroupRepositoryMock = MockRepository.GenerateMock<GamingGroupRepository>();
+            pendingGamingGroupInvitationRetriever = MockRepository.GenerateMock<PendingGamingGroupInvitationRetriever>();
             userStoreMock = MockRepository.GenerateMock<IUserStore<ApplicationUser>>();
             userManager = new UserManager<ApplicationUser>(userStoreMock);
             gamingGroupAccessGranter = MockRepository.GenerateMock<GamingGroupAccessGranter>();
-            inviteConsumer = new GamingGroupInviteConsumerImpl(gamingGroupRepositoryMock, userManager, gamingGroupAccessGranter);
+            inviteConsumer = new GamingGroupInviteConsumerImpl(pendingGamingGroupInvitationRetriever, userManager, gamingGroupAccessGranter);
             currentUser = new ApplicationUser()
             {
                 Id = "user id"
@@ -48,7 +49,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.GamingGroupInviteC
         [Test]
         public async Task ItReturnsNullIfThereAreNoInvitesForTheGivenUser()
         {
-            gamingGroupRepositoryMock.Expect(mock => mock.GetPendingGamingGroupInvitations(currentUser))
+            pendingGamingGroupInvitationRetriever.Expect(mock => mock.GetPendingGamingGroupInvitations(currentUser))
                 .Repeat.Once()
                 .Return(gamingGroupInvitations);
             int? gamingGroupId = await inviteConsumer.AddUserToInvitedGroupAsync(currentUser);

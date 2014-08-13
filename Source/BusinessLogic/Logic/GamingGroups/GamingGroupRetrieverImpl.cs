@@ -30,7 +30,26 @@ namespace BusinessLogic.Logic.GamingGroups
                 .Where(invitation => invitation.GamingGroupId == gamingGroup.Id)
                 .ToList();
 
+            SetRegisteredUserInfo(currentUser, gamingGroup);
+
             return gamingGroup;
+        }
+
+        private void SetRegisteredUserInfo(ApplicationUser currentUser, GamingGroup gamingGroup)
+        {
+            List<string> registeredUserIds = (from gamingGroupInvitation in gamingGroup.GamingGroupInvitations
+                                              select gamingGroupInvitation.RegisteredUserId).ToList();
+
+            List<ApplicationUser> registeredUsers = dataContext.GetQueryable<ApplicationUser>(currentUser)
+                .Where(user => registeredUserIds.Contains(user.Id))
+                .ToList();
+
+            foreach (GamingGroupInvitation gamingGroupInvitation in gamingGroup.GamingGroupInvitations)
+            {
+                gamingGroupInvitation.RegisteredUser = registeredUsers
+                    .Where(user => user.Id == gamingGroupInvitation.RegisteredUserId)
+                    .FirstOrDefault();
+            }
         }
     }
 }

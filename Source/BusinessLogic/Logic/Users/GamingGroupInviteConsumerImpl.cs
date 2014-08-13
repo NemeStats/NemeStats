@@ -1,6 +1,7 @@
 ﻿using BusinessLogic.DataAccess;
 using BusinessLogic.DataAccess.GamingGroups;
 using BusinessLogic.DataAccess.Repositories;
+using BusinessLogic.Logic.GamingGroups;
 using BusinessLogic.Models;
 using BusinessLogic.Models.User;
 using Microsoft.AspNet.Identity;
@@ -14,16 +15,16 @@ namespace BusinessLogic.Logic.Users
 {
     public class GamingGroupInviteConsumerImpl : GamingGroupInviteConsumer
     {
-        private GamingGroupRepository gamingGroupRepository;
+        private PendingGamingGroupInvitationRetriever pendingGamingGroupRetriever;
         private GamingGroupAccessGranter gamingGroupAccessGranter;
         private UserManager<ApplicationUser> userManager;
 
         public GamingGroupInviteConsumerImpl(
-            GamingGroupRepository gamingGroupRepository, 
+            PendingGamingGroupInvitationRetriever pendingGamingGroupRetriever, 
             UserManager<ApplicationUser> userManager,
             GamingGroupAccessGranter gamingGroupAccessGranter)
         {
-            this.gamingGroupRepository = gamingGroupRepository;
+            this.pendingGamingGroupRetriever = pendingGamingGroupRetriever;
             this.userManager = userManager;
             this.gamingGroupAccessGranter = gamingGroupAccessGranter;
         }
@@ -31,7 +32,7 @@ namespace BusinessLogic.Logic.Users
         public async Task<int?> AddUserToInvitedGroupAsync(ApplicationUser currentUser)
         {
             IList<GamingGroupInvitation> gamingGroupInvitations 
-                = gamingGroupRepository.GetPendingGamingGroupInvitations(currentUser);
+                = pendingGamingGroupRetriever.GetPendingGamingGroupInvitations(currentUser);
             
             if(gamingGroupInvitations.Count == 0)
             {

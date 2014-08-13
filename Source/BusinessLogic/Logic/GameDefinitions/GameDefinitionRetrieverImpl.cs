@@ -37,7 +37,10 @@ namespace BusinessLogic.Logic.GameDefinitions
             return gameDefinition;
         }
 
-        private IList<PlayedGame> AddPlayedGamesToTheGameDefinition(int numberOfPlayedGamesToRetrieve, ApplicationUser currentUser, GameDefinition gameDefinition)
+        private IList<PlayedGame> AddPlayedGamesToTheGameDefinition(
+            int numberOfPlayedGamesToRetrieve, 
+            ApplicationUser currentUser, 
+            GameDefinition gameDefinition)
         {
             IList<PlayedGame> playedGames = dataContext.GetQueryable<PlayedGame>(currentUser)
                 .Where(playedGame => playedGame.GameDefinitionId == gameDefinition.Id)

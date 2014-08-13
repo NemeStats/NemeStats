@@ -14,7 +14,6 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
     public class GamingGroupControllerTestBase
     {
         protected DataContext dataContext;
-        protected GamingGroupRepository gamingGroupRepositoryMock;
         protected GamingGroupToGamingGroupViewModelTransformation gamingGroupToGamingGroupViewModelTransformationMock;
         protected GamingGroupController gamingGroupController;
         protected GamingGroupAccessGranter gamingGroupAccessGranterMock;
@@ -26,7 +25,6 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
         public void SetUp()
         {
             dataContext = MockRepository.GenerateMock<DataContext>();
-            gamingGroupRepositoryMock = MockRepository.GenerateMock<GamingGroupRepository>();
             gamingGroupToGamingGroupViewModelTransformationMock = MockRepository.GenerateMock<GamingGroupToGamingGroupViewModelTransformation>();
             gamingGroupAccessGranterMock = MockRepository.GenerateMock<GamingGroupAccessGranter>();
             gamingGroupCreatorMock = MockRepository.GenerateMock<GamingGroupCreator>();
@@ -34,7 +32,6 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
             gamingGroupController = new GamingGroupController(
                 dataContext, 
                 gamingGroupToGamingGroupViewModelTransformationMock, 
-                gamingGroupRepositoryMock,
                 gamingGroupAccessGranterMock,
                 gamingGroupCreatorMock,
                 gamingGroupRetrieverMock);
