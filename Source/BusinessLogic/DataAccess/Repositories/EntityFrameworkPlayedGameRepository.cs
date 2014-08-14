@@ -28,7 +28,8 @@ namespace BusinessLogic.DataAccess.Repositories
                 .Where(playedGame => playedGame.Id == playedGameId
                     && playedGame.GamingGroupId == currentUser.CurrentGamingGroupId)
                     .Include(playedGame => playedGame.GameDefinition)
-                    .Include(playedGame => playedGame.PlayerGameResults)
+                    .Include(playedGame => playedGame.PlayerGameResults
+                        .Select(playerGameResult => playerGameResult.Player))
                     .FirstOrDefault();   
         }
 
