@@ -19,6 +19,7 @@ namespace BusinessLogic.Tests.IntegrationTests
         protected SecuredEntityValidatorFactory securedEntityValidatorFactory = new SecuredEntityValidatorFactory();
         protected List<PlayedGame> testPlayedGames = new List<PlayedGame>();
         protected GameDefinition testGameDefinition;
+        protected GameDefinition testGameDefinition2;
         protected GameDefinition testGameDefinitionWithOtherGamingGroupId;
         protected ApplicationUser testUserWithDefaultGamingGroup;
         protected ApplicationUser testUserWithOtherGamingGroup;
@@ -38,6 +39,7 @@ namespace BusinessLogic.Tests.IntegrationTests
         protected Player testPlayer7WithOtherGamingGroupId;
         protected string testPlayer7Name = "testPlayer7";
         protected string testGameName = "this is test game definition name";
+        protected string testGameName2 = "aaa - game definition that should sort first";
         protected string testGameNameForGameWithOtherGamingGroupId = "this is test game definition name for game with other GamingGroupId";
         protected string testGameDescription = "this is a test game description 123abc";
         protected string testApplicationUserNameForUserWithDefaultGamingGroup = "username with default gaming group";
@@ -81,6 +83,7 @@ namespace BusinessLogic.Tests.IntegrationTests
 
 
                     testGameDefinition = SaveGameDefinition(nemeStatsDbContext, testGamingGroup.Id, testGameName);
+                    testGameDefinition2 = SaveGameDefinition(nemeStatsDbContext, testGamingGroup.Id, testGameName2);
                     testGameDefinitionWithOtherGamingGroupId = SaveGameDefinition(nemeStatsDbContext, testOtherGamingGroup.Id, testGameNameForGameWithOtherGamingGroupId);
                     SavePlayers(nemeStatsDbContext, testGamingGroup.Id, testOtherGamingGroup.Id);
 
@@ -208,7 +211,7 @@ namespace BusinessLogic.Tests.IntegrationTests
 
         private GameDefinition SaveGameDefinition(NemeStatsDbContext nemeStatsDbContext, int gamingGroupId, string gameDefinitionName)
         {
-            GameDefinition gameDefinition = new GameDefinition() { Name = testGameName, Description = testGameDescription, GamingGroupId = gamingGroupId };
+            GameDefinition gameDefinition = new GameDefinition() { Name = gameDefinitionName, Description = testGameDescription, GamingGroupId = gamingGroupId };
             nemeStatsDbContext.GameDefinitions.Add(gameDefinition);
             nemeStatsDbContext.SaveChanges();
 
@@ -274,6 +277,7 @@ namespace BusinessLogic.Tests.IntegrationTests
                 CleanUpPlayerGameResults(nemeStatsDbContext);
                 CleanUpPlayedGames(nemeStatsDbContext);
                 CleanUpGameDefinitions(nemeStatsDbContext, testGameName);
+                CleanUpGameDefinitions(nemeStatsDbContext, testGameName2);
                 CleanUpGameDefinitions(nemeStatsDbContext, testGameNameForGameWithOtherGamingGroupId);
                 CleanUpPlayers(nemeStatsDbContext);
                 CleanUpGamingGroup(testGamingGroup1Name, nemeStatsDbContext);

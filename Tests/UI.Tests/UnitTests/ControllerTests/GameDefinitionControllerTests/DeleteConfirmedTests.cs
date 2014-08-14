@@ -36,7 +36,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
 
             gameDefinitionControllerPartialMock.DeleteConfirmed(gameDefinitionId, currentUser);
 
-            gameDefinitionRepository.VerifyAllExpectations();
+            gameDefinitionRetrieverMock.VerifyAllExpectations();
         }
 
         [Test]

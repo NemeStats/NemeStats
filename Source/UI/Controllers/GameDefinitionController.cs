@@ -25,18 +25,15 @@ namespace UI.Controllers
         internal const int NUMBER_OF_RECENT_GAMES_TO_SHOW = 5;
 
         internal DataContext dataContext;
-        internal GameDefinitionRepository gameDefinitionRepository;
         internal GameDefinitionRetriever gameDefinitionRetriever;
         internal GameDefinitionToGameDefinitionViewModelTransformation gameDefinitionTransformation;
         internal ShowingXResultsMessageBuilder showingXResultsMessageBuilder;
 
-        public GameDefinitionController(DataContext dataContext, 
-            GameDefinitionRepository gameDefinitionRepository, 
+        public GameDefinitionController(DataContext dataContext,
             GameDefinitionRetriever gameDefinitionRetriever,
             GameDefinitionToGameDefinitionViewModelTransformation gameDefinitionTransformation,
             ShowingXResultsMessageBuilder showingXResultsMessageBuilder)
         {
-            this.gameDefinitionRepository = gameDefinitionRepository;
             this.dataContext = dataContext;
             this.gameDefinitionRetriever = gameDefinitionRetriever;
             this.gameDefinitionTransformation = gameDefinitionTransformation;
@@ -47,7 +44,7 @@ namespace UI.Controllers
         [UserContextAttribute]
         public virtual ActionResult Index(ApplicationUser currentUser)
         {
-            List<GameDefinition> games = gameDefinitionRepository.GetAllGameDefinitions(currentUser);
+            IList<GameDefinition> games = gameDefinitionRetriever.GetAllGameDefinitions(currentUser);
             return View(MVC.GameDefinition.Views.Index, games);
         }
 

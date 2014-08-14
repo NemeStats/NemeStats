@@ -87,8 +87,6 @@
     <Compile Include="DataAccess\DataContext.cs" />
     <Compile Include="DataAccess\GamingGroups\EntityFrameworkGamingGroupAccessGranter.cs" />
     <Compile Include="DataAccess\GamingGroups\GamingGroupAccessGranter.cs" />
-    <Compile Include="DataAccess\Repositories\EntityFrameworkGameDefinitionRepository.cs" />
-    <Compile Include="DataAccess\Repositories\GameDefinitionRepository.cs" />
     <Compile Include="DataAccess\NemeStatsDbContext.cs" />
     <Compile Include="DataAccess\NemeStatsInitializer.cs" />
     <Compile Include="DataAccess\SecuredEntityWithTechnicalKey.cs" />

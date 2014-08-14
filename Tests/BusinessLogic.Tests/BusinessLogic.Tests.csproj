@@ -92,9 +92,8 @@
   <ItemGroup>
     <Compile Include="IntegrationTests\DataAccessTests\NemeStatsDataContextTests\FindByIdIntegrationTests.cs" />
     <Compile Include="IntegrationTests\DataAccessTests\NemeStatsDataContextTests\GetQueryableIntegrationTests.cs" />
-    <Compile Include="IntegrationTests\DataAccessTests\RepositoriesTests\EntityFrameworkGameDefinitionRepositoryTests\EntityFrameworkGameDefinitionRepositoryTestBase.cs" />
-    <Compile Include="IntegrationTests\DataAccessTests\RepositoriesTests\EntityFrameworkGameDefinitionRepositoryTests\GetAllGamesIntegrationTests.cs" />
     <Compile Include="IntegrationTests\EntityFrameworkGeneralIntegrationTests.cs" />
+    <Compile Include="IntegrationTests\LogicTests\GameDefinitionsTests\GameDefinitionRetrieverImplTests\GetAllGameDefinitionsIntegrationTests.cs" />
     <Compile Include="IntegrationTests\LogicTests\GameDefinitionsTests\GameDefinitionRetrieverImplTests\GetGameDefinitionDetailsIntegrationTests.cs" />
     <Compile Include="UnitTests\DataAccessTests\NemeStatsDataContextTests\DeleteByIdTests.cs" />
     <Compile Include="UnitTests\DataAccessTests\NemeStatsDataContextTests\FindByIdTests.cs" />
