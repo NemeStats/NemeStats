@@ -119,7 +119,7 @@ namespace UI.Controllers
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionParamsClass_GrantAccess
         {
-            public readonly string inviteeEmail = "inviteeEmail";
+            public readonly string model = "model";
             public readonly string currentUser = "currentUser";
         }
         static readonly ViewsClass s_views = new ViewsClass();
@@ -182,15 +182,15 @@ namespace UI.Controllers
         }
 
         [NonAction]
-        partial void GrantAccessOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string inviteeEmail, BusinessLogic.Models.User.ApplicationUser currentUser);
+        partial void GrantAccessOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, UI.Models.GamingGroup.GamingGroupViewModel model, BusinessLogic.Models.User.ApplicationUser currentUser);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult GrantAccess(string inviteeEmail, BusinessLogic.Models.User.ApplicationUser currentUser)
+        public override System.Web.Mvc.ActionResult GrantAccess(UI.Models.GamingGroup.GamingGroupViewModel model, BusinessLogic.Models.User.ApplicationUser currentUser)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.GrantAccess);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "inviteeEmail", inviteeEmail);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "model", model);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "currentUser", currentUser);
-            GrantAccessOverride(callInfo, inviteeEmail, currentUser);
+            GrantAccessOverride(callInfo, model, currentUser);
             return callInfo;
         }
 

@@ -17,6 +17,7 @@ namespace UI.Models.GamingGroup
         public string OwningUserName { get; set; }
         [DataType(DataType.EmailAddress)]
         [DisplayName("Invitee Email")]
+        [Required(ErrorMessage = "Please enter an e-mail!", AllowEmptyStrings = false)]
         public string InviteeEmail { get; set; }
         public IList<InvitationViewModel> Invitations { get; set; }
     }

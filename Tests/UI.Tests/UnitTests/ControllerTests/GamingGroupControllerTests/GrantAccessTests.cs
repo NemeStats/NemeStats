@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System.Web.Routing;
+using NUnit.Framework;
 using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
@@ -6,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using UI.Models.GamingGroup;
+using ModelBindingContext = System.Web.ModelBinding.ModelBindingContext;
 
 namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
 {
@@ -15,20 +18,38 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
         [Test]
         public void ItRedirectsToTheIndexAction()
         {
-            RedirectToRouteResult redirectResult = gamingGroupController.GrantAccess(string.Empty, currentUser) as RedirectToRouteResult;
+            RedirectToRouteResult redirectResult = gamingGroupController.GrantAccess(new GamingGroupViewModel(), currentUser) as RedirectToRouteResult;
 
             Assert.AreEqual(MVC.GamingGroup.ActionNames.Index, redirectResult.RouteValues["action"]);
         }
 
         [Test]
+        public void ItDoesCreateInvitationIfTheEmailIsEmpty()
+        {
+            var model = new GamingGroupViewModel 
+            {
+                InviteeEmail = string.Empty
+            };
+
+            gamingGroupController.ViewData.ModelState.AddModelError("EmptyEmail", new Exception());
+            gamingGroupController.GrantAccess(model, currentUser);
+
+            Assert.IsFalse(gamingGroupController.ModelState.IsValid); 
+            gamingGroupAccessGranterMock.AssertWasNotCalled(mock => mock.CreateInvitation(model.InviteeEmail, currentUser));
+        }
+
+        [Test]
         public void ItGrantsAccessToTheSpecifiedEmailAddress()
         {
-            string email = "abc@xyz.com";
+            var model = new GamingGroupViewModel 
+            {
+                InviteeEmail = "abc@xyz.com"
+            };
 
-            gamingGroupAccessGranterMock.Expect(mock => mock.CreateInvitation(email, currentUser))
+            gamingGroupAccessGranterMock.Expect(mock => mock.CreateInvitation(model.InviteeEmail, currentUser))
                 .Repeat.Once();
 
-            gamingGroupController.GrantAccess(email, currentUser);
+            gamingGroupController.GrantAccess(model, currentUser);
 
             gamingGroupAccessGranterMock.VerifyAllExpectations();
         }
