@@ -49,11 +49,11 @@
         },
         generatePlayerRankListItemString: function (playerIndex, playerId, playerName, playerRank) {
 
-            return "<span style='cursor:pointer'><div class='alert alert-info' role='alert' style='width:280px;'>" + playerName + " - Rank: <input type='text' id='" + playerId +
-            "' name='PlayerRanks[" + playerIndex +
-            "].GameRank' value='" + playerRank + "'/>"
-            + "<input type='hidden' name='PlayerRanks[" + playerIndex +
-                            "].PlayerId' value='" + playerId + "'/></div></span>";
+            return "<span style='cursor:pointer'>" +
+                   "<div class='alert alert-info' role='alert' style='max-width:280px;'>" + playerName + " - Rank: " +
+                    "<input type='text' id='" + playerId + "' name='PlayerRanks[" + playerIndex +"].GameRank' value='" + playerRank + "' style='text-align:center;'/>" +
+                    "<input type='hidden' name='PlayerRanks[" + playerIndex + "].PlayerId' value='" + playerId + "'/>" +
+                   "</div></span>";
         },
         addPlayer: function () {
             var selectedOption = this.$players.find(":selected");

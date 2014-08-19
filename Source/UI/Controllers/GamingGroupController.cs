@@ -69,10 +69,15 @@ namespace UI.Controllers
         // POST: /GamingGroup/Delete/5
         [HttpPost]
         [UserContextAttribute]
-        public virtual ActionResult GrantAccess(string inviteeEmail, ApplicationUser currentUser)
+        public virtual ActionResult GrantAccess(GamingGroupViewModel model, ApplicationUser currentUser)
         {
-            gamingGroupAccessGranter.CreateInvitation(inviteeEmail, currentUser);
-            return RedirectToAction(MVC.GamingGroup.ActionNames.Index);
+            if (ModelState.IsValid)
+            {
+                gamingGroupAccessGranter.CreateInvitation(model.InviteeEmail, currentUser);
+                return RedirectToAction(MVC.GamingGroup.ActionNames.Index);
+            }
+
+            return RedirectToAction(MVC.GamingGroup.ActionNames.Index, model);
         }
     }
 }

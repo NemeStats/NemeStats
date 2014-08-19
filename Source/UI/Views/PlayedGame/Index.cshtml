@@ -39,10 +39,10 @@
                             @foreach (var result in item.PlayerResults)
                             {
                                 <div class="row">
-                                    <div class="col-sm-2">
+                                    <div class="col-sm-4">
                                         @Html.ActionLink(result.PlayerName, "Details", "Player", new { id = result.PlayerId }, new { })   
                                     </div>
-                                    <div class="col-sm-5">
+                                    <div class="col-sm-4">
                                         @Html.GameResults(result)
                                     </div>    
                                 </div>

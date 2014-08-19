@@ -1,86 +1,142 @@
 ﻿@model UI.Models.GamingGroup.GamingGroupViewModel
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "My Gaming Group";
 }
 
-<h2>Index</h2>
-
-<div class="form-horizontal">
-    <h4>Gaming Group Details</h4>
+<h2>@ViewBag.Title</h2>
     <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.OwningUserName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.OwningUserName)
-        </dd>
-
-    </dl>
-    @using (Html.BeginForm("GrantAccess", "GamingGroup"))
-    {
-        @Html.AntiForgeryToken()
-        <div class="form-group">
-            <h4>Invite Other Players</h4>
-            <hr />
-            <div class="form-group">
-                @Html.Label("Invitee Email Address*", new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.InviteeEmail)
-                    <span data-toggle="tooltip" title="This only allows a player to register with this email address and will place them directly into this Gaming Group.">
-                        <i class="glyphicon glyphicon-question-sign"></i>
-                    </span>
-                    @Html.ValidationMessageFor(model => model.InviteeEmail)
-                </div>
+    <div class="row">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>Gaming Group Details</h4>
             </div>
-            <div class="form-group">
-                <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" value="Grant Access To Gaming Group" class="btn btn-default" />
-                </div>
-            </div>
-            <div class="form-group">
-                <h4>Past Invites</h4>
-                <hr />
-                <dl class="dl-horizontal">
-                    @for (int i = 0; i < Model.Invitations.Count(); i++)
-                    {
-                        <dt>
-                            @Html.DisplayNameFor(model => model.Invitations[i].InviteeEmail)
-                        </dt>
+            
+            <div class="panel-body">
 
-                        <dd>
-                            @Html.DisplayFor(model => model.Invitations[i].InviteeEmail)
-                        </dd>
-                        if (Model.Invitations[i].DateRegistered != null)
+                <div class="row">
+                    <div class="col-md-2">
+                        <strong>
+                            @Html.DisplayNameFor(model => model.Name)
+                        </strong>
+                    </div>
+
+                    <div class="col-md-3">
+                        @Html.DisplayFor(model => model.Name)
+                    </div>
+                </div>
+
+                <div class="row panel-group">
+                    <div class="col-md-2">
+                        <strong>
+                            @Html.DisplayNameFor(model => model.OwningUserName)
+                        </strong>
+                    </div>
+
+                    <div class="col-md-3">
+                        @Html.DisplayFor(model => model.OwningUserName)
+                    </div>
+                </div>
+
+                <div class="row panel-group">
+                    <div class="col-md-2">
+                        <h4>Invite Other Players</h4>
+                    </div>
+                </div>
+                
+                
+                <div class="row">
+                    <div class="form-horizontal">
+                        @using (Html.BeginForm("GrantAccess", "GamingGroup"))
                         {
-                            <dt>
-                                @Html.DisplayNameFor(model => model.Invitations[i].DateRegistered)
-                            </dt>
+                            @Html.AntiForgeryToken()
 
-                            <dd>
-                                @Html.DisplayFor(model => model.Invitations[i].DateRegistered)
-                            </dd>
-                            <dt>
-                                @Html.DisplayNameFor(model => model.Invitations[i].RegisteredUserName)
-                            </dt>
-
-                            <dd>
-                                @Html.DisplayFor(model => model.Invitations[i].RegisteredUserName)
-                            </dd>
+                            <div class="form-group">
+                                @Html.Label("Invitee Email Address*", new { @class = "control-label col-md-2" })
+                                @Html.TextBoxFor(model => model.InviteeEmail, new { @class = "form-control col-md-2" })
+                                    
+                                <div class="col-md-2">
+                                    <span data-toggle="tooltip" title="This only allows a player to register with this email address and will place them directly into this Gaming Group.">
+                                        <i class="glyphicon glyphicon-question-sign"></i>
+                                    </span>
+                                    @Html.ValidationMessageFor(model => model.InviteeEmail)
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <div class="col-md-offset-2">
+                                    <input type="submit" value="Grant Access To Gaming Group" class="btn btn-primary" />
+                                </div>
+                            </div>
                         }
-                    }
-                </dl>
+                    </div>
+                </div>
             </div>
         </div>
-    }
+    </div>
+    
+<div class="row">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4>Past Invites</h4>
+        </div>
+        <div class="panel-body">
+            <div class="table-responsive">
+                <table class="table table-hover table-condensed">
+                    <thead>
+                        <tr>
+                            <th>
+                                Event
+                            </th>
+                            <th>
+                                Details
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (int i = 0; i < Model.Invitations.Count(); i++)
+                        {
+                            if (Model.Invitations[i].DateRegistered != null)
+                            {
+                                @: <tr class="active">                              
+                            }
+                            else
+                            {
+                                @: <tr>
+                            }
+     
+                                    <td>
+                                        <em>@Html.DisplayNameFor(model => model.Invitations[i].InviteeEmail)</em>
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(model => model.Invitations[i].InviteeEmail)
+                                    </td>
+                               @: </tr>
+                            
+                            if (Model.Invitations[i].DateRegistered != null)
+                            {
+                                <tr class="active">
+                                    <td>
+                                        <em>@Html.DisplayNameFor(model => model.Invitations[i].DateRegistered)</em>
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(model => model.Invitations[i].DateRegistered)            
+                                    </td>
+                                </tr>
+                                <tr class="active">
+                                    <td>
+                                        <em>@Html.DisplayNameFor(model => model.Invitations[i].RegisteredUserName)            </em>
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(model => model.Invitations[i].RegisteredUserName)
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
