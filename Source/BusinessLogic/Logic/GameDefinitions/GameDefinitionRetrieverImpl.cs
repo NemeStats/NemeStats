@@ -28,7 +28,7 @@ namespace BusinessLogic.Logic.GameDefinitions
 
         public GameDefinition GetGameDefinitionDetails(int id, int numberOfPlayedGamesToRetrieve, ApplicationUser currentUser)
         {
-            GameDefinition gameDefinition = GetGameDefinition(id, currentUser);
+            GameDefinition gameDefinition = dataContext.FindById<GameDefinition>(id, currentUser);
             IList<PlayedGame> playedGames = AddPlayedGamesToTheGameDefinition(numberOfPlayedGamesToRetrieve, currentUser, gameDefinition);
             IList<int> distinctPlayerIds = AddPlayerGameResultsToEachPlayedGame(currentUser, playedGames);
             AddPlayersToPlayerGameResults(currentUser, playedGames, distinctPlayerIds);
@@ -37,15 +37,10 @@ namespace BusinessLogic.Logic.GameDefinitions
             return gameDefinition;
         }
 
-        private GameDefinition GetGameDefinition(int id, ApplicationUser currentUser)
-        {
-            GameDefinition gameDefinition = dataContext.GetQueryable<GameDefinition>(currentUser)
-                .Where(gameDef => gameDef.Id == id)
-                .FirstOrDefault();
-            return gameDefinition;
-        }
-
-        private IList<PlayedGame> AddPlayedGamesToTheGameDefinition(int numberOfPlayedGamesToRetrieve, ApplicationUser currentUser, GameDefinition gameDefinition)
+        private IList<PlayedGame> AddPlayedGamesToTheGameDefinition(
+            int numberOfPlayedGamesToRetrieve, 
+            ApplicationUser currentUser, 
+            GameDefinition gameDefinition)
         {
             IList<PlayedGame> playedGames = dataContext.GetQueryable<PlayedGame>(currentUser)
                 .Where(playedGame => playedGame.GameDefinitionId == gameDefinition.Id)

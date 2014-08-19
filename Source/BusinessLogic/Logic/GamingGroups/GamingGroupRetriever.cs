@@ -6,12 +6,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessLogic.DataAccess.Repositories
+namespace BusinessLogic.Logic.GamingGroups
 {
-    public interface GamingGroupRepository
+    public interface GamingGroupRetriever
     {
         GamingGroup GetGamingGroupDetails(int gamingGroupId, ApplicationUser currentUser);
-        IList<GamingGroupInvitation> GetPendingGamingGroupInvitations(ApplicationUser currentUser);
-        GamingGroup Save(GamingGroup gamingGroup, ApplicationUser currentUser);
     }
 }

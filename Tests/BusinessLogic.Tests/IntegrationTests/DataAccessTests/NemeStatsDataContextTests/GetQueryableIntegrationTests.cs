@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.ApplicationDataContextTests
+namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.NemeStatsDataContextTests.ApplicationDataContextTests
 {
     [TestFixture]
     public class GetQueryableIntegrationTests : IntegrationTestBase

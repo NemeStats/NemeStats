@@ -21,22 +21,22 @@ namespace UI.Controllers
     {
         internal DataContext dataContext;
         internal GamingGroupToGamingGroupViewModelTransformation gamingGroupToGamingGroupViewModelTransformation;
-        internal GamingGroupRepository gamingGroupRepository;
         internal GamingGroupAccessGranter gamingGroupAccessGranter;
         internal GamingGroupCreator gamingGroupCreator;
+        internal GamingGroupRetriever gamingGroupRetriever;
 
         public GamingGroupController(
             DataContext dataContext,
             GamingGroupToGamingGroupViewModelTransformation gamingGroupToGamingGroupViewModelTransformation,
-            GamingGroupRepository gamingGroupRespository,
             GamingGroupAccessGranter gamingGroupAccessGranter,
-            GamingGroupCreator gamingGroupCreator)
+            GamingGroupCreator gamingGroupCreator,
+            GamingGroupRetriever gamingGroupRetriever)
         {
             this.dataContext = dataContext;
             this.gamingGroupToGamingGroupViewModelTransformation = gamingGroupToGamingGroupViewModelTransformation;
-            this.gamingGroupRepository = gamingGroupRespository;
             this.gamingGroupAccessGranter = gamingGroupAccessGranter;
             this.gamingGroupCreator = gamingGroupCreator;
+            this.gamingGroupRetriever = gamingGroupRetriever;
         }
 
         //
@@ -44,7 +44,7 @@ namespace UI.Controllers
         [UserContextAttribute]
         public virtual ActionResult Index(ApplicationUser currentUser)
         {
-            GamingGroup gamingGroup = gamingGroupRepository.GetGamingGroupDetails(currentUser.CurrentGamingGroupId.Value, currentUser);
+            GamingGroup gamingGroup = gamingGroupRetriever.GetGamingGroupDetails(currentUser.CurrentGamingGroupId.Value, currentUser);
             GamingGroupViewModel viewModel = gamingGroupToGamingGroupViewModelTransformation.Build(gamingGroup);
 
             return View(MVC.GamingGroup.Views.Index, viewModel);

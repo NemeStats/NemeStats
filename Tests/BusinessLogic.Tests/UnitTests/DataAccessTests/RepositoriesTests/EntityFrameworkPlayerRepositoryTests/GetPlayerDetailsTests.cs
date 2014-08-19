@@ -42,8 +42,7 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.RepositoriesTests.Entity
                 Active = true
             };
 
-            playerRepositoryPartialMock.Expect(repo => repo.GetPlayer(player.Id, currentUser))
-                .Repeat.Once()
+            dataContextMock.Expect(mock => mock.FindById<Player>(player.Id, currentUser))
                 .Return(player);
 
             PlayerStatistics playerStatistics = new PlayerStatistics();
@@ -64,21 +63,6 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.RepositoriesTests.Entity
                             .Return(player.PlayerGameResults.ToList());
         }
 
-        [Test]
-        public void ItThrowsArgumentExceptionIfThePlayerDoesntExist()
-        {
-            int playerId = 1;
-            playerRepositoryPartialMock.Expect(mock => mock.GetPlayer(playerId, currentUser))
-                .Repeat.Once()
-                .Return(null);
-
-            var exception = Assert.Throws<ArgumentException>(() =>
-                    playerRepositoryPartialMock.GetPlayerDetails(playerId, numberOfRecentGames, currentUser)
-                );
-
-            Assert.AreEqual(EntityFrameworkPlayerRepository.EXCEPTION_PLAYER_NOT_FOUND, exception.Message);
-        }
-
         //TODO need tests for the transformation... which should probably be refactored into a different class
 
         [Test]
@@ -87,16 +71,6 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.RepositoriesTests.Entity
             PlayerDetails playerDetails = playerRepositoryPartialMock.GetPlayerDetails(player.Id, numberOfRecentGames, currentUser);
 
             Assert.AreEqual(nemesis, playerDetails.Nemesis);
-        }
-
-        [Test]
-        public void ItThrowsAnUnauthorizedExceptionIfTheUserDoesntHaveAccessToThePlayer()
-        {
-            playerRepositoryPartialMock = MockRepository.GeneratePartialMock<EntityFrameworkPlayerRepository>(dataContextMock);
-            playerRepositoryPartialMock.Expect(partialMock => partialMock.GetPlayer(player.Id, currentUser))
-                .Throw(new UnauthorizedAccessException());
-
-            Assert.Throws<UnauthorizedAccessException>(() => playerRepositoryPartialMock.GetPlayerDetails(player.Id, 0, currentUser));
         }
     }
 }

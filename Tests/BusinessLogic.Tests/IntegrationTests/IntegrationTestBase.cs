@@ -236,6 +236,7 @@ namespace BusinessLogic.Tests.IntegrationTests
         {
             GamingGroup gamingGroup = new GamingGroup() { Name = gamingGroupName, OwningUserId = owningUser.Id };
             dataContext.Save(gamingGroup, owningUser);
+            dataContext.CommitAllChanges();
 
             return gamingGroup;
         }

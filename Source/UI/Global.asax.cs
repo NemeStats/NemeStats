@@ -33,6 +33,9 @@ namespace UI
 
         protected void Application_Error()
         {
+            var exception = Server.GetLastError().GetBaseException();
+
+            (new RollbarClient()).SendException(exception);
         }
     }
 }

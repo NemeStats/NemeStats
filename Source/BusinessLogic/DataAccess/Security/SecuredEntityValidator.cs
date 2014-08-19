@@ -9,6 +9,6 @@ namespace BusinessLogic.DataAccess.Security
 {
     public interface SecuredEntityValidator<TEntity> where TEntity : class
     {
-        void ValidateAccess(TEntity entity, ApplicationUser currentUser, Type underlyingEntityType);
+        void ValidateAccess(TEntity entity, ApplicationUser currentUser, Type underlyingEntityType, object entityId);
     }
 }

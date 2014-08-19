@@ -1,4 +1,6 @@
-﻿using BusinessLogic.Models;
+﻿using BusinessLogic.DataAccess.Security;
+using BusinessLogic.Exceptions;
+using BusinessLogic.Models;
 using BusinessLogic.Models.User;
 using System;
 using System.Collections.Generic;
@@ -11,14 +13,15 @@ namespace BusinessLogic.DataAccess.Repositories
     {
         internal const string EXCEPTION_MESSAGE_USER_DOES_NOT_HAVE_ACCESS_TO_GAME_DEFINITION 
             = "User with Id '{0} is unauthorized to access GameDefinition with Id '{1}'";
-        internal const string EXCEPTION_MESSAGE_GAME_DEFINITION_NOT_FOUND
-            = "Game Definition with Id '{0}' not found.";
 
         private DataContext dataContext;
+        private SecuredEntityValidatorFactory securedEntityValidatorFactory;
 
-        public EntityFrameworkGameDefinitionRepository(DataContext dataContext)
+        public EntityFrameworkGameDefinitionRepository(DataContext dataContext,
+            SecuredEntityValidatorFactory securedEntityValidatorFactory)
         {
             this.dataContext = dataContext;
+            this.securedEntityValidatorFactory = securedEntityValidatorFactory;
         }
 
         public virtual List<GameDefinition> GetAllGameDefinitions(ApplicationUser currentUser)
@@ -26,41 +29,6 @@ namespace BusinessLogic.DataAccess.Repositories
             return dataContext.GetQueryable<GameDefinition>(currentUser)
                 .Where(game => game.GamingGroupId == currentUser.CurrentGamingGroupId)
                 .ToList();
-        }
-        
-        public virtual GameDefinition GetGameDefinition(
-            int gameDefinitionId, 
-            ApplicationUser currentUser)
-        {
-            GameDefinition game = dataContext.GetQueryable<GameDefinition>(currentUser)
-                .Where(gameDefinition => gameDefinition.Id == gameDefinitionId)
-                .FirstOrDefault();
-            ValidateGameDefinitionIsFound(gameDefinitionId, game);
-
-            ValidateUserHasAccessToGameDefinition(currentUser, game);
-
-            return game;
-        }
-
-        private static void ValidateGameDefinitionIsFound(int gameDefinitionId, GameDefinition game)
-        {
-            if (game == null)
-            {
-                string keyNotFoundMessage = string.Format(EXCEPTION_MESSAGE_GAME_DEFINITION_NOT_FOUND, gameDefinitionId);
-                throw new KeyNotFoundException(keyNotFoundMessage);
-            }
-        }
-
-        internal virtual void ValidateUserHasAccessToGameDefinition(ApplicationUser currentUser, GameDefinition game)
-        {
-            if (game.GamingGroupId != currentUser.CurrentGamingGroupId)
-            {
-                string notAuthorizedMessage = string.Format(
-                    EXCEPTION_MESSAGE_USER_DOES_NOT_HAVE_ACCESS_TO_GAME_DEFINITION,
-                    currentUser.Id,
-                    game.Id);
-                throw new UnauthorizedAccessException(notAuthorizedMessage);
-            }
         }
     }
 }

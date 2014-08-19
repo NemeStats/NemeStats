@@ -9,11 +9,16 @@ using System.Threading.Tasks;
 
 namespace BusinessLogic.Models.User
 {
-    public class ApplicationUser : IdentityUser, SingleColumnTechnicalKey<string>
+    public class ApplicationUser : IdentityUser, SingleColumnTechnicalKey<string>, EntityWithTechnicalKey
     {
         public int? CurrentGamingGroupId { get; set; }
 
         [ForeignKey("ApplicationUserId")]
         public virtual IList<UserGamingGroup> UserGamingGroups { get; set; }
+
+        public bool AlreadyInDatabase()
+        {
+            return Id != null;
+        }
     }
 }

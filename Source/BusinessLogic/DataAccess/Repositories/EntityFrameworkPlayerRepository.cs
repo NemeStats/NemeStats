@@ -14,9 +14,6 @@ namespace BusinessLogic.DataAccess.Repositories
 {
     public class EntityFrameworkPlayerRepository : PlayerRepository
     {
-        internal const string EXCEPTION_PLAYER_NOT_FOUND = "The specified player does not exist.";
-        internal const string EXCEPTION_USER_DOES_NOT_HAVE_ACCESS_TO_THIS_PLAYER = 
-            "User with user id '{0}' does not have access to player with player id '{1}'";
         public int MINIMUM_NUMBER_OF_GAMES_TO_BE_A_NEMESIS = 3;
 
         private static readonly string SQL_GET_WIN_LOSS_GAMES_COUNT =
@@ -70,36 +67,9 @@ namespace BusinessLogic.DataAccess.Repositories
             this.dataContext = dataContext;
         }
 
-        internal virtual Player GetPlayer(int playerID, ApplicationUser currentUser)
-        {
-            Player returnPlayer = dataContext.GetQueryable<Player>(currentUser)
-                .Where(player => player.Id == playerID)
-                    .FirstOrDefault();
-
-            ValidateAccessToPlayer(currentUser, returnPlayer);
-
-            return returnPlayer;
-        }
-
-        private static void ValidateAccessToPlayer(ApplicationUser currentUser, Player desiredPlayer)
-        {
-            if (desiredPlayer != null)
-            {
-                if (desiredPlayer.GamingGroupId != currentUser.CurrentGamingGroupId)
-                {
-                    string message = string.Format(EXCEPTION_USER_DOES_NOT_HAVE_ACCESS_TO_THIS_PLAYER,
-                        currentUser.Id,
-                        desiredPlayer.Id);
-                    throw new UnauthorizedAccessException(message);
-                }
-            }
-        }
-
         public virtual PlayerDetails GetPlayerDetails(int playerID, int numberOfRecentGamesToRetrieve, ApplicationUser currentUser)
         {
-            Player returnPlayer = GetPlayer(playerID, currentUser);
-
-            ValidatePlayerWasFound(returnPlayer);
+            Player returnPlayer = dataContext.FindById<Player>(playerID, currentUser);
 
             PlayerStatistics playerStatistics = GetPlayerStatistics(playerID, currentUser);
 
@@ -119,14 +89,6 @@ namespace BusinessLogic.DataAccess.Repositories
             };
 
             return playerDetails;
-        }
-
-        private static void ValidatePlayerWasFound(Player returnPlayer)
-        {
-            if (returnPlayer == null)
-            {
-                throw new ArgumentException(EXCEPTION_PLAYER_NOT_FOUND);
-            }
         }
 
         internal virtual List<PlayerGameResult> GetPlayerGameResultsWithPlayedGameAndGameDefinition(
@@ -169,7 +131,7 @@ namespace BusinessLogic.DataAccess.Repositories
         public virtual Nemesis GetNemesis(int playerId, ApplicationUser currentUser)
         {
             //call GetPlayer just to ensure that the requesting user has access
-            GetPlayer(playerId, currentUser);
+            dataContext.FindById<Player>(playerId, currentUser);
             DbRawSqlQuery<WinLossStatistics> data = dataContext.MakeRawSqlQuery<WinLossStatistics>(SQL_GET_WIN_LOSS_GAMES_COUNT,
                 new SqlParameter("PlayerId", playerId));
 

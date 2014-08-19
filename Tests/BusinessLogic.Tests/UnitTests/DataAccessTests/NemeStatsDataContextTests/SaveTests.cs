@@ -65,7 +65,11 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.NemeStatsDataContextTest
             entityWithGamingGroup.Expect(mock => mock.AlreadyInDatabase())
                 .Repeat.Once()
                 .Return(true);
-            securedEntityValidator.Expect(mock => mock.ValidateAccess(entityWithGamingGroup, currentUser, typeof(EntityWithTechnicalKey)))
+            securedEntityValidator.Expect(mock => mock.ValidateAccess(
+                entityWithGamingGroup, 
+                currentUser, 
+                typeof(EntityWithTechnicalKey),
+                NemeStatsDataContext.UNKNOWN_ENTITY_ID))
                 .Throw(new UnauthorizedAccessException());
             try
             {
