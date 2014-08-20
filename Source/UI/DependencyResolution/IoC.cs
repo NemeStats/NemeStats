@@ -23,6 +23,7 @@ using BusinessLogic.DataAccess.Security;
 using BusinessLogic.Logic;
 using BusinessLogic.Logic.GameDefinitions;
 using BusinessLogic.Logic.GamingGroups;
+using BusinessLogic.Logic.PlayedGames;
 using BusinessLogic.Logic.Users;
 using BusinessLogic.Models;
 using BusinessLogic.Models.User;
@@ -69,6 +70,7 @@ namespace UI.DependencyResolution {
                             x.For<ShowingXResultsMessageBuilder>().Use<ShowingXResultsMessageBuilderImpl>();
                             x.For<GamingGroupRetriever>().Use<GamingGroupRetrieverImpl>();
                             x.For<PendingGamingGroupInvitationRetriever>().Use<PendingGamingGroupInvitationRetrieverImpl>();
+                            x.For<PlayedGameCreator>().Use<PlayedGameCreatorImpl>();
                             //TODO finish implementing http://lostechies.com/jimmybogard/2010/05/03/dependency-injection-in-asp-net-mvc-filters/
                             //x.For<IActionInvoker>().Use<InjectingActionInvoker>();
                         });

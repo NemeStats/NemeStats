@@ -17,6 +17,14 @@ namespace UI.Filters
         internal const string EXCEPTION_MESSAGE_USER_NOT_AUTHENTICATED = "User is not authenticated.";
 
         internal UserManager<ApplicationUser> userManager;
+        /// <summary>
+        /// The parameter key for the Google Analytics unique client id.
+        /// </summary>
+        internal const string REQUEST_PARAM_ANALYTICS_ID = "_ga";
+        /// <summary>
+        /// This was randomly generated and will be used for any client whose anonymous ID cannot be determined.
+        /// </summary>
+        internal const string DEFAULT_ANONYMOUS_CLIENT_ID = "D4151681-B52E-415B-975C-D1C8FD56C645";
 
         public bool RequiresGamingGroup { get; set; }
 
@@ -40,28 +48,48 @@ namespace UI.Filters
             ActionExecutingContext filterContext, 
             UserManager<ApplicationUser> userManager)
         {
-            if (!filterContext.HttpContext.User.Identity.IsAuthenticated)
-            {
-                throw new InvalidOperationException(EXCEPTION_MESSAGE_USER_NOT_AUTHENTICATED);
-            }
+            ValidateUserIsAuthenticated(filterContext);
 
             if (filterContext.ActionParameters.ContainsKey(USER_CONTEXT_KEY))
             {
                 string userId = filterContext.HttpContext.User.Identity.GetUserId();
                 ApplicationUser applicationUser = userManager.FindByIdAsync(userId).Result;
 
-                if(RequiresGamingGroup)
+                RedirectToGamingGroupCreatePageIfUserDoesntHaveAGamingGroup(filterContext, applicationUser);
+
+                string anonymousClientId = filterContext.HttpContext.Request.Params[REQUEST_PARAM_ANALYTICS_ID];
+                if(anonymousClientId == null)
                 {
-                    if (!applicationUser.CurrentGamingGroupId.HasValue)
-                    {
-                        filterContext.Result = new RedirectToRouteResult(MVC.GamingGroup.Create().GetRouteValueDictionary());
-                    }
+                    applicationUser.AnonymousClientId = DEFAULT_ANONYMOUS_CLIENT_ID;
+                }
+                else
+                {
+                    applicationUser.AnonymousClientId = anonymousClientId;
                 }
 
                 filterContext.ActionParameters[USER_CONTEXT_KEY] = applicationUser;
             }
 
             base.OnActionExecuting(filterContext);
-        } 
+        }
+
+        private static void ValidateUserIsAuthenticated(ActionExecutingContext filterContext)
+        {
+            if (!filterContext.HttpContext.User.Identity.IsAuthenticated)
+            {
+                throw new InvalidOperationException(EXCEPTION_MESSAGE_USER_NOT_AUTHENTICATED);
+            }
+        }
+
+        private void RedirectToGamingGroupCreatePageIfUserDoesntHaveAGamingGroup(ActionExecutingContext filterContext, ApplicationUser applicationUser)
+        {
+            if (RequiresGamingGroup)
+            {
+                if (!applicationUser.CurrentGamingGroupId.HasValue)
+                {
+                    filterContext.Result = new RedirectToRouteResult(MVC.GamingGroup.Create().GetRouteValueDictionary());
+                }
+            }
+        }
     }
 }

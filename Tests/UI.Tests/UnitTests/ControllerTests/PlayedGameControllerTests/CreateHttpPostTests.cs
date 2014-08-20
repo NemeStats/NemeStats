@@ -57,7 +57,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
                 PlayerRanks = new List<PlayerRank>()
             };
             ApplicationUser user = new ApplicationUser();
-            playedGameLogicMock.Expect(x => x.CreatePlayedGame(Arg<NewlyCompletedGame>.Is.Anything, Arg<ApplicationUser>.Is.Anything)).Repeat.Once();
+            playedGameCreatorMock.Expect(x => x.CreatePlayedGame(Arg<NewlyCompletedGame>.Is.Anything, Arg<ApplicationUser>.Is.Anything)).Repeat.Once();
             RedirectToRouteResult result = playedGameController.Create(playedGame, null) as RedirectToRouteResult;
 
             Assert.AreEqual(MVC.PlayedGame.ActionNames.Index, result.RouteValues["action"]);
@@ -74,7 +74,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 
             playedGameController.Create(newlyCompletedGame, null);
 
-            playedGameLogicMock.AssertWasCalled(mock => mock.CreatePlayedGame(Arg<NewlyCompletedGame>.Is.Equal(newlyCompletedGame), 
+            playedGameCreatorMock.AssertWasCalled(mock => mock.CreatePlayedGame(Arg<NewlyCompletedGame>.Is.Equal(newlyCompletedGame), 
                 Arg<ApplicationUser>.Is.Anything));
         }
 
@@ -89,7 +89,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 
             playedGameController.Create(newlyCompletedGame, currentUser);
 
-            playedGameLogicMock.AssertWasCalled(logic => logic.CreatePlayedGame(
+            playedGameCreatorMock.AssertWasCalled(logic => logic.CreatePlayedGame(
                 Arg<NewlyCompletedGame>.Is.Anything,
                 Arg<ApplicationUser>.Is.Equal(currentUser)));
         }
