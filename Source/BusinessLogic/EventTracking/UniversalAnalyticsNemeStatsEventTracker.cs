@@ -7,12 +7,17 @@ using UniversalAnalyticsHttpWrapper;
 
 namespace BusinessLogic.EventTracking
 {
-    public class UniversalAnalyticsPlayedGameTracker : PlayedGameTracker
+    public class UniversalAnalyticsNemeStatsEventTracker : NemeStatsEventTracker
     {
+        /// <summary>
+        /// This was randomly generated and will be used for any client whose anonymous ID cannot be determined.
+        /// </summary>
+        public const string DEFAULT_ANONYMOUS_CLIENT_ID = "D4151681-B52E-415B-975C-D1C8FD56C645";
+
         private IEventTracker eventTracker;
         private IUniversalAnalyticsEventFactory eventFactory;
 
-        public UniversalAnalyticsPlayedGameTracker(
+        public UniversalAnalyticsNemeStatsEventTracker(
             IEventTracker eventTracker,
             IUniversalAnalyticsEventFactory eventFactory)
         {
@@ -28,6 +33,16 @@ namespace BusinessLogic.EventTracking
                 EventActionEnum.Created.ToString(),
                 gameName,
                 numberOfPlayers.ToString());
+
+            eventTracker.TrackEvent(universalAnalyticsEvent);
+        }
+
+        public void TrackUserRegistration()
+        {
+            IUniversalAnalyticsEvent universalAnalyticsEvent = eventFactory.MakeUniversalAnalyticsEvent(
+                UniversalAnalyticsNemeStatsEventTracker.DEFAULT_ANONYMOUS_CLIENT_ID,
+                EventCategoryEnum.Users.ToString(),
+                EventActionEnum.Created.ToString());
 
             eventTracker.TrackEvent(universalAnalyticsEvent);
         }

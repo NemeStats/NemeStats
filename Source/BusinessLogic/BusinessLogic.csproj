@@ -110,8 +110,8 @@
     <Compile Include="DataAccess\Repositories\EntityFrameworkPlayerRepository.cs" />
     <Compile Include="EventTracking\EventActionEnum.cs" />
     <Compile Include="EventTracking\EventCategoryEnum.cs" />
-    <Compile Include="EventTracking\PlayedGameTracker.cs" />
-    <Compile Include="EventTracking\UniversalAnalyticsPlayedGameTracker.cs" />
+    <Compile Include="EventTracking\NemeStatsEventTracker.cs" />
+    <Compile Include="EventTracking\UniversalAnalyticsNemeStatsEventTracker.cs" />
     <Compile Include="Exceptions\EntityDoesNotExistException.cs" />
     <Compile Include="Exceptions\UnauthorizedEntityAccessException.cs" />
     <Compile Include="Logic\GameDefinitions\GameDefinitionRetriever.cs" />

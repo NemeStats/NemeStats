@@ -8,6 +8,7 @@ using Microsoft.AspNet.Identity;
 using BusinessLogic.Logic;
 using BusinessLogic.DataAccess;
 using BusinessLogic.Logic.Users;
+using BusinessLogic.EventTracking;
 
 namespace UI.Filters
 {
@@ -21,10 +22,6 @@ namespace UI.Filters
         /// The parameter key for the Google Analytics unique client id.
         /// </summary>
         internal const string REQUEST_PARAM_ANALYTICS_ID = "_ga";
-        /// <summary>
-        /// This was randomly generated and will be used for any client whose anonymous ID cannot be determined.
-        /// </summary>
-        internal const string DEFAULT_ANONYMOUS_CLIENT_ID = "D4151681-B52E-415B-975C-D1C8FD56C645";
 
         public bool RequiresGamingGroup { get; set; }
 
@@ -60,7 +57,7 @@ namespace UI.Filters
                 string anonymousClientId = filterContext.HttpContext.Request.Params[REQUEST_PARAM_ANALYTICS_ID];
                 if(anonymousClientId == null)
                 {
-                    applicationUser.AnonymousClientId = DEFAULT_ANONYMOUS_CLIENT_ID;
+                    applicationUser.AnonymousClientId = UniversalAnalyticsNemeStatsEventTracker.DEFAULT_ANONYMOUS_CLIENT_ID;
                 }
                 else
                 {

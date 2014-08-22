@@ -1,5 +1,6 @@
 ﻿using BusinessLogic.EventTracking;
 using BusinessLogic.Models.User;
+using BusinessLogic.Tests.UnitTests.EventTrackingTests.UniversalAnalyticsNemeStatsEventTrackerTests;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System;
@@ -12,28 +13,8 @@ using UniversalAnalyticsHttpWrapper;
 namespace BusinessLogic.Tests.UnitTests.EventTrackingTests.PlayedGameTrackerTests
 {
     [TestFixture]
-    public class TrackPlayedGameTests
+    public class TrackPlayedGameTests : UniversalAnalyticsNemeStatsEventTrackerTestBase
     {
-        private IEventTracker eventTrackerMock;
-        private IUniversalAnalyticsEventFactory eventFactoryMock;
-        private IUniversalAnalyticsEvent analyticsEvent;
-        private UniversalAnalyticsPlayedGameTracker tracker;
-        private ApplicationUser currentUser;
-
-        [SetUp]
-        public void SetUp()
-        {
-            eventTrackerMock = MockRepository.GenerateMock<IEventTracker>();
-            eventFactoryMock = MockRepository.GenerateMock<IUniversalAnalyticsEventFactory>();
-            analyticsEvent = MockRepository.GenerateMock<IUniversalAnalyticsEvent>();
-            
-            tracker = new UniversalAnalyticsPlayedGameTracker(eventTrackerMock, eventFactoryMock);
-            currentUser = new ApplicationUser()
-            {
-                AnonymousClientId = "anonymous id"
-            };
-        }
-
         [Test]
         public void ItSetsTheAnonymousClientId()
         {

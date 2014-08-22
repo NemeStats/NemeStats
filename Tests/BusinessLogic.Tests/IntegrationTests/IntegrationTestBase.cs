@@ -23,7 +23,7 @@ namespace BusinessLogic.Tests.IntegrationTests
         protected SecuredEntityValidatorFactory securedEntityValidatorFactory = new SecuredEntityValidatorFactory();
         protected IEventTracker eventTrackerStub;
         protected IUniversalAnalyticsEventFactory eventFactory = new UniversalAnalyticsEventFactory();
-        protected PlayedGameTracker playedGameTracker;
+        protected NemeStatsEventTracker playedGameTracker;
 
         protected List<PlayedGame> testPlayedGames = new List<PlayedGame>();
         protected GameDefinition testGameDefinition;
@@ -70,7 +70,7 @@ namespace BusinessLogic.Tests.IntegrationTests
             eventTrackerStub.Expect(stub => stub.TrackEvent(Arg<IUniversalAnalyticsEvent>.Is.Anything))
                 .Repeat.Any();
              
-            playedGameTracker = new UniversalAnalyticsPlayedGameTracker(eventTrackerStub, eventFactory);
+            playedGameTracker = new UniversalAnalyticsNemeStatsEventTracker(eventTrackerStub, eventFactory);
 
             using (NemeStatsDbContext nemeStatsDbContext = new NemeStatsDbContext())
             {

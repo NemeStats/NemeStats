@@ -16,9 +16,9 @@ namespace BusinessLogic.Logic.PlayedGames
     public class PlayedGameCreatorImpl : PlayedGameCreator
     {
         private DataContext dataContext;
-        private PlayedGameTracker playedGameTracker;
+        private NemeStatsEventTracker playedGameTracker;
 
-        public PlayedGameCreatorImpl(DataContext applicationDataContext, PlayedGameTracker playedGameTracker)
+        public PlayedGameCreatorImpl(DataContext applicationDataContext, NemeStatsEventTracker playedGameTracker)
         {
             this.dataContext = applicationDataContext;
             this.playedGameTracker = playedGameTracker;

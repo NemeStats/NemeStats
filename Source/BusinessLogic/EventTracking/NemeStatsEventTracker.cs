@@ -6,8 +6,9 @@ using System.Text;
 
 namespace BusinessLogic.EventTracking
 {
-    public interface PlayedGameTracker
+    public interface NemeStatsEventTracker
     {
         void TrackPlayedGame(ApplicationUser currentUser, string gameName, int numberOfPlayers);
+        void TrackUserRegistration();
     }
 }

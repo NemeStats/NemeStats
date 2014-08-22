@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.DataAccess;
+using BusinessLogic.EventTracking;
 using BusinessLogic.Logic.Users;
 using BusinessLogic.Models.User;
 using Microsoft.AspNet.Identity;
@@ -151,7 +152,7 @@ namespace UI.Tests.UnitTests.FiltersTests.UserContextAttributeTests
             userContextActionFilter.OnActionExecuting(actionExecutingContext, userManager);
 
             ApplicationUser actualApplicationUser = (ApplicationUser)actionExecutingContext.ActionParameters[UserContextAttribute.USER_CONTEXT_KEY];
-            Assert.AreEqual(UserContextAttribute.DEFAULT_ANONYMOUS_CLIENT_ID, actualApplicationUser.AnonymousClientId);
+            Assert.AreEqual(UniversalAnalyticsNemeStatsEventTracker.DEFAULT_ANONYMOUS_CLIENT_ID, actualApplicationUser.AnonymousClientId);
         }
     }
 }

@@ -74,7 +74,7 @@ namespace UI.DependencyResolution {
                             x.For<GamingGroupRetriever>().Use<GamingGroupRetrieverImpl>();
                             x.For<PendingGamingGroupInvitationRetriever>().Use<PendingGamingGroupInvitationRetrieverImpl>();
                             x.For<PlayedGameCreator>().Use<PlayedGameCreatorImpl>();
-                            x.For<PlayedGameTracker>().Use<UniversalAnalyticsPlayedGameTracker>();
+                            x.For<NemeStatsEventTracker>().Use<UniversalAnalyticsNemeStatsEventTracker>();
                             x.For<IEventTracker>().Use<EventTracker>();
                             x.For<IUniversalAnalyticsEvent>().Use<UniversalAnalyticsEvent>();
                             x.For<IUniversalAnalyticsEventFactory>().Use<UniversalAnalyticsEventFactory>();

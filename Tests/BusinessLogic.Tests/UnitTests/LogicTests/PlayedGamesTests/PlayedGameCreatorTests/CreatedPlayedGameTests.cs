@@ -22,7 +22,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameCr
     {
         private NemeStatsDataContext dataContext;
         private PlayedGameCreatorImpl playedGameCreatorPartialMock;
-        private PlayedGameTracker playedGameTracker;
+        private NemeStatsEventTracker playedGameTracker;
         private ApplicationUser currentUser;
         private GameDefinition gameDefinition;
 
@@ -30,7 +30,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameCr
         public void TestSetUp()
         {
             dataContext = MockRepository.GenerateMock<NemeStatsDataContext>();
-            playedGameTracker = MockRepository.GenerateMock<PlayedGameTracker>();
+            playedGameTracker = MockRepository.GenerateMock<NemeStatsEventTracker>();
 
             currentUser = new ApplicationUser()
             {
