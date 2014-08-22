@@ -1,5 +1,6 @@
 ﻿using BusinessLogic.DataAccess;
 using BusinessLogic.DataAccess.Repositories;
+using BusinessLogic.EventTracking;
 using BusinessLogic.Logic.PlayedGames;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
@@ -12,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UniversalAnalyticsHttpWrapper;
 
 namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameCreatorTests
 {
@@ -20,20 +22,26 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameCr
     {
         private NemeStatsDataContext dataContext;
         private PlayedGameCreatorImpl playedGameCreatorPartialMock;
+        private PlayedGameTracker playedGameTracker;
         private ApplicationUser currentUser;
+        private GameDefinition gameDefinition;
 
         [SetUp]
         public void TestSetUp()
         {
             dataContext = MockRepository.GenerateMock<NemeStatsDataContext>();
+            playedGameTracker = MockRepository.GenerateMock<PlayedGameTracker>();
 
             currentUser = new ApplicationUser()
             {
                 Id = "user id",
-                CurrentGamingGroupId = 1513
+                CurrentGamingGroupId = 1513,
+                AnonymousClientId = "anonymous client id"
             };
-
-            playedGameCreatorPartialMock = MockRepository.GeneratePartialMock<PlayedGameCreatorImpl>(dataContext);
+            gameDefinition = new GameDefinition(){ Name = "game definition name" };
+            dataContext.Expect(mock => mock.FindById<GameDefinition>(Arg<int>.Is.Anything, Arg<ApplicationUser>.Is.Same(currentUser)))
+                .Return(gameDefinition);
+            playedGameCreatorPartialMock = MockRepository.GeneratePartialMock<PlayedGameCreatorImpl>(dataContext, playedGameTracker);
         }
 
         [Test]
@@ -119,6 +127,25 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameCr
             dataContext.AssertWasCalled(mock => mock.Save(
                 Arg<PlayedGame>.Matches(game => game.GamingGroupId == currentUser.CurrentGamingGroupId),
                 Arg<ApplicationUser>.Is.Same(currentUser)));
+        }
+
+        [Test]
+        public void ItRecordsAGamePlayedEvent()
+        {
+            PlayerRank playerRank = new PlayerRank()
+            {
+                GameRank = 1,
+                PlayerId = 1
+            };
+            NewlyCompletedGame newlyCompletedGame = new NewlyCompletedGame()
+            {
+                GameDefinitionId = 1,
+                PlayerRanks = new List<PlayerRank>() { playerRank }
+            };
+
+            playedGameCreatorPartialMock.CreatePlayedGame(newlyCompletedGame, currentUser);
+
+            playedGameTracker.AssertWasCalled(mock => mock.TrackPlayedGame(currentUser, gameDefinition.Name, newlyCompletedGame.PlayerRanks.Count));
         }
     }
 }

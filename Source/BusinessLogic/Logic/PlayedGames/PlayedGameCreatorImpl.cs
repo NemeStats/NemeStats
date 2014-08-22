@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.DataAccess;
+using BusinessLogic.EventTracking;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
 using BusinessLogic.Models.Points;
@@ -8,16 +9,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UniversalAnalyticsHttpWrapper;
 
 namespace BusinessLogic.Logic.PlayedGames
 {
-    public class PlayedGameCreatorImpl : BusinessLogic.Logic.PlayedGames.PlayedGameCreator
+    public class PlayedGameCreatorImpl : PlayedGameCreator
     {
         private DataContext dataContext;
+        private PlayedGameTracker playedGameTracker;
 
-        public PlayedGameCreatorImpl(DataContext applicationDataContext)
+        public PlayedGameCreatorImpl(DataContext applicationDataContext, PlayedGameTracker playedGameTracker)
         {
             this.dataContext = applicationDataContext;
+            this.playedGameTracker = playedGameTracker;
         }
 
         //TODO need to have validation logic here (or on PlayedGame similar to what is on NewlyCompletedGame)
@@ -32,6 +36,9 @@ namespace BusinessLogic.Logic.PlayedGames
                 playerGameResults);
 
             dataContext.Save(playedGame, currentUser);
+
+            GameDefinition gameDefinition = dataContext.FindById<GameDefinition>(newlyCompletedGame.GameDefinitionId, currentUser);
+            playedGameTracker.TrackPlayedGame(currentUser, gameDefinition.Name, playedGame.PlayerGameResults.Count);
 
             return playedGame;
         }

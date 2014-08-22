@@ -136,6 +136,10 @@
       <HintPath>..\..\packages\structuremap.3.0.4.125\lib\net40\StructureMap.Net4.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration.Abstractions, Version=2.0.2.15, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\UniversalAnalyticsMeasurementProtocolWrapper.1.2.0\lib\net40\System.Configuration.Abstractions.dll</HintPath>
+    </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Net.Http.Formatting, Version=5.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -207,6 +211,10 @@
     </Reference>
     <Reference Include="T4MVCExtensions">
       <HintPath>..\..\packages\T4MVCExtensions.3.9.1\lib\net40\T4MVCExtensions.dll</HintPath>
+    </Reference>
+    <Reference Include="UniversalAnalyticsHttpWrapper, Version=1.2.0.40798, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\UniversalAnalyticsMeasurementProtocolWrapper.1.2.0\lib\net40\UniversalAnalyticsHttpWrapper.dll</HintPath>
     </Reference>
     <Reference Include="WebActivator">
       <HintPath>..\..\packages\WebActivator.1.5.3\lib\net40\WebActivator.dll</HintPath>
