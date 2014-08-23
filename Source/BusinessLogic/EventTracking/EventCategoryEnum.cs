@@ -11,6 +11,7 @@ namespace BusinessLogic.EventTracking
         @Players,
         @PlayedGames,
         @GameDefinitions,
+        @GamingGroups,
         @Users
     }
 }

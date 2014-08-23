@@ -128,12 +128,13 @@
     <Compile Include="UnitTests\DataAccessTests\RepositoriesTests\EntityFrameworkPlayerRepositoryTests\GetPlayerDetailsTests.cs" />
     <Compile Include="UnitTests\DataAccessTests\SecurityTests\SecuredEntityValidatorTests\ValidateAccessTests.cs" />
     <Compile Include="UnitTests\EventTrackingTests\UniversalAnalyticsNemeStatsEventTrackerTests\TrackPlayedGameTests.cs" />
+    <Compile Include="UnitTests\EventTrackingTests\UniversalAnalyticsNemeStatsEventTrackerTests\TrackGamingGroupCreationTests.cs" />
     <Compile Include="UnitTests\EventTrackingTests\UniversalAnalyticsNemeStatsEventTrackerTests\TrackUserRegistrationTests.cs" />
     <Compile Include="UnitTests\EventTrackingTests\UniversalAnalyticsNemeStatsEventTrackerTests\UniversalAnalyticsNemeStatsEventTrackerTestBase.cs" />
     <Compile Include="UnitTests\LogicTests\GameDefinitionsTests\GameDefinitionRetrieverImplTests\GameDefinitionRetrieverImplTestBase.cs" />
     <Compile Include="UnitTests\LogicTests\GameDefinitionsTests\GameDefinitionRetrieverImplTests\GetAllTests.cs" />
     <Compile Include="UnitTests\LogicTests\GameDefinitionsTests\GameDefinitionRetrieverImplTests\GetGameDefinitionDetailsTests.cs" />
-    <Compile Include="UnitTests\LogicTests\GamingGroupsTests\GamingGroupCreatorImplTests\CreateGamingGroupTests.cs" />
+    <Compile Include="UnitTests\LogicTests\GamingGroupsTests\GamingGroupCreatorImplTests\CreateGamingGroupAsyncTests.cs" />
     <Compile Include="UnitTests\LogicTests\GamingGroupsTests\GamingGroupRetrieverImplTests\GetGamingGroupDetailsTests.cs" />
     <Compile Include="UnitTests\LogicTests\GamingGroupsTests\PendingGamingGroupInvitationRetrieverImplTests\GetPendingGamingGroupInvitationsTests.cs" />
     <Compile Include="UnitTests\LogicTests\GamingGroupsTests\PendingGamingGroupInvitationRetrieverImplTests\TestFixtuure.cs" />

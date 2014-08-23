@@ -46,5 +46,15 @@ namespace BusinessLogic.EventTracking
 
             eventTracker.TrackEvent(universalAnalyticsEvent);
         }
+
+        public void TrackGamingGroupCreation()
+        {
+            IUniversalAnalyticsEvent universalAnalyticsEvent = eventFactory.MakeUniversalAnalyticsEvent(
+                UniversalAnalyticsNemeStatsEventTracker.DEFAULT_ANONYMOUS_CLIENT_ID,
+                EventCategoryEnum.GamingGroups.ToString(),
+                EventActionEnum.Created.ToString());
+
+            eventTracker.TrackEvent(universalAnalyticsEvent);
+        }
     }
 }

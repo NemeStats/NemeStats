@@ -1,5 +1,6 @@
 ﻿using BusinessLogic.DataAccess;
 using BusinessLogic.DataAccess.Repositories;
+using BusinessLogic.EventTracking;
 using BusinessLogic.Models;
 using BusinessLogic.Models.User;
 using Microsoft.AspNet.Identity;
@@ -8,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UniversalAnalyticsHttpWrapper;
 
 namespace BusinessLogic.Logic.GamingGroups
 {
@@ -17,11 +19,13 @@ namespace BusinessLogic.Logic.GamingGroups
 
         private DataContext dataContext;
         private UserManager<ApplicationUser> userManager;
+        private NemeStatsEventTracker eventTracker;
 
-        public GamingGroupCreatorImpl(DataContext dataContext, UserManager<ApplicationUser> userManager)
+        public GamingGroupCreatorImpl(DataContext dataContext, UserManager<ApplicationUser> userManager, NemeStatsEventTracker eventTracker)
         {
             this.dataContext = dataContext;
             this.userManager = userManager;
+            this.eventTracker = eventTracker;
         }
 
         public async Task<GamingGroup> CreateGamingGroupAsync(string gamingGroupName, ApplicationUser currentUser)
@@ -35,6 +39,9 @@ namespace BusinessLogic.Logic.GamingGroups
             };
 
             GamingGroup returnGroup = dataContext.Save<GamingGroup>(gamingGroup, currentUser);
+
+            eventTracker.TrackGamingGroupCreation();
+
             ApplicationUser user = await userManager.FindByIdAsync(currentUser.Id);
             user.CurrentGamingGroupId = returnGroup.Id;
             await userManager.UpdateAsync(user);
