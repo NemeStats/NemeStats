@@ -61,3 +61,57 @@ ul input[type=text] { width:25px }
     width: 150px;
     text-indent: -9999px;
 }
+
+.margin-bottom-xs {
+    margin-bottom: 0.5em;
+
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}  
+
+.margin-bottom-sm {
+    margin-bottom: 1em;
+} 
+
+.margin-bottom-md {
+    margin-bottom: 1.5em;
+}
+
+.margin-bottom-lg {
+    margin-bottom: 2em;
+}
+
+.line-bottom-sm {
+    border-bottom:#eee;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+}
+
+.line-bottom-md {
+    border-bottom:#eee;
+    border-bottom-style: solid;
+    border-bottom-width: 2px;
+}
+
+.font-size-xs {
+    font-size: 0.5em;
+}
+
+.font-size-sm {
+    font-size: 1.5em;
+}
+
+.font-size-md {
+    font-size: 2.5em;
+}
+
+.font-size-lg {
+    font-size: 3.5em;
+
+}
+
+.line-bottom-sm:last-child {
+    border-bottom-style: hidden;
+    border-bottom-width: 0;
+}

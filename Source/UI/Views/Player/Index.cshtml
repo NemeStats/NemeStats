@@ -4,7 +4,7 @@
     ViewBag.Title = "Players";
 }
 
-<div class="row">
+<div class="row margin-bottom-xs">
     <h2>@ViewBag.Title</h2>
     <hr />
     @Html.ActionLink("Create New", "Create", "Player", new { @class = "btn btn-primary btn-sm" })
@@ -36,15 +36,15 @@
                         </td>
                         <td>
                             <a href="@Url.Action("Edit", "Player", new { id = item.Id })" title="Edit">
-                                <span class="glyphicon glyphicon-pencil"></span>
+                                <span class="glyphicon glyphicon-pencil font-size-sm"></span>
                             </a>
 
                             <a href="@Url.Action("Details", "Player", new { id = item.Id })" title="Details">
-                                <span class="glyphicon glyphicon-book"></span>
+                                <span class="glyphicon glyphicon-book font-size-sm"></span>
                             </a>
 
                             <a href="@Url.Action("Delete", "Player", new { id = item.Id })" title="Delete">
-                                <span class="glyphicon glyphicon-trash"></span>
+                                <span class="glyphicon glyphicon-trash font-size-sm"></span>
                             </a>
                         </td>
                     </tr>
