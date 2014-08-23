@@ -55,6 +55,20 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
         }
 
         [Test]
+        public void ItEagerlyFetchesThePlayers()
+        {
+            using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
+            {
+                dbContext.Configuration.LazyLoadingEnabled = false;
+                using (NemeStatsDataContext dataContext = new NemeStatsDataContext(dbContext, securedEntityValidatorFactory))
+                {
+                    PlayedGame playedGame = GetTestSubjectPlayedGame(dataContext);
+                    Assert.NotNull(playedGame.PlayerGameResults[0].Player);
+                }
+            }
+        }
+
+        [Test]
         public void ItReturnsNullIfNoPlayedGameFound()
         {
             using (NemeStatsDataContext dataContext = new NemeStatsDataContext())

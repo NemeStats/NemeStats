@@ -1,0 +1,52 @@
+﻿using BusinessLogic.DataAccess;
+using BusinessLogic.Logic.GameDefinitions;
+using BusinessLogic.Models;
+using NUnit.Framework;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace BusinessLogic.Tests.IntegrationTests.LogicTests.GameDefinitionsTests.GameDefinitionRetrieverImplTests
+{
+    [TestFixture]
+    public class GetAllGameDefinitionsIntegrationTests : IntegrationTestBase
+    {
+        protected GameDefinitionRetrieverImpl retriever;
+        protected IList<GameDefinition> actualGameDefinitions;
+
+        [SetUp]
+        public void SetUp()
+        {
+            using(NemeStatsDataContext dataContext = new NemeStatsDataContext())
+            {
+                retriever = new GameDefinitionRetrieverImpl(dataContext);
+                actualGameDefinitions = retriever.GetAllGameDefinitions(testUserWithDefaultGamingGroup);
+            }
+            
+        }
+
+        [Test]
+        public void ItOnlyGetsGameDefinitionsForTheCurrentPlayersGamingGroup()
+        {
+            Assert.True(actualGameDefinitions.All(game => game.GamingGroupId == testUserWithDefaultGamingGroup.CurrentGamingGroupId));
+        }
+
+        [Test]
+        public void ItSortsGameDefinitionsByNameAscending()
+        {
+            string previousName = null;
+
+            foreach (GameDefinition gameDefinition in actualGameDefinitions)
+            {
+                if (previousName != null)
+                {
+                    Assert.LessOrEqual(previousName, gameDefinition.Name);
+                }
+
+                previousName = gameDefinition.Name;
+            }
+        }
+    }
+}

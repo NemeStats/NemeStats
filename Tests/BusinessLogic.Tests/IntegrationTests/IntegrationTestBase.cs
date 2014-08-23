@@ -2,23 +2,32 @@
 using BusinessLogic.DataAccess.GamingGroups;
 using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.DataAccess.Security;
+using BusinessLogic.EventTracking;
 using BusinessLogic.Logic;
+using BusinessLogic.Logic.PlayedGames;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
 using BusinessLogic.Models.User;
 using Microsoft.AspNet.Identity.EntityFramework;
 using NUnit.Framework;
+using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UniversalAnalyticsHttpWrapper;
 
 namespace BusinessLogic.Tests.IntegrationTests
 {
     public class IntegrationTestBase
     {
         protected SecuredEntityValidatorFactory securedEntityValidatorFactory = new SecuredEntityValidatorFactory();
+        protected IEventTracker eventTrackerStub;
+        protected IUniversalAnalyticsEventFactory eventFactory = new UniversalAnalyticsEventFactory();
+        protected NemeStatsEventTracker playedGameTracker;
+
         protected List<PlayedGame> testPlayedGames = new List<PlayedGame>();
         protected GameDefinition testGameDefinition;
+        protected GameDefinition testGameDefinition2;
         protected GameDefinition testGameDefinitionWithOtherGamingGroupId;
         protected ApplicationUser testUserWithDefaultGamingGroup;
         protected ApplicationUser testUserWithOtherGamingGroup;
@@ -38,6 +47,7 @@ namespace BusinessLogic.Tests.IntegrationTests
         protected Player testPlayer7WithOtherGamingGroupId;
         protected string testPlayer7Name = "testPlayer7";
         protected string testGameName = "this is test game definition name";
+        protected string testGameName2 = "aaa - game definition that should sort first";
         protected string testGameNameForGameWithOtherGamingGroupId = "this is test game definition name for game with other GamingGroupId";
         protected string testGameDescription = "this is a test game description 123abc";
         protected string testApplicationUserNameForUserWithDefaultGamingGroup = "username with default gaming group";
@@ -55,6 +65,13 @@ namespace BusinessLogic.Tests.IntegrationTests
         [TestFixtureSetUp]
         public virtual void FixtureSetUp()
         {
+            //create a stub for this only since we don't want the slowdown of all of the universal analytics event tracking
+            eventTrackerStub = MockRepository.GenerateStub<IEventTracker>();
+            eventTrackerStub.Expect(stub => stub.TrackEvent(Arg<IUniversalAnalyticsEvent>.Is.Anything))
+                .Repeat.Any();
+             
+            playedGameTracker = new UniversalAnalyticsNemeStatsEventTracker(eventTrackerStub, eventFactory);
+
             using (NemeStatsDbContext nemeStatsDbContext = new NemeStatsDbContext())
             {
                 CleanUpTestData();
@@ -81,6 +98,7 @@ namespace BusinessLogic.Tests.IntegrationTests
 
 
                     testGameDefinition = SaveGameDefinition(nemeStatsDbContext, testGamingGroup.Id, testGameName);
+                    testGameDefinition2 = SaveGameDefinition(nemeStatsDbContext, testGamingGroup.Id, testGameName2);
                     testGameDefinitionWithOtherGamingGroupId = SaveGameDefinition(nemeStatsDbContext, testOtherGamingGroup.Id, testGameNameForGameWithOtherGamingGroupId);
                     SavePlayers(nemeStatsDbContext, testGamingGroup.Id, testOtherGamingGroup.Id);
 
@@ -118,70 +136,70 @@ namespace BusinessLogic.Tests.IntegrationTests
 
         private void CreatePlayedGames(NemeStatsDataContext dataContext)
         {
-            PlayedGameRepository playedGameLogic = new EntityFrameworkPlayedGameRepository(dataContext);
-
+            PlayedGameCreator playedGameCreator = new PlayedGameCreatorImpl(dataContext, playedGameTracker);
+            
             List<Player> players = new List<Player>() { testPlayer1, testPlayer2 };
             List<int> playerRanks = new List<int>() { 1, 1 };
-            PlayedGame playedGame = CreateTestPlayedGame(players, playerRanks, testUserWithDefaultGamingGroup, playedGameLogic);
+            PlayedGame playedGame = CreateTestPlayedGame(testGameDefinition.Id, players, playerRanks, testUserWithDefaultGamingGroup, playedGameCreator);
             testPlayedGames.Add(playedGame);
 
             players = new List<Player>() { testPlayer1, testPlayer2, testPlayer3 };
             playerRanks = new List<int>() { 1, 2, 3 };
-            playedGame = CreateTestPlayedGame(players, playerRanks, testUserWithDefaultGamingGroup, playedGameLogic);
+            playedGame = CreateTestPlayedGame(testGameDefinition.Id, players, playerRanks, testUserWithDefaultGamingGroup, playedGameCreator);
             testPlayedGames.Add(playedGame);
 
             players = new List<Player>() { testPlayer1, testPlayer3, testPlayer2 };
             playerRanks = new List<int>() { 1, 2, 3 };
-            playedGame = CreateTestPlayedGame(players, playerRanks, testUserWithDefaultGamingGroup, playedGameLogic);
+            playedGame = CreateTestPlayedGame(testGameDefinition.Id, players, playerRanks, testUserWithDefaultGamingGroup, playedGameCreator);
             testPlayedGames.Add(playedGame);
 
             players = new List<Player>() { testPlayer3, testPlayer1 };
             playerRanks = new List<int>() { 1, 2 };
-            playedGame = CreateTestPlayedGame(players, playerRanks, testUserWithDefaultGamingGroup, playedGameLogic);
+            playedGame = CreateTestPlayedGame(testGameDefinition.Id, players, playerRanks, testUserWithDefaultGamingGroup, playedGameCreator);
             testPlayedGames.Add(playedGame);
 
             //make player4 beat player 1 three times
             players = new List<Player>() { testPlayer4, testPlayer1, testPlayer2, testPlayer3 };
             playerRanks = new List<int>() { 1, 2, 3, 4 };
-            playedGame = CreateTestPlayedGame(players, playerRanks, testUserWithDefaultGamingGroup, playedGameLogic);
+            playedGame = CreateTestPlayedGame(testGameDefinition.Id, players, playerRanks, testUserWithDefaultGamingGroup, playedGameCreator);
             testPlayedGames.Add(playedGame);
 
             players = new List<Player>() { testPlayer4, testPlayer1 };
             playerRanks = new List<int>() { 1, 2 };
-            playedGame = CreateTestPlayedGame(players, playerRanks, testUserWithDefaultGamingGroup, playedGameLogic);
+            playedGame = CreateTestPlayedGame(testGameDefinition.Id, players, playerRanks, testUserWithDefaultGamingGroup, playedGameCreator);
             testPlayedGames.Add(playedGame);
 
             players = new List<Player>() { testPlayer4, testPlayer1 };
             playerRanks = new List<int>() { 1, 2 };
-            playedGame = CreateTestPlayedGame(players, playerRanks, testUserWithDefaultGamingGroup, playedGameLogic);
+            playedGame = CreateTestPlayedGame(testGameDefinition.Id, players, playerRanks, testUserWithDefaultGamingGroup, playedGameCreator);
             testPlayedGames.Add(playedGame);
 
             //--make the inactive player5 beat player1 3 times
             players = new List<Player>() { testPlayer5, testPlayer1 };
             playerRanks = new List<int>() { 1, 2 };
-            playedGame = CreateTestPlayedGame(players, playerRanks, testUserWithDefaultGamingGroup, playedGameLogic);
+            playedGame = CreateTestPlayedGame(testGameDefinition.Id, players, playerRanks, testUserWithDefaultGamingGroup, playedGameCreator);
             testPlayedGames.Add(playedGame);
 
             players = new List<Player>() { testPlayer5, testPlayer1 };
             playerRanks = new List<int>() { 1, 2 };
-            playedGame = CreateTestPlayedGame(players, playerRanks, testUserWithDefaultGamingGroup, playedGameLogic);
+            playedGame = CreateTestPlayedGame(testGameDefinition.Id, players, playerRanks, testUserWithDefaultGamingGroup, playedGameCreator);
             testPlayedGames.Add(playedGame);
 
             players = new List<Player>() { testPlayer5, testPlayer1 };
             playerRanks = new List<int>() { 1, 2 };
-            playedGame = CreateTestPlayedGame(players, playerRanks, testUserWithDefaultGamingGroup, playedGameLogic);
+            playedGame = CreateTestPlayedGame(testGameDefinition.Id, players, playerRanks, testUserWithDefaultGamingGroup, playedGameCreator);
             testPlayedGames.Add(playedGame);
 
             //make player 2 be the only one who beat player 5
             players = new List<Player>() { testPlayer2, testPlayer5 };
             playerRanks = new List<int>() { 1, 2 };
-            playedGame = CreateTestPlayedGame(players, playerRanks, testUserWithDefaultGamingGroup, playedGameLogic);
+            playedGame = CreateTestPlayedGame(testGameDefinition.Id, players, playerRanks, testUserWithDefaultGamingGroup, playedGameCreator);
             testPlayedGames.Add(playedGame);
 
             //--create a game that has a different GamingGroupId
             players = new List<Player>() { testPlayer7WithOtherGamingGroupId };
             playerRanks = new List<int>() { 1 };
-            playedGame = CreateTestPlayedGame(players, playerRanks, testUserWithOtherGamingGroup, playedGameLogic);
+            playedGame = CreateTestPlayedGame(testGameDefinitionWithOtherGamingGroupId.Id, players, playerRanks, testUserWithOtherGamingGroup, playedGameCreator);
             testPlayedGames.Add(playedGame);
         }
 
@@ -208,7 +226,7 @@ namespace BusinessLogic.Tests.IntegrationTests
 
         private GameDefinition SaveGameDefinition(NemeStatsDbContext nemeStatsDbContext, int gamingGroupId, string gameDefinitionName)
         {
-            GameDefinition gameDefinition = new GameDefinition() { Name = testGameName, Description = testGameDescription, GamingGroupId = gamingGroupId };
+            GameDefinition gameDefinition = new GameDefinition() { Name = gameDefinitionName, Description = testGameDescription, GamingGroupId = gamingGroupId };
             nemeStatsDbContext.GameDefinitions.Add(gameDefinition);
             nemeStatsDbContext.SaveChanges();
 
@@ -224,7 +242,8 @@ namespace BusinessLogic.Tests.IntegrationTests
                 EmailConfirmed = false,
                 PhoneNumberConfirmed = false,
                 LockoutEnabled = false,
-                AccessFailedCount = 0
+                AccessFailedCount = 0,
+                AnonymousClientId = new Guid().ToString()
             };
             nemeStatsDbContext.Users.Add(applicationUser);
             nemeStatsDbContext.SaveChanges();
@@ -242,10 +261,11 @@ namespace BusinessLogic.Tests.IntegrationTests
         }
 
         private PlayedGame CreateTestPlayedGame(
+            int gameDefinitionId,
             List<Player> players,
             List<int> correspondingPlayerRanks,
             ApplicationUser currentUser,
-            PlayedGameRepository playedGameLogic)
+            PlayedGameCreator playedGameCreator)
         {
             List<PlayerRank> playerRanks = new List<PlayerRank>();
 
@@ -260,11 +280,11 @@ namespace BusinessLogic.Tests.IntegrationTests
 
             NewlyCompletedGame newlyCompletedGame = new NewlyCompletedGame()
                 {
-                    GameDefinitionId = testGameDefinition.Id,
+                    GameDefinitionId = gameDefinitionId,
                     PlayerRanks = playerRanks,
                 };
 
-            return playedGameLogic.CreatePlayedGame(newlyCompletedGame, currentUser);
+            return playedGameCreator.CreatePlayedGame(newlyCompletedGame, currentUser);
         }
 
         private void CleanUpTestData()
@@ -273,17 +293,25 @@ namespace BusinessLogic.Tests.IntegrationTests
             {
                 CleanUpPlayerGameResults(nemeStatsDbContext);
                 CleanUpPlayedGames(nemeStatsDbContext);
+                nemeStatsDbContext.SaveChanges();
+
                 CleanUpGameDefinitions(nemeStatsDbContext, testGameName);
+                CleanUpGameDefinitions(nemeStatsDbContext, testGameName2);
                 CleanUpGameDefinitions(nemeStatsDbContext, testGameNameForGameWithOtherGamingGroupId);
                 CleanUpPlayers(nemeStatsDbContext);
+                nemeStatsDbContext.SaveChanges();
+
                 CleanUpGamingGroup(testGamingGroup1Name, nemeStatsDbContext);
                 CleanUpGamingGroup(testGamingGroup2Name, nemeStatsDbContext);
+                nemeStatsDbContext.SaveChanges();
+
                 CleanUpGamingGroupInvitation(testInviteeEmail1, nemeStatsDbContext);
                 CleanUpGamingGroupInvitation(testInviteeEmail2, nemeStatsDbContext);
+                nemeStatsDbContext.SaveChanges();
+
                 CleanUpApplicationUser(testApplicationUserNameForUserWithDefaultGamingGroup, nemeStatsDbContext);
                 CleanUpApplicationUser(testApplicationUserNameForUserWithOtherGamingGroup, nemeStatsDbContext);
                 CleanUpApplicationUser(testApplicationUserNameForUserWithDefaultGamingGroupAndNoInvites, nemeStatsDbContext);
-
                 nemeStatsDbContext.SaveChanges();
             }
         }

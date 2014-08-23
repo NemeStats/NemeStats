@@ -20,15 +20,18 @@ using BusinessLogic.DataAccess;
 using BusinessLogic.DataAccess.GamingGroups;
 using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.DataAccess.Security;
+using BusinessLogic.EventTracking;
 using BusinessLogic.Logic;
 using BusinessLogic.Logic.GameDefinitions;
 using BusinessLogic.Logic.GamingGroups;
+using BusinessLogic.Logic.PlayedGames;
 using BusinessLogic.Logic.Users;
 using BusinessLogic.Models;
 using BusinessLogic.Models.User;
 using Microsoft.AspNet.Identity;
 using StructureMap;
 using StructureMap.Graph;
+using System.Configuration.Abstractions;
 using System.Data.Entity;
 using System.Web.Mvc;
 using UI.Controllers.Helpers;
@@ -36,6 +39,7 @@ using UI.Filters;
 using UI.Models.PlayedGame;
 using UI.Transformations;
 using UI.Transformations.Player;
+using UniversalAnalyticsHttpWrapper;
 namespace UI.DependencyResolution {
     public static class IoC {
         public static IContainer Initialize() {
@@ -55,7 +59,6 @@ namespace UI.DependencyResolution {
                             x.For<PlayedGameDetailsViewModelBuilder>().Use<PlayedGameDetailsViewModelBuilderImpl>();
                             x.For<GameResultViewModelBuilder>().Use<GameResultViewModelBuilderImpl>();
                             x.For<PlayerDetailsViewModelBuilder>().Use<PlayerDetailsViewModelBuilderImpl>();
-                            x.For<GameDefinitionRepository>().Use<EntityFrameworkGameDefinitionRepository>();
                             x.For<GamingGroupToGamingGroupViewModelTransformation>()
                                 .Use<GamingGroupToGamingGroupViewModelTransformationImpl>();
                             x.For<GamingGroupInvitationToInvitationViewModelTransformation>()
@@ -70,6 +73,12 @@ namespace UI.DependencyResolution {
                             x.For<ShowingXResultsMessageBuilder>().Use<ShowingXResultsMessageBuilderImpl>();
                             x.For<GamingGroupRetriever>().Use<GamingGroupRetrieverImpl>();
                             x.For<PendingGamingGroupInvitationRetriever>().Use<PendingGamingGroupInvitationRetrieverImpl>();
+                            x.For<PlayedGameCreator>().Use<PlayedGameCreatorImpl>();
+                            x.For<NemeStatsEventTracker>().Use<UniversalAnalyticsNemeStatsEventTracker>();
+                            x.For<IEventTracker>().Use<EventTracker>();
+                            x.For<IUniversalAnalyticsEvent>().Use<UniversalAnalyticsEvent>();
+                            x.For<IUniversalAnalyticsEventFactory>().Use<UniversalAnalyticsEventFactory>();
+                            x.For<IConfigurationManager>().Use<ConfigurationManager>();
                             //TODO finish implementing http://lostechies.com/jimmybogard/2010/05/03/dependency-injection-in-asp-net-mvc-filters/
                             //x.For<IActionInvoker>().Use<InjectingActionInvoker>();
                         });

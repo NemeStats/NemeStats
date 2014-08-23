@@ -75,20 +75,28 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Configuration.Abstractions, Version=2.0.2.15, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\UniversalAnalyticsMeasurementProtocolWrapper.1.2.0\lib\net40\System.Configuration.Abstractions.dll</HintPath>
+    </Reference>
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="UniversalAnalyticsHttpWrapper, Version=1.2.0.40798, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\UniversalAnalyticsMeasurementProtocolWrapper.1.2.0\lib\net40\UniversalAnalyticsHttpWrapper.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataAccess\NemeStatsDataContext.cs" />
     <Compile Include="DataAccess\DataContext.cs" />
     <Compile Include="DataAccess\GamingGroups\EntityFrameworkGamingGroupAccessGranter.cs" />
     <Compile Include="DataAccess\GamingGroups\GamingGroupAccessGranter.cs" />
-    <Compile Include="DataAccess\Repositories\EntityFrameworkGameDefinitionRepository.cs" />
-    <Compile Include="DataAccess\Repositories\GameDefinitionRepository.cs" />
     <Compile Include="DataAccess\NemeStatsDbContext.cs" />
     <Compile Include="DataAccess\NemeStatsInitializer.cs" />
     <Compile Include="DataAccess\SecuredEntityWithTechnicalKey.cs" />
@@ -100,6 +108,10 @@
     <Compile Include="DataAccess\Repositories\EntityFrameworkPlayedGameRepository.cs" />
     <Compile Include="DataAccess\Repositories\PlayerRepository.cs" />
     <Compile Include="DataAccess\Repositories\EntityFrameworkPlayerRepository.cs" />
+    <Compile Include="EventTracking\EventActionEnum.cs" />
+    <Compile Include="EventTracking\EventCategoryEnum.cs" />
+    <Compile Include="EventTracking\NemeStatsEventTracker.cs" />
+    <Compile Include="EventTracking\UniversalAnalyticsNemeStatsEventTracker.cs" />
     <Compile Include="Exceptions\EntityDoesNotExistException.cs" />
     <Compile Include="Exceptions\UnauthorizedEntityAccessException.cs" />
     <Compile Include="Logic\GameDefinitions\GameDefinitionRetriever.cs" />
@@ -110,6 +122,8 @@
     <Compile Include="Logic\GamingGroups\GamingGroupRetrieverImpl.cs" />
     <Compile Include="Logic\GamingGroups\PendingGamingGroupInvitationRetriever.cs" />
     <Compile Include="Logic\GamingGroups\PendingGamingGroupInvitationRetrieverImpl.cs" />
+    <Compile Include="Logic\PlayedGames\PlayedGameCreator.cs" />
+    <Compile Include="Logic\PlayedGames\PlayedGameCreatorImpl.cs" />
     <Compile Include="Logic\Points\GordonPoints.cs" />
     <Compile Include="Logic\Users\GamingGroupInviteConsumer.cs" />
     <Compile Include="Logic\Users\GamingGroupInviteConsumerImpl.cs" />

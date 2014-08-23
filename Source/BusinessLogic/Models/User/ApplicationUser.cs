@@ -12,6 +12,12 @@ namespace BusinessLogic.Models.User
     public class ApplicationUser : IdentityUser, SingleColumnTechnicalKey<string>, EntityWithTechnicalKey
     {
         public int? CurrentGamingGroupId { get; set; }
+        /// <summary>
+        /// This is pulled from the analytics token and can not be linked back to the actual user. Used for pushing analytics
+        /// events and should not be persisted to the DB.
+        /// </summary>
+        [NotMapped]
+        public string AnonymousClientId { get; set; }
 
         [ForeignKey("ApplicationUserId")]
         public virtual IList<UserGamingGroup> UserGamingGroups { get; set; }

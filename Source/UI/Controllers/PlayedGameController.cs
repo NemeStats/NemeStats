@@ -2,6 +2,7 @@
 using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.Logic;
 using BusinessLogic.Logic.GameDefinitions;
+using BusinessLogic.Logic.PlayedGames;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
 using BusinessLogic.Models.User;
@@ -24,6 +25,7 @@ namespace UI.Controllers
         internal PlayedGameRepository playedGameLogic;
         internal PlayerRepository playerLogic;
         internal PlayedGameDetailsViewModelBuilder playedGameDetailsBuilder;
+        internal PlayedGameCreator playedGameCreator;
         internal GameDefinitionRetriever gameDefinitionRetriever;
         internal ShowingXResultsMessageBuilder showingXResultsMessageBuilder;
 
@@ -35,7 +37,8 @@ namespace UI.Controllers
             PlayerRepository playLogic,
             PlayedGameDetailsViewModelBuilder builder,
             GameDefinitionRetriever gameDefinitionRetriever,
-            ShowingXResultsMessageBuilder showingXResultsMessageBuilder)
+            ShowingXResultsMessageBuilder showingXResultsMessageBuilder,
+            PlayedGameCreator playedGameCreator)
         {
             this.dataContext = dataContext;
             playedGameLogic = playedLogic;
@@ -43,6 +46,7 @@ namespace UI.Controllers
             playedGameDetailsBuilder = builder;
             this.gameDefinitionRetriever = gameDefinitionRetriever;
             this.showingXResultsMessageBuilder = showingXResultsMessageBuilder;
+            this.playedGameCreator = playedGameCreator;
         }
 
         // GET: /PlayedGame/
@@ -106,7 +110,7 @@ namespace UI.Controllers
         {
             if (ModelState.IsValid)
             {
-                playedGameLogic.CreatePlayedGame(newlyCompletedGame, currentUser);
+                playedGameCreator.CreatePlayedGame(newlyCompletedGame, currentUser);
 
                 return RedirectToAction(MVC.PlayedGame.ActionNames.Index);
             }

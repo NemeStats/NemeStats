@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.DataAccess;
+using BusinessLogic.EventTracking;
 using BusinessLogic.Logic.Users;
 using BusinessLogic.Models.User;
 using Microsoft.AspNet.Identity;
@@ -6,6 +7,7 @@ using NUnit.Framework;
 using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Security.Principal;
 using System.Threading.Tasks;
 using System.Web;
@@ -24,6 +26,8 @@ namespace UI.Tests.UnitTests.FiltersTests.UserContextAttributeTests
         private UserManager<ApplicationUser> userManager;
         private IUserStore<ApplicationUser> userStoreMock;
         private ApplicationUser applicationUser;
+        private string anonymousClientId = "anonymous client id";
+        private NameValueCollection requestParameters;
 
         [SetUp]
         public void SetUp()
@@ -49,6 +53,16 @@ namespace UI.Tests.UnitTests.FiltersTests.UserContextAttributeTests
             identity.Expect(mock => mock.IsAuthenticated)
                 .Repeat.Once()
                 .Return(true);
+
+            HttpRequestBase requestBaseMock = MockRepository.GenerateMock<HttpRequestBase>();
+
+            httpContextBase.Expect(mock => mock.Request)
+                .Return(requestBaseMock);
+            requestParameters = new NameValueCollection();
+            requestParameters.Add(UserContextAttribute.REQUEST_PARAM_ANALYTICS_ID, anonymousClientId);
+            requestBaseMock.Expect(mock => mock.Params)
+                .Return(requestParameters);
+
             userContextActionFilter = new UserContextAttribute();
             applicationUser = new ApplicationUser()
             {
@@ -120,6 +134,25 @@ namespace UI.Tests.UnitTests.FiltersTests.UserContextAttributeTests
             userContextActionFilter.OnActionExecuting(actionExecutingContext, userManager);
 
             Assert.Null(actionExecutingContext.Result);
+        }
+
+        [Test]
+        public void ItAddsTheAnonymousClientIdToTheUserIfItExists()
+        {
+            userContextActionFilter.OnActionExecuting(actionExecutingContext, userManager);
+
+            ApplicationUser actualApplicationUser = (ApplicationUser)actionExecutingContext.ActionParameters[UserContextAttribute.USER_CONTEXT_KEY];
+            Assert.AreEqual(applicationUser.AnonymousClientId, actualApplicationUser.AnonymousClientId);
+        }
+
+        [Test]
+        public void ItSetsTheApplicationUsersAnonymousClientIdToSomeConstantIfItCannotBePulledFromTheCookie()
+        {
+            requestParameters.Clear();
+            userContextActionFilter.OnActionExecuting(actionExecutingContext, userManager);
+
+            ApplicationUser actualApplicationUser = (ApplicationUser)actionExecutingContext.ActionParameters[UserContextAttribute.USER_CONTEXT_KEY];
+            Assert.AreEqual(UniversalAnalyticsNemeStatsEventTracker.DEFAULT_ANONYMOUS_CLIENT_ID, actualApplicationUser.AnonymousClientId);
         }
     }
 }

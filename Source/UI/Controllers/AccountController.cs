@@ -13,23 +13,26 @@ using BusinessLogic.Models.User;
 using BusinessLogic.DataAccess;
 using StructureMap;
 using BusinessLogic.Logic.Users;
+using BusinessLogic.EventTracking;
 
 namespace UI.Controllers
 {
     [Authorize]
     public partial class AccountController : Controller
     {
+        protected UserManager<ApplicationUser> userManager { get; set; }
         protected GamingGroupInviteConsumer gamingGroupInviteConsumer;
+        protected NemeStatsEventTracker eventTracker;
 
         public AccountController(
             UserManager<ApplicationUser> userManager, 
-            GamingGroupInviteConsumer gamingGroupInviteConsumer)
+            GamingGroupInviteConsumer gamingGroupInviteConsumer,
+            NemeStatsEventTracker eventTracker)
         {
-            UserManager = userManager;
+            this.userManager = userManager;
             this.gamingGroupInviteConsumer = gamingGroupInviteConsumer;
+            this.eventTracker = eventTracker;
         }
-
-        public UserManager<ApplicationUser> UserManager { get; private set; }
 
         //
         // GET: /Account/Login
@@ -49,7 +52,7 @@ namespace UI.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = await UserManager.FindAsync(model.UserName, model.Password);
+                var user = await userManager.FindAsync(model.UserName, model.Password);
                 if (user != null)
                 {
                     await SignInAsync(user, model.RememberMe);
@@ -83,9 +86,11 @@ namespace UI.Controllers
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser() { UserName = model.UserName, Email = model.EmailAddress };
-                var result = await UserManager.CreateAsync(user, model.Password);
+                var result = await userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
+                    new Task(() => eventTracker.TrackUserRegistration()).Start();
+                    
                     await SignInAsync(user, isPersistent: false);
                     int? gamingGroupIdToWhichTheUserWasAdded = await gamingGroupInviteConsumer.AddUserToInvitedGroupAsync(user);
                     
@@ -112,7 +117,7 @@ namespace UI.Controllers
         public virtual async Task<ActionResult> Disassociate(string loginProvider, string providerKey)
         {
             ManageMessageId? message = null;
-            IdentityResult result = await UserManager.RemoveLoginAsync(User.Identity.GetUserId(), new UserLoginInfo(loginProvider, providerKey));
+            IdentityResult result = await userManager.RemoveLoginAsync(User.Identity.GetUserId(), new UserLoginInfo(loginProvider, providerKey));
             if (result.Succeeded)
             {
                 message = ManageMessageId.RemoveLoginSuccess;
@@ -139,7 +144,7 @@ namespace UI.Controllers
 
             ManageUserViewModel viewModel = new ManageUserViewModel();
             string currentUserId = User.Identity.GetUserId();
-            ApplicationUser user = UserManager.FindById(currentUserId);
+            ApplicationUser user = userManager.FindById(currentUserId);
             viewModel.EmailAddress = user.Email;
             return View(MVC.Account.Views.Manage, viewModel);
         }
@@ -157,7 +162,7 @@ namespace UI.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    IdentityResult result = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
+                    IdentityResult result = await userManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
                     if (result.Succeeded)
                     {
                         return RedirectToAction("Manage", new { Message = ManageMessageId.ChangePasswordSuccess });
@@ -179,7 +184,7 @@ namespace UI.Controllers
 
                 if (ModelState.IsValid)
                 {
-                    IdentityResult result = await UserManager.AddPasswordAsync(User.Identity.GetUserId(), model.NewPassword);
+                    IdentityResult result = await userManager.AddPasswordAsync(User.Identity.GetUserId(), model.NewPassword);
                     if (result.Succeeded)
                     {
                         return RedirectToAction("Manage", new { Message = ManageMessageId.SetPasswordSuccess });
@@ -218,7 +223,7 @@ namespace UI.Controllers
             }
 
             // Sign in the user with this external login provider if the user already has a login
-            var user = await UserManager.FindAsync(loginInfo.Login);
+            var user = await userManager.FindAsync(loginInfo.Login);
             if (user != null)
             {
                 await SignInAsync(user, isPersistent: false);
@@ -252,7 +257,7 @@ namespace UI.Controllers
             {
                 return RedirectToAction("Manage", new { Message = ManageMessageId.Error });
             }
-            var result = await UserManager.AddLoginAsync(User.Identity.GetUserId(), loginInfo.Login);
+            var result = await userManager.AddLoginAsync(User.Identity.GetUserId(), loginInfo.Login);
             if (result.Succeeded)
             {
                 return RedirectToAction("Manage");
@@ -281,10 +286,10 @@ namespace UI.Controllers
                     return View("ExternalLoginFailure");
                 }
                 var user = new ApplicationUser() { UserName = model.UserName };
-                var result = await UserManager.CreateAsync(user);
+                var result = await userManager.CreateAsync(user);
                 if (result.Succeeded)
                 {
-                    result = await UserManager.AddLoginAsync(user.Id, info.Login);
+                    result = await userManager.AddLoginAsync(user.Id, info.Login);
                     if (result.Succeeded)
                     {
                         await SignInAsync(user, isPersistent: false);
@@ -319,17 +324,17 @@ namespace UI.Controllers
         [ChildActionOnly]
         public virtual ActionResult RemoveAccountList()
         {
-            var linkedAccounts = UserManager.GetLogins(User.Identity.GetUserId());
+            var linkedAccounts = userManager.GetLogins(User.Identity.GetUserId());
             ViewBag.ShowRemoveButton = HasPassword() || linkedAccounts.Count > 1;
             return (ActionResult)PartialView("_RemoveAccountPartial", linkedAccounts);
         }
 
         protected override void Dispose(bool disposing)
         {
-            if (disposing && UserManager != null)
+            if (disposing && userManager != null)
             {
-                UserManager.Dispose();
-                UserManager = null;
+                userManager.Dispose();
+                userManager = null;
             }
             base.Dispose(disposing);
         }
@@ -349,7 +354,7 @@ namespace UI.Controllers
         private async Task SignInAsync(ApplicationUser user, bool isPersistent)
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ExternalCookie);
-            var identity = await UserManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
+            var identity = await userManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
             AuthenticationManager.SignIn(new AuthenticationProperties() { IsPersistent = isPersistent }, identity);
         }
 
@@ -363,7 +368,7 @@ namespace UI.Controllers
 
         private bool HasPassword()
         {
-            var user = UserManager.FindById(User.Identity.GetUserId());
+            var user = userManager.FindById(User.Identity.GetUserId());
             if (user != null)
             {
                 return user.PasswordHash != null;
