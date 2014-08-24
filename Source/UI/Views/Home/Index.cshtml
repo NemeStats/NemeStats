@@ -1,10 +1,32 @@
-﻿@{
+﻿@model UI.Models.Home.HomeIndexViewModel
+
+@{
     ViewBag.Title = "Home Page";
 }
 
 <div class="jumbotron">
 
     <img src="~/Content/Images/NemeStats.png" style="width:100%" />
+    <div class="col-md-4">
+        <h2>Top 5 Players</h2>
+        <table>
+            <tr>
+                <td>Name</td>
+                <td>Games Played</td>
+                <td>Win %</td>
+                <td>Total Points</td>
+            </tr>
+            @foreach(UI.Models.Players.TopPlayerViewModel playerSummaryViewModel in @Model.PlayerSummaries)
+            {
+            <tr>
+                <td>@playerSummaryViewModel.PlayerName</td>
+                <td>@playerSummaryViewModel.TotalNumberOfGamesPlayed</td>
+                <td>@playerSummaryViewModel.WinPercentage</td>
+                <td>@playerSummaryViewModel.TotalPoints</td>
+            </tr>
+            }
+        </table>
+    </div>
     <h2>Keep Track Of Your Nemesis</h2>
     <p class="lead">NemeStats is a free web application for recording games played among a relatively stable group of players. 
     The output will be an interesting set of metrics around game rank over

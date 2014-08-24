@@ -269,9 +269,11 @@
     <Compile Include="Models\GameDefinitionModels\GameDefinitionViewModel.cs" />
     <Compile Include="Models\GamingGroup\GamingGroupViewModel.cs" />
     <Compile Include="Models\GamingGroup\InvitationViewModel.cs" />
+    <Compile Include="Models\Home\IndexViewModel.cs" />
     <Compile Include="Models\PlayedGame\GameResultViewModel.cs" />
     <Compile Include="Models\PlayedGame\PlayedGameDetailsViewModel.cs" />
     <Compile Include="Models\Players\PlayerDetailsViewModel.cs" />
+    <Compile Include="Models\Players\TopPlayerViewModel.cs" />
     <Compile Include="Models\User\UserViewModel.cs" />
     <Compile Include="Transformations\GameDefinitionToGameDefinitionViewModelTransformation.cs" />
     <Compile Include="Transformations\GameDefinitionToGameDefinitionViewModelTransformationImpl.cs" />
@@ -301,6 +303,8 @@
     <Compile Include="Transformations\GameResultViewModelBuilderImpl.cs" />
     <Compile Include="Transformations\Player\PlayerDetailsViewModelBuilder.cs" />
     <Compile Include="Transformations\Player\PlayerDetailsViewModelBuilderImpl.cs" />
+    <Compile Include="Transformations\Player\TopPlayerViewModelBuilder.cs" />
+    <Compile Include="Transformations\Player\TopPlayerViewModelBuilderImpl.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\blog.css" />
