@@ -7,16 +7,16 @@
 <div class="jumbotron">
 
     <img src="~/Content/Images/NemeStats.png" style="width:100%" />
-    <div class="col-md-4">
+    <div class="col-md-6">
         <h2>Top 5 Players</h2>
         <table>
             <tr>
-                <td>Name</td>
-                <td>Games Played</td>
-                <td>Win %</td>
-                <td>Total Points</td>
+                <th width="35%">Name</th>
+                <th width="25%">Games Played</th>
+                <th width="20%">Win %</th>
+                <th width="20%">Total Points</th>
             </tr>
-            @foreach(UI.Models.Players.TopPlayerViewModel playerSummaryViewModel in @Model.PlayerSummaries)
+            @foreach (UI.Models.Players.TopPlayerViewModel playerSummaryViewModel in @Model.TopPlayers)
             {
             <tr>
                 <td>@playerSummaryViewModel.PlayerName</td>

@@ -25,6 +25,7 @@ using BusinessLogic.Logic;
 using BusinessLogic.Logic.GameDefinitions;
 using BusinessLogic.Logic.GamingGroups;
 using BusinessLogic.Logic.PlayedGames;
+using BusinessLogic.Logic.Players;
 using BusinessLogic.Logic.Users;
 using BusinessLogic.Models;
 using BusinessLogic.Models.User;
@@ -79,6 +80,8 @@ namespace UI.DependencyResolution {
                             x.For<IUniversalAnalyticsEvent>().Use<UniversalAnalyticsEvent>();
                             x.For<IUniversalAnalyticsEventFactory>().Use<UniversalAnalyticsEventFactory>();
                             x.For<IConfigurationManager>().Use<ConfigurationManager>();
+                            x.For<TopPlayerViewModelBuilder>().Use<TopPlayerViewModelBuilderImpl>();
+                            x.For<PlayerSummaryBuilder>().Use<PlayerSummaryBuilderImpl>();
                             //TODO finish implementing http://lostechies.com/jimmybogard/2010/05/03/dependency-injection-in-asp-net-mvc-filters/
                             //x.For<IActionInvoker>().Use<InjectingActionInvoker>();
                         });
