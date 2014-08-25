@@ -19,7 +19,7 @@
             @foreach (UI.Models.Players.TopPlayerViewModel playerSummaryViewModel in @Model.TopPlayers)
             {
             <tr>
-                <td>@playerSummaryViewModel.PlayerName</td>
+                <td>@Html.ActionLink(playerSummaryViewModel.PlayerName, "Details", "Player", new { id = playerSummaryViewModel.PlayerId }, new { })</td>
                 <td>@playerSummaryViewModel.TotalNumberOfGamesPlayed</td>
                 <td>@playerSummaryViewModel.WinPercentage</td>
                 <td>@playerSummaryViewModel.TotalPoints</td>
@@ -34,7 +34,8 @@
     </p>
     <p>
     NemeStats is open source and accepting pull requests and feature requests 
-    via <a href='https://github.com/jakejgordon/NemeStats' target="_blank">GitHub</a>.
+    via <a href='https://github.com/jakejgordon/NemeStats' target="_blank">GitHub</a>. Check out the features that are being worked on or in the backlog
+        <a href='https://waffle.io/jakejgordon/NemeStats' target="_blank">here</a>.
     </p>
 </div>
 
