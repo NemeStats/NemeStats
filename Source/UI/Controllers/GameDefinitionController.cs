@@ -26,12 +26,12 @@ namespace UI.Controllers
 
         internal DataContext dataContext;
         internal GameDefinitionRetriever gameDefinitionRetriever;
-        internal GameDefinitionToGameDefinitionViewModelTransformation gameDefinitionTransformation;
+        internal GameDefinitionViewModelBuilder gameDefinitionTransformation;
         internal ShowingXResultsMessageBuilder showingXResultsMessageBuilder;
 
         public GameDefinitionController(DataContext dataContext,
             GameDefinitionRetriever gameDefinitionRetriever,
-            GameDefinitionToGameDefinitionViewModelTransformation gameDefinitionTransformation,
+            GameDefinitionViewModelBuilder gameDefinitionTransformation,
             ShowingXResultsMessageBuilder showingXResultsMessageBuilder)
         {
             this.dataContext = dataContext;
@@ -63,7 +63,7 @@ namespace UI.Controllers
             try
             {
                 gameDefinition = gameDefinitionRetriever.GetGameDefinitionDetails(id.Value, NUMBER_OF_RECENT_GAMES_TO_SHOW, currentUser);
-                gameDefinitionViewModel = gameDefinitionTransformation.Build(gameDefinition);
+                gameDefinitionViewModel = gameDefinitionTransformation.Build(gameDefinition, currentUser);
             }catch(KeyNotFoundException)
             {
                 return new HttpNotFoundResult(); ;

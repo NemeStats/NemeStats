@@ -58,7 +58,7 @@ namespace UI.Controllers
             List<PlayedGameDetailsViewModel> details = new List<PlayedGameDetailsViewModel>(totalGames);
             for (int i = 0; i < totalGames; i++)
             {
-                details.Add(playedGameDetailsBuilder.Build(playedGames[i]));
+                details.Add(playedGameDetailsBuilder.Build(playedGames[i], currentUser));
             }
 
             ViewBag.RecentGamesMessage = showingXResultsMessageBuilder.BuildMessage(
@@ -81,7 +81,7 @@ namespace UI.Controllers
             {
                 return HttpNotFound();
             }
-            PlayedGameDetailsViewModel playedGameDetails = playedGameDetailsBuilder.Build(playedGame);
+            PlayedGameDetailsViewModel playedGameDetails = playedGameDetailsBuilder.Build(playedGame, currentUser);
             return View(MVC.PlayedGame.Views.Details, playedGameDetails);
         }
 

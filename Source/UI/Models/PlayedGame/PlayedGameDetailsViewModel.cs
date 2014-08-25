@@ -12,5 +12,6 @@ namespace UI.Models.PlayedGame
         public int GameDefinitionId { get; set; }
         public DateTime DatePlayed { get; set; }
         public IList<GameResultViewModel> PlayerResults { get; set; }
+        public bool UserCanEdit { get; set; }
     }
 }

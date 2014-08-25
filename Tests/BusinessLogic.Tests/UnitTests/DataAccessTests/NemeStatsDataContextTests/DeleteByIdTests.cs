@@ -16,20 +16,20 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.NemeStatsDataContextTest
     [TestFixture]
     public class DeleteByIdTests : NemeStatsDataContextTestBase
     {
-        private SecuredEntityValidator<GamingGroup> securedEntityValidator;
-        private DbSet<GamingGroup> gamingGroupDbSetMock;
+        private SecuredEntityValidator<GameDefinition> securedEntityValidator;
+        private DbSet<GameDefinition> gameDefinitionDbSetMock;
 
         [SetUp]
         public void SetUp()
         {
-            gamingGroupDbSetMock = MockRepository.GenerateMock<DbSet<GamingGroup>>();
+            gameDefinitionDbSetMock = MockRepository.GenerateMock<DbSet<GameDefinition>>();
 
-            nemeStatsDbContext.Expect(mock => mock.Set<GamingGroup>())
+            nemeStatsDbContext.Expect(mock => mock.Set<GameDefinition>())
                 .Repeat.Once()
-                .Return(gamingGroupDbSetMock);
+                .Return(gameDefinitionDbSetMock);
 
-            securedEntityValidator = MockRepository.GenerateMock<SecuredEntityValidator<GamingGroup>>();
-            securedEntityValidatorFactory.Expect(mock => mock.MakeSecuredEntityValidator<GamingGroup>())
+            securedEntityValidator = MockRepository.GenerateMock<SecuredEntityValidator<GameDefinition>>();
+            securedEntityValidatorFactory.Expect(mock => mock.MakeSecuredEntityValidator<GameDefinition>())
                 .Repeat.Once()
                 .Return(securedEntityValidator);
         }
@@ -38,14 +38,31 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.NemeStatsDataContextTest
         public void ItDeletesTheSpecifiedEntity()
         {
             int id = 1;
-            GamingGroup group = new GamingGroup() { Id = id };
-            dataContext.Expect(mock => mock.FindById<GamingGroup>(id, currentUser))
-                .Return(group);
+            GameDefinition gameDefinition = new GameDefinition() { Id = id };
+            dataContext.Expect(mock => mock.FindById<GameDefinition>(id, currentUser))
+                .Return(gameDefinition);
 
-            dataContext.DeleteById<GamingGroup>(id, currentUser);
+            dataContext.DeleteById<GameDefinition>(id, currentUser);
             dataContext.CommitAllChanges();
 
-            gamingGroupDbSetMock.AssertWasCalled(mock => mock.Remove(group));
+            gameDefinitionDbSetMock.AssertWasCalled(mock => mock.Remove(gameDefinition));
+        }
+
+        [Test]
+        public void ItValidatesAccessToTheEntity()
+        {
+            int entityId = 1;
+            GameDefinition gameDefinition = new GameDefinition() { Id = entityId };
+            dataContext.Expect(mock => mock.FindById<GameDefinition>(entityId, currentUser))
+                .Return(gameDefinition);
+
+            dataContext.DeleteById<GameDefinition>(entityId, currentUser);
+
+            securedEntityValidator.AssertWasCalled(mock => mock.ValidateAccess(
+                Arg<GameDefinition>.Is.Anything,//Same(gameDefinition), 
+                Arg<ApplicationUser>.Is.Anything,//Same(currentUser), 
+                Arg<Type>.Is.Anything,//.Equal(typeof(GameDefinition)),
+                Arg<int>.Is.Equal(entityId)));
         }
     }
 }

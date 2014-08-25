@@ -97,8 +97,7 @@ namespace BusinessLogic.DataAccess.Repositories
             ApplicationUser currentUser)
         {
             List<PlayerGameResult> playerGameResults = dataContext.GetQueryable<PlayerGameResult>(currentUser)
-                        .Where(result => result.PlayerId == playerID
-                            && result.Player.GamingGroupId == currentUser.CurrentGamingGroupId)
+                        .Where(result => result.PlayerId == playerID)
                         .OrderByDescending(result => result.PlayedGame.DatePlayed)
                         .Take(numberOfRecentGamesToRetrieve)
                         .Include(result => result.PlayedGame)
@@ -117,13 +116,9 @@ namespace BusinessLogic.DataAccess.Repositories
 
         public virtual PlayerStatistics GetPlayerStatistics(int playerId, ApplicationUser currentUser)
         {
-            //TODO could hard code the below to get my integration test to pass. 
-            //How do I do a 2nd test so that this would need to be fixed?
-            //return new PlayerStatistics() { TotalGames = 3 };
             PlayerStatistics playerStatistics = new PlayerStatistics();
             playerStatistics.TotalGames = dataContext.GetQueryable<PlayerGameResult>(currentUser)
-                .Count(playerGameResults => playerGameResults.PlayerId == playerId
-                && playerGameResults.Player.GamingGroupId == currentUser.CurrentGamingGroupId);
+                .Count(playerGameResults => playerGameResults.PlayerId == playerId);
             return playerStatistics;
         }
 

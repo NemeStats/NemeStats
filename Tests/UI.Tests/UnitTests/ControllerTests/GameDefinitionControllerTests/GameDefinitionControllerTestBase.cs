@@ -20,7 +20,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
     {
         protected GameDefinitionController gameDefinitionControllerPartialMock;
         protected GameDefinitionRetriever gameDefinitionRetrieverMock;
-        protected GameDefinitionToGameDefinitionViewModelTransformation gameDefinitionTransformation;
+        protected GameDefinitionViewModelBuilder gameDefinitionTransformation;
         protected ShowingXResultsMessageBuilder showingXResultsMessageBuilder;
         protected NemeStatsDataContext dataContext;
         protected ApplicationUser currentUser;
@@ -30,7 +30,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
         {
             dataContext = MockRepository.GenerateMock<NemeStatsDataContext>();
             gameDefinitionRetrieverMock = MockRepository.GenerateMock<GameDefinitionRetriever>();
-            gameDefinitionTransformation = MockRepository.GenerateMock<GameDefinitionToGameDefinitionViewModelTransformation>();
+            gameDefinitionTransformation = MockRepository.GenerateMock<GameDefinitionViewModelBuilder>();
             showingXResultsMessageBuilder = MockRepository.GenerateMock<ShowingXResultsMessageBuilder>();
             gameDefinitionControllerPartialMock = MockRepository.GeneratePartialMock<GameDefinitionController>(
                 dataContext, 

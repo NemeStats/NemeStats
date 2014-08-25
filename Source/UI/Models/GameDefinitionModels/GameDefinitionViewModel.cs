@@ -12,5 +12,6 @@ namespace UI.Models.GameDefinitionModels
         public string Name { get; set; }
         public string Description { get; set; }
         public IList<PlayedGameDetailsViewModel> PlayedGames { get; set; }
+        public bool UserCanEdit { get; set; }
     }
 }

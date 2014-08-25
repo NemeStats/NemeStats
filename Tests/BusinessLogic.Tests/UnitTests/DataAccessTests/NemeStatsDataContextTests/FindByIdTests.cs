@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 namespace BusinessLogic.Tests.UnitTests.DataAccessTests.NemeStatsDataContextTests
 {
     [TestFixture]
-    public class FindByIdTests :NemeStatsDataContextTestBase
+    public class FindByIdTests : NemeStatsDataContextTestBase
     {
         private SecuredEntityValidator<GameDefinition> securedEntityValidator;
         private DbSet<GameDefinition> gameDefinitionDbSetMock;
@@ -57,21 +57,6 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.NemeStatsDataContextTest
             dataContext.FindById<GameDefinition>(entityId, currentUser);
 
             dataContext.AssertWasCalled(mock => mock.ValidateEntityExists<GameDefinition>(entityId, gameDefinition));
-        }
-
-        [Test]
-        public void ItThrowsAnUnauthorizedAccessExceptionIfTheUserDoesntHaveAccessToTheEntity()
-        {
-            int entityId = 1;
-            GameDefinition gameDefinition = new GameDefinition() { Id = entityId };
-            gameDefinitionDbSetMock.Expect(mock => mock.Find(entityId))
-                .Return(gameDefinition);
-
-            securedEntityValidator.Expect(mock => mock.ValidateAccess(gameDefinition, currentUser, typeof(GameDefinition), entityId))
-                .Throw(new UnauthorizedAccessException());
-
-            Exception exception = Assert.Throws<UnauthorizedAccessException>(
-                () => dataContext.FindById<GameDefinition>(entityId, currentUser));
         }
     }
 }

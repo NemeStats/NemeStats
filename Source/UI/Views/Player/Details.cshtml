@@ -37,12 +37,15 @@
                     @Html.DisplayFor(model => model.Active)
                 </div>
             </div>
+            @if(Model.UserCanEdit)
+            {
             <div class="row">
                 <div class="col-md-1"></div>
                 <div class="col-md-2">
                     @Html.ActionLink("Edit", "Edit", new { id = Model.PlayerId }, new { @class = "btn btn-sm btn-primary" })
                 </div>
             </div>
+            }
         </div>
     </div>
 </div>

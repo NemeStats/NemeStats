@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.Models;
+using BusinessLogic.Models.User;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System;
@@ -13,7 +14,7 @@ using UI.Transformations;
 namespace UI.Tests.UnitTests.TransformationsTests
 {
     [TestFixture]
-    public class GameDefinitionToGameDefinitionViewModelTransformationImplTests
+    public class ameDefinitionViewModelBuilderImplTests
     {
         protected GameDefinitionToGameDefinitionViewModelTransformationImpl transformer;
         protected PlayedGameDetailsViewModelBuilder playedGameDetailsViewModelBuilder;
@@ -21,6 +22,8 @@ namespace UI.Tests.UnitTests.TransformationsTests
         protected GameDefinitionViewModel viewModel;
         protected PlayedGameDetailsViewModel playedGameDetailsViewModel1;
         protected PlayedGameDetailsViewModel playedGameDetailsViewModel2;
+        protected ApplicationUser currentUser;
+        protected int gamingGroupid = 135;
 
         [TestFixtureSetUp]
         public void FixtureSetUp()
@@ -44,15 +47,19 @@ namespace UI.Tests.UnitTests.TransformationsTests
                 Id = 1,
                 Name = "game definition name",
                 Description = "game definition description",
-                GamingGroupId = 2,
+                GamingGroupId = gamingGroupid,
                 PlayedGames = playedGames
             };
-            playedGameDetailsViewModelBuilder.Expect(mock => mock.Build(gameDefinition.PlayedGames[0]))
+            currentUser = new ApplicationUser()
+            {
+                CurrentGamingGroupId = gamingGroupid
+            };
+            playedGameDetailsViewModelBuilder.Expect(mock => mock.Build(gameDefinition.PlayedGames[0], currentUser))
                 .Return(playedGameDetailsViewModel1);
-            playedGameDetailsViewModelBuilder.Expect(mock => mock.Build(gameDefinition.PlayedGames[1]))
+            playedGameDetailsViewModelBuilder.Expect(mock => mock.Build(gameDefinition.PlayedGames[1], currentUser))
                 .Return(playedGameDetailsViewModel2);
 
-            viewModel = transformer.Build(gameDefinition);
+            viewModel = transformer.Build(gameDefinition, currentUser);
         }
 
         [Test]
@@ -78,6 +85,23 @@ namespace UI.Tests.UnitTests.TransformationsTests
         {
             Assert.AreEqual(playedGameDetailsViewModel1, viewModel.PlayedGames[0]);
             Assert.AreEqual(playedGameDetailsViewModel2, viewModel.PlayedGames[1]);
+        }
+
+        [Test]
+        public void TheUserCanEditViewModelIfTheyShareGamingGroups()
+        {
+            viewModel = transformer.Build(gameDefinition, currentUser);
+
+            Assert.True(viewModel.UserCanEdit);
+        }
+
+        [Test]
+        public void TheUserCanNotEditViewModelIfTheyDoNotShareGamingGroups()
+        {
+            currentUser.CurrentGamingGroupId = -1;
+            viewModel = transformer.Build(gameDefinition, currentUser);
+
+            Assert.False(viewModel.UserCanEdit);
         }
     }
 }

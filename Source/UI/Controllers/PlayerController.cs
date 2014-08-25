@@ -27,7 +27,8 @@ namespace UI.Controllers
         internal DataContext dataContext;
         internal PlayerRepository playerRepository;
         internal GameResultViewModelBuilder builder;
-        internal PlayerDetailsViewModelBuilder playerDetailsViewModelBuilder;
+        internal 
+            PlayerDetailsViewModelBuilder playerDetailsViewModelBuilder;
         internal ShowingXResultsMessageBuilder showingXResultsMessageBuilder;
         
         public PlayerController(DataContext dataContext, 
@@ -67,7 +68,7 @@ namespace UI.Controllers
                 return new HttpNotFoundResult();
             }
 
-            PlayerDetailsViewModel playerDetailsViewModel = playerDetailsViewModelBuilder.Build(player);
+            PlayerDetailsViewModel playerDetailsViewModel = playerDetailsViewModelBuilder.Build(player, currentUser);
 
             ViewBag.RecentGamesMessage = showingXResultsMessageBuilder.BuildMessage(
                 NUMBER_OF_RECENT_GAMES_TO_RETRIEVE, 

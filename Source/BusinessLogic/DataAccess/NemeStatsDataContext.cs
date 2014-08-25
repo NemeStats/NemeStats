@@ -42,14 +42,6 @@ namespace BusinessLogic.DataAccess
 
         public virtual IQueryable<TEntity> GetQueryable<TEntity>(ApplicationUser currentUser) where TEntity : class, EntityWithTechnicalKey
         {
-            //TODO this doesn't apear to be doing anything even though it compiles. Want to filter on gaming group ID automatically
-            // when appropriate
-            //if (typeof(SecuredEntityWithTechnicalKey).IsAssignableFrom(typeof(TEntity)))
-            //{
-                
-            //    queryable = dbSet.Where(securedEntitySet => ((SecuredEntityWithTechnicalKey)securedEntitySet).GamingGroupId
-            //        == currentUser.CurrentGamingGroupId.Value);
-            //}
             return nemeStatsDbContext.Set<TEntity>();
         }
 
@@ -130,6 +122,9 @@ namespace BusinessLogic.DataAccess
         {
             TEntity entityToDelete = FindById<TEntity>(id, currentUser);
 
+            SecuredEntityValidator<TEntity> securedEntityValidator = securedEntityValidatorFactory.MakeSecuredEntityValidator<TEntity>();
+            securedEntityValidator.ValidateAccess(entityToDelete, currentUser, typeof(TEntity), id);
+
             nemeStatsDbContext.Set<TEntity>().Remove(entityToDelete);
         }
 
@@ -146,10 +141,6 @@ namespace BusinessLogic.DataAccess
             TEntity entity = nemeStatsDbContext.Set<TEntity>().Find(id);
 
             ValidateEntityExists(id, entity);
-
-            //TODO update comments to indicate it can throw an exception
-            SecuredEntityValidator<TEntity> validator = securedEntityValidatorFactory.MakeSecuredEntityValidator<TEntity>();
-            validator.ValidateAccess(entity, currentUser, typeof(TEntity), id);
 
             return entity;
         }

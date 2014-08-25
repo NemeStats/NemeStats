@@ -28,17 +28,5 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
                 Assert.AreEqual(totalGamesForPlayer1, playerStatistics.TotalGames);
             }
         }
-
-        [Test]
-        public void ItOnlyIncludesStatisticsForPlayersWhoShareTheSameGamingGroupAsTheCurrentUser()
-        {
-            using (DataContext dataContext = new NemeStatsDataContext())
-            {
-                PlayerRepository playerLogic = new EntityFrameworkPlayerRepository(dataContext);
-                PlayerStatistics playerStatistics = playerLogic.GetPlayerStatistics(testPlayer1.Id, testUserWithOtherGamingGroup);
-                
-                Assert.AreEqual(0, playerStatistics.TotalGames);
-            }
-        } 
     }
 }

@@ -69,7 +69,7 @@ namespace UI.DependencyResolution {
                             x.For<Microsoft.AspNet.Identity.IUserStore<ApplicationUser>>()
                                 .Use<Microsoft.AspNet.Identity.EntityFramework.UserStore<ApplicationUser>>();
                             x.For<GamingGroupCreator>().Use<GamingGroupCreatorImpl>();
-                            x.For<GameDefinitionToGameDefinitionViewModelTransformation>()
+                            x.For<GameDefinitionViewModelBuilder>()
                                 .Use<GameDefinitionToGameDefinitionViewModelTransformationImpl>();
                             x.For<ShowingXResultsMessageBuilder>().Use<ShowingXResultsMessageBuilderImpl>();
                             x.For<GamingGroupRetriever>().Use<GamingGroupRetrieverImpl>();

@@ -19,5 +19,6 @@ namespace UI.Models.Players
         public string NemesisName { get; set; }
         public int LossPercentageVersusPlayer { get; set; }
         public int NumberOfGamesLostVersusNemesis { get; set; }
+        public bool UserCanEdit { get; set; }
     }
 }

@@ -64,7 +64,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
                 PlayerId = playerId,
                 PlayerGameResultDetails = new List<GameResultViewModel>()
             };
-            playerDetailsViewModelBuilderMock.Expect(viewModelBuilder => viewModelBuilder.Build(playerDetails))
+            playerDetailsViewModelBuilderMock.Expect(viewModelBuilder => viewModelBuilder.Build(playerDetails, currentUser))
                 .Repeat
                 .Once()
                 .Return(playerDetailsViewModel);
@@ -87,7 +87,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
                 PlayerId = playerId,
                 PlayerGameResultDetails = new List<GameResultViewModel>()
             };
-            playerDetailsViewModelBuilderMock.Expect(viewModelBuilder => viewModelBuilder.Build(playerDetails))
+            playerDetailsViewModelBuilderMock.Expect(viewModelBuilder => viewModelBuilder.Build(playerDetails, currentUser))
                 .Repeat
                 .Once()
                 .Return(playerDetailsViewModel);
@@ -124,7 +124,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
                 PlayerId = playerId,
                 PlayerGameResultDetails = new List<GameResultViewModel>()
             };
-            playerDetailsViewModelBuilderMock.Expect(viewModelBuilder => viewModelBuilder.Build(playerDetails))
+            playerDetailsViewModelBuilderMock.Expect(viewModelBuilder => viewModelBuilder.Build(playerDetails, currentUser))
                 .Repeat
                 .Once()
                 .Return(playerDetailsViewModel);

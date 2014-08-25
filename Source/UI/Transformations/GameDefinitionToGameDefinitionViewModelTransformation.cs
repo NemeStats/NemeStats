@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.Models;
+using BusinessLogic.Models.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,8 +8,8 @@ using UI.Models.GameDefinitionModels;
 
 namespace UI.Transformations
 {
-    public interface GameDefinitionToGameDefinitionViewModelTransformation
+    public interface GameDefinitionViewModelBuilder
     {
-        GameDefinitionViewModel Build(GameDefinition gameDefinition);
+        GameDefinitionViewModel Build(GameDefinition gameDefinition, ApplicationUser currentUser);
     }
 }

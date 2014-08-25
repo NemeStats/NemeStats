@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.Models;
+using BusinessLogic.Models.User;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System;
@@ -18,6 +19,8 @@ namespace UI.Tests.UnitTests.TransformationsTests
         private PlayedGame playedGame;
         private PlayedGameDetailsViewModel playedGameDetails;
         private GameResultViewModelBuilder detailsBuilder;
+        private ApplicationUser currentUser;
+        private int gamingGroupId = 1123;
 
         [SetUp]
         public void SetUp()
@@ -27,7 +30,8 @@ namespace UI.Tests.UnitTests.TransformationsTests
                 Id = 11111,
                 GameDefinition = new GameDefinition(),
                 GameDefinitionId = 2222,
-                PlayerGameResults = new List<PlayerGameResult>()
+                PlayerGameResults = new List<PlayerGameResult>(),
+                GamingGroupId = gamingGroupId
             };
 
             playedGame.PlayerGameResults.Add(new PlayerGameResult()
@@ -70,15 +74,19 @@ namespace UI.Tests.UnitTests.TransformationsTests
                     .Once()
                     .Return(new GameResultViewModel() { PlayerId = playedGame.PlayerGameResults[i].PlayerId });
             }
+            currentUser = new ApplicationUser()
+            {
+                CurrentGamingGroupId = gamingGroupId
+            };
 
-            playedGameDetails = builder.Build(playedGame);
+            playedGameDetails = builder.Build(playedGame, currentUser);
         }
 
         [Test]
         public void ItRequiresAPlayedGame()
         {
             var exception = Assert.Throws<ArgumentNullException>(() =>
-                    builder.Build(null)
+                    builder.Build(null, currentUser)
                 );
 
             Assert.AreEqual("playedGame", exception.ParamName);
@@ -90,7 +98,7 @@ namespace UI.Tests.UnitTests.TransformationsTests
             PlayedGame playedGameWithNoGameDefinition = new PlayedGame();
 
             var exception = Assert.Throws<ArgumentException>(() =>
-                    builder.Build(playedGameWithNoGameDefinition)
+                    builder.Build(playedGameWithNoGameDefinition, currentUser)
                 );
 
             Assert.AreEqual(PlayedGameDetailsViewModelBuilderImpl.EXCEPTION_GAME_DEFINITION_CANNOT_BE_NULL, exception.Message);
@@ -102,7 +110,7 @@ namespace UI.Tests.UnitTests.TransformationsTests
             PlayedGame playedGameWithNoPlayerGameResults = new PlayedGame() { GameDefinition = new GameDefinition() };
 
             var exception = Assert.Throws<ArgumentException>(() =>
-                    builder.Build(playedGameWithNoPlayerGameResults)
+                    builder.Build(playedGameWithNoPlayerGameResults, currentUser)
                 );
 
             Assert.AreEqual(PlayedGameDetailsViewModelBuilderImpl.EXCEPTION_PLAYER_GAME_RESULTS_CANNOT_BE_NULL, exception.Message);
@@ -139,7 +147,23 @@ namespace UI.Tests.UnitTests.TransformationsTests
             {
                 Assert.AreEqual(playedGame.PlayerGameResults[i].PlayerId, playedGameDetails.PlayerResults[i].PlayerId);
             }
+        }
 
+        [Test]
+        public void TheUserCanEditThePlayedGameDetailsViewModelIfTheyShareGamingGroups()
+        {
+            PlayedGameDetailsViewModel viewModel = builder.Build(playedGame, currentUser);
+
+            Assert.True(viewModel.UserCanEdit);
+        }
+
+        [Test]
+        public void TheUserCanNotEditThePlayedGameDetailsViewModelIfTheyDoNotShareGamingGroups()
+        {
+            currentUser.CurrentGamingGroupId = -1;
+            PlayedGameDetailsViewModel viewModel = builder.Build(playedGame, currentUser);
+
+            Assert.False(viewModel.UserCanEdit);
         }
     }
 }

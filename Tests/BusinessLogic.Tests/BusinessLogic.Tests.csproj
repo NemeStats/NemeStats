@@ -121,7 +121,6 @@
     <Compile Include="IntegrationTests\DataAccessTests\RepositoriesTests\EntityFrameworkPlayedGameRepositoryTests\GetRecentlyPlayedGameTests.cs" />
     <Compile Include="IntegrationTests\DataAccessTests\RepositoriesTests\EntityFrameworkPlayerRepositoryTests\GetAllPlayersIntegrationTests.cs" />
     <Compile Include="IntegrationTests\DataAccessTests\RepositoriesTests\EntityFrameworkPlayerRepositoryTests\GetPlayerDetailsIntegrationTests.cs" />
-    <Compile Include="IntegrationTests\DataAccessTests\RepositoriesTests\EntityFrameworkPlayerRepositoryTests\GetPlayerGameResultsWithPlayedGameAndGameDefinitionIntegrationTests.cs" />
     <Compile Include="IntegrationTests\DataAccessTests\RepositoriesTests\EntityFrameworkPlayerRepositoryTests\GetPlayerStatisticsIntegrationTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UnitTests\DataAccessTests\GamingGroupsTests\EntityFrameworkGamingGroupAccessGranterTests\EntityFrameworkGamingGroupAccessGranterTestBase.cs" />

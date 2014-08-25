@@ -69,7 +69,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
                 .Repeat.Once()
                 .Return(playedGame);
             PlayedGameDetailsViewModel playedGameDetails = new PlayedGameDetailsViewModel();
-            playedGameDetailsBuilderMock.Expect(builder => builder.Build(playedGame)).Repeat.Once()
+            playedGameDetailsBuilderMock.Expect(builder => builder.Build(playedGame, currentUser)).Repeat.Once()
                 .Return(playedGameDetails);
 
             ViewResult result = playedGameController.Details(playedGameId, currentUser) as ViewResult;

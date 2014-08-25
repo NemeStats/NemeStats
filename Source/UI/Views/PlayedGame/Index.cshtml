@@ -56,10 +56,12 @@
                         <a href="@Url.Action("Details", "PlayedGame", new { id = item.PlayedGameId })" title="Details">
                             <span class="glyphicon glyphicon-book font-size-sm"></span>
                         </a>
-
+                        @if(item.UserCanEdit)
+                        {
                         <a href="@Url.Action("Delete", "PlayedGame", new { id = item.PlayedGameId })" title="Delete">
                             <span class="glyphicon glyphicon-trash font-size-sm"></span>
                         </a>
+                        }
                     </div>
                 </div>
            </div>        

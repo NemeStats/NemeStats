@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using System.Web.Mvc;
 using UI.Controllers;
 using UI.Models.GameDefinitionModels;
+using UI.Controllers.Helpers;
 
 namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
 {
@@ -30,7 +31,8 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
 
             gameDefinition = new GameDefinition()
             {
-                PlayedGames = new List<PlayedGame>()
+                PlayedGames = new List<PlayedGame>(),
+                GamingGroupId = currentUser.CurrentGamingGroupId.Value
             };
 
             gameDefinitionRetrieverMock.Expect(repo => repo.GetGameDefinitionDetails(
@@ -38,7 +40,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
                 Arg<int>.Is.Anything,
                 Arg<ApplicationUser>.Is.Anything))
                 .Return(gameDefinition);
-            gameDefinitionTransformation.Expect(mock => mock.Build(gameDefinition))
+            gameDefinitionTransformation.Expect(mock => mock.Build(gameDefinition, currentUser))
                 .Return(expectedViewModel);
         }
 

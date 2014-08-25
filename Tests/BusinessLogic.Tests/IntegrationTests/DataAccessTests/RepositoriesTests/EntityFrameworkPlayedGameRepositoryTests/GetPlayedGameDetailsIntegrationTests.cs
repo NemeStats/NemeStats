@@ -79,20 +79,5 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
                 Assert.Null(notFoundPlayedGame);
             }
         }
-
-        [Test]
-        public void ItThrowsANotAuthorizedExceptionIfTheGameIsntInThePlayersGamingGroup()
-        {
-            using (NemeStatsDataContext dataContext = new NemeStatsDataContext())
-            {
-                PlayedGame gameWithMismatchedGamingGroupId = testPlayedGames.First(
-                    playedGame => playedGame.GamingGroupId != testUserWithDefaultGamingGroup.CurrentGamingGroupId);
-
-                EntityFrameworkPlayedGameRepository playedGameRepository = new EntityFrameworkPlayedGameRepository(dataContext);
-
-                PlayedGame notFoundPlayedGame = playedGameRepository.GetPlayedGameDetails(gameWithMismatchedGamingGroupId.Id, testUserWithDefaultGamingGroup);
-                Assert.Null(notFoundPlayedGame);
-            }
-        }
     }
 }

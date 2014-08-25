@@ -1,5 +1,6 @@
 ﻿using BusinessLogic.Models;
 using BusinessLogic.Models.Players;
+using BusinessLogic.Models.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,17 +17,17 @@ namespace UI.Transformations.Player
         internal GameResultViewModelBuilder gameResultViewModelBuilder;
 
         //TODO is this correct? MVC complained that I didn't have a parameterless constructor. Maybe called Mapper.Get or something like that?
-        public PlayerDetailsViewModelBuilderImpl()
-        {
-            gameResultViewModelBuilder = new GameResultViewModelBuilderImpl();
-        }
+        //public PlayerDetailsViewModelBuilderImpl()
+        //{
+        //    gameResultViewModelBuilder = new GameResultViewModelBuilderImpl();
+        //}
 
         public PlayerDetailsViewModelBuilderImpl(GameResultViewModelBuilder builder)
         {
             gameResultViewModelBuilder = builder;
         }
 
-        public PlayerDetailsViewModel Build(PlayerDetails playerDetails)
+        public PlayerDetailsViewModel Build(PlayerDetails playerDetails, ApplicationUser currentUser)
         {
             Validate(playerDetails);
 
@@ -35,6 +36,7 @@ namespace UI.Transformations.Player
             playerDetailsViewModel.PlayerName = playerDetails.Name;
             playerDetailsViewModel.Active = playerDetails.Active;
             playerDetailsViewModel.TotalGamesPlayed = playerDetails.PlayerStats.TotalGames;
+            playerDetailsViewModel.UserCanEdit = (playerDetails.GamingGroupId == currentUser.CurrentGamingGroupId);
 
             PopulatePlayerGameSummaries(playerDetails, playerDetailsViewModel);
 

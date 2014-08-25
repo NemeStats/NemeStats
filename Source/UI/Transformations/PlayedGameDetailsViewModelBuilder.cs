@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.Models;
+using BusinessLogic.Models.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,6 @@ namespace UI.Transformations
 {
     public interface PlayedGameDetailsViewModelBuilder
     {
-        PlayedGameDetailsViewModel Build(PlayedGame playedGame);
+        PlayedGameDetailsViewModel Build(PlayedGame playedGame, ApplicationUser currentUser);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using BusinessLogic.Models;
 using BusinessLogic.Models.Players;
+using BusinessLogic.Models.User;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System;
@@ -18,6 +19,8 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTests.PlayerDetailsViewM
     {
         private PlayerDetails playerDetails;
         private PlayerDetailsViewModel playerDetailsViewModel;
+        private PlayerDetailsViewModelBuilderImpl builder;
+        private ApplicationUser currentUser;
 
         [TestFixtureSetUp]
         public void TestFixtureSetUp()
@@ -63,7 +66,8 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTests.PlayerDetailsViewM
                 Name = "Skipper",
                 PlayerGameResults = playerGameResults,
                 PlayerStats = new PlayerStatistics() { TotalGames = 71 },
-                Nemesis = nemesis
+                Nemesis = nemesis,
+                GamingGroupId = 123
             };
 
             GameResultViewModelBuilder relatedEntityBuilder
@@ -76,9 +80,14 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTests.PlayerDetailsViewM
                     .Repeat
                     .Once()
                     .Return(new Models.PlayedGame.GameResultViewModel() { PlayedGameId = playerGameResults[1].PlayedGameId });
-            PlayerDetailsViewModelBuilderImpl builder = new PlayerDetailsViewModelBuilderImpl(relatedEntityBuilder);
+            builder = new PlayerDetailsViewModelBuilderImpl(relatedEntityBuilder);
 
-            playerDetailsViewModel = builder.Build(playerDetails);
+            currentUser = new ApplicationUser()
+            {
+                CurrentGamingGroupId = playerDetails.GamingGroupId
+            };
+
+            playerDetailsViewModel = builder.Build(playerDetails, currentUser);
         }
 
         [Test]
@@ -87,7 +96,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTests.PlayerDetailsViewM
             PlayerDetailsViewModelBuilderImpl builder = new PlayerDetailsViewModelBuilderImpl(null);
 
             var exception = Assert.Throws<ArgumentNullException>(() =>
-                    builder.Build(null));
+                    builder.Build(null, currentUser));
 
             Assert.AreEqual("playerDetails", exception.ParamName);
         }
@@ -98,7 +107,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTests.PlayerDetailsViewM
             PlayerDetailsViewModelBuilderImpl builder = new PlayerDetailsViewModelBuilderImpl(null);
 
             var exception = Assert.Throws<ArgumentException>(() =>
-                    builder.Build(new PlayerDetails()));
+                    builder.Build(new PlayerDetails(), currentUser));
 
             Assert.AreEqual(PlayerDetailsViewModelBuilderImpl.EXCEPTION_PLAYER_GAME_RESULTS_CANNOT_BE_NULL, exception.Message);
         }
@@ -109,7 +118,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTests.PlayerDetailsViewM
             PlayerDetailsViewModelBuilderImpl builder = new PlayerDetailsViewModelBuilderImpl(null);
             PlayerDetails playerDetailsWithNoStatistics = new PlayerDetails() { PlayerGameResults = new List<PlayerGameResult>() };
             var exception = Assert.Throws<ArgumentException>(() =>
-                    builder.Build(playerDetailsWithNoStatistics));
+                    builder.Build(playerDetailsWithNoStatistics, currentUser));
 
             Assert.AreEqual(PlayerDetailsViewModelBuilderImpl.EXCEPTION_PLAYER_STATISTICS_CANNOT_BE_NULL, exception.Message);
         }
@@ -180,6 +189,23 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTests.PlayerDetailsViewM
         public void ItPopulatesTheLostPercentageVersusTheNemesis()
         {
             Assert.AreEqual(playerDetails.Nemesis.LossPercentageVersusNemesis, playerDetailsViewModel.LossPercentageVersusPlayer);
+        }
+
+        [Test]
+        public void TheUserCanEditViewModelIfTheyShareGamingGroups()
+        {
+            PlayerDetailsViewModel viewModel = builder.Build(playerDetails, currentUser);
+
+            Assert.True(viewModel.UserCanEdit);
+        }
+
+        [Test]
+        public void TheUserCanNotEditViewModelIfTheyDoNotShareGamingGroups()
+        {
+            currentUser.CurrentGamingGroupId = -1;
+            PlayerDetailsViewModel viewModel = builder.Build(playerDetails, currentUser);
+
+            Assert.False(viewModel.UserCanEdit);
         }
     }
 }
