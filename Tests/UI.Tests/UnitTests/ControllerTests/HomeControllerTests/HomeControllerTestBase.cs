@@ -1,4 +1,5 @@
-﻿using BusinessLogic.Logic.Players;
+﻿using BusinessLogic.DataAccess.Repositories;
+using BusinessLogic.Logic.Players;
 using BusinessLogic.Models.User;
 using NUnit.Framework;
 using Rhino.Mocks;
@@ -17,13 +18,18 @@ namespace UI.Tests.UnitTests.ControllerTests.HomeControllerTests
         protected HomeController homeControllerPartialMock;
         protected PlayerSummaryBuilder playerSummaryBuilderMock;
         protected TopPlayerViewModelBuilder viewModelBuilderMock;
+        protected PlayedGameRepository playedGameRepository;
 
         [SetUp]
         public void SetUp()
         {
             playerSummaryBuilderMock = MockRepository.GenerateMock<PlayerSummaryBuilder>();
             viewModelBuilderMock = MockRepository.GenerateMock<TopPlayerViewModelBuilder>();
-            homeControllerPartialMock = MockRepository.GeneratePartialMock<HomeController>(playerSummaryBuilderMock, viewModelBuilderMock);
+            playedGameRepository = MockRepository.GenerateMock<PlayedGameRepository>();
+            homeControllerPartialMock = MockRepository.GeneratePartialMock<HomeController>(
+                playerSummaryBuilderMock, 
+                viewModelBuilderMock,
+                playedGameRepository);
         }
     }
 }

@@ -27,6 +27,24 @@
             }
         </table>
     </div>
+    <div class="col-md-6">
+        <h2>Recent Games</h2>
+        <table>
+            <tr>
+                <th width="30%">Game</th>
+                <th width="25%">Winner</th>
+                <th width="35%">Date</th>
+            </tr>
+            @foreach (BusinessLogic.Models.Games.PublicGameSummary publicGame in @Model.RecentPublicGames)
+            {
+                <tr>
+                    <td>@Html.ActionLink(publicGame.GameDefinitionName, "Details", "GameDefinition", new { id = publicGame.GameDefinitionId }, new { })</td>
+                    <td>@Html.ActionLink(publicGame.WinningPlayer.Name, "Details", "Player", new { id = publicGame.WinningPlayer.Id }, new { })</td>
+                    <td>@Html.ActionLink(publicGame.DatePlayed.ToShortDateString(), "Details", "PlayedGame", new { id = publicGame.PlayedGameId }, new { })</td>
+                </tr>
+            }
+        </table>
+    </div>
     <h2>Keep Track Of Your Nemesis</h2>
     <p class="lead">NemeStats is a free web application for recording games played among a relatively stable group of players. 
     The output will be an interesting set of metrics around game rank over

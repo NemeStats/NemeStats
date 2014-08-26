@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BusinessLogic.Models.Games;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -9,5 +10,6 @@ namespace UI.Models.Home
     public class HomeIndexViewModel
     {
         public List<TopPlayerViewModel> TopPlayers { get; set; }
+        public List<PublicGameSummary> RecentPublicGames { get; set; }
     }
 }

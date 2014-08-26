@@ -52,5 +52,19 @@ namespace BusinessLogic.DataAccess.Repositories
             return playedGames;
         }
 
+        public List<PublicGameSummary> GetRecentPublicGames(int numberOfGames)
+        {
+            return (from playedGame in dataContext.GetQueryable<PlayedGame>()
+                           select new PublicGameSummary()
+                           {
+                               PlayedGameId = playedGame.Id,
+                               GameDefinitionId = playedGame.GameDefinitionId,
+                               GameDefinitionName = playedGame.GameDefinition.Name,
+                               WinningPlayer = playedGame.PlayerGameResults.FirstOrDefault(player => player.GameRank == 1).Player,
+                               DatePlayed = playedGame.DatePlayed
+                           }).OrderByDescending(result => result.DatePlayed)
+                                .Take(numberOfGames)
+                                .ToList();
+        }
     }
 }

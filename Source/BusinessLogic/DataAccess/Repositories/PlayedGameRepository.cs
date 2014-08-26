@@ -9,5 +9,6 @@ namespace BusinessLogic.DataAccess.Repositories
     {
         PlayedGame GetPlayedGameDetails(int playedGameId);
         List<PlayedGame> GetRecentGames(int numberOfGames, ApplicationUser currentUser);
+        List<PublicGameSummary> GetRecentPublicGames(int numberOfGames);
     }
 }

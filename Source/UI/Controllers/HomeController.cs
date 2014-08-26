@@ -1,4 +1,6 @@
-﻿using BusinessLogic.Logic.Players;
+﻿using BusinessLogic.DataAccess.Repositories;
+using BusinessLogic.Logic.Players;
+using BusinessLogic.Models.Games;
 using BusinessLogic.Models.Players;
 using System;
 using System.Collections.Generic;
@@ -14,14 +16,20 @@ namespace UI.Controllers
     public partial class HomeController : Controller
     {
         internal const int NUMBER_OF_TOP_PLAYERS_TO_SHOW = 5;
+        internal const int NUMBER_OF_RECENT_PUBLIC_GAMES_TO_SHOW = 5;
 
         private PlayerSummaryBuilder playerSummaryBuilder;
         private TopPlayerViewModelBuilder topPlayerViewModelBuilder;
+        private PlayedGameRepository playedGameRepository;
 
-        public HomeController(PlayerSummaryBuilder playerSummaryBuilder, TopPlayerViewModelBuilder topPlayerViewModelBuilder)
+        public HomeController(
+            PlayerSummaryBuilder playerSummaryBuilder, 
+            TopPlayerViewModelBuilder topPlayerViewModelBuilder,
+            PlayedGameRepository playedGameRepository)
         {
             this.playerSummaryBuilder = playerSummaryBuilder;
             this.topPlayerViewModelBuilder = topPlayerViewModelBuilder;
+            this.playedGameRepository = playedGameRepository;
         }
 
         public virtual ActionResult Index()
@@ -32,9 +40,14 @@ namespace UI.Controllers
             {
                 topPlayerViewModels.Add(topPlayerViewModelBuilder.Build(topPlayer));
             }
+
+            List<PublicGameSummary> publicGameSummaries = playedGameRepository
+                .GetRecentPublicGames(NUMBER_OF_RECENT_PUBLIC_GAMES_TO_SHOW);
+
             HomeIndexViewModel homeIndexViewModel = new HomeIndexViewModel()
             {
-                TopPlayers = topPlayerViewModels
+                TopPlayers = topPlayerViewModels,
+                RecentPublicGames = publicGameSummaries
             };
             return View(MVC.Home.Views.Index, homeIndexViewModel);
         }

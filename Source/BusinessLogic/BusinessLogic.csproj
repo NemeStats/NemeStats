@@ -178,6 +178,7 @@
     <Compile Include="Migrations\201407270144172_DropUniqueIndexOnPlayerNameAlone.Designer.cs">
       <DependentUpon>201407270144172_DropUniqueIndexOnPlayerNameAlone.cs</DependentUpon>
     </Compile>
+    <Compile Include="Models\Games\PublicGameSummary.cs" />
     <Compile Include="Models\GamingGroup.cs" />
     <Compile Include="Models\GamingGroupInvitation.cs" />
     <Compile Include="Models\Players\TopPlayer.cs" />
