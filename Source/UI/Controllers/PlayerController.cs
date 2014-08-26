@@ -19,7 +19,6 @@ using UI.Transformations.Player;
 
 namespace UI.Controllers
 {
-    [Authorize]
     public partial class PlayerController : Controller
     {
         public static readonly int NUMBER_OF_RECENT_GAMES_TO_RETRIEVE = 10;
@@ -45,6 +44,7 @@ namespace UI.Controllers
         }
 
         // GET: /Player/
+        [Authorize]
         [UserContextAttribute]
         public virtual ActionResult Index(ApplicationUser currentUser)
         {
@@ -53,7 +53,7 @@ namespace UI.Controllers
         }
 
         // GET: /Player/Details/5
-        [UserContextAttribute]
+        [UserContextAttribute(RequiresGamingGroup = false)]
         public virtual ActionResult Details(int? id, ApplicationUser currentUser)
         {
             if(!id.HasValue)
@@ -61,7 +61,7 @@ namespace UI.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            PlayerDetails player = playerRepository.GetPlayerDetails(id.Value, NUMBER_OF_RECENT_GAMES_TO_RETRIEVE, currentUser);
+            PlayerDetails player = playerRepository.GetPlayerDetails(id.Value, NUMBER_OF_RECENT_GAMES_TO_RETRIEVE);
 
             if (player == null)
             {
@@ -78,6 +78,7 @@ namespace UI.Controllers
         }
 
         // GET: /Player/Create
+        [Authorize]
         public virtual ActionResult Create()
         {
             return View(MVC.Player.Views.Create, new Player());
@@ -86,6 +87,7 @@ namespace UI.Controllers
         // POST: /Player/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         [UserContextAttribute]
@@ -102,8 +104,8 @@ namespace UI.Controllers
         }
 
         // GET: /Player/Edit/5
-        [UserContextAttribute]
-        public virtual ActionResult Edit(int? id, ApplicationUser currentUser)
+        [Authorize]
+        public virtual ActionResult Edit(int? id)
         {
             if (id == null)
             {
@@ -112,7 +114,7 @@ namespace UI.Controllers
             PlayerDetails player;
             try
             {
-                player = playerRepository.GetPlayerDetails(id.Value, 0, currentUser);
+                player = playerRepository.GetPlayerDetails(id.Value, 0);
             }catch(UnauthorizedAccessException)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
@@ -127,6 +129,7 @@ namespace UI.Controllers
         // POST: /Player/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         [UserContextAttribute]
@@ -142,8 +145,8 @@ namespace UI.Controllers
         }
 
         // GET: /Player/Delete/5
-        [UserContextAttribute]
-        public virtual ActionResult Delete(int? id, ApplicationUser currentUser)
+        [Authorize]
+        public virtual ActionResult Delete(int? id)
         {
             if (id == null)
             {
@@ -152,7 +155,7 @@ namespace UI.Controllers
             PlayerDetails playerDetails;
             try
             {
-                playerDetails = playerRepository.GetPlayerDetails(id.Value, 0, currentUser);
+                playerDetails = playerRepository.GetPlayerDetails(id.Value, 0);
             }catch(UnauthorizedAccessException)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
@@ -165,6 +168,7 @@ namespace UI.Controllers
         }
 
         // POST: /Player/Delete/5
+        [Authorize]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [UserContextAttribute]

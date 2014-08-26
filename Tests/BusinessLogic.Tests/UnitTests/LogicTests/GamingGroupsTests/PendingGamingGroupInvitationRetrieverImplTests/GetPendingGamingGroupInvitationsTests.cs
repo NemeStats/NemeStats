@@ -38,7 +38,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.PendingGami
                 Email = "email@email.com"
             };
 
-            dataContextMock.Expect(mock => mock.FindById<ApplicationUser>(currentUser.Id, currentUser))
+            dataContextMock.Expect(mock => mock.FindById<ApplicationUser>(currentUser.Id))
                 .Return(expectedApplicationUser);
 
             expectedGamingGroupInvitations = new List<GamingGroupInvitation>();
@@ -46,7 +46,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.PendingGami
             expectedGamingGroupInvitations.Add(expectedGamingGroupInvitation);
             expectedGamingGroupInvitations.Add(new GamingGroupInvitation() { InviteeEmail = "some other email that shouldnt be included" });
 
-            dataContextMock.Expect(mock => mock.GetQueryable<GamingGroupInvitation>(currentUser))
+            dataContextMock.Expect(mock => mock.GetQueryable<GamingGroupInvitation>())
                 .Return(expectedGamingGroupInvitations.AsQueryable());
         }
 

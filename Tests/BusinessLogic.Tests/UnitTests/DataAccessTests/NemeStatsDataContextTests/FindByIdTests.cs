@@ -41,7 +41,7 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.NemeStatsDataContextTest
             gameDefinitionDbSetMock.Expect(mock => mock.Find(entityId))
                 .Return(expectedGameDefinition);
 
-            GameDefinition actualGameDefinition = dataContext.FindById<GameDefinition>(entityId, currentUser);
+            GameDefinition actualGameDefinition = dataContext.FindById<GameDefinition>(entityId);
 
             Assert.AreSame(expectedGameDefinition, actualGameDefinition);
         }
@@ -54,7 +54,7 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.NemeStatsDataContextTest
             gameDefinitionDbSetMock.Expect(mock => mock.Find(entityId))
                 .Return(gameDefinition);
 
-            dataContext.FindById<GameDefinition>(entityId, currentUser);
+            dataContext.FindById<GameDefinition>(entityId);
 
             dataContext.AssertWasCalled(mock => mock.ValidateEntityExists<GameDefinition>(entityId, gameDefinition));
         }

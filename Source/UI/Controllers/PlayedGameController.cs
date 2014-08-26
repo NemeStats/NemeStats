@@ -18,7 +18,6 @@ using UI.Transformations;
 
 namespace UI.Controllers
 {
-    [Authorize]
     public partial class PlayedGameController : Controller
     {
         internal NemeStatsDataContext dataContext;
@@ -50,6 +49,7 @@ namespace UI.Controllers
         }
 
         // GET: /PlayedGame/
+        [Authorize]
         [UserContextAttribute]
         public virtual ActionResult Index(ApplicationUser currentUser)
         {
@@ -69,14 +69,14 @@ namespace UI.Controllers
         }
 
         // GET: /PlayedGame/Details/5
-        [UserContextAttribute]
+        [UserContextAttribute(RequiresGamingGroup = false)]
         public virtual ActionResult Details(int? id, ApplicationUser currentUser)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            PlayedGame playedGame = playedGameLogic.GetPlayedGameDetails(id.Value, currentUser);
+            PlayedGame playedGame = playedGameLogic.GetPlayedGameDetails(id.Value);
             if (playedGame == null)
             {
                 return HttpNotFound();
@@ -86,6 +86,7 @@ namespace UI.Controllers
         }
 
         // GET: /PlayedGame/Create
+        [Authorize]
         [UserContextAttribute]
         [HttpGet]
         public virtual ActionResult Create(ApplicationUser currentUser)
@@ -103,6 +104,7 @@ namespace UI.Controllers
         // POST: /PlayedGame/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         [UserContextAttribute]
@@ -132,6 +134,7 @@ namespace UI.Controllers
         }
 
         // GET: /PlayedGame/Delete/5
+        [Authorize]
         [UserContextAttribute]
         public virtual ActionResult Delete(int? id, ApplicationUser currentUser)
         {
@@ -139,7 +142,7 @@ namespace UI.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            PlayedGame playedgame = dataContext.GetQueryable<PlayedGame>(currentUser)
+            PlayedGame playedgame = dataContext.GetQueryable<PlayedGame>()
                 .Where(playedGame => playedGame.Id == id.Value)
                 .FirstOrDefault();
             if (playedgame == null)
@@ -150,6 +153,7 @@ namespace UI.Controllers
         }
 
         // POST: /PlayedGame/Delete/5
+        [Authorize]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [UserContextAttribute]

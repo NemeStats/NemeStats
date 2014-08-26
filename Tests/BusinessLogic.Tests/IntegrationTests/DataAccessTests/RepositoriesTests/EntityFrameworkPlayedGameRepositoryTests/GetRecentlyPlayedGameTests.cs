@@ -109,7 +109,7 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
                 PlayedGameRepository playedGameLogic = new EntityFrameworkPlayedGameRepository(dataContext);
                 int five = 5;
                 List<PlayedGame> playedGames = playedGameLogic.GetRecentGames(five, testUserWithDefaultGamingGroup);
-                List<PlayedGame> allPlayedGames = dataContext.GetQueryable<PlayedGame>(testUserWithDefaultGamingGroup)
+                List<PlayedGame> allPlayedGames = dataContext.GetQueryable<PlayedGame>()
                     .Where(game => game.GamingGroupId == testUserWithDefaultGamingGroup.CurrentGamingGroupId)
                     .ToList()
                     .OrderByDescending(playedGame => playedGame.DatePlayed)

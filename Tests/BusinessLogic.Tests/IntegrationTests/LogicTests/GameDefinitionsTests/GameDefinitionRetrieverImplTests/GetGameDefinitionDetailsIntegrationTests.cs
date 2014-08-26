@@ -30,8 +30,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.GameDefinitionsTests.G
                     GameDefinitionRetrieverImpl gameDefinitionRetriever = new GameDefinitionRetrieverImpl(dataContext);
                     gameDefinition = gameDefinitionRetriever.GetGameDefinitionDetails(
                         testGameDefinition.Id, 
-                        numberOfGamesToRetrieve, 
-                        testUserWithDefaultGamingGroup);
+                        numberOfGamesToRetrieve);
                 }
             }
         }

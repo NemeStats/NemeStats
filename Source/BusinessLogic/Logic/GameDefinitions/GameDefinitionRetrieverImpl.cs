@@ -21,18 +21,18 @@ namespace BusinessLogic.Logic.GameDefinitions
 
         public virtual IList<GameDefinition> GetAllGameDefinitions(ApplicationUser currentUser)
         {
-            return dataContext.GetQueryable<GameDefinition>(currentUser)
+            return dataContext.GetQueryable<GameDefinition>()
                 .Where(game => game.GamingGroupId == currentUser.CurrentGamingGroupId)
                 .OrderBy(game => game.Name)
                 .ToList();
         }
 
-        public virtual GameDefinition GetGameDefinitionDetails(int id, int numberOfPlayedGamesToRetrieve, ApplicationUser currentUser)
+        public virtual GameDefinition GetGameDefinitionDetails(int id, int numberOfPlayedGamesToRetrieve)
         {
-            GameDefinition gameDefinition = dataContext.FindById<GameDefinition>(id, currentUser);
-            IList<PlayedGame> playedGames = AddPlayedGamesToTheGameDefinition(numberOfPlayedGamesToRetrieve, currentUser, gameDefinition);
-            IList<int> distinctPlayerIds = AddPlayerGameResultsToEachPlayedGame(currentUser, playedGames);
-            AddPlayersToPlayerGameResults(currentUser, playedGames, distinctPlayerIds);
+            GameDefinition gameDefinition = dataContext.FindById<GameDefinition>(id);
+            IList<PlayedGame> playedGames = AddPlayedGamesToTheGameDefinition(numberOfPlayedGamesToRetrieve, gameDefinition);
+            IList<int> distinctPlayerIds = AddPlayerGameResultsToEachPlayedGame(playedGames);
+            AddPlayersToPlayerGameResults(playedGames, distinctPlayerIds);
              
             //TODO implement validation
             return gameDefinition;
@@ -40,10 +40,9 @@ namespace BusinessLogic.Logic.GameDefinitions
 
         private IList<PlayedGame> AddPlayedGamesToTheGameDefinition(
             int numberOfPlayedGamesToRetrieve, 
-            ApplicationUser currentUser, 
             GameDefinition gameDefinition)
         {
-            IList<PlayedGame> playedGames = dataContext.GetQueryable<PlayedGame>(currentUser)
+            IList<PlayedGame> playedGames = dataContext.GetQueryable<PlayedGame>()
                 .Where(playedGame => playedGame.GameDefinitionId == gameDefinition.Id)
                 .OrderByDescending(playedGame => playedGame.DatePlayed)
                 .Take(numberOfPlayedGamesToRetrieve)
@@ -52,12 +51,12 @@ namespace BusinessLogic.Logic.GameDefinitions
             return playedGames;
         }
 
-        private IList<int> AddPlayerGameResultsToEachPlayedGame(ApplicationUser currentUser, IList<PlayedGame> playedGames)
+        private IList<int> AddPlayerGameResultsToEachPlayedGame(IList<PlayedGame> playedGames)
         {
             List<int> playedGameIds = (from playedGame in playedGames
                                        select playedGame.Id).ToList();
 
-            IList<PlayerGameResult> playerGameResults = dataContext.GetQueryable<PlayerGameResult>(currentUser)
+            IList<PlayerGameResult> playerGameResults = dataContext.GetQueryable<PlayerGameResult>()
                 .Where(playerGameResult => playedGameIds.Contains(playerGameResult.PlayedGameId))
                 .ToList();
 
@@ -86,9 +85,9 @@ namespace BusinessLogic.Logic.GameDefinitions
             }
         }
 
-        private void AddPlayersToPlayerGameResults(ApplicationUser currentUser, IList<PlayedGame> playedGames, IList<int> distinctPlayerIds)
+        private void AddPlayersToPlayerGameResults(IList<PlayedGame> playedGames, IList<int> distinctPlayerIds)
         {
-            IList<Player> players = dataContext.GetQueryable<Player>(currentUser)
+            IList<Player> players = dataContext.GetQueryable<Player>()
                 .Where(player => distinctPlayerIds.Contains(player.Id))
                 .ToList();
 

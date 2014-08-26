@@ -33,7 +33,7 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
         [Test]
         public void ItGetsThePlayerWithTheHighestWinPercentageAgainstMe()
         {
-            Nemesis nemesis = playerLogic.GetNemesis(testPlayer1.Id, testUserWithDefaultGamingGroup);
+            Nemesis nemesis = playerLogic.GetNemesis(testPlayer1.Id);
 
             Assert.AreEqual(testPlayer4.Id, nemesis.NemesisPlayerId);
         }
@@ -42,7 +42,7 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
         public void ANemesisMustBeActive()
         {
             //player 5 is inactive but beat player 1 three times
-            Nemesis nemesis = playerLogic.GetNemesis(testPlayer1.Id, testUserWithDefaultGamingGroup);
+            Nemesis nemesis = playerLogic.GetNemesis(testPlayer1.Id);
 
             Assert.AreNotEqual(testPlayer5.Id, nemesis.NemesisPlayerId);
         }
@@ -51,7 +51,7 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
         public void ItReturnsANullNemesisIfThereIsNoNemesis()
         {
             //player 5 is inactive but beat player 1 three times
-            Nemesis nemesis = playerLogic.GetNemesis(testPlayer5.Id, testUserWithDefaultGamingGroup);
+            Nemesis nemesis = playerLogic.GetNemesis(testPlayer5.Id);
 
             Assert.True(nemesis is NullNemesis);
         }
@@ -60,7 +60,7 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
         public void ANemesisMustHaveWonAtLeastACertainNumberOfGames()
         {
             //player2 beat player5 once (100% of the time) but this isn't enough to be a nemesis
-            Nemesis nemesis = playerLogic.GetNemesis(testPlayer5.Id, testUserWithDefaultGamingGroup);
+            Nemesis nemesis = playerLogic.GetNemesis(testPlayer5.Id);
 
             Assert.AreNotEqual(testPlayer2.Id, nemesis.NemesisPlayerId);
         }
@@ -68,7 +68,7 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
         [Test]
         public void ItSetsTheNemesisPlayerId()
         {
-            Nemesis nemesis = playerLogic.GetNemesis(testPlayer1.Id, testUserWithDefaultGamingGroup);
+            Nemesis nemesis = playerLogic.GetNemesis(testPlayer1.Id);
 
             Assert.AreEqual(testPlayer4.Id, nemesis.NemesisPlayerId);
         }
@@ -76,7 +76,7 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
         [Test]
         public void ItSetsTheNemesisPlayerName()
         {
-            Nemesis nemesis = playerLogic.GetNemesis(testPlayer1.Id, testUserWithDefaultGamingGroup);
+            Nemesis nemesis = playerLogic.GetNemesis(testPlayer1.Id);
 
             Assert.AreEqual(testPlayer4.Name, nemesis.NemesisPlayerName);
         }
@@ -84,7 +84,7 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
         [Test]
         public void ItSetsTheLossPercentageVersusTheNemesis()
         {
-            Nemesis nemesis = playerLogic.GetNemesis(testPlayer1.Id, testUserWithDefaultGamingGroup);
+            Nemesis nemesis = playerLogic.GetNemesis(testPlayer1.Id);
 
             Assert.AreEqual(100, nemesis.LossPercentageVersusNemesis);
         }
@@ -92,7 +92,7 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
         [Test]
         public void ItSetsTheNumberOfGamesLostVersusTheNemesis()
         {
-            Nemesis nemesis = playerLogic.GetNemesis(testPlayer1.Id, testUserWithDefaultGamingGroup);
+            Nemesis nemesis = playerLogic.GetNemesis(testPlayer1.Id);
 
             Assert.AreEqual(3, nemesis.GamesLostVersusNemesis);
         }

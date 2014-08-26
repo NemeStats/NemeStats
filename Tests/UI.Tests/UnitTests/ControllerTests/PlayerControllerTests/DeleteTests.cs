@@ -19,7 +19,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         {
             int? nullPlayerId = null;
 
-            HttpStatusCodeResult result = playerController.Delete(nullPlayerId, currentUser) as HttpStatusCodeResult;
+            HttpStatusCodeResult result = playerController.Delete(nullPlayerId) as HttpStatusCodeResult;
 
             Assert.AreEqual((int)HttpStatusCode.BadRequest, result.StatusCode);
         }
@@ -28,9 +28,9 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         public void ItReturnsAnUnauthorizedAccessHttpStatusIfTheUserDoesntHaveAccess()
         {
             int playerId = 1351;
-            playerRepositoryMock.Expect(mock => mock.GetPlayerDetails(playerId, 0, currentUser))
+            playerRepositoryMock.Expect(mock => mock.GetPlayerDetails(playerId, 0))
                 .Throw(new UnauthorizedAccessException());
-            HttpStatusCodeResult result = playerController.Delete(playerId, currentUser) as HttpStatusCodeResult;
+            HttpStatusCodeResult result = playerController.Delete(playerId) as HttpStatusCodeResult;
 
             Assert.AreEqual((int)HttpStatusCode.Unauthorized, result.StatusCode);
         }
@@ -39,9 +39,9 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         public void ItReturnsANotFoundHttpStatusIfThePlayerDoesntExist()
         {
             int playerId = -1;
-            playerRepositoryMock.Expect(mock => mock.GetPlayerDetails(playerId, 0, currentUser))
+            playerRepositoryMock.Expect(mock => mock.GetPlayerDetails(playerId, 0))
                 .Throw(new KeyNotFoundException());
-            HttpStatusCodeResult result = playerController.Delete(playerId, currentUser) as HttpStatusCodeResult;
+            HttpStatusCodeResult result = playerController.Delete(playerId) as HttpStatusCodeResult;
 
             Assert.AreEqual((int)HttpStatusCode.NotFound, result.StatusCode);
         }
@@ -50,10 +50,10 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         public void ItShowsTheDeleteView()
         {
             PlayerDetails player = new PlayerDetails();
-            playerRepositoryMock.Expect(mock => mock.GetPlayerDetails(player.Id, 0, currentUser))
+            playerRepositoryMock.Expect(mock => mock.GetPlayerDetails(player.Id, 0))
                 .Repeat.Once()
                 .Return(player);
-            ViewResult result = playerController.Delete(player.Id, currentUser) as ViewResult;
+            ViewResult result = playerController.Delete(player.Id) as ViewResult;
 
             Assert.AreEqual(MVC.Player.Views.Delete, result.ViewName);
         }
@@ -62,10 +62,10 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         public void ItPutsThePlayerOnTheView()
         {
             PlayerDetails player = new PlayerDetails();
-            playerRepositoryMock.Expect(mock => mock.GetPlayerDetails(player.Id, 0, currentUser))
+            playerRepositoryMock.Expect(mock => mock.GetPlayerDetails(player.Id, 0))
                 .Repeat.Once()
                 .Return(player);
-            ViewResult result = playerController.Delete(player.Id, currentUser) as ViewResult;
+            ViewResult result = playerController.Delete(player.Id) as ViewResult;
 
             Assert.AreSame(player, result.Model);
         }

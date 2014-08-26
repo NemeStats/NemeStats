@@ -30,7 +30,7 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.NemeStatsDataCont
         [Test]
         public void ItCanFindAnEntityUsingAnIntId()
         {
-            GameDefinition gameDefinition = dataContext.FindById<GameDefinition>(testGameDefinition.Id, testUserWithDefaultGamingGroup);
+            GameDefinition gameDefinition = dataContext.FindById<GameDefinition>(testGameDefinition.Id);
 
             Assert.NotNull(gameDefinition);
         }

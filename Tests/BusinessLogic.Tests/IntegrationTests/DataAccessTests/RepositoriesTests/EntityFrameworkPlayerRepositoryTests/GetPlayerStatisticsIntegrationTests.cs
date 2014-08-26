@@ -21,7 +21,7 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
             using (DataContext dataContext = new NemeStatsDataContext())
             {
                 PlayerRepository playerLogic = new EntityFrameworkPlayerRepository(dataContext);
-                PlayerStatistics playerStatistics = playerLogic.GetPlayerStatistics(testPlayer1.Id, testUserWithDefaultGamingGroup);
+                PlayerStatistics playerStatistics = playerLogic.GetPlayerStatistics(testPlayer1.Id);
                 int totalGamesForPlayer1 = testPlayedGames
                         .Count(playedGame => playedGame.PlayerGameResults
                             .Any(playerGameResult => playerGameResult.PlayerId == testPlayer1.Id));

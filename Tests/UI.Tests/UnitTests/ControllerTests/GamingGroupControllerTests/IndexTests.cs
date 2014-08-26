@@ -28,7 +28,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
             GamingGroupViewModel gamingGroupViewModel = new GamingGroupViewModel();
             GamingGroup gamingGroup = new GamingGroup();
 
-            gamingGroupRetrieverMock.Expect(mock => mock.GetGamingGroupDetails(currentUser.CurrentGamingGroupId.Value, currentUser))
+            gamingGroupRetrieverMock.Expect(mock => mock.GetGamingGroupDetails(currentUser.CurrentGamingGroupId.Value))
                 .Repeat.Once()
                 .Return(gamingGroup);
 

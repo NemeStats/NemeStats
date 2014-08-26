@@ -37,8 +37,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
 
             gameDefinitionRetrieverMock.Expect(repo => repo.GetGameDefinitionDetails(
                 Arg<int>.Is.Anything,
-                Arg<int>.Is.Anything,
-                Arg<ApplicationUser>.Is.Anything))
+                Arg<int>.Is.Anything))
                 .Return(gameDefinition);
             gameDefinitionTransformation.Expect(mock => mock.Build(gameDefinition, currentUser))
                 .Return(expectedViewModel);
@@ -75,8 +74,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
             gameDefinitionControllerPartialMock.gameDefinitionRetriever = MockRepository.GenerateMock<GameDefinitionRetriever>();
             gameDefinitionControllerPartialMock.gameDefinitionRetriever.Expect(mock => mock.GetGameDefinitionDetails(
                 Arg<int>.Is.Anything,
-                Arg<int>.Is.Anything,
-                Arg<ApplicationUser>.Is.Anything))
+                Arg<int>.Is.Anything))
                 .Throw(new KeyNotFoundException());
 
             HttpStatusCodeResult result = gameDefinitionControllerPartialMock.Details(999999, currentUser) as HttpStatusCodeResult;
@@ -90,8 +88,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
             gameDefinitionControllerPartialMock.gameDefinitionRetriever = MockRepository.GenerateMock<GameDefinitionRetriever>();
             gameDefinitionControllerPartialMock.gameDefinitionRetriever.Expect(repo => repo.GetGameDefinitionDetails(
                 Arg<int>.Is.Anything,
-                Arg<int>.Is.Anything,
-                Arg<ApplicationUser>.Is.Anything))
+                Arg<int>.Is.Anything))
                 .Throw(new UnauthorizedAccessException());
 
             HttpStatusCodeResult result = gameDefinitionControllerPartialMock.Details(999999, currentUser) as HttpStatusCodeResult;

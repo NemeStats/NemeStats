@@ -77,15 +77,15 @@ namespace UI.Tests.UnitTests.FiltersTests.UserContextAttributeTests
         }
 
         [Test]
-        public void ItThrowsAnInvalidOperationExceptionIfTheUserIsNotAuthenticated()
+        public void ItUsesTheAnonymousUserIfTheUserIsNotAuthenticated()
         {
             identity.BackToRecord(BackToRecordOptions.All);
             identity.Expect(mock => mock.IsAuthenticated)
                 .Repeat.Once()
                 .Return(false);
 
-            var exception = Assert.Throws<InvalidOperationException>(() => userContextActionFilter.OnActionExecuting(actionExecutingContext, userManager));
-            Assert.AreEqual(UserContextAttribute.EXCEPTION_MESSAGE_USER_NOT_AUTHENTICATED, exception.Message);
+            userContextActionFilter.OnActionExecuting(actionExecutingContext, userManager);
+            Assert.IsInstanceOf<AnonymousApplicationUser>(actionExecutingContext.ActionParameters[UserContextAttribute.USER_CONTEXT_KEY]);
         }
 
         [Test]

@@ -18,29 +18,29 @@ namespace BusinessLogic.Logic.GamingGroups
             this.dataContext = dataContext;
         }
 
-        public GamingGroup GetGamingGroupDetails(int gamingGroupId, ApplicationUser currentUser)
+        public GamingGroup GetGamingGroupDetails(int gamingGroupId)
         {
-            GamingGroup gamingGroup = dataContext.FindById<GamingGroup>(gamingGroupId, currentUser);
+            GamingGroup gamingGroup = dataContext.FindById<GamingGroup>(gamingGroupId);
 
-            gamingGroup.OwningUser = dataContext.GetQueryable<ApplicationUser>(currentUser)
+            gamingGroup.OwningUser = dataContext.GetQueryable<ApplicationUser>()
                 .Where(user => user.Id == gamingGroup.OwningUserId)
                 .First();
 
-            gamingGroup.GamingGroupInvitations = dataContext.GetQueryable<GamingGroupInvitation>(currentUser)
+            gamingGroup.GamingGroupInvitations = dataContext.GetQueryable<GamingGroupInvitation>()
                 .Where(invitation => invitation.GamingGroupId == gamingGroup.Id)
                 .ToList();
 
-            SetRegisteredUserInfo(currentUser, gamingGroup);
+            AddRegisteredUserInfo(gamingGroup);
 
             return gamingGroup;
         }
 
-        private void SetRegisteredUserInfo(ApplicationUser currentUser, GamingGroup gamingGroup)
+        private void AddRegisteredUserInfo(GamingGroup gamingGroup)
         {
             List<string> registeredUserIds = (from gamingGroupInvitation in gamingGroup.GamingGroupInvitations
                                               select gamingGroupInvitation.RegisteredUserId).ToList();
 
-            List<ApplicationUser> registeredUsers = dataContext.GetQueryable<ApplicationUser>(currentUser)
+            List<ApplicationUser> registeredUsers = dataContext.GetQueryable<ApplicationUser>()
                 .Where(user => registeredUserIds.Contains(user.Id))
                 .ToList();
 

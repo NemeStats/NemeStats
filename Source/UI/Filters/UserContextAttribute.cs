@@ -15,7 +15,6 @@ namespace UI.Filters
     public class UserContextAttribute : ActionFilterAttribute
     {
         internal const string USER_CONTEXT_KEY = "currentUser";
-        internal const string EXCEPTION_MESSAGE_USER_NOT_AUTHENTICATED = "User is not authenticated.";
 
         internal UserManager<ApplicationUser> userManager;
         /// <summary>
@@ -45,12 +44,18 @@ namespace UI.Filters
             ActionExecutingContext filterContext, 
             UserManager<ApplicationUser> userManager)
         {
-            ValidateUserIsAuthenticated(filterContext);
-
             if (filterContext.ActionParameters.ContainsKey(USER_CONTEXT_KEY))
             {
-                string userId = filterContext.HttpContext.User.Identity.GetUserId();
-                ApplicationUser applicationUser = userManager.FindByIdAsync(userId).Result;
+                ApplicationUser applicationUser;
+
+                if (filterContext.HttpContext.User.Identity.IsAuthenticated)
+                {
+                    string userId = filterContext.HttpContext.User.Identity.GetUserId();
+                    applicationUser = userManager.FindByIdAsync(userId).Result;
+                }else
+                {
+                    applicationUser = new AnonymousApplicationUser();
+                }
 
                 RedirectToGamingGroupCreatePageIfUserDoesntHaveAGamingGroup(filterContext, applicationUser);
 
@@ -68,14 +73,6 @@ namespace UI.Filters
             }
 
             base.OnActionExecuting(filterContext);
-        }
-
-        private static void ValidateUserIsAuthenticated(ActionExecutingContext filterContext)
-        {
-            if (!filterContext.HttpContext.User.Identity.IsAuthenticated)
-            {
-                throw new InvalidOperationException(EXCEPTION_MESSAGE_USER_NOT_AUTHENTICATED);
-            }
         }
 
         private void RedirectToGamingGroupCreatePageIfUserDoesntHaveAGamingGroup(ActionExecutingContext filterContext, ApplicationUser applicationUser)

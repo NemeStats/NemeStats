@@ -39,7 +39,7 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.NemeStatsDataContextTest
         {
             int id = 1;
             GameDefinition gameDefinition = new GameDefinition() { Id = id };
-            dataContext.Expect(mock => mock.FindById<GameDefinition>(id, currentUser))
+            dataContext.Expect(mock => mock.FindById<GameDefinition>(id))
                 .Return(gameDefinition);
 
             dataContext.DeleteById<GameDefinition>(id, currentUser);
@@ -53,15 +53,15 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.NemeStatsDataContextTest
         {
             int entityId = 1;
             GameDefinition gameDefinition = new GameDefinition() { Id = entityId };
-            dataContext.Expect(mock => mock.FindById<GameDefinition>(entityId, currentUser))
+            dataContext.Expect(mock => mock.FindById<GameDefinition>(entityId))
                 .Return(gameDefinition);
 
             dataContext.DeleteById<GameDefinition>(entityId, currentUser);
-
+            //TODO should probably check each 
             securedEntityValidator.AssertWasCalled(mock => mock.ValidateAccess(
-                Arg<GameDefinition>.Is.Anything,//Same(gameDefinition), 
-                Arg<ApplicationUser>.Is.Anything,//Same(currentUser), 
-                Arg<Type>.Is.Anything,//.Equal(typeof(GameDefinition)),
+                Arg<GameDefinition>.Is.Same(gameDefinition), 
+                Arg<ApplicationUser>.Is.Same(currentUser),
+                Arg<Type>.Is.Equal(typeof(GameDefinition)),
                 Arg<int>.Is.Equal(entityId)));
         }
     }

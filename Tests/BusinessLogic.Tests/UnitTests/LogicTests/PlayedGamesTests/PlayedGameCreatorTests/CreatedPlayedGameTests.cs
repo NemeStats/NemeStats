@@ -39,7 +39,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameCr
                 AnonymousClientId = "anonymous client id"
             };
             gameDefinition = new GameDefinition(){ Name = "game definition name" };
-            dataContext.Expect(mock => mock.FindById<GameDefinition>(Arg<int>.Is.Anything, Arg<ApplicationUser>.Is.Same(currentUser)))
+            dataContext.Expect(mock => mock.FindById<GameDefinition>(Arg<int>.Is.Anything))
                 .Return(gameDefinition);
             playedGameCreatorPartialMock = MockRepository.GeneratePartialMock<PlayedGameCreatorImpl>(dataContext, playedGameTracker);
         }

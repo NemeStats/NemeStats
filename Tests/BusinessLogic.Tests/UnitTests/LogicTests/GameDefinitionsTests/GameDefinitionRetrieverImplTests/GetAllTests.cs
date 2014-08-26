@@ -19,7 +19,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
         public void ItReturnsAListOfAllGameDefinitions()
         {
             IQueryable<GameDefinition> gameDefinitionQueryable = new List<GameDefinition>().AsQueryable();
-            dataContext.Expect(mock => mock.GetQueryable<GameDefinition>(currentUser))
+            dataContext.Expect(mock => mock.GetQueryable<GameDefinition>())
                 .Repeat.Once()
                 .Return(gameDefinitionQueryable);
 

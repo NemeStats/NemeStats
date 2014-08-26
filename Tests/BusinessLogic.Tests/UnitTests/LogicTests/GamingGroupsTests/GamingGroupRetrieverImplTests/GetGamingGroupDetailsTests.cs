@@ -32,13 +32,13 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
             currentUser = new ApplicationUser() { Id = "application user", UserName = "user name" };
             expectedGamingGroup = new GamingGroup() { Id = gamingGroupId, OwningUserId = currentUser.Id };
 
-            dataContextMock.Expect(mock => mock.FindById<GamingGroup>(gamingGroupId, currentUser))
+            dataContextMock.Expect(mock => mock.FindById<GamingGroup>(gamingGroupId))
                 .Return(expectedGamingGroup);
 
             List<ApplicationUser> applicationUsers = new List<ApplicationUser>();
             applicationUsers.Add(currentUser);
 
-            dataContextMock.Expect(mock => mock.GetQueryable<ApplicationUser>(currentUser))
+            dataContextMock.Expect(mock => mock.GetQueryable<ApplicationUser>())
                 .Return(applicationUsers.AsQueryable());
 
             List<GamingGroupInvitation> gamingGroupInvitations = new List<GamingGroupInvitation>();
@@ -49,17 +49,17 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
             };
             
             gamingGroupInvitations.Add(expectedGamingGroupInvitation);
-            dataContextMock.Expect(mock => mock.GetQueryable<GamingGroupInvitation>(currentUser))
+            dataContextMock.Expect(mock => mock.GetQueryable<GamingGroupInvitation>())
                 .Return(gamingGroupInvitations.AsQueryable());
 
-            dataContextMock.Expect(mock => mock.GetQueryable<ApplicationUser>(currentUser))
+            dataContextMock.Expect(mock => mock.GetQueryable<ApplicationUser>())
                 .Return(applicationUsers.AsQueryable());
         }
 
         [Test]
         public void ItReturnsTheGamingGroup()
         {
-            GamingGroup actualGamingGroup = gamingGroupRetriever.GetGamingGroupDetails(gamingGroupId, currentUser);
+            GamingGroup actualGamingGroup = gamingGroupRetriever.GetGamingGroupDetails(gamingGroupId);
 
             Assert.AreSame(expectedGamingGroup, actualGamingGroup);
         }
@@ -67,7 +67,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
         [Test]
         public void ItReturnsTheOwningUserOnTheGameDefinition()
         {
-            GamingGroup actualGamingGroup = gamingGroupRetriever.GetGamingGroupDetails(gamingGroupId, currentUser);
+            GamingGroup actualGamingGroup = gamingGroupRetriever.GetGamingGroupDetails(gamingGroupId);
 
             Assert.NotNull(actualGamingGroup.OwningUser);
         }
@@ -75,7 +75,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
         [Test]
         public void ItReturnsTheGamingGroupInvitationsOnTheGamingGroup()
         {
-            GamingGroup actualGamingGroup = gamingGroupRetriever.GetGamingGroupDetails(gamingGroupId, currentUser);
+            GamingGroup actualGamingGroup = gamingGroupRetriever.GetGamingGroupDetails(gamingGroupId);
 
             Assert.AreSame(expectedGamingGroup.GamingGroupInvitations[0], actualGamingGroup.GamingGroupInvitations[0]);
         }
@@ -83,7 +83,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
         [Test]
         public void ItReturnsTheRegisteredUserNameOfAnyUsersThatRegistered()
         {
-            GamingGroup actualGamingGroup = gamingGroupRetriever.GetGamingGroupDetails(gamingGroupId, currentUser);
+            GamingGroup actualGamingGroup = gamingGroupRetriever.GetGamingGroupDetails(gamingGroupId);
 
             foreach(GamingGroupInvitation invitation in actualGamingGroup.GamingGroupInvitations)
             {

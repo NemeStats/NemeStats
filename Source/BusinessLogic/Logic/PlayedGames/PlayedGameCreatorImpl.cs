@@ -37,7 +37,7 @@ namespace BusinessLogic.Logic.PlayedGames
 
             dataContext.Save(playedGame, currentUser);
 
-            GameDefinition gameDefinition = dataContext.FindById<GameDefinition>(newlyCompletedGame.GameDefinitionId, currentUser);
+            GameDefinition gameDefinition = dataContext.FindById<GameDefinition>(newlyCompletedGame.GameDefinitionId);
             playedGameTracker.TrackPlayedGame(currentUser, gameDefinition.Name, playedGame.PlayerGameResults.Count);
 
             return playedGame;

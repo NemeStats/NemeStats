@@ -42,11 +42,11 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.RepositoriesTests.Entity
                 Active = true
             };
 
-            dataContextMock.Expect(mock => mock.FindById<Player>(player.Id, currentUser))
+            dataContextMock.Expect(mock => mock.FindById<Player>(player.Id))
                 .Return(player);
 
             PlayerStatistics playerStatistics = new PlayerStatistics();
-            playerRepositoryPartialMock.Expect(repo => repo.GetPlayerStatistics(player.Id, currentUser))
+            playerRepositoryPartialMock.Expect(repo => repo.GetPlayerStatistics(player.Id))
                 .Repeat.Once()
                 .Return(playerStatistics);
             
@@ -54,11 +54,11 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.RepositoriesTests.Entity
             {
                 NemesisPlayerId = 151541
             };
-            playerRepositoryPartialMock.Expect(mock => mock.GetNemesis(player.Id, currentUser))
+            playerRepositoryPartialMock.Expect(mock => mock.GetNemesis(player.Id))
                 .Repeat.Once()
                 .Return(nemesis);
 
-            playerRepositoryPartialMock.Expect(mock => mock.GetPlayerGameResultsWithPlayedGameAndGameDefinition(player.Id, numberOfRecentGames, currentUser))
+            playerRepositoryPartialMock.Expect(mock => mock.GetPlayerGameResultsWithPlayedGameAndGameDefinition(player.Id, numberOfRecentGames))
                             .Repeat.Once()
                             .Return(player.PlayerGameResults.ToList());
         }
@@ -68,7 +68,7 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.RepositoriesTests.Entity
         [Test]
         public void ItGetsThePlayersNemesis()
         {
-            PlayerDetails playerDetails = playerRepositoryPartialMock.GetPlayerDetails(player.Id, numberOfRecentGames, currentUser);
+            PlayerDetails playerDetails = playerRepositoryPartialMock.GetPlayerDetails(player.Id, numberOfRecentGames);
 
             Assert.AreEqual(nemesis, playerDetails.Nemesis);
         }

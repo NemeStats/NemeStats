@@ -28,7 +28,7 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
                     dbContext.Configuration.LazyLoadingEnabled = false;
                     dbContext.Configuration.ProxyCreationEnabled = false;
 
-                    PlayerDetails playerDetails = playerRepository.GetPlayerDetails(testPlayer1.Id, 1, testUserWithDefaultGamingGroup);
+                    PlayerDetails playerDetails = playerRepository.GetPlayerDetails(testPlayer1.Id, 1);
                     Assert.NotNull(playerDetails.PlayerGameResults, "Failed to retrieve PlayerGameResults.");
                 }
             }
@@ -45,7 +45,7 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
                     dbContext.Configuration.ProxyCreationEnabled = false;
                     EntityFrameworkPlayerRepository playerRepository = new EntityFrameworkPlayerRepository(dataContext);
 
-                    PlayerDetails testPlayerDetails = playerRepository.GetPlayerDetails(testPlayer1.Id, 1, testUserWithDefaultGamingGroup);
+                    PlayerDetails testPlayerDetails = playerRepository.GetPlayerDetails(testPlayer1.Id, 1);
 
                     Assert.NotNull(testPlayerDetails.PlayerGameResults.First().PlayedGame);
                 }
@@ -63,7 +63,7 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
                     dbContext.Configuration.ProxyCreationEnabled = false;
                     EntityFrameworkPlayerRepository playerRepository = new EntityFrameworkPlayerRepository(dataContext);
 
-                    PlayerDetails testPlayerDetails = playerRepository.GetPlayerDetails(testPlayer1.Id, 1, testUserWithDefaultGamingGroup);
+                    PlayerDetails testPlayerDetails = playerRepository.GetPlayerDetails(testPlayer1.Id, 1);
 
                     Assert.NotNull(testPlayerDetails.PlayerGameResults.First().PlayedGame.GameDefinition);
                 }
@@ -78,7 +78,7 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
                 using (DataContext dataContext = new NemeStatsDataContext(dbContext, securedEntityValidatorFactory))
                 {
                     PlayerDetails playerDetails = new EntityFrameworkPlayerRepository(dataContext)
-                        .GetPlayerDetails(testPlayer1.Id, 1, testUserWithDefaultGamingGroup);
+                        .GetPlayerDetails(testPlayer1.Id, 1);
 
                     Assert.NotNull(playerDetails.PlayerStats);
                 }
@@ -95,7 +95,7 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
                     int numberOfGamesToRetrieve = 1;
 
                     PlayerDetails playerDetails = new EntityFrameworkPlayerRepository(dataContext)
-                        .GetPlayerDetails(testPlayer1.Id, numberOfGamesToRetrieve, testUserWithDefaultGamingGroup);
+                        .GetPlayerDetails(testPlayer1.Id, numberOfGamesToRetrieve);
 
                     Assert.AreEqual(numberOfGamesToRetrieve, playerDetails.PlayerGameResults.Count);
                 }
@@ -112,7 +112,7 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
                     int numberOfGamesToRetrieve = 3;
 
                     PlayerDetails playerDetails = new EntityFrameworkPlayerRepository(dataContext)
-                        .GetPlayerDetails(testPlayer1.Id, numberOfGamesToRetrieve, testUserWithDefaultGamingGroup);
+                        .GetPlayerDetails(testPlayer1.Id, numberOfGamesToRetrieve);
                     long lastTicks = long.MaxValue; ;
                     Assert.IsTrue(playerDetails.PlayerGameResults.Count == numberOfGamesToRetrieve);
                     foreach (PlayerGameResult result in playerDetails.PlayerGameResults)
@@ -124,17 +124,5 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
                 }
             }
         }
-
-        //[Test]
-        //public void ItThrowsAn()
-        //{
-        //    using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
-        //    {
-        //        PlayerDetails playerDetails = new PlayerRepository(dbContext)
-        //            .GetPlayerDetails(-1, 1, testUserWithDefaultGamingGroup);
-
-        //        Assert.Null(playerDetails);
-        //    }
-        //}
     }
 }

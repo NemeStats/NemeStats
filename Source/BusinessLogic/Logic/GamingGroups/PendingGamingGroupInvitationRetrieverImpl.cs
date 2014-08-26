@@ -20,9 +20,9 @@ namespace BusinessLogic.Logic.GamingGroups
 
         public virtual List<GamingGroupInvitation> GetPendingGamingGroupInvitations(ApplicationUser currentUser)
         {
-            ApplicationUser user = dataContext.FindById<ApplicationUser>(currentUser.Id, currentUser);
+            ApplicationUser user = dataContext.FindById<ApplicationUser>(currentUser.Id);
 
-            return dataContext.GetQueryable<GamingGroupInvitation>(currentUser)
+            return dataContext.GetQueryable<GamingGroupInvitation>()
                 .Where(invitation => invitation.InviteeEmail == user.Email)
                 .ToList();
         }

@@ -67,15 +67,15 @@ namespace BusinessLogic.DataAccess.Repositories
             this.dataContext = dataContext;
         }
 
-        public virtual PlayerDetails GetPlayerDetails(int playerID, int numberOfRecentGamesToRetrieve, ApplicationUser currentUser)
+        public virtual PlayerDetails GetPlayerDetails(int playerID, int numberOfRecentGamesToRetrieve)
         {
-            Player returnPlayer = dataContext.FindById<Player>(playerID, currentUser);
+            Player returnPlayer = dataContext.FindById<Player>(playerID);
 
-            PlayerStatistics playerStatistics = GetPlayerStatistics(playerID, currentUser);
+            PlayerStatistics playerStatistics = GetPlayerStatistics(playerID);
 
-            List<PlayerGameResult> playerGameResults = GetPlayerGameResultsWithPlayedGameAndGameDefinition(playerID, numberOfRecentGamesToRetrieve, currentUser);
+            List<PlayerGameResult> playerGameResults = GetPlayerGameResultsWithPlayedGameAndGameDefinition(playerID, numberOfRecentGamesToRetrieve);
 
-            Nemesis nemesis = GetNemesis(playerID, currentUser);
+            Nemesis nemesis = GetNemesis(playerID);
 
             PlayerDetails playerDetails = new PlayerDetails()
             {
@@ -93,10 +93,9 @@ namespace BusinessLogic.DataAccess.Repositories
 
         internal virtual List<PlayerGameResult> GetPlayerGameResultsWithPlayedGameAndGameDefinition(
             int playerID, 
-            int numberOfRecentGamesToRetrieve, 
-            ApplicationUser currentUser)
+            int numberOfRecentGamesToRetrieve)
         {
-            List<PlayerGameResult> playerGameResults = dataContext.GetQueryable<PlayerGameResult>(currentUser)
+            List<PlayerGameResult> playerGameResults = dataContext.GetQueryable<PlayerGameResult>()
                         .Where(result => result.PlayerId == playerID)
                         .OrderByDescending(result => result.PlayedGame.DatePlayed)
                         .Take(numberOfRecentGamesToRetrieve)
@@ -108,25 +107,25 @@ namespace BusinessLogic.DataAccess.Repositories
 
         public List<Player> GetAllPlayers(bool active, ApplicationUser currentUser)
         {
-            return dataContext.GetQueryable<Player>(currentUser).Where(player => player.Active == active
+            return dataContext.GetQueryable<Player>().Where(player => player.Active == active
                 && player.GamingGroupId == currentUser.CurrentGamingGroupId)
                 .OrderBy(player => player.Name)
                 .ToList();
         }
 
-        public virtual PlayerStatistics GetPlayerStatistics(int playerId, ApplicationUser currentUser)
+        public virtual PlayerStatistics GetPlayerStatistics(int playerId)
         {
             PlayerStatistics playerStatistics = new PlayerStatistics();
-            playerStatistics.TotalGames = dataContext.GetQueryable<PlayerGameResult>(currentUser)
+            playerStatistics.TotalGames = dataContext.GetQueryable<PlayerGameResult>()
                 .Count(playerGameResults => playerGameResults.PlayerId == playerId);
             return playerStatistics;
         }
 
         //TODO refactor this. Might be tricky with anonymous data types. Should I create concrete types?
-        public virtual Nemesis GetNemesis(int playerId, ApplicationUser currentUser)
+        public virtual Nemesis GetNemesis(int playerId)
         {
             //call GetPlayer just to ensure that the requesting user has access
-            dataContext.FindById<Player>(playerId, currentUser);
+            dataContext.FindById<Player>(playerId);
             DbRawSqlQuery<WinLossStatistics> data = dataContext.MakeRawSqlQuery<WinLossStatistics>(SQL_GET_WIN_LOSS_GAMES_COUNT,
                 new SqlParameter("PlayerId", playerId));
 
@@ -148,7 +147,7 @@ namespace BusinessLogic.DataAccess.Repositories
             }
 
             Nemesis nemesis = new Nemesis();
-            Player nemesisPlayer = dataContext.GetQueryable<Player>(currentUser).Where(player => player.Id == result.NemesisPlayerId).First();
+            Player nemesisPlayer = dataContext.GetQueryable<Player>().Where(player => player.Id == result.NemesisPlayerId).First();
             nemesis.NemesisPlayerId = nemesisPlayer.Id;
             nemesis.NemesisPlayerName = nemesisPlayer.Name;
             nemesis.GamesLostVersusNemesis = result.NumberOfGamesLost;

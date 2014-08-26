@@ -13,7 +13,7 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
         private PlayedGame GetTestSubjectPlayedGame(NemeStatsDataContext dataContextToTestWith)
         {
             return new EntityFrameworkPlayedGameRepository(dataContextToTestWith)
-                .GetPlayedGameDetails(testPlayedGames[0].Id, testUserWithDefaultGamingGroup);
+                .GetPlayedGameDetails(testPlayedGames[0].Id);
         }
 
         [Test]
@@ -75,7 +75,7 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
             {
                 EntityFrameworkPlayedGameRepository playedGameRepository = new EntityFrameworkPlayedGameRepository(dataContext);
 
-                PlayedGame notFoundPlayedGame = playedGameRepository.GetPlayedGameDetails(-1, testUserWithDefaultGamingGroup);
+                PlayedGame notFoundPlayedGame = playedGameRepository.GetPlayedGameDetails(-1);
                 Assert.Null(notFoundPlayedGame);
             }
         }

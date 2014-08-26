@@ -19,7 +19,6 @@ using UI.Controllers.Helpers;
 
 namespace UI.Controllers
 {
-    [Authorize]
     public partial class GameDefinitionController : Controller
     {
         internal const int NUMBER_OF_RECENT_GAMES_TO_SHOW = 5;
@@ -41,6 +40,7 @@ namespace UI.Controllers
         }
 
         // GET: /GameDefinition/
+        [Authorize]
         [UserContextAttribute]
         public virtual ActionResult Index(ApplicationUser currentUser)
         {
@@ -49,7 +49,7 @@ namespace UI.Controllers
         }
 
         // GET: /GameDefinition/Details/5
-        [UserContextAttribute]
+        [UserContextAttribute(RequiresGamingGroup = false)]
         public virtual ActionResult Details(int? id, ApplicationUser currentUser)
         {
             if (id == null)
@@ -62,7 +62,7 @@ namespace UI.Controllers
 
             try
             {
-                gameDefinition = gameDefinitionRetriever.GetGameDefinitionDetails(id.Value, NUMBER_OF_RECENT_GAMES_TO_SHOW, currentUser);
+                gameDefinition = gameDefinitionRetriever.GetGameDefinitionDetails(id.Value, NUMBER_OF_RECENT_GAMES_TO_SHOW);
                 gameDefinitionViewModel = gameDefinitionTransformation.Build(gameDefinition, currentUser);
             }catch(KeyNotFoundException)
             {
@@ -79,6 +79,7 @@ namespace UI.Controllers
         }
 
         // GET: /GameDefinition/Create
+        [Authorize]
         public virtual ActionResult Create()
         {
             return View(MVC.GameDefinition.Views.Create);
@@ -87,6 +88,7 @@ namespace UI.Controllers
         // POST: /GameDefinition/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         [UserContextAttribute]
@@ -103,6 +105,7 @@ namespace UI.Controllers
         }
 
         // GET: /GameDefinition/Edit/5
+        [Authorize]
         [UserContextAttribute]
         public virtual ActionResult Edit(int? id, ApplicationUser currentUser)
         {
@@ -114,7 +117,7 @@ namespace UI.Controllers
             GameDefinition gameDefinition;
             try
             {
-                gameDefinition = gameDefinitionRetriever.GetGameDefinitionDetails(id.Value, 0, currentUser);
+                gameDefinition = gameDefinitionRetriever.GetGameDefinitionDetails(id.Value, 0);
             }catch(KeyNotFoundException)
             {
                 return HttpNotFound();
@@ -141,8 +144,8 @@ namespace UI.Controllers
         }
 
         // GET: /GameDefinition/Delete/5
-        [UserContextAttribute]
-        public virtual ActionResult Delete(int? id, ApplicationUser currentUser)
+        [Authorize]
+        public virtual ActionResult Delete(int? id)
         {
             if (id == null)
             {
@@ -152,8 +155,7 @@ namespace UI.Controllers
             {
                 GameDefinition gameDefinition = gameDefinitionRetriever.GetGameDefinitionDetails(
                     id.Value, 
-                    0, 
-                    currentUser);
+                    0);
                 return View(MVC.GameDefinition.Views.Delete, gameDefinition);
             }catch(KeyNotFoundException)
             {
@@ -165,6 +167,7 @@ namespace UI.Controllers
         }
 
         // POST: /GameDefinition/Delete/5
+        [Authorize]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [UserContextAttribute]

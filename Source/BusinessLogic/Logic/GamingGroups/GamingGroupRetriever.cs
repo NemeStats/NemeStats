@@ -10,6 +10,6 @@ namespace BusinessLogic.Logic.GamingGroups
 {
     public interface GamingGroupRetriever
     {
-        GamingGroup GetGamingGroupDetails(int gamingGroupId, ApplicationUser currentUser);
+        GamingGroup GetGamingGroupDetails(int gamingGroupId);
     }
 }

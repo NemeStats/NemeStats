@@ -40,7 +40,7 @@ namespace BusinessLogic.DataAccess
             nemeStatsDbContext.SaveChanges();
         }
 
-        public virtual IQueryable<TEntity> GetQueryable<TEntity>(ApplicationUser currentUser) where TEntity : class, EntityWithTechnicalKey
+        public virtual IQueryable<TEntity> GetQueryable<TEntity>() where TEntity : class, EntityWithTechnicalKey
         {
             return nemeStatsDbContext.Set<TEntity>();
         }
@@ -120,7 +120,7 @@ namespace BusinessLogic.DataAccess
 
         public virtual void DeleteById<TEntity>(object id, ApplicationUser currentUser) where TEntity : class, EntityWithTechnicalKey
         {
-            TEntity entityToDelete = FindById<TEntity>(id, currentUser);
+            TEntity entityToDelete = FindById<TEntity>(id);
 
             SecuredEntityValidator<TEntity> securedEntityValidator = securedEntityValidatorFactory.MakeSecuredEntityValidator<TEntity>();
             securedEntityValidator.ValidateAccess(entityToDelete, currentUser, typeof(TEntity), id);
@@ -136,7 +136,7 @@ namespace BusinessLogic.DataAccess
             }
         }
 
-        public virtual TEntity FindById<TEntity>(object id, ApplicationUser currentUser) where TEntity : class, EntityWithTechnicalKey
+        public virtual TEntity FindById<TEntity>(object id) where TEntity : class, EntityWithTechnicalKey
         {
             TEntity entity = nemeStatsDbContext.Set<TEntity>().Find(id);
 

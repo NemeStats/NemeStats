@@ -44,7 +44,7 @@ namespace UI.Controllers
         [UserContextAttribute]
         public virtual ActionResult Index(ApplicationUser currentUser)
         {
-            GamingGroup gamingGroup = gamingGroupRetriever.GetGamingGroupDetails(currentUser.CurrentGamingGroupId.Value, currentUser);
+            GamingGroup gamingGroup = gamingGroupRetriever.GetGamingGroupDetails(currentUser.CurrentGamingGroupId.Value);
             GamingGroupViewModel viewModel = gamingGroupToGamingGroupViewModelTransformation.Build(gamingGroup);
 
             return View(MVC.GamingGroup.Views.Index, viewModel);

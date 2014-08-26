@@ -40,7 +40,7 @@ namespace BusinessLogic.Tests.IntegrationTests
             GamingGroup gamingGroup, 
             ApplicationUser currentUser)
         {
-            GamingGroup gamingGroupToDelete = dbContext.GetQueryable<GamingGroup>(currentUser)
+            GamingGroup gamingGroupToDelete = dbContext.GetQueryable<GamingGroup>()
                 .Where(game => game.Name == gamingGroup.Name).FirstOrDefault();
             if (gamingGroupToDelete != null)
             {

@@ -181,6 +181,7 @@
     <Compile Include="Models\GamingGroup.cs" />
     <Compile Include="Models\GamingGroupInvitation.cs" />
     <Compile Include="Models\Players\TopPlayer.cs" />
+    <Compile Include="Models\User\AnonymousApplicationUser.cs" />
     <Compile Include="Models\User\ApplicationUser.cs" />
     <Compile Include="Models\User\UserGamingGroup.cs" />
     <Compile Include="Models\Players\Nemesis.cs" />

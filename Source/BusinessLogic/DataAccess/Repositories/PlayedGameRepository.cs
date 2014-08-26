@@ -7,7 +7,7 @@ namespace BusinessLogic.DataAccess.Repositories
 {
     public interface PlayedGameRepository
     {
-        PlayedGame GetPlayedGameDetails(int playedGameId, ApplicationUser currentUser);
+        PlayedGame GetPlayedGameDetails(int playedGameId);
         List<PlayedGame> GetRecentGames(int numberOfGames, ApplicationUser currentUser);
     }
 }
