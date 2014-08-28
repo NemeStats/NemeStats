@@ -1,7 +1,5 @@
 ﻿@using Microsoft.Owin.Security
 
-<h4>Use another service to log in.</h4>
-<hr />
 @{
     var loginProviders = Context.GetOwinContext().Authentication.GetExternalAuthenticationTypes();
     if (loginProviders.Count() == 0)
@@ -13,6 +11,8 @@
     }
     else
     {
+        <h4>Use another service to log in.</h4>
+        <hr />
         string action = Model.Action;
         string returnUrl = Model.ReturnUrl;
         using (Html.BeginForm(action, "Account", new { ReturnUrl = returnUrl }))
