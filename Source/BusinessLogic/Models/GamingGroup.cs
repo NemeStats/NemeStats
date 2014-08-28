@@ -13,10 +13,16 @@ namespace BusinessLogic.Models
 {
     public class GamingGroup : EntityWithTechnicalKey<int>
     {
+        public GamingGroup()
+        {
+            DateCreated = DateTime.UtcNow;
+        }
+
         public override int Id { get; set; }
         public string Name { get; set; }
 
         public string OwningUserId { get; set; }
+        public DateTime DateCreated { get; set; }
 
         [ForeignKey("OwningUserId")]
         public virtual ApplicationUser OwningUser { get; set; }

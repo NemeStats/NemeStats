@@ -178,6 +178,14 @@
     <Compile Include="Migrations\201407270144172_DropUniqueIndexOnPlayerNameAlone.Designer.cs">
       <DependentUpon>201407270144172_DropUniqueIndexOnPlayerNameAlone.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201408280114204_AddDateCreatedToApplicationUser.cs" />
+    <Compile Include="Migrations\201408280114204_AddDateCreatedToApplicationUser.Designer.cs">
+      <DependentUpon>201408280114204_AddDateCreatedToApplicationUser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201408280159232_AddDateCreatedToGamingGroup.cs" />
+    <Compile Include="Migrations\201408280159232_AddDateCreatedToGamingGroup.Designer.cs">
+      <DependentUpon>201408280159232_AddDateCreatedToGamingGroup.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Games\PublicGameSummary.cs" />
     <Compile Include="Models\GamingGroup.cs" />
     <Compile Include="Models\GamingGroupInvitation.cs" />
@@ -293,6 +301,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201407270144172_DropUniqueIndexOnPlayerNameAlone.resx">
       <DependentUpon>201407270144172_DropUniqueIndexOnPlayerNameAlone.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201408280114204_AddDateCreatedToApplicationUser.resx">
+      <DependentUpon>201408280114204_AddDateCreatedToApplicationUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201408280159232_AddDateCreatedToGamingGroup.resx">
+      <DependentUpon>201408280159232_AddDateCreatedToGamingGroup.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

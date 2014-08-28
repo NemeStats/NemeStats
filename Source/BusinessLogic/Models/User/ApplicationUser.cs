@@ -11,6 +11,11 @@ namespace BusinessLogic.Models.User
 {
     public class ApplicationUser : IdentityUser, SingleColumnTechnicalKey<string>, EntityWithTechnicalKey
     {
+        public ApplicationUser()
+        {
+            DateCreated = DateTime.UtcNow;
+        }
+
         public virtual int? CurrentGamingGroupId { get; set; }
         /// <summary>
         /// This is pulled from the analytics token and can not be linked back to the actual user. Used for pushing analytics
@@ -18,6 +23,7 @@ namespace BusinessLogic.Models.User
         /// </summary>
         [NotMapped]
         public virtual string AnonymousClientId { get; set; }
+        public DateTime DateCreated { get; set; }
 
         [ForeignKey("ApplicationUserId")]
         public virtual IList<UserGamingGroup> UserGamingGroups { get; set; }
