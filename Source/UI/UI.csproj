@@ -447,6 +447,7 @@
     <Content Include="Views\PlayedGame\Index.cshtml" />
     <Content Include="Views\GamingGroup\Index.cshtml" />
     <Content Include="Views\GamingGroup\Create.cshtml" />
+    <Content Include="Views\Shared\_BaseLayout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Code\" />

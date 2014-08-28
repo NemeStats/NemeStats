@@ -1,12 +1,32 @@
 ﻿body {
-    padding-top: 50px;
-    padding-bottom: 20px;
+   padding-top: 50px;
+   overflow-x: hidden;
 }
 
 /* Set padding to keep content from hitting the edges */
 .body-content {
     padding-left: 15px;
     padding-right: 15px;
+    padding-bottom: 20px;
+}
+
+.home-container {
+    background-color: #eee;
+}
+
+.home-body-container {
+    background-color: #fff;
+    width: 100%;
+    padding-left: 2%;
+    padding-right: 2%;
+}
+
+.home-banner {
+    padding-left: 20%;
+    padding-right: 20%;
+    width: 100%;
+    /*margin-bottom: 30px;*/
+    display: block;
 }
 
 /* Set width on the form input elements since they're 100% wide by default */
@@ -114,4 +134,23 @@ ul input[type=text] { width:25px }
 .line-bottom-sm:last-child {
     border-bottom-style: hidden;
     border-bottom-width: 0;
+}
+
+/*Customize the carousel*/
+
+/* Carousel base class */
+.carousel {
+  background-color: #eee;
+}
+
+.carousel-caption {
+    color: black;
+    position: inherit;
+}
+
+/* Declare heights because of positioning of img element */
+.carousel .item {
+  min-height: 260px;
+  background-color: #eee;
+  margin-bottom: 10px;
 }

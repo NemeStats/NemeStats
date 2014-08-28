@@ -28,8 +28,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <!--//TODO need to get the new logo working here-->
-                <!--<a href="/" target="_self"><img src="/Content/Images/NemeStats-White.png" class="homelogo"/></a>-->
+
                 @Html.ActionLink("NemeStats", "Index", "Home", null, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
@@ -43,16 +42,11 @@
             </div>
         </div>
     </div>
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - NemeStats</p>
-        </footer>
-    </div>
-
+    
+    @RenderBody()
+    
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
+    @RenderSection("Scripts", required: false)
 </body>
 </html>

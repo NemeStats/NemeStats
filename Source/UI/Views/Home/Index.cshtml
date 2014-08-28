@@ -4,79 +4,110 @@
     ViewBag.Title = "Home Page";
 }
 
-<div class="jumbotron">
+<div class="home-container">
+    <div class="home-banner">
+        <img src="~/Content/Images/NemeStats.png" style="width: 100%;" />
+    </div>
 
-    <img src="~/Content/Images/NemeStats.png" style="width:100%" />
-    <div class="col-md-6">
-        <h2>Top 5 Players</h2>
-        <table>
-            <tr>
-                <th width="35%">Name</th>
-                <th width="25%">Games Played</th>
-                <th width="20%">Win %</th>
-                <th width="20%">Total Points</th>
-            </tr>
-            @foreach (UI.Models.Players.TopPlayerViewModel playerSummaryViewModel in @Model.TopPlayers)
-            {
-            <tr>
-                <td>@Html.ActionLink(playerSummaryViewModel.PlayerName, "Details", "Player", new { id = playerSummaryViewModel.PlayerId }, new { })</td>
-                <td>@playerSummaryViewModel.TotalNumberOfGamesPlayed</td>
-                <td>@playerSummaryViewModel.WinPercentage</td>
-                <td>@playerSummaryViewModel.TotalPoints</td>
-            </tr>
-            }
-        </table>
-    </div>
-    <div class="col-md-6">
-        <h2>Recent Games</h2>
-        <table>
-            <tr>
-                <th width="30%">Game</th>
-                <th width="25%">Winner</th>
-                <th width="35%">Date</th>
-            </tr>
-            @foreach (BusinessLogic.Models.Games.PublicGameSummary publicGame in @Model.RecentPublicGames)
-            {
-                <tr>
-                    <td>@Html.ActionLink(publicGame.GameDefinitionName, "Details", "GameDefinition", new { id = publicGame.GameDefinitionId }, new { })</td>
-                    <td>@Html.ActionLink(publicGame.WinningPlayer.Name, "Details", "Player", new { id = publicGame.WinningPlayer.Id }, new { })</td>
-                    <td>@Html.ActionLink(publicGame.DatePlayed.ToShortDateString(), "Details", "PlayedGame", new { id = publicGame.PlayedGameId }, new { })</td>
-                </tr>
-            }
-        </table>
-    </div>
-    <h2>Keep Track Of Your Nemesis</h2>
-    <p class="lead">NemeStats is a free web application for recording games played among a relatively stable group of players. 
-    The output will be an interesting set of metrics around game rank over
-    the dimensions of player, number of players, game played, etc. Just register a new account, set up your games and players, and start recording!
-    </p>
-    <p>
-    NemeStats is open source and accepting pull requests and feature requests 
-    via <a href='https://github.com/jakejgordon/NemeStats' target="_blank">GitHub</a>. Check out the features that are being worked on or in the backlog
-        <a href='https://waffle.io/jakejgordon/NemeStats' target="_blank">here</a>.
-    </p>
-</div>
+    <div id="mainCarousel" class="carousel slide" data-ride="carousel">
+        <ol class="carousel-indicators">
+            <li data-target="#mainCarousel" data-slide-to="0" class="active"></li>
+            <li data-target="#mainCarousel" data-slide-to="1"></li>
+        </ol>
 
-<div class="row">
-    <div class="col-md-4">
-        <h2>Define Games</h2>
-        <p>
-            Manage the list of Games here. A Game Definition must be created in order to create a record of a Game played.
-        </p>
-        <p>@Html.ActionLink("Manage Games", "Index", "GameDefinition")</p>
+        <div class="carousel-inner">
+            <div class="item active">
+                <div class="container">
+                    <div class="carousel-caption">
+                        <h2>Keep Track Of Your Nemesis</h2>
+                        <p class="lead">
+                            NemeStats is a free web application for recording games played among a relatively stable group of players.
+                            The output will be an interesting set of metrics around game rank over
+                            the dimensions of player, number of players, game played, etc. Just register a new account, set up your games and players, and start recording!
+                        </p>
+                        <p>
+                            NemeStats is open source and accepting pull requests and feature requests
+                            via <a href='https://github.com/jakejgordon/NemeStats' target="_blank">GitHub</a>. Check out the features that are being worked on or in the backlog
+                            <a href='https://waffle.io/jakejgordon/NemeStats' target="_blank">here</a>.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="item">
+                <div class="container">
+                    <div class="carousel-caption">
+                        <div class="col-md-4">
+                            <h2>Define Games</h2>
+                            <p>
+                                Manage the list of Games here. A Game Definition must be created in order to create a record of a Game played.
+                            </p>
+                            <p>@Html.ActionLink("Manage Games", "Index", "GameDefinition")</p>
+                        </div>
+                        <div class="col-md-4">
+                            <h2>Setup Players</h2>
+                            <p>
+                                Manage the list of players here. A Player must be created in order to create a record of a game played for that Player.
+                            </p>
+                            <p>@Html.ActionLink("Manage Players", "Index", "Player")</p>
+                        </div>
+                        <div class="col-md-4">
+                            <h2>Save Game Results</h2>
+
+                            <p>Record the results of your games here.</p>
+
+                            <p>@Html.ActionLink("Game Results", "Index", "PlayedGame")</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="col-md-4">
-        <h2>Setup Players</h2>
-        <p>
-            Manage the list of players here. A Player must be created in order to create a record of a game played for that Player.
-        </p>
-        <p>@Html.ActionLink("Manage Players", "Index", "Player")</p>
-    </div>
-    <div class="col-md-4">
-        <h2>Save Game Results</h2>
-        <p>
-            Record the results of your games here.
-        </p>
-        <p>@Html.ActionLink("Game Results", "Index", "PlayedGame")</p>
+
+    <div class="home-body-container">
+        <div class="col-md-6">
+            <h2>Top 5 Players</h2>
+            
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <tr>
+                        <th>Name</th>
+                        <th>Games Played</th>
+                        <th>Win %</th>
+                        <th>Total Points</th>
+                    </tr>
+                    @foreach (UI.Models.Players.TopPlayerViewModel playerSummaryViewModel in @Model.TopPlayers)
+                    {
+                        <tr>
+                            <td>@Html.ActionLink(playerSummaryViewModel.PlayerName, "Details", "Player", new { id = playerSummaryViewModel.PlayerId }, new { })</td>
+                            <td>@playerSummaryViewModel.TotalNumberOfGamesPlayed</td>
+                            <td>@playerSummaryViewModel.WinPercentage</td>
+                            <td>@playerSummaryViewModel.TotalPoints</td>
+                        </tr>
+                    }
+                </table>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <h2>Recent Games</h2>
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <tr>
+                        <th>Game</th>
+                        <th>Winner</th>
+                        <th>Date</th>
+                    </tr>
+                    @foreach (BusinessLogic.Models.Games.PublicGameSummary publicGame in @Model.RecentPublicGames)
+                    {
+                        <tr>
+                            <td>@Html.ActionLink(publicGame.GameDefinitionName, "Details", "GameDefinition", new { id = publicGame.GameDefinitionId }, new { })</td>
+                            <td>@Html.ActionLink(publicGame.WinningPlayer.Name, "Details", "Player", new { id = publicGame.WinningPlayer.Id }, new { })</td>
+                            <td>@Html.ActionLink(publicGame.DatePlayed.ToShortDateString(), "Details", "PlayedGame", new { id = publicGame.PlayedGameId }, new { })</td>
+                        </tr>
+                    }
+                </table>
+            </div>
+        </div>
     </div>
 </div>
