@@ -2,6 +2,7 @@
 SELECT AspNetUsers.DateCreated AS UserRegisteredDate
 	  ,AspNetUsers.Id AS UserId
 	  ,AspNetUsers.UserName AS UserName
+	  ,AspNetUsers.Email
 	  ,GamingGroup.Id AS GamingGroupId
 	  ,CASE WHEN EXISTS (SELECT 1 FROM GamingGroup WHERE GamingGroup.OwningUserId = AspNetUsers.Id) THEN 1 ELSE 0 END AS GamingGroupCreated
 	  ,CASE WHEN EXISTS (SELECT 1 FROM PlayedGame WHERE PlayedGame.GamingGroupId = GamingGroup.Id) THEN 1 ELSE 0 END AS PlayedGameCreated
