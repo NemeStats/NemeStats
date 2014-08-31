@@ -1,4 +1,6 @@
-﻿using NUnit.Framework;
+﻿using BusinessLogic.Models;
+using BusinessLogic.Models.User;
+using NUnit.Framework;
 using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
@@ -9,11 +11,19 @@ using System.Web.Mvc;
 
 namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
 {
-    //TODO failing at testing async methods.... had to ignore this 
-    [TestFixture, Ignore("had to ignore since i haven't figured out how to test async methods")]
+    [TestFixture]
     public class CreateHttpPostTests : GamingGroupControllerTestBase
     {
         private string gamingGroupName = "name";
+
+        [SetUp]
+        public void TestSetUp()
+        {
+            gamingGroupCreatorMock.Expect(mock => mock.CreateGamingGroupAsync(
+                Arg<string>.Is.Anything,
+                Arg<ApplicationUser>.Is.Anything))
+                    .Return(Task.FromResult(new GamingGroup()));
+        }
 
         [Test]
         public async Task ItRedirectsToTheGamingGroupIndexView()

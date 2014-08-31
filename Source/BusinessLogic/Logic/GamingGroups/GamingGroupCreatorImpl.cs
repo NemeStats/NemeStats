@@ -32,20 +32,13 @@ namespace BusinessLogic.Logic.GamingGroups
         {
             ValidateGamingGroupName(gamingGroupName);
 
-            GamingGroup gamingGroup = new GamingGroup()
-            {
-                OwningUserId = currentUser.Id,
-                Name = gamingGroupName
-            };
-
-            GamingGroup returnGroup = dataContext.Save<GamingGroup>(gamingGroup, currentUser);
+            GamingGroup newGamingGroup = CreateNewGamingGroup(gamingGroupName, currentUser);
 
             eventTracker.TrackGamingGroupCreation();
 
-            ApplicationUser user = await userManager.FindByIdAsync(currentUser.Id);
-            user.CurrentGamingGroupId = returnGroup.Id;
-            await userManager.UpdateAsync(user);
-            return returnGroup;
+            await SetGamingGroupOnCurrentUser(currentUser, newGamingGroup);
+
+            return newGamingGroup;
         }
 
         private static void ValidateGamingGroupName(string gamingGroupName)
@@ -54,6 +47,24 @@ namespace BusinessLogic.Logic.GamingGroups
             {
                 throw new ArgumentException(EXCEPTION_MESSAGE_GAMING_GROUP_NAME_CANNOT_BE_NULL_OR_BLANK);
             }
+        }
+
+        private GamingGroup CreateNewGamingGroup(string gamingGroupName, ApplicationUser currentUser)
+        {
+            GamingGroup gamingGroup = new GamingGroup()
+            {
+                OwningUserId = currentUser.Id,
+                Name = gamingGroupName
+            };
+
+            return dataContext.Save<GamingGroup>(gamingGroup, currentUser);
+        }
+
+        private async Task SetGamingGroupOnCurrentUser(ApplicationUser currentUser, GamingGroup newGamingGroup)
+        {
+            ApplicationUser user = await userManager.FindByIdAsync(currentUser.Id);
+            user.CurrentGamingGroupId = newGamingGroup.Id;
+            await userManager.UpdateAsync(user);
         }
     }
 }
