@@ -12,6 +12,7 @@ using UI.Controllers;
 using UI.Transformations;
 using UI.Transformations.Player;
 using UI.Controllers.Helpers;
+using BusinessLogic.Logic.Players;
 
 namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
 {
@@ -22,7 +23,8 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         protected PlayerRepository playerRepositoryMock;
         protected GameResultViewModelBuilder playerGameResultDetailsBuilderMock;
         protected PlayerDetailsViewModelBuilder playerDetailsViewModelBuilderMock;
-        protected ShowingXResultsMessageBuilder showingXResultsMessageBuilder;
+        protected ShowingXResultsMessageBuilder showingXResultsMessageBuilderMock;
+        protected PlayerCreator playerCreatorMock;
         protected PlayerController playerController;
         protected ApplicationUser currentUser;
 
@@ -38,13 +40,15 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
             playerRepositoryMock = MockRepository.GenerateMock<PlayerRepository>();
             playerGameResultDetailsBuilderMock = MockRepository.GenerateMock<GameResultViewModelBuilder>();
             playerDetailsViewModelBuilderMock = MockRepository.GenerateMock<PlayerDetailsViewModelBuilder>();
-            showingXResultsMessageBuilder = MockRepository.GenerateMock<ShowingXResultsMessageBuilder>();
+            showingXResultsMessageBuilderMock = MockRepository.GenerateMock<ShowingXResultsMessageBuilder>();
+            playerCreatorMock = MockRepository.GenerateMock<PlayerCreator>();
             playerController = new PlayerController(
                                 dataContextMock,
                                 playerRepositoryMock,
                                 playerGameResultDetailsBuilderMock,
                                 playerDetailsViewModelBuilderMock,
-                                showingXResultsMessageBuilder);
+                                showingXResultsMessageBuilderMock,
+                                playerCreatorMock);
         }
     }
 }

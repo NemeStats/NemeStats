@@ -1,6 +1,7 @@
 ﻿using BusinessLogic.DataAccess;
 using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.Logic;
+using BusinessLogic.Logic.Players;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Players;
 using BusinessLogic.Models.User;
@@ -26,21 +27,23 @@ namespace UI.Controllers
         internal DataContext dataContext;
         internal PlayerRepository playerRepository;
         internal GameResultViewModelBuilder builder;
-        internal 
-            PlayerDetailsViewModelBuilder playerDetailsViewModelBuilder;
+        internal PlayerDetailsViewModelBuilder playerDetailsViewModelBuilder;
         internal ShowingXResultsMessageBuilder showingXResultsMessageBuilder;
+        internal PlayerCreator playerCreator;
         
         public PlayerController(DataContext dataContext, 
             PlayerRepository playerRepository, 
             GameResultViewModelBuilder builder,
             PlayerDetailsViewModelBuilder playerDetailsViewModelBuilder,
-            ShowingXResultsMessageBuilder showingXResultsMessageBuilder)
+            ShowingXResultsMessageBuilder showingXResultsMessageBuilder,
+            PlayerCreator playerCreator)
         {
             this.dataContext = dataContext;
             this.playerRepository = playerRepository;
             this.builder = builder;
             this.playerDetailsViewModelBuilder = playerDetailsViewModelBuilder;
             this.showingXResultsMessageBuilder = showingXResultsMessageBuilder;
+            this.playerCreator = playerCreator;
         }
 
         // GET: /Player/
@@ -93,6 +96,7 @@ namespace UI.Controllers
         [UserContextAttribute]
         public virtual ActionResult Create([Bind(Include = "Id,Name,Active")] Player player, ApplicationUser currentUser)
         {
+            //TODO use new PlayerCreator to create players instead.
             if (ModelState.IsValid)
             {
                 dataContext.Save<Player>(player, currentUser);

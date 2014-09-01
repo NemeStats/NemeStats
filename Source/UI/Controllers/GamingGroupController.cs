@@ -3,6 +3,7 @@ using BusinessLogic.DataAccess.GamingGroups;
 using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.Logic.GamingGroups;
 using BusinessLogic.Models;
+using BusinessLogic.Models.GamingGroups;
 using BusinessLogic.Models.User;
 using System;
 using System.Collections.Generic;
@@ -59,9 +60,9 @@ namespace UI.Controllers
 
         [HttpPost]
         [UserContextAttribute(RequiresGamingGroup = false)]
-        public async virtual Task<ActionResult> Create(string gamingGroupName, ApplicationUser currentUser)
+        public async virtual Task<ActionResult> Create(GamingGroupQuickStart gamingGroupQuickStart, ApplicationUser currentUser)
         {
-            await gamingGroupCreator.CreateGamingGroupAsync(gamingGroupName, currentUser);
+            await gamingGroupCreator.CreateGamingGroupAsync(gamingGroupQuickStart, currentUser);
             return RedirectToAction(MVC.GamingGroup.ActionNames.Index);
         }
 

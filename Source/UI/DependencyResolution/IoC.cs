@@ -82,6 +82,7 @@ namespace UI.DependencyResolution {
                             x.For<IConfigurationManager>().Use<ConfigurationManager>();
                             x.For<TopPlayerViewModelBuilder>().Use<TopPlayerViewModelBuilderImpl>();
                             x.For<PlayerSummaryBuilder>().Use<PlayerSummaryBuilderImpl>();
+                            x.For<PlayerCreator>().Use<PlayerCreatorImpl>();
                             //TODO finish implementing http://lostechies.com/jimmybogard/2010/05/03/dependency-injection-in-asp-net-mvc-filters/
                             //x.For<IActionInvoker>().Use<InjectingActionInvoker>();
                         });

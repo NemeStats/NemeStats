@@ -140,6 +140,7 @@
     <Compile Include="UnitTests\LogicTests\GamingGroupsTests\PendingGamingGroupInvitationRetrieverImplTests\TestFixtuure.cs" />
     <Compile Include="UnitTests\LogicTests\PlayedGamesTests\PlayedGameCreatorTests\CreatedPlayedGameTests.cs" />
     <Compile Include="IntegrationTests\LogicTests\Players\GetTopPlayersIntegrationTestsTests.cs" />
+    <Compile Include="UnitTests\LogicTests\PlayersTests\PlayerCreatorImplTests\CreatePlayerTests.cs" />
     <Compile Include="UnitTests\LogicTests\PointsTests\GordonPointsTests\CalculateGordonPointsTests.cs" />
     <Compile Include="UnitTests\LogicTests\UsersTests\GamingGroupInviteConsumerImplTests\AddUserToInvitedGroupTests.cs" />
     <Compile Include="UnitTests\ModelsTests\GamesTests\ValidationTests\ValidatePlayerRanksTests.cs" />

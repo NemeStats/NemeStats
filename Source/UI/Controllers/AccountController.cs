@@ -98,7 +98,7 @@ namespace UI.Controllers
                     {
                         return RedirectToAction(MVC.GamingGroup.ActionNames.Index, "GamingGroup");
                     }
-                    return RedirectToAction(MVC.Home.ActionNames.Index, "Home");
+                    return RedirectToAction(MVC.GamingGroup.ActionNames.Create, "GamingGroup");
                 }
                 else
                 {

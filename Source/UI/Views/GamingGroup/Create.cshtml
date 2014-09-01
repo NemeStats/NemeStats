@@ -1,10 +1,12 @@
-﻿@{
+﻿@model BusinessLogic.Models.GamingGroups.GamingGroupQuickStart
+@{
     ViewBag.Title = "Create";
     Layout = MVC.Shared.Views._BaseLayout;
 }
 
-<h2>Create A New Gaming group</h2>
-<div class="col-md-10">You need to pick a name for your new gaming group before you can get started!</div>
+<h2>New Gaming Group</h2>
+<div class="col-md-10">Pick a name for your new gaming group and optionally set up a 
+    couple of players and games so you can quickly get started.</div>
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
@@ -16,12 +18,39 @@
         <div class="form-group">
             <div class="col-md-10">
                 <dl>
-                    <dd>Pick A Gaming Group Name</dd>
-                    <dt>@Html.TextBox("gamingGroupName")</dt>
+                    <dd>Gaming Group Name (Required)</dd>
+                    <dt>
+                        @Html.TextBoxFor(model => model.GamingGroupName, new { @class = "form-control", @placeholder = "Gaming Group (e.g. CLE Gamers)" })
+                        @Html.ValidationMessageFor(model => model.GamingGroupName)
+                    </dt>
                 </dl>
             </div>
         </div>
-
+        <div class="form-group">
+            <div class="col-md-10">
+                <dl>
+                    <dd>Set Up Initial Players (Optional)</dd>
+                    <dt>
+                        <input type="text" name="NewPlayerNames[0]" class="form-control" placeholder="Player 1 Name (e.g. Jane)" /><br/>
+                        <input type="text" name="NewPlayerNames[1]" class="form-control" placeholder="Player 2 Name (e.g. Jim)" /><br />
+                        <input type="text" name="NewPlayerNames[2]" class="form-control" placeholder="Player 3 Name (e.g. Star Eater)" /><br />
+                        <input type="text" name="NewPlayerNames[3]" class="form-control" placeholder="Player 4 Name (e.g. Morphman)" /><br />
+                        <input type="text" name="NewPlayerNames[4]" class="form-control" placeholder="Player 5 Name (e.g. SusieQ)" /><br />
+                    </dt>
+                </dl>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-10">
+                <dl>
+                    <dd>Set Up Initial Players (Optional)</dd>
+                    <dt>
+                        <input type="text" name="NewGameDefinitionName[0]" class="form-control" placeholder="Game 1 Name (e.g. Dominion)" /><br />
+                        <input type="text" name="NewGameDefinitionName[1]" class="form-control" placeholder="Game 2 Name (e.g. Risk)" /><br />
+                    </dt>
+                </dl>
+            </div>
+        </div>
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Create" class="btn btn-default" />

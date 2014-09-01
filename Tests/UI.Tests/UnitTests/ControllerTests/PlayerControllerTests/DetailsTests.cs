@@ -128,7 +128,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
                 .Once()
                 .Return(playerDetailsViewModel);
             string expectedMessage = "expected message";
-            showingXResultsMessageBuilder.Expect(mock => mock.BuildMessage(
+            showingXResultsMessageBuilderMock.Expect(mock => mock.BuildMessage(
                 PlayerController.NUMBER_OF_RECENT_GAMES_TO_RETRIEVE,
                 playerDetailsViewModel.PlayerGameResultDetails.Count))
                     .Return(expectedMessage);

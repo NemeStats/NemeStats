@@ -2,7 +2,9 @@
 using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.EventTracking;
 using BusinessLogic.Logic.GamingGroups;
+using BusinessLogic.Logic.Players;
 using BusinessLogic.Models;
+using BusinessLogic.Models.GamingGroups;
 using BusinessLogic.Models.User;
 using Microsoft.AspNet.Identity;
 using NUnit.Framework;
@@ -24,10 +26,12 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
         private UserManager<ApplicationUser> userManager;
         private DataContext dataContextMock;
         private NemeStatsEventTracker eventTrackerMock;
+        private PlayerCreator playerCreatorMock;
         private ApplicationUser currentUser = new ApplicationUser()
         {
             Id = "application user id"
         };
+        private GamingGroupQuickStart gamingGroupQuickStart;
         GamingGroup expectedGamingGroup;
         private ApplicationUser appUserRetrievedFromFindMethod;
 
@@ -38,8 +42,13 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
             userManager = new UserManager<ApplicationUser>(userStoreMock);
             dataContextMock = MockRepository.GenerateMock<DataContext>();
             eventTrackerMock = MockRepository.GenerateMock<NemeStatsEventTracker>();
-            gamingGroupCreator = new GamingGroupCreatorImpl(dataContextMock, userManager, eventTrackerMock);
-
+            playerCreatorMock = MockRepository.GenerateMock<PlayerCreator>();
+            gamingGroupCreator = new GamingGroupCreatorImpl(dataContextMock, userManager, eventTrackerMock, playerCreatorMock);
+            gamingGroupQuickStart = new GamingGroupQuickStart()
+            {
+                GamingGroupName = "gaming group name",
+                NewPlayerNames = new List<string>()
+            };
             expectedGamingGroup = new GamingGroup() { Id = 123 };
             dataContextMock.Expect(mock => mock.Save(Arg<GamingGroup>.Is.Anything, Arg<ApplicationUser>.Is.Anything))
                 .Repeat.Once()
@@ -59,7 +68,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
         [Test]
         public async Task ItSetsTheOwnerToTheCurrentUser()
         {
-            await gamingGroupCreator.CreateGamingGroupAsync("a", currentUser);
+            await gamingGroupCreator.CreateGamingGroupAsync(gamingGroupQuickStart, currentUser);
 
             dataContextMock.AssertWasCalled(mock =>
                 mock.Save(Arg<GamingGroup>.Matches(group => group.OwningUserId == currentUser.Id),
@@ -68,22 +77,36 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
 
         [Test]
         public async Task ItSetsTheGamingGroupName()
-        {
-            string gamingGroupName = "name";
-
-            await gamingGroupCreator.CreateGamingGroupAsync(gamingGroupName, currentUser);
+        {       
+            await gamingGroupCreator.CreateGamingGroupAsync(gamingGroupQuickStart, currentUser);
 
             dataContextMock.AssertWasCalled(mock =>
-                mock.Save(Arg<GamingGroup>.Matches(group => group.Name == gamingGroupName),
+                mock.Save(Arg<GamingGroup>.Matches(group => group.Name == gamingGroupQuickStart.GamingGroupName),
                 Arg<ApplicationUser>.Is.Anything));
         }
 
         [Test]
-        public async Task ItThrowsAnArgumentExceptionIfTheGamingGroupNameIsEmpty()
+        public async Task ItThrowsAnArgumentNullExceptionIfGamingGroupQuickStartIsNull()
         {
+            gamingGroupQuickStart = null;
+            ArgumentNullException expectedException = new ArgumentNullException("gamingGroupQuickStart");
             try
             {
-                await gamingGroupCreator.CreateGamingGroupAsync(string.Empty, currentUser);
+                await gamingGroupCreator.CreateGamingGroupAsync(gamingGroupQuickStart, currentUser);
+            }
+            catch (ArgumentNullException exception)
+            {
+                Assert.AreEqual(expectedException.Message, exception.Message);
+            }
+        }
+
+        [Test]
+        public async Task ItThrowsAnArgumentExceptionIfTheGamingGroupQuickStartIsNull()
+        {
+            gamingGroupQuickStart.GamingGroupName = null;
+            try
+            {
+                await gamingGroupCreator.CreateGamingGroupAsync(gamingGroupQuickStart, currentUser);
             }catch(ArgumentException exception)
             {
                 Assert.AreEqual(GamingGroupCreatorImpl.EXCEPTION_MESSAGE_GAMING_GROUP_NAME_CANNOT_BE_NULL_OR_BLANK, exception.Message);
@@ -91,9 +114,37 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
         }
 
         [Test]
+        public async Task ItThrowsAnArgumentExceptionIfTheGamingGroupQuickStartIsWhitespace()
+        {
+            gamingGroupQuickStart.GamingGroupName = "   ";
+            try
+            {
+                await gamingGroupCreator.CreateGamingGroupAsync(gamingGroupQuickStart, currentUser);
+            }
+            catch (ArgumentException exception)
+            {
+                Assert.AreEqual(GamingGroupCreatorImpl.EXCEPTION_MESSAGE_GAMING_GROUP_NAME_CANNOT_BE_NULL_OR_BLANK, exception.Message);
+            }
+        }
+
+        [Test]
+        public async Task ItThrowsAnArgumentExceptionIfThePlayerNamesAreNull()
+        {
+            gamingGroupQuickStart.NewPlayerNames = null;
+            try
+            {
+                await gamingGroupCreator.CreateGamingGroupAsync(gamingGroupQuickStart, currentUser);
+            }
+            catch (ArgumentException exception)
+            {
+                Assert.AreEqual(GamingGroupCreatorImpl.EXCEPTION_MESSAGE_PLAYER_NAMES_CANNOT_BE_NULL, exception.Message);
+            }
+        }
+
+        [Test]
         public async Task ItReturnsTheSavedGamingGroup()
         {
-            GamingGroup returnedGamingGroup = await gamingGroupCreator.CreateGamingGroupAsync("a", currentUser);
+            GamingGroup returnedGamingGroup = await gamingGroupCreator.CreateGamingGroupAsync(gamingGroupQuickStart, currentUser);
 
             IList<object[]> objectsPassedToSaveMethod = dataContextMock.GetArgumentsForCallsMadeOn(
                 mock => mock.Save(Arg<GamingGroup>.Is.Anything, Arg<ApplicationUser>.Is.Anything));
@@ -101,11 +152,10 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
             Assert.AreSame(expectedGamingGroup, returnedGamingGroup);
         }
 
-        //TODO need to figure out why this fails. It seems to work just fine.
-        [Test, Ignore("No idea why this fails!!")]
+        
         public async Task ItUpdatesTheCurrentUsersGamingGroup()
         {
-            GamingGroup returnedGamingGroup = await gamingGroupCreator.CreateGamingGroupAsync("a", currentUser);
+            GamingGroup returnedGamingGroup = await gamingGroupCreator.CreateGamingGroupAsync(gamingGroupQuickStart, currentUser);
 
             userStoreMock.AssertWasCalled(mock => mock.UpdateAsync(Arg<ApplicationUser>.Matches(
                 user => user.CurrentGamingGroupId == expectedGamingGroup.Id 
@@ -116,13 +166,45 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
         public async Task ItTracksTheGamingGroupCreation()
         {
             GamingGroup expectedGamingGroup = new GamingGroup() { Id = 123 };
-
             dataContextMock.Expect(mock => mock.Save(Arg<GamingGroup>.Is.Anything, Arg<ApplicationUser>.Is.Anything))
                 .Repeat.Once()
                 .Return(expectedGamingGroup);
-            await gamingGroupCreator.CreateGamingGroupAsync("a", currentUser);
+
+            await gamingGroupCreator.CreateGamingGroupAsync(gamingGroupQuickStart, currentUser);
 
             eventTrackerMock.AssertWasCalled(mock => mock.TrackGamingGroupCreation());
+        }
+
+        [Test]
+        public async Task ItSavesAnyNewPlayers()
+        {
+            gamingGroupQuickStart.NewPlayerNames = new List<string>()
+            {
+                "player 1 name",
+                "player 2 name"
+            };
+
+            await gamingGroupCreator.CreateGamingGroupAsync(gamingGroupQuickStart, currentUser);
+
+            foreach(string playerName in gamingGroupQuickStart.NewPlayerNames)
+            {
+                playerCreatorMock.AssertWasCalled(mock => mock.CreatePlayer(playerName, currentUser));
+            }
+        }
+
+        [Test]
+        public async Task ItSkipsOverAnyPlayersWithNullOrWhitespaceNames()
+        {
+            gamingGroupQuickStart.NewPlayerNames = new List<string>()
+            {
+                "   ",
+                string.Empty,
+                null
+            };
+
+            await gamingGroupCreator.CreateGamingGroupAsync(gamingGroupQuickStart, currentUser);
+
+            playerCreatorMock.AssertWasNotCalled(mock => mock.CreatePlayer(Arg<string>.Is.Anything, Arg<ApplicationUser>.Is.Anything));
         }
     }
 }

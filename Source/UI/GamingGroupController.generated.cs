@@ -110,7 +110,7 @@ namespace UI.Controllers
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionParamsClass_Create
         {
-            public readonly string gamingGroupName = "gamingGroupName";
+            public readonly string gamingGroupQuickStart = "gamingGroupQuickStart";
             public readonly string currentUser = "currentUser";
         }
         static readonly ActionParamsClass_GrantAccess s_params_GrantAccess = new ActionParamsClass_GrantAccess();
@@ -169,15 +169,15 @@ namespace UI.Controllers
         }
 
         [NonAction]
-        partial void CreateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string gamingGroupName, BusinessLogic.Models.User.ApplicationUser currentUser);
+        partial void CreateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, BusinessLogic.Models.GamingGroups.GamingGroupQuickStart gamingGroupQuickStart, BusinessLogic.Models.User.ApplicationUser currentUser);
 
         [NonAction]
-        public override System.Threading.Tasks.Task<System.Web.Mvc.ActionResult> Create(string gamingGroupName, BusinessLogic.Models.User.ApplicationUser currentUser)
+        public override System.Threading.Tasks.Task<System.Web.Mvc.ActionResult> Create(BusinessLogic.Models.GamingGroups.GamingGroupQuickStart gamingGroupQuickStart, BusinessLogic.Models.User.ApplicationUser currentUser)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Create);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "gamingGroupName", gamingGroupName);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "gamingGroupQuickStart", gamingGroupQuickStart);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "currentUser", currentUser);
-            CreateOverride(callInfo, gamingGroupName, currentUser);
+            CreateOverride(callInfo, gamingGroupQuickStart, currentUser);
             return System.Threading.Tasks.Task.FromResult(callInfo as ActionResult);
         }
 
