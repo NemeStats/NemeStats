@@ -114,6 +114,8 @@
     <Compile Include="EventTracking\UniversalAnalyticsNemeStatsEventTracker.cs" />
     <Compile Include="Exceptions\EntityDoesNotExistException.cs" />
     <Compile Include="Exceptions\UnauthorizedEntityAccessException.cs" />
+    <Compile Include="Logic\GameDefinitions\GameDefinitionCreator.cs" />
+    <Compile Include="Logic\GameDefinitions\GameDefinitionCreatorImpl.cs" />
     <Compile Include="Logic\GameDefinitions\GameDefinitionRetriever.cs" />
     <Compile Include="Logic\GameDefinitions\GameDefinitionRetrieverImpl.cs" />
     <Compile Include="Logic\GamingGroups\GamingGroupCreator.cs" />

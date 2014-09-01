@@ -11,5 +11,6 @@ namespace BusinessLogic.EventTracking
         void TrackPlayedGame(ApplicationUser currentUser, string gameName, int numberOfPlayers);
         void TrackUserRegistration();
         void TrackGamingGroupCreation();
+        void TrackGameDefinitionCreation(ApplicationUser currentUser, string gameDefinitionName);
     }
 }

@@ -10,6 +10,7 @@ namespace BusinessLogic.Logic.Players
 {
     public class PlayerCreatorImpl : PlayerCreator
     {
+        //TODO add event tracking for newly created game definitions
         private DataContext dataContext;
 
         public PlayerCreatorImpl(DataContext dataContext)
@@ -19,10 +20,7 @@ namespace BusinessLogic.Logic.Players
 
         public Player CreatePlayer(string playerName, ApplicationUser currentUser)
         {
-            if(string.IsNullOrWhiteSpace(playerName))
-            {
-                throw new ArgumentNullException("playerName");
-            }
+            ValidatePlayerNameIsNotNullOrWhiteSpace(playerName);
 
             Player player = new Player()
             {
@@ -30,6 +28,14 @@ namespace BusinessLogic.Logic.Players
             };
 
             return dataContext.Save<Player>(player, currentUser);
+        }
+
+        private static void ValidatePlayerNameIsNotNullOrWhiteSpace(string playerName)
+        {
+            if (string.IsNullOrWhiteSpace(playerName))
+            {
+                throw new ArgumentNullException("playerName");
+            }
         }
     }
 }

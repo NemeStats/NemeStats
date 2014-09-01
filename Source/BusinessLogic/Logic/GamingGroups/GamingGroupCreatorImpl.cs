@@ -1,6 +1,7 @@
 ﻿using BusinessLogic.DataAccess;
 using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.EventTracking;
+using BusinessLogic.Logic.GameDefinitions;
 using BusinessLogic.Logic.Players;
 using BusinessLogic.Models;
 using BusinessLogic.Models.GamingGroups;
@@ -19,9 +20,11 @@ namespace BusinessLogic.Logic.GamingGroups
     {
         internal const string EXCEPTION_MESSAGE_GAMING_GROUP_NAME_CANNOT_BE_NULL_OR_BLANK = "GamingGroup name cannot be null or blank";
         internal const string EXCEPTION_MESSAGE_PLAYER_NAMES_CANNOT_BE_NULL = "gamingGroupQuickStart.NewPlayerNames cannot be null.";
+        internal const string EXCEPTION_MESSAGE_GAME_DEFINITION_NAMES_CANNOT_BE_NULL = "gamingGroupQuickStart.NewGameDefinitionNames cannot be null.";
 
         private DataContext dataContext;
         private PlayerCreator playerCreator;
+        private GameDefinitionCreator gameDefinitionCreator;
         private UserManager<ApplicationUser> userManager;
         private NemeStatsEventTracker eventTracker;
 
@@ -29,12 +32,14 @@ namespace BusinessLogic.Logic.GamingGroups
             DataContext dataContext, 
             UserManager<ApplicationUser> userManager, 
             NemeStatsEventTracker eventTracker,
-            PlayerCreator playerCreator)
+            PlayerCreator playerCreator,
+            GameDefinitionCreator gameDefinitionCreator)
         {
             this.dataContext = dataContext;
             this.userManager = userManager;
             this.eventTracker = eventTracker;
             this.playerCreator = playerCreator;
+            this.gameDefinitionCreator = gameDefinitionCreator;
         }
 
         public async Task<GamingGroup> CreateGamingGroupAsync(GamingGroupQuickStart gamingGroupQuickStart, ApplicationUser currentUser)
@@ -47,6 +52,8 @@ namespace BusinessLogic.Logic.GamingGroups
 
             CreatePlayers(gamingGroupQuickStart, currentUser);
 
+            CreateGameDefinitions(gamingGroupQuickStart, currentUser);
+
             new Task(() => eventTracker.TrackGamingGroupCreation()).Start();
 
             return newGamingGroup;
@@ -57,6 +64,7 @@ namespace BusinessLogic.Logic.GamingGroups
             ValidateGamingGroupQuickStartIsNotNull(gamingGroupQuickStart);
             ValidateGamingGroupName(gamingGroupQuickStart.GamingGroupName);
             ValidatePlayerNamesListIsNotNull(gamingGroupQuickStart);
+            ValidateGameDefinitionNamesListIsNotNull(gamingGroupQuickStart);
         }
 
         private static void ValidateGamingGroupQuickStartIsNotNull(GamingGroupQuickStart gamingGroupQuickStart)
@@ -83,6 +91,14 @@ namespace BusinessLogic.Logic.GamingGroups
             }
         }
 
+        private static void ValidateGameDefinitionNamesListIsNotNull(GamingGroupQuickStart gamingGroupQuickStart)
+        {
+            if (gamingGroupQuickStart.NewGameDefinitionNames == null)
+            {
+                throw new ArgumentException(EXCEPTION_MESSAGE_GAME_DEFINITION_NAMES_CANNOT_BE_NULL);
+            }
+        }
+
         private GamingGroup CreateNewGamingGroup(string gamingGroupName, ApplicationUser currentUser)
         {
             GamingGroup gamingGroup = new GamingGroup()
@@ -101,6 +117,17 @@ namespace BusinessLogic.Logic.GamingGroups
                 if(!string.IsNullOrWhiteSpace(playerName))
                 {
                     playerCreator.CreatePlayer(playerName, currentUser);
+                }
+            }
+        }
+
+        private void CreateGameDefinitions(GamingGroupQuickStart gamingGroupQuickStart, ApplicationUser currentUser)
+        {
+            foreach (string gameDefinitionName in gamingGroupQuickStart.NewGameDefinitionNames)
+            {
+                if (!string.IsNullOrWhiteSpace(gameDefinitionName))
+                {
+                    gameDefinitionCreator.CreateGameDefinition(gameDefinitionName, currentUser);
                 }
             }
         }

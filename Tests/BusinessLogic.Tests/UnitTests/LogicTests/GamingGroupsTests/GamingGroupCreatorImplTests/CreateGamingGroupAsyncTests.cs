@@ -15,6 +15,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UniversalAnalyticsHttpWrapper;
+using BusinessLogic.Logic.GameDefinitions;
 
 namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroupCreatorImplTests
 {
@@ -27,12 +28,13 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
         private DataContext dataContextMock;
         private NemeStatsEventTracker eventTrackerMock;
         private PlayerCreator playerCreatorMock;
+        private GameDefinitionCreator gameDefinitionCreator;
         private ApplicationUser currentUser = new ApplicationUser()
         {
             Id = "application user id"
         };
         private GamingGroupQuickStart gamingGroupQuickStart;
-        GamingGroup expectedGamingGroup;
+        private GamingGroup expectedGamingGroup;
         private ApplicationUser appUserRetrievedFromFindMethod;
 
         [SetUp]
@@ -43,11 +45,18 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
             dataContextMock = MockRepository.GenerateMock<DataContext>();
             eventTrackerMock = MockRepository.GenerateMock<NemeStatsEventTracker>();
             playerCreatorMock = MockRepository.GenerateMock<PlayerCreator>();
-            gamingGroupCreator = new GamingGroupCreatorImpl(dataContextMock, userManager, eventTrackerMock, playerCreatorMock);
+            gameDefinitionCreator = MockRepository.GenerateMock<GameDefinitionCreator>();
+            gamingGroupCreator = new GamingGroupCreatorImpl(
+                dataContextMock, 
+                userManager, 
+                eventTrackerMock, 
+                playerCreatorMock,
+                gameDefinitionCreator);
             gamingGroupQuickStart = new GamingGroupQuickStart()
             {
                 GamingGroupName = "gaming group name",
-                NewPlayerNames = new List<string>()
+                NewPlayerNames = new List<string>(),
+                NewGameDefinitionNames = new List<string>()
             };
             expectedGamingGroup = new GamingGroup() { Id = 123 };
             dataContextMock.Expect(mock => mock.Save(Arg<GamingGroup>.Is.Anything, Arg<ApplicationUser>.Is.Anything))
@@ -142,6 +151,20 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
         }
 
         [Test]
+        public async Task ItThrowsAnArgumentExceptionIfTheGameDefinitionNamesAreNull()
+        {
+            gamingGroupQuickStart.NewGameDefinitionNames = null;
+            try
+            {
+                await gamingGroupCreator.CreateGamingGroupAsync(gamingGroupQuickStart, currentUser);
+            }
+            catch (ArgumentException exception)
+            {
+                Assert.AreEqual(GamingGroupCreatorImpl.EXCEPTION_MESSAGE_GAME_DEFINITION_NAMES_CANNOT_BE_NULL, exception.Message);
+            }
+        }
+
+        [Test]
         public async Task ItReturnsTheSavedGamingGroup()
         {
             GamingGroup returnedGamingGroup = await gamingGroupCreator.CreateGamingGroupAsync(gamingGroupQuickStart, currentUser);
@@ -205,6 +228,38 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
             await gamingGroupCreator.CreateGamingGroupAsync(gamingGroupQuickStart, currentUser);
 
             playerCreatorMock.AssertWasNotCalled(mock => mock.CreatePlayer(Arg<string>.Is.Anything, Arg<ApplicationUser>.Is.Anything));
+        }
+
+        [Test]
+        public async Task ItSavesAnyNewGameDefinitions()
+        {
+            gamingGroupQuickStart.NewGameDefinitionNames = new List<string>()
+            {
+                "game definition 1 name",
+                "game definition 2 name"
+            };
+
+            await gamingGroupCreator.CreateGamingGroupAsync(gamingGroupQuickStart, currentUser);
+
+            foreach (string gameDefinitionName in gamingGroupQuickStart.NewGameDefinitionNames)
+            {
+                gameDefinitionCreator.AssertWasCalled(mock => mock.CreateGameDefinition(gameDefinitionName, currentUser));
+            }
+        }
+
+        [Test]
+        public async Task ItSkipsOverAnyGameDefinitionsWithNullOrWhitespaceNames()
+        {
+            gamingGroupQuickStart.NewPlayerNames = new List<string>()
+            {
+                "   ",
+                string.Empty,
+                null
+            };
+
+            await gamingGroupCreator.CreateGamingGroupAsync(gamingGroupQuickStart, currentUser);
+
+            gameDefinitionCreator.AssertWasNotCalled(mock => mock.CreateGameDefinition(Arg<string>.Is.Anything, Arg<ApplicationUser>.Is.Anything));
         }
     }
 }
