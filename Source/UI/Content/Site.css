@@ -146,6 +146,7 @@ ul input[type=text] { width:25px }
 .carousel-caption {
     color: black;
     position: inherit;
+    text-shadow: none;
 }
 
 /* Declare heights because of positioning of img element */
