@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.DataAccess;
+using BusinessLogic.EventTracking;
 using BusinessLogic.Logic.Players;
 using BusinessLogic.Models;
 using BusinessLogic.Models.User;
@@ -16,6 +17,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerCreatorImp
     public class CreatePlayerTests
     {
         private DataContext dataContextMock;
+        private NemeStatsEventTracker eventTrackerMock;
         private PlayerCreatorImpl playerCreator;
         private ApplicationUser currentUser;
 
@@ -23,7 +25,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerCreatorImp
         public void SetUp()
         {
             dataContextMock = MockRepository.GenerateMock<DataContext>();
-            playerCreator = new PlayerCreatorImpl(dataContextMock);
+            eventTrackerMock = MockRepository.GenerateMock<NemeStatsEventTracker>();
+            playerCreator = new PlayerCreatorImpl(dataContextMock, eventTrackerMock);
             currentUser = new ApplicationUser();
         }
 
@@ -63,13 +66,19 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerCreatorImp
         [Test]
         public void TheNewPlayerIsActiveWhenCreated()
         {
-            string playerName = "player name";
-
-            playerCreator.CreatePlayer(playerName, currentUser);
+            playerCreator.CreatePlayer("player name", currentUser);
 
             dataContextMock.AssertWasCalled(mock => mock.Save<Player>(
                 Arg<Player>.Matches(player => player.Active == true),
                 Arg<ApplicationUser>.Is.Anything));
+        }
+
+        [Test]
+        public void ItRecordsAPlayerCreatedEvent()
+        {
+            playerCreator.CreatePlayer("player name", currentUser);
+
+            eventTrackerMock.AssertWasCalled(mock => mock.TrackPlayerCreation(currentUser));
         }
     }
 }

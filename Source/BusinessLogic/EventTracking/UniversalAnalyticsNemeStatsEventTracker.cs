@@ -67,5 +67,15 @@ namespace BusinessLogic.EventTracking
 
             eventTracker.TrackEvent(universalAnalyticsEvent);
         }
+
+        public void TrackPlayerCreation(ApplicationUser currentUser)
+        {
+            IUniversalAnalyticsEvent universalAnalyticsEvent = eventFactory.MakeUniversalAnalyticsEvent(
+                  currentUser.AnonymousClientId,
+                  EventCategoryEnum.Players.ToString(),
+                  EventActionEnum.Created.ToString());
+
+            eventTracker.TrackEvent(universalAnalyticsEvent);
+        }
     }
 }

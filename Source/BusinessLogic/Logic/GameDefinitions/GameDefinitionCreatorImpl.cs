@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.DataAccess;
+using BusinessLogic.EventTracking;
 using BusinessLogic.Models;
 using BusinessLogic.Models.User;
 using System;
@@ -11,12 +12,13 @@ namespace BusinessLogic.Logic.GameDefinitions
 {
     public class GameDefinitionCreatorImpl : GameDefinitionCreator
     {
-        //TODO add event tracking for newly created game definitions
         private DataContext dataContext;
+        private NemeStatsEventTracker eventTracker;
 
-        public GameDefinitionCreatorImpl(DataContext dataContext)
+        public GameDefinitionCreatorImpl(DataContext dataContext, NemeStatsEventTracker eventTracker)
         {
             this.dataContext = dataContext;
+            this.eventTracker = eventTracker;
         }
 
         public GameDefinition CreateGameDefinition(string gameDefinitionName, ApplicationUser currentUser)
@@ -28,7 +30,11 @@ namespace BusinessLogic.Logic.GameDefinitions
                 Name = gameDefinitionName
             };
 
-            return dataContext.Save<GameDefinition>(gameDefinition, currentUser);
+            GameDefinition newGameDefinition = dataContext.Save<GameDefinition>(gameDefinition, currentUser);
+
+            new Task(() => eventTracker.TrackGameDefinitionCreation(currentUser, gameDefinitionName)).Start();
+
+            return newGameDefinition;
         }
 
         private static void ValidateGameDefinitionNameIsNotNullOrWhitespace(string gameDefinitionName)

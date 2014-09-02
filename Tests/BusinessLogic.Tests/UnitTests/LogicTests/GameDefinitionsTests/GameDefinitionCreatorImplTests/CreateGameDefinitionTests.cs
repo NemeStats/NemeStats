@@ -27,7 +27,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
         {
             dataContextMock = MockRepository.GenerateMock<DataContext>();
             eventTrackerMock = MockRepository.GenerateMock<NemeStatsEventTracker>();
-            gameDefinitionCreator = new GameDefinitionCreatorImpl(dataContextMock);
+            gameDefinitionCreator = new GameDefinitionCreatorImpl(dataContextMock, eventTrackerMock);
             currentUser = new ApplicationUser();
         }
 
@@ -71,11 +71,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
 
             gameDefinitionCreator.CreateGameDefinition(gameDefinitionName, currentUser);
 
-            //eventTrackerMock.AssertWasCalled(mock => mock.Tr)
-
-            dataContextMock.AssertWasCalled(mock => mock.Save<GameDefinition>(
-                Arg<GameDefinition>.Matches(gameDefinition => gameDefinition.Name == gameDefinitionName),
-                Arg<ApplicationUser>.Is.Anything));
+            eventTrackerMock.AssertWasCalled(mock => mock.TrackGameDefinitionCreation(currentUser, gameDefinitionName));
         }
     }
 }

@@ -130,6 +130,7 @@
     <Compile Include="UnitTests\EventTrackingTests\UniversalAnalyticsNemeStatsEventTrackerTests\TrackGameDefinitionCreationTests.cs" />
     <Compile Include="UnitTests\EventTrackingTests\UniversalAnalyticsNemeStatsEventTrackerTests\TrackPlayedGameTests.cs" />
     <Compile Include="UnitTests\EventTrackingTests\UniversalAnalyticsNemeStatsEventTrackerTests\TrackGamingGroupCreationTests.cs" />
+    <Compile Include="UnitTests\EventTrackingTests\UniversalAnalyticsNemeStatsEventTrackerTests\TrackPlayerCreationTests.cs" />
     <Compile Include="UnitTests\EventTrackingTests\UniversalAnalyticsNemeStatsEventTrackerTests\TrackUserRegistrationTests.cs" />
     <Compile Include="UnitTests\EventTrackingTests\UniversalAnalyticsNemeStatsEventTrackerTests\UniversalAnalyticsNemeStatsEventTrackerTestBase.cs" />
     <Compile Include="UnitTests\LogicTests\GameDefinitionsTests\GameDefinitionCreatorImplTests\CreateGameDefinitionTests.cs" />
