@@ -16,11 +16,14 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         [Test]
         public void ItSavesThePlayer()
         {
-
-            Player player = new Player();
-            dataContextMock.Expect(mock => mock.Save<Player>(player, currentUser));
+            Player player = new Player()
+            {
+                Name = "player name"
+            };
 
             playerController.Create(player, currentUser);
+
+            playerCreatorMock.AssertWasCalled(mock => mock.CreatePlayer(player.Name, currentUser));
         }
 
         [Test]

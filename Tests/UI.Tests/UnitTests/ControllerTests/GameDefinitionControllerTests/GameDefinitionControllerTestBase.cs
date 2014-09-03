@@ -20,23 +20,26 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
     {
         protected GameDefinitionController gameDefinitionControllerPartialMock;
         protected GameDefinitionRetriever gameDefinitionRetrieverMock;
-        protected GameDefinitionViewModelBuilder gameDefinitionTransformation;
-        protected ShowingXResultsMessageBuilder showingXResultsMessageBuilder;
-        protected NemeStatsDataContext dataContext;
+        protected GameDefinitionViewModelBuilder gameDefinitionTransformationMock;
+        protected ShowingXResultsMessageBuilder showingXResultsMessageBuilderMock;
+        protected GameDefinitionCreator gameDefinitionCreatorMock;
+        protected NemeStatsDataContext dataContextMock;
         protected ApplicationUser currentUser;
 
         [SetUp]
         public virtual void SetUp()
         {
-            dataContext = MockRepository.GenerateMock<NemeStatsDataContext>();
+            dataContextMock = MockRepository.GenerateMock<NemeStatsDataContext>();
             gameDefinitionRetrieverMock = MockRepository.GenerateMock<GameDefinitionRetriever>();
-            gameDefinitionTransformation = MockRepository.GenerateMock<GameDefinitionViewModelBuilder>();
-            showingXResultsMessageBuilder = MockRepository.GenerateMock<ShowingXResultsMessageBuilder>();
+            gameDefinitionTransformationMock = MockRepository.GenerateMock<GameDefinitionViewModelBuilder>();
+            showingXResultsMessageBuilderMock = MockRepository.GenerateMock<ShowingXResultsMessageBuilder>();
+            gameDefinitionCreatorMock = MockRepository.GenerateMock<GameDefinitionCreator>();
             gameDefinitionControllerPartialMock = MockRepository.GeneratePartialMock<GameDefinitionController>(
-                dataContext, 
+                dataContextMock, 
                 gameDefinitionRetrieverMock,
-                gameDefinitionTransformation,
-                showingXResultsMessageBuilder);
+                gameDefinitionTransformationMock,
+                showingXResultsMessageBuilderMock,
+                gameDefinitionCreatorMock);
             currentUser = new ApplicationUser()
             {
                 Id = "user id",

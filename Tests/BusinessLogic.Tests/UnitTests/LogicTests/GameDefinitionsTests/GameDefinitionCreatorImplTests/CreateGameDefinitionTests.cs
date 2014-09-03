@@ -36,7 +36,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
         {
             ArgumentNullException expectedException = new ArgumentNullException("gameDefinitionName");
 
-            Exception exception = Assert.Throws<ArgumentNullException>(() => gameDefinitionCreator.CreateGameDefinition(null, currentUser));
+            Exception exception = Assert.Throws<ArgumentNullException>(() => gameDefinitionCreator.CreateGameDefinition(null, null, currentUser));
 
             Assert.AreEqual(expectedException.Message, exception.Message);
         }
@@ -47,7 +47,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
             string gameDefinitionName = "    ";
             ArgumentNullException expectedException = new ArgumentNullException("gameDefinitionName");
 
-            Exception exception = Assert.Throws<ArgumentNullException>(() => gameDefinitionCreator.CreateGameDefinition(gameDefinitionName, currentUser));
+            Exception exception = Assert.Throws<ArgumentNullException>(
+                () => gameDefinitionCreator.CreateGameDefinition(gameDefinitionName, null, currentUser));
 
             Assert.AreEqual(expectedException.Message, exception.Message);
         }
@@ -57,10 +58,22 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
         {
             string gameDefinitionName = "game definition name";
 
-            gameDefinitionCreator.CreateGameDefinition(gameDefinitionName, currentUser);
+            gameDefinitionCreator.CreateGameDefinition(gameDefinitionName, null, currentUser);
 
             dataContextMock.AssertWasCalled(mock => mock.Save<GameDefinition>(
                 Arg<GameDefinition>.Matches(gameDefinition => gameDefinition.Name == gameDefinitionName),
+                Arg<ApplicationUser>.Is.Anything));
+        }
+
+        [Test]
+        public void ItSetsTheGameDefinitionDescription()
+        {
+            string gameDefinitionDescription = "game definition description";
+
+            gameDefinitionCreator.CreateGameDefinition("game definition name", gameDefinitionDescription, currentUser);
+
+            dataContextMock.AssertWasCalled(mock => mock.Save<GameDefinition>(
+                Arg<GameDefinition>.Matches(gameDefinition => gameDefinition.Description == gameDefinitionDescription),
                 Arg<ApplicationUser>.Is.Anything));
         }
 
@@ -69,7 +82,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
         {
             string gameDefinitionName = "game definition name";
 
-            gameDefinitionCreator.CreateGameDefinition(gameDefinitionName, currentUser);
+            gameDefinitionCreator.CreateGameDefinition(gameDefinitionName, null, currentUser);
 
             eventTrackerMock.AssertWasCalled(mock => mock.TrackGameDefinitionCreation(currentUser, gameDefinitionName));
         }

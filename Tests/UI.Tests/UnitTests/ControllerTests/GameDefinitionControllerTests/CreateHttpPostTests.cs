@@ -38,11 +38,14 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
         [Test]
         public void ItSavesTheGameDefinitionIfValidationPasses()
         {
-            GameDefinition gameDefinition = new GameDefinition();
+            GameDefinition gameDefinition = new GameDefinition()
+            {
+                Name = "game definition name"
+            };
 
             gameDefinitionControllerPartialMock.Create(gameDefinition, currentUser);
 
-            dataContext.AssertWasCalled(mock => mock.Save(gameDefinition, currentUser));
+            gameDefinitionCreatorMock.AssertWasCalled(mock => mock.CreateGameDefinition(gameDefinition.Name, gameDefinition.Description, currentUser));
         }
 
         [Test]

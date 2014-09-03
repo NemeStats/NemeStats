@@ -39,7 +39,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
                 Arg<int>.Is.Anything,
                 Arg<int>.Is.Anything))
                 .Return(gameDefinition);
-            gameDefinitionTransformation.Expect(mock => mock.Build(gameDefinition, currentUser))
+            gameDefinitionTransformationMock.Expect(mock => mock.Build(gameDefinition, currentUser))
                 .Return(expectedViewModel);
         }
 
@@ -99,7 +99,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
         public void ItPutsTheRecentGamesMessageOnTheViewBag()
         {
             string expectedMessage = "expected message";
-            showingXResultsMessageBuilder.Expect(mock => mock.BuildMessage(
+            showingXResultsMessageBuilderMock.Expect(mock => mock.BuildMessage(
                 GameDefinitionController.NUMBER_OF_RECENT_GAMES_TO_SHOW,
                 gameDefinition.PlayedGames.Count))
                     .Return(expectedMessage);

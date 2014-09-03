@@ -127,7 +127,7 @@ namespace BusinessLogic.Logic.GamingGroups
             {
                 if (!string.IsNullOrWhiteSpace(gameDefinitionName))
                 {
-                    gameDefinitionCreator.CreateGameDefinition(gameDefinitionName, currentUser);
+                    gameDefinitionCreator.CreateGameDefinition(gameDefinitionName, null, currentUser);
                 }
             }
         }

@@ -21,13 +21,14 @@ namespace BusinessLogic.Logic.GameDefinitions
             this.eventTracker = eventTracker;
         }
 
-        public GameDefinition CreateGameDefinition(string gameDefinitionName, ApplicationUser currentUser)
+        public GameDefinition CreateGameDefinition(string gameDefinitionName, string gameDefinitionDescription, ApplicationUser currentUser)
         {
             ValidateGameDefinitionNameIsNotNullOrWhitespace(gameDefinitionName);
 
             GameDefinition gameDefinition = new GameDefinition()
             {
-                Name = gameDefinitionName
+                Name = gameDefinitionName,
+                Description = gameDefinitionDescription
             };
 
             GameDefinition newGameDefinition = dataContext.Save<GameDefinition>(gameDefinition, currentUser);

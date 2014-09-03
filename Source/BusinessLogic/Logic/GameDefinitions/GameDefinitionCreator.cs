@@ -9,6 +9,6 @@ namespace BusinessLogic.Logic.GameDefinitions
 {
     public interface GameDefinitionCreator
     {
-        GameDefinition CreateGameDefinition(string gameDefinitionName, ApplicationUser currentUser);
+        GameDefinition CreateGameDefinition(string gameDefinitionName, string gameDefinitionDescription, ApplicationUser currentUser);
     }
 }

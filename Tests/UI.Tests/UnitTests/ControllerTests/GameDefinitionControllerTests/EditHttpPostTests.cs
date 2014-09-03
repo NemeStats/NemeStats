@@ -42,7 +42,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
 
             gameDefinitionControllerPartialMock.Edit(gameDefinition, currentUser);
 
-            dataContext.AssertWasCalled(mock => mock.Save(gameDefinition, currentUser));
+            dataContextMock.AssertWasCalled(mock => mock.Save(gameDefinition, currentUser));
         }
 
         [Test]

@@ -243,7 +243,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
 
             foreach (string gameDefinitionName in gamingGroupQuickStart.NewGameDefinitionNames)
             {
-                gameDefinitionCreator.AssertWasCalled(mock => mock.CreateGameDefinition(gameDefinitionName, currentUser));
+                gameDefinitionCreator.AssertWasCalled(mock => mock.CreateGameDefinition(gameDefinitionName, null, currentUser));
             }
         }
 
@@ -259,7 +259,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
 
             await gamingGroupCreator.CreateGamingGroupAsync(gamingGroupQuickStart, currentUser);
 
-            gameDefinitionCreator.AssertWasNotCalled(mock => mock.CreateGameDefinition(Arg<string>.Is.Anything, Arg<ApplicationUser>.Is.Anything));
+            gameDefinitionCreator.AssertWasNotCalled(mock => mock.CreateGameDefinition(
+                Arg<string>.Is.Anything, Arg<string>.Is.Anything, Arg<ApplicationUser>.Is.Anything));
         }
     }
 }

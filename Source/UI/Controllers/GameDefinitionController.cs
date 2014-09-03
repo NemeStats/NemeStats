@@ -27,16 +27,19 @@ namespace UI.Controllers
         internal GameDefinitionRetriever gameDefinitionRetriever;
         internal GameDefinitionViewModelBuilder gameDefinitionTransformation;
         internal ShowingXResultsMessageBuilder showingXResultsMessageBuilder;
+        internal GameDefinitionCreator gameDefinitionCreator;
 
         public GameDefinitionController(DataContext dataContext,
             GameDefinitionRetriever gameDefinitionRetriever,
             GameDefinitionViewModelBuilder gameDefinitionTransformation,
-            ShowingXResultsMessageBuilder showingXResultsMessageBuilder)
+            ShowingXResultsMessageBuilder showingXResultsMessageBuilder,
+            GameDefinitionCreator gameDefinitionCreator)
         {
             this.dataContext = dataContext;
             this.gameDefinitionRetriever = gameDefinitionRetriever;
             this.gameDefinitionTransformation = gameDefinitionTransformation;
             this.showingXResultsMessageBuilder = showingXResultsMessageBuilder;
+            this.gameDefinitionCreator = gameDefinitionCreator;
         }
 
         // GET: /GameDefinition/
@@ -96,8 +99,8 @@ namespace UI.Controllers
         {
             if (ModelState.IsValid)
             {
-                dataContext.Save(gameDefinition, currentUser);
-                dataContext.CommitAllChanges();
+                gameDefinitionCreator.CreateGameDefinition(gameDefinition.Name, gameDefinition.Description, currentUser);
+      
                 return RedirectToAction(MVC.GameDefinition.ActionNames.Index);
             }
 

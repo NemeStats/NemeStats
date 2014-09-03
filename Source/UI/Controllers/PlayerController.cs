@@ -87,6 +87,7 @@ namespace UI.Controllers
             return View(MVC.Player.Views.Create, new Player());
         }
 
+        //TODO it is really only the player name that can be passed in on a create
         // POST: /Player/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -96,11 +97,10 @@ namespace UI.Controllers
         [UserContextAttribute]
         public virtual ActionResult Create([Bind(Include = "Id,Name,Active")] Player player, ApplicationUser currentUser)
         {
-            //TODO use new PlayerCreator to create players instead.
             if (ModelState.IsValid)
             {
-                dataContext.Save<Player>(player, currentUser);
-                dataContext.CommitAllChanges();
+                playerCreator.CreatePlayer(player.Name, currentUser);
+       
                 return RedirectToAction(MVC.Player.ActionNames.Index);
             }
 
