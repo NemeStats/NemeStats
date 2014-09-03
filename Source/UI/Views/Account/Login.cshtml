@@ -14,7 +14,7 @@
                 <h4>Use a local account to log in.</h4>
             </div>
             <div class="panel-body">
-                @*<section id="loginForm">*@
+                <section id="loginForm">
                     @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
                     {
                         @Html.AntiForgeryToken()
@@ -49,11 +49,10 @@
                             </div>
                         </div>
                     }
-                @*</section>*@
+                </section>
             </div>
         </div>
     </div>
-    @*Leaving this out until we turn on google authentication.
     <div class="col-md-4">
         <section id="socialLoginForm">
             <div class="sidebar-module sidebar-module-inset">
@@ -61,7 +60,7 @@
             </div>
         </section>
     </div>
-    *@
+    
 </div>
 <div class="row">
     <div class="col-md-8">

@@ -33,6 +33,8 @@ namespace UI
             //   appSecret: "");
 
             //app.UseGoogleAuthentication();
+            app.UseGoogleAuthentication(clientId: "260011030385-4651b4m7fsn28tc9vj13remofgji8m3l.apps.googleusercontent.com",
+                                        clientSecret: "H1c-03pCcASs8Ug3fNOx9WQx");
         }
     }
 }
