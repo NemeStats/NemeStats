@@ -33,7 +33,8 @@ namespace UI
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css",
-                      "~/Content/blog.css"));
+                      "~/Content/blog.css",
+                      "~/Content/css/font-awesome*"));
         }
     }
 }

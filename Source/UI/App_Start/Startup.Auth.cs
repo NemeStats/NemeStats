@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNet.Identity;
+﻿using System.Configuration;
+using Microsoft.AspNet.Identity;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
 using Owin;
@@ -32,9 +33,9 @@ namespace UI
             //   appId: "",
             //   appSecret: "");
 
-            //app.UseGoogleAuthentication();
-            app.UseGoogleAuthentication(clientId: "260011030385-4651b4m7fsn28tc9vj13remofgji8m3l.apps.googleusercontent.com",
-                                        clientSecret: "H1c-03pCcASs8Ug3fNOx9WQx");
+            var googleAppId = ConfigurationManager.AppSettings.Get("googleAppId");
+            var googleClientSecret = ConfigurationManager.AppSettings.Get("googleClientSecret");
+            app.UseGoogleAuthentication(googleAppId, googleClientSecret);
         }
     }
 }
