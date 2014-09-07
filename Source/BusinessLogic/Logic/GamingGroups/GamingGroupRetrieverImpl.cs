@@ -1,4 +1,6 @@
 ﻿using BusinessLogic.DataAccess;
+using BusinessLogic.Logic.GameDefinitions;
+using BusinessLogic.Logic.Players;
 using BusinessLogic.Models;
 using BusinessLogic.Models.User;
 using System;
@@ -12,15 +14,23 @@ namespace BusinessLogic.Logic.GamingGroups
     public class GamingGroupRetrieverImpl : GamingGroupRetriever
     {
         private DataContext dataContext;
+        private PlayerRetriever playerRetriever;
+        private GameDefinitionRetriever gameDefinitionRetriever;
 
-        public GamingGroupRetrieverImpl(DataContext dataContext)
+        public GamingGroupRetrieverImpl(DataContext dataContext, PlayerRetriever playerRetriever, GameDefinitionRetriever gameDefinitionRetriever)
         {
             this.dataContext = dataContext;
+            this.playerRetriever = playerRetriever;
+            this.gameDefinitionRetriever = gameDefinitionRetriever;
         }
 
         public GamingGroup GetGamingGroupDetails(int gamingGroupId)
         {
             GamingGroup gamingGroup = dataContext.FindById<GamingGroup>(gamingGroupId);
+
+            gamingGroup.Players = playerRetriever.GetAllPlayers(gamingGroupId);
+
+            gamingGroup.GameDefinitions = gameDefinitionRetriever.GetAllGameDefinitions(gamingGroupId);
 
             gamingGroup.OwningUser = dataContext.GetQueryable<ApplicationUser>()
                 .Where(user => user.Id == gamingGroup.OwningUserId)

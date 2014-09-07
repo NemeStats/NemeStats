@@ -207,5 +207,13 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTests.PlayerDetailsViewM
 
             Assert.False(viewModel.UserCanEdit);
         }
+
+        [Test]
+        public void TheUserCanNotEditViewModelIfTheUserIsUnknown()
+        {
+            PlayerDetailsViewModel viewModel = builder.Build(playerDetails, null);
+
+            Assert.False(viewModel.UserCanEdit);
+        }
     }
 }

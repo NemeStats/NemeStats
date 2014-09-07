@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.Models;
+using BusinessLogic.Models.Players;
 using BusinessLogic.Models.User;
 using NUnit.Framework;
 using Rhino.Mocks;
@@ -7,8 +8,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UI.Models.GameDefinitionModels;
 using UI.Models.GamingGroup;
+using UI.Models.Players;
 using UI.Transformations;
+using UI.Transformations.Player;
 
 namespace UI.Tests.UnitTests.TransformationsTests
 {
@@ -16,15 +20,21 @@ namespace UI.Tests.UnitTests.TransformationsTests
     public class GamingGroupToGamingGroupViewModelTransformationImplTests
     {
         private GamingGroupToGamingGroupViewModelTransformationImpl transformer;
-        private GamingGroupInvitationToInvitationViewModelTransformation invitationTransformer;
+        private GamingGroupInvitationToInvitationViewModelTransformation invitationTransformerMock;
+        private PlayerDetailsViewModelBuilder playerDetailsViewModelBuilderMock;
         private GamingGroup gamingGroup;
         private GamingGroupViewModel viewModel;
+        private List<Player> players;
+        private List<GameDefinition> gameDefinitions;
 
         [SetUp]
         public void SetUp()
         {
-            invitationTransformer = MockRepository.GenerateMock<GamingGroupInvitationToInvitationViewModelTransformation>();
-            transformer = new GamingGroupToGamingGroupViewModelTransformationImpl(invitationTransformer);
+            invitationTransformerMock = MockRepository.GenerateMock<GamingGroupInvitationToInvitationViewModelTransformation>();
+            playerDetailsViewModelBuilderMock = MockRepository.GenerateMock<PlayerDetailsViewModelBuilder>();
+            transformer = new GamingGroupToGamingGroupViewModelTransformationImpl(invitationTransformerMock, playerDetailsViewModelBuilderMock);
+            players = new List<Player>();
+            gameDefinitions = new List<GameDefinition>();
             ApplicationUser owningUser = new ApplicationUser()
             {
                 Id = "owning user user Id",
@@ -49,10 +59,12 @@ namespace UI.Tests.UnitTests.TransformationsTests
                 Name = "gaming group",
                 OwningUserId = owningUser.Id,
                 OwningUser = owningUser,
-                GamingGroupInvitations = new List<GamingGroupInvitation>() { invitation }
+                GamingGroupInvitations = new List<GamingGroupInvitation>() { invitation },
+                Players = players,
+                GameDefinitions = gameDefinitions
             };
 
-            viewModel = transformer.Build(gamingGroup);
+            viewModel = transformer.Build(gamingGroup, null);
         }
 
         [Test]
@@ -87,13 +99,25 @@ namespace UI.Tests.UnitTests.TransformationsTests
             {
                 InvitationViewModel invitationViewModel = new InvitationViewModel();
                 invitations.Add(invitationViewModel);
-                
-                invitationTransformer.Expect(mock => mock.Build(invitation))
+
+                invitationTransformerMock.Expect(mock => mock.Build(invitation))
                     .Repeat.Once()
                     .Return(invitationViewModel);
             }
 
             Assert.AreEqual(invitations.Count(), viewModel.Invitations.Count());
+        }
+
+        [Test]
+        public void ItSetsThePlayers()
+        {
+            Assert.AreSame(players, viewModel.Players);
+        }
+
+        [Test]
+        public void ItSetsTheGameDefinitions()
+        {
+            Assert.AreSame(gameDefinitions, viewModel.GameDefinitions);
         }
     }
 }

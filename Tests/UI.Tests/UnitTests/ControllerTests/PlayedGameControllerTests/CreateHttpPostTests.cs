@@ -37,12 +37,12 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
             string playerName = "Herb";
             List<Player> allPlayers = new List<Player>() { new Player() { Id = playerId, Name = playerName } };
 
-            playerLogicMock.Expect(x => x.GetAllPlayers(true, currentUser)).Repeat.Once().Return(allPlayers);
+            playerRetrieverMock.Expect(x => x.GetAllPlayers(currentUser.CurrentGamingGroupId.Value)).Repeat.Once().Return(allPlayers);
             playedGameController.ModelState.AddModelError("Test error", "this is a test error to make model state invalid");
 
             playedGameController.Create(new NewlyCompletedGame(), currentUser);
 
-            playerLogicMock.VerifyAllExpectations();
+            playerRetrieverMock.VerifyAllExpectations();
 
             List<SelectListItem> selectListItems = playedGameController.ViewBag.Players;
             Assert.True(selectListItems.All(x => x.Value == playerId.ToString() && x.Text == playerName));

@@ -22,7 +22,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.GameDefinitionsTests.G
             using(NemeStatsDataContext dataContext = new NemeStatsDataContext())
             {
                 retriever = new GameDefinitionRetrieverImpl(dataContext);
-                actualGameDefinitions = retriever.GetAllGameDefinitions(testUserWithDefaultGamingGroup);
+                actualGameDefinitions = retriever.GetAllGameDefinitions(testUserWithDefaultGamingGroup.CurrentGamingGroupId.Value);
             }
             
         }

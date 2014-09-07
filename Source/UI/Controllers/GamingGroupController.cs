@@ -46,7 +46,8 @@ namespace UI.Controllers
         public virtual ActionResult Index(ApplicationUser currentUser)
         {
             GamingGroup gamingGroup = gamingGroupRetriever.GetGamingGroupDetails(currentUser.CurrentGamingGroupId.Value);
-            GamingGroupViewModel viewModel = gamingGroupToGamingGroupViewModelTransformation.Build(gamingGroup);
+
+            GamingGroupViewModel viewModel = gamingGroupToGamingGroupViewModelTransformation.Build(gamingGroup, currentUser);
 
             return View(MVC.GamingGroup.Views.Index, viewModel);
         }

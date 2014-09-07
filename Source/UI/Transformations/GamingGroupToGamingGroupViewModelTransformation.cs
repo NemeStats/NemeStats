@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.Models;
+using BusinessLogic.Models.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,6 @@ namespace UI.Transformations
 {
     public interface GamingGroupToGamingGroupViewModelTransformation
     {
-        GamingGroupViewModel Build(GamingGroup gamingGroup);
+        GamingGroupViewModel Build(GamingGroup gamingGroup, ApplicationUser currentUser = null);
     }
 }

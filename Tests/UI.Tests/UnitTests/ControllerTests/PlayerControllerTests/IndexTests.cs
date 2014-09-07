@@ -28,7 +28,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         public void ItAddsAllActivePlayersToTheView()
         {
             List<Player> players = new List<Player>();
-            playerRepositoryMock.Expect(mock => mock.GetAllPlayers(true, currentUser))
+            playerRetriever.Expect(mock => mock.GetAllPlayers(currentUser.CurrentGamingGroupId.Value))
                 .Repeat.Once()
                 .Return(players);
 

@@ -47,7 +47,7 @@ namespace UI.Controllers
         [UserContextAttribute]
         public virtual ActionResult Index(ApplicationUser currentUser)
         {
-            IList<GameDefinition> games = gameDefinitionRetriever.GetAllGameDefinitions(currentUser);
+            IList<GameDefinition> games = gameDefinitionRetriever.GetAllGameDefinitions(currentUser.CurrentGamingGroupId.Value);
             return View(MVC.GameDefinition.Views.Index, games);
         }
 

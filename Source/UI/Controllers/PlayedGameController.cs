@@ -3,6 +3,7 @@ using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.Logic;
 using BusinessLogic.Logic.GameDefinitions;
 using BusinessLogic.Logic.PlayedGames;
+using BusinessLogic.Logic.Players;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
 using BusinessLogic.Models.User;
@@ -22,7 +23,7 @@ namespace UI.Controllers
     {
         internal NemeStatsDataContext dataContext;
         internal PlayedGameRepository playedGameLogic;
-        internal PlayerRepository playerLogic;
+        internal PlayerRetriever playerRetriever;
         internal PlayedGameDetailsViewModelBuilder playedGameDetailsBuilder;
         internal PlayedGameCreator playedGameCreator;
         internal GameDefinitionRetriever gameDefinitionRetriever;
@@ -33,7 +34,7 @@ namespace UI.Controllers
         public PlayedGameController(
             NemeStatsDataContext dataContext,
             PlayedGameRepository playedLogic, 
-            PlayerRepository playLogic,
+            PlayerRetriever playerRetriever,
             PlayedGameDetailsViewModelBuilder builder,
             GameDefinitionRetriever gameDefinitionRetriever,
             ShowingXResultsMessageBuilder showingXResultsMessageBuilder,
@@ -41,7 +42,7 @@ namespace UI.Controllers
         {
             this.dataContext = dataContext;
             playedGameLogic = playedLogic;
-            playerLogic = playLogic;
+            this.playerRetriever = playerRetriever;
             playedGameDetailsBuilder = builder;
             this.gameDefinitionRetriever = gameDefinitionRetriever;
             this.showingXResultsMessageBuilder = showingXResultsMessageBuilder;
@@ -92,7 +93,7 @@ namespace UI.Controllers
         public virtual ActionResult Create(ApplicationUser currentUser)
         {
             ViewBag.GameDefinitionId = new SelectList(
-                gameDefinitionRetriever.GetAllGameDefinitions(currentUser), 
+                gameDefinitionRetriever.GetAllGameDefinitions(currentUser.CurrentGamingGroupId.Value), 
                 "Id", 
                 "Name");
 
@@ -123,7 +124,7 @@ namespace UI.Controllers
         private void AddAllPlayersToViewBag(ApplicationUser currentUser)
         {
             //TODO Clean Code said something about boolean parameters not being good. Come back to this...
-            List<Player> allPlayers = playerLogic.GetAllPlayers(true, currentUser);
+            List<Player> allPlayers = playerRetriever.GetAllPlayers(currentUser.CurrentGamingGroupId.Value);
             List<SelectListItem> allPlayersSelectList = allPlayers.Select(item => new SelectListItem()
             {
                 Text = item.Name,

@@ -30,13 +30,15 @@ namespace UI.Controllers
         internal PlayerDetailsViewModelBuilder playerDetailsViewModelBuilder;
         internal ShowingXResultsMessageBuilder showingXResultsMessageBuilder;
         internal PlayerCreator playerCreator;
+        internal PlayerRetriever playerRetriever;
         
         public PlayerController(DataContext dataContext, 
             PlayerRepository playerRepository, 
             GameResultViewModelBuilder builder,
             PlayerDetailsViewModelBuilder playerDetailsViewModelBuilder,
             ShowingXResultsMessageBuilder showingXResultsMessageBuilder,
-            PlayerCreator playerCreator)
+            PlayerCreator playerCreator,
+            PlayerRetriever playerRetriever)
         {
             this.dataContext = dataContext;
             this.playerRepository = playerRepository;
@@ -44,6 +46,7 @@ namespace UI.Controllers
             this.playerDetailsViewModelBuilder = playerDetailsViewModelBuilder;
             this.showingXResultsMessageBuilder = showingXResultsMessageBuilder;
             this.playerCreator = playerCreator;
+            this.playerRetriever = playerRetriever;
         }
 
         // GET: /Player/
@@ -51,7 +54,7 @@ namespace UI.Controllers
         [UserContextAttribute]
         public virtual ActionResult Index(ApplicationUser currentUser)
         {
-            List<Player> players = playerRepository.GetAllPlayers(true, currentUser);
+            List<Player> players = playerRetriever.GetAllPlayers(currentUser.CurrentGamingGroupId.Value);
             return View(MVC.Player.Views.Index, players);
         }
 

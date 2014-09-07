@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.Models;
+using BusinessLogic.Models.User;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System;
@@ -32,7 +33,9 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
                 .Repeat.Once()
                 .Return(gamingGroup);
 
-            gamingGroupToGamingGroupViewModelTransformationMock.Expect(mock => mock.Build(gamingGroup))
+            gamingGroupToGamingGroupViewModelTransformationMock.Expect(mock => mock.Build(
+                    Arg<GamingGroup>.Is.Same(gamingGroup),
+                    Arg<ApplicationUser>.Is.Anything))
                 .Repeat.Once()
                 .Return(gamingGroupViewModel);
             

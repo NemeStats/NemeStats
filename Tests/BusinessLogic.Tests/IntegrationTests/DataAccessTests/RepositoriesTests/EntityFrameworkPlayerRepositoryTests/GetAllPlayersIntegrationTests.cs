@@ -1,6 +1,7 @@
 ﻿using BusinessLogic.DataAccess;
 using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.Logic;
+using BusinessLogic.Logic.Players;
 using BusinessLogic.Models;
 using NUnit.Framework;
 using System;
@@ -15,39 +16,27 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
     public class GetAllPlayersIntegrationTests : IntegrationTestBase
     {
         private DataContext dataContext;
-        private EntityFrameworkPlayerRepository playerRepository;
+        private PlayerRetrieverImpl playerRetriever;
 
         [SetUp]
         public void TestSetUp()
         {
             dataContext = new NemeStatsDataContext();
-            playerRepository = new EntityFrameworkPlayerRepository(dataContext);
+            playerRetriever = new PlayerRetrieverImpl(dataContext);
         }
 
         [Test]
-        public void ItOnlyReturnsActivePlayersWhenActivePlayersAreRequested()
+        public void ItOnlyReturnsActivePlayers()
         {
-            bool active = true;
+            List<Player> players = playerRetriever.GetAllPlayers(testUserWithDefaultGamingGroup.CurrentGamingGroupId.Value);
 
-            List<Player> players = playerRepository.GetAllPlayers(active, testUserWithDefaultGamingGroup);
-
-            Assert.True(players.All(x => x.Active == active));
-        }
-
-        [Test]
-        public void ItOnlyReturnsInactivePlayersWhenInActivePlayersAreRequested()
-        {
-            bool active = false;
-
-            List<Player> players = playerRepository.GetAllPlayers(active, testUserWithDefaultGamingGroup);
-
-            Assert.True(players.All(x => x.Active == active));
+            Assert.True(players.All(x => x.Active));
         }
 
         [Test]
         public void ItOnlyReturnsPlayersForTheGivenGamingGroupId()
         {
-            List<Player> players = playerRepository.GetAllPlayers(true, testUserWithDefaultGamingGroup);
+            List<Player> players = playerRetriever.GetAllPlayers(testUserWithDefaultGamingGroup.CurrentGamingGroupId.Value);
 
             Assert.True(players.All(x => x.GamingGroupId == testGamingGroup.Id));
         }

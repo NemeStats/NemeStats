@@ -23,7 +23,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
                 .Repeat.Once()
                 .Return(gameDefinitionQueryable);
 
-            IList<GameDefinition> gameDefinitions = retriever.GetAllGameDefinitions(currentUser);
+            IList<GameDefinition> gameDefinitions = retriever.GetAllGameDefinitions(currentUser.CurrentGamingGroupId.Value);
 
             Assert.AreEqual(gameDefinitionQueryable.ToList(), gameDefinitions);
         }

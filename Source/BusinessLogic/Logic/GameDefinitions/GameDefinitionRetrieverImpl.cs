@@ -19,10 +19,10 @@ namespace BusinessLogic.Logic.GameDefinitions
             this.dataContext = dataContext;
         }
 
-        public virtual IList<GameDefinition> GetAllGameDefinitions(ApplicationUser currentUser)
+        public virtual IList<GameDefinition> GetAllGameDefinitions(int gamingGroupId)
         {
             return dataContext.GetQueryable<GameDefinition>()
-                .Where(game => game.GamingGroupId == currentUser.CurrentGamingGroupId)
+                .Where(game => game.GamingGroupId == gamingGroupId)
                 .OrderBy(game => game.Name)
                 .ToList();
         }

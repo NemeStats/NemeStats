@@ -6,77 +6,171 @@
 }
 
 <h2>@ViewBag.Title</h2>
-    <hr />
+<hr />
 
-    <div class="row">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h4>Gaming Group Details</h4>
+<div class="row">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4>Gaming Group Details</h4>
+        </div>
+
+        <div class="panel-body">
+
+            <div class="row">
+                <div class="col-md-2">
+                    <strong>
+                        @Html.DisplayNameFor(model => model.Name)
+                    </strong>
+                </div>
+
+                <div class="col-md-3">
+                    @Html.DisplayFor(model => model.Name)
+                </div>
             </div>
-            
-            <div class="panel-body">
 
-                <div class="row">
-                    <div class="col-md-2">
-                        <strong>
-                            @Html.DisplayNameFor(model => model.Name)
-                        </strong>
-                    </div>
-
-                    <div class="col-md-3">
-                        @Html.DisplayFor(model => model.Name)
-                    </div>
+            <div class="row panel-group">
+                <div class="col-md-2">
+                    <strong>
+                        @Html.DisplayNameFor(model => model.OwningUserName)
+                    </strong>
                 </div>
 
-                <div class="row panel-group">
-                    <div class="col-md-2">
-                        <strong>
-                            @Html.DisplayNameFor(model => model.OwningUserName)
-                        </strong>
-                    </div>
-
-                    <div class="col-md-3">
-                        @Html.DisplayFor(model => model.OwningUserName)
-                    </div>
-                </div>
-
-                <div class="row panel-group">
-                    <div class="col-md-2">
-                        <h4>Invite Other Players</h4>
-                    </div>
-                </div>
-                
-                
-                <div class="row">
-                    <div class="form-horizontal">
-                        @using (Html.BeginForm("GrantAccess", "GamingGroup"))
-                        {
-                            @Html.AntiForgeryToken()
-
-                            <div class="form-group">
-                                @Html.Label("Invitee Email Address*", new { @class = "control-label col-md-2" })
-                                @Html.TextBoxFor(model => model.InviteeEmail, new { @class = "form-control col-md-2" })
-                                    
-                                <div class="col-md-2">
-                                    <span data-toggle="tooltip" title="This only allows a player to register with this email address and will place them directly into this Gaming Group.">
-                                        <i class="glyphicon glyphicon-question-sign"></i>
-                                    </span>
-                                    @Html.ValidationMessageFor(model => model.InviteeEmail)
-                                </div>
-                            </div>
-                            
-                            <div class="form-group">
-                                <div class="col-md-offset-2">
-                                    <input type="submit" value="Grant Access To Gaming Group" class="btn btn-primary" />
-                                </div>
-                            </div>
-                        }
-                    </div>
+                <div class="col-md-3">
+                    @Html.DisplayFor(model => model.OwningUserName)
                 </div>
             </div>
         </div>
     </div>
-    
+</div>
+
+<div class="row">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4>Players</h4>
+        </div>
+        <div class="panel-body">
+            <div class="table-responsive">
+                <table class="table table-hover table-condensed">
+                    <thead>
+                        <tr>
+                            <th>
+                                Player Name
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Players)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Name)
+                                </td>
+                                <td>
+                                    <a href="@Url.Action("Edit", "Player", new { id = item.Id })" title="Edit">
+                                        <span class="glyphicon glyphicon-pencil font-size-sm"></span>
+                                    </a>
+
+                                    <a href="@Url.Action("Details", "Player", new { id = item.Id })" title="Details">
+                                        <span class="glyphicon glyphicon-book font-size-sm"></span>
+                                    </a>
+
+                                    <a href="@Url.Action("Delete", "Player", new { id = item.Id })" title="Delete">
+                                        <span class="glyphicon glyphicon-trash font-size-sm"></span>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4>Games This Group Players (LINK TO CREATE NEW ONE HERE)</h4>
+        </div>
+        <div class="panel-body">
+            <div class="table-responsive">
+                <table class="table table-hover table-condensed">
+                    <thead>
+                        <tr>
+                            <th>
+                                Games Set Up For This Group (LINK FOR CREATE NEW HERE)
+                            </th>
+                            <th>
+                                Description
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.GameDefinitions)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Description)
+                                </td>
+                                <td>
+                                    <a href="@Url.Action("Edit", "GameDefinition", new { id = item.Id })" title="Edit">
+                                        <span class="glyphicon glyphicon-pencil font-size-sm"></span>
+                                    </a>
+
+                                    <a href="@Url.Action("Details", "GameDefinition", new { id = item.Id })" title="Details">
+                                        <span class="glyphicon glyphicon-book font-size-sm"></span>
+                                    </a>
+
+                                    <a href="@Url.Action("Delete", "GameDefinition", new { id = item.Id })" title="Delete">
+                                        <span class="glyphicon glyphicon-trash font-size-sm"></span>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row panel-group">
+    <div class="col-md-2">
+        <h4>Invite Other Admins</h4>
+    </div>
+</div>
+<div class="row">
+    <div class="form-horizontal">
+        @using (Html.BeginForm("GrantAccess", "GamingGroup"))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-group">
+                @Html.Label("Invitee Email Address*", new { @class = "control-label col-md-2" })
+                @Html.TextBoxFor(model => model.InviteeEmail, new { @class = "form-control col-md-2" })
+
+                <div class="col-md-2">
+                    <span data-toggle="tooltip" title="This only allows a player to register with this email address and will place them directly into this Gaming Group.">
+                        <i class="glyphicon glyphicon-question-sign"></i>
+                    </span>
+                    @Html.ValidationMessageFor(model => model.InviteeEmail)
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2">
+                    <input type="submit" value="Grant Access To Gaming Group" class="btn btn-primary" />
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
 <div class="row">
     <div class="panel panel-default">
         <div class="panel-heading">
@@ -100,21 +194,21 @@
                         {
                             if (Model.Invitations[i].DateRegistered != null)
                             {
-                                @: <tr class="active">                              
+                                @:<tr class="active">
                             }
                             else
                             {
-                                @: <tr>
+                                @:<tr>
                             }
-     
-                                    <td>
-                                        <em>@Html.DisplayNameFor(model => model.Invitations[i].InviteeEmail)</em>
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(model => model.Invitations[i].InviteeEmail)
-                                    </td>
-                               @: </tr>
-                            
+
+                            <td>
+                                <em>@Html.DisplayNameFor(model => model.Invitations[i].InviteeEmail)</em>
+                            </td>
+                            <td>
+                                @Html.DisplayFor(model => model.Invitations[i].InviteeEmail)
+                            </td>
+                            @:</tr>
+
                             if (Model.Invitations[i].DateRegistered != null)
                             {
                                 <tr class="active">
@@ -122,7 +216,7 @@
                                         <em>@Html.DisplayNameFor(model => model.Invitations[i].DateRegistered)</em>
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(model => model.Invitations[i].DateRegistered)            
+                                        @Html.DisplayFor(model => model.Invitations[i].DateRegistered)
                                     </td>
                                 </tr>
                                 <tr class="active">

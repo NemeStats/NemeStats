@@ -21,6 +21,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
     {
         protected DataContext dataContextMock;
         protected PlayerRepository playerRepositoryMock;
+        protected PlayerRetriever playerRetriever;
         protected GameResultViewModelBuilder playerGameResultDetailsBuilderMock;
         protected PlayerDetailsViewModelBuilder playerDetailsViewModelBuilderMock;
         protected ShowingXResultsMessageBuilder showingXResultsMessageBuilderMock;
@@ -38,6 +39,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
             };
             dataContextMock = MockRepository.GenerateMock<DataContext>();
             playerRepositoryMock = MockRepository.GenerateMock<PlayerRepository>();
+            playerRetriever = MockRepository.GenerateMock<PlayerRetriever>();
             playerGameResultDetailsBuilderMock = MockRepository.GenerateMock<GameResultViewModelBuilder>();
             playerDetailsViewModelBuilderMock = MockRepository.GenerateMock<PlayerDetailsViewModelBuilder>();
             showingXResultsMessageBuilderMock = MockRepository.GenerateMock<ShowingXResultsMessageBuilder>();
@@ -48,7 +50,8 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
                                 playerGameResultDetailsBuilderMock,
                                 playerDetailsViewModelBuilderMock,
                                 showingXResultsMessageBuilderMock,
-                                playerCreatorMock);
+                                playerCreatorMock,
+                                playerRetriever);
         }
     }
 }

@@ -3,6 +3,7 @@ using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.Logic;
 using BusinessLogic.Logic.GameDefinitions;
 using BusinessLogic.Logic.PlayedGames;
+using BusinessLogic.Logic.Players;
 using BusinessLogic.Models;
 using BusinessLogic.Models.User;
 using NUnit.Framework;
@@ -20,7 +21,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
         protected PlayedGameController playedGameController;
         protected PlayedGameController playedGameControllerPartialMock;
         protected PlayedGameRepository playedGameLogicMock;
-        protected PlayerRepository playerLogicMock;
+        protected PlayerRetriever playerRetrieverMock;
         protected PlayedGameDetailsViewModelBuilder playedGameDetailsBuilderMock;
         protected GameDefinitionRetriever gameDefinitionRetrieverMock;
         protected PlayedGameCreator playedGameCreatorMock;
@@ -34,15 +35,15 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
         {
             dataContext = MockRepository.GenerateMock<NemeStatsDataContext>();
             playedGameLogicMock = MockRepository.GenerateMock<PlayedGameRepository>();
-            playerLogicMock = MockRepository.GenerateMock<PlayerRepository>();
+            playerRetrieverMock = MockRepository.GenerateMock<PlayerRetriever>();
             playedGameDetailsBuilderMock = MockRepository.GenerateMock<PlayedGameDetailsViewModelBuilder>();
             gameDefinitionRetrieverMock = MockRepository.GenerateMock<GameDefinitionRetriever>();
             playedGameCreatorMock = MockRepository.GenerateMock<PlayedGameCreator>();
             showingXResultsMessageBuilderMock = MockRepository.GenerateMock<ShowingXResultsMessageBuilder>();
             playedGameController = new Controllers.PlayedGameController(
                 dataContext,
-                playedGameLogicMock, 
-                playerLogicMock, 
+                playedGameLogicMock,
+                playerRetrieverMock, 
                 playedGameDetailsBuilderMock,
                 gameDefinitionRetrieverMock,
                 showingXResultsMessageBuilderMock,
@@ -51,14 +52,18 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
             playedGameControllerPartialMock = MockRepository.GeneratePartialMock<PlayedGameController>(
                 dataContext,
                 playedGameLogicMock,
-                playerLogicMock,
+                playerRetrieverMock,
                 playedGameDetailsBuilderMock,
                 gameDefinitionRetrieverMock,
                 showingXResultsMessageBuilderMock,
                 playedGameCreatorMock);
 
+            currentUser = new ApplicationUser()
+            {
+                CurrentGamingGroupId = 1
+            };
             gameDefinitions = new List<GameDefinition>();
-            gameDefinitionRetrieverMock.Expect(mock => mock.GetAllGameDefinitions(currentUser))
+            gameDefinitionRetrieverMock.Expect(mock => mock.GetAllGameDefinitions(currentUser.CurrentGamingGroupId.Value))
                 .Repeat.Once()
                 .Return(gameDefinitions);
         }

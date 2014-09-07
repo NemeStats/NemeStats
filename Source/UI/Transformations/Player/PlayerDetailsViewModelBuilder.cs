@@ -11,6 +11,6 @@ namespace UI.Transformations.Player
 {
     public interface PlayerDetailsViewModelBuilder
     {
-        PlayerDetailsViewModel Build(PlayerDetails playerDetails, ApplicationUser currentUser);
+        PlayerDetailsViewModel Build(PlayerDetails playerDetails, ApplicationUser currentUser = null);
     }
 }

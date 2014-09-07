@@ -11,7 +11,7 @@ namespace BusinessLogic.Logic.GameDefinitions
 {
     public interface GameDefinitionRetriever
     {
-        IList<GameDefinition> GetAllGameDefinitions(ApplicationUser currentUser);
+        IList<GameDefinition> GetAllGameDefinitions(int gamingGroupId);
         GameDefinition GetGameDefinitionDetails(int id, int numberOfPlayedGamesToRetrieve);
     }
 }

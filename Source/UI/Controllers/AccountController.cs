@@ -285,7 +285,11 @@ namespace UI.Controllers
                 {
                     return View("ExternalLoginFailure");
                 }
-                var user = new ApplicationUser() { UserName = model.UserName };
+                var user = new ApplicationUser() 
+                { 
+                    UserName = model.UserName,
+                    Email = info.Email
+                };
                 var result = await userManager.CreateAsync(user);
                 if (result.Succeeded)
                 {

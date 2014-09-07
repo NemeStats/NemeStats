@@ -1,5 +1,7 @@
 ﻿using BusinessLogic.DataAccess;
+using BusinessLogic.Logic.GameDefinitions;
 using BusinessLogic.Logic.GamingGroups;
+using BusinessLogic.Logic.Players;
 using BusinessLogic.Models;
 using BusinessLogic.Models.User;
 using NUnit.Framework;
@@ -17,6 +19,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
     {
         protected GamingGroupRetrieverImpl gamingGroupRetriever;
         protected DataContext dataContextMock;
+        protected PlayerRetriever playerRetrieverMock;
+        protected GameDefinitionRetriever gameDefinitionRetrieverMock;
         protected ApplicationUser currentUser;
         protected GamingGroup expectedGamingGroup;
         protected GamingGroupInvitation expectedGamingGroupInvitation;
@@ -27,9 +31,16 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
         public void SetUp()
         {
             dataContextMock = MockRepository.GenerateMock<DataContext>();
-            gamingGroupRetriever = new GamingGroupRetrieverImpl(dataContextMock);
+            playerRetrieverMock = MockRepository.GenerateMock<PlayerRetriever>();
+            gameDefinitionRetrieverMock = MockRepository.GenerateMock<GameDefinitionRetriever>();
+            gamingGroupRetriever = new GamingGroupRetrieverImpl(dataContextMock, playerRetrieverMock, gameDefinitionRetrieverMock);
 
-            currentUser = new ApplicationUser() { Id = "application user", UserName = "user name" };
+            currentUser = new ApplicationUser() 
+            { 
+                Id = "application user", 
+                UserName = "user name", 
+                CurrentGamingGroupId = 1 
+            };
             expectedGamingGroup = new GamingGroup() { Id = gamingGroupId, OwningUserId = currentUser.Id };
 
             dataContextMock.Expect(mock => mock.FindById<GamingGroup>(gamingGroupId))
@@ -92,6 +103,30 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
                     Assert.NotNull(invitation.RegisteredUser);
                 }
             }
+        }
+
+        [Test]
+        public void ItReturnsAllActivePlayersInTheGamingGroup()
+        {
+            List<Player> expectedPlayers = new List<Player>();
+            playerRetrieverMock.Expect(mock => mock.GetAllPlayers(gamingGroupId))
+                .Return(expectedPlayers);
+
+            GamingGroup actualGamingGroup = gamingGroupRetriever.GetGamingGroupDetails(gamingGroupId);
+
+            Assert.AreSame(expectedPlayers, actualGamingGroup.Players);
+        }
+
+        [Test]
+        public void ItReturnsAllGameDefinitionsForTheGamingGroup()
+        {
+            List<GameDefinition> expectedGameDefinitions = new List<GameDefinition>();
+            gameDefinitionRetrieverMock.Expect(mock => mock.GetAllGameDefinitions(gamingGroupId))
+                .Return(expectedGameDefinitions);
+
+            GamingGroup actualGamingGroup = gamingGroupRetriever.GetGamingGroupDetails(gamingGroupId);
+
+            Assert.AreSame(expectedGameDefinitions, actualGamingGroup.GameDefinitions);
         }
     }
 }

@@ -105,14 +105,6 @@ namespace BusinessLogic.DataAccess.Repositories
             return playerGameResults;
         }
 
-        public List<Player> GetAllPlayers(bool active, ApplicationUser currentUser)
-        {
-            return dataContext.GetQueryable<Player>().Where(player => player.Active == active
-                && player.GamingGroupId == currentUser.CurrentGamingGroupId)
-                .OrderBy(player => player.Name)
-                .ToList();
-        }
-
         public virtual PlayerStatistics GetPlayerStatistics(int playerId)
         {
             PlayerStatistics playerStatistics = new PlayerStatistics();

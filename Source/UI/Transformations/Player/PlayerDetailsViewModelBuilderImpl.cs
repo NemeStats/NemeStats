@@ -16,18 +16,12 @@ namespace UI.Transformations.Player
         internal const string EXCEPTION_PLAYER_STATISTICS_CANNOT_BE_NULL = "PlayerDetails.PlayerStatistics cannot be null.";
         internal GameResultViewModelBuilder gameResultViewModelBuilder;
 
-        //TODO is this correct? MVC complained that I didn't have a parameterless constructor. Maybe called Mapper.Get or something like that?
-        //public PlayerDetailsViewModelBuilderImpl()
-        //{
-        //    gameResultViewModelBuilder = new GameResultViewModelBuilderImpl();
-        //}
-
         public PlayerDetailsViewModelBuilderImpl(GameResultViewModelBuilder builder)
         {
             gameResultViewModelBuilder = builder;
         }
 
-        public PlayerDetailsViewModel Build(PlayerDetails playerDetails, ApplicationUser currentUser)
+        public PlayerDetailsViewModel Build(PlayerDetails playerDetails, ApplicationUser currentUser = null)
         {
             Validate(playerDetails);
 
@@ -36,7 +30,13 @@ namespace UI.Transformations.Player
             playerDetailsViewModel.PlayerName = playerDetails.Name;
             playerDetailsViewModel.Active = playerDetails.Active;
             playerDetailsViewModel.TotalGamesPlayed = playerDetails.PlayerStats.TotalGames;
-            playerDetailsViewModel.UserCanEdit = (playerDetails.GamingGroupId == currentUser.CurrentGamingGroupId);
+            if (currentUser == null || playerDetails.GamingGroupId != currentUser.CurrentGamingGroupId)
+            {
+                playerDetailsViewModel.UserCanEdit = false;
+            }else
+            {
+                playerDetailsViewModel.UserCanEdit = true;
+            }
 
             PopulatePlayerGameSummaries(playerDetails, playerDetailsViewModel);
 

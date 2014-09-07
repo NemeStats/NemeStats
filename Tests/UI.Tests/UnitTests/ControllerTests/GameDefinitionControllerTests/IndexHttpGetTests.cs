@@ -20,7 +20,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
         [Test]
         public void ItReturnsAnIndexView()
         {
-            gameDefinitionRetrieverMock.Expect(repo => repo.GetAllGameDefinitions(Arg<ApplicationUser>.Is.Anything));
+            gameDefinitionRetrieverMock.Expect(repo => repo.GetAllGameDefinitions(Arg<int>.Is.Anything));
 
             ViewResult viewResult = gameDefinitionControllerPartialMock.Index(currentUser) as ViewResult;
 
@@ -31,7 +31,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
         public void TheIndexViewHasAllGameDefinitions()
         {
             List<GameDefinition> games = new List<GameDefinition>();
-            gameDefinitionRetrieverMock.Expect(repo => repo.GetAllGameDefinitions(currentUser))
+            gameDefinitionRetrieverMock.Expect(repo => repo.GetAllGameDefinitions(currentUser.CurrentGamingGroupId.Value))
                 .Repeat.Once()
                 .Return(games);
 

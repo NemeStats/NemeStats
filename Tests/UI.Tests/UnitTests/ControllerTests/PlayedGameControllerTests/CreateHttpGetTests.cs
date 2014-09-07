@@ -18,11 +18,11 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
             string playerName = "Herb";
             List<Player> allPlayers = new List<Player>() { new Player() { Id = playerId, Name = playerName } };
 
-            playerLogicMock.Expect(x => x.GetAllPlayers(true, currentUser)).Repeat.Once().Return(allPlayers);
+            playerRetrieverMock.Expect(x => x.GetAllPlayers(currentUser.CurrentGamingGroupId.Value)).Repeat.Once().Return(allPlayers);
 
             playedGameController.Create(currentUser);
 
-            playerLogicMock.VerifyAllExpectations();
+            playerRetrieverMock.VerifyAllExpectations();
 
             List<SelectListItem> selectListItems = playedGameController.ViewBag.Players;
             Assert.True(selectListItems.All(x => x.Value == playerId.ToString() && x.Text == playerName));
@@ -31,7 +31,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
         [Test]
         public void ItLoadsTheCreateView()
         {
-            playerLogicMock.Expect(x => x.GetAllPlayers(true, currentUser)).Repeat.Once().Return(new List<Player>());
+            playerRetrieverMock.Expect(x => x.GetAllPlayers(currentUser.CurrentGamingGroupId.Value)).Repeat.Once().Return(new List<Player>());
 
             ViewResult result = playedGameController.Create(currentUser) as ViewResult;
 

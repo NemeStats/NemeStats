@@ -136,6 +136,8 @@
     <Compile Include="Logic\PlayedGames\PlayedGameCreatorImpl.cs" />
     <Compile Include="Logic\Players\PlayerCreator.cs" />
     <Compile Include="Logic\Players\PlayerCreatorImpl.cs" />
+    <Compile Include="Logic\Players\PlayerRetriever.cs" />
+    <Compile Include="Logic\Players\PlayerRetrieverImpl.cs" />
     <Compile Include="Logic\Players\PlayerSummaryBuilder.cs" />
     <Compile Include="Logic\Players\PlayerSummaryBuilderImpl.cs" />
     <Compile Include="Logic\Points\GordonPoints.cs" />
