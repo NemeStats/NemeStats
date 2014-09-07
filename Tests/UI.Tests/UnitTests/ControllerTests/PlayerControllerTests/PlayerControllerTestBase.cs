@@ -13,6 +13,7 @@ using UI.Transformations;
 using UI.Transformations.Player;
 using UI.Controllers.Helpers;
 using BusinessLogic.Logic.Players;
+using System.Web.Mvc;
 
 namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
 {
@@ -26,6 +27,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         protected PlayerDetailsViewModelBuilder playerDetailsViewModelBuilderMock;
         protected ShowingXResultsMessageBuilder showingXResultsMessageBuilderMock;
         protected PlayerCreator playerCreatorMock;
+        protected UrlHelper urlHelperMock;
         protected PlayerController playerController;
         protected ApplicationUser currentUser;
 
@@ -44,6 +46,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
             playerDetailsViewModelBuilderMock = MockRepository.GenerateMock<PlayerDetailsViewModelBuilder>();
             showingXResultsMessageBuilderMock = MockRepository.GenerateMock<ShowingXResultsMessageBuilder>();
             playerCreatorMock = MockRepository.GenerateMock<PlayerCreator>();
+            urlHelperMock = MockRepository.GenerateMock<UrlHelper>();
             playerController = new PlayerController(
                                 dataContextMock,
                                 playerRepositoryMock,
@@ -52,6 +55,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
                                 showingXResultsMessageBuilderMock,
                                 playerCreatorMock,
                                 playerRetriever);
+            playerController.Url = urlHelperMock;
         }
     }
 }

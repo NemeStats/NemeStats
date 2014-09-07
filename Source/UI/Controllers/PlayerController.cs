@@ -102,9 +102,12 @@ namespace UI.Controllers
         {
             if (ModelState.IsValid)
             {
+                //TODO need to have a more graceful way of knowing that a player name already exists rather than blowing up
+                // in the user's face. This should start at the business layer level.
                 playerCreator.CreatePlayer(player.Name, currentUser);
-       
-                return RedirectToAction(MVC.Player.ActionNames.Index);
+
+                return new RedirectResult(Url.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name)
+                            + "#" + GamingGroupController.SECTION_ANCHOR_PLAYERS);
             }
 
             return View(MVC.Player.Views.Index, player);

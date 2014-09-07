@@ -20,6 +20,9 @@ namespace UI.Controllers
     [Authorize]
     public partial class GamingGroupController : Controller
     {
+        public const string SECTION_ANCHOR_PLAYERS = "Players";
+        public const string SECTION_ANCHOR_GAMEDEFINITIONS = "GameDefinitions";
+
         internal DataContext dataContext;
         internal GamingGroupToGamingGroupViewModelTransformation gamingGroupToGamingGroupViewModelTransformation;
         internal GamingGroupAccessGranter gamingGroupAccessGranter;
@@ -40,7 +43,6 @@ namespace UI.Controllers
             this.gamingGroupRetriever = gamingGroupRetriever;
         }
 
-        //
         // GET: /GamingGroup
         [UserContextAttribute]
         public virtual ActionResult Index(ApplicationUser currentUser)
@@ -48,6 +50,9 @@ namespace UI.Controllers
             GamingGroup gamingGroup = gamingGroupRetriever.GetGamingGroupDetails(currentUser.CurrentGamingGroupId.Value);
 
             GamingGroupViewModel viewModel = gamingGroupToGamingGroupViewModelTransformation.Build(gamingGroup, currentUser);
+
+            ViewBag.PlayerSectionAnchorText = SECTION_ANCHOR_PLAYERS;
+            ViewBag.GameDefinitionSectionAnchorText = SECTION_ANCHOR_GAMEDEFINITIONS;
 
             return View(MVC.GamingGroup.Views.Index, viewModel);
         }

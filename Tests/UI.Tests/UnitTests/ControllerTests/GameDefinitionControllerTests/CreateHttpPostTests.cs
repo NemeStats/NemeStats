@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using UI.Controllers;
 
 namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
 {
@@ -49,13 +50,17 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
         }
 
         [Test]
-        public void ItRedirectsToTheIndexActionAfterSaving()
+        public void ItRedirectsToTheGamingGroupIndexAndGameDefinitionSectionAfterSaving()
         {
+            string baseUrl = "base url";
+            string expectedUrl = baseUrl + "#" + GamingGroupController.SECTION_ANCHOR_GAMEDEFINITIONS;
             GameDefinition gameDefinition = new GameDefinition();
+            urlHelperMock.Expect(mock => mock.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name))
+                    .Return(baseUrl);
 
-            RedirectToRouteResult redirectToRouteResult = gameDefinitionControllerPartialMock.Create(gameDefinition, currentUser) as RedirectToRouteResult;
+            RedirectResult redirectResult = gameDefinitionControllerPartialMock.Create(gameDefinition, currentUser) as RedirectResult;
 
-            Assert.AreEqual(MVC.GameDefinition.ActionNames.Index, redirectToRouteResult.RouteValues["action"]);
+            Assert.AreEqual(expectedUrl, redirectResult.Url);
         }
     }
 }

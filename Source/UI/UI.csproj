@@ -415,12 +415,10 @@
     <Content Include="Views\Player\Delete.cshtml" />
     <Content Include="Views\Player\Details.cshtml" />
     <Content Include="Views\Player\Edit.cshtml" />
-    <Content Include="Views\Player\Index.cshtml" />
     <Content Include="Views\GameDefinition\Create.cshtml" />
     <Content Include="Views\GameDefinition\Delete.cshtml" />
     <Content Include="Views\GameDefinition\Details.cshtml" />
     <Content Include="Views\GameDefinition\Edit.cshtml" />
-    <Content Include="Views\GameDefinition\Index.cshtml" />
     <Content Include="Views\PlayedGame\Create.cshtml" />
     <Content Include="Views\PlayedGame\Delete.cshtml" />
     <Content Include="Views\PlayedGame\Details.cshtml" />

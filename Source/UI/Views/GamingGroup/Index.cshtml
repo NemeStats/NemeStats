@@ -42,11 +42,12 @@
         </div>
     </div>
 </div>
-
+<a name="@ViewBag.PlayerSectionAnchorText"></a>
 <div class="row">
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h4>Players</h4>
+            <h4>Players @Html.ActionLink("Create New", "Create", "Player", new { }, new { @class = "btn btn-primary btn-sm" })
+</h4>
         </div>
         <div class="panel-body">
             <div class="table-responsive">
@@ -86,12 +87,13 @@
         </div>
     </div>
 </div>
-
-
+<a name="@ViewBag.GameDefinitionSectionAnchorText"></a>
 <div class="row">
     <div class="panel panel-default">
-        <div class="panel-heading">
-            <h4>Games This Group Players (LINK TO CREATE NEW ONE HERE)</h4>
+        <div class="panel-heading">  
+            <h4>Games This Group Plays
+    @Html.ActionLink("Create New", "Create", "GameDefinition", new { }, new { @class = "btn btn-primary btn-sm" })
+        </h4>
         </div>
         <div class="panel-body">
             <div class="table-responsive">
@@ -99,7 +101,7 @@
                     <thead>
                         <tr>
                             <th>
-                                Games Set Up For This Group (LINK FOR CREATE NEW HERE)
+                                Name
                             </th>
                             <th>
                                 Description

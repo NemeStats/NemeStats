@@ -101,7 +101,8 @@ namespace UI.Controllers
             {
                 gameDefinitionCreator.CreateGameDefinition(gameDefinition.Name, gameDefinition.Description, currentUser);
       
-                return RedirectToAction(MVC.GameDefinition.ActionNames.Index);
+                return new RedirectResult(Url.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name) 
+                                            + "#" + GamingGroupController.SECTION_ANCHOR_GAMEDEFINITIONS);
             }
 
             return View(MVC.GameDefinition.Views.Create, gameDefinition);
