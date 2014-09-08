@@ -40,16 +40,16 @@
                         <div class="col-md-4">
                             <h2>Define Games</h2>
                             <p>
-                                Manage the list of Games here. A Game Definition must be created in order to create a record of a Game played.
+                                Manage the list of Games your Gaming Group plays here. A Game Definition must be created in order to create a record of a Game played.
                             </p>
-                            <p>@Html.ActionLink("Manage Games", "Index", "GameDefinition")</p>
+                            <p>@Html.ActionLink("Manage Games", "Index", "GamingGroup", null, null, UI.Controllers.GamingGroupController.SECTION_ANCHOR_GAMEDEFINITIONS, null, null)</p>
                         </div>
                         <div class="col-md-4">
                             <h2>Setup Players</h2>
                             <p>
-                                Manage the list of players here. A Player must be created in order to create a record of a game played for that Player.
+                                Manage the list of Players in your Gaming Group. A Player must be created in order to create a record of a Game played for that Player.
                             </p>
-                            <p>@Html.ActionLink("Manage Players", "Index", "Player")</p>
+                            <p>@Html.ActionLink("Manage Players", "Index", "GamingGroup", null, null, UI.Controllers.GamingGroupController.SECTION_ANCHOR_PLAYERS, null, null)</p>
                         </div>
                         <div class="col-md-4">
                             <h2>Save Game Results</h2>
