@@ -44,14 +44,14 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
             int playedGameId = 1351;
             playedGameController.Details(playedGameId, currentUser);
 
-            playedGameLogicMock.AssertWasCalled(x => x.GetPlayedGameDetails(playedGameId));
+            playedGameRetriever.AssertWasCalled(x => x.GetPlayedGameDetails(playedGameId));
         }
         
         [Test]
         public void ItReturnsThePlayedGameDetailsViewWhenThePlayedGameIsFound()
         {
             int playedGameId = 1351;
-            playedGameLogicMock.Expect(playedGameLogic => playedGameLogic.GetPlayedGameDetails(playedGameId))
+            playedGameRetriever.Expect(playedGameLogic => playedGameLogic.GetPlayedGameDetails(playedGameId))
                 .Repeat.Once()
                 .Return(new PlayedGame());
             ViewResult playedGameDetails = playedGameController.Details(playedGameId, currentUser) as ViewResult;
@@ -65,7 +65,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
             int playedGameId = 13541;
 
             PlayedGame playedGame = new PlayedGame() { Id = 123 };
-            playedGameLogicMock.Expect(x => x.GetPlayedGameDetails(playedGameId))
+            playedGameRetriever.Expect(x => x.GetPlayedGameDetails(playedGameId))
                 .Repeat.Once()
                 .Return(playedGame);
             PlayedGameDetailsViewModel playedGameDetails = new PlayedGameDetailsViewModel();

@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.DataAccess.Repositories;
+using BusinessLogic.Logic.PlayedGames;
 using BusinessLogic.Logic.Players;
 using BusinessLogic.Models.Games;
 using BusinessLogic.Models.Players;
@@ -20,16 +21,16 @@ namespace UI.Controllers
 
         private PlayerSummaryBuilder playerSummaryBuilder;
         private TopPlayerViewModelBuilder topPlayerViewModelBuilder;
-        private PlayedGameRepository playedGameRepository;
+        private PlayedGameRetriever playedGameRetriever;
 
         public HomeController(
             PlayerSummaryBuilder playerSummaryBuilder, 
             TopPlayerViewModelBuilder topPlayerViewModelBuilder,
-            PlayedGameRepository playedGameRepository)
+            PlayedGameRetriever playedGameRetriever)
         {
             this.playerSummaryBuilder = playerSummaryBuilder;
             this.topPlayerViewModelBuilder = topPlayerViewModelBuilder;
-            this.playedGameRepository = playedGameRepository;
+            this.playedGameRetriever = playedGameRetriever;
         }
 
         public virtual ActionResult Index()
@@ -41,7 +42,7 @@ namespace UI.Controllers
                 topPlayerViewModels.Add(topPlayerViewModelBuilder.Build(topPlayer));
             }
 
-            List<PublicGameSummary> publicGameSummaries = playedGameRepository
+            List<PublicGameSummary> publicGameSummaries = playedGameRetriever
                 .GetRecentPublicGames(NUMBER_OF_RECENT_PUBLIC_GAMES_TO_SHOW);
 
             HomeIndexViewModel homeIndexViewModel = new HomeIndexViewModel()

@@ -1,6 +1,7 @@
 ﻿using BusinessLogic.DataAccess;
 using BusinessLogic.Logic.GameDefinitions;
 using BusinessLogic.Logic.GamingGroups;
+using BusinessLogic.Logic.PlayedGames;
 using BusinessLogic.Logic.Players;
 using BusinessLogic.Models;
 using BusinessLogic.Models.User;
@@ -21,6 +22,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
         protected DataContext dataContextMock;
         protected PlayerRetriever playerRetrieverMock;
         protected GameDefinitionRetriever gameDefinitionRetrieverMock;
+        protected PlayedGameRetriever playedGameRetriever;
         protected ApplicationUser currentUser;
         protected GamingGroup expectedGamingGroup;
         protected GamingGroupInvitation expectedGamingGroupInvitation;
@@ -33,7 +35,12 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
             dataContextMock = MockRepository.GenerateMock<DataContext>();
             playerRetrieverMock = MockRepository.GenerateMock<PlayerRetriever>();
             gameDefinitionRetrieverMock = MockRepository.GenerateMock<GameDefinitionRetriever>();
-            gamingGroupRetriever = new GamingGroupRetrieverImpl(dataContextMock, playerRetrieverMock, gameDefinitionRetrieverMock);
+            playedGameRetriever = MockRepository.GenerateMock<PlayedGameRetriever>();
+            gamingGroupRetriever = new GamingGroupRetrieverImpl(
+                dataContextMock, 
+                playerRetrieverMock, 
+                gameDefinitionRetrieverMock,
+                playedGameRetriever);
 
             currentUser = new ApplicationUser() 
             { 
@@ -70,7 +77,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
         [Test]
         public void ItReturnsTheGamingGroup()
         {
-            GamingGroup actualGamingGroup = gamingGroupRetriever.GetGamingGroupDetails(gamingGroupId);
+            GamingGroup actualGamingGroup = gamingGroupRetriever.GetGamingGroupDetails(gamingGroupId, 0);
 
             Assert.AreSame(expectedGamingGroup, actualGamingGroup);
         }
@@ -78,7 +85,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
         [Test]
         public void ItReturnsTheOwningUserOnTheGameDefinition()
         {
-            GamingGroup actualGamingGroup = gamingGroupRetriever.GetGamingGroupDetails(gamingGroupId);
+            GamingGroup actualGamingGroup = gamingGroupRetriever.GetGamingGroupDetails(gamingGroupId, 0);
 
             Assert.NotNull(actualGamingGroup.OwningUser);
         }
@@ -86,7 +93,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
         [Test]
         public void ItReturnsTheGamingGroupInvitationsOnTheGamingGroup()
         {
-            GamingGroup actualGamingGroup = gamingGroupRetriever.GetGamingGroupDetails(gamingGroupId);
+            GamingGroup actualGamingGroup = gamingGroupRetriever.GetGamingGroupDetails(gamingGroupId, 0);
 
             Assert.AreSame(expectedGamingGroup.GamingGroupInvitations[0], actualGamingGroup.GamingGroupInvitations[0]);
         }
@@ -94,7 +101,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
         [Test]
         public void ItReturnsTheRegisteredUserNameOfAnyUsersThatRegistered()
         {
-            GamingGroup actualGamingGroup = gamingGroupRetriever.GetGamingGroupDetails(gamingGroupId);
+            GamingGroup actualGamingGroup = gamingGroupRetriever.GetGamingGroupDetails(gamingGroupId, 0);
 
             foreach(GamingGroupInvitation invitation in actualGamingGroup.GamingGroupInvitations)
             {
@@ -112,7 +119,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
             playerRetrieverMock.Expect(mock => mock.GetAllPlayers(gamingGroupId))
                 .Return(expectedPlayers);
 
-            GamingGroup actualGamingGroup = gamingGroupRetriever.GetGamingGroupDetails(gamingGroupId);
+            GamingGroup actualGamingGroup = gamingGroupRetriever.GetGamingGroupDetails(gamingGroupId, 0);
 
             Assert.AreSame(expectedPlayers, actualGamingGroup.Players);
         }
@@ -124,9 +131,22 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
             gameDefinitionRetrieverMock.Expect(mock => mock.GetAllGameDefinitions(gamingGroupId))
                 .Return(expectedGameDefinitions);
 
-            GamingGroup actualGamingGroup = gamingGroupRetriever.GetGamingGroupDetails(gamingGroupId);
+            GamingGroup actualGamingGroup = gamingGroupRetriever.GetGamingGroupDetails(gamingGroupId, 0);
 
             Assert.AreSame(expectedGameDefinitions, actualGamingGroup.GameDefinitions);
+        }
+
+        [Test]
+        public void ItReturnsTheSpecifiedNumberOfPlayedGamesForTheGamingGroup()
+        {
+            int numberOfGames = 135;
+            List<PlayedGame> playedGames = new List<PlayedGame>();
+            playedGameRetriever.Expect(mock => mock.GetRecentGames(numberOfGames, gamingGroupId))
+                .Return(playedGames);
+
+            GamingGroup actualGamingGroup = gamingGroupRetriever.GetGamingGroupDetails(gamingGroupId, numberOfGames);
+
+            Assert.AreSame(playedGames, actualGamingGroup.PlayedGames);
         }
     }
 }

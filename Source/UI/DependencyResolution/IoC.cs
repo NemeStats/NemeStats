@@ -56,21 +56,21 @@ namespace UI.DependencyResolution {
                             x.For<DataContext>().Use<NemeStatsDataContext>();
                             x.For<PlayerRepository>().Use<EntityFrameworkPlayerRepository>();
                             x.For<GameDefinitionRetriever>().Use<GameDefinitionRetrieverImpl>();
-                            x.For<PlayedGameRepository>().Use<EntityFrameworkPlayedGameRepository>();
+                            x.For<PlayedGameRetriever>().Use<PlayedGameRetrieverImpl>();
                             x.For<PlayedGameDetailsViewModelBuilder>().Use<PlayedGameDetailsViewModelBuilderImpl>();
                             x.For<GameResultViewModelBuilder>().Use<GameResultViewModelBuilderImpl>();
                             x.For<PlayerDetailsViewModelBuilder>().Use<PlayerDetailsViewModelBuilderImpl>();
-                            x.For<GamingGroupToGamingGroupViewModelTransformation>()
-                                .Use<GamingGroupToGamingGroupViewModelTransformationImpl>();
-                            x.For<GamingGroupInvitationToInvitationViewModelTransformation>()
-                                .Use<GamingGroupInvitationToInvitationViewModelTransformationImpl>();
+                            x.For<GamingGroupViewModelBuilder>()
+                                .Use<GamingGroupViewModelBuilderImpl>();
+                            x.For<GamingGroupInvitationViewModelBuilder>()
+                                .Use<GamingGroupInvitationViewModelBuilderImpl>();
                             x.For<GamingGroupAccessGranter>().Use<EntityFrameworkGamingGroupAccessGranter>();
                             x.For<GamingGroupInviteConsumer>().Use<GamingGroupInviteConsumerImpl>();
                             x.For<Microsoft.AspNet.Identity.IUserStore<ApplicationUser>>()
                                 .Use<Microsoft.AspNet.Identity.EntityFramework.UserStore<ApplicationUser>>();
                             x.For<GamingGroupCreator>().Use<GamingGroupCreatorImpl>();
                             x.For<GameDefinitionViewModelBuilder>()
-                                .Use<GameDefinitionToGameDefinitionViewModelTransformationImpl>();
+                                .Use<GameDefinitionViewModelBuilderImpl>();
                             x.For<ShowingXResultsMessageBuilder>().Use<ShowingXResultsMessageBuilderImpl>();
                             x.For<GamingGroupRetriever>().Use<GamingGroupRetrieverImpl>();
                             x.For<PendingGamingGroupInvitationRetriever>().Use<PendingGamingGroupInvitationRetrieverImpl>();

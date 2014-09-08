@@ -8,11 +8,11 @@ using UI.Models.GameDefinitionModels;
 
 namespace UI.Transformations
 {
-    public class GameDefinitionToGameDefinitionViewModelTransformationImpl : GameDefinitionViewModelBuilder
+    public class GameDefinitionViewModelBuilderImpl : GameDefinitionViewModelBuilder
     {
         internal PlayedGameDetailsViewModelBuilder playedGameDetailsViewModelBuilder;
 
-        public GameDefinitionToGameDefinitionViewModelTransformationImpl(PlayedGameDetailsViewModelBuilder playedGameDetailsViewModelBuilder)
+        public GameDefinitionViewModelBuilderImpl(PlayedGameDetailsViewModelBuilder playedGameDetailsViewModelBuilder)
         {
             this.playedGameDetailsViewModelBuilder = playedGameDetailsViewModelBuilder;
         }

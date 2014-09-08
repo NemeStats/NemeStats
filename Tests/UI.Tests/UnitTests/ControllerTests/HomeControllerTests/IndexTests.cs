@@ -71,7 +71,7 @@ namespace UI.Tests.UnitTests.ControllerTests.HomeControllerTests
             {
                 expectedPublicGameSummary
             };
-            playedGameRepository.Expect(mock => mock.GetRecentPublicGames(HomeController.NUMBER_OF_RECENT_PUBLIC_GAMES_TO_SHOW))
+            playedGameRetriever.Expect(mock => mock.GetRecentPublicGames(HomeController.NUMBER_OF_RECENT_PUBLIC_GAMES_TO_SHOW))
                 .Return(publicGameSummaries);
 
             ViewResult viewResult = homeControllerPartialMock.Index() as ViewResult;

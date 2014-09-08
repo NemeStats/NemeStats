@@ -8,7 +8,7 @@ using UI.Models.GamingGroup;
 
 namespace UI.Transformations
 {
-    public interface GamingGroupInvitationToInvitationViewModelTransformation
+    public interface GamingGroupInvitationViewModelBuilder
     {
         InvitationViewModel Build(GamingGroupInvitation invitation);
     }

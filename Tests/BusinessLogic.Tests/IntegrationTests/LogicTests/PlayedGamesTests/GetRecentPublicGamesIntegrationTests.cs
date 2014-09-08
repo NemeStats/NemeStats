@@ -1,5 +1,6 @@
 ﻿using BusinessLogic.DataAccess;
 using BusinessLogic.DataAccess.Repositories;
+using BusinessLogic.Logic.PlayedGames;
 using BusinessLogic.Models.Games;
 using NUnit.Framework;
 using System;
@@ -8,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests.EntityFrameworkPlayedGameRepositoryTests
+namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGamesTests
 {
     [TestFixture]
     public class GetRecentPublicGamesIntegrationTests : IntegrationTestBase
@@ -22,9 +23,9 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
         {
             using (NemeStatsDataContext dataContext = new NemeStatsDataContext())
             {
-                PlayedGameRepository playedGameLogic = new EntityFrameworkPlayedGameRepository(dataContext);
+                PlayedGameRetrieverImpl retriever = new PlayedGameRetrieverImpl(dataContext);
 
-                publicGameSummaryResults = playedGameLogic.GetRecentPublicGames(numberOfGamesToRetrieve);
+                publicGameSummaryResults = retriever.GetRecentPublicGames(numberOfGamesToRetrieve);
             }
         }
 

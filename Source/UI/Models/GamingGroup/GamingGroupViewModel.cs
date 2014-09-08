@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using UI.Models.GameDefinitionModels;
+using UI.Models.PlayedGame;
 using UI.Models.Players;
 using UI.Models.User;
 
@@ -25,5 +26,6 @@ namespace UI.Models.GamingGroup
         public IList<GameDefinition> GameDefinitions { get; set; }
         public IList<Player> Players { get; set; }
         public IList<InvitationViewModel> Invitations { get; set; }
+        public IList<PlayedGameDetailsViewModel> RecentGames { get; set; }
     }
 }

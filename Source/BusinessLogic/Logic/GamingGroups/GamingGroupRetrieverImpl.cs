@@ -1,5 +1,6 @@
 ﻿using BusinessLogic.DataAccess;
 using BusinessLogic.Logic.GameDefinitions;
+using BusinessLogic.Logic.PlayedGames;
 using BusinessLogic.Logic.Players;
 using BusinessLogic.Models;
 using BusinessLogic.Models.User;
@@ -16,17 +17,25 @@ namespace BusinessLogic.Logic.GamingGroups
         private DataContext dataContext;
         private PlayerRetriever playerRetriever;
         private GameDefinitionRetriever gameDefinitionRetriever;
+        private PlayedGameRetriever playedGameRetriever;
 
-        public GamingGroupRetrieverImpl(DataContext dataContext, PlayerRetriever playerRetriever, GameDefinitionRetriever gameDefinitionRetriever)
+        public GamingGroupRetrieverImpl(
+            DataContext dataContext, 
+            PlayerRetriever playerRetriever, 
+            GameDefinitionRetriever gameDefinitionRetriever,
+            PlayedGameRetriever playedGameRetriever)
         {
             this.dataContext = dataContext;
             this.playerRetriever = playerRetriever;
             this.gameDefinitionRetriever = gameDefinitionRetriever;
+            this.playedGameRetriever = playedGameRetriever;
         }
 
-        public GamingGroup GetGamingGroupDetails(int gamingGroupId)
+        public GamingGroup GetGamingGroupDetails(int gamingGroupId, int maxNumberOfGamesToRetrieve)
         {
             GamingGroup gamingGroup = dataContext.FindById<GamingGroup>(gamingGroupId);
+
+            gamingGroup.PlayedGames = playedGameRetriever.GetRecentGames(maxNumberOfGamesToRetrieve, gamingGroupId);
 
             gamingGroup.Players = playerRetriever.GetAllPlayers(gamingGroupId);
 

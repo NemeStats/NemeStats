@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UI.Models.GameDefinitionModels;
 using UI.Models.GamingGroup;
+using UI.Models.PlayedGame;
 using UI.Models.Players;
 using UI.Transformations;
 using UI.Transformations.Player;
@@ -17,24 +18,31 @@ using UI.Transformations.Player;
 namespace UI.Tests.UnitTests.TransformationsTests
 {
     [TestFixture]
-    public class GamingGroupToGamingGroupViewModelTransformationImplTests
+    public class GamingGroupViewModelBuilderImplTests
     {
-        private GamingGroupToGamingGroupViewModelTransformationImpl transformer;
-        private GamingGroupInvitationToInvitationViewModelTransformation invitationTransformerMock;
+        private GamingGroupViewModelBuilderImpl transformer;
+        private GamingGroupInvitationViewModelBuilder invitationTransformerMock;
         private PlayerDetailsViewModelBuilder playerDetailsViewModelBuilderMock;
+        private PlayedGameDetailsViewModelBuilder playedGameDetailsViewModelBuilderMock;
         private GamingGroup gamingGroup;
         private GamingGroupViewModel viewModel;
         private List<Player> players;
         private List<GameDefinition> gameDefinitions;
+        private List<PlayedGame> playedGames;
 
         [SetUp]
         public void SetUp()
         {
-            invitationTransformerMock = MockRepository.GenerateMock<GamingGroupInvitationToInvitationViewModelTransformation>();
+            invitationTransformerMock = MockRepository.GenerateMock<GamingGroupInvitationViewModelBuilder>();
             playerDetailsViewModelBuilderMock = MockRepository.GenerateMock<PlayerDetailsViewModelBuilder>();
-            transformer = new GamingGroupToGamingGroupViewModelTransformationImpl(invitationTransformerMock, playerDetailsViewModelBuilderMock);
+            playedGameDetailsViewModelBuilderMock = MockRepository.GenerateMock<PlayedGameDetailsViewModelBuilder>();
+            transformer = new GamingGroupViewModelBuilderImpl(
+                invitationTransformerMock, 
+                playerDetailsViewModelBuilderMock,
+                playedGameDetailsViewModelBuilderMock);
             players = new List<Player>();
             gameDefinitions = new List<GameDefinition>();
+            playedGames = new List<PlayedGame>();
             ApplicationUser owningUser = new ApplicationUser()
             {
                 Id = "owning user user Id",
@@ -61,8 +69,14 @@ namespace UI.Tests.UnitTests.TransformationsTests
                 OwningUser = owningUser,
                 GamingGroupInvitations = new List<GamingGroupInvitation>() { invitation },
                 Players = players,
-                GameDefinitions = gameDefinitions
+                GameDefinitions = gameDefinitions,
+                PlayedGames = playedGames
             };
+
+            playedGameDetailsViewModelBuilderMock.Expect(mock => mock.Build(
+                Arg<PlayedGame>.Is.Anything,
+                Arg<ApplicationUser>.Is.Anything))
+                .Return(new PlayedGameDetailsViewModel());
 
             viewModel = transformer.Build(gamingGroup, null);
         }
@@ -118,6 +132,12 @@ namespace UI.Tests.UnitTests.TransformationsTests
         public void ItSetsTheGameDefinitions()
         {
             Assert.AreSame(gameDefinitions, viewModel.GameDefinitions);
+        }
+
+        [Test]
+        public void ItSetsTheRecentlyPlayedGames()
+        {
+            Assert.AreEqual(playedGames, viewModel.RecentGames);
         }
     }
 }

@@ -112,8 +112,6 @@
     <Compile Include="DataAccess\Security\SecuredEntityValidatorFactory.cs" />
     <Compile Include="DataAccess\Security\SecuredEntityValidatorImpl.cs" />
     <Compile Include="DataAccess\SingleColumnTechnicalKey.cs" />
-    <Compile Include="DataAccess\Repositories\PlayedGameRepository.cs" />
-    <Compile Include="DataAccess\Repositories\EntityFrameworkPlayedGameRepository.cs" />
     <Compile Include="DataAccess\Repositories\PlayerRepository.cs" />
     <Compile Include="DataAccess\Repositories\EntityFrameworkPlayerRepository.cs" />
     <Compile Include="EventTracking\EventActionEnum.cs" />
@@ -134,6 +132,8 @@
     <Compile Include="Logic\GamingGroups\PendingGamingGroupInvitationRetrieverImpl.cs" />
     <Compile Include="Logic\PlayedGames\PlayedGameCreator.cs" />
     <Compile Include="Logic\PlayedGames\PlayedGameCreatorImpl.cs" />
+    <Compile Include="Logic\PlayedGames\PlayedGameRetriever.cs" />
+    <Compile Include="Logic\PlayedGames\PlayedGameRetrieverImpl.cs" />
     <Compile Include="Logic\Players\PlayerCreator.cs" />
     <Compile Include="Logic\Players\PlayerCreatorImpl.cs" />
     <Compile Include="Logic\Players\PlayerRetriever.cs" />

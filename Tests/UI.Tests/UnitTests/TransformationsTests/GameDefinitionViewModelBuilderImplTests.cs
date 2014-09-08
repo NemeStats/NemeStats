@@ -14,9 +14,9 @@ using UI.Transformations;
 namespace UI.Tests.UnitTests.TransformationsTests
 {
     [TestFixture]
-    public class ameDefinitionViewModelBuilderImplTests
+    public class GameDefinitionViewModelBuilderImplTests
     {
-        protected GameDefinitionToGameDefinitionViewModelTransformationImpl transformer;
+        protected GameDefinitionViewModelBuilderImpl transformer;
         protected PlayedGameDetailsViewModelBuilder playedGameDetailsViewModelBuilder;
         protected GameDefinition gameDefinition;
         protected GameDefinitionViewModel viewModel;
@@ -29,7 +29,7 @@ namespace UI.Tests.UnitTests.TransformationsTests
         public void FixtureSetUp()
         {
             playedGameDetailsViewModelBuilder = MockRepository.GenerateMock<PlayedGameDetailsViewModelBuilder>();
-            transformer = new GameDefinitionToGameDefinitionViewModelTransformationImpl(playedGameDetailsViewModelBuilder);            
+            transformer = new GameDefinitionViewModelBuilderImpl(playedGameDetailsViewModelBuilder);            
 
             List<PlayedGame> playedGames = new List<PlayedGame>();
             playedGames.Add(new PlayedGame()

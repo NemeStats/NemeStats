@@ -22,7 +22,7 @@ namespace UI.Controllers
     public partial class PlayedGameController : Controller
     {
         internal NemeStatsDataContext dataContext;
-        internal PlayedGameRepository playedGameLogic;
+        internal PlayedGameRetriever playedGameRetriever;
         internal PlayerRetriever playerRetriever;
         internal PlayedGameDetailsViewModelBuilder playedGameDetailsBuilder;
         internal PlayedGameCreator playedGameCreator;
@@ -33,7 +33,7 @@ namespace UI.Controllers
 
         public PlayedGameController(
             NemeStatsDataContext dataContext,
-            PlayedGameRepository playedLogic, 
+            PlayedGameRetriever playedGameRetriever, 
             PlayerRetriever playerRetriever,
             PlayedGameDetailsViewModelBuilder builder,
             GameDefinitionRetriever gameDefinitionRetriever,
@@ -41,7 +41,7 @@ namespace UI.Controllers
             PlayedGameCreator playedGameCreator)
         {
             this.dataContext = dataContext;
-            playedGameLogic = playedLogic;
+            this.playedGameRetriever = playedGameRetriever;
             this.playerRetriever = playerRetriever;
             playedGameDetailsBuilder = builder;
             this.gameDefinitionRetriever = gameDefinitionRetriever;
@@ -54,7 +54,9 @@ namespace UI.Controllers
         [UserContextAttribute]
         public virtual ActionResult Index(ApplicationUser currentUser)
         {
-            List<PlayedGame> playedGames = playedGameLogic.GetRecentGames(NUMBER_OF_RECENT_GAMES_TO_DISPLAY, currentUser);
+            List<PlayedGame> playedGames = playedGameRetriever.GetRecentGames(
+                NUMBER_OF_RECENT_GAMES_TO_DISPLAY, 
+                currentUser.CurrentGamingGroupId.Value);
             int totalGames = playedGames.Count();
             List<PlayedGameDetailsViewModel> details = new List<PlayedGameDetailsViewModel>(totalGames);
             for (int i = 0; i < totalGames; i++)
@@ -77,7 +79,7 @@ namespace UI.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            PlayedGame playedGame = playedGameLogic.GetPlayedGameDetails(id.Value);
+            PlayedGame playedGame = playedGameRetriever.GetPlayedGameDetails(id.Value);
             if (playedGame == null)
             {
                 return HttpNotFound();

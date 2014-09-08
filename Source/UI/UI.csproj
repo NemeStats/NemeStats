@@ -290,12 +290,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>
-    <Compile Include="Transformations\GameDefinitionToGameDefinitionViewModelTransformation.cs" />
-    <Compile Include="Transformations\GameDefinitionToGameDefinitionViewModelTransformationImpl.cs" />
-    <Compile Include="Transformations\GamingGroupInvitationToInvitationViewModelTransformation.cs" />
-    <Compile Include="Transformations\GamingGroupInvitationToInvitationViewModelTransformationImpl.cs" />
-    <Compile Include="Transformations\GamingGroupToGamingGroupViewModelTransformation.cs" />
-    <Compile Include="Transformations\GamingGroupToGamingGroupViewModelTransformationImpl.cs" />
+    <Compile Include="Transformations\GameDefinitionViewModelBuilder.cs" />
+    <Compile Include="Transformations\GameDefinitionViewModelBuilderImpl.cs" />
+    <Compile Include="Transformations\GamingGroupInvitationViewModelBuilder.cs" />
+    <Compile Include="Transformations\GamingGroupInvitationViewModelBuilderImpl.cs" />
+    <Compile Include="Transformations\GamingGroupViewModelBuilder.cs" />
+    <Compile Include="Transformations\GamingGroupViewModelBuilderImpl.cs" />
     <Compile Include="Transformations\PlayedGameDetailsViewModelBuilderImpl.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />

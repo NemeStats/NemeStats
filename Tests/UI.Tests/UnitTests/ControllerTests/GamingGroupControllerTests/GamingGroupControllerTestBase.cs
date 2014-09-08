@@ -6,6 +6,7 @@ using BusinessLogic.Models.User;
 using NUnit.Framework;
 using Rhino.Mocks;
 using UI.Controllers;
+using UI.Controllers.Helpers;
 using UI.Transformations;
 
 namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
@@ -14,27 +15,30 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
     public class GamingGroupControllerTestBase
     {
         protected DataContext dataContext;
-        protected GamingGroupToGamingGroupViewModelTransformation gamingGroupToGamingGroupViewModelTransformationMock;
+        protected GamingGroupViewModelBuilder gamingGroupViewModelBuilderMock;
         protected GamingGroupController gamingGroupController;
         protected GamingGroupAccessGranter gamingGroupAccessGranterMock;
         protected GamingGroupCreator gamingGroupCreatorMock;
         protected GamingGroupRetriever gamingGroupRetrieverMock;
+        protected ShowingXResultsMessageBuilder showingXResultsMessageBuilderMock;
         protected ApplicationUser currentUser;
 
         [SetUp]
-        public void SetUp()
+        public virtual void SetUp()
         {
             dataContext = MockRepository.GenerateMock<DataContext>();
-            gamingGroupToGamingGroupViewModelTransformationMock = MockRepository.GenerateMock<GamingGroupToGamingGroupViewModelTransformation>();
+            gamingGroupViewModelBuilderMock = MockRepository.GenerateMock<GamingGroupViewModelBuilder>();
             gamingGroupAccessGranterMock = MockRepository.GenerateMock<GamingGroupAccessGranter>();
             gamingGroupCreatorMock = MockRepository.GenerateMock<GamingGroupCreator>();
             gamingGroupRetrieverMock = MockRepository.GenerateMock<GamingGroupRetriever>();
+            showingXResultsMessageBuilderMock = MockRepository.GenerateMock<ShowingXResultsMessageBuilder>();
             gamingGroupController = new GamingGroupController(
                 dataContext, 
-                gamingGroupToGamingGroupViewModelTransformationMock, 
+                gamingGroupViewModelBuilderMock, 
                 gamingGroupAccessGranterMock,
                 gamingGroupCreatorMock,
-                gamingGroupRetrieverMock);
+                gamingGroupRetrieverMock,
+                showingXResultsMessageBuilderMock);
             currentUser = new ApplicationUser()
             {
                 Id = "user  id",

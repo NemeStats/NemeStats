@@ -11,8 +11,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using UI.Controllers.Helpers;
 using UI.Filters;
 using UI.Models.GamingGroup;
+using UI.Models.PlayedGame;
 using UI.Transformations;
 
 namespace UI.Controllers
@@ -20,39 +22,51 @@ namespace UI.Controllers
     [Authorize]
     public partial class GamingGroupController : Controller
     {
+        public const int MAX_NUMBER_OF_RECENT_GAMES = 10;
         public const string SECTION_ANCHOR_PLAYERS = "Players";
         public const string SECTION_ANCHOR_GAMEDEFINITIONS = "GameDefinitions";
+        public const string SECTION_ANCHOR_RECENT_GAMES = "RecentGames";
 
         internal DataContext dataContext;
-        internal GamingGroupToGamingGroupViewModelTransformation gamingGroupToGamingGroupViewModelTransformation;
+        internal GamingGroupViewModelBuilder gamingGroupViewModelBuilder;
         internal GamingGroupAccessGranter gamingGroupAccessGranter;
         internal GamingGroupCreator gamingGroupCreator;
         internal GamingGroupRetriever gamingGroupRetriever;
+        internal ShowingXResultsMessageBuilder showingXResultsMessageBuilder;
 
         public GamingGroupController(
             DataContext dataContext,
-            GamingGroupToGamingGroupViewModelTransformation gamingGroupToGamingGroupViewModelTransformation,
+            GamingGroupViewModelBuilder gamingGroupViewModelBuilder,
             GamingGroupAccessGranter gamingGroupAccessGranter,
             GamingGroupCreator gamingGroupCreator,
-            GamingGroupRetriever gamingGroupRetriever)
+            GamingGroupRetriever gamingGroupRetriever,
+            ShowingXResultsMessageBuilder showingXResultsMessageBuilder)
         {
             this.dataContext = dataContext;
-            this.gamingGroupToGamingGroupViewModelTransformation = gamingGroupToGamingGroupViewModelTransformation;
+            this.gamingGroupViewModelBuilder = gamingGroupViewModelBuilder;
             this.gamingGroupAccessGranter = gamingGroupAccessGranter;
             this.gamingGroupCreator = gamingGroupCreator;
             this.gamingGroupRetriever = gamingGroupRetriever;
+            this.showingXResultsMessageBuilder = showingXResultsMessageBuilder;
         }
 
         // GET: /GamingGroup
         [UserContextAttribute]
         public virtual ActionResult Index(ApplicationUser currentUser)
         {
-            GamingGroup gamingGroup = gamingGroupRetriever.GetGamingGroupDetails(currentUser.CurrentGamingGroupId.Value);
+            GamingGroup gamingGroup = gamingGroupRetriever.GetGamingGroupDetails(
+                currentUser.CurrentGamingGroupId.Value,
+                MAX_NUMBER_OF_RECENT_GAMES);
 
-            GamingGroupViewModel viewModel = gamingGroupToGamingGroupViewModelTransformation.Build(gamingGroup, currentUser);
+            GamingGroupViewModel viewModel = gamingGroupViewModelBuilder.Build(gamingGroup, currentUser);
 
+            ViewBag.RecentGamesSectionAnchorText = SECTION_ANCHOR_RECENT_GAMES;
             ViewBag.PlayerSectionAnchorText = SECTION_ANCHOR_PLAYERS;
             ViewBag.GameDefinitionSectionAnchorText = SECTION_ANCHOR_GAMEDEFINITIONS;
+
+            ViewBag.RecentGamesMessage = showingXResultsMessageBuilder.BuildMessage(
+                MAX_NUMBER_OF_RECENT_GAMES,
+                gamingGroup.PlayedGames.Count);
 
             return View(MVC.GamingGroup.Views.Index, viewModel);
         }

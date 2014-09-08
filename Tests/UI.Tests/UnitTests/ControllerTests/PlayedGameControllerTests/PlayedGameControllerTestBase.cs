@@ -20,7 +20,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
         protected NemeStatsDataContext dataContext;
         protected PlayedGameController playedGameController;
         protected PlayedGameController playedGameControllerPartialMock;
-        protected PlayedGameRepository playedGameLogicMock;
+        protected PlayedGameRetriever playedGameRetriever;
         protected PlayerRetriever playerRetrieverMock;
         protected PlayedGameDetailsViewModelBuilder playedGameDetailsBuilderMock;
         protected GameDefinitionRetriever gameDefinitionRetrieverMock;
@@ -34,7 +34,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
         public virtual void TestSetUp()
         {
             dataContext = MockRepository.GenerateMock<NemeStatsDataContext>();
-            playedGameLogicMock = MockRepository.GenerateMock<PlayedGameRepository>();
+            playedGameRetriever = MockRepository.GenerateMock<PlayedGameRetriever>();
             playerRetrieverMock = MockRepository.GenerateMock<PlayerRetriever>();
             playedGameDetailsBuilderMock = MockRepository.GenerateMock<PlayedGameDetailsViewModelBuilder>();
             gameDefinitionRetrieverMock = MockRepository.GenerateMock<GameDefinitionRetriever>();
@@ -42,7 +42,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
             showingXResultsMessageBuilderMock = MockRepository.GenerateMock<ShowingXResultsMessageBuilder>();
             playedGameController = new Controllers.PlayedGameController(
                 dataContext,
-                playedGameLogicMock,
+                playedGameRetriever,
                 playerRetrieverMock, 
                 playedGameDetailsBuilderMock,
                 gameDefinitionRetrieverMock,
@@ -51,7 +51,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 
             playedGameControllerPartialMock = MockRepository.GeneratePartialMock<PlayedGameController>(
                 dataContext,
-                playedGameLogicMock,
+                playedGameRetriever,
                 playerRetrieverMock,
                 playedGameDetailsBuilderMock,
                 gameDefinitionRetrieverMock,

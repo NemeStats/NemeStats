@@ -9,7 +9,7 @@ using UI.Models.GamingGroup;
 
 namespace UI.Transformations
 {
-    public interface GamingGroupToGamingGroupViewModelTransformation
+    public interface GamingGroupViewModelBuilder
     {
         GamingGroupViewModel Build(GamingGroup gamingGroup, ApplicationUser currentUser = null);
     }

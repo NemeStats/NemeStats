@@ -16,18 +16,24 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
         [Test]
         public void ItGetsRecentlyPlayedGames()
         {
-            playedGameLogicMock.Expect(x => x.GetRecentGames(Controllers.PlayedGameController.NUMBER_OF_RECENT_GAMES_TO_DISPLAY, currentUser))
+            playedGameRetriever.Expect(x => x.GetRecentGames(
+                    Controllers.PlayedGameController.NUMBER_OF_RECENT_GAMES_TO_DISPLAY, 
+                    currentUser.CurrentGamingGroupId.Value))
                 .Repeat.Once()
                 .Return(new List<PlayedGame>());
             playedGameController.Index(currentUser);
 
-            playedGameLogicMock.AssertWasCalled(x => x.GetRecentGames(Controllers.PlayedGameController.NUMBER_OF_RECENT_GAMES_TO_DISPLAY, currentUser));
+            playedGameRetriever.AssertWasCalled(x => x.GetRecentGames(
+                Controllers.PlayedGameController.NUMBER_OF_RECENT_GAMES_TO_DISPLAY, 
+                currentUser.CurrentGamingGroupId.Value));
         }
 
         [Test]
         public void ItReturnsTheIndexView()
         {
-            playedGameLogicMock.Expect(x => x.GetRecentGames(Controllers.PlayedGameController.NUMBER_OF_RECENT_GAMES_TO_DISPLAY, currentUser))
+            playedGameRetriever.Expect(x => x.GetRecentGames(
+                    Controllers.PlayedGameController.NUMBER_OF_RECENT_GAMES_TO_DISPLAY, 
+                    currentUser.CurrentGamingGroupId.Value))
                 .Repeat.Once()
                 .Return(new List<PlayedGame>());
             ViewResult result = playedGameController.Index(currentUser) as ViewResult;
@@ -41,7 +47,9 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
             int playedGameId = 13541;
 
             List<PlayedGame> playedGames = new List<PlayedGame>() { new PlayedGame() { Id = playedGameId } };
-            playedGameLogicMock.Expect(x => x.GetRecentGames(Controllers.PlayedGameController.NUMBER_OF_RECENT_GAMES_TO_DISPLAY, currentUser))
+            playedGameRetriever.Expect(x => x.GetRecentGames(
+                    Controllers.PlayedGameController.NUMBER_OF_RECENT_GAMES_TO_DISPLAY, 
+                    currentUser.CurrentGamingGroupId.Value))
                 .Repeat.Once()
                 .Return(playedGames);
             List<PlayedGameDetailsViewModel> summaries = new List<PlayedGameDetailsViewModel>()
@@ -66,7 +74,9 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
                 new PlayedGame(){ Id = 1 },
                 new PlayedGame(){ Id = 2 }
             };
-            playedGameLogicMock.Expect(playedGameLogic => playedGameLogic.GetRecentGames(Arg<int>.Is.Anything, Arg<ApplicationUser>.Is.Anything))
+            playedGameRetriever.Expect(playedGameLogic => playedGameLogic.GetRecentGames(
+                    Arg<int>.Is.Anything, 
+                    Arg<int>.Is.Anything))
                 .Repeat.Once()
                 .Return(recentlyPlayedGames);
 
@@ -87,7 +97,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
                 new PlayedGame(){ Id = 1 },
                 new PlayedGame(){ Id = 2 }
             };
-            playedGameLogicMock.Expect(playedGameLogic => playedGameLogic.GetRecentGames(Arg<int>.Is.Anything, Arg<ApplicationUser>.Is.Anything))
+            playedGameRetriever.Expect(playedGameLogic => playedGameLogic.GetRecentGames(Arg<int>.Is.Anything, Arg<int>.Is.Anything))
                 .Repeat.Once()
                 .Return(recentlyPlayedGames);
             showingXResultsMessageBuilderMock.Expect(mock => mock.BuildMessage(

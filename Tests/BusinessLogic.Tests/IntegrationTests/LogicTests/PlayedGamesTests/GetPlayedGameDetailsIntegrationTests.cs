@@ -1,18 +1,19 @@
 ﻿using BusinessLogic.DataAccess;
 using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.Logic;
+using BusinessLogic.Logic.PlayedGames;
 using BusinessLogic.Models;
 using NUnit.Framework;
 using System.Linq;
 
-namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests.PlayedGameRepositoryTests
+namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGamesTests
 {
     [TestFixture]
     public class GetPlayedGameDetailsIntegrationTests : IntegrationTestBase
     {
         private PlayedGame GetTestSubjectPlayedGame(NemeStatsDataContext dataContextToTestWith)
         {
-            return new EntityFrameworkPlayedGameRepository(dataContextToTestWith)
+            return new PlayedGameRetrieverImpl(dataContextToTestWith)
                 .GetPlayedGameDetails(testPlayedGames[0].Id);
         }
 
@@ -73,9 +74,9 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
         {
             using (NemeStatsDataContext dataContext = new NemeStatsDataContext())
             {
-                EntityFrameworkPlayedGameRepository playedGameRepository = new EntityFrameworkPlayedGameRepository(dataContext);
+                PlayedGameRetrieverImpl retriever = new PlayedGameRetrieverImpl(dataContext);
 
-                PlayedGame notFoundPlayedGame = playedGameRepository.GetPlayedGameDetails(-1);
+                PlayedGame notFoundPlayedGame = retriever.GetPlayedGameDetails(-1);
                 Assert.Null(notFoundPlayedGame);
             }
         }

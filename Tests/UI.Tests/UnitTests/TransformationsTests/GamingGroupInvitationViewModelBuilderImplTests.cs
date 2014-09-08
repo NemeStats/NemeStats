@@ -12,16 +12,16 @@ using UI.Transformations;
 namespace UI.Tests.UnitTests.TransformationsTests
 {
     [TestFixture]
-    public class GamingGroupInvitationToInvitationViewModelTransformationImplTests
+    public class GamingGroupInvitationViewModelBuilderImplTests
     {
-        protected GamingGroupInvitationToInvitationViewModelTransformationImpl transformation;
+        protected GamingGroupInvitationViewModelBuilderImpl transformation;
         protected GamingGroupInvitation gamingGroupInvitation;
         protected InvitationViewModel invitationViewModel;
 
         [SetUp]
         public void SetUp()
         {
-            transformation = new GamingGroupInvitationToInvitationViewModelTransformationImpl();
+            transformation = new GamingGroupInvitationViewModelBuilderImpl();
             gamingGroupInvitation = new GamingGroupInvitation()
             {
                 InviteeEmail = "email@email.com",
