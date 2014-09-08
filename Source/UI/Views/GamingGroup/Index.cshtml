@@ -2,54 +2,20 @@
 @model UI.Models.GamingGroup.GamingGroupViewModel
 
 @{
-    ViewBag.Title = "My Gaming Group";
+    ViewBag.Title = Model.Name;
     Layout = MVC.Shared.Views._BaseLayout;
 }
 
-<h2>@ViewBag.Title</h2>
+<h2>@Model.Name</h2>
 <hr />
 
-<div class="row">
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <h4>Gaming Group Details</h4>
-        </div>
-
-        <div class="panel-body">
-
-            <div class="row">
-                <div class="col-md-2">
-                    <strong>
-                        @Html.DisplayNameFor(model => model.Name)
-                    </strong>
-                </div>
-
-                <div class="col-md-3">
-                    @Html.DisplayFor(model => model.Name)
-                </div>
-            </div>
-
-            <div class="row panel-group">
-                <div class="col-md-2">
-                    <strong>
-                        @Html.DisplayNameFor(model => model.OwningUserName)
-                    </strong>
-                </div>
-
-                <div class="col-md-3">
-                    @Html.DisplayFor(model => model.OwningUserName)
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
 <a name="@ViewBag.RecentGamesSectionAnchorText"></a>
 <div class="row">
     <div class="panel panel-default">
         <div class="panel-heading">
             <h4>
-                @ViewBag.RecentGamesMessage @Html.ActionLink("Create New", "Create", "PlayedGame", new { }, new { @class = "btn btn-primary btn-sm" })
+                Record A Played Game @ViewBag.RecentGamesMessage @Html.ActionLink("Create New", "Create", "PlayedGame", new { }, new { @class = "btn btn-primary btn-sm" })
             </h4>
         </div>
         <div class="panel-body">
