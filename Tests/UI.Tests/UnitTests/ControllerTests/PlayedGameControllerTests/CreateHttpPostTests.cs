@@ -10,6 +10,7 @@ using System.Linq;
 using System.Security.Principal;
 using System.Web;
 using System.Web.Mvc;
+using UI.Controllers;
 
 namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 {
@@ -49,18 +50,23 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
         }
 
         [Test]
-        public void ItLoadsTheIndexPageIfSaveIsSuccessful()
+        public void ItRedirectsToTheGamingGroupIndexAndRecentGamesSectionAfterSaving()
         {
             NewlyCompletedGame playedGame = new NewlyCompletedGame()
-            { 
-                GameDefinitionId = 1, 
+            {
+                GameDefinitionId = 1,
                 PlayerRanks = new List<PlayerRank>()
-            };
+            }; 
+            string baseUrl = "base url";
+            string expectedUrl = baseUrl + "#" + GamingGroupController.SECTION_ANCHOR_RECENT_GAMES;
+            urlHelperMock.Expect(mock => mock.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name))
+                    .Return(baseUrl);
             ApplicationUser user = new ApplicationUser();
             playedGameCreatorMock.Expect(x => x.CreatePlayedGame(Arg<NewlyCompletedGame>.Is.Anything, Arg<ApplicationUser>.Is.Anything)).Repeat.Once();
-            RedirectToRouteResult result = playedGameController.Create(playedGame, null) as RedirectToRouteResult;
 
-            Assert.AreEqual(MVC.PlayedGame.ActionNames.Index, result.RouteValues["action"]);
+            RedirectResult redirectResult = playedGameController.Create(playedGame, null) as RedirectResult;
+
+            Assert.AreEqual(expectedUrl, redirectResult.Url);
         }
 
         [Test]
@@ -71,6 +77,10 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
                 GameDefinitionId = 1,
                 PlayerRanks = new List<PlayerRank>()
             };
+            string baseUrl = "base url";
+            string expectedUrl = baseUrl + "#" + GamingGroupController.SECTION_ANCHOR_RECENT_GAMES;
+            urlHelperMock.Expect(mock => mock.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name))
+                    .Return(baseUrl);
 
             playedGameController.Create(newlyCompletedGame, null);
 

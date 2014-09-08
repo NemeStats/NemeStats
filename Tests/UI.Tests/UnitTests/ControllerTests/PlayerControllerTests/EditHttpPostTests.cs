@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using UI.Controllers;
 
 namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
 {
@@ -14,11 +15,16 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
     public class EditHttpPostTests : PlayerControllerTestBase
     {
         [Test]
-        public void ItRedirectsToTheIndexAction()
+        public void ItRedirectsToTheGamingGroupIndexAndPlayersSectionAfterSaving()
         {
-            RedirectToRouteResult result = playerController.Edit(new Player(), currentUser) as RedirectToRouteResult;
+            string baseUrl = "base url";
+            string expectedUrl = baseUrl + "#" + GamingGroupController.SECTION_ANCHOR_PLAYERS;
+            urlHelperMock.Expect(mock => mock.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name))
+                    .Return(baseUrl);
 
-            Assert.AreEqual(MVC.Player.ActionNames.Index, result.RouteValues["action"]);
+            RedirectResult redirectResult = playerController.Edit(new Player(), currentUser) as RedirectResult;
+
+            Assert.AreEqual(expectedUrl, redirectResult.Url);
         }
 
         [Test]

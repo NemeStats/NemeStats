@@ -33,9 +33,7 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Games", "Index", "GamingGroup", null, null, UI.Controllers.GamingGroupController.SECTION_ANCHOR_GAMEDEFINITIONS, null, null)</li>
-                    <li>@Html.ActionLink("Players", "Index", "GamingGroup", null, null, UI.Controllers.GamingGroupController.SECTION_ANCHOR_PLAYERS, null, null)</li>
-                    <li>@Html.ActionLink("Record Results", "Index", "PlayedGame")</li>
+                    <li>@Html.ActionLink("Record Played Game", "Create", "PlayedGame")</li>
                     <li>@Html.ActionLink("My Gaming Group", "Index", "GamingGroup")</li>
                 </ul>
                 @Html.Partial("_LoginPartial")

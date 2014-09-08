@@ -49,15 +49,6 @@ namespace UI.Controllers
             this.playerRetriever = playerRetriever;
         }
 
-        // GET: /Player/
-        [Authorize]
-        [UserContextAttribute]
-        public virtual ActionResult Index(ApplicationUser currentUser)
-        {
-            List<Player> players = playerRetriever.GetAllPlayers(currentUser.CurrentGamingGroupId.Value);
-            return View(MVC.Player.Views.Index, players);
-        }
-
         // GET: /Player/Details/5
         [UserContextAttribute(RequiresGamingGroup = false)]
         public virtual ActionResult Details(int? id, ApplicationUser currentUser)
@@ -110,7 +101,7 @@ namespace UI.Controllers
                             + "#" + GamingGroupController.SECTION_ANCHOR_PLAYERS);
             }
 
-            return View(MVC.Player.Views.Index, player);
+            return View(MVC.Player.Views.Create, player);
         }
 
         // GET: /Player/Edit/5
@@ -149,7 +140,8 @@ namespace UI.Controllers
             {
                 dataContext.Save<Player>(player, currentUser);
                 dataContext.CommitAllChanges();
-                return RedirectToAction(MVC.Player.ActionNames.Index);
+                return new RedirectResult(Url.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name)
+                                          + "#" + GamingGroupController.SECTION_ANCHOR_PLAYERS);
             }
             return View(MVC.Player.Views.Edit, player);
         }
@@ -192,7 +184,8 @@ namespace UI.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
             }
-            return RedirectToAction("Index");
+            return new RedirectResult(Url.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name)
+                                          + "#" + GamingGroupController.SECTION_ANCHOR_PLAYERS);
         }
 
         protected override void Dispose(bool disposing)

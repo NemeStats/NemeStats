@@ -42,15 +42,6 @@ namespace UI.Controllers
             this.gameDefinitionCreator = gameDefinitionCreator;
         }
 
-        // GET: /GameDefinition/
-        [Authorize]
-        [UserContextAttribute]
-        public virtual ActionResult Index(ApplicationUser currentUser)
-        {
-            IList<GameDefinition> games = gameDefinitionRetriever.GetAllGameDefinitions(currentUser.CurrentGamingGroupId.Value);
-            return View(MVC.GameDefinition.Views.Index, games);
-        }
-
         // GET: /GameDefinition/Details/5
         [UserContextAttribute(RequiresGamingGroup = false)]
         public virtual ActionResult Details(int? id, ApplicationUser currentUser)
@@ -142,7 +133,8 @@ namespace UI.Controllers
             {
                 dataContext.Save(gamedefinition, currentUser);
                 dataContext.CommitAllChanges();
-                return RedirectToAction(MVC.GameDefinition.ActionNames.Index);
+                return new RedirectResult(Url.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name)
+                                          + "#" + GamingGroupController.SECTION_ANCHOR_GAMEDEFINITIONS);
             }
             return View(MVC.GameDefinition.Views.Edit, gamedefinition);
         }
@@ -181,8 +173,10 @@ namespace UI.Controllers
             {
                 dataContext.DeleteById<GameDefinition>(id, currentUser);
                 dataContext.CommitAllChanges();
-                return RedirectToAction(MVC.GameDefinition.ActionNames.Index);
-            }catch(UnauthorizedAccessException)
+                return new RedirectResult(Url.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name)
+                                          + "#" + GamingGroupController.SECTION_ANCHOR_GAMEDEFINITIONS);
+            }
+            catch (UnauthorizedAccessException)
             {
                 return new HttpUnauthorizedResult();
             }

@@ -9,6 +9,7 @@ using BusinessLogic.Models.User;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System.Collections.Generic;
+using System.Web.Mvc;
 using UI.Controllers;
 using UI.Controllers.Helpers;
 using UI.Transformations;
@@ -26,6 +27,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
         protected GameDefinitionRetriever gameDefinitionRetrieverMock;
         protected PlayedGameCreator playedGameCreatorMock;
         protected ShowingXResultsMessageBuilder showingXResultsMessageBuilderMock;
+        protected UrlHelper urlHelperMock;
         protected string testUserName = "the test user name";
         protected ApplicationUser currentUser;
         protected List<GameDefinition> gameDefinitions;
@@ -40,6 +42,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
             gameDefinitionRetrieverMock = MockRepository.GenerateMock<GameDefinitionRetriever>();
             playedGameCreatorMock = MockRepository.GenerateMock<PlayedGameCreator>();
             showingXResultsMessageBuilderMock = MockRepository.GenerateMock<ShowingXResultsMessageBuilder>();
+            urlHelperMock = MockRepository.GenerateMock<UrlHelper>();
             playedGameController = new Controllers.PlayedGameController(
                 dataContext,
                 playedGameRetriever,
@@ -48,6 +51,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
                 gameDefinitionRetrieverMock,
                 showingXResultsMessageBuilderMock,
                 playedGameCreatorMock);
+            playedGameController.Url = urlHelperMock;
 
             playedGameControllerPartialMock = MockRepository.GeneratePartialMock<PlayedGameController>(
                 dataContext,
@@ -57,6 +61,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
                 gameDefinitionRetrieverMock,
                 showingXResultsMessageBuilderMock,
                 playedGameCreatorMock);
+            playedGameControllerPartialMock.Url = urlHelperMock;
 
             currentUser = new ApplicationUser()
             {

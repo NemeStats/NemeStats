@@ -46,7 +46,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
             playerController.ModelState.AddModelError("key", "message");
             ViewResult result = playerController.Create(new Player(), currentUser) as ViewResult;
 
-            Assert.AreEqual(MVC.Player.Views.Index, result.ViewName);
+            Assert.AreEqual(MVC.Player.Views.Create, result.ViewName);
         }
 
         [Test]

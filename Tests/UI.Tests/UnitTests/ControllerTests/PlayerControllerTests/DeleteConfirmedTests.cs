@@ -8,6 +8,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using UI.Controllers;
 
 namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
 {
@@ -35,13 +36,18 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         }
 
         [Test]
-        public void ItRedirectsToTheIndexAction()
+        public void ItRedirectsToTheGamingGroupIndexAndPlayersSectionAfterSaving()
         {
             int playerId = 1;
             dataContextMock.Expect(mock => mock.DeleteById<Player>(playerId, currentUser));
-            RedirectToRouteResult result = playerController.DeleteConfirmed(playerId, currentUser) as RedirectToRouteResult;
+            string baseUrl = "base url";
+            string expectedUrl = baseUrl + "#" + GamingGroupController.SECTION_ANCHOR_PLAYERS;
+            urlHelperMock.Expect(mock => mock.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name))
+                    .Return(baseUrl);
 
-            Assert.AreEqual(MVC.Player.ActionNames.Index, result.RouteValues["action"]);
+            RedirectResult redirectResult = playerController.DeleteConfirmed(playerId, currentUser) as RedirectResult;
+
+            Assert.AreEqual(expectedUrl, redirectResult.Url);
         }
     }
 }

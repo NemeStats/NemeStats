@@ -49,28 +49,6 @@ namespace UI.Controllers
             this.playedGameCreator = playedGameCreator;
         }
 
-        // GET: /PlayedGame/
-        [Authorize]
-        [UserContextAttribute]
-        public virtual ActionResult Index(ApplicationUser currentUser)
-        {
-            List<PlayedGame> playedGames = playedGameRetriever.GetRecentGames(
-                NUMBER_OF_RECENT_GAMES_TO_DISPLAY, 
-                currentUser.CurrentGamingGroupId.Value);
-            int totalGames = playedGames.Count();
-            List<PlayedGameDetailsViewModel> details = new List<PlayedGameDetailsViewModel>(totalGames);
-            for (int i = 0; i < totalGames; i++)
-            {
-                details.Add(playedGameDetailsBuilder.Build(playedGames[i], currentUser));
-            }
-
-            ViewBag.RecentGamesMessage = showingXResultsMessageBuilder.BuildMessage(
-                NUMBER_OF_RECENT_GAMES_TO_DISPLAY,
-                details.Count);
-            
-            return View(MVC.PlayedGame.Views.Index, details);
-        }
-
         // GET: /PlayedGame/Details/5
         [UserContextAttribute(RequiresGamingGroup = false)]
         public virtual ActionResult Details(int? id, ApplicationUser currentUser)
@@ -117,7 +95,8 @@ namespace UI.Controllers
             {
                 playedGameCreator.CreatePlayedGame(newlyCompletedGame, currentUser);
 
-                return RedirectToAction(MVC.PlayedGame.ActionNames.Index);
+                return new RedirectResult(Url.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name)
+                                            + "#" + GamingGroupController.SECTION_ANCHOR_RECENT_GAMES);
             }
 
             return Create(currentUser);
