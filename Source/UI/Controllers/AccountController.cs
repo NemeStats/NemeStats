@@ -298,6 +298,13 @@ namespace UI.Controllers
                     {
                         await SignInAsync(user, isPersistent: false);
 
+                        int? gamingGroupIdToWhichTheUserWasAdded = await gamingGroupInviteConsumer.AddUserToInvitedGroupAsync(user);
+
+                        if (gamingGroupIdToWhichTheUserWasAdded.HasValue)
+                        {
+                            return RedirectToAction(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name);
+                        }
+
                         return new RedirectResult(Url.Action(MVC.GamingGroup.ActionNames.Create, MVC.GamingGroup.Name));
                     }
                 }
