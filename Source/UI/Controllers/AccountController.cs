@@ -297,7 +297,15 @@ namespace UI.Controllers
                     if (result.Succeeded)
                     {
                         await SignInAsync(user, isPersistent: false);
-                        return RedirectToLocal(returnUrl);
+
+                        int? gamingGroupIdToWhichTheUserWasAdded = await gamingGroupInviteConsumer.AddUserToInvitedGroupAsync(user);
+
+                        if (gamingGroupIdToWhichTheUserWasAdded.HasValue)
+                        {
+                            return RedirectToAction(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name);
+                        }
+
+                        return new RedirectResult(Url.Action(MVC.GamingGroup.ActionNames.Create, MVC.GamingGroup.Name));
                     }
                 }
                 AddErrors(result);

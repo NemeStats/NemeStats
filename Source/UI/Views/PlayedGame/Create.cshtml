@@ -55,13 +55,13 @@
             
 
     <div>
-        @Html.ActionLink("Back to List", "Index")
+        @Html.ActionLink("Back To List", "Index", "GamingGroup", null, null, UI.Controllers.GamingGroupController.SECTION_ANCHOR_RECENT_GAMES, null, null)
     </div>
 
     @section Scripts {
         @Scripts.Render("~/bundles/jquery");
         @Scripts.Render("~/bundles/jqueryval");
         <!--//TODO not sure why i had to do this-->
-        @Scripts.Render("~/Scripts/jquery-ui-1.10.4.js");
+        @Scripts.Render("~/Scripts/jquery-ui-1.11.1.js");
         @Scripts.Render("~/bundles/custom");
     }
