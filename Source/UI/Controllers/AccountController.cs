@@ -297,7 +297,8 @@ namespace UI.Controllers
                     if (result.Succeeded)
                     {
                         await SignInAsync(user, isPersistent: false);
-                        return RedirectToLocal(returnUrl);
+
+                        return new RedirectResult(Url.Action(MVC.GamingGroup.ActionNames.Create, MVC.GamingGroup.Name));
                     }
                 }
                 AddErrors(result);
