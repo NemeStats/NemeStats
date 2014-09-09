@@ -25,11 +25,11 @@ namespace UI
 
             bundles.Add(new ScriptBundle("~/bundles/custom").Include("~/Scripts/CreatePlayedGame/createplayedgame.js"));
 
-            bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/bootstrap.css",
-                      "~/Content/site.css",
-                      "~/Content/blog.css",
-                      "~/Content/css/font-awesome*"));
+            bundles.Add(new StyleBundle("~/bundles/content/css").Include(
+                        "~/Content/bootstrap.min.css", new CssRewriteUrlTransform())
+                      .Include("~/Content/site.css",
+                        "~/Content/blog.css")
+                      .Include("~/Content/css/font-awesome.min.css", new CssRewriteUrlTransform()));
         }
     }
 }
