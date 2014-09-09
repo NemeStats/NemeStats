@@ -10,6 +10,12 @@
     padding-bottom: 20px;
 }
 
+a[name] {
+    padding-top: 50px;
+    margin-top: -50px;
+    display: inline-block;
+}
+
 .home-container {
     background-color: #eee;
 }
