@@ -31,10 +31,8 @@
 <p>
     @if(Model.UserCanEdit)
     {
-      @Html.ActionLink("Delete", "Delete", new { id = Model.PlayedGameId }) @: |  
+      @Html.ActionLink("Delete", "Delete", new { id = Model.PlayedGameId }) 
     }
-    
-    @Html.ActionLink("Back to List", "Index")
 </p>
 <div>
     @foreach (var result in Model.PlayerResults)
