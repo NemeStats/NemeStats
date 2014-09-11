@@ -10,31 +10,40 @@ using System.Threading.Tasks;
 
 namespace BusinessLogic.Logic.Players
 {
-    public class PlayerCreatorImpl : PlayerCreator
+    public class PlayerSaver : IPlayerSaver
     {
         private DataContext dataContext;
         private NemeStatsEventTracker eventTracker;
 
-        public PlayerCreatorImpl(DataContext dataContext, NemeStatsEventTracker eventTracker)
+        public PlayerSaver(DataContext dataContext, NemeStatsEventTracker eventTracker)
         {
             this.dataContext = dataContext;
             this.eventTracker = eventTracker;
         }
 
-        public Player CreatePlayer(string playerName, ApplicationUser currentUser)
+        public Player Save(Player player, ApplicationUser currentUser)
         {
-            ValidatePlayerNameIsNotNullOrWhiteSpace(playerName);
+            ValidatePlayerIsNotNull(player);
+            ValidatePlayerNameIsNotNullOrWhiteSpace(player.Name);
 
-            Player player = new Player()
-            {
-                Name = playerName
-            };
+            bool isNewPlayer = !player.AlreadyInDatabase();
 
             Player newPlayer = dataContext.Save<Player>(player, currentUser);
 
-            new Task(() => eventTracker.TrackPlayerCreation(currentUser)).Start();
+            if(isNewPlayer)
+            {
+                new Task(() => eventTracker.TrackPlayerCreation(currentUser)).Start();
+            }
 
             return newPlayer;
+        }
+
+        private static void ValidatePlayerIsNotNull(Player player)
+        {
+            if (player == null)
+            {
+                throw new ArgumentNullException("player");
+            }
         }
 
         private static void ValidatePlayerNameIsNotNullOrWhiteSpace(string playerName)

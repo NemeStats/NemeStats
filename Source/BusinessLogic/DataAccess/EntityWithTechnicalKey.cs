@@ -11,7 +11,7 @@ namespace BusinessLogic.DataAccess
     {
         public abstract T Id { get; set; }
 
-        public bool AlreadyInDatabase()
+        public virtual bool AlreadyInDatabase()
         {
             if(Id == null)
             {

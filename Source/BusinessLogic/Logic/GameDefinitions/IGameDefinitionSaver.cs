@@ -7,8 +7,8 @@ using System.Text;
 
 namespace BusinessLogic.Logic.GameDefinitions
 {
-    public interface GameDefinitionCreator
+    public interface IGameDefinitionSaver
     {
-        GameDefinition CreateGameDefinition(string gameDefinitionName, string gameDefinitionDescription, ApplicationUser currentUser);
+        GameDefinition Save(GameDefinition gameDefinition, ApplicationUser currentUser);
     }
 }

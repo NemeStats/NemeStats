@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace BusinessLogic.Logic.Players
 {
-    public interface PlayerCreator
+    public interface IPlayerSaver
     {
-        Player CreatePlayer(string playerName, ApplicationUser currentUser);
+        Player Save(Player player, ApplicationUser currentUser);
     }
 }

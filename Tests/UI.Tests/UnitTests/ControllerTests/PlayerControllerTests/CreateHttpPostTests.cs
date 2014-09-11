@@ -24,7 +24,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
 
             playerController.Create(player, currentUser);
 
-            playerCreatorMock.AssertWasCalled(mock => mock.CreatePlayer(player.Name, currentUser));
+            playerCreatorMock.AssertWasCalled(mock => mock.Save(player, currentUser));
         }
 
         [Test]

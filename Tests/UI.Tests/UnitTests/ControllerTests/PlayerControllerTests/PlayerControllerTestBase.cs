@@ -26,7 +26,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         protected GameResultViewModelBuilder playerGameResultDetailsBuilderMock;
         protected PlayerDetailsViewModelBuilder playerDetailsViewModelBuilderMock;
         protected ShowingXResultsMessageBuilder showingXResultsMessageBuilderMock;
-        protected PlayerCreator playerCreatorMock;
+        protected IPlayerSaver playerCreatorMock;
         protected UrlHelper urlHelperMock;
         protected PlayerController playerController;
         protected ApplicationUser currentUser;
@@ -45,7 +45,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
             playerGameResultDetailsBuilderMock = MockRepository.GenerateMock<GameResultViewModelBuilder>();
             playerDetailsViewModelBuilderMock = MockRepository.GenerateMock<PlayerDetailsViewModelBuilder>();
             showingXResultsMessageBuilderMock = MockRepository.GenerateMock<ShowingXResultsMessageBuilder>();
-            playerCreatorMock = MockRepository.GenerateMock<PlayerCreator>();
+            playerCreatorMock = MockRepository.GenerateMock<IPlayerSaver>();
             urlHelperMock = MockRepository.GenerateMock<UrlHelper>();
             playerController = new PlayerController(
                                 dataContextMock,

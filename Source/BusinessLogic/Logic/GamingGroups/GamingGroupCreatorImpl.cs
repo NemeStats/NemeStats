@@ -23,8 +23,8 @@ namespace BusinessLogic.Logic.GamingGroups
         internal const string EXCEPTION_MESSAGE_GAME_DEFINITION_NAMES_CANNOT_BE_NULL = "gamingGroupQuickStart.NewGameDefinitionNames cannot be null.";
 
         private DataContext dataContext;
-        private PlayerCreator playerCreator;
-        private GameDefinitionCreator gameDefinitionCreator;
+        private IPlayerSaver playerCreator;
+        private IGameDefinitionSaver gameDefinitionCreator;
         private UserManager<ApplicationUser> userManager;
         private NemeStatsEventTracker eventTracker;
 
@@ -32,8 +32,8 @@ namespace BusinessLogic.Logic.GamingGroups
             DataContext dataContext, 
             UserManager<ApplicationUser> userManager, 
             NemeStatsEventTracker eventTracker,
-            PlayerCreator playerCreator,
-            GameDefinitionCreator gameDefinitionCreator)
+            IPlayerSaver playerCreator,
+            IGameDefinitionSaver gameDefinitionCreator)
         {
             this.dataContext = dataContext;
             this.userManager = userManager;
@@ -112,22 +112,29 @@ namespace BusinessLogic.Logic.GamingGroups
 
         private void CreatePlayers(GamingGroupQuickStart gamingGroupQuickStart, ApplicationUser currentUser)
         {
+            Player newPlayer;
             foreach (string playerName in gamingGroupQuickStart.NewPlayerNames)
             {
                 if(!string.IsNullOrWhiteSpace(playerName))
                 {
-                    playerCreator.CreatePlayer(playerName, currentUser);
+                    newPlayer = new Player()
+                    {
+                        Name = playerName
+                    };
+                    playerCreator.Save(newPlayer, currentUser);
                 }
             }
         }
 
         private void CreateGameDefinitions(GamingGroupQuickStart gamingGroupQuickStart, ApplicationUser currentUser)
         {
+            GameDefinition gameDefinition;
             foreach (string gameDefinitionName in gamingGroupQuickStart.NewGameDefinitionNames)
             {
                 if (!string.IsNullOrWhiteSpace(gameDefinitionName))
                 {
-                    gameDefinitionCreator.CreateGameDefinition(gameDefinitionName, null, currentUser);
+                    gameDefinition = new GameDefinition() { Name = gameDefinitionName };
+                    gameDefinitionCreator.Save(gameDefinition, currentUser);
                 }
             }
         }

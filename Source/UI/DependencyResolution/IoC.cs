@@ -82,8 +82,8 @@ namespace UI.DependencyResolution {
                             x.For<IConfigurationManager>().Use<ConfigurationManager>();
                             x.For<TopPlayerViewModelBuilder>().Use<TopPlayerViewModelBuilderImpl>();
                             x.For<PlayerSummaryBuilder>().Use<PlayerSummaryBuilderImpl>();
-                            x.For<PlayerCreator>().Use<PlayerCreatorImpl>();
-                            x.For<GameDefinitionCreator>().Use<GameDefinitionCreatorImpl>();
+                            x.For<IPlayerSaver>().Use<PlayerSaver>();
+                            x.For<IGameDefinitionSaver>().Use<GameDefinitionSaver>();
                             x.For<PlayerRetriever>().Use<PlayerRetrieverImpl>();
                         });
             return ObjectFactory.Container;

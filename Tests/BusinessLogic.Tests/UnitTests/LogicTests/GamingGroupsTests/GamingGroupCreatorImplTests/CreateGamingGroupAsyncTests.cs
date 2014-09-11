@@ -27,8 +27,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
         private UserManager<ApplicationUser> userManager;
         private DataContext dataContextMock;
         private NemeStatsEventTracker eventTrackerMock;
-        private PlayerCreator playerCreatorMock;
-        private GameDefinitionCreator gameDefinitionCreator;
+        private IPlayerSaver playerSaverMock;
+        private IGameDefinitionSaver gameDefinitionCreator;
         private ApplicationUser currentUser = new ApplicationUser()
         {
             Id = "application user id"
@@ -44,13 +44,13 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
             userManager = new UserManager<ApplicationUser>(userStoreMock);
             dataContextMock = MockRepository.GenerateMock<DataContext>();
             eventTrackerMock = MockRepository.GenerateMock<NemeStatsEventTracker>();
-            playerCreatorMock = MockRepository.GenerateMock<PlayerCreator>();
-            gameDefinitionCreator = MockRepository.GenerateMock<GameDefinitionCreator>();
+            playerSaverMock = MockRepository.GenerateMock<IPlayerSaver>();
+            gameDefinitionCreator = MockRepository.GenerateMock<IGameDefinitionSaver>();
             gamingGroupCreator = new GamingGroupCreatorImpl(
                 dataContextMock, 
                 userManager, 
                 eventTrackerMock, 
-                playerCreatorMock,
+                playerSaverMock,
                 gameDefinitionCreator);
             gamingGroupQuickStart = new GamingGroupQuickStart()
             {
@@ -211,7 +211,9 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
 
             foreach(string playerName in gamingGroupQuickStart.NewPlayerNames)
             {
-                playerCreatorMock.AssertWasCalled(mock => mock.CreatePlayer(playerName, currentUser));
+                playerSaverMock.AssertWasCalled(mock => mock.Save(
+                    Arg<Player>.Matches(player => player.Name == playerName), 
+                    Arg<ApplicationUser>.Is.Same(currentUser)));
             }
         }
 
@@ -227,7 +229,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
 
             await gamingGroupCreator.CreateGamingGroupAsync(gamingGroupQuickStart, currentUser);
 
-            playerCreatorMock.AssertWasNotCalled(mock => mock.CreatePlayer(Arg<string>.Is.Anything, Arg<ApplicationUser>.Is.Anything));
+            playerSaverMock.AssertWasNotCalled(mock => mock.Save(Arg<Player>.Is.Anything, Arg<ApplicationUser>.Is.Anything));
         }
 
         [Test]
@@ -243,7 +245,9 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
 
             foreach (string gameDefinitionName in gamingGroupQuickStart.NewGameDefinitionNames)
             {
-                gameDefinitionCreator.AssertWasCalled(mock => mock.CreateGameDefinition(gameDefinitionName, null, currentUser));
+                gameDefinitionCreator.AssertWasCalled(mock => mock.Save(
+                    Arg<GameDefinition>.Matches(gameDefinition => gameDefinition.Name == gameDefinitionName),
+                    Arg<ApplicationUser>.Is.Same(currentUser)));
             }
         }
 
@@ -259,8 +263,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
 
             await gamingGroupCreator.CreateGamingGroupAsync(gamingGroupQuickStart, currentUser);
 
-            gameDefinitionCreator.AssertWasNotCalled(mock => mock.CreateGameDefinition(
-                Arg<string>.Is.Anything, Arg<string>.Is.Anything, Arg<ApplicationUser>.Is.Anything));
+            gameDefinitionCreator.AssertWasNotCalled(mock => mock.Save(
+                Arg<GameDefinition>.Is.Anything, Arg<ApplicationUser>.Is.Anything));
         }
     }
 }

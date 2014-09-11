@@ -29,7 +29,7 @@ namespace UI.Controllers
         internal GameResultViewModelBuilder builder;
         internal PlayerDetailsViewModelBuilder playerDetailsViewModelBuilder;
         internal ShowingXResultsMessageBuilder showingXResultsMessageBuilder;
-        internal PlayerCreator playerCreator;
+        internal IPlayerSaver playerSaver;
         internal PlayerRetriever playerRetriever;
         
         public PlayerController(DataContext dataContext, 
@@ -37,7 +37,7 @@ namespace UI.Controllers
             GameResultViewModelBuilder builder,
             PlayerDetailsViewModelBuilder playerDetailsViewModelBuilder,
             ShowingXResultsMessageBuilder showingXResultsMessageBuilder,
-            PlayerCreator playerCreator,
+            IPlayerSaver playerSaver,
             PlayerRetriever playerRetriever)
         {
             this.dataContext = dataContext;
@@ -45,7 +45,7 @@ namespace UI.Controllers
             this.builder = builder;
             this.playerDetailsViewModelBuilder = playerDetailsViewModelBuilder;
             this.showingXResultsMessageBuilder = showingXResultsMessageBuilder;
-            this.playerCreator = playerCreator;
+            this.playerSaver = playerSaver;
             this.playerRetriever = playerRetriever;
         }
 
@@ -95,7 +95,7 @@ namespace UI.Controllers
             {
                 //TODO need to have a more graceful way of knowing that a player name already exists rather than blowing up
                 // in the user's face. This should start at the business layer level.
-                playerCreator.CreatePlayer(player.Name, currentUser);
+                playerSaver.Save(player, currentUser);
 
                 return new RedirectResult(Url.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name)
                             + "#" + GamingGroupController.SECTION_ANCHOR_PLAYERS);

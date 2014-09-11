@@ -14,11 +14,11 @@ using System.Threading.Tasks;
 namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerCreatorImplTests
 {
     [TestFixture]
-    public class CreatePlayerTests
+    public class SaveTests
     {
         private DataContext dataContextMock;
         private NemeStatsEventTracker eventTrackerMock;
-        private PlayerCreatorImpl playerCreator;
+        private PlayerSaver playerSaver;
         private ApplicationUser currentUser;
 
         [SetUp]
@@ -26,16 +26,16 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerCreatorImp
         {
             dataContextMock = MockRepository.GenerateMock<DataContext>();
             eventTrackerMock = MockRepository.GenerateMock<NemeStatsEventTracker>();
-            playerCreator = new PlayerCreatorImpl(dataContextMock, eventTrackerMock);
+            playerSaver = new PlayerSaver(dataContextMock, eventTrackerMock);
             currentUser = new ApplicationUser();
         }
 
         [Test]
-        public void ItThrowsAnArgumentNullExceptionIfThePlayerNameIsNull()
+        public void ItThrowsAnArgumentNullExceptionIfThePlayerIsNull()
         {
-            ArgumentNullException expectedException = new ArgumentNullException("playerName");
+            ArgumentNullException expectedException = new ArgumentNullException("player");
 
-            Exception exception = Assert.Throws<ArgumentNullException>(() => playerCreator.CreatePlayer(null, currentUser));
+            Exception exception = Assert.Throws<ArgumentNullException>(() => playerSaver.Save(null, currentUser));
 
             Assert.AreEqual(expectedException.Message, exception.Message);
         }
@@ -43,10 +43,13 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerCreatorImp
         [Test]
         public void ItThrowsAnArgumentNullExceptionIfThePlayerNameIsWhitespace()
         {
-            string playerName = "    ";
+            Player player = new Player()
+            {
+                Name = "    "
+            };
             ArgumentNullException expectedException = new ArgumentNullException("playerName");
 
-            Exception exception = Assert.Throws<ArgumentNullException>(() => playerCreator.CreatePlayer(playerName, currentUser));
+            Exception exception = Assert.Throws<ArgumentNullException>(() => playerSaver.Save(player, currentUser));
 
             Assert.AreEqual(expectedException.Message, exception.Message);
         }
@@ -54,19 +57,22 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerCreatorImp
         [Test]
         public void ItSetsThePlayerName()
         {
-            string playerName = "player name";
+            Player player = new Player()
+            {
+                Name = "player name"
+            };
 
-            playerCreator.CreatePlayer(playerName, currentUser);
+            playerSaver.Save(player, currentUser);
 
             dataContextMock.AssertWasCalled(mock => mock.Save<Player>(
-                Arg<Player>.Matches(player => player.Name == playerName), 
+                Arg<Player>.Matches(savedPlayer => savedPlayer.Name == player.Name), 
                 Arg<ApplicationUser>.Is.Anything));
         }
 
         [Test]
         public void TheNewPlayerIsActiveWhenCreated()
         {
-            playerCreator.CreatePlayer("player name", currentUser);
+            playerSaver.Save(new Player() { Name = "player name" }, currentUser);
 
             dataContextMock.AssertWasCalled(mock => mock.Save<Player>(
                 Arg<Player>.Matches(player => player.Active == true),
@@ -74,11 +80,29 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerCreatorImp
         }
 
         [Test]
-        public void ItRecordsAPlayerCreatedEvent()
+        public void ItRecordsAPlayerCreatedEventIfThePlayerIsNew()
         {
-            playerCreator.CreatePlayer("player name", currentUser);
+            Player player = MockRepository.GeneratePartialMock<Player>();
+            player.Name = "player name";
+            player.Expect(mock => mock.AlreadyInDatabase())
+                .Return(false);
+
+            playerSaver.Save(player, currentUser);
 
             eventTrackerMock.AssertWasCalled(mock => mock.TrackPlayerCreation(currentUser));
+        }
+
+        [Test]
+        public void ItDoesNotRecordsAPlayerCreatedEventIfThePlayerIsNotNew()
+        {
+            Player player = MockRepository.GeneratePartialMock<Player>();
+            player.Name = "player name";
+            player.Expect(mock => mock.AlreadyInDatabase())
+                .Return(true);
+
+            playerSaver.Save(player, currentUser);
+
+            eventTrackerMock.AssertWasNotCalled(mock => mock.TrackPlayerCreation(currentUser));
         }
     }
 }

@@ -46,7 +46,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
 
             gameDefinitionControllerPartialMock.Create(gameDefinition, currentUser);
 
-            gameDefinitionCreatorMock.AssertWasCalled(mock => mock.CreateGameDefinition(gameDefinition.Name, gameDefinition.Description, currentUser));
+            gameDefinitionCreatorMock.AssertWasCalled(mock => mock.Save(gameDefinition, currentUser));
         }
 
         [Test]

@@ -150,7 +150,7 @@
     <Compile Include="UnitTests\EventTrackingTests\UniversalAnalyticsNemeStatsEventTrackerTests\TrackPlayerCreationTests.cs" />
     <Compile Include="UnitTests\EventTrackingTests\UniversalAnalyticsNemeStatsEventTrackerTests\TrackUserRegistrationTests.cs" />
     <Compile Include="UnitTests\EventTrackingTests\UniversalAnalyticsNemeStatsEventTrackerTests\UniversalAnalyticsNemeStatsEventTrackerTestBase.cs" />
-    <Compile Include="UnitTests\LogicTests\GameDefinitionsTests\GameDefinitionCreatorImplTests\CreateGameDefinitionTests.cs" />
+    <Compile Include="UnitTests\LogicTests\GameDefinitionsTests\GameDefinitionSaverTests\SaveTests.cs" />
     <Compile Include="UnitTests\LogicTests\GameDefinitionsTests\GameDefinitionRetrieverImplTests\GameDefinitionRetrieverImplTestBase.cs" />
     <Compile Include="UnitTests\LogicTests\GameDefinitionsTests\GameDefinitionRetrieverImplTests\GetAllTests.cs" />
     <Compile Include="UnitTests\LogicTests\GameDefinitionsTests\GameDefinitionRetrieverImplTests\GetGameDefinitionDetailsTests.cs" />
@@ -160,7 +160,7 @@
     <Compile Include="UnitTests\LogicTests\GamingGroupsTests\PendingGamingGroupInvitationRetrieverImplTests\TestFixtuure.cs" />
     <Compile Include="UnitTests\LogicTests\PlayedGamesTests\PlayedGameCreatorTests\CreatedPlayedGameTests.cs" />
     <Compile Include="IntegrationTests\LogicTests\Players\GetTopPlayersIntegrationTestsTests.cs" />
-    <Compile Include="UnitTests\LogicTests\PlayersTests\PlayerCreatorImplTests\CreatePlayerTests.cs" />
+    <Compile Include="UnitTests\LogicTests\PlayersTests\PlayerSaverTests\SaveTests.cs" />
     <Compile Include="UnitTests\LogicTests\PlayersTests\PlayerRetrieverImplTests\GetAllPlayersTests.cs" />
     <Compile Include="UnitTests\LogicTests\PointsTests\GordonPointsTests\CalculateGordonPointsTests.cs" />
     <Compile Include="UnitTests\LogicTests\UsersTests\GamingGroupInviteConsumerImplTests\AddUserToInvitedGroupTests.cs" />

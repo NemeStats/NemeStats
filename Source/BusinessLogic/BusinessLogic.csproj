@@ -129,8 +129,8 @@
     <Compile Include="EventTracking\UniversalAnalyticsNemeStatsEventTracker.cs" />
     <Compile Include="Exceptions\EntityDoesNotExistException.cs" />
     <Compile Include="Exceptions\UnauthorizedEntityAccessException.cs" />
-    <Compile Include="Logic\GameDefinitions\GameDefinitionCreator.cs" />
-    <Compile Include="Logic\GameDefinitions\GameDefinitionCreatorImpl.cs" />
+    <Compile Include="Logic\GameDefinitions\IGameDefinitionSaver.cs" />
+    <Compile Include="Logic\GameDefinitions\GameDefinitionSaver.cs" />
     <Compile Include="Logic\GameDefinitions\GameDefinitionRetriever.cs" />
     <Compile Include="Logic\GameDefinitions\GameDefinitionRetrieverImpl.cs" />
     <Compile Include="Logic\GamingGroups\GamingGroupCreator.cs" />
@@ -143,8 +143,8 @@
     <Compile Include="Logic\PlayedGames\PlayedGameCreatorImpl.cs" />
     <Compile Include="Logic\PlayedGames\PlayedGameRetriever.cs" />
     <Compile Include="Logic\PlayedGames\PlayedGameRetrieverImpl.cs" />
-    <Compile Include="Logic\Players\PlayerCreator.cs" />
-    <Compile Include="Logic\Players\PlayerCreatorImpl.cs" />
+    <Compile Include="Logic\Players\IPlayerSaver.cs" />
+    <Compile Include="Logic\Players\PlayerSaver.cs" />
     <Compile Include="Logic\Players\PlayerRetriever.cs" />
     <Compile Include="Logic\Players\PlayerRetrieverImpl.cs" />
     <Compile Include="Logic\Players\PlayerSummaryBuilder.cs" />
