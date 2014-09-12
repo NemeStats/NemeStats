@@ -23,10 +23,10 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
         protected PlayedGameController playedGameControllerPartialMock;
         protected IPlayedGameRetriever playedGameRetriever;
         protected IPlayerRetriever playerRetrieverMock;
-        protected PlayedGameDetailsViewModelBuilder playedGameDetailsBuilderMock;
+        protected IPlayedGameDetailsViewModelBuilder playedGameDetailsBuilderMock;
         protected IGameDefinitionRetriever gameDefinitionRetrieverMock;
         protected IPlayedGameCreator playedGameCreatorMock;
-        protected ShowingXResultsMessageBuilder showingXResultsMessageBuilderMock;
+        protected IShowingXResultsMessageBuilder showingXResultsMessageBuilderMock;
         protected UrlHelper urlHelperMock;
         protected string testUserName = "the test user name";
         protected ApplicationUser currentUser;
@@ -38,10 +38,10 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
             dataContext = MockRepository.GenerateMock<NemeStatsDataContext>();
             playedGameRetriever = MockRepository.GenerateMock<IPlayedGameRetriever>();
             playerRetrieverMock = MockRepository.GenerateMock<IPlayerRetriever>();
-            playedGameDetailsBuilderMock = MockRepository.GenerateMock<PlayedGameDetailsViewModelBuilder>();
+            playedGameDetailsBuilderMock = MockRepository.GenerateMock<IPlayedGameDetailsViewModelBuilder>();
             gameDefinitionRetrieverMock = MockRepository.GenerateMock<IGameDefinitionRetriever>();
             playedGameCreatorMock = MockRepository.GenerateMock<IPlayedGameCreator>();
-            showingXResultsMessageBuilderMock = MockRepository.GenerateMock<ShowingXResultsMessageBuilder>();
+            showingXResultsMessageBuilderMock = MockRepository.GenerateMock<IShowingXResultsMessageBuilder>();
             urlHelperMock = MockRepository.GenerateMock<UrlHelper>();
             playedGameController = new Controllers.PlayedGameController(
                 dataContext,

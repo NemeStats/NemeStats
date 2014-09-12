@@ -11,16 +11,16 @@ using UI.Transformations;
 namespace UI.Tests.UnitTests.TransformationsTests.PlayedGameTests.GameResultViewModelBuilderTests
 {
     [TestFixture]
-    public class GameResultViewModelBuilderImplTests
+    public class GameResultViewModelBuilderTests
     {
-        GameResultViewModelBuilderImpl builder;
+        GameResultViewModelBuilder builder;
         PlayerGameResult playerGameResult;
         GameResultViewModel playerGameResultDetails;
 
         [SetUp]
         public void SetUp()
         {
-            builder = new GameResultViewModelBuilderImpl();
+            builder = new GameResultViewModelBuilder();
             GameDefinition gameDefinition = new GameDefinition()
             {
                 Id = 15131,
@@ -67,7 +67,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayedGameTests.GameResultView
                     builder.Build(playerGameResultWithNoPlayer)
                 );
 
-            Assert.AreEqual(GameResultViewModelBuilderImpl.EXCEPTION_PLAYER_CANNOT_BE_NULL, exception.Message);
+            Assert.AreEqual(GameResultViewModelBuilder.EXCEPTION_PLAYER_CANNOT_BE_NULL, exception.Message);
         }
 
         [Test]
@@ -79,7 +79,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayedGameTests.GameResultView
                     builder.Build(playerGameResultWithNoPlayedGame)
                 );
 
-            Assert.AreEqual(GameResultViewModelBuilderImpl.EXCEPTION_PLAYED_GAME_CANNOT_BE_NULL, exception.Message);
+            Assert.AreEqual(GameResultViewModelBuilder.EXCEPTION_PLAYED_GAME_CANNOT_BE_NULL, exception.Message);
         }
 
         [Test]
@@ -95,7 +95,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayedGameTests.GameResultView
                     builder.Build(playerGameResultWithNoGameDefinition)
                 );
 
-            Assert.AreEqual(GameResultViewModelBuilderImpl.EXCEPTION_GAME_DEFINITION_CANNOT_BE_NULL, exception.Message);
+            Assert.AreEqual(GameResultViewModelBuilder.EXCEPTION_GAME_DEFINITION_CANNOT_BE_NULL, exception.Message);
         }
 
         [Test]

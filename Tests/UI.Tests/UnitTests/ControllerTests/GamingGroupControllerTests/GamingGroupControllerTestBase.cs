@@ -15,23 +15,23 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
     public class GamingGroupControllerTestBase
     {
         protected IDataContext dataContext;
-        protected GamingGroupViewModelBuilder gamingGroupViewModelBuilderMock;
+        protected IGamingGroupViewModelBuilder gamingGroupViewModelBuilderMock;
         protected GamingGroupController gamingGroupController;
         protected IGamingGroupAccessGranter gamingGroupAccessGranterMock;
         protected IGamingGroupCreator gamingGroupCreatorMock;
         protected IGamingGroupRetriever gamingGroupRetrieverMock;
-        protected ShowingXResultsMessageBuilder showingXResultsMessageBuilderMock;
+        protected IShowingXResultsMessageBuilder showingXResultsMessageBuilderMock;
         protected ApplicationUser currentUser;
 
         [SetUp]
         public virtual void SetUp()
         {
             dataContext = MockRepository.GenerateMock<IDataContext>();
-            gamingGroupViewModelBuilderMock = MockRepository.GenerateMock<GamingGroupViewModelBuilder>();
+            gamingGroupViewModelBuilderMock = MockRepository.GenerateMock<IGamingGroupViewModelBuilder>();
             gamingGroupAccessGranterMock = MockRepository.GenerateMock<IGamingGroupAccessGranter>();
             gamingGroupCreatorMock = MockRepository.GenerateMock<IGamingGroupCreator>();
             gamingGroupRetrieverMock = MockRepository.GenerateMock<IGamingGroupRetriever>();
-            showingXResultsMessageBuilderMock = MockRepository.GenerateMock<ShowingXResultsMessageBuilder>();
+            showingXResultsMessageBuilderMock = MockRepository.GenerateMock<IShowingXResultsMessageBuilder>();
             gamingGroupController = new GamingGroupController(
                 dataContext, 
                 gamingGroupViewModelBuilderMock, 

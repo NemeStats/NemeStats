@@ -16,7 +16,7 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.NemeStatsDataContextTest
     [TestFixture]
     public class DeleteByIdTests : NemeStatsDataContextTestBase
     {
-        private SecuredEntityValidator<GameDefinition> securedEntityValidator;
+        private ISecuredEntityValidator<GameDefinition> securedEntityValidator;
         private DbSet<GameDefinition> gameDefinitionDbSetMock;
 
         [SetUp]
@@ -28,7 +28,7 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.NemeStatsDataContextTest
                 .Repeat.Once()
                 .Return(gameDefinitionDbSetMock);
 
-            securedEntityValidator = MockRepository.GenerateMock<SecuredEntityValidator<GameDefinition>>();
+            securedEntityValidator = MockRepository.GenerateMock<ISecuredEntityValidator<GameDefinition>>();
             securedEntityValidatorFactory.Expect(mock => mock.MakeSecuredEntityValidator<GameDefinition>())
                 .Repeat.Once()
                 .Return(securedEntityValidator);

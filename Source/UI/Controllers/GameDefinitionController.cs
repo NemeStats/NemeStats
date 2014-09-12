@@ -25,14 +25,14 @@ namespace UI.Controllers
 
         internal IDataContext dataContext;
         internal IGameDefinitionRetriever gameDefinitionRetriever;
-        internal GameDefinitionViewModelBuilder gameDefinitionTransformation;
-        internal ShowingXResultsMessageBuilder showingXResultsMessageBuilder;
+        internal IGameDefinitionViewModelBuilder gameDefinitionTransformation;
+        internal IShowingXResultsMessageBuilder showingXResultsMessageBuilder;
         internal IGameDefinitionSaver gameDefinitionSaver;
 
         public GameDefinitionController(IDataContext dataContext,
             IGameDefinitionRetriever gameDefinitionRetriever,
-            GameDefinitionViewModelBuilder gameDefinitionTransformation,
-            ShowingXResultsMessageBuilder showingXResultsMessageBuilder,
+            IGameDefinitionViewModelBuilder gameDefinitionTransformation,
+            IShowingXResultsMessageBuilder showingXResultsMessageBuilder,
             IGameDefinitionSaver gameDefinitionCreator)
         {
             this.dataContext = dataContext;

@@ -24,10 +24,10 @@ namespace UI.Controllers
         internal NemeStatsDataContext dataContext;
         internal IPlayedGameRetriever playedGameRetriever;
         internal IPlayerRetriever playerRetriever;
-        internal PlayedGameDetailsViewModelBuilder playedGameDetailsBuilder;
+        internal IPlayedGameDetailsViewModelBuilder playedGameDetailsBuilder;
         internal IPlayedGameCreator playedGameCreator;
         internal IGameDefinitionRetriever gameDefinitionRetriever;
-        internal ShowingXResultsMessageBuilder showingXResultsMessageBuilder;
+        internal IShowingXResultsMessageBuilder showingXResultsMessageBuilder;
 
         internal const int NUMBER_OF_RECENT_GAMES_TO_DISPLAY = 10;
 
@@ -35,9 +35,9 @@ namespace UI.Controllers
             NemeStatsDataContext dataContext,
             IPlayedGameRetriever playedGameRetriever, 
             IPlayerRetriever playerRetriever,
-            PlayedGameDetailsViewModelBuilder builder,
+            IPlayedGameDetailsViewModelBuilder builder,
             IGameDefinitionRetriever gameDefinitionRetriever,
-            ShowingXResultsMessageBuilder showingXResultsMessageBuilder,
+            IShowingXResultsMessageBuilder showingXResultsMessageBuilder,
             IPlayedGameCreator playedGameCreator)
         {
             this.dataContext = dataContext;

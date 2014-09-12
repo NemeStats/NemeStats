@@ -17,12 +17,12 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.NemeStatsDataContextTest
     [TestFixture]
     public class SaveTests : NemeStatsDataContextTestBase
     {
-        protected SecuredEntityValidator<EntityWithTechnicalKey> securedEntityValidator;
+        protected ISecuredEntityValidator<EntityWithTechnicalKey> securedEntityValidator;
 
         [SetUp]
         public void SetUp()
         {
-            securedEntityValidator = MockRepository.GenerateMock<SecuredEntityValidator<EntityWithTechnicalKey>>();
+            securedEntityValidator = MockRepository.GenerateMock<ISecuredEntityValidator<EntityWithTechnicalKey>>();
             securedEntityValidatorFactory.Expect(mock => mock.MakeSecuredEntityValidator<EntityWithTechnicalKey>())
                 .Repeat.Once()
                 .Return(securedEntityValidator);

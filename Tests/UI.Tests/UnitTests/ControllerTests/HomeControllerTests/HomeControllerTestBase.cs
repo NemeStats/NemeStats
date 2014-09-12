@@ -18,14 +18,14 @@ namespace UI.Tests.UnitTests.ControllerTests.HomeControllerTests
     {
         protected HomeController homeControllerPartialMock;
         protected IPlayerSummaryBuilder playerSummaryBuilderMock;
-        protected TopPlayerViewModelBuilder viewModelBuilderMock;
+        protected ITopPlayerViewModelBuilder viewModelBuilderMock;
         protected IPlayedGameRetriever playedGameRetriever;
 
         [SetUp]
         public void SetUp()
         {
             playerSummaryBuilderMock = MockRepository.GenerateMock<IPlayerSummaryBuilder>();
-            viewModelBuilderMock = MockRepository.GenerateMock<TopPlayerViewModelBuilder>();
+            viewModelBuilderMock = MockRepository.GenerateMock<ITopPlayerViewModelBuilder>();
             playedGameRetriever = MockRepository.GenerateMock<IPlayedGameRetriever>();
             homeControllerPartialMock = MockRepository.GeneratePartialMock<HomeController>(
                 playerSummaryBuilderMock, 

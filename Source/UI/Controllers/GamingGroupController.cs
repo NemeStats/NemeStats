@@ -28,19 +28,19 @@ namespace UI.Controllers
         public const string SECTION_ANCHOR_RECENT_GAMES = "RecentGames";
 
         internal IDataContext dataContext;
-        internal GamingGroupViewModelBuilder gamingGroupViewModelBuilder;
+        internal IGamingGroupViewModelBuilder gamingGroupViewModelBuilder;
         internal IGamingGroupAccessGranter gamingGroupAccessGranter;
         internal IGamingGroupCreator gamingGroupCreator;
         internal IGamingGroupRetriever gamingGroupRetriever;
-        internal ShowingXResultsMessageBuilder showingXResultsMessageBuilder;
+        internal IShowingXResultsMessageBuilder showingXResultsMessageBuilder;
 
         public GamingGroupController(
             IDataContext dataContext,
-            GamingGroupViewModelBuilder gamingGroupViewModelBuilder,
+            IGamingGroupViewModelBuilder gamingGroupViewModelBuilder,
             IGamingGroupAccessGranter gamingGroupAccessGranter,
             IGamingGroupCreator gamingGroupCreator,
             IGamingGroupRetriever gamingGroupRetriever,
-            ShowingXResultsMessageBuilder showingXResultsMessageBuilder)
+            IShowingXResultsMessageBuilder showingXResultsMessageBuilder)
         {
             this.dataContext = dataContext;
             this.gamingGroupViewModelBuilder = gamingGroupViewModelBuilder;

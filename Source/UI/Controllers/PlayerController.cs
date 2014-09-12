@@ -26,17 +26,17 @@ namespace UI.Controllers
 
         internal IDataContext dataContext;
         internal IPlayerRepository playerRepository;
-        internal GameResultViewModelBuilder builder;
-        internal PlayerDetailsViewModelBuilder playerDetailsViewModelBuilder;
-        internal ShowingXResultsMessageBuilder showingXResultsMessageBuilder;
+        internal IGameResultViewModelBuilder builder;
+        internal IPlayerDetailsViewModelBuilder playerDetailsViewModelBuilder;
+        internal IShowingXResultsMessageBuilder showingXResultsMessageBuilder;
         internal IPlayerSaver playerSaver;
         internal IPlayerRetriever playerRetriever;
         
         public PlayerController(IDataContext dataContext, 
             IPlayerRepository playerRepository, 
-            GameResultViewModelBuilder builder,
-            PlayerDetailsViewModelBuilder playerDetailsViewModelBuilder,
-            ShowingXResultsMessageBuilder showingXResultsMessageBuilder,
+            IGameResultViewModelBuilder builder,
+            IPlayerDetailsViewModelBuilder playerDetailsViewModelBuilder,
+            IShowingXResultsMessageBuilder showingXResultsMessageBuilder,
             IPlayerSaver playerSaver,
             IPlayerRetriever playerRetriever)
         {

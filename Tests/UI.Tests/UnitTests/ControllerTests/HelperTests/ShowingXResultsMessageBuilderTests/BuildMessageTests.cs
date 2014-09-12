@@ -11,12 +11,12 @@ namespace UI.Tests.UnitTests.ControllerTests.HelperTests.ShowingXResultsMessageB
     [TestFixture]
     public class BuildMessageTests
     {
-        protected ShowingXResultsMessageBuilder messageBuilder;
+        protected IShowingXResultsMessageBuilder messageBuilder;
 
         [SetUp]
         public void SetUp()
         {
-            messageBuilder = new ShowingXResultsMessageBuilderImpl();
+            messageBuilder = new ShowingXResultsMessageBuilder();
         }
 
         [Test]
@@ -32,7 +32,7 @@ namespace UI.Tests.UnitTests.ControllerTests.HelperTests.ShowingXResultsMessageB
         {
             int maxResults = 1;
             int actualResults = 1;
-            string expectedMessage = string.Format(ShowingXResultsMessageBuilderImpl.RECENT_GAMES_MESSAGE_FORMAT, maxResults);
+            string expectedMessage = string.Format(ShowingXResultsMessageBuilder.RECENT_GAMES_MESSAGE_FORMAT, maxResults);
 
             string message = messageBuilder.BuildMessage(maxResults, actualResults);
 

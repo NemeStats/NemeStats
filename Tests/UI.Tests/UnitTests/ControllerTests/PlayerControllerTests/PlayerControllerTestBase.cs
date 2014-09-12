@@ -23,9 +23,9 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         protected IDataContext dataContextMock;
         protected IPlayerRepository playerRepositoryMock;
         protected IPlayerRetriever playerRetriever;
-        protected GameResultViewModelBuilder playerGameResultDetailsBuilderMock;
-        protected PlayerDetailsViewModelBuilder playerDetailsViewModelBuilderMock;
-        protected ShowingXResultsMessageBuilder showingXResultsMessageBuilderMock;
+        protected IGameResultViewModelBuilder playerGameResultDetailsBuilderMock;
+        protected IPlayerDetailsViewModelBuilder playerDetailsViewModelBuilderMock;
+        protected IShowingXResultsMessageBuilder showingXResultsMessageBuilderMock;
         protected IPlayerSaver playerCreatorMock;
         protected UrlHelper urlHelperMock;
         protected PlayerController playerController;
@@ -42,9 +42,9 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
             dataContextMock = MockRepository.GenerateMock<IDataContext>();
             playerRepositoryMock = MockRepository.GenerateMock<IPlayerRepository>();
             playerRetriever = MockRepository.GenerateMock<IPlayerRetriever>();
-            playerGameResultDetailsBuilderMock = MockRepository.GenerateMock<GameResultViewModelBuilder>();
-            playerDetailsViewModelBuilderMock = MockRepository.GenerateMock<PlayerDetailsViewModelBuilder>();
-            showingXResultsMessageBuilderMock = MockRepository.GenerateMock<ShowingXResultsMessageBuilder>();
+            playerGameResultDetailsBuilderMock = MockRepository.GenerateMock<IGameResultViewModelBuilder>();
+            playerDetailsViewModelBuilderMock = MockRepository.GenerateMock<IPlayerDetailsViewModelBuilder>();
+            showingXResultsMessageBuilderMock = MockRepository.GenerateMock<IShowingXResultsMessageBuilder>();
             playerCreatorMock = MockRepository.GenerateMock<IPlayerSaver>();
             urlHelperMock = MockRepository.GenerateMock<UrlHelper>();
             playerController = new PlayerController(

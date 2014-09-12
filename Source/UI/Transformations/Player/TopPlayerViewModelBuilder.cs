@@ -2,14 +2,23 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Web;
 using UI.Models.Players;
 
 namespace UI.Transformations.Player
 {
-    public interface TopPlayerViewModelBuilder
+    public class TopPlayerViewModelBuilder : ITopPlayerViewModelBuilder
     {
-        TopPlayerViewModel Build(TopPlayer topPlayer);
+        public TopPlayerViewModel Build(TopPlayer topPlayer)
+        {
+            return new TopPlayerViewModel()
+            {
+                PlayerId = topPlayer.PlayerId,
+                PlayerName = topPlayer.PlayerName,
+                TotalNumberOfGamesPlayed = topPlayer.TotalNumberOfGamesPlayed,
+                TotalPoints = topPlayer.TotalPoints,
+                WinPercentage = topPlayer.WinPercentage
+            };
+        }
     }
 }

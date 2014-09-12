@@ -242,8 +242,8 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\GameDefinitionController.cs" />
     <Compile Include="Controllers\GamingGroupController.cs" />
+    <Compile Include="Controllers\Helpers\IShowingXResultsMessageBuilder.cs" />
     <Compile Include="Controllers\Helpers\ShowingXResultsMessageBuilder.cs" />
-    <Compile Include="Controllers\Helpers\ShowingXResultsMessageBuilderImpl.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PlayedGameController.cs" />
     <Compile Include="Controllers\PlayerController.cs" />
@@ -290,22 +290,22 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>
+    <Compile Include="Transformations\IGameDefinitionViewModelBuilder.cs" />
     <Compile Include="Transformations\GameDefinitionViewModelBuilder.cs" />
-    <Compile Include="Transformations\GameDefinitionViewModelBuilderImpl.cs" />
+    <Compile Include="Transformations\IGamingGroupInvitationViewModelBuilder.cs" />
     <Compile Include="Transformations\GamingGroupInvitationViewModelBuilder.cs" />
-    <Compile Include="Transformations\GamingGroupInvitationViewModelBuilderImpl.cs" />
+    <Compile Include="Transformations\IGamingGroupViewModelBuilder.cs" />
     <Compile Include="Transformations\GamingGroupViewModelBuilder.cs" />
-    <Compile Include="Transformations\GamingGroupViewModelBuilderImpl.cs" />
-    <Compile Include="Transformations\PlayedGameDetailsViewModelBuilderImpl.cs" />
+    <Compile Include="Transformations\PlayedGameDetailsViewModelBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
-    <Compile Include="Transformations\PlayedGameDetailsViewModelBuilder.cs" />
+    <Compile Include="Transformations\IPlayedGameDetailsViewModelBuilder.cs" />
+    <Compile Include="Transformations\IGameResultViewModelBuilder.cs" />
     <Compile Include="Transformations\GameResultViewModelBuilder.cs" />
-    <Compile Include="Transformations\GameResultViewModelBuilderImpl.cs" />
+    <Compile Include="Transformations\Player\IPlayerDetailsViewModelBuilder.cs" />
     <Compile Include="Transformations\Player\PlayerDetailsViewModelBuilder.cs" />
-    <Compile Include="Transformations\Player\PlayerDetailsViewModelBuilderImpl.cs" />
+    <Compile Include="Transformations\Player\ITopPlayerViewModelBuilder.cs" />
     <Compile Include="Transformations\Player\TopPlayerViewModelBuilder.cs" />
-    <Compile Include="Transformations\Player\TopPlayerViewModelBuilderImpl.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\blog.css" />

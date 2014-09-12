@@ -16,8 +16,8 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.SecurityTests.SecuredEnt
     [TestFixture]
     public class ValidateAccessTests
     {
-        protected SecuredEntityValidatorImpl<SecuredEntityWithTechnicalKey> securedEntityValidatorForSecuredEntity;
-        protected SecuredEntityValidatorImpl<object> securedEntityValidatorForEntityThatIsNotSecured;
+        protected SecuredEntityValidator<SecuredEntityWithTechnicalKey> securedEntityValidatorForSecuredEntity;
+        protected SecuredEntityValidator<object> securedEntityValidatorForEntityThatIsNotSecured;
         protected SecuredEntityWithTechnicalKey securedEntity;
         protected ApplicationUser currentUser;
         protected int securedEntityGamingGroupId = 1;
@@ -26,8 +26,8 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.SecurityTests.SecuredEnt
         [SetUp]
         public void SetUp()
         {
-            securedEntityValidatorForSecuredEntity = new SecuredEntityValidatorImpl<SecuredEntityWithTechnicalKey>();
-            securedEntityValidatorForEntityThatIsNotSecured = new SecuredEntityValidatorImpl<object>();
+            securedEntityValidatorForSecuredEntity = new SecuredEntityValidator<SecuredEntityWithTechnicalKey>();
+            securedEntityValidatorForEntityThatIsNotSecured = new SecuredEntityValidator<object>();
             securedEntity = MockRepository.GenerateMock<SecuredEntityWithTechnicalKey>();
             currentUser = new ApplicationUser();
 
@@ -95,7 +95,7 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.SecurityTests.SecuredEnt
                     string.Empty));
 
             Assert.AreEqual(
-                SecuredEntityValidatorImpl<SecuredEntityWithTechnicalKey>.EXCEPTION_MESSAGE_CURRENT_USER_GAMING_GROUP_ID_CANNOT_BE_NULL, 
+                SecuredEntityValidator<SecuredEntityWithTechnicalKey>.EXCEPTION_MESSAGE_CURRENT_USER_GAMING_GROUP_ID_CANNOT_BE_NULL, 
                 exception.Message);
         }
     }

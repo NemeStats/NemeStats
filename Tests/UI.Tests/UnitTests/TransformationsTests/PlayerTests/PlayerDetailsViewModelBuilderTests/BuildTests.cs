@@ -12,14 +12,14 @@ using UI.Models.Players;
 using UI.Transformations;
 using UI.Transformations.Player;
 
-namespace UI.Tests.UnitTests.TransformationsTests.PlayerTests.PlayerDetailsViewModelBuilderImplTests
+namespace UI.Tests.UnitTests.TransformationsTests.PlayerTests.PlayerDetailsViewModelBuilderTests
 {
     [TestFixture]
     public class BuildTests
     {
         private PlayerDetails playerDetails;
         private PlayerDetailsViewModel playerDetailsViewModel;
-        private PlayerDetailsViewModelBuilderImpl builder;
+        private PlayerDetailsViewModelBuilder builder;
         private ApplicationUser currentUser;
 
         [TestFixtureSetUp]
@@ -70,8 +70,8 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTests.PlayerDetailsViewM
                 GamingGroupId = 123
             };
 
-            GameResultViewModelBuilder relatedEntityBuilder
-                = MockRepository.GenerateMock<GameResultViewModelBuilder>();
+            IGameResultViewModelBuilder relatedEntityBuilder
+                = MockRepository.GenerateMock<IGameResultViewModelBuilder>();
             relatedEntityBuilder.Expect(build => build.Build(playerGameResults[0]))
                     .Repeat
                     .Once()
@@ -80,7 +80,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTests.PlayerDetailsViewM
                     .Repeat
                     .Once()
                     .Return(new Models.PlayedGame.GameResultViewModel() { PlayedGameId = playerGameResults[1].PlayedGameId });
-            builder = new PlayerDetailsViewModelBuilderImpl(relatedEntityBuilder);
+            builder = new PlayerDetailsViewModelBuilder(relatedEntityBuilder);
 
             currentUser = new ApplicationUser()
             {
@@ -93,7 +93,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTests.PlayerDetailsViewM
         [Test]
         public void PlayerDetailsCannotBeNull()
         {
-            PlayerDetailsViewModelBuilderImpl builder = new PlayerDetailsViewModelBuilderImpl(null);
+            PlayerDetailsViewModelBuilder builder = new PlayerDetailsViewModelBuilder(null);
 
             var exception = Assert.Throws<ArgumentNullException>(() =>
                     builder.Build(null, currentUser));
@@ -104,23 +104,23 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTests.PlayerDetailsViewM
         [Test]
         public void ItRequiresPlayerGameResults()
         {
-            PlayerDetailsViewModelBuilderImpl builder = new PlayerDetailsViewModelBuilderImpl(null);
+            PlayerDetailsViewModelBuilder builder = new PlayerDetailsViewModelBuilder(null);
 
             var exception = Assert.Throws<ArgumentException>(() =>
                     builder.Build(new PlayerDetails(), currentUser));
 
-            Assert.AreEqual(PlayerDetailsViewModelBuilderImpl.EXCEPTION_PLAYER_GAME_RESULTS_CANNOT_BE_NULL, exception.Message);
+            Assert.AreEqual(PlayerDetailsViewModelBuilder.EXCEPTION_PLAYER_GAME_RESULTS_CANNOT_BE_NULL, exception.Message);
         }
 
         [Test]
         public void ItRequiresPlayerStatistics()
         {
-            PlayerDetailsViewModelBuilderImpl builder = new PlayerDetailsViewModelBuilderImpl(null);
+            PlayerDetailsViewModelBuilder builder = new PlayerDetailsViewModelBuilder(null);
             PlayerDetails playerDetailsWithNoStatistics = new PlayerDetails() { PlayerGameResults = new List<PlayerGameResult>() };
             var exception = Assert.Throws<ArgumentException>(() =>
                     builder.Build(playerDetailsWithNoStatistics, currentUser));
 
-            Assert.AreEqual(PlayerDetailsViewModelBuilderImpl.EXCEPTION_PLAYER_STATISTICS_CANNOT_BE_NULL, exception.Message);
+            Assert.AreEqual(PlayerDetailsViewModelBuilder.EXCEPTION_PLAYER_STATISTICS_CANNOT_BE_NULL, exception.Message);
         }
 
         [Test]

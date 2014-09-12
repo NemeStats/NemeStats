@@ -119,7 +119,7 @@
     <Compile Include="DataAccess\SecuredEntityWithTechnicalKey.cs" />
     <Compile Include="DataAccess\Security\ISecuredEntityValidator.cs" />
     <Compile Include="DataAccess\Security\SecuredEntityValidatorFactory.cs" />
-    <Compile Include="DataAccess\Security\SecuredEntityValidatorImpl.cs" />
+    <Compile Include="DataAccess\Security\SecuredEntityValidator.cs" />
     <Compile Include="DataAccess\ISingleColumnTechnicalKey.cs" />
     <Compile Include="DataAccess\Repositories\IPlayerRepository.cs" />
     <Compile Include="DataAccess\Repositories\EntityFrameworkPlayerRepository.cs" />

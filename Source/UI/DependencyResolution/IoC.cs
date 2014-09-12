@@ -57,21 +57,21 @@ namespace UI.DependencyResolution {
                             x.For<IPlayerRepository>().Use<EntityFrameworkPlayerRepository>();
                             x.For<IGameDefinitionRetriever>().Use<GameDefinitionRetriever>();
                             x.For<IPlayedGameRetriever>().Use<PlayedGameRetriever>();
-                            x.For<PlayedGameDetailsViewModelBuilder>().Use<PlayedGameDetailsViewModelBuilderImpl>();
-                            x.For<GameResultViewModelBuilder>().Use<GameResultViewModelBuilderImpl>();
-                            x.For<PlayerDetailsViewModelBuilder>().Use<PlayerDetailsViewModelBuilderImpl>();
-                            x.For<GamingGroupViewModelBuilder>()
-                                .Use<GamingGroupViewModelBuilderImpl>();
-                            x.For<GamingGroupInvitationViewModelBuilder>()
-                                .Use<GamingGroupInvitationViewModelBuilderImpl>();
+                            x.For<IPlayedGameDetailsViewModelBuilder>().Use<PlayedGameDetailsViewModelBuilder>();
+                            x.For<IGameResultViewModelBuilder>().Use<GameResultViewModelBuilder>();
+                            x.For<IPlayerDetailsViewModelBuilder>().Use<PlayerDetailsViewModelBuilder>();
+                            x.For<IGamingGroupViewModelBuilder>()
+                                .Use<GamingGroupViewModelBuilder>();
+                            x.For<IGamingGroupInvitationViewModelBuilder>()
+                                .Use<GamingGroupInvitationViewModelBuilder>();
                             x.For<IGamingGroupAccessGranter>().Use<EntityFrameworkGamingGroupAccessGranter>();
                             x.For<IGamingGroupInviteConsumer>().Use<GamingGroupInviteConsumer>();
                             x.For<Microsoft.AspNet.Identity.IUserStore<ApplicationUser>>()
                                 .Use<Microsoft.AspNet.Identity.EntityFramework.UserStore<ApplicationUser>>();
                             x.For<IGamingGroupCreator>().Use<GamingGroupCreator>();
-                            x.For<GameDefinitionViewModelBuilder>()
-                                .Use<GameDefinitionViewModelBuilderImpl>();
-                            x.For<ShowingXResultsMessageBuilder>().Use<ShowingXResultsMessageBuilderImpl>();
+                            x.For<IGameDefinitionViewModelBuilder>()
+                                .Use<GameDefinitionViewModelBuilder>();
+                            x.For<IShowingXResultsMessageBuilder>().Use<ShowingXResultsMessageBuilder>();
                             x.For<IGamingGroupRetriever>().Use<GamingGroupRetriever>();
                             x.For<IPendingGamingGroupInvitationRetriever>().Use<PendingGamingGroupInvitationRetriever>();
                             x.For<IPlayedGameCreator>().Use<PlayedGameCreator>();
@@ -80,7 +80,7 @@ namespace UI.DependencyResolution {
                             x.For<IUniversalAnalyticsEvent>().Use<UniversalAnalyticsEvent>();
                             x.For<IUniversalAnalyticsEventFactory>().Use<UniversalAnalyticsEventFactory>();
                             x.For<IConfigurationManager>().Use<ConfigurationManager>();
-                            x.For<TopPlayerViewModelBuilder>().Use<TopPlayerViewModelBuilderImpl>();
+                            x.For<ITopPlayerViewModelBuilder>().Use<TopPlayerViewModelBuilder>();
                             x.For<IPlayerSummaryBuilder>().Use<PlayerSummaryBuilder>();
                             x.For<IPlayerSaver>().Use<PlayerSaver>();
                             x.For<IGameDefinitionSaver>().Use<GameDefinitionSaver>();

@@ -8,19 +8,19 @@ using System.Threading.Tasks;
 using UI.Models.Players;
 using UI.Transformations.Player;
 
-namespace UI.Tests.UnitTests.TransformationsTests.PlayerTests.TopPlayerViewModelBuilderImplTests
+namespace UI.Tests.UnitTests.TransformationsTests.PlayerTests.TopPlayerViewModelBuilderTests
 {
     [TestFixture]
     public class BuildTests
     {
-        private TopPlayerViewModelBuilderImpl builder;
+        private TopPlayerViewModelBuilder builder;
         private TopPlayer topPlayer;
         private TopPlayerViewModel topPlayerViewModel;
 
         [SetUp]
         public void SetUp()
         {
-            builder = new TopPlayerViewModelBuilderImpl();
+            builder = new TopPlayerViewModelBuilder();
             topPlayer = new TopPlayer()
             {
                 PlayerId = 1,

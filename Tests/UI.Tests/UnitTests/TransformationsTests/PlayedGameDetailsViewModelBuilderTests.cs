@@ -13,12 +13,12 @@ using UI.Transformations;
 namespace UI.Tests.UnitTests.TransformationsTests
 {
     [TestFixture]
-    public class PlayedGameDetailsBuilderImplTests
+    public class PlayedGameDetailsBuilderTests
     {
-        private PlayedGameDetailsViewModelBuilderImpl builder;
+        private PlayedGameDetailsViewModelBuilder builder;
         private PlayedGame playedGame;
         private PlayedGameDetailsViewModel playedGameDetails;
-        private GameResultViewModelBuilder detailsBuilder;
+        private IGameResultViewModelBuilder detailsBuilder;
         private ApplicationUser currentUser;
         private int gamingGroupId = 1123;
 
@@ -62,8 +62,8 @@ namespace UI.Tests.UnitTests.TransformationsTests
                 PlayedGame = new PlayedGame() { GameDefinition = new GameDefinition() {  Id = 135, Name = "Test game name"} }
             });
 
-            detailsBuilder = MockRepository.GenerateMock<GameResultViewModelBuilder>();
-            builder = new PlayedGameDetailsViewModelBuilderImpl(detailsBuilder);
+            detailsBuilder = MockRepository.GenerateMock<IGameResultViewModelBuilder>();
+            builder = new PlayedGameDetailsViewModelBuilder(detailsBuilder);
 
             int totalPlayerGameResults = playedGame.PlayerGameResults.Count;
             for (int i = 0; i < totalPlayerGameResults; i++)
@@ -101,7 +101,7 @@ namespace UI.Tests.UnitTests.TransformationsTests
                     builder.Build(playedGameWithNoGameDefinition, currentUser)
                 );
 
-            Assert.AreEqual(PlayedGameDetailsViewModelBuilderImpl.EXCEPTION_GAME_DEFINITION_CANNOT_BE_NULL, exception.Message);
+            Assert.AreEqual(PlayedGameDetailsViewModelBuilder.EXCEPTION_GAME_DEFINITION_CANNOT_BE_NULL, exception.Message);
         }
 
         [Test]
@@ -113,7 +113,7 @@ namespace UI.Tests.UnitTests.TransformationsTests
                     builder.Build(playedGameWithNoPlayerGameResults, currentUser)
                 );
 
-            Assert.AreEqual(PlayedGameDetailsViewModelBuilderImpl.EXCEPTION_PLAYER_GAME_RESULTS_CANNOT_BE_NULL, exception.Message);
+            Assert.AreEqual(PlayedGameDetailsViewModelBuilder.EXCEPTION_PLAYER_GAME_RESULTS_CANNOT_BE_NULL, exception.Message);
         }
 
         [Test]

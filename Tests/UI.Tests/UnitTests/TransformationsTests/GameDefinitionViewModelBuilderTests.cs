@@ -14,10 +14,10 @@ using UI.Transformations;
 namespace UI.Tests.UnitTests.TransformationsTests
 {
     [TestFixture]
-    public class GameDefinitionViewModelBuilderImplTests
+    public class GameDefinitionViewModelBuilderTests
     {
-        protected GameDefinitionViewModelBuilderImpl transformer;
-        protected PlayedGameDetailsViewModelBuilder playedGameDetailsViewModelBuilder;
+        protected GameDefinitionViewModelBuilder transformer;
+        protected IPlayedGameDetailsViewModelBuilder playedGameDetailsViewModelBuilder;
         protected GameDefinition gameDefinition;
         protected GameDefinitionViewModel viewModel;
         protected PlayedGameDetailsViewModel playedGameDetailsViewModel1;
@@ -28,8 +28,8 @@ namespace UI.Tests.UnitTests.TransformationsTests
         [TestFixtureSetUp]
         public void FixtureSetUp()
         {
-            playedGameDetailsViewModelBuilder = MockRepository.GenerateMock<PlayedGameDetailsViewModelBuilder>();
-            transformer = new GameDefinitionViewModelBuilderImpl(playedGameDetailsViewModelBuilder);            
+            playedGameDetailsViewModelBuilder = MockRepository.GenerateMock<IPlayedGameDetailsViewModelBuilder>();
+            transformer = new GameDefinitionViewModelBuilder(playedGameDetailsViewModelBuilder);            
 
             List<PlayedGame> playedGames = new List<PlayedGame>();
             playedGames.Add(new PlayedGame()

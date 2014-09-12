@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BusinessLogic.DataAccess.Security
 {
-    public class SecuredEntityValidatorImpl<TEntity> : SecuredEntityValidator<TEntity> where TEntity : class
+    public class SecuredEntityValidator<TEntity> : ISecuredEntityValidator<TEntity> where TEntity : class
     {
         internal const string EXCEPTION_MESSAGE_CURRENT_USER_ID_CANNOT_BE_NULL
            = "currentUser.Id cannot be null";

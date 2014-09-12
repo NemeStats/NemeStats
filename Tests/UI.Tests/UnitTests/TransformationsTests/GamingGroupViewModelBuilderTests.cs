@@ -18,12 +18,12 @@ using UI.Transformations.Player;
 namespace UI.Tests.UnitTests.TransformationsTests
 {
     [TestFixture]
-    public class GamingGroupViewModelBuilderImplTests
+    public class GamingGroupViewModelBuilderTests
     {
-        private GamingGroupViewModelBuilderImpl transformer;
-        private GamingGroupInvitationViewModelBuilder invitationTransformerMock;
-        private PlayerDetailsViewModelBuilder playerDetailsViewModelBuilderMock;
-        private PlayedGameDetailsViewModelBuilder playedGameDetailsViewModelBuilderMock;
+        private GamingGroupViewModelBuilder transformer;
+        private IGamingGroupInvitationViewModelBuilder invitationTransformerMock;
+        private IPlayerDetailsViewModelBuilder playerDetailsViewModelBuilderMock;
+        private IPlayedGameDetailsViewModelBuilder playedGameDetailsViewModelBuilderMock;
         private GamingGroup gamingGroup;
         private GamingGroupViewModel viewModel;
         private List<Player> players;
@@ -33,10 +33,10 @@ namespace UI.Tests.UnitTests.TransformationsTests
         [SetUp]
         public void SetUp()
         {
-            invitationTransformerMock = MockRepository.GenerateMock<GamingGroupInvitationViewModelBuilder>();
-            playerDetailsViewModelBuilderMock = MockRepository.GenerateMock<PlayerDetailsViewModelBuilder>();
-            playedGameDetailsViewModelBuilderMock = MockRepository.GenerateMock<PlayedGameDetailsViewModelBuilder>();
-            transformer = new GamingGroupViewModelBuilderImpl(
+            invitationTransformerMock = MockRepository.GenerateMock<IGamingGroupInvitationViewModelBuilder>();
+            playerDetailsViewModelBuilderMock = MockRepository.GenerateMock<IPlayerDetailsViewModelBuilder>();
+            playedGameDetailsViewModelBuilderMock = MockRepository.GenerateMock<IPlayedGameDetailsViewModelBuilder>();
+            transformer = new GamingGroupViewModelBuilder(
                 invitationTransformerMock, 
                 playerDetailsViewModelBuilderMock,
                 playedGameDetailsViewModelBuilderMock);

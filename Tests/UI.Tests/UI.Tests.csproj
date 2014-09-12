@@ -178,13 +178,13 @@
     <Compile Include="UnitTests\ControllerTests\PlayerControllerTests\PlayerControllerTestBase.cs" />
     <Compile Include="UnitTests\FiltersTests\UserContextAttributeTests\OnActionExecutingTests.cs" />
     <Compile Include="UnitTests\HtmlHelperTests\MyHelpersTests\GameResultsTests.cs" />
-    <Compile Include="UnitTests\TransformationsTests\GameDefinitionViewModelBuilderImplTests.cs" />
-    <Compile Include="UnitTests\TransformationsTests\GamingGroupInvitationViewModelBuilderImplTests.cs" />
-    <Compile Include="UnitTests\TransformationsTests\GamingGroupViewModelBuilderImplTests.cs" />
-    <Compile Include="UnitTests\TransformationsTests\PlayedGameDetailsViewModelBuilderImplTests.cs" />
+    <Compile Include="UnitTests\TransformationsTests\GameDefinitionViewModelBuilderTests.cs" />
+    <Compile Include="UnitTests\TransformationsTests\GamingGroupInvitationViewModelBuilderTests.cs" />
+    <Compile Include="UnitTests\TransformationsTests\GamingGroupViewModelBuilderTests.cs" />
+    <Compile Include="UnitTests\TransformationsTests\PlayedGameDetailsViewModelBuilderTests.cs" />
     <Compile Include="UnitTests\TransformationsTests\GameResultViewModelBuilderTests\BuildTests.cs" />
-    <Compile Include="UnitTests\TransformationsTests\PlayerTests\PlayerDetailsViewModelBuilderImplTests\BuildTests.cs" />
-    <Compile Include="UnitTests\TransformationsTests\PlayerTests\TopPlayerViewModelBuilderImplTests\BuildTests.cs" />
+    <Compile Include="UnitTests\TransformationsTests\PlayerTests\PlayerDetailsViewModelBuilderTests\BuildTests.cs" />
+    <Compile Include="UnitTests\TransformationsTests\PlayerTests\TopPlayerViewModelBuilderTests\BuildTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
