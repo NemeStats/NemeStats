@@ -6,10 +6,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefinitionRetrieverImplTests
+namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefinitionRetrieverTests
 {
     [TestFixture]
-    public class GetGameDefinitionDetailsTests : GameDefinitionRetrieverImplTestBase
+    public class GetGameDefinitionDetailsTests : GameDefinitionRetrieverTestBase
     {
         //TODO integration testing instead. Will delete this if it pans out.
         //private List<GameDefinition> gameDefinitionsToQuery;

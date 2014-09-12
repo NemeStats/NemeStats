@@ -20,9 +20,9 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
     [TestFixture]
     public class PlayerControllerTestBase
     {
-        protected DataContext dataContextMock;
-        protected PlayerRepository playerRepositoryMock;
-        protected PlayerRetriever playerRetriever;
+        protected IDataContext dataContextMock;
+        protected IPlayerRepository playerRepositoryMock;
+        protected IPlayerRetriever playerRetriever;
         protected GameResultViewModelBuilder playerGameResultDetailsBuilderMock;
         protected PlayerDetailsViewModelBuilder playerDetailsViewModelBuilderMock;
         protected ShowingXResultsMessageBuilder showingXResultsMessageBuilderMock;
@@ -39,9 +39,9 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
                 CurrentGamingGroupId = 123,
                 Id = "app user id"
             };
-            dataContextMock = MockRepository.GenerateMock<DataContext>();
-            playerRepositoryMock = MockRepository.GenerateMock<PlayerRepository>();
-            playerRetriever = MockRepository.GenerateMock<PlayerRetriever>();
+            dataContextMock = MockRepository.GenerateMock<IDataContext>();
+            playerRepositoryMock = MockRepository.GenerateMock<IPlayerRepository>();
+            playerRetriever = MockRepository.GenerateMock<IPlayerRetriever>();
             playerGameResultDetailsBuilderMock = MockRepository.GenerateMock<GameResultViewModelBuilder>();
             playerDetailsViewModelBuilderMock = MockRepository.GenerateMock<PlayerDetailsViewModelBuilder>();
             showingXResultsMessageBuilderMock = MockRepository.GenerateMock<ShowingXResultsMessageBuilder>();

@@ -10,11 +10,11 @@ using System.Threading.Tasks;
 
 namespace BusinessLogic.DataAccess.GamingGroups
 {
-    public class EntityFrameworkGamingGroupAccessGranter : GamingGroupAccessGranter
+    public class EntityFrameworkGamingGroupAccessGranter : IGamingGroupAccessGranter
     {
-        protected DataContext dataContext;
+        protected IDataContext dataContext;
 
-        public EntityFrameworkGamingGroupAccessGranter(DataContext dataContext)
+        public EntityFrameworkGamingGroupAccessGranter(IDataContext dataContext)
         {
             this.dataContext = dataContext;
         }

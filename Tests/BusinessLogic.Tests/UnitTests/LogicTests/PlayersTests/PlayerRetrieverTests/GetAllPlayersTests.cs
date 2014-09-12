@@ -10,21 +10,21 @@ using Rhino.Mocks;
 using BusinessLogic.Models;
 using BusinessLogic.Models.User;
 
-namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverImplTests
+namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverTests
 {
     [TestFixture]
     public class GetAllPlayersTests
     {
-        private PlayerRetrieverImpl playerRetriever;
-        private DataContext dataContextMock;
+        private PlayerRetriever playerRetriever;
+        private IDataContext dataContextMock;
         private IQueryable<Player> playerQueryable;
         private int gamingGroupId = 558585;
 
         [SetUp]
         public void SetUp()
         {
-            dataContextMock = MockRepository.GenerateMock<DataContext>();
-            playerRetriever = new PlayerRetrieverImpl(dataContextMock);
+            dataContextMock = MockRepository.GenerateMock<IDataContext>();
+            playerRetriever = new PlayerRetriever(dataContextMock);
 
             List<Player> players = new List<Player>()
             {

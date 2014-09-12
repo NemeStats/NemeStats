@@ -13,7 +13,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGamesTests
     {
         private PlayedGame GetTestSubjectPlayedGame(NemeStatsDataContext dataContextToTestWith)
         {
-            return new PlayedGameRetrieverImpl(dataContextToTestWith)
+            return new PlayedGameRetriever(dataContextToTestWith)
                 .GetPlayedGameDetails(testPlayedGames[0].Id);
         }
 
@@ -74,7 +74,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGamesTests
         {
             using (NemeStatsDataContext dataContext = new NemeStatsDataContext())
             {
-                PlayedGameRetrieverImpl retriever = new PlayedGameRetrieverImpl(dataContext);
+                PlayedGameRetriever retriever = new PlayedGameRetriever(dataContext);
 
                 PlayedGame notFoundPlayedGame = retriever.GetPlayedGameDetails(-1);
                 Assert.Null(notFoundPlayedGame);

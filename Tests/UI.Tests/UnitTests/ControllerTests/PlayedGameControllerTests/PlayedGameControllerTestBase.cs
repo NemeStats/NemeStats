@@ -21,11 +21,11 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
         protected NemeStatsDataContext dataContext;
         protected PlayedGameController playedGameController;
         protected PlayedGameController playedGameControllerPartialMock;
-        protected PlayedGameRetriever playedGameRetriever;
-        protected PlayerRetriever playerRetrieverMock;
+        protected IPlayedGameRetriever playedGameRetriever;
+        protected IPlayerRetriever playerRetrieverMock;
         protected PlayedGameDetailsViewModelBuilder playedGameDetailsBuilderMock;
-        protected GameDefinitionRetriever gameDefinitionRetrieverMock;
-        protected PlayedGameCreator playedGameCreatorMock;
+        protected IGameDefinitionRetriever gameDefinitionRetrieverMock;
+        protected IPlayedGameCreator playedGameCreatorMock;
         protected ShowingXResultsMessageBuilder showingXResultsMessageBuilderMock;
         protected UrlHelper urlHelperMock;
         protected string testUserName = "the test user name";
@@ -36,11 +36,11 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
         public virtual void TestSetUp()
         {
             dataContext = MockRepository.GenerateMock<NemeStatsDataContext>();
-            playedGameRetriever = MockRepository.GenerateMock<PlayedGameRetriever>();
-            playerRetrieverMock = MockRepository.GenerateMock<PlayerRetriever>();
+            playedGameRetriever = MockRepository.GenerateMock<IPlayedGameRetriever>();
+            playerRetrieverMock = MockRepository.GenerateMock<IPlayerRetriever>();
             playedGameDetailsBuilderMock = MockRepository.GenerateMock<PlayedGameDetailsViewModelBuilder>();
-            gameDefinitionRetrieverMock = MockRepository.GenerateMock<GameDefinitionRetriever>();
-            playedGameCreatorMock = MockRepository.GenerateMock<PlayedGameCreator>();
+            gameDefinitionRetrieverMock = MockRepository.GenerateMock<IGameDefinitionRetriever>();
+            playedGameCreatorMock = MockRepository.GenerateMock<IPlayedGameCreator>();
             showingXResultsMessageBuilderMock = MockRepository.GenerateMock<ShowingXResultsMessageBuilder>();
             urlHelperMock = MockRepository.GenerateMock<UrlHelper>();
             playedGameController = new Controllers.PlayedGameController(

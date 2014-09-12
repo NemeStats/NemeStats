@@ -12,12 +12,12 @@ using System.Text;
 using System.Threading.Tasks;
 using UniversalAnalyticsHttpWrapper;
 
-namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefinitionCreatorImplTests
+namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefinitionCreatorTests
 {
     [TestFixture]
     public class SaveTests
     {
-        private DataContext dataContextMock;
+        private IDataContext dataContextMock;
         private NemeStatsEventTracker eventTrackerMock;
         private GameDefinitionSaver gameDefinitionSaver;
         private ApplicationUser currentUser;
@@ -25,7 +25,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
         [SetUp]
         public void SetUp()
         {
-            dataContextMock = MockRepository.GenerateMock<DataContext>();
+            dataContextMock = MockRepository.GenerateMock<IDataContext>();
             eventTrackerMock = MockRepository.GenerateMock<NemeStatsEventTracker>();
             gameDefinitionSaver = new GameDefinitionSaver(dataContextMock, eventTrackerMock);
             currentUser = new ApplicationUser();

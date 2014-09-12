@@ -10,12 +10,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.PendingGamingGroupInvitationRetrieverImplTests
+namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.PendingGamingGroupInvitationRetrieverTests
 {
     [TestFixture]
     public class GetPendingGamingGroupInvitationsTests
     {
-        protected PendingGamingGroupInvitationRetrieverImpl retriever;
+        protected PendingGamingGroupInvitationRetriever retriever;
         protected NemeStatsDataContext dataContextMock;
         protected ApplicationUser currentUser;
         protected ApplicationUser expectedApplicationUser;
@@ -26,7 +26,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.PendingGami
         public void SetUp()
         {
             dataContextMock = MockRepository.GenerateMock<NemeStatsDataContext>();
-            retriever = new PendingGamingGroupInvitationRetrieverImpl(dataContextMock);
+            retriever = new PendingGamingGroupInvitationRetriever(dataContextMock);
 
             currentUser = new ApplicationUser()
             {

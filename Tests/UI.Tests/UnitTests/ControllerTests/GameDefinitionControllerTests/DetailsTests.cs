@@ -71,7 +71,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
         [Test]
         public void ItReturnsAnHttpNotFoundStatusCodeIfTheGameDefinitionIsNotFound()
         {
-            gameDefinitionControllerPartialMock.gameDefinitionRetriever = MockRepository.GenerateMock<GameDefinitionRetriever>();
+            gameDefinitionControllerPartialMock.gameDefinitionRetriever = MockRepository.GenerateMock<IGameDefinitionRetriever>();
             gameDefinitionControllerPartialMock.gameDefinitionRetriever.Expect(mock => mock.GetGameDefinitionDetails(
                 Arg<int>.Is.Anything,
                 Arg<int>.Is.Anything))
@@ -85,7 +85,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
         [Test]
         public void ItReturnsAnHttpNotAuthorizedStatusCodeIfUserIsNotAuthorizedToViewTheGameDefintion()
         {
-            gameDefinitionControllerPartialMock.gameDefinitionRetriever = MockRepository.GenerateMock<GameDefinitionRetriever>();
+            gameDefinitionControllerPartialMock.gameDefinitionRetriever = MockRepository.GenerateMock<IGameDefinitionRetriever>();
             gameDefinitionControllerPartialMock.gameDefinitionRetriever.Expect(repo => repo.GetGameDefinitionDetails(
                 Arg<int>.Is.Anything,
                 Arg<int>.Is.Anything))

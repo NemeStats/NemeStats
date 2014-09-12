@@ -21,12 +21,12 @@ namespace UI.Controllers
     public partial class AccountController : Controller
     {
         protected UserManager<ApplicationUser> userManager { get; set; }
-        protected GamingGroupInviteConsumer gamingGroupInviteConsumer;
+        protected IGamingGroupInviteConsumer gamingGroupInviteConsumer;
         protected NemeStatsEventTracker eventTracker;
 
         public AccountController(
             UserManager<ApplicationUser> userManager, 
-            GamingGroupInviteConsumer gamingGroupInviteConsumer,
+            IGamingGroupInviteConsumer gamingGroupInviteConsumer,
             NemeStatsEventTracker eventTracker)
         {
             this.userManager = userManager;

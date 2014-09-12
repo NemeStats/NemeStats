@@ -10,7 +10,7 @@ using System.Linq;
 
 namespace BusinessLogic.DataAccess
 {
-    public class NemeStatsDataContext : DataContext
+    public class NemeStatsDataContext : IDataContext
     {
         internal const string CONNECTION_NAME = "DefaultConnection";
         internal const string UNKNOWN_ENTITY_ID = "<unknown>";

@@ -53,10 +53,10 @@ namespace UI.DependencyResolution {
                                     });
                             //TODO MAKE THIS PER REQUEST
                             x.For<DbContext>().Use<NemeStatsDbContext>();
-                            x.For<DataContext>().Use<NemeStatsDataContext>();
-                            x.For<PlayerRepository>().Use<EntityFrameworkPlayerRepository>();
-                            x.For<GameDefinitionRetriever>().Use<GameDefinitionRetrieverImpl>();
-                            x.For<PlayedGameRetriever>().Use<PlayedGameRetrieverImpl>();
+                            x.For<IDataContext>().Use<NemeStatsDataContext>();
+                            x.For<IPlayerRepository>().Use<EntityFrameworkPlayerRepository>();
+                            x.For<IGameDefinitionRetriever>().Use<GameDefinitionRetriever>();
+                            x.For<IPlayedGameRetriever>().Use<PlayedGameRetriever>();
                             x.For<PlayedGameDetailsViewModelBuilder>().Use<PlayedGameDetailsViewModelBuilderImpl>();
                             x.For<GameResultViewModelBuilder>().Use<GameResultViewModelBuilderImpl>();
                             x.For<PlayerDetailsViewModelBuilder>().Use<PlayerDetailsViewModelBuilderImpl>();
@@ -64,27 +64,27 @@ namespace UI.DependencyResolution {
                                 .Use<GamingGroupViewModelBuilderImpl>();
                             x.For<GamingGroupInvitationViewModelBuilder>()
                                 .Use<GamingGroupInvitationViewModelBuilderImpl>();
-                            x.For<GamingGroupAccessGranter>().Use<EntityFrameworkGamingGroupAccessGranter>();
-                            x.For<GamingGroupInviteConsumer>().Use<GamingGroupInviteConsumerImpl>();
+                            x.For<IGamingGroupAccessGranter>().Use<EntityFrameworkGamingGroupAccessGranter>();
+                            x.For<IGamingGroupInviteConsumer>().Use<GamingGroupInviteConsumer>();
                             x.For<Microsoft.AspNet.Identity.IUserStore<ApplicationUser>>()
                                 .Use<Microsoft.AspNet.Identity.EntityFramework.UserStore<ApplicationUser>>();
-                            x.For<GamingGroupCreator>().Use<GamingGroupCreatorImpl>();
+                            x.For<IGamingGroupCreator>().Use<GamingGroupCreator>();
                             x.For<GameDefinitionViewModelBuilder>()
                                 .Use<GameDefinitionViewModelBuilderImpl>();
                             x.For<ShowingXResultsMessageBuilder>().Use<ShowingXResultsMessageBuilderImpl>();
-                            x.For<GamingGroupRetriever>().Use<GamingGroupRetrieverImpl>();
-                            x.For<PendingGamingGroupInvitationRetriever>().Use<PendingGamingGroupInvitationRetrieverImpl>();
-                            x.For<PlayedGameCreator>().Use<PlayedGameCreatorImpl>();
+                            x.For<IGamingGroupRetriever>().Use<GamingGroupRetriever>();
+                            x.For<IPendingGamingGroupInvitationRetriever>().Use<PendingGamingGroupInvitationRetriever>();
+                            x.For<IPlayedGameCreator>().Use<PlayedGameCreator>();
                             x.For<NemeStatsEventTracker>().Use<UniversalAnalyticsNemeStatsEventTracker>();
                             x.For<IEventTracker>().Use<EventTracker>();
                             x.For<IUniversalAnalyticsEvent>().Use<UniversalAnalyticsEvent>();
                             x.For<IUniversalAnalyticsEventFactory>().Use<UniversalAnalyticsEventFactory>();
                             x.For<IConfigurationManager>().Use<ConfigurationManager>();
                             x.For<TopPlayerViewModelBuilder>().Use<TopPlayerViewModelBuilderImpl>();
-                            x.For<PlayerSummaryBuilder>().Use<PlayerSummaryBuilderImpl>();
+                            x.For<IPlayerSummaryBuilder>().Use<PlayerSummaryBuilder>();
                             x.For<IPlayerSaver>().Use<PlayerSaver>();
                             x.For<IGameDefinitionSaver>().Use<GameDefinitionSaver>();
-                            x.For<PlayerRetriever>().Use<PlayerRetrieverImpl>();
+                            x.For<IPlayerRetriever>().Use<PlayerRetriever>();
                         });
             return ObjectFactory.Container;
         }

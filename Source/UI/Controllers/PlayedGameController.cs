@@ -22,23 +22,23 @@ namespace UI.Controllers
     public partial class PlayedGameController : Controller
     {
         internal NemeStatsDataContext dataContext;
-        internal PlayedGameRetriever playedGameRetriever;
-        internal PlayerRetriever playerRetriever;
+        internal IPlayedGameRetriever playedGameRetriever;
+        internal IPlayerRetriever playerRetriever;
         internal PlayedGameDetailsViewModelBuilder playedGameDetailsBuilder;
-        internal PlayedGameCreator playedGameCreator;
-        internal GameDefinitionRetriever gameDefinitionRetriever;
+        internal IPlayedGameCreator playedGameCreator;
+        internal IGameDefinitionRetriever gameDefinitionRetriever;
         internal ShowingXResultsMessageBuilder showingXResultsMessageBuilder;
 
         internal const int NUMBER_OF_RECENT_GAMES_TO_DISPLAY = 10;
 
         public PlayedGameController(
             NemeStatsDataContext dataContext,
-            PlayedGameRetriever playedGameRetriever, 
-            PlayerRetriever playerRetriever,
+            IPlayedGameRetriever playedGameRetriever, 
+            IPlayerRetriever playerRetriever,
             PlayedGameDetailsViewModelBuilder builder,
-            GameDefinitionRetriever gameDefinitionRetriever,
+            IGameDefinitionRetriever gameDefinitionRetriever,
             ShowingXResultsMessageBuilder showingXResultsMessageBuilder,
-            PlayedGameCreator playedGameCreator)
+            IPlayedGameCreator playedGameCreator)
         {
             this.dataContext = dataContext;
             this.playedGameRetriever = playedGameRetriever;

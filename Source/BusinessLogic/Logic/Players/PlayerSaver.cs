@@ -12,10 +12,10 @@ namespace BusinessLogic.Logic.Players
 {
     public class PlayerSaver : IPlayerSaver
     {
-        private DataContext dataContext;
+        private IDataContext dataContext;
         private NemeStatsEventTracker eventTracker;
 
-        public PlayerSaver(DataContext dataContext, NemeStatsEventTracker eventTracker)
+        public PlayerSaver(IDataContext dataContext, NemeStatsEventTracker eventTracker)
         {
             this.dataContext = dataContext;
             this.eventTracker = eventTracker;

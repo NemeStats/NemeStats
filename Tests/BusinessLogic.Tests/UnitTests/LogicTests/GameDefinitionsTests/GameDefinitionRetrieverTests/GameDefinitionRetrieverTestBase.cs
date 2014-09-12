@@ -9,25 +9,25 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefinitionRetrieverImplTests
+namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefinitionRetrieverTests
 {
     [TestFixture]
-    public class GameDefinitionRetrieverImplTestBase
+    public class GameDefinitionRetrieverTestBase
     {
-        protected DataContext dataContext;
+        protected IDataContext dataContext;
         protected ApplicationUser currentUser;
-        protected GameDefinitionRetriever retriever;
+        protected IGameDefinitionRetriever retriever;
 
         [SetUp]
         public void SetUp()
         {
-            dataContext = MockRepository.GenerateMock<DataContext>();
+            dataContext = MockRepository.GenerateMock<IDataContext>();
             currentUser = new ApplicationUser()
             {
                 Id = "user id",
                 CurrentGamingGroupId = 123
             };
-            retriever = new GameDefinitionRetrieverImpl(dataContext);
+            retriever = new GameDefinitionRetriever(dataContext);
         }
     }
 }

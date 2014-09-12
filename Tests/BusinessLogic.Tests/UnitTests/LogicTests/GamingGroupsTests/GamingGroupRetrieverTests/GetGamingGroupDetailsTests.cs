@@ -13,16 +13,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroupRetrieverImplTests
+namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroupRetrieverTests
 {
     [TestFixture]
     public class GetGamingGroupDetailsTests
     {
-        protected GamingGroupRetrieverImpl gamingGroupRetriever;
-        protected DataContext dataContextMock;
-        protected PlayerRetriever playerRetrieverMock;
-        protected GameDefinitionRetriever gameDefinitionRetrieverMock;
-        protected PlayedGameRetriever playedGameRetriever;
+        protected GamingGroupRetriever gamingGroupRetriever;
+        protected IDataContext dataContextMock;
+        protected IPlayerRetriever playerRetrieverMock;
+        protected IGameDefinitionRetriever gameDefinitionRetrieverMock;
+        protected IPlayedGameRetriever playedGameRetriever;
         protected ApplicationUser currentUser;
         protected GamingGroup expectedGamingGroup;
         protected GamingGroupInvitation expectedGamingGroupInvitation;
@@ -32,11 +32,11 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
         [SetUp]
         public void SetUp()
         {
-            dataContextMock = MockRepository.GenerateMock<DataContext>();
-            playerRetrieverMock = MockRepository.GenerateMock<PlayerRetriever>();
-            gameDefinitionRetrieverMock = MockRepository.GenerateMock<GameDefinitionRetriever>();
-            playedGameRetriever = MockRepository.GenerateMock<PlayedGameRetriever>();
-            gamingGroupRetriever = new GamingGroupRetrieverImpl(
+            dataContextMock = MockRepository.GenerateMock<IDataContext>();
+            playerRetrieverMock = MockRepository.GenerateMock<IPlayerRetriever>();
+            gameDefinitionRetrieverMock = MockRepository.GenerateMock<IGameDefinitionRetriever>();
+            playedGameRetriever = MockRepository.GenerateMock<IPlayedGameRetriever>();
+            gamingGroupRetriever = new GamingGroupRetriever(
                 dataContextMock, 
                 playerRetrieverMock, 
                 gameDefinitionRetrieverMock,

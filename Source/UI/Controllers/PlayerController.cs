@@ -24,21 +24,21 @@ namespace UI.Controllers
     {
         public static readonly int NUMBER_OF_RECENT_GAMES_TO_RETRIEVE = 10;
 
-        internal DataContext dataContext;
-        internal PlayerRepository playerRepository;
+        internal IDataContext dataContext;
+        internal IPlayerRepository playerRepository;
         internal GameResultViewModelBuilder builder;
         internal PlayerDetailsViewModelBuilder playerDetailsViewModelBuilder;
         internal ShowingXResultsMessageBuilder showingXResultsMessageBuilder;
         internal IPlayerSaver playerSaver;
-        internal PlayerRetriever playerRetriever;
+        internal IPlayerRetriever playerRetriever;
         
-        public PlayerController(DataContext dataContext, 
-            PlayerRepository playerRepository, 
+        public PlayerController(IDataContext dataContext, 
+            IPlayerRepository playerRepository, 
             GameResultViewModelBuilder builder,
             PlayerDetailsViewModelBuilder playerDetailsViewModelBuilder,
             ShowingXResultsMessageBuilder showingXResultsMessageBuilder,
             IPlayerSaver playerSaver,
-            PlayerRetriever playerRetriever)
+            IPlayerRetriever playerRetriever)
         {
             this.dataContext = dataContext;
             this.playerRepository = playerRepository;

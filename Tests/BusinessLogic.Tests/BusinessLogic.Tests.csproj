@@ -121,8 +121,8 @@
     <Compile Include="IntegrationTests\DataAccessTests\NemeStatsDataContextTests\GetQueryableIntegrationTests.cs" />
     <Compile Include="IntegrationTests\LogicTests\PlayedGamesTests\GetRecentPublicGamesIntegrationTests.cs" />
     <Compile Include="IntegrationTests\EntityFrameworkGeneralIntegrationTests.cs" />
-    <Compile Include="IntegrationTests\LogicTests\GameDefinitionsTests\GameDefinitionRetrieverImplTests\GetAllGameDefinitionsIntegrationTests.cs" />
-    <Compile Include="IntegrationTests\LogicTests\GameDefinitionsTests\GameDefinitionRetrieverImplTests\GetGameDefinitionDetailsIntegrationTests.cs" />
+    <Compile Include="IntegrationTests\LogicTests\GameDefinitionsTests\GameDefinitionRetrieverTests\GetAllGameDefinitionsIntegrationTests.cs" />
+    <Compile Include="IntegrationTests\LogicTests\GameDefinitionsTests\GameDefinitionRetrieverTests\GetGameDefinitionDetailsIntegrationTests.cs" />
     <Compile Include="UnitTests\DataAccessTests\NemeStatsDataContextTests\DeleteByIdTests.cs" />
     <Compile Include="UnitTests\DataAccessTests\NemeStatsDataContextTests\FindByIdTests.cs" />
     <Compile Include="UnitTests\DataAccessTests\NemeStatsDataContextTests\NemeStatsDataContextTestBase.cs" />
@@ -151,19 +151,18 @@
     <Compile Include="UnitTests\EventTrackingTests\UniversalAnalyticsNemeStatsEventTrackerTests\TrackUserRegistrationTests.cs" />
     <Compile Include="UnitTests\EventTrackingTests\UniversalAnalyticsNemeStatsEventTrackerTests\UniversalAnalyticsNemeStatsEventTrackerTestBase.cs" />
     <Compile Include="UnitTests\LogicTests\GameDefinitionsTests\GameDefinitionSaverTests\SaveTests.cs" />
-    <Compile Include="UnitTests\LogicTests\GameDefinitionsTests\GameDefinitionRetrieverImplTests\GameDefinitionRetrieverImplTestBase.cs" />
-    <Compile Include="UnitTests\LogicTests\GameDefinitionsTests\GameDefinitionRetrieverImplTests\GetAllTests.cs" />
-    <Compile Include="UnitTests\LogicTests\GameDefinitionsTests\GameDefinitionRetrieverImplTests\GetGameDefinitionDetailsTests.cs" />
-    <Compile Include="UnitTests\LogicTests\GamingGroupsTests\GamingGroupCreatorImplTests\CreateGamingGroupAsyncTests.cs" />
-    <Compile Include="UnitTests\LogicTests\GamingGroupsTests\GamingGroupRetrieverImplTests\GetGamingGroupDetailsTests.cs" />
+    <Compile Include="UnitTests\LogicTests\GameDefinitionsTests\GameDefinitionRetrieverTests\GameDefinitionRetrieverTestBase.cs" />
+    <Compile Include="UnitTests\LogicTests\GameDefinitionsTests\GameDefinitionRetrieverTests\GetAllTests.cs" />
+    <Compile Include="UnitTests\LogicTests\GameDefinitionsTests\GameDefinitionRetrieverTests\GetGameDefinitionDetailsTests.cs" />
+    <Compile Include="UnitTests\LogicTests\GamingGroupsTests\GamingGroupCreatorTests\CreateGamingGroupAsyncTests.cs" />
+    <Compile Include="UnitTests\LogicTests\GamingGroupsTests\GamingGroupRetrieverTests\GetGamingGroupDetailsTests.cs" />
     <Compile Include="UnitTests\LogicTests\GamingGroupsTests\PendingGamingGroupInvitationRetrieverImplTests\GetPendingGamingGroupInvitationsTests.cs" />
-    <Compile Include="UnitTests\LogicTests\GamingGroupsTests\PendingGamingGroupInvitationRetrieverImplTests\TestFixtuure.cs" />
     <Compile Include="UnitTests\LogicTests\PlayedGamesTests\PlayedGameCreatorTests\CreatedPlayedGameTests.cs" />
     <Compile Include="IntegrationTests\LogicTests\Players\GetTopPlayersIntegrationTestsTests.cs" />
     <Compile Include="UnitTests\LogicTests\PlayersTests\PlayerSaverTests\SaveTests.cs" />
-    <Compile Include="UnitTests\LogicTests\PlayersTests\PlayerRetrieverImplTests\GetAllPlayersTests.cs" />
+    <Compile Include="UnitTests\LogicTests\PlayersTests\PlayerRetrieverTests\GetAllPlayersTests.cs" />
     <Compile Include="UnitTests\LogicTests\PointsTests\GordonPointsTests\CalculateGordonPointsTests.cs" />
-    <Compile Include="UnitTests\LogicTests\UsersTests\GamingGroupInviteConsumerImplTests\AddUserToInvitedGroupTests.cs" />
+    <Compile Include="UnitTests\LogicTests\UsersTests\GamingGroupInviteConsumerTests\AddUserToInvitedGroupTests.cs" />
     <Compile Include="UnitTests\ModelsTests\GamesTests\ValidationTests\ValidatePlayerRanksTests.cs" />
   </ItemGroup>
   <ItemGroup>

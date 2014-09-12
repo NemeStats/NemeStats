@@ -18,9 +18,9 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
         [Test]
         public void ItGetsTheNumberOfTotalGamesPlayed()
         {
-            using (DataContext dataContext = new NemeStatsDataContext())
+            using (IDataContext dataContext = new NemeStatsDataContext())
             {
-                PlayerRepository playerLogic = new EntityFrameworkPlayerRepository(dataContext);
+                IPlayerRepository playerLogic = new EntityFrameworkPlayerRepository(dataContext);
                 PlayerStatistics playerStatistics = playerLogic.GetPlayerStatistics(testPlayer1.Id);
                 int totalGamesForPlayer1 = testPlayedGames
                         .Count(playedGame => playedGame.PlayerGameResults

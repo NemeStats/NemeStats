@@ -17,7 +17,7 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.RepositoriesTests.Entity
     [TestFixture]
     public class GetPlayerDetailsTests
     {
-        private DataContext dataContextMock;
+        private IDataContext dataContextMock;
         private EntityFrameworkPlayerRepository playerRepositoryPartialMock;
         private Player player;
         private int numberOfRecentGames = 1;
@@ -32,7 +32,7 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.RepositoriesTests.Entity
                 Id = "123",
                 CurrentGamingGroupId = 15151
             };
-            dataContextMock = MockRepository.GenerateMock<DataContext>();
+            dataContextMock = MockRepository.GenerateMock<IDataContext>();
             playerRepositoryPartialMock = MockRepository.GeneratePartialMock<EntityFrameworkPlayerRepository>(dataContextMock);
             player = new Player()
             {

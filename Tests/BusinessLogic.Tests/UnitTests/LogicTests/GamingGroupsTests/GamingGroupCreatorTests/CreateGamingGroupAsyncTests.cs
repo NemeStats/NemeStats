@@ -17,15 +17,15 @@ using System.Threading.Tasks;
 using UniversalAnalyticsHttpWrapper;
 using BusinessLogic.Logic.GameDefinitions;
 
-namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroupCreatorImplTests
+namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroupCreatorTests
 {
     [TestFixture]
     public class CreateGamingGroupAsyncTests
     {
-        private GamingGroupCreatorImpl gamingGroupCreator;
+        private GamingGroupCreator gamingGroupCreator;
         private IUserStore<ApplicationUser> userStoreMock;
         private UserManager<ApplicationUser> userManager;
-        private DataContext dataContextMock;
+        private IDataContext dataContextMock;
         private NemeStatsEventTracker eventTrackerMock;
         private IPlayerSaver playerSaverMock;
         private IGameDefinitionSaver gameDefinitionCreator;
@@ -42,11 +42,11 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
         {
             userStoreMock = MockRepository.GenerateMock<IUserStore<ApplicationUser>>();
             userManager = new UserManager<ApplicationUser>(userStoreMock);
-            dataContextMock = MockRepository.GenerateMock<DataContext>();
+            dataContextMock = MockRepository.GenerateMock<IDataContext>();
             eventTrackerMock = MockRepository.GenerateMock<NemeStatsEventTracker>();
             playerSaverMock = MockRepository.GenerateMock<IPlayerSaver>();
             gameDefinitionCreator = MockRepository.GenerateMock<IGameDefinitionSaver>();
-            gamingGroupCreator = new GamingGroupCreatorImpl(
+            gamingGroupCreator = new GamingGroupCreator(
                 dataContextMock, 
                 userManager, 
                 eventTrackerMock, 
@@ -118,7 +118,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
                 await gamingGroupCreator.CreateGamingGroupAsync(gamingGroupQuickStart, currentUser);
             }catch(ArgumentException exception)
             {
-                Assert.AreEqual(GamingGroupCreatorImpl.EXCEPTION_MESSAGE_GAMING_GROUP_NAME_CANNOT_BE_NULL_OR_BLANK, exception.Message);
+                Assert.AreEqual(GamingGroupCreator.EXCEPTION_MESSAGE_GAMING_GROUP_NAME_CANNOT_BE_NULL_OR_BLANK, exception.Message);
             }
         }
 
@@ -132,7 +132,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
             }
             catch (ArgumentException exception)
             {
-                Assert.AreEqual(GamingGroupCreatorImpl.EXCEPTION_MESSAGE_GAMING_GROUP_NAME_CANNOT_BE_NULL_OR_BLANK, exception.Message);
+                Assert.AreEqual(GamingGroupCreator.EXCEPTION_MESSAGE_GAMING_GROUP_NAME_CANNOT_BE_NULL_OR_BLANK, exception.Message);
             }
         }
 
@@ -146,7 +146,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
             }
             catch (ArgumentException exception)
             {
-                Assert.AreEqual(GamingGroupCreatorImpl.EXCEPTION_MESSAGE_PLAYER_NAMES_CANNOT_BE_NULL, exception.Message);
+                Assert.AreEqual(GamingGroupCreator.EXCEPTION_MESSAGE_PLAYER_NAMES_CANNOT_BE_NULL, exception.Message);
             }
         }
 
@@ -160,7 +160,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
             }
             catch (ArgumentException exception)
             {
-                Assert.AreEqual(GamingGroupCreatorImpl.EXCEPTION_MESSAGE_GAME_DEFINITION_NAMES_CANNOT_BE_NULL, exception.Message);
+                Assert.AreEqual(GamingGroupCreator.EXCEPTION_MESSAGE_GAME_DEFINITION_NAMES_CANNOT_BE_NULL, exception.Message);
             }
         }
 

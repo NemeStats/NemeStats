@@ -8,12 +8,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessLogic.Tests.IntegrationTests.LogicTests.GameDefinitionsTests.GameDefinitionRetrieverImplTests
+namespace BusinessLogic.Tests.IntegrationTests.LogicTests.GameDefinitionsTests.GameDefinitionRetrieverTests
 {
     [TestFixture]
     public class GetAllGameDefinitionsIntegrationTests : IntegrationTestBase
     {
-        protected GameDefinitionRetrieverImpl retriever;
+        protected GameDefinitionRetriever retriever;
         protected IList<GameDefinition> actualGameDefinitions;
 
         [SetUp]
@@ -21,7 +21,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.GameDefinitionsTests.G
         {
             using(NemeStatsDataContext dataContext = new NemeStatsDataContext())
             {
-                retriever = new GameDefinitionRetrieverImpl(dataContext);
+                retriever = new GameDefinitionRetriever(dataContext);
                 actualGameDefinitions = retriever.GetAllGameDefinitions(testUserWithDefaultGamingGroup.CurrentGamingGroupId.Value);
             }
             

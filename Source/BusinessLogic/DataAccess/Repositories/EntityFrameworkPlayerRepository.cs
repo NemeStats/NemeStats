@@ -12,7 +12,7 @@ using System.Linq;
 
 namespace BusinessLogic.DataAccess.Repositories
 {
-    public class EntityFrameworkPlayerRepository : PlayerRepository
+    public class EntityFrameworkPlayerRepository : IPlayerRepository
     {
         public int MINIMUM_NUMBER_OF_GAMES_TO_BE_A_NEMESIS = 3;
 
@@ -60,9 +60,9 @@ namespace BusinessLogic.DataAccess.Repositories
             ) AS X
             GROUP BY PlayerId";
 
-        private DataContext dataContext;
+        private IDataContext dataContext;
 
-        public EntityFrameworkPlayerRepository(DataContext dataContext)
+        public EntityFrameworkPlayerRepository(IDataContext dataContext)
         {
             this.dataContext = dataContext;
         }

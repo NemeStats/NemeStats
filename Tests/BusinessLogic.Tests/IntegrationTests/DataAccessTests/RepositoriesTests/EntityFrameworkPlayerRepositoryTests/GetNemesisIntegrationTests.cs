@@ -20,8 +20,8 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
     [TestFixture]
     public class GetNemesisTests : IntegrationTestBase
     {
-        private DataContext dataContext;
-        private PlayerRepository playerLogic;
+        private IDataContext dataContext;
+        private IPlayerRepository playerLogic;
 
         [SetUp]
         public void SetUp()

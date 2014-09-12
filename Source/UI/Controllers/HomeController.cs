@@ -19,14 +19,14 @@ namespace UI.Controllers
         internal const int NUMBER_OF_TOP_PLAYERS_TO_SHOW = 5;
         internal const int NUMBER_OF_RECENT_PUBLIC_GAMES_TO_SHOW = 5;
 
-        private PlayerSummaryBuilder playerSummaryBuilder;
+        private IPlayerSummaryBuilder playerSummaryBuilder;
         private TopPlayerViewModelBuilder topPlayerViewModelBuilder;
-        private PlayedGameRetriever playedGameRetriever;
+        private IPlayedGameRetriever playedGameRetriever;
 
         public HomeController(
-            PlayerSummaryBuilder playerSummaryBuilder, 
+            IPlayerSummaryBuilder playerSummaryBuilder, 
             TopPlayerViewModelBuilder topPlayerViewModelBuilder,
-            PlayedGameRetriever playedGameRetriever)
+            IPlayedGameRetriever playedGameRetriever)
         {
             this.playerSummaryBuilder = playerSummaryBuilder;
             this.topPlayerViewModelBuilder = topPlayerViewModelBuilder;

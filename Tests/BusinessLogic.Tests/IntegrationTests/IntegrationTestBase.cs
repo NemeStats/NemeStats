@@ -112,7 +112,7 @@ namespace BusinessLogic.Tests.IntegrationTests
             }
         }
 
-        private void SaveGamingGroupInvitations(NemeStatsDbContext nemeStatsDbContext, DataContext dataContext)
+        private void SaveGamingGroupInvitations(NemeStatsDbContext nemeStatsDbContext, IDataContext dataContext)
         {
             EntityFrameworkGamingGroupAccessGranter accessGranter = new EntityFrameworkGamingGroupAccessGranter(dataContext);
             testUnredeemedGamingGroupInvitation = accessGranter.CreateInvitation(testUserWithDefaultGamingGroup.Email, testUserWithDefaultGamingGroup);
@@ -136,7 +136,7 @@ namespace BusinessLogic.Tests.IntegrationTests
 
         private void CreatePlayedGames(NemeStatsDataContext dataContext)
         {
-            PlayedGameCreator playedGameCreator = new PlayedGameCreatorImpl(dataContext, playedGameTracker);
+            IPlayedGameCreator playedGameCreator = new PlayedGameCreator(dataContext, playedGameTracker);
             
             List<Player> players = new List<Player>() { testPlayer1, testPlayer2 };
             List<int> playerRanks = new List<int>() { 1, 1 };
@@ -265,7 +265,7 @@ namespace BusinessLogic.Tests.IntegrationTests
             List<Player> players,
             List<int> correspondingPlayerRanks,
             ApplicationUser currentUser,
-            PlayedGameCreator playedGameCreator)
+            IPlayedGameCreator playedGameCreator)
         {
             List<PlayerRank> playerRanks = new List<PlayerRank>();
 

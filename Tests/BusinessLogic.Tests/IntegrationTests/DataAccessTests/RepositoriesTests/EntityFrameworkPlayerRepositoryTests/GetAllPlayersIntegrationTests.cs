@@ -15,14 +15,14 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
     [TestFixture]
     public class GetAllPlayersIntegrationTests : IntegrationTestBase
     {
-        private DataContext dataContext;
-        private PlayerRetrieverImpl playerRetriever;
+        private IDataContext dataContext;
+        private PlayerRetriever playerRetriever;
 
         [SetUp]
         public void TestSetUp()
         {
             dataContext = new NemeStatsDataContext();
-            playerRetriever = new PlayerRetrieverImpl(dataContext);
+            playerRetriever = new PlayerRetriever(dataContext);
         }
 
         [Test]

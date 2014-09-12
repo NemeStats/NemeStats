@@ -14,16 +14,16 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.Players
     [TestFixture]
     public class GetTopPlayersIntegrationTests : IntegrationTestBase
     {
-        private PlayerSummaryBuilderImpl playerSummaryBuilderImpl;
+        private PlayerSummaryBuilder playerSummaryBuilderImpl;
         private List<TopPlayer> topPlayersResult;
         private int expectedNumberOfPlayers = 3;
 
         [TestFixtureSetUp]
         public void TestFixtureSetUp()
         {
-            using(DataContext dataContext = new NemeStatsDataContext())
+            using(IDataContext dataContext = new NemeStatsDataContext())
             {
-                playerSummaryBuilderImpl = new PlayerSummaryBuilderImpl(dataContext);
+                playerSummaryBuilderImpl = new PlayerSummaryBuilder(dataContext);
 
                 topPlayersResult = playerSummaryBuilderImpl.GetTopPlayers(3);
             }

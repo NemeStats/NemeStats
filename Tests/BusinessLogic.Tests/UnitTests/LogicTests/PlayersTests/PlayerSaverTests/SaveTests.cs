@@ -11,12 +11,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerCreatorImplTests
+namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerCreatorTests
 {
     [TestFixture]
     public class SaveTests
     {
-        private DataContext dataContextMock;
+        private IDataContext dataContextMock;
         private NemeStatsEventTracker eventTrackerMock;
         private PlayerSaver playerSaver;
         private ApplicationUser currentUser;
@@ -24,7 +24,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerCreatorImp
         [SetUp]
         public void SetUp()
         {
-            dataContextMock = MockRepository.GenerateMock<DataContext>();
+            dataContextMock = MockRepository.GenerateMock<IDataContext>();
             eventTrackerMock = MockRepository.GenerateMock<NemeStatsEventTracker>();
             playerSaver = new PlayerSaver(dataContextMock, eventTrackerMock);
             currentUser = new ApplicationUser();

@@ -10,10 +10,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefinitionRetrieverImplTests
+namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefinitionRetrieverTests
 {
     [TestFixture]
-    public class GetAllTests : GameDefinitionRetrieverImplTestBase
+    public class GetAllTests : GameDefinitionRetrieverTestBase
     {
         [Test]
         public void ItReturnsAListOfAllGameDefinitions()

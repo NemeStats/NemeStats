@@ -23,14 +23,14 @@ namespace UI.Controllers
     {
         internal const int NUMBER_OF_RECENT_GAMES_TO_SHOW = 5;
 
-        internal DataContext dataContext;
-        internal GameDefinitionRetriever gameDefinitionRetriever;
+        internal IDataContext dataContext;
+        internal IGameDefinitionRetriever gameDefinitionRetriever;
         internal GameDefinitionViewModelBuilder gameDefinitionTransformation;
         internal ShowingXResultsMessageBuilder showingXResultsMessageBuilder;
         internal IGameDefinitionSaver gameDefinitionSaver;
 
-        public GameDefinitionController(DataContext dataContext,
-            GameDefinitionRetriever gameDefinitionRetriever,
+        public GameDefinitionController(IDataContext dataContext,
+            IGameDefinitionRetriever gameDefinitionRetriever,
             GameDefinitionViewModelBuilder gameDefinitionTransformation,
             ShowingXResultsMessageBuilder showingXResultsMessageBuilder,
             IGameDefinitionSaver gameDefinitionCreator)

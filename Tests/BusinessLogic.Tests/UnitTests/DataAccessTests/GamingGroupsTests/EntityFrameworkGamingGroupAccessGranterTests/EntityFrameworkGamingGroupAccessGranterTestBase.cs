@@ -17,14 +17,14 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.GamingGroupsTests.Entity
     [TestFixture]
     public class EntityFrameworkGamingGroupAccessGranterTestBase
     {
-        protected DataContext dataContextMock;
-        protected GamingGroupAccessGranter gamingGroupAccessGranter;
+        protected IDataContext dataContextMock;
+        protected IGamingGroupAccessGranter gamingGroupAccessGranter;
         protected ApplicationUser currentUser;
 
         [SetUp]
         public void SetUp()
         {
-            dataContextMock = MockRepository.GenerateMock<DataContext>();
+            dataContextMock = MockRepository.GenerateMock<IDataContext>();
             currentUser = new ApplicationUser()
             {
                 Id = "user id",

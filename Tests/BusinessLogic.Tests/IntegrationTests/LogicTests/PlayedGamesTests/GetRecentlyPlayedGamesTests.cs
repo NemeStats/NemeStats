@@ -22,7 +22,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGamesTests
 
                 using (NemeStatsDataContext dataContext = new NemeStatsDataContext(dbContext, securedEntityValidatorFactory))
                 {
-                    PlayedGameRetrieverImpl retriever = new PlayedGameRetrieverImpl(dataContext);
+                    PlayedGameRetriever retriever = new PlayedGameRetriever(dataContext);
 
                     List<PlayedGame> playedGames = retriever.GetRecentGames(1, testUserWithDefaultGamingGroup.CurrentGamingGroupId.Value);
                     GameDefinition gameDefinition = playedGames[0].GameDefinition;
@@ -41,7 +41,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGamesTests
                 dbContext.Configuration.ProxyCreationEnabled = false;
                 using (NemeStatsDataContext dataContext = new NemeStatsDataContext(dbContext, securedEntityValidatorFactory))
                 {
-                    PlayedGameRetrieverImpl retriever = new PlayedGameRetrieverImpl(dataContext);
+                    PlayedGameRetriever retriever = new PlayedGameRetriever(dataContext);
 
                     List<PlayedGame> playedGames = retriever.GetRecentGames(1, testUserWithDefaultGamingGroup.CurrentGamingGroupId.Value);
                     ICollection<PlayerGameResult> playerGameResults = playedGames[0].PlayerGameResults;
@@ -60,7 +60,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGamesTests
                 dbContext.Configuration.ProxyCreationEnabled = false;
                 using (NemeStatsDataContext dataContext = new NemeStatsDataContext(dbContext, securedEntityValidatorFactory))
                 {
-                    PlayedGameRetrieverImpl retriever = new PlayedGameRetrieverImpl(dataContext);
+                    PlayedGameRetriever retriever = new PlayedGameRetriever(dataContext);
 
                     List<PlayedGame> playedGames = retriever.GetRecentGames(1, testUserWithDefaultGamingGroup.CurrentGamingGroupId.Value);
                     List<Player> players = playedGames[0].PlayerGameResults.Select(
@@ -81,7 +81,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGamesTests
         {
             using (NemeStatsDataContext dataContext = new NemeStatsDataContext())
             {
-                PlayedGameRetrieverImpl retriever = new PlayedGameRetrieverImpl(dataContext);
+                PlayedGameRetriever retriever = new PlayedGameRetriever(dataContext);
                 int one = 1;
                 List<PlayedGame> playedGames = retriever.GetRecentGames(one, testUserWithDefaultGamingGroup.CurrentGamingGroupId.Value);
 
@@ -94,7 +94,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGamesTests
         {
             using (NemeStatsDataContext dataContext = new NemeStatsDataContext())
             {
-                PlayedGameRetrieverImpl retriever = new PlayedGameRetrieverImpl(dataContext);
+                PlayedGameRetriever retriever = new PlayedGameRetriever(dataContext);
                 int two = 2;
                 List<PlayedGame> playedGames = retriever.GetRecentGames(two, testUserWithDefaultGamingGroup.CurrentGamingGroupId.Value);
 
@@ -107,7 +107,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGamesTests
         {
             using (NemeStatsDataContext dataContext = new NemeStatsDataContext())
             {
-                PlayedGameRetrieverImpl retriever = new PlayedGameRetrieverImpl(dataContext);
+                PlayedGameRetriever retriever = new PlayedGameRetriever(dataContext);
                 int five = 5;
                 List<PlayedGame> playedGames = retriever.GetRecentGames(five, testUserWithDefaultGamingGroup.CurrentGamingGroupId.Value);
                 List<PlayedGame> allPlayedGames = dataContext.GetQueryable<PlayedGame>()
@@ -127,7 +127,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGamesTests
         {
             using (NemeStatsDataContext dataContext = new NemeStatsDataContext())
             {
-                PlayedGameRetrieverImpl retriever = new PlayedGameRetrieverImpl(dataContext);
+                PlayedGameRetriever retriever = new PlayedGameRetriever(dataContext);
                 int five = 5;
                 List<PlayedGame> playedGames = retriever.GetRecentGames(five, testUserWithDefaultGamingGroup.CurrentGamingGroupId.Value);
 
@@ -151,7 +151,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGamesTests
         {
             using (NemeStatsDataContext dataContext = new NemeStatsDataContext())
             {
-                PlayedGameRetrieverImpl retriever = new PlayedGameRetrieverImpl(dataContext);
+                PlayedGameRetriever retriever = new PlayedGameRetriever(dataContext);
                 
                 List<PlayedGame> playedGames = retriever.GetRecentGames(20, testUserWithOtherGamingGroup.CurrentGamingGroupId.Value);
 

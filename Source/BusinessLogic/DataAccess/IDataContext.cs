@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BusinessLogic.DataAccess
 {
-    public interface DataContext : IDisposable
+    public interface IDataContext : IDisposable
     {
         void CommitAllChanges();
         DbRawSqlQuery<T> MakeRawSqlQuery<T>(string sql, params object[] parameters);

@@ -21,7 +21,7 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
         {
             using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
             {
-                using (DataContext dataContext = new NemeStatsDataContext(dbContext, securedEntityValidatorFactory))
+                using (IDataContext dataContext = new NemeStatsDataContext(dbContext, securedEntityValidatorFactory))
                 {
                     EntityFrameworkPlayerRepository playerRepository = new EntityFrameworkPlayerRepository(dataContext);
 
@@ -39,7 +39,7 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
         {
             using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
             {
-                using (DataContext dataContext = new NemeStatsDataContext(dbContext, securedEntityValidatorFactory))
+                using (IDataContext dataContext = new NemeStatsDataContext(dbContext, securedEntityValidatorFactory))
                 {
                     dbContext.Configuration.LazyLoadingEnabled = false;
                     dbContext.Configuration.ProxyCreationEnabled = false;
@@ -57,7 +57,7 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
         {
             using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
             {
-                using (DataContext dataContext = new NemeStatsDataContext(dbContext, securedEntityValidatorFactory))
+                using (IDataContext dataContext = new NemeStatsDataContext(dbContext, securedEntityValidatorFactory))
                 {
                     dbContext.Configuration.LazyLoadingEnabled = false;
                     dbContext.Configuration.ProxyCreationEnabled = false;
@@ -75,7 +75,7 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
         {
             using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
             {
-                using (DataContext dataContext = new NemeStatsDataContext(dbContext, securedEntityValidatorFactory))
+                using (IDataContext dataContext = new NemeStatsDataContext(dbContext, securedEntityValidatorFactory))
                 {
                     PlayerDetails playerDetails = new EntityFrameworkPlayerRepository(dataContext)
                         .GetPlayerDetails(testPlayer1.Id, 1);
@@ -90,7 +90,7 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
         {
             using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
             {
-                using (DataContext dataContext = new NemeStatsDataContext(dbContext, securedEntityValidatorFactory))
+                using (IDataContext dataContext = new NemeStatsDataContext(dbContext, securedEntityValidatorFactory))
                 {
                     int numberOfGamesToRetrieve = 1;
 
@@ -107,7 +107,7 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
         {
             using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
             {
-                using (DataContext dataContext = new NemeStatsDataContext(dbContext, securedEntityValidatorFactory))
+                using (IDataContext dataContext = new NemeStatsDataContext(dbContext, securedEntityValidatorFactory))
                 {
                     int numberOfGamesToRetrieve = 3;
 

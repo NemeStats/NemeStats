@@ -21,7 +21,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameCr
     public class CreatePlayedGameTests
     {
         private NemeStatsDataContext dataContext;
-        private PlayedGameCreatorImpl playedGameCreatorPartialMock;
+        private PlayedGameCreator playedGameCreatorPartialMock;
         private NemeStatsEventTracker playedGameTracker;
         private ApplicationUser currentUser;
         private GameDefinition gameDefinition;
@@ -41,7 +41,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameCr
             gameDefinition = new GameDefinition(){ Name = "game definition name" };
             dataContext.Expect(mock => mock.FindById<GameDefinition>(Arg<int>.Is.Anything))
                 .Return(gameDefinition);
-            playedGameCreatorPartialMock = MockRepository.GeneratePartialMock<PlayedGameCreatorImpl>(dataContext, playedGameTracker);
+            playedGameCreatorPartialMock = MockRepository.GeneratePartialMock<PlayedGameCreator>(dataContext, playedGameTracker);
         }
 
         [Test]

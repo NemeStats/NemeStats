@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BusinessLogic.DataAccess.GamingGroups
 {
-    public interface GamingGroupAccessGranter
+    public interface IGamingGroupAccessGranter
     {
         GamingGroupInvitation CreateInvitation(string email, ApplicationUser currentUser);
         GamingGroupInvitation ConsumeInvitation(GamingGroupInvitation gamingGroupInvitation, ApplicationUser currentUser);

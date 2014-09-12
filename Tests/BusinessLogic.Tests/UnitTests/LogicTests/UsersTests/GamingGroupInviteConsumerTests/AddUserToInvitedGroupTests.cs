@@ -14,17 +14,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.GamingGroupInviteConsumerImplTests
+namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.GamingGroupInviteConsumerTests
 {
     [TestFixture]
     public class AddUserToInvitedGroupTests
     {
         private NemeStatsDbContext dbContextMock;
-        private PendingGamingGroupInvitationRetriever pendingGamingGroupInvitationRetriever;
+        private IPendingGamingGroupInvitationRetriever pendingGamingGroupInvitationRetriever;
         private IUserStore<ApplicationUser> userStoreMock;
         private UserManager<ApplicationUser> userManager;
-        private GamingGroupInviteConsumerImpl inviteConsumer;
-        private GamingGroupAccessGranter gamingGroupAccessGranter;
+        private GamingGroupInviteConsumer inviteConsumer;
+        private IGamingGroupAccessGranter gamingGroupAccessGranter;
         private List<GamingGroupInvitation> gamingGroupInvitations;
         private ApplicationUser currentUser;
         private ApplicationUser applicationUser;
@@ -33,11 +33,11 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.GamingGroupInviteC
         public void SetUp()
         {
             dbContextMock = MockRepository.GenerateMock<NemeStatsDbContext>();
-            pendingGamingGroupInvitationRetriever = MockRepository.GenerateMock<PendingGamingGroupInvitationRetriever>();
+            pendingGamingGroupInvitationRetriever = MockRepository.GenerateMock<IPendingGamingGroupInvitationRetriever>();
             userStoreMock = MockRepository.GenerateMock<IUserStore<ApplicationUser>>();
             userManager = new UserManager<ApplicationUser>(userStoreMock);
-            gamingGroupAccessGranter = MockRepository.GenerateMock<GamingGroupAccessGranter>();
-            inviteConsumer = new GamingGroupInviteConsumerImpl(pendingGamingGroupInvitationRetriever, userManager, gamingGroupAccessGranter);
+            gamingGroupAccessGranter = MockRepository.GenerateMock<IGamingGroupAccessGranter>();
+            inviteConsumer = new GamingGroupInviteConsumer(pendingGamingGroupInvitationRetriever, userManager, gamingGroupAccessGranter);
             currentUser = new ApplicationUser()
             {
                 Id = "user id"

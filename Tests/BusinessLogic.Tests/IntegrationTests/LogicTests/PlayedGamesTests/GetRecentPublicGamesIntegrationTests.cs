@@ -23,7 +23,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGamesTests
         {
             using (NemeStatsDataContext dataContext = new NemeStatsDataContext())
             {
-                PlayedGameRetrieverImpl retriever = new PlayedGameRetrieverImpl(dataContext);
+                PlayedGameRetriever retriever = new PlayedGameRetriever(dataContext);
 
                 publicGameSummaryResults = retriever.GetRecentPublicGames(numberOfGamesToRetrieve);
             }

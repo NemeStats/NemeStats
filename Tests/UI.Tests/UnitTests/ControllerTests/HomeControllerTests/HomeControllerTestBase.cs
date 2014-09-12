@@ -17,16 +17,16 @@ namespace UI.Tests.UnitTests.ControllerTests.HomeControllerTests
     public class HomeControllerTestBase
     {
         protected HomeController homeControllerPartialMock;
-        protected PlayerSummaryBuilder playerSummaryBuilderMock;
+        protected IPlayerSummaryBuilder playerSummaryBuilderMock;
         protected TopPlayerViewModelBuilder viewModelBuilderMock;
-        protected PlayedGameRetriever playedGameRetriever;
+        protected IPlayedGameRetriever playedGameRetriever;
 
         [SetUp]
         public void SetUp()
         {
-            playerSummaryBuilderMock = MockRepository.GenerateMock<PlayerSummaryBuilder>();
+            playerSummaryBuilderMock = MockRepository.GenerateMock<IPlayerSummaryBuilder>();
             viewModelBuilderMock = MockRepository.GenerateMock<TopPlayerViewModelBuilder>();
-            playedGameRetriever = MockRepository.GenerateMock<PlayedGameRetriever>();
+            playedGameRetriever = MockRepository.GenerateMock<IPlayedGameRetriever>();
             homeControllerPartialMock = MockRepository.GeneratePartialMock<HomeController>(
                 playerSummaryBuilderMock, 
                 viewModelBuilderMock,
