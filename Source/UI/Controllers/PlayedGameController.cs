@@ -143,7 +143,8 @@ namespace UI.Controllers
         {
             dataContext.DeleteById<PlayedGame>(id, currentUser);
             dataContext.CommitAllChanges();
-            return RedirectToAction("Index");
+            return new RedirectResult(Url.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name)
+                            + "#" + GamingGroupController.SECTION_ANCHOR_RECENT_GAMES);
         }
 
         protected override void Dispose(bool disposing)
