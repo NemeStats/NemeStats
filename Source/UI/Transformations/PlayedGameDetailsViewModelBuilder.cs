@@ -11,7 +11,7 @@ namespace UI.Transformations
 {
     public class PlayedGameDetailsViewModelBuilder : IPlayedGameDetailsViewModelBuilder
     {
-        internal const string EXCEPTION_GAME_DEFINITION_CANNOT_BE_NULL = "PlayedGame.GameDefintion cannot be null.";
+        internal const string EXCEPTION_GAME_DEFINITION_CANNOT_BE_NULL = "PlayedGame.GameDefinition cannot be null.";
         internal const string EXCEPTION_PLAYER_GAME_RESULTS_CANNOT_BE_NULL = "PlayedGame.PlayerGameResults cannot be null.";
 
         private IGameResultViewModelBuilder playerResultBuilder;

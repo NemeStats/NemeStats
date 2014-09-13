@@ -3,6 +3,7 @@ using BusinessLogic.DataAccess;
 using Mindscape.Raygun4Net;
 using Mindscape.Raygun4Net.Messages;
 using RollbarSharp;
+using StructureMap;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -36,6 +37,11 @@ namespace UI
             var exception = Server.GetLastError().GetBaseException();
 
             (new RollbarClient()).SendException(exception);
+        }
+
+        protected void Application_EndRequest(object sender, EventArgs e)
+        {
+            //TODO do something to displose of structuremap objects here
         }
     }
 }

@@ -32,6 +32,7 @@ using BusinessLogic.Models.User;
 using Microsoft.AspNet.Identity;
 using StructureMap;
 using StructureMap.Graph;
+using StructureMap.Pipeline;
 using System.Configuration.Abstractions;
 using System.Data.Entity;
 using System.Web.Mvc;
@@ -51,19 +52,16 @@ namespace UI.DependencyResolution {
                                         scan.TheCallingAssembly();
                                         scan.WithDefaultConventions();
                                     });
-                            //TODO MAKE THIS PER REQUEST
-                            x.For<DbContext>().Use<NemeStatsDbContext>();
-                            x.For<IDataContext>().Use<NemeStatsDataContext>();
+
+                            //unique per request scope
+                            x.For<DbContext>().LifecycleIs(new UniquePerRequestLifecycle()).Use<NemeStatsDbContext>();
+                            x.For<IDataContext>().LifecycleIs(new UniquePerRequestLifecycle()).Use<NemeStatsDataContext>();
+
+                            //transient scope
+                            x.For<IPlayerSummaryBuilder>().Use<PlayerSummaryBuilder>();
                             x.For<IPlayerRepository>().Use<EntityFrameworkPlayerRepository>();
                             x.For<IGameDefinitionRetriever>().Use<GameDefinitionRetriever>();
                             x.For<IPlayedGameRetriever>().Use<PlayedGameRetriever>();
-                            x.For<IPlayedGameDetailsViewModelBuilder>().Use<PlayedGameDetailsViewModelBuilder>();
-                            x.For<IGameResultViewModelBuilder>().Use<GameResultViewModelBuilder>();
-                            x.For<IPlayerDetailsViewModelBuilder>().Use<PlayerDetailsViewModelBuilder>();
-                            x.For<IGamingGroupViewModelBuilder>()
-                                .Use<GamingGroupViewModelBuilder>();
-                            x.For<IGamingGroupInvitationViewModelBuilder>()
-                                .Use<GamingGroupInvitationViewModelBuilder>();
                             x.For<IGamingGroupAccessGranter>().Use<EntityFrameworkGamingGroupAccessGranter>();
                             x.For<IGamingGroupInviteConsumer>().Use<GamingGroupInviteConsumer>();
                             x.For<Microsoft.AspNet.Identity.IUserStore<ApplicationUser>>()
@@ -80,11 +78,19 @@ namespace UI.DependencyResolution {
                             x.For<IUniversalAnalyticsEvent>().Use<UniversalAnalyticsEvent>();
                             x.For<IUniversalAnalyticsEventFactory>().Use<UniversalAnalyticsEventFactory>();
                             x.For<IConfigurationManager>().Use<ConfigurationManager>();
-                            x.For<ITopPlayerViewModelBuilder>().Use<TopPlayerViewModelBuilder>();
-                            x.For<IPlayerSummaryBuilder>().Use<PlayerSummaryBuilder>();
                             x.For<IPlayerSaver>().Use<PlayerSaver>();
                             x.For<IGameDefinitionSaver>().Use<GameDefinitionSaver>();
                             x.For<IPlayerRetriever>().Use<PlayerRetriever>();
+
+                            //singleton scope
+                            x.For<IGameResultViewModelBuilder>().Singleton().Use<GameResultViewModelBuilder>();
+                            x.For<IPlayerDetailsViewModelBuilder>().Singleton().Use<PlayerDetailsViewModelBuilder>();
+                            x.For<IGamingGroupViewModelBuilder>().Singleton()
+                                .Use<GamingGroupViewModelBuilder>();
+                            x.For<IGamingGroupInvitationViewModelBuilder>().Singleton()
+                                .Use<GamingGroupInvitationViewModelBuilder>();
+                            x.For<ITopPlayerViewModelBuilder>().Use<TopPlayerViewModelBuilder>();
+                            x.For<IPlayedGameDetailsViewModelBuilder>().Singleton().Use<PlayedGameDetailsViewModelBuilder>();
                         });
             return ObjectFactory.Container;
         }
