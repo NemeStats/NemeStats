@@ -146,48 +146,6 @@ namespace UI.Controllers
             return View(MVC.Player.Views.Edit, player);
         }
 
-        // GET: /Player/Delete/5
-        [Authorize]
-        public virtual ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            PlayerDetails playerDetails;
-            try
-            {
-                playerDetails = playerRepository.GetPlayerDetails(id.Value, 0);
-            }catch(UnauthorizedAccessException)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
-            }catch (KeyNotFoundException)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
-            }
-            
-            return View(MVC.Player.Views.Delete, playerDetails);
-        }
-
-        // POST: /Player/Delete/5
-        [Authorize]
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        [UserContextAttribute]
-        public virtual ActionResult DeleteConfirmed(int id, ApplicationUser currentUser)
-        {
-            try
-            {
-                dataContext.DeleteById<Player>(id, currentUser);
-                dataContext.CommitAllChanges();
-            }catch(UnauthorizedAccessException)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
-            }
-            return new RedirectResult(Url.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name)
-                                          + "#" + GamingGroupController.SECTION_ANCHOR_PLAYERS);
-        }
-
         protected override void Dispose(bool disposing)
         {
             if (disposing)

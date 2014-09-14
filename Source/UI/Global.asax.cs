@@ -1,5 +1,4 @@
-﻿using Bugsnag.Library;
-using BusinessLogic.DataAccess;
+﻿using BusinessLogic.DataAccess;
 using Mindscape.Raygun4Net;
 using Mindscape.Raygun4Net.Messages;
 using RollbarSharp;
