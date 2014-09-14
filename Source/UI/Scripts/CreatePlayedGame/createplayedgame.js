@@ -93,8 +93,3 @@
         }
     }; //end prototypes
 
-    //Creation
-    $(document).ready(function () {
-        var createPlayedGame = new window.Views.PlayedGame.CreatePlayedGame();
-        createPlayedGame.init();
-    });

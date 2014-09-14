@@ -23,7 +23,9 @@ namespace UI
                       "~/Scripts/bootstrap.js",
                       "~/Scripts/respond.js"));
 
-            bundles.Add(new ScriptBundle("~/bundles/custom").Include("~/Scripts/CreatePlayedGame/createplayedgame.js"));
+            bundles.Add(new ScriptBundle("~/bundles/custom")
+                .Include("~/Scripts/CreatePlayedGame/createplayedgame.js")
+                .Include("~/Scripts/Player/createOrUpdatePlayer.js"));
 
             bundles.Add(new StyleBundle("~/bundles/content/css").Include(
                         "~/Content/bootstrap.min.css", new CssRewriteUrlTransform())

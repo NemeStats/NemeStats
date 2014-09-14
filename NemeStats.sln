@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30723.0
+VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UI", "Source\UI\UI.csproj", "{960D6AE0-E6AE-4241-AB88-85532666AA84}"
 EndProject
@@ -23,6 +23,7 @@ Global
 		Debug|Any CPU = Debug|Any CPU
 		Jake|Any CPU = Jake|Any CPU
 		Release|Any CPU = Release|Any CPU
+		Tosho|Any CPU = Tosho|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{960D6AE0-E6AE-4241-AB88-85532666AA84}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -31,24 +32,32 @@ Global
 		{960D6AE0-E6AE-4241-AB88-85532666AA84}.Jake|Any CPU.Build.0 = Jake|Any CPU
 		{960D6AE0-E6AE-4241-AB88-85532666AA84}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{960D6AE0-E6AE-4241-AB88-85532666AA84}.Release|Any CPU.Build.0 = Release|Any CPU
+		{960D6AE0-E6AE-4241-AB88-85532666AA84}.Tosho|Any CPU.ActiveCfg = Tosho|Any CPU
+		{960D6AE0-E6AE-4241-AB88-85532666AA84}.Tosho|Any CPU.Build.0 = Tosho|Any CPU
 		{B1184B6A-9C68-48B6-814C-0667B69F89D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B1184B6A-9C68-48B6-814C-0667B69F89D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B1184B6A-9C68-48B6-814C-0667B69F89D2}.Jake|Any CPU.ActiveCfg = Jake|Any CPU
 		{B1184B6A-9C68-48B6-814C-0667B69F89D2}.Jake|Any CPU.Build.0 = Jake|Any CPU
 		{B1184B6A-9C68-48B6-814C-0667B69F89D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B1184B6A-9C68-48B6-814C-0667B69F89D2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1184B6A-9C68-48B6-814C-0667B69F89D2}.Tosho|Any CPU.ActiveCfg = Release|Any CPU
+		{B1184B6A-9C68-48B6-814C-0667B69F89D2}.Tosho|Any CPU.Build.0 = Release|Any CPU
 		{F58E10C5-089C-48A0-9D4F-1F932268A5B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F58E10C5-089C-48A0-9D4F-1F932268A5B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F58E10C5-089C-48A0-9D4F-1F932268A5B7}.Jake|Any CPU.ActiveCfg = Jake|Any CPU
 		{F58E10C5-089C-48A0-9D4F-1F932268A5B7}.Jake|Any CPU.Build.0 = Jake|Any CPU
 		{F58E10C5-089C-48A0-9D4F-1F932268A5B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F58E10C5-089C-48A0-9D4F-1F932268A5B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F58E10C5-089C-48A0-9D4F-1F932268A5B7}.Tosho|Any CPU.ActiveCfg = Release|Any CPU
+		{F58E10C5-089C-48A0-9D4F-1F932268A5B7}.Tosho|Any CPU.Build.0 = Release|Any CPU
 		{94D48899-B24B-42CE-B3D3-0D1F89D0E515}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{94D48899-B24B-42CE-B3D3-0D1F89D0E515}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{94D48899-B24B-42CE-B3D3-0D1F89D0E515}.Jake|Any CPU.ActiveCfg = Jake|Any CPU
 		{94D48899-B24B-42CE-B3D3-0D1F89D0E515}.Jake|Any CPU.Build.0 = Jake|Any CPU
 		{94D48899-B24B-42CE-B3D3-0D1F89D0E515}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{94D48899-B24B-42CE-B3D3-0D1F89D0E515}.Release|Any CPU.Build.0 = Release|Any CPU
+		{94D48899-B24B-42CE-B3D3-0D1F89D0E515}.Tosho|Any CPU.ActiveCfg = Release|Any CPU
+		{94D48899-B24B-42CE-B3D3-0D1F89D0E515}.Tosho|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

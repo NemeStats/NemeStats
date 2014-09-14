@@ -62,6 +62,12 @@ namespace UI.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult Save()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Save);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult Edit()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Edit);
@@ -95,7 +101,9 @@ namespace UI.Controllers
         public class ActionNamesClass
         {
             public readonly string Details = "Details";
+            public readonly string SavePlayer = "SavePlayer";
             public readonly string Create = "Create";
+            public readonly string Save = "Save";
             public readonly string Edit = "Edit";
             public readonly string Delete = "Delete";
             public readonly string DeleteConfirmed = "Delete";
@@ -105,7 +113,9 @@ namespace UI.Controllers
         public class ActionNameConstants
         {
             public const string Details = "Details";
+            public const string SavePlayer = "SavePlayer";
             public const string Create = "Create";
+            public const string Save = "Save";
             public const string Edit = "Edit";
             public const string Delete = "Delete";
             public const string DeleteConfirmed = "Delete";
@@ -121,13 +131,13 @@ namespace UI.Controllers
             public readonly string id = "id";
             public readonly string currentUser = "currentUser";
         }
-        static readonly ActionParamsClass_Create s_params_Create = new ActionParamsClass_Create();
+        static readonly ActionParamsClass_Save s_params_Save = new ActionParamsClass_Save();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public ActionParamsClass_Create CreateParams { get { return s_params_Create; } }
+        public ActionParamsClass_Save SaveParams { get { return s_params_Save; } }
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public class ActionParamsClass_Create
+        public class ActionParamsClass_Save
         {
-            public readonly string player = "player";
+            public readonly string model = "model";
             public readonly string currentUser = "currentUser";
         }
         static readonly ActionParamsClass_Edit s_params_Edit = new ActionParamsClass_Edit();
@@ -167,11 +177,13 @@ namespace UI.Controllers
             public _ViewNamesClass ViewNames { get { return s_ViewNames; } }
             public class _ViewNamesClass
             {
+                public readonly string _CreateOrUpdatePartial = "_CreateOrUpdatePartial";
                 public readonly string Create = "Create";
                 public readonly string Delete = "Delete";
                 public readonly string Details = "Details";
                 public readonly string Edit = "Edit";
             }
+            public readonly string _CreateOrUpdatePartial = "~/Views/Player/_CreateOrUpdatePartial.cshtml";
             public readonly string Create = "~/Views/Player/Create.cshtml";
             public readonly string Delete = "~/Views/Player/Delete.cshtml";
             public readonly string Details = "~/Views/Player/Details.cshtml";
@@ -198,6 +210,17 @@ namespace UI.Controllers
         }
 
         [NonAction]
+        partial void SavePlayerOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult SavePlayer()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SavePlayer);
+            SavePlayerOverride(callInfo);
+            return callInfo;
+        }
+
+        [NonAction]
         partial void CreateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
 
         [NonAction]
@@ -209,15 +232,15 @@ namespace UI.Controllers
         }
 
         [NonAction]
-        partial void CreateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, BusinessLogic.Models.Player player, BusinessLogic.Models.User.ApplicationUser currentUser);
+        partial void SaveOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, BusinessLogic.Models.Player model, BusinessLogic.Models.User.ApplicationUser currentUser);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult Create(BusinessLogic.Models.Player player, BusinessLogic.Models.User.ApplicationUser currentUser)
+        public override System.Web.Mvc.ActionResult Save(BusinessLogic.Models.Player model, BusinessLogic.Models.User.ApplicationUser currentUser)
         {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Create);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "player", player);
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Save);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "model", model);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "currentUser", currentUser);
-            CreateOverride(callInfo, player, currentUser);
+            SaveOverride(callInfo, model, currentUser);
             return callInfo;
         }
 
