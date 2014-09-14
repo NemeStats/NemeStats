@@ -100,5 +100,14 @@ namespace UI.Controllers
 
             return RedirectToAction(MVC.GamingGroup.ActionNames.Index, model);
         }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                dataContext.Dispose();
+            }
+            base.Dispose(disposing);
+        }
     }
 }

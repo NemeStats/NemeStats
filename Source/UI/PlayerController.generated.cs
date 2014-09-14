@@ -72,18 +72,6 @@ namespace UI.Controllers
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Edit);
         }
-        [NonAction]
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public virtual System.Web.Mvc.ActionResult Delete()
-        {
-            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Delete);
-        }
-        [NonAction]
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public virtual System.Web.Mvc.ActionResult DeleteConfirmed()
-        {
-            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.DeleteConfirmed);
-        }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public PlayerController Actions { get { return MVC.Player; } }
@@ -105,8 +93,6 @@ namespace UI.Controllers
             public readonly string Create = "Create";
             public readonly string Save = "Save";
             public readonly string Edit = "Edit";
-            public readonly string Delete = "Delete";
-            public readonly string DeleteConfirmed = "Delete";
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -117,8 +103,6 @@ namespace UI.Controllers
             public const string Create = "Create";
             public const string Save = "Save";
             public const string Edit = "Edit";
-            public const string Delete = "Delete";
-            public const string DeleteConfirmed = "Delete";
         }
 
 
@@ -150,23 +134,6 @@ namespace UI.Controllers
             public readonly string player = "player";
             public readonly string currentUser = "currentUser";
         }
-        static readonly ActionParamsClass_Delete s_params_Delete = new ActionParamsClass_Delete();
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public ActionParamsClass_Delete DeleteParams { get { return s_params_Delete; } }
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public class ActionParamsClass_Delete
-        {
-            public readonly string id = "id";
-        }
-        static readonly ActionParamsClass_DeleteConfirmed s_params_DeleteConfirmed = new ActionParamsClass_DeleteConfirmed();
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public ActionParamsClass_DeleteConfirmed DeleteConfirmedParams { get { return s_params_DeleteConfirmed; } }
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public class ActionParamsClass_DeleteConfirmed
-        {
-            public readonly string id = "id";
-            public readonly string currentUser = "currentUser";
-        }
         static readonly ViewsClass s_views = new ViewsClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ViewsClass Views { get { return s_views; } }
@@ -179,13 +146,11 @@ namespace UI.Controllers
             {
                 public readonly string _CreateOrUpdatePartial = "_CreateOrUpdatePartial";
                 public readonly string Create = "Create";
-                public readonly string Delete = "Delete";
                 public readonly string Details = "Details";
                 public readonly string Edit = "Edit";
             }
             public readonly string _CreateOrUpdatePartial = "~/Views/Player/_CreateOrUpdatePartial.cshtml";
             public readonly string Create = "~/Views/Player/Create.cshtml";
-            public readonly string Delete = "~/Views/Player/Delete.cshtml";
             public readonly string Details = "~/Views/Player/Details.cshtml";
             public readonly string Edit = "~/Views/Player/Edit.cshtml";
         }
@@ -266,31 +231,6 @@ namespace UI.Controllers
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "player", player);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "currentUser", currentUser);
             EditOverride(callInfo, player, currentUser);
-            return callInfo;
-        }
-
-        [NonAction]
-        partial void DeleteOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int? id);
-
-        [NonAction]
-        public override System.Web.Mvc.ActionResult Delete(int? id)
-        {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Delete);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
-            DeleteOverride(callInfo, id);
-            return callInfo;
-        }
-
-        [NonAction]
-        partial void DeleteConfirmedOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, BusinessLogic.Models.User.ApplicationUser currentUser);
-
-        [NonAction]
-        public override System.Web.Mvc.ActionResult DeleteConfirmed(int id, BusinessLogic.Models.User.ApplicationUser currentUser)
-        {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.DeleteConfirmed);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "currentUser", currentUser);
-            DeleteConfirmedOverride(callInfo, id, currentUser);
             return callInfo;
         }
 
