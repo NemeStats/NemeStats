@@ -23,6 +23,7 @@ namespace BusinessLogic.Models
 
         [StringLength(255)]
         [Index("IX_ID_AND_NAME", 2, IsUnique = true)]
+        [Required]
         public string Name { get; set; }
         public bool Active { get; set; }
 

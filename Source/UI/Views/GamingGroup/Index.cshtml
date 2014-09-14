@@ -1,4 +1,5 @@
-﻿@using UI.HtmlHelpers
+﻿@using BusinessLogic.Models
+@using UI.HtmlHelpers
 @model UI.Models.GamingGroup.GamingGroupViewModel
 
 @{
@@ -8,7 +9,6 @@
 
 <h2>@Model.Name</h2>
 <hr />
-
 
 <a name="@ViewBag.RecentGamesSectionAnchorText"></a>
 <div class="row">
@@ -78,10 +78,12 @@
     <div class="panel panel-default">
         <div class="panel-heading">
             <h4>
-                Players @Html.ActionLink("Create New", "Create", "Player", new { }, new { @class = "btn btn-primary btn-sm" })
+                Players 
             </h4>
         </div>
         <div class="panel-body">
+            @Html.Action("SavePlayer", "Player")
+
             <div class="table-responsive">
                 <table class="table table-hover table-condensed">
                     <thead>
@@ -96,14 +98,14 @@
                         {
                             <tr>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.Name)
+                                    @Html.ActionLink(item.Name, MVC.Player.Details(item.Id, null))
                                 </td>
                                 <td>
                                     <a href="@Url.Action("Edit", "Player", new { id = item.Id })" title="Edit">
                                         <span class="glyphicon glyphicon-pencil font-size-sm"></span>
                                     </a>
-                                    <a href="@Url.Action("Details", "Player", new { id = item.Id })" title="Details">
-                                        <span class="glyphicon glyphicon-book font-size-sm"></span>
+                                    <a href="@Url.Action("Delete", "Player", new { id = item.Id })" title="Delete">
+                                        <span class="glyphicon glyphicon-trash font-size-sm"></span>
                                     </a>
                                 </td>
                             </tr>
@@ -262,3 +264,13 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script type="text/javascript">
+     //Creation
+     $(document).ready(function () {
+         var createOrUpdatePlayer = new window.Views.Player.CreateOrUpdate();
+         createOrUpdatePlayer.init();
+     });
+    </script>
+}

@@ -1,4 +1,6 @@
-﻿using BusinessLogic.DataAccess;
+﻿using System.Web;
+using System.Web.Http;
+using BusinessLogic.DataAccess;
 using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.Logic;
 using BusinessLogic.Logic.Players;
@@ -74,38 +76,41 @@ namespace UI.Controllers
             return View(MVC.Player.Views.Details, playerDetailsViewModel);
         }
 
+        // GET: /Player/SavePlayer
+        [System.Web.Mvc.Authorize]
+        public virtual ActionResult SavePlayer()
+        {
+            return View(MVC.Player.Views._CreateOrUpdatePartial, new Player());
+        }
+
         // GET: /Player/Create
-        [Authorize]
+        [System.Web.Mvc.Authorize]
         public virtual ActionResult Create()
         {
             return View(MVC.Player.Views.Create, new Player());
         }
 
-        //TODO it is really only the player name that can be passed in on a create
-        // POST: /Player/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [Authorize]
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        [System.Web.Mvc.Authorize]
+        [System.Web.Mvc.HttpPost]
         [UserContextAttribute]
-        public virtual ActionResult Create([Bind(Include = "Id,Name,Active")] Player player, ApplicationUser currentUser)
+        public virtual ActionResult Save(Player model, ApplicationUser currentUser)
         {
-            if (ModelState.IsValid)
+            if (!Request.IsAjaxRequest()) 
             {
-                //TODO need to have a more graceful way of knowing that a player name already exists rather than blowing up
-                // in the user's face. This should start at the business layer level.
-                playerSaver.Save(player, currentUser);
-
-                return new RedirectResult(Url.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name)
-                            + "#" + GamingGroupController.SECTION_ANCHOR_PLAYERS);
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            return View(MVC.Player.Views.Create, player);
+            if(ModelState.IsValid)
+            {
+                Player player = playerSaver.Save(model, currentUser);
+                return Json(player, JsonRequestBehavior.AllowGet);
+            }
+
+            return new HttpStatusCodeResult(HttpStatusCode.NotModified);
         }
 
         // GET: /Player/Edit/5
-        [Authorize]
+        [System.Web.Mvc.Authorize]
         public virtual ActionResult Edit(int? id)
         {
             if (id == null)
@@ -130,8 +135,8 @@ namespace UI.Controllers
         // POST: /Player/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [Authorize]
-        [HttpPost]
+        [System.Web.Mvc.Authorize]
+        [System.Web.Mvc.HttpPost]
         [ValidateAntiForgeryToken]
         [UserContextAttribute]
         public virtual ActionResult Edit([Bind(Include = "Id,Name,Active,GamingGroupId")] Player player, ApplicationUser currentUser)
@@ -144,6 +149,48 @@ namespace UI.Controllers
                                           + "#" + GamingGroupController.SECTION_ANCHOR_PLAYERS);
             }
             return View(MVC.Player.Views.Edit, player);
+        }
+
+        // GET: /Player/Delete/5
+        [System.Web.Mvc.Authorize]
+        public virtual ActionResult Delete(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            PlayerDetails playerDetails;
+            try
+            {
+                playerDetails = playerRepository.GetPlayerDetails(id.Value, 0);
+            }catch(UnauthorizedAccessException)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
+            }catch (KeyNotFoundException)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+            }
+            
+            return View(MVC.Player.Views.Delete, playerDetails);
+        }
+
+        // POST: /Player/Delete/5
+        [System.Web.Mvc.Authorize]
+        [System.Web.Mvc.HttpPost, System.Web.Mvc.ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        [UserContextAttribute]
+        public virtual ActionResult DeleteConfirmed(int id, ApplicationUser currentUser)
+        {
+            try
+            {
+                dataContext.DeleteById<Player>(id, currentUser);
+                dataContext.CommitAllChanges();
+            }catch(UnauthorizedAccessException)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
+            }
+            return new RedirectResult(Url.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name)
+                                          + "#" + GamingGroupController.SECTION_ANCHOR_PLAYERS);
         }
 
         protected override void Dispose(bool disposing)

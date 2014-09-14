@@ -1,4 +1,6 @@
-﻿using BusinessLogic.DataAccess;
+﻿using System.Data.Entity.Infrastructure;
+using System.Data.SqlClient;
+using BusinessLogic.DataAccess;
 using BusinessLogic.EventTracking;
 using BusinessLogic.Models;
 using BusinessLogic.Models.User;
@@ -27,15 +29,22 @@ namespace BusinessLogic.Logic.Players
             ValidatePlayerNameIsNotNullOrWhiteSpace(player.Name);
 
             bool isNewPlayer = !player.AlreadyInDatabase();
-
-            Player newPlayer = dataContext.Save<Player>(player, currentUser);
-
-            if(isNewPlayer)
+            try
             {
-                new Task(() => eventTracker.TrackPlayerCreation(currentUser)).Start();
-            }
+                Player newPlayer = dataContext.Save<Player>(player, currentUser);
 
-            return newPlayer;
+                if (isNewPlayer)
+                {
+                    new Task(() => eventTracker.TrackPlayerCreation(currentUser)).Start();
+                }
+
+                return newPlayer;
+            }
+            catch (DbUpdateException exp)
+            {
+                    
+                throw exp;
+            }
         }
 
         private static void ValidatePlayerIsNotNull(Player player)

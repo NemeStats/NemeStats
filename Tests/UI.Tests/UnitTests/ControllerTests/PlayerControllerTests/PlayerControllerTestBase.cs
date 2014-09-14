@@ -32,7 +32,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         protected ApplicationUser currentUser;
 
         [SetUp]
-        public void SetUp()
+        public virtual void SetUp()
         {
             currentUser = new ApplicationUser()
             {
@@ -47,7 +47,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
             showingXResultsMessageBuilderMock = MockRepository.GenerateMock<IShowingXResultsMessageBuilder>();
             playerCreatorMock = MockRepository.GenerateMock<IPlayerSaver>();
             urlHelperMock = MockRepository.GenerateMock<UrlHelper>();
-            playerController = new PlayerController(
+            playerController = MockRepository.GeneratePartialMock<PlayerController>(
                                 dataContextMock,
                                 playerRepositoryMock,
                                 playerGameResultDetailsBuilderMock,
