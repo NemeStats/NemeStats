@@ -22,7 +22,8 @@ namespace BusinessLogic.Logic.GameDefinitions
         public virtual IList<GameDefinition> GetAllGameDefinitions(int gamingGroupId)
         {
             return dataContext.GetQueryable<GameDefinition>()
-                .Where(game => game.GamingGroupId == gamingGroupId)
+                .Where(game => game.GamingGroupId == gamingGroupId
+                        && game.Active)
                 .OrderBy(game => game.Name)
                 .ToList();
         }

@@ -86,7 +86,7 @@ namespace UI.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [UserContextAttribute]
-        public virtual ActionResult Create([Bind(Include = "Id,Name,Description")] GameDefinition gameDefinition, ApplicationUser currentUser)
+        public virtual ActionResult Create([Bind(Include = "Id,Name,Description,Active")] GameDefinition gameDefinition, ApplicationUser currentUser)
         {
             if (ModelState.IsValid)
             {
@@ -127,7 +127,7 @@ namespace UI.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [UserContextAttribute]
-        public virtual ActionResult Edit([Bind(Include = "Id,Name,Description,GamingGroupId")] GameDefinition gamedefinition, ApplicationUser currentUser)
+        public virtual ActionResult Edit([Bind(Include = "Id,Name,Description,GamingGroupId,Active")] GameDefinition gamedefinition, ApplicationUser currentUser)
         {
             if (ModelState.IsValid)
             {
@@ -137,49 +137,6 @@ namespace UI.Controllers
                                           + "#" + GamingGroupController.SECTION_ANCHOR_GAMEDEFINITIONS);
             }
             return View(MVC.GameDefinition.Views.Edit, gamedefinition);
-        }
-
-        // GET: /GameDefinition/Delete/5
-        [Authorize]
-        public virtual ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            try
-            {
-                GameDefinition gameDefinition = gameDefinitionRetriever.GetGameDefinitionDetails(
-                    id.Value, 
-                    0);
-                return View(MVC.GameDefinition.Views.Delete, gameDefinition);
-            }catch(KeyNotFoundException)
-            {
-                return HttpNotFound();
-            }catch (UnauthorizedAccessException)
-            {
-                return new HttpUnauthorizedResult();
-            }
-        }
-
-        // POST: /GameDefinition/Delete/5
-        [Authorize]
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        [UserContextAttribute]
-        public virtual ActionResult DeleteConfirmed(int id, ApplicationUser currentUser)
-        {
-            try
-            {
-                dataContext.DeleteById<GameDefinition>(id, currentUser);
-                dataContext.CommitAllChanges();
-                return new RedirectResult(Url.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name)
-                                          + "#" + GamingGroupController.SECTION_ANCHOR_GAMEDEFINITIONS);
-            }
-            catch (UnauthorizedAccessException)
-            {
-                return new HttpUnauthorizedResult();
-            }
         }
 
         protected override void Dispose(bool disposing)

@@ -16,16 +16,27 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
     public class GetAllTests : GameDefinitionRetrieverTestBase
     {
         [Test]
-        public void ItReturnsAListOfAllGameDefinitions()
+        public void ItOnlyReturnsActiveGameDefinitions()
         {
-            IQueryable<GameDefinition> gameDefinitionQueryable = new List<GameDefinition>().AsQueryable();
             dataContext.Expect(mock => mock.GetQueryable<GameDefinition>())
                 .Repeat.Once()
                 .Return(gameDefinitionQueryable);
 
             IList<GameDefinition> gameDefinitions = retriever.GetAllGameDefinitions(currentUser.CurrentGamingGroupId.Value);
 
-            Assert.AreEqual(gameDefinitionQueryable.ToList(), gameDefinitions);
+            Assert.True(gameDefinitions.All(gameDefinition => gameDefinition.Active));
+        }
+
+        [Test]
+        public void ItOnlyReturnsGameDefinitionsForTheCurrentUsersGamingGroup()
+        {
+            dataContext.Expect(mock => mock.GetQueryable<GameDefinition>())
+                .Repeat.Once()
+                .Return(gameDefinitionQueryable);
+
+            IList<GameDefinition> gameDefinitions = retriever.GetAllGameDefinitions(currentUser.CurrentGamingGroupId.Value);
+
+            Assert.True(gameDefinitions.All(gameDefinition => gameDefinition.GamingGroupId == currentUser.CurrentGamingGroupId));
         }
     }
 }

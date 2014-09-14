@@ -1,5 +1,6 @@
 ﻿using BusinessLogic.DataAccess;
 using BusinessLogic.Logic.GameDefinitions;
+using BusinessLogic.Models;
 using BusinessLogic.Models.User;
 using NUnit.Framework;
 using Rhino.Mocks;
@@ -17,6 +18,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
         protected IDataContext dataContext;
         protected ApplicationUser currentUser;
         protected IGameDefinitionRetriever retriever;
+        protected IQueryable<GameDefinition> gameDefinitionQueryable;
+        protected int gamingGroupId = 123;
 
         [SetUp]
         public void SetUp()
@@ -25,8 +28,17 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
             currentUser = new ApplicationUser()
             {
                 Id = "user id",
-                CurrentGamingGroupId = 123
+                CurrentGamingGroupId = gamingGroupId
             };
+            List<GameDefinition> gameDefinitions = new List<GameDefinition>()
+            {
+                new GameDefinition() { Id = 1, Active = true, GamingGroupId = gamingGroupId },  
+                new GameDefinition() { Id = 2, Active = false, GamingGroupId = gamingGroupId },
+                new GameDefinition() { Id = 3, Active = true, GamingGroupId = -1 },  
+
+            };
+            gameDefinitionQueryable = gameDefinitions.AsQueryable<GameDefinition>();
+
             retriever = new GameDefinitionRetriever(dataContext);
         }
     }

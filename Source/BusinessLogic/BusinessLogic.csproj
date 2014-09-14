@@ -209,6 +209,10 @@
     <Compile Include="Migrations\201408280159232_AddDateCreatedToGamingGroup.Designer.cs">
       <DependentUpon>201408280159232_AddDateCreatedToGamingGroup.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201409140144412_AddActiveToGameDefinition.cs" />
+    <Compile Include="Migrations\201409140144412_AddActiveToGameDefinition.Designer.cs">
+      <DependentUpon>201409140144412_AddActiveToGameDefinition.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Games\PublicGameSummary.cs" />
     <Compile Include="Models\GamingGroup.cs" />
     <Compile Include="Models\GamingGroupInvitation.cs" />
@@ -340,6 +344,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201408280159232_AddDateCreatedToGamingGroup.resx">
       <DependentUpon>201408280159232_AddDateCreatedToGamingGroup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201409140144412_AddActiveToGameDefinition.resx">
+      <DependentUpon>201409140144412_AddActiveToGameDefinition.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />
