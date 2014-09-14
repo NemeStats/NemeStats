@@ -169,8 +169,6 @@
     <Compile Include="UnitTests\ControllerTests\PlayedGameControllerTests\PlayedGameControllerTestBase.cs" />
     <Compile Include="UnitTests\ControllerTests\PlayerControllerTests\CreateHttpGetTests.cs" />
     <Compile Include="UnitTests\ControllerTests\PlayerControllerTests\SaveHttpPostTests.cs" />
-    <Compile Include="UnitTests\ControllerTests\PlayerControllerTests\DeleteConfirmedTests.cs" />
-    <Compile Include="UnitTests\ControllerTests\PlayerControllerTests\DeleteTests.cs" />
     <Compile Include="UnitTests\ControllerTests\PlayerControllerTests\DetailsTests.cs" />
     <Compile Include="UnitTests\ControllerTests\PlayedGameControllerTests\CreateHttpGetTests.cs" />
     <Compile Include="UnitTests\ControllerTests\PlayerControllerTests\EditHttpGetTests.cs" />
