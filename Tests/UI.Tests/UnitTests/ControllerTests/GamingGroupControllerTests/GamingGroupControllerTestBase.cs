@@ -33,7 +33,6 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
             gamingGroupRetrieverMock = MockRepository.GenerateMock<IGamingGroupRetriever>();
             showingXResultsMessageBuilderMock = MockRepository.GenerateMock<IShowingXResultsMessageBuilder>();
             gamingGroupController = new GamingGroupController(
-                dataContext, 
                 gamingGroupViewModelBuilderMock, 
                 gamingGroupAccessGranterMock,
                 gamingGroupCreatorMock,

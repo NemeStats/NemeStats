@@ -213,10 +213,13 @@
     <Compile Include="Migrations\201409140144412_AddActiveToGameDefinition.Designer.cs">
       <DependentUpon>201409140144412_AddActiveToGameDefinition.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201409142235424_PlayerNameIsNoLongerNullable.cs" />
+    <Compile Include="Migrations\201409142235424_PlayerNameIsNoLongerNullable.Designer.cs">
+      <DependentUpon>201409142235424_PlayerNameIsNoLongerNullable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Games\PublicGameSummary.cs" />
     <Compile Include="Models\GamingGroup.cs" />
     <Compile Include="Models\GamingGroupInvitation.cs" />
-    <Compile Include="Models\GamingGroups\GamingGroupQuickStart.cs" />
     <Compile Include="Models\Players\TopPlayer.cs" />
     <Compile Include="Models\User\AnonymousApplicationUser.cs" />
     <Compile Include="Models\User\ApplicationUser.cs" />
@@ -276,7 +279,7 @@
     <None Include="App.Release.config">
       <DependentUpon>App.config</DependentUpon>
     </None>
-    <None Include="App.Tosho.config" >
+    <None Include="App.Tosho.config">
       <DependentUpon>App.config</DependentUpon>
     </None>
     <None Include="packages.config" />
@@ -350,6 +353,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201409140144412_AddActiveToGameDefinition.resx">
       <DependentUpon>201409140144412_AddActiveToGameDefinition.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201409142235424_PlayerNameIsNoLongerNullable.resx">
+      <DependentUpon>201409142235424_PlayerNameIsNoLongerNullable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

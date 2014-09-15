@@ -9,6 +9,6 @@ namespace BusinessLogic.Logic.Users
 {
     public interface IGamingGroupInviteConsumer
     {
-        Task<int?> AddUserToInvitedGroupAsync(ApplicationUser currentUser);
+        Task<int?> ConsumeGamingGroupInvitation(ApplicationUser currentUser);
     }
 }

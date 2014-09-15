@@ -57,16 +57,17 @@ namespace UI.DependencyResolution {
                             x.For<DbContext>().LifecycleIs(new UniquePerRequestLifecycle()).Use<NemeStatsDbContext>();
                             x.For<IDataContext>().LifecycleIs(new UniquePerRequestLifecycle()).Use<NemeStatsDataContext>();
 
+                            x.For<IGamingGroupCreator>().Use<GamingGroupCreator>();
+                            x.For<IGamingGroupAccessGranter>().Use<EntityFrameworkGamingGroupAccessGranter>();
+                            x.For<IGamingGroupInviteConsumer>().Use<GamingGroupInviteConsumer>();
+
                             //transient scope
                             x.For<IPlayerSummaryBuilder>().Use<PlayerSummaryBuilder>();
                             x.For<IPlayerRepository>().Use<EntityFrameworkPlayerRepository>();
                             x.For<IGameDefinitionRetriever>().Use<GameDefinitionRetriever>();
                             x.For<IPlayedGameRetriever>().Use<PlayedGameRetriever>();
-                            x.For<IGamingGroupAccessGranter>().Use<EntityFrameworkGamingGroupAccessGranter>();
-                            x.For<IGamingGroupInviteConsumer>().Use<GamingGroupInviteConsumer>();
                             x.For<Microsoft.AspNet.Identity.IUserStore<ApplicationUser>>()
                                 .Use<Microsoft.AspNet.Identity.EntityFramework.UserStore<ApplicationUser>>();
-                            x.For<IGamingGroupCreator>().Use<GamingGroupCreator>();
                             x.For<IGameDefinitionViewModelBuilder>()
                                 .Use<GameDefinitionViewModelBuilder>();
                             x.For<IShowingXResultsMessageBuilder>().Use<ShowingXResultsMessageBuilder>();

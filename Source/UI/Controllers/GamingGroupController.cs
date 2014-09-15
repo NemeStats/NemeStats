@@ -3,7 +3,6 @@ using BusinessLogic.DataAccess.GamingGroups;
 using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.Logic.GamingGroups;
 using BusinessLogic.Models;
-using BusinessLogic.Models.GamingGroups;
 using BusinessLogic.Models.User;
 using System;
 using System.Collections.Generic;
@@ -27,7 +26,6 @@ namespace UI.Controllers
         public const string SECTION_ANCHOR_GAMEDEFINITIONS = "GameDefinitions";
         public const string SECTION_ANCHOR_RECENT_GAMES = "RecentGames";
 
-        internal IDataContext dataContext;
         internal IGamingGroupViewModelBuilder gamingGroupViewModelBuilder;
         internal IGamingGroupAccessGranter gamingGroupAccessGranter;
         internal IGamingGroupCreator gamingGroupCreator;
@@ -35,14 +33,12 @@ namespace UI.Controllers
         internal IShowingXResultsMessageBuilder showingXResultsMessageBuilder;
 
         public GamingGroupController(
-            IDataContext dataContext,
             IGamingGroupViewModelBuilder gamingGroupViewModelBuilder,
             IGamingGroupAccessGranter gamingGroupAccessGranter,
             IGamingGroupCreator gamingGroupCreator,
             IGamingGroupRetriever gamingGroupRetriever,
             IShowingXResultsMessageBuilder showingXResultsMessageBuilder)
         {
-            this.dataContext = dataContext;
             this.gamingGroupViewModelBuilder = gamingGroupViewModelBuilder;
             this.gamingGroupAccessGranter = gamingGroupAccessGranter;
             this.gamingGroupCreator = gamingGroupCreator;
@@ -78,14 +74,6 @@ namespace UI.Controllers
             return View();
         }
 
-        [HttpPost]
-        [UserContextAttribute(RequiresGamingGroup = false)]
-        public async virtual Task<ActionResult> Create(GamingGroupQuickStart gamingGroupQuickStart, ApplicationUser currentUser)
-        {
-            await gamingGroupCreator.CreateGamingGroupAsync(gamingGroupQuickStart, currentUser);
-            return RedirectToAction(MVC.GamingGroup.ActionNames.Index);
-        }
-
         //
         // POST: /GamingGroup/Delete/5
         [HttpPost]
@@ -103,10 +91,6 @@ namespace UI.Controllers
 
         protected override void Dispose(bool disposing)
         {
-            if (disposing)
-            {
-                dataContext.Dispose();
-            }
             base.Dispose(disposing);
         }
     }

@@ -4,7 +4,6 @@ using BusinessLogic.EventTracking;
 using BusinessLogic.Logic.GameDefinitions;
 using BusinessLogic.Logic.Players;
 using BusinessLogic.Models;
-using BusinessLogic.Models.GamingGroups;
 using BusinessLogic.Models.User;
 using Microsoft.AspNet.Identity;
 using System;
@@ -42,64 +41,7 @@ namespace BusinessLogic.Logic.GamingGroups
             this.gameDefinitionCreator = gameDefinitionCreator;
         }
 
-        public async Task<GamingGroup> CreateGamingGroupAsync(GamingGroupQuickStart gamingGroupQuickStart, ApplicationUser currentUser)
-        {
-            Validate(gamingGroupQuickStart);
-
-            GamingGroup newGamingGroup = CreateNewGamingGroup(gamingGroupQuickStart.GamingGroupName, currentUser);
-
-            await SetGamingGroupOnCurrentUser(currentUser, newGamingGroup);
-
-            CreatePlayers(gamingGroupQuickStart, currentUser);
-
-            CreateGameDefinitions(gamingGroupQuickStart, currentUser);
-
-            new Task(() => eventTracker.TrackGamingGroupCreation()).Start();
-
-            return newGamingGroup;
-        }
-
-        private static void Validate(GamingGroupQuickStart gamingGroupQuickStart)
-        {
-            ValidateGamingGroupQuickStartIsNotNull(gamingGroupQuickStart);
-            ValidateGamingGroupName(gamingGroupQuickStart.GamingGroupName);
-            ValidatePlayerNamesListIsNotNull(gamingGroupQuickStart);
-            ValidateGameDefinitionNamesListIsNotNull(gamingGroupQuickStart);
-        }
-
-        private static void ValidateGamingGroupQuickStartIsNotNull(GamingGroupQuickStart gamingGroupQuickStart)
-        {
-            if (gamingGroupQuickStart == null)
-            {
-                throw new ArgumentNullException("gamingGroupQuickStart");
-            }
-        }
-
-        private static void ValidateGamingGroupName(string gamingGroupName)
-        {
-            if (string.IsNullOrWhiteSpace(gamingGroupName))
-            {
-                throw new ArgumentException(EXCEPTION_MESSAGE_GAMING_GROUP_NAME_CANNOT_BE_NULL_OR_BLANK);
-            }
-        }
-
-        private static void ValidatePlayerNamesListIsNotNull(GamingGroupQuickStart gamingGroupQuickStart)
-        {
-            if (gamingGroupQuickStart.NewPlayerNames == null)
-            {
-                throw new ArgumentException(EXCEPTION_MESSAGE_PLAYER_NAMES_CANNOT_BE_NULL);
-            }
-        }
-
-        private static void ValidateGameDefinitionNamesListIsNotNull(GamingGroupQuickStart gamingGroupQuickStart)
-        {
-            if (gamingGroupQuickStart.NewGameDefinitionNames == null)
-            {
-                throw new ArgumentException(EXCEPTION_MESSAGE_GAME_DEFINITION_NAMES_CANNOT_BE_NULL);
-            }
-        }
-
-        private GamingGroup CreateNewGamingGroup(string gamingGroupName, ApplicationUser currentUser)
+        public async virtual Task<GamingGroup> CreateNewGamingGroup(string gamingGroupName, ApplicationUser currentUser)
         {
             GamingGroup gamingGroup = new GamingGroup()
             {
@@ -107,36 +49,13 @@ namespace BusinessLogic.Logic.GamingGroups
                 Name = gamingGroupName
             };
 
-            return dataContext.Save<GamingGroup>(gamingGroup, currentUser);
-        }
+            GamingGroup newGamingGroup = dataContext.Save<GamingGroup>(gamingGroup, currentUser);
 
-        private void CreatePlayers(GamingGroupQuickStart gamingGroupQuickStart, ApplicationUser currentUser)
-        {
-            Player newPlayer;
-            foreach (string playerName in gamingGroupQuickStart.NewPlayerNames)
-            {
-                if(!string.IsNullOrWhiteSpace(playerName))
-                {
-                    newPlayer = new Player()
-                    {
-                        Name = playerName
-                    };
-                    playerCreator.Save(newPlayer, currentUser);
-                }
-            }
-        }
+            await SetGamingGroupOnCurrentUser(currentUser, newGamingGroup);
 
-        private void CreateGameDefinitions(GamingGroupQuickStart gamingGroupQuickStart, ApplicationUser currentUser)
-        {
-            GameDefinition gameDefinition;
-            foreach (string gameDefinitionName in gamingGroupQuickStart.NewGameDefinitionNames)
-            {
-                if (!string.IsNullOrWhiteSpace(gameDefinitionName))
-                {
-                    gameDefinition = new GameDefinition() { Name = gameDefinitionName };
-                    gameDefinitionCreator.Save(gameDefinition, currentUser);
-                }
-            }
+            new Task(() => eventTracker.TrackGamingGroupCreation()).Start();
+
+            return newGamingGroup;
         }
 
         private async Task SetGamingGroupOnCurrentUser(ApplicationUser currentUser, GamingGroup newGamingGroup)

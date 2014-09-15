@@ -50,6 +50,13 @@
                 </div>
             </div>
         }
+        <div class="col-md-4">
+            <section id="socialLoginForm">
+                <div class="sidebar-module sidebar-module-inset">
+                    @Html.Partial("_ExternalLoginsListPartial", new { Action = "ExternalLogin", ReturnUrl = ViewBag.ReturnUrl })
+                </div>
+            </section>
+        </div>
     </div>
     Registering an account lets you join an existing Gaming Group (if you've been invited) or create a new Gaming Group.
     We will NOT share your email address with any third party or send you spam of any sort.

@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.GamingGroupInviteConsumerTests
 {
     [TestFixture]
-    public class AddUserToInvitedGroupTests
+    public class ConsumeGamingGroupInvitationTests
     {
         private NemeStatsDbContext dbContextMock;
         private IPendingGamingGroupInvitationRetriever pendingGamingGroupInvitationRetriever;
@@ -52,7 +52,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.GamingGroupInviteC
             pendingGamingGroupInvitationRetriever.Expect(mock => mock.GetPendingGamingGroupInvitations(currentUser))
                 .Repeat.Once()
                 .Return(gamingGroupInvitations);
-            int? gamingGroupId = await inviteConsumer.AddUserToInvitedGroupAsync(currentUser);
+            int? gamingGroupId = await inviteConsumer.ConsumeGamingGroupInvitation(currentUser);
 
             Assert.Null(gamingGroupId);
         }

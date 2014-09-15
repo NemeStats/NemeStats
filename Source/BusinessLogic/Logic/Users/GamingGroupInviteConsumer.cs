@@ -29,7 +29,7 @@ namespace BusinessLogic.Logic.Users
             this.gamingGroupAccessGranter = gamingGroupAccessGranter;
         }
 
-        public async Task<int?> AddUserToInvitedGroupAsync(ApplicationUser currentUser)
+        public async Task<int?> ConsumeGamingGroupInvitation(ApplicationUser currentUser)
         {
             IList<GamingGroupInvitation> gamingGroupInvitations 
                 = pendingGamingGroupRetriever.GetPendingGamingGroupInvitations(currentUser);

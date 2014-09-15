@@ -14,23 +14,27 @@ using BusinessLogic.DataAccess;
 using StructureMap;
 using BusinessLogic.Logic.Users;
 using BusinessLogic.EventTracking;
+using BusinessLogic.Logic.GamingGroups;
 
 namespace UI.Controllers
 {
     [Authorize]
     public partial class AccountController : Controller
     {
-        protected UserManager<ApplicationUser> userManager { get; set; }
+        protected UserManager<ApplicationUser> userManager;
         protected IGamingGroupInviteConsumer gamingGroupInviteConsumer;
+        protected IGamingGroupCreator gamingGroupCreator;
         protected NemeStatsEventTracker eventTracker;
 
         public AccountController(
             UserManager<ApplicationUser> userManager, 
             IGamingGroupInviteConsumer gamingGroupInviteConsumer,
+            IGamingGroupCreator gamingGroupCreator,
             NemeStatsEventTracker eventTracker)
         {
             this.userManager = userManager;
             this.gamingGroupInviteConsumer = gamingGroupInviteConsumer;
+            this.gamingGroupCreator = gamingGroupCreator;
             this.eventTracker = eventTracker;
         }
 
@@ -89,16 +93,9 @@ namespace UI.Controllers
                 var result = await userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    new Task(() => eventTracker.TrackUserRegistration()).Start();
-                    
-                    await SignInAsync(user, isPersistent: false);
-                    int? gamingGroupIdToWhichTheUserWasAdded = await gamingGroupInviteConsumer.AddUserToInvitedGroupAsync(user);
-                    
-                    if(gamingGroupIdToWhichTheUserWasAdded.HasValue)
-                    {
-                        return RedirectToAction(MVC.GamingGroup.ActionNames.Index, "GamingGroup");
-                    }
-                    return RedirectToAction(MVC.GamingGroup.ActionNames.Create, "GamingGroup");
+                    await SignInAndAssignGamingGroup(model.UserName, user);
+
+                    return RedirectToAction(MVC.GamingGroup.ActionNames.Index, "GamingGroup");
                 }
                 else
                 {
@@ -108,6 +105,19 @@ namespace UI.Controllers
 
             // If we got this far, something failed, redisplay form
             return View(model);
+        }
+
+        private async Task SignInAndAssignGamingGroup(string userName, ApplicationUser user)
+        {
+            new Task(() => eventTracker.TrackUserRegistration()).Start();
+
+            await SignInAsync(user, isPersistent: false);
+            int? gamingGroupIdToWhichTheUserWasAdded = await gamingGroupInviteConsumer.ConsumeGamingGroupInvitation(user);
+
+            if (!gamingGroupIdToWhichTheUserWasAdded.HasValue)
+            {
+                await gamingGroupCreator.CreateNewGamingGroup(userName + "'s Gaming Group", user);
+            }
         }
 
         //
@@ -296,16 +306,9 @@ namespace UI.Controllers
                     result = await userManager.AddLoginAsync(user.Id, info.Login);
                     if (result.Succeeded)
                     {
-                        await SignInAsync(user, isPersistent: false);
+                        await SignInAndAssignGamingGroup(model.UserName, user);
 
-                        int? gamingGroupIdToWhichTheUserWasAdded = await gamingGroupInviteConsumer.AddUserToInvitedGroupAsync(user);
-
-                        if (gamingGroupIdToWhichTheUserWasAdded.HasValue)
-                        {
-                            return RedirectToAction(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name);
-                        }
-
-                        return new RedirectResult(Url.Action(MVC.GamingGroup.ActionNames.Create, MVC.GamingGroup.Name));
+                        return RedirectToAction(MVC.GamingGroup.ActionNames.Index, "GamingGroup");
                     }
                 }
                 AddErrors(result);

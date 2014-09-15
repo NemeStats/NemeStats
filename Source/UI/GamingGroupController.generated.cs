@@ -104,15 +104,6 @@ namespace UI.Controllers
         {
             public readonly string currentUser = "currentUser";
         }
-        static readonly ActionParamsClass_Create s_params_Create = new ActionParamsClass_Create();
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public ActionParamsClass_Create CreateParams { get { return s_params_Create; } }
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public class ActionParamsClass_Create
-        {
-            public readonly string gamingGroupQuickStart = "gamingGroupQuickStart";
-            public readonly string currentUser = "currentUser";
-        }
         static readonly ActionParamsClass_GrantAccess s_params_GrantAccess = new ActionParamsClass_GrantAccess();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ActionParamsClass_GrantAccess GrantAccessParams { get { return s_params_GrantAccess; } }
@@ -132,10 +123,8 @@ namespace UI.Controllers
             public _ViewNamesClass ViewNames { get { return s_ViewNames; } }
             public class _ViewNamesClass
             {
-                public readonly string Create = "Create";
                 public readonly string Index = "Index";
             }
-            public readonly string Create = "~/Views/GamingGroup/Create.cshtml";
             public readonly string Index = "~/Views/GamingGroup/Index.cshtml";
         }
     }
@@ -166,19 +155,6 @@ namespace UI.Controllers
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Create);
             CreateOverride(callInfo);
             return callInfo;
-        }
-
-        [NonAction]
-        partial void CreateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, BusinessLogic.Models.GamingGroups.GamingGroupQuickStart gamingGroupQuickStart, BusinessLogic.Models.User.ApplicationUser currentUser);
-
-        [NonAction]
-        public override System.Threading.Tasks.Task<System.Web.Mvc.ActionResult> Create(BusinessLogic.Models.GamingGroups.GamingGroupQuickStart gamingGroupQuickStart, BusinessLogic.Models.User.ApplicationUser currentUser)
-        {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Create);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "gamingGroupQuickStart", gamingGroupQuickStart);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "currentUser", currentUser);
-            CreateOverride(callInfo, gamingGroupQuickStart, currentUser);
-            return System.Threading.Tasks.Task.FromResult(callInfo as ActionResult);
         }
 
         [NonAction]
