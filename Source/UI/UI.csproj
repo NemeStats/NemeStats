@@ -416,7 +416,6 @@
     <Content Include="Views\Account\Manage.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\Player\Delete.cshtml" />
     <Content Include="Views\Player\Create.cshtml" />
     <Content Include="Views\Player\Details.cshtml" />
     <Content Include="Views\GameDefinition\Create.cshtml" />
@@ -430,7 +429,6 @@
     <Content Include="Views\Shared\_BaseLayout.cshtml" />
     <Content Include="Views\Player\_CreateOrUpdatePartial.cshtml" />
     <Content Include="Views\Player\Edit.cshtml" />
-    <Content Include="Views\Player\Create.cshtml" />
     <None Include="Web.Jake.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
