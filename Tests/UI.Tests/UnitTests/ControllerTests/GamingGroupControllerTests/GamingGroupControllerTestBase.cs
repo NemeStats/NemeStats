@@ -18,7 +18,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
         protected IGamingGroupViewModelBuilder gamingGroupViewModelBuilderMock;
         protected GamingGroupController gamingGroupController;
         protected IGamingGroupAccessGranter gamingGroupAccessGranterMock;
-        protected IGamingGroupCreator gamingGroupCreatorMock;
+        protected IGamingGroupSaver gamingGroupSaverMock;
         protected IGamingGroupRetriever gamingGroupRetrieverMock;
         protected IShowingXResultsMessageBuilder showingXResultsMessageBuilderMock;
         protected ApplicationUser currentUser;
@@ -29,13 +29,13 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
             dataContext = MockRepository.GenerateMock<IDataContext>();
             gamingGroupViewModelBuilderMock = MockRepository.GenerateMock<IGamingGroupViewModelBuilder>();
             gamingGroupAccessGranterMock = MockRepository.GenerateMock<IGamingGroupAccessGranter>();
-            gamingGroupCreatorMock = MockRepository.GenerateMock<IGamingGroupCreator>();
+            gamingGroupSaverMock = MockRepository.GenerateMock<IGamingGroupSaver>();
             gamingGroupRetrieverMock = MockRepository.GenerateMock<IGamingGroupRetriever>();
             showingXResultsMessageBuilderMock = MockRepository.GenerateMock<IShowingXResultsMessageBuilder>();
             gamingGroupController = new GamingGroupController(
                 gamingGroupViewModelBuilderMock, 
                 gamingGroupAccessGranterMock,
-                gamingGroupCreatorMock,
+                gamingGroupSaverMock,
                 gamingGroupRetrieverMock,
                 showingXResultsMessageBuilderMock);
             currentUser = new ApplicationUser()

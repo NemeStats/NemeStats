@@ -53,7 +53,7 @@ namespace UI.DependencyResolution {
             For<IDataContext>().LifecycleIs(new UniquePerRequestLifecycle()).Use<NemeStatsDataContext>();
 
             //transient scope
-            For<IGamingGroupCreator>().Use<GamingGroupCreator>();
+            For<IGamingGroupSaver>().Use<GamingGroupSaver>();
 
             For<IGamingGroupAccessGranter>().Use<EntityFrameworkGamingGroupAccessGranter>();
 

@@ -154,6 +154,7 @@
     <Compile Include="UnitTests\ControllerTests\GameDefinitionControllerTests\EditHttpGetTests.cs" />
     <Compile Include="UnitTests\ControllerTests\GameDefinitionControllerTests\EditHttpPostTests.cs" />
     <Compile Include="UnitTests\ControllerTests\GameDefinitionControllerTests\GameDefinitionControllerTestBase.cs" />
+    <Compile Include="UnitTests\ControllerTests\GamingGroupControllerTests\EditTests.cs" />
     <Compile Include="UnitTests\ControllerTests\GamingGroupControllerTests\GamingGroupControllerTestBase.cs" />
     <Compile Include="UnitTests\ControllerTests\GamingGroupControllerTests\GrantAccessTests.cs" />
     <Compile Include="UnitTests\ControllerTests\GamingGroupControllerTests\IndexTests.cs" />

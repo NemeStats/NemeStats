@@ -15,44 +15,22 @@ using System.Text;
 using System.Threading.Tasks;
 using UniversalAnalyticsHttpWrapper;
 using BusinessLogic.Logic.GameDefinitions;
+using BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GamingGroupsTests.GamingGroupSaverTests;
 
-namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroupCreatorTests
+namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroupSaverTests
 {
     [TestFixture]
-    public class CreateGamingGroupAsyncTests
+    public class CreateGamingGroupAsyncTests : GamingGroupSaverTestBase
     {
-        private GamingGroupCreator gamingGroupCreator;
-        private IUserStore<ApplicationUser> userStoreMock;
-        private UserManager<ApplicationUser> userManager;
-        private IDataContext dataContextMock;
-        private NemeStatsEventTracker eventTrackerMock;
-        private IPlayerSaver playerSaverMock;
-        private IGameDefinitionSaver gameDefinitionCreator;
-        private ApplicationUser currentUser = new ApplicationUser()
-        {
-            Id = "application user id"
-        };
-        private string gamingGroupName = "gaming group name";
-        private GamingGroup expectedGamingGroup;
-        private ApplicationUser appUserRetrievedFromFindMethod;
+        protected GamingGroup expectedGamingGroup;
+        protected ApplicationUser appUserRetrievedFromFindMethod;
 
         [SetUp]
-        public void SetUp()
+        public override void SetUp()
         {
-            userStoreMock = MockRepository.GenerateMock<IUserStore<ApplicationUser>>();
-            userManager = new UserManager<ApplicationUser>(userStoreMock);
-            dataContextMock = MockRepository.GenerateMock<IDataContext>();
-            eventTrackerMock = MockRepository.GenerateMock<NemeStatsEventTracker>();
-            playerSaverMock = MockRepository.GenerateMock<IPlayerSaver>();
-            gameDefinitionCreator = MockRepository.GenerateMock<IGameDefinitionSaver>();
-            gamingGroupCreator = new GamingGroupCreator(
-                dataContextMock, 
-                userManager, 
-                eventTrackerMock, 
-                playerSaverMock,
-                gameDefinitionCreator);
+            base.SetUp();
 
-            expectedGamingGroup = new GamingGroup() { Id = 123 };
+            expectedGamingGroup = new GamingGroup() { Id = currentUser.CurrentGamingGroupId.Value };
             dataContextMock.Expect(mock => mock.Save(Arg<GamingGroup>.Is.Anything, Arg<ApplicationUser>.Is.Anything))
                 .Repeat.Once()
                 .Return(expectedGamingGroup);
@@ -74,7 +52,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
             ArgumentNullException expectedException = new ArgumentNullException("gamingGroupName");
             try
             {
-                await gamingGroupCreator.CreateNewGamingGroup(null, currentUser);
+                await gamingGroupSaver.CreateNewGamingGroup(null, currentUser);
             }
             catch (ArgumentNullException exception)
             {
@@ -88,7 +66,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
             ArgumentNullException expectedException = new ArgumentNullException("gamingGroupName");
             try
             {
-                await gamingGroupCreator.CreateNewGamingGroup("   ", currentUser);
+                await gamingGroupSaver.CreateNewGamingGroup("   ", currentUser);
             }
             catch (ArgumentNullException exception)
             {
@@ -99,7 +77,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
         [Test]
         public async Task ItSetsTheOwnerToTheCurrentUser()
         {
-            await gamingGroupCreator.CreateNewGamingGroup(gamingGroupName, currentUser);
+            await gamingGroupSaver.CreateNewGamingGroup(gamingGroupName, currentUser);
 
             dataContextMock.AssertWasCalled(mock =>
                 mock.Save(Arg<GamingGroup>.Matches(group => group.OwningUserId == currentUser.Id),
@@ -109,7 +87,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
         [Test]
         public async Task ItSetsTheGamingGroupName()
         {
-            await gamingGroupCreator.CreateNewGamingGroup(gamingGroupName, currentUser);
+            await gamingGroupSaver.CreateNewGamingGroup(gamingGroupName, currentUser);
 
             dataContextMock.AssertWasCalled(mock =>
                 mock.Save(Arg<GamingGroup>.Matches(group => group.Name == gamingGroupName),
@@ -119,7 +97,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
         [Test]
         public async Task ItReturnsTheSavedGamingGroup()
         {
-            GamingGroup returnedGamingGroup = await gamingGroupCreator.CreateNewGamingGroup(gamingGroupName, currentUser);
+            GamingGroup returnedGamingGroup = await gamingGroupSaver.CreateNewGamingGroup(gamingGroupName, currentUser);
 
             IList<object[]> objectsPassedToSaveMethod = dataContextMock.GetArgumentsForCallsMadeOn(
                 mock => mock.Save(Arg<GamingGroup>.Is.Anything, Arg<ApplicationUser>.Is.Anything));
@@ -130,7 +108,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
         
         public async Task ItUpdatesTheCurrentUsersGamingGroup()
         {
-            GamingGroup returnedGamingGroup = await gamingGroupCreator.CreateNewGamingGroup(gamingGroupName, currentUser);
+            GamingGroup returnedGamingGroup = await gamingGroupSaver.CreateNewGamingGroup(gamingGroupName, currentUser);
 
             userStoreMock.AssertWasCalled(mock => mock.UpdateAsync(Arg<ApplicationUser>.Matches(
                 user => user.CurrentGamingGroupId == expectedGamingGroup.Id 
@@ -145,7 +123,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
                 .Repeat.Once()
                 .Return(expectedGamingGroup);
 
-            await gamingGroupCreator.CreateNewGamingGroup(gamingGroupName, currentUser);
+            await gamingGroupSaver.CreateNewGamingGroup(gamingGroupName, currentUser);
             eventTrackerMock.AssertWasCalled(mock => mock.TrackGamingGroupCreation());
         }
     }

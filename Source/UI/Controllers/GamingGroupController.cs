@@ -7,6 +7,7 @@ using BusinessLogic.Models.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -28,20 +29,20 @@ namespace UI.Controllers
 
         internal IGamingGroupViewModelBuilder gamingGroupViewModelBuilder;
         internal IGamingGroupAccessGranter gamingGroupAccessGranter;
-        internal IGamingGroupCreator gamingGroupCreator;
+        internal IGamingGroupSaver gamingGroupSaver;
         internal IGamingGroupRetriever gamingGroupRetriever;
         internal IShowingXResultsMessageBuilder showingXResultsMessageBuilder;
 
         public GamingGroupController(
             IGamingGroupViewModelBuilder gamingGroupViewModelBuilder,
             IGamingGroupAccessGranter gamingGroupAccessGranter,
-            IGamingGroupCreator gamingGroupCreator,
+            IGamingGroupSaver gamingGroupSaver,
             IGamingGroupRetriever gamingGroupRetriever,
             IShowingXResultsMessageBuilder showingXResultsMessageBuilder)
         {
             this.gamingGroupViewModelBuilder = gamingGroupViewModelBuilder;
             this.gamingGroupAccessGranter = gamingGroupAccessGranter;
-            this.gamingGroupCreator = gamingGroupCreator;
+            this.gamingGroupSaver = gamingGroupSaver;
             this.gamingGroupRetriever = gamingGroupRetriever;
             this.showingXResultsMessageBuilder = showingXResultsMessageBuilder;
         }
@@ -87,6 +88,15 @@ namespace UI.Controllers
             }
 
             return RedirectToAction(MVC.GamingGroup.ActionNames.Index, model);
+        }
+
+        [HttpPost]
+        [UserContextAttribute]
+        public virtual ActionResult Edit(string gamingGroupName, ApplicationUser currentUser)
+        {
+            gamingGroupSaver.UpdateGamingGroupName(gamingGroupName, currentUser);
+
+            return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
 
         protected override void Dispose(bool disposing)

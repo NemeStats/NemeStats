@@ -15,7 +15,7 @@ using UniversalAnalyticsHttpWrapper;
 
 namespace BusinessLogic.Logic.GamingGroups
 {
-    public class GamingGroupCreator : IGamingGroupCreator
+    public class GamingGroupSaver : IGamingGroupSaver
     {
         internal const string EXCEPTION_MESSAGE_GAMING_GROUP_NAME_CANNOT_BE_NULL_OR_BLANK = "GamingGroup name cannot be null or blank";
         internal const string EXCEPTION_MESSAGE_PLAYER_NAMES_CANNOT_BE_NULL = "gamingGroupQuickStart.NewPlayerNames cannot be null.";
@@ -27,7 +27,7 @@ namespace BusinessLogic.Logic.GamingGroups
         private UserManager<ApplicationUser> userManager;
         private NemeStatsEventTracker eventTracker;
 
-        public GamingGroupCreator(
+        public GamingGroupSaver(
             IDataContext dataContext, 
             UserManager<ApplicationUser> userManager, 
             NemeStatsEventTracker eventTracker,
@@ -65,6 +65,15 @@ namespace BusinessLogic.Logic.GamingGroups
             await userManager.UpdateAsync(user);
 
             currentUser.CurrentGamingGroupId = user.CurrentGamingGroupId;
+        }
+
+        public GamingGroup UpdateGamingGroupName(string gamingGroupName, ApplicationUser currentUser)
+        {
+            GamingGroup gamingGroup = dataContext.FindById<GamingGroup>(currentUser.CurrentGamingGroupId.Value);
+            gamingGroup.Name = gamingGroupName;
+            gamingGroup = dataContext.Save(gamingGroup, currentUser);
+            dataContext.CommitAllChanges();
+            return gamingGroup;
         }
     }
 }

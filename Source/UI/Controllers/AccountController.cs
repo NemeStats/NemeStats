@@ -23,18 +23,18 @@ namespace UI.Controllers
     {
         protected UserManager<ApplicationUser> userManager;
         protected IGamingGroupInviteConsumer gamingGroupInviteConsumer;
-        protected IGamingGroupCreator gamingGroupCreator;
+        protected IGamingGroupSaver gamingGroupSaver;
         protected NemeStatsEventTracker eventTracker;
 
         public AccountController(
             UserManager<ApplicationUser> userManager, 
             IGamingGroupInviteConsumer gamingGroupInviteConsumer,
-            IGamingGroupCreator gamingGroupCreator,
+            IGamingGroupSaver gamingGroupSaver,
             NemeStatsEventTracker eventTracker)
         {
             this.userManager = userManager;
             this.gamingGroupInviteConsumer = gamingGroupInviteConsumer;
-            this.gamingGroupCreator = gamingGroupCreator;
+            this.gamingGroupSaver = gamingGroupSaver;
             this.eventTracker = eventTracker;
         }
 
@@ -116,7 +116,7 @@ namespace UI.Controllers
 
             if (!gamingGroupIdToWhichTheUserWasAdded.HasValue)
             {
-                await gamingGroupCreator.CreateNewGamingGroup(userName + "'s Gaming Group", user);
+                await gamingGroupSaver.CreateNewGamingGroup(userName + "'s Gaming Group", user);
             }
         }
 

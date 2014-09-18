@@ -133,8 +133,8 @@
     <Compile Include="Logic\GameDefinitions\GameDefinitionSaver.cs" />
     <Compile Include="Logic\GameDefinitions\IGameDefinitionRetriever.cs" />
     <Compile Include="Logic\GameDefinitions\GameDefinitionRetriever.cs" />
-    <Compile Include="Logic\GamingGroups\IGamingGroupCreator.cs" />
-    <Compile Include="Logic\GamingGroups\GamingGroupCreator.cs" />
+    <Compile Include="Logic\GamingGroups\IGamingGroupSaver.cs" />
+    <Compile Include="Logic\GamingGroups\GamingGroupSaver.cs" />
     <Compile Include="Logic\GamingGroups\IGamingGroupRetriever.cs" />
     <Compile Include="Logic\GamingGroups\GamingGroupRetriever.cs" />
     <Compile Include="Logic\GamingGroups\IPendingGamingGroupInvitationRetriever.cs" />

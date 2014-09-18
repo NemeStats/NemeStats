@@ -8,8 +8,9 @@ using System.Threading.Tasks;
 
 namespace BusinessLogic.Logic.GamingGroups
 {
-    public interface IGamingGroupCreator
+    public interface IGamingGroupSaver
     {
         Task<GamingGroup> CreateNewGamingGroup(string gamingGroupName, ApplicationUser currentUser);
+        GamingGroup UpdateGamingGroupName(string gamingGroupName, ApplicationUser currentUser);
     }
 }
