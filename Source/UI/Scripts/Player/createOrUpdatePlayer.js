@@ -30,8 +30,7 @@ window.Views.Player.CreateOrUpdate.prototype = {
         });
 
         this.$playerNameInput = this.$form.find("#Name");
-
-        this.$playersTable = this.$container.parent().parent().find("table");
+        this.$playersTable = this.$container.parent().parent().parent().find("table");
 
         this.$btnSubmit = this.$container.find("#btnSubmit");
         this.$btnSubmit.on("click", function () {
@@ -52,19 +51,17 @@ window.Views.Player.CreateOrUpdate.prototype = {
                 url: this.formAction,
                 data: this.$form.serialize(),
                 success: function (player) {
-                    owner.$playersTable.find("tr:last").after("<tr> \
-                                    <td> \
-                                        <a href='/Player/Details/"+ player.Id +"'>"+ player.Name +"</a> \
-                                    </td> \
-                                    <td> \
-                                        <a href='/Player/Edit/" + player.Id + "' title='Edit'> \
-                                            <span class='glyphicon glyphicon-pencil font-size-sm'></span> \
-                                        </a> \
-                                        <a href='/Player/Delete/" + player.Id + "' title='Delete'> \
-                                            <span class='glyphicon glyphicon-trash font-size-sm'></span> \
-                                        </a> \
-                                    </td> \
-                                </tr>");
+                    owner.$playersTable.find("tr:last").after(
+                        "<tr> \
+                                <td> \
+                                    <a href='/Player/Details/" + player.Id + "'>" + player.Name + "</a> \
+                                </td> \
+                                <td> \
+                                    <a href='/Player/Edit/" + player.Id + " title='Edit'> \
+                                        <i class='fa fa-pencil fa-3x'></i> \
+                                    </a> \
+                                </td> \
+                            </tr>");
                     owner.$playerNameInput.val('');
                 },
                 error: function (err) {

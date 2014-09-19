@@ -161,3 +161,16 @@ ul input[type=text] { width:25px }
   background-color: #eee;
   margin-bottom: 10px;
 }
+
+.fl-left {
+    float: left;
+}
+
+.fl-right {
+    float: right;
+}
+
+.fl-clear {
+    clear:both;
+}
+

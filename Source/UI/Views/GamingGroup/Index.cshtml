@@ -14,62 +14,74 @@
 <div class="row">
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h4>
-                Record A Played Game @ViewBag.RecentGamesMessage @Html.ActionLink("Create New", "Create", "PlayedGame", new { }, new { @class = "btn btn-primary btn-sm" })
+            <h4 class="fl-left">
+                Record A Played Game @ViewBag.RecentGamesMessage
             </h4>
+            <div class="fl-right">
+                @Html.ActionLink("Create New", "Create", "PlayedGame", new { }, new { @class = "btn btn-primary" })
+            </div>
+            <div class="fl-clear"></div>
         </div>
+
         <div class="panel-body">
-
-            <div class="col-md-4">
-                <strong>Game Name</strong>
-            </div>
-            <div class="col-md-4">
-                <strong>Date Played</strong>
-            </div>
-            <div class="col-md-4">
-                <strong>Result</strong>
-            </div>
-            <div class="col-md-4">
-
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>
+                                Game Name
+                            </th>
+                            <th>
+                                Date Played
+                            </th>
+                            <th>
+                                Result
+                            </th>
+                            <th>
+                                
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.RecentGames)
+                        {
+                            <tr>
+                                <td class="col-sm-4">
+                                    @Html.ActionLink(item.GameDefinitionName, "Details", "GameDefinition", new { id = item.GameDefinitionId }, new { })
+                                </td>
+                                <td class="col-sm-2">
+                                    @Html.DisplayFor(modelItem => item.DatePlayed)
+                                </td>
+                                <td class="col-sm-4">
+                                    @foreach (var result in item.PlayerResults)
+                                    {
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                @Html.ActionLink(result.PlayerName, "Details", "Player", new { id = result.PlayerId }, new { })
+                                            </div>
+                                            <div class="col-sm-6">
+                                                @Html.GameResults(result)
+                                            </div>
+                                        </div>
+                                    }
+                                </td>
+                                <td class="col-sm-2">
+                                    <a href="@Url.Action("Details", "PlayedGame", new { id = item.PlayedGameId })" title="Details">
+                                        <i class="fa fa-book fa-3x"></i>
+                                    </a>
+                                    @if (item.UserCanEdit)
+                                    {
+                                        <a href="@Url.Action("Delete", "PlayedGame", new { id = item.PlayedGameId })" title="Delete">
+                                            <i class="fa fa-trash-o fa-3x"></i>
+                                        </a>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
             </div>
         </div>
-    @foreach (var item in Model.RecentGames)
-    {
-        <div class="line-bottom-sm margin-bottom-xs">
-            <div class="row">
-                <div class="col-md-4">
-                    @Html.ActionLink(item.GameDefinitionName, "Details", "GameDefinition", new { id = item.GameDefinitionId }, new { })
-                </div>
-                <div class="col-md-2">
-                    @Html.DisplayFor(modelItem => item.DatePlayed)
-                </div>
-                <div class="col-md-4">
-                    @foreach (var result in item.PlayerResults)
-                    {
-                        <div class="row">
-                            <div class="col-sm-6">
-                                @Html.ActionLink(result.PlayerName, "Details", "Player", new { id = result.PlayerId }, new { })
-                            </div>
-                            <div class="col-sm-6">
-                                @Html.GameResults(result)
-                            </div>
-                        </div>
-                    }
-                </div>
-                <div class="col-md-2">
-                    <a href="@Url.Action("Details", "PlayedGame", new { id = item.PlayedGameId })" title="Details">
-                        <span class="glyphicon glyphicon-book font-size-sm"></span>
-                    </a>
-                    @if (item.UserCanEdit)
-                    {
-                        <a href="@Url.Action("Delete", "PlayedGame", new { id = item.PlayedGameId })" title="Delete">
-                            <span class="glyphicon glyphicon-trash font-size-sm"></span>
-                        </a>
-                    }
-                </div>
-            </div>
-        </div>
-    }
     </div>
 </div>
 
@@ -77,13 +89,15 @@
 <div class="row">
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h4>
+            <h4 class="fl-left">
                 Players 
             </h4>
+            <div class="fl-right">
+                @Html.Action("SavePlayer", "Player")
+            </div>
+            <div class="fl-clear"></div>
         </div>
         <div class="panel-body">
-            @Html.Action("SavePlayer", "Player")
-
             <div class="table-responsive">
                 <table class="table table-hover table-condensed">
                     <thead>
@@ -102,7 +116,7 @@
                                 </td>
                                 <td>
                                     <a href="@Url.Action("Edit", "Player", new { id = item.Id })" title="Edit">
-                                        <span class="glyphicon glyphicon-pencil font-size-sm"></span>
+                                        <i class="fa fa-pencil fa-3x"></i>
                                     </a>
                                 </td>
                             </tr>
@@ -113,14 +127,20 @@
         </div>
     </div>
 </div>
+
 <a name="@ViewBag.GameDefinitionSectionAnchorText"></a>
 <div class="row">
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h4>
+            <h4 class="fl-left">
                 Games This Group Plays
-                @Html.ActionLink("Create New", "Create", "GameDefinition", new { }, new { @class = "btn btn-primary btn-sm" })
             </h4>
+            <div class="fl-right">
+                @Html.ActionLink("Create New", "Create", "GameDefinition", new { }, new { @class = "btn btn-primary" })
+            </div>
+            <div class="fl-clear">
+                
+            </div>
         </div>
         <div class="panel-body">
             <div class="table-responsive">
@@ -148,11 +168,11 @@
                                 </td>
                                 <td>
                                     <a href="@Url.Action("Edit", "GameDefinition", new { id = item.Id })" title="Edit">
-                                        <span class="glyphicon glyphicon-pencil font-size-sm"></span>
+                                        <span class="fa fa-pencil fa-3x"></span>
                                     </a>
 
                                     <a href="@Url.Action("Details", "GameDefinition", new { id = item.Id })" title="Details">
-                                        <span class="glyphicon glyphicon-book font-size-sm"></span>
+                                        <span class="fa fa-book fa-3x"></span>
                                     </a>
                                 </td>
                             </tr>
