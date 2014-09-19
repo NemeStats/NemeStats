@@ -3,6 +3,7 @@ using Mindscape.Raygun4Net;
 using Mindscape.Raygun4Net.Messages;
 using RollbarSharp;
 using StructureMap;
+using StructureMap.Web.Pipeline;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -16,9 +17,6 @@ namespace UI
 {
     public class MvcApplication : System.Web.HttpApplication
     {
-        internal const string INFO_MESSAGE_TO_LOG = "This is just an informational message. A request was sent to: {0}";
-        internal const string INFORMATIONAL_TAG = "InfoTag";
-
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
@@ -40,7 +38,7 @@ namespace UI
 
         protected void Application_EndRequest(object sender, EventArgs e)
         {
-            //TODO do something to displose of structuremap objects here
+            HttpContextLifecycle.DisposeAndClearAll();
         }
     }
 }
