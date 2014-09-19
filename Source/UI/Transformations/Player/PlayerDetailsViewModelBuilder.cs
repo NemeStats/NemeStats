@@ -30,19 +30,39 @@ namespace UI.Transformations.Player
             playerDetailsViewModel.PlayerName = playerDetails.Name;
             playerDetailsViewModel.Active = playerDetails.Active;
             playerDetailsViewModel.TotalGamesPlayed = playerDetails.PlayerStats.TotalGames;
-            if (currentUser == null || playerDetails.GamingGroupId != currentUser.CurrentGamingGroupId)
-            {
-                playerDetailsViewModel.UserCanEdit = false;
-            }else
-            {
-                playerDetailsViewModel.UserCanEdit = true;
-            }
+            playerDetailsViewModel.TotalPoints = playerDetails.PlayerStats.TotalPoints;
+            SetAveragePointsPerGame(playerDetails, playerDetailsViewModel);
+            SetUserCanEditFlag(playerDetails, currentUser, playerDetailsViewModel);
 
             PopulatePlayerGameSummaries(playerDetails, playerDetailsViewModel);
 
             PopulateNemesisData(playerDetails.Nemesis, playerDetailsViewModel);
 
             return playerDetailsViewModel;
+        }
+
+        private static void SetAveragePointsPerGame(PlayerDetails playerDetails, PlayerDetailsViewModel playerDetailsViewModel)
+        {
+            if (playerDetails.PlayerStats.TotalGames == 0)
+            {
+                playerDetailsViewModel.AveragePointsPerGame = 0;
+            }
+            else
+            {
+                playerDetailsViewModel.AveragePointsPerGame = (float)playerDetails.PlayerStats.TotalPoints / (float)playerDetails.PlayerStats.TotalGames;
+            }
+        }
+
+        private static void SetUserCanEditFlag(PlayerDetails playerDetails, ApplicationUser currentUser, PlayerDetailsViewModel playerDetailsViewModel)
+        {
+            if (currentUser == null || playerDetails.GamingGroupId != currentUser.CurrentGamingGroupId)
+            {
+                playerDetailsViewModel.UserCanEdit = false;
+            }
+            else
+            {
+                playerDetailsViewModel.UserCanEdit = true;
+            }
         }
 
         private static void PopulateNemesisData(Nemesis nemesis, PlayerDetailsViewModel playerDetailsViewModel)

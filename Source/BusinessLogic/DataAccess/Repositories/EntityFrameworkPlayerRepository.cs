@@ -110,6 +110,11 @@ namespace BusinessLogic.DataAccess.Repositories
             PlayerStatistics playerStatistics = new PlayerStatistics();
             playerStatistics.TotalGames = dataContext.GetQueryable<PlayerGameResult>()
                 .Count(playerGameResults => playerGameResults.PlayerId == playerId);
+
+            playerStatistics.TotalPoints = dataContext.GetQueryable<PlayerGameResult>()
+                .Where(result => result.PlayerId == playerId)
+                .Sum(playerGameResults => playerGameResults.GordonPoints);
+
             return playerStatistics;
         }
 

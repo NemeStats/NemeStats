@@ -65,7 +65,11 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTests.PlayerDetailsViewM
                 Active = true,
                 Name = "Skipper",
                 PlayerGameResults = playerGameResults,
-                PlayerStats = new PlayerStatistics() { TotalGames = 71 },
+                PlayerStats = new PlayerStatistics() 
+                    { 
+                        TotalGames = 71,
+                        TotalPoints = 150
+                    },
                 Nemesis = nemesis,
                 GamingGroupId = 123
             };
@@ -142,9 +146,33 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTests.PlayerDetailsViewM
         }
 
         [Test]
-        public void ItCopiesTheTotalPlayers()
+        public void ItCopiesTheTotalGamesPlayed()
         {
             Assert.AreEqual(playerDetails.PlayerStats.TotalGames, playerDetailsViewModel.TotalGamesPlayed);
+        }
+
+        [Test]
+        public void ItCopiesTheTotalPoints()
+        {
+            Assert.AreEqual(playerDetails.PlayerStats.TotalPoints, playerDetailsViewModel.TotalPoints);
+        }
+
+        [Test]
+        public void ItSetsTheAveragePointsPerGame()
+        {
+            float expectedPoints = (float)playerDetails.PlayerStats.TotalPoints / (float)playerDetails.PlayerStats.TotalGames;
+
+            Assert.AreEqual(expectedPoints, playerDetailsViewModel.AveragePointsPerGame);
+        }
+
+        [Test]
+        public void ItSetsTheAveragePointsPerGameToZeroIfNoGamesHaveBeenPlayed()
+        {
+            playerDetails.PlayerStats.TotalGames = 0;
+
+            playerDetailsViewModel = builder.Build(playerDetails, currentUser);
+
+            Assert.AreEqual(0, playerDetailsViewModel.AveragePointsPerGame);
         }
 
         [Test]
