@@ -6,29 +6,15 @@
     Layout = MVC.Shared.Views._BaseLayout;
 }
 
-<h2>Details</h2>
+<h2>@Html.DisplayFor(model => model.Name)</h2>
+<h3>@Html.DisplayFor(model => model.Description)</h3>
+@if (Model.UserCanEdit)
+{
+    <a href="@Url.Action("Edit", "GameDefinition", new { id = Model.Id })" title="Edit">
+        <span class="fa fa-pencil fa-3x"></span>
+    </a>
+}
 
-<div>
-    <h4>Game Definition Details</h4>
-	<hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-    </dl>
-</div>
 <div class="panel-heading">
     <h4>Recent Games @ViewBag.RecentGamesMessage</h4>
 </div>
@@ -50,9 +36,3 @@
         <br/>
     }
 </div>
-<p>
-    @if(Model.UserCanEdit)
-    {
-        @Html.ActionLink("Edit", "Edit", new { id = Model.Id })
-    }
-</p>
