@@ -22,7 +22,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTests.PlayerDetailsViewM
         private PlayerDetailsViewModelBuilder builder;
         private ApplicationUser currentUser;
 
-        [TestFixtureSetUp]
+        [SetUp]
         public void TestFixtureSetUp()
         {
             GameDefinition gameDefinition1 = new GameDefinition()
@@ -196,9 +196,9 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTests.PlayerDetailsViewM
         {
             playerDetails.PlayerStats.AveragePlayersPerGame = 0;
 
-            playerDetailsViewModel = builder.Build(playerDetails, currentUser);
+            PlayerDetailsViewModel viewModel = builder.Build(playerDetails, currentUser);
 
-            Assert.AreEqual(0, playerDetailsViewModel.AveragePointsPerPlayer);
+            Assert.AreEqual(0, viewModel.AveragePointsPerPlayer);
         }
 
         [Test]
