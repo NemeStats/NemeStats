@@ -50,5 +50,20 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
                 Assert.AreEqual(totalPoints, playerStatistics.TotalPoints);
             }
         }
+
+        [Test]
+        public void ItGetsTheAveragePlayersPerGame()
+        {
+            using (IDataContext dataContext = new NemeStatsDataContext())
+            {
+                IPlayerRepository playerLogic = new EntityFrameworkPlayerRepository(dataContext);
+                PlayerStatistics playerStatistics = playerLogic.GetPlayerStatistics(testPlayer1.Id);
+
+                float averagePlayersPerGame = (float)testPlayedGames.Where(game => game.PlayerGameResults.Any(result => result.PlayerId == testPlayer1.Id))
+                    .Average(game => game.NumberOfPlayers);
+
+                Assert.AreEqual(averagePlayersPerGame, playerStatistics.AveragePlayersPerGame);
+            }
+        }
     }
 }

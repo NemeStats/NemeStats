@@ -115,6 +115,10 @@ namespace BusinessLogic.DataAccess.Repositories
                 .Where(result => result.PlayerId == playerId)
                 .Sum(playerGameResults => playerGameResults.GordonPoints);
 
+            playerStatistics.AveragePlayersPerGame = (float)dataContext.GetQueryable<PlayedGame>()
+                .Where(playedGame => playedGame.PlayerGameResults.Any(result => result.PlayerId == playerId))
+                    .Average(game => game.NumberOfPlayers);
+
             return playerStatistics;
         }
 

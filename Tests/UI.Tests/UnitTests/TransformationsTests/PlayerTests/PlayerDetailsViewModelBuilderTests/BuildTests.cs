@@ -68,7 +68,8 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTests.PlayerDetailsViewM
                 PlayerStats = new PlayerStatistics() 
                     { 
                         TotalGames = 71,
-                        TotalPoints = 150
+                        TotalPoints = 150,
+                        AveragePlayersPerGame = 3
                     },
                 Nemesis = nemesis,
                 GamingGroupId = 123
@@ -173,6 +174,31 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTests.PlayerDetailsViewM
             playerDetailsViewModel = builder.Build(playerDetails, currentUser);
 
             Assert.AreEqual(0, playerDetailsViewModel.AveragePointsPerGame);
+        }
+
+        [Test]
+        public void ItSetsTheAveragePlayersPerGame()
+        {
+            Assert.AreEqual(playerDetails.PlayerStats.AveragePlayersPerGame, playerDetailsViewModel.AveragePlayersPerGame);
+        }
+
+        [Test]
+        public void ItSetsTheAveragePointsPerPlayer()
+        {
+            float expectedPointsPerGame = (float)playerDetails.PlayerStats.TotalPoints / (float)playerDetails.PlayerStats.TotalGames;
+            float expectedPointsPerPlayer = expectedPointsPerGame / (float)playerDetails.PlayerStats.AveragePlayersPerGame;
+
+            Assert.AreEqual(expectedPointsPerPlayer, playerDetailsViewModel.AveragePointsPerPlayer);
+        }
+
+        [Test]
+        public void ItSetsTheAveragePointsPerPlayerToZeroIfTheAveragePlayersPerGameIsZero()
+        {
+            playerDetails.PlayerStats.AveragePlayersPerGame = 0;
+
+            playerDetailsViewModel = builder.Build(playerDetails, currentUser);
+
+            Assert.AreEqual(0, playerDetailsViewModel.AveragePointsPerPlayer);
         }
 
         [Test]

@@ -32,6 +32,8 @@ namespace UI.Transformations.Player
             playerDetailsViewModel.TotalGamesPlayed = playerDetails.PlayerStats.TotalGames;
             playerDetailsViewModel.TotalPoints = playerDetails.PlayerStats.TotalPoints;
             SetAveragePointsPerGame(playerDetails, playerDetailsViewModel);
+            playerDetailsViewModel.AveragePlayersPerGame = playerDetails.PlayerStats.AveragePlayersPerGame;
+            SetAveragePointsPerPlayer(playerDetails, playerDetailsViewModel);
             SetUserCanEditFlag(playerDetails, currentUser, playerDetailsViewModel);
 
             PopulatePlayerGameSummaries(playerDetails, playerDetailsViewModel);
@@ -50,6 +52,19 @@ namespace UI.Transformations.Player
             else
             {
                 playerDetailsViewModel.AveragePointsPerGame = (float)playerDetails.PlayerStats.TotalPoints / (float)playerDetails.PlayerStats.TotalGames;
+            }
+        }
+
+        private static void SetAveragePointsPerPlayer(PlayerDetails playerDetails, PlayerDetailsViewModel playerDetailsViewModel)
+        {
+            if (playerDetails.PlayerStats.AveragePlayersPerGame == 0)
+            {
+                playerDetailsViewModel.AveragePointsPerPlayer = 0;
+            }
+            else
+            {
+                playerDetailsViewModel.AveragePointsPerPlayer
+                    = playerDetailsViewModel.AveragePointsPerGame / playerDetails.PlayerStats.AveragePlayersPerGame;
             }
         }
 

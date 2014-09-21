@@ -16,6 +16,8 @@ namespace UI.Models.Players
         public int TotalGamesPlayed { get; set; }
         public int TotalPoints { get; set; }
         public float AveragePointsPerGame { get; set; }
+        public float AveragePlayersPerGame { get; set; }
+        public float AveragePointsPerPlayer { get; set; }
         public bool HasNemesis { get; set; }
         public int NemesisPlayerId { get; set; }
         public string NemesisName { get; set; }
