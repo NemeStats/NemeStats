@@ -28,16 +28,16 @@
                 <table class="table table-hover">
                     <thead>
                         <tr>
-                            <th>
+                            <th class="col-md-4">
                                 Game Name
                             </th>
-                            <th>
+                            <th class="col-md-2">
                                 Date Played
                             </th>
-                            <th>
+                            <th class="col-md-5">
                                 Result
                             </th>
-                            <th>
+                            <th class="col-md-1">
                                 
                             </th>
                         </tr>
@@ -46,13 +46,13 @@
                         @foreach (var item in Model.RecentGames)
                         {
                             <tr>
-                                <td class="col-sm-4">
+                                <td>
                                     @Html.ActionLink(item.GameDefinitionName, "Details", "GameDefinition", new { id = item.GameDefinitionId }, new { })
                                 </td>
-                                <td class="col-sm-2">
+                                <td>
                                     @Html.DisplayFor(modelItem => item.DatePlayed)
                                 </td>
-                                <td class="col-sm-4">
+                                <td>
                                     @foreach (var result in item.PlayerResults)
                                     {
                                         <div class="row">
@@ -65,7 +65,7 @@
                                         </div>
                                     }
                                 </td>
-                                <td class="col-sm-2">
+                                <td>
                                     <a href="@Url.Action("Details", "PlayedGame", new { id = item.PlayedGameId })" title="Details">
                                         <i class="fa fa-book fa-3x"></i>
                                     </a>
@@ -102,8 +102,11 @@
                 <table class="table table-hover table-condensed">
                     <thead>
                         <tr>
-                            <th>
+                            <th class="col-md-11">
                                 Player Name
+                            </th>
+                            <th class="col-md-1">
+                                
                             </th>
                         </tr>
                     </thead>
@@ -147,13 +150,13 @@
                 <table class="table table-hover table-condensed">
                     <thead>
                         <tr>
-                            <th>
+                            <th class="col-md-5">
                                 Name
                             </th>
-                            <th>
+                            <th class="col-md-6">
                                 Description
                             </th>
-                            <th></th>
+                            <th class="col-md-1"></th>
                         </tr>
                     </thead>
                     <tbody>
