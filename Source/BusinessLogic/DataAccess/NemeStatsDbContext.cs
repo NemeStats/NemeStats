@@ -27,6 +27,7 @@ namespace BusinessLogic.DataAccess
         public virtual DbSet<PlayerGameResult> PlayerGameResults { get; set; }
         public virtual DbSet<UserGamingGroup> UserGamingGroups { get; set; }
         public virtual DbSet<GamingGroupInvitation> GamingGroupInvitations { get; set; }
+        public virtual DbSet<Nemesis> Nemeses { get; set; }
         
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

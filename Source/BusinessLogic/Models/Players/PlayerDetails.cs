@@ -16,6 +16,6 @@ namespace BusinessLogic.Models.Players
 
         public PlayerStatistics PlayerStats { get; set; }
         public List<PlayerGameResult> PlayerGameResults { get; set; }
-        public Nemesis Nemesis { get; set; }
+        public Nemesis PlayerNemesis { get; set; }
     }
 }

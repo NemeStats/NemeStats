@@ -33,68 +33,76 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
         [Test]
         public void ItGetsThePlayerWithTheHighestWinPercentageAgainstMe()
         {
-            Nemesis nemesis = playerLogic.GetNemesis(testPlayer1.Id);
-
-            Assert.AreEqual(testPlayer4.Id, nemesis.NemesisPlayerId);
+            //player 4 beat player 1 3 times
+            Assert.AreEqual(testPlayer4.Id, testPlayer1.Nemesis.NemesisPlayerId);
         }
 
         [Test]
         public void ANemesisMustBeActive()
         {
             //player 5 is inactive but beat player 1 three times
-            Nemesis nemesis = playerLogic.GetNemesis(testPlayer1.Id);
-
-            Assert.AreNotEqual(testPlayer5.Id, nemesis.NemesisPlayerId);
+            Assert.AreNotEqual(testPlayer5.Id, testPlayer1.Nemesis.NemesisPlayerId);
         }
         
         [Test]
         public void ItReturnsANullNemesisIfThereIsNoNemesis()
         {
-            //player 5 is inactive but beat player 1 three times
-            Nemesis nemesis = playerLogic.GetNemesis(testPlayer5.Id);
-
-            Assert.True(nemesis is NullNemesis);
+            //player 5 has no nemesis
+            Assert.True(testPlayer5.Nemesis is NullNemesis);
         }
 
         [Test]
         public void ANemesisMustHaveWonAtLeastACertainNumberOfGames()
         {
             //player2 beat player5 once (100% of the time) but this isn't enough to be a nemesis
-            Nemesis nemesis = playerLogic.GetNemesis(testPlayer5.Id);
-
-            Assert.AreNotEqual(testPlayer2.Id, nemesis.NemesisPlayerId);
+            Assert.AreNotEqual(testPlayer2.Id, testPlayer5.Nemesis.NemesisPlayerId);
         }
 
         [Test]
         public void ItSetsTheNemesisPlayerId()
         {
-            Nemesis nemesis = playerLogic.GetNemesis(testPlayer1.Id);
-
-            Assert.AreEqual(testPlayer4.Id, nemesis.NemesisPlayerId);
-        }
-
-        [Test]
-        public void ItSetsTheNemesisPlayerName()
-        {
-            Nemesis nemesis = playerLogic.GetNemesis(testPlayer1.Id);
-
-            Assert.AreEqual(testPlayer4.Name, nemesis.NemesisPlayerName);
+            Assert.AreEqual(testPlayer4.Id, testPlayer1.Nemesis.NemesisPlayerId);
         }
 
         [Test]
         public void ItSetsTheLossPercentageVersusTheNemesis()
         {
-            Nemesis nemesis = playerLogic.GetNemesis(testPlayer1.Id);
-
-            Assert.AreEqual(100, nemesis.LossPercentageVersusNemesis);
+            //player 1 lost 100% of their games against player 4
+            Assert.AreEqual(100, testPlayer1.Nemesis.LossPercentage);
         }
 
         [Test]
         public void ItSetsTheNumberOfGamesLostVersusTheNemesis()
         {
-            Nemesis nemesis = playerLogic.GetNemesis(testPlayer1.Id);
+            Assert.AreEqual(3, testPlayer1.Nemesis.NumberOfGamesLost);
+        }
 
-            Assert.AreEqual(3, nemesis.GamesLostVersusNemesis);
+        [Test]
+        public void ItSetsTheNemesisIdOnThePlayer()
+        {
+            using(NemeStatsDbContext nemeStatsDbContext = new NemeStatsDbContext())
+            {
+                using(NemeStatsDataContext nemeStatsDataContext = new NemeStatsDataContext())
+                {
+                    Player player1 = nemeStatsDataContext.FindById<Player>(testPlayer1.Id);
+
+                    Assert.NotNull(player1.NemesisId);
+                }
+            }
+        }
+
+        [Test]
+        public void ItClearsTheNemesisIdIfThePlayerHasNoNemesis()
+        {
+            using (NemeStatsDbContext nemeStatsDbContext = new NemeStatsDbContext())
+            {
+                using (NemeStatsDataContext nemeStatsDataContext = new NemeStatsDataContext())
+                {
+                    Player player5 = nemeStatsDataContext.FindById<Player>(testPlayer5.Id);
+
+                    Assert.Null(player5.NemesisId);
+                }
+            }
         }
 
         [TearDown]

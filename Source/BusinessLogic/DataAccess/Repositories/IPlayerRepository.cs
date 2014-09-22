@@ -9,6 +9,6 @@ namespace BusinessLogic.DataAccess.Repositories
     {
         PlayerDetails GetPlayerDetails(int playerID, int numberOfRecentGamesToRetrieve);
         PlayerStatistics GetPlayerStatistics(int playerId);
-        Nemesis GetNemesis(int playerId);
+        Nemesis RecalculateNemesis(int playerId, ApplicationUser currentUser);
     }
 }

@@ -21,7 +21,7 @@ namespace UI.Models.Players
         public bool HasNemesis { get; set; }
         public int NemesisPlayerId { get; set; }
         public string NemesisName { get; set; }
-        public int LossPercentageVersusPlayer { get; set; }
+        public float LossPercentageVersusPlayer { get; set; }
         public int NumberOfGamesLostVersusNemesis { get; set; }
         public bool UserCanEdit { get; set; }
     }

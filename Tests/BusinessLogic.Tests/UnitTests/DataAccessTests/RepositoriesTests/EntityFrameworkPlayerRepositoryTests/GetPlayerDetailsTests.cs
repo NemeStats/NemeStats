@@ -39,7 +39,8 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.RepositoriesTests.Entity
                 Id = 1351,
                 Name = "the player",
                 PlayerGameResults = new List<PlayerGameResult>(),
-                Active = true
+                Active = true,
+                NemesisId = 566677
             };
 
             dataContextMock.Expect(mock => mock.FindById<Player>(player.Id))
@@ -49,18 +50,17 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.RepositoriesTests.Entity
             playerRepositoryPartialMock.Expect(repo => repo.GetPlayerStatistics(player.Id))
                 .Repeat.Once()
                 .Return(playerStatistics);
-            
-            nemesis = new Nemesis()
-            {
-                NemesisPlayerId = 151541
-            };
-            playerRepositoryPartialMock.Expect(mock => mock.GetNemesis(player.Id))
-                .Repeat.Once()
-                .Return(nemesis);
 
             playerRepositoryPartialMock.Expect(mock => mock.GetPlayerGameResultsWithPlayedGameAndGameDefinition(player.Id, numberOfRecentGames))
                             .Repeat.Once()
                             .Return(player.PlayerGameResults.ToList());
+
+            nemesis = new Nemesis()
+            {
+                NemesisPlayerId = 151541
+            };
+            dataContextMock.Expect(mock => mock.FindById<Nemesis>(player.NemesisId))
+                .Return(nemesis);
         }
 
         //TODO need tests for the transformation... which should probably be refactored into a different class
@@ -70,7 +70,7 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.RepositoriesTests.Entity
         {
             PlayerDetails playerDetails = playerRepositoryPartialMock.GetPlayerDetails(player.Id, numberOfRecentGames);
 
-            Assert.AreEqual(nemesis, playerDetails.Nemesis);
+            Assert.AreEqual(nemesis, playerDetails.PlayerNemesis);
         }
     }
 }

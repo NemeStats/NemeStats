@@ -38,7 +38,7 @@ namespace UI.Transformations.Player
 
             PopulatePlayerGameSummaries(playerDetails, playerDetailsViewModel);
 
-            PopulateNemesisData(playerDetails.Nemesis, playerDetailsViewModel);
+            PopulateNemesisData(playerDetails.PlayerNemesis, playerDetailsViewModel);
 
             return playerDetailsViewModel;
         }
@@ -82,12 +82,14 @@ namespace UI.Transformations.Player
 
         private static void PopulateNemesisData(Nemesis nemesis, PlayerDetailsViewModel playerDetailsViewModel)
         {
-            //TODO should there be another 'normal' type that extends Nemesis?
             playerDetailsViewModel.HasNemesis = !(nemesis is NullNemesis);
-            playerDetailsViewModel.NemesisPlayerId = nemesis.NemesisPlayerId;
-            playerDetailsViewModel.NemesisName = nemesis.NemesisPlayerName;
-            playerDetailsViewModel.NumberOfGamesLostVersusNemesis = nemesis.GamesLostVersusNemesis;
-            playerDetailsViewModel.LossPercentageVersusPlayer = nemesis.LossPercentageVersusNemesis;
+            if(playerDetailsViewModel.HasNemesis)
+            {
+                playerDetailsViewModel.NemesisPlayerId = nemesis.NemesisPlayerId;
+                playerDetailsViewModel.NemesisName = nemesis.NemesisPlayer.Name;
+                playerDetailsViewModel.NumberOfGamesLostVersusNemesis = nemesis.NumberOfGamesLost;
+                playerDetailsViewModel.LossPercentageVersusPlayer = nemesis.LossPercentage;
+            }
         }
 
         private static void Validate(PlayerDetails playerDetails)

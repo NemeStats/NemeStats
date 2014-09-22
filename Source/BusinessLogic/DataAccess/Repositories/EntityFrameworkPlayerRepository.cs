@@ -75,7 +75,7 @@ namespace BusinessLogic.DataAccess.Repositories
 
             List<PlayerGameResult> playerGameResults = GetPlayerGameResultsWithPlayedGameAndGameDefinition(playerID, numberOfRecentGamesToRetrieve);
 
-            Nemesis nemesis = GetNemesis(playerID);
+            Nemesis nemesis = RetrieveNemesis(returnPlayer.NemesisId);
 
             PlayerDetails playerDetails = new PlayerDetails()
             {
@@ -85,7 +85,7 @@ namespace BusinessLogic.DataAccess.Repositories
                 GamingGroupId = returnPlayer.GamingGroupId,
                 PlayerGameResults = playerGameResults,
                 PlayerStats = playerStatistics,
-                Nemesis = nemesis
+                PlayerNemesis = nemesis
             };
 
             return playerDetails;
@@ -131,11 +131,25 @@ namespace BusinessLogic.DataAccess.Repositories
             return playerStatistics;
         }
 
-        //TODO refactor this. Might be tricky with anonymous data types. Should I create concrete types?
-        public virtual Nemesis GetNemesis(int playerId)
+        private Nemesis RetrieveNemesis(int? nemesisId)
         {
-            //call GetPlayer just to ensure that the requesting user has access
-            dataContext.FindById<Player>(playerId);
+            Nemesis nemesis;
+            if (nemesisId.HasValue)
+            {
+                nemesis = dataContext.FindById<Nemesis>(nemesisId.Value);
+                nemesis.NemesisPlayer = dataContext.FindById<Player>(nemesis.NemesisPlayerId);
+            }
+            else
+            {
+                nemesis = new NullNemesis();
+            }
+            return nemesis;
+        }
+
+        //TODO refactor this. Might be tricky with anonymous data types. Should I create concrete types?
+        public virtual Nemesis RecalculateNemesis(int playerId, ApplicationUser currentUser)
+        {
+            Player minionPlayer = dataContext.FindById<Player>(playerId);
             DbRawSqlQuery<WinLossStatistics> data = dataContext.MakeRawSqlQuery<WinLossStatistics>(SQL_GET_WIN_LOSS_GAMES_COUNT,
                 new SqlParameter("PlayerId", playerId));
 
@@ -153,15 +167,24 @@ namespace BusinessLogic.DataAccess.Repositories
 
             if (result == null)
             {
+                minionPlayer.NemesisId = null;
+                dataContext.Save<Player>(minionPlayer, currentUser);
                 return new NullNemesis();
             }
 
-            Nemesis nemesis = new Nemesis();
-            Player nemesisPlayer = dataContext.GetQueryable<Player>().Where(player => player.Id == result.NemesisPlayerId).First();
-            nemesis.NemesisPlayerId = nemesisPlayer.Id;
-            nemesis.NemesisPlayerName = nemesisPlayer.Name;
-            nemesis.GamesLostVersusNemesis = result.NumberOfGamesLost;
-            nemesis.LossPercentageVersusNemesis = result.LossPercentage;
+            Nemesis nemesis = new Nemesis()
+            {
+                LossPercentage = result.LossPercentage,
+                NumberOfGamesLost = result.NumberOfGamesLost,
+                NemesisPlayerId = result.NemesisPlayerId,
+                MinionPlayerId = playerId
+            };
+
+            Nemesis newNemesis = dataContext.Save<Nemesis>(nemesis, currentUser);
+            dataContext.CommitAllChanges();
+
+            minionPlayer.NemesisId = newNemesis.Id;
+            dataContext.Save<Player>(minionPlayer, currentUser);
 
             return nemesis;
         }

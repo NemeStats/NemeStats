@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BusinessLogic.Models;
+using System;
 using System.Collections.Generic;
 namespace BusinessLogic.Logic.Players
 {

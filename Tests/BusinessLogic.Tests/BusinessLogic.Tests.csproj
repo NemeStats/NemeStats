@@ -131,7 +131,7 @@
     <Compile Include="UnitTests\DataAccessTests\EntityWithTechnicalKeyTests\AlreadyInDatabaseTests.cs" />
     <Compile Include="UnitTests\DataAccessTests\GamingGroupsTests\EntityFrameworkGamingGroupAccessGranterTests\ConsumeInvitationTests.cs" />
     <Compile Include="UnitTests\DataAccessTests\GamingGroupsTests\EntityFrameworkGamingGroupAccessGranterTests\CreateInvitationTests.cs" />
-    <Compile Include="IntegrationTests\DataAccessTests\RepositoriesTests\EntityFrameworkPlayerRepositoryTests\GetNemesisIntegrationTests.cs" />
+    <Compile Include="IntegrationTests\DataAccessTests\RepositoriesTests\EntityFrameworkPlayerRepositoryTests\RecalculateNemesisIntegrationTests.cs" />
     <Compile Include="IntegrationTests\EntityFramework6EagerLoadingTests.cs" />
     <Compile Include="IntegrationTests\IntegrationTestBase.cs" />
     <Compile Include="IntegrationTests\DataAccessTests\RepositoriesTests\EntityFrameworkPlayedGameRepositoryTests\CreatePlayedGameIntegrationTests.cs" />
@@ -150,6 +150,7 @@
     <Compile Include="UnitTests\EventTrackingTests\UniversalAnalyticsNemeStatsEventTrackerTests\TrackPlayerCreationTests.cs" />
     <Compile Include="UnitTests\EventTrackingTests\UniversalAnalyticsNemeStatsEventTrackerTests\TrackUserRegistrationTests.cs" />
     <Compile Include="UnitTests\EventTrackingTests\UniversalAnalyticsNemeStatsEventTrackerTests\UniversalAnalyticsNemeStatsEventTrackerTestBase.cs" />
+    <Compile Include="UnitTests\LogicTests\BatchTests\NemesisRecalculatorTests\RecalculateAllNemesesTests.cs" />
     <Compile Include="UnitTests\LogicTests\GameDefinitionsTests\GameDefinitionSaverTests\SaveTests.cs" />
     <Compile Include="UnitTests\LogicTests\GameDefinitionsTests\GameDefinitionRetrieverTests\GameDefinitionRetrieverTestBase.cs" />
     <Compile Include="UnitTests\LogicTests\GameDefinitionsTests\GameDefinitionRetrieverTests\GetAllTests.cs" />

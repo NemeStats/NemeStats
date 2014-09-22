@@ -129,6 +129,8 @@
     <Compile Include="EventTracking\UniversalAnalyticsNemeStatsEventTracker.cs" />
     <Compile Include="Exceptions\EntityDoesNotExistException.cs" />
     <Compile Include="Exceptions\UnauthorizedEntityAccessException.cs" />
+    <Compile Include="Logic\Batch\INemesisRecalculator.cs" />
+    <Compile Include="Logic\Batch\NemesisRecalculator.cs" />
     <Compile Include="Logic\GameDefinitions\IGameDefinitionSaver.cs" />
     <Compile Include="Logic\GameDefinitions\GameDefinitionSaver.cs" />
     <Compile Include="Logic\GameDefinitions\IGameDefinitionRetriever.cs" />
@@ -217,15 +219,23 @@
     <Compile Include="Migrations\201409142235424_PlayerNameIsNoLongerNullable.Designer.cs">
       <DependentUpon>201409142235424_PlayerNameIsNoLongerNullable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201409212154322_CreateNemesisTable.cs" />
+    <Compile Include="Migrations\201409212154322_CreateNemesisTable.Designer.cs">
+      <DependentUpon>201409212154322_CreateNemesisTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201409221652230_SetAllInitialNemeses.cs" />
+    <Compile Include="Migrations\201409221652230_SetAllInitialNemeses.Designer.cs">
+      <DependentUpon>201409221652230_SetAllInitialNemeses.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Games\PublicGameSummary.cs" />
     <Compile Include="Models\GamingGroup.cs" />
     <Compile Include="Models\GamingGroupInvitation.cs" />
+    <Compile Include="Models\Nemesis.cs" />
+    <Compile Include="Models\NullNemesis.cs" />
     <Compile Include="Models\Players\TopPlayer.cs" />
     <Compile Include="Models\User\AnonymousApplicationUser.cs" />
     <Compile Include="Models\User\ApplicationUser.cs" />
     <Compile Include="Models\User\UserGamingGroup.cs" />
-    <Compile Include="Models\Players\Nemesis.cs" />
-    <Compile Include="Models\Players\NullNemesis.cs" />
     <Compile Include="Models\Players\PlayerStatistics.cs" />
     <Compile Include="Migrations\201405220234035_Initial.cs" />
     <Compile Include="Migrations\201405220234035_Initial.Designer.cs">
@@ -356,6 +366,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201409142235424_PlayerNameIsNoLongerNullable.resx">
       <DependentUpon>201409142235424_PlayerNameIsNoLongerNullable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201409212154322_CreateNemesisTable.resx">
+      <DependentUpon>201409212154322_CreateNemesisTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201409221652230_SetAllInitialNemeses.resx">
+      <DependentUpon>201409221652230_SetAllInitialNemeses.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

@@ -40,6 +40,7 @@ namespace BusinessLogic.Tests.IntegrationTests
         protected string testPlayer3Name = "testPlayer3";
         protected Player testPlayer4;
         protected string testPlayer4Name = "testPlayer4";
+        //player 1's nemesis
         protected Player testPlayer5;
         protected string testPlayer5Name = "testPlayer5";
         protected Player testPlayer6;
@@ -96,7 +97,6 @@ namespace BusinessLogic.Tests.IntegrationTests
                     testOtherGamingGroup = SaveGamingGroup(dataContext, testGamingGroup2Name, testUserWithOtherGamingGroup);
                     testUserWithOtherGamingGroup = UpdateDatefaultGamingGroupOnUser(testUserWithOtherGamingGroup, testOtherGamingGroup, dataContext);
 
-
                     testGameDefinition = SaveGameDefinition(nemeStatsDbContext, testGamingGroup.Id, testGameName);
                     testGameDefinition2 = SaveGameDefinition(nemeStatsDbContext, testGamingGroup.Id, testGameName2);
                     testGameDefinitionWithOtherGamingGroupId = SaveGameDefinition(nemeStatsDbContext, testOtherGamingGroup.Id, testGameNameForGameWithOtherGamingGroupId);
@@ -108,6 +108,10 @@ namespace BusinessLogic.Tests.IntegrationTests
                 using(NemeStatsDataContext dataContext = new NemeStatsDataContext())
                 {
                     CreatePlayedGames(dataContext);
+
+                    EntityFrameworkPlayerRepository playerRepository = new EntityFrameworkPlayerRepository(dataContext);
+                    testPlayer1.Nemesis = playerRepository.RecalculateNemesis(testPlayer1.Id, testUserWithDefaultGamingGroup);
+                    testPlayer5.Nemesis = playerRepository.RecalculateNemesis(testPlayer5.Id, testUserWithDefaultGamingGroup);
                 }
             }
         }
@@ -298,6 +302,7 @@ namespace BusinessLogic.Tests.IntegrationTests
                 CleanUpGameDefinitions(nemeStatsDbContext, testGameName);
                 CleanUpGameDefinitions(nemeStatsDbContext, testGameName2);
                 CleanUpGameDefinitions(nemeStatsDbContext, testGameNameForGameWithOtherGamingGroupId);
+                CleanUpNemeses(nemeStatsDbContext);
                 CleanUpPlayers(nemeStatsDbContext);
                 nemeStatsDbContext.SaveChanges();
 
@@ -421,6 +426,19 @@ namespace BusinessLogic.Tests.IntegrationTests
                 }
                 catch (Exception) { }
             }
+        }
+
+        private void CleanUpNemeses(NemeStatsDbContext nemeStatsDbContext)
+        {
+            if (testPlayer1 != null)
+            {
+                testPlayer1.NemesisId = null;
+                nemeStatsDbContext.Players.Find(testPlayer1.Id).NemesisId = null;
+                nemeStatsDbContext.SaveChanges();
+                Nemesis nemesis = nemeStatsDbContext.Nemeses.Find(testPlayer1.Nemesis.Id);
+                nemeStatsDbContext.Nemeses.Remove(nemesis);
+            }
+            nemeStatsDbContext.SaveChanges();
         }
 
         private static void CleanUpPlayerByPlayerName(string playerName, NemeStatsDbContext nemeStatsDbContext)
