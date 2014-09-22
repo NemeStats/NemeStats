@@ -10,5 +10,6 @@ namespace BusinessLogic.Models.Players
     {
         public int TotalGames { get; set; }
         public int TotalPoints { get; set; }
+        public float AveragePlayersPerGame { get; set; }
     }
 }

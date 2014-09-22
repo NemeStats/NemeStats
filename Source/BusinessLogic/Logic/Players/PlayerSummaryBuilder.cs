@@ -22,6 +22,7 @@ namespace BusinessLogic.Logic.Players
             SUM(PlayerGameResult.GordonPoints) AS TotalPoints,
             SUM(CASE WHEN PlayerGameResult.GameRank = 1 THEN 1 ELSE 0 END) AS WinPercentage
             FROM Player INNER JOIN PlayerGameResult ON Player.Id = PlayerGameResult.PlayerId
+            WHERE Player.Active = 1
             GROUP BY Player.Id, Player.Name
             ORDER BY TotalNumberOfGamesPlayed DESC";
 
@@ -38,7 +39,7 @@ namespace BusinessLogic.Logic.Players
 
             List<TopPlayer> topPlayers = data.ToList<TopPlayer>();
             //WinPercentage as it is originally pulled back from the query contains the number of games won and we have to
-            //do the below match to switch it to a win %
+            //do the below math to switch it to a win %
             topPlayers.ForEach(player => player.WinPercentage = CalculateWinPercentage(player.WinPercentage, player.TotalNumberOfGamesPlayed));
 
             return topPlayers;

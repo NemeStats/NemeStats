@@ -111,9 +111,22 @@ namespace BusinessLogic.DataAccess.Repositories
             playerStatistics.TotalGames = dataContext.GetQueryable<PlayerGameResult>()
                 .Count(playerGameResults => playerGameResults.PlayerId == playerId);
 
-            playerStatistics.TotalPoints = dataContext.GetQueryable<PlayerGameResult>()
+            int? totalPoints = dataContext.GetQueryable<PlayerGameResult>()
                 .Where(result => result.PlayerId == playerId)
-                .Sum(playerGameResults => playerGameResults.GordonPoints);
+                //had to cast to handle the case where there is no data:
+                //http://stackoverflow.com/questions/6864311/the-cast-to-value-type-int32-failed-because-the-materialized-value-is-null
+                .Sum(playerGameResults => (int?)playerGameResults.GordonPoints) ?? 0;
+
+            if(totalPoints.HasValue)
+            {
+                playerStatistics.TotalPoints = totalPoints.Value;
+            }
+
+            //had to cast to handle the case where there is no data:
+            //http://stackoverflow.com/questions/6864311/the-cast-to-value-type-int32-failed-because-the-materialized-value-is-null
+            playerStatistics.AveragePlayersPerGame = (float?)dataContext.GetQueryable<PlayedGame>()
+                .Where(playedGame => playedGame.PlayerGameResults.Any(result => result.PlayerId == playerId))
+                    .Average(game => (int?)game.NumberOfPlayers) ?? 0F;
 
             return playerStatistics;
         }

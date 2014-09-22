@@ -136,9 +136,28 @@
             <h4>Statistics</h4>
         </div>
         <div class="panel-body">
-            Total Games: @Model.TotalGamesPlayed<br/>
-            Total Points: @Model.TotalPoints<br />
-            Average Points Per Game: @Model.AveragePointsPerGame.ToString("N2")
+            <table>
+                <tr>
+                    <td>Total Games:</td>
+                    <td>@Model.TotalGamesPlayed</td>
+                </tr>
+                <tr>
+                    <td>Total Points:</td>
+                    <td>@Model.TotalPoints</td>
+                </tr>
+                <tr>
+                    <td>Average Points Per Game:</td>
+                    <td>@Model.AveragePointsPerGame.ToString("N2")</td>
+                </tr>
+                <tr>
+                    <td>Average Players Per Game:</td>
+                    <td>@Model.AveragePlayersPerGame.ToString("N2")</td>
+                </tr>
+                <tr>
+                    <td>Average Points Per Player (0 to 1):</td>
+                    <td>@Model.AveragePointsPerPlayer.ToString("N2")</td>
+                </tr>
+            </table>
         </div>
     </div>
 </div>
