@@ -35,6 +35,7 @@ namespace UI.DependencyResolution {
     using UI.Transformations;
     using UI.Transformations.Player;
     using UniversalAnalyticsHttpWrapper;
+    using StructureMap.Web;
 	
     public class DefaultRegistry : Registry {
         #region Constructors and Destructors
@@ -46,11 +47,10 @@ namespace UI.DependencyResolution {
                     scan.WithDefaultConventions();
 					scan.With(new ControllerConvention());
                 });
-            //For<IExample>().Use<Example>();
-            //unique per request scope
 
-            For<DbContext>().LifecycleIs(new UniquePerRequestLifecycle()).Use<NemeStatsDbContext>();
-            For<IDataContext>().LifecycleIs(new UniquePerRequestLifecycle()).Use<NemeStatsDataContext>();
+            //unique per request scope
+            For<DbContext>().HttpContextScoped().Use<NemeStatsDbContext>();
+            For<IDataContext>().HttpContextScoped().Use<NemeStatsDataContext>();
 
             //transient scope
             For<IGamingGroupSaver>().Use<GamingGroupSaver>();
@@ -113,8 +113,7 @@ namespace UI.DependencyResolution {
 
             For<ITopPlayerViewModelBuilder>().Use<TopPlayerViewModelBuilder>();
 
-            For<IPlayedGameDetailsViewModelBuilder>().Singleton().Use<PlayedGameDetailsViewModelBuilder>();
-
+            For<IPlayedGameDetailsViewModelBuilder>().Singleton().Use<PlayedGameDetailsViewModelBuilder>();
         }
 
         #endregion

@@ -141,10 +141,6 @@ namespace UI.Controllers
 
         protected override void Dispose(bool disposing)
         {
-            if (disposing)
-            {
-                dataContext.Dispose();
-            }
             base.Dispose(disposing);
         }
     }

@@ -28,5 +28,27 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
                 Assert.AreEqual(totalGamesForPlayer1, playerStatistics.TotalGames);
             }
         }
+
+        [Test]
+        public void ItGetsTheTotalPoints()
+        {
+            using (IDataContext dataContext = new NemeStatsDataContext())
+            {
+                IPlayerRepository playerLogic = new EntityFrameworkPlayerRepository(dataContext);
+                PlayerStatistics playerStatistics = playerLogic.GetPlayerStatistics(testPlayer1.Id);
+
+                int totalPoints = 0;
+
+                foreach(PlayedGame playedGame in testPlayedGames)
+                {
+                    if(playedGame.PlayerGameResults.Any(result => result.PlayerId == testPlayer1.Id))
+                    {
+                        totalPoints += playedGame.PlayerGameResults.Where(result => result.PlayerId == testPlayer1.Id).First().GordonPoints;
+                    }
+                }
+
+                Assert.AreEqual(totalPoints, playerStatistics.TotalPoints);
+            }
+        }
     }
 }

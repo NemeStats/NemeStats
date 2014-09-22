@@ -14,6 +14,8 @@ namespace UI.Models.Players
         public bool Active { get; set; }
         public List<GameResultViewModel> PlayerGameResultDetails { get; set; }
         public int TotalGamesPlayed { get; set; }
+        public int TotalPoints { get; set; }
+        public float AveragePointsPerGame { get; set; }
         public bool HasNemesis { get; set; }
         public int NemesisPlayerId { get; set; }
         public string NemesisName { get; set; }
