@@ -62,6 +62,7 @@ namespace BusinessLogic.Tests.IntegrationTests
         protected GamingGroupInvitation testUnredeemedGamingGroupInvitation;
         protected string testInviteeEmail2 = "email2@email.com";
         protected GamingGroupInvitation testAlreadyRedeemedGamingGroupInvitation;
+        protected List<int> nemesisIdsToDelete;
 
         [TestFixtureSetUp]
         public virtual void FixtureSetUp()
@@ -108,10 +109,6 @@ namespace BusinessLogic.Tests.IntegrationTests
                 using(NemeStatsDataContext dataContext = new NemeStatsDataContext())
                 {
                     CreatePlayedGames(dataContext);
-
-                    EntityFrameworkPlayerRepository playerRepository = new EntityFrameworkPlayerRepository(dataContext);
-                    testPlayer1.Nemesis = playerRepository.RecalculateNemesis(testPlayer1.Id, testUserWithDefaultGamingGroup);
-                    testPlayer5.Nemesis = playerRepository.RecalculateNemesis(testPlayer5.Id, testUserWithDefaultGamingGroup);
                 }
             }
         }
@@ -140,7 +137,8 @@ namespace BusinessLogic.Tests.IntegrationTests
 
         private void CreatePlayedGames(NemeStatsDataContext dataContext)
         {
-            IPlayedGameCreator playedGameCreator = new PlayedGameCreator(dataContext, playedGameTracker);
+            IPlayerRepository playerRepository = new EntityFrameworkPlayerRepository(dataContext);
+            IPlayedGameCreator playedGameCreator = new PlayedGameCreator(dataContext, playedGameTracker, playerRepository);
             
             List<Player> players = new List<Player>() { testPlayer1, testPlayer2 };
             List<int> playerRanks = new List<int>() { 1, 1 };
@@ -302,7 +300,6 @@ namespace BusinessLogic.Tests.IntegrationTests
                 CleanUpGameDefinitions(nemeStatsDbContext, testGameName);
                 CleanUpGameDefinitions(nemeStatsDbContext, testGameName2);
                 CleanUpGameDefinitions(nemeStatsDbContext, testGameNameForGameWithOtherGamingGroupId);
-                CleanUpNemeses(nemeStatsDbContext);
                 CleanUpPlayers(nemeStatsDbContext);
                 nemeStatsDbContext.SaveChanges();
 
@@ -339,6 +336,8 @@ namespace BusinessLogic.Tests.IntegrationTests
 
         private void CleanUpPlayers(NemeStatsDbContext nemeStatsDbContext)
         {
+            CleanUpNemeses(nemeStatsDbContext);
+
             CleanUpPlayerByPlayerName(testPlayer1Name, nemeStatsDbContext);
             CleanUpPlayerByPlayerName(testPlayer2Name, nemeStatsDbContext);
             CleanUpPlayerByPlayerName(testPlayer3Name, nemeStatsDbContext);
@@ -346,6 +345,46 @@ namespace BusinessLogic.Tests.IntegrationTests
             CleanUpPlayerByPlayerName(testPlayer5Name, nemeStatsDbContext);
             CleanUpPlayerByPlayerName(testPlayer6Name, nemeStatsDbContext);
             CleanUpPlayerByPlayerName(testPlayer7Name, nemeStatsDbContext);
+        }
+
+        private void CleanUpNemeses(NemeStatsDbContext nemeStatsDbContext)
+        {
+            List<int> playerIdsToClearNemesisId = (from player in nemeStatsDbContext.Players
+                                                   where player.Name == testPlayer1Name
+                                                   || player.Name == testPlayer1Name
+                                                   || player.Name == testPlayer2Name
+                                                   || player.Name == testPlayer3Name
+                                                   || player.Name == testPlayer3Name
+                                                   || player.Name == testPlayer4Name
+                                                   || player.Name == testPlayer5Name
+                                                   || player.Name == testPlayer6Name
+                                                   || player.Name == testPlayer7Name
+                                                   select player.Id)
+                                                  .ToList();
+
+            nemesisIdsToDelete = (from nemesis in nemeStatsDbContext.Nemeses
+                                  where playerIdsToClearNemesisId.Contains(nemesis.NemesisPlayerId)
+                                  select nemesis.Id)
+                                            .Distinct()
+                                            .ToList();
+
+            Player playerNeedingNemesisCleared;
+            foreach (int playerId in playerIdsToClearNemesisId)
+            {
+                playerNeedingNemesisCleared = nemeStatsDbContext.Players.Find(playerId);
+                if (playerNeedingNemesisCleared.NemesisId != null)
+                {
+                    playerNeedingNemesisCleared.NemesisId = null;
+                }
+            }
+            nemeStatsDbContext.SaveChanges();
+            Nemesis nemesisToDelete;
+            foreach (int nemesisId in nemesisIdsToDelete)
+            {
+                nemesisToDelete = nemeStatsDbContext.Nemeses.Find(nemesisId);
+                nemeStatsDbContext.Nemeses.Remove(nemesisToDelete);
+            }
+            nemeStatsDbContext.SaveChanges();
         }
 
         private void CleanUpApplicationUser(string testApplicationUserName, NemeStatsDbContext nemeStatsDbContext)
@@ -428,19 +467,6 @@ namespace BusinessLogic.Tests.IntegrationTests
             }
         }
 
-        private void CleanUpNemeses(NemeStatsDbContext nemeStatsDbContext)
-        {
-            if (testPlayer1 != null)
-            {
-                testPlayer1.NemesisId = null;
-                nemeStatsDbContext.Players.Find(testPlayer1.Id).NemesisId = null;
-                nemeStatsDbContext.SaveChanges();
-                Nemesis nemesis = nemeStatsDbContext.Nemeses.Find(testPlayer1.Nemesis.Id);
-                nemeStatsDbContext.Nemeses.Remove(nemesis);
-            }
-            nemeStatsDbContext.SaveChanges();
-        }
-
         private static void CleanUpPlayerByPlayerName(string playerName, NemeStatsDbContext nemeStatsDbContext)
         {
             Player playerToDelete = nemeStatsDbContext.Players.FirstOrDefault(player => player.Name == playerName);
@@ -450,13 +476,14 @@ namespace BusinessLogic.Tests.IntegrationTests
                 try
                 {
                     nemeStatsDbContext.Players.Remove(playerToDelete);
+                    nemeStatsDbContext.SaveChanges();
                 }
                 catch (Exception) { }
             }
         }
 
         [TestFixtureTearDown]
-        public void FixtureTearDown()
+        public virtual void FixtureTearDown()
         {
             CleanUpTestData();
         }

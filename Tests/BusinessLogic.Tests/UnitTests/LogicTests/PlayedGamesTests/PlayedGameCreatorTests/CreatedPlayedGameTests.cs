@@ -22,6 +22,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameCr
     {
         private NemeStatsDataContext dataContext;
         private PlayedGameCreator playedGameCreatorPartialMock;
+        private IPlayerRepository playerRepositoryMock;
         private NemeStatsEventTracker playedGameTracker;
         private ApplicationUser currentUser;
         private GameDefinition gameDefinition;
@@ -31,6 +32,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameCr
         {
             dataContext = MockRepository.GenerateMock<NemeStatsDataContext>();
             playedGameTracker = MockRepository.GenerateMock<NemeStatsEventTracker>();
+            playerRepositoryMock = MockRepository.GenerateMock<IPlayerRepository>();
 
             currentUser = new ApplicationUser()
             {
@@ -41,7 +43,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameCr
             gameDefinition = new GameDefinition(){ Name = "game definition name" };
             dataContext.Expect(mock => mock.FindById<GameDefinition>(Arg<int>.Is.Anything))
                 .Return(gameDefinition);
-            playedGameCreatorPartialMock = MockRepository.GeneratePartialMock<PlayedGameCreator>(dataContext, playedGameTracker);
+            playedGameCreatorPartialMock = MockRepository.GeneratePartialMock<PlayedGameCreator>(dataContext, playedGameTracker, playerRepositoryMock);
         }
 
         [Test]
@@ -146,6 +148,43 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameCr
             playedGameCreatorPartialMock.CreatePlayedGame(newlyCompletedGame, currentUser);
 
             playedGameTracker.AssertWasCalled(mock => mock.TrackPlayedGame(currentUser, gameDefinition.Name, newlyCompletedGame.PlayerRanks.Count));
+        }
+
+        [Test]
+        public void ItRecalculatesTheNemesisOfAnyPlayerThatDidntWinTheGame()
+        {
+            int playerOneId = 1;
+            int playerTwoId = 2;
+            int playerThreeId = 3;
+            List<PlayerRank> playerRanks = new List<PlayerRank>()
+            {
+                new PlayerRank()
+                {
+                    PlayerId = playerOneId,
+                    GameRank = 1
+                },
+                new PlayerRank()
+                {
+                    PlayerId = playerTwoId,
+                    GameRank = 2
+                },
+                new PlayerRank()
+                {
+                    PlayerId = playerThreeId,
+                    GameRank = 3
+                }
+            };
+            NewlyCompletedGame newlyCompletedGame = new NewlyCompletedGame()
+            {
+                GameDefinitionId = 1,
+                PlayerRanks = playerRanks
+            };
+
+            PlayedGame playedGame = playedGameCreatorPartialMock.CreatePlayedGame(newlyCompletedGame, currentUser);
+
+            playerRepositoryMock.AssertWasNotCalled(mock => mock.RecalculateNemesis(playerOneId, currentUser));
+            playerRepositoryMock.AssertWasCalled(mock => mock.RecalculateNemesis(playerTwoId, currentUser));
+            playerRepositoryMock.AssertWasCalled(mock => mock.RecalculateNemesis(playerThreeId, currentUser));
         }
     }
 }
