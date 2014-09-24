@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.DataAccess;
+using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.EventTracking;
 using BusinessLogic.Logic.Players;
 using BusinessLogic.Models;
@@ -18,6 +19,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerCreatorTes
     {
         private IDataContext dataContextMock;
         private NemeStatsEventTracker eventTrackerMock;
+        private IPlayerRepository playerRepositoryMock;
         private PlayerSaver playerSaver;
         private ApplicationUser currentUser;
 
@@ -26,7 +28,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerCreatorTes
         {
             dataContextMock = MockRepository.GenerateMock<IDataContext>();
             eventTrackerMock = MockRepository.GenerateMock<NemeStatsEventTracker>();
-            playerSaver = new PlayerSaver(dataContextMock, eventTrackerMock);
+            playerRepositoryMock = MockRepository.GenerateMock<IPlayerRepository>();
+            playerSaver = new PlayerSaver(dataContextMock, eventTrackerMock, playerRepositoryMock);
             currentUser = new ApplicationUser();
         }
 
@@ -100,9 +103,98 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerCreatorTes
             player.Expect(mock => mock.AlreadyInDatabase())
                 .Return(true);
 
+            dataContextMock.Expect(mock => mock.GetQueryable<Player>())
+                .Return(new List<Player>().AsQueryable());
+
             playerSaver.Save(player, currentUser);
 
             eventTrackerMock.AssertWasNotCalled(mock => mock.TrackPlayerCreation(currentUser));
+        }
+
+        [Test]
+        public void ItRecalculatesTheNemesisOfTheCurrentPlayersMinionsIfThePlayerIsGoingInactive()
+        {
+            Player player = MockRepository.GeneratePartialMock<Player>();
+            player.Name = "player name";
+            player.Active = false;
+            player.Id = 151516;
+            player.Expect(mock => mock.AlreadyInDatabase())
+                .Return(true);
+
+            int expectedPlayerId1 = 1;
+            int expectedPlayerId2 = 2;
+
+            Player activeMinion1 = new Player()
+            {
+                Id = expectedPlayerId1
+            };
+            Nemesis activeNemesis = new Nemesis()
+            { 
+                NemesisPlayerId = player.Id,
+            };
+            activeMinion1.Nemesis = activeNemesis;
+
+            Player activeMinion2 = new Player()
+            {
+                Id = expectedPlayerId2
+            };
+            Nemesis secondActiveNemesis = new Nemesis()
+            { 
+                NemesisPlayerId = player.Id,
+            };
+            activeMinion2.Nemesis = secondActiveNemesis;
+
+            Player inactiveMinion = new Player()
+            {
+                Id = -1,
+                Active = false
+            };
+            Nemesis inactiveNemesis = new Nemesis()
+            { 
+                NemesisPlayerId = player.Id
+            };
+            inactiveMinion.Nemesis = inactiveNemesis;
+
+            IQueryable<Player> minionPlayers = new List<Player>()
+            {
+                activeMinion1,
+                activeMinion2,
+                inactiveMinion
+            }.AsQueryable<Player>();
+
+            dataContextMock.Expect(mock => mock.GetQueryable<Player>())
+                .Return(minionPlayers);
+
+            playerSaver.Save(player, currentUser);
+
+            playerRepositoryMock.AssertWasCalled(mock => mock.RecalculateNemesis(activeMinion1.Id, currentUser));
+            playerRepositoryMock.AssertWasCalled(mock => mock.RecalculateNemesis(activeMinion2.Id, currentUser));
+            playerRepositoryMock.AssertWasNotCalled(mock => mock.RecalculateNemesis(inactiveMinion.Id, currentUser));
+        }
+
+        [Test]
+        public void ItDoesNotRecalculateTheNemesisOfTheCurrentPlayersMinionsIfThePlayerIsStillActive()
+        {
+            Player player = MockRepository.GeneratePartialMock<Player>();
+            player.Name = "player name";
+            player.Active = true;
+            player.Id = 151516;
+
+            player.Expect(mock => mock.AlreadyInDatabase())
+                .Return(true);
+
+            int currentPlayerMinionId1 = 10;
+            IQueryable<Nemesis> minionsOfInactivePlayer = new List<Nemesis>()
+            {
+                new Nemesis(){ NemesisPlayerId = player.Id, MinionPlayerId = currentPlayerMinionId1 },
+            }.AsQueryable<Nemesis>();
+
+            dataContextMock.Expect(mock => mock.GetQueryable<Player>())
+    .           Return(new List<Player>().AsQueryable());
+
+            playerSaver.Save(player, currentUser);
+
+            playerRepositoryMock.AssertWasNotCalled(mock => mock.RecalculateNemesis(currentPlayerMinionId1, currentUser));
         }
     }
 }

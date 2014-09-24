@@ -9,18 +9,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BusinessLogic.DataAccess.Repositories;
 
 namespace BusinessLogic.Logic.Players
 {
     public class PlayerSaver : IPlayerSaver
     {
         private IDataContext dataContext;
+        private IPlayerRepository playerRepository;
         private NemeStatsEventTracker eventTracker;
 
-        public PlayerSaver(IDataContext dataContext, NemeStatsEventTracker eventTracker)
+        public PlayerSaver(IDataContext dataContext, NemeStatsEventTracker eventTracker, IPlayerRepository playerRepository)
         {
             this.dataContext = dataContext;
             this.eventTracker = eventTracker;
+            this.playerRepository = playerRepository;
         }
 
         public Player Save(Player player, ApplicationUser currentUser)
@@ -32,10 +35,25 @@ namespace BusinessLogic.Logic.Players
             try
             {
                 Player newPlayer = dataContext.Save<Player>(player, currentUser);
+                dataContext.CommitAllChanges();
 
                 if (isNewPlayer)
                 {
                     new Task(() => eventTracker.TrackPlayerCreation(currentUser)).Start();
+                }else
+                {
+                    if(!player.Active)
+                    {
+                        List<int> playerIdsToRecalculate = (from thePlayer in dataContext.GetQueryable<Player>()
+                                                            where thePlayer.Active == true
+                                                            && thePlayer.Nemesis.NemesisPlayerId == player.Id
+                                                            select thePlayer.Id).ToList();
+
+                        foreach (int playerId in playerIdsToRecalculate)
+                        {
+                            playerRepository.RecalculateNemesis(playerId, currentUser);
+                        }
+                    }
                 }
 
                 return newPlayer;

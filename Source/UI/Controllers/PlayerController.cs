@@ -143,8 +143,7 @@ namespace UI.Controllers
         {
             if (ModelState.IsValid)
             {
-                dataContext.Save<Player>(player, currentUser);
-                dataContext.CommitAllChanges();
+                playerSaver.Save(player, currentUser);
                 return new RedirectResult(Url.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name)
                                           + "#" + GamingGroupController.SECTION_ANCHOR_PLAYERS);
             }

@@ -36,6 +36,7 @@ namespace BusinessLogic.DataAccess.Repositories
 				            WHERE PGR.PlayedGameId = OtherResults.PlayedGameId 
 				            AND PGR.PlayerId = @PlayerId
 			            )
+                        AND EXISTS (SELECT 1 FROM Player WHERE Player.Id = OtherResults.PlayerId AND Player.Active = 1)
 	               ) AS LostGames
 	               GROUP BY PlayerId
 	               UNION
@@ -55,6 +56,7 @@ namespace BusinessLogic.DataAccess.Repositories
 				            WHERE PGR.PlayedGameId = OtherResults.PlayedGameId 
 				            AND PGR.PlayerId = @PlayerId
 			            ) 
+                        AND EXISTS (SELECT 1 FROM Player WHERE Player.Id = OtherResults.PlayerId AND Player.Active = 1)
 	               ) AS WonGames
 	               GROUP BY PlayerId
             ) AS X

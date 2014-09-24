@@ -50,7 +50,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
             
             playerController.Save(player, currentUser);
 
-            playerCreatorMock.AssertWasCalled(mock => mock.Save(player, currentUser));
+            playerSaverMock.AssertWasCalled(mock => mock.Save(player, currentUser));
         }
 
         [Test]
