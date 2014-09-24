@@ -429,6 +429,7 @@
     <Content Include="Views\Shared\_BaseLayout.cshtml" />
     <Content Include="Views\Player\_CreateOrUpdatePartial.cshtml" />
     <Content Include="Views\Player\Edit.cshtml" />
+    <Content Include="Views\Player\_Players.cshtml" />
     <None Include="Web.Jake.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
