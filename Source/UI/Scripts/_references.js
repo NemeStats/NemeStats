@@ -9,3 +9,4 @@
 /// <reference path="modernizr-2.8.3.js" />
 /// <reference path="respond.js" />
 /// <reference path="createplayedgame/createplayedgame.js" />
+/// <reference path="player/createorupdateplayer.js" />

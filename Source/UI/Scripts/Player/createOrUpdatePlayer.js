@@ -57,7 +57,7 @@ window.Views.Player.CreateOrUpdate.prototype = {
                                     <a href='/Player/Details/" + player.Id + "'>" + player.Name + "</a> \
                                 </td> \
                                 <td> \
-                                    <a href='/Player/Edit/" + player.Id + " title='Edit'> \
+                                    <a href='/Player/Edit/" + player.Id + "' title='Edit'> \
                                         <i class='fa fa-pencil fa-3x'></i> \
                                     </a> \
                                 </td> \
