@@ -98,6 +98,8 @@ namespace UI.DependencyResolution {
 
             For<INemesisRecalculator>().Use<NemesisRecalculator>();
 
+            For<IPlayedGameDeleter>().Use<PlayedGameDeleter>();
+
 
             //singleton scope
 

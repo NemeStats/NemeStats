@@ -141,9 +141,11 @@
     <Compile Include="Logic\GamingGroups\GamingGroupRetriever.cs" />
     <Compile Include="Logic\GamingGroups\IPendingGamingGroupInvitationRetriever.cs" />
     <Compile Include="Logic\GamingGroups\PendingGamingGroupInvitationRetriever.cs" />
+    <Compile Include="Logic\PlayedGames\IPlayedGameDeleter.cs" />
     <Compile Include="Logic\PlayedGames\IPlayedGameCreator.cs" />
     <Compile Include="Logic\PlayedGames\PlayedGameCreator.cs" />
     <Compile Include="Logic\PlayedGames\IPlayedGameRetriever.cs" />
+    <Compile Include="Logic\PlayedGames\PlayedGameDeleter.cs" />
     <Compile Include="Logic\PlayedGames\PlayedGameRetriever.cs" />
     <Compile Include="Logic\Players\IPlayerSaver.cs" />
     <Compile Include="Logic\Players\PlayerSaver.cs" />

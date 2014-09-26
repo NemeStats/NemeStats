@@ -28,6 +28,7 @@ namespace UI.Controllers
         internal IPlayedGameCreator playedGameCreator;
         internal IGameDefinitionRetriever gameDefinitionRetriever;
         internal IShowingXResultsMessageBuilder showingXResultsMessageBuilder;
+        internal IPlayedGameDeleter playedGameDeleter;
 
         internal const int NUMBER_OF_RECENT_GAMES_TO_DISPLAY = 10;
 
@@ -38,7 +39,8 @@ namespace UI.Controllers
             IPlayedGameDetailsViewModelBuilder builder,
             IGameDefinitionRetriever gameDefinitionRetriever,
             IShowingXResultsMessageBuilder showingXResultsMessageBuilder,
-            IPlayedGameCreator playedGameCreator)
+            IPlayedGameCreator playedGameCreator,
+            IPlayedGameDeleter playedGameDeleter)
         {
             this.dataContext = dataContext;
             this.playedGameRetriever = playedGameRetriever;
@@ -47,6 +49,7 @@ namespace UI.Controllers
             this.gameDefinitionRetriever = gameDefinitionRetriever;
             this.showingXResultsMessageBuilder = showingXResultsMessageBuilder;
             this.playedGameCreator = playedGameCreator;
+            this.playedGameDeleter = playedGameDeleter;
         }
 
         // GET: /PlayedGame/Details/5
@@ -141,7 +144,8 @@ namespace UI.Controllers
         [UserContextAttribute]
         public virtual ActionResult DeleteConfirmed(int id, ApplicationUser currentUser)
         {
-            dataContext.DeleteById<PlayedGame>(id, currentUser);
+            playedGameDeleter.DeletePlayedGame(id, currentUser);
+            //TODO really don't know whether I need to commit here or if it is automatically taken care of when disposing.
             dataContext.CommitAllChanges();
             return new RedirectResult(Url.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name)
                             + "#" + GamingGroupController.SECTION_ANCHOR_RECENT_GAMES);

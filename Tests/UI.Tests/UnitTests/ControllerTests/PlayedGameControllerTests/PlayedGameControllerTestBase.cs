@@ -27,6 +27,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
         protected IGameDefinitionRetriever gameDefinitionRetrieverMock;
         protected IPlayedGameCreator playedGameCreatorMock;
         protected IShowingXResultsMessageBuilder showingXResultsMessageBuilderMock;
+        protected IPlayedGameDeleter playedGameDeleterMock;
         protected UrlHelper urlHelperMock;
         protected string testUserName = "the test user name";
         protected ApplicationUser currentUser;
@@ -42,6 +43,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
             gameDefinitionRetrieverMock = MockRepository.GenerateMock<IGameDefinitionRetriever>();
             playedGameCreatorMock = MockRepository.GenerateMock<IPlayedGameCreator>();
             showingXResultsMessageBuilderMock = MockRepository.GenerateMock<IShowingXResultsMessageBuilder>();
+            playedGameDeleterMock = MockRepository.GenerateMock<IPlayedGameDeleter>();
             urlHelperMock = MockRepository.GenerateMock<UrlHelper>();
             playedGameController = new Controllers.PlayedGameController(
                 dataContext,
@@ -50,7 +52,8 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
                 playedGameDetailsBuilderMock,
                 gameDefinitionRetrieverMock,
                 showingXResultsMessageBuilderMock,
-                playedGameCreatorMock);
+                playedGameCreatorMock,
+                playedGameDeleterMock);
             playedGameController.Url = urlHelperMock;
 
             playedGameControllerPartialMock = MockRepository.GeneratePartialMock<PlayedGameController>(
@@ -60,7 +63,8 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
                 playedGameDetailsBuilderMock,
                 gameDefinitionRetrieverMock,
                 showingXResultsMessageBuilderMock,
-                playedGameCreatorMock);
+                playedGameCreatorMock,
+                playedGameDeleterMock);
             playedGameControllerPartialMock.Url = urlHelperMock;
 
             currentUser = new ApplicationUser()

@@ -163,6 +163,7 @@
     <Compile Include="UnitTests\ControllerTests\HomeControllerTests\IndexTests.cs" />
     <Compile Include="UnitTests\ControllerTests\PlayedGameControllerTests\CreateHttpPostTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UnitTests\ControllerTests\PlayedGameControllerTests\DeleteConfirmedTests.cs" />
     <Compile Include="UnitTests\ControllerTests\PlayedGameControllerTests\DetailsTests.cs" />
     <Compile Include="UnitTests\ControllerTests\PlayedGameControllerTests\PlayedGameControllerTestBase.cs" />
     <Compile Include="UnitTests\ControllerTests\PlayerControllerTests\CreateHttpGetTests.cs" />
