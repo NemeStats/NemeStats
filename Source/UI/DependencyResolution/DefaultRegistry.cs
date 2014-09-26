@@ -36,6 +36,7 @@ namespace UI.DependencyResolution {
     using UI.Transformations.Player;
     using UniversalAnalyticsHttpWrapper;
     using StructureMap.Web;
+    using BusinessLogic.Logic.Nemeses;
 	
     public class DefaultRegistry : Registry {
         #region Constructors and Destructors
@@ -95,6 +96,7 @@ namespace UI.DependencyResolution {
 
             For<IPlayerRetriever>().Use<PlayerRetriever>();
 
+            For<INemesisRecalculator>().Use<NemesisRecalculator>();
 
 
             //singleton scope

@@ -1,6 +1,7 @@
 ﻿using BusinessLogic.DataAccess;
 using BusinessLogic.Logic;
 using BusinessLogic.Models;
+using BusinessLogic.Models.Nemeses;
 using BusinessLogic.Models.Players;
 using BusinessLogic.Models.User;
 using System;
@@ -148,47 +149,29 @@ namespace BusinessLogic.DataAccess.Repositories
             return nemesis;
         }
 
-        //TODO refactor this. Might be tricky with anonymous data types. Should I create concrete types?
-        public virtual Nemesis RecalculateNemesis(int playerId, ApplicationUser currentUser)
+        public NemesisData GetNemesisData(int playerId)
         {
-            Player minionPlayer = dataContext.FindById<Player>(playerId);
             DbRawSqlQuery<WinLossStatistics> data = dataContext.MakeRawSqlQuery<WinLossStatistics>(SQL_GET_WIN_LOSS_GAMES_COUNT,
                 new SqlParameter("PlayerId", playerId));
 
             List<WinLossStatistics> winLossStatistics = data.ToList<WinLossStatistics>();
 
-            var result = (from x in winLossStatistics
+            NemesisData nemesisData = (from x in winLossStatistics
                           where x.NumberOfGamesLost > x.NumberOfGamesWon
                           && x.NumberOfGamesLost >= MINIMUM_NUMBER_OF_GAMES_TO_BE_A_NEMESIS
-                          select new
+                          select new NemesisData
                           {
                               NumberOfGamesLost = x.NumberOfGamesLost,
                               LossPercentage = 100 * x.NumberOfGamesLost / (x.NumberOfGamesWon + x.NumberOfGamesLost),
                               NemesisPlayerId = x.VersusPlayerId
                           }).OrderByDescending(nemesisCandidates => nemesisCandidates.LossPercentage).FirstOrDefault();
 
-            if (result == null)
+            if(nemesisData == null)
             {
-                minionPlayer.NemesisId = null;
-                dataContext.Save<Player>(minionPlayer, currentUser);
-                return new NullNemesis();
+                return new NullNemesisData();
             }
 
-            Nemesis nemesis = new Nemesis()
-            {
-                LossPercentage = result.LossPercentage,
-                NumberOfGamesLost = result.NumberOfGamesLost,
-                NemesisPlayerId = result.NemesisPlayerId,
-                MinionPlayerId = playerId
-            };
-
-            Nemesis newNemesis = dataContext.Save<Nemesis>(nemesis, currentUser);
-            dataContext.CommitAllChanges();
-
-            minionPlayer.NemesisId = newNemesis.Id;
-            dataContext.Save<Player>(minionPlayer, currentUser);
-
-            return nemesis;
+            return nemesisData;
         }
     }
 }

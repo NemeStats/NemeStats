@@ -4,6 +4,7 @@ using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.DataAccess.Security;
 using BusinessLogic.EventTracking;
 using BusinessLogic.Logic;
+using BusinessLogic.Logic.Nemeses;
 using BusinessLogic.Logic.PlayedGames;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
@@ -138,7 +139,8 @@ namespace BusinessLogic.Tests.IntegrationTests
         private void CreatePlayedGames(NemeStatsDataContext dataContext)
         {
             IPlayerRepository playerRepository = new EntityFrameworkPlayerRepository(dataContext);
-            IPlayedGameCreator playedGameCreator = new PlayedGameCreator(dataContext, playedGameTracker, playerRepository);
+            INemesisRecalculator nemesisRecalculator = new NemesisRecalculator(dataContext, playerRepository);
+            IPlayedGameCreator playedGameCreator = new PlayedGameCreator(dataContext, playedGameTracker, playerRepository, nemesisRecalculator);
             
             List<Player> players = new List<Player>() { testPlayer1, testPlayer2 };
             List<int> playerRanks = new List<int>() { 1, 1 };

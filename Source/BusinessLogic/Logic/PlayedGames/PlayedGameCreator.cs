@@ -1,6 +1,7 @@
 ﻿using BusinessLogic.DataAccess;
 using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.EventTracking;
+using BusinessLogic.Logic.Nemeses;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
 using BusinessLogic.Models.Points;
@@ -19,15 +20,18 @@ namespace BusinessLogic.Logic.PlayedGames
         private IDataContext dataContext;
         private NemeStatsEventTracker playedGameTracker;
         private IPlayerRepository playerRepository;
+        private INemesisRecalculator nemesisRecalculator;
 
         public PlayedGameCreator(
             IDataContext applicationDataContext, 
             NemeStatsEventTracker playedGameTracker, 
-            IPlayerRepository playerRepository)
+            IPlayerRepository playerRepository,
+            INemesisRecalculator nemesisRecalculator)
         {
             this.dataContext = applicationDataContext;
             this.playedGameTracker = playedGameTracker;
             this.playerRepository = playerRepository;
+            this.nemesisRecalculator = nemesisRecalculator;
         }
 
         //TODO need to have validation logic here (or on PlayedGame similar to what is on NewlyCompletedGame)
@@ -50,7 +54,7 @@ namespace BusinessLogic.Logic.PlayedGames
             {
                 if(result.GameRank != 1)
                 {
-                    playerRepository.RecalculateNemesis(result.PlayerId, currentUser);
+                    nemesisRecalculator.RecalculateNemesis(result.PlayerId, currentUser);
                 }
             }
 

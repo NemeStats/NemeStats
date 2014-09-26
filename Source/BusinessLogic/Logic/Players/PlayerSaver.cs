@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BusinessLogic.DataAccess.Repositories;
+using BusinessLogic.Logic.Nemeses;
 
 namespace BusinessLogic.Logic.Players
 {
@@ -18,12 +19,14 @@ namespace BusinessLogic.Logic.Players
         private IDataContext dataContext;
         private IPlayerRepository playerRepository;
         private NemeStatsEventTracker eventTracker;
+        private INemesisRecalculator nemesisRecalculator;
 
-        public PlayerSaver(IDataContext dataContext, NemeStatsEventTracker eventTracker, IPlayerRepository playerRepository)
+        public PlayerSaver(IDataContext dataContext, NemeStatsEventTracker eventTracker, IPlayerRepository playerRepository, INemesisRecalculator nemesisRecalculator)
         {
             this.dataContext = dataContext;
             this.eventTracker = eventTracker;
             this.playerRepository = playerRepository;
+            this.nemesisRecalculator = nemesisRecalculator;
         }
 
         public Player Save(Player player, ApplicationUser currentUser)
@@ -51,7 +54,7 @@ namespace BusinessLogic.Logic.Players
 
                         foreach (int playerId in playerIdsToRecalculate)
                         {
-                            playerRepository.RecalculateNemesis(playerId, currentUser);
+                            nemesisRecalculator.RecalculateNemesis(playerId, currentUser);
                         }
                     }
                 }

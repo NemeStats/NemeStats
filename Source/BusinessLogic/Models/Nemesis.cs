@@ -26,5 +26,27 @@ namespace BusinessLogic.Models
         public virtual Player MinionPlayer { get; set; }
         [ForeignKey("NemesisPlayerId")]
         public virtual Player NemesisPlayer { get; set; }
+
+        /// <summary>
+        /// Indicates whether the two records represent the same Minion to Nemesis relationship (regardless of the stats recorded at that time)
+        /// </summary>
+        public bool SameNemesis(Nemesis nemesis)
+        {
+            return this.NemesisPlayerId == nemesis.NemesisPlayerId
+                    && this.MinionPlayerId == nemesis.MinionPlayerId;
+        }
+
+        public override bool Equals(object nemesis)
+        {
+            Nemesis compareToNemesis = nemesis as Nemesis;
+            if(compareToNemesis == null)
+            {
+                return false;
+            }
+            return this.MinionPlayerId == compareToNemesis.MinionPlayerId
+                    && this.NemesisPlayerId == compareToNemesis.NemesisPlayerId
+                    && this.NumberOfGamesLost == compareToNemesis.NumberOfGamesLost
+                    && this.LossPercentage == compareToNemesis.LossPercentage;
+        }
     }
 }

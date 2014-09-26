@@ -1,6 +1,6 @@
 ﻿using BusinessLogic.DataAccess;
 using BusinessLogic.DataAccess.Repositories;
-using BusinessLogic.Logic.Batch;
+using BusinessLogic.Logic.Nemeses;
 using BusinessLogic.Models;
 using BusinessLogic.Models.User;
 using NUnit.Framework;
@@ -50,7 +50,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.BatchTests.NemesisRecalculato
 
             foreach(Player activePlayer in activePlayersOnly)
             {
-                playerRepositoryMock.AssertWasCalled(mock => mock.RecalculateNemesis(
+                nemesisRecalculator.AssertWasCalled(mock => mock.RecalculateNemesis(
                     Arg<int>.Is.Equal(activePlayer.Id), 
                     Arg<ApplicationUser>.Matches(appUser => appUser.CurrentGamingGroupId == activePlayer.GamingGroupId)));
             }

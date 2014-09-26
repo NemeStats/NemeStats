@@ -2,7 +2,7 @@ namespace BusinessLogic.Migrations
 {
     using BusinessLogic.DataAccess;
     using BusinessLogic.DataAccess.Repositories;
-    using BusinessLogic.Logic.Batch;
+    using BusinessLogic.Logic.Nemeses;
     using System;
     using System.Data.Entity.Migrations;
     
@@ -15,6 +15,7 @@ namespace BusinessLogic.Migrations
                 using(NemeStatsDataContext dataContext = new NemeStatsDataContext())
                 {
                     IPlayerRepository playerRepository = new EntityFrameworkPlayerRepository(dataContext);
+                    
                     INemesisRecalculator nemesisRecalculator = new NemesisRecalculator(dataContext, playerRepository);
                     nemesisRecalculator.RecalculateAllNemeses();
                 }

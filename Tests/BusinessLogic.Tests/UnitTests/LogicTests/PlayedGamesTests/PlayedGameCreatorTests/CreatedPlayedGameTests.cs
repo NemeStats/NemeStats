@@ -1,6 +1,7 @@
 ﻿using BusinessLogic.DataAccess;
 using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.EventTracking;
+using BusinessLogic.Logic.Nemeses;
 using BusinessLogic.Logic.PlayedGames;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
@@ -23,6 +24,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameCr
         private NemeStatsDataContext dataContext;
         private PlayedGameCreator playedGameCreatorPartialMock;
         private IPlayerRepository playerRepositoryMock;
+        private INemesisRecalculator nemesisRecalculatorMock;
         private NemeStatsEventTracker playedGameTracker;
         private ApplicationUser currentUser;
         private GameDefinition gameDefinition;
@@ -33,6 +35,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameCr
             dataContext = MockRepository.GenerateMock<NemeStatsDataContext>();
             playedGameTracker = MockRepository.GenerateMock<NemeStatsEventTracker>();
             playerRepositoryMock = MockRepository.GenerateMock<IPlayerRepository>();
+            nemesisRecalculatorMock = MockRepository.GenerateMock<INemesisRecalculator>();
 
             currentUser = new ApplicationUser()
             {
@@ -182,9 +185,9 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameCr
 
             PlayedGame playedGame = playedGameCreatorPartialMock.CreatePlayedGame(newlyCompletedGame, currentUser);
 
-            playerRepositoryMock.AssertWasNotCalled(mock => mock.RecalculateNemesis(playerOneId, currentUser));
-            playerRepositoryMock.AssertWasCalled(mock => mock.RecalculateNemesis(playerTwoId, currentUser));
-            playerRepositoryMock.AssertWasCalled(mock => mock.RecalculateNemesis(playerThreeId, currentUser));
+            nemesisRecalculatorMock.AssertWasNotCalled(mock => mock.RecalculateNemesis(playerOneId, currentUser));
+            nemesisRecalculatorMock.AssertWasCalled(mock => mock.RecalculateNemesis(playerTwoId, currentUser));
+            nemesisRecalculatorMock.AssertWasCalled(mock => mock.RecalculateNemesis(playerThreeId, currentUser));
         }
     }
 }

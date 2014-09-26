@@ -1,6 +1,7 @@
 ﻿using BusinessLogic.DataAccess;
 using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.EventTracking;
+using BusinessLogic.Logic.Nemeses;
 using BusinessLogic.Logic.Players;
 using BusinessLogic.Models;
 using BusinessLogic.Models.User;
@@ -20,6 +21,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerCreatorTes
         private IDataContext dataContextMock;
         private NemeStatsEventTracker eventTrackerMock;
         private IPlayerRepository playerRepositoryMock;
+        private INemesisRecalculator nemesisRecalculatorMock;
         private PlayerSaver playerSaver;
         private ApplicationUser currentUser;
 
@@ -29,7 +31,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerCreatorTes
             dataContextMock = MockRepository.GenerateMock<IDataContext>();
             eventTrackerMock = MockRepository.GenerateMock<NemeStatsEventTracker>();
             playerRepositoryMock = MockRepository.GenerateMock<IPlayerRepository>();
-            playerSaver = new PlayerSaver(dataContextMock, eventTrackerMock, playerRepositoryMock);
+            nemesisRecalculatorMock = MockRepository.GenerateMock<INemesisRecalculator>();
+            playerSaver = new PlayerSaver(dataContextMock, eventTrackerMock, playerRepositoryMock, nemesisRecalculatorMock);
             currentUser = new ApplicationUser();
         }
 
@@ -167,9 +170,9 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerCreatorTes
 
             playerSaver.Save(player, currentUser);
 
-            playerRepositoryMock.AssertWasCalled(mock => mock.RecalculateNemesis(activeMinion1.Id, currentUser));
-            playerRepositoryMock.AssertWasCalled(mock => mock.RecalculateNemesis(activeMinion2.Id, currentUser));
-            playerRepositoryMock.AssertWasNotCalled(mock => mock.RecalculateNemesis(inactiveMinion.Id, currentUser));
+            nemesisRecalculatorMock.AssertWasCalled(mock => mock.RecalculateNemesis(activeMinion1.Id, currentUser));
+            nemesisRecalculatorMock.AssertWasCalled(mock => mock.RecalculateNemesis(activeMinion2.Id, currentUser));
+            nemesisRecalculatorMock.AssertWasNotCalled(mock => mock.RecalculateNemesis(inactiveMinion.Id, currentUser));
         }
 
         [Test]
@@ -194,7 +197,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerCreatorTes
 
             playerSaver.Save(player, currentUser);
 
-            playerRepositoryMock.AssertWasNotCalled(mock => mock.RecalculateNemesis(currentPlayerMinionId1, currentUser));
+            nemesisRecalculatorMock.AssertWasNotCalled(mock => mock.RecalculateNemesis(currentPlayerMinionId1, currentUser));
         }
     }
 }
