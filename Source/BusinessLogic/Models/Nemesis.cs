@@ -32,7 +32,8 @@ namespace BusinessLogic.Models
         /// </summary>
         public bool SameNemesis(Nemesis nemesis)
         {
-            return this.NemesisPlayerId == nemesis.NemesisPlayerId
+            return nemesis != null
+                    && this.NemesisPlayerId == nemesis.NemesisPlayerId
                     && this.MinionPlayerId == nemesis.MinionPlayerId;
         }
 

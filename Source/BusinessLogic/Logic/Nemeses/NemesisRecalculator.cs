@@ -53,7 +53,7 @@ namespace BusinessLogic.Logic.Nemeses
 
             Nemesis currentNemesis = dataContext.GetQueryable<Nemesis>()
                                         .Where(nemesis => nemesis.Id == minionPlayer.NemesisId)
-                                        .First();
+                                        .FirstOrDefault();
 
             Nemesis newNemesis = new Nemesis()
             {
@@ -63,29 +63,31 @@ namespace BusinessLogic.Logic.Nemeses
                 MinionPlayerId = playerId
             };
 
-            Nemesis savedNemesis;
+            Nemesis savedNemesis = newNemesis;
 
-            if(currentNemesis.SameNemesis(newNemesis))
+            if (newNemesis.SameNemesis(currentNemesis))
             {
-                if(currentNemesis.Equals(newNemesis))
-                {
-                    savedNemesis = newNemesis;
-                }else
-                {
-                    currentNemesis.NumberOfGamesLost = newNemesis.NumberOfGamesLost;
-                    currentNemesis.LossPercentage = newNemesis.LossPercentage;
-                    savedNemesis = dataContext.Save<Nemesis>(currentNemesis, currentUser);
-                    dataContext.CommitAllChanges();
-                }
+                savedNemesis = UpdateExistingNemesisIfNeeded(currentUser, currentNemesis, newNemesis, savedNemesis);
             }else
             {
                 savedNemesis = dataContext.Save<Nemesis>(newNemesis, currentUser);
                 dataContext.CommitAllChanges();
+                minionPlayer.NemesisId = savedNemesis.Id;
+                dataContext.Save<Player>(minionPlayer, currentUser);
             }
 
-            minionPlayer.NemesisId = savedNemesis.Id;
-            dataContext.Save<Player>(minionPlayer, currentUser);
+            return savedNemesis;
+        }
 
+        private Nemesis UpdateExistingNemesisIfNeeded(ApplicationUser currentUser, Nemesis currentNemesis, Nemesis newNemesis, Nemesis savedNemesis)
+        {
+            if (!newNemesis.Equals(currentNemesis))
+            {
+                currentNemesis.NumberOfGamesLost = newNemesis.NumberOfGamesLost;
+                currentNemesis.LossPercentage = newNemesis.LossPercentage;
+                savedNemesis = dataContext.Save<Nemesis>(currentNemesis, currentUser);
+                dataContext.CommitAllChanges();
+            }
             return savedNemesis;
         }
 

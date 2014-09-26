@@ -28,6 +28,14 @@ namespace BusinessLogic.Tests.UnitTests.ModelsTests.NemesisTests
         }
 
         [Test]
+        public void ANullObjectIsNotEqual()
+        {
+            Nemesis nemesis1 = new Nemesis();
+
+            Assert.False(nemesis1.Equals(null));
+        }
+
+        [Test]
         public void ItReturnsFalseIfTheMinionPlayerIdsAreDifferent()
         {
             Nemesis nemesis1 = new Nemesis();
