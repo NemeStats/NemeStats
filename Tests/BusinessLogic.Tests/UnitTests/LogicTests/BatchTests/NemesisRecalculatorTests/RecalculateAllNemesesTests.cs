@@ -18,7 +18,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.BatchTests.NemesisRecalculato
     {
         private IDataContext dataContextMock;
         private IPlayerRepository playerRepositoryMock;
-        private NemesisRecalculator nemesisRecalculator;
+        private NemesisRecalculator nemesisRecalculatorPartialMock;
         private IQueryable<Player> allPlayersQueryable;
 
         [SetUp]
@@ -26,7 +26,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.BatchTests.NemesisRecalculato
         {
             dataContextMock = MockRepository.GenerateMock<IDataContext>();
             playerRepositoryMock = MockRepository.GenerateMock<IPlayerRepository>();
-            nemesisRecalculator = new NemesisRecalculator(dataContextMock, playerRepositoryMock);
+            nemesisRecalculatorPartialMock = MockRepository.GeneratePartialMock<NemesisRecalculator>(dataContextMock, playerRepositoryMock);
 
             List<Player> allPlayers = new List<Player>()
             {
@@ -45,12 +45,13 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.BatchTests.NemesisRecalculato
         public void ItRecalculatesTheNemesisForEachActivePlayerInTheGamingGroupUsingAFakeUserThatHasAccessToThatPlayersGamingGroup()
         {
             List<Player> activePlayersOnly = allPlayersQueryable.Where(player => player.Active == true).ToList();
+            nemesisRecalculatorPartialMock.Expect(mock => mock.RecalculateNemesis(Arg<int>.Is.Anything, Arg<ApplicationUser>.Is.Anything));
 
-            nemesisRecalculator.RecalculateAllNemeses();
+            nemesisRecalculatorPartialMock.RecalculateAllNemeses();
 
             foreach(Player activePlayer in activePlayersOnly)
             {
-                nemesisRecalculator.AssertWasCalled(mock => mock.RecalculateNemesis(
+                nemesisRecalculatorPartialMock.AssertWasCalled(mock => mock.RecalculateNemesis(
                     Arg<int>.Is.Equal(activePlayer.Id), 
                     Arg<ApplicationUser>.Matches(appUser => appUser.CurrentGamingGroupId == activePlayer.GamingGroupId)));
             }

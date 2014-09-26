@@ -46,7 +46,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameCr
             gameDefinition = new GameDefinition(){ Name = "game definition name" };
             dataContext.Expect(mock => mock.FindById<GameDefinition>(Arg<int>.Is.Anything))
                 .Return(gameDefinition);
-            playedGameCreatorPartialMock = MockRepository.GeneratePartialMock<PlayedGameCreator>(dataContext, playedGameTracker, playerRepositoryMock);
+            playedGameCreatorPartialMock = MockRepository.GeneratePartialMock<PlayedGameCreator>(dataContext, playedGameTracker, playerRepositoryMock, nemesisRecalculatorMock);
         }
 
         [Test]
@@ -154,7 +154,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameCr
         }
 
         [Test]
-        public void ItRecalculatesTheNemesisOfAnyPlayerThatDidntWinTheGame()
+        public void ItRecalculatesTheNemesisOfEveryPlayerInTheGame()
         {
             int playerOneId = 1;
             int playerTwoId = 2;
@@ -185,9 +185,10 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameCr
 
             PlayedGame playedGame = playedGameCreatorPartialMock.CreatePlayedGame(newlyCompletedGame, currentUser);
 
-            nemesisRecalculatorMock.AssertWasNotCalled(mock => mock.RecalculateNemesis(playerOneId, currentUser));
-            nemesisRecalculatorMock.AssertWasCalled(mock => mock.RecalculateNemesis(playerTwoId, currentUser));
-            nemesisRecalculatorMock.AssertWasCalled(mock => mock.RecalculateNemesis(playerThreeId, currentUser));
+            foreach(PlayerRank playerRank in playerRanks)
+            {
+                nemesisRecalculatorMock.AssertWasCalled(mock => mock.RecalculateNemesis(playerRank.PlayerId.Value, currentUser));
+            }
         }
     }
 }

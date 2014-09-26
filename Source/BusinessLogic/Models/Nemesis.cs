@@ -49,5 +49,10 @@ namespace BusinessLogic.Models
                     && this.NumberOfGamesLost == compareToNemesis.NumberOfGamesLost
                     && this.LossPercentage == compareToNemesis.LossPercentage;
         }
+
+        public override int GetHashCode()
+        {
+            return this.MinionPlayerId.GetHashCode() ^ this.NemesisPlayerId ^ this.NumberOfGamesLost ^ (int)this.LossPercentage;
+        }
     }
 }

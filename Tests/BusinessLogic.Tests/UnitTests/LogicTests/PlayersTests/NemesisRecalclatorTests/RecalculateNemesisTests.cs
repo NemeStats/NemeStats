@@ -26,6 +26,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.NemesisRecalclat
         private Player minionPlayer;
         private int existingNemesisId = 15153;
         private int newNemesisId = 9999;
+        private Nemesis savedNemesis;
 
         [SetUp]
         public void SetUp()
@@ -41,8 +42,9 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.NemesisRecalclat
             };
             dataContextMock.Expect(mock => mock.FindById<Player>(playerId))
                 .Return(minionPlayer);
+            savedNemesis = new Nemesis() { Id = newNemesisId };
             dataContextMock.Expect(mock => mock.Save<Nemesis>(Arg<Nemesis>.Is.Anything, Arg<ApplicationUser>.Is.Anything))
-                .Return(new Nemesis() { Id = newNemesisId });
+                .Return(savedNemesis);
         }
 
         [Test]
@@ -141,7 +143,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.NemesisRecalclat
                             .Return(nemesisData);
 
             List<Nemesis> nemesisList = new List<Nemesis>();
-            nemesisList.Add(new Nemesis()
+            Nemesis existingNemesis = new Nemesis()
             {
                 Id = existingNemesisId,
                 NemesisPlayerId = nemesisPlayerId,
@@ -149,7 +151,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.NemesisRecalclat
                 //add 1 so the data is different
                 NumberOfGamesLost = gamesLost + 1,
                 LossPercentage = lossPercentage
-            });
+            };
+            nemesisList.Add(existingNemesis);
             dataContextMock.Expect(mock => mock.GetQueryable<Nemesis>())
                 .Return(nemesisList.AsQueryable());
 
@@ -167,19 +170,71 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.NemesisRecalclat
         [Test]
         public void ItReturnsTheExistingNemesisIfNothingChanged()
         {
-            throw new NotImplementedException();
+            NemesisData nemesisData = new NemesisData();
+            playerRepositoryMock.Expect(mock => mock.GetNemesisData(playerId))
+                            .Return(nemesisData);
+
+            List<Nemesis> nemesisList = new List<Nemesis>();
+            Nemesis existingNemesis = new Nemesis()
+            {
+                Id = existingNemesisId,
+                MinionPlayerId = playerId
+            };
+            nemesisList.Add(existingNemesis);
+            dataContextMock.Expect(mock => mock.GetQueryable<Nemesis>())
+                .Return(nemesisList.AsQueryable());
+
+            Nemesis actualNemesis = nemesisRecalculator.RecalculateNemesis(playerId, currentUser);
+
+            Assert.AreSame(existingNemesis, actualNemesis);
         }
 
         [Test]
         public void ItReturnsTheUpdatedNemesisIfItWasUpdated()
         {
-            throw new NotImplementedException();
+            int expectedLossPercentage = 15;
+            NemesisData nemesisData = new NemesisData() { LossPercentage = expectedLossPercentage };
+            playerRepositoryMock.Expect(mock => mock.GetNemesisData(playerId))
+                            .Return(nemesisData);
+
+            List<Nemesis> nemesisList = new List<Nemesis>();
+            Nemesis existingNemesis = new Nemesis()
+            {
+                Id = existingNemesisId,
+                MinionPlayerId = playerId
+                
+            };
+            nemesisList.Add(existingNemesis);
+            dataContextMock.Expect(mock => mock.GetQueryable<Nemesis>())
+                .Return(nemesisList.AsQueryable());
+
+            Nemesis actualNemesis = nemesisRecalculator.RecalculateNemesis(playerId, currentUser);
+
+            Assert.AreSame(savedNemesis, actualNemesis);
         }
 
         [Test]
         public void ItReturnsTheNewNemesisIfItWasChanged()
         {
-            throw new NotImplementedException();
+            //change the nemesis
+            NemesisData nemesisData = new NemesisData() { NemesisPlayerId = 19383 };
+            playerRepositoryMock.Expect(mock => mock.GetNemesisData(playerId))
+                            .Return(nemesisData);
+
+            List<Nemesis> nemesisList = new List<Nemesis>();
+            Nemesis existingNemesis = new Nemesis()
+            {
+                Id = existingNemesisId,
+                MinionPlayerId = playerId
+
+            };
+            nemesisList.Add(existingNemesis);
+            dataContextMock.Expect(mock => mock.GetQueryable<Nemesis>())
+                .Return(nemesisList.AsQueryable());
+
+            Nemesis actualNemesis = nemesisRecalculator.RecalculateNemesis(playerId, currentUser);
+
+            Assert.AreSame(savedNemesis, actualNemesis);
         }
     }
 }

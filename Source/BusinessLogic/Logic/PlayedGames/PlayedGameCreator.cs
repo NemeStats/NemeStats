@@ -52,10 +52,7 @@ namespace BusinessLogic.Logic.PlayedGames
 
             foreach(PlayerGameResult result in playerGameResults)
             {
-                if(result.GameRank != 1)
-                {
-                    nemesisRecalculator.RecalculateNemesis(result.PlayerId, currentUser);
-                }
+                nemesisRecalculator.RecalculateNemesis(result.PlayerId, currentUser);
             }
 
             return playedGame;
