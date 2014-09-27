@@ -52,50 +52,6 @@
 </div>
 
 <div class="row">
-    @if (Model.PlayerGameResultDetails.Any())
-    {
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h4>Recent Games @ViewBag.RecentGamesMessage</h4>
-            </div>
-            <div class="panel-body">
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th>Date Played</th>
-                            <th>Game</th>
-                            <th>Rank</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    @foreach (var playerGameResult in @Model.PlayerGameResultDetails)
-                    {
-                        <tbody>
-                            <tr>
-                                <td>
-                                    @playerGameResult.DatePlayed.ToShortDateString()
-                                </td>
-                                <td>
-                                    @Html.ActionLink(playerGameResult.GameName, "Details", "GameDefinition", new { id = playerGameResult.GameDefinitionId }, new { })
-                                </td>
-                                <td>
-                                    @Html.GameResults(playerGameResult)
-                                </td>
-                                <td>
-                                    <span class="glyphicon glyphicon-book"></span>
-                                    @Html.ActionLink("Details", "Details", "PlayedGame", new { id = playerGameResult.PlayedGameId }, new { })
-                                </td>
-                            </tr>
-                        </tbody>
-                    }
-                </table>
-
-            </div>
-        </div>
-    }
-</div>
-
-<div class="row">
     @if (@Model.HasNemesis)
     {
         <div class="panel panel-default">
@@ -138,23 +94,23 @@
         <div class="panel-body">
             <table>
                 <tr>
-                    <td>Total Games:</td>
+                    <td><strong>Total Games:</strong></td>
                     <td>@Model.TotalGamesPlayed</td>
                 </tr>
                 <tr>
-                    <td>Total Points:</td>
+                    <td><strong>Total Points:</strong></td>
                     <td>@Model.TotalPoints</td>
                 </tr>
                 <tr>
-                    <td>Average Points Per Game:</td>
+                    <td><strong>Average Points Per Game:</strong></td>
                     <td>@Model.AveragePointsPerGame.ToString("N2")</td>
                 </tr>
                 <tr>
-                    <td>Average Players Per Game:</td>
+                    <td><strong>Average Players Per Game:</strong></td>
                     <td>@Model.AveragePlayersPerGame.ToString("N2")</td>
                 </tr>
                 <tr>
-                    <td>Average Points Per Player (0 to 1):</td>
+                    <td><strong>Average Points Per Player (0 to 1):</strong></td>
                     <td>@Model.AveragePointsPerPlayer.ToString("N2")</td>
                 </tr>
             </table>
@@ -163,6 +119,44 @@
 </div>
 
 
+<div class="row">
+    @if (Model.PlayerGameResultDetails.Any())
+    {
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>Recent Games @ViewBag.RecentGamesMessage</h4>
+            </div>
+            <div class="panel-body">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Date Played</th>
+                            <th>Game</th>
+                            <th>Rank</th>
+                        </tr>
+                    </thead>
+                    @foreach (var playerGameResult in @Model.PlayerGameResultDetails)
+                    {
+                        <tbody>
+                            <tr>
+                                <td>
+                                    @Html.ActionLink(playerGameResult.DatePlayed.ToShortDateString(), "Details", "PlayedGame", new { id = playerGameResult.PlayedGameId }, new { })
+                                </td>
+                                <td>
+                                    @Html.ActionLink(playerGameResult.GameName, "Details", "GameDefinition", new { id = playerGameResult.GameDefinitionId }, new { })
+                                </td>
+                                <td>
+                                    @Html.GameResults(playerGameResult)
+                                </td>
+                            </tr>
+                        </tbody>
+                    }
+                </table>
+
+            </div>
+        </div>
+    }
+</div>
 
 
 
