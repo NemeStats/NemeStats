@@ -26,6 +26,7 @@ namespace BusinessLogic.Logic.PlayedGames
                                    where playerResult.PlayedGameId == playedGameId
                                    select playerResult.PlayerId).ToList();
             dataContext.DeleteById<PlayedGame>(playedGameId, currentUser);
+            dataContext.CommitAllChanges();
                      
             foreach(int playerId in playerIds)
             {
