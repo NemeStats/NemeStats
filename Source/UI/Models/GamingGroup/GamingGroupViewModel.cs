@@ -9,6 +9,7 @@ using UI.Models.GameDefinitionModels;
 using UI.Models.PlayedGame;
 using UI.Models.Players;
 using UI.Models.User;
+using UI.Views.Player;
 
 namespace UI.Models.GamingGroup
 {
@@ -24,7 +25,7 @@ namespace UI.Models.GamingGroup
         [Required(ErrorMessage = "Please enter an e-mail!", AllowEmptyStrings = false)]
         public string InviteeEmail { get; set; }
         public IList<GameDefinition> GameDefinitions { get; set; }
-        public IList<Player> Players { get; set; }
+        public IList<PlayerWithNemesisViewModel> Players { get; set; }
         public IList<InvitationViewModel> Invitations { get; set; }
         public IList<PlayedGameDetailsViewModel> RecentGames { get; set; }
     }

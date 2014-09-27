@@ -181,7 +181,9 @@
     <Compile Include="UnitTests\TransformationsTests\PlayedGameDetailsViewModelBuilderTests.cs" />
     <Compile Include="UnitTests\TransformationsTests\GameResultViewModelBuilderTests\BuildTests.cs" />
     <Compile Include="UnitTests\TransformationsTests\PlayerTests\PlayerDetailsViewModelBuilderTests\BuildTests.cs" />
+    <Compile Include="UnitTests\TransformationsTests\PlayerTests\PlayerWithNemesisViewModelBuilderTests\BuildTests.cs" />
     <Compile Include="UnitTests\TransformationsTests\PlayerTests\TopPlayerViewModelBuilderTests\BuildTests.cs" />
+    <Compile Include="UnitTests\TransformationsTests\PlayerWithNemesis.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

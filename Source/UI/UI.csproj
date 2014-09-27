@@ -303,10 +303,13 @@
     <Compile Include="Transformations\IPlayedGameDetailsViewModelBuilder.cs" />
     <Compile Include="Transformations\IGameResultViewModelBuilder.cs" />
     <Compile Include="Transformations\GameResultViewModelBuilder.cs" />
-    <Compile Include="Transformations\Player\IPlayerDetailsViewModelBuilder.cs" />
-    <Compile Include="Transformations\Player\PlayerDetailsViewModelBuilder.cs" />
-    <Compile Include="Transformations\Player\ITopPlayerViewModelBuilder.cs" />
-    <Compile Include="Transformations\Player\TopPlayerViewModelBuilder.cs" />
+    <Compile Include="Transformations\PlayerTransformations\IPlayerDetailsViewModelBuilder.cs" />
+    <Compile Include="Transformations\PlayerTransformations\IPlayerWithNemesisViewModelBuilder.cs" />
+    <Compile Include="Transformations\PlayerTransformations\PlayerDetailsViewModelBuilder.cs" />
+    <Compile Include="Transformations\PlayerTransformations\ITopPlayerViewModelBuilder.cs" />
+    <Compile Include="Transformations\PlayerTransformations\PlayerWithNemesisViewModelBuilder.cs" />
+    <Compile Include="Transformations\PlayerTransformations\TopPlayerViewModelBuilder.cs" />
+    <Compile Include="Views\Player\PlayerWithNemesisViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\blog.css" />

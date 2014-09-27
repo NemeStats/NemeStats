@@ -10,7 +10,7 @@ using System.Web;
 using System.Web.Mvc;
 using UI.Models.Home;
 using UI.Models.Players;
-using UI.Transformations.Player;
+using UI.Transformations.PlayerTransformations;
 
 namespace UI.Controllers
 {

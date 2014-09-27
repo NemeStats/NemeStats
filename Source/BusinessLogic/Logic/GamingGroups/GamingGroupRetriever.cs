@@ -37,7 +37,7 @@ namespace BusinessLogic.Logic.GamingGroups
 
             gamingGroup.PlayedGames = playedGameRetriever.GetRecentGames(maxNumberOfGamesToRetrieve, gamingGroupId);
 
-            gamingGroup.Players = playerRetriever.GetAllPlayers(gamingGroupId);
+            gamingGroup.Players = playerRetriever.GetAllPlayersWithNemesisInfo(gamingGroupId);
 
             gamingGroup.GameDefinitions = gameDefinitionRetriever.GetAllGameDefinitions(gamingGroupId);
 

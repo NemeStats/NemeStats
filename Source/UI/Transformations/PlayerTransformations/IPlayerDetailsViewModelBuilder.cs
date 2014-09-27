@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UI.Models.Players;
 
-namespace UI.Transformations.Player
+namespace UI.Transformations.PlayerTransformations
 {
     public interface IPlayerDetailsViewModelBuilder
     {

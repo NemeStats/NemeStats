@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UI.Controllers;
 using UI.Transformations;
-using UI.Transformations.Player;
+using UI.Transformations.PlayerTransformations;
 using UI.Controllers.Helpers;
 using BusinessLogic.Logic.Players;
 using System.Web.Mvc;

@@ -5,6 +5,7 @@ namespace BusinessLogic.Logic.Players
 {
     public interface IPlayerRetriever
     {
-        List<BusinessLogic.Models.Player> GetAllPlayers(int gamingGroupId);
+        List<Player> GetAllPlayers(int gamingGroupId);
+        List<Player> GetAllPlayersWithNemesisInfo(int gamingGroupId);
     }
 }

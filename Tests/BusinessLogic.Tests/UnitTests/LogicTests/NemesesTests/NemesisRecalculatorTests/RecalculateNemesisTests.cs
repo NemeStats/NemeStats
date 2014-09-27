@@ -12,7 +12,7 @@ using BusinessLogic.Models.Nemeses;
 using BusinessLogic.Models;
 using BusinessLogic.Models.User;
 
-namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.NemesisRecalclatorTests
+namespace BusinessLogic.Tests.UnitTests.LogicTests.NemesesTests.NemesisRecalclatorTests
 {
     [TestFixture]
     public class RecalculateNemesisTests

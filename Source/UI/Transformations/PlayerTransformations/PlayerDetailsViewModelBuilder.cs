@@ -8,7 +8,7 @@ using System.Web;
 using UI.Models.PlayedGame;
 using UI.Models.Players;
 
-namespace UI.Transformations.Player
+namespace UI.Transformations.PlayerTransformations
 {
     public class PlayerDetailsViewModelBuilder : IPlayerDetailsViewModelBuilder
     {

@@ -11,7 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessLogic.Tests.UnitTests.LogicTests.BatchTests.NemesisRecalculatorTests
+namespace BusinessLogic.Tests.UnitTests.LogicTests.NemesesTests.NemesisRecalculatorTests
 {
     [TestFixture]
     public class RecalculateAllNemesesTests

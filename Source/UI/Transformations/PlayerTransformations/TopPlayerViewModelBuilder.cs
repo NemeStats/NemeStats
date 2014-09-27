@@ -5,7 +5,7 @@ using System.Linq;
 using System.Web;
 using UI.Models.Players;
 
-namespace UI.Transformations.Player
+namespace UI.Transformations.PlayerTransformations
 {
     public class TopPlayerViewModelBuilder : ITopPlayerViewModelBuilder
     {

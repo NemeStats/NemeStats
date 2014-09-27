@@ -12,7 +12,7 @@ using UI.Controllers;
 using UI.Models.PlayedGame;
 using UI.Models.Players;
 using UI.Transformations;
-using UI.Transformations.Player;
+using UI.Transformations.PlayerTransformations;
 
 namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
 {

@@ -2,37 +2,41 @@
 using BusinessLogic.Models.Players;
 using BusinessLogic.Models.User;
 using System.Collections.Generic;
+using System.Linq;
 using UI.Models.GamingGroup;
 using UI.Models.PlayedGame;
-using UI.Transformations.Player;
+using UI.Transformations.PlayerTransformations;
+using UI.Views.Player;
 
 namespace UI.Transformations
 {
     public class GamingGroupViewModelBuilder : IGamingGroupViewModelBuilder
     {
         private IGamingGroupInvitationViewModelBuilder invitationViewModelTransformer;
-        private IPlayerDetailsViewModelBuilder playerDetailsViewModelBuilder;
         private IPlayedGameDetailsViewModelBuilder playedGameDetailsViewModelBuilder;
+        private IPlayerWithNemesisViewModelBuilder playerWithNemesisViewModelBuilder;
 
         public GamingGroupViewModelBuilder(
             IGamingGroupInvitationViewModelBuilder invitationViewModelTransformer,
-            IPlayerDetailsViewModelBuilder playerDetailsViewModelBuilder,
-            IPlayedGameDetailsViewModelBuilder playedGameDetailsViewModelBuilder)
+            IPlayedGameDetailsViewModelBuilder playedGameDetailsViewModelBuilder,
+            IPlayerWithNemesisViewModelBuilder playerWithNemesisViewModelBuilder)
         {
             this.invitationViewModelTransformer = invitationViewModelTransformer;
-            this.playerDetailsViewModelBuilder = playerDetailsViewModelBuilder;
             this.playedGameDetailsViewModelBuilder = playedGameDetailsViewModelBuilder;
+            this.playerWithNemesisViewModelBuilder = playerWithNemesisViewModelBuilder;
         }
 
         public GamingGroupViewModel Build(GamingGroup gamingGroup, ApplicationUser currentUser = null)
         {
-            List<InvitationViewModel> invitationViewModels = new List<InvitationViewModel>();
-            foreach(GamingGroupInvitation invitation in gamingGroup.GamingGroupInvitations)
-            {
-                invitationViewModels.Add(invitationViewModelTransformer.Build(invitation));
-            }
+            List<InvitationViewModel> invitationViewModels
+                = (from GamingGroupInvitation invitation in gamingGroup.GamingGroupInvitations
+                   select invitationViewModelTransformer.Build(invitation)).ToList();
 
             List<PlayedGameDetailsViewModel> details = BuildPlayedGameDetailsViewModels(gamingGroup, currentUser);
+
+            List<PlayerWithNemesisViewModel> playerWithNemesisList 
+                = (from Player player in gamingGroup.Players
+                  select playerWithNemesisViewModelBuilder.Build(player)).ToList();
             
             GamingGroupViewModel viewModel = new GamingGroupViewModel()
             {
@@ -41,7 +45,7 @@ namespace UI.Transformations
                 Name = gamingGroup.Name,
                 OwningUserName = gamingGroup.OwningUser.UserName,
                 Invitations = invitationViewModels,
-                Players = gamingGroup.Players,
+                Players = playerWithNemesisList,
                 GameDefinitions = gamingGroup.GameDefinitions,
                 RecentGames = details
             };

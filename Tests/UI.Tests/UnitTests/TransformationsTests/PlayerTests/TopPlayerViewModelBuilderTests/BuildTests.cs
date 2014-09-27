@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UI.Models.Players;
-using UI.Transformations.Player;
+using UI.Transformations.PlayerTransformations;
 
 namespace UI.Tests.UnitTests.TransformationsTests.PlayerTests.TopPlayerViewModelBuilderTests
 {
