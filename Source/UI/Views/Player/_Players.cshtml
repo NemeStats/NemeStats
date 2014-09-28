@@ -1,4 +1,4 @@
-﻿@model IList<BusinessLogic.Models.Player>
+﻿@model IList<UI.Models.Players.PlayerWithNemesisViewModel>
 <div class="playersList">
     <div class="panel panel-default">
         <div class="panel-heading">
@@ -36,7 +36,7 @@
                                 <td>
                                     @if (item.NemesisPlayerId.HasValue) 
                                     {
-                                        @Html.ActionLink(item.NemesisPlayerName, MVC.Player.Details(item.NemesisPlayerId, null));
+                                        @Html.ActionLink(item.NemesisPlayerName , MVC.Player.Details(item.NemesisPlayerId, null));
                                     }
                                 </td>
                                 <td>
