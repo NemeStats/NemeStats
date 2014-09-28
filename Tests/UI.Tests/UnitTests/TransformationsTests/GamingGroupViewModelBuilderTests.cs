@@ -13,7 +13,7 @@ using UI.Models.GamingGroup;
 using UI.Models.PlayedGame;
 using UI.Models.Players;
 using UI.Transformations;
-using UI.Transformations.Player;
+using UI.Transformations.PlayerTransformations;
 
 namespace UI.Tests.UnitTests.TransformationsTests
 {
@@ -22,8 +22,8 @@ namespace UI.Tests.UnitTests.TransformationsTests
     {
         private GamingGroupViewModelBuilder transformer;
         private IGamingGroupInvitationViewModelBuilder invitationTransformerMock;
-        private IPlayerDetailsViewModelBuilder playerDetailsViewModelBuilderMock;
         private IPlayedGameDetailsViewModelBuilder playedGameDetailsViewModelBuilderMock;
+        private IPlayerWithNemesisViewModelBuilder playerWithNemesisViewModelBuilderMock;
         private GamingGroup gamingGroup;
         private GamingGroupViewModel viewModel;
         private List<Player> players;
@@ -34,13 +34,17 @@ namespace UI.Tests.UnitTests.TransformationsTests
         public void SetUp()
         {
             invitationTransformerMock = MockRepository.GenerateMock<IGamingGroupInvitationViewModelBuilder>();
-            playerDetailsViewModelBuilderMock = MockRepository.GenerateMock<IPlayerDetailsViewModelBuilder>();
+            playerWithNemesisViewModelBuilderMock = MockRepository.GenerateMock<IPlayerWithNemesisViewModelBuilder>();
             playedGameDetailsViewModelBuilderMock = MockRepository.GenerateMock<IPlayedGameDetailsViewModelBuilder>();
             transformer = new GamingGroupViewModelBuilder(
-                invitationTransformerMock, 
-                playerDetailsViewModelBuilderMock,
-                playedGameDetailsViewModelBuilderMock);
-            players = new List<Player>();
+                invitationTransformerMock,
+                playedGameDetailsViewModelBuilderMock,
+                playerWithNemesisViewModelBuilderMock);
+            players = new List<Player>()
+            {
+                new Player(){ Id = 1 },
+                new Player(){ Id = 2 }
+            };
             gameDefinitions = new List<GameDefinition>();
             playedGames = new List<PlayedGame>();
             ApplicationUser owningUser = new ApplicationUser()
@@ -77,6 +81,12 @@ namespace UI.Tests.UnitTests.TransformationsTests
                 Arg<PlayedGame>.Is.Anything,
                 Arg<ApplicationUser>.Is.Anything))
                 .Return(new PlayedGameDetailsViewModel());
+
+            foreach(Player player in players)
+            {
+                playerWithNemesisViewModelBuilderMock.Expect(mock => mock.Build(player))
+                    .Return(new PlayerWithNemesisViewModel() { PlayerId = player.Id });
+            }
 
             viewModel = transformer.Build(gamingGroup, null);
         }
@@ -125,7 +135,12 @@ namespace UI.Tests.UnitTests.TransformationsTests
         [Test]
         public void ItSetsThePlayers()
         {
-            Assert.AreSame(players, viewModel.Players);
+            foreach(Player player in players)
+            {
+                Assert.True((from PlayerWithNemesisViewModel playerWithNemesis in viewModel.Players
+                     where playerWithNemesis.PlayerId == player.Id
+                     select true).First());
+            }
         }
 
         [Test]

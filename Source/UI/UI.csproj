@@ -274,6 +274,7 @@
     <Compile Include="Models\Home\IndexViewModel.cs" />
     <Compile Include="Models\PlayedGame\GameResultViewModel.cs" />
     <Compile Include="Models\PlayedGame\PlayedGameDetailsViewModel.cs" />
+    <Compile Include="Models\Players\MinionViewModel.cs" />
     <Compile Include="Models\Players\PlayerDetailsViewModel.cs" />
     <Compile Include="Models\Players\TopPlayerViewModel.cs" />
     <Compile Include="Models\User\UserViewModel.cs" />
@@ -303,10 +304,15 @@
     <Compile Include="Transformations\IPlayedGameDetailsViewModelBuilder.cs" />
     <Compile Include="Transformations\IGameResultViewModelBuilder.cs" />
     <Compile Include="Transformations\GameResultViewModelBuilder.cs" />
-    <Compile Include="Transformations\Player\IPlayerDetailsViewModelBuilder.cs" />
-    <Compile Include="Transformations\Player\PlayerDetailsViewModelBuilder.cs" />
-    <Compile Include="Transformations\Player\ITopPlayerViewModelBuilder.cs" />
-    <Compile Include="Transformations\Player\TopPlayerViewModelBuilder.cs" />
+    <Compile Include="Transformations\PlayerTransformations\IMinionViewModelBuilder.cs" />
+    <Compile Include="Transformations\PlayerTransformations\IPlayerDetailsViewModelBuilder.cs" />
+    <Compile Include="Transformations\PlayerTransformations\IPlayerWithNemesisViewModelBuilder.cs" />
+    <Compile Include="Transformations\PlayerTransformations\MinionViewModelBuilder.cs" />
+    <Compile Include="Transformations\PlayerTransformations\PlayerDetailsViewModelBuilder.cs" />
+    <Compile Include="Transformations\PlayerTransformations\ITopPlayerViewModelBuilder.cs" />
+    <Compile Include="Transformations\PlayerTransformations\PlayerWithNemesisViewModelBuilder.cs" />
+    <Compile Include="Transformations\PlayerTransformations\TopPlayerViewModelBuilder.cs" />
+    <Compile Include="Models\Players\PlayerWithNemesisViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\blog.css" />

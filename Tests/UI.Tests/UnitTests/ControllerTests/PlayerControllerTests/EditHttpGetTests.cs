@@ -27,7 +27,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         public void ItReturnsAnUnauthorizedAccessHttpStatusCodeIfTheUserDoesntHaveAccess()
         {
             int playerId = 1;
-            playerRepositoryMock.Expect(mock => mock.GetPlayerDetails(playerId, 0))
+            playerRetrieverMock.Expect(mock => mock.GetPlayerDetails(playerId, 0))
                 .Throw(new UnauthorizedAccessException());
             HttpStatusCodeResult result = playerController.Edit(playerId) as HttpStatusCodeResult;
 
@@ -38,7 +38,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         public void ItReturnsANotFoundHttpStatusCodeIfThePlayerDoesntExist()
         {
             int playerId = -1;
-            playerRepositoryMock.Expect(mock => mock.GetPlayerDetails(playerId, 0))
+            playerRetrieverMock.Expect(mock => mock.GetPlayerDetails(playerId, 0))
                 .Throw(new KeyNotFoundException());
             HttpStatusCodeResult result = playerController.Edit(playerId) as HttpStatusCodeResult;
 
@@ -59,7 +59,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         public void ItPutsThePlayerDetailsOnTheView()
         {
             PlayerDetails playerDetails = new PlayerDetails();
-            playerRepositoryMock.Expect(mock => mock.GetPlayerDetails(playerDetails.Id, 0))
+            playerRetrieverMock.Expect(mock => mock.GetPlayerDetails(playerDetails.Id, 0))
                 .Repeat.Once()
                 .Return(playerDetails);
 

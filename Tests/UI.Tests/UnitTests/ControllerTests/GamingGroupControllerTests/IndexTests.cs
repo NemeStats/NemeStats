@@ -19,7 +19,6 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
         private GamingGroup gamingGroup;
         private GamingGroupViewModel gamingGroupViewModel;
 
-
         [Test]
         public override void SetUp()
         {

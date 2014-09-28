@@ -17,7 +17,7 @@
         </div>
         <div class="panel-body">
             <div class="row">
-                <div class="col-md-1">
+                <div class="col-md-2">
                     <strong>
                         Name
                     </strong>
@@ -28,7 +28,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-1">
+                <div class="col-md-2">
                     <strong>
                         @Html.DisplayNameFor(model => model.Active)
                     </strong>
@@ -41,7 +41,7 @@
             @if(Model.UserCanEdit)
             {
             <div class="row">
-                <div class="col-md-1"></div>
+                <div class="col-md-2"></div>
                 <div class="col-md-2">
                     @Html.ActionLink("Edit", "Edit", new { id = Model.PlayerId }, new { @class = "btn btn-sm btn-primary" })
                 </div>
@@ -79,6 +79,45 @@
                                 @Model.LossPercentageVersusPlayer
                             </td>
                         </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+</div>
+
+
+<div class="row">
+    @if (@Model.Minions.Count > 0)
+    {
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>Minions</h4>
+            </div>
+            <div class="panel-body">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Player Name</th>
+                            <th>Games Won</th>
+                            <th>% Won</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach(UI.Models.Players.MinionViewModel minion in Model.Minions)
+                        {
+                        <tr>
+                            <td>
+                                @Html.ActionLink(minion.MinionName, "Details", "Player", new { id = minion.MinionPlayerId }, new { })
+                            </td>
+                            <td>
+                                @minion.NumberOfGamesWonVersusMinion
+                            </td>
+                            <td>
+                                @minion.WinPercentageVersusMinion
+                            </td>
+                        </tr>
+                        }
                     </tbody>
                 </table>
             </div>

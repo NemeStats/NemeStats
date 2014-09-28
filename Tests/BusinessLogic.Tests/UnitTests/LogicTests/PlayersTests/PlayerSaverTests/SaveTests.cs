@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerCreatorTests
@@ -95,7 +96,17 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerCreatorTes
 
             playerSaver.Save(player, currentUser);
 
-            eventTrackerMock.AssertWasCalled(mock => mock.TrackPlayerCreation(currentUser));
+            try
+            {
+                eventTrackerMock.AssertWasCalled(mock => mock.TrackPlayerCreation(currentUser));
+            }catch(Exception)
+            {
+                //since this happens in a task there can be a race condition where the test runs before this method is called. Hopefully this
+                // solves the problem
+                Thread.Sleep(200);
+                eventTrackerMock.AssertWasCalled(mock => mock.TrackPlayerCreation(currentUser));
+
+            }
         }
 
         [Test]

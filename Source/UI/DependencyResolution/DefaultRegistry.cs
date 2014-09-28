@@ -33,7 +33,7 @@ namespace UI.DependencyResolution {
     using System.Data.Entity;
     using UI.Controllers.Helpers;
     using UI.Transformations;
-    using UI.Transformations.Player;
+    using UI.Transformations.PlayerTransformations;
     using UniversalAnalyticsHttpWrapper;
     using StructureMap.Web;
     using BusinessLogic.Logic.Nemeses;
@@ -118,6 +118,10 @@ namespace UI.DependencyResolution {
             For<ITopPlayerViewModelBuilder>().Use<TopPlayerViewModelBuilder>();
 
             For<IPlayedGameDetailsViewModelBuilder>().Singleton().Use<PlayedGameDetailsViewModelBuilder>();
+
+            For<IPlayerWithNemesisViewModelBuilder>().Singleton().Use<PlayerWithNemesisViewModelBuilder>();
+
+            For<IMinionViewModelBuilder>().Singleton().Use<MinionViewModelBuilder>();
         }
 
         #endregion

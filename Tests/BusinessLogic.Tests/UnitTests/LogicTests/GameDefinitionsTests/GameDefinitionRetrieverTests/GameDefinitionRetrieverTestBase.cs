@@ -12,7 +12,6 @@ using System.Threading.Tasks;
 
 namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefinitionRetrieverTests
 {
-    [TestFixture]
     public class GameDefinitionRetrieverTestBase
     {
         protected IDataContext dataContext;

@@ -18,7 +18,7 @@ using UI.Filters;
 using UI.Models.PlayedGame;
 using UI.Models.Players;
 using UI.Transformations;
-using UI.Transformations.Player;
+using UI.Transformations.PlayerTransformations;
 
 namespace UI.Controllers
 {
@@ -27,15 +27,13 @@ namespace UI.Controllers
         public static readonly int NUMBER_OF_RECENT_GAMES_TO_RETRIEVE = 10;
 
         internal IDataContext dataContext;
-        internal IPlayerRepository playerRepository;
         internal IGameResultViewModelBuilder builder;
         internal IPlayerDetailsViewModelBuilder playerDetailsViewModelBuilder;
         internal IShowingXResultsMessageBuilder showingXResultsMessageBuilder;
         internal IPlayerSaver playerSaver;
         internal IPlayerRetriever playerRetriever;
         
-        public PlayerController(IDataContext dataContext, 
-            IPlayerRepository playerRepository, 
+        public PlayerController(IDataContext dataContext,
             IGameResultViewModelBuilder builder,
             IPlayerDetailsViewModelBuilder playerDetailsViewModelBuilder,
             IShowingXResultsMessageBuilder showingXResultsMessageBuilder,
@@ -43,7 +41,6 @@ namespace UI.Controllers
             IPlayerRetriever playerRetriever)
         {
             this.dataContext = dataContext;
-            this.playerRepository = playerRepository;
             this.builder = builder;
             this.playerDetailsViewModelBuilder = playerDetailsViewModelBuilder;
             this.showingXResultsMessageBuilder = showingXResultsMessageBuilder;
@@ -60,7 +57,7 @@ namespace UI.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            PlayerDetails player = playerRepository.GetPlayerDetails(id.Value, NUMBER_OF_RECENT_GAMES_TO_RETRIEVE);
+            PlayerDetails player = playerRetriever.GetPlayerDetails(id.Value, NUMBER_OF_RECENT_GAMES_TO_RETRIEVE);
 
             if (player == null)
             {
@@ -120,7 +117,7 @@ namespace UI.Controllers
             PlayerDetails player;
             try
             {
-                player = playerRepository.GetPlayerDetails(id.Value, 0);
+                player = playerRetriever.GetPlayerDetails(id.Value, 0);
             }catch(UnauthorizedAccessException)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
@@ -161,7 +158,7 @@ namespace UI.Controllers
             PlayerDetails playerDetails;
             try
             {
-                playerDetails = playerRepository.GetPlayerDetails(id.Value, 0);
+                playerDetails = playerRetriever.GetPlayerDetails(id.Value, 0);
             }catch(UnauthorizedAccessException)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);

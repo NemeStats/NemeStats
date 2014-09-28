@@ -8,17 +8,21 @@ using System.Web;
 using UI.Models.PlayedGame;
 using UI.Models.Players;
 
-namespace UI.Transformations.Player
+namespace UI.Transformations.PlayerTransformations
 {
     public class PlayerDetailsViewModelBuilder : IPlayerDetailsViewModelBuilder
     {
         internal const string EXCEPTION_PLAYER_GAME_RESULTS_CANNOT_BE_NULL = "PlayerDetails.PlayerGameResults cannot be null.";
         internal const string EXCEPTION_PLAYER_STATISTICS_CANNOT_BE_NULL = "PlayerDetails.PlayerStatistics cannot be null.";
-        internal IGameResultViewModelBuilder gameResultViewModelBuilder;
+        internal const string EXCEPTION_MINIONS_CANNOT_BE_NULL = "PlayerDetails.PlayerStatistics cannot be null.";
 
-        public PlayerDetailsViewModelBuilder(IGameResultViewModelBuilder builder)
+        private IGameResultViewModelBuilder gameResultViewModelBuilder;
+        private IMinionViewModelBuilder minionViewModelBuilder;
+
+        public PlayerDetailsViewModelBuilder(IGameResultViewModelBuilder builder, IMinionViewModelBuilder minionViewModelBuilder)
         {
             gameResultViewModelBuilder = builder;
+            this.minionViewModelBuilder = minionViewModelBuilder;
         }
 
         public PlayerDetailsViewModel Build(PlayerDetails playerDetails, ApplicationUser currentUser = null)
@@ -39,6 +43,9 @@ namespace UI.Transformations.Player
             PopulatePlayerGameSummaries(playerDetails, playerDetailsViewModel);
 
             PopulateNemesisData(playerDetails.PlayerNemesis, playerDetailsViewModel);
+
+            playerDetailsViewModel.Minions = (from Player player in playerDetails.Minions
+                                              select minionViewModelBuilder.Build(player)).ToList();
 
             return playerDetailsViewModel;
         }
@@ -97,6 +104,7 @@ namespace UI.Transformations.Player
             ValidatePlayerDetailsIsNotNull(playerDetails);
             ValidatePlayerGameResultsIsNotNull(playerDetails);
             ValidatePlayerStatisticsIsNotNull(playerDetails);
+            ValidateMinions(playerDetails);
         }
 
         private static void ValidatePlayerDetailsIsNotNull(PlayerDetails playerDetails)
@@ -120,6 +128,14 @@ namespace UI.Transformations.Player
             if (playerDetails.PlayerStats == null)
             {
                 throw new ArgumentException(EXCEPTION_PLAYER_STATISTICS_CANNOT_BE_NULL);
+            }
+        }
+
+        private static void ValidateMinions(PlayerDetails playerDetails)
+        {
+            if (playerDetails.Minions == null)
+            {
+                throw new ArgumentException(EXCEPTION_MINIONS_CANNOT_BE_NULL);
             }
         }
 

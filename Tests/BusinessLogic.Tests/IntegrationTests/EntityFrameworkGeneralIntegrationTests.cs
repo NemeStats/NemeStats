@@ -6,13 +6,15 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using NUnit.Framework;
 using System.Data.Entity.Migrations;
 using System.Linq;
+using System.Data.Entity;
+using System.Collections.Generic;
 
 namespace BusinessLogic.Tests.IntegrationTests
 {
     [TestFixture]
     public class EntityFrameworkGeneralIntegrationTests : IntegrationTestBase
     {
-        [Test]
+        [Test, Ignore("just learning Entity Framework")]
         public void TheAddOrInsertExtensionMethodSetsTheIdOnNewEntities()
         {
             using(NemeStatsDataContext dataContext = new NemeStatsDataContext(
@@ -32,6 +34,27 @@ namespace BusinessLogic.Tests.IntegrationTests
                 Cleanup(dataContext, gamingGroup, testUserWithDefaultGamingGroup);
 
                 Assert.AreNotEqual(default(int), gamingGroup.Id);
+            }
+        }
+
+        [Test, Ignore("playing around")]
+        public void TestIncludeMethod()
+        {
+            using (NemeStatsDataContext dataContext = new NemeStatsDataContext(
+                            new NemeStatsDbContext(),
+                            new SecuredEntityValidatorFactory()))
+            {
+                List<Player> players = dataContext.GetQueryable<Player>()
+                                        .Where(player => player.Active && player.GamingGroupId == 1)
+                                        .Include(player => player.Nemesis)
+                                        .Include(player => player.Nemesis.NemesisPlayer)
+
+                                        .OrderBy(player => player.Name)
+                                        .ToList();
+
+                List<Player> playersWithNemesisid = players.Where(player => player.NemesisId != null).ToList();
+
+                Assert.Greater(playersWithNemesisid.Count, 0);
             }
         }
 
