@@ -304,8 +304,10 @@
     <Compile Include="Transformations\IPlayedGameDetailsViewModelBuilder.cs" />
     <Compile Include="Transformations\IGameResultViewModelBuilder.cs" />
     <Compile Include="Transformations\GameResultViewModelBuilder.cs" />
+    <Compile Include="Transformations\PlayerTransformations\IMinionViewModelBuilder.cs" />
     <Compile Include="Transformations\PlayerTransformations\IPlayerDetailsViewModelBuilder.cs" />
     <Compile Include="Transformations\PlayerTransformations\IPlayerWithNemesisViewModelBuilder.cs" />
+    <Compile Include="Transformations\PlayerTransformations\MinionViewModelBuilder.cs" />
     <Compile Include="Transformations\PlayerTransformations\PlayerDetailsViewModelBuilder.cs" />
     <Compile Include="Transformations\PlayerTransformations\ITopPlayerViewModelBuilder.cs" />
     <Compile Include="Transformations\PlayerTransformations\PlayerWithNemesisViewModelBuilder.cs" />

@@ -180,9 +180,10 @@
     <Compile Include="UnitTests\TransformationsTests\GamingGroupViewModelBuilderTests.cs" />
     <Compile Include="UnitTests\TransformationsTests\PlayedGameDetailsViewModelBuilderTests.cs" />
     <Compile Include="UnitTests\TransformationsTests\GameResultViewModelBuilderTests\BuildTests.cs" />
-    <Compile Include="UnitTests\TransformationsTests\PlayerTests\PlayerDetailsViewModelBuilderTests\BuildTests.cs" />
-    <Compile Include="UnitTests\TransformationsTests\PlayerTests\PlayerWithNemesisViewModelBuilderTests\BuildTests.cs" />
-    <Compile Include="UnitTests\TransformationsTests\PlayerTests\TopPlayerViewModelBuilderTests\BuildTests.cs" />
+    <Compile Include="UnitTests\TransformationsTests\PlayerTransformationTests\MinionViewModelBuilderTests.cs" />
+    <Compile Include="UnitTests\TransformationsTests\PlayerTransformationTests\PlayerDetailsViewModelBuilderTests\BuildTests.cs" />
+    <Compile Include="UnitTests\TransformationsTests\PlayerTransformationTests\PlayerWithNemesisViewModelBuilderTests\BuildTests.cs" />
+    <Compile Include="UnitTests\TransformationsTests\PlayerTransformationTests\TopPlayerViewModelBuilderTests\BuildTests.cs" />
     <Compile Include="UnitTests\TransformationsTests\PlayerWithNemesis.cs" />
   </ItemGroup>
   <ItemGroup>

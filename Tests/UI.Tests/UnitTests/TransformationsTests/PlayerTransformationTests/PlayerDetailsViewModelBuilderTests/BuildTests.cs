@@ -12,11 +12,13 @@ using UI.Models.Players;
 using UI.Transformations;
 using UI.Transformations.PlayerTransformations;
 
-namespace UI.Tests.UnitTests.TransformationsTests.PlayerTests.PlayerDetailsViewModelBuilderTests
+namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.PlayerDetailsViewModelBuilderTests
 {
     [TestFixture]
     public class BuildTests
     {
+        private IGameResultViewModelBuilder gameResultViewModelBuilder;
+        private IMinionViewModelBuilder minionViewModelBuilderMock;
         private PlayerDetails playerDetails;
         private PlayerDetailsViewModel playerDetailsViewModel;
         private PlayerDetailsViewModelBuilder builder;
@@ -25,6 +27,8 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTests.PlayerDetailsViewM
         [SetUp]
         public void TestFixtureSetUp()
         {
+            minionViewModelBuilderMock = MockRepository.GenerateMock<IMinionViewModelBuilder>();
+
             GameDefinition gameDefinition1 = new GameDefinition()
             {
                 Name = "test game 1",
@@ -62,6 +66,12 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTests.PlayerDetailsViewM
                 }
             };
 
+            List<Player> minionPlayers = new List<Player>()
+            {
+                new Player(){ Id = 1, Nemesis = new Nemesis()},
+                new Player(){ Id = 2, Nemesis = new Nemesis()}
+            };
+
             playerDetails = new PlayerDetails()
             {
                 Id = 134,
@@ -79,17 +89,23 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTests.PlayerDetailsViewM
                 GamingGroupId = 123
             };
 
-            IGameResultViewModelBuilder relatedEntityBuilder
+            gameResultViewModelBuilder
                 = MockRepository.GenerateMock<IGameResultViewModelBuilder>();
-            relatedEntityBuilder.Expect(build => build.Build(playerGameResults[0]))
+            gameResultViewModelBuilder.Expect(build => build.Build(playerGameResults[0]))
                     .Repeat
                     .Once()
                     .Return(new Models.PlayedGame.GameResultViewModel() { PlayedGameId = playerGameResults[0].PlayedGameId });
-            relatedEntityBuilder.Expect(build => build.Build(playerGameResults[1]))
+            gameResultViewModelBuilder.Expect(build => build.Build(playerGameResults[1]))
                     .Repeat
                     .Once()
                     .Return(new Models.PlayedGame.GameResultViewModel() { PlayedGameId = playerGameResults[1].PlayedGameId });
-            builder = new PlayerDetailsViewModelBuilder(relatedEntityBuilder);
+            foreach (Player player in playerDetails.Minions)
+            {
+                minionViewModelBuilderMock.Expect(mock => mock.Build(player))
+                    .Return(new MinionViewModel() { MinionPlayerId = player.Id });
+            }
+
+            builder = new PlayerDetailsViewModelBuilder(gameResultViewModelBuilder, minionViewModelBuilderMock);
 
             currentUser = new ApplicationUser()
             {
@@ -102,7 +118,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTests.PlayerDetailsViewM
         [Test]
         public void PlayerDetailsCannotBeNull()
         {
-            PlayerDetailsViewModelBuilder builder = new PlayerDetailsViewModelBuilder(null);
+            PlayerDetailsViewModelBuilder builder = new PlayerDetailsViewModelBuilder(null, null);
 
             var exception = Assert.Throws<ArgumentNullException>(() =>
                     builder.Build(null, currentUser));
@@ -113,7 +129,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTests.PlayerDetailsViewM
         [Test]
         public void ItRequiresPlayerGameResults()
         {
-            PlayerDetailsViewModelBuilder builder = new PlayerDetailsViewModelBuilder(null);
+            PlayerDetailsViewModelBuilder builder = new PlayerDetailsViewModelBuilder(null, null);
 
             var exception = Assert.Throws<ArgumentException>(() =>
                     builder.Build(new PlayerDetails(), currentUser));
@@ -124,7 +140,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTests.PlayerDetailsViewM
         [Test]
         public void ItRequiresPlayerStatistics()
         {
-            PlayerDetailsViewModelBuilder builder = new PlayerDetailsViewModelBuilder(null);
+            PlayerDetailsViewModelBuilder builder = new PlayerDetailsViewModelBuilder(null, null);
             PlayerDetails playerDetailsWithNoStatistics = new PlayerDetails() { PlayerGameResults = new List<PlayerGameResult>() };
             var exception = Assert.Throws<ArgumentException>(() =>
                     builder.Build(playerDetailsWithNoStatistics, currentUser));
@@ -135,7 +151,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTests.PlayerDetailsViewM
         [Test]
         public void MinionsCannotBeNull()
         {
-            PlayerDetailsViewModelBuilder builder = new PlayerDetailsViewModelBuilder(null);
+            PlayerDetailsViewModelBuilder builder = new PlayerDetailsViewModelBuilder(null, null);
             PlayerDetails playerDetailsWithNoMinions = new PlayerDetails() { PlayerGameResults = new List<PlayerGameResult>() };
             playerDetailsWithNoMinions.PlayerStats = new PlayerStatistics();
 
@@ -143,21 +159,6 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTests.PlayerDetailsViewM
                     builder.Build(playerDetailsWithNoMinions, currentUser));
 
             Assert.AreEqual(PlayerDetailsViewModelBuilder.EXCEPTION_MINIONS_CANNOT_BE_NULL, exception.Message);
-        }
-
-        [Test]
-        public void ItRequiresThatMinionPlayersHaveNemesisDataPopulated()
-        {
-            PlayerDetailsViewModelBuilder builder = new PlayerDetailsViewModelBuilder(null);
-            PlayerDetails playerDetailsWithPlayerlessMinion = new PlayerDetails() { Minions = new List<Player>() };
-            playerDetailsWithPlayerlessMinion.PlayerGameResults = new List<PlayerGameResult>();
-            playerDetailsWithPlayerlessMinion.PlayerStats = new PlayerStatistics();
-            playerDetailsWithPlayerlessMinion.Minions.Add(new Player());
-            
-            var exception = Assert.Throws<ArgumentException>(() =>
-                    builder.Build(playerDetailsWithPlayerlessMinion, currentUser));
-
-            Assert.AreEqual(PlayerDetailsViewModelBuilder.EXCEPTION_MINIONS_MUST_HAVE_NEMESIS_DATA, exception.Message);
         }
 
         [Test]
@@ -275,6 +276,15 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTests.PlayerDetailsViewM
         public void ItPopulatesTheLostPercentageVersusTheNemesis()
         {
             Assert.AreEqual(playerDetails.PlayerNemesis.LossPercentage, playerDetailsViewModel.LossPercentageVersusPlayer);
+        }
+
+        [Test]
+        public void ItSetsTheMinions()
+        {
+            foreach(Player player in playerDetails.Minions)
+            {
+                Assert.True(playerDetailsViewModel.Minions.Any(minion => minion.MinionPlayerId == player.Id));
+            }
         }
 
         [Test]

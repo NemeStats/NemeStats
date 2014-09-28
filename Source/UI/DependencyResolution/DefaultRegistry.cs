@@ -120,6 +120,8 @@ namespace UI.DependencyResolution {
             For<IPlayedGameDetailsViewModelBuilder>().Singleton().Use<PlayedGameDetailsViewModelBuilder>();
 
             For<IPlayerWithNemesisViewModelBuilder>().Singleton().Use<PlayerWithNemesisViewModelBuilder>();
+
+            For<IMinionViewModelBuilder>().Singleton().Use<MinionViewModelBuilder>();
         }
 
         #endregion
