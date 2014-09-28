@@ -28,7 +28,8 @@ namespace UI
 
             bundles.Add(new ScriptBundle("~/bundles/custom")
                 .Include("~/Scripts/CreatePlayedGame/createplayedgame.js")
-                .Include("~/Scripts/Player/createOrUpdatePlayer.js"));
+                .Include("~/Scripts/Player/createOrUpdatePlayer.js")
+                .Include("~/Scripts/Player/players.js"));
 
             bundles.Add(new StyleBundle("~/bundles/content/css").Include(
                         "~/Content/bootstrap.min.css", new CssRewriteUrlTransform())

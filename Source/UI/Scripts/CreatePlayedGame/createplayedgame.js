@@ -11,6 +11,8 @@
         this.$playerId = null;
         this.$players = null;
         this.$playerFormData = null;
+        this.$btnAddPlayer = null;
+        this.$addPlayer = null;
     };
 
     //Implementation
@@ -24,6 +26,10 @@
             this.$players = $("#Players");
             this.$playerFormData = $("#playerFormData");
             this.$playerDiv = $("#playerDiv");
+            this.$addPlayer = $("#addPlayer");
+            this.$btnAddPlayer = $("#btnAddPlayer");
+
+            this.$addPlayer.hide();
 
             //Event handlers
             this.$players.change(function () { parent.addPlayer(); });
@@ -31,6 +37,9 @@
                 stop: function() {
                     parent.onReorder();
                 }
+            });
+            this.$btnAddPlayer.on("click", function() {
+                parent.$addPlayer.toggle();
             });
         },
         onReorder: function () {
@@ -76,6 +85,10 @@
             selectedOption.remove();
 
             return null;
+        },
+        onPlayerCreated: function (player) {
+            var newPlayer = $('<option value="' + player.Id + '">' + player.Name + '</option>');
+            this.$players.append(newPlayer);
         },
 
         //Properties

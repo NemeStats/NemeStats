@@ -8,14 +8,14 @@ window.Views.Player.CreateOrUpdate = function () {
     this.$cbActiveGroup = null;
     this.$btnSubmit = null;
     this.$form = null;
-    this.$playersTable = null;
     this.$playerNameInput = null;
     this.formAction = null;
+    this.onPlayerSaved = null;
 };
 
 //Implementation
 window.Views.Player.CreateOrUpdate.prototype = {
-    init: function () {
+    init: function (onPlayerSaved) {
         var owner = this;
         this.formAction = "/player/save";
         this.$container = $(".createOrUpdatePartial");
@@ -30,8 +30,8 @@ window.Views.Player.CreateOrUpdate.prototype = {
         });
 
         this.$playerNameInput = this.$form.find("#Name");
-        this.$playersTable = this.$container.parent().parent().parent().find("table");
-
+        this.onPlayerSaved = onPlayerSaved;
+        
         this.$btnSubmit = this.$container.find("#btnSubmit");
         this.$btnSubmit.on("click", function () {
             owner.createPlayer();
@@ -51,17 +51,7 @@ window.Views.Player.CreateOrUpdate.prototype = {
                 url: this.formAction,
                 data: this.$form.serialize(),
                 success: function (player) {
-                    owner.$playersTable.find("tr:last").after(
-                        "<tr> \
-                                <td> \
-                                    <a href='/Player/Details/" + player.Id + "'>" + player.Name + "</a> \
-                                </td> \
-                                <td> \
-                                    <a href='/Player/Edit/" + player.Id + "' title='Edit'> \
-                                        <i class='fa fa-pencil fa-3x'></i> \
-                                    </a> \
-                                </td> \
-                            </tr>");
+                    owner.onPlayerSaved(player);
                     owner.$playerNameInput.val('');
                 },
                 error: function (err) {

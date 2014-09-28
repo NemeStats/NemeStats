@@ -245,8 +245,11 @@
     <script type="text/javascript">
         //Creation
         $(document).ready(function () {
+            var players = new window.Views.Player.Players();
+            players.init();
+
             var createOrUpdatePlayer = new window.Views.Player.CreateOrUpdate();
-            createOrUpdatePlayer.init();
+            createOrUpdatePlayer.init($.proxy(players.onPlayerSaved, players));
         });
     </script>
 }
