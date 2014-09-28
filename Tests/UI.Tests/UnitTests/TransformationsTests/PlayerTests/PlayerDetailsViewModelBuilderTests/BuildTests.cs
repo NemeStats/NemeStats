@@ -75,6 +75,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTests.PlayerDetailsViewM
                         AveragePlayersPerGame = 3
                     },
                 PlayerNemesis = nemesis,
+                Minions = new List<Player>(),
                 GamingGroupId = 123
             };
 
@@ -129,6 +130,34 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTests.PlayerDetailsViewM
                     builder.Build(playerDetailsWithNoStatistics, currentUser));
 
             Assert.AreEqual(PlayerDetailsViewModelBuilder.EXCEPTION_PLAYER_STATISTICS_CANNOT_BE_NULL, exception.Message);
+        }
+
+        [Test]
+        public void MinionsCannotBeNull()
+        {
+            PlayerDetailsViewModelBuilder builder = new PlayerDetailsViewModelBuilder(null);
+            PlayerDetails playerDetailsWithNoMinions = new PlayerDetails() { PlayerGameResults = new List<PlayerGameResult>() };
+            playerDetailsWithNoMinions.PlayerStats = new PlayerStatistics();
+
+            var exception = Assert.Throws<ArgumentException>(() =>
+                    builder.Build(playerDetailsWithNoMinions, currentUser));
+
+            Assert.AreEqual(PlayerDetailsViewModelBuilder.EXCEPTION_MINIONS_CANNOT_BE_NULL, exception.Message);
+        }
+
+        [Test]
+        public void ItRequiresThatMinionPlayersHaveNemesisDataPopulated()
+        {
+            PlayerDetailsViewModelBuilder builder = new PlayerDetailsViewModelBuilder(null);
+            PlayerDetails playerDetailsWithPlayerlessMinion = new PlayerDetails() { Minions = new List<Player>() };
+            playerDetailsWithPlayerlessMinion.PlayerGameResults = new List<PlayerGameResult>();
+            playerDetailsWithPlayerlessMinion.PlayerStats = new PlayerStatistics();
+            playerDetailsWithPlayerlessMinion.Minions.Add(new Player());
+            
+            var exception = Assert.Throws<ArgumentException>(() =>
+                    builder.Build(playerDetailsWithPlayerlessMinion, currentUser));
+
+            Assert.AreEqual(PlayerDetailsViewModelBuilder.EXCEPTION_MINIONS_MUST_HAVE_NEMESIS_DATA, exception.Message);
         }
 
         [Test]

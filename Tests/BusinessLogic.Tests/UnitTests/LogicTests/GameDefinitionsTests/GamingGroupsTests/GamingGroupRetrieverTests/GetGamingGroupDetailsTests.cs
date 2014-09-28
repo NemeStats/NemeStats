@@ -116,7 +116,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
         public void ItReturnsAllActivePlayersInTheGamingGroup()
         {
             List<Player> expectedPlayers = new List<Player>();
-            playerRetrieverMock.Expect(mock => mock.GetAllPlayers(gamingGroupId))
+            playerRetrieverMock.Expect(mock => mock.GetAllPlayersWithNemesisInfo(gamingGroupId))
                 .Return(expectedPlayers);
 
             GamingGroup actualGamingGroup = gamingGroupRetriever.GetGamingGroupDetails(gamingGroupId, 0);

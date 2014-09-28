@@ -21,8 +21,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
     public class PlayerControllerTestBase
     {
         protected IDataContext dataContextMock;
-        protected IPlayerRepository playerRepositoryMock;
-        protected IPlayerRetriever playerRetriever;
+        protected IPlayerRetriever playerRetrieverMock;
         protected IGameResultViewModelBuilder playerGameResultDetailsBuilderMock;
         protected IPlayerDetailsViewModelBuilder playerDetailsViewModelBuilderMock;
         protected IShowingXResultsMessageBuilder showingXResultsMessageBuilderMock;
@@ -40,8 +39,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
                 Id = "app user id"
             };
             dataContextMock = MockRepository.GenerateMock<IDataContext>();
-            playerRepositoryMock = MockRepository.GenerateMock<IPlayerRepository>();
-            playerRetriever = MockRepository.GenerateMock<IPlayerRetriever>();
+            playerRetrieverMock = MockRepository.GenerateMock<IPlayerRetriever>();
             playerGameResultDetailsBuilderMock = MockRepository.GenerateMock<IGameResultViewModelBuilder>();
             playerDetailsViewModelBuilderMock = MockRepository.GenerateMock<IPlayerDetailsViewModelBuilder>();
             showingXResultsMessageBuilderMock = MockRepository.GenerateMock<IShowingXResultsMessageBuilder>();
@@ -49,12 +47,11 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
             urlHelperMock = MockRepository.GenerateMock<UrlHelper>();
             playerController = MockRepository.GeneratePartialMock<PlayerController>(
                                 dataContextMock,
-                                playerRepositoryMock,
                                 playerGameResultDetailsBuilderMock,
                                 playerDetailsViewModelBuilderMock,
                                 showingXResultsMessageBuilderMock,
                                 playerSaverMock,
-                                playerRetriever);
+                                playerRetrieverMock);
             playerController.Url = urlHelperMock;
         }
     }

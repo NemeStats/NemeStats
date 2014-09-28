@@ -14,6 +14,7 @@ using System.Data.Entity.Infrastructure;
 using BusinessLogic.Logic;
 using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.Logic.Users;
+using BusinessLogic.Logic.Players;
 
 namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests.EntityFrameworkPlayerRepositoryTests
 {
@@ -21,7 +22,7 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
     public class GetNemesisTests : IntegrationTestBase
     {
         private IDataContext dataContext;
-        private IPlayerRepository playerLogic;
+        private IPlayerRetriever playerRetriever;
         private PlayerDetails player1Details;
         private PlayerDetails player5Details;
 
@@ -31,9 +32,9 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
             base.FixtureSetUp();
 
             dataContext = new NemeStatsDataContext();
-            playerLogic = new EntityFrameworkPlayerRepository(dataContext);
-            player1Details = playerLogic.GetPlayerDetails(testPlayer1.Id, 0);
-            player5Details = playerLogic.GetPlayerDetails(testPlayer5.Id, 0);
+            playerRetriever = new PlayerRetriever(dataContext);
+            player1Details = playerRetriever.GetPlayerDetails(testPlayer1.Id, 0);
+            player5Details = playerRetriever.GetPlayerDetails(testPlayer5.Id, 0);
         }
 
         [Test]
@@ -47,7 +48,7 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
         public void ANemesisMustBeActive()
         {
             //player 5 is inactive but beat player 1 three times
-            PlayerDetails player1Details = playerLogic.GetPlayerDetails(testPlayer1.Id, 0);
+            PlayerDetails player1Details = playerRetriever.GetPlayerDetails(testPlayer1.Id, 0);
             Assert.AreNotEqual(testPlayer5.Id, player1Details.PlayerNemesis.NemesisPlayerId);
         }
         

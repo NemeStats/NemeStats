@@ -24,5 +24,6 @@ namespace UI.Models.Players
         public float LossPercentageVersusPlayer { get; set; }
         public int NumberOfGamesLostVersusNemesis { get; set; }
         public bool UserCanEdit { get; set; }
+        public IList<MinionViewModel> Minions { get; set; }
     }
 }

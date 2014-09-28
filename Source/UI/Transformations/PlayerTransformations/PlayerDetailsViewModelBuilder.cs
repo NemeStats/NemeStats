@@ -14,6 +14,9 @@ namespace UI.Transformations.PlayerTransformations
     {
         internal const string EXCEPTION_PLAYER_GAME_RESULTS_CANNOT_BE_NULL = "PlayerDetails.PlayerGameResults cannot be null.";
         internal const string EXCEPTION_PLAYER_STATISTICS_CANNOT_BE_NULL = "PlayerDetails.PlayerStatistics cannot be null.";
+        internal const string EXCEPTION_MINIONS_CANNOT_BE_NULL = "PlayerDetails.PlayerStatistics cannot be null.";
+        internal const string EXCEPTION_MINIONS_MUST_HAVE_NEMESIS_DATA = "PlayerDetails.Minions.Nemesis data must be populated if there are Minions.";
+
         internal IGameResultViewModelBuilder gameResultViewModelBuilder;
 
         public PlayerDetailsViewModelBuilder(IGameResultViewModelBuilder builder)
@@ -39,6 +42,11 @@ namespace UI.Transformations.PlayerTransformations
             PopulatePlayerGameSummaries(playerDetails, playerDetailsViewModel);
 
             PopulateNemesisData(playerDetails.PlayerNemesis, playerDetailsViewModel);
+            foreach(Player player in playerDetails.Minions)
+            {
+
+            }
+            //playerDetailsViewModel.Minions = 
 
             return playerDetailsViewModel;
         }
@@ -97,6 +105,7 @@ namespace UI.Transformations.PlayerTransformations
             ValidatePlayerDetailsIsNotNull(playerDetails);
             ValidatePlayerGameResultsIsNotNull(playerDetails);
             ValidatePlayerStatisticsIsNotNull(playerDetails);
+            ValidateMinions(playerDetails);
         }
 
         private static void ValidatePlayerDetailsIsNotNull(PlayerDetails playerDetails)
@@ -120,6 +129,19 @@ namespace UI.Transformations.PlayerTransformations
             if (playerDetails.PlayerStats == null)
             {
                 throw new ArgumentException(EXCEPTION_PLAYER_STATISTICS_CANNOT_BE_NULL);
+            }
+        }
+
+        private static void ValidateMinions(PlayerDetails playerDetails)
+        {
+            if (playerDetails.Minions == null)
+            {
+                throw new ArgumentException(EXCEPTION_MINIONS_CANNOT_BE_NULL);
+            }
+
+            if(playerDetails.Minions.Any(minion => minion.Nemesis == null))
+            {
+                throw new ArgumentException(EXCEPTION_MINIONS_MUST_HAVE_NEMESIS_DATA);
             }
         }
 

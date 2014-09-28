@@ -1,6 +1,7 @@
 ﻿using BusinessLogic.DataAccess;
 using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.Logic;
+using BusinessLogic.Logic.Players;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Players;
 using NUnit.Framework;
@@ -20,8 +21,8 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
         {
             using (IDataContext dataContext = new NemeStatsDataContext())
             {
-                IPlayerRepository playerLogic = new EntityFrameworkPlayerRepository(dataContext);
-                PlayerStatistics playerStatistics = playerLogic.GetPlayerStatistics(testPlayer1.Id);
+                IPlayerRetriever playerRetriever = new PlayerRetriever(dataContext);
+                PlayerStatistics playerStatistics = playerRetriever.GetPlayerStatistics(testPlayer1.Id);
                 int totalGamesForPlayer1 = testPlayedGames
                         .Count(playedGame => playedGame.PlayerGameResults
                             .Any(playerGameResult => playerGameResult.PlayerId == testPlayer1.Id));
@@ -34,8 +35,8 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
         {
             using (IDataContext dataContext = new NemeStatsDataContext())
             {
-                IPlayerRepository playerLogic = new EntityFrameworkPlayerRepository(dataContext);
-                PlayerStatistics playerStatistics = playerLogic.GetPlayerStatistics(testPlayer1.Id);
+                IPlayerRetriever playerRetriever = new PlayerRetriever(dataContext);
+                PlayerStatistics playerStatistics = playerRetriever.GetPlayerStatistics(testPlayer1.Id);
 
                 int totalPoints = 0;
 
@@ -56,8 +57,8 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
         {
             using (IDataContext dataContext = new NemeStatsDataContext())
             {
-                IPlayerRepository playerLogic = new EntityFrameworkPlayerRepository(dataContext);
-                PlayerStatistics playerStatistics = playerLogic.GetPlayerStatistics(testPlayer1.Id);
+                IPlayerRetriever playerRetriever = new PlayerRetriever(dataContext);
+                PlayerStatistics playerStatistics = playerRetriever.GetPlayerStatistics(testPlayer1.Id);
 
                 float averagePlayersPerGame = (float)testPlayedGames.Where(game => game.PlayerGameResults.Any(result => result.PlayerId == testPlayer1.Id))
                     .Average(game => game.NumberOfPlayers);
