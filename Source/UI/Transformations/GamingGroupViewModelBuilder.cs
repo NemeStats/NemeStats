@@ -5,8 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using UI.Models.GamingGroup;
 using UI.Models.PlayedGame;
+using UI.Models.Players;
 using UI.Transformations.PlayerTransformations;
-using UI.Views.Player;
 
 namespace UI.Transformations
 {

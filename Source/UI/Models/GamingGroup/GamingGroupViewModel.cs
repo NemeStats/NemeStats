@@ -9,7 +9,6 @@ using UI.Models.GameDefinitionModels;
 using UI.Models.PlayedGame;
 using UI.Models.Players;
 using UI.Models.User;
-using UI.Views.Player;
 
 namespace UI.Models.GamingGroup
 {

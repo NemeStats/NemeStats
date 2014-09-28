@@ -14,7 +14,6 @@ using UI.Models.PlayedGame;
 using UI.Models.Players;
 using UI.Transformations;
 using UI.Transformations.PlayerTransformations;
-using UI.Views.Player;
 
 namespace UI.Tests.UnitTests.TransformationsTests
 {

@@ -17,7 +17,7 @@
         </div>
         <div class="panel-body">
             <div class="row">
-                <div class="col-md-1">
+                <div class="col-md-2">
                     <strong>
                         Name
                     </strong>
@@ -28,7 +28,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-1">
+                <div class="col-md-2">
                     <strong>
                         @Html.DisplayNameFor(model => model.Active)
                     </strong>
@@ -41,7 +41,7 @@
             @if(Model.UserCanEdit)
             {
             <div class="row">
-                <div class="col-md-1"></div>
+                <div class="col-md-2"></div>
                 <div class="col-md-2">
                     @Html.ActionLink("Edit", "Edit", new { id = Model.PlayerId }, new { @class = "btn btn-sm btn-primary" })
                 </div>

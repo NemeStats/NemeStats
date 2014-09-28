@@ -5,8 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UI.Models.Players;
 using UI.Transformations.PlayerTransformations;
-using UI.Views.Player;
 
 namespace UI.Tests.UnitTests.TransformationsTests.PlayerTests.PlayerWithNemesisViewModelBuilderTests
 {

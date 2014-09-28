@@ -1,6 +1,6 @@
 ﻿using BusinessLogic.Models;
 using System;
-using UI.Views.Player;
+using UI.Models.Players;
 namespace UI.Transformations.PlayerTransformations
 {
     public interface IPlayerWithNemesisViewModelBuilder

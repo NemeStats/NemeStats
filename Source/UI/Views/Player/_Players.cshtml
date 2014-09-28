@@ -1,4 +1,4 @@
-﻿@model IList<BusinessLogic.Models.Player>
+﻿@model IList<UI.Models.Players.PlayerWithNemesisViewModel>
 
     <div class="panel panel-default">
         <div class="panel-heading">
@@ -15,8 +15,11 @@
                 <table class="table table-hover table-condensed">
                     <thead>
                         <tr>
-                            <th class="col-md-11">
+                            <th class="col-md-5">
                                 Player Name
+                            </th>
+                            <th class="col-md-5">
+                                Nemesis
                             </th>
                             <th class="col-md-1">
 
@@ -28,10 +31,16 @@
                         {
                             <tr>
                                 <td>
-                                    @Html.ActionLink(item.Name, MVC.Player.Details(item.Id, null))
+                                    @Html.ActionLink(item.PlayerName, MVC.Player.Details(item.PlayerId, null))
                                 </td>
                                 <td>
-                                    <a href="@Url.Action("Edit", "Player", new { id = item.Id })" title="Edit">
+                                    @if (item.NemesisPlayerId.HasValue) 
+                                    {
+                                        @Html.ActionLink(item.NemesisPlayerName, MVC.Player.Details(item.NemesisPlayerId, null));
+                                    }
+                                </td>
+                                <td>
+                                    <a href="@Url.Action("Edit", "Player", new { id = item.PlayerId })" title="Edit">
                                         <i class="fa fa-pencil fa-3x"></i>
                                     </a>
                                 </td>
