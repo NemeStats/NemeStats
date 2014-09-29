@@ -108,7 +108,7 @@
                                     @Html.ActionLink(item.GameDefinitionName, "Details", "GameDefinition", new { id = item.GameDefinitionId }, new { })
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.DatePlayed)
+                                    @item.DatePlayed.ToShortDateString()
                                 </td>
                                 <td>
                                     @foreach (var result in item.PlayerResults)
