@@ -7,32 +7,99 @@
 }
 
 <h2>@Html.DisplayFor(model => model.Name)</h2>
-<h3>@Html.DisplayFor(model => model.Description)</h3>
-@if (Model.UserCanEdit)
-{
-    <a href="@Url.Action("Edit", "GameDefinition", new { id = Model.Id })" title="Edit">
-        <span class="fa fa-pencil fa-3x"></span>
-    </a>
-}
-
-<div class="panel-heading">
-    <h4>Recent Games @ViewBag.RecentGamesMessage</h4>
-</div>
-<div>
-    @foreach (var playedGameViewModel in @Model.PlayedGames)
-    {
-        <div>@playedGameViewModel.DatePlayed.ToShortDateString()</div>
-        foreach(var gameResultViewModel in playedGameViewModel.PlayerResults)
-        { 
-        <div class="row">
-            <div class="col-sm-2">
-                @Html.ActionLink(gameResultViewModel.PlayerName, "Details", "Player", new { id = gameResultViewModel.PlayerId }, new { })
+<div class="row">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4>Game Info</h4>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-sm-2">
+                    <strong>
+                        Name
+                    </strong>
+                </div>
+                <div class="col-sm-2">
+                    @Html.DisplayFor(model => model.Name)
+                </div>
             </div>
-            <div class="col-sm-5">
-                @Html.GameResults(gameResultViewModel)
+            <div class="row">
+                <div class="col-md-2">
+                    <strong>
+                        Description
+                    </strong>
+                </div>
+                <div class="col-sm-2">
+                    @Html.DisplayFor(model => model.Description)
+                </div>
+            </div>
+            @if(Model.UserCanEdit)
+            {
+            <div class="row">
+                <div class="col-sm-2 col-sm-offset-2">
+                    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new { @class = "btn btn-sm btn-primary" })
+                </div>
+            </div>
+            }
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4>Recent Games @ViewBag.RecentGamesMessage</h4>
+        </div>
+        <div class="panel-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th class="col-md-5">
+                                Date Played
+                            </th>
+                            <th class="col-md-6">
+                                Result
+                            </th>
+                            <th class="col-md-1">
+
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var playedGameViewModel in @Model.PlayedGames)
+                        {
+                        <tr>
+                            <td>@playedGameViewModel.DatePlayed.ToShortDateString()</td>
+                            <td>
+                                @foreach (var gameResultViewModel in playedGameViewModel.PlayerResults)
+                                {
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        @Html.ActionLink(gameResultViewModel.PlayerName, "Details", "Player", new { id = gameResultViewModel.PlayerId }, new { })
+                                    </div>
+                                    <div class="col-sm-8">
+                                        @Html.GameResults(gameResultViewModel)
+                                    </div>
+                                </div>
+                                }
+                            </td>
+                            <td>
+                                <a href="@Url.Action("Details", "PlayedGame", new { id = playedGameViewModel.PlayedGameId })" title="Details">
+                                    <i class="fa fa-book fa-3x"></i>
+                                </a>
+                                @if (playedGameViewModel.UserCanEdit)
+                                {
+                                <a href="@Url.Action("Delete", "PlayedGame", new { id = playedGameViewModel.PlayedGameId })" title="Delete">
+                                    <i class="fa fa-trash-o fa-3x"></i>
+                                </a>
+                                }
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
             </div>
         </div>
-        }
-        <br/>
-    }
+    </div>
 </div>
