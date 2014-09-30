@@ -28,6 +28,7 @@
             this.$playerDiv = $("#playerDiv");
             this.$addPlayer = $("#addPlayer");
             this.$btnAddPlayer = $("#btnAddPlayer");
+            this.$anchorAddPlayer = $("#addPlayerAnchor");
 
             this.$addPlayer.hide();
 
@@ -40,6 +41,7 @@
             });
             this.$btnAddPlayer.on("click", function() {
                 parent.$addPlayer.toggle();
+                document.location = parent.$anchorAddPlayer.attr("href")
             });
         },
         onReorder: function () {

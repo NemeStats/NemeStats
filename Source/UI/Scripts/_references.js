@@ -10,3 +10,4 @@
 /// <reference path="respond.js" />
 /// <reference path="createplayedgame/createplayedgame.js" />
 /// <reference path="player/createorupdateplayer.js" />
+/// <reference path="player/players.js" />
