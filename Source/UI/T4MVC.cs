@@ -102,6 +102,7 @@ namespace Links
             public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
             public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
             public static readonly string createOrUpdatePlayer_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/createOrUpdatePlayer.min.js") ? Url("createOrUpdatePlayer.min.js") : Url("createOrUpdatePlayer.js");
+            public static readonly string players_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/players.min.js") ? Url("players.min.js") : Url("players.js");
         }
     
         public static readonly string respond_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/respond.min.js") ? Url("respond.min.js") : Url("respond.js");

@@ -99,6 +99,12 @@ namespace UI.Controllers
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ExternalLoginConfirmation);
             return System.Threading.Tasks.Task.FromResult(callInfo as ActionResult);
         }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult ResetPassword()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ResetPassword);
+        }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public AccountController Actions { get { return MVC.Account; } }
@@ -127,6 +133,10 @@ namespace UI.Controllers
             public readonly string LogOff = "LogOff";
             public readonly string ExternalLoginFailure = "ExternalLoginFailure";
             public readonly string RemoveAccountList = "RemoveAccountList";
+            public readonly string ForgotPassword = "ForgotPassword";
+            public readonly string ForgotPasswordConfirmation = "ForgotPasswordConfirmation";
+            public readonly string ResetPassword = "ResetPassword";
+            public readonly string ResetPasswordConfirmation = "ResetPasswordConfirmation";
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -144,6 +154,10 @@ namespace UI.Controllers
             public const string LogOff = "LogOff";
             public const string ExternalLoginFailure = "ExternalLoginFailure";
             public const string RemoveAccountList = "RemoveAccountList";
+            public const string ForgotPassword = "ForgotPassword";
+            public const string ForgotPasswordConfirmation = "ForgotPasswordConfirmation";
+            public const string ResetPassword = "ResetPassword";
+            public const string ResetPasswordConfirmation = "ResetPasswordConfirmation";
         }
 
 
@@ -215,6 +229,23 @@ namespace UI.Controllers
         {
             public readonly string model = "model";
             public readonly string returnUrl = "returnUrl";
+        }
+        static readonly ActionParamsClass_ForgotPassword s_params_ForgotPassword = new ActionParamsClass_ForgotPassword();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_ForgotPassword ForgotPasswordParams { get { return s_params_ForgotPassword; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_ForgotPassword
+        {
+            public readonly string model = "model";
+        }
+        static readonly ActionParamsClass_ResetPassword s_params_ResetPassword = new ActionParamsClass_ResetPassword();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_ResetPassword ResetPasswordParams { get { return s_params_ResetPassword; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_ResetPassword
+        {
+            public readonly string code = "code";
+            public readonly string model = "model";
         }
         static readonly ViewsClass s_views = new ViewsClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -429,6 +460,75 @@ namespace UI.Controllers
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.RemoveAccountList);
             RemoveAccountListOverride(callInfo);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void ForgotPasswordOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult ForgotPassword()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ForgotPassword);
+            ForgotPasswordOverride(callInfo);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void ForgotPasswordOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, UI.Models.ForgotPasswordViewModel model);
+
+        [NonAction]
+        public override System.Threading.Tasks.Task<System.Web.Mvc.ActionResult> ForgotPassword(UI.Models.ForgotPasswordViewModel model)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ForgotPassword);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "model", model);
+            ForgotPasswordOverride(callInfo, model);
+            return System.Threading.Tasks.Task.FromResult(callInfo as ActionResult);
+        }
+
+        [NonAction]
+        partial void ForgotPasswordConfirmationOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult ForgotPasswordConfirmation()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ForgotPasswordConfirmation);
+            ForgotPasswordConfirmationOverride(callInfo);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void ResetPasswordOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string code);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult ResetPassword(string code)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ResetPassword);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "code", code);
+            ResetPasswordOverride(callInfo, code);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void ResetPasswordOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, UI.Models.ResetPasswordViewModel model);
+
+        [NonAction]
+        public override System.Threading.Tasks.Task<System.Web.Mvc.ActionResult> ResetPassword(UI.Models.ResetPasswordViewModel model)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ResetPassword);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "model", model);
+            ResetPasswordOverride(callInfo, model);
+            return System.Threading.Tasks.Task.FromResult(callInfo as ActionResult);
+        }
+
+        [NonAction]
+        partial void ResetPasswordConfirmationOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult ResetPasswordConfirmation()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ResetPasswordConfirmation);
+            ResetPasswordConfirmationOverride(callInfo);
             return callInfo;
         }
 
