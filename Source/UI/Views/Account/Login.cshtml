@@ -56,7 +56,12 @@
     <div class="col-md-4">
         <section id="socialLoginForm">
             <div class="sidebar-module sidebar-module-inset">
-                @Html.Partial("_ExternalLoginsListPartial", new { Action = "ExternalLogin", ReturnUrl = ViewBag.ReturnUrl })
+                @{
+                    dynamic myModel = new System.Dynamic.ExpandoObject();
+                    myModel.Action = "ExternalLogin";
+                    myModel.ReturnUrl = ViewBag.ReturnUrl;
+                    @Html.Partial("_ExternalLoginsListPartial", myModel)
+                }
             </div>
         </section>
     </div>
@@ -64,6 +69,9 @@
 <div class="row">
     <div class="col-md-8">
         <em>@Html.ActionLink("Register", "Register") if you don't have a local account.</em>
+        <p>
+            @Html.ActionLink("Forget your password?", "ForgotPassword")
+        </p>
     </div>
 </div>
 
