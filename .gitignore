@@ -5,6 +5,10 @@
 *.suo
 *.user
 *.sln.docstates
+Web.Jake.config
+Web.Tosho.config
+Web.Debug.config
+Web.Release.config
 
 # Build results
 [Dd]ebug/
