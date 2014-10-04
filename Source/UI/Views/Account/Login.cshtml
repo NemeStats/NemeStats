@@ -56,12 +56,7 @@
     <div class="col-md-4">
         <section id="socialLoginForm">
             <div class="sidebar-module sidebar-module-inset">
-                @{
-                    dynamic myModel = new System.Dynamic.ExpandoObject();
-                    myModel.Action = "ExternalLogin";
-                    myModel.ReturnUrl = ViewBag.ReturnUrl;
-                    @Html.Partial("_ExternalLoginsListPartial", myModel)
-                }
+                @Html.Partial("_ExternalLoginsListPartial", new { Action = "ExternalLogin", ReturnUrl = ViewBag.ReturnUrl })
             </div>
         </section>
     </div>

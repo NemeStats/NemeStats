@@ -18,7 +18,7 @@ namespace UI.Tests.UnitTests.ControllerTests.AccountControllerTests
     [TestFixture]
     public class AccountControllerTestBase
     {
-        protected UserManager<ApplicationUser> userManager;
+        protected ApplicationUserManager userManager;
         protected IUserStore<ApplicationUser> userStoreMock;
         protected IGamingGroupInviteConsumer gamingGroupInviteConsumerMock;
         protected NemeStatsEventTracker eventTrackerMock;
@@ -33,7 +33,7 @@ namespace UI.Tests.UnitTests.ControllerTests.AccountControllerTests
             userStoreMock = MockRepository.GenerateMock<IUserStore<ApplicationUser>>();
             gamingGroupInviteConsumerMock = MockRepository.GenerateMock<IGamingGroupInviteConsumer>();
             eventTrackerMock = MockRepository.GenerateMock<NemeStatsEventTracker>();
-            userManager = new UserManager<ApplicationUser>(userStoreMock);
+            userManager = new ApplicationUserManager(userStoreMock);
             accountControllerPartialMock = MockRepository.GeneratePartialMock<AccountController>(userManager, gamingGroupInviteConsumerMock, eventTrackerMock);
            // modelStateDictionaryMock = MockRepository.GenerateMock<ModelStateDictionary>();
             newApplicationUser = new ApplicationUser()

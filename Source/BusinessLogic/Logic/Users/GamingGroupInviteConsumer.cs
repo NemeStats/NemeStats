@@ -17,11 +17,11 @@ namespace BusinessLogic.Logic.Users
     {
         private IPendingGamingGroupInvitationRetriever pendingGamingGroupRetriever;
         private IGamingGroupAccessGranter gamingGroupAccessGranter;
-        private UserManager<ApplicationUser> userManager;
+        private ApplicationUserManager userManager;
 
         public GamingGroupInviteConsumer(
             IPendingGamingGroupInvitationRetriever pendingGamingGroupRetriever, 
-            UserManager<ApplicationUser> userManager,
+            ApplicationUserManager userManager,
             IGamingGroupAccessGranter gamingGroupAccessGranter)
         {
             this.pendingGamingGroupRetriever = pendingGamingGroupRetriever;

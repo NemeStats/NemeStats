@@ -1,33 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
+﻿using BusinessLogic.EventTracking;
+using BusinessLogic.Logic.GamingGroups;
+using BusinessLogic.Logic.Users;
+using BusinessLogic.Models.User;
+using Microsoft.AspNet.Identity;
+using Microsoft.Owin.Security;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
-using Microsoft.Owin.Security;
 using UI.Models;
-using BusinessLogic.Models.User;
-using BusinessLogic.DataAccess;
-using StructureMap;
-using BusinessLogic.Logic.Users;
-using BusinessLogic.EventTracking;
-using BusinessLogic.Logic.GamingGroups;
 
 namespace UI.Controllers
 {
     [Authorize]
     public partial class AccountController : Controller
     {
-        protected UserManager<ApplicationUser> userManager;
+        protected ApplicationUserManager userManager;
         protected IGamingGroupInviteConsumer gamingGroupInviteConsumer;
         protected IGamingGroupSaver gamingGroupSaver;
         protected NemeStatsEventTracker eventTracker;
 
         public AccountController(
-            UserManager<ApplicationUser> userManager, 
+            ApplicationUserManager userManager, 
             IGamingGroupInviteConsumer gamingGroupInviteConsumer,
             IGamingGroupSaver gamingGroupSaver,
             NemeStatsEventTracker eventTracker)

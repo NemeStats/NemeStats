@@ -1,5 +1,5 @@
-﻿using BusinessLogic.Models.User;
-using IdentitySample.Models;
+﻿using BusinessLogic.Logic.Users;
+using BusinessLogic.Models.User;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;

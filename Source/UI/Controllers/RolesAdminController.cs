@@ -1,5 +1,4 @@
-﻿using IdentitySample.Models;
-using Microsoft.AspNet.Identity;
+﻿using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Linq;
@@ -10,6 +9,7 @@ using System.Web.Mvc;
 using System.Collections.Generic;
 using UI.Models;
 using BusinessLogic.Models.User;
+using BusinessLogic.Logic.Users;
 
 namespace IdentitySample.Controllers
 {

@@ -23,7 +23,7 @@ namespace UI.Tests.UnitTests.FiltersTests.UserContextAttributeTests
         private ActionExecutingContext actionExecutingContext;
         private UserContextAttribute userContextActionFilter;
         private IIdentity identity;
-        private UserManager<ApplicationUser> userManager;
+        private ApplicationUserManager userManager;
         private IUserStore<ApplicationUser> userStoreMock;
         private ApplicationUser applicationUser;
         private string anonymousClientId = "anonymous client id";
@@ -35,7 +35,7 @@ namespace UI.Tests.UnitTests.FiltersTests.UserContextAttributeTests
             actionExecutingContext = new ActionExecutingContext();
             actionExecutingContext.ActionParameters = new Dictionary<string, object>();
             userStoreMock = MockRepository.GenerateMock<IUserStore<ApplicationUser>>();
-            userManager = new UserManager<ApplicationUser>(userStoreMock);
+            userManager = new ApplicationUserManager(userStoreMock);
             //need to simulate like the parameter exists on the method
             actionExecutingContext.ActionParameters[UserContextAttribute.USER_CONTEXT_KEY] = null;
 

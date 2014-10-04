@@ -3,6 +3,7 @@ using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.EventTracking;
 using BusinessLogic.Logic.GameDefinitions;
 using BusinessLogic.Logic.Players;
+using BusinessLogic.Logic.Users;
 using BusinessLogic.Models;
 using BusinessLogic.Models.User;
 using Microsoft.AspNet.Identity;
@@ -24,12 +25,12 @@ namespace BusinessLogic.Logic.GamingGroups
         private IDataContext dataContext;
         private IPlayerSaver playerCreator;
         private IGameDefinitionSaver gameDefinitionCreator;
-        private UserManager<ApplicationUser> userManager;
+        private ApplicationUserManager userManager;
         private NemeStatsEventTracker eventTracker;
 
         public GamingGroupSaver(
             IDataContext dataContext, 
-            UserManager<ApplicationUser> userManager, 
+            ApplicationUserManager userManager, 
             NemeStatsEventTracker eventTracker,
             IPlayerSaver playerCreator,
             IGameDefinitionSaver gameDefinitionCreator)

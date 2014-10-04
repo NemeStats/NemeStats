@@ -1,6 +1,9 @@
-﻿using BusinessLogic.Models;
+﻿using BusinessLogic.Logic.Users;
+using BusinessLogic.Models;
 using BusinessLogic.Models.User;
 using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.Owin;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -28,6 +31,11 @@ namespace BusinessLogic.DataAccess
         public virtual DbSet<UserGamingGroup> UserGamingGroups { get; set; }
         public virtual DbSet<GamingGroupInvitation> GamingGroupInvitations { get; set; }
         public virtual DbSet<Nemesis> Nemeses { get; set; }
+
+        public static NemeStatsDbContext Create()
+        {
+            return new NemeStatsDbContext();
+        }
         
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

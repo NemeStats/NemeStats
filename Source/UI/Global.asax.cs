@@ -1,6 +1,4 @@
 ﻿using BusinessLogic.DataAccess;
-using Mindscape.Raygun4Net;
-using Mindscape.Raygun4Net.Messages;
 using RollbarSharp;
 using StructureMap;
 using StructureMap.Web.Pipeline;

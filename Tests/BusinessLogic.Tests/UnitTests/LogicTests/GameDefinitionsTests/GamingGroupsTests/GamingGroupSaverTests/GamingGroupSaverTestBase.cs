@@ -3,6 +3,7 @@ using BusinessLogic.EventTracking;
 using BusinessLogic.Logic.GameDefinitions;
 using BusinessLogic.Logic.GamingGroups;
 using BusinessLogic.Logic.Players;
+using BusinessLogic.Logic.Users;
 using BusinessLogic.Models;
 using BusinessLogic.Models.User;
 using Microsoft.AspNet.Identity;
@@ -20,7 +21,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GamingGr
     {
         protected GamingGroupSaver gamingGroupSaver;
         protected IUserStore<ApplicationUser> userStoreMock;
-        protected UserManager<ApplicationUser> userManager;
+        protected ApplicationUserManager userManager;
         protected IDataContext dataContextMock;
         protected NemeStatsEventTracker eventTrackerMock;
         protected IPlayerSaver playerSaverMock;
@@ -36,7 +37,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GamingGr
         public virtual void SetUp()
         {
             userStoreMock = MockRepository.GenerateMock<IUserStore<ApplicationUser>>();
-            userManager = new UserManager<ApplicationUser>(userStoreMock);
+            userManager = new ApplicationUserManager(userStoreMock);
             dataContextMock = MockRepository.GenerateMock<IDataContext>();
             eventTrackerMock = MockRepository.GenerateMock<NemeStatsEventTracker>();
             playerSaverMock = MockRepository.GenerateMock<IPlayerSaver>();
