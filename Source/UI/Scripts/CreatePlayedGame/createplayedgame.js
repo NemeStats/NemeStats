@@ -1,9 +1,8 @@
 ﻿    //Usings
-    window.Views = window.Views || {};
-    window.Views.PlayedGame = Views.PlayedGame || {};
+    Namespace("Views.PlayedGame");
 
     //Initialization
-    window.Views.PlayedGame.CreatePlayedGame = function () {
+    Views.PlayedGame.CreatePlayedGame = function () {
         this._playerRank = 1;
         this._playerIndex = 0;
         this.$rankedPlayers = null;
@@ -16,7 +15,7 @@
     };
 
     //Implementation
-    window.Views.PlayedGame.CreatePlayedGame.prototype = {
+    Views.PlayedGame.CreatePlayedGame.prototype = {
 
         //Method definitions
         init: function () {

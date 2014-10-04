@@ -1,15 +1,14 @@
 ﻿//Usings
-window.Views = window.Views || {};
-window.Views.Player = Views.Player || {};
+Namespace("Views.Player");
 
 //Initialization
-window.Views.Player.Players = function () {
+Views.Player.Players = function () {
     this.$container = null;
     this.$playersTable = null;
 };
 
 //Implementation
-window.Views.Player.Players.prototype = {
+Views.Player.Players.prototype = {
     init: function () {
         this.$container = $(".playersList");
         this.$playersTable = this.$container.find("table");
