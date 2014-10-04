@@ -5,6 +5,8 @@
 *.suo
 *.user
 *.sln.docstates
+Web.Jake.config
+Web.Tosho.config
 
 # Build results
 [Dd]ebug/
