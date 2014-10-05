@@ -52,7 +52,7 @@ namespace UI.DependencyResolution {
             //unique per request scope
             For<DbContext>().HttpContextScoped().Use<NemeStatsDbContext>();
             For<IDataContext>().HttpContextScoped().Use<NemeStatsDataContext>();
-            For<ApplicationUserManager>().HttpContextScoped().Use<ApplicationUserManager>(() => ApplicationUserManager.Create());
+            For<ApplicationUserManager>().HttpContextScoped().Use<ApplicationUserManager>();
 
             //transient scope
             For<IGamingGroupSaver>().Use<GamingGroupSaver>();

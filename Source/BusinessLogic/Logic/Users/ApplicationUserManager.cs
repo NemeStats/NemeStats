@@ -19,22 +19,15 @@ namespace BusinessLogic.Logic.Users
         public ApplicationUserManager(IUserStore<ApplicationUser> store)
             : base(store)
         {
-        }
-
-        //public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options,
-        //    IOwinContext context)
-        public static ApplicationUserManager Create()
-        {
-            //TODO should tie into StructureMap here
-            var manager = new ApplicationUserManager(new UserStore<ApplicationUser>(new NemeStatsDbContext()));
+            //TODO all of these dependencies should probably be injected
             // Configure validation logic for usernames
-            manager.UserValidator = new UserValidator<ApplicationUser>(manager)
+            this.UserValidator = new UserValidator<ApplicationUser>(this)
             {
                 AllowOnlyAlphanumericUserNames = false,
                 RequireUniqueEmail = true
             };
             // Configure validation logic for passwords
-            manager.PasswordValidator = new PasswordValidator
+            this.PasswordValidator = new PasswordValidator
             {
                 RequiredLength = 6,
                 RequireNonLetterOrDigit = true,
@@ -43,29 +36,28 @@ namespace BusinessLogic.Logic.Users
                 RequireUppercase = true,
             };
             // Configure user lockout defaults
-            manager.UserLockoutEnabledByDefault = true;
-            manager.DefaultAccountLockoutTimeSpan = TimeSpan.FromMinutes(5);
-            manager.MaxFailedAccessAttemptsBeforeLockout = 5;
+            this.UserLockoutEnabledByDefault = true;
+            this.DefaultAccountLockoutTimeSpan = TimeSpan.FromMinutes(5);
+            this.MaxFailedAccessAttemptsBeforeLockout = 5;
             // Register two factor authentication providers. This application uses Phone and Emails as a step of receiving a code for verifying the user
             // You can write your own provider and plug in here.
-            manager.RegisterTwoFactorProvider("PhoneCode", new PhoneNumberTokenProvider<ApplicationUser>
+            this.RegisterTwoFactorProvider("PhoneCode", new PhoneNumberTokenProvider<ApplicationUser>
             {
                 MessageFormat = "Your security code is: {0}"
             });
-            manager.RegisterTwoFactorProvider("EmailCode", new EmailTokenProvider<ApplicationUser>
+            this.RegisterTwoFactorProvider("EmailCode", new EmailTokenProvider<ApplicationUser>
             {
                 Subject = "SecurityCode",
                 BodyFormat = "Your security code is {0}"
             });
-            manager.EmailService = new EmailService();
-            manager.SmsService = new SmsService();
+            this.EmailService = new EmailService();
+            this.SmsService = new SmsService();
             var dataProtectionProvider = new Microsoft.Owin.Security.DataProtection.DpapiDataProtectionProvider("NemeStats");
             if (dataProtectionProvider != null)
             {
-                manager.UserTokenProvider =
+                this.UserTokenProvider =
                     new DataProtectorTokenProvider<ApplicationUser>(dataProtectionProvider.Create("ASP.NET Identity"));
             }
-            return manager;
         }
     }
 }

@@ -21,7 +21,7 @@ namespace BusinessLogic.DataAccess
         private NemeStatsDbContext nemeStatsDbContext;
 
         //TODO do i really need this constructor? MockRepository.GenerateMock<ApplicationDbContext>() fails saying it needs a parameterless constructor
-        public NemeStatsDataContext() 
+        public NemeStatsDataContext()
             : this(new NemeStatsDbContext(), new SecuredEntityValidatorFactory())
         {
 

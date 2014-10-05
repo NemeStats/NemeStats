@@ -31,6 +31,8 @@ namespace UI.Filters
 
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
+            //TODO this doesn't appear to honor the HttpContextScoped structureMap directive... so it is getting a new
+            // instance each time
             userManager = DependencyResolver.Current.GetService<ApplicationUserManager>();
 
             OnActionExecuting(filterContext, userManager);

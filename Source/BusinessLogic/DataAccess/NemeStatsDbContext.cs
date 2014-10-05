@@ -31,11 +31,6 @@ namespace BusinessLogic.DataAccess
         public virtual DbSet<UserGamingGroup> UserGamingGroups { get; set; }
         public virtual DbSet<GamingGroupInvitation> GamingGroupInvitations { get; set; }
         public virtual DbSet<Nemesis> Nemeses { get; set; }
-
-        public static NemeStatsDbContext Create()
-        {
-            return new NemeStatsDbContext();
-        }
         
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
