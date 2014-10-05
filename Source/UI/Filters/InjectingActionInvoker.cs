@@ -23,10 +23,22 @@
 //        {
 //            var info = base.GetFilters(controllerContext, actionDescriptor);
 
-//            info.AuthorizationFilters.ForEach(_container.BuildUp);
-//            info.ActionFilters.ForEach(_container.BuildUp);
-//            info.ResultFilters.ForEach(_container.BuildUp);
-//            info.ExceptionFilters.ForEach(_container.BuildUp);
+//            foreach(IAuthorizationFilter filter in info.AuthenticationFilters)
+//            {
+//                _container.BuildUp(filter);
+//            }
+//            foreach (IAuthorizationFilter filter in info.ActionFilters)
+//            {
+//                _container.BuildUp(filter);
+//            }
+//            foreach (IAuthorizationFilter filter in info.ResultFilters)
+//            {
+//                _container.BuildUp(filter);
+//            }
+//            foreach (IAuthorizationFilter filter in info.ExceptionFilters)
+//            {
+//                _container.BuildUp(filter);
+//            }
 
 //            return info;
 //        }

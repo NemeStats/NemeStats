@@ -16,7 +16,7 @@ namespace UI.Filters
     {
         internal const string USER_CONTEXT_KEY = "currentUser";
 
-        internal ApplicationUserManager userManager;
+        public ApplicationUserManager userManager;
         /// <summary>
         /// The parameter key for the Google Analytics unique client id.
         /// </summary>
@@ -31,9 +31,7 @@ namespace UI.Filters
 
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            NemeStatsDbContext dbContext = DependencyResolver.Current.GetService<NemeStatsDbContext>();
-            IUserStore<ApplicationUser> userStore = DependencyResolver.Current.GetService<IUserStore<ApplicationUser>>();
-            userManager = new ApplicationUserManager(userStore);
+            userManager = DependencyResolver.Current.GetService<ApplicationUserManager>();
 
             OnActionExecuting(filterContext, userManager);
 
