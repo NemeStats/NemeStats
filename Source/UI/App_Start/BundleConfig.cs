@@ -27,6 +27,7 @@ namespace UI
                       "~/Scripts/respond.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/custom")
+                .Include("~/Scripts/namespace-{version}.js")
                 .Include("~/Scripts/CreatePlayedGame/createplayedgame.js")
                 .Include("~/Scripts/Player/createOrUpdatePlayer.js")
                 .Include("~/Scripts/Player/players.js"));

@@ -1,9 +1,8 @@
 ﻿//Usings
-window.Views = window.Views || {};
-window.Views.Player = Views.Player || {};
+Namespace("Views.Player");
 
 //Initialization
-window.Views.Player.CreateOrUpdate = function () {
+Views.Player.CreateOrUpdate = function () {
     this.$container = null;
     this.$cbActiveGroup = null;
     this.$btnSubmit = null;
@@ -14,7 +13,7 @@ window.Views.Player.CreateOrUpdate = function () {
 };
 
 //Implementation
-window.Views.Player.CreateOrUpdate.prototype = {
+Views.Player.CreateOrUpdate.prototype = {
     init: function (onPlayerSaved) {
         var owner = this;
         this.formAction = "/player/save";
