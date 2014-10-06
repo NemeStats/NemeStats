@@ -21,12 +21,15 @@
                     <div class="carousel-caption">
                         <h2>Keep Track Of Your Nemesis</h2>
                         <p class="lead">
-                            NemeStats is a free web application for recording games played among a relatively stable group of players.
-                            The output will be an interesting set of metrics around game rank over
-                            the dimensions of player, number of players, game played, etc. Just register a new account, set up your games and players, and start recording!
+                            NemeStats (as in "Nemesis Statistics") is a free web application for logging games played among a relatively stable group of players. It takes only
+                            a moment and will give you statistics on your win percentage, average rank in games, who is your Nemesis and who is your Minion, etc.
+                            When you register, a new "Gaming Group" will be created where you and other players in your group can watch your statistics materialize over time.
+                            <br/><br/>
+                            All information is publicly accessible so feel free to browse around! If you'd like to give it a shot just @Html.ActionLink("Register", "Register"),
+                            set up the game and players you want to record, and start tracking! 
                         </p>
                         <p>
-                            NemeStats is open source and accepting pull requests and feature requests
+                            NemeStats is open source and accepting feature requests
                             via <a href='https://github.com/jakejgordon/NemeStats' target="_blank">GitHub</a>. Check out the features that are being worked on or in the backlog
                             <a href='https://waffle.io/jakejgordon/NemeStats' target="_blank">here</a>.
                         </p>
@@ -38,23 +41,23 @@
                 <div class="container">
                     <div class="carousel-caption">
                         <div class="col-md-4">
-                            <h2>Define Games</h2>
+                            <h2>Setup Games</h2>
                             <p>
-                                Manage the list of Games your Gaming Group plays here. A Game Definition must be created in order to create a record of a Game played.
+                                Manage the list of Games your Gaming Group plays here. A Game Definition must be created in order to log a played game.
                             </p>
                             <p>@Html.ActionLink("Manage Games", "Index", "GamingGroup", null, null, UI.Controllers.GamingGroupController.SECTION_ANCHOR_GAMEDEFINITIONS, null, null)</p>
                         </div>
                         <div class="col-md-4">
                             <h2>Setup Players</h2>
                             <p>
-                                Manage the list of Players in your Gaming Group. A Player must be created in order to create a record of a Game played for that Player.
+                                Manage the list of Players in your Gaming Group. A Player must be created in order to to log a played game for that Player.
                             </p>
                             <p>@Html.ActionLink("Manage Players", "Index", "GamingGroup", null, null, UI.Controllers.GamingGroupController.SECTION_ANCHOR_PLAYERS, null, null)</p>
                         </div>
                         <div class="col-md-4">
-                            <h2>Save Game Results</h2>
+                            <h2>Track Game Results</h2>
 
-                            <p>Record the results of your games here.</p>
+                            <p>Log the results of your games here.</p>
 
                             <p>@Html.ActionLink("Game Results", "Create", "PlayedGame")</p>
                         </div>
