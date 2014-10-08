@@ -35,6 +35,7 @@ namespace UI
             bundles.Add(new StyleBundle("~/bundles/content/css").Include(
                         "~/Content/bootstrap.min.css", new CssRewriteUrlTransform())
                       .Include("~/Content/site.css",
+                        "~/Content/site-mobile.css",
                         "~/Content/blog.css")
                       .Include("~/Content/css/font-awesome.min.css", new CssRewriteUrlTransform()));
         }

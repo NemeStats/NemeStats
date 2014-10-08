@@ -1,0 +1,6 @@
+﻿/* smartphones, portrait iPhone, portrait 480x320 phones (Android) */ 
+@media (min-width:320px) and (max-width: 480px) { 
+    .home-page-icon {
+        font-size: 4em;
+    }
+}

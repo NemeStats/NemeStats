@@ -174,3 +174,9 @@ ul input[type=text] { width:25px }
     clear:both;
 }
 
+/* tablets and desktops */ 
+@media (min-width:481px) { 
+    .home-page-icon {
+        font-size: 8em;
+    }
+}
