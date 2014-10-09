@@ -17,13 +17,13 @@ namespace UI.Controllers
         protected ApplicationUserManager userManager;
         protected IGamingGroupInviteConsumer gamingGroupInviteConsumer;
         protected IGamingGroupSaver gamingGroupSaver;
-        protected NemeStatsEventTracker eventTracker;
+        protected INemeStatsEventTracker eventTracker;
 
         public AccountController(
             ApplicationUserManager userManager, 
             IGamingGroupInviteConsumer gamingGroupInviteConsumer,
             IGamingGroupSaver gamingGroupSaver,
-            NemeStatsEventTracker eventTracker)
+            INemeStatsEventTracker eventTracker)
         {
             this.userManager = userManager;
             this.gamingGroupInviteConsumer = gamingGroupInviteConsumer;

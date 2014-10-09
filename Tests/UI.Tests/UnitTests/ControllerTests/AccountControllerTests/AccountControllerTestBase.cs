@@ -21,7 +21,7 @@ namespace UI.Tests.UnitTests.ControllerTests.AccountControllerTests
         protected ApplicationUserManager userManager;
         protected IUserStore<ApplicationUser> userStoreMock;
         protected IGamingGroupInviteConsumer gamingGroupInviteConsumerMock;
-        protected NemeStatsEventTracker eventTrackerMock;
+        protected INemeStatsEventTracker eventTrackerMock;
         protected AccountController accountControllerPartialMock;
         //protected ModelStateDictionary modelStateDictionaryMock;
         protected RegisterViewModel registerViewModel;
@@ -32,7 +32,7 @@ namespace UI.Tests.UnitTests.ControllerTests.AccountControllerTests
         {
             userStoreMock = MockRepository.GenerateMock<IUserStore<ApplicationUser>>();
             gamingGroupInviteConsumerMock = MockRepository.GenerateMock<IGamingGroupInviteConsumer>();
-            eventTrackerMock = MockRepository.GenerateMock<NemeStatsEventTracker>();
+            eventTrackerMock = MockRepository.GenerateMock<INemeStatsEventTracker>();
             userManager = new ApplicationUserManager(userStoreMock);
             accountControllerPartialMock = MockRepository.GeneratePartialMock<AccountController>(userManager, gamingGroupInviteConsumerMock, eventTrackerMock);
            // modelStateDictionaryMock = MockRepository.GenerateMock<ModelStateDictionary>();

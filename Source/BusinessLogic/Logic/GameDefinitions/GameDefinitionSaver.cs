@@ -16,9 +16,9 @@ namespace BusinessLogic.Logic.GameDefinitions
             = "gameDefinition.Name cannot be null or whitespace.";
 
         private IDataContext dataContext;
-        private NemeStatsEventTracker eventTracker;
+        private INemeStatsEventTracker eventTracker;
 
-        public GameDefinitionSaver(IDataContext dataContext, NemeStatsEventTracker eventTracker)
+        public GameDefinitionSaver(IDataContext dataContext, INemeStatsEventTracker eventTracker)
         {
             this.dataContext = dataContext;
             this.eventTracker = eventTracker;

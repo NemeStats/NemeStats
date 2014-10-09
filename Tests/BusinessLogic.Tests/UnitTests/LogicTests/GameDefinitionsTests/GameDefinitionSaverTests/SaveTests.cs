@@ -18,7 +18,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
     public class SaveTests
     {
         private IDataContext dataContextMock;
-        private NemeStatsEventTracker eventTrackerMock;
+        private INemeStatsEventTracker eventTrackerMock;
         private GameDefinitionSaver gameDefinitionSaver;
         private ApplicationUser currentUser;
 
@@ -26,7 +26,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
         public void SetUp()
         {
             dataContextMock = MockRepository.GenerateMock<IDataContext>();
-            eventTrackerMock = MockRepository.GenerateMock<NemeStatsEventTracker>();
+            eventTrackerMock = MockRepository.GenerateMock<INemeStatsEventTracker>();
             gameDefinitionSaver = new GameDefinitionSaver(dataContextMock, eventTrackerMock);
             currentUser = new ApplicationUser();
         }

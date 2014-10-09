@@ -18,10 +18,10 @@ namespace BusinessLogic.Logic.Players
     {
         private IDataContext dataContext;
         private IPlayerRepository playerRepository;
-        private NemeStatsEventTracker eventTracker;
+        private INemeStatsEventTracker eventTracker;
         private INemesisRecalculator nemesisRecalculator;
 
-        public PlayerSaver(IDataContext dataContext, NemeStatsEventTracker eventTracker, IPlayerRepository playerRepository, INemesisRecalculator nemesisRecalculator)
+        public PlayerSaver(IDataContext dataContext, INemeStatsEventTracker eventTracker, IPlayerRepository playerRepository, INemesisRecalculator nemesisRecalculator)
         {
             this.dataContext = dataContext;
             this.eventTracker = eventTracker;

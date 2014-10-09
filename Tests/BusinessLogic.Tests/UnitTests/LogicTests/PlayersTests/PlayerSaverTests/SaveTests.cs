@@ -20,7 +20,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerCreatorTes
     public class SaveTests
     {
         private IDataContext dataContextMock;
-        private NemeStatsEventTracker eventTrackerMock;
+        private INemeStatsEventTracker eventTrackerMock;
         private IPlayerRepository playerRepositoryMock;
         private INemesisRecalculator nemesisRecalculatorMock;
         private PlayerSaver playerSaver;
@@ -30,7 +30,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerCreatorTes
         public void SetUp()
         {
             dataContextMock = MockRepository.GenerateMock<IDataContext>();
-            eventTrackerMock = MockRepository.GenerateMock<NemeStatsEventTracker>();
+            eventTrackerMock = MockRepository.GenerateMock<INemeStatsEventTracker>();
             playerRepositoryMock = MockRepository.GenerateMock<IPlayerRepository>();
             nemesisRecalculatorMock = MockRepository.GenerateMock<INemesisRecalculator>();
             playerSaver = new PlayerSaver(dataContextMock, eventTrackerMock, playerRepositoryMock, nemesisRecalculatorMock);

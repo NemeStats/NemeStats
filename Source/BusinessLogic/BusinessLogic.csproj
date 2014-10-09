@@ -165,6 +165,7 @@
     <Compile Include="Logic\Users\ApplicationRoleManager.cs" />
     <Compile Include="Logic\Users\ApplicationSignInManager.cs" />
     <Compile Include="Logic\Users\ApplicationUserManager.cs" />
+    <Compile Include="Logic\Users\FirstTimeAuthenticator.cs" />
     <Compile Include="Logic\Users\IFirstTimeAuthenticator.cs" />
     <Compile Include="Logic\Users\IGamingGroupInviteConsumer.cs" />
     <Compile Include="Logic\Users\GamingGroupInviteConsumer.cs" />

@@ -26,12 +26,12 @@ namespace BusinessLogic.Logic.GamingGroups
         private IPlayerSaver playerCreator;
         private IGameDefinitionSaver gameDefinitionCreator;
         private ApplicationUserManager userManager;
-        private NemeStatsEventTracker eventTracker;
+        private INemeStatsEventTracker eventTracker;
 
         public GamingGroupSaver(
             IDataContext dataContext, 
             ApplicationUserManager userManager, 
-            NemeStatsEventTracker eventTracker,
+            INemeStatsEventTracker eventTracker,
             IPlayerSaver playerCreator,
             IGameDefinitionSaver gameDefinitionCreator)
         {

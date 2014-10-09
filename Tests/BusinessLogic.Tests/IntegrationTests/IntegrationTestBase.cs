@@ -24,7 +24,7 @@ namespace BusinessLogic.Tests.IntegrationTests
         protected SecuredEntityValidatorFactory securedEntityValidatorFactory = new SecuredEntityValidatorFactory();
         protected IEventTracker eventTrackerStub;
         protected IUniversalAnalyticsEventFactory eventFactory = new UniversalAnalyticsEventFactory();
-        protected NemeStatsEventTracker playedGameTracker;
+        protected INemeStatsEventTracker playedGameTracker;
 
         protected List<PlayedGame> testPlayedGames = new List<PlayedGame>();
         protected GameDefinition testGameDefinition;

@@ -56,7 +56,9 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.UserRegistererTest
                 UserName = "user name",
                 Email = "the email"
             };
-            IdentityResult result = new IdentityResult(new string[0]);
+            IdentityResult result = MockRepository.GenerateMock<IdentityResult>(new string[] { });
+            result.Expect(res => res.Succeeded)
+                .Return(true);
             applicationUserManagerMock.Expect(mock => mock.CreateAsync(Arg<ApplicationUser>.Is.Anything, Arg<string>.Is.Anything))
                 .Return(Task.FromResult<IdentityResult>(result));
             firstTimeUserAuthenticatorMock.Expect(mock => mock.SignInAndCreateGamingGroup(Arg<ApplicationUser>.Is.Anything))

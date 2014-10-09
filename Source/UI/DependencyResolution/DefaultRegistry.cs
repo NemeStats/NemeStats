@@ -81,7 +81,7 @@ namespace UI.DependencyResolution {
 
             For<IPlayedGameCreator>().Use<PlayedGameCreator>();
 
-            For<NemeStatsEventTracker>().Use<UniversalAnalyticsNemeStatsEventTracker>();
+            For<INemeStatsEventTracker>().Use<UniversalAnalyticsNemeStatsEventTracker>();
 
             For<IEventTracker>().Use<EventTracker>();
 

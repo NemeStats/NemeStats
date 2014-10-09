@@ -25,7 +25,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameCr
         private PlayedGameCreator playedGameCreatorPartialMock;
         private IPlayerRepository playerRepositoryMock;
         private INemesisRecalculator nemesisRecalculatorMock;
-        private NemeStatsEventTracker playedGameTracker;
+        private INemeStatsEventTracker playedGameTracker;
         private ApplicationUser currentUser;
         private GameDefinition gameDefinition;
 
@@ -33,7 +33,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameCr
         public void TestSetUp()
         {
             dataContext = MockRepository.GenerateMock<NemeStatsDataContext>();
-            playedGameTracker = MockRepository.GenerateMock<NemeStatsEventTracker>();
+            playedGameTracker = MockRepository.GenerateMock<INemeStatsEventTracker>();
             playerRepositoryMock = MockRepository.GenerateMock<IPlayerRepository>();
             nemesisRecalculatorMock = MockRepository.GenerateMock<INemesisRecalculator>();
 
