@@ -165,8 +165,11 @@
     <Compile Include="Logic\Users\ApplicationRoleManager.cs" />
     <Compile Include="Logic\Users\ApplicationSignInManager.cs" />
     <Compile Include="Logic\Users\ApplicationUserManager.cs" />
+    <Compile Include="Logic\Users\IFirstTimeAuthenticator.cs" />
     <Compile Include="Logic\Users\IGamingGroupInviteConsumer.cs" />
     <Compile Include="Logic\Users\GamingGroupInviteConsumer.cs" />
+    <Compile Include="Logic\Users\IUserRegisterer.cs" />
+    <Compile Include="Logic\Users\UserRegisterer.cs" />
     <Compile Include="Migrations\201407011153551_GamingGroupsAndAspNetAuth.cs" />
     <Compile Include="Migrations\201407011153551_GamingGroupsAndAspNetAuth.Designer.cs">
       <DependentUpon>201407011153551_GamingGroupsAndAspNetAuth.cs</DependentUpon>
@@ -250,6 +253,7 @@
     <Compile Include="Models\Players\TopPlayer.cs" />
     <Compile Include="Models\User\AnonymousApplicationUser.cs" />
     <Compile Include="Models\User\ApplicationUser.cs" />
+    <Compile Include="Models\User\NewUser.cs" />
     <Compile Include="Models\User\UserGamingGroup.cs" />
     <Compile Include="Models\Players\PlayerStatistics.cs" />
     <Compile Include="Migrations\201405220234035_Initial.cs" />

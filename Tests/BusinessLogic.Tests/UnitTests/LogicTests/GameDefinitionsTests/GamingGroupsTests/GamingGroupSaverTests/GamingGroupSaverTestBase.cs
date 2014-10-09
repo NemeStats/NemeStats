@@ -1,5 +1,6 @@
 ﻿using BusinessLogic.DataAccess;
 using BusinessLogic.EventTracking;
+using BusinessLogic.Logic.Email;
 using BusinessLogic.Logic.GameDefinitions;
 using BusinessLogic.Logic.GamingGroups;
 using BusinessLogic.Logic.Players;
@@ -21,7 +22,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GamingGr
     {
         protected GamingGroupSaver gamingGroupSaver;
         protected IUserStore<ApplicationUser> userStoreMock;
-        protected ApplicationUserManager userManager;
+        protected ApplicationUserManager applicationUserManagerMock;
         protected IDataContext dataContextMock;
         protected NemeStatsEventTracker eventTrackerMock;
         protected IPlayerSaver playerSaverMock;
@@ -37,14 +38,14 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GamingGr
         public virtual void SetUp()
         {
             userStoreMock = MockRepository.GenerateMock<IUserStore<ApplicationUser>>();
-            userManager = new ApplicationUserManager(userStoreMock);
+            applicationUserManagerMock = MockRepository.GenerateMock<ApplicationUserManager>(userStoreMock);
             dataContextMock = MockRepository.GenerateMock<IDataContext>();
             eventTrackerMock = MockRepository.GenerateMock<NemeStatsEventTracker>();
             playerSaverMock = MockRepository.GenerateMock<IPlayerSaver>();
             gameDefinitionCreator = MockRepository.GenerateMock<IGameDefinitionSaver>();
             gamingGroupSaver = new GamingGroupSaver(
                 dataContextMock,
-                userManager,
+                applicationUserManagerMock,
                 eventTrackerMock,
                 playerSaverMock,
                 gameDefinitionCreator);

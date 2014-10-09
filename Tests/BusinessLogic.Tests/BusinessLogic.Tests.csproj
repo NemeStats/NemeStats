@@ -170,6 +170,7 @@
     <Compile Include="UnitTests\LogicTests\PlayersTests\PlayerRetrieverTests\GetAllPlayersTests.cs" />
     <Compile Include="UnitTests\LogicTests\PointsTests\GordonPointsTests\CalculateGordonPointsTests.cs" />
     <Compile Include="UnitTests\LogicTests\UsersTests\GamingGroupInviteConsumerTests\ConsumeGamingGroupInvitationTests.cs" />
+    <Compile Include="UnitTests\LogicTests\UsersTests\UserRegistererTests\RegisterUserTests.cs" />
     <Compile Include="UnitTests\ModelsTests\GamesTests\ValidationTests\ValidatePlayerRanksTests.cs" />
     <Compile Include="UnitTests\ModelsTests\NemesisTests\EqualsTests.cs" />
     <Compile Include="UnitTests\ModelsTests\NemesisTests\GetHashCodeTests.cs" />

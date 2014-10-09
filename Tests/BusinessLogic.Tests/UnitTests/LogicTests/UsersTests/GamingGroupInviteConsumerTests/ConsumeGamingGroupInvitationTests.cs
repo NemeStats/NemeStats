@@ -22,7 +22,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.GamingGroupInviteC
         private NemeStatsDbContext dbContextMock;
         private IPendingGamingGroupInvitationRetriever pendingGamingGroupInvitationRetriever;
         private IUserStore<ApplicationUser> userStoreMock;
-        private ApplicationUserManager userManager;
+        private ApplicationUserManager applicationUserManagerMock;
         private GamingGroupInviteConsumer inviteConsumer;
         private IGamingGroupAccessGranter gamingGroupAccessGranter;
         private List<GamingGroupInvitation> gamingGroupInvitations;
@@ -35,9 +35,9 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.GamingGroupInviteC
             dbContextMock = MockRepository.GenerateMock<NemeStatsDbContext>();
             pendingGamingGroupInvitationRetriever = MockRepository.GenerateMock<IPendingGamingGroupInvitationRetriever>();
             userStoreMock = MockRepository.GenerateMock<IUserStore<ApplicationUser>>();
-            userManager = new ApplicationUserManager(userStoreMock);
+            applicationUserManagerMock = MockRepository.GenerateMock<ApplicationUserManager>(userStoreMock);
             gamingGroupAccessGranter = MockRepository.GenerateMock<IGamingGroupAccessGranter>();
-            inviteConsumer = new GamingGroupInviteConsumer(pendingGamingGroupInvitationRetriever, userManager, gamingGroupAccessGranter);
+            inviteConsumer = new GamingGroupInviteConsumer(pendingGamingGroupInvitationRetriever, applicationUserManagerMock, gamingGroupAccessGranter);
             currentUser = new ApplicationUser()
             {
                 Id = "user id"
