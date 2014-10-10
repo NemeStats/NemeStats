@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace BusinessLogic.Models.User
 {
-    public class ApplicationUser : IdentityUser, SingleColumnTechnicalKey<string>, EntityWithTechnicalKey
+    public class ApplicationUser : IdentityUser, ISingleColumnTechnicalKey<string>, EntityWithTechnicalKey
     {
         public ApplicationUser()
         {

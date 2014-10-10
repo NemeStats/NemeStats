@@ -101,6 +101,8 @@ namespace UI.DependencyResolution {
 
             For<IPlayedGameDeleter>().Use<PlayedGameDeleter>();
 
+            For<IUserRegisterer>().Use<UserRegisterer>();
+
 
             //singleton scope
 

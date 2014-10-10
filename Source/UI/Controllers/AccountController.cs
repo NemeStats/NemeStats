@@ -14,21 +14,21 @@ namespace UI.Controllers
     [Authorize]
     public partial class AccountController : Controller
     {
-        protected ApplicationUserManager userManager;
-        protected IGamingGroupInviteConsumer gamingGroupInviteConsumer;
-        protected IGamingGroupSaver gamingGroupSaver;
-        protected INemeStatsEventTracker eventTracker;
+        private ApplicationUserManager userManager;
+        private IGamingGroupInviteConsumer gamingGroupInviteConsumer;
+        private IGamingGroupSaver gamingGroupSaver;
+        private IUserRegisterer userRegisterer;
 
         public AccountController(
             ApplicationUserManager userManager, 
             IGamingGroupInviteConsumer gamingGroupInviteConsumer,
             IGamingGroupSaver gamingGroupSaver,
-            INemeStatsEventTracker eventTracker)
+            IUserRegisterer userRegisterer)
         {
             this.userManager = userManager;
             this.gamingGroupInviteConsumer = gamingGroupInviteConsumer;
             this.gamingGroupSaver = gamingGroupSaver;
-            this.eventTracker = eventTracker;
+            this.userRegisterer = userRegisterer;
         }
 
         //
@@ -82,35 +82,22 @@ namespace UI.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser() { UserName = model.UserName, Email = model.EmailAddress };
-                var result = await userManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
-                {
-                    await SignInAndAssignGamingGroup(model.UserName, user);
+                //var user = new ApplicationUser() { UserName = model.UserName, Email = model.EmailAddress };
+                //var result = await userManager.CreateAsync(user, model.Password);
+                //if (result.Succeeded)
+                //{
+                //    await SignInAndAssignGamingGroup(model.UserName, user);
 
-                    return RedirectToAction(MVC.GamingGroup.ActionNames.Index, "GamingGroup");
-                }
-                else
-                {
-                    AddErrors(result);
-                }
+                //    return RedirectToAction(MVC.GamingGroup.ActionNames.Index, "GamingGroup");
+                //}
+                //else
+                //{
+                //    AddErrors(result);
+                //}
             }
 
             // If we got this far, something failed, redisplay form
-            return View(model);
-        }
-
-        private async Task SignInAndAssignGamingGroup(string userName, ApplicationUser user)
-        {
-            new Task(() => eventTracker.TrackUserRegistration()).Start();
-
-            await SignInAsync(user, isPersistent: false);
-            int? gamingGroupIdToWhichTheUserWasAdded = await gamingGroupInviteConsumer.ConsumeGamingGroupInvitation(user);
-
-            if (!gamingGroupIdToWhichTheUserWasAdded.HasValue)
-            {
-                await gamingGroupSaver.CreateNewGamingGroup(userName + "'s Gaming Group", user);
-            }
+            return View(MVC.Account.Views.Register, model);
         }
 
         //

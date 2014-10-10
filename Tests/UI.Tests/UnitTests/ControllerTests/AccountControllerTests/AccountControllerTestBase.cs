@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.EventTracking;
+using BusinessLogic.Logic.GamingGroups;
 using BusinessLogic.Logic.Users;
 using BusinessLogic.Models.User;
 using Microsoft.AspNet.Identity;
@@ -21,9 +22,9 @@ namespace UI.Tests.UnitTests.ControllerTests.AccountControllerTests
         protected ApplicationUserManager userManager;
         protected IUserStore<ApplicationUser> userStoreMock;
         protected IGamingGroupInviteConsumer gamingGroupInviteConsumerMock;
-        protected INemeStatsEventTracker eventTrackerMock;
+        protected IGamingGroupSaver gamingGroupSaverMock;
+        protected IUserRegisterer userRegistererMock;
         protected AccountController accountControllerPartialMock;
-        //protected ModelStateDictionary modelStateDictionaryMock;
         protected RegisterViewModel registerViewModel;
         protected ApplicationUser newApplicationUser;
 
@@ -32,10 +33,14 @@ namespace UI.Tests.UnitTests.ControllerTests.AccountControllerTests
         {
             userStoreMock = MockRepository.GenerateMock<IUserStore<ApplicationUser>>();
             gamingGroupInviteConsumerMock = MockRepository.GenerateMock<IGamingGroupInviteConsumer>();
-            eventTrackerMock = MockRepository.GenerateMock<INemeStatsEventTracker>();
+            gamingGroupSaverMock = MockRepository.GenerateMock<IGamingGroupSaver>();
+            userRegistererMock = MockRepository.GenerateMock<IUserRegisterer>();
             userManager = new ApplicationUserManager(userStoreMock);
-            accountControllerPartialMock = MockRepository.GeneratePartialMock<AccountController>(userManager, gamingGroupInviteConsumerMock, eventTrackerMock);
-           // modelStateDictionaryMock = MockRepository.GenerateMock<ModelStateDictionary>();
+            accountControllerPartialMock = MockRepository.GeneratePartialMock<AccountController>(
+                userManager, 
+                gamingGroupInviteConsumerMock, 
+                gamingGroupSaverMock,
+                userRegistererMock);
             newApplicationUser = new ApplicationUser()
             {
                 Id = "new application user"

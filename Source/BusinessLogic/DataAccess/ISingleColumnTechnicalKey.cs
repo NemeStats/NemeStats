@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BusinessLogic.DataAccess
 {
-    public interface SingleColumnTechnicalKey<T>
+    public interface ISingleColumnTechnicalKey<T>
     {
         T Id { get; set; }
     }

@@ -47,7 +47,6 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.UserRegistererTest
                 Arg<string>.Is.Equal(newUser.Password)));
         }
 
-        //TODO this is failing because I can't figure out how to create an IdentityResult with .Success == true
         [Test]
         public async Task ItSignsInTheUserAndCreatesANewGamingGroup()
         {
@@ -56,11 +55,10 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.UserRegistererTest
                 UserName = "user name",
                 Email = "the email"
             };
-            IdentityResult result = MockRepository.GenerateMock<IdentityResult>(new string[] { });
-            result.Expect(res => res.Succeeded)
-                .Return(true);
+            IdentityResult result = IdentityResult.Success;
+
             applicationUserManagerMock.Expect(mock => mock.CreateAsync(Arg<ApplicationUser>.Is.Anything, Arg<string>.Is.Anything))
-                .Return(Task.FromResult<IdentityResult>(result));
+                .Return(Task.FromResult(result));
             firstTimeUserAuthenticatorMock.Expect(mock => mock.SignInAndCreateGamingGroup(Arg<ApplicationUser>.Is.Anything))
                 .Return(Task.FromResult(new object()));
 
