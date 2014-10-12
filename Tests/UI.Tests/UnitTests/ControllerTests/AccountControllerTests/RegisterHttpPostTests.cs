@@ -1,4 +1,5 @@
-﻿using BusinessLogic.Models.User;
+﻿using System.Security.Policy;
+using BusinessLogic.Models.User;
 using Microsoft.AspNet.Identity;
 using NUnit.Framework;
 using Rhino.Mocks;
@@ -16,6 +17,21 @@ namespace UI.Tests.UnitTests.ControllerTests.AccountControllerTests
     [TestFixture]
     public class RegisterHttpPostTests : AccountControllerTestBase
     {
+        private RegisterViewModel expectedViewModel;
+
+        [SetUp]
+        public override void SetUp()
+        {
+            base.SetUp();
+
+            expectedViewModel = new RegisterViewModel()
+            {
+                EmailAddress = "email",
+                Password = "password",
+                UserName = "user name"
+            };
+        }
+
         [Test]
         public async Task ItStaysOnTheRegisterPageIfThereAreErrors()
         {
@@ -30,7 +46,6 @@ namespace UI.Tests.UnitTests.ControllerTests.AccountControllerTests
         public async Task ItReloadsTheCurrentRegisterViewModelIfThereAreErrors()
         {
             accountControllerPartialMock.ModelState.AddModelError("key", "an error message");
-            RegisterViewModel expectedViewModel = new RegisterViewModel();
 
             ViewResult result = await accountControllerPartialMock.Register(expectedViewModel) as ViewResult;
 
@@ -40,12 +55,8 @@ namespace UI.Tests.UnitTests.ControllerTests.AccountControllerTests
         [Test]
         public async Task ItRegistersANewUserIfThereAreNoModelErrors()
         {
-            RegisterViewModel expectedViewModel = new RegisterViewModel()
-            {
-                EmailAddress = "email",
-                Password = "password",
-                UserName = "user name"
-            };
+            userRegistererMock.Expect(mock => mock.RegisterUser(Arg<NewUser>.Is.Anything))
+                              .Return(Task.FromResult(IdentityResult.Success));
 
             ViewResult result = await accountControllerPartialMock.Register(expectedViewModel) as ViewResult;
 
@@ -53,6 +64,35 @@ namespace UI.Tests.UnitTests.ControllerTests.AccountControllerTests
                 user => user.Email == expectedViewModel.EmailAddress
                     && user.UserName == expectedViewModel.UserName
                     && user.Password == expectedViewModel.Password)));
+        }
+
+        [Test]
+        public async Task ItRedirectsToTheGamingGroupPageIfTheUserIsSuccessfullyRegistered()
+        {
+            userRegistererMock.Expect(mock => mock.RegisterUser(Arg<NewUser>.Is.Anything))
+                              .Return(Task.FromResult(IdentityResult.Success));
+
+            RedirectToRouteResult result = await accountControllerPartialMock.Register(expectedViewModel) as RedirectToRouteResult;
+
+            Assert.AreEqual(MVC.GamingGroup.ActionNames.Index, result.RouteValues["action"]);
+        }
+
+        [Test]
+        public async Task ItAddsErrorsAndStaysOnThePageIfRegisteringFails()
+        {
+            string errorMessage = "some error message";
+            IdentityResult failureIdentityResult = new IdentityResult(new string[]
+            {
+                errorMessage
+            });
+            userRegistererMock.Expect(mock => mock.RegisterUser(Arg<NewUser>.Is.Anything))
+                              .Return(Task.FromResult(failureIdentityResult));
+
+            ViewResult result = await accountControllerPartialMock.Register(expectedViewModel) as ViewResult;
+
+            Assert.AreSame(expectedViewModel, result.Model);
+            Assert.AreEqual(MVC.Account.Views.Register, result.ViewName);
+            Assert.True(accountControllerPartialMock.ModelState[string.Empty].Errors.Any(error => error.ErrorMessage == errorMessage));
         }
     }
 }

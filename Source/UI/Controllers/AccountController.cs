@@ -15,20 +15,17 @@ namespace UI.Controllers
     public partial class AccountController : Controller
     {
         private ApplicationUserManager userManager;
-        private IGamingGroupInviteConsumer gamingGroupInviteConsumer;
-        private IGamingGroupSaver gamingGroupSaver;
-        private IUserRegisterer userRegisterer;
+        private readonly IUserRegisterer userRegisterer;
+        private readonly IFirstTimeAuthenticator firstTimeAuthenticator;
 
         public AccountController(
             ApplicationUserManager userManager, 
-            IGamingGroupInviteConsumer gamingGroupInviteConsumer,
-            IGamingGroupSaver gamingGroupSaver,
-            IUserRegisterer userRegisterer)
+            IUserRegisterer userRegisterer,
+            IFirstTimeAuthenticator firstTimeAuthenticator)
         {
             this.userManager = userManager;
-            this.gamingGroupInviteConsumer = gamingGroupInviteConsumer;
-            this.gamingGroupSaver = gamingGroupSaver;
             this.userRegisterer = userRegisterer;
+            this.firstTimeAuthenticator = firstTimeAuthenticator;
         }
 
         //
@@ -57,7 +54,7 @@ namespace UI.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError("", "Invalid username or password.");
+                    ModelState.AddModelError(string.Empty, "Invalid username or password.");
                 }
             }
 
@@ -82,18 +79,23 @@ namespace UI.Controllers
         {
             if (ModelState.IsValid)
             {
-                //var user = new ApplicationUser() { UserName = model.UserName, Email = model.EmailAddress };
-                //var result = await userManager.CreateAsync(user, model.Password);
-                //if (result.Succeeded)
-                //{
-                //    await SignInAndAssignGamingGroup(model.UserName, user);
+                NewUser newUser = new NewUser
+                {
+                    Email = model.EmailAddress,
+                    UserName = model.UserName,
+                    Password = model.Password
+                };
 
-                //    return RedirectToAction(MVC.GamingGroup.ActionNames.Index, "GamingGroup");
-                //}
-                //else
-                //{
-                //    AddErrors(result);
-                //}
+                IdentityResult result = await this.userRegisterer.RegisterUser(newUser);
+
+                if (result.Succeeded)
+                {
+                    return RedirectToAction(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name);
+                }
+                else
+                {
+                    AddErrors(result);
+                }
             }
 
             // If we got this far, something failed, redisplay form
@@ -286,7 +288,7 @@ namespace UI.Controllers
                     result = await userManager.AddLoginAsync(user.Id, info.Login);
                     if (result.Succeeded)
                     {
-                        await SignInAndAssignGamingGroup(model.UserName, user);
+                        await firstTimeAuthenticator.SignInAndCreateGamingGroup(user);
 
                         return RedirectToAction(MVC.GamingGroup.ActionNames.Index, "GamingGroup");
                     }

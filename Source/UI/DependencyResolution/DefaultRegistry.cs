@@ -15,6 +15,9 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Net;
+using Microsoft.Owin.Security;
+
 namespace UI.DependencyResolution {
     using BusinessLogic.DataAccess;
     using BusinessLogic.DataAccess.GamingGroups;
@@ -37,6 +40,8 @@ namespace UI.DependencyResolution {
     using UniversalAnalyticsHttpWrapper;
     using StructureMap.Web;
     using BusinessLogic.Logic.Nemeses;
+    using System.Web;
+    using Microsoft.Owin;
 	
     public class DefaultRegistry : Registry {
         #region Constructors and Destructors
@@ -53,6 +58,7 @@ namespace UI.DependencyResolution {
             For<DbContext>().HttpContextScoped().Use<NemeStatsDbContext>();
             For<IDataContext>().HttpContextScoped().Use<NemeStatsDataContext>();
             For<ApplicationUserManager>().HttpContextScoped().Use<ApplicationUserManager>();
+            For<IAuthenticationManager>().Use(() => HttpContext.Current.GetOwinContext().Authentication);
 
             //transient scope
             For<IGamingGroupSaver>().Use<GamingGroupSaver>();
@@ -103,6 +109,7 @@ namespace UI.DependencyResolution {
 
             For<IUserRegisterer>().Use<UserRegisterer>();
 
+            For<IFirstTimeAuthenticator>().Use<FirstTimeAuthenticator>();
 
             //singleton scope
 

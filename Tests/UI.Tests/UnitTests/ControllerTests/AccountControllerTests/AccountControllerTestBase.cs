@@ -22,25 +22,24 @@ namespace UI.Tests.UnitTests.ControllerTests.AccountControllerTests
         protected ApplicationUserManager userManager;
         protected IUserStore<ApplicationUser> userStoreMock;
         protected IGamingGroupInviteConsumer gamingGroupInviteConsumerMock;
-        protected IGamingGroupSaver gamingGroupSaverMock;
         protected IUserRegisterer userRegistererMock;
+        protected IFirstTimeAuthenticator firstTimeAuthenticator;
         protected AccountController accountControllerPartialMock;
         protected RegisterViewModel registerViewModel;
         protected ApplicationUser newApplicationUser;
 
         [SetUp]
-        public void SetUp()
+        public virtual void SetUp()
         {
             userStoreMock = MockRepository.GenerateMock<IUserStore<ApplicationUser>>();
             gamingGroupInviteConsumerMock = MockRepository.GenerateMock<IGamingGroupInviteConsumer>();
-            gamingGroupSaverMock = MockRepository.GenerateMock<IGamingGroupSaver>();
             userRegistererMock = MockRepository.GenerateMock<IUserRegisterer>();
+            firstTimeAuthenticator = MockRepository.GenerateMock<IFirstTimeAuthenticator>();
             userManager = new ApplicationUserManager(userStoreMock);
             accountControllerPartialMock = MockRepository.GeneratePartialMock<AccountController>(
-                userManager, 
-                gamingGroupInviteConsumerMock, 
-                gamingGroupSaverMock,
-                userRegistererMock);
+                userManager,
+                userRegistererMock,
+                firstTimeAuthenticator);
             newApplicationUser = new ApplicationUser()
             {
                 Id = "new application user"
