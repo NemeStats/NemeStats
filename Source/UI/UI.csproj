@@ -457,6 +457,7 @@
     <Content Include="Views\Account\ResetPasswordConfirmation.cshtml" />
     <Content Include="Views\Account\SendCode.cshtml" />
     <Content Include="Views\Account\VerifyCode.cshtml" />
+    <Content Include="Views\Account\ConfirmEmail.cshtml" />
     <None Include="Web.Jake.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

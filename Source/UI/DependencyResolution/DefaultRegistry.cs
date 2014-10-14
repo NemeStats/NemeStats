@@ -91,11 +91,12 @@ namespace UI.DependencyResolution {
 
             For<IEventTracker>().Use<EventTracker>();
 
-            For<IUniversalAnalyticsEvent>().Use<UniversalAnalyticsEvent>();
+            //TODO should never be injected by the IoC... need to confirm
+            //For<IUniversalAnalyticsEvent>().Use<UniversalAnalyticsEvent>();
 
             For<IUniversalAnalyticsEventFactory>().Use<UniversalAnalyticsEventFactory>();
 
-            For<IConfigurationManager>().Use<ConfigurationManager>();
+            For<IConfigurationManager>().Use(() => ConfigurationManager.Instance);
 
             For<IPlayerSaver>().Use<PlayerSaver>();
 

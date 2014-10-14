@@ -337,6 +337,8 @@ namespace UI.Controllers
         }
 
         #region Helpers
+
+        //TODO this should be injected by the IoC
         // Used for XSRF protection when adding external logins
         private const string XsrfKey = "XsrfId";
 
@@ -463,6 +465,18 @@ namespace UI.Controllers
         public virtual ActionResult ForgotPasswordConfirmation()
         {
             return View();
+        }
+
+        // GET: /Account/ConfirmEmail
+        [AllowAnonymous]
+        public async Task<ActionResult> ConfirmEmail(string userId, string code)
+        {
+            if (userId == null || code == null)
+            {
+                return View("Error");
+            }
+            var result = await userManager.ConfirmEmailAsync(userId, code);
+            return View(result.Succeeded ? "ConfirmEmail" : "Error");
         }
 
         //
