@@ -1,6 +1,7 @@
 ﻿using System.Configuration;
 using System.Configuration.Abstractions;
 using System.Net.Mime;
+using System.Web;
 using BusinessLogic.EventTracking;
 using BusinessLogic.Logic.GamingGroups;
 using BusinessLogic.Logic.Users;
@@ -80,7 +81,10 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.FirstTimeAuthentic
             applicationUserManagerMock.Expect(mock => mock.GenerateEmailConfirmationTokenAsync(applicationUser.Id))
                                       .Return(Task.FromResult(confirmationToken));
 
-            string expectedCallbackUrl = callbackUrl + string.Format(FirstTimeAuthenticator.CONFIRMATION_EMAIL_CALLBACK_URL_SUFFIX, applicationUser.Id, confirmationToken);
+            string expectedCallbackUrl = callbackUrl + string.Format(
+                FirstTimeAuthenticator.CONFIRMATION_EMAIL_CALLBACK_URL_SUFFIX, 
+                applicationUser.Id, 
+                HttpUtility.UrlEncode(confirmationToken));
             string expectedEmailBody = string.Format(FirstTimeAuthenticator.CONFIRMATION_EMAIL_BODY, expectedCallbackUrl);
             applicationUserManagerMock.Expect(mock => mock.SendEmailAsync(
                                                                           applicationUser.Id,
