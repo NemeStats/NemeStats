@@ -2,33 +2,29 @@
 
 @if (Model.Count > 0)
 {
-    <h4>Registered Logins</h4>
-    <table class="table">
-        <tbody>
-            @foreach (var account in Model)
+    <h4>Registered Logins</h4>        
+    foreach (var account in Model)
+    {
+    <div class="row">
+        <div class="col-md-8 col-sm-6" style="padding-top: 7px">@account.LoginProvider</div>
+        <div class="col-md-4 col-sm-6">
+            @if (ViewBag.ShowRemoveButton)
             {
-                <tr>
-                    <td>@account.LoginProvider</td>
-                    <td>
-                        @if (ViewBag.ShowRemoveButton)
-                        {
-                            using (Html.BeginForm("Disassociate", "Account"))
-                            {
-                            @Html.AntiForgeryToken()
-                            <div>
-                                @Html.Hidden("loginProvider", account.LoginProvider)
-                                @Html.Hidden("providerKey", account.ProviderKey)
-                                <input type="submit" class="btn btn-default" value="Remove" title="Remove this @account.LoginProvider login from your account" />
-                            </div>
-                            }
-                        }
-                        else
-                        {
-                            @: &nbsp;
-                        }
-                    </td>
-                </tr>
+                using (Html.BeginForm("Disassociate", "Account"))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.Hidden("loginProvider", account.LoginProvider)
+                    @Html.Hidden("providerKey", account.ProviderKey)
+                    <button type="submit" class="btn btn-danger" title="Remove this @account.LoginProvider login from your account">
+                        <i class="fa fa-times-circle"></i> Remove
+                    </button>
+                }
             }
-        </tbody>
-    </table>
+            else
+            {
+                @: &nbsp;
+            }
+        </div>
+    </div>
+    }
 }

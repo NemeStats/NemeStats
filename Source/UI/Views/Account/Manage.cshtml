@@ -11,32 +11,71 @@
 <p class="text-success">@ViewBag.StatusMessage</p>
 <div class="row">
     <div class="col-md-12">
-        @if (ViewBag.HasLocalPassword)
-        {
-            @Html.Partial("_ChangePasswordPartial")
-        }
-        else
-        {
-            @Html.Partial("_SetPasswordPartial")
-        }
-
-        <br/>
-        <div class="form-group">
-            @Html.LabelFor(m => m.EmailAddress, new { @class = "col-md-2 control-label" })
-            <div class="col-md-10">
-                @Html.TextBoxFor(m => m.EmailAddress, new { @class = "form-control" })
+        <p>You're logged in as <strong>@User.Identity.GetUserName()</strong>.</p>
+        <ul class="nav nav-tabs" role="tablist">
+            @if (ViewBag.HasLocalPassword)
+            { 
+            <li class="active">
+                <a href="#login-password" role="tab" data-toggle="tab">Change Password</a>
+            </li>
+            }
+            else
+            {
+            <li class="active">
+                <a href="#login-password" role="tab" data-toggle="tab">Create Local Login</a>
+            </li>
+            }
+            <li>
+                <a href="#email" role="tab" data-toggle="tab">Change Email</a>
+            </li>
+            <li>
+                <a href="#registered-logins" role="tab" data-toggle="tab">Registered Logins</a>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane fade in active" id="login-password">
+                @if (ViewBag.HasLocalPassword)
+                {
+                    @Html.Partial("_ChangePasswordPartial")
+                }
+                else
+                {
+                    @Html.Partial("_SetPasswordPartial")
+                }
+            </div>
+            <div class="tab-pane fade" id="email">
+                <div class="panel panel-default panel-tab-content">
+                    <div class="panel-body">
+                        <!-- Adding a horizontal form div just to keep the styling consistent with the looks of the other pages. This should be
+               removed once the form is implemented. -->
+                        <div class="form-horizontal">
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.EmailAddress, new { @class = "col-md-3 control-label" })
+                                <div class="col-md-9">
+                                    @Html.TextBoxFor(m => m.EmailAddress, new { @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-offset-3 col-md-9">
+                                    <input type="submit" value="Update Email Address" class="btn btn-default" onclick='alert("Not implemented yet!"); return false;' />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="registered-logins">
+                <div class="panel panel-default panel-tab-content">
+                    <div class="panel-body">
+                        <section id="externalLogins">
+                            @Html.Action("RemoveAccountList")
+                            <hr /><br />
+                            @Html.Partial("_ExternalLoginsListPartial", new { Action = "LinkLogin", ReturnUrl = ViewBag.ReturnUrl })
+                        </section>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Update Email Address" class="btn btn-default" onclick='alert("Not implemented yet!"); return false;' />
-            </div>
-        </div>
-        <br/><br/><br/>
-        <section id="externalLogins">
-            @Html.Action("RemoveAccountList")
-            @Html.Partial("_ExternalLoginsListPartial", new { Action = "LinkLogin", ReturnUrl = ViewBag.ReturnUrl })
-        </section>
     </div>
 </div>
 @section Scripts {
