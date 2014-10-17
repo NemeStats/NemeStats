@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using RollbarSharp;
 using UI.Models.Home;
 using UI.Models.Players;
 using UI.Transformations.PlayerTransformations;
@@ -35,6 +36,7 @@ namespace UI.Controllers
 
         public virtual ActionResult Index()
         {
+            (new RollbarClient()).SendException(new Exception("test from home controller"));
             List<TopPlayer> topPlayers = playerSummaryBuilder.GetTopPlayers(NUMBER_OF_TOP_PLAYERS_TO_SHOW);
             List<TopPlayerViewModel> topPlayerViewModels = new List<TopPlayerViewModel>();
             foreach(TopPlayer topPlayer in topPlayers)
