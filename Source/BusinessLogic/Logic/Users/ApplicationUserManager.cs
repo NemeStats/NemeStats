@@ -52,12 +52,7 @@ namespace BusinessLogic.Logic.Users
             });
             this.EmailService = new EmailService();
             this.SmsService = new SmsService();
-            var dataProtectionProvider = new Microsoft.Owin.Security.DataProtection.DpapiDataProtectionProvider("NemeStats");
-            if (dataProtectionProvider != null)
-            {
-                this.UserTokenProvider =
-                    new DataProtectorTokenProvider<ApplicationUser>(dataProtectionProvider.Create("ASP.NET Identity"));
-            }
+            this.UserTokenProvider = this.UserTokenProvider = new EmailTokenProvider<ApplicationUser, string>();
         }
     }
 }
