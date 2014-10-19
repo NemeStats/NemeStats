@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.DataAccess;
+using BusinessLogic.Logic.Nemeses;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Nemeses;
 using BusinessLogic.Models.Players;
@@ -10,11 +11,15 @@ namespace BusinessLogic.Logic.Players
 {
     public class PlayerRetriever : BusinessLogic.Logic.Players.IPlayerRetriever
     {
-        private IDataContext dataContext;
+        public const int NUMBER_OF_PREVIOUS_NEMESES_TO_RETURN = 2;
 
-        public PlayerRetriever(DataAccess.IDataContext dataContext)
+        private readonly IDataContext dataContext;
+        private readonly INemesisHistoryRetriever nemesisHistoryRetriever;
+
+        public PlayerRetriever(DataAccess.IDataContext dataContext, INemesisHistoryRetriever nemesisHistoryRetriever)
         {
             this.dataContext = dataContext;
+            this.nemesisHistoryRetriever = nemesisHistoryRetriever;
         }
 
         internal IQueryable<Player> GetAllPlayersInGamingGroupQueryable(int gamingGroupId)
@@ -40,16 +45,23 @@ namespace BusinessLogic.Logic.Players
                                         .ToList();
         }
 
-        public virtual PlayerDetails GetPlayerDetails(int playerID, int numberOfRecentGamesToRetrieve)
+        public virtual PlayerDetails GetPlayerDetails(int playerId, int numberOfRecentGamesToRetrieve)
         {
-            Player returnPlayer = dataContext.FindById<Player>(playerID);
+            Player returnPlayer = dataContext.FindById<Player>(playerId);
 
-            PlayerStatistics playerStatistics = GetPlayerStatistics(playerID);
+            PlayerStatistics playerStatistics = GetPlayerStatistics(playerId);
 
-            List<PlayerGameResult> playerGameResults = GetPlayerGameResultsWithPlayedGameAndGameDefinition(playerID, numberOfRecentGamesToRetrieve);
+            List<PlayerGameResult> playerGameResults = GetPlayerGameResultsWithPlayedGameAndGameDefinition(playerId, numberOfRecentGamesToRetrieve);
 
-            Nemesis nemesis = RetrieveNemesis(returnPlayer.NemesisId);
+            NemesisHistoryData nemesisHistoryData = nemesisHistoryRetriever.GetNemesisHistory(playerId, NUMBER_OF_PREVIOUS_NEMESES_TO_RETURN);
 
+            Nemesis currentNemesis = nemesisHistoryData.CurrentNemesis;
+            Nemesis previousNemesis = null;
+            if (nemesisHistoryData.PreviousNemeses.Count > 0)
+            {
+                previousNemesis = nemesisHistoryData.PreviousNemeses[0];
+            }
+ 
             List<Player> minions = GetMinions(returnPlayer.Id);
 
             PlayerDetails playerDetails = new PlayerDetails()
@@ -60,7 +72,8 @@ namespace BusinessLogic.Logic.Players
                 GamingGroupId = returnPlayer.GamingGroupId,
                 PlayerGameResults = playerGameResults,
                 PlayerStats = playerStatistics,
-                PlayerNemesis = nemesis,
+                CurrentNemesis = currentNemesis,
+                PreviousNemesis = previousNemesis,
                 Minions = minions
             };
 
@@ -112,21 +125,6 @@ namespace BusinessLogic.Logic.Players
                     .Average(game => (int?)game.NumberOfPlayers) ?? 0F;
 
             return playerStatistics;
-        }
-
-        private Nemesis RetrieveNemesis(int? nemesisId)
-        {
-            Nemesis nemesis;
-            if (nemesisId.HasValue)
-            {
-                nemesis = dataContext.FindById<Nemesis>(nemesisId.Value);
-                nemesis.NemesisPlayer = dataContext.FindById<Player>(nemesis.NemesisPlayerId);
-            }
-            else
-            {
-                nemesis = new NullNemesis();
-            }
-            return nemesis;
         }
     }
 }

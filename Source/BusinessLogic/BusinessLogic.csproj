@@ -137,7 +137,9 @@
     <Compile Include="Exceptions\EntityDoesNotExistException.cs" />
     <Compile Include="Exceptions\UnauthorizedEntityAccessException.cs" />
     <Compile Include="Logic\Email\EmailService.cs" />
+    <Compile Include="Logic\Nemeses\INemesisHistoryRetriever.cs" />
     <Compile Include="Logic\Nemeses\INemesisRecalculator.cs" />
+    <Compile Include="Logic\Nemeses\NemesisHistoryRetriever.cs" />
     <Compile Include="Logic\Nemeses\NemesisRecalculator.cs" />
     <Compile Include="Logic\GameDefinitions\IGameDefinitionSaver.cs" />
     <Compile Include="Logic\GameDefinitions\GameDefinitionSaver.cs" />
@@ -249,6 +251,7 @@
     <Compile Include="Models\GamingGroup.cs" />
     <Compile Include="Models\GamingGroupInvitation.cs" />
     <Compile Include="Models\Nemeses\NemesisData.cs" />
+    <Compile Include="Models\Nemeses\NemesisHistoryData.cs" />
     <Compile Include="Models\Nemeses\NullNemesisData.cs" />
     <Compile Include="Models\Nemesis.cs" />
     <Compile Include="Models\NullNemesis.cs" />

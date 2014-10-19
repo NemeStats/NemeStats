@@ -3,6 +3,7 @@ using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.Logic;
 using BusinessLogic.Logic.Players;
 using BusinessLogic.Models;
+using BusinessLogic.Models.Nemeses;
 using BusinessLogic.Models.Players;
 using BusinessLogic.Models.User;
 using NUnit.Framework;
@@ -12,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BusinessLogic.Logic.Nemeses;
 
 namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverTests
 {
@@ -19,10 +21,12 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
     public class GetPlayerDetailsTests
     {
         private IDataContext dataContextMock;
+        private INemesisHistoryRetriever nemesisHistoryRetrieverMock;
         private PlayerRetriever playerRetrieverPartialMock;
         private Player player;
         private int numberOfRecentGames = 1;
-        private Nemesis nemesis;
+        private Nemesis expectedNemesis;
+        private Nemesis expectedPriorNemesis;
         private List<Player> minions;
         private ApplicationUser currentUser;
 
@@ -35,7 +39,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
                 CurrentGamingGroupId = 15151
             };
             dataContextMock = MockRepository.GenerateMock<IDataContext>();
-            playerRetrieverPartialMock = MockRepository.GeneratePartialMock<PlayerRetriever>(dataContextMock);
+            nemesisHistoryRetrieverMock = MockRepository.GenerateMock<INemesisHistoryRetriever>();
+            playerRetrieverPartialMock = MockRepository.GeneratePartialMock<PlayerRetriever>(dataContextMock, nemesisHistoryRetrieverMock);
             player = new Player()
             {
                 Id = 1351,
@@ -61,22 +66,41 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
             playerRetrieverPartialMock.Expect(mock => mock.GetMinions(player.Id))
                 .Return(minions);
 
-            nemesis = new Nemesis()
+            expectedNemesis = new Nemesis()
             {
-                NemesisPlayerId = 151541
+                NemesisPlayerId = 8888
             };
-            dataContextMock.Expect(mock => mock.FindById<Nemesis>(player.NemesisId))
-                .Return(nemesis);
+            expectedNemesis = new Nemesis()
+            {
+                NemesisPlayerId = 9999
+            };
+
+            NemesisHistoryData nemesisHistoryData = new NemesisHistoryData
+            {
+                CurrentNemesis = expectedNemesis,
+                PreviousNemeses = new List<Nemesis>() { expectedPriorNemesis }
+            };
+
+            nemesisHistoryRetrieverMock.Expect(mock => mock.GetNemesisHistory(player.Id, PlayerRetriever.NUMBER_OF_PREVIOUS_NEMESES_TO_RETURN))
+                                       .Return(nemesisHistoryData);
         }
 
         //TODO need tests for the transformation... which should probably be refactored into a different class
 
         [Test]
-        public void ItSetsThePlayersNemesis()
+        public void ItSetsTheCurrentNemesis()
         {
             PlayerDetails playerDetails = playerRetrieverPartialMock.GetPlayerDetails(player.Id, numberOfRecentGames);
 
-            Assert.AreEqual(nemesis, playerDetails.PlayerNemesis);
+            Assert.AreSame(expectedNemesis, playerDetails.CurrentNemesis);
+        }
+
+        [Test]
+        public void ItSetsThePreviousNemesis()
+        {
+            PlayerDetails playerDetails = playerRetrieverPartialMock.GetPlayerDetails(player.Id, numberOfRecentGames);
+
+            Assert.AreSame(expectedPriorNemesis, playerDetails.PreviousNemesis);
         }
 
         [Test]

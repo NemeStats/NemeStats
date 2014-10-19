@@ -42,7 +42,7 @@ namespace UI.Transformations.PlayerTransformations
 
             PopulatePlayerGameSummaries(playerDetails, playerDetailsViewModel);
 
-            PopulateNemesisData(playerDetails.PlayerNemesis, playerDetailsViewModel);
+            PopulateNemesisData(playerDetails.CurrentNemesis, playerDetailsViewModel);
 
             playerDetailsViewModel.Minions = (from Player player in playerDetails.Minions
                                               select minionViewModelBuilder.Build(player)).ToList();

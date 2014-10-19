@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.DataAccess;
+using BusinessLogic.Logic.Nemeses;
 using BusinessLogic.Logic.Players;
 using BusinessLogic.Models;
 using NUnit.Framework;
@@ -15,6 +16,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
     {
         internal PlayerRetriever playerRetriever;
         internal IDataContext dataContextMock;
+        internal INemesisHistoryRetriever nemesisHistoryRetriever;
         internal IQueryable<Player> playerQueryable;
         internal int gamingGroupId = 558585;
 
@@ -22,7 +24,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
         public void SetUp()
         {
             dataContextMock = MockRepository.GenerateMock<IDataContext>();
-            playerRetriever = new PlayerRetriever(dataContextMock);
+            nemesisHistoryRetriever = MockRepository.GenerateMock<INemesisHistoryRetriever>();
+            playerRetriever = new PlayerRetriever(dataContextMock, nemesisHistoryRetriever);
 
             List<Player> players = new List<Player>()
             {

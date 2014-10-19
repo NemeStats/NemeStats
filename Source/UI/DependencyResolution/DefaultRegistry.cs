@@ -17,6 +17,7 @@
 
 using System.Net;
 using Microsoft.Owin.Security;
+using BusinessLogic.Logic.Nemeses;
 
 namespace UI.DependencyResolution {
     using BusinessLogic.DataAccess;
@@ -90,6 +91,7 @@ namespace UI.DependencyResolution {
             For<INemeStatsEventTracker>().Use<UniversalAnalyticsNemeStatsEventTracker>();
 
             For<IEventTracker>().Use<EventTracker>();
+            For<INemesisHistoryRetriever>().Use<NemesisHistoryRetriever>();
 
             //TODO should never be injected by the IoC... need to confirm
             //For<IUniversalAnalyticsEvent>().Use<UniversalAnalyticsEvent>();
