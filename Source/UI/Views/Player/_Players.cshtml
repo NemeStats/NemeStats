@@ -19,7 +19,7 @@
                                 Player Name
                             </th>
                             <th class="col-md-5">
-                                Previous/Current Nemesis
+                                Nemesis
                             </th>
                             <th class="col-md-1">
 
@@ -34,14 +34,6 @@
                                     @Html.ActionLink(item.PlayerName, MVC.Player.Details(item.PlayerId, null))
                                 </td>
                                 <td>
-                                    @if (item.PreviousNemesisPlayerId.HasValue)
-                                    {
-                                        <span style="text-decoration: line-through">
-                                            @Html.ActionLink(item.PreviousNemesisPlayerName, MVC.Player.Details(item.PreviousNemesisPlayerId, null));
-                                        </span> 
-                                        @:<br/>
-                                    }
-                                    
                                     @if (item.NemesisPlayerId.HasValue) 
                                     {
                                         @Html.ActionLink(item.NemesisPlayerName , MVC.Player.Details(item.NemesisPlayerId, null));

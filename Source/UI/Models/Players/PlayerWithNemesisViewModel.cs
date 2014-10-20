@@ -8,7 +8,5 @@ namespace UI.Models.Players
         public string PlayerName { get; set; }
         public int? NemesisPlayerId { get; set; }
         public string NemesisPlayerName { get; set; }
-        public int? PreviousNemesisPlayerId { get; set; }
-        public string PreviousNemesisPlayerName { get; set; }
     }
 }

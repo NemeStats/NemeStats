@@ -10,8 +10,8 @@ namespace BusinessLogic.Logic.Nemeses
 {
     public class NemesisRecalculator : INemesisRecalculator
     {
-        private readonly IDataContext dataContext;
-        private readonly IPlayerRepository playerRepository;
+        private IDataContext dataContext;
+        private IPlayerRepository playerRepository;
 
         public NemesisRecalculator(IDataContext dataContext, IPlayerRepository playerRepository)
         {
@@ -69,7 +69,6 @@ namespace BusinessLogic.Logic.Nemeses
             {
                 savedNemesis = dataContext.Save<Nemesis>(newNemesis, currentUser);
                 dataContext.CommitAllChanges();
-                minionPlayer.PreviousNemesisId = minionPlayer.NemesisId;
                 minionPlayer.NemesisId = savedNemesis.Id;
                 dataContext.Save<Player>(minionPlayer, currentUser);
             }
@@ -94,7 +93,6 @@ namespace BusinessLogic.Logic.Nemeses
         {
             if (minionPlayer.NemesisId != null)
             {
-                minionPlayer.PreviousNemesisId = minionPlayer.NemesisId;
                 minionPlayer.NemesisId = null;
                 dataContext.Save<Player>(minionPlayer, currentUser);
             }
