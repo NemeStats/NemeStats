@@ -1,8 +1,5 @@
-﻿using BusinessLogic.DataAccess;
-using BusinessLogic.DataAccess.Repositories;
-using BusinessLogic.Models;
+﻿using BusinessLogic.Models;
 using BusinessLogic.Models.Players;
-using BusinessLogic.Models.User;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System.Collections.Generic;
@@ -11,8 +8,6 @@ using System.Web.Mvc;
 using UI.Controllers;
 using UI.Models.PlayedGame;
 using UI.Models.Players;
-using UI.Transformations;
-using UI.Transformations.PlayerTransformations;
 
 namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
 {

@@ -1,14 +1,7 @@
 ﻿using NUnit.Framework;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BusinessLogic.Logic.Players;
-using BusinessLogic.DataAccess;
-using Rhino.Mocks;
 using BusinessLogic.Models;
-using BusinessLogic.Models.User;
 
 namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverTests
 {

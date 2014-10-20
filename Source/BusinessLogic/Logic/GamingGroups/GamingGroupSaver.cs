@@ -1,18 +1,12 @@
 ﻿using BusinessLogic.DataAccess;
-using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.EventTracking;
 using BusinessLogic.Logic.GameDefinitions;
 using BusinessLogic.Logic.Players;
 using BusinessLogic.Logic.Users;
 using BusinessLogic.Models;
 using BusinessLogic.Models.User;
-using Microsoft.AspNet.Identity;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using UniversalAnalyticsHttpWrapper;
 
 namespace BusinessLogic.Logic.GamingGroups
 {
