@@ -94,6 +94,35 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.NemesesTests.NemesisRecalclat
         }
 
         [Test]
+        public void ItSetsThePreviousNemesisIfTheCurrentOneChanges()
+        {
+            NemesisData nemesisData = new NemesisData() { NemesisPlayerId = -1 };
+            playerRepositoryMock.Expect(mock => mock.GetNemesisData(playerId))
+                            .Return(nemesisData);
+
+            dataContextMock.Expect(mock => mock.GetQueryable<Nemesis>())
+                .Return(new List<Nemesis>().AsQueryable());
+
+            nemesisRecalculator.RecalculateNemesis(playerId, currentUser);
+
+            dataContextMock.AssertWasCalled(mock => mock.Save<Player>(
+                Arg<Player>.Matches(player => player.PreviousNemesisId == existingNemesisId), Arg<ApplicationUser>.Is.Same(currentUser)));
+        }
+
+        [Test]
+        public void ItSetsThePreviousNemesisIfTheCurrentOneIsCleared()
+        {
+            playerRepositoryMock.Expect(mock => mock.GetNemesisData(playerId))
+                            .Return(new NullNemesisData());
+
+            nemesisRecalculator.RecalculateNemesis(playerId, currentUser);
+
+            dataContextMock.AssertWasCalled(mock => mock.Save<Player>(
+                Arg<Player>.Matches(player => player.PreviousNemesisId == existingNemesisId),
+                Arg<ApplicationUser>.Is.Anything));
+        }
+
+        [Test]
         public void ItDoesntBotherSavingTheNemesisIfNothingHasChanged()
         {
             int nemesisPlayerId = 1;

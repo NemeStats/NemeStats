@@ -1,6 +1,7 @@
 ﻿using BusinessLogic.DataAccess;
 using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.Logic;
+using BusinessLogic.Logic.Nemeses;
 using BusinessLogic.Logic.Players;
 using BusinessLogic.Models;
 using NUnit.Framework;
@@ -17,11 +18,13 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
     {
         private IDataContext dataContext;
         private PlayerRetriever playerRetriever;
+        private INemesisHistoryRetriever nemesisHistoryRetriever;
 
         [SetUp]
         public void TestSetUp()
         {
             dataContext = new NemeStatsDataContext();
+            nemesisHistoryRetriever = new NemesisHistoryRetriever(dataContext);
             playerRetriever = new PlayerRetriever(dataContext);
         }
 
