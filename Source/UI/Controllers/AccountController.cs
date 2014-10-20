@@ -126,8 +126,7 @@ namespace UI.Controllers
         public virtual ActionResult Manage(ManageMessageId? message)
         {
             ViewBag.StatusMessage =
-                message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
-                : message == ManageMessageId.SetPasswordSuccess ? "Your password has been set."
+                message == ManageMessageId.UpdateAccountInformationSuccess ? "Your account information has been updated."
                 : message == ManageMessageId.RemoveLoginSuccess ? "The external login was removed."
                 : message == ManageMessageId.Error ? "An error has occurred."
                 : "";
@@ -154,14 +153,16 @@ namespace UI.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    IdentityResult result = await userManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
-                    if (result.Succeeded)
+                    IdentityResult passwordResult = await userManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
+                    IdentityResult emailResult = await userManager.SetEmailAsync(User.Identity.GetUserId(), model.EmailAddress);
+                    if (passwordResult.Succeeded && emailResult.Succeeded)
                     {
-                        return RedirectToAction("Manage", new { Message = ManageMessageId.ChangePasswordSuccess });
+                        return RedirectToAction("Manage", new { Message = ManageMessageId.UpdateAccountInformationSuccess });
                     }
                     else
                     {
-                        AddErrors(result);
+                        AddErrors(passwordResult);
+                        AddErrors(emailResult);
                     }
                 }
             }
@@ -179,7 +180,7 @@ namespace UI.Controllers
                     IdentityResult result = await userManager.AddPasswordAsync(User.Identity.GetUserId(), model.NewPassword);
                     if (result.Succeeded)
                     {
-                        return RedirectToAction("Manage", new { Message = ManageMessageId.SetPasswordSuccess });
+                        return RedirectToAction("Manage", new { Message = ManageMessageId.UpdateAccountInformationSuccess });
                     }
                     else
                     {
@@ -377,8 +378,7 @@ namespace UI.Controllers
 
         public enum ManageMessageId
         {
-            ChangePasswordSuccess,
-            SetPasswordSuccess,
+            UpdateAccountInformationSuccess,
             RemoveLoginSuccess,
             Error
         }
