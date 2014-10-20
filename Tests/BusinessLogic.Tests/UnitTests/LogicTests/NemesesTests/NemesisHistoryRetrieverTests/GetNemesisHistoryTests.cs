@@ -106,6 +106,14 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.NemesesTests.NemesisHistoryRe
         }
 
         [Test]
+        public void ItPopulatesTheMinionPlayerData()
+        {
+            NemesisHistoryData historyData = nemesisHistoryRetriever.GetNemesisHistory(playerIdUnderTest, 5);
+
+            Assert.NotNull(historyData.CurrentNemesis.MinionPlayer);
+        }
+
+        [Test]
         public void ItOnlyRetrievesTheSpecifiedNumberOfNemeses()
         {
             int numberOfHistoricalRecords = 1;

@@ -23,7 +23,7 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
             using (IDataContext dataContext = new NemeStatsDataContext())
             {
                 INemesisHistoryRetriever nemesisHistoryRetriever = new NemesisHistoryRetriever(dataContext);
-                IPlayerRetriever playerRetriever = new PlayerRetriever(dataContext, nemesisHistoryRetriever);
+                IPlayerRetriever playerRetriever = new PlayerRetriever(dataContext);
                 PlayerStatistics playerStatistics = playerRetriever.GetPlayerStatistics(testPlayer1.Id);
                 int totalGamesForPlayer1 = testPlayedGames
                         .Count(playedGame => playedGame.PlayerGameResults
@@ -38,7 +38,7 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
             using (IDataContext dataContext = new NemeStatsDataContext())
             {
                 INemesisHistoryRetriever nemesisHistoryRetriever = new NemesisHistoryRetriever(dataContext);
-                IPlayerRetriever playerRetriever = new PlayerRetriever(dataContext, nemesisHistoryRetriever); 
+                IPlayerRetriever playerRetriever = new PlayerRetriever(dataContext); 
                 PlayerStatistics playerStatistics = playerRetriever.GetPlayerStatistics(testPlayer1.Id);
 
                 int totalPoints = 0;
@@ -61,7 +61,7 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
             using (IDataContext dataContext = new NemeStatsDataContext())
             {
                 INemesisHistoryRetriever nemesisHistoryRetriever = new NemesisHistoryRetriever(dataContext);
-                IPlayerRetriever playerRetriever = new PlayerRetriever(dataContext, nemesisHistoryRetriever); 
+                IPlayerRetriever playerRetriever = new PlayerRetriever(dataContext); 
                 PlayerStatistics playerStatistics = playerRetriever.GetPlayerStatistics(testPlayer1.Id);
 
                 float averagePlayersPerGame = (float)testPlayedGames.Where(game => game.PlayerGameResults.Any(result => result.PlayerId == testPlayer1.Id))

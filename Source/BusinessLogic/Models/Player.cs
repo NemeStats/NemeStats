@@ -27,9 +27,11 @@ namespace BusinessLogic.Models
         public string Name { get; set; }
         public bool Active { get; set; }
         public int? NemesisId { get; set; }
+        public int? PreviousNemesisId { get; set; }
 
         public virtual GamingGroup GamingGroup { get; set; }
         public virtual Nemesis Nemesis { get; set; }
+        public virtual Nemesis PreviousNemesis { get; set; }
         public virtual IList<PlayerGameResult> PlayerGameResults { get; set; }
     }
 }

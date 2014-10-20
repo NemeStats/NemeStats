@@ -11,15 +11,12 @@ namespace BusinessLogic.Logic.Players
 {
     public class PlayerRetriever : BusinessLogic.Logic.Players.IPlayerRetriever
     {
-        public const int NUMBER_OF_PREVIOUS_NEMESES_TO_RETURN = 2;
-
         private readonly IDataContext dataContext;
-        private readonly INemesisHistoryRetriever nemesisHistoryRetriever;
+        public const string EXCEPTION_MESSAGE_PLAYER_COULD_NOT_BE_FOUND = "Could not find player with Id: {0}";
 
-        public PlayerRetriever(DataAccess.IDataContext dataContext, INemesisHistoryRetriever nemesisHistoryRetriever)
+        public PlayerRetriever(DataAccess.IDataContext dataContext)
         {
             this.dataContext = dataContext;
-            this.nemesisHistoryRetriever = nemesisHistoryRetriever;
         }
 
         internal IQueryable<Player> GetAllPlayersInGamingGroupQueryable(int gamingGroupId)
@@ -41,27 +38,27 @@ namespace BusinessLogic.Logic.Players
             return GetAllPlayersInGamingGroupQueryable(gamingGroupId)
                                         .Include(player => player.Nemesis)
                                         .Include(player => player.Nemesis.NemesisPlayer)
+                                        .Include(player => player.PreviousNemesis)
+                                        .Include(player => player.PreviousNemesis.NemesisPlayer)
                                         .OrderBy(player => player.Name)
                                         .ToList();
         }
 
         public virtual PlayerDetails GetPlayerDetails(int playerId, int numberOfRecentGamesToRetrieve)
         {
-            Player returnPlayer = dataContext.FindById<Player>(playerId);
+            Player returnPlayer = dataContext.GetQueryable<Player>()
+                                             .Include(player => player.Nemesis)
+                                             .Include(player => player.Nemesis.NemesisPlayer)
+                                             .Include(player => player.PreviousNemesis)
+                                             .Include(player => player.PreviousNemesis.NemesisPlayer)
+                                             .SingleOrDefault(player => player.Id == playerId);
+
+            ValidatePlayerWasFound(playerId, returnPlayer);
 
             PlayerStatistics playerStatistics = GetPlayerStatistics(playerId);
 
             List<PlayerGameResult> playerGameResults = GetPlayerGameResultsWithPlayedGameAndGameDefinition(playerId, numberOfRecentGamesToRetrieve);
 
-            NemesisHistoryData nemesisHistoryData = nemesisHistoryRetriever.GetNemesisHistory(playerId, NUMBER_OF_PREVIOUS_NEMESES_TO_RETURN);
-
-            Nemesis currentNemesis = nemesisHistoryData.CurrentNemesis;
-            Nemesis previousNemesis = null;
-            if (nemesisHistoryData.PreviousNemeses.Count > 0)
-            {
-                previousNemesis = nemesisHistoryData.PreviousNemeses[0];
-            }
- 
             List<Player> minions = GetMinions(returnPlayer.Id);
 
             PlayerDetails playerDetails = new PlayerDetails()
@@ -72,12 +69,20 @@ namespace BusinessLogic.Logic.Players
                 GamingGroupId = returnPlayer.GamingGroupId,
                 PlayerGameResults = playerGameResults,
                 PlayerStats = playerStatistics,
-                CurrentNemesis = currentNemesis,
-                PreviousNemesis = previousNemesis,
+                CurrentNemesis = returnPlayer.Nemesis ?? new NullNemesis(),
+                PreviousNemesis = returnPlayer.PreviousNemesis ?? new NullNemesis(),
                 Minions = minions
             };
 
             return playerDetails;
+        }
+
+        private static void ValidatePlayerWasFound(int playerId, Player returnPlayer)
+        {
+            if (returnPlayer == null)
+            {
+                throw new KeyNotFoundException(string.Format(EXCEPTION_MESSAGE_PLAYER_COULD_NOT_BE_FOUND, playerId));
+            }
         }
 
         internal virtual List<Player> GetMinions(int nemesisPlayerId)

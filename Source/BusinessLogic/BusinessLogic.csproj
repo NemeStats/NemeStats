@@ -247,6 +247,10 @@
     <Compile Include="Migrations\201409221652230_SetAllInitialNemeses.Designer.cs">
       <DependentUpon>201409221652230_SetAllInitialNemeses.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201410191609475_PreviousNemesisOnPlayer.cs" />
+    <Compile Include="Migrations\201410191609475_PreviousNemesisOnPlayer.Designer.cs">
+      <DependentUpon>201410191609475_PreviousNemesisOnPlayer.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Games\PublicGameSummary.cs" />
     <Compile Include="Models\GamingGroup.cs" />
     <Compile Include="Models\GamingGroupInvitation.cs" />
@@ -396,6 +400,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201409221652230_SetAllInitialNemeses.resx">
       <DependentUpon>201409221652230_SetAllInitialNemeses.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201410191609475_PreviousNemesisOnPlayer.resx">
+      <DependentUpon>201410191609475_PreviousNemesisOnPlayer.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

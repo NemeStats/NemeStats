@@ -35,7 +35,7 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
 
             dataContext = new NemeStatsDataContext();
             nemesisHistoryRetriever = new NemesisHistoryRetriever(dataContext);
-            playerRetriever = new PlayerRetriever(dataContext, nemesisHistoryRetriever);
+            playerRetriever = new PlayerRetriever(dataContext);
             player1Details = playerRetriever.GetPlayerDetails(testPlayer1.Id, 0);
             player5Details = playerRetriever.GetPlayerDetails(testPlayer5.Id, 0);
         }
