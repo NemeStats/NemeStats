@@ -6,6 +6,8 @@ using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using UI.Models.Players;
 using UI.Transformations;
 using UI.Transformations.PlayerTransformations;

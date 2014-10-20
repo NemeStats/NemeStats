@@ -3,6 +3,7 @@ namespace BusinessLogic.Migrations
     using BusinessLogic.DataAccess;
     using BusinessLogic.DataAccess.Repositories;
     using BusinessLogic.Logic.Nemeses;
+    using System;
     using System.Data.Entity.Migrations;
     
     public partial class SetAllInitialNemeses : DbMigration

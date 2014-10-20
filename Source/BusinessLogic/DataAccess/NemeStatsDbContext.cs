@@ -1,9 +1,16 @@
-﻿using BusinessLogic.Models;
+﻿using BusinessLogic.Logic.Users;
+using BusinessLogic.Models;
 using BusinessLogic.Models.User;
 using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.Owin;
+using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace BusinessLogic.DataAccess
 {

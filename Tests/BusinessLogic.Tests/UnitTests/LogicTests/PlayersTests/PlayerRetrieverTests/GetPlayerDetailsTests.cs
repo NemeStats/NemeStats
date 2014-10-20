@@ -1,6 +1,9 @@
 ﻿using BusinessLogic.DataAccess;
+using BusinessLogic.DataAccess.Repositories;
+using BusinessLogic.Logic;
 using BusinessLogic.Logic.Players;
 using BusinessLogic.Models;
+using BusinessLogic.Models.Nemeses;
 using BusinessLogic.Models.Players;
 using BusinessLogic.Models.User;
 using NUnit.Framework;
@@ -8,6 +11,9 @@ using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using BusinessLogic.Logic.Nemeses;
 
 namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverTests
 {

@@ -1,13 +1,20 @@
-﻿using BusinessLogic.DataAccess.GamingGroups;
+﻿using BusinessLogic.DataAccess;
+using BusinessLogic.DataAccess.GamingGroups;
+using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.Logic.GamingGroups;
 using BusinessLogic.Models;
 using BusinessLogic.Models.User;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
+using System.Web;
 using System.Web.Mvc;
 using UI.Controllers.Helpers;
 using UI.Filters;
 using UI.Models.GamingGroup;
+using UI.Models.PlayedGame;
 using UI.Transformations;
 
 namespace UI.Controllers

@@ -1,5 +1,6 @@
 ﻿using System.Configuration;
 using System.Configuration.Abstractions;
+using System.Net.Mime;
 using System.Web;
 using BusinessLogic.EventTracking;
 using BusinessLogic.Logic.GamingGroups;
@@ -7,11 +8,14 @@ using BusinessLogic.Logic.Users;
 using BusinessLogic.Models;
 using BusinessLogic.Models.User;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Security;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.FirstTimeAuthenticatorTests

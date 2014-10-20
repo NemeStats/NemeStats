@@ -1,4 +1,6 @@
 ﻿using BusinessLogic.DataAccess;
+using BusinessLogic.DataAccess.Repositories;
+using BusinessLogic.Logic;
 using BusinessLogic.Logic.PlayedGames;
 using BusinessLogic.Models;
 using NUnit.Framework;

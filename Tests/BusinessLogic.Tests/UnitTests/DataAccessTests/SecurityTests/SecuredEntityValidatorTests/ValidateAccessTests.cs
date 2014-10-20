@@ -1,11 +1,15 @@
 ﻿using BusinessLogic.DataAccess;
 using BusinessLogic.DataAccess.Security;
 using BusinessLogic.Exceptions;
+using BusinessLogic.Models;
 using BusinessLogic.Models.User;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace BusinessLogic.Tests.UnitTests.DataAccessTests.SecurityTests.SecuredEntityValidatorTests
 {

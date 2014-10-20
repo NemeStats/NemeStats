@@ -1,10 +1,15 @@
 ﻿using BusinessLogic.DataAccess;
+using BusinessLogic.DataAccess.Repositories;
+using BusinessLogic.Logic;
 using BusinessLogic.Logic.Nemeses;
 using BusinessLogic.Logic.Players;
 using BusinessLogic.Models;
 using NUnit.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests.EntityFrameworkPlayerRepositoryTests
 {

@@ -1,9 +1,11 @@
-﻿using BusinessLogic.EventTracking;
+﻿using BusinessLogic.DataAccess;
+using BusinessLogic.EventTracking;
 using BusinessLogic.Logic.Users;
 using BusinessLogic.Models.User;
 using Microsoft.AspNet.Identity;
 using NUnit.Framework;
 using Rhino.Mocks;
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Security.Principal;

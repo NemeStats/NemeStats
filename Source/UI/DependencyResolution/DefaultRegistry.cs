@@ -15,7 +15,9 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Net;
 using Microsoft.Owin.Security;
+using BusinessLogic.Logic.Nemeses;
 
 namespace UI.DependencyResolution {
     using BusinessLogic.DataAccess;
@@ -30,6 +32,7 @@ namespace UI.DependencyResolution {
     using BusinessLogic.Models.User;
     using StructureMap.Configuration.DSL;
     using StructureMap.Graph;
+    using StructureMap.Pipeline;
     using System.Configuration.Abstractions;
     using System.Data.Entity;
     using UI.Controllers.Helpers;
@@ -39,7 +42,8 @@ namespace UI.DependencyResolution {
     using StructureMap.Web;
     using BusinessLogic.Logic.Nemeses;
     using System.Web;
-
+    using Microsoft.Owin;
+	
     public class DefaultRegistry : Registry {
         #region Constructors and Destructors
 

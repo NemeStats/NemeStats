@@ -1,5 +1,6 @@
 ﻿using BusinessLogic.DataAccess;
 using BusinessLogic.DataAccess.GamingGroups;
+using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.Logic.GamingGroups;
 using BusinessLogic.Models.User;
 using NUnit.Framework;

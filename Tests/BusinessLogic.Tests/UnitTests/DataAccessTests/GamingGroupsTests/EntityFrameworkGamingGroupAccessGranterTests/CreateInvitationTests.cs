@@ -1,9 +1,12 @@
-﻿using BusinessLogic.Models;
+﻿using BusinessLogic.DataAccess;
+using BusinessLogic.DataAccess.GamingGroups;
+using BusinessLogic.Models;
 using BusinessLogic.Models.User;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 
 namespace BusinessLogic.Tests.UnitTests.DataAccessTests.GamingGroupsTests.EntityFrameworkGamingGroupAccessGranterTests
 {

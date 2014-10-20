@@ -1,8 +1,14 @@
 ﻿using BusinessLogic.EventTracking;
+using BusinessLogic.Models.User;
 using BusinessLogic.Tests.UnitTests.EventTrackingTests.UniversalAnalyticsNemeStatsEventTrackerTests;
 using NUnit.Framework;
 using Rhino.Mocks;
+using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using UniversalAnalyticsHttpWrapper;
 
 namespace BusinessLogic.Tests.UnitTests.EventTrackingTests.PlayedGameTrackerTests
 {

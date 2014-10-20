@@ -2,7 +2,9 @@
 using BusinessLogic.DataAccess.Security;
 using BusinessLogic.Models;
 using BusinessLogic.Models.User;
+using Microsoft.AspNet.Identity.EntityFramework;
 using NUnit.Framework;
+using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Data.Entity;
 using System.Collections.Generic;

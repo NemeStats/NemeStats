@@ -1,14 +1,19 @@
-﻿using BusinessLogic.Logic.GameDefinitions;
+﻿using BusinessLogic.DataAccess;
+using BusinessLogic.Logic.GameDefinitions;
 using BusinessLogic.Models;
+using BusinessLogic.Models.User;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Text;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 using UI.Controllers;
 using UI.Models.GameDefinitionModels;
+using UI.Controllers.Helpers;
 
 namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
 {
