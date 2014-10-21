@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using BusinessLogic.Models;
+﻿using System.Linq;
 using BusinessLogic.Models.Nemeses;
 
 namespace BusinessLogic.Logic.Nemeses

@@ -1,20 +1,9 @@
 ﻿using BusinessLogic.Logic.Nemeses;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BusinessLogic.Tests.IntegrationTests.LogicTests;
 using BusinessLogic.DataAccess;
 using BusinessLogic.Models.Players;
 using BusinessLogic.Models;
-using Rhino.Mocks;
-using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
-using BusinessLogic.Logic;
-using BusinessLogic.DataAccess.Repositories;
-using BusinessLogic.Logic.Users;
 using BusinessLogic.Logic.Players;
 
 namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests.EntityFrameworkPlayerRepositoryTests

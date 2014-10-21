@@ -1,7 +1,5 @@
 ﻿using BusinessLogic.DataAccess;
-using BusinessLogic.Logic.Nemeses;
 using BusinessLogic.Models;
-using BusinessLogic.Models.Nemeses;
 using BusinessLogic.Models.Players;
 using System.Collections.Generic;
 using System.Data.Entity;
