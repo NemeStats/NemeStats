@@ -1,12 +1,6 @@
-﻿using BusinessLogic.DataAccess;
-using BusinessLogic.Logic;
-using BusinessLogic.Models;
-using BusinessLogic.Models.Nemeses;
+﻿using BusinessLogic.Models.Nemeses;
 using BusinessLogic.Models.Players;
-using BusinessLogic.Models.User;
-using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Data.SqlClient;
 using System.Linq;

@@ -1,5 +1,4 @@
 ﻿using System.Data.Entity.Infrastructure;
-using System.Data.SqlClient;
 using BusinessLogic.DataAccess;
 using BusinessLogic.EventTracking;
 using BusinessLogic.Models;
@@ -7,7 +6,6 @@ using BusinessLogic.Models.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.Logic.Nemeses;

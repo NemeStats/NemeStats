@@ -1,5 +1,4 @@
 ﻿using BusinessLogic.Models;
-using BusinessLogic.Models.Players;
 using BusinessLogic.Models.User;
 using System.Collections.Generic;
 using System.Linq;

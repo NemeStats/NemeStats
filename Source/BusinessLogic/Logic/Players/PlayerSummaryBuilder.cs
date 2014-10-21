@@ -1,16 +1,8 @@
 ﻿using BusinessLogic.DataAccess;
 using BusinessLogic.Models.Players;
-using System;
 using System.Collections.Generic;
 using System.Data.Entity.Infrastructure;
-using System.Data.SqlClient;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BusinessLogic.Logic;
-using BusinessLogic.Models;
-using BusinessLogic.Models.User;
-using System.Data.Entity;
 
 namespace BusinessLogic.Logic.Players
 {

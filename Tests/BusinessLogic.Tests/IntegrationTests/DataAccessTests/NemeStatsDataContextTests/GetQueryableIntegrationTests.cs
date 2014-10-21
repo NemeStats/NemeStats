@@ -1,11 +1,5 @@
-﻿using BusinessLogic.DataAccess;
-using BusinessLogic.Models;
-using NUnit.Framework;
-using System;
-using System.Collections.Generic;
+﻿using NUnit.Framework;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.NemeStatsDataContextTests.ApplicationDataContextTests
 {

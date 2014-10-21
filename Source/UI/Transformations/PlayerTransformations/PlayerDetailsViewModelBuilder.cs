@@ -4,7 +4,6 @@ using BusinessLogic.Models.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using UI.Models.PlayedGame;
 using UI.Models.Players;
 
