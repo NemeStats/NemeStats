@@ -15,15 +15,18 @@ namespace UI.Controllers
         private ApplicationUserManager userManager;
         private readonly IUserRegisterer userRegisterer;
         private readonly IFirstTimeAuthenticator firstTimeAuthenticator;
+        private readonly IAuthenticationManager authenticationManager;
 
         public AccountController(
             ApplicationUserManager userManager, 
             IUserRegisterer userRegisterer,
-            IFirstTimeAuthenticator firstTimeAuthenticator)
+            IFirstTimeAuthenticator firstTimeAuthenticator,
+            IAuthenticationManager authenticationManager)
         {
             this.userManager = userManager;
             this.userRegisterer = userRegisterer;
             this.firstTimeAuthenticator = firstTimeAuthenticator;
+            this.authenticationManager = authenticationManager;
         }
 
         //
@@ -206,7 +209,7 @@ namespace UI.Controllers
         [AllowAnonymous]
         public virtual async Task<ActionResult> ExternalLoginCallback(string returnUrl)
         {
-            var loginInfo = await AuthenticationManager.GetExternalLoginInfoAsync();
+            var loginInfo = await authenticationManager.GetExternalLoginInfoAsync();
             if (loginInfo == null)
             {
                 return RedirectToAction("Login");
@@ -242,7 +245,7 @@ namespace UI.Controllers
         // GET: /Account/LinkLoginCallback
         public virtual async Task<ActionResult> LinkLoginCallback()
         {
-            var loginInfo = await AuthenticationManager.GetExternalLoginInfoAsync(XsrfKey, User.Identity.GetUserId());
+            var loginInfo = await authenticationManager.GetExternalLoginInfoAsync(XsrfKey, User.Identity.GetUserId());
             if (loginInfo == null)
             {
                 return RedirectToAction("Manage", new { Message = ManageMessageId.Error });
@@ -270,7 +273,7 @@ namespace UI.Controllers
             if (ModelState.IsValid)
             {
                 // Get the information about the user from the external login provider
-                var info = await AuthenticationManager.GetExternalLoginInfoAsync();
+                var info = await authenticationManager.GetExternalLoginInfoAsync();
                 if (info == null)
                 {
                     return View("ExternalLoginFailure");
@@ -304,7 +307,7 @@ namespace UI.Controllers
         [ValidateAntiForgeryToken]
         public virtual ActionResult LogOff()
         {
-            AuthenticationManager.SignOut();
+            authenticationManager.SignOut();
             return RedirectToAction("Index", "Home");
         }
 
@@ -336,23 +339,14 @@ namespace UI.Controllers
 
         #region Helpers
 
-        //TODO this should be injected by the IoC
         // Used for XSRF protection when adding external logins
         private const string XsrfKey = "XsrfId";
 
-        private IAuthenticationManager AuthenticationManager
-        {
-            get
-            {
-                return HttpContext.GetOwinContext().Authentication;
-            }
-        }
-
         private async Task SignInAsync(ApplicationUser user, bool isPersistent)
         {
-            AuthenticationManager.SignOut(DefaultAuthenticationTypes.ExternalCookie);
+            authenticationManager.SignOut(DefaultAuthenticationTypes.ExternalCookie);
             var identity = await userManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
-            AuthenticationManager.SignIn(new AuthenticationProperties() { IsPersistent = isPersistent }, identity);
+            authenticationManager.SignIn(new AuthenticationProperties() { IsPersistent = isPersistent }, identity);
         }
 
         private void AddErrors(IdentityResult result)
