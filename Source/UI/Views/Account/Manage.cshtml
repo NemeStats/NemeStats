@@ -1,5 +1,5 @@
 ﻿@using Microsoft.AspNet.Identity;
-@model UI.Models.ManageUserViewModel
+@model UI.Models.ChangeEmailViewModel
 @{
     ViewBag.Title = "Manage Account";
     Layout = MVC.Shared.Views._BaseLayout;
@@ -16,31 +16,33 @@
                 <h4>Manage Your Account</h4>
             </div>
             <div class="panel-body">
-                @using (Html.BeginForm("Manage", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-                {
-                    @Html.AntiForgeryToken()
-                    if (ViewBag.HasLocalPassword)
+                    @if (ViewBag.HasLocalPassword)
                     {
-                        @Html.Partial("_ChangePasswordPartial")
+                        @Html.Partial("_ChangePasswordPartial", new UI.Models.ChangePasswordViewModel())
                     }
                     else
                     {
-                         @Html.Partial("_SetPasswordPartial")
+                        @Html.Partial("_SetPasswordPartial", new UI.Models.SetPasswordViewModel())
                     }
                     <br /><br />
                     <h4>Update Email Address</h4>
                     <hr />
-                    <div class="form-group">
-                        @Html.LabelFor(m => m.EmailAddress, new { @class = "col-md-3 control-label" })
-                        <div class="col-md-9">
-                            @Html.TextBoxFor(m => m.EmailAddress, new { @class = "form-control" })
+                    @using (Html.BeginForm("ChangeEmailAddress", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                    {
+                        @Html.ValidationSummary()
+                        @Html.AntiForgeryToken()
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.EmailAddress, new { @class = "col-md-3 control-label" })
+                            <div class="col-md-9">
+                                @Html.TextBoxFor(m => m.EmailAddress, new { @class = "form-control" })
+                            </div>
                         </div>
-                    </div>
-                    <br />
-                    <div class="col-md-9 col-md-offset-3">
-                        <input type="submit" value="Submit Changes" class="btn btn-default" />
-                    </div>
-                }
+                        <div class="form-group">
+                            <div class="col-md-9 col-md-offset-3">
+                                <input type="submit" value="Change Email Address" class="btn btn-default" />
+                            </div>
+                        </div>
+                    }
             </div>
         </div>
     </div>

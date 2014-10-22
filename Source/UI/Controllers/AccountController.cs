@@ -127,71 +127,79 @@ namespace UI.Controllers
         public virtual ActionResult Manage(ManageMessageId? message)
         {
             ViewBag.StatusMessage =
-                message == ManageMessageId.UpdateAccountInformationSuccess ? "Your account information has been updated."
+                message == ManageMessageId.SetPasswordSuccess ? "Your password has been set."
+                : message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
+                : message == ManageMessageId.ChangeEmailSuccess ? "Your email has been changed."
                 : message == ManageMessageId.RemoveLoginSuccess ? "The external login was removed."
                 : message == ManageMessageId.Error ? "An error has occurred."
                 : "";
+
             ViewBag.HasLocalPassword = HasPassword();
             ViewBag.ReturnUrl = Url.Action("Manage");
 
-            ManageUserViewModel viewModel = new ManageUserViewModel();
             string currentUserId = User.Identity.GetUserId();
             ApplicationUser user = userManager.FindById(currentUserId);
+            ChangeEmailViewModel viewModel = new ChangeEmailViewModel();
             viewModel.EmailAddress = user.Email;
             return View(MVC.Account.Views.Manage, viewModel);
         }
 
         //TODO how to test async methods?
-        // POST: /Account/Manage
+        // POST: /Account/SetPassword
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public virtual async Task<ActionResult> Manage(ManageUserViewModel model)
+        public virtual async Task<ActionResult> SetPassword(SetPasswordViewModel model)
         {
-            bool hasPassword = HasPassword();
-            ViewBag.HasLocalPassword = hasPassword;
-            ViewBag.ReturnUrl = Url.Action("Manage");
-            if (hasPassword)
+            if (ModelState.IsValid)
             {
-                if (ModelState.IsValid)
+                var result = await userManager.AddPasswordAsync(User.Identity.GetUserId(), model.NewPassword);
+                if (result.Succeeded)
                 {
-                    IdentityResult passwordResult = await userManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
-                    IdentityResult emailResult = await userManager.SetEmailAsync(User.Identity.GetUserId(), model.EmailAddress);
-                    if (passwordResult.Succeeded && emailResult.Succeeded)
-                    {
-                        return RedirectToAction("Manage", new { Message = ManageMessageId.UpdateAccountInformationSuccess });
-                    }
-                    else
-                    {
-                        AddErrors(passwordResult);
-                        AddErrors(emailResult);
-                    }
+                    return RedirectToAction("Manage", new { Message = ManageMessageId.SetPasswordSuccess });
                 }
-            }
-            else
-            {
-                // User does not have a password so remove any validation errors caused by a missing OldPassword field
-                ModelState state = ModelState["OldPassword"];
-                if (state != null)
-                {
-                    state.Errors.Clear();
-                }
-
-                if (ModelState.IsValid)
-                {
-                    IdentityResult result = await userManager.AddPasswordAsync(User.Identity.GetUserId(), model.NewPassword);
-                    if (result.Succeeded)
-                    {
-                        return RedirectToAction("Manage", new { Message = ManageMessageId.UpdateAccountInformationSuccess });
-                    }
-                    else
-                    {
-                        AddErrors(result);
-                    }
-                }
+                AddErrors(result);
             }
 
             // If we got this far, something failed, redisplay form
-            return View(model);
+            return RedirectToAction("Manage", new { Message = ManageMessageId.Error });
+        }
+
+        //TODO how to test async methods?
+        // POST: /Account/ChangePassword
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public virtual async Task<ActionResult> ChangePassword(ChangePasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return RedirectToAction("Manage", new { Message = ManageMessageId.Error });
+            }
+            var result = await userManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
+            if (result.Succeeded)
+            {
+                return RedirectToAction("Manage", new { Message = ManageMessageId.ChangePasswordSuccess });
+            }
+            AddErrors(result);
+            return RedirectToAction("Manage", new { Message = ManageMessageId.Error });
+        }
+
+        //TODO how to test async methods?
+        // POST: /Account/ChangeEmailAddress
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public virtual async Task<ActionResult> ChangeEmailAddress(ChangeEmailViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return RedirectToAction("Manage", new { Message = ManageMessageId.Error });
+            }
+            var result = await userManager.SetEmailAsync(User.Identity.GetUserId(), model.EmailAddress);
+            if (result.Succeeded)
+            {
+                return RedirectToAction("Manage", new { Message = ManageMessageId.ChangeEmailSuccess });
+            }
+            AddErrors(result);
+            return RedirectToAction("Manage", new { Message = ManageMessageId.Error });
         }
 
         //
@@ -370,7 +378,9 @@ namespace UI.Controllers
 
         public enum ManageMessageId
         {
-            UpdateAccountInformationSuccess,
+            SetPasswordSuccess,
+            ChangePasswordSuccess,
+            ChangeEmailSuccess,
             RemoveLoginSuccess,
             Error
         }
