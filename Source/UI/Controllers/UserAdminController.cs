@@ -12,7 +12,7 @@ using BusinessLogic.Logic.Users;
 namespace IdentitySample.Controllers
 {
     [Authorize(Roles = "Admin")]
-    public class UsersAdminController : Controller
+    public partial class UsersAdminController : Controller
     {
         public UsersAdminController()
         {
@@ -52,14 +52,14 @@ namespace IdentitySample.Controllers
 
         //
         // GET: /Users/
-        public async Task<ActionResult> Index()
+        public virtual async Task<ActionResult> Index()
         {
             return View(await UserManager.Users.ToListAsync());
         }
 
         //
         // GET: /Users/Details/5
-        public async Task<ActionResult> Details(string id)
+        public virtual async Task<ActionResult> Details(string id)
         {
             if (id == null)
             {
@@ -74,7 +74,7 @@ namespace IdentitySample.Controllers
 
         //
         // GET: /Users/Create
-        public async Task<ActionResult> Create()
+        public virtual async Task<ActionResult> Create()
         {
             //Get the list of Roles
             ViewBag.RoleId = new SelectList(await RoleManager.Roles.ToListAsync(), "Name", "Name");
@@ -84,7 +84,7 @@ namespace IdentitySample.Controllers
         //
         // POST: /Users/Create
         [HttpPost]
-        public async Task<ActionResult> Create(RegisterViewModel userViewModel, params string[] selectedRoles)
+        public virtual async Task<ActionResult> Create(RegisterViewModel userViewModel, params string[] selectedRoles)
         {
             if (ModelState.IsValid)
             {
@@ -120,7 +120,7 @@ namespace IdentitySample.Controllers
 
         //
         // GET: /Users/Edit/1
-        public async Task<ActionResult> Edit(string id)
+        public virtual async Task<ActionResult> Edit(string id)
         {
             if (id == null)
             {
@@ -151,7 +151,7 @@ namespace IdentitySample.Controllers
         // POST: /Users/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Email,Id")] EditUserViewModel editUser, params string[] selectedRole)
+        public virtual async Task<ActionResult> Edit([Bind(Include = "Email,Id")] EditUserViewModel editUser, params string[] selectedRole)
         {
             if (ModelState.IsValid)
             {
@@ -190,7 +190,7 @@ namespace IdentitySample.Controllers
 
         //
         // GET: /Users/Delete/5
-        public async Task<ActionResult> Delete(string id)
+        public virtual async Task<ActionResult> Delete(string id)
         {
             if (id == null)
             {
@@ -208,7 +208,7 @@ namespace IdentitySample.Controllers
         // POST: /Users/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> DeleteConfirmed(string id)
+        public virtual async Task<ActionResult> DeleteConfirmed(string id)
         {
             if (ModelState.IsValid)
             {

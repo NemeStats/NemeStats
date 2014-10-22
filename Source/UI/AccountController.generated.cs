@@ -7,11 +7,19 @@
 #pragma warning disable 1591, 3008, 3009
 #region T4MVC
 
+using System;
 using System.Diagnostics;
 using System.CodeDom.Compiler;
+using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using System.Web;
+using System.Web.Hosting;
 using System.Web.Mvc;
+using System.Web.Mvc.Ajax;
+using System.Web.Mvc.Html;
+using System.Web.Routing;
 using T4MVC;
 namespace UI.Controllers
 {
@@ -67,6 +75,27 @@ namespace UI.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Threading.Tasks.Task<System.Web.Mvc.ActionResult> SetPassword()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SetPassword);
+            return System.Threading.Tasks.Task.FromResult(callInfo as ActionResult);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Threading.Tasks.Task<System.Web.Mvc.ActionResult> ChangePassword()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ChangePassword);
+            return System.Threading.Tasks.Task.FromResult(callInfo as ActionResult);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Threading.Tasks.Task<System.Web.Mvc.ActionResult> ChangeEmailAddress()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ChangeEmailAddress);
+            return System.Threading.Tasks.Task.FromResult(callInfo as ActionResult);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult ExternalLogin()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ExternalLogin);
@@ -89,6 +118,13 @@ namespace UI.Controllers
         public virtual System.Threading.Tasks.Task<System.Web.Mvc.ActionResult> ExternalLoginConfirmation()
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ExternalLoginConfirmation);
+            return System.Threading.Tasks.Task.FromResult(callInfo as ActionResult);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Threading.Tasks.Task<System.Web.Mvc.ActionResult> ConfirmEmail()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ConfirmEmail);
             return System.Threading.Tasks.Task.FromResult(callInfo as ActionResult);
         }
         [NonAction]
@@ -117,6 +153,9 @@ namespace UI.Controllers
             public readonly string Register = "Register";
             public readonly string Disassociate = "Disassociate";
             public readonly string Manage = "Manage";
+            public readonly string SetPassword = "SetPassword";
+            public readonly string ChangePassword = "ChangePassword";
+            public readonly string ChangeEmailAddress = "ChangeEmailAddress";
             public readonly string ExternalLogin = "ExternalLogin";
             public readonly string ExternalLoginCallback = "ExternalLoginCallback";
             public readonly string LinkLogin = "LinkLogin";
@@ -127,6 +166,7 @@ namespace UI.Controllers
             public readonly string RemoveAccountList = "RemoveAccountList";
             public readonly string ForgotPassword = "ForgotPassword";
             public readonly string ForgotPasswordConfirmation = "ForgotPasswordConfirmation";
+            public readonly string ConfirmEmail = "ConfirmEmail";
             public readonly string ResetPassword = "ResetPassword";
             public readonly string ResetPasswordConfirmation = "ResetPasswordConfirmation";
         }
@@ -138,6 +178,9 @@ namespace UI.Controllers
             public const string Register = "Register";
             public const string Disassociate = "Disassociate";
             public const string Manage = "Manage";
+            public const string SetPassword = "SetPassword";
+            public const string ChangePassword = "ChangePassword";
+            public const string ChangeEmailAddress = "ChangeEmailAddress";
             public const string ExternalLogin = "ExternalLogin";
             public const string ExternalLoginCallback = "ExternalLoginCallback";
             public const string LinkLogin = "LinkLogin";
@@ -148,6 +191,7 @@ namespace UI.Controllers
             public const string RemoveAccountList = "RemoveAccountList";
             public const string ForgotPassword = "ForgotPassword";
             public const string ForgotPasswordConfirmation = "ForgotPasswordConfirmation";
+            public const string ConfirmEmail = "ConfirmEmail";
             public const string ResetPassword = "ResetPassword";
             public const string ResetPasswordConfirmation = "ResetPasswordConfirmation";
         }
@@ -186,6 +230,29 @@ namespace UI.Controllers
         public class ActionParamsClass_Manage
         {
             public readonly string message = "message";
+        }
+        static readonly ActionParamsClass_SetPassword s_params_SetPassword = new ActionParamsClass_SetPassword();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_SetPassword SetPasswordParams { get { return s_params_SetPassword; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_SetPassword
+        {
+            public readonly string model = "model";
+        }
+        static readonly ActionParamsClass_ChangePassword s_params_ChangePassword = new ActionParamsClass_ChangePassword();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_ChangePassword ChangePasswordParams { get { return s_params_ChangePassword; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_ChangePassword
+        {
+            public readonly string model = "model";
+        }
+        static readonly ActionParamsClass_ChangeEmailAddress s_params_ChangeEmailAddress = new ActionParamsClass_ChangeEmailAddress();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_ChangeEmailAddress ChangeEmailAddressParams { get { return s_params_ChangeEmailAddress; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_ChangeEmailAddress
+        {
             public readonly string model = "model";
         }
         static readonly ActionParamsClass_ExternalLogin s_params_ExternalLogin = new ActionParamsClass_ExternalLogin();
@@ -230,6 +297,15 @@ namespace UI.Controllers
         {
             public readonly string model = "model";
         }
+        static readonly ActionParamsClass_ConfirmEmail s_params_ConfirmEmail = new ActionParamsClass_ConfirmEmail();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_ConfirmEmail ConfirmEmailParams { get { return s_params_ConfirmEmail; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_ConfirmEmail
+        {
+            public readonly string userId = "userId";
+            public readonly string code = "code";
+        }
         static readonly ActionParamsClass_ResetPassword s_params_ResetPassword = new ActionParamsClass_ResetPassword();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ActionParamsClass_ResetPassword ResetPasswordParams { get { return s_params_ResetPassword; } }
@@ -253,21 +329,35 @@ namespace UI.Controllers
                 public readonly string _ExternalLoginsListPartial = "_ExternalLoginsListPartial";
                 public readonly string _RemoveAccountPartial = "_RemoveAccountPartial";
                 public readonly string _SetPasswordPartial = "_SetPasswordPartial";
+                public readonly string ConfirmEmail = "ConfirmEmail";
                 public readonly string ExternalLoginConfirmation = "ExternalLoginConfirmation";
                 public readonly string ExternalLoginFailure = "ExternalLoginFailure";
+                public readonly string ForgotPassword = "ForgotPassword";
+                public readonly string ForgotPasswordConfirmation = "ForgotPasswordConfirmation";
                 public readonly string Login = "Login";
                 public readonly string Manage = "Manage";
                 public readonly string Register = "Register";
+                public readonly string ResetPassword = "ResetPassword";
+                public readonly string ResetPasswordConfirmation = "ResetPasswordConfirmation";
+                public readonly string SendCode = "SendCode";
+                public readonly string VerifyCode = "VerifyCode";
             }
             public readonly string _ChangePasswordPartial = "~/Views/Account/_ChangePasswordPartial.cshtml";
             public readonly string _ExternalLoginsListPartial = "~/Views/Account/_ExternalLoginsListPartial.cshtml";
             public readonly string _RemoveAccountPartial = "~/Views/Account/_RemoveAccountPartial.cshtml";
             public readonly string _SetPasswordPartial = "~/Views/Account/_SetPasswordPartial.cshtml";
+            public readonly string ConfirmEmail = "~/Views/Account/ConfirmEmail.cshtml";
             public readonly string ExternalLoginConfirmation = "~/Views/Account/ExternalLoginConfirmation.cshtml";
             public readonly string ExternalLoginFailure = "~/Views/Account/ExternalLoginFailure.cshtml";
+            public readonly string ForgotPassword = "~/Views/Account/ForgotPassword.cshtml";
+            public readonly string ForgotPasswordConfirmation = "~/Views/Account/ForgotPasswordConfirmation.cshtml";
             public readonly string Login = "~/Views/Account/Login.cshtml";
             public readonly string Manage = "~/Views/Account/Manage.cshtml";
             public readonly string Register = "~/Views/Account/Register.cshtml";
+            public readonly string ResetPassword = "~/Views/Account/ResetPassword.cshtml";
+            public readonly string ResetPasswordConfirmation = "~/Views/Account/ResetPasswordConfirmation.cshtml";
+            public readonly string SendCode = "~/Views/Account/SendCode.cshtml";
+            public readonly string VerifyCode = "~/Views/Account/VerifyCode.cshtml";
         }
     }
 
@@ -350,14 +440,38 @@ namespace UI.Controllers
         }
 
         [NonAction]
-        partial void ManageOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, UI.Models.ManageUserViewModel model);
+        partial void SetPasswordOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, UI.Models.SetPasswordViewModel model);
 
         [NonAction]
-        public override System.Threading.Tasks.Task<System.Web.Mvc.ActionResult> Manage(UI.Models.ManageUserViewModel model)
+        public override System.Threading.Tasks.Task<System.Web.Mvc.ActionResult> SetPassword(UI.Models.SetPasswordViewModel model)
         {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Manage);
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SetPassword);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "model", model);
-            ManageOverride(callInfo, model);
+            SetPasswordOverride(callInfo, model);
+            return System.Threading.Tasks.Task.FromResult(callInfo as ActionResult);
+        }
+
+        [NonAction]
+        partial void ChangePasswordOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, UI.Models.ChangePasswordViewModel model);
+
+        [NonAction]
+        public override System.Threading.Tasks.Task<System.Web.Mvc.ActionResult> ChangePassword(UI.Models.ChangePasswordViewModel model)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ChangePassword);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "model", model);
+            ChangePasswordOverride(callInfo, model);
+            return System.Threading.Tasks.Task.FromResult(callInfo as ActionResult);
+        }
+
+        [NonAction]
+        partial void ChangeEmailAddressOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, UI.Models.ChangeEmailViewModel model);
+
+        [NonAction]
+        public override System.Threading.Tasks.Task<System.Web.Mvc.ActionResult> ChangeEmailAddress(UI.Models.ChangeEmailViewModel model)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ChangeEmailAddress);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "model", model);
+            ChangeEmailAddressOverride(callInfo, model);
             return System.Threading.Tasks.Task.FromResult(callInfo as ActionResult);
         }
 
@@ -487,6 +601,19 @@ namespace UI.Controllers
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ForgotPasswordConfirmation);
             ForgotPasswordConfirmationOverride(callInfo);
             return callInfo;
+        }
+
+        [NonAction]
+        partial void ConfirmEmailOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string userId, string code);
+
+        [NonAction]
+        public override System.Threading.Tasks.Task<System.Web.Mvc.ActionResult> ConfirmEmail(string userId, string code)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ConfirmEmail);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "userId", userId);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "code", code);
+            ConfirmEmailOverride(callInfo, userId, code);
+            return System.Threading.Tasks.Task.FromResult(callInfo as ActionResult);
         }
 
         [NonAction]
