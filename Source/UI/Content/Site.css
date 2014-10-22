@@ -181,8 +181,6 @@ ul input[type=text] { width:25px }
     }
 }
 
-/* Use in combination with panel-default to remove the top border and rounded corners */
-.panel-tab-content {
-    border-top: none;
-    border-radius: 0;
+.push-30 {
+    margin-top: 30px;
 }
