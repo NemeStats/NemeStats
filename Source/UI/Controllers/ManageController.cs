@@ -13,7 +13,7 @@ using UI.Models;
 namespace IdentitySample.Controllers
 {
     [Authorize]
-    public class ManageController : Controller
+    public partial class ManageController : Controller
     {
         public ManageController()
         {
@@ -39,7 +39,7 @@ namespace IdentitySample.Controllers
 
         //
         // GET: /Account/Index
-        public async Task<ActionResult> Index(ManageMessageId? message)
+        public virtual async Task<ActionResult> Index(ManageMessageId? message)
         {
             ViewBag.StatusMessage =
                 message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
@@ -63,7 +63,7 @@ namespace IdentitySample.Controllers
 
         //
         // GET: /Account/RemoveLogin
-        public ActionResult RemoveLogin()
+        public virtual ActionResult RemoveLogin()
         {
             var linkedAccounts = UserManager.GetLogins(User.Identity.GetUserId());
             ViewBag.ShowRemoveButton = HasPassword() || linkedAccounts.Count > 1;
@@ -74,7 +74,7 @@ namespace IdentitySample.Controllers
         // POST: /Manage/RemoveLogin
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> RemoveLogin(string loginProvider, string providerKey)
+        public virtual async Task<ActionResult> RemoveLogin(string loginProvider, string providerKey)
         {
             ManageMessageId? message;
             var result = await UserManager.RemoveLoginAsync(User.Identity.GetUserId(), new UserLoginInfo(loginProvider, providerKey));
@@ -96,7 +96,7 @@ namespace IdentitySample.Controllers
 
         //
         // GET: /Account/AddPhoneNumber
-        public ActionResult AddPhoneNumber()
+        public virtual ActionResult AddPhoneNumber()
         {
             return View();
         }
@@ -105,7 +105,7 @@ namespace IdentitySample.Controllers
         // POST: /Account/AddPhoneNumber
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> AddPhoneNumber(AddPhoneNumberViewModel model)
+        public virtual async Task<ActionResult> AddPhoneNumber(AddPhoneNumberViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -128,7 +128,7 @@ namespace IdentitySample.Controllers
         //
         // POST: /Manage/RememberBrowser
         [HttpPost]
-        public ActionResult RememberBrowser()
+        public virtual ActionResult RememberBrowser()
         {
             var rememberBrowserIdentity = AuthenticationManager.CreateTwoFactorRememberBrowserIdentity(User.Identity.GetUserId());
             AuthenticationManager.SignIn(new AuthenticationProperties { IsPersistent = true }, rememberBrowserIdentity);
@@ -138,7 +138,7 @@ namespace IdentitySample.Controllers
         //
         // POST: /Manage/ForgetBrowser
         [HttpPost]
-        public ActionResult ForgetBrowser()
+        public virtual ActionResult ForgetBrowser()
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.TwoFactorRememberBrowserCookie);
             return RedirectToAction("Index", "Manage");
@@ -147,7 +147,7 @@ namespace IdentitySample.Controllers
         //
         // POST: /Manage/EnableTFA
         [HttpPost]
-        public async Task<ActionResult> EnableTFA()
+        public virtual async Task<ActionResult> EnableTFA()
         {
             await UserManager.SetTwoFactorEnabledAsync(User.Identity.GetUserId(), true);
             var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
@@ -161,7 +161,7 @@ namespace IdentitySample.Controllers
         //
         // POST: /Manage/DisableTFA
         [HttpPost]
-        public async Task<ActionResult> DisableTFA()
+        public virtual async Task<ActionResult> DisableTFA()
         {
             await UserManager.SetTwoFactorEnabledAsync(User.Identity.GetUserId(), false);
             var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
@@ -174,7 +174,7 @@ namespace IdentitySample.Controllers
 
         //
         // GET: /Account/VerifyPhoneNumber
-        public async Task<ActionResult> VerifyPhoneNumber(string phoneNumber)
+        public virtual async Task<ActionResult> VerifyPhoneNumber(string phoneNumber)
         {
             // This code allows you exercise the flow without actually sending codes
             // For production use please register a SMS provider in IdentityConfig and generate a code here.
@@ -187,7 +187,7 @@ namespace IdentitySample.Controllers
         // POST: /Account/VerifyPhoneNumber
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> VerifyPhoneNumber(VerifyPhoneNumberViewModel model)
+        public virtual async Task<ActionResult> VerifyPhoneNumber(VerifyPhoneNumberViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -210,7 +210,7 @@ namespace IdentitySample.Controllers
 
         //
         // GET: /Account/RemovePhoneNumber
-        public async Task<ActionResult> RemovePhoneNumber()
+        public virtual async Task<ActionResult> RemovePhoneNumber()
         {
             var result = await UserManager.SetPhoneNumberAsync(User.Identity.GetUserId(), null);
             if (!result.Succeeded)
@@ -227,7 +227,7 @@ namespace IdentitySample.Controllers
 
         //
         // GET: /Manage/ChangePassword
-        public ActionResult ChangePassword()
+        public virtual ActionResult ChangePassword()
         {
             return View();
         }
@@ -236,7 +236,7 @@ namespace IdentitySample.Controllers
         // POST: /Account/Manage
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> ChangePassword(ChangePasswordViewModel model)
+        public virtual async Task<ActionResult> ChangePassword(ChangePasswordViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -258,7 +258,7 @@ namespace IdentitySample.Controllers
 
         //
         // GET: /Manage/SetPassword
-        public ActionResult SetPassword()
+        public virtual ActionResult SetPassword()
         {
             return View();
         }
@@ -267,7 +267,7 @@ namespace IdentitySample.Controllers
         // POST: /Manage/SetPassword
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> SetPassword(SetPasswordViewModel model)
+        public virtual async Task<ActionResult> SetPassword(SetPasswordViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -290,7 +290,7 @@ namespace IdentitySample.Controllers
 
         //
         // GET: /Account/Manage
-        public async Task<ActionResult> ManageLogins(ManageMessageId? message)
+        public virtual async Task<ActionResult> ManageLogins(ManageMessageId? message)
         {
             ViewBag.StatusMessage =
                 message == ManageMessageId.RemoveLoginSuccess ? "The external login was removed."
@@ -315,7 +315,7 @@ namespace IdentitySample.Controllers
         // POST: /Manage/LinkLogin
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult LinkLogin(string provider)
+        public virtual ActionResult LinkLogin(string provider)
         {
             // Request a redirect to the external login provider to link a login for the current user
             return new AccountController.ChallengeResult(provider, Url.Action("LinkLoginCallback", "Manage"), User.Identity.GetUserId());
@@ -323,7 +323,7 @@ namespace IdentitySample.Controllers
 
         //
         // GET: /Manage/LinkLoginCallback
-        public async Task<ActionResult> LinkLoginCallback()
+        public virtual async Task<ActionResult> LinkLoginCallback()
         {
             var loginInfo = await AuthenticationManager.GetExternalLoginInfoAsync(XsrfKey, User.Identity.GetUserId());
             if (loginInfo == null)
