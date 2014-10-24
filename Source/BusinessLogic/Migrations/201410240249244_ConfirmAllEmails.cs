@@ -7,7 +7,7 @@ namespace BusinessLogic.Migrations
     {
         public override void Up()
         {
-            Sql("UPDATE dbo.AspNetUsers SET EmailConfirmed = 1;");
+            Sql("UPDATE dbo.AspNetUsers SET EmailConfirmed = 1 WHERE DateCreated < '2014-10-10';");
         }
         
         public override void Down()
