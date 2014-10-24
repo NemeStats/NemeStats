@@ -19,8 +19,6 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GamingGr
         protected ApplicationUserManager applicationUserManagerMock;
         protected IDataContext dataContextMock;
         protected INemeStatsEventTracker eventTrackerMock;
-        protected IPlayerSaver playerSaverMock;
-        protected IGameDefinitionSaver gameDefinitionCreator;
         protected ApplicationUser currentUser = new ApplicationUser()
         {
             Id = "application user id",
@@ -35,14 +33,10 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GamingGr
             applicationUserManagerMock = MockRepository.GenerateMock<ApplicationUserManager>(userStoreMock);
             dataContextMock = MockRepository.GenerateMock<IDataContext>();
             eventTrackerMock = MockRepository.GenerateMock<INemeStatsEventTracker>();
-            playerSaverMock = MockRepository.GenerateMock<IPlayerSaver>();
-            gameDefinitionCreator = MockRepository.GenerateMock<IGameDefinitionSaver>();
             gamingGroupSaver = new GamingGroupSaver(
                 dataContextMock,
                 applicationUserManagerMock,
-                eventTrackerMock,
-                playerSaverMock,
-                gameDefinitionCreator);
+                eventTrackerMock);
         }
     }
 }
