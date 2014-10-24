@@ -131,16 +131,12 @@ namespace UI.Controllers
                 : message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
                 : message == ManageMessageId.ChangeEmailSuccess ? "Your email has been changed."
                 : message == ManageMessageId.RemoveLoginSuccess ? "The external login was removed."
-                : message == ManageMessageId.Error ? "An error has occurred."
+                : message == ManageMessageId.Error ? "An error occurred."
                 : "";
 
-            ViewBag.HasLocalPassword = HasPassword();
-            ViewBag.ReturnUrl = Url.Action("Manage");
-
-            string currentUserId = User.Identity.GetUserId();
-            ApplicationUser user = userManager.FindById(currentUserId);
-            ChangeEmailViewModel viewModel = new ChangeEmailViewModel();
-            viewModel.EmailAddress = user.Email;
+            SetViewBag();
+            ManageAccountViewModel viewModel = GetBaseManageAccountViewModel();
+            
             return View(MVC.Account.Views.Manage, viewModel);
         }
 
@@ -150,6 +146,8 @@ namespace UI.Controllers
         [ValidateAntiForgeryToken]
         public virtual async Task<ActionResult> SetPassword(SetPasswordViewModel model)
         {
+            var parentViewModel = GetBaseManageAccountViewModel();
+            parentViewModel.PasswordViewModel = model;
             if (ModelState.IsValid)
             {
                 var result = await userManager.AddPasswordAsync(User.Identity.GetUserId(), model.NewPassword);
@@ -157,11 +155,12 @@ namespace UI.Controllers
                 {
                     return RedirectToAction("Manage", new { Message = ManageMessageId.SetPasswordSuccess });
                 }
-                AddErrors(result);
+                AddErrors(result, "password");
             }
-
+            
             // If we got this far, something failed, redisplay form
-            return RedirectToAction("Manage", new { Message = ManageMessageId.Error });
+            SetViewBag();
+            return View("Manage", parentViewModel);
         }
 
         //TODO how to test async methods?
@@ -170,17 +169,20 @@ namespace UI.Controllers
         [ValidateAntiForgeryToken]
         public virtual async Task<ActionResult> ChangePassword(ChangePasswordViewModel model)
         {
+            var parentViewModel = GetBaseManageAccountViewModel();
+            parentViewModel.PasswordViewModel = model;
             if (!ModelState.IsValid)
             {
-                return RedirectToAction("Manage", new { Message = ManageMessageId.Error });
+                return RedirectToAction("Manage", new { Message = ManageMessageId.ErrorEnterEmail });
             }
             var result = await userManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
             if (result.Succeeded)
             {
                 return RedirectToAction("Manage", new { Message = ManageMessageId.ChangePasswordSuccess });
             }
-            AddErrors(result);
-            return RedirectToAction("Manage", new { Message = ManageMessageId.Error });
+            SetViewBag();
+            AddErrors(result, "password");
+            return View("Manage", parentViewModel);
         }
 
         //TODO how to test async methods?
@@ -189,6 +191,7 @@ namespace UI.Controllers
         [ValidateAntiForgeryToken]
         public virtual async Task<ActionResult> ChangeEmailAddress(ChangeEmailViewModel model)
         {
+            var parentViewModel = GetBaseManageAccountViewModel();
             if (!ModelState.IsValid)
             {
                 return RedirectToAction("Manage", new { Message = ManageMessageId.Error });
@@ -198,8 +201,27 @@ namespace UI.Controllers
             {
                 return RedirectToAction("Manage", new { Message = ManageMessageId.ChangeEmailSuccess });
             }
-            AddErrors(result);
+            AddErrors(result, "email");
             return RedirectToAction("Manage", new { Message = ManageMessageId.Error });
+        }
+
+        private void SetViewBag()
+        {
+            ViewBag.HasLocalPassword = HasPassword();
+            ViewBag.ReturnUrl = Url.Action("Manage");
+        }
+
+        private ManageAccountViewModel GetBaseManageAccountViewModel()
+        {
+            ManageAccountViewModel viewModel = new ManageAccountViewModel();
+            string currentUserId = User.Identity.GetUserId();
+            ApplicationUser user = userManager.FindById(currentUserId);
+            viewModel.PasswordViewModel = HasPassword() ? (PasswordViewModel)new ChangePasswordViewModel() : new SetPasswordViewModel();
+            ChangeEmailViewModel emailViewModel = new ChangeEmailViewModel();
+            emailViewModel.EmailAddress = user.Email;
+            viewModel.ChangeEmailViewModel = emailViewModel;
+
+            return viewModel;
         }
 
         //
@@ -358,11 +380,11 @@ namespace UI.Controllers
             authenticationManager.SignIn(new AuthenticationProperties() { IsPersistent = isPersistent }, identity);
         }
 
-        private void AddErrors(IdentityResult result)
+        private void AddErrors(IdentityResult result, string validationKey = "")
         {
             foreach (var error in result.Errors)
             {
-                ModelState.AddModelError("", error);
+                ModelState.AddModelError(validationKey, error);
             }
         }
 
@@ -382,6 +404,7 @@ namespace UI.Controllers
             ChangePasswordSuccess,
             ChangeEmailSuccess,
             RemoveLoginSuccess,
+            ErrorEnterEmail,
             Error
         }
 
