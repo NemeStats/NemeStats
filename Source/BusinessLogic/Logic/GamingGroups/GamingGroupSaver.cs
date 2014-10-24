@@ -17,23 +17,17 @@ namespace BusinessLogic.Logic.GamingGroups
         internal const string EXCEPTION_MESSAGE_GAME_DEFINITION_NAMES_CANNOT_BE_NULL = "gamingGroupQuickStart.NewGameDefinitionNames cannot be null.";
 
         private IDataContext dataContext;
-        private IPlayerSaver playerCreator;
-        private IGameDefinitionSaver gameDefinitionCreator;
         private ApplicationUserManager userManager;
         private INemeStatsEventTracker eventTracker;
 
         public GamingGroupSaver(
             IDataContext dataContext, 
             ApplicationUserManager userManager, 
-            INemeStatsEventTracker eventTracker,
-            IPlayerSaver playerCreator,
-            IGameDefinitionSaver gameDefinitionCreator)
+            INemeStatsEventTracker eventTracker)
         {
             this.dataContext = dataContext;
             this.userManager = userManager;
             this.eventTracker = eventTracker;
-            this.playerCreator = playerCreator;
-            this.gameDefinitionCreator = gameDefinitionCreator;
         }
 
         public async virtual Task<GamingGroup> CreateNewGamingGroup(string gamingGroupName, ApplicationUser currentUser)

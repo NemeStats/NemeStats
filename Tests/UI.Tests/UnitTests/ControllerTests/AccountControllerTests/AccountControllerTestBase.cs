@@ -1,6 +1,7 @@
 ﻿using BusinessLogic.Logic.Users;
 using BusinessLogic.Models.User;
 using Microsoft.AspNet.Identity;
+using Microsoft.Owin.Security;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System.Linq;
@@ -17,6 +18,7 @@ namespace UI.Tests.UnitTests.ControllerTests.AccountControllerTests
         protected IGamingGroupInviteConsumer gamingGroupInviteConsumerMock;
         protected IUserRegisterer userRegistererMock;
         protected IFirstTimeAuthenticator firstTimeAuthenticator;
+        protected IAuthenticationManager authenticationManager;
         protected AccountController accountControllerPartialMock;
         protected RegisterViewModel registerViewModel;
         protected ApplicationUser newApplicationUser;
@@ -28,11 +30,13 @@ namespace UI.Tests.UnitTests.ControllerTests.AccountControllerTests
             gamingGroupInviteConsumerMock = MockRepository.GenerateMock<IGamingGroupInviteConsumer>();
             userRegistererMock = MockRepository.GenerateMock<IUserRegisterer>();
             firstTimeAuthenticator = MockRepository.GenerateMock<IFirstTimeAuthenticator>();
+            authenticationManager = MockRepository.GenerateMock<IAuthenticationManager>();
             userManager = new ApplicationUserManager(userStoreMock);
             accountControllerPartialMock = MockRepository.GeneratePartialMock<AccountController>(
                 userManager,
                 userRegistererMock,
-                firstTimeAuthenticator);
+                firstTimeAuthenticator,
+                authenticationManager);
             newApplicationUser = new ApplicationUser()
             {
                 Id = "new application user"

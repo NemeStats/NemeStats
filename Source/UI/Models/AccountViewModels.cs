@@ -84,6 +84,7 @@ namespace UI.Models
 
         [Required]
         [DataType(DataType.EmailAddress)]
+        [EmailAddress]
         [Display(Name = "Email Address")]
         public string EmailAddress { get; set; }
     }

@@ -249,7 +249,6 @@
     <Compile Include="Controllers\Helpers\IShowingXResultsMessageBuilder.cs" />
     <Compile Include="Controllers\Helpers\ShowingXResultsMessageBuilder.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\PlayedGameController.cs" />
     <Compile Include="Controllers\PlayerController.cs" />
     <Compile Include="Controllers\RolesAdminController.cs" />
@@ -276,9 +275,6 @@
     </Compile>
     <Compile Include="HtmlHelpers\MvcHtmlStringExtension.cs" />
     <Compile Include="HtmlHelpers\PlayedGameHelper.cs" />
-    <Compile Include="ManageController.generated.cs">
-      <DependentUpon>T4MVC.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\LocalPasswordModel.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AdminViewModel.cs" />
