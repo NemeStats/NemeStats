@@ -9,27 +9,20 @@ namespace UI.Models
         public string UserName { get; set; }
     }
 
-    public class SetPasswordViewModel
+    public class SetPasswordViewModel : PasswordViewModel
     {
-        [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
-        [DataType(DataType.Password)]
-        [Display(Name = "New password")]
-        public string NewPassword { get; set; }
-
-        [DataType(DataType.Password)]
-        [Display(Name = "Confirm new password")]
-        [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
-        public string ConfirmPassword { get; set; }
     }
 
-    public class ChangePasswordViewModel
+    public class ChangePasswordViewModel : PasswordViewModel
     {
         [Required]
         [DataType(DataType.Password)]
         [Display(Name = "Current password")]
         public string OldPassword { get; set; }
+    }
 
+    public class PasswordViewModel
+    {
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
         [DataType(DataType.Password)]
@@ -48,6 +41,13 @@ namespace UI.Models
         [DataType(DataType.EmailAddress)]
         [Display(Name = "Email Address")]
         public string EmailAddress { get; set; }
+    }
+
+    public class ManageAccountViewModel
+    {
+        public PasswordViewModel PasswordViewModel { get; set; }
+
+        public ChangeEmailViewModel ChangeEmailViewModel { get; set; }
     }
 
     public class LoginViewModel

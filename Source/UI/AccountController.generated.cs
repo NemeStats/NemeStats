@@ -325,6 +325,7 @@ namespace UI.Controllers
             public _ViewNamesClass ViewNames { get { return s_ViewNames; } }
             public class _ViewNamesClass
             {
+                public readonly string _ChangeEmailPartial = "_ChangeEmailPartial";
                 public readonly string _ChangePasswordPartial = "_ChangePasswordPartial";
                 public readonly string _ExternalLoginsListPartial = "_ExternalLoginsListPartial";
                 public readonly string _RemoveAccountPartial = "_RemoveAccountPartial";
@@ -342,6 +343,7 @@ namespace UI.Controllers
                 public readonly string SendCode = "SendCode";
                 public readonly string VerifyCode = "VerifyCode";
             }
+            public readonly string _ChangeEmailPartial = "~/Views/Account/_ChangeEmailPartial.cshtml";
             public readonly string _ChangePasswordPartial = "~/Views/Account/_ChangePasswordPartial.cshtml";
             public readonly string _ExternalLoginsListPartial = "~/Views/Account/_ExternalLoginsListPartial.cshtml";
             public readonly string _RemoveAccountPartial = "~/Views/Account/_RemoveAccountPartial.cshtml";
