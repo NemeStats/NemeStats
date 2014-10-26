@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.DataAccess;
+using BusinessLogic.Exceptions;
 using BusinessLogic.Logic.Players;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Players;
@@ -93,8 +94,16 @@ namespace UI.Controllers
 
             if(ModelState.IsValid)
             {
-                Player player = playerSaver.Save(model, currentUser);
-                return Json(player, JsonRequestBehavior.AllowGet);
+                try
+                {
+                    Player player = playerSaver.Save(model, currentUser);
+                    return Json(player, JsonRequestBehavior.AllowGet);
+                }
+                catch (PlayerAlreadyExistsException playerAlreadyExistsException)
+                {
+                    //TODO Tosho, not sure how to pass back the message and the existing player Id back to the UI.
+                    throw playerAlreadyExistsException;
+                }
             }
 
             return new HttpStatusCodeResult(HttpStatusCode.NotModified);

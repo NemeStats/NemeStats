@@ -1,4 +1,6 @@
-﻿using BusinessLogic.DataAccess;
+﻿using System.Data.Entity.Core;
+using System.Data.SqlClient;
+using BusinessLogic.DataAccess;
 using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.EventTracking;
 using BusinessLogic.Logic.Nemeses;
@@ -11,28 +13,54 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using BusinessLogic.Exceptions;
 
-namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerCreatorTests
+namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerSaverTests
 {
     [TestFixture]
     public class SaveTests
     {
         private IDataContext dataContextMock;
         private INemeStatsEventTracker eventTrackerMock;
-        private IPlayerRepository playerRepositoryMock;
         private INemesisRecalculator nemesisRecalculatorMock;
         private PlayerSaver playerSaver;
         private ApplicationUser currentUser;
-
+        private List<Player> players;
+        private Player playerThatAlreadyExists;
+        private int idOfPlayerThatAlreadyExists;
+            
         [SetUp]
         public void SetUp()
         {
             dataContextMock = MockRepository.GenerateMock<IDataContext>();
             eventTrackerMock = MockRepository.GenerateMock<INemeStatsEventTracker>();
-            playerRepositoryMock = MockRepository.GenerateMock<IPlayerRepository>();
             nemesisRecalculatorMock = MockRepository.GenerateMock<INemesisRecalculator>();
-            playerSaver = new PlayerSaver(dataContextMock, eventTrackerMock, playerRepositoryMock, nemesisRecalculatorMock);
-            currentUser = new ApplicationUser();
+            currentUser = new ApplicationUser
+            {
+                CurrentGamingGroupId = 12
+            };
+            this.playerThatAlreadyExists = new Player
+            {
+                Name = "the new player name"
+            };
+            idOfPlayerThatAlreadyExists = 9;
+            players = new List<Player>
+            {
+                new Player
+                {
+                    Id = idOfPlayerThatAlreadyExists,
+                    Name = this.playerThatAlreadyExists.Name,
+                    GamingGroupId = currentUser.CurrentGamingGroupId.Value
+                },
+                new Player
+                {
+                    Id = 2
+                }
+            };
+            dataContextMock.Expect(mock => mock.GetQueryable<Player>())
+                .Repeat.Once()
+                .Return(players.AsQueryable());
+            playerSaver = new PlayerSaver(dataContextMock, eventTrackerMock, nemesisRecalculatorMock);
         }
 
         [Test]
@@ -108,15 +136,12 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerCreatorTes
         }
 
         [Test]
-        public void ItDoesNotRecordsAPlayerCreatedEventIfThePlayerIsNotNew()
+        public void ItDoesNotRecordAPlayerCreatedEventIfThePlayerIsNotNew()
         {
-            Player player = MockRepository.GeneratePartialMock<Player>();
+            Player player = MockRepository.GenerateMock<Player>();
             player.Name = "player name";
             player.Expect(mock => mock.AlreadyInDatabase())
                 .Return(true);
-
-            dataContextMock.Expect(mock => mock.GetQueryable<Player>())
-                .Return(new List<Player>().AsQueryable());
 
             playerSaver.Save(player, currentUser);
 
@@ -175,6 +200,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerCreatorTes
             }.AsQueryable<Player>();
 
             dataContextMock.Expect(mock => mock.GetQueryable<Player>())
+                .Repeat.Any()
                 .Return(minionPlayers);
 
             playerSaver.Save(player, currentUser);
@@ -207,6 +233,15 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerCreatorTes
             playerSaver.Save(player, currentUser);
 
             nemesisRecalculatorMock.AssertWasNotCalled(mock => mock.RecalculateNemesis(currentPlayerMinionId1, currentUser));
+        }
+
+        [Test]
+        public void ItThrowsAPlayerAlreadyExistsExceptionIfAttemptingToSaveAPlayerWithANameThatAlreadyExists()
+        {    
+            PlayerAlreadyExistsException exception = Assert.Throws<PlayerAlreadyExistsException>(
+                () => playerSaver.Save(this.playerThatAlreadyExists, currentUser));
+
+            Assert.AreEqual(idOfPlayerThatAlreadyExists, exception.ExistingPlayerId);
         }
     }
 }
