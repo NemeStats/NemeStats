@@ -24,13 +24,6 @@ namespace UI
             Database.SetInitializer<NemeStatsDbContext>(null);
         }
 
-        protected void Application_Error()
-        {
-            var exception = Server.GetLastError().GetBaseException();
-
-            (new RollbarClient()).SendException(exception);
-        }
-
         protected void Application_EndRequest(object sender, EventArgs e)
         {
             HttpContextLifecycle.DisposeAndClearAll();
