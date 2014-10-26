@@ -36,7 +36,7 @@ namespace UI
                       .Include("~/Content/site.css",
                         "~/Content/site-mobile.css",
                         "~/Content/blog.css")
-                      .Include("~/Content/css/font-awesome.min.css", new CssRewriteUrlTransform()));
+                      .Include("~/Content/font-awesome.css", new CssRewriteUrlTransform()));
         }
     }
 }
