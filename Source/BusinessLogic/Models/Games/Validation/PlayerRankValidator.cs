@@ -6,6 +6,7 @@ namespace BusinessLogic.Models.Games.Validation
 {
     public class PlayerRankValidator
     {
+        internal const string EXCEPTION_MESSAGE_NO_PLAYER_CAN_HAVE_A_RANK_LESS_THAN_ONE = "No player may have a rank less than 1.";
         internal const string EXCEPTION_MESSAGE_EACH_PLAYER_RANK_MUST_HAVE_A_PLAYER_ID = "Each PlayerRank must have a valid PlayerId.";
         internal const string EXCEPTION_MESSAGE_EACH_PLAYER_RANK_MUST_HAVE_A_GAME_RANK = "Each PlayerRank must have a valid GameRank.";
         internal const string EXCEPTION_MESSAGE_MUST_PASS_AT_LEAST_TWO_PLAYERS = "Must pass in at least two players.";
@@ -20,6 +21,7 @@ namespace BusinessLogic.Models.Games.Validation
             ValidateThatThereAreAtLeastTwoPlayers(playerRanks);
             ValidateThatThereIsAWinner(playerRanks);
             ValidateThatNoPlayerHasARankGreaterThanTheNumberOfPlayers(playerRanks);
+            ValidateNoPlayerHasARankLessThanOne(playerRanks);
         }
 
         private static void ValidateThatNoPlayerHasARankGreaterThanTheNumberOfPlayers(List<PlayerRank> playerRanks)
@@ -64,9 +66,17 @@ namespace BusinessLogic.Models.Games.Validation
 
         private static void ValidateThatThereIsAWinner(List<PlayerRank> playerRanks)
         {
-            if (!playerRanks.Any(playerRank => playerRank.GameRank == 1))
+            if (playerRanks.All(playerRank => playerRank.GameRank != 1))
             {
                 throw new ArgumentException(EXCEPTION_MESSAGE_GAME_MUST_HAVE_A_WINNER);
+            }
+        }
+
+        private static void ValidateNoPlayerHasARankLessThanOne(List<PlayerRank> playerRanks)
+        {
+            if (playerRanks.Any(rank => rank.GameRank < 1))
+            {
+                throw new ArgumentException(EXCEPTION_MESSAGE_NO_PLAYER_CAN_HAVE_A_RANK_LESS_THAN_ONE);
             }
         }
     }

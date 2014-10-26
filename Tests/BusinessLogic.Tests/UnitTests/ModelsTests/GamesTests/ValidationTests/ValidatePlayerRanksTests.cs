@@ -73,6 +73,17 @@ namespace BusinessLogic.Tests.UnitTests.ModelsTests.GamesTests.ValidationTests
         }
 
         [Test]
+        [ExpectedException(typeof(ArgumentException), ExpectedMessage = PlayerRankValidator.EXCEPTION_MESSAGE_NO_PLAYER_CAN_HAVE_A_RANK_LESS_THAN_ONE)]
+        public void NoPlayersMayHaveARankLessThanOne()
+        {
+            List<PlayerRank> playerRanks = new List<PlayerRank>();
+            playerRanks.Add(new PlayerRank() { PlayerId = 1, GameRank = 1 });
+            playerRanks.Add(new PlayerRank() { PlayerId = 2, GameRank = 0 });
+
+            PlayerRankValidator.ValidatePlayerRanks(playerRanks);
+        }
+
+        [Test]
         public void ItAcceptsAGameWithRanksOneTwoAndThreeRanks()
         {
             List<PlayerRank> playerRanks = new List<PlayerRank>();
