@@ -1,12 +1,7 @@
-﻿using BusinessLogic.DataAccess.Repositories;
-using BusinessLogic.Models;
+﻿using BusinessLogic.Models;
 using BusinessLogic.Models.User;
 using System;
-using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BusinessLogic.DataAccess.GamingGroups
 {

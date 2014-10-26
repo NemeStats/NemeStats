@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BusinessLogic.Models.Players
 {
@@ -15,7 +12,8 @@ namespace BusinessLogic.Models.Players
 
         public PlayerStatistics PlayerStats { get; set; }
         public List<PlayerGameResult> PlayerGameResults { get; set; }
-        public Nemesis PlayerNemesis { get; set; }
+        public Nemesis CurrentNemesis { get; set; }
+        public Nemesis PreviousNemesis { get; set; }
         public List<Player> Minions { get; set; }
     }
 }

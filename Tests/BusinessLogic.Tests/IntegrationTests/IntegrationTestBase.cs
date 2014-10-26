@@ -3,13 +3,11 @@ using BusinessLogic.DataAccess.GamingGroups;
 using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.DataAccess.Security;
 using BusinessLogic.EventTracking;
-using BusinessLogic.Logic;
 using BusinessLogic.Logic.Nemeses;
 using BusinessLogic.Logic.PlayedGames;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
 using BusinessLogic.Models.User;
-using Microsoft.AspNet.Identity.EntityFramework;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System;
@@ -24,7 +22,7 @@ namespace BusinessLogic.Tests.IntegrationTests
         protected SecuredEntityValidatorFactory securedEntityValidatorFactory = new SecuredEntityValidatorFactory();
         protected IEventTracker eventTrackerStub;
         protected IUniversalAnalyticsEventFactory eventFactory = new UniversalAnalyticsEventFactory();
-        protected NemeStatsEventTracker playedGameTracker;
+        protected INemeStatsEventTracker playedGameTracker;
 
         protected List<PlayedGame> testPlayedGames = new List<PlayedGame>();
         protected GameDefinition testGameDefinition;

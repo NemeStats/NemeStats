@@ -4,7 +4,6 @@ using BusinessLogic.Models.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using UI.Models.PlayedGame;
 using UI.Models.Players;
 
@@ -42,7 +41,7 @@ namespace UI.Transformations.PlayerTransformations
 
             PopulatePlayerGameSummaries(playerDetails, playerDetailsViewModel);
 
-            PopulateNemesisData(playerDetails.PlayerNemesis, playerDetailsViewModel);
+            PopulateNemesisData(playerDetails.CurrentNemesis, playerDetailsViewModel);
 
             playerDetailsViewModel.Minions = (from Player player in playerDetails.Minions
                                               select minionViewModelBuilder.Build(player)).ToList();

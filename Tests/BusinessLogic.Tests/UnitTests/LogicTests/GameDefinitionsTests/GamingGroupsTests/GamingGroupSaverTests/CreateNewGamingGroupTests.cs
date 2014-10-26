@@ -1,9 +1,4 @@
-﻿using BusinessLogic.DataAccess;
-using BusinessLogic.DataAccess.Repositories;
-using BusinessLogic.EventTracking;
-using BusinessLogic.Logic.GamingGroups;
-using BusinessLogic.Logic.Players;
-using BusinessLogic.Models;
+﻿using BusinessLogic.Models;
 using BusinessLogic.Models.User;
 using Microsoft.AspNet.Identity;
 using NUnit.Framework;
@@ -11,10 +6,7 @@ using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using UniversalAnalyticsHttpWrapper;
-using BusinessLogic.Logic.GameDefinitions;
 using BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GamingGroupsTests.GamingGroupSaverTests;
 
 namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroupSaverTests
@@ -39,10 +31,10 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
             {
                 Id = currentUser.Id
             };
-            userStoreMock.Expect(mock => mock.FindByIdAsync(currentUser.Id))
+            applicationUserManagerMock.Expect(mock => mock.FindByIdAsync(currentUser.Id))
                 .Repeat.Once()
                 .Return(Task.FromResult(appUserRetrievedFromFindMethod));
-            userStoreMock.Expect(mock => mock.UpdateAsync(appUserRetrievedFromFindMethod))
+            applicationUserManagerMock.Expect(mock => mock.UpdateAsync(appUserRetrievedFromFindMethod))
                  .Return(Task.FromResult(new IdentityResult()));
         }
 
@@ -110,7 +102,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
         {
             GamingGroup returnedGamingGroup = await gamingGroupSaver.CreateNewGamingGroup(gamingGroupName, currentUser);
 
-            userStoreMock.AssertWasCalled(mock => mock.UpdateAsync(Arg<ApplicationUser>.Matches(
+            applicationUserManagerMock.AssertWasCalled(mock => mock.UpdateAsync(Arg<ApplicationUser>.Matches(
                 user => user.CurrentGamingGroupId == expectedGamingGroup.Id 
                     && user.Id == appUserRetrievedFromFindMethod.Id)));
         }

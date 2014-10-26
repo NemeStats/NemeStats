@@ -1,12 +1,9 @@
-﻿using BusinessLogic.DataAccess.Repositories;
-using BusinessLogic.Logic.PlayedGames;
+﻿using BusinessLogic.Logic.PlayedGames;
 using BusinessLogic.Logic.Players;
 using BusinessLogic.Models.Games;
 using BusinessLogic.Models.Players;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using UI.Models.Home;
 using UI.Models.Players;

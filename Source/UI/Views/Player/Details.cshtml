@@ -1,8 +1,5 @@
-﻿@using UI.HtmlHelpers
-@using System.Collections.Generic;
-@using UI.Models.PlayedGame;
-@model UI.Models.Players.PlayerDetailsViewModel
-
+﻿@model UI.Models.Players.PlayerDetailsViewModel
+@using UI.HtmlHelpers
 @{
     ViewBag.Title = "Player Details";
     Layout = MVC.Shared.Views._BaseLayout;
@@ -62,7 +59,7 @@
                 <table class="table table-hover">
                     <thead>
                         <tr>
-                            <th>Player Name</th>
+                            <th>Previous/Current Player Name</th>
                             <th>Games Lost</th>
                             <th>% Lost</th>
                         </tr>

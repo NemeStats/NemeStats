@@ -15,6 +15,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Microsoft.Owin.Security;
+
 namespace UI.DependencyResolution {
     using BusinessLogic.DataAccess;
     using BusinessLogic.DataAccess.GamingGroups;
@@ -28,7 +30,6 @@ namespace UI.DependencyResolution {
     using BusinessLogic.Models.User;
     using StructureMap.Configuration.DSL;
     using StructureMap.Graph;
-    using StructureMap.Pipeline;
     using System.Configuration.Abstractions;
     using System.Data.Entity;
     using UI.Controllers.Helpers;
@@ -37,7 +38,8 @@ namespace UI.DependencyResolution {
     using UniversalAnalyticsHttpWrapper;
     using StructureMap.Web;
     using BusinessLogic.Logic.Nemeses;
-	
+    using System.Web;
+
     public class DefaultRegistry : Registry {
         #region Constructors and Destructors
 
@@ -53,6 +55,7 @@ namespace UI.DependencyResolution {
             For<DbContext>().HttpContextScoped().Use<NemeStatsDbContext>();
             For<IDataContext>().HttpContextScoped().Use<NemeStatsDataContext>();
             For<ApplicationUserManager>().HttpContextScoped().Use<ApplicationUserManager>();
+            For<IAuthenticationManager>().Use(() => HttpContext.Current.GetOwinContext().Authentication);
 
             //transient scope
             For<IGamingGroupSaver>().Use<GamingGroupSaver>();
@@ -81,15 +84,17 @@ namespace UI.DependencyResolution {
 
             For<IPlayedGameCreator>().Use<PlayedGameCreator>();
 
-            For<NemeStatsEventTracker>().Use<UniversalAnalyticsNemeStatsEventTracker>();
+            For<INemeStatsEventTracker>().Use<UniversalAnalyticsNemeStatsEventTracker>();
 
             For<IEventTracker>().Use<EventTracker>();
+            For<INemesisHistoryRetriever>().Use<NemesisHistoryRetriever>();
 
-            For<IUniversalAnalyticsEvent>().Use<UniversalAnalyticsEvent>();
+            //TODO should never be injected by the IoC... need to confirm
+            //For<IUniversalAnalyticsEvent>().Use<UniversalAnalyticsEvent>();
 
             For<IUniversalAnalyticsEventFactory>().Use<UniversalAnalyticsEventFactory>();
 
-            For<IConfigurationManager>().Use<ConfigurationManager>();
+            For<IConfigurationManager>().Use(() => ConfigurationManager.Instance);
 
             For<IPlayerSaver>().Use<PlayerSaver>();
 
@@ -101,6 +106,9 @@ namespace UI.DependencyResolution {
 
             For<IPlayedGameDeleter>().Use<PlayedGameDeleter>();
 
+            For<IUserRegisterer>().Use<UserRegisterer>();
+
+            For<IFirstTimeAuthenticator>().Use<FirstTimeAuthenticator>();
 
             //singleton scope
 

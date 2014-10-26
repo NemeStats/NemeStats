@@ -1,11 +1,7 @@
 ﻿using BusinessLogic.Models;
 using NUnit.Framework;
 using Rhino.Mocks;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Mvc;
 using UI.Controllers;
 
@@ -19,9 +15,9 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
         {
             gameDefinitionControllerPartialMock.ModelState.AddModelError("key", "message");
 
-            ViewResult actionResult = gameDefinitionControllerPartialMock.Create(null, currentUser) as ViewResult;
+            ViewResult viewResult = gameDefinitionControllerPartialMock.Create(null, currentUser) as ViewResult;
 
-            Assert.AreEqual(MVC.GameDefinition.Views.Create, actionResult.ViewName);
+            Assert.AreEqual(MVC.GameDefinition.Views.Create, viewResult.ViewName);
         }
 
         [Test]

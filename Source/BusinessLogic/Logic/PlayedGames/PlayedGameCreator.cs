@@ -9,22 +9,19 @@ using BusinessLogic.Models.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UniversalAnalyticsHttpWrapper;
 
 namespace BusinessLogic.Logic.PlayedGames
 {
     public class PlayedGameCreator : IPlayedGameCreator
     {
         private IDataContext dataContext;
-        private NemeStatsEventTracker playedGameTracker;
+        private INemeStatsEventTracker playedGameTracker;
         private IPlayerRepository playerRepository;
         private INemesisRecalculator nemesisRecalculator;
 
         public PlayedGameCreator(
             IDataContext applicationDataContext, 
-            NemeStatsEventTracker playedGameTracker, 
+            INemeStatsEventTracker playedGameTracker, 
             IPlayerRepository playerRepository,
             INemesisRecalculator nemesisRecalculator)
         {

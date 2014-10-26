@@ -180,3 +180,7 @@ ul input[type=text] { width:25px }
         font-size: 8em;
     }
 }
+
+.push-30 {
+    margin-top: 30px;
+}

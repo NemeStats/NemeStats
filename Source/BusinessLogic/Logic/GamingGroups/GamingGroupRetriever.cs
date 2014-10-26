@@ -4,20 +4,17 @@ using BusinessLogic.Logic.PlayedGames;
 using BusinessLogic.Logic.Players;
 using BusinessLogic.Models;
 using BusinessLogic.Models.User;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BusinessLogic.Logic.GamingGroups
 {
     public class GamingGroupRetriever : IGamingGroupRetriever
     {
-        private IDataContext dataContext;
-        private IPlayerRetriever playerRetriever;
-        private IGameDefinitionRetriever gameDefinitionRetriever;
-        private IPlayedGameRetriever playedGameRetriever;
+        private readonly IDataContext dataContext;
+        private readonly IPlayerRetriever playerRetriever;
+        private readonly IGameDefinitionRetriever gameDefinitionRetriever;
+        private readonly IPlayedGameRetriever playedGameRetriever;
 
         public GamingGroupRetriever(
             IDataContext dataContext, 

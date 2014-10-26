@@ -3,9 +3,7 @@ using BusinessLogic.EventTracking;
 using BusinessLogic.Models;
 using BusinessLogic.Models.User;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace BusinessLogic.Logic.GameDefinitions
@@ -16,9 +14,9 @@ namespace BusinessLogic.Logic.GameDefinitions
             = "gameDefinition.Name cannot be null or whitespace.";
 
         private IDataContext dataContext;
-        private NemeStatsEventTracker eventTracker;
+        private INemeStatsEventTracker eventTracker;
 
-        public GameDefinitionSaver(IDataContext dataContext, NemeStatsEventTracker eventTracker)
+        public GameDefinitionSaver(IDataContext dataContext, INemeStatsEventTracker eventTracker)
         {
             this.dataContext = dataContext;
             this.eventTracker = eventTracker;

@@ -1,17 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using BusinessLogic.Models;
 using BusinessLogic.DataAccess;
 using BusinessLogic.Models.User;
-using BusinessLogic.Logic;
 using UI.Filters;
-using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.Logic.GameDefinitions;
 using UI.Transformations;
 using UI.Models.GameDefinitionModels;

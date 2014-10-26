@@ -1,15 +1,10 @@
-﻿using BusinessLogic.EventTracking;
-using BusinessLogic.Logic.Users;
+﻿using BusinessLogic.Logic.Users;
 using BusinessLogic.Models.User;
 using Microsoft.AspNet.Identity;
+using Microsoft.Owin.Security;
 using NUnit.Framework;
 using Rhino.Mocks;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.Mvc;
 using UI.Controllers;
 using UI.Models;
 
@@ -21,21 +16,27 @@ namespace UI.Tests.UnitTests.ControllerTests.AccountControllerTests
         protected ApplicationUserManager userManager;
         protected IUserStore<ApplicationUser> userStoreMock;
         protected IGamingGroupInviteConsumer gamingGroupInviteConsumerMock;
-        protected NemeStatsEventTracker eventTrackerMock;
+        protected IUserRegisterer userRegistererMock;
+        protected IFirstTimeAuthenticator firstTimeAuthenticator;
+        protected IAuthenticationManager authenticationManager;
         protected AccountController accountControllerPartialMock;
-        //protected ModelStateDictionary modelStateDictionaryMock;
         protected RegisterViewModel registerViewModel;
         protected ApplicationUser newApplicationUser;
 
         [SetUp]
-        public void SetUp()
+        public virtual void SetUp()
         {
             userStoreMock = MockRepository.GenerateMock<IUserStore<ApplicationUser>>();
             gamingGroupInviteConsumerMock = MockRepository.GenerateMock<IGamingGroupInviteConsumer>();
-            eventTrackerMock = MockRepository.GenerateMock<NemeStatsEventTracker>();
+            userRegistererMock = MockRepository.GenerateMock<IUserRegisterer>();
+            firstTimeAuthenticator = MockRepository.GenerateMock<IFirstTimeAuthenticator>();
+            authenticationManager = MockRepository.GenerateMock<IAuthenticationManager>();
             userManager = new ApplicationUserManager(userStoreMock);
-            accountControllerPartialMock = MockRepository.GeneratePartialMock<AccountController>(userManager, gamingGroupInviteConsumerMock, eventTrackerMock);
-           // modelStateDictionaryMock = MockRepository.GenerateMock<ModelStateDictionary>();
+            accountControllerPartialMock = MockRepository.GeneratePartialMock<AccountController>(
+                userManager,
+                userRegistererMock,
+                firstTimeAuthenticator,
+                authenticationManager);
             newApplicationUser = new ApplicationUser()
             {
                 Id = "new application user"

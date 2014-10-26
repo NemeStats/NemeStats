@@ -1,13 +1,10 @@
 ﻿using BusinessLogic.Models.User;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using UniversalAnalyticsHttpWrapper;
 
 namespace BusinessLogic.EventTracking
 {
-    public class UniversalAnalyticsNemeStatsEventTracker : NemeStatsEventTracker
+    public class UniversalAnalyticsNemeStatsEventTracker : INemeStatsEventTracker
     {
         /// <summary>
         /// This was randomly generated and will be used for any client whose anonymous ID cannot be determined.

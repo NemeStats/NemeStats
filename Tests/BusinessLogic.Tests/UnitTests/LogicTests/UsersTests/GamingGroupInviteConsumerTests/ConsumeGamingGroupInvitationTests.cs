@@ -1,6 +1,5 @@
 ﻿using BusinessLogic.DataAccess;
 using BusinessLogic.DataAccess.GamingGroups;
-using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.Logic.GamingGroups;
 using BusinessLogic.Logic.Users;
 using BusinessLogic.Models;
@@ -8,10 +7,8 @@ using BusinessLogic.Models.User;
 using Microsoft.AspNet.Identity;
 using NUnit.Framework;
 using Rhino.Mocks;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.GamingGroupInviteConsumerTests
@@ -22,7 +19,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.GamingGroupInviteC
         private NemeStatsDbContext dbContextMock;
         private IPendingGamingGroupInvitationRetriever pendingGamingGroupInvitationRetriever;
         private IUserStore<ApplicationUser> userStoreMock;
-        private ApplicationUserManager userManager;
+        private ApplicationUserManager applicationUserManagerMock;
         private GamingGroupInviteConsumer inviteConsumer;
         private IGamingGroupAccessGranter gamingGroupAccessGranter;
         private List<GamingGroupInvitation> gamingGroupInvitations;
@@ -35,9 +32,9 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.GamingGroupInviteC
             dbContextMock = MockRepository.GenerateMock<NemeStatsDbContext>();
             pendingGamingGroupInvitationRetriever = MockRepository.GenerateMock<IPendingGamingGroupInvitationRetriever>();
             userStoreMock = MockRepository.GenerateMock<IUserStore<ApplicationUser>>();
-            userManager = new ApplicationUserManager(userStoreMock);
+            applicationUserManagerMock = MockRepository.GenerateMock<ApplicationUserManager>(userStoreMock);
             gamingGroupAccessGranter = MockRepository.GenerateMock<IGamingGroupAccessGranter>();
-            inviteConsumer = new GamingGroupInviteConsumer(pendingGamingGroupInvitationRetriever, userManager, gamingGroupAccessGranter);
+            inviteConsumer = new GamingGroupInviteConsumer(pendingGamingGroupInvitationRetriever, applicationUserManagerMock, gamingGroupAccessGranter);
             currentUser = new ApplicationUser()
             {
                 Id = "user id"

@@ -1,10 +1,7 @@
 ﻿using BusinessLogic.Models;
 using NUnit.Framework;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UI.Models.Players;
 using UI.Transformations.PlayerTransformations;
 
@@ -20,6 +17,27 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         public void SetUp()
         {
             builder = new PlayerWithNemesisViewModelBuilder();
+            player = new Player
+            {
+                Id = 100,
+                Name = "player name",
+                Nemesis = new Nemesis
+                {
+                    NemesisPlayerId = 1,
+                    NemesisPlayer = new Player
+                    {
+                        Name = "current nemesis player name"
+                    }
+                },
+                PreviousNemesis = new Nemesis
+                {
+                    NemesisPlayerId = 2,
+                    NemesisPlayer = new Player
+                    {
+                        Name = "previous nemesis player name"
+                    }
+                }
+            };
         }
 
         [Test]
@@ -33,12 +51,29 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         [Test]
         public void ItThrowsAnArgumentExceptionIfThePlayerHasANemesisButTheNemesisPlayerIsNull()
         {
-            Player player = new Player()
+            Player playerWithNoNemesisPlayer = new Player()
             {
                 Nemesis = new Nemesis()
             };
-            Exception expectedException = new ArgumentException(PlayerWithNemesisViewModelBuilder.EXCEPTION_MESSAGE_NEMESIS_PLAYER_CANNOT_BE_NULL);
-            Exception actualException = Assert.Throws<ArgumentException>(() => builder.Build(player));
+            Exception expectedException = new ArgumentException(
+                PlayerWithNemesisViewModelBuilder.EXCEPTION_MESSAGE_NEMESIS_PLAYER_CANNOT_BE_NULL);
+
+            Exception actualException = Assert.Throws<ArgumentException>(() => builder.Build(playerWithNoNemesisPlayer));
+
+            Assert.AreEqual(expectedException.Message, actualException.Message);
+        }
+
+        [Test]
+        public void ItThrowsAnArgumentExceptionIfThePlayerHasAPreviousNemesisButTheNemesisPlayerIsNull()
+        {
+            Player playerWithNoPreviousNemesisSet = new Player()
+            {
+                PreviousNemesis = new Nemesis()
+            };
+            Exception expectedException = new ArgumentException(
+                PlayerWithNemesisViewModelBuilder.EXCEPTION_MESSAGE_PREVIOUS_NEMESIS_PLAYER_CANNOT_BE_NULL);
+
+            Exception actualException = Assert.Throws<ArgumentException>(() => builder.Build(playerWithNoPreviousNemesisSet));
 
             Assert.AreEqual(expectedException.Message, actualException.Message);
         }
@@ -46,8 +81,6 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         [Test]
         public void ItCopiesThePlayerId()
         {
-            Player player = new Player() { Id = 1 };
-
             PlayerWithNemesisViewModel actualViewModel = builder.Build(player);
 
             Assert.AreEqual(player.Id, actualViewModel.PlayerId);
@@ -56,8 +89,6 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         [Test]
         public void ItCopiesThePlayerName()
         {
-            Player player = new Player() { Name = "player name" };
-
             PlayerWithNemesisViewModel actualViewModel = builder.Build(player);
 
             Assert.AreEqual(player.Name, actualViewModel.PlayerName);
@@ -66,11 +97,6 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         [Test]
         public void ItCopiesTheNemesisPlayerId()
         {
-            Player player = new Player();
-            player.Nemesis = new Nemesis();
-            player.Nemesis.NemesisPlayerId = 123;
-            player.Nemesis.NemesisPlayer = new Player();
-
             PlayerWithNemesisViewModel actualViewModel = builder.Build(player);
 
             Assert.AreEqual(player.Nemesis.NemesisPlayerId, actualViewModel.NemesisPlayerId);
@@ -79,13 +105,25 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         [Test]
         public void ItCopiesTheNemesisPlayerName()
         {
-            Player player = new Player();
-            player.Nemesis = new Nemesis();
-            player.Nemesis.NemesisPlayer = new Player() { Name = "nemesis player name" };
-
             PlayerWithNemesisViewModel actualViewModel = builder.Build(player);
 
             Assert.AreEqual(player.Nemesis.NemesisPlayer.Name, actualViewModel.NemesisPlayerName);
+        }
+
+        [Test]
+        public void ItCopiesThePreviousNemesisPlayerId()
+        {
+            PlayerWithNemesisViewModel actualViewModel = builder.Build(player);
+
+            Assert.AreEqual(player.PreviousNemesis.NemesisPlayerId, actualViewModel.PreviousNemesisPlayerId);
+        }
+
+        [Test]
+        public void ItCopiesThePreviousNemesisPlayerName()
+        {
+            PlayerWithNemesisViewModel actualViewModel = builder.Build(player);
+
+            Assert.AreEqual(player.PreviousNemesis.NemesisPlayer.Name, actualViewModel.PreviousNemesisPlayerName);
         }
     }
 }

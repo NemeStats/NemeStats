@@ -1,5 +1,5 @@
-﻿using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
+using UI.Filters;
 
 namespace UI
 {
@@ -7,7 +7,8 @@ namespace UI
     {
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
-            filters.Add(new HandleErrorAttribute());
+            filters.Add(new RollbarExceptionFilter(), 1);
+            filters.Add(new HandleErrorAttribute(), 2);
         }
     }
 }

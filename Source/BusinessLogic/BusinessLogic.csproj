@@ -93,8 +93,9 @@
     <Reference Include="SendGrid.SmtpApi">
       <HintPath>..\..\packages\SendGrid.SmtpApi.1.1.3\lib\net40\SendGrid.SmtpApi.dll</HintPath>
     </Reference>
-    <Reference Include="SendGridMail">
-      <HintPath>..\..\packages\Sendgrid.4.0.0\lib\SendGridMail.dll</HintPath>
+    <Reference Include="SendGridMail, Version=5.0.0.0, Culture=neutral, PublicKeyToken=2ae73662c35d80e4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Sendgrid.5.0.0\lib\SendGridMail.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -134,9 +135,12 @@
     <Compile Include="EventTracking\NemeStatsEventTracker.cs" />
     <Compile Include="EventTracking\UniversalAnalyticsNemeStatsEventTracker.cs" />
     <Compile Include="Exceptions\EntityDoesNotExistException.cs" />
+    <Compile Include="Exceptions\PlayerAlreadyExistsException.cs" />
     <Compile Include="Exceptions\UnauthorizedEntityAccessException.cs" />
     <Compile Include="Logic\Email\EmailService.cs" />
+    <Compile Include="Logic\Nemeses\INemesisHistoryRetriever.cs" />
     <Compile Include="Logic\Nemeses\INemesisRecalculator.cs" />
+    <Compile Include="Logic\Nemeses\NemesisHistoryRetriever.cs" />
     <Compile Include="Logic\Nemeses\NemesisRecalculator.cs" />
     <Compile Include="Logic\GameDefinitions\IGameDefinitionSaver.cs" />
     <Compile Include="Logic\GameDefinitions\GameDefinitionSaver.cs" />
@@ -165,8 +169,12 @@
     <Compile Include="Logic\Users\ApplicationRoleManager.cs" />
     <Compile Include="Logic\Users\ApplicationSignInManager.cs" />
     <Compile Include="Logic\Users\ApplicationUserManager.cs" />
+    <Compile Include="Logic\Users\FirstTimeAuthenticator.cs" />
+    <Compile Include="Logic\Users\IFirstTimeAuthenticator.cs" />
     <Compile Include="Logic\Users\IGamingGroupInviteConsumer.cs" />
     <Compile Include="Logic\Users\GamingGroupInviteConsumer.cs" />
+    <Compile Include="Logic\Users\IUserRegisterer.cs" />
+    <Compile Include="Logic\Users\UserRegisterer.cs" />
     <Compile Include="Migrations\201407011153551_GamingGroupsAndAspNetAuth.cs" />
     <Compile Include="Migrations\201407011153551_GamingGroupsAndAspNetAuth.Designer.cs">
       <DependentUpon>201407011153551_GamingGroupsAndAspNetAuth.cs</DependentUpon>
@@ -240,16 +248,26 @@
     <Compile Include="Migrations\201409221652230_SetAllInitialNemeses.Designer.cs">
       <DependentUpon>201409221652230_SetAllInitialNemeses.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201410191609475_PreviousNemesisOnPlayer.cs" />
+    <Compile Include="Migrations\201410191609475_PreviousNemesisOnPlayer.Designer.cs">
+      <DependentUpon>201410191609475_PreviousNemesisOnPlayer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201410240249244_ConfirmAllEmails.cs" />
+    <Compile Include="Migrations\201410240249244_ConfirmAllEmails.Designer.cs">
+      <DependentUpon>201410240249244_ConfirmAllEmails.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Games\PublicGameSummary.cs" />
     <Compile Include="Models\GamingGroup.cs" />
     <Compile Include="Models\GamingGroupInvitation.cs" />
     <Compile Include="Models\Nemeses\NemesisData.cs" />
+    <Compile Include="Models\Nemeses\NemesisHistoryData.cs" />
     <Compile Include="Models\Nemeses\NullNemesisData.cs" />
     <Compile Include="Models\Nemesis.cs" />
     <Compile Include="Models\NullNemesis.cs" />
     <Compile Include="Models\Players\TopPlayer.cs" />
     <Compile Include="Models\User\AnonymousApplicationUser.cs" />
     <Compile Include="Models\User\ApplicationUser.cs" />
+    <Compile Include="Models\User\NewUser.cs" />
     <Compile Include="Models\User\UserGamingGroup.cs" />
     <Compile Include="Models\Players\PlayerStatistics.cs" />
     <Compile Include="Migrations\201405220234035_Initial.cs" />
@@ -387,6 +405,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201409221652230_SetAllInitialNemeses.resx">
       <DependentUpon>201409221652230_SetAllInitialNemeses.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201410191609475_PreviousNemesisOnPlayer.resx">
+      <DependentUpon>201410191609475_PreviousNemesisOnPlayer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201410240249244_ConfirmAllEmails.resx">
+      <DependentUpon>201410240249244_ConfirmAllEmails.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

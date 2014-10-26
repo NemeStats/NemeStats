@@ -1,16 +1,9 @@
-﻿using BusinessLogic.DataAccess;
-using BusinessLogic.Logic.Email;
+﻿using BusinessLogic.Logic.Email;
 using BusinessLogic.Logic.SMS;
 using BusinessLogic.Models.User;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
-using Microsoft.AspNet.Identity.Owin;
-using Microsoft.Owin;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BusinessLogic.Logic.Users
 {
@@ -30,10 +23,10 @@ namespace BusinessLogic.Logic.Users
             this.PasswordValidator = new PasswordValidator
             {
                 RequiredLength = 6,
-                RequireNonLetterOrDigit = true,
-                RequireDigit = true,
-                RequireLowercase = true,
-                RequireUppercase = true,
+                RequireNonLetterOrDigit = false,
+                RequireDigit = false,
+                RequireLowercase = false,
+                RequireUppercase = false,
             };
             // Configure user lockout defaults
             this.UserLockoutEnabledByDefault = true;
@@ -52,12 +45,7 @@ namespace BusinessLogic.Logic.Users
             });
             this.EmailService = new EmailService();
             this.SmsService = new SmsService();
-            var dataProtectionProvider = new Microsoft.Owin.Security.DataProtection.DpapiDataProtectionProvider("NemeStats");
-            if (dataProtectionProvider != null)
-            {
-                this.UserTokenProvider =
-                    new DataProtectorTokenProvider<ApplicationUser>(dataProtectionProvider.Create("ASP.NET Identity"));
-            }
+            this.UserTokenProvider = this.UserTokenProvider = new EmailTokenProvider<ApplicationUser, string>();
         }
     }
 }

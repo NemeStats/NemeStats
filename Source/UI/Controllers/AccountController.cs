@@ -1,6 +1,4 @@
-﻿using BusinessLogic.EventTracking;
-using BusinessLogic.Logic.GamingGroups;
-using BusinessLogic.Logic.Users;
+﻿using BusinessLogic.Logic.Users;
 using BusinessLogic.Models.User;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
@@ -14,21 +12,21 @@ namespace UI.Controllers
     [Authorize]
     public partial class AccountController : Controller
     {
-        protected ApplicationUserManager userManager;
-        protected IGamingGroupInviteConsumer gamingGroupInviteConsumer;
-        protected IGamingGroupSaver gamingGroupSaver;
-        protected NemeStatsEventTracker eventTracker;
+        private ApplicationUserManager userManager;
+        private readonly IUserRegisterer userRegisterer;
+        private readonly IFirstTimeAuthenticator firstTimeAuthenticator;
+        private readonly IAuthenticationManager authenticationManager;
 
         public AccountController(
             ApplicationUserManager userManager, 
-            IGamingGroupInviteConsumer gamingGroupInviteConsumer,
-            IGamingGroupSaver gamingGroupSaver,
-            NemeStatsEventTracker eventTracker)
+            IUserRegisterer userRegisterer,
+            IFirstTimeAuthenticator firstTimeAuthenticator,
+            IAuthenticationManager authenticationManager)
         {
             this.userManager = userManager;
-            this.gamingGroupInviteConsumer = gamingGroupInviteConsumer;
-            this.gamingGroupSaver = gamingGroupSaver;
-            this.eventTracker = eventTracker;
+            this.userRegisterer = userRegisterer;
+            this.firstTimeAuthenticator = firstTimeAuthenticator;
+            this.authenticationManager = authenticationManager;
         }
 
         //
@@ -57,7 +55,7 @@ namespace UI.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError("", "Invalid username or password.");
+                    ModelState.AddModelError(string.Empty, "Invalid username or password.");
                 }
             }
 
@@ -82,13 +80,18 @@ namespace UI.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser() { UserName = model.UserName, Email = model.EmailAddress };
-                var result = await userManager.CreateAsync(user, model.Password);
+                NewUser newUser = new NewUser
+                {
+                    Email = model.EmailAddress,
+                    UserName = model.UserName,
+                    Password = model.Password
+                };
+
+                IdentityResult result = await this.userRegisterer.RegisterUser(newUser);
+
                 if (result.Succeeded)
                 {
-                    await SignInAndAssignGamingGroup(model.UserName, user);
-
-                    return RedirectToAction(MVC.GamingGroup.ActionNames.Index, "GamingGroup");
+                    return RedirectToAction(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name);
                 }
                 else
                 {
@@ -97,20 +100,7 @@ namespace UI.Controllers
             }
 
             // If we got this far, something failed, redisplay form
-            return View(model);
-        }
-
-        private async Task SignInAndAssignGamingGroup(string userName, ApplicationUser user)
-        {
-            new Task(() => eventTracker.TrackUserRegistration()).Start();
-
-            await SignInAsync(user, isPersistent: false);
-            int? gamingGroupIdToWhichTheUserWasAdded = await gamingGroupInviteConsumer.ConsumeGamingGroupInvitation(user);
-
-            if (!gamingGroupIdToWhichTheUserWasAdded.HasValue)
-            {
-                await gamingGroupSaver.CreateNewGamingGroup(userName + "'s Gaming Group", user);
-            }
+            return View(MVC.Account.Views.Register, model);
         }
 
         //
@@ -137,70 +127,101 @@ namespace UI.Controllers
         public virtual ActionResult Manage(ManageMessageId? message)
         {
             ViewBag.StatusMessage =
-                message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
-                : message == ManageMessageId.SetPasswordSuccess ? "Your password has been set."
+                message == ManageMessageId.SetPasswordSuccess ? "Your password has been set."
+                : message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
+                : message == ManageMessageId.ChangeEmailSuccess ? "Your email has been changed."
                 : message == ManageMessageId.RemoveLoginSuccess ? "The external login was removed."
-                : message == ManageMessageId.Error ? "An error has occurred."
+                : message == ManageMessageId.Error ? "An error occurred."
                 : "";
-            ViewBag.HasLocalPassword = HasPassword();
-            ViewBag.ReturnUrl = Url.Action("Manage");
 
-            ManageUserViewModel viewModel = new ManageUserViewModel();
-            string currentUserId = User.Identity.GetUserId();
-            ApplicationUser user = userManager.FindById(currentUserId);
-            viewModel.EmailAddress = user.Email;
+            SetViewBag();
+            ManageAccountViewModel viewModel = GetBaseManageAccountViewModel();
+            
             return View(MVC.Account.Views.Manage, viewModel);
         }
 
         //TODO how to test async methods?
-        // POST: /Account/Manage
+        // POST: /Account/SetPassword
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public virtual async Task<ActionResult> Manage(ManageUserViewModel model)
+        public virtual async Task<ActionResult> SetPassword(SetPasswordViewModel model)
         {
-            bool hasPassword = HasPassword();
-            ViewBag.HasLocalPassword = hasPassword;
-            ViewBag.ReturnUrl = Url.Action("Manage");
-            if (hasPassword)
+            var parentViewModel = GetBaseManageAccountViewModel();
+            parentViewModel.PasswordViewModel = model;
+            if (ModelState.IsValid)
             {
-                if (ModelState.IsValid)
+                var result = await userManager.AddPasswordAsync(User.Identity.GetUserId(), model.NewPassword);
+                if (result.Succeeded)
                 {
-                    IdentityResult result = await userManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
-                    if (result.Succeeded)
-                    {
-                        return RedirectToAction("Manage", new { Message = ManageMessageId.ChangePasswordSuccess });
-                    }
-                    else
-                    {
-                        AddErrors(result);
-                    }
+                    return RedirectToAction("Manage", new { Message = ManageMessageId.SetPasswordSuccess });
                 }
+                AddErrors(result, "password");
             }
-            else
-            {
-                // User does not have a password so remove any validation errors caused by a missing OldPassword field
-                ModelState state = ModelState["OldPassword"];
-                if (state != null)
-                {
-                    state.Errors.Clear();
-                }
-
-                if (ModelState.IsValid)
-                {
-                    IdentityResult result = await userManager.AddPasswordAsync(User.Identity.GetUserId(), model.NewPassword);
-                    if (result.Succeeded)
-                    {
-                        return RedirectToAction("Manage", new { Message = ManageMessageId.SetPasswordSuccess });
-                    }
-                    else
-                    {
-                        AddErrors(result);
-                    }
-                }
-            }
-
+            
             // If we got this far, something failed, redisplay form
-            return View(model);
+            SetViewBag();
+            return View("Manage", parentViewModel);
+        }
+
+        //TODO how to test async methods?
+        // POST: /Account/ChangePassword
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public virtual async Task<ActionResult> ChangePassword(ChangePasswordViewModel model)
+        {
+            var parentViewModel = GetBaseManageAccountViewModel();
+            parentViewModel.PasswordViewModel = model;
+            if (!ModelState.IsValid)
+            {
+                return RedirectToAction("Manage", new { Message = ManageMessageId.ErrorEnterEmail });
+            }
+            var result = await userManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
+            if (result.Succeeded)
+            {
+                return RedirectToAction("Manage", new { Message = ManageMessageId.ChangePasswordSuccess });
+            }
+            SetViewBag();
+            AddErrors(result, "password");
+            return View("Manage", parentViewModel);
+        }
+
+        //TODO how to test async methods?
+        // POST: /Account/ChangeEmailAddress
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public virtual async Task<ActionResult> ChangeEmailAddress(ChangeEmailViewModel model)
+        {
+            var parentViewModel = GetBaseManageAccountViewModel();
+            if (!ModelState.IsValid)
+            {
+                return RedirectToAction("Manage", new { Message = ManageMessageId.Error });
+            }
+            var result = await userManager.SetEmailAsync(User.Identity.GetUserId(), model.EmailAddress);
+            if (result.Succeeded)
+            {
+                return RedirectToAction("Manage", new { Message = ManageMessageId.ChangeEmailSuccess });
+            }
+            AddErrors(result, "email");
+            return RedirectToAction("Manage", new { Message = ManageMessageId.Error });
+        }
+
+        private void SetViewBag()
+        {
+            ViewBag.HasLocalPassword = HasPassword();
+            ViewBag.ReturnUrl = Url.Action("Manage");
+        }
+
+        private ManageAccountViewModel GetBaseManageAccountViewModel()
+        {
+            ManageAccountViewModel viewModel = new ManageAccountViewModel();
+            string currentUserId = User.Identity.GetUserId();
+            ApplicationUser user = userManager.FindById(currentUserId);
+            viewModel.PasswordViewModel = HasPassword() ? (PasswordViewModel)new ChangePasswordViewModel() : new SetPasswordViewModel();
+            ChangeEmailViewModel emailViewModel = new ChangeEmailViewModel();
+            emailViewModel.EmailAddress = user.Email;
+            viewModel.ChangeEmailViewModel = emailViewModel;
+
+            return viewModel;
         }
 
         //
@@ -219,7 +240,7 @@ namespace UI.Controllers
         [AllowAnonymous]
         public virtual async Task<ActionResult> ExternalLoginCallback(string returnUrl)
         {
-            var loginInfo = await AuthenticationManager.GetExternalLoginInfoAsync();
+            var loginInfo = await authenticationManager.GetExternalLoginInfoAsync();
             if (loginInfo == null)
             {
                 return RedirectToAction("Login");
@@ -255,7 +276,7 @@ namespace UI.Controllers
         // GET: /Account/LinkLoginCallback
         public virtual async Task<ActionResult> LinkLoginCallback()
         {
-            var loginInfo = await AuthenticationManager.GetExternalLoginInfoAsync(XsrfKey, User.Identity.GetUserId());
+            var loginInfo = await authenticationManager.GetExternalLoginInfoAsync(XsrfKey, User.Identity.GetUserId());
             if (loginInfo == null)
             {
                 return RedirectToAction("Manage", new { Message = ManageMessageId.Error });
@@ -283,7 +304,7 @@ namespace UI.Controllers
             if (ModelState.IsValid)
             {
                 // Get the information about the user from the external login provider
-                var info = await AuthenticationManager.GetExternalLoginInfoAsync();
+                var info = await authenticationManager.GetExternalLoginInfoAsync();
                 if (info == null)
                 {
                     return View("ExternalLoginFailure");
@@ -299,7 +320,7 @@ namespace UI.Controllers
                     result = await userManager.AddLoginAsync(user.Id, info.Login);
                     if (result.Succeeded)
                     {
-                        await SignInAndAssignGamingGroup(model.UserName, user);
+                        await firstTimeAuthenticator.SignInAndCreateGamingGroup(user);
 
                         return RedirectToAction(MVC.GamingGroup.ActionNames.Index, "GamingGroup");
                     }
@@ -317,7 +338,7 @@ namespace UI.Controllers
         [ValidateAntiForgeryToken]
         public virtual ActionResult LogOff()
         {
-            AuthenticationManager.SignOut();
+            authenticationManager.SignOut();
             return RedirectToAction("Index", "Home");
         }
 
@@ -348,29 +369,22 @@ namespace UI.Controllers
         }
 
         #region Helpers
+
         // Used for XSRF protection when adding external logins
         private const string XsrfKey = "XsrfId";
 
-        private IAuthenticationManager AuthenticationManager
-        {
-            get
-            {
-                return HttpContext.GetOwinContext().Authentication;
-            }
-        }
-
         private async Task SignInAsync(ApplicationUser user, bool isPersistent)
         {
-            AuthenticationManager.SignOut(DefaultAuthenticationTypes.ExternalCookie);
+            authenticationManager.SignOut(DefaultAuthenticationTypes.ExternalCookie);
             var identity = await userManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
-            AuthenticationManager.SignIn(new AuthenticationProperties() { IsPersistent = isPersistent }, identity);
+            authenticationManager.SignIn(new AuthenticationProperties() { IsPersistent = isPersistent }, identity);
         }
 
-        private void AddErrors(IdentityResult result)
+        private void AddErrors(IdentityResult result, string validationKey = "")
         {
             foreach (var error in result.Errors)
             {
-                ModelState.AddModelError("", error);
+                ModelState.AddModelError(validationKey, error);
             }
         }
 
@@ -386,9 +400,11 @@ namespace UI.Controllers
 
         public enum ManageMessageId
         {
-            ChangePasswordSuccess,
             SetPasswordSuccess,
+            ChangePasswordSuccess,
+            ChangeEmailSuccess,
             RemoveLoginSuccess,
+            ErrorEnterEmail,
             Error
         }
 
@@ -450,7 +466,7 @@ namespace UI.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = await userManager.FindByNameAsync(model.Email);
+                var user = await userManager.FindByEmailAsync(model.Email);
                 if (user == null || !(await userManager.IsEmailConfirmedAsync(user.Id)))
                 {
                     // Don't reveal that the user does not exist or is not confirmed
@@ -476,6 +492,18 @@ namespace UI.Controllers
             return View();
         }
 
+        // GET: /Account/ConfirmEmail
+        [AllowAnonymous]
+        public virtual async Task<ActionResult> ConfirmEmail(string userId, string code)
+        {
+            if (userId == null || code == null)
+            {
+                return View("Error");
+            }
+            var result = await userManager.ConfirmEmailAsync(userId, code);
+            return View(result.Succeeded ? "ConfirmEmail" : "Error");
+        }
+
         //
         // GET: /Account/ResetPassword
         [AllowAnonymous]
@@ -495,7 +523,7 @@ namespace UI.Controllers
             {
                 return View(model);
             }
-            var user = await userManager.FindByNameAsync(model.Email);
+            var user = await userManager.FindByEmailAsync(model.Email);
             if (user == null)
             {
                 // Don't reveal that the user does not exist

@@ -1,15 +1,10 @@
 ﻿using BusinessLogic.DataAccess;
-using BusinessLogic.DataAccess.Repositories;
-using BusinessLogic.Logic;
+using BusinessLogic.Logic.Nemeses;
 using BusinessLogic.Logic.Players;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Players;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests.EntityFrameworkPlayerRepositoryTests
 {
@@ -21,6 +16,7 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
         {
             using (IDataContext dataContext = new NemeStatsDataContext())
             {
+                INemesisHistoryRetriever nemesisHistoryRetriever = new NemesisHistoryRetriever(dataContext);
                 IPlayerRetriever playerRetriever = new PlayerRetriever(dataContext);
                 PlayerStatistics playerStatistics = playerRetriever.GetPlayerStatistics(testPlayer1.Id);
                 int totalGamesForPlayer1 = testPlayedGames
@@ -35,7 +31,8 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
         {
             using (IDataContext dataContext = new NemeStatsDataContext())
             {
-                IPlayerRetriever playerRetriever = new PlayerRetriever(dataContext);
+                INemesisHistoryRetriever nemesisHistoryRetriever = new NemesisHistoryRetriever(dataContext);
+                IPlayerRetriever playerRetriever = new PlayerRetriever(dataContext); 
                 PlayerStatistics playerStatistics = playerRetriever.GetPlayerStatistics(testPlayer1.Id);
 
                 int totalPoints = 0;
@@ -57,7 +54,8 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
         {
             using (IDataContext dataContext = new NemeStatsDataContext())
             {
-                IPlayerRetriever playerRetriever = new PlayerRetriever(dataContext);
+                INemesisHistoryRetriever nemesisHistoryRetriever = new NemesisHistoryRetriever(dataContext);
+                IPlayerRetriever playerRetriever = new PlayerRetriever(dataContext); 
                 PlayerStatistics playerStatistics = playerRetriever.GetPlayerStatistics(testPlayer1.Id);
 
                 float averagePlayersPerGame = (float)testPlayedGames.Where(game => game.PlayerGameResults.Any(result => result.PlayerId == testPlayer1.Id))

@@ -1,13 +1,12 @@
 ﻿using System.Data.Entity.Infrastructure;
-using System.Data.SqlClient;
 using BusinessLogic.DataAccess;
 using BusinessLogic.EventTracking;
+using BusinessLogic.Exceptions;
 using BusinessLogic.Models;
 using BusinessLogic.Models.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.Logic.Nemeses;
@@ -16,16 +15,14 @@ namespace BusinessLogic.Logic.Players
 {
     public class PlayerSaver : IPlayerSaver
     {
-        private IDataContext dataContext;
-        private IPlayerRepository playerRepository;
-        private NemeStatsEventTracker eventTracker;
-        private INemesisRecalculator nemesisRecalculator;
+        private readonly IDataContext dataContext;
+        private readonly INemeStatsEventTracker eventTracker;
+        private readonly INemesisRecalculator nemesisRecalculator;
 
-        public PlayerSaver(IDataContext dataContext, NemeStatsEventTracker eventTracker, IPlayerRepository playerRepository, INemesisRecalculator nemesisRecalculator)
+        public PlayerSaver(IDataContext dataContext, INemeStatsEventTracker eventTracker, INemesisRecalculator nemesisRecalculator)
         {
             this.dataContext = dataContext;
             this.eventTracker = eventTracker;
-            this.playerRepository = playerRepository;
             this.nemesisRecalculator = nemesisRecalculator;
         }
 
@@ -33,38 +30,50 @@ namespace BusinessLogic.Logic.Players
         {
             ValidatePlayerIsNotNull(player);
             ValidatePlayerNameIsNotNullOrWhiteSpace(player.Name);
+            ValidatePlayerWithThisNameDoesntAlreadyExist(player, currentUser);
 
-            bool isNewPlayer = !player.AlreadyInDatabase();
-            try
+            Player newPlayer = dataContext.Save<Player>(player, currentUser);
+            dataContext.CommitAllChanges();
+
+            if (!player.AlreadyInDatabase())
             {
-                Player newPlayer = dataContext.Save<Player>(player, currentUser);
-                dataContext.CommitAllChanges();
-
-                if (isNewPlayer)
+                new Task(() => eventTracker.TrackPlayerCreation(currentUser)).Start();
+            }else
+            {
+                if(!player.Active)
                 {
-                    new Task(() => eventTracker.TrackPlayerCreation(currentUser)).Start();
-                }else
-                {
-                    if(!player.Active)
-                    {
-                        List<int> playerIdsToRecalculate = (from thePlayer in dataContext.GetQueryable<Player>()
-                                                            where thePlayer.Active == true
-                                                            && thePlayer.Nemesis.NemesisPlayerId == player.Id
-                                                            select thePlayer.Id).ToList();
-
-                        foreach (int playerId in playerIdsToRecalculate)
-                        {
-                            nemesisRecalculator.RecalculateNemesis(playerId, currentUser);
-                        }
-                    }
+                    this.RecalculateNemeses(player, currentUser);
                 }
-
-                return newPlayer;
             }
-            catch (DbUpdateException exp)
+
+            return newPlayer;
+        }
+
+        private void ValidatePlayerWithThisNameDoesntAlreadyExist(Player player, ApplicationUser currentUser)
+        {
+            if (!player.AlreadyInDatabase())
             {
-                    
-                throw exp;
+                Player existingPlayerWithThisName = this.dataContext.GetQueryable<Player>().FirstOrDefault(
+                                                                                       p => p.GamingGroupId == currentUser.CurrentGamingGroupId
+                                                                                            && p.Name == player.Name);
+
+                if (existingPlayerWithThisName != null)
+                {
+                    throw new PlayerAlreadyExistsException(existingPlayerWithThisName.Id);
+                } 
+            }
+        }
+
+        private void RecalculateNemeses(Player player, ApplicationUser currentUser)
+        {
+            List<int> playerIdsToRecalculate = (from thePlayer in this.dataContext.GetQueryable<Player>()
+                                                where thePlayer.Active == true
+                                                      && thePlayer.Nemesis.NemesisPlayerId == player.Id
+                                                select thePlayer.Id).ToList();
+
+            foreach (int playerId in playerIdsToRecalculate)
+            {
+                this.nemesisRecalculator.RecalculateNemesis(playerId, currentUser);
             }
         }
 

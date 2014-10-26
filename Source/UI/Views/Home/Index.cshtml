@@ -1,7 +1,7 @@
 ﻿@model UI.Models.Home.HomeIndexViewModel
 
 @{
-    ViewBag.Title = "Home Page";
+    ViewBag.Title = "Track Board Game Results";
 }
 
 <div class="home-container">
@@ -25,7 +25,7 @@
                             a moment and will give you statistics on your win percentage, average rank in games, who is your Nemesis and who is your Minion, etc.
                             When you register, a new "Gaming Group" will be created where you and other players in your group can watch your statistics materialize over time.
                             <br/><br/>
-                            All information is publicly accessible so feel free to browse around! If you'd like to give it a shot just @Html.ActionLink("Register", "Register"),
+                            All information is publicly accessible so feel free to browse around! If you'd like to give it a shot just @Html.ActionLink("Register", "Register", "Account", null, null),
                             set up the game and players you want to record, and start tracking! 
                         </p>
                         <p>
@@ -56,7 +56,7 @@
                             </span>
                             <h2>Setup Players</h2>
                             <p>
-                                Manage the list of Players in your Gaming Group. A Player must be created in order to to log a played game for that Player.
+                                Manage the list of Players in your Gaming Group. A Player must be created in order to log a played game for that Player.
                             </p>
                             <p>@Html.ActionLink("Manage Players", "Index", "GamingGroup", null, null, UI.Controllers.GamingGroupController.SECTION_ANCHOR_PLAYERS, null, null)</p>
                         </div>

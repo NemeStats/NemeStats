@@ -1,21 +1,16 @@
-﻿using System.Web;
-using System.Web.Http;
-using BusinessLogic.DataAccess;
-using BusinessLogic.DataAccess.Repositories;
-using BusinessLogic.Logic;
+﻿using BusinessLogic.DataAccess;
+using BusinessLogic.Exceptions;
 using BusinessLogic.Logic.Players;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Players;
 using BusinessLogic.Models.User;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using UI.Controllers.Helpers;
 using UI.Filters;
-using UI.Models.PlayedGame;
 using UI.Models.Players;
 using UI.Transformations;
 using UI.Transformations.PlayerTransformations;
@@ -99,8 +94,16 @@ namespace UI.Controllers
 
             if(ModelState.IsValid)
             {
-                Player player = playerSaver.Save(model, currentUser);
-                return Json(player, JsonRequestBehavior.AllowGet);
+                try
+                {
+                    Player player = playerSaver.Save(model, currentUser);
+                    return Json(player, JsonRequestBehavior.AllowGet);
+                }
+                catch (PlayerAlreadyExistsException playerAlreadyExistsException)
+                {
+                    //TODO Tosho, not sure how to pass back the message and the existing player Id back to the UI.
+                    throw playerAlreadyExistsException;
+                }
             }
 
             return new HttpStatusCodeResult(HttpStatusCode.NotModified);

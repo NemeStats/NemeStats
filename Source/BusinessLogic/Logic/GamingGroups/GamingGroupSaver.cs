@@ -1,18 +1,12 @@
 ﻿using BusinessLogic.DataAccess;
-using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.EventTracking;
 using BusinessLogic.Logic.GameDefinitions;
 using BusinessLogic.Logic.Players;
 using BusinessLogic.Logic.Users;
 using BusinessLogic.Models;
 using BusinessLogic.Models.User;
-using Microsoft.AspNet.Identity;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using UniversalAnalyticsHttpWrapper;
 
 namespace BusinessLogic.Logic.GamingGroups
 {
@@ -23,23 +17,17 @@ namespace BusinessLogic.Logic.GamingGroups
         internal const string EXCEPTION_MESSAGE_GAME_DEFINITION_NAMES_CANNOT_BE_NULL = "gamingGroupQuickStart.NewGameDefinitionNames cannot be null.";
 
         private IDataContext dataContext;
-        private IPlayerSaver playerCreator;
-        private IGameDefinitionSaver gameDefinitionCreator;
         private ApplicationUserManager userManager;
-        private NemeStatsEventTracker eventTracker;
+        private INemeStatsEventTracker eventTracker;
 
         public GamingGroupSaver(
             IDataContext dataContext, 
             ApplicationUserManager userManager, 
-            NemeStatsEventTracker eventTracker,
-            IPlayerSaver playerCreator,
-            IGameDefinitionSaver gameDefinitionCreator)
+            INemeStatsEventTracker eventTracker)
         {
             this.dataContext = dataContext;
             this.userManager = userManager;
             this.eventTracker = eventTracker;
-            this.playerCreator = playerCreator;
-            this.gameDefinitionCreator = gameDefinitionCreator;
         }
 
         public async virtual Task<GamingGroup> CreateNewGamingGroup(string gamingGroupName, ApplicationUser currentUser)

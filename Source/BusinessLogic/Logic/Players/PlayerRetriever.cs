@@ -1,6 +1,5 @@
 ﻿using BusinessLogic.DataAccess;
 using BusinessLogic.Models;
-using BusinessLogic.Models.Nemeses;
 using BusinessLogic.Models.Players;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -10,7 +9,8 @@ namespace BusinessLogic.Logic.Players
 {
     public class PlayerRetriever : BusinessLogic.Logic.Players.IPlayerRetriever
     {
-        private IDataContext dataContext;
+        private readonly IDataContext dataContext;
+        public const string EXCEPTION_MESSAGE_PLAYER_COULD_NOT_BE_FOUND = "Could not find player with Id: {0}";
 
         public PlayerRetriever(DataAccess.IDataContext dataContext)
         {
@@ -36,19 +36,26 @@ namespace BusinessLogic.Logic.Players
             return GetAllPlayersInGamingGroupQueryable(gamingGroupId)
                                         .Include(player => player.Nemesis)
                                         .Include(player => player.Nemesis.NemesisPlayer)
+                                        .Include(player => player.PreviousNemesis)
+                                        .Include(player => player.PreviousNemesis.NemesisPlayer)
                                         .OrderBy(player => player.Name)
                                         .ToList();
         }
 
-        public virtual PlayerDetails GetPlayerDetails(int playerID, int numberOfRecentGamesToRetrieve)
+        public virtual PlayerDetails GetPlayerDetails(int playerId, int numberOfRecentGamesToRetrieve)
         {
-            Player returnPlayer = dataContext.FindById<Player>(playerID);
+            Player returnPlayer = dataContext.GetQueryable<Player>()
+                                             .Include(player => player.Nemesis)
+                                             .Include(player => player.Nemesis.NemesisPlayer)
+                                             .Include(player => player.PreviousNemesis)
+                                             .Include(player => player.PreviousNemesis.NemesisPlayer)
+                                             .SingleOrDefault(player => player.Id == playerId);
 
-            PlayerStatistics playerStatistics = GetPlayerStatistics(playerID);
+            ValidatePlayerWasFound(playerId, returnPlayer);
 
-            List<PlayerGameResult> playerGameResults = GetPlayerGameResultsWithPlayedGameAndGameDefinition(playerID, numberOfRecentGamesToRetrieve);
+            PlayerStatistics playerStatistics = GetPlayerStatistics(playerId);
 
-            Nemesis nemesis = RetrieveNemesis(returnPlayer.NemesisId);
+            List<PlayerGameResult> playerGameResults = GetPlayerGameResultsWithPlayedGameAndGameDefinition(playerId, numberOfRecentGamesToRetrieve);
 
             List<Player> minions = GetMinions(returnPlayer.Id);
 
@@ -60,11 +67,20 @@ namespace BusinessLogic.Logic.Players
                 GamingGroupId = returnPlayer.GamingGroupId,
                 PlayerGameResults = playerGameResults,
                 PlayerStats = playerStatistics,
-                PlayerNemesis = nemesis,
+                CurrentNemesis = returnPlayer.Nemesis ?? new NullNemesis(),
+                PreviousNemesis = returnPlayer.PreviousNemesis ?? new NullNemesis(),
                 Minions = minions
             };
 
             return playerDetails;
+        }
+
+        private static void ValidatePlayerWasFound(int playerId, Player returnPlayer)
+        {
+            if (returnPlayer == null)
+            {
+                throw new KeyNotFoundException(string.Format(EXCEPTION_MESSAGE_PLAYER_COULD_NOT_BE_FOUND, playerId));
+            }
         }
 
         internal virtual List<Player> GetMinions(int nemesisPlayerId)
@@ -112,21 +128,6 @@ namespace BusinessLogic.Logic.Players
                     .Average(game => (int?)game.NumberOfPlayers) ?? 0F;
 
             return playerStatistics;
-        }
-
-        private Nemesis RetrieveNemesis(int? nemesisId)
-        {
-            Nemesis nemesis;
-            if (nemesisId.HasValue)
-            {
-                nemesis = dataContext.FindById<Nemesis>(nemesisId.Value);
-                nemesis.NemesisPlayer = dataContext.FindById<Player>(nemesis.NemesisPlayerId);
-            }
-            else
-            {
-                nemesis = new NullNemesis();
-            }
-            return nemesis;
         }
     }
 }

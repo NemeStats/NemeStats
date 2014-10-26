@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 
 namespace BusinessLogic.DataAccess
 {
     //TODO make generic
-    public abstract class EntityWithTechnicalKey<T> : EntityWithTechnicalKey, SingleColumnTechnicalKey<T>
+    public abstract class EntityWithTechnicalKey<T> : EntityWithTechnicalKey, ISingleColumnTechnicalKey<T>
     {
         public abstract T Id { get; set; }
 

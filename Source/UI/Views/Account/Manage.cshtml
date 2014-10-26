@@ -1,6 +1,5 @@
-﻿@using UI.Models;
-@using Microsoft.AspNet.Identity;
-@model UI.Models.ManageUserViewModel
+﻿@using Microsoft.AspNet.Identity;
+@model UI.Models.ManageAccountViewModel
 @{
     ViewBag.Title = "Manage Account";
     Layout = MVC.Shared.Views._BaseLayout;
@@ -10,33 +9,39 @@
 
 <p class="text-success">@ViewBag.StatusMessage</p>
 <div class="row">
-    <div class="col-md-12">
-        @if (ViewBag.HasLocalPassword)
-        {
-            @Html.Partial("_ChangePasswordPartial")
-        }
-        else
-        {
-            @Html.Partial("_SetPasswordPartial")
-        }
-
-        <br/>
-        <div class="form-group">
-            @Html.LabelFor(m => m.EmailAddress, new { @class = "col-md-2 control-label" })
-            <div class="col-md-10">
-                @Html.TextBoxFor(m => m.EmailAddress, new { @class = "form-control" })
+    <div class="col-md-8">
+        <p>You're logged in as <strong>@User.Identity.GetUserName()</strong>.</p>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>Manage Your Account</h4>
+            </div>
+            <div class="panel-body">
+                    @if (ViewBag.HasLocalPassword)
+                    {
+                        @Html.Partial("_ChangePasswordPartial", Model.PasswordViewModel)
+                    }
+                    else
+                    {
+                        @Html.Partial("_SetPasswordPartial", Model.PasswordViewModel)
+                    }
+                    <br /><br />
+                    @Html.Partial("_ChangeEmailPartial", Model.ChangeEmailViewModel)
             </div>
         </div>
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Update Email Address" class="btn btn-default" onclick='alert("Not implemented yet!"); return false;' />
+    </div>
+    <div class="col-md-4">
+        <div class="panel panel-default push-30">
+            <div class="panel-heading">
+                <h4>Manage External Logins</h4>
+            </div>
+            <div class="panel-body">
+                <section id="externalLogins">
+                    @Html.Action("RemoveAccountList")
+                    <br /><br />
+                    @Html.Partial("_ExternalLoginsListPartial", new { Action = "LinkLogin", ReturnUrl = ViewBag.ReturnUrl })
+                </section>
             </div>
         </div>
-        <br/><br/><br/>
-        <section id="externalLogins">
-            @Html.Action("RemoveAccountList")
-            @Html.Partial("_ExternalLoginsListPartial", new { Action = "LinkLogin", ReturnUrl = ViewBag.ReturnUrl })
-        </section>
     </div>
 </div>
 @section Scripts {

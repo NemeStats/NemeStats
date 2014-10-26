@@ -31,6 +31,8 @@ public static partial class MVC
     public static UI.Controllers.HomeController Home = new UI.Controllers.T4MVC_HomeController();
     public static UI.Controllers.PlayedGameController PlayedGame = new UI.Controllers.T4MVC_PlayedGameController();
     public static UI.Controllers.PlayerController Player = new UI.Controllers.T4MVC_PlayerController();
+    public static IdentitySample.Controllers.RolesAdminController RolesAdmin = new IdentitySample.Controllers.T4MVC_RolesAdminController();
+    public static IdentitySample.Controllers.UsersAdminController UsersAdmin = new IdentitySample.Controllers.T4MVC_UsersAdminController();
     public static T4MVC.SharedController Shared = new T4MVC.SharedController();
 }
 
@@ -96,6 +98,8 @@ namespace Links
         public static readonly string jquery_validate_unobtrusive_min_js = Url("jquery.validate.unobtrusive.min.js");
         public static readonly string modernizr_2_6_2_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/modernizr-2.6.2.min.js") ? Url("modernizr-2.6.2.min.js") : Url("modernizr-2.6.2.js");
         public static readonly string modernizr_2_8_3_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/modernizr-2.8.3.min.js") ? Url("modernizr-2.8.3.min.js") : Url("modernizr-2.8.3.js");
+        public static readonly string namespace_1_0_0_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/namespace-1.0.0.min.js") ? Url("namespace-1.0.0.min.js") : Url("namespace-1.0.0.js");
+        public static readonly string namespace_min_1_0_0_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/namespace.min-1.0.0.min.js") ? Url("namespace.min-1.0.0.min.js") : Url("namespace.min-1.0.0.js");
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public static class Player {
             private const string URLPATH = "~/Scripts/Player";
@@ -151,6 +155,8 @@ namespace Links
             public static readonly string NemeStats_png = Url("NemeStats.png");
         }
     
+        public static readonly string site_mobile_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/site-mobile.min.css") ? Url("site-mobile.min.css") : Url("site-mobile.css");
+             
         public static readonly string Site_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/Site.min.css") ? Url("Site.min.css") : Url("Site.css");
              
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]

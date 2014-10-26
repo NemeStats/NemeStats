@@ -3,18 +3,15 @@ using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Nemeses;
 using BusinessLogic.Models.User;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BusinessLogic.Logic.Nemeses
 {
     public class NemesisRecalculator : INemesisRecalculator
     {
-        private IDataContext dataContext;
-        private IPlayerRepository playerRepository;
+        private readonly IDataContext dataContext;
+        private readonly IPlayerRepository playerRepository;
 
         public NemesisRecalculator(IDataContext dataContext, IPlayerRepository playerRepository)
         {
@@ -72,6 +69,7 @@ namespace BusinessLogic.Logic.Nemeses
             {
                 savedNemesis = dataContext.Save<Nemesis>(newNemesis, currentUser);
                 dataContext.CommitAllChanges();
+                minionPlayer.PreviousNemesisId = minionPlayer.NemesisId;
                 minionPlayer.NemesisId = savedNemesis.Id;
                 dataContext.Save<Player>(minionPlayer, currentUser);
             }
@@ -96,6 +94,7 @@ namespace BusinessLogic.Logic.Nemeses
         {
             if (minionPlayer.NemesisId != null)
             {
+                minionPlayer.PreviousNemesisId = minionPlayer.NemesisId;
                 minionPlayer.NemesisId = null;
                 dataContext.Save<Player>(minionPlayer, currentUser);
             }

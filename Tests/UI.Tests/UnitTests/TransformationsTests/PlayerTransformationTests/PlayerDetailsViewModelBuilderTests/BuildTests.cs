@@ -6,8 +6,6 @@ using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UI.Models.Players;
 using UI.Transformations;
 using UI.Transformations.PlayerTransformations;
@@ -84,7 +82,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
                         TotalPoints = 150,
                         AveragePlayersPerGame = 3
                     },
-                PlayerNemesis = nemesis,
+                CurrentNemesis = nemesis,
                 Minions = new List<Player>(),
                 GamingGroupId = 123
             };
@@ -257,25 +255,25 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         [Test]
         public void ItPopulatesTheNemesisPlayerId()
         {
-            Assert.AreEqual(playerDetails.PlayerNemesis.NemesisPlayerId, playerDetailsViewModel.NemesisPlayerId);
+            Assert.AreEqual(playerDetails.CurrentNemesis.NemesisPlayerId, playerDetailsViewModel.NemesisPlayerId);
         }
 
         [Test]
         public void ItPopulatesTheNemesisName()
         {
-            Assert.AreEqual(playerDetails.PlayerNemesis.NemesisPlayer.Name, playerDetailsViewModel.NemesisName);
+            Assert.AreEqual(playerDetails.CurrentNemesis.NemesisPlayer.Name, playerDetailsViewModel.NemesisName);
         }
 
         [Test]
         public void ItPopulatesTheGamesLostVersusTheNemesis()
         {
-            Assert.AreEqual(playerDetails.PlayerNemesis.NumberOfGamesLost, playerDetailsViewModel.NumberOfGamesLostVersusNemesis);
+            Assert.AreEqual(playerDetails.CurrentNemesis.NumberOfGamesLost, playerDetailsViewModel.NumberOfGamesLostVersusNemesis);
         }
 
         [Test]
         public void ItPopulatesTheLostPercentageVersusTheNemesis()
         {
-            Assert.AreEqual(playerDetails.PlayerNemesis.LossPercentage, playerDetailsViewModel.LossPercentageVersusPlayer);
+            Assert.AreEqual(playerDetails.CurrentNemesis.LossPercentage, playerDetailsViewModel.LossPercentageVersusPlayer);
         }
 
         [Test]
