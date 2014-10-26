@@ -8,9 +8,6 @@ namespace UI.Filters
     {
         public void OnException(ExceptionContext filterContext)
         {
-            if (filterContext.ExceptionHandled)
-                return;
-
             (new RollbarClient()).SendException(filterContext.Exception);
         }
     }
