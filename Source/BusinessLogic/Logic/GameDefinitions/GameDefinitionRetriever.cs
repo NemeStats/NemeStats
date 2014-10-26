@@ -54,6 +54,7 @@ namespace BusinessLogic.Logic.GameDefinitions
 
             IList<PlayerGameResult> playerGameResults = dataContext.GetQueryable<PlayerGameResult>()
                 .Where(playerGameResult => playedGameIds.Contains(playerGameResult.PlayedGameId))
+                .OrderBy(playerGameResult => playerGameResult.GameRank)
                 .ToList();
 
             HashSet<int> distinctPlayerIds = new HashSet<int>();
