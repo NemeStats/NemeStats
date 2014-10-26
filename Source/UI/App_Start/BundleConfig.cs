@@ -29,14 +29,15 @@ namespace UI
                 .Include("~/Scripts/namespace-{version}.js")
                 .Include("~/Scripts/CreatePlayedGame/createplayedgame.js")
                 .Include("~/Scripts/Player/createOrUpdatePlayer.js")
-                .Include("~/Scripts/Player/players.js"));
+                .Include("~/Scripts/Player/players.js")
+                .Include("~/Scripts/GameDefinition/createGameDefinitionPartial.js"));
 
             bundles.Add(new StyleBundle("~/bundles/content/css").Include(
                         "~/Content/bootstrap.min.css", new CssRewriteUrlTransform())
                       .Include("~/Content/site.css",
                         "~/Content/site-mobile.css",
-                        "~/Content/blog.css")
-                      .Include("~/Content/font-awesome.css", new CssRewriteUrlTransform()));
+                        "~/Content/blog.css",
+                        "~/Content/font-awesome.css"));
         }
     }
 }
