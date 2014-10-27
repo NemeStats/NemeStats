@@ -30,14 +30,15 @@ namespace UI
                 .Include("~/Scripts/CreatePlayedGame/createplayedgame.js")
                 .Include("~/Scripts/Player/createOrUpdatePlayer.js")
                 .Include("~/Scripts/Player/players.js")
-                .Include("~/Scripts/GameDefinition/createGameDefinitionPartial.js"));
+                .Include("~/Scripts/GameDefinition/createGameDefinitionPartial.js")
+                .Include("~/Scripts/GameDefinition/gameDefinitions.js"));
 
             bundles.Add(new StyleBundle("~/bundles/content/css").Include(
                         "~/Content/bootstrap.min.css", new CssRewriteUrlTransform())
                       .Include("~/Content/site.css",
                         "~/Content/site-mobile.css",
                         "~/Content/blog.css",
-                        "~/Content/font-awesome.css"));
+                        "~/Content/FontAwesome/font-awesome*"));
         }
     }
 }

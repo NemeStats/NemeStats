@@ -94,6 +94,25 @@ namespace UI.Controllers
             return View(MVC.GameDefinition.Views.Create, gameDefinition);
         }
 
+        [Authorize]
+        [HttpPost]
+        [UserContextAttribute]
+        public virtual ActionResult Save(GameDefinition model, ApplicationUser currentUser)
+        {
+            if (!Request.IsAjaxRequest())
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            if (ModelState.IsValid)
+            {
+                    GameDefinition game = gameDefinitionSaver.Save(model, currentUser);
+                    return Json(game, JsonRequestBehavior.AllowGet);
+            }
+
+            return new HttpStatusCodeResult(HttpStatusCode.NotModified);
+        }
+
         // GET: /GameDefinition/Edit/5
         [Authorize]
         [UserContextAttribute]
@@ -132,6 +151,12 @@ namespace UI.Controllers
                                           + "#" + GamingGroupController.SECTION_ANCHOR_GAMEDEFINITIONS);
             }
             return View(MVC.GameDefinition.Views.Edit, gamedefinition);
+        }
+
+        [Authorize]
+        public virtual ActionResult CreatePartial()
+        {
+            return View(MVC.GameDefinition.Views._CreatePartial, new GameDefinition());
         }
 
         protected override void Dispose(bool disposing)
