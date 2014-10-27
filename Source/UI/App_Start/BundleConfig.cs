@@ -34,11 +34,11 @@ namespace UI
                 .Include("~/Scripts/GameDefinition/gameDefinitions.js"));
 
             bundles.Add(new StyleBundle("~/bundles/content/css").Include(
-                        "~/Content/bootstrap.min.css", new CssRewriteUrlTransform())
-                      .Include("~/Content/site.css",
-                        "~/Content/site-mobile.css",
-                        "~/Content/blog.css",
-                        "~/Content/FontAwesome/font-awesome*"));
+                "~/Content/bootstrap.min.css", new CssRewriteUrlTransform())
+                .Include("~/Content/site.css",
+                    "~/Content/site-mobile.css",
+                    "~/Content/blog.css")
+                .Include("~/Content/font-awesome.min.css", new CssRewriteUrlTransform()));
         }
     }
 }
