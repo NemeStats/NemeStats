@@ -13,3 +13,5 @@
 /// <reference path="namespace-1.0.0.js" />
 /// <reference path="namespace.min-1.0.0.js" />
 /// <reference path="respond.js" />
+/// <reference path="gamedefinition/creategamedefinitionpartial.js" />
+/// <reference path="gamedefinition/gamedefinitions.js" />

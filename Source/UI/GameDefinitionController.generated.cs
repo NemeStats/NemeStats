@@ -85,6 +85,7 @@ namespace UI.Controllers
             public readonly string Details = "Details";
             public readonly string Create = "Create";
             public readonly string Edit = "Edit";
+            public readonly string CreatePartial = "CreatePartial";
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -93,6 +94,7 @@ namespace UI.Controllers
             public const string Details = "Details";
             public const string Create = "Create";
             public const string Edit = "Edit";
+            public const string CreatePartial = "CreatePartial";
         }
 
 
@@ -134,11 +136,15 @@ namespace UI.Controllers
             public _ViewNamesClass ViewNames { get { return s_ViewNames; } }
             public class _ViewNamesClass
             {
+                public readonly string _CreatePartial = "_CreatePartial";
+                public readonly string _GameDefinitionsPartial = "_GameDefinitionsPartial";
                 public readonly string Create = "Create";
                 public readonly string Delete = "Delete";
                 public readonly string Details = "Details";
                 public readonly string Edit = "Edit";
             }
+            public readonly string _CreatePartial = "~/Views/GameDefinition/_CreatePartial.cshtml";
+            public readonly string _GameDefinitionsPartial = "~/Views/GameDefinition/_GameDefinitionsPartial.cshtml";
             public readonly string Create = "~/Views/GameDefinition/Create.cshtml";
             public readonly string Delete = "~/Views/GameDefinition/Delete.cshtml";
             public readonly string Details = "~/Views/GameDefinition/Details.cshtml";
@@ -211,6 +217,17 @@ namespace UI.Controllers
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "gamedefinition", gamedefinition);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "currentUser", currentUser);
             EditOverride(callInfo, gamedefinition, currentUser);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void CreatePartialOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult CreatePartial()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.CreatePartial);
+            CreatePartialOverride(callInfo);
             return callInfo;
         }
 

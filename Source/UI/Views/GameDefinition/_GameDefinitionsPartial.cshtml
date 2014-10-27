@@ -1,0 +1,49 @@
+﻿@model IList<BusinessLogic.Models.GameDefinition>
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h4 class="fl-left">
+            Games This Group Plays
+        </h4>
+        <div class="fl-right">
+            @Html.Action("CreatePartial", "GameDefinition")
+        </div>
+        <div class="fl-clear"></div>
+    </div>
+    <div class="panel-body">
+        <div class="table-responsive gameDefinitionsList">
+            <table class="table table-hover table-condensed">
+                <thead>
+                    <tr>
+                        <th class="col-md-5">
+                            Name
+                        </th>
+                        <th class="col-md-6">
+                            Description
+                        </th>
+                        <th class="col-md-1"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.ActionLink(item.Name, "Details", "GameDefinition", new { id = item.Id }, new { })
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Description)
+                            </td>
+                            <td>
+                                <a href="@Url.Action("Edit", "GameDefinition", new { id = item.Id })" title="Edit">
+                                    <span class="fa fa-pencil fa-3x"></span>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
