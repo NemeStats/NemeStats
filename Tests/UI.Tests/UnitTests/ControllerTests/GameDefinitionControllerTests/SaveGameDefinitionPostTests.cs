@@ -40,7 +40,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
         }
 
         [Test]
-        public void ItSavesThePlayer()
+        public void ItSavesTheGame()
         {
             var game = new GameDefinition()
             {
