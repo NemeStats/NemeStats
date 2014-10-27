@@ -341,8 +341,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\blog.css" />
-    <Content Include="Content\bootstrap.css" />
-    <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\FontAwesome\font-awesome.css" />
     <Content Include="Content\FontAwesome\font-awesome.min.css" />
     <Content Include="Content\Images\NemeStats-White.png" />
@@ -394,8 +392,6 @@
     <None Include="Properties\PublishProfiles\nerdscorekeeper.pubxml" />
     <None Include="Properties\PublishProfiles\Publish Local.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
-    <Content Include="Scripts\bootstrap.js" />
-    <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\CreatePlayedGame\createplayedgame.js" />
     <Content Include="Scripts\GameDefinition\createGameDefinitionPartial.js" />
     <Content Include="Scripts\GameDefinition\gameDefinitions.js" />
