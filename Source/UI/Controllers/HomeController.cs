@@ -16,9 +16,9 @@ namespace UI.Controllers
         internal const int NUMBER_OF_TOP_PLAYERS_TO_SHOW = 5;
         internal const int NUMBER_OF_RECENT_PUBLIC_GAMES_TO_SHOW = 5;
 
-        private IPlayerSummaryBuilder playerSummaryBuilder;
-        private ITopPlayerViewModelBuilder topPlayerViewModelBuilder;
-        private IPlayedGameRetriever playedGameRetriever;
+        private readonly IPlayerSummaryBuilder playerSummaryBuilder;
+        private readonly ITopPlayerViewModelBuilder topPlayerViewModelBuilder;
+        private readonly IPlayedGameRetriever playedGameRetriever;
 
         public HomeController(
             IPlayerSummaryBuilder playerSummaryBuilder, 
@@ -52,8 +52,6 @@ namespace UI.Controllers
 
         public virtual ActionResult About()
         {
-            ViewBag.Message = "Your application description page.";
-
             return View();
         }
 
