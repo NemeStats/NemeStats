@@ -22,7 +22,7 @@ Views.GameDefinition.GameDefinitions.prototype = {
                 </td> \
                 <td> </td>\
                 <td> \
-                    <a href='/Game/Edit/" + game.Id + "' title='Edit'> \
+                    <a href='/GameDefinition/Edit/" + game.Id + "' title='Edit'> \
                         <i class='fa fa-pencil fa-3x'></i> \
                     </a> \
                 </td> \
