@@ -58,7 +58,7 @@ namespace BusinessLogic.Logic.Nemeses
 
         public List<NemesisChange> GetRecentNemesisChanges(int numberOfRecentNemeses)
         {
-            throw new NotImplementedException();
+            return new List<NemesisChange>();
         }
     }
 }
