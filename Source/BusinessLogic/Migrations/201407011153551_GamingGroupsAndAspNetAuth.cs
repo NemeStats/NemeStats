@@ -83,7 +83,8 @@ namespace BusinessLogic.Migrations
                 })
                 .PrimaryKey(t => t.Id);
 
-            Sql("INSERT INTO GamingGroup (Name) VALUES ('Initial Gaming Group')");
+            //create a new GamingGroup only if there are existing users
+            Sql("INSERT INTO GamingGroup (Name) SELECT 'Initial Gaming Group' FROM AspNetUsers WHERE EXISTS(SELECT TOP 1 1 FROM AspNetUsers)");
 
             AddColumn("dbo.Player", "GamingGroupId", c => c.Int(nullable: true));
             AddForeignKey("dbo.Player", "GamingGroupId", "dbo.GamingGroup", "Id");

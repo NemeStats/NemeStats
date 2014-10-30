@@ -33,14 +33,13 @@ namespace UI.Controllers
         public virtual ActionResult Index()
         {
             List<TopPlayer> topPlayers = playerSummaryBuilder.GetTopPlayers(NUMBER_OF_TOP_PLAYERS_TO_SHOW);
-            List<TopPlayerViewModel> topPlayerViewModels = new List<TopPlayerViewModel>();
-            foreach(TopPlayer topPlayer in topPlayers)
-            {
-                topPlayerViewModels.Add(topPlayerViewModelBuilder.Build(topPlayer));
-            }
+            List<TopPlayerViewModel> topPlayerViewModels = topPlayers.Select(
+                topPlayer => this.topPlayerViewModelBuilder.Build(topPlayer)).ToList();
 
             List<PublicGameSummary> publicGameSummaries = playedGameRetriever
                 .GetRecentPublicGames(NUMBER_OF_RECENT_PUBLIC_GAMES_TO_SHOW);
+
+            //List<NemesisChange> nemesisHistoryRetriever.GetRecentNemesisChanges(NUMBER_OF_RECENT_NEMESIS_CHANGES_TO_SHOW);
 
             HomeIndexViewModel homeIndexViewModel = new HomeIndexViewModel()
             {
