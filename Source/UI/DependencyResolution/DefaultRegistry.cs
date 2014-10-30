@@ -131,6 +131,8 @@ namespace UI.DependencyResolution {
             For<IPlayerWithNemesisViewModelBuilder>().Singleton().Use<PlayerWithNemesisViewModelBuilder>();
 
             For<IMinionViewModelBuilder>().Singleton().Use<MinionViewModelBuilder>();
+
+            For<INemesisChangeViewModelBuilder>().Singleton().Use<NemesisChangeViewModelBuilder>();
         }
 
         #endregion

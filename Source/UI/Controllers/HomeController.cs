@@ -6,8 +6,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using UI.Models.Home;
+using UI.Models.Nemeses;
 using UI.Models.Players;
+using UI.Transformations;
 using UI.Transformations.PlayerTransformations;
+using BusinessLogic.Logic.Nemeses;
 
 namespace UI.Controllers
 {
@@ -15,19 +18,25 @@ namespace UI.Controllers
     {
         internal const int NUMBER_OF_TOP_PLAYERS_TO_SHOW = 5;
         internal const int NUMBER_OF_RECENT_PUBLIC_GAMES_TO_SHOW = 5;
+        internal const int NUMBER_OF_RECENT_NEMESIS_CHANGES_TO_SHOW = 5;
 
         private readonly IPlayerSummaryBuilder playerSummaryBuilder;
         private readonly ITopPlayerViewModelBuilder topPlayerViewModelBuilder;
         private readonly IPlayedGameRetriever playedGameRetriever;
+        private readonly INemesisHistoryRetriever nemesisHistoryRetriever;
+        private readonly INemesisChangeViewModelBuilder nemesisChangeViewModelBuilder;
 
         public HomeController(
             IPlayerSummaryBuilder playerSummaryBuilder, 
             ITopPlayerViewModelBuilder topPlayerViewModelBuilder,
-            IPlayedGameRetriever playedGameRetriever)
+            IPlayedGameRetriever playedGameRetriever, 
+            INemesisHistoryRetriever nemesisHistoryRetriever, INemesisChangeViewModelBuilder nemesisChangeViewModelBuilder)
         {
             this.playerSummaryBuilder = playerSummaryBuilder;
             this.topPlayerViewModelBuilder = topPlayerViewModelBuilder;
             this.playedGameRetriever = playedGameRetriever;
+            this.nemesisHistoryRetriever = nemesisHistoryRetriever;
+            this.nemesisChangeViewModelBuilder = nemesisChangeViewModelBuilder;
         }
 
         public virtual ActionResult Index()
@@ -39,12 +48,15 @@ namespace UI.Controllers
             List<PublicGameSummary> publicGameSummaries = playedGameRetriever
                 .GetRecentPublicGames(NUMBER_OF_RECENT_PUBLIC_GAMES_TO_SHOW);
 
-            //List<NemesisChange> nemesisHistoryRetriever.GetRecentNemesisChanges(NUMBER_OF_RECENT_NEMESIS_CHANGES_TO_SHOW);
+            List<NemesisChange> nemesisChanges = nemesisHistoryRetriever.GetRecentNemesisChanges(NUMBER_OF_RECENT_NEMESIS_CHANGES_TO_SHOW);
+
+            var nemesisChangeViewModels = nemesisChangeViewModelBuilder.Build(nemesisChanges);
 
             HomeIndexViewModel homeIndexViewModel = new HomeIndexViewModel()
             {
                 TopPlayers = topPlayerViewModels,
-                RecentPublicGames = publicGameSummaries
+                RecentPublicGames = publicGameSummaries,
+                RecentNemesisChanges = nemesisChangeViewModels
             };
             return View(MVC.Home.Views.Index, homeIndexViewModel);
         }

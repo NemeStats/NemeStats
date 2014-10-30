@@ -1,4 +1,6 @@
-﻿using System.Data.Entity;
+﻿using System;
+using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using BusinessLogic.DataAccess;
 using BusinessLogic.Models;
@@ -52,6 +54,11 @@ namespace BusinessLogic.Logic.Nemeses
             }
 
             return nemesisHistoryData;
+        }
+
+        public List<NemesisChange> GetRecentNemesisChanges(int numberOfRecentNemeses)
+        {
+            throw new NotImplementedException();
         }
     }
 }
