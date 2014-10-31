@@ -15,8 +15,8 @@ namespace UI.Transformations
             {
                 NemesisPlayerId = nemesisChange.NemesisPlayerId,
                 NemesisPlayerName = nemesisChange.NemesisPlayerName,
-                PlayerId = nemesisChange.PlayerId,
-                PlayerName = nemesisChange.PlayerName,
+                PlayerId = nemesisChange.MinionPlayerId,
+                PlayerName = nemesisChange.MinionPlayerName,
                 LossPercentageVersusNemesis = nemesisChange.LossPercentageVersusNemesis
             }).ToList();
         }

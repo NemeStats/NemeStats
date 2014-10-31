@@ -58,7 +58,19 @@ namespace BusinessLogic.Logic.Nemeses
 
         public List<NemesisChange> GetRecentNemesisChanges(int numberOfRecentNemeses)
         {
-            return new List<NemesisChange>();
+            return (from nemesisChange in dataContext.GetQueryable<Nemesis>().GroupBy(n => n.MinionPlayerId)
+                                                     .Select(n => n.OrderByDescending(p => p.DateCreated)
+                                                                   .FirstOrDefault())
+                    select new NemesisChange
+                    {
+                        LossPercentageVersusNemesis = nemesisChange.LossPercentage,
+                        NemesisPlayerId = nemesisChange.NemesisPlayerId,
+                        NemesisPlayerName = nemesisChange.NemesisPlayer.Name,
+                        MinionPlayerName = nemesisChange.MinionPlayer.Name,
+                        MinionPlayerId = nemesisChange.MinionPlayerId,
+                        DateCreated = nemesisChange.DateCreated
+                    }).OrderByDescending(n => n.DateCreated)
+                    .ToList();
         }
     }
 }

@@ -9,8 +9,9 @@ namespace BusinessLogic.Logic.Nemeses
     {
         public int NemesisPlayerId { get; set; }
         public string NemesisPlayerName { get; set; }
-        public int LossPercentageVersusNemesis { get; set; }
-        public int PlayerId { get; set; }
-        public string PlayerName { get; set; }
+        public float LossPercentageVersusNemesis { get; set; }
+        public int MinionPlayerId { get; set; }
+        public string MinionPlayerName { get; set; }
+        public DateTime DateCreated { get; set; }
     }
 }

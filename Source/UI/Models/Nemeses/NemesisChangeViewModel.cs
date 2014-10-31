@@ -11,6 +11,6 @@ namespace UI.Models.Nemeses
         public string PlayerName { get; set; }
         public int NemesisPlayerId { get; set; }
         public string NemesisPlayerName { get; set; }
-        public int LossPercentageVersusNemesis { get; set; }
+        public float LossPercentageVersusNemesis { get; set; }
     }
 }
