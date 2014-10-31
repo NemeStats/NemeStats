@@ -34,7 +34,9 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.NemesesTests.NemesisHistoryRe
                 BuildNemesisItem(nemesisPlayerId1, nemesisPlayerName1, repeatedMinionPlayerId, repeatedMinionPlayerName1, lossPercentage, 0),
                 BuildNemesisItem(35, "another nemesis player name", repeatedMinionPlayerId, repeatedMinionPlayerName1, 59, 1),
                 BuildNemesisItem(36, "nemesis3", 515, "minion3", 59, 3),
-                BuildNemesisItem(37, "nemesis4", 516, "minion4", 100, 2)
+                BuildNemesisItem(37, "nemesis4", 516, "minion4", 100, 2),
+                BuildNemesisItem(39, "nemesis5", 515116, "minion4", 70, 5)
+
             };
 
             dataContextMock.Expect(mock => mock.GetQueryable<Nemesis>())

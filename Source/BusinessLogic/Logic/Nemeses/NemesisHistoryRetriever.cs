@@ -70,6 +70,7 @@ namespace BusinessLogic.Logic.Nemeses
                         MinionPlayerId = nemesisChange.MinionPlayerId,
                         DateCreated = nemesisChange.DateCreated
                     }).OrderByDescending(n => n.DateCreated)
+                    .Take(numberOfRecentNemeses)
                     .ToList();
         }
     }
