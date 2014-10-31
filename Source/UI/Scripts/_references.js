@@ -15,3 +15,4 @@
 /// <reference path="gamedefinition/creategamedefinitionpartial.js" />
 /// <reference path="gamedefinition/gamedefinitions.js" />
 /// <reference path="bootstrap.min.js" />
+/// <reference path="shared/_layout.js" />

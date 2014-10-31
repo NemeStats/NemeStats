@@ -62,6 +62,12 @@ namespace UI.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult Save()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Save);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult Edit()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Edit);
@@ -84,6 +90,7 @@ namespace UI.Controllers
         {
             public readonly string Details = "Details";
             public readonly string Create = "Create";
+            public readonly string Save = "Save";
             public readonly string Edit = "Edit";
             public readonly string CreatePartial = "CreatePartial";
         }
@@ -93,6 +100,7 @@ namespace UI.Controllers
         {
             public const string Details = "Details";
             public const string Create = "Create";
+            public const string Save = "Save";
             public const string Edit = "Edit";
             public const string CreatePartial = "CreatePartial";
         }
@@ -114,6 +122,15 @@ namespace UI.Controllers
         public class ActionParamsClass_Create
         {
             public readonly string gameDefinition = "gameDefinition";
+            public readonly string currentUser = "currentUser";
+        }
+        static readonly ActionParamsClass_Save s_params_Save = new ActionParamsClass_Save();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_Save SaveParams { get { return s_params_Save; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_Save
+        {
+            public readonly string model = "model";
             public readonly string currentUser = "currentUser";
         }
         static readonly ActionParamsClass_Edit s_params_Edit = new ActionParamsClass_Edit();
@@ -191,6 +208,19 @@ namespace UI.Controllers
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "gameDefinition", gameDefinition);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "currentUser", currentUser);
             CreateOverride(callInfo, gameDefinition, currentUser);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void SaveOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, BusinessLogic.Models.GameDefinition model, BusinessLogic.Models.User.ApplicationUser currentUser);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult Save(BusinessLogic.Models.GameDefinition model, BusinessLogic.Models.User.ApplicationUser currentUser)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Save);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "model", model);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "currentUser", currentUser);
+            SaveOverride(callInfo, model, currentUser);
             return callInfo;
         }
 
