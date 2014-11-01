@@ -45,7 +45,11 @@
                 }
             });
             this.$btnAddPlayer.on("click", function() {
-                parent.$addPlayer.toggle();
+                if (parent.$addPlayer.hasClass("hidden")) {
+                    parent.$addPlayer.removeClass("hidden");
+                } else {
+                    parent.$addPlayer.addClass("hidden");
+                }
                 document.location = parent.$anchorAddPlayer.attr("href");
             });
         },
