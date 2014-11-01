@@ -59,7 +59,7 @@
 
                         <div class="form-group">
                             <div class="col-md-offset-4 col-md-10">
-                                <input type="submit" value="Create" class="btn btn-primary" />
+                                <input type="submit" value="Create" class="btn btn-primary" id="createPlayedGameSubmit"/>
                             </div>
                         </div>
                     </div>
@@ -75,7 +75,7 @@
 </div>
 
 
-<div>
+<div id="createdPlayedGameBack">
     @Html.ActionLink("Back To List", "Index", "GamingGroup", null, null, UI.Controllers.GamingGroupController.SECTION_ANCHOR_RECENT_GAMES, null, null)
 </div>
 
