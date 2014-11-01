@@ -32,10 +32,10 @@
             this.$datePicker = $(".date-picker").datepicker({
                 showOn: "button",
                 buttonText: "<i class='fa fa-calendar'></i>",
-                showButtonPanel: true
+                showButtonPanel: true,
+                maxDate: new Date,
+                minDate: new Date(2014, 1, 1)
             });
-
-            this.$addPlayer.hide();
 
             //Event handlers
             this.$players.change(function () { parent.addPlayer(); });
@@ -46,7 +46,7 @@
             });
             this.$btnAddPlayer.on("click", function() {
                 parent.$addPlayer.toggle();
-                document.location = parent.$anchorAddPlayer.attr("href")
+                document.location = parent.$anchorAddPlayer.attr("href");
             });
         },
         onReorder: function () {
