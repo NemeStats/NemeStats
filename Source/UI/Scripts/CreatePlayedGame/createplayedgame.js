@@ -12,6 +12,7 @@
         this.$playerFormData = null;
         this.$btnAddPlayer = null;
         this.$addPlayer = null;
+        this.$datePicker = null;
     };
 
     //Implementation
@@ -28,6 +29,11 @@
             this.$addPlayer = $("#addPlayer");
             this.$btnAddPlayer = $("#btnAddPlayer");
             this.$anchorAddPlayer = $("#addPlayerAnchor");
+            this.$datePicker = $(".date-picker").datepicker({
+                showOn: "button",
+                buttonText: "<i class='fa fa-calendar'></i>",
+                showButtonPanel: true
+            });
 
             this.$addPlayer.hide();
 
