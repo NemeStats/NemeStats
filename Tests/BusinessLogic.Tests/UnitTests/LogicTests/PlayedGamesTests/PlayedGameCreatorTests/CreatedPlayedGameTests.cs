@@ -65,7 +65,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameCr
             dataContext.AssertWasCalled(mock => mock.Save(
                                                 Arg<PlayedGame>.Matches(game => game.GameDefinitionId == gameDefinitionId
                                                     && game.NumberOfPlayers == playerRanks.Count()
-                                                    && game.DatePlayed.Date.Equals(DateTime.UtcNow.Date)),
+                                                    && game.DatePlayed.Date.Equals(newlyCompletedGame.DatePlayed.Date)),
                                                 Arg<ApplicationUser>.Is.Same(currentUser)));
         }
 

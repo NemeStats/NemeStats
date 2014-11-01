@@ -1,4 +1,5 @@
-﻿using BusinessLogic.Models.Games.Validation;
+﻿using System;
+using BusinessLogic.Models.Games.Validation;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -7,6 +8,11 @@ namespace BusinessLogic.Models.Games
 {
     public class NewlyCompletedGame
     {
+        public NewlyCompletedGame()
+        {
+            DatePlayed = DateTime.UtcNow;
+        }
+
         [Required]
         public int? GameDefinitionId { get; set; }
 
@@ -15,5 +21,9 @@ namespace BusinessLogic.Models.Games
         [PlayerRankValidationAttribute]
         [Required]
         public List<PlayerRank> PlayerRanks { get; set; }
+
+        [Required]
+        [DataType(DataType.Date)]
+        public DateTime DatePlayed { get; set; }
     }
 }

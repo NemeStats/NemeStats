@@ -14,10 +14,9 @@ namespace BusinessLogic.Logic.PlayedGames
 {
     public class PlayedGameCreator : IPlayedGameCreator
     {
-        private IDataContext dataContext;
-        private INemeStatsEventTracker playedGameTracker;
-        private IPlayerRepository playerRepository;
-        private INemesisRecalculator nemesisRecalculator;
+        private readonly IDataContext dataContext;
+        private readonly INemeStatsEventTracker playedGameTracker;
+        private readonly INemesisRecalculator nemesisRecalculator;
 
         public PlayedGameCreator(
             IDataContext applicationDataContext, 
@@ -27,7 +26,6 @@ namespace BusinessLogic.Logic.PlayedGames
         {
             this.dataContext = applicationDataContext;
             this.playedGameTracker = playedGameTracker;
-            this.playerRepository = playerRepository;
             this.nemesisRecalculator = nemesisRecalculator;
         }
 
@@ -83,7 +81,7 @@ namespace BusinessLogic.Logic.PlayedGames
                 GameDefinitionId = newlyCompletedGame.GameDefinitionId.Value,
                 NumberOfPlayers = numberOfPlayers,
                 PlayerGameResults = playerGameResults,
-                DatePlayed = DateTime.UtcNow,
+                DatePlayed = newlyCompletedGame.DatePlayed,
                 GamingGroupId = gamingGroupId
             };
             return playedGame;

@@ -16,7 +16,6 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.GamingGroupInviteC
     [TestFixture]
     public class ConsumeGamingGroupInvitationTests
     {
-        private NemeStatsDbContext dbContextMock;
         private IPendingGamingGroupInvitationRetriever pendingGamingGroupInvitationRetriever;
         private IUserStore<ApplicationUser> userStoreMock;
         private ApplicationUserManager applicationUserManagerMock;
@@ -24,12 +23,10 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.GamingGroupInviteC
         private IGamingGroupAccessGranter gamingGroupAccessGranter;
         private List<GamingGroupInvitation> gamingGroupInvitations;
         private ApplicationUser currentUser;
-        private ApplicationUser applicationUser;
 
         [SetUp]
         public void SetUp()
         {
-            dbContextMock = MockRepository.GenerateMock<NemeStatsDbContext>();
             pendingGamingGroupInvitationRetriever = MockRepository.GenerateMock<IPendingGamingGroupInvitationRetriever>();
             userStoreMock = MockRepository.GenerateMock<IUserStore<ApplicationUser>>();
             applicationUserManagerMock = MockRepository.GenerateMock<ApplicationUserManager>(userStoreMock);
@@ -39,7 +36,6 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.GamingGroupInviteC
             {
                 Id = "user id"
             };
-            applicationUser = new ApplicationUser() { Id = currentUser.Id };
             gamingGroupInvitations = new List<GamingGroupInvitation>();
         }
 

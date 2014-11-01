@@ -6,70 +6,78 @@
 }
 
 <h2>@ViewBag.Title</h2>
-    <hr />
+<hr />
 
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <h4>Game played</h4>
-        </div>
-        <div class="panel-body">
-            <div class="row">
-                <div class="col-md-5">
-                    @using (Html.BeginForm())
-                    {
-                        @Html.AntiForgeryToken()
-                        <div class="form-horizontal">
-                            <div class="form-group">
-                                @Html.LabelFor(model => model.GameDefinitionId, "The Game", new { @class = "control-label col-md-4" })
-                                <div class="col-md-6">
-                                    @Html.DropDownList("GameDefinitionId", (IEnumerable<SelectListItem>)null, "Pick A Game", new { @class = "form-control" })
-                                    @Html.ValidationMessageFor(model => model.GameDefinitionId)
-                                </div>
-                            </div>
-
-                            <div class="form-group" id="playerDiv">
-                                @Html.LabelFor(model => model.PlayerRanks, "The Players", new { @class = "control-label col-md-4" })
-                                <div class="col-md-6">
-                                    @Html.DropDownList("Players", (IEnumerable<SelectListItem>)null, "Add A Player", new { @class = "form-control" })
-                                    @Html.ValidationMessageFor(model => model.PlayerRanks)
-                                </div>
-                                <div class="col-md-2">
-                                    <button type="button" id="btnAddPlayer" class=" btn btn-default" title="Create new player">
-                                        <i class="fa fa-plus"></i>
-                                    </button>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <div class="col-md-4">
-
-                                </div>
-                                <div class="col-md-8">
-                                    <ul id="rankedPlayers" class="sortable"></ul>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <div class="col-md-offset-4 col-md-10">
-                                    <input type="submit" value="Create" class="btn btn-primary" />
-                                </div>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h4>Game played</h4>
+    </div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-5">
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.GameDefinitionId, "The Game", new { @class = "control-label col-md-4" })
+                            <div class="col-md-6">
+                                @Html.DropDownList("GameDefinitionId", (IEnumerable<SelectListItem>)null, "Pick A Game", new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.GameDefinitionId)
                             </div>
                         </div>
-                    }
-                </div>
 
-                <div id="addPlayer" class="col-md-7" style="margin-top: 50px">
-                    <a href="#addPlayer" id="addPlayerAnchor"></a>
-                    @Html.Action("SavePlayer", "Player")
-                </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.DatePlayed, "Date Played", new { @class = "control-label col-md-4" })
+                            <div class="col-md-6">
+                                @Html.TextBox("DatePlayed", "", new { @class = "date-picker" })
+                                @Html.ValidationMessageFor(model => model.GameDefinitionId)
+                            </div>
+                        </div>
+
+                        <div class="form-group" id="playerDiv">
+                            @Html.LabelFor(model => model.PlayerRanks, "The Players", new { @class = "control-label col-md-4" })
+                            <div class="col-md-6">
+                                @Html.DropDownList("Players", (IEnumerable<SelectListItem>)null, "Add A Player", new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.PlayerRanks)
+                            </div>
+                            <div class="col-md-2">
+                                <button type="button" id="btnAddPlayer" class=" btn btn-default" title="Create new player">
+                                    <i class="fa fa-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-4">
+
+                            </div>
+                            <div class="col-md-8">
+                                <ul id="rankedPlayers" class="sortable"></ul>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-offset-4 col-md-10">
+                                <input type="submit" value="Create" class="btn btn-primary" />
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <div id="addPlayer" class="col-md-7" style="margin-top: 50px">
+                <a href="#addPlayer" id="addPlayerAnchor"></a>
+                @Html.Action("SavePlayer", "Player")
             </div>
         </div>
     </div>
-            
+</div>
 
-    <div>
-        @Html.ActionLink("Back To List", "Index", "GamingGroup", null, null, UI.Controllers.GamingGroupController.SECTION_ANCHOR_RECENT_GAMES, null, null)
-    </div>
+
+<div>
+    @Html.ActionLink("Back To List", "Index", "GamingGroup", null, null, UI.Controllers.GamingGroupController.SECTION_ANCHOR_RECENT_GAMES, null, null)
+</div>
 
 @section Scripts{
     <script type="text/javascript">
@@ -80,6 +88,8 @@
 
             var createOrUpdatePlayer = new window.Views.Player.CreateOrUpdate();
             createOrUpdatePlayer.init($.proxy(createPlayedGame.onPlayerCreated, createPlayedGame));
+
+            $('.date-picker').datepicker();
         });
     </script>
 }

@@ -12,7 +12,6 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
     public class GetNemesisTests : IntegrationTestBase
     {
         private IDataContext dataContext;
-        private INemesisHistoryRetriever nemesisHistoryRetriever;
         private IPlayerRetriever playerRetriever;
         private PlayerDetails player1Details;
         private PlayerDetails player5Details;
@@ -23,7 +22,6 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
             base.FixtureSetUp();
 
             dataContext = new NemeStatsDataContext();
-            nemesisHistoryRetriever = new NemesisHistoryRetriever(dataContext);
             playerRetriever = new PlayerRetriever(dataContext);
             player1Details = playerRetriever.GetPlayerDetails(testPlayer1.Id, 0);
             player5Details = playerRetriever.GetPlayerDetails(testPlayer5.Id, 0);

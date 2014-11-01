@@ -23,16 +23,10 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
         private Nemesis expectedNemesis;
         private Nemesis expectedPriorNemesis;
         private List<Player> minions;
-        private ApplicationUser currentUser;
 
         [SetUp]
         public void SetUp()
         {
-            currentUser = new ApplicationUser()
-            {
-                Id = "123",
-                CurrentGamingGroupId = 15151
-            };
             dataContextMock = MockRepository.GenerateMock<IDataContext>();
             playerRetrieverPartialMock = MockRepository.GeneratePartialMock<PlayerRetriever>(dataContextMock);
 
