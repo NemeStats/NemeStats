@@ -31,7 +31,8 @@ namespace UI
                 .Include("~/Scripts/Player/createOrUpdatePlayer.js")
                 .Include("~/Scripts/Player/players.js")
                 .Include("~/Scripts/GameDefinition/createGameDefinitionPartial.js")
-                .Include("~/Scripts/GameDefinition/gameDefinitions.js"));
+				.Include("~/Scripts/GameDefinition/gameDefinitions.js")
+				.Include("~/Scripts/Shared/_Layout.js"));
 
             bundles.Add(new StyleBundle("~/bundles/content/css").Include(
                 "~/Content/bootstrap.min.css", new CssRewriteUrlTransform())
