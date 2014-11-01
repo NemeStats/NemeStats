@@ -18,7 +18,7 @@
         <div class="carousel-inner">
             <div class="item active" style="min-height: 365px;">
                 <div class="container">
-                    <div class="carousel-caption">
+                    <div class="carousel-caption" id="homePageCarouselPage1">
                         <h2>Keep Track Of Your Nemesis</h2>
                         <p class="lead">
                             NemeStats (as in "Nemesis Statistics") is a free web application for logging games played among a relatively stable group of players. It takes only
@@ -40,9 +40,9 @@
             <div class="item" style="min-height: 365px;">
                 <div class="container">
                     <div class="carousel-caption">
-                        <div class="col-md-4">
+                        <div class="col-md-4" id="homePageCarouselSetupGames">
                             <span class="home-page-icon">
-                                <i class="fa fa-gamepad"></i>    
+                                <i class="fa fa-gamepad"></i>
                             </span>
                             <h2>Setup Games</h2>
                             <p>
@@ -50,7 +50,7 @@
                             </p>
                             <p>@Html.ActionLink("Manage Games", "Index", "GamingGroup", null, null, UI.Controllers.GamingGroupController.SECTION_ANCHOR_GAMEDEFINITIONS, null, null)</p>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-4" id="homePageCarouselSetupPlayers">
                             <span class="home-page-icon">
                                 <i class="fa fa-users"></i>
                             </span>
@@ -60,7 +60,7 @@
                             </p>
                             <p>@Html.ActionLink("Manage Players", "Index", "GamingGroup", null, null, UI.Controllers.GamingGroupController.SECTION_ANCHOR_PLAYERS, null, null)</p>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-4" id="homePageCarouselTrackGameResults">
                             <span class="home-page-icon">
                                 <i class="fa fa-line-chart"></i>
                             </span>
@@ -81,7 +81,7 @@
             <h3>Top 5 Players</h3>
             
             <div class="table-responsive">
-                <table class="table table-hover">
+                <table class="table table-hover" id="topFivePlayersTable">
                     <tr>
                         <th>Name</th>
                         <th>Games</th>
@@ -104,7 +104,7 @@
         <div class="col-md-6">
             <h3>Recent Games</h3>
             <div class="table-responsive">
-                <table class="table table-hover">
+                <table class="table table-hover" id="recentGamesTable">
                     <tr>
                         <th>Game</th>
                         <th>Winner</th>
@@ -126,7 +126,7 @@
         <div class="col-md-6">
             <h3>Recent Nemesis Changes</h3>
             <div class="table-responsive">
-                <table class="table table-hover">
+                <table class="table table-hover" id="recentNemesisChangesTable">
                     <tr>
                         <th>Player</th>
                         <th>New Nemesis</th>
@@ -147,7 +147,7 @@
         <div class="col-md-6">
             <h3>Top 5 Gaming Groups</h3>
             <div class="table-responsive">
-                <table class="table table-hover">
+                <table class="table table-hover" id="topFiveGamingGroupsTable">
                     <tr>
                         <th>Gaming Group</th>
                         <th>Number of Players</th>

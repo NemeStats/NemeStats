@@ -16,6 +16,7 @@
         })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
 
         ga('create', 'UA-52982625-1', 'auto');
+        ga('require', 'linkid', 'linkid.js');
         ga('send', 'pageview');
 
     </script>
@@ -34,9 +35,9 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Record Played Game", "Create", "PlayedGame")</li>
-                    <li>@Html.ActionLink("My Gaming Group", "Index", "GamingGroup")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
+                    <li id="navRecordGame">@Html.ActionLink("Record Played Game", "Create", "PlayedGame")</li>
+                    <li id="navMyGamingGroup">@Html.ActionLink("My Gaming Group", "Index", "GamingGroup")</li>
+                    <li id="navAbout">@Html.ActionLink("About", "About", "Home")</li>
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>
