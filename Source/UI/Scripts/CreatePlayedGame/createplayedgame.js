@@ -33,9 +33,9 @@
                 showOn: "button",
                 buttonText: "<i class='fa fa-calendar'></i>",
                 showButtonPanel: true,
-                maxDate: new Date,
+                maxDate: new Date(),
                 minDate: new Date(2014, 1, 1)
-            });
+            }).datepicker("setDate", new Date());
 
             //Event handlers
             this.$players.change(function () { parent.addPlayer(); });
