@@ -1,16 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
+using System.Text;
 
-namespace UI.Models.Nemeses
+namespace BusinessLogic.Logic.Nemeses
 {
-    public class NemesisChangeViewModel
+    public class NemesisChange
     {
-        public int PlayerId { get; set; }
-        public string PlayerName { get; set; }
         public int NemesisPlayerId { get; set; }
         public string NemesisPlayerName { get; set; }
         public float LossPercentageVersusNemesis { get; set; }
+        public int MinionPlayerId { get; set; }
+        public string MinionPlayerName { get; set; }
+        public DateTime DateCreated { get; set; }
     }
 }
