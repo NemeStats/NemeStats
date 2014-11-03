@@ -15,6 +15,8 @@ namespace BusinessLogic.Models
 
         public override int GamingGroupId { get; set; }
 
+        public int? BoardGameGeekObjecdtId { get; set; }
+
         public string Name { get; set; }
         public string Description { get; set; }
         public bool Active { get; set; }

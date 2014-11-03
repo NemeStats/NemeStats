@@ -86,7 +86,7 @@ namespace BusinessLogic.Logic
                     continue;
                 }
                 individualSearchResult.BoardGameName = gameName.Value;
-                individualSearchResult.BoardGameId = searchResult.objectid;
+                individualSearchResult.BoardGameId = int.Parse(searchResult.objectid);
                 individualSearchResult.YearPublished = searchResult.yearpublished;
                 returnValue.Add(individualSearchResult);
                 break;

@@ -9,7 +9,7 @@ namespace BusinessLogic.Models.Games
     public class BoardGameGeekSearchResult
     {
         public string BoardGameName { get; set; }
-        public string BoardGameId { get; set; }
+        public int BoardGameId { get; set; }
         public string YearPublished { get; set; }
     }
 }

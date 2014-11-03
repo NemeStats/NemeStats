@@ -158,7 +158,7 @@ namespace UI.Tests.IntegrationTests.BoardGameGeekTests
 
                         if (results.Count != 1)
                         {
-                            Console.WriteLine(gameName + "has "+ results.Count + " results.");
+                            Console.WriteLine(gameName + " has "+ results.Count + " results.");
                         }
                     }
                 }

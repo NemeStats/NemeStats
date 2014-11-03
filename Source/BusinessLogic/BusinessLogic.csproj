@@ -260,6 +260,10 @@
     <Compile Include="Migrations\201410240249244_ConfirmAllEmails.Designer.cs">
       <DependentUpon>201410240249244_ConfirmAllEmails.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201411030319165_AddBoardGameGeekObjectId.cs" />
+    <Compile Include="Migrations\201411030319165_AddBoardGameGeekObjectId.Designer.cs">
+      <DependentUpon>201411030319165_AddBoardGameGeekObjectId.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Games\BoardGameGeekSearchResult.cs" />
     <Compile Include="Models\Games\PublicGameSummary.cs" />
     <Compile Include="Models\GamingGroup.cs" />
@@ -416,6 +420,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201410240249244_ConfirmAllEmails.resx">
       <DependentUpon>201410240249244_ConfirmAllEmails.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201411030319165_AddBoardGameGeekObjectId.resx">
+      <DependentUpon>201411030319165_AddBoardGameGeekObjectId.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />
