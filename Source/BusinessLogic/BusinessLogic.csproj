@@ -137,6 +137,9 @@
     <Compile Include="Exceptions\EntityDoesNotExistException.cs" />
     <Compile Include="Exceptions\PlayerAlreadyExistsException.cs" />
     <Compile Include="Exceptions\UnauthorizedEntityAccessException.cs" />
+    <Compile Include="Logic\BoardGameGeekSearcher.cs" />
+    <Compile Include="Logic\BoardGameGeek\IBoardGameGeekSearcher.cs" />
+    <Compile Include="Logic\BoardGameGeek\DeSerializationModels\SearchResultModels.cs" />
     <Compile Include="Logic\Email\EmailService.cs" />
     <Compile Include="Logic\Nemeses\INemesisHistoryRetriever.cs" />
     <Compile Include="Logic\Nemeses\INemesisRecalculator.cs" />
@@ -257,6 +260,7 @@
     <Compile Include="Migrations\201410240249244_ConfirmAllEmails.Designer.cs">
       <DependentUpon>201410240249244_ConfirmAllEmails.cs</DependentUpon>
     </Compile>
+    <Compile Include="Models\Games\BoardGameGeekSearchResult.cs" />
     <Compile Include="Models\Games\PublicGameSummary.cs" />
     <Compile Include="Models\GamingGroup.cs" />
     <Compile Include="Models\GamingGroupInvitation.cs" />
