@@ -8,7 +8,9 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Xml.Serialization;
 using BusinessLogic.DataAccess;
+using BusinessLogic.Logic;
 using BusinessLogic.Models;
+using BusinessLogic.Models.Games;
 using NUnit.Framework;
 
 namespace UI.Tests.IntegrationTests.BoardGameGeekTests
@@ -147,32 +149,18 @@ namespace UI.Tests.IntegrationTests.BoardGameGeekTests
                         "Wrath of Ashardalon",
                         "Zombicide"
                     };
-                    string uriFormat = "http://www.boardgamegeek.com/xmlapi/search?search={0}";
+
+                    BoardGameGeekSearcher bggSearcher = new BoardGameGeekSearcher();
+
                     foreach (string gameName in gameNames)
                     {
-                        Uri boardGameGeekAPIUri = new Uri(string.Format(uriFormat, HttpUtility.UrlEncode(gameName)));
-                        HttpWebRequest httpRequest = WebRequest.CreateHttp(boardGameGeekAPIUri);
-                        httpRequest.Method = "GET";
+                        List<BoardGameGeekSearchResult> results = bggSearcher.SearchForBoardGames(gameName);
 
-                        using (var webResponse = (HttpWebResponse)httpRequest.GetResponse())
+                        if (results.Count != 1)
                         {
-                            if (webResponse.StatusCode != HttpStatusCode.OK)
-                            {
-                                throw new HttpException((int)webResponse.StatusCode,
-                                                        "Google Analytics tracking did not return OK 200");
-                            }
-
-                            using (StreamReader streamReader = new StreamReader(webResponse.GetResponseStream(), System.Text.Encoding.UTF8))
-                            {
-                                string result = streamReader.ReadToEnd();
-
-                                XmlSerializer serializer = new XmlSerializer(typeof(boardgames));
-                                MemoryStream memStream = new MemoryStream(Encoding.UTF8.GetBytes(result));
-                                boardgames resultingMessage = (boardgames)serializer.Deserialize(memStream);
-                            }
+                            Console.WriteLine(gameName + "has "+ results.Count + " results.");
                         }
                     }
-                   
                 }
             }
         }

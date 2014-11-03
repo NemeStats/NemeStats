@@ -13,13 +13,13 @@ namespace BusinessLogic.Logic
 {
     public class BoardGameGeekSearcher : IBoardGameGeekSearcher
     {
-        public const string URI_FORMAT_BOARD_GAME_GEEK_SEARCH_REQUEST = "http://www.boardgamegeek.com/xmlapi/search?search={0}";
+        public const string URI_FORMAT_BOARD_GAME_GEEK_SEARCH_REQUEST = "http://www.boardgamegeek.com/xmlapi/search?search={0}&exact=1";
 
         public List<BoardGameGeekSearchResult> SearchForBoardGames(string searchText)
         {
             List<BoardGameGeekSearchResult> searchResults = new List<BoardGameGeekSearchResult>();
 
-            var httpRequest = BuildHttpRequest(searchText);
+            var httpRequest = BuildHttpRequest(searchText.Trim());
             using (var webResponse = (HttpWebResponse)httpRequest.GetResponse())
             {
                 ValidateHttpResponseStatusCode(webResponse);
@@ -50,6 +50,11 @@ namespace BusinessLogic.Logic
         private static void BuildSearchResults(HttpWebResponse webResponse, List<BoardGameGeekSearchResult> returnValue)
         {
             var searchResults = GetBoardGameGeekSearchResults(webResponse);
+
+            if (searchResults.boardgame == null)
+            {
+                return;
+            }
 
             BoardGameGeekSearchResult individualSearchResult = new BoardGameGeekSearchResult();
             foreach (var searchResult in searchResults.boardgame)
