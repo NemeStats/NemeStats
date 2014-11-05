@@ -137,10 +137,11 @@
     <Compile Include="Exceptions\EntityDoesNotExistException.cs" />
     <Compile Include="Exceptions\PlayerAlreadyExistsException.cs" />
     <Compile Include="Exceptions\UnauthorizedEntityAccessException.cs" />
-    <Compile Include="Logic\BoardGameGeekSearcher.cs" />
+    <Compile Include="Logic\BoardGameGeek\BoardGameGeekSearcher.cs" />
     <Compile Include="Logic\BoardGameGeek\IBoardGameGeekSearcher.cs" />
     <Compile Include="Logic\BoardGameGeek\DeSerializationModels\SearchResultModels.cs" />
     <Compile Include="Logic\Email\EmailService.cs" />
+    <Compile Include="Logic\GameDefinitions\BoardGameGeekDataLinker.cs" />
     <Compile Include="Logic\Nemeses\INemesisHistoryRetriever.cs" />
     <Compile Include="Logic\Nemeses\INemesisRecalculator.cs" />
     <Compile Include="Logic\Nemeses\NemesisChange.cs" />
@@ -263,6 +264,14 @@
     <Compile Include="Migrations\201411030319165_AddBoardGameGeekObjectId.cs" />
     <Compile Include="Migrations\201411030319165_AddBoardGameGeekObjectId.Designer.cs">
       <DependentUpon>201411030319165_AddBoardGameGeekObjectId.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201411050330597_FixedTypo.cs" />
+    <Compile Include="Migrations\201411050330597_FixedTypo.Designer.cs">
+      <DependentUpon>201411050330597_FixedTypo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201411050405195_LinkExistingGameDefinitionsToBoardGameGeek.cs" />
+    <Compile Include="Migrations\201411050405195_LinkExistingGameDefinitionsToBoardGameGeek.Designer.cs">
+      <DependentUpon>201411050405195_LinkExistingGameDefinitionsToBoardGameGeek.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\Games\BoardGameGeekSearchResult.cs" />
     <Compile Include="Models\Games\PublicGameSummary.cs" />
@@ -423,6 +432,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201411030319165_AddBoardGameGeekObjectId.resx">
       <DependentUpon>201411030319165_AddBoardGameGeekObjectId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201411050330597_FixedTypo.resx">
+      <DependentUpon>201411050330597_FixedTypo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201411050405195_LinkExistingGameDefinitionsToBoardGameGeek.resx">
+      <DependentUpon>201411050405195_LinkExistingGameDefinitionsToBoardGameGeek.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

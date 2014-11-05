@@ -9,6 +9,8 @@ using System.Web;
 using System.Xml.Serialization;
 using BusinessLogic.DataAccess;
 using BusinessLogic.Logic;
+using BusinessLogic.Logic.BoardGameGeek;
+using BusinessLogic.Logic.GameDefinitions;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
 using NUnit.Framework;
@@ -163,6 +165,13 @@ namespace UI.Tests.IntegrationTests.BoardGameGeekTests
                     }
                 }
             }
+        }
+
+        [Test, Ignore("Integration test")]
+        public void ItUpdatesExistingGameDefinitions()
+        {
+            BoardGameGeekDataLinker dataLinker = new BoardGameGeekDataLinker();
+            dataLinker.CleanUpExistingRecords();
         }
     }
 }

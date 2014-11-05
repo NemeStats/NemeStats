@@ -9,7 +9,7 @@ using System.Xml.Serialization;
 using BusinessLogic.Logic.BoardGameGeek;
 using BusinessLogic.Models.Games;
 
-namespace BusinessLogic.Logic
+namespace BusinessLogic.Logic.BoardGameGeek
 {
     public class BoardGameGeekSearcher : IBoardGameGeekSearcher
     {
