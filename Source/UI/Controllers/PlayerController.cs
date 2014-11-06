@@ -1,4 +1,5 @@
-﻿using BusinessLogic.DataAccess;
+﻿using System.Web.Http;
+using BusinessLogic.DataAccess;
 using BusinessLogic.Exceptions;
 using BusinessLogic.Logic.Players;
 using BusinessLogic.Models;
@@ -101,8 +102,7 @@ namespace UI.Controllers
                 }
                 catch (PlayerAlreadyExistsException playerAlreadyExistsException)
                 {
-                    //TODO Tosho, not sure how to pass back the message and the existing player Id back to the UI.
-                    throw playerAlreadyExistsException;
+                    return new HttpStatusCodeResult(HttpStatusCode.Conflict, playerAlreadyExistsException.Message);
                 }
             }
 
