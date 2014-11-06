@@ -156,7 +156,7 @@ namespace UI.Tests.IntegrationTests.BoardGameGeekTests
 
                     foreach (string gameName in gameNames)
                     {
-                        List<BoardGameGeekSearchResult> results = bggSearcher.SearchForBoardGames(gameName);
+                        List<BoardGameGeekSearchResult> results = bggSearcher.SearchForBoardGames(gameName, true);
 
                         if (results.Count != 1)
                         {

@@ -142,6 +142,7 @@
     <Compile Include="IntegrationTests\DataAccessTests\RepositoriesTests\EntityFrameworkPlayerRepositoryTests\GetPlayerStatisticsIntegrationTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UnitTests\DataAccessTests\GamingGroupsTests\EntityFrameworkGamingGroupAccessGranterTests\EntityFrameworkGamingGroupAccessGranterTestBase.cs" />
+    <Compile Include="UnitTests\LogicTests\BoardGameGeekSearcherTests\SortSearchResultsTests.cs" />
     <Compile Include="UnitTests\LogicTests\NemesesTests\NemesisHistoryRetrieverTests\GetNemesisHistoryTests.cs" />
     <Compile Include="UnitTests\LogicTests\NemesesTests\NemesisHistoryRetrieverTests\GetRecentNemesisChangesTests.cs" />
     <Compile Include="UnitTests\LogicTests\PlayersTests\PlayerRetrieverTests\GetPlayerDetailsTests.cs" />

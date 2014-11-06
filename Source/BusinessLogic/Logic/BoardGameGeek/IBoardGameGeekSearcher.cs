@@ -9,6 +9,6 @@ namespace BusinessLogic.Logic.BoardGameGeek
 {
     public interface IBoardGameGeekSearcher
     {
-        List<BoardGameGeekSearchResult> SearchForBoardGames(string searchText);
+        List<BoardGameGeekSearchResult> SearchForBoardGames(string searchText, bool exactMatch);
     }
 }

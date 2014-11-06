@@ -1,4 +1,7 @@
-﻿using BusinessLogic.DataAccess;
+﻿using System.Web;
+using System.Web.Routing;
+using BusinessLogic.DataAccess;
+using BusinessLogic.Logic.BoardGameGeek;
 using BusinessLogic.Logic.GameDefinitions;
 using BusinessLogic.Models.User;
 using NUnit.Framework;
@@ -19,9 +22,12 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
         protected IGameDefinitionViewModelBuilder gameDefinitionTransformationMock;
         protected IShowingXResultsMessageBuilder showingXResultsMessageBuilderMock;
         protected IGameDefinitionSaver gameDefinitionCreatorMock;
+        protected IBoardGameGeekSearcher boardGameGeekSearcherMock;
         protected NemeStatsDataContext dataContextMock;
         protected UrlHelper urlHelperMock;
         protected ApplicationUser currentUser;
+        protected HttpRequestBase asyncRequestMock;
+
 
         [SetUp]
         public virtual void SetUp()
@@ -32,13 +38,31 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
             showingXResultsMessageBuilderMock = MockRepository.GenerateMock<IShowingXResultsMessageBuilder>();
             gameDefinitionCreatorMock = MockRepository.GenerateMock<IGameDefinitionSaver>();
             urlHelperMock = MockRepository.GenerateMock<UrlHelper>();
+            boardGameGeekSearcherMock = MockRepository.GenerateMock<IBoardGameGeekSearcher>();
             gameDefinitionControllerPartialMock = MockRepository.GeneratePartialMock<GameDefinitionController>(
                 dataContextMock, 
                 gameDefinitionRetrieverMock,
                 gameDefinitionTransformationMock,
                 showingXResultsMessageBuilderMock,
-                gameDefinitionCreatorMock);
+                gameDefinitionCreatorMock,
+                boardGameGeekSearcherMock);
             gameDefinitionControllerPartialMock.Url = urlHelperMock;
+
+            asyncRequestMock = MockRepository.GenerateMock<HttpRequestBase>();
+            asyncRequestMock.Expect(x => x.Headers)
+                .Repeat.Any()
+                .Return(new System.Net.WebHeaderCollection
+                {
+                    { "X-Requested-With", "XMLHttpRequest" }
+                });
+
+            var context = MockRepository.GenerateMock<HttpContextBase>();
+            context.Expect(x => x.Request)
+                .Repeat.Any()
+                .Return(asyncRequestMock);
+
+            gameDefinitionControllerPartialMock.ControllerContext = new ControllerContext(context, new RouteData(), gameDefinitionControllerPartialMock); 
+            
             currentUser = new ApplicationUser()
             {
                 Id = "user id",

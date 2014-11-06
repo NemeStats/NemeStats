@@ -16,29 +16,6 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
     [TestFixture]
     public class SaveGameDefinitionPostTests : GameDefinitionControllerTestBase
     {
-        private HttpRequestBase asyncRequestMock;
-
-        [SetUp]
-        public override void SetUp()
-        {
-            base.SetUp();
-
-            asyncRequestMock = MockRepository.GenerateMock<HttpRequestBase>();
-            asyncRequestMock.Expect(x => x.Headers)
-                .Repeat.Any()
-                .Return(new System.Net.WebHeaderCollection
-                {
-                    { "X-Requested-With", "XMLHttpRequest" }
-                });
-
-            var context = MockRepository.GenerateMock<HttpContextBase>();
-            context.Expect(x => x.Request)
-                .Repeat.Any()
-                .Return(asyncRequestMock);
-
-            gameDefinitionControllerPartialMock.ControllerContext = new ControllerContext(context, new RouteData(), gameDefinitionControllerPartialMock);
-        }
-
         [Test]
         public void ItSavesTheGame()
         {

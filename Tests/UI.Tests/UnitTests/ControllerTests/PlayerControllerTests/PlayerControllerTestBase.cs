@@ -1,4 +1,6 @@
-﻿using BusinessLogic.DataAccess;
+﻿using System.Web;
+using System.Web.Routing;
+using BusinessLogic.DataAccess;
 using BusinessLogic.Models.User;
 using NUnit.Framework;
 using Rhino.Mocks;
@@ -24,6 +26,8 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         protected UrlHelper urlHelperMock;
         protected PlayerController playerController;
         protected ApplicationUser currentUser;
+        protected HttpRequestBase asyncRequestMock;
+
 
         [SetUp]
         public virtual void SetUp()
@@ -48,6 +52,21 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
                                 playerSaverMock,
                                 playerRetrieverMock);
             playerController.Url = urlHelperMock;
+
+            asyncRequestMock = MockRepository.GenerateMock<HttpRequestBase>();
+            asyncRequestMock.Expect(x => x.Headers)
+                .Repeat.Any()
+                .Return(new System.Net.WebHeaderCollection
+                {
+                    { "X-Requested-With", "XMLHttpRequest" }
+                });
+
+            var context = MockRepository.GenerateMock<HttpContextBase>();
+            context.Expect(x => x.Request)
+                .Repeat.Any()
+                .Return(asyncRequestMock);
+
+            playerController.ControllerContext = new ControllerContext(context, new RouteData(), playerController);
         }
     }
 }

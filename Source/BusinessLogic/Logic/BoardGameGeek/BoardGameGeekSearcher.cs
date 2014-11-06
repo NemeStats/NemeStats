@@ -13,13 +13,15 @@ namespace BusinessLogic.Logic.BoardGameGeek
 {
     public class BoardGameGeekSearcher : IBoardGameGeekSearcher
     {
-        public const string URI_FORMAT_BOARD_GAME_GEEK_SEARCH_REQUEST = "http://www.boardgamegeek.com/xmlapi/search?search={0}&exact=1";
+        public const string URI_FORMAT_BOARD_GAME_GEEK_SEARCH_REQUEST = "http://www.boardgamegeek.com/xmlapi/search?search={0}";
+        public const string URI_FRAGMENT_EXACT_MATCH = "&exact=1";
 
-        public List<BoardGameGeekSearchResult> SearchForBoardGames(string searchText)
+        public List<BoardGameGeekSearchResult> SearchForBoardGames(string searchText, bool exactMatch)
         {
-            List<BoardGameGeekSearchResult> searchResults = new List<BoardGameGeekSearchResult>();
+            searchText = searchText.Trim();
+            var searchResults = new List<BoardGameGeekSearchResult>();
 
-            var httpRequest = BuildHttpRequest(searchText.Trim());
+            var httpRequest = BuildHttpRequest(searchText, exactMatch);
             using (var webResponse = (HttpWebResponse)httpRequest.GetResponse())
             {
                 ValidateHttpResponseStatusCode(webResponse);
@@ -27,12 +29,17 @@ namespace BusinessLogic.Logic.BoardGameGeek
                 BuildSearchResults(webResponse, searchResults);
             }
 
-            return searchResults;
+            return SortSearchResults(searchText, searchResults);
         }
 
-        private static HttpWebRequest BuildHttpRequest(string searchText)
+        private static HttpWebRequest BuildHttpRequest(string searchText, bool exactMatch)
         {
-            Uri boardGameGeekApiUri = new Uri(string.Format(URI_FORMAT_BOARD_GAME_GEEK_SEARCH_REQUEST, HttpUtility.UrlEncode(searchText)));
+            string uri = string.Format(URI_FORMAT_BOARD_GAME_GEEK_SEARCH_REQUEST, HttpUtility.UrlEncode(searchText));
+            if (exactMatch)
+            {
+                uri += URI_FRAGMENT_EXACT_MATCH;
+            }
+            Uri boardGameGeekApiUri = new Uri(uri);
             HttpWebRequest httpRequest = WebRequest.CreateHttp(boardGameGeekApiUri);
             httpRequest.Method = "GET";
             return httpRequest;
@@ -91,6 +98,20 @@ namespace BusinessLogic.Logic.BoardGameGeek
                 returnValue.Add(individualSearchResult);
                 break;
             }
+        }
+
+        internal static List<BoardGameGeekSearchResult> SortSearchResults(string searchText, List<BoardGameGeekSearchResult> searchResults)
+        {
+            var queryable = searchResults.AsQueryable();
+            var results = new List<BoardGameGeekSearchResult>();
+            //first add exact matches
+            results.AddRange(queryable.Where(result => result.BoardGameName == searchText));
+            //then add anything that starts with but isn't an exact match
+            results.AddRange(queryable.Where(result => result.BoardGameName.StartsWith(searchText) && result.BoardGameName != searchText));
+            //then add everything else
+            results.AddRange(queryable.Where(result => !result.BoardGameName.StartsWith(searchText) && result.BoardGameName != searchText));
+
+            return results;
         }
     }
 }

@@ -29,7 +29,7 @@ namespace BusinessLogic.Logic.GameDefinitions
 
                     foreach (GameDefinition game in games)
                     {
-                        List<BoardGameGeekSearchResult> bggResults = bggSearcher.SearchForBoardGames(game.Name.Trim());
+                        List<BoardGameGeekSearchResult> bggResults = bggSearcher.SearchForBoardGames(game.Name.Trim(), true);
 
                         if (bggResults.Count == 1)
                         {
