@@ -8,6 +8,7 @@ Views.Player.CreateOrUpdate = function () {
     this.$btnSubmit = null;
     this.$form = null;
     this.$playerNameInput = null;
+    this.$errorContainer = null;
     this.formAction = null;
     this.onPlayerSaved = null;
 };
@@ -18,7 +19,7 @@ Views.Player.CreateOrUpdate.prototype = {
         var owner = this;
         this.formAction = "/player/save";
         this.$container = $(".createOrUpdatePartial");
-
+        this.$errorContainer = this.$container.find(".field-validation-valid");
         this.$cbActiveGroup = this.$container.find(".activeGroup");
         this.$cbActiveGroup.hide();
 
@@ -54,7 +55,9 @@ Views.Player.CreateOrUpdate.prototype = {
                     owner.$playerNameInput.val('');
                 },
                 error: function (err) {
-                    alert("Error " + err.status + ":\r\n" + err.statusText);
+                    owner.$errorContainer.switchClass("field-validation-valid", "field-validation-error");
+                    owner.$errorContainer.html(err.statusText);
+                    console.log("Error " + err.status + ":\r\n" + err.statusText);
                 },
                 dataType: "json"
             });

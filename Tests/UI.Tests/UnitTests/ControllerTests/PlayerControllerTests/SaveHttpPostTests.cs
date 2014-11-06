@@ -1,6 +1,8 @@
 ﻿using System.Net;
 using System.Web;
 using System.Web.Routing;
+using BusinessLogic.DataAccess;
+using BusinessLogic.Exceptions;
 using BusinessLogic.Models;
 using NUnit.Framework;
 using Rhino.Mocks;
@@ -49,7 +51,24 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
 
             var result = playerController.Save(player, currentUser) as HttpStatusCodeResult;
 
+            Assert.IsNotNull(result);
             Assert.AreEqual((int)HttpStatusCode.NotModified, result.StatusCode);
+        }
+
+        [Test]
+        public void ItReturnsAConflictHttpStatusCodeWhenThePlayerExists()
+        {
+            var player = new Player();
+            player.Id = 3;
+            playerSaverMock.Expect(x => x.Save(player, currentUser))
+                .Repeat.Once()
+                .Throw(new PlayerAlreadyExistsException(player.Id));
+
+            var result = playerController.Save(player, currentUser) as HttpStatusCodeResult;
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual((int)HttpStatusCode.Conflict, result.StatusCode);
+
         }
     }
 }
