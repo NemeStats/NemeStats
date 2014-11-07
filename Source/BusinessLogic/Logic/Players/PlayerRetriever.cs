@@ -59,6 +59,19 @@ namespace BusinessLogic.Logic.Players
 
             List<Player> minions = GetMinions(returnPlayer.Id);
 
+            List<PlayerGameSummary> playerGameSummaries = (from playerGameResult in dataContext.GetQueryable<PlayerGameResult>()
+                                                           .Include(result => result.PlayedGame)
+                                                           .Include(results => results.PlayedGame.GameDefinition)
+                                                            where playerGameResult.PlayerId == playerId
+                                                           select new PlayerGameSummary
+                                                           {
+                                                               GameDefinitionId = playerGameResult.PlayedGame.GameDefinitionId,
+                                                               GameName = playerGameResult.PlayedGame.GameDefinition.Name
+                                                               //GamesPlayed = playerGameResult.P
+                                                           }
+
+                                                          ).ToList();
+
             PlayerDetails playerDetails = new PlayerDetails()
             {
                 Active = returnPlayer.Active,

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using BusinessLogic.Models.Players;
 using UI.Models.PlayedGame;
 
 namespace UI.Models.Players
@@ -21,6 +22,7 @@ namespace UI.Models.Players
         public float LossPercentageVersusPlayer { get; set; }
         public int NumberOfGamesLostVersusNemesis { get; set; }
         public bool UserCanEdit { get; set; }
-        public IList<MinionViewModel> Minions { get; set; }
+        public List<MinionViewModel> Minions { get; set; }
+        public List<PlayerGameSummary> PlayerGameSummaries { get; set; }
     }
 }

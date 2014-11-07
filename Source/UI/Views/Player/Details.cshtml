@@ -125,7 +125,7 @@
 <div class="row">
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h4>Statistics</h4>
+            <h4>Global Statistics</h4>
         </div>
         <div class="panel-body">
             <table>
@@ -154,6 +154,41 @@
     </div>
 </div>
 
+<div class="row">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4>Game Statistics</h4>
+        </div>
+        <div class="panel-body">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Game</th>
+                        <th>Games Played</th>
+                        <th>Average Points Per Player</th>
+                        <th>% Won</th>
+                    </tr>
+                </thead>
+                @foreach(BusinessLogic.Models.Players.PlayerGameSummary summary in @Model.PlayerGameSummaries)
+                { 
+                    <tbody>
+                        <tr>
+                            <td>
+                                @Html.ActionLink(summary.GameName, "Details", "GameDefinition", new { id = summary.GameDefinitionId }, new { })
+                            </td>
+                            <td>
+                                @summary.GamesPlayed
+                            </td>
+                            <td>
+                                @summary.PercentWon
+                            </td>
+                        </tr>
+                    </tbody>
+                }
+            </table>
+        </div>
+    </div>
+</div>
 
 <div class="row">
     @if (Model.PlayerGameResultDetails.Any())

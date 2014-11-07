@@ -13,8 +13,8 @@ namespace BusinessLogic.Logic.GameDefinitions
         internal const string EXCEPTION_MESSAGE_GAME_DEFINITION_NAME_CANNOT_BE_NULL_OR_WHITESPACE 
             = "gameDefinition.Name cannot be null or whitespace.";
 
-        private IDataContext dataContext;
-        private INemeStatsEventTracker eventTracker;
+        private readonly IDataContext dataContext;
+        private readonly INemeStatsEventTracker eventTracker;
 
         public GameDefinitionSaver(IDataContext dataContext, INemeStatsEventTracker eventTracker)
         {

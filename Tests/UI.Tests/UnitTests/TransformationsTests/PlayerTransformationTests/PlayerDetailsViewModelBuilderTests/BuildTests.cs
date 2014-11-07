@@ -309,5 +309,11 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
 
             Assert.False(viewModel.UserCanEdit);
         }
+
+        [Test]
+        public void ItCopiesThePlayerGameSummaries()
+        {
+            Assert.AreEqual(playerDetails.PlayerGameSummaries, playerDetailsViewModel.PlayerGameSummaries);
+        }
     }
 }

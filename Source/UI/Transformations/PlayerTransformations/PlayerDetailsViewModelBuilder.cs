@@ -15,8 +15,8 @@ namespace UI.Transformations.PlayerTransformations
         internal const string EXCEPTION_PLAYER_STATISTICS_CANNOT_BE_NULL = "PlayerDetails.PlayerStatistics cannot be null.";
         internal const string EXCEPTION_MINIONS_CANNOT_BE_NULL = "PlayerDetails.PlayerStatistics cannot be null.";
 
-        private IGameResultViewModelBuilder gameResultViewModelBuilder;
-        private IMinionViewModelBuilder minionViewModelBuilder;
+        private readonly IGameResultViewModelBuilder gameResultViewModelBuilder;
+        private readonly IMinionViewModelBuilder minionViewModelBuilder;
 
         public PlayerDetailsViewModelBuilder(IGameResultViewModelBuilder builder, IMinionViewModelBuilder minionViewModelBuilder)
         {
@@ -45,6 +45,8 @@ namespace UI.Transformations.PlayerTransformations
 
             playerDetailsViewModel.Minions = (from Player player in playerDetails.Minions
                                               select minionViewModelBuilder.Build(player)).ToList();
+
+            playerDetailsViewModel.PlayerGameSummaries = playerDetails.PlayerGameSummaries;
 
             return playerDetailsViewModel;
         }
