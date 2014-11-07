@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.DataAccess;
+using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.Logic.Nemeses;
 using BusinessLogic.Logic.Players;
 using BusinessLogic.Models;
@@ -13,12 +14,14 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
     {
         private IDataContext dataContext;
         private PlayerRetriever playerRetriever;
+        internal IPlayerRepository playerRepository;
 
         [SetUp]
         public void TestSetUp()
         {
             dataContext = new NemeStatsDataContext();
-            playerRetriever = new PlayerRetriever(dataContext);
+            playerRepository = new EntityFrameworkPlayerRepository(dataContext);
+            playerRetriever = new PlayerRetriever(dataContext, playerRepository);
         }
 
         [Test]

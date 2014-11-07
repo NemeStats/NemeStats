@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.DataAccess;
+using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.Logic.Players;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Players;
@@ -15,6 +16,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
     public class GetPlayerDetailsTests
     {
         private IDataContext dataContextMock;
+        private IPlayerRepository playerRepositoryMock;
         private PlayerRetriever playerRetrieverPartialMock;
         private Player player;
         private Player playerWithOnlyACurrentNemesis;
@@ -22,13 +24,15 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
         private int numberOfRecentGames = 1;
         private Nemesis expectedNemesis;
         private Nemesis expectedPriorNemesis;
-        private List<Player> minions;
-
+        private List<Player> expectedMinions;
+        private List<PlayerGameSummary> expectedPlayerGameSummaries;
+            
         [SetUp]
         public void SetUp()
         {
             dataContextMock = MockRepository.GenerateMock<IDataContext>();
-            playerRetrieverPartialMock = MockRepository.GeneratePartialMock<PlayerRetriever>(dataContextMock);
+            playerRepositoryMock = MockRepository.GenerateMock<IPlayerRepository>();
+            playerRetrieverPartialMock = MockRepository.GeneratePartialMock<PlayerRetriever>(dataContextMock, playerRepositoryMock);
 
             expectedNemesis = new Nemesis()
             {
@@ -91,9 +95,16 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
                             .Repeat.Once()
                             .Return(player.PlayerGameResults.ToList());
 
-            minions = new List<Player>();
+            this.expectedMinions = new List<Player>();
             playerRetrieverPartialMock.Expect(mock => mock.GetMinions(Arg<int>.Is.Anything))
-                .Return(minions);
+                .Return(this.expectedMinions);
+
+            expectedPlayerGameSummaries = new List<PlayerGameSummary>
+            {
+                new PlayerGameSummary()
+            };
+            playerRepositoryMock.Expect(mock => mock.GetPlayerGameSummaries(Arg<int>.Is.Anything))
+                                .Return(expectedPlayerGameSummaries);
         }
 
         //TODO need tests for the transformation... which should probably be refactored into a different class
@@ -148,7 +159,15 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
         {
             PlayerDetails playerDetails = playerRetrieverPartialMock.GetPlayerDetails(player.Id, numberOfRecentGames);
 
-            Assert.AreSame(minions, playerDetails.Minions);
+            Assert.AreSame(this.expectedMinions, playerDetails.Minions);
+        }
+
+        [Test]
+        public void ItSetsThePlayersGameSummaries()
+        {
+            PlayerDetails playerDetails = playerRetrieverPartialMock.GetPlayerDetails(player.Id, numberOfRecentGames);
+
+            Assert.AreSame(expectedPlayerGameSummaries, playerDetails.PlayerGameSummaries);
         }
     }
 }

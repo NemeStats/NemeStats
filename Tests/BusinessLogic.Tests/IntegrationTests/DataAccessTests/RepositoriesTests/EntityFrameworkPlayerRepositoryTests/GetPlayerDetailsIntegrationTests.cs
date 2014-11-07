@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.DataAccess;
+using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.Logic.Nemeses;
 using BusinessLogic.Logic.Players;
 using BusinessLogic.Models;
@@ -19,7 +20,8 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
                 using (IDataContext dataContext = new NemeStatsDataContext(dbContext, securedEntityValidatorFactory))
                 {
                     NemesisHistoryRetriever nemesisHistoryRetriever = new NemesisHistoryRetriever(dataContext);
-                    PlayerRetriever playerRetriever = new PlayerRetriever(dataContext);
+                    IPlayerRepository playerRepository = new EntityFrameworkPlayerRepository(dataContext);
+                    PlayerRetriever playerRetriever = new PlayerRetriever(dataContext, playerRepository);
 
                     dbContext.Configuration.LazyLoadingEnabled = false;
                     dbContext.Configuration.ProxyCreationEnabled = false;
@@ -40,7 +42,8 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
                     dbContext.Configuration.LazyLoadingEnabled = false;
                     dbContext.Configuration.ProxyCreationEnabled = false;
                     INemesisHistoryRetriever nemesisHistoryRetriever = new NemesisHistoryRetriever(dataContext);
-                    IPlayerRetriever playerRetriever = new PlayerRetriever(dataContext);
+                    IPlayerRepository playerRepository = new EntityFrameworkPlayerRepository(dataContext);
+                    IPlayerRetriever playerRetriever = new PlayerRetriever(dataContext, playerRepository);
                     PlayerDetails testPlayerDetails = playerRetriever.GetPlayerDetails(testPlayer1.Id, 1);
 
                     Assert.NotNull(testPlayerDetails.PlayerGameResults.First().PlayedGame);
@@ -58,7 +61,8 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
                     dbContext.Configuration.LazyLoadingEnabled = false;
                     dbContext.Configuration.ProxyCreationEnabled = false;
                     INemesisHistoryRetriever nemesisHistoryRetriever = new NemesisHistoryRetriever(dataContext);
-                    IPlayerRetriever playerRetriever = new PlayerRetriever(dataContext);
+                    IPlayerRepository playerRepository = new EntityFrameworkPlayerRepository(dataContext);
+                    IPlayerRetriever playerRetriever = new PlayerRetriever(dataContext, playerRepository);
                     PlayerDetails testPlayerDetails = playerRetriever.GetPlayerDetails(testPlayer1.Id, 1);
 
                     Assert.NotNull(testPlayerDetails.PlayerGameResults.First().PlayedGame.GameDefinition);
@@ -74,7 +78,8 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
                 using (IDataContext dataContext = new NemeStatsDataContext(dbContext, securedEntityValidatorFactory))
                 {
                     INemesisHistoryRetriever nemesisHistoryRetriever = new NemesisHistoryRetriever(dataContext);
-                    IPlayerRetriever playerRetriever = new PlayerRetriever(dataContext);
+                    IPlayerRepository playerRepository = new EntityFrameworkPlayerRepository(dataContext);
+                    IPlayerRetriever playerRetriever = new PlayerRetriever(dataContext,  playerRepository);
                     PlayerDetails playerDetails = playerRetriever.GetPlayerDetails(testPlayer1.Id, 1);
 
                     Assert.NotNull(playerDetails.PlayerStats);
@@ -92,7 +97,8 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
                     int numberOfGamesToRetrieve = 1;
 
                     INemesisHistoryRetriever nemesisHistoryRetriever = new NemesisHistoryRetriever(dataContext);
-                    IPlayerRetriever playerRetriever = new PlayerRetriever(dataContext);
+                    IPlayerRepository playerRepository = new EntityFrameworkPlayerRepository(dataContext);
+                    IPlayerRetriever playerRetriever = new PlayerRetriever(dataContext, playerRepository);
                     PlayerDetails playerDetails = playerRetriever.GetPlayerDetails(testPlayer1.Id, numberOfGamesToRetrieve);
 
                     Assert.AreEqual(numberOfGamesToRetrieve, playerDetails.PlayerGameResults.Count);
@@ -110,7 +116,8 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
                     int numberOfGamesToRetrieve = 3;
 
                     INemesisHistoryRetriever nemesisHistoryRetriever = new NemesisHistoryRetriever(dataContext);
-                    IPlayerRetriever playerRetriever = new PlayerRetriever(dataContext);
+                    IPlayerRepository playerRepository = new EntityFrameworkPlayerRepository(dataContext);
+                    IPlayerRetriever playerRetriever = new PlayerRetriever(dataContext, playerRepository);
                     PlayerDetails playerDetails = playerRetriever.GetPlayerDetails(testPlayer1.Id, numberOfGamesToRetrieve);
 
                     long lastTicks = long.MaxValue; ;

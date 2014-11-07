@@ -165,8 +165,7 @@
                     <tr>
                         <th>Game</th>
                         <th>Games Played</th>
-                        <th>Average Points Per Player</th>
-                        <th>% Won</th>
+                        <th>Games Won</th>
                     </tr>
                 </thead>
                 @foreach(BusinessLogic.Models.Players.PlayerGameSummary summary in @Model.PlayerGameSummaries)
@@ -174,13 +173,13 @@
                     <tbody>
                         <tr>
                             <td>
-                                @Html.ActionLink(summary.GameName, "Details", "GameDefinition", new { id = summary.GameDefinitionId }, new { })
+                                @Html.ActionLink(summary.GameDefinitionName, "Details", "GameDefinition", new { id = summary.GameDefinitionId }, new { })
                             </td>
                             <td>
                                 @summary.GamesPlayed
                             </td>
                             <td>
-                                @summary.PercentWon
+                                @summary.GamesWon
                             </td>
                         </tr>
                     </tbody>

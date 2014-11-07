@@ -7,9 +7,9 @@ namespace BusinessLogic.Models.Players
 {
     public class PlayerGameSummary
     {
-        public string GameName { get; set; }
+        public string GameDefinitionName { get; set; }
         public int GameDefinitionId { get; set; }
         public int GamesPlayed { get; set; }
-        public int PercentWon { get; set; }
+        public int GamesWon { get; set; }
     }
 }

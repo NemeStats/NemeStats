@@ -1,4 +1,5 @@
-﻿using BusinessLogic.Models.Nemeses;
+﻿using BusinessLogic.Models;
+using BusinessLogic.Models.Nemeses;
 using BusinessLogic.Models.Players;
 using System.Collections.Generic;
 using System.Data.Entity.Infrastructure;
@@ -11,7 +12,14 @@ namespace BusinessLogic.DataAccess.Repositories
     {
         public int MINIMUM_NUMBER_OF_GAMES_TO_BE_A_NEMESIS = 3;
 
-        private static readonly string SQL_GET_WIN_LOSS_GAMES_COUNT =
+        private readonly IDataContext dataContext;
+
+        public EntityFrameworkPlayerRepository(IDataContext dataContext)
+        {
+            this.dataContext = dataContext;
+        }
+
+        private const string SQL_GET_WIN_LOSS_GAMES_COUNT =
             @"SELECT SUM(NumberOfGamesLost) AS NumberOfGamesLost, SUM(NumberOfGamesWon) AS NumberOfGamesWon, PlayerId as VersusPlayerId
             FROM
             (
@@ -57,13 +65,6 @@ namespace BusinessLogic.DataAccess.Repositories
             ) AS X
             GROUP BY PlayerId";
 
-        private IDataContext dataContext;
-
-        public EntityFrameworkPlayerRepository(IDataContext dataContext)
-        {
-            this.dataContext = dataContext;
-        }
-
         public NemesisData GetNemesisData(int playerId)
         {
             DbRawSqlQuery<WinLossStatistics> data = dataContext.MakeRawSqlQuery<WinLossStatistics>(SQL_GET_WIN_LOSS_GAMES_COUNT,
@@ -87,6 +88,26 @@ namespace BusinessLogic.DataAccess.Repositories
             }
 
             return nemesisData;
+        }
+
+        private const string SQL_GET_PLAYER_GAME_SUMMARY_INFO = 
+          @"SELECT GD.[Id] AS GameDefinitionId
+          ,GD.[Name] AS GameDefinitionName
+	      ,SUM(CASE WHEN PGR.GameRank = 1 THEN 1 ELSE 0 END) AS GamesWon
+	      ,COUNT(*) AS GamesPlayed
+          FROM [dbo].[GameDefinition] GD 
+          INNER JOIN PlayedGame PG ON GD.ID = PG.GameDefinitionID
+          INNER JOIN PlayerGameResult PGR ON PG.ID = PGR.PlayedGameId
+          WHERE PGR.PlayerId = @PlayerId
+          GROUP BY GD.[Id], GD.[Name]
+          ORDER BY GamesPlayed DESC, GameDefinitionName";
+
+        public List<PlayerGameSummary> GetPlayerGameSummaries(int playerId)
+        {
+            DbRawSqlQuery<PlayerGameSummary> data = dataContext.MakeRawSqlQuery<PlayerGameSummary>(SQL_GET_PLAYER_GAME_SUMMARY_INFO,
+                new SqlParameter("PlayerId", playerId));
+
+            return data.ToList<PlayerGameSummary>();
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using BusinessLogic.Logic.Nemeses;
+﻿using BusinessLogic.DataAccess.Repositories;
+using BusinessLogic.Logic.Nemeses;
 using NUnit.Framework;
 using System.Linq;
 using BusinessLogic.DataAccess;
@@ -22,7 +23,8 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
             base.FixtureSetUp();
 
             dataContext = new NemeStatsDataContext();
-            playerRetriever = new PlayerRetriever(dataContext);
+            IPlayerRepository playerRepository = new EntityFrameworkPlayerRepository(dataContext);
+            playerRetriever = new PlayerRetriever(dataContext, playerRepository);
             player1Details = playerRetriever.GetPlayerDetails(testPlayer1.Id, 0);
             player5Details = playerRetriever.GetPlayerDetails(testPlayer5.Id, 0);
         }

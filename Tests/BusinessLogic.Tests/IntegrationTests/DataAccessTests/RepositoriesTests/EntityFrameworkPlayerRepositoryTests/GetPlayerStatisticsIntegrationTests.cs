@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.DataAccess;
+using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.Logic.Nemeses;
 using BusinessLogic.Logic.Players;
 using BusinessLogic.Models;
@@ -17,7 +18,8 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
             using (IDataContext dataContext = new NemeStatsDataContext())
             {
                 INemesisHistoryRetriever nemesisHistoryRetriever = new NemesisHistoryRetriever(dataContext);
-                IPlayerRetriever playerRetriever = new PlayerRetriever(dataContext);
+                IPlayerRepository playerRepository = new EntityFrameworkPlayerRepository(dataContext);
+                IPlayerRetriever playerRetriever = new PlayerRetriever(dataContext, playerRepository);
                 PlayerStatistics playerStatistics = playerRetriever.GetPlayerStatistics(testPlayer1.Id);
                 int totalGamesForPlayer1 = testPlayedGames
                         .Count(playedGame => playedGame.PlayerGameResults
@@ -32,7 +34,8 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
             using (IDataContext dataContext = new NemeStatsDataContext())
             {
                 INemesisHistoryRetriever nemesisHistoryRetriever = new NemesisHistoryRetriever(dataContext);
-                IPlayerRetriever playerRetriever = new PlayerRetriever(dataContext); 
+                IPlayerRepository playerRepository = new EntityFrameworkPlayerRepository(dataContext);
+                IPlayerRetriever playerRetriever = new PlayerRetriever(dataContext, playerRepository); 
                 PlayerStatistics playerStatistics = playerRetriever.GetPlayerStatistics(testPlayer1.Id);
 
                 int totalPoints = 0;
@@ -41,7 +44,7 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
                 {
                     if(playedGame.PlayerGameResults.Any(result => result.PlayerId == testPlayer1.Id))
                     {
-                        totalPoints += playedGame.PlayerGameResults.Where(result => result.PlayerId == testPlayer1.Id).First().GordonPoints;
+                        totalPoints += playedGame.PlayerGameResults.First(result => result.PlayerId == testPlayer1.Id).GordonPoints;
                     }
                 }
 
@@ -55,7 +58,8 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
             using (IDataContext dataContext = new NemeStatsDataContext())
             {
                 INemesisHistoryRetriever nemesisHistoryRetriever = new NemesisHistoryRetriever(dataContext);
-                IPlayerRetriever playerRetriever = new PlayerRetriever(dataContext); 
+                IPlayerRepository playerRepository = new EntityFrameworkPlayerRepository(dataContext);
+                IPlayerRetriever playerRetriever = new PlayerRetriever(dataContext, playerRepository);
                 PlayerStatistics playerStatistics = playerRetriever.GetPlayerStatistics(testPlayer1.Id);
 
                 float averagePlayersPerGame = (float)testPlayedGames.Where(game => game.PlayerGameResults.Any(result => result.PlayerId == testPlayer1.Id))

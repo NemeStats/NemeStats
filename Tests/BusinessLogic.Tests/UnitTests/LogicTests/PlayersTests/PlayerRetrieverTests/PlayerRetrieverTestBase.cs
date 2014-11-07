@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.DataAccess;
+using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.Logic.Players;
 using BusinessLogic.Models;
 using NUnit.Framework;
@@ -14,12 +15,14 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
         internal IDataContext dataContextMock;
         internal IQueryable<Player> playerQueryable;
         internal int gamingGroupId = 558585;
+        internal IPlayerRepository playerRepositoryMock;
 
         [SetUp]
         public void SetUp()
         {
             dataContextMock = MockRepository.GenerateMock<IDataContext>();
-            playerRetriever = new PlayerRetriever(dataContextMock);
+            playerRepositoryMock = MockRepository.GenerateMock<IPlayerRepository>();
+            playerRetriever = new PlayerRetriever(dataContextMock, playerRepositoryMock);
 
             List<Player> players = new List<Player>()
             {

@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.DataAccess;
+using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Players;
 using System.Collections.Generic;
@@ -10,11 +11,13 @@ namespace BusinessLogic.Logic.Players
     public class PlayerRetriever : BusinessLogic.Logic.Players.IPlayerRetriever
     {
         private readonly IDataContext dataContext;
+        private readonly IPlayerRepository playerRepository;
         public const string EXCEPTION_MESSAGE_PLAYER_COULD_NOT_BE_FOUND = "Could not find player with Id: {0}";
 
-        public PlayerRetriever(DataAccess.IDataContext dataContext)
+        public PlayerRetriever(DataAccess.IDataContext dataContext, IPlayerRepository playerRepository)
         {
             this.dataContext = dataContext;
+            this.playerRepository = playerRepository;
         }
 
         internal IQueryable<Player> GetAllPlayersInGamingGroupQueryable(int gamingGroupId)
@@ -59,18 +62,7 @@ namespace BusinessLogic.Logic.Players
 
             List<Player> minions = GetMinions(returnPlayer.Id);
 
-            List<PlayerGameSummary> playerGameSummaries = (from playerGameResult in dataContext.GetQueryable<PlayerGameResult>()
-                                                           .Include(result => result.PlayedGame)
-                                                           .Include(results => results.PlayedGame.GameDefinition)
-                                                            where playerGameResult.PlayerId == playerId
-                                                           select new PlayerGameSummary
-                                                           {
-                                                               GameDefinitionId = playerGameResult.PlayedGame.GameDefinitionId,
-                                                               GameName = playerGameResult.PlayedGame.GameDefinition.Name
-                                                               //GamesPlayed = playerGameResult.P
-                                                           }
-
-                                                          ).ToList();
+            List<PlayerGameSummary> playerGameSummaries = playerRepository.GetPlayerGameSummaries(playerId);
 
             PlayerDetails playerDetails = new PlayerDetails()
             {
@@ -82,7 +74,8 @@ namespace BusinessLogic.Logic.Players
                 PlayerStats = playerStatistics,
                 CurrentNemesis = returnPlayer.Nemesis ?? new NullNemesis(),
                 PreviousNemesis = returnPlayer.PreviousNemesis ?? new NullNemesis(),
-                Minions = minions
+                Minions = minions,
+                PlayerGameSummaries = playerGameSummaries
             };
 
             return playerDetails;
