@@ -15,6 +15,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using BusinessLogic.Logic.BoardGameGeek;
 using Microsoft.Owin.Security;
 
 namespace UI.DependencyResolution {
@@ -109,6 +110,8 @@ namespace UI.DependencyResolution {
             For<IUserRegisterer>().Use<UserRegisterer>();
 
             For<IFirstTimeAuthenticator>().Use<FirstTimeAuthenticator>();
+
+            For<IBoardGameGeekSearcher>().Use<BoardGameGeekSearcher>();
 
             //singleton scope
 
