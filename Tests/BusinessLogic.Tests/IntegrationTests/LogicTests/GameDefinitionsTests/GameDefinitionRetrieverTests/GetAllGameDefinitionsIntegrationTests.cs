@@ -1,6 +1,7 @@
 ﻿using BusinessLogic.DataAccess;
 using BusinessLogic.Logic.GameDefinitions;
 using BusinessLogic.Models;
+using BusinessLogic.Models.Games;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.GameDefinitionsTests.G
     public class GetAllGameDefinitionsIntegrationTests : IntegrationTestBase
     {
         protected GameDefinitionRetriever retriever;
-        protected IList<GameDefinition> actualGameDefinitions;
+        protected IList<GameDefinitionSummary> actualGameDefinitionSummaries;
 
         [SetUp]
         public void SetUp()
@@ -19,7 +20,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.GameDefinitionsTests.G
             using(NemeStatsDataContext dataContext = new NemeStatsDataContext())
             {
                 retriever = new GameDefinitionRetriever(dataContext);
-                actualGameDefinitions = retriever.GetAllGameDefinitions(testUserWithDefaultGamingGroup.CurrentGamingGroupId.Value);
+                this.actualGameDefinitionSummaries = retriever.GetAllGameDefinitions(testUserWithDefaultGamingGroup.CurrentGamingGroupId.Value);
             }
             
         }
@@ -27,7 +28,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.GameDefinitionsTests.G
         [Test]
         public void ItOnlyGetsGameDefinitionsForTheCurrentPlayersGamingGroup()
         {
-            Assert.True(actualGameDefinitions.All(game => game.GamingGroupId == testUserWithDefaultGamingGroup.CurrentGamingGroupId));
+            Assert.True(this.actualGameDefinitionSummaries.All(game => game.GamingGroupId == testUserWithDefaultGamingGroup.CurrentGamingGroupId));
         }
 
         [Test]
@@ -35,7 +36,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.GameDefinitionsTests.G
         {
             string previousName = null;
 
-            foreach (GameDefinition gameDefinition in actualGameDefinitions)
+            foreach (GameDefinition gameDefinition in this.actualGameDefinitionSummaries)
             {
                 if (previousName != null)
                 {

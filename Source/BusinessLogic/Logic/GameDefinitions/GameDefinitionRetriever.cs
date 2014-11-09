@@ -1,7 +1,9 @@
-﻿using BusinessLogic.DataAccess;
+﻿using System.Data.Entity;
+using BusinessLogic.DataAccess;
 using BusinessLogic.Models;
 using System.Collections.Generic;
 using System.Linq;
+using BusinessLogic.Models.Games;
 
 namespace BusinessLogic.Logic.GameDefinitions
 {
@@ -14,11 +16,21 @@ namespace BusinessLogic.Logic.GameDefinitions
             this.dataContext = dataContext;
         }
 
-        public virtual IList<GameDefinition> GetAllGameDefinitions(int gamingGroupId)
+        public virtual IList<GameDefinitionSummary> GetAllGameDefinitions(int gamingGroupId)
         {
-            return dataContext.GetQueryable<GameDefinition>()
-                .Where(game => game.GamingGroupId == gamingGroupId
-                        && game.Active)
+            return (from gameDefinition in dataContext.GetQueryable<GameDefinition>().Include(game => game.PlayedGames)
+                where gameDefinition.GamingGroupId == gamingGroupId
+                        && gameDefinition.Active
+                select new GameDefinitionSummary
+                {
+                    Active = gameDefinition.Active,
+                    BoardGameGeekObjectId = gameDefinition.BoardGameGeekObjectId,
+                    Name = gameDefinition.Name,
+                    Description = gameDefinition.Description,
+                    GamingGroupId = gameDefinition.GamingGroupId,
+                    Id = gameDefinition.Id,
+                    TotalNumberOfGamesPlayed = gameDefinition.PlayedGames.Count
+                })
                 .OrderBy(game => game.Name)
                 .ToList();
         }

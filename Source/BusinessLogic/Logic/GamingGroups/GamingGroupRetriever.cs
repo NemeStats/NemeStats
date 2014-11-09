@@ -3,6 +3,7 @@ using BusinessLogic.Logic.GameDefinitions;
 using BusinessLogic.Logic.PlayedGames;
 using BusinessLogic.Logic.Players;
 using BusinessLogic.Models;
+using BusinessLogic.Models.GamingGroups;
 using BusinessLogic.Models.User;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,43 +29,47 @@ namespace BusinessLogic.Logic.GamingGroups
             this.playedGameRetriever = playedGameRetriever;
         }
 
-        public GamingGroup GetGamingGroupDetails(int gamingGroupId, int maxNumberOfGamesToRetrieve)
+        public GamingGroupSummary GetGamingGroupDetails(int gamingGroupId, int maxNumberOfGamesToRetrieve)
         {
             GamingGroup gamingGroup = dataContext.FindById<GamingGroup>(gamingGroupId);
+            GamingGroupSummary summary = new GamingGroupSummary
+            {
+                Id = gamingGroup.Id,
+                DateCreated = gamingGroup.DateCreated,
+                Name = gamingGroup.Name,
+                OwningUserId = gamingGroup.OwningUserId
+            };
 
-            gamingGroup.PlayedGames = playedGameRetriever.GetRecentGames(maxNumberOfGamesToRetrieve, gamingGroupId);
+            summary.PlayedGames = playedGameRetriever.GetRecentGames(maxNumberOfGamesToRetrieve, gamingGroupId);
 
-            gamingGroup.Players = playerRetriever.GetAllPlayersWithNemesisInfo(gamingGroupId);
+            summary.Players = playerRetriever.GetAllPlayersWithNemesisInfo(gamingGroupId);
 
-            gamingGroup.GameDefinitions = gameDefinitionRetriever.GetAllGameDefinitions(gamingGroupId);
+            summary.GameDefinitionSummaries = gameDefinitionRetriever.GetAllGameDefinitions(gamingGroupId);
 
-            gamingGroup.OwningUser = dataContext.GetQueryable<ApplicationUser>()
-                .Where(user => user.Id == gamingGroup.OwningUserId)
-                .First();
+            summary.OwningUser = dataContext.GetQueryable<ApplicationUser>().First(user => user.Id == gamingGroup.OwningUserId);
 
-            gamingGroup.GamingGroupInvitations = dataContext.GetQueryable<GamingGroupInvitation>()
+            summary.GamingGroupInvitations = dataContext.GetQueryable<GamingGroupInvitation>()
                 .Where(invitation => invitation.GamingGroupId == gamingGroup.Id)
                 .ToList();
 
-            AddRegisteredUserInfo(gamingGroup);
+            AddRegisteredUserInfo(summary);
 
-            return gamingGroup;
+            return summary;
         }
 
-        private void AddRegisteredUserInfo(GamingGroup gamingGroup)
+        private void AddRegisteredUserInfo(GamingGroupSummary gamingGroupSummary)
         {
-            List<string> registeredUserIds = (from gamingGroupInvitation in gamingGroup.GamingGroupInvitations
+            List<string> registeredUserIds = (from gamingGroupInvitation in gamingGroupSummary.GamingGroupInvitations
                                               select gamingGroupInvitation.RegisteredUserId).ToList();
 
             List<ApplicationUser> registeredUsers = dataContext.GetQueryable<ApplicationUser>()
                 .Where(user => registeredUserIds.Contains(user.Id))
                 .ToList();
 
-            foreach (GamingGroupInvitation gamingGroupInvitation in gamingGroup.GamingGroupInvitations)
+            foreach (GamingGroupInvitation gamingGroupInvitation in gamingGroupSummary.GamingGroupInvitations)
             {
-                gamingGroupInvitation.RegisteredUser = registeredUsers
-                    .Where(user => user.Id == gamingGroupInvitation.RegisteredUserId)
-                    .FirstOrDefault();
+                gamingGroupInvitation.RegisteredUser = registeredUsers.FirstOrDefault(
+                    user => user.Id == gamingGroupInvitation.RegisteredUserId);
             }
         }
     }

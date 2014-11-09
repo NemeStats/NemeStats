@@ -28,9 +28,9 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
             };
             List<GameDefinition> gameDefinitions = new List<GameDefinition>()
             {
-                new GameDefinition() { Id = 1, Active = true, GamingGroupId = gamingGroupId },  
-                new GameDefinition() { Id = 2, Active = false, GamingGroupId = gamingGroupId },
-                new GameDefinition() { Id = 3, Active = true, GamingGroupId = -1 },  
+                new GameDefinition() { Id = 1, Active = true, GamingGroupId = gamingGroupId, PlayedGames = new List<PlayedGame>()},  
+                new GameDefinition() { Id = 2, Active = false, GamingGroupId = gamingGroupId, PlayedGames = new List<PlayedGame>() },
+                new GameDefinition() { Id = 3, Active = true, GamingGroupId = -1, PlayedGames = new List<PlayedGame>() }
 
             };
             gameDefinitionQueryable = gameDefinitions.AsQueryable<GameDefinition>();

@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.Models;
+using BusinessLogic.Models.GamingGroups;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
     [TestFixture]
     public class IndexTests : GamingGroupControllerTestBase
     {
-        private GamingGroup gamingGroup;
+        private GamingGroupSummary gamingGroupSummary;
         private GamingGroupViewModel gamingGroupViewModel;
 
         [Test]
@@ -20,7 +21,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
         {
             base.SetUp();
 
-            gamingGroup = new GamingGroup()
+            gamingGroupSummary = new GamingGroupSummary()
             {
                 PlayedGames = new List<PlayedGame>()
             };
@@ -30,9 +31,9 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
                 currentUser.CurrentGamingGroupId.Value,
                 GamingGroupController.MAX_NUMBER_OF_RECENT_GAMES))
                 .Repeat.Once()
-                .Return(gamingGroup);
+                .Return(gamingGroupSummary);
 
-            gamingGroupViewModelBuilderMock.Expect(mock => mock.Build(gamingGroup, currentUser))
+            gamingGroupViewModelBuilderMock.Expect(mock => mock.Build(gamingGroupSummary, currentUser))
                 .Return(gamingGroupViewModel);
         }
 
@@ -58,7 +59,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
             string expectedMessage = "expected message";
             showingXResultsMessageBuilderMock.Expect(mock => mock.BuildMessage(
                  GamingGroupController.MAX_NUMBER_OF_RECENT_GAMES,
-                 gamingGroup.PlayedGames.Count))
+                 gamingGroupSummary.PlayedGames.Count))
                      .Return(expectedMessage);
 
             ViewResult viewResult = gamingGroupController.Index(currentUser) as ViewResult;

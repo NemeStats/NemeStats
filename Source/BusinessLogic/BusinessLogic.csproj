@@ -274,9 +274,11 @@
       <DependentUpon>201411050405195_LinkExistingGameDefinitionsToBoardGameGeek.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\Games\BoardGameGeekSearchResult.cs" />
+    <Compile Include="Models\Games\GameDefinitionSummary.cs" />
     <Compile Include="Models\Games\PublicGameSummary.cs" />
     <Compile Include="Models\GamingGroup.cs" />
     <Compile Include="Models\GamingGroupInvitation.cs" />
+    <Compile Include="Models\GamingGroups\GamingGroupSummary.cs" />
     <Compile Include="Models\Nemeses\NemesisData.cs" />
     <Compile Include="Models\Nemeses\NemesisHistoryData.cs" />
     <Compile Include="Models\Nemeses\NullNemesisData.cs" />
