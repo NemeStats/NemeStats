@@ -11,12 +11,12 @@
 
 <a name="@ViewBag.PlayerSectionAnchorText"></a>
 <div class="row">
-    @Html.Partial("~/Views/Player/_Players.cshtml", Model.Players)
+    @Html.Partial("~/Views/Player/_Players.cshtml", Model.Players, new ViewDataDictionary { { "canEdit", true } })
 </div>
 
 <a name="@ViewBag.GameDefinitionSectionAnchorText"></a>
 <div class="row">
-    @Html.Partial("~/Views/GameDefinition/_GameDefinitionsPartial.cshtml", Model.GameDefinitionSummaries)
+    @Html.Partial("~/Views/GameDefinition/_GameDefinitionsPartial.cshtml", Model.GameDefinitionSummaries, new ViewDataDictionary { { "canEdit", true } })
 </div>
 
 
@@ -32,7 +32,7 @@
             </div>
             <div class="fl-clear"></div>
         </div>
-        @Html.Partial("~/Views/PlayedGame/_PlayedGamesPartial.cshtml", Model.RecentGames)
+        @Html.Partial("~/Views/PlayedGame/_PlayedGamesPartial.cshtml", Model.RecentGames, new ViewDataDictionary { { "canEdit", true } })
     </div>
 </div>
 
