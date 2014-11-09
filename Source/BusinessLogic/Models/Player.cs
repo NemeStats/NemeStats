@@ -1,4 +1,5 @@
-﻿using BusinessLogic.DataAccess;
+﻿using System;
+using BusinessLogic.DataAccess;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -11,6 +12,7 @@ namespace BusinessLogic.Models
         public Player()
         {
             Active = true;
+            DateCreated = DateTime.UtcNow;
         }
 
         public override int Id { get; set; }
@@ -24,6 +26,7 @@ namespace BusinessLogic.Models
         public bool Active { get; set; }
         public int? NemesisId { get; set; }
         public int? PreviousNemesisId { get; set; }
+        public DateTime DateCreated { get; set; }
 
         public virtual GamingGroup GamingGroup { get; set; }
         public virtual Nemesis Nemesis { get; set; }

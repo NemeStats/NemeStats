@@ -2,6 +2,7 @@
 using BusinessLogic.DataAccess.GamingGroups;
 using BusinessLogic.Logic.GamingGroups;
 using BusinessLogic.Models;
+using BusinessLogic.Models.GamingGroups;
 using BusinessLogic.Models.User;
 using System.Linq;
 using System.Net;
@@ -45,11 +46,11 @@ namespace UI.Controllers
         [UserContextAttribute]
         public virtual ActionResult Index(ApplicationUser currentUser)
         {
-            GamingGroup gamingGroup = gamingGroupRetriever.GetGamingGroupDetails(
+            GamingGroupSummary gamingGroupSummary = gamingGroupRetriever.GetGamingGroupDetails(
                 currentUser.CurrentGamingGroupId.Value,
                 MAX_NUMBER_OF_RECENT_GAMES);
 
-            GamingGroupViewModel viewModel = gamingGroupViewModelBuilder.Build(gamingGroup, currentUser);
+            GamingGroupViewModel viewModel = gamingGroupViewModelBuilder.Build(gamingGroupSummary, currentUser);
 
             ViewBag.RecentGamesSectionAnchorText = SECTION_ANCHOR_RECENT_GAMES;
             ViewBag.PlayerSectionAnchorText = SECTION_ANCHOR_PLAYERS;
@@ -57,7 +58,7 @@ namespace UI.Controllers
 
             ViewBag.RecentGamesMessage = showingXResultsMessageBuilder.BuildMessage(
                 MAX_NUMBER_OF_RECENT_GAMES,
-                gamingGroup.PlayedGames.Count);
+                gamingGroupSummary.PlayedGames.Count);
 
             return View(MVC.GamingGroup.Views.Index, viewModel);
         }

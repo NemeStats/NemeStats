@@ -480,6 +480,7 @@
     <Content Include="Views\Account\_ChangeEmailPartial.cshtml" />
     <Content Include="Views\GameDefinition\_CreatePartial.cshtml" />
     <Content Include="Views\GameDefinition\_GameDefinitionsPartial.cshtml" />
+    <Content Include="Views\PlayedGame\_PlayedGamesPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Code\" />

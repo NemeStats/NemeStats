@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.Models;
+using BusinessLogic.Models.Games;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System.Collections.Generic;
@@ -16,7 +17,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
                 .Repeat.Once()
                 .Return(gameDefinitionQueryable);
 
-            IList<GameDefinition> gameDefinitions = retriever.GetAllGameDefinitions(currentUser.CurrentGamingGroupId.Value);
+            IList<GameDefinitionSummary> gameDefinitions = retriever.GetAllGameDefinitions(currentUser.CurrentGamingGroupId.Value);
 
             Assert.True(gameDefinitions.All(gameDefinition => gameDefinition.Active));
         }
@@ -28,7 +29,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
                 .Repeat.Once()
                 .Return(gameDefinitionQueryable);
 
-            IList<GameDefinition> gameDefinitions = retriever.GetAllGameDefinitions(currentUser.CurrentGamingGroupId.Value);
+            IList<GameDefinitionSummary> gameDefinitions = retriever.GetAllGameDefinitions(currentUser.CurrentGamingGroupId.Value);
 
             Assert.True(gameDefinitions.All(gameDefinition => gameDefinition.GamingGroupId == currentUser.CurrentGamingGroupId));
         }

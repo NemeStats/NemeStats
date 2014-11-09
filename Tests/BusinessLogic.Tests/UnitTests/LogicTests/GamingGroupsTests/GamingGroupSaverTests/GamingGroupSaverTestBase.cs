@@ -10,7 +10,7 @@ using NUnit.Framework;
 using Rhino.Mocks;
 using System.Linq;
 
-namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GamingGroupsTests.GamingGroupSaverTests
+namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroupSaverTests
 {
     public class GamingGroupSaverTestBase
     {

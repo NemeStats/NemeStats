@@ -1,4 +1,4 @@
-﻿@model IList<BusinessLogic.Models.GameDefinition>
+﻿@model IList<BusinessLogic.Models.Games.GameDefinitionSummary>
 
 <div class="panel panel-default">
     <div class="panel-heading">
@@ -15,11 +15,14 @@
             <table class="table table-hover table-condensed">
                 <thead>
                     <tr>
-                        <th class="col-md-5">
+                        <th class="col-md-4">
                             Name
                         </th>
-                        <th class="col-md-6">
+                        <th class="col-md-4">
                             Description
+                        </th>
+                        <th class="col-md-3">
+                            Games Played
                         </th>
                         <th class="col-md-1"></th>
                     </tr>
@@ -34,6 +37,7 @@
                             <td>
                                 @Html.DisplayFor(modelItem => item.Description)
                             </td>
+                            <td>@Html.DisplayFor(modelItem => item.TotalNumberOfGamesPlayed)</td>
                             <td>
                                 <a href="@Url.Action("Edit", "GameDefinition", new { id = item.Id })" title="Edit">
                                     <span class="fa fa-pencil fa-3x"></span>
