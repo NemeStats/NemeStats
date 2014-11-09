@@ -87,15 +87,12 @@ namespace UI.Controllers
                 RecentGames = gamingGroupSummary.PlayedGames
                     .Select(playedGame => playedGameDetailsViewModelBuilder.Build(playedGame, currentUser)).ToList()
             };
-            ViewBag.RecentGamesSectionAnchorText = SECTION_ANCHOR_RECENT_GAMES;
-            ViewBag.PlayerSectionAnchorText = SECTION_ANCHOR_PLAYERS;
-            ViewBag.GameDefinitionSectionAnchorText = SECTION_ANCHOR_GAMEDEFINITIONS;
 
             ViewBag.RecentGamesMessage = showingXResultsMessageBuilder.BuildMessage(
                 MAX_NUMBER_OF_RECENT_GAMES,
                 gamingGroupSummary.PlayedGames.Count);
 
-            return View(MVC.GamingGroup.Views.Index, viewModel);
+            return View(MVC.GamingGroup.Views.Details, viewModel);
         }
 
         //
