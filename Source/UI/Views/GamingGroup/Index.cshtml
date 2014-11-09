@@ -5,7 +5,8 @@
     Layout = MVC.Shared.Views._BaseLayout;
 }
 
-<h2>@Model.Name</h2>
+<h2><span class="editable-title" id="gamingGroupTitle" title="Click to rename the gaming group">@Model.Name</span></h2>
+
 <hr />
 
 <a name="@ViewBag.PlayerSectionAnchorText"></a>
@@ -149,6 +150,9 @@
             var gameDefinitions = new window.Views.GameDefinition.GameDefinitions();
             gameDefinitions.init();
             gameDefinition.onDefinitionCreated = $.proxy(gameDefinitions.onGameCreated, gameDefinitions);
+
+            var gamingGroupView = new Views.GamingGroup.GamingGroupView();
+            gamingGroupView.init();
         });
     </script>
 }

@@ -1,4 +1,5 @@
-﻿using BusinessLogic.DataAccess.GamingGroups;
+﻿using System;
+using BusinessLogic.DataAccess.GamingGroups;
 using BusinessLogic.Logic.GamingGroups;
 using BusinessLogic.Models;
 using BusinessLogic.Models.GamingGroups;
@@ -114,9 +115,15 @@ namespace UI.Controllers
         [UserContextAttribute]
         public virtual ActionResult Edit(string gamingGroupName, ApplicationUser currentUser)
         {
-            gamingGroupSaver.UpdateGamingGroupName(gamingGroupName, currentUser);
-
-            return new HttpStatusCodeResult(HttpStatusCode.OK);
+            try
+            {
+                gamingGroupSaver.UpdateGamingGroupName(gamingGroupName, currentUser);
+                return Json(new HttpStatusCodeResult(HttpStatusCode.OK));
+            }
+            catch(Exception)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.NotModified);
+            }
         }
 
         protected override void Dispose(bool disposing)
