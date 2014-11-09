@@ -1,0 +1,61 @@
+﻿@model IList<UI.Models.PlayedGame.PlayedGameDetailsViewModel>
+@using UI.HtmlHelpers
+<div class="panel-body">
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th class="col-md-4">
+                        Game Name
+                    </th>
+                    <th class="col-md-2">
+                        Date Played
+                    </th>
+                    <th class="col-md-5">
+                        Result
+                    </th>
+                    <th class="col-md-1">
+
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.ActionLink(item.GameDefinitionName, "Details", "GameDefinition", new { id = item.GameDefinitionId }, new { })
+                        </td>
+                        <td>
+                            @item.DatePlayed.ToShortDateString()
+                        </td>
+                        <td>
+                            @foreach (var result in item.PlayerResults)
+                            {
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        @Html.ActionLink(result.PlayerName, "Details", "Player", new { id = result.PlayerId }, new { })
+                                    </div>
+                                    <div class="col-sm-6">
+                                        @Html.GameResults(result)
+                                    </div>
+                                </div>
+                            }
+                        </td>
+                        <td>
+                            <a href="@Url.Action("Details", "PlayedGame", new { id = item.PlayedGameId })" title="Details">
+                                <i class="fa fa-book fa-3x"></i>
+                            </a>
+                            @if (item.UserCanEdit)
+                            {
+                                <a href="@Url.Action("Delete", "PlayedGame", new { id = item.PlayedGameId })" title="Delete">
+                                    <i class="fa fa-trash-o fa-3x"></i>
+                                </a>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
