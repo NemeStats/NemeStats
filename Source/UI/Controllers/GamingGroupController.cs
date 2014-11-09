@@ -10,6 +10,7 @@ using UI.Controllers.Helpers;
 using UI.Filters;
 using UI.Models.GamingGroup;
 using UI.Transformations;
+using UI.Transformations.PlayerTransformations;
 
 namespace UI.Controllers
 {
@@ -26,19 +27,25 @@ namespace UI.Controllers
         internal IGamingGroupSaver gamingGroupSaver;
         internal IGamingGroupRetriever gamingGroupRetriever;
         internal IShowingXResultsMessageBuilder showingXResultsMessageBuilder;
+        internal IPlayerWithNemesisViewModelBuilder playerWithNemesisViewModelBuilder;
+        internal IPlayedGameDetailsViewModelBuilder playedGameDetailsViewModelBuilder;
 
         public GamingGroupController(
             IGamingGroupViewModelBuilder gamingGroupViewModelBuilder,
             IGamingGroupAccessGranter gamingGroupAccessGranter,
             IGamingGroupSaver gamingGroupSaver,
             IGamingGroupRetriever gamingGroupRetriever,
-            IShowingXResultsMessageBuilder showingXResultsMessageBuilder)
+            IShowingXResultsMessageBuilder showingXResultsMessageBuilder,
+            IPlayerWithNemesisViewModelBuilder playerWithNemesisViewModelBuilder,
+            IPlayedGameDetailsViewModelBuilder playedGameDetailsViewModelBuilder)
         {
             this.gamingGroupViewModelBuilder = gamingGroupViewModelBuilder;
             this.gamingGroupAccessGranter = gamingGroupAccessGranter;
             this.gamingGroupSaver = gamingGroupSaver;
             this.gamingGroupRetriever = gamingGroupRetriever;
             this.showingXResultsMessageBuilder = showingXResultsMessageBuilder;
+            this.playerWithNemesisViewModelBuilder = playerWithNemesisViewModelBuilder;
+            this.playedGameDetailsViewModelBuilder = playedGameDetailsViewModelBuilder;
         }
 
         // GET: /GamingGroup
@@ -62,11 +69,33 @@ namespace UI.Controllers
             return View(MVC.GamingGroup.Views.Index, viewModel);
         }
 
-        [HttpGet]
-        [UserContextAttribute(RequiresGamingGroup = false)]
-        public virtual ActionResult Create()
+        // GET: /GamingGroup/Details
+        [UserContextAttribute]
+        public virtual ActionResult Details(ApplicationUser currentUser)
         {
-            return View();
+            GamingGroupSummary gamingGroupSummary = gamingGroupRetriever.GetGamingGroupDetails(
+                currentUser.CurrentGamingGroupId.Value,
+                MAX_NUMBER_OF_RECENT_GAMES);
+
+            GamingGroupPublicViewModel viewModel = new GamingGroupPublicViewModel
+            {
+                Id = gamingGroupSummary.Id,
+                Name = gamingGroupSummary.Name,
+                GameDefinitionSummaries = gamingGroupSummary.GameDefinitionSummaries,
+                Players = gamingGroupSummary.Players
+                    .Select(player => playerWithNemesisViewModelBuilder.Build(player)).ToList(),
+                RecentGames = gamingGroupSummary.PlayedGames
+                    .Select(playedGame => playedGameDetailsViewModelBuilder.Build(playedGame, currentUser)).ToList()
+            };
+            ViewBag.RecentGamesSectionAnchorText = SECTION_ANCHOR_RECENT_GAMES;
+            ViewBag.PlayerSectionAnchorText = SECTION_ANCHOR_PLAYERS;
+            ViewBag.GameDefinitionSectionAnchorText = SECTION_ANCHOR_GAMEDEFINITIONS;
+
+            ViewBag.RecentGamesMessage = showingXResultsMessageBuilder.BuildMessage(
+                MAX_NUMBER_OF_RECENT_GAMES,
+                gamingGroupSummary.PlayedGames.Count);
+
+            return View(MVC.GamingGroup.Views.Index, viewModel);
         }
 
         //

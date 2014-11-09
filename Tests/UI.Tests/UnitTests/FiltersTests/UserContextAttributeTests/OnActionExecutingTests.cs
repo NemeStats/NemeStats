@@ -95,7 +95,7 @@ namespace UI.Tests.UnitTests.FiltersTests.UserContextAttributeTests
         }
 
         [Test]
-        public void IfAGamingGroupIsRequiredAndUserDoesntHaveAGaminGroupItRedirectsUserToTheCreateAction()
+        public void IfAGamingGroupIsRequiredAndUserDoesntHaveAGaminGroupItRedirectsUserToTheLoginAction()
         {
             userContextActionFilter.RequiresGamingGroup = true;
             applicationUser.CurrentGamingGroupId = null;
@@ -104,10 +104,8 @@ namespace UI.Tests.UnitTests.FiltersTests.UserContextAttributeTests
 
             RouteValueDictionary dictionary = new RouteValueDictionary();
             dictionary.Add("Area", "");
-            dictionary.Add("Controller", "GamingGroup");
-            dictionary.Add("Action", "Create");
-            //TODO can't get the GetRouteValueDictionary extension method to work here  
-            //new RedirectToRouteResult(MVC.GamingGroup.Create().GetRouteValueDictionary());
+            dictionary.Add("Controller", "Account");
+            dictionary.Add("Action", "Login");
             RedirectToRouteResult actualResult = (RedirectToRouteResult)actionExecutingContext.Result;
             Assert.AreEqual(dictionary, actualResult.RouteValues);
         }

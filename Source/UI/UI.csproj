@@ -276,6 +276,7 @@
     </Compile>
     <Compile Include="HtmlHelpers\MvcHtmlStringExtension.cs" />
     <Compile Include="HtmlHelpers\PlayedGameHelper.cs" />
+    <Compile Include="Models\GamingGroup\GamingGroupPublicViewModel.cs" />
     <Compile Include="Models\LocalPasswordModel.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AdminViewModel.cs" />
@@ -479,6 +480,7 @@
     <Content Include="Views\GameDefinition\_CreatePartial.cshtml" />
     <Content Include="Views\GameDefinition\_GameDefinitionsPartial.cshtml" />
     <Content Include="Views\PlayedGame\_PlayedGamesPartial.cshtml" />
+    <Content Include="Views\GamingGroup\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Code\" />

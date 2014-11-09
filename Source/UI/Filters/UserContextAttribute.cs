@@ -52,7 +52,7 @@ namespace UI.Filters
                     applicationUser = new AnonymousApplicationUser();
                 }
 
-                RedirectToGamingGroupCreatePageIfUserDoesntHaveAGamingGroup(filterContext, applicationUser);
+                RedirectToLoginPageIfUserDoesntHaveAGamingGroup(filterContext, applicationUser);
 
                 string anonymousClientId = filterContext.HttpContext.Request.Params[REQUEST_PARAM_ANALYTICS_ID];
                 if(anonymousClientId == null)
@@ -70,13 +70,13 @@ namespace UI.Filters
             base.OnActionExecuting(filterContext);
         }
 
-        private void RedirectToGamingGroupCreatePageIfUserDoesntHaveAGamingGroup(ActionExecutingContext filterContext, ApplicationUser applicationUser)
+        private void RedirectToLoginPageIfUserDoesntHaveAGamingGroup(ActionExecutingContext filterContext, ApplicationUser applicationUser)
         {
             if (RequiresGamingGroup)
             {
                 if (!applicationUser.CurrentGamingGroupId.HasValue)
                 {
-                    filterContext.Result = new RedirectToRouteResult(MVC.GamingGroup.Create().GetRouteValueDictionary());
+                    filterContext.Result = new RedirectToRouteResult(MVC.Account.Login().GetRouteValueDictionary());
                 }
             }
         }
