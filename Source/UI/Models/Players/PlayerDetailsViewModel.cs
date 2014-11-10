@@ -5,7 +5,7 @@ using UI.Models.PlayedGame;
 
 namespace UI.Models.Players
 {
-    public class PlayerDetailsViewModel
+    public class PlayerDetailsViewModel : IEditableViewModel
     {
         public int PlayerId { get; set; }
         public string PlayerName { get; set; }

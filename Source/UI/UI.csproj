@@ -277,6 +277,7 @@
     <Compile Include="HtmlHelpers\MvcHtmlStringExtension.cs" />
     <Compile Include="HtmlHelpers\PlayedGameHelper.cs" />
     <Compile Include="Models\GamingGroup\GamingGroupPublicViewModel.cs" />
+    <Compile Include="Models\IEditableViewModel.cs" />
     <Compile Include="Models\LocalPasswordModel.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AdminViewModel.cs" />

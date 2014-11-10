@@ -12,7 +12,7 @@ namespace UI.Transformations
         internal const string EXCEPTION_GAME_DEFINITION_CANNOT_BE_NULL = "PlayedGame.GameDefinition cannot be null.";
         internal const string EXCEPTION_PLAYER_GAME_RESULTS_CANNOT_BE_NULL = "PlayedGame.PlayerGameResults cannot be null.";
 
-        private IGameResultViewModelBuilder playerResultBuilder;
+        private readonly IGameResultViewModelBuilder playerResultBuilder;
 
         //TODO is it OK to do this to satisfy MVC's need for parameterless constructors?
         public PlayedGameDetailsViewModelBuilder()

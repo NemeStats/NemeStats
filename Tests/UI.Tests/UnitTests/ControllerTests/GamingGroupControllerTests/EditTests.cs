@@ -20,11 +20,12 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
         }
 
         [Test]
-        public void ItReturnsAnHttpStatusCodeOk()
+        public void ItReturnsAJsonResultWhenEverythingIsOk()
         {
-            HttpStatusCodeResult httpStatusCodeResult = gamingGroupController.Edit("gaming group name", currentUser) as HttpStatusCodeResult;
+            JsonResult jsonResult = gamingGroupController.Edit("gaming group name", currentUser) as JsonResult;
 
-            Assert.AreEqual((int)HttpStatusCode.OK, httpStatusCodeResult.StatusCode);
+            dynamic jsonData = jsonResult.Data;
+            Assert.AreEqual((int)HttpStatusCode.OK, jsonData.StatusCode);
         }
     }
 }

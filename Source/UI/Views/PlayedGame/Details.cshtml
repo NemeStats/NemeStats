@@ -28,7 +28,7 @@
     </dl>
 </div>
 <p>
-    @if(Model.UserCanEdit)
+    @if(Model.UserCanEdit())
     {
       @Html.ActionLink("Delete", "Delete", new { id = Model.PlayedGameId }) 
     }

@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using UI.Models;
 
 namespace UI.Models.PlayedGame
 {
-    public class PlayedGameDetailsViewModel
+    public class PlayedGameDetailsViewModel : IEditableViewModel
     {
         public int PlayedGameId { get; set; }
         public string GameDefinitionName { get; set; }
