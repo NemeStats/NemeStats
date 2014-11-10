@@ -9,7 +9,7 @@
 <hr />
 
 <div class="row">
-    @Html.Partial("~/Views/Player/_Players.cshtml", Model.Players)
+    @Html.Partial("~/Views/Player/_Players.cshtml", Model.Players, new ViewDataDictionary { { "canEdit", false } })
 </div>
 
 <div class="row">

@@ -21,7 +21,7 @@ namespace UI.Transformations
                 Id = gameDefinition.Id,
                 Name = gameDefinition.Name,
                 Description = gameDefinition.Description,
-                UserCanEdit = (gameDefinition.GamingGroupId == currentUser.CurrentGamingGroupId)
+                UserCanEdit = (currentUser != null && gameDefinition.GamingGroupId == currentUser.CurrentGamingGroupId)
             };
 
             viewModel.PlayedGames = (from playedGame in gameDefinition.PlayedGames

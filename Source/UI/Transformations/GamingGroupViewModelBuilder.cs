@@ -36,7 +36,7 @@ namespace UI.Transformations
 
             List<PlayerWithNemesisViewModel> playerWithNemesisList 
                 = (from Player player in gamingGroupSummary.Players
-                  select playerWithNemesisViewModelBuilder.Build(player)).ToList();
+                  select playerWithNemesisViewModelBuilder.Build(player, currentUser)).ToList();
             
             GamingGroupViewModel viewModel = new GamingGroupViewModel()
             {

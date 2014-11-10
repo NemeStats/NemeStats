@@ -34,7 +34,7 @@ namespace UI.Transformations
             summary.GameDefinitionId = playedGame.GameDefinitionId;
             summary.PlayedGameId = playedGame.Id;
             summary.DatePlayed = playedGame.DatePlayed;
-            summary.UserCanEdit = (playedGame.GamingGroupId == currentUser.CurrentGamingGroupId);
+            summary.UserCanEdit = (currentUser != null && playedGame.GamingGroupId == currentUser.CurrentGamingGroupId);
             summary.PlayerResults = new List<GameResultViewModel>();
             
             foreach(PlayerGameResult playerGameResult in playedGame.PlayerGameResults)

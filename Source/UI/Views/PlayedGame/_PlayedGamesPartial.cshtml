@@ -46,7 +46,7 @@
                             <a href="@Url.Action("Details", "PlayedGame", new { id = item.PlayedGameId })" title="Details">
                                 <i class="fa fa-book fa-3x"></i>
                             </a>
-                            @if (item.UserCanEdit(currentUser))
+                            @if (item.UserCanEdit)
                             {
                                 <a href="@Url.Action("Delete", "PlayedGame", new { id = item.PlayedGameId })" title="Delete">
                                     <i class="fa fa-trash-o fa-3x"></i>

@@ -50,7 +50,7 @@
                                         @Html.ActionLink(item.NemesisPlayerName , MVC.Player.Details(item.NemesisPlayerId, null));
                                     }
                                 </td>
-                                @if ((bool?)ViewData["canEdit"] == true)
+                                @if (item.UserCanEdit)
                                 {
                                     <td>
                                         <a href="@Url.Action("Edit", "Player", new { id = item.PlayerId })" title="Edit">

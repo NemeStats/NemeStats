@@ -2,7 +2,7 @@
 
 namespace UI.Models.Players
 {
-    public class PlayerWithNemesisViewModel
+    public class PlayerWithNemesisViewModel : IEditableViewModel
     {
         public int PlayerId { get; set; }
         public string PlayerName { get; set; }
@@ -10,5 +10,6 @@ namespace UI.Models.Players
         public string NemesisPlayerName { get; set; }
         public int? PreviousNemesisPlayerId { get; set; }
         public string PreviousNemesisPlayerName { get; set; }
+        public bool UserCanEdit { get; set; }
     }
 }

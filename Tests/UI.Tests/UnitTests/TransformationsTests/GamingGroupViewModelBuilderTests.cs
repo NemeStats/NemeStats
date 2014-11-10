@@ -27,6 +27,7 @@ namespace UI.Tests.UnitTests.TransformationsTests
         private List<Player> players;
         private List<GameDefinitionSummary> gameDefinitionSummaries;
         private List<PlayedGame> playedGames;
+        private ApplicationUser currentUser;
 
         [SetUp]
         public void SetUp()
@@ -80,13 +81,15 @@ namespace UI.Tests.UnitTests.TransformationsTests
                 Arg<ApplicationUser>.Is.Anything))
                 .Return(new PlayedGameDetailsViewModel());
 
+            currentUser = new ApplicationUser();
+
             foreach(Player player in players)
             {
-                playerWithNemesisViewModelBuilderMock.Expect(mock => mock.Build(player))
+                playerWithNemesisViewModelBuilderMock.Expect(mock => mock.Build(player, currentUser))
                     .Return(new PlayerWithNemesisViewModel() { PlayerId = player.Id });
             }
 
-            viewModel = transformer.Build(gamingGroupSummary, null);
+            viewModel = transformer.Build(gamingGroupSummary, currentUser);
         }
 
         [Test]

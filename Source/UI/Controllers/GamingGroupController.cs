@@ -15,7 +15,6 @@ using UI.Transformations.PlayerTransformations;
 
 namespace UI.Controllers
 {
-    [Authorize]
     public partial class GamingGroupController : Controller
     {
         public const int MAX_NUMBER_OF_RECENT_GAMES = 10;
@@ -50,12 +49,11 @@ namespace UI.Controllers
         }
 
         // GET: /GamingGroup
+        [Authorize]
         [UserContextAttribute]
         public virtual ActionResult Index(ApplicationUser currentUser)
         {
-            GamingGroupSummary gamingGroupSummary = gamingGroupRetriever.GetGamingGroupDetails(
-                currentUser.CurrentGamingGroupId.Value,
-                MAX_NUMBER_OF_RECENT_GAMES);
+            var gamingGroupSummary = this.GetGamingGroupSummaryAndSetRecentGamesMessage(currentUser.CurrentGamingGroupId.Value);
 
             GamingGroupViewModel viewModel = gamingGroupViewModelBuilder.Build(gamingGroupSummary, currentUser);
 
@@ -63,20 +61,26 @@ namespace UI.Controllers
             ViewBag.PlayerSectionAnchorText = SECTION_ANCHOR_PLAYERS;
             ViewBag.GameDefinitionSectionAnchorText = SECTION_ANCHOR_GAMEDEFINITIONS;
 
-            ViewBag.RecentGamesMessage = showingXResultsMessageBuilder.BuildMessage(
-                MAX_NUMBER_OF_RECENT_GAMES,
-                gamingGroupSummary.PlayedGames.Count);
-
             return View(MVC.GamingGroup.Views.Index, viewModel);
         }
 
-        // GET: /GamingGroup/Details
-        [UserContextAttribute]
-        public virtual ActionResult Details(ApplicationUser currentUser)
+        internal virtual GamingGroupSummary GetGamingGroupSummaryAndSetRecentGamesMessage(int gamingGroupId)
         {
-            GamingGroupSummary gamingGroupSummary = gamingGroupRetriever.GetGamingGroupDetails(
-                currentUser.CurrentGamingGroupId.Value,
-                MAX_NUMBER_OF_RECENT_GAMES);
+            GamingGroupSummary gamingGroupSummary = this.gamingGroupRetriever.GetGamingGroupDetails(
+                                                                                               gamingGroupId,
+                                                                                               MAX_NUMBER_OF_RECENT_GAMES);
+
+            this.ViewBag.RecentGamesMessage = this.showingXResultsMessageBuilder.BuildMessage(
+                                                                                    MAX_NUMBER_OF_RECENT_GAMES,
+                                                                                    gamingGroupSummary.PlayedGames.Count);
+            return gamingGroupSummary;
+        }
+
+        // GET: /GamingGroup/Details
+        [UserContextAttribute(RequiresGamingGroup = false)]
+        public virtual ActionResult Details(int id, ApplicationUser currentUser)
+        {
+            GamingGroupSummary gamingGroupSummary = GetGamingGroupSummaryAndSetRecentGamesMessage(id);
 
             GamingGroupPublicViewModel viewModel = new GamingGroupPublicViewModel
             {
@@ -84,21 +88,16 @@ namespace UI.Controllers
                 Name = gamingGroupSummary.Name,
                 GameDefinitionSummaries = gamingGroupSummary.GameDefinitionSummaries,
                 Players = gamingGroupSummary.Players
-                    .Select(player => playerWithNemesisViewModelBuilder.Build(player)).ToList(),
+                    .Select(player => playerWithNemesisViewModelBuilder.Build(player, currentUser)).ToList(),
                 RecentGames = gamingGroupSummary.PlayedGames
                     .Select(playedGame => playedGameDetailsViewModelBuilder.Build(playedGame, currentUser)).ToList()
             };
 
-            ViewBag.RecentGamesMessage = showingXResultsMessageBuilder.BuildMessage(
-                MAX_NUMBER_OF_RECENT_GAMES,
-                gamingGroupSummary.PlayedGames.Count);
-
             return View(MVC.GamingGroup.Views.Details, viewModel);
         }
 
-        //
-        // POST: /GamingGroup/Delete/5
         [HttpPost]
+        [Authorize]
         [UserContextAttribute]
         public virtual ActionResult GrantAccess(GamingGroupViewModel model, ApplicationUser currentUser)
         {
@@ -112,6 +111,7 @@ namespace UI.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         [UserContextAttribute]
         public virtual ActionResult Edit(string gamingGroupName, ApplicationUser currentUser)
         {

@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.Models;
+using BusinessLogic.Models.User;
 using NUnit.Framework;
 using System;
 using System.Linq;
@@ -12,6 +13,8 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
     {
         private PlayerWithNemesisViewModelBuilder builder;
         private Player player;
+        private int gamingGroupId = 1;
+        private ApplicationUser currentUser;
 
         [SetUp]
         public void SetUp()
@@ -36,14 +39,20 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
                     {
                         Name = "previous nemesis player name"
                     }
-                }
+                },
+                GamingGroupId = gamingGroupId
+            };
+
+            currentUser = new ApplicationUser
+            {
+                CurrentGamingGroupId = gamingGroupId
             };
         }
 
         [Test]
         public void ItThrowsAnArgumentNullExceptionIfThePlayerIsNull()
         {
-            Exception actualException = Assert.Throws<ArgumentNullException>(() => builder.Build(null));
+            Exception actualException = Assert.Throws<ArgumentNullException>(() => builder.Build(null, currentUser));
 
             Assert.AreEqual(new ArgumentNullException("player").Message, actualException.Message);
         }
@@ -58,7 +67,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
             Exception expectedException = new ArgumentException(
                 PlayerWithNemesisViewModelBuilder.EXCEPTION_MESSAGE_NEMESIS_PLAYER_CANNOT_BE_NULL);
 
-            Exception actualException = Assert.Throws<ArgumentException>(() => builder.Build(playerWithNoNemesisPlayer));
+            Exception actualException = Assert.Throws<ArgumentException>(() => builder.Build(playerWithNoNemesisPlayer, currentUser));
 
             Assert.AreEqual(expectedException.Message, actualException.Message);
         }
@@ -73,7 +82,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
             Exception expectedException = new ArgumentException(
                 PlayerWithNemesisViewModelBuilder.EXCEPTION_MESSAGE_PREVIOUS_NEMESIS_PLAYER_CANNOT_BE_NULL);
 
-            Exception actualException = Assert.Throws<ArgumentException>(() => builder.Build(playerWithNoPreviousNemesisSet));
+            Exception actualException = Assert.Throws<ArgumentException>(() => builder.Build(playerWithNoPreviousNemesisSet, currentUser));
 
             Assert.AreEqual(expectedException.Message, actualException.Message);
         }
@@ -81,7 +90,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         [Test]
         public void ItCopiesThePlayerId()
         {
-            PlayerWithNemesisViewModel actualViewModel = builder.Build(player);
+            PlayerWithNemesisViewModel actualViewModel = builder.Build(player, currentUser);
 
             Assert.AreEqual(player.Id, actualViewModel.PlayerId);
         }
@@ -89,7 +98,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         [Test]
         public void ItCopiesThePlayerName()
         {
-            PlayerWithNemesisViewModel actualViewModel = builder.Build(player);
+            PlayerWithNemesisViewModel actualViewModel = builder.Build(player, currentUser);
 
             Assert.AreEqual(player.Name, actualViewModel.PlayerName);
         }
@@ -97,7 +106,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         [Test]
         public void ItCopiesTheNemesisPlayerId()
         {
-            PlayerWithNemesisViewModel actualViewModel = builder.Build(player);
+            PlayerWithNemesisViewModel actualViewModel = builder.Build(player, currentUser);
 
             Assert.AreEqual(player.Nemesis.NemesisPlayerId, actualViewModel.NemesisPlayerId);
         }
@@ -105,7 +114,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         [Test]
         public void ItCopiesTheNemesisPlayerName()
         {
-            PlayerWithNemesisViewModel actualViewModel = builder.Build(player);
+            PlayerWithNemesisViewModel actualViewModel = builder.Build(player, currentUser);
 
             Assert.AreEqual(player.Nemesis.NemesisPlayer.Name, actualViewModel.NemesisPlayerName);
         }
@@ -113,7 +122,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         [Test]
         public void ItCopiesThePreviousNemesisPlayerId()
         {
-            PlayerWithNemesisViewModel actualViewModel = builder.Build(player);
+            PlayerWithNemesisViewModel actualViewModel = builder.Build(player, currentUser);
 
             Assert.AreEqual(player.PreviousNemesis.NemesisPlayerId, actualViewModel.PreviousNemesisPlayerId);
         }
@@ -121,9 +130,34 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         [Test]
         public void ItCopiesThePreviousNemesisPlayerName()
         {
-            PlayerWithNemesisViewModel actualViewModel = builder.Build(player);
+            PlayerWithNemesisViewModel actualViewModel = builder.Build(player, currentUser);
 
             Assert.AreEqual(player.PreviousNemesis.NemesisPlayer.Name, actualViewModel.PreviousNemesisPlayerName);
+        }
+
+        [Test]
+        public void TheUserCanEditViewModelIfTheyShareGamingGroups()
+        {
+            PlayerWithNemesisViewModel actualViewModel = builder.Build(player, currentUser);
+
+            Assert.True(actualViewModel.UserCanEdit);
+        }
+
+        [Test]
+        public void TheUserCanNotEditViewModelIfTheyDoNotShareGamingGroups()
+        {
+            currentUser.CurrentGamingGroupId = -1;
+            PlayerWithNemesisViewModel actualViewModel = builder.Build(player, currentUser);
+
+            Assert.False(actualViewModel.UserCanEdit);
+        }
+
+        [Test]
+        public void TheUserCanNotEditViewModelIfTheUserIsUnknown()
+        {
+            PlayerWithNemesisViewModel actualViewModel = builder.Build(player, null);
+
+            Assert.False(actualViewModel.UserCanEdit);
         }
     }
 }

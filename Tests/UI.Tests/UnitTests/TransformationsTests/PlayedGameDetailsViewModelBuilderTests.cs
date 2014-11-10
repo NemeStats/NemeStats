@@ -163,5 +163,13 @@ namespace UI.Tests.UnitTests.TransformationsTests
 
             Assert.False(viewModel.UserCanEdit);
         }
+
+        [Test]
+        public void TheUserCanNotEditThePlayedGameDetailsViewModelIfTheCurrentUserIsUnknown()
+        {
+            PlayedGameDetailsViewModel viewModel = builder.Build(playedGame, null);
+
+            Assert.False(viewModel.UserCanEdit);
+        }
     }
 }
