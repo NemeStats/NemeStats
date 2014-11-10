@@ -9,7 +9,7 @@ namespace BusinessLogic.Logic.PlayedGames
 {
     public class PlayedGameRetriever : IPlayedGameRetriever
     {
-        private IDataContext dataContext;
+        private readonly IDataContext dataContext;
 
         public PlayedGameRetriever(IDataContext dataContext)
         {
@@ -24,6 +24,7 @@ namespace BusinessLogic.Logic.PlayedGames
                 .Include(playedGame => playedGame.PlayerGameResults
                     .Select(playerGameResult => playerGameResult.Player))
                     .OrderByDescending(orderBy => orderBy.DatePlayed)
+                    .ThenByDescending(orderBy => orderBy.DateCreated)
                 .Take(numberOfGames)
                 .ToList();
 
@@ -50,6 +51,8 @@ namespace BusinessLogic.Logic.PlayedGames
         public List<PublicGameSummary> GetRecentPublicGames(int numberOfGames)
         {
             return (from playedGame in dataContext.GetQueryable<PlayedGame>()
+                        .OrderByDescending(game => game.DatePlayed)
+                        .ThenByDescending(game => game.DateCreated)
                     select new PublicGameSummary()
                     {
                         PlayedGameId = playedGame.Id,
@@ -57,8 +60,7 @@ namespace BusinessLogic.Logic.PlayedGames
                         GameDefinitionName = playedGame.GameDefinition.Name,
                         WinningPlayer = playedGame.PlayerGameResults.FirstOrDefault(player => player.GameRank == 1).Player,
                         DatePlayed = playedGame.DatePlayed
-                    }).OrderByDescending(result => result.DatePlayed)
-                                .Take(numberOfGames)
+                    }).Take(numberOfGames)
                                 .ToList();
         }
     }
