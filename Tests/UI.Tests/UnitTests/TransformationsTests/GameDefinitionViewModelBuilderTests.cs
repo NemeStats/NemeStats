@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.Models;
+using BusinessLogic.Models.Games;
 using BusinessLogic.Models.User;
 using NUnit.Framework;
 using Rhino.Mocks;
@@ -15,7 +16,7 @@ namespace UI.Tests.UnitTests.TransformationsTests
     {
         protected GameDefinitionViewModelBuilder transformer;
         protected IPlayedGameDetailsViewModelBuilder playedGameDetailsViewModelBuilder;
-        protected GameDefinition gameDefinition;
+        protected GameDefinitionSummary gameDefinitionSummary;
         protected GameDefinitionViewModel viewModel;
         protected PlayedGameDetailsViewModel playedGameDetailsViewModel1;
         protected PlayedGameDetailsViewModel playedGameDetailsViewModel2;
@@ -39,42 +40,48 @@ namespace UI.Tests.UnitTests.TransformationsTests
                 Id = 11
             });
             playedGameDetailsViewModel2 = new PlayedGameDetailsViewModel();
-            gameDefinition = new GameDefinition()
+            gameDefinitionSummary = new GameDefinitionSummary()
             {
                 Id = 1,
                 Name = "game definition name",
                 Description = "game definition description",
                 GamingGroupId = gamingGroupid,
-                PlayedGames = playedGames
+                PlayedGames = playedGames,
             };
             currentUser = new ApplicationUser()
             {
                 CurrentGamingGroupId = gamingGroupid
             };
-            playedGameDetailsViewModelBuilder.Expect(mock => mock.Build(gameDefinition.PlayedGames[0], currentUser))
+            playedGameDetailsViewModelBuilder.Expect(mock => mock.Build(gameDefinitionSummary.PlayedGames[0], currentUser))
                 .Return(playedGameDetailsViewModel1);
-            playedGameDetailsViewModelBuilder.Expect(mock => mock.Build(gameDefinition.PlayedGames[1], currentUser))
+            playedGameDetailsViewModelBuilder.Expect(mock => mock.Build(gameDefinitionSummary.PlayedGames[1], currentUser))
                 .Return(playedGameDetailsViewModel2);
 
-            viewModel = transformer.Build(gameDefinition, currentUser);
+            viewModel = transformer.Build(gameDefinitionSummary, currentUser);
         }
 
         [Test]
         public void ItCopiesTheId()
         {
-            Assert.AreEqual(gameDefinition.Id, viewModel.Id);
+            Assert.AreEqual(gameDefinitionSummary.Id, viewModel.Id);
         }
 
         [Test]
         public void ItCopiesTheName()
         {
-            Assert.AreEqual(gameDefinition.Name, viewModel.Name);
+            Assert.AreEqual(gameDefinitionSummary.Name, viewModel.Name);
         }
 
         [Test]
         public void ItCopiesTheDescription()
         {
-            Assert.AreEqual(gameDefinition.Description, viewModel.Description);
+            Assert.AreEqual(gameDefinitionSummary.Description, viewModel.Description);
+        }
+
+        [Test]
+        public void ItCopiesTheTotalNumberOfGamesPlayed()
+        {
+            Assert.AreEqual(gameDefinitionSummary.TotalNumberOfGamesPlayed, viewModel.TotalNumberOfGamesPlayed);
         }
 
         [Test]
@@ -85,28 +92,38 @@ namespace UI.Tests.UnitTests.TransformationsTests
         }
 
         [Test]
+        public void ItSetsThePlayedGamesToAnEmptyListIfThereAreNone()
+        {
+            gameDefinitionSummary.PlayedGames = null;
+
+            GameDefinitionViewModel actualViewModel = transformer.Build(gameDefinitionSummary, currentUser);
+
+            Assert.AreEqual(new List<PlayedGameDetailsViewModel>(), actualViewModel.PlayedGames);
+        }
+
+        [Test]
         public void TheUserCanEditViewModelIfTheyShareGamingGroups()
         {
-            viewModel = transformer.Build(gameDefinition, currentUser);
+            GameDefinitionViewModel actualViewModel = transformer.Build(gameDefinitionSummary, currentUser);
 
-            Assert.True(viewModel.UserCanEdit);
+            Assert.True(actualViewModel.UserCanEdit);
         }
 
         [Test]
         public void TheUserCanNotEditViewModelIfTheyDoNotShareGamingGroups()
         {
             currentUser.CurrentGamingGroupId = -1;
-            viewModel = transformer.Build(gameDefinition, currentUser);
+            GameDefinitionViewModel actualViewModel = transformer.Build(gameDefinitionSummary, currentUser);
 
-            Assert.False(viewModel.UserCanEdit);
+            Assert.False(actualViewModel.UserCanEdit);
         }
 
         [Test]
         public void TheUserCanNotEditViewModelIfTheUserIsUnknown()
         {
-            viewModel = transformer.Build(gameDefinition, null);
+            GameDefinitionViewModel actualViewModel = transformer.Build(gameDefinitionSummary, null);
 
-            Assert.False(viewModel.UserCanEdit);
+            Assert.False(actualViewModel.UserCanEdit);
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿@model IList<BusinessLogic.Models.Games.GameDefinitionSummary>
+﻿@model IList<UI.Models.GameDefinitionModels.GameDefinitionViewModel>
 
 <div class="panel panel-default">
     <div class="panel-heading">
@@ -42,7 +42,7 @@
                             </td>
                             <td>@Html.DisplayFor(modelItem => item.TotalNumberOfGamesPlayed)</td>
                             <td>
-                                @if ((bool?)ViewData["canEdit"] == true)
+                                @if (item.UserCanEdit)
                                 {
                                     <a href="@Url.Action("Edit", "GameDefinition", new
                                              {

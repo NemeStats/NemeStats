@@ -1,4 +1,5 @@
-﻿using BusinessLogic.Models;
+﻿using System.Web.UI.WebControls;
+using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
 using BusinessLogic.Models.GamingGroups;
 using BusinessLogic.Models.User;
@@ -7,6 +8,7 @@ using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UI.Models.GameDefinitionModels;
 using UI.Models.GamingGroup;
 using UI.Models.PlayedGame;
 using UI.Models.Players;
@@ -22,11 +24,13 @@ namespace UI.Tests.UnitTests.TransformationsTests
         private IGamingGroupInvitationViewModelBuilder invitationTransformerMock;
         private IPlayedGameDetailsViewModelBuilder playedGameDetailsViewModelBuilderMock;
         private IPlayerWithNemesisViewModelBuilder playerWithNemesisViewModelBuilderMock;
+        private IGameDefinitionViewModelBuilder gameDefinitionViewModelBuilderMock;
         private GamingGroupSummary gamingGroupSummary;
         private GamingGroupViewModel viewModel;
         private List<Player> players;
         private List<GameDefinitionSummary> gameDefinitionSummaries;
         private List<PlayedGame> playedGames;
+        private List<GameDefinitionViewModel> gameDefinitionViewModels; 
         private ApplicationUser currentUser;
 
         [SetUp]
@@ -35,16 +39,23 @@ namespace UI.Tests.UnitTests.TransformationsTests
             invitationTransformerMock = MockRepository.GenerateMock<IGamingGroupInvitationViewModelBuilder>();
             playerWithNemesisViewModelBuilderMock = MockRepository.GenerateMock<IPlayerWithNemesisViewModelBuilder>();
             playedGameDetailsViewModelBuilderMock = MockRepository.GenerateMock<IPlayedGameDetailsViewModelBuilder>();
+            gameDefinitionViewModelBuilderMock = MockRepository.GenerateMock<IGameDefinitionViewModelBuilder>();
             transformer = new GamingGroupViewModelBuilder(
                 invitationTransformerMock,
                 playedGameDetailsViewModelBuilderMock,
-                playerWithNemesisViewModelBuilderMock);
+                playerWithNemesisViewModelBuilderMock,
+                gameDefinitionViewModelBuilderMock);
             players = new List<Player>()
             {
                 new Player(){ Id = 1 },
                 new Player(){ Id = 2 }
             };
-            gameDefinitionSummaries = new List<GameDefinitionSummary>();
+            gameDefinitionSummaries = new List<GameDefinitionSummary>
+            {
+                new GameDefinitionSummary{ Id = 1 },
+                new GameDefinitionSummary{ Id = 2 }
+            };
+
             playedGames = new List<PlayedGame>();
             ApplicationUser owningUser = new ApplicationUser()
             {
@@ -87,6 +98,12 @@ namespace UI.Tests.UnitTests.TransformationsTests
             {
                 playerWithNemesisViewModelBuilderMock.Expect(mock => mock.Build(player, currentUser))
                     .Return(new PlayerWithNemesisViewModel() { PlayerId = player.Id });
+            }
+
+            foreach (GameDefinitionSummary summary in gameDefinitionSummaries)
+            {
+                gameDefinitionViewModelBuilderMock.Expect(mock => mock.Build(summary, currentUser))
+                                                  .Return(new GameDefinitionViewModel { Id = summary.Id });
             }
 
             viewModel = transformer.Build(gamingGroupSummary, currentUser);
@@ -145,9 +162,14 @@ namespace UI.Tests.UnitTests.TransformationsTests
         }
 
         [Test]
-        public void ItSetsTheGameDefinitionSummaries()
+        public void ItBuildsTheGameDefinitionViewModels()
         {
-            Assert.AreSame(gameDefinitionSummaries, viewModel.GameDefinitionSummaries);
+            foreach (GameDefinitionSummary summary in gameDefinitionSummaries)
+            {
+                Assert.True((from GameDefinitionViewModel game in viewModel.GameDefinitionSummaries
+                                 where game.Id == summary.Id
+                                 select true).First());
+            }
         }
 
         [Test]

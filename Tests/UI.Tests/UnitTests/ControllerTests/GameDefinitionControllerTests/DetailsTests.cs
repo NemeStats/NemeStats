@@ -1,5 +1,6 @@
 ﻿using BusinessLogic.Logic.GameDefinitions;
 using BusinessLogic.Models;
+using BusinessLogic.Models.Games;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System;
@@ -16,15 +17,15 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
     public class DetailsTests : GameDefinitionControllerTestBase
     {
         private int gameDefinitionId = 1;
-        private GameDefinition gameDefinition;
-        private GameDefinitionViewModel expectedViewModel = new GameDefinitionViewModel();
+        private GameDefinitionSummary gameDefinitionSummary;
+        private readonly GameDefinitionViewModel expectedViewModel = new GameDefinitionViewModel();
 
         [SetUp]
         public override void SetUp()
         {
             base.SetUp();
 
-            gameDefinition = new GameDefinition()
+            gameDefinitionSummary = new GameDefinitionSummary()
             {
                 PlayedGames = new List<PlayedGame>(),
                 GamingGroupId = currentUser.CurrentGamingGroupId.Value
@@ -33,8 +34,8 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
             gameDefinitionRetrieverMock.Expect(repo => repo.GetGameDefinitionDetails(
                 Arg<int>.Is.Anything,
                 Arg<int>.Is.Anything))
-                .Return(gameDefinition);
-            gameDefinitionTransformationMock.Expect(mock => mock.Build(gameDefinition, currentUser))
+                .Return(gameDefinitionSummary);
+            gameDefinitionTransformationMock.Expect(mock => mock.Build(gameDefinitionSummary, currentUser))
                 .Return(expectedViewModel);
         }
 
@@ -96,7 +97,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
             string expectedMessage = "expected message";
             showingXResultsMessageBuilderMock.Expect(mock => mock.BuildMessage(
                 GameDefinitionController.NUMBER_OF_RECENT_GAMES_TO_SHOW,
-                gameDefinition.PlayedGames.Count))
+                gameDefinitionSummary.PlayedGames.Count))
                     .Return(expectedMessage);
                 
             gameDefinitionControllerPartialMock.Details(gameDefinitionId, currentUser);

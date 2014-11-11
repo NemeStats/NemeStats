@@ -15,15 +15,18 @@ namespace UI.Transformations
         private readonly IGamingGroupInvitationViewModelBuilder invitationViewModelTransformer;
         private readonly IPlayedGameDetailsViewModelBuilder playedGameDetailsViewModelBuilder;
         private readonly IPlayerWithNemesisViewModelBuilder playerWithNemesisViewModelBuilder;
+        private readonly IGameDefinitionViewModelBuilder gameDefinitionViewModelBuilder;
 
         public GamingGroupViewModelBuilder(
             IGamingGroupInvitationViewModelBuilder invitationViewModelTransformer,
             IPlayedGameDetailsViewModelBuilder playedGameDetailsViewModelBuilder,
-            IPlayerWithNemesisViewModelBuilder playerWithNemesisViewModelBuilder)
+            IPlayerWithNemesisViewModelBuilder playerWithNemesisViewModelBuilder,
+            IGameDefinitionViewModelBuilder gameDefinitionViewModelBuilder)
         {
             this.invitationViewModelTransformer = invitationViewModelTransformer;
             this.playedGameDetailsViewModelBuilder = playedGameDetailsViewModelBuilder;
             this.playerWithNemesisViewModelBuilder = playerWithNemesisViewModelBuilder;
+            this.gameDefinitionViewModelBuilder = gameDefinitionViewModelBuilder;
         }
 
         public GamingGroupViewModel Build(GamingGroupSummary gamingGroupSummary, ApplicationUser currentUser = null)
@@ -46,7 +49,8 @@ namespace UI.Transformations
                 OwningUserName = gamingGroupSummary.OwningUser.UserName,
                 Invitations = invitationViewModels,
                 Players = playerWithNemesisList,
-                GameDefinitionSummaries = gamingGroupSummary.GameDefinitionSummaries,
+                GameDefinitionSummaries = gamingGroupSummary.GameDefinitionSummaries
+                    .Select(game => gameDefinitionViewModelBuilder.Build(game, currentUser)).ToList(),
                 RecentGames = details
             };
 

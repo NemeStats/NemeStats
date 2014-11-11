@@ -11,5 +11,6 @@ namespace BusinessLogic.Models.Games
     public class GameDefinitionSummary : GameDefinition
     {
         public int TotalNumberOfGamesPlayed { get; set; }
+        internal GameDefinition GameDefinition { get; set; }
     }
 }

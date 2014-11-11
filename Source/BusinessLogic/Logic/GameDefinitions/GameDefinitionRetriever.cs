@@ -35,27 +35,49 @@ namespace BusinessLogic.Logic.GameDefinitions
                 .ToList();
         }
 
-        public virtual GameDefinition GetGameDefinitionDetails(int id, int numberOfPlayedGamesToRetrieve)
+        public virtual GameDefinitionSummary GetGameDefinitionDetails(int id, int numberOfPlayedGamesToRetrieve)
         {
-            GameDefinition gameDefinition = dataContext.FindById<GameDefinition>(id);
-            IList<PlayedGame> playedGames = AddPlayedGamesToTheGameDefinition(numberOfPlayedGamesToRetrieve, gameDefinition);
+            GameDefinitionSummary gameDefinitionSummary = (from gameDefinition in dataContext.GetQueryable<GameDefinition>()
+                                                                                             .Include(game => game.PlayedGames)
+                                                           where gameDefinition.Id == id
+                                                           select new GameDefinitionSummary
+                                                           {
+                                                               Active = gameDefinition.Active,
+                                                               BoardGameGeekObjectId = gameDefinition.BoardGameGeekObjectId,
+                                                               Name = gameDefinition.Name,
+                                                               Description = gameDefinition.Description,
+                                                               GamingGroupId = gameDefinition.GamingGroupId,
+                                                               Id = gameDefinition.Id,
+                                                               TotalNumberOfGamesPlayed = gameDefinition.PlayedGames.Count,
+                                                               GameDefinition = gameDefinition
+                                                           }).First();
+
+            IList<PlayedGame> playedGames = AddPlayedGamesToTheGameDefinition(numberOfPlayedGamesToRetrieve, gameDefinitionSummary);
             IList<int> distinctPlayerIds = AddPlayerGameResultsToEachPlayedGame(playedGames);
             AddPlayersToPlayerGameResults(playedGames, distinctPlayerIds);
-             
-            //TODO implement validation
-            return gameDefinition;
+
+            return gameDefinitionSummary;
         }
 
         private IList<PlayedGame> AddPlayedGamesToTheGameDefinition(
-            int numberOfPlayedGamesToRetrieve, 
-            GameDefinition gameDefinition)
+            int numberOfPlayedGamesToRetrieve,
+            GameDefinitionSummary gameDefinitionSummary)
         {
-            IList<PlayedGame> playedGames = dataContext.GetQueryable<PlayedGame>()
-                .Where(playedGame => playedGame.GameDefinitionId == gameDefinition.Id)
+            IList<PlayedGame> playedGames = dataContext.GetQueryable<PlayedGame>().Include(playedGame => playedGame.PlayerGameResults)
+                .Where(playedGame => playedGame.GameDefinitionId == gameDefinitionSummary.Id)
                 .OrderByDescending(playedGame => playedGame.DatePlayed)
                 .Take(numberOfPlayedGamesToRetrieve)
                 .ToList();
-            gameDefinition.PlayedGames = playedGames;
+
+            //TODO this is very hacky as I had to add GameDefinition as an internal property on GameDefinitionSummary just so I could set it here. 
+            //Need to revisit this when my brain is less foggy. Or someone with a less foggy brain in general needs to take a peak.
+            foreach (PlayedGame playedGame in playedGames)
+            {
+                playedGame.GameDefinition = gameDefinitionSummary.GameDefinition;
+            }
+
+            gameDefinitionSummary.PlayedGames = playedGames;
+
             return playedGames;
         }
 

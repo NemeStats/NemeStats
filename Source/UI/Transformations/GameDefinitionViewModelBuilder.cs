@@ -1,7 +1,10 @@
-﻿using BusinessLogic.Models;
+﻿using System.Collections.Generic;
+using BusinessLogic.Models;
+using BusinessLogic.Models.Games;
 using BusinessLogic.Models.User;
 using System.Linq;
 using UI.Models.GameDefinitionModels;
+using UI.Models.PlayedGame;
 
 namespace UI.Transformations
 {
@@ -14,20 +17,28 @@ namespace UI.Transformations
             this.playedGameDetailsViewModelBuilder = playedGameDetailsViewModelBuilder;
         }
 
-        public GameDefinitionViewModel Build(GameDefinition gameDefinition, ApplicationUser currentUser)
+        public GameDefinitionViewModel Build(GameDefinitionSummary gameDefinitionSummary, ApplicationUser currentUser)
         {
             GameDefinitionViewModel viewModel = new GameDefinitionViewModel()
             {
-                Id = gameDefinition.Id,
-                Name = gameDefinition.Name,
-                Description = gameDefinition.Description,
-                UserCanEdit = (currentUser != null && gameDefinition.GamingGroupId == currentUser.CurrentGamingGroupId)
+                Id = gameDefinitionSummary.Id,
+                Name = gameDefinitionSummary.Name,
+                Description = gameDefinitionSummary.Description,
+                TotalNumberOfGamesPlayed = gameDefinitionSummary.TotalNumberOfGamesPlayed,
+                UserCanEdit = (currentUser != null && gameDefinitionSummary.GamingGroupId == currentUser.CurrentGamingGroupId)
             };
 
-            viewModel.PlayedGames = (from playedGame in gameDefinition.PlayedGames
-                                     select playedGameDetailsViewModelBuilder.Build(playedGame, currentUser))
-                                    .ToList();
-                                    
+            if (gameDefinitionSummary.PlayedGames == null)
+            {
+                viewModel.PlayedGames = new List<PlayedGameDetailsViewModel>();
+            }
+            else
+            {
+                viewModel.PlayedGames = (from playedGame in gameDefinitionSummary.PlayedGames
+                                         select playedGameDetailsViewModelBuilder.Build(playedGame, currentUser))
+                                   .ToList();
+            }
+                                  
             return viewModel;
         }
     }

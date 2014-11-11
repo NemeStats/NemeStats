@@ -8,6 +8,6 @@ namespace BusinessLogic.Logic.GameDefinitions
     public interface IGameDefinitionRetriever
     {
         IList<GameDefinitionSummary> GetAllGameDefinitions(int gamingGroupId);
-        GameDefinition GetGameDefinitionDetails(int id, int numberOfPlayedGamesToRetrieve);
+        GameDefinitionSummary GetGameDefinitionDetails(int id, int numberOfPlayedGamesToRetrieve);
     }
 }
