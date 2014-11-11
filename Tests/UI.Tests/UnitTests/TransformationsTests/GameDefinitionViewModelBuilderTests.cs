@@ -46,7 +46,8 @@ namespace UI.Tests.UnitTests.TransformationsTests
                 Name = "game definition name",
                 Description = "game definition description",
                 GamingGroupId = gamingGroupid,
-                PlayedGames = playedGames,
+                GamingGroupName = "gaming group name",
+                PlayedGames = playedGames
             };
             currentUser = new ApplicationUser()
             {
@@ -99,6 +100,18 @@ namespace UI.Tests.UnitTests.TransformationsTests
             GameDefinitionViewModel actualViewModel = transformer.Build(gameDefinitionSummary, currentUser);
 
             Assert.AreEqual(new List<PlayedGameDetailsViewModel>(), actualViewModel.PlayedGames);
+        }
+
+        [Test]
+        public void ItCopiesTheGamingGroupName()
+        {
+            Assert.AreEqual(gameDefinitionSummary.GamingGroupName, viewModel.GamingGroupName);
+        }
+
+        [Test]
+        public void ItCopiesTheGamingGroupId()
+        {
+            Assert.AreEqual(gameDefinitionSummary.GamingGroupId, viewModel.GamingGroupId);
         }
 
         [Test]

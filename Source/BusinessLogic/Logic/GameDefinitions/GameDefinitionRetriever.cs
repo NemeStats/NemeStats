@@ -39,6 +39,7 @@ namespace BusinessLogic.Logic.GameDefinitions
         {
             GameDefinitionSummary gameDefinitionSummary = (from gameDefinition in dataContext.GetQueryable<GameDefinition>()
                                                                                              .Include(game => game.PlayedGames)
+                                                                                             .Include(game => game.GamingGroup)
                                                            where gameDefinition.Id == id
                                                            select new GameDefinitionSummary
                                                            {
@@ -47,6 +48,7 @@ namespace BusinessLogic.Logic.GameDefinitions
                                                                Name = gameDefinition.Name,
                                                                Description = gameDefinition.Description,
                                                                GamingGroupId = gameDefinition.GamingGroupId,
+                                                               GamingGroupName = gameDefinition.GamingGroup.Name,
                                                                Id = gameDefinition.Id,
                                                                TotalNumberOfGamesPlayed = gameDefinition.PlayedGames.Count,
                                                                GameDefinition = gameDefinition

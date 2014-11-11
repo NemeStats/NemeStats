@@ -25,6 +25,8 @@ namespace UI.Transformations
                 Name = gameDefinitionSummary.Name,
                 Description = gameDefinitionSummary.Description,
                 TotalNumberOfGamesPlayed = gameDefinitionSummary.TotalNumberOfGamesPlayed,
+                GamingGroupId = gameDefinitionSummary.GamingGroupId,
+                GamingGroupName = gameDefinitionSummary.GamingGroupName,
                 UserCanEdit = (currentUser != null && gameDefinitionSummary.GamingGroupId == currentUser.CurrentGamingGroupId)
             };
 
