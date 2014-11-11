@@ -84,7 +84,8 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
                     },
                 CurrentNemesis = nemesis,
                 Minions = new List<Player>(),
-                GamingGroupId = 123
+                GamingGroupId = 123,
+                GamingGroupName = "gaming group name"
             };
 
             gameResultViewModelBuilder
@@ -181,6 +182,18 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         public void ItCopiesTheTotalGamesPlayed()
         {
             Assert.AreEqual(playerDetails.PlayerStats.TotalGames, playerDetailsViewModel.TotalGamesPlayed);
+        }
+
+        [Test]
+        public void ItCopiesTheGamingGroupName()
+        {
+            Assert.AreEqual(playerDetails.GamingGroupId, playerDetailsViewModel.GamingGroupId);
+        }
+
+        [Test]
+        public void ItCopiesTheGamingGroupId()
+        {
+            Assert.AreEqual(playerDetails.GamingGroupName, playerDetailsViewModel.GamingGroupName);
         }
 
         [Test]

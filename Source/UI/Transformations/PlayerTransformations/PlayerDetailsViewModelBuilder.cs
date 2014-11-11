@@ -32,8 +32,11 @@ namespace UI.Transformations.PlayerTransformations
             playerDetailsViewModel.PlayerId = playerDetails.Id;
             playerDetailsViewModel.PlayerName = playerDetails.Name;
             playerDetailsViewModel.Active = playerDetails.Active;
+            playerDetailsViewModel.GamingGroupName = playerDetails.GamingGroupName;
+            playerDetailsViewModel.GamingGroupId = playerDetails.GamingGroupId;
             playerDetailsViewModel.TotalGamesPlayed = playerDetails.PlayerStats.TotalGames;
             playerDetailsViewModel.TotalPoints = playerDetails.PlayerStats.TotalPoints;
+            
             SetAveragePointsPerGame(playerDetails, playerDetailsViewModel);
             playerDetailsViewModel.AveragePlayersPerGame = playerDetails.PlayerStats.AveragePlayersPerGame;
             SetAveragePointsPerPlayer(playerDetails, playerDetailsViewModel);
