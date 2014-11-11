@@ -10,6 +10,7 @@ Views.GameDefinition.CreateGameDefinitionPartial = function () {
 	this.$gamesTable = null;
 	this.onDefinitionCreated = null;
 	this.formAction = null;
+	var dictionary = null;
 };
 
 //Implementation
@@ -27,8 +28,9 @@ Views.GameDefinition.CreateGameDefinitionPartial.prototype = {
 			owner.createGameDefinition();
 		});
 
-		this.$gameNameInput.on("input", function (target) {
-			owner.getGameName(target);
+		this.$gameNameInput.on("input", function () {
+			dictionary = owner.getGameName();
+			owner.setAutoComplete(dictionary);
 		});
 	},
 	createGameDefinition: function () {
@@ -49,31 +51,35 @@ Views.GameDefinition.CreateGameDefinitionPartial.prototype = {
 			});
 		}
 	},
-	getGameName: function (target) {
-		var inputText = $('#gameNameInput').val()
-		alert("input is: " + inputText);
+	getGameName: function () {
+		var inputText = $('#gameNameInput').val()	
 		var results = [];
+		var autocompleteDictionary = [];
 
-		 $.ajax({
-			url: "/GameDefinition/SearchBoardGameGeekHttpGet",
-			type: "GET",
-			data: { searchText: inputText },
-			success: function (data) {
-				//data needs to be converted to value: BoardGameId, label: BoardGameName
-				results = data;
-				alert(data);
-
-				alert(results.length);
-				alert(results[0].BoardGameName);
-			},
-			error: function(err) {
-				alert("Error " + err.status + ":\r\n" + err.statusText);
-			},
-			dataType: "json"
-		});
-
-		target.autocomplete({
-			source: results
+		if (inputText.length >= 3) {
+			$.ajax({
+				url: "/GameDefinition/SearchBoardGameGeekHttpGet",
+				type: "GET",
+				async: false,
+				data: { searchText: inputText },
+				success: function (data) {
+					results = data;
+			
+					for (var i = 0; i < results.length; i++)
+						autocompleteDictionary.push({ 'value': results[i].BoardGameName, 'label': results[i].BoardGameName });	
+				},
+				error: function (err) {
+					alert("Error " + err.status + ":\r\n" + err.statusText);
+				},
+				dataType: "json"
+			});
+		}
+		return autocompleteDictionary;
+	},
+	setAutoComplete: function (dictionary) {
+		$('#gameNameInput').autocomplete({
+			minLength: 3,
+			source: dictionary
 		});
 	}
 }
