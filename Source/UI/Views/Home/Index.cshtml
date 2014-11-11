@@ -109,6 +109,7 @@
                         <th>Game</th>
                         <th>Winner</th>
                         <th>Date</th>
+                        <th>Gaming Group</th>
                     </tr>
                     @foreach (BusinessLogic.Models.Games.PublicGameSummary publicGame in @Model.RecentPublicGames)
                     {
@@ -116,6 +117,7 @@
                             <td>@Html.ActionLink(publicGame.GameDefinitionName, "Details", "GameDefinition", new { id = publicGame.GameDefinitionId }, new { })</td>
                             <td>@Html.ActionLink(publicGame.WinningPlayer.Name, "Details", "Player", new { id = publicGame.WinningPlayer.Id }, new { })</td>
                             <td>@Html.ActionLink(publicGame.DatePlayed.ToShortDateString(), "Details", "PlayedGame", new { id = publicGame.PlayedGameId }, new { })</td>
+                            <td>@Html.ActionLink(publicGame.GamingGroupName, "Details", "GamingGroup", new { id = publicGame.GamingGroupId }, new { })</td>
                         </tr>
                     }
                 </table>
