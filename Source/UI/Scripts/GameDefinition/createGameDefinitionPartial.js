@@ -66,7 +66,7 @@ Views.GameDefinition.CreateGameDefinitionPartial.prototype = {
 					results = data;
 			
 					for (var i = 0; i < results.length; i++)
-						autocompleteDictionary.push({ 'value': results[i].BoardGameName, 'label': results[i].BoardGameName });	
+						autocompleteDictionary.push({ 'value': results[i].BoardGameName, 'label': results[i].BoardGameName + " (" + results[i].YearPublished  + ")" });
 				},
 				error: function (err) {
 					alert("Error " + err.status + ":\r\n" + err.statusText);
