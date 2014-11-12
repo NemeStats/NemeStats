@@ -177,7 +177,8 @@ namespace UI.Controllers
 
             if (ModelState.IsValid)
             {
-                bool requireExactMatches = searchText.Length < MIN_LENGTH_FOR_PARTIAL_MATCH_BOARD_GAME_GEEK_SEARCH;
+                //Jake, I disabled this because it is not needed anymore.
+                bool requireExactMatches = false;//searchText.Length < MIN_LENGTH_FOR_PARTIAL_MATCH_BOARD_GAME_GEEK_SEARCH;
                 List<BoardGameGeekSearchResult> searchResults = boardGameGeekSearcher.SearchForBoardGames(searchText, requireExactMatches);
                 return Json(searchResults, JsonRequestBehavior.AllowGet);
             }

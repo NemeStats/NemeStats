@@ -10,7 +10,7 @@ Views.GameDefinition.CreateGameDefinitionPartial = function () {
 	this.$gamesTable = null;
 	this.onDefinitionCreated = null;
 	this.formAction = null;
-	var dictionary = null;
+	this._serviceUrl = "/GameDefinition/SearchBoardGameGeekHttpGet";
 };
 
 //Implementation
@@ -28,9 +28,9 @@ Views.GameDefinition.CreateGameDefinitionPartial.prototype = {
 			owner.createGameDefinition();
 		});
 
-		this.$gameNameInput.on("input", function () {
-			dictionary = owner.getGameName();
-			owner.setAutoComplete(dictionary);
+		this.$gameNameInput.autocomplete({
+		    minLength: 3,
+		    source: $.proxy(owner.getGameName, owner)
 		});
 	},
 	createGameDefinition: function () {
@@ -51,35 +51,24 @@ Views.GameDefinition.CreateGameDefinitionPartial.prototype = {
 			});
 		}
 	},
-	getGameName: function () {
-		var inputText = $('#gameNameInput').val()	
-		var results = [];
-		var autocompleteDictionary = [];
-
-		if (inputText.length >= 3) {
-			$.ajax({
-				url: "/GameDefinition/SearchBoardGameGeekHttpGet",
-				type: "GET",
-				async: false,
-				data: { searchText: inputText },
-				success: function (data) {
-					results = data;
-			
-					for (var i = 0; i < results.length; i++)
-						autocompleteDictionary.push({ 'value': results[i].BoardGameName, 'label': results[i].BoardGameName + " (" + results[i].YearPublished  + ")" });
-				},
-				error: function (err) {
-					alert("Error " + err.status + ":\r\n" + err.statusText);
-				},
-				dataType: "json"
-			});
-		}
-		return autocompleteDictionary;
-	},
-	setAutoComplete: function (dictionary) {
-		$('#gameNameInput').autocomplete({
-			minLength: 3,
-			source: dictionary
+	getGameName: function (request, response) {
+	    var owner = this;
+		$.ajax({
+			url: owner._serviceUrl,
+			type: "GET",
+			async: true,
+			data: { searchText: request.term },
+			success: function (data) {
+			    var result = [];
+			    for (var item in data) {
+			        result.push(data[item].BoardGameName);
+			    }
+				response(result);
+			},
+			error: function (err) {
+				alert("Error " + err.status + ":\r\n" + err.statusText);
+			},
+			dataType: "json"
 		});
 	}
 }
