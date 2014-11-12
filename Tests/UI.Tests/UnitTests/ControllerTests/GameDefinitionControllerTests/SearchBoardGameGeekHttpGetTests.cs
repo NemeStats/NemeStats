@@ -26,12 +26,23 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
         }
 
         [Test]
-        public void ItReturnsBoardGameGeekResultsThatDontHaveToBeExactMatches()
+        public void ItReturnsBoardGameGeekResultsThatDontHaveToBeExactMatchesWhenFiveOrMoreCharactersAreEntered()
         {
-            gameDefinitionControllerPartialMock.SearchBoardGameGeekHttpGet(searchText);
+            string fiveCharacterSearchText = "12345";
+            gameDefinitionControllerPartialMock.SearchBoardGameGeekHttpGet(fiveCharacterSearchText);
 
             boardGameGeekSearcherMock.AssertWasCalled(
-                mock => mock.SearchForBoardGames(Arg<string>.Is.Equal(searchText), Arg<bool>.Is.Equal(false)));
+                mock => mock.SearchForBoardGames(Arg<string>.Is.Equal(fiveCharacterSearchText), Arg<bool>.Is.Equal(false)));
+        }
+
+        [Test]
+        public void ItRequestsExactMatchesWhenLessThanFiveCharacters()
+        {
+            string fourCharacterSearchText = "1234";
+            gameDefinitionControllerPartialMock.SearchBoardGameGeekHttpGet(fourCharacterSearchText);
+
+            boardGameGeekSearcherMock.AssertWasCalled(
+                mock => mock.SearchForBoardGames(Arg<string>.Is.Equal(fourCharacterSearchText), Arg<bool>.Is.Equal(true)));
         }
     }
 }
