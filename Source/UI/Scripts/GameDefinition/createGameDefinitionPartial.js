@@ -61,7 +61,7 @@ Views.GameDefinition.CreateGameDefinitionPartial.prototype = {
 			success: function (data) {
 			    var result = [];
 			    for (var item in data) {
-			        result.push(data[item].BoardGameName);
+			        result.push(data[item].BoardGameName + " (" + data[item].YearPublished + ")");
 			    }
 				response(result);
 			},
