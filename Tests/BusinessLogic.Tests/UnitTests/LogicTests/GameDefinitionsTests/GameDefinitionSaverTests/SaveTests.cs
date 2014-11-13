@@ -8,7 +8,7 @@ using Rhino.Mocks;
 using System;
 using System.Linq;
 
-namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefinitionCreatorTests
+namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefinitionSaverTests
 {
     [TestFixture]
     public class SaveTests

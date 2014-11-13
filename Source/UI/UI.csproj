@@ -276,6 +276,7 @@
     </Compile>
     <Compile Include="HtmlHelpers\MvcHtmlStringExtension.cs" />
     <Compile Include="HtmlHelpers\PlayedGameHelper.cs" />
+    <Compile Include="Models\GameDefinitionModels\GameDefinitionSummaryViewModel.cs" />
     <Compile Include="Models\GamingGroup\GamingGroupPublicViewModel.cs" />
     <Compile Include="Models\IEditableViewModel.cs" />
     <Compile Include="Models\IGamingGroupAssignedViewModel.cs" />
@@ -311,8 +312,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>
+    <Compile Include="Transformations\GameDefinitionSummaryViewModelBuilder.cs" />
+    <Compile Include="Transformations\IGameDefinitionSummaryViewModelBuilder.cs" />
     <Compile Include="Transformations\IGameDefinitionViewModelBuilder.cs" />
-    <Compile Include="Transformations\GameDefinitionViewModelBuilder.cs" />
+    <Compile Include="Transformations\GameDefinitionDetailsViewModelBuilder.cs" />
     <Compile Include="Transformations\IGamingGroupInvitationViewModelBuilder.cs" />
     <Compile Include="Transformations\GamingGroupInvitationViewModelBuilder.cs" />
     <Compile Include="Transformations\IGamingGroupViewModelBuilder.cs" />

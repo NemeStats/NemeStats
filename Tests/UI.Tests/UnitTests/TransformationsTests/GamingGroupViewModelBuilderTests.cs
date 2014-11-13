@@ -24,13 +24,13 @@ namespace UI.Tests.UnitTests.TransformationsTests
         private IGamingGroupInvitationViewModelBuilder invitationTransformerMock;
         private IPlayedGameDetailsViewModelBuilder playedGameDetailsViewModelBuilderMock;
         private IPlayerWithNemesisViewModelBuilder playerWithNemesisViewModelBuilderMock;
-        private IGameDefinitionViewModelBuilder gameDefinitionViewModelBuilderMock;
+        private IGameDefinitionSummaryViewModelBuilder gameDefinitionSummaryViewModelBuilderMock;
         private GamingGroupSummary gamingGroupSummary;
         private GamingGroupViewModel viewModel;
         private List<Player> players;
         private List<GameDefinitionSummary> gameDefinitionSummaries;
         private List<PlayedGame> playedGames;
-        private List<GameDefinitionViewModel> gameDefinitionViewModels; 
+        private List<GameDefinitionDetailsViewModel> gameDefinitionDetailsViewModels; 
         private ApplicationUser currentUser;
 
         [SetUp]
@@ -39,12 +39,12 @@ namespace UI.Tests.UnitTests.TransformationsTests
             invitationTransformerMock = MockRepository.GenerateMock<IGamingGroupInvitationViewModelBuilder>();
             playerWithNemesisViewModelBuilderMock = MockRepository.GenerateMock<IPlayerWithNemesisViewModelBuilder>();
             playedGameDetailsViewModelBuilderMock = MockRepository.GenerateMock<IPlayedGameDetailsViewModelBuilder>();
-            gameDefinitionViewModelBuilderMock = MockRepository.GenerateMock<IGameDefinitionViewModelBuilder>();
+            gameDefinitionSummaryViewModelBuilderMock = MockRepository.GenerateMock<IGameDefinitionSummaryViewModelBuilder>();
             transformer = new GamingGroupViewModelBuilder(
                 invitationTransformerMock,
                 playedGameDetailsViewModelBuilderMock,
                 playerWithNemesisViewModelBuilderMock,
-                gameDefinitionViewModelBuilderMock);
+                gameDefinitionSummaryViewModelBuilderMock);
             players = new List<Player>()
             {
                 new Player(){ Id = 1 },
@@ -102,8 +102,8 @@ namespace UI.Tests.UnitTests.TransformationsTests
 
             foreach (GameDefinitionSummary summary in gameDefinitionSummaries)
             {
-                gameDefinitionViewModelBuilderMock.Expect(mock => mock.Build(summary, currentUser))
-                                                  .Return(new GameDefinitionViewModel { Id = summary.Id });
+                gameDefinitionSummaryViewModelBuilderMock.Expect(mock => mock.Build(summary, currentUser))
+                                                  .Return(new GameDefinitionSummaryViewModel { Id = summary.Id });
             }
 
             viewModel = transformer.Build(gamingGroupSummary, currentUser);
@@ -166,7 +166,7 @@ namespace UI.Tests.UnitTests.TransformationsTests
         {
             foreach (GameDefinitionSummary summary in gameDefinitionSummaries)
             {
-                Assert.True((from GameDefinitionViewModel game in viewModel.GameDefinitionSummaries
+                Assert.True((from GameDefinitionSummaryViewModel game in viewModel.GameDefinitionSummaries
                                  where game.Id == summary.Id
                                  select true).First());
             }

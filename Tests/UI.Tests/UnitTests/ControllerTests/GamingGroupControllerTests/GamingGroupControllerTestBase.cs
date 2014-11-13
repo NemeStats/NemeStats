@@ -23,7 +23,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
         protected IShowingXResultsMessageBuilder showingXResultsMessageBuilderMock;
         protected IPlayerWithNemesisViewModelBuilder playerWithNemesisViewModelBuilderMock;
         protected IPlayedGameDetailsViewModelBuilder playedGameDetailsViewModelBuilderMock;
-        protected IGameDefinitionViewModelBuilder gameDefinitionViewModelBuilderMock;
+        protected IGameDefinitionSummaryViewModelBuilder gameDefinitionSummaryViewModelBuilderMock;
         protected ApplicationUser currentUser;
 
         [SetUp]
@@ -37,7 +37,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
             showingXResultsMessageBuilderMock = MockRepository.GenerateMock<IShowingXResultsMessageBuilder>();
             playerWithNemesisViewModelBuilderMock = MockRepository.GenerateMock<IPlayerWithNemesisViewModelBuilder>();
             playedGameDetailsViewModelBuilderMock = MockRepository.GenerateMock<IPlayedGameDetailsViewModelBuilder>();
-            gameDefinitionViewModelBuilderMock = MockRepository.GenerateMock<IGameDefinitionViewModelBuilder>();
+            gameDefinitionSummaryViewModelBuilderMock = MockRepository.GenerateMock<IGameDefinitionSummaryViewModelBuilder>();
             gamingGroupController = new GamingGroupController(
                 gamingGroupViewModelBuilderMock, 
                 gamingGroupAccessGranterMock,
@@ -46,7 +46,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
                 showingXResultsMessageBuilderMock,
                 playerWithNemesisViewModelBuilderMock,
                 playedGameDetailsViewModelBuilderMock,
-                gameDefinitionViewModelBuilderMock);
+                gameDefinitionSummaryViewModelBuilderMock);
             currentUser = new ApplicationUser()
             {
                 Id = "user  id",

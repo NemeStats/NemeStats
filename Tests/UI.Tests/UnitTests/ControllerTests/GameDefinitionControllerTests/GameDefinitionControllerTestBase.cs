@@ -19,7 +19,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
     {
         protected GameDefinitionController gameDefinitionControllerPartialMock;
         protected IGameDefinitionRetriever gameDefinitionRetrieverMock;
-        protected IGameDefinitionViewModelBuilder gameDefinitionTransformationMock;
+        protected IGameDefinitionDetailsViewModelBuilder gameDefinitionTransformationMock;
         protected IShowingXResultsMessageBuilder showingXResultsMessageBuilderMock;
         protected IGameDefinitionSaver gameDefinitionCreatorMock;
         protected IBoardGameGeekSearcher boardGameGeekSearcherMock;
@@ -34,7 +34,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
         {
             dataContextMock = MockRepository.GenerateMock<NemeStatsDataContext>();
             gameDefinitionRetrieverMock = MockRepository.GenerateMock<IGameDefinitionRetriever>();
-            gameDefinitionTransformationMock = MockRepository.GenerateMock<IGameDefinitionViewModelBuilder>();
+            gameDefinitionTransformationMock = MockRepository.GenerateMock<IGameDefinitionDetailsViewModelBuilder>();
             showingXResultsMessageBuilderMock = MockRepository.GenerateMock<IShowingXResultsMessageBuilder>();
             gameDefinitionCreatorMock = MockRepository.GenerateMock<IGameDefinitionSaver>();
             urlHelperMock = MockRepository.GenerateMock<UrlHelper>();

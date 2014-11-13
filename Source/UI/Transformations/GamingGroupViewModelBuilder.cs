@@ -15,18 +15,18 @@ namespace UI.Transformations
         private readonly IGamingGroupInvitationViewModelBuilder invitationViewModelTransformer;
         private readonly IPlayedGameDetailsViewModelBuilder playedGameDetailsViewModelBuilder;
         private readonly IPlayerWithNemesisViewModelBuilder playerWithNemesisViewModelBuilder;
-        private readonly IGameDefinitionViewModelBuilder gameDefinitionViewModelBuilder;
+        private readonly IGameDefinitionSummaryViewModelBuilder gameDefinitionSummaryViewModelBuilder;
 
         public GamingGroupViewModelBuilder(
             IGamingGroupInvitationViewModelBuilder invitationViewModelTransformer,
             IPlayedGameDetailsViewModelBuilder playedGameDetailsViewModelBuilder,
             IPlayerWithNemesisViewModelBuilder playerWithNemesisViewModelBuilder,
-            IGameDefinitionViewModelBuilder gameDefinitionViewModelBuilder)
+            IGameDefinitionSummaryViewModelBuilder gameDefinitionSummaryViewModelBuilder)
         {
             this.invitationViewModelTransformer = invitationViewModelTransformer;
             this.playedGameDetailsViewModelBuilder = playedGameDetailsViewModelBuilder;
             this.playerWithNemesisViewModelBuilder = playerWithNemesisViewModelBuilder;
-            this.gameDefinitionViewModelBuilder = gameDefinitionViewModelBuilder;
+            this.gameDefinitionSummaryViewModelBuilder = gameDefinitionSummaryViewModelBuilder;
         }
 
         public GamingGroupViewModel Build(GamingGroupSummary gamingGroupSummary, ApplicationUser currentUser = null)
@@ -50,7 +50,7 @@ namespace UI.Transformations
                 Invitations = invitationViewModels,
                 Players = playerWithNemesisList,
                 GameDefinitionSummaries = gamingGroupSummary.GameDefinitionSummaries
-                    .Select(game => gameDefinitionViewModelBuilder.Build(game, currentUser)).ToList(),
+                    .Select(game => gameDefinitionSummaryViewModelBuilder.Build(game, currentUser)).ToList(),
                 RecentGames = details
             };
 

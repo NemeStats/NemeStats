@@ -29,6 +29,7 @@ namespace BusinessLogic.Logic.GameDefinitions
                     Description = gameDefinition.Description,
                     GamingGroupId = gameDefinition.GamingGroupId,
                     Id = gameDefinition.Id,
+                    PlayedGames = gameDefinition.PlayedGames,
                     TotalNumberOfGamesPlayed = gameDefinition.PlayedGames.Count
                 })
                 .OrderBy(game => game.Name)
@@ -47,6 +48,7 @@ namespace BusinessLogic.Logic.GameDefinitions
                                                                BoardGameGeekObjectId = gameDefinition.BoardGameGeekObjectId,
                                                                Name = gameDefinition.Name,
                                                                Description = gameDefinition.Description,
+                                                               GamingGroup = gameDefinition.GamingGroup,
                                                                GamingGroupId = gameDefinition.GamingGroupId,
                                                                GamingGroupName = gameDefinition.GamingGroup.Name,
                                                                Id = gameDefinition.Id,

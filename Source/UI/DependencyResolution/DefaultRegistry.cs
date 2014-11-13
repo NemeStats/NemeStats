@@ -52,90 +52,100 @@ namespace UI.DependencyResolution {
 					scan.With(new ControllerConvention());
                 });
 
-            //unique per request scope
-            For<DbContext>().HttpContextScoped().Use<NemeStatsDbContext>();
-            For<IDataContext>().HttpContextScoped().Use<NemeStatsDataContext>();
-            For<ApplicationUserManager>().HttpContextScoped().Use<ApplicationUserManager>();
-            For<IAuthenticationManager>().Use(() => HttpContext.Current.GetOwinContext().Authentication);
+            this.SetupSingletonMappings();
 
-            //transient scope
-            For<IGamingGroupSaver>().Use<GamingGroupSaver>();
+            this.SetupUniquePerRequestMappings();
 
-            For<IGamingGroupAccessGranter>().Use<EntityFrameworkGamingGroupAccessGranter>();
+            this.SetupTransientMappings();
+        }
 
-            For<IGamingGroupInviteConsumer>().Use<GamingGroupInviteConsumer>();
-            For<IPlayerSummaryBuilder>().Use<PlayerSummaryBuilder>();
+        private void SetupSingletonMappings()
+        {
+            this.For<IGameResultViewModelBuilder>().Singleton().Use<GameResultViewModelBuilder>();
 
-            For<IPlayerRepository>().Use<EntityFrameworkPlayerRepository>();
+            this.For<IPlayerDetailsViewModelBuilder>().Singleton().Use<PlayerDetailsViewModelBuilder>();
 
-            For<IGameDefinitionRetriever>().Use<GameDefinitionRetriever>();
+            this.For<IGamingGroupViewModelBuilder>().Singleton()
+                                               .Use<GamingGroupViewModelBuilder>();
 
-            For<IPlayedGameRetriever>().Use<PlayedGameRetriever>();
+            this.For<IGamingGroupInvitationViewModelBuilder>().Singleton()
+                                                         .Use<GamingGroupInvitationViewModelBuilder>();
 
-            For<Microsoft.AspNet.Identity.IUserStore<ApplicationUser>>()
+            this.For<ITopPlayerViewModelBuilder>().Use<TopPlayerViewModelBuilder>();
+
+            this.For<IPlayedGameDetailsViewModelBuilder>().Singleton().Use<PlayedGameDetailsViewModelBuilder>();
+
+            this.For<IPlayerWithNemesisViewModelBuilder>().Singleton().Use<PlayerWithNemesisViewModelBuilder>();
+
+            this.For<IMinionViewModelBuilder>().Singleton().Use<MinionViewModelBuilder>();
+
+            this.For<INemesisChangeViewModelBuilder>().Singleton().Use<NemesisChangeViewModelBuilder>();
+
+            this.For<IGameDefinitionDetailsViewModelBuilder>().Singleton().Use<GameDefinitionDetailsViewModelBuilder>();
+
+            this.For<IGameDefinitionSummaryViewModelBuilder>().Singleton().Use<GameDefinitionSummaryViewModelBuilder>();
+        }
+
+        private void SetupTransientMappings()
+        {
+            this.For<IGamingGroupSaver>().Use<GamingGroupSaver>();
+
+            this.For<IGamingGroupAccessGranter>().Use<EntityFrameworkGamingGroupAccessGranter>();
+
+            this.For<IGamingGroupInviteConsumer>().Use<GamingGroupInviteConsumer>();
+            this.For<IPlayerSummaryBuilder>().Use<PlayerSummaryBuilder>();
+
+            this.For<IPlayerRepository>().Use<EntityFrameworkPlayerRepository>();
+
+            this.For<IGameDefinitionRetriever>().Use<GameDefinitionRetriever>();
+
+            this.For<IPlayedGameRetriever>().Use<PlayedGameRetriever>();
+
+            this.For<Microsoft.AspNet.Identity.IUserStore<ApplicationUser>>()
                 .Use<Microsoft.AspNet.Identity.EntityFramework.UserStore<ApplicationUser>>();
 
-            For<IGameDefinitionViewModelBuilder>()
-                .Use<GameDefinitionViewModelBuilder>();
+            this.For<IShowingXResultsMessageBuilder>().Use<ShowingXResultsMessageBuilder>();
+            this.For<IGamingGroupRetriever>().Use<GamingGroupRetriever>();
 
-            For<IShowingXResultsMessageBuilder>().Use<ShowingXResultsMessageBuilder>();
-            For<IGamingGroupRetriever>().Use<GamingGroupRetriever>();
+            this.For<IPendingGamingGroupInvitationRetriever>().Use<PendingGamingGroupInvitationRetriever>();
 
-            For<IPendingGamingGroupInvitationRetriever>().Use<PendingGamingGroupInvitationRetriever>();
+            this.For<IPlayedGameCreator>().Use<PlayedGameCreator>();
 
-            For<IPlayedGameCreator>().Use<PlayedGameCreator>();
+            this.For<INemeStatsEventTracker>().Use<UniversalAnalyticsNemeStatsEventTracker>();
 
-            For<INemeStatsEventTracker>().Use<UniversalAnalyticsNemeStatsEventTracker>();
-
-            For<IEventTracker>().Use<EventTracker>();
-            For<INemesisHistoryRetriever>().Use<NemesisHistoryRetriever>();
+            this.For<IEventTracker>().Use<EventTracker>();
+            this.For<INemesisHistoryRetriever>().Use<NemesisHistoryRetriever>();
 
             //TODO should never be injected by the IoC... need to confirm
             //For<IUniversalAnalyticsEvent>().Use<UniversalAnalyticsEvent>();
 
-            For<IUniversalAnalyticsEventFactory>().Use<UniversalAnalyticsEventFactory>();
+            this.For<IUniversalAnalyticsEventFactory>().Use<UniversalAnalyticsEventFactory>();
 
-            For<IConfigurationManager>().Use(() => ConfigurationManager.Instance);
+            this.For<IConfigurationManager>().Use(() => ConfigurationManager.Instance);
 
-            For<IPlayerSaver>().Use<PlayerSaver>();
+            this.For<IPlayerSaver>().Use<PlayerSaver>();
 
-            For<IGameDefinitionSaver>().Use<GameDefinitionSaver>();
+            this.For<IGameDefinitionSaver>().Use<GameDefinitionSaver>();
 
-            For<IPlayerRetriever>().Use<PlayerRetriever>();
+            this.For<IPlayerRetriever>().Use<PlayerRetriever>();
 
-            For<INemesisRecalculator>().Use<NemesisRecalculator>();
+            this.For<INemesisRecalculator>().Use<NemesisRecalculator>();
 
-            For<IPlayedGameDeleter>().Use<PlayedGameDeleter>();
+            this.For<IPlayedGameDeleter>().Use<PlayedGameDeleter>();
 
-            For<IUserRegisterer>().Use<UserRegisterer>();
+            this.For<IUserRegisterer>().Use<UserRegisterer>();
 
-            For<IFirstTimeAuthenticator>().Use<FirstTimeAuthenticator>();
+            this.For<IFirstTimeAuthenticator>().Use<FirstTimeAuthenticator>();
 
-            For<IBoardGameGeekSearcher>().Use<BoardGameGeekSearcher>();
+            this.For<IBoardGameGeekSearcher>().Use<BoardGameGeekSearcher>();
+        }
 
-            //singleton scope
-
-            For<IGameResultViewModelBuilder>().Singleton().Use<GameResultViewModelBuilder>();
-
-            For<IPlayerDetailsViewModelBuilder>().Singleton().Use<PlayerDetailsViewModelBuilder>();
-
-            For<IGamingGroupViewModelBuilder>().Singleton()
-
-                .Use<GamingGroupViewModelBuilder>();
-
-            For<IGamingGroupInvitationViewModelBuilder>().Singleton()
-
-                .Use<GamingGroupInvitationViewModelBuilder>();
-
-            For<ITopPlayerViewModelBuilder>().Use<TopPlayerViewModelBuilder>();
-
-            For<IPlayedGameDetailsViewModelBuilder>().Singleton().Use<PlayedGameDetailsViewModelBuilder>();
-
-            For<IPlayerWithNemesisViewModelBuilder>().Singleton().Use<PlayerWithNemesisViewModelBuilder>();
-
-            For<IMinionViewModelBuilder>().Singleton().Use<MinionViewModelBuilder>();
-
-            For<INemesisChangeViewModelBuilder>().Singleton().Use<NemesisChangeViewModelBuilder>();
+        private void SetupUniquePerRequestMappings()
+        {
+            this.For<DbContext>().HttpContextScoped().Use<NemeStatsDbContext>();
+            this.For<IDataContext>().HttpContextScoped().Use<NemeStatsDataContext>();
+            this.For<ApplicationUserManager>().HttpContextScoped().Use<ApplicationUserManager>();
+            this.For<IAuthenticationManager>().Use(() => HttpContext.Current.GetOwinContext().Authentication);
         }
 
         #endregion

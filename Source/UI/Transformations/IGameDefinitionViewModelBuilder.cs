@@ -6,8 +6,8 @@ using UI.Models.GameDefinitionModels;
 
 namespace UI.Transformations
 {
-    public interface IGameDefinitionViewModelBuilder
+    public interface IGameDefinitionDetailsViewModelBuilder
     {
-        GameDefinitionViewModel Build(GameDefinitionSummary gameDefinitionSummary, ApplicationUser currentUser);
+        GameDefinitionDetailsViewModel Build(GameDefinitionSummary gameDefinitionSummary, ApplicationUser currentUser);
     }
 }

@@ -8,18 +8,20 @@ using UI.Models.PlayedGame;
 
 namespace UI.Transformations
 {
-    public class GameDefinitionViewModelBuilder : IGameDefinitionViewModelBuilder
+    public class GameDefinitionDetailsViewModelBuilder : IGameDefinitionDetailsViewModelBuilder
     {
+        //TODO Discuss with Tosho. How do I avoid duplicating this logic? If I call existing GameDefinitionSummaryViewModelBuilder
+        //then I get back a GameDefinitionSummaryViewModel, not a GameDefinitionDetailsViewModel
         internal IPlayedGameDetailsViewModelBuilder playedGameDetailsViewModelBuilder;
 
-        public GameDefinitionViewModelBuilder(IPlayedGameDetailsViewModelBuilder playedGameDetailsViewModelBuilder)
+        public GameDefinitionDetailsViewModelBuilder(IPlayedGameDetailsViewModelBuilder playedGameDetailsViewModelBuilder)
         {
             this.playedGameDetailsViewModelBuilder = playedGameDetailsViewModelBuilder;
         }
 
-        public GameDefinitionViewModel Build(GameDefinitionSummary gameDefinitionSummary, ApplicationUser currentUser)
+        public GameDefinitionDetailsViewModel Build(GameDefinitionSummary gameDefinitionSummary, ApplicationUser currentUser)
         {
-            GameDefinitionViewModel viewModel = new GameDefinitionViewModel()
+            GameDefinitionDetailsViewModel viewModel = new GameDefinitionDetailsViewModel()
             {
                 Id = gameDefinitionSummary.Id,
                 Name = gameDefinitionSummary.Name,

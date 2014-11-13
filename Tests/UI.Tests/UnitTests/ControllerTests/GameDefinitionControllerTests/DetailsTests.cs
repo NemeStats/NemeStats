@@ -18,7 +18,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
     {
         private int gameDefinitionId = 1;
         private GameDefinitionSummary gameDefinitionSummary;
-        private readonly GameDefinitionViewModel expectedViewModel = new GameDefinitionViewModel();
+        private readonly GameDefinitionDetailsViewModel expectedViewModel = new GameDefinitionDetailsViewModel();
 
         [SetUp]
         public override void SetUp()
@@ -52,7 +52,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
         {
             ViewResult viewResult = gameDefinitionControllerPartialMock.Details(gameDefinitionId, currentUser) as ViewResult;
 
-            GameDefinitionViewModel actualGameDefinitionViewModel = (GameDefinitionViewModel)viewResult.ViewData.Model;
+            GameDefinitionDetailsViewModel actualGameDefinitionViewModel = (GameDefinitionDetailsViewModel)viewResult.ViewData.Model;
             Assert.AreEqual(expectedViewModel, actualGameDefinitionViewModel);
         }
 

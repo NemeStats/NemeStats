@@ -22,14 +22,14 @@ namespace UI.Controllers
 
         internal IDataContext dataContext;
         internal IGameDefinitionRetriever gameDefinitionRetriever;
-        internal IGameDefinitionViewModelBuilder gameDefinitionTransformation;
+        internal IGameDefinitionDetailsViewModelBuilder gameDefinitionTransformation;
         internal IShowingXResultsMessageBuilder showingXResultsMessageBuilder;
         internal IGameDefinitionSaver gameDefinitionSaver;
         internal IBoardGameGeekSearcher boardGameGeekSearcher;
 
         public GameDefinitionController(IDataContext dataContext,
             IGameDefinitionRetriever gameDefinitionRetriever,
-            IGameDefinitionViewModelBuilder gameDefinitionTransformation,
+            IGameDefinitionDetailsViewModelBuilder gameDefinitionTransformation,
             IShowingXResultsMessageBuilder showingXResultsMessageBuilder,
             IGameDefinitionSaver gameDefinitionCreator,
             IBoardGameGeekSearcher boardGameGeekSearcher)
@@ -52,7 +52,7 @@ namespace UI.Controllers
             }
 
             GameDefinitionSummary gameDefinitionSummary;
-            GameDefinitionViewModel gamingGroupGameDefinitionViewModel;
+            GameDefinitionDetailsViewModel gamingGroupGameDefinitionViewModel;
 
             try
             {

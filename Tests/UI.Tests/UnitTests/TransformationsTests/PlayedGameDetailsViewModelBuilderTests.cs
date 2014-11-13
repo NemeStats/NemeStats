@@ -15,6 +15,7 @@ namespace UI.Tests.UnitTests.TransformationsTests
     {
         private PlayedGameDetailsViewModelBuilder builder;
         private PlayedGame playedGame;
+        private GamingGroup gamingGroup;
         private PlayedGameDetailsViewModel playedGameDetails;
         private IGameResultViewModelBuilder detailsBuilder;
         private ApplicationUser currentUser;
@@ -23,10 +24,16 @@ namespace UI.Tests.UnitTests.TransformationsTests
         [SetUp]
         public void SetUp()
         {
+            gamingGroup = new GamingGroup
+            {
+                Id = gamingGroupId,
+                Name = "gaming group name"
+            };
             playedGame = new PlayedGame()
             {
                 Id = 11111,
                 GameDefinition = new GameDefinition(),
+                GamingGroup = gamingGroup,
                 GameDefinitionId = 2222,
                 PlayerGameResults = new List<PlayerGameResult>(),
                 GamingGroupId = gamingGroupId
@@ -91,27 +98,39 @@ namespace UI.Tests.UnitTests.TransformationsTests
         }
 
         [Test]
-        public void ItRequiresAGameDefinitionOnThePlayedGame()
+        public void ItRequiresAGamingGroupOnThePlayedGame()
         {
-            PlayedGame playedGameWithNoGameDefinition = new PlayedGame();
+            playedGame.GamingGroup = null;
 
             var exception = Assert.Throws<ArgumentException>(() =>
-                    builder.Build(playedGameWithNoGameDefinition, currentUser)
+                    builder.Build(playedGame, currentUser)
                 );
 
-            Assert.AreEqual(PlayedGameDetailsViewModelBuilder.EXCEPTION_GAME_DEFINITION_CANNOT_BE_NULL, exception.Message);
+            Assert.AreEqual(PlayedGameDetailsViewModelBuilder.EXCEPTION_MESSAGE_GAMING_GROUP_CANNOT_BE_NULL, exception.Message);
+        }
+
+        [Test]
+        public void ItRequiresAGameDefinitionOnThePlayedGame()
+        {
+            playedGame.GameDefinition = null;
+
+            var exception = Assert.Throws<ArgumentException>(() =>
+                    builder.Build(playedGame, currentUser)
+                );
+
+            Assert.AreEqual(PlayedGameDetailsViewModelBuilder.EXCEPTION_MESSAGE_GAME_DEFINITION_CANNOT_BE_NULL, exception.Message);
         }
 
         [Test]
         public void ItRequiresPlayerGameResultsOnThePlayedGame()
         {
-            PlayedGame playedGameWithNoPlayerGameResults = new PlayedGame() { GameDefinition = new GameDefinition() };
+            playedGame.PlayerGameResults = null;
 
             var exception = Assert.Throws<ArgumentException>(() =>
-                    builder.Build(playedGameWithNoPlayerGameResults, currentUser)
+                    builder.Build(playedGame, currentUser)
                 );
 
-            Assert.AreEqual(PlayedGameDetailsViewModelBuilder.EXCEPTION_PLAYER_GAME_RESULTS_CANNOT_BE_NULL, exception.Message);
+            Assert.AreEqual(PlayedGameDetailsViewModelBuilder.EXCEPTION_MESSAGE_PLAYER_GAME_RESULTS_CANNOT_BE_NULL, exception.Message);
         }
 
         [Test]
@@ -136,6 +155,18 @@ namespace UI.Tests.UnitTests.TransformationsTests
         public void ItCopiesTheDatePlayed()
         {
             Assert.AreEqual(playedGame.DatePlayed.Ticks, playedGameDetails.DatePlayed.Ticks);
+        }
+
+        [Test]
+        public void ItCopiesTheGamingGroupId()
+        {
+            Assert.AreEqual(playedGame.GamingGroup.Id, playedGameDetails.GamingGroupId);
+        }
+
+        [Test]
+        public void ItCopiesTheGamingGroupName()
+        {
+            Assert.AreEqual(playedGame.GamingGroup.Name, playedGameDetails.GamingGroupName);
         }
 
         [Test]

@@ -29,7 +29,7 @@ namespace UI.Controllers
         internal IShowingXResultsMessageBuilder showingXResultsMessageBuilder;
         internal IPlayerWithNemesisViewModelBuilder playerWithNemesisViewModelBuilder;
         internal IPlayedGameDetailsViewModelBuilder playedGameDetailsViewModelBuilder;
-        internal IGameDefinitionViewModelBuilder gameDefinitionViewModelBuilder;
+        internal IGameDefinitionSummaryViewModelBuilder gameDefinitionSummaryViewModelBuilder;
 
         public GamingGroupController(
             IGamingGroupViewModelBuilder gamingGroupViewModelBuilder,
@@ -39,7 +39,7 @@ namespace UI.Controllers
             IShowingXResultsMessageBuilder showingXResultsMessageBuilder,
             IPlayerWithNemesisViewModelBuilder playerWithNemesisViewModelBuilder,
             IPlayedGameDetailsViewModelBuilder playedGameDetailsViewModelBuilder,
-            IGameDefinitionViewModelBuilder gameDefinitionViewModelBuilder)
+            IGameDefinitionSummaryViewModelBuilder gameDefinitionSummaryViewModelBuilder)
         {
             this.gamingGroupViewModelBuilder = gamingGroupViewModelBuilder;
             this.gamingGroupAccessGranter = gamingGroupAccessGranter;
@@ -48,7 +48,7 @@ namespace UI.Controllers
             this.showingXResultsMessageBuilder = showingXResultsMessageBuilder;
             this.playerWithNemesisViewModelBuilder = playerWithNemesisViewModelBuilder;
             this.playedGameDetailsViewModelBuilder = playedGameDetailsViewModelBuilder;
-            this.gameDefinitionViewModelBuilder = gameDefinitionViewModelBuilder;
+            this.gameDefinitionSummaryViewModelBuilder = gameDefinitionSummaryViewModelBuilder;
         }
 
         // GET: /GamingGroup
@@ -90,7 +90,7 @@ namespace UI.Controllers
                 Id = gamingGroupSummary.Id,
                 Name = gamingGroupSummary.Name,
                 GameDefinitionSummaries = gamingGroupSummary.GameDefinitionSummaries
-                    .Select(summary => gameDefinitionViewModelBuilder.Build(summary, currentUser)).ToList(),
+                    .Select(summary => gameDefinitionSummaryViewModelBuilder.Build(summary, currentUser)).ToList(),
                 Players = gamingGroupSummary.Players
                     .Select(player => playerWithNemesisViewModelBuilder.Build(player, currentUser)).ToList(),
                 RecentGames = gamingGroupSummary.PlayedGames
