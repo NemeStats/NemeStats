@@ -72,6 +72,12 @@ namespace UI.Controllers
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Edit);
         }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult SearchBoardGameGeekHttpGet()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SearchBoardGameGeekHttpGet);
+        }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public GameDefinitionController Actions { get { return MVC.GameDefinition; } }
@@ -93,6 +99,7 @@ namespace UI.Controllers
             public readonly string Save = "Save";
             public readonly string Edit = "Edit";
             public readonly string CreatePartial = "CreatePartial";
+            public readonly string SearchBoardGameGeekHttpGet = "SearchBoardGameGeekHttpGet";
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -103,6 +110,7 @@ namespace UI.Controllers
             public const string Save = "Save";
             public const string Edit = "Edit";
             public const string CreatePartial = "CreatePartial";
+            public const string SearchBoardGameGeekHttpGet = "SearchBoardGameGeekHttpGet";
         }
 
 
@@ -143,6 +151,14 @@ namespace UI.Controllers
             public readonly string currentUser = "currentUser";
             public readonly string gamedefinition = "gamedefinition";
         }
+        static readonly ActionParamsClass_SearchBoardGameGeekHttpGet s_params_SearchBoardGameGeekHttpGet = new ActionParamsClass_SearchBoardGameGeekHttpGet();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_SearchBoardGameGeekHttpGet SearchBoardGameGeekHttpGetParams { get { return s_params_SearchBoardGameGeekHttpGet; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_SearchBoardGameGeekHttpGet
+        {
+            public readonly string searchText = "searchText";
+        }
         static readonly ViewsClass s_views = new ViewsClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ViewsClass Views { get { return s_views; } }
@@ -156,14 +172,12 @@ namespace UI.Controllers
                 public readonly string _CreatePartial = "_CreatePartial";
                 public readonly string _GameDefinitionsPartial = "_GameDefinitionsPartial";
                 public readonly string Create = "Create";
-                public readonly string Delete = "Delete";
                 public readonly string Details = "Details";
                 public readonly string Edit = "Edit";
             }
             public readonly string _CreatePartial = "~/Views/GameDefinition/_CreatePartial.cshtml";
             public readonly string _GameDefinitionsPartial = "~/Views/GameDefinition/_GameDefinitionsPartial.cshtml";
             public readonly string Create = "~/Views/GameDefinition/Create.cshtml";
-            public readonly string Delete = "~/Views/GameDefinition/Delete.cshtml";
             public readonly string Details = "~/Views/GameDefinition/Details.cshtml";
             public readonly string Edit = "~/Views/GameDefinition/Edit.cshtml";
         }
@@ -258,6 +272,18 @@ namespace UI.Controllers
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.CreatePartial);
             CreatePartialOverride(callInfo);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void SearchBoardGameGeekHttpGetOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string searchText);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult SearchBoardGameGeekHttpGet(string searchText)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SearchBoardGameGeekHttpGet);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "searchText", searchText);
+            SearchBoardGameGeekHttpGetOverride(callInfo, searchText);
             return callInfo;
         }
 

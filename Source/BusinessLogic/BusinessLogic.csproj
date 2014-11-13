@@ -273,10 +273,16 @@
     <Compile Include="Migrations\201411050405195_LinkExistingGameDefinitionsToBoardGameGeek.Designer.cs">
       <DependentUpon>201411050405195_LinkExistingGameDefinitionsToBoardGameGeek.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201411090249182_AddDateCreated.cs" />
+    <Compile Include="Migrations\201411090249182_AddDateCreated.Designer.cs">
+      <DependentUpon>201411090249182_AddDateCreated.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Games\BoardGameGeekSearchResult.cs" />
+    <Compile Include="Models\Games\GameDefinitionSummary.cs" />
     <Compile Include="Models\Games\PublicGameSummary.cs" />
     <Compile Include="Models\GamingGroup.cs" />
     <Compile Include="Models\GamingGroupInvitation.cs" />
+    <Compile Include="Models\GamingGroups\GamingGroupSummary.cs" />
     <Compile Include="Models\Nemeses\NemesisData.cs" />
     <Compile Include="Models\Nemeses\NemesisHistoryData.cs" />
     <Compile Include="Models\Nemeses\NullNemesisData.cs" />
@@ -439,6 +445,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201411050405195_LinkExistingGameDefinitionsToBoardGameGeek.resx">
       <DependentUpon>201411050405195_LinkExistingGameDefinitionsToBoardGameGeek.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201411090249182_AddDateCreated.resx">
+      <DependentUpon>201411090249182_AddDateCreated.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

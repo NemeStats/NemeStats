@@ -1,6 +1,7 @@
 ﻿using BusinessLogic.Models;
 using System;
 using System.Linq;
+using BusinessLogic.Models.User;
 using UI.Models.Players;
 
 namespace UI.Transformations.PlayerTransformations
@@ -10,14 +11,15 @@ namespace UI.Transformations.PlayerTransformations
         internal const string EXCEPTION_MESSAGE_NEMESIS_PLAYER_CANNOT_BE_NULL = "player.Nemesis.NemesisPlayer cannot be null if there is a Nemesis set.";
         internal const string EXCEPTION_MESSAGE_PREVIOUS_NEMESIS_PLAYER_CANNOT_BE_NULL = "player.PreviousNemesis.NemesisPlayer cannot be null if there is a PreviousNemesis set.";
 
-        public PlayerWithNemesisViewModel Build(Player player)
+        public PlayerWithNemesisViewModel Build(Player player, ApplicationUser currentUser)
         {
             ValidatePlayerNotNull(player);
 
             PlayerWithNemesisViewModel model = new PlayerWithNemesisViewModel()
             {
                 PlayerId = player.Id,
-                PlayerName = player.Name
+                PlayerName = player.Name,
+                UserCanEdit = (currentUser != null && player.GamingGroupId == currentUser.CurrentGamingGroupId)
             };
 
             if(player.Nemesis != null)

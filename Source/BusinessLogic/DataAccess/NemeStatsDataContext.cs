@@ -15,8 +15,8 @@ namespace BusinessLogic.DataAccess
         internal const string EXCEPTION_MESSAGE_CURRENT_GAMING_GROUP_ID_CANNOT_BE_NULL = "currentUser.CurrentGamingGroupId cannot be null";
         internal const string EXCEPTION_MESSAGE_NO_ENTITY_EXISTS_FOR_THIS_ID = "No entity exists for Id '{0}'";
 
-        private SecuredEntityValidatorFactory securedEntityValidatorFactory;
-        private NemeStatsDbContext nemeStatsDbContext;
+        private readonly SecuredEntityValidatorFactory securedEntityValidatorFactory;
+        private readonly NemeStatsDbContext nemeStatsDbContext;
 
         //TODO do i really need this constructor? MockRepository.GenerateMock<ApplicationDbContext>() fails saying it needs a parameterless constructor
         public NemeStatsDataContext()

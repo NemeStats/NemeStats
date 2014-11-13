@@ -184,7 +184,8 @@
     <Compile Include="UnitTests\ControllerTests\PlayerControllerTests\PlayerControllerTestBase.cs" />
     <Compile Include="UnitTests\FiltersTests\UserContextAttributeTests\OnActionExecutingTests.cs" />
     <Compile Include="UnitTests\HtmlHelperTests\MyHelpersTests\GameResultsTests.cs" />
-    <Compile Include="UnitTests\TransformationsTests\GameDefinitionViewModelBuilderTests.cs" />
+    <Compile Include="UnitTests\TransformationsTests\GameDefinitionSummaryViewModelBuilderTests.cs" />
+    <Compile Include="UnitTests\TransformationsTests\GameDefinitionDetailsViewModelBuilderTests.cs" />
     <Compile Include="UnitTests\TransformationsTests\GamingGroupInvitationViewModelBuilderTests.cs" />
     <Compile Include="UnitTests\TransformationsTests\GamingGroupViewModelBuilderTests.cs" />
     <Compile Include="UnitTests\TransformationsTests\PlayedGameDetailsViewModelBuilderTests.cs" />

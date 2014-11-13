@@ -22,7 +22,7 @@ namespace UI.Controllers
 
         internal IDataContext dataContext;
         internal IGameDefinitionRetriever gameDefinitionRetriever;
-        internal IGameDefinitionViewModelBuilder gameDefinitionTransformation;
+        internal IGameDefinitionDetailsViewModelBuilder gameDefinitionTransformation;
         internal IShowingXResultsMessageBuilder showingXResultsMessageBuilder;
         internal IGameDefinitionSaver gameDefinitionSaver;
         internal IBoardGameGeekSearcher boardGameGeekSearcher;
@@ -30,7 +30,7 @@ namespace UI.Controllers
 
         public GameDefinitionController(IDataContext dataContext,
             IGameDefinitionRetriever gameDefinitionRetriever,
-            IGameDefinitionViewModelBuilder gameDefinitionTransformation,
+            IGameDefinitionDetailsViewModelBuilder gameDefinitionTransformation,
             IShowingXResultsMessageBuilder showingXResultsMessageBuilder,
             IGameDefinitionSaver gameDefinitionCreator,
             IBoardGameGeekSearcher boardGameGeekSearcher)
@@ -52,25 +52,25 @@ namespace UI.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            GameDefinition gameDefinition;
-            GameDefinitionViewModel gameDefinitionViewModel;
+            GameDefinitionSummary gameDefinitionSummary;
+            GameDefinitionDetailsViewModel gamingGroupGameDefinitionViewModel;
 
             try
             {
-                gameDefinition = gameDefinitionRetriever.GetGameDefinitionDetails(id.Value, NUMBER_OF_RECENT_GAMES_TO_SHOW);
-                gameDefinitionViewModel = gameDefinitionTransformation.Build(gameDefinition, currentUser);
+                gameDefinitionSummary = gameDefinitionRetriever.GetGameDefinitionDetails(id.Value, NUMBER_OF_RECENT_GAMES_TO_SHOW);
+                gamingGroupGameDefinitionViewModel = gameDefinitionTransformation.Build(gameDefinitionSummary, currentUser);
             }catch(KeyNotFoundException)
             {
-                return new HttpNotFoundResult(); ;
+                return new HttpNotFoundResult();
             }
             catch (UnauthorizedAccessException)
             {
                 return new HttpUnauthorizedResult();
             }
 
-            ViewBag.RecentGamesMessage = showingXResultsMessageBuilder.BuildMessage(NUMBER_OF_RECENT_GAMES_TO_SHOW, gameDefinition.PlayedGames.Count);
+            ViewBag.RecentGamesMessage = showingXResultsMessageBuilder.BuildMessage(NUMBER_OF_RECENT_GAMES_TO_SHOW, gameDefinitionSummary.PlayedGames.Count);
 
-            return View(MVC.GameDefinition.Views.Details, gameDefinitionViewModel);
+            return View(MVC.GameDefinition.Views.Details, gamingGroupGameDefinitionViewModel);
         }
 
         // GET: /GameDefinition/Create

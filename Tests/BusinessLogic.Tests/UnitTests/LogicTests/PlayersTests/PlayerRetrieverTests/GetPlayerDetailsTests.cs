@@ -26,6 +26,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
         private Nemesis expectedPriorNemesis;
         private List<Player> expectedMinions;
         private List<PlayerGameSummary> expectedPlayerGameSummaries;
+        private int gamingGroupId = 1985;
             
         [SetUp]
         public void SetUp()
@@ -56,6 +57,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
                 Id = 1351,
                 Name = "the player",
                 PlayerGameResults = new List<PlayerGameResult>(),
+                GamingGroup = new GamingGroup{ Id = gamingGroupId },
+                GamingGroupId = gamingGroupId,
                 Active = true,
                 NemesisId = expectedNemesis.Id,
                 Nemesis = expectedNemesis,
@@ -64,13 +67,17 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
             };
             playerWithNoNemesisEver = new Player()
             {
-                Id = 161266939
+                Id = 161266939,
+                GamingGroup = new GamingGroup { Id = gamingGroupId },
+                GamingGroupId = gamingGroupId
             };
             playerWithOnlyACurrentNemesis = new Player()
             {
                 Id = 888484,
                 NemesisId = 7,
-                Nemesis = nemesisForPlayerWithOnlyACurrentNemesis 
+                Nemesis = nemesisForPlayerWithOnlyACurrentNemesis,
+                GamingGroup = new GamingGroup { Id = gamingGroupId },
+                GamingGroupId = gamingGroupId
             };
 
             List<Player> players = new List<Player>()

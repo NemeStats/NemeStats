@@ -5,7 +5,7 @@ using UI.Models.PlayedGame;
 
 namespace UI.Models.Players
 {
-    public class PlayerDetailsViewModel
+    public class PlayerDetailsViewModel : IEditableViewModel, IGamingGroupAssignedViewModel
     {
         public int PlayerId { get; set; }
         public string PlayerName { get; set; }
@@ -24,5 +24,8 @@ namespace UI.Models.Players
         public bool UserCanEdit { get; set; }
         public List<MinionViewModel> Minions { get; set; }
         public List<PlayerGameSummary> PlayerGameSummaries { get; set; }
+
+        public string GamingGroupName { get; set; }
+        public int GamingGroupId { get; set; }
     }
 }

@@ -35,6 +35,16 @@
                     @Html.DisplayFor(model => model.Active)
                 </div>
             </div>
+            <div class="row">
+                <div class="col-md-2">
+                    <strong>
+                        Gaming Group
+                    </strong>
+                </div>
+                <div class="col-sm-3">
+                    @Html.ActionLink(@Model.GamingGroupName, "Details", "GamingGroup", new { id = @Model.GamingGroupId }, new { })
+                </div>
+            </div>
             @if(Model.UserCanEdit)
             {
             <div class="row">

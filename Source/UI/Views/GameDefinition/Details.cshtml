@@ -1,5 +1,5 @@
 ﻿@using UI.HtmlHelpers
-@model UI.Models.GameDefinitionModels.GameDefinitionViewModel
+@model UI.Models.GameDefinitionModels.GameDefinitionDetailsViewModel
 
 @{
     ViewBag.Title = "Details";
@@ -19,7 +19,7 @@
                         Name
                     </strong>
                 </div>
-                <div class="col-sm-2">
+                <div class="col-sm-3">
                     @Html.DisplayFor(model => model.Name)
                 </div>
             </div>
@@ -29,8 +29,18 @@
                         Description
                     </strong>
                 </div>
-                <div class="col-sm-2">
+                <div class="col-sm-3">
                     @Html.DisplayFor(model => model.Description)
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2">
+                    <strong>
+                        Gaming Group
+                    </strong>
+                </div>
+                <div class="col-sm-3">
+                    @Html.ActionLink(@Model.GamingGroupName, "Details", "GamingGroup", new { id = @Model.GamingGroupId }, new { })
                 </div>
             </div>
             @if(Model.UserCanEdit)

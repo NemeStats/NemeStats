@@ -156,10 +156,12 @@ namespace UI.Controllers
             public _ViewNamesClass ViewNames { get { return s_ViewNames; } }
             public class _ViewNamesClass
             {
+                public readonly string _PlayedGamesPartial = "_PlayedGamesPartial";
                 public readonly string Create = "Create";
                 public readonly string Delete = "Delete";
                 public readonly string Details = "Details";
             }
+            public readonly string _PlayedGamesPartial = "~/Views/PlayedGame/_PlayedGamesPartial.cshtml";
             public readonly string Create = "~/Views/PlayedGame/Create.cshtml";
             public readonly string Delete = "~/Views/PlayedGame/Delete.cshtml";
             public readonly string Details = "~/Views/PlayedGame/Details.cshtml";

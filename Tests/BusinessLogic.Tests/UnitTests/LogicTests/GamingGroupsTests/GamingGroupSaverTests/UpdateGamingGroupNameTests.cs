@@ -4,13 +4,13 @@ using NUnit.Framework;
 using Rhino.Mocks;
 using System.Linq;
 
-namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GamingGroupsTests.GamingGroupSaverTests
+namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroupSaverTests
 {
     [TestFixture]
     public class UpdateGamingGroupNameTests : GamingGroupSaverTestBase
     {
-        private GamingGroup expectedGamingGroup = new GamingGroup();
-        private GamingGroup savedGamingGroup = new GamingGroup();
+        private readonly GamingGroup expectedGamingGroup = new GamingGroup();
+        private readonly GamingGroup savedGamingGroup = new GamingGroup();
 
         [Test]
         public override void SetUp()

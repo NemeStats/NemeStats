@@ -25,6 +25,13 @@
         <dd>
             @Html.DisplayFor(model => model.DatePlayed)
         </dd>
+
+        <dt>
+            Gaming Group
+        </dt>
+        <dd>
+            @Html.ActionLink(@Model.GamingGroupName, "Details", "GamingGroup", new { id = @Model.GamingGroupId }, new { })
+        </dd>
     </dl>
 </div>
 <p>

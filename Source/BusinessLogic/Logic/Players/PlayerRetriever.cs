@@ -52,6 +52,7 @@ namespace BusinessLogic.Logic.Players
                                              .Include(player => player.Nemesis.NemesisPlayer)
                                              .Include(player => player.PreviousNemesis)
                                              .Include(player => player.PreviousNemesis.NemesisPlayer)
+                                             .Include(player => player.GamingGroup)
                                              .SingleOrDefault(player => player.Id == playerId);
 
             ValidatePlayerWasFound(playerId, returnPlayer);
@@ -70,6 +71,7 @@ namespace BusinessLogic.Logic.Players
                 Id = returnPlayer.Id,
                 Name = returnPlayer.Name,
                 GamingGroupId = returnPlayer.GamingGroupId,
+                GamingGroupName = returnPlayer.GamingGroup.Name,
                 PlayerGameResults = playerGameResults,
                 PlayerStats = playerStatistics,
                 CurrentNemesis = returnPlayer.Nemesis ?? new NullNemesis(),

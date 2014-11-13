@@ -7,6 +7,7 @@ using Rhino.Mocks;
 using UI.Controllers;
 using UI.Controllers.Helpers;
 using UI.Transformations;
+using UI.Transformations.PlayerTransformations;
 
 namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
 {
@@ -20,6 +21,9 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
         protected IGamingGroupSaver gamingGroupSaverMock;
         protected IGamingGroupRetriever gamingGroupRetrieverMock;
         protected IShowingXResultsMessageBuilder showingXResultsMessageBuilderMock;
+        protected IPlayerWithNemesisViewModelBuilder playerWithNemesisViewModelBuilderMock;
+        protected IPlayedGameDetailsViewModelBuilder playedGameDetailsViewModelBuilderMock;
+        protected IGameDefinitionSummaryViewModelBuilder gameDefinitionSummaryViewModelBuilderMock;
         protected ApplicationUser currentUser;
 
         [SetUp]
@@ -31,12 +35,18 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
             gamingGroupSaverMock = MockRepository.GenerateMock<IGamingGroupSaver>();
             gamingGroupRetrieverMock = MockRepository.GenerateMock<IGamingGroupRetriever>();
             showingXResultsMessageBuilderMock = MockRepository.GenerateMock<IShowingXResultsMessageBuilder>();
+            playerWithNemesisViewModelBuilderMock = MockRepository.GenerateMock<IPlayerWithNemesisViewModelBuilder>();
+            playedGameDetailsViewModelBuilderMock = MockRepository.GenerateMock<IPlayedGameDetailsViewModelBuilder>();
+            gameDefinitionSummaryViewModelBuilderMock = MockRepository.GenerateMock<IGameDefinitionSummaryViewModelBuilder>();
             gamingGroupController = new GamingGroupController(
                 gamingGroupViewModelBuilderMock, 
                 gamingGroupAccessGranterMock,
                 gamingGroupSaverMock,
                 gamingGroupRetrieverMock,
-                showingXResultsMessageBuilderMock);
+                showingXResultsMessageBuilderMock,
+                playerWithNemesisViewModelBuilderMock,
+                playedGameDetailsViewModelBuilderMock,
+                gameDefinitionSummaryViewModelBuilderMock);
             currentUser = new ApplicationUser()
             {
                 Id = "user  id",

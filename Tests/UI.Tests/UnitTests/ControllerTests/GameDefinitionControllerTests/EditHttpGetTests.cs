@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.Models;
+using BusinessLogic.Models.Games;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System.Collections.Generic;
@@ -23,17 +24,17 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
         [Test]
         public void ItSetsTheGameDefinitionOnTheView()
         {
-            GameDefinition gameDefinition = new GameDefinition()
+            GameDefinitionSummary gameDefinitionSummary = new GameDefinitionSummary()
             {
                 Id = 135
             };
-            gameDefinitionRetrieverMock.Expect(mock => mock.GetGameDefinitionDetails(gameDefinition.Id, 0))
+            gameDefinitionRetrieverMock.Expect(mock => mock.GetGameDefinitionDetails(gameDefinitionSummary.Id, 0))
                 .Repeat.Once()
-                .Return(gameDefinition);
+                .Return(gameDefinitionSummary);
 
-            ViewResult viewResult = gameDefinitionControllerPartialMock.Edit(gameDefinition.Id, currentUser) as ViewResult;
+            ViewResult viewResult = gameDefinitionControllerPartialMock.Edit(gameDefinitionSummary.Id, currentUser) as ViewResult;
 
-            Assert.AreEqual(gameDefinition, viewResult.ViewData.Model);
+            Assert.AreEqual(gameDefinitionSummary, viewResult.ViewData.Model);
         }
 
         [Test]

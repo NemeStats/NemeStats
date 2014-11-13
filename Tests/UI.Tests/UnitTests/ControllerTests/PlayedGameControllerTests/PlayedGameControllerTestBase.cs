@@ -3,6 +3,7 @@ using BusinessLogic.Logic.GameDefinitions;
 using BusinessLogic.Logic.PlayedGames;
 using BusinessLogic.Logic.Players;
 using BusinessLogic.Models;
+using BusinessLogic.Models.Games;
 using BusinessLogic.Models.User;
 using NUnit.Framework;
 using Rhino.Mocks;
@@ -29,7 +30,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
         protected UrlHelper urlHelperMock;
         protected string testUserName = "the test user name";
         protected ApplicationUser currentUser;
-        protected List<GameDefinition> gameDefinitions;
+        protected List<GameDefinitionSummary> gameDefinitionSummaries;
 
         [SetUp]
         public virtual void TestSetUp()
@@ -69,10 +70,10 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
             {
                 CurrentGamingGroupId = 1
             };
-            gameDefinitions = new List<GameDefinition>();
+            gameDefinitionSummaries = new List<GameDefinitionSummary>();
             gameDefinitionRetrieverMock.Expect(mock => mock.GetAllGameDefinitions(currentUser.CurrentGamingGroupId.Value))
                 .Repeat.Once()
-                .Return(gameDefinitions);
+                .Return(gameDefinitionSummaries);
         }
     }
 }

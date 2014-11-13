@@ -9,16 +9,11 @@ namespace UI.Transformations
 {
     public class PlayedGameDetailsViewModelBuilder : IPlayedGameDetailsViewModelBuilder
     {
-        internal const string EXCEPTION_GAME_DEFINITION_CANNOT_BE_NULL = "PlayedGame.GameDefinition cannot be null.";
-        internal const string EXCEPTION_PLAYER_GAME_RESULTS_CANNOT_BE_NULL = "PlayedGame.PlayerGameResults cannot be null.";
+        internal const string EXCEPTION_MESSAGE_GAME_DEFINITION_CANNOT_BE_NULL = "PlayedGame.GameDefinition cannot be null.";
+        internal const string EXCEPTION_MESSAGE_PLAYER_GAME_RESULTS_CANNOT_BE_NULL = "PlayedGame.PlayerGameResults cannot be null.";
+        internal const string EXCEPTION_MESSAGE_GAMING_GROUP_CANNOT_BE_NULL = "PlayedGame.GamingGroup cannnot be null.";
 
-        private IGameResultViewModelBuilder playerResultBuilder;
-
-        //TODO is it OK to do this to satisfy MVC's need for parameterless constructors?
-        public PlayedGameDetailsViewModelBuilder()
-        {
-            playerResultBuilder = new GameResultViewModelBuilder();
-        }
+        private readonly IGameResultViewModelBuilder playerResultBuilder;
 
         public PlayedGameDetailsViewModelBuilder(IGameResultViewModelBuilder playerGameResultBuilder)
         {
@@ -34,7 +29,9 @@ namespace UI.Transformations
             summary.GameDefinitionId = playedGame.GameDefinitionId;
             summary.PlayedGameId = playedGame.Id;
             summary.DatePlayed = playedGame.DatePlayed;
-            summary.UserCanEdit = (playedGame.GamingGroupId == currentUser.CurrentGamingGroupId);
+            summary.GamingGroupId = playedGame.GamingGroup.Id;
+            summary.GamingGroupName = playedGame.GamingGroup.Name;
+            summary.UserCanEdit = (currentUser != null && playedGame.GamingGroupId == currentUser.CurrentGamingGroupId);
             summary.PlayerResults = new List<GameResultViewModel>();
             
             foreach(PlayerGameResult playerGameResult in playedGame.PlayerGameResults)
@@ -52,14 +49,19 @@ namespace UI.Transformations
                 throw new ArgumentNullException("playedGame");
             }
 
+            if (playedGame.GamingGroup == null)
+            {
+                throw new ArgumentException(EXCEPTION_MESSAGE_GAMING_GROUP_CANNOT_BE_NULL);
+            }
+
             if (playedGame.GameDefinition == null)
             {
-                throw new ArgumentException(EXCEPTION_GAME_DEFINITION_CANNOT_BE_NULL);
+                throw new ArgumentException(EXCEPTION_MESSAGE_GAME_DEFINITION_CANNOT_BE_NULL);
             }
 
             if (playedGame.PlayerGameResults == null)
             {
-                throw new ArgumentException(EXCEPTION_PLAYER_GAME_RESULTS_CANNOT_BE_NULL);
+                throw new ArgumentException(EXCEPTION_MESSAGE_PLAYER_GAME_RESULTS_CANNOT_BE_NULL);
             }
         }
     }

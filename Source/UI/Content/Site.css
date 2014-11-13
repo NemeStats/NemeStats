@@ -184,3 +184,7 @@ ul input[type=text] { width:25px }
 .push-30 {
     margin-top: 30px;
 }
+
+.editable-title {
+    cursor: pointer;
+}

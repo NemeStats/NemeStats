@@ -276,6 +276,10 @@
     </Compile>
     <Compile Include="HtmlHelpers\MvcHtmlStringExtension.cs" />
     <Compile Include="HtmlHelpers\PlayedGameHelper.cs" />
+    <Compile Include="Models\GameDefinitionModels\GameDefinitionSummaryViewModel.cs" />
+    <Compile Include="Models\GamingGroup\GamingGroupPublicViewModel.cs" />
+    <Compile Include="Models\IEditableViewModel.cs" />
+    <Compile Include="Models\IGamingGroupAssignedViewModel.cs" />
     <Compile Include="Models\LocalPasswordModel.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AdminViewModel.cs" />
@@ -308,8 +312,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>
+    <Compile Include="Transformations\GameDefinitionSummaryViewModelBuilder.cs" />
+    <Compile Include="Transformations\IGameDefinitionSummaryViewModelBuilder.cs" />
     <Compile Include="Transformations\IGameDefinitionViewModelBuilder.cs" />
-    <Compile Include="Transformations\GameDefinitionViewModelBuilder.cs" />
+    <Compile Include="Transformations\GameDefinitionDetailsViewModelBuilder.cs" />
     <Compile Include="Transformations\IGamingGroupInvitationViewModelBuilder.cs" />
     <Compile Include="Transformations\GamingGroupInvitationViewModelBuilder.cs" />
     <Compile Include="Transformations\IGamingGroupViewModelBuilder.cs" />
@@ -401,6 +407,7 @@
     <Content Include="Scripts\CreatePlayedGame\createplayedgame.js" />
     <Content Include="Scripts\GameDefinition\createGameDefinitionPartial.js" />
     <Content Include="Scripts\GameDefinition\gameDefinitions.js" />
+    <Content Include="Scripts\GamingGroup\gamingGroup.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -416,6 +423,7 @@
     <Content Include="Scripts\namespace.min-1.0.0.js" />
     <Content Include="Scripts\Player\createOrUpdatePlayer.js" />
     <Content Include="Scripts\Player\players.js" />
+    <Content Include="Scripts\Plugins\toEditBoxPlugin.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\Shared\_Layout.js" />
@@ -457,7 +465,6 @@
     <Content Include="Views\Player\Create.cshtml" />
     <Content Include="Views\Player\Details.cshtml" />
     <Content Include="Views\GameDefinition\Create.cshtml" />
-    <Content Include="Views\GameDefinition\Delete.cshtml" />
     <Content Include="Views\GameDefinition\Details.cshtml" />
     <Content Include="Views\GameDefinition\Edit.cshtml" />
     <Content Include="Views\PlayedGame\Create.cshtml" />
@@ -478,6 +485,8 @@
     <Content Include="Views\Account\_ChangeEmailPartial.cshtml" />
     <Content Include="Views\GameDefinition\_CreatePartial.cshtml" />
     <Content Include="Views\GameDefinition\_GameDefinitionsPartial.cshtml" />
+    <Content Include="Views\PlayedGame\_PlayedGamesPartial.cshtml" />
+    <Content Include="Views\GamingGroup\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Code\" />

@@ -5,9 +5,12 @@
             <h4 class="fl-left">
                 Players
             </h4>
+        @if ((bool?)ViewData["canEdit"] == true)
+        {
             <div class="fl-right">
                 @Html.Action("SavePlayer", "Player")
             </div>
+        }
             <div class="fl-clear"></div>
         </div>
         <div class="panel-body">
@@ -47,11 +50,14 @@
                                         @Html.ActionLink(item.NemesisPlayerName , MVC.Player.Details(item.NemesisPlayerId, null));
                                     }
                                 </td>
-                                <td>
-                                    <a href="@Url.Action("Edit", "Player", new { id = item.PlayerId })" title="Edit">
-                                        <i class="fa fa-pencil fa-3x"></i>
-                                    </a>
-                                </td>
+                                @if (item.UserCanEdit)
+                                {
+                                    <td>
+                                        <a href="@Url.Action("Edit", "Player", new { id = item.PlayerId })" title="Edit">
+                                            <i class="fa fa-pencil fa-3x"></i>
+                                        </a>
+                                    </td>
+                                }
                             </tr>
                         }
                     </tbody>
