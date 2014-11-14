@@ -115,7 +115,14 @@
                     {
                         <tr>
                             <td>@Html.ActionLink(publicGame.GameDefinitionName, "Details", "GameDefinition", new { id = publicGame.GameDefinitionId }, new { })</td>
-                            <td>@Html.ActionLink(publicGame.WinningPlayer.Name, "Details", "Player", new { id = publicGame.WinningPlayer.Id }, new { })</td>
+                            @if (publicGame.WinningPlayer == null)
+                            {
+                                <td>TEAM LOSS</td>
+                            }
+                            else
+                            {
+                                <td>@Html.ActionLink(publicGame.WinningPlayer.Name, "Details", "Player", new { id = publicGame.WinningPlayer.Id }, new { })</td>
+                            }
                             <td>@Html.ActionLink(publicGame.DatePlayed.ToShortDateString(), "Details", "PlayedGame", new { id = publicGame.PlayedGameId }, new { })</td>
                             <td>@Html.ActionLink(publicGame.GamingGroupName, "Details", "GamingGroup", new { id = publicGame.GamingGroupId }, new { })</td>
                         </tr>
