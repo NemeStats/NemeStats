@@ -12,6 +12,7 @@
         this.$playerFormData = null;
         this.$btnAddPlayer = null;
         this.$addPlayer = null;
+        this.$btnRemovePlayer = null;
         this.$datePicker = null;
     };
 
@@ -28,6 +29,7 @@
             this.$playerDiv = $("#playerDiv");
             this.$addPlayer = $("#addPlayer");
             this.$btnAddPlayer = $("#btnAddPlayer");
+            this.$btnRemovePlayer = $("#btnRemovePlayer");
             this.$anchorAddPlayer = $("#addPlayerAnchor");
             this.$datePicker = $(".date-picker").datepicker({
                 showOn: "button",
@@ -52,6 +54,9 @@
                 }
                 document.location = parent.$anchorAddPlayer.attr("href");
             });
+            $(document).on("click", ":button#btnRemovePlayer", function () {
+            	$.proxy(parent.removePlayer(this), parent);
+            });
         },
         onReorder: function () {
             var parent = this;
@@ -71,7 +76,10 @@
 
             return "<span style='cursor:pointer'>" +
                    "<div class='alert alert-info' role='alert' style='max-width:280px;'>" + playerName + " - Rank: " +
-                    "<input type='text' id='" + playerId + "' name='PlayerRanks[" + playerIndex +"].GameRank' value='" + playerRank + "' style='text-align:center;'/>" +
+                    "<input type='text' id='" + playerId + "' name='PlayerRanks[" + playerIndex + "].GameRank' value='" + playerRank + "' style='text-align:center;'/>" +
+					"<button type='button' id='btnRemovePlayer' class='btn btn-default fl-right' data-playerid='" + playerId + "' data-playername='" + playerName + "' title='Remove player'>" +
+						"<i class='fa fa-minus'></i>"+
+                    "</button>" +
                     "<input type='hidden' name='PlayerRanks[" + playerIndex + "].PlayerId' value='" + playerId + "'/>" +
                    "</div></span>";
         },
@@ -96,6 +104,15 @@
             selectedOption.remove();
 
             return null;
+        },
+        removePlayer: function (data) {
+        	var playerId = $(data).data("playerid");
+        	var playerName = $(data).data("playername");
+
+        	var player = {Id: playerId, Name: playerName};
+        	this.onPlayerCreated(player);
+
+	      	$("#li" + playerId).remove();
         },
         onPlayerCreated: function (player) {
             var newPlayer = $('<option value="' + player.Id + '">' + player.Name + '</option>');
