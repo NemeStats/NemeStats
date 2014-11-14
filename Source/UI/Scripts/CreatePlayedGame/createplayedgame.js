@@ -55,7 +55,7 @@
                 document.location = parent.$anchorAddPlayer.attr("href");
             });
             $(document).on("click", ":button#btnRemovePlayer", function () {
-            	$.proxy(parent.removePlayer(this), parent);
+            	parent.removePlayer(this);
             });
         },
         onReorder: function () {
