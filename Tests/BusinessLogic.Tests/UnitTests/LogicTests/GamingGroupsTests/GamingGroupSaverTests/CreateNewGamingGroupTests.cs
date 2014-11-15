@@ -96,7 +96,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
             Assert.AreSame(expectedGamingGroup, returnedGamingGroup);
         }
 
-        
+        [Test]
         public async Task ItUpdatesTheCurrentUsersGamingGroup()
         {
             GamingGroup returnedGamingGroup = await gamingGroupSaver.CreateNewGamingGroup(gamingGroupName, currentUser);
@@ -104,6 +104,18 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
             applicationUserManagerMock.AssertWasCalled(mock => mock.UpdateAsync(Arg<ApplicationUser>.Matches(
                 user => user.CurrentGamingGroupId == expectedGamingGroup.Id 
                     && user.Id == appUserRetrievedFromFindMethod.Id)));
+        }
+
+        [Test]
+        public async Task ItCreatesANewPlayerNamedAfterTheUserName()
+        {
+            GamingGroup returnedGamingGroup = await gamingGroupSaver.CreateNewGamingGroup(gamingGroupName, currentUser);
+
+            playerSaverMock.AssertWasCalled(mock => mock.Save(Arg<Player>.Matches(
+                                        player => player.Name == currentUser.UserName
+                                            && player.ApplicationUserId == currentUser.Id
+                                            && player.Active), 
+                                            Arg<ApplicationUser>.Is.Same(currentUser)));
         }
 
         [Test]

@@ -277,6 +277,10 @@
     <Compile Include="Migrations\201411090249182_AddDateCreated.Designer.cs">
       <DependentUpon>201411090249182_AddDateCreated.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201411150212370_AddPlayerUserRelationship.cs" />
+    <Compile Include="Migrations\201411150212370_AddPlayerUserRelationship.Designer.cs">
+      <DependentUpon>201411150212370_AddPlayerUserRelationship.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Games\BoardGameGeekSearchResult.cs" />
     <Compile Include="Models\Games\GameDefinitionSummary.cs" />
     <Compile Include="Models\Games\PublicGameSummary.cs" />
@@ -448,6 +452,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201411090249182_AddDateCreated.resx">
       <DependentUpon>201411090249182_AddDateCreated.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201411150212370_AddPlayerUserRelationship.resx">
+      <DependentUpon>201411150212370_AddPlayerUserRelationship.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

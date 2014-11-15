@@ -18,6 +18,7 @@ namespace UI.Controllers
 {
     public partial class GameDefinitionController : Controller
     {
+        internal const int MIN_LENGTH_FOR_PARTIAL_MATCH_BOARD_GAME_GEEK_SEARCH = 5;
         internal const int NUMBER_OF_RECENT_GAMES_TO_SHOW = 5;
 
         internal IDataContext dataContext;
@@ -26,7 +27,6 @@ namespace UI.Controllers
         internal IShowingXResultsMessageBuilder showingXResultsMessageBuilder;
         internal IGameDefinitionSaver gameDefinitionSaver;
         internal IBoardGameGeekSearcher boardGameGeekSearcher;
-        public const int MIN_LENGTH_FOR_PARTIAL_MATCH_BOARD_GAME_GEEK_SEARCH = 5;
 
         public GameDefinitionController(IDataContext dataContext,
             IGameDefinitionRetriever gameDefinitionRetriever,
@@ -178,7 +178,7 @@ namespace UI.Controllers
             if (ModelState.IsValid)
             {
                 //Jake, I disabled this because it is not needed anymore.
-                bool requireExactMatches = false;//searchText.Length < MIN_LENGTH_FOR_PARTIAL_MATCH_BOARD_GAME_GEEK_SEARCH;
+                bool requireExactMatches = searchText.Length < MIN_LENGTH_FOR_PARTIAL_MATCH_BOARD_GAME_GEEK_SEARCH;
                 List<BoardGameGeekSearchResult> searchResults = boardGameGeekSearcher.SearchForBoardGames(searchText, requireExactMatches);
                 return Json(searchResults, JsonRequestBehavior.AllowGet);
             }

@@ -29,6 +29,8 @@ namespace BusinessLogic.Models.User
 
         [ForeignKey("ApplicationUserId")]
         public virtual IList<UserGamingGroup> UserGamingGroups { get; set; }
+        [ForeignKey("ApplicationUserId")]
+        public virtual IList<Player> Players { get; set; } 
 
         public bool AlreadyInDatabase()
         {

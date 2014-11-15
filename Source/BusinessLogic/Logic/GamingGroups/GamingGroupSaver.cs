@@ -16,18 +16,21 @@ namespace BusinessLogic.Logic.GamingGroups
         internal const string EXCEPTION_MESSAGE_PLAYER_NAMES_CANNOT_BE_NULL = "gamingGroupQuickStart.NewPlayerNames cannot be null.";
         internal const string EXCEPTION_MESSAGE_GAME_DEFINITION_NAMES_CANNOT_BE_NULL = "gamingGroupQuickStart.NewGameDefinitionNames cannot be null.";
 
-        private IDataContext dataContext;
-        private ApplicationUserManager userManager;
-        private INemeStatsEventTracker eventTracker;
+        private readonly IDataContext dataContext;
+        private readonly ApplicationUserManager userManager;
+        private readonly IPlayerSaver playerSaver;
+        private readonly INemeStatsEventTracker eventTracker;
 
         public GamingGroupSaver(
             IDataContext dataContext, 
             ApplicationUserManager userManager, 
-            INemeStatsEventTracker eventTracker)
+            INemeStatsEventTracker eventTracker, 
+            IPlayerSaver playerSaver)
         {
             this.dataContext = dataContext;
             this.userManager = userManager;
             this.eventTracker = eventTracker;
+            this.playerSaver = playerSaver;
         }
 
         public async virtual Task<GamingGroup> CreateNewGamingGroup(string gamingGroupName, ApplicationUser currentUser)
@@ -42,6 +45,8 @@ namespace BusinessLogic.Logic.GamingGroups
 
             await SetGamingGroupOnCurrentUser(currentUser, newGamingGroup);
 
+            AddUserToGamingGroupAsPlayer(currentUser);
+
             new Task(() => eventTracker.TrackGamingGroupCreation()).Start();
 
             return newGamingGroup;
@@ -54,6 +59,16 @@ namespace BusinessLogic.Logic.GamingGroups
             await userManager.UpdateAsync(user);
 
             currentUser.CurrentGamingGroupId = user.CurrentGamingGroupId;
+        }
+
+        private void AddUserToGamingGroupAsPlayer(ApplicationUser currentUser)
+        {
+            Player player = new Player
+            {
+                ApplicationUserId = currentUser.Id,
+                Name = currentUser.UserName
+            };
+            this.playerSaver.Save(player, currentUser);
         }
 
         public GamingGroup UpdateGamingGroupName(string gamingGroupName, ApplicationUser currentUser)

@@ -36,9 +36,9 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
         }
 
         [Test]
-        public void ItRequestsExactMatchesWhenLessThanFiveCharacters()
+        public void ItRequestsExactMatchesWhenLessThanFourCharacters()
         {
-            string fourCharacterSearchText = "1234";
+            string fourCharacterSearchText = "123";
             gameDefinitionControllerPartialMock.SearchBoardGameGeekHttpGet(fourCharacterSearchText);
 
             boardGameGeekSearcherMock.AssertWasCalled(
