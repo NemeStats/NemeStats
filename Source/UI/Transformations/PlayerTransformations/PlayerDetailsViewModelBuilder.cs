@@ -31,6 +31,7 @@ namespace UI.Transformations.PlayerTransformations
             PlayerDetailsViewModel playerDetailsViewModel = new PlayerDetailsViewModel();
             playerDetailsViewModel.PlayerId = playerDetails.Id;
             playerDetailsViewModel.PlayerName = playerDetails.Name;
+            playerDetailsViewModel.PlayerRegistered = playerDetails.ApplicationUserId != null;
             playerDetailsViewModel.Active = playerDetails.Active;
             playerDetailsViewModel.GamingGroupName = playerDetails.GamingGroupName;
             playerDetailsViewModel.GamingGroupId = playerDetails.GamingGroupId;

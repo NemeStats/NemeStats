@@ -73,6 +73,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
             playerDetails = new PlayerDetails()
             {
                 Id = 134,
+                ApplicationUserId = "application user id",
                 Active = true,
                 Name = "Skipper",
                 PlayerGameResults = playerGameResults,
@@ -170,6 +171,21 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         public void ItCopiesThePlayerName()
         {
             Assert.AreEqual(playerDetails.Name, playerDetailsViewModel.PlayerName);
+        }
+
+        [Test]
+        public void ItSetsThePlayerRegisteredFlagToTrueIfThereIsAnApplicationUserIdOnThePlayer()
+        {
+            Assert.AreEqual(true, playerDetailsViewModel.PlayerRegistered);
+        }
+
+        [Test]
+        public void ItSetsThePlayerRegisteredFlagToFalseIfThereIsNoApplicationUserIdOnThePlayer()
+        {
+            playerDetails.ApplicationUserId = null;
+            playerDetailsViewModel = builder.Build(playerDetails, currentUser);
+
+            Assert.AreEqual(false, playerDetailsViewModel.PlayerRegistered);
         }
 
         [Test]
