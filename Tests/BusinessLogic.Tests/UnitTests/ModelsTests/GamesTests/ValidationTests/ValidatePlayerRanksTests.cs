@@ -51,17 +51,6 @@ namespace BusinessLogic.Tests.UnitTests.ModelsTests.GamesTests.ValidationTests
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException), ExpectedMessage = PlayerRankValidator.EXCEPTION_MESSAGE_GAME_MUST_HAVE_A_WINNER)]
-        public void ItRequiresAWinner()
-        {
-            List<PlayerRank> playerRanks = new List<PlayerRank>();
-            playerRanks.Add(new PlayerRank() { PlayerId = 1, GameRank = 2 });
-            playerRanks.Add(new PlayerRank() { PlayerId = 1, GameRank = 3 });
-
-            PlayerRankValidator.ValidatePlayerRanks(playerRanks);
-        }
-
-        [Test]
         [ExpectedException(typeof(ArgumentException), ExpectedMessage = PlayerRankValidator.EXCEPTION_MESSAGE_NO_PLAYER_CAN_HAVE_A_HIGHER_RANK_THAN_THE_NUMBER_OF_PLAYERS)]
         public void NoPlayerMayHaveARankGreaterThanTheTotalNumberOfPlayers()
         {
