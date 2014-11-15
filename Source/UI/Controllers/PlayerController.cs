@@ -20,7 +20,11 @@ namespace UI.Controllers
 {
     public partial class PlayerController : Controller
     {
-        public static readonly int NUMBER_OF_RECENT_GAMES_TO_RETRIEVE = 10;
+        internal const int NUMBER_OF_RECENT_GAMES_TO_RETRIEVE = 10;
+        internal const string EMAIL_SUBJECT_PLAYER_INVITATION = "{0} has invited you to their Gaming Group";
+        internal const string EMAIL_BODY_PLAYER_INVITATION = "You have been invited by '{0}' to join the '{1}'"
+            + " Gaming Group on http://nemestats.com/. NemeStats.com is a free website for tracking the results of"
+            + " board games. Please click the link below to complete the registration process:";
 
         internal IDataContext dataContext;
         internal IGameResultViewModelBuilder builder;
@@ -81,6 +85,33 @@ namespace UI.Controllers
         public virtual ActionResult Create()
         {
             return View(MVC.Player.Views.Create, new Player());
+        }
+
+        // GET: /Player/InvitePlayer/5
+        [System.Web.Mvc.Authorize]
+        [UserContextAttribute]
+        public virtual ActionResult InvitePlayer(int id, ApplicationUser currentUser)
+        {
+            PlayerDetails playerDetails;
+
+            try
+            {
+                playerDetails = playerRetriever.GetPlayerDetails(id, 0);
+            }
+            catch (KeyNotFoundException)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+            }
+
+            string emailSubject = string.Format(EMAIL_SUBJECT_PLAYER_INVITATION, currentUser.UserName);
+
+            var playerInvitationViewModel = new PlayerInvitationViewModel
+            {
+                PlayerId = playerDetails.Id,
+                PlayerName = playerDetails.Name,
+                EmailSubject = emailSubject
+            };
+            return View(MVC.Player.Views.InvitePlayer, playerInvitationViewModel);
         }
 
         [System.Web.Mvc.Authorize]

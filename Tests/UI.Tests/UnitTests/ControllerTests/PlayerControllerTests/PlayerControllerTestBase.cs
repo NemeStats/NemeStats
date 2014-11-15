@@ -23,6 +23,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         protected IPlayerDetailsViewModelBuilder playerDetailsViewModelBuilderMock;
         protected IShowingXResultsMessageBuilder showingXResultsMessageBuilderMock;
         protected IPlayerSaver playerSaverMock;
+        protected IPlayerInviter playerInviterMock;
         protected UrlHelper urlHelperMock;
         protected PlayerController playerController;
         protected ApplicationUser currentUser;

@@ -1,0 +1,55 @@
+﻿@model UI.Models.Players.PlayerInvitationViewModel
+@using UI.HtmlHelpers
+@{
+    ViewBag.Title = "Invite Player";
+    Layout = MVC.Shared.Views._BaseLayout;
+}
+
+<h2>@ViewBag.Title</h2>
+<hr />
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h4>Invite Another Player To Your Gaming Group</h4>
+    </div>
+    <p>
+        Send an email to another player asking them to register on the site. These players will have full access to your gaming group
+        and can record games, create and de-activate players, etc.
+    </p>
+    <div class="panel-body">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            <div class="form-horizontal">
+                @Html.ValidationSummary(true)
+                @Html.HiddenFor(modelItem => @Model.PlayerId)
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.EmailAddress, new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.EmailAddress, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.EmailAddress)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.EmailSubject, new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.EmailSubject, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.EmailSubject)
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    @Html.LabelFor(model => model.EmailBody, new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextAreaFor(model => model.EmailBody, 6, 70, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.EmailBody)
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+

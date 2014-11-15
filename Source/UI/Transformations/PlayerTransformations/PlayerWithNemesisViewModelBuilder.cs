@@ -19,6 +19,7 @@ namespace UI.Transformations.PlayerTransformations
             {
                 PlayerId = player.Id,
                 PlayerName = player.Name,
+                PlayerRegistered = player.ApplicationUserId != null,
                 UserCanEdit = (currentUser != null && player.GamingGroupId == currentUser.CurrentGamingGroupId)
             };
 

@@ -293,6 +293,7 @@
     <Compile Include="Models\PlayedGame\PlayedGameDetailsViewModel.cs" />
     <Compile Include="Models\Players\MinionViewModel.cs" />
     <Compile Include="Models\Players\PlayerDetailsViewModel.cs" />
+    <Compile Include="Models\Players\PlayerInvitationViewModel.cs" />
     <Compile Include="Models\Players\TopPlayerViewModel.cs" />
     <Compile Include="Models\User\UserViewModel.cs" />
     <Compile Include="PlayedGameController.generated.cs">
@@ -487,6 +488,7 @@
     <Content Include="Views\GameDefinition\_GameDefinitionsPartial.cshtml" />
     <Content Include="Views\PlayedGame\_PlayedGamesPartial.cshtml" />
     <Content Include="Views\GamingGroup\Details.cshtml" />
+    <Content Include="Views\Player\InvitePlayer.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Code\" />
