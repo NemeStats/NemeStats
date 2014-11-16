@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration.Abstractions;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,17 +21,20 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerInviterTes
         private PlayerInviter playerInviter;
         private IDataContext dataContextMock;
         private IIdentityMessageService emailServiceMock;
+        private IConfigurationManager configurationManagerMock;
         private PlayerInvitation playerInvitation;
         private ApplicationUser currentUser;
         private Player player;
         private GamingGroup gamingGroup;
         private GamingGroupInvitation gamingGroupInvitation;
+        private string rootUrl = "http://nemestats.com";
 
         [SetUp]
         public void SetUp()
         {
             dataContextMock = MockRepository.GenerateMock<IDataContext>();
             emailServiceMock = MockRepository.GenerateMock<IIdentityMessageService>();
+            configurationManagerMock = MockRepository.GenerateMock<IConfigurationManager>();
             playerInvitation = new PlayerInvitation
             {
                 CustomEmailMessage = "custom message",
@@ -64,10 +68,13 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerInviterTes
             dataContextMock.Expect(mock => mock.Save<GamingGroupInvitation>(Arg<GamingGroupInvitation>.Is.Anything, Arg<ApplicationUser>.Is.Anything))
                            .Return(gamingGroupInvitation);
 
+            configurationManagerMock.Expect(mock => mock.AppSettings[PlayerInviter.APP_SETTING_URL_ROOT])
+                                    .Return(rootUrl);
+
             emailServiceMock.Expect(mock => mock.SendAsync(Arg<IdentityMessage>.Is.Anything))
                             .Return(Task.FromResult<object>(null));
 
-            playerInviter = new PlayerInviter(dataContextMock, emailServiceMock);
+            playerInviter = new PlayerInviter(dataContextMock, emailServiceMock, configurationManagerMock);
         }
 
         [Test]
@@ -90,10 +97,11 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerInviterTes
             string expectedBody = string.Format(PlayerInviter.EMAIL_MESSAGE_INVITE_PLAYER,
                                                 currentUser.UserName,
                                                 gamingGroup.Name,
-                                                "http://nerdscorekeeper.azurewebsites.net",
+                                                rootUrl,
                                                 currentUser.CurrentGamingGroupId.Value,
                                                 playerInvitation.CustomEmailMessage,
-                                                gamingGroupInvitation.Id);
+                                                gamingGroupInvitation.Id,
+                                                Environment.NewLine);
 
             playerInviter.InvitePlayer(playerInvitation, currentUser);
 
