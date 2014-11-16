@@ -68,7 +68,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         public void ItDefaultsTheEmailBodyToSayThatSomeoneHasInvitedThemToNemeStats()
         {
             string expectedEmailBody = string.Format(
-                PlayerController.EMAIL_BODY_PLAYER_INVITATION, playerDetails.Name, 
+                PlayerController.EMAIL_BODY_PLAYER_INVITATION,
                 playerDetails.GamingGroupName);
 
             ViewResult viewResult = playerController.InvitePlayer(playerId, currentUser) as ViewResult;

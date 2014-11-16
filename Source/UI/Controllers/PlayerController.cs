@@ -22,9 +22,8 @@ namespace UI.Controllers
     {
         internal const int NUMBER_OF_RECENT_GAMES_TO_RETRIEVE = 10;
         internal const string EMAIL_SUBJECT_PLAYER_INVITATION = "Invitation from {0}";
-        internal const string EMAIL_BODY_PLAYER_INVITATION = "You have been invited by '{0}' to join the '{1}'"
-            + " Gaming Group on http://nemestats.com/. NemeStats.com is a free website for tracking the results of"
-            + " board games. Please click the link below to complete the registration process:";
+        internal const string EMAIL_BODY_PLAYER_INVITATION = "Hi There! I'm inviting you to join the '{0}'"
+                                                             + " Gaming Group on http://nemestats.com/.";
 
         internal IDataContext dataContext;
         internal IGameResultViewModelBuilder builder;
@@ -107,7 +106,7 @@ namespace UI.Controllers
             }
 
             string emailSubject = string.Format(EMAIL_SUBJECT_PLAYER_INVITATION, currentUser.UserName);
-            string emailBody = string.Format(EMAIL_BODY_PLAYER_INVITATION, currentUser.UserName, playerDetails.GamingGroupName);
+            string emailBody = string.Format(EMAIL_BODY_PLAYER_INVITATION, playerDetails.GamingGroupName);
 
             var playerInvitationViewModel = new PlayerInvitationViewModel
             {
@@ -117,6 +116,24 @@ namespace UI.Controllers
                 EmailBody = emailBody
             };
             return View(MVC.Player.Views.InvitePlayer, playerInvitationViewModel);
+        }
+
+        [System.Web.Mvc.HttpPost]
+        [System.Web.Mvc.Authorize]
+        [UserContextAttribute]
+        public virtual ActionResult InvitePlayer(PlayerInvitationViewModel playerInvitationViewModel, ApplicationUser currentUser)
+        {
+            PlayerInvitation playerInvitation = new PlayerInvitation
+            {
+                InvitedPlayerId = playerInvitationViewModel.PlayerId,
+                InvitedPlayerEmail = playerInvitationViewModel.EmailAddress,
+                EmailSubject = playerInvitationViewModel.EmailSubject,
+                CustomEmailMessage = playerInvitationViewModel.EmailBody
+            };
+
+            playerInviter.InvitePlayer(playerInvitation, currentUser);
+
+            return new RedirectResult(Url.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name));
         }
 
         [System.Web.Mvc.Authorize]

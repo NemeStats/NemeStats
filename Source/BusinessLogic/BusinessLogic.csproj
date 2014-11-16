@@ -165,6 +165,11 @@
     <Compile Include="Logic\PlayedGames\PlayedGameRetriever.cs" />
     <Compile Include="Logic\Players\IPlayerInviter.cs" />
     <Compile Include="Logic\Players\IPlayerSaver.cs" />
+    <Compile Include="Migrations\201411160430223_AddSupportForPlayerInvitationsOnGamingGroup.cs" />
+    <Compile Include="Migrations\201411160430223_AddSupportForPlayerInvitationsOnGamingGroup.Designer.cs">
+      <DependentUpon>201411160430223_AddSupportForPlayerInvitationsOnGamingGroup.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Players\PlayerInvitation.cs" />
     <Compile Include="Logic\Players\PlayerInviter.cs" />
     <Compile Include="Logic\Players\PlayerSaver.cs" />
     <Compile Include="Logic\Players\IPlayerRetriever.cs" />
@@ -457,6 +462,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201411150212370_AddPlayerUserRelationship.resx">
       <DependentUpon>201411150212370_AddPlayerUserRelationship.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201411160430223_AddSupportForPlayerInvitationsOnGamingGroup.resx">
+      <DependentUpon>201411160430223_AddSupportForPlayerInvitationsOnGamingGroup.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

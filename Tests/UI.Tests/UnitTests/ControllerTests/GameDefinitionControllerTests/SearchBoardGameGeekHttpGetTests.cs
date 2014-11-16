@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using BusinessLogic.Models.Games;
 using NUnit.Framework;
 using Rhino.Mocks;
+using UI.Controllers;
 
 namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
 {
@@ -36,13 +37,13 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
         }
 
         [Test]
-        public void ItRequestsExactMatchesWhenLessThanFourCharacters()
+        public void ItRequestsExactMatchesWhenLessThanTheDesignatedNumberOfCharacters()
         {
-            string fourCharacterSearchText = "123";
-            gameDefinitionControllerPartialMock.SearchBoardGameGeekHttpGet(fourCharacterSearchText);
+            string searchString = string.Empty.PadRight(GameDefinitionController.MIN_LENGTH_FOR_PARTIAL_MATCH_BOARD_GAME_GEEK_SEARCH - 1);
+            gameDefinitionControllerPartialMock.SearchBoardGameGeekHttpGet(searchString);
 
             boardGameGeekSearcherMock.AssertWasCalled(
-                mock => mock.SearchForBoardGames(Arg<string>.Is.Equal(fourCharacterSearchText), Arg<bool>.Is.Equal(true)));
+                mock => mock.SearchForBoardGames(Arg<string>.Is.Equal(searchString), Arg<bool>.Is.Equal(true)));
         }
     }
 }

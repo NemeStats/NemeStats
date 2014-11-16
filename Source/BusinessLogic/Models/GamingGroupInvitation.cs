@@ -18,9 +18,12 @@ namespace BusinessLogic.Models
         public DateTime DateSent { get; set; }
         public string RegisteredUserId { get; set; }
         public DateTime? DateRegistered { get; set; }
+        public int? PlayerId { get; set; }
         [ForeignKey("InvitingUserId")]
         public virtual ApplicationUser InvitingUser { get; set; }
         [ForeignKey("RegisteredUserId")]
         public virtual ApplicationUser RegisteredUser { get; set; }
+        [ForeignKey("PlayerId")]
+        public virtual Player RegisteredPlayer { get; set; }
     }
 }

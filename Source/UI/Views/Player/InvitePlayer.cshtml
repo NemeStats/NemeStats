@@ -13,7 +13,7 @@
         <h4>Invite Another Player To Your Gaming Group</h4>
     </div>
     <p>
-        Send an email to another player asking them to register on the site. These players will have full access to your gaming group
+        Send an email to another player inviting them to register on the site. These players will have full access to your gaming group
         and can record games, create and de-activate players, etc.
     </p>
     <div class="panel-body">
@@ -41,10 +41,16 @@
                 </div>
                 
                 <div class="form-group">
-                    @Html.LabelFor(model => model.EmailBody, new { @class = "control-label col-md-2" })
+                    <span class="control-label col-md-2">Custom Message</span>
                     <div class="col-md-10">
                         @Html.TextAreaFor(model => model.EmailBody, 6, 70, new { @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.EmailBody)
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Send Invitation" class="btn btn-primary" />
                     </div>
                 </div>
             </div>

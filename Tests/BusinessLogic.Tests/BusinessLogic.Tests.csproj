@@ -145,6 +145,7 @@
     <Compile Include="UnitTests\LogicTests\BoardGameGeekSearcherTests\SortSearchResultsTests.cs" />
     <Compile Include="UnitTests\LogicTests\NemesesTests\NemesisHistoryRetrieverTests\GetNemesisHistoryTests.cs" />
     <Compile Include="UnitTests\LogicTests\NemesesTests\NemesisHistoryRetrieverTests\GetRecentNemesisChangesTests.cs" />
+    <Compile Include="UnitTests\LogicTests\PlayersTests\PlayerInviterTests\InvitePlayerTests.cs" />
     <Compile Include="UnitTests\LogicTests\PlayersTests\PlayerRetrieverTests\GetPlayerDetailsTests.cs" />
     <Compile Include="UnitTests\DataAccessTests\SecurityTests\SecuredEntityValidatorTests\ValidateAccessTests.cs" />
     <Compile Include="UnitTests\EventTrackingTests\UniversalAnalyticsNemeStatsEventTrackerTests\TrackGameDefinitionCreationTests.cs" />

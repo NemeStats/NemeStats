@@ -16,6 +16,8 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using BusinessLogic.Logic.BoardGameGeek;
+using BusinessLogic.Logic.Email;
+using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
 
 namespace UI.DependencyResolution {
@@ -137,6 +139,8 @@ namespace UI.DependencyResolution {
             this.For<IBoardGameGeekSearcher>().Use<BoardGameGeekSearcher>();
 
             this.For<IPlayerInviter>().Use<PlayerInviter>();
+
+            this.For<IIdentityMessageService>().Use<EmailService>();
         }
 
         private void SetupUniquePerRequestMappings()
