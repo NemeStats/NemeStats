@@ -45,13 +45,15 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
             showingXResultsMessageBuilderMock = MockRepository.GenerateMock<IShowingXResultsMessageBuilder>();
             playerSaverMock = MockRepository.GenerateMock<IPlayerSaver>();
             urlHelperMock = MockRepository.GenerateMock<UrlHelper>();
+            playerInviterMock = MockRepository.GenerateMock<IPlayerInviter>();
             playerController = MockRepository.GeneratePartialMock<PlayerController>(
                                 dataContextMock,
                                 playerGameResultDetailsBuilderMock,
                                 playerDetailsViewModelBuilderMock,
                                 showingXResultsMessageBuilderMock,
                                 playerSaverMock,
-                                playerRetrieverMock);
+                                playerRetrieverMock,
+                                playerInviterMock);
             playerController.Url = urlHelperMock;
 
             asyncRequestMock = MockRepository.GenerateMock<HttpRequestBase>();

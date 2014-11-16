@@ -163,7 +163,9 @@
     <Compile Include="Logic\PlayedGames\IPlayedGameRetriever.cs" />
     <Compile Include="Logic\PlayedGames\PlayedGameDeleter.cs" />
     <Compile Include="Logic\PlayedGames\PlayedGameRetriever.cs" />
+    <Compile Include="Logic\Players\IPlayerInviter.cs" />
     <Compile Include="Logic\Players\IPlayerSaver.cs" />
+    <Compile Include="Logic\Players\PlayerInviter.cs" />
     <Compile Include="Logic\Players\PlayerSaver.cs" />
     <Compile Include="Logic\Players\IPlayerRetriever.cs" />
     <Compile Include="Logic\Players\PlayerRetriever.cs" />

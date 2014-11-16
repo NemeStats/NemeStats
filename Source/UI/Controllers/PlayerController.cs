@@ -21,7 +21,7 @@ namespace UI.Controllers
     public partial class PlayerController : Controller
     {
         internal const int NUMBER_OF_RECENT_GAMES_TO_RETRIEVE = 10;
-        internal const string EMAIL_SUBJECT_PLAYER_INVITATION = "{0} has invited you to their Gaming Group";
+        internal const string EMAIL_SUBJECT_PLAYER_INVITATION = "Invitation from {0}";
         internal const string EMAIL_BODY_PLAYER_INVITATION = "You have been invited by '{0}' to join the '{1}'"
             + " Gaming Group on http://nemestats.com/. NemeStats.com is a free website for tracking the results of"
             + " board games. Please click the link below to complete the registration process:";
@@ -32,13 +32,15 @@ namespace UI.Controllers
         internal IShowingXResultsMessageBuilder showingXResultsMessageBuilder;
         internal IPlayerSaver playerSaver;
         internal IPlayerRetriever playerRetriever;
+        internal IPlayerInviter playerInviter;
         
         public PlayerController(IDataContext dataContext,
             IGameResultViewModelBuilder builder,
             IPlayerDetailsViewModelBuilder playerDetailsViewModelBuilder,
             IShowingXResultsMessageBuilder showingXResultsMessageBuilder,
             IPlayerSaver playerSaver,
-            IPlayerRetriever playerRetriever)
+            IPlayerRetriever playerRetriever,
+            IPlayerInviter playerInviter)
         {
             this.dataContext = dataContext;
             this.builder = builder;
@@ -46,6 +48,7 @@ namespace UI.Controllers
             this.showingXResultsMessageBuilder = showingXResultsMessageBuilder;
             this.playerSaver = playerSaver;
             this.playerRetriever = playerRetriever;
+            this.playerInviter = playerInviter;
         }
 
         // GET: /Player/Details/5
@@ -104,12 +107,14 @@ namespace UI.Controllers
             }
 
             string emailSubject = string.Format(EMAIL_SUBJECT_PLAYER_INVITATION, currentUser.UserName);
+            string emailBody = string.Format(EMAIL_BODY_PLAYER_INVITATION, currentUser.UserName, playerDetails.GamingGroupName);
 
             var playerInvitationViewModel = new PlayerInvitationViewModel
             {
                 PlayerId = playerDetails.Id,
                 PlayerName = playerDetails.Name,
-                EmailSubject = emailSubject
+                EmailSubject = emailSubject,
+                EmailBody = emailBody
             };
             return View(MVC.Player.Views.InvitePlayer, playerInvitationViewModel);
         }

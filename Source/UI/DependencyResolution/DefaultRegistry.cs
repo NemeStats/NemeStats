@@ -116,9 +116,6 @@ namespace UI.DependencyResolution {
             this.For<IEventTracker>().Use<EventTracker>();
             this.For<INemesisHistoryRetriever>().Use<NemesisHistoryRetriever>();
 
-            //TODO should never be injected by the IoC... need to confirm
-            //For<IUniversalAnalyticsEvent>().Use<UniversalAnalyticsEvent>();
-
             this.For<IUniversalAnalyticsEventFactory>().Use<UniversalAnalyticsEventFactory>();
 
             this.For<IConfigurationManager>().Use(() => ConfigurationManager.Instance);
@@ -138,6 +135,8 @@ namespace UI.DependencyResolution {
             this.For<IFirstTimeAuthenticator>().Use<FirstTimeAuthenticator>();
 
             this.For<IBoardGameGeekSearcher>().Use<BoardGameGeekSearcher>();
+
+            this.For<IPlayerInviter>().Use<PlayerInviter>();
         }
 
         private void SetupUniquePerRequestMappings()

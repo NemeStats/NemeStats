@@ -18,7 +18,7 @@ namespace UI.Controllers
 {
     public partial class GameDefinitionController : Controller
     {
-        internal const int MIN_LENGTH_FOR_PARTIAL_MATCH_BOARD_GAME_GEEK_SEARCH = 5;
+        internal const int MIN_LENGTH_FOR_PARTIAL_MATCH_BOARD_GAME_GEEK_SEARCH = 3;
         internal const int NUMBER_OF_RECENT_GAMES_TO_SHOW = 5;
 
         internal IDataContext dataContext;
