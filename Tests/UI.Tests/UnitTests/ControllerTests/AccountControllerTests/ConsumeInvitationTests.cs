@@ -26,13 +26,13 @@ namespace UI.Tests.UnitTests.ControllerTests.AccountControllerTests
         {
             accountControllerPartialMock.ConsumeInvitation(gamingGroupInvitationId, currentUser);
 
-            gamingGroupInviteConsumerMock.AssertWasCalled(mock => mock.ConsumeInvitation(gamingGroupInvitationId, currentUser));
+            gamingGroupInviteConsumerMock.AssertWasCalled(mock => mock.ConsumeInvitation(gamingGroupInvitationId));
         }
 
         [Test]
         public void ItRedirectsToTheGamingGroupPageIfThePlayerWasAddedDirectlyToAGamingGroupWithoutHavingToEnterInformation()
         {
-            gamingGroupInviteConsumerMock.Expect(mock => mock.ConsumeInvitation(Arg<string>.Is.Anything, Arg<ApplicationUser>.Is.Anything))
+            gamingGroupInviteConsumerMock.Expect(mock => mock.ConsumeInvitation(Arg<string>.Is.Anything))
                                          .Return(true);
 
             RedirectToRouteResult redirectResult = accountControllerPartialMock.ConsumeInvitation(gamingGroupInvitationId, currentUser) as RedirectToRouteResult;
@@ -43,7 +43,7 @@ namespace UI.Tests.UnitTests.ControllerTests.AccountControllerTests
         [Test]
         public void ItRedirectsToTheRegisterAgainstExistingGamingGroupActionIfTheUserDoesntAlreadyExist()
         {
-            gamingGroupInviteConsumerMock.Expect(mock => mock.ConsumeInvitation(Arg<string>.Is.Anything, Arg<ApplicationUser>.Is.Anything))
+            gamingGroupInviteConsumerMock.Expect(mock => mock.ConsumeInvitation(Arg<string>.Is.Anything))
                                          .Return(false);
 
             RedirectToRouteResult redirectResult = accountControllerPartialMock.ConsumeInvitation(gamingGroupInvitationId, currentUser) as RedirectToRouteResult;

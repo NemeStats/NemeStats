@@ -108,9 +108,10 @@ namespace UI.Controllers
         }
 
         [UserContext(RequiresGamingGroup = false)]
-        public virtual ActionResult ConsumeInvitation(string gamingGroupInvitationId, ApplicationUser currentUser)
+        [AllowAnonymous]
+        public virtual ActionResult ConsumeInvitation(string id, ApplicationUser currentUser)
         {
-            bool userAddedToExistingGamingGroup = gamingGroupInvitationConsumer.ConsumeInvitation(gamingGroupInvitationId, currentUser);
+            bool userAddedToExistingGamingGroup = gamingGroupInvitationConsumer.ConsumeInvitation(id);
 
             if (userAddedToExistingGamingGroup)
             {
@@ -121,6 +122,7 @@ namespace UI.Controllers
         }
 
         [UserContext(RequiresGamingGroup = false)]
+        [AllowAnonymous]
         public virtual ActionResult RegisterAgainstExistingGamingGroup(string gamingGroupInvitationId, ApplicationUser currentUser)
         {
             return this.View();

@@ -14,38 +14,15 @@ using System.Threading.Tasks;
 namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.GamingGroupInviteConsumerTests
 {
     [TestFixture]
-    public class ConsumeGamingGroupInvitationTests
+    public class ConsumeGamingGroupInvitationTests : GamingGroupInviteConsumerTestBase
     {
-        private IPendingGamingGroupInvitationRetriever pendingGamingGroupInvitationRetriever;
-        private IUserStore<ApplicationUser> userStoreMock;
-        private ApplicationUserManager applicationUserManagerMock;
-        private GamingGroupInviteConsumer inviteConsumer;
-        private IGamingGroupAccessGranter gamingGroupAccessGranter;
-        private List<GamingGroupInvitation> gamingGroupInvitations;
-        private ApplicationUser currentUser;
-
-        [SetUp]
-        public void SetUp()
-        {
-            pendingGamingGroupInvitationRetriever = MockRepository.GenerateMock<IPendingGamingGroupInvitationRetriever>();
-            userStoreMock = MockRepository.GenerateMock<IUserStore<ApplicationUser>>();
-            applicationUserManagerMock = MockRepository.GenerateMock<ApplicationUserManager>(userStoreMock);
-            gamingGroupAccessGranter = MockRepository.GenerateMock<IGamingGroupAccessGranter>();
-            inviteConsumer = new GamingGroupInviteConsumer(pendingGamingGroupInvitationRetriever, applicationUserManagerMock, gamingGroupAccessGranter);
-            currentUser = new ApplicationUser()
-            {
-                Id = "user id"
-            };
-            gamingGroupInvitations = new List<GamingGroupInvitation>();
-        }
-
         [Test]
         public async Task ItReturnsNullIfThereAreNoInvitesForTheGivenUser()
         {
             pendingGamingGroupInvitationRetriever.Expect(mock => mock.GetPendingGamingGroupInvitations(currentUser))
                 .Repeat.Once()
                 .Return(gamingGroupInvitations);
-            int? gamingGroupId = await inviteConsumer.ConsumeGamingGroupInvitation(currentUser);
+            int? gamingGroupId = await this.gamingGroupInviteConsumer.ConsumeGamingGroupInvitation(currentUser);
 
             Assert.Null(gamingGroupId);
         }

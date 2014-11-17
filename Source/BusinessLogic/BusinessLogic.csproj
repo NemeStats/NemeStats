@@ -169,6 +169,10 @@
     <Compile Include="Migrations\201411160430223_AddSupportForPlayerInvitationsOnGamingGroup.Designer.cs">
       <DependentUpon>201411160430223_AddSupportForPlayerInvitationsOnGamingGroup.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201411170404303_UniqueConstraintOnUserGamingGroup.cs" />
+    <Compile Include="Migrations\201411170404303_UniqueConstraintOnUserGamingGroup.Designer.cs">
+      <DependentUpon>201411170404303_UniqueConstraintOnUserGamingGroup.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Players\PlayerInvitation.cs" />
     <Compile Include="Logic\Players\PlayerInviter.cs" />
     <Compile Include="Logic\Players\PlayerSaver.cs" />
@@ -465,6 +469,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201411160430223_AddSupportForPlayerInvitationsOnGamingGroup.resx">
       <DependentUpon>201411160430223_AddSupportForPlayerInvitationsOnGamingGroup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201411170404303_UniqueConstraintOnUserGamingGroup.resx">
+      <DependentUpon>201411170404303_UniqueConstraintOnUserGamingGroup.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />
