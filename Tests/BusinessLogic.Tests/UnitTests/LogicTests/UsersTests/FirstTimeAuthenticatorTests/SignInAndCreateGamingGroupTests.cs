@@ -1,6 +1,7 @@
 ﻿using System.Configuration;
 using System.Configuration.Abstractions;
 using System.Web;
+using BusinessLogic.DataAccess;
 using BusinessLogic.EventTracking;
 using BusinessLogic.Logic.GamingGroups;
 using BusinessLogic.Logic.Users;
@@ -26,8 +27,10 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.FirstTimeAuthentic
         private IGamingGroupSaver gamingGroupSaverMock;
         private IConfigurationManager configurationManagerMock;
         private ApplicationUserManager applicationUserManagerMock;
+        private IDataContext dataContextMock;
         private FirstTimeAuthenticator firstTimeAuthenticator;
         private ApplicationUser applicationUser;
+        private string applicationUserIdAfterSaving = "application user id after saving";
         private string confirmationToken = "the confirmation token";
         private string callbackUrl = "nemestats.com/Account/ConfirmEmail";
 
@@ -42,6 +45,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.FirstTimeAuthentic
             gamingGroupInviteConsumerMock = MockRepository.GenerateMock<IGamingGroupInviteConsumer>();
             gamingGroupSaverMock = MockRepository.GenerateMock<IGamingGroupSaver>();
             configurationManagerMock = MockRepository.GenerateMock<IConfigurationManager>();
+            dataContextMock = MockRepository.GenerateMock<IDataContext>();
 
             firstTimeAuthenticator = new FirstTimeAuthenticator(
                 eventTrackerMock,
@@ -49,7 +53,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.FirstTimeAuthentic
                 gamingGroupInviteConsumerMock,
                 gamingGroupSaverMock,
                 applicationUserManagerMock,
-                configurationManagerMock);
+                configurationManagerMock,
+                dataContextMock);
 
             applicationUser = new ApplicationUser()
             {
@@ -67,6 +72,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.FirstTimeAuthentic
                                                               Arg<ApplicationUser>.Is.Anything,
                                                               Arg<bool>.Is.Anything,
                                                               Arg<bool>.Is.Anything))
+                             .WhenCalled(invocation => this.applicationUser.Id = this.applicationUserIdAfterSaving)
                              .Return(Task.FromResult(-1));
 
             gamingGroupSaverMock.Expect(mock => mock.CreateNewGamingGroup(
@@ -74,16 +80,16 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.FirstTimeAuthentic
                                                                 Arg<ApplicationUser>.Is.Anything))
                       .Return(Task.FromResult(new GamingGroup()));
 
-            applicationUserManagerMock.Expect(mock => mock.GenerateEmailConfirmationTokenAsync(applicationUser.Id))
+            applicationUserManagerMock.Expect(mock => mock.GenerateEmailConfirmationTokenAsync(this.applicationUserIdAfterSaving))
                                       .Return(Task.FromResult(confirmationToken));
 
             string expectedCallbackUrl = callbackUrl + string.Format(
-                FirstTimeAuthenticator.CONFIRMATION_EMAIL_CALLBACK_URL_SUFFIX, 
-                applicationUser.Id, 
+                FirstTimeAuthenticator.CONFIRMATION_EMAIL_CALLBACK_URL_SUFFIX,
+                this.applicationUserIdAfterSaving, 
                 HttpUtility.UrlEncode(confirmationToken));
             string expectedEmailBody = string.Format(FirstTimeAuthenticator.CONFIRMATION_EMAIL_BODY, expectedCallbackUrl);
             applicationUserManagerMock.Expect(mock => mock.SendEmailAsync(
-                                                                          applicationUser.Id,
+                                                                          this.applicationUserIdAfterSaving,
                                                                           FirstTimeAuthenticator.EMAIL_SUBJECT,
                                                                           expectedEmailBody))
                                       .Return(Task.FromResult(-1));
@@ -176,7 +182,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.FirstTimeAuthentic
                 gamingGroupInviteConsumerMock,
                 gamingGroupSaverMock,
                 applicationUserManagerMock,
-                configurationManagerMock);
+                configurationManagerMock,
+                dataContextMock);
 
             string exceptionMessage = string.Empty;
             try
@@ -189,6 +196,18 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.FirstTimeAuthentic
             }
 
             Assert.AreEqual(exceptionMessage, "Missing app setting with key: emailConfirmationCallbackUrl");
+        }
+
+        [Test]
+        public async Task ItCreatesAUserGamingGroupRecord()
+        {
+            gamingGroupInviteConsumerMock.Expect(mock => mock.ConsumeGamingGroupInvitation(Arg<ApplicationUser>.Is.Anything))
+                 .Return(Task.FromResult((int?)null));
+
+            await firstTimeAuthenticator.SignInAndCreateGamingGroup(applicationUser);
+
+            dataContextMock.AssertWasCalled(mock => mock.Save(Arg<UserGamingGroup>.Matches(userGamingGroup => userGamingGroup.ApplicationUserId == applicationUserIdAfterSaving),
+                Arg<ApplicationUser>.Is.Anything));
         }
     }
 }

@@ -11,23 +11,16 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.GamingGroupInviteC
     [TestFixture]
     public class ConsumeInvitationTests : GamingGroupInviteConsumerTestBase
     {
-        private string gamingGroupInvitationId = "gaming group id";
-
-        [SetUp]
-        public override void SetUp()
-        {
-            base.SetUp();
-        }
+        private readonly string gamingGroupInvitationId = Guid.NewGuid().ToString();
 
         [Test]
         public void ItThrowsAnEntityNotFoundIfTheGamingGroupInvitationDoesNotExist()
         {
-            dataContextMock.Expect(mock => mock.FindById<GamingGroupInvitation>(gamingGroupInvitationId))
+            dataContextMock.Expect(mock => mock.FindById<GamingGroupInvitation>(new Guid(gamingGroupInvitationId)))
                            .Return(null);
             var expectedException = new EntityDoesNotExistException(gamingGroupInvitationId);
 
-            Exception actualException = Assert.Throws<EntityDoesNotExistException>(
-                                                                                   () => gamingGroupInviteConsumer.ConsumeInvitation(gamingGroupInvitationId));
+            Exception actualException = Assert.Throws<EntityDoesNotExistException>(() => gamingGroupInviteConsumer.ConsumeInvitation(gamingGroupInvitationId));
 
             Assert.That(actualException.Message.Equals(expectedException.Message));
         }
@@ -39,23 +32,22 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.GamingGroupInviteC
             {
                 RegisteredUserId = "user id that doesn't have a corresponding player"
             };
-            dataContextMock.Expect(mock => mock.FindById<GamingGroupInvitation>(gamingGroupInvitationId))
+            dataContextMock.Expect(mock => mock.FindById<GamingGroupInvitation>(new Guid(gamingGroupInvitationId)))
                            .Return(invitation);
             dataContextMock.Expect(mock => mock.FindById<ApplicationUser>(invitation.RegisteredUserId))
                            .Return(null);
             var expectedException = new EntityDoesNotExistException(invitation.RegisteredUserId);
 
-            Exception actualException = Assert.Throws<EntityDoesNotExistException>(
-                                                                                   () => gamingGroupInviteConsumer.ConsumeInvitation(gamingGroupInvitationId));
+            Exception actualException = Assert.Throws<EntityDoesNotExistException>(() => gamingGroupInviteConsumer.ConsumeInvitation(gamingGroupInvitationId));
 
-            Assert.That(actualException.Message.Equals(expectedException.Message));
+            Assert.That(actualException.Message, Is.EqualTo(expectedException.Message));
         }
 
         [Test]
         public void ItReturnsFalseIfTheInvitationIsNotForAPlayerWithAnExistingRegisteredUserId()
         {
             var invitation = new GamingGroupInvitation();
-            dataContextMock.Expect(mock => mock.FindById<GamingGroupInvitation>(gamingGroupInvitationId))
+            dataContextMock.Expect(mock => mock.FindById<GamingGroupInvitation>(new Guid(gamingGroupInvitationId)))
                            .Return(invitation);
 
             bool actualResult = gamingGroupInviteConsumer.ConsumeInvitation(gamingGroupInvitationId);
@@ -70,7 +62,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.GamingGroupInviteC
             {
                 RegisteredUserId = "registered user id"
             };
-            dataContextMock.Expect(mock => mock.FindById<GamingGroupInvitation>(gamingGroupInvitationId))
+            dataContextMock.Expect(mock => mock.FindById<GamingGroupInvitation>(new Guid(gamingGroupInvitationId)))
                            .Return(invitation);
             dataContextMock.Expect(mock => mock.FindById<ApplicationUser>(invitation.RegisteredUserId))
                             .Return(new ApplicationUser());
@@ -87,7 +79,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.GamingGroupInviteC
                 GamingGroupId = 123,
                 RegisteredUserId = "registered user id"
             };
-            dataContextMock.Expect(mock => mock.FindById<GamingGroupInvitation>(gamingGroupInvitationId))
+            dataContextMock.Expect(mock => mock.FindById<GamingGroupInvitation>(new Guid(gamingGroupInvitationId)))
                            .Return(invitation);
             dataContextMock.Expect(mock => mock.FindById<ApplicationUser>(invitation.RegisteredUserId))
                             .Return(new ApplicationUser());
@@ -107,7 +99,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.GamingGroupInviteC
                 GamingGroupId = 123,
                 RegisteredUserId = "registered user id"
             };
-            dataContextMock.Expect(mock => mock.FindById<GamingGroupInvitation>(gamingGroupInvitationId))
+            dataContextMock.Expect(mock => mock.FindById<GamingGroupInvitation>(new Guid(gamingGroupInvitationId)))
                            .Return(invitation);
             dataContextMock.Expect(mock => mock.FindById<ApplicationUser>(invitation.RegisteredUserId))
                 .Return(new ApplicationUser());

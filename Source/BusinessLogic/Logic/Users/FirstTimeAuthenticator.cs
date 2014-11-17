@@ -1,8 +1,10 @@
 ﻿using System.Configuration;
 using System.Configuration.Abstractions;
 using System.Web;
+using BusinessLogic.DataAccess;
 using BusinessLogic.EventTracking;
 using BusinessLogic.Logic.GamingGroups;
+using BusinessLogic.Models;
 using BusinessLogic.Models.User;
 using System;
 using System.Linq;
@@ -23,6 +25,7 @@ namespace BusinessLogic.Logic.Users
         private readonly IGamingGroupSaver gamingGroupSaver;
         private readonly IConfigurationManager configurationManager;
         private readonly ApplicationUserManager applicationUserManager;
+        private readonly IDataContext dataContext;
 
         public FirstTimeAuthenticator(
             INemeStatsEventTracker eventTracker,
@@ -30,7 +33,8 @@ namespace BusinessLogic.Logic.Users
             IGamingGroupInviteConsumer gamingGroupInviteConsumer,
             IGamingGroupSaver gamingGroupSaver,
             ApplicationUserManager applicationUserManager, 
-            IConfigurationManager configurationManager)
+            IConfigurationManager configurationManager, 
+            IDataContext dataContext)
         {
             this.eventTracker = eventTracker;
             this.signInManager = signInManager;
@@ -38,6 +42,7 @@ namespace BusinessLogic.Logic.Users
             this.gamingGroupSaver = gamingGroupSaver;
             this.applicationUserManager = applicationUserManager;
             this.configurationManager = configurationManager;
+            this.dataContext = dataContext;
         }
 
         public async Task<object> SignInAndCreateGamingGroup(ApplicationUser applicationUser)
@@ -76,8 +81,16 @@ namespace BusinessLogic.Logic.Users
 
             if (!gamingGroupIdToWhichTheUserWasAdded.HasValue)
             {
-                await this.gamingGroupSaver.CreateNewGamingGroup(applicationUser.UserName + "'s Gaming Group", applicationUser);
+                gamingGroupIdToWhichTheUserWasAdded = (await this.gamingGroupSaver.CreateNewGamingGroup(applicationUser.UserName + "'s Gaming Group", applicationUser)).Id;
             }
+
+            UserGamingGroup userGamingGroup = new UserGamingGroup
+            {
+                ApplicationUserId = applicationUser.Id,
+                GamingGroupId = gamingGroupIdToWhichTheUserWasAdded.Value
+            };
+
+            dataContext.Save(userGamingGroup, applicationUser);
         }
 
         private async Task SendConfirmationEmail(ApplicationUser applicationUser, string callbackActionUrl)
