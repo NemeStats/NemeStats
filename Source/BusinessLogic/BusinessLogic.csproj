@@ -123,6 +123,8 @@
     <Compile Include="DataAccess\GamingGroups\IGamingGroupAccessGranter.cs" />
     <Compile Include="DataAccess\NemeStatsDbContext.cs" />
     <Compile Include="DataAccess\NemeStatsInitializer.cs" />
+    <Compile Include="DataAccess\Repositories\ChampionRepository.cs" />
+    <Compile Include="DataAccess\Repositories\IChampionRepository.cs" />
     <Compile Include="DataAccess\SecuredEntityWithTechnicalKey.cs" />
     <Compile Include="DataAccess\Security\ISecuredEntityValidator.cs" />
     <Compile Include="DataAccess\Security\SecuredEntityValidatorFactory.cs" />
@@ -140,8 +142,10 @@
     <Compile Include="Logic\BoardGameGeek\BoardGameGeekSearcher.cs" />
     <Compile Include="Logic\BoardGameGeek\IBoardGameGeekSearcher.cs" />
     <Compile Include="Logic\BoardGameGeek\DeSerializationModels\SearchResultModels.cs" />
+    <Compile Include="Logic\Champions\ChampionRecalculator.cs" />
     <Compile Include="Logic\Email\EmailService.cs" />
     <Compile Include="Logic\GameDefinitions\BoardGameGeekDataLinker.cs" />
+    <Compile Include="Logic\Champions\IChampionRecalculator.cs" />
     <Compile Include="Logic\Nemeses\INemesisHistoryRetriever.cs" />
     <Compile Include="Logic\Nemeses\INemesisRecalculator.cs" />
     <Compile Include="Logic\Nemeses\NemesisChange.cs" />
@@ -277,7 +281,19 @@
     <Compile Include="Migrations\201411090249182_AddDateCreated.Designer.cs">
       <DependentUpon>201411090249182_AddDateCreated.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201411161651116_CreateChampionTable.cs" />
+    <Compile Include="Migrations\201411161651116_CreateChampionTable.Designer.cs">
+      <DependentUpon>201411161651116_CreateChampionTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201411161652021_SetupInitialChampions.cs" />
+    <Compile Include="Migrations\201411161652021_SetupInitialChampions.Designer.cs">
+      <DependentUpon>201411161652021_SetupInitialChampions.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Champion.cs" />
+    <Compile Include="Models\Champions\ChampionData.cs" />
+    <Compile Include="Models\Champions\NullChampionData.cs" />
     <Compile Include="Models\Games\BoardGameGeekSearchResult.cs" />
+    <Compile Include="Models\Games\ChampionStatistics.cs" />
     <Compile Include="Models\Games\GameDefinitionSummary.cs" />
     <Compile Include="Models\Games\PublicGameSummary.cs" />
     <Compile Include="Models\GamingGroup.cs" />
@@ -287,6 +303,7 @@
     <Compile Include="Models\Nemeses\NemesisHistoryData.cs" />
     <Compile Include="Models\Nemeses\NullNemesisData.cs" />
     <Compile Include="Models\Nemesis.cs" />
+    <Compile Include="Models\NullChampion.cs" />
     <Compile Include="Models\NullNemesis.cs" />
     <Compile Include="Models\Players\PlayerGameSummary.cs" />
     <Compile Include="Models\Players\TopPlayer.cs" />
@@ -448,6 +465,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201411090249182_AddDateCreated.resx">
       <DependentUpon>201411090249182_AddDateCreated.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201411161651116_CreateChampionTable.resx">
+      <DependentUpon>201411161651116_CreateChampionTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201411161652021_SetupInitialChampions.resx">
+      <DependentUpon>201411161652021_SetupInitialChampions.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

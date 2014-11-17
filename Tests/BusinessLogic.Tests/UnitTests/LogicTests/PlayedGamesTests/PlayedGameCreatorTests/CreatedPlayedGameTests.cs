@@ -1,6 +1,7 @@
 ﻿using BusinessLogic.DataAccess;
 using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.EventTracking;
+using BusinessLogic.Logic.Champions;
 using BusinessLogic.Logic.Nemeses;
 using BusinessLogic.Logic.PlayedGames;
 using BusinessLogic.Models;
@@ -23,6 +24,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameCr
         private IPlayerRepository playerRepositoryMock;
         private INemesisRecalculator nemesisRecalculatorMock;
         private INemeStatsEventTracker playedGameTracker;
+        private IChampionRecalculator championRecalculatorMock;
         private ApplicationUser currentUser;
         private GameDefinition gameDefinition;
 
@@ -33,6 +35,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameCr
             playedGameTracker = MockRepository.GenerateMock<INemeStatsEventTracker>();
             playerRepositoryMock = MockRepository.GenerateMock<IPlayerRepository>();
             nemesisRecalculatorMock = MockRepository.GenerateMock<INemesisRecalculator>();
+            championRecalculatorMock = MockRepository.GenerateMock<IChampionRecalculator>();
 
             currentUser = new ApplicationUser()
             {
@@ -43,7 +46,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameCr
             gameDefinition = new GameDefinition(){ Name = "game definition name" };
             dataContext.Expect(mock => mock.FindById<GameDefinition>(Arg<int>.Is.Anything))
                 .Return(gameDefinition);
-            playedGameCreatorPartialMock = MockRepository.GeneratePartialMock<PlayedGameCreator>(dataContext, playedGameTracker, playerRepositoryMock, nemesisRecalculatorMock);
+            playedGameCreatorPartialMock = MockRepository.GeneratePartialMock<PlayedGameCreator>(dataContext, playedGameTracker, playerRepositoryMock, nemesisRecalculatorMock, championRecalculatorMock);
         }
 
         [Test]
@@ -186,6 +189,21 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameCr
             {
                 nemesisRecalculatorMock.AssertWasCalled(mock => mock.RecalculateNemesis(playerRank.PlayerId.Value, currentUser));
             }
+        }
+
+        [Test]
+        public void ItRecalculatesTheChampionForTheGame()
+        {
+            List<PlayerRank> playerRanks = new List<PlayerRank>();
+            NewlyCompletedGame newlyCompletedGame = new NewlyCompletedGame()
+            {
+                GameDefinitionId = 1,
+                PlayerRanks = playerRanks
+            };
+
+            playedGameCreatorPartialMock.CreatePlayedGame(newlyCompletedGame, currentUser);
+
+            championRecalculatorMock.AssertWasCalled(mock => mock.RecalculateChampion((int)newlyCompletedGame.GameDefinitionId, currentUser));
         }
     }
 }
