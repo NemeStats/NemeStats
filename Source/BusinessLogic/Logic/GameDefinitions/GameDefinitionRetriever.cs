@@ -42,6 +42,8 @@ namespace BusinessLogic.Logic.GameDefinitions
                 .Include(game => game.PlayedGames)
                 .Include(game => game.Champion)
                 .Include(game => game.Champion.Player)
+                .Include(game => game.PreviousChampion)
+                .Include(game => game.PreviousChampion.Player)
                 .Include(game => game.GamingGroup)
                 .SingleOrDefault(game => game.Id == id);
 
