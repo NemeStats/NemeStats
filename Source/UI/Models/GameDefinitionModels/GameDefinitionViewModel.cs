@@ -8,5 +8,8 @@ namespace UI.Models.GameDefinitionModels
     public class GameDefinitionDetailsViewModel : GameDefinitionSummaryViewModel
     {
         public IList<PlayedGameDetailsViewModel> PlayedGames { get; set; }
+        public string ChampionName { get; set; }
+        public float WinPercentage { get; set; }
+        public string PreviousChampionName { get; set; }
     }
 }

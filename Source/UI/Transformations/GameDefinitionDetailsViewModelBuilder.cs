@@ -42,7 +42,18 @@ namespace UI.Transformations
                                          select playedGameDetailsViewModelBuilder.Build(playedGame, currentUser))
                                    .ToList();
             }
-                                  
+
+            if (!(gameDefinitionSummary.Champion is NullChampion))
+            {
+                viewModel.ChampionName = gameDefinitionSummary.Champion.Player.Name;
+                viewModel.WinPercentage = gameDefinitionSummary.Champion.WinPercentage;
+            }
+
+            if (!(gameDefinitionSummary.PreviousChampion is NullChampion))
+            {
+                viewModel.PreviousChampionName = gameDefinitionSummary.PreviousChampion.Player.Name;
+            }
+
             return viewModel;
         }
     }
