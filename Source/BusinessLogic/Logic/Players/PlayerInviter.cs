@@ -29,9 +29,14 @@ namespace BusinessLogic.Logic.Players
             this.emailService = emailService;
             this.configurationManager = configurationManager;
         }
+
         public void InvitePlayer(PlayerInvitation playerInvitation, ApplicationUser currentUser)
         {
             GamingGroup gamingGroup = dataContext.FindById<GamingGroup>(currentUser.CurrentGamingGroupId.Value);
+
+            string existingUserId = (from ApplicationUser user in dataContext.GetQueryable<ApplicationUser>()
+                                     where user.Email == playerInvitation.InvitedPlayerEmail
+                                     select user.Id).FirstOrDefault();       
             
             GamingGroupInvitation gamingGroupInvitation = new GamingGroupInvitation
             {
@@ -39,7 +44,8 @@ namespace BusinessLogic.Logic.Players
                 GamingGroupId = currentUser.CurrentGamingGroupId.Value,
                 InviteeEmail = playerInvitation.InvitedPlayerEmail,
                 InvitingUserId = currentUser.Id,
-                PlayerId = playerInvitation.InvitedPlayerId
+                PlayerId = playerInvitation.InvitedPlayerId,
+                RegisteredUserId = existingUserId
             };
 
             GamingGroupInvitation savedGamingGroupInvitation = dataContext.Save<GamingGroupInvitation>(gamingGroupInvitation, currentUser);
@@ -55,7 +61,7 @@ namespace BusinessLogic.Logic.Players
                                                 gamingGroup.Id,
                                                 playerInvitation.CustomEmailMessage,
                                                 savedGamingGroupInvitation.Id,
-                                                Environment.NewLine);
+                                                "<br/><br/>");
             var message = new IdentityMessage
             {
                 Body = messageBody,

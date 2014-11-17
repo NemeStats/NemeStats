@@ -28,6 +28,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerInviterTes
         private GamingGroup gamingGroup;
         private GamingGroupInvitation gamingGroupInvitation;
         private string rootUrl = "http://nemestats.com";
+        private string existingUserId = "existing user id";
 
         [SetUp]
         public void SetUp()
@@ -65,6 +66,17 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerInviterTes
             dataContextMock.Expect(mock => mock.FindById<GamingGroup>(currentUser.CurrentGamingGroupId.Value))
                            .Return(gamingGroup);
 
+            List<ApplicationUser> applicationUsers = new List<ApplicationUser>
+            {
+                new ApplicationUser
+                {
+                    Email = playerInvitation.InvitedPlayerEmail,
+                    Id = existingUserId
+                }
+            };
+            dataContextMock.Expect(mock => mock.GetQueryable<ApplicationUser>())
+                           .Return(applicationUsers.AsQueryable());
+
             dataContextMock.Expect(mock => mock.Save<GamingGroupInvitation>(Arg<GamingGroupInvitation>.Is.Anything, Arg<ApplicationUser>.Is.Anything))
                            .Return(gamingGroupInvitation);
 
@@ -92,6 +104,16 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerInviterTes
         }
 
         [Test]
+        public void ItSetsTheRegisteredUserIdOnTheGamingGroupInvitationIfTheUserAlreadyHasAnExistingAccount()
+        {
+            playerInviter.InvitePlayer(playerInvitation, currentUser);
+
+            dataContextMock.AssertWasCalled(mock => mock.Save<GamingGroupInvitation>(Arg<GamingGroupInvitation>.Matches(
+                invite => invite.RegisteredUserId == existingUserId),
+                Arg<ApplicationUser>.Is.Anything));
+        }
+
+        [Test]
         public void ItEmailsTheUser()
         {
             string expectedBody = string.Format(PlayerInviter.EMAIL_MESSAGE_INVITE_PLAYER,
@@ -101,13 +123,13 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerInviterTes
                                                 currentUser.CurrentGamingGroupId.Value,
                                                 playerInvitation.CustomEmailMessage,
                                                 gamingGroupInvitation.Id,
-                                                Environment.NewLine);
+                                                "<br/><br/>");
 
             playerInviter.InvitePlayer(playerInvitation, currentUser);
 
             emailServiceMock.AssertWasCalled(mock => mock.SendAsync(Arg<IdentityMessage>.Matches(
                 message => message.Subject == playerInvitation.EmailSubject
-                && message.Body.StartsWith(expectedBody))));
+                && message.Body == expectedBody)));
         }
     }
 }
