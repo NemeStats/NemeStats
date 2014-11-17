@@ -7,10 +7,12 @@ namespace BusinessLogic.Migrations
     {
         public override void Up()
         {
+            this.Sql("DELETE FROM dbo.UserGamingGroup;");
+
             DropIndex("dbo.UserGamingGroup", new[] { "ApplicationUserId" });
             DropIndex("dbo.UserGamingGroup", new[] { "GamingGroupId" });
             CreateIndex("dbo.UserGamingGroup", new[] { "ApplicationUserId", "GamingGroupId" }, unique: true, name: "IX_USERID_AND_GAMING_GROUPID");
-            this.Sql("DELETE FROM dbo.UserGamingGroup;");
+            
             this.Sql(@"INSERT INTO UserGamingGroup (ApplicationUserId, GamingGroupId) 
               (SELECT Id, CurrentGamingGroupid FROM AspNetUsers 
               WHERE NOT EXISTS (SELECT 1 FROM UserGamingGroup UGG2 WHERE UGG2.ApplicationUserId = AspNetUsers.Id 
