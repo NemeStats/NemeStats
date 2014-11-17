@@ -11,9 +11,9 @@ namespace BusinessLogic.Logic.Users
 {
     public class GamingGroupInviteConsumer : IGamingGroupInviteConsumer
     {
-        private IPendingGamingGroupInvitationRetriever pendingGamingGroupRetriever;
-        private IGamingGroupAccessGranter gamingGroupAccessGranter;
-        private ApplicationUserManager userManager;
+        private readonly IPendingGamingGroupInvitationRetriever pendingGamingGroupRetriever;
+        private readonly IGamingGroupAccessGranter gamingGroupAccessGranter;
+        private readonly ApplicationUserManager userManager;
 
         public GamingGroupInviteConsumer(
             IPendingGamingGroupInvitationRetriever pendingGamingGroupRetriever, 
@@ -43,6 +43,11 @@ namespace BusinessLogic.Logic.Users
             gamingGroupAccessGranter.ConsumeInvitation(oldestInvite, currentUser);
 
             return user.CurrentGamingGroupId;
+        }
+
+        public bool ConsumeInvitation(string gamingGroupInvitationId, ApplicationUser currentUser)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

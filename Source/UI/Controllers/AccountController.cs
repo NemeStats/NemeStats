@@ -5,6 +5,7 @@ using Microsoft.Owin.Security;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using UI.Filters;
 using UI.Models;
 
 namespace UI.Controllers
@@ -16,17 +17,20 @@ namespace UI.Controllers
         private readonly IUserRegisterer userRegisterer;
         private readonly IFirstTimeAuthenticator firstTimeAuthenticator;
         private readonly IAuthenticationManager authenticationManager;
+        private readonly IGamingGroupInviteConsumer gamingGroupInvitationConsumer;
 
         public AccountController(
             ApplicationUserManager userManager, 
             IUserRegisterer userRegisterer,
             IFirstTimeAuthenticator firstTimeAuthenticator,
-            IAuthenticationManager authenticationManager)
+            IAuthenticationManager authenticationManager, 
+            IGamingGroupInviteConsumer gamingGroupInvitationConsumer)
         {
             this.userManager = userManager;
             this.userRegisterer = userRegisterer;
             this.firstTimeAuthenticator = firstTimeAuthenticator;
             this.authenticationManager = authenticationManager;
+            this.gamingGroupInvitationConsumer = gamingGroupInvitationConsumer;
         }
 
         //
@@ -101,6 +105,25 @@ namespace UI.Controllers
 
             // If we got this far, something failed, redisplay form
             return View(MVC.Account.Views.Register, model);
+        }
+
+        [UserContext(RequiresGamingGroup = false)]
+        public virtual ActionResult ConsumeInvitation(string gamingGroupInvitationId, ApplicationUser currentUser)
+        {
+            bool userAddedToExistingGamingGroup = gamingGroupInvitationConsumer.ConsumeInvitation(gamingGroupInvitationId, currentUser);
+
+            if (userAddedToExistingGamingGroup)
+            {
+                return RedirectToAction(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name);
+            }
+
+            return RedirectToAction(MVC.Account.ActionNames.RegisterAgainstExistingGamingGroup, MVC.Account.Name);
+        }
+
+        [UserContext(RequiresGamingGroup = false)]
+        public virtual ActionResult RegisterAgainstExistingGamingGroup(string gamingGroupInvitationId, ApplicationUser currentUser)
+        {
+            return this.View();
         }
 
         //

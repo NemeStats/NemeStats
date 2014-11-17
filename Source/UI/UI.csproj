@@ -489,6 +489,7 @@
     <Content Include="Views\PlayedGame\_PlayedGamesPartial.cshtml" />
     <Content Include="Views\GamingGroup\Details.cshtml" />
     <Content Include="Views\Player\InvitePlayer.cshtml" />
+    <Content Include="Views\Account\RegisterAgainstExistingGamingGroup.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Code\" />
