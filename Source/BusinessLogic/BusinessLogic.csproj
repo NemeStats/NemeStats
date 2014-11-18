@@ -304,10 +304,6 @@
     <Compile Include="Migrations\201411150212370_AddPlayerUserRelationship.Designer.cs">
       <DependentUpon>201411150212370_AddPlayerUserRelationship.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201411161652021_SetupInitialChampions.cs" />
-    <Compile Include="Migrations\201411161652021_SetupInitialChampions.Designer.cs">
-      <DependentUpon>201411161652021_SetupInitialChampions.cs</DependentUpon>
-    </Compile>
     <Compile Include="Models\Champion.cs" />
     <Compile Include="Models\Champions\ChampionData.cs" />
     <Compile Include="Models\Champions\NullChampionData.cs" />
@@ -490,9 +486,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201411160430223_AddSupportForPlayerInvitationsOnGamingGroup.resx">
       <DependentUpon>201411160430223_AddSupportForPlayerInvitationsOnGamingGroup.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201411161652021_SetupInitialChampions.resx">
-      <DependentUpon>201411161652021_SetupInitialChampions.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201411170404303_UniqueConstraintOnUserGamingGroup.resx">
       <DependentUpon>201411170404303_UniqueConstraintOnUserGamingGroup.cs</DependentUpon>
