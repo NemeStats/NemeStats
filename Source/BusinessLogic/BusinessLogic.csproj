@@ -177,6 +177,14 @@
     <Compile Include="Migrations\201411170404303_UniqueConstraintOnUserGamingGroup.Designer.cs">
       <DependentUpon>201411170404303_UniqueConstraintOnUserGamingGroup.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201411180233114_CreateChampionTable.cs" />
+    <Compile Include="Migrations\201411180233114_CreateChampionTable.Designer.cs">
+      <DependentUpon>201411180233114_CreateChampionTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201411180236413_SetInitialChampions.cs" />
+    <Compile Include="Migrations\201411180236413_SetInitialChampions.Designer.cs">
+      <DependentUpon>201411180236413_SetInitialChampions.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Players\PlayerInvitation.cs" />
     <Compile Include="Logic\Players\PlayerInviter.cs" />
     <Compile Include="Logic\Players\PlayerSaver.cs" />
@@ -295,10 +303,6 @@
     <Compile Include="Migrations\201411150212370_AddPlayerUserRelationship.cs" />
     <Compile Include="Migrations\201411150212370_AddPlayerUserRelationship.Designer.cs">
       <DependentUpon>201411150212370_AddPlayerUserRelationship.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201411161651116_CreateChampionTable.cs" />
-    <Compile Include="Migrations\201411161651116_CreateChampionTable.Designer.cs">
-      <DependentUpon>201411161651116_CreateChampionTable.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\201411161652021_SetupInitialChampions.cs" />
     <Compile Include="Migrations\201411161652021_SetupInitialChampions.Designer.cs">
@@ -487,14 +491,17 @@
     <EmbeddedResource Include="Migrations\201411160430223_AddSupportForPlayerInvitationsOnGamingGroup.resx">
       <DependentUpon>201411160430223_AddSupportForPlayerInvitationsOnGamingGroup.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201411161651116_CreateChampionTable.resx">
-      <DependentUpon>201411161651116_CreateChampionTable.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201411161652021_SetupInitialChampions.resx">
       <DependentUpon>201411161652021_SetupInitialChampions.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201411170404303_UniqueConstraintOnUserGamingGroup.resx">
       <DependentUpon>201411170404303_UniqueConstraintOnUserGamingGroup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201411180233114_CreateChampionTable.resx">
+      <DependentUpon>201411180233114_CreateChampionTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201411180236413_SetInitialChampions.resx">
+      <DependentUpon>201411180236413_SetInitialChampions.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

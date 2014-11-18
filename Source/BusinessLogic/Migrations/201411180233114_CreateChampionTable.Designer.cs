@@ -13,7 +13,7 @@ namespace BusinessLogic.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201411161651116_CreateChampionTable"; }
+            get { return "201411180233114_CreateChampionTable"; }
         }
         
         string IMigrationMetadata.Source

@@ -33,14 +33,14 @@ namespace BusinessLogic.Migrations
         
         public override void Down()
         {
-            DropForeignKey("dbo.GameDefinition", "PreviousChampionId", "dbo.Champion");
-            DropForeignKey("dbo.GameDefinition", "ChampionId", "dbo.Champion");
             DropForeignKey("dbo.Champion", "PlayerId", "dbo.Player");
             DropForeignKey("dbo.Champion", "GameDefinitionId", "dbo.GameDefinition");
-            DropIndex("dbo.Champion", new[] { "PlayerId" });
-            DropIndex("dbo.Champion", new[] { "GameDefinitionId" });
+            DropForeignKey("dbo.GameDefinition", "PreviousChampionId", "dbo.Champion");
+            DropForeignKey("dbo.GameDefinition", "ChampionId", "dbo.Champion");
             DropIndex("dbo.GameDefinition", new[] { "PreviousChampionId" });
             DropIndex("dbo.GameDefinition", new[] { "ChampionId" });
+            DropIndex("dbo.Champion", new[] { "PlayerId" });
+            DropIndex("dbo.Champion", new[] { "GameDefinitionId" });
             DropColumn("dbo.GameDefinition", "PreviousChampionId");
             DropColumn("dbo.GameDefinition", "ChampionId");
             DropTable("dbo.Champion");
