@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
 using BusinessLogic.Models.User;
@@ -10,6 +11,8 @@ namespace UI.Transformations
 {
     public class GameDefinitionDetailsViewModelBuilder : IGameDefinitionDetailsViewModelBuilder
     {
+        public const string BOARD_GAME_GEEK_BOARD_GAME_BASE_URI = "http://boardgamegeek.com/boardgame/{0}";
+
         //TODO Discuss with Tosho. How do I avoid duplicating this logic? If I call existing GameDefinitionSummaryViewModelBuilder
         //then I get back a GameDefinitionSummaryViewModel, not a GameDefinitionDetailsViewModel
         internal IPlayedGameDetailsViewModelBuilder playedGameDetailsViewModelBuilder;
@@ -21,6 +24,12 @@ namespace UI.Transformations
 
         public GameDefinitionDetailsViewModel Build(GameDefinitionSummary gameDefinitionSummary, ApplicationUser currentUser)
         {
+            Uri boardGameGeekUri = null;
+
+            if (gameDefinitionSummary.BoardGameGeekObjectId.HasValue)
+            {
+                boardGameGeekUri = new Uri(string.Format(BOARD_GAME_GEEK_BOARD_GAME_BASE_URI, gameDefinitionSummary.BoardGameGeekObjectId.Value));
+            }
             GameDefinitionDetailsViewModel viewModel = new GameDefinitionDetailsViewModel()
             {
                 Id = gameDefinitionSummary.Id,
@@ -29,6 +38,7 @@ namespace UI.Transformations
                 TotalNumberOfGamesPlayed = gameDefinitionSummary.TotalNumberOfGamesPlayed,
                 GamingGroupId = gameDefinitionSummary.GamingGroupId,
                 GamingGroupName = gameDefinitionSummary.GamingGroupName,
+                BoardGameGeekUri = boardGameGeekUri,
                 UserCanEdit = (currentUser != null && gameDefinitionSummary.GamingGroupId == currentUser.CurrentGamingGroupId)
             };
 
