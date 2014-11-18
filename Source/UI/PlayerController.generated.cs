@@ -62,6 +62,12 @@ namespace UI.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult InvitePlayer()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.InvitePlayer);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult Save()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Save);
@@ -91,6 +97,7 @@ namespace UI.Controllers
             public readonly string Details = "Details";
             public readonly string SavePlayer = "SavePlayer";
             public readonly string Create = "Create";
+            public readonly string InvitePlayer = "InvitePlayer";
             public readonly string Save = "Save";
             public readonly string Edit = "Edit";
         }
@@ -101,6 +108,7 @@ namespace UI.Controllers
             public const string Details = "Details";
             public const string SavePlayer = "SavePlayer";
             public const string Create = "Create";
+            public const string InvitePlayer = "InvitePlayer";
             public const string Save = "Save";
             public const string Edit = "Edit";
         }
@@ -114,6 +122,16 @@ namespace UI.Controllers
         {
             public readonly string id = "id";
             public readonly string currentUser = "currentUser";
+        }
+        static readonly ActionParamsClass_InvitePlayer s_params_InvitePlayer = new ActionParamsClass_InvitePlayer();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_InvitePlayer InvitePlayerParams { get { return s_params_InvitePlayer; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_InvitePlayer
+        {
+            public readonly string id = "id";
+            public readonly string currentUser = "currentUser";
+            public readonly string playerInvitationViewModel = "playerInvitationViewModel";
         }
         static readonly ActionParamsClass_Save s_params_Save = new ActionParamsClass_Save();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -149,12 +167,14 @@ namespace UI.Controllers
                 public readonly string Create = "Create";
                 public readonly string Details = "Details";
                 public readonly string Edit = "Edit";
+                public readonly string InvitePlayer = "InvitePlayer";
             }
             public readonly string _CreateOrUpdatePartial = "~/Views/Player/_CreateOrUpdatePartial.cshtml";
             public readonly string _Players = "~/Views/Player/_Players.cshtml";
             public readonly string Create = "~/Views/Player/Create.cshtml";
             public readonly string Details = "~/Views/Player/Details.cshtml";
             public readonly string Edit = "~/Views/Player/Edit.cshtml";
+            public readonly string InvitePlayer = "~/Views/Player/InvitePlayer.cshtml";
         }
     }
 
@@ -195,6 +215,32 @@ namespace UI.Controllers
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Create);
             CreateOverride(callInfo);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void InvitePlayerOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, BusinessLogic.Models.User.ApplicationUser currentUser);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult InvitePlayer(int id, BusinessLogic.Models.User.ApplicationUser currentUser)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.InvitePlayer);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "currentUser", currentUser);
+            InvitePlayerOverride(callInfo, id, currentUser);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void InvitePlayerOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, UI.Models.Players.PlayerInvitationViewModel playerInvitationViewModel, BusinessLogic.Models.User.ApplicationUser currentUser);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult InvitePlayer(UI.Models.Players.PlayerInvitationViewModel playerInvitationViewModel, BusinessLogic.Models.User.ApplicationUser currentUser)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.InvitePlayer);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "playerInvitationViewModel", playerInvitationViewModel);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "currentUser", currentUser);
+            InvitePlayerOverride(callInfo, playerInvitationViewModel, currentUser);
             return callInfo;
         }
 

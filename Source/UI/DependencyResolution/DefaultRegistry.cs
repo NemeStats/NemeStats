@@ -16,6 +16,8 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using BusinessLogic.Logic.BoardGameGeek;
+using BusinessLogic.Logic.Email;
+using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
 
 namespace UI.DependencyResolution {
@@ -116,9 +118,6 @@ namespace UI.DependencyResolution {
             this.For<IEventTracker>().Use<EventTracker>();
             this.For<INemesisHistoryRetriever>().Use<NemesisHistoryRetriever>();
 
-            //TODO should never be injected by the IoC... need to confirm
-            //For<IUniversalAnalyticsEvent>().Use<UniversalAnalyticsEvent>();
-
             this.For<IUniversalAnalyticsEventFactory>().Use<UniversalAnalyticsEventFactory>();
 
             this.For<IConfigurationManager>().Use(() => ConfigurationManager.Instance);
@@ -138,6 +137,10 @@ namespace UI.DependencyResolution {
             this.For<IFirstTimeAuthenticator>().Use<FirstTimeAuthenticator>();
 
             this.For<IBoardGameGeekSearcher>().Use<BoardGameGeekSearcher>();
+
+            this.For<IPlayerInviter>().Use<PlayerInviter>();
+
+            this.For<IIdentityMessageService>().Use<EmailService>();
         }
 
         private void SetupUniquePerRequestMappings()

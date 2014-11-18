@@ -20,7 +20,10 @@ namespace UI.Controllers
 {
     public partial class PlayerController : Controller
     {
-        public static readonly int NUMBER_OF_RECENT_GAMES_TO_RETRIEVE = 10;
+        internal const int NUMBER_OF_RECENT_GAMES_TO_RETRIEVE = 10;
+        internal const string EMAIL_SUBJECT_PLAYER_INVITATION = "Invitation from {0}";
+        internal const string EMAIL_BODY_PLAYER_INVITATION = "Hi There! I'm inviting you to join the '{0}'"
+                                                             + " Gaming Group on http://nemestats.com/.";
 
         internal IDataContext dataContext;
         internal IGameResultViewModelBuilder builder;
@@ -28,13 +31,15 @@ namespace UI.Controllers
         internal IShowingXResultsMessageBuilder showingXResultsMessageBuilder;
         internal IPlayerSaver playerSaver;
         internal IPlayerRetriever playerRetriever;
+        internal IPlayerInviter playerInviter;
         
         public PlayerController(IDataContext dataContext,
             IGameResultViewModelBuilder builder,
             IPlayerDetailsViewModelBuilder playerDetailsViewModelBuilder,
             IShowingXResultsMessageBuilder showingXResultsMessageBuilder,
             IPlayerSaver playerSaver,
-            IPlayerRetriever playerRetriever)
+            IPlayerRetriever playerRetriever,
+            IPlayerInviter playerInviter)
         {
             this.dataContext = dataContext;
             this.builder = builder;
@@ -42,6 +47,7 @@ namespace UI.Controllers
             this.showingXResultsMessageBuilder = showingXResultsMessageBuilder;
             this.playerSaver = playerSaver;
             this.playerRetriever = playerRetriever;
+            this.playerInviter = playerInviter;
         }
 
         // GET: /Player/Details/5
@@ -81,6 +87,53 @@ namespace UI.Controllers
         public virtual ActionResult Create()
         {
             return View(MVC.Player.Views.Create, new Player());
+        }
+
+        // GET: /Player/InvitePlayer/5
+        [System.Web.Mvc.Authorize]
+        [UserContextAttribute]
+        public virtual ActionResult InvitePlayer(int id, ApplicationUser currentUser)
+        {
+            PlayerDetails playerDetails;
+
+            try
+            {
+                playerDetails = playerRetriever.GetPlayerDetails(id, 0);
+            }
+            catch (KeyNotFoundException)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+            }
+
+            string emailSubject = string.Format(EMAIL_SUBJECT_PLAYER_INVITATION, currentUser.UserName);
+            string emailBody = string.Format(EMAIL_BODY_PLAYER_INVITATION, playerDetails.GamingGroupName);
+
+            var playerInvitationViewModel = new PlayerInvitationViewModel
+            {
+                PlayerId = playerDetails.Id,
+                PlayerName = playerDetails.Name,
+                EmailSubject = emailSubject,
+                EmailBody = emailBody
+            };
+            return View(MVC.Player.Views.InvitePlayer, playerInvitationViewModel);
+        }
+
+        [System.Web.Mvc.HttpPost]
+        [System.Web.Mvc.Authorize]
+        [UserContextAttribute]
+        public virtual ActionResult InvitePlayer(PlayerInvitationViewModel playerInvitationViewModel, ApplicationUser currentUser)
+        {
+            PlayerInvitation playerInvitation = new PlayerInvitation
+            {
+                InvitedPlayerId = playerInvitationViewModel.PlayerId,
+                InvitedPlayerEmail = playerInvitationViewModel.EmailAddress,
+                EmailSubject = playerInvitationViewModel.EmailSubject,
+                CustomEmailMessage = playerInvitationViewModel.EmailBody
+            };
+
+            playerInviter.InvitePlayer(playerInvitation, currentUser);
+
+            return new RedirectResult(Url.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name));
         }
 
         [System.Web.Mvc.Authorize]

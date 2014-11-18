@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using BusinessLogic.Models.Players;
 using UI.Models.PlayedGame;
@@ -9,6 +10,8 @@ namespace UI.Models.Players
     {
         public int PlayerId { get; set; }
         public string PlayerName { get; set; }
+        [Display(Name = "Player Registered")]
+        public bool PlayerRegistered { get; set; }
         public bool Active { get; set; }
         public List<GameResultViewModel> PlayerGameResultDetails { get; set; }
         public int TotalGamesPlayed { get; set; }

@@ -148,6 +148,7 @@
     <Compile Include="UnitTests\LogicTests\ChampionsTests\ChampionRecalculatorTests\RecalculateChampionTests.cs" />
     <Compile Include="UnitTests\LogicTests\NemesesTests\NemesisHistoryRetrieverTests\GetNemesisHistoryTests.cs" />
     <Compile Include="UnitTests\LogicTests\NemesesTests\NemesisHistoryRetrieverTests\GetRecentNemesisChangesTests.cs" />
+    <Compile Include="UnitTests\LogicTests\PlayersTests\PlayerInviterTests\InvitePlayerTests.cs" />
     <Compile Include="UnitTests\LogicTests\PlayersTests\PlayerRetrieverTests\GetPlayerDetailsTests.cs" />
     <Compile Include="UnitTests\DataAccessTests\SecurityTests\SecuredEntityValidatorTests\ValidateAccessTests.cs" />
     <Compile Include="UnitTests\EventTrackingTests\UniversalAnalyticsNemeStatsEventTrackerTests\TrackGameDefinitionCreationTests.cs" />
@@ -177,6 +178,8 @@
     <Compile Include="UnitTests\LogicTests\PointsTests\GordonPointsTests\CalculateGordonPointsTests.cs" />
     <Compile Include="UnitTests\LogicTests\UsersTests\FirstTimeAuthenticatorTests\SignInAndCreateGamingGroupTests.cs" />
     <Compile Include="UnitTests\LogicTests\UsersTests\GamingGroupInviteConsumerTests\ConsumeGamingGroupInvitationTests.cs" />
+    <Compile Include="UnitTests\LogicTests\UsersTests\GamingGroupInviteConsumerTests\ConsumeInvitationTests.cs" />
+    <Compile Include="UnitTests\LogicTests\UsersTests\GamingGroupInviteConsumerTests\GamingGroupInviteConsumerTestBase.cs" />
     <Compile Include="UnitTests\LogicTests\UsersTests\UserRegistererTests\RegisterUserTests.cs" />
     <Compile Include="UnitTests\ModelsTests\GamesTests\ValidationTests\ValidatePlayerRanksTests.cs" />
     <Compile Include="UnitTests\ModelsTests\NemesisTests\EqualsTests.cs" />

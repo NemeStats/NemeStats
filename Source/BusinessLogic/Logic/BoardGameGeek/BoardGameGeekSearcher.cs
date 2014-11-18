@@ -15,6 +15,7 @@ namespace BusinessLogic.Logic.BoardGameGeek
     {
         public const string URI_FORMAT_BOARD_GAME_GEEK_SEARCH_REQUEST = "http://www.boardgamegeek.com/xmlapi/search?search={0}";
         public const string URI_FRAGMENT_EXACT_MATCH = "&exact=1";
+        public const int MAX_RESULTS_TO_RETURN = 10;
 
         public List<BoardGameGeekSearchResult> SearchForBoardGames(string searchText, bool exactMatch)
         {
@@ -29,7 +30,7 @@ namespace BusinessLogic.Logic.BoardGameGeek
                 BuildSearchResults(webResponse, searchResults);
             }
 
-            return SortSearchResults(searchText, searchResults);
+            return SortSearchResults(searchText, searchResults).Take(MAX_RESULTS_TO_RETURN).ToList();
         }
 
         private static HttpWebRequest BuildHttpRequest(string searchText, bool exactMatch)
@@ -63,10 +64,9 @@ namespace BusinessLogic.Logic.BoardGameGeek
                 return;
             }
 
-            BoardGameGeekSearchResult individualSearchResult = new BoardGameGeekSearchResult();
             foreach (var searchResult in searchResults.boardgame)
             {
-                VetSearchResult(searchResult, individualSearchResult, returnValue);
+                VetSearchResult(searchResult, returnValue);
             }
         }
 
@@ -84,14 +84,16 @@ namespace BusinessLogic.Logic.BoardGameGeek
             return searchResult;
         }
 
-        private static void VetSearchResult(boardgamesBoardgame searchResult, BoardGameGeekSearchResult individualSearchResult, List<BoardGameGeekSearchResult> returnValue)
+        private static void VetSearchResult(boardgamesBoardgame searchResult,  List<BoardGameGeekSearchResult> returnValue)
         {
+            BoardGameGeekSearchResult individualSearchResult;
             foreach (var gameName in searchResult.name)
             {
                 if (gameName.primary != "true")
                 {
                     continue;
                 }
+                individualSearchResult = new BoardGameGeekSearchResult();
                 individualSearchResult.BoardGameName = gameName.Value;
                 individualSearchResult.BoardGameId = int.Parse(searchResult.objectid);
                 individualSearchResult.YearPublished = searchResult.yearpublished;
@@ -105,11 +107,30 @@ namespace BusinessLogic.Logic.BoardGameGeek
             var queryable = searchResults.AsQueryable();
             var results = new List<BoardGameGeekSearchResult>();
             //first add exact matches
-            results.AddRange(queryable.Where(result => result.BoardGameName == searchText));
+            results.AddRange(queryable.Where(result => result.BoardGameName.Equals(searchText, StringComparison.InvariantCultureIgnoreCase))
+                .OrderByDescending(result => result.YearPublished)
+                .Take(MAX_RESULTS_TO_RETURN));
+
+            if (results.Count >= MAX_RESULTS_TO_RETURN)
+            {
+                return results;
+            }
+
             //then add anything that starts with but isn't an exact match
-            results.AddRange(queryable.Where(result => result.BoardGameName.StartsWith(searchText) && result.BoardGameName != searchText));
+            results.AddRange(queryable.Where(result => result.BoardGameName.StartsWith(searchText, StringComparison.InvariantCultureIgnoreCase)
+                    && !result.BoardGameName.Equals(searchText, StringComparison.InvariantCultureIgnoreCase))
+                    .OrderByDescending(result => result.YearPublished)
+                .Take(MAX_RESULTS_TO_RETURN));
+
+            if (results.Count >= MAX_RESULTS_TO_RETURN)
+            {
+                return results;
+            }
             //then add everything else
-            results.AddRange(queryable.Where(result => !result.BoardGameName.StartsWith(searchText) && result.BoardGameName != searchText));
+            results.AddRange(queryable.Where(result => !result.BoardGameName.StartsWith(searchText, StringComparison.InvariantCultureIgnoreCase)
+                && !result.BoardGameName.Equals(searchText, StringComparison.InvariantCultureIgnoreCase))
+                .OrderByDescending(result => result.YearPublished)
+                .Take(MAX_RESULTS_TO_RETURN));
 
             return results;
         }

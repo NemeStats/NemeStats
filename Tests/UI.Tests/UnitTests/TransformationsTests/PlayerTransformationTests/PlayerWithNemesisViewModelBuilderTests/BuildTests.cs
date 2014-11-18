@@ -23,6 +23,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
             player = new Player
             {
                 Id = 100,
+                ApplicationUserId = "application user id",
                 Name = "player name",
                 Nemesis = new Nemesis
                 {
@@ -101,6 +102,23 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
             PlayerWithNemesisViewModel actualViewModel = builder.Build(player, currentUser);
 
             Assert.AreEqual(player.Name, actualViewModel.PlayerName);
+        }
+
+        [Test]
+        public void ItSetsThePlayerRegisteredFlagToTrueIfThePlayerHasAnApplicationUserId()
+        {
+            PlayerWithNemesisViewModel actualViewModel = builder.Build(player, currentUser);
+
+            Assert.AreEqual(true, actualViewModel.PlayerRegistered);
+        }
+
+        [Test]
+        public void ItSetsThePlayerRegisteredFlagToFalseIfThePlayerDoesNotHaveAnApplicationUserId()
+        {
+            player.ApplicationUserId = null;
+            PlayerWithNemesisViewModel actualViewModel = builder.Build(player, currentUser);
+
+            Assert.AreEqual(false, actualViewModel.PlayerRegistered);
         }
 
         [Test]

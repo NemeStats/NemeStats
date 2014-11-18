@@ -7,8 +7,8 @@ namespace BusinessLogic.Logic.Users
 {
     public class UserRegisterer : IUserRegisterer
     {
-        private ApplicationUserManager applicationUserManager;
-        private IFirstTimeAuthenticator firstTimeUserAuthenticator;
+        private readonly ApplicationUserManager applicationUserManager;
+        private readonly IFirstTimeAuthenticator firstTimeUserAuthenticator;
 
         public UserRegisterer(ApplicationUserManager applicationUserManager, IFirstTimeAuthenticator firstTimeUserAuthenticator)
         {

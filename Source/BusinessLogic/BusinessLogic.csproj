@@ -167,7 +167,18 @@
     <Compile Include="Logic\PlayedGames\IPlayedGameRetriever.cs" />
     <Compile Include="Logic\PlayedGames\PlayedGameDeleter.cs" />
     <Compile Include="Logic\PlayedGames\PlayedGameRetriever.cs" />
+    <Compile Include="Logic\Players\IPlayerInviter.cs" />
     <Compile Include="Logic\Players\IPlayerSaver.cs" />
+    <Compile Include="Migrations\201411160430223_AddSupportForPlayerInvitationsOnGamingGroup.cs" />
+    <Compile Include="Migrations\201411160430223_AddSupportForPlayerInvitationsOnGamingGroup.Designer.cs">
+      <DependentUpon>201411160430223_AddSupportForPlayerInvitationsOnGamingGroup.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201411170404303_UniqueConstraintOnUserGamingGroup.cs" />
+    <Compile Include="Migrations\201411170404303_UniqueConstraintOnUserGamingGroup.Designer.cs">
+      <DependentUpon>201411170404303_UniqueConstraintOnUserGamingGroup.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Players\PlayerInvitation.cs" />
+    <Compile Include="Logic\Players\PlayerInviter.cs" />
     <Compile Include="Logic\Players\PlayerSaver.cs" />
     <Compile Include="Logic\Players\IPlayerRetriever.cs" />
     <Compile Include="Logic\Players\PlayerRetriever.cs" />
@@ -280,6 +291,10 @@
     <Compile Include="Migrations\201411090249182_AddDateCreated.cs" />
     <Compile Include="Migrations\201411090249182_AddDateCreated.Designer.cs">
       <DependentUpon>201411090249182_AddDateCreated.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201411150212370_AddPlayerUserRelationship.cs" />
+    <Compile Include="Migrations\201411150212370_AddPlayerUserRelationship.Designer.cs">
+      <DependentUpon>201411150212370_AddPlayerUserRelationship.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\201411161651116_CreateChampionTable.cs" />
     <Compile Include="Migrations\201411161651116_CreateChampionTable.Designer.cs">
@@ -466,11 +481,20 @@
     <EmbeddedResource Include="Migrations\201411090249182_AddDateCreated.resx">
       <DependentUpon>201411090249182_AddDateCreated.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201411150212370_AddPlayerUserRelationship.resx">
+      <DependentUpon>201411150212370_AddPlayerUserRelationship.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201411160430223_AddSupportForPlayerInvitationsOnGamingGroup.resx">
+      <DependentUpon>201411160430223_AddSupportForPlayerInvitationsOnGamingGroup.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201411161651116_CreateChampionTable.resx">
       <DependentUpon>201411161651116_CreateChampionTable.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201411161652021_SetupInitialChampions.resx">
       <DependentUpon>201411161652021_SetupInitialChampions.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201411170404303_UniqueConstraintOnUserGamingGroup.resx">
+      <DependentUpon>201411170404303_UniqueConstraintOnUserGamingGroup.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

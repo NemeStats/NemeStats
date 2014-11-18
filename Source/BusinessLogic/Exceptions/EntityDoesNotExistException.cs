@@ -7,7 +7,7 @@ namespace BusinessLogic.Exceptions
     {
         internal const string EXCEPTION_MESSAGE_FORMAT = "Entity with Id {0} does not exist.";
 
-        private object entityId;
+        private readonly object entityId;
 
         public EntityDoesNotExistException(object entityId)
         {

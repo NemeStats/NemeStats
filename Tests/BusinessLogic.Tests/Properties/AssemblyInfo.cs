@@ -7,9 +7,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("BusinessLogic.Tests")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Ridge Tool Company")]
+[assembly: AssemblyCompany("jakejgordon")]
 [assembly: AssemblyProduct("BusinessLogic.Tests")]
-[assembly: AssemblyCopyright("Copyright © Ridge Tool Company 2014")]
+[assembly: AssemblyCopyright("Copyright © jakejgordon 2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

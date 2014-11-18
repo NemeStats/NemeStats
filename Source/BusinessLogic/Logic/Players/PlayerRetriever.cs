@@ -68,6 +68,7 @@ namespace BusinessLogic.Logic.Players
             PlayerDetails playerDetails = new PlayerDetails()
             {
                 Active = returnPlayer.Active,
+                ApplicationUserId = returnPlayer.ApplicationUserId,
                 Id = returnPlayer.Id,
                 Name = returnPlayer.Name,
                 GamingGroupId = returnPlayer.GamingGroupId,

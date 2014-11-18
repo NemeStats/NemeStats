@@ -17,11 +17,11 @@ namespace UI.Tests.UnitTests.ControllerTests.AccountControllerTests
         protected IUserStore<ApplicationUser> userStoreMock;
         protected IGamingGroupInviteConsumer gamingGroupInviteConsumerMock;
         protected IUserRegisterer userRegistererMock;
-        protected IFirstTimeAuthenticator firstTimeAuthenticator;
-        protected IAuthenticationManager authenticationManager;
+        protected IFirstTimeAuthenticator firstTimeAuthenticatorMock;
+        protected IAuthenticationManager authenticationManagerMock;
         protected AccountController accountControllerPartialMock;
         protected RegisterViewModel registerViewModel;
-        protected ApplicationUser newApplicationUser;
+        protected ApplicationUser currentUser;
 
         [SetUp]
         public virtual void SetUp()
@@ -29,15 +29,16 @@ namespace UI.Tests.UnitTests.ControllerTests.AccountControllerTests
             userStoreMock = MockRepository.GenerateMock<IUserStore<ApplicationUser>>();
             gamingGroupInviteConsumerMock = MockRepository.GenerateMock<IGamingGroupInviteConsumer>();
             userRegistererMock = MockRepository.GenerateMock<IUserRegisterer>();
-            firstTimeAuthenticator = MockRepository.GenerateMock<IFirstTimeAuthenticator>();
-            authenticationManager = MockRepository.GenerateMock<IAuthenticationManager>();
+            this.firstTimeAuthenticatorMock = MockRepository.GenerateMock<IFirstTimeAuthenticator>();
+            this.authenticationManagerMock = MockRepository.GenerateMock<IAuthenticationManager>();
             userManager = new ApplicationUserManager(userStoreMock);
             accountControllerPartialMock = MockRepository.GeneratePartialMock<AccountController>(
                 userManager,
                 userRegistererMock,
-                firstTimeAuthenticator,
-                authenticationManager);
-            newApplicationUser = new ApplicationUser()
+                this.firstTimeAuthenticatorMock,
+                this.authenticationManagerMock,
+                gamingGroupInviteConsumerMock);
+            currentUser = new ApplicationUser()
             {
                 Id = "new application user"
             };
