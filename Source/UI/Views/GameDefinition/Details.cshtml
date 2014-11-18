@@ -55,6 +55,49 @@
     </div>
 </div>
 
+@if (Model.ChampionName != null)
+{
+<div class="row">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4>Champion</h4>
+        </div>
+        <div class="panel-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th class="col-md-4">
+                                Previous Champion
+                            </th>
+                            <th class="col-md-4">
+                                Current Champion
+                            </th>
+                            <th class="col-md-4">
+                                Win Percentage
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="col-md-4">
+                                @Model.PreviousChampionName
+                            </td>
+                            <td class="col-md-4">
+                                @Model.ChampionName
+                            </td>
+                            <td class="col-md-4">
+                                @Model.WinPercentage
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+}
+
 <div class="row">
     <div class="panel panel-default">
         <div class="panel-heading">
