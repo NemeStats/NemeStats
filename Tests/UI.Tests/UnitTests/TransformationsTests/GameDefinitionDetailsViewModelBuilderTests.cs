@@ -1,4 +1,5 @@
-﻿using BusinessLogic.Models;
+﻿using System;
+using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
 using BusinessLogic.Models.User;
 using NUnit.Framework;
@@ -73,7 +74,8 @@ namespace UI.Tests.UnitTests.TransformationsTests
                 GamingGroupName = "gaming group name",
                 PlayedGames = playedGames,
                 Champion = champion,
-                PreviousChampion = previousChampion
+                PreviousChampion = previousChampion,
+                BoardGameGeekObjectId = 123
             };
             currentUser = new ApplicationUser()
             {
@@ -138,6 +140,22 @@ namespace UI.Tests.UnitTests.TransformationsTests
         public void ItCopiesTheGamingGroupId()
         {
             Assert.AreEqual(gameDefinitionSummary.GamingGroupId, viewModel.GamingGroupId);
+        }
+
+        [Test]
+        public void ItCopiesTheBoardGameGeekObjectId()
+        {
+            Assert.That(gameDefinitionSummary.BoardGameGeekObjectId, Is.EqualTo(viewModel.BoardGameGeekObjectId));
+        }
+
+        [Test]
+        public void ItBuildsABoardGameGeekUri()
+        {
+            Uri expectedUri = new Uri(string.Format(
+                GameDefinitionDetailsViewModelBuilder.BOARD_GAME_GEEK_BOARD_GAME_BASE_URI, 
+                gameDefinitionSummary.BoardGameGeekObjectId) );
+
+            Assert.That(expectedUri, Is.EqualTo(viewModel.BoardGameGeekUri));
         }
 
         [Test]

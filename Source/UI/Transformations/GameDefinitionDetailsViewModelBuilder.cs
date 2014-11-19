@@ -38,6 +38,7 @@ namespace UI.Transformations
                 TotalNumberOfGamesPlayed = gameDefinitionSummary.TotalNumberOfGamesPlayed,
                 GamingGroupId = gameDefinitionSummary.GamingGroupId,
                 GamingGroupName = gameDefinitionSummary.GamingGroupName,
+                BoardGameGeekObjectId = gameDefinitionSummary.BoardGameGeekObjectId,
                 BoardGameGeekUri = boardGameGeekUri,
                 UserCanEdit = (currentUser != null && gameDefinitionSummary.GamingGroupId == currentUser.CurrentGamingGroupId)
             };

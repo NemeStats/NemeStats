@@ -14,5 +14,7 @@ namespace UI.Models.GameDefinitionModels
         public bool UserCanEdit { get; set; }
         public string GamingGroupName { get; set; }
         public int GamingGroupId { get; set; }
+        public int? BoardGameGeekObjectId { get; set; }
+        public Uri BoardGameGeekUri { get; set; }
     }
 }

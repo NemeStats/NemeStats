@@ -283,7 +283,7 @@
     <Compile Include="Models\LocalPasswordModel.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AdminViewModel.cs" />
-    <Compile Include="Models\GameDefinitionModels\GameDefinitionViewModel.cs" />
+    <Compile Include="Models\GameDefinitionModels\GameDefinitionDetailsViewModel.cs" />
     <Compile Include="Models\GamingGroup\GamingGroupViewModel.cs" />
     <Compile Include="Models\GamingGroup\InvitationViewModel.cs" />
     <Compile Include="Models\Home\IndexViewModel.cs" />

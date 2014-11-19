@@ -36,6 +36,10 @@
                         <tr>
                             <td>
                                 @Html.ActionLink(item.Name, "Details", "GameDefinition", new { id = item.Id }, new { })
+                                @if (item.BoardGameGeekUri != null)
+                                {
+                                    <a href="@item.BoardGameGeekUri.AbsoluteUri" id="@item."><img src="~/Content/Images/bgg_small.png" alt="View on BoardGameGeek.com" title="View on BoardGameGeek.com" /></a>
+                                }
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.Description)
