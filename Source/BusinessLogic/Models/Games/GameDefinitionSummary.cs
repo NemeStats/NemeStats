@@ -13,5 +13,6 @@ namespace BusinessLogic.Models.Games
         public int TotalNumberOfGamesPlayed { get; set; }
         public string GamingGroupName { get; set; }
         internal GameDefinition GameDefinition { get; set; }
+        public Uri BoardGameGeekUri { get; set; }
     }
 }

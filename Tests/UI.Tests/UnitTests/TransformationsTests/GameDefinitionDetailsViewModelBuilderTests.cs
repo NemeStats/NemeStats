@@ -149,13 +149,9 @@ namespace UI.Tests.UnitTests.TransformationsTests
         }
 
         [Test]
-        public void ItBuildsABoardGameGeekUri()
+        public void ItCopiesTheBoardGameGeekUri()
         {
-            Uri expectedUri = new Uri(string.Format(
-                GameDefinitionDetailsViewModelBuilder.BOARD_GAME_GEEK_BOARD_GAME_BASE_URI, 
-                gameDefinitionSummary.BoardGameGeekObjectId) );
-
-            Assert.That(expectedUri, Is.EqualTo(viewModel.BoardGameGeekUri));
+            Assert.That(gameDefinitionSummary.BoardGameGeekUri, Is.EqualTo(viewModel.BoardGameGeekUri));
         }
 
         [Test]

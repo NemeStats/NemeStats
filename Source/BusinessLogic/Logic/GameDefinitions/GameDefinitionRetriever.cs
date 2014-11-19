@@ -1,5 +1,6 @@
 ﻿using System.Data.Entity;
 using BusinessLogic.DataAccess;
+using BusinessLogic.Logic.BoardGameGeek;
 using BusinessLogic.Models;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +19,7 @@ namespace BusinessLogic.Logic.GameDefinitions
 
         public virtual IList<GameDefinitionSummary> GetAllGameDefinitions(int gamingGroupId)
         {
-            return (from gameDefinition in dataContext.GetQueryable<GameDefinition>().Include(game => game.PlayedGames)
+            var returnValue = (from gameDefinition in dataContext.GetQueryable<GameDefinition>().Include(game => game.PlayedGames)
                 where gameDefinition.GamingGroupId == gamingGroupId
                         && gameDefinition.Active
                 select new GameDefinitionSummary
@@ -34,6 +35,9 @@ namespace BusinessLogic.Logic.GameDefinitions
                 })
                 .OrderBy(game => game.Name)
                 .ToList();
+
+            returnValue.ForEach(summary => summary.BoardGameGeekUri = BoardGameGeekUriBuilder.BuildBoardGameGeekGameUri(summary.BoardGameGeekObjectId));
+            return returnValue;
         }
 
         public virtual GameDefinitionSummary GetGameDefinitionDetails(int id, int numberOfPlayedGamesToRetrieve)
@@ -51,6 +55,7 @@ namespace BusinessLogic.Logic.GameDefinitions
                                                            {
                                                                Active = gameDefinition.Active,
                                                                BoardGameGeekObjectId = gameDefinition.BoardGameGeekObjectId,
+                                                               BoardGameGeekUri = BoardGameGeekUriBuilder.BuildBoardGameGeekGameUri(gameDefinition.BoardGameGeekObjectId),
                                                                Name = gameDefinition.Name,
                                                                Description = gameDefinition.Description,
                                                                GamingGroup = gameDefinition.GamingGroup,
@@ -81,7 +86,7 @@ namespace BusinessLogic.Logic.GameDefinitions
                 .ToList();
 
             //TODO this is very hacky as I had to add GameDefinition as an internal property on GameDefinitionSummary just so I could set it here. 
-            //Need to revisit this when my brain is less foggy. Or someone with a less foggy brain in general needs to take a peak.
+            //Need to revisit this when my brain is less foggy. Or someone with a less foggy brain in general needs to take a peek.
             foreach (PlayedGame playedGame in playedGames)
             {
                 playedGame.GameDefinition = gameDefinitionSummary.GameDefinition;

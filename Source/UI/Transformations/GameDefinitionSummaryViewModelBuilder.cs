@@ -10,17 +10,8 @@ namespace UI.Transformations
 {
     public class GameDefinitionSummaryViewModelBuilder : IGameDefinitionSummaryViewModelBuilder
     {
-        public const string BOARD_GAME_GEEK_BOARD_GAME_BASE_URI = "http://boardgamegeek.com/boardgame/{0}";
-
         public GameDefinitionSummaryViewModel Build(GameDefinitionSummary gameDefinitionSummary, ApplicationUser currentUser)
         {
-            Uri boardGameGeekUri = null;
-
-            if (gameDefinitionSummary.BoardGameGeekObjectId.HasValue)
-            {
-                boardGameGeekUri = new Uri(string.Format(BOARD_GAME_GEEK_BOARD_GAME_BASE_URI, gameDefinitionSummary.BoardGameGeekObjectId.Value));
-            }
-
             return new GameDefinitionDetailsViewModel()
             {
                 Id = gameDefinitionSummary.Id,
@@ -29,7 +20,7 @@ namespace UI.Transformations
                 TotalNumberOfGamesPlayed = gameDefinitionSummary.TotalNumberOfGamesPlayed,
                 GamingGroupId = gameDefinitionSummary.GamingGroupId,
                 GamingGroupName = gameDefinitionSummary.GamingGroupName,
-                BoardGameGeekUri = boardGameGeekUri,
+                BoardGameGeekUri = gameDefinitionSummary.BoardGameGeekUri,
                 UserCanEdit = (currentUser != null && gameDefinitionSummary.GamingGroupId == currentUser.CurrentGamingGroupId)
             };
         }

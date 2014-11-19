@@ -27,12 +27,11 @@ namespace BusinessLogic.Logic.GameDefinitions
             ValidateGameDefinitionIsNotNull(gameDefinition);
             ValidateGameDefinitionNameIsNotNullOrWhitespace(gameDefinition.Name);
             bool isNewGameDefinition = !gameDefinition.AlreadyInDatabase();
-            GameDefinition newGameDefinition = dataContext.Save<GameDefinition>(gameDefinition, currentUser);
-
-            if(isNewGameDefinition)
+            if (isNewGameDefinition)
             {
                 new Task(() => eventTracker.TrackGameDefinitionCreation(currentUser, gameDefinition.Name)).Start();
             }
+            GameDefinition newGameDefinition = dataContext.Save<GameDefinition>(gameDefinition, currentUser);
 
             return newGameDefinition;
         }

@@ -104,7 +104,6 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
 
             gameDefinitionSaver.Save(gameDefinition, currentUser);
 
-            //TODO just discovered that there is a race condition here... this test failed once but I can't reproduce.
             eventTrackerMock.AssertWasCalled(mock => mock.TrackGameDefinitionCreation(currentUser, gameDefinition.Name));
         }
 
