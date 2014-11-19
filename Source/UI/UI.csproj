@@ -348,6 +348,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\font-awesome.css" />
     <Content Include="Content\font-awesome.min.css" />
+    <Content Include="Content\Images\bgg_small.png" />
     <Content Include="Content\Images\NemeStats-White.png" />
     <Content Include="Content\Images\NemeStats.png" />
     <Content Include="Content\site-mobile.css" />

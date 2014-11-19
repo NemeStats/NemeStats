@@ -20,23 +20,20 @@
                     </strong>
                 </div>
                 <div class="col-sm-3">
-                    @if (Model.BoardGameGeekUri == null)
-                    {
-                        @Html.DisplayFor(model => model.Name)
-                    }
-                    else
-                    {
-                        <a href="@Model.BoardGameGeekUri.AbsoluteUri">
-                            @Html.DisplayFor(model => model.Name)
-                        </a>
-                    }
-                    
+                @Html.DisplayFor(model => model.Name)
+                @if (Model.BoardGameGeekUri != null)
+                {
+                    <a href="@Model.BoardGameGeekUri.AbsoluteUri"><img src="~/Content/Images/bgg_small.png" alt="View on BoardGameGeek.com" title="View on BoardGameGeek.com" /></a>
+                }
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-2">
                     <strong>
-                        Description
+                        @if (!string.IsNullOrWhiteSpace(Model.Description))
+                        {
+                            @:Description
+                        }
                     </strong>
                 </div>
                 <div class="col-sm-3">
