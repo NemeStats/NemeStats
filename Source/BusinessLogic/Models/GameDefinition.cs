@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 using BusinessLogic.DataAccess;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,5 +27,11 @@ namespace BusinessLogic.Models
 
         public virtual IList<PlayedGame> PlayedGames { get; set; }
         public virtual GamingGroup GamingGroup { get; set; }
+
+        public int? ChampionId { get; set; }
+        public int? PreviousChampionId { get; set; }
+
+        public virtual Champion Champion { get; set; }
+        public virtual Champion PreviousChampion { get; set; }
     }
 }

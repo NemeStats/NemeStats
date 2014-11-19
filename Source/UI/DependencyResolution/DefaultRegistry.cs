@@ -16,6 +16,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using BusinessLogic.Logic.BoardGameGeek;
+using BusinessLogic.Logic.Champions;
 using BusinessLogic.Logic.Email;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
@@ -141,6 +142,11 @@ namespace UI.DependencyResolution {
             this.For<IPlayerInviter>().Use<PlayerInviter>();
 
             this.For<IIdentityMessageService>().Use<EmailService>();
+
+            this.For<IChampionRecalculator>().Use<ChampionRecalculator>();
+
+            this.For<IChampionRepository>().Use<ChampionRepository>();
+
         }
 
         private void SetupUniquePerRequestMappings()

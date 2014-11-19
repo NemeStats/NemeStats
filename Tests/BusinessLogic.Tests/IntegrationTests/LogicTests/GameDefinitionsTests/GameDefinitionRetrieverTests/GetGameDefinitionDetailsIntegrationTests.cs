@@ -66,5 +66,11 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.GameDefinitionsTests.G
         {
             Assert.NotNull(gameDefinition.PlayedGames[0].PlayerGameResults[0].Player);
         }
+
+        [Test]
+        public void ItRetrievesChampionInfoForTheGameDefinition()
+        {
+            Assert.That(gameDefinition.Champion, Is.Not.Null);
+        }
     }
 }

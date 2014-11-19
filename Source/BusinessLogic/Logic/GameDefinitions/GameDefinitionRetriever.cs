@@ -38,11 +38,16 @@ namespace BusinessLogic.Logic.GameDefinitions
 
         public virtual GameDefinitionSummary GetGameDefinitionDetails(int id, int numberOfPlayedGamesToRetrieve)
         {
-            GameDefinitionSummary gameDefinitionSummary = (from gameDefinition in dataContext.GetQueryable<GameDefinition>()
-                                                                                             .Include(game => game.PlayedGames)
-                                                                                             .Include(game => game.GamingGroup)
-                                                           where gameDefinition.Id == id
-                                                           select new GameDefinitionSummary
+            GameDefinition gameDefinition = dataContext.GetQueryable<GameDefinition>()
+                .Include(game => game.PlayedGames)
+                .Include(game => game.Champion)
+                .Include(game => game.Champion.Player)
+                .Include(game => game.PreviousChampion)
+                .Include(game => game.PreviousChampion.Player)
+                .Include(game => game.GamingGroup)
+                .SingleOrDefault(game => game.Id == id);
+
+            GameDefinitionSummary gameDefinitionSummary =  new GameDefinitionSummary
                                                            {
                                                                Active = gameDefinition.Active,
                                                                BoardGameGeekObjectId = gameDefinition.BoardGameGeekObjectId,
@@ -53,8 +58,10 @@ namespace BusinessLogic.Logic.GameDefinitions
                                                                GamingGroupName = gameDefinition.GamingGroup.Name,
                                                                Id = gameDefinition.Id,
                                                                TotalNumberOfGamesPlayed = gameDefinition.PlayedGames.Count,
-                                                               GameDefinition = gameDefinition
-                                                           }).First();
+                                                               GameDefinition = gameDefinition,
+                                                               Champion = gameDefinition.Champion ?? new NullChampion(),
+                                                               PreviousChampion = gameDefinition.PreviousChampion ?? new NullChampion()
+                                                           };
 
             IList<PlayedGame> playedGames = AddPlayedGamesToTheGameDefinition(numberOfPlayedGamesToRetrieve, gameDefinitionSummary);
             IList<int> distinctPlayerIds = AddPlayerGameResultsToEachPlayedGame(playedGames);

@@ -3,6 +3,7 @@ using BusinessLogic.DataAccess.GamingGroups;
 using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.DataAccess.Security;
 using BusinessLogic.EventTracking;
+using BusinessLogic.Logic.Champions;
 using BusinessLogic.Logic.Nemeses;
 using BusinessLogic.Logic.PlayedGames;
 using BusinessLogic.Models;
@@ -28,6 +29,7 @@ namespace BusinessLogic.Tests.IntegrationTests
         protected GameDefinition testGameDefinition;
         protected GameDefinition testGameDefinition2;
         protected GameDefinition testGameDefinitionWithOtherGamingGroupId;
+        protected GameDefinition anotherTestGameDefinitionWithOtherGamingGroupId;
         protected ApplicationUser testUserWithDefaultGamingGroup;
         protected ApplicationUser testUserWithOtherGamingGroup;
         protected ApplicationUser testUserWithDefaultGamingGroupAndNoInvites;
@@ -46,9 +48,14 @@ namespace BusinessLogic.Tests.IntegrationTests
         protected string testPlayer6Name = "testPlayer6";
         protected Player testPlayer7WithOtherGamingGroupId;
         protected string testPlayer7Name = "testPlayer7";
+        protected Player testPlayer8WithOtherGamingGroupId;
+        protected string testPlayer8Name = "testPlayer8";
+        protected Player testPlayer9;
+        protected string testPlayer9Name = "testPlayer9";
         protected string testGameName = "this is test game definition name";
         protected string testGameName2 = "aaa - game definition that should sort first";
         protected string testGameNameForGameWithOtherGamingGroupId = "this is test game definition name for game with other GamingGroupId";
+        protected string testGameNameForAnotherGameWithOtherGamingGroupId = "test definition for game in other gaming group";
         protected string testGameDescription = "this is a test game description 123abc";
         protected string testApplicationUserNameForUserWithDefaultGamingGroup = "username with default gaming group";
         protected string testApplicationUserNameForUserWithOtherGamingGroup = "username with other gaming group";
@@ -62,7 +69,8 @@ namespace BusinessLogic.Tests.IntegrationTests
         protected string testInviteeEmail2 = "email2@email.com";
         protected GamingGroupInvitation testAlreadyRedeemedGamingGroupInvitation;
         protected List<int> nemesisIdsToDelete;
-
+        protected List<int> championIdsToDelete;
+            
         [TestFixtureSetUp]
         public virtual void FixtureSetUp()
         {
@@ -100,6 +108,8 @@ namespace BusinessLogic.Tests.IntegrationTests
                     testGameDefinition = SaveGameDefinition(nemeStatsDbContext, testGamingGroup.Id, testGameName);
                     testGameDefinition2 = SaveGameDefinition(nemeStatsDbContext, testGamingGroup.Id, testGameName2);
                     testGameDefinitionWithOtherGamingGroupId = SaveGameDefinition(nemeStatsDbContext, testOtherGamingGroup.Id, testGameNameForGameWithOtherGamingGroupId);
+                    anotherTestGameDefinitionWithOtherGamingGroupId = SaveGameDefinition(nemeStatsDbContext,
+                        testOtherGamingGroup.Id, testGameNameForAnotherGameWithOtherGamingGroupId);
                     SavePlayers(nemeStatsDbContext, testGamingGroup.Id, testOtherGamingGroup.Id);
 
                     SaveGamingGroupInvitations(nemeStatsDbContext, dataContext);
@@ -138,7 +148,9 @@ namespace BusinessLogic.Tests.IntegrationTests
         {
             IPlayerRepository playerRepository = new EntityFrameworkPlayerRepository(dataContext);
             INemesisRecalculator nemesisRecalculator = new NemesisRecalculator(dataContext, playerRepository);
-            IPlayedGameCreator playedGameCreator = new PlayedGameCreator(dataContext, playedGameTracker, playerRepository, nemesisRecalculator);
+            IChampionRepository championRepository = new ChampionRepository(dataContext);
+            IChampionRecalculator championRecalculator = new ChampionRecalculator(dataContext, championRepository);
+            IPlayedGameCreator playedGameCreator = new PlayedGameCreator(dataContext, playedGameTracker, playerRepository, nemesisRecalculator, championRecalculator);
             
             List<Player> players = new List<Player>() { testPlayer1, testPlayer2 };
             List<int> playerRanks = new List<int>() { 1, 1 };
@@ -198,10 +210,60 @@ namespace BusinessLogic.Tests.IntegrationTests
             playedGame = CreateTestPlayedGame(testGameDefinition.Id, players, playerRanks, testUserWithDefaultGamingGroup, playedGameCreator);
             testPlayedGames.Add(playedGame);
 
-            //--create a game that has a different GamingGroupId
+            //--create games that have a different GamingGroupId and testPlayer7 being the champion
             players = new List<Player>() { testPlayer7WithOtherGamingGroupId };
             playerRanks = new List<int>() { 1 };
             playedGame = CreateTestPlayedGame(testGameDefinitionWithOtherGamingGroupId.Id, players, playerRanks, testUserWithOtherGamingGroup, playedGameCreator);
+            testPlayedGames.Add(playedGame);
+
+            players = new List<Player>() { testPlayer7WithOtherGamingGroupId, testPlayer8WithOtherGamingGroupId };
+            playerRanks = new List<int>() { 1, 2 };
+            playedGame = CreateTestPlayedGame(testGameDefinitionWithOtherGamingGroupId.Id, players, playerRanks, testUserWithOtherGamingGroup, playedGameCreator);
+            testPlayedGames.Add(playedGame);
+
+            players = new List<Player>() { testPlayer7WithOtherGamingGroupId, testPlayer8WithOtherGamingGroupId };
+            playerRanks = new List<int>() { 1, 2 };
+            playedGame = CreateTestPlayedGame(testGameDefinitionWithOtherGamingGroupId.Id, players, playerRanks, testUserWithOtherGamingGroup, playedGameCreator);
+            testPlayedGames.Add(playedGame);
+
+            players = new List<Player>() { testPlayer7WithOtherGamingGroupId, testPlayer8WithOtherGamingGroupId };
+            playerRanks = new List<int>() { 1, 2 };
+            playedGame = CreateTestPlayedGame(testGameDefinitionWithOtherGamingGroupId.Id, players, playerRanks, testUserWithOtherGamingGroup, playedGameCreator);
+            testPlayedGames.Add(playedGame);
+
+            players = new List<Player>() { testPlayer7WithOtherGamingGroupId, testPlayer8WithOtherGamingGroupId };
+            playerRanks = new List<int>() { 1, 2 };
+            playedGame = CreateTestPlayedGame(testGameDefinitionWithOtherGamingGroupId.Id, players, playerRanks, testUserWithOtherGamingGroup, playedGameCreator);
+            testPlayedGames.Add(playedGame);
+
+            players = new List<Player>() { testPlayer8WithOtherGamingGroupId, testPlayer7WithOtherGamingGroupId };
+            playerRanks = new List<int>() { 1, 2 };
+            playedGame = CreateTestPlayedGame(testGameDefinitionWithOtherGamingGroupId.Id, players, playerRanks, testUserWithOtherGamingGroup, playedGameCreator);
+            testPlayedGames.Add(playedGame);
+
+            players = new List<Player>() { testPlayer9, testPlayer7WithOtherGamingGroupId };
+            playerRanks = new List<int>() { 1, 2 };
+            playedGame = CreateTestPlayedGame(anotherTestGameDefinitionWithOtherGamingGroupId.Id, players, playerRanks, testUserWithOtherGamingGroup, playedGameCreator);
+            testPlayedGames.Add(playedGame);
+
+            players = new List<Player>() { testPlayer9, testPlayer7WithOtherGamingGroupId };
+            playerRanks = new List<int>() { 1, 2 };
+            playedGame = CreateTestPlayedGame(anotherTestGameDefinitionWithOtherGamingGroupId.Id, players, playerRanks, testUserWithOtherGamingGroup, playedGameCreator);
+            testPlayedGames.Add(playedGame);
+
+            players = new List<Player>() { testPlayer9, testPlayer7WithOtherGamingGroupId };
+            playerRanks = new List<int>() { 1, 2 };
+            playedGame = CreateTestPlayedGame(anotherTestGameDefinitionWithOtherGamingGroupId.Id, players, playerRanks, testUserWithOtherGamingGroup, playedGameCreator);
+            testPlayedGames.Add(playedGame);
+
+            players = new List<Player>() { testPlayer9, testPlayer7WithOtherGamingGroupId };
+            playerRanks = new List<int>() { 1, 2 };
+            playedGame = CreateTestPlayedGame(anotherTestGameDefinitionWithOtherGamingGroupId.Id, players, playerRanks, testUserWithOtherGamingGroup, playedGameCreator);
+            testPlayedGames.Add(playedGame);
+
+            players = new List<Player>() { testPlayer9, testPlayer7WithOtherGamingGroupId };
+            playerRanks = new List<int>() { 1, 2 };
+            playedGame = CreateTestPlayedGame(anotherTestGameDefinitionWithOtherGamingGroupId.Id, players, playerRanks, testUserWithOtherGamingGroup, playedGameCreator);
             testPlayedGames.Add(playedGame);
         }
 
@@ -222,6 +284,10 @@ namespace BusinessLogic.Tests.IntegrationTests
 
             testPlayer7WithOtherGamingGroupId = new Player() { Name = testPlayer7Name, Active = true, GamingGroupId = otherGamingGroupId };
             nemeStatsDbContext.Players.Add(testPlayer7WithOtherGamingGroupId);
+            testPlayer8WithOtherGamingGroupId = new Player() { Name = testPlayer8Name, Active = true, GamingGroupId = otherGamingGroupId };
+            nemeStatsDbContext.Players.Add(testPlayer8WithOtherGamingGroupId);
+            testPlayer9 = new Player { Name = testPlayer9Name, Active = false, GamingGroupId =  otherGamingGroupId};
+            nemeStatsDbContext.Players.Add(testPlayer9);
 
             nemeStatsDbContext.SaveChanges();
         }
@@ -296,7 +362,8 @@ namespace BusinessLogic.Tests.IntegrationTests
                 CleanUpPlayerGameResults(nemeStatsDbContext);
                 CleanUpPlayedGames(nemeStatsDbContext);
                 nemeStatsDbContext.SaveChanges();
-
+                
+                CleanUpChampions(nemeStatsDbContext);
                 CleanUpGameDefinitions(nemeStatsDbContext, testGameName);
                 CleanUpGameDefinitions(nemeStatsDbContext, testGameName2);
                 CleanUpGameDefinitions(nemeStatsDbContext, testGameNameForGameWithOtherGamingGroupId);
@@ -345,6 +412,41 @@ namespace BusinessLogic.Tests.IntegrationTests
             CleanUpPlayerByPlayerName(testPlayer5Name, nemeStatsDbContext);
             CleanUpPlayerByPlayerName(testPlayer6Name, nemeStatsDbContext);
             CleanUpPlayerByPlayerName(testPlayer7Name, nemeStatsDbContext);
+            CleanUpPlayerByPlayerName(testPlayer8Name, nemeStatsDbContext);
+            CleanUpPlayerByPlayerName(testPlayer9Name, nemeStatsDbContext);
+        }
+
+        private void CleanUpChampions(NemeStatsDbContext nemeStatsDbContext)
+        {
+            List<int> gameDefinitionIdsToClearChampionId = (from gameDefinition in nemeStatsDbContext.GameDefinitions
+                                                            where gameDefinition.Name == testGameName
+                                                                || gameDefinition.Name == testGameName2
+                                                                || gameDefinition.Name == testGameNameForGameWithOtherGamingGroupId
+                                                                || gameDefinition.Name == testGameNameForAnotherGameWithOtherGamingGroupId
+                                                            select gameDefinition.Id)
+                                                            .ToList();
+
+            championIdsToDelete = (from champion in nemeStatsDbContext.Champions
+                                    where gameDefinitionIdsToClearChampionId.Contains(champion.GameDefinitionId)
+                                    select champion.Id)
+                                    .Distinct()
+                                    .ToList();
+
+            GameDefinition gameDefinitionNeedingChampionCleared;
+            foreach (int gameDefinitionId in gameDefinitionIdsToClearChampionId)
+            {
+                gameDefinitionNeedingChampionCleared = nemeStatsDbContext.GameDefinitions.Find(gameDefinitionId);
+                gameDefinitionNeedingChampionCleared.ChampionId = null;
+            }
+            nemeStatsDbContext.SaveChanges();
+
+            Champion championToDelete;
+            foreach (int championId in championIdsToDelete)
+            {
+                championToDelete = nemeStatsDbContext.Champions.Find(championId);
+                nemeStatsDbContext.Champions.Remove(championToDelete);
+            }
+            nemeStatsDbContext.SaveChanges();
         }
 
         private void CleanUpNemeses(NemeStatsDbContext nemeStatsDbContext)
@@ -359,6 +461,8 @@ namespace BusinessLogic.Tests.IntegrationTests
                                                    || player.Name == testPlayer5Name
                                                    || player.Name == testPlayer6Name
                                                    || player.Name == testPlayer7Name
+                                                   || player.Name == testPlayer8Name
+                                                   || player.Name == testPlayer9Name
                                                    select player.Id)
                                                   .ToList();
 

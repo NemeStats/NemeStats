@@ -7,7 +7,7 @@ namespace BusinessLogic.Migrations
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = true;
+            AutomaticMigrationsEnabled = false;
         }
     }
 }

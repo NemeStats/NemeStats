@@ -10,5 +10,8 @@ namespace UI.Models.GameDefinitionModels
     {
         public IList<PlayedGameDetailsViewModel> PlayedGames { get; set; }
         public Uri BoardGameGeekUri { get; set; }
+        public string ChampionName { get; set; }
+        public float WinPercentage { get; set; }
+        public string PreviousChampionName { get; set; }
     }
 }
