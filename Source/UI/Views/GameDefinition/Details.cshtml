@@ -96,19 +96,28 @@
                                 {
                                     <span style="text-decoration: line-through">
                                         @Model.PreviousChampionName
-                                        /
                                     </span>
+                                    <span>/</span>
                                 }
                                 @Model.ChampionName
                             </td>
                             <td class="col-md-3">
-                                @Model.NumberOfWins
+                                @if (Model.NumberOfWins.HasValue)
+                                {
+                                    @Model.NumberOfWins
+                                }
                             </td>
                             <td class="col-md-3">
-                                @Model.NumberOfGamesPlayed
+                                @if (Model.NumberOfGamesPlayed.HasValue)
+                                {
+                                    @Model.NumberOfGamesPlayed
+                                }
                             </td>
                             <td class="col-md-3">
-                                @Model.WinPercentage
+                                @if (Model.WinPercentage.HasValue)
+                                {
+                                    @Model.WinPercentage
+                                }
                             </td>
                         </tr>
                     </tbody>
