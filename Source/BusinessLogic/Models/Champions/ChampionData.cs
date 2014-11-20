@@ -9,6 +9,8 @@ namespace BusinessLogic.Models.Champions
     public class ChampionData
     {
         public int WinPercentage { get; set; }
+        public int NumberOfWins { get; set; }
+        public int NumberOfGames { get; set; }
         public int GameDefinitionId { get; set; }
         public int PlayerId { get; set; }
     }

@@ -11,7 +11,6 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
         private IDataContext dataContext;
         private IGameDefinitionRetriever gameDefinitionRetriever;
         private GameDefinition gameDefinition;
-        private GameDefinition inactiveChampionGameDefinition;
         private GameDefinition championlessGameDefinition;
         private int championPlayerIdForGameDefinition;
         private int otherChampionPlayerIdForGameDefinition;
@@ -27,7 +26,7 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
 
             gameDefinition = gameDefinitionRetriever.GetGameDefinitionDetails(testGameDefinitionWithOtherGamingGroupId.Id,
                 0);
-            championlessGameDefinition = gameDefinitionRetriever.GetGameDefinitionDetails(testGameDefinition.Id, 0);
+            championlessGameDefinition = gameDefinitionRetriever.GetGameDefinitionDetails(gameDefinitionWithNoChampion.Id, 0);
 
             // Player ID 1 has a winning percentage high enough to be considered the champion
             championPlayerIdForGameDefinition = testPlayer7WithOtherGamingGroupId.Id;
@@ -53,7 +52,7 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
         [Test]
         public void ItReturnsANullChampionIfThereIsntAChampion()
         {
-            // The game definition has recorded games, but none have qualified as being champion
+            // The game definition has recorded games, but no player has played three games
             Assert.That(championlessGameDefinition.Champion, Is.InstanceOf<NullChampion>());
         }
 
@@ -62,6 +61,20 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
         {
             // The champion won 83% of all games played
             Assert.That(gameDefinition.Champion.WinPercentage, Is.EqualTo(83));
+        }
+
+        [Test]
+        public void ItSetsTheNumberOfGamesForTheChampion()
+        {
+            // The champion played 6 games
+            Assert.That(gameDefinition.Champion.NumberOfGames, Is.EqualTo(6));
+        }
+
+        [Test]
+        public void ItSetsTheNumberOfWinsForTheChampion()
+        {
+            // The champion won 5 games
+            Assert.That(gameDefinition.Champion.NumberOfWins, Is.EqualTo(5));
         }
 
         [TearDown]
