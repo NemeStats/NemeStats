@@ -49,12 +49,16 @@ namespace UI.Transformations
             if (!(gameDefinitionSummary.Champion is NullChampion))
             {
                 viewModel.ChampionName = gameDefinitionSummary.Champion.Player.Name;
+                viewModel.ChampionPlayerId = gameDefinitionSummary.Champion.Player.Id;
                 viewModel.WinPercentage = gameDefinitionSummary.Champion.WinPercentage;
+                viewModel.NumberOfGamesPlayed = gameDefinitionSummary.Champion.NumberOfGames;
+                viewModel.NumberOfWins = gameDefinitionSummary.Champion.NumberOfWins;
             }
 
             if (!(gameDefinitionSummary.PreviousChampion is NullChampion))
             {
                 viewModel.PreviousChampionName = gameDefinitionSummary.PreviousChampion.Player.Name;
+                viewModel.PreviousChampionPlayerId = gameDefinitionSummary.PreviousChampion.Player.Id;
             }
 
             return viewModel;

@@ -30,8 +30,10 @@ namespace BusinessLogic.Tests.IntegrationTests
         protected GameDefinition testGameDefinition2;
         protected GameDefinition testGameDefinitionWithOtherGamingGroupId;
         protected GameDefinition anotherTestGameDefinitionWithOtherGamingGroupId;
+        protected GameDefinition gameDefinitionWithNoChampion;
         protected ApplicationUser testUserWithDefaultGamingGroup;
         protected ApplicationUser testUserWithOtherGamingGroup;
+        protected ApplicationUser testUserWithThirdGamingGroup;
         protected ApplicationUser testUserWithDefaultGamingGroupAndNoInvites;
         protected Player testPlayer1;
         protected string testPlayer1Name = "testPlayer1";
@@ -55,15 +57,19 @@ namespace BusinessLogic.Tests.IntegrationTests
         protected string testGameName = "this is test game definition name";
         protected string testGameName2 = "aaa - game definition that should sort first";
         protected string testGameNameForGameWithOtherGamingGroupId = "this is test game definition name for game with other GamingGroupId";
+        protected string gameDefinitionWithNoChampionName = "this is test game definition name for game with no champion";
         protected string testGameNameForAnotherGameWithOtherGamingGroupId = "test definition for game in other gaming group";
         protected string testGameDescription = "this is a test game description 123abc";
         protected string testApplicationUserNameForUserWithDefaultGamingGroup = "username with default gaming group";
         protected string testApplicationUserNameForUserWithOtherGamingGroup = "username with other gaming group";
         protected string testApplicationUserNameForUserWithDefaultGamingGroupAndNoInvites = "username with default gaming group and no invites";
+        protected string testApplicationUserNameForUserWithThirdGamingGroup = "username with third gaming group";
         protected string testGamingGroup1Name = "this is test gaming group 1";
         protected string testGamingGroup2Name = "this is test gaming group 2";
+        protected string testGamingGroup3Name = "this is test gaming group 3";
         protected GamingGroup testGamingGroup;
         protected GamingGroup testOtherGamingGroup;
+        protected GamingGroup testThirdGamingGroup;
         protected string testInviteeEmail1 = "email1@email.com";
         protected GamingGroupInvitation testUnredeemedGamingGroupInvitation;
         protected string testInviteeEmail2 = "email2@email.com";
@@ -97,6 +103,10 @@ namespace BusinessLogic.Tests.IntegrationTests
                     nemeStatsDbContext,
                     testApplicationUserNameForUserWithOtherGamingGroup,
                     "b@mailinator.com");
+                testUserWithThirdGamingGroup = SaveApplicationUser(
+                    nemeStatsDbContext,
+                    testApplicationUserNameForUserWithThirdGamingGroup, 
+                    "c@mailinator.com");
 
                 using (NemeStatsDataContext dataContext = new NemeStatsDataContext())
                 {
@@ -104,10 +114,15 @@ namespace BusinessLogic.Tests.IntegrationTests
                     testUserWithDefaultGamingGroup = UpdateDatefaultGamingGroupOnUser(testUserWithDefaultGamingGroup, testGamingGroup, dataContext);
                     testOtherGamingGroup = SaveGamingGroup(dataContext, testGamingGroup2Name, testUserWithOtherGamingGroup);
                     testUserWithOtherGamingGroup = UpdateDatefaultGamingGroupOnUser(testUserWithOtherGamingGroup, testOtherGamingGroup, dataContext);
+                    testThirdGamingGroup = SaveGamingGroup(dataContext, testGamingGroup3Name, testUserWithThirdGamingGroup);
+                    testUserWithThirdGamingGroup = UpdateDatefaultGamingGroupOnUser(testUserWithThirdGamingGroup,
+                        testThirdGamingGroup, dataContext);
 
                     testGameDefinition = SaveGameDefinition(nemeStatsDbContext, testGamingGroup.Id, testGameName);
                     testGameDefinition2 = SaveGameDefinition(nemeStatsDbContext, testGamingGroup.Id, testGameName2);
                     testGameDefinitionWithOtherGamingGroupId = SaveGameDefinition(nemeStatsDbContext, testOtherGamingGroup.Id, testGameNameForGameWithOtherGamingGroupId);
+                    gameDefinitionWithNoChampion = SaveGameDefinition(nemeStatsDbContext, testThirdGamingGroup.Id,
+                        gameDefinitionWithNoChampionName);
                     anotherTestGameDefinitionWithOtherGamingGroupId = SaveGameDefinition(nemeStatsDbContext,
                         testOtherGamingGroup.Id, testGameNameForAnotherGameWithOtherGamingGroupId);
                     SavePlayers(nemeStatsDbContext, testGamingGroup.Id, testOtherGamingGroup.Id);
@@ -367,11 +382,14 @@ namespace BusinessLogic.Tests.IntegrationTests
                 CleanUpGameDefinitions(nemeStatsDbContext, testGameName);
                 CleanUpGameDefinitions(nemeStatsDbContext, testGameName2);
                 CleanUpGameDefinitions(nemeStatsDbContext, testGameNameForGameWithOtherGamingGroupId);
+                CleanUpGameDefinitions(nemeStatsDbContext, testGameNameForAnotherGameWithOtherGamingGroupId);
+                CleanUpGameDefinitions(nemeStatsDbContext, gameDefinitionWithNoChampionName);
                 CleanUpPlayers(nemeStatsDbContext);
                 nemeStatsDbContext.SaveChanges();
 
                 CleanUpGamingGroup(testGamingGroup1Name, nemeStatsDbContext);
                 CleanUpGamingGroup(testGamingGroup2Name, nemeStatsDbContext);
+                CleanUpGamingGroup(testGamingGroup3Name, nemeStatsDbContext);
                 nemeStatsDbContext.SaveChanges();
 
                 CleanUpGamingGroupInvitation(testInviteeEmail1, nemeStatsDbContext);
@@ -381,6 +399,7 @@ namespace BusinessLogic.Tests.IntegrationTests
                 CleanUpApplicationUser(testApplicationUserNameForUserWithDefaultGamingGroup, nemeStatsDbContext);
                 CleanUpApplicationUser(testApplicationUserNameForUserWithOtherGamingGroup, nemeStatsDbContext);
                 CleanUpApplicationUser(testApplicationUserNameForUserWithDefaultGamingGroupAndNoInvites, nemeStatsDbContext);
+                CleanUpApplicationUser(testApplicationUserNameForUserWithThirdGamingGroup, nemeStatsDbContext);
                 nemeStatsDbContext.SaveChanges();
             }
         }

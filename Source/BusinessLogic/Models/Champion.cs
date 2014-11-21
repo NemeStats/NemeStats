@@ -19,6 +19,8 @@ namespace BusinessLogic.Models
         public int GameDefinitionId { get; set; }
         public int PlayerId { get; set; }
         public DateTime DateCreated { get; set; }
+        public int NumberOfGames { get; set; }
+        public int NumberOfWins { get; set; }
         public float WinPercentage { get; set; }
 
         [ForeignKey("GameDefinitionId")]
@@ -42,7 +44,9 @@ namespace BusinessLogic.Models
             }
             return this.GameDefinitionId == championToCompare.GameDefinitionId
                    && this.PlayerId == championToCompare.PlayerId
-                   && this.WinPercentage == championToCompare.WinPercentage;
+                   && this.WinPercentage == championToCompare.WinPercentage
+                   && this.NumberOfGames == championToCompare.NumberOfGames
+                   && this.NumberOfWins == championToCompare.NumberOfWins;
         }
     }
 }

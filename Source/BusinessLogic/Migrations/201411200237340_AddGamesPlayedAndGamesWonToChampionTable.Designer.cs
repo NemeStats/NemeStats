@@ -7,13 +7,13 @@ namespace BusinessLogic.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.1-30610")]
-    public sealed partial class SetInitialChampions : IMigrationMetadata
+    public sealed partial class AddGamesPlayedAndGamesWonToChampionTable : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(SetInitialChampions));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(AddGamesPlayedAndGamesWonToChampionTable));
         
         string IMigrationMetadata.Id
         {
-            get { return "201411180236413_SetInitialChampions"; }
+            get { return "201411200237340_AddGamesPlayedAndGamesWonToChampionTable"; }
         }
         
         string IMigrationMetadata.Source

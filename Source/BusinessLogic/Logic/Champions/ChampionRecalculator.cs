@@ -60,6 +60,8 @@ namespace BusinessLogic.Logic.Champions
             Champion newChampion = new Champion
             {
                 WinPercentage = championData.WinPercentage,
+                NumberOfGames = championData.NumberOfGames,
+                NumberOfWins = championData.NumberOfWins,
                 GameDefinitionId = gameDefinitionId,
                 PlayerId = championData.PlayerId
             };
@@ -97,6 +99,8 @@ namespace BusinessLogic.Logic.Champions
             if (!newChampion.Equals(existingChampion))
             {
                 existingChampion.WinPercentage = newChampion.WinPercentage;
+                existingChampion.NumberOfGames = newChampion.NumberOfGames;
+                existingChampion.NumberOfWins = newChampion.NumberOfWins;
                 Champion returnChampion = dataContext.Save(existingChampion, applicationUser);
                 dataContext.CommitAllChanges();
                 return returnChampion;

@@ -7,7 +7,7 @@ namespace BusinessLogic.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class SetInitialChampions : DbMigration
+    public partial class ResetInitialChampions : DbMigration
     {
         public override void Up()
         {

@@ -75,16 +75,16 @@
                 <table class="table table-hover">
                     <thead>
                         <tr>
-                            <th class="col-md-3">
+                            <th>
                                 Previous/Current Champion
                             </th>
-                            <th class="col-md-3">
+                            <th>
                                 Games Won
                             </th>
-                            <th class="col-md-3">
+                            <th>
                                 Games Played
                             </th>
-                            <th class="col-md-3">
+                            <th>
                                 Win Percentage
                             </th>
                         </tr>
@@ -95,11 +95,18 @@
                                 @if (Model.PreviousChampionName != null)
                                 {
                                     <span style="text-decoration: line-through">
-                                        @Model.PreviousChampionName
+                                        @Html.ActionLink(Model.PreviousChampionName, 
+                                            "Details", 
+                                            "Player", 
+                                            new { id = Model.PreviousChampionPlayerId }, 
+                                            new { })
                                     </span>
                                     <span>/</span>
                                 }
-                                @Model.ChampionName
+                                @if (Model.ChampionName != null)
+                                {
+                                    @Html.ActionLink(Model.ChampionName, "Details", "Player", new {id = Model.ChampionPlayerId}, new {})
+                                }
                             </td>
                             <td class="col-md-3">
                                 @if (Model.NumberOfWins.HasValue)

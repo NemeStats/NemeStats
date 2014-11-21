@@ -182,9 +182,13 @@
     <Compile Include="Migrations\201411180233114_CreateChampionTable.Designer.cs">
       <DependentUpon>201411180233114_CreateChampionTable.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201411180236413_SetInitialChampions.cs" />
-    <Compile Include="Migrations\201411180236413_SetInitialChampions.Designer.cs">
-      <DependentUpon>201411180236413_SetInitialChampions.cs</DependentUpon>
+    <Compile Include="Migrations\201411200237340_AddGamesPlayedAndGamesWonToChampionTable.cs" />
+    <Compile Include="Migrations\201411200237340_AddGamesPlayedAndGamesWonToChampionTable.Designer.cs">
+      <DependentUpon>201411200237340_AddGamesPlayedAndGamesWonToChampionTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201411200330450_ResetInitialChampions.cs" />
+    <Compile Include="Migrations\201411200330450_ResetInitialChampions.Designer.cs">
+      <DependentUpon>201411200330450_ResetInitialChampions.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\Players\PlayerInvitation.cs" />
     <Compile Include="Logic\Players\PlayerInviter.cs" />
@@ -495,8 +499,11 @@
     <EmbeddedResource Include="Migrations\201411180233114_CreateChampionTable.resx">
       <DependentUpon>201411180233114_CreateChampionTable.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201411180236413_SetInitialChampions.resx">
-      <DependentUpon>201411180236413_SetInitialChampions.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201411200237340_AddGamesPlayedAndGamesWonToChampionTable.resx">
+      <DependentUpon>201411200237340_AddGamesPlayedAndGamesWonToChampionTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201411200330450_ResetInitialChampions.resx">
+      <DependentUpon>201411200330450_ResetInitialChampions.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />
