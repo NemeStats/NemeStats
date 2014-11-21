@@ -9,9 +9,10 @@ using Rhino.Mocks;
 namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.GamingGroupInviteConsumerTests
 {
     [TestFixture]
-    public class ConsumeInvitationTests : GamingGroupInviteConsumerTestBase
+    public class AddExistingUserToGamingGroup : GamingGroupInviteConsumerTestBase
     {
         private readonly string gamingGroupInvitationId = Guid.NewGuid().ToString();
+        private string email;
 
         [Test]
         public void ItThrowsAnEntityNotFoundIfTheGamingGroupInvitationDoesNotExist()
@@ -20,7 +21,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.GamingGroupInviteC
                            .Return(null);
             var expectedException = new EntityDoesNotExistException(gamingGroupInvitationId);
 
-            Exception actualException = Assert.Throws<EntityDoesNotExistException>(() => gamingGroupInviteConsumer.ConsumeInvitation(gamingGroupInvitationId));
+            Exception actualException = Assert.Throws<EntityDoesNotExistException>(
+                () => gamingGroupInviteConsumer.AddExistingUserToGamingGroup(this.gamingGroupInvitationId));
 
             Assert.That(actualException.Message.Equals(expectedException.Message));
         }
@@ -38,25 +40,26 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.GamingGroupInviteC
                            .Return(null);
             var expectedException = new EntityDoesNotExistException(invitation.RegisteredUserId);
 
-            Exception actualException = Assert.Throws<EntityDoesNotExistException>(() => gamingGroupInviteConsumer.ConsumeInvitation(gamingGroupInvitationId));
+            Exception actualException = Assert.Throws<EntityDoesNotExistException>(
+                () => gamingGroupInviteConsumer.AddExistingUserToGamingGroup(this.gamingGroupInvitationId));
 
             Assert.That(actualException.Message, Is.EqualTo(expectedException.Message));
         }
 
         [Test]
-        public void ItReturnsFalseIfTheInvitationIsNotForAPlayerWithAnExistingRegisteredUserId()
+        public void TheUserAddedToExistingGameGroupFlagIsFalseIfTheInvitationIsNotForAPlayerWithAnExistingRegisteredUserId()
         {
             var invitation = new GamingGroupInvitation();
             dataContextMock.Expect(mock => mock.FindById<GamingGroupInvitation>(new Guid(gamingGroupInvitationId)))
                            .Return(invitation);
 
-            bool actualResult = gamingGroupInviteConsumer.ConsumeInvitation(gamingGroupInvitationId);
+            var actualResult = gamingGroupInviteConsumer.AddExistingUserToGamingGroup(this.gamingGroupInvitationId);
 
-            Assert.False(actualResult);
+            Assert.False(actualResult.UserAddedToExistingGamingGroup);
         }
 
         [Test]
-        public void ItReturnsTrueIfTheInvitationIsForAPlayerWithAnExistingRegisteredUserId()
+        public void TheUserAddedToExistingGameGroupFlagIsTrueIfTheInvitationIsForAPlayerWithAnExistingRegisteredUserId()
         {
             var invitation = new GamingGroupInvitation
             {
@@ -66,9 +69,9 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.GamingGroupInviteC
                            .Return(invitation);
             dataContextMock.Expect(mock => mock.FindById<ApplicationUser>(invitation.RegisteredUserId))
                             .Return(new ApplicationUser());
-            bool actualResult = gamingGroupInviteConsumer.ConsumeInvitation(gamingGroupInvitationId);
+            var actualResult = gamingGroupInviteConsumer.AddExistingUserToGamingGroup(this.gamingGroupInvitationId);
 
-            Assert.True(actualResult);
+            Assert.True(actualResult.UserAddedToExistingGamingGroup);
         }
 
         [Test]
@@ -83,7 +86,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.GamingGroupInviteC
                            .Return(invitation);
             dataContextMock.Expect(mock => mock.FindById<ApplicationUser>(invitation.RegisteredUserId))
                             .Return(new ApplicationUser());
-            gamingGroupInviteConsumer.ConsumeInvitation(gamingGroupInvitationId);
+            gamingGroupInviteConsumer.AddExistingUserToGamingGroup(this.gamingGroupInvitationId);
 
             dataContextMock.AssertWasCalled(mock => mock.Save(Arg<UserGamingGroup>
                                                                   .Matches(ugg => ugg.ApplicationUserId == invitation.RegisteredUserId
@@ -104,7 +107,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.GamingGroupInviteC
             dataContextMock.Expect(mock => mock.FindById<ApplicationUser>(invitation.RegisteredUserId))
                 .Return(new ApplicationUser());
 
-            gamingGroupInviteConsumer.ConsumeInvitation(gamingGroupInvitationId);
+            gamingGroupInviteConsumer.AddExistingUserToGamingGroup(this.gamingGroupInvitationId);
 
             dataContextMock.AssertWasCalled(mock => mock.Save(Arg<ApplicationUser>
                                                                   .Matches(appUser => appUser.CurrentGamingGroupId == invitation.GamingGroupId),

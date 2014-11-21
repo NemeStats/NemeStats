@@ -41,7 +41,7 @@
                 </div>
                 
                 <div class="form-group">
-                    <span class="control-label col-md-2">Custom Message</span>
+                    <label class="control-label col-md-2">Custom Message</label>
                     <div class="col-md-10">
                         @Html.TextAreaFor(model => model.EmailBody, 6, 70, new { @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.EmailBody)

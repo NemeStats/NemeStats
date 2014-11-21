@@ -1,4 +1,5 @@
-﻿
+﻿@using BusinessLogic.DataAccess
+
 @{
     Layout = MVC.Shared.Views._Layout;
 }
@@ -8,7 +9,11 @@
 
     <hr />
     <footer>
-        <p>&copy; @DateTime.Now.Year - NemeStats | <a href="https://plus.google.com/115226456486429841980" rel="publisher">Google+</a></p>
+        <p>
+            &copy; @DateTime.Now.Year - NemeStats |
+            <a href="https://plus.google.com/115226456486429841980" rel="publisher">Google+</a> |
+            &#64;nemestats
+        </p>
     </footer>
 </div>
 

@@ -8,6 +8,6 @@ namespace BusinessLogic.Logic.Users
     {
         Task<int?> ConsumeGamingGroupInvitation(ApplicationUser currentUser);
 
-        bool ConsumeInvitation(string gamingGroupInvitationId);
+        AddUserToGamingGroupResult AddExistingUserToGamingGroup(string gamingGroupInvitationId);
     }
 }

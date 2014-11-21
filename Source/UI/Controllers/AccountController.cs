@@ -111,21 +111,21 @@ namespace UI.Controllers
         [AllowAnonymous]
         public virtual ActionResult ConsumeInvitation(string id, ApplicationUser currentUser)
         {
-            bool userAddedToExistingGamingGroup = gamingGroupInvitationConsumer.ConsumeInvitation(id);
+            string userEmail;
+            AddUserToGamingGroupResult result = gamingGroupInvitationConsumer.AddExistingUserToGamingGroup(id);
 
-            if (userAddedToExistingGamingGroup)
+            if (result.UserAddedToExistingGamingGroup)
             {
                 return RedirectToAction(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name);
             }
 
-            return RedirectToAction(MVC.Account.ActionNames.RegisterAgainstExistingGamingGroup, MVC.Account.Name);
-        }
+            RegisterViewModel registerViewModel = new RegisterViewModel
+            {
+                EmailAddress = result.EmailAddress,
+                GamingGroupInvitationId = id
+            };
 
-        [UserContext(RequiresGamingGroup = false)]
-        [AllowAnonymous]
-        public virtual ActionResult RegisterAgainstExistingGamingGroup(string gamingGroupInvitationId, ApplicationUser currentUser)
-        {
-            return this.View();
+            return this.View(MVC.Account.Views.RegisterAgainstExistingGamingGroup, registerViewModel);
         }
 
         //

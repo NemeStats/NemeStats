@@ -1,4 +1,5 @@
-﻿@model UI.Models.RegisterViewModel
+﻿@using System.Web.UI.WebControls
+@model UI.Models.RegisterViewModel
 @{
     ViewBag.Title = "Register";
     Layout = MVC.Shared.Views._BaseLayout;
@@ -18,6 +19,7 @@
                 {
                     @Html.AntiForgeryToken()
                     @Html.ValidationSummary()
+                    @Html.HiddenFor(model => model.GamingGroupInvitationId)
                     <div class="form-group">
                         @Html.LabelFor(m => m.UserName, new { @class = "col-md-2 control-label" })
                         <div class="col-md-10">
@@ -54,21 +56,6 @@
                 }
             </div>
         </div>    
-    </div>
-    
-    <div class="col-md-4">
-        <section id="socialLoginForm">
-            <div class="sidebar-module sidebar-module-inset">
-                @{
-                    TempData.Add("Registration", "Register");
-                }
-                @Html.Partial("_ExternalLoginsListPartial", new { Action = "ExternalLogin", ReturnUrl = ViewBag.ReturnUrl })
-            </div>
-            <em>
-                Registering an account lets you join an existing Gaming Group (if you've been invited) or create a new Gaming Group.
-                We will NOT share your email address with any third party or send you spam of any sort.
-            </em>
-        </section>
     </div>
 </div>
 

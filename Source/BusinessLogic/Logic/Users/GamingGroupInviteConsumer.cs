@@ -52,21 +52,26 @@ namespace BusinessLogic.Logic.Users
             return user.CurrentGamingGroupId;
         }
 
-        public bool ConsumeInvitation(string gamingGroupInvitationId)
+        public AddUserToGamingGroupResult AddExistingUserToGamingGroup(string gamingGroupInvitationId)
         {
             var invitation = this.ValidateGamingGroupInvitation(gamingGroupInvitationId);
+            AddUserToGamingGroupResult result = new AddUserToGamingGroupResult();
+            result.EmailAddress = invitation.InviteeEmail;
 
             if (invitation.RegisteredUserId == null)
             {
-                return false;
+                result.UserAddedToExistingGamingGroup = false;
+            }
+            else
+            {
+                var existingUser = this.ValidateExistingUser(invitation);
+
+                this.AddNewGamingGroupAssociation(invitation);
+                this.SwitchCurrentGamingGroup(existingUser, invitation);
+                result.UserAddedToExistingGamingGroup = true;
             }
 
-            var existingUser = this.ValidateExistingUser(invitation);
-
-            this.AddNewGamingGroupAssociation(invitation);
-            this.SwitchCurrentGamingGroup(existingUser, invitation);
-
-            return true;
+            return result;
         }
 
         private GamingGroupInvitation ValidateGamingGroupInvitation(string gamingGroupInvitationId)

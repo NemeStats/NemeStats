@@ -68,12 +68,6 @@ namespace UI.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public virtual System.Web.Mvc.ActionResult RegisterAgainstExistingGamingGroup()
-        {
-            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.RegisterAgainstExistingGamingGroup);
-        }
-        [NonAction]
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Threading.Tasks.Task<System.Web.Mvc.ActionResult> Disassociate()
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Disassociate);
@@ -164,7 +158,6 @@ namespace UI.Controllers
             public readonly string Login = "Login";
             public readonly string Register = "Register";
             public readonly string ConsumeInvitation = "ConsumeInvitation";
-            public readonly string RegisterAgainstExistingGamingGroup = "RegisterAgainstExistingGamingGroup";
             public readonly string Disassociate = "Disassociate";
             public readonly string Manage = "Manage";
             public readonly string SetPassword = "SetPassword";
@@ -191,7 +184,6 @@ namespace UI.Controllers
             public const string Login = "Login";
             public const string Register = "Register";
             public const string ConsumeInvitation = "ConsumeInvitation";
-            public const string RegisterAgainstExistingGamingGroup = "RegisterAgainstExistingGamingGroup";
             public const string Disassociate = "Disassociate";
             public const string Manage = "Manage";
             public const string SetPassword = "SetPassword";
@@ -236,16 +228,7 @@ namespace UI.Controllers
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionParamsClass_ConsumeInvitation
         {
-            public readonly string gamingGroupInvitationId = "gamingGroupInvitationId";
-            public readonly string currentUser = "currentUser";
-        }
-        static readonly ActionParamsClass_RegisterAgainstExistingGamingGroup s_params_RegisterAgainstExistingGamingGroup = new ActionParamsClass_RegisterAgainstExistingGamingGroup();
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public ActionParamsClass_RegisterAgainstExistingGamingGroup RegisterAgainstExistingGamingGroupParams { get { return s_params_RegisterAgainstExistingGamingGroup; } }
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public class ActionParamsClass_RegisterAgainstExistingGamingGroup
-        {
-            public readonly string gamingGroupInvitationId = "gamingGroupInvitationId";
+            public readonly string id = "id";
             public readonly string currentUser = "currentUser";
         }
         static readonly ActionParamsClass_Disassociate s_params_Disassociate = new ActionParamsClass_Disassociate();
@@ -453,28 +436,15 @@ namespace UI.Controllers
         }
 
         [NonAction]
-        partial void ConsumeInvitationOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string gamingGroupInvitationId, BusinessLogic.Models.User.ApplicationUser currentUser);
+        partial void ConsumeInvitationOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, BusinessLogic.Models.User.ApplicationUser currentUser);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult ConsumeInvitation(string gamingGroupInvitationId, BusinessLogic.Models.User.ApplicationUser currentUser)
+        public override System.Web.Mvc.ActionResult ConsumeInvitation(string id, BusinessLogic.Models.User.ApplicationUser currentUser)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ConsumeInvitation);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "gamingGroupInvitationId", gamingGroupInvitationId);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "currentUser", currentUser);
-            ConsumeInvitationOverride(callInfo, gamingGroupInvitationId, currentUser);
-            return callInfo;
-        }
-
-        [NonAction]
-        partial void RegisterAgainstExistingGamingGroupOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string gamingGroupInvitationId, BusinessLogic.Models.User.ApplicationUser currentUser);
-
-        [NonAction]
-        public override System.Web.Mvc.ActionResult RegisterAgainstExistingGamingGroup(string gamingGroupInvitationId, BusinessLogic.Models.User.ApplicationUser currentUser)
-        {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.RegisterAgainstExistingGamingGroup);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "gamingGroupInvitationId", gamingGroupInvitationId);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "currentUser", currentUser);
-            RegisterAgainstExistingGamingGroupOverride(callInfo, gamingGroupInvitationId, currentUser);
+            ConsumeInvitationOverride(callInfo, id, currentUser);
             return callInfo;
         }
 
