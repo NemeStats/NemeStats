@@ -79,6 +79,7 @@ Views.GameDefinition.CreateGameDefinitionPartial.prototype = {
 	},
 	getGameName: function (request, response) {
 	    var owner = this;
+	    this.$gameNameInput.addClass("autocomplete-loading");
 		$.ajax({
 			url: owner._serviceUrl,
 			type: "GET",
@@ -98,6 +99,9 @@ Views.GameDefinition.CreateGameDefinitionPartial.prototype = {
 			},
 			error: function (err) {
 				alert("Error " + err.status + ":\r\n" + err.statusText);
+			},
+			complete: function () {
+			    owner.$gameNameInput.removeClass("autocomplete-loading");
 			},
 			dataType: "json"
 		});
