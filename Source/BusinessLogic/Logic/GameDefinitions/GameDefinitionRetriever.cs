@@ -19,7 +19,12 @@ namespace BusinessLogic.Logic.GameDefinitions
 
         public virtual IList<GameDefinitionSummary> GetAllGameDefinitions(int gamingGroupId)
         {
-            var returnValue = (from gameDefinition in dataContext.GetQueryable<GameDefinition>().Include(game => game.PlayedGames)
+            var returnValue = (from gameDefinition in dataContext.GetQueryable<GameDefinition>()
+                                   .Include(game => game.PlayedGames)
+                                   .Include(game => game.Champion)
+                                   .Include(game => game.Champion.Player)
+                                   .Include(game => game.PreviousChampion)
+                                   .Include(game => game.PreviousChampion.Player)
                 where gameDefinition.GamingGroupId == gamingGroupId
                         && gameDefinition.Active
                 select new GameDefinitionSummary
@@ -31,12 +36,19 @@ namespace BusinessLogic.Logic.GameDefinitions
                     GamingGroupId = gameDefinition.GamingGroupId,
                     Id = gameDefinition.Id,
                     PlayedGames = gameDefinition.PlayedGames,
-                    TotalNumberOfGamesPlayed = gameDefinition.PlayedGames.Count
+                    TotalNumberOfGamesPlayed = gameDefinition.PlayedGames.Count,
+                    Champion = gameDefinition.Champion,
+                    PreviousChampion = gameDefinition.PreviousChampion
                 })
                 .OrderBy(game => game.Name)
                 .ToList();
 
-            returnValue.ForEach(summary => summary.BoardGameGeekUri = BoardGameGeekUriBuilder.BuildBoardGameGeekGameUri(summary.BoardGameGeekObjectId));
+            returnValue.ForEach( summary =>
+            {
+                summary.BoardGameGeekUri = BoardGameGeekUriBuilder.BuildBoardGameGeekGameUri(summary.BoardGameGeekObjectId);
+                summary.Champion = summary.Champion ?? new NullChampion();
+                summary.PreviousChampion = summary.PreviousChampion ?? new NullChampion();
+            });
             return returnValue;
         }
 

@@ -46,5 +46,17 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.GameDefinitionsTests.G
                 previousName = gameDefinition.Name;
             }
         }
+
+        [Test]
+        public void ItGetsBackChampionInformation()
+        {
+            Assert.That(this.actualGameDefinitionSummaries.All(game => game.Champion != null), Is.True);
+        }
+
+        [Test]
+        public void ItGetsBackPreviousChampionInformation()
+        {
+            Assert.That(this.actualGameDefinitionSummaries.All(game => game.PreviousChampion != null), Is.True);
+        }
     }
 }
