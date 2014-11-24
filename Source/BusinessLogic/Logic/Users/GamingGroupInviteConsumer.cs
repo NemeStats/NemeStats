@@ -15,6 +15,7 @@ namespace BusinessLogic.Logic.Users
     public class GamingGroupInviteConsumer : IGamingGroupInviteConsumer
     {
         internal const string EXCEPTION_MESSAGE_KEY_NOT_FOUND = "GamingGroupInvitation with Id '{0}' could not be found.";
+        internal const string EXCEPTION_MESSAGE_USER_MUST_ALREADY_EXIST = "The passed in user must already be registered and must have an Id.";
         private readonly IPendingGamingGroupInvitationRetriever pendingGamingGroupRetriever;
         private readonly IGamingGroupAccessGranter gamingGroupAccessGranter;
         private readonly ApplicationUserManager userManager;
@@ -55,8 +56,10 @@ namespace BusinessLogic.Logic.Users
         public AddUserToGamingGroupResult AddExistingUserToGamingGroup(string gamingGroupInvitationId)
         {
             var invitation = this.ValidateGamingGroupInvitation(gamingGroupInvitationId);
-            AddUserToGamingGroupResult result = new AddUserToGamingGroupResult();
-            result.EmailAddress = invitation.InviteeEmail;
+            AddUserToGamingGroupResult result = new AddUserToGamingGroupResult
+            {
+                EmailAddress = invitation.InviteeEmail
+            };
 
             if (invitation.RegisteredUserId == null)
             {
@@ -112,6 +115,66 @@ namespace BusinessLogic.Logic.Users
         {
             existingUser.CurrentGamingGroupId = invitation.GamingGroupId;
             this.dataContext.Save(existingUser, new ApplicationUser());
+        }
+
+        public void AddNewUserToGamingGroup(string applicationUserId, Guid gamingGroupInvitationId)
+        {
+            ApplicationUser userFromDatabase = dataContext.FindById<ApplicationUser>(applicationUserId);
+
+            ValidateApplicationUser(userFromDatabase, applicationUserId);
+
+            GamingGroupInvitation invitation = dataContext.FindById<GamingGroupInvitation>(gamingGroupInvitationId);
+
+            ValidateInvitation(gamingGroupInvitationId, invitation);
+
+            this.AssociateUserWithNewGamingGroup(invitation.GamingGroupId, userFromDatabase);
+
+            Player player = dataContext.FindById<Player>(invitation.PlayerId);
+
+            ValidatePlayer(player, invitation);
+
+            player.ApplicationUserId = applicationUserId;
+            dataContext.Save(player, userFromDatabase);
+
+            dataContext.CommitAllChanges();
+        }
+
+        private static void ValidateApplicationUser(ApplicationUser userFromDatabase, string userId)
+        {
+            if (userFromDatabase == null)
+            {
+                throw new EntityDoesNotExistException(userId);
+            }
+        }
+
+        private static void ValidateInvitation(Guid guid, GamingGroupInvitation invitation)
+        {
+            if (invitation == null)
+            {
+                throw new EntityDoesNotExistException(guid);
+            }
+        }
+
+        private void AssociateUserWithNewGamingGroup(int gamingGroupId, ApplicationUser userFromDatabase)
+        {
+            UserGamingGroup userGamingGroup = new UserGamingGroup
+            {
+                ApplicationUserId = userFromDatabase.Id,
+                GamingGroupId = gamingGroupId
+            };
+
+            this.dataContext.Save(userGamingGroup, userFromDatabase);
+
+            userFromDatabase.CurrentGamingGroupId = gamingGroupId;
+            this.dataContext.Save(userFromDatabase, userFromDatabase);
+        }
+
+        private static void ValidatePlayer(Player player, GamingGroupInvitation invitation)
+        {
+            if (player == null)
+            {
+                throw new EntityDoesNotExistException(invitation.PlayerId);
+            }
         }
     }
 }

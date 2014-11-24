@@ -45,7 +45,7 @@ namespace BusinessLogic.Logic.Users
             this.dataContext = dataContext;
         }
 
-        public async Task<object> SignInAndCreateGamingGroup(ApplicationUser applicationUser)
+        public async Task<object> CreateGamingGroup(ApplicationUser applicationUser)
         {
             //fetch this first since we want to fail as early as possible if the config entry is missing
             var callbackUrl = this.GetCallbackUrlFromConfig();

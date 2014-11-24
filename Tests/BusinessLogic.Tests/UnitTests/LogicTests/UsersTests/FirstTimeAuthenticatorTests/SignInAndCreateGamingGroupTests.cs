@@ -101,7 +101,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.FirstTimeAuthentic
             gamingGroupInviteConsumerMock.Expect(mock => mock.ConsumeGamingGroupInvitation(Arg<ApplicationUser>.Is.Anything))
                                          .Return(Task.FromResult((int?)null));
 
-            await firstTimeAuthenticator.SignInAndCreateGamingGroup(applicationUser);
+            await firstTimeAuthenticator.CreateGamingGroup(applicationUser);
 
             eventTrackerMock.AssertWasCalled(mock => mock.TrackUserRegistration());
         }
@@ -112,7 +112,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.FirstTimeAuthentic
             gamingGroupInviteConsumerMock.Expect(mock => mock.ConsumeGamingGroupInvitation(Arg<ApplicationUser>.Is.Anything))
                                          .Return(Task.FromResult((int?)null));
 
-            await firstTimeAuthenticator.SignInAndCreateGamingGroup(applicationUser);
+            await firstTimeAuthenticator.CreateGamingGroup(applicationUser);
 
             signInManagerMock.AssertWasCalled(mock => mock.SignInAsync(applicationUser, false, false));
         }
@@ -123,7 +123,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.FirstTimeAuthentic
             gamingGroupInviteConsumerMock.Expect(mock => mock.ConsumeGamingGroupInvitation(Arg<ApplicationUser>.Is.Anything))
                                          .Return(Task.FromResult((int?)null));
 
-            await firstTimeAuthenticator.SignInAndCreateGamingGroup(applicationUser);
+            await firstTimeAuthenticator.CreateGamingGroup(applicationUser);
 
             gamingGroupInviteConsumerMock.AssertWasCalled(mock => mock.ConsumeGamingGroupInvitation(applicationUser));
         }
@@ -134,7 +134,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.FirstTimeAuthentic
             gamingGroupInviteConsumerMock.Expect(mock => mock.ConsumeGamingGroupInvitation(Arg<ApplicationUser>.Is.Anything))
                                          .Return(Task.FromResult((int?)null));
   
-            await firstTimeAuthenticator.SignInAndCreateGamingGroup(applicationUser);
+            await firstTimeAuthenticator.CreateGamingGroup(applicationUser);
 
             gamingGroupSaverMock.AssertWasCalled(mock => mock.CreateNewGamingGroup(
                 Arg<string>.Is.Equal(applicationUser.UserName + "'s Gaming Group"),
@@ -148,7 +148,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.FirstTimeAuthentic
             gamingGroupInviteConsumerMock.Expect(mock => mock.ConsumeGamingGroupInvitation(Arg<ApplicationUser>.Is.Anything))
                                          .Return(Task.FromResult(existingGamingGroupId));
 
-            await firstTimeAuthenticator.SignInAndCreateGamingGroup(applicationUser);
+            await firstTimeAuthenticator.CreateGamingGroup(applicationUser);
 
             gamingGroupSaverMock.AssertWasNotCalled(mock => mock.CreateNewGamingGroup(
                 Arg<string>.Is.Anything,
@@ -161,7 +161,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.FirstTimeAuthentic
             gamingGroupInviteConsumerMock.Expect(mock => mock.ConsumeGamingGroupInvitation(Arg<ApplicationUser>.Is.Anything))
                              .Return(Task.FromResult((int?)null));
 
-            await firstTimeAuthenticator.SignInAndCreateGamingGroup(applicationUser);
+            await firstTimeAuthenticator.CreateGamingGroup(applicationUser);
 
             applicationUserManagerMock.VerifyAllExpectations();
         }
@@ -188,7 +188,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.FirstTimeAuthentic
             string exceptionMessage = string.Empty;
             try
             {
-                await firstTimeAuthenticator.SignInAndCreateGamingGroup(applicationUser);
+                await firstTimeAuthenticator.CreateGamingGroup(applicationUser);
             }
             catch (ConfigurationException expectedException)
             {
@@ -204,7 +204,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.FirstTimeAuthentic
             gamingGroupInviteConsumerMock.Expect(mock => mock.ConsumeGamingGroupInvitation(Arg<ApplicationUser>.Is.Anything))
                  .Return(Task.FromResult((int?)null));
 
-            await firstTimeAuthenticator.SignInAndCreateGamingGroup(applicationUser);
+            await firstTimeAuthenticator.CreateGamingGroup(applicationUser);
 
             dataContextMock.AssertWasCalled(mock => mock.Save(Arg<UserGamingGroup>.Matches(userGamingGroup => userGamingGroup.ApplicationUserId == applicationUserIdAfterSaving),
                 Arg<ApplicationUser>.Is.Anything));

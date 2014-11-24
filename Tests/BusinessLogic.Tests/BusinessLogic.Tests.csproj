@@ -146,6 +146,7 @@
     <Compile Include="UnitTests\LogicTests\BoardGameGeekSearcherTests\SortSearchResultsTests.cs" />
     <Compile Include="UnitTests\LogicTests\ChampionsTests\ChampionRecalculatorTests\RecalculateAllChampionsTests.cs" />
     <Compile Include="UnitTests\LogicTests\ChampionsTests\ChampionRecalculatorTests\RecalculateChampionTests.cs" />
+    <Compile Include="UnitTests\LogicTests\UsersTests\GamingGroupInviteConsumerTests\AddNewUserToGamingGroupTests.cs" />
     <Compile Include="UnitTests\LogicTests\NemesesTests\NemesisHistoryRetrieverTests\GetNemesisHistoryTests.cs" />
     <Compile Include="UnitTests\LogicTests\NemesesTests\NemesisHistoryRetrieverTests\GetRecentNemesisChangesTests.cs" />
     <Compile Include="UnitTests\LogicTests\PlayersTests\PlayerInviterTests\InvitePlayerTests.cs" />

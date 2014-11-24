@@ -1,4 +1,5 @@
-﻿using BusinessLogic.Logic.Users;
+﻿using System;
+using BusinessLogic.Logic.Users;
 using BusinessLogic.Models.User;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
@@ -105,6 +106,11 @@ namespace UI.Controllers
 
             // If we got this far, something failed, redisplay form
             return View(MVC.Account.Views.Register, model);
+        }
+
+        public virtual ActionResult RegisterNewUserAgainstExistingGamingGroup(RegisterViewModel registerViewModel)
+        {
+            throw new NotImplementedException();
         }
 
         [UserContext(RequiresGamingGroup = false)]
@@ -345,7 +351,7 @@ namespace UI.Controllers
                     result = await userManager.AddLoginAsync(user.Id, info.Login);
                     if (result.Succeeded)
                     {
-                        await firstTimeAuthenticator.SignInAndCreateGamingGroup(user);
+                        await firstTimeAuthenticator.CreateGamingGroup(user);
 
                         return RedirectToAction(MVC.GamingGroup.ActionNames.Index, "GamingGroup");
                     }

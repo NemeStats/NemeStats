@@ -9,5 +9,7 @@ namespace BusinessLogic.Logic.Users
         Task<int?> ConsumeGamingGroupInvitation(ApplicationUser currentUser);
 
         AddUserToGamingGroupResult AddExistingUserToGamingGroup(string gamingGroupInvitationId);
+
+        void AddNewUserToGamingGroup(string applicationUserId, System.Guid guid);
     }
 }
