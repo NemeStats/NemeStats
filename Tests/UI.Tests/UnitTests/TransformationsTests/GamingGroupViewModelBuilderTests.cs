@@ -134,23 +134,6 @@ namespace UI.Tests.UnitTests.TransformationsTests
         }
 
         [Test]
-        public void ItTransformsGamingGroupInvitationsToInvitationViewModels()
-        {
-            List<InvitationViewModel> invitations = new List<InvitationViewModel>();
-            foreach(GamingGroupInvitation invitation in gamingGroupSummary.GamingGroupInvitations)
-            {
-                InvitationViewModel invitationViewModel = new InvitationViewModel();
-                invitations.Add(invitationViewModel);
-
-                invitationTransformerMock.Expect(mock => mock.Build(invitation))
-                    .Repeat.Once()
-                    .Return(invitationViewModel);
-            }
-
-            Assert.AreEqual(invitations.Count(), viewModel.Invitations.Count());
-        }
-
-        [Test]
         public void ItSetsThePlayers()
         {
             foreach(Player player in players)

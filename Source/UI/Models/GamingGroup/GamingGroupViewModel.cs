@@ -24,7 +24,6 @@ namespace UI.Models.GamingGroup
         public string InviteeEmail { get; set; }
         public IList<GameDefinitionSummaryViewModel> GameDefinitionSummaries { get; set; }
         public IList<PlayerWithNemesisViewModel> Players { get; set; }
-        public IList<InvitationViewModel> Invitations { get; set; }
         public IList<PlayedGameDetailsViewModel> RecentGames { get; set; }
     }
 }

@@ -70,17 +70,6 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
             dataContextMock.Expect(mock => mock.GetQueryable<ApplicationUser>())
                 .Return(applicationUsers.AsQueryable());
 
-            List<GamingGroupInvitation> gamingGroupInvitations = new List<GamingGroupInvitation>();
-            expectedGamingGroupInvitation = new GamingGroupInvitation() 
-            { 
-                GamingGroupId = expectedGamingGroup.Id, 
-                RegisteredUserId = currentUser.Id 
-            };
-            
-            gamingGroupInvitations.Add(expectedGamingGroupInvitation);
-            dataContextMock.Expect(mock => mock.GetQueryable<GamingGroupInvitation>())
-                .Return(gamingGroupInvitations.AsQueryable());
-
             dataContextMock.Expect(mock => mock.GetQueryable<ApplicationUser>())
                 .Return(applicationUsers.AsQueryable());
         }
@@ -102,28 +91,6 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
             GamingGroupSummary actualGamingGroup = gamingGroupRetriever.GetGamingGroupDetails(gamingGroupId, 0);
 
             Assert.NotNull(actualGamingGroup.OwningUser);
-        }
-
-        [Test]
-        public void ItReturnsTheGamingGroupInvitationsOnTheGamingGroup()
-        {
-            GamingGroupSummary actualGamingGroup = gamingGroupRetriever.GetGamingGroupDetails(gamingGroupId, 0);
-
-            Assert.AreSame(expectedGamingGroupInvitation, actualGamingGroup.GamingGroupInvitations[0]);
-        }
-        
-        [Test]
-        public void ItReturnsTheRegisteredUserNameOfAnyUsersThatRegistered()
-        {
-            GamingGroupSummary actualGamingGroup = gamingGroupRetriever.GetGamingGroupDetails(gamingGroupId, 0);
-
-            foreach(GamingGroupInvitation invitation in actualGamingGroup.GamingGroupInvitations)
-            {
-                if(!string.IsNullOrEmpty(invitation.RegisteredUserId))
-                {
-                    Assert.NotNull(invitation.RegisteredUser);
-                }
-            }
         }
 
         [Test]

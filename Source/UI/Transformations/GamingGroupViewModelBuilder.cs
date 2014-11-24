@@ -31,10 +31,6 @@ namespace UI.Transformations
 
         public GamingGroupViewModel Build(GamingGroupSummary gamingGroupSummary, ApplicationUser currentUser = null)
         {
-            List<InvitationViewModel> invitationViewModels
-                = (from GamingGroupInvitation invitation in gamingGroupSummary.GamingGroupInvitations
-                   select invitationViewModelTransformer.Build(invitation)).ToList();
-
             List<PlayedGameDetailsViewModel> details = BuildPlayedGameDetailsViewModels(gamingGroupSummary, currentUser);
 
             List<PlayerWithNemesisViewModel> playerWithNemesisList 
@@ -47,7 +43,6 @@ namespace UI.Transformations
                 OwningUserId = gamingGroupSummary.OwningUserId,
                 Name = gamingGroupSummary.Name,
                 OwningUserName = gamingGroupSummary.OwningUser.UserName,
-                Invitations = invitationViewModels,
                 Players = playerWithNemesisList,
                 GameDefinitionSummaries = gamingGroupSummary.GameDefinitionSummaries
                     .Select(game => gameDefinitionSummaryViewModelBuilder.Build(game, currentUser)).ToList(),

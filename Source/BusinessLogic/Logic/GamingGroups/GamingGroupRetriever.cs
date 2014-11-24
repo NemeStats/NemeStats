@@ -48,29 +48,7 @@ namespace BusinessLogic.Logic.GamingGroups
 
             summary.OwningUser = dataContext.GetQueryable<ApplicationUser>().First(user => user.Id == gamingGroup.OwningUserId);
 
-            summary.GamingGroupInvitations = dataContext.GetQueryable<GamingGroupInvitation>()
-                .Where(invitation => invitation.GamingGroupId == gamingGroup.Id)
-                .ToList();
-
-            AddRegisteredUserInfo(summary);
-
             return summary;
-        }
-
-        private void AddRegisteredUserInfo(GamingGroupSummary gamingGroupSummary)
-        {
-            List<string> registeredUserIds = (from gamingGroupInvitation in gamingGroupSummary.GamingGroupInvitations
-                                              select gamingGroupInvitation.RegisteredUserId).ToList();
-
-            List<ApplicationUser> registeredUsers = dataContext.GetQueryable<ApplicationUser>()
-                .Where(user => registeredUserIds.Contains(user.Id))
-                .ToList();
-
-            foreach (GamingGroupInvitation gamingGroupInvitation in gamingGroupSummary.GamingGroupInvitations)
-            {
-                gamingGroupInvitation.RegisteredUser = registeredUsers.FirstOrDefault(
-                    user => user.Id == gamingGroupInvitation.RegisteredUserId);
-            }
         }
     }
 }
