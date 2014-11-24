@@ -177,7 +177,7 @@
     <Compile Include="UnitTests\LogicTests\PlayersTests\PlayerSaverTests\SaveTests.cs" />
     <Compile Include="UnitTests\LogicTests\PlayersTests\PlayerRetrieverTests\GetAllPlayersTests.cs" />
     <Compile Include="UnitTests\LogicTests\PointsTests\GordonPointsTests\CalculateGordonPointsTests.cs" />
-    <Compile Include="UnitTests\LogicTests\UsersTests\FirstTimeAuthenticatorTests\SignInAndCreateGamingGroupTests.cs" />
+    <Compile Include="UnitTests\LogicTests\UsersTests\FirstTimeAuthenticatorTests\SetupNewGamingGroupForNewlyRegisteredUserTests.cs" />
     <Compile Include="UnitTests\LogicTests\UsersTests\GamingGroupInviteConsumerTests\ConsumeGamingGroupInvitationTests.cs" />
     <Compile Include="UnitTests\LogicTests\UsersTests\GamingGroupInviteConsumerTests\AddExistingUserToGamingGroup.cs" />
     <Compile Include="UnitTests\LogicTests\UsersTests\GamingGroupInviteConsumerTests\GamingGroupInviteConsumerTestBase.cs" />

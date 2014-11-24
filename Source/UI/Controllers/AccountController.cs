@@ -85,11 +85,18 @@ namespace UI.Controllers
         {
             if (ModelState.IsValid)
             {
+                Guid? gamingGroupInvitation = null;
+                if (!string.IsNullOrWhiteSpace(model.GamingGroupInvitationId))
+                {
+                    gamingGroupInvitation = new Guid(model.GamingGroupInvitationId);
+                }
+
                 NewUser newUser = new NewUser
                 {
                     Email = model.EmailAddress,
                     UserName = model.UserName,
-                    Password = model.Password
+                    Password = model.Password,
+                    GamingGroupInvitationId = gamingGroupInvitation
                 };
 
                 IdentityResult result = await this.userRegisterer.RegisterUser(newUser);

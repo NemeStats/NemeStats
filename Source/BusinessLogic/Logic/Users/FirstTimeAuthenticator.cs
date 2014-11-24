@@ -19,26 +19,17 @@ namespace BusinessLogic.Logic.Users
         internal const string CONFIRMATION_EMAIL_BODY = "Please confirm your account by clicking this <a href=\"{0}\">link</a>";
         internal const string EMAIL_SUBJECT = "Confirm Your NemeStats Account";
 
-        private readonly INemeStatsEventTracker eventTracker;
-        private readonly ApplicationSignInManager signInManager;
-        private readonly IGamingGroupInviteConsumer gamingGroupInviteConsumer;
         private readonly IGamingGroupSaver gamingGroupSaver;
         private readonly IConfigurationManager configurationManager;
         private readonly ApplicationUserManager applicationUserManager;
         private readonly IDataContext dataContext;
 
         public FirstTimeAuthenticator(
-            INemeStatsEventTracker eventTracker,
-            ApplicationSignInManager signInManager,
-            IGamingGroupInviteConsumer gamingGroupInviteConsumer,
             IGamingGroupSaver gamingGroupSaver,
             ApplicationUserManager applicationUserManager, 
             IConfigurationManager configurationManager, 
             IDataContext dataContext)
         {
-            this.eventTracker = eventTracker;
-            this.signInManager = signInManager;
-            this.gamingGroupInviteConsumer = gamingGroupInviteConsumer;
             this.gamingGroupSaver = gamingGroupSaver;
             this.applicationUserManager = applicationUserManager;
             this.configurationManager = configurationManager;
@@ -49,11 +40,8 @@ namespace BusinessLogic.Logic.Users
         {
             //fetch this first since we want to fail as early as possible if the config entry is missing
             var callbackUrl = this.GetCallbackUrlFromConfig();
-
-            new Task(() => eventTracker.TrackUserRegistration()).Start();
-
-            await signInManager.SignInAsync(applicationUser, false, false);
-            await this.HandleGamingGroupAssignment(applicationUser);
+            
+            await this.CreateNewGamingGroupAndAssignUser(applicationUser);
 
             await this.SendConfirmationEmail(applicationUser, callbackUrl);
 
@@ -75,19 +63,15 @@ namespace BusinessLogic.Logic.Users
             return callbackUrl;
         }
 
-        private async Task HandleGamingGroupAssignment(ApplicationUser applicationUser)
+        private async Task CreateNewGamingGroupAndAssignUser(ApplicationUser applicationUser)
         {
-            int? gamingGroupIdToWhichTheUserWasAdded = await this.gamingGroupInviteConsumer.ConsumeGamingGroupInvitation(applicationUser);
-
-            if (!gamingGroupIdToWhichTheUserWasAdded.HasValue)
-            {
-                gamingGroupIdToWhichTheUserWasAdded = (await this.gamingGroupSaver.CreateNewGamingGroup(applicationUser.UserName + "'s Gaming Group", applicationUser)).Id;
-            }
+            int gamingGroupIdToWhichTheUserWasAdded = (await this.gamingGroupSaver.CreateNewGamingGroup(
+                applicationUser.UserName + "'s Gaming Group", applicationUser)).Id;
 
             UserGamingGroup userGamingGroup = new UserGamingGroup
             {
                 ApplicationUserId = applicationUser.Id,
-                GamingGroupId = gamingGroupIdToWhichTheUserWasAdded.Value
+                GamingGroupId = gamingGroupIdToWhichTheUserWasAdded
             };
 
             dataContext.Save(userGamingGroup, applicationUser);

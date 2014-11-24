@@ -20,7 +20,7 @@ Views.Player.Players.prototype = {
                 <td> \
                     <a href='/Player/Details/" + player.Id + "'>" + player.Name + "</a> \
                 </td> \
-                <td> </td>\
+                <td><input class=\"check-box\" disabled=\"disabled\" type=\"checkbox\"> </td>\
                 <td> </td>\
                 <td> \
                     <a href='/Player/Edit/" + player.Id + "' title='Edit'> \

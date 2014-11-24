@@ -1,4 +1,5 @@
-﻿using BusinessLogic.Models.User;
+﻿using System;
+using BusinessLogic.Models.User;
 using Microsoft.AspNet.Identity;
 using NUnit.Framework;
 using Rhino.Mocks;
@@ -23,7 +24,8 @@ namespace UI.Tests.UnitTests.ControllerTests.AccountControllerTests
             {
                 EmailAddress = "email",
                 Password = "password",
-                UserName = "user name"
+                UserName = "user name",
+                GamingGroupInvitationId = Guid.NewGuid().ToString()
             };
         }
 
@@ -58,7 +60,8 @@ namespace UI.Tests.UnitTests.ControllerTests.AccountControllerTests
             userRegistererMock.AssertWasCalled(mock => mock.RegisterUser(Arg<NewUser>.Matches(
                 user => user.Email == expectedViewModel.EmailAddress
                     && user.UserName == expectedViewModel.UserName
-                    && user.Password == expectedViewModel.Password)));
+                    && user.Password == expectedViewModel.Password
+                    && user.GamingGroupInvitationId == new Guid(expectedViewModel.GamingGroupInvitationId))));
         }
 
         [Test]
