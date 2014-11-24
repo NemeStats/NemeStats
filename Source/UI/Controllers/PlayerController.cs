@@ -22,8 +22,8 @@ namespace UI.Controllers
     {
         internal const int NUMBER_OF_RECENT_GAMES_TO_RETRIEVE = 10;
         internal const string EMAIL_SUBJECT_PLAYER_INVITATION = "Invitation from {0}";
-        internal const string EMAIL_BODY_PLAYER_INVITATION = "Hi There! I'm inviting you to join the '{0}'"
-                                                             + " Gaming Group on http://nemestats.com/.";
+        internal const string EMAIL_BODY_PLAYER_INVITATION = "Hi There! I'm inviting you to join '{0}'"
+                                                             + " on http://nemestats.com/.";
 
         internal IDataContext dataContext;
         internal IGameResultViewModelBuilder builder;
