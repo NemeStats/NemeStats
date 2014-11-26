@@ -138,7 +138,6 @@
     <Compile Include="EventTracking\UniversalAnalyticsNemeStatsEventTracker.cs" />
     <Compile Include="Exceptions\EntityDoesNotExistException.cs" />
     <Compile Include="Exceptions\PlayerAlreadyExistsException.cs" />
-    <Compile Include="Exceptions\PlayerInviteAlreadyConsumedException.cs" />
     <Compile Include="Exceptions\UnauthorizedEntityAccessException.cs" />
     <Compile Include="Logic\BoardGameGeek\BoardGameGeekSearcher.cs" />
     <Compile Include="Logic\BoardGameGeek\BoardGameGeekUriBuilder.cs" />

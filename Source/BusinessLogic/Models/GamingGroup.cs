@@ -26,5 +26,6 @@ namespace BusinessLogic.Models
         public virtual IList<GameDefinition> GameDefinitions { get; set; }
         public virtual IList<PlayedGame> PlayedGames { get; set; }
         public virtual IList<GamingGroupInvitation> GamingGroupInvitations { get; set; }
+        public virtual IList<UserGamingGroup> UserGamingGroups { get; set; } 
     }
 }

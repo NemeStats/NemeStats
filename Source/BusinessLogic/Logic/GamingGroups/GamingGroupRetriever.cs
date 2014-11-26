@@ -50,5 +50,12 @@ namespace BusinessLogic.Logic.GamingGroups
 
             return summary;
         }
+
+        public List<GamingGroup> GetGamingGroupsForUser(ApplicationUser applicationUser)
+        {
+            return dataContext.GetQueryable<GamingGroup>()
+                              .Where(gamingGroup => gamingGroup.UserGamingGroups.Any(ugg => ugg.ApplicationUserId == applicationUser.Id))
+                              .ToList();
+        }
     }
 }

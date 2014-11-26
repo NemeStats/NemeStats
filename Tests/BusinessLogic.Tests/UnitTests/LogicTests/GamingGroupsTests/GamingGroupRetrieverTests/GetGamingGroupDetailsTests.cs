@@ -15,39 +15,19 @@ using System.Linq;
 namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroupRetrieverTests
 {
     [TestFixture]
-    public class GetGamingGroupDetailsTests
+    public class GetGamingGroupDetailsTests : GamingGroupRetrieverTestBase
     {
-        private GamingGroupRetriever gamingGroupRetriever;
-        private IDataContext dataContextMock;
-        private IPlayerRetriever playerRetrieverMock;
-        private IGameDefinitionRetriever gameDefinitionRetrieverMock;
-        private IPlayedGameRetriever playedGameRetriever;
-        private ApplicationUser currentUser;
         private GamingGroup expectedGamingGroup;
         private GamingGroupInvitation expectedGamingGroupInvitation;
         private List<GameDefinitionSummary> gameDefinitionSummaries;  
 
-        protected int gamingGroupId = 13511;
+        private int gamingGroupId = 13511;
 
         [SetUp]
-        public void SetUp()
+        public override void SetUp()
         {
-            dataContextMock = MockRepository.GenerateMock<IDataContext>();
-            playerRetrieverMock = MockRepository.GenerateMock<IPlayerRetriever>();
-            gameDefinitionRetrieverMock = MockRepository.GenerateMock<IGameDefinitionRetriever>();
-            playedGameRetriever = MockRepository.GenerateMock<IPlayedGameRetriever>();
-            gamingGroupRetriever = new GamingGroupRetriever(
-                dataContextMock, 
-                playerRetrieverMock, 
-                gameDefinitionRetrieverMock,
-                playedGameRetriever);
+            base.SetUp();
 
-            currentUser = new ApplicationUser() 
-            { 
-                Id = "application user", 
-                UserName = "user name", 
-                CurrentGamingGroupId = 1 
-            };
             expectedGamingGroup = new GamingGroup
             {
                 Id = gamingGroupId, 

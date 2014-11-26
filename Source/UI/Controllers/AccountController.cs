@@ -196,7 +196,6 @@ namespace UI.Controllers
             return View("Manage", parentViewModel);
         }
 
-        //TODO how to test async methods?
         // POST: /Account/ChangePassword
         [HttpPost]
         [ValidateAntiForgeryToken]

@@ -166,6 +166,7 @@
     <Compile Include="UnitTests\ControllerTests\GameDefinitionControllerTests\SearchBoardGameGeekHttpGetTests.cs" />
     <Compile Include="UnitTests\ControllerTests\GamingGroupControllerTests\EditTests.cs" />
     <Compile Include="UnitTests\ControllerTests\GamingGroupControllerTests\GamingGroupControllerTestBase.cs" />
+    <Compile Include="UnitTests\ControllerTests\GamingGroupControllerTests\GetUsersGamingGroupsTests.cs" />
     <Compile Include="UnitTests\ControllerTests\GamingGroupControllerTests\GrantAccessTests.cs" />
     <Compile Include="UnitTests\ControllerTests\GamingGroupControllerTests\IndexTests.cs" />
     <Compile Include="UnitTests\ControllerTests\HelperTests\ShowingXResultsMessageBuilderTests\BuildMessageTests.cs" />

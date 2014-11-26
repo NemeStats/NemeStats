@@ -130,6 +130,24 @@ namespace UI.Controllers
             }
         }
 
+        [HttpPost]
+        [Authorize]
+        [UserContextAttribute]
+        public virtual ActionResult GetUsersGamingGroups(ApplicationUser currentUser)
+        {
+            var gamingGroups = gamingGroupRetriever.GetGamingGroupsForUser(currentUser);
+            JsonResult jsonResult = new JsonResult();
+            var gamingGroupList = (from gamingGroup in gamingGroups
+                                   select new
+                                   {
+                                       gamingGroup.Id,
+                                       gamingGroup.Name,
+                                       IsCurrentGamingGroup = currentUser.CurrentGamingGroupId == gamingGroup.Id
+                                   }).ToList();
+
+            return Json(gamingGroupList, JsonRequestBehavior.AllowGet);
+        }
+
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);
