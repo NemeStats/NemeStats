@@ -147,6 +147,8 @@ namespace UI.DependencyResolution {
 
             this.For<IChampionRepository>().Use<ChampionRepository>();
 
+            this.For<IGamingGroupContextSwitcher>().Use<GamingGroupContextSwitcher>();
+
         }
 
         private void SetupUniquePerRequestMappings()
