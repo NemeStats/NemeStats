@@ -1,6 +1,7 @@
 ﻿using BusinessLogic.DataAccess;
 using BusinessLogic.DataAccess.GamingGroups;
 using BusinessLogic.Logic.GamingGroups;
+using BusinessLogic.Logic.Users;
 using BusinessLogic.Models.User;
 using NUnit.Framework;
 using Rhino.Mocks;
@@ -24,6 +25,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
         protected IPlayerWithNemesisViewModelBuilder playerWithNemesisViewModelBuilderMock;
         protected IPlayedGameDetailsViewModelBuilder playedGameDetailsViewModelBuilderMock;
         protected IGameDefinitionSummaryViewModelBuilder gameDefinitionSummaryViewModelBuilderMock;
+        protected IGamingGroupContextSwitcher gamingGroupContextSwitcherMock;
         protected ApplicationUser currentUser;
 
         [SetUp]
@@ -38,6 +40,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
             playerWithNemesisViewModelBuilderMock = MockRepository.GenerateMock<IPlayerWithNemesisViewModelBuilder>();
             playedGameDetailsViewModelBuilderMock = MockRepository.GenerateMock<IPlayedGameDetailsViewModelBuilder>();
             gameDefinitionSummaryViewModelBuilderMock = MockRepository.GenerateMock<IGameDefinitionSummaryViewModelBuilder>();
+            gamingGroupContextSwitcherMock = MockRepository.GenerateMock<IGamingGroupContextSwitcher>();
             gamingGroupController = new GamingGroupController(
                 gamingGroupViewModelBuilderMock, 
                 gamingGroupAccessGranterMock,
@@ -46,7 +49,8 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
                 showingXResultsMessageBuilderMock,
                 playerWithNemesisViewModelBuilderMock,
                 playedGameDetailsViewModelBuilderMock,
-                gameDefinitionSummaryViewModelBuilderMock);
+                gameDefinitionSummaryViewModelBuilderMock,
+                gamingGroupContextSwitcherMock);
             currentUser = new ApplicationUser()
             {
                 Id = "user  id",

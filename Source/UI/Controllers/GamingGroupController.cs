@@ -1,6 +1,7 @@
 ﻿using System;
 using BusinessLogic.DataAccess.GamingGroups;
 using BusinessLogic.Logic.GamingGroups;
+using BusinessLogic.Logic.Users;
 using BusinessLogic.Models;
 using BusinessLogic.Models.GamingGroups;
 using BusinessLogic.Models.User;
@@ -30,6 +31,7 @@ namespace UI.Controllers
         internal IPlayerWithNemesisViewModelBuilder playerWithNemesisViewModelBuilder;
         internal IPlayedGameDetailsViewModelBuilder playedGameDetailsViewModelBuilder;
         internal IGameDefinitionSummaryViewModelBuilder gameDefinitionSummaryViewModelBuilder;
+        internal IGamingGroupContextSwitcher gamingGroupContextSwitcher;
 
         public GamingGroupController(
             IGamingGroupViewModelBuilder gamingGroupViewModelBuilder,
@@ -39,7 +41,8 @@ namespace UI.Controllers
             IShowingXResultsMessageBuilder showingXResultsMessageBuilder,
             IPlayerWithNemesisViewModelBuilder playerWithNemesisViewModelBuilder,
             IPlayedGameDetailsViewModelBuilder playedGameDetailsViewModelBuilder,
-            IGameDefinitionSummaryViewModelBuilder gameDefinitionSummaryViewModelBuilder)
+            IGameDefinitionSummaryViewModelBuilder gameDefinitionSummaryViewModelBuilder,
+            IGamingGroupContextSwitcher gamingGroupContextSwitcher)
         {
             this.gamingGroupViewModelBuilder = gamingGroupViewModelBuilder;
             this.gamingGroupAccessGranter = gamingGroupAccessGranter;
@@ -49,6 +52,7 @@ namespace UI.Controllers
             this.playerWithNemesisViewModelBuilder = playerWithNemesisViewModelBuilder;
             this.playedGameDetailsViewModelBuilder = playedGameDetailsViewModelBuilder;
             this.gameDefinitionSummaryViewModelBuilder = gameDefinitionSummaryViewModelBuilder;
+            this.gamingGroupContextSwitcher = gamingGroupContextSwitcher;
         }
 
         // GET: /GamingGroup
@@ -146,6 +150,19 @@ namespace UI.Controllers
                                    }).ToList();
 
             return Json(gamingGroupList, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        [Authorize]
+        [UserContextAttribute]
+        public virtual ActionResult SwitchGamingGroups(int gamingGroupId, ApplicationUser currentUser)
+        {
+            if (gamingGroupId != currentUser.CurrentGamingGroupId)
+            {
+                gamingGroupContextSwitcher.SwitchGamingGroupContext(gamingGroupId, currentUser);
+            }
+
+            return RedirectToAction(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name);
         }
 
         protected override void Dispose(bool disposing)

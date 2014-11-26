@@ -170,6 +170,8 @@
     <Compile Include="Logic\PlayedGames\PlayedGameRetriever.cs" />
     <Compile Include="Logic\Players\IPlayerInviter.cs" />
     <Compile Include="Logic\Players\IPlayerSaver.cs" />
+    <Compile Include="Logic\Users\GamingGroupContextSwitcher.cs" />
+    <Compile Include="Logic\Users\IGamingGroupContextSwitcher.cs" />
     <Compile Include="Migrations\201411160430223_AddSupportForPlayerInvitationsOnGamingGroup.cs" />
     <Compile Include="Migrations\201411160430223_AddSupportForPlayerInvitationsOnGamingGroup.Designer.cs">
       <DependentUpon>201411160430223_AddSupportForPlayerInvitationsOnGamingGroup.cs</DependentUpon>
