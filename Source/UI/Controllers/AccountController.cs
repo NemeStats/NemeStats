@@ -115,11 +115,6 @@ namespace UI.Controllers
             return View(MVC.Account.Views.Register, model);
         }
 
-        public virtual ActionResult RegisterNewUserAgainstExistingGamingGroup(RegisterViewModel registerViewModel)
-        {
-            throw new NotImplementedException();
-        }
-
         [UserContext(RequiresGamingGroup = false)]
         [AllowAnonymous]
         public virtual ActionResult ConsumeInvitation(string id, ApplicationUser currentUser)
