@@ -4,12 +4,24 @@ using Rhino.Mocks;
 using System.Linq;
 using System.Web.Mvc;
 using UI.Controllers;
+using UI.Models.Players;
 
 namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
 {
     [TestFixture]
     public class EditHttpPostTests : PlayerControllerTestBase
     {
+        private readonly PlayerEditViewModel expectedViewModel = new PlayerEditViewModel();
+
+        [SetUp]
+        public override void SetUp()
+        {
+            base.SetUp();
+
+            playerEditViewModelBuilderMock.Expect(mock => mock.Build(Arg<Player>.Is.Anything))
+                                          .Return(expectedViewModel);
+        }
+
         [Test]
         public void ItRedirectsToTheGamingGroupIndexAndPlayersSectionAfterSaving()
         {
@@ -41,7 +53,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
 
             ViewResult result = playerController.Edit(player, currentUser) as ViewResult;
 
-            Assert.AreEqual(player, result.Model);
+            Assert.AreEqual(expectedViewModel, result.Model);
         }
 
         [Test]

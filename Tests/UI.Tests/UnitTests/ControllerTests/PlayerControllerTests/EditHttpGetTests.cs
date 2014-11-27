@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using UI.Models.Players;
 
 namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
 {
@@ -46,7 +47,14 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         [Test]
         public void ItLoadsTheEditView()
         {
-            PlayerDetails playerDetails = new PlayerDetails();
+            int playerId = 123;
+            playerRetrieverMock.Expect(mock => mock.GetPlayerDetails(playerId, 0))
+                .Return(new PlayerDetails());
+
+            PlayerDetails playerDetails = new PlayerDetails
+            {
+                Id = playerId
+            };
 
             ViewResult result = playerController.Edit(playerDetails.Id) as ViewResult;
 
@@ -54,7 +62,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         }
 
         [Test]
-        public void ItPutsThePlayerDetailsOnTheView()
+        public void ItPutsThePlayerEditViewModelOnTheView()
         {
             PlayerDetails playerDetails = new PlayerDetails();
             playerRetrieverMock.Expect(mock => mock.GetPlayerDetails(playerDetails.Id, 0))
@@ -63,7 +71,13 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
 
             ViewResult result = playerController.Edit(playerDetails.Id) as ViewResult;
 
-            Assert.AreSame(playerDetails, result.Model);
+            var actualViewModel = (PlayerEditViewModel)result.Model;
+
+            Assert.That(playerDetails.Name, Is.EqualTo(actualViewModel.Name));
+            Assert.That(playerDetails.Id, Is.EqualTo(actualViewModel.Id));
+            Assert.That(playerDetails.GamingGroupId, Is.EqualTo(actualViewModel.GamingGroupId));
+            Assert.That(playerDetails.Active, Is.EqualTo(actualViewModel.Active));
+
         }
     }
 }
