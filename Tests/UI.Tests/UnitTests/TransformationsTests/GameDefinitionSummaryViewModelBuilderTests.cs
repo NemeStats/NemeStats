@@ -21,9 +21,6 @@ namespace UI.Tests.UnitTests.TransformationsTests
         protected int gamingGroupid = 135;
         protected Champion champion;
         protected Champion previousChampion;
-        protected float championWinPercentage = 100;
-        protected int championNumberOfGames = 6;
-        protected int championNumberOfWins = 4;
         protected string championName = "Champion Name";
         protected int championPlayerId = 999;
         protected string previousChampionName = "Previous Champion Name";
@@ -58,9 +55,6 @@ namespace UI.Tests.UnitTests.TransformationsTests
             champion = new Champion
             {
                 Player = championPlayer,
-                WinPercentage = championWinPercentage,
-                NumberOfGames = championNumberOfGames,
-                NumberOfWins = championNumberOfWins
             };
             previousChampion = new Champion
             {
@@ -153,36 +147,14 @@ namespace UI.Tests.UnitTests.TransformationsTests
 
             Assert.That(actualViewModel.ChampionName, Is.EqualTo(championName));
         }
-
-        [Test]
-        public void ItSetsTheChampionWinPercentageWhenThereIsAChampion()
-        {
-            var actualViewModel = transformer.Build(gameDefinitionSummary, currentUser);
-
-            Assert.That(actualViewModel.WinPercentage, Is.EqualTo(championWinPercentage));
-        }
-
-        [Test]
-        public void ItSetsTheChampionGamesPlayedWhenThereIsAChampion()
-        {
-            var actualViewModel = transformer.Build(gameDefinitionSummary, currentUser);
-            Assert.That(actualViewModel.NumberOfGamesPlayed, Is.EqualTo(championNumberOfGames));
-        }
-
-        [Test]
-        public void ItSetsTheChampionGamesWonWhenThereIsAChampion()
-        {
-            var actualViewModel = transformer.Build(gameDefinitionSummary, currentUser);
-            Assert.That(actualViewModel.NumberOfWins, Is.EqualTo(championNumberOfWins));
-        }
-
+        //copy
         [Test]
         public void ItSetsTheChampionPlayerIdWhenThereIsAChampion()
         {
             var actualViewModel = transformer.Build(gameDefinitionSummary, currentUser);
             Assert.That(actualViewModel.ChampionPlayerId, Is.EqualTo(championPlayerId));
         }
-
+        //copy
         [Test]
         public void ItSetsThePreviousChampionNameWhenThereIsAPreviousChampion()
         {
@@ -190,7 +162,7 @@ namespace UI.Tests.UnitTests.TransformationsTests
 
             Assert.That(actualViewModel.PreviousChampionName, Is.EqualTo(previousChampionName));
         }
-
+        //copy
         [Test]
         public void ItSetsThePreviousChampionPlayerIdWhenThereIsAPreviousChampion()
         {
