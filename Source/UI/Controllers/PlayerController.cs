@@ -32,6 +32,7 @@ namespace UI.Controllers
         internal IPlayerSaver playerSaver;
         internal IPlayerRetriever playerRetriever;
         internal IPlayerInviter playerInviter;
+        internal IPlayerEditViewModelBuilder playerEditViewModelBuilder;
         
         public PlayerController(IDataContext dataContext,
             IGameResultViewModelBuilder builder,
@@ -39,7 +40,8 @@ namespace UI.Controllers
             IShowingXResultsMessageBuilder showingXResultsMessageBuilder,
             IPlayerSaver playerSaver,
             IPlayerRetriever playerRetriever,
-            IPlayerInviter playerInviter)
+            IPlayerInviter playerInviter,
+            IPlayerEditViewModelBuilder playerEditViewModelBuilder)
         {
             this.dataContext = dataContext;
             this.builder = builder;
@@ -48,6 +50,7 @@ namespace UI.Controllers
             this.playerSaver = playerSaver;
             this.playerRetriever = playerRetriever;
             this.playerInviter = playerInviter;
+            this.playerEditViewModelBuilder = playerEditViewModelBuilder;
         }
 
         // GET: /Player/Details/5
@@ -181,8 +184,14 @@ namespace UI.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.NotFound);
             }
-
-            return View(MVC.Player.Views.Edit, player);
+            var playerEditViewModel = new PlayerEditViewModel
+            {
+                Active = player.Active,
+                Id = player.Id,
+                GamingGroupId = player.GamingGroupId,
+                Name = player.Name
+            };
+            return View(MVC.Player.Views.Edit, playerEditViewModel);
         }
 
         // POST: /Player/Edit/5
@@ -200,7 +209,10 @@ namespace UI.Controllers
                 return new RedirectResult(Url.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name)
                                           + "#" + GamingGroupController.SECTION_ANCHOR_PLAYERS);
             }
-            return View(MVC.Player.Views.Edit, player);
+
+            var playerEditViewModel = playerEditViewModelBuilder.Build(player);
+
+            return View(MVC.Player.Views.Edit, playerEditViewModel);
         }
 
         protected override void Dispose(bool disposing)

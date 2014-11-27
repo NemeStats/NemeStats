@@ -293,6 +293,7 @@
     <Compile Include="Models\PlayedGame\PlayedGameDetailsViewModel.cs" />
     <Compile Include="Models\Players\MinionViewModel.cs" />
     <Compile Include="Models\Players\PlayerDetailsViewModel.cs" />
+    <Compile Include="Models\Players\PlayerEditViewModel.cs" />
     <Compile Include="Models\Players\PlayerInvitationViewModel.cs" />
     <Compile Include="Models\Players\TopPlayerViewModel.cs" />
     <Compile Include="Models\User\UserViewModel.cs" />
@@ -331,10 +332,12 @@
     <Compile Include="Transformations\GameResultViewModelBuilder.cs" />
     <Compile Include="Transformations\PlayerTransformations\IMinionViewModelBuilder.cs" />
     <Compile Include="Transformations\PlayerTransformations\IPlayerDetailsViewModelBuilder.cs" />
+    <Compile Include="Transformations\PlayerTransformations\IPlayerEditViewModelBuilder.cs" />
     <Compile Include="Transformations\PlayerTransformations\IPlayerWithNemesisViewModelBuilder.cs" />
     <Compile Include="Transformations\PlayerTransformations\MinionViewModelBuilder.cs" />
     <Compile Include="Transformations\PlayerTransformations\PlayerDetailsViewModelBuilder.cs" />
     <Compile Include="Transformations\PlayerTransformations\ITopPlayerViewModelBuilder.cs" />
+    <Compile Include="Transformations\PlayerTransformations\PlayerEditViewModelBuilder.cs" />
     <Compile Include="Transformations\PlayerTransformations\PlayerWithNemesisViewModelBuilder.cs" />
     <Compile Include="Transformations\PlayerTransformations\TopPlayerViewModelBuilder.cs" />
     <Compile Include="Models\Players\PlayerWithNemesisViewModel.cs" />

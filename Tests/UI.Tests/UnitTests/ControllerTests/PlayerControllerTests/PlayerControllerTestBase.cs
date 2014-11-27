@@ -24,6 +24,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         protected IShowingXResultsMessageBuilder showingXResultsMessageBuilderMock;
         protected IPlayerSaver playerSaverMock;
         protected IPlayerInviter playerInviterMock;
+        protected IPlayerEditViewModelBuilder playerEditViewModelBuilderMock;
         protected UrlHelper urlHelperMock;
         protected PlayerController playerController;
         protected ApplicationUser currentUser;
@@ -46,6 +47,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
             playerSaverMock = MockRepository.GenerateMock<IPlayerSaver>();
             urlHelperMock = MockRepository.GenerateMock<UrlHelper>();
             playerInviterMock = MockRepository.GenerateMock<IPlayerInviter>();
+            playerEditViewModelBuilderMock = MockRepository.GenerateMock<IPlayerEditViewModelBuilder>();
             playerController = MockRepository.GeneratePartialMock<PlayerController>(
                                 dataContextMock,
                                 playerGameResultDetailsBuilderMock,
@@ -53,7 +55,8 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
                                 showingXResultsMessageBuilderMock,
                                 playerSaverMock,
                                 playerRetrieverMock,
-                                playerInviterMock);
+                                playerInviterMock,
+                                playerEditViewModelBuilderMock);
             playerController.Url = urlHelperMock;
 
             asyncRequestMock = MockRepository.GenerateMock<HttpRequestBase>();

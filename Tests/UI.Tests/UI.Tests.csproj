@@ -196,6 +196,7 @@
     <Compile Include="UnitTests\TransformationsTests\GameResultViewModelBuilderTests\BuildTests.cs" />
     <Compile Include="UnitTests\TransformationsTests\PlayerTransformationTests\MinionViewModelBuilderTests.cs" />
     <Compile Include="UnitTests\TransformationsTests\PlayerTransformationTests\PlayerDetailsViewModelBuilderTests\BuildTests.cs" />
+    <Compile Include="UnitTests\TransformationsTests\PlayerTransformationTests\PlayerEditViewModelBuilderTests.cs" />
     <Compile Include="UnitTests\TransformationsTests\PlayerTransformationTests\PlayerWithNemesisViewModelBuilderTests\BuildTests.cs" />
     <Compile Include="UnitTests\TransformationsTests\PlayerTransformationTests\TopPlayerViewModelBuilderTests\BuildTests.cs" />
     <Compile Include="UnitTests\TransformationsTests\PlayerWithNemesis.cs" />
