@@ -46,7 +46,7 @@ Views.Shared.LoginPartial.prototype = {
             if (gamingGroup.IsCurrentGamingGroup == true) {
                 this.$currentGamingGroup.html(gamingGroup.Name);
             }
-            var gamingGroupItem = "<li><a href=# class='gamingGroupItem' data='"+ gamingGroup.Id +"'>"+ gamingGroup.Name +"</a></li>";
+            var gamingGroupItem = "<li><a href=# class='gamingGroupItem' data-groupid='"+ gamingGroup.Id +"'>"+ gamingGroup.Name +"</a></li>";
             this.$gamingGroupSwitcher.append(gamingGroupItem);
             $(".gamingGroupItem").off('click').on('click', function () {
                 parent.switchGamingGroup(this);
@@ -54,7 +54,11 @@ Views.Shared.LoginPartial.prototype = {
         }
     },
     switchGamingGroup: function (gamingGroupItem) {
-        alert("todo - call the switch ajax");
+        $.cookie(this._cookieName, null, { path: '/', expires: -5 });
+        $('<form action="/GamingGroup/SwitchGamingGroups" method="POST"/>')
+        .append($('<input type="hidden" name="gamingGroupId" value="' + $(gamingGroupItem).data("groupid") + '">'))
+        .appendTo($(document.body))
+        .submit();
     }
 };
 
