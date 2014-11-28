@@ -74,9 +74,9 @@ namespace BusinessLogic.Logic.GamingGroups
 
         private async Task SetGamingGroupOnCurrentUser(ApplicationUser currentUser, GamingGroup newGamingGroup)
         {
-            ApplicationUser user = await userManager.FindByIdAsync(currentUser.Id);
+            ApplicationUser user = dataContext.FindById<ApplicationUser>(currentUser.Id);
             user.CurrentGamingGroupId = newGamingGroup.Id;
-            await userManager.UpdateAsync(user);
+            dataContext.Save(user, currentUser);
 
             currentUser.CurrentGamingGroupId = user.CurrentGamingGroupId;
         }

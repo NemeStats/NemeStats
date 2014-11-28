@@ -25,6 +25,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
             expectedGamingGroup = new GamingGroup() { Id = currentUser.CurrentGamingGroupId.Value };
             dataContextMock.Expect(mock => mock.Save(Arg<GamingGroup>.Is.Anything, Arg<ApplicationUser>.Is.Anything))
                 .Return(expectedGamingGroup);
+            
             expectedUserGamingGroup = new UserGamingGroup
             {
                 ApplicationUserId = currentUser.Id,
@@ -32,15 +33,15 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
             };
             dataContextMock.Expect(mock => mock.Save<UserGamingGroup>(Arg<UserGamingGroup>.Is.Anything, Arg<ApplicationUser>.Is.Anything))
                            .Return(expectedUserGamingGroup);
+
             appUserRetrievedFromFindMethod = new ApplicationUser()
             {
                 Id = currentUser.Id
             };
-            applicationUserManagerMock.Expect(mock => mock.FindByIdAsync(currentUser.Id))
-                .Repeat.Once()
-                .Return(Task.FromResult(appUserRetrievedFromFindMethod));
-            applicationUserManagerMock.Expect(mock => mock.UpdateAsync(appUserRetrievedFromFindMethod))
-                 .Return(Task.FromResult(new IdentityResult()));
+            dataContextMock.Expect(mock => mock.FindById<ApplicationUser>(Arg<ApplicationUser>.Is.Anything))
+                .Return(appUserRetrievedFromFindMethod);
+            dataContextMock.Expect(mock => mock.Save(Arg<ApplicationUser>.Is.Anything, Arg<ApplicationUser>.Is.Anything))
+                 .Return(new ApplicationUser());
         }
 
         [Test]
@@ -117,9 +118,10 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
         {
             GamingGroup returnedGamingGroup = await gamingGroupSaver.CreateNewGamingGroup(gamingGroupName, currentUser);
 
-            applicationUserManagerMock.AssertWasCalled(mock => mock.UpdateAsync(Arg<ApplicationUser>.Matches(
+            dataContextMock.AssertWasCalled(mock => mock.Save(Arg<ApplicationUser>.Matches(
                 user => user.CurrentGamingGroupId == expectedGamingGroup.Id 
-                    && user.Id == appUserRetrievedFromFindMethod.Id)));
+                    && user.Id == appUserRetrievedFromFindMethod.Id),
+                    Arg<ApplicationUser>.Is.Anything));
         }
 
         [Test]
