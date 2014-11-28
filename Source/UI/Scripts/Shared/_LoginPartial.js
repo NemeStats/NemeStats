@@ -30,6 +30,7 @@ Views.Shared.LoginPartial.prototype = {
             async: false,
             success: function (data) {
                 $.cookie(parent._cookieName, JSON.stringify(data), { expires: 1, path: '/' });
+                parent.setGamingGroups(data);
             },
             error: function (err) {
                 console.log("Error " + err.status + ":\r\n" + err.statusText);
