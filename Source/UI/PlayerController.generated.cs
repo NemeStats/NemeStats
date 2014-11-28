@@ -163,14 +163,14 @@ namespace UI.Controllers
             public class _ViewNamesClass
             {
                 public readonly string _CreateOrUpdatePartial = "_CreateOrUpdatePartial";
-                public readonly string _Players = "_Players";
+                public readonly string _PlayersPartial = "_PlayersPartial";
                 public readonly string Create = "Create";
                 public readonly string Details = "Details";
                 public readonly string Edit = "Edit";
                 public readonly string InvitePlayer = "InvitePlayer";
             }
             public readonly string _CreateOrUpdatePartial = "~/Views/Player/_CreateOrUpdatePartial.cshtml";
-            public readonly string _Players = "~/Views/Player/_Players.cshtml";
+            public readonly string _PlayersPartial = "~/Views/Player/_PlayersPartial.cshtml";
             public readonly string Create = "~/Views/Player/Create.cshtml";
             public readonly string Details = "~/Views/Player/Details.cshtml";
             public readonly string Edit = "~/Views/Player/Edit.cshtml";

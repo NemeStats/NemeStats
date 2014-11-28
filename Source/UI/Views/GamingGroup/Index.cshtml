@@ -11,7 +11,9 @@
 
 <a name="@ViewBag.PlayerSectionAnchorText"></a>
 <div class="row">
-    @Html.Partial("~/Views/Player/_Players.cshtml", Model.Players, new ViewDataDictionary { { "canEdit", true } })
+    @{
+        Html.RenderPartial("~/Views/Player/_PlayersPartial.cshtml", Model.Players, new ViewDataDictionary {{"canEdit", true}});
+    }
 </div>
 
 <a name="@ViewBag.GameDefinitionSectionAnchorText"></a>

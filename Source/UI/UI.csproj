@@ -482,7 +482,7 @@
     <Content Include="Views\Shared\_BaseLayout.cshtml" />
     <Content Include="Views\Player\_CreateOrUpdatePartial.cshtml" />
     <Content Include="Views\Player\Edit.cshtml" />
-    <Content Include="Views\Player\_Players.cshtml" />
+    <Content Include="Views\Player\_PlayersPartial.cshtml" />
     <Content Include="Views\Account\ForgotPassword.cshtml" />
     <Content Include="Views\Account\ForgotPasswordConfirmation.cshtml" />
     <Content Include="Views\Account\ResetPassword.cshtml" />
