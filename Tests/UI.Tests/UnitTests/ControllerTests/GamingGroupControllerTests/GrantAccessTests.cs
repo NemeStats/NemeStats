@@ -13,7 +13,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
         [Test]
         public void ItRedirectsToTheIndexAction()
         {
-            RedirectToRouteResult redirectResult = gamingGroupController.GrantAccess(new GamingGroupViewModel(), currentUser) as RedirectToRouteResult;
+            RedirectToRouteResult redirectResult = gamingGroupControllerPartialMock.GrantAccess(new GamingGroupViewModel(), currentUser) as RedirectToRouteResult;
 
             Assert.AreEqual(MVC.GamingGroup.ActionNames.Index, redirectResult.RouteValues["action"]);
         }
@@ -26,10 +26,10 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
                 InviteeEmail = string.Empty
             };
 
-            gamingGroupController.ViewData.ModelState.AddModelError("EmptyEmail", new Exception());
-            gamingGroupController.GrantAccess(model, currentUser);
+            gamingGroupControllerPartialMock.ViewData.ModelState.AddModelError("EmptyEmail", new Exception());
+            gamingGroupControllerPartialMock.GrantAccess(model, currentUser);
 
-            Assert.IsFalse(gamingGroupController.ModelState.IsValid); 
+            Assert.IsFalse(gamingGroupControllerPartialMock.ModelState.IsValid); 
             gamingGroupAccessGranterMock.AssertWasNotCalled(mock => mock.CreateInvitation(model.InviteeEmail, currentUser));
         }
 
@@ -44,7 +44,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
             gamingGroupAccessGranterMock.Expect(mock => mock.CreateInvitation(model.InviteeEmail, currentUser))
                 .Repeat.Once();
 
-            gamingGroupController.GrantAccess(model, currentUser);
+            gamingGroupControllerPartialMock.GrantAccess(model, currentUser);
 
             gamingGroupAccessGranterMock.VerifyAllExpectations();
         }

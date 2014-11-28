@@ -42,14 +42,34 @@ namespace BusinessLogic.Logic.GamingGroups
             };
 
             GamingGroup newGamingGroup = dataContext.Save<GamingGroup>(gamingGroup, currentUser);
+            //commit changes since we'll need the GamingGroup.Id
+            dataContext.CommitAllChanges();
 
-            await SetGamingGroupOnCurrentUser(currentUser, newGamingGroup);
-
-            AddUserToGamingGroupAsPlayer(currentUser);
+            await this.AssociateUserWithGamingGroup(currentUser, newGamingGroup);
 
             new Task(() => eventTracker.TrackGamingGroupCreation()).Start();
 
             return newGamingGroup;
+        }
+
+        private async Task AssociateUserWithGamingGroup(ApplicationUser currentUser, GamingGroup newGamingGroup)
+        {
+            this.AddUserGamingGroupRecord(currentUser, newGamingGroup);
+
+            await this.SetGamingGroupOnCurrentUser(currentUser, newGamingGroup);
+
+            this.AddUserToGamingGroupAsPlayer(currentUser);
+        }
+
+        private void AddUserGamingGroupRecord(ApplicationUser currentUser, GamingGroup newGamingGroup)
+        {
+            UserGamingGroup userGamingGroup = new UserGamingGroup
+            {
+                ApplicationUserId = currentUser.Id,
+                GamingGroupId = newGamingGroup.Id
+            };
+
+            this.dataContext.Save(userGamingGroup, currentUser);
         }
 
         private async Task SetGamingGroupOnCurrentUser(ApplicationUser currentUser, GamingGroup newGamingGroup)

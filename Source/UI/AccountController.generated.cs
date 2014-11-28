@@ -344,6 +344,7 @@ namespace UI.Controllers
             {
                 public readonly string _ChangeEmailPartial = "_ChangeEmailPartial";
                 public readonly string _ChangePasswordPartial = "_ChangePasswordPartial";
+                public readonly string _CreateGamingGroupPartial = "_CreateGamingGroupPartial";
                 public readonly string _ExternalLoginsListPartial = "_ExternalLoginsListPartial";
                 public readonly string _RemoveAccountPartial = "_RemoveAccountPartial";
                 public readonly string _SetPasswordPartial = "_SetPasswordPartial";
@@ -363,6 +364,7 @@ namespace UI.Controllers
             }
             public readonly string _ChangeEmailPartial = "~/Views/Account/_ChangeEmailPartial.cshtml";
             public readonly string _ChangePasswordPartial = "~/Views/Account/_ChangePasswordPartial.cshtml";
+            public readonly string _CreateGamingGroupPartial = "~/Views/Account/_CreateGamingGroupPartial.cshtml";
             public readonly string _ExternalLoginsListPartial = "~/Views/Account/_ExternalLoginsListPartial.cshtml";
             public readonly string _RemoveAccountPartial = "~/Views/Account/_RemoveAccountPartial.cshtml";
             public readonly string _SetPasswordPartial = "~/Views/Account/_SetPasswordPartial.cshtml";

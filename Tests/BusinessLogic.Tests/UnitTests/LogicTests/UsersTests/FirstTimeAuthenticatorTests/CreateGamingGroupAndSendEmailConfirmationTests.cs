@@ -16,7 +16,7 @@ using Rhino.Mocks;
 namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.FirstTimeAuthenticatorTests
 {
     [TestFixture]
-    public class SetupNewGamingGroupForNewlyRegisteredUserTests
+    public class CreateGamingGroupAndSendEmailConfirmationTests
     {
         private IGamingGroupSaver gamingGroupSaverMock;
         private IConfigurationManager configurationManagerMock;
@@ -77,7 +77,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.FirstTimeAuthentic
         [Test]
         public async Task ItCreatesANewGamingGroupForTheUser()
         {
-            await firstTimeAuthenticator.CreateGamingGroup(applicationUser);
+            await firstTimeAuthenticator.CreateGamingGroupAndSendEmailConfirmation(applicationUser);
 
             gamingGroupSaverMock.AssertWasCalled(mock => mock.CreateNewGamingGroup(
                                                                                    Arg<string>.Is.Equal(applicationUser.UserName + "'s Gaming Group"),
@@ -87,7 +87,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.FirstTimeAuthentic
         [Test]
         public async Task ItEmailsNewRegistrantsAskingForConfirmation()
         {
-            await firstTimeAuthenticator.CreateGamingGroup(applicationUser);
+            await firstTimeAuthenticator.CreateGamingGroupAndSendEmailConfirmation(applicationUser);
 
             applicationUserManagerMock.VerifyAllExpectations();
         }
@@ -111,7 +111,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.FirstTimeAuthentic
             string exceptionMessage = string.Empty;
             try
             {
-                await firstTimeAuthenticator.CreateGamingGroup(applicationUser);
+                await firstTimeAuthenticator.CreateGamingGroupAndSendEmailConfirmation(applicationUser);
             }
             catch (ConfigurationException expectedException)
             {
@@ -119,16 +119,6 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.FirstTimeAuthentic
             }
 
             Assert.AreEqual(exceptionMessage, "Missing app setting with key: emailConfirmationCallbackUrl");
-        }
-
-        [Test]
-        public async Task ItCreatesAUserGamingGroupRecord()
-        {
-            await firstTimeAuthenticator.CreateGamingGroup(applicationUser);
-
-            dataContextMock.AssertWasCalled(mock => mock.Save(Arg<UserGamingGroup>.Matches(
-                                                                                           userGamingGroup => userGamingGroup.ApplicationUserId == applicationUser.Id),
-                                                              Arg<ApplicationUser>.Is.Anything));
         }
     }
 }

@@ -43,7 +43,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
         [Test]
         public void ItReturnsAllGamingGroupsForTheUser()
         {
-            JsonResult jsonResult = gamingGroupController.GetUsersGamingGroups(currentUser) as JsonResult;
+            JsonResult jsonResult = gamingGroupControllerPartialMock.GetUsersGamingGroups(currentUser) as JsonResult;
             dynamic jsonData = jsonResult.Data;
 
             Assert.That(jsonData[0].Id, Is.EqualTo(expectedGamingGroups[0].Id));

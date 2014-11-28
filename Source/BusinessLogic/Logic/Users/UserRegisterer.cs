@@ -56,7 +56,7 @@ namespace BusinessLogic.Logic.Users
                 }
                 else
                 {
-                    await firstTimeUserAuthenticator.CreateGamingGroup(newApplicationUser);
+                    await firstTimeUserAuthenticator.CreateGamingGroupAndSendEmailConfirmation(newApplicationUser);
                 }
             }
 

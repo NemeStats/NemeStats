@@ -497,6 +497,7 @@
     <Content Include="Views\GamingGroup\Details.cshtml" />
     <Content Include="Views\Player\InvitePlayer.cshtml" />
     <Content Include="Views\Account\RegisterAgainstExistingGamingGroup.cshtml" />
+    <Content Include="Views\Account\_CreateGamingGroupPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Code\" />

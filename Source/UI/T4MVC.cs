@@ -108,6 +108,7 @@ namespace Links
         public static readonly string jquery_1_10_2_min_js = Url("jquery-1.10.2.min.js");
         public static readonly string jquery_ui_1_11_1_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery-ui-1.11.1.min.js") ? Url("jquery-ui-1.11.1.min.js") : Url("jquery-ui-1.11.1.js");
         public static readonly string jquery_ui_min_1_11_1_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery-ui.min-1.11.1.min.js") ? Url("jquery-ui.min-1.11.1.min.js") : Url("jquery-ui.min-1.11.1.js");
+        public static readonly string jquery_cookie_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery.cookie.min.js") ? Url("jquery.cookie.min.js") : Url("jquery.cookie.js");
         public static readonly string jquery_validate_vsdoc_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery.validate-vsdoc.min.js") ? Url("jquery.validate-vsdoc.min.js") : Url("jquery.validate-vsdoc.js");
         public static readonly string jquery_validate_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery.validate.min.js") ? Url("jquery.validate.min.js") : Url("jquery.validate.js");
         public static readonly string jquery_validate_min_js = Url("jquery.validate.min.js");
@@ -142,6 +143,7 @@ namespace Links
             public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
             public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
             public static readonly string _Layout_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/_Layout.min.js") ? Url("_Layout.min.js") : Url("_Layout.js");
+            public static readonly string _LoginPartial_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/_LoginPartial.min.js") ? Url("_LoginPartial.min.js") : Url("_LoginPartial.js");
         }
     
     }
@@ -168,6 +170,7 @@ namespace Links
             public static readonly string bgg_small_png = Url("bgg_small.png");
             public static readonly string NemeStats_White_png = Url("NemeStats-White.png");
             public static readonly string NemeStats_png = Url("NemeStats.png");
+            public static readonly string spinner_gif = Url("spinner.gif");
         }
     
         public static readonly string site_mobile_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/site-mobile.min.css") ? Url("site-mobile.min.css") : Url("site-mobile.css");

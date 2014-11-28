@@ -40,7 +40,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
         [Test]
         public void ItReturnsTheIndexView()
         {
-            ViewResult viewResult = gamingGroupController.Index(currentUser) as ViewResult;
+            ViewResult viewResult = gamingGroupControllerPartialMock.Index(currentUser) as ViewResult;
 
             Assert.AreEqual(MVC.GamingGroup.Views.Index, viewResult.ViewName);
         }
@@ -48,7 +48,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
         [Test]
         public void ItAddsAGamingGroupViewModelToTheView()
         {
-            ViewResult viewResult = gamingGroupController.Index(currentUser) as ViewResult;
+            ViewResult viewResult = gamingGroupControllerPartialMock.Index(currentUser) as ViewResult;
 
             Assert.AreSame(gamingGroupViewModel, viewResult.Model);
         }
@@ -62,9 +62,9 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
                  gamingGroupSummary.PlayedGames.Count))
                      .Return(expectedMessage);
 
-            ViewResult viewResult = gamingGroupController.Index(currentUser) as ViewResult;
+            ViewResult viewResult = gamingGroupControllerPartialMock.Index(currentUser) as ViewResult;
 
-            Assert.AreEqual(expectedMessage, gamingGroupController.ViewBag.RecentGamesMessage);
+            Assert.AreEqual(expectedMessage, gamingGroupControllerPartialMock.ViewBag.RecentGamesMessage);
         }
     }
 }

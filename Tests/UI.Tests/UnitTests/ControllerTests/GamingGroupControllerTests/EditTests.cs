@@ -14,7 +14,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
         {
             string gamingGroupName = "new gaming group name";
 
-            HttpStatusCodeResult httpStatusCodeResult = gamingGroupController.Edit(gamingGroupName, currentUser) as HttpStatusCodeResult;
+            HttpStatusCodeResult httpStatusCodeResult = gamingGroupControllerPartialMock.Edit(gamingGroupName, currentUser) as HttpStatusCodeResult;
 
             gamingGroupSaverMock.AssertWasCalled(saver => saver.UpdateGamingGroupName(gamingGroupName, currentUser));
         }
@@ -22,7 +22,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
         [Test]
         public void ItReturnsAJsonResultWhenEverythingIsOk()
         {
-            JsonResult jsonResult = gamingGroupController.Edit("gaming group name", currentUser) as JsonResult;
+            JsonResult jsonResult = gamingGroupControllerPartialMock.Edit("gaming group name", currentUser) as JsonResult;
 
             dynamic jsonData = jsonResult.Data;
             Assert.AreEqual((int)HttpStatusCode.OK, jsonData.StatusCode);

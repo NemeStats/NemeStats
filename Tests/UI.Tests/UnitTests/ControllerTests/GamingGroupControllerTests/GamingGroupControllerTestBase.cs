@@ -15,9 +15,9 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
     [TestFixture]
     public class GamingGroupControllerTestBase
     {
+        protected GamingGroupController gamingGroupControllerPartialMock;
         protected IDataContext dataContext;
         protected IGamingGroupViewModelBuilder gamingGroupViewModelBuilderMock;
-        protected GamingGroupController gamingGroupController;
         protected IGamingGroupAccessGranter gamingGroupAccessGranterMock;
         protected IGamingGroupSaver gamingGroupSaverMock;
         protected IGamingGroupRetriever gamingGroupRetrieverMock;
@@ -41,7 +41,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
             playedGameDetailsViewModelBuilderMock = MockRepository.GenerateMock<IPlayedGameDetailsViewModelBuilder>();
             gameDefinitionSummaryViewModelBuilderMock = MockRepository.GenerateMock<IGameDefinitionSummaryViewModelBuilder>();
             gamingGroupContextSwitcherMock = MockRepository.GenerateMock<IGamingGroupContextSwitcher>();
-            gamingGroupController = new GamingGroupController(
+            gamingGroupControllerPartialMock = MockRepository.GeneratePartialMock<GamingGroupController>(
                 gamingGroupViewModelBuilderMock, 
                 gamingGroupAccessGranterMock,
                 gamingGroupSaverMock,

@@ -165,6 +165,24 @@ namespace UI.Controllers
             return RedirectToAction(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name);
         }
 
+        [HttpPost]
+        [Authorize]
+        [UserContextAttribute]
+        public virtual ActionResult CreateNewGamingGroup(string gamingGroupName, ApplicationUser currentUser)
+        {
+            if (string.IsNullOrWhiteSpace(gamingGroupName))
+            {
+                this.ModelState.AddModelError(string.Empty, "You must enter a Gaming Group name.");
+                return this.Index(currentUser);
+            }
+            else
+            {
+                gamingGroupSaver.CreateNewGamingGroup(gamingGroupName.Trim(), currentUser);
+            }
+
+            return RedirectToAction(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name);
+        }
+
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);

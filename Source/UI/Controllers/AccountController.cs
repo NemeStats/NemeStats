@@ -352,7 +352,7 @@ namespace UI.Controllers
                     result = await userManager.AddLoginAsync(user.Id, info.Login);
                     if (result.Succeeded)
                     {
-                        await firstTimeAuthenticator.CreateGamingGroup(user);
+                        await firstTimeAuthenticator.CreateGamingGroupAndSendEmailConfirmation(user);
 
                         return RedirectToAction(MVC.GamingGroup.ActionNames.Index, "GamingGroup");
                     }

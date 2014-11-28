@@ -36,12 +36,13 @@ namespace BusinessLogic.Logic.Users
             this.dataContext = dataContext;
         }
 
-        public async Task<object> CreateGamingGroup(ApplicationUser applicationUser)
+        public async Task<object> CreateGamingGroupAndSendEmailConfirmation(ApplicationUser applicationUser)
         {
             //fetch this first since we want to fail as early as possible if the config entry is missing
             var callbackUrl = this.GetCallbackUrlFromConfig();
-            
-            await this.CreateNewGamingGroupAndAssignUser(applicationUser);
+
+            await this.gamingGroupSaver.CreateNewGamingGroup(
+                applicationUser.UserName + "'s Gaming Group", applicationUser);
 
             await this.SendConfirmationEmail(applicationUser, callbackUrl);
 
@@ -61,20 +62,6 @@ namespace BusinessLogic.Logic.Users
                     string.Format("Missing app setting with key: {0}", APP_KEY_EMAIL_CONFIRMATION_CALLBACK_URL));
             }
             return callbackUrl;
-        }
-
-        private async Task CreateNewGamingGroupAndAssignUser(ApplicationUser applicationUser)
-        {
-            int gamingGroupIdToWhichTheUserWasAdded = (await this.gamingGroupSaver.CreateNewGamingGroup(
-                applicationUser.UserName + "'s Gaming Group", applicationUser)).Id;
-
-            UserGamingGroup userGamingGroup = new UserGamingGroup
-            {
-                ApplicationUserId = applicationUser.Id,
-                GamingGroupId = gamingGroupIdToWhichTheUserWasAdded
-            };
-
-            dataContext.Save(userGamingGroup, applicationUser);
         }
 
         private async Task SendConfirmationEmail(ApplicationUser applicationUser, string callbackActionUrl)

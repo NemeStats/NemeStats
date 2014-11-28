@@ -14,6 +14,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
     public class CreateGamingGroupAsyncTests : GamingGroupSaverTestBase
     {
         protected GamingGroup expectedGamingGroup;
+        protected UserGamingGroup expectedUserGamingGroup;
         protected ApplicationUser appUserRetrievedFromFindMethod;
 
         [SetUp]
@@ -23,9 +24,14 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
 
             expectedGamingGroup = new GamingGroup() { Id = currentUser.CurrentGamingGroupId.Value };
             dataContextMock.Expect(mock => mock.Save(Arg<GamingGroup>.Is.Anything, Arg<ApplicationUser>.Is.Anything))
-                .Repeat.Once()
                 .Return(expectedGamingGroup);
-
+            expectedUserGamingGroup = new UserGamingGroup
+            {
+                ApplicationUserId = currentUser.Id,
+                GamingGroupId = expectedGamingGroup.Id
+            };
+            dataContextMock.Expect(mock => mock.Save<UserGamingGroup>(Arg<UserGamingGroup>.Is.Anything, Arg<ApplicationUser>.Is.Anything))
+                           .Return(expectedUserGamingGroup);
             appUserRetrievedFromFindMethod = new ApplicationUser()
             {
                 Id = currentUser.Id
@@ -94,6 +100,16 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
                 mock => mock.Save(Arg<GamingGroup>.Is.Anything, Arg<ApplicationUser>.Is.Anything));
 
             Assert.AreSame(expectedGamingGroup, returnedGamingGroup);
+        }
+
+        public async Task ItAssociatesTheUserWithTheGamingGroup()
+        {
+            await gamingGroupSaver.CreateNewGamingGroup(gamingGroupName, currentUser);
+
+            dataContextMock.AssertWasCalled(mock => mock.Save<UserGamingGroup>(
+                Arg<UserGamingGroup>.Matches(ugg => ugg.ApplicationUserId == currentUser.Id
+                    && ugg.GamingGroupId == expectedGamingGroup.Id),
+                Arg<ApplicationUser>.Is.Anything));
         }
 
         [Test]
