@@ -20,7 +20,7 @@ namespace UI.Controllers
         private readonly IFirstTimeAuthenticator firstTimeAuthenticator;
         private readonly IAuthenticationManager authenticationManager;
         private readonly IGamingGroupInviteConsumer gamingGroupInvitationConsumer;
-        private readonly ICookieHelper cookieHelperMock;
+        private readonly ICookieHelper cookieHelper;
 
         public AccountController(
             ApplicationUserManager userManager, 
@@ -28,14 +28,14 @@ namespace UI.Controllers
             IFirstTimeAuthenticator firstTimeAuthenticator,
             IAuthenticationManager authenticationManager, 
             IGamingGroupInviteConsumer gamingGroupInvitationConsumer, 
-            ICookieHelper cookieHelperMock)
+            ICookieHelper cookieHelper)
         {
             this.userManager = userManager;
             this.userRegisterer = userRegisterer;
             this.firstTimeAuthenticator = firstTimeAuthenticator;
             this.authenticationManager = authenticationManager;
             this.gamingGroupInvitationConsumer = gamingGroupInvitationConsumer;
-            this.cookieHelperMock = cookieHelperMock;
+            this.cookieHelper = cookieHelper;
         }
 
         //
@@ -60,7 +60,7 @@ namespace UI.Controllers
                 if (user != null)
                 {
                     await SignInAsync(user, model.RememberMe);
-                    cookieHelperMock.ClearCookie(NemeStatsCookieEnum.gamingGroupsCookie, Request, Response);
+                    cookieHelper.ClearCookie(NemeStatsCookieEnum.gamingGroupsCookie, Request, Response);
 
                     return RedirectToLocal(returnUrl);
                 }
@@ -109,7 +109,7 @@ namespace UI.Controllers
 
                 if (result.Succeeded)
                 {
-                    cookieHelperMock.ClearCookie(NemeStatsCookieEnum.gamingGroupsCookie, Request, Response);
+                    cookieHelper.ClearCookie(NemeStatsCookieEnum.gamingGroupsCookie, Request, Response);
 
                     return RedirectToAction(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name);
                 }
@@ -132,7 +132,7 @@ namespace UI.Controllers
 
             if (result.UserAddedToExistingGamingGroup)
             {
-                cookieHelperMock.ClearCookie(NemeStatsCookieEnum.gamingGroupsCookie, Request, Response);
+                cookieHelper.ClearCookie(NemeStatsCookieEnum.gamingGroupsCookie, Request, Response);
 
                 return RedirectToAction(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name);
             }
@@ -293,7 +293,7 @@ namespace UI.Controllers
             if (user != null)
             {
                 await SignInAsync(user, isPersistent: false);
-                cookieHelperMock.ClearCookie(NemeStatsCookieEnum.gamingGroupsCookie, Request, Response);
+                cookieHelper.ClearCookie(NemeStatsCookieEnum.gamingGroupsCookie, Request, Response);
 
                 return RedirectToLocal(returnUrl);
             }
@@ -365,7 +365,7 @@ namespace UI.Controllers
                     if (result.Succeeded)
                     {
                         await firstTimeAuthenticator.CreateGamingGroupAndSendEmailConfirmation(user);
-                                            cookieHelperMock.ClearCookie(NemeStatsCookieEnum.gamingGroupsCookie, Request, Response);
+                                            cookieHelper.ClearCookie(NemeStatsCookieEnum.gamingGroupsCookie, Request, Response);
 
                         return RedirectToAction(MVC.GamingGroup.ActionNames.Index, "GamingGroup");
                     }

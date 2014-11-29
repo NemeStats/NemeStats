@@ -1,8 +1,10 @@
-﻿using NUnit.Framework;
+﻿using System.Web;
+using NUnit.Framework;
 using Rhino.Mocks;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using UI.Controllers.Helpers;
 
 namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
 {
@@ -26,6 +28,17 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
 
             dynamic jsonData = jsonResult.Data;
             Assert.AreEqual((int)HttpStatusCode.OK, jsonData.StatusCode);
+        }
+
+        [Test]
+        public void ItClearsTheGamingGroupCookieAfterRenaming()
+        {
+            gamingGroupControllerPartialMock.Edit("gaming group name", currentUser);
+
+            cookieHelperMock.AssertWasCalled(mock => mock.ClearCookie(
+                 Arg<NemeStatsCookieEnum>.Is.Equal(NemeStatsCookieEnum.gamingGroupsCookie),
+                 Arg<HttpRequestBase>.Is.Anything,
+                 Arg<HttpResponseBase>.Is.Anything));
         }
     }
 }

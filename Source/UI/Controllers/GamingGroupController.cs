@@ -129,6 +129,8 @@ namespace UI.Controllers
             try
             {
                 gamingGroupSaver.UpdateGamingGroupName(gamingGroupName, currentUser);
+                cookieHelper.ClearCookie(NemeStatsCookieEnum.gamingGroupsCookie, Request, Response);
+
                 return Json(new HttpStatusCodeResult(HttpStatusCode.OK));
             }
             catch(Exception)
