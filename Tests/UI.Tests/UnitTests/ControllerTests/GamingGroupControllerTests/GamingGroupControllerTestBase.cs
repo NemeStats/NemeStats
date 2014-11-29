@@ -26,6 +26,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
         protected IPlayedGameDetailsViewModelBuilder playedGameDetailsViewModelBuilderMock;
         protected IGameDefinitionSummaryViewModelBuilder gameDefinitionSummaryViewModelBuilderMock;
         protected IGamingGroupContextSwitcher gamingGroupContextSwitcherMock;
+        protected ICookieHelper cookieHelperMock;
         protected ApplicationUser currentUser;
 
         [SetUp]
@@ -41,6 +42,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
             playedGameDetailsViewModelBuilderMock = MockRepository.GenerateMock<IPlayedGameDetailsViewModelBuilder>();
             gameDefinitionSummaryViewModelBuilderMock = MockRepository.GenerateMock<IGameDefinitionSummaryViewModelBuilder>();
             gamingGroupContextSwitcherMock = MockRepository.GenerateMock<IGamingGroupContextSwitcher>();
+            cookieHelperMock = MockRepository.GenerateMock<ICookieHelper>();
             gamingGroupControllerPartialMock = MockRepository.GeneratePartialMock<GamingGroupController>(
                 gamingGroupViewModelBuilderMock, 
                 gamingGroupAccessGranterMock,
@@ -50,7 +52,8 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
                 playerWithNemesisViewModelBuilderMock,
                 playedGameDetailsViewModelBuilderMock,
                 gameDefinitionSummaryViewModelBuilderMock,
-                gamingGroupContextSwitcherMock);
+                gamingGroupContextSwitcherMock,
+                cookieHelperMock);
             currentUser = new ApplicationUser()
             {
                 Id = "user  id",

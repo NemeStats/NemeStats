@@ -6,6 +6,7 @@ using Microsoft.Owin.Security;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using UI.Controllers.Helpers;
 using UI.Filters;
 using UI.Models;
 
@@ -19,19 +20,22 @@ namespace UI.Controllers
         private readonly IFirstTimeAuthenticator firstTimeAuthenticator;
         private readonly IAuthenticationManager authenticationManager;
         private readonly IGamingGroupInviteConsumer gamingGroupInvitationConsumer;
+        private readonly ICookieHelper cookieHelperMock;
 
         public AccountController(
             ApplicationUserManager userManager, 
             IUserRegisterer userRegisterer,
             IFirstTimeAuthenticator firstTimeAuthenticator,
             IAuthenticationManager authenticationManager, 
-            IGamingGroupInviteConsumer gamingGroupInvitationConsumer)
+            IGamingGroupInviteConsumer gamingGroupInvitationConsumer, 
+            ICookieHelper cookieHelperMock)
         {
             this.userManager = userManager;
             this.userRegisterer = userRegisterer;
             this.firstTimeAuthenticator = firstTimeAuthenticator;
             this.authenticationManager = authenticationManager;
             this.gamingGroupInvitationConsumer = gamingGroupInvitationConsumer;
+            this.cookieHelperMock = cookieHelperMock;
         }
 
         //
@@ -103,6 +107,8 @@ namespace UI.Controllers
 
                 if (result.Succeeded)
                 {
+                    cookieHelperMock.ClearCookie(NemeStatsCookieEnum.gamingGroupsCookie, Request, Response);
+
                     return RedirectToAction(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name);
                 }
                 else
@@ -124,6 +130,8 @@ namespace UI.Controllers
 
             if (result.UserAddedToExistingGamingGroup)
             {
+                cookieHelperMock.ClearCookie(NemeStatsCookieEnum.gamingGroupsCookie, Request, Response);
+
                 return RedirectToAction(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name);
             }
 

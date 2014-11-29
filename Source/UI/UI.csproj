@@ -247,7 +247,10 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\GameDefinitionController.cs" />
     <Compile Include="Controllers\GamingGroupController.cs" />
+    <Compile Include="Controllers\Helpers\CookieHelper.cs" />
+    <Compile Include="Controllers\Helpers\ICookieHelper.cs" />
     <Compile Include="Controllers\Helpers\IShowingXResultsMessageBuilder.cs" />
+    <Compile Include="Controllers\Helpers\NemeStatsCookieEnum.cs" />
     <Compile Include="Controllers\Helpers\ShowingXResultsMessageBuilder.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PlayedGameController.cs" />

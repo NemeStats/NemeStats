@@ -6,6 +6,7 @@ using NUnit.Framework;
 using Rhino.Mocks;
 using System.Linq;
 using UI.Controllers;
+using UI.Controllers.Helpers;
 using UI.Models;
 
 namespace UI.Tests.UnitTests.ControllerTests.AccountControllerTests
@@ -19,6 +20,7 @@ namespace UI.Tests.UnitTests.ControllerTests.AccountControllerTests
         protected IUserRegisterer userRegistererMock;
         protected IFirstTimeAuthenticator firstTimeAuthenticatorMock;
         protected IAuthenticationManager authenticationManagerMock;
+        protected ICookieHelper cookieHelperMock;
         protected AccountController accountControllerPartialMock;
         protected RegisterViewModel registerViewModel;
         protected ApplicationUser currentUser;
@@ -32,12 +34,14 @@ namespace UI.Tests.UnitTests.ControllerTests.AccountControllerTests
             this.firstTimeAuthenticatorMock = MockRepository.GenerateMock<IFirstTimeAuthenticator>();
             this.authenticationManagerMock = MockRepository.GenerateMock<IAuthenticationManager>();
             userManager = new ApplicationUserManager(userStoreMock);
+            cookieHelperMock = MockRepository.GenerateMock<ICookieHelper>();
             accountControllerPartialMock = MockRepository.GeneratePartialMock<AccountController>(
                 userManager,
                 userRegistererMock,
                 this.firstTimeAuthenticatorMock,
                 this.authenticationManagerMock,
-                gamingGroupInviteConsumerMock);
+                gamingGroupInviteConsumerMock,
+                cookieHelperMock);
             currentUser = new ApplicationUser()
             {
                 Id = "new application user"

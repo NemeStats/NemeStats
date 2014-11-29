@@ -89,6 +89,8 @@ namespace UI.DependencyResolution {
             this.For<IGameDefinitionSummaryViewModelBuilder>().Singleton().Use<GameDefinitionSummaryViewModelBuilder>();
 
             this.For<IPlayerEditViewModelBuilder>().Singleton().Use<PlayerEditViewModelBuilder>();
+
+            this.For<ICookieHelper>().Singleton().Use<CookieHelper>();
         }
 
         private void SetupTransientMappings()

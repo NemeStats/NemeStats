@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Web;
 using BusinessLogic.Models.User;
 using Microsoft.AspNet.Identity;
 using NUnit.Framework;
@@ -6,6 +7,7 @@ using Rhino.Mocks;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using UI.Controllers.Helpers;
 using UI.Models;
 
 namespace UI.Tests.UnitTests.ControllerTests.AccountControllerTests
@@ -91,6 +93,20 @@ namespace UI.Tests.UnitTests.ControllerTests.AccountControllerTests
             Assert.AreSame(expectedViewModel, result.Model);
             Assert.AreEqual(MVC.Account.Views.Register, result.ViewName);
             Assert.True(accountControllerPartialMock.ModelState[string.Empty].Errors.Any(error => error.ErrorMessage == errorMessage));
+        }
+
+        [Test]
+        public async Task ItClearsTheGamingGroupCookieIfTheUserSuccessfullyRegisters()
+        {
+            userRegistererMock.Expect(mock => mock.RegisterUser(Arg<NewUser>.Is.Anything))
+                  .Return(Task.FromResult(IdentityResult.Success));
+
+            await accountControllerPartialMock.Register(expectedViewModel);
+            
+            cookieHelperMock.AssertWasCalled(mock => mock.ClearCookie(
+                Arg<NemeStatsCookieEnum>.Is.Equal(NemeStatsCookieEnum.gamingGroupsCookie),
+                Arg<HttpRequestBase>.Is.Anything,
+                Arg<HttpResponseBase>.Is.Anything));
         }
     }
 }
