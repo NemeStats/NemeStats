@@ -60,6 +60,8 @@ namespace UI.Controllers
                 if (user != null)
                 {
                     await SignInAsync(user, model.RememberMe);
+                    cookieHelperMock.ClearCookie(NemeStatsCookieEnum.gamingGroupsCookie, Request, Response);
+
                     return RedirectToLocal(returnUrl);
                 }
                 else
@@ -291,6 +293,8 @@ namespace UI.Controllers
             if (user != null)
             {
                 await SignInAsync(user, isPersistent: false);
+                cookieHelperMock.ClearCookie(NemeStatsCookieEnum.gamingGroupsCookie, Request, Response);
+
                 return RedirectToLocal(returnUrl);
             }
             else
@@ -361,6 +365,7 @@ namespace UI.Controllers
                     if (result.Succeeded)
                     {
                         await firstTimeAuthenticator.CreateGamingGroupAndSendEmailConfirmation(user);
+                                            cookieHelperMock.ClearCookie(NemeStatsCookieEnum.gamingGroupsCookie, Request, Response);
 
                         return RedirectToAction(MVC.GamingGroup.ActionNames.Index, "GamingGroup");
                     }
