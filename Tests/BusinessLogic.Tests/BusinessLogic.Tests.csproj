@@ -182,7 +182,7 @@
     <Compile Include="UnitTests\LogicTests\PointsTests\GordonPointsTests\CalculateGordonPointsTests.cs" />
     <Compile Include="UnitTests\LogicTests\UsersTests\FirstTimeAuthenticatorTests\CreateGamingGroupAndSendEmailConfirmationTests.cs" />
     <Compile Include="UnitTests\LogicTests\UsersTests\GamingGroupInviteConsumerTests\ConsumeGamingGroupInvitationTests.cs" />
-    <Compile Include="UnitTests\LogicTests\UsersTests\GamingGroupInviteConsumerTests\AddExistingUserToGamingGroup.cs" />
+    <Compile Include="UnitTests\LogicTests\UsersTests\GamingGroupInviteConsumerTests\AddExistingUserToGamingGroupTests.cs" />
     <Compile Include="UnitTests\LogicTests\UsersTests\GamingGroupInviteConsumerTests\GamingGroupInviteConsumerTestBase.cs" />
     <Compile Include="UnitTests\LogicTests\UsersTests\UserRegistererTests\RegisterUserTests.cs" />
     <Compile Include="UnitTests\ModelsTests\GamesTests\ValidationTests\ValidatePlayerRanksTests.cs" />

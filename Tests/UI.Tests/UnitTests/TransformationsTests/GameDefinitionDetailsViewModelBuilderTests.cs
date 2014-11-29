@@ -23,6 +23,17 @@ namespace UI.Tests.UnitTests.TransformationsTests
         protected PlayedGameDetailsViewModel playedGameDetailsViewModel2;
         protected ApplicationUser currentUser;
         protected int gamingGroupid = 135;
+        protected Champion champion;
+        protected Champion previousChampion;
+        protected float championWinPercentage = 100;
+        protected int championNumberOfGames = 6;
+        protected int championNumberOfWins = 4;
+        protected string championName = "Champion Name";
+        protected int championPlayerId = 999;
+        protected string previousChampionName = "Previous Champion Name";
+        protected int previousChampionPlayerId = 998;
+        protected Player championPlayer;
+        protected Player previousChampionPlayer;
 
         [TestFixtureSetUp]
         public void FixtureSetUp()
@@ -41,6 +52,27 @@ namespace UI.Tests.UnitTests.TransformationsTests
                 Id = 11
             });
             playedGameDetailsViewModel2 = new PlayedGameDetailsViewModel();
+            championPlayer = new Player
+            {
+                Name = championName,
+                Id = championPlayerId
+            };
+            previousChampionPlayer = new Player
+            {
+                Name = previousChampionName,
+                Id = previousChampionPlayerId
+            };
+            champion = new Champion
+            {
+                Player = championPlayer,
+                WinPercentage = championWinPercentage,
+                NumberOfGames = championNumberOfGames,
+                NumberOfWins = championNumberOfWins
+            };
+            previousChampion = new Champion
+            {
+                Player = previousChampionPlayer
+            };
             gameDefinitionSummary = new GameDefinitionSummary()
             {
                 Id = 1,
@@ -49,7 +81,9 @@ namespace UI.Tests.UnitTests.TransformationsTests
                 GamingGroupId = gamingGroupid,
                 GamingGroupName = "gaming group name",
                 PlayedGames = playedGames,
-                BoardGameGeekObjectId = 123
+                BoardGameGeekObjectId = 123,
+                Champion = champion,
+                PreviousChampion = previousChampion
             };
             currentUser = new ApplicationUser()
             {
@@ -151,6 +185,59 @@ namespace UI.Tests.UnitTests.TransformationsTests
             GameDefinitionDetailsViewModel actualViewModel = transformer.Build(gameDefinitionSummary, null);
 
             Assert.False(actualViewModel.UserCanEdit);
+        }
+
+        [Test]
+        public void ItSetsTheChampionNameWhenThereIsAChampion()
+        {
+            var actualViewModel = transformer.Build(gameDefinitionSummary, currentUser);
+
+            Assert.That(actualViewModel.ChampionName, Is.EqualTo(championName));
+        }
+
+        [Test]
+        public void ItSetsTheChampionWinPercentageWhenThereIsAChampion()
+        {
+            var actualViewModel = transformer.Build(gameDefinitionSummary, currentUser);
+
+            Assert.That(actualViewModel.WinPercentage, Is.EqualTo(championWinPercentage));
+        }
+
+        [Test]
+        public void ItSetsTheChampionGamesPlayedWhenThereIsAChampion()
+        {
+            var actualViewModel = transformer.Build(gameDefinitionSummary, currentUser);
+            Assert.That(actualViewModel.NumberOfGamesPlayed, Is.EqualTo(championNumberOfGames));
+        }
+
+        [Test]
+        public void ItSetsTheChampionGamesWonWhenThereIsAChampion()
+        {
+            var actualViewModel = transformer.Build(gameDefinitionSummary, currentUser);
+            Assert.That(actualViewModel.NumberOfWins, Is.EqualTo(championNumberOfWins));
+        }
+
+        [Test]
+        public void ItSetsTheChampionPlayerIdWhenThereIsAChampion()
+        {
+            var actualViewModel = transformer.Build(gameDefinitionSummary, currentUser);
+            Assert.That(actualViewModel.ChampionPlayerId, Is.EqualTo(championPlayerId));
+        }
+
+        [Test]
+        public void ItSetsThePreviousChampionNameWhenThereIsAPreviousChampion()
+        {
+            var actualViewModel = transformer.Build(gameDefinitionSummary, currentUser);
+
+            Assert.That(actualViewModel.PreviousChampionName, Is.EqualTo(previousChampionName));
+        }
+
+        [Test]
+        public void ItSetsThePreviousChampionPlayerIdWhenThereIsAPreviousChampion()
+        {
+            var actualViewModel = transformer.Build(gameDefinitionSummary, currentUser);
+
+            Assert.That(actualViewModel.PreviousChampionPlayerId, Is.EqualTo(previousChampionPlayerId));
         }
     }
 }

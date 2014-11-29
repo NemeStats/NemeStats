@@ -91,6 +91,19 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.GamingGroupInviteC
         }
 
         [Test]
+        public void ItUpdatesTheInvitation()
+        {
+            BuildDataContextMock(true, true, true);
+
+            gamingGroupInviteConsumer.AddNewUserToGamingGroup(currentUser.Id, invitationId);
+
+            dataContextMock.AssertWasCalled(mock => mock.Save(Arg<GamingGroupInvitation>.Matches(
+                ggi => ggi.RegisteredUserId == currentUser.Id
+                && ggi.DateRegistered.Value.Date == DateTime.UtcNow.Date),
+                Arg<ApplicationUser>.Is.Anything));
+        }
+
+        [Test]
         public void ItUpdatesTheUsersGamingGroup()
         {
             BuildDataContextMock(true, true, true);

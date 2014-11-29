@@ -69,9 +69,12 @@ namespace BusinessLogic.Logic.Users
             {
                 var existingUser = this.ValidateExistingUser(invitation);
 
-                this.AddNewGamingGroupAssociation(invitation);
-                this.SwitchCurrentGamingGroup(existingUser, invitation);
+                AddNewGamingGroupAssociation(invitation);
+                SwitchCurrentGamingGroup(existingUser, invitation);
                 result.UserAddedToExistingGamingGroup = true;
+
+                UpdateGamingGroupInvitation(invitation, existingUser);
+                AssociatePlayerWithApplicationUser(invitation, existingUser);
             }
 
             return result;
@@ -101,14 +104,22 @@ namespace BusinessLogic.Logic.Users
 
         private void AddNewGamingGroupAssociation(GamingGroupInvitation invitation)
         {
-            var newGamingGroupAssociation = new UserGamingGroup
-            {
-                ApplicationUserId = invitation.RegisteredUserId,
-                GamingGroupId = invitation.GamingGroupId
-            };
+            UserGamingGroup userGamingGroup = dataContext.GetQueryable<UserGamingGroup>()
+                .FirstOrDefault(
+                    ugg => ugg.ApplicationUserId == invitation.RegisteredUserId 
+                    && ugg.GamingGroupId == invitation.GamingGroupId);
 
-            //ApplicationUser is not used when saving new entities -- just has to be not-null
-            this.dataContext.Save(newGamingGroupAssociation, new ApplicationUser());
+            if (userGamingGroup == null)
+            {
+                var newGamingGroupAssociation = new UserGamingGroup
+                {
+                    ApplicationUserId = invitation.RegisteredUserId,
+                    GamingGroupId = invitation.GamingGroupId
+                };
+
+                //ApplicationUser is not used when saving new entities -- just has to be not-null
+                this.dataContext.Save(newGamingGroupAssociation, new ApplicationUser()); 
+            }
         }
 
         private void SwitchCurrentGamingGroup(ApplicationUser existingUser, GamingGroupInvitation invitation)
@@ -129,14 +140,21 @@ namespace BusinessLogic.Logic.Users
 
             this.AssociateUserWithNewGamingGroup(invitation.GamingGroupId, userFromDatabase);
 
-            Player player = dataContext.FindById<Player>(invitation.PlayerId);
+            this.UpdateGamingGroupInvitation(invitation, userFromDatabase);
+
+            this.AssociatePlayerWithApplicationUser(invitation, userFromDatabase);
+
+            dataContext.CommitAllChanges();
+        }
+
+        private void AssociatePlayerWithApplicationUser(GamingGroupInvitation invitation, ApplicationUser userFromDatabase)
+        {
+            Player player = this.dataContext.FindById<Player>(invitation.PlayerId);
 
             ValidatePlayer(player, invitation);
 
-            player.ApplicationUserId = applicationUserId;
-            dataContext.Save(player, userFromDatabase);
-
-            dataContext.CommitAllChanges();
+            player.ApplicationUserId = userFromDatabase.Id;
+            this.dataContext.Save(player, userFromDatabase);
         }
 
         private static void ValidateApplicationUser(ApplicationUser userFromDatabase, string userId)
@@ -167,6 +185,13 @@ namespace BusinessLogic.Logic.Users
 
             userFromDatabase.CurrentGamingGroupId = gamingGroupId;
             this.dataContext.Save(userFromDatabase, userFromDatabase);
+        }
+
+        private void UpdateGamingGroupInvitation(GamingGroupInvitation invitation, ApplicationUser userFromDatabase)
+        {
+            invitation.RegisteredUserId = userFromDatabase.Id;
+            invitation.DateRegistered = DateTime.UtcNow;
+            this.dataContext.Save(invitation, userFromDatabase);
         }
 
         private static void ValidatePlayer(Player player, GamingGroupInvitation invitation)
