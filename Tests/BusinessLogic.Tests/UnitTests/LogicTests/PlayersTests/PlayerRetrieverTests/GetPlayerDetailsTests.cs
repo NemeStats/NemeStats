@@ -21,11 +21,14 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
         private Player player;
         private Player playerWithOnlyACurrentNemesis;
         private Player playerWithNoNemesisEver;
+        private Player playerWithAChampionship;
         private int numberOfRecentGames = 1;
         private Nemesis expectedNemesis;
         private Nemesis expectedPriorNemesis;
+        private Champion expectedChampion;
         private List<Player> expectedMinions;
         private List<PlayerGameSummary> expectedPlayerGameSummaries;
+        private List<Champion> expectedChampionships;
         private int gamingGroupId = 1985;
             
         [SetUp]
@@ -35,6 +38,12 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
             playerRepositoryMock = MockRepository.GenerateMock<IPlayerRepository>();
             playerRetrieverPartialMock = MockRepository.GeneratePartialMock<PlayerRetriever>(dataContextMock, playerRepositoryMock);
 
+            expectedChampion = new Champion()
+            {
+                Id = 100,
+                PlayerId = 101,
+                Player = new Player()
+            };
             expectedNemesis = new Nemesis()
             {
                 Id = 155,
@@ -79,12 +88,18 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
                 GamingGroup = new GamingGroup { Id = gamingGroupId },
                 GamingGroupId = gamingGroupId
             };
+            playerWithAChampionship = new Player()
+            {
+                Id = 101,
+                GamingGroup = new GamingGroup { Id = gamingGroupId }
+            };
 
             List<Player> players = new List<Player>()
             {
                 player,
                 playerWithNoNemesisEver,
-                playerWithOnlyACurrentNemesis
+                playerWithOnlyACurrentNemesis,
+                playerWithAChampionship
             };
 
             dataContextMock.Expect(mock => mock.GetQueryable<Player>())
@@ -112,6 +127,11 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
             };
             playerRepositoryMock.Expect(mock => mock.GetPlayerGameSummaries(Arg<int>.Is.Anything))
                                 .Return(expectedPlayerGameSummaries);
+
+            expectedChampionships = new List<Champion> { expectedChampion };
+            playerRetrieverPartialMock.Expect(mock => mock.GetChampionships(Arg<int>.Is.Anything))
+                .Return(expectedChampionships);
+
         }
 
         //TODO need tests for the transformation... which should probably be refactored into a different class
@@ -175,6 +195,15 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
             PlayerDetails playerDetails = playerRetrieverPartialMock.GetPlayerDetails(player.Id, numberOfRecentGames);
 
             Assert.AreSame(expectedPlayerGameSummaries, playerDetails.PlayerGameSummaries);
+        }
+
+        [Test]
+        public void ItSetsThePlayersChampionships()
+        {
+            PlayerDetails playerDetails = playerRetrieverPartialMock.GetPlayerDetails(playerWithAChampionship.Id,
+                numberOfRecentGames);
+
+            Assert.That(playerDetails.Championships, Is.EqualTo(expectedChampionships));
         }
     }
 }

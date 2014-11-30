@@ -65,6 +65,8 @@ namespace BusinessLogic.Logic.Players
 
             List<PlayerGameSummary> playerGameSummaries = playerRepository.GetPlayerGameSummaries(playerId);
 
+            List<Champion> championships = GetChampionships(returnPlayer.Id);
+
             PlayerDetails playerDetails = new PlayerDetails()
             {
                 Active = returnPlayer.Active,
@@ -78,7 +80,8 @@ namespace BusinessLogic.Logic.Players
                 CurrentNemesis = returnPlayer.Nemesis ?? new NullNemesis(),
                 PreviousNemesis = returnPlayer.PreviousNemesis ?? new NullNemesis(),
                 Minions = minions,
-                PlayerGameSummaries = playerGameSummaries
+                PlayerGameSummaries = playerGameSummaries,
+                Championships = championships
             };
 
             return playerDetails;
@@ -97,6 +100,15 @@ namespace BusinessLogic.Logic.Players
             return (from Player player in dataContext.GetQueryable<Player>().Include(p => p.Nemesis)
                      where player.Nemesis.NemesisPlayerId == nemesisPlayerId
                         select player).ToList();
+        }
+
+        internal virtual List<Champion> GetChampionships(int playerId)
+        {
+            return
+                (from GameDefinition gameDefinition in
+                    dataContext.GetQueryable<GameDefinition>().Include(g => g.Champion)
+                    where gameDefinition.Champion.PlayerId == playerId
+                    select gameDefinition.Champion).ToList();
         }
 
         internal virtual List<PlayerGameResult> GetPlayerGameResultsWithPlayedGameAndGameDefinition(
