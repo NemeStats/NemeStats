@@ -55,5 +55,21 @@ namespace BusinessLogic.Tests.UnitTests.EventTrackingTests.UniversalAnalyticsNem
 
             eventTrackerMock.AssertWasCalled(mock => mock.TrackEvent(analyticsEvent));
         }
+
+        [Test]
+        public void ItSetsTheLabelToDefault()
+        {
+            eventFactoryMock.Expect(mock => mock.MakeUniversalAnalyticsEvent(
+                Arg<string>.Is.Anything,
+                Arg<string>.Is.Anything,
+                Arg<string>.Is.Anything,
+                Arg<string>.Is.Equal(UniversalAnalyticsNemeStatsEventTracker.DEFAULT_EVENT_LABEL),
+                Arg<string>.Is.Anything))
+                .Return(analyticsEvent);
+
+            tracker.TrackPlayerCreation(currentUser);
+
+            eventTrackerMock.AssertWasCalled(mock => mock.TrackEvent(analyticsEvent));
+        }
     }
 }

@@ -2,6 +2,7 @@
 using NUnit.Framework;
 using Rhino.Mocks;
 using System.Linq;
+using UniversalAnalyticsHttpWrapper;
 
 namespace BusinessLogic.Tests.UnitTests.EventTrackingTests.UniversalAnalyticsNemeStatsEventTrackerTests
 {
@@ -48,6 +49,22 @@ namespace BusinessLogic.Tests.UnitTests.EventTrackingTests.UniversalAnalyticsNem
                 Arg<string>.Is.Anything,
                 Arg<string>.Is.Equal(EventActionEnum.Created.ToString()),
                 Arg<string>.Is.Anything,
+                Arg<string>.Is.Anything))
+                .Return(analyticsEvent);
+
+            tracker.TrackGamingGroupCreation();
+
+            eventTrackerMock.AssertWasCalled(mock => mock.TrackEvent(analyticsEvent));
+        }
+
+        [Test]
+        public void ItSetsTheLabelToDefault()
+        {
+            eventFactoryMock.Expect(mock => mock.MakeUniversalAnalyticsEvent(
+                Arg<string>.Is.Anything,
+                Arg<string>.Is.Anything,
+                Arg<string>.Is.Anything,
+                Arg<string>.Is.Equal(UniversalAnalyticsNemeStatsEventTracker.DEFAULT_EVENT_LABEL),
                 Arg<string>.Is.Anything))
                 .Return(analyticsEvent);
 

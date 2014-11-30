@@ -10,9 +10,10 @@ namespace BusinessLogic.EventTracking
         /// This was randomly generated and will be used for any client whose anonymous ID cannot be determined.
         /// </summary>
         public const string DEFAULT_ANONYMOUS_CLIENT_ID = "D4151681-B52E-415B-975C-D1C8FD56C645";
+        public const string DEFAULT_EVENT_LABEL = "Blank";
 
-        private IEventTracker eventTracker;
-        private IUniversalAnalyticsEventFactory eventFactory;
+        private readonly IEventTracker eventTracker;
+        private readonly IUniversalAnalyticsEventFactory eventFactory;
 
         public UniversalAnalyticsNemeStatsEventTracker(
             IEventTracker eventTracker,
@@ -39,7 +40,8 @@ namespace BusinessLogic.EventTracking
             IUniversalAnalyticsEvent universalAnalyticsEvent = eventFactory.MakeUniversalAnalyticsEvent(
                 UniversalAnalyticsNemeStatsEventTracker.DEFAULT_ANONYMOUS_CLIENT_ID,
                 EventCategoryEnum.Users.ToString(),
-                EventActionEnum.Created.ToString());
+                EventActionEnum.Created.ToString(),
+                DEFAULT_EVENT_LABEL);
 
             eventTracker.TrackEvent(universalAnalyticsEvent);
         }
@@ -49,7 +51,8 @@ namespace BusinessLogic.EventTracking
             IUniversalAnalyticsEvent universalAnalyticsEvent = eventFactory.MakeUniversalAnalyticsEvent(
                 UniversalAnalyticsNemeStatsEventTracker.DEFAULT_ANONYMOUS_CLIENT_ID,
                 EventCategoryEnum.GamingGroups.ToString(),
-                EventActionEnum.Created.ToString());
+                EventActionEnum.Created.ToString(),
+                DEFAULT_EVENT_LABEL);
 
             eventTracker.TrackEvent(universalAnalyticsEvent);
         }
@@ -70,7 +73,8 @@ namespace BusinessLogic.EventTracking
             IUniversalAnalyticsEvent universalAnalyticsEvent = eventFactory.MakeUniversalAnalyticsEvent(
                   currentUser.AnonymousClientId,
                   EventCategoryEnum.Players.ToString(),
-                  EventActionEnum.Created.ToString());
+                  EventActionEnum.Created.ToString(),
+                  DEFAULT_EVENT_LABEL);
 
             eventTracker.TrackEvent(universalAnalyticsEvent);
         }
