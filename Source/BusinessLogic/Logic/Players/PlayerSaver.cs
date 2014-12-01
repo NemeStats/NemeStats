@@ -31,11 +31,12 @@ namespace BusinessLogic.Logic.Players
             ValidatePlayerIsNotNull(player);
             ValidatePlayerNameIsNotNullOrWhiteSpace(player.Name);
             ValidatePlayerWithThisNameDoesntAlreadyExist(player, currentUser);
+            bool alreadyInDatabase = player.AlreadyInDatabase();
 
             Player newPlayer = dataContext.Save<Player>(player, currentUser);
             dataContext.CommitAllChanges();
 
-            if (!player.AlreadyInDatabase())
+            if (!alreadyInDatabase)
             {
                 new Task(() => eventTracker.TrackPlayerCreation(currentUser)).Start();
             }else
