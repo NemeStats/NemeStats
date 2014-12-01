@@ -189,6 +189,7 @@
     <Compile Include="UnitTests\ControllerTests\PlayerControllerTests\PlayerControllerTestBase.cs" />
     <Compile Include="UnitTests\FiltersTests\UserContextAttributeTests\OnActionExecutingTests.cs" />
     <Compile Include="UnitTests\HtmlHelperTests\MyHelpersTests\GameResultsTests.cs" />
+    <Compile Include="UnitTests\TransformationsTests\ChampionViewModelBuilderTests.cs" />
     <Compile Include="UnitTests\TransformationsTests\GameDefinitionSummaryViewModelBuilderTests.cs" />
     <Compile Include="UnitTests\TransformationsTests\GameDefinitionDetailsViewModelBuilderTests.cs" />
     <Compile Include="UnitTests\TransformationsTests\GamingGroupInvitationViewModelBuilderTests.cs" />

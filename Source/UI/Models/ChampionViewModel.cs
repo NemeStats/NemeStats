@@ -9,8 +9,8 @@ namespace UI.Models
     {
         public string GameDefinitionName { get; set; }
         public int GameDefinitionId { get; set; }
-        public int WinPercentage { get; set; }
-        public int GamesPlayed { get; set; }
-        public int GamesWon { get; set; }
+        public float WinPercentage { get; set; }
+        public int NumberOfGames { get; set; }
+        public int NumberOfWins { get; set; }
     }
 }

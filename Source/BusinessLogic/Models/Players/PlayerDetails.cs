@@ -18,6 +18,6 @@ namespace BusinessLogic.Models.Players
         public Nemesis PreviousNemesis { get; set; }
         public List<Player> Minions { get; set; }
         public List<PlayerGameSummary> PlayerGameSummaries { get; set; }
-        public List<Champion> Championships { get; set; } 
+        public List<Champion> ChampionedGames { get; set; } 
     }
 }

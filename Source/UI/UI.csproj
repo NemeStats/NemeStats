@@ -334,6 +334,8 @@
     <Compile Include="Transformations\IPlayedGameDetailsViewModelBuilder.cs" />
     <Compile Include="Transformations\IGameResultViewModelBuilder.cs" />
     <Compile Include="Transformations\GameResultViewModelBuilder.cs" />
+    <Compile Include="Transformations\PlayerTransformations\ChampionViewModelBuilder.cs" />
+    <Compile Include="Transformations\PlayerTransformations\IChampionViewModelBuilder.cs" />
     <Compile Include="Transformations\PlayerTransformations\IMinionViewModelBuilder.cs" />
     <Compile Include="Transformations\PlayerTransformations\IPlayerDetailsViewModelBuilder.cs" />
     <Compile Include="Transformations\PlayerTransformations\IPlayerEditViewModelBuilder.cs" />

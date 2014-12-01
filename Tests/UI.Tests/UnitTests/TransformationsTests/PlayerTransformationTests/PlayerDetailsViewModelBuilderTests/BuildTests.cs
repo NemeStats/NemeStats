@@ -6,6 +6,7 @@ using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UI.Models;
 using UI.Models.Players;
 using UI.Transformations;
 using UI.Transformations.PlayerTransformations;
@@ -17,6 +18,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
     {
         private IGameResultViewModelBuilder gameResultViewModelBuilder;
         private IMinionViewModelBuilder minionViewModelBuilderMock;
+        private IChampionViewModelBuilder championViewModelBuilderMock;
         private PlayerDetails playerDetails;
         private PlayerDetailsViewModel playerDetailsViewModel;
         private PlayerDetailsViewModelBuilder builder;
@@ -27,10 +29,12 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         {
             minionViewModelBuilderMock = MockRepository.GenerateMock<IMinionViewModelBuilder>();
 
+            Champion champion = new Champion();
             GameDefinition gameDefinition1 = new GameDefinition()
             {
                 Name = "test game 1",
-                Id = 1
+                Id = 1,
+                Champion = champion
             };
             PlayedGame playedGame1 = new PlayedGame()
             {
@@ -105,7 +109,17 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
                     .Return(new MinionViewModel() { MinionPlayerId = player.Id });
             }
 
-            builder = new PlayerDetailsViewModelBuilder(gameResultViewModelBuilder, minionViewModelBuilderMock);
+            championViewModelBuilderMock = MockRepository.GenerateMock<IChampionViewModelBuilder>();
+            var championedGames = new List<Champion>
+            {
+                new Champion { GameDefinition = gameDefinition1 }
+            };
+            playerDetails.ChampionedGames = championedGames;
+
+            championViewModelBuilderMock.Expect(mock => mock.Build(Arg<Champion>.Is.Anything))
+                .Return(new ChampionViewModel { GameDefinitionName = gameDefinition1.Name });
+
+            builder = new PlayerDetailsViewModelBuilder(gameResultViewModelBuilder, minionViewModelBuilderMock, championViewModelBuilderMock);
 
             currentUser = new ApplicationUser()
             {
@@ -118,7 +132,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         [Test]
         public void PlayerDetailsCannotBeNull()
         {
-            PlayerDetailsViewModelBuilder builder = new PlayerDetailsViewModelBuilder(null, null);
+            PlayerDetailsViewModelBuilder builder = new PlayerDetailsViewModelBuilder(null, null, null);
 
             var exception = Assert.Throws<ArgumentNullException>(() =>
                     builder.Build(null, currentUser));
@@ -129,7 +143,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         [Test]
         public void ItRequiresPlayerGameResults()
         {
-            PlayerDetailsViewModelBuilder builder = new PlayerDetailsViewModelBuilder(null, null);
+            PlayerDetailsViewModelBuilder builder = new PlayerDetailsViewModelBuilder(null, null, null);
 
             var exception = Assert.Throws<ArgumentException>(() =>
                     builder.Build(new PlayerDetails(), currentUser));
@@ -140,7 +154,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         [Test]
         public void ItRequiresPlayerStatistics()
         {
-            PlayerDetailsViewModelBuilder builder = new PlayerDetailsViewModelBuilder(null, null);
+            PlayerDetailsViewModelBuilder builder = new PlayerDetailsViewModelBuilder(null, null, null);
             PlayerDetails playerDetailsWithNoStatistics = new PlayerDetails() { PlayerGameResults = new List<PlayerGameResult>() };
             var exception = Assert.Throws<ArgumentException>(() =>
                     builder.Build(playerDetailsWithNoStatistics, currentUser));
@@ -151,7 +165,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         [Test]
         public void MinionsCannotBeNull()
         {
-            PlayerDetailsViewModelBuilder builder = new PlayerDetailsViewModelBuilder(null, null);
+            PlayerDetailsViewModelBuilder builder = new PlayerDetailsViewModelBuilder(null, null, null);
             PlayerDetails playerDetailsWithNoMinions = new PlayerDetails() { PlayerGameResults = new List<PlayerGameResult>() };
             playerDetailsWithNoMinions.PlayerStats = new PlayerStatistics();
 
@@ -343,6 +357,16 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         public void ItCopiesThePlayerGameSummaries()
         {
             Assert.AreEqual(playerDetails.PlayerGameSummaries, playerDetailsViewModel.PlayerGameSummaries);
+        }
+
+        [Test]
+        public void ItSetsTheChampionedGames()
+        {
+            for (int i = 0; i < playerDetailsViewModel.ChampionedGames.Count; i++)
+            {
+                Assert.That(playerDetailsViewModel.ChampionedGames[i].GameDefinitionName, 
+                    Is.EqualTo(playerDetails.ChampionedGames[i].GameDefinition.Name));
+            }
         }
     }
 }

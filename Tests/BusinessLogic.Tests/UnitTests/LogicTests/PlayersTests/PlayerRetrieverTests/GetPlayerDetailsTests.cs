@@ -28,7 +28,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
         private Champion expectedChampion;
         private List<Player> expectedMinions;
         private List<PlayerGameSummary> expectedPlayerGameSummaries;
-        private List<Champion> expectedChampionships;
+        private List<Champion> expectedChampionedGames;
         private int gamingGroupId = 1985;
             
         [SetUp]
@@ -128,9 +128,9 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
             playerRepositoryMock.Expect(mock => mock.GetPlayerGameSummaries(Arg<int>.Is.Anything))
                                 .Return(expectedPlayerGameSummaries);
 
-            expectedChampionships = new List<Champion> { expectedChampion };
-            playerRetrieverPartialMock.Expect(mock => mock.GetChampionships(Arg<int>.Is.Anything))
-                .Return(expectedChampionships);
+            expectedChampionedGames = new List<Champion> { expectedChampion };
+            playerRetrieverPartialMock.Expect(mock => mock.GetChampionedGames(Arg<int>.Is.Anything))
+                .Return(expectedChampionedGames);
 
         }
 
@@ -198,12 +198,12 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
         }
 
         [Test]
-        public void ItSetsThePlayersChampionships()
+        public void ItSetsThePlayersChampionedGames()
         {
             PlayerDetails playerDetails = playerRetrieverPartialMock.GetPlayerDetails(playerWithAChampionship.Id,
                 numberOfRecentGames);
 
-            Assert.That(playerDetails.Championships, Is.EqualTo(expectedChampionships));
+            Assert.That(playerDetails.ChampionedGames, Is.EqualTo(expectedChampionedGames));
         }
     }
 }

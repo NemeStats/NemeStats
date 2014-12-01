@@ -4,6 +4,7 @@ using BusinessLogic.Models.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UI.Models;
 using UI.Models.PlayedGame;
 using UI.Models.Players;
 
@@ -17,11 +18,13 @@ namespace UI.Transformations.PlayerTransformations
 
         private readonly IGameResultViewModelBuilder gameResultViewModelBuilder;
         private readonly IMinionViewModelBuilder minionViewModelBuilder;
+        private readonly IChampionViewModelBuilder championViewModelBuilder;
 
-        public PlayerDetailsViewModelBuilder(IGameResultViewModelBuilder builder, IMinionViewModelBuilder minionViewModelBuilder)
+        public PlayerDetailsViewModelBuilder(IGameResultViewModelBuilder builder, IMinionViewModelBuilder minionViewModelBuilder, IChampionViewModelBuilder championViewModelBuilder)
         {
             gameResultViewModelBuilder = builder;
             this.minionViewModelBuilder = minionViewModelBuilder;
+            this.championViewModelBuilder = championViewModelBuilder;
         }
 
         public PlayerDetailsViewModel Build(PlayerDetails playerDetails, ApplicationUser currentUser = null)
@@ -52,6 +55,8 @@ namespace UI.Transformations.PlayerTransformations
 
             playerDetailsViewModel.PlayerGameSummaries = playerDetails.PlayerGameSummaries;
 
+            SetChampionedGames(playerDetails, playerDetailsViewModel);
+            
             return playerDetailsViewModel;
         }
 
@@ -102,6 +107,13 @@ namespace UI.Transformations.PlayerTransformations
                 playerDetailsViewModel.NumberOfGamesLostVersusNemesis = nemesis.NumberOfGamesLost;
                 playerDetailsViewModel.LossPercentageVersusPlayer = nemesis.LossPercentage;
             }
+        }
+
+        private void SetChampionedGames(PlayerDetails playerDetails, PlayerDetailsViewModel playerDetailsViewModel)
+        {
+            playerDetailsViewModel.ChampionedGames = playerDetails.ChampionedGames.Select(
+                championedGame => championViewModelBuilder.Build(championedGame))
+                .ToList();
         }
 
         private static void Validate(PlayerDetails playerDetails)
