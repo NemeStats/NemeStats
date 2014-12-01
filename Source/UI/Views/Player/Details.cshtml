@@ -1,5 +1,6 @@
 ﻿@model UI.Models.Players.PlayerDetailsViewModel
 @using UI.HtmlHelpers
+@using UI.Models
 @{
     ViewBag.Title = "Player Details";
     Layout = MVC.Shared.Views._BaseLayout;
@@ -174,6 +175,46 @@
         </div>
     </div>
 </div>
+
+@if (Model.ChampionedGames.Count > 0)
+{
+    <div class="row">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>Championed Games</h4>
+            </div>
+            <div class="panel-body">
+                <table class="table table-hover">
+                    <thead>
+                        <th>Game</th>
+                        <th>Games Played</th>
+                        <th>Games Won</th>
+                        <th>Win Percentage</th>
+                    </thead>
+                    <tbody>
+                        @foreach (ChampionViewModel championModel in @Model.ChampionedGames)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.ActionLink(championModel.GameDefinitionName, "Details", "GameDefinition", new { id = championModel.GameDefinitionId }, new { })
+                                </td>
+                                <td>
+                                    @championModel.NumberOfGames
+                                </td>
+                                <td>
+                                    @championModel.NumberOfWins
+                                </td>
+                                <td>
+                                    @championModel.WinPercentage
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+}
 
 <div class="row">
     <div class="panel panel-default">
