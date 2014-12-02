@@ -1,4 +1,5 @@
-﻿using BusinessLogic.Models;
+﻿using BusinessLogic.Migrations;
+using BusinessLogic.Models;
 using BusinessLogic.Models.User;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,7 @@ namespace UI.Transformations
         internal const string EXCEPTION_MESSAGE_GAME_DEFINITION_CANNOT_BE_NULL = "PlayedGame.GameDefinition cannot be null.";
         internal const string EXCEPTION_MESSAGE_PLAYER_GAME_RESULTS_CANNOT_BE_NULL = "PlayedGame.PlayerGameResults cannot be null.";
         internal const string EXCEPTION_MESSAGE_GAMING_GROUP_CANNOT_BE_NULL = "PlayedGame.GamingGroup cannnot be null.";
+        internal const string NEWLINE_REPLACEMENT_FOR_HTML = "<br/>";
 
         private readonly IGameResultViewModelBuilder playerResultBuilder;
 
@@ -31,6 +33,11 @@ namespace UI.Transformations
             summary.DatePlayed = playedGame.DatePlayed;
             summary.GamingGroupId = playedGame.GamingGroup.Id;
             summary.GamingGroupName = playedGame.GamingGroup.Name;
+            if (playedGame.Notes != null)
+            {
+                summary.Notes = playedGame.Notes.Replace(Environment.NewLine, NEWLINE_REPLACEMENT_FOR_HTML);
+            }
+            
             summary.UserCanEdit = (currentUser != null && playedGame.GamingGroupId == currentUser.CurrentGamingGroupId);
             summary.PlayerResults = new List<GameResultViewModel>();
             

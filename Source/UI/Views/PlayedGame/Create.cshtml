@@ -56,10 +56,18 @@
                                 <ul id="rankedPlayers" class="sortable"></ul>
                             </div>
                         </div>
-
+                        
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Notes, "Game Notes", new { @class = "control-label col-md-4" })
+                            <div class="col-md-6">
+                                @Html.TextAreaFor(model => model.Notes, 8, 30, new { })
+                                @Html.ValidationMessageFor(model => model.GameDefinitionId)
+                            </div>
+                        </div>
+                        
                         <div class="form-group">
                             <div class="col-md-offset-4 col-md-10">
-                                <input type="submit" value="Create" class="btn btn-primary" id="createPlayedGameSubmit"/>
+                                <input type="submit" value="Create" class="btn btn-primary" id="createPlayedGameSubmit" />
                             </div>
                         </div>
                     </div>

@@ -42,6 +42,7 @@ namespace BusinessLogic.Logic.PlayedGames
                 newlyCompletedGame,
                 //TODO should throw some kind of exception if GamingGroupId is null
                 currentUser.CurrentGamingGroupId.Value,
+                currentUser.Id,
                 playerGameResults);
 
             dataContext.Save(playedGame, currentUser);
@@ -60,7 +61,6 @@ namespace BusinessLogic.Logic.PlayedGames
             return playedGame;
         }
 
-        //TODO this should be out of the repository
         internal virtual List<PlayerGameResult> TransformNewlyCompletedGamePlayerRanksToPlayerGameResults(NewlyCompletedGame newlyCompletedGame)
         {
             int numberOfPlayers = newlyCompletedGame.PlayerRanks.Count();
@@ -80,6 +80,7 @@ namespace BusinessLogic.Logic.PlayedGames
         internal virtual PlayedGame TransformNewlyCompletedGameIntoPlayedGame(
             NewlyCompletedGame newlyCompletedGame,
             int gamingGroupId,
+            string applicationUserId,
             List<PlayerGameResult> playerGameResults)
         {
             int numberOfPlayers = newlyCompletedGame.PlayerRanks.Count();
@@ -89,7 +90,9 @@ namespace BusinessLogic.Logic.PlayedGames
                 NumberOfPlayers = numberOfPlayers,
                 PlayerGameResults = playerGameResults,
                 DatePlayed = newlyCompletedGame.DatePlayed,
-                GamingGroupId = gamingGroupId
+                GamingGroupId = gamingGroupId,
+                Notes = newlyCompletedGame.Notes,
+                CreatedByApplicationUserId = applicationUserId
             };
             return playedGame;
         }

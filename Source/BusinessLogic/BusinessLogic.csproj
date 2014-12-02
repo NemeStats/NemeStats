@@ -194,6 +194,10 @@
     <Compile Include="Migrations\201411200330450_ResetInitialChampions.Designer.cs">
       <DependentUpon>201411200330450_ResetInitialChampions.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201412021233106_AddNotesAndCreatedByApplicationUserIdToPlayedGame.cs" />
+    <Compile Include="Migrations\201412021233106_AddNotesAndCreatedByApplicationUserIdToPlayedGame.Designer.cs">
+      <DependentUpon>201412021233106_AddNotesAndCreatedByApplicationUserIdToPlayedGame.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Players\PlayerInvitation.cs" />
     <Compile Include="Logic\Players\PlayerInviter.cs" />
     <Compile Include="Logic\Players\PlayerSaver.cs" />
@@ -508,6 +512,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201411200330450_ResetInitialChampions.resx">
       <DependentUpon>201411200330450_ResetInitialChampions.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201412021233106_AddNotesAndCreatedByApplicationUserIdToPlayedGame.resx">
+      <DependentUpon>201412021233106_AddNotesAndCreatedByApplicationUserIdToPlayedGame.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

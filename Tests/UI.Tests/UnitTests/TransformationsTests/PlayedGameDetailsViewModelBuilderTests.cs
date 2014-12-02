@@ -36,7 +36,8 @@ namespace UI.Tests.UnitTests.TransformationsTests
                 GamingGroup = gamingGroup,
                 GameDefinitionId = 2222,
                 PlayerGameResults = new List<PlayerGameResult>(),
-                GamingGroupId = gamingGroupId
+                GamingGroupId = gamingGroupId,
+                Notes = "some notes" + Environment.NewLine + "some notes on a separate line"
             };
 
             playedGame.PlayerGameResults.Add(new PlayerGameResult()
@@ -167,6 +168,12 @@ namespace UI.Tests.UnitTests.TransformationsTests
         public void ItCopiesTheGamingGroupName()
         {
             Assert.AreEqual(playedGame.GamingGroup.Name, playedGameDetails.GamingGroupName);
+        }
+
+        [Test]
+        public void ItCopiesTheNotesReplacingNewlinesWithBreakTags()
+        {
+            Assert.That(playedGame.Notes.Replace(Environment.NewLine, PlayedGameDetailsViewModelBuilder.NEWLINE_REPLACEMENT_FOR_HTML), Is.EqualTo(playedGameDetails.Notes));
         }
 
         [Test]

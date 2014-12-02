@@ -9,7 +9,7 @@
 
 <div>
     <h4>Recent Games</h4>
-	<hr />
+    <hr />
     <dl class="dl-horizontal">
         <dt>
             Game Played
@@ -31,6 +31,13 @@
         </dt>
         <dd>
             @Html.ActionLink(@Model.GamingGroupName, "Details", "GamingGroup", new { id = @Model.GamingGroupId }, new { })
+        </dd>
+        
+        <dt>
+            Notes
+        </dt>
+        <dd>
+            @Html.Raw(Model.Notes)
         </dd>
     </dl>
 </div>
