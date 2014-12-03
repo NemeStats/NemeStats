@@ -40,11 +40,13 @@ namespace UI
 
             bundles.Add(new StyleBundle("~/bundles/content/css").Include(
                 "~/Content/bootstrap.min.css", new CssRewriteUrlTransform())
-                .Include("~/Content/Themes/base/jquery-ui.css",
-                    "~/Content/site.css",
+                .Include("~/Content/site.css",
                     "~/Content/site-mobile.css",
                     "~/Content/blog.css")
                 .Include("~/Content/font-awesome.min.css", new CssRewriteUrlTransform()));
+
+            bundles.Add(new StyleBundle("~/Content/themes/base/css").Include(
+                "~/Content/Themes/base/jquery-ui.css"));
         }
     }
 }
