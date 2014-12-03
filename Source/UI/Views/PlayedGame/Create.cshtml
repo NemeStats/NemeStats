@@ -20,7 +20,7 @@
                     @Html.AntiForgeryToken()
                     <div class="form-horizontal">
                         <div class="form-group">
-                            @Html.LabelFor(model => model.GameDefinitionId, "The Game", new { @class = "control-label col-md-4" })
+                            @Html.LabelFor(model => model.GameDefinitionId, "The Game", new { @class = "control-label col-md-3" })
                             <div class="col-md-6">
                                 @Html.DropDownList("GameDefinitionId", (IEnumerable<SelectListItem>)null, "Pick A Game", new { @class = "form-control" })
                                 @Html.ValidationMessageFor(model => model.GameDefinitionId)
@@ -28,7 +28,7 @@
                         </div>
 
                         <div class="form-group">
-                            @Html.LabelFor(model => model.DatePlayed, "Date Played", new { @class = "control-label col-md-4" })
+                            @Html.LabelFor(model => model.DatePlayed, "Date Played", new { @class = "control-label col-md-3" })
                             <div class="col-md-6">
                                 @Html.TextBox("DatePlayed", "", new { @class = "date-picker" })
                                 @Html.ValidationMessageFor(model => model.DatePlayed)
@@ -36,12 +36,12 @@
                         </div>
 
                         <div class="form-group" id="playerDiv">
-                            @Html.LabelFor(model => model.PlayerRanks, "The Players", new { @class = "control-label col-md-4" })
+                            @Html.LabelFor(model => model.PlayerRanks, "The Players", new { @class = "control-label col-md-3" })
                             <div class="col-md-6">
                                 @Html.DropDownList("Players", (IEnumerable<SelectListItem>)null, "Add A Player", new { @class = "form-control" })
                                 @Html.ValidationMessageFor(model => model.PlayerRanks)
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-md-3">
                                 <button type="button" id="btnAddPlayer" class=" btn btn-default" title="Create new player">
                                     <i class="fa fa-plus"></i>
                                 </button>
@@ -49,24 +49,24 @@
                         </div>
 
                         <div class="form-group">
-                            <div class="col-md-4">
+                            <div class="col-md-3">
 
                             </div>
-                            <div class="col-md-8">
+                            <div class="col-md-9">
                                 <ul id="rankedPlayers" class="sortable"></ul>
                             </div>
                         </div>
                         
                         <div class="form-group">
-                            @Html.LabelFor(model => model.Notes, "Game Notes", new { @class = "control-label col-md-4" })
-                            <div class="col-md-6">
-                                @Html.TextAreaFor(model => model.Notes, 8, 30, new { })
+                            @Html.LabelFor(model => model.Notes, "Game Notes", new { @class = "control-label col-md-3" })
+                            <div class="col-md-9">
+                                @Html.TextAreaFor(model => model.Notes,  new { @style = "width:100%", @rows = "8" })
                                 @Html.ValidationMessageFor(model => model.GameDefinitionId)
                             </div>
                         </div>
                         
                         <div class="form-group">
-                            <div class="col-md-offset-4 col-md-10">
+                            <div class="col-md-offset-3 col-md-10">
                                 <input type="submit" value="Create" class="btn btn-primary" id="createPlayedGameSubmit" />
                             </div>
                         </div>
