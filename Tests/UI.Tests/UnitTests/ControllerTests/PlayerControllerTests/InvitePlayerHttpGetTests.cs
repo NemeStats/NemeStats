@@ -14,7 +14,7 @@ using UI.Models.Players;
 namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
 {
     [TestFixture]
-    public class InvitePlayerHttpTests : PlayerControllerTestBase
+    public class InvitePlayerHttpGetTests : PlayerControllerTestBase
     {
         private PlayerDetails playerDetails;
         private int playerId = 915;

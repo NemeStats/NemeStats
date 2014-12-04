@@ -120,7 +120,6 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerInviterTes
                                                 currentUser.UserName,
                                                 gamingGroup.Name,
                                                 rootUrl,
-                                                currentUser.CurrentGamingGroupId.Value,
                                                 playerInvitation.CustomEmailMessage,
                                                 gamingGroupInvitation.Id,
                                                 "<br/><br/>");

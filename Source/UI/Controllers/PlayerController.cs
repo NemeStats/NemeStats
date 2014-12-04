@@ -22,8 +22,7 @@ namespace UI.Controllers
     {
         internal const int NUMBER_OF_RECENT_GAMES_TO_RETRIEVE = 10;
         internal const string EMAIL_SUBJECT_PLAYER_INVITATION = "Invitation from {0}";
-        internal const string EMAIL_BODY_PLAYER_INVITATION = "Hi There! I'm inviting you to join '{0}'"
-                                                             + " on http://nemestats.com/.";
+        internal const string EMAIL_BODY_PLAYER_INVITATION = "Check out this gaming group I created to record the results of our board games!";
 
         internal IDataContext dataContext;
         internal IGameResultViewModelBuilder builder;
@@ -109,14 +108,13 @@ namespace UI.Controllers
             }
 
             string emailSubject = string.Format(EMAIL_SUBJECT_PLAYER_INVITATION, currentUser.UserName);
-            string emailBody = string.Format(EMAIL_BODY_PLAYER_INVITATION, playerDetails.GamingGroupName);
 
             var playerInvitationViewModel = new PlayerInvitationViewModel
             {
                 PlayerId = playerDetails.Id,
                 PlayerName = playerDetails.Name,
                 EmailSubject = emailSubject,
-                EmailBody = emailBody
+                EmailBody = EMAIL_BODY_PLAYER_INVITATION
             };
             return View(MVC.Player.Views.InvitePlayer, playerInvitationViewModel);
         }
