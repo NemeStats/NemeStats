@@ -15,7 +15,7 @@ namespace BusinessLogic.Logic.Players
     public class PlayerInviter : IPlayerInviter
     {
         internal const string APP_SETTING_URL_ROOT = "urlRoot";
-        internal const string EMAIL_MESSAGE_INVITE_PLAYER = "Hi There! You've been invited by {0} to join the \"{1}\" gaming group on on {2}. {5}"
+        internal const string EMAIL_MESSAGE_INVITE_PLAYER = "Hi There! You've been invited by {0} to join the \"{1}\" gaming group on {2}. {5}"
                                   + "{0} says: {3} {5} "
                                   + "To join this Gaming Group click on this link: {2}/Account/ConsumeInvitation/{4}";
 
