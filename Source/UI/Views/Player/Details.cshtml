@@ -76,7 +76,7 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h4>Nemesis <i class="fa fa-question-circle" data-container="body" data-toggle="popover" data-placement="right"
-   data-content="The target player who has the highest win % vs. the source player. Just have won at least 3 games to be designated as the Nemesis."></i></h4>
+   data-content="The Nemesis is the Player with the highest win % vs. this Player. Must have won at least 3 games to be designated as the Nemesis."></i></h4>
             </div>
             <div class="panel-body">
                 <table class="table table-hover">
@@ -113,7 +113,7 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h4>Minions <i class="fa fa-question-circle" data-container="body" data-toggle="popover" data-placement="right"
-   data-content="The target player is a Nemesis of the Source Player."></i></h4>
+   data-content="Minions are Players who have this Player as a Nemesis."></i></h4>
             </div>
             <div class="panel-body">
                 <table class="table table-hover">
@@ -146,37 +146,6 @@
     }
 </div>
 
-<div class="row">
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <h4>Global Statistics</h4>
-        </div>
-        <div class="panel-body">
-            <table>
-                <tr>
-                    <td><strong>Total Games:</strong></td>
-                    <td>@Model.TotalGamesPlayed</td>
-                </tr>
-                <tr>
-                    <td><strong>Total Points:</strong></td>
-                    <td>@Model.TotalPoints</td>
-                </tr>
-                <tr>
-                    <td><strong>Average Points Per Game:</strong></td>
-                    <td>@Model.AveragePointsPerGame.ToString("N2")</td>
-                </tr>
-                <tr>
-                    <td><strong>Average Players Per Game:</strong></td>
-                    <td>@Model.AveragePlayersPerGame.ToString("N2")</td>
-                </tr>
-                <tr>
-                    <td><strong>Average Points Per Player (0 to 1):</strong></td>
-                    <td>@Model.AveragePointsPerPlayer.ToString("N2")</td>
-                </tr>
-            </table>
-        </div>
-    </div>
-</div>
 
 @if (Model.ChampionedGames.Count > 0)
 {
@@ -184,7 +153,7 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h4>Championed Games <i class="fa fa-question-circle" data-container="body" data-toggle="popover" data-placement="right"
-   data-content="The games this gaming group plays which the source player has played at least 3 games and has won the most games in this gaming group."></i></h4>
+   data-content="The Champion is the Player within the Gaming Group with the most wins of this game."></i></h4>
             </div>
             <div class="panel-body">
                 <table class="table table-hover">
@@ -218,6 +187,39 @@
         </div>
     </div>
 }
+
+<div class="row">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4>Global Statistics</h4>
+        </div>
+        <div class="panel-body">
+            <table>
+                <tr>
+                    <td><strong>Total Games:</strong></td>
+                    <td>@Model.TotalGamesPlayed</td>
+                </tr>
+                <tr>
+                    <td><strong>Total Points:</strong></td>
+                    <td>@Model.TotalPoints</td>
+                </tr>
+                <tr>
+                    <td><strong>Average Points Per Game:</strong></td>
+                    <td>@Model.AveragePointsPerGame.ToString("N2")</td>
+                </tr>
+                <tr>
+                    <td><strong>Average Players Per Game:</strong></td>
+                    <td>@Model.AveragePlayersPerGame.ToString("N2")</td>
+                </tr>
+                <tr>
+                    <td><strong>Average Points Per Player (0 to 1):</strong></td>
+                    <td>@Model.AveragePointsPerPlayer.ToString("N2")</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
 
 <div class="row">
     <div class="panel panel-default">
