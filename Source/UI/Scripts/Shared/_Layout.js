@@ -17,4 +17,6 @@ Views.Shared.Layout.prototype = {
 $(document).ready(function () {
     var layout = new Views.Shared.Layout();
     layout.init();
+
+    $('[data-toggle="popover"]').popover({ trigger: 'hover' });
 });
