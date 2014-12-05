@@ -19,8 +19,6 @@ namespace BusinessLogic.DataAccess.Repositories
             this.dataContext = dataContext;
         }
 
-        private const int MINIMUM_NUMBER_OF_GAMES_TO_QUALIFY_AS_CHAMPION = 3;
-
         private const string CHAMPION_SQL =
             @"SELECT TOP 1 PlayerId,
 	             COUNT(PlayerId) AS NumberOfGames,
@@ -35,14 +33,12 @@ namespace BusinessLogic.DataAccess.Repositories
 	             ON GameDefinition.Id = PlayedGame.GameDefinitionId
              WHERE GameDefinitionId = @GameDefinitionId
              GROUP BY PlayerId
-             HAVING COUNT(PlayerId) >= @MinimumNumberOfGames
              ORDER BY NumberOfWins DESC, NumberOfGames DESC";
 
         public ChampionData GetChampionData(int gameDefinitionId)
         {
             DbRawSqlQuery<ChampionStatistics> championStatisticsData = dataContext.MakeRawSqlQuery<ChampionStatistics>(CHAMPION_SQL,
-                new SqlParameter("GameDefinitionId", gameDefinitionId), 
-                new SqlParameter("MinimumNumberOfGames", MINIMUM_NUMBER_OF_GAMES_TO_QUALIFY_AS_CHAMPION));
+                new SqlParameter("GameDefinitionId", gameDefinitionId));
 
             List<ChampionStatistics> championStatistics = championStatisticsData.ToList();
 
