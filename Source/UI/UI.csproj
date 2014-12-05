@@ -422,6 +422,7 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\CreatePlayedGame\createplayedgame.js" />
     <Content Include="Scripts\GameDefinition\createGameDefinitionPartial.js" />
+    <Content Include="Scripts\GameDefinition\gameDefinitionAutoComplete.js" />
     <Content Include="Scripts\GameDefinition\gameDefinitions.js" />
     <Content Include="Scripts\GamingGroup\gamingGroup.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />

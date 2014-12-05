@@ -147,7 +147,7 @@ namespace UI.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [UserContextAttribute]
-        public virtual ActionResult Edit([Bind(Include = "Id,Name,Description,GamingGroupId,Active")] GameDefinition gamedefinition, ApplicationUser currentUser)
+        public virtual ActionResult Edit([Bind(Include = "Id,Name,BoardGameGeekObjectId,Description,GamingGroupId,Active")] GameDefinition gamedefinition, ApplicationUser currentUser)
         {
             if (ModelState.IsValid)
             {
