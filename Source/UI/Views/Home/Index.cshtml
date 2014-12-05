@@ -138,7 +138,8 @@
                 <table class="table table-hover" id="recentNemesisChangesTable">
                     <tr>
                         <th>Player</th>
-                        <th>New Nemesis</th>
+                        <th>New Nemesis <i class="fa fa-question-circle" data-container="body" data-toggle="popover" data-placement="right"
+   data-content="The Nemesis is the Player with the highest win % vs. this Player. Must have won at least 3 games to be designated as the Nemesis."></i></th>
                         <th>Loss %</th>
                     </tr>
                     @foreach (UI.Models.Nemeses.NemesisChangeViewModel nemesisChange in @Model.RecentNemesisChanges)
