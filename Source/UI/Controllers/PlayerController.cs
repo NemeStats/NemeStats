@@ -68,7 +68,7 @@ namespace UI.Controllers
                 return new HttpNotFoundResult();
             }
 
-            PlayerDetailsViewModel playerDetailsViewModel = playerDetailsViewModelBuilder.Build(player, currentUser);
+            PlayerDetailsViewModel playerDetailsViewModel = playerDetailsViewModelBuilder.Build(player,  currentUser);
 
             ViewBag.RecentGamesMessage = showingXResultsMessageBuilder.BuildMessage(
                 NUMBER_OF_RECENT_GAMES_TO_RETRIEVE, 
