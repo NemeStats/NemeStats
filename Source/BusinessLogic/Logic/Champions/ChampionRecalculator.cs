@@ -54,8 +54,7 @@ namespace BusinessLogic.Logic.Champions
 
             Champion existingChampion =
                 dataContext.GetQueryable<Champion>()
-                    .Where(champion => champion.GameDefinitionId == gameDefinitionId)
-                    .FirstOrDefault();
+                .FirstOrDefault(champion => champion.GameDefinitionId == gameDefinitionId && champion.GameDefinition.ChampionId == champion.Id);
 
             Champion newChampion = new Champion
             {
