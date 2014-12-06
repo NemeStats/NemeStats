@@ -149,7 +149,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.ChampionsTests.ChampionRecalc
                 Id = previousChampionId,
                 PlayerId = championPlayerId,
                 GameDefinitionId = gameDefinitionId,
-                WinPercentage = winPercentage
+                WinPercentage = winPercentage,
+                GameDefinition = new GameDefinition { ChampionId = previousChampionId }
             });
             dataContextMock.Expect(mock => mock.GetQueryable<Champion>())
                 .Return(championList.AsQueryable());
@@ -181,7 +182,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.ChampionsTests.ChampionRecalc
                 Id = previousChampionId,
                 PlayerId = championPlayerId,
                 WinPercentage = winPercentage + 1,
-                GameDefinitionId = gameDefinitionId
+                GameDefinitionId = gameDefinitionId,
+                GameDefinition = new GameDefinition()
             };
             championList.Add(existingChampion);
 
@@ -213,7 +215,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.ChampionsTests.ChampionRecalc
             {
                 Id = previousChampionId,
                 PlayerId = playerChampionId,
-                GameDefinitionId = gameDefinitionId
+                GameDefinitionId = gameDefinitionId,
+                GameDefinition = new GameDefinition { ChampionId = previousChampionId }
             };
             championList.Add(existingChampion);
             dataContextMock.Expect(mock => mock.GetQueryable<Champion>())
@@ -237,7 +240,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.ChampionsTests.ChampionRecalc
             {
                 Id = previousChampionId,
                 PlayerId = playerChampionId,
-                GameDefinitionId = gameDefinitionId
+                GameDefinitionId = gameDefinitionId,
+                GameDefinition = new GameDefinition()
             };
             championList.Add(existingChampion);
             dataContextMock.Expect(mock => mock.GetQueryable<Champion>())

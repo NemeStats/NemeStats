@@ -104,11 +104,10 @@ namespace BusinessLogic.Logic.Players
 
         internal virtual List<Champion> GetChampionedGames(int playerId)
         {
-            return
-                (from GameDefinition gameDefinition in
-                    dataContext.GetQueryable<GameDefinition>().Include(g => g.Champion)
-                    where gameDefinition.Champion.PlayerId == playerId
-                    select gameDefinition.Champion).ToList();
+            return dataContext.GetQueryable<Champion>()
+                .Include(h => h.GameDefinition)
+                              .Where(champion => champion.PlayerId == playerId)
+                              .ToList();
         }
 
         internal virtual List<PlayerGameResult> GetPlayerGameResultsWithPlayedGameAndGameDefinition(

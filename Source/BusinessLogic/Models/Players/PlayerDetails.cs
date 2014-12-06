@@ -5,6 +5,12 @@ namespace BusinessLogic.Models.Players
 {
     public class PlayerDetails
     {
+        public PlayerDetails()
+        {
+            CurrentNemesis = new NullNemesis();
+            PreviousNemesis = new NullNemesis();
+        }
+
         public int Id { get; set; }
         public string Name { get; set; }
         public string ApplicationUserId { get; set; }

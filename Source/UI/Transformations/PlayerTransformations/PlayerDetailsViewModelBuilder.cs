@@ -14,7 +14,8 @@ namespace UI.Transformations.PlayerTransformations
     {
         internal const string EXCEPTION_PLAYER_GAME_RESULTS_CANNOT_BE_NULL = "PlayerDetails.PlayerGameResults cannot be null.";
         internal const string EXCEPTION_PLAYER_STATISTICS_CANNOT_BE_NULL = "PlayerDetails.PlayerStatistics cannot be null.";
-        internal const string EXCEPTION_MINIONS_CANNOT_BE_NULL = "PlayerDetails.PlayerStatistics cannot be null.";
+        internal const string EXCEPTION_MINIONS_CANNOT_BE_NULL = "PlayerDetails.Minions cannot be null.";
+        internal const string EXCEPTION_CHAMPIONED_GAMES_CANNOT_BE_NULL = "PlayerDetails.ChampionedGames cannot be null.";
 
         private readonly IGameResultViewModelBuilder gameResultViewModelBuilder;
         private readonly IMinionViewModelBuilder minionViewModelBuilder;
@@ -122,6 +123,7 @@ namespace UI.Transformations.PlayerTransformations
             ValidatePlayerGameResultsIsNotNull(playerDetails);
             ValidatePlayerStatisticsIsNotNull(playerDetails);
             ValidateMinions(playerDetails);
+            ValidateChampionedGames(playerDetails);
         }
 
         private static void ValidatePlayerDetailsIsNotNull(PlayerDetails playerDetails)
@@ -153,6 +155,14 @@ namespace UI.Transformations.PlayerTransformations
             if (playerDetails.Minions == null)
             {
                 throw new ArgumentException(EXCEPTION_MINIONS_CANNOT_BE_NULL);
+            }
+        }
+
+        private static void ValidateChampionedGames(PlayerDetails playerDetails)
+        {
+            if (playerDetails.ChampionedGames == null)
+            {
+                throw new ArgumentException(EXCEPTION_CHAMPIONED_GAMES_CANNOT_BE_NULL);
             }
         }
 

@@ -176,6 +176,23 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         }
 
         [Test]
+        public void ChampionedGamesCannotBeNull()
+        {
+            PlayerDetailsViewModelBuilder builder = new PlayerDetailsViewModelBuilder(null, null, null);
+            PlayerDetails playerDetailsWithNoChampionedGames = new PlayerDetails()
+            {
+                PlayerGameResults = new List<PlayerGameResult>(),
+                PlayerStats = new PlayerStatistics(),
+                Minions = new List<Player>()
+            };
+
+            var exception = Assert.Throws<ArgumentException>(() =>
+                    builder.Build(playerDetailsWithNoChampionedGames, currentUser));
+
+            Assert.AreEqual(PlayerDetailsViewModelBuilder.EXCEPTION_CHAMPIONED_GAMES_CANNOT_BE_NULL, exception.Message);
+        }
+
+        [Test]
         public void ItCopiesThePlayerId()
         {
             Assert.AreEqual(playerDetails.Id, playerDetailsViewModel.PlayerId);

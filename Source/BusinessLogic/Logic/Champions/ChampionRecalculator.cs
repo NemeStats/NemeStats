@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -54,6 +55,7 @@ namespace BusinessLogic.Logic.Champions
 
             Champion existingChampion =
                 dataContext.GetQueryable<Champion>()
+                    .Include(champion => champion.GameDefinition)
                 .FirstOrDefault(champion => champion.GameDefinitionId == gameDefinitionId && champion.GameDefinition.ChampionId == champion.Id);
 
             Champion newChampion = new Champion
