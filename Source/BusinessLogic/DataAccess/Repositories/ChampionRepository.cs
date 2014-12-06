@@ -20,9 +20,10 @@ namespace BusinessLogic.DataAccess.Repositories
         }
 
         private const string CHAMPION_SQL =
-            @"SELECT TOP 1 PlayerId,
-	             COUNT(PlayerId) AS NumberOfGames,
-	             SUM(CASE WHEN PlayerGameResult.GameRank = 1 THEN 1 ELSE 0 END) AS NumberOfWins
+            @"SELECT TOP 1 PlayerGameResult.PlayerId,
+	             COUNT(PlayerGameResult.PlayerId) AS NumberOfGames,
+	             SUM(CASE WHEN PlayerGameResult.GameRank = 1 THEN 1 ELSE 0 END) AS NumberOfWins,
+				 CASE WHEN Champion.PlayerId = PlayerGameResult.PlayerId THEN 1 ELSE 0 END AS CurrentChampion
              FROM PlayerGameResult
              INNER JOIN PlayedGame
 	             ON PlayerGameResult.PlayedGameId = PlayedGame.Id
@@ -31,9 +32,11 @@ namespace BusinessLogic.DataAccess.Repositories
 	             AND Player.Active = 1
              INNER JOIN GameDefinition
 	             ON GameDefinition.Id = PlayedGame.GameDefinitionId
-             WHERE GameDefinitionId = @GameDefinitionId
-             GROUP BY PlayerId
-             ORDER BY NumberOfWins DESC, NumberOfGames DESC";
+		     LEFT JOIN Champion ON Champion.Id = GameDefinition.ChampionId
+             WHERE PlayedGame.GameDefinitionId = @GameDefinitionId
+             GROUP BY PlayerGameResult.PlayerId, 
+			 CASE WHEN Champion.PlayerId = PlayerGameResult.PlayerId THEN 1 ELSE 0 END
+             ORDER BY NumberOfWins DESC, NumberOfGames DESC, CurrentChampion DESC";
 
         public ChampionData GetChampionData(int gameDefinitionId)
         {

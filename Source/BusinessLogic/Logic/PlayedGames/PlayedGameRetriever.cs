@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.DataAccess;
+using BusinessLogic.Exceptions;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
 using System.Collections.Generic;
@@ -41,13 +42,22 @@ namespace BusinessLogic.Logic.PlayedGames
 
         public PlayedGame GetPlayedGameDetails(int playedGameId)
         {
-            return dataContext.GetQueryable<PlayedGame>()
+            PlayedGame result = dataContext.GetQueryable<PlayedGame>()
                 .Where(playedGame => playedGame.Id == playedGameId)
                     .Include(playedGame => playedGame.GameDefinition)
                     .Include(playedGame => playedGame.GamingGroup)
                     .Include(playedGame => playedGame.PlayerGameResults
                         .Select(playerGameResult => playerGameResult.Player))
                     .FirstOrDefault();
+
+            if (result == null)
+            {
+                throw new EntityDoesNotExistException(playedGameId);
+            }
+
+            result.PlayerGameResults = result.PlayerGameResults.OrderBy(playerGameResult => playerGameResult.GameRank).ToList();
+
+            return result;
         }
 
         public List<PublicGameSummary> GetRecentPublicGames(int numberOfGames)

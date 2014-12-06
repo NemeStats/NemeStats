@@ -1,4 +1,6 @@
-﻿using BusinessLogic.DataAccess;
+﻿using System;
+using BusinessLogic.DataAccess;
+using BusinessLogic.Exceptions;
 using BusinessLogic.Logic.PlayedGames;
 using BusinessLogic.Models;
 using NUnit.Framework;
@@ -68,14 +70,18 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGamesTests
         }
 
         [Test]
-        public void ItReturnsNullIfNoPlayedGameFound()
+        public void ItThrowsAnEntityDoesNotExistExceptionIfTheIdIsInvalid()
         {
+            int invalidId = -1;
+            EntityDoesNotExistException expectedException = new EntityDoesNotExistException(invalidId);
+
             using (NemeStatsDataContext dataContext = new NemeStatsDataContext())
             {
                 PlayedGameRetriever retriever = new PlayedGameRetriever(dataContext);
 
-                PlayedGame notFoundPlayedGame = retriever.GetPlayedGameDetails(-1);
-                Assert.Null(notFoundPlayedGame);
+                Exception actualException = Assert.Throws<EntityDoesNotExistException>(() => retriever.GetPlayedGameDetails(invalidId));
+
+                Assert.That(expectedException.Message, Is.EqualTo(actualException.Message));
             }
         }
     }
