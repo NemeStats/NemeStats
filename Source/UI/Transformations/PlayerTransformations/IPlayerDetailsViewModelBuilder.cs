@@ -7,6 +7,6 @@ namespace UI.Transformations.PlayerTransformations
 {
     public interface IPlayerDetailsViewModelBuilder
     {
-        PlayerDetailsViewModel Build(PlayerDetails playerDetails, ApplicationUser currentUser = null);
+        PlayerDetailsViewModel Build(PlayerDetails playerDetails, string urlToMinionsAnchor, ApplicationUser currentUser = null);
     }
 }

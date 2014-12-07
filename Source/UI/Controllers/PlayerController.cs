@@ -68,7 +68,8 @@ namespace UI.Controllers
                 return new HttpNotFoundResult();
             }
 
-            PlayerDetailsViewModel playerDetailsViewModel = playerDetailsViewModelBuilder.Build(player,  currentUser);
+            var fullUrl = this.Url.Action(MVC.Player.ActionNames.Details, MVC.Player.Name, new { id }, this.Request.Url.Scheme) + "#minions";
+            PlayerDetailsViewModel playerDetailsViewModel = playerDetailsViewModelBuilder.Build(player, fullUrl, currentUser);
 
             ViewBag.RecentGamesMessage = showingXResultsMessageBuilder.BuildMessage(
                 NUMBER_OF_RECENT_GAMES_TO_RETRIEVE, 

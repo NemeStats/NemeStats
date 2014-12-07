@@ -28,7 +28,7 @@ namespace UI.Transformations.PlayerTransformations
             this.championViewModelBuilder = championViewModelBuilder;
         }
 
-        public PlayerDetailsViewModel Build(PlayerDetails playerDetails, ApplicationUser currentUser = null)
+        public PlayerDetailsViewModel Build(PlayerDetails playerDetails, string urlForMinionBragging, ApplicationUser currentUser = null)
         {
             Validate(playerDetails);
 
@@ -41,6 +41,8 @@ namespace UI.Transformations.PlayerTransformations
             playerDetailsViewModel.GamingGroupId = playerDetails.GamingGroupId;
             playerDetailsViewModel.TotalGamesPlayed = playerDetails.PlayerStats.TotalGames;
             playerDetailsViewModel.TotalPoints = playerDetails.PlayerStats.TotalPoints;
+
+            SetTwitterBraggingUrlIfThePlayerIsTheCurrentlyLoggedInUser(playerDetails, urlForMinionBragging, currentUser, playerDetailsViewModel);
             
             SetAveragePointsPerGame(playerDetails, playerDetailsViewModel);
             playerDetailsViewModel.AveragePlayersPerGame = playerDetails.PlayerStats.AveragePlayersPerGame;
@@ -59,6 +61,17 @@ namespace UI.Transformations.PlayerTransformations
             SetChampionedGames(playerDetails, playerDetailsViewModel);
             
             return playerDetailsViewModel;
+        }
+
+        private static void SetTwitterBraggingUrlIfThePlayerIsTheCurrentlyLoggedInUser(PlayerDetails playerDetails,
+                                                                                       string urlForMinionBragging,
+                                                                                       ApplicationUser currentUser,
+                                                                                       PlayerDetailsViewModel playerDetailsViewModel)
+        {
+            if (currentUser != null && currentUser.Id == playerDetails.ApplicationUserId)
+            {
+                playerDetailsViewModel.MinionBraggingTweetUrl = urlForMinionBragging;
+            }
         }
 
         private static void SetAveragePointsPerGame(PlayerDetails playerDetails, PlayerDetailsViewModel playerDetailsViewModel)

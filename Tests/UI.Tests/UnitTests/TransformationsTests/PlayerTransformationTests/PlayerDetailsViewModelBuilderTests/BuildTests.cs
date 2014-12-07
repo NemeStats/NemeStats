@@ -23,11 +23,20 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         private PlayerDetailsViewModel playerDetailsViewModel;
         private PlayerDetailsViewModelBuilder builder;
         private ApplicationUser currentUser;
+        private string twitterMinionBraggingUrl = "some url";
+        private int gamingGroupId = 123;
 
         [SetUp]
         public void TestFixtureSetUp()
         {
             minionViewModelBuilderMock = MockRepository.GenerateMock<IMinionViewModelBuilder>();
+
+
+            currentUser = new ApplicationUser()
+            {
+                CurrentGamingGroupId = gamingGroupId,
+                Id = "application user id"
+            };
 
             Champion champion = new Champion();
             GameDefinition gameDefinition1 = new GameDefinition()
@@ -77,7 +86,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
             playerDetails = new PlayerDetails()
             {
                 Id = 134,
-                ApplicationUserId = "application user id",
+                ApplicationUserId = currentUser.Id,
                 Active = true,
                 Name = "Skipper",
                 PlayerGameResults = playerGameResults,
@@ -89,7 +98,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
                     },
                 CurrentNemesis = nemesis,
                 Minions = new List<Player>(),
-                GamingGroupId = 123,
+                GamingGroupId = gamingGroupId,
                 GamingGroupName = "gaming group name"
             };
 
@@ -121,12 +130,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
 
             builder = new PlayerDetailsViewModelBuilder(gameResultViewModelBuilder, minionViewModelBuilderMock, championViewModelBuilderMock);
 
-            currentUser = new ApplicationUser()
-            {
-                CurrentGamingGroupId = playerDetails.GamingGroupId
-            };
-
-            playerDetailsViewModel = builder.Build(playerDetails, currentUser);
+            playerDetailsViewModel = builder.Build(playerDetails, twitterMinionBraggingUrl, currentUser);
         }
 
         [Test]
@@ -135,7 +139,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
             PlayerDetailsViewModelBuilder builder = new PlayerDetailsViewModelBuilder(null, null, null);
 
             var exception = Assert.Throws<ArgumentNullException>(() =>
-                    builder.Build(null, currentUser));
+                    builder.Build(null, twitterMinionBraggingUrl, currentUser));
 
             Assert.AreEqual("playerDetails", exception.ParamName);
         }
@@ -146,7 +150,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
             PlayerDetailsViewModelBuilder builder = new PlayerDetailsViewModelBuilder(null, null, null);
 
             var exception = Assert.Throws<ArgumentException>(() =>
-                    builder.Build(new PlayerDetails(), currentUser));
+                    builder.Build(new PlayerDetails(), twitterMinionBraggingUrl, currentUser));
 
             Assert.AreEqual(PlayerDetailsViewModelBuilder.EXCEPTION_PLAYER_GAME_RESULTS_CANNOT_BE_NULL, exception.Message);
         }
@@ -157,7 +161,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
             PlayerDetailsViewModelBuilder builder = new PlayerDetailsViewModelBuilder(null, null, null);
             PlayerDetails playerDetailsWithNoStatistics = new PlayerDetails() { PlayerGameResults = new List<PlayerGameResult>() };
             var exception = Assert.Throws<ArgumentException>(() =>
-                    builder.Build(playerDetailsWithNoStatistics, currentUser));
+                    builder.Build(playerDetailsWithNoStatistics, twitterMinionBraggingUrl, currentUser));
 
             Assert.AreEqual(PlayerDetailsViewModelBuilder.EXCEPTION_PLAYER_STATISTICS_CANNOT_BE_NULL, exception.Message);
         }
@@ -170,7 +174,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
             playerDetailsWithNoMinions.PlayerStats = new PlayerStatistics();
 
             var exception = Assert.Throws<ArgumentException>(() =>
-                    builder.Build(playerDetailsWithNoMinions, currentUser));
+                    builder.Build(playerDetailsWithNoMinions, twitterMinionBraggingUrl, currentUser));
 
             Assert.AreEqual(PlayerDetailsViewModelBuilder.EXCEPTION_MINIONS_CANNOT_BE_NULL, exception.Message);
         }
@@ -187,7 +191,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
             };
 
             var exception = Assert.Throws<ArgumentException>(() =>
-                    builder.Build(playerDetailsWithNoChampionedGames, currentUser));
+                    builder.Build(playerDetailsWithNoChampionedGames, twitterMinionBraggingUrl, currentUser));
 
             Assert.AreEqual(PlayerDetailsViewModelBuilder.EXCEPTION_CHAMPIONED_GAMES_CANNOT_BE_NULL, exception.Message);
         }
@@ -214,7 +218,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         public void ItSetsThePlayerRegisteredFlagToFalseIfThereIsNoApplicationUserIdOnThePlayer()
         {
             playerDetails.ApplicationUserId = null;
-            playerDetailsViewModel = builder.Build(playerDetails, currentUser);
+            playerDetailsViewModel = builder.Build(playerDetails, twitterMinionBraggingUrl, currentUser);
 
             Assert.AreEqual(false, playerDetailsViewModel.PlayerRegistered);
         }
@@ -262,7 +266,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         {
             playerDetails.PlayerStats.TotalGames = 0;
 
-            playerDetailsViewModel = builder.Build(playerDetails, currentUser);
+            playerDetailsViewModel = builder.Build(playerDetails, twitterMinionBraggingUrl, currentUser);
 
             Assert.AreEqual(0, playerDetailsViewModel.AveragePointsPerGame);
         }
@@ -287,7 +291,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         {
             playerDetails.PlayerStats.AveragePlayersPerGame = 0;
 
-            PlayerDetailsViewModel viewModel = builder.Build(playerDetails, currentUser);
+            PlayerDetailsViewModel viewModel = builder.Build(playerDetails, twitterMinionBraggingUrl, currentUser);
 
             Assert.AreEqual(0, viewModel.AveragePointsPerPlayer);
         }
@@ -348,7 +352,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         [Test]
         public void TheUserCanEditViewModelIfTheyShareGamingGroups()
         {
-            PlayerDetailsViewModel viewModel = builder.Build(playerDetails, currentUser);
+            PlayerDetailsViewModel viewModel = builder.Build(playerDetails, twitterMinionBraggingUrl, currentUser);
 
             Assert.True(viewModel.UserCanEdit);
         }
@@ -357,7 +361,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         public void TheUserCanNotEditViewModelIfTheyDoNotShareGamingGroups()
         {
             currentUser.CurrentGamingGroupId = -1;
-            PlayerDetailsViewModel viewModel = builder.Build(playerDetails, currentUser);
+            PlayerDetailsViewModel viewModel = builder.Build(playerDetails, twitterMinionBraggingUrl, currentUser);
 
             Assert.False(viewModel.UserCanEdit);
         }
@@ -365,7 +369,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         [Test]
         public void TheUserCanNotEditViewModelIfTheUserIsUnknown()
         {
-            PlayerDetailsViewModel viewModel = builder.Build(playerDetails, null);
+            PlayerDetailsViewModel viewModel = builder.Build(playerDetails, twitterMinionBraggingUrl, null);
 
             Assert.False(viewModel.UserCanEdit);
         }
@@ -384,6 +388,21 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
                 Assert.That(playerDetailsViewModel.ChampionedGames[i].GameDefinitionName, 
                     Is.EqualTo(playerDetails.ChampionedGames[i].GameDefinition.Name));
             }
+        }
+
+        [Test]
+        public void ItSetsTheTwitterBraggingUrlIfTCurrentUserIsLookingAtThemself()
+        {
+            Assert.That(twitterMinionBraggingUrl, Is.EqualTo(playerDetailsViewModel.MinionBraggingTweetUrl));
+        }
+
+        [Test]
+        public void ItDoesNotSetTheTwitterBraggingUrlIfTCurrentUserIsNotThePlayerBeingTransformed()
+        {
+            currentUser.Id = "some different user id";
+            PlayerDetailsViewModel viewModel = builder.Build(playerDetails, twitterMinionBraggingUrl, currentUser);
+
+            Assert.That(null, Is.EqualTo(viewModel.MinionBraggingTweetUrl));
         }
     }
 }

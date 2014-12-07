@@ -31,5 +31,6 @@ namespace UI.Models.Players
 
         public string GamingGroupName { get; set; }
         public int GamingGroupId { get; set; }
+        public string MinionBraggingTweetUrl { get; set; }
     }
 }

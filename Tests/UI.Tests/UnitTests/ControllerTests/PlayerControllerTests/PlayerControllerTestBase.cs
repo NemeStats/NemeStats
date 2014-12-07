@@ -1,4 +1,5 @@
-﻿using System.Web;
+﻿using System;
+using System.Web;
 using System.Web.Routing;
 using BusinessLogic.DataAccess;
 using BusinessLogic.Models.User;
@@ -71,6 +72,9 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
             context.Expect(x => x.Request)
                 .Repeat.Any()
                 .Return(asyncRequestMock);
+
+            asyncRequestMock.Expect(mock => mock.Url)
+                            .Return(new Uri("https://nemestats.com/Details/1"));
 
             playerController.ControllerContext = new ControllerContext(context, new RouteData(), playerController);
         }

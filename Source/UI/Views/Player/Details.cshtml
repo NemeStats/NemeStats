@@ -106,14 +106,21 @@
     }
 </div>
 
-
+<a name="minions"></a>
 <div class="row">
     @if (@Model.Minions.Count > 0)
     {
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h4>Minions <i class="fa fa-question-circle" data-container="body" data-toggle="popover" data-placement="right"
-   data-content="Minions are Players who have this Player as a Nemesis."></i></h4>
+                <h4>
+                    Minions <i class="fa fa-question-circle" data-container="body" data-toggle="popover" data-placement="right"
+                               data-content="Minions are Players who have this Player as a Nemesis."></i> 
+                    @if(Model.MinionBraggingTweetUrl != null)
+                    {
+                    <a href="https://twitter.com/share" class="twitter-share-button" data-url="@Model.MinionBraggingTweetUrl" data-text="Check out my Minions on &#64;nemestats!" data-related="nemestats" data-count="none" data-hashtags="boardgames" data-dnt="true" title="Brag about your minions on twitter">Tweet</a>
+                    <script>!function (d, s, id) { var js, fjs = d.getElementsByTagName(s)[0], p = /^http:/.test(d.location) ? 'http' : 'https'; if (!d.getElementById(id)) { js = d.createElement(s); js.id = id; js.src = p + '://platform.twitter.com/widgets.js'; fjs.parentNode.insertBefore(js, fjs); } }(document, 'script', 'twitter-wjs');</script>
+                    }
+                </h4>
             </div>
             <div class="panel-body">
                 <table class="table table-hover">

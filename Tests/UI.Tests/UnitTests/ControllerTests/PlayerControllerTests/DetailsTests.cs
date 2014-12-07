@@ -14,6 +14,16 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
     [TestFixture]
     public class PlayerControllerTests : PlayerControllerTestBase
     {
+        private int playerId = 1;
+        private string expectedMinionUrl;
+
+        public override void SetUp()
+        {
+            base.SetUp();
+
+            expectedMinionUrl = playerController.Url.Action(MVC.Player.ActionNames.Details, MVC.Player.Name, new { id = playerId }, "HTTPS") + "#minions";
+        }
+
         [Test]
         public void ItNeverReturnsNull()
         {
@@ -39,7 +49,6 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         [Test]
         public void ItRetrievesRequestedPlayer()
         {
-            int playerId = 1351;
             playerController.Details(playerId, currentUser);
 
             playerRetrieverMock.AssertWasCalled(x => x.GetPlayerDetails(playerId, PlayerController.NUMBER_OF_RECENT_GAMES_TO_RETRIEVE));
@@ -48,7 +57,6 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         [Test]
         public void ItReturnsThePlayerDetailsViewWhenThePlayerIsFound()
         {
-            int playerId = 1351;
             PlayerDetails playerDetails = new PlayerDetails(){ PlayerGameResults = new List<PlayerGameResult>() };
             playerRetrieverMock.Expect(playerLogic => playerLogic.GetPlayerDetails(playerId, PlayerController.NUMBER_OF_RECENT_GAMES_TO_RETRIEVE))
                 .Repeat.Once()
@@ -59,7 +67,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
                 PlayerId = playerId,
                 PlayerGameResultDetails = new List<GameResultViewModel>()
             };
-            playerDetailsViewModelBuilderMock.Expect(viewModelBuilder => viewModelBuilder.Build(playerDetails, currentUser))
+            playerDetailsViewModelBuilderMock.Expect(viewModelBuilder => viewModelBuilder.Build(playerDetails, expectedMinionUrl, currentUser))
                 .Repeat
                 .Once()
                 .Return(playerDetailsViewModel);
@@ -71,7 +79,6 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         [Test]
         public void ItSetsThePlayerDetailsViewModelForTheFoundPlayer()
         {
-            int playerId = 1351;
             PlayerDetails playerDetails = new PlayerDetails() { Id = playerId, PlayerGameResults = new List<PlayerGameResult>() };
             playerRetrieverMock.Expect(playerLogic => playerLogic.GetPlayerDetails(playerId, PlayerController.NUMBER_OF_RECENT_GAMES_TO_RETRIEVE))
                 .Repeat.Once()
@@ -82,7 +89,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
                 PlayerId = playerId,
                 PlayerGameResultDetails = new List<GameResultViewModel>()
             };
-            playerDetailsViewModelBuilderMock.Expect(viewModelBuilder => viewModelBuilder.Build(playerDetails, currentUser))
+            playerDetailsViewModelBuilderMock.Expect(viewModelBuilder => viewModelBuilder.Build(playerDetails, expectedMinionUrl, currentUser))
                 .Repeat
                 .Once()
                 .Return(playerDetailsViewModel);
@@ -95,8 +102,6 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         [Test]
         public void ItOnlyRetrievesTheSpecifiedNumberOfPlayers()
         {
-            int playerId = 1;
-
             playerController.Details(playerId, currentUser);
 
             playerRetrieverMock.AssertWasCalled(mock => mock.GetPlayerDetails(playerId, PlayerController.NUMBER_OF_RECENT_GAMES_TO_RETRIEVE));
@@ -105,7 +110,6 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         [Test]
         public void ItPutsTheRecentGamesMessageOnTheViewbag()
         {
-            int playerId = 1;
             PlayerDetails playerDetails = new PlayerDetails(){ PlayerGameResults = new List<PlayerGameResult>() };
             playerRetrieverMock.Expect(playerLogic => playerLogic.GetPlayerDetails(
                 playerId, 
@@ -118,7 +122,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
                 PlayerId = playerId,
                 PlayerGameResultDetails = new List<GameResultViewModel>()
             };
-            playerDetailsViewModelBuilderMock.Expect(viewModelBuilder => viewModelBuilder.Build(playerDetails, currentUser))
+            playerDetailsViewModelBuilderMock.Expect(viewModelBuilder => viewModelBuilder.Build(playerDetails, expectedMinionUrl, currentUser))
                 .Repeat
                 .Once()
                 .Return(playerDetailsViewModel);
