@@ -418,6 +418,7 @@
     <None Include="Properties\PublishProfiles\nerdscorekeeper.pubxml" />
     <None Include="Properties\PublishProfiles\Publish Local.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="robots.txt" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\CreatePlayedGame\createplayedgame.js" />
