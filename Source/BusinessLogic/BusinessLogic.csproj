@@ -206,6 +206,10 @@
     <Compile Include="Migrations\201412060313473_RecalculateChampions_Again.Designer.cs">
       <DependentUpon>201412060313473_RecalculateChampions_Again.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201412102038100_RecalculateChampionsYetAgain.cs" />
+    <Compile Include="Migrations\201412102038100_RecalculateChampionsYetAgain.Designer.cs">
+      <DependentUpon>201412102038100_RecalculateChampionsYetAgain.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Players\PlayerInvitation.cs" />
     <Compile Include="Logic\Players\PlayerInviter.cs" />
     <Compile Include="Logic\Players\PlayerSaver.cs" />
@@ -529,6 +533,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201412060313473_RecalculateChampions_Again.resx">
       <DependentUpon>201412060313473_RecalculateChampions_Again.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201412102038100_RecalculateChampionsYetAgain.resx">
+      <DependentUpon>201412102038100_RecalculateChampionsYetAgain.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

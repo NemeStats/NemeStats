@@ -122,6 +122,7 @@
     <Compile Include="IntegrationTests\DataAccessTests\NemeStatsDataContextTests\FindByIdIntegrationTests.cs" />
     <Compile Include="IntegrationTests\DataAccessTests\NemeStatsDataContextTests\GetQueryableIntegrationTests.cs" />
     <Compile Include="IntegrationTests\DataAccessTests\RepositoriesTests\ChamionRepositoryTests\GetChampionDataTests.cs" />
+    <Compile Include="IntegrationTests\LogicTests\ChampionsTests\RecalculateChampionTests.cs" />
     <Compile Include="IntegrationTests\LogicTests\PlayedGamesTests\GetRecentPublicGamesIntegrationTests.cs" />
     <Compile Include="IntegrationTests\EntityFrameworkGeneralIntegrationTests.cs" />
     <Compile Include="IntegrationTests\LogicTests\GameDefinitionsTests\GameDefinitionRetrieverTests\GetAllGameDefinitionsIntegrationTests.cs" />
