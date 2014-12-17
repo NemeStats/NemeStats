@@ -75,12 +75,12 @@
         generatePlayerRankListItemString: function (playerIndex, playerId, playerName, playerRank) {
 
             return "<span style='cursor:pointer'>" +
-                   "<div class='alert alert-info' role='alert' style='max-width:280px;'>" + playerName + " - Rank: " +
-                    "<input type='text' id='" + playerId + "' name='PlayerRanks[" + playerIndex + "].GameRank' value='" + playerRank + "' style='text-align:center;'/>" +
-					"<button type='button' id='btnRemovePlayer' class='btn btn-default fl-right' data-playerid='" + playerId + "' data-playername='" + playerName + "' title='Remove player'>" +
-						"<i class='fa fa-minus'></i>"+
-                    "</button>" +
-                    "<input type='hidden' name='PlayerRanks[" + playerIndex + "].PlayerId' value='" + playerId + "'/>" +
+                   "<div class='alert alert-info' role='alert' style='max-width:300px;'>" + playerName + " - Rank: " +
+						"<button style='padding: 3px 4px; margin-left:5px;' type='button' id='btnRemovePlayer' class='btn btn-default fl-right' data-playerid='" + playerId + "' data-playername='" + playerName + "' title='Remove player'>" +
+							"<i class='fa fa-minus'></i>" +
+						"</button>" +
+						"<input class='fl-right' type='text' id='" + playerId + "' name='PlayerRanks[" + playerIndex + "].GameRank' value='" + playerRank + "' style='text-align:center;'/>" +
+						"<input type='hidden' name='PlayerRanks[" + playerIndex + "].PlayerId' value='" + playerId + "'/>" +
                    "</div></span>";
         },
         addPlayer: function () {
