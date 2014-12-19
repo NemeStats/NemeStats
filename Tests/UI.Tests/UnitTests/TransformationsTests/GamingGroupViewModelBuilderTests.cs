@@ -2,6 +2,7 @@
 using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
 using BusinessLogic.Models.GamingGroups;
+using BusinessLogic.Models.Players;
 using BusinessLogic.Models.User;
 using NUnit.Framework;
 using Rhino.Mocks;
@@ -27,7 +28,7 @@ namespace UI.Tests.UnitTests.TransformationsTests
         private IGameDefinitionSummaryViewModelBuilder gameDefinitionSummaryViewModelBuilderMock;
         private GamingGroupSummary gamingGroupSummary;
         private GamingGroupViewModel viewModel;
-        private List<Player> players;
+        private List<PlayerWithNemesis> players;
         private List<GameDefinitionSummary> gameDefinitionSummaries;
         private List<PlayedGame> playedGames;
         private List<GameDefinitionDetailsViewModel> gameDefinitionDetailsViewModels; 
@@ -45,10 +46,10 @@ namespace UI.Tests.UnitTests.TransformationsTests
                 playedGameDetailsViewModelBuilderMock,
                 playerWithNemesisViewModelBuilderMock,
                 gameDefinitionSummaryViewModelBuilderMock);
-            players = new List<Player>()
+            players = new List<PlayerWithNemesis>()
             {
-                new Player(){ Id = 1 },
-                new Player(){ Id = 2 }
+                new PlayerWithNemesis(){ PlayerId = 1 },
+                new PlayerWithNemesis(){ PlayerId = 2 }
             };
             gameDefinitionSummaries = new List<GameDefinitionSummary>
             {
@@ -94,10 +95,10 @@ namespace UI.Tests.UnitTests.TransformationsTests
 
             currentUser = new ApplicationUser();
 
-            foreach(Player player in players)
+            foreach(PlayerWithNemesis playerWithNemesis in players)
             {
-                playerWithNemesisViewModelBuilderMock.Expect(mock => mock.Build(player, currentUser))
-                    .Return(new PlayerWithNemesisViewModel() { PlayerId = player.Id });
+                playerWithNemesisViewModelBuilderMock.Expect(mock => mock.Build(playerWithNemesis, this.currentUser))
+                    .Return(new PlayerWithNemesisViewModel() { PlayerId = playerWithNemesis.PlayerId });
             }
 
             foreach (GameDefinitionSummary summary in gameDefinitionSummaries)
@@ -136,10 +137,10 @@ namespace UI.Tests.UnitTests.TransformationsTests
         [Test]
         public void ItSetsThePlayers()
         {
-            foreach(Player player in players)
+            foreach(PlayerWithNemesis player in players)
             {
                 Assert.True((from PlayerWithNemesisViewModel playerWithNemesis in viewModel.Players
-                     where playerWithNemesis.PlayerId == player.Id
+                     where playerWithNemesis.PlayerId == player.PlayerId
                      select true).First());
             }
         }

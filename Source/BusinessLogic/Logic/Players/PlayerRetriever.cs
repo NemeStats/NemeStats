@@ -8,13 +8,13 @@ using System.Linq;
 
 namespace BusinessLogic.Logic.Players
 {
-    public class PlayerRetriever : BusinessLogic.Logic.Players.IPlayerRetriever
+    public class PlayerRetriever : IPlayerRetriever
     {
         private readonly IDataContext dataContext;
         private readonly IPlayerRepository playerRepository;
         public const string EXCEPTION_MESSAGE_PLAYER_COULD_NOT_BE_FOUND = "Could not find player with Id: {0}";
 
-        public PlayerRetriever(DataAccess.IDataContext dataContext, IPlayerRepository playerRepository)
+        public PlayerRetriever(IDataContext dataContext, IPlayerRepository playerRepository)
         {
             this.dataContext = dataContext;
             this.playerRepository = playerRepository;
@@ -34,15 +34,30 @@ namespace BusinessLogic.Logic.Players
                 .ToList();
         }
 
-        public List<Player> GetAllPlayersWithNemesisInfo(int gamingGroupId)
+        public List<PlayerWithNemesis> GetAllPlayersWithNemesisInfo(int gamingGroupId)
         {
-            return GetAllPlayersInGamingGroupQueryable(gamingGroupId)
-                                        .Include(player => player.Nemesis)
-                                        .Include(player => player.Nemesis.NemesisPlayer)
-                                        .Include(player => player.PreviousNemesis)
-                                        .Include(player => player.PreviousNemesis.NemesisPlayer)
-                                        .OrderBy(player => player.Name)
-                                        .ToList();
+            return (from Player player in GetAllPlayersInGamingGroupQueryable(gamingGroupId)
+                        select new PlayerWithNemesis
+                        {
+                           PlayerId = player.Id,
+                           PlayerName = player.Name,
+                           PlayerRegistered = !string.IsNullOrEmpty(player.ApplicationUserId),
+                           NemesisPlayerId = player.Nemesis == null ? (int?)null : player.Nemesis.NemesisPlayerId,
+                           NemesisPlayerName = player.Nemesis != null && player.Nemesis.NemesisPlayer != null 
+                            ? player.Nemesis.NemesisPlayer.Name : null,
+                           PreviousNemesisPlayerId = player.PreviousNemesis == null ? (int?)null : player.PreviousNemesis.NemesisPlayerId,
+                           PreviousNemesisPlayerName = player.PreviousNemesis != null && player.PreviousNemesis.NemesisPlayer != null 
+                            ? player.PreviousNemesis.NemesisPlayer.Name : null,
+                            GamingGroupId = player.GamingGroupId
+                        }
+                   ).ToList();
+            //GetAllPlayersInGamingGroupQueryable(gamingGroupId)
+            //                        .Include(player => player.Nemesis)
+            //                        .Include(player => player.Nemesis.NemesisPlayer)
+            //                        .Include(player => player.PreviousNemesis)
+            //                        .Include(player => player.PreviousNemesis.NemesisPlayer)
+            //                        .OrderBy(player => player.Name)
+            //                        .ToList();
         }
 
         public virtual PlayerDetails GetPlayerDetails(int playerId, int numberOfRecentGamesToRetrieve)

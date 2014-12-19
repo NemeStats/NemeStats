@@ -6,6 +6,7 @@ using BusinessLogic.Logic.Players;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
 using BusinessLogic.Models.GamingGroups;
+using BusinessLogic.Models.Players;
 using BusinessLogic.Models.User;
 using NUnit.Framework;
 using Rhino.Mocks;
@@ -76,7 +77,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
         [Test]
         public void ItReturnsAllActivePlayersInTheGamingGroup()
         {
-            List<Player> expectedPlayers = new List<Player>();
+            List<PlayerWithNemesis> expectedPlayers = new List<PlayerWithNemesis>();
             playerRetrieverMock.Expect(mock => mock.GetAllPlayersWithNemesisInfo(gamingGroupId))
                 .Return(expectedPlayers);
 

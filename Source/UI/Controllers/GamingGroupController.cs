@@ -99,7 +99,7 @@ namespace UI.Controllers
                 GameDefinitionSummaries = gamingGroupSummary.GameDefinitionSummaries
                     .Select(summary => gameDefinitionSummaryViewModelBuilder.Build(summary, currentUser)).ToList(),
                 Players = gamingGroupSummary.Players
-                    .Select(player => playerWithNemesisViewModelBuilder.Build(player, currentUser)).ToList(),
+                    .Select(playerWithNemesis => playerWithNemesisViewModelBuilder.Build(playerWithNemesis, currentUser)).ToList(),
                 RecentGames = gamingGroupSummary.PlayedGames
                     .Select(playedGame => playedGameDetailsViewModelBuilder.Build(playedGame, currentUser)).ToList()
             };

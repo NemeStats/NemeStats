@@ -14,6 +14,8 @@ namespace BusinessLogic.DataAccess
         {
             this.Configuration.ProxyCreationEnabled = false;
             this.Configuration.LazyLoadingEnabled = false;
+            //TODO remove this, only here temporarily
+            this.Database.Log = s => System.Diagnostics.Debug.WriteLine(s);
         }
 
         public virtual DbSet<GamingGroup> GamingGroups { get; set; }

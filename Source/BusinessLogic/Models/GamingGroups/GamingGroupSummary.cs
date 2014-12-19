@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BusinessLogic.Models.Games;
+using BusinessLogic.Models.Players;
 using BusinessLogic.Models.User;
 
 namespace BusinessLogic.Models.GamingGroups
@@ -17,7 +18,7 @@ namespace BusinessLogic.Models.GamingGroups
         public DateTime DateCreated { get; set; }
 
         public virtual ApplicationUser OwningUser { get; set; }
-        public virtual IList<Player> Players { get; set; }
+        public virtual IList<PlayerWithNemesis> Players { get; set; }
         public virtual IList<GameDefinitionSummary> GameDefinitionSummaries { get; set; }
         public virtual IList<PlayedGame> PlayedGames { get; set; }
         public virtual IList<GamingGroupInvitation> GamingGroupInvitations { get; set; }

@@ -1,6 +1,7 @@
 ﻿using BusinessLogic.Models;
 using System;
 using System.Linq;
+using BusinessLogic.Models.Players;
 using BusinessLogic.Models.User;
 using UI.Models.Players;
 
@@ -8,61 +9,32 @@ namespace UI.Transformations.PlayerTransformations
 {
     public class PlayerWithNemesisViewModelBuilder : UI.Transformations.PlayerTransformations.IPlayerWithNemesisViewModelBuilder
     {
-        internal const string EXCEPTION_MESSAGE_NEMESIS_PLAYER_CANNOT_BE_NULL = "player.Nemesis.NemesisPlayer cannot be null if there is a Nemesis set.";
-        internal const string EXCEPTION_MESSAGE_PREVIOUS_NEMESIS_PLAYER_CANNOT_BE_NULL = "player.PreviousNemesis.NemesisPlayer cannot be null if there is a PreviousNemesis set.";
-
-        public PlayerWithNemesisViewModel Build(Player player, ApplicationUser currentUser)
+        public PlayerWithNemesisViewModel Build(PlayerWithNemesis playerWithNemesis, ApplicationUser currentUser)
         {
-            ValidatePlayerNotNull(player);
+            ValidatePlayerNotNull(playerWithNemesis);
 
             PlayerWithNemesisViewModel model = new PlayerWithNemesisViewModel()
             {
-                PlayerId = player.Id,
-                PlayerName = player.Name,
-                PlayerRegistered = player.ApplicationUserId != null,
-                UserCanEdit = (currentUser != null && player.GamingGroupId == currentUser.CurrentGamingGroupId)
+                PlayerId = playerWithNemesis.PlayerId,
+                PlayerName = playerWithNemesis.PlayerName,
+                PlayerRegistered = playerWithNemesis.PlayerRegistered,
+                UserCanEdit = (currentUser != null && playerWithNemesis.GamingGroupId == currentUser.CurrentGamingGroupId)
             };
 
-            if(player.Nemesis != null)
-            {
-                ValidateNemesisPlayerNotNullIfNemesisExists(player);
+            model.NemesisPlayerId = playerWithNemesis.NemesisPlayerId;
+            model.NemesisPlayerName = playerWithNemesis.NemesisPlayerName;
 
-                model.NemesisPlayerId = player.Nemesis.NemesisPlayerId;
-                model.NemesisPlayerName = player.Nemesis.NemesisPlayer.Name;
-            }
-
-            if (player.PreviousNemesis != null)
-            {
-                ValidatePreviousNemesisPlayerNotNullIfNemesisExists(player);
-
-                model.PreviousNemesisPlayerId = player.PreviousNemesis.NemesisPlayerId;
-                model.PreviousNemesisPlayerName = player.PreviousNemesis.NemesisPlayer.Name;
-            }
+            model.PreviousNemesisPlayerId = playerWithNemesis.PreviousNemesisPlayerId;
+            model.PreviousNemesisPlayerName = playerWithNemesis.PreviousNemesisPlayerName;
 
             return model;
         }
 
-        private static void ValidatePlayerNotNull(Player player)
+        private static void ValidatePlayerNotNull(PlayerWithNemesis player)
         {
             if (player == null)
             {
                 throw new ArgumentNullException("player");
-            }
-        }
-
-        private static void ValidateNemesisPlayerNotNullIfNemesisExists(Player player)
-        {
-            if (player.Nemesis.NemesisPlayer == null)
-            {
-                throw new ArgumentException(EXCEPTION_MESSAGE_NEMESIS_PLAYER_CANNOT_BE_NULL);
-            }
-        }
-
-        private static void ValidatePreviousNemesisPlayerNotNullIfNemesisExists(Player player)
-        {
-            if (player.PreviousNemesis.NemesisPlayer == null)
-            {
-                throw new ArgumentException(EXCEPTION_MESSAGE_PREVIOUS_NEMESIS_PLAYER_CANNOT_BE_NULL);
             }
         }
     }

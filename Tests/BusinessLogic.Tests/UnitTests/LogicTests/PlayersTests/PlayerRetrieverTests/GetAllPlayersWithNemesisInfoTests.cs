@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.Models;
+using BusinessLogic.Models.Players;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
         [Test]
         public void ItOnlyReturnsPlayersForTheGivenGamingGroup()
         {
-            List<Player> players = playerRetriever.GetAllPlayersWithNemesisInfo(gamingGroupId);
+            List<PlayerWithNemesis> players = playerRetriever.GetAllPlayersWithNemesisInfo(gamingGroupId);
 
             Assert.True(players.All(player => player.GamingGroupId == gamingGroupId));
         }
@@ -19,13 +20,13 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
         [Test]
         public void ItReturnsPlayersOrderedByTheirNameAscending()
         {
-            List<Player> players = playerRetriever.GetAllPlayersWithNemesisInfo(gamingGroupId);
+            List<PlayerWithNemesis> players = playerRetriever.GetAllPlayersWithNemesisInfo(gamingGroupId);
 
             string lastPlayerName = "0";
-            foreach (Player player in players)
+            foreach (PlayerWithNemesis player in players)
             {
-                Assert.LessOrEqual(lastPlayerName, player.Name);
-                lastPlayerName = player.Name;
+                Assert.LessOrEqual(lastPlayerName, player.PlayerName);
+                lastPlayerName = player.PlayerName;
             }
         }
     }

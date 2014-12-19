@@ -346,6 +346,7 @@
     <Compile Include="Models\NullChampion.cs" />
     <Compile Include="Models\NullNemesis.cs" />
     <Compile Include="Models\Players\PlayerGameSummary.cs" />
+    <Compile Include="Models\Players\PlayerWithNemesis.cs" />
     <Compile Include="Models\Players\TopPlayer.cs" />
     <Compile Include="Models\User\AddUserToGamingGroupResult.cs" />
     <Compile Include="Models\User\AnonymousApplicationUser.cs" />

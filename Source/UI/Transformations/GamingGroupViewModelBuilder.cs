@@ -1,5 +1,6 @@
 ﻿using BusinessLogic.Models;
 using BusinessLogic.Models.GamingGroups;
+using BusinessLogic.Models.Players;
 using BusinessLogic.Models.User;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,8 +35,8 @@ namespace UI.Transformations
             List<PlayedGameDetailsViewModel> details = BuildPlayedGameDetailsViewModels(gamingGroupSummary, currentUser);
 
             List<PlayerWithNemesisViewModel> playerWithNemesisList 
-                = (from Player player in gamingGroupSummary.Players
-                  select playerWithNemesisViewModelBuilder.Build(player, currentUser)).ToList();
+                = (from PlayerWithNemesis playerWithNemesis in gamingGroupSummary.Players
+                   select playerWithNemesisViewModelBuilder.Build(playerWithNemesis, currentUser)).ToList();
             
             GamingGroupViewModel viewModel = new GamingGroupViewModel()
             {
