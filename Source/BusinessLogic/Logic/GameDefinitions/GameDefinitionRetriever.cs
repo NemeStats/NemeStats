@@ -21,9 +21,7 @@ namespace BusinessLogic.Logic.GameDefinitions
         {
             var returnValue = (from gameDefinition in dataContext.GetQueryable<GameDefinition>()
                                    .Include(game => game.PlayedGames)
-                                   .Include(game => game.Champion)
                                    .Include(game => game.Champion.Player)
-                                   .Include(game => game.PreviousChampion)
                                    .Include(game => game.PreviousChampion.Player)
                 where gameDefinition.GamingGroupId == gamingGroupId
                         && gameDefinition.Active
@@ -38,7 +36,10 @@ namespace BusinessLogic.Logic.GameDefinitions
                     PlayedGames = gameDefinition.PlayedGames,
                     TotalNumberOfGamesPlayed = gameDefinition.PlayedGames.Count,
                     Champion = gameDefinition.Champion,
-                    PreviousChampion = gameDefinition.PreviousChampion
+                    ChampionId = gameDefinition.ChampionId,
+                    PreviousChampion = gameDefinition.PreviousChampion,
+                    PreviousChampionId = gameDefinition.PreviousChampionId,
+                    DateCreated = gameDefinition.DateCreated
                 })
                 .OrderBy(game => game.Name)
                 .ToList();
@@ -75,7 +76,6 @@ namespace BusinessLogic.Logic.GameDefinitions
                                                                GamingGroupName = gameDefinition.GamingGroup.Name,
                                                                Id = gameDefinition.Id,
                                                                TotalNumberOfGamesPlayed = gameDefinition.PlayedGames.Count,
-                                                               GameDefinition = gameDefinition,
                                                                Champion = gameDefinition.Champion ?? new NullChampion(),
                                                                PreviousChampion = gameDefinition.PreviousChampion ?? new NullChampion()
                                                            };
@@ -97,11 +97,9 @@ namespace BusinessLogic.Logic.GameDefinitions
                 .Take(numberOfPlayedGamesToRetrieve)
                 .ToList();
 
-            //TODO this is very hacky as I had to add GameDefinition as an internal property on GameDefinitionSummary just so I could set it here. 
-            //Need to revisit this when my brain is less foggy. Or someone with a less foggy brain in general needs to take a peek.
             foreach (PlayedGame playedGame in playedGames)
             {
-                playedGame.GameDefinition = gameDefinitionSummary.GameDefinition;
+                playedGame.GameDefinition = gameDefinitionSummary;
             }
 
             gameDefinitionSummary.PlayedGames = playedGames;

@@ -12,10 +12,10 @@ namespace BusinessLogic.DataAccess
         public NemeStatsDbContext()
             : base("DefaultConnection")
         {
-            this.Configuration.ProxyCreationEnabled = false;
-            this.Configuration.LazyLoadingEnabled = false;
-            //TODO remove this, only here temporarily
-            this.Database.Log = s => System.Diagnostics.Debug.WriteLine(s);
+            this.Configuration.ProxyCreationEnabled = true;
+            this.Configuration.LazyLoadingEnabled = true;
+            //uncomment to turn on SQL statements printing to the console
+            //this.Database.Log = s => System.Diagnostics.Debug.WriteLine(s);
         }
 
         public virtual DbSet<GamingGroup> GamingGroups { get; set; }

@@ -50,14 +50,8 @@ namespace BusinessLogic.Logic.Players
                             ? player.PreviousNemesis.NemesisPlayer.Name : null,
                             GamingGroupId = player.GamingGroupId
                         }
-                   ).ToList();
-            //GetAllPlayersInGamingGroupQueryable(gamingGroupId)
-            //                        .Include(player => player.Nemesis)
-            //                        .Include(player => player.Nemesis.NemesisPlayer)
-            //                        .Include(player => player.PreviousNemesis)
-            //                        .Include(player => player.PreviousNemesis.NemesisPlayer)
-            //                        .OrderBy(player => player.Name)
-            //                        .ToList();
+                   ).OrderBy(playerWithNemesis => playerWithNemesis.PlayerName)
+                   .ToList();
         }
 
         public virtual PlayerDetails GetPlayerDetails(int playerId, int numberOfRecentGamesToRetrieve)
