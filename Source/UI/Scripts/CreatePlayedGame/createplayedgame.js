@@ -12,7 +12,6 @@
         this.$playerFormData = null;
         this.$btnAddPlayer = null;
         this.$addPlayer = null;
-        this.$btnRemovePlayer = null;
         this.$datePicker = null;
     };
 
@@ -29,7 +28,6 @@
             this.$playerDiv = $("#playerDiv");
             this.$addPlayer = $("#addPlayer");
             this.$btnAddPlayer = $("#btnAddPlayer");
-            this.$btnRemovePlayer = $("#btnRemovePlayer");
             this.$anchorAddPlayer = $("#addPlayerAnchor");
             this.$datePicker = $(".date-picker").datepicker({
                 showOn: "button",
@@ -46,6 +44,7 @@
                     parent.onReorder();
                 }
             });
+
             this.$btnAddPlayer.on("click", function() {
                 if (parent.$addPlayer.hasClass("hidden")) {
                     parent.$addPlayer.removeClass("hidden");
@@ -54,9 +53,6 @@
                 }
                 document.location = parent.$anchorAddPlayer.attr("href");
             });
-            $(document).on("click", ":button#btnRemovePlayer", function () {
-            	parent.removePlayer(this);
-            });
         },
         onReorder: function () {
             var parent = this;
@@ -64,11 +60,11 @@
             this.$rankedPlayersListItem = $("#rankedPlayers li");
             this.$rankedPlayersListItem.each(function (index, value) {
                 var listItem = $(value);
-                var playerId = listItem.attr("data-playerId");
+                var playerId = listItem.data("playerId");
                 var rank = index + 1;
                 $("#" + playerId).val(rank);
 
-                var playerName = listItem.attr("data-playerName");
+                var playerName = listItem.data("playerName");
                 listItem.html(parent.generatePlayerRankListItemString(index, playerId, playerName, rank));
             });
         },
@@ -76,7 +72,7 @@
 
             return "<span style='cursor:pointer'>" +
                    "<div class='alert alert-info' role='alert' style='max-width:300px;'>" + playerName + " - Rank: " +
-						"<button style='padding: 3px 4px; margin-left:5px;' type='button' id='btnRemovePlayer' class='btn btn-default fl-right' data-playerid='" + playerId + "' data-playername='" + playerName + "' title='Remove player'>" +
+						"<button style='padding: 3px 4px; margin-left:5px;' type='button' class='btn btn-default btnRemovePlayer fl-right' data-playerid='" + playerId + "' data-playername='" + playerName + "' title='Remove player'>" +
 							"<i class='fa fa-minus'></i>" +
 						"</button>" +
 						"<input class='fl-right' type='text' id='" + playerId + "' name='PlayerRanks[" + playerIndex + "].GameRank' value='" + playerRank + "' style='text-align:center;'/>" +
@@ -84,6 +80,7 @@
                    "</div></span>";
         },
         addPlayer: function () {
+            var parent = this;
             var selectedOption = this.$players.find(":selected");
 
             if (selectedOption.text() == "Add A Player") {
@@ -103,12 +100,16 @@
             this._playerRank++;
             selectedOption.remove();
 
+            var removePlayerButtons = $(".btnRemovePlayer");
+            removePlayerButtons.off('click').on("click", function () {
+                parent.removePlayer(this);
+            });
+
             return null;
         },
         removePlayer: function (data) {
         	var playerId = $(data).data("playerid");
         	var playerName = $(data).data("playername");
-
         	var player = {Id: playerId, Name: playerName};
         	this.onPlayerCreated(player);
 
