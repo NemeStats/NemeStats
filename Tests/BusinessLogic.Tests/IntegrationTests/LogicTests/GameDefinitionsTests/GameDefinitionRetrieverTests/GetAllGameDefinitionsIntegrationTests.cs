@@ -63,7 +63,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.GameDefinitionsTests.G
 
         }
 
-        [Test]
+        [Test, Ignore("Miscellaneous integration test that might be occassionally useful but not worth slowing things down.")]
         public void TryGamingGroup1()
         {
             using (NemeStatsDataContext dataContext = new NemeStatsDataContext())
@@ -79,24 +79,6 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.GameDefinitionsTests.G
                         Assert.That(summary.Champion.Player, Is.Not.Null);
                     }
                 }
-            }
-        }
-
-        [Test]
-        public void EagerLoadTest()
-        {
-            using (NemeStatsDataContext dataContext = new NemeStatsDataContext())
-            {
-                var result = (from gameDefinition in dataContext.GetQueryable<GameDefinition>()
-                                                                .Include(game => game.Champion.Player)
-                                                                    where gameDefinition.Id == 2004
-                                                                    select gameDefinition
-                                                                /*select new {
-                                                                    Champion = gameDefinition.Champion
-                                                                    }*/).First();
-
-                Assert.That(result.Champion, Is.Not.Null);
-                Assert.That(result.Champion.Player, Is.Not.Null);
             }
         }
     }

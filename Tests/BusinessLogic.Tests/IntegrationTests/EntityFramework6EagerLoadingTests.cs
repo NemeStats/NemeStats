@@ -1,4 +1,5 @@
-﻿using BusinessLogic.DataAccess;
+﻿using System.Data.Entity;
+using BusinessLogic.DataAccess;
 using BusinessLogic.Models;
 using NUnit.Framework;
 using System.Linq;
@@ -56,6 +57,38 @@ namespace BusinessLogic.Tests.IntegrationTests
                 //even though LazyLoadingEnabled is false, it will fetch since this player has already been loaded into
                 // memory before
                 Assert.NotNull(player2.PlayerGameResults);
+            }
+        }
+
+
+        [Test]
+        public void EagerLoadTest()
+        {
+            using (NemeStatsDataContext dataContext = new NemeStatsDataContext())
+            {
+                var result = (from gameDefinition in dataContext.GetQueryable<GameDefinition>()
+                                                                .Include(game => game.Champion.Player)
+                              where gameDefinition.Id == 2004
+                              select gameDefinition
+                    /*select new {
+                        Champion = gameDefinition.Champion
+                        }*/).First();
+
+                Assert.That(result.Champion, Is.Not.Null);
+                Assert.That(result.Champion.Player, Is.Not.Null);
+            }
+        }
+
+        [Test(Description = "Have to manually inspect SQL to see what the query looks like")]
+        public void ItOnlyFetchesRelatedEntitiesThatAreNeeded()
+        {
+            using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
+            {
+                dbContext.Database.Log = s => System.Diagnostics.Debug.WriteLine(s);
+                var result = (from gamingGroup in dbContext.GamingGroups.Include(g => g.OwningUser.Players.Select(p => p.Nemesis))
+                              where gamingGroup.Id == 1
+                              select gamingGroup.OwningUser.Players.Select(p => p.Nemesis)).ToList();
+                ;
             }
         }
     }

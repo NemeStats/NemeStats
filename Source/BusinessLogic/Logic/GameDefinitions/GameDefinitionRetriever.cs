@@ -20,9 +20,6 @@ namespace BusinessLogic.Logic.GameDefinitions
         public virtual IList<GameDefinitionSummary> GetAllGameDefinitions(int gamingGroupId)
         {
             var returnValue = (from gameDefinition in dataContext.GetQueryable<GameDefinition>()
-                                   .Include(game => game.PlayedGames)
-                                   .Include(game => game.Champion.Player)
-                                   .Include(game => game.PreviousChampion.Player)
                 where gameDefinition.GamingGroupId == gamingGroupId
                         && gameDefinition.Active
                 select new GameDefinitionSummary
