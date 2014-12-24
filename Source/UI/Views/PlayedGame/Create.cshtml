@@ -1,4 +1,4 @@
-﻿@model BusinessLogic.Models.Games.NewlyCompletedGame
+﻿@model UI.Models.PlayedGame.NewlyCompletedGameViewModel
 
 @{
     ViewBag.Title = "Record a game";
@@ -22,7 +22,7 @@
                         <div class="form-group">
                             @Html.LabelFor(model => model.GameDefinitionId, "The Game", new { @class = "control-label col-md-3" })
                             <div class="col-md-6">
-                                @Html.DropDownList("GameDefinitionId", (IEnumerable<SelectListItem>)null, "Pick A Game", new { @class = "form-control" })
+                                @Html.DropDownList("GameDefinitionId", Model.GameDefinitions, "Pick A Game", new { @class = "form-control" })
                                 @Html.ValidationMessageFor(model => model.GameDefinitionId)
                             </div>
                         </div>
@@ -38,7 +38,7 @@
                         <div class="form-group" id="playerDiv">
                             @Html.LabelFor(model => model.PlayerRanks, "The Players", new { @class = "control-label col-md-3" })
                             <div class="col-md-6">
-                                @Html.DropDownList("Players", (IEnumerable<SelectListItem>)null, "Add A Player", new { @class = "form-control" })
+                                @Html.DropDownList("Players", Model.Players, "Add A Player", new { @class = "form-control" })
                                 @Html.ValidationMessageFor(model => model.PlayerRanks)
                             </div>
                             <div class="col-md-3">
@@ -61,7 +61,7 @@
                             @Html.LabelFor(model => model.Notes, "Game Notes", new { @class = "control-label col-md-3" })
                             <div class="col-md-9">
                                 @Html.TextAreaFor(model => model.Notes,  new { @style = "width:100%", @rows = "8" })
-                                @Html.ValidationMessageFor(model => model.GameDefinitionId)
+                                @Html.ValidationMessageFor(model => model.Notes)
                             </div>
                         </div>
                         

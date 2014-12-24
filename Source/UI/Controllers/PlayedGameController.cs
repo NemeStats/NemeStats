@@ -72,14 +72,16 @@ namespace UI.Controllers
         [HttpGet]
         public virtual ActionResult Create(ApplicationUser currentUser)
         {
-            ViewBag.GameDefinitionId = new SelectList(
-                gameDefinitionRetriever.GetAllGameDefinitions(currentUser.CurrentGamingGroupId.Value), 
-                "Id", 
-                "Name");
+            var viewModel = new NewlyCompletedGameViewModel
+            {
+                GameDefinitions = new SelectList(
+                    gameDefinitionRetriever.GetAllGameDefinitions(currentUser.CurrentGamingGroupId.Value), 
+                    "Id", 
+                    "Name"),
+                Players = AddAllPlayersToViewBag(currentUser)
+            };
 
-            AddAllPlayersToViewBag(currentUser);
-
-            return View(MVC.PlayedGame.Views.Create);
+            return View(MVC.PlayedGame.Views.Create, viewModel);
         }
 
         // POST: /PlayedGame/Create
@@ -102,9 +104,8 @@ namespace UI.Controllers
             return Create(currentUser);
         }
 
-        private void AddAllPlayersToViewBag(ApplicationUser currentUser)
+        private IEnumerable<SelectListItem> AddAllPlayersToViewBag(ApplicationUser currentUser)
         {
-            //TODO Clean Code said something about boolean parameters not being good. Come back to this...
             List<Player> allPlayers = playerRetriever.GetAllPlayers(currentUser.CurrentGamingGroupId.Value);
             List<SelectListItem> allPlayersSelectList = allPlayers.Select(item => new SelectListItem()
             {
@@ -113,6 +114,8 @@ namespace UI.Controllers
             }).ToList();
 
             ViewBag.Players = allPlayersSelectList;
+
+            return allPlayersSelectList;
         }
 
         // GET: /PlayedGame/Delete/5
@@ -124,9 +127,7 @@ namespace UI.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            PlayedGame playedgame = dataContext.GetQueryable<PlayedGame>()
-                .Where(playedGame => playedGame.Id == id.Value)
-                .FirstOrDefault();
+            PlayedGame playedgame = dataContext.GetQueryable<PlayedGame>().FirstOrDefault(playedGame => playedGame.Id == id.Value);
             if (playedgame == null)
             {
                 return HttpNotFound();

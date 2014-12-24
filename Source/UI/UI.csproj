@@ -298,6 +298,7 @@
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Nemeses\NemesisChangeViewModel.cs" />
     <Compile Include="Models\PlayedGame\GameResultViewModel.cs" />
+    <Compile Include="Models\PlayedGame\NewlyCompletedGameViewModel.cs" />
     <Compile Include="Models\PlayedGame\PlayedGameDetailsViewModel.cs" />
     <Compile Include="Models\Players\MinionViewModel.cs" />
     <Compile Include="Models\Players\PlayerDetailsViewModel.cs" />
