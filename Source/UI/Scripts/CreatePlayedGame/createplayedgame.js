@@ -5,10 +5,12 @@
     Views.PlayedGame.CreatePlayedGame = function () {
         this._playerRank = 1;
         this._playerIndex = 0;
+        this.$recordPlayedGameForm = null;
         this.$rankedPlayers = null;
         this.$rankedPlayersListItem = null;
         this.$playerId = null;
         this.$players = null;
+        this.$playersErrorContainer = null;
         this.$playerFormData = null;
         this.$btnAddPlayer = null;
         this.$addPlayer = null;
@@ -22,6 +24,8 @@
         init: function () {
             //Fields
             var parent = this;
+            this.$recordPlayedGameForm = $("#recordPlayedGame");
+            this.$playersErrorContainer = $("#players-error");
             this.$rankedPlayers = $("#rankedPlayers");
             this.$players = $("#Players");
             this.$playerFormData = $("#playerFormData");
@@ -36,6 +40,8 @@
                 maxDate: new Date(),
                 minDate: new Date(2014, 1, 1)
             }).datepicker("setDate", new Date());
+
+            this.$recordPlayedGameForm.on("submit", $.proxy(parent.validatePlayers, parent));
 
             //Event handlers
             this.$players.change(function () { parent.addPlayer(); });
@@ -82,6 +88,7 @@
         addPlayer: function () {
             var parent = this;
             var selectedOption = this.$players.find(":selected");
+            this.$playersErrorContainer.addClass("hidden");
 
             if (selectedOption.text() == "Add A Player") {
                 return alert("You must pick a player.");
@@ -113,11 +120,20 @@
         	var player = {Id: playerId, Name: playerName};
         	this.onPlayerCreated(player);
 
-	      	$("#li" + playerId).remove();
+        	$("#li" + playerId).remove();
         },
         onPlayerCreated: function (player) {
             var newPlayer = $('<option value="' + player.Id + '">' + player.Name + '</option>');
             this.$players.append(newPlayer);
+        },
+
+        validatePlayers: function (event) {
+            if (this.$rankedPlayers.children().length < 2) {
+                this.$playersErrorContainer.removeClass("hidden");
+                return false;
+            }
+
+            return true;
         },
 
         //Properties

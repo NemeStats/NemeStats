@@ -113,8 +113,6 @@ namespace UI.Controllers
                 Value = item.Id.ToString()
             }).ToList();
 
-            ViewBag.Players = allPlayersSelectList;
-
             return allPlayersSelectList;
         }
 

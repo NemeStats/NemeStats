@@ -21,3 +21,7 @@
 /// <reference path="shared/_layout.js" />
 /// <reference path="shared/_loginpartial.js" />
 /// <reference path="gamedefinition/gamedefinitionautocomplete.js" />
+/// <reference path="handlebars.runtime.min.js" />
+/// <reference path="handlebars.runtime.amd.min.js" />
+/// <reference path="handlebars.min.js" />
+/// <reference path="handlebars.amd.min.js" />

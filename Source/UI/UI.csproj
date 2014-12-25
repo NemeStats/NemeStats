@@ -416,6 +416,8 @@
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Content\bootstrap.css.map" />
+    <Content Include="App_Readme\Handlebarsjs_README.md" />
+    <Content Include="App_Readme\Handlebarsjs_LICENSE" />
     <None Include="Properties\PublishProfiles\nerdscorekeeper.pubxml" />
     <None Include="Properties\PublishProfiles\Publish Local.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
@@ -427,6 +429,14 @@
     <Content Include="Scripts\GameDefinition\gameDefinitionAutoComplete.js" />
     <Content Include="Scripts\GameDefinition\gameDefinitions.js" />
     <Content Include="Scripts\GamingGroup\gamingGroup.js" />
+    <Content Include="Scripts\handlebars.amd.js" />
+    <Content Include="Scripts\handlebars.amd.min.js" />
+    <Content Include="Scripts\handlebars.js" />
+    <Content Include="Scripts\handlebars.min.js" />
+    <Content Include="Scripts\handlebars.runtime.amd.js" />
+    <Content Include="Scripts\handlebars.runtime.amd.min.js" />
+    <Content Include="Scripts\handlebars.runtime.js" />
+    <Content Include="Scripts\handlebars.runtime.min.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <Content Include="Scripts\jquery-ui-1.11.2.js" />
