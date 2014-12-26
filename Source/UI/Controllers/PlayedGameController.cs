@@ -78,7 +78,7 @@ namespace UI.Controllers
                     gameDefinitionRetriever.GetAllGameDefinitions(currentUser.CurrentGamingGroupId.Value), 
                     "Id", 
                     "Name"),
-                Players = AddAllPlayersToViewBag(currentUser)
+                Players = this.GetAllPlayers(currentUser)
             };
 
             return View(MVC.PlayedGame.Views.Create, viewModel);
@@ -104,7 +104,7 @@ namespace UI.Controllers
             return Create(currentUser);
         }
 
-        private IEnumerable<SelectListItem> AddAllPlayersToViewBag(ApplicationUser currentUser)
+        private IEnumerable<SelectListItem> GetAllPlayers(ApplicationUser currentUser)
         {
             List<Player> allPlayers = playerRetriever.GetAllPlayers(currentUser.CurrentGamingGroupId.Value);
             List<SelectListItem> allPlayersSelectList = allPlayers.Select(item => new SelectListItem()

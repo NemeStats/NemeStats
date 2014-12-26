@@ -28,24 +28,6 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
         }
 
         [Test]
-        public void ItAddsAllActivePlayersToTheViewBagIfRemainingOnTheCreatePage()
-        {
-            int playerId = 1938;
-            string playerName = "Herb";
-            List<Player> allPlayers = new List<Player>() { new Player() { Id = playerId, Name = playerName } };
-
-            playerRetrieverMock.Expect(x => x.GetAllPlayers(currentUser.CurrentGamingGroupId.Value)).Repeat.Once().Return(allPlayers);
-            playedGameController.ModelState.AddModelError("Test error", "this is a test error to make model state invalid");
-
-            playedGameController.Create(new NewlyCompletedGame(), currentUser);
-
-            playerRetrieverMock.VerifyAllExpectations();
-
-            List<SelectListItem> selectListItems = playedGameController.ViewBag.Players;
-            Assert.True(selectListItems.All(x => x.Value == playerId.ToString() && x.Text == playerName));
-        }
-
-        [Test]
         public void ItRedirectsToTheGamingGroupIndexAndRecentGamesSectionAfterSaving()
         {
             NewlyCompletedGame playedGame = new NewlyCompletedGame()

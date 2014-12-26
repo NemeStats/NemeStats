@@ -210,6 +210,10 @@
     <Compile Include="Migrations\201412102038100_RecalculateChampionsYetAgain.Designer.cs">
       <DependentUpon>201412102038100_RecalculateChampionsYetAgain.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201412260631204_GameDefinitionNameIsRequired.cs" />
+    <Compile Include="Migrations\201412260631204_GameDefinitionNameIsRequired.Designer.cs">
+      <DependentUpon>201412260631204_GameDefinitionNameIsRequired.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Players\PlayerInvitation.cs" />
     <Compile Include="Logic\Players\PlayerInviter.cs" />
     <Compile Include="Logic\Players\PlayerSaver.cs" />
@@ -537,6 +541,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201412102038100_RecalculateChampionsYetAgain.resx">
       <DependentUpon>201412102038100_RecalculateChampionsYetAgain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201412260631204_GameDefinitionNameIsRequired.resx">
+      <DependentUpon>201412260631204_GameDefinitionNameIsRequired.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

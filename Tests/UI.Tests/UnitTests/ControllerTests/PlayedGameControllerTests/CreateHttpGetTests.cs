@@ -47,17 +47,6 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
         }
 
         [Test]
-        public void ItAddsAllActivePlayersToTheViewBag()
-        {
-            playedGameController.Create(currentUser);
-
-            playerRetrieverMock.VerifyAllExpectations();
-
-            List<SelectListItem> selectListItems = playedGameController.ViewBag.Players;
-            Assert.True(selectListItems.All(x => x.Value == playerId.ToString() && x.Text == playerName));
-        }
-
-        [Test]
         public void ItLoadsTheCreateView()
         {
             ViewResult result = playedGameController.Create(currentUser) as ViewResult;
