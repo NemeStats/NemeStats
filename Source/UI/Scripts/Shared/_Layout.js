@@ -10,8 +10,6 @@ Views.Shared.Layout = function () {
 //Implementation
 Views.Shared.Layout.prototype = {
     init: function () {
-        this.$input = $('input:visible:enabled:first');
-        this.$input.focus();
         this.$popovers = $('[data-toggle="popover"]');
         this.$popovers.popover({ trigger: 'hover' });
     }
