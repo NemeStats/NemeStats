@@ -5,7 +5,7 @@ Namespace("Views.Player");
 Views.Player.CreateOrUpdate = function () {
     this.$container = null;
     this.$cbActiveGroup = null;
-    this.$btnSubmit = null;
+    this.$btnSubmitCreatePlayer = null;
     this.$form = null;
     this.$playerNameInput = null;
     this.$errorContainer = null;
@@ -32,8 +32,8 @@ Views.Player.CreateOrUpdate.prototype = {
         this.$playerNameInput = this.$form.find("#Name");
         this.onPlayerSaved = onPlayerSaved;
         
-        this.$btnSubmit = this.$container.find("#btnSubmit");
-        this.$btnSubmit.on("click", function () {
+        this.$btnSubmitCreatePlayer = this.$container.find("#btnSubmitCreatePlayer");
+        this.$btnSubmitCreatePlayer.on("click", function () {
             owner.createPlayer();
         });
     },

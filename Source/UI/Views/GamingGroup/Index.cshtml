@@ -30,7 +30,7 @@
                 Record A Played Game @ViewBag.RecentGamesMessage
             </h4>
             <div class="fl-right">
-                @Html.ActionLink("Record Played Game", "Create", "PlayedGame", new { }, new { @class = "btn btn-primary" })
+                @Html.ActionLink("Record Played Game", "Create", "PlayedGame", new { }, new { @class = "btn btn-primary", @id = "recordPlayedGameFromGamingGroup" })
             </div>
             <div class="fl-clear"></div>
         </div>
@@ -56,7 +56,8 @@
             gameDefinition.onDefinitionCreated = $.proxy(gameDefinitions.onGameCreated, gameDefinitions);
 
             var gamingGroupView = new Views.GamingGroup.GamingGroupView();
-            gamingGroupView.init();
+            var googleAnalyticsObject = new window.Views.Shared.GoogleAnalytics();
+            gamingGroupView.init(googleAnalyticsObject);
         });
     </script>
 }

@@ -6,15 +6,16 @@ Views.GamingGroup.GamingGroupView = function () {
     this.$container = null;
     this.$title = null;
     this._serviceAddress = "/GamingGroup/Edit";
-
+    this._googleAnalytics = null;
 };
 
 //Implementation
 Views.GamingGroup.GamingGroupView.prototype = {
-    init: function () {
+    init: function (gaObject) {
         var parent = this;
         this.$title = $("#gamingGroupTitle");
         this.$title.toEditBox({ onFocusOut: $.proxy(parent.renameGamingGroup, this) });
+        this._googleAnalytics = gaObject;
     },
     renameGamingGroup: function (element) {
         var parent = this;
@@ -30,5 +31,7 @@ Views.GamingGroup.GamingGroupView.prototype = {
             },
             dataType: "json"
         });
+
+        this._googleAnalytics.trackGAEvent("GamingGroup", "GamingGroupRenamed", "GamingGroupRenNamed");
     }
 }

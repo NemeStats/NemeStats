@@ -15,7 +15,7 @@
         this.$btnAddPlayer = null;
         this.$addPlayer = null;
         this.$datePicker = null;
-        this._googleAnalytics = null
+        this._googleAnalytics = null;
     };
 
     //Implementation
