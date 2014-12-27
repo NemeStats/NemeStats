@@ -23,6 +23,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.BoardGameGeekSearcherTests
             expectedOrder = new List<string>
             {
                 TOSHO,
+                TOSHO + " is amazing",
                 TOSHO + " is the man and he likes to be hugged",
                 "Everyone knows " + TOSHO + " is awesome"
             };
@@ -30,16 +31,20 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.BoardGameGeekSearcherTests
             {
                 new BoardGameGeekSearchResult
                 {
-                    BoardGameName = expectedOrder[1]
-                },
-                new BoardGameGeekSearchResult
-                {
                     BoardGameName = expectedOrder[2]
                 },
                 new BoardGameGeekSearchResult
                 {
+                    BoardGameName = expectedOrder[3]
+                },
+                new BoardGameGeekSearchResult
+                {
                     BoardGameName = expectedOrder[0]
-                }
+                },
+                new BoardGameGeekSearchResult
+                {
+                    BoardGameName = expectedOrder[1]
+                } 
             };
 
             actualResults = BoardGameGeekSearcher.SortSearchResults(TOSHO, startingResults);
@@ -52,15 +57,21 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.BoardGameGeekSearcherTests
         }
 
         [Test]
-        public void ItPutsStartsWithMatchesSecond()
+        public void ItPutsTheShortestStartsWithMatchesSecond()
         {
             Assert.AreEqual(expectedOrder[1], actualResults[1].BoardGameName);
         }
 
         [Test]
-        public void ItPutsOtherMatchesLast()
+        public void ItPutsOtherStartsWithMatchesNext()
         {
             Assert.AreEqual(expectedOrder[2], actualResults[2].BoardGameName);
+        }
+
+        [Test]
+        public void ItPutsOtherMatchesLast()
+        {
+            Assert.AreEqual(expectedOrder[3], actualResults[3].BoardGameName);
         }
     }
 }

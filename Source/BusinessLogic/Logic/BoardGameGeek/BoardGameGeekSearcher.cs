@@ -119,7 +119,8 @@ namespace BusinessLogic.Logic.BoardGameGeek
             //then add anything that starts with but isn't an exact match
             results.AddRange(queryable.Where(result => result.BoardGameName.StartsWith(searchText, StringComparison.InvariantCultureIgnoreCase)
                     && !result.BoardGameName.Equals(searchText, StringComparison.InvariantCultureIgnoreCase))
-                    .OrderByDescending(result => result.YearPublished)
+                    .OrderBy(result => result.BoardGameName.Length)
+                    .ThenByDescending(result => result.YearPublished)
                 .Take(MAX_RESULTS_TO_RETURN));
 
             if (results.Count >= MAX_RESULTS_TO_RETURN)
