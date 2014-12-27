@@ -15,13 +15,14 @@
         this.$btnAddPlayer = null;
         this.$addPlayer = null;
         this.$datePicker = null;
+        this._googleAnalytics = null
     };
 
     //Implementation
     Views.PlayedGame.CreatePlayedGame.prototype = {
 
         //Method definitions
-        init: function () {
+        init: function (gaObject) {
             //Fields
             var parent = this;
             this.$recordPlayedGameForm = $("#recordPlayedGame");
@@ -40,6 +41,7 @@
                 maxDate: new Date(),
                 minDate: new Date(2014, 1, 1)
             }).datepicker("setDate", new Date());
+            this._googleAnalytics = gaObject;
 
             this.$recordPlayedGameForm.on("submit", $.proxy(parent.validatePlayers, parent));
 
@@ -58,6 +60,8 @@
                     parent.$addPlayer.addClass("hidden");
                 }
                 document.location = parent.$anchorAddPlayer.attr("href");
+                //TODO Tosho how do I call this in an anonymous inner function?
+                //this._googleAnalytics.trackGAEvent("PlayedGame", "AddNewPlayerClicked", "AddNewPlayerClicked");
             });
         },
         onReorder: function () {
@@ -66,13 +70,14 @@
             this.$rankedPlayersListItem = $("#rankedPlayers li");
             this.$rankedPlayersListItem.each(function (index, value) {
                 var listItem = $(value);
-                var playerId = listItem.data("playerId");
+                var playerId = listItem.data("playerid");
                 var rank = index + 1;
                 $("#" + playerId).val(rank);
 
-                var playerName = listItem.data("playerName");
+                var playerName = listItem.data("playername");
                 listItem.html(parent.generatePlayerRankListItemString(index, playerId, playerName, rank));
             });
+            this._googleAnalytics.trackGAEvent("PlayedGame", "PlayersReordered", "PlayersReordered");
         },
         generatePlayerRankListItemString: function (playerIndex, playerId, playerName, playerRank) {
 
@@ -98,8 +103,8 @@
             var playerName = selectedOption.text();
 
             var playerItem = "<li id='li" + playerId +
-                              "' data-playerId='" + playerId +
-                              "' data-playerName='" + playerName +
+                              "' data-playerid='" + playerId +
+                              "' data-playername='" + playerName +
                               "'>" + this.generatePlayerRankListItemString(this._playerIndex, playerId, playerName, this._playerRank) + "</li>";
 
             this.$rankedPlayers.append(playerItem);
@@ -117,14 +122,19 @@
         removePlayer: function (data) {
         	var playerId = $(data).data("playerid");
         	var playerName = $(data).data("playername");
-        	var player = {Id: playerId, Name: playerName};
-        	this.onPlayerCreated(player);
+            //TODO what  is this for???
+        	//var player = {Id: playerId, Name: playerName};
+        	//this.onPlayerCreated(player);
 
         	$("#li" + playerId).remove();
+
+        	this._googleAnalytics.trackGAEvent("PlayedGame", "PlayerRemoved", "PlayerRemoved");
         },
         onPlayerCreated: function (player) {
             var newPlayer = $('<option value="' + player.Id + '">' + player.Name + '</option>');
             this.$players.append(newPlayer);
+
+            this._googleAnalytics.trackGAEvent("PlayedGame", "NewPlayerAdded", "NewPlayerAdded");
         },
 
         validatePlayers: function (event) {

@@ -96,7 +96,8 @@
         //Creation
         $(document).ready(function () {
             var createPlayedGame = new window.Views.PlayedGame.CreatePlayedGame();
-            createPlayedGame.init();
+            var googleAnalyticsObject = new window.Views.Shared.GoogleAnalytics();
+            createPlayedGame.init(googleAnalyticsObject);
 
             var createOrUpdatePlayer = new window.Views.Player.CreateOrUpdate();
             createOrUpdatePlayer.init($.proxy(createPlayedGame.onPlayerCreated, createPlayedGame));
