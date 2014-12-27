@@ -8,55 +8,76 @@
 <h2>
     Played Game Details <a href="https://twitter.com/share" class="twitter-share-button" data-text="Check out this game I just played on &#64;nemestats :" data-size="large" data-related="nemestats" data-count="none" data-hashtags="boardgames" data-dnt="true" title="Tweet a link to this game">Tweet</a>
 <script>!function (d, s, id) { var js, fjs = d.getElementsByTagName(s)[0], p = /^http:/.test(d.location) ? 'http' : 'https'; if (!d.getElementById(id)) { js = d.createElement(s); js.id = id; js.src = p + '://platform.twitter.com/widgets.js'; fjs.parentNode.insertBefore(js, fjs); } }(document, 'script', 'twitter-wjs');</script>
-
 </h2>
 
-<div>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            Game Played
-        </dt>
-
-        <dd>
-            @Html.ActionLink(Model.GameDefinitionName, "Details", "GameDefinition", new { id = Model.GameDefinitionId }, new { })
-        </dd>
-        <dt>
-            Date Played
-        </dt>
-
-        <dd>
-            @Model.DatePlayed.ToShortDateString()
-        </dd>
-
-        <dt>
-            Gaming Group
-        </dt>
-        <dd>
-            @Html.ActionLink(@Model.GamingGroupName, "Details", "GamingGroup", new { id = @Model.GamingGroupId }, new { })
-        </dd>
-        
-        <dt>
-            Notes
-        </dt>
-        <dd>
-            @Html.Raw(Model.Notes)
-        </dd>
-    </dl>
+<div class="row">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4>Game Info</h4>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-sm-2">
+                    <b>Game Played</b>
+                </div>
+                <div class="col-sm-10">
+                    @Html.ActionLink(Model.GameDefinitionName, "Details", "GameDefinition", new { id = Model.GameDefinitionId }, new { })
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2">
+                    <b>Date Played</b>
+                </div>
+                <div class="col-sm-10">
+                    @Model.DatePlayed.ToShortDateString()
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2">
+                    <b>Gaming Group</b>
+                </div>
+                <div class="col-sm-10">
+                    @Html.ActionLink(@Model.GamingGroupName, "Details", "GamingGroup", new { id = @Model.GamingGroupId }, new { })
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2">
+                    <b>Notes</b>
+                </div>
+                <div class="col-sm-10">
+                    @Html.Raw(Model.Notes)
+                </div>
+            </div>
+            @if (Model.UserCanEdit)
+            {
+                <br/>
+                <div class="row">
+                    <div class="col-sm-10 col-sm-offset-2">
+                        @Html.ActionLink("Delete", "Delete", new { id = Model.PlayedGameId }, new { @class = "btn btn-sm btn-primary" })
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
 </div>
-<p>
-    @if(Model.UserCanEdit)
-    {
-      @Html.ActionLink("Delete", "Delete", new { id = Model.PlayedGameId }) 
-    }
-</p>
-<div>
-    @foreach (var result in Model.PlayerResults)
-    {
-        @Html.ActionLink(@result.PlayerName, "Details", "Player", new { id = result.PlayerId }, new { })
-        <text>- </text>
-        @Html.GameResults(result);
-        <br />
-    }
+<div class="row">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4>Results</h4>
+        </div>
+        <div class="panel-body">
+            @foreach (var result in Model.PlayerResults)
+            {
+                <div class="row">
+                    <div class="col-sm-4">
+                        @Html.ActionLink(@result.PlayerName, "Details", "Player", new { id = result.PlayerId }, new { })
+                    </div>
+                    <div class="col-sm-8">
+                        @Html.GameResults(result)
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
 </div>
 
