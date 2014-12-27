@@ -26,6 +26,9 @@ namespace UI
                       "~/Scripts/bootstrap.js",
                       "~/Scripts/respond.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/handlebars")
+                .Include("~/Scripts/handlebars.js"));
+
             bundles.Add(new ScriptBundle("~/bundles/custom")
                 .Include("~/Scripts/namespace-{version}.js")
                 .Include("~/Scripts/Plugins/toEditBoxPlugin.js")

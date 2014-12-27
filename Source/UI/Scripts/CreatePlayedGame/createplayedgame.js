@@ -15,6 +15,7 @@
         this.$btnAddPlayer = null;
         this.$addPlayer = null;
         this.$datePicker = null;
+        this.$playerItemTemplate = null;
         this._googleAnalytics = null;
     };
 
@@ -60,9 +61,10 @@
                     parent.$addPlayer.addClass("hidden");
                 }
                 document.location = parent.$anchorAddPlayer.attr("href");
-                //TODO Tosho how do I call this in an anonymous inner function?
-                //this._googleAnalytics.trackGAEvent("PlayedGame", "AddNewPlayerClicked", "AddNewPlayerClicked");
+                parent._googleAnalytics.trackGAEvent("PlayedGame", "AddNewPlayerClicked", "AddNewPlayerClicked");
             });
+
+            this.$playerItemTemplate = $("#player-item-template");
         },
         onReorder: function () {
             var parent = this;
@@ -81,14 +83,10 @@
         },
         generatePlayerRankListItemString: function (playerIndex, playerId, playerName, playerRank) {
 
-            return "<span style='cursor:pointer'>" +
-                   "<div class='alert alert-info' role='alert' style='max-width:300px;'>" + playerName + " - Rank: " +
-						"<button style='padding: 3px 4px; margin-left:5px;' type='button' class='btn btn-default btnRemovePlayer fl-right' data-playerid='" + playerId + "' data-playername='" + playerName + "' title='Remove player'>" +
-							"<i class='fa fa-minus'></i>" +
-						"</button>" +
-						"<input class='fl-right' type='text' id='" + playerId + "' name='PlayerRanks[" + playerIndex + "].GameRank' value='" + playerRank + "' style='text-align:center;'/>" +
-						"<input type='hidden' name='PlayerRanks[" + playerIndex + "].PlayerId' value='" + playerId + "'/>" +
-                   "</div></span>";
+            var template = Handlebars.compile(this.$playerItemTemplate.html());
+            var context = { playerIndex: playerIndex, playerId: playerId, playerName: playerName, playerRank: playerRank };
+
+            return template(context);
         },
         addPlayer: function () {
             var parent = this;
@@ -101,7 +99,6 @@
 
             var playerId = selectedOption.val();
             var playerName = selectedOption.text();
-
             var playerItem = "<li id='li" + playerId +
                               "' data-playerid='" + playerId +
                               "' data-playername='" + playerName +
@@ -121,13 +118,8 @@
         },
         removePlayer: function (data) {
         	var playerId = $(data).data("playerid");
-        	var playerName = $(data).data("playername");
-            //TODO what  is this for???
-        	//var player = {Id: playerId, Name: playerName};
-        	//this.onPlayerCreated(player);
-
         	$("#li" + playerId).remove();
-
+            this._playerRank--;
         	this._googleAnalytics.trackGAEvent("PlayedGame", "PlayerRemoved", "PlayerRemoved");
         },
         onPlayerCreated: function (player) {
