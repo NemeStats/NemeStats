@@ -105,15 +105,17 @@
     </script>
     
     <script id="player-item-template" type="text/x-handlebars-template">
-        <div style="cursor:pointer">
-            <div class="alert alert-info" role="alert" style="max-width:300px;">
-                {{playerName}} - Rank:
-                <button style="padding: 3px 4px; margin-left:5px;" type="button" class="btn btn-default btnRemovePlayer fl-right" data-playerid="{{playerId}}" data-playername="{{playerName}}" title="Remove player">
-                    <i class='fa fa-minus'></i>
-                </button>
-                <input class="fl-right" data-rule-required="true" data-rule-min="1" data-val="true" data-val-number="The field must be a number." data-val-required="" aria-required="true" aria-invalid="false" type="text" id="{{playerId}}" name="PlayerRanks[{{playerIndex}}].GameRank" value="{{playerRank}}" style="text-align:center;" />
-                <input type="hidden" name="PlayerRanks[{{playerIndex}}].PlayerId" value="{{playerId}}" />
+        <li>
+            <div style="cursor:pointer">
+                <div class="alert alert-info" role="alert" style="max-width:300px;">
+                    {{playerName}} - Rank:
+                    <button style="padding: 3px 4px; margin-left:5px;" type="button" class="btn btn-default btnRemovePlayer fl-right" data-playername="{{playerName}}" data-playerid="{{playerId}}" title="Remove player">
+                        <i class='fa fa-minus'></i>
+                    </button>
+                    <input class="fl-right" data-rule-required="true" data-rule-min="1" data-val="true" data-val-number="The field must be a number." data-val-required="" aria-required="true" aria-invalid="false" type="text" name="PlayerRanks[{{playerIndex}}].GameRank" value="{{playerRank}}" style="text-align:center;" />
+                    <input type="hidden" name="PlayerRanks[{{playerIndex}}].PlayerId" value="{{playerId}}" />
+                </div>
             </div>
-        </div>
+        </li>
     </script>
 }

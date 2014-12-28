@@ -68,17 +68,14 @@
         },
         onReorder: function () {
             var parent = this;
-
             this.$rankedPlayersListItem = $("#rankedPlayers li");
-            this.$rankedPlayersListItem.each(function (index, value) {
-                var listItem = $(value);
-                var playerId = listItem.data("playerid");
-                var rank = index + 1;
-                $("#" + playerId).val(rank);
 
-                var playerName = listItem.data("playername");
-                listItem.html(parent.generatePlayerRankListItemString(index, playerId, playerName, rank));
+            var removePlayerButtons = $(".btnRemovePlayer");
+            removePlayerButtons.off('click').on("click", function () {
+                parent.removePlayer(this);
             });
+
+            this.recalculateRanks();
             this._googleAnalytics.trackGAEvent("PlayedGame", "PlayersReordered", "PlayersReordered");
         },
         generatePlayerRankListItemString: function (playerIndex, playerId, playerName, playerRank) {
@@ -93,16 +90,13 @@
             var selectedOption = this.$players.find(":selected");
             this.$playersErrorContainer.addClass("hidden");
 
-            if (selectedOption.text() == "Add A Player") {
+            if (selectedOption.text() == "Add A Player") { 
                 return alert("You must pick a player.");
             }
 
             var playerId = selectedOption.val();
             var playerName = selectedOption.text();
-            var playerItem = "<li id='li" + playerId +
-                              "' data-playerid='" + playerId +
-                              "' data-playername='" + playerName +
-                              "'>" + this.generatePlayerRankListItemString(this._playerIndex, playerId, playerName, this._playerRank) + "</li>";
+            var playerItem = this.generatePlayerRankListItemString(this._playerIndex, playerId, playerName, this._playerRank);
 
             this.$rankedPlayers.append(playerItem);
             this._playerIndex++;
@@ -114,13 +108,33 @@
                 parent.removePlayer(this);
             });
 
+            this.recalculateRanks();
+
             return null;
         },
-        removePlayer: function (data) {
-        	var playerId = $(data).data("playerid");
-        	$("#li" + playerId).remove();
-            this._playerRank--;
+        removePlayer: function (button) {
+            var playerId = $(button).data("playerid");
+            var playerName = $(button).data("playername");
+        	$(button).parents('li').remove();
+        	this._playerRank--;
+        	var newPlayer = $('<option value="' + playerId + '">' + playerName + '</option>');
+        	this.$players.append(newPlayer);
+        	this.recalculateRanks();
+
         	this._googleAnalytics.trackGAEvent("PlayedGame", "PlayerRemoved", "PlayerRemoved");
+        },
+        recalculateRanks: function () {
+            var playerItems = this.$rankedPlayers.children();
+            var idx = 1;
+            for (var i = 0; i < playerItems.length; i++) {
+                var playerItem = $(playerItems[i]);
+                var inputTextField = playerItem.find("input:text");
+                var inputHiddenField = playerItem.find("input:hidden");
+                inputTextField.val(idx);
+                inputTextField.attr("name", "PlayerRanks[" + i + "].GameRank");
+                inputHiddenField.attr("name", "PlayerRanks[" + i + "].PlayerId");
+                idx++;
+            }
         },
         onPlayerCreated: function (player) {
             var newPlayer = $('<option value="' + player.Id + '">' + player.Name + '</option>');
