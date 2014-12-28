@@ -11,6 +11,7 @@
         this.$playerId = null;
         this.$players = null;
         this.$playersErrorContainer = null;
+        this.$playersErrorRankTooHigh = null;
         this.$playerFormData = null;
         this.$btnAddPlayer = null;
         this.$addPlayer = null;
@@ -28,6 +29,7 @@
             var parent = this;
             this.$recordPlayedGameForm = $("#recordPlayedGame");
             this.$playersErrorContainer = $("#players-error");
+            this.$playersErrorRankTooHigh = $("#players-error-rank-too-high");
             this.$rankedPlayers = $("#rankedPlayers");
             this.$players = $("#Players");
             this.$playerFormData = $("#playerFormData");
@@ -89,6 +91,7 @@
             var parent = this;
             var selectedOption = this.$players.find(":selected");
             this.$playersErrorContainer.addClass("hidden");
+            this.$playersErrorRankTooHigh.addClass("hidden");
 
             if (selectedOption.text() == "Add A Player") { 
                 return alert("You must pick a player.");
@@ -148,6 +151,16 @@
                 this.$playersErrorContainer.removeClass("hidden");
                 return false;
             }
+            this.$playersErrorContainer.addClass("hidden");
+
+            var allRankValues = this.$rankedPlayers.children().map(function () {
+                return $(this).find("input[type=text]").val();
+            });
+            if (Math.max.apply(Math, allRankValues) > this.$rankedPlayers.children().length) {
+                this.$playersErrorRankTooHigh.removeClass("hidden");
+                return false;
+            }
+            this.$playersErrorRankTooHigh.addClass("hidden");
 
             return true;
         },

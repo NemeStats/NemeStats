@@ -43,6 +43,9 @@
                                 <span id="players-error" class="field-validation-error hidden">
                                     <span class="">Must pass in at least two players.</span>
                                 </span>
+                                <span id="players-error-rank-too-high" class="field-validation-error hidden">
+                                    <span class="">No player can have a rank higher than the max number of players.</span>
+                                </span>
                                 @Html.ValidationMessageFor(model => model.PlayerRanks)
                             </div>
                             <div class="col-md-3">
