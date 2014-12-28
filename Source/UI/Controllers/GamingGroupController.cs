@@ -1,10 +1,9 @@
-﻿using System;
-using BusinessLogic.DataAccess.GamingGroups;
+﻿using BusinessLogic.DataAccess.GamingGroups;
 using BusinessLogic.Logic.GamingGroups;
 using BusinessLogic.Logic.Users;
-using BusinessLogic.Models;
 using BusinessLogic.Models.GamingGroups;
 using BusinessLogic.Models.User;
+using System;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
@@ -180,11 +179,8 @@ namespace UI.Controllers
                 this.ModelState.AddModelError(string.Empty, "You must enter a Gaming Group name.");
                 return this.Index(currentUser);
             }
-            else
-            {
-                gamingGroupSaver.CreateNewGamingGroup(gamingGroupName.Trim(), currentUser);
-                cookieHelper.ClearCookie(NemeStatsCookieEnum.gamingGroupsCookie, Request, Response);
-            }
+            this.gamingGroupSaver.CreateNewGamingGroup(gamingGroupName.Trim(), currentUser);
+            this.cookieHelper.ClearCookie(NemeStatsCookieEnum.gamingGroupsCookie, this.Request, this.Response);
 
             return RedirectToAction(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name);
         }
