@@ -7,6 +7,7 @@ namespace BusinessLogic.Migrations
     {
         public override void Up()
         {
+            this.Sql("UPDATE GameDefinition SET Name = 'Game Name Not Set' WHERE Name IS NULL");
             AlterColumn("dbo.GameDefinition", "Name", c => c.String(nullable: false));
         }
         
