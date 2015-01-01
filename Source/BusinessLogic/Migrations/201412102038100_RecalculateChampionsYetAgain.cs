@@ -12,18 +12,20 @@ namespace BusinessLogic.Migrations
     {
         public override void Up()
         {
-            using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
-            {
-                SecuredEntityValidatorFactory factory = new SecuredEntityValidatorFactory();
+            //since the model has changed, since this migration was originally written, this is no longer valid.
 
-                using (NemeStatsDataContext dataContext = new NemeStatsDataContext(dbContext, factory))
-                {
-                    IChampionRepository championRepository = new ChampionRepository(dataContext);
+            //using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
+            //{
+            //    SecuredEntityValidatorFactory factory = new SecuredEntityValidatorFactory();
 
-                    IChampionRecalculator championRecalculator = new ChampionRecalculator(dataContext, championRepository);
-                    championRecalculator.RecalculateAllChampions();
-                }
-            }
+            //    using (NemeStatsDataContext dataContext = new NemeStatsDataContext(dbContext, factory))
+            //    {
+            //        IChampionRepository championRepository = new ChampionRepository(dataContext);
+
+            //        IChampionRecalculator championRecalculator = new ChampionRecalculator(dataContext, championRepository);
+            //        championRecalculator.RecalculateAllChampions();
+            //    }
+            //}
         }
         
         public override void Down()

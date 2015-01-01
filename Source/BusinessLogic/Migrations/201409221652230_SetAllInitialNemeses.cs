@@ -9,16 +9,17 @@ namespace BusinessLogic.Migrations
     {
         public override void Up()
         {
-            using(NemeStatsDbContext dbContext = new NemeStatsDbContext())
-            {
-                using(NemeStatsDataContext dataContext = new NemeStatsDataContext())
-                {
-                    IPlayerRepository playerRepository = new EntityFrameworkPlayerRepository(dataContext);
+            //since the model has changed, since this migration was originally written, this is no longer valid.
+            //using(NemeStatsDbContext dbContext = new NemeStatsDbContext())
+            //{
+            //    using(NemeStatsDataContext dataContext = new NemeStatsDataContext())
+            //    {
+            //        IPlayerRepository playerRepository = new EntityFrameworkPlayerRepository(dataContext);
                     
-                    INemesisRecalculator nemesisRecalculator = new NemesisRecalculator(dataContext, playerRepository);
-                    nemesisRecalculator.RecalculateAllNemeses();
-                }
-            }
+            //        INemesisRecalculator nemesisRecalculator = new NemesisRecalculator(dataContext, playerRepository);
+            //        nemesisRecalculator.RecalculateAllNemeses();
+            //    }
+            //}
         }
         
         public override void Down()

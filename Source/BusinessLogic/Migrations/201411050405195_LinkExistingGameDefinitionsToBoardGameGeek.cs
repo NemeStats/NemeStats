@@ -9,8 +9,9 @@ namespace BusinessLogic.Migrations
     {
         public override void Up()
         {
-            BoardGameGeekDataLinker dataLinker = new BoardGameGeekDataLinker();
-            dataLinker.CleanUpExistingRecords();
+            //since the model has changed, since this migration was originally written, this is no longer valid.
+            //BoardGameGeekDataLinker dataLinker = new BoardGameGeekDataLinker();
+            //dataLinker.CleanUpExistingRecords();
         }
         
         public override void Down()

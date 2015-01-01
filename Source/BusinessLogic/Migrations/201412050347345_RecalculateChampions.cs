@@ -11,16 +11,17 @@ namespace BusinessLogic.Migrations
     {
         public override void Up()
         {
-            using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
-            {
-                using (NemeStatsDataContext dataContext = new NemeStatsDataContext())
-                {
-                    IChampionRepository championRepository = new ChampionRepository(dataContext);
+            //since the model has changed, since this migration was originally written, this is no longer valid.
+            //using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
+            //{
+            //    using (NemeStatsDataContext dataContext = new NemeStatsDataContext())
+            //    {
+            //        IChampionRepository championRepository = new ChampionRepository(dataContext);
 
-                    IChampionRecalculator championRecalculator = new ChampionRecalculator(dataContext, championRepository);
-                    championRecalculator.RecalculateAllChampions();
-                }
-            }
+            //        IChampionRecalculator championRecalculator = new ChampionRecalculator(dataContext, championRepository);
+            //        championRecalculator.RecalculateAllChampions();
+            //    }
+            //}
         }
         
         public override void Down()
