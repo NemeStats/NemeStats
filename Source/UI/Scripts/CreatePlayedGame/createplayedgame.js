@@ -78,7 +78,7 @@
             });
 
             this.recalculateRanks();
-            this._googleAnalytics.trackGAEvent("PlayedGame", "PlayersReordered", "PlayersReordered");
+            this._googleAnalytics.trackGAEvent("PlayedGames", "PlayersReordered", "PlayersReordered");
         },
         generatePlayerRankListItemString: function (playerIndex, playerId, playerName, playerRank) {
 
@@ -124,7 +124,7 @@
         	this.$players.append(newPlayer);
         	this.recalculateRanks();
 
-        	this._googleAnalytics.trackGAEvent("PlayedGame", "PlayerRemoved", "PlayerRemoved");
+        	this._googleAnalytics.trackGAEvent("PlayedGames", "PlayerRemoved", "PlayerRemoved");
         },
         recalculateRanks: function () {
             var playerItems = this.$rankedPlayers.children();
