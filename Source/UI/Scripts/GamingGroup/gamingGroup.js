@@ -32,6 +32,6 @@ Views.GamingGroup.GamingGroupView.prototype = {
             dataType: "json"
         });
 
-        this._googleAnalytics.trackGAEvent("GamingGroup", "GamingGroupRenamed", "GamingGroupRenNamed");
+        this._googleAnalytics.trackGAEvent("GamingGroup", "GamingGroupRenamed", "GamingGroupRenamed");
     }
 }
