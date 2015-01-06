@@ -63,7 +63,7 @@
                     parent.$addPlayer.addClass("hidden");
                 }
                 document.location = parent.$anchorAddPlayer.attr("href");
-                parent._googleAnalytics.trackGAEvent("PlayedGame", "AddNewPlayerClicked", "AddNewPlayerClicked");
+                parent._googleAnalytics.trackGAEvent("PlayedGames", "AddNewPlayerClicked", "AddNewPlayerClicked");
             });
 
             this.$playerItemTemplate = $("#player-item-template");
