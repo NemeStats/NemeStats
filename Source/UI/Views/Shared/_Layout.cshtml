@@ -6,6 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="msvalidate.01" content="52A9C8830987C1456378EB7E298524FB" />
     <title>@ViewBag.Title - NemeStats</title>
+    @if(ViewBag.Description != null)
+    {
+        <meta name="description" content="@ViewBag.Description"/>
+    }
     @Styles.Render("~/bundles/content/css")
     @Styles.Render("~/Content/themes/base/css")
     @Scripts.Render("~/bundles/modernizr")
@@ -45,9 +49,9 @@
             </div>
         </div>
     </div>
-    
+
     @RenderBody()
-    
+
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/bundles/jqueryui")
