@@ -1,7 +1,7 @@
 ﻿@model UI.Models.PlayedGame.PlayedGameDetailsViewModel
 @using UI.HtmlHelpers
 @{
-    ViewBag.Title = "Played Game Details";
+    ViewBag.Title = @Model.GameDefinitionName + " - " + Model.DatePlayed.ToShortDateString() + " - " + Model.GamingGroupName;
     Layout = MVC.Shared.Views._BaseLayout;
 }
 
