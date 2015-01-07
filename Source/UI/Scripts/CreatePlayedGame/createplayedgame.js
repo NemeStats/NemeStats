@@ -143,7 +143,7 @@
             var newPlayer = $('<option value="' + player.Id + '">' + player.Name + '</option>');
             this.$players.append(newPlayer);
 
-            this._googleAnalytics.trackGAEvent("PlayedGame", "NewPlayerAdded", "NewPlayerAdded");
+            this._googleAnalytics.trackGAEvent("PlayedGames", "NewPlayerAdded", "NewPlayerAdded");
         },
 
         validatePlayers: function (event) {
