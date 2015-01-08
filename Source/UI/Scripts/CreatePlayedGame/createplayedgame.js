@@ -145,7 +145,7 @@
             if (previous.length > 0) {
                 item.insertBefore(previous);
                 this.recalculateRanks();
-                this._googleAnalytics.trackGAEvent("PlayedGame", "PlayersReorderedViaArrow", "PlayersReorderedViaArrow");
+                this._googleAnalytics.trackGAEvent("PlayedGames", "PlayersReorderedViaArrow", "PlayersReorderedViaArrow");
             }
         },
         movePlayerDown: function (button) {
@@ -155,7 +155,7 @@
             if (next.length > 0) {
                 item.insertAfter(next);
                 this.recalculateRanks();
-                this._googleAnalytics.trackGAEvent("PlayedGame", "PlayersReorderedViaArrow", "PlayersReorderedViaArrow");
+                this._googleAnalytics.trackGAEvent("PlayedGames", "PlayersReorderedViaArrow", "PlayersReorderedViaArrow");
             }
         },
         recalculateRanks: function () {
