@@ -191,3 +191,12 @@ ul input[type=text] { width:25px }
 .autocomplete-loading {
     background: url('/Content/Images/spinner.gif') no-repeat right center;
 }
+
+.editable-title:hover {
+    background: #ddd;
+    border-radius: 4px;
+}
+
+.editable-title {
+    padding: 5px;
+}
