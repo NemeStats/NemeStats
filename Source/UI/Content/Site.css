@@ -107,6 +107,30 @@ ul input[type=text] { width:25px }
     margin-bottom: 2em;
 }
 
+.margin-left-sm {
+    margin-left: 1em;
+} 
+
+.margin-left-md {
+    margin-left: 1.5em;
+}
+
+.margin-left-lg {
+    margin-left: 2em;
+}
+
+.margin-sm {
+    margin: 1em;
+} 
+
+.margin-md {
+    margin: 1.5em;
+}
+
+.margin-lg {
+    margin: 2em;
+}
+
 .line-bottom-sm {
     border-bottom:#eee;
     border-bottom-style: solid;
@@ -192,16 +216,50 @@ ul input[type=text] { width:25px }
     background: url('/Content/Images/spinner.gif') no-repeat right center;
 }
 
-.editable-title:hover {
-    background: #ddd;
-    border-radius: 4px;
+.leftItem {
+  display:inline-block;
+  max-width: 120px;
+  overflow: hidden;
 }
 
-.editable-title {
-    padding: 5px;
+.leftItem span {
+  display:inline-block; 
+  line-height:30px;
+  white-space:nowrap;
 }
 
-.gaming-group-name {
-    min-width: 100%;
-    max-width: 100%;
+.rightItem {
+  display:inline-block;
+}
+
+.playerRank {
+  height:30px;
+  width:30px !important;
+  border-radius:5px;
+  border-color:blue;
+  border-width:1px;
+  text-align:center;
+}
+
+.removePlayerButton {
+  height:30px;
+  width:30px;
+  border-radius:5px;
+  background-color:#fff;
+  border-width:1px;
+  border-color:blue;
+}
+
+.playerItem {
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+  color:#31708f;
+  background-color:#d9edf7;
+  max-width:380px;
+  margin:8px;
+  padding:4px;
+  cursor:pointer;
+  border-radius:5px;
+  position:relative;
+  white-space:nowrap;
+  margin-left: 0px;
 }
