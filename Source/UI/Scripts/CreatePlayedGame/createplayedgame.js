@@ -18,6 +18,7 @@
         this.$datePicker = null;
         this.$playerItemTemplate = null;
         this._googleAnalytics = null;
+        this._rankButtons = null;
     };
 
     //Implementation
@@ -27,6 +28,7 @@
         init: function (gaObject) {
             //Fields
             var parent = this;
+            this._rankButtons = [];
             this.$recordPlayedGameForm = $("#recordPlayedGame");
             this.$playersErrorContainer = $("#players-error");
             this.$playersErrorRankTooHigh = $("#players-error-rank-too-high");
@@ -105,6 +107,16 @@
             this._playerIndex++;
             this._playerRank++;
             selectedOption.remove();
+            
+            var buttonUp = $(".rankButton-up");
+            var buttonDown = $(".rankButton-down");
+            buttonUp.off("click").on("click", function () {
+                parent.movePlayerUp(this);
+            });
+
+            buttonDown.off("click").on("click", function () {
+                parent.movePlayerDown(this);
+            });
 
             var removePlayerButtons = $(".btnRemovePlayer");
             removePlayerButtons.off('click').on("click", function () {
@@ -125,6 +137,26 @@
         	this.recalculateRanks();
 
         	this._googleAnalytics.trackGAEvent("PlayedGame", "PlayerRemoved", "PlayerRemoved");
+        },
+        movePlayerUp: function (button) {
+            var item = $(button).closest("li");
+            var previous = item.prev();
+
+            if (previous.length > 0) {
+                item.insertBefore(previous);
+                this.recalculateRanks();
+                this._googleAnalytics.trackGAEvent("PlayedGame", "PlayersReorderedViaArrow", "PlayersReorderedViaArrow");
+            }
+        },
+        movePlayerDown: function (button) {
+            var item = $(button).closest("li");
+            var next = item.next();
+
+            if (next.length > 0) {
+                item.insertAfter(next);
+                this.recalculateRanks();
+                this._googleAnalytics.trackGAEvent("PlayedGame", "PlayersReorderedViaArrow", "PlayersReorderedViaArrow");
+            }
         },
         recalculateRanks: function () {
             var playerItems = this.$rankedPlayers.children();
