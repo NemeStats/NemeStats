@@ -3,7 +3,7 @@
 @model UI.Models.GameDefinitionModels.GameDefinitionDetailsViewModel
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = @Model.Name + " - " + Model.GamingGroupName;
     Layout = MVC.Shared.Views._BaseLayout;
 }
 

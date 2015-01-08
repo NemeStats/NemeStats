@@ -65,7 +65,7 @@
                     parent.$addPlayer.addClass("hidden");
                 }
                 document.location = parent.$anchorAddPlayer.attr("href");
-                parent._googleAnalytics.trackGAEvent("PlayedGame", "AddNewPlayerClicked", "AddNewPlayerClicked");
+                parent._googleAnalytics.trackGAEvent("PlayedGames", "AddNewPlayerClicked", "AddNewPlayerClicked");
             });
 
             this.$playerItemTemplate = $("#player-item-template");
@@ -80,7 +80,7 @@
             });
 
             this.recalculateRanks();
-            this._googleAnalytics.trackGAEvent("PlayedGame", "PlayersReordered", "PlayersReordered");
+            this._googleAnalytics.trackGAEvent("PlayedGames", "PlayersReordered", "PlayersReordered");
         },
         generatePlayerRankListItemString: function (playerIndex, playerId, playerName, playerRank) {
 
@@ -136,7 +136,7 @@
         	this.$players.append(newPlayer);
         	this.recalculateRanks();
 
-        	this._googleAnalytics.trackGAEvent("PlayedGame", "PlayerRemoved", "PlayerRemoved");
+        	this._googleAnalytics.trackGAEvent("PlayedGames", "PlayerRemoved", "PlayerRemoved");
         },
         movePlayerUp: function (button) {
             var item = $(button).closest("li");
@@ -175,7 +175,7 @@
             var newPlayer = $('<option value="' + player.Id + '">' + player.Name + '</option>');
             this.$players.append(newPlayer);
 
-            this._googleAnalytics.trackGAEvent("PlayedGame", "NewPlayerAdded", "NewPlayerAdded");
+            this._googleAnalytics.trackGAEvent("PlayedGames", "NewPlayerAdded", "NewPlayerAdded");
         },
 
         validatePlayers: function (event) {
