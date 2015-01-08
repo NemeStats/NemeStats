@@ -1,7 +1,8 @@
 ﻿(function ($) {
     var settings = {
         onFocusOut: null,
-        onFocusIn: null
+        onFocusIn: null,
+        cssClass: null
     };
 
     var $previous = null;
@@ -10,7 +11,11 @@
     function convertToEdit(element) {
         $previous = $(element).clone(true, true);
         var oldValue = $(element).text();
-        var textBox = "<input type='text' id='" + element.id + "' />";
+        var textBox = "<input type='text' id='" + element.id + "'";
+        if (settings.cssClass !== null) {
+            textBox += " class='" + settings.cssClass + "' ";
+        }
+        textBox += " />";
         $(element).replaceWith(textBox);
         element = $("#" + element.id);
         $(element).focus().val(oldValue);

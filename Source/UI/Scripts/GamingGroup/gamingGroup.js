@@ -14,7 +14,7 @@ Views.GamingGroup.GamingGroupView.prototype = {
     init: function (gaObject) {
         var parent = this;
         this.$title = $("#gamingGroupTitle");
-        this.$title.toEditBox({ onFocusOut: $.proxy(parent.renameGamingGroup, this) });
+        this.$title.toEditBox({ onFocusOut: $.proxy(parent.renameGamingGroup, this), cssClass: 'gaming-group-name' });
         this._googleAnalytics = gaObject;
     },
     renameGamingGroup: function (element) {
