@@ -323,6 +323,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>
+    <Compile Include="Transformations\AutomapperConfiguration.cs" />
     <Compile Include="Transformations\GameDefinitionSummaryViewModelBuilder.cs" />
     <Compile Include="Transformations\IGameDefinitionSummaryViewModelBuilder.cs" />
     <Compile Include="Transformations\IGameDefinitionViewModelBuilder.cs" />
@@ -352,7 +353,6 @@
     <Compile Include="Transformations\PlayerTransformations\PlayerWithNemesisViewModelBuilder.cs" />
     <Compile Include="Transformations\PlayerTransformations\TopPlayerViewModelBuilder.cs" />
     <Compile Include="Models\Players\PlayerWithNemesisViewModel.cs" />
-    <Compile Include="Transformations\TopGamingGroupSummaryViewModelBuilder.cs" />
     <Compile Include="UsersAdminController.generated.cs">
       <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>

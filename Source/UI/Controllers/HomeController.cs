@@ -1,11 +1,14 @@
-﻿using BusinessLogic.Logic.GamingGroups;
+﻿using AutoMapper;
+using BusinessLogic.Logic.GamingGroups;
 using BusinessLogic.Logic.PlayedGames;
 using BusinessLogic.Logic.Players;
 using BusinessLogic.Models.Games;
+using BusinessLogic.Models.GamingGroups;
 using BusinessLogic.Models.Players;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using UI.Models.GamingGroup;
 using UI.Models.Home;
 using UI.Models.Nemeses;
 using UI.Models.Players;
@@ -28,7 +31,6 @@ namespace UI.Controllers
         private readonly INemesisHistoryRetriever nemesisHistoryRetriever;
         private readonly INemesisChangeViewModelBuilder nemesisChangeViewModelBuilder;
         private readonly IGamingGroupRetriever gamingGroupRetriever;
-        private readonly TopGamingGroupSummaryViewModelBuilder topGamingGroupSummaryViewModelBuilder;
 
 
         public HomeController(
@@ -37,8 +39,7 @@ namespace UI.Controllers
             IPlayedGameRetriever playedGameRetriever, 
             INemesisHistoryRetriever nemesisHistoryRetriever, 
             INemesisChangeViewModelBuilder nemesisChangeViewModelBuilder, 
-            IGamingGroupRetriever gamingGroupRetriever, 
-            TopGamingGroupSummaryViewModelBuilder topGamingGroupSummaryViewModelBuilder)
+            IGamingGroupRetriever gamingGroupRetriever)
         {
             this.playerSummaryBuilder = playerSummaryBuilder;
             this.topPlayerViewModelBuilder = topPlayerViewModelBuilder;
@@ -46,7 +47,6 @@ namespace UI.Controllers
             this.nemesisHistoryRetriever = nemesisHistoryRetriever;
             this.nemesisChangeViewModelBuilder = nemesisChangeViewModelBuilder;
             this.gamingGroupRetriever = gamingGroupRetriever;
-            this.topGamingGroupSummaryViewModelBuilder = topGamingGroupSummaryViewModelBuilder;
         }
 
         public virtual ActionResult Index()
@@ -63,7 +63,8 @@ namespace UI.Controllers
             var nemesisChangeViewModels = nemesisChangeViewModelBuilder.Build(nemesisChanges);
 
             var topGamingGroups = gamingGroupRetriever.GetTopGamingGroups(NUMBER_OF_TOP_GAMING_GROUPS_TO_SHOW);
-            var topGamingGroupViewModels = topGamingGroups.Select(topGamingGroup => topGamingGroupSummaryViewModelBuilder.Build(topGamingGroup)).ToList();
+
+            var topGamingGroupViewModels = topGamingGroups.Select(Mapper.Map<TopGamingGroupSummary, TopGamingGroupSummaryViewModel>).ToList();
 
             HomeIndexViewModel homeIndexViewModel = new HomeIndexViewModel()
             {

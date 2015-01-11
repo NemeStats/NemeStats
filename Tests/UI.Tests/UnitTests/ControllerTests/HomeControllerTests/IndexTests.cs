@@ -1,4 +1,5 @@
-﻿using BusinessLogic.Logic.GamingGroups;
+﻿using AutoMapper;
+using BusinessLogic.Logic.GamingGroups;
 using BusinessLogic.Logic.Nemeses;
 using BusinessLogic.Models.Games;
 using BusinessLogic.Models.Players;
@@ -58,16 +59,20 @@ namespace UI.Tests.UnitTests.ControllerTests.HomeControllerTests
             nemesisChangeViewModelBuilderMock.Expect(mock => mock.Build(expectedNemesisChanges))
                                          .Return(expectedNemesisChangeViewModels);
 
-            expectedTopGamingGroup = new TopGamingGroupSummary();
+            expectedTopGamingGroup = new TopGamingGroupSummary()
+            {
+                GamingGroupId = 1,
+                GamingGroupName = "gaming group name",
+                NumberOfGamesPlayed = 2,
+                NumberOfPlayers = 3
+            };
             List<TopGamingGroupSummary> expectedTopGamingGroupSummaries = new List<TopGamingGroupSummary>()
             {
                 expectedTopGamingGroup
             };
             gamingGroupRetrieverMock.Expect(mock => mock.GetTopGamingGroups(HomeController.NUMBER_OF_TOP_GAMING_GROUPS_TO_SHOW))
                                     .Return(expectedTopGamingGroupSummaries);
-            expectedTopGamingGroupViewModel = new TopGamingGroupSummaryViewModel();
-            topGamingGroupSummaryViewModelBuilderMock.Expect(mock => mock.Build(Arg<TopGamingGroupSummary>.Is.Anything))
-                                                 .Return(expectedTopGamingGroupViewModel);
+            expectedTopGamingGroupViewModel = Mapper.Map<TopGamingGroupSummary, TopGamingGroupSummaryViewModel>(expectedTopGamingGroupSummaries[0]);
 
             HomeIndexViewModel indexViewModel = new HomeIndexViewModel();
             viewResult = homeControllerPartialMock.Index() as ViewResult;
@@ -108,7 +113,11 @@ namespace UI.Tests.UnitTests.ControllerTests.HomeControllerTests
         {
             HomeIndexViewModel actualViewModel = (HomeIndexViewModel)viewResult.ViewData.Model;
 
-            Assert.AreSame(expectedTopGamingGroupViewModel, actualViewModel.TopGamingGroups[0]);
+            Assert.AreEqual(expectedTopGamingGroupViewModel.GamingGroupId, actualViewModel.TopGamingGroups[0].GamingGroupId);
+            Assert.AreEqual(expectedTopGamingGroupViewModel.GamingGroupName, actualViewModel.TopGamingGroups[0].GamingGroupName);
+            Assert.AreEqual(expectedTopGamingGroupViewModel.NumberOfGamesPlayed, actualViewModel.TopGamingGroups[0].NumberOfGamesPlayed);
+            Assert.AreEqual(expectedTopGamingGroupViewModel.NumberOfPlayers, actualViewModel.TopGamingGroups[0].NumberOfPlayers);
+
         }
     }
 }
