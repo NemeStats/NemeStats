@@ -1,4 +1,5 @@
-﻿using BusinessLogic.Logic.Nemeses;
+﻿using BusinessLogic.Logic.GamingGroups;
+using BusinessLogic.Logic.Nemeses;
 using BusinessLogic.Models.Games;
 using BusinessLogic.Models.Players;
 using NUnit.Framework;
@@ -7,9 +8,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using UI.Controllers;
+using UI.Models.GamingGroup;
 using UI.Models.Home;
 using UI.Models.Nemeses;
 using UI.Models.Players;
+using BusinessLogic.Models.GamingGroups;
 
 namespace UI.Tests.UnitTests.ControllerTests.HomeControllerTests
 {
@@ -19,6 +22,8 @@ namespace UI.Tests.UnitTests.ControllerTests.HomeControllerTests
         private TopPlayerViewModel expectedPlayer;
         private PublicGameSummary expectedPublicGameSummary;
         private List<NemesisChangeViewModel> expectedNemesisChangeViewModels;
+        private TopGamingGroupSummary expectedTopGamingGroup;
+        private TopGamingGroupSummaryViewModel expectedTopGamingGroupViewModel;
         private ViewResult viewResult;
             
         [SetUp]
@@ -34,7 +39,7 @@ namespace UI.Tests.UnitTests.ControllerTests.HomeControllerTests
             playerSummaryBuilderMock.Expect(mock => mock.GetTopPlayers(HomeController.NUMBER_OF_TOP_PLAYERS_TO_SHOW))
                 .Return(topPlayers);
             expectedPlayer = new TopPlayerViewModel();
-            viewModelBuilderMock.Expect(mock => mock.Build(Arg<TopPlayer>.Is.Anything))
+            topPlayerViewModelBuilderMock.Expect(mock => mock.Build(Arg<TopPlayer>.Is.Anything))
                 .Return(expectedPlayer);
 
             expectedPublicGameSummary = new PublicGameSummary();
@@ -42,16 +47,27 @@ namespace UI.Tests.UnitTests.ControllerTests.HomeControllerTests
             {
                 expectedPublicGameSummary
             };
-            playedGameRetriever.Expect(mock => mock.GetRecentPublicGames(HomeController.NUMBER_OF_RECENT_PUBLIC_GAMES_TO_SHOW))
+            playedGameRetrieverMock.Expect(mock => mock.GetRecentPublicGames(HomeController.NUMBER_OF_RECENT_PUBLIC_GAMES_TO_SHOW))
                 .Return(publicGameSummaries);
 
             List<NemesisChange> expectedNemesisChanges = new List<NemesisChange>();
-            nemesisHistoryRetriever.Expect(mock => mock.GetRecentNemesisChanges(HomeController.NUMBER_OF_RECENT_NEMESIS_CHANGES_TO_SHOW))
+            nemesisHistoryRetrieverMock.Expect(mock => mock.GetRecentNemesisChanges(HomeController.NUMBER_OF_RECENT_NEMESIS_CHANGES_TO_SHOW))
                                    .Return(expectedNemesisChanges);
 
             expectedNemesisChangeViewModels = new List<NemesisChangeViewModel>();
-            nemesisChangeViewModelBuilder.Expect(mock => mock.Build(expectedNemesisChanges))
+            nemesisChangeViewModelBuilderMock.Expect(mock => mock.Build(expectedNemesisChanges))
                                          .Return(expectedNemesisChangeViewModels);
+
+            expectedTopGamingGroup = new TopGamingGroupSummary();
+            List<TopGamingGroupSummary> expectedTopGamingGroupSummaries = new List<TopGamingGroupSummary>()
+            {
+                expectedTopGamingGroup
+            };
+            gamingGroupRetrieverMock.Expect(mock => mock.GetTopGamingGroups(HomeController.NUMBER_OF_TOP_GAMING_GROUPS_TO_SHOW))
+                                    .Return(expectedTopGamingGroupSummaries);
+            expectedTopGamingGroupViewModel = new TopGamingGroupSummaryViewModel();
+            topGamingGroupSummaryViewModelBuilderMock.Expect(mock => mock.Build(Arg<TopGamingGroupSummary>.Is.Anything))
+                                                 .Return(expectedTopGamingGroupViewModel);
 
             HomeIndexViewModel indexViewModel = new HomeIndexViewModel();
             viewResult = homeControllerPartialMock.Index() as ViewResult;
@@ -83,7 +99,16 @@ namespace UI.Tests.UnitTests.ControllerTests.HomeControllerTests
         public void TheIndexHasRecentNemesisChanges()
         {
             HomeIndexViewModel actualViewModel = (HomeIndexViewModel)viewResult.ViewData.Model;
+
             Assert.AreSame(expectedNemesisChangeViewModels, actualViewModel.RecentNemesisChanges);
+        }
+
+        [Test]
+        public void TheIndexHasTopGamingGroups()
+        {
+            HomeIndexViewModel actualViewModel = (HomeIndexViewModel)viewResult.ViewData.Model;
+
+            Assert.AreSame(expectedTopGamingGroupViewModel, actualViewModel.TopGamingGroups[0]);
         }
     }
 }

@@ -214,6 +214,7 @@
     <Compile Include="Migrations\201412260631204_GameDefinitionNameIsRequired.Designer.cs">
       <DependentUpon>201412260631204_GameDefinitionNameIsRequired.cs</DependentUpon>
     </Compile>
+    <Compile Include="Models\GamingGroups\TopGamingGroupSummary.cs" />
     <Compile Include="Models\Players\PlayerInvitation.cs" />
     <Compile Include="Logic\Players\PlayerInviter.cs" />
     <Compile Include="Logic\Players\PlayerSaver.cs" />

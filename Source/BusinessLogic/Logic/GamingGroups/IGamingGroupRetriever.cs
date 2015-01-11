@@ -11,5 +11,6 @@ namespace BusinessLogic.Logic.GamingGroups
         GamingGroupSummary GetGamingGroupDetails(int gamingGroupId, int maxNumberOfGamesToRetrieve);
 
         List<GamingGroup> GetGamingGroupsForUser(ApplicationUser applicationUser);
+        List<TopGamingGroupSummary> GetTopGamingGroups(int numberOfTopGamingGroupsToShow);
     }
 }

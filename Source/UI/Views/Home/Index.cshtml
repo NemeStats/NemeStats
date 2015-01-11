@@ -7,7 +7,7 @@
 
 <div class="home-container">
     <div class="home-banner">
-        <img src="~/Content/Images/NemeStats.png" style="width: 70%; margin-left:15%; margin-right:15%;" />
+        <img src="~/Content/Images/NemeStats.png" alt="NemeStats" style="width: 70%; margin-left:15%; margin-right:15%;" />
     </div>
 
     <div id="mainCarousel" class="carousel slide" data-ride="carousel" data-interval="15000" data-pause="hover">
@@ -164,7 +164,14 @@
                         <th>Number of Players</th>
                         <th>Number of Games Played</th>
                     </tr>
-                    <tr><td></td><td>Coming Soon!</td><td></td></tr>
+                    @foreach (UI.Models.GamingGroup.TopGamingGroupSummary topGamingGroup in @Model.TopGamingGroups)
+                    {
+                        <tr>
+                            <td>@Html.ActionLink(topGamingGroup.GamingGroupName, "Details", "GamingGroup", new { id = topGamingGroup.GamingGroupId }, new { })</td>
+                            <td>@topGamingGroup.NumberOfPlayers</td>
+                            <td>@topGamingGroup.NumberOfGamesPlayed</td>
+                        </tr>
+                    }
                 </table>
             </div>
         </div>

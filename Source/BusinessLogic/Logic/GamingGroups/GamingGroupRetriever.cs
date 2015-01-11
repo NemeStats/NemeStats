@@ -57,5 +57,11 @@ namespace BusinessLogic.Logic.GamingGroups
                               .Where(gamingGroup => gamingGroup.UserGamingGroups.Any(ugg => ugg.ApplicationUserId == applicationUser.Id))
                               .ToList();
         }
+
+
+        public List<TopGamingGroupSummary> GetTopGamingGroups(int numberOfTopGamingGroupsToShow)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

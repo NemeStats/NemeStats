@@ -1,4 +1,5 @@
-﻿using BusinessLogic.Logic.PlayedGames;
+﻿using BusinessLogic.Logic.GamingGroups;
+using BusinessLogic.Logic.PlayedGames;
 using BusinessLogic.Logic.Players;
 using BusinessLogic.Models.Games;
 using BusinessLogic.Models.Players;
@@ -19,24 +20,33 @@ namespace UI.Controllers
         internal const int NUMBER_OF_TOP_PLAYERS_TO_SHOW = 5;
         internal const int NUMBER_OF_RECENT_PUBLIC_GAMES_TO_SHOW = 5;
         internal const int NUMBER_OF_RECENT_NEMESIS_CHANGES_TO_SHOW = 5;
+        internal const int NUMBER_OF_TOP_GAMING_GROUPS_TO_SHOW = 5;
 
         private readonly IPlayerSummaryBuilder playerSummaryBuilder;
         private readonly ITopPlayerViewModelBuilder topPlayerViewModelBuilder;
         private readonly IPlayedGameRetriever playedGameRetriever;
         private readonly INemesisHistoryRetriever nemesisHistoryRetriever;
         private readonly INemesisChangeViewModelBuilder nemesisChangeViewModelBuilder;
+        private readonly IGamingGroupRetriever gamingGroupRetriever;
+        private readonly TopGamingGroupSummaryViewModelBuilder topGamingGroupSummaryViewModelBuilder;
+
 
         public HomeController(
             IPlayerSummaryBuilder playerSummaryBuilder, 
             ITopPlayerViewModelBuilder topPlayerViewModelBuilder,
             IPlayedGameRetriever playedGameRetriever, 
-            INemesisHistoryRetriever nemesisHistoryRetriever, INemesisChangeViewModelBuilder nemesisChangeViewModelBuilder)
+            INemesisHistoryRetriever nemesisHistoryRetriever, 
+            INemesisChangeViewModelBuilder nemesisChangeViewModelBuilder, 
+            IGamingGroupRetriever gamingGroupRetriever, 
+            TopGamingGroupSummaryViewModelBuilder topGamingGroupSummaryViewModelBuilder)
         {
             this.playerSummaryBuilder = playerSummaryBuilder;
             this.topPlayerViewModelBuilder = topPlayerViewModelBuilder;
             this.playedGameRetriever = playedGameRetriever;
             this.nemesisHistoryRetriever = nemesisHistoryRetriever;
             this.nemesisChangeViewModelBuilder = nemesisChangeViewModelBuilder;
+            this.gamingGroupRetriever = gamingGroupRetriever;
+            this.topGamingGroupSummaryViewModelBuilder = topGamingGroupSummaryViewModelBuilder;
         }
 
         public virtual ActionResult Index()
@@ -52,11 +62,15 @@ namespace UI.Controllers
 
             var nemesisChangeViewModels = nemesisChangeViewModelBuilder.Build(nemesisChanges);
 
+            var topGamingGroups = gamingGroupRetriever.GetTopGamingGroups(NUMBER_OF_TOP_GAMING_GROUPS_TO_SHOW);
+            var topGamingGroupViewModels = topGamingGroups.Select(topGamingGroup => topGamingGroupSummaryViewModelBuilder.Build(topGamingGroup)).ToList();
+
             HomeIndexViewModel homeIndexViewModel = new HomeIndexViewModel()
             {
                 TopPlayers = topPlayerViewModels,
                 RecentPublicGames = publicGameSummaries,
-                RecentNemesisChanges = nemesisChangeViewModels
+                RecentNemesisChanges = nemesisChangeViewModels,
+                TopGamingGroups = topGamingGroupViewModels
             };
             return View(MVC.Home.Views.Index, homeIndexViewModel);
         }
