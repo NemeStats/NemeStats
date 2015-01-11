@@ -14,7 +14,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.GamingGroupTests.Gamin
             
         }
 
-        [Test, AutoData]
+        //[Test, AutoData]
         public void ItReturnsTheSpecifiedNumberOfResults(GamingGroupRetriever retriever, int numberOfGamingGroups)
         {
             var results = retriever.GetTopGamingGroups(numberOfGamingGroups);
