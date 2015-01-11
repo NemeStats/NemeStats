@@ -161,15 +161,15 @@
                 <table class="table table-hover" id="topFiveGamingGroupsTable">
                     <tr>
                         <th>Gaming Group</th>
-                        <th>Number of Players</th>
                         <th>Number of Games Played</th>
+                        <th>Number of Players</th>
                     </tr>
-                    @foreach (UI.Models.GamingGroup.TopGamingGroupSummary topGamingGroup in @Model.TopGamingGroups)
+                    @foreach (UI.Models.GamingGroup.TopGamingGroupSummaryViewModel topGamingGroup in @Model.TopGamingGroups)
                     {
                         <tr>
                             <td>@Html.ActionLink(topGamingGroup.GamingGroupName, "Details", "GamingGroup", new { id = topGamingGroup.GamingGroupId }, new { })</td>
-                            <td>@topGamingGroup.NumberOfPlayers</td>
                             <td>@topGamingGroup.NumberOfGamesPlayed</td>
+                            <td>@topGamingGroup.NumberOfPlayers</td>
                         </tr>
                     }
                 </table>

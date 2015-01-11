@@ -58,10 +58,19 @@ namespace BusinessLogic.Logic.GamingGroups
                               .ToList();
         }
 
-
         public List<TopGamingGroupSummary> GetTopGamingGroups(int numberOfTopGamingGroupsToShow)
         {
-            throw new System.NotImplementedException();
+            return (from gamingGroup in dataContext.GetQueryable<GamingGroup>()
+                    select new TopGamingGroupSummary()
+                    {
+                        GamingGroupId = gamingGroup.Id,
+                        GamingGroupName = gamingGroup.Name,
+                        NumberOfGamesPlayed = gamingGroup.PlayedGames.Count,
+                        NumberOfPlayers = gamingGroup.Players.Count
+                    }).OrderByDescending(gg => gg.NumberOfGamesPlayed)
+                      .ThenByDescending(gg => gg.NumberOfPlayers)
+                      .Take(numberOfTopGamingGroupsToShow)
+                      .ToList();
         }
     }
 }
