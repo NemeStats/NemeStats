@@ -1,5 +1,4 @@
-﻿using System.Web.Http;
-using BusinessLogic.DataAccess;
+﻿using BusinessLogic.DataAccess;
 using BusinessLogic.Exceptions;
 using BusinessLogic.Logic.Players;
 using BusinessLogic.Models;
@@ -7,7 +6,6 @@ using BusinessLogic.Models.Players;
 using BusinessLogic.Models.User;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using UI.Controllers.Helpers;
@@ -18,205 +16,209 @@ using UI.Transformations.PlayerTransformations;
 
 namespace UI.Controllers
 {
-    public partial class PlayerController : Controller
-    {
-        internal const int NUMBER_OF_RECENT_GAMES_TO_RETRIEVE = 10;
-        internal const string EMAIL_SUBJECT_PLAYER_INVITATION = "Invitation from {0}";
-        internal const string EMAIL_BODY_PLAYER_INVITATION = "Check out this gaming group I created to record the results of our board games!";
+	public partial class PlayerController : Controller
+	{
+		internal const int NUMBER_OF_RECENT_GAMES_TO_RETRIEVE = 10;
+		internal const string EMAIL_SUBJECT_PLAYER_INVITATION = "Invitation from {0}";
+		internal const string EMAIL_BODY_PLAYER_INVITATION = "Check out this gaming group I created to record the results of our board games!";
 
-        internal IDataContext dataContext;
-        internal IGameResultViewModelBuilder builder;
-        internal IPlayerDetailsViewModelBuilder playerDetailsViewModelBuilder;
-        internal IShowingXResultsMessageBuilder showingXResultsMessageBuilder;
-        internal IPlayerSaver playerSaver;
-        internal IPlayerRetriever playerRetriever;
-        internal IPlayerInviter playerInviter;
-        internal IPlayerEditViewModelBuilder playerEditViewModelBuilder;
-        
-        public PlayerController(IDataContext dataContext,
-            IGameResultViewModelBuilder builder,
-            IPlayerDetailsViewModelBuilder playerDetailsViewModelBuilder,
-            IShowingXResultsMessageBuilder showingXResultsMessageBuilder,
-            IPlayerSaver playerSaver,
-            IPlayerRetriever playerRetriever,
-            IPlayerInviter playerInviter,
-            IPlayerEditViewModelBuilder playerEditViewModelBuilder)
-        {
-            this.dataContext = dataContext;
-            this.builder = builder;
-            this.playerDetailsViewModelBuilder = playerDetailsViewModelBuilder;
-            this.showingXResultsMessageBuilder = showingXResultsMessageBuilder;
-            this.playerSaver = playerSaver;
-            this.playerRetriever = playerRetriever;
-            this.playerInviter = playerInviter;
-            this.playerEditViewModelBuilder = playerEditViewModelBuilder;
-        }
+		internal IDataContext dataContext;
+		internal IGameResultViewModelBuilder builder;
+		internal IPlayerDetailsViewModelBuilder playerDetailsViewModelBuilder;
+		internal IShowingXResultsMessageBuilder showingXResultsMessageBuilder;
+		internal IPlayerSaver playerSaver;
+		internal IPlayerRetriever playerRetriever;
+		internal IPlayerInviter playerInviter;
+		internal IPlayerEditViewModelBuilder playerEditViewModelBuilder;
 
-        // GET: /Player/Details/5
-        [UserContextAttribute(RequiresGamingGroup = false)]
-        public virtual ActionResult Details(int? id, ApplicationUser currentUser)
-        {
-            if(!id.HasValue)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+		public PlayerController(IDataContext dataContext,
+			IGameResultViewModelBuilder builder,
+			IPlayerDetailsViewModelBuilder playerDetailsViewModelBuilder,
+			IShowingXResultsMessageBuilder showingXResultsMessageBuilder,
+			IPlayerSaver playerSaver,
+			IPlayerRetriever playerRetriever,
+			IPlayerInviter playerInviter,
+			IPlayerEditViewModelBuilder playerEditViewModelBuilder)
+		{
+			this.dataContext = dataContext;
+			this.builder = builder;
+			this.playerDetailsViewModelBuilder = playerDetailsViewModelBuilder;
+			this.showingXResultsMessageBuilder = showingXResultsMessageBuilder;
+			this.playerSaver = playerSaver;
+			this.playerRetriever = playerRetriever;
+			this.playerInviter = playerInviter;
+			this.playerEditViewModelBuilder = playerEditViewModelBuilder;
+		}
 
-            PlayerDetails player = playerRetriever.GetPlayerDetails(id.Value, NUMBER_OF_RECENT_GAMES_TO_RETRIEVE);
+		// GET: /Player/Details/5
+		[UserContextAttribute(RequiresGamingGroup = false)]
+		public virtual ActionResult Details(int? id, ApplicationUser currentUser)
+		{
+			if (!id.HasValue)
+			{
+				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+			}
 
-            if (player == null)
-            {
-                return new HttpNotFoundResult();
-            }
+			PlayerDetails player = playerRetriever.GetPlayerDetails(id.Value, NUMBER_OF_RECENT_GAMES_TO_RETRIEVE);
 
-            var fullUrl = this.Url.Action(MVC.Player.ActionNames.Details, MVC.Player.Name, new { id }, this.Request.Url.Scheme) + "#minions";
-            PlayerDetailsViewModel playerDetailsViewModel = playerDetailsViewModelBuilder.Build(player, fullUrl, currentUser);
+			if (player == null)
+			{
+				return new HttpNotFoundResult();
+			}
 
-            ViewBag.RecentGamesMessage = showingXResultsMessageBuilder.BuildMessage(
-                NUMBER_OF_RECENT_GAMES_TO_RETRIEVE, 
-                player.PlayerGameResults.Count);
+			var fullUrl = this.Url.Action(MVC.Player.ActionNames.Details, MVC.Player.Name, new { id }, this.Request.Url.Scheme) + "#minions";
+			PlayerDetailsViewModel playerDetailsViewModel = playerDetailsViewModelBuilder.Build(player, fullUrl, currentUser);
 
-            return View(MVC.Player.Views.Details, playerDetailsViewModel);
-        }
+			ViewBag.RecentGamesMessage = showingXResultsMessageBuilder.BuildMessage(
+				NUMBER_OF_RECENT_GAMES_TO_RETRIEVE,
+				player.PlayerGameResults.Count);
 
-        // GET: /Player/SavePlayer
-        [System.Web.Mvc.Authorize]
-        public virtual ActionResult SavePlayer()
-        {
-            return View(MVC.Player.Views._CreateOrUpdatePartial, new Player());
-        }
+			return View(MVC.Player.Views.Details, playerDetailsViewModel);
+		}
 
-        // GET: /Player/Create
-        [System.Web.Mvc.Authorize]
-        public virtual ActionResult Create()
-        {
-            return View(MVC.Player.Views.Create, new Player());
-        }
+		// GET: /Player/SavePlayer
+		[System.Web.Mvc.Authorize]
+		public virtual ActionResult SavePlayer()
+		{
+			return View(MVC.Player.Views._CreateOrUpdatePartial, new Player());
+		}
 
-        // GET: /Player/InvitePlayer/5
-        [System.Web.Mvc.Authorize]
-        [UserContextAttribute]
-        public virtual ActionResult InvitePlayer(int id, ApplicationUser currentUser)
-        {
-            PlayerDetails playerDetails;
+		// GET: /Player/Create
+		[System.Web.Mvc.Authorize]
+		public virtual ActionResult Create()
+		{
+			return View(MVC.Player.Views.Create, new Player());
+		}
 
-            try
-            {
-                playerDetails = playerRetriever.GetPlayerDetails(id, 0);
-            }
-            catch (KeyNotFoundException)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
-            }
+		// GET: /Player/InvitePlayer/5
+		[System.Web.Mvc.Authorize]
+		[UserContextAttribute]
+		public virtual ActionResult InvitePlayer(int id, ApplicationUser currentUser)
+		{
+			PlayerDetails playerDetails;
 
-            string emailSubject = string.Format(EMAIL_SUBJECT_PLAYER_INVITATION, currentUser.UserName);
+			try
+			{
+				playerDetails = playerRetriever.GetPlayerDetails(id, 0);
+			}
+			catch (KeyNotFoundException)
+			{
+				return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+			}
 
-            var playerInvitationViewModel = new PlayerInvitationViewModel
-            {
-                PlayerId = playerDetails.Id,
-                PlayerName = playerDetails.Name,
-                EmailSubject = emailSubject,
-                EmailBody = EMAIL_BODY_PLAYER_INVITATION
-            };
-            return View(MVC.Player.Views.InvitePlayer, playerInvitationViewModel);
-        }
+			string emailSubject = string.Format(EMAIL_SUBJECT_PLAYER_INVITATION, currentUser.UserName);
 
-        [System.Web.Mvc.HttpPost]
-        [System.Web.Mvc.Authorize]
-        [UserContextAttribute]
-        public virtual ActionResult InvitePlayer(PlayerInvitationViewModel playerInvitationViewModel, ApplicationUser currentUser)
-        {
-            PlayerInvitation playerInvitation = new PlayerInvitation
-            {
-                InvitedPlayerId = playerInvitationViewModel.PlayerId,
-                InvitedPlayerEmail = playerInvitationViewModel.EmailAddress,
-                EmailSubject = playerInvitationViewModel.EmailSubject,
-                CustomEmailMessage = playerInvitationViewModel.EmailBody
-            };
+			var playerInvitationViewModel = new PlayerInvitationViewModel
+			{
+				PlayerId = playerDetails.Id,
+				PlayerName = playerDetails.Name,
+				EmailSubject = emailSubject,
+				EmailBody = EMAIL_BODY_PLAYER_INVITATION
+			};
+			return View(MVC.Player.Views.InvitePlayer, playerInvitationViewModel);
+		}
 
-            playerInviter.InvitePlayer(playerInvitation, currentUser);
+		[System.Web.Mvc.HttpPost]
+		[System.Web.Mvc.Authorize]
+		[UserContextAttribute]
+		public virtual ActionResult InvitePlayer(PlayerInvitationViewModel playerInvitationViewModel, ApplicationUser currentUser)
+		{
+			PlayerInvitation playerInvitation = new PlayerInvitation
+			{
+				InvitedPlayerId = playerInvitationViewModel.PlayerId,
+				InvitedPlayerEmail = playerInvitationViewModel.EmailAddress.Trim(),
+				EmailSubject = playerInvitationViewModel.EmailSubject,
+				CustomEmailMessage = playerInvitationViewModel.EmailBody
+			};
 
-            return new RedirectResult(Url.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name));
-        }
+			playerInviter.InvitePlayer(playerInvitation, currentUser);
 
-        [System.Web.Mvc.Authorize]
-        [System.Web.Mvc.HttpPost]
-        [UserContextAttribute]
-        public virtual ActionResult Save(Player model, ApplicationUser currentUser)
-        {
-            if (!Request.IsAjaxRequest()) 
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+			return new RedirectResult(Url.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name));
+		}
 
-            if(ModelState.IsValid)
-            {
-                try
-                {
-                    Player player = playerSaver.Save(model, currentUser);
-                    return Json(player, JsonRequestBehavior.AllowGet);
-                }
-                catch (PlayerAlreadyExistsException playerAlreadyExistsException)
-                {
-                    return new HttpStatusCodeResult(HttpStatusCode.Conflict, playerAlreadyExistsException.Message);
-                }
-            }
+		[System.Web.Mvc.Authorize]
+		[System.Web.Mvc.HttpPost]
+		[UserContextAttribute]
+		public virtual ActionResult Save(Player model, ApplicationUser currentUser)
+		{
+			if (!Request.IsAjaxRequest())
+			{
+				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+			}
 
-            return new HttpStatusCodeResult(HttpStatusCode.NotModified);
-        }
+			if (ModelState.IsValid)
+			{
+				try
+				{
+					model.Name = model.Name.Trim();
+					Player player = playerSaver.Save(model, currentUser);
+					return Json(player, JsonRequestBehavior.AllowGet);
+				}
+				catch (PlayerAlreadyExistsException playerAlreadyExistsException)
+				{
+					return new HttpStatusCodeResult(HttpStatusCode.Conflict, playerAlreadyExistsException.Message);
+				}
+			}
 
-        // GET: /Player/Edit/5
-        [System.Web.Mvc.Authorize]
-        public virtual ActionResult Edit(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            PlayerDetails player;
-            try
-            {
-                player = playerRetriever.GetPlayerDetails(id.Value, 0);
-            }catch(UnauthorizedAccessException)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
-            }catch(KeyNotFoundException)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
-            }
-            var playerEditViewModel = new PlayerEditViewModel
-            {
-                Active = player.Active,
-                Id = player.Id,
-                GamingGroupId = player.GamingGroupId,
-                Name = player.Name
-            };
-            return View(MVC.Player.Views.Edit, playerEditViewModel);
-        }
+			return new HttpStatusCodeResult(HttpStatusCode.NotModified);
+		}
 
-        // POST: /Player/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [System.Web.Mvc.Authorize]
-        [System.Web.Mvc.HttpPost]
-        [ValidateAntiForgeryToken]
-        [UserContextAttribute]
-        public virtual ActionResult Edit([Bind(Include = "Id,Name,Active,GamingGroupId")] Player player, ApplicationUser currentUser)
-        {
-            if (ModelState.IsValid)
-            {
-                playerSaver.Save(player, currentUser);
-                return new RedirectResult(Url.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name)
-                                          + "#" + GamingGroupController.SECTION_ANCHOR_PLAYERS);
-            }
+		// GET: /Player/Edit/5
+		[System.Web.Mvc.Authorize]
+		public virtual ActionResult Edit(int? id)
+		{
+			if (id == null)
+			{
+				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+			}
+			PlayerDetails player;
+			try
+			{
+				player = playerRetriever.GetPlayerDetails(id.Value, 0);
+			}
+			catch (UnauthorizedAccessException)
+			{
+				return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
+			}
+			catch (KeyNotFoundException)
+			{
+				return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+			}
+			var playerEditViewModel = new PlayerEditViewModel
+			{
+				Active = player.Active,
+				Id = player.Id,
+				GamingGroupId = player.GamingGroupId,
+				Name = player.Name
+			};
+			return View(MVC.Player.Views.Edit, playerEditViewModel);
+		}
 
-            var playerEditViewModel = playerEditViewModelBuilder.Build(player);
+		// POST: /Player/Edit/5
+		// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+		// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+		[System.Web.Mvc.Authorize]
+		[System.Web.Mvc.HttpPost]
+		[ValidateAntiForgeryToken]
+		[UserContextAttribute]
+		public virtual ActionResult Edit([Bind(Include = "Id,Name,Active,GamingGroupId")] Player player, ApplicationUser currentUser)
+		{
+			if (ModelState.IsValid)
+			{
+				player.Name = player.Name.Trim();
+				playerSaver.Save(player, currentUser);
+				return new RedirectResult(Url.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name)
+										  + "#" + GamingGroupController.SECTION_ANCHOR_PLAYERS);
+			}
 
-            return View(MVC.Player.Views.Edit, playerEditViewModel);
-        }
+			var playerEditViewModel = playerEditViewModelBuilder.Build(player);
 
-        protected override void Dispose(bool disposing)
-        {
-            base.Dispose(disposing);
-        }
-    }
+			return View(MVC.Player.Views.Edit, playerEditViewModel);
+		}
+
+		protected override void Dispose(bool disposing)
+		{
+			base.Dispose(disposing);
+		}
+	}
 }
