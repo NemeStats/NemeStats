@@ -209,7 +209,13 @@ ul input[type=text] { width:25px }
 }
 
 .editable-title {
+    padding: 5px;
     cursor: pointer;
+}
+
+.editable-title:hover {
+    background: #ddd;
+    border-radius: 4px;
 }
 
 .autocomplete-loading {
@@ -262,4 +268,9 @@ ul input[type=text] { width:25px }
   position:relative;
   white-space:nowrap;
   margin-left: 0px;
+}
+
+.gaming-group-name {
+    min-width: 95%;
+    max-width: 95%;
 }

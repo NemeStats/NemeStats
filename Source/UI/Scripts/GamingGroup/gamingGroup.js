@@ -35,3 +35,7 @@ Views.GamingGroup.GamingGroupView.prototype = {
         this._googleAnalytics.trackGAEvent("GamingGroups", "GamingGroupRenamed", "GamingGroupRenamed");
     }
 }
+
+var clickElement = function (elementId) {
+    $('#' + elementId).click();
+}
