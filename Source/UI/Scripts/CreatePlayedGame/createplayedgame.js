@@ -19,6 +19,7 @@
         this.$playerItemTemplate = null;
         this._googleAnalytics = null;
         this._rankButtons = null;
+        this.$gameDefinitionDropDown = null;
     };
 
     //Implementation
@@ -39,6 +40,7 @@
             this.$addPlayer = $("#addPlayer");
             this.$btnAddPlayer = $("#btnAddPlayer");
             this.$anchorAddPlayer = $("#addPlayerAnchor");
+            this.$gameDefinitionDropDown = $("#gameDefinitionDropDown");
             this.$datePicker = $(".date-picker").datepicker({
                 showOn: "button",
                 buttonText: "<i class='fa fa-calendar'></i>",
@@ -50,7 +52,7 @@
 
             this.$recordPlayedGameForm.on("submit", $.proxy(parent.validatePlayers, parent));
 
-            //Event handlers
+        	//Event handlers
             this.$players.change(function () { parent.addPlayer(); });
             this.$rankedPlayers.sortable({
                 stop: function() {
@@ -69,6 +71,11 @@
             });
 
             this.$playerItemTemplate = $("#player-item-template");
+
+            this.$gameDefinitionDropDown.on("click", function () {
+            	if ($(this).data("numofdefinitions") == 0 )
+            		$("#gameDefinitionDropDown").popover("show");
+            });
         },
         onReorder: function () {
             var parent = this;
