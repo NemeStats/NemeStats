@@ -26,7 +26,7 @@
 									@class = "form-control",
 									data_numOfDefinitions = Model.GameDefinitions.Count(),
 									data_trigger = "focus",
-									data_content = "No game definitions detected. Please create a game definition before proceeding.",
+									data_content = "No game definitions detected. Please create a game definition before proceeding. <a href='/GamingGroup#GameDefinitions'>Create Game Definition</a>",
 									data_placement = "top"
 								})
 								@Html.ValidationMessageFor(model => model.GameDefinitionId)

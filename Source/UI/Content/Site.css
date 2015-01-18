@@ -274,3 +274,7 @@ ul input[type=text] { width:25px }
     min-width: 95%;
     max-width: 95%;
 }
+
+.popover {
+	color: red;
+}
