@@ -35,7 +35,10 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
         [Test]
         public void ItSavesTheGameDefinitionIfValidationPasses()
         {
-            GameDefinition gameDefinition = new GameDefinition();
+            GameDefinition gameDefinition = new GameDefinition()
+            {
+                Name = "game definition name"
+            };
 
             gameDefinitionControllerPartialMock.Edit(gameDefinition, currentUser);
 
@@ -45,7 +48,10 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
         [Test]
         public void ItRedirectsToTheGamingGroupIndexAndGameDefinitionsSectionAfterSaving()
         {
-            GameDefinition gameDefinition = new GameDefinition();
+            GameDefinition gameDefinition = new GameDefinition()
+            {
+                Name = "game definition name"
+            };
             string baseUrl = "base url";
             string expectedUrl = baseUrl + "#" + GamingGroupController.SECTION_ANCHOR_GAMEDEFINITIONS;
             urlHelperMock.Expect(mock => mock.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name))

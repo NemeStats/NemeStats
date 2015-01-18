@@ -58,7 +58,10 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         [Test]
         public void ItReturnsAConflictHttpStatusCodeWhenThePlayerExists()
         {
-            var player = new Player();
+            var player = new Player()
+            {
+                Name = "player name"
+            };
             player.Id = 3;
             playerSaverMock.Expect(x => x.Save(player, currentUser))
                 .Repeat.Once()

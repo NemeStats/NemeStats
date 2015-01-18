@@ -50,7 +50,10 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
         {
             string baseUrl = "base url";
             string expectedUrl = baseUrl + "#" + GamingGroupController.SECTION_ANCHOR_GAMEDEFINITIONS;
-            GameDefinition gameDefinition = new GameDefinition();
+            GameDefinition gameDefinition = new GameDefinition()
+            {
+                Name = "game definition name"
+            };
             urlHelperMock.Expect(mock => mock.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name))
                     .Return(baseUrl);
 

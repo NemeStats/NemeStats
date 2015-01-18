@@ -29,8 +29,12 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
             string expectedUrl = baseUrl + "#" + GamingGroupController.SECTION_ANCHOR_PLAYERS;
             urlHelperMock.Expect(mock => mock.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name))
                     .Return(baseUrl);
+            Player player = new Player()
+            {
+                Name = "player name"
+            };
 
-            RedirectResult redirectResult = playerController.Edit(new Player(), currentUser) as RedirectResult;
+            RedirectResult redirectResult = playerController.Edit(player, currentUser) as RedirectResult;
 
             Assert.AreEqual(expectedUrl, redirectResult.Url);
         }
@@ -59,7 +63,10 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         [Test]
         public void ItSavesThePlayer()
         {
-            Player player = new Player();
+            Player player = new Player()
+            {
+                Name = "player name"
+            };
 
             playerController.Edit(player, currentUser);
 
