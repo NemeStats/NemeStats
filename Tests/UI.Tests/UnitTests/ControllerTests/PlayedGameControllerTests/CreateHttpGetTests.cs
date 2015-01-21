@@ -9,49 +9,49 @@ using UI.Models.PlayedGame;
 
 namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 {
-    [TestFixture]
-    public class CreateHttpGetTests : PlayedGameControllerTestBase
-    {
-        private int playerId = 1938;
-        private string playerName = "Herb";
-        private List<Player> allPlayers;
+	[TestFixture]
+	public class CreateHttpGetTests : PlayedGameControllerTestBase
+	{
+		private int playerId = 1938;
+		private string playerName = "Herb";
+		private List<Player> allPlayers;
 
-        [SetUp]
-        public override void TestSetUp()
-        {
-            base.TestSetUp();
+		[SetUp]
+		public override void TestSetUp()
+		{
+			base.TestSetUp();
 
-            allPlayers = new List<Player>() { new Player() { Id = playerId, Name = playerName } };
+			allPlayers = new List<Player>() { new Player() { Id = playerId, Name = playerName } };
 
-            playerRetrieverMock.Expect(x => x.GetAllPlayers(currentUser.CurrentGamingGroupId.Value)).Repeat.Once().Return(allPlayers);    
-        }
+			playerRetrieverMock.Expect(x => x.GetAllPlayers(currentUser.CurrentGamingGroupId.Value)).Repeat.Once().Return(allPlayers);
+		}
 
-        [Test]
-        public void ItSetsTheGameDefinitionsOnTheViewModel()
-        {
-            int gameDefinitionId = 1;
-            var gameDefinitions = new List<GameDefinitionSummary>
+		[Test]
+		public void ItSetsTheGameDefinitionsOnTheViewModel()
+		{
+			int gameDefinitionId = 1;
+			var gameDefinitions = new List<GameDefinitionSummary>
             {
                 new GameDefinitionSummary
                 {
                    Id = gameDefinitionId
                 }
             };
-            base.gameDefinitionRetrieverMock.Expect(mock => mock.GetAllGameDefinitions(currentUser.CurrentGamingGroupId.Value))
-                .Return(gameDefinitions);
+			base.gameDefinitionRetrieverMock.Expect(mock => mock.GetAllGameDefinitions(currentUser.CurrentGamingGroupId.Value))
+				.Return(gameDefinitions);
 
-            ViewResult result = playedGameController.Create(currentUser) as ViewResult;
+			ViewResult result = playedGameController.Create(-1, currentUser) as ViewResult;
 
-            NewlyCompletedGameViewModel viewModel = (NewlyCompletedGameViewModel)result.Model;
-            Assert.That(viewModel.GameDefinitions.All(item => item.Value == gameDefinitionId.ToString()), Is.True);
-        }
+			NewlyCompletedGameViewModel viewModel = (NewlyCompletedGameViewModel)result.Model;
+			Assert.That(viewModel.GameDefinitions.All(item => item.Value == gameDefinitionId.ToString()), Is.True);
+		}
 
-        [Test]
-        public void ItLoadsTheCreateView()
-        {
-            ViewResult result = playedGameController.Create(currentUser) as ViewResult;
+		[Test]
+		public void ItLoadsTheCreateView()
+		{
+			ViewResult result = playedGameController.Create(-1, currentUser) as ViewResult;
 
-            Assert.AreEqual(MVC.PlayedGame.Views.Create, result.ViewName);
-        }
-    }
+			Assert.AreEqual(MVC.PlayedGame.Views.Create, result.ViewName);
+		}
+	}
 }
