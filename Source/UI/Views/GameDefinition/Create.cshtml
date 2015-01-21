@@ -13,7 +13,7 @@
         <h4>Create a new game</h4>
     </div>
     <div class="panel-body">
-        @using (Html.BeginForm())
+        @using (Html.BeginForm("Create", "GameDefinition", FormMethod.Post, new { id = "__AjaxAntiForgeryForm" }))
         {
             @Html.AntiForgeryToken()
             <div class="form-horizontal">
@@ -37,7 +37,7 @@
 
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
-                        <input type="submit" value="Create" class="btn btn-primary" />
+                        <input type="submit" value="Create" class="btn btn-primary" id="btnCreateGame" />
                     </div>
                 </div>
             </div>

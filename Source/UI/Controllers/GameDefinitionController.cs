@@ -1,18 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Web.Mvc;
+﻿using BusinessLogic.DataAccess;
 using BusinessLogic.Logic.BoardGameGeek;
+using BusinessLogic.Logic.GameDefinitions;
 using BusinessLogic.Models;
-using BusinessLogic.DataAccess;
 using BusinessLogic.Models.Games;
 using BusinessLogic.Models.User;
-using UI.Filters;
-using BusinessLogic.Logic.GameDefinitions;
-using UI.Transformations;
-using UI.Models.GameDefinitionModels;
+using System;
+using System.Collections.Generic;
+using System.Net;
+using System.Web.Mvc;
 using UI.Controllers.Helpers;
+using UI.Filters;
+using UI.Models.GameDefinitionModels;
+using UI.Transformations;
 
 namespace UI.Controllers
 {
@@ -88,12 +87,15 @@ namespace UI.Controllers
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		[UserContextAttribute]
-		public virtual ActionResult Create([Bind(Include = "Id,Name,Description,Active")] GameDefinition gameDefinition, ApplicationUser currentUser)
+		public virtual ActionResult Create([Bind(Include = "Id,Name,Description,Active")] GameDefinition gameDefinition, string returnUrl, ApplicationUser currentUser)
 		{
 			if (ModelState.IsValid)
 			{
 				gameDefinition.Name = gameDefinition.Name.Trim();
 				gameDefinitionSaver.Save(gameDefinition, currentUser);
+
+				if (!String.IsNullOrWhiteSpace(returnUrl))
+					return Json(new { Success = true, url = returnUrl }, JsonRequestBehavior.AllowGet);
 
 				return new RedirectResult(Url.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name)
 											+ "#" + GamingGroupController.SECTION_ANCHOR_GAMEDEFINITIONS);
