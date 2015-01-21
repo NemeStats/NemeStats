@@ -18,6 +18,7 @@
 					@Html.AntiForgeryToken()
 					<div class="form-horizontal">
 						<div class="form-group">
+							<input type="hidden" value="@ViewBag.GameDefinitionId" id="newGameDefinition"/>
 							@Html.LabelFor(model => model.GameDefinitionId, "The Game", new { @class = "control-label col-md-3" })
 							<div class="col-md-6">
 								@Html.DropDownList("GameDefinitionId", Model.GameDefinitions, "Pick A Game", new

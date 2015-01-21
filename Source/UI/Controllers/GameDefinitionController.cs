@@ -75,7 +75,7 @@ namespace UI.Controllers
 
 		// GET: /GameDefinition/Create
 		[Authorize]
-		public virtual ActionResult Create()
+		public virtual ActionResult Create(string returnUrl)
 		{
 			return View(MVC.GameDefinition.Views.Create);
 		}
@@ -87,7 +87,7 @@ namespace UI.Controllers
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		[UserContextAttribute]
-		public virtual ActionResult Create([Bind(Include = "Id,Name,Description,Active")] GameDefinition gameDefinition, string returnUrl, ApplicationUser currentUser)
+		public virtual ActionResult Create([Bind(Include = "Id,Name,Description,ReturnUrl,Active")] GameDefinition gameDefinition, string returnUrl, ApplicationUser currentUser)
 		{
 			if (ModelState.IsValid)
 			{
@@ -95,7 +95,7 @@ namespace UI.Controllers
 				gameDefinitionSaver.Save(gameDefinition, currentUser);
 
 				if (!String.IsNullOrWhiteSpace(returnUrl))
-					return Json(new { Success = true, url = returnUrl }, JsonRequestBehavior.AllowGet);
+					return RedirectToAction(MVC.PlayedGame.Create(gameDefinition.Id, currentUser));
 
 				return new RedirectResult(Url.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name)
 											+ "#" + GamingGroupController.SECTION_ANCHOR_GAMEDEFINITIONS);

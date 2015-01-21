@@ -20,6 +20,7 @@
         this._googleAnalytics = null;
         this._rankButtons = null;
         this.$gameDefinitionDropDown = null;
+        this.$newGameDefinition = null;
     };
 
     //Implementation
@@ -40,7 +41,8 @@
             this.$addPlayer = $("#addPlayer");
             this.$btnAddPlayer = $("#btnAddPlayer");
             this.$anchorAddPlayer = $("#addPlayerAnchor");
-            this.$gameDefinitionDropDown = $("#gameDefinitionDropDown");
+            this.$gameDefinitionDropDown = $("[name='GameDefinitionId']");
+            this.$newGameDefinition = $("#newGameDefinition").val;
             this.$datePicker = $(".date-picker").datepicker({
                 showOn: "button",
                 buttonText: "<i class='fa fa-calendar'></i>",
@@ -206,7 +208,8 @@
         		$("#gameDefinitionDropDown").popover({ html: true });
         		$("#gameDefinitionDropDown").popover("show");
         		$(":input").prop("disabled", true);
-        	}
+        	} else if (this.$newGameDefinition.val != -1, null)
+        		this.$gameDefinitionDropDown.val(this.$newGameDefinition);
         },
 
         //Properties

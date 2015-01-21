@@ -27,4 +27,3 @@
 /// <reference path="jquery-1.10.2.js" />
 /// <reference path="shared/googleanalytics.js" />
 /// <reference path="jquery-2.1.3.min.js" />
-/// <reference path="gamedefinition/creategamedefinition.js" />

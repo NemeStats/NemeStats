@@ -125,6 +125,7 @@ namespace UI.Controllers
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionParamsClass_Create
         {
+            public readonly string gameDefinitionId = "gameDefinitionId";
             public readonly string currentUser = "currentUser";
             public readonly string newlyCompletedGame = "newlyCompletedGame";
         }
@@ -187,14 +188,15 @@ namespace UI.Controllers
         }
 
         [NonAction]
-        partial void CreateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, BusinessLogic.Models.User.ApplicationUser currentUser);
+        partial void CreateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int? gameDefinitionId, BusinessLogic.Models.User.ApplicationUser currentUser);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult Create(BusinessLogic.Models.User.ApplicationUser currentUser)
+        public override System.Web.Mvc.ActionResult Create(int? gameDefinitionId, BusinessLogic.Models.User.ApplicationUser currentUser)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Create);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "gameDefinitionId", gameDefinitionId);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "currentUser", currentUser);
-            CreateOverride(callInfo, currentUser);
+            CreateOverride(callInfo, gameDefinitionId, currentUser);
             return callInfo;
         }
 
