@@ -12,17 +12,17 @@
     <div class="panel-heading">
         <h4>Create a new game</h4>
     </div>
-    <div class="panel-body">
-        @using (Html.BeginForm("Create", "GameDefinition", FormMethod.Post, new { id = "__AjaxAntiForgeryForm" }))
+    <div class="panel-body createGameDefinitionForm">
+        @using (Html.BeginForm("Create", "GameDefinition", FormMethod.Post, new { id = "__RequestVerificationToken" }))
         {
             @Html.AntiForgeryToken()
             <div class="form-horizontal">
                 @Html.ValidationSummary(true)
-
+				@Html.HiddenFor(model => model.BoardGameGeekObjectId)
                 <div class="form-group">
                     @Html.LabelFor(model => model.Name, new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
+                        @Html.TextBoxFor(model => model.Name, new { @class = "form-control", @id="gameDefinitionInput" })
                         @Html.ValidationMessageFor(model => model.Name)
                     </div>
                 </div>
@@ -38,7 +38,7 @@
 
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
-                        <input type="submit" value="Create" class="btn btn-primary" id="btnCreateGame" />
+                        <input type="button" value="Create" class="btn btn-primary" id="btnCreateGame" />
                     </div>
                 </div>
             </div>
