@@ -87,18 +87,25 @@ namespace UI.Controllers
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		[UserContextAttribute]
-		public virtual ActionResult Create([Bind(Include = "Id,Name,Description,ReturnUrl,Active")] GameDefinition gameDefinition, string returnUrl, ApplicationUser currentUser)
+		public virtual ActionResult Create([Bind(Include = "Id,Name,Description,BoardGameGeekObjectId,ReturnUrl,Active")] GameDefinition gameDefinition, string returnUrl, ApplicationUser currentUser)
 		{
 			if (ModelState.IsValid)
 			{
 				gameDefinition.Name = gameDefinition.Name.Trim();
 				gameDefinitionSaver.Save(gameDefinition, currentUser);
 
-				if (!String.IsNullOrWhiteSpace(returnUrl))
-					return RedirectToAction(MVC.PlayedGame.Create(gameDefinition.Id, currentUser));
+				if (Request.IsAjaxRequest() && !String.IsNullOrWhiteSpace(returnUrl))
+					return Json(new { Success = true, url = returnUrl, gameId = gameDefinition.Id }, JsonRequestBehavior.AllowGet);
+				else if (Request.IsAjaxRequest() && String.IsNullOrWhiteSpace(returnUrl))
+					return Json(new
+					{
+						Success = true,
+						url = Url.Action(MVC.GamingGroup.Index()).ToString()
+							+ "#" + GamingGroupController.SECTION_ANCHOR_GAMEDEFINITIONS
+					}, JsonRequestBehavior.AllowGet);
 
-				return new RedirectResult(Url.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name)
-											+ "#" + GamingGroupController.SECTION_ANCHOR_GAMEDEFINITIONS);
+				//return new RedirectResult(Url.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name)
+				//						+ "#" + GamingGroupController.SECTION_ANCHOR_GAMEDEFINITIONS);
 			}
 
 			return View(MVC.GameDefinition.Views.Create, gameDefinition);

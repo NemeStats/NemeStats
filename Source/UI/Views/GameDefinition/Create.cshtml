@@ -18,11 +18,11 @@
             @Html.AntiForgeryToken()
             <div class="form-horizontal">
                 @Html.ValidationSummary(true)
-				@Html.HiddenFor(model => model.BoardGameGeekObjectId)
+				@Html.HiddenFor(model => model.BoardGameGeekObjectId, new { @id = "boardGameId" })
                 <div class="form-group">
                     @Html.LabelFor(model => model.Name, new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        @Html.TextBoxFor(model => model.Name, new { @class = "form-control", @id="gameDefinitionInput" })
+                        @Html.TextBoxFor(model => model.Name, new { @class = "form-control", @id="gameNameInput" })
                         @Html.ValidationMessageFor(model => model.Name)
                     </div>
                 </div>
@@ -30,7 +30,7 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.Description, new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        @Html.TextBoxFor(model => model.Description, new { @class = "form-control" })
+                        @Html.TextBoxFor(model => model.Description, new { @class = "form-control", @id="gameDescriptionInput" })
                         @Html.ValidationMessageFor(model => model.Description)
 						@Html.HiddenFor(model => model.ReturnUrl)
                     </div>

@@ -91,6 +91,7 @@ namespace Links
             private const string URLPATH = "~/Scripts/GameDefinition";
             public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
             public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
+            public static readonly string createGameDefinition_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/createGameDefinition.min.js") ? Url("createGameDefinition.min.js") : Url("createGameDefinition.js");
             public static readonly string createGameDefinitionPartial_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/createGameDefinitionPartial.min.js") ? Url("createGameDefinitionPartial.min.js") : Url("createGameDefinitionPartial.js");
             public static readonly string gameDefinitionAutoComplete_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/gameDefinitionAutoComplete.min.js") ? Url("gameDefinitionAutoComplete.min.js") : Url("gameDefinitionAutoComplete.js");
             public static readonly string gameDefinitions_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/gameDefinitions.min.js") ? Url("gameDefinitions.min.js") : Url("gameDefinitions.js");

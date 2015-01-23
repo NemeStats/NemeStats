@@ -17,7 +17,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 		public void ItRemainsOnTheCreatePageIfTheModelIsNotValid()
 		{
 			ViewResult expectedViewResult = new ViewResult();
-			playedGameControllerPartialMock.Expect(controller => controller.Create(-1, currentUser))
+			playedGameControllerPartialMock.Expect(controller => controller.Create(currentUser))
 					.Repeat.Once()
 					.Return(expectedViewResult);
 			playedGameControllerPartialMock.ModelState.AddModelError("Test error", "this is a test error to make model state invalid");

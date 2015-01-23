@@ -3,29 +3,35 @@ Namespace("Views.GameDefinition");
 
 //Initialization
 Views.GameDefinition.Create = function () {
-	//var $container = null;
+	var parent = null;
 	var $form = null;
-	var $gameDefinitionInput = null;
+	var $gameNameInput = null;
+	var $gameDescriptionInput = null;
 	var $boardGameId = null;
 	var $btnCreateGame = null;
+	var $returnUrl = null;
 
 };
 //Implementation
 Views.GameDefinition.Create.prototype = {
 	init: function () {
-		//this.$container = (".createGameDefinitionForm");
+		parent = this;
 		this.$form = $("form");
-		this.$gameDefinitionInput = $("#gameDefinitionInput");
-		this.$boardGameId = this.$form.find("input[type='hidden']");
+		this.$gameNameInput = $("#gameNameInput");
+		this.$gameDescriptionInput = $("#gameDescriptionInput");
+		this.$boardGameId = $("#boardGameId");
 		this.$btnCreateGame = $("#btnCreateGame");
 		this.$form = $('form');
 		this.$token = $('input[name="__RequestVerificationToken"]', this.$form).val();
 
 		var gameDefinitionAutoComplete = new Views.GameDefinition.GameDefinitionAutoComplete();
-		gameDefinitionAutoComplete.init(this.$gameDefinitionInput, this.$boardGameId);
+		gameDefinitionAutoComplete.init(this.$gameNameInput, this.$boardGameId);
+
+		var shared = new Views.Shared.Layout();
+		this.$returnUrl = shared.getQueryString("returnUrl");
 
 		this.$btnCreateGame.on("click", function () {
-			this.createGame();
+			parent.createGame();
 		});
 	},
 	createGame: function () {
@@ -34,16 +40,20 @@ Views.GameDefinition.Create.prototype = {
 			url: "/GameDefinition/Create",
 			dataType: "json",
 			data: {
-				__RequestVerificationToken: this.$token
+				__RequestVerificationToken: this.$token,
+				name: this.$gameNameInput.val(),
+				description: this.$gameDescriptionInput.val(),
+				boardGameGeekObjectId: this.$boardGameId.val(),
+				returnUrl: this.$returnUrl
 			},
-			success: function () {
-				alert("successful");
+			success: function (response) {
+					window.location = response["url"] + "?gameId=" + response["gameId"];
 			},
 			error: function (err) {
 				alert("Error " + err.status + ":\r\n" + err.statusText);
 			}
 		});
-	}
+	},
 }
 
 $(document).ready(function () {

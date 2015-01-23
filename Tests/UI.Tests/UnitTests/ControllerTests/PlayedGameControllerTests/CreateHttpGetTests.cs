@@ -40,7 +40,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 			base.gameDefinitionRetrieverMock.Expect(mock => mock.GetAllGameDefinitions(currentUser.CurrentGamingGroupId.Value))
 				.Return(gameDefinitions);
 
-			ViewResult result = playedGameController.Create(-1, currentUser) as ViewResult;
+			ViewResult result = playedGameController.Create(currentUser) as ViewResult;
 
 			NewlyCompletedGameViewModel viewModel = (NewlyCompletedGameViewModel)result.Model;
 			Assert.That(viewModel.GameDefinitions.All(item => item.Value == gameDefinitionId.ToString()), Is.True);
@@ -49,7 +49,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 		[Test]
 		public void ItLoadsTheCreateView()
 		{
-			ViewResult result = playedGameController.Create(-1, currentUser) as ViewResult;
+			ViewResult result = playedGameController.Create(currentUser) as ViewResult;
 
 			Assert.AreEqual(MVC.PlayedGame.Views.Create, result.ViewName);
 		}

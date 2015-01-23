@@ -70,9 +70,8 @@ namespace UI.Controllers
 		[Authorize]
 		[UserContextAttribute]
 		[HttpGet]
-		public virtual ActionResult Create(int? gameDefinitionId, ApplicationUser currentUser)
+		public virtual ActionResult Create(ApplicationUser currentUser)
 		{
-			ViewBag.GameDefinitionId = gameDefinitionId;
 			var viewModel = new NewlyCompletedGameViewModel
 			{
 				GameDefinitions = new SelectList(
@@ -102,7 +101,7 @@ namespace UI.Controllers
 											+ "#" + GamingGroupController.SECTION_ANCHOR_RECENT_GAMES);
 			}
 
-			return Create(-1, currentUser);
+			return Create(currentUser);
 		}
 
 		private IEnumerable<SelectListItem> GetAllPlayers(ApplicationUser currentUser)
