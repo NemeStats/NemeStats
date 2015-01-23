@@ -77,7 +77,7 @@ namespace UI.Controllers
 		[Authorize]
 		public virtual ActionResult Create(string returnUrl)
 		{
-			return View(MVC.GameDefinition.Views.Create);
+			return View(MVC.GameDefinition.Views.Create, new NewGameDefinitionViewModel(returnUrl));
 		}
 
 		// POST: /GameDefinition/Create
@@ -94,18 +94,11 @@ namespace UI.Controllers
 				gameDefinition.Name = gameDefinition.Name.Trim();
 				gameDefinitionSaver.Save(gameDefinition, currentUser);
 
-				if (Request.IsAjaxRequest() && !String.IsNullOrWhiteSpace(returnUrl))
-					return Json(new { Success = true, url = returnUrl, gameId = gameDefinition.Id }, JsonRequestBehavior.AllowGet);
-				else if (Request.IsAjaxRequest() && String.IsNullOrWhiteSpace(returnUrl))
-					return Json(new
-					{
-						Success = true,
-						url = Url.Action(MVC.GamingGroup.Index()).ToString()
-							+ "#" + GamingGroupController.SECTION_ANCHOR_GAMEDEFINITIONS
-					}, JsonRequestBehavior.AllowGet);
+				if (!String.IsNullOrWhiteSpace(returnUrl))
+					return new RedirectResult(returnUrl + "?gameId=" + gameDefinition.Id);
 
-				//return new RedirectResult(Url.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name)
-				//						+ "#" + GamingGroupController.SECTION_ANCHOR_GAMEDEFINITIONS);
+				return new RedirectResult(Url.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name)
+										+ "#" + GamingGroupController.SECTION_ANCHOR_GAMEDEFINITIONS);
 			}
 
 			return View(MVC.GameDefinition.Views.Create, gameDefinition);
