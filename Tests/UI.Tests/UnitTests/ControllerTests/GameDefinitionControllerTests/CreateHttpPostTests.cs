@@ -1,7 +1,6 @@
 ﻿using BusinessLogic.Models;
 using NUnit.Framework;
 using Rhino.Mocks;
-using System.Linq;
 using System.Web.Mvc;
 using UI.Controllers;
 
@@ -58,6 +57,21 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
 					.Return(baseUrl);
 
 			RedirectResult redirectResult = gameDefinitionControllerPartialMock.Create(gameDefinition, string.Empty, currentUser) as RedirectResult;
+
+			Assert.AreEqual(expectedUrl, redirectResult.Url);
+		}
+		[Test]
+		public void ItRedirectsBackToThePlayedGameCreateWhenSentFromThere()
+		{
+			string returnUrl = "/PlayedGame/Create";
+			GameDefinition gameDefinition = new GameDefinition()
+			{
+				Name = "Project-Ariel",
+				Id = 6666
+			};
+			string expectedUrl = returnUrl + "?gameId=" + gameDefinition.Id;
+
+			RedirectResult redirectResult = gameDefinitionControllerPartialMock.Create(gameDefinition, returnUrl, currentUser) as RedirectResult;
 
 			Assert.AreEqual(expectedUrl, redirectResult.Url);
 		}
