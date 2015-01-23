@@ -77,7 +77,7 @@ namespace UI.Controllers
 		[Authorize]
 		public virtual ActionResult Create(string returnUrl)
 		{
-			return View(MVC.GameDefinition.Views.Create);
+			return View(MVC.GameDefinition.Views.Create, new NewGameDefinitionViewModel(returnUrl));
 		}
 
 		// POST: /GameDefinition/Create
