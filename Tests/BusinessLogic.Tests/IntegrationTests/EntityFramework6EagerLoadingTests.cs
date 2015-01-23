@@ -61,7 +61,7 @@ namespace BusinessLogic.Tests.IntegrationTests
         }
 
 
-        [Test]
+        [Test, Ignore("Integration test")]
         public void EagerLoadTest()
         {
             using (NemeStatsDataContext dataContext = new NemeStatsDataContext())
@@ -79,7 +79,7 @@ namespace BusinessLogic.Tests.IntegrationTests
             }
         }
 
-        [Test(Description = "Have to manually inspect SQL to see what the query looks like")]
+        [Test(Description = "Have to manually inspect SQL to see what the query looks like"), Ignore("Integration test")]
         public void ItOnlyFetchesRelatedEntitiesThatAreNeeded()
         {
             using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
