@@ -13,7 +13,7 @@
         <h4>Create a new game</h4>
     </div>
     <div class="panel-body createGameDefinitionForm">
-        @using (Html.BeginForm("Create", "GameDefinition", FormMethod.Post, new { id = "__RequestVerificationToken" }))
+        @using (Html.BeginForm())
         {
             @Html.AntiForgeryToken()
             <div class="form-horizontal">
@@ -30,7 +30,7 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.Description, new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        @Html.TextBoxFor(model => model.Description, new { @class = "form-control", @id="gameDescriptionInput" })
+                        @Html.TextBoxFor(model => model.Description, new { @class = "form-control"})
                         @Html.ValidationMessageFor(model => model.Description)
 						@Html.HiddenFor(model => model.ReturnUrl)
                     </div>
@@ -38,7 +38,7 @@
 
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
-                        <input type="button" value="Create" class="btn btn-primary" id="btnCreateGame" />
+                        <input type="submit" value="Create" class="btn btn-primary" id="btnCreateGame" />
                     </div>
                 </div>
             </div>
