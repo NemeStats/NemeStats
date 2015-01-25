@@ -4,7 +4,7 @@
     Layout = null;
 }
 
-<div class="panel panel-default">
+<div class="panel panel-primary">
     <div class="panel-heading">
         <h4 class="fl-left">
             Games This Group Plays
@@ -19,7 +19,7 @@
     </div>
     <div class="panel-body">
         <div class="table-responsive gameDefinitionsList">
-            <table class="table table-hover table-condensed">
+            <table class="table table-hover table-striped table-condensed">
                 <thead>
                     <tr>
                         <th class="col-md-4">
@@ -40,10 +40,15 @@
                     {
                         <tr>
                             <td>
-                                @Html.ActionLink(item.Name, "Details", "GameDefinition", new { id = item.Id }, new { })
+                                <b>
+                                    @Html.ActionLink(item.Name, "Details", "GameDefinition", new { id = item.Id }, new { })                                    
+                                </b>
+
                                 @if (item.BoardGameGeekUri != null)
                                 {
-                                    <a href="@item.BoardGameGeekUri.AbsoluteUri" id="@item."><img src="~/Content/Images/bgg_small.png" alt="View on BoardGameGeek.com" title="View on BoardGameGeek.com" /></a>
+                                    <b>
+                                        <a href="@item.BoardGameGeekUri.AbsoluteUri" id="@item."><img src="~/Content/Images/bgg_small.png" alt="View on BoardGameGeek.com" title="View on BoardGameGeek.com" /></a>
+                                    </b>
                                 }
                             </td>
                             <td>@Html.DisplayFor(modelItem => item.TotalNumberOfGamesPlayed)</td>
@@ -51,17 +56,21 @@
                                 @if (item.PreviousChampionName != null)
                                 {
                                     <span style="text-decoration: line-through">
-                                        @Html.ActionLink(item.PreviousChampionName,
+                                        <b>
+                                            @Html.ActionLink(item.PreviousChampionName,
                                             "Details",
                                             "Player",
                                             new { id = item.PreviousChampionPlayerId },
                                             new { })
+                                        </b>
                                     </span>
                                     <span>/</span>
                                 }
                                 @if (item.ChampionName != null)
                                 {
-                                    @Html.ActionLink(item.ChampionName, "Details", "Player", new { id = item.ChampionPlayerId }, new { })
+                                    <b>
+                                        @Html.ActionLink(item.ChampionName, "Details", "Player", new { id = item.ChampionPlayerId }, new { })
+                                    </b>
                                 }
                             </td>
                             <td>
@@ -71,7 +80,7 @@
                                              {
                                                  id = item.Id
                                              })" title="Edit">
-                                        <span class="fa fa-pencil fa-3x"></span>
+                                        <span class="fa fa-pencil fa-2x"></span>
                                     </a>
                                 }
                             </td>

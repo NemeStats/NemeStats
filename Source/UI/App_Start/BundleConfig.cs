@@ -44,7 +44,7 @@ namespace UI
                 .Include("~/Scripts/Shared/GoogleAnalytics.js"));
 
             bundles.Add(new StyleBundle("~/bundles/content/css").Include(
-                "~/Content/bootstrap.min.css", new CssRewriteUrlTransform())
+                "~/sass/_bootswatch.css", new CssRewriteUrlTransform())
                 .Include("~/Content/site.css",
                     "~/Content/site-mobile.css",
                     "~/Content/blog.css")

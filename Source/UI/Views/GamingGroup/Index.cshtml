@@ -29,13 +29,13 @@
 
 <a name="@ViewBag.RecentGamesSectionAnchorText"></a>
 <div class="row">
-    <div class="panel panel-default">
+    <div class="panel panel-primary">
         <div class="panel-heading">
             <h4 class="fl-left">
                 Record A Played Game @ViewBag.RecentGamesMessage
             </h4>
             <div class="fl-right">
-                @Html.ActionLink("Record Played Game", "Create", "PlayedGame", new { }, new { @class = "btn btn-primary", @id = "recordPlayedGameFromGamingGroup" })
+                @Html.ActionLink("Record Played Game", "Create", "PlayedGame", new { }, new { @class = "btn btn-default", @id = "recordPlayedGameFromGamingGroup" })
             </div>
             <div class="fl-clear"></div>
         </div>

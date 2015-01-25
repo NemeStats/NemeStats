@@ -9,7 +9,7 @@
 <h2>@Html.DisplayFor(model => model.PlayerName)</h2>
 
 <div class="row">
-    <div class="panel panel-default">
+    <div class="panel panel-primary">
         <div class="panel-heading">
             <h4>Player Info</h4>
         </div>
@@ -73,7 +73,7 @@
 <div class="row">
     @if (@Model.HasNemesis)
     {
-        <div class="panel panel-default">
+        <div class="panel panel-primary">
             <div class="panel-heading">
                 <h4>Nemesis <i class="fa fa-question-circle" data-container="body" data-toggle="popover" data-placement="right"
    data-content="The Nemesis is the Player with the highest win % vs. this Player. Must have won at least 3 games to be designated as the Nemesis."></i></h4>
@@ -110,7 +110,7 @@
 <div class="row">
     @if (@Model.Minions.Count > 0)
     {
-        <div class="panel panel-default">
+        <div class="panel panel-primary">
             <div class="panel-heading">
                 <h4>
                     Minions <i class="fa fa-question-circle" data-container="body" data-toggle="popover" data-placement="right"
@@ -157,7 +157,7 @@
 @if (Model.ChampionedGames.Count > 0)
 {
     <div class="row">
-        <div class="panel panel-default">
+        <div class="panel panel-primary">
             <div class="panel-heading">
                 <h4>Championed Games <i class="fa fa-question-circle" data-container="body" data-toggle="popover" data-placement="right"
    data-content="The Champion is the Player within the Gaming Group with the most wins of this game."></i></h4>
@@ -196,7 +196,7 @@
 }
 
 <div class="row">
-    <div class="panel panel-default">
+    <div class="panel panel-primary">
         <div class="panel-heading">
             <h4>Global Statistics</h4>
         </div>
@@ -229,7 +229,7 @@
 
 
 <div class="row">
-    <div class="panel panel-default">
+    <div class="panel panel-primary">
         <div class="panel-heading">
             <h4>Game Statistics</h4>
         </div>
@@ -266,7 +266,7 @@
 <div class="row">
     @if (Model.PlayerGameResultDetails.Any())
     {
-        <div class="panel panel-default">
+        <div class="panel panel-primary">
             <div class="panel-heading">
                 <h4>Recent Games @ViewBag.RecentGamesMessage</h4>
             </div>
