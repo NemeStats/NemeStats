@@ -1,4 +1,5 @@
-﻿using BusinessLogic.DataAccess;
+﻿using AutoMapper;
+using BusinessLogic.DataAccess;
 using BusinessLogic.Logic.BoardGameGeek;
 using BusinessLogic.Logic.GameDefinitions;
 using BusinessLogic.Models;
@@ -87,21 +88,23 @@ namespace UI.Controllers
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		[UserContextAttribute]
-		public virtual ActionResult Create([Bind(Include = "Id,Name,Description,BoardGameGeekObjectId,ReturnUrl,Active")] GameDefinition gameDefinition, string returnUrl, ApplicationUser currentUser)
+		public virtual ActionResult Create(NewGameDefinitionViewModel newGameDefinitionViewModel, ApplicationUser currentUser)
 		{
 			if (ModelState.IsValid)
 			{
-				gameDefinition.Name = gameDefinition.Name.Trim();
+                newGameDefinitionViewModel.Name = newGameDefinitionViewModel.Name.Trim();
+                var gameDefinition = Mapper.Map<NewGameDefinitionViewModel, GameDefinition>(newGameDefinitionViewModel);
+
 				gameDefinitionSaver.Save(gameDefinition, currentUser);
 
-				if (!String.IsNullOrWhiteSpace(returnUrl))
-					return new RedirectResult(returnUrl + "?gameId=" + gameDefinition.Id);
+                if (!String.IsNullOrWhiteSpace(newGameDefinitionViewModel.ReturnUrl))
+                    return new RedirectResult(newGameDefinitionViewModel.ReturnUrl + "?gameId=" + gameDefinition.Id);
 
 				return new RedirectResult(Url.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name)
 										+ "#" + GamingGroupController.SECTION_ANCHOR_GAMEDEFINITIONS);
 			}
 
-			return View(MVC.GameDefinition.Views.Create, gameDefinition);
+            return View(MVC.GameDefinition.Views.Create, newGameDefinitionViewModel);
 		}
 
 		[Authorize]

@@ -136,7 +136,7 @@ namespace UI.Controllers
         public class ActionParamsClass_Create
         {
             public readonly string returnUrl = "returnUrl";
-            public readonly string gameDefinition = "gameDefinition";
+            public readonly string newGameDefinitionViewModel = "newGameDefinitionViewModel";
             public readonly string currentUser = "currentUser";
         }
         static readonly ActionParamsClass_Save s_params_Save = new ActionParamsClass_Save();
@@ -221,16 +221,15 @@ namespace UI.Controllers
         }
 
         [NonAction]
-        partial void CreateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, BusinessLogic.Models.GameDefinition gameDefinition, string returnUrl, BusinessLogic.Models.User.ApplicationUser currentUser);
+        partial void CreateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, UI.Models.GameDefinitionModels.NewGameDefinitionViewModel newGameDefinitionViewModel, BusinessLogic.Models.User.ApplicationUser currentUser);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult Create(BusinessLogic.Models.GameDefinition gameDefinition, string returnUrl, BusinessLogic.Models.User.ApplicationUser currentUser)
+        public override System.Web.Mvc.ActionResult Create(UI.Models.GameDefinitionModels.NewGameDefinitionViewModel newGameDefinitionViewModel, BusinessLogic.Models.User.ApplicationUser currentUser)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Create);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "gameDefinition", gameDefinition);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "returnUrl", returnUrl);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "newGameDefinitionViewModel", newGameDefinitionViewModel);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "currentUser", currentUser);
-            CreateOverride(callInfo, gameDefinition, returnUrl, currentUser);
+            CreateOverride(callInfo, newGameDefinitionViewModel, currentUser);
             return callInfo;
         }
 
