@@ -287,3 +287,20 @@ ul input[type=text] { width:25px }
 .panel-text-vertical-center {
     line-height: 43px;
 }
+
+a:not(.btn),
+table a:not(.btn),
+.table a:not(.btn)
+{
+  text-decoration: none;
+}
+
+a:not(.btn):hover
+{
+  text-decoration: underline;
+}
+
+a.navbar-brand:hover
+{
+  text-decoration: none;
+}
