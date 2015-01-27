@@ -79,7 +79,7 @@
    data-content="The Nemesis is the Player with the highest win % vs. this Player. Must have won at least 3 games to be designated as the Nemesis."></i></h4>
             </div>
             <div class="panel-body">
-                <table class="table table-hover">
+                <table class="table table-hover table-striped">
                     <thead>
                         <tr>
                             <th>Previous/Current Player Name</th>
@@ -123,7 +123,7 @@
                 </h4>
             </div>
             <div class="panel-body">
-                <table class="table table-hover">
+                <table class="table table-hover table-striped">
                     <thead>
                         <tr>
                             <th>Player Name</th>
@@ -132,19 +132,19 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach(UI.Models.Players.MinionViewModel minion in Model.Minions)
+                        @foreach (UI.Models.Players.MinionViewModel minion in Model.Minions)
                         {
-                        <tr>
-                            <td>
-                                @Html.ActionLink(minion.MinionName, "Details", "Player", new { id = minion.MinionPlayerId }, new { })
-                            </td>
-                            <td>
-                                @minion.NumberOfGamesWonVersusMinion
-                            </td>
-                            <td>
-                                @minion.WinPercentageVersusMinion
-                            </td>
-                        </tr>
+                            <tr>
+                                <td>
+                                    @Html.ActionLink(minion.MinionName, "Details", "Player", new { id = minion.MinionPlayerId }, new { })
+                                </td>
+                                <td>
+                                    @minion.NumberOfGamesWonVersusMinion
+                                </td>
+                                <td>
+                                    @minion.WinPercentageVersusMinion
+                                </td>
+                            </tr>
                         }
                     </tbody>
                 </table>
@@ -163,12 +163,12 @@
    data-content="The Champion is the Player within the Gaming Group with the most wins of this game."></i></h4>
             </div>
             <div class="panel-body">
-                <table class="table table-hover">
+                <table class="table table-hover table-striped">
                     <thead>
-                        <th>Game</th>
-                        <th>Games Played</th>
-                        <th>Games Won</th>
-                        <th>Win Percentage</th>
+                    <th>Game</th>
+                    <th>Games Played</th>
+                    <th>Games Won</th>
+                    <th>Win Percentage</th>
                     </thead>
                     <tbody>
                         @foreach (ChampionViewModel championModel in @Model.ChampionedGames)
@@ -201,7 +201,7 @@
             <h4>Global Statistics</h4>
         </div>
         <div class="panel-body">
-            <table>
+            <table class="table table-hover table-striped">
                 <tr>
                     <td><strong>Total Games:</strong></td>
                     <td>@Model.TotalGamesPlayed</td>
@@ -234,7 +234,7 @@
             <h4>Game Statistics</h4>
         </div>
         <div class="panel-body">
-            <table class="table table-hover">
+            <table class="table table-hover table-striped">
                 <thead>
                     <tr>
                         <th>Game</th>
@@ -242,8 +242,8 @@
                         <th>Games Won</th>
                     </tr>
                 </thead>
-                @foreach(BusinessLogic.Models.Players.PlayerGameSummary summary in @Model.PlayerGameSummaries)
-                { 
+                @foreach (BusinessLogic.Models.Players.PlayerGameSummary summary in @Model.PlayerGameSummaries)
+                {
                     <tbody>
                         <tr>
                             <td>
@@ -271,7 +271,7 @@
                 <h4>Recent Games @ViewBag.RecentGamesMessage</h4>
             </div>
             <div class="panel-body">
-                <table class="table table-hover">
+                <table class="table table-hover table-striped">
                     <thead>
                         <tr>
                             <th>Date Played</th>
