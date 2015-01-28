@@ -5,66 +5,74 @@
 }           
 
 @using UI.HtmlHelpers
-<div class="panel-body">
-    <div class="table-responsive">
-        <table class="table table-hover table-striped">
-            <thead>
-                <tr>
-                    <th class="col-md-4">
-                        Game Name
-                    </th>
-                    <th class="col-md-2">
-                        Date Played
-                    </th>
-                    <th class="col-md-5">
-                        Result
-                    </th>
-                    <th class="col-md-1">
-
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <h4 class="fl-left">
+            Recently Played Games @ViewBag.RecentGamesMessage
+        </h4>
+        <div class="fl-clear"></div>
+    </div>
+    <div class="panel-body">
+        <div class="table-responsive">
+            <table class="table table-hover table-striped">
+                <thead>
                     <tr>
-                        <td>
-                            <b>
-                                @Html.ActionLink(item.GameDefinitionName, "Details", "GameDefinition", new { id = item.GameDefinitionId }, new { })
-                            </b>
-                        </td>
-                        <td>
-                            @item.DatePlayed.ToShortDateString()
-                        </td>
-                        <td>
-                            @foreach (var result in item.PlayerResults)
-                            {
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                        <b>
-                                            @Html.ActionLink(result.PlayerName, "Details", "Player", new { id = result.PlayerId }, new { })
-                                        </b>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        @Html.GameResults(result)
-                                    </div>
-                                </div>
-                            }
-                        </td>
-                        <td>
-                            <a href="@Url.Action("Details", "PlayedGame", new { id = item.PlayedGameId })" title="Details">
-                                <i class="fa fa-book fa-2x"></i>
-                            </a>
-                            @if (item.UserCanEdit)
-                            {
-                                <a href="@Url.Action("Delete", "PlayedGame", new { id = item.PlayedGameId })" title="Delete">
-                                    <i class="fa fa-trash-o fa-2x"></i>
-                                </a>
-                            }
-                        </td>
+                        <th class="col-md-4">
+                            Game Name
+                        </th>
+                        <th class="col-md-2">
+                            Date Played
+                        </th>
+                        <th class="col-md-5">
+                            Result
+                        </th>
+                        <th class="col-md-1">
+
+                        </th>
                     </tr>
-                }
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                <b>
+                                    @Html.ActionLink(item.GameDefinitionName, "Details", "GameDefinition", new { id = item.GameDefinitionId }, new { })
+                                </b>
+                            </td>
+                            <td>
+                                @item.DatePlayed.ToShortDateString()
+                            </td>
+                            <td>
+                                @foreach (var result in item.PlayerResults)
+                                {
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <b>
+                                                @Html.ActionLink(result.PlayerName, "Details", "Player", new { id = result.PlayerId }, new { })
+                                            </b>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            @Html.GameResults(result)
+                                        </div>
+                                    </div>
+                                }
+                            </td>
+                            <td>
+                                <a href="@Url.Action("Details", "PlayedGame", new { id = item.PlayedGameId })" title="Details">
+                                    <i class="fa fa-book fa-2x"></i>
+                                </a>
+                                @if (item.UserCanEdit)
+                                {
+                                    <a href="@Url.Action("Delete", "PlayedGame", new { id = item.PlayedGameId })" title="Delete">
+                                        <i class="fa fa-trash-o fa-2x"></i>
+                                    </a>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
