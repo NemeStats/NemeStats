@@ -14,8 +14,8 @@ namespace UI.Transformations
     {
         public static void Configure()
         {
-            Mapper.CreateMap<TopGamingGroupSummary, TopGamingGroupSummaryViewModel>();
-            Mapper.CreateMap<NewGameDefinitionViewModel, GameDefinition>();
+            Mapper.CreateMap<TopGamingGroupSummary, TopGamingGroupSummaryViewModel>(MemberList.Source);
+            Mapper.CreateMap<NewGameDefinitionViewModel, GameDefinition>(MemberList.Source);
         }
     }
 }

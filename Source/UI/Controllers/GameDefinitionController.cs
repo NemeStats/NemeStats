@@ -95,7 +95,7 @@ namespace UI.Controllers
                 newGameDefinitionViewModel.Name = newGameDefinitionViewModel.Name.Trim();
                 var gameDefinition = Mapper.Map<NewGameDefinitionViewModel, GameDefinition>(newGameDefinitionViewModel);
 
-				gameDefinitionSaver.Save(gameDefinition, currentUser);
+				gameDefinition = gameDefinitionSaver.Save(gameDefinition, currentUser);
 
                 if (!String.IsNullOrWhiteSpace(newGameDefinitionViewModel.ReturnUrl))
                     return new RedirectResult(newGameDefinitionViewModel.ReturnUrl + "?gameId=" + gameDefinition.Id);
