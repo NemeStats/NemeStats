@@ -72,10 +72,7 @@
 
             this.$playerItemTemplate = $("#player-item-template");
 
-            this.$gameDefinitionDropDown.on("click", function () {
-            	if ($(this).data("numofdefinitions") == 0 )
-            		$("#gameDefinitionDropDown").popover("show");
-            });
+            parent.validateGameDefinition();
         },
         onReorder: function () {
             var parent = this;
@@ -204,6 +201,14 @@
             return true;
         },
 
+        validateGameDefinition: function () {
+        	if ($("#gameDefinitionDropDown").data("numofdefinitions") == 0) {
+        		$("#gameDefinitionDropDown").popover({ html: true });
+        		$("#gameDefinitionDropDown").popover("show");
+        		$(":input").prop("disabled", true);
+        	}
+        },
+
         //Properties
         set_playerIndex: function (value) {
             this._playerIndex = value;
@@ -218,4 +223,3 @@
             return this._playerRank;
         }
     }; //end prototypes
-

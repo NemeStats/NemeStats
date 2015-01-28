@@ -3,4 +3,10 @@
     .home-page-icon {
         font-size: 4em;
     }
+
+    .leftItem {
+     display:inline-block;
+     max-width: 90px;
+     overflow: hidden;
+   }
 }

@@ -290,17 +290,18 @@ ul input[type=text] { width:25px }
 
 a:not(.btn),
 table a:not(.btn),
-.table a:not(.btn)
-{
+.table a:not(.btn){
   text-decoration: none;
 }
 
-a:not(.btn):hover
-{
+a:not(.btn):hover{
   text-decoration: underline;
 }
 
-a.navbar-brand:hover
-{
-  text-decoration: none;
+a.navbar-brand:hover{
+    text-decoration: none;
+}
+
+.popover {
+	color: red;
 }
