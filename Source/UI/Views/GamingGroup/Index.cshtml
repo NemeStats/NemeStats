@@ -29,18 +29,7 @@
 
 <a name="@ViewBag.RecentGamesSectionAnchorText"></a>
 <div class="row">
-    <div class="panel panel-primary">
-        <div class="panel-heading">
-            <h4 class="fl-left">
-                Recently Played Games @ViewBag.RecentGamesMessage
-            </h4>
-            <div class="fl-right">
-                @Html.ActionLink("Record Played Game", "Create", "PlayedGame", new { }, new { @class = "btn btn-default", @id = "recordPlayedGameFromGamingGroup" })
-            </div>
-            <div class="fl-clear"></div>
-        </div>
-        @Html.Partial("~/Views/PlayedGame/_PlayedGamesPartial.cshtml", Model.RecentGames, new ViewDataDictionary { { "canEdit", true } })
-    </div>
+   @Html.Partial("~/Views/PlayedGame/_PlayedGamesPartial.cshtml", Model.RecentGames, new ViewDataDictionary { { "canEdit", true } })
 </div>
 
 @section Scripts {

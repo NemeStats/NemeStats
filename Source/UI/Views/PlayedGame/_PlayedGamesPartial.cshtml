@@ -10,6 +10,12 @@
         <h4 class="fl-left">
             Recently Played Games @ViewBag.RecentGamesMessage
         </h4>
+        @if ((bool?)ViewData["canEdit"] == true)
+        {
+            <div class="fl-right">
+                @Html.ActionLink("Record Played Game", "Create", "PlayedGame", new { }, new { @class = "btn btn-default", @id = "recordPlayedGameFromGamingGroup" })
+            </div>
+        }
         <div class="fl-clear"></div>
     </div>
     <div class="panel-body">
