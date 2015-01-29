@@ -78,7 +78,11 @@ namespace UI.Controllers
 		[Authorize]
 		public virtual ActionResult Create(string returnUrl)
 		{
-			return View(MVC.GameDefinition.Views.Create, new NewGameDefinitionViewModel(returnUrl));
+		    return View(MVC.GameDefinition.Views.Create,
+		                new NewGameDefinitionViewModel()
+		                {
+		                    ReturnUrl = returnUrl
+		                });
 		}
 
 		// POST: /GameDefinition/Create
@@ -172,7 +176,7 @@ namespace UI.Controllers
 		[Authorize]
 		public virtual ActionResult CreatePartial()
 		{
-			return View(MVC.GameDefinition.Views._CreatePartial, new GameDefinition());
+			return View(MVC.GameDefinition.Views._CreatePartial, new NewGameDefinitionViewModel());
 		}
 
 		[Authorize]

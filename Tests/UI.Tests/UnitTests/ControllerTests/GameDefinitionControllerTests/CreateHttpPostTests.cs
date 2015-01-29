@@ -24,7 +24,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
 		[Test]
 		public void ItReloadsTheCurrentGameDefinitionIfValidationFails()
 		{
-			var newGameDefinitionViewModel = new NewGameDefinitionViewModel(null);
+			var newGameDefinitionViewModel = new NewGameDefinitionViewModel();
 			gameDefinitionControllerPartialMock.ModelState.AddModelError("key", "message");
 
 			ViewResult actionResult = gameDefinitionControllerPartialMock.Create(newGameDefinitionViewModel, currentUser) as ViewResult;
@@ -36,7 +36,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
 		[Test]
 		public void ItSavesTheGameDefinitionIfValidationPasses()
 		{
-			var newGameDefinitionViewModel = new NewGameDefinitionViewModel(null)
+			var newGameDefinitionViewModel = new NewGameDefinitionViewModel()
 			{
 				Name = "game definition name"
 			};
@@ -55,7 +55,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
 		{
 			string baseUrl = "base url";
 			string expectedUrl = baseUrl + "#" + GamingGroupController.SECTION_ANCHOR_GAMEDEFINITIONS;
-			var newGameDefinitionViewModel = new NewGameDefinitionViewModel(null)
+			var newGameDefinitionViewModel = new NewGameDefinitionViewModel()
 			{
 				Name = "game definition name"
 			};
@@ -72,7 +72,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
 		{
 		    int expectedGameDefinitionId = 123;
 			string returnUrl = "/PlayedGame/Create";
-		    var newGameDefinitionViewModel = new NewGameDefinitionViewModel(null)
+		    var newGameDefinitionViewModel = new NewGameDefinitionViewModel()
 		    {
                 ReturnUrl = returnUrl,
                 Name = "Project-Ariel"
