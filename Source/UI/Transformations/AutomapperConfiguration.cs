@@ -15,7 +15,7 @@ namespace UI.Transformations
         public static void Configure()
         {
             Mapper.CreateMap<TopGamingGroupSummary, TopGamingGroupSummaryViewModel>(MemberList.Source);
-            Mapper.CreateMap<NewGameDefinitionViewModel, GameDefinition>(MemberList.Source);
+            Mapper.CreateMap<NewGameDefinitionViewModel, GameDefinition>(MemberList.Source).ForSourceMember(x => x.ReturnUrl, opt => opt.Ignore());
         }
     }
 }

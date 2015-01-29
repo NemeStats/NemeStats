@@ -82,7 +82,7 @@
             <h3>Top 5 Players</h3>
             
             <div class="table-responsive">
-                <table class="table table-hover" id="topFivePlayersTable">
+                <table class="table table-hover table-striped" id="topFivePlayersTable">
                     <tr>
                         <th>Name</th>
                         <th>Games</th>
@@ -105,7 +105,7 @@
         <div class="col-md-6">
             <h3>Recent Games</h3>
             <div class="table-responsive">
-                <table class="table table-hover" id="recentGamesTable">
+                <table class="table table-hover table-striped" id="recentGamesTable">
                     <tr>
                         <th>Game</th>
                         <th>Winner</th>
@@ -136,11 +136,13 @@
         <div class="col-md-6">
             <h3>Recent Nemesis Changes</h3>
             <div class="table-responsive">
-                <table class="table table-hover" id="recentNemesisChangesTable">
+                <table class="table table-hover table-striped" id="recentNemesisChangesTable">
                     <tr>
                         <th>Player</th>
-                        <th>New Nemesis <i class="fa fa-question-circle" data-container="body" data-toggle="popover" data-placement="right"
-   data-content="The Nemesis is the Player with the highest win % vs. this Player. Must have won at least 3 games to be designated as the Nemesis."></i></th>
+                        <th>
+                            New Nemesis <i class="fa fa-question-circle" data-container="body" data-toggle="popover" data-placement="right"
+                                           data-content="The Nemesis is the Player with the highest win % vs. this Player. Must have won at least 3 games to be designated as the Nemesis."></i>
+                        </th>
                         <th>Loss %</th>
                     </tr>
                     @foreach (UI.Models.Nemeses.NemesisChangeViewModel nemesisChange in @Model.RecentNemesisChanges)
@@ -158,7 +160,7 @@
         <div class="col-md-6">
             <h3>Top 5 Gaming Groups</h3>
             <div class="table-responsive">
-                <table class="table table-hover" id="topFiveGamingGroupsTable">
+                <table class="table table-hover table-striped" id="topFiveGamingGroupsTable">
                     <tr>
                         <th>Gaming Group</th>
                         <th>Number of Games Played</th>

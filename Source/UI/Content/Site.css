@@ -258,8 +258,13 @@ ul input[type=text] { width:25px }
 
 .playerItem {
   font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+<<<<<<< HEAD
   color:#31708f;
   background-color:#d9edf7;
+=======
+  color:#fff;
+  background-color:#2C3E50;
+>>>>>>> 15f3d15c3162ac57354673006d1618bd360267a2
   max-width:380px;
   margin:8px;
   padding:4px;
@@ -270,9 +275,36 @@ ul input[type=text] { width:25px }
   margin-left: 0px;
 }
 
+.playerItem button {
+    color:#2C3E50;
+}
+
+.playerItem input[type="text"] {
+    color:#2C3E50;
+    border-color: #2C3E50;
+}
+
 .gaming-group-name {
     min-width: 95%;
     max-width: 95%;
+}
+
+.panel-text-vertical-center {
+    line-height: 43px;
+}
+
+a:not(.btn),
+table a:not(.btn),
+.table a:not(.btn){
+  text-decoration: none;
+}
+
+a:not(.btn):hover{
+  text-decoration: underline;
+}
+
+a.navbar-brand:hover{
+    text-decoration: none;
 }
 
 .popover {
