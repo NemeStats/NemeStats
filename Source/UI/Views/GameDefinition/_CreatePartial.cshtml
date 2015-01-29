@@ -10,7 +10,7 @@
         <div class="form-inline">
             @Html.HiddenFor(m => m.BoardGameGeekObjectId)
             <div class="form-group">
-                @Html.LabelFor(model => model.Name, new { @class = "control-label col-md-3" })
+                @Html.LabelFor(model => model.Name, new { @class = "control-label col-md-3 panel-text-vertical-center" })
                 @Html.TextBoxFor(model => model.Name, new { @class = "form-control col-md-2", id = "gameNameInput" })
                 <div class="col-md-offset-3">
                     @Html.ValidationMessageFor(model => model.Name)
@@ -19,7 +19,7 @@
 
             <div class="form-group">
                 <div class="col-md-pull-2">
-                    <button class="btn btn-primary" id="createGameDefinitionFromPartial">Create Game</button>
+                    <button class="btn btn-default" id="createGameDefinitionFromPartial">Create Game</button>
                 </div>
             </div>
         </div>
