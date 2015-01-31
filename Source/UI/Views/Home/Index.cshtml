@@ -1,4 +1,5 @@
-﻿@model UI.Models.Home.HomeIndexViewModel
+﻿@using BusinessLogic.Models.PlayedGames
+@model UI.Models.Home.HomeIndexViewModel
 
 @{
     ViewBag.Title = "Board Game Tracking Made Fun";
@@ -116,9 +117,13 @@
                     {
                         <tr>
                             <td>@Html.ActionLink(publicGame.GameDefinitionName, "Details", "GameDefinition", new { id = publicGame.GameDefinitionId }, new { })</td>
-                            @if (publicGame.WinningPlayer == null)
+                            @if (publicGame.WinnerType == WinnerTypes.TeamWin)
                             {
-                                <td>TEAM LOSS</td>
+                                <td class="gameResult-teamWin">TEAM WIN</td>
+                            }
+                            else if (publicGame.WinnerType == WinnerTypes.TeamLoss)
+                            {
+                                <td class="gameResult-teamLoss">TEAM LOSS</td>
                             }
                             else
                             {

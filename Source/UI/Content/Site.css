@@ -305,3 +305,11 @@ a.navbar-brand:hover{
 .popover {
 	color: red;
 }
+
+.gameResult-teamLoss {
+    color: red;
+}
+
+.gameResult-teamWin {
+    color: green;
+}

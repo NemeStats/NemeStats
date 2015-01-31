@@ -1,10 +1,12 @@
-﻿using BusinessLogic.DataAccess;
+﻿using System.Security.Cryptography.X509Certificates;
+using BusinessLogic.DataAccess;
 using BusinessLogic.Exceptions;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using BusinessLogic.Models.PlayedGames;
 
 namespace BusinessLogic.Logic.PlayedGames
 {
@@ -63,19 +65,21 @@ namespace BusinessLogic.Logic.PlayedGames
         public List<PublicGameSummary> GetRecentPublicGames(int numberOfGames)
         {
             return (from playedGame in dataContext.GetQueryable<PlayedGame>()
-                        .Include(playedGame => playedGame.GamingGroup)
                         .OrderByDescending(game => game.DatePlayed)
                         .ThenByDescending(game => game.DateCreated)
-                    select new PublicGameSummary()
-                    {
-                        PlayedGameId = playedGame.Id,
-                        GameDefinitionId = playedGame.GameDefinitionId,
-                        GameDefinitionName = playedGame.GameDefinition.Name,
-                        GamingGroupId = playedGame.GamingGroupId,
-                        GamingGroupName = playedGame.GamingGroup.Name,
-                        WinningPlayer = playedGame.PlayerGameResults.FirstOrDefault(player => player.GameRank == 1).Player,
-                        DatePlayed = playedGame.DatePlayed
-                    }).Take(numberOfGames)
+                    select new PublicGameSummary
+             {
+                 PlayedGameId = playedGame.Id,
+                 GameDefinitionId = playedGame.GameDefinitionId,
+                 GameDefinitionName = playedGame.GameDefinition.Name,
+                 GamingGroupId = playedGame.GamingGroupId,
+                 GamingGroupName = playedGame.GamingGroup.Name,
+                 WinnerType = (playedGame.PlayerGameResults.All(x => x.GameRank == 1) ? WinnerTypes.TeamWin :
+                                playedGame.PlayerGameResults.All(x => x.GameRank != 1) ? WinnerTypes.TeamLoss :
+                                WinnerTypes.PlayerWin),
+                 WinningPlayer = playedGame.PlayerGameResults.FirstOrDefault(player => player.GameRank == 1).Player,
+                 DatePlayed = playedGame.DatePlayed
+             }).Take(numberOfGames)
                                 .ToList();
         }
     }
