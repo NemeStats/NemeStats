@@ -306,6 +306,6 @@ a.navbar-brand:hover{
 	color: red;
 }
 
-.rowFirst:hover {
-	background-color: #f9f9f9 !important;
+table > thead :hover {
+	background-color: none !important;
 }

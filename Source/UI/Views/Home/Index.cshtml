@@ -82,23 +82,26 @@
             <h3>Top 5 Players</h3>
             
             <div class="table-responsive">
-                <table class="table table-hover table-striped" id="topFivePlayersTable">
-                    <tr class="rowFirst">
-                        <th>Name</th>
-                        <th>Games</th>
-                        <th>Win %</th>
-                        <th>Points</th>
-                    </tr>
-                    @foreach (UI.Models.Players.TopPlayerViewModel playerSummaryViewModel in @Model.TopPlayers)
-                    {
-                        <tr>
-                            <td>@Html.ActionLink(playerSummaryViewModel.PlayerName, "Details", "Player", new { id = playerSummaryViewModel.PlayerId }, new { })</td>
-                            <td>@playerSummaryViewModel.TotalNumberOfGamesPlayed</td>
-                            <td>@playerSummaryViewModel.WinPercentage</td>
-                            <td>@playerSummaryViewModel.TotalPoints</td>
-                        </tr>
-                    }
-                </table>
+				<table class="table table-hover table-striped" id="topFivePlayersTable">
+					<thead>
+						<tr>
+							<th>Name</th>
+							<th>Games</th>
+							<th>Win %</th>
+							<th>Points</th>
+						</tr>
+					</thead>
+					@foreach (UI.Models.Players.TopPlayerViewModel playerSummaryViewModel in @Model.TopPlayers)
+					{
+						<tr>
+							<td>@Html.ActionLink(playerSummaryViewModel.PlayerName, "Details", "Player", new { id = playerSummaryViewModel.PlayerId }, new { })</td>
+							<td>@playerSummaryViewModel.TotalNumberOfGamesPlayed</td>
+							<td>@playerSummaryViewModel.WinPercentage</td>
+							<td>@playerSummaryViewModel.TotalPoints</td>
+						</tr>
+					}
+				</table>
+
             </div>
         </div>
 
@@ -106,12 +109,14 @@
             <h3>Recent Games</h3>
             <div class="table-responsive">
                 <table class="table table-hover table-striped" id="recentGamesTable">
-                    <tr class="rowFirst">
-                        <th>Game</th>
-                        <th>Winner</th>
-                        <th>Date</th>
-                        <th>Gaming Group</th>
-                    </tr>
+                    <thead>
+						<tr>
+							<th>Game</th>
+							<th>Winner</th>
+							<th>Date</th>
+							<th>Gaming Group</th>
+						</tr>
+                    </thead>
                     @foreach (BusinessLogic.Models.Games.PublicGameSummary publicGame in @Model.RecentPublicGames)
                     {
                         <tr>
@@ -137,14 +142,16 @@
             <h3>Recent Nemesis Changes</h3>
             <div class="table-responsive">
                 <table class="table table-hover table-striped" id="recentNemesisChangesTable">
-                    <tr class="rowFirst">
-                        <th>Player</th>
-                        <th>
-                            New Nemesis <i class="fa fa-question-circle" data-container="body" data-toggle="popover" data-placement="right"
+                    <thead>
+						<tr>
+							<th>Player</th>
+							<th>
+								New Nemesis <i class="fa fa-question-circle" data-container="body" data-toggle="popover" data-placement="right"
                                            data-content="The Nemesis is the Player with the highest win % vs. this Player. Must have won at least 3 games to be designated as the Nemesis."></i>
-                        </th>
-                        <th>Loss %</th>
-                    </tr>
+							</th>
+							<th>Loss %</th>
+						</tr>
+                    </thead>
                     @foreach (UI.Models.Nemeses.NemesisChangeViewModel nemesisChange in @Model.RecentNemesisChanges)
                     {
                         <tr>
@@ -161,11 +168,13 @@
             <h3>Top 5 Gaming Groups</h3>
             <div class="table-responsive">
                 <table class="table table-hover table-striped" id="topFiveGamingGroupsTable">
-                    <tr class="row">
-                        <th>Gaming Group</th>
-                        <th>Number of Games Played</th>
-                        <th>Number of Players</th>
-                    </tr>
+                    <thead>
+						<tr>
+							<th>Gaming Group</th>
+							<th>Number of Games Played</th>
+							<th>Number of Players</th>
+						</tr>
+                    </thead>
                     @foreach (UI.Models.GamingGroup.TopGamingGroupSummaryViewModel topGamingGroup in @Model.TopGamingGroups)
                     {
                         <tr>
