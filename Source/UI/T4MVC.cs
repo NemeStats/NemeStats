@@ -76,6 +76,26 @@ namespace Links
         public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
         public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
         public static readonly string _references_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/_references.min.js") ? Url("_references.min.js") : Url("_references.js");
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public static class bootstrap {
+            private const string URLPATH = "~/Scripts/bootstrap";
+            public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
+            public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
+            public static readonly string affix_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/affix.min.js") ? Url("affix.min.js") : Url("affix.js");
+            public static readonly string alert_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/alert.min.js") ? Url("alert.min.js") : Url("alert.js");
+            public static readonly string button_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/button.min.js") ? Url("button.min.js") : Url("button.js");
+            public static readonly string carousel_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/carousel.min.js") ? Url("carousel.min.js") : Url("carousel.js");
+            public static readonly string collapse_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/collapse.min.js") ? Url("collapse.min.js") : Url("collapse.js");
+            public static readonly string dropdown_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/dropdown.min.js") ? Url("dropdown.min.js") : Url("dropdown.js");
+            public static readonly string modal_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/modal.min.js") ? Url("modal.min.js") : Url("modal.js");
+            public static readonly string popover_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/popover.min.js") ? Url("popover.min.js") : Url("popover.js");
+            public static readonly string scrollspy_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/scrollspy.min.js") ? Url("scrollspy.min.js") : Url("scrollspy.js");
+            public static readonly string tab_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/tab.min.js") ? Url("tab.min.js") : Url("tab.js");
+            public static readonly string tooltip_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/tooltip.min.js") ? Url("tooltip.min.js") : Url("tooltip.js");
+            public static readonly string transition_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/transition.min.js") ? Url("transition.min.js") : Url("transition.js");
+        }
+    
+        public static readonly string bootstrap_sprockets_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/bootstrap-sprockets.min.js") ? Url("bootstrap-sprockets.min.js") : Url("bootstrap-sprockets.js");
         public static readonly string bootstrap_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/bootstrap.min.js") ? Url("bootstrap.min.js") : Url("bootstrap.js");
         public static readonly string bootstrap_min_js = Url("bootstrap.min.js");
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -132,7 +152,6 @@ namespace Links
         public static readonly string modernizr_2_8_3_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/modernizr-2.8.3.min.js") ? Url("modernizr-2.8.3.min.js") : Url("modernizr-2.8.3.js");
         public static readonly string namespace_1_0_0_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/namespace-1.0.0.min.js") ? Url("namespace-1.0.0.min.js") : Url("namespace-1.0.0.js");
         public static readonly string namespace_min_1_0_0_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/namespace.min-1.0.0.min.js") ? Url("namespace.min-1.0.0.min.js") : Url("namespace.min-1.0.0.js");
-        public static readonly string npm_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/npm.min.js") ? Url("npm.min.js") : Url("npm.js");
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public static class Player {
             private const string URLPATH = "~/Scripts/Player";
@@ -171,10 +190,6 @@ namespace Links
         public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
         public static readonly string blog_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/blog.min.css") ? Url("blog.min.css") : Url("blog.css");
              
-        public static readonly string bootstrap_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/bootstrap.min.css") ? Url("bootstrap.min.css") : Url("bootstrap.css");
-             
-        public static readonly string bootstrap_css_map = Url("bootstrap.css.map");
-        public static readonly string bootstrap_min_css = Url("bootstrap.min.css");
         public static readonly string font_awesome_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/font-awesome.min.css") ? Url("font-awesome.min.css") : Url("font-awesome.css");
              
         public static readonly string font_awesome_min_css = Url("font-awesome.min.css");

@@ -114,6 +114,7 @@ namespace UI.Controllers
         {
             public readonly string Index = "Index";
             public readonly string Details = "Details";
+            public readonly string GetTopGamingGroups = "GetTopGamingGroups";
             public readonly string GrantAccess = "GrantAccess";
             public readonly string Edit = "Edit";
             public readonly string GetUsersGamingGroups = "GetUsersGamingGroups";
@@ -126,6 +127,7 @@ namespace UI.Controllers
         {
             public const string Index = "Index";
             public const string Details = "Details";
+            public const string GetTopGamingGroups = "GetTopGamingGroups";
             public const string GrantAccess = "GrantAccess";
             public const string Edit = "Edit";
             public const string GetUsersGamingGroups = "GetUsersGamingGroups";
@@ -207,9 +209,11 @@ namespace UI.Controllers
             {
                 public readonly string Details = "Details";
                 public readonly string Index = "Index";
+                public readonly string TopGamingGroups = "TopGamingGroups";
             }
             public readonly string Details = "~/Views/GamingGroup/Details.cshtml";
             public readonly string Index = "~/Views/GamingGroup/Index.cshtml";
+            public readonly string TopGamingGroups = "~/Views/GamingGroup/TopGamingGroups.cshtml";
         }
     }
 
@@ -240,6 +244,17 @@ namespace UI.Controllers
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "currentUser", currentUser);
             DetailsOverride(callInfo, id, currentUser);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void GetTopGamingGroupsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult GetTopGamingGroups()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.GetTopGamingGroups);
+            GetTopGamingGroupsOverride(callInfo);
             return callInfo;
         }
 
