@@ -229,7 +229,6 @@ ul input[type=text] { width:25px }
 }
 
 .leftItem span {
-  color: #fff;
   display:inline-block; 
   line-height:30px;
   white-space:nowrap;
