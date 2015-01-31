@@ -305,3 +305,7 @@ a.navbar-brand:hover{
 .popover {
 	color: red;
 }
+
+.rowFirst:hover {
+	background-color: #f9f9f9 !important;
+}
