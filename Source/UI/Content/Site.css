@@ -336,3 +336,12 @@ h3 > a {
     color:red;
     font-weight:bold;
 }
+
+.btn-recordgame {
+    width: 175px;
+    margin: 3px 3px 3px 3px;
+}
+
+button > i.fa {
+    font-size: 20px;
+}

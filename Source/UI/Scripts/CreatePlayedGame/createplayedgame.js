@@ -21,6 +21,8 @@
         this._rankButtons = null;
         this.$gameDefinitionDropDown = null;
         this.$gameId = null;
+        this.$btnEveryoneWonButton = null;
+        this.$btnEveryoneLostButton = null;
     };
 
     //Implementation
@@ -49,6 +51,9 @@
                 maxDate: new Date(),
                 minDate: new Date(2014, 1, 1)
             }).datepicker("setDate", new Date());
+            this.$btnEveryoneWonButton = $("#btnEveryoneWonButton");
+            this.$btnEveryoneLostButton = $("#btnEveryoneLostButton");
+
             this._googleAnalytics = gaObject;
 
             this.$recordPlayedGameForm.on("submit", $.proxy(parent.validatePlayers, parent));
@@ -69,6 +74,24 @@
                 }
                 document.location = parent.$anchorAddPlayer.attr("href");
                 parent._googleAnalytics.trackGAEvent("PlayedGames", "AddNewPlayerClicked", "AddNewPlayerClicked");
+            });
+
+            this.$btnEveryoneWonButton.on("click", function () {
+                if (confirm("Are you sure you want to give every player a win?")) {
+                    $(".playerRank,input[name$='.GameRank'").val(1);
+                    return true;
+                } else {
+                    return false;
+                }
+            });
+
+            this.$btnEveryoneLostButton.on("click", function () {
+                if (confirm("Are you sure you want to give every player a loss?")) {
+                    $(".playerRank,input[name$='.GameRank'").val(2);
+                    return true;
+                } else {
+                    return false;
+                }
             });
 
             this.$playerItemTemplate = $("#player-item-template");
