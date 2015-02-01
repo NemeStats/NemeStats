@@ -79,8 +79,11 @@
 
     <div class="home-body-container">
         <div class="col-md-6">
-            <h3>Top 5 Players</h3>
-            
+            <div class="fl-left">
+                <h3>Top 5 Players</h3>
+            </div>
+            <div id="topPlayersVote" class="fl-right" style="margin-top: 21px; margin-bottom: 10.5px;"></div>
+            <div class="fl-clear"></div>
             <div class="table-responsive">
                 <table class="table table-hover table-striped" id="topFivePlayersTable">
                     <tr>
@@ -100,11 +103,14 @@
                     }
                 </table>
             </div>
-        </div>
+            </div>
 
         <div class="col-md-6">
-            <h3>Recent Games</h3>
-            <div id="testRank"></div>
+            <div class="fl-left">
+                <h3>Recent Games</h3>
+            </div>
+            <div id="recentGamesVote" class="fl-right" style="margin-top: 21px; margin-bottom: 10.5px;"></div>
+            <div class="fl-clear"></div>
             <div class="table-responsive">
                 <table class="table table-hover table-striped" id="recentGamesTable">
                     <tr>
@@ -135,7 +141,11 @@
         
 
         <div class="col-md-6">
-            <h3>Recent Nemesis Changes</h3>
+            <div class="fl-left">
+                <h3>Recent Nemesis Changes</h3>    
+            </div>
+            <div id="nemesisChangeVote" class="fl-right" style="margin-top: 21px; margin-bottom: 10.5px;"></div>
+            <div class="fl-clear"></div>
             <div class="table-responsive">
                 <table class="table table-hover table-striped" id="recentNemesisChangesTable">
                     <tr>
@@ -159,7 +169,11 @@
         </div>
         
         <div class="col-md-6">
-            <h3>Top 5 Gaming Groups</h3>
+            <div class="fl-left">
+                <h3>Top 5 Gaming Groups</h3>
+            </div>
+            <div id="gamingGroupsVote" class="fl-right" style="margin-top: 21px; margin-bottom: 10.5px;"></div>
+            <div class="fl-clear"></div>
             <div class="table-responsive">
                 <table class="table table-hover table-striped" id="topFiveGamingGroupsTable">
                     <tr>
@@ -197,7 +211,10 @@
 @section Scripts {
     <script type="text/javascript">
         $(document).ready(function () {
-            $("#testRank").rank();
+            $("#recentGamesVote").rank();
+            $("#topPlayersVote").rank();
+            $("#nemesisChangeVote").rank();
+            $("#gamingGroupsVote").rank();
         });
     </script>
 }
