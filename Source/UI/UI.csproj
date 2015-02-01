@@ -640,6 +640,8 @@
     <Content Include="Views\GamingGroup\_TopGamingGroupsPartial.cshtml" />
     <Content Include="Views\PlayedGame\RecentlyPlayedGames.cshtml" />
     <Content Include="Views\PlayedGame\_RecentlyPlayedGamesPartial.cshtml" />
+    <Content Include="Views\Player\TopPlayers.cshtml" />
+    <Content Include="Views\Player\_TopPlayersPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Code\" />

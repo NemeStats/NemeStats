@@ -98,6 +98,7 @@ namespace UI.Controllers
             public readonly string SavePlayer = "SavePlayer";
             public readonly string Create = "Create";
             public readonly string InvitePlayer = "InvitePlayer";
+            public readonly string ShowTopPlayers = "ShowTopPlayers";
             public readonly string Save = "Save";
             public readonly string Edit = "Edit";
         }
@@ -109,6 +110,7 @@ namespace UI.Controllers
             public const string SavePlayer = "SavePlayer";
             public const string Create = "Create";
             public const string InvitePlayer = "InvitePlayer";
+            public const string ShowTopPlayers = "ShowTopPlayers";
             public const string Save = "Save";
             public const string Edit = "Edit";
         }
@@ -164,17 +166,21 @@ namespace UI.Controllers
             {
                 public readonly string _CreateOrUpdatePartial = "_CreateOrUpdatePartial";
                 public readonly string _PlayersPartial = "_PlayersPartial";
+                public readonly string _TopPlayersPartial = "_TopPlayersPartial";
                 public readonly string Create = "Create";
                 public readonly string Details = "Details";
                 public readonly string Edit = "Edit";
                 public readonly string InvitePlayer = "InvitePlayer";
+                public readonly string TopPlayers = "TopPlayers";
             }
             public readonly string _CreateOrUpdatePartial = "~/Views/Player/_CreateOrUpdatePartial.cshtml";
             public readonly string _PlayersPartial = "~/Views/Player/_PlayersPartial.cshtml";
+            public readonly string _TopPlayersPartial = "~/Views/Player/_TopPlayersPartial.cshtml";
             public readonly string Create = "~/Views/Player/Create.cshtml";
             public readonly string Details = "~/Views/Player/Details.cshtml";
             public readonly string Edit = "~/Views/Player/Edit.cshtml";
             public readonly string InvitePlayer = "~/Views/Player/InvitePlayer.cshtml";
+            public readonly string TopPlayers = "~/Views/Player/TopPlayers.cshtml";
         }
     }
 
@@ -228,6 +234,17 @@ namespace UI.Controllers
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "currentUser", currentUser);
             InvitePlayerOverride(callInfo, id, currentUser);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void ShowTopPlayersOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult ShowTopPlayers()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ShowTopPlayers);
+            ShowTopPlayersOverride(callInfo);
             return callInfo;
         }
 

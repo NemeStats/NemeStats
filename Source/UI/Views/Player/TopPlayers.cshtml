@@ -1,0 +1,11 @@
+﻿@model IEnumerable<UI.Models.Players.TopPlayerViewModel>
+
+@{
+    ViewBag.Title = "Top " + @Model.Count() +" Players";
+	Layout = MVC.Shared.Views._BaseLayout;
+}
+
+<div class="container">
+	<h2>Top @Model.Count() Players</h2>
+	@Html.Partial(MVC.Player.Views._TopPlayersPartial, @Model)
+</div>
