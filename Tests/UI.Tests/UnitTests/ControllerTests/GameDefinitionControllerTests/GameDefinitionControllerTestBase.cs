@@ -32,6 +32,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
         [SetUp]
         public virtual void SetUp()
         {
+            AutomapperConfiguration.Configure();
             dataContextMock = MockRepository.GenerateMock<NemeStatsDataContext>();
             gameDefinitionRetrieverMock = MockRepository.GenerateMock<IGameDefinitionRetriever>();
             gameDefinitionTransformationMock = MockRepository.GenerateMock<IGameDefinitionDetailsViewModelBuilder>();

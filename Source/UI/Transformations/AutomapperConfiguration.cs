@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using AutoMapper;
+using BusinessLogic.Models;
 using BusinessLogic.Models.GamingGroups;
+using UI.Models.GameDefinitionModels;
 using UI.Models.GamingGroup;
 
 namespace UI.Transformations
@@ -12,7 +14,8 @@ namespace UI.Transformations
     {
         public static void Configure()
         {
-            Mapper.CreateMap<TopGamingGroupSummary, TopGamingGroupSummaryViewModel>();
+            Mapper.CreateMap<TopGamingGroupSummary, TopGamingGroupSummaryViewModel>(MemberList.Source);
+            Mapper.CreateMap<NewGameDefinitionViewModel, GameDefinition>(MemberList.Source).ForSourceMember(x => x.ReturnUrl, opt => opt.Ignore());
         }
     }
 }

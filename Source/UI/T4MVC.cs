@@ -91,7 +91,9 @@ namespace Links
             private const string URLPATH = "~/Scripts/GameDefinition";
             public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
             public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
+            public static readonly string createGameDefinition_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/createGameDefinition.min.js") ? Url("createGameDefinition.min.js") : Url("createGameDefinition.js");
             public static readonly string createGameDefinitionPartial_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/createGameDefinitionPartial.min.js") ? Url("createGameDefinitionPartial.min.js") : Url("createGameDefinitionPartial.js");
+            public static readonly string gameDefinitionAutoComplete_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/gameDefinitionAutoComplete.min.js") ? Url("gameDefinitionAutoComplete.min.js") : Url("gameDefinitionAutoComplete.js");
             public static readonly string gameDefinitions_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/gameDefinitions.min.js") ? Url("gameDefinitions.min.js") : Url("gameDefinitions.js");
         }
     
@@ -103,11 +105,23 @@ namespace Links
             public static readonly string gamingGroup_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/gamingGroup.min.js") ? Url("gamingGroup.min.js") : Url("gamingGroup.js");
         }
     
+        public static readonly string handlebars_amd_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/handlebars.amd.min.js") ? Url("handlebars.amd.min.js") : Url("handlebars.amd.js");
+        public static readonly string handlebars_amd_min_js = Url("handlebars.amd.min.js");
+        public static readonly string handlebars_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/handlebars.min.js") ? Url("handlebars.min.js") : Url("handlebars.js");
+        public static readonly string handlebars_min_js = Url("handlebars.min.js");
+        public static readonly string handlebars_runtime_amd_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/handlebars.runtime.amd.min.js") ? Url("handlebars.runtime.amd.min.js") : Url("handlebars.runtime.amd.js");
+        public static readonly string handlebars_runtime_amd_min_js = Url("handlebars.runtime.amd.min.js");
+        public static readonly string handlebars_runtime_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/handlebars.runtime.min.js") ? Url("handlebars.runtime.min.js") : Url("handlebars.runtime.js");
+        public static readonly string handlebars_runtime_min_js = Url("handlebars.runtime.min.js");
         public static readonly string jquery_1_10_2_intellisense_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery-1.10.2.intellisense.min.js") ? Url("jquery-1.10.2.intellisense.min.js") : Url("jquery-1.10.2.intellisense.js");
         public static readonly string jquery_1_10_2_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery-1.10.2.min.js") ? Url("jquery-1.10.2.min.js") : Url("jquery-1.10.2.js");
         public static readonly string jquery_1_10_2_min_js = Url("jquery-1.10.2.min.js");
-        public static readonly string jquery_ui_1_11_1_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery-ui-1.11.1.min.js") ? Url("jquery-ui-1.11.1.min.js") : Url("jquery-ui-1.11.1.js");
-        public static readonly string jquery_ui_min_1_11_1_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery-ui.min-1.11.1.min.js") ? Url("jquery-ui.min-1.11.1.min.js") : Url("jquery-ui.min-1.11.1.js");
+        public static readonly string jquery_2_1_3_intellisense_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery-2.1.3.intellisense.min.js") ? Url("jquery-2.1.3.intellisense.min.js") : Url("jquery-2.1.3.intellisense.js");
+        public static readonly string jquery_2_1_3_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery-2.1.3.min.js") ? Url("jquery-2.1.3.min.js") : Url("jquery-2.1.3.js");
+        public static readonly string jquery_2_1_3_min_js = Url("jquery-2.1.3.min.js");
+        public static readonly string jquery_2_1_3_min_map = Url("jquery-2.1.3.min.map");
+        public static readonly string jquery_ui_1_11_2_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery-ui-1.11.2.min.js") ? Url("jquery-ui-1.11.2.min.js") : Url("jquery-ui-1.11.2.js");
+        public static readonly string jquery_ui_1_11_2_min_js = Url("jquery-ui-1.11.2.min.js");
         public static readonly string jquery_cookie_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery.cookie.min.js") ? Url("jquery.cookie.min.js") : Url("jquery.cookie.js");
         public static readonly string jquery_validate_vsdoc_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery.validate-vsdoc.min.js") ? Url("jquery.validate-vsdoc.min.js") : Url("jquery.validate-vsdoc.js");
         public static readonly string jquery_validate_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery.validate.min.js") ? Url("jquery.validate.min.js") : Url("jquery.validate.js");
@@ -118,6 +132,7 @@ namespace Links
         public static readonly string modernizr_2_8_3_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/modernizr-2.8.3.min.js") ? Url("modernizr-2.8.3.min.js") : Url("modernizr-2.8.3.js");
         public static readonly string namespace_1_0_0_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/namespace-1.0.0.min.js") ? Url("namespace-1.0.0.min.js") : Url("namespace-1.0.0.js");
         public static readonly string namespace_min_1_0_0_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/namespace.min-1.0.0.min.js") ? Url("namespace.min-1.0.0.min.js") : Url("namespace.min-1.0.0.js");
+        public static readonly string npm_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/npm.min.js") ? Url("npm.min.js") : Url("npm.js");
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public static class Player {
             private const string URLPATH = "~/Scripts/Player";
@@ -144,6 +159,7 @@ namespace Links
             public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
             public static readonly string _Layout_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/_Layout.min.js") ? Url("_Layout.min.js") : Url("_Layout.js");
             public static readonly string _LoginPartial_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/_LoginPartial.min.js") ? Url("_LoginPartial.min.js") : Url("_LoginPartial.js");
+            public static readonly string GoogleAnalytics_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/GoogleAnalytics.min.js") ? Url("GoogleAnalytics.min.js") : Url("GoogleAnalytics.js");
         }
     
     }

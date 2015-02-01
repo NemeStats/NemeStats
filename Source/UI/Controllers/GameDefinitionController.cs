@@ -1,18 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Web.Mvc;
-using BusinessLogic.Logic.BoardGameGeek;
-using BusinessLogic.Models;
+﻿using AutoMapper;
 using BusinessLogic.DataAccess;
+using BusinessLogic.Logic.BoardGameGeek;
+using BusinessLogic.Logic.GameDefinitions;
+using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
 using BusinessLogic.Models.User;
-using UI.Filters;
-using BusinessLogic.Logic.GameDefinitions;
-using UI.Transformations;
-using UI.Models.GameDefinitionModels;
+using System;
+using System.Collections.Generic;
+using System.Net;
+using System.Web.Mvc;
 using UI.Controllers.Helpers;
+using UI.Filters;
+using UI.Models.GameDefinitionModels;
+using UI.Transformations;
 
 namespace UI.Controllers
 {
@@ -76,9 +76,13 @@ namespace UI.Controllers
 
 		// GET: /GameDefinition/Create
 		[Authorize]
-		public virtual ActionResult Create()
+		public virtual ActionResult Create(string returnUrl)
 		{
-			return View(MVC.GameDefinition.Views.Create);
+		    return View(MVC.GameDefinition.Views.Create,
+		                new NewGameDefinitionViewModel()
+		                {
+		                    ReturnUrl = returnUrl
+		                });
 		}
 
 		// POST: /GameDefinition/Create
@@ -88,18 +92,23 @@ namespace UI.Controllers
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		[UserContextAttribute]
-		public virtual ActionResult Create([Bind(Include = "Id,Name,Description,Active")] GameDefinition gameDefinition, ApplicationUser currentUser)
+		public virtual ActionResult Create(NewGameDefinitionViewModel newGameDefinitionViewModel, ApplicationUser currentUser)
 		{
 			if (ModelState.IsValid)
 			{
-				gameDefinition.Name = gameDefinition.Name.Trim();
-				gameDefinitionSaver.Save(gameDefinition, currentUser);
+                newGameDefinitionViewModel.Name = newGameDefinitionViewModel.Name.Trim();
+                var gameDefinition = Mapper.Map<NewGameDefinitionViewModel, GameDefinition>(newGameDefinitionViewModel);
+
+				gameDefinition = gameDefinitionSaver.Save(gameDefinition, currentUser);
+
+                if (!String.IsNullOrWhiteSpace(newGameDefinitionViewModel.ReturnUrl))
+                    return new RedirectResult(newGameDefinitionViewModel.ReturnUrl + "?gameId=" + gameDefinition.Id);
 
 				return new RedirectResult(Url.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name)
-											+ "#" + GamingGroupController.SECTION_ANCHOR_GAMEDEFINITIONS);
+										+ "#" + GamingGroupController.SECTION_ANCHOR_GAMEDEFINITIONS);
 			}
 
-			return View(MVC.GameDefinition.Views.Create, gameDefinition);
+            return View(MVC.GameDefinition.Views.Create, newGameDefinitionViewModel);
 		}
 
 		[Authorize]
@@ -167,7 +176,7 @@ namespace UI.Controllers
 		[Authorize]
 		public virtual ActionResult CreatePartial()
 		{
-			return View(MVC.GameDefinition.Views._CreatePartial, new GameDefinition());
+			return View(MVC.GameDefinition.Views._CreatePartial, new NewGameDefinitionViewModel());
 		}
 
 		[Authorize]

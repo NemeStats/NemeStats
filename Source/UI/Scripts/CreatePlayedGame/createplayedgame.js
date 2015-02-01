@@ -20,6 +20,7 @@
         this._googleAnalytics = null;
         this._rankButtons = null;
         this.$gameDefinitionDropDown = null;
+        this.$gameId = null;
     };
 
     //Implementation
@@ -40,7 +41,7 @@
             this.$addPlayer = $("#addPlayer");
             this.$btnAddPlayer = $("#btnAddPlayer");
             this.$anchorAddPlayer = $("#addPlayerAnchor");
-            this.$gameDefinitionDropDown = $("#gameDefinitionDropDown");
+            this.$gameDefinitionDropDown = $("[name='GameDefinitionId']");
             this.$datePicker = $(".date-picker").datepicker({
                 showOn: "button",
                 buttonText: "<i class='fa fa-calendar'></i>",
@@ -71,6 +72,9 @@
             });
 
             this.$playerItemTemplate = $("#player-item-template");
+
+            var shared = new Views.Shared.Layout();
+            this.$gameId = shared.getQueryString("gameId");
 
             parent.validateGameDefinition();
         },
@@ -206,7 +210,8 @@
         		$("#gameDefinitionDropDown").popover({ html: true });
         		$("#gameDefinitionDropDown").popover("show");
         		$(":input").prop("disabled", true);
-        	}
+        	} else if (this.$gameId != "")        		
+        			this.$gameDefinitionDropDown.val(this.$gameId);
         },
 
         //Properties
