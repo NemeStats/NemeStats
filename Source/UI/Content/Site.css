@@ -307,6 +307,14 @@ a.navbar-brand:hover{
 	color: red;
 }
 
+.gameResult-teamLoss {
+    color: red;
+}
+
+.gameResult-teamWin {
+    color: green;
+}
+
 .rank-item {
     font-size:26px;
 }

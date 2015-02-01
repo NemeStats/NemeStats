@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using BusinessLogic.Models.PlayedGames;
 using UI.Models;
 
 namespace UI.Models.PlayedGame
@@ -16,5 +17,6 @@ namespace UI.Models.PlayedGame
         public DateTime DatePlayed { get; set; }
         public IList<GameResultViewModel> PlayerResults { get; set; }
         public bool UserCanEdit { get; set; }
+        public WinnerTypes? WinnerType { get; set; }
     }
 }
