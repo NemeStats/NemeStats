@@ -26,9 +26,9 @@
                             NemeStats (as in "Nemesis Statistics") is a free web application for logging games played among a relatively stable group of players. It takes only
                             a moment and will give you statistics on your win percentage, average rank in games, who is your Nemesis and who is your Minion, etc.
                             When you register, a new "Gaming Group" will be created where you and other players in your group can watch your statistics materialize over time.
-							<br /><br />
+                            <br /><br />
                             All information is publicly accessible so feel free to browse around! If you'd like to give it a shot just @Html.ActionLink("Register", "Register", "Account", null, null),
-                            set up the game and players you want to record, and start tracking! 
+                            set up the game and players you want to record, and start tracking!
                         </p>
                         <p>
                             NemeStats is open source and accepting feature requests
@@ -49,6 +49,7 @@
                             <h2>Setup Games</h2>
                             <p>
                                 Manage the list of Games your Gaming Group plays here. A Game Definition must be created in order to log a played game.
+                                Games may be linked to Board Game Geek for convenient linkage.
                             </p>
                             <p>@Html.ActionLink("Manage Games", "Index", "GamingGroup", null, null, UI.Controllers.GamingGroupController.SECTION_ANCHOR_GAMEDEFINITIONS, null, null)</p>
                         </div>
@@ -58,7 +59,7 @@
                             </span>
                             <h2>Setup Players</h2>
                             <p>
-                                Manage the list of Players in your Gaming Group. A Player must be created in order to log a played game for that Player.
+                                Manage the list of Players in your Gaming Group. A Player must be created in order to log a played game for that Player. You can send invitations to Players so they can also record games in your Gaming Group.
                             </p>
                             <p>@Html.ActionLink("Manage Players", "Index", "GamingGroup", null, null, UI.Controllers.GamingGroupController.SECTION_ANCHOR_PLAYERS, null, null)</p>
                         </div>
@@ -68,7 +69,9 @@
                             </span>
                             <h2>Track Game Results</h2>
 
-                            <p>Log the results of your games here.</p>
+                            <p>
+                                Log the results of your board games here. This is where the magic happens! NemeStats has a unique system for tracking played games that allows for some really sweet statistics.
+                            </p>
 
                             <p>@Html.ActionLink("Game Results", "Create", "PlayedGame")</p>
                         </div>
@@ -81,20 +84,20 @@
     <div class="home-body-container">
         <div class="col-md-6">
             <div class="fl-left">
-            <h3>Top 5 Players</h3>
+                <h3>Top 5 Players</h3>
             </div>
             <div id="topPlayersVote" class="fl-right" style="margin-top: 21px; margin-bottom: 10.5px;"></div>
             <div class="fl-clear"></div>
             <div class="table-responsive">
                 <table class="table table-hover table-striped" id="topFivePlayersTable">
-					<thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Games</th>
-                        <th>Win %</th>
-                        <th>Points</th>
-                    </tr>
-					</thead>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Games</th>
+                            <th>Win %</th>
+                            <th>Points</th>
+                        </tr>
+                    </thead>
                     @foreach (UI.Models.Players.TopPlayerViewModel playerSummaryViewModel in @Model.TopPlayers)
                     {
                         <tr>
@@ -110,20 +113,20 @@
 
         <div class="col-md-6">
             <div class="fl-left">
-            <h3>Recent Games</h3>
+                <h3>Recent Games</h3>
             </div>
             <div id="recentGamesVote" class="fl-right" style="margin-top: 21px; margin-bottom: 10.5px;"></div>
             <div class="fl-clear"></div>
             <div class="table-responsive">
                 <table class="table table-hover table-striped" id="recentGamesTable">
-					<thead>
-                    <tr>
-                        <th>Game</th>
-                        <th>Winner</th>
-                        <th>Date</th>
-                        <th>Gaming Group</th>
-                    </tr>
-					</thead>
+                    <thead>
+                        <tr>
+                            <th>Game</th>
+                            <th>Winner</th>
+                            <th>Date</th>
+                            <th>Gaming Group</th>
+                        </tr>
+                    </thead>
                     @foreach (BusinessLogic.Models.Games.PublicGameSummary publicGame in @Model.RecentPublicGames)
                     {
                         <tr>
@@ -147,26 +150,26 @@
                 </table>
             </div>
         </div>
-        
+
 
         <div class="col-md-6">
             <div class="fl-left">
-            <h3>Recent Nemesis Changes</h3>
+                <h3>Recent Nemesis Changes</h3>
             </div>
             <div id="nemesisChangeVote" class="fl-right" style="margin-top: 21px; margin-bottom: 10.5px;"></div>
             <div class="fl-clear"></div>
             <div class="table-responsive">
                 <table class="table table-hover table-striped" id="recentNemesisChangesTable">
-					<thead>
-                    <tr>
-                        <th>Player</th>
-                        <th>
-                            New Nemesis <i class="fa fa-question-circle" data-container="body" data-toggle="popover" data-placement="right"
-                                           data-content="The Nemesis is the Player with the highest win % vs. this Player. Must have won at least 3 games to be designated as the Nemesis."></i>
-                        </th>
-                        <th>Loss %</th>
-                    </tr>
-					</thead>
+                    <thead>
+                        <tr>
+                            <th>Player</th>
+                            <th>
+                                New Nemesis <i class="fa fa-question-circle" data-container="body" data-toggle="popover" data-placement="right"
+                                               data-content="The Nemesis is the Player with the highest win % vs. this Player. Must have won at least 3 games to be designated as the Nemesis."></i>
+                            </th>
+                            <th>Loss %</th>
+                        </tr>
+                    </thead>
                     @foreach (UI.Models.Nemeses.NemesisChangeViewModel nemesisChange in @Model.RecentNemesisChanges)
                     {
                         <tr>
@@ -178,11 +181,11 @@
                 </table>
             </div>
         </div>
-        
+
         <div class="col-md-6">
-			<h3>Top 5 Gaming Groups @Html.ActionLink(" - View More", MVC.GamingGroup.GetTopGamingGroups())</h3>
-			@Html.Partial(MVC.GamingGroup.Views._TopGamingGroupsPartial, Model.TopGamingGroups)
-			
+            <h3>Top 5 Gaming Groups @Html.ActionLink(" - View More", MVC.GamingGroup.GetTopGamingGroups())</h3>
+            @Html.Partial(MVC.GamingGroup.Views._TopGamingGroupsPartial, Model.TopGamingGroups)
+
         </div>
     </div>
 </div>
