@@ -124,7 +124,7 @@
                 </h4>
             </div>
             <div class="panel-body">
-                <table class="table table-hover table-striped">
+                <table class="table table-hover table-striped table-responsive">
                     <thead>
                         <tr>
                             <th>Player Name</th>
@@ -164,12 +164,12 @@
    data-content="The Champion is the Player within the Gaming Group with the most wins of this game."></i></h4>
             </div>
             <div class="panel-body">
-                <table class="table table-hover table-striped">
+                <table class="table table-hover table-striped table-responsive">
                     <thead>
-                    <th>Game</th>
-                    <th>Games Played</th>
-                    <th>Games Won</th>
-                    <th>Win Percentage</th>
+                    <tr>Game</tr>
+                    <tr>Games Played</tr>
+                    <tr>Games Won</tr>
+                    <tr>Win Percentage</tr>
                     </thead>
                     <tbody>
                         @foreach (ChampionViewModel championModel in @Model.ChampionedGames)
@@ -235,7 +235,7 @@
             <h4>Game Statistics</h4>
         </div>
         <div class="panel-body">
-            <table class="table table-hover table-striped">
+            <table class="table table-hover table-striped  table-responsive">
                 <thead>
                     <tr>
                         <th>Game</th>
