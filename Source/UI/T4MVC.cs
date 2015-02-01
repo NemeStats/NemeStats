@@ -166,6 +166,7 @@ namespace Links
             private const string URLPATH = "~/Scripts/Plugins";
             public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
             public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
+            public static readonly string rankPlugin_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/rankPlugin.min.js") ? Url("rankPlugin.min.js") : Url("rankPlugin.js");
             public static readonly string toEditBoxPlugin_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/toEditBoxPlugin.min.js") ? Url("toEditBoxPlugin.min.js") : Url("toEditBoxPlugin.js");
         }
     

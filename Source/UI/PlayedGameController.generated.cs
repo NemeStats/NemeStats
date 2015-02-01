@@ -96,6 +96,7 @@ namespace UI.Controllers
         {
             public readonly string Details = "Details";
             public readonly string Create = "Create";
+            public readonly string ShowRecentlyPlayedGames = "ShowRecentlyPlayedGames";
             public readonly string Delete = "Delete";
             public readonly string DeleteConfirmed = "Delete";
         }
@@ -105,6 +106,7 @@ namespace UI.Controllers
         {
             public const string Details = "Details";
             public const string Create = "Create";
+            public const string ShowRecentlyPlayedGames = "ShowRecentlyPlayedGames";
             public const string Delete = "Delete";
             public const string DeleteConfirmed = "Delete";
         }
@@ -157,14 +159,18 @@ namespace UI.Controllers
             public class _ViewNamesClass
             {
                 public readonly string _PlayedGamesPartial = "_PlayedGamesPartial";
+                public readonly string _RecentlyPlayedGamesPartial = "_RecentlyPlayedGamesPartial";
                 public readonly string Create = "Create";
                 public readonly string Delete = "Delete";
                 public readonly string Details = "Details";
+                public readonly string RecentlyPlayedGames = "RecentlyPlayedGames";
             }
             public readonly string _PlayedGamesPartial = "~/Views/PlayedGame/_PlayedGamesPartial.cshtml";
+            public readonly string _RecentlyPlayedGamesPartial = "~/Views/PlayedGame/_RecentlyPlayedGamesPartial.cshtml";
             public readonly string Create = "~/Views/PlayedGame/Create.cshtml";
             public readonly string Delete = "~/Views/PlayedGame/Delete.cshtml";
             public readonly string Details = "~/Views/PlayedGame/Details.cshtml";
+            public readonly string RecentlyPlayedGames = "~/Views/PlayedGame/RecentlyPlayedGames.cshtml";
         }
     }
 
@@ -195,6 +201,17 @@ namespace UI.Controllers
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Create);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "currentUser", currentUser);
             CreateOverride(callInfo, currentUser);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void ShowRecentlyPlayedGamesOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult ShowRecentlyPlayedGames()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ShowRecentlyPlayedGames);
+            ShowRecentlyPlayedGamesOverride(callInfo);
             return callInfo;
         }
 

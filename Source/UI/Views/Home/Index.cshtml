@@ -113,42 +113,9 @@
 
         <div class="col-md-6">
             <div class="fl-left">
-                <h3>Recent Games</h3>
+                <h3>@Model.RecentPublicGames.Count() Recent Games @Html.ActionLink(" - View More", MVC.PlayedGame.ShowRecentlyPlayedGames())</h3>
             </div>
-            <div id="recentGamesVote" class="fl-right" style="margin-top: 21px; margin-bottom: 10.5px;"></div>
-            <div class="fl-clear"></div>
-            <div class="table-responsive">
-                <table class="table table-hover table-striped" id="recentGamesTable">
-                    <thead>
-                        <tr>
-                            <th>Game</th>
-                            <th>Winner</th>
-                            <th>Date</th>
-                            <th>Gaming Group</th>
-                        </tr>
-                    </thead>
-                    @foreach (BusinessLogic.Models.Games.PublicGameSummary publicGame in @Model.RecentPublicGames)
-                    {
-                        <tr>
-                            <td>@Html.ActionLink(publicGame.GameDefinitionName, "Details", "GameDefinition", new { id = publicGame.GameDefinitionId }, new { })</td>
-                            @if (publicGame.WinnerType == WinnerTypes.TeamWin)
-                            {
-                                <td class="gameResult-teamWin">TEAM WIN</td>
-                            }
-                            else if (publicGame.WinnerType == WinnerTypes.TeamLoss)
-                            {
-                                <td class="gameResult-teamLoss">TEAM LOSS</td>
-                            }
-                            else
-                            {
-                                <td>@Html.ActionLink(publicGame.WinningPlayer.Name, "Details", "Player", new { id = publicGame.WinningPlayer.Id }, new { })</td>
-                            }
-                            <td>@Html.ActionLink(publicGame.DatePlayed.ToShortDateString(), "Details", "PlayedGame", new { id = publicGame.PlayedGameId }, new { })</td>
-                            <td>@Html.ActionLink(publicGame.GamingGroupName, "Details", "GamingGroup", new { id = publicGame.GamingGroupId }, new { })</td>
-                        </tr>
-                    }
-                </table>
-            </div>
+           @Html.Partial(MVC.PlayedGame.Views._RecentlyPlayedGamesPartial, Model.RecentPublicGames)
         </div>
 
 
@@ -183,7 +150,7 @@
         </div>
 
         <div class="col-md-6">
-            <h3>Top 5 Gaming Groups @Html.ActionLink(" - View More", MVC.GamingGroup.GetTopGamingGroups())</h3>
+            <h3>Top @Model.TopGamingGroups.Count() Gaming Groups @Html.ActionLink(" - View More", MVC.GamingGroup.GetTopGamingGroups())</h3>
             @Html.Partial(MVC.GamingGroup.Views._TopGamingGroupsPartial, Model.TopGamingGroups)
 
         </div>

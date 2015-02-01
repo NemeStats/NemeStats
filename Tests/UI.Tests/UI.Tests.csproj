@@ -189,6 +189,7 @@
     <Compile Include="UnitTests\ControllerTests\PlayedGameControllerTests\DeleteConfirmedTests.cs" />
     <Compile Include="UnitTests\ControllerTests\PlayedGameControllerTests\DetailsTests.cs" />
     <Compile Include="UnitTests\ControllerTests\PlayedGameControllerTests\PlayedGameControllerTestBase.cs" />
+    <Compile Include="UnitTests\ControllerTests\PlayedGameControllerTests\ShowRecentlyPlayedGamesTests.cs" />
     <Compile Include="UnitTests\ControllerTests\PlayerControllerTests\CreateHttpGetTests.cs" />
     <Compile Include="UnitTests\ControllerTests\PlayerControllerTests\InvitePlayerHttpPostTests.cs" />
     <Compile Include="UnitTests\ControllerTests\PlayerControllerTests\InvitePlayerHttpGetTests.cs" />
