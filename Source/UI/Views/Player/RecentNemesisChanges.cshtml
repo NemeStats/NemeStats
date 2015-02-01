@@ -1,0 +1,10 @@
+﻿@model IEnumerable<UI.Models.Nemeses.NemesisChangeViewModel>
+
+@{
+    ViewBag.Title = Model.Count() + " Recent Nemesis Changes";
+    Layout = MVC.Shared.Views._BaseLayout;
+}
+<div class="container">
+	<h2>@Model.Count() Recent Nemesis Changes</h2>
+	@Html.Partial(MVC.Player.Views._RecentNemesisChangesPartial, Model)
+</div>

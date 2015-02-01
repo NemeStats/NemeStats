@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BusinessLogic.DataAccess;
 using BusinessLogic.Exceptions;
+using BusinessLogic.Logic.Nemeses;
 using BusinessLogic.Logic.Players;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Players;
@@ -22,6 +23,7 @@ namespace UI.Controllers
 	{
 		internal const int NUMBER_OF_RECENT_GAMES_TO_RETRIEVE = 10;
 		internal const int NUMBER_OF_TOP_PLAYERS_TO_RETRIEVE = 25;
+		internal const int NUMBER_OF_RECENT_NEMESIS_CHANGES_TO_RETRIEVE = 25;
 		internal const string EMAIL_SUBJECT_PLAYER_INVITATION = "Invitation from {0}";
 		internal const string EMAIL_BODY_PLAYER_INVITATION = "Check out this gaming group I created to record the results of our board games!";
 
@@ -35,6 +37,8 @@ namespace UI.Controllers
 		internal IPlayerEditViewModelBuilder playerEditViewModelBuilder;
 		internal IPlayerSummaryBuilder playerSummaryBuilder;
 		internal ITopPlayerViewModelBuilder topPlayerViewModelBuilder;
+		internal INemesisHistoryRetriever nemesisHistoryRetriever;
+		internal INemesisChangeViewModelBuilder nemesisChangeViewModelBuilder;
 
 		public PlayerController(IDataContext dataContext,
 			IGameResultViewModelBuilder builder,
@@ -45,7 +49,9 @@ namespace UI.Controllers
 			IPlayerInviter playerInviter,
 			IPlayerEditViewModelBuilder playerEditViewModelBuilder,
 			IPlayerSummaryBuilder playerSummaryBuilder,
-			ITopPlayerViewModelBuilder topPlayerViewModelBuilder)
+			ITopPlayerViewModelBuilder topPlayerViewModelBuilder,
+			INemesisHistoryRetriever nemesisHistoryRetriever,
+			INemesisChangeViewModelBuilder nemesisChangeViewModelBuilder)
 		{
 			this.dataContext = dataContext;
 			this.builder = builder;
@@ -57,6 +63,8 @@ namespace UI.Controllers
 			this.playerEditViewModelBuilder = playerEditViewModelBuilder;
 			this.playerSummaryBuilder = playerSummaryBuilder;
 			this.topPlayerViewModelBuilder = topPlayerViewModelBuilder;
+			this.nemesisHistoryRetriever = nemesisHistoryRetriever;
+			this.nemesisChangeViewModelBuilder = nemesisChangeViewModelBuilder;
 		}
 
 		// GET: /Player/Details/5
@@ -133,6 +141,14 @@ namespace UI.Controllers
 			var topPlayers = playerSummaryBuilder.GetTopPlayers(NUMBER_OF_TOP_PLAYERS_TO_RETRIEVE);
 			var topPlayersViewModels = topPlayers.Select(topPlayer => this.topPlayerViewModelBuilder.Build(topPlayer)).ToList();
 			return View(MVC.Player.Views.TopPlayers, topPlayersViewModels);
+		}
+
+		[HttpGet]
+		public virtual ActionResult ShowRecentNemesisChanges()
+		{
+			var recentNemesisChanges = nemesisHistoryRetriever.GetRecentNemesisChanges(NUMBER_OF_RECENT_NEMESIS_CHANGES_TO_RETRIEVE);
+			var recentNemesisChangesViewModels = this.nemesisChangeViewModelBuilder.Build(recentNemesisChanges).ToList();
+			return View(MVC.Player.Views.RecentNemesisChanges, recentNemesisChangesViewModels);
 		}
 
 		[System.Web.Mvc.HttpPost]

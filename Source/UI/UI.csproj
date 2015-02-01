@@ -642,6 +642,8 @@
     <Content Include="Views\PlayedGame\_RecentlyPlayedGamesPartial.cshtml" />
     <Content Include="Views\Player\TopPlayers.cshtml" />
     <Content Include="Views\Player\_TopPlayersPartial.cshtml" />
+    <Content Include="Views\Player\RecentNemesisChanges.cshtml" />
+    <Content Include="Views\Player\_RecentNemesisChangesPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Code\" />

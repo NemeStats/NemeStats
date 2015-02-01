@@ -199,6 +199,7 @@
     <Compile Include="UnitTests\ControllerTests\PlayerControllerTests\EditHttpGetTests.cs" />
     <Compile Include="UnitTests\ControllerTests\PlayerControllerTests\EditHttpPostTests.cs" />
     <Compile Include="UnitTests\ControllerTests\PlayerControllerTests\PlayerControllerTestBase.cs" />
+    <Compile Include="UnitTests\ControllerTests\PlayerControllerTests\ShowRecentNemesisChangesTests.cs" />
     <Compile Include="UnitTests\ControllerTests\PlayerControllerTests\ShowTopPlayersTests.cs" />
     <Compile Include="UnitTests\FiltersTests\UserContextAttributeTests\OnActionExecutingTests.cs" />
     <Compile Include="UnitTests\HtmlHelperTests\MyHelpersTests\GameResultsTests.cs" />

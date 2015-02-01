@@ -14,6 +14,8 @@ using BusinessLogic.Logic.Players;
 using System.Web.Mvc;
 using BusinessLogic.Models.Players;
 using System.Collections.Generic;
+using BusinessLogic.Logic.Nemeses;
+using UI.Models.Nemeses;
 
 namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
 {
@@ -30,6 +32,8 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
 		protected IPlayerEditViewModelBuilder playerEditViewModelBuilderMock;
 		protected IPlayerSummaryBuilder playerSummaryBuilderMock;
 		protected ITopPlayerViewModelBuilder topPlayerViewModelBuilderMock;
+		protected INemesisHistoryRetriever nemesisHistoryRetrieverMock;
+		protected INemesisChangeViewModelBuilder nemesisChangeViewModelBuilderMock;
 		protected UrlHelper urlHelperMock;
 		protected PlayerController playerController;
 		protected ApplicationUser currentUser;
@@ -51,6 +55,8 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
 			showingXResultsMessageBuilderMock = MockRepository.GenerateMock<IShowingXResultsMessageBuilder>();
 			playerSummaryBuilderMock = MockRepository.GenerateMock<IPlayerSummaryBuilder>();
 			topPlayerViewModelBuilderMock = MockRepository.GenerateMock<ITopPlayerViewModelBuilder>();
+			nemesisHistoryRetrieverMock = MockRepository.GenerateMock<INemesisHistoryRetriever>();
+			nemesisChangeViewModelBuilderMock = MockRepository.GenerateMock<INemesisChangeViewModelBuilder>();
 			playerSaverMock = MockRepository.GenerateMock<IPlayerSaver>();
 			urlHelperMock = MockRepository.GenerateMock<UrlHelper>();
 			playerInviterMock = MockRepository.GenerateMock<IPlayerInviter>();
@@ -65,7 +71,9 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
 								playerInviterMock,
 								playerEditViewModelBuilderMock,
 								playerSummaryBuilderMock,
-								topPlayerViewModelBuilderMock);
+								topPlayerViewModelBuilderMock,
+								nemesisHistoryRetrieverMock,
+								nemesisChangeViewModelBuilderMock);
 			playerController.Url = urlHelperMock;
 
 			asyncRequestMock = MockRepository.GenerateMock<HttpRequestBase>();
@@ -86,6 +94,8 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
 
 			playerController.ControllerContext = new ControllerContext(context, new RouteData(), playerController);
 			playerSummaryBuilderMock.Expect(mock => mock.GetTopPlayers(Arg<int>.Is.Anything)).Return(new List<TopPlayer>());
+			nemesisHistoryRetrieverMock.Expect(mock => mock.GetRecentNemesisChanges(Arg<int>.Is.Anything)).Return(new List<NemesisChange>());
+			nemesisChangeViewModelBuilderMock.Expect(mock => mock.Build(Arg<List<NemesisChange>>.Is.Anything)).Return(new List<NemesisChangeViewModel>());
 		}
 	}
 }

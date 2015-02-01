@@ -99,6 +99,7 @@ namespace UI.Controllers
             public readonly string Create = "Create";
             public readonly string InvitePlayer = "InvitePlayer";
             public readonly string ShowTopPlayers = "ShowTopPlayers";
+            public readonly string ShowRecentNemesisChanges = "ShowRecentNemesisChanges";
             public readonly string Save = "Save";
             public readonly string Edit = "Edit";
         }
@@ -111,6 +112,7 @@ namespace UI.Controllers
             public const string Create = "Create";
             public const string InvitePlayer = "InvitePlayer";
             public const string ShowTopPlayers = "ShowTopPlayers";
+            public const string ShowRecentNemesisChanges = "ShowRecentNemesisChanges";
             public const string Save = "Save";
             public const string Edit = "Edit";
         }
@@ -166,20 +168,24 @@ namespace UI.Controllers
             {
                 public readonly string _CreateOrUpdatePartial = "_CreateOrUpdatePartial";
                 public readonly string _PlayersPartial = "_PlayersPartial";
+                public readonly string _RecentNemesisChangesPartial = "_RecentNemesisChangesPartial";
                 public readonly string _TopPlayersPartial = "_TopPlayersPartial";
                 public readonly string Create = "Create";
                 public readonly string Details = "Details";
                 public readonly string Edit = "Edit";
                 public readonly string InvitePlayer = "InvitePlayer";
+                public readonly string RecentNemesisChanges = "RecentNemesisChanges";
                 public readonly string TopPlayers = "TopPlayers";
             }
             public readonly string _CreateOrUpdatePartial = "~/Views/Player/_CreateOrUpdatePartial.cshtml";
             public readonly string _PlayersPartial = "~/Views/Player/_PlayersPartial.cshtml";
+            public readonly string _RecentNemesisChangesPartial = "~/Views/Player/_RecentNemesisChangesPartial.cshtml";
             public readonly string _TopPlayersPartial = "~/Views/Player/_TopPlayersPartial.cshtml";
             public readonly string Create = "~/Views/Player/Create.cshtml";
             public readonly string Details = "~/Views/Player/Details.cshtml";
             public readonly string Edit = "~/Views/Player/Edit.cshtml";
             public readonly string InvitePlayer = "~/Views/Player/InvitePlayer.cshtml";
+            public readonly string RecentNemesisChanges = "~/Views/Player/RecentNemesisChanges.cshtml";
             public readonly string TopPlayers = "~/Views/Player/TopPlayers.cshtml";
         }
     }
@@ -245,6 +251,17 @@ namespace UI.Controllers
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ShowTopPlayers);
             ShowTopPlayersOverride(callInfo);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void ShowRecentNemesisChangesOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult ShowRecentNemesisChanges()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ShowRecentNemesisChanges);
+            ShowRecentNemesisChangesOverride(callInfo);
             return callInfo;
         }
 
