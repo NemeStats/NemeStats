@@ -28,6 +28,7 @@ a[name] {
 }
 
 .home-banner {
+    margin-top: 10px;
     padding-top: 5px;
     padding-left: 20%;
     padding-right: 20%;
