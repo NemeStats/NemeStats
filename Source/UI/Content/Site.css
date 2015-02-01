@@ -309,3 +309,7 @@ a.navbar-brand:hover{
 table > thead :hover {
 	background-color: none !important;
 }
+
+h3 > a {
+    font-size: smaller;
+}
