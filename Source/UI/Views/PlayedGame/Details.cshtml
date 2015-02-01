@@ -1,13 +1,24 @@
 ﻿@model UI.Models.PlayedGame.PlayedGameDetailsViewModel
+@using BusinessLogic.Models.PlayedGames
 @using UI.HtmlHelpers
 @{
-    ViewBag.Title = @Model.GameDefinitionName + " - " + Model.DatePlayed.ToShortDateString() + " - " + Model.GamingGroupName;
+    string title = @Model.GameDefinitionName + " - " + Model.DatePlayed.ToShortDateString();
+    ViewBag.Title = title + " - " + Model.GamingGroupName;
     Layout = MVC.Shared.Views._BaseLayout;
 }
 
 <h2>
-    Played Game Details <a href="https://twitter.com/share" class="twitter-share-button" data-text="Check out this game I played on &#64;nemestats :" data-size="large" data-related="nemestats" data-count="none" data-hashtags="boardgames" data-dnt="true" title="Tweet a link to this game">Tweet</a>
-<script>!function (d, s, id) { var js, fjs = d.getElementsByTagName(s)[0], p = /^http:/.test(d.location) ? 'http' : 'https'; if (!d.getElementById(id)) { js = d.createElement(s); js.id = id; js.src = p + '://platform.twitter.com/widgets.js'; fjs.parentNode.insertBefore(js, fjs); } }(document, 'script', 'twitter-wjs');</script>
+    @title
+    @if (Model.WinnerType == WinnerTypes.TeamLoss)
+    {
+        <span class="gameResult-teamLoss"> - TEAM LOSS</span>
+    }
+    else if (Model.WinnerType == WinnerTypes.TeamWin)
+    {
+        <span class="gameResult-teamWin"> - TEAM WIN</span>
+    }
+    <a href="https://twitter.com/share" class="twitter-share-button" data-text="Check out this game I played on &#64;nemestats :" data-size="large" data-related="nemestats" data-count="none" data-hashtags="boardgames" data-dnt="true" title="Tweet a link to this game">Tweet</a>
+    <script>!function (d, s, id) { var js, fjs = d.getElementsByTagName(s)[0], p = /^http:/.test(d.location) ? 'http' : 'https'; if (!d.getElementById(id)) { js = d.createElement(s); js.id = id; js.src = p + '://platform.twitter.com/widgets.js'; fjs.parentNode.insertBefore(js, fjs); } }(document, 'script', 'twitter-wjs');</script>
 </h2>
 
 <div class="row">

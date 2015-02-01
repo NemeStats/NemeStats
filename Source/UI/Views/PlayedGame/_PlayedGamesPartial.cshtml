@@ -38,19 +38,19 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var item in Model)
+                    @foreach (var playedGameDetailsViewModel in Model)
                     {
                         <tr>
                             <td>
                                 <b>
-                                    @Html.ActionLink(item.GameDefinitionName, "Details", "GameDefinition", new { id = item.GameDefinitionId }, new { })
+                                    @Html.ActionLink(playedGameDetailsViewModel.GameDefinitionName, "Details", "GameDefinition", new { id = playedGameDetailsViewModel.GameDefinitionId }, new { })
                                 </b>
                             </td>
                             <td>
-                                @item.DatePlayed.ToShortDateString()
+                                @playedGameDetailsViewModel.DatePlayed.ToShortDateString()
                             </td>
                             <td>
-                                @foreach (var result in item.PlayerResults)
+                                @foreach (var result in playedGameDetailsViewModel.PlayerResults)
                                 {
                                     <div class="row">
                                         <div class="col-sm-6">
@@ -65,12 +65,12 @@
                                 }
                             </td>
                             <td>
-                                <a href="@Url.Action("Details", "PlayedGame", new { id = item.PlayedGameId })" title="Details">
+                                <a href="@Url.Action("Details", "PlayedGame", new { id = playedGameDetailsViewModel.PlayedGameId })" title="Details">
                                     <i class="fa fa-book fa-2x"></i>
                                 </a>
-                                @if (item.UserCanEdit)
+                                @if (playedGameDetailsViewModel.UserCanEdit)
                                 {
-                                    <a href="@Url.Action("Delete", "PlayedGame", new { id = item.PlayedGameId })" title="Delete">
+                                    <a href="@Url.Action("Delete", "PlayedGame", new { id = playedGameDetailsViewModel.PlayedGameId })" title="Delete">
                                         <i class="fa fa-trash-o fa-2x"></i>
                                     </a>
                                 }

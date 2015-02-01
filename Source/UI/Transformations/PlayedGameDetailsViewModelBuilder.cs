@@ -1,5 +1,6 @@
 ﻿using BusinessLogic.Migrations;
 using BusinessLogic.Models;
+using BusinessLogic.Models.PlayedGames;
 using BusinessLogic.Models.User;
 using System;
 using System.Collections.Generic;
@@ -46,6 +47,8 @@ namespace UI.Transformations
                 summary.PlayerResults.Add(playerResultBuilder.Build(playerGameResult));
             }
 
+            SetWinnerType(playedGame, summary);
+
             return summary;
         }
 
@@ -69,6 +72,23 @@ namespace UI.Transformations
             if (playedGame.PlayerGameResults == null)
             {
                 throw new ArgumentException(EXCEPTION_MESSAGE_PLAYER_GAME_RESULTS_CANNOT_BE_NULL);
+            }
+        }
+
+
+        private static void SetWinnerType(PlayedGame playedGame, PlayedGameDetailsViewModel summary)
+        {
+            if (playedGame.PlayerGameResults.All(x => x.GameRank == 1))
+            {
+                summary.WinnerType = WinnerTypes.TeamWin;
+            }
+            else if (playedGame.PlayerGameResults.All(x => x.GameRank != 1))
+            {
+                summary.WinnerType = WinnerTypes.TeamLoss;
+            }
+            else
+            {
+                summary.WinnerType = WinnerTypes.PlayerWin;
             }
         }
     }
