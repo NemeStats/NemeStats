@@ -564,6 +564,7 @@
     <Content Include="Scripts\namespace.min-1.0.0.js" />
     <Content Include="Scripts\Player\createOrUpdatePlayer.js" />
     <Content Include="Scripts\Player\players.js" />
+    <Content Include="Scripts\Plugins\rankPlugin.js" />
     <Content Include="Scripts\Plugins\toEditBoxPlugin.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />

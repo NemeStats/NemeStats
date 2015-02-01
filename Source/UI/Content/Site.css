@@ -1,4 +1,4 @@
-﻿body {
+body {
    padding-top: 50px;
    overflow-x: hidden;
 }
@@ -304,4 +304,18 @@ a.navbar-brand:hover{
 
 .popover {
 	color: red;
+}
+
+.rank-item {
+    font-size:2em;
+}
+
+.upvote-count {
+    color:green;
+    font-weight:bold;
+}
+
+.downvote-count {
+    color:red;
+    font-weight:bold;
 }

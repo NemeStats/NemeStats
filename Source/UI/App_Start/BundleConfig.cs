@@ -32,6 +32,7 @@ namespace UI
             bundles.Add(new ScriptBundle("~/bundles/custom")
                 .Include("~/Scripts/namespace-{version}.js")
                 .Include("~/Scripts/Plugins/toEditBoxPlugin.js")
+                .Include("~/Scripts/Plugins/rankPlugin.js")
                 .Include("~/Scripts/GamingGroup/gamingGroup.js")
                 .Include("~/Scripts/CreatePlayedGame/createplayedgame.js")
                 .Include("~/Scripts/Player/createOrUpdatePlayer.js")
