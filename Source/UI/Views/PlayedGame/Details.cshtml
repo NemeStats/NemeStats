@@ -77,14 +77,14 @@
             <h4>Results</h4>
         </div>
         <div class="panel-body">
-            @foreach (var result in Model.PlayerResults)
+            @foreach (var gameResultViewModel in Model.PlayerResults)
             {
                 <div class="row">
                     <div class="col-sm-4">
-                        @Html.ActionLink(@result.PlayerName, "Details", "Player", new { id = result.PlayerId }, new { })
+                        @Html.ActionLink(gameResultViewModel.PlayerName, "Details", "Player", new { id = gameResultViewModel.PlayerId }, new { })
                     </div>
                     <div class="col-sm-8">
-                        @Html.GameResults(result)
+                        @Html.GameResults(gameResultViewModel, Model.WinnerType)
                     </div>
                 </div>
             }

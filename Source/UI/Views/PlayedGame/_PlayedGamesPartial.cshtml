@@ -50,16 +50,16 @@
                                 @playedGameDetailsViewModel.DatePlayed.ToShortDateString()
                             </td>
                             <td>
-                                @foreach (var result in playedGameDetailsViewModel.PlayerResults)
+                                @foreach (var playerGameResultDetails in playedGameDetailsViewModel.PlayerResults)
                                 {
                                     <div class="row">
                                         <div class="col-sm-6">
                                             <b>
-                                                @Html.ActionLink(result.PlayerName, "Details", "Player", new { id = result.PlayerId }, new { })
+                                                @Html.ActionLink(playerGameResultDetails.PlayerName, "Details", "Player", new { id = playerGameResultDetails.PlayerId }, new { })
                                             </b>
                                         </div>
                                         <div class="col-sm-6">
-                                            @Html.GameResults(result)
+                                            @Html.GameResults(playerGameResultDetails, playedGameDetailsViewModel.WinnerType)
                                         </div>
                                     </div>
                                 }

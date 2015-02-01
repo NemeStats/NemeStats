@@ -1,4 +1,5 @@
 ﻿@model UI.Models.Players.PlayerDetailsViewModel
+@using BusinessLogic.Models.PlayedGames
 @using UI.HtmlHelpers
 @using UI.Models
 @{
@@ -283,17 +284,18 @@
                     </thead>
                     <tbody>
 
-                        @foreach (var playerGameResult in @Model.PlayerGameResultDetails)
+                        @foreach (var gameResultViewModel in @Model.PlayerGameResultDetails)
                         {
                             <tr>
                                 <td>
-                                    @Html.ActionLink(playerGameResult.DatePlayed.ToShortDateString(), "Details", "PlayedGame", new { id = playerGameResult.PlayedGameId }, new { })
+                                    @Html.ActionLink(gameResultViewModel.DatePlayed.ToShortDateString(), "Details", "PlayedGame", new { id = gameResultViewModel.PlayedGameId }, new { })
                                 </td>
                                 <td>
-                                    @Html.ActionLink(playerGameResult.GameName, "Details", "GameDefinition", new { id = playerGameResult.GameDefinitionId }, new { })
+                                    @Html.ActionLink(gameResultViewModel.GameName, "Details", "GameDefinition", new { id = gameResultViewModel.GameDefinitionId }, new { })
                                 </td>
                                 <td>
-                                    @Html.GameResults(playerGameResult)
+                                    @*Don't have the WinnerType available on PlayerGameResult and this is a big refactor to make it work.*@
+                                    @Html.GameResults(gameResultViewModel, WinnerTypes.PlayerWin);
                                 </td>
                             </tr>
                         }
