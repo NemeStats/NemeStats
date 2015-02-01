@@ -6,23 +6,5 @@
 
 <div class="container">
 	<h2>Top @Model.Count Gaming Groups</h2>
-	<div class="table-responsive">
-		<table class="table table-hover table-striped" id="topFiveGamingGroupsTable">
-			<thead>
-				<tr>
-					<th>Gaming Group</th>
-					<th>Number of Games Played</th>
-					<th>Number of Players</th>
-				</tr>
-			</thead>
-			@foreach (var topGamingGroup in @Model)
-			{
-				<tr>
-					<td>@Html.ActionLink(topGamingGroup.GamingGroupName, "Details", "GamingGroup", new { id = topGamingGroup.GamingGroupId }, new { })</td>
-					<td>@topGamingGroup.NumberOfGamesPlayed</td>
-					<td>@topGamingGroup.NumberOfPlayers</td>
-				</tr>
-			}
-		</table>
-	</div>
+	@Html.Partial(MVC.GamingGroup.Views._TopGamingGroupsPartial)
 </div>

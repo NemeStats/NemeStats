@@ -80,29 +80,7 @@
 	<div class="home-body-container">
 		<div class="col-md-6">
 			<h3>Top 5 Players</h3>
-
-			<div class="table-responsive">
-				<table class="table table-hover table-striped" id="topFivePlayersTable">
-					<thead>
-						<tr>
-							<th>Name</th>
-							<th>Games</th>
-							<th>Win %</th>
-							<th>Points</th>
-						</tr>
-					</thead>
-					@foreach (UI.Models.Players.TopPlayerViewModel playerSummaryViewModel in @Model.TopPlayers)
-					{
-						<tr>
-							<td>@Html.ActionLink(playerSummaryViewModel.PlayerName, "Details", "Player", new { id = playerSummaryViewModel.PlayerId }, new { })</td>
-							<td>@playerSummaryViewModel.TotalNumberOfGamesPlayed</td>
-							<td>@playerSummaryViewModel.WinPercentage</td>
-							<td>@playerSummaryViewModel.TotalPoints</td>
-						</tr>
-					}
-				</table>
-
-			</div>
+			@Html.Partial(MVC.GamingGroup.Views._TopGamingGroupsPartial, Model.TopGamingGroups)
 		</div>
 
 		<div class="col-md-6">

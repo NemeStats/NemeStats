@@ -207,10 +207,12 @@ namespace UI.Controllers
             public _ViewNamesClass ViewNames { get { return s_ViewNames; } }
             public class _ViewNamesClass
             {
+                public readonly string _TopGamingGroupsPartial = "_TopGamingGroupsPartial";
                 public readonly string Details = "Details";
                 public readonly string Index = "Index";
                 public readonly string TopGamingGroups = "TopGamingGroups";
             }
+            public readonly string _TopGamingGroupsPartial = "~/Views/GamingGroup/_TopGamingGroupsPartial.cshtml";
             public readonly string Details = "~/Views/GamingGroup/Details.cshtml";
             public readonly string Index = "~/Views/GamingGroup/Index.cshtml";
             public readonly string TopGamingGroups = "~/Views/GamingGroup/TopGamingGroups.cshtml";
