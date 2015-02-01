@@ -26,7 +26,7 @@
                             NemeStats (as in "Nemesis Statistics") is a free web application for logging games played among a relatively stable group of players. It takes only
                             a moment and will give you statistics on your win percentage, average rank in games, who is your Nemesis and who is your Minion, etc.
                             When you register, a new "Gaming Group" will be created where you and other players in your group can watch your statistics materialize over time.
-                            <br/><br/>
+							<br /><br />
                             All information is publicly accessible so feel free to browse around! If you'd like to give it a shot just @Html.ActionLink("Register", "Register", "Account", null, null),
                             set up the game and players you want to record, and start tracking! 
                         </p>
@@ -81,18 +81,20 @@
     <div class="home-body-container">
         <div class="col-md-6">
             <div class="fl-left">
-                <h3>Top 5 Players</h3>
+            <h3>Top 5 Players</h3>
             </div>
             <div id="topPlayersVote" class="fl-right" style="margin-top: 21px; margin-bottom: 10.5px;"></div>
             <div class="fl-clear"></div>
             <div class="table-responsive">
                 <table class="table table-hover table-striped" id="topFivePlayersTable">
+					<thead>
                     <tr>
                         <th>Name</th>
                         <th>Games</th>
                         <th>Win %</th>
                         <th>Points</th>
                     </tr>
+					</thead>
                     @foreach (UI.Models.Players.TopPlayerViewModel playerSummaryViewModel in @Model.TopPlayers)
                     {
                         <tr>
@@ -104,22 +106,24 @@
                     }
                 </table>
             </div>
-            </div>
+        </div>
 
         <div class="col-md-6">
             <div class="fl-left">
-                <h3>Recent Games</h3>
+            <h3>Recent Games</h3>
             </div>
             <div id="recentGamesVote" class="fl-right" style="margin-top: 21px; margin-bottom: 10.5px;"></div>
             <div class="fl-clear"></div>
             <div class="table-responsive">
                 <table class="table table-hover table-striped" id="recentGamesTable">
+					<thead>
                     <tr>
                         <th>Game</th>
                         <th>Winner</th>
                         <th>Date</th>
                         <th>Gaming Group</th>
                     </tr>
+					</thead>
                     @foreach (BusinessLogic.Models.Games.PublicGameSummary publicGame in @Model.RecentPublicGames)
                     {
                         <tr>
@@ -147,12 +151,13 @@
 
         <div class="col-md-6">
             <div class="fl-left">
-                <h3>Recent Nemesis Changes</h3>    
+            <h3>Recent Nemesis Changes</h3>
             </div>
             <div id="nemesisChangeVote" class="fl-right" style="margin-top: 21px; margin-bottom: 10.5px;"></div>
             <div class="fl-clear"></div>
             <div class="table-responsive">
                 <table class="table table-hover table-striped" id="recentNemesisChangesTable">
+					<thead>
                     <tr>
                         <th>Player</th>
                         <th>
@@ -161,6 +166,7 @@
                         </th>
                         <th>Loss %</th>
                     </tr>
+					</thead>
                     @foreach (UI.Models.Nemeses.NemesisChangeViewModel nemesisChange in @Model.RecentNemesisChanges)
                     {
                         <tr>
@@ -174,32 +180,13 @@
         </div>
         
         <div class="col-md-6">
-            <div class="fl-left">
-                <h3>Top 5 Gaming Groups</h3>
-            </div>
-            <div id="gamingGroupsVote" class="fl-right" style="margin-top: 21px; margin-bottom: 10.5px;"></div>
-            <div class="fl-clear"></div>
-            <div class="table-responsive">
-                <table class="table table-hover table-striped" id="topFiveGamingGroupsTable">
-                    <tr>
-                        <th>Gaming Group</th>
-                        <th>Number of Games Played</th>
-                        <th>Number of Players</th>
-                    </tr>
-                    @foreach (UI.Models.GamingGroup.TopGamingGroupSummaryViewModel topGamingGroup in @Model.TopGamingGroups)
-                    {
-                        <tr>
-                            <td>@Html.ActionLink(topGamingGroup.GamingGroupName, "Details", "GamingGroup", new { id = topGamingGroup.GamingGroupId }, new { })</td>
-                            <td>@topGamingGroup.NumberOfGamesPlayed</td>
-                            <td>@topGamingGroup.NumberOfPlayers</td>
-                        </tr>
-                    }
-                </table>
-            </div>
+			<h3>Top 5 Gaming Groups @Html.ActionLink(" - View More", MVC.GamingGroup.GetTopGamingGroups())</h3>
+			@Html.Partial(MVC.GamingGroup.Views._TopGamingGroupsPartial, Model.TopGamingGroups)
+			
         </div>
     </div>
 </div>
-<br/>
+<br />
 <div class="col-md-12">
     <hr />
     <footer>
