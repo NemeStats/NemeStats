@@ -31,6 +31,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 		protected string testUserName = "the test user name";
 		protected ApplicationUser currentUser;
 		protected List<GameDefinitionSummary> gameDefinitionSummaries;
+		protected readonly List<PublicGameSummary> expectedViewModel = new List<PublicGameSummary>();
 
 		[SetUp]
 		public virtual void TestSetUp()
@@ -75,6 +76,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 				.Repeat.Once()
 				.Return(gameDefinitionSummaries);
 			playedGameRetriever.Expect(mock => mock.GetRecentPublicGames(Arg<int>.Is.Anything)).Return(new List<PublicGameSummary>());
+			playedGameControllerPartialMock.Expect(mock => mock.ShowRecentlyPlayedGames()).Return(new ViewResult { ViewData = new ViewDataDictionary(expectedViewModel) });
 		}
 	}
 }

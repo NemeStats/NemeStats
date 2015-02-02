@@ -14,11 +14,19 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 		[Test]
 		public void ItReturnsRecentlyPlayedGamesView()
 		{
-			base.TestSetUp();
-
 			var viewResult = playedGameControllerPartialMock.ShowRecentlyPlayedGames() as ViewResult;
 
 			Assert.AreEqual(MVC.PlayedGame.Views.RecentlyPlayedGames, viewResult.ViewName);
+		}
+
+		[Test]
+		public void ItReturnsSpecifiedRecentlyPlayedGamesModelToView()
+		{
+			var viewResult = playedGameController.ShowRecentlyPlayedGames() as ViewResult;
+
+			var actualViewModel = viewResult.ViewData.Model;
+
+			Assert.AreEqual(base.expectedViewModel, actualViewModel);
 		}
 	}
 }

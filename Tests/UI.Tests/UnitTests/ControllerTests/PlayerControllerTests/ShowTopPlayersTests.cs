@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using UI.Models.Players;
 
 namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
 {
@@ -14,11 +15,19 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
 		[Test]
 		public void ItReturnsTopPlayerView()
 		{
-			base.SetUp();
-
 			var viewResult = playerController.ShowTopPlayers() as ViewResult;
 
 			Assert.AreEqual(MVC.Player.Views.TopPlayers, viewResult.ViewName);
+		}
+
+		[Test]
+		public void ItReturnsSpecifiedTopPlayerModelToView()
+		{
+			var viewResult = playerController.ShowTopPlayers() as ViewResult;
+
+			var actualViewModel = viewResult.ViewData.Model;
+
+			Assert.AreEqual(base.expectedTopPlayersViewModel, actualViewModel);
 		}
 	}
 }

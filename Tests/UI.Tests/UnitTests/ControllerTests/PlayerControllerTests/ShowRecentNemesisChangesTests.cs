@@ -14,11 +14,19 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
 		[Test]
 		public void ItReturnsRecentNemesisChangesView()
 		{
-			base.SetUp();
-
 			var viewResult = playerController.ShowRecentNemesisChanges() as ViewResult;
 
 			Assert.AreEqual(MVC.Player.Views.RecentNemesisChanges, viewResult.ViewName);
+		}
+
+		[Test]
+		public void ItReturnsSpecifiedRecentNemesisChangeModelToView()
+		{
+			var viewResult = playerController.ShowRecentNemesisChanges() as ViewResult;
+
+			var actualViewModel = viewResult.ViewData.Model;
+
+			Assert.AreEqual(base.expectedNemesisChangeViewModel, actualViewModel);
 		}
 	}
 }

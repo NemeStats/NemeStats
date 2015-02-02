@@ -16,6 +16,7 @@ using BusinessLogic.Models.Players;
 using System.Collections.Generic;
 using BusinessLogic.Logic.Nemeses;
 using UI.Models.Nemeses;
+using UI.Models.Players;
 
 namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
 {
@@ -38,7 +39,8 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
 		protected PlayerController playerController;
 		protected ApplicationUser currentUser;
 		protected HttpRequestBase asyncRequestMock;
-
+		protected readonly TopPlayerViewModel expectedTopPlayersViewModel = new TopPlayerViewModel();
+		protected readonly NemesisChangeViewModel expectedNemesisChangeViewModel = new NemesisChangeViewModel();
 
 		[SetUp]
 		public virtual void SetUp()
@@ -96,6 +98,8 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
 			playerSummaryBuilderMock.Expect(mock => mock.GetTopPlayers(Arg<int>.Is.Anything)).Return(new List<TopPlayer>());
 			nemesisHistoryRetrieverMock.Expect(mock => mock.GetRecentNemesisChanges(Arg<int>.Is.Anything)).Return(new List<NemesisChange>());
 			nemesisChangeViewModelBuilderMock.Expect(mock => mock.Build(Arg<List<NemesisChange>>.Is.Anything)).Return(new List<NemesisChangeViewModel>());
+			playerController.Expect(mock => mock.ShowTopPlayers()).Return(new ViewResult { ViewData = new ViewDataDictionary(expectedTopPlayersViewModel) });
+			playerController.Expect(mock => mock.ShowRecentNemesisChanges()).Return(new ViewResult { ViewData = new ViewDataDictionary(expectedNemesisChangeViewModel) });
 		}
 	}
 }
