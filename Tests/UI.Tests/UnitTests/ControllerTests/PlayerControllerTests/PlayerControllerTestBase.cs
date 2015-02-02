@@ -98,8 +98,8 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
 			playerSummaryBuilderMock.Expect(mock => mock.GetTopPlayers(Arg<int>.Is.Anything)).Return(new List<TopPlayer>());
 			nemesisHistoryRetrieverMock.Expect(mock => mock.GetRecentNemesisChanges(Arg<int>.Is.Anything)).Return(new List<NemesisChange>());
 			nemesisChangeViewModelBuilderMock.Expect(mock => mock.Build(Arg<List<NemesisChange>>.Is.Anything)).Return(new List<NemesisChangeViewModel>());
-			playerController.Expect(mock => mock.ShowTopPlayers()).Return(new ViewResult { ViewData = new ViewDataDictionary(expectedTopPlayersViewModel) });
-			playerController.Expect(mock => mock.ShowRecentNemesisChanges()).Return(new ViewResult { ViewData = new ViewDataDictionary(expectedNemesisChangeViewModel) });
+			playerController.Expect(mock => mock.ShowTopPlayers()).Return(new ViewResult { ViewName = MVC.Player.Views.TopPlayers, ViewData = new ViewDataDictionary(expectedTopPlayersViewModel) });
+			playerController.Expect(mock => mock.ShowRecentNemesisChanges()).Return(new ViewResult { ViewName = MVC.Player.Views.RecentNemesisChanges, ViewData = new ViewDataDictionary(expectedNemesisChangeViewModel) });
 		}
 	}
 }

@@ -22,7 +22,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
 			base.SetUp();
 
 			gamingGroupRetrieverMock.Expect(mock => mock.GetTopGamingGroups(Arg<int>.Is.Anything)).Return(new List<TopGamingGroupSummary>());
-			gamingGroupControllerPartialMock.Expect(mock => mock.GetTopGamingGroups()).Return(new ViewResult() { ViewData = new ViewDataDictionary(expectedViewModel) });
+			gamingGroupControllerPartialMock.Expect(mock => mock.GetTopGamingGroups()).Return(new ViewResult() { ViewName = MVC.GamingGroup.Views.TopGamingGroups, ViewData = new ViewDataDictionary(expectedViewModel) });
 		}
 
 		[Test]

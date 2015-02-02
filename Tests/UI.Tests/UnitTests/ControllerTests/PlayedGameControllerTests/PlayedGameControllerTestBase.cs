@@ -76,7 +76,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 				.Repeat.Once()
 				.Return(gameDefinitionSummaries);
 			playedGameRetriever.Expect(mock => mock.GetRecentPublicGames(Arg<int>.Is.Anything)).Return(new List<PublicGameSummary>());
-			playedGameControllerPartialMock.Expect(mock => mock.ShowRecentlyPlayedGames()).Return(new ViewResult { ViewData = new ViewDataDictionary(expectedViewModel) });
+			playedGameControllerPartialMock.Expect(mock => mock.ShowRecentlyPlayedGames()).Return(new ViewResult { ViewName = MVC.PlayedGame.Views.RecentlyPlayedGames, ViewData = new ViewDataDictionary(expectedViewModel) });
 		}
 	}
 }
