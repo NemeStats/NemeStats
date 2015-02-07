@@ -1,0 +1,11 @@
+﻿@model List<UI.Models.GamingGroup.TopGamingGroupSummaryViewModel>
+@{
+	ViewBag.Title = "Top " + @Model.Count + " Gaming Groups";
+    ViewBag.Description = "See who are the top Gaming Groups on NemeStats!";
+	Layout = MVC.Shared.Views._BaseLayout;
+}
+
+<div class="container">
+	<h2>Top @Model.Count Gaming Groups</h2>
+	@Html.Partial(MVC.GamingGroup.Views._TopGamingGroupsPartial)
+</div>

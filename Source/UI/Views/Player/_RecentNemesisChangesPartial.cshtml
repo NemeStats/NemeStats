@@ -1,0 +1,25 @@
+﻿@model IEnumerable<UI.Models.Nemeses.NemesisChangeViewModel>
+<div id="nemesisChangeVote" class="fl-right" style="margin-top: 21px; margin-bottom: 10.5px;"></div>
+<div class="fl-clear"></div>
+<div class="table-responsive">
+	<table class="table table-hover table-striped table-responsive" id="recentNemesisChangesTable">
+		<thead>
+			<tr>
+				<th>Player</th>
+				<th>
+					New Nemesis <i class="fa fa-question-circle" data-container="body" data-toggle="popover" data-placement="right"
+						 data-content="The Nemesis is the Player with the highest win % vs. this Player. Must have won at least 3 games to be designated as the Nemesis."></i>
+				</th>
+				<th>Loss %</th>
+			</tr>
+		</thead>
+		@foreach (UI.Models.Nemeses.NemesisChangeViewModel nemesisChange in @Model)
+		{
+			<tr>
+				<td>@Html.ActionLink(nemesisChange.PlayerName, "Details", "Player", new { id = nemesisChange.PlayerId }, new { })</td>
+				<td>@Html.ActionLink(nemesisChange.NemesisPlayerName, "Details", "Player", new { id = nemesisChange.NemesisPlayerId }, new { })</td>
+				<td>@nemesisChange.LossPercentageVersusNemesis</td>
+			</tr>
+		}
+	</table>
+</div>

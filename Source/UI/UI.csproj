@@ -569,6 +569,7 @@
     <Content Include="Scripts\namespace.min-1.0.0.js" />
     <Content Include="Scripts\Player\createOrUpdatePlayer.js" />
     <Content Include="Scripts\Player\players.js" />
+    <Content Include="Scripts\Plugins\rankPlugin.js" />
     <Content Include="Scripts\Plugins\toEditBoxPlugin.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
@@ -638,6 +639,14 @@
     <Content Include="Views\Player\InvitePlayer.cshtml" />
     <Content Include="Views\Account\RegisterAgainstExistingGamingGroup.cshtml" />
     <Content Include="Views\Account\_CreateGamingGroupPartial.cshtml" />
+    <Content Include="Views\GamingGroup\TopGamingGroups.cshtml" />
+    <Content Include="Views\GamingGroup\_TopGamingGroupsPartial.cshtml" />
+    <Content Include="Views\PlayedGame\RecentlyPlayedGames.cshtml" />
+    <Content Include="Views\PlayedGame\_RecentlyPlayedGamesPartial.cshtml" />
+    <Content Include="Views\Player\TopPlayers.cshtml" />
+    <Content Include="Views\Player\_TopPlayersPartial.cshtml" />
+    <Content Include="Views\Player\RecentNemesisChanges.cshtml" />
+    <Content Include="Views\Player\_RecentNemesisChangesPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Code\" />

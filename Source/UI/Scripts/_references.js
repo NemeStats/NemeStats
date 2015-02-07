@@ -39,3 +39,5 @@
 /// <reference path="bootstrap/scrollspy.js" />
 /// <reference path="bootstrap/tab.js" />
 /// <reference path="bootstrap/tooltip.js" />
+/// <reference path="GameDefinition/createGameDefinition.js" />
+/// <reference path="plugins/rankplugin.js" />

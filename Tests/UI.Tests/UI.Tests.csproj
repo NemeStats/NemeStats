@@ -177,6 +177,7 @@
     <Compile Include="UnitTests\ControllerTests\GamingGroupControllerTests\CreateNewGamingGroupTests.cs" />
     <Compile Include="UnitTests\ControllerTests\GamingGroupControllerTests\EditTests.cs" />
     <Compile Include="UnitTests\ControllerTests\GamingGroupControllerTests\GamingGroupControllerTestBase.cs" />
+    <Compile Include="UnitTests\ControllerTests\GamingGroupControllerTests\GetTopGamingGroupsTests.cs" />
     <Compile Include="UnitTests\ControllerTests\GamingGroupControllerTests\GetUsersGamingGroupsTests.cs" />
     <Compile Include="UnitTests\ControllerTests\GamingGroupControllerTests\GrantAccessTests.cs" />
     <Compile Include="UnitTests\ControllerTests\GamingGroupControllerTests\IndexTests.cs" />
@@ -188,6 +189,7 @@
     <Compile Include="UnitTests\ControllerTests\PlayedGameControllerTests\DeleteConfirmedTests.cs" />
     <Compile Include="UnitTests\ControllerTests\PlayedGameControllerTests\DetailsTests.cs" />
     <Compile Include="UnitTests\ControllerTests\PlayedGameControllerTests\PlayedGameControllerTestBase.cs" />
+    <Compile Include="UnitTests\ControllerTests\PlayedGameControllerTests\ShowRecentlyPlayedGamesTests.cs" />
     <Compile Include="UnitTests\ControllerTests\PlayerControllerTests\CreateHttpGetTests.cs" />
     <Compile Include="UnitTests\ControllerTests\PlayerControllerTests\InvitePlayerHttpPostTests.cs" />
     <Compile Include="UnitTests\ControllerTests\PlayerControllerTests\InvitePlayerHttpGetTests.cs" />
@@ -197,6 +199,8 @@
     <Compile Include="UnitTests\ControllerTests\PlayerControllerTests\EditHttpGetTests.cs" />
     <Compile Include="UnitTests\ControllerTests\PlayerControllerTests\EditHttpPostTests.cs" />
     <Compile Include="UnitTests\ControllerTests\PlayerControllerTests\PlayerControllerTestBase.cs" />
+    <Compile Include="UnitTests\ControllerTests\PlayerControllerTests\ShowRecentNemesisChangesTests.cs" />
+    <Compile Include="UnitTests\ControllerTests\PlayerControllerTests\ShowTopPlayersTests.cs" />
     <Compile Include="UnitTests\FiltersTests\UserContextAttributeTests\OnActionExecutingTests.cs" />
     <Compile Include="UnitTests\HtmlHelperTests\MyHelpersTests\GameResultsTests.cs" />
     <Compile Include="UnitTests\TransformationsTests\AutomapperConfigurationTests.cs" />

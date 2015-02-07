@@ -1,4 +1,5 @@
 ﻿@model UI.Models.Players.PlayerDetailsViewModel
+@using BusinessLogic.Models.PlayedGames
 @using UI.HtmlHelpers
 @using UI.Models
 @{
@@ -123,7 +124,7 @@
                 </h4>
             </div>
             <div class="panel-body">
-                <table class="table table-hover table-striped">
+                <table class="table table-hover table-striped table-responsive">
                     <thead>
                         <tr>
                             <th>Player Name</th>
@@ -163,12 +164,12 @@
    data-content="The Champion is the Player within the Gaming Group with the most wins of this game."></i></h4>
             </div>
             <div class="panel-body">
-                <table class="table table-hover table-striped">
+                <table class="table table-hover table-striped table-responsive">
                     <thead>
-                    <th>Game</th>
-                    <th>Games Played</th>
-                    <th>Games Won</th>
-                    <th>Win Percentage</th>
+                    <tr>Game</tr>
+                    <tr>Games Played</tr>
+                    <tr>Games Won</tr>
+                    <tr>Win Percentage</tr>
                     </thead>
                     <tbody>
                         @foreach (ChampionViewModel championModel in @Model.ChampionedGames)
@@ -234,7 +235,7 @@
             <h4>Game Statistics</h4>
         </div>
         <div class="panel-body">
-            <table class="table table-hover table-striped">
+            <table class="table table-hover table-striped  table-responsive">
                 <thead>
                     <tr>
                         <th>Game</th>
@@ -283,17 +284,18 @@
                     </thead>
                     <tbody>
 
-                        @foreach (var playerGameResult in @Model.PlayerGameResultDetails)
+                        @foreach (var gameResultViewModel in @Model.PlayerGameResultDetails)
                         {
                             <tr>
                                 <td>
-                                    @Html.ActionLink(playerGameResult.DatePlayed.ToShortDateString(), "Details", "PlayedGame", new { id = playerGameResult.PlayedGameId }, new { })
+                                    @Html.ActionLink(gameResultViewModel.DatePlayed.ToShortDateString(), "Details", "PlayedGame", new { id = gameResultViewModel.PlayedGameId }, new { })
                                 </td>
                                 <td>
-                                    @Html.ActionLink(playerGameResult.GameName, "Details", "GameDefinition", new { id = playerGameResult.GameDefinitionId }, new { })
+                                    @Html.ActionLink(gameResultViewModel.GameName, "Details", "GameDefinition", new { id = gameResultViewModel.GameDefinitionId }, new { })
                                 </td>
                                 <td>
-                                    @Html.GameResults(playerGameResult)
+                                    @*Don't have the WinnerType available on PlayerGameResult and this is a big refactor to make it work.*@
+                                    @Html.GameResults(gameResultViewModel, WinnerTypes.PlayerWin);
                                 </td>
                             </tr>
                         }

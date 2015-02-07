@@ -1,0 +1,12 @@
+﻿@model IEnumerable<BusinessLogic.Models.Games.PublicGameSummary>
+
+@{
+    ViewBag.Title = Model.Count() + " Recently Played Games";
+    ViewBag.Description = "Check out the recently played games on NemeStats!";
+	Layout = MVC.Shared.Views._BaseLayout;
+}
+
+<div class="container">
+	<h2>@Model.Count() Recently Played Games</h2>
+	@Html.Partial(MVC.PlayedGame.Views._RecentlyPlayedGamesPartial, Model)
+</div>

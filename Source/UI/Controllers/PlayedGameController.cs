@@ -1,4 +1,5 @@
-﻿using BusinessLogic.DataAccess;
+﻿using AutoMapper;
+using BusinessLogic.DataAccess;
 using BusinessLogic.Logic.GameDefinitions;
 using BusinessLogic.Logic.PlayedGames;
 using BusinessLogic.Logic.Players;
@@ -27,7 +28,7 @@ namespace UI.Controllers
 		internal IShowingXResultsMessageBuilder showingXResultsMessageBuilder;
 		internal IPlayedGameDeleter playedGameDeleter;
 
-		internal const int NUMBER_OF_RECENT_GAMES_TO_DISPLAY = 10;
+		internal const int NUMBER_OF_RECENT_GAMES_TO_DISPLAY = 25;
 
 		public PlayedGameController(
 			NemeStatsDataContext dataContext,
@@ -82,6 +83,14 @@ namespace UI.Controllers
 			};
 
 			return View(MVC.PlayedGame.Views.Create, viewModel);
+		}
+
+		[HttpGet]
+		public virtual ActionResult ShowRecentlyPlayedGames()
+		{
+			var recentlyPlayedGames = playedGameRetriever.GetRecentPublicGames(NUMBER_OF_RECENT_GAMES_TO_DISPLAY);
+
+			return View(MVC.PlayedGame.Views.RecentlyPlayedGames, recentlyPlayedGames);
 		}
 
 		// POST: /PlayedGame/Create

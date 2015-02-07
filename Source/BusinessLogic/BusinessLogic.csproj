@@ -214,7 +214,13 @@
     <Compile Include="Migrations\201412260631204_GameDefinitionNameIsRequired.Designer.cs">
       <DependentUpon>201412260631204_GameDefinitionNameIsRequired.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201502012058510_AddUniqueConstraintOnPlayerIdAndPlayedGameIdInPlayerGameResult.cs" />
+    <Compile Include="Migrations\201502012058510_AddUniqueConstraintOnPlayerIdAndPlayedGameIdInPlayerGameResult.Designer.cs">
+      <DependentUpon>201502012058510_AddUniqueConstraintOnPlayerIdAndPlayedGameIdInPlayerGameResult.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\GamingGroups\TopGamingGroupSummary.cs" />
+    <Compile Include="Models\PlayedGames\IWinner.cs" />
+    <Compile Include="Models\PlayedGames\WinnerTypesEnum.cs" />
     <Compile Include="Models\Players\PlayerInvitation.cs" />
     <Compile Include="Logic\Players\PlayerInviter.cs" />
     <Compile Include="Logic\Players\PlayerSaver.cs" />
@@ -545,6 +551,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201412260631204_GameDefinitionNameIsRequired.resx">
       <DependentUpon>201412260631204_GameDefinitionNameIsRequired.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201502012058510_AddUniqueConstraintOnPlayerIdAndPlayedGameIdInPlayerGameResult.resx">
+      <DependentUpon>201502012058510_AddUniqueConstraintOnPlayerIdAndPlayedGameIdInPlayerGameResult.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

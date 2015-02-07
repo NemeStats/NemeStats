@@ -1,0 +1,20 @@
+﻿@model List<UI.Models.GamingGroup.TopGamingGroupSummaryViewModel>
+<div class="table-responsive">
+	<table class="table table-hover table-striped table-responsive" id="topFiveGamingGroupsTable">
+		<thead>
+			<tr>
+				<th>Gaming Group</th>
+				<th>Games Played</th>
+				<th>Players</th>
+			</tr>
+		</thead>
+		@foreach (var topGamingGroup in @Model)
+		{
+			<tr>
+				<td>@Html.ActionLink(topGamingGroup.GamingGroupName, "Details", "GamingGroup", new { id = topGamingGroup.GamingGroupId }, new { })</td>
+				<td>@topGamingGroup.NumberOfGamesPlayed</td>
+				<td>@topGamingGroup.NumberOfPlayers</td>
+			</tr>
+		}
+	</table>
+</div>

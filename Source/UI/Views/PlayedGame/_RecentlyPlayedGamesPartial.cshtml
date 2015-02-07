@@ -1,0 +1,37 @@
+﻿@model IEnumerable<BusinessLogic.Models.Games.PublicGameSummary>
+
+<div id="recentGamesVote" class="fl-right" style="margin-top: 21px; margin-bottom: 10.5px;"></div>
+<div class="fl-clear"></div>
+<div class="table-responsive">
+	<table class="table table-hover table-striped table-responsive" id="recentGamesTable">
+		<thead>
+			<tr>
+				<th>Game</th>
+				<th>Winner</th>
+				<th>Date</th>
+				<th>Gaming Group</th>
+			</tr>
+		</thead>
+
+		@foreach (var publicGame in @Model)
+		{
+			<tr>
+				<td>@Html.ActionLink(publicGame.GameDefinitionName, "Details", "GameDefinition", new { id = publicGame.GameDefinitionId }, new { })</td>
+				@if (publicGame.WinnerType == BusinessLogic.Models.PlayedGames.WinnerTypes.TeamWin)
+				{
+					<td class="gameResult-teamWin">TEAM WIN</td>
+				}
+				else if (publicGame.WinnerType == BusinessLogic.Models.PlayedGames.WinnerTypes.TeamLoss)
+				{
+					<td class="gameResult-teamLoss">TEAM LOSS</td>
+				}
+				else
+				{
+					<td>@Html.ActionLink(publicGame.WinningPlayer.Name, "Details", "Player", new { id = publicGame.WinningPlayer.Id }, new { })</td>
+				}
+				<td>@Html.ActionLink(publicGame.DatePlayed.ToShortDateString(), "Details", "PlayedGame", new { id = publicGame.PlayedGameId }, new { })</td>
+				<td>@Html.ActionLink(publicGame.GamingGroupName, "Details", "GamingGroup", new { id = publicGame.GamingGroupId }, new { })</td>
+			</tr>
+		}
+	</table>
+</div>

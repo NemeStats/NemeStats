@@ -1,4 +1,5 @@
-﻿using BusinessLogic.DataAccess.GamingGroups;
+﻿using AutoMapper;
+using BusinessLogic.DataAccess.GamingGroups;
 using BusinessLogic.Logic.GamingGroups;
 using BusinessLogic.Logic.Users;
 using BusinessLogic.Models.GamingGroups;
@@ -18,6 +19,7 @@ namespace UI.Controllers
 	public partial class GamingGroupController : Controller
 	{
 		public const int MAX_NUMBER_OF_RECENT_GAMES = 10;
+		public const int NUMBER_OF_TOP_GAMING_GROUPS_TO_SHOW = 25;
 		public const string SECTION_ANCHOR_PLAYERS = "Players";
 		public const string SECTION_ANCHOR_GAMEDEFINITIONS = "GameDefinitions";
 		public const string SECTION_ANCHOR_RECENT_GAMES = "RecentGames";
@@ -104,6 +106,15 @@ namespace UI.Controllers
 			};
 
 			return View(MVC.GamingGroup.Views.Details, viewModel);
+		}
+
+		[HttpGet]
+		public virtual ActionResult GetTopGamingGroups()
+		{
+			var topGamingGroups = gamingGroupRetriever.GetTopGamingGroups(NUMBER_OF_TOP_GAMING_GROUPS_TO_SHOW);
+			var topGamingGroupViewModels = topGamingGroups.Select(Mapper.Map<TopGamingGroupSummary, TopGamingGroupSummaryViewModel>).ToList();
+
+			return View(MVC.GamingGroup.Views.TopGamingGroups, topGamingGroupViewModels);
 		}
 
 		[HttpPost]

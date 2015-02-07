@@ -1,4 +1,5 @@
-﻿using BusinessLogic.DataAccess;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using BusinessLogic.DataAccess;
 using System.Linq;
 
 namespace BusinessLogic.Models
@@ -7,7 +8,9 @@ namespace BusinessLogic.Models
     {
         public override int Id { get; set; }
 
+        [Index("IX_PlayerId_and_PlayedGameId", 1, IsUnique = true)]
         public int PlayedGameId { get; set; }
+        [Index("IX_PlayerId_and_PlayedGameId", 2, IsUnique = true)]
         public int PlayerId { get; set; }
         public int GameRank { get; set; }
         public int GordonPoints { get; set; }

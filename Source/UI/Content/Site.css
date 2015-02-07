@@ -1,4 +1,4 @@
-﻿body {
+body {
    padding-top: 50px;
    overflow-x: hidden;
 }
@@ -28,6 +28,7 @@ a[name] {
 }
 
 .home-banner {
+    margin-top: 10px;
     padding-top: 5px;
     padding-left: 20%;
     padding-right: 20%;
@@ -219,7 +220,7 @@ ul input[type=text] { width:25px }
 }
 
 .autocomplete-loading {
-    background: url('/Content/Images/spinner.gif') no-repeat right center;
+    background: #fff url('/Content/Images/spinner.gif') no-repeat right center;
 }
 
 .leftItem {
@@ -304,4 +305,43 @@ a.navbar-brand:hover{
 
 .popover {
 	color: red;
+}
+
+table > thead :hover {
+	background-color: none !important;
+}
+
+h3 > a {
+    font-size: smaller;
+}
+
+.gameResult-teamLoss {
+    color: red;
+}
+
+.gameResult-teamWin {
+    color: green;
+}
+
+.rank-item {
+    font-size:26px;
+}
+
+.upvote-count {
+    color:green;
+    font-weight:bold;
+}
+
+.downvote-count {
+    color:red;
+    font-weight:bold;
+}
+
+.btn-recordgame {
+    width: 175px;
+    margin: 3px 3px 3px 3px;
+}
+
+button > i.fa {
+    font-size: 20px;
 }
