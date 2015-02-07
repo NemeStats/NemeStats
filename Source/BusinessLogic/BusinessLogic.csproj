@@ -147,6 +147,7 @@
     <Compile Include="Logic\BoardGameGeek\DeSerializationModels\SearchResultModels.cs" />
     <Compile Include="Logic\Champions\ChampionRecalculator.cs" />
     <Compile Include="Logic\Email\EmailService.cs" />
+    <Compile Include="Logic\FeatureVoting\IFeatureInterestSummaryRetriever.cs" />
     <Compile Include="Logic\GameDefinitions\BoardGameGeekDataLinker.cs" />
     <Compile Include="Logic\Champions\IChampionRecalculator.cs" />
     <Compile Include="Logic\Nemeses\INemesisHistoryRetriever.cs" />

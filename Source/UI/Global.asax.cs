@@ -1,5 +1,4 @@
 ﻿using BusinessLogic.DataAccess;
-using RollbarSharp;
 using StructureMap.Web.Pipeline;
 using System;
 using System.Data.Entity;
@@ -16,6 +15,7 @@ namespace UI
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
+
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             GlobalFilters.Filters.Add(new RequireHttpsAttribute());
             RouteConfig.RegisterRoutes(RouteTable.Routes);
