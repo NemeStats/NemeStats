@@ -110,6 +110,7 @@
     </Reference>
     <Reference Include="StructureMap">
       <HintPath>..\..\packages\structuremap.3.0.0.108\lib\net40\StructureMap.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="StructureMap.AutoMocking">
       <HintPath>..\..\packages\structuremap.automocking.3.1.0.133\lib\net40\StructureMap.AutoMocking.dll</HintPath>

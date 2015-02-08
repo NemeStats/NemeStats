@@ -4,6 +4,6 @@ namespace BusinessLogic.Logic.VotableFeatures
 {
     public interface IVotableFeatureRetriever
     {
-        VotableFeature RetrieveVotableFeature(string featureId);
+        VotableFeature RetrieveVotableFeature(int id);
     }
 }

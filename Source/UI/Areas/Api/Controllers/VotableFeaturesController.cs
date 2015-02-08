@@ -24,7 +24,7 @@ namespace UI.Areas.Api.Controllers
         }
 
         // GET api/<controller>/5
-        public VotableFeature Get(string id)
+        public VotableFeature Get(int id)
         {
             throw new NotImplementedException();
         }
