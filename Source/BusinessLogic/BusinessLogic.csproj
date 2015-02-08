@@ -219,6 +219,10 @@
     <Compile Include="Migrations\201502012058510_AddUniqueConstraintOnPlayerIdAndPlayedGameIdInPlayerGameResult.Designer.cs">
       <DependentUpon>201502012058510_AddUniqueConstraintOnPlayerIdAndPlayedGameIdInPlayerGameResult.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201502081728246_AddVotableFeature.cs" />
+    <Compile Include="Migrations\201502081728246_AddVotableFeature.Designer.cs">
+      <DependentUpon>201502081728246_AddVotableFeature.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\GamingGroups\TopGamingGroupSummary.cs" />
     <Compile Include="Models\PlayedGames\IWinner.cs" />
     <Compile Include="Models\PlayedGames\WinnerTypesEnum.cs" />
@@ -405,7 +409,7 @@
     <Compile Include="Models\Games\PlayerRank.cs" />
     <Compile Include="Models\Players\PlayerDetails.cs" />
     <Compile Include="Models\Players\WinLossStatistics.cs" />
-    <Compile Include="Models\VotableFeatures\VotableFeature.cs" />
+    <Compile Include="Models\VotableFeature.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -556,6 +560,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201502012058510_AddUniqueConstraintOnPlayerIdAndPlayedGameIdInPlayerGameResult.resx">
       <DependentUpon>201502012058510_AddUniqueConstraintOnPlayerIdAndPlayedGameIdInPlayerGameResult.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201502081728246_AddVotableFeature.resx">
+      <DependentUpon>201502081728246_AddVotableFeature.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

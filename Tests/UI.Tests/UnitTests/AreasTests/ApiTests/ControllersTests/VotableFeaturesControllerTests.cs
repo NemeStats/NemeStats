@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BusinessLogic.Logic.VotableFeatures;
+﻿using BusinessLogic.Logic.VotableFeatures;
+using BusinessLogic.Models;
 using NUnit.Framework;
 using Rhino.Mocks;
 using StructureMap.AutoMocking;
 using UI.Areas.Api.Controllers;
-using BusinessLogic.Models.VotableFeatures;
 
 namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests
 {
@@ -37,7 +32,10 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests
         [Test]
         public void ItReturnsTheFeatureInterestSummaryForTheGivenFeature()
         {
+            VotableFeature expectedVotableFeature = new VotableFeature();
             string featureId = "the feature id";
+            autoMocker.Get<IVotableFeatureRetriever>().Expect(mock => mock.RetrieveVotableFeature(featureId))
+                      .Return(expectedVotableFeature);
             VotableFeature votableFeature = autoMocker.ClassUnderTest.Get(featureId);
             //FeatureInterestInfo actualFeatureInterestSummary = featureVotingController.GetFeatureInterestInfo("some feature");
 

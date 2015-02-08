@@ -5,7 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using BusinessLogic.Logic.VotableFeatures;
-using BusinessLogic.Models.VotableFeatures;
+using BusinessLogic.Models;
 
 namespace UI.Areas.Api.Controllers
 {

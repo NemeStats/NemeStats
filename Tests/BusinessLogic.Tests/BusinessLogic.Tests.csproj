@@ -212,6 +212,7 @@
     <Compile Include="UnitTests\LogicTests\UsersTests\GamingGroupInviteConsumerTests\AddExistingUserToGamingGroupTests.cs" />
     <Compile Include="UnitTests\LogicTests\UsersTests\GamingGroupInviteConsumerTests\GamingGroupInviteConsumerTestBase.cs" />
     <Compile Include="UnitTests\LogicTests\UsersTests\UserRegistererTests\RegisterUserTests.cs" />
+    <Compile Include="UnitTests\LogicTests\VotableFeaturesTests\RetrieveVotableFeatureTests.cs" />
     <Compile Include="UnitTests\ModelsTests\GamesTests\ValidationTests\ValidatePlayerRanksTests.cs" />
     <Compile Include="UnitTests\ModelsTests\NemesisTests\EqualsTests.cs" />
     <Compile Include="UnitTests\ModelsTests\NemesisTests\GetHashCodeTests.cs" />
