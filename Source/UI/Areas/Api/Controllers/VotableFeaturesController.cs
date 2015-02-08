@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using BusinessLogic.Exceptions;
 using BusinessLogic.Logic.VotableFeatures;
 using BusinessLogic.Models;
 
@@ -11,7 +12,7 @@ namespace UI.Areas.Api.Controllers
 {
     public class VotableFeaturesController : ApiController
     {
-        private IVotableFeatureRetriever votableFeatureRetriever;
+        private readonly IVotableFeatureRetriever votableFeatureRetriever;
 
         public VotableFeaturesController(IVotableFeatureRetriever votableFeatureRetriever)
         {
@@ -24,9 +25,16 @@ namespace UI.Areas.Api.Controllers
         }
 
         // GET api/<controller>/5
-        public VotableFeature Get(int id)
+        public IHttpActionResult Get(int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                return this.Ok(votableFeatureRetriever.RetrieveVotableFeature(id));
+            }
+            catch (EntityDoesNotExistException exception)
+            {
+                return this.NotFound();
+            }
         }
 
         // POST api/<controller>
