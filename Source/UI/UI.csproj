@@ -249,7 +249,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\StructuremapMvc.cs" />
     <Compile Include="Areas\Api\ApiAreaRegistration.cs" />
-    <Compile Include="Areas\Api\Controllers\FeatureVoting.cs" />
+    <Compile Include="Areas\Api\Controllers\VotableFeaturesController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\GameDefinitionController.cs" />
     <Compile Include="Controllers\GamingGroupController.cs" />

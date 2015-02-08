@@ -4,29 +4,29 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using BusinessLogic.Logic.FeatureVoting;
+using BusinessLogic.Logic.VotableFeatures;
+using BusinessLogic.Models.VotableFeatures;
 
 namespace UI.Areas.Api.Controllers
 {
-    public class FeatureVotingController : ApiController
+    public class VotableFeaturesController : ApiController
     {
-        private IFeatureInterestSummaryRetriever featureInterestSummaryRetriever;
+        private IVotableFeatureRetriever votableFeatureRetriever;
 
-        public FeatureVotingController(IFeatureInterestSummaryRetriever featureInterestSummaryRetriever)
+        public VotableFeaturesController(IVotableFeatureRetriever votableFeatureRetriever)
         {
-            this.featureInterestSummaryRetriever = featureInterestSummaryRetriever;
+            this.votableFeatureRetriever = votableFeatureRetriever;
         }
 
-        // GET api/<controller>
         public IEnumerable<string> Get()
         {
             return new string[] { "value1", "value2" };
         }
 
         // GET api/<controller>/5
-        public string Get(int id)
+        public VotableFeature Get(string id)
         {
-            return "value";
+            throw new NotImplementedException();
         }
 
         // POST api/<controller>

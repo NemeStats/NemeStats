@@ -108,13 +108,15 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\RollbarSharp.0.3.1.0\lib\net40\RollbarSharp.dll</HintPath>
     </Reference>
-    <Reference Include="StructureMap, Version=3.1.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\structuremap.3.1.4.143\lib\net40\StructureMap.dll</HintPath>
+    <Reference Include="StructureMap">
+      <HintPath>..\..\packages\structuremap.3.0.0.108\lib\net40\StructureMap.dll</HintPath>
     </Reference>
-    <Reference Include="StructureMap.Net4, Version=3.1.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\structuremap.3.1.4.143\lib\net40\StructureMap.Net4.dll</HintPath>
+    <Reference Include="StructureMap.AutoMocking">
+      <HintPath>..\..\packages\structuremap.automocking.3.1.0.133\lib\net40\StructureMap.AutoMocking.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="StructureMap.Net4">
+      <HintPath>..\..\packages\structuremap.3.0.0.108\lib\net40\StructureMap.Net4.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -172,7 +174,7 @@
     <Compile Include="IntegrationTests\BoardGameGeekTests\BoardGameGeekModels.cs" />
     <Compile Include="IntegrationTests\BoardGameGeekTests\BoardGameGeekIntegrationTests.cs" />
     <Compile Include="IntegrationTests\RollbarTests.cs" />
-    <Compile Include="UnitTests\AreasTests\ApiTests\ControllersTests\FeatureVotingControllerTests.cs" />
+    <Compile Include="UnitTests\AreasTests\ApiTests\ControllersTests\VotableFeaturesControllerTests.cs" />
     <Compile Include="UnitTests\ControllerTests\AccountControllerTests\AccountControllerTestBase.cs" />
     <Compile Include="UnitTests\ControllerTests\AccountControllerTests\AddExistingUserToGamingGroup.cs" />
     <Compile Include="UnitTests\ControllerTests\AccountControllerTests\RegisterHttpPostTests.cs" />

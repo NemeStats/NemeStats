@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessLogic.Logic.FeatureVoting
+namespace BusinessLogic.Logic.VotableFeatures
 {
-    public interface IFeatureInterestSummaryRetriever
+    public interface IVotableFeatureRetriever
     {
     }
 }

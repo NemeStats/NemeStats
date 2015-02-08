@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System.Web.Http;
+using System.Web.Mvc;
 
 namespace UI.Areas.Api
 {
@@ -16,8 +17,9 @@ namespace UI.Areas.Api
         {
             context.MapRoute(
                 "Api_default",
-                "Api/{controller}/{action}/{id}",
-                new { action = "Index", id = UrlParameter.Optional }
+                "api/{controller}/{id}",
+                defaults: new { id = RouteParameter.Optional }
+                //new { action = "Index", id = UrlParameter.Optional }
             );
         }
     }
