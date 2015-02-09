@@ -115,7 +115,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\structuremap.3.1.4.143\lib\net40\StructureMap.dll</HintPath>
     </Reference>
-    <Reference Include="StructureMap.AutoMocking">
+    <Reference Include="StructureMap.AutoMocking, Version=3.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\structuremap.automocking.3.1.0.133\lib\net40\StructureMap.AutoMocking.dll</HintPath>
     </Reference>
     <Reference Include="StructureMap.Net4, Version=3.1.4.0, Culture=neutral, processorArchitecture=MSIL">
@@ -213,6 +214,7 @@
     <Compile Include="UnitTests\LogicTests\UsersTests\GamingGroupInviteConsumerTests\GamingGroupInviteConsumerTestBase.cs" />
     <Compile Include="UnitTests\LogicTests\UsersTests\UserRegistererTests\RegisterUserTests.cs" />
     <Compile Include="UnitTests\LogicTests\VotableFeaturesTests\RetrieveVotableFeatureTests.cs" />
+    <Compile Include="UnitTests\LogicTests\VotableFeaturesTests\VotableFeatureVoterTests\CastVoteTests.cs" />
     <Compile Include="UnitTests\ModelsTests\GamesTests\ValidationTests\ValidatePlayerRanksTests.cs" />
     <Compile Include="UnitTests\ModelsTests\NemesisTests\EqualsTests.cs" />
     <Compile Include="UnitTests\ModelsTests\NemesisTests\GetHashCodeTests.cs" />

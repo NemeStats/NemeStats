@@ -175,7 +175,9 @@
     <Compile Include="Logic\Players\IPlayerSaver.cs" />
     <Compile Include="Logic\Users\GamingGroupContextSwitcher.cs" />
     <Compile Include="Logic\Users\IGamingGroupContextSwitcher.cs" />
+    <Compile Include="Logic\VotableFeatures\IVotableFeatureVoter.cs" />
     <Compile Include="Logic\VotableFeatures\VotableFeatureRetriever.cs" />
+    <Compile Include="Logic\VotableFeatures\VotableFeatureVoter.cs" />
     <Compile Include="Migrations\201411160430223_AddSupportForPlayerInvitationsOnGamingGroup.cs" />
     <Compile Include="Migrations\201411160430223_AddSupportForPlayerInvitationsOnGamingGroup.Designer.cs">
       <DependentUpon>201411160430223_AddSupportForPlayerInvitationsOnGamingGroup.cs</DependentUpon>

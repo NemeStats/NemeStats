@@ -1,4 +1,6 @@
-﻿using BusinessLogic.DataAccess;
+﻿using System.Web.Http;
+using BusinessLogic.DataAccess;
+using StructureMap;
 using StructureMap.Web.Pipeline;
 using System;
 using System.Data.Entity;
@@ -6,6 +8,7 @@ using System.Linq;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using UI.DependencyResolution;
 using UI.Transformations;
 
 namespace UI
@@ -20,6 +23,7 @@ namespace UI
             GlobalFilters.Filters.Add(new RequireHttpsAttribute());
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+
             //  don't want to set an initializer since we are doing code first with migrations 
             //  and the Configuration will call the DataSeeder.
             Database.SetInitializer<NemeStatsDbContext>(null);

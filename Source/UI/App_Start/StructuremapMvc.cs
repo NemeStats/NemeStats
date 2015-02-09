@@ -15,6 +15,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Web.Http;
+using System.Web.Http.Dependencies;
 using UI.App_Start;
 
 using WebActivatorEx;
@@ -49,6 +51,8 @@ namespace UI.App_Start {
             StructureMapDependencyScope = new StructureMapDependencyScope(container);
             DependencyResolver.SetResolver(StructureMapDependencyScope);
             DynamicModuleUtility.RegisterModule(typeof(StructureMapScopeModule));
+            //TODO need Tosho help
+            //GlobalConfiguration.Configuration.DependencyResolver = (IDependencyScope)new StructureMapDependencyScope(container.GetNestedContainer());
         }
 
         #endregion

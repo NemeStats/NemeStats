@@ -25,21 +25,31 @@ namespace UI.Areas.Api.Controllers
         }
 
         // GET api/<controller>/5
-        public IHttpActionResult Get(int id)
+        public HttpResponseMessage Get(int id)
+        {
+            //try
+            //{
+            //    Request.CreateResponse()
+            //    return this.Ok(votableFeatureRetriever.RetrieveVotableFeature(id));
+            //}
+            //catch (EntityDoesNotExistException exception)
+            //{
+            //    return this.NotFound();
+            //}
+            return null;
+        }
+
+        // POST api/<controller>
+        public IHttpActionResult Post([FromBody]int id, bool voteDirection)
         {
             try
             {
                 return this.Ok(votableFeatureRetriever.RetrieveVotableFeature(id));
             }
-            catch (EntityDoesNotExistException exception)
+            catch (EntityDoesNotExistException)
             {
                 return this.NotFound();
             }
-        }
-
-        // POST api/<controller>
-        public void Post([FromBody]string value)
-        {
         }
 
         // PUT api/<controller>/5
