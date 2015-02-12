@@ -28,7 +28,7 @@
                                     data_numOfDefinitions = Model.GameDefinitions.Count(),
                                     data_trigger = "focus",
                                     data_content = "No game definitions detected. Please create a game definition before proceeding. " +
-                                        "<a href='/GameDefinition/Create?returnUrl=/PlayedGame/Create'>Create Game Definition</a>",
+                                                   "<a href='/GameDefinition/Create?returnUrl=/PlayedGame/Create'>Create Game Definition</a>",
                                     data_placement = "top"
                                 })
                                 @Html.ValidationMessageFor(model => model.GameDefinitionId)
@@ -129,28 +129,29 @@
                            type="text"
                            name="PlayerRanks[{{playerIndex}}].GameRank"
                            value="{{playerRank}}"
-                           style="text-align:center;" />
+                           style="text-align:center;"
+                           onclick="this.focus();this.select()" />
 
                     <button class="removePlayerButton btnRemovePlayer"
                             type="button"
                             data-playername="{{playerName}}"
                             data-playerid="{{playerId}}"
                             title="Remove player">
-                        <i class='fa fa-minus'></i>
+                        <i class='fa fa-remove'></i>
                     </button>
-                    <button class="rankButton-down removePlayerButton"
+                    <button class="rankButton-down"
                             type="button"
                             data-playername="{{playerName}}"
                             data-playerid="{{playerId}}"
-                            title="Remove player">
+                            title="Move rank down">
                         <i class="fa fa-chevron-down"></i>
                     </button>
 
-                    <button class="rankButton-up removePlayerButton"
+                    <button class="rankButton-up"
                             type="button"
                             data-playername="{{playerName}}"
                             data-playerid="{{playerId}}"
-                            title="Remove player">
+                            title="Move rank up">
                         <i class="fa fa-chevron-up"></i>
                     </button>
                 </div>
