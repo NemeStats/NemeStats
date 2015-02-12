@@ -45,13 +45,13 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
-    <Reference Include="AutoMapper, Version=3.3.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+    <Reference Include="AutoMapper, Version=3.3.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\AutoMapper.3.3.0\lib\net40\AutoMapper.dll</HintPath>
+      <HintPath>..\..\packages\AutoMapper.3.3.1\lib\net40\AutoMapper.dll</HintPath>
     </Reference>
-    <Reference Include="AutoMapper.Net4, Version=3.3.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+    <Reference Include="AutoMapper.Net4, Version=3.3.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\AutoMapper.3.3.0\lib\net40\AutoMapper.Net4.dll</HintPath>
+      <HintPath>..\..\packages\AutoMapper.3.3.1\lib\net40\AutoMapper.Net4.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -124,13 +124,13 @@
     <Reference Include="RollbarSharp">
       <HintPath>..\..\packages\RollbarSharp.0.3.1.0\lib\net40\RollbarSharp.dll</HintPath>
     </Reference>
-    <Reference Include="SendGrid.SmtpApi, Version=1.1.3.0, Culture=neutral, PublicKeyToken=55aa52d3c3c0d2b2, processorArchitecture=MSIL">
+    <Reference Include="SendGrid.SmtpApi, Version=1.2.1.0, Culture=neutral, PublicKeyToken=2ae73662c35d80e4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\SendGrid.SmtpApi.1.1.3\lib\net40\SendGrid.SmtpApi.dll</HintPath>
+      <HintPath>..\..\packages\SendGrid.SmtpApi.1.2.1\lib\net40\SendGrid.SmtpApi.dll</HintPath>
     </Reference>
-    <Reference Include="SendGridMail, Version=5.0.0.0, Culture=neutral, PublicKeyToken=2ae73662c35d80e4, processorArchitecture=MSIL">
+    <Reference Include="SendGridMail, Version=5.1.0.0, Culture=neutral, PublicKeyToken=2ae73662c35d80e4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Sendgrid.5.0.0\lib\SendGridMail.dll</HintPath>
+      <HintPath>..\..\packages\Sendgrid.5.1.0\lib\SendGridMail.dll</HintPath>
     </Reference>
     <Reference Include="StructureMap, Version=3.1.4.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -214,8 +214,9 @@
     </Reference>
     <Reference Include="System.Net.Http.WebRequest">
     </Reference>
-    <Reference Include="T4MVCExtensions">
-      <HintPath>..\..\packages\T4MVCExtensions.3.10.0\lib\net40\T4MVCExtensions.dll</HintPath>
+    <Reference Include="T4MVCExtensions, Version=3.0.0.0, Culture=neutral, PublicKeyToken=7b26dc2a43f6a0d4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\T4MVCExtensions.3.13.1\lib\net40\T4MVCExtensions.dll</HintPath>
     </Reference>
     <Reference Include="UniversalAnalyticsHttpWrapper, Version=1.2.0.29307, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -240,6 +241,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AccountController.generated.cs">
+      <DependentUpon>T4MVC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Api.SharedController.generated.cs">
       <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>
     <Compile Include="App_Start\BundleConfig.cs" />
@@ -356,10 +360,10 @@
     <Compile Include="Transformations\PlayerTransformations\PlayerWithNemesisViewModelBuilder.cs" />
     <Compile Include="Transformations\PlayerTransformations\TopPlayerViewModelBuilder.cs" />
     <Compile Include="Models\Players\PlayerWithNemesisViewModel.cs" />
+    <Compile Include="Models\GamingGroup\TopGamingGroupSummaryViewModel.cs" />
     <Compile Include="UsersAdminController.generated.cs">
       <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\GamingGroup\TopGamingGroupSummaryViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\blog.css" />
@@ -406,10 +410,25 @@
     <Content Include="Content\themes\base\theme.css" />
     <Content Include="Content\themes\base\tooltip.css" />
     <Content Include="favicon.ico" />
+    <Content Include="fonts\bootstrap\glyphicons-halflings-regular.svg" />
     <Content Include="fonts\fontawesome-webfont.svg" />
-    <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="javascripts\bootstrap-sprockets.js" />
+    <Content Include="javascripts\bootstrap.js" />
+    <Content Include="javascripts\bootstrap.min.js" />
+    <Content Include="javascripts\bootstrap\affix.js" />
+    <Content Include="javascripts\bootstrap\alert.js" />
+    <Content Include="javascripts\bootstrap\button.js" />
+    <Content Include="javascripts\bootstrap\carousel.js" />
+    <Content Include="javascripts\bootstrap\collapse.js" />
+    <Content Include="javascripts\bootstrap\dropdown.js" />
+    <Content Include="javascripts\bootstrap\modal.js" />
+    <Content Include="javascripts\bootstrap\popover.js" />
+    <Content Include="javascripts\bootstrap\scrollspy.js" />
+    <Content Include="javascripts\bootstrap\tab.js" />
+    <Content Include="javascripts\bootstrap\tooltip.js" />
+    <Content Include="javascripts\bootstrap\transition.js" />
     <Content Include="PrivateAppSettings.config" />
     <Content Include="fonts\fontawesome-webfont.woff" />
     <Content Include="fonts\fontawesome-webfont.ttf" />
@@ -417,95 +436,14 @@
     <Content Include="fonts\FontAwesome.otf" />
     <Content Include="App_Readme\Handlebarsjs_README.md" />
     <Content Include="App_Readme\Handlebarsjs_LICENSE" />
-    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
-    <Content Include="fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Areas\Api\Views\web.config" />
+    <Content Include="images\.keep" />
+    <Content Include="fonts\bootstrap\glyphicons-halflings-regular.woff2" />
+    <Content Include="fonts\bootstrap\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\bootstrap\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\bootstrap\glyphicons-halflings-regular.eot" />
     <None Include="Properties\PublishProfiles\nerdscorekeeper.pubxml" />
     <None Include="Properties\PublishProfiles\Publish Local.pubxml" />
-    <Content Include="sass\bootstrap\mixins\_vendor-prefixes.scss" />
-    <Content Include="sass\bootstrap\mixins\_text-overflow.scss" />
-    <Content Include="sass\bootstrap\mixins\_text-emphasis.scss" />
-    <Content Include="sass\bootstrap\mixins\_table-row.scss" />
-    <Content Include="sass\bootstrap\mixins\_tab-focus.scss" />
-    <Content Include="sass\bootstrap\mixins\_size.scss" />
-    <Content Include="sass\bootstrap\mixins\_responsive-visibility.scss" />
-    <Content Include="sass\bootstrap\mixins\_resize.scss" />
-    <Content Include="sass\bootstrap\mixins\_reset-filter.scss" />
-    <Content Include="sass\bootstrap\mixins\_progress-bar.scss" />
-    <Content Include="sass\bootstrap\mixins\_panels.scss" />
-    <Content Include="sass\bootstrap\mixins\_pagination.scss" />
-    <Content Include="sass\bootstrap\mixins\_opacity.scss" />
-    <Content Include="sass\bootstrap\mixins\_nav-vertical-align.scss" />
-    <Content Include="sass\bootstrap\mixins\_nav-divider.scss" />
-    <Content Include="sass\bootstrap\mixins\_list-group.scss" />
-    <Content Include="sass\bootstrap\mixins\_labels.scss" />
-    <Content Include="sass\bootstrap\mixins\_image.scss" />
-    <Content Include="sass\bootstrap\mixins\_hide-text.scss" />
-    <Content Include="sass\bootstrap\mixins\_grid-framework.scss" />
-    <Content Include="sass\bootstrap\mixins\_grid.scss" />
-    <Content Include="sass\bootstrap\mixins\_gradients.scss" />
-    <Content Include="sass\bootstrap\mixins\_forms.scss" />
-    <Content Include="sass\bootstrap\mixins\_clearfix.scss" />
-    <Content Include="sass\bootstrap\mixins\_center-block.scss" />
-    <Content Include="sass\bootstrap\mixins\_buttons.scss" />
-    <Content Include="sass\bootstrap\mixins\_border-radius.scss" />
-    <Content Include="sass\bootstrap\mixins\_background-variant.scss" />
-    <Content Include="sass\bootstrap\mixins\_alerts.scss" />
-    <Content Include="sass\bootstrap\_wells.scss" />
-    <Content Include="sass\bootstrap\_utilities.scss" />
-    <Content Include="sass\bootstrap\_type.scss" />
-    <Content Include="sass\bootstrap\_tooltip.scss" />
-    <Content Include="sass\bootstrap\_thumbnails.scss" />
-    <Content Include="sass\bootstrap\_theme.scss" />
-    <Content Include="sass\bootstrap\_tables.scss" />
-    <Content Include="sass\bootstrap\_scaffolding.scss" />
-    <Content Include="sass\bootstrap\_responsive-utilities.scss" />
-    <Content Include="sass\bootstrap\_responsive-embed.scss" />
-    <Content Include="sass\bootstrap\_progress-bars.scss" />
-    <Content Include="sass\bootstrap\_print.scss" />
-    <Content Include="sass\bootstrap\_popovers.scss" />
-    <Content Include="sass\bootstrap\_panels.scss" />
-    <Content Include="sass\bootstrap\_pagination.scss" />
-    <Content Include="sass\bootstrap\_pager.scss" />
-    <Content Include="sass\bootstrap\_normalize.scss" />
-    <Content Include="sass\bootstrap\_navs.scss" />
-    <Content Include="sass\bootstrap\_navbar.scss" />
-    <Content Include="sass\bootstrap\_modals.scss" />
-    <Content Include="sass\bootstrap\_mixins.scss" />
-    <Content Include="sass\bootstrap\_media.scss" />
-    <Content Include="sass\bootstrap\_list-group.scss" />
-    <Content Include="sass\bootstrap\_labels.scss" />
-    <Content Include="sass\bootstrap\_jumbotron.scss" />
-    <Content Include="sass\bootstrap\_input-groups.scss" />
-    <Content Include="sass\bootstrap\_grid.scss" />
-    <Content Include="sass\bootstrap\_glyphicons.scss" />
-    <Content Include="sass\bootstrap\_forms.scss" />
-    <Content Include="sass\bootstrap\_dropdowns.scss" />
-    <Content Include="sass\bootstrap\_component-animations.scss" />
-    <Content Include="sass\bootstrap\_code.scss" />
-    <Content Include="sass\bootstrap\_close.scss" />
-    <Content Include="sass\bootstrap\_carousel.scss" />
-    <Content Include="sass\bootstrap\_buttons.scss" />
-    <Content Include="sass\bootstrap\_button-groups.scss" />
-    <Content Include="sass\bootstrap\_breadcrumbs.scss" />
-    <Content Include="sass\bootstrap\_badges.scss" />
-    <Content Include="sass\bootstrap\_alerts.scss" />
-    <Content Include="sass\_bootstrap-sprockets.scss" />
-    <Content Include="sass\_bootstrap-mincer.scss" />
-    <Content Include="sass\_bootstrap-compass.scss" />
-    <Content Include="sass\_bootstrap.css">
-      <DependentUpon>_bootstrap.scss</DependentUpon>
-    </Content>
-    <Content Include="sass\_bootstrap.scss">
-      <Compile>False</Compile>
-      <Minify>True</Minify>
-      <IgnoreWarnings>False</IgnoreWarnings>
-      <IgnoreErrors>False</IgnoreErrors>
-      <CompileStyle>Nested</CompileStyle>
-      <DebugInfo>False</DebugInfo>
-    </Content>
     <Content Include="sass\_bootswatch.css">
       <DependentUpon>_bootswatch.scss</DependentUpon>
     </Content>
@@ -520,21 +458,6 @@
     <Content Include="sass\bootstrap\_variables.scss" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="robots.txt" />
-    <Content Include="Scripts\bootstrap-sprockets.js" />
-    <Content Include="Scripts\bootstrap.js" />
-    <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="Scripts\bootstrap\affix.js" />
-    <Content Include="Scripts\bootstrap\alert.js" />
-    <Content Include="Scripts\bootstrap\button.js" />
-    <Content Include="Scripts\bootstrap\carousel.js" />
-    <Content Include="Scripts\bootstrap\collapse.js" />
-    <Content Include="Scripts\bootstrap\dropdown.js" />
-    <Content Include="Scripts\bootstrap\modal.js" />
-    <Content Include="Scripts\bootstrap\popover.js" />
-    <Content Include="Scripts\bootstrap\scrollspy.js" />
-    <Content Include="Scripts\bootstrap\tab.js" />
-    <Content Include="Scripts\bootstrap\tooltip.js" />
-    <Content Include="Scripts\bootstrap\transition.js" />
     <Content Include="Scripts\CreatePlayedGame\createplayedgame.js" />
     <Content Include="Scripts\GameDefinition\createGameDefinition.js" />
     <Content Include="Scripts\GameDefinition\createGameDefinitionPartial.js" />
@@ -577,6 +500,79 @@
     <Content Include="Scripts\Shared\_Layout.js" />
     <Content Include="Scripts\Shared\_LoginPartial.js" />
     <Content Include="Scripts\_references.js" />
+    <Content Include="stylesheets\bootstrap\mixins\_vendor-prefixes.scss" />
+    <Content Include="stylesheets\bootstrap\mixins\_text-overflow.scss" />
+    <Content Include="stylesheets\bootstrap\mixins\_text-emphasis.scss" />
+    <Content Include="stylesheets\bootstrap\mixins\_table-row.scss" />
+    <Content Include="stylesheets\bootstrap\mixins\_tab-focus.scss" />
+    <Content Include="stylesheets\bootstrap\mixins\_size.scss" />
+    <Content Include="stylesheets\bootstrap\mixins\_responsive-visibility.scss" />
+    <Content Include="stylesheets\bootstrap\mixins\_resize.scss" />
+    <Content Include="stylesheets\bootstrap\mixins\_reset-filter.scss" />
+    <Content Include="stylesheets\bootstrap\mixins\_progress-bar.scss" />
+    <Content Include="stylesheets\bootstrap\mixins\_panels.scss" />
+    <Content Include="stylesheets\bootstrap\mixins\_pagination.scss" />
+    <Content Include="stylesheets\bootstrap\mixins\_opacity.scss" />
+    <Content Include="stylesheets\bootstrap\mixins\_nav-vertical-align.scss" />
+    <Content Include="stylesheets\bootstrap\mixins\_nav-divider.scss" />
+    <Content Include="stylesheets\bootstrap\mixins\_list-group.scss" />
+    <Content Include="stylesheets\bootstrap\mixins\_labels.scss" />
+    <Content Include="stylesheets\bootstrap\mixins\_image.scss" />
+    <Content Include="stylesheets\bootstrap\mixins\_hide-text.scss" />
+    <Content Include="stylesheets\bootstrap\mixins\_grid-framework.scss" />
+    <Content Include="stylesheets\bootstrap\mixins\_grid.scss" />
+    <Content Include="stylesheets\bootstrap\mixins\_gradients.scss" />
+    <Content Include="stylesheets\bootstrap\mixins\_forms.scss" />
+    <Content Include="stylesheets\bootstrap\mixins\_clearfix.scss" />
+    <Content Include="stylesheets\bootstrap\mixins\_center-block.scss" />
+    <Content Include="stylesheets\bootstrap\mixins\_buttons.scss" />
+    <Content Include="stylesheets\bootstrap\mixins\_border-radius.scss" />
+    <Content Include="stylesheets\bootstrap\mixins\_background-variant.scss" />
+    <Content Include="stylesheets\bootstrap\mixins\_alerts.scss" />
+    <Content Include="stylesheets\bootstrap\_wells.scss" />
+    <Content Include="stylesheets\bootstrap\_variables.scss" />
+    <Content Include="stylesheets\bootstrap\_utilities.scss" />
+    <Content Include="stylesheets\bootstrap\_type.scss" />
+    <Content Include="stylesheets\bootstrap\_tooltip.scss" />
+    <Content Include="stylesheets\bootstrap\_thumbnails.scss" />
+    <Content Include="stylesheets\bootstrap\_theme.scss" />
+    <Content Include="stylesheets\bootstrap\_tables.scss" />
+    <Content Include="stylesheets\bootstrap\_scaffolding.scss" />
+    <Content Include="stylesheets\bootstrap\_responsive-utilities.scss" />
+    <Content Include="stylesheets\bootstrap\_responsive-embed.scss" />
+    <Content Include="stylesheets\bootstrap\_progress-bars.scss" />
+    <Content Include="stylesheets\bootstrap\_print.scss" />
+    <Content Include="stylesheets\bootstrap\_popovers.scss" />
+    <Content Include="stylesheets\bootstrap\_panels.scss" />
+    <Content Include="stylesheets\bootstrap\_pagination.scss" />
+    <Content Include="stylesheets\bootstrap\_pager.scss" />
+    <Content Include="stylesheets\bootstrap\_normalize.scss" />
+    <Content Include="stylesheets\bootstrap\_navs.scss" />
+    <Content Include="stylesheets\bootstrap\_navbar.scss" />
+    <Content Include="stylesheets\bootstrap\_modals.scss" />
+    <Content Include="stylesheets\bootstrap\_mixins.scss" />
+    <Content Include="stylesheets\bootstrap\_media.scss" />
+    <Content Include="stylesheets\bootstrap\_list-group.scss" />
+    <Content Include="stylesheets\bootstrap\_labels.scss" />
+    <Content Include="stylesheets\bootstrap\_jumbotron.scss" />
+    <Content Include="stylesheets\bootstrap\_input-groups.scss" />
+    <Content Include="stylesheets\bootstrap\_grid.scss" />
+    <Content Include="stylesheets\bootstrap\_glyphicons.scss" />
+    <Content Include="stylesheets\bootstrap\_forms.scss" />
+    <Content Include="stylesheets\bootstrap\_dropdowns.scss" />
+    <Content Include="stylesheets\bootstrap\_component-animations.scss" />
+    <Content Include="stylesheets\bootstrap\_code.scss" />
+    <Content Include="stylesheets\bootstrap\_close.scss" />
+    <Content Include="stylesheets\bootstrap\_carousel.scss" />
+    <Content Include="stylesheets\bootstrap\_buttons.scss" />
+    <Content Include="stylesheets\bootstrap\_button-groups.scss" />
+    <Content Include="stylesheets\bootstrap\_breadcrumbs.scss" />
+    <Content Include="stylesheets\bootstrap\_badges.scss" />
+    <Content Include="stylesheets\bootstrap\_alerts.scss" />
+    <Content Include="stylesheets\_bootstrap-sprockets.scss" />
+    <Content Include="stylesheets\_bootstrap-mincer.scss" />
+    <Content Include="stylesheets\_bootstrap-compass.scss" />
+    <Content Include="stylesheets\_bootstrap.scss" />
     <None Include="T4MVC.tt.hooks.t4" />
     <None Include="T4MVC.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -715,7 +711,7 @@
     </VisualStudio>
   </ProjectExtensions>
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
-  <Import Project="..\..\packages\AutoMapper.3.3.0\tools\AutoMapper.targets" Condition="Exists('..\..\packages\AutoMapper.3.3.0\tools\AutoMapper.targets')" />
+  <Import Project="..\..\packages\AutoMapper.3.3.1\tools\AutoMapper.targets" Condition="Exists('..\..\packages\AutoMapper.3.3.1\tools\AutoMapper.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
