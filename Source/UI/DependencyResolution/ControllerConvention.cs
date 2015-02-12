@@ -15,6 +15,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Web.Http;
+
 namespace UI.DependencyResolution {
     using System;
     using System.Web.Mvc;
@@ -29,6 +31,10 @@ namespace UI.DependencyResolution {
 
         public void Process(Type type, Registry registry) {
             if (type.CanBeCastTo<Controller>() && !type.IsAbstract) {
+                registry.For(type).LifecycleIs(new UniquePerRequestLifecycle());
+            }
+            else if (type.CanBeCastTo<ApiController>() && !type.IsAbstract)
+            {
                 registry.For(type).LifecycleIs(new UniquePerRequestLifecycle());
             }
         }

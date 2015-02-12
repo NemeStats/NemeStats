@@ -8,6 +8,7 @@ using System.Linq;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using UI.App_Start;
 using UI.DependencyResolution;
 using UI.Transformations;
 
@@ -18,7 +19,7 @@ namespace UI
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
-
+            GlobalConfiguration.Configure(WebApiConfig.Register);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             GlobalFilters.Filters.Add(new RequireHttpsAttribute());
             RouteConfig.RegisterRoutes(RouteTable.Routes);

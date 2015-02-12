@@ -14,7 +14,7 @@ namespace UI.Areas.Api.Controllers
     {
         private readonly IVotableFeatureRetriever votableFeatureRetriever;
 
-        public VotableFeaturesController(IVotableFeatureRetriever votableFeatureRetriever)
+        public VotableFeaturesController()
         {
             this.votableFeatureRetriever = votableFeatureRetriever;
         }
@@ -36,7 +36,7 @@ namespace UI.Areas.Api.Controllers
             //{
             //    return this.NotFound();
             //}
-            return null;
+            return new HttpResponseMessage(HttpStatusCode.Found);
         }
 
         // POST api/<controller>
