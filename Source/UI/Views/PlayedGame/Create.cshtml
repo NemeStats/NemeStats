@@ -28,7 +28,7 @@
                                     data_numOfDefinitions = Model.GameDefinitions.Count(),
                                     data_trigger = "focus",
                                     data_content = "No game definitions detected. Please create a game definition before proceeding. " +
-                                        "<a href='/GameDefinition/Create?returnUrl=/PlayedGame/Create'>Create Game Definition</a>",
+                                                   "<a href='/GameDefinition/Create?returnUrl=/PlayedGame/Create'>Create Game Definition</a>",
                                     data_placement = "top"
                                 })
                                 @Html.ValidationMessageFor(model => model.GameDefinitionId)
@@ -78,9 +78,9 @@
 
                         <div class="form-group">
                             <div class="col-md-offset-3 col-md-3">
-                                <button class="btn btn-primary btn-recordgame" id="btnCreatePlayedGameButton">Record Game</button>
-                                <button class="btn btn-success btn-recordgame" id="btnEveryoneWonButton">Everyone Won <i class="fa fa-smile-o"></i></button>
-                                <button class="btn btn-danger btn-recordgame" id="btnEveryoneLostButton">Everyone Lost <i class="fa fa-frown-o"></i></button>
+                                <button class="btn btn-primary btn-recordgame" id="btnCreatePlayedGameButton" title="Record a normal game with winners and losers">Record Game</button>
+                                <button class="btn btn-success btn-recordgame" id="btnEveryoneWonButton" title="Record a game where everyone won (e.g. you saved the world in Pandemic)">Everyone Won <i class="fa fa-smile-o"></i></button>
+                                <button class="btn btn-danger btn-recordgame" id="btnEveryoneLostButton" title="Record a game where everyone lost (e.g. no one survived in Zombicide)">Everyone Lost <i class="fa fa-frown-o"></i></button>
                             </div>
                         </div>
                     </div>
@@ -129,28 +129,29 @@
                            type="text"
                            name="PlayerRanks[{{playerIndex}}].GameRank"
                            value="{{playerRank}}"
-                           style="text-align:center;" />
+                           style="text-align:center;"
+                           onclick="this.focus();this.select()" />
 
                     <button class="removePlayerButton btnRemovePlayer"
                             type="button"
                             data-playername="{{playerName}}"
                             data-playerid="{{playerId}}"
                             title="Remove player">
-                        <i class='fa fa-minus'></i>
+                        <i class='fa fa-remove'></i>
                     </button>
-                    <button class="rankButton-down removePlayerButton"
+                    <button class="rankButton-down"
                             type="button"
                             data-playername="{{playerName}}"
                             data-playerid="{{playerId}}"
-                            title="Remove player">
+                            title="Move rank down">
                         <i class="fa fa-chevron-down"></i>
                     </button>
 
-                    <button class="rankButton-up removePlayerButton"
+                    <button class="rankButton-up"
                             type="button"
                             data-playername="{{playerName}}"
                             data-playerid="{{playerId}}"
-                            title="Remove player">
+                            title="Move rank up">
                         <i class="fa fa-chevron-up"></i>
                     </button>
                 </div>
