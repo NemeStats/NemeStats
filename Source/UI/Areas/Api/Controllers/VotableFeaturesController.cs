@@ -15,24 +15,19 @@ namespace UI.Areas.Api.Controllers
     public class VotableFeaturesController : ApiController
     {
         private readonly IVotableFeatureRetriever votableFeatureRetriever;
+        private readonly IVotableFeatureVoter votableFeatureVoter;
 
-        public VotableFeaturesController(IVotableFeatureRetriever votableFeatureRetriever)
+        public VotableFeaturesController(
+            IVotableFeatureRetriever votableFeatureRetriever, 
+            IVotableFeatureVoter votableFeatureVoter)
         {
             this.votableFeatureRetriever = votableFeatureRetriever;
+            this.votableFeatureVoter = votableFeatureVoter;
         }
 
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
-
-        // GET api/<controller>/5
+        // GET /api/VotableFeatures/<id>
         public VotableFeature Get(int id)
         {
-            //HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK, "value");
-            //response.Content = new StringContent("hello", Encoding.Unicode);
-
-            //return response;
             try
             {
                 return votableFeatureRetriever.RetrieveVotableFeature(id);
@@ -43,7 +38,7 @@ namespace UI.Areas.Api.Controllers
             }
         }
 
-        // POST api/<controller>
+        // POST /api/VotableFeatures/
         public void Post([FromBody]int id, bool voteDirection)
         {
             try
@@ -54,16 +49,6 @@ namespace UI.Areas.Api.Controllers
             {
                 throw new HttpResponseException(HttpStatusCode.NotFound);
             }
-        }
-
-        // PUT api/<controller>/5
-        public void Put(int id, [FromBody]string value)
-        {
-        }
-
-        // DELETE api/<controller>/5
-        public void Delete(int id)
-        {
         }
     }
 }

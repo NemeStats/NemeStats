@@ -86,28 +86,6 @@ namespace Links
         public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
         public static readonly string _references_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/_references.min.js") ? Url("_references.min.js") : Url("_references.js");
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public static class bootstrap {
-            private const string URLPATH = "~/Scripts/bootstrap";
-            public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
-            public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
-            public static readonly string affix_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/affix.min.js") ? Url("affix.min.js") : Url("affix.js");
-            public static readonly string alert_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/alert.min.js") ? Url("alert.min.js") : Url("alert.js");
-            public static readonly string button_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/button.min.js") ? Url("button.min.js") : Url("button.js");
-            public static readonly string carousel_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/carousel.min.js") ? Url("carousel.min.js") : Url("carousel.js");
-            public static readonly string collapse_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/collapse.min.js") ? Url("collapse.min.js") : Url("collapse.js");
-            public static readonly string dropdown_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/dropdown.min.js") ? Url("dropdown.min.js") : Url("dropdown.js");
-            public static readonly string modal_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/modal.min.js") ? Url("modal.min.js") : Url("modal.js");
-            public static readonly string popover_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/popover.min.js") ? Url("popover.min.js") : Url("popover.js");
-            public static readonly string scrollspy_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/scrollspy.min.js") ? Url("scrollspy.min.js") : Url("scrollspy.js");
-            public static readonly string tab_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/tab.min.js") ? Url("tab.min.js") : Url("tab.js");
-            public static readonly string tooltip_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/tooltip.min.js") ? Url("tooltip.min.js") : Url("tooltip.js");
-            public static readonly string transition_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/transition.min.js") ? Url("transition.min.js") : Url("transition.js");
-        }
-    
-        public static readonly string bootstrap_sprockets_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/bootstrap-sprockets.min.js") ? Url("bootstrap-sprockets.min.js") : Url("bootstrap-sprockets.js");
-        public static readonly string bootstrap_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/bootstrap.min.js") ? Url("bootstrap.min.js") : Url("bootstrap.js");
-        public static readonly string bootstrap_min_js = Url("bootstrap.min.js");
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public static class CreatePlayedGame {
             private const string URLPATH = "~/Scripts/CreatePlayedGame";
             public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
@@ -149,8 +127,8 @@ namespace Links
         public static readonly string jquery_2_1_3_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery-2.1.3.min.js") ? Url("jquery-2.1.3.min.js") : Url("jquery-2.1.3.js");
         public static readonly string jquery_2_1_3_min_js = Url("jquery-2.1.3.min.js");
         public static readonly string jquery_2_1_3_min_map = Url("jquery-2.1.3.min.map");
-        public static readonly string jquery_ui_1_11_2_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery-ui-1.11.2.min.js") ? Url("jquery-ui-1.11.2.min.js") : Url("jquery-ui-1.11.2.js");
-        public static readonly string jquery_ui_1_11_2_min_js = Url("jquery-ui-1.11.2.min.js");
+        public static readonly string jquery_ui_1_11_3_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery-ui-1.11.3.min.js") ? Url("jquery-ui-1.11.3.min.js") : Url("jquery-ui-1.11.3.js");
+        public static readonly string jquery_ui_1_11_3_min_js = Url("jquery-ui-1.11.3.min.js");
         public static readonly string jquery_cookie_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery.cookie.min.js") ? Url("jquery.cookie.min.js") : Url("jquery.cookie.js");
         public static readonly string jquery_validate_vsdoc_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery.validate-vsdoc.min.js") ? Url("jquery.validate-vsdoc.min.js") : Url("jquery.validate-vsdoc.js");
         public static readonly string jquery_validate_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery.validate.min.js") ? Url("jquery.validate.min.js") : Url("jquery.validate.js");
@@ -303,24 +281,6 @@ namespace Links
     {
         public static partial class Scripts 
         {
-            public static partial class bootstrap 
-            {
-                public static class Assets
-                {
-                    public const string affix_js = "~/Scripts/bootstrap/affix.js"; 
-                    public const string alert_js = "~/Scripts/bootstrap/alert.js"; 
-                    public const string button_js = "~/Scripts/bootstrap/button.js"; 
-                    public const string carousel_js = "~/Scripts/bootstrap/carousel.js"; 
-                    public const string collapse_js = "~/Scripts/bootstrap/collapse.js"; 
-                    public const string dropdown_js = "~/Scripts/bootstrap/dropdown.js"; 
-                    public const string modal_js = "~/Scripts/bootstrap/modal.js"; 
-                    public const string popover_js = "~/Scripts/bootstrap/popover.js"; 
-                    public const string scrollspy_js = "~/Scripts/bootstrap/scrollspy.js"; 
-                    public const string tab_js = "~/Scripts/bootstrap/tab.js"; 
-                    public const string tooltip_js = "~/Scripts/bootstrap/tooltip.js"; 
-                    public const string transition_js = "~/Scripts/bootstrap/transition.js"; 
-                }
-            }
             public static partial class CreatePlayedGame 
             {
                 public static class Assets
@@ -373,9 +333,6 @@ namespace Links
             public static class Assets
             {
                 public const string _references_js = "~/Scripts/_references.js"; 
-                public const string bootstrap_sprockets_js = "~/Scripts/bootstrap-sprockets.js"; 
-                public const string bootstrap_js = "~/Scripts/bootstrap.js"; 
-                public const string bootstrap_min_js = "~/Scripts/bootstrap.min.js"; 
                 public const string handlebars_amd_js = "~/Scripts/handlebars.amd.js"; 
                 public const string handlebars_amd_min_js = "~/Scripts/handlebars.amd.min.js"; 
                 public const string handlebars_js = "~/Scripts/handlebars.js"; 
@@ -390,8 +347,8 @@ namespace Links
                 public const string jquery_2_1_3_intellisense_js = "~/Scripts/jquery-2.1.3.intellisense.js"; 
                 public const string jquery_2_1_3_js = "~/Scripts/jquery-2.1.3.js"; 
                 public const string jquery_2_1_3_min_js = "~/Scripts/jquery-2.1.3.min.js"; 
-                public const string jquery_ui_1_11_2_js = "~/Scripts/jquery-ui-1.11.2.js"; 
-                public const string jquery_ui_1_11_2_min_js = "~/Scripts/jquery-ui-1.11.2.min.js"; 
+                public const string jquery_ui_1_11_3_js = "~/Scripts/jquery-ui-1.11.3.js"; 
+                public const string jquery_ui_1_11_3_min_js = "~/Scripts/jquery-ui-1.11.3.min.js"; 
                 public const string jquery_cookie_js = "~/Scripts/jquery.cookie.js"; 
                 public const string jquery_validate_js = "~/Scripts/jquery.validate.js"; 
                 public const string jquery_validate_min_js = "~/Scripts/jquery.validate.min.js"; 
