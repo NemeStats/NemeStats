@@ -37,22 +37,22 @@ namespace UI.Areas.Api.Controllers
             {
                 return votableFeatureRetriever.RetrieveVotableFeature(id);
             }
-            catch (EntityDoesNotExistException exception)
+            catch (EntityDoesNotExistException)
             {
                 throw new HttpResponseException(HttpStatusCode.NotFound);
             }
         }
 
         // POST api/<controller>
-        public IHttpActionResult Post([FromBody]int id, bool voteDirection)
+        public void Post([FromBody]int id, bool voteDirection)
         {
             try
             {
-                return this.Ok(votableFeatureRetriever.RetrieveVotableFeature(id));
+                votableFeatureRetriever.RetrieveVotableFeature(id);
             }
             catch (EntityDoesNotExistException)
             {
-                return this.NotFound();
+                throw new HttpResponseException(HttpStatusCode.NotFound);
             }
         }
 
