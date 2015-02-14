@@ -18,6 +18,7 @@
 using BusinessLogic.Logic.BoardGameGeek;
 using BusinessLogic.Logic.Champions;
 using BusinessLogic.Logic.Email;
+using BusinessLogic.Logic.VotableFeatures;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
 
@@ -152,6 +153,8 @@ namespace UI.DependencyResolution {
             this.For<IChampionRepository>().Use<ChampionRepository>();
 
             this.For<IGamingGroupContextSwitcher>().Use<GamingGroupContextSwitcher>();
+
+            this.For<IVotableFeatureRetriever>().Use<VotableFeatureRetriever>();
 
         }
 
