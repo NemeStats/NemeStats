@@ -225,7 +225,7 @@ ul input[type=text] { width:25px }
 
 .leftItem {
   display:inline-block;
-  max-width: 120px;
+  /*max-width: 120px;*/
   overflow: hidden;
 }
 
@@ -233,6 +233,9 @@ ul input[type=text] { width:25px }
   display:inline-block; 
   line-height:30px;
   white-space:nowrap;
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow:ellipsis;
 }
 
 .rightItem {
@@ -243,8 +246,8 @@ ul input[type=text] { width:25px }
   height:30px;
   width:30px !important;
   border-radius:5px;
-  border-color:blue;
-  border-width:1px;
+  border-color:lime !important;
+  border-width:2px;
   text-align:center;
 }
 
