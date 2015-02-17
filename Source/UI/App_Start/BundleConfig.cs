@@ -23,7 +23,7 @@ namespace UI
                         "~/Scripts/modernizr-*"));
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
-                      "~/Scripts/bootstrap.js",
+                      "~/javascripts/bootstrap*",
                       "~/Scripts/respond.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/handlebars")
