@@ -1,300 +1,304 @@
 body {
-   padding-top: 50px;
-   overflow-x: hidden;
+	padding-top: 50px;
+	overflow-x: hidden;
 }
 
 /* Set padding to keep content from hitting the edges */
 .body-content {
-    padding-left: 15px;
-    padding-right: 15px;
-    padding-bottom: 20px;
+	padding-left: 15px;
+	padding-right: 15px;
+	padding-bottom: 20px;
 }
 
 a[name] {
-    padding-top: 50px;
-    margin-top: -50px;
-    display: inline-block;
+	padding-top: 50px;
+	margin-top: -50px;
+	display: inline-block;
 }
 
 .home-container {
-    background-color: #eee;
+	background-color: #eee;
 }
 
 .home-body-container {
-    background-color: #fff;
-    width: 100%;
-    padding-left: 2%;
-    padding-right: 2%;
+	background-color: #fff;
+	width: 100%;
+	padding-left: 2%;
+	padding-right: 2%;
 }
 
 .home-banner {
-    margin-top: 10px;
-    padding-top: 5px;
-    padding-left: 20%;
-    padding-right: 20%;
-    width: 100%;
-    display: block;
+	margin-top: 10px;
+	padding-top: 5px;
+	padding-left: 20%;
+	padding-right: 20%;
+	width: 100%;
+	display: block;
 }
 
 /* Set width on the form input elements since they're 100% wide by default */
 input,
 select {
-    max-width: 280px;
+	max-width: 280px;
 }
 
 /* styles for validation helpers */
 .field-validation-error {
-    color: #b94a48;
+	color: #b94a48;
 }
 
 .field-validation-valid {
-    display: none;
+	display: none;
 }
 
 input.input-validation-error {
-    border: 1px solid #b94a48;
+	border: 1px solid #b94a48;
 }
 
 input[type="checkbox"].input-validation-error {
-    border: 0 none;
+	border: 0 none;
 }
 
 .validation-summary-errors {
-    color: #b94a48;
+	color: #b94a48;
 }
 
 .validation-summary-valid {
-    display: none;
+	display: none;
 }
 
 .gamename {
-   
 }
 
 .firstplace {
-    color: darkgreen;
-    font-weight: bold;
+	color: darkgreen;
+	font-weight: bold;
 }
 
-.sortable { list-style-type: none; margin: 0; padding: 0; }
+.sortable {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
 
-ul input[type=text] { width:25px }
+ul input[type=text] {
+	width: 25px;
+}
 
-.homelogo 
-{ 
-    background: url(/Content/Images/NemeStats-White.png) no-repeat top left;
-    display: block;
-    width: 150px;
-    text-indent: -9999px;
+.homelogo {
+	background: url(/Content/Images/NemeStats-White.png) no-repeat top left;
+	display: block;
+	width: 150px;
+	text-indent: -9999px;
 }
 
 .margin-bottom-xs {
-    margin-bottom: 0.5em;
-
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-}  
+	margin-bottom: 0.5em;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
 
 .margin-bottom-sm {
-    margin-bottom: 1em;
-} 
+	margin-bottom: 1em;
+}
 
 .margin-bottom-md {
-    margin-bottom: 1.5em;
+	margin-bottom: 1.5em;
 }
 
 .margin-bottom-lg {
-    margin-bottom: 2em;
+	margin-bottom: 2em;
 }
 
 .margin-left-sm {
-    margin-left: 1em;
-} 
+	margin-left: 1em;
+}
 
 .margin-left-md {
-    margin-left: 1.5em;
+	margin-left: 1.5em;
 }
 
 .margin-left-lg {
-    margin-left: 2em;
+	margin-left: 2em;
 }
 
 .margin-sm {
-    margin: 1em;
-} 
+	margin: 1em;
+}
 
 .margin-md {
-    margin: 1.5em;
+	margin: 1.5em;
 }
 
 .margin-lg {
-    margin: 2em;
+	margin: 2em;
 }
 
 .line-bottom-sm {
-    border-bottom:#eee;
-    border-bottom-style: solid;
-    border-bottom-width: 1px;
+	border-bottom: #eee;
+	border-bottom-style: solid;
+	border-bottom-width: 1px;
 }
 
 .line-bottom-md {
-    border-bottom:#eee;
-    border-bottom-style: solid;
-    border-bottom-width: 2px;
+	border-bottom: #eee;
+	border-bottom-style: solid;
+	border-bottom-width: 2px;
 }
 
 .font-size-xs {
-    font-size: 0.5em;
+	font-size: 0.5em;
 }
 
 .font-size-sm {
-    font-size: 1.5em;
+	font-size: 1.5em;
 }
 
 .font-size-md {
-    font-size: 2.5em;
+	font-size: 2.5em;
 }
 
 .font-size-lg {
-    font-size: 3.5em;
-
+	font-size: 3.5em;
 }
 
 .line-bottom-sm:last-child {
-    border-bottom-style: hidden;
-    border-bottom-width: 0;
+	border-bottom-style: hidden;
+	border-bottom-width: 0;
 }
 
 /*Customize the carousel*/
 
 /* Carousel base class */
 .carousel {
-  background-color: #eee;
+	background-color: #eee;
 }
 
 .carousel-caption {
-    color: black;
-    position: inherit;
-    text-shadow: none;
+	color: black;
+	position: inherit;
+	text-shadow: none;
 }
 
 /* Declare heights because of positioning of img element */
 .carousel .item {
-  min-height: 260px;
-  background-color: #eee;
-  margin-bottom: 10px;
+	min-height: 260px;
+	background-color: #eee;
+	margin-bottom: 10px;
 }
 
 .fl-left {
-    float: left;
+	float: left;
 }
 
 .fl-right {
-    float: right;
+	float: right;
 }
 
 .fl-clear {
-    clear:both;
+	clear: both;
 }
 
-/* tablets and desktops */ 
-@media (min-width:481px) { 
-    .home-page-icon {
-        font-size: 8em;
-    }
+/* tablets and desktops */
+@media (min-width:481px) {
+	.home-page-icon {
+		font-size: 8em;
+	}
 }
 
 .push-30 {
-    margin-top: 30px;
+	margin-top: 30px;
 }
 
 .editable-title {
-    padding: 5px;
-    cursor: pointer;
+	padding: 5px;
+	cursor: pointer;
 }
 
-.editable-title:hover {
-    background: #ddd;
-    border-radius: 4px;
-}
+	.editable-title:hover {
+		background: #ddd;
+		border-radius: 4px;
+	}
 
 .autocomplete-loading {
-    background: #fff url('/Content/Images/spinner.gif') no-repeat right center;
+	background: #fff url('/Content/Images/spinner.gif') no-repeat right center;
 }
 
 .leftItem {
-  display:inline-block;
-  /*max-width: 120px;*/
-  overflow: hidden;
+	display: inline-block;
+	/*max-width: 120px;*/
+	overflow: hidden;
+	padding: 5px 0 0 3px;
 }
 
-.leftItem span {
-  display:inline-block; 
-  line-height:30px;
-  white-space:nowrap;
-  max-width: 150px;
-  overflow: hidden;
-  text-overflow:ellipsis;
-}
+	.leftItem span {
+		display: inline-block;
+		line-height: 30px;
+		white-space: nowrap;
+		max-width: 150px;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
 
 .rightItem {
-  display:inline-block;
+	display: inline-block;
+	padding: 5px;
 }
 
 .playerRank {
-  height:30px;
-  width:30px !important;
-  border-radius:5px;
-  border-color:lime !important;
-  border-width:2px;
-  text-align:center;
+	height: 30px;
+	width: 30px !important;
+	border-radius: 5px;
+	border-color: #18bc9c !important;
+	border-width: 3px;
+	text-align: center;
 }
 
 .playerItem {
-  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-  color:#fff;
-  background-color:#2C3E50;
-  max-width:380px;
-  margin:8px;
-  padding:4px;
-  cursor:pointer;
-  border-radius:5px;
-  position:relative;
-  white-space:nowrap;
-  margin-left: 0px;
+	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+	color: #fff;
+	background-color: #2C3E50;
+	max-width: 380px;
+	margin: 8px;
+	padding: 4px;
+	cursor: pointer;
+	border-radius: 5px;
+	position: relative;
+	white-space: nowrap;
+	margin-left: 0px;
 }
 
-.playerItem button {
-    color:#2C3E50;
-}
+	.playerItem button {
+		color: #2C3E50;
+	}
 
-.playerItem input[type="text"] {
-    color:#2C3E50;
-    border-color: #2C3E50;
-}
+	.playerItem input[type="text"] {
+		color: #2C3E50;
+		border-color: #2C3E50;
+	}
 
 .gaming-group-name {
-    min-width: 95%;
-    max-width: 95%;
+	min-width: 95%;
+	max-width: 95%;
 }
 
 .panel-text-vertical-center {
-    line-height: 43px;
+	line-height: 43px;
 }
 
 a:not(.btn),
 table a:not(.btn),
-.table a:not(.btn){
-  text-decoration: none;
+.table a:not(.btn) {
+	text-decoration: none;
 }
 
-a:not(.btn):hover{
-  text-decoration: underline;
-}
+	a:not(.btn):hover {
+		text-decoration: underline;
+	}
 
-a.navbar-brand:hover{
-    text-decoration: none;
+a.navbar-brand:hover {
+	text-decoration: none;
 }
 
 .popover {
@@ -306,36 +310,36 @@ table > thead :hover {
 }
 
 h3 > a {
-    font-size: smaller;
+	font-size: smaller;
 }
 
 .gameResult-teamLoss {
-    color: red;
+	color: red;
 }
 
 .gameResult-teamWin {
-    color: green;
+	color: green;
 }
 
 .rank-item {
-    font-size:26px;
+	font-size: 26px;
 }
 
 .upvote-count {
-    color:green;
-    font-weight:bold;
+	color: green;
+	font-weight: bold;
 }
 
 .downvote-count {
-    color:red;
-    font-weight:bold;
+	color: red;
+	font-weight: bold;
 }
 
 .btn-recordgame {
-    width: 175px;
-    margin: 3px 3px 3px 3px;
+	width: 175px;
+	margin: 3px 3px 3px 3px;
 }
 
 button > i.fa {
-    font-size: 20px;
+	font-size: 20px;
 }
