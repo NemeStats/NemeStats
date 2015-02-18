@@ -1,17 +1,27 @@
 ﻿(function ($) {
     var settings = {
-        serviceGet: null,
-        servicePost: null
+        votableFeatureId: null,
+        serviceGet: "/api/votablefeatures/",
+        servicePost: "/api/votablefeatures/"
     };
 
     $.fn.rank = function (options) {
-        settings = options;
+        //settings = options;
         var upvoteValue = 0;
         var downVoteValue = 0;
         function receiveValues() {
-            //TODO: Ajax request that gets the values for the widget
-            upvoteValue = 0; //here we should put the received value
-            downVoteValue = 0; //received value again
+            $.ajax({
+                type: "GET",
+                url: settings.serviceGet + "TopGlobalPlayers",
+                success: function (data) {
+                    upvoteValue = data.NumberOfUpvotes; //here we should put the received value
+                    downVoteValue = data.NumberOfDownvotes; //received value again     
+                },
+                error: function (err) {
+                    alert(err);
+                },
+                dataType: "json"
+            });
         }
 
         function sendValues(upvote, downvote) {
@@ -42,7 +52,7 @@
             cookieValues = JSON.parse($.cookie(cookieName));
         }
 
-        var elementId = $originalElement.attr("id");
+        var elementId = settings.votableFeatureId != null ? settings.votableFeatureId : $originalElement.attr("id");
         var $upVote = $originalElement.find(".upvote-link");
         var $downVote = $originalElement.find(".downvote-link");
         var upCount = $originalElement.find(".upvote-count");
