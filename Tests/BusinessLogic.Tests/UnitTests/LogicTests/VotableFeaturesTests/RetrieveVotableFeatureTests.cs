@@ -26,7 +26,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.VotableFeaturesTests
         [Test]
         public void ItRetrievesTheGivenVotableFeature()
         {
-            int featureId = 1;
+            string featureId = "some feature id";
             VotableFeature expectedVotableFeature = new VotableFeature();
             autoMocker.Get<IDataContext>().Expect(mock => mock.FindById<VotableFeature>(featureId))
                 .Return(expectedVotableFeature);

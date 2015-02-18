@@ -13,7 +13,7 @@ namespace BusinessLogic.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201502081728246_AddVotableFeature"; }
+            get { return "201502181205491_AddVotableFeature"; }
         }
         
         string IMigrationMetadata.Source

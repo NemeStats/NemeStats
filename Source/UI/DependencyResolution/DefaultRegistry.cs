@@ -156,6 +156,8 @@ namespace UI.DependencyResolution {
 
             this.For<IVotableFeatureRetriever>().Use<VotableFeatureRetriever>();
 
+            this.For<IVotableFeatureVoter>().Use<VotableFeatureVoter>();
+
         }
 
         private void SetupUniquePerRequestMappings()

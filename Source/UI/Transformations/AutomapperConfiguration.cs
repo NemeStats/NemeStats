@@ -7,6 +7,7 @@ using BusinessLogic.Models;
 using BusinessLogic.Models.GamingGroups;
 using UI.Models.GameDefinitionModels;
 using UI.Models.GamingGroup;
+using UI.Models;
 
 namespace UI.Transformations
 {
@@ -16,6 +17,7 @@ namespace UI.Transformations
         {
             Mapper.CreateMap<TopGamingGroupSummary, TopGamingGroupSummaryViewModel>(MemberList.Source);
             Mapper.CreateMap<NewGameDefinitionViewModel, GameDefinition>(MemberList.Source).ForSourceMember(x => x.ReturnUrl, opt => opt.Ignore());
+            Mapper.CreateMap<VotableFeature, VotableFeatureViewModel>(MemberList.Destination);
         }
     }
 }

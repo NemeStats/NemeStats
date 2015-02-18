@@ -1,10 +1,12 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using BusinessLogic.DataAccess;
 
 namespace BusinessLogic.Models
 {
-    public class VotableFeature : EntityWithTechnicalKey<int>
+    public class VotableFeature : EntityWithTechnicalKey<string>
     {
         public VotableFeature()
         {
@@ -12,7 +14,8 @@ namespace BusinessLogic.Models
             DateModified = DateTime.UtcNow;
         }
 
-        public override int Id { get; set; }
+        [MaxLength(255), Key, DatabaseGenerated(DatabaseGeneratedOption.None)]
+        public override string Id { get; set; }
         public string FeatureDescription { get; set; }
         public int NumberOfUpvotes { get; set; }
         public int NumberOfDownvotes { get; set; }

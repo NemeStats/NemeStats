@@ -314,6 +314,7 @@
     <Compile Include="Models\Players\PlayerInvitationViewModel.cs" />
     <Compile Include="Models\Players\TopPlayerViewModel.cs" />
     <Compile Include="Models\User\UserViewModel.cs" />
+    <Compile Include="Models\VotableFeatureViewModel.cs" />
     <Compile Include="PlayedGameController.generated.cs">
       <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>

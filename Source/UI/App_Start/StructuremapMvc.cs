@@ -51,9 +51,7 @@ namespace UI.App_Start {
             StructureMapDependencyScope = new StructureMapDependencyScope(container);
             DependencyResolver.SetResolver(StructureMapDependencyScope);
             DynamicModuleUtility.RegisterModule(typeof(StructureMapScopeModule));
-            //TODO need Tosho help
-            //GlobalConfiguration.Configuration.DependencyResolver = (IDependencyScope)new StructureMapDependencyScope(container.GetNestedContainer());
-        }
+         }
 
         #endregion
     }

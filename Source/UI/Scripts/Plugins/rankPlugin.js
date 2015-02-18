@@ -10,7 +10,6 @@
         var downVoteValue = 0;
         function receiveValues() {
             //TODO: Ajax request that gets the values for the widget
-
             upvoteValue = 0; //here we should put the received value
             downVoteValue = 0; //received value again
         }

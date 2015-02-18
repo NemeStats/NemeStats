@@ -16,7 +16,7 @@ namespace BusinessLogic.Logic.VotableFeatures
             this.dataContext = dataContext;
         }
 
-        public VotableFeature RetrieveVotableFeature(int id)
+        public VotableFeature RetrieveVotableFeature(string id)
         {
             return dataContext.FindById<VotableFeature>(id);
         }

@@ -6,9 +6,11 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Web.Http;
+using AutoMapper;
 using BusinessLogic.Exceptions;
 using BusinessLogic.Logic.VotableFeatures;
 using BusinessLogic.Models;
+using UI.Models;
 
 namespace UI.Areas.Api.Controllers
 {
@@ -26,11 +28,12 @@ namespace UI.Areas.Api.Controllers
         }
 
         // GET /api/VotableFeatures/<id>
-        public VotableFeature Get(int id)
+        public VotableFeatureViewModel Get(string id)
         {
             try
             {
-                return votableFeatureRetriever.RetrieveVotableFeature(id);
+                VotableFeature votableFeature = votableFeatureRetriever.RetrieveVotableFeature(id);
+                return Mapper.Map<VotableFeature, VotableFeatureViewModel>(votableFeature);
             }
             catch (EntityDoesNotExistException)
             {
@@ -39,7 +42,7 @@ namespace UI.Areas.Api.Controllers
         }
 
         // POST /api/VotableFeatures/
-        public void Post([FromBody]int id, bool voteDirection)
+        public void Post([FromBody]string id, bool voteDirection)
         {
             try
             {
