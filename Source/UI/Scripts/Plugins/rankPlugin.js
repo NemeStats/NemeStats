@@ -1,25 +1,25 @@
 ﻿(function ($) {
-    var settings = {
-        votableFeatureId: null,
-        serviceGet: "/api/votablefeatures/",
-        servicePost: "/api/votablefeatures/"
-    };
-
     $.fn.rank = function (options) {
-        //settings = options;
+        var settings = $.extend({
+            votableFeatureId: null,
+            serviceGet: "/api/votablefeatures/",
+            servicePost: "/api/votablefeatures/"
+        }, options);
+
         var upvoteValue = 0;
         var downVoteValue = 0;
         function receiveValues() {
             $.ajax({
                 type: "GET",
-                url: settings.serviceGet + "TopGlobalPlayers",
+                url: settings.serviceGet + settings.votableFeatureId,
                 success: function (data) {
-                    upvoteValue = data.NumberOfUpvotes; //here we should put the received value
-                    downVoteValue = data.NumberOfDownvotes; //received value again     
+                    upvoteValue = data.NumberOfUpvotes;
+                    downVoteValue = data.NumberOfDownvotes;
                 },
                 error: function (err) {
                     alert(err);
                 },
+                async: false,
                 dataType: "json"
             });
         }
@@ -32,7 +32,7 @@
         receiveValues();
 
         var $originalElement = $(this);
-        var template = "<div class=\"rank-item\"> \
+        var template = "<div class=\"rank-item\" id=" + settings.votableFeatureId.toString() + "> \
             <a href=\"#\" class=\"upvote-link\"> \
                 <i class=\"fa fa-thumbs-up\"></i> \
             </a> \

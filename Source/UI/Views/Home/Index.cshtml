@@ -134,10 +134,10 @@
 @section Scripts {
     <script type="text/javascript">
         $(document).ready(function() {
-            $("#recentGamesVote").rank();
-            $("#topPlayersVote").rank();
-            $("#nemesisChangeVote").rank();
-            $("#gamingGroupsVote").rank();
+            $("#recentGamesVote").rank({ votableFeatureId: "RecentGlobalGames" });
+            $("#topPlayersVote").rank({ votableFeatureId: "TopGlobalPlayers" });
+            $("#nemesisChangeVote").rank({ votableFeatureId: "RecentGlobalNemesisChanges" });
+            //$("#gamingGroupsVote").rank();
         });
     </script>
 }
