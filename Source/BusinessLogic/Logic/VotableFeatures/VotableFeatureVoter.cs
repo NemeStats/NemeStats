@@ -18,11 +18,11 @@ namespace BusinessLogic.Logic.VotableFeatures
             this.dataContext = dataContext;
         }
 
-        public VotableFeature CastVote(int votableFeatureId, bool voteDirection)
+        public VotableFeature CastVote(string votableFeatureId, bool voteUp)
         {
             var votableFeature = dataContext.FindById<VotableFeature>(votableFeatureId);
 
-            if (voteDirection)
+            if (voteUp)
             {
                 votableFeature.NumberOfUpvotes += 1;
             }

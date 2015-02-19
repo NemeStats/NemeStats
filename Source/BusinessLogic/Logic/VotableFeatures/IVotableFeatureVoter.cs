@@ -9,6 +9,6 @@ namespace BusinessLogic.Logic.VotableFeatures
 {
     public interface IVotableFeatureVoter
     {
-        VotableFeature CastVote(int votableFeatureId, bool voteDirection);
+        VotableFeature CastVote(string votableFeatureId, bool voteUp);
     }
 }

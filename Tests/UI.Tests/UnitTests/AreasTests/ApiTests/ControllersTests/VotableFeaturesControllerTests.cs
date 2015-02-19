@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using System.Web.Http;
 using AutoMapper;
 using BusinessLogic.Exceptions;
@@ -9,6 +10,7 @@ using Rhino.Mocks;
 using StructureMap.AutoMocking;
 using UI.Areas.Api.Controllers;
 using UI.Models;
+using UI.Models.API;
 using UI.Transformations;
 
 namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests
@@ -45,11 +47,37 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests
         [Test]
         public void Get_ThrowsNotFoundHttpExceptionIfTheFeatureDoesntExist()
         {
-            string featureIdThatDoesntExist = "some non-existent feature id";
-            autoMocker.Get<IVotableFeatureRetriever>().Expect(mock => mock.RetrieveVotableFeature(featureIdThatDoesntExist))
+            autoMocker.Get<IVotableFeatureRetriever>().Expect(mock => mock.RetrieveVotableFeature(Arg<string>.Is.Anything))
                       .Throw(new EntityDoesNotExistException(""));
 
-            HttpResponseException actualException = Assert.Throws<HttpResponseException>(() => autoMocker.ClassUnderTest.Get(featureIdThatDoesntExist));
+            HttpResponseException actualException = Assert.Throws<HttpResponseException>(() => autoMocker.ClassUnderTest.Get("feature that doesn't exist"));
+            Assert.That(HttpStatusCode.NotFound, Is.EqualTo(actualException.Response.StatusCode));
+        }
+
+        [Test]
+        public void Post_CastsAVoteForTheGivenFeature()
+        {
+            FeatureVote featureVote = new FeatureVote
+            {
+                VotableFeatureId = "some feature id",
+                VoteUp = true
+            };
+
+            autoMocker.ClassUnderTest.Post(featureVote);
+
+            autoMocker.Get<IVotableFeatureVoter>().AssertWasCalled(
+                mock => mock.CastVote(
+                    Arg<String>.Is.Equal(featureVote.VotableFeatureId), 
+                    Arg<bool>.Is.Equal(featureVote.VoteUp)));
+        }
+
+        [Test]
+        public void Post_ThrowsNotFoundHttpExceptionIfTheFeatureDoesntExist()
+        {
+            autoMocker.Get<IVotableFeatureVoter>().Expect(mock => mock.CastVote(Arg<string>.Is.Anything, Arg<bool>.Is.Anything))
+                      .Throw(new EntityDoesNotExistException(""));
+
+            HttpResponseException actualException = Assert.Throws<HttpResponseException>(() => autoMocker.ClassUnderTest.Post(new FeatureVote()));
             Assert.That(HttpStatusCode.NotFound, Is.EqualTo(actualException.Response.StatusCode));
         }
     }

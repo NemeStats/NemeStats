@@ -17,7 +17,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.VotableFeaturesTests.VotableF
     public class CastVoteTests
     {
         private RhinoAutoMocker<VotableFeatureVoter> autoMocker;
-        private int votableFeatureId = 1;
+        private string votableFeatureId = "some feature id";
         private int startingNumberOfUpvotes = 10;
         private int startingNumberOfDownvotes = 200;
         private VotableFeature expectedVotableFeature;

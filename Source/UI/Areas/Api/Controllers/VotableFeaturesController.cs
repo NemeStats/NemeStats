@@ -11,6 +11,7 @@ using BusinessLogic.Exceptions;
 using BusinessLogic.Logic.VotableFeatures;
 using BusinessLogic.Models;
 using UI.Models;
+using UI.Models.API;
 
 namespace UI.Areas.Api.Controllers
 {
@@ -42,11 +43,11 @@ namespace UI.Areas.Api.Controllers
         }
 
         // POST /api/VotableFeatures/
-        public void Post([FromBody]string id, bool voteDirection)
+        public void Post(FeatureVote featureVote)
         {
             try
             {
-                votableFeatureRetriever.RetrieveVotableFeature(id);
+                votableFeatureVoter.CastVote(featureVote.VotableFeatureId, featureVote.VoteUp);
             }
             catch (EntityDoesNotExistException)
             {
