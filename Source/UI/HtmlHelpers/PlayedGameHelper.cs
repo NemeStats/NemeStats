@@ -14,8 +14,8 @@ namespace UI.HtmlHelpers
         internal const string PLACE_THIRD = "3rd Place";
         internal const string PLACE_FOURTH = "4th Place";
         internal const string PLACE_BIG_LOSER = "BIG LOSER";
-        internal const string PLACE_TEAM_WIN = "TEAM WIN";
-        internal const string PLACE_TEAM_LOSS = "TEAM LOSS";
+        internal const string PLACE_TEAM_WIN = "EVERYONE WON";
+        internal const string PLACE_EVERYONE_LOST = "EVERYONE LOST";
         internal const string CSS_CLASS_FIRST_PLACE = "firstplace";
         internal const string CSS_CLASS_SECOND_PLACE = "secondplace";
         internal const string CSS_CLASS_THIRD_PLACE = "thirdplace";
@@ -41,7 +41,7 @@ namespace UI.HtmlHelpers
             }else if (winnerType == WinnerTypes.TeamLoss)
             {
                 cssPlace = CSS_CLASS_TEAM_LOSS;
-                gameRankText = PLACE_TEAM_LOSS;
+                gameRankText = PLACE_EVERYONE_LOST;
             }else
             {
                 switch(playerGameResultDetails.GameRank)

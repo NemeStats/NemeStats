@@ -24,9 +24,21 @@
             });
         }
 
-        function sendValues(upvote, downvote) {
-            //TODO: put an AJAX request to Jake's service that sends the values
-            //The service addresses are passed from outside - check the settings.serviceGet and settings.servicePost
+        function sendValues(upVote) {
+            var jsonToSend = {
+                "VotableFeatureId": settings.votableFeatureId,
+                "VoteUp" : upVote
+            }
+            $.ajax({
+                type: "POST",
+                url: settings.servicePost + settings.votableFeatureId,
+                data: jsonToSend,
+                error: function (err) {
+                    alert(err);
+                },
+                async: false,
+                dataType: "json"
+            });
         }
 
         receiveValues();
@@ -74,7 +86,7 @@
                 countElement.text("-" + downCnt.toString());
             }
 
-            sendValues(upCnt, downCnt);
+            sendValues(!decrease);
             cookieValues[elementId] = true;
             $.cookie(cookieName, JSON.stringify(cookieValues), { path:'/', expires: 20 });
         };

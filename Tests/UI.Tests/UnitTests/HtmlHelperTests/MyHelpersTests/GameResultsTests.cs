@@ -95,7 +95,7 @@ namespace UI.Tests.UnitTests.HtmlHelperTests.MyHelpersTests
         [Test]
         public void ItRendersATeamLossIfTheTeamLost()
         {
-            TestRenderingForGivenRank(2, WinnerTypes.TeamLoss, PlayedGameHelper.CSS_CLASS_TEAM_LOSS, PlayedGameHelper.PLACE_TEAM_LOSS);
+            TestRenderingForGivenRank(2, WinnerTypes.TeamLoss, PlayedGameHelper.CSS_CLASS_TEAM_LOSS, PlayedGameHelper.PLACE_EVERYONE_LOST);
         }
 
         [Test]
