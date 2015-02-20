@@ -30,7 +30,7 @@
                 url: settings.servicePost,
                 data: { VotableFeatureId: settings.votableFeatureId, VoteUp: direction },
                 success: function (data) {
-
+                    
                 },
                 error: function (err) {
                     alert(err);
@@ -46,7 +46,7 @@
             <a href=\"#\" class=\"upvote-link\"> \
                 <i class=\"fa fa-thumbs-up\"></i> \
             </a> \
-            <span class=\"upvote-count\">"+ upvoteValue.toString() + "</span> \
+            <span class=\"upvote-count\">"+ upvoteValue.toString() +"</span> \
             <span class=\"downvote-count\">-" + downVoteValue.toString() + "</span> \
             <a href=\"#\" class=\"downvote-link\"> \
                 <i class=\"fa fa-thumbs-down\"></i> \
@@ -86,7 +86,7 @@
 
             sendValues(!decrease);
             cookieValues[elementId] = true;
-            $.cookie(cookieName, JSON.stringify(cookieValues), { path: '/', expires: 20 });
+            $.cookie(cookieName, JSON.stringify(cookieValues), { path:'/', expires: 20 });
         };
 
         $upVote.on("click", function (e) {
