@@ -43,17 +43,21 @@
 
         var $originalElement = $(this);
         var template = "<div class=\"rank-item\" id=" + settings.votableFeatureId.toString() + "> \
-            <a href=\"#\" class=\"upvote-link\"> \
-                <i class=\"fa fa-thumbs-up\"></i> \
-            </a> \
+            <a href=\"#\" class=\"upvote-link\">\
+                <i class=\"fa fa-thumbs-up\" data-container=\"body\" data-toggle=\"popover\" data-placement=\"right\" \
+        data-content=\"I like this feature. Give me more like this!\"></i>\
+            </a>\
             <span class=\"upvote-count\">"+ upvoteValue.toString() +"</span> \
             <span class=\"downvote-count\">-" + downVoteValue.toString() + "</span> \
-            <a href=\"#\" class=\"downvote-link\"> \
-                <i class=\"fa fa-thumbs-down\"></i> \
-            </a> \
+            <a href=\"#\" class=\"downvote-link\">\
+                <i class=\"fa fa-thumbs-down\" data-container=\"body\" data-toggle=\"popover\" data-placement=\"right\" \
+        data-content=\"I don't care for this feature. Focus on improving the site elsewhere.\"></i> \
+            </a>\
         </div>";
 
         $originalElement.html(template);
+        $originalElement.find('[data-toggle="popover"]').popover({ trigger: 'hover' });
+
         var cookieValues = {};
         var cookieName = "rankCookie";
         if (!$.cookie(cookieName)) {

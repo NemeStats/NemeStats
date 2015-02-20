@@ -301,10 +301,6 @@ a.navbar-brand:hover {
 	text-decoration: none;
 }
 
-.popover {
-	color: red;
-}
-
 table > thead :hover {
 	background-color: none !important;
 }
