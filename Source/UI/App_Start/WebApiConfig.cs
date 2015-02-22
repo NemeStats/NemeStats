@@ -5,12 +5,14 @@ using System.Net.Http.Headers;
 using System.Web;
 using System.Web.Http;
 using System.Web.Http.Dispatcher;
+using System.Web.Http.ExceptionHandling;
 using Microsoft.Owin.Security.OAuth;
 using RIDGID.Blaze.PublicAPI.DependencyResolution;
 using RollbarSharp;
 using StructureMap;
 using StructureMap.Graph;
 using UI.DependencyResolution;
+using UI.Areas.Api;
 
 namespace UI.App_Start
 {
@@ -18,6 +20,7 @@ namespace UI.App_Start
     {
         public static void Register(HttpConfiguration config)
         {
+            config.Services.Add(typeof(IExceptionLogger), new RollbarExceptionLogger());
             config.Formatters.JsonFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/html"));
 
             // Web API routes
@@ -28,11 +31,6 @@ namespace UI.App_Start
                 defaults: new { id = RouteParameter.Optional }
             );
 
-            IContainer container = new Container(registry => registry.Scan(scan =>
-            {
-                scan.TheCallingAssembly();
-                scan.LookForRegistries();
-            }));
             config.Services.Replace(typeof(IHttpControllerActivator), new StructureMapServiceActivator(config));
         }
     }

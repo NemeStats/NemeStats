@@ -8,6 +8,7 @@
 
         var upvoteValue = 0;
         var downVoteValue = 0;
+        var gotError = false;
         function receiveValues() {
             $.ajax({
                 type: "GET",
@@ -17,7 +18,7 @@
                     downVoteValue = data.NumberOfDownvotes;
                 },
                 error: function (err) {
-                    alert(err);
+                    gotError = true;
                 },
                 async: false,
                 dataType: "json"
@@ -39,6 +40,9 @@
             });
         }
 
+        if (gotError) {
+            return this;
+        }
         receiveValues();
 
         var $originalElement = $(this);
