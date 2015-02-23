@@ -7,7 +7,6 @@ using System.Web.Http;
 using System.Web.Http.Dispatcher;
 using System.Web.Http.ExceptionHandling;
 using Microsoft.Owin.Security.OAuth;
-using RIDGID.Blaze.PublicAPI.DependencyResolution;
 using RollbarSharp;
 using StructureMap;
 using StructureMap.Graph;
@@ -20,6 +19,7 @@ namespace UI.App_Start
     {
         public static void Register(HttpConfiguration config)
         {
+            config.Services.Replace(typeof(IHttpControllerActivator), new StructureMapServiceActivator(config));
             config.Services.Add(typeof(IExceptionLogger), new RollbarExceptionLogger());
             config.Formatters.JsonFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/html"));
 
@@ -30,8 +30,6 @@ namespace UI.App_Start
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
-
-            config.Services.Replace(typeof(IHttpControllerActivator), new StructureMapServiceActivator(config));
         }
     }
 }

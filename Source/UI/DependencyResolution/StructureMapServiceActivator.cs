@@ -1,11 +1,11 @@
-﻿﻿using System;
+﻿using System;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Controllers;
 using System.Web.Http.Dispatcher;
-﻿using UI.App_Start;
+using UI.App_Start;
 
-namespace RIDGID.Blaze.PublicAPI.DependencyResolution
+namespace UI.DependencyResolution
 {
     public class StructureMapServiceActivator : IHttpControllerActivator
     {
