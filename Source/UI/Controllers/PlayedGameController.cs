@@ -159,8 +159,9 @@ namespace UI.Controllers
 		[Authorize]
 		[UserContextAttribute]
 		[HttpGet]
-		public virtual ActionResult Edit()
+		public virtual ActionResult Edit(int? gameID)
 		{
+			var viewModel = new NewlyCompletedGameViewModel();
 			return View();
 		}
 

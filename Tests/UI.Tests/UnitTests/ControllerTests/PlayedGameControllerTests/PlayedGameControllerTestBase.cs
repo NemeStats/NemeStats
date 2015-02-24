@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Web.Mvc;
 using UI.Controllers;
 using UI.Controllers.Helpers;
+using UI.Models.PlayedGame;
 using UI.Transformations;
 
 namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
@@ -31,6 +32,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 		protected ApplicationUser currentUser;
 		protected List<GameDefinitionSummary> gameDefinitionSummaries;
 		protected readonly List<PublicGameSummary> expectedViewModel = new List<PublicGameSummary>();
+		protected NewlyCompletedGameViewModel expectedDefaultCompletedGameViewModel = new NewlyCompletedGameViewModel();
 
 		[SetUp]
 		public virtual void TestSetUp()
@@ -77,6 +79,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 			playedGameRetriever.Expect(mock => mock.GetRecentPublicGames(Arg<int>.Is.Anything)).Return(new List<PublicGameSummary>());
 			playedGameControllerPartialMock.Expect(mock => mock.Edit()).Return(new ViewResult { ViewName = MVC.PlayedGame.Views.Edit });
 			playedGameControllerPartialMock.Expect(mock => mock.ShowRecentlyPlayedGames()).Return(new ViewResult { ViewName = MVC.PlayedGame.Views.RecentlyPlayedGames, ViewData = new ViewDataDictionary(expectedViewModel) });
+			playedGameControllerPartialMock.Expect(mock => mock.Edit(Arg<int>.Is.Anything)).Return(new ViewResult { ViewData = new ViewDataDictionary(this.expectedDefaultCompletedGameViewModel) });
 		}
 	}
 }
