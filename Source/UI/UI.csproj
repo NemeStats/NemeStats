@@ -647,6 +647,7 @@
     <Content Include="Views\Player\_TopPlayersPartial.cshtml" />
     <Content Include="Views\Player\RecentNemesisChanges.cshtml" />
     <Content Include="Views\Player\_RecentNemesisChangesPartial.cshtml" />
+    <Content Include="Views\PlayedGame\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Code\" />

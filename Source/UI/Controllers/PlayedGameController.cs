@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using BusinessLogic.DataAccess;
+﻿using BusinessLogic.DataAccess;
 using BusinessLogic.Logic.GameDefinitions;
 using BusinessLogic.Logic.PlayedGames;
 using BusinessLogic.Logic.Players;
@@ -94,7 +93,7 @@ namespace UI.Controllers
 		}
 
 		// POST: /PlayedGame/Create
-		// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+		// To protect from overposting attacks, please enable the specific properties you want to bind to, for
 		// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
 		[Authorize]
 		[HttpPost]
@@ -154,6 +153,15 @@ namespace UI.Controllers
 			dataContext.CommitAllChanges();
 			return new RedirectResult(Url.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name)
 							+ "#" + GamingGroupController.SECTION_ANCHOR_RECENT_GAMES);
+		}
+
+		// GET: /PlayedGame/Edit
+		[Authorize]
+		[UserContextAttribute]
+		[HttpGet]
+		public virtual ActionResult Edit()
+		{
+			return View();
 		}
 
 		protected override void Dispose(bool disposing)

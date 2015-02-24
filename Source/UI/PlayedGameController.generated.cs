@@ -100,6 +100,7 @@ namespace UI.Controllers
             public readonly string ShowRecentlyPlayedGames = "ShowRecentlyPlayedGames";
             public readonly string Delete = "Delete";
             public readonly string DeleteConfirmed = "Delete";
+            public readonly string Edit = "Edit";
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -110,6 +111,7 @@ namespace UI.Controllers
             public const string ShowRecentlyPlayedGames = "ShowRecentlyPlayedGames";
             public const string Delete = "Delete";
             public const string DeleteConfirmed = "Delete";
+            public const string Edit = "Edit";
         }
 
 
@@ -164,6 +166,7 @@ namespace UI.Controllers
                 public readonly string Create = "Create";
                 public readonly string Delete = "Delete";
                 public readonly string Details = "Details";
+                public readonly string Edit = "Edit";
                 public readonly string RecentlyPlayedGames = "RecentlyPlayedGames";
             }
             public readonly string _PlayedGamesPartial = "~/Views/PlayedGame/_PlayedGamesPartial.cshtml";
@@ -171,6 +174,7 @@ namespace UI.Controllers
             public readonly string Create = "~/Views/PlayedGame/Create.cshtml";
             public readonly string Delete = "~/Views/PlayedGame/Delete.cshtml";
             public readonly string Details = "~/Views/PlayedGame/Details.cshtml";
+            public readonly string Edit = "~/Views/PlayedGame/Edit.cshtml";
             public readonly string RecentlyPlayedGames = "~/Views/PlayedGame/RecentlyPlayedGames.cshtml";
         }
     }
@@ -252,6 +256,17 @@ namespace UI.Controllers
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "currentUser", currentUser);
             DeleteConfirmedOverride(callInfo, id, currentUser);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void EditOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult Edit()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Edit);
+            EditOverride(callInfo);
             return callInfo;
         }
 
