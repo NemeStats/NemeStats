@@ -171,9 +171,7 @@ namespace UI.Controllers
 				viewModel.GameDefinitionId = playedGame.GameDefinitionId;
 				viewModel.DatePlayed = playedGame.DatePlayed;
 				viewModel.Notes = playedGame.Notes;
-
-				//need to send player ranks to view
-				//probably needs to be saved on recorded game creation
+				viewModel.PlayerRanks = playedGame.PlayerGameResults.Select(item => new PlayerRank { GameRank = item.GameRank, PlayerId = item.PlayerId }).ToList();
 			}
 
 			if (id == null)
