@@ -42,7 +42,7 @@ namespace UI.Controllers
 			this.dataContext = dataContext;
 			this.playedGameRetriever = playedGameRetriever;
 			this.playerRetriever = playerRetriever;
-			playedGameDetailsBuilder = builder;
+			this.playedGameDetailsBuilder = builder;
 			this.gameDefinitionRetriever = gameDefinitionRetriever;
 			this.showingXResultsMessageBuilder = showingXResultsMessageBuilder;
 			this.playedGameCreator = playedGameCreator;
@@ -159,10 +159,27 @@ namespace UI.Controllers
 		[Authorize]
 		[UserContextAttribute]
 		[HttpGet]
-		public virtual ActionResult Edit(int? gameID)
+		public virtual ActionResult Edit(int? id, ApplicationUser currentUser)
 		{
 			var viewModel = new NewlyCompletedGameViewModel();
-			return View();
+			viewModel.GameDefinitions = this.gameDefinitionRetriever.GetAllGameDefinitions(currentUser.CurrentGamingGroupId.Value).Select(item => new SelectListItem { Text = item.Name, Value = item.Id.ToString() }).ToList();
+			viewModel.Players = this.GetAllPlayers(currentUser);
+
+			if (id > 0)
+			{
+				var playedGame = this.playedGameRetriever.GetPlayedGameDetails((int)id) as PlayedGame;
+				viewModel.GameDefinitionId = playedGame.GameDefinitionId;
+				viewModel.DatePlayed = playedGame.DatePlayed;
+				viewModel.Notes = playedGame.Notes;
+
+				//need to send player ranks to view
+				//probably needs to be saved on recorded game creation
+			}
+
+			if (id == null)
+				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+			return View(viewModel);
 		}
 
 		protected override void Dispose(bool disposing)

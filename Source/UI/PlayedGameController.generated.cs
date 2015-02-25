@@ -164,6 +164,7 @@ namespace UI.Controllers
         public class ActionParamsClass_Edit
         {
             public readonly string gameID = "gameID";
+            public readonly string currentUser = "currentUser";
         }
         static readonly ViewsClass s_views = new ViewsClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -274,14 +275,15 @@ namespace UI.Controllers
         }
 
         [NonAction]
-        partial void EditOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int? gameID);
+        partial void EditOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int? gameID, BusinessLogic.Models.User.ApplicationUser currentUser);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult Edit(int? gameID)
+        public override System.Web.Mvc.ActionResult Edit(int? gameID, BusinessLogic.Models.User.ApplicationUser currentUser)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Edit);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "gameID", gameID);
-            EditOverride(callInfo, gameID);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "currentUser", currentUser);
+            EditOverride(callInfo, gameID, currentUser);
             return callInfo;
         }
 

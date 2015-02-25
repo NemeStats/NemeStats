@@ -1,9 +1,7 @@
-﻿using NUnit.Framework;
-using System;
+﻿using BusinessLogic.Models.Games;
+using NUnit.Framework;
+using Rhino.Mocks;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
@@ -11,6 +9,15 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 	[TestFixture]
 	public class ShowRecentlyPlayedGamesTests : PlayedGameControllerTestBase
 	{
+		[SetUp]
+		public override void TestSetUp()
+		{
+			base.TestSetUp();
+			base.expectedViewModel = new List<PublicGameSummary>();
+			base.playedGameRetriever.Expect(mock => mock.GetRecentPublicGames(Arg<int>.Is.Anything)).Return(new List<PublicGameSummary>());
+			base.playedGameControllerPartialMock.Expect(mock => mock.ShowRecentlyPlayedGames()).Return(new ViewResult { ViewName = MVC.PlayedGame.Views.RecentlyPlayedGames, ViewData = new ViewDataDictionary(base.expectedViewModel) });
+		}
+
 		[Test]
 		public void ItReturnsRecentlyPlayedGamesView()
 		{
