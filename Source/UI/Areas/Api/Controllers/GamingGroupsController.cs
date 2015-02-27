@@ -12,27 +12,32 @@ using AutoMapper;
 using BusinessLogic.Logic.PlayedGames;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
-using CsvHelper;
-using CsvHelper.Configuration;
+using BusinessLogic.Models.PlayedGames;
+using OfficeOpenXml;
 using RollbarSharp;
 using UI.Models.PlayedGame;
+using BusinessLogic.Export;
 
 namespace UI.Areas.Api.Controllers
 {
     public class GamingGroupsController : ApiController
     {
         public const int MAX_PLAYED_GAMES_TO_EXPORT = 1000;
-        private readonly IPlayedGameRetriever playedGameRetriever;
-        private MemoryStream csvFileMemoryStream;
 
-        public GamingGroupsController(IPlayedGameRetriever playedGameRetriever)
+        private readonly IPlayedGameRetriever playedGameRetriever;
+        private readonly IExcelGenerator excelGenerator;
+
+        private MemoryStream exportMemoryStream;
+
+        public GamingGroupsController(IPlayedGameRetriever playedGameRetriever, IExcelGenerator excelGenerator)
         {
             this.playedGameRetriever = playedGameRetriever;
+            this.excelGenerator = excelGenerator;
         }
 
         [Route("api/v1/GamingGroups/{gamingGroupId}/PlayedGames")]
         [HttpGet]
-        public HttpResponseMessage Get(int gamingGroupId)
+        public virtual HttpResponseMessage GetPlayedGames(int gamingGroupId)
         {
             var playedGames = playedGameRetriever.GetRecentGames(MAX_PLAYED_GAMES_TO_EXPORT, gamingGroupId);
             var playedGamesForExport = playedGames.Select(playedGame => new PlayedGameExportModel
@@ -48,27 +53,14 @@ namespace UI.Areas.Api.Controllers
                 NumberOfPlayers = playedGame.NumberOfPlayers,
                 WinningPlayerIds = String.Join("|", playedGame.PlayerGameResults.Where(result => result.GameRank == 1).Select(result => result.PlayerId).ToList()),
                 WinningPlayerNames = String.Join("|", playedGame.PlayerGameResults.Where(result => result.GameRank == 1).Select(result => result.Player.Name).ToList())
-            });
-            csvFileMemoryStream = new MemoryStream();
+            }).ToList();
 
-            using (StreamWriter streamWriter = new StreamWriter(csvFileMemoryStream, Encoding.UTF8, 1024, leaveOpen: true))
-            {
-                
-                CsvConfiguration csvConfiguration = new CsvConfiguration();
-                csvConfiguration.AutoMap(typeof(PlayedGameExportModel));
-                csvConfiguration.Delimiter = "|";
-                using (var csvWriter = new CsvWriter(streamWriter, csvConfiguration))
-                {
-                    csvWriter.WriteRecords(playedGamesForExport);
+            exportMemoryStream = new MemoryStream();
 
-                    csvFileMemoryStream.Position = 0;
-                }
-            }
-
-            csvFileMemoryStream.Position = 0;
+            excelGenerator.GenerateExcelFile(playedGamesForExport, exportMemoryStream);
 
             HttpResponseMessage responseMessage = new HttpResponseMessage(HttpStatusCode.OK);
-            responseMessage.Content = new StreamContent(csvFileMemoryStream);
+            responseMessage.Content = new StreamContent(exportMemoryStream);
             responseMessage.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
             {
                 FileName = "played_game_export.csv"
@@ -80,7 +72,7 @@ namespace UI.Areas.Api.Controllers
 
         protected override void Dispose(bool disposing)
         {
-            csvFileMemoryStream.Dispose();
+            exportMemoryStream.Dispose();
             base.Dispose(disposing);
         }
     }

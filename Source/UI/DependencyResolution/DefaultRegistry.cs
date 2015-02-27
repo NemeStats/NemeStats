@@ -15,6 +15,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using BusinessLogic.Export;
 using BusinessLogic.Logic.BoardGameGeek;
 using BusinessLogic.Logic.Champions;
 using BusinessLogic.Logic.Email;
@@ -158,6 +159,7 @@ namespace UI.DependencyResolution {
 
             this.For<IVotableFeatureVoter>().Use<VotableFeatureVoter>();
 
+            this.For<IExcelGenerator>().Use<ExcelGenerator>();
         }
 
         private void SetupUniquePerRequestMappings()

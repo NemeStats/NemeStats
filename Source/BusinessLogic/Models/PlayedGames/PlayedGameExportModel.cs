@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace UI.Models.PlayedGame
+namespace BusinessLogic.Models.PlayedGames
 {
     public class PlayedGameExportModel
     {

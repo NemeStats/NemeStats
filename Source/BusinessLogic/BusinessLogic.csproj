@@ -142,6 +142,8 @@
     <Compile Include="Exceptions\EntityDoesNotExistException.cs" />
     <Compile Include="Exceptions\PlayerAlreadyExistsException.cs" />
     <Compile Include="Exceptions\UnauthorizedEntityAccessException.cs" />
+    <Compile Include="Export\ExcelGenerator.cs" />
+    <Compile Include="Export\IExcelGenerator.cs" />
     <Compile Include="Logic\BoardGameGeek\BoardGameGeekSearcher.cs" />
     <Compile Include="Logic\BoardGameGeek\BoardGameGeekUriBuilder.cs" />
     <Compile Include="Logic\BoardGameGeek\IBoardGameGeekSearcher.cs" />
@@ -229,6 +231,7 @@
     </Compile>
     <Compile Include="Models\GamingGroups\TopGamingGroupSummary.cs" />
     <Compile Include="Models\PlayedGames\IWinner.cs" />
+    <Compile Include="Models\PlayedGames\PlayedGameExportModel.cs" />
     <Compile Include="Models\PlayedGames\WinnerTypesEnum.cs" />
     <Compile Include="Models\Players\PlayerInvitation.cs" />
     <Compile Include="Logic\Players\PlayerInviter.cs" />
