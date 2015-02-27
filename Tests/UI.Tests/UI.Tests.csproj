@@ -49,6 +49,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\AutoMapper.3.3.1\lib\net40\AutoMapper.Net4.dll</HintPath>
     </Reference>
+    <Reference Include="CsvHelper">
+      <HintPath>..\..\packages\CsvHelper.2.11.0\lib\net40-client\CsvHelper.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\EntityFramework.6.1.2\lib\net45\EntityFramework.dll</HintPath>
@@ -217,6 +220,7 @@
     <Compile Include="UnitTests\ControllerTests\PlayerControllerTests\PlayerControllerTestBase.cs" />
     <Compile Include="UnitTests\ControllerTests\PlayerControllerTests\ShowRecentNemesisChangesTests.cs" />
     <Compile Include="UnitTests\ControllerTests\PlayerControllerTests\ShowTopPlayersTests.cs" />
+    <Compile Include="UnitTests\ExcelExportTests.cs" />
     <Compile Include="UnitTests\FiltersTests\UserContextAttributeTests\OnActionExecutingTests.cs" />
     <Compile Include="UnitTests\HtmlHelperTests\MyHelpersTests\GameResultsTests.cs" />
     <Compile Include="UnitTests\TransformationsTests\AutomapperConfigurationTests.cs" />

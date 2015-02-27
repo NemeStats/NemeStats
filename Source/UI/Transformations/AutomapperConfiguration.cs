@@ -8,6 +8,7 @@ using BusinessLogic.Models.GamingGroups;
 using UI.Models.GameDefinitionModels;
 using UI.Models.GamingGroup;
 using UI.Models;
+using UI.Models.PlayedGame;
 
 namespace UI.Transformations
 {

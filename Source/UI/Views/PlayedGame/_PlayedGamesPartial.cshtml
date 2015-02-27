@@ -2,6 +2,7 @@
 
 @{
     Layout = null;
+    var fileRequestUrl = "/api/v1/GamingGroups/" + ViewData["gamingGroupid"] + "/PlayedGames";
 }           
 
 @using UI.HtmlHelpers
@@ -12,6 +13,7 @@
         </h4>
         @if ((bool?)ViewData["canEdit"] == true)
         {
+            <div><a href="@fileRequestUrl">Export to CSV</a></div>
             <div class="fl-right">
                 @Html.ActionLink("Record Played Game", "Create", "PlayedGame", new { }, new { @class = "btn btn-default", @id = "recordPlayedGameFromGamingGroup" })
             </div>
