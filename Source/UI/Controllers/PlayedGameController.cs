@@ -183,6 +183,16 @@ namespace UI.Controllers
 			return View(viewModel);
 		}
 
+		[Authorize]
+		[UserContextAttribute]
+		[HttpGet]
+		public virtual ActionResult AddPlayer(int? playerId, string playerName)
+		{
+			var model = new EditPlayedGamePlayerPartialViewModel(playerId, playerName);
+
+			return PartialView(MVC.PlayedGame.Views._PlayedGamesPlayerPartial, model);
+		}
+
 		protected override void Dispose(bool disposing)
 		{
 			base.Dispose(disposing);
