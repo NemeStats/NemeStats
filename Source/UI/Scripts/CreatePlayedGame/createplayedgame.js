@@ -175,14 +175,15 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
 	setupButtons: function () {
 		var parent = this;
 
-		this.$buttonUp.on("click", function () {
+		this.$buttonUp.off("click").on("click", function () {
 			parent.movePlayerUp(this);
 		});
 
-		this.$buttonDown.on("click", function () {
+		this.$buttonDown.off("click").on("click", function () {
 			parent.movePlayerDown(this);
 		});
-		this.$removePlayerButtons.on("click", function () {
+
+		this.$removePlayerButtons.off("click").on("click", function () {
 			parent.removePlayer(this);
 		});
 	},
