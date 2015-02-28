@@ -105,6 +105,9 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
 		var shared = new Views.Shared.Layout();
 		this.$gameId = shared.getQueryString("gameId");
 
+
+		this.setupButtons();
+
 		parent.validateGameDefinition();
 	},
 	onReorder: function () {
@@ -154,17 +157,41 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
 			},
 		});
 		
+		
 		this._playerIndex++;
 		this._playerRank++;
 		selectedOption.remove();
 
+		this.setupButtons();
+		//this.setupButtons();
+		//var buttonUp = $(".rankButton-up");
+		//var buttonDown = $(".rankButton-down");
+		//buttonUp.off("click").on("click", function () {
+		//	parent.movePlayerUp(this);
+		//});
+
+		//buttonDown.off("click").on("click", function () {
+		//	parent.movePlayerDown(this);
+		//});
+
+		//var removePlayerButtons = $(".btnRemovePlayer");
+		//removePlayerButtons.off('click').on("click", function () {
+		//	parent.removePlayer(this);
+		//});
+
+		this.recalculateRanks();
+
+		return null;
+	},
+	setupButtons: function () {
+		var parent = this;
 		var buttonUp = $(".rankButton-up");
 		var buttonDown = $(".rankButton-down");
-		buttonUp.off("click").on("click", function () {
+		buttonUp.on("click", function () {
 			parent.movePlayerUp(this);
 		});
 
-		buttonDown.off("click").on("click", function () {
+		buttonDown.on("click", function () {
 			parent.movePlayerDown(this);
 		});
 
@@ -172,11 +199,7 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
 		removePlayerButtons.off('click').on("click", function () {
 			parent.removePlayer(this);
 		});
-
-		this.recalculateRanks();
-
-		return null;
-	},
+},
 	removePlayer: function (button) {
 		var playerId = $(button).data("playerid");
 		var playerName = $(button).data("playername");
