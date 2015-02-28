@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.Models;
+using BusinessLogic.Models.User;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System.Collections.Generic;
@@ -25,7 +26,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 		}
 
 		[Test]
-		public void ThatEditActionReturnsAView()
+		public void ThatEditGetActionReturnsAView()
 		{
 			//--Arrange
 			base.playedGameControllerPartialMock.Expect(mock => mock.Edit()).Return(new ViewResult { ViewName = MVC.PlayedGame.Views.Edit });
@@ -41,7 +42,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 		public void ThatWhenGameIDIsZeroADefaultModelIsSentToView()
 		{
 			//--Arrange
-			base.playedGameControllerPartialMock.Expect(mock => mock.Edit(Arg<int>.Is.Equal(0), base.currentUser)).Return(new ViewResult { ViewData = new ViewDataDictionary(base.expectedDefaultCompletedGameViewModel) });
+			base.playedGameControllerPartialMock.Expect(mock => mock.Edit(Arg<int>.Is.Equal(0), Arg<ApplicationUser>.Is.Anything)).Return(new ViewResult { ViewData = new ViewDataDictionary(base.expectedDefaultCompletedGameViewModel) });
 
 			//--Act
 			var result = base.playedGameControllerPartialMock.Edit(0, base.currentUser) as ViewResult;
@@ -54,7 +55,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 		public void ThatWhenGameIDIsNotZeroPopulatedModelIsSentToView()
 		{
 			//--Arrange
-			base.playedGameControllerPartialMock.Expect(mock => mock.Edit(Arg<int>.Is.Anything, base.currentUser)).Return(new ViewResult { ViewData = new ViewDataDictionary(base.expectedPopulatedCompletedGameViewModel) });
+			base.playedGameControllerPartialMock.Expect(mock => mock.Edit(Arg<int>.Is.Anything, Arg<ApplicationUser>.Is.Anything)).Return(new ViewResult { ViewData = new ViewDataDictionary(base.expectedPopulatedCompletedGameViewModel) });
 
 			//--Act
 			var result = base.playedGameControllerPartialMock.Edit(1, base.currentUser) as ViewResult;

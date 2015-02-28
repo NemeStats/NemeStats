@@ -205,6 +205,7 @@
     <Compile Include="UnitTests\ControllerTests\PlayedGameControllerTests\DeleteConfirmedTests.cs" />
     <Compile Include="UnitTests\ControllerTests\PlayedGameControllerTests\DetailsTests.cs" />
     <Compile Include="UnitTests\ControllerTests\PlayedGameControllerTests\EditGetTests.cs" />
+    <Compile Include="UnitTests\ControllerTests\PlayedGameControllerTests\EditPostTests.cs" />
     <Compile Include="UnitTests\ControllerTests\PlayedGameControllerTests\PlayedGameControllerTestBase.cs" />
     <Compile Include="UnitTests\ControllerTests\PlayedGameControllerTests\ShowRecentlyPlayedGamesTests.cs" />
     <Compile Include="UnitTests\ControllerTests\PlayerControllerTests\CreateHttpGetTests.cs" />
