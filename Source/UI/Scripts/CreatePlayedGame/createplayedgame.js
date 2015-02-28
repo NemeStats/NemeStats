@@ -26,6 +26,7 @@ Views.PlayedGame.CreatePlayedGame = function () {
 	this.$removePlayerButtons = null;
 	this.$buttonUp = null;
 	this.$buttonDown = null;
+	this.$document = null;
 };
 
 //Implementation
@@ -58,6 +59,7 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
 		this.$removePlayerButtons = $(".btnRemovePlayer");
 		this.$buttonUp = $(".rankButton-up");
 		this.$buttonDown = $(".rankButton-down");
+		this.$document = $(document);
 
 		this._googleAnalytics = gaObject;
 
@@ -166,8 +168,6 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
 		this._playerRank++;
 		selectedOption.remove();
 
-		this.setupButtons();
-
 		this.recalculateRanks();
 
 		return null;
@@ -175,17 +175,19 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
 	setupButtons: function () {
 		var parent = this;
 
-		this.$buttonUp.off("click").on("click", function () {
+		this.$document.on("click", ".btnRemovePlayer", function () {
+			parent.removePlayer(this);
+		});
+
+		this.$document.on("click", ".rankButton-up", function () {
 			parent.movePlayerUp(this);
 		});
 
-		this.$buttonDown.off("click").on("click", function () {
+		this.$document.on("click", ".rankButton-down", function () {
 			parent.movePlayerDown(this);
 		});
 
-		this.$removePlayerButtons.off("click").on("click", function () {
-			parent.removePlayer(this);
-		});
+		this.recalculateRanks();
 	},
 	removePlayer: function (button) {
 		var playerId = $(button).data("playerid");
