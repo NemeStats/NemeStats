@@ -9,5 +9,7 @@ namespace UI.Models.PlayedGame
 		public IEnumerable<SelectListItem> GameDefinitions { get; set; }
 
 		public IEnumerable<SelectListItem> Players { get; set; }
+
+		public Dictionary<string, int> ExistingRankedPlayerNames { get; set; }
 	}
 }

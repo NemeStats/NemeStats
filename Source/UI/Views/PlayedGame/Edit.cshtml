@@ -67,7 +67,7 @@
 								<ul id="rankedPlayers" class="sortable" data-numrankedplayers="@(Model.PlayerRanks.Count + 1)">
 									@foreach (var item in Model.PlayerRanks)
 									{
-										var playerName = Model.Players.Where(x => x.Value.Equals(item.PlayerId.ToString())).SingleOrDefault().Text;
+										var playerName = Model.ExistingRankedPlayerNames.Where(x => x.Value.ToString() == item.PlayerId.ToString()).SingleOrDefault().Key;
 										Html.RenderPartial(MVC.PlayedGame.Views._PlayedGamesPlayerPartial, new UI.Models.PlayedGame.EditPlayedGamePlayerPartialViewModel { PlayerId = item.PlayerId, PlayerName = playerName, GameRank = item.GameRank });
 									}
 								</ul>

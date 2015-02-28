@@ -175,12 +175,27 @@ namespace UI.Controllers
 				//players that are already recorded should not appear in player drop down list
 
 				viewModel.PlayerRanks = playedGame.PlayerGameResults.Select(item => new PlayerRank { GameRank = item.GameRank, PlayerId = item.PlayerId }).ToList();
+				viewModel.ExistingRankedPlayerNames = playedGame.PlayerGameResults.Select(item => new { item.Player.Name, item.Player.Id }).ToDictionary(p => p.Name, q => q.Id);
+				viewModel.Players = this.RemovePlayersFromExistingPlayerRanks(viewModel.Players.ToList<SelectListItem>(), viewModel.PlayerRanks);
 			}
 
 			if (id == null)
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
 			return View(viewModel);
+		}
+
+		private List<SelectListItem> RemovePlayersFromExistingPlayerRanks(List<SelectListItem> players, List<PlayerRank> playerRanks)
+		{
+			var playerList = new List<SelectListItem>();
+
+			foreach (var item in players)
+			{
+				if (playerRanks.Any(p => p.PlayerId.ToString() == item.Value) == false)
+					playerList.Add(item);
+			}
+
+			return playerList;
 		}
 
 		[Authorize]
