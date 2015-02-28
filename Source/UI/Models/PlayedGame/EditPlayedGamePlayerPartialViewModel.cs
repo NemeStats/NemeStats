@@ -12,11 +12,11 @@
 		{
 		}
 
-		public EditPlayedGamePlayerPartialViewModel(int? playerId, string playerName)
+		public EditPlayedGamePlayerPartialViewModel(int? playerId, string playerName, int? gameRank)
 		{
 			this.PlayerId = playerId;
 			this.PlayerName = playerName;
-			//this.GameRank = gameRank;
+			this.GameRank = gameRank;
 		}
 	}
 }

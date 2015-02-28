@@ -186,9 +186,9 @@ namespace UI.Controllers
 		[Authorize]
 		[UserContextAttribute]
 		[HttpGet]
-		public virtual ActionResult AddPlayer(int? playerId, string playerName)
+		public virtual ActionResult AddPlayer(int? playerId, string playerName, int? gameRank)
 		{
-			var model = new EditPlayedGamePlayerPartialViewModel(playerId, playerName);
+			var model = new EditPlayedGamePlayerPartialViewModel(playerId, playerName, gameRank);
 
 			return PartialView(MVC.PlayedGame.Views._PlayedGamesPlayerPartial, model);
 		}

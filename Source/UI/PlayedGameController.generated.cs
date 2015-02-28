@@ -182,6 +182,7 @@ namespace UI.Controllers
         {
             public readonly string playerId = "playerId";
             public readonly string playerName = "playerName";
+            public readonly string gameRank = "gameRank";
         }
         static readonly ViewsClass s_views = new ViewsClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -307,15 +308,16 @@ namespace UI.Controllers
         }
 
         [NonAction]
-        partial void AddPlayerOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int? playerId, string playerName);
+        partial void AddPlayerOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int? playerId, string playerName, int? gameRank);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult AddPlayer(int? playerId, string playerName)
+        public override System.Web.Mvc.ActionResult AddPlayer(int? playerId, string playerName, int? gameRank)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AddPlayer);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "playerId", playerId);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "playerName", playerName);
-            AddPlayerOverride(callInfo, playerId, playerName);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "gameRank", gameRank);
+            AddPlayerOverride(callInfo, playerId, playerName, gameRank);
             return callInfo;
         }
 

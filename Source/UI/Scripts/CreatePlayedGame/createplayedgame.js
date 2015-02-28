@@ -133,28 +133,24 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
 		var playerId = selectedOption.val();
 		var playerName = selectedOption.text();
 
-		//var $detailDiv = $('#detailsDiv'),
-		//url = $(this).data('url');
-
-		//$.get(url, function (data) {
-		//	$detailsDiv.replaceWith(data);
-		//});
-		//var playerItem = this.generatePlayerRankListItemString(this._playerIndex, playerId, playerName, this._playerRank);//
 		var playerItem = null;
 		$.ajax({
 			url: "/PlayedGame/AddPlayer/",
 			type: "GET",
-			data: { PlayerId: playerId, PlayerName: playerName },
+			data: { PlayerId: playerId, PlayerName: playerName, GameRank: this._playerRank },
 			success: function (response) {
+				this.$rankedPlayers = $("#rankedPlayers");
 				playerItem = response;
 				this.$rankedPlayers.append(playerItem);
-				alert(playerItem);
 			},
-			error: function () {
-				alert("nope");
-			}
+			error: function (err) {
+				alert("Error " + err.status + ":\r\n" + err.statusText);
+			},
 		});
-		alert("added");
+		/*when this is called from edit
+		*	players that are already displayed need to be removed from the dropdown
+		*	playerRank needs to be populated to correspond to the number of players recorded + 1
+		*/
 		this._playerIndex++;
 		this._playerRank++;
 		selectedOption.remove();
