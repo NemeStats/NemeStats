@@ -40,6 +40,12 @@ namespace UI.Areas.Api.Controllers
         public virtual HttpResponseMessage GetPlayedGames(int gamingGroupId)
         {
             var playedGames = playedGameRetriever.GetRecentGames(MAX_PLAYED_GAMES_TO_EXPORT, gamingGroupId);
+
+            if (playedGames.Count == 0)
+            {
+                return new HttpResponseMessage(HttpStatusCode.NotFound);
+            }
+
             var playedGamesForExport = playedGames.Select(playedGame => new PlayedGameExportModel
             {
                 BoardGameGeekObjectId = playedGame.GameDefinition.BoardGameGeekObjectId,
@@ -60,8 +66,10 @@ namespace UI.Areas.Api.Controllers
 
             excelGenerator.GenerateExcelFile(playedGamesForExport, exportMemoryStream);
 
-            HttpResponseMessage responseMessage = new HttpResponseMessage(HttpStatusCode.OK);
-            responseMessage.Content = new StreamContent(exportMemoryStream);
+            HttpResponseMessage responseMessage = new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = new StreamContent(this.exportMemoryStream)
+            };
             responseMessage.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
             {
                 FileName = "played_game_export.xlsx"
@@ -73,7 +81,10 @@ namespace UI.Areas.Api.Controllers
 
         protected override void Dispose(bool disposing)
         {
-            exportMemoryStream.Dispose();
+            if (exportMemoryStream != null)
+            {
+                exportMemoryStream.Dispose();
+            }
             base.Dispose(disposing);
         }
     }

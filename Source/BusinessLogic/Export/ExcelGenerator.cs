@@ -30,55 +30,65 @@ namespace BusinessLogic.Export
             using (var package = new ExcelPackage(exportMemoryStream))
             {
                 ExcelWorksheet worksheet = package.Workbook.Worksheets.Add("NemeStats Played Games");
-                worksheet.Cells[1, 1].Value = "Game Name";
-                worksheet.Cells[1, INDEX_OF_PLAYED_GAME_ID].Value = "Played Game Id";
-                worksheet.Cells[1, INDEX_OF_DATE_PLAYED].Value = "Date Played (UTC)";
-                worksheet.Cells[1, INDEX_OF_GAME_DEFINITION_ID].Value = "Game Id";
-                worksheet.Cells[1, INDEX_OF_GAME_DEFINITION_NAME].Value = "Game Name";
-                worksheet.Cells[1, INDEX_OF_BOARD_GAME_GEEK_OBJECT_ID].Value = "BoardGameGeek Object Id";
-                worksheet.Cells[1, INDEX_OF_GAMING_GROUP_ID].Value = "Gaming Group Id";
-                worksheet.Cells[1, INDEX_OF_GAMING_GROUP_NAME].Value = "Gaming Group Name";
-                worksheet.Cells[1, INDEX_OF_DATE_RECORDED].Value = "Date Recorded (UTC)";
-                worksheet.Cells[1, INDEX_OF_NOTES].Value = "Notes";
-                worksheet.Cells[1, INDEX_OF_NUMBER_OF_PLAYERS].Value = "Number Of Players";
-                worksheet.Cells[1, INDEX_OF_WINNING_PLAYER_IDS].Value = "Winning Player Ids";
-                worksheet.Cells[1, INDEX_OF_WINNING_PLAYER_NAMES].Value = "Winning Player Names";
-
-                using (var range = worksheet.Cells[1, 1, 1, 12])
-                {
-                    range.Style.Font.Bold = true;
-                    range.Style.Fill.PatternType = ExcelFillStyle.Solid;
-                    range.Style.Fill.BackgroundColor.SetColor(Color.Black);
-                    range.Style.Font.Color.SetColor(Color.WhiteSmoke);
-                    range.Style.ShrinkToFit = false;
-                    range.AutoFitColumns();
-                }
+                AddHeaderRow(worksheet);
 
                 worksheet.Column(INDEX_OF_DATE_PLAYED).Style.Numberformat.Format = "yyyy-mm-dd";
                 worksheet.Column(INDEX_OF_DATE_RECORDED).Style.Numberformat.Format = "yyyy-mm-dd";
 
-                for (int i = 0; i < playedGameExportModels.Count(); i++)
-                {
-                    PlayedGameExportModel playedGameExportModel = playedGameExportModels[i];
-
-                    worksheet.Cells[i + START_ROW_OF_NON_HEADER_DATA, INDEX_OF_PLAYED_GAME_ID].Value = playedGameExportModel.Id;
-                    worksheet.Cells[i + START_ROW_OF_NON_HEADER_DATA, INDEX_OF_DATE_PLAYED].Value = playedGameExportModel.DatePlayed;
-                    worksheet.Cells[i + START_ROW_OF_NON_HEADER_DATA, INDEX_OF_GAME_DEFINITION_ID].Value = playedGameExportModel.GameDefinitionId;
-                    worksheet.Cells[i + START_ROW_OF_NON_HEADER_DATA, INDEX_OF_GAME_DEFINITION_NAME].Value = playedGameExportModel.GameDefinitionName;
-                    worksheet.Cells[i + START_ROW_OF_NON_HEADER_DATA, INDEX_OF_BOARD_GAME_GEEK_OBJECT_ID].Value = playedGameExportModel.BoardGameGeekObjectId;
-                    worksheet.Cells[i + START_ROW_OF_NON_HEADER_DATA, INDEX_OF_GAMING_GROUP_ID].Value = playedGameExportModel.GamingGroupId;
-                    worksheet.Cells[i + START_ROW_OF_NON_HEADER_DATA, INDEX_OF_GAMING_GROUP_NAME].Value = playedGameExportModel.GamingGroupName;
-                    worksheet.Cells[i + START_ROW_OF_NON_HEADER_DATA, INDEX_OF_DATE_RECORDED].Value = playedGameExportModel.DateCreated;
-                    worksheet.Cells[i + START_ROW_OF_NON_HEADER_DATA, INDEX_OF_NOTES].Value = playedGameExportModel.Notes;
-                    worksheet.Cells[i + START_ROW_OF_NON_HEADER_DATA, INDEX_OF_NUMBER_OF_PLAYERS].Value = playedGameExportModel.NumberOfPlayers;
-                    worksheet.Cells[i + START_ROW_OF_NON_HEADER_DATA, INDEX_OF_WINNING_PLAYER_IDS].Value = playedGameExportModel.WinningPlayerIds;
-                    worksheet.Cells[i + START_ROW_OF_NON_HEADER_DATA, INDEX_OF_WINNING_PLAYER_NAMES].Value = playedGameExportModel.WinningPlayerNames;
-                }
+                AddDataRows(playedGameExportModels, worksheet);
 
                 package.SaveAs(exportMemoryStream);
             }
 
             exportMemoryStream.Position = 0;
+        }
+
+        private static void AddDataRows(List<PlayedGameExportModel> playedGameExportModels, ExcelWorksheet worksheet)
+        {
+            for (int i = 0; i < playedGameExportModels.Count(); i++)
+            {
+                PlayedGameExportModel playedGameExportModel = playedGameExportModels[i];
+
+                worksheet.Cells[i + START_ROW_OF_NON_HEADER_DATA, INDEX_OF_PLAYED_GAME_ID].Value = playedGameExportModel.Id;
+                worksheet.Cells[i + START_ROW_OF_NON_HEADER_DATA, INDEX_OF_DATE_PLAYED].Value = playedGameExportModel.DatePlayed;
+                worksheet.Cells[i + START_ROW_OF_NON_HEADER_DATA, INDEX_OF_GAME_DEFINITION_ID].Value = playedGameExportModel.GameDefinitionId;
+                worksheet.Cells[i + START_ROW_OF_NON_HEADER_DATA, INDEX_OF_GAME_DEFINITION_NAME].Value = playedGameExportModel.GameDefinitionName;
+                worksheet.Cells[i + START_ROW_OF_NON_HEADER_DATA, INDEX_OF_BOARD_GAME_GEEK_OBJECT_ID].Value = playedGameExportModel.BoardGameGeekObjectId;
+                worksheet.Cells[i + START_ROW_OF_NON_HEADER_DATA, INDEX_OF_GAMING_GROUP_ID].Value = playedGameExportModel.GamingGroupId;
+                worksheet.Cells[i + START_ROW_OF_NON_HEADER_DATA, INDEX_OF_GAMING_GROUP_NAME].Value = playedGameExportModel.GamingGroupName;
+                worksheet.Cells[i + START_ROW_OF_NON_HEADER_DATA, INDEX_OF_DATE_RECORDED].Value = playedGameExportModel.DateCreated;
+                worksheet.Cells[i + START_ROW_OF_NON_HEADER_DATA, INDEX_OF_NOTES].Value = playedGameExportModel.Notes;
+                worksheet.Cells[i + START_ROW_OF_NON_HEADER_DATA, INDEX_OF_NUMBER_OF_PLAYERS].Value = playedGameExportModel.NumberOfPlayers;
+                worksheet.Cells[i + START_ROW_OF_NON_HEADER_DATA, INDEX_OF_WINNING_PLAYER_IDS].Value = playedGameExportModel.WinningPlayerIds;
+                worksheet.Cells[i + START_ROW_OF_NON_HEADER_DATA, INDEX_OF_WINNING_PLAYER_NAMES].Value = playedGameExportModel.WinningPlayerNames;
+            }
+        }
+
+        private static void AddHeaderRow(ExcelWorksheet worksheet)
+        {
+            worksheet.Cells[1, 1].Value = "Game Name";
+            worksheet.Cells[1, INDEX_OF_PLAYED_GAME_ID].Value = "Played Game Id";
+            worksheet.Cells[1, INDEX_OF_DATE_PLAYED].Value = "Date Played (UTC)";
+            worksheet.Cells[1, INDEX_OF_GAME_DEFINITION_ID].Value = "Game Id";
+            worksheet.Cells[1, INDEX_OF_GAME_DEFINITION_NAME].Value = "Game Name";
+            worksheet.Cells[1, INDEX_OF_BOARD_GAME_GEEK_OBJECT_ID].Value = "BoardGameGeek Object Id";
+            worksheet.Cells[1, INDEX_OF_GAMING_GROUP_ID].Value = "Gaming Group Id";
+            worksheet.Cells[1, INDEX_OF_GAMING_GROUP_NAME].Value = "Gaming Group Name";
+            worksheet.Cells[1, INDEX_OF_DATE_RECORDED].Value = "Date Recorded (UTC)";
+            worksheet.Cells[1, INDEX_OF_NOTES].Value = "Notes";
+            worksheet.Cells[1, INDEX_OF_NUMBER_OF_PLAYERS].Value = "Number Of Players";
+            worksheet.Cells[1, INDEX_OF_WINNING_PLAYER_IDS].Value = "Winning Player Ids";
+            worksheet.Cells[1, INDEX_OF_WINNING_PLAYER_NAMES].Value = "Winning Player Names";
+
+            using (var range = worksheet.Cells[1, 1, 1, 12])
+            {
+                range.Style.Font.Bold = true;
+                range.Style.Fill.PatternType = ExcelFillStyle.Solid;
+                range.Style.Fill.BackgroundColor.SetColor(Color.Black);
+                range.Style.Font.Color.SetColor(Color.WhiteSmoke);
+                range.Style.ShrinkToFit = false;
+                range.AutoFitColumns();
+            }
         }
     }
 }
