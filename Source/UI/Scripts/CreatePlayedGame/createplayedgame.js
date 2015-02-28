@@ -23,6 +23,9 @@ Views.PlayedGame.CreatePlayedGame = function () {
 	this.$gameId = null;
 	this.$btnEveryoneWonButton = null;
 	this.$btnEveryoneLostButton = null;
+	this.$removePlayerButtons = null;
+	this.$buttonUp = null;
+	this.$buttonDown = null;
 };
 
 //Implementation
@@ -52,13 +55,16 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
 		}).datepicker("setDate", new Date());
 		this.$btnEveryoneWonButton = $("#btnEveryoneWonButton");
 		this.$btnEveryoneLostButton = $("#btnEveryoneLostButton");
+		this.$removePlayerButtons = $(".btnRemovePlayer");
+		this.$buttonUp = $(".rankButton-up");
+		this.$buttonDown = $(".rankButton-down");
 
 		this._googleAnalytics = gaObject;
 
 		this.$recordPlayedGameForm.on("submit", $.proxy(parent.validatePlayers, parent));
 
 		var currentRank = this.$rankedPlayers.attr("data-numRankedPlayers");
-		
+
 		if (currentRank > 0)
 			this._playerRank = currentRank;
 
@@ -105,10 +111,9 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
 		var shared = new Views.Shared.Layout();
 		this.$gameId = shared.getQueryString("gameId");
 
+		parent.validateGameDefinition();
 
 		this.setupButtons();
-
-		parent.validateGameDefinition();
 	},
 	onReorder: function () {
 		var parent = this;
@@ -156,28 +161,12 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
 				alert("Error " + err.status + ":\r\n" + err.statusText);
 			},
 		});
-		
-		
+
 		this._playerIndex++;
 		this._playerRank++;
 		selectedOption.remove();
 
 		this.setupButtons();
-		//this.setupButtons();
-		//var buttonUp = $(".rankButton-up");
-		//var buttonDown = $(".rankButton-down");
-		//buttonUp.off("click").on("click", function () {
-		//	parent.movePlayerUp(this);
-		//});
-
-		//buttonDown.off("click").on("click", function () {
-		//	parent.movePlayerDown(this);
-		//});
-
-		//var removePlayerButtons = $(".btnRemovePlayer");
-		//removePlayerButtons.off('click').on("click", function () {
-		//	parent.removePlayer(this);
-		//});
 
 		this.recalculateRanks();
 
@@ -185,21 +174,18 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
 	},
 	setupButtons: function () {
 		var parent = this;
-		var buttonUp = $(".rankButton-up");
-		var buttonDown = $(".rankButton-down");
-		buttonUp.on("click", function () {
+
+		this.$buttonUp.on("click", function () {
 			parent.movePlayerUp(this);
 		});
 
-		buttonDown.on("click", function () {
+		this.$buttonDown.on("click", function () {
 			parent.movePlayerDown(this);
 		});
-
-		var removePlayerButtons = $(".btnRemovePlayer");
-		removePlayerButtons.off('click').on("click", function () {
+		this.$removePlayerButtons.on("click", function () {
 			parent.removePlayer(this);
 		});
-},
+	},
 	removePlayer: function (button) {
 		var playerId = $(button).data("playerid");
 		var playerName = $(button).data("playername");
