@@ -57,6 +57,11 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
 
 		this.$recordPlayedGameForm.on("submit", $.proxy(parent.validatePlayers, parent));
 
+		var currentRank = this.$rankedPlayers.attr("data-numRankedPlayers");
+		
+		if (currentRank > 0)
+			this._playerRank = currentRank;
+
 		//Event handlers
 		this.$players.change(function () { parent.addPlayer(); });
 		this.$rankedPlayers.sortable({
@@ -141,6 +146,7 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
 			success: function (response) {
 				this.$rankedPlayers = $("#rankedPlayers");
 				playerItem = response;
+
 				this.$rankedPlayers.append(playerItem);
 			},
 			error: function (err) {
@@ -150,6 +156,8 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
 		/*when this is called from edit
 		*	players that are already displayed need to be removed from the dropdown
 		*	playerRank needs to be populated to correspond to the number of players recorded + 1
+		*
+		* currently when there are existing players, new players are added to the top of the list which messes up the ranks for everyone
 		*/
 		this._playerIndex++;
 		this._playerRank++;

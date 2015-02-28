@@ -64,12 +64,13 @@
 							<div class="col-md-3">
 							</div>
 							<div class="col-md-9">
-								<ul id="rankedPlayers" class="sortable"></ul>
-								@foreach (var item in Model.PlayerRanks)
-								{
-									var playerName = Model.Players.Where(x => x.Value.Equals(item.PlayerId.ToString())).SingleOrDefault().Text;
-									Html.RenderPartial(MVC.PlayedGame.Views._PlayedGamesPlayerPartial, new UI.Models.PlayedGame.EditPlayedGamePlayerPartialViewModel { PlayerId = item.PlayerId, PlayerName = playerName, GameRank = item.GameRank });
-								}
+								<ul id="rankedPlayers" class="sortable" data-numrankedplayers="@(Model.PlayerRanks.Count + 1)">
+									@foreach (var item in Model.PlayerRanks)
+									{
+										var playerName = Model.Players.Where(x => x.Value.Equals(item.PlayerId.ToString())).SingleOrDefault().Text;
+										Html.RenderPartial(MVC.PlayedGame.Views._PlayedGamesPlayerPartial, new UI.Models.PlayedGame.EditPlayedGamePlayerPartialViewModel { PlayerId = item.PlayerId, PlayerName = playerName, GameRank = item.GameRank });
+									}
+								</ul>
 							</div>
 						</div>
 
@@ -113,60 +114,5 @@
 			var createOrUpdatePlayer = new window.Views.Player.CreateOrUpdate();
 			createOrUpdatePlayer.init($.proxy(createPlayedGame.onPlayerCreated, createPlayedGame));
 		});
-	</script>
-
-	<script id="player-item-template" type="text/x-handlebars-template">
-		@*var playerName = {{ playerName }};
-		@{
-
-			Html.RenderPartial(MVC.PlayedGame.Views._PlayedGamesPlayerPartial, new UI.Models.PlayedGame.EditPlayedGamePlayerPartialViewModel { PlayerName = "" });
-		}*@
-		@*<li>
-				<div class="playerItem">
-					<div class="leftItem">
-						<span>{{playerName}} - Rank:</span>
-						<input type="hidden" name="PlayerRanks[{{playerIndex}}].PlayerId" value="{{playerId}}" />
-					</div>
-					<div class="rightItem fl-right">
-						<input class="playerRank"
-							   data-rule-required="true"
-							   data-rule-min="1"
-							   data-val="true"
-							   data-val-number="The field must be a number."
-							   data-val-required=""
-							   aria-required="true"
-							   aria-invalid="false"
-							   type="text"
-							   name="PlayerRanks[{{playerIndex}}].GameRank"
-							   value="{{playerRank}}"
-							   style="text-align:center;"
-							   onclick="this.focus();this.select()" />
-
-						<button class="removePlayerButton btnRemovePlayer"
-								type="button"
-								data-playername="{{playerName}}"
-								data-playerid="{{playerId}}"
-								title="Remove player">
-							<i class='fa fa-remove'></i>
-						</button>
-						<button class="rankButton-down"
-								type="button"
-								data-playername="{{playerName}}"
-								data-playerid="{{playerId}}"
-								title="Move rank down">
-							<i class="fa fa-chevron-down"></i>
-						</button>
-
-						<button class="rankButton-up"
-								type="button"
-								data-playername="{{playerName}}"
-								data-playerid="{{playerId}}"
-								title="Move rank up">
-							<i class="fa fa-chevron-up"></i>
-						</button>
-					</div>
-					<div class="fl-clear"></div>
-				</div>
-			</li>*@
 	</script>
 }
