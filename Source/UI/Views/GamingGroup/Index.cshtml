@@ -52,6 +52,9 @@
             var gamingGroupView = new Views.GamingGroup.GamingGroupView();
             var googleAnalyticsObject = new window.Views.Shared.GoogleAnalytics();
             gamingGroupView.init(googleAnalyticsObject);
+
+            var recordexceldownload = new window.Views._PlayedGamesPartial.EventTracking();
+            recordexceldownload.init(googleAnalyticsObject);
         });
     </script>
 }

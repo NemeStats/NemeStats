@@ -499,6 +499,7 @@
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\namespace-1.0.0.js" />
     <Content Include="Scripts\namespace.min-1.0.0.js" />
+    <Content Include="Scripts\PlayedGame\recordexceldownload.js" />
     <Content Include="Scripts\Player\createOrUpdatePlayer.js" />
     <Content Include="Scripts\Player\players.js" />
     <Content Include="Scripts\Plugins\rankPlugin.js" />

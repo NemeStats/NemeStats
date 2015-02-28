@@ -14,7 +14,7 @@
         @if ((bool?)ViewData["canEdit"] == true)
         {
             <div>&nbsp;
-                <a href="@fileRequestUrl">
+                <a href="@fileRequestUrl" id="playedGamesExcelDownload">
                     <i class="fa fa-download fa-2x" style="line-height: 36px" data-container="body" data-toggle="popover" data-placement="left"
                        data-content="Export all of your played games to Microsoft Excel (.xlsx)"></i>
                 </a>
