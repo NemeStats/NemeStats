@@ -307,6 +307,7 @@
     <Compile Include="Models\Home\IndexViewModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Nemeses\NemesisChangeViewModel.cs" />
+    <Compile Include="Models\PlayedGame\EditPlayedGamePlayerPartialViewModel.cs" />
     <Compile Include="Models\PlayedGame\GameResultViewModel.cs" />
     <Compile Include="Models\PlayedGame\NewlyCompletedGameViewModel.cs" />
     <Compile Include="Models\PlayedGame\PlayedGameDetailsViewModel.cs" />
@@ -648,6 +649,7 @@
     <Content Include="Views\Player\RecentNemesisChanges.cshtml" />
     <Content Include="Views\Player\_RecentNemesisChangesPartial.cshtml" />
     <Content Include="Views\PlayedGame\Edit.cshtml" />
+    <Content Include="Views\PlayedGame\_PlayedGamesPlayerPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Code\" />

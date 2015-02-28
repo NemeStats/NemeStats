@@ -171,6 +171,9 @@ namespace UI.Controllers
 				viewModel.GameDefinitionId = playedGame.GameDefinitionId;
 				viewModel.DatePlayed = playedGame.DatePlayed;
 				viewModel.Notes = playedGame.Notes;
+
+				//players that are already recorded should not appear in player drop down list
+
 				viewModel.PlayerRanks = playedGame.PlayerGameResults.Select(item => new PlayerRank { GameRank = item.GameRank, PlayerId = item.PlayerId }).ToList();
 			}
 

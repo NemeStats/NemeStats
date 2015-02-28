@@ -163,7 +163,7 @@ namespace UI.Controllers
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionParamsClass_Edit
         {
-            public readonly string gameID = "gameID";
+            public readonly string id = "id";
             public readonly string currentUser = "currentUser";
         }
         static readonly ViewsClass s_views = new ViewsClass();
@@ -177,6 +177,7 @@ namespace UI.Controllers
             public class _ViewNamesClass
             {
                 public readonly string _PlayedGamesPartial = "_PlayedGamesPartial";
+                public readonly string _PlayedGamesPlayerPartial = "_PlayedGamesPlayerPartial";
                 public readonly string _RecentlyPlayedGamesPartial = "_RecentlyPlayedGamesPartial";
                 public readonly string Create = "Create";
                 public readonly string Delete = "Delete";
@@ -185,6 +186,7 @@ namespace UI.Controllers
                 public readonly string RecentlyPlayedGames = "RecentlyPlayedGames";
             }
             public readonly string _PlayedGamesPartial = "~/Views/PlayedGame/_PlayedGamesPartial.cshtml";
+            public readonly string _PlayedGamesPlayerPartial = "~/Views/PlayedGame/_PlayedGamesPlayerPartial.cshtml";
             public readonly string _RecentlyPlayedGamesPartial = "~/Views/PlayedGame/_RecentlyPlayedGamesPartial.cshtml";
             public readonly string Create = "~/Views/PlayedGame/Create.cshtml";
             public readonly string Delete = "~/Views/PlayedGame/Delete.cshtml";
@@ -275,15 +277,15 @@ namespace UI.Controllers
         }
 
         [NonAction]
-        partial void EditOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int? gameID, BusinessLogic.Models.User.ApplicationUser currentUser);
+        partial void EditOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int? id, BusinessLogic.Models.User.ApplicationUser currentUser);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult Edit(int? gameID, BusinessLogic.Models.User.ApplicationUser currentUser)
+        public override System.Web.Mvc.ActionResult Edit(int? id, BusinessLogic.Models.User.ApplicationUser currentUser)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Edit);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "gameID", gameID);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "currentUser", currentUser);
-            EditOverride(callInfo, gameID, currentUser);
+            EditOverride(callInfo, id, currentUser);
             return callInfo;
         }
 
