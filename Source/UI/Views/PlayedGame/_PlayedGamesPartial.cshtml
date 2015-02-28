@@ -23,7 +23,7 @@
             <table class="table table-hover table-striped">
                 <thead>
                     <tr>
-                        <th class="col-md-4">
+                        <th class="col-md-3">
                             Game Name
                         </th>
                         <th class="col-md-2">
@@ -70,6 +70,9 @@
                                 </a>
                                 @if (playedGameDetailsViewModel.UserCanEdit)
                                 {
+									<a href="@Url.Action("Edit", "PlayedGame", new { id = playedGameDetailsViewModel.PlayedGameId })" title="Edit">
+										<i class="fa fa-pencil fa-2x"></i>
+									</a>
                                     <a href="@Url.Action("Delete", "PlayedGame", new { id = playedGameDetailsViewModel.PlayedGameId })" title="Delete">
                                         <i class="fa fa-trash-o fa-2x"></i>
                                     </a>
