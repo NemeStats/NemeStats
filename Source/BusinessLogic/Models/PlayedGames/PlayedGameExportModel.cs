@@ -6,6 +6,7 @@ namespace BusinessLogic.Models.PlayedGames
     {
         public int Id { get; set; }
         public int GamingGroupId { get; set; }
+        public string GamingGroupName { get; set; }
         public int GameDefinitionId { get; set; }
         public int? BoardGameGeekObjectId { get; set; }
         public string GameDefinitionName { get; set; }

@@ -48,11 +48,12 @@ namespace UI.Areas.Api.Controllers
                 GameDefinitionId = playedGame.GameDefinitionId,
                 GameDefinitionName = playedGame.GameDefinition.Name,
                 GamingGroupId = playedGame.GamingGroupId,
+                GamingGroupName = playedGame.GamingGroup.Name,
                 Id = playedGame.Id,
                 Notes = playedGame.Notes,
                 NumberOfPlayers = playedGame.NumberOfPlayers,
-                WinningPlayerIds = String.Join("|", playedGame.PlayerGameResults.Where(result => result.GameRank == 1).Select(result => result.PlayerId).ToList()),
-                WinningPlayerNames = String.Join("|", playedGame.PlayerGameResults.Where(result => result.GameRank == 1).Select(result => result.Player.Name).ToList())
+                WinningPlayerIds = String.Join(",", playedGame.PlayerGameResults.Where(result => result.GameRank == 1).Select(result => result.PlayerId).ToList()),
+                WinningPlayerNames = String.Join(",", playedGame.PlayerGameResults.Where(result => result.GameRank == 1).Select(result => result.Player.Name).ToList())
             }).ToList();
 
             exportMemoryStream = new MemoryStream();
@@ -63,7 +64,7 @@ namespace UI.Areas.Api.Controllers
             responseMessage.Content = new StreamContent(exportMemoryStream);
             responseMessage.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
             {
-                FileName = "played_game_export.csv"
+                FileName = "played_game_export.xlsx"
             };
             responseMessage.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
 
