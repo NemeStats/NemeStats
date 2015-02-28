@@ -166,10 +166,12 @@
             <div class="panel-body">
                 <table class="table table-hover table-striped table-responsive">
                     <thead>
-                    <tr>Game</tr>
-                    <tr>Games Played</tr>
-                    <tr>Games Won</tr>
-                    <tr>Win Percentage</tr>
+                        <tr>
+                            <th>Game</th>
+                            <th>Games Played</th>
+                            <th>Games Won</th>
+                            <th>Win Percentage</th>
+                        </tr>
                     </thead>
                     <tbody>
                         @foreach (ChampionViewModel championModel in @Model.ChampionedGames)

@@ -42,3 +42,4 @@
 /// <reference path="../javascripts/bootstrap/affix.js" />
 /// <reference path="jquery-ui-1.11.3.min.js" />
 /// <reference path="jquery.validate.unobtrusive.min.js" />
+/// <reference path="playedgame/recordexceldownload.js" />

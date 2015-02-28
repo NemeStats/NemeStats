@@ -57,6 +57,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\EntityFramework.6.1.2\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="EPPlus">
+      <HintPath>..\..\packages\EPPlus.4.0.3\lib\net20\EPPlus.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\Microsoft.AspNet.Identity.Core.2.1.0\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
@@ -107,7 +110,7 @@
     </Reference>
     <Reference Include="RollbarSharp, Version=0.3.1.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\RollbarSharp.0.3.1.0\lib\net40\RollbarSharp.dll</HintPath>
+      <HintPath>..\..\packages\RollbarSharp.Unofficial.0.4.1\lib\net40\RollbarSharp.dll</HintPath>
     </Reference>
     <Reference Include="StructureMap, Version=3.1.4.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -178,6 +181,7 @@
     <Compile Include="IntegrationTests\BoardGameGeekTests\BoardGameGeekModels.cs" />
     <Compile Include="IntegrationTests\BoardGameGeekTests\BoardGameGeekIntegrationTests.cs" />
     <Compile Include="IntegrationTests\RollbarTests.cs" />
+    <Compile Include="UnitTests\AreasTests\ApiTests\ControllersTests\GamingGroupsControllerTests.cs" />
     <Compile Include="UnitTests\AreasTests\ApiTests\ControllersTests\VotableFeaturesControllerTests.cs" />
     <Compile Include="UnitTests\ControllerTests\AccountControllerTests\AccountControllerTestBase.cs" />
     <Compile Include="UnitTests\ControllerTests\AccountControllerTests\AddExistingUserToGamingGroup.cs" />
@@ -219,6 +223,7 @@
     <Compile Include="UnitTests\ControllerTests\PlayerControllerTests\PlayerControllerTestBase.cs" />
     <Compile Include="UnitTests\ControllerTests\PlayerControllerTests\ShowRecentNemesisChangesTests.cs" />
     <Compile Include="UnitTests\ControllerTests\PlayerControllerTests\ShowTopPlayersTests.cs" />
+    <Compile Include="UnitTests\ExcelExportTests.cs" />
     <Compile Include="UnitTests\FiltersTests\UserContextAttributeTests\OnActionExecutingTests.cs" />
     <Compile Include="UnitTests\HtmlHelperTests\MyHelpersTests\GameResultsTests.cs" />
     <Compile Include="UnitTests\TransformationsTests\AutomapperConfigurationTests.cs" />

@@ -339,3 +339,7 @@ h3 > a {
 button > i.fa {
 	font-size: 20px;
 }
+
+.panel > i.fa{
+    line-height: 36;
+}
