@@ -13,9 +13,14 @@
         </h4>
         @if ((bool?)ViewData["canEdit"] == true)
         {
-            <div><a href="@fileRequestUrl">Export to CSV</a></div>
-            <div class="fl-right">
-                @Html.ActionLink("Record Played Game", "Create", "PlayedGame", new { }, new { @class = "btn btn-default", @id = "recordPlayedGameFromGamingGroup" })
+            <div>&nbsp;
+                <a href="@fileRequestUrl">
+                    <i class="fa fa-download fa-2x" style="line-height: 36px" data-container="body" data-toggle="popover" data-placement="left"
+                       data-content="Export all of your played games to Microsoft Excel (.xlsx)"></i>
+                </a>
+                <div class="fl-right">
+                    @Html.ActionLink("Record Played Game", "Create", "PlayedGame", new { }, new { @class = "btn btn-default", @id = "recordPlayedGameFromGamingGroup" })
+                </div>
             </div>
         }
         <div class="fl-clear"></div>
