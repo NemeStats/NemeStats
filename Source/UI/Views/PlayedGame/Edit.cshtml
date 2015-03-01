@@ -13,7 +13,7 @@
 	<div class="panel-body">
 		<div class="row">
 			<div class="col-md-5">
-				@using (Html.BeginForm("Create", MVC.PlayedGame.Name, FormMethod.Post, new { id = "recordPlayedGame" }))
+				@using (Html.BeginForm("Edit", MVC.PlayedGame.Name, Model, FormMethod.Post))
 				{
 					@Html.AntiForgeryToken()
 					<div class="form-horizontal">

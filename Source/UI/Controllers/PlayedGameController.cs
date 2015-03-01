@@ -189,18 +189,18 @@ namespace UI.Controllers
 		[Authorize]
 		[UserContextAttribute]
 		[HttpPost]
-		public virtual ActionResult Edit(NewlyCompletedGameViewModel newlyCompletedGame, ApplicationUser currentUser)
+		public virtual ActionResult Edit([Bind(Include = "GameDefinitions, Players, PlayerRanks, DatePlayed, PreviousGameId")] NewlyCompletedGameViewModel newlyCompletedGame, ApplicationUser currentUser)
 		{
 			if (ModelState.IsValid)
 			{
 				var editedGame = new NewlyCompletedGame();
 				Mapper.Map<NewlyCompletedGameViewModel, NewlyCompletedGame>(newlyCompletedGame, editedGame);
 
-				this.playedGameDeleter.DeletePlayedGame(newlyCompletedGame.PreviousGameId, currentUser);
+				//	this.playedGameDeleter.DeletePlayedGame(newlyCompletedGame.PreviousGameId, currentUser);
 				this.playedGameCreator.CreatePlayedGame(editedGame, currentUser);
 				//delete old game
 				//save new one
-				return View(MVC.GamingGroup.Views.Index, currentUser);
+				return View(MVC.GamingGroup.Views.Index, currentUser);//should probably redirect to #recentlyplayed games anchor tag
 			}
 
 			return View(MVC.PlayedGame.Views.Edit, newlyCompletedGame.PreviousGameId);

@@ -1,5 +1,8 @@
 ﻿using BusinessLogic.Models.Games;
+using BusinessLogic.Models.Games.Validation;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 
 namespace UI.Models.PlayedGame
@@ -12,11 +15,19 @@ namespace UI.Models.PlayedGame
 
 		public Dictionary<string, int> ExistingRankedPlayerNames { get; set; }
 
+		[PlayerRankValidationAttribute]
+		[Required]
+		public List<PlayerRank> PlayerRanks { get; set; }
+
+		[Required]
+		[DataType(DataType.Date)]
+		public DateTime DatePlayed { get; set; }
+
 		public int PreviousGameId { get; set; }
 
-		public NewlyCompletedGameViewModel()
-		{
-			this.PreviousGameId = -1;
-		}
+		//public NewlyCompletedGameViewModel()
+		//{
+		//	this.PreviousGameId = -1;
+		//}
 	}
 }
