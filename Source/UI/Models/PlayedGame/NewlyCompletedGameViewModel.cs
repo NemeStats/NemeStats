@@ -11,5 +11,12 @@ namespace UI.Models.PlayedGame
 		public IEnumerable<SelectListItem> Players { get; set; }
 
 		public Dictionary<string, int> ExistingRankedPlayerNames { get; set; }
+
+		public int PreviousGameId { get; set; }
+
+		public NewlyCompletedGameViewModel()
+		{
+			this.PreviousGameId = -1;
+		}
 	}
 }

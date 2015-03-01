@@ -1,4 +1,5 @@
-﻿using BusinessLogic.DataAccess;
+﻿using AutoMapper;
+using BusinessLogic.DataAccess;
 using BusinessLogic.Logic.GameDefinitions;
 using BusinessLogic.Logic.PlayedGames;
 using BusinessLogic.Logic.Players;
@@ -168,6 +169,7 @@ namespace UI.Controllers
 			if (id > 0)
 			{
 				var playedGame = this.playedGameRetriever.GetPlayedGameDetails((int)id) as PlayedGame;
+				viewModel.PreviousGameId = playedGame.Id;
 				viewModel.GameDefinitionId = playedGame.GameDefinitionId;
 				viewModel.DatePlayed = playedGame.DatePlayed;
 				viewModel.Notes = playedGame.Notes;
@@ -181,6 +183,27 @@ namespace UI.Controllers
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
 			return View(viewModel);
+		}
+
+		// POST: /PlayedGame/Edit
+		[Authorize]
+		[UserContextAttribute]
+		[HttpPost]
+		public virtual ActionResult Edit(NewlyCompletedGameViewModel newlyCompletedGame, ApplicationUser currentUser)
+		{
+			if (ModelState.IsValid)
+			{
+				var editedGame = new NewlyCompletedGame();
+				Mapper.Map<NewlyCompletedGameViewModel, NewlyCompletedGame>(newlyCompletedGame, editedGame);
+
+				this.playedGameDeleter.DeletePlayedGame(newlyCompletedGame.PreviousGameId, currentUser);
+				this.playedGameCreator.CreatePlayedGame(editedGame, currentUser);
+				//delete old game
+				//save new one
+				return View(MVC.GamingGroup.Views.Index, currentUser);
+			}
+
+			return View(MVC.PlayedGame.Views.Edit, newlyCompletedGame.PreviousGameId);
 		}
 
 		private List<SelectListItem> RemovePlayersFromExistingPlayerRanks(List<SelectListItem> players, List<PlayerRank> playerRanks)

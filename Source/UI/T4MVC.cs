@@ -140,6 +140,14 @@ namespace Links
         public static readonly string namespace_1_0_0_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/namespace-1.0.0.min.js") ? Url("namespace-1.0.0.min.js") : Url("namespace-1.0.0.js");
         public static readonly string namespace_min_1_0_0_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/namespace.min-1.0.0.min.js") ? Url("namespace.min-1.0.0.min.js") : Url("namespace.min-1.0.0.js");
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public static class PlayedGame {
+            private const string URLPATH = "~/Scripts/PlayedGame";
+            public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
+            public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
+            public static readonly string recordexceldownload_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/recordexceldownload.min.js") ? Url("recordexceldownload.min.js") : Url("recordexceldownload.js");
+        }
+    
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public static class Player {
             private const string URLPATH = "~/Scripts/Player";
             public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
@@ -167,6 +175,100 @@ namespace Links
             public static readonly string _Layout_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/_Layout.min.js") ? Url("_Layout.min.js") : Url("_Layout.js");
             public static readonly string _LoginPartial_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/_LoginPartial.min.js") ? Url("_LoginPartial.min.js") : Url("_LoginPartial.js");
             public static readonly string GoogleAnalytics_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/GoogleAnalytics.min.js") ? Url("GoogleAnalytics.min.js") : Url("GoogleAnalytics.js");
+        }
+    
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public static class stylesheets {
+            private const string URLPATH = "~/Scripts/stylesheets";
+            public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
+            public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
+            public static readonly string _bootstrap_compass_scss = Url("_bootstrap-compass.scss");
+            public static readonly string _bootstrap_mincer_scss = Url("_bootstrap-mincer.scss");
+            public static readonly string _bootstrap_sprockets_scss = Url("_bootstrap-sprockets.scss");
+            public static readonly string _bootstrap_scss = Url("_bootstrap.scss");
+            [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+            public static class bootstrap {
+                private const string URLPATH = "~/Scripts/stylesheets/bootstrap";
+                public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
+                public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
+                public static readonly string _alerts_scss = Url("_alerts.scss");
+                public static readonly string _badges_scss = Url("_badges.scss");
+                public static readonly string _breadcrumbs_scss = Url("_breadcrumbs.scss");
+                public static readonly string _button_groups_scss = Url("_button-groups.scss");
+                public static readonly string _buttons_scss = Url("_buttons.scss");
+                public static readonly string _carousel_scss = Url("_carousel.scss");
+                public static readonly string _close_scss = Url("_close.scss");
+                public static readonly string _code_scss = Url("_code.scss");
+                public static readonly string _component_animations_scss = Url("_component-animations.scss");
+                public static readonly string _dropdowns_scss = Url("_dropdowns.scss");
+                public static readonly string _forms_scss = Url("_forms.scss");
+                public static readonly string _glyphicons_scss = Url("_glyphicons.scss");
+                public static readonly string _grid_scss = Url("_grid.scss");
+                public static readonly string _input_groups_scss = Url("_input-groups.scss");
+                public static readonly string _jumbotron_scss = Url("_jumbotron.scss");
+                public static readonly string _labels_scss = Url("_labels.scss");
+                public static readonly string _list_group_scss = Url("_list-group.scss");
+                public static readonly string _media_scss = Url("_media.scss");
+                public static readonly string _mixins_scss = Url("_mixins.scss");
+                public static readonly string _modals_scss = Url("_modals.scss");
+                public static readonly string _navbar_scss = Url("_navbar.scss");
+                public static readonly string _navs_scss = Url("_navs.scss");
+                public static readonly string _normalize_scss = Url("_normalize.scss");
+                public static readonly string _pager_scss = Url("_pager.scss");
+                public static readonly string _pagination_scss = Url("_pagination.scss");
+                public static readonly string _panels_scss = Url("_panels.scss");
+                public static readonly string _popovers_scss = Url("_popovers.scss");
+                public static readonly string _print_scss = Url("_print.scss");
+                public static readonly string _progress_bars_scss = Url("_progress-bars.scss");
+                public static readonly string _responsive_embed_scss = Url("_responsive-embed.scss");
+                public static readonly string _responsive_utilities_scss = Url("_responsive-utilities.scss");
+                public static readonly string _scaffolding_scss = Url("_scaffolding.scss");
+                public static readonly string _tables_scss = Url("_tables.scss");
+                public static readonly string _theme_scss = Url("_theme.scss");
+                public static readonly string _thumbnails_scss = Url("_thumbnails.scss");
+                public static readonly string _tooltip_scss = Url("_tooltip.scss");
+                public static readonly string _type_scss = Url("_type.scss");
+                public static readonly string _utilities_scss = Url("_utilities.scss");
+                public static readonly string _variables_scss = Url("_variables.scss");
+                public static readonly string _wells_scss = Url("_wells.scss");
+                [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+                public static class mixins {
+                    private const string URLPATH = "~/Scripts/stylesheets/bootstrap/mixins";
+                    public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
+                    public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
+                    public static readonly string _alerts_scss = Url("_alerts.scss");
+                    public static readonly string _background_variant_scss = Url("_background-variant.scss");
+                    public static readonly string _border_radius_scss = Url("_border-radius.scss");
+                    public static readonly string _buttons_scss = Url("_buttons.scss");
+                    public static readonly string _center_block_scss = Url("_center-block.scss");
+                    public static readonly string _clearfix_scss = Url("_clearfix.scss");
+                    public static readonly string _forms_scss = Url("_forms.scss");
+                    public static readonly string _gradients_scss = Url("_gradients.scss");
+                    public static readonly string _grid_framework_scss = Url("_grid-framework.scss");
+                    public static readonly string _grid_scss = Url("_grid.scss");
+                    public static readonly string _hide_text_scss = Url("_hide-text.scss");
+                    public static readonly string _image_scss = Url("_image.scss");
+                    public static readonly string _labels_scss = Url("_labels.scss");
+                    public static readonly string _list_group_scss = Url("_list-group.scss");
+                    public static readonly string _nav_divider_scss = Url("_nav-divider.scss");
+                    public static readonly string _nav_vertical_align_scss = Url("_nav-vertical-align.scss");
+                    public static readonly string _opacity_scss = Url("_opacity.scss");
+                    public static readonly string _pagination_scss = Url("_pagination.scss");
+                    public static readonly string _panels_scss = Url("_panels.scss");
+                    public static readonly string _progress_bar_scss = Url("_progress-bar.scss");
+                    public static readonly string _reset_filter_scss = Url("_reset-filter.scss");
+                    public static readonly string _resize_scss = Url("_resize.scss");
+                    public static readonly string _responsive_visibility_scss = Url("_responsive-visibility.scss");
+                    public static readonly string _size_scss = Url("_size.scss");
+                    public static readonly string _tab_focus_scss = Url("_tab-focus.scss");
+                    public static readonly string _table_row_scss = Url("_table-row.scss");
+                    public static readonly string _text_emphasis_scss = Url("_text-emphasis.scss");
+                    public static readonly string _text_overflow_scss = Url("_text-overflow.scss");
+                    public static readonly string _vendor_prefixes_scss = Url("_vendor-prefixes.scss");
+                }
+            
+            }
+        
         }
     
     }
@@ -305,6 +407,13 @@ namespace Links
                     public const string gamingGroup_js = "~/Scripts/GamingGroup/gamingGroup.js"; 
                 }
             }
+            public static partial class PlayedGame 
+            {
+                public static class Assets
+                {
+                    public const string recordexceldownload_js = "~/Scripts/PlayedGame/recordexceldownload.js"; 
+                }
+            }
             public static partial class Player 
             {
                 public static class Assets
@@ -328,6 +437,24 @@ namespace Links
                     public const string _Layout_js = "~/Scripts/Shared/_Layout.js"; 
                     public const string _LoginPartial_js = "~/Scripts/Shared/_LoginPartial.js"; 
                     public const string GoogleAnalytics_js = "~/Scripts/Shared/GoogleAnalytics.js"; 
+                }
+            }
+            public static partial class stylesheets 
+            {
+                public static partial class bootstrap 
+                {
+                    public static partial class mixins 
+                    {
+                        public static class Assets
+                        {
+                        }
+                    }
+                    public static class Assets
+                    {
+                    }
+                }
+                public static class Assets
+                {
                 }
             }
             public static class Assets

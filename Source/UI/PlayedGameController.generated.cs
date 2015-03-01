@@ -173,6 +173,7 @@ namespace UI.Controllers
         {
             public readonly string id = "id";
             public readonly string currentUser = "currentUser";
+            public readonly string newlyCompletedGame = "newlyCompletedGame";
         }
         static readonly ActionParamsClass_AddPlayer s_params_AddPlayer = new ActionParamsClass_AddPlayer();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -304,6 +305,19 @@ namespace UI.Controllers
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "currentUser", currentUser);
             EditOverride(callInfo, id, currentUser);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void EditOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, UI.Models.PlayedGame.NewlyCompletedGameViewModel newlyCompletedGame, BusinessLogic.Models.User.ApplicationUser currentUser);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult Edit(UI.Models.PlayedGame.NewlyCompletedGameViewModel newlyCompletedGame, BusinessLogic.Models.User.ApplicationUser currentUser)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Edit);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "newlyCompletedGame", newlyCompletedGame);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "currentUser", currentUser);
+            EditOverride(callInfo, newlyCompletedGame, currentUser);
             return callInfo;
         }
 
