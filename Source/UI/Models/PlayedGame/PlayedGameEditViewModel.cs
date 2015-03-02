@@ -12,19 +12,6 @@ namespace UI.Models.PlayedGame
 
 		public Dictionary<string, int> ExistingRankedPlayerNames { get; set; }
 
-		//[PlayerRankValidationAttribute]
-		//[Required]
-		//public List<PlayerRank> PlayerRanks { get; set; }
-
-		//[Required]
-		//[DataType(DataType.Date)]
-		//public DateTime DatePlayed { get; set; }
-
 		public int PreviousGameId { get; set; }
-
-		//public NewlyCompletedGameViewModel()
-		//{
-		//	this.PreviousGameId = -1;
-		//}
 	}
 }
