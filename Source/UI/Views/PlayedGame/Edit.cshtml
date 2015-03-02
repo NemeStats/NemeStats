@@ -1,5 +1,5 @@
 ﻿@using System.Activities.Expressions
-@model UI.Models.PlayedGame.NewlyCompletedGameViewModel
+@model UI.Models.PlayedGame.PlayedGameEditViewModel
 @{
 	ViewBag.Title = "Record a game";
 	Layout = MVC.Shared.Views._BaseLayout;
@@ -13,7 +13,7 @@
 	<div class="panel-body">
 		<div class="row">
 			<div class="col-md-5">
-				@using (Html.BeginForm("Edit", MVC.PlayedGame.Name, Model, FormMethod.Post))
+				@using (Html.BeginForm("Edit", MVC.PlayedGame.Name, new { previousGameId = @Model.PreviousGameId }, FormMethod.Post))
 				{
 					@Html.AntiForgeryToken()
 					<div class="form-horizontal">

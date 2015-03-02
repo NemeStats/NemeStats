@@ -42,7 +42,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 
 			ViewResult result = playedGameController.Create(currentUser) as ViewResult;
 
-			NewlyCompletedGameViewModel viewModel = (NewlyCompletedGameViewModel)result.Model;
+			PlayedGameEditViewModel viewModel = (PlayedGameEditViewModel)result.Model;
 			Assert.That(viewModel.GameDefinitions.All(item => item.Value == gameDefinitionId.ToString()), Is.True);
 		}
 

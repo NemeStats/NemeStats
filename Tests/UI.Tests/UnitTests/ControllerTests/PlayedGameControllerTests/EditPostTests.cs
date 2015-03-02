@@ -15,8 +15,8 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 		public void ThatEditPostActionReturnsAView()
 		{
 			//--Arrange
-			var editedGame = new NewlyCompletedGameViewModel();
-			base.playedGameControllerPartialMock.Expect(mock => mock.Edit(Arg<NewlyCompletedGameViewModel>.Is.Anything, Arg<ApplicationUser>.Is.Anything)).Return(new ViewResult { ViewName = MVC.GamingGroup.Views.Index });
+			var editedGame = new PlayedGameEditViewModel();
+			base.playedGameControllerPartialMock.Expect(mock => mock.Edit(Arg<PlayedGameEditViewModel>.Is.Anything, Arg<ApplicationUser>.Is.Anything)).Return(new ViewResult { ViewName = MVC.GamingGroup.Views.Index });
 
 			//--Act
 			var result = base.playedGameControllerPartialMock.Edit(editedGame, base.currentUser) as ViewResult;
@@ -29,7 +29,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 		public void ItStaysOnEditPageIfValidationFails()
 		{
 			//--Arrange
-			var editedGame = new NewlyCompletedGameViewModel();
+			var editedGame = new PlayedGameEditViewModel();
 			base.playedGameControllerPartialMock.ModelState.AddModelError("Model", "is bad you fool");
 
 			//--Act
@@ -44,8 +44,8 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 		{
 			//--Arrange
 			var editedGame = new NewlyCompletedGame();
-			var viewModel = new NewlyCompletedGameViewModel();
-			Mapper.Map<NewlyCompletedGameViewModel, NewlyCompletedGame>(viewModel, editedGame);
+			var viewModel = new PlayedGameEditViewModel();
+			Mapper.Map<PlayedGameEditViewModel, NewlyCompletedGame>(viewModel, editedGame);
 
 			//--Act
 			base.playedGameController.Edit(viewModel, base.currentUser);
@@ -58,7 +58,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 		public void ThatPreviousGameIsDeleted()
 		{
 			//--Arrange
-			var viewModel = new NewlyCompletedGameViewModel();
+			var viewModel = new PlayedGameEditViewModel();
 
 			//--Act
 			base.playedGameControllerPartialMock.Edit(viewModel, base.currentUser);

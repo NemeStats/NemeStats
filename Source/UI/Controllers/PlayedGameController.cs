@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using BusinessLogic.DataAccess;
+﻿using BusinessLogic.DataAccess;
 using BusinessLogic.Logic.GameDefinitions;
 using BusinessLogic.Logic.PlayedGames;
 using BusinessLogic.Logic.Players;
@@ -73,7 +72,7 @@ namespace UI.Controllers
 		[HttpGet]
 		public virtual ActionResult Create(ApplicationUser currentUser)
 		{
-			var viewModel = new NewlyCompletedGameViewModel
+			var viewModel = new PlayedGameEditViewModel
 			{
 				GameDefinitions = new SelectList(
 					gameDefinitionRetriever.GetAllGameDefinitions(currentUser.CurrentGamingGroupId.Value),
@@ -162,7 +161,7 @@ namespace UI.Controllers
 		[HttpGet]
 		public virtual ActionResult Edit(int id, ApplicationUser currentUser)
 		{
-			var viewModel = new NewlyCompletedGameViewModel();
+			var viewModel = new PlayedGameEditViewModel();
 			viewModel.GameDefinitions = this.gameDefinitionRetriever.GetAllGameDefinitions(currentUser.CurrentGamingGroupId.Value).Select(item => new SelectListItem { Text = item.Name, Value = item.Id.ToString() }).ToList();
 			viewModel.Players = this.GetAllPlayers(currentUser);
 
@@ -189,21 +188,18 @@ namespace UI.Controllers
 		[Authorize]
 		[UserContextAttribute]
 		[HttpPost]
-		public virtual ActionResult Edit(NewlyCompletedGameViewModel newlyCompletedGame, ApplicationUser currentUser)
+		public virtual ActionResult Edit(NewlyCompletedGame newlyCompletedGame, int previousGameId, ApplicationUser currentUser)
 		{
 			if (ModelState.IsValid)
 			{
-				var editedGame = new NewlyCompletedGame();
-				Mapper.Map<NewlyCompletedGameViewModel, NewlyCompletedGame>(newlyCompletedGame, editedGame);
+				this.playedGameDeleter.DeletePlayedGame(previousGameId, currentUser);
+				this.playedGameCreator.CreatePlayedGame(newlyCompletedGame, currentUser);
 
-				//	this.playedGameDeleter.DeletePlayedGame(newlyCompletedGame.PreviousGameId, currentUser);
-				this.playedGameCreator.CreatePlayedGame(editedGame, currentUser);
-				//delete old game
-				//save new one
-				return View(MVC.GamingGroup.Views.Index, currentUser);//should probably redirect to #recentlyplayed games anchor tag
+				return new RedirectResult(Url.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name)
+											+ "#" + GamingGroupController.SECTION_ANCHOR_RECENT_GAMES);
 			}
 
-			return View(MVC.PlayedGame.Views.Edit, newlyCompletedGame.PreviousGameId);
+			return View(MVC.PlayedGame.Views.Edit, previousGameId);
 		}
 
 		private List<SelectListItem> RemovePlayersFromExistingPlayerRanks(List<SelectListItem> players, List<PlayerRank> playerRanks)

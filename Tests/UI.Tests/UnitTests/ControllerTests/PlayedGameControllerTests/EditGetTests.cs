@@ -17,12 +17,12 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 		{
 			base.TestSetUp();
 
-			base.expectedDefaultCompletedGameViewModel = new NewlyCompletedGameViewModel();
+			base.expectedDefaultCompletedGameViewModel = new PlayedGameEditViewModel();
 			base.playerList = new List<Player> { new Player { Id = 42, Name = "Smitty Werbenjagermanjensen" } };
 			base.playerSelectList = this.playerList.Select(item => new SelectListItem { Text = item.Name, Value = item.Id.ToString() }).ToList();
 			base.gameDefinitionList = new List<GameDefinition> { new GameDefinition { Id = 1, Name = "Betrayal At The House On The Hill" } };
 			base.gameDefinitionSelectList = this.gameDefinitionList.Select(item => new SelectListItem { Text = item.Name, Value = item.Id.ToString() }).ToList();
-			base.expectedPopulatedCompletedGameViewModel = new NewlyCompletedGameViewModel { GameDefinitions = base.gameDefinitionSelectList, Players = base.playerSelectList };
+			base.expectedPopulatedCompletedGameViewModel = new PlayedGameEditViewModel { GameDefinitions = base.gameDefinitionSelectList, Players = base.playerSelectList };
 		}
 
 		[Test]
