@@ -160,7 +160,7 @@ namespace UI.Controllers
 		[Authorize]
 		[UserContextAttribute]
 		[HttpGet]
-		public virtual ActionResult Edit(int? id, ApplicationUser currentUser)
+		public virtual ActionResult Edit(int id, ApplicationUser currentUser)
 		{
 			var viewModel = new NewlyCompletedGameViewModel();
 			viewModel.GameDefinitions = this.gameDefinitionRetriever.GetAllGameDefinitions(currentUser.CurrentGamingGroupId.Value).Select(item => new SelectListItem { Text = item.Name, Value = item.Id.ToString() }).ToList();
@@ -168,7 +168,7 @@ namespace UI.Controllers
 
 			if (id > 0)
 			{
-				var playedGame = this.playedGameRetriever.GetPlayedGameDetails((int)id) as PlayedGame;
+				var playedGame = this.playedGameRetriever.GetPlayedGameDetails(id) as PlayedGame;
 				viewModel.PreviousGameId = playedGame.Id;
 				viewModel.GameDefinitionId = playedGame.GameDefinitionId;
 				viewModel.DatePlayed = playedGame.DatePlayed;
@@ -189,7 +189,7 @@ namespace UI.Controllers
 		[Authorize]
 		[UserContextAttribute]
 		[HttpPost]
-		public virtual ActionResult Edit([Bind(Include = "GameDefinitions, Players, PlayerRanks, DatePlayed, PreviousGameId")] NewlyCompletedGameViewModel newlyCompletedGame, ApplicationUser currentUser)
+		public virtual ActionResult Edit(NewlyCompletedGameViewModel newlyCompletedGame, ApplicationUser currentUser)
 		{
 			if (ModelState.IsValid)
 			{
