@@ -4,6 +4,7 @@ using BusinessLogic.Models.User;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System.Web.Mvc;
+using UI.Controllers;
 using UI.Models.PlayedGame;
 
 namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
@@ -16,10 +17,10 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 		{
 			//--Arrange
 			var editedGame = new PlayedGameEditViewModel();
-			base.playedGameControllerPartialMock.Expect(mock => mock.Edit(Arg<PlayedGameEditViewModel>.Is.Anything, Arg<ApplicationUser>.Is.Anything)).Return(new ViewResult { ViewName = MVC.GamingGroup.Views.Index });
+			base.playedGameControllerPartialMock.Expect(mock => mock.Edit(Arg<PlayedGameEditViewModel>.Is.Anything, Arg<int>.Is.NotNull, Arg<ApplicationUser>.Is.Anything)).Return(new ViewResult { ViewName = MVC.GamingGroup.Views.Index });
 
 			//--Act
-			var result = base.playedGameControllerPartialMock.Edit(editedGame, base.currentUser) as ViewResult;
+			var result = base.playedGameControllerPartialMock.Edit(editedGame, 1234, base.currentUser) as ViewResult;
 
 			//--Assert
 			Assert.AreEqual(MVC.GamingGroup.Views.Index, result.ViewName);
@@ -33,7 +34,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 			base.playedGameControllerPartialMock.ModelState.AddModelError("Model", "is bad you fool");
 
 			//--Act
-			var result = playedGameControllerPartialMock.Edit(editedGame, base.currentUser) as ViewResult;
+			var result = playedGameControllerPartialMock.Edit(editedGame, 1234, base.currentUser) as ViewResult;
 
 			//--Assert
 			Assert.AreEqual(MVC.PlayedGame.Views.Edit, result.ViewName);
@@ -48,7 +49,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 			Mapper.Map<PlayedGameEditViewModel, NewlyCompletedGame>(viewModel, editedGame);
 
 			//--Act
-			base.playedGameController.Edit(viewModel, base.currentUser);
+			base.playedGameController.Edit(viewModel, 1234, base.currentUser);
 
 			//--Assert
 			base.playedGameCreatorMock.AssertWasCalled(mock => mock.CreatePlayedGame(Arg<NewlyCompletedGame>.Is.Anything, Arg<ApplicationUser>.Is.Anything));
@@ -61,10 +62,30 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 			var viewModel = new PlayedGameEditViewModel();
 
 			//--Act
-			base.playedGameControllerPartialMock.Edit(viewModel, base.currentUser);
+			base.playedGameControllerPartialMock.Edit(viewModel, 1234, base.currentUser);
 
 			//--Assert
 			base.playedGameDeleterMock.AssertWasCalled(mock => mock.DeletePlayedGame(Arg<int>.Is.NotNull, Arg<ApplicationUser>.Is.Anything));
+		}
+
+		[Test]
+		public void ItRedirectsToTheGamingGroupIndexAndRecentGamesSectionAfterSaving()
+		{
+			//--Arrange
+			var playedGame = new NewlyCompletedGame();
+
+			var baseUrl = "base url";
+			var expectedUrl = baseUrl + "#" + GamingGroupController.SECTION_ANCHOR_RECENT_GAMES;
+			base.urlHelperMock.Expect(mock => mock.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name))
+					.Return(baseUrl);
+
+			base.playedGameCreatorMock.Expect(x => x.CreatePlayedGame(Arg<NewlyCompletedGame>.Is.Anything, Arg<ApplicationUser>.Is.Anything)).Repeat.Once();
+
+			//--Act
+			RedirectResult redirectResult = playedGameController.Edit(playedGame, 1234, base.currentUser) as RedirectResult;
+
+			//--Assert
+			Assert.AreEqual(expectedUrl, redirectResult.Url);
 		}
 	}
 }
