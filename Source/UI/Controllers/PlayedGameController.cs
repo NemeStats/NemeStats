@@ -167,7 +167,7 @@ namespace UI.Controllers
 
 			if (id > 0)
 			{
-				var playedGame = this.playedGameRetriever.GetPlayedGameDetails(id) as PlayedGame;
+				var playedGame = this.playedGameRetriever.GetPlayedGameDetails(id);
 				viewModel.PreviousGameId = playedGame.Id;
 				viewModel.GameDefinitionId = playedGame.GameDefinitionId;
 				viewModel.DatePlayed = playedGame.DatePlayed;
@@ -177,9 +177,6 @@ namespace UI.Controllers
 				viewModel.ExistingRankedPlayerNames = playedGame.PlayerGameResults.Select(item => new { item.Player.Name, item.Player.Id }).ToDictionary(p => p.Name, q => q.Id);
 				viewModel.Players = this.RemovePlayersFromExistingPlayerRanks(viewModel.Players.ToList<SelectListItem>(), viewModel.PlayerRanks);
 			}
-
-			if (id == null)
-				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
 			return View(viewModel);
 		}

@@ -17,7 +17,6 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 		{
 			base.TestSetUp();
 
-			base.expectedDefaultCompletedGameViewModel = new PlayedGameEditViewModel();
 			base.playerList = new List<Player> { new Player { Id = 42, Name = "Smitty Werbenjagermanjensen" } };
 			base.playerSelectList = this.playerList.Select(item => new SelectListItem { Text = item.Name, Value = item.Id.ToString() }).ToList();
 			base.gameDefinitionList = new List<GameDefinition> { new GameDefinition { Id = 1, Name = "Betrayal At The House On The Hill" } };
@@ -36,19 +35,6 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 
 			//--Assert
 			Assert.AreEqual(MVC.PlayedGame.Views.Edit, result.ViewName);
-		}
-
-		[Test]
-		public void ThatWhenGameIDIsZeroADefaultModelIsSentToView()
-		{
-			//--Arrange
-			base.playedGameControllerPartialMock.Expect(mock => mock.Edit(Arg<int>.Is.Equal(0), Arg<ApplicationUser>.Is.Anything)).Return(new ViewResult { ViewData = new ViewDataDictionary(base.expectedDefaultCompletedGameViewModel) });
-
-			//--Act
-			var result = base.playedGameControllerPartialMock.Edit(0, base.currentUser) as ViewResult;
-
-			//--Assert
-			Assert.AreEqual(base.expectedDefaultCompletedGameViewModel, result.ViewData.Model);
 		}
 
 		[Test]

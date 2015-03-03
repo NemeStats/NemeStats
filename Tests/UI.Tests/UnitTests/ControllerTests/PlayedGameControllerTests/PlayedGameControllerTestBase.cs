@@ -33,7 +33,6 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 		protected ApplicationUser currentUser;
 		protected List<GameDefinitionSummary> gameDefinitionSummaries;
 		protected List<PublicGameSummary> expectedViewModel;
-		protected PlayedGameEditViewModel expectedDefaultCompletedGameViewModel;
 		protected PlayedGameEditViewModel expectedPopulatedCompletedGameViewModel;
 		protected List<Player> playerList;
 		protected List<SelectListItem> playerSelectList;
