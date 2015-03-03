@@ -32,7 +32,7 @@
 		<div class="col-md-6">
 			@Html.DropDownList("Players", Model.Players, "Add A Player", new { @class = "form-control" })
 			<span id="players-error" class="field-validation-error hidden">
-				<span class="">Each game must have at least two players.</span>
+				<span class="">Each game must have at least one player.</span>
 			</span>
 			<span id="players-error-rank-too-high" class="field-validation-error hidden">
 				<span class="">No player can have a rank higher than the max number of players.</span>
@@ -62,7 +62,7 @@
 				}
 				else
 				{
-					<ul id="rankedPlayers" class="sortable"></ul>
+					<ul id="rankedPlayers" class="sortable" data-numrankedplayers="0"></ul>
 				}
 			}
 		</div>

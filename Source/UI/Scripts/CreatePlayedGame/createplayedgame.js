@@ -27,6 +27,7 @@ Views.PlayedGame.CreatePlayedGame = function () {
 	this.$buttonUp = null;
 	this.$buttonDown = null;
 	this.$document = null;
+	this.$numRankedPlayers = null;
 };
 
 //Implementation
@@ -60,6 +61,7 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
 		this.$buttonUp = $(".rankButton-up");
 		this.$buttonDown = $(".rankButton-down");
 		this.$document = $(document);
+		this.$numRankedPlayers = $("#rankedPlayers").attr("data-numrankedplayers");
 
 		this._googleAnalytics = gaObject;
 
@@ -166,6 +168,7 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
 
 		this._playerIndex++;
 		this._playerRank++;
+		this.$numRankedPlayers++;
 		selectedOption.remove();
 
 		this.recalculateRanks();
@@ -194,6 +197,7 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
 		var playerName = $(button).data("playername");
 		$(button).parents('li').remove();
 		this._playerRank--;
+		this.$numRankedPlayers--;
 		var newPlayer = $('<option value="' + playerId + '">' + playerName + '</option>');
 		this.$players.append(newPlayer);
 		this.recalculateRanks();
@@ -241,7 +245,8 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
 	},
 
 	validatePlayers: function (event) {
-		if (this.$rankedPlayers.children().length < 2) {
+		if (this.$numRankedPlayers < 1) {
+			alert("not enough players");
 			this.$playersErrorContainer.removeClass("hidden");
 			return false;
 		}

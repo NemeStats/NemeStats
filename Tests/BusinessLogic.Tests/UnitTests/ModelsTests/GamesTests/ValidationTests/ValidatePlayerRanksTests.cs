@@ -7,81 +7,81 @@ using System.Linq;
 
 namespace BusinessLogic.Tests.UnitTests.ModelsTests.GamesTests.ValidationTests
 {
-    [TestFixture]
-    public class ValidatePlayerRanksTests
-    {
-        [Test]
-        [ExpectedException(typeof(ArgumentException), ExpectedMessage = PlayerRankValidator.EXCEPTION_MESSAGE_MUST_PASS_AT_LEAST_TWO_PLAYERS)]
-        public void ItRequiresPlayerRanks()
-        {
-            List<PlayerRank> playerRanks = null;
+	[TestFixture]
+	public class ValidatePlayerRanksTests
+	{
+		[Test]
+		[ExpectedException(typeof(ArgumentException), ExpectedMessage = PlayerRankValidator.EXCEPTION_MESSAGE_MUST_PASS_AT_LEAST_ONE_PLAYER)]
+		public void ItRequiresPlayerRanks()
+		{
+			List<PlayerRank> playerRanks = null;
 
-            PlayerRankValidator.ValidatePlayerRanks(playerRanks);
-        }
+			PlayerRankValidator.ValidatePlayerRanks(playerRanks);
+		}
 
-        [Test]
-        [ExpectedException(typeof(ArgumentException), ExpectedMessage = PlayerRankValidator.EXCEPTION_MESSAGE_MUST_PASS_AT_LEAST_TWO_PLAYERS)]
-        public void ItRequiresMoreThanOnePlayer()
-        {
-            List<PlayerRank> playerRanks = new List<PlayerRank>() { new PlayerRank { GameRank = 1, PlayerId = 1 } };
-            
-            PlayerRankValidator.ValidatePlayerRanks(playerRanks);
-        }
+		[Test]
+		[ExpectedException(typeof(ArgumentException), ExpectedMessage = PlayerRankValidator.EXCEPTION_MESSAGE_MUST_PASS_AT_LEAST_ONE_PLAYER)]
+		public void ItRequiresMoreThanOnePlayer()
+		{
+			List<PlayerRank> playerRanks = new List<PlayerRank>() { new PlayerRank { GameRank = 1, PlayerId = 1 } };
 
-        [Test]
-        [ExpectedException(typeof(ArgumentException), ExpectedMessage = PlayerRankValidator.EXCEPTION_MESSAGE_EACH_PLAYER_RANK_MUST_HAVE_A_PLAYER_ID)]
-        public void ItRequiresEachPlayerRankToHaveAPlayer()
-        {
-            List<PlayerRank> playerRanks = new List<PlayerRank>() { new PlayerRank() { GameRank = 1 } };
+			PlayerRankValidator.ValidatePlayerRanks(playerRanks);
+		}
 
-            PlayerRankValidator.ValidatePlayerRanks(playerRanks);
-        }
+		[Test]
+		[ExpectedException(typeof(ArgumentException), ExpectedMessage = PlayerRankValidator.EXCEPTION_MESSAGE_EACH_PLAYER_RANK_MUST_HAVE_A_PLAYER_ID)]
+		public void ItRequiresEachPlayerRankToHaveAPlayer()
+		{
+			List<PlayerRank> playerRanks = new List<PlayerRank>() { new PlayerRank() { GameRank = 1 } };
 
-        [Test]
-        [ExpectedException(typeof(ArgumentException), ExpectedMessage = PlayerRankValidator.EXCEPTION_MESSAGE_EACH_PLAYER_RANK_MUST_HAVE_A_GAME_RANK)]
-        public void ItRequiresEachPlayerRankToAGameRank()
-        {
-            List<PlayerRank> playerRanks = new List<PlayerRank>() 
-                                            { 
+			PlayerRankValidator.ValidatePlayerRanks(playerRanks);
+		}
+
+		[Test]
+		[ExpectedException(typeof(ArgumentException), ExpectedMessage = PlayerRankValidator.EXCEPTION_MESSAGE_EACH_PLAYER_RANK_MUST_HAVE_A_GAME_RANK)]
+		public void ItRequiresEachPlayerRankToAGameRank()
+		{
+			List<PlayerRank> playerRanks = new List<PlayerRank>()
+                                            {
                                                 new PlayerRank() { PlayerId = 1, GameRank = 1 },
-                                                new PlayerRank() { PlayerId = 2 } 
+                                                new PlayerRank() { PlayerId = 2 }
                                             };
 
-            PlayerRankValidator.ValidatePlayerRanks(playerRanks);
-        }
+			PlayerRankValidator.ValidatePlayerRanks(playerRanks);
+		}
 
-        [Test]
-        [ExpectedException(typeof(ArgumentException), ExpectedMessage = PlayerRankValidator.EXCEPTION_MESSAGE_NO_PLAYER_CAN_HAVE_A_HIGHER_RANK_THAN_THE_NUMBER_OF_PLAYERS)]
-        public void NoPlayerMayHaveARankGreaterThanTheTotalNumberOfPlayers()
-        {
-            List<PlayerRank> playerRanks = new List<PlayerRank>();
-            playerRanks.Add(new PlayerRank() { PlayerId = 1, GameRank = 1 });
-            playerRanks.Add(new PlayerRank() { PlayerId = 2, GameRank = 3 });
+		[Test]
+		[ExpectedException(typeof(ArgumentException), ExpectedMessage = PlayerRankValidator.EXCEPTION_MESSAGE_NO_PLAYER_CAN_HAVE_A_HIGHER_RANK_THAN_THE_NUMBER_OF_PLAYERS)]
+		public void NoPlayerMayHaveARankGreaterThanTheTotalNumberOfPlayers()
+		{
+			List<PlayerRank> playerRanks = new List<PlayerRank>();
+			playerRanks.Add(new PlayerRank() { PlayerId = 1, GameRank = 1 });
+			playerRanks.Add(new PlayerRank() { PlayerId = 2, GameRank = 3 });
 
-            PlayerRankValidator.ValidatePlayerRanks(playerRanks);
-        }
+			PlayerRankValidator.ValidatePlayerRanks(playerRanks);
+		}
 
-        [Test]
-        [ExpectedException(typeof(ArgumentException), ExpectedMessage = PlayerRankValidator.EXCEPTION_MESSAGE_NO_PLAYER_CAN_HAVE_A_RANK_LESS_THAN_ONE)]
-        public void NoPlayersMayHaveARankLessThanOne()
-        {
-            List<PlayerRank> playerRanks = new List<PlayerRank>();
-            playerRanks.Add(new PlayerRank() { PlayerId = 1, GameRank = 1 });
-            playerRanks.Add(new PlayerRank() { PlayerId = 2, GameRank = 0 });
+		[Test]
+		[ExpectedException(typeof(ArgumentException), ExpectedMessage = PlayerRankValidator.EXCEPTION_MESSAGE_NO_PLAYER_CAN_HAVE_A_RANK_LESS_THAN_ONE)]
+		public void NoPlayersMayHaveARankLessThanOne()
+		{
+			List<PlayerRank> playerRanks = new List<PlayerRank>();
+			playerRanks.Add(new PlayerRank() { PlayerId = 1, GameRank = 1 });
+			playerRanks.Add(new PlayerRank() { PlayerId = 2, GameRank = 0 });
 
-            PlayerRankValidator.ValidatePlayerRanks(playerRanks);
-        }
+			PlayerRankValidator.ValidatePlayerRanks(playerRanks);
+		}
 
-        [Test]
-        public void ItAcceptsAGameWithRanksOneTwoAndThreeRanks()
-        {
-            List<PlayerRank> playerRanks = new List<PlayerRank>();
-            playerRanks.Add(new PlayerRank() { PlayerId = 1, GameRank = 1 });
-            playerRanks.Add(new PlayerRank() { PlayerId = 2, GameRank = 1 });
-            playerRanks.Add(new PlayerRank() { PlayerId = 3, GameRank = 2 });
-            playerRanks.Add(new PlayerRank() { PlayerId = 4, GameRank = 3 });
+		[Test]
+		public void ItAcceptsAGameWithRanksOneTwoAndThreeRanks()
+		{
+			List<PlayerRank> playerRanks = new List<PlayerRank>();
+			playerRanks.Add(new PlayerRank() { PlayerId = 1, GameRank = 1 });
+			playerRanks.Add(new PlayerRank() { PlayerId = 2, GameRank = 1 });
+			playerRanks.Add(new PlayerRank() { PlayerId = 3, GameRank = 2 });
+			playerRanks.Add(new PlayerRank() { PlayerId = 4, GameRank = 3 });
 
-            PlayerRankValidator.ValidatePlayerRanks(playerRanks);
-        }
-    }
+			PlayerRankValidator.ValidatePlayerRanks(playerRanks);
+		}
+	}
 }
