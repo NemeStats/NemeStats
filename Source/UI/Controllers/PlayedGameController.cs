@@ -196,7 +196,7 @@ namespace UI.Controllers
 											+ "#" + GamingGroupController.SECTION_ANCHOR_RECENT_GAMES);
 			}
 
-			return View(MVC.PlayedGame.Views.Edit, previousGameId);
+			return RedirectToAction(MVC.PlayedGame.Edit(previousGameId, currentUser));
 		}
 
 		private List<SelectListItem> RemovePlayersFromExistingPlayerRanks(List<SelectListItem> players, List<PlayerRank> playerRanks)

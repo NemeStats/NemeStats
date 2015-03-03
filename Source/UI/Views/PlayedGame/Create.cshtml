@@ -1,162 +1,44 @@
 ﻿@using System.Activities.Expressions
 @model UI.Models.PlayedGame.PlayedGameEditViewModel
-	@{
-		ViewBag.Title = "Record a game";
-		Layout = MVC.Shared.Views._BaseLayout;
-	}
-	<h2>@ViewBag.Title</h2>
-	<hr />
-	<div class="panel panel-primary">
-		<div class="panel-heading">
-			<h4>Game played</h4>
-		</div>
-		<div class="panel-body">
-			<div class="row">
-				<div class="col-md-5">
-					@using (Html.BeginForm("Create", MVC.PlayedGame.Name, FormMethod.Post, new { id = "recordPlayedGame" }))
-					{
-						@Html.AntiForgeryToken()
-						<div class="form-horizontal">
-							<div class="form-group">
-								<input type="hidden" value="@ViewBag.GameDefinitionId" id="newGameDefinition" />
-								@Html.LabelFor(model => model.GameDefinitionId, "The Game", new { @class = "control-label col-md-3" })
-								<div class="col-md-6">
-									@Html.DropDownList("GameDefinitionId", Model.GameDefinitions, "Pick A Game", new
-								{
-									@id = "gameDefinitionDropDown",
-									@class = "form-control",
-									data_numOfDefinitions = Model.GameDefinitions.Count(),
-									data_trigger = "focus",
-									data_content = "No game definitions detected. Please create a game definition before proceeding. " +
-												   "<a href='/GameDefinition/Create?returnUrl=/PlayedGame/Create'>Create Game Definition</a>",
-									data_placement = "top"
-								})
-									@Html.ValidationMessageFor(model => model.GameDefinitionId)
-								</div>
-							</div>
-
-							<div class="form-group">
-								@Html.LabelFor(model => model.DatePlayed, "Date Played", new { @class = "control-label col-md-3" })
-								<div class="col-md-6">
-									@Html.TextBox("DatePlayed", "", new { @class = "date-picker" })
-									@Html.ValidationMessageFor(model => model.DatePlayed)
-								</div>
-							</div>
-							<div class="form-group" id="playerDiv">
-								@Html.LabelFor(model => model.PlayerRanks, "The Players", new { @class = "control-label col-md-3" })
-								<div class="col-md-6">
-									@Html.DropDownList("Players", Model.Players, "Add A Player", new { @class = "form-control" })
-									<span id="players-error" class="field-validation-error hidden">
-										<span class="">Each game must have at least two players.</span>
-									</span>
-									<span id="players-error-rank-too-high" class="field-validation-error hidden">
-										<span class="">No player can have a rank higher than the max number of players.</span>
-									</span>
-									@Html.ValidationMessageFor(model => model.PlayerRanks)
-								</div>
-								<div class="col-md-3">
-									<button type="button" id="btnAddPlayer" class=" btn btn-default" title="Create New Player">
-										<i class="fa fa-plus"></i>
-									</button>
-								</div>
-							</div>
-							<div class="form-group">
-								<div class="col-md-3">
-								</div>
-								<div class="col-md-9">
-									<ul id="rankedPlayers" class="sortable"></ul>
-								</div>
-							</div>
-
-							<div class="form-group">
-								@Html.LabelFor(model => model.Notes, "Game Notes", new { @class = "control-label col-md-3" })
-								<div class="col-md-9">
-									@Html.TextAreaFor(model => model.Notes, new { @style = "width:100%", @rows = "8" })
-									@Html.ValidationMessageFor(model => model.Notes)
-								</div>
-							</div>
-
-							<div class="form-group">
-								<div class="col-md-offset-3 col-md-3">
-									<button class="btn btn-primary btn-recordgame" id="btnCreatePlayedGameButton" title="Record a normal game with winners and losers">Record Game</button>
-									<button class="btn btn-success btn-recordgame" id="btnEveryoneWonButton" title="Record a game where everyone won (e.g. you saved the world in Pandemic)">Everyone Won <i class="fa fa-smile-o"></i></button>
-									<button class="btn btn-danger btn-recordgame" id="btnEveryoneLostButton" title="Record a game where everyone lost (e.g. no one survived in Zombicide)">Everyone Lost <i class="fa fa-frown-o"></i></button>
-								</div>
-							</div>
-						</div>
-					}
-				</div>
-				<div id="addPlayer" class="col-md-7 hidden" style="margin-top: 90px">
-					<a href="#addPlayer" id="addPlayerAnchor"></a>
-					@Html.Action("SavePlayer", "Player")
-				</div>
+@{
+	ViewBag.Title = "Record a game";
+	Layout = MVC.Shared.Views._BaseLayout;
+}
+<h2>@ViewBag.Title</h2>
+<hr />
+<div class="panel panel-primary">
+	<div class="panel-heading">
+		<h4>Game played</h4>
+	</div>
+	<div class="panel-body">
+		<div class="row">
+			<div class="col-md-5">
+				@using (Html.BeginForm("Create", MVC.PlayedGame.Name, FormMethod.Post, new { id = "recordPlayedGame" }))
+				{
+					@Html.Partial(MVC.PlayedGame.Views._PlayedGameFormPartial, Model)
+				}
+			</div>
+			<div id="addPlayer" class="col-md-7 hidden" style="margin-top: 90px">
+				<a href="#addPlayer" id="addPlayerAnchor"></a>
+				@Html.Action("SavePlayer", "Player")
 			</div>
 		</div>
 	</div>
+</div>
 
-	<div id="createdPlayedGameBack">
-		@Html.ActionLink("Back To List", "Index", "GamingGroup", null, null, UI.Controllers.GamingGroupController.SECTION_ANCHOR_RECENT_GAMES, null, null)
-	</div>
-	@section Scripts{
-		<script type="text/javascript">
-			//Creation
-			$(document).ready(function () {
-				var createPlayedGame = new window.Views.PlayedGame.CreatePlayedGame();
-				var googleAnalyticsObject = new window.Views.Shared.GoogleAnalytics();
-				createPlayedGame.init(googleAnalyticsObject);
+<div id="createdPlayedGameBack">
+	@Html.ActionLink("Back To List", "Index", "GamingGroup", null, null, UI.Controllers.GamingGroupController.SECTION_ANCHOR_RECENT_GAMES, null, null)
+</div>
+@section Scripts{
+	<script type="text/javascript">
+		//Creation
+		$(document).ready(function () {
+			var createPlayedGame = new window.Views.PlayedGame.CreatePlayedGame();
+			var googleAnalyticsObject = new window.Views.Shared.GoogleAnalytics();
+			createPlayedGame.init(googleAnalyticsObject);
 
-				var createOrUpdatePlayer = new window.Views.Player.CreateOrUpdate();
-				createOrUpdatePlayer.init($.proxy(createPlayedGame.onPlayerCreated, createPlayedGame));
-			});
-		</script>
-
-		<script id="player-item-template" type="text/x-handlebars-template">
-			<li>
-				<div class="playerItem">
-					<div class="leftItem">
-						<span>{{playerName}} - Rank:</span>
-						<input type="hidden" name="PlayerRanks[{{playerIndex}}].PlayerId" value="{{playerId}}" />
-					</div>
-					<div class="rightItem fl-right">
-						<input class="playerRank"
-							   data-rule-required="true"
-							   data-rule-min="1"
-							   data-val="true"
-							   data-val-number="The field must be a number."
-							   data-val-required=""
-							   aria-required="true"
-							   aria-invalid="false"
-							   type="text"
-							   name="PlayerRanks[{{playerIndex}}].GameRank"
-							   value="{{playerRank}}"
-							   style="text-align:center;"
-							   onclick="this.focus();this.select()" />
-
-						<button class="removePlayerButton btnRemovePlayer"
-								type="button"
-								data-playername="{{playerName}}"
-								data-playerid="{{playerId}}"
-								title="Remove player">
-							<i class='fa fa-remove'></i>
-						</button>
-						<button class="rankButton-down"
-								type="button"
-								data-playername="{{playerName}}"
-								data-playerid="{{playerId}}"
-								title="Move rank down">
-							<i class="fa fa-chevron-down"></i>
-						</button>
-
-						<button class="rankButton-up"
-								type="button"
-								data-playername="{{playerName}}"
-								data-playerid="{{playerId}}"
-								title="Move rank up">
-							<i class="fa fa-chevron-up"></i>
-						</button>
-					</div>
-					<div class="fl-clear"></div>
-				</div>
-			</li>
-		</script>
-	}
+			var createOrUpdatePlayer = new window.Views.Player.CreateOrUpdate();
+			createOrUpdatePlayer.init($.proxy(createPlayedGame.onPlayerCreated, createPlayedGame));
+		});
+	</script>
+}
