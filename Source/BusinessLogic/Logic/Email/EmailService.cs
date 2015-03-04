@@ -33,14 +33,7 @@ namespace BusinessLogic.Logic.Email
             var transportWeb = new Web(credentials);
 
             // Send the email.
-            if (transportWeb != null)
-            {
-                return transportWeb.DeliverAsync(myMessage);
-            }
-            else
-            {
-                return Task.FromResult(0);
-            }
+            return transportWeb.DeliverAsync(myMessage);
         }
     }
 }

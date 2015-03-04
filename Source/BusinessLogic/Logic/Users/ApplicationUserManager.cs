@@ -45,7 +45,7 @@ namespace BusinessLogic.Logic.Users
             });
             this.EmailService = new EmailService();
             this.SmsService = new SmsService();
-            this.UserTokenProvider = this.UserTokenProvider = new EmailTokenProvider<ApplicationUser, string>();
+            this.UserTokenProvider = new EmailTokenProvider<ApplicationUser, string>();
         }
     }
 }
