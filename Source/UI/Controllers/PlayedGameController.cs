@@ -1,6 +1,4 @@
-<<<<<<< HEAD
 ﻿using BusinessLogic.DataAccess;
-=======
 ﻿#region LICENSE
 // NemeStats is a free website for tracking the results of board games.
 //     Copyright (C) 2015 Jacob Gordon
@@ -18,9 +16,7 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
-using AutoMapper;
-using BusinessLogic.DataAccess;
->>>>>>> master
+
 using BusinessLogic.Logic.GameDefinitions;
 using BusinessLogic.Logic.PlayedGames;
 using BusinessLogic.Logic.Players;
