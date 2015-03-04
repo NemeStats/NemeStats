@@ -1,7 +1,25 @@
-﻿using BusinessLogic.Logic.Users;
+﻿#region LICENSE
+// NemeStats is a free website for tracking the results of board games.
+//     Copyright (C) 2015 Jacob Gordon
+// 
+//     This program is free software: you can redistribute it and/or modify
+//     it under the terms of the GNU General Public License as published by
+//     the Free Software Foundation, either version 3 of the License, or
+//     (at your option) any later version.
+// 
+//     This program is distributed in the hope that it will be useful,
+//     but WITHOUT ANY WARRANTY; without even the implied warranty of
+//     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//     GNU General Public License for more details.
+// 
+//     You should have received a copy of the GNU General Public License
+//     along with this program.  If not, see <http://www.gnu.org/licenses/>
+#endregion
+using BusinessLogic.Logic.Users;
 using BusinessLogic.Models.User;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
+using Microsoft.Owin.Security.DataProtection;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System.Linq;
@@ -22,6 +40,7 @@ namespace UI.Tests.UnitTests.ControllerTests.AccountControllerTests
         protected IAuthenticationManager authenticationManagerMock;
         protected ICookieHelper cookieHelperMock;
         protected AccountController accountControllerPartialMock;
+        protected IDataProtectionProvider dataProtectionProviderMock;
         protected RegisterViewModel registerViewModel;
         protected ApplicationUser currentUser;
 
@@ -33,7 +52,11 @@ namespace UI.Tests.UnitTests.ControllerTests.AccountControllerTests
             userRegistererMock = MockRepository.GenerateMock<IUserRegisterer>();
             this.firstTimeAuthenticatorMock = MockRepository.GenerateMock<IFirstTimeAuthenticator>();
             this.authenticationManagerMock = MockRepository.GenerateMock<IAuthenticationManager>();
-            userManager = new ApplicationUserManager(userStoreMock);
+            var dataProtector = MockRepository.GenerateMock<IDataProtector>();
+            dataProtectionProviderMock = MockRepository.GenerateMock<IDataProtectionProvider>();
+            dataProtectionProviderMock.Expect(mock => mock.Create(Arg<string>.Is.Anything)).Return(dataProtector);
+
+            userManager = new ApplicationUserManager(userStoreMock, dataProtectionProviderMock);
             cookieHelperMock = MockRepository.GenerateMock<ICookieHelper>();
             accountControllerPartialMock = MockRepository.GeneratePartialMock<AccountController>(
                 userManager,

@@ -15,18 +15,19 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
-using Microsoft.AspNet.Identity;
+using System;
+using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using System.Web;
+using System.Web.Mvc;
+using BusinessLogic.Models.Games;
 
-namespace BusinessLogic.Logic.SMS
+namespace UI.Models.PlayedGame
 {
-    public class SmsService : IIdentityMessageService
+    public class NewlyCompletedGameViewModel : NewlyCompletedGame
     {
-        public Task SendAsync(IdentityMessage message)
-        {
-            // Plug in your sms service here to send a text message.
-            return Task.FromResult(0);
-        }
+        public IEnumerable<SelectListItem> GameDefinitions { get; set; }
+        public IEnumerable<SelectListItem> Players { get; set; }
+
     }
 }
