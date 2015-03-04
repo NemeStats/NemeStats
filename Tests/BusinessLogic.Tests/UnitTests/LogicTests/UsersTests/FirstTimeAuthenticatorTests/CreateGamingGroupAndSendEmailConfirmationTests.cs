@@ -27,6 +27,7 @@ using BusinessLogic.Logic.Users;
 using BusinessLogic.Models;
 using BusinessLogic.Models.User;
 using Microsoft.AspNet.Identity;
+using Microsoft.Owin.Security.DataProtection;
 using NUnit.Framework;
 using Rhino.Mocks;
 
@@ -40,6 +41,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.FirstTimeAuthentic
         private ApplicationUserManager applicationUserManagerMock;
         private IDataContext dataContextMock;
         private FirstTimeAuthenticator firstTimeAuthenticator;
+        protected IDataProtectionProvider dataProtectionProviderMock;
         private ApplicationUser applicationUser;
         private string confirmationToken = "the confirmation token";
         private string callbackUrl = "nemestats.com/Account/ConfirmEmail";
@@ -48,7 +50,10 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.FirstTimeAuthentic
         public void SetUp()
         {
             var userStoreMock = MockRepository.GenerateMock<IUserStore<ApplicationUser>>();
-            applicationUserManagerMock = MockRepository.GenerateMock<ApplicationUserManager>(userStoreMock);
+            var dataProtector = MockRepository.GenerateMock<IDataProtector>();
+            dataProtectionProviderMock = MockRepository.GenerateMock<IDataProtectionProvider>();
+            dataProtectionProviderMock.Expect(mock => mock.Create(Arg<string>.Is.Anything)).Return(dataProtector);
+            applicationUserManagerMock = MockRepository.GenerateMock<ApplicationUserManager>(userStoreMock, dataProtectionProviderMock);
             gamingGroupSaverMock = MockRepository.GenerateMock<IGamingGroupSaver>();
             configurationManagerMock = MockRepository.GenerateMock<IConfigurationManager>();
             dataContextMock = MockRepository.GenerateMock<IDataContext>();

@@ -27,6 +27,7 @@ using BusinessLogic.Logic.Users;
 using BusinessLogic.Models;
 using BusinessLogic.Models.User;
 using Microsoft.AspNet.Identity;
+using Microsoft.Owin.Security.DataProtection;
 using NUnit.Framework;
 using Rhino.Mocks;
 
@@ -40,6 +41,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.GamingGroupInviteC
         protected ApplicationUserManager applicationUserManagerMock;
         protected GamingGroupInviteConsumer gamingGroupInviteConsumer;
         protected IGamingGroupAccessGranter gamingGroupAccessGranter;
+        protected IDataProtectionProvider dataProtectionProviderMock;
         protected List<GamingGroupInvitation> gamingGroupInvitations;
         protected ApplicationUser currentUser;
 
@@ -47,8 +49,11 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.GamingGroupInviteC
         public virtual void SetUp()
         {
             pendingGamingGroupInvitationRetriever = MockRepository.GenerateMock<IPendingGamingGroupInvitationRetriever>();
+            var dataProtector = MockRepository.GenerateMock<IDataProtector>();
+            dataProtectionProviderMock = MockRepository.GenerateMock<IDataProtectionProvider>();
+            dataProtectionProviderMock.Expect(mock => mock.Create(Arg<string>.Is.Anything)).Return(dataProtector);
             userStoreMock = MockRepository.GenerateMock<IUserStore<ApplicationUser>>();
-            applicationUserManagerMock = MockRepository.GenerateMock<ApplicationUserManager>(userStoreMock);
+            applicationUserManagerMock = MockRepository.GenerateMock<ApplicationUserManager>(userStoreMock, dataProtectionProviderMock);
             gamingGroupAccessGranter = MockRepository.GenerateMock<IGamingGroupAccessGranter>();
             dataContextMock = MockRepository.GenerateMock<IDataContext>();
             this.gamingGroupInviteConsumer = new GamingGroupInviteConsumer(

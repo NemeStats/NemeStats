@@ -23,6 +23,7 @@ using BusinessLogic.Logic.Players;
 using BusinessLogic.Logic.Users;
 using BusinessLogic.Models.User;
 using Microsoft.AspNet.Identity;
+using Microsoft.Owin.Security.DataProtection;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System.Linq;
@@ -37,6 +38,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
         protected IDataContext dataContextMock;
         protected INemeStatsEventTracker eventTrackerMock;
         protected IPlayerSaver playerSaverMock;
+        protected IDataProtectionProvider dataProtectionProviderMock;
         protected ApplicationUser currentUser = new ApplicationUser()
         {
             Id = "application user id",
@@ -48,7 +50,10 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
         public virtual void SetUp()
         {
             userStoreMock = MockRepository.GenerateMock<IUserStore<ApplicationUser>>();
-            applicationUserManagerMock = MockRepository.GenerateMock<ApplicationUserManager>(userStoreMock);
+            var dataProtector = MockRepository.GenerateMock<IDataProtector>();
+            dataProtectionProviderMock = MockRepository.GenerateMock<IDataProtectionProvider>();
+            dataProtectionProviderMock.Expect(mock => mock.Create(Arg<string>.Is.Anything)).Return(dataProtector);
+            applicationUserManagerMock = MockRepository.GenerateMock<ApplicationUserManager>(userStoreMock, dataProtectionProviderMock);
             dataContextMock = MockRepository.GenerateMock<IDataContext>();
             playerSaverMock = MockRepository.GenerateMock<IPlayerSaver>();
             eventTrackerMock = MockRepository.GenerateMock<INemeStatsEventTracker>();
