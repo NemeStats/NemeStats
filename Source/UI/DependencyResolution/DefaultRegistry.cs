@@ -110,7 +110,7 @@ namespace UI.DependencyResolution {
 
             this.For<IPlayedGameRetriever>().Use<PlayedGameRetriever>();
 
-            this.For<Microsoft.AspNet.Identity.IUserStore<ApplicationUser>>()
+            this.For<IUserStore<ApplicationUser>>()
                 .Use<Microsoft.AspNet.Identity.EntityFramework.UserStore<ApplicationUser>>();
 
             this.For<IShowingXResultsMessageBuilder>().Use<ShowingXResultsMessageBuilder>();

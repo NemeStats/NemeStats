@@ -271,8 +271,6 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PlayedGameController.cs" />
     <Compile Include="Controllers\PlayerController.cs" />
-    <Compile Include="Controllers\RolesAdminController.cs" />
-    <Compile Include="Controllers\UserAdminController.cs" />
     <Compile Include="DependencyResolution\ControllerConvention.cs" />
     <Compile Include="DependencyResolution\DefaultRegistry.cs" />
     <Compile Include="DependencyResolution\IoC.cs" />
@@ -328,9 +326,6 @@
     <Compile Include="PlayerController.generated.cs">
       <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>
-    <Compile Include="RolesAdminController.generated.cs">
-      <DependentUpon>T4MVC.tt</DependentUpon>
-    </Compile>
     <Compile Include="SharedController.generated.cs">
       <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>
@@ -370,9 +365,6 @@
     <Compile Include="Transformations\PlayerTransformations\TopPlayerViewModelBuilder.cs" />
     <Compile Include="Models\Players\PlayerWithNemesisViewModel.cs" />
     <Compile Include="Models\GamingGroup\TopGamingGroupSummaryViewModel.cs" />
-    <Compile Include="UsersAdminController.generated.cs">
-      <DependentUpon>T4MVC.tt</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\blog.css" />
