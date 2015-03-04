@@ -22,6 +22,7 @@ using BusinessLogic.Logic.Email;
 using BusinessLogic.Logic.VotableFeatures;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
+using Microsoft.Owin.Security.DataProtection;
 
 namespace UI.DependencyResolution {
     using BusinessLogic.DataAccess;
@@ -112,6 +113,8 @@ namespace UI.DependencyResolution {
 
             this.For<IUserStore<ApplicationUser>>()
                 .Use<Microsoft.AspNet.Identity.EntityFramework.UserStore<ApplicationUser>>();
+
+            this.For<IDataProtectionProvider>().Use(() => Startup.DataProtectionProvider);
 
             this.For<IShowingXResultsMessageBuilder>().Use<ShowingXResultsMessageBuilder>();
             this.For<IGamingGroupRetriever>().Use<GamingGroupRetriever>();

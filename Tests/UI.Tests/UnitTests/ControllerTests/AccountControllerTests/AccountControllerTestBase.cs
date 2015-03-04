@@ -19,6 +19,7 @@ using BusinessLogic.Logic.Users;
 using BusinessLogic.Models.User;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
+using Microsoft.Owin.Security.DataProtection;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System.Linq;
@@ -39,6 +40,7 @@ namespace UI.Tests.UnitTests.ControllerTests.AccountControllerTests
         protected IAuthenticationManager authenticationManagerMock;
         protected ICookieHelper cookieHelperMock;
         protected AccountController accountControllerPartialMock;
+        protected IDataProtectionProvider dataProtectionProviderMock;
         protected RegisterViewModel registerViewModel;
         protected ApplicationUser currentUser;
 
@@ -50,7 +52,11 @@ namespace UI.Tests.UnitTests.ControllerTests.AccountControllerTests
             userRegistererMock = MockRepository.GenerateMock<IUserRegisterer>();
             this.firstTimeAuthenticatorMock = MockRepository.GenerateMock<IFirstTimeAuthenticator>();
             this.authenticationManagerMock = MockRepository.GenerateMock<IAuthenticationManager>();
-            userManager = new ApplicationUserManager(userStoreMock);
+            var dataProtector = MockRepository.GenerateMock<IDataProtector>();
+            dataProtectionProviderMock = MockRepository.GenerateMock<IDataProtectionProvider>();
+            dataProtectionProviderMock.Expect(mock => mock.Create(Arg<string>.Is.Anything)).Return(dataProtector);
+
+            userManager = new ApplicationUserManager(userStoreMock, dataProtectionProviderMock);
             cookieHelperMock = MockRepository.GenerateMock<ICookieHelper>();
             accountControllerPartialMock = MockRepository.GeneratePartialMock<AccountController>(
                 userManager,

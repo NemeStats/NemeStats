@@ -19,6 +19,7 @@ using BusinessLogic.EventTracking;
 using BusinessLogic.Logic.Users;
 using BusinessLogic.Models.User;
 using Microsoft.AspNet.Identity;
+using Microsoft.Owin.Security.DataProtection;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System.Collections.Generic;
@@ -40,6 +41,7 @@ namespace UI.Tests.UnitTests.FiltersTests.UserContextAttributeTests
         private IIdentity identity;
         private ApplicationUserManager userManager;
         private IUserStore<ApplicationUser> userStoreMock;
+        private IDataProtectionProvider dataProtectionProviderMock;
         private ApplicationUser applicationUser;
         private string anonymousClientId = "anonymous client id";
         private NameValueCollection requestParameters;
@@ -50,7 +52,10 @@ namespace UI.Tests.UnitTests.FiltersTests.UserContextAttributeTests
             actionExecutingContext = new ActionExecutingContext();
             actionExecutingContext.ActionParameters = new Dictionary<string, object>();
             userStoreMock = MockRepository.GenerateMock<IUserStore<ApplicationUser>>();
-            userManager = new ApplicationUserManager(userStoreMock);
+            dataProtectionProviderMock = MockRepository.GenerateMock<IDataProtectionProvider>();
+            var dataProtector = MockRepository.GenerateMock<IDataProtector>();
+            dataProtectionProviderMock.Expect(mock => mock.Create(Arg<string>.Is.Anything)).Return(dataProtector);
+            userManager = new ApplicationUserManager(userStoreMock, dataProtectionProviderMock);
             //need to simulate like the parameter exists on the method
             actionExecutingContext.ActionParameters[UserContextAttribute.USER_CONTEXT_KEY] = null;
 

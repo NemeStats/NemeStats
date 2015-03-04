@@ -21,12 +21,14 @@ using BusinessLogic.Models.User;
 using Microsoft.AspNet.Identity;
 using System;
 using System.Linq;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.Owin.Security.DataProtection;
 
 namespace BusinessLogic.Logic.Users
 {
     public class ApplicationUserManager : UserManager<ApplicationUser>
     {
-        public ApplicationUserManager(IUserStore<ApplicationUser> store)
+        public ApplicationUserManager(IUserStore<ApplicationUser> store, IDataProtectionProvider dataProtectionProvider)
             : base(store)
         {
             //TODO all of these dependencies should probably be injected
@@ -62,7 +64,9 @@ namespace BusinessLogic.Logic.Users
             });
             this.EmailService = new EmailService();
             this.SmsService = new SmsService();
-            this.UserTokenProvider = new EmailTokenProvider<ApplicationUser, string>();
+
+            this.UserTokenProvider =
+                new DataProtectorTokenProvider<ApplicationUser>(dataProtectionProvider.Create("ASP.NET Identity"));
         }
     }
 }
