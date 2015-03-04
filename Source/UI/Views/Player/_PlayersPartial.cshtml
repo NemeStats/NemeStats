@@ -26,13 +26,14 @@
                             <th class="col-md-4">
                                 Player Name
                             </th>
-                            <th class="col-md-3">
+                            <th class="col-md-2">
                                 @if ((bool?)ViewData["canEdit"] == true)
                                 {
                                     @:Registered
                                 }
                             </th>
-                            <th class="col-md-4">
+                            <th class="col-md-2">Games Played</th>
+                            <th class="col-md-3">
                                 Previous/Current Nemesis <i class="fa fa-question-circle" data-container="body" data-toggle="popover" data-placement="left"
    data-content="The Nemesis is the Player with the highest win % vs. this Player. Must have won at least 3 games to be designated as the Nemesis."></i></th>
                             <th class="col-md-1">
@@ -50,7 +51,7 @@
                                 <td>
                                     @if ((bool?)ViewData["canEdit"] == true)
                                     {
-                                       @Html.DisplayFor(modelItem => item.PlayerRegistered)
+                                        @Html.DisplayFor(modelItem => item.PlayerRegistered)
                                         if (!item.PlayerRegistered)
                                         {
                                             <b>
@@ -61,6 +62,7 @@
                                         }
                                     }
                                 </td>
+                                <td>@item.NumberOfGamesPlayed</td>
                                 <td>
                                     @if (item.PreviousNemesisPlayerId.HasValue)
                                     {

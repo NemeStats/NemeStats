@@ -27,6 +27,8 @@ namespace UI.Transformations.PlayerTransformations
             model.PreviousNemesisPlayerId = playerWithNemesis.PreviousNemesisPlayerId;
             model.PreviousNemesisPlayerName = playerWithNemesis.PreviousNemesisPlayerName;
 
+            model.NumberOfPlayedGames = playerWithNemesis.NumberOfPlayedGames;
+
             return model;
         }
 

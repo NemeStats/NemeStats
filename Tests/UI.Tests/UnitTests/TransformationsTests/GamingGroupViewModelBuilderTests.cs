@@ -22,7 +22,6 @@ namespace UI.Tests.UnitTests.TransformationsTests
     public class GamingGroupViewModelBuilderTests
     {
         private GamingGroupViewModelBuilder transformer;
-        private IGamingGroupInvitationViewModelBuilder invitationTransformerMock;
         private IPlayedGameDetailsViewModelBuilder playedGameDetailsViewModelBuilderMock;
         private IPlayerWithNemesisViewModelBuilder playerWithNemesisViewModelBuilderMock;
         private IGameDefinitionSummaryViewModelBuilder gameDefinitionSummaryViewModelBuilderMock;
@@ -31,18 +30,15 @@ namespace UI.Tests.UnitTests.TransformationsTests
         private List<PlayerWithNemesis> players;
         private List<GameDefinitionSummary> gameDefinitionSummaries;
         private List<PlayedGame> playedGames;
-        private List<GameDefinitionDetailsViewModel> gameDefinitionDetailsViewModels; 
         private ApplicationUser currentUser;
 
         [SetUp]
         public void SetUp()
         {
-            invitationTransformerMock = MockRepository.GenerateMock<IGamingGroupInvitationViewModelBuilder>();
             playerWithNemesisViewModelBuilderMock = MockRepository.GenerateMock<IPlayerWithNemesisViewModelBuilder>();
             playedGameDetailsViewModelBuilderMock = MockRepository.GenerateMock<IPlayedGameDetailsViewModelBuilder>();
             gameDefinitionSummaryViewModelBuilderMock = MockRepository.GenerateMock<IGameDefinitionSummaryViewModelBuilder>();
             transformer = new GamingGroupViewModelBuilder(
-                invitationTransformerMock,
                 playedGameDetailsViewModelBuilderMock,
                 playerWithNemesisViewModelBuilderMock,
                 gameDefinitionSummaryViewModelBuilderMock);

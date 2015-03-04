@@ -12,5 +12,6 @@ namespace UI.Models.Players
         public int? PreviousNemesisPlayerId { get; set; }
         public string PreviousNemesisPlayerName { get; set; }
         public bool UserCanEdit { get; set; }
+        public int NumberOfPlayedGames { get; set; }
     }
 }
