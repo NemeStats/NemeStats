@@ -47,7 +47,8 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
                 NemesisPlayerName = "nemesis player name",
                 PreviousNemesisPlayerId = 400,
                 PreviousNemesisPlayerName = "previous nemesis player name",
-                GamingGroupId = gamingGroupId
+                GamingGroupId = gamingGroupId,
+                NumberOfPlayedGames = 1
             };
 
             currentUser = new ApplicationUser
@@ -126,6 +127,14 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
             PlayerWithNemesisViewModel actualViewModel = builder.Build(this.playerWithNemesis, this.currentUser);
 
             Assert.AreEqual(this.playerWithNemesis.PreviousNemesisPlayerName, actualViewModel.PreviousNemesisPlayerName);
+        }
+
+        [Test]
+        public void ItCopiesTheNumberOfPlayedGames()
+        {
+            PlayerWithNemesisViewModel actualViewModel = builder.Build(this.playerWithNemesis, this.currentUser);
+
+            Assert.AreEqual(this.playerWithNemesis.NumberOfPlayedGames, actualViewModel.NumberOfPlayedGames);
         }
 
         [Test]

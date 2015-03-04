@@ -46,5 +46,15 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
                 lastPlayerName = player.PlayerName;
             }
         }
+
+        [Test]
+        public void ItReturnsTheNumberOfGamesPlayed()
+        {
+            int expectedNumberOfGamesPlayed = playerGameResultsForFirstPlayer.Count();
+
+            List<PlayerWithNemesis> players = playerRetriever.GetAllPlayersWithNemesisInfo(gamingGroupId);
+
+            Assert.That(players[0].NumberOfPlayedGames, Is.EqualTo(expectedNumberOfGamesPlayed));
+        }
     }
 }

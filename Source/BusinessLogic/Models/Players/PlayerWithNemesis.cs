@@ -33,5 +33,6 @@ namespace BusinessLogic.Models.Players
         public int? PreviousNemesisPlayerId { get; set; }
         public string PreviousNemesisPlayerName { get; set; }
         public int GamingGroupId { get; set; }
+        public int NumberOfPlayedGames { get; set; }
     }
 }

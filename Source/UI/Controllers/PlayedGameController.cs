@@ -15,7 +15,6 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
-using AutoMapper;
 using BusinessLogic.DataAccess;
 using BusinessLogic.Logic.GameDefinitions;
 using BusinessLogic.Logic.PlayedGames;
@@ -27,6 +26,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using UI.Controllers;
 using UI.Controllers.Helpers;
 using UI.Filters;
 using UI.Models.PlayedGame;

@@ -30,18 +30,15 @@ namespace UI.Transformations
 {
     public class GamingGroupViewModelBuilder : IGamingGroupViewModelBuilder
     {
-        private readonly IGamingGroupInvitationViewModelBuilder invitationViewModelTransformer;
         private readonly IPlayedGameDetailsViewModelBuilder playedGameDetailsViewModelBuilder;
         private readonly IPlayerWithNemesisViewModelBuilder playerWithNemesisViewModelBuilder;
         private readonly IGameDefinitionSummaryViewModelBuilder gameDefinitionSummaryViewModelBuilder;
 
         public GamingGroupViewModelBuilder(
-            IGamingGroupInvitationViewModelBuilder invitationViewModelTransformer,
             IPlayedGameDetailsViewModelBuilder playedGameDetailsViewModelBuilder,
             IPlayerWithNemesisViewModelBuilder playerWithNemesisViewModelBuilder,
             IGameDefinitionSummaryViewModelBuilder gameDefinitionSummaryViewModelBuilder)
         {
-            this.invitationViewModelTransformer = invitationViewModelTransformer;
             this.playedGameDetailsViewModelBuilder = playedGameDetailsViewModelBuilder;
             this.playerWithNemesisViewModelBuilder = playerWithNemesisViewModelBuilder;
             this.gameDefinitionSummaryViewModelBuilder = gameDefinitionSummaryViewModelBuilder;

@@ -39,8 +39,9 @@ namespace BusinessLogic.Logic.Players
 
         internal IQueryable<Player> GetAllPlayersInGamingGroupQueryable(int gamingGroupId)
         {
-            return dataContext.GetQueryable<Player>().Where(
-               player => player.GamingGroupId == gamingGroupId
+            return dataContext.GetQueryable<Player>()
+                .Include(player => player.PlayerGameResults)
+                .Where(player => player.GamingGroupId == gamingGroupId
                    && player.Active);
         }
 
@@ -65,7 +66,8 @@ namespace BusinessLogic.Logic.Players
                            PreviousNemesisPlayerId = player.PreviousNemesis == null ? (int?)null : player.PreviousNemesis.NemesisPlayerId,
                            PreviousNemesisPlayerName = player.PreviousNemesis != null && player.PreviousNemesis.NemesisPlayer != null 
                             ? player.PreviousNemesis.NemesisPlayer.Name : null,
-                            GamingGroupId = player.GamingGroupId
+                            GamingGroupId = player.GamingGroupId,
+                            NumberOfPlayedGames = player.PlayerGameResults.Count
                         }
                    ).OrderBy(playerWithNemesis => playerWithNemesis.PlayerName)
                    .ToList();
