@@ -49,18 +49,7 @@
 		<div class="col-md-3">
 		</div>
 		<div class="col-md-9">
-			@{
-				if (Model.PreviousGameId > 0)
-				{
-					<ul id="rankedPlayers" class="sortable" data-numrankedplayers=@Model.PlayerRanks.Count>
-						@*@Model.ExistingRankedPlayerNames*@
-					</ul>
-				}
-				else
-				{
-					<ul id="rankedPlayers" class="sortable" data-numrankedplayers="0"></ul>
-				}
-			}
+			<ul id="rankedPlayers" class="sortable"></ul>
 		</div>
 	</div>
 

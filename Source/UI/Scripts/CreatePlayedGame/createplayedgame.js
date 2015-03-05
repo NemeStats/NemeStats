@@ -157,22 +157,6 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
 		var playerId = selectedOption.val();
 		var playerName = selectedOption.text();
 
-		//var playerItem = null;
-		//$.ajax({
-		//	url: "/PlayedGame/AddPlayer/",
-		//	type: "GET",
-		//	data: { PlayerId: playerId, PlayerName: playerName, GameRank: this._playerRank },
-		//	success: function (response) {
-		//		this.$rankedPlayers = $("#rankedPlayers");
-		//		playerItem = response;
-
-		//		this.$rankedPlayers.append(playerItem);
-		//	},
-		//	error: function (err) {
-		//		alert("Error " + err.status + ":\r\n" + err.statusText);
-		//	},
-		//});
-
 		var playerId = selectedOption.val();
 		var playerName = selectedOption.text();
 		var playerItem = this.generatePlayerRankListItemString(this._playerIndex, playerId, playerName, this._playerRank);
