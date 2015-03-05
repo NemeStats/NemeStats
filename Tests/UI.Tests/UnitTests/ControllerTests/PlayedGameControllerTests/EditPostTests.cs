@@ -34,10 +34,10 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 			base.playedGameControllerPartialMock.ModelState.AddModelError("Model", "is bad you fool");
 
 			//--Act
-			var result = playedGameControllerPartialMock.Edit(editedGame, 1234, base.currentUser) as ViewResult;
+			var result = base.playedGameControllerPartialMock.Edit(editedGame, 1234, base.currentUser) as RedirectToRouteResult;
 
 			//--Assert
-			Assert.AreEqual(MVC.PlayedGame.Views.Edit, result.ViewName);
+			Assert.AreEqual("Edit", result.RouteValues["action"]);
 		}
 
 		[Test]
