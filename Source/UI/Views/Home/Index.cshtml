@@ -82,41 +82,40 @@
 	</div>
 
 	<div class="home-body-container">
-	    <div class="col-md-6">
-	        <div class="fl-left">
-	            <h3>Top @Model.TopPlayers.Count Players @Html.ActionLink(" - View More", MVC.Player.ShowTopPlayers())</h3>
-	        </div>
-	        @Html.Partial(MVC.Player.Views._TopPlayersPartial, Model.TopPlayers)
-	    </div>
-
 		<div class="col-md-6">
 			<div class="fl-left">
 				<h3>@Model.RecentPublicGames.Count() Recent Games @Html.ActionLink(" - View More", MVC.PlayedGame.ShowRecentlyPlayedGames())</h3>
 			</div>
 			@Html.Partial(MVC.PlayedGame.Views._RecentlyPlayedGamesPartial, Model.RecentPublicGames)
 		</div>
-
-
-		<div class="col-md-6">
-			<div class="fl-left">
-				@if (Model.RecentNemesisChanges.Count() != 0)
-				{
-					<h3>@Model.RecentNemesisChanges.Count() Recent Nemesis Changes @Html.ActionLink(" - View More", MVC.Player.ShowRecentNemesisChanges())</h3>
-				}
-				else
-				{
-					<h3>Recent Nemesis Changes</h3>
-				}
-			</div>
-			@Html.Partial(MVC.Player.Views._RecentNemesisChangesPartial, Model.RecentNemesisChanges)
-		</div>
-
-	    <div class="col-md-6">
+        
+        <div class="col-md-6">
             <div class="fl-left">
                 <h3>Top @Model.TopGamingGroups.Count() Gaming Groups @Html.ActionLink(" - View More", MVC.GamingGroup.GetTopGamingGroups())</h3>
             </div>
-                @Html.Partial(MVC.GamingGroup.Views._TopGamingGroupsPartial, Model.TopGamingGroups)
+            @Html.Partial(MVC.GamingGroup.Views._TopGamingGroupsPartial, Model.TopGamingGroups)
+        </div>
+
+	    <div class="col-md-6">
+	        <div class="fl-left">
+	            @if (Model.RecentNemesisChanges.Count() != 0)
+	            {
+	                <h3>@Model.RecentNemesisChanges.Count() Recent Nemesis Changes @Html.ActionLink(" - View More", MVC.Player.ShowRecentNemesisChanges())</h3>
+	            }
+	            else
+	            {
+	                <h3>Recent Nemesis Changes</h3>
+	            }
+	        </div>
+	        @Html.Partial(MVC.Player.Views._RecentNemesisChangesPartial, Model.RecentNemesisChanges)
+	    </div>
+        
+        <div class="col-md-6">
+            <div class="fl-left">
+                <h3>Top @Model.TopPlayers.Count Players @Html.ActionLink(" - View More", MVC.Player.ShowTopPlayers())</h3>
             </div>
+            @Html.Partial(MVC.Player.Views._TopPlayersPartial, Model.TopPlayers)
+        </div>
 	</div>
 </div>
 <br />

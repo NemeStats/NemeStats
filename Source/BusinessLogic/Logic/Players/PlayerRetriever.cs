@@ -40,7 +40,6 @@ namespace BusinessLogic.Logic.Players
         internal IQueryable<Player> GetAllPlayersInGamingGroupQueryable(int gamingGroupId)
         {
             return dataContext.GetQueryable<Player>()
-                .Include(player => player.PlayerGameResults)
                 .Where(player => player.GamingGroupId == gamingGroupId
                    && player.Active);
         }
@@ -55,6 +54,7 @@ namespace BusinessLogic.Logic.Players
         public List<PlayerWithNemesis> GetAllPlayersWithNemesisInfo(int gamingGroupId)
         {
             return (from Player player in GetAllPlayersInGamingGroupQueryable(gamingGroupId)
+                    .Include(player => player.PlayerGameResults)
                         select new PlayerWithNemesis
                         {
                            PlayerId = player.Id,
