@@ -31,14 +31,77 @@
 </div>
 @section Scripts{
 	<script type="text/javascript">
-		//Creation
-		$(document).ready(function () {
-			var createPlayedGame = new window.Views.PlayedGame.CreatePlayedGame();
-			var googleAnalyticsObject = new window.Views.Shared.GoogleAnalytics();
-			createPlayedGame.init(googleAnalyticsObject);
+	//Creation
+	$(document).ready(function () {
+		var createPlayedGame = new window.Views.PlayedGame.CreatePlayedGame();
+		var googleAnalyticsObject = new window.Views.Shared.GoogleAnalytics();
+		var rankedPlayers = @Html.Raw(Json.Encode(
+				(Model.PlayerRanks).Select(player => new
+				{
+            		playerIndex = @Model.PlayerRanks.IndexOf(player),
+            		playerId = player.PlayerId,
+            		playerName = @Model.ExistingRankedPlayerNames.Where(key => key.Value == player.PlayerId).SingleOrDefault().Key,
+					playerRank = player.GameRank
+				})
+			)
+		);
+		createPlayedGame.init(googleAnalyticsObject, rankedPlayers);
+		// (playerIndex, playerId, playerName, playerRank)
 
-			var createOrUpdatePlayer = new window.Views.Player.CreateOrUpdate();
-			createOrUpdatePlayer.init($.proxy(createPlayedGame.onPlayerCreated, createPlayedGame));
-		});
-	</script>
+
+		createPlayedGame.initializeRankedPlayers(array);
+		var createOrUpdatePlayer = new window.Views.Player.CreateOrUpdate();
+		createOrUpdatePlayer.init($.proxy(createPlayedGame.onPlayerCreated, createPlayedGame));
+	});
+</script>
+
+<script id="player-item-template" type="text/x-handlebars-template">
+	<li>
+		<div class="playerItem">
+			<div class="leftItem">
+				<span>{{playerName}} - Rank:</span>
+				<input type="hidden" name="PlayerRanks[{{playerIndex}}].PlayerId" value="{{playerId}}" />
+			</div>
+			<div class="rightItem fl-right">
+				<input class="playerRank"
+					   data-rule-required="true"
+					   data-rule-min="1"
+					   data-val="true"
+					   data-val-number="The field must be a number."
+					   data-val-required=""
+					   aria-required="true"
+					   aria-invalid="false"
+					   type="text"
+					   name="PlayerRanks[{{playerIndex}}].GameRank"
+					   value="{{playerRank}}"
+					   style="text-align:center;"
+					   onclick="this.focus();this.select()" />
+
+				<button class="removePlayerButton btnRemovePlayer"
+						type="button"
+						data-playername="{{playerName}}"
+						data-playerid="{{playerId}}"
+						title="Remove player">
+					<i class='fa fa-remove'></i>
+				</button>
+				<button class="rankButton-down"
+						type="button"
+						data-playername="{{playerName}}"
+						data-playerid="{{playerId}}"
+						title="Move rank down">
+					<i class="fa fa-chevron-down"></i>
+				</button>
+
+				<button class="rankButton-up"
+						type="button"
+						data-playername="{{playerName}}"
+						data-playerid="{{playerId}}"
+						title="Move rank up">
+					<i class="fa fa-chevron-up"></i>
+				</button>
+			</div>
+			<div class="fl-clear"></div>
+		</div>
+	</li>
+</script>
 }

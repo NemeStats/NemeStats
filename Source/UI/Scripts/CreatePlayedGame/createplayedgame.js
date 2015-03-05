@@ -33,7 +33,7 @@ Views.PlayedGame.CreatePlayedGame = function () {
 //Implementation
 Views.PlayedGame.CreatePlayedGame.prototype = {
 	//Method definitions
-	init: function (gaObject) {
+	init: function (gaObject, rankedPlayers) {
 		//Fields
 		var parent = this;
 		this._rankButtons = [];
@@ -118,6 +118,7 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
 		parent.validateGameDefinition();
 
 		this.setupButtons();
+		this.initializeRankedPlayers(rankedPlayers);
 	},
 	onReorder: function () {
 		var parent = this;
@@ -137,6 +138,12 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
 
 		return template(context);
 	},
+	initializeRankedPlayers: function (rankedPlayers) {
+		for (var i = 0; i < rankedPlayers.length; i++) {
+			var playerItem = this.generatePlayerRankListItemString(rankedPlayers[i].playerIndex, rankedPlayers[i].playerId, rankedPlayers[i].playerName, rankedPlayers[i].playerRank);
+			this.$rankedPlayers.append(playerItem);
+		}
+	},
 	addPlayer: function () {
 		var parent = this;
 		var selectedOption = this.$players.find(":selected");
@@ -150,22 +157,27 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
 		var playerId = selectedOption.val();
 		var playerName = selectedOption.text();
 
-		var playerItem = null;
-		$.ajax({
-			url: "/PlayedGame/AddPlayer/",
-			type: "GET",
-			data: { PlayerId: playerId, PlayerName: playerName, GameRank: this._playerRank },
-			success: function (response) {
-				this.$rankedPlayers = $("#rankedPlayers");
-				playerItem = response;
+		//var playerItem = null;
+		//$.ajax({
+		//	url: "/PlayedGame/AddPlayer/",
+		//	type: "GET",
+		//	data: { PlayerId: playerId, PlayerName: playerName, GameRank: this._playerRank },
+		//	success: function (response) {
+		//		this.$rankedPlayers = $("#rankedPlayers");
+		//		playerItem = response;
 
-				this.$rankedPlayers.append(playerItem);
-			},
-			error: function (err) {
-				alert("Error " + err.status + ":\r\n" + err.statusText);
-			},
-		});
+		//		this.$rankedPlayers.append(playerItem);
+		//	},
+		//	error: function (err) {
+		//		alert("Error " + err.status + ":\r\n" + err.statusText);
+		//	},
+		//});
 
+		var playerId = selectedOption.val();
+		var playerName = selectedOption.text();
+		var playerItem = this.generatePlayerRankListItemString(this._playerIndex, playerId, playerName, this._playerRank);
+
+		this.$rankedPlayers.append(playerItem);
 		this._playerIndex++;
 		this._playerRank++;
 		this.$numRankedPlayers++;
