@@ -235,16 +235,6 @@ namespace UI.Controllers
 			return playerList;
 		}
 
-		[Authorize]
-		[UserContextAttribute]
-		[HttpGet]
-		public virtual ActionResult AddPlayer(int? playerId, string playerName, int? gameRank)
-		{
-			var model = new EditPlayedGamePlayerPartialViewModel(playerId, playerName, gameRank);
-
-			return PartialView(MVC.PlayedGame.Views._PlayedGamesPlayerPartial, model);
-		}
-
 		protected override void Dispose(bool disposing)
 		{
 			base.Dispose(disposing);

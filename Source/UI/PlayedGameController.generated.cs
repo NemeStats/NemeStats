@@ -85,12 +85,6 @@ namespace UI.Controllers
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Edit);
         }
-        [NonAction]
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public virtual System.Web.Mvc.ActionResult AddPlayer()
-        {
-            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AddPlayer);
-        }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public PlayedGameController Actions { get { return MVC.PlayedGame; } }
@@ -113,7 +107,6 @@ namespace UI.Controllers
             public readonly string Delete = "Delete";
             public readonly string DeleteConfirmed = "Delete";
             public readonly string Edit = "Edit";
-            public readonly string AddPlayer = "AddPlayer";
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -125,7 +118,6 @@ namespace UI.Controllers
             public const string Delete = "Delete";
             public const string DeleteConfirmed = "Delete";
             public const string Edit = "Edit";
-            public const string AddPlayer = "AddPlayer";
         }
 
 
@@ -175,16 +167,6 @@ namespace UI.Controllers
             public readonly string currentUser = "currentUser";
             public readonly string newlyCompletedGame = "newlyCompletedGame";
             public readonly string previousGameId = "previousGameId";
-        }
-        static readonly ActionParamsClass_AddPlayer s_params_AddPlayer = new ActionParamsClass_AddPlayer();
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public ActionParamsClass_AddPlayer AddPlayerParams { get { return s_params_AddPlayer; } }
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public class ActionParamsClass_AddPlayer
-        {
-            public readonly string playerId = "playerId";
-            public readonly string playerName = "playerName";
-            public readonly string gameRank = "gameRank";
         }
         static readonly ViewsClass s_views = new ViewsClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -322,20 +304,6 @@ namespace UI.Controllers
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "previousGameId", previousGameId);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "currentUser", currentUser);
             EditOverride(callInfo, newlyCompletedGame, previousGameId, currentUser);
-            return callInfo;
-        }
-
-        [NonAction]
-        partial void AddPlayerOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int? playerId, string playerName, int? gameRank);
-
-        [NonAction]
-        public override System.Web.Mvc.ActionResult AddPlayer(int? playerId, string playerName, int? gameRank)
-        {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AddPlayer);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "playerId", playerId);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "playerName", playerName);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "gameRank", gameRank);
-            AddPlayerOverride(callInfo, playerId, playerName, gameRank);
             return callInfo;
         }
 
