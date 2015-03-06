@@ -61,7 +61,7 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
 		this.$buttonUp = $(".rankButton-up");
 		this.$buttonDown = $(".rankButton-down");
 		this.$document = $(document);
-		this.$numRankedPlayers = $("#rankedPlayers").attr("data-numrankedplayers");
+		this.$numRankedPlayers = 0;
 
 		this._googleAnalytics = gaObject;
 
@@ -143,6 +143,7 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
 			for (var i = 0; i < rankedPlayers.length; i++) {
 				var playerItem = this.generatePlayerRankListItemString(rankedPlayers[i].playerIndex, rankedPlayers[i].playerId, rankedPlayers[i].playerName, rankedPlayers[i].playerRank);
 				this.$rankedPlayers.append(playerItem);
+				this.$numRankedPlayers++;
 			}
 		}
 	},
