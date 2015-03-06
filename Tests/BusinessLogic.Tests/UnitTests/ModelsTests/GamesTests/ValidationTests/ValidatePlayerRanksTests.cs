@@ -30,7 +30,7 @@ namespace BusinessLogic.Tests.UnitTests.ModelsTests.GamesTests.ValidationTests
 	public class ValidatePlayerRanksTests
 	{
 		[Test]
-		[ExpectedException(typeof(ArgumentException), ExpectedMessage = PlayerRankValidator.EXCEPTION_MESSAGE_MUST_PASS_AT_LEAST_ONE_PLAYER)]
+		[ExpectedException(typeof(ArgumentException), ExpectedMessage = PlayerRankValidator.EXCEPTION_MESSAGE_MUST_PASS_AT_LEAST_TWO_PLAYERS)]
 		public void ItRequiresPlayerRanks()
 		{
 			List<PlayerRank> playerRanks = null;
@@ -39,10 +39,13 @@ namespace BusinessLogic.Tests.UnitTests.ModelsTests.GamesTests.ValidationTests
 		}
 
 		[Test]
-		[ExpectedException(typeof(ArgumentException), ExpectedMessage = PlayerRankValidator.EXCEPTION_MESSAGE_MUST_PASS_AT_LEAST_ONE_PLAYER)]
+		[ExpectedException(typeof(ArgumentException), ExpectedMessage = PlayerRankValidator.EXCEPTION_MESSAGE_MUST_PASS_AT_LEAST_TWO_PLAYERS)]
 		public void ItRequiresAtLeastOnePlayer()
 		{
-			List<PlayerRank> playerRanks = new List<PlayerRank>();
+		    List<PlayerRank> playerRanks = new List<PlayerRank>
+		    {
+                new PlayerRank { PlayerId = 1, GameRank = 1 }
+		    };
 
 			PlayerRankValidator.ValidatePlayerRanks(playerRanks);
 		}

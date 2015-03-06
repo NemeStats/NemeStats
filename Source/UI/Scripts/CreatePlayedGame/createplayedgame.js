@@ -147,7 +147,6 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
 		}
 	},
 	addPlayer: function () {
-		var parent = this;
 		var selectedOption = this.$players.find(":selected");
 		this.$playersErrorContainer.addClass("hidden");
 		this.$playersErrorRankTooHigh.addClass("hidden");
@@ -155,9 +154,6 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
 		if (selectedOption.text() == "Add A Player") {
 			return alert("You must pick a player.");
 		}
-
-		var playerId = selectedOption.val();
-		var playerName = selectedOption.text();
 
 		var playerId = selectedOption.val();
 		var playerName = selectedOption.text();
@@ -243,8 +239,7 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
 	},
 
 	validatePlayers: function (event) {
-		if (this.$numRankedPlayers < 1) {
-			alert("not enough players");
+		if (this.$numRankedPlayers < 2) {
 			this.$playersErrorContainer.removeClass("hidden");
 			return false;
 		}

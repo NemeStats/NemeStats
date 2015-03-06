@@ -133,7 +133,7 @@ namespace UI.Controllers
 		private IEnumerable<SelectListItem> GetAllPlayers(ApplicationUser currentUser)
 		{
 			List<Player> allPlayers = playerRetriever.GetAllPlayers(currentUser.CurrentGamingGroupId.Value);
-			List<SelectListItem> allPlayersSelectList = allPlayers.Select(item => new SelectListItem()
+			List<SelectListItem> allPlayersSelectList = allPlayers.Select(item => new SelectListItem
 			{
 				Text = item.Name,
 				Value = item.Id.ToString()
@@ -198,7 +198,7 @@ namespace UI.Controllers
 
 				viewModel.PlayerRanks = playedGame.PlayerGameResults.Select(item => new PlayerRank { GameRank = item.GameRank, PlayerId = item.PlayerId }).ToList();
 				viewModel.ExistingRankedPlayerNames = playedGame.PlayerGameResults.Select(item => new { item.Player.Name, item.Player.Id }).ToDictionary(p => p.Name, q => q.Id);
-				viewModel.Players = this.RemovePlayersFromExistingPlayerRanks(viewModel.Players.ToList<SelectListItem>(), viewModel.PlayerRanks);
+				viewModel.Players = this.RemovePlayersFromExistingPlayerRanks(viewModel.Players.ToList(), viewModel.PlayerRanks);
 			}
 
 			return View(viewModel);
@@ -222,20 +222,12 @@ namespace UI.Controllers
 			return RedirectToAction(MVC.PlayedGame.Edit(previousGameId, currentUser));
 		}
 
-		private List<SelectListItem> RemovePlayersFromExistingPlayerRanks(List<SelectListItem> players, List<PlayerRank> playerRanks)
+		private IEnumerable<SelectListItem> RemovePlayersFromExistingPlayerRanks(IEnumerable<SelectListItem> players, List<PlayerRank> playerRanks)
 		{
-			var playerList = new List<SelectListItem>();
-
-			foreach (var item in players)
-			{
-				if (playerRanks.Any(p => p.PlayerId.ToString() == item.Value) == false)
-					playerList.Add(item);
-			}
-
-			return playerList;
+		    return players.Where(item => playerRanks.Any(p => p.PlayerId.ToString() == item.Value) == false).ToList();
 		}
 
-		protected override void Dispose(bool disposing)
+	    protected override void Dispose(bool disposing)
 		{
 			base.Dispose(disposing);
 		}

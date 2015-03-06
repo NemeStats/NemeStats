@@ -23,10 +23,11 @@ namespace BusinessLogic.Models.Games.Validation
 {
 	public class PlayerRankValidator
 	{
+	    public const int MINIMUM_NUMBER_OF_PLAYERS = 2;
 		internal const string EXCEPTION_MESSAGE_NO_PLAYER_CAN_HAVE_A_RANK_LESS_THAN_ONE = "No player may have a rank less than 1.";
 		internal const string EXCEPTION_MESSAGE_EACH_PLAYER_RANK_MUST_HAVE_A_PLAYER_ID = "Each PlayerRank must have a valid PlayerId.";
 		internal const string EXCEPTION_MESSAGE_EACH_PLAYER_RANK_MUST_HAVE_A_GAME_RANK = "Each PlayerRank must have a valid GameRank.";
-		internal const string EXCEPTION_MESSAGE_MUST_PASS_AT_LEAST_ONE_PLAYER = "Each game must have at least one player.";
+		internal const string EXCEPTION_MESSAGE_MUST_PASS_AT_LEAST_TWO_PLAYERS = "Each game must have at least two players.";
 		internal const string EXCEPTION_MESSAGE_NO_PLAYER_CAN_HAVE_A_HIGHER_RANK_THAN_THE_NUMBER_OF_PLAYERS = "No player can have a higher rank than the total number of players in the game.";
 
 		public static void ValidatePlayerRanks(List<PlayerRank> playerRanks)
@@ -34,7 +35,7 @@ namespace BusinessLogic.Models.Games.Validation
 			ValidateThatPlayerRanksIsNotNull(playerRanks);
 			ValidateThatAllPlayerIdsAreSet(playerRanks);
 			ValidateThatAllGameRanksAreSet(playerRanks);
-			ValidateThatThereIsAtLeastOnePlayer(playerRanks);
+			ValidateThatThereAreAtLeastTwoPlayers(playerRanks);
 			ValidateThatNoPlayerHasARankGreaterThanTheNumberOfPlayers(playerRanks);
 			ValidateNoPlayerHasARankLessThanOne(playerRanks);
 		}
@@ -51,7 +52,7 @@ namespace BusinessLogic.Models.Games.Validation
 		{
 			if (playerRanks == null)
 			{
-				throw new ArgumentException(EXCEPTION_MESSAGE_MUST_PASS_AT_LEAST_ONE_PLAYER);
+				throw new ArgumentException(EXCEPTION_MESSAGE_MUST_PASS_AT_LEAST_TWO_PLAYERS);
 			}
 		}
 
@@ -71,11 +72,11 @@ namespace BusinessLogic.Models.Games.Validation
 			}
 		}
 
-		private static void ValidateThatThereIsAtLeastOnePlayer(List<PlayerRank> playerRanks)
+		private static void ValidateThatThereAreAtLeastTwoPlayers(List<PlayerRank> playerRanks)
 		{
-			if (playerRanks.Count < 1)
+            if (playerRanks.Count < MINIMUM_NUMBER_OF_PLAYERS)
 			{
-				throw new ArgumentException(EXCEPTION_MESSAGE_MUST_PASS_AT_LEAST_ONE_PLAYER);
+				throw new ArgumentException(EXCEPTION_MESSAGE_MUST_PASS_AT_LEAST_TWO_PLAYERS);
 			}
 		}
 

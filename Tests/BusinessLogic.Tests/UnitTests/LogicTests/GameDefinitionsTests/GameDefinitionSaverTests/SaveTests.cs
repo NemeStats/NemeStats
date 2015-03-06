@@ -121,6 +121,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
 
             gameDefinitionSaver.Save(gameDefinition, currentUser);
 
+            //TODO this test has race conditions and may fail at random
             eventTrackerMock.AssertWasCalled(mock => mock.TrackGameDefinitionCreation(currentUser, gameDefinition.Name));
         }
 

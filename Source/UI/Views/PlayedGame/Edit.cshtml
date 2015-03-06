@@ -31,20 +31,20 @@
 </div>
 @section Scripts{
 	<script type="text/javascript">
-	//Creation
-	$(document).ready(function () {
-		var createPlayedGame = new window.Views.PlayedGame.CreatePlayedGame();
-		var googleAnalyticsObject = new window.Views.Shared.GoogleAnalytics();
-		var rankedPlayers = @Html.Raw(Json.Encode(
-				(Model.PlayerRanks).Select(player => new
-				{
-            		playerIndex = @Model.PlayerRanks.IndexOf(player),
-            		playerId = player.PlayerId,
-            		playerName = @Model.ExistingRankedPlayerNames.Where(key => key.Value == player.PlayerId).SingleOrDefault().Key,
-					playerRank = player.GameRank
-				})
-			)
-		);
+	    //Creation
+	    $(document).ready(function() {
+	        var createPlayedGame = new window.Views.PlayedGame.CreatePlayedGame();
+	        var googleAnalyticsObject = new window.Views.Shared.GoogleAnalytics();
+	        var rankedPlayers = @Html.Raw(Json.Encode(
+	                                                  (Model.PlayerRanks).Select(player => new
+	                                                  {
+	                                                      playerIndex = @Model.PlayerRanks.IndexOf(player),
+	                                                      playerId = player.PlayerId,
+	                                                      playerName = @Model.ExistingRankedPlayerNames.SingleOrDefault(key => key.Value == player.PlayerId).Key,
+	                                                      playerRank = player.GameRank
+	                                                  })
+	                                          )
+	                                 );
 		createPlayedGame.init(googleAnalyticsObject, rankedPlayers);
 
 		var createOrUpdatePlayer = new window.Views.Player.CreateOrUpdate();
