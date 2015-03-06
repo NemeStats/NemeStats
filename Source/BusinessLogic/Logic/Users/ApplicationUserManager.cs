@@ -65,8 +65,10 @@ namespace BusinessLogic.Logic.Users
             this.EmailService = new EmailService();
             this.SmsService = new SmsService();
 
-            this.UserTokenProvider =
-                new DataProtectorTokenProvider<ApplicationUser>(dataProtectionProvider.Create("ASP.NET Identity"));
+            this.UserTokenProvider = new DataProtectorTokenProvider<ApplicationUser, string>(dataProtectionProvider.Create("ASP.N‌​ET Identity"))
+            {
+                TokenLifespan = new TimeSpan(TimeSpan.TicksPerDay)
+            };
         }
     }
 }
