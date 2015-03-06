@@ -139,9 +139,11 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
 		return template(context);
 	},
 	initializeRankedPlayers: function (rankedPlayers) {
-		for (var i = 0; i < rankedPlayers.length; i++) {
-			var playerItem = this.generatePlayerRankListItemString(rankedPlayers[i].playerIndex, rankedPlayers[i].playerId, rankedPlayers[i].playerName, rankedPlayers[i].playerRank);
-			this.$rankedPlayers.append(playerItem);
+		if (rankedPlayers != null) {
+			for (var i = 0; i < rankedPlayers.length; i++) {
+				var playerItem = this.generatePlayerRankListItemString(rankedPlayers[i].playerIndex, rankedPlayers[i].playerId, rankedPlayers[i].playerName, rankedPlayers[i].playerRank);
+				this.$rankedPlayers.append(playerItem);
+			}
 		}
 	},
 	addPlayer: function () {
