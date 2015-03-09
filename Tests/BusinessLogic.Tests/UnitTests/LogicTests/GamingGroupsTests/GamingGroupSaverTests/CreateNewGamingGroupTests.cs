@@ -15,6 +15,8 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
+
+using BusinessLogic.Logic.GamingGroups;
 using BusinessLogic.Models;
 using BusinessLogic.Models.User;
 using Microsoft.AspNet.Identity;
@@ -59,34 +61,6 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
                 .Return(appUserRetrievedFromFindMethod);
             dataContextMock.Expect(mock => mock.Save(Arg<ApplicationUser>.Is.Anything, Arg<ApplicationUser>.Is.Anything))
                  .Return(new ApplicationUser());
-        }
-
-        [Test]
-        public async Task ItThrowsAnArgumentNullExceptionIfGamingGroupNameIsNull()
-        {
-            ArgumentNullException expectedException = new ArgumentNullException("gamingGroupName");
-            try
-            {
-                await gamingGroupSaver.CreateNewGamingGroup(null, currentUser);
-            }
-            catch (ArgumentNullException exception)
-            {
-                Assert.AreEqual(expectedException.Message, exception.Message);
-            }
-        }
-
-        [Test]
-        public async Task ItThrowsAnArgumentNullExceptionIfGamingGroupNameIsWhiteSpace()
-        {
-            ArgumentNullException expectedException = new ArgumentNullException("gamingGroupName");
-            try
-            {
-                await gamingGroupSaver.CreateNewGamingGroup("   ", currentUser);
-            }
-            catch (ArgumentNullException exception)
-            {
-                Assert.AreEqual(expectedException.Message, exception.Message);
-            }
         }
 
         [Test]
@@ -163,6 +137,22 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
 
             await gamingGroupSaver.CreateNewGamingGroup(gamingGroupName, currentUser);
             eventTrackerMock.AssertWasCalled(mock => mock.TrackGamingGroupCreation());
+        }
+
+        [Test]
+        public void ItThrowsAnArgumentExceptionIfTheGamingGroupNameIsNull()
+        {
+            AggregateException exception = Assert.Throws<AggregateException>(() => gamingGroupSaver.CreateNewGamingGroup(null, currentUser).Wait());
+
+            Assert.That(exception.InnerException.Message, Is.EqualTo(GamingGroupSaver.EXCEPTION_MESSAGE_GAMING_GROUP_NAME_CANNOT_BE_NULL_OR_BLANK));
+        }
+
+        [Test]
+        public void ItThrowsAnArgumentExceptionIfTheGamingGroupNameIsWhitespace()
+        {
+            AggregateException exception = Assert.Throws<AggregateException>(() => gamingGroupSaver.CreateNewGamingGroup("      ", currentUser).Wait());
+
+            Assert.That(exception.InnerException.Message, Is.EqualTo(GamingGroupSaver.EXCEPTION_MESSAGE_GAMING_GROUP_NAME_CANNOT_BE_NULL_OR_BLANK));
         }
     }
 }

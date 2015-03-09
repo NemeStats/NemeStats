@@ -15,6 +15,9 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
+
+using System;
+using BusinessLogic.Logic.GamingGroups;
 using BusinessLogic.Models;
 using BusinessLogic.Models.User;
 using NUnit.Framework;
@@ -56,6 +59,22 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
             GamingGroup gamingGroup = gamingGroupSaver.UpdateGamingGroupName(gamingGroupName, currentUser);
 
             Assert.AreSame(savedGamingGroup, gamingGroup);
+        }
+
+        [Test]
+        public void ItThrowsAnArgumentExceptionIfTheGamingGroupNameIsNull()
+        {
+            ArgumentException exception = Assert.Throws<ArgumentException>(() => gamingGroupSaver.UpdateGamingGroupName(null, currentUser));
+
+            Assert.That(exception.Message, Is.EqualTo(GamingGroupSaver.EXCEPTION_MESSAGE_GAMING_GROUP_NAME_CANNOT_BE_NULL_OR_BLANK));
+        }
+
+        [Test]
+        public void ItThrowsAnArgumentExceptionIfTheGamingGroupNameIsWhitespace()
+        {
+            ArgumentException exception = Assert.Throws<ArgumentException>(() => gamingGroupSaver.UpdateGamingGroupName("      ", currentUser));
+
+            Assert.That(exception.Message, Is.EqualTo(GamingGroupSaver.EXCEPTION_MESSAGE_GAMING_GROUP_NAME_CANNOT_BE_NULL_OR_BLANK));
         }
     }
 }

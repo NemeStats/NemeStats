@@ -15,6 +15,8 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
+
+using System;
 using BusinessLogic.DataAccess;
 using BusinessLogic.EventTracking;
 using BusinessLogic.Logic.GameDefinitions;
@@ -52,6 +54,8 @@ namespace BusinessLogic.Logic.GamingGroups
 
         public async virtual Task<GamingGroup> CreateNewGamingGroup(string gamingGroupName, ApplicationUser currentUser)
         {
+            ValidateGamingGroupName(gamingGroupName);
+
             GamingGroup gamingGroup = new GamingGroup()
             {
                 OwningUserId = currentUser.Id,
@@ -67,6 +71,14 @@ namespace BusinessLogic.Logic.GamingGroups
             new Task(() => eventTracker.TrackGamingGroupCreation()).Start();
 
             return newGamingGroup;
+        }
+
+        private static void ValidateGamingGroupName(string gamingGroupName)
+        {
+            if (string.IsNullOrWhiteSpace(gamingGroupName))
+            {
+                throw new ArgumentException(EXCEPTION_MESSAGE_GAMING_GROUP_NAME_CANNOT_BE_NULL_OR_BLANK);
+            }
         }
 
         private async Task AssociateUserWithGamingGroup(ApplicationUser currentUser, GamingGroup newGamingGroup)
@@ -110,6 +122,8 @@ namespace BusinessLogic.Logic.GamingGroups
 
         public GamingGroup UpdateGamingGroupName(string gamingGroupName, ApplicationUser currentUser)
         {
+            ValidateGamingGroupName(gamingGroupName);
+
             GamingGroup gamingGroup = dataContext.FindById<GamingGroup>(currentUser.CurrentGamingGroupId.Value);
             gamingGroup.Name = gamingGroupName;
             gamingGroup = dataContext.Save(gamingGroup, currentUser);
