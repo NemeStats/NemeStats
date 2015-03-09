@@ -29,7 +29,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
-using UI.Filters;
+using UI.Attributes.Filters;
 
 namespace UI.Tests.UnitTests.FiltersTests.UserContextAttributeTests
 {

@@ -26,8 +26,8 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Web.Mvc;
+using UI.Attributes.Filters;
 using UI.Controllers.Helpers;
-using UI.Filters;
 using UI.Models.GameDefinitionModels;
 using UI.Transformations;
 
@@ -61,7 +61,7 @@ namespace UI.Controllers
 		}
 
 		// GET: /GameDefinition/Details/5
-		[UserContextAttribute(RequiresGamingGroup = false)]
+		[UserContext(RequiresGamingGroup = false)]
 		public virtual ActionResult Details(int? id, ApplicationUser currentUser)
 		{
 			if (id == null)
@@ -108,7 +108,7 @@ namespace UI.Controllers
 		[Authorize]
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		[UserContextAttribute]
+		[UserContext]
 		public virtual ActionResult Create(NewGameDefinitionViewModel newGameDefinitionViewModel, ApplicationUser currentUser)
 		{
 			if (ModelState.IsValid)
@@ -130,7 +130,7 @@ namespace UI.Controllers
 
 		[Authorize]
 		[HttpPost]
-		[UserContextAttribute]
+		[UserContext]
 		public virtual ActionResult Save(GameDefinition model, ApplicationUser currentUser)
 		{
 			if (!Request.IsAjaxRequest())
@@ -150,7 +150,7 @@ namespace UI.Controllers
 
 		// GET: /GameDefinition/Edit/5
 		[Authorize]
-		[UserContextAttribute]
+		[UserContext]
 		public virtual ActionResult Edit(int? id, ApplicationUser currentUser)
 		{
 			if (id == null)
@@ -176,7 +176,7 @@ namespace UI.Controllers
 		// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		[UserContextAttribute]
+		[UserContext]
 		public virtual ActionResult Edit([Bind(Include = "Id,Name,BoardGameGeekObjectId,Description,GamingGroupId,Active")] GameDefinition gamedefinition, ApplicationUser currentUser)
 		{
 			if (ModelState.IsValid)
@@ -198,7 +198,7 @@ namespace UI.Controllers
 
 		[Authorize]
 		[HttpGet]
-		[UserContextAttribute]
+		[UserContext]
 		public virtual ActionResult SearchBoardGameGeekHttpGet(string searchText)
 		{
 			if (!Request.IsAjaxRequest())

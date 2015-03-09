@@ -15,17 +15,18 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
-using System.Web.Mvc;
-using UI.Attributes.Filters;
 
-namespace UI
+using System.Linq;
+using System.Web.Mvc;
+using RollbarSharp;
+
+namespace UI.Attributes.Filters
 {
-    public class FilterConfig
+    public class RollbarExceptionFilter : IExceptionFilter
     {
-        public static void RegisterGlobalFilters(GlobalFilterCollection filters)
+        public void OnException(ExceptionContext filterContext)
         {
-            filters.Add(new RollbarExceptionFilter(), 1);
-            filters.Add(new HandleErrorAttribute(), 2);
+            (new RollbarClient()).SendException(filterContext.Exception);
         }
     }
 }

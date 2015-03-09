@@ -23,8 +23,8 @@ using System;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using UI.Attributes.Filters;
 using UI.Controllers.Helpers;
-using UI.Filters;
 using UI.Models;
 
 namespace UI.Controllers

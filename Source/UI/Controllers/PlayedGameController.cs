@@ -27,8 +27,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using UI.Attributes.Filters;
 using UI.Controllers.Helpers;
-using UI.Filters;
 using UI.Models.PlayedGame;
 using UI.Transformations;
 
@@ -68,7 +68,7 @@ namespace UI.Controllers
 		}
 
 		// GET: /PlayedGame/Details/5
-		[UserContextAttribute(RequiresGamingGroup = false)]
+		[UserContext(RequiresGamingGroup = false)]
 		public virtual ActionResult Details(int? id, ApplicationUser currentUser)
 		{
 			if (id == null)
@@ -86,7 +86,7 @@ namespace UI.Controllers
 
 		// GET: /PlayedGame/Create
 		[Authorize]
-		[UserContextAttribute]
+		[UserContext]
 		[HttpGet]
 		public virtual ActionResult Create(ApplicationUser currentUser)
 		{
@@ -116,7 +116,7 @@ namespace UI.Controllers
 		[Authorize]
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		[UserContextAttribute]
+		[UserContext]
 		public virtual ActionResult Create(NewlyCompletedGame newlyCompletedGame, ApplicationUser currentUser)
 		{
 			if (ModelState.IsValid)
@@ -144,7 +144,7 @@ namespace UI.Controllers
 
 		// GET: /PlayedGame/Delete/5
 		[Authorize]
-		[UserContextAttribute]
+		[UserContext]
 		public virtual ActionResult Delete(int? id, ApplicationUser currentUser)
 		{
 			if (id == null)
@@ -163,7 +163,7 @@ namespace UI.Controllers
 		[Authorize]
 		[HttpPost, ActionName("Delete")]
 		[ValidateAntiForgeryToken]
-		[UserContextAttribute]
+		[UserContext]
 		public virtual ActionResult DeleteConfirmed(int id, ApplicationUser currentUser)
 		{
 			playedGameDeleter.DeletePlayedGame(id, currentUser);
@@ -175,7 +175,7 @@ namespace UI.Controllers
 
 		// GET: /PlayedGame/Edit
 		[Authorize]
-		[UserContextAttribute]
+		[UserContext]
 		[HttpGet]
 		public virtual ActionResult Edit(int id, ApplicationUser currentUser)
 		{
@@ -206,7 +206,7 @@ namespace UI.Controllers
 
 		// POST: /PlayedGame/Edit
 		[Authorize]
-		[UserContextAttribute]
+		[UserContext]
 		[HttpPost]
 		public virtual ActionResult Edit(NewlyCompletedGame newlyCompletedGame, int previousGameId, ApplicationUser currentUser)
 		{

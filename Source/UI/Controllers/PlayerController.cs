@@ -28,8 +28,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using UI.Attributes.Filters;
 using UI.Controllers.Helpers;
-using UI.Filters;
 using UI.Models.Players;
 using UI.Transformations;
 using UI.Transformations.PlayerTransformations;
@@ -85,7 +85,7 @@ namespace UI.Controllers
 		}
 
 		// GET: /Player/Details/5
-		[UserContextAttribute(RequiresGamingGroup = false)]
+		[UserContext(RequiresGamingGroup = false)]
 		public virtual ActionResult Details(int? id, ApplicationUser currentUser)
 		{
 			if (!id.HasValue)
@@ -126,7 +126,7 @@ namespace UI.Controllers
 
 		// GET: /Player/InvitePlayer/5
 		[System.Web.Mvc.Authorize]
-		[UserContextAttribute]
+		[UserContext]
 		public virtual ActionResult InvitePlayer(int id, ApplicationUser currentUser)
 		{
 			PlayerDetails playerDetails;
@@ -170,7 +170,7 @@ namespace UI.Controllers
 
 		[System.Web.Mvc.HttpPost]
 		[System.Web.Mvc.Authorize]
-		[UserContextAttribute]
+		[UserContext]
 		public virtual ActionResult InvitePlayer(PlayerInvitationViewModel playerInvitationViewModel, ApplicationUser currentUser)
 		{
 			PlayerInvitation playerInvitation = new PlayerInvitation
@@ -188,7 +188,7 @@ namespace UI.Controllers
 
 		[System.Web.Mvc.Authorize]
 		[System.Web.Mvc.HttpPost]
-		[UserContextAttribute]
+		[UserContext]
 		public virtual ActionResult Save(Player model, ApplicationUser currentUser)
 		{
 			if (!Request.IsAjaxRequest())
@@ -250,7 +250,7 @@ namespace UI.Controllers
 		[System.Web.Mvc.Authorize]
 		[System.Web.Mvc.HttpPost]
 		[ValidateAntiForgeryToken]
-		[UserContextAttribute]
+		[UserContext]
 		public virtual ActionResult Edit([Bind(Include = "Id,Name,Active,GamingGroupId")] Player player, ApplicationUser currentUser)
 		{
 			if (ModelState.IsValid)

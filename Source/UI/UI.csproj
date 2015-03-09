@@ -277,9 +277,9 @@
     <Compile Include="DependencyResolution\StructureMapDependencyScope.cs" />
     <Compile Include="DependencyResolution\StructureMapScopeModule.cs" />
     <Compile Include="DependencyResolution\StructureMapServiceActivator.cs" />
-    <Compile Include="Filters\InjectingActionInvoker.cs" />
-    <Compile Include="Filters\RollbarExceptionFilter.cs" />
-    <Compile Include="Filters\UserContextAttribute.cs" />
+    <Compile Include="Attributes\Filters\InjectingActionInvoker.cs" />
+    <Compile Include="Attributes\Filters\RollbarExceptionFilter.cs" />
+    <Compile Include="Attributes\Filters\UserContextAttribute.cs" />
     <Compile Include="GameDefinitionController.generated.cs">
       <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>

@@ -25,8 +25,8 @@ using System;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using UI.Attributes.Filters;
 using UI.Controllers.Helpers;
-using UI.Filters;
 using UI.Models.GamingGroup;
 using UI.Transformations;
 using UI.Transformations.PlayerTransformations;
@@ -78,7 +78,7 @@ namespace UI.Controllers
 
 		// GET: /GamingGroup
 		[Authorize]
-		[UserContextAttribute]
+		[UserContext]
 		public virtual ActionResult Index(ApplicationUser currentUser)
 		{
 			var gamingGroupSummary = this.GetGamingGroupSummaryAndSetRecentGamesMessage(currentUser.CurrentGamingGroupId.Value);
@@ -105,7 +105,7 @@ namespace UI.Controllers
 		}
 
 		// GET: /GamingGroup/Details
-		[UserContextAttribute(RequiresGamingGroup = false)]
+		[UserContext(RequiresGamingGroup = false)]
 		public virtual ActionResult Details(int id, ApplicationUser currentUser)
 		{
 			GamingGroupSummary gamingGroupSummary = GetGamingGroupSummaryAndSetRecentGamesMessage(id);
@@ -136,7 +136,7 @@ namespace UI.Controllers
 
 		[HttpPost]
 		[Authorize]
-		[UserContextAttribute]
+		[UserContext]
 		public virtual ActionResult GrantAccess(GamingGroupViewModel model, ApplicationUser currentUser)
 		{
 			if (ModelState.IsValid)
@@ -150,7 +150,7 @@ namespace UI.Controllers
 
 		[HttpPost]
 		[Authorize]
-		[UserContextAttribute]
+		[UserContext]
 		public virtual ActionResult Edit(string gamingGroupName, ApplicationUser currentUser)
 		{
 			try
@@ -168,7 +168,7 @@ namespace UI.Controllers
 
 		[HttpPost]
 		[Authorize]
-		[UserContextAttribute]
+		[UserContext]
 		public virtual ActionResult GetUsersGamingGroups(ApplicationUser currentUser)
 		{
 			var gamingGroups = gamingGroupRetriever.GetGamingGroupsForUser(currentUser);
@@ -186,7 +186,7 @@ namespace UI.Controllers
 
 		[HttpPost]
 		[Authorize]
-		[UserContextAttribute]
+		[UserContext]
 		public virtual ActionResult SwitchGamingGroups(int gamingGroupId, ApplicationUser currentUser)
 		{
 			if (gamingGroupId != currentUser.CurrentGamingGroupId)
@@ -199,7 +199,7 @@ namespace UI.Controllers
 
 		[HttpPost]
 		[Authorize]
-		[UserContextAttribute]
+		[UserContext]
 		public virtual ActionResult CreateNewGamingGroup(string gamingGroupName, ApplicationUser currentUser)
 		{
 			if (string.IsNullOrWhiteSpace(gamingGroupName))

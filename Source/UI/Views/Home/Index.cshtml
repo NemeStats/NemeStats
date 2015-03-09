@@ -27,7 +27,7 @@
 							a moment and will give you statistics on your win percentage, average rank in games, who is your Nemesis and who is your Minion, etc.
 							When you register, a new "Gaming Group" will be created where you and other players in your group can watch your statistics materialize over time.
 							<br /><br />
-							All information is publicly accessible so feel free to browse around! If you'd like to give it a shot just @Html.ActionLink("Register", "Register", "Account", null, null),
+							All information is publicly accessible so feel free to browse around! If you'd like to give it a shot just @Html.ActionLink("Register", "Register", "Account", null, new { id = "carouselregister" }),
 							set up the game and players you want to record, and start tracking!
 						</p>
 						<p>
@@ -127,10 +127,10 @@
 	<footer>
 		<p>
 			&copy; @DateTime.Now.Year - NemeStats
-			| <a href="https://plus.google.com/115226456486429841980" target="_blank" rel="publisher">Google+</a>
-			| <a href="https://twitter.com/NemeStats" class="twitter-follow-button" data-show-count="false">Follow &#64;NemeStats</a>
+			| <a href="https://plus.google.com/115226456486429841980" target="_blank" rel="publisher" id="googleplusfollow">Google+</a>
+			| <a href="https://twitter.com/NemeStats" class="twitter-follow-button" data-show-count="false" id="twitterfollow">Follow &#64;NemeStats</a>
 			<script>!function (d, s, id) { var js, fjs = d.getElementsByTagName(s)[0], p = /^http:/.test(d.location) ? 'http' : 'https'; if (!d.getElementById(id)) { js = d.createElement(s); js.id = id; js.src = p + '://platform.twitter.com/widgets.js'; fjs.parentNode.insertBefore(js, fjs); } }(document, 'script', 'twitter-wjs');</script>
-			| <a href="mailto:nemestats@gmail.com?subject=NemeStats feedback">Send Feedback</a>
+			| <a href="mailto:nemestats@gmail.com?subject=NemeStats feedback" id="sendfeedback">Send Feedback</a>
 		</p>
 	</footer>
 </div>
