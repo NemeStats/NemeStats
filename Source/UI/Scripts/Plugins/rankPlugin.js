@@ -47,13 +47,13 @@
 
         var $originalElement = $(this);
         var template = "<div class=\"rank-item\" id=" + settings.votableFeatureId.toString() + "> \
-            <a href=\"#\" class=\"upvote-link\">\
+            <a href=\"#\" class=\"upvote-link\" id=\"up_" + settings.votableFeatureId.toString() + "\">\
                 <i class=\"fa fa-thumbs-up\" data-container=\"body\" data-toggle=\"popover\" data-placement=\"left\" \
         data-content=\"I like this feature. Give me more like this!\"></i>\
             </a>\
             <span class=\"upvote-count\">"+ upvoteValue.toString() +"</span> \
             <span class=\"downvote-count\">-" + downVoteValue.toString() + "</span> \
-            <a href=\"#\" class=\"downvote-link\">\
+            <a href=\"#\" class=\"downvote-link\" id=\"down_" + settings.votableFeatureId.toString() + "\">\
                 <i class=\"fa fa-thumbs-down\" data-container=\"body\" data-toggle=\"popover\" data-placement=\"left\" \
         data-content=\"I don't care for this feature. Focus on improving the site elsewhere.\"></i> \
             </a>\
