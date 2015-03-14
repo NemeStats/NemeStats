@@ -59,7 +59,7 @@ namespace UI.Attributes
             {
                 AcceptedVersions = GetSupportedVersions(ConfigurationManager);
             }
-            string routePrefix = string.Format("api/v({0})", string.Join("|", AcceptedVersions));
+            string routePrefix = "api/v{version:int:regex(" + string.Join("|", AcceptedVersions) + ")}";
             return routePrefix + "/" + Template;
         }
 

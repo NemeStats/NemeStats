@@ -62,7 +62,7 @@ namespace UI.Tests.UnitTests.AttributesTests
 
             string actualRoute = routeAttribute.BuildRoute();
 
-            Assert.That(actualRoute, Is.EqualTo("api/v(1|2|3)/GamingGroups"));
+            Assert.That(actualRoute, Is.EqualTo("api/v{version:int:regex(1|2|3)}/GamingGroups"));
         }
     }
 }
