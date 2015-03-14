@@ -15,13 +15,7 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
-using BusinessLogic.EventTracking;
-using BusinessLogic.Logic.Users;
-using BusinessLogic.Models.User;
-using Microsoft.AspNet.Identity;
-using Microsoft.Owin.Security.DataProtection;
-using NUnit.Framework;
-using Rhino.Mocks;
+
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Security.Principal;
@@ -29,9 +23,16 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using BusinessLogic.EventTracking;
+using BusinessLogic.Logic.Users;
+using BusinessLogic.Models.User;
+using Microsoft.AspNet.Identity;
+using Microsoft.Owin.Security.DataProtection;
+using NUnit.Framework;
+using Rhino.Mocks;
 using UI.Attributes.Filters;
 
-namespace UI.Tests.UnitTests.FiltersTests.UserContextAttributeTests
+namespace UI.Tests.UnitTests.AttributesTests.FiltersTests.UserContextAttributeTests
 {
     [TestFixture]
     public class OnActionExecutingTests
@@ -49,28 +50,28 @@ namespace UI.Tests.UnitTests.FiltersTests.UserContextAttributeTests
         [SetUp]
         public void SetUp()
         {
-            actionExecutingContext = new ActionExecutingContext();
-            actionExecutingContext.ActionParameters = new Dictionary<string, object>();
-            userStoreMock = MockRepository.GenerateMock<IUserStore<ApplicationUser>>();
-            dataProtectionProviderMock = MockRepository.GenerateMock<IDataProtectionProvider>();
+            this.actionExecutingContext = new ActionExecutingContext();
+            this.actionExecutingContext.ActionParameters = new Dictionary<string, object>();
+            this.userStoreMock = MockRepository.GenerateMock<IUserStore<ApplicationUser>>();
+            this.dataProtectionProviderMock = MockRepository.GenerateMock<IDataProtectionProvider>();
             var dataProtector = MockRepository.GenerateMock<IDataProtector>();
-            dataProtectionProviderMock.Expect(mock => mock.Create(Arg<string>.Is.Anything)).Return(dataProtector);
-            userManager = new ApplicationUserManager(userStoreMock, dataProtectionProviderMock);
+            this.dataProtectionProviderMock.Expect(mock => mock.Create(Arg<string>.Is.Anything)).Return(dataProtector);
+            this.userManager = new ApplicationUserManager(this.userStoreMock, this.dataProtectionProviderMock);
             //need to simulate like the parameter exists on the method
-            actionExecutingContext.ActionParameters[UserContextAttribute.USER_CONTEXT_KEY] = null;
+            this.actionExecutingContext.ActionParameters[UserContextAttribute.USER_CONTEXT_KEY] = null;
 
             HttpContextBase httpContextBase = MockRepository.GenerateMock<HttpContextBase>();
-            actionExecutingContext.HttpContext = httpContextBase;
+            this.actionExecutingContext.HttpContext = httpContextBase;
 
             IPrincipal principal = MockRepository.GenerateMock<IPrincipal>();
             httpContextBase.Expect(contextBase => contextBase.User)
                 .Repeat.Any()
                 .Return(principal);
-            identity = MockRepository.GenerateMock<IIdentity>();
+            this.identity = MockRepository.GenerateMock<IIdentity>();
             principal.Expect(mock => mock.Identity)
                 .Repeat.Any()
-                .Return(identity);
-            identity.Expect(mock => mock.IsAuthenticated)
+                .Return(this.identity);
+            this.identity.Expect(mock => mock.IsAuthenticated)
                 .Repeat.Once()
                 .Return(true);
 
@@ -78,20 +79,20 @@ namespace UI.Tests.UnitTests.FiltersTests.UserContextAttributeTests
 
             httpContextBase.Expect(mock => mock.Request)
                 .Return(requestBaseMock);
-            requestParameters = new NameValueCollection();
-            requestParameters.Add(UserContextAttribute.REQUEST_PARAM_ANALYTICS_ID, anonymousClientId);
+            this.requestParameters = new NameValueCollection();
+            this.requestParameters.Add(UserContextAttribute.REQUEST_PARAM_ANALYTICS_ID, this.anonymousClientId);
             requestBaseMock.Expect(mock => mock.Params)
-                .Return(requestParameters);
+                .Return(this.requestParameters);
 
-            userContextActionFilter = new UserContextAttribute();
-            applicationUser = new ApplicationUser()
+            this.userContextActionFilter = new UserContextAttribute();
+            this.applicationUser = new ApplicationUser()
             {
                 Id = "user id",
                 CurrentGamingGroupId = 315
             };
-            Task<ApplicationUser> task = Task.FromResult(applicationUser);
+            Task<ApplicationUser> task = Task.FromResult(this.applicationUser);
             //TODO can't figure out how to mock the GetUserId() extension method, so have to be less strict here
-            userStoreMock.Expect(mock => mock.FindByIdAsync(Arg<string>.Is.Anything))
+            this.userStoreMock.Expect(mock => mock.FindByIdAsync(Arg<string>.Is.Anything))
                 .Repeat.Once()
                 .Return(task);
         }
@@ -99,77 +100,77 @@ namespace UI.Tests.UnitTests.FiltersTests.UserContextAttributeTests
         [Test]
         public void ItUsesTheAnonymousUserIfTheUserIsNotAuthenticated()
         {
-            identity.BackToRecord(BackToRecordOptions.All);
-            identity.Expect(mock => mock.IsAuthenticated)
+            this.identity.BackToRecord(BackToRecordOptions.All);
+            this.identity.Expect(mock => mock.IsAuthenticated)
                 .Repeat.Once()
                 .Return(false);
 
-            userContextActionFilter.OnActionExecuting(actionExecutingContext, userManager);
-            Assert.IsInstanceOf<AnonymousApplicationUser>(actionExecutingContext.ActionParameters[UserContextAttribute.USER_CONTEXT_KEY]);
+            this.userContextActionFilter.OnActionExecuting(this.actionExecutingContext, this.userManager);
+            Assert.IsInstanceOf<AnonymousApplicationUser>(this.actionExecutingContext.ActionParameters[UserContextAttribute.USER_CONTEXT_KEY]);
         }
 
         [Test]
         public void ItSetsTheUserConextActionParameterIfItIsntAlreadySet()
         {
-            userContextActionFilter.OnActionExecuting(actionExecutingContext, userManager);
+            this.userContextActionFilter.OnActionExecuting(this.actionExecutingContext, this.userManager);
 
-            Assert.AreEqual(applicationUser, actionExecutingContext.ActionParameters[UserContextAttribute.USER_CONTEXT_KEY]);
+            Assert.AreEqual(this.applicationUser, this.actionExecutingContext.ActionParameters[UserContextAttribute.USER_CONTEXT_KEY]);
         }
 
         [Test]
         public void IfAGamingGroupIsRequiredAndUserDoesntHaveAGaminGroupItRedirectsUserToTheLoginAction()
         {
-            userContextActionFilter.RequiresGamingGroup = true;
-            applicationUser.CurrentGamingGroupId = null;
+            this.userContextActionFilter.RequiresGamingGroup = true;
+            this.applicationUser.CurrentGamingGroupId = null;
 
-            userContextActionFilter.OnActionExecuting(actionExecutingContext, userManager);
+            this.userContextActionFilter.OnActionExecuting(this.actionExecutingContext, this.userManager);
 
             RouteValueDictionary dictionary = new RouteValueDictionary();
             dictionary.Add("Area", "");
             dictionary.Add("Controller", "Account");
             dictionary.Add("Action", "Login");
-            RedirectToRouteResult actualResult = (RedirectToRouteResult)actionExecutingContext.Result;
+            RedirectToRouteResult actualResult = (RedirectToRouteResult)this.actionExecutingContext.Result;
             Assert.AreEqual(dictionary, actualResult.RouteValues);
         }
 
         [Test]
         public void ItDoesntRedirectIfTheUserHasAGamingGroup()
         {
-            userContextActionFilter.RequiresGamingGroup = true;
-            applicationUser.CurrentGamingGroupId = 1;
+            this.userContextActionFilter.RequiresGamingGroup = true;
+            this.applicationUser.CurrentGamingGroupId = 1;
 
-            userContextActionFilter.OnActionExecuting(actionExecutingContext, userManager);
+            this.userContextActionFilter.OnActionExecuting(this.actionExecutingContext, this.userManager);
 
-            Assert.Null(actionExecutingContext.Result);
+            Assert.Null(this.actionExecutingContext.Result);
         }
 
         [Test]
         public void ItDoesntRedirectIfGamingGroupIsNotRequired()
         {
-            userContextActionFilter.RequiresGamingGroup = false;
-            applicationUser.CurrentGamingGroupId = null;
+            this.userContextActionFilter.RequiresGamingGroup = false;
+            this.applicationUser.CurrentGamingGroupId = null;
 
-            userContextActionFilter.OnActionExecuting(actionExecutingContext, userManager);
+            this.userContextActionFilter.OnActionExecuting(this.actionExecutingContext, this.userManager);
 
-            Assert.Null(actionExecutingContext.Result);
+            Assert.Null(this.actionExecutingContext.Result);
         }
 
         [Test]
         public void ItAddsTheAnonymousClientIdToTheUserIfItExists()
         {
-            userContextActionFilter.OnActionExecuting(actionExecutingContext, userManager);
+            this.userContextActionFilter.OnActionExecuting(this.actionExecutingContext, this.userManager);
 
-            ApplicationUser actualApplicationUser = (ApplicationUser)actionExecutingContext.ActionParameters[UserContextAttribute.USER_CONTEXT_KEY];
-            Assert.AreEqual(applicationUser.AnonymousClientId, actualApplicationUser.AnonymousClientId);
+            ApplicationUser actualApplicationUser = (ApplicationUser)this.actionExecutingContext.ActionParameters[UserContextAttribute.USER_CONTEXT_KEY];
+            Assert.AreEqual(this.applicationUser.AnonymousClientId, actualApplicationUser.AnonymousClientId);
         }
 
         [Test]
         public void ItSetsTheApplicationUsersAnonymousClientIdToSomeConstantIfItCannotBePulledFromTheCookie()
         {
-            requestParameters.Clear();
-            userContextActionFilter.OnActionExecuting(actionExecutingContext, userManager);
+            this.requestParameters.Clear();
+            this.userContextActionFilter.OnActionExecuting(this.actionExecutingContext, this.userManager);
 
-            ApplicationUser actualApplicationUser = (ApplicationUser)actionExecutingContext.ActionParameters[UserContextAttribute.USER_CONTEXT_KEY];
+            ApplicationUser actualApplicationUser = (ApplicationUser)this.actionExecutingContext.ActionParameters[UserContextAttribute.USER_CONTEXT_KEY];
             Assert.AreEqual(UniversalAnalyticsNemeStatsEventTracker.DEFAULT_ANONYMOUS_CLIENT_ID, actualApplicationUser.AnonymousClientId);
         }
     }

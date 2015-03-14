@@ -32,6 +32,7 @@ using BusinessLogic.Models.Games;
 using BusinessLogic.Models.PlayedGames;
 using OfficeOpenXml;
 using RollbarSharp;
+using UI.Attributes;
 using UI.Models.PlayedGame;
 using BusinessLogic.Export;
 
@@ -52,7 +53,7 @@ namespace UI.Areas.Api.Controllers
             this.excelGenerator = excelGenerator;
         }
 
-        [Route("api/v1/GamingGroups/{gamingGroupId}/PlayedGames")]
+        [ApiRoute("GamingGroups/{gamingGroupId}/PlayedGames")]
         [HttpGet]
         public virtual HttpResponseMessage GetPlayedGames(int gamingGroupId)
         {
