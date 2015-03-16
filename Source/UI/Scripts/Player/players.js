@@ -18,13 +18,14 @@ Views.Player.Players.prototype = {
         this.$playersTable.find("tr:last").after(
             "<tr> \
                 <td> \
-                    <a href='/Player/Details/" + player.Id + "'>" + player.Name + "</a> \
+                    <b><a href='/Player/Details/" + player.Id + "'>" + player.Name + "</a></b> \
                 </td> \
                 <td><input class=\"check-box\" disabled=\"disabled\" type=\"checkbox\"> </td>\
                 <td> </td>\
+                <td> </td>\
                 <td> \
                     <a href='/Player/Edit/" + player.Id + "' title='Edit'> \
-                        <i class='fa fa-pencil fa-3x'></i> \
+                        <i class='fa fa-pencil fa-2x'></i> \
                     </a> \
                 </td> \
             </tr>");
