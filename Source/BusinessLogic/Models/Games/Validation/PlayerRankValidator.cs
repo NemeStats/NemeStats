@@ -42,7 +42,7 @@ namespace BusinessLogic.Models.Games.Validation
 
 		private static void ValidateThatNoPlayerHasARankGreaterThanTheNumberOfPlayers(List<PlayerRank> playerRanks)
 		{
-			if (playerRanks.Max(playerRank => playerRank.GameRank).Value > playerRanks.Count)
+			if (playerRanks.Max(playerRank => playerRank.GameRank) > playerRanks.Count)
 			{
 				throw new ArgumentException(EXCEPTION_MESSAGE_NO_PLAYER_CAN_HAVE_A_HIGHER_RANK_THAN_THE_NUMBER_OF_PLAYERS);
 			}
@@ -58,7 +58,7 @@ namespace BusinessLogic.Models.Games.Validation
 
 		private static void ValidateThatAllPlayerIdsAreSet(List<PlayerRank> playerRanks)
 		{
-			if (playerRanks.Any(playerRank => playerRank.PlayerId == null))
+			if (playerRanks.Any(playerRank => playerRank.PlayerId == 0))
 			{
 				throw new ArgumentException(EXCEPTION_MESSAGE_EACH_PLAYER_RANK_MUST_HAVE_A_PLAYER_ID);
 			}
@@ -66,7 +66,7 @@ namespace BusinessLogic.Models.Games.Validation
 
 		private static void ValidateThatAllGameRanksAreSet(List<PlayerRank> playerRanks)
 		{
-			if (playerRanks.Any(playerRank => playerRank.GameRank == null))
+			if (playerRanks.Any(playerRank => playerRank.GameRank == 0))
 			{
 				throw new ArgumentException(EXCEPTION_MESSAGE_EACH_PLAYER_RANK_MUST_HAVE_A_GAME_RANK);
 			}

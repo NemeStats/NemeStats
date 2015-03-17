@@ -204,7 +204,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameCr
 
             foreach(PlayerRank playerRank in playerRanks)
             {
-                nemesisRecalculatorMock.AssertWasCalled(mock => mock.RecalculateNemesis(playerRank.PlayerId.Value, currentUser));
+                nemesisRecalculatorMock.AssertWasCalled(mock => mock.RecalculateNemesis(playerRank.PlayerId, currentUser));
             }
         }
 

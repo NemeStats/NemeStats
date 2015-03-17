@@ -84,10 +84,10 @@ namespace BusinessLogic.Logic.PlayedGames
             var playerGameResults = newlyCompletedGame.PlayerRanks
                                         .Select(playerRank => new PlayerGameResult()
                                         {
-                                            PlayerId = playerRank.PlayerId.Value,
-                                            GameRank = playerRank.GameRank.Value,
+                                            PlayerId = playerRank.PlayerId,
+                                            GameRank = playerRank.GameRank,
                                             //TODO maybe too functional in style? Is there a better way?
-                                            GordonPoints = GordonPoints.CalculateGordonPoints(numberOfPlayers, playerRank.GameRank.Value)
+                                            GordonPoints = GordonPoints.CalculateGordonPoints(numberOfPlayers, playerRank.GameRank)
                                         })
                                         .ToList();
             return playerGameResults;

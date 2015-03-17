@@ -61,7 +61,7 @@ namespace BusinessLogic.Tests.UnitTests.ModelsTests.GamesTests.ValidationTests
 
 		[Test]
 		[ExpectedException(typeof(ArgumentException), ExpectedMessage = PlayerRankValidator.EXCEPTION_MESSAGE_EACH_PLAYER_RANK_MUST_HAVE_A_GAME_RANK)]
-		public void ItRequiresEachPlayerRankToAGameRank()
+		public void ItRequiresEachPlayerRankToHaveAGameRank()
 		{
 			List<PlayerRank> playerRanks = new List<PlayerRank>()
                                             {
@@ -89,7 +89,7 @@ namespace BusinessLogic.Tests.UnitTests.ModelsTests.GamesTests.ValidationTests
 		{
 			List<PlayerRank> playerRanks = new List<PlayerRank>();
 			playerRanks.Add(new PlayerRank() { PlayerId = 1, GameRank = 1 });
-			playerRanks.Add(new PlayerRank() { PlayerId = 2, GameRank = 0 });
+			playerRanks.Add(new PlayerRank() { PlayerId = 2, GameRank = -1 });
 
 			PlayerRankValidator.ValidatePlayerRanks(playerRanks);
 		}
