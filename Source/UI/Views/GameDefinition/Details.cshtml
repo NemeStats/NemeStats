@@ -178,12 +178,15 @@
                                 </td>
                                 <td>
                                     <a href="@Url.Action("Details", "PlayedGame", new { id = playedGameViewModel.PlayedGameId })" title="Details">
-                                        <i class="fa fa-book fa-3x"></i>
+                                        <i class="fa fa-book fa-2x"></i>
                                     </a>
                                     @if (playedGameViewModel.UserCanEdit)
-                                    {
+									{
+										<a href="@Url.Action("Edit", "PlayedGame", new { id = playedGameViewModel.PlayedGameId })" title="Edit">
+											<i class="fa fa-pencil fa-2x"></i>
+										</a>
                                         <a href="@Url.Action("Delete", "PlayedGame", new { id = playedGameViewModel.PlayedGameId })" title="Delete">
-                                            <i class="fa fa-trash-o fa-3x"></i>
+                                            <i class="fa fa-trash-o fa-2x"></i>
                                         </a>
                                     }
                                 </td>
