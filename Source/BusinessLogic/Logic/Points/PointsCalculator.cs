@@ -54,7 +54,7 @@ namespace BusinessLogic.Logic.Points
             int totalPointsToAllocate = totalNumberOfPlayers * POINTS_PER_PLAYER;
             decimal denominator = FibonacciSum(totalNumberOfPlayers);
 
-            const int FIBONACCI_OFFSET = 1;
+            const int fibonacciOffset = 1;
             int highestRankSlotNotConsumed = 1;
             
             for (int rank = 1; rank <= totalNumberOfPlayers; rank++)
@@ -63,8 +63,8 @@ namespace BusinessLogic.Logic.Points
                 int numberOfPlayersWithThisRank = playersWithThisRank.Count;
                 if (numberOfPlayersWithThisRank > 0)
                 {
-                    int finoacciEndIndex = totalNumberOfPlayers + FIBONACCI_OFFSET - highestRankSlotNotConsumed;
-                    int fibonacciStartIndex = finoacciEndIndex + FIBONACCI_OFFSET - numberOfPlayersWithThisRank;
+                    int finoacciEndIndex = totalNumberOfPlayers + fibonacciOffset - highestRankSlotNotConsumed;
+                    int fibonacciStartIndex = finoacciEndIndex + fibonacciOffset - numberOfPlayersWithThisRank;
                     decimal numerator = FibonacciSum(fibonacciStartIndex, finoacciEndIndex) / numberOfPlayersWithThisRank;
                     int points = RoundUpIfNonNegligible(totalPointsToAllocate * (numerator / denominator));
 

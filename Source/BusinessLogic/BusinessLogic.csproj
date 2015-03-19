@@ -245,7 +245,6 @@
     <Compile Include="Logic\Players\PlayerRetriever.cs" />
     <Compile Include="Logic\Players\IPlayerSummaryBuilder.cs" />
     <Compile Include="Logic\Players\PlayerSummaryBuilder.cs" />
-    <Compile Include="Logic\Points\GordonPoints.cs" />
     <Compile Include="Logic\Sms\SmsService.cs" />
     <Compile Include="Logic\Users\ApplicationRoleManager.cs" />
     <Compile Include="Logic\Users\ApplicationSignInManager.cs" />

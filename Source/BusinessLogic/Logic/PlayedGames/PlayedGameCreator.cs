@@ -80,14 +80,14 @@ namespace BusinessLogic.Logic.PlayedGames
 
         internal virtual List<PlayerGameResult> TransformNewlyCompletedGamePlayerRanksToPlayerGameResults(NewlyCompletedGame newlyCompletedGame)
         {
-            int numberOfPlayers = newlyCompletedGame.PlayerRanks.Count();
+            var pointsDictionary = PointsCalculator.CalculatePoints(newlyCompletedGame.PlayerRanks);
+
             var playerGameResults = newlyCompletedGame.PlayerRanks
                                         .Select(playerRank => new PlayerGameResult()
                                         {
                                             PlayerId = playerRank.PlayerId,
                                             GameRank = playerRank.GameRank,
-                                            //TODO maybe too functional in style? Is there a better way?
-                                            GordonPoints = GordonPoints.CalculateGordonPoints(numberOfPlayers, playerRank.GameRank)
+                                            GordonPoints = pointsDictionary[playerRank.PlayerId]
                                         })
                                         .ToList();
             return playerGameResults;

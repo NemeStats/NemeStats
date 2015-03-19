@@ -148,8 +148,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PointsTests
 
             Dictionary<int, int> actualPointsAwarded = PointsCalculator.CalculatePoints(playerRanks);
 
-            int expectedWinnerPoints = 14;//(int)Math.Ceiling(20m * (2m / 3m));
-            int expectedLoserPoints = 7;//(int)Math.Ceiling(20m * (1m / 3m));
+            int expectedWinnerPoints = 14;
+            int expectedLoserPoints = 7;
             Assert.That(actualPointsAwarded[winningPlayerId], Is.EqualTo(expectedWinnerPoints));
             Assert.That(actualPointsAwarded[losingPlayerId], Is.EqualTo(expectedLoserPoints));
         }

@@ -115,7 +115,9 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameCr
                 PlayerRanks = playerRanks
             };
 
-            int playerOneExpectedGordonPoints = GordonPoints.CalculateGordonPoints(playerRanks.Count, playerOneGameRank);
+            var pointsDictionary = PointsCalculator.CalculatePoints(playerRanks);
+
+            int playerOneExpectedGordonPoints = pointsDictionary[playerOneId];
             ApplicationUser user = new ApplicationUser();
 
             PlayedGame playedGame = playedGameCreatorPartialMock.CreatePlayedGame(newlyCompletedGame, currentUser);
@@ -124,7 +126,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameCr
                                                     .First(gameResult => gameResult.PlayerId == playerOneId)
                                                     .GordonPoints);
 
-            int playerTwoExpectedGordonPoints = GordonPoints.CalculateGordonPoints(playerRanks.Count, playerTwoGameRank);
+            int playerTwoExpectedGordonPoints = pointsDictionary[playerTwoId];
             Assert.AreEqual(playerTwoExpectedGordonPoints, playedGame.PlayerGameResults
                                                     .First(gameResult => gameResult.PlayerId == playerTwoId)
                                                     .GordonPoints);
