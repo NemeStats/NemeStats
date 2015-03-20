@@ -154,6 +154,8 @@
     <Compile Include="Logic\BoardGameGeek\DeSerializationModels\SearchResultModels.cs" />
     <Compile Include="Logic\Champions\ChampionRecalculator.cs" />
     <Compile Include="Logic\Email\EmailService.cs" />
+    <Compile Include="Logic\Points\PointsCalculator.cs" />
+    <Compile Include="Logic\Points\GlobalPointsRecalculator.cs" />
     <Compile Include="Logic\VotableFeatures\IVotableFeatureRetriever.cs" />
     <Compile Include="Logic\GameDefinitions\BoardGameGeekDataLinker.cs" />
     <Compile Include="Logic\Champions\IChampionRecalculator.cs" />
@@ -233,6 +235,10 @@
     <Compile Include="Migrations\201502181205491_AddVotableFeature.Designer.cs">
       <DependentUpon>201502181205491_AddVotableFeature.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201503200340319_UpdatePoints.cs" />
+    <Compile Include="Migrations\201503200340319_UpdatePoints.Designer.cs">
+      <DependentUpon>201503200340319_UpdatePoints.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\GamingGroups\TopGamingGroupSummary.cs" />
     <Compile Include="Models\PlayedGames\IWinner.cs" />
     <Compile Include="Models\PlayedGames\PlayedGameExportModel.cs" />
@@ -244,7 +250,6 @@
     <Compile Include="Logic\Players\PlayerRetriever.cs" />
     <Compile Include="Logic\Players\IPlayerSummaryBuilder.cs" />
     <Compile Include="Logic\Players\PlayerSummaryBuilder.cs" />
-    <Compile Include="Logic\Points\GordonPoints.cs" />
     <Compile Include="Logic\Sms\SmsService.cs" />
     <Compile Include="Logic\Users\ApplicationRoleManager.cs" />
     <Compile Include="Logic\Users\ApplicationSignInManager.cs" />
@@ -574,6 +579,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201502181205491_AddVotableFeature.resx">
       <DependentUpon>201502181205491_AddVotableFeature.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201503200340319_UpdatePoints.resx">
+      <DependentUpon>201503200340319_UpdatePoints.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

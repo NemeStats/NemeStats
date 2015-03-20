@@ -38,6 +38,23 @@ namespace BusinessLogic.Tests.UnitTests.ModelsTests.GamesTests.ValidationTests
 			PlayerRankValidator.ValidatePlayerRanks(playerRanks);
 		}
 
+        [Test]
+        [ExpectedException(typeof(ArgumentException), ExpectedMessage = PlayerRankValidator.EXCEPTION_MESSAGE_CANNOT_HAVE_MORE_THAN_25_PLAYERS)]
+        public void ItCannotHaveMoreThan25Players()
+        {
+            List<PlayerRank> playerRanks = new List<PlayerRank>();
+            for (int i = 0; i < 26; i++)
+            {
+                playerRanks.Add(new PlayerRank
+                {
+                    GameRank = i+1,
+                    PlayerId = i+1
+                });
+            }
+
+            PlayerRankValidator.ValidatePlayerRanks(playerRanks);
+        }
+
 		[Test]
 		[ExpectedException(typeof(ArgumentException), ExpectedMessage = PlayerRankValidator.EXCEPTION_MESSAGE_MUST_PASS_AT_LEAST_TWO_PLAYERS)]
 		public void ItRequiresAtLeastOnePlayer()
@@ -61,7 +78,7 @@ namespace BusinessLogic.Tests.UnitTests.ModelsTests.GamesTests.ValidationTests
 
 		[Test]
 		[ExpectedException(typeof(ArgumentException), ExpectedMessage = PlayerRankValidator.EXCEPTION_MESSAGE_EACH_PLAYER_RANK_MUST_HAVE_A_GAME_RANK)]
-		public void ItRequiresEachPlayerRankToAGameRank()
+		public void ItRequiresEachPlayerRankToHaveAGameRank()
 		{
 			List<PlayerRank> playerRanks = new List<PlayerRank>()
                                             {
@@ -89,7 +106,7 @@ namespace BusinessLogic.Tests.UnitTests.ModelsTests.GamesTests.ValidationTests
 		{
 			List<PlayerRank> playerRanks = new List<PlayerRank>();
 			playerRanks.Add(new PlayerRank() { PlayerId = 1, GameRank = 1 });
-			playerRanks.Add(new PlayerRank() { PlayerId = 2, GameRank = 0 });
+			playerRanks.Add(new PlayerRank() { PlayerId = 2, GameRank = -1 });
 
 			PlayerRankValidator.ValidatePlayerRanks(playerRanks);
 		}

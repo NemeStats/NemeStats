@@ -23,8 +23,8 @@ namespace BusinessLogic.Models.Games
     public class PlayerRank
     {
         [Required]
-        public int? PlayerId { get; set; }
+        public int PlayerId { get; set; }
         [Required]
-        public int? GameRank { get; set; }
+        public int GameRank { get; set; }
     }
 }
