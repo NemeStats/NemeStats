@@ -155,6 +155,7 @@
     <Compile Include="Logic\Champions\ChampionRecalculator.cs" />
     <Compile Include="Logic\Email\EmailService.cs" />
     <Compile Include="Logic\Points\PointsCalculator.cs" />
+    <Compile Include="Logic\Points\GlobalPointsRecalculator.cs" />
     <Compile Include="Logic\VotableFeatures\IVotableFeatureRetriever.cs" />
     <Compile Include="Logic\GameDefinitions\BoardGameGeekDataLinker.cs" />
     <Compile Include="Logic\Champions\IChampionRecalculator.cs" />
@@ -233,6 +234,10 @@
     <Compile Include="Migrations\201502181205491_AddVotableFeature.cs" />
     <Compile Include="Migrations\201502181205491_AddVotableFeature.Designer.cs">
       <DependentUpon>201502181205491_AddVotableFeature.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201503200148558_UpdateAllPointsViaNewFormula.cs" />
+    <Compile Include="Migrations\201503200148558_UpdateAllPointsViaNewFormula.Designer.cs">
+      <DependentUpon>201503200148558_UpdateAllPointsViaNewFormula.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\GamingGroups\TopGamingGroupSummary.cs" />
     <Compile Include="Models\PlayedGames\IWinner.cs" />
@@ -574,6 +579,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201502181205491_AddVotableFeature.resx">
       <DependentUpon>201502181205491_AddVotableFeature.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201503200148558_UpdateAllPointsViaNewFormula.resx">
+      <DependentUpon>201503200148558_UpdateAllPointsViaNewFormula.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

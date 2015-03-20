@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using BusinessLogic.Logic.Points;
 using BusinessLogic.Models.Games;
+using BusinessLogic.Models.Games.Validation;
 using NUnit.Framework;
 
 namespace BusinessLogic.Tests.UnitTests.LogicTests.PointsTests
@@ -17,8 +18,43 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PointsTests
         private const int SECOND_PLACE = 2;
         private const int THIRD_PLACE = 3;
 
-        //TODO ItThrowsAnArgumentExceptionIfAGivenPlayerHasMultipleRanks
-        //TODO ItThrowsAnArgumentExceptionIfThereAreMoreThanFifteenPlayers
+        [Test]
+        public void ItThrowsAnArgumentExceptionIfAGivenPlayerHasMultipleRanks()
+        {
+            List<PlayerRank> playerRanks = new List<PlayerRank>();
+            playerRanks.Add(new PlayerRank
+            {
+                PlayerId = 1,
+                GameRank = 1
+            });
+            playerRanks.Add(new PlayerRank
+            {
+                PlayerId = 1,
+                GameRank = 2
+            });
+
+            Exception actualException = Assert.Throws<ArgumentException>(() => PointsCalculator.CalculatePoints(playerRanks));
+
+            Assert.That(actualException.Message, Is.EqualTo("Each player can only have one PlayerRank record but one or more players have duplicate PlayerRank records."));
+        }
+
+        [Test]
+        public void ItThrowsAnArgumentExceptionIfThereAreMoreThan25Players()
+        {
+            List<PlayerRank> playerRanks = new List<PlayerRank>();
+            for (int i = 0; i < PlayerRankValidator.MAXIMUM_NUMBER_OF_PLAYERS + 1; i++)
+            {
+                playerRanks.Add(new PlayerRank
+                {
+                    PlayerId = i,
+                    GameRank = i + 1
+                });
+            }
+
+            Exception actualException = Assert.Throws<ArgumentException>(() => PointsCalculator.CalculatePoints(playerRanks));
+
+            Assert.That(actualException.Message, Is.EqualTo("There can be no more than 25 players."));
+        }
 
         [Test]
         public void ItGivesTwoPointsToEachPlayerIfEveryoneLost()
