@@ -235,10 +235,6 @@
     <Compile Include="Migrations\201502181205491_AddVotableFeature.Designer.cs">
       <DependentUpon>201502181205491_AddVotableFeature.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201503200340319_UpdatePoints.cs" />
-    <Compile Include="Migrations\201503200340319_UpdatePoints.Designer.cs">
-      <DependentUpon>201503200340319_UpdatePoints.cs</DependentUpon>
-    </Compile>
     <Compile Include="Models\GamingGroups\TopGamingGroupSummary.cs" />
     <Compile Include="Models\PlayedGames\IWinner.cs" />
     <Compile Include="Models\PlayedGames\PlayedGameExportModel.cs" />
@@ -579,9 +575,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201502181205491_AddVotableFeature.resx">
       <DependentUpon>201502181205491_AddVotableFeature.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201503200340319_UpdatePoints.resx">
-      <DependentUpon>201503200340319_UpdatePoints.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />
