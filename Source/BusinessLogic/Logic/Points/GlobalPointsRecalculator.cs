@@ -12,9 +12,10 @@ namespace BusinessLogic.Logic.Points
 {
     public class GlobalPointsRecalculator
     {
-        public void RecalculateAllPoints(IDataContext dataContext)
+        public void RecalculateAllPoints(IDataContext dataContext, int startPlayedGameId, int endPlayedGameId)
         {
             var allPlayedGames = (from PlayedGame playedGame in dataContext.GetQueryable<PlayedGame>()
+                                  where playedGame.Id >= startPlayedGameId && playedGame.Id < endPlayedGameId
                                   select new
                                   {
                                       playedGame.Id,
