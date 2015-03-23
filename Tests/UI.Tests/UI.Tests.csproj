@@ -182,6 +182,7 @@
     <Compile Include="IntegrationTests\BoardGameGeekTests\BoardGameGeekIntegrationTests.cs" />
     <Compile Include="IntegrationTests\RollbarTests.cs" />
     <Compile Include="UnitTests\AreasTests\ApiTests\ControllersTests\GamingGroupsControllerTests.cs" />
+    <Compile Include="UnitTests\AreasTests\ApiTests\ControllersTests\UsersControllerTests.cs" />
     <Compile Include="UnitTests\AreasTests\ApiTests\ControllersTests\VotableFeaturesControllerTests.cs" />
     <Compile Include="UnitTests\AttributesTests\ApiRouteAttributeTests.cs" />
     <Compile Include="UnitTests\ControllerTests\AccountControllerTests\AccountControllerTestBase.cs" />

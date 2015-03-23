@@ -122,18 +122,15 @@ namespace UI.Controllers
 					GamingGroupInvitationId = gamingGroupInvitation
 				};
 
-				IdentityResult result = await this.userRegisterer.RegisterUser(newUser);
+				RegisterNewUserResult registerNewUserResult = await this.userRegisterer.RegisterUser(newUser);
 
-				if (result.Succeeded)
+                if (registerNewUserResult.Result.Succeeded)
 				{
 					cookieHelper.ClearCookie(NemeStatsCookieEnum.gamingGroupsCookie, Request, Response);
 
 					return RedirectToAction(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name);
 				}
-				else
-				{
-					AddErrors(result);
-				}
+                this.AddErrors(registerNewUserResult.Result);
 			}
 
 			// If we got this far, something failed, redisplay form

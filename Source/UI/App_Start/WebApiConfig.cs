@@ -18,12 +18,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
 using System.Web;
 using System.Web.Http;
 using System.Web.Http.Dispatcher;
 using System.Web.Http.ExceptionHandling;
 using Microsoft.Owin.Security.OAuth;
+using Newtonsoft.Json.Serialization;
 using RollbarSharp;
 using StructureMap;
 using StructureMap.Graph;
@@ -39,6 +41,8 @@ namespace UI.App_Start
             config.Services.Replace(typeof(IHttpControllerActivator), new StructureMapServiceActivator(config));
             config.Services.Add(typeof(IExceptionLogger), new RollbarExceptionLogger());
             config.Formatters.JsonFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/html"));
+            var jsonFormatter = config.Formatters.OfType<JsonMediaTypeFormatter>().First();
+            jsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
 
             // Web API routes
             config.MapHttpAttributeRoutes();

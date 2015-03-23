@@ -22,6 +22,9 @@ using System.Web;
 using AutoMapper;
 using BusinessLogic.Models;
 using BusinessLogic.Models.GamingGroups;
+using BusinessLogic.Models.User;
+using UI.Areas.Api.Models;
+using UI.Models.API;
 using UI.Models.GameDefinitionModels;
 using UI.Models.GamingGroup;
 using UI.Models;
@@ -36,6 +39,8 @@ namespace UI.Transformations
             Mapper.CreateMap<TopGamingGroupSummary, TopGamingGroupSummaryViewModel>(MemberList.Source);
             Mapper.CreateMap<NewGameDefinitionViewModel, GameDefinition>(MemberList.Source).ForSourceMember(x => x.ReturnUrl, opt => opt.Ignore());
             Mapper.CreateMap<VotableFeature, VotableFeatureViewModel>(MemberList.Destination);
+            Mapper.CreateMap<NewUserMessage, NewUser>(MemberList.Source);
+            Mapper.CreateMap<NewlyRegisteredUser, NewlyRegisteredUserMessage>(MemberList.Source);
         }
     }
 }

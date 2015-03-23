@@ -51,7 +51,7 @@ namespace BusinessLogic.Logic.Users
             this.gamingGroupInviteConsumer = gamingGroupInviteConsumer;
         }
 
-        public async Task<IdentityResult> RegisterUser(NewUser newUser)
+        public async Task<RegisterNewUserResult> RegisterUser(NewUser newUser)
         {
             ApplicationUser newApplicationUser = new ApplicationUser()
             {
@@ -61,23 +61,36 @@ namespace BusinessLogic.Logic.Users
             };
 
             IdentityResult identityResult = await applicationUserManager.CreateAsync(newApplicationUser, newUser.Password);
+            //TODO FINISH IMPLEMENTATION!
+            NewlyRegisteredUser newlyRegisteredUser = new NewlyRegisteredUser();
 
             if(identityResult.Succeeded)
             {
-                new Task(() => eventTracker.TrackUserRegistration()).Start();
-                await signInManager.SignInAsync(newApplicationUser, false, false);
-
-                if (newUser.GamingGroupInvitationId.HasValue)
-                {
-                    gamingGroupInviteConsumer.AddNewUserToGamingGroup(newApplicationUser.Id, newUser.GamingGroupInvitationId.Value);
-                }
-                else
-                {
-                    await firstTimeUserAuthenticator.CreateGamingGroupAndSendEmailConfirmation(newApplicationUser);
-                }
+                await this.SignInAndAssociateGamingGroup(newUser, newApplicationUser);
             }
 
-            return identityResult;
+            RegisterNewUserResult result = new RegisterNewUserResult
+            {
+                Result = identityResult,
+                NewlyRegisteredUser = newlyRegisteredUser
+            };
+
+            return result;
+        }
+
+        private async Task SignInAndAssociateGamingGroup(NewUser newUser, ApplicationUser newApplicationUser)
+        {
+            new Task(() => this.eventTracker.TrackUserRegistration()).Start();
+            await this.signInManager.SignInAsync(newApplicationUser, false, false);
+
+            if (newUser.GamingGroupInvitationId.HasValue)
+            {
+                this.gamingGroupInviteConsumer.AddNewUserToGamingGroup(newApplicationUser.Id, newUser.GamingGroupInvitationId.Value);
+            }
+            else
+            {
+                await this.firstTimeUserAuthenticator.CreateGamingGroupAndSendEmailConfirmation(newApplicationUser);
+            }
         }
     }
 }

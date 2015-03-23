@@ -258,7 +258,10 @@
     <Compile Include="App_Start\StructuremapMvc.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Areas\Api\Controllers\GamingGroupsController.cs" />
+    <Compile Include="Areas\Api\Controllers\UsersController.cs" />
     <Compile Include="Areas\Api\Controllers\VotableFeaturesController.cs" />
+    <Compile Include="Areas\Api\Models\DefaultEmptyResponseMessage.cs" />
+    <Compile Include="Areas\Api\Models\NewUserMessage.cs" />
     <Compile Include="Areas\Api\RollbarExceptionLogger.cs" />
     <Compile Include="Attributes\ApiRouteAttribute.cs" />
     <Compile Include="Controllers\AccountController.cs" />
@@ -296,6 +299,7 @@
     <Compile Include="HtmlHelpers\MvcHtmlStringExtension.cs" />
     <Compile Include="HtmlHelpers\PlayedGameHelper.cs" />
     <Compile Include="Models\API\FeatureVote.cs" />
+    <Compile Include="Models\API\NewlyRegisteredUserMessage.cs" />
     <Compile Include="Models\ChampionViewModel.cs" />
     <Compile Include="Models\GameDefinitionModels\GameDefinitionSummaryViewModel.cs" />
     <Compile Include="Models\GameDefinitionModels\NewGameDefinitionViewModel.cs" />
@@ -654,7 +658,6 @@
   <ItemGroup>
     <Folder Include="App_Code\" />
     <Folder Include="App_Data\" />
-    <Folder Include="Areas\Api\Models\" />
     <Folder Include="Areas\Api\Views\Shared\" />
     <Folder Include="Views\Shared\DisplayTemplates\" />
   </ItemGroup>
