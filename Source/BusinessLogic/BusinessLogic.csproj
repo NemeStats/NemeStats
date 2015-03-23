@@ -382,6 +382,7 @@
     <Compile Include="Models\User\NewlyRegisteredUser.cs" />
     <Compile Include="Models\User\NewUser.cs" />
     <Compile Include="Models\User\RegisterNewUserResult.cs" />
+    <Compile Include="Models\User\RegistrationSource.cs" />
     <Compile Include="Models\User\UserGamingGroup.cs" />
     <Compile Include="Models\Players\PlayerStatistics.cs" />
     <Compile Include="Migrations\201405220234035_Initial.cs" />

@@ -26,5 +26,6 @@ namespace BusinessLogic.Models.User
         public string Email { get; set; }
         public string Password { get; set; }
         public Guid? GamingGroupInvitationId { get; set; }
+        public RegistrationSource Source { get; set; }
     }
 }

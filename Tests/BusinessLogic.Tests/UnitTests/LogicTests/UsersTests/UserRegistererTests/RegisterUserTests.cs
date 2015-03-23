@@ -82,7 +82,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.UserRegistererTest
             {
                 UserName = "user name",
                 Email = "the email",
-                GamingGroupInvitationId = invitationId
+                GamingGroupInvitationId = invitationId,
+                Source = RegistrationSource.WebApplication
             };
             IdentityResult result = IdentityResult.Success;
 
@@ -113,7 +114,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.UserRegistererTest
         }
 
         [Test]
-        public async Task ItSignsInTheNewUser()
+        public async Task ItSignsInTheNewUserIfRegisteringFromTheWebApplication()
         {
             await userRegisterer.RegisterUser(newUser);
 
@@ -124,7 +125,20 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.UserRegistererTest
         }
 
         [Test]
-        public async Task ItRecordsAUserRegisteredEvent()
+        public async Task ItDoesntSignInIfRegisteringFromTheReTaskstApi()
+        {
+            newUser.Source = RegistrationSource.RestAPI;
+
+            await userRegisterer.RegisterUser(newUser);
+
+            signInManagerMock.AssertWasNotCalled(mock => mock.SignInAsync(
+                Arg<ApplicationUser>.Is.Anything,
+                Arg<bool>.Is.Anything,
+                Arg<bool>.Is.Anything));
+        }
+
+        [Test]
+        public async Task zzz_ItRecordsAUserRegisteredEvent()
         {
             await userRegisterer.RegisterUser(newUser);
 

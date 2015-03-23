@@ -81,7 +81,11 @@ namespace BusinessLogic.Logic.Users
         private async Task SignInAndAssociateGamingGroup(NewUser newUser, ApplicationUser newApplicationUser)
         {
             new Task(() => this.eventTracker.TrackUserRegistration()).Start();
-            await this.signInManager.SignInAsync(newApplicationUser, false, false);
+
+            if (newUser.Source == RegistrationSource.WebApplication)
+            {
+                await this.signInManager.SignInAsync(newApplicationUser, false, false);
+            }
 
             if (newUser.GamingGroupInvitationId.HasValue)
             {
