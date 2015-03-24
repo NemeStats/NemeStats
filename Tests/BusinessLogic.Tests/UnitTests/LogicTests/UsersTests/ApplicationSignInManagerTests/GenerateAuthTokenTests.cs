@@ -61,7 +61,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.ApplicationSignInM
         {
             autoMocker.ClassUnderTest.GenerateAuthToken("some user id");
 
-            autoMocker.Get<IDataContext>().AssertWasCalled(mock => mock.Save(Arg<ApplicationUser>.Matches(user => user.AuthenticationTokenExpirationDate.Date == DateTime.UtcNow.AddMonths(3).Date),
+            autoMocker.Get<IDataContext>().AssertWasCalled(mock => mock.Save(Arg<ApplicationUser>.Matches(user => user.AuthenticationTokenExpirationDate.Value.Date == DateTime.UtcNow.AddMonths(3).Date),
                                                                              Arg<ApplicationUser>.Is.Anything));
         }
 

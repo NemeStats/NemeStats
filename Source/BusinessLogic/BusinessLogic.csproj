@@ -237,6 +237,10 @@
     <Compile Include="Migrations\201502181205491_AddVotableFeature.Designer.cs">
       <DependentUpon>201502181205491_AddVotableFeature.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201503241204333_AddAuthTokenToAspNetUsers.cs" />
+    <Compile Include="Migrations\201503241204333_AddAuthTokenToAspNetUsers.Designer.cs">
+      <DependentUpon>201503241204333_AddAuthTokenToAspNetUsers.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\GamingGroups\TopGamingGroupSummary.cs" />
     <Compile Include="Models\PlayedGames\IWinner.cs" />
     <Compile Include="Models\PlayedGames\PlayedGameExportModel.cs" />
@@ -580,6 +584,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201502181205491_AddVotableFeature.resx">
       <DependentUpon>201502181205491_AddVotableFeature.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201503241204333_AddAuthTokenToAspNetUsers.resx">
+      <DependentUpon>201503241204333_AddAuthTokenToAspNetUsers.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

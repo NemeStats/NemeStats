@@ -64,6 +64,6 @@ namespace BusinessLogic.Models.User
             return userIdentity;
         }
 
-        public DateTime AuthenticationTokenExpirationDate { get; set; }
+        public DateTime? AuthenticationTokenExpirationDate { get; set; }
     }
 }
