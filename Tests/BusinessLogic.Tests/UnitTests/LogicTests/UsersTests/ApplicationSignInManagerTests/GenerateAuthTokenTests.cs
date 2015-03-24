@@ -41,7 +41,6 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.ApplicationSignInM
         [Test]
         public void ItUpdatesTheAspNetUsersAuthenticationTokenWithAHashedAndSaltedToken()
         {
-            const string applicationUserId = "some user id";
             autoMocker.PartialMockTheClassUnderTest();
             const string expectedAuthToken = "some auth token";
             
@@ -52,9 +51,18 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.ApplicationSignInM
 
             autoMocker.ClassUnderTest.GenerateAuthToken(applicationUserId);
 
-            autoMocker.Get<IDataContext>().Save(Arg<ApplicationUser>.Matches(user => user.Id == applicationUserId
+            autoMocker.Get<IDataContext>().AssertWasCalled(mock => mock.Save(Arg<ApplicationUser>.Matches(user => user.Id == applicationUserId
                                                                                      && user.AuthenticationToken == expectedSaltedHashedAuthToken),
-                                                                             Arg<ApplicationUser>.Is.Anything);
+                                                                             Arg<ApplicationUser>.Is.Anything));
+        }
+
+        [Test]
+        public void ItSetsTheAuthenticationTokenExpirationForThreeMonthsFromNow()
+        {
+            autoMocker.ClassUnderTest.GenerateAuthToken("some user id");
+
+            autoMocker.Get<IDataContext>().AssertWasCalled(mock => mock.Save(Arg<ApplicationUser>.Matches(user => user.AuthenticationTokenExpirationDate.Date == DateTime.UtcNow.AddMonths(3).Date),
+                                                                             Arg<ApplicationUser>.Is.Anything));
         }
 
         [Test]
