@@ -7,7 +7,7 @@ namespace UI.Models.API
 {
     public class NewlyRegisteredUserMessage
     {
-        public int UserId { get; set; }
+        public string UserId { get; set; }
         public int PlayerId { get; set; }
         public string PlayerName { get; set; }
         public int GamingGroupId { get; set; }

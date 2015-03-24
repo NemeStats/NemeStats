@@ -11,6 +11,7 @@ using BusinessLogic.Logic.Users;
 using BusinessLogic.Models.User;
 using Microsoft.Ajax.Utilities;
 using Microsoft.AspNet.Identity;
+using Microsoft.Owin.Security.Infrastructure;
 using UI.Areas.Api.Models;
 using UI.Attributes;
 using UI.Models.API;
@@ -20,10 +21,12 @@ namespace UI.Areas.Api.Controllers
     public class UsersController : ApiController
     {
         private readonly IUserRegisterer userRegisterer;
+        private readonly IAuthTokenGenerator authTokenGenerator;
 
-        public UsersController(IUserRegisterer userRegisterer)
+        public UsersController(IUserRegisterer userRegisterer, IAuthTokenGenerator authTokenGenerator)
         {
             this.userRegisterer = userRegisterer;
+            this.authTokenGenerator = authTokenGenerator;
         }
 
         [ApiRoute("Users")]
@@ -36,7 +39,9 @@ namespace UI.Areas.Api.Controllers
 
             if (registerNewUserResult.Result.Succeeded)
             {
+                string authToken = authTokenGenerator.GenerateAuthToken(registerNewUserResult.NewlyRegisteredUser.UserId);
                 NewlyRegisteredUserMessage newlyRegisteredUserMessage = Mapper.Map<NewlyRegisteredUser, NewlyRegisteredUserMessage>(registerNewUserResult.NewlyRegisteredUser);
+                newlyRegisteredUserMessage.AuthenticationToken = authToken;
                 return Request.CreateResponse(HttpStatusCode.OK, newlyRegisteredUserMessage);
             }
 

@@ -156,6 +156,8 @@
     <Compile Include="Logic\Email\EmailService.cs" />
     <Compile Include="Logic\Points\PointsCalculator.cs" />
     <Compile Include="Logic\Points\GlobalPointsRecalculator.cs" />
+    <Compile Include="Logic\Users\AuthTokenGenerator.cs" />
+    <Compile Include="Logic\Users\IAuthTokenGenerator.cs" />
     <Compile Include="Logic\VotableFeatures\IVotableFeatureRetriever.cs" />
     <Compile Include="Logic\GameDefinitions\BoardGameGeekDataLinker.cs" />
     <Compile Include="Logic\Champions\IChampionRecalculator.cs" />

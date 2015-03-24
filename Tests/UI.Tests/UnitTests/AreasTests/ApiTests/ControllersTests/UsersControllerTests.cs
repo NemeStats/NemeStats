@@ -40,7 +40,7 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests
         [Test]
         public async Task Post_RegistersTheGivenUser()
         {
-            autoMocker.Get<IUserRegisterer>().Expect(mock => mock.RegisterUser(Arg<NewUser>.Is.Anything)).Return(Task.FromResult(new RegisterNewUserResult{ Result = IdentityResult.Success}));
+            autoMocker.Get<IUserRegisterer>().Expect(mock => mock.RegisterUser(Arg<NewUser>.Is.Anything)).Return(Task.FromResult(new RegisterNewUserResult{ Result = IdentityResult.Failed("some failure")}));
 
             NewUserMessage newUserMessage = new NewUserMessage
             {
@@ -86,41 +86,41 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests
         public async Task Post_ReturnsANewlyRegisteredUserMessage()
         {
             NewUserMessage newUserMessage = new NewUserMessage();
-            NewlyRegisteredUserMessage newlyRegisteredUserMessage = new NewlyRegisteredUserMessage
+            NewlyRegisteredUserMessage expectedNewlyRegisteredUserMessage = new NewlyRegisteredUserMessage
             {
-                UserId = 1,
+                UserId = "user id",
                 PlayerId = 2,
                 PlayerName = "player name",
                 GamingGroupId = 3,
-                GamingGroupName = "gaming group name",
-                AuthenticationToken = "authentication token"
+                GamingGroupName = "gaming group name"
             };
             RegisterNewUserResult registerNewUserResult = new RegisterNewUserResult
             {
                 Result = IdentityResult.Success,
                 NewlyRegisteredUser = new NewlyRegisteredUser
                 {
-                    UserId = 1,
+                    UserId = "user id",
                     PlayerId = 2,
                     PlayerName = "player name",
                     GamingGroupId = 3,
-                    GamingGroupName = "gaming group name",
-                    AuthenticationToken = "authentication token"
+                    GamingGroupName = "gaming group name"
                 }
             };
             autoMocker.Get<IUserRegisterer>().Expect(mock => mock.RegisterUser(Arg<NewUser>.Is.Anything)).Return(Task.FromResult(registerNewUserResult));
+            string expectedAuthToken = "auth token";
+            autoMocker.Get<IAuthTokenGenerator>().Expect(mock => mock.GenerateAuthToken(expectedNewlyRegisteredUserMessage.UserId)).Return(expectedAuthToken);
 
             HttpResponseMessage actualResponse = await autoMocker.ClassUnderTest.RegisterNewUser(newUserMessage);
 
             Assert.That(actualResponse.Content, Is.TypeOf(typeof(ObjectContent<NewlyRegisteredUserMessage>)));
             ObjectContent<NewlyRegisteredUserMessage> content = actualResponse.Content as ObjectContent<NewlyRegisteredUserMessage>;
             NewlyRegisteredUserMessage actualNewlyRegisteredUserMessage = content.Value as NewlyRegisteredUserMessage;
-            Assert.That(actualNewlyRegisteredUserMessage.UserId, Is.EqualTo(newlyRegisteredUserMessage.UserId));
-            Assert.That(actualNewlyRegisteredUserMessage.PlayerId, Is.EqualTo(newlyRegisteredUserMessage.PlayerId));
-            Assert.That(actualNewlyRegisteredUserMessage.PlayerName, Is.EqualTo(newlyRegisteredUserMessage.PlayerName));
-            Assert.That(actualNewlyRegisteredUserMessage.GamingGroupId, Is.EqualTo(newlyRegisteredUserMessage.GamingGroupId));
-            Assert.That(actualNewlyRegisteredUserMessage.GamingGroupName, Is.EqualTo(newlyRegisteredUserMessage.GamingGroupName));
-            Assert.That(actualNewlyRegisteredUserMessage.AuthenticationToken, Is.EqualTo(newlyRegisteredUserMessage.AuthenticationToken));
+            Assert.That(actualNewlyRegisteredUserMessage.UserId, Is.EqualTo(expectedNewlyRegisteredUserMessage.UserId));
+            Assert.That(actualNewlyRegisteredUserMessage.PlayerId, Is.EqualTo(expectedNewlyRegisteredUserMessage.PlayerId));
+            Assert.That(actualNewlyRegisteredUserMessage.PlayerName, Is.EqualTo(expectedNewlyRegisteredUserMessage.PlayerName));
+            Assert.That(actualNewlyRegisteredUserMessage.GamingGroupId, Is.EqualTo(expectedNewlyRegisteredUserMessage.GamingGroupId));
+            Assert.That(actualNewlyRegisteredUserMessage.GamingGroupName, Is.EqualTo(expectedNewlyRegisteredUserMessage.GamingGroupName));
+            Assert.That(actualNewlyRegisteredUserMessage.AuthenticationToken, Is.EqualTo(expectedAuthToken));
         }
     }
 }

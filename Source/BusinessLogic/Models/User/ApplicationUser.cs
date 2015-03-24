@@ -47,7 +47,9 @@ namespace BusinessLogic.Models.User
         [ForeignKey("ApplicationUserId")]
         public virtual IList<UserGamingGroup> UserGamingGroups { get; set; }
         [ForeignKey("ApplicationUserId")]
-        public virtual IList<Player> Players { get; set; } 
+        public virtual IList<Player> Players { get; set; }
+
+        public string AuthenticationToken { get; set; }
 
         public bool AlreadyInDatabase()
         {
@@ -61,5 +63,7 @@ namespace BusinessLogic.Models.User
             // Add custom user claims here
             return userIdentity;
         }
+
+        public DateTime AuthenticationTokenExpirationDate { get; set; }
     }
 }
