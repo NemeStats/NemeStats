@@ -16,10 +16,12 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 using System;
+using System.Runtime.CompilerServices;
 using BusinessLogic.DataAccess;
 using BusinessLogic.EventTracking;
 using BusinessLogic.Logic.Users;
 using BusinessLogic.Models;
+using BusinessLogic.Models.GamingGroups;
 using BusinessLogic.Models.User;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
@@ -46,7 +48,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.UserRegistererTest
         private IGamingGroupInviteConsumer gamingGroupInviteConsumerMock;
 
         private NewUser newUser;
-        private string applicationUserIdAfterSaving = "new application user Id";
+        private NewlyCreatedGamingGroupResult newlyCreatedGamingGroupResult;
+        private const string applicationUserIdAfterSaving = "new application user Id";
 
         [SetUp]
         public void SetUp()
@@ -81,24 +84,33 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.UserRegistererTest
             newUser = new NewUser()
             {
                 UserName = "user name",
-                Email = "the email",
+                EmailAddress = "the email",
                 GamingGroupInvitationId = invitationId,
                 Source = RegistrationSource.WebApplication
+            };
+            newlyCreatedGamingGroupResult = new NewlyCreatedGamingGroupResult
+            {
+                NewlyCreatedGamingGroup = new GamingGroup{ Id = 1, Name = "some gaming group name" },
+                NewlyCreatedPlayer = new Player {  Id = 200, Name = "some player name" }
             };
             IdentityResult result = IdentityResult.Success;
 
             dataContextMock.Expect(mock => mock.FindById<GamingGroupInvitation>(invitationId))
                            .Return(invitation);
             applicationUserManagerMock.Expect(mock => mock.CreateAsync(Arg<ApplicationUser>.Is.Anything, Arg<string>.Is.Anything))
-                .Return(Task.FromResult(result));
+                                      .Return(Task.FromResult(result))
+                                      .WhenCalled(invocation => ((ApplicationUser)invocation.Arguments[0]).Id = applicationUserIdAfterSaving);
+                                      
             signInManagerMock.Expect(mock => mock.SignInAsync(
                                                                           Arg<ApplicationUser>.Is.Anything,
                                                                           Arg<bool>.Is.Anything,
                                                                           Arg<bool>.Is.Anything))
-                                         .WhenCalled(invocation => ((ApplicationUser)invocation.Arguments[0]).Id = this.applicationUserIdAfterSaving)
+                                         
                                          .Return(Task.FromResult(-1));
+            gamingGroupInviteConsumerMock.Expect(mock => mock.AddNewUserToGamingGroup(Arg<string>.Is.Anything, Arg<Guid>.Is.Anything))
+                                         .Return(newlyCreatedGamingGroupResult);
             firstTimeUserAuthenticatorMock.Expect(mock => mock.CreateGamingGroupAndSendEmailConfirmation(Arg<ApplicationUser>.Is.Anything))
-                .Return(Task.FromResult(new object()));
+                .Return(Task.FromResult(newlyCreatedGamingGroupResult));
         }
 
         [Test]
@@ -108,7 +120,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.UserRegistererTest
 
             applicationUserManagerMock.AssertWasCalled(mock => mock.CreateAsync(
                 Arg<ApplicationUser>.Matches(appUser => appUser.UserName == newUser.UserName
-                    && appUser.Email == newUser.Email
+                    && appUser.Email == newUser.EmailAddress
                     && appUser.EmailConfirmed),
                 Arg<string>.Is.Equal(newUser.Password)));
         }
@@ -119,7 +131,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.UserRegistererTest
             await userRegisterer.RegisterUser(newUser);
 
             signInManagerMock.AssertWasCalled(mock => mock.SignInAsync(
-                Arg<ApplicationUser>.Matches(user => user.Email == newUser.Email && user.UserName == newUser.UserName), 
+                Arg<ApplicationUser>.Matches(user => user.Email == newUser.EmailAddress && user.UserName == newUser.UserName), 
                 Arg<bool>.Is.Equal(false),
                 Arg<bool>.Is.Equal(false)));
         }
@@ -137,7 +149,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.UserRegistererTest
                 Arg<bool>.Is.Anything));
         }
 
-        [Test]
+        [Test(Description = "added zzz prefix as this test needs to run last due to event tracking timing")]
         public async Task zzz_ItRecordsAUserRegisteredEvent()
         {
             await userRegisterer.RegisterUser(newUser);
@@ -148,10 +160,10 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.UserRegistererTest
         [Test]
         public async Task ItCreatesANewGamingGroupIfNotConsumingAnInvitationToAnExistingGamingGroup()
         {
-            NewUser newUser = new NewUser()
+            newUser = new NewUser()
             {
                 UserName = "user name",
-                Email = "the email",
+                EmailAddress = "the email",
                 GamingGroupInvitationId = null
             };
 
@@ -159,7 +171,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.UserRegistererTest
 
             firstTimeUserAuthenticatorMock.AssertWasCalled(mock => mock.CreateGamingGroupAndSendEmailConfirmation(
                 Arg<ApplicationUser>.Matches(user => user.UserName == newUser.UserName
-                                                && user.Email == newUser.Email)));
+                                                && user.Email == newUser.EmailAddress)));
         }
 
         [Test]
@@ -174,7 +186,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.UserRegistererTest
         [Test]
         public async Task ItDoesntSignInIfTheUserIsntCreatedSuccessfully()
         {
-            NewUser newUser = new NewUser();
+            newUser = new NewUser();
             IdentityResult result = new IdentityResult("an error");
 
             applicationUserManagerMock = MockRepository.GenerateMock<ApplicationUserManager>(userStoreMock, dataProtectionProviderMock);
@@ -202,6 +214,18 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.UserRegistererTest
             gamingGroupInviteConsumerMock.AssertWasCalled(mock => mock.AddNewUserToGamingGroup(
                 Arg<string>.Is.Equal(applicationUserIdAfterSaving), 
                     Arg<Guid>.Is.Equal(newUser.GamingGroupInvitationId.Value)));
+        }
+
+        [Test]
+        public async Task ItReturnsTheNewlyRegisteredUser()
+        {
+            RegisterNewUserResult result = await userRegisterer.RegisterUser(newUser);
+
+            Assert.That(result.NewlyRegisteredUser.UserId, Is.EqualTo(applicationUserIdAfterSaving));
+            Assert.That(result.NewlyRegisteredUser.PlayerId, Is.EqualTo(newlyCreatedGamingGroupResult.NewlyCreatedPlayer.Id));
+            Assert.That(result.NewlyRegisteredUser.PlayerName, Is.EqualTo(newlyCreatedGamingGroupResult.NewlyCreatedPlayer.Name));
+            Assert.That(result.NewlyRegisteredUser.GamingGroupId, Is.EqualTo(newlyCreatedGamingGroupResult.NewlyCreatedGamingGroup.Id));
+            Assert.That(result.NewlyRegisteredUser.GamingGroupName, Is.EqualTo(newlyCreatedGamingGroupResult.NewlyCreatedGamingGroup.Name));
         }
     }
 }

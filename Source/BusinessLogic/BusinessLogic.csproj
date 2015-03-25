@@ -241,6 +241,7 @@
     <Compile Include="Migrations\201503241204333_AddAuthTokenToAspNetUsers.Designer.cs">
       <DependentUpon>201503241204333_AddAuthTokenToAspNetUsers.cs</DependentUpon>
     </Compile>
+    <Compile Include="Models\GamingGroups\NewlyCreatedGamingGroupResult.cs" />
     <Compile Include="Models\GamingGroups\TopGamingGroupSummary.cs" />
     <Compile Include="Models\PlayedGames\IWinner.cs" />
     <Compile Include="Models\PlayedGames\PlayedGameExportModel.cs" />

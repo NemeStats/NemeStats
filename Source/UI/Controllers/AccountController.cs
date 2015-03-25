@@ -116,7 +116,7 @@ namespace UI.Controllers
 
 				NewUser newUser = new NewUser
 				{
-					Email = model.EmailAddress.Trim(),
+					EmailAddress = model.EmailAddress.Trim(),
 					UserName = model.UserName.Trim(),
 					Password = model.Password,
 					GamingGroupInvitationId = gamingGroupInvitation

@@ -44,7 +44,7 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests
 
             NewUserMessage newUserMessage = new NewUserMessage
             {
-                Email = "email@email.com",
+                EmailAddress = "email@email.com",
                 UserName = "username",
                 Password = "password"
             };
@@ -52,7 +52,7 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests
             await autoMocker.ClassUnderTest.RegisterNewUser(newUserMessage);
 
             autoMocker.Get<IUserRegisterer>().AssertWasCalled(mock => mock.RegisterUser(
-                Arg<NewUser>.Matches(user =>  user.Email == newUserMessage.Email 
+                Arg<NewUser>.Matches(user =>  user.EmailAddress == newUserMessage.EmailAddress 
                     && user.UserName == newUserMessage.UserName
                     && user.Password == newUserMessage.Password)));
         }
@@ -68,7 +68,7 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests
 
             NewUserMessage newUserMessage = new NewUserMessage
             {
-                Email = "email@email.com",
+                EmailAddress = "email@email.com",
                 UserName = "username",
                 Password = "password"
             };

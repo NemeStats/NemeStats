@@ -17,12 +17,13 @@
 #endregion
 using System.Linq;
 using System.Threading.Tasks;
+using BusinessLogic.Models.GamingGroups;
 using BusinessLogic.Models.User;
 
 namespace BusinessLogic.Logic.Users
 {
     public interface IFirstTimeAuthenticator
     {
-        Task<object> CreateGamingGroupAndSendEmailConfirmation(ApplicationUser applicationUser);
+        Task<NewlyCreatedGamingGroupResult> CreateGamingGroupAndSendEmailConfirmation(ApplicationUser applicationUser);
     }
 }

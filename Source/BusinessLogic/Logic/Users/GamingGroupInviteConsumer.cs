@@ -24,6 +24,7 @@ using BusinessLogic.DataAccess.GamingGroups;
 using BusinessLogic.Exceptions;
 using BusinessLogic.Logic.GamingGroups;
 using BusinessLogic.Models;
+using BusinessLogic.Models.GamingGroups;
 using BusinessLogic.Models.User;
 using Microsoft.AspNet.Identity;
 
@@ -145,7 +146,7 @@ namespace BusinessLogic.Logic.Users
             this.dataContext.Save(existingUser, new ApplicationUser());
         }
 
-        public void AddNewUserToGamingGroup(string applicationUserId, Guid gamingGroupInvitationId)
+        public NewlyCreatedGamingGroupResult AddNewUserToGamingGroup(string applicationUserId, Guid gamingGroupInvitationId)
         {
             ApplicationUser userFromDatabase = dataContext.FindById<ApplicationUser>(applicationUserId);
 
@@ -159,12 +160,14 @@ namespace BusinessLogic.Logic.Users
 
             this.UpdateGamingGroupInvitation(invitation, userFromDatabase);
 
-            this.AssociatePlayerWithApplicationUser(invitation, userFromDatabase);
+            Player player = this.AssociatePlayerWithApplicationUser(invitation, userFromDatabase);
 
             dataContext.CommitAllChanges();
+
+            return new NewlyCreatedGamingGroupResult();
         }
 
-        private void AssociatePlayerWithApplicationUser(GamingGroupInvitation invitation, ApplicationUser userFromDatabase)
+        private Player AssociatePlayerWithApplicationUser(GamingGroupInvitation invitation, ApplicationUser userFromDatabase)
         {
             Player player = this.dataContext.FindById<Player>(invitation.PlayerId);
 
@@ -172,6 +175,8 @@ namespace BusinessLogic.Logic.Users
 
             player.ApplicationUserId = userFromDatabase.Id;
             this.dataContext.Save(player, userFromDatabase);
+
+            return player;
         }
 
         private static void ValidateApplicationUser(ApplicationUser userFromDatabase, string userId)

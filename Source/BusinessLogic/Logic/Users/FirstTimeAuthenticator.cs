@@ -22,6 +22,7 @@ using BusinessLogic.DataAccess;
 using BusinessLogic.EventTracking;
 using BusinessLogic.Logic.GamingGroups;
 using BusinessLogic.Models;
+using BusinessLogic.Models.GamingGroups;
 using BusinessLogic.Models.User;
 using System;
 using System.Linq;
@@ -53,17 +54,17 @@ namespace BusinessLogic.Logic.Users
             this.dataContext = dataContext;
         }
 
-        public async Task<object> CreateGamingGroupAndSendEmailConfirmation(ApplicationUser applicationUser)
+        public async Task<NewlyCreatedGamingGroupResult> CreateGamingGroupAndSendEmailConfirmation(ApplicationUser applicationUser)
         {
             //fetch this first since we want to fail as early as possible if the config entry is missing
             var callbackUrl = this.GetCallbackUrlFromConfig();
 
-            await this.gamingGroupSaver.CreateNewGamingGroup(
+            NewlyCreatedGamingGroupResult result = this.gamingGroupSaver.CreateNewGamingGroup(
                 applicationUser.UserName + "'s Gaming Group", applicationUser);
 
             await this.SendConfirmationEmail(applicationUser, callbackUrl);
 
-            return new object();
+            return result;
         }
 
         private string GetCallbackUrlFromConfig()

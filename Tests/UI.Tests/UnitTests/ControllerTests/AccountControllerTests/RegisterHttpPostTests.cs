@@ -81,7 +81,7 @@ namespace UI.Tests.UnitTests.ControllerTests.AccountControllerTests
             ViewResult result = await accountControllerPartialMock.Register(expectedViewModel) as ViewResult;
 
             userRegistererMock.AssertWasCalled(mock => mock.RegisterUser(Arg<NewUser>.Matches(
-                user => user.Email == expectedViewModel.EmailAddress
+                user => user.EmailAddress == expectedViewModel.EmailAddress
                     && user.UserName == expectedViewModel.UserName
                     && user.Password == expectedViewModel.Password
                     && user.GamingGroupInvitationId == new Guid(expectedViewModel.GamingGroupInvitationId))));

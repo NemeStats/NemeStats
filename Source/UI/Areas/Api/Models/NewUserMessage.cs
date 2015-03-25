@@ -7,7 +7,7 @@ namespace UI.Areas.Api.Models
 {
     public class NewUserMessage
     {
-        public string Email { get; set; }
+        public string EmailAddress { get; set; }
 
         public string UserName { get; set; }
 

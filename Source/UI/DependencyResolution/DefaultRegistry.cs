@@ -163,6 +163,8 @@ namespace UI.DependencyResolution {
             this.For<IVotableFeatureVoter>().Use<VotableFeatureVoter>();
 
             this.For<IExcelGenerator>().Use<ExcelGenerator>();
+
+            this.For<IAuthTokenGenerator>().Use<AuthTokenGenerator>();
         }
 
         private void SetupUniquePerRequestMappings()
