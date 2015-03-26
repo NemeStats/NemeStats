@@ -10,7 +10,6 @@ using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security.DataProtection;
 using NUnit.Framework;
 using Rhino.Mocks;
-using StructureMap.AutoMocking;
 using UI.Attributes;
 
 namespace UI.Tests.UnitTests.AttributesTests
