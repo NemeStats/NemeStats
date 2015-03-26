@@ -43,7 +43,7 @@ namespace UI.Attributes
                 return;
             }
 
-            if (!_applicationUserManager.Users.Any(x => x.AuthenticationToken == authHeader))
+            if (!_applicationUserManager.Users.Any(x => x.AuthenticationToken == authHeader && DateTime.UtcNow <= x.AuthenticationTokenExpirationDate))
             {
                 actionContext.Response = new HttpResponseMessage(HttpStatusCode.Unauthorized);
             }

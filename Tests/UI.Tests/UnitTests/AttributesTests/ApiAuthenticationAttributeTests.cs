@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -64,7 +65,8 @@ namespace UI.Tests.UnitTests.AttributesTests
             {
                 new ApplicationUser
                 {
-                    AuthenticationToken = expectedToken
+                    AuthenticationToken = expectedToken,
+                    AuthenticationTokenExpirationDate = DateTime.UtcNow.AddMonths(2)
                 }
             };
 
@@ -86,7 +88,31 @@ namespace UI.Tests.UnitTests.AttributesTests
             {
                 new ApplicationUser
                 {
-                    AuthenticationToken = actualToken
+                    AuthenticationToken = actualToken,
+                    AuthenticationTokenExpirationDate = DateTime.UtcNow.AddMonths(2)
+                }
+            };
+
+            _applicationUserManager.Expect(x => x.Users)
+                .Repeat.Any()
+                .Return(expectedUsers.AsQueryable());
+
+            _attribute.OnActionExecuting(_actionContext);
+            Assert.AreEqual(HttpStatusCode.Unauthorized, _actionContext.Response.StatusCode);
+        }
+
+        [Test]
+        public void ShouldReturnUnauthorizedHttpStatusWhenTokenExpired()
+        {
+            const string expectedToken = "TEST";
+            const string actualToken = "DIFFERENT";
+            _request.Headers.Add(ApiAuthenticationAttribute.AUTH_HEADER, new[] { expectedToken });
+            var expectedUsers = new List<ApplicationUser>
+            {
+                new ApplicationUser
+                {
+                    AuthenticationToken = actualToken,
+                    AuthenticationTokenExpirationDate = DateTime.UtcNow.AddMonths(-2)
                 }
             };
 
