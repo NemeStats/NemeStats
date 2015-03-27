@@ -52,13 +52,13 @@ namespace BusinessLogic.EventTracking
             eventTracker.TrackEvent(universalAnalyticsEvent);
         }
 
-        public void TrackUserRegistration()
+        public void TrackUserRegistration(RegistrationSource registrationSource)
         {
             IUniversalAnalyticsEvent universalAnalyticsEvent = eventFactory.MakeUniversalAnalyticsEvent(
-                UniversalAnalyticsNemeStatsEventTracker.DEFAULT_ANONYMOUS_CLIENT_ID,
+                DEFAULT_ANONYMOUS_CLIENT_ID,
                 EventCategoryEnum.Users.ToString(),
                 EventActionEnum.Created.ToString(),
-                DEFAULT_EVENT_LABEL);
+                registrationSource.ToString());
 
             eventTracker.TrackEvent(universalAnalyticsEvent);
         }

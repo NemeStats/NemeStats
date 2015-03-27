@@ -139,7 +139,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.UserRegistererTest
         [Test]
         public async Task ItDoesntSignInIfRegisteringFromTheReTaskstApi()
         {
-            newUser.Source = RegistrationSource.RestAPI;
+            newUser.Source = RegistrationSource.RestApi;
 
             await userRegisterer.RegisterUser(newUser);
 
@@ -154,7 +154,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.UserRegistererTest
         {
             await userRegisterer.RegisterUser(newUser);
 
-            eventTrackerMock.AssertWasCalled(mock => mock.TrackUserRegistration());
+            eventTrackerMock.AssertWasCalled(mock => mock.TrackUserRegistration(newUser.Source));
         }
 
         [Test]

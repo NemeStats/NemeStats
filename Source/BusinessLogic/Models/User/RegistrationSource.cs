@@ -7,7 +7,7 @@ namespace BusinessLogic.Models.User
 {
     public enum RegistrationSource
     {
-        WebApplication,
-        RestAPI
+        @WebApplication,
+        RestApi
     }
 }

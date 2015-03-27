@@ -16,6 +16,7 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 using BusinessLogic.EventTracking;
+using BusinessLogic.Models.User;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System.Linq;
@@ -36,7 +37,7 @@ namespace BusinessLogic.Tests.UnitTests.EventTrackingTests.UniversalAnalyticsNem
                 Arg<string>.Is.Anything))
                 .Return(analyticsEvent);
 
-            tracker.TrackUserRegistration();
+            tracker.TrackUserRegistration(RegistrationSource.RestApi);
 
             eventTrackerMock.AssertWasCalled(mock => mock.TrackEvent(analyticsEvent));
         }
@@ -52,7 +53,7 @@ namespace BusinessLogic.Tests.UnitTests.EventTrackingTests.UniversalAnalyticsNem
                 Arg<string>.Is.Anything))
                 .Return(analyticsEvent);
 
-            tracker.TrackUserRegistration();
+            tracker.TrackUserRegistration(RegistrationSource.RestApi);
 
             eventTrackerMock.AssertWasCalled(mock => mock.TrackEvent(analyticsEvent));
         }
@@ -68,7 +69,7 @@ namespace BusinessLogic.Tests.UnitTests.EventTrackingTests.UniversalAnalyticsNem
                 Arg<string>.Is.Anything))
                 .Return(analyticsEvent);
 
-            tracker.TrackUserRegistration();
+            tracker.TrackUserRegistration(RegistrationSource.RestApi);
 
             eventTrackerMock.AssertWasCalled(mock => mock.TrackEvent(analyticsEvent));
         }
@@ -80,11 +81,11 @@ namespace BusinessLogic.Tests.UnitTests.EventTrackingTests.UniversalAnalyticsNem
                 Arg<string>.Is.Anything,
                 Arg<string>.Is.Anything,
                 Arg<string>.Is.Anything,
-                Arg<string>.Is.Equal(UniversalAnalyticsNemeStatsEventTracker.DEFAULT_EVENT_LABEL),
+                Arg<string>.Is.Equal(RegistrationSource.RestApi.ToString()),
                 Arg<string>.Is.Anything))
                 .Return(analyticsEvent);
 
-            tracker.TrackUserRegistration();
+            tracker.TrackUserRegistration(RegistrationSource.RestApi);
 
             eventTrackerMock.AssertWasCalled(mock => mock.TrackEvent(analyticsEvent));
         }

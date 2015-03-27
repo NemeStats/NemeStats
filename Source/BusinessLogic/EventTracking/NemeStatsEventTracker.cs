@@ -23,7 +23,7 @@ namespace BusinessLogic.EventTracking
     public interface INemeStatsEventTracker
     {
         void TrackPlayedGame(ApplicationUser currentUser, string gameName, int numberOfPlayers);
-        void TrackUserRegistration();
+        void TrackUserRegistration(RegistrationSource registrationSource);
         void TrackGamingGroupCreation();
         void TrackGameDefinitionCreation(ApplicationUser currentUser, string gameDefinitionName);
         void TrackPlayerCreation(ApplicationUser currentUser);
