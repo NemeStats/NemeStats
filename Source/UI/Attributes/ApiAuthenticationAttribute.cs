@@ -13,7 +13,7 @@ namespace UI.Attributes
 {
     public class ApiAuthenticationAttribute : ActionFilterAttribute
     {
-        private readonly ApplicationUserManager _applicationUserManager;
+        private readonly ApplicationUserManager applicationUserManager;
         internal const string AUTH_HEADER = "X-Auth-Token";
 
         public ApiAuthenticationAttribute()
@@ -24,14 +24,17 @@ namespace UI.Attributes
 
         public ApiAuthenticationAttribute(ApplicationUserManager applicationUserManager)
         {
-            _applicationUserManager = applicationUserManager;
+            this.applicationUserManager = applicationUserManager;
         }
 
         public override void OnActionExecuting(System.Web.Http.Controllers.HttpActionContext actionContext)
         {
             if (!actionContext.Request.Headers.Contains(AUTH_HEADER))
             {
-                actionContext.Response = new HttpResponseMessage(HttpStatusCode.BadRequest);
+                actionContext.Response = actionContext.Request.CreateResponse(
+                    HttpStatusCode.BadRequest, 
+                    "This action requires an " + AUTH_HEADER + " header.");
+
                 return;
             }
 
@@ -39,13 +42,17 @@ namespace UI.Attributes
 
             if(string.IsNullOrWhiteSpace(authHeader))
             {
-                actionContext.Response = new HttpResponseMessage(HttpStatusCode.BadRequest);
+                actionContext.Response = actionContext.Request.CreateResponse(
+                    HttpStatusCode.BadRequest,
+                    "Invalid " + AUTH_HEADER); 
                 return;
             }
 
-            if (!_applicationUserManager.Users.Any(x => x.AuthenticationToken == authHeader && DateTime.UtcNow <= x.AuthenticationTokenExpirationDate))
+            if (!this.applicationUserManager.Users.Any(x => x.AuthenticationToken == authHeader && DateTime.UtcNow <= x.AuthenticationTokenExpirationDate))
             {
-                actionContext.Response = new HttpResponseMessage(HttpStatusCode.Unauthorized);
+                actionContext.Response = actionContext.Request.CreateResponse(
+                    HttpStatusCode.Unauthorized,
+                    "Invalid " + AUTH_HEADER);
             }
         }
     }

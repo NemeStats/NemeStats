@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Web.Http;
 using System.Web.Http.Controllers;
 using BusinessLogic.Logic.Users;
 using BusinessLogic.Models.User;
@@ -28,9 +29,9 @@ namespace UI.Tests.UnitTests.AttributesTests
         [SetUp]
         public void SetUp()
         {
-            var userStoreMock = MockRepository.GenerateMock<IUserStore<ApplicationUser>>();
             var dataProtector = MockRepository.GenerateMock<IDataProtector>();
             _request = new HttpRequestMessage();
+            _request.SetConfiguration(new HttpConfiguration());
             _userStoreMock = MockRepository.GenerateMock<IUserStore<ApplicationUser>>();
             _dataProtectionProviderMock = MockRepository.GenerateMock<IDataProtectionProvider>();
             _dataProtectionProviderMock.Expect(mock => mock.Create(Arg<string>.Is.Anything)).Return(dataProtector);
@@ -45,6 +46,8 @@ namespace UI.Tests.UnitTests.AttributesTests
         {
             _attribute.OnActionExecuting(_actionContext);
             Assert.AreEqual(HttpStatusCode.BadRequest, _actionContext.Response.StatusCode);
+            string actualContent = ((ObjectContent<string>)_actionContext.Response.Content).Value.ToString();
+            Assert.AreEqual("This action requires an X-Auth-Token header.", actualContent);
         }
 
         [Test]
@@ -53,6 +56,8 @@ namespace UI.Tests.UnitTests.AttributesTests
             _request.Headers.Add(ApiAuthenticationAttribute.AUTH_HEADER, new [] { string.Empty });
             _attribute.OnActionExecuting(_actionContext);
             Assert.AreEqual(HttpStatusCode.BadRequest, _actionContext.Response.StatusCode);
+            string actualContent = ((ObjectContent<string>)_actionContext.Response.Content).Value.ToString();
+            Assert.AreEqual("Invalid X-Auth-Token", actualContent);
         }
 
         [Test]
@@ -78,7 +83,7 @@ namespace UI.Tests.UnitTests.AttributesTests
         }
 
         [Test]
-        public void ShouldReturnUnauthorizedHttpStatusWhenWronToken()
+        public void ShouldReturnUnauthorizedHttpStatusWhenWrongToken()
         {
             const string expectedToken = "TEST";
             const string actualToken = "DIFFERENT";
@@ -98,6 +103,8 @@ namespace UI.Tests.UnitTests.AttributesTests
 
             _attribute.OnActionExecuting(_actionContext);
             Assert.AreEqual(HttpStatusCode.Unauthorized, _actionContext.Response.StatusCode);
+            string actualContent = ((ObjectContent<string>)_actionContext.Response.Content).Value.ToString();
+            Assert.AreEqual("Invalid X-Auth-Token", actualContent);
         }
 
         [Test]
@@ -121,6 +128,8 @@ namespace UI.Tests.UnitTests.AttributesTests
 
             _attribute.OnActionExecuting(_actionContext);
             Assert.AreEqual(HttpStatusCode.Unauthorized, _actionContext.Response.StatusCode);
+            string actualContent = ((ObjectContent<string>)_actionContext.Response.Content).Value.ToString();
+            Assert.AreEqual("Invalid X-Auth-Token", actualContent);
         }
     }
 }
