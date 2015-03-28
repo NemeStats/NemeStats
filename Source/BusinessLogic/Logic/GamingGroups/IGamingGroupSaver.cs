@@ -25,7 +25,7 @@ namespace BusinessLogic.Logic.GamingGroups
 {
     public interface IGamingGroupSaver
     {
-        NewlyCreatedGamingGroupResult CreateNewGamingGroup(string gamingGroupName, ApplicationUser currentUser);
+        NewlyCreatedGamingGroupResult CreateNewGamingGroup(string gamingGroupName, RegistrationSource registrationSource, ApplicationUser currentUser);
         GamingGroup UpdateGamingGroupName(string gamingGroupName, ApplicationUser currentUser);
     }
 }

@@ -54,13 +54,17 @@ namespace BusinessLogic.Logic.Users
             this.dataContext = dataContext;
         }
 
-        public async Task<NewlyCreatedGamingGroupResult> CreateGamingGroupAndSendEmailConfirmation(ApplicationUser applicationUser)
+        public async Task<NewlyCreatedGamingGroupResult> CreateGamingGroupAndSendEmailConfirmation(
+            ApplicationUser applicationUser, 
+            RegistrationSource registrationSource)
         {
             //fetch this first since we want to fail as early as possible if the config entry is missing
             var callbackUrl = this.GetCallbackUrlFromConfig();
 
             NewlyCreatedGamingGroupResult result = this.gamingGroupSaver.CreateNewGamingGroup(
-                applicationUser.UserName + "'s Gaming Group", applicationUser);
+                applicationUser.UserName + "'s Gaming Group",
+                registrationSource,
+                applicationUser);
 
             await this.SendConfirmationEmail(applicationUser, callbackUrl);
 

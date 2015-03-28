@@ -50,7 +50,10 @@ namespace BusinessLogic.Logic.GamingGroups
             this.playerSaver = playerSaver;
         }
 
-        public virtual NewlyCreatedGamingGroupResult CreateNewGamingGroup(string gamingGroupName, ApplicationUser currentUser)
+        public virtual NewlyCreatedGamingGroupResult CreateNewGamingGroup(
+            string gamingGroupName, 
+            RegistrationSource registrationSource, 
+            ApplicationUser currentUser)
         {
             ValidateGamingGroupName(gamingGroupName);
 
@@ -69,7 +72,7 @@ namespace BusinessLogic.Logic.GamingGroups
             Player newlyCreatedPlayer = this.AssociateUserWithGamingGroup(currentUser, newGamingGroup);
             newlyCreatedGamingGroupResult.NewlyCreatedPlayer = newlyCreatedPlayer;
 
-            new Task(() => eventTracker.TrackGamingGroupCreation()).Start();
+            new Task(() => eventTracker.TrackGamingGroupCreation(registrationSource)).Start();
 
             return newlyCreatedGamingGroupResult;
         }

@@ -103,7 +103,7 @@ namespace BusinessLogic.Logic.Users
             }
             else
             {
-                newlyCreatedGamingGroupResult = await this.firstTimeUserAuthenticator.CreateGamingGroupAndSendEmailConfirmation(newApplicationUser);
+                newlyCreatedGamingGroupResult = await this.firstTimeUserAuthenticator.CreateGamingGroupAndSendEmailConfirmation(newApplicationUser, newUser.Source);
             }
 
             return newlyCreatedGamingGroupResult;

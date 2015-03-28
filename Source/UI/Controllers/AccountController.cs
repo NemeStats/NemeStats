@@ -378,7 +378,7 @@ namespace UI.Controllers
 					result = await userManager.AddLoginAsync(user.Id, info.Login);
 					if (result.Succeeded)
 					{
-						await firstTimeAuthenticator.CreateGamingGroupAndSendEmailConfirmation(user);
+						await firstTimeAuthenticator.CreateGamingGroupAndSendEmailConfirmation(user, RegistrationSource.WebApplication);
 						cookieHelper.ClearCookie(NemeStatsCookieEnum.gamingGroupsCookie, Request, Response);
 
 						return RedirectToAction(MVC.GamingGroup.ActionNames.Index, "GamingGroup");

@@ -48,6 +48,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.FirstTimeAuthentic
         private ApplicationUser applicationUser;
         private string confirmationToken = "the confirmation token";
         private string callbackUrl = "nemestats.com/Account/ConfirmEmail";
+        private RegistrationSource registrationSource;
 
         [SetUp]
         public void SetUp()
@@ -73,6 +74,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.FirstTimeAuthentic
                 UserName = "user name"
             };
 
+            registrationSource = RegistrationSource.RestApi;
+
             var appSettingsMock = MockRepository.GenerateMock<IAppSettings>();
             configurationManagerMock.Expect(mock => mock.AppSettings)
                                     .Return(appSettingsMock);
@@ -86,6 +89,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.FirstTimeAuthentic
             };
             gamingGroupSaverMock.Expect(mock => mock.CreateNewGamingGroup(
                                                                           Arg<string>.Is.Anything,
+                                                                          Arg<RegistrationSource>.Is.Anything,
                                                                           Arg<ApplicationUser>.Is.Anything))
                                 .Return(expectedNewlyCreatedGamingGroupResult);
 
@@ -107,17 +111,18 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.FirstTimeAuthentic
         [Test]
         public async Task ItCreatesANewGamingGroupForTheUser()
         {
-            await firstTimeAuthenticator.CreateGamingGroupAndSendEmailConfirmation(applicationUser);
+            await firstTimeAuthenticator.CreateGamingGroupAndSendEmailConfirmation(applicationUser, registrationSource);
 
             gamingGroupSaverMock.AssertWasCalled(mock => mock.CreateNewGamingGroup(
                                                                                    Arg<string>.Is.Equal(applicationUser.UserName + "'s Gaming Group"),
+                                                                                   Arg<RegistrationSource>.Is.Equal(registrationSource),
                                                                                    Arg<ApplicationUser>.Is.Same(applicationUser)));
         }
 
         [Test]
         public async Task ItEmailsNewRegistrantsAskingForConfirmation()
         {
-            await firstTimeAuthenticator.CreateGamingGroupAndSendEmailConfirmation(applicationUser);
+            await firstTimeAuthenticator.CreateGamingGroupAndSendEmailConfirmation(applicationUser, registrationSource);
 
             applicationUserManagerMock.VerifyAllExpectations();
         }
@@ -141,7 +146,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.FirstTimeAuthentic
             string exceptionMessage = string.Empty;
             try
             {
-                await firstTimeAuthenticator.CreateGamingGroupAndSendEmailConfirmation(applicationUser);
+                await firstTimeAuthenticator.CreateGamingGroupAndSendEmailConfirmation(applicationUser, registrationSource);
             }
             catch (ConfigurationException expectedException)
             {
@@ -154,7 +159,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.FirstTimeAuthentic
         [Test]
         public async Task ItReturnsTheNewlyCreatedGamingGroupResult()
         {
-            NewlyCreatedGamingGroupResult result = await firstTimeAuthenticator.CreateGamingGroupAndSendEmailConfirmation(applicationUser);
+            NewlyCreatedGamingGroupResult result = await firstTimeAuthenticator.CreateGamingGroupAndSendEmailConfirmation(applicationUser, registrationSource);
 
             Assert.That(result, Is.SameAs(expectedNewlyCreatedGamingGroupResult));
         }

@@ -109,7 +109,9 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.UserRegistererTest
                                          .Return(Task.FromResult(-1));
             gamingGroupInviteConsumerMock.Expect(mock => mock.AddNewUserToGamingGroup(Arg<string>.Is.Anything, Arg<Guid>.Is.Anything))
                                          .Return(newlyCreatedGamingGroupResult);
-            firstTimeUserAuthenticatorMock.Expect(mock => mock.CreateGamingGroupAndSendEmailConfirmation(Arg<ApplicationUser>.Is.Anything))
+            firstTimeUserAuthenticatorMock.Expect(mock => mock.CreateGamingGroupAndSendEmailConfirmation(
+                Arg<ApplicationUser>.Is.Anything,
+                Arg<RegistrationSource>.Is.Anything))
                 .Return(Task.FromResult(newlyCreatedGamingGroupResult));
         }
 
@@ -171,7 +173,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.UserRegistererTest
 
             firstTimeUserAuthenticatorMock.AssertWasCalled(mock => mock.CreateGamingGroupAndSendEmailConfirmation(
                 Arg<ApplicationUser>.Matches(user => user.UserName == newUser.UserName
-                                                && user.Email == newUser.EmailAddress)));
+                                                && user.Email == newUser.EmailAddress),
+                Arg<RegistrationSource>.Is.Anything));
         }
 
         [Test]
@@ -180,7 +183,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.UserRegistererTest
             await userRegisterer.RegisterUser(newUser);
 
             firstTimeUserAuthenticatorMock.AssertWasNotCalled(mock => mock.CreateGamingGroupAndSendEmailConfirmation(
-                Arg<ApplicationUser>.Is.Anything));
+                Arg<ApplicationUser>.Is.Anything,
+                Arg<RegistrationSource>.Is.Anything));
         }
 
         [Test]
@@ -203,7 +207,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.UserRegistererTest
             await userRegisterer.RegisterUser(newUser);
 
             firstTimeUserAuthenticatorMock.AssertWasNotCalled(mock => mock.CreateGamingGroupAndSendEmailConfirmation(
-                Arg<ApplicationUser>.Is.Anything));
+                Arg<ApplicationUser>.Is.Anything,
+                Arg<RegistrationSource>.Is.Anything));
         }
 
         [Test]

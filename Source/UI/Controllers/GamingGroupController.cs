@@ -207,7 +207,7 @@ namespace UI.Controllers
 				this.ModelState.AddModelError(string.Empty, "You must enter a Gaming Group name.");
 				return this.Index(currentUser);
 			}
-			this.gamingGroupSaver.CreateNewGamingGroup(gamingGroupName.Trim(), currentUser);
+			this.gamingGroupSaver.CreateNewGamingGroup(gamingGroupName.Trim(), RegistrationSource.WebApplication, currentUser);
 			this.cookieHelper.ClearCookie(NemeStatsCookieEnum.gamingGroupsCookie, this.Request, this.Response);
 
 			return RedirectToAction(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name);

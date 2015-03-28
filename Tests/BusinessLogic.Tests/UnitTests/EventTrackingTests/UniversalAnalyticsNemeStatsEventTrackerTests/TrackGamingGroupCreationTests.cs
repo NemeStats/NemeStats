@@ -16,6 +16,7 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 using BusinessLogic.EventTracking;
+using BusinessLogic.Models.User;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System.Linq;
@@ -37,7 +38,7 @@ namespace BusinessLogic.Tests.UnitTests.EventTrackingTests.UniversalAnalyticsNem
                 Arg<string>.Is.Anything))
                 .Return(analyticsEvent);
 
-            tracker.TrackGamingGroupCreation();
+            tracker.TrackGamingGroupCreation(RegistrationSource.RestApi);
 
             eventTrackerMock.AssertWasCalled(mock => mock.TrackEvent(analyticsEvent));
         }
@@ -53,7 +54,7 @@ namespace BusinessLogic.Tests.UnitTests.EventTrackingTests.UniversalAnalyticsNem
                 Arg<string>.Is.Anything))
                 .Return(analyticsEvent);
 
-            tracker.TrackGamingGroupCreation();
+            tracker.TrackGamingGroupCreation(RegistrationSource.RestApi);
 
             eventTrackerMock.AssertWasCalled(mock => mock.TrackEvent(analyticsEvent));
         }
@@ -69,23 +70,25 @@ namespace BusinessLogic.Tests.UnitTests.EventTrackingTests.UniversalAnalyticsNem
                 Arg<string>.Is.Anything))
                 .Return(analyticsEvent);
 
-            tracker.TrackGamingGroupCreation();
+            tracker.TrackGamingGroupCreation(RegistrationSource.RestApi);
 
             eventTrackerMock.AssertWasCalled(mock => mock.TrackEvent(analyticsEvent));
         }
 
         [Test]
-        public void ItSetsTheLabelToDefault()
+        public void ItSetsTheLabelToTheSpecifiedRegistrationSource()
         {
+            RegistrationSource registrationSource = RegistrationSource.RestApi;
+
             eventFactoryMock.Expect(mock => mock.MakeUniversalAnalyticsEvent(
                 Arg<string>.Is.Anything,
                 Arg<string>.Is.Anything,
                 Arg<string>.Is.Anything,
-                Arg<string>.Is.Equal(UniversalAnalyticsNemeStatsEventTracker.DEFAULT_EVENT_LABEL),
+                Arg<string>.Is.Equal(registrationSource.ToString()),
                 Arg<string>.Is.Anything))
                 .Return(analyticsEvent);
 
-            tracker.TrackGamingGroupCreation();
+            tracker.TrackGamingGroupCreation(registrationSource);
 
             eventTrackerMock.AssertWasCalled(mock => mock.TrackEvent(analyticsEvent));
         }
