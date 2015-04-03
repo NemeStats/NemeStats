@@ -37,7 +37,7 @@ namespace UI.Areas.Api.Controllers
             {
                 AuthenticationToken = authTokenGenerator.GenerateAuthToken(user.Id)
             };
-
+            
             return Request.CreateResponse(HttpStatusCode.OK, newAuthTokenMessage);
         }
     }

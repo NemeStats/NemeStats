@@ -1,24 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web;
-using System.Web.Http;
-using AutoMapper;
-using BusinessLogic.Logic.Users;
+﻿using BusinessLogic.Logic.Users;
 using BusinessLogic.Models.User;
-using Links;
 using Microsoft.AspNet.Identity;
 using NUnit.Framework;
 using Rhino.Mocks;
 using StructureMap.AutoMocking;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Threading.Tasks;
+using System.Web.Http;
 using UI.Areas.Api.Controllers;
 using UI.Areas.Api.Models;
-using UI.Transformations;
 using UI.Models.API;
+using UI.Transformations;
 
 namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests
 {
