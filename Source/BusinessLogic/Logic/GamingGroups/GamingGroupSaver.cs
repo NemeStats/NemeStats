@@ -52,7 +52,7 @@ namespace BusinessLogic.Logic.GamingGroups
 
         public virtual NewlyCreatedGamingGroupResult CreateNewGamingGroup(
             string gamingGroupName, 
-            RegistrationSource registrationSource, 
+            TransactionSource registrationSource, 
             ApplicationUser currentUser)
         {
             ValidateGamingGroupName(gamingGroupName);

@@ -16,6 +16,7 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 using BusinessLogic.EventTracking;
+using BusinessLogic.Logic;
 using BusinessLogic.Models.User;
 using NUnit.Framework;
 using Rhino.Mocks;
@@ -37,7 +38,7 @@ namespace BusinessLogic.Tests.UnitTests.EventTrackingTests.UniversalAnalyticsNem
                 Arg<string>.Is.Anything))
                 .Return(analyticsEvent);
 
-            tracker.TrackUserRegistration(RegistrationSource.RestApi);
+            tracker.TrackUserRegistration(TransactionSource.RestApi);
 
             eventTrackerMock.AssertWasCalled(mock => mock.TrackEvent(analyticsEvent));
         }
@@ -53,7 +54,7 @@ namespace BusinessLogic.Tests.UnitTests.EventTrackingTests.UniversalAnalyticsNem
                 Arg<string>.Is.Anything))
                 .Return(analyticsEvent);
 
-            tracker.TrackUserRegistration(RegistrationSource.RestApi);
+            tracker.TrackUserRegistration(TransactionSource.RestApi);
 
             eventTrackerMock.AssertWasCalled(mock => mock.TrackEvent(analyticsEvent));
         }
@@ -69,7 +70,7 @@ namespace BusinessLogic.Tests.UnitTests.EventTrackingTests.UniversalAnalyticsNem
                 Arg<string>.Is.Anything))
                 .Return(analyticsEvent);
 
-            tracker.TrackUserRegistration(RegistrationSource.RestApi);
+            tracker.TrackUserRegistration(TransactionSource.RestApi);
 
             eventTrackerMock.AssertWasCalled(mock => mock.TrackEvent(analyticsEvent));
         }
@@ -81,11 +82,11 @@ namespace BusinessLogic.Tests.UnitTests.EventTrackingTests.UniversalAnalyticsNem
                 Arg<string>.Is.Anything,
                 Arg<string>.Is.Anything,
                 Arg<string>.Is.Anything,
-                Arg<string>.Is.Equal(RegistrationSource.RestApi.ToString()),
+                Arg<string>.Is.Equal(TransactionSource.RestApi.ToString()),
                 Arg<string>.Is.Anything))
                 .Return(analyticsEvent);
 
-            tracker.TrackUserRegistration(RegistrationSource.RestApi);
+            tracker.TrackUserRegistration(TransactionSource.RestApi);
 
             eventTrackerMock.AssertWasCalled(mock => mock.TrackEvent(analyticsEvent));
         }

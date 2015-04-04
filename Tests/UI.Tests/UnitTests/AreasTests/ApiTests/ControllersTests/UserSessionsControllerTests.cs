@@ -18,7 +18,7 @@ using UI.Transformations;
 namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests
 {
     [TestFixture]
-    public class UserSessionsControllersTests
+    public class UserSessionsControllerTests
     {
         private RhinoAutoMocker<UserSessionsController> autoMocker;
         private IUserStore<ApplicationUser> userStoreMock;

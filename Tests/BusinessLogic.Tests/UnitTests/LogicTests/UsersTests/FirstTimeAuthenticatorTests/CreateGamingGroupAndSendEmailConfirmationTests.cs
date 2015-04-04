@@ -23,6 +23,7 @@ using System.Runtime.Remoting;
 using System.Threading.Tasks;
 using System.Web;
 using BusinessLogic.DataAccess;
+using BusinessLogic.Logic;
 using BusinessLogic.Logic.GamingGroups;
 using BusinessLogic.Logic.Users;
 using BusinessLogic.Models;
@@ -48,7 +49,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.FirstTimeAuthentic
         private ApplicationUser applicationUser;
         private string confirmationToken = "the confirmation token";
         private string callbackUrl = "nemestats.com/Account/ConfirmEmail";
-        private RegistrationSource registrationSource;
+        private TransactionSource registrationSource;
 
         [SetUp]
         public void SetUp()
@@ -74,7 +75,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.FirstTimeAuthentic
                 UserName = "user name"
             };
 
-            registrationSource = RegistrationSource.RestApi;
+            registrationSource = TransactionSource.RestApi;
 
             var appSettingsMock = MockRepository.GenerateMock<IAppSettings>();
             configurationManagerMock.Expect(mock => mock.AppSettings)
@@ -89,7 +90,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.FirstTimeAuthentic
             };
             gamingGroupSaverMock.Expect(mock => mock.CreateNewGamingGroup(
                                                                           Arg<string>.Is.Anything,
-                                                                          Arg<RegistrationSource>.Is.Anything,
+                                                                          Arg<TransactionSource>.Is.Anything,
                                                                           Arg<ApplicationUser>.Is.Anything))
                                 .Return(expectedNewlyCreatedGamingGroupResult);
 
@@ -115,7 +116,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.FirstTimeAuthentic
 
             gamingGroupSaverMock.AssertWasCalled(mock => mock.CreateNewGamingGroup(
                                                                                    Arg<string>.Is.Equal(applicationUser.UserName + "'s Gaming Group"),
-                                                                                   Arg<RegistrationSource>.Is.Equal(registrationSource),
+                                                                                   Arg<TransactionSource>.Is.Equal(registrationSource),
                                                                                    Arg<ApplicationUser>.Is.Same(applicationUser)));
         }
 

@@ -156,6 +156,7 @@
     <Compile Include="Logic\Email\EmailService.cs" />
     <Compile Include="Logic\Points\PointsCalculator.cs" />
     <Compile Include="Logic\Points\GlobalPointsRecalculator.cs" />
+    <Compile Include="Logic\TransactionSource.cs" />
     <Compile Include="Logic\Users\AuthTokenGenerator.cs" />
     <Compile Include="Logic\Users\IAuthTokenGenerator.cs" />
     <Compile Include="Logic\VotableFeatures\IVotableFeatureRetriever.cs" />
@@ -389,7 +390,6 @@
     <Compile Include="Models\User\NewlyRegisteredUser.cs" />
     <Compile Include="Models\User\NewUser.cs" />
     <Compile Include="Models\User\RegisterNewUserResult.cs" />
-    <Compile Include="Models\User\RegistrationSource.cs" />
     <Compile Include="Models\User\UserGamingGroup.cs" />
     <Compile Include="Models\Players\PlayerStatistics.cs" />
     <Compile Include="Migrations\201405220234035_Initial.cs" />

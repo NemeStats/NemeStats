@@ -90,7 +90,7 @@ namespace BusinessLogic.Logic.Users
         {
             new Task(() => this.eventTracker.TrackUserRegistration(newUser.Source)).Start();
 
-            if (newUser.Source == RegistrationSource.WebApplication)
+            if (newUser.Source == TransactionSource.WebApplication)
             {
                 await this.signInManager.SignInAsync(newApplicationUser, false, false);
             }

@@ -15,6 +15,8 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
+
+using BusinessLogic.Logic;
 using BusinessLogic.Logic.Users;
 using BusinessLogic.Models.User;
 using Microsoft.AspNet.Identity;
@@ -378,7 +380,7 @@ namespace UI.Controllers
 					result = await userManager.AddLoginAsync(user.Id, info.Login);
 					if (result.Succeeded)
 					{
-						await firstTimeAuthenticator.CreateGamingGroupAndSendEmailConfirmation(user, RegistrationSource.WebApplication);
+						await firstTimeAuthenticator.CreateGamingGroupAndSendEmailConfirmation(user, TransactionSource.WebApplication);
 						cookieHelper.ClearCookie(NemeStatsCookieEnum.gamingGroupsCookie, Request, Response);
 
 						return RedirectToAction(MVC.GamingGroup.ActionNames.Index, "GamingGroup");

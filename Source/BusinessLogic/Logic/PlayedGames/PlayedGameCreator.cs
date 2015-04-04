@@ -40,7 +40,6 @@ namespace BusinessLogic.Logic.PlayedGames
         public PlayedGameCreator(
             IDataContext applicationDataContext, 
             INemeStatsEventTracker playedGameTracker, 
-            IPlayerRepository playerRepository,
             INemesisRecalculator nemesisRecalculator,
             IChampionRecalculator championRecalculator)
         {
@@ -51,7 +50,7 @@ namespace BusinessLogic.Logic.PlayedGames
         }
 
         //TODO need to have validation logic here (or on PlayedGame similar to what is on NewlyCompletedGame)
-        public PlayedGame CreatePlayedGame(NewlyCompletedGame newlyCompletedGame, ApplicationUser currentUser)
+        public PlayedGame CreatePlayedGame(NewlyCompletedGame newlyCompletedGame, TransactionSource transactionSource, ApplicationUser currentUser)
         {
             List<PlayerGameResult> playerGameResults = TransformNewlyCompletedGamePlayerRanksToPlayerGameResults(newlyCompletedGame);
 
@@ -64,16 +63,13 @@ namespace BusinessLogic.Logic.PlayedGames
 
             dataContext.Save(playedGame, currentUser);
 
-            GameDefinition gameDefinition = dataContext.FindById<GameDefinition>(newlyCompletedGame.GameDefinitionId);
-            playedGameTracker.TrackPlayedGame(currentUser, gameDefinition.Name, playedGame.PlayerGameResults.Count);
+            playedGameTracker.TrackPlayedGame(currentUser, transactionSource);
 
             foreach(PlayerGameResult result in playerGameResults)
             {
                 nemesisRecalculator.RecalculateNemesis(result.PlayerId, currentUser);
             }
             championRecalculator.RecalculateChampion(playedGame.GameDefinitionId, currentUser);
-
-
 
             return playedGame;
         }

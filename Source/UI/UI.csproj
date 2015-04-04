@@ -258,11 +258,13 @@
     <Compile Include="App_Start\StructuremapMvc.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Areas\Api\Controllers\GamingGroupsController.cs" />
+    <Compile Include="Areas\Api\Controllers\PlayedGamesController.cs" />
     <Compile Include="Areas\Api\Controllers\UsersController.cs" />
     <Compile Include="Areas\Api\Controllers\UserSessionsController.cs" />
     <Compile Include="Areas\Api\Controllers\VotableFeaturesController.cs" />
     <Compile Include="Areas\Api\Models\DefaultEmptyResponseMessage.cs" />
     <Compile Include="Areas\Api\Models\NewUserMessage.cs" />
+    <Compile Include="Areas\Api\Models\PlayedGameMessage.cs" />
     <Compile Include="Areas\Api\RollbarExceptionLogger.cs" />
     <Compile Include="Attributes\ApiAuthenticationAttribute.cs" />
     <Compile Include="Attributes\ApiModelValidationAttribute.cs" />

@@ -19,6 +19,7 @@ using System;
 using System.Runtime.CompilerServices;
 using BusinessLogic.DataAccess;
 using BusinessLogic.EventTracking;
+using BusinessLogic.Logic;
 using BusinessLogic.Logic.Users;
 using BusinessLogic.Models;
 using BusinessLogic.Models.GamingGroups;
@@ -86,7 +87,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.UserRegistererTest
                 UserName = "user name",
                 EmailAddress = "the email",
                 GamingGroupInvitationId = invitationId,
-                Source = RegistrationSource.WebApplication
+                Source = TransactionSource.WebApplication
             };
             newlyCreatedGamingGroupResult = new NewlyCreatedGamingGroupResult
             {
@@ -111,7 +112,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.UserRegistererTest
                                          .Return(newlyCreatedGamingGroupResult);
             firstTimeUserAuthenticatorMock.Expect(mock => mock.CreateGamingGroupAndSendEmailConfirmation(
                 Arg<ApplicationUser>.Is.Anything,
-                Arg<RegistrationSource>.Is.Anything))
+                Arg<TransactionSource>.Is.Anything))
                 .Return(Task.FromResult(newlyCreatedGamingGroupResult));
         }
 
@@ -141,7 +142,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.UserRegistererTest
         [Test]
         public async Task ItDoesntSignInIfRegisteringFromTheReTaskstApi()
         {
-            newUser.Source = RegistrationSource.RestApi;
+            newUser.Source = TransactionSource.RestApi;
 
             await userRegisterer.RegisterUser(newUser);
 
@@ -174,7 +175,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.UserRegistererTest
             firstTimeUserAuthenticatorMock.AssertWasCalled(mock => mock.CreateGamingGroupAndSendEmailConfirmation(
                 Arg<ApplicationUser>.Matches(user => user.UserName == newUser.UserName
                                                 && user.Email == newUser.EmailAddress),
-                Arg<RegistrationSource>.Is.Anything));
+                Arg<TransactionSource>.Is.Anything));
         }
 
         [Test]
@@ -184,7 +185,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.UserRegistererTest
 
             firstTimeUserAuthenticatorMock.AssertWasNotCalled(mock => mock.CreateGamingGroupAndSendEmailConfirmation(
                 Arg<ApplicationUser>.Is.Anything,
-                Arg<RegistrationSource>.Is.Anything));
+                Arg<TransactionSource>.Is.Anything));
         }
 
         [Test]
@@ -208,7 +209,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.UserRegistererTest
 
             firstTimeUserAuthenticatorMock.AssertWasNotCalled(mock => mock.CreateGamingGroupAndSendEmailConfirmation(
                 Arg<ApplicationUser>.Is.Anything,
-                Arg<RegistrationSource>.Is.Anything));
+                Arg<TransactionSource>.Is.Anything));
         }
 
         [Test]

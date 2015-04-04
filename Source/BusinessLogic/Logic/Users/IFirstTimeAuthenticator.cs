@@ -24,6 +24,6 @@ namespace BusinessLogic.Logic.Users
 {
     public interface IFirstTimeAuthenticator
     {
-        Task<NewlyCreatedGamingGroupResult> CreateGamingGroupAndSendEmailConfirmation(ApplicationUser applicationUser, RegistrationSource registrationSource);
+        Task<NewlyCreatedGamingGroupResult> CreateGamingGroupAndSendEmailConfirmation(ApplicationUser applicationUser, TransactionSource registrationSource);
     }
 }

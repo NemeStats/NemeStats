@@ -17,6 +17,7 @@
 #endregion
 using System;
 using System.Linq;
+using BusinessLogic.Logic;
 
 namespace BusinessLogic.Models.User
 {
@@ -26,6 +27,6 @@ namespace BusinessLogic.Models.User
         public string EmailAddress { get; set; }
         public string Password { get; set; }
         public Guid? GamingGroupInvitationId { get; set; }
-        public RegistrationSource Source { get; set; }
+        public TransactionSource Source { get; set; }
     }
 }

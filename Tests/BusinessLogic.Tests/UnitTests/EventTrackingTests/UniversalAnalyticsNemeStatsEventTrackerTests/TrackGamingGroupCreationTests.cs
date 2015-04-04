@@ -16,6 +16,7 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 using BusinessLogic.EventTracking;
+using BusinessLogic.Logic;
 using BusinessLogic.Models.User;
 using NUnit.Framework;
 using Rhino.Mocks;
@@ -38,7 +39,7 @@ namespace BusinessLogic.Tests.UnitTests.EventTrackingTests.UniversalAnalyticsNem
                 Arg<string>.Is.Anything))
                 .Return(analyticsEvent);
 
-            tracker.TrackGamingGroupCreation(RegistrationSource.RestApi);
+            tracker.TrackGamingGroupCreation(TransactionSource.RestApi);
 
             eventTrackerMock.AssertWasCalled(mock => mock.TrackEvent(analyticsEvent));
         }
@@ -54,7 +55,7 @@ namespace BusinessLogic.Tests.UnitTests.EventTrackingTests.UniversalAnalyticsNem
                 Arg<string>.Is.Anything))
                 .Return(analyticsEvent);
 
-            tracker.TrackGamingGroupCreation(RegistrationSource.RestApi);
+            tracker.TrackGamingGroupCreation(TransactionSource.RestApi);
 
             eventTrackerMock.AssertWasCalled(mock => mock.TrackEvent(analyticsEvent));
         }
@@ -70,7 +71,7 @@ namespace BusinessLogic.Tests.UnitTests.EventTrackingTests.UniversalAnalyticsNem
                 Arg<string>.Is.Anything))
                 .Return(analyticsEvent);
 
-            tracker.TrackGamingGroupCreation(RegistrationSource.RestApi);
+            tracker.TrackGamingGroupCreation(TransactionSource.RestApi);
 
             eventTrackerMock.AssertWasCalled(mock => mock.TrackEvent(analyticsEvent));
         }
@@ -78,7 +79,7 @@ namespace BusinessLogic.Tests.UnitTests.EventTrackingTests.UniversalAnalyticsNem
         [Test]
         public void ItSetsTheLabelToTheSpecifiedRegistrationSource()
         {
-            RegistrationSource registrationSource = RegistrationSource.RestApi;
+            TransactionSource registrationSource = TransactionSource.RestApi;
 
             eventFactoryMock.Expect(mock => mock.MakeUniversalAnalyticsEvent(
                 Arg<string>.Is.Anything,

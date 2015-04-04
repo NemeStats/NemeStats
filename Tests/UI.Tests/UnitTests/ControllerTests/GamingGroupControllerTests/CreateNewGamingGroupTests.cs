@@ -22,6 +22,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using BusinessLogic.Logic;
 using BusinessLogic.Models.User;
 using NUnit.Framework;
 using Rhino.Mocks;
@@ -56,7 +57,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
 
             gamingGroupControllerPartialMock.CreateNewGamingGroup(gamingGroupName, currentUser);
 
-            gamingGroupSaverMock.AssertWasCalled(mock => mock.CreateNewGamingGroup(gamingGroupName, RegistrationSource.WebApplication, currentUser));
+            gamingGroupSaverMock.AssertWasCalled(mock => mock.CreateNewGamingGroup(gamingGroupName, TransactionSource.WebApplication, currentUser));
         }
 
         [Test]

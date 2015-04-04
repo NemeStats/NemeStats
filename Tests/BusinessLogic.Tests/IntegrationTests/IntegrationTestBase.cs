@@ -20,6 +20,7 @@ using BusinessLogic.DataAccess.GamingGroups;
 using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.DataAccess.Security;
 using BusinessLogic.EventTracking;
+using BusinessLogic.Logic;
 using BusinessLogic.Logic.Champions;
 using BusinessLogic.Logic.Nemeses;
 using BusinessLogic.Logic.PlayedGames;
@@ -182,7 +183,7 @@ namespace BusinessLogic.Tests.IntegrationTests
             INemesisRecalculator nemesisRecalculator = new NemesisRecalculator(dataContext, playerRepository);
             IChampionRepository championRepository = new ChampionRepository(dataContext);
             IChampionRecalculator championRecalculator = new ChampionRecalculator(dataContext, championRepository);
-            IPlayedGameCreator playedGameCreator = new PlayedGameCreator(dataContext, playedGameTracker, playerRepository, nemesisRecalculator, championRecalculator);
+            IPlayedGameCreator playedGameCreator = new PlayedGameCreator(dataContext, playedGameTracker, nemesisRecalculator, championRecalculator);
             
             List<Player> players = new List<Player>() { testPlayer1, testPlayer2 };
             List<int> playerRanks = new List<int>() { 1, 1 };
@@ -384,7 +385,7 @@ namespace BusinessLogic.Tests.IntegrationTests
                     PlayerRanks = playerRanks,
                 };
 
-            return playedGameCreator.CreatePlayedGame(newlyCompletedGame, currentUser);
+            return playedGameCreator.CreatePlayedGame(newlyCompletedGame, TransactionSource.WebApplication, currentUser);
         }
 
         private void CleanUpTestData()

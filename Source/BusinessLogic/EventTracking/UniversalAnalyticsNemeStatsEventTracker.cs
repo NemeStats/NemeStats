@@ -15,6 +15,8 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
+
+using BusinessLogic.Logic;
 using BusinessLogic.Models.User;
 using System.Linq;
 using UniversalAnalyticsHttpWrapper;
@@ -40,19 +42,18 @@ namespace BusinessLogic.EventTracking
             this.eventFactory = eventFactory;
         }
 
-        public void TrackPlayedGame(ApplicationUser currentUser, string gameName, int numberOfPlayers)
+        public void TrackPlayedGame(ApplicationUser currentUser, TransactionSource transactionSource)
         {
             IUniversalAnalyticsEvent universalAnalyticsEvent = eventFactory.MakeUniversalAnalyticsEvent(
                 currentUser.AnonymousClientId,
                 EventCategoryEnum.PlayedGames.ToString(),
                 EventActionEnum.Created.ToString(),
-                gameName,
-                numberOfPlayers.ToString());
+                transactionSource.ToString());
 
             eventTracker.TrackEvent(universalAnalyticsEvent);
         }
 
-        public void TrackUserRegistration(RegistrationSource registrationSource)
+        public void TrackUserRegistration(TransactionSource registrationSource)
         {
             IUniversalAnalyticsEvent universalAnalyticsEvent = eventFactory.MakeUniversalAnalyticsEvent(
                 DEFAULT_ANONYMOUS_CLIENT_ID,
@@ -63,7 +64,7 @@ namespace BusinessLogic.EventTracking
             eventTracker.TrackEvent(universalAnalyticsEvent);
         }
 
-        public void TrackGamingGroupCreation(RegistrationSource registrationSource)
+        public void TrackGamingGroupCreation(TransactionSource registrationSource)
         {
             IUniversalAnalyticsEvent universalAnalyticsEvent = eventFactory.MakeUniversalAnalyticsEvent(
                 DEFAULT_ANONYMOUS_CLIENT_ID,

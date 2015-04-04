@@ -56,7 +56,7 @@ namespace BusinessLogic.Logic.Users
 
         public async Task<NewlyCreatedGamingGroupResult> CreateGamingGroupAndSendEmailConfirmation(
             ApplicationUser applicationUser, 
-            RegistrationSource registrationSource)
+            TransactionSource registrationSource)
         {
             //fetch this first since we want to fail as early as possible if the config entry is missing
             var callbackUrl = this.GetCallbackUrlFromConfig();

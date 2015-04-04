@@ -16,6 +16,7 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 
+using BusinessLogic.Logic;
 using BusinessLogic.Logic.GamingGroups;
 using BusinessLogic.Models;
 using BusinessLogic.Models.GamingGroups;
@@ -71,7 +72,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
         [Test]
         public void ItSetsTheOwnerToTheCurrentUser()
         {
-            gamingGroupSaver.CreateNewGamingGroup(gamingGroupName, RegistrationSource.RestApi, currentUser);
+            gamingGroupSaver.CreateNewGamingGroup(gamingGroupName, TransactionSource.RestApi, currentUser);
 
             dataContextMock.AssertWasCalled(mock =>
                 mock.Save(Arg<GamingGroup>.Matches(group => group.OwningUserId == currentUser.Id),
@@ -81,7 +82,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
         [Test]
         public void ItSetsTheGamingGroupName()
         {
-            gamingGroupSaver.CreateNewGamingGroup(gamingGroupName, RegistrationSource.RestApi, currentUser);
+            gamingGroupSaver.CreateNewGamingGroup(gamingGroupName, TransactionSource.RestApi, currentUser);
 
             dataContextMock.AssertWasCalled(mock =>
                 mock.Save(Arg<GamingGroup>.Matches(group => group.Name == gamingGroupName),
@@ -91,7 +92,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
         [Test]
         public void ItReturnsTheNewlyCreatedGamingGroupResult()
         {
-            NewlyCreatedGamingGroupResult actualResult = gamingGroupSaver.CreateNewGamingGroup(gamingGroupName, RegistrationSource.RestApi, currentUser);
+            NewlyCreatedGamingGroupResult actualResult = gamingGroupSaver.CreateNewGamingGroup(gamingGroupName, TransactionSource.RestApi, currentUser);
 
             Assert.AreSame(expectedGamingGroup, actualResult.NewlyCreatedGamingGroup);
             Assert.AreSame(expectedPlayer, actualResult.NewlyCreatedPlayer);
@@ -100,7 +101,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
         [Test]
         public void ItAssociatesTheUserWithTheGamingGroup()
         {
-            gamingGroupSaver.CreateNewGamingGroup(gamingGroupName, RegistrationSource.RestApi, currentUser);
+            gamingGroupSaver.CreateNewGamingGroup(gamingGroupName, TransactionSource.RestApi, currentUser);
 
             dataContextMock.AssertWasCalled(mock => mock.Save<UserGamingGroup>(
                 Arg<UserGamingGroup>.Matches(ugg => ugg.ApplicationUserId == currentUser.Id
@@ -111,7 +112,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
         [Test]
         public void ItUpdatesTheCurrentUsersGamingGroup()
         {
-            gamingGroupSaver.CreateNewGamingGroup(gamingGroupName, RegistrationSource.RestApi, currentUser);
+            gamingGroupSaver.CreateNewGamingGroup(gamingGroupName, TransactionSource.RestApi, currentUser);
 
             dataContextMock.AssertWasCalled(mock => mock.Save(Arg<ApplicationUser>.Matches(
                 user => user.CurrentGamingGroupId == expectedGamingGroup.Id 
@@ -122,7 +123,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
         [Test]
         public void ItCreatesANewPlayerNamedAfterTheUserName()
         {
-            gamingGroupSaver.CreateNewGamingGroup(gamingGroupName, RegistrationSource.RestApi, currentUser);
+            gamingGroupSaver.CreateNewGamingGroup(gamingGroupName, TransactionSource.RestApi, currentUser);
 
             playerSaverMock.AssertWasCalled(mock => mock.Save(Arg<Player>.Matches(
                                         player => player.Name == currentUser.UserName
@@ -138,7 +139,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
             dataContextMock.Expect(mock => mock.Save(Arg<GamingGroup>.Is.Anything, Arg<ApplicationUser>.Is.Anything))
                 .Repeat.Once()
                 .Return(expectedGamingGroup);
-            RegistrationSource expectedRegistrationSource = RegistrationSource.RestApi;
+            TransactionSource expectedRegistrationSource = TransactionSource.RestApi;
 
             gamingGroupSaver.CreateNewGamingGroup(gamingGroupName, expectedRegistrationSource, currentUser);
 
@@ -148,7 +149,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
         [Test]
         public void ItThrowsAnArgumentExceptionIfTheGamingGroupNameIsNull()
         {
-            Exception exception = Assert.Throws<ArgumentException>(() => gamingGroupSaver.CreateNewGamingGroup(null, RegistrationSource.RestApi, currentUser));
+            Exception exception = Assert.Throws<ArgumentException>(() => gamingGroupSaver.CreateNewGamingGroup(null, TransactionSource.RestApi, currentUser));
 
             Assert.That(exception.Message, Is.EqualTo(GamingGroupSaver.EXCEPTION_MESSAGE_GAMING_GROUP_NAME_CANNOT_BE_NULL_OR_BLANK));
         }
@@ -156,7 +157,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
         [Test]
         public void ItThrowsAnArgumentExceptionIfTheGamingGroupNameIsWhitespace()
         {
-            Exception exception = Assert.Throws<ArgumentException>(() => gamingGroupSaver.CreateNewGamingGroup("    ", RegistrationSource.RestApi, currentUser));
+            Exception exception = Assert.Throws<ArgumentException>(() => gamingGroupSaver.CreateNewGamingGroup("    ", TransactionSource.RestApi, currentUser));
 
             Assert.That(exception.Message, Is.EqualTo(GamingGroupSaver.EXCEPTION_MESSAGE_GAMING_GROUP_NAME_CANNOT_BE_NULL_OR_BLANK));
         }
