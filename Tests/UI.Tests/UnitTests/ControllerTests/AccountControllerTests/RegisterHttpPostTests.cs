@@ -71,13 +71,17 @@ namespace UI.Tests.UnitTests.ControllerTests.AccountControllerTests
         [Test]
         public async Task ItRegistersANewUserIfThereAreNoModelErrors()
         {
+            RegisterNewUserResult registerNewUserResult = new RegisterNewUserResult
+            {
+                Result = IdentityResult.Success
+            };
             userRegistererMock.Expect(mock => mock.RegisterUser(Arg<NewUser>.Is.Anything))
-                              .Return(Task.FromResult(IdentityResult.Success));
+                              .Return(Task.FromResult(registerNewUserResult));
 
             ViewResult result = await accountControllerPartialMock.Register(expectedViewModel) as ViewResult;
 
             userRegistererMock.AssertWasCalled(mock => mock.RegisterUser(Arg<NewUser>.Matches(
-                user => user.Email == expectedViewModel.EmailAddress
+                user => user.EmailAddress == expectedViewModel.EmailAddress
                     && user.UserName == expectedViewModel.UserName
                     && user.Password == expectedViewModel.Password
                     && user.GamingGroupInvitationId == new Guid(expectedViewModel.GamingGroupInvitationId))));
@@ -86,8 +90,12 @@ namespace UI.Tests.UnitTests.ControllerTests.AccountControllerTests
         [Test]
         public async Task ItRedirectsToTheGamingGroupPageIfTheUserIsSuccessfullyRegistered()
         {
+            RegisterNewUserResult registerNewUserResult = new RegisterNewUserResult
+            {
+                Result = IdentityResult.Success
+            };
             userRegistererMock.Expect(mock => mock.RegisterUser(Arg<NewUser>.Is.Anything))
-                              .Return(Task.FromResult(IdentityResult.Success));
+                              .Return(Task.FromResult(registerNewUserResult));
 
             RedirectToRouteResult result = await accountControllerPartialMock.Register(expectedViewModel) as RedirectToRouteResult;
 
@@ -102,8 +110,12 @@ namespace UI.Tests.UnitTests.ControllerTests.AccountControllerTests
             {
                 errorMessage
             });
+            RegisterNewUserResult registerNewUserResult = new RegisterNewUserResult
+            {
+                Result = failureIdentityResult
+            };
             userRegistererMock.Expect(mock => mock.RegisterUser(Arg<NewUser>.Is.Anything))
-                              .Return(Task.FromResult(failureIdentityResult));
+                              .Return(Task.FromResult(registerNewUserResult));
 
             ViewResult result = await accountControllerPartialMock.Register(expectedViewModel) as ViewResult;
 
@@ -115,11 +127,15 @@ namespace UI.Tests.UnitTests.ControllerTests.AccountControllerTests
         [Test]
         public async Task ItClearsTheGamingGroupCookieIfTheUserSuccessfullyRegisters()
         {
+            RegisterNewUserResult registerNewUserResult = new RegisterNewUserResult
+            {
+                Result = IdentityResult.Success
+            };
             userRegistererMock.Expect(mock => mock.RegisterUser(Arg<NewUser>.Is.Anything))
-                  .Return(Task.FromResult(IdentityResult.Success));
+                  .Return(Task.FromResult(registerNewUserResult));
 
             await accountControllerPartialMock.Register(expectedViewModel);
-            
+
             cookieHelperMock.AssertWasCalled(mock => mock.ClearCookie(
                 Arg<NemeStatsCookieEnum>.Is.Equal(NemeStatsCookieEnum.gamingGroupsCookie),
                 Arg<HttpRequestBase>.Is.Anything,

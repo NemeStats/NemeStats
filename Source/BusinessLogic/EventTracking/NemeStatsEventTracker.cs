@@ -15,6 +15,8 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
+
+using BusinessLogic.Logic;
 using BusinessLogic.Models.User;
 using System.Linq;
 
@@ -22,9 +24,9 @@ namespace BusinessLogic.EventTracking
 {
     public interface INemeStatsEventTracker
     {
-        void TrackPlayedGame(ApplicationUser currentUser, string gameName, int numberOfPlayers);
-        void TrackUserRegistration();
-        void TrackGamingGroupCreation();
+        void TrackPlayedGame(ApplicationUser currentUser, TransactionSource transactionSource);
+        void TrackUserRegistration(TransactionSource registrationSource);
+        void TrackGamingGroupCreation(TransactionSource registrationSource);
         void TrackGameDefinitionCreation(ApplicationUser currentUser, string gameDefinitionName);
         void TrackPlayerCreation(ApplicationUser currentUser);
     }

@@ -59,7 +59,6 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
             eventTrackerMock = MockRepository.GenerateMock<INemeStatsEventTracker>();
             gamingGroupSaver = new GamingGroupSaver(
                 dataContextMock,
-                applicationUserManagerMock,
                 eventTrackerMock,
                 playerSaverMock);
         }

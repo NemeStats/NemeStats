@@ -15,6 +15,8 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
+
+using BusinessLogic.Logic;
 using BusinessLogic.Logic.Users;
 using BusinessLogic.Models.User;
 using Microsoft.AspNet.Identity;
@@ -116,24 +118,21 @@ namespace UI.Controllers
 
 				NewUser newUser = new NewUser
 				{
-					Email = model.EmailAddress.Trim(),
+					EmailAddress = model.EmailAddress.Trim(),
 					UserName = model.UserName.Trim(),
 					Password = model.Password,
 					GamingGroupInvitationId = gamingGroupInvitation
 				};
 
-				IdentityResult result = await this.userRegisterer.RegisterUser(newUser);
+				RegisterNewUserResult registerNewUserResult = await this.userRegisterer.RegisterUser(newUser);
 
-				if (result.Succeeded)
+                if (registerNewUserResult.Result.Succeeded)
 				{
 					cookieHelper.ClearCookie(NemeStatsCookieEnum.gamingGroupsCookie, Request, Response);
 
 					return RedirectToAction(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name);
 				}
-				else
-				{
-					AddErrors(result);
-				}
+                this.AddErrors(registerNewUserResult.Result);
 			}
 
 			// If we got this far, something failed, redisplay form
@@ -381,7 +380,7 @@ namespace UI.Controllers
 					result = await userManager.AddLoginAsync(user.Id, info.Login);
 					if (result.Succeeded)
 					{
-						await firstTimeAuthenticator.CreateGamingGroupAndSendEmailConfirmation(user);
+						await firstTimeAuthenticator.CreateGamingGroupAndSendEmailConfirmation(user, TransactionSource.WebApplication);
 						cookieHelper.ClearCookie(NemeStatsCookieEnum.gamingGroupsCookie, Request, Response);
 
 						return RedirectToAction(MVC.GamingGroup.ActionNames.Index, "GamingGroup");

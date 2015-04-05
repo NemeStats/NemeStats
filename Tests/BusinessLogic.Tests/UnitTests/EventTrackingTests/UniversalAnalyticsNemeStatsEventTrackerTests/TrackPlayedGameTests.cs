@@ -16,6 +16,7 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 using BusinessLogic.EventTracking;
+using BusinessLogic.Logic;
 using BusinessLogic.Tests.UnitTests.EventTrackingTests.UniversalAnalyticsNemeStatsEventTrackerTests;
 using NUnit.Framework;
 using Rhino.Mocks;
@@ -37,24 +38,7 @@ namespace BusinessLogic.Tests.UnitTests.EventTrackingTests.PlayedGameTrackerTest
                 Arg<string>.Is.Anything))
                 .Return(analyticsEvent);
 
-            tracker.TrackPlayedGame(currentUser, string.Empty, 0);
-
-            eventTrackerMock.AssertWasCalled(mock => mock.TrackEvent(analyticsEvent));
-        }
-
-        [Test]
-        public void ItSetsTheEventValueToTheNumberOfPlayers()
-        {
-            int numberOfPlayers = 1351;
-            eventFactoryMock.Expect(mock => mock.MakeUniversalAnalyticsEvent(
-                Arg<string>.Is.Anything,
-                Arg<string>.Is.Anything,
-                Arg<string>.Is.Anything,
-                Arg<string>.Is.Anything,
-                Arg<string>.Is.Equal(numberOfPlayers.ToString())))
-                .Return(analyticsEvent);
-
-            tracker.TrackPlayedGame(currentUser, string.Empty, numberOfPlayers);
+            tracker.TrackPlayedGame(currentUser, TransactionSource.WebApplication);
 
             eventTrackerMock.AssertWasCalled(mock => mock.TrackEvent(analyticsEvent));
         }
@@ -69,7 +53,7 @@ namespace BusinessLogic.Tests.UnitTests.EventTrackingTests.PlayedGameTrackerTest
                 Arg<string>.Is.Anything,
                 Arg<string>.Is.Anything))
                 .Return(analyticsEvent);
-            tracker.TrackPlayedGame(currentUser, string.Empty, 0);
+            tracker.TrackPlayedGame(currentUser, TransactionSource.WebApplication);
 
             eventTrackerMock.AssertWasCalled(mock => mock.TrackEvent(analyticsEvent));
         }
@@ -85,24 +69,25 @@ namespace BusinessLogic.Tests.UnitTests.EventTrackingTests.PlayedGameTrackerTest
                 Arg<string>.Is.Anything))
                 .Return(analyticsEvent);
 
-            tracker.TrackPlayedGame(currentUser, string.Empty, 0);
+            tracker.TrackPlayedGame(currentUser, TransactionSource.WebApplication);
 
             eventTrackerMock.AssertWasCalled(mock => mock.TrackEvent(analyticsEvent));
         }
 
         [Test]
-        public void ItSetsTheEventLabelToTheGameName()
+        public void ItSetsTheEventLabelToTheTransactionSource()
         {
-            string gameName = "the name of the game";
+            TransactionSource transactionSource = TransactionSource.RestApi;
+            
             eventFactoryMock.Expect(mock => mock.MakeUniversalAnalyticsEvent(
                 Arg<string>.Is.Anything,
                 Arg<string>.Is.Anything,
                 Arg<string>.Is.Anything,
-                Arg<string>.Is.Equal(gameName),
+                Arg<string>.Is.Equal(transactionSource.ToString()),
                 Arg<string>.Is.Anything))
                 .Return(analyticsEvent);
 
-            tracker.TrackPlayedGame(currentUser, gameName, 0);
+            tracker.TrackPlayedGame(currentUser, transactionSource);
 
             eventTrackerMock.AssertWasCalled(mock => mock.TrackEvent(analyticsEvent));
         }

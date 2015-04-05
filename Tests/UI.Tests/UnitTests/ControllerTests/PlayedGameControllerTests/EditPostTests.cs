@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BusinessLogic.Logic;
 using BusinessLogic.Models.Games;
 using BusinessLogic.Models.User;
 using NUnit.Framework;
@@ -52,7 +53,10 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 			base.playedGameController.Edit(viewModel, 1234, base.currentUser);
 
 			//--Assert
-			base.playedGameCreatorMock.AssertWasCalled(mock => mock.CreatePlayedGame(Arg<NewlyCompletedGame>.Is.Anything, Arg<ApplicationUser>.Is.Anything));
+			base.playedGameCreatorMock.AssertWasCalled(mock => mock.CreatePlayedGame(
+                Arg<NewlyCompletedGame>.Is.Anything, 
+                Arg<TransactionSource>.Is.Anything,
+                Arg<ApplicationUser>.Is.Anything));
 		}
 
 		[Test]
@@ -79,7 +83,10 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 			base.urlHelperMock.Expect(mock => mock.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name))
 					.Return(baseUrl);
 
-			base.playedGameCreatorMock.Expect(x => x.CreatePlayedGame(Arg<NewlyCompletedGame>.Is.Anything, Arg<ApplicationUser>.Is.Anything)).Repeat.Once();
+			base.playedGameCreatorMock.Expect(x => x.CreatePlayedGame(
+                Arg<NewlyCompletedGame>.Is.Anything, 
+                Arg<TransactionSource>.Is.Anything,
+                Arg<ApplicationUser>.Is.Anything)).Repeat.Once();
 
 			//--Act
 			RedirectResult redirectResult = playedGameController.Edit(playedGame, 1234, base.currentUser) as RedirectResult;

@@ -16,6 +16,7 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 using BusinessLogic.Models;
+using BusinessLogic.Models.GamingGroups;
 using BusinessLogic.Models.User;
 using System.Linq;
 using System.Threading.Tasks;
@@ -24,7 +25,7 @@ namespace BusinessLogic.Logic.GamingGroups
 {
     public interface IGamingGroupSaver
     {
-        Task<GamingGroup> CreateNewGamingGroup(string gamingGroupName, ApplicationUser currentUser);
+        NewlyCreatedGamingGroupResult CreateNewGamingGroup(string gamingGroupName, TransactionSource registrationSource, ApplicationUser currentUser);
         GamingGroup UpdateGamingGroupName(string gamingGroupName, ApplicationUser currentUser);
     }
 }

@@ -19,9 +19,11 @@ using System;
 using System.Configuration;
 using System.Configuration.Abstractions;
 using System.Linq;
+using System.Runtime.Remoting;
 using System.Threading.Tasks;
 using System.Web;
 using BusinessLogic.DataAccess;
+using BusinessLogic.Logic;
 using BusinessLogic.Logic.GamingGroups;
 using BusinessLogic.Logic.Users;
 using BusinessLogic.Models;
@@ -30,6 +32,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security.DataProtection;
 using NUnit.Framework;
 using Rhino.Mocks;
+using BusinessLogic.Models.GamingGroups;
 
 namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.FirstTimeAuthenticatorTests
 {
@@ -41,10 +44,12 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.FirstTimeAuthentic
         private ApplicationUserManager applicationUserManagerMock;
         private IDataContext dataContextMock;
         private FirstTimeAuthenticator firstTimeAuthenticator;
+        private NewlyCreatedGamingGroupResult expectedNewlyCreatedGamingGroupResult;
         protected IDataProtectionProvider dataProtectionProviderMock;
         private ApplicationUser applicationUser;
         private string confirmationToken = "the confirmation token";
         private string callbackUrl = "nemestats.com/Account/ConfirmEmail";
+        private TransactionSource registrationSource;
 
         [SetUp]
         public void SetUp()
@@ -70,16 +75,24 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.FirstTimeAuthentic
                 UserName = "user name"
             };
 
+            registrationSource = TransactionSource.RestApi;
+
             var appSettingsMock = MockRepository.GenerateMock<IAppSettings>();
             configurationManagerMock.Expect(mock => mock.AppSettings)
                                     .Return(appSettingsMock);
             appSettingsMock.Expect(mock => mock.Get(FirstTimeAuthenticator.APP_KEY_EMAIL_CONFIRMATION_CALLBACK_URL))
                            .Return(callbackUrl);
 
+            expectedNewlyCreatedGamingGroupResult = new NewlyCreatedGamingGroupResult
+            {
+                NewlyCreatedGamingGroup = new GamingGroup {  Id = 1 },
+                NewlyCreatedPlayer = new Player { Id = 100 }
+            };
             gamingGroupSaverMock.Expect(mock => mock.CreateNewGamingGroup(
                                                                           Arg<string>.Is.Anything,
+                                                                          Arg<TransactionSource>.Is.Anything,
                                                                           Arg<ApplicationUser>.Is.Anything))
-                                .Return(Task.FromResult(new GamingGroup()));
+                                .Return(expectedNewlyCreatedGamingGroupResult);
 
             applicationUserManagerMock.Expect(mock => mock.GenerateEmailConfirmationTokenAsync(applicationUser.Id))
                                       .Return(Task.FromResult(confirmationToken));
@@ -99,17 +112,18 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.FirstTimeAuthentic
         [Test]
         public async Task ItCreatesANewGamingGroupForTheUser()
         {
-            await firstTimeAuthenticator.CreateGamingGroupAndSendEmailConfirmation(applicationUser);
+            await firstTimeAuthenticator.CreateGamingGroupAndSendEmailConfirmation(applicationUser, registrationSource);
 
             gamingGroupSaverMock.AssertWasCalled(mock => mock.CreateNewGamingGroup(
                                                                                    Arg<string>.Is.Equal(applicationUser.UserName + "'s Gaming Group"),
+                                                                                   Arg<TransactionSource>.Is.Equal(registrationSource),
                                                                                    Arg<ApplicationUser>.Is.Same(applicationUser)));
         }
 
         [Test]
         public async Task ItEmailsNewRegistrantsAskingForConfirmation()
         {
-            await firstTimeAuthenticator.CreateGamingGroupAndSendEmailConfirmation(applicationUser);
+            await firstTimeAuthenticator.CreateGamingGroupAndSendEmailConfirmation(applicationUser, registrationSource);
 
             applicationUserManagerMock.VerifyAllExpectations();
         }
@@ -133,7 +147,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.FirstTimeAuthentic
             string exceptionMessage = string.Empty;
             try
             {
-                await firstTimeAuthenticator.CreateGamingGroupAndSendEmailConfirmation(applicationUser);
+                await firstTimeAuthenticator.CreateGamingGroupAndSendEmailConfirmation(applicationUser, registrationSource);
             }
             catch (ConfigurationException expectedException)
             {
@@ -141,6 +155,14 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.FirstTimeAuthentic
             }
 
             Assert.AreEqual(exceptionMessage, "Missing app setting with key: emailConfirmationCallbackUrl");
+        }
+
+        [Test]
+        public async Task ItReturnsTheNewlyCreatedGamingGroupResult()
+        {
+            NewlyCreatedGamingGroupResult result = await firstTimeAuthenticator.CreateGamingGroupAndSendEmailConfirmation(applicationUser, registrationSource);
+
+            Assert.That(result, Is.SameAs(expectedNewlyCreatedGamingGroupResult));
         }
     }
 }

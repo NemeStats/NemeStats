@@ -156,6 +156,9 @@
     <Compile Include="Logic\Email\EmailService.cs" />
     <Compile Include="Logic\Points\PointsCalculator.cs" />
     <Compile Include="Logic\Points\GlobalPointsRecalculator.cs" />
+    <Compile Include="Logic\TransactionSource.cs" />
+    <Compile Include="Logic\Users\AuthTokenGenerator.cs" />
+    <Compile Include="Logic\Users\IAuthTokenGenerator.cs" />
     <Compile Include="Logic\VotableFeatures\IVotableFeatureRetriever.cs" />
     <Compile Include="Logic\GameDefinitions\BoardGameGeekDataLinker.cs" />
     <Compile Include="Logic\Champions\IChampionRecalculator.cs" />
@@ -235,6 +238,11 @@
     <Compile Include="Migrations\201502181205491_AddVotableFeature.Designer.cs">
       <DependentUpon>201502181205491_AddVotableFeature.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201503241204333_AddAuthTokenToAspNetUsers.cs" />
+    <Compile Include="Migrations\201503241204333_AddAuthTokenToAspNetUsers.Designer.cs">
+      <DependentUpon>201503241204333_AddAuthTokenToAspNetUsers.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\GamingGroups\NewlyCreatedGamingGroupResult.cs" />
     <Compile Include="Models\GamingGroups\TopGamingGroupSummary.cs" />
     <Compile Include="Models\PlayedGames\IWinner.cs" />
     <Compile Include="Models\PlayedGames\PlayedGameExportModel.cs" />
@@ -379,7 +387,9 @@
     <Compile Include="Models\User\AddUserToGamingGroupResult.cs" />
     <Compile Include="Models\User\AnonymousApplicationUser.cs" />
     <Compile Include="Models\User\ApplicationUser.cs" />
+    <Compile Include="Models\User\NewlyRegisteredUser.cs" />
     <Compile Include="Models\User\NewUser.cs" />
+    <Compile Include="Models\User\RegisterNewUserResult.cs" />
     <Compile Include="Models\User\UserGamingGroup.cs" />
     <Compile Include="Models\Players\PlayerStatistics.cs" />
     <Compile Include="Migrations\201405220234035_Initial.cs" />
@@ -575,6 +585,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201502181205491_AddVotableFeature.resx">
       <DependentUpon>201502181205491_AddVotableFeature.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201503241204333_AddAuthTokenToAspNetUsers.resx">
+      <DependentUpon>201503241204333_AddAuthTokenToAspNetUsers.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

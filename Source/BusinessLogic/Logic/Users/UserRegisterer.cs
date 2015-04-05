@@ -19,6 +19,7 @@ using System;
 using BusinessLogic.DataAccess;
 using BusinessLogic.EventTracking;
 using BusinessLogic.Models;
+using BusinessLogic.Models.GamingGroups;
 using BusinessLogic.Models.User;
 using Microsoft.AspNet.Identity;
 using System.Linq;
@@ -51,33 +52,61 @@ namespace BusinessLogic.Logic.Users
             this.gamingGroupInviteConsumer = gamingGroupInviteConsumer;
         }
 
-        public async Task<IdentityResult> RegisterUser(NewUser newUser)
+        public async Task<RegisterNewUserResult> RegisterUser(NewUser newUser)
         {
             ApplicationUser newApplicationUser = new ApplicationUser()
             {
                 UserName = newUser.UserName,
-                Email = newUser.Email,
+                Email = newUser.EmailAddress,
                 EmailConfirmed = true
             };
 
             IdentityResult identityResult = await applicationUserManager.CreateAsync(newApplicationUser, newUser.Password);
 
+            NewlyRegisteredUser newlyRegisteredUser = new NewlyRegisteredUser
+            {
+                UserId = newApplicationUser.Id
+            };
+
             if(identityResult.Succeeded)
             {
-                new Task(() => eventTracker.TrackUserRegistration()).Start();
-                await signInManager.SignInAsync(newApplicationUser, false, false);
-
-                if (newUser.GamingGroupInvitationId.HasValue)
-                {
-                    gamingGroupInviteConsumer.AddNewUserToGamingGroup(newApplicationUser.Id, newUser.GamingGroupInvitationId.Value);
-                }
-                else
-                {
-                    await firstTimeUserAuthenticator.CreateGamingGroupAndSendEmailConfirmation(newApplicationUser);
-                }
+                NewlyCreatedGamingGroupResult newlyCreatedGamingGroupResult = await this.SignInAndAssociateGamingGroup(newUser, newApplicationUser);
+                newlyRegisteredUser.PlayerId = newlyCreatedGamingGroupResult.NewlyCreatedPlayer.Id;
+                newlyRegisteredUser.PlayerName = newlyCreatedGamingGroupResult.NewlyCreatedPlayer.Name;
+                newlyRegisteredUser.GamingGroupId = newlyCreatedGamingGroupResult.NewlyCreatedGamingGroup.Id;
+                newlyRegisteredUser.GamingGroupName = newlyCreatedGamingGroupResult.NewlyCreatedGamingGroup.Name;
             }
 
-            return identityResult;
+            RegisterNewUserResult result = new RegisterNewUserResult
+            {
+                Result = identityResult,
+                NewlyRegisteredUser = newlyRegisteredUser
+            };
+
+            return result;
+        }
+
+        private async Task<NewlyCreatedGamingGroupResult> SignInAndAssociateGamingGroup(NewUser newUser, ApplicationUser newApplicationUser)
+        {
+            new Task(() => this.eventTracker.TrackUserRegistration(newUser.Source)).Start();
+
+            if (newUser.Source == TransactionSource.WebApplication)
+            {
+                await this.signInManager.SignInAsync(newApplicationUser, false, false);
+            }
+
+            NewlyCreatedGamingGroupResult newlyCreatedGamingGroupResult;
+
+            if (newUser.GamingGroupInvitationId.HasValue)
+            {
+                newlyCreatedGamingGroupResult = this.gamingGroupInviteConsumer.AddNewUserToGamingGroup(newApplicationUser.Id, newUser.GamingGroupInvitationId.Value);
+            }
+            else
+            {
+                newlyCreatedGamingGroupResult = await this.firstTimeUserAuthenticator.CreateGamingGroupAndSendEmailConfirmation(newApplicationUser, newUser.Source);
+            }
+
+            return newlyCreatedGamingGroupResult;
         }
     }
 }

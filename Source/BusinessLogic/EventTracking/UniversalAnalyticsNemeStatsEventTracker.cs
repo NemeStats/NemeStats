@@ -15,6 +15,8 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
+
+using BusinessLogic.Logic;
 using BusinessLogic.Models.User;
 using System.Linq;
 using UniversalAnalyticsHttpWrapper;
@@ -40,36 +42,35 @@ namespace BusinessLogic.EventTracking
             this.eventFactory = eventFactory;
         }
 
-        public void TrackPlayedGame(ApplicationUser currentUser, string gameName, int numberOfPlayers)
+        public void TrackPlayedGame(ApplicationUser currentUser, TransactionSource transactionSource)
         {
             IUniversalAnalyticsEvent universalAnalyticsEvent = eventFactory.MakeUniversalAnalyticsEvent(
                 currentUser.AnonymousClientId,
                 EventCategoryEnum.PlayedGames.ToString(),
                 EventActionEnum.Created.ToString(),
-                gameName,
-                numberOfPlayers.ToString());
+                transactionSource.ToString());
 
             eventTracker.TrackEvent(universalAnalyticsEvent);
         }
 
-        public void TrackUserRegistration()
+        public void TrackUserRegistration(TransactionSource registrationSource)
         {
             IUniversalAnalyticsEvent universalAnalyticsEvent = eventFactory.MakeUniversalAnalyticsEvent(
-                UniversalAnalyticsNemeStatsEventTracker.DEFAULT_ANONYMOUS_CLIENT_ID,
+                DEFAULT_ANONYMOUS_CLIENT_ID,
                 EventCategoryEnum.Users.ToString(),
                 EventActionEnum.Created.ToString(),
-                DEFAULT_EVENT_LABEL);
+                registrationSource.ToString());
 
             eventTracker.TrackEvent(universalAnalyticsEvent);
         }
 
-        public void TrackGamingGroupCreation()
+        public void TrackGamingGroupCreation(TransactionSource registrationSource)
         {
             IUniversalAnalyticsEvent universalAnalyticsEvent = eventFactory.MakeUniversalAnalyticsEvent(
-                UniversalAnalyticsNemeStatsEventTracker.DEFAULT_ANONYMOUS_CLIENT_ID,
+                DEFAULT_ANONYMOUS_CLIENT_ID,
                 EventCategoryEnum.GamingGroups.ToString(),
                 EventActionEnum.Created.ToString(),
-                DEFAULT_EVENT_LABEL);
+                registrationSource.ToString());
 
             eventTracker.TrackEvent(universalAnalyticsEvent);
         }

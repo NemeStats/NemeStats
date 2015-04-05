@@ -24,6 +24,6 @@ namespace BusinessLogic.Logic.Users
 {
     public interface IUserRegisterer
     {
-        Task<IdentityResult> RegisterUser(NewUser newUser);
+        Task<RegisterNewUserResult> RegisterUser(NewUser newUser);
     }
 }

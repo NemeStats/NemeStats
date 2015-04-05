@@ -23,6 +23,7 @@ using BusinessLogic.Logic.GameDefinitions;
 using BusinessLogic.Logic.Players;
 using BusinessLogic.Logic.Users;
 using BusinessLogic.Models;
+using BusinessLogic.Models.GamingGroups;
 using BusinessLogic.Models.User;
 using System.Linq;
 using System.Threading.Tasks;
@@ -36,23 +37,23 @@ namespace BusinessLogic.Logic.GamingGroups
         internal const string EXCEPTION_MESSAGE_GAME_DEFINITION_NAMES_CANNOT_BE_NULL = "gamingGroupQuickStart.NewGameDefinitionNames cannot be null.";
 
         private readonly IDataContext dataContext;
-        private readonly ApplicationUserManager userManager;
         private readonly IPlayerSaver playerSaver;
         private readonly INemeStatsEventTracker eventTracker;
 
         public GamingGroupSaver(
             IDataContext dataContext, 
-            ApplicationUserManager userManager, 
             INemeStatsEventTracker eventTracker, 
             IPlayerSaver playerSaver)
         {
             this.dataContext = dataContext;
-            this.userManager = userManager;
             this.eventTracker = eventTracker;
             this.playerSaver = playerSaver;
         }
 
-        public async virtual Task<GamingGroup> CreateNewGamingGroup(string gamingGroupName, ApplicationUser currentUser)
+        public virtual NewlyCreatedGamingGroupResult CreateNewGamingGroup(
+            string gamingGroupName, 
+            TransactionSource registrationSource, 
+            ApplicationUser currentUser)
         {
             ValidateGamingGroupName(gamingGroupName);
 
@@ -62,15 +63,18 @@ namespace BusinessLogic.Logic.GamingGroups
                 Name = gamingGroupName
             };
 
+            NewlyCreatedGamingGroupResult newlyCreatedGamingGroupResult = new NewlyCreatedGamingGroupResult();
             GamingGroup newGamingGroup = dataContext.Save<GamingGroup>(gamingGroup, currentUser);
+            newlyCreatedGamingGroupResult.NewlyCreatedGamingGroup = newGamingGroup;
             //commit changes since we'll need the GamingGroup.Id
             dataContext.CommitAllChanges();
 
-            await this.AssociateUserWithGamingGroup(currentUser, newGamingGroup);
+            Player newlyCreatedPlayer = this.AssociateUserWithGamingGroup(currentUser, newGamingGroup);
+            newlyCreatedGamingGroupResult.NewlyCreatedPlayer = newlyCreatedPlayer;
 
-            new Task(() => eventTracker.TrackGamingGroupCreation()).Start();
+            new Task(() => eventTracker.TrackGamingGroupCreation(registrationSource)).Start();
 
-            return newGamingGroup;
+            return newlyCreatedGamingGroupResult;
         }
 
         private static void ValidateGamingGroupName(string gamingGroupName)
@@ -81,13 +85,13 @@ namespace BusinessLogic.Logic.GamingGroups
             }
         }
 
-        private async Task AssociateUserWithGamingGroup(ApplicationUser currentUser, GamingGroup newGamingGroup)
+        private Player AssociateUserWithGamingGroup(ApplicationUser currentUser, GamingGroup newGamingGroup)
         {
             this.AddUserGamingGroupRecord(currentUser, newGamingGroup);
 
-            await this.SetGamingGroupOnCurrentUser(currentUser, newGamingGroup);
+            this.SetGamingGroupOnCurrentUser(currentUser, newGamingGroup);
 
-            this.AddUserToGamingGroupAsPlayer(currentUser);
+            return this.AddUserToGamingGroupAsPlayer(currentUser);
         }
 
         private void AddUserGamingGroupRecord(ApplicationUser currentUser, GamingGroup newGamingGroup)
@@ -101,7 +105,7 @@ namespace BusinessLogic.Logic.GamingGroups
             this.dataContext.Save(userGamingGroup, currentUser);
         }
 
-        private async Task SetGamingGroupOnCurrentUser(ApplicationUser currentUser, GamingGroup newGamingGroup)
+        private void SetGamingGroupOnCurrentUser(ApplicationUser currentUser, GamingGroup newGamingGroup)
         {
             ApplicationUser user = dataContext.FindById<ApplicationUser>(currentUser.Id);
             user.CurrentGamingGroupId = newGamingGroup.Id;
@@ -110,14 +114,14 @@ namespace BusinessLogic.Logic.GamingGroups
             currentUser.CurrentGamingGroupId = user.CurrentGamingGroupId;
         }
 
-        private void AddUserToGamingGroupAsPlayer(ApplicationUser currentUser)
+        private Player AddUserToGamingGroupAsPlayer(ApplicationUser currentUser)
         {
             Player player = new Player
             {
                 ApplicationUserId = currentUser.Id,
                 Name = currentUser.UserName
             };
-            this.playerSaver.Save(player, currentUser);
+            return this.playerSaver.Save(player, currentUser);
         }
 
         public GamingGroup UpdateGamingGroupName(string gamingGroupName, ApplicationUser currentUser)

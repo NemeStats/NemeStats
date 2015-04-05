@@ -17,14 +17,16 @@
 #endregion
 using System;
 using System.Linq;
+using BusinessLogic.Logic;
 
 namespace BusinessLogic.Models.User
 {
     public class NewUser
     {
         public string UserName { get; set; }
-        public string Email { get; set; }
+        public string EmailAddress { get; set; }
         public string Password { get; set; }
         public Guid? GamingGroupInvitationId { get; set; }
+        public TransactionSource Source { get; set; }
     }
 }

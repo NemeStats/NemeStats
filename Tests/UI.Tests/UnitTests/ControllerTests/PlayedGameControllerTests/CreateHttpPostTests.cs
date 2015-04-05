@@ -15,6 +15,8 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
+
+using BusinessLogic.Logic;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
 using BusinessLogic.Models.User;
@@ -57,7 +59,10 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 			urlHelperMock.Expect(mock => mock.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name))
 					.Return(baseUrl);
 			ApplicationUser user = new ApplicationUser();
-			playedGameCreatorMock.Expect(x => x.CreatePlayedGame(Arg<NewlyCompletedGame>.Is.Anything, Arg<ApplicationUser>.Is.Anything)).Repeat.Once();
+			playedGameCreatorMock.Expect(x => x.CreatePlayedGame(
+                Arg<NewlyCompletedGame>.Is.Anything, 
+                Arg<TransactionSource>.Is.Anything,
+                Arg<ApplicationUser>.Is.Anything)).Repeat.Once();
 
 			RedirectResult redirectResult = playedGameController.Create(playedGame, null) as RedirectResult;
 
@@ -79,7 +84,9 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 
 			playedGameController.Create(newlyCompletedGame, null);
 
-			playedGameCreatorMock.AssertWasCalled(mock => mock.CreatePlayedGame(Arg<NewlyCompletedGame>.Is.Equal(newlyCompletedGame),
+			playedGameCreatorMock.AssertWasCalled(mock => mock.CreatePlayedGame(
+                Arg<NewlyCompletedGame>.Is.Equal(newlyCompletedGame),
+                Arg<TransactionSource>.Is.Anything,
 				Arg<ApplicationUser>.Is.Anything));
 		}
 
@@ -96,7 +103,8 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 
 			playedGameCreatorMock.AssertWasCalled(logic => logic.CreatePlayedGame(
 				Arg<NewlyCompletedGame>.Is.Anything,
-				Arg<ApplicationUser>.Is.Equal(currentUser)));
+                Arg<TransactionSource>.Is.Anything,
+				Arg<ApplicationUser>.Is.Equal(this.currentUser)));
 		}
 	}
 }

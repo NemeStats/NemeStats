@@ -17,6 +17,7 @@
 #endregion
 
 using BusinessLogic.DataAccess;
+using BusinessLogic.Logic;
 using BusinessLogic.Logic.GameDefinitions;
 using BusinessLogic.Logic.PlayedGames;
 using BusinessLogic.Logic.Players;
@@ -121,7 +122,7 @@ namespace UI.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				playedGameCreator.CreatePlayedGame(newlyCompletedGame, currentUser);
+				playedGameCreator.CreatePlayedGame(newlyCompletedGame, TransactionSource.WebApplication, currentUser);
 
 				return new RedirectResult(Url.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name)
 											+ "#" + GamingGroupController.SECTION_ANCHOR_RECENT_GAMES);
@@ -213,7 +214,7 @@ namespace UI.Controllers
 			if (ModelState.IsValid)
 			{
 				this.playedGameDeleter.DeletePlayedGame(previousGameId, currentUser);
-				this.playedGameCreator.CreatePlayedGame(newlyCompletedGame, currentUser);
+                this.playedGameCreator.CreatePlayedGame(newlyCompletedGame, TransactionSource.WebApplication, currentUser);
 
 				return new RedirectResult(Url.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name)
 											+ "#" + GamingGroupController.SECTION_ANCHOR_RECENT_GAMES);

@@ -23,6 +23,6 @@ namespace BusinessLogic.Logic.PlayedGames
 {
     public interface IPlayedGameCreator
     {
-        PlayedGame CreatePlayedGame(NewlyCompletedGame newlyCompletedGame, ApplicationUser currentUser);
+        PlayedGame CreatePlayedGame(NewlyCompletedGame newlyCompletedGame, TransactionSource transactionSource, ApplicationUser currentUser);
     }
 }
