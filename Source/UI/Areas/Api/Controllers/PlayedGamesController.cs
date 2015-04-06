@@ -94,7 +94,7 @@ namespace UI.Areas.Api.Controllers
         [ApiRoute("GamingGroups/{gamingGroupId}/PlayedGames")]
         [HttpPost]
         [ApiAuthentication]
-        public HttpResponseMessage RecordPlayedGame(PlayedGameMessage playedGameMessage, int gamingGroupId, ApplicationUser applicationUser)
+        public HttpResponseMessage RecordPlayedGame([FromBody]PlayedGameMessage playedGameMessage, [FromUri]int gamingGroupId, ApplicationUser applicationUser)
         {
             if (gamingGroupId != applicationUser.CurrentGamingGroupId)
             {

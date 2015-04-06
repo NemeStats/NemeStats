@@ -94,6 +94,8 @@ namespace UI.DependencyResolution {
             this.For<IPlayerEditViewModelBuilder>().Singleton().Use<PlayerEditViewModelBuilder>();
 
             this.For<ICookieHelper>().Singleton().Use<CookieHelper>();
+
+            this.For<IDataProtectionProvider>().Singleton().Use<DpapiDataProtectionProvider>().Ctor<string>("appName").Is("NemeStats");
         }
 
         private void SetupTransientMappings()
@@ -113,8 +115,6 @@ namespace UI.DependencyResolution {
 
             this.For<IUserStore<ApplicationUser>>()
                 .Use<Microsoft.AspNet.Identity.EntityFramework.UserStore<ApplicationUser>>();
-
-            this.For<IDataProtectionProvider>().Use(() => Startup.DataProtectionProvider);
 
             this.For<IShowingXResultsMessageBuilder>().Use<ShowingXResultsMessageBuilder>();
             this.For<IGamingGroupRetriever>().Use<GamingGroupRetriever>();
