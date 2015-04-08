@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Web;
 using System.Web.Mvc;
 using BusinessLogic.Logic.Users;
+using BusinessLogic.Models.User;
 using StructureMap;
 using ActionFilterAttribute = System.Web.Http.Filters.ActionFilterAttribute;
 
@@ -15,6 +16,7 @@ namespace UI.Attributes
     {
         private readonly ApplicationUserManager applicationUserManager;
         internal const string AUTH_HEADER = "X-Auth-Token";
+        internal const string UNAUTHORIZED_MESSAGE = "Invalid " + AUTH_HEADER;
 
         public ApiAuthenticationAttribute()
             : this(DependencyResolver.Current.GetService<ApplicationUserManager>())
@@ -44,16 +46,21 @@ namespace UI.Attributes
             {
                 actionContext.Response = actionContext.Request.CreateResponse(
                     HttpStatusCode.BadRequest,
-                    "Invalid " + AUTH_HEADER); 
+                    UNAUTHORIZED_MESSAGE); 
                 return;
             }
 
-            if (!this.applicationUserManager.Users.Any(x => x.AuthenticationToken == authHeader && DateTime.UtcNow <= x.AuthenticationTokenExpirationDate))
+            ApplicationUser applicationUser =
+                this.applicationUserManager.Users.FirstOrDefault(x => x.AuthenticationToken == authHeader && DateTime.UtcNow <= x.AuthenticationTokenExpirationDate);
+
+            if (applicationUser == null)
             {
                 actionContext.Response = actionContext.Request.CreateResponse(
                     HttpStatusCode.Unauthorized,
-                    "Invalid " + AUTH_HEADER);
+                    UNAUTHORIZED_MESSAGE);
             }
+
+            actionContext.ActionArguments["applicationUser"] = applicationUser;
         }
     }
 }
