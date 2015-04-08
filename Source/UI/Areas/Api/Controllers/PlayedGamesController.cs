@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -93,15 +94,19 @@ namespace UI.Areas.Api.Controllers
         [ApiRoute("GamingGroups/{gamingGroupId}/PlayedGames")]
         [HttpPost]
         [ApiAuthentication]
-        public HttpResponseMessage RecordPlayedGame([FromBody]PlayedGameMessage playedGameMessage, [FromUri]int gamingGroupId)
+        public HttpResponseMessage RecordPlayedGame([FromBody]PlayedGameMessage playedGameMessage, [FromUri]int gamingGroupId, ApplicationUser applicationUser)
         {
-            ApplicationUser applicationUser = ActionContext.ActionArguments["applicationUser"] as ApplicationUser;
             if (gamingGroupId != applicationUser.CurrentGamingGroupId)
             {
                 return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, ApiAuthenticationAttribute.UNAUTHORIZED_MESSAGE);
             }
 
-            var datePlayed = CalculateDatePlayed(playedGameMessage);
+            DateTime datePlayed = DateTime.UtcNow;
+
+            if (!string.IsNullOrWhiteSpace(playedGameMessage.DatePlayed))
+            {
+                datePlayed = DateTime.ParseExact(playedGameMessage.DatePlayed, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None);
+            }
 
             NewlyCompletedGame newlyCompletedGame = new NewlyCompletedGame
             {
@@ -118,17 +123,6 @@ namespace UI.Areas.Api.Controllers
             };
 
             return Request.CreateResponse(HttpStatusCode.OK, newlyRecordedPlayedGameMessage);
-        }
-
-        private static DateTime CalculateDatePlayed(PlayedGameMessage playedGameMessage)
-        {
-            DateTime datePlayed = DateTime.UtcNow;
-
-            if (!string.IsNullOrWhiteSpace(playedGameMessage.DatePlayed))
-            {
-                datePlayed = DateTime.ParseExact(playedGameMessage.DatePlayed, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None);
-            }
-            return datePlayed;
         }
     }
 }

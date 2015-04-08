@@ -6,7 +6,10 @@ using System.Net.Http;
 using System.Web;
 using System.Web.Mvc;
 using BusinessLogic.Logic.Users;
+<<<<<<< HEAD
 using BusinessLogic.Models.User;
+=======
+>>>>>>> origin
 using StructureMap;
 using ActionFilterAttribute = System.Web.Http.Filters.ActionFilterAttribute;
 
@@ -50,17 +53,24 @@ namespace UI.Attributes
                 return;
             }
 
+<<<<<<< HEAD
             ApplicationUser applicationUser =
                 this.applicationUserManager.Users.FirstOrDefault(x => x.AuthenticationToken == authHeader && DateTime.UtcNow <= x.AuthenticationTokenExpirationDate);
 
             if (applicationUser == null)
+=======
+            if (!this.applicationUserManager.Users.Any(x => x.AuthenticationToken == authHeader && DateTime.UtcNow <= x.AuthenticationTokenExpirationDate))
+>>>>>>> origin
             {
                 actionContext.Response = actionContext.Request.CreateResponse(
                     HttpStatusCode.Unauthorized,
                     UNAUTHORIZED_MESSAGE);
             }
+<<<<<<< HEAD
 
             actionContext.ActionArguments["applicationUser"] = applicationUser;
+=======
+>>>>>>> origin
         }
     }
 }

@@ -33,17 +33,17 @@ using StructureMap.AutoMocking;
 using UI.Areas.Api.Controllers;
 using UI.Models.PlayedGame;
 
-namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests
+namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.PlayedGamesControllerTests
 {
     [TestFixture]
-    public class GamingGroupsControllerTests
+    public class GetPlayedGamesTests
     {
-        private RhinoAutoMocker<GamingGroupsController> autoMocker;
+        private RhinoAutoMocker<PlayedGamesController> autoMocker;
 
         [SetUp]
         public void SetUp()
         {
-            autoMocker = new RhinoAutoMocker<GamingGroupsController>();
+            autoMocker = new RhinoAutoMocker<PlayedGamesController>();
         }
 
         [Test]
@@ -59,7 +59,7 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests
                     PlayerGameResults = new List<PlayerGameResult>()
                 }
             };
-            autoMocker.Get<IPlayedGameRetriever>().Expect(mock => mock.GetRecentGames(GamingGroupsController.MAX_PLAYED_GAMES_TO_EXPORT, gamingGroupId))
+            autoMocker.Get<IPlayedGameRetriever>().Expect(mock => mock.GetRecentGames(PlayedGamesController.MAX_PLAYED_GAMES_TO_EXPORT, gamingGroupId))
                         .Return(expectedPlayedGames);
 
             autoMocker.ClassUnderTest.GetPlayedGames(gamingGroupId);
@@ -73,7 +73,7 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests
         {
             int gamingGroupId = 1;
             List<PlayedGame> expectedPlayedGames = new List<PlayedGame>();
-            autoMocker.Get<IPlayedGameRetriever>().Expect(mock => mock.GetRecentGames(GamingGroupsController.MAX_PLAYED_GAMES_TO_EXPORT, gamingGroupId))
+            autoMocker.Get<IPlayedGameRetriever>().Expect(mock => mock.GetRecentGames(PlayedGamesController.MAX_PLAYED_GAMES_TO_EXPORT, gamingGroupId))
                         .Return(expectedPlayedGames);
 
             HttpResponseMessage response = autoMocker.ClassUnderTest.GetPlayedGames(gamingGroupId);
