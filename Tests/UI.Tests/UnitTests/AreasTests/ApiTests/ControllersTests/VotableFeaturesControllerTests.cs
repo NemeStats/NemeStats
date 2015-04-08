@@ -26,8 +26,8 @@ using NUnit.Framework;
 using Rhino.Mocks;
 using StructureMap.AutoMocking;
 using UI.Areas.Api.Controllers;
+using UI.Areas.Api.Models;
 using UI.Models;
-using UI.Models.API;
 using UI.Transformations;
 
 namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests

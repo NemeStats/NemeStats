@@ -14,7 +14,6 @@ using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security.Infrastructure;
 using UI.Areas.Api.Models;
 using UI.Attributes;
-using UI.Models.API;
 
 namespace UI.Areas.Api.Controllers
 {

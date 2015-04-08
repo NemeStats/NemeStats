@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Controllers;
 using UI.Areas.Api.Controllers;
-using UI.Models.API;
+using UI.Areas.Api.Models;
 using UI.Transformations;
 
 namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests
@@ -38,10 +38,6 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests
             var controllerContextMock = MockRepository.GeneratePartialMock<HttpControllerContext>();
             HttpActionDescriptor actionDescriptorMock = MockRepository.GenerateMock<HttpActionDescriptor>();
             autoMocker.ClassUnderTest.ActionContext = new HttpActionContext(controllerContextMock, actionDescriptorMock);
-<<<<<<< HEAD
-
-=======
->>>>>>> origin
             autoMocker.ClassUnderTest.Request = new HttpRequestMessage();
             autoMocker.ClassUnderTest.Request.SetConfiguration(new HttpConfiguration());
 

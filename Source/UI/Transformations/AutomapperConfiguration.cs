@@ -24,7 +24,6 @@ using BusinessLogic.Models;
 using BusinessLogic.Models.GamingGroups;
 using BusinessLogic.Models.User;
 using UI.Areas.Api.Models;
-using UI.Models.API;
 using UI.Models.GameDefinitionModels;
 using UI.Models.GamingGroup;
 using UI.Models;

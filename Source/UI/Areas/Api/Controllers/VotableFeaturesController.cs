@@ -27,8 +27,8 @@ using AutoMapper;
 using BusinessLogic.Exceptions;
 using BusinessLogic.Logic.VotableFeatures;
 using BusinessLogic.Models;
+using UI.Areas.Api.Models;
 using UI.Models;
-using UI.Models.API;
 
 namespace UI.Areas.Api.Controllers
 {

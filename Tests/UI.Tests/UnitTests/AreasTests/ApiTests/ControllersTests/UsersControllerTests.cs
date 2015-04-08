@@ -11,7 +11,6 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using UI.Areas.Api.Controllers;
 using UI.Areas.Api.Models;
-using UI.Models.API;
 using UI.Transformations;
 
 namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests
