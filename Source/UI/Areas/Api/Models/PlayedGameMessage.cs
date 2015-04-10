@@ -11,11 +11,13 @@ namespace UI.Areas.Api.Models
     {
         [RegularExpression(@"^\d\d\d\d-\d\d\-\d\d$", ErrorMessage = "Dates must be in the format of YYYY-MM-DD.")]
         public string DatePlayed { get; set; }
+
         [Required]
         public int GameDefinitionId { get; set; }
 
         public string Notes { get; set; }
 
+        [Required]
         public List<PlayerRank> PlayerRanks { get; set; }
     }
 }

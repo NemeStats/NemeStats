@@ -22,21 +22,17 @@ namespace UI.Tests.UnitTests.AttributesTests
         private HttpActionContext _actionContext;
         private HttpControllerContext _controllerContext;
         private HttpRequestMessage _request;
-        private ApplicationUserManager _applicationUserManager;
+        private IAuthTokenValidator authTokenValidatorMock;
         private IUserStore<ApplicationUser> _userStoreMock;
         private IDataProtectionProvider _dataProtectionProviderMock;
 
         [SetUp]
         public void SetUp()
         {
-            var dataProtector = MockRepository.GenerateMock<IDataProtector>();
             _request = new HttpRequestMessage();
             _request.SetConfiguration(new HttpConfiguration());
-            _userStoreMock = MockRepository.GenerateMock<IUserStore<ApplicationUser>>();
-            _dataProtectionProviderMock = MockRepository.GenerateMock<IDataProtectionProvider>();
-            _dataProtectionProviderMock.Expect(mock => mock.Create(Arg<string>.Is.Anything)).Return(dataProtector);
-            _applicationUserManager = MockRepository.GenerateMock<ApplicationUserManager>(_userStoreMock, _dataProtectionProviderMock);
-            _attribute = new ApiAuthenticationAttribute(_applicationUserManager);
+            authTokenValidatorMock = MockRepository.GenerateMock<IAuthTokenValidator>();
+            _attribute = new ApiAuthenticationAttribute(authTokenValidatorMock);
             _controllerContext = new HttpControllerContext {Request = _request};
             _actionContext = new HttpActionContext(_controllerContext, new ReflectedHttpActionDescriptor());
         }
@@ -61,25 +57,17 @@ namespace UI.Tests.UnitTests.AttributesTests
         }
 
         [Test]
-        public void ShouldGetTheUsersToken()
+        public void ItSetsTheApplicationUserOnTheActionContextIfTheAuthTokenIsValid()
         {
             const string expectedToken = "TEST";
             _request.Headers.Add(ApiAuthenticationAttribute.AUTH_HEADER, new[] { expectedToken });
-            var expectedUsers = new List<ApplicationUser>
-            {
-                new ApplicationUser
-                {
-                    AuthenticationToken = expectedToken,
-                    AuthenticationTokenExpirationDate = DateTime.UtcNow.AddMonths(2)
-                }
-            };
+            var expectedUser = new ApplicationUser();
 
-            _applicationUserManager.Expect(x => x.Users)
-                .Repeat.Any()
-                .Return(expectedUsers.AsQueryable());
+            authTokenValidatorMock.Expect(mock => mock.ValidateAuthToken(expectedToken)).Return(expectedUser);
 
             _attribute.OnActionExecuting(_actionContext);
-            _applicationUserManager.AssertWasCalled(x => x.Users);
+
+            Assert.That(_actionContext.ActionArguments[ApiAuthenticationAttribute.ACTION_ARGUMENT_APPLICATION_USER], Is.SameAs(expectedUser));
         }
 
         [Test]
@@ -96,10 +84,6 @@ namespace UI.Tests.UnitTests.AttributesTests
                     AuthenticationTokenExpirationDate = DateTime.UtcNow.AddMonths(2)
                 }
             };
-
-            _applicationUserManager.Expect(x => x.Users)
-                .Repeat.Any()
-                .Return(expectedUsers.AsQueryable());
 
             _attribute.OnActionExecuting(_actionContext);
             Assert.AreEqual(HttpStatusCode.Unauthorized, _actionContext.Response.StatusCode);
@@ -121,10 +105,6 @@ namespace UI.Tests.UnitTests.AttributesTests
                     AuthenticationTokenExpirationDate = DateTime.UtcNow.AddMonths(-2)
                 }
             };
-
-            _applicationUserManager.Expect(x => x.Users)
-                .Repeat.Any()
-                .Return(expectedUsers.AsQueryable());
 
             _attribute.OnActionExecuting(_actionContext);
             Assert.AreEqual(HttpStatusCode.Unauthorized, _actionContext.Response.StatusCode);

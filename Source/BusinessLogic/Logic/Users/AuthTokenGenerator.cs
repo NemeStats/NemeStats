@@ -23,9 +23,8 @@ namespace BusinessLogic.Logic.Users
 
         public string GenerateAuthToken(string applicationUserId)
         {
-            string salt = configManager.AppSettings[APP_KEY_AUTH_TOKEN_SALT];
             string newAuthToken = GenerateNewAuthToken();
-            var saltedHash = GetNewSaltedHashedAuthenticationToken(salt, newAuthToken);
+            var saltedHash = this.HashAuthToken(newAuthToken);
 
             ApplicationUser applicationUser = dataContext.FindById<ApplicationUser>(applicationUserId);
             applicationUser.AuthenticationToken = saltedHash;
@@ -41,16 +40,17 @@ namespace BusinessLogic.Logic.Users
             return Guid.NewGuid().ToString();
         }
 
-        internal virtual string GetNewSaltedHashedAuthenticationToken(string salt, string newAuthToken)
-        {
-            byte[] saltBytes = new byte[salt.Length * sizeof(char)];
-            Buffer.BlockCopy(salt.ToCharArray(), 0, saltBytes, 0, saltBytes.Length);
+        internal const int HASH_ITERATIONS = 1000;
+        internal const int HASH_SIZE = 20;
 
-            var hmacMd5 = new HMACMD5(saltBytes);
-            byte[] authTokenBytes = new byte[newAuthToken.Length * sizeof(char)];
-            Buffer.BlockCopy(newAuthToken.ToCharArray(), 0, authTokenBytes, 0, authTokenBytes.Length);
-            var saltedHash = hmacMd5.ComputeHash(authTokenBytes);
-            return saltedHash.ToString();
+        public virtual string HashAuthToken(string newAuthToken)
+        {
+            string salt = configManager.AppSettings[APP_KEY_AUTH_TOKEN_SALT];
+
+            byte[] saltBytes = Encoding.UTF8.GetBytes(salt);
+            byte[] authTokenBytes = Encoding.UTF8.GetBytes(newAuthToken);
+
+            return System.Text.Encoding.Default.GetString(new Rfc2898DeriveBytes(authTokenBytes, saltBytes, HASH_ITERATIONS).GetBytes(HASH_SIZE));
         }
     }
 }

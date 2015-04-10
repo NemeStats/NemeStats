@@ -94,8 +94,10 @@ namespace UI.Areas.Api.Controllers
         [ApiRoute("GamingGroups/{gamingGroupId}/PlayedGames")]
         [HttpPost]
         [ApiAuthentication]
-        public HttpResponseMessage RecordPlayedGame([FromBody]PlayedGameMessage playedGameMessage, [FromUri]int gamingGroupId, ApplicationUser applicationUser)
+        [ApiModelValidation]
+        public HttpResponseMessage RecordPlayedGame([FromBody]PlayedGameMessage playedGameMessage, [FromUri]int gamingGroupId)
         {
+            ApplicationUser applicationUser = ActionContext.ActionArguments[ApiAuthenticationAttribute.ACTION_ARGUMENT_APPLICATION_USER] as ApplicationUser;
             if (gamingGroupId != applicationUser.CurrentGamingGroupId)
             {
                 return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, ApiAuthenticationAttribute.UNAUTHORIZED_MESSAGE);

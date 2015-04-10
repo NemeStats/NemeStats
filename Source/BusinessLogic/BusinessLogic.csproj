@@ -158,7 +158,9 @@
     <Compile Include="Logic\Points\GlobalPointsRecalculator.cs" />
     <Compile Include="Logic\TransactionSource.cs" />
     <Compile Include="Logic\Users\AuthTokenGenerator.cs" />
+    <Compile Include="Logic\Users\AuthTokenValidator.cs" />
     <Compile Include="Logic\Users\IAuthTokenGenerator.cs" />
+    <Compile Include="Logic\Users\IAuthTokenValidator.cs" />
     <Compile Include="Logic\VotableFeatures\IVotableFeatureRetriever.cs" />
     <Compile Include="Logic\GameDefinitions\BoardGameGeekDataLinker.cs" />
     <Compile Include="Logic\Champions\IChampionRecalculator.cs" />

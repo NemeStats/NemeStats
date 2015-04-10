@@ -165,6 +165,8 @@ namespace UI.DependencyResolution {
             this.For<IExcelGenerator>().Use<ExcelGenerator>();
 
             this.For<IAuthTokenGenerator>().Use<AuthTokenGenerator>();
+
+            this.For<IAuthTokenValidator>().Use<AuthTokenValidator>();
         }
 
         private void SetupUniquePerRequestMappings()

@@ -46,7 +46,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.ApplicationSignInM
             
             autoMocker.ClassUnderTest.Expect(mock => mock.GenerateNewAuthToken()).Return(expectedAuthToken);
             const string expectedSaltedHashedAuthToken = "some salted hashed auth token";
-            autoMocker.ClassUnderTest.Expect(mock => mock.GetNewSaltedHashedAuthenticationToken(expectedSalt, expectedAuthToken))
+            autoMocker.ClassUnderTest.Expect(mock => mock.HashAuthToken(expectedAuthToken))
                       .Return(expectedSaltedHashedAuthToken);
 
             autoMocker.ClassUnderTest.GenerateAuthToken(applicationUserId);

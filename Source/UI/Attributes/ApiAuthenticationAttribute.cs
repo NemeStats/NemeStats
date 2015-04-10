@@ -12,19 +12,21 @@ namespace UI.Attributes
 {
     public class ApiAuthenticationAttribute : ActionFilterAttribute
     {
-        private readonly ApplicationUserManager applicationUserManager;
+        public const string ACTION_ARGUMENT_APPLICATION_USER = "applicationUser";
+
+        private readonly IAuthTokenValidator authTokenValidator;
         internal const string AUTH_HEADER = "X-Auth-Token";
         internal const string UNAUTHORIZED_MESSAGE = "Invalid " + AUTH_HEADER;
 
         public ApiAuthenticationAttribute()
-            : this(DependencyResolver.Current.GetService<ApplicationUserManager>())
+            : this(DependencyResolver.Current.GetService<AuthTokenValidator>())
         {
 
         }
 
-        public ApiAuthenticationAttribute(ApplicationUserManager applicationUserManager)
+        public ApiAuthenticationAttribute(IAuthTokenValidator authTokenValidator)
         {
-            this.applicationUserManager = applicationUserManager;
+            this.authTokenValidator = authTokenValidator;
         }
 
         public override void OnActionExecuting(System.Web.Http.Controllers.HttpActionContext actionContext)
@@ -48,8 +50,7 @@ namespace UI.Attributes
                 return;
             }
 
-            ApplicationUser applicationUser =
-                this.applicationUserManager.Users.FirstOrDefault(x => x.AuthenticationToken == authHeader && DateTime.UtcNow <= x.AuthenticationTokenExpirationDate);
+            ApplicationUser applicationUser = authTokenValidator.ValidateAuthToken(authHeader);
 
             if (applicationUser == null)
             {
@@ -58,7 +59,7 @@ namespace UI.Attributes
                     UNAUTHORIZED_MESSAGE);
             }
 
-            actionContext.ActionArguments["applicationUser"] = applicationUser;
+            actionContext.ActionArguments[ACTION_ARGUMENT_APPLICATION_USER] = applicationUser;
         }
     }
 }
