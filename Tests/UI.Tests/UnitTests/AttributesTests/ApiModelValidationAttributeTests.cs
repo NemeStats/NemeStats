@@ -15,25 +15,26 @@ namespace UI.Tests.UnitTests.AttributesTests
     [TestFixture]
     public class ApiModelValidationAttributeTests
     {
-        [Test]
-        public void ItReturnsABadRequestResponseIfTheModelStateIsNotValid()
-        {
-            ApiModelValidationAttribute modelValidationAttribute = new ApiModelValidationAttribute();
-            HttpControllerContext controllerContext = new HttpControllerContext {Request = new HttpRequestMessage()};
-            controllerContext.Request.SetConfiguration(new HttpConfiguration());
-            HttpActionContext actionContext = new HttpActionContext(controllerContext, new ReflectedHttpActionDescriptor());
+        //TODO delete this, just checking into source control in case i bring it back.
+        //[Test]
+        //public void ItReturnsABadRequestResponseIfTheModelStateIsNotValid()
+        //{
+        //    ApiModelValidationAttribute modelValidationAttribute = new ApiModelValidationAttribute();
+        //    HttpControllerContext controllerContext = new HttpControllerContext {Request = new HttpRequestMessage()};
+        //    controllerContext.Request.SetConfiguration(new HttpConfiguration());
+        //    HttpActionContext actionContext = new HttpActionContext(controllerContext, new ReflectedHttpActionDescriptor());
 
-            const string EXPECTED_ERROR_MESSAGE1 = "some validation error message 1";
-            actionContext.ModelState.AddModelError("error 1", EXPECTED_ERROR_MESSAGE1);
-            const string EXPECTED_ERROR_MESSAGE2 = "some validation error message 2";
-            actionContext.ModelState.AddModelError("error 2", EXPECTED_ERROR_MESSAGE2);
+        //    const string EXPECTED_ERROR_MESSAGE1 = "some validation error message 1";
+        //    actionContext.ModelState.AddModelError("error 1", EXPECTED_ERROR_MESSAGE1);
+        //    const string EXPECTED_ERROR_MESSAGE2 = "some validation error message 2";
+        //    actionContext.ModelState.AddModelError("error 2", EXPECTED_ERROR_MESSAGE2);
 
-            modelValidationAttribute.OnActionExecuting(actionContext);
+        //    modelValidationAttribute.OnActionExecuting(actionContext);
 
-            Assert.That(actionContext.Response.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
+        //    Assert.That(actionContext.Response.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
 
-            string actualContent = ((ObjectContent<string>)actionContext.Response.Content).Value.ToString();
-            Assert.That(actualContent, Is.EqualTo(EXPECTED_ERROR_MESSAGE1 + "|" + EXPECTED_ERROR_MESSAGE2));
-        }
+        //    string actualContent = ((ObjectContent<string>)actionContext.Response.Content).Value.ToString();
+        //    Assert.That(actualContent, Is.EqualTo(EXPECTED_ERROR_MESSAGE1 + "|" + EXPECTED_ERROR_MESSAGE2));
+        //}
     }
 }

@@ -13,7 +13,7 @@ namespace UI.Areas.Api.Models
         public string DatePlayed { get; set; }
 
         [Required]
-        public int GameDefinitionId { get; set; }
+        public int? GameDefinitionId { get; set; }
 
         public string Notes { get; set; }
 
