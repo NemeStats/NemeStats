@@ -187,6 +187,7 @@
     <Compile Include="UnitTests\AreasTests\ApiTests\ControllersTests\UserSessionsControllerTests.cs" />
     <Compile Include="UnitTests\AreasTests\ApiTests\ControllersTests\VotableFeaturesControllerTests.cs" />
     <Compile Include="UnitTests\AttributesTests\ApiAuthenticationAttributeTests.cs" />
+    <Compile Include="UnitTests\AttributesTests\ApiExceptionFilterAttributeTests.cs" />
     <Compile Include="UnitTests\AttributesTests\ApiRouteAttributeTests.cs" />
     <Compile Include="UnitTests\AttributesTests\ApiModelValidationAttributeTests.cs" />
     <Compile Include="UnitTests\ControllerTests\AccountControllerTests\AccountControllerTestBase.cs" />

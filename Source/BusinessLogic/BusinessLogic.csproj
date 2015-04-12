@@ -144,6 +144,7 @@
     <Compile Include="EventTracking\NemeStatsEventTracker.cs" />
     <Compile Include="EventTracking\UniversalAnalyticsNemeStatsEventTracker.cs" />
     <Compile Include="Exceptions\EntityDoesNotExistException.cs" />
+    <Compile Include="Exceptions\ForeignKeyNotFoundException.cs" />
     <Compile Include="Exceptions\PlayerAlreadyExistsException.cs" />
     <Compile Include="Exceptions\UnauthorizedEntityAccessException.cs" />
     <Compile Include="Export\ExcelGenerator.cs" />

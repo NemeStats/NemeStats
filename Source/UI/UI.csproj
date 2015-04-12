@@ -271,6 +271,7 @@
     <Compile Include="Areas\Api\Models\PlayedGameMessage.cs" />
     <Compile Include="Areas\Api\RollbarExceptionLogger.cs" />
     <Compile Include="Attributes\ApiAuthenticationAttribute.cs" />
+    <Compile Include="Attributes\ApiExceptionFilter.cs" />
     <Compile Include="Attributes\ApiModelValidationAttribute.cs" />
     <Compile Include="Attributes\ApiRouteAttribute.cs" />
     <Compile Include="Controllers\AccountController.cs" />

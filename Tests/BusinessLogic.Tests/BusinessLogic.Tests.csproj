@@ -156,6 +156,7 @@
     <Compile Include="IntegrationTests\LogicTests\GameDefinitionsTests\GameDefinitionRetrieverTests\GetAllGameDefinitionsIntegrationTests.cs" />
     <Compile Include="IntegrationTests\LogicTests\GameDefinitionsTests\GameDefinitionRetrieverTests\GetGameDefinitionDetailsIntegrationTests.cs" />
     <Compile Include="LocalAddin.cs" />
+    <Compile Include="UnitTests\DataAccessTests\NemeStatsDataContextTests\CommitAllChangesTests.cs" />
     <Compile Include="UnitTests\DataAccessTests\NemeStatsDataContextTests\DeleteByIdTests.cs" />
     <Compile Include="UnitTests\DataAccessTests\NemeStatsDataContextTests\FindByIdTests.cs" />
     <Compile Include="UnitTests\DataAccessTests\NemeStatsDataContextTests\NemeStatsDataContextTestBase.cs" />
