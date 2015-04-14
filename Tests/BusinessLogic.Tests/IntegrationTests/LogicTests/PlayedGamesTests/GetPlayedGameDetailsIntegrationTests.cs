@@ -90,13 +90,13 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGamesTests
         public void ItThrowsAnEntityDoesNotExistExceptionIfTheIdIsInvalid()
         {
             int invalidId = -1;
-            EntityDoesNotExistException expectedException = new EntityDoesNotExistException(invalidId);
+            var expectedException = new EntityDoesNotExistException<PlayedGame>(invalidId);
 
             using (NemeStatsDataContext dataContext = new NemeStatsDataContext())
             {
                 PlayedGameRetriever retriever = new PlayedGameRetriever(dataContext);
 
-                Exception actualException = Assert.Throws<EntityDoesNotExistException>(() => retriever.GetPlayedGameDetails(invalidId));
+                Exception actualException = Assert.Throws<EntityDoesNotExistException<PlayedGame>>(() => retriever.GetPlayedGameDetails(invalidId));
 
                 Assert.That(expectedException.Message, Is.EqualTo(actualException.Message));
             }

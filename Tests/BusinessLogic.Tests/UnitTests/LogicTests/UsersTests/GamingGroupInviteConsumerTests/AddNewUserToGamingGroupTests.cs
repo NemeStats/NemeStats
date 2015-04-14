@@ -61,9 +61,9 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.GamingGroupInviteC
         public void ItThrowsAnEntityDoesNotExistExceptionIfTheInvitationDoesntExist()
         {
             BuildDataContextMock(true, false, true);
-            EntityDoesNotExistException expectedException = new EntityDoesNotExistException(invitationId);
+            var expectedException = new EntityDoesNotExistException<GamingGroupInvitation>(invitationId);
 
-            Exception actualException = Assert.Throws<EntityDoesNotExistException>(
+            Exception actualException = Assert.Throws<EntityDoesNotExistException<GamingGroupInvitation>>(
                 () => gamingGroupInviteConsumer.AddNewUserToGamingGroup(currentUser.Id, invitationId));
 
             Assert.That(expectedException.Message, Is.EqualTo(actualException.Message));
@@ -73,9 +73,9 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.GamingGroupInviteC
         public void ItThrowsAnEntityDoesNotExistExceptionIfThePassedInUserDoesntExistYet()
         {
             BuildDataContextMock(false, true, true);
-            EntityDoesNotExistException expectedException = new EntityDoesNotExistException(currentUser.Id);
+            var expectedException = new EntityDoesNotExistException<ApplicationUser>(currentUser.Id);
 
-            Exception actualException = Assert.Throws<EntityDoesNotExistException>(
+            Exception actualException = Assert.Throws<EntityDoesNotExistException<ApplicationUser>>(
                 () => gamingGroupInviteConsumer.AddNewUserToGamingGroup(currentUser.Id, invitationId));
 
             Assert.That(expectedException.Message, Is.EqualTo(actualException.Message));
@@ -86,9 +86,9 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.GamingGroupInviteC
         {
             BuildDataContextMock(true, true, false);
 
-            EntityDoesNotExistException expectedException = new EntityDoesNotExistException(expectedInvitation.PlayerId);
+            var expectedException = new EntityDoesNotExistException<Player>(expectedInvitation.PlayerId);
 
-            Exception actualException = Assert.Throws<EntityDoesNotExistException>(
+            Exception actualException = Assert.Throws<EntityDoesNotExistException<Player>>(
                 () => gamingGroupInviteConsumer.AddNewUserToGamingGroup(currentUser.Id, invitationId));
 
             Assert.That(expectedException.Message, Is.EqualTo(actualException.Message));

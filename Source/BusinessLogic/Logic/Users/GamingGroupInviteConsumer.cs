@@ -104,7 +104,7 @@ namespace BusinessLogic.Logic.Users
 
             if (invitation == null)
             {
-                throw new EntityDoesNotExistException(gamingGroupInvitationId);
+                throw new EntityDoesNotExistException<GamingGroupInvitation>(gamingGroupInvitationId);
             }
             return invitation;
         }
@@ -115,7 +115,7 @@ namespace BusinessLogic.Logic.Users
 
             if (existingUser == null)
             {
-                throw new EntityDoesNotExistException(invitation.RegisteredUserId);
+                throw new EntityDoesNotExistException<GamingGroupInvitation>(invitation.RegisteredUserId);
             }
             return existingUser;
         }
@@ -183,7 +183,7 @@ namespace BusinessLogic.Logic.Users
         {
             if (userFromDatabase == null)
             {
-                throw new EntityDoesNotExistException(userId);
+                throw new EntityDoesNotExistException<ApplicationUser>(userId);
             }
         }
 
@@ -191,7 +191,7 @@ namespace BusinessLogic.Logic.Users
         {
             if (invitation == null)
             {
-                throw new EntityDoesNotExistException(guid);
+                throw new EntityDoesNotExistException<GamingGroupInvitation>(guid);
             }
         }
 
@@ -220,7 +220,7 @@ namespace BusinessLogic.Logic.Users
         {
             if (player == null)
             {
-                throw new EntityDoesNotExistException(invitation.PlayerId);
+                throw new EntityDoesNotExistException<Player>(invitation.PlayerId);
             }
         }
     }

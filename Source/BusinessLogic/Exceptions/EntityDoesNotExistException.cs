@@ -20,9 +20,9 @@ using System.Linq;
 
 namespace BusinessLogic.Exceptions
 {
-    public class EntityDoesNotExistException : KeyNotFoundException
+    public class EntityDoesNotExistException<TEntity> : KeyNotFoundException
     {
-        internal const string EXCEPTION_MESSAGE_FORMAT = "Entity with Id {0} does not exist.";
+        internal const string EXCEPTION_MESSAGE_FORMAT = "Entity of type '{0}' with Id '{1}' does not exist.";
 
         private readonly object entityId;
 
@@ -35,7 +35,7 @@ namespace BusinessLogic.Exceptions
         {
             get
             {
-                return string.Format(EXCEPTION_MESSAGE_FORMAT, entityId);
+                return string.Format(EXCEPTION_MESSAGE_FORMAT, typeof(TEntity).Name, entityId);
             }
         }
     }

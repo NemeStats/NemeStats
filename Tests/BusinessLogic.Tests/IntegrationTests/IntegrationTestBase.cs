@@ -183,7 +183,15 @@ namespace BusinessLogic.Tests.IntegrationTests
             INemesisRecalculator nemesisRecalculator = new NemesisRecalculator(dataContext, playerRepository);
             IChampionRepository championRepository = new ChampionRepository(dataContext);
             IChampionRecalculator championRecalculator = new ChampionRecalculator(dataContext, championRepository);
-            IPlayedGameCreator playedGameCreator = new PlayedGameCreator(dataContext, playedGameTracker, nemesisRecalculator, championRecalculator);
+            ISecuredEntityValidator<Player> securedEntityValidatorForPlayers = new SecuredEntityValidator<Player>();
+            ISecuredEntityValidator<GameDefinition> securedEntityValidatorForGameDefinition = new SecuredEntityValidator<GameDefinition>();
+            IPlayedGameCreator playedGameCreator = new PlayedGameCreator(
+                dataContext, 
+                playedGameTracker, 
+                nemesisRecalculator, 
+                championRecalculator, 
+                securedEntityValidatorForPlayers,
+                securedEntityValidatorForGameDefinition);
             
             List<Player> players = new List<Player>() { testPlayer1, testPlayer2 };
             List<int> playerRanks = new List<int>() { 1, 1 };
