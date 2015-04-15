@@ -71,7 +71,7 @@ namespace BusinessLogic.Logic.PlayedGames
 
             if (result == null)
             {
-                throw new EntityDoesNotExistException<PlayedGame>(playedGameId);
+                throw new EntityDoesNotExistException(typeof(PlayedGame), playedGameId);
             }
 
             result.PlayerGameResults = result.PlayerGameResults.OrderBy(playerGameResult => playerGameResult.GameRank).ToList();

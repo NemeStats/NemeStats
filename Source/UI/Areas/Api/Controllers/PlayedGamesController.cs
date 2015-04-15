@@ -8,6 +8,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Web.Http;
+using BusinessLogic.Exceptions;
 using BusinessLogic.Export;
 using BusinessLogic.Logic;
 using BusinessLogic.Logic.PlayedGames;
@@ -98,6 +99,7 @@ namespace UI.Areas.Api.Controllers
         public HttpResponseMessage RecordPlayedGame([FromBody]PlayedGameMessage playedGameMessage, [FromUri]int gamingGroupId)
         {
             ApplicationUser applicationUser = ActionContext.ActionArguments[ApiAuthenticationAttribute.ACTION_ARGUMENT_APPLICATION_USER] as ApplicationUser;
+
             if (gamingGroupId != applicationUser.CurrentGamingGroupId)
             {
                 return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, ApiAuthenticationAttribute.UNAUTHORIZED_MESSAGE);

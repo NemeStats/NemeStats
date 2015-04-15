@@ -13,7 +13,7 @@ namespace UI.Attributes
     {
         public override void OnException(HttpActionExecutedContext context)
         {
-            if (context.Exception is ForeignKeyNotFoundException)
+            if (context.Exception is EntityDoesNotExistException)
             {
                 context.Response = new HttpResponseMessage(HttpStatusCode.BadRequest)
                 {

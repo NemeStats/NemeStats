@@ -15,13 +15,7 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
 using System.Web.Http;
 using AutoMapper;
 using BusinessLogic.Exceptions;
@@ -53,7 +47,7 @@ namespace UI.Areas.Api.Controllers
                 VotableFeature votableFeature = votableFeatureRetriever.RetrieveVotableFeature(id);
                 return Mapper.Map<VotableFeature, VotableFeatureViewModel>(votableFeature);
             }
-            catch (EntityDoesNotExistException<VotableFeature>)
+            catch (EntityDoesNotExistException)
             {
                 throw new HttpResponseException(HttpStatusCode.NotFound);
             }
@@ -66,7 +60,7 @@ namespace UI.Areas.Api.Controllers
             {
                 votableFeatureVoter.CastVote(featureVote.VotableFeatureId, featureVote.VoteUp);
             }
-            catch (EntityDoesNotExistException<VotableFeature>)
+            catch (EntityDoesNotExistException)
             {
                 throw new HttpResponseException(HttpStatusCode.NotFound);
             }

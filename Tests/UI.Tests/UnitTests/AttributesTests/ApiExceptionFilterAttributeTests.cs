@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Web.Http.Controllers;
 using System.Web.Http.Filters;
 using BusinessLogic.Exceptions;
+using BusinessLogic.Models;
 using NUnit.Framework;
 using StructureMap.AutoMocking;
 using UI.Attributes;
@@ -39,15 +40,15 @@ namespace UI.Tests.UnitTests.AttributesTests
         }
 
         [Test]
-        public async Task ItReturnsABadRequestIfTheExceptionIsAForeignKeyNotFoundException()
+        public async Task ItReturnsABadRequestIfTheExceptionIsAnEntityDoesNotExistException()
         {
-            const string EXPECTED_MESSAGE = "some message";
-            context.Exception = new ForeignKeyNotFoundException(EXPECTED_MESSAGE);
+            var expectedException = new EntityDoesNotExistException(typeof(Player), "some id");
+            context.Exception = expectedException;
 
             autoMocker.ClassUnderTest.OnException(context);
 
             Assert.That(context.Response.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
-            Assert.That(await context.Response.Content.ReadAsStringAsync(), Is.EqualTo(EXPECTED_MESSAGE));
+            Assert.That(await context.Response.Content.ReadAsStringAsync(), Is.EqualTo(expectedException.Message));
         }
     }
 }

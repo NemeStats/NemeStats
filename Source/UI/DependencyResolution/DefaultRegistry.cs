@@ -15,6 +15,8 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
+
+using BusinessLogic.DataAccess.Security;
 using BusinessLogic.Export;
 using BusinessLogic.Logic.BoardGameGeek;
 using BusinessLogic.Logic.Champions;
@@ -167,6 +169,8 @@ namespace UI.DependencyResolution {
             this.For<IAuthTokenGenerator>().Use<AuthTokenGenerator>();
 
             this.For<IAuthTokenValidator>().Use<AuthTokenValidator>();
+
+            this.For(typeof(ISecuredEntityValidator<>)).Use(typeof(SecuredEntityValidator<>));
         }
 
         private void SetupUniquePerRequestMappings()
