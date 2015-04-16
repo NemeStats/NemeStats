@@ -244,6 +244,10 @@
     <Compile Include="Migrations\201503241204333_AddAuthTokenToAspNetUsers.Designer.cs">
       <DependentUpon>201503241204333_AddAuthTokenToAspNetUsers.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201504160224098_AddPointsScoredToPlayerGameResult.cs" />
+    <Compile Include="Migrations\201504160224098_AddPointsScoredToPlayerGameResult.Designer.cs">
+      <DependentUpon>201504160224098_AddPointsScoredToPlayerGameResult.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\GamingGroups\NewlyCreatedGamingGroupResult.cs" />
     <Compile Include="Models\GamingGroups\TopGamingGroupSummary.cs" />
     <Compile Include="Models\PlayedGames\IWinner.cs" />
@@ -590,6 +594,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201503241204333_AddAuthTokenToAspNetUsers.resx">
       <DependentUpon>201503241204333_AddAuthTokenToAspNetUsers.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201504160224098_AddPointsScoredToPlayerGameResult.resx">
+      <DependentUpon>201504160224098_AddPointsScoredToPlayerGameResult.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />
