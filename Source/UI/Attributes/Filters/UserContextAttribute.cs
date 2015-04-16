@@ -17,6 +17,7 @@
 #endregion
 
 using System.Linq;
+using System.Web;
 using System.Web.Mvc;
 using BusinessLogic.EventTracking;
 using BusinessLogic.Logic.Users;
@@ -29,11 +30,8 @@ namespace UI.Attributes.Filters
     {
         internal const string USER_CONTEXT_KEY = "currentUser";
 
-        public ApplicationUserManager userManager;
-        /// <summary>
-        /// The parameter key for the Google Analytics unique client id.
-        /// </summary>
-        internal const string REQUEST_PARAM_ANALYTICS_ID = "_ga";
+        private ApplicationUserManager userManager;
+        private ClientIdCalculator clientIdCalculator;
 
         public bool RequiresGamingGroup { get; set; }
 
@@ -47,15 +45,18 @@ namespace UI.Attributes.Filters
             //TODO this doesn't appear to honor the HttpContextScoped structureMap directive... so it is getting a new
             // instance each time
             this.userManager = DependencyResolver.Current.GetService<ApplicationUserManager>();
+            //TODO if there is only one implementation is this OK?
+            this.clientIdCalculator = new ClientIdCalculator();
 
-            this.OnActionExecuting(filterContext, this.userManager);
+            this.OnActionExecuting(filterContext, this.userManager, clientIdCalculator);
 
             base.OnActionExecuting(filterContext);
         }
 
         internal void OnActionExecuting(
             ActionExecutingContext filterContext, 
-            ApplicationUserManager userManager)
+            ApplicationUserManager userManager,
+            ClientIdCalculator clientIdCalculator)
         {
             if (filterContext.ActionParameters.ContainsKey(USER_CONTEXT_KEY))
             {
@@ -72,15 +73,7 @@ namespace UI.Attributes.Filters
 
                 this.RedirectToLoginPageIfUserDoesntHaveAGamingGroup(filterContext, applicationUser);
 
-                string anonymousClientId = filterContext.HttpContext.Request.Params[REQUEST_PARAM_ANALYTICS_ID];
-                if(anonymousClientId == null)
-                {
-                    applicationUser.AnonymousClientId = UniversalAnalyticsNemeStatsEventTracker.DEFAULT_ANONYMOUS_CLIENT_ID;
-                }
-                else
-                {
-                    applicationUser.AnonymousClientId = anonymousClientId;
-                }
+                applicationUser.AnonymousClientId = clientIdCalculator.GetClientId(filterContext.HttpContext.Request, applicationUser);
 
                 filterContext.ActionParameters[USER_CONTEXT_KEY] = applicationUser;
             }

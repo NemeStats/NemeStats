@@ -43,8 +43,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameCr
         private GameDefinition gameDefinition;
         private List<Player> players;
         private Player existingPlayerWithMatchingGamingGroup;
-        private int gamingGroupId = 9;
-        
+        private const int GAMING_GROUP_ID = 9;
+
         [SetUp]
         public void TestSetUp()
         {
@@ -54,17 +54,17 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameCr
             currentUser = new ApplicationUser()
             {
                 Id = "user id",
-                CurrentGamingGroupId = gamingGroupId,
+                CurrentGamingGroupId = GAMING_GROUP_ID,
                 AnonymousClientId = "anonymous client id"
             };
-            gameDefinition = new GameDefinition(){ Name = "game definition name", GamingGroupId = gamingGroupId, Id = 9598 };
+            gameDefinition = new GameDefinition(){ Name = "game definition name", GamingGroupId = GAMING_GROUP_ID, Id = 9598 };
             autoMocker.Get<IDataContext>().Expect(mock => mock.FindById<GameDefinition>(gameDefinition.Id))
                 .Return(gameDefinition);
 
             existingPlayerWithMatchingGamingGroup = new Player
             {
                 Id = 1,
-                GamingGroupId = gamingGroupId
+                GamingGroupId = GAMING_GROUP_ID
             };
             autoMocker.Get<IDataContext>().Expect(mock => mock.FindById<Player>(Arg<int>.Is.Anything)).Return(existingPlayerWithMatchingGamingGroup);
         }

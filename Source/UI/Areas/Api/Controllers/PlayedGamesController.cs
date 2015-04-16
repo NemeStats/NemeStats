@@ -105,20 +105,7 @@ namespace UI.Areas.Api.Controllers
                 return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, ApiAuthenticationAttribute.UNAUTHORIZED_MESSAGE);
             }
 
-            DateTime datePlayed = DateTime.UtcNow;
-
-            if (!string.IsNullOrWhiteSpace(playedGameMessage.DatePlayed))
-            {
-                datePlayed = DateTime.ParseExact(playedGameMessage.DatePlayed, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None);
-            }
-
-            NewlyCompletedGame newlyCompletedGame = new NewlyCompletedGame
-            {
-                DatePlayed = datePlayed,
-                GameDefinitionId = playedGameMessage.GameDefinitionId,
-                Notes = playedGameMessage.Notes,
-                PlayerRanks = playedGameMessage.PlayerRanks
-            };
+            var newlyCompletedGame = BuildNewlyPlayedGame(playedGameMessage);
 
             PlayedGame playedGame = playedGameCreator.CreatePlayedGame(newlyCompletedGame, TransactionSource.RestApi, applicationUser);
             var newlyRecordedPlayedGameMessage = new NewlyRecordedPlayedGameMessage
@@ -127,6 +114,24 @@ namespace UI.Areas.Api.Controllers
             };
 
             return Request.CreateResponse(HttpStatusCode.OK, newlyRecordedPlayedGameMessage);
+        }
+
+        private static NewlyCompletedGame BuildNewlyPlayedGame(PlayedGameMessage playedGameMessage)
+        {
+            DateTime datePlayed = DateTime.UtcNow;
+
+            if (!string.IsNullOrWhiteSpace(playedGameMessage.DatePlayed))
+            {
+                datePlayed = DateTime.ParseExact(playedGameMessage.DatePlayed, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None);
+            }
+
+            return new NewlyCompletedGame
+            {
+                DatePlayed = datePlayed,
+                GameDefinitionId = playedGameMessage.GameDefinitionId,
+                Notes = playedGameMessage.Notes,
+                PlayerRanks = playedGameMessage.PlayerRanks
+            };
         }
     }
 }

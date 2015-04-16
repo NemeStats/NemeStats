@@ -274,6 +274,7 @@
     <Compile Include="Attributes\ApiExceptionFilter.cs" />
     <Compile Include="Attributes\ApiModelValidationAttribute.cs" />
     <Compile Include="Attributes\ApiRouteAttribute.cs" />
+    <Compile Include="Attributes\ClientIdCalculator.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\GameDefinitionController.cs" />
     <Compile Include="Controllers\GamingGroupController.cs" />

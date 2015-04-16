@@ -19,6 +19,12 @@ namespace UI.Attributes
                 {
                     Content = new StringContent(context.Exception.Message)
                 };
+            }else if (context.Exception is UnauthorizedEntityAccessException)
+            {
+                context.Response = new HttpResponseMessage(HttpStatusCode.BadRequest)
+                {
+                    Content = new StringContent(context.Exception.Message)
+                }; 
             }
         }
     }

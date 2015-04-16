@@ -10,6 +10,7 @@ using BusinessLogic.Models.User;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security.DataProtection;
 using NUnit.Framework;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 using Rhino.Mocks;
 using UI.Attributes;
 
@@ -25,6 +26,7 @@ namespace UI.Tests.UnitTests.AttributesTests
         private IAuthTokenValidator authTokenValidatorMock;
         private IUserStore<ApplicationUser> _userStoreMock;
         private IDataProtectionProvider _dataProtectionProviderMock;
+        private ClientIdCalculator clientIdCalculatorMock;
 
         [SetUp]
         public void SetUp()
@@ -32,7 +34,8 @@ namespace UI.Tests.UnitTests.AttributesTests
             _request = new HttpRequestMessage();
             _request.SetConfiguration(new HttpConfiguration());
             authTokenValidatorMock = MockRepository.GenerateMock<IAuthTokenValidator>();
-            _attribute = new ApiAuthenticationAttribute(authTokenValidatorMock);
+            clientIdCalculatorMock = MockRepository.GenerateMock<ClientIdCalculator>();
+            _attribute = new ApiAuthenticationAttribute(authTokenValidatorMock, clientIdCalculatorMock);
             _controllerContext = new HttpControllerContext {Request = _request};
             _actionContext = new HttpActionContext(_controllerContext, new ReflectedHttpActionDescriptor());
         }
@@ -61,13 +64,35 @@ namespace UI.Tests.UnitTests.AttributesTests
         {
             const string expectedToken = "TEST";
             _request.Headers.Add(ApiAuthenticationAttribute.AUTH_HEADER, new[] { expectedToken });
-            var expectedUser = new ApplicationUser();
+            var expectedUser = new ApplicationUser
+            {
+                Id = "some id"
+            };
 
             authTokenValidatorMock.Expect(mock => mock.ValidateAuthToken(expectedToken)).Return(expectedUser);
 
             _attribute.OnActionExecuting(_actionContext);
+            ApplicationUser actualUser = _actionContext.ActionArguments[ApiAuthenticationAttribute.ACTION_ARGUMENT_APPLICATION_USER] as ApplicationUser;
+            Assert.That(actualUser, Is.SameAs(expectedUser));
+        }
 
-            Assert.That(_actionContext.ActionArguments[ApiAuthenticationAttribute.ACTION_ARGUMENT_APPLICATION_USER], Is.SameAs(expectedUser));
+        [Test]
+        public void ItSetsTheAnonymousClientIdOnTheApplicationUser()
+        {
+            const string EXPECTED_TOKEN = "TEST";
+            _request.Headers.Add(ApiAuthenticationAttribute.AUTH_HEADER, new[] { EXPECTED_TOKEN });
+            var expectedUser = new ApplicationUser
+            {
+                Id = "some id"
+            };
+            authTokenValidatorMock.Expect(mock => mock.ValidateAuthToken(EXPECTED_TOKEN)).Return(expectedUser);
+            const string EXPECTED_CLIENT_ID = "some client id";
+            clientIdCalculatorMock.Expect(mock => mock.GetClientId(_request, expectedUser)).Return(EXPECTED_CLIENT_ID);
+
+            _attribute.OnActionExecuting(_actionContext);
+            ApplicationUser actualUser = _actionContext.ActionArguments[ApiAuthenticationAttribute.ACTION_ARGUMENT_APPLICATION_USER] as ApplicationUser;
+
+            Assert.That(actualUser.AnonymousClientId, Is.EqualTo(EXPECTED_CLIENT_ID));
         }
 
         [Test]
@@ -95,21 +120,18 @@ namespace UI.Tests.UnitTests.AttributesTests
         public void ShouldReturnUnauthorizedHttpStatusWhenTokenExpired()
         {
             const string expectedToken = "TEST";
-            const string actualToken = "DIFFERENT";
             _request.Headers.Add(ApiAuthenticationAttribute.AUTH_HEADER, new[] { expectedToken });
-            var expectedUsers = new List<ApplicationUser>
-            {
-                new ApplicationUser
-                {
-                    AuthenticationToken = actualToken,
-                    AuthenticationTokenExpirationDate = DateTime.UtcNow.AddMonths(-2)
-                }
-            };
 
             _attribute.OnActionExecuting(_actionContext);
             Assert.AreEqual(HttpStatusCode.Unauthorized, _actionContext.Response.StatusCode);
             string actualContent = ((ObjectContent<string>)_actionContext.Response.Content).Value.ToString();
             Assert.AreEqual("Invalid X-Auth-Token", actualContent);
+        }
+
+        [Test]
+        public void ItSetsTheAnonymousClientIdToTheApplicationUserId()
+        {
+            
         }
     }
 }
