@@ -16,13 +16,10 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using BusinessLogic.EventTracking;
 using BusinessLogic.Logic.Users;
 using BusinessLogic.Models.User;
 using Microsoft.AspNet.Identity;
+using System.Web.Mvc;
 
 namespace UI.Attributes.Filters
 {

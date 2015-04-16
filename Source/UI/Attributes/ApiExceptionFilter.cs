@@ -13,17 +13,18 @@ namespace UI.Attributes
     {
         public override void OnException(HttpActionExecutedContext context)
         {
-            if (context.Exception is EntityDoesNotExistException)
+            if (context.Exception is EntityDoesNotExistException || context.Exception is UnauthorizedEntityAccessException)
             {
                 context.Response = new HttpResponseMessage(HttpStatusCode.BadRequest)
                 {
                     Content = new StringContent(context.Exception.Message)
                 };
-            }else if (context.Exception is UnauthorizedEntityAccessException)
+            }else
             {
-                context.Response = new HttpResponseMessage(HttpStatusCode.BadRequest)
+                context.Response = new HttpResponseMessage(HttpStatusCode.InternalServerError)
                 {
-                    Content = new StringContent(context.Exception.Message)
+                    Content = new StringContent("An internal server error occurred. This isn't your fault. "
+                     + "We have been notified of the problem and will try to fix it as soon as possible.")
                 }; 
             }
         }
