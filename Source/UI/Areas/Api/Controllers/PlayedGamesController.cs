@@ -39,7 +39,7 @@ namespace UI.Areas.Api.Controllers
             this.playedGameCreator = playedGameCreator;
         }
 
-        [ApiRoute("GamingGroups/{gamingGroupId}/PlayedGames")]
+        [ApiRoute("GamingGroups/{gamingGroupId}/PlayedGamesExcel")]
         [HttpGet]
         public virtual HttpResponseMessage GetPlayedGames(int gamingGroupId)
         {
@@ -90,6 +90,19 @@ namespace UI.Areas.Api.Controllers
                 exportMemoryStream.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        [ApiRoute("GamingGroups/{gamingGroupId}/PlayedGames")]
+        [HttpPost]
+        public HttpResponseMessage SearchPlayedGames([FromBody]PlayedGameFilterMessage playedGameFilterMessage, [FromUri]int gamingGroupId)
+        {
+            ApplicationUser applicationUser = ActionContext.ActionArguments[ApiAuthenticationAttribute.ACTION_ARGUMENT_APPLICATION_USER] as ApplicationUser;
+
+            if (gamingGroupId != applicationUser.CurrentGamingGroupId)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, ApiAuthenticationAttribute.UNAUTHORIZED_MESSAGE);
+            }
+            throw new NotImplementedException();
         }
 
         [ApiRoute("GamingGroups/{gamingGroupId}/PlayedGames")]
