@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text;
 using System.Web.Http;
-using BusinessLogic.Exceptions;
 using BusinessLogic.Export;
 using BusinessLogic.Logic;
 using BusinessLogic.Logic.PlayedGames;
@@ -41,7 +38,7 @@ namespace UI.Areas.Api.Controllers
 
         [ApiRoute("GamingGroups/{gamingGroupId}/PlayedGamesExcel")]
         [HttpGet]
-        public virtual HttpResponseMessage GetPlayedGames(int gamingGroupId)
+        public virtual HttpResponseMessage ExportPlayedGamesToExcel(int gamingGroupId)
         {
             var playedGames = playedGameRetriever.GetRecentGames(MAX_PLAYED_GAMES_TO_EXPORT, gamingGroupId);
 
@@ -92,17 +89,21 @@ namespace UI.Areas.Api.Controllers
             base.Dispose(disposing);
         }
 
+        [ApiAuthentication]
         [ApiRoute("GamingGroups/{gamingGroupId}/PlayedGames")]
-        [HttpPost]
-        public HttpResponseMessage SearchPlayedGames([FromBody]PlayedGameFilterMessage playedGameFilterMessage, [FromUri]int gamingGroupId)
+        [HttpGet]
+        public HttpResponseMessage GetPlayedGames([FromBody]PlayedGameFilterMessage playedGameFilterMessage, [FromUri]int gamingGroupId)
         {
             ApplicationUser applicationUser = ActionContext.ActionArguments[ApiAuthenticationAttribute.ACTION_ARGUMENT_APPLICATION_USER] as ApplicationUser;
-
-            if (gamingGroupId != applicationUser.CurrentGamingGroupId)
+            var filter = new PlayedGameFilter();
+            if(playedGameFilterMessage != null)
             {
-                return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, ApiAuthenticationAttribute.UNAUTHORIZED_MESSAGE);
+                filter.StartDateGameLastUpdated = playedGameFilterMessage.StartDateGameLastUpdated;
+                filter.MaximumNumberOfResults = playedGameFilterMessage.MaximumNumberOfResults;
             }
-            throw new NotImplementedException();
+            var searchResults = playedGameRetriever.SearchPlayedGames(filter, applicationUser);
+
+            return Request.CreateResponse(HttpStatusCode.OK, searchResults);
         }
 
         [ApiRoute("GamingGroups/{gamingGroupId}/PlayedGames")]

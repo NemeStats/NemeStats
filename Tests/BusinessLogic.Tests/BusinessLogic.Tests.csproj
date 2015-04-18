@@ -181,6 +181,7 @@
     <Compile Include="UnitTests\LogicTests\ChampionsTests\ChampionRecalculatorTests\RecalculateChampionTests.cs" />
     <Compile Include="UnitTests\LogicTests\GamingGroupsTests\GamingGroupRetrieverTests\GamingGroupRetrieverTestBase.cs" />
     <Compile Include="UnitTests\LogicTests\GamingGroupsTests\GamingGroupRetrieverTests\GetGamingGroupsForUserTests.cs" />
+    <Compile Include="UnitTests\LogicTests\PlayedGamesTests\PlayedGameRetrieverTests\SearchPlayedGamesTests.cs" />
     <Compile Include="UnitTests\LogicTests\PointsTests\PointsCalculatorTests.cs" />
     <Compile Include="UnitTests\LogicTests\UsersTests\ApplicationSignInManagerTests\GenerateAuthTokenTests.cs" />
     <Compile Include="UnitTests\LogicTests\UsersTests\ApplicationUserManagerTests\ValidateAuthTokenTests.cs" />

@@ -20,31 +20,14 @@ using UI.Attributes;
 namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.PlayedGamesControllerTests
 {
     [TestFixture]
-    public class PlayedGamesControllerTests
+    public class PlayedGamesControllerTests : PlayedGamesControllerTestBase
     {
-        private RhinoAutoMocker<PlayedGamesController> autoMocker;
-        private ApplicationUser applicationUser;
         private PlayedGameMessage playedGameMessage;
         private const int EXPECTED_PLAYED_GAME_ID = 1;
-        private const int EXPECTED_GAMING_GROUP_ID = 2;
 
         [SetUp]
-        public void SetUp()
+        public void LocalSetUp()
         {
-            this.autoMocker = new RhinoAutoMocker<PlayedGamesController>();
-            var controllerContextMock = MockRepository.GeneratePartialMock<HttpControllerContext>();
-            HttpActionDescriptor actionDescriptorMock = MockRepository.GenerateMock<HttpActionDescriptor>();
-            this.autoMocker.ClassUnderTest.ActionContext = new HttpActionContext(controllerContextMock, actionDescriptorMock);
-
-            this.applicationUser = new ApplicationUser
-            {
-                Id = "application user id",
-                CurrentGamingGroupId = EXPECTED_GAMING_GROUP_ID
-            };
-            autoMocker.ClassUnderTest.ActionContext.ActionArguments[ApiAuthenticationAttribute.ACTION_ARGUMENT_APPLICATION_USER] = applicationUser;
-            this.autoMocker.ClassUnderTest.Request = new HttpRequestMessage();
-            this.autoMocker.ClassUnderTest.Request.SetConfiguration(new HttpConfiguration());
-
             this.playedGameMessage = new PlayedGameMessage
             {
                 DatePlayed = "2015-04-10",

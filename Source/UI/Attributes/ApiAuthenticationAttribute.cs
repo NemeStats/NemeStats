@@ -18,8 +18,10 @@ namespace UI.Attributes
 
         private readonly IAuthTokenValidator authTokenValidator;
         private readonly ClientIdCalculator clientIdCalculator;
+        
         internal const string AUTH_HEADER = "X-Auth-Token";
         internal const string UNAUTHORIZED_MESSAGE = "Invalid " + AUTH_HEADER;
+        internal const string UNAUTHORIZED_TO_GAMING_GROUP_MESSAGE = "User does not have access to Gaming Group with Id '{0}'.";
 
         public ApiAuthenticationAttribute()
             : this(DependencyResolver.Current.GetService<AuthTokenValidator>(), new ClientIdCalculator())
@@ -63,6 +65,17 @@ namespace UI.Attributes
                     UNAUTHORIZED_MESSAGE);
                 return;
             }
+
+            if (actionContext.ActionArguments.ContainsKey("gamingGroupId")
+                && (int)actionContext.ActionArguments["gamingGroupId"] != applicationUser.CurrentGamingGroupId)
+            {
+                actionContext.Response = actionContext.Request.CreateResponse(
+                    HttpStatusCode.Unauthorized,
+                    string.Format(UNAUTHORIZED_TO_GAMING_GROUP_MESSAGE, 
+                    actionContext.ActionArguments["gamingGroupId"]));
+                return;
+            }
+
             applicationUser.AnonymousClientId = this.clientIdCalculator.GetClientId(actionContext.Request, applicationUser);
 
             actionContext.ActionArguments[ACTION_ARGUMENT_APPLICATION_USER] = applicationUser;

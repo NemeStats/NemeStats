@@ -24,6 +24,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using BusinessLogic.Models.PlayedGames;
+using BusinessLogic.Models.User;
 
 namespace BusinessLogic.Logic.PlayedGames
 {
@@ -98,6 +99,11 @@ namespace BusinessLogic.Logic.PlayedGames
                  DatePlayed = playedGame.DatePlayed
              }).Take(numberOfGames)
                                 .ToList();
+        }
+
+        public List<PlayedGameSearchResult> SearchPlayedGames(PlayedGameFilter playedGameFilter, ApplicationUser applicationUser)
+        {
+            return new List<PlayedGameSearchResult>();
         }
     }
 }

@@ -12,7 +12,9 @@ using Microsoft.Owin.Security.DataProtection;
 using NUnit.Framework;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 using Rhino.Mocks;
+using Rhino.Mocks.Constraints;
 using UI.Attributes;
+using Is = NUnit.Framework.Is;
 
 namespace UI.Tests.UnitTests.AttributesTests
 {
@@ -98,19 +100,13 @@ namespace UI.Tests.UnitTests.AttributesTests
         [Test]
         public void ShouldReturnUnauthorizedHttpStatusWhenWrongToken()
         {
-            const string expectedToken = "TEST";
-            const string actualToken = "DIFFERENT";
-            _request.Headers.Add(ApiAuthenticationAttribute.AUTH_HEADER, new[] { expectedToken });
-            var expectedUsers = new List<ApplicationUser>
-            {
-                new ApplicationUser
-                {
-                    AuthenticationToken = actualToken,
-                    AuthenticationTokenExpirationDate = DateTime.UtcNow.AddMonths(2)
-                }
-            };
+            const string TOKEN = "DIFFERENT";
+            _request.Headers.Add(ApiAuthenticationAttribute.AUTH_HEADER, new[] { TOKEN });
+
+            authTokenValidatorMock.Expect(mock => mock.ValidateAuthToken(Arg<string>.Is.Anything)).Return(null);
 
             _attribute.OnActionExecuting(_actionContext);
+
             Assert.AreEqual(HttpStatusCode.Unauthorized, _actionContext.Response.StatusCode);
             string actualContent = ((ObjectContent<string>)_actionContext.Response.Content).Value.ToString();
             Assert.AreEqual("Invalid X-Auth-Token", actualContent);
@@ -119,19 +115,38 @@ namespace UI.Tests.UnitTests.AttributesTests
         [Test]
         public void ShouldReturnUnauthorizedHttpStatusWhenTokenExpired()
         {
-            const string expectedToken = "TEST";
-            _request.Headers.Add(ApiAuthenticationAttribute.AUTH_HEADER, new[] { expectedToken });
+            const string EXPECTED_TOKEN = "TEST";
+            _request.Headers.Add(ApiAuthenticationAttribute.AUTH_HEADER, new[] { EXPECTED_TOKEN });
 
             _attribute.OnActionExecuting(_actionContext);
+
             Assert.AreEqual(HttpStatusCode.Unauthorized, _actionContext.Response.StatusCode);
             string actualContent = ((ObjectContent<string>)_actionContext.Response.Content).Value.ToString();
             Assert.AreEqual("Invalid X-Auth-Token", actualContent);
         }
 
         [Test]
-        public void ItSetsTheAnonymousClientIdToTheApplicationUserId()
+        public void ItReturnsAnUnauthorizedHttpStatusWhenThereIsAGamingGroupIdThatDoesntMatchTheCurrentUser()
         {
-            
+            const string TOKEN = "TEST";
+            _request.Headers.Add(ApiAuthenticationAttribute.AUTH_HEADER, new[] { TOKEN });
+            const int REQUESTED_GAMING_GROUP_ID = 1;
+            _actionContext.ActionArguments.Add("gamingGroupId", REQUESTED_GAMING_GROUP_ID);
+            const int GAMING_GROUP_ID = -1;
+            var expectedUser = new ApplicationUser
+            {
+                Id = "some id",
+                CurrentGamingGroupId = GAMING_GROUP_ID
+            };
+            authTokenValidatorMock.Expect(mock => mock.ValidateAuthToken(TOKEN)).Return(expectedUser);
+            const string EXPECTED_CLIENT_ID = "some client id";
+            clientIdCalculatorMock.Expect(mock => mock.GetClientId(_request, expectedUser)).Return(EXPECTED_CLIENT_ID);
+
+            _attribute.OnActionExecuting(_actionContext);
+
+            Assert.AreEqual(HttpStatusCode.Unauthorized, _actionContext.Response.StatusCode);
+            string actualContent = ((ObjectContent<string>)_actionContext.Response.Content).Value.ToString();
+            Assert.AreEqual("User does not have access to Gaming Group with Id '" + REQUESTED_GAMING_GROUP_ID + "'.", actualContent);
         }
     }
 }
