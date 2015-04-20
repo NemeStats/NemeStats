@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace BusinessLogic.Models.PlayedGames
+namespace UI.Areas.Api.Models
 {
-    public class PlayedGameSearchResult
+    public class PlayedGameSearchResultMessage
     {
         public int PlayedGameId { get; set; }
         public int GameDefinitionId { get; set; }
@@ -15,6 +15,6 @@ namespace BusinessLogic.Models.PlayedGames
         public int? BoardGameGeekObjectId { get; set; }
         public DateTime DatePlayed { get; set; }
         public DateTime DateLastUpdated { get; set; }
-        public IList<PlayerGameResult> PlayerGameResults { get; set; }
+        public List<PlayerGameResultMessage> PlayerGameResults;
     }
 }

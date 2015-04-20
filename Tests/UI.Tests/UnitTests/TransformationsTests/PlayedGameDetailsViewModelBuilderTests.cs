@@ -84,7 +84,7 @@ namespace UI.Tests.UnitTests.TransformationsTests
             this.playedGame.PlayerGameResults.Add(new PlayerGameResult()
             {
                 GameRank = gameRankStack.Pop(),
-                GordonPoints = 3,
+                NemeStatsPointsAwarded = 3,
                 Id = 1,
                 PlayedGameId = this.playedGame.Id,
                 PlayerId = 1
@@ -93,7 +93,7 @@ namespace UI.Tests.UnitTests.TransformationsTests
             this.playedGame.PlayerGameResults.Add(new PlayerGameResult()
             {
                 GameRank = gameRankStack.Pop(),
-                GordonPoints = 2,
+                NemeStatsPointsAwarded = 2,
                 Id = 2,
                 PlayedGameId = this.playedGame.Id,
                 PlayerId = 2
@@ -102,7 +102,7 @@ namespace UI.Tests.UnitTests.TransformationsTests
             this.playedGame.PlayerGameResults.Add(new PlayerGameResult()
             {
                 GameRank = gameRankStack.Pop(),
-                GordonPoints = 1,
+                NemeStatsPointsAwarded = 1,
                 Id = 3,
                 PlayedGameId = this.playedGame.Id,
                 PlayerId = 3,

@@ -1,19 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.Http.Controllers;
-using BusinessLogic.Exceptions;
-using BusinessLogic.Logic.PlayedGames;
-using BusinessLogic.Models.User;
+﻿using BusinessLogic.Logic.PlayedGames;
+using BusinessLogic.Models.PlayedGames;
 using NUnit.Framework;
 using Rhino.Mocks;
-using StructureMap.AutoMocking;
-using UI.Areas.Api.Controllers;
+using System.Collections.Generic;
+using System.Net.Http;
 using UI.Areas.Api.Models;
-using BusinessLogic.Models.PlayedGames;
 
 namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.PlayedGamesControllerTests
 {
@@ -26,15 +17,14 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.PlayedGamesCon
             var filterMessage = new PlayedGameFilterMessage();
             autoMocker.Get<IPlayedGameRetriever>().Expect(
                 mock => mock.SearchPlayedGames(
-                Arg<PlayedGameFilter>.Is.Anything, 
-                Arg<ApplicationUser>.Is.Anything))
+                Arg<PlayedGameFilter>.Is.Anything))
                       .Return(new List<PlayedGameSearchResult>());
 
             var actualResponse = autoMocker.ClassUnderTest.GetPlayedGames(filterMessage, 1);
 
-            Assert.That(actualResponse.Content, Is.TypeOf(typeof(ObjectContent<List<PlayedGameSearchResult>>)));
-            ObjectContent<List<PlayedGameSearchResult>> content = actualResponse.Content as ObjectContent<List<PlayedGameSearchResult>>;
-            var searchResults = content.Value as List<PlayedGameSearchResult>;
+            Assert.That(actualResponse.Content, Is.TypeOf(typeof(ObjectContent<List<PlayedGameSearchResultMessage>>)));
+            ObjectContent<List<PlayedGameSearchResultMessage>> content = actualResponse.Content as ObjectContent<List<PlayedGameSearchResultMessage>>;
+            var searchResults = content.Value as List<PlayedGameSearchResultMessage>;
             Assert.That(searchResults.Count, Is.EqualTo(0));
         }
 
@@ -49,8 +39,7 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.PlayedGamesCon
             autoMocker.ClassUnderTest.GetPlayedGames(filterMessage, 1);
 
             autoMocker.Get<IPlayedGameRetriever>().AssertWasCalled(mock => mock.SearchPlayedGames(
-                Arg<PlayedGameFilter>.Matches(filter => filter.StartDateGameLastUpdated == filterMessage.StartDateGameLastUpdated),
-                Arg<ApplicationUser>.Is.Anything));
+                Arg<PlayedGameFilter>.Matches(filter => filter.StartDateGameLastUpdated == filterMessage.StartDateGameLastUpdated)));
         }
 
         [Test]
@@ -64,8 +53,7 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.PlayedGamesCon
             autoMocker.ClassUnderTest.GetPlayedGames(filterMessage, 1);
 
             autoMocker.Get<IPlayedGameRetriever>().AssertWasCalled(mock => mock.SearchPlayedGames(
-                Arg<PlayedGameFilter>.Matches(filter => filter.MaximumNumberOfResults == filterMessage.MaximumNumberOfResults),
-                Arg<ApplicationUser>.Is.Anything));
+                Arg<PlayedGameFilter>.Matches(filter => filter.MaximumNumberOfResults == filterMessage.MaximumNumberOfResults)));
         }
     }
 }

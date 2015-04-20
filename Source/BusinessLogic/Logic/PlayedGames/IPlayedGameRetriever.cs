@@ -29,6 +29,6 @@ namespace BusinessLogic.Logic.PlayedGames
         PlayedGame GetPlayedGameDetails(int playedGameId);
         List<PlayedGame> GetRecentGames(int numberOfGames, int gamingGroupId);
         List<PublicGameSummary> GetRecentPublicGames(int numberOfGames);
-        List<PlayedGameSearchResult> SearchPlayedGames(PlayedGameFilter playedGameFilter, ApplicationUser currentUser);
+        List<PlayedGameSearchResult> SearchPlayedGames(PlayedGameFilter playedGameFilter);
     }
 }

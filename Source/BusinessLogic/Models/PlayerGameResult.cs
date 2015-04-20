@@ -30,7 +30,7 @@ namespace BusinessLogic.Models
         [Index("IX_PlayerId_and_PlayedGameId", 2, IsUnique = true)]
         public int PlayerId { get; set; }
         public int GameRank { get; set; }
-        public int GordonPoints { get; set; }
+        public int NemeStatsPointsAwarded { get; set; }
         public int? PointScored { get; set; }
 
         public virtual PlayedGame PlayedGame { get; set; }

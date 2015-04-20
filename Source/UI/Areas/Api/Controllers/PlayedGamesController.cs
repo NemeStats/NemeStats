@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Web.Http;
+using AutoMapper;
 using BusinessLogic.Export;
 using BusinessLogic.Logic;
 using BusinessLogic.Logic.PlayedGames;
@@ -89,21 +90,21 @@ namespace UI.Areas.Api.Controllers
             base.Dispose(disposing);
         }
 
-        [ApiAuthentication]
         [ApiRoute("GamingGroups/{gamingGroupId}/PlayedGames")]
         [HttpGet]
         public HttpResponseMessage GetPlayedGames([FromBody]PlayedGameFilterMessage playedGameFilterMessage, [FromUri]int gamingGroupId)
         {
-            ApplicationUser applicationUser = ActionContext.ActionArguments[ApiAuthenticationAttribute.ACTION_ARGUMENT_APPLICATION_USER] as ApplicationUser;
             var filter = new PlayedGameFilter();
             if(playedGameFilterMessage != null)
             {
                 filter.StartDateGameLastUpdated = playedGameFilterMessage.StartDateGameLastUpdated;
                 filter.MaximumNumberOfResults = playedGameFilterMessage.MaximumNumberOfResults;
             }
-            var searchResults = playedGameRetriever.SearchPlayedGames(filter, applicationUser);
+            var searchResults = playedGameRetriever.SearchPlayedGames(filter);
 
-            return Request.CreateResponse(HttpStatusCode.OK, searchResults);
+            var searchResultsMessage = searchResults.Select(Mapper.Map<PlayedGameSearchResultMessage>).ToList();
+
+            return Request.CreateResponse(HttpStatusCode.OK, searchResultsMessage);
         }
 
         [ApiRoute("GamingGroups/{gamingGroupId}/PlayedGames")]

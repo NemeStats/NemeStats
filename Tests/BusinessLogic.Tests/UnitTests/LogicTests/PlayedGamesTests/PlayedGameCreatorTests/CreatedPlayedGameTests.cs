@@ -126,12 +126,12 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameCr
 
             Assert.AreEqual(playerOneExpectedGordonPoints, playedGame.PlayerGameResults
                                                     .First(gameResult => gameResult.PlayerId == playerOneId)
-                                                    .GordonPoints);
+                                                    .NemeStatsPointsAwarded);
 
             int playerTwoExpectedGordonPoints = pointsDictionary[playerTwoId];
             Assert.AreEqual(playerTwoExpectedGordonPoints, playedGame.PlayerGameResults
                                                     .First(gameResult => gameResult.PlayerId == playerTwoId)
-                                                    .GordonPoints);
+                                                    .NemeStatsPointsAwarded);
         }
 
         [Test]

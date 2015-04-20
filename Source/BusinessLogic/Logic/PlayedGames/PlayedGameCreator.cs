@@ -102,7 +102,7 @@ namespace BusinessLogic.Logic.PlayedGames
                                         {
                                             PlayerId = playerRank.PlayerId,
                                             GameRank = playerRank.GameRank,
-                                            GordonPoints = pointsDictionary[playerRank.PlayerId],
+                                            NemeStatsPointsAwarded = pointsDictionary[playerRank.PlayerId],
                                             PointScored = playerRank.PointsScored
                                         })
                                         .ToList();

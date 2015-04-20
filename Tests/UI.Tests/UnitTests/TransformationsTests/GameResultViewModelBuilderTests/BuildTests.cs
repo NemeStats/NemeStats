@@ -48,7 +48,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayedGameTests.GameResultView
             playerGameResult = new PlayerGameResult()
             {
                 GameRank = 1,
-                GordonPoints = 2,
+                NemeStatsPointsAwarded = 2,
                 Id = 151,
                 PlayerId = 15135,
                 Player = new Player()
@@ -133,7 +133,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayedGameTests.GameResultView
         [Test]
         public void ItCopiesTheGordonPoints()
         {
-            Assert.AreEqual(playerGameResult.GordonPoints, playerGameResultDetails.GordonPoints);
+            Assert.AreEqual(playerGameResult.NemeStatsPointsAwarded, playerGameResultDetails.GordonPoints);
         }
 
         [Test]

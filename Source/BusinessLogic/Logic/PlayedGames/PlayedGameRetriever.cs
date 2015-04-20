@@ -15,6 +15,9 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
+
+using System;
+using System.Globalization;
 using System.Security.Cryptography.X509Certificates;
 using BusinessLogic.DataAccess;
 using BusinessLogic.Exceptions;
@@ -101,9 +104,36 @@ namespace BusinessLogic.Logic.PlayedGames
                                 .ToList();
         }
 
-        public List<PlayedGameSearchResult> SearchPlayedGames(PlayedGameFilter playedGameFilter, ApplicationUser applicationUser)
+        public List<PlayedGameSearchResult> SearchPlayedGames(PlayedGameFilter playedGameFilter)
         {
-            return new List<PlayedGameSearchResult>();
+            var queryable = (from playedGame in dataContext.GetQueryable<PlayedGame>()
+                                                           .OrderByDescending(game => game.DatePlayed)
+                                                           .ThenByDescending(game => game.DateCreated)
+                             select new PlayedGameSearchResult()
+                             {
+                                 PlayedGameId = playedGame.Id,
+                                 GameDefinitionId = playedGame.GameDefinitionId,
+                                 GameDefinitionName = playedGame.GameDefinition.Name,
+                                 BoardGameGeekObjectId = playedGame.GameDefinition.BoardGameGeekObjectId,
+                                 GamingGroupId = playedGame.GamingGroupId,
+                                 GamingGroupName = playedGame.GamingGroup.Name,
+                                 DatePlayed = playedGame.DatePlayed,
+                                 DateLastUpdated = playedGame.DateCreated,
+                                 PlayerGameResults = playedGame.PlayerGameResults
+                             });
+
+            if (playedGameFilter.MaximumNumberOfResults != null)
+            {
+                queryable = queryable.Take(playedGameFilter.MaximumNumberOfResults.Value);
+            }
+
+            if (!string.IsNullOrEmpty(playedGameFilter.StartDateGameLastUpdated))
+            {
+                DateTime startDate = DateTime.ParseExact(playedGameFilter.StartDateGameLastUpdated, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None);
+                queryable = queryable.Where(query => query.DateLastUpdated >= startDate.Date);
+            }
+
+            return queryable.ToList();
         }
     }
 }

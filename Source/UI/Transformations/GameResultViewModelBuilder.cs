@@ -36,7 +36,7 @@ namespace UI.Transformations
             result.PlayerId = playerGameResult.PlayerId;
             result.PlayerName = playerGameResult.Player.Name;
             result.GameRank = playerGameResult.GameRank;
-            result.GordonPoints = playerGameResult.GordonPoints;
+            result.GordonPoints = playerGameResult.NemeStatsPointsAwarded;
             result.GameDefinitionId = playerGameResult.PlayedGame.GameDefinition.Id;
             result.GameName = playerGameResult.PlayedGame.GameDefinition.Name;
             result.PlayedGameId = playerGameResult.PlayedGameId;
