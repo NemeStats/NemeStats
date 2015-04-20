@@ -15,14 +15,15 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
-using BusinessLogic.Models;
-using NUnit.Framework;
+
 using System;
 using System.Linq;
+using BusinessLogic.Models;
+using NUnit.Framework;
 using UI.Models.PlayedGame;
 using UI.Transformations;
 
-namespace UI.Tests.UnitTests.TransformationsTests.PlayedGameTests.GameResultViewModelBuilderTests
+namespace UI.Tests.UnitTests.TransformationsTests.GameResultViewModelBuilderTests
 {
     [TestFixture]
     public class GameResultViewModelBuilderTests
@@ -34,7 +35,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayedGameTests.GameResultView
         [SetUp]
         public void SetUp()
         {
-            builder = new GameResultViewModelBuilder();
+            this.builder = new GameResultViewModelBuilder();
             GameDefinition gameDefinition = new GameDefinition()
             {
                 Id = 15131,
@@ -45,7 +46,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayedGameTests.GameResultView
                 GameDefinition = gameDefinition,
                 DatePlayed = new DateTime(2014, 09, 15)
             };
-            playerGameResult = new PlayerGameResult()
+            this.playerGameResult = new PlayerGameResult()
             {
                 GameRank = 1,
                 NemeStatsPointsAwarded = 2,
@@ -59,14 +60,14 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayedGameTests.GameResultView
                 PlayedGame = playedGame
             };
 
-            playerGameResultDetails = builder.Build(playerGameResult);
+            this.playerGameResultDetails = this.builder.Build(this.playerGameResult);
         }
 
         [Test]
         public void ItRequiresAPlayerGameResult()
         {
             var exception = Assert.Throws<ArgumentNullException>(() =>
-                    builder.Build(null)
+                    this.builder.Build(null)
                 );
 
             Assert.AreEqual("playerGameResult", exception.ParamName);
@@ -78,7 +79,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayedGameTests.GameResultView
             PlayerGameResult playerGameResultWithNoPlayer = new PlayerGameResult();
 
             var exception = Assert.Throws<ArgumentException>(() =>
-                    builder.Build(playerGameResultWithNoPlayer)
+                    this.builder.Build(playerGameResultWithNoPlayer)
                 );
 
             Assert.AreEqual(GameResultViewModelBuilder.EXCEPTION_PLAYER_CANNOT_BE_NULL, exception.Message);
@@ -90,7 +91,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayedGameTests.GameResultView
             PlayerGameResult playerGameResultWithNoPlayedGame = new PlayerGameResult() { Player = new Player() };
 
             var exception = Assert.Throws<ArgumentException>(() =>
-                    builder.Build(playerGameResultWithNoPlayedGame)
+                    this.builder.Build(playerGameResultWithNoPlayedGame)
                 );
 
             Assert.AreEqual(GameResultViewModelBuilder.EXCEPTION_PLAYED_GAME_CANNOT_BE_NULL, exception.Message);
@@ -106,7 +107,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayedGameTests.GameResultView
             };
 
             var exception = Assert.Throws<ArgumentException>(() =>
-                    builder.Build(playerGameResultWithNoGameDefinition)
+                    this.builder.Build(playerGameResultWithNoGameDefinition)
                 );
 
             Assert.AreEqual(GameResultViewModelBuilder.EXCEPTION_GAME_DEFINITION_CANNOT_BE_NULL, exception.Message);
@@ -115,37 +116,37 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayedGameTests.GameResultView
         [Test]
         public void ItCopiesThePlayerId()
         {
-            Assert.AreEqual(playerGameResult.PlayerId, playerGameResultDetails.PlayerId);
+            Assert.AreEqual(this.playerGameResult.PlayerId, this.playerGameResultDetails.PlayerId);
         }
 
         [Test]
         public void ItCopiesThePlayerName()
         {
-            Assert.AreEqual(playerGameResult.Player.Name, playerGameResultDetails.PlayerName);
+            Assert.AreEqual(this.playerGameResult.Player.Name, this.playerGameResultDetails.PlayerName);
         }
 
         [Test]
         public void ItCopiesTheGameRank()
         {
-            Assert.AreEqual(playerGameResult.GameRank, playerGameResultDetails.GameRank);
+            Assert.AreEqual(this.playerGameResult.GameRank, this.playerGameResultDetails.GameRank);
         }
 
         [Test]
-        public void ItCopiesTheGordonPoints()
+        public void ItCopiesThenemeStatsPoints()
         {
-            Assert.AreEqual(playerGameResult.NemeStatsPointsAwarded, playerGameResultDetails.GordonPoints);
+            Assert.AreEqual(this.playerGameResult.NemeStatsPointsAwarded, this.playerGameResultDetails.NemeStatsPoints);
         }
 
         [Test]
         public void ItCopiesThePlayedGameId()
         {
-            Assert.AreEqual(playerGameResult.PlayedGameId, playerGameResultDetails.PlayedGameId);
+            Assert.AreEqual(this.playerGameResult.PlayedGameId, this.playerGameResultDetails.PlayedGameId);
         }
 
         [Test]
         public void ItCopiesTheDatePlayed()
         {
-            Assert.AreEqual(playerGameResult.PlayedGame.DatePlayed, playerGameResultDetails.DatePlayed);
+            Assert.AreEqual(this.playerGameResult.PlayedGame.DatePlayed, this.playerGameResultDetails.DatePlayed);
         }
     }
 }

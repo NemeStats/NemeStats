@@ -248,6 +248,14 @@
     <Compile Include="Migrations\201504160224098_AddPointsScoredToPlayerGameResult.Designer.cs">
       <DependentUpon>201504160224098_AddPointsScoredToPlayerGameResult.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201504201657131_ChangeGordonPointsToNemeStatsPoints.cs" />
+    <Compile Include="Migrations\201504201657131_ChangeGordonPointsToNemeStatsPoints.Designer.cs">
+      <DependentUpon>201504201657131_ChangeGordonPointsToNemeStatsPoints.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201504201705047_FixedPointsScoredMisspelling.cs" />
+    <Compile Include="Migrations\201504201705047_FixedPointsScoredMisspelling.Designer.cs">
+      <DependentUpon>201504201705047_FixedPointsScoredMisspelling.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\GamingGroups\NewlyCreatedGamingGroupResult.cs" />
     <Compile Include="Models\GamingGroups\TopGamingGroupSummary.cs" />
     <Compile Include="Models\PlayedGames\IWinner.cs" />
@@ -599,6 +607,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201504160224098_AddPointsScoredToPlayerGameResult.resx">
       <DependentUpon>201504160224098_AddPointsScoredToPlayerGameResult.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201504201657131_ChangeGordonPointsToNemeStatsPoints.resx">
+      <DependentUpon>201504201657131_ChangeGordonPointsToNemeStatsPoints.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201504201705047_FixedPointsScoredMisspelling.resx">
+      <DependentUpon>201504201705047_FixedPointsScoredMisspelling.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

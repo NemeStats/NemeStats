@@ -60,7 +60,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameRe
                 {
                     GameRank = 1,
                     PlayerId = 2,
-                    PointScored = 50
+                    PointsScored = 50
                 }
             };
 

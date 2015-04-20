@@ -116,19 +116,19 @@ namespace UI.Tests.UnitTests.HtmlHelperTests.MyHelpersTests
         }
 
         [Test]
-        public void ItRendersGordonPoints()
+        public void ItRendersNemeStatsPoints()
         {
             HtmlHelper helper = new HtmlHelper(new ViewContext(), new ViewPage());
             GameResultViewModel playerGameResultDetails = new GameResultViewModel()
             {
-                GordonPoints = 9
+                NemeStatsPoints = 9
             };
 
             XElement result = helper.GameResults(playerGameResultDetails, WinnerTypes.PlayerWin).ToXElement();
 
             string firstNodeText = result.FirstNode.ToString();
-            string gordonPointsComponent = string.Format(PlayedGameHelper.HTML_GORDON_POINTS_TEMPLATE, playerGameResultDetails.GordonPoints);
-            Assert.True(firstNodeText.EndsWith(gordonPointsComponent));
+            string nemeStatsPointsComponent = string.Format(PlayedGameHelper.HTML_GORDON_POINTS_TEMPLATE, playerGameResultDetails.NemeStatsPoints);
+            Assert.True(firstNodeText.EndsWith(nemeStatsPointsComponent));
         }
     }
 }

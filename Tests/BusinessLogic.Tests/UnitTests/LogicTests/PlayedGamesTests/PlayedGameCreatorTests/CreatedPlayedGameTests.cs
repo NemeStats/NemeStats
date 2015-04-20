@@ -41,7 +41,6 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameCr
         private RhinoAutoMocker<PlayedGameCreator> autoMocker;
         private ApplicationUser currentUser;
         private GameDefinition gameDefinition;
-        private List<Player> players;
         private Player existingPlayerWithMatchingGamingGroup;
         private const int GAMING_GROUP_ID = 9;
 
@@ -92,7 +91,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameCr
         }
 
         [Test]
-        public void ItSetsGordonPointsForEachPlayerGameResult()
+        public void ItSetsnemeStatsPointsForEachPlayerGameResult()
         {
             int playerOneId = 1;
             int playerTwoId = 2;
@@ -119,17 +118,17 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameCr
 
             var pointsDictionary = PointsCalculator.CalculatePoints(playerRanks);
 
-            int playerOneExpectedGordonPoints = pointsDictionary[playerOneId];
+            int playerOneExpectednemeStatsPoints = pointsDictionary[playerOneId];
             ApplicationUser user = new ApplicationUser();
 
             PlayedGame playedGame = autoMocker.ClassUnderTest.CreatePlayedGame(newlyCompletedGame, TransactionSource.WebApplication, this.currentUser);
 
-            Assert.AreEqual(playerOneExpectedGordonPoints, playedGame.PlayerGameResults
+            Assert.AreEqual(playerOneExpectednemeStatsPoints, playedGame.PlayerGameResults
                                                     .First(gameResult => gameResult.PlayerId == playerOneId)
                                                     .NemeStatsPointsAwarded);
 
-            int playerTwoExpectedGordonPoints = pointsDictionary[playerTwoId];
-            Assert.AreEqual(playerTwoExpectedGordonPoints, playedGame.PlayerGameResults
+            int playerTwoExpectednemeStatsPoints = pointsDictionary[playerTwoId];
+            Assert.AreEqual(playerTwoExpectednemeStatsPoints, playedGame.PlayerGameResults
                                                     .First(gameResult => gameResult.PlayerId == playerTwoId)
                                                     .NemeStatsPointsAwarded);
         }

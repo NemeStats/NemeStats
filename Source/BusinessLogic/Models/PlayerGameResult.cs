@@ -31,7 +31,7 @@ namespace BusinessLogic.Models
         public int PlayerId { get; set; }
         public int GameRank { get; set; }
         public int NemeStatsPointsAwarded { get; set; }
-        public int? PointScored { get; set; }
+        public int? PointsScored { get; set; }
 
         public virtual PlayedGame PlayedGame { get; set; }
         public virtual Player Player { get; set; }
