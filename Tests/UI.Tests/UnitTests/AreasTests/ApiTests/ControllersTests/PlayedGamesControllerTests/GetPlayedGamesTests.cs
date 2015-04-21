@@ -36,6 +36,11 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.PlayedGamesCon
                 StartDateGameLastUpdated = "2015-04-15"
             };
 
+            autoMocker.Get<IPlayedGameRetriever>().Expect(
+                mock => mock.SearchPlayedGames(
+                Arg<PlayedGameFilter>.Is.Anything))
+                      .Return(new List<PlayedGameSearchResult>());
+
             autoMocker.ClassUnderTest.GetPlayedGames(filterMessage, 1);
 
             autoMocker.Get<IPlayedGameRetriever>().AssertWasCalled(mock => mock.SearchPlayedGames(
@@ -49,6 +54,9 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.PlayedGamesCon
             {
                 MaximumNumberOfResults = 100
             };
+
+            autoMocker.Get<IPlayedGameRetriever>().Expect(mock => mock.SearchPlayedGames(Arg<PlayedGameFilter>.Is.Anything))
+                .Return(new List<PlayedGameSearchResult>());
 
             autoMocker.ClassUnderTest.GetPlayedGames(filterMessage, 1);
 

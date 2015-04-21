@@ -46,7 +46,7 @@ namespace BusinessLogic.Logic.Players
         {
             DbRawSqlQuery<TopPlayer> data = dataContext.MakeRawSqlQuery<TopPlayer>(string.Format(SQL_GET_TOP_PLAYERS, numberOfPlayersToRetrieve));
 
-            List<TopPlayer> topPlayers = data.ToList<TopPlayer>();
+            List<TopPlayer> topPlayers = data.ToList();
             //WinPercentage as it is originally pulled back from the query contains the number of games won and we have to
             //do the below math to switch it to a win %
             topPlayers.ForEach(player => player.WinPercentage = CalculateWinPercentage(player.WinPercentage, player.TotalNumberOfGamesPlayed));

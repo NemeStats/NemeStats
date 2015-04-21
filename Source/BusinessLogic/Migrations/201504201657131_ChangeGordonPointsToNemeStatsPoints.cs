@@ -7,14 +7,12 @@ namespace BusinessLogic.Migrations
     {
         public override void Up()
         {
-            AddColumn("dbo.PlayerGameResult", "NemeStatsPointsAwarded", c => c.Int(nullable: false));
-            DropColumn("dbo.PlayerGameResult", "GordonPoints");
+            this.RenameColumn("dbo.PlayerGameResult", "GordonPoints", "NemeStatsPointsAwarded");
         }
         
         public override void Down()
         {
-            AddColumn("dbo.PlayerGameResult", "GordonPoints", c => c.Int(nullable: false));
-            DropColumn("dbo.PlayerGameResult", "NemeStatsPointsAwarded");
+            this.RenameColumn("dbo.PlayerGameResult", "NemeStatsPointsAwarded", "GordonPoints");
         }
     }
 }
