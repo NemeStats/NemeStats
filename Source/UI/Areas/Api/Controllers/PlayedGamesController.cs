@@ -94,7 +94,10 @@ namespace UI.Areas.Api.Controllers
         [HttpGet]
         public HttpResponseMessage GetPlayedGames([FromBody]PlayedGameFilterMessage playedGameFilterMessage, [FromUri]int gamingGroupId)
         {
-            var filter = new PlayedGameFilter();
+            var filter = new PlayedGameFilter
+            {
+                GamingGroupId = gamingGroupId
+            };
             if(playedGameFilterMessage != null)
             {
                 filter.StartDateGameLastUpdated = playedGameFilterMessage.StartDateGameLastUpdated;

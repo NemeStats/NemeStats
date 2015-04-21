@@ -21,6 +21,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameRe
         private List<PlayedGame> playedGames;
         private const int PLAYED_GAME_ID_FOR_GAME_RECORDED_IN_MARCH = 1;
         private const int PLAYED_GAME_ID_FOR_GAME_RECORDED_IN_APRIL = 2;
+        private const int EXPECTED_GAMING_GROUP_ID = 30;
             
         [SetUp]
         public void SetUp()
@@ -35,7 +36,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameRe
                     DateCreated = new DateTime(2015, 3, 1),
                     PlayerGameResults = new List<PlayerGameResult>(),
                     GameDefinition = new GameDefinition(),
-                    GamingGroup = new GamingGroup()
+                    GamingGroup = new GamingGroup(),
+                    GamingGroupId = EXPECTED_GAMING_GROUP_ID
                 },
                 new PlayedGame
                 {
@@ -43,7 +45,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameRe
                     DateCreated = new DateTime(2015, 4, 1),
                     PlayerGameResults = new List<PlayerGameResult>(),
                     GameDefinition = new GameDefinition(),
-                    GamingGroup = new GamingGroup()
+                    GamingGroup = new GamingGroup(),
+                    GamingGroupId = 135353
                 }
             };
 
@@ -137,6 +140,19 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameRe
             var results = autoMocker.ClassUnderTest.SearchPlayedGames(filter);
 
             Assert.That(results.Count, Is.EqualTo(MAX_RESULTS));
+        }
+
+        [Test]
+        public void ItFiltersOnTheGamingGroupId()
+        {
+            var filter = new PlayedGameFilter
+            {
+                GamingGroupId = EXPECTED_GAMING_GROUP_ID
+            };
+
+            var results = autoMocker.ClassUnderTest.SearchPlayedGames(filter);
+
+            Assert.True(results.All(result => result.GamingGroupId == filter.GamingGroupId));
         }
     }
 }

@@ -122,6 +122,12 @@ namespace BusinessLogic.Logic.PlayedGames
                                  PlayerGameResults = playedGame.PlayerGameResults
                              });
 
+
+            if (playedGameFilter.GamingGroupId != null)
+            {
+                queryable = queryable.Where(query => query.GamingGroupId == playedGameFilter.GamingGroupId.Value);
+            }
+
             if (playedGameFilter.MaximumNumberOfResults != null)
             {
                 queryable = queryable.Take(playedGameFilter.MaximumNumberOfResults.Value);

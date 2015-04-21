@@ -47,6 +47,22 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.PlayedGamesCon
                 Arg<PlayedGameFilter>.Matches(filter => filter.StartDateGameLastUpdated == filterMessage.StartDateGameLastUpdated)));
         }
 
+
+        [Test]
+        public void ItFiltersOnTheGamingGroupId()
+        {
+            const int EXPECTED_GAMING_GROUP_ID = 1;
+            autoMocker.Get<IPlayedGameRetriever>().Expect(
+                mock => mock.SearchPlayedGames(
+                Arg<PlayedGameFilter>.Is.Anything))
+                      .Return(new List<PlayedGameSearchResult>());
+
+            autoMocker.ClassUnderTest.GetPlayedGames(new PlayedGameFilterMessage(), EXPECTED_GAMING_GROUP_ID);
+
+            autoMocker.Get<IPlayedGameRetriever>().AssertWasCalled(mock => mock.SearchPlayedGames(
+                Arg<PlayedGameFilter>.Matches(filter => filter.GamingGroupId == EXPECTED_GAMING_GROUP_ID)));
+        }
+
         [Test]
         public void ItLimitsTheNumberOfResultsIfSpecified()
         {

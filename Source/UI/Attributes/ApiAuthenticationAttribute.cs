@@ -20,6 +20,7 @@ namespace UI.Attributes
         private readonly ClientIdCalculator clientIdCalculator;
         
         internal const string AUTH_HEADER = "X-Auth-Token";
+        internal const string PARAMETER_NAME_GAMING_GROUP_ID = "gamingGroupId";
         internal const string UNAUTHORIZED_MESSAGE = "Invalid " + AUTH_HEADER;
         internal const string UNAUTHORIZED_TO_GAMING_GROUP_MESSAGE = "User does not have access to Gaming Group with Id '{0}'.";
 
@@ -66,13 +67,13 @@ namespace UI.Attributes
                 return;
             }
 
-            if (actionContext.ActionArguments.ContainsKey("gamingGroupId")
-                && (int)actionContext.ActionArguments["gamingGroupId"] != applicationUser.CurrentGamingGroupId)
+            if (actionContext.ActionArguments.ContainsKey(PARAMETER_NAME_GAMING_GROUP_ID)
+                && (int)actionContext.ActionArguments[PARAMETER_NAME_GAMING_GROUP_ID] != applicationUser.CurrentGamingGroupId)
             {
                 actionContext.Response = actionContext.Request.CreateResponse(
                     HttpStatusCode.Unauthorized,
-                    string.Format(UNAUTHORIZED_TO_GAMING_GROUP_MESSAGE, 
-                    actionContext.ActionArguments["gamingGroupId"]));
+                    string.Format(UNAUTHORIZED_TO_GAMING_GROUP_MESSAGE,
+                    actionContext.ActionArguments[PARAMETER_NAME_GAMING_GROUP_ID]));
                 return;
             }
 
