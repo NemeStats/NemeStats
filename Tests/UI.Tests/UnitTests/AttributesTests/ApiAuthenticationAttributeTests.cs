@@ -1,18 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Web.Http;
-using System.Web.Http.Controllers;
-using BusinessLogic.Logic.Users;
+﻿using BusinessLogic.Logic.Users;
 using BusinessLogic.Models.User;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security.DataProtection;
 using NUnit.Framework;
-using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 using Rhino.Mocks;
-using Rhino.Mocks.Constraints;
+using System.Net;
+using System.Net.Http;
+using System.Web.Http;
+using System.Web.Http.Controllers;
 using UI.Attributes;
 using Is = NUnit.Framework.Is;
 
@@ -46,9 +41,12 @@ namespace UI.Tests.UnitTests.AttributesTests
         public void ShouldReturnBadRequestWhenNoTokenProvided()
         {
             _attribute.OnActionExecuting(_actionContext);
-            Assert.AreEqual(HttpStatusCode.BadRequest, _actionContext.Response.StatusCode);
-            string actualContent = ((ObjectContent<string>)_actionContext.Response.Content).Value.ToString();
-            Assert.AreEqual("This action requires an X-Auth-Token header.", actualContent);
+
+            Assert.That(_actionContext.Response.Content, Is.TypeOf(typeof(ObjectContent<HttpError>)));
+            var content = _actionContext.Response.Content as ObjectContent<HttpError>;
+            var httpError = content.Value as HttpError;
+            Assert.That(_actionContext.Response.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
+            Assert.That(httpError.Message, Is.EqualTo(ApiAuthenticationAttribute.ERROR_MESSAGE_MISSING_AUTH_TOKEN_HEADER));
         }
 
         [Test]
@@ -56,9 +54,12 @@ namespace UI.Tests.UnitTests.AttributesTests
         {
             _request.Headers.Add(ApiAuthenticationAttribute.AUTH_HEADER, new [] { string.Empty });
             _attribute.OnActionExecuting(_actionContext);
-            Assert.AreEqual(HttpStatusCode.BadRequest, _actionContext.Response.StatusCode);
-            string actualContent = ((ObjectContent<string>)_actionContext.Response.Content).Value.ToString();
-            Assert.AreEqual("Invalid X-Auth-Token", actualContent);
+
+            Assert.That(_actionContext.Response.Content, Is.TypeOf(typeof(ObjectContent<HttpError>)));
+            var content = _actionContext.Response.Content as ObjectContent<HttpError>;
+            var httpError = content.Value as HttpError;
+            Assert.That(_actionContext.Response.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
+            Assert.That(httpError.Message, Is.EqualTo(ApiAuthenticationAttribute.ERROR_MESSAGE_INVALID_AUTH_TOKEN));
         }
 
         [Test]
@@ -107,9 +108,11 @@ namespace UI.Tests.UnitTests.AttributesTests
 
             _attribute.OnActionExecuting(_actionContext);
 
-            Assert.AreEqual(HttpStatusCode.Unauthorized, _actionContext.Response.StatusCode);
-            string actualContent = ((ObjectContent<string>)_actionContext.Response.Content).Value.ToString();
-            Assert.AreEqual("Invalid X-Auth-Token", actualContent);
+            Assert.That(_actionContext.Response.Content, Is.TypeOf(typeof(ObjectContent<HttpError>)));
+            var content = _actionContext.Response.Content as ObjectContent<HttpError>;
+            var httpError = content.Value as HttpError;
+            Assert.That(_actionContext.Response.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
+            Assert.That(httpError.Message, Is.EqualTo(ApiAuthenticationAttribute.ERROR_MESSAGE_INVALID_AUTH_TOKEN));
         }
 
         [Test]
@@ -120,9 +123,11 @@ namespace UI.Tests.UnitTests.AttributesTests
 
             _attribute.OnActionExecuting(_actionContext);
 
-            Assert.AreEqual(HttpStatusCode.Unauthorized, _actionContext.Response.StatusCode);
-            string actualContent = ((ObjectContent<string>)_actionContext.Response.Content).Value.ToString();
-            Assert.AreEqual("Invalid X-Auth-Token", actualContent);
+            Assert.That(_actionContext.Response.Content, Is.TypeOf(typeof(ObjectContent<HttpError>)));
+            var content = _actionContext.Response.Content as ObjectContent<HttpError>;
+            var httpError = content.Value as HttpError;
+            Assert.That(_actionContext.Response.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
+            Assert.That(httpError.Message, Is.EqualTo(ApiAuthenticationAttribute.ERROR_MESSAGE_INVALID_AUTH_TOKEN));
         }
 
         [Test]
@@ -144,9 +149,11 @@ namespace UI.Tests.UnitTests.AttributesTests
 
             _attribute.OnActionExecuting(_actionContext);
 
-            Assert.AreEqual(HttpStatusCode.Unauthorized, _actionContext.Response.StatusCode);
-            string actualContent = ((ObjectContent<string>)_actionContext.Response.Content).Value.ToString();
-            Assert.AreEqual("User does not have access to Gaming Group with Id '" + REQUESTED_GAMING_GROUP_ID + "'.", actualContent);
+            Assert.That(_actionContext.Response.Content, Is.TypeOf(typeof(ObjectContent<HttpError>)));
+            var content = _actionContext.Response.Content as ObjectContent<HttpError>;
+            var httpError = content.Value as HttpError;
+            Assert.That(_actionContext.Response.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
+            Assert.That(httpError.Message, Is.EqualTo(string.Format(ApiAuthenticationAttribute.ERROR_MESSAGE_UNAUTHORIZED_TO_GAMING_GROUP, REQUESTED_GAMING_GROUP_ID)));
         }
     }
 }

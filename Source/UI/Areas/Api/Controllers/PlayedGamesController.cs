@@ -120,7 +120,7 @@ namespace UI.Areas.Api.Controllers
 
             if (gamingGroupId != applicationUser.CurrentGamingGroupId)
             {
-                return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, ApiAuthenticationAttribute.UNAUTHORIZED_MESSAGE);
+                return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, ApiAuthenticationAttribute.ERROR_MESSAGE_INVALID_AUTH_TOKEN);
             }
 
             var newlyCompletedGame = BuildNewlyPlayedGame(playedGameMessage);

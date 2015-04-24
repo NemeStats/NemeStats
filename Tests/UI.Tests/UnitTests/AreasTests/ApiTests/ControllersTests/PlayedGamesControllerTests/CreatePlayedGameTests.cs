@@ -51,7 +51,7 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.PlayedGamesCon
             var content = actualResponse.Content as ObjectContent<HttpError>;
             var httpError = content.Value as HttpError;
             Assert.That(actualResponse.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
-            Assert.That(httpError.Message, Is.EqualTo(ApiAuthenticationAttribute.UNAUTHORIZED_MESSAGE));
+            Assert.That(httpError.Message, Is.EqualTo(ApiAuthenticationAttribute.ERROR_MESSAGE_INVALID_AUTH_TOKEN));
 
         }
 

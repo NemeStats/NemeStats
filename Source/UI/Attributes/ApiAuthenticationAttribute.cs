@@ -21,8 +21,9 @@ namespace UI.Attributes
         
         internal const string AUTH_HEADER = "X-Auth-Token";
         internal const string PARAMETER_NAME_GAMING_GROUP_ID = "gamingGroupId";
-        internal const string UNAUTHORIZED_MESSAGE = "Invalid " + AUTH_HEADER;
-        internal const string UNAUTHORIZED_TO_GAMING_GROUP_MESSAGE = "User does not have access to Gaming Group with Id '{0}'.";
+        internal const string ERROR_MESSAGE_INVALID_AUTH_TOKEN = "Invalid " + AUTH_HEADER;
+        internal const string ERROR_MESSAGE_UNAUTHORIZED_TO_GAMING_GROUP = "User does not have access to Gaming Group with Id '{0}'.";
+        internal const string ERROR_MESSAGE_MISSING_AUTH_TOKEN_HEADER = "This action requires an " + AUTH_HEADER + " header.";
 
         public ApiAuthenticationAttribute()
             : this(DependencyResolver.Current.GetService<AuthTokenValidator>(), new ClientIdCalculator())
@@ -40,9 +41,9 @@ namespace UI.Attributes
         {
             if (!actionContext.Request.Headers.Contains(AUTH_HEADER))
             {
-                actionContext.Response = actionContext.Request.CreateResponse(
-                    HttpStatusCode.BadRequest, 
-                    "This action requires an " + AUTH_HEADER + " header.");
+                actionContext.Response = actionContext.Request.CreateErrorResponse(
+                    HttpStatusCode.BadRequest,
+                    ERROR_MESSAGE_MISSING_AUTH_TOKEN_HEADER);
 
                 return;
             }
@@ -51,9 +52,9 @@ namespace UI.Attributes
 
             if(string.IsNullOrWhiteSpace(authHeader))
             {
-                actionContext.Response = actionContext.Request.CreateResponse(
+                actionContext.Response = actionContext.Request.CreateErrorResponse(
                     HttpStatusCode.BadRequest,
-                    UNAUTHORIZED_MESSAGE); 
+                    ERROR_MESSAGE_INVALID_AUTH_TOKEN); 
                 return;
             }
 
@@ -61,18 +62,18 @@ namespace UI.Attributes
 
             if (applicationUser == null)
             {
-                actionContext.Response = actionContext.Request.CreateResponse(
+                actionContext.Response = actionContext.Request.CreateErrorResponse(
                     HttpStatusCode.Unauthorized,
-                    UNAUTHORIZED_MESSAGE);
+                    ERROR_MESSAGE_INVALID_AUTH_TOKEN);
                 return;
             }
 
             if (actionContext.ActionArguments.ContainsKey(PARAMETER_NAME_GAMING_GROUP_ID)
                 && (int)actionContext.ActionArguments[PARAMETER_NAME_GAMING_GROUP_ID] != applicationUser.CurrentGamingGroupId)
             {
-                actionContext.Response = actionContext.Request.CreateResponse(
+                actionContext.Response = actionContext.Request.CreateErrorResponse(
                     HttpStatusCode.Unauthorized,
-                    string.Format(UNAUTHORIZED_TO_GAMING_GROUP_MESSAGE,
+                    string.Format(ERROR_MESSAGE_UNAUTHORIZED_TO_GAMING_GROUP,
                     actionContext.ActionArguments[PARAMETER_NAME_GAMING_GROUP_ID]));
                 return;
             }
