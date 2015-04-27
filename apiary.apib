@@ -41,10 +41,18 @@ integrating with your own website.
 # Data Structures
 
 ## PlayerRank (object)
-
-+ playerId (number, required) - NemeStats unique identifier for the Player
+Represents the minimum amount of data the the client needs to send to give rank information about a particular Player in a particular Played Game.
++ playerId (number, required) - NemeStats unique identifier for the Player.
 + gameRank (number, required) - The corresponding rank of the Player in this Played Game. A rank of 1 means the Player got first place, 2 means second place, and so on.
 + pointsScored (number, optional) - Integer number of points the Player scored in the Played Game.
+
+## PlayerGameResult
+Represents all of the data related to a particular Player's performance in a particular Played Game.
++ playerId (number, required) - NemeStats unique identifier for the Player.
++ playerName (string, required) - The name of the Player.
++ gameRank (number, required) - The corresponding rank of the Player in this Played Game. A rank of 1 means the Player got first place, 2 means second place, and so on.
++ pointsScored (number, optional) - Integer number of points the Player scored in the Played Game.
++ nemeStatsPointsAwarded (number, required) - The number of NemeStats Points awarded to the Player for their respective rank in the Played Game.
 
 # Traits
 + Trait Auth
@@ -173,6 +181,17 @@ resources are described in more detail in their corresponding sections.
 A Played Game represents an event in which multiple Players were recorded as having played a given
 game (aka Game Definition in NemeStats terms).
 
++ Attributes
+    + playedGameId (number, required) - NemeStats unique identifier for the Played Game.
+    + gameDefinitionId (number, required) - NemeStats unique identifier for the Game Definition of the Played Game.
+    + gameDefinitionName (string, required) - Name of the Game Definition.
+    + boardGameGeekObjectId (number, optional) - Board Game Geek unique identifier for the Game Definition.
+    + gamingGroupId (number, required) - NemeStats unique identifier of the Gaming Group against which this Played Game was recorded.
+    + gamingGroupName (string, required) - Name of the Gaming Group.
+    + datePlayed (string, required) - The date that the Played Game was recorded in yyyy-MM-dd format (e.g. 2015-05-013).
+    + dateLastUpdated (string, required) - The date that the Played Game was last updated in yyyy-MM-dd format (e.g. 2015-05-013). This will usually match the datePlayed unless the Played Game was updated at a later date.
+    + playerGameResults (PlayerGameResult, required) - A list of PlayerGameResult objects which contain information regarding each Player's rank, points scored, and NemeStats points awarded for playing the game.
+
 ## Create A New Played Game [POST]
 This service will record a new Played Game.
 
@@ -189,7 +208,6 @@ This service will record a new Played Game.
             X-Auth-Token: some token
             
     + Body
-    
 
                 {
                   "gameDefinitionId" : 1234,
@@ -252,9 +270,120 @@ Retrieve a list of Played Games given some criteria.
             
 + Response 200 (application/json)
 
-                {
-                  "playedGameId" : 31995
-                }
+                [  
+                    {  
+                        "playerGameResults":[  
+                            {  
+                                "playerId":1,
+                                "playerName":"Dave Staw",
+                                "gameRank":1,
+                                "pointsScored":15,
+                                "nemeStatsPointsAwarded":19
+                            },
+                            {  
+                                "playerId":7,
+                                "playerName":"Redeish",
+                                "gameRank":2,
+                                "pointsScored":null,
+                                "nemeStatsPointsAwarded":11
+                            },
+                            {  
+                                "playerId":6,
+                                "playerName":"Mike Kochel",
+                                "gameRank":3,
+                                "pointsScored":9,
+                                "nemeStatsPointsAwarded":6
+                            },
+                            {  
+                                "playerId":5,
+                                "playerName":"Gooseman",
+                                "gameRank":3,
+                                "pointsScored":9,
+                                "nemeStatsPointsAwarded":6
+                            }
+                        ],
+                        "playedGameId":16785,
+                        "gameDefinitionId":1,
+                        "gameDefinitionName":"Small World",
+                        "gamingGroupId":1,
+                        "gamingGroupName":"RIDGID Board Gamers",
+                        "boardGameGeekObjectId":40692,
+                        "datePlayed":"2015-04-04T00:00:00",
+                        "dateLastUpdated":"2015-04-24T01:09:06.41"
+                    },
+                    {  
+                        "playerGameResults":[  
+                            {  
+                                "playerId":11,
+                                "playerName":"Charles Cai",
+                                "gameRank":2,
+                                "pointsScored":null,
+                                "nemeStatsPointsAwarded":2
+                            },
+                            {  
+                                "playerId":1018,
+                                "playerName":"Marcus",
+                                "gameRank":2,
+                                "pointsScored":null,
+                                "nemeStatsPointsAwarded":2
+                            },
+                            {  
+                                "playerId":9,
+                                "playerName":"Tosho",
+                                "gameRank":2,
+                                "pointsScored":null,
+                                "nemeStatsPointsAwarded":2
+                            }
+                        ],
+                        "playedGameId":16098,
+                        "gameDefinitionId":7720,
+                        "gameDefinitionName":"Dead of Winter: A Crossroads Game (2014)",
+                        "gamingGroupId":1,
+                        "gamingGroupName":"RIDGID Board Gamers",
+                        "boardGameGeekObjectId":150376,
+                        "datePlayed":"2015-03-06T00:00:00",
+                        "dateLastUpdated":"2015-03-06T18:11:17.33"
+                    },
+                    {  
+                        "playerGameResults":[  
+                            {  
+                                "playerId":9,
+                                "playerName":"Tosho",
+                                "gameRank":2,
+                                "pointsScored":null,
+                                "nemeStatsPointsAwarded":4
+                            },
+                            {  
+                                "playerId":11,
+                                "playerName":"Charles Cai",
+                                "gameRank":2,
+                                "pointsScored":null,
+                                "nemeStatsPointsAwarded":4
+                            },
+                            {  
+                                "playerId":12,
+                                "playerName":"jakejgordon",
+                                "gameRank":2,
+                                "pointsScored":null,
+                                "nemeStatsPointsAwarded":4
+                            },
+                            {  
+                                "playerId":1018,
+                                "playerName":"Marcus",
+                                "gameRank":2,
+                                "pointsScored":null,
+                                "nemeStatsPointsAwarded":4
+                            },
+                            {  
+                                "playerId":10,
+                                "playerName":"Tina",
+                                "gameRank":2,
+                                "pointsScored":null,
+                                "nemeStatsPointsAwarded":4
+                            }
+                        ]
+                    }
+                ]
 
 + Response 400 (application/json)
 
