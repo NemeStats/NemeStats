@@ -55,7 +55,7 @@ integrating with your own website.
 
 Resources related to Users and authentication.
 
-# User [/Users]
+# User [/Users/]
  A User represents an individual account with its own credentials to log into NemeStats.
  A User can have more than Gaming Group and hence more than one Player associated with it.
 
@@ -116,7 +116,7 @@ the email address of the new User.
                     "message" : "Email 'someemailthatisalreadytaken@mailinator.com' is already taken."
                 }
 
-# User Session [/UserSessions]
+# User Session [/UserSessions/]
  A User Session represents a period of time when a User is authenticated with NemeStats. A User Session
  must be created and the resulting authentication token must be passed on subsequent requests to the API
  in the X-Auth-Token header (for services that require authentication).
@@ -454,7 +454,7 @@ a common unique identifier for board games across different Gaming Groups.
     + boardGameGeekObjectId (number, optional) - Board Game Geek unique identifier for the Game Definition. Used to conveniently cross reference with Board Game Geek.
     + active (boolean, required) - Flag indicating whether or not the Game Definition is still active within the Gaming Group. Inactive Game Definitions will nto show up in the NemeStats website.
 
-## Get Game Definitions in Gaming Group [GET /GamingGroups/{gamingGroupId}/GameDefinitions] 
+## Get Game Definitions in Gaming Group [GET /GamingGroups/{gamingGroupId}/GameDefinitions/] 
 Retrieve a list of all Game Definitions in the given Gaming Group.
 
 + Parameters
