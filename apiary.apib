@@ -1,0 +1,589 @@
+FORMAT: 1A
+HOST: https://nerdscorekeeper.azurewebsites.net/api/v1
+
+# NemeStats API
+
+NemeStats is a completely free and open source website for tracking the results of played games. 
+We've made the API completely accessible so you can push data in and pull data out. 
+This could be useful for building your own mobile app, pulling out data for analysis, or
+integrating with your own website.
+
+### General Information
+
+* Currently all services return data in the JSON format only
+* The API is versioned in the URL and will update whenever there are breaking changes to the API. That is, if a single service has a breaking change then all of the services will still continue to function on the old version, but the updated services would run through the new version. Here is an example of a versioned endpoint: 
+
+  `/api/v1/GamingGroup/1234`
+* The general format for a URI is: 
+
+  `/api/v{API version number}/{resource name}/{optional resource id}/{optional nested resource}/{optional nested resource id}`  
+
+  The simplest example would be GET /api/v1/GamingGroups (returns all Gaming Groups) and a more complex example might be `/api/v1/GamingGroups/1531/PlayedGames/5168839` (returns Played Game 5168839 under Gaming Group 1531).
+* Resource names are plural (e.g. GaminGroups instead of GamingGroup)
+* Properties in request and response objects are camel-cased (e.g. playerId instead of PlayerId or playerid)
+* All services work only over HTTPS
+* For GET requests, additional parameters or filters will be passed in via query string (e.g. `/api/v1/GamingGroups/13/Playedgames?startDate=2015-02-03`)
+* For services that require authentication (namely ones that allow data to be changed via POST/PUT/DELETE), a header for "X-Auth-Token" will need to be sent on the request to ensure that the consumer has the appropriate access.
+* All dates will be in the ISO-8601 format ([wikipedia entry](http://en.wikipedia.org/wiki/ISO_8601)). In most cases this will just be the date portion in UTC (yyyy-MM-dd) with no time information included. For example: 2015-03-20
+* Endpoints that have no content returned (e.g. a DELETE request) will return an object with:
+
+ ```JSON
+  `{ 
+        "message" : "The player was successfully deleted!" 
+    }`
+```
+* HTTP Status Codes
+  * HTTP 200 will be returned on a normal success
+  * For services that require authorization (i.e. those that require an X-Auth-Token header), the service will return an HTTP 400 Bad Request response if the token is missing and an HTTP 401 Not Authorized response if the token is there, but is no longer valid.
+  * HTTP 500 will be returned whenever there is an error on the server
+  * Any other HTTP response codes will be explicitly documented in the respective service
+
+# Data Structures
+
+## PlayerRank (object)
+
++ playerId (number, required) - NemeStats unique identifier for the Player
++ gameRank (number, required) - The corresponding rank of the Player in this Played Game. A rank of 1 means the Player got first place, 2 means second place, and so on.
++ pointsScored (number, optional) - Integer number of points the Player scored in the Played Game.
+
+# Traits
++ Trait Auth
+    + Request Headers
+        + X-Auth-Token (string) ... Authentication token provided by the POST /UserSessions service
+
+# Group Authentication
+
+Resources related to Users and authentication.
+
+# User [/Users]
+ A User represents an individual account with its own credentials to log into NemeStats.
+ A User can have more than Gaming Group and hence more than one Player associated with it.
+
+## Register a new User [POST]
+Register a new User and Gaming Group at the same time. Will also create a single 
+Player with the same name as the new User. A confirmation email will be sent to 
+the email address of the new User.
+
++ Attributes
+    + emailAddress (string, required) - Email address of the User
+    + userName (string, required) - NemeStats username
+    + password (string, required) - NemeStats password
+
++ Request ValidUserName (application/json)
+
+                {
+                  "emailAddress" : "someemail@mailinator.com",
+                  "userName" : "some username",
+                  "password" : "some new password"
+                }
+
++ Response 200 (application/json)
+
+                {
+                    "userId" : "some user id",
+                    "playerId" : 7980,
+                    "playerName" : "some username",
+                    "gamingGroupId" : 6326,
+                    "gamingGroupName" : "some username's Gaming Group",
+                    "authenticationToken" : "6ce40b88-d366-4c5d-b60d-cfbd9107bcd9"
+                }
+
++ Request AlreadyInUseUserName (application/json)
+
+                {
+                  "emailAddress" : "someemail@mailinator.com",
+                  "userName" : "some username that is already taken",
+                  "password" : "some new password"
+                }
+                
++ Response 400 (application/json)
+
+                {
+                    "message" : "Name 'some username' is already taken."
+                }
+
++ Request AlreadyInUseEmail (application/json)
+
+                {
+                  "emailAddress" : "someemailthatisalreadytaken@mailinator.com",
+                  "userName" : "some username",
+                  "password" : "some new password"
+                }
+                
++ Response 400 (application/json)
+
+                {
+                    "message" : "Email 'someemailthatisalreadytaken@mailinator.com' is already taken."
+                }
+
+# User Session [/UserSessions]
+ A User Session represents a period of time when a User is authenticated with NemeStats. A User Session
+ must be created and the resulting authentication token must be passed on subsequent requests to the API
+ in the X-Auth-Token header (for services that require authentication).
+
+## Create A New User Session [POST]
+Authenticates the given User and gives back an authentication token which can be sent in the X-Auth-Token
+header on subsequent requests to the API that require authentication. This authentication token will be valid
+for an arbitrarily long amount of time (most likely > 1 week but not more than a few months).
+
+A User Session is represented by an authentication token:
++ authenticationToken (string) - NemeStats unique identifier for the new User
+
++ Attributes
+    + userName (string, required) - Username of the User being authenticated
+    + password (string, required) - Password of the User being authenticated
+
+
++ Request ValidCredentials (application/json)
+                
+                {
+                  "userName" : "some legit username",
+                  "password" : "some legit password"
+                }
+
++ Response 200 (application/json)
+
+               {
+                  "authenticationToken" : "some awesome authentication token"
+               }
+
++ Request InvalidCredentials (application/json)
+                
+                {
+                  "userName" : "some invalid username",
+                  "password" : "some invalid password"
+                }
+                
++ Response 401 (application/json)
+
+                {
+                    "message" : "Invalid credentials provided."
+                }
+
+# Group Gaming Groups
+
+# Gaming Group [/GamingGroups]
+A Gaming Group represents a group of Players who play games together. The original User that registers
+will have a new Gaming Group automatically created and associated with their account. Other Users
+can be invited to join a Gaming Group and can even create additional Gaming Groups of their own.
+Gaming Groups have multiple nested resources: Players, GameDefinitions, and PlayedGames. These
+resources are described in more detail in their corresponding sections.
+
+# Played Games [/GamingGroups/{gamingGroupId}/PlayedGames]
+A Played Game represents an event in which multiple Players were recorded as having played a given
+game (aka Game Definition in NemeStats terms).
+
+## Create A New Played Game [POST]
+This service will record a new Played Game.
+
++ Attributes
+    + gameDefinitionId (number, required) - NemeStats unique identifier for the Game Definition (e.g. Race For the Galaxy's unique Id) of the Played Game.
+    + datePlayed (string, optional) - The date the game was played in yyyy-MM-dd format (e.g. 2015-04-29).
+    + notes (string, optional) - Any notes or comments that the User wants to record about the game for future reference.
+    + playerRanks (array[PlayerRank], required) - A collection of PlayerRank objects specifying the game rank and points scored for each Player. See below table for details.
+
++ Request ValidRequest (application/json)
+
+    + Headers
+            
+            X-Auth-Token: some token
+            
+    + Body
+    
+
+                {
+                  "gameDefinitionId" : 1234,
+                  "datePlayed" : "2015-04-05",
+                  "notes" : "Erica destroyed us with her harpy shoes of the bear-goddess",
+                  "playerRanks" : [ 
+                      { 
+                        "playerId" : 456, 
+                        "gameRank" : 1, 
+                        "pointsScored" : 15 
+                      }, 
+                      { 
+                        "playerId" : 678, 
+                        "gameRank" : 2, 
+                        "pointsScored" : 13 
+                      }, 
+                      { 
+                        "playerId" : 356, 
+                        "gameRank" : 3, 
+                        "pointsScored" : 9 
+                      },
+                      { 
+                        "playerId" : 9175, 
+                        "gameRank" : 3, 
+                        "pointsScored" : 9 
+                      }
+                  ]
+                }
+
++ Response 200 (application/json)
+
+                {
+                  "playedGameId" : 31995
+                }
+
++ Response 400 (application/json)
+
+                {
+                    "message" : "This action requires an X-Auth-Token header."
+                }
+
++ Response 401 (application/json)
+
+                {
+                    "message" : "Invalid X-Auth-Token"
+                }
+
+## Get Played Games [GET /GamingGroups/{gamingGroupId}/PlayedGames{?startDateGameLastUpdated,maximumNumberOfResults}] 
+Retrieve a list of Played Games given some criteria.
+
++ Parameters
+    + gamingGroupId : '1234' (number, required) - The NemeStats unique identifier for the Gaming Group that this entity belongs to.
+    + startDateGameLastUpdated : '2015-04-26' (string, optional) - If set, all Played Games returned will be greater than or equal to this date. Dates must be in yyyy-MM-dd format.
+    + maximumNumberOfResults : 100 (number, optional) - The maximum number of results to be returned. The default is no limit.
+        + Default: 1000000
+    
++ Request ValidRequest (application/json)
+    + Headers
+            
+            X-Auth-Token: some token
+            
++ Response 200 (application/json)
+
+                {
+                  "playedGameId" : 31995
+                }
+
++ Response 400 (application/json)
+
+                {
+                    "message" : "This action requires an X-Auth-Token header."
+                }
+
++ Response 401 (application/json)
+
+                {
+                    "message" : "Invalid X-Auth-Token"
+                }
+                
+# Player [/GamingGroups/{gamingGroupId}/Players]
+A Player represents a person in a Gaming Group. A Player must be created to log games for that person. If a given person is in multiple
+Gaming Groups, a new Player will be created for each Gaming Group. A Player may or may not be associated with a registered User.
+
+## Get Players in Gaming Group [GET /GamingGroups/{gamingGroupId}/Players] 
+Retrieve a list of all Players in the given Gaming Group.
+
++ Parameters
+    + gamingGroupId : '1234' (number, required) - The NemeStats unique identifier for the Gaming Group that this entity belongs to.
+    
++ Request ValidRequest (application/json)
+    + Headers
+            
+            X-Auth-Token: some token
+            
++ Response 200 (application/json)
+
+                {
+                  "players" : [
+                    {
+                        "playerName" : "Anna Viko",
+                        "playerId" : 789,
+                        "active" : "true",
+                        "currentNemesisPlayerId" : 456
+                    },
+                    {
+                        "playerName" : "Chris Konnel",
+                        "playerId" : 456,
+                        "active" : "true",
+                        "currentNemesisPlayerId" : 456
+                    },
+                    {
+                        "playerName" : "The Destroyer",
+                        "playerId" : 111,
+                        "active" : "true",
+                    },
+                    {
+                        "playerName" : "Herb",
+                        "playerId" : 112,
+                        "active" : "true",
+                        "currentNemesisPlayerId" : 789
+                    },
+                    {
+                        "playerName" : "Marvin",
+                        "playerId" : 745,
+                        "active" : "false"
+                    }
+                }
+
++ Response 400 (application/json)
+
+                {
+                    "message" : "This action requires an X-Auth-Token header."
+                }
+
++ Response 401 (application/json)
+
+                {
+                    "message" : "Invalid X-Auth-Token"
+                }
+
+## Create A new Player [POST]
+This service will create a new Player in the specified Gaming Group.
+
++ Attributes
+    + playerName (string, required) - The name of the Player in this Gaming Group.
+
++ Request Valid Request (application/json)
+    + Headers
+            
+            X-Auth-Token: some token
+    + Body
+    
+                {
+                  "playerName" : "Some Sweet Player Name That Is Unique In This Gaming Group"
+                }
+
++ Response 200 (application/json)
+
+                {
+                  "playerId" : 105156
+                }
+
++ Request Invalid Request Where Player Already Exists (application/json)
+    + Headers
+            
+            X-Auth-Token: some token
+    + Body
+    
+                {
+                  "playerName" : "Some Player Name That Already Exists In The Gaming Group"
+                }               
+
+                
++ Response 400 (application/json)
+
+                {
+                    "message" : "A Player with name 'Some Player Name That Already Exists In The Gaming Group' already exists in this Gaming Group."
+                }
+                
++ Response 400 (application/json)
+
+                {
+                    "message" : "This action requires an X-Auth-Token header."
+                }
+
++ Response 401 (application/json)
+
+                {
+                    "message" : "Invalid X-Auth-Token"
+                }
+                
+## Update an existing Player [PUT /GamingGroups/{gamingGroupId}/Players/{playerId}]
+This service will update a given Player in the given Gaming Group.
+
++ Parameters
+    + playerId : 12345 (number, required) - The NemeStats unique identifier of a given Player.
+
++ Attributes
+    + playerName (string, optional) - The name of the Player in this Gaming Group.
+    + active (boolean, optional) - Flag indicating whether the Player should be marked as active or inactive. Inactive Players will not show up in the NemeStats website.
+
++ Request Valid Request (application/json)
+    + Headers
+            
+            X-Auth-Token: some token
+    + Body
+    
+                {
+                  "playerName" : "Some Sweet Player Name That Is Unique In This Gaming Group",
+                  "active" : "true"
+                }
+
++ Response 200 (application/json)
+
+                {
+                  "playerId" : 105156
+                }
+
++ Request Invalid Request Name Already Exists (application/json)
+    + Headers
+            
+            X-Auth-Token: some token
+    + Body
+    
+                {
+                  "playerName" : "Some Player Name That Already Exists In The Gaming Group"
+                }               
+
+                
++ Response 400 (application/json)
+
+                {
+                    "message" : "A Player with name 'Some Player Name That Already Exists In The Gaming Group' already exists in this Gaming Group."
+                }
+
+                
++ Response 400 (application/json)
+
+                {
+                    "message" : "This action requires an X-Auth-Token header."
+                }
+
++ Response 401 (application/json)
+
+                {
+                    "message" : "Invalid X-Auth-Token"
+                }
+                
++ Response 404 (application/json)
+
+                {
+                    "message" : "A Player with playerId '12345' does not exist in this Gaming Group."
+                } 
+                
+# Game Definition [/GamingGroups/{gamingGroupId}/GameDefinitions]
+A Game Definition represents a unique game (e.g. Race For The Galaxy, Candy Land, Axis and Allies, etc.) in a Gaming Group.
+Game Definitions may be linked with Board Game Geek (BGG) to facilitate integration with that site and to bring together
+a common unique identifier for board games across different Gaming Groups.
+
++ Attributes
+    + gameDefinitionId (number, required) - NemeStats unique identifier for the given Game Definition.
+    + gameDefinitionName (string, required) - Name of the Game Definition (e.g. 'Monopoly) within the given Gaming Group.
+    + boardGameGeekObjectId (number, optional) - Board Game Geek unique identifier for the Game Definition. Used to conveniently cross reference with Board Game Geek.
+    + active (boolean, required) - Flag indicating whether or not the Game Definition is still active within the Gaming Group. Inactive Game Definitions will nto show up in the NemeStats website.
+
+## Get Game Definitions in Gaming Group [GET /GamingGroups/{gamingGroupId}/GameDefinitions] 
+Retrieve a list of all Game Definitions in the given Gaming Group.
+
++ Parameters
+    + gamingGroupId : '1234' (number, required) - The NemeStats unique identifier for the Gaming Group that this entity belongs to.
+    
++ Request ValidRequest (application/json)
+    + Headers
+            
+            X-Auth-Token: some token
+            
++ Response 200 (application/json)
+
+                {
+                  "gameDefinitions" : [
+                    {
+                        "gameDefinitionName" : "Zombicide",
+                        "gameDefinitionId" : 711,
+                        "boardGameGeekObjectId" : 113924,
+                        "active " : "true"
+                    },
+                    {
+                        "gameDefinitionName" : "Candy Land",
+                        "gameDefinitionId" : 12,
+                        "active " : "true"
+                    },
+                    {
+                        "gameDefinitionName" : "Small World",
+                        "gameDefinitionId" : 789,
+                        "boardGameGeekObjectId" : 40692,
+                        "active " : false
+                    }
+                }
+
++ Response 400 (application/json)
+
+                {
+                    "message" : "This action requires an X-Auth-Token header."
+                }
+
++ Response 401 (application/json)
+
+                {
+                    "message" : "Invalid X-Auth-Token"
+                }
+
+## Create a new Game Definition [POST]
+This service will create a new Game Definition in the specified Gaming Group.
+
++ Attributes
+    + gameDefinitionName (string, required) - The name of the Game Definition in this Gaming Group.
+    + gameDefinitionDescription (string, optional) - Description of the Game Definition.
+    + boardGameGeekObjectId (number, optional) - The Board Game Geek unique identifier for the Game. 
+
++ Request Valid Request (application/json)
+    + Headers
+            
+            X-Auth-Token: some token
+    + Body
+    
+                {
+                  "playerName" : "Some Sweet Player Name That Is Unique In This Gaming Group"
+                }
+
++ Response 200 (application/json)
+
+                {
+                  "playerId" : 105156
+                }
+                
+## Update an existing Game Definition [PUT /GamingGroups/{gamingGroupId}/GameDefinitions/{gameDefinitionId}]
+This service will update a given Player in the given Gaming Group.
+
++ Parameters
+    + gameDefinitionId : 54321 (number, required) - The NemeStats unique identifier of a given Game Definition.
+
++ Attributes
+    + gameDefinitionName (string, optional) - The name of the Game Definition in this Gaming Group.
+    + active (boolean, optional) - Flag indicating whether the Game Definition should be marked as active or inactive. Inactive Game Definitions will not show up in the NemeStats website.
+
++ Request Valid Request (application/json)
+    + Headers
+            
+            X-Auth-Token: some token
+    + Body
+    
+                {
+                  "gameDefinitionName" : "Some Sweet Game Definition Name That Is Unique In This Gaming Group",
+                  "active" : "true"
+                }
+
++ Response 200 (application/json)
+
+                {
+                  "gameDefinitionId" : 87658
+                }
+
++ Request Invalid Request Name Already Exists (application/json)
+    + Headers
+            
+            X-Auth-Token: some token
+    + Body
+    
+                {
+                  "gameDefinitionName" : "Some Game Definition Name That Already Exists In The Gaming Group"
+                }               
+
+                
++ Response 400 (application/json)
+
+                {
+                    "message" : "A Game Definition with name 'Some Game Definition Name That Already Exists In The Gaming Group' already exists in this Gaming Group."
+                }
+
+                
++ Response 400 (application/json)
+
+                {
+                    "message" : "This action requires an X-Auth-Token header."
+                }
+
++ Response 401 (application/json)
+
+                {
+                    "message" : "Invalid X-Auth-Token"
+                }
+                
++ Response 404 (application/json)
+
+                {
+                    "message" : "A Game Definition with playerId '87658' does not exist in this Gaming Group."
+                } 
