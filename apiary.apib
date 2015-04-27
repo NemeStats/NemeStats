@@ -237,11 +237,10 @@ This service will record a new Played Game.
                     "message" : "Invalid X-Auth-Token"
                 }
 
-## Get Played Games [GET /GamingGroups/{gamingGroupId}/PlayedGames{?startDateGameLastUpdated,maximumNumberOfResults}] 
+## Get Played Games [GET /{?startDateGameLastUpdated,maximumNumberOfResults}] 
 Retrieve a list of Played Games given some criteria.
 
 + Parameters
-    + gamingGroupId : '1234' (number, required) - The NemeStats unique identifier for the Gaming Group that this entity belongs to.
     + startDateGameLastUpdated : '2015-04-26' (string, optional) - If set, all Played Games returned will be greater than or equal to this date. Dates must be in yyyy-MM-dd format.
     + maximumNumberOfResults : 100 (number, optional) - The maximum number of results to be returned. The default is no limit.
         + Default: 1000000
