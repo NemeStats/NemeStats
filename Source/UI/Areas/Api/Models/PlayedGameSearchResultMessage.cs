@@ -13,8 +13,8 @@ namespace UI.Areas.Api.Models
         public int GamingGroupId { get; set; }
         public string GamingGroupName { get; set; }
         public int? BoardGameGeekObjectId { get; set; }
-        public DateTime DatePlayed { get; set; }
-        public DateTime DateLastUpdated { get; set; }
+        public string DatePlayed { get; set; }
+        public string DateLastUpdated { get; set; }
         public List<PlayerGameResultMessage> PlayerGameResults;
     }
 }

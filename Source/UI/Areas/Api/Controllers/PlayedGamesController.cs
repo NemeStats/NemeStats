@@ -90,7 +90,7 @@ namespace UI.Areas.Api.Controllers
             base.Dispose(disposing);
         }
 
-        [ApiRoute("GamingGroups/{gamingGroupId}/PlayedGames")]
+        [ApiRoute("GamingGroups/{gamingGroupId}/PlayedGames/")]
         [HttpGet]
         public HttpResponseMessage GetPlayedGames([FromBody]PlayedGameFilterMessage playedGameFilterMessage, [FromUri]int gamingGroupId)
         {
@@ -110,7 +110,7 @@ namespace UI.Areas.Api.Controllers
             return Request.CreateResponse(HttpStatusCode.OK, searchResultsMessage);
         }
 
-        [ApiRoute("GamingGroups/{gamingGroupId}/PlayedGames")]
+        [ApiRoute("GamingGroups/{gamingGroupId}/PlayedGames/")]
         [HttpPost]
         [ApiAuthentication]
         [ApiModelValidation]

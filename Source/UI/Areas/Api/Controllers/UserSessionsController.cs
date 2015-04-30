@@ -24,7 +24,7 @@ namespace UI.Areas.Api.Controllers
 
         [HttpPost]
         [ApiModelValidationAttribute]
-        [ApiRoute("UserSessions")]
+        [ApiRoute("UserSessions/")]
         public async Task<HttpResponseMessage> Login(CredentialsMessage credentialsMessage)
         {
             var user = await applicationUserManager.FindAsync(credentialsMessage.UserName, credentialsMessage.Password);

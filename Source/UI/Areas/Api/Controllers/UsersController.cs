@@ -28,7 +28,7 @@ namespace UI.Areas.Api.Controllers
             this.authTokenGenerator = authTokenGenerator;
         }
 
-        [ApiRoute("Users")]
+        [ApiRoute("Users/")]
         [HttpPost]
         public virtual async Task<HttpResponseMessage> RegisterNewUser(NewUserMessage newUserMessage)
         {
