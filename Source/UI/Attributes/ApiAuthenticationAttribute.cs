@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using BusinessLogic.Logic.Users;
+using BusinessLogic.Models.User;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Mvc;
-using BusinessLogic.EventTracking;
-using BusinessLogic.Logic.Users;
-using BusinessLogic.Models.User;
-using UI.Attributes.Filters;
 using ActionFilterAttribute = System.Web.Http.Filters.ActionFilterAttribute;
 
 namespace UI.Attributes

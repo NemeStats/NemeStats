@@ -15,13 +15,14 @@ namespace UI.Areas.Api.Controllers
 {
     public class PlayersController : ApiController
     {
-        private IPlayerSaver playerSaver;
+        private readonly IPlayerSaver playerSaver;
 
         public PlayersController(IPlayerSaver playerSaver)
         {
             this.playerSaver = playerSaver;
         }
 
+        [ApiAuthentication]
         [ApiRoute("GamingGroups/{gamingGroupId}/Players/")]
         [HttpPost]
         public virtual HttpResponseMessage SaveNewPlayer([FromBody]NewPlayerMessage newPlayerMessage, [FromUri]int gamingGroupId)

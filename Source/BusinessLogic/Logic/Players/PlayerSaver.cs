@@ -15,18 +15,16 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
-using System.Data.Entity.Infrastructure;
 using BusinessLogic.DataAccess;
 using BusinessLogic.EventTracking;
 using BusinessLogic.Exceptions;
+using BusinessLogic.Logic.Nemeses;
 using BusinessLogic.Models;
 using BusinessLogic.Models.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using BusinessLogic.DataAccess.Repositories;
-using BusinessLogic.Logic.Nemeses;
 
 namespace BusinessLogic.Logic.Players
 {
@@ -50,7 +48,7 @@ namespace BusinessLogic.Logic.Players
             ValidatePlayerWithThisNameDoesntAlreadyExist(player, currentUser);
             bool alreadyInDatabase = player.AlreadyInDatabase();
 
-            Player newPlayer = dataContext.Save<Player>(player, currentUser);
+            var newPlayer = dataContext.Save(player, currentUser);
             dataContext.CommitAllChanges();
 
             if (!alreadyInDatabase)
@@ -77,7 +75,7 @@ namespace BusinessLogic.Logic.Players
 
                 if (existingPlayerWithThisName != null)
                 {
-                    throw new PlayerAlreadyExistsException(existingPlayerWithThisName.Id);
+                    throw new PlayerAlreadyExistsException(player.Name, existingPlayerWithThisName.Id);
                 } 
             }
         }
@@ -85,7 +83,7 @@ namespace BusinessLogic.Logic.Players
         private void RecalculateNemeses(Player player, ApplicationUser currentUser)
         {
             List<int> playerIdsToRecalculate = (from thePlayer in this.dataContext.GetQueryable<Player>()
-                                                where thePlayer.Active == true
+                                                where thePlayer.Active
                                                       && thePlayer.Nemesis.NemesisPlayerId == player.Id
                                                 select thePlayer.Id).ToList();
 
