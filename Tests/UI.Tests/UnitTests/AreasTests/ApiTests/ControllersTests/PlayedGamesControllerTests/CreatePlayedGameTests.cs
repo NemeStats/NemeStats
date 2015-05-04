@@ -10,13 +10,14 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using UI.Areas.Api.Controllers;
 using UI.Areas.Api.Models;
 using UI.Attributes;
 
 namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.PlayedGamesControllerTests
 {
     [TestFixture]
-    public class PlayedGamesControllerTests : PlayedGamesControllerTestBase
+    public class PlayedGamesControllerTests : ApiControllerTestBase<PlayedGamesController>
     {
         private PlayedGameMessage playedGameMessage;
         private const int EXPECTED_PLAYED_GAME_ID = 1;

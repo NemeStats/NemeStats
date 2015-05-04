@@ -4,12 +4,13 @@ using NUnit.Framework;
 using Rhino.Mocks;
 using System.Collections.Generic;
 using System.Net.Http;
+using UI.Areas.Api.Controllers;
 using UI.Areas.Api.Models;
 
 namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.PlayedGamesControllerTests
 {
     [TestFixture]
-    public class GetPlayedGamesTests : PlayedGamesControllerTestBase
+    public class GetPlayedGamesTests : ApiControllerTestBase<PlayedGamesController>
     {
         [Test]
         public void ItReturnsAnEmptyListIfThereAreNoResults()

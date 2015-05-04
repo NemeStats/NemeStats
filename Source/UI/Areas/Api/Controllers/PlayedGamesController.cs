@@ -21,7 +21,7 @@ namespace UI.Areas.Api.Controllers
 {
     public class PlayedGamesController : ApiController
     {
-         public const int MAX_PLAYED_GAMES_TO_EXPORT = 1000;
+        public const int MAX_PLAYED_GAMES_TO_EXPORT = 1000;
 
         private readonly IPlayedGameRetriever playedGameRetriever;
         private readonly IExcelGenerator excelGenerator;

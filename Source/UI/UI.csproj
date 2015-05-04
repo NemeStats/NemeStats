@@ -258,6 +258,7 @@
     <Compile Include="App_Start\StructuremapMvc.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Areas\Api\Controllers\PlayedGamesController.cs" />
+    <Compile Include="Areas\Api\Controllers\PlayersController.cs" />
     <Compile Include="Areas\Api\Controllers\UsersController.cs" />
     <Compile Include="Areas\Api\Controllers\UserSessionsController.cs" />
     <Compile Include="Areas\Api\Controllers\VotableFeaturesController.cs" />
@@ -267,6 +268,7 @@
     <Compile Include="Areas\Api\Models\NewAuthTokenMessage.cs" />
     <Compile Include="Areas\Api\Models\NewlyRecordedPlayedGameMessage.cs" />
     <Compile Include="Areas\Api\Models\NewlyRegisteredUserMessage.cs" />
+    <Compile Include="Areas\Api\Models\NewPlayerMessage.cs" />
     <Compile Include="Areas\Api\Models\NewUserMessage.cs" />
     <Compile Include="Areas\Api\Models\PlayedGameFilterMessage.cs" />
     <Compile Include="Areas\Api\Models\PlayedGameMessage.cs" />
