@@ -22,25 +22,14 @@ using System.Linq;
 
 namespace BusinessLogic.Exceptions
 {
-    public class EntityDoesNotExistException : KeyNotFoundException
+    public class EntityDoesNotExistException : ApiFriendlyException
     {
         internal const string EXCEPTION_MESSAGE_FORMAT = "Entity of type '{0}' with Id '{1}' does not exist.";
 
-        private readonly object entityId;
-        private readonly Type entityType;
-
         public EntityDoesNotExistException(Type entityType, object entityId)
+            : base(string.Format(EXCEPTION_MESSAGE_FORMAT, entityType.Name, entityId))
         {
-            this.entityId = entityId;
-            this.entityType = entityType;
-        }
 
-        public override string Message
-        {
-            get
-            {
-                return string.Format(EXCEPTION_MESSAGE_FORMAT, entityType.Name, entityId);
-            }
         }
     }
 }

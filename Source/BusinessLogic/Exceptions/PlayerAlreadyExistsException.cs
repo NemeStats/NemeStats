@@ -19,7 +19,7 @@ using System;
 
 namespace BusinessLogic.Exceptions
 {
-    public class PlayerAlreadyExistsException : Exception
+    public class PlayerAlreadyExistsException : ApiFriendlyException
     {
         internal const string EXCEPTION_MESSAGE = "A Player with name '{0}' already exists in this Gaming Group.";
 

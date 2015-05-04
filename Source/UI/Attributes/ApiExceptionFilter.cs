@@ -13,9 +13,7 @@ namespace UI.Attributes
     {
         public override void OnException(HttpActionExecutedContext context)
         {
-            if (context.Exception is EntityDoesNotExistException 
-                || context.Exception is UnauthorizedEntityAccessException
-                || context.Exception is PlayerAlreadyExistsException)
+            if (context.Exception is ApiFriendlyException)
             {
                 context.Response = new HttpResponseMessage(HttpStatusCode.BadRequest)
                 {

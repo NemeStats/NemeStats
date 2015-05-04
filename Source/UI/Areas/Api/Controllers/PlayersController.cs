@@ -23,6 +23,7 @@ namespace UI.Areas.Api.Controllers
         }
 
         [ApiAuthentication]
+        [ApiModelValidation]
         [ApiRoute("GamingGroups/{gamingGroupId}/Players/")]
         [HttpPost]
         public virtual HttpResponseMessage SaveNewPlayer([FromBody]NewPlayerMessage newPlayerMessage, [FromUri]int gamingGroupId)
