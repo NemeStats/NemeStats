@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Controllers;
 using BusinessLogic.Models.User;
+using NUnit.Framework;
 using Rhino.Mocks;
 using StructureMap.AutoMocking;
 using UI.Areas.Api.Controllers;
@@ -20,7 +21,8 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests
         protected ApplicationUser applicationUser;
         protected const int EXPECTED_GAMING_GROUP_ID = 2;
 
-        public void SetUp()
+        [SetUp]
+        public void BaseSetUp()
         {
             this.autoMocker = new RhinoAutoMocker<T>();
             var controllerContextMock = MockRepository.GeneratePartialMock<HttpControllerContext>();

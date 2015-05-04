@@ -266,6 +266,7 @@
     <Compile Include="Areas\Api\Models\DefaultEmptyResponseMessage.cs" />
     <Compile Include="Areas\Api\Models\FeatureVote.cs" />
     <Compile Include="Areas\Api\Models\NewAuthTokenMessage.cs" />
+    <Compile Include="Areas\Api\Models\NewlyCreatedPlayerMessage.cs" />
     <Compile Include="Areas\Api\Models\NewlyRecordedPlayedGameMessage.cs" />
     <Compile Include="Areas\Api\Models\NewlyRegisteredUserMessage.cs" />
     <Compile Include="Areas\Api\Models\NewPlayerMessage.cs" />
