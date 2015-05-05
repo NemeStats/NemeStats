@@ -399,6 +399,13 @@ Retrieve a list of Played Games given some criteria.
 A Player represents a person in a Gaming Group. A Player must be created to log games for that person. If a given person is in multiple
 Gaming Groups, a new Player will be created for each Gaming Group. A Player may or may not be associated with a registered User.
 
++ Attributes
+    + playerId (number, required) - The NemeStats unique identifier for the Player.
+    + playerName (string, required) - The name of the Player in this Gaming Group.
+    + gamingGroupId (number, required) - The NemeStats unique identifier for the Gaming Group to which this Player belongs.
+    + nemesisPlayerId (number, optional) - The NemeStats unique identifier for the Player who is this Player's Nemesis. The Nemesis is the Player who has the highest win percentage vs. this Player and who has won at least 3 games.
+    + active (boolean, required) - Flag indicating whether the Player is active or inactive. Inactive Players will not show up in the NemeStats website.
+
 ## Get Players in Gaming Group [GET] 
 Retrieve a list of all Players in the given Gaming Group.
     
