@@ -523,9 +523,11 @@ This service will update a given Player in the given Gaming Group.
     + active (boolean, optional) - Flag indicating whether the Player should be marked as active or inactive. Inactive Players will not show up in the NemeStats website.
 
 + Request Valid Request (application/json)
+
     + Headers
             
             X-Auth-Token: some token
+
     + Body
     
                 {
@@ -536,6 +538,7 @@ This service will update a given Player in the given Gaming Group.
 + Response 204 (application/json)
 
 + Request Invalid Request Name Already Exists (application/json)
+
     + Headers
             
             X-Auth-Token: some token
