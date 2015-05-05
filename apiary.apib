@@ -127,7 +127,7 @@ the email address of the new User.
  must be created and the resulting authentication token must be passed on subsequent requests to the API
  in the X-Auth-Token header (for services that require authentication).
 
-## Create A New User Session [POST]
+## Create a new User Session [POST]
 Authenticates the given User and gives back an authentication token which can be sent in the X-Auth-Token
 header on subsequent requests to the API that require authentication. This authentication token will be valid
 for an arbitrarily long amount of time (most likely > 1 week but not more than a few months).
@@ -190,7 +190,7 @@ game (aka Game Definition in NemeStats terms).
     + dateLastUpdated (string, required) - The date that the Played Game was last updated in yyyy-MM-dd format (e.g. 2015-05-013). This will usually match the datePlayed unless the Played Game was updated at a later date.
     + playerGameResults (PlayerGameResult, required) - A list of PlayerGameResult objects which contain information regarding each Player's rank, points scored, and NemeStats points awarded for playing the game.
 
-## Create A New Played Game [POST]
+## Create a new Played Game [POST]
 This service will record a new Played Game.
 
 + Attributes
@@ -460,7 +460,7 @@ Retrieve a list of all Players in the given Gaming Group.
                     "message" : "Invalid X-Auth-Token"
                 }
 
-## Create A new Player [POST]
+## Create a new Player [POST]
 This service will create a new Player in the specified Gaming Group.
 
 + Attributes
