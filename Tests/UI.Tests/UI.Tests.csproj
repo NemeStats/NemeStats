@@ -181,11 +181,13 @@
     <Compile Include="IntegrationTests\BoardGameGeekTests\BoardGameGeekModels.cs" />
     <Compile Include="IntegrationTests\BoardGameGeekTests\BoardGameGeekIntegrationTests.cs" />
     <Compile Include="IntegrationTests\RollbarTests.cs" />
+    <Compile Include="UnitTests\AreasTests\ApiTests\ApiTestHelpers.cs" />
     <Compile Include="UnitTests\AreasTests\ApiTests\ControllersTests\ApiControllerTestBase.cs" />
     <Compile Include="UnitTests\AreasTests\ApiTests\ControllersTests\PlayedGamesControllerTests\CreatePlayedGameTests.cs" />
     <Compile Include="UnitTests\AreasTests\ApiTests\ControllersTests\PlayedGamesControllerTests\ExportPlayedGamesToExcelTests.cs" />
     <Compile Include="UnitTests\AreasTests\ApiTests\ControllersTests\PlayedGamesControllerTests\GetPlayedGamesTests.cs" />
     <Compile Include="UnitTests\AreasTests\ApiTests\ControllersTests\PlayersControllerTests\SaveNewPlayerTests.cs" />
+    <Compile Include="UnitTests\AreasTests\ApiTests\ControllersTests\PlayersControllerTests\UpdatePlayerTests.cs" />
     <Compile Include="UnitTests\AreasTests\ApiTests\ControllersTests\UsersControllerTests.cs" />
     <Compile Include="UnitTests\AreasTests\ApiTests\ControllersTests\UserSessionsControllerTests.cs" />
     <Compile Include="UnitTests\AreasTests\ApiTests\ControllersTests\VotableFeaturesControllerTests.cs" />

@@ -20,6 +20,7 @@ using BusinessLogic.EventTracking;
 using BusinessLogic.Exceptions;
 using BusinessLogic.Logic.Nemeses;
 using BusinessLogic.Models;
+using BusinessLogic.Models.Players;
 using BusinessLogic.Models.User;
 using System;
 using System.Collections.Generic;
@@ -41,7 +42,7 @@ namespace BusinessLogic.Logic.Players
             this.nemesisRecalculator = nemesisRecalculator;
         }
 
-        public Player Save(Player player, ApplicationUser currentUser)
+        public virtual Player Save(Player player, ApplicationUser currentUser)
         {
             ValidatePlayerIsNotNull(player);
             ValidatePlayerNameIsNotNullOrWhiteSpace(player.Name);
@@ -67,16 +68,17 @@ namespace BusinessLogic.Logic.Players
 
         private void ValidatePlayerWithThisNameDoesntAlreadyExist(Player player, ApplicationUser currentUser)
         {
-            if (!player.AlreadyInDatabase())
+            if (player.AlreadyInDatabase())
             {
-                Player existingPlayerWithThisName = this.dataContext.GetQueryable<Player>().FirstOrDefault(
-                                                                                       p => p.GamingGroupId == currentUser.CurrentGamingGroupId
-                                                                                            && p.Name == player.Name);
+                return;
+            }
+            Player existingPlayerWithThisName = this.dataContext.GetQueryable<Player>().FirstOrDefault(
+                                                                                                       p => p.GamingGroupId == currentUser.CurrentGamingGroupId
+                                                                                                            && p.Name == player.Name);
 
-                if (existingPlayerWithThisName != null)
-                {
-                    throw new PlayerAlreadyExistsException(player.Name, existingPlayerWithThisName.Id);
-                } 
+            if (existingPlayerWithThisName != null)
+            {
+                throw new PlayerAlreadyExistsException(player.Name, existingPlayerWithThisName.Id);
             }
         }
 
@@ -106,6 +108,32 @@ namespace BusinessLogic.Logic.Players
             if (string.IsNullOrWhiteSpace(playerName))
             {
                 throw new ArgumentNullException("playerName");
+            }
+        }
+
+        public virtual void UpdatePlayer(UpdatePlayerRequest updatePlayerRequest, ApplicationUser applicationUser)
+        {
+            var player = dataContext.FindById<Player>(updatePlayerRequest.PlayerId);
+
+            bool somethingChanged = false;
+
+            if (updatePlayerRequest.Active.HasValue)
+            {
+                player.Active = updatePlayerRequest.Active.Value;
+
+                somethingChanged = true;
+            }
+
+            if (!string.IsNullOrWhiteSpace(updatePlayerRequest.Name))
+            {
+                player.Name = updatePlayerRequest.Name.Trim();
+
+                somethingChanged = true;
+            }
+
+            if (somethingChanged)
+            {
+                Save(player, applicationUser);
             }
         }
     }

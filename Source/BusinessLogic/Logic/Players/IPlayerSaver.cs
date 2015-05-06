@@ -16,6 +16,7 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 using BusinessLogic.Models;
+using BusinessLogic.Models.Players;
 using BusinessLogic.Models.User;
 using System.Linq;
 
@@ -24,5 +25,7 @@ namespace BusinessLogic.Logic.Players
     public interface IPlayerSaver
     {
         Player Save(Player player, ApplicationUser currentUser);
+
+        void UpdatePlayer(UpdatePlayerRequest updatePlayerRequest, ApplicationUser applicationUser);
     }
 }

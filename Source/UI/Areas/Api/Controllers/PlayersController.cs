@@ -7,7 +7,9 @@ using System.Web;
 using System.Web.Http;
 using BusinessLogic.Logic.Players;
 using BusinessLogic.Models;
+using BusinessLogic.Models.Players;
 using BusinessLogic.Models.User;
+using Microsoft.Ajax.Utilities;
 using UI.Areas.Api.Models;
 using UI.Attributes;
 
@@ -43,6 +45,31 @@ namespace UI.Areas.Api.Controllers
             };
 
             return Request.CreateResponse(HttpStatusCode.OK, newlyCreatedPlayerMessage);
+        }
+
+        [ApiAuthentication]
+        [ApiModelValidation]
+        [ApiRoute("GamingGroups/{gamingGroupId}/Players/{playerId}/")]
+        [HttpPut]
+        public virtual HttpResponseMessage UpdatePlayer([FromBody]UpdatePlayerMessage updatePlayerMessage, [FromUri] int playerId, [FromUri]int gamingGroupId)
+        {
+            if (updatePlayerMessage == null)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "You must pass at least one valid parameter.");
+            }
+
+            ApplicationUser applicationUser = ActionContext.ActionArguments[ApiAuthenticationAttribute.ACTION_ARGUMENT_APPLICATION_USER] as ApplicationUser;
+
+            var requestedPlayer = new UpdatePlayerRequest
+            {
+                PlayerId = playerId,
+                Active = updatePlayerMessage.Active,
+                Name = updatePlayerMessage.PlayerName
+            };
+
+            playerSaver.UpdatePlayer(requestedPlayer, applicationUser);
+
+            return Request.CreateResponse(HttpStatusCode.NoContent, string.Empty);
         }
     }
 }

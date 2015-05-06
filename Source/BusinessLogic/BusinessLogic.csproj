@@ -401,6 +401,7 @@
     <Compile Include="Models\Players\PlayerGameSummary.cs" />
     <Compile Include="Models\Players\PlayerWithNemesis.cs" />
     <Compile Include="Models\Players\TopPlayer.cs" />
+    <Compile Include="Models\Players\UpdatePlayerRequest.cs" />
     <Compile Include="Models\User\AddUserToGamingGroupResult.cs" />
     <Compile Include="Models\User\AnonymousApplicationUser.cs" />
     <Compile Include="Models\User\ApplicationUser.cs" />

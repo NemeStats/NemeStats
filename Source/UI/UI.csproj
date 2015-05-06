@@ -275,6 +275,7 @@
     <Compile Include="Areas\Api\Models\PlayedGameMessage.cs" />
     <Compile Include="Areas\Api\Models\PlayedGameSearchResultMessage.cs" />
     <Compile Include="Areas\Api\Models\PlayerGameResultsMessage.cs" />
+    <Compile Include="Areas\Api\Models\UpdatePlayerMessage.cs" />
     <Compile Include="Areas\Api\RollbarExceptionLogger.cs" />
     <Compile Include="Attributes\ApiAuthenticationAttribute.cs" />
     <Compile Include="Attributes\ApiExceptionFilter.cs" />
