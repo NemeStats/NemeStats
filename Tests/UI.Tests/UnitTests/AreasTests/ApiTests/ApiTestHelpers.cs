@@ -20,5 +20,13 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests
             Assert.That(responseMessage.StatusCode, Is.EqualTo(expectedStatusCode));
             Assert.That(httpError.Message, Is.EqualTo(expectedMessage));
         }
+
+        public static T ReturnsThisTypeWithThisStatusCode<T>(HttpResponseMessage responseMessage, HttpStatusCode expectedStatusCode) where T: class
+        {
+            Assert.That(responseMessage.StatusCode, Is.EqualTo(expectedStatusCode));
+            Assert.That(responseMessage.Content, Is.TypeOf(typeof(ObjectContent<T>)));
+            ObjectContent<T> content = responseMessage.Content as ObjectContent<T>;
+            return content.Value as T;
+        }
     }
 }

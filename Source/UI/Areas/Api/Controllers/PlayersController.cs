@@ -18,10 +18,34 @@ namespace UI.Areas.Api.Controllers
     public class PlayersController : ApiController
     {
         private readonly IPlayerSaver playerSaver;
+        private readonly IPlayerRetriever playerRetriever;
 
-        public PlayersController(IPlayerSaver playerSaver)
+        public PlayersController(IPlayerSaver playerSaver, IPlayerRetriever playerRetriever)
         {
             this.playerSaver = playerSaver;
+            this.playerRetriever = playerRetriever;
+        }
+
+        [ApiAuthentication]
+        [ApiModelValidation]
+        [ApiRoute("GamingGroups/{gamingGroupId}/Players/")]
+        [HttpGet]
+        public virtual HttpResponseMessage GetPlayers([FromUri] int gamingGroupId)
+        {
+            var results = playerRetriever.GetAllPlayers(gamingGroupId);
+
+            var playerSearchResultsMessage = new PlayersSearchResultsMessage
+            {
+                Players = results.Select(player => new PlayerSearchResult
+                {
+                    Active = player.Active,
+                    Id = player.Id,
+                    CurrentNemesisPlayerId = player.NemesisId,
+                    PlayerName = player.Name
+                }).ToList()
+            };
+
+            return Request.CreateResponse(HttpStatusCode.OK, playerSearchResultsMessage);
         }
 
         [ApiAuthentication]
