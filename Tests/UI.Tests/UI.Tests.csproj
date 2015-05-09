@@ -184,6 +184,7 @@
     <Compile Include="UnitTests\AreasTests\ApiTests\ApiTestHelpers.cs" />
     <Compile Include="UnitTests\AreasTests\ApiTests\ControllersTests\ApiControllerTestBase.cs" />
     <Compile Include="UnitTests\AreasTests\ApiTests\ControllersTests\GameDefinitionsControllerTests\GetGameDefinitionsTests.cs" />
+    <Compile Include="UnitTests\AreasTests\ApiTests\ControllersTests\GameDefinitionsControllerTests\SaveNewGameDefinitionTests.cs" />
     <Compile Include="UnitTests\AreasTests\ApiTests\ControllersTests\PlayedGamesControllerTests\CreatePlayedGameTests.cs" />
     <Compile Include="UnitTests\AreasTests\ApiTests\ControllersTests\PlayedGamesControllerTests\ExportPlayedGamesToExcelTests.cs" />
     <Compile Include="UnitTests\AreasTests\ApiTests\ControllersTests\PlayedGamesControllerTests\GetPlayedGamesTests.cs" />

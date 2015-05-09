@@ -269,6 +269,8 @@
     <Compile Include="Areas\Api\Models\GameDefinitionSearchResultMessage.cs" />
     <Compile Include="Areas\Api\Models\GameDefinitionsSearchResultsMessage.cs" />
     <Compile Include="Areas\Api\Models\NewAuthTokenMessage.cs" />
+    <Compile Include="Areas\Api\Models\NewGameDefinitionMessage.cs" />
+    <Compile Include="Areas\Api\Models\NewlyCreatedGameDefinitionMessage.cs" />
     <Compile Include="Areas\Api\Models\NewlyCreatedPlayerMessage.cs" />
     <Compile Include="Areas\Api\Models\NewlyRecordedPlayedGameMessage.cs" />
     <Compile Include="Areas\Api\Models\NewlyRegisteredUserMessage.cs" />
