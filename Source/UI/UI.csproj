@@ -257,6 +257,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\StructuremapMvc.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Areas\Api\Controllers\GameDefinitionsController.cs" />
     <Compile Include="Areas\Api\Controllers\PlayedGamesController.cs" />
     <Compile Include="Areas\Api\Controllers\PlayersController.cs" />
     <Compile Include="Areas\Api\Controllers\UsersController.cs" />
@@ -265,6 +266,8 @@
     <Compile Include="Areas\Api\Models\CredentialsMessage.cs" />
     <Compile Include="Areas\Api\Models\DefaultEmptyResponseMessage.cs" />
     <Compile Include="Areas\Api\Models\FeatureVote.cs" />
+    <Compile Include="Areas\Api\Models\GameDefinitionSearchResultMessage.cs" />
+    <Compile Include="Areas\Api\Models\GameDefinitionsSearchResultsMessage.cs" />
     <Compile Include="Areas\Api\Models\NewAuthTokenMessage.cs" />
     <Compile Include="Areas\Api\Models\NewlyCreatedPlayerMessage.cs" />
     <Compile Include="Areas\Api\Models\NewlyRecordedPlayedGameMessage.cs" />

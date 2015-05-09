@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Web;
-using System.Web.Http;
-using BusinessLogic.Logic.Players;
+﻿using BusinessLogic.Logic.Players;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Players;
 using BusinessLogic.Models.User;
-using Microsoft.Ajax.Utilities;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Web.Http;
 using UI.Areas.Api.Models;
 using UI.Attributes;
 
