@@ -5,8 +5,8 @@ using System.Text;
 
 namespace UI.Areas.Api.Models
 {
-    public class PlayersSearchResultsMessage
+    public class PlayedGameSearchResultsMessage
     {
-        public List<PlayerSearchResultMessage> Players { get; set; }
+        public List<PlayedGameSearchResultMessage> PlayedGames { get; set; }
     }
 }

@@ -40,7 +40,7 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.PlayersControl
             var actualData = AssertThatApiAction.ReturnsThisTypeWithThisStatusCode<PlayersSearchResultsMessage>(actualResults, HttpStatusCode.OK);
             Assert.That(actualData.Players.Count, Is.EqualTo(1));
             var player = actualData.Players[0];
-            Assert.That(player.Id, Is.EqualTo(expectedPlayer.Id));
+            Assert.That(player.PlayerId, Is.EqualTo(expectedPlayer.Id));
             Assert.That(player.PlayerName, Is.EqualTo(expectedPlayer.Name));
             Assert.That(player.Active, Is.EqualTo(expectedPlayer.Active));
             Assert.That(player.CurrentNemesisPlayerId, Is.EqualTo(expectedPlayer.NemesisId));

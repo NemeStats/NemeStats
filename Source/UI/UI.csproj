@@ -274,8 +274,9 @@
     <Compile Include="Areas\Api\Models\PlayedGameFilterMessage.cs" />
     <Compile Include="Areas\Api\Models\PlayedGameMessage.cs" />
     <Compile Include="Areas\Api\Models\PlayedGameSearchResultMessage.cs" />
+    <Compile Include="Areas\Api\Models\PlayedGameSearchResultsMessage.cs" />
     <Compile Include="Areas\Api\Models\PlayerGameResultsMessage.cs" />
-    <Compile Include="Areas\Api\Models\PlayerSearchResult.cs" />
+    <Compile Include="Areas\Api\Models\PlayerSearchResultMessage.cs" />
     <Compile Include="Areas\Api\Models\PlayersSearchResultsMessage.cs" />
     <Compile Include="Areas\Api\Models\UpdatePlayerMessage.cs" />
     <Compile Include="Areas\Api\RollbarExceptionLogger.cs" />

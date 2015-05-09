@@ -12,6 +12,7 @@ using Rhino.Mocks;
 using StructureMap.AutoMocking;
 using UI.Areas.Api.Controllers;
 using UI.Attributes;
+using UI.Transformations;
 
 namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests
 {
@@ -24,6 +25,7 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests
         [SetUp]
         public void BaseSetUp()
         {
+            AutomapperConfiguration.Configure();
             this.autoMocker = new RhinoAutoMocker<T>();
             var controllerContextMock = MockRepository.GeneratePartialMock<HttpControllerContext>();
             var actionDescriptorMock = MockRepository.GenerateMock<HttpActionDescriptor>();

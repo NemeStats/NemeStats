@@ -36,10 +36,10 @@ namespace UI.Areas.Api.Controllers
 
             var playerSearchResultsMessage = new PlayersSearchResultsMessage
             {
-                Players = results.Select(player => new PlayerSearchResult
+                Players = results.Select(player => new PlayerSearchResultMessage
                 {
                     Active = player.Active,
-                    Id = player.Id,
+                    PlayerId = player.Id,
                     CurrentNemesisPlayerId = player.NemesisId,
                     PlayerName = player.Name
                 }).ToList()

@@ -1,4 +1,7 @@
-﻿using BusinessLogic.Logic.PlayedGames;
+﻿using System;
+using System.Net;
+using BusinessLogic.Logic.PlayedGames;
+using BusinessLogic.Models;
 using BusinessLogic.Models.PlayedGames;
 using NUnit.Framework;
 using Rhino.Mocks;
@@ -23,10 +26,8 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.PlayedGamesCon
 
             var actualResponse = autoMocker.ClassUnderTest.GetPlayedGames(filterMessage, 1);
 
-            Assert.That(actualResponse.Content, Is.TypeOf(typeof(ObjectContent<List<PlayedGameSearchResultMessage>>)));
-            ObjectContent<List<PlayedGameSearchResultMessage>> content = actualResponse.Content as ObjectContent<List<PlayedGameSearchResultMessage>>;
-            var searchResults = content.Value as List<PlayedGameSearchResultMessage>;
-            Assert.That(searchResults.Count, Is.EqualTo(0));
+            var actualData = AssertThatApiAction.ReturnsThisTypeWithThisStatusCode<PlayedGameSearchResultsMessage>(actualResponse, HttpStatusCode.OK);
+            Assert.That(actualData.PlayedGames.Count, Is.EqualTo(0));
         }
 
         [Test]
@@ -79,6 +80,66 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.PlayedGamesCon
 
             autoMocker.Get<IPlayedGameRetriever>().AssertWasCalled(mock => mock.SearchPlayedGames(
                 Arg<PlayedGameFilter>.Matches(filter => filter.MaximumNumberOfResults == filterMessage.MaximumNumberOfResults)));
+        }
+
+        [Test]
+        public void ItReturnsTheCorrectPlayedGames()
+        {
+            var expectedSingleResult = new PlayedGameSearchResult
+            {
+                BoardGameGeekObjectId = 1,
+                DateLastUpdated = DateTime.UtcNow.Date,
+                DatePlayed = DateTime.UtcNow.Date,
+                GameDefinitionId = 2,
+                GameDefinitionName = "some game definition name",
+                GamingGroupId = 3,
+                GamingGroupName = "some gaming group name",
+                PlayedGameId = 4,
+                PlayerGameResults = new List<PlayerGameResult>
+                {
+                    new PlayerGameResult
+                    {
+                        GameRank = 1,
+                        PlayerId = 2,
+                        PointsScored = 3,
+                        NemeStatsPointsAwarded = 4,
+                        Player = new Player
+                        {
+                            Name = "some player name"
+                        }
+                    }
+                }
+            };
+
+            var expectedResults = new List<PlayedGameSearchResult>
+            {
+                expectedSingleResult
+            };
+            var filterMessage = new PlayedGameFilterMessage();
+            autoMocker.Get<IPlayedGameRetriever>().Expect(
+                mock => mock.SearchPlayedGames(
+                Arg<PlayedGameFilter>.Is.Anything))
+                      .Return(expectedResults);
+
+            var actualResponse = autoMocker.ClassUnderTest.GetPlayedGames(filterMessage, 1);
+
+            var actualData = AssertThatApiAction.ReturnsThisTypeWithThisStatusCode<PlayedGameSearchResultsMessage>(actualResponse, HttpStatusCode.OK);
+            Assert.That(actualData.PlayedGames.Count, Is.EqualTo(1));
+            var actualSinglePlayedGame = actualData.PlayedGames[0];
+            Assert.That(actualSinglePlayedGame.BoardGameGeekObjectId, Is.EqualTo(expectedSingleResult.BoardGameGeekObjectId));
+            Assert.That(actualSinglePlayedGame.DateLastUpdated, Is.EqualTo(expectedSingleResult.DateLastUpdated.ToString("yyyy-MM-dd")));
+            Assert.That(actualSinglePlayedGame.DatePlayed, Is.EqualTo(expectedSingleResult.DatePlayed.ToString("yyyy-MM-dd")));
+            Assert.That(actualSinglePlayedGame.GameDefinitionId, Is.EqualTo(expectedSingleResult.GameDefinitionId));
+            Assert.That(actualSinglePlayedGame.GameDefinitionName, Is.EqualTo(expectedSingleResult.GameDefinitionName));
+            Assert.That(actualSinglePlayedGame.GamingGroupId, Is.EqualTo(expectedSingleResult.GamingGroupId));
+            Assert.That(actualSinglePlayedGame.GamingGroupName, Is.EqualTo(expectedSingleResult.GamingGroupName));
+            Assert.That(actualSinglePlayedGame.PlayedGameId, Is.EqualTo(expectedSingleResult.PlayedGameId));
+            Assert.That(actualSinglePlayedGame.PlayerGameResults[0].GameRank, Is.EqualTo(expectedSingleResult.PlayerGameResults[0].GameRank));
+            Assert.That(actualSinglePlayedGame.PlayerGameResults[0].NemeStatsPointsAwarded, Is.EqualTo(expectedSingleResult.PlayerGameResults[0].NemeStatsPointsAwarded));
+            Assert.That(actualSinglePlayedGame.PlayerGameResults[0].PlayerId, Is.EqualTo(expectedSingleResult.PlayerGameResults[0].PlayerId));
+            Assert.That(actualSinglePlayedGame.PlayerGameResults[0].PlayerName, Is.EqualTo(expectedSingleResult.PlayerGameResults[0].Player.Name));
+            Assert.That(actualSinglePlayedGame.PlayerGameResults[0].PointsScored, Is.EqualTo(expectedSingleResult.PlayerGameResults[0].PointsScored));
+            Assert.That(actualSinglePlayedGame.PlayerGameResults[0].NemeStatsPointsAwarded, Is.EqualTo(expectedSingleResult.PlayerGameResults[0].NemeStatsPointsAwarded));
         }
     }
 }

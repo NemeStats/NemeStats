@@ -105,9 +105,13 @@ namespace UI.Areas.Api.Controllers
             }
             var searchResults = playedGameRetriever.SearchPlayedGames(filter);
 
-            var searchResultsMessage = searchResults.Select(Mapper.Map<PlayedGameSearchResultMessage>).ToList();
+ 
+            var playedGamesSearchResultMessage = new PlayedGameSearchResultsMessage
+            {
+                PlayedGames = searchResults.Select(Mapper.Map<PlayedGameSearchResultMessage>).ToList()
+            };
 
-            return Request.CreateResponse(HttpStatusCode.OK, searchResultsMessage);
+            return Request.CreateResponse(HttpStatusCode.OK, playedGamesSearchResultMessage);
         }
 
         [ApiRoute("GamingGroups/{gamingGroupId}/PlayedGames/")]
