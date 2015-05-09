@@ -650,13 +650,13 @@ This service will create a new Game Definition in the specified Gaming Group.
     + Body
     
                 {
-                  "playerName" : "Some Sweet Player Name That Is Unique In This Gaming Group"
+                  "gameDefinitionName" : "Some Sweet Game Definition Name That Is Unique In This Gaming Group"
                 }
 
 + Response 200 (application/json)
 
                 {
-                  "playerId" : 105156
+                  "gameDefinitionId" : 105156
                 }
                 
 ## Update an existing Game Definition [PUT /GamingGroups/{gamingGroupId}/GameDefinitions/{gameDefinitionId}/]
