@@ -66,5 +66,31 @@ namespace UI.Areas.Api.Controllers
 
             return Request.CreateResponse(HttpStatusCode.OK, newlyCreatedGameDefinitionMessage);
         }
+
+        [ApiAuthentication]
+        [ApiModelValidation]
+        [ApiRoute("GamingGroups/{gamingGroupId}/GameDefinitions/{gameDefinitionId}/")]
+        [HttpPut]
+        public HttpResponseMessage UpdateGameDefinition(UpdateGameDefinitionMessage updateGameDefinitionMessage, int gameDefinitionId, int gamingGroupId)
+        {
+            if (updateGameDefinitionMessage == null)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "You must pass at least one valid parameter.");
+            }
+
+            var gameDefinitionUpdateRequest = new GameDefinitionUpdateRequest
+            {
+                Active = updateGameDefinitionMessage.Active,
+                Name = updateGameDefinitionMessage.GameDefinitionName,
+                BoardGameGeekObjectId = updateGameDefinitionMessage.BoardGameGeekObjectId,
+                GameDefinitionId = gameDefinitionId
+            };
+
+            var applicationUser = ActionContext.ActionArguments[ApiAuthenticationAttribute.ACTION_ARGUMENT_APPLICATION_USER] as ApplicationUser;
+
+            gameDefinitionSaver.UpdateGameDefinition(gameDefinitionUpdateRequest, applicationUser);
+
+            return Request.CreateResponse(HttpStatusCode.NoContent);
+        }
     }
 }

@@ -155,6 +155,7 @@
     <Compile Include="Logic\BoardGameGeek\DeSerializationModels\SearchResultModels.cs" />
     <Compile Include="Logic\Champions\ChampionRecalculator.cs" />
     <Compile Include="Logic\Email\EmailService.cs" />
+    <Compile Include="Logic\GameDefinitions\GameDefinitionUpdateRequest.cs" />
     <Compile Include="Logic\Points\PointsCalculator.cs" />
     <Compile Include="Logic\Points\GlobalPointsRecalculator.cs" />
     <Compile Include="Logic\TransactionSource.cs" />

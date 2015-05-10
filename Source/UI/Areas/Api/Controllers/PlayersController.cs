@@ -89,7 +89,7 @@ namespace UI.Areas.Api.Controllers
 
             playerSaver.UpdatePlayer(requestedPlayer, applicationUser);
 
-            return Request.CreateResponse(HttpStatusCode.NoContent, string.Empty);
+            return Request.CreateResponse(HttpStatusCode.NoContent);
         }
     }
 }

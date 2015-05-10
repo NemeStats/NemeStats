@@ -48,5 +48,13 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.PlayersControl
 
             AssertThatApiAction.HasThisError(actualResponse, HttpStatusCode.BadRequest, "You must pass at least one valid parameter.");
         }
+
+        [Test]
+        public void ItReturnsANoContentResponse()
+        {
+            var actualResults = autoMocker.ClassUnderTest.UpdatePlayer(new UpdatePlayerMessage(), 0, 0);
+
+            AssertThatApiAction.ReturnsANoContentResponseWithNoContent(actualResults);
+        }
     }
 }

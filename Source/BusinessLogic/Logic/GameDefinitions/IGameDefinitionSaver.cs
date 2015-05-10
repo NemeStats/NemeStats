@@ -24,5 +24,6 @@ namespace BusinessLogic.Logic.GameDefinitions
     public interface IGameDefinitionSaver
     {
         GameDefinition Save(GameDefinition gameDefinition, ApplicationUser currentUser);
+        void UpdateGameDefinition(GameDefinitionUpdateRequest gameDefinitionUpdateRequest, ApplicationUser applicationUser);
     }
 }

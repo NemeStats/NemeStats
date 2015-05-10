@@ -179,6 +179,8 @@
     <Compile Include="UnitTests\LogicTests\BoardGameGeekSearcherTests\SortSearchResultsTests.cs" />
     <Compile Include="UnitTests\LogicTests\ChampionsTests\ChampionRecalculatorTests\RecalculateAllChampionsTests.cs" />
     <Compile Include="UnitTests\LogicTests\ChampionsTests\ChampionRecalculatorTests\RecalculateChampionTests.cs" />
+    <Compile Include="UnitTests\LogicTests\GameDefinitionsTests\GameDefinitionSaverTests\GameDefinitionSaverTestBase.cs" />
+    <Compile Include="UnitTests\LogicTests\GameDefinitionsTests\GameDefinitionSaverTests\UpdateGameDefinitionTests.cs" />
     <Compile Include="UnitTests\LogicTests\GamingGroupsTests\GamingGroupRetrieverTests\GamingGroupRetrieverTestBase.cs" />
     <Compile Include="UnitTests\LogicTests\GamingGroupsTests\GamingGroupRetrieverTests\GetGamingGroupsForUserTests.cs" />
     <Compile Include="UnitTests\LogicTests\PlayedGamesTests\PlayedGameRetrieverTests\SearchPlayedGamesTests.cs" />

@@ -25,8 +25,14 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests
         {
             Assert.That(responseMessage.StatusCode, Is.EqualTo(expectedStatusCode));
             Assert.That(responseMessage.Content, Is.TypeOf(typeof(ObjectContent<T>)));
-            ObjectContent<T> content = responseMessage.Content as ObjectContent<T>;
+            var content = responseMessage.Content as ObjectContent<T>;
             return content.Value as T;
+        }
+
+        public static void ReturnsANoContentResponseWithNoContent(HttpResponseMessage responseMessage)
+        {
+            Assert.That(responseMessage.StatusCode, Is.EqualTo(HttpStatusCode.NoContent));
+            Assert.That(responseMessage.Content, Is.Null);
         }
     }
 }
