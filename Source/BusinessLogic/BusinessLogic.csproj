@@ -258,6 +258,10 @@
     <Compile Include="Migrations\201504201705047_FixedPointsScoredMisspelling.Designer.cs">
       <DependentUpon>201504201705047_FixedPointsScoredMisspelling.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201505102058077_MakeNameAUniqueConstraintOnGameDefinitionWithinGamingGroup.cs" />
+    <Compile Include="Migrations\201505102058077_MakeNameAUniqueConstraintOnGameDefinitionWithinGamingGroup.Designer.cs">
+      <DependentUpon>201505102058077_MakeNameAUniqueConstraintOnGameDefinitionWithinGamingGroup.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\GamingGroups\NewlyCreatedGamingGroupResult.cs" />
     <Compile Include="Models\GamingGroups\TopGamingGroupSummary.cs" />
     <Compile Include="Models\PlayedGames\IWinner.cs" />
@@ -616,6 +620,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201504201705047_FixedPointsScoredMisspelling.resx">
       <DependentUpon>201504201705047_FixedPointsScoredMisspelling.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201505102058077_MakeNameAUniqueConstraintOnGameDefinitionWithinGamingGroup.resx">
+      <DependentUpon>201505102058077_MakeNameAUniqueConstraintOnGameDefinitionWithinGamingGroup.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
