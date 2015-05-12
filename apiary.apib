@@ -3,17 +3,20 @@ HOST: https://nerdscorekeeper.azurewebsites.net/api/v1
 
 # NemeStats API
 
-NemeStats is a completely free and open source website for tracking the results of played games. 
-We've made the API completely accessible so you can push data in and pull data out. 
-This could be useful for building your own mobile app, pulling out data for analysis, or
-integrating with your own website.
+[NemeStats.com](http://nemestats.com/) is a completely free and open source website for tracking the results of played games. 
+We've made the API completely accessible so you can can use the NemeStats platform as your 
+repository for all of your played game statistics. Most of the data pushed into the platform is
+publicly accessible, but you can use the platform with no strings attached. 
+
+The API could be useful for building your own mobile app, pulling out data for analysis, or
+integrating with your own website or other application.
 
 ### General Information
 
-* Currently all services return data in the JSON format only
 * The API is versioned in the URL and will update whenever there are breaking changes to the API. 
 That is, if a single service has a breaking change then all of the services will still continue 
-to function on the old version, but the updated services would run through the new version. 
+to function on the old version, but all services (especially the updated ones) will be advanced to
+the new version. 
 Here is an example of a versioned endpoint: 
 
   `/api/v1/GamingGroup/1234`
@@ -21,23 +24,19 @@ Here is an example of a versioned endpoint:
 
   `/api/v{API version number}/{resource name}/{optional resource id}/{optional nested resource}/{optional nested resource id}`  
 
-  The simplest example would be GET /api/v1/GamingGroups (returns all Gaming Groups) and a more complex example might be `/api/v1/GamingGroups/1531/PlayedGames/5168839` (returns Played Game 5168839 under Gaming Group 1531).
+  An example would be GET /api/v1/GamingGroups/1/PlayedGames (returns all of the Played Game resources under
+  the Gaming Group with Id '1')
 * Resource names are plural (e.g. GaminGroups instead of GamingGroup)
 * Properties in request and response objects are camel-cased (e.g. playerId instead of PlayerId or playerid)
-* All services work only over HTTPS
 * For GET requests, additional parameters or filters will be passed in via query string (e.g. `/api/v1/GamingGroups/13/Playedgames?startDate=2015-02-03`)
 * For services that require authentication (namely ones that allow data to be changed via POST/PUT/DELETE), a header for "X-Auth-Token" will need to be sent on the request to ensure that the consumer has the appropriate access.
 * All dates will be in the ISO-8601 format ([wikipedia entry](http://en.wikipedia.org/wiki/ISO_8601)). In most cases this will just be the date portion in UTC (yyyy-MM-dd) with no time information included. For example: 2015-03-20
-* Endpoints that have no content returned (e.g. a DELETE request) will return an object with:
-
- ```JSON
-  `{ 
-        "message" : "The player was successfully deleted!" 
-    }`
-```
+* Currently all services return data in JSON format only
+* All services work only over HTTPS
 * HTTP Status Codes
-  * HTTP 200 will be returned on a normal success
-  * For services that require authorization (i.e. those that require an X-Auth-Token header), the service will return an HTTP 400 Bad Request response if the token is missing and an HTTP 401 Not Authorized response if the token is there, but is no longer valid.
+  * HTTP 200 or 204 will be returned on a normal success
+  * For services that require authorization (i.e. those that require an X-Auth-Token header), 
+  the service will return an HTTP 400 Bad Request response if the token is missing and an HTTP 401 Not Authorized response if the token is there, but is no longer valid.
   * HTTP 500 will be returned whenever there is an error on the server
   * Any other HTTP response codes will be explicitly documented in the respective service
 
