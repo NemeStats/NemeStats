@@ -72,10 +72,10 @@ subsequent requests to the service.
  requests to the API.
 
 ## Register a new User [POST]
-Register a new User and Gaming Group at the same time. Will also create a single 
-Player with the same name as the new User. A confirmation email will be sent to 
-the email address of the new User. Once a User account is created then requests can be made
-to the User Sessions resource to give back and authentication token.
+Register a new User and Gaming Group at the same time. Once a User account is created then requests can be made
+to the User Sessions resource to give back and authentication token. Registering a new User will
+also create a single Player with the same name as the new User. A confirmation email will be 
+sent to the email address of the new User. 
 
 + Attributes
     + emailAddress (string, required) - Email address of the User
@@ -178,13 +178,16 @@ A User Session is represented by an authentication token:
 # Gaming Group [/GamingGroups/]
 A Gaming Group represents a group of Players who play games together. The original User that registers
 will have a new Gaming Group automatically created and associated with their account. Other Users
-can be invited to join a Gaming Group and can even create additional Gaming Groups of their own.
-Gaming Groups have multiple nested resources: Players, GameDefinitions, and PlayedGames. These
-resources are described in more detail in their corresponding sections.
+can be invited (currently through the website only) to join a Gaming Group and can even create 
+additional Gaming Groups of their own. Gaming Groups have multiple nested resources: Players, 
+GameDefinitions, and PlayedGames. These resources are described in more detail in their 
+corresponding sections.
 
 # Played Games [/GamingGroups/{gamingGroupId}/PlayedGames/]
-A Played Game represents an event in which multiple Players were recorded as having played a given
-game (aka Game Definition in NemeStats terms).
+A Played Game represents an event in which multiple Players were recorded as having played a 
+given game (aka Game Definition in NemeStats terms). A Played Game houses information about
+who played the game, who won, how many points were awarded, etc. The Played Game is the foundation
+for all important statistics within NemeStats.
 
 + Attributes
     + playedGameId (number, required) - NemeStats unique identifier for the Played Game.
