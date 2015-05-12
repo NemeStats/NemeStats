@@ -58,16 +58,24 @@ Represents all of the data related to a particular Player's performance in a par
 
 # Group Authentication
 
-Resources related to Users and authentication.
+Some services within NemeStats are completely wide open and do not require any security to prevent
+unauthorized access. However, many services (such as those that post data to a Gaming Group) require
+a valid NemeStats User account which is then in turn used to get an authorization token (i.e. an X-Auth-Token)
+to send on the request header. The following services are related to creating User accounts (and hence 
+Gaming Groups) as well as creating a User Session which provides and authentication token to send on
+subsequent requests to the service.
 
 # User [/Users/]
  A User represents an individual account with its own credentials to log into NemeStats.
- A User can have more than Gaming Group and hence more than one Player associated with it.
+ A User can have more than Gaming Group and hence more than one Player associated with it. It is
+ necessary to create a User before you can request an authentication token to send on subsequent
+ requests to the API.
 
 ## Register a new User [POST]
 Register a new User and Gaming Group at the same time. Will also create a single 
 Player with the same name as the new User. A confirmation email will be sent to 
-the email address of the new User.
+the email address of the new User. Once a User account is created then requests can be made
+to the User Sessions resource to give back and authentication token.
 
 + Attributes
     + emailAddress (string, required) - Email address of the User
