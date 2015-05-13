@@ -78,9 +78,9 @@ also create a single Player with the same name as the new User. A confirmation e
 sent to the email address of the new User. 
 
 + Attributes
-    + emailAddress (string, required) - Email address of the User
-    + userName (string, required) - NemeStats username
-    + password (string, required) - NemeStats password
+    + emailAddress : someemail@mailinator.com (string, required) - Email address of the User
+    + userName : some username (string, required) - NemeStats username
+    + password : some new password (string, required) - NemeStats password
 
 + Request ValidUserName (application/json)
 
@@ -93,28 +93,20 @@ sent to the email address of the new User.
 + Response 200 (application/json)
     
     + Attributes
-        + userId (string, required) - NemeStats unique identifier of the newly registered user. May be
+        + userId : some user id (string, required) - NemeStats unique identifier of the newly registered user. May be
         used in the future to pull statistics for a given User (but currently has no use in the API).
-        + playerId (number, required) - NemeStats unique identifier for the corresponding Player 
+        + playerId : 7980 (number, required) - NemeStats unique identifier for the corresponding Player 
         that was created and associated with the newly created User.
-        + playerName (string, required) - The name of the Player that was just created. Defaults to
+        + playerName : some username (string, required) - The name of the Player that was just created. Defaults to
         the same name of the newly created User.
-        + gamingGroupId - The NemeStats unique identifier of the Gaming Group that was created as part
+        + gamingGroupId : 6326 (number, required) - The NemeStats unique identifier of the Gaming Group that was created as part
         of the User registration. The new User and Player are automatically placed in this Gaming Group.
         This id will be important for subsequent requests to the API and should definitely be stored
         client-side.
-        + gamingGroupName - The name of the newly created Gaming Group.
-        + authenticationToken - The token that should be sent in the X-Auth-Token request header on
+        + gamingGroupName : some username's Gaming Group (string, required) - The name of the newly created Gaming Group.
+        + authenticationToken : 6ce40b88\-d366\-4c5d-b60d\-cfbd9107bcd9 (string, required) - The token that should be sent in the X-Auth-Token request header on
         subsequent requests to the API that require authentication.
-        
-                {
-                    "userId" : "some user id",
-                    "playerId" : 7980,
-                    "playerName" : "some username",
-                    "gamingGroupId" : 6326,
-                    "gamingGroupName" : "some username's Gaming Group",
-                    "authenticationToken" : "6ce40b88-d366-4c5d-b60d-cfbd9107bcd9"
-                }
+    
 
 + Request AlreadyInUseUserName (application/json)
 
