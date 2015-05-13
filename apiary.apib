@@ -91,7 +91,22 @@ sent to the email address of the new User.
                 }
 
 + Response 200 (application/json)
-
+    
+    + Attributes
+        + userId (string, required) - NemeStats unique identifier of the newly registered user. May be
+        used in the future to pull statistics for a given User (but currently has no use in the API).
+        + playerId (number, required) - NemeStats unique identifier for the corresponding Player 
+        that was created and associated with the newly created User.
+        + playerName (string, required) - The name of the Player that was just created. Defaults to
+        the same name of the newly created User.
+        + gamingGroupId - The NemeStats unique identifier of the Gaming Group that was created as part
+        of the User registration. The new User and Player are automatically placed in this Gaming Group.
+        This id will be important for subsequent requests to the API and should definitely be stored
+        client-side.
+        + gamingGroupName - The name of the newly created Gaming Group.
+        + authenticationToken - The token that should be sent in the X-Auth-Token request header on
+        subsequent requests to the API that require authentication.
+        
                 {
                     "userId" : "some user id",
                     "playerId" : 7980,
