@@ -146,8 +146,7 @@ Authenticates the given User and gives back an authentication token which can be
 header on subsequent requests to the API that require authentication. This authentication token will be valid
 for an arbitrarily long amount of time (most likely > 1 week but not more than a few months).
 
-A User Session is represented by an authentication token:
-+ authenticationToken (string) - NemeStats unique identifier for the new User
+A User Session is represented by an authentication token.
 
 + Attributes
     + userName (string, required) - Username of the User being authenticated
@@ -163,9 +162,8 @@ A User Session is represented by an authentication token:
 
 + Response 200 (application/json)
 
-               {
-                  "authenticationToken" : "some awesome authentication token"
-               }
+    + Attributes    
+        + authenticationToken : some awesome token (string) - NemeStats unique identifier for the new User
 
 + Request InvalidCredentials (application/json)
                 
