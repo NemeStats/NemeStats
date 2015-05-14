@@ -206,19 +206,47 @@ for all important statistics within NemeStats.
 ## Create a new Played Game [POST]
 This service will record a new Played Game.
 
++ Attributes
+    + gameDefinitionId (number, required) - NemeStats unique identifier for the Game Definition (e.g. Race For the Galaxy's unique Id) of the Played Game.
+    + datePlayed (string, optional) - The date the game was played in yyyy-MM-dd format (e.g. 2015-04-29).
+    + notes (string, optional) - Any notes or comments that the User wants to record about the game for future reference.
+    + playerRanks (array[PlayerRank], required) - A collection of PlayerRank objects specifying the game rank and points scored for each Player. See below table for details.
+
 + Request ValidRequest (application/json)
 
     + Headers
             
             X-Auth-Token: some token
             
-    + Attributes
-        + gameDefinitionId : 1234 (number, required) - NemeStats unique identifier for the Game Definition (e.g. Race For the Galaxy's unique Id) of the Played Game.
-        + datePlayed : 2015-04-05 (string, optional) - The date the game was played in yyyy-MM-dd format (e.g. 2015-04-29).
-        + notes : Erica destroyed us with her harpy shoes of the bear-goddess (string, optional) - Any notes or comments that the User wants to record about the game for future reference.
-        + playerRanks (array[PlayerRank], required) - A collection of PlayerRank objects specifying the game rank and points scored for each Player. See below table for details.
-             
+    + Body
 
+                {
+                  "gameDefinitionId" : 1234,
+                  "datePlayed" : "2015-04-05",
+                  "notes" : "Erica destroyed us with her harpy shoes of the bear-goddess",
+                  "playerRanks" : [ 
+                      { 
+                        "playerId" : 456, 
+                        "gameRank" : 1, 
+                        "pointsScored" : 15 
+                      }, 
+                      { 
+                        "playerId" : 678, 
+                        "gameRank" : 2, 
+                        "pointsScored" : 13 
+                      }, 
+                      { 
+                        "playerId" : 356, 
+                        "gameRank" : 3, 
+                        "pointsScored" : 9 
+                      },
+                      { 
+                        "playerId" : 9175, 
+                        "gameRank" : 3, 
+                        "pointsScored" : 9 
+                      }
+                  ]
+                }
 
 + Response 200 (application/json)
 
