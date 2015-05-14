@@ -82,13 +82,7 @@ sent to the email address of the new User.
     + userName : some username (string, required) - NemeStats username
     + password : some new password (string, required) - NemeStats password
 
-+ Request ValidUserName (application/json)
-
-                {
-                  "emailAddress" : "someemail@mailinator.com",
-                  "userName" : "some username",
-                  "password" : "some new password"
-                }
++ Request Valid UserName (application/json)
 
 + Response 200 (application/json)
     
@@ -108,7 +102,7 @@ sent to the email address of the new User.
         subsequent requests to the API that require authentication.
     
 
-+ Request AlreadyInUseUserName (application/json)
++ Request Already In Use UserName (application/json)
 
                 {
                   "emailAddress" : "someemail@mailinator.com",
@@ -122,7 +116,7 @@ sent to the email address of the new User.
                     "message" : "Name 'some username' is already taken."
                 }
 
-+ Request AlreadyInUseEmail (application/json)
++ Request Already In Use Email (application/json)
 
                 {
                   "emailAddress" : "someemailthatisalreadytaken@mailinator.com",
@@ -148,17 +142,12 @@ for an arbitrarily long amount of time (most likely > 1 week but not more than a
 
 A User Session is represented by an authentication token.
 
-+ Attributes
-    + userName (string, required) - Username of the User being authenticated
-    + password (string, required) - Password of the User being authenticated
-
-
 + Request ValidCredentials (application/json)
                 
-                {
-                  "userName" : "some legit username",
-                  "password" : "some legit password"
-                }
+    + Attributes
+        + userName : some legit username (string, required) - Username of the User being authenticated
+        + password : some legit password (string, required) - Password of the User being authenticated
+
 
 + Response 200 (application/json)
 
@@ -212,7 +201,7 @@ This service will record a new Played Game.
     + notes (string, optional) - Any notes or comments that the User wants to record about the game for future reference.
     + playerRanks (array[PlayerRank], required) - A collection of PlayerRank objects specifying the game rank and points scored for each Player. See below table for details.
 
-+ Request ValidRequest (application/json)
++ Request Valid Request (application/json)
 
     + Headers
             
@@ -281,6 +270,17 @@ Retrieve a list of Played Games given some criteria.
             X-Auth-Token: some token
             
 + Response 200 (application/json)
+
+    + Attributes
+        + playedGameId (number, required) - NemeStats unique identifier for the Played Game.
+        + gameDefinitionId (number, required) - NemeStats unique identifier for the Game Definition of the Played Game.
+        + gameDefinitionName (string, required) - Name of the Game Definition.
+        + boardGameGeekObjectId (number, optional) - Board Game Geek unique identifier for the Game Definition.
+        + gamingGroupId (number, required) - NemeStats unique identifier of the Gaming Group against which this Played Game was recorded.
+        + gamingGroupName (string, required) - Name of the Gaming Group.
+        + datePlayed (string, required) - The date that the Played Game was recorded in yyyy-MM-dd format (e.g. 2015-05-013).
+        + dateLastUpdated (string, required) - The date that the Played Game was last updated in yyyy-MM-dd format (e.g. 2015-05-013). This will usually match the datePlayed unless the Played Game was updated at a later date.
+        + playerGameResults (PlayerGameResult, required) - A list of PlayerGameResult objects which contain information regarding each Player's rank, points scored, and NemeStats points awarded for playing the game.
 
             {  
                 "playedGames":[
