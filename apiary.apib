@@ -11,6 +11,8 @@ publicly accessible, but you can use the platform with no strings attached.
 The API could be useful for building your own mobile app, pulling out data for analysis, or
 integrating with your own website or other application.
 
+Feel free to email us at nemestats@gmail.com if you have questions or issues.
+
 ### General Information
 
 * The API is versioned in the URL and will update whenever there are breaking changes to the API. 
@@ -469,6 +471,9 @@ Retrieve a list of all Players in the given Gaming Group.
 ## Create a new Player [POST]
 This service will create a new Player in the specified Gaming Group.
 
++ Parameters
+    + gamingGroupId : 923 (number, required) - The NemeStats unique identifier for the Gaming Group of the Player.
+
 + Attributes
     + playerName (string, required) - The name of the Player in this Gaming Group.
 
@@ -584,6 +589,9 @@ This service will update a given Player in the given Gaming Group.
 A Game Definition represents a unique game (e.g. Race For The Galaxy, Candy Land, Axis and Allies, etc.) in a Gaming Group.
 Game Definitions may be linked with Board Game Geek (BGG) to facilitate integration with that site and to bring together
 a common unique identifier for board games across different Gaming Groups.
+
++ Parameters
+    + gamingGroupId : 923 (number, required) - The NemeStats unique identifier for the Gaming Group of the Player.
 
 + Attributes
     + gameDefinitionId (number, required) - NemeStats unique identifier for the given Game Definition.
