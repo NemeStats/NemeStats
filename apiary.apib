@@ -183,6 +183,9 @@ given game (aka Game Definition in NemeStats terms). A Played Game houses inform
 who played the game, who won, how many points were awarded, etc. The Played Game is the foundation
 for all important statistics within NemeStats.
 
++ Parameters
+    + gamingGroupId : 923 (number, required) - The NemeStats unique identifier for the Gaming Group of the Player.
+
 + Attributes
     + playedGameId (number, required) - NemeStats unique identifier for the Played Game.
     + gameDefinitionId (number, required) - NemeStats unique identifier for the Game Definition of the Played Game.
@@ -261,7 +264,6 @@ This service will record a new Played Game.
 Retrieve a list of Played Games given some criteria.
 
 + Parameters
-    + gamingGroupId : 923 (number, required) - The NemeStats unique identifier for the Gaming Group of the Player.
     + startDateGameLastUpdated : `2015-04-26` (string, optional) - If set, all Played Games returned will be greater than or equal to this date. Dates must be in yyyy-MM-dd format.
     + maximumNumberOfResults : 100 (number, optional) - The maximum number of results to be returned. The default is no limit.
         + Default: 1000000
