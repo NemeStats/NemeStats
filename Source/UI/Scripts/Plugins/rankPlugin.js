@@ -14,8 +14,8 @@
                 type: "GET",
                 url: settings.serviceGet + settings.votableFeatureId,
                 success: function (data) {
-                    upvoteValue = data.NumberOfUpvotes;
-                    downVoteValue = data.NumberOfDownvotes;
+                    upvoteValue = data.numberOfUpvotes;
+                    downVoteValue = data.numberOfDownvotes;
                 },
                 error: function (err) {
                     gotError = true;
