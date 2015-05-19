@@ -405,16 +405,12 @@ Retrieve a list of Played Games given some criteria.
                     "message" : "Invalid X-Auth-Token"
                 }
 
-## Delete an existing Played Game [DELETE /GamingGroups/{gamingGroupId}/Players/{playerId}/]
+## Delete an existing Played Game [DELETE /GamingGroups/{gamingGroupId}/PlayedGames/{playedGameId}/]
 This service will permanently delete a Played Game and re-adjust NemeStats statistics accordingly.
 
 + Parameters
-    + gamingGroupId : 923 (number, required) - The NemeStats unique identifier for the Gaming Group of the Player.
-    + playerId : 12345 (number, required) - The NemeStats unique identifier of a given Player.
-
-+ Attributes
-    + playerName (string, optional) - The name of the Player in this Gaming Group.
-    + active (boolean, optional) - Flag indicating whether the Player should be marked as active or inactive. Inactive Players will not show up in the NemeStats website.
+    + gamingGroupId : 923 (number, required) - The NemeStats unique identifier for the Gaming Group of the Played Game.
+    + playedGameId : 16098 (number, required) - The NemeStats unique identifier of a given Played Game.
 
 + Request Valid Request (application/json)
 
@@ -422,33 +418,7 @@ This service will permanently delete a Played Game and re-adjust NemeStats stati
             
             X-Auth-Token: some token
 
-    + Body
-    
-                {
-                  "playerName" : "Some Sweet Player Name That Is Unique In This Gaming Group",
-                  "active" : "true"
-                }
-
 + Response 204
-
-+ Request Invalid Request Name Already Exists (application/json)
-
-    + Headers
-            
-            X-Auth-Token: some token
-    + Body
-    
-                {
-                  "playerName" : "Some Player Name That Already Exists In The Gaming Group"
-                }               
-
-                
-+ Response 400 (application/json)
-
-                {
-                    "message" : "A Player with name 'Some Player Name That Already Exists In The Gaming Group' already exists in this Gaming Group."
-                }
-
                 
 + Response 400 (application/json)
 
@@ -465,7 +435,7 @@ This service will permanently delete a Played Game and re-adjust NemeStats stati
 + Response 404 (application/json)
 
                 {
-                    "message" : "A Player with playerId '12345' does not exist in this Gaming Group."
+                    "message" : "A Played Game with playedGameId '-1' does not exist in this Gaming Group."
                 } 
                 
 # Players [/GamingGroups/{gamingGroupId}/Players/]
