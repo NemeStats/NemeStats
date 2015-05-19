@@ -183,6 +183,9 @@ given game (aka Game Definition in NemeStats terms). A Played Game houses inform
 who played the game, who won, how many points were awarded, etc. The Played Game is the foundation
 for all important statistics within NemeStats.
 
+Currently, updating Played Games is not supported and requires that the game needing updates be deleted
+and then recreated using the corresponding services for this.
+
 + Parameters
     + gamingGroupId : 923 (number, required) - The NemeStats unique identifier for the Gaming Group of the Player.
 
@@ -404,6 +407,39 @@ Retrieve a list of Played Games given some criteria.
                 {
                     "message" : "Invalid X-Auth-Token"
                 }
+
+## Delete an existing Played Game [DELETE /GamingGroups/{gamingGroupId}/PlayedGames/{playedGameId}/]
+This service will permanently delete a Played Game and re-adjust NemeStats statistics accordingly.
+
++ Parameters
+    + gamingGroupId : 923 (number, required) - The NemeStats unique identifier for the Gaming Group of the Played Game.
+    + playedGameId : 16098 (number, required) - The NemeStats unique identifier of a given Played Game.
+
++ Request Valid Request (application/json)
+
+    + Headers
+            
+            X-Auth-Token: some token
+
++ Response 204
+                
++ Response 400 (application/json)
+
+                {
+                    "message" : "This action requires an X-Auth-Token header."
+                }
+
++ Response 401 (application/json)
+
+                {
+                    "message" : "Invalid X-Auth-Token"
+                }
+                
++ Response 404 (application/json)
+
+                {
+                    "message" : "A Played Game with playedGameId '-1' does not exist in this Gaming Group."
+                } 
                 
 # Players [/GamingGroups/{gamingGroupId}/Players/]
 A Player represents a person in a Gaming Group. A Player must be created to log games for that person. If a given person is in multiple
