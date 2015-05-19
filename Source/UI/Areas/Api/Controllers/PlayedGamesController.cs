@@ -26,15 +26,21 @@ namespace UI.Areas.Api.Controllers
         private readonly IPlayedGameRetriever playedGameRetriever;
         private readonly IExcelGenerator excelGenerator;
         private readonly IPlayedGameCreator playedGameCreator;
+        private readonly IPlayedGameDeleter playedGameDeleter;
 
 
         private MemoryStream exportMemoryStream;
 
-        public PlayedGamesController(IPlayedGameRetriever playedGameRetriever, IExcelGenerator excelGenerator, IPlayedGameCreator playedGameCreator)
+        public PlayedGamesController(
+            IPlayedGameRetriever playedGameRetriever, 
+            IExcelGenerator excelGenerator, 
+            IPlayedGameCreator playedGameCreator, 
+            IPlayedGameDeleter playedGameDeleter)
         {
             this.playedGameRetriever = playedGameRetriever;
             this.excelGenerator = excelGenerator;
             this.playedGameCreator = playedGameCreator;
+            this.playedGameDeleter = playedGameDeleter;
         }
 
         [ApiRoute("GamingGroups/{gamingGroupId}/PlayedGamesExcel")]
@@ -120,12 +126,7 @@ namespace UI.Areas.Api.Controllers
         [ApiModelValidation]
         public HttpResponseMessage RecordPlayedGame([FromBody]PlayedGameMessage playedGameMessage, [FromUri]int gamingGroupId)
         {
-            ApplicationUser applicationUser = ActionContext.ActionArguments[ApiAuthenticationAttribute.ACTION_ARGUMENT_APPLICATION_USER] as ApplicationUser;
-
-            if (gamingGroupId != applicationUser.CurrentGamingGroupId)
-            {
-                return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, ApiAuthenticationAttribute.ERROR_MESSAGE_INVALID_AUTH_TOKEN);
-            }
+            var applicationUser = ActionContext.ActionArguments[ApiAuthenticationAttribute.ACTION_ARGUMENT_APPLICATION_USER] as ApplicationUser;
 
             var newlyCompletedGame = BuildNewlyPlayedGame(playedGameMessage);
 
@@ -154,6 +155,19 @@ namespace UI.Areas.Api.Controllers
                 Notes = playedGameMessage.Notes,
                 PlayerRanks = playedGameMessage.PlayerRanks
             };
+        }
+
+        [ApiRoute("GamingGroups/{gamingGroupId}/PlayedGames/{playedGameID}")]
+        [HttpDelete]
+        [ApiAuthentication]
+        [ApiModelValidation]
+        public HttpResponseMessage DeletePlayedGame(int playedGameID, int gamingGroupId)
+        {
+            var applicationUser = ActionContext.ActionArguments[ApiAuthenticationAttribute.ACTION_ARGUMENT_APPLICATION_USER] as ApplicationUser;
+
+            playedGameDeleter.DeletePlayedGame(playedGameID, applicationUser);
+
+            return Request.CreateResponse(HttpStatusCode.NoContent);
         }
     }
 }

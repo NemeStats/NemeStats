@@ -44,19 +44,6 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.PlayedGamesCon
         }
 
         [Test]
-        public void ItReturnsAnHttp401NotAuthorizedIfTheGamingGroupIdDoesntMatchTheCurrentlyLoggedInUser()
-        {
-            var actualResponse = this.autoMocker.ClassUnderTest.RecordPlayedGame(this.playedGameMessage, -1);
-
-            Assert.That(actualResponse.Content, Is.TypeOf(typeof(ObjectContent<HttpError>)));
-            var content = actualResponse.Content as ObjectContent<HttpError>;
-            var httpError = content.Value as HttpError;
-            Assert.That(actualResponse.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
-            Assert.That(httpError.Message, Is.EqualTo(ApiAuthenticationAttribute.ERROR_MESSAGE_INVALID_AUTH_TOKEN));
-
-        }
-
-        [Test]
         public void ItRecordsThePlayedGameWithTheTransactionSourceSetToRestApi()
         {
             this.autoMocker.ClassUnderTest.RecordPlayedGame(this.playedGameMessage, this.applicationUser.CurrentGamingGroupId.Value);
@@ -73,6 +60,7 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.PlayedGamesCon
             DateTime expectedDateTime = new DateTime(2015, 4, 10);
 
             this.autoMocker.ClassUnderTest.RecordPlayedGame(this.playedGameMessage, this.applicationUser.CurrentGamingGroupId.Value);
+
             this.autoMocker.Get<IPlayedGameCreator>().AssertWasCalled(mock => mock.CreatePlayedGame(
                 Arg<NewlyCompletedGame>.Matches(x => x.DatePlayed.Date == expectedDateTime.Date),
                 Arg<TransactionSource>.Is.Anything,
