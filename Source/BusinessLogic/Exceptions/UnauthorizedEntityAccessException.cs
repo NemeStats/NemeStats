@@ -24,9 +24,9 @@ namespace BusinessLogic.Exceptions
     {
         internal const string EXCEPTION_MESSAGE_FORMAT = "User with Id '{0}' does not have access to entity of type '{1}' with Id '{2}";
 
-        private string userId;
-        private Type entityType;
-        private object entityId;
+        private readonly string userId;
+        private readonly Type entityType;
+        private readonly object entityId;
 
         public UnauthorizedEntityAccessException(string userId, Type entityType, object entityId)
         {

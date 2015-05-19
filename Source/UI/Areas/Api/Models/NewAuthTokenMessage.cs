@@ -1,5 +1,5 @@
 ﻿
-namespace UI.Models.API
+namespace UI.Areas.Api.Models
 {
     public class NewAuthTokenMessage
     {

@@ -15,28 +15,21 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace BusinessLogic.Exceptions
 {
-    public class EntityDoesNotExistException : KeyNotFoundException
+    public class EntityDoesNotExistException : ApiFriendlyException
     {
-        internal const string EXCEPTION_MESSAGE_FORMAT = "Entity with Id {0} does not exist.";
+        internal const string EXCEPTION_MESSAGE_FORMAT = "Entity of type '{0}' with Id '{1}' does not exist.";
 
-        private readonly object entityId;
-
-        public EntityDoesNotExistException(object entityId)
+        public EntityDoesNotExistException(Type entityType, object entityId)
+            : base(string.Format(EXCEPTION_MESSAGE_FORMAT, entityType.Name, entityId))
         {
-            this.entityId = entityId;
-        }
 
-        public override string Message
-        {
-            get
-            {
-                return string.Format(EXCEPTION_MESSAGE_FORMAT, entityId);
-            }
         }
     }
 }

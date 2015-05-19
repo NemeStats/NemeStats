@@ -29,6 +29,7 @@ using Newtonsoft.Json.Serialization;
 using RollbarSharp;
 using StructureMap;
 using StructureMap.Graph;
+using UI.Attributes;
 using UI.DependencyResolution;
 using UI.Areas.Api;
 
@@ -40,6 +41,7 @@ namespace UI.App_Start
         {
             config.Services.Replace(typeof(IHttpControllerActivator), new StructureMapServiceActivator(config));
             config.Services.Add(typeof(IExceptionLogger), new RollbarExceptionLogger());
+            config.Filters.Add(new ApiExceptionFilterAttribute());
             config.Formatters.JsonFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/html"));
             var jsonFormatter = config.Formatters.OfType<JsonMediaTypeFormatter>().First();
             jsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();

@@ -90,7 +90,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGamesTests
         public void ItThrowsAnEntityDoesNotExistExceptionIfTheIdIsInvalid()
         {
             int invalidId = -1;
-            EntityDoesNotExistException expectedException = new EntityDoesNotExistException(invalidId);
+            var expectedException = new EntityDoesNotExistException(typeof(PlayedGame), invalidId);
 
             using (NemeStatsDataContext dataContext = new NemeStatsDataContext())
             {

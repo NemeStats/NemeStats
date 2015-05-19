@@ -1,84 +1,145 @@
-﻿#region LICENSE
-// NemeStats is a free website for tracking the results of board games.
-//     Copyright (C) 2015 Jacob Gordon
-// 
-//     This program is free software: you can redistribute it and/or modify
-//     it under the terms of the GNU General Public License as published by
-//     the Free Software Foundation, either version 3 of the License, or
-//     (at your option) any later version.
-// 
-//     This program is distributed in the hope that it will be useful,
-//     but WITHOUT ANY WARRANTY; without even the implied warranty of
-//     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//     GNU General Public License for more details.
-// 
-//     You should have received a copy of the GNU General Public License
-//     along with this program.  If not, see <http://www.gnu.org/licenses/>
-#endregion
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿using System;
 using System.Net;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
-using BusinessLogic.Export;
 using BusinessLogic.Logic.PlayedGames;
 using BusinessLogic.Models;
 using BusinessLogic.Models.PlayedGames;
 using NUnit.Framework;
 using Rhino.Mocks;
-using StructureMap.AutoMocking;
+using System.Collections.Generic;
+using System.Net.Http;
 using UI.Areas.Api.Controllers;
-using UI.Models.PlayedGame;
+using UI.Areas.Api.Models;
 
 namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.PlayedGamesControllerTests
 {
     [TestFixture]
-    public class GetPlayedGamesTests
+    public class GetPlayedGamesTests : ApiControllerTestBase<PlayedGamesController>
     {
-        private RhinoAutoMocker<PlayedGamesController> autoMocker;
-
-        [SetUp]
-        public void SetUp()
+        [Test]
+        public void ItReturnsAnEmptyListIfThereAreNoResults()
         {
-            autoMocker = new RhinoAutoMocker<PlayedGamesController>();
+            var filterMessage = new PlayedGameFilterMessage();
+            autoMocker.Get<IPlayedGameRetriever>().Expect(
+                mock => mock.SearchPlayedGames(
+                Arg<PlayedGameFilter>.Is.Anything))
+                      .Return(new List<PlayedGameSearchResult>());
+
+            var actualResponse = autoMocker.ClassUnderTest.GetPlayedGames(filterMessage, 1);
+
+            var actualData = AssertThatApiAction.ReturnsThisTypeWithThisStatusCode<PlayedGameSearchResultsMessage>(actualResponse, HttpStatusCode.OK);
+            Assert.That(actualData.PlayedGames.Count, Is.EqualTo(0));
         }
 
         [Test]
-        public void GetPlayedGames_returns_an_excel_file_of_all_played_games_for_a_given_gaming_group()
+        public void ItFiltersOnStartDateGameLastUpdated()
         {
-            int gamingGroupId = 1;
-            List<PlayedGame> expectedPlayedGames = new List<PlayedGame>
+            var filterMessage = new PlayedGameFilterMessage
             {
-                new PlayedGame
+                StartDateGameLastUpdated = "2015-04-15"
+            };
+
+            autoMocker.Get<IPlayedGameRetriever>().Expect(
+                mock => mock.SearchPlayedGames(
+                Arg<PlayedGameFilter>.Is.Anything))
+                      .Return(new List<PlayedGameSearchResult>());
+
+            autoMocker.ClassUnderTest.GetPlayedGames(filterMessage, 1);
+
+            autoMocker.Get<IPlayedGameRetriever>().AssertWasCalled(mock => mock.SearchPlayedGames(
+                Arg<PlayedGameFilter>.Matches(filter => filter.StartDateGameLastUpdated == filterMessage.StartDateGameLastUpdated)));
+        }
+
+
+        [Test]
+        public void ItFiltersOnTheGamingGroupId()
+        {
+            const int EXPECTED_GAMING_GROUP_ID = 1;
+            autoMocker.Get<IPlayedGameRetriever>().Expect(
+                mock => mock.SearchPlayedGames(
+                Arg<PlayedGameFilter>.Is.Anything))
+                      .Return(new List<PlayedGameSearchResult>());
+
+            autoMocker.ClassUnderTest.GetPlayedGames(new PlayedGameFilterMessage(), EXPECTED_GAMING_GROUP_ID);
+
+            autoMocker.Get<IPlayedGameRetriever>().AssertWasCalled(mock => mock.SearchPlayedGames(
+                Arg<PlayedGameFilter>.Matches(filter => filter.GamingGroupId == EXPECTED_GAMING_GROUP_ID)));
+        }
+
+        [Test]
+        public void ItLimitsTheNumberOfResultsIfSpecified()
+        {
+            var filterMessage = new PlayedGameFilterMessage
+            {
+                MaximumNumberOfResults = 100
+            };
+
+            autoMocker.Get<IPlayedGameRetriever>().Expect(mock => mock.SearchPlayedGames(Arg<PlayedGameFilter>.Is.Anything))
+                .Return(new List<PlayedGameSearchResult>());
+
+            autoMocker.ClassUnderTest.GetPlayedGames(filterMessage, 1);
+
+            autoMocker.Get<IPlayedGameRetriever>().AssertWasCalled(mock => mock.SearchPlayedGames(
+                Arg<PlayedGameFilter>.Matches(filter => filter.MaximumNumberOfResults == filterMessage.MaximumNumberOfResults)));
+        }
+
+        [Test]
+        public void ItReturnsTheCorrectPlayedGames()
+        {
+            var expectedSingleResult = new PlayedGameSearchResult
+            {
+                BoardGameGeekObjectId = 1,
+                DateLastUpdated = DateTime.UtcNow.Date,
+                DatePlayed = DateTime.UtcNow.Date,
+                GameDefinitionId = 2,
+                GameDefinitionName = "some game definition name",
+                GamingGroupId = 3,
+                GamingGroupName = "some gaming group name",
+                PlayedGameId = 4,
+                PlayerGameResults = new List<PlayerGameResult>
                 {
-                    GameDefinition = new GameDefinition(),
-                    GamingGroup = new GamingGroup(),
-                    PlayerGameResults = new List<PlayerGameResult>()
+                    new PlayerGameResult
+                    {
+                        GameRank = 1,
+                        PlayerId = 2,
+                        PointsScored = 3,
+                        NemeStatsPointsAwarded = 4,
+                        Player = new Player
+                        {
+                            Name = "some player name"
+                        }
+                    }
                 }
             };
-            autoMocker.Get<IPlayedGameRetriever>().Expect(mock => mock.GetRecentGames(PlayedGamesController.MAX_PLAYED_GAMES_TO_EXPORT, gamingGroupId))
-                        .Return(expectedPlayedGames);
 
-            autoMocker.ClassUnderTest.GetPlayedGames(gamingGroupId);
+            var expectedResults = new List<PlayedGameSearchResult>
+            {
+                expectedSingleResult
+            };
+            var filterMessage = new PlayedGameFilterMessage();
+            autoMocker.Get<IPlayedGameRetriever>().Expect(
+                mock => mock.SearchPlayedGames(
+                Arg<PlayedGameFilter>.Is.Anything))
+                      .Return(expectedResults);
 
-            autoMocker.Get<IExcelGenerator>().AssertWasCalled(
-                mock => mock.GenerateExcelFile(Arg<List<PlayedGameExportModel>>.Is.Anything, Arg<MemoryStream>.Is.Anything));
-        }
+            var actualResponse = autoMocker.ClassUnderTest.GetPlayedGames(filterMessage, 1);
 
-        [Test]
-        public void GetPlayedGames_returns_a_not_found_response_when_there_are_no_played_games()
-        {
-            int gamingGroupId = 1;
-            List<PlayedGame> expectedPlayedGames = new List<PlayedGame>();
-            autoMocker.Get<IPlayedGameRetriever>().Expect(mock => mock.GetRecentGames(PlayedGamesController.MAX_PLAYED_GAMES_TO_EXPORT, gamingGroupId))
-                        .Return(expectedPlayedGames);
-
-            HttpResponseMessage response = autoMocker.ClassUnderTest.GetPlayedGames(gamingGroupId);
-
-            Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));
+            var actualData = AssertThatApiAction.ReturnsThisTypeWithThisStatusCode<PlayedGameSearchResultsMessage>(actualResponse, HttpStatusCode.OK);
+            Assert.That(actualData.PlayedGames.Count, Is.EqualTo(1));
+            var actualSinglePlayedGame = actualData.PlayedGames[0];
+            Assert.That(actualSinglePlayedGame.BoardGameGeekObjectId, Is.EqualTo(expectedSingleResult.BoardGameGeekObjectId));
+            Assert.That(actualSinglePlayedGame.DateLastUpdated, Is.EqualTo(expectedSingleResult.DateLastUpdated.ToString("yyyy-MM-dd")));
+            Assert.That(actualSinglePlayedGame.DatePlayed, Is.EqualTo(expectedSingleResult.DatePlayed.ToString("yyyy-MM-dd")));
+            Assert.That(actualSinglePlayedGame.GameDefinitionId, Is.EqualTo(expectedSingleResult.GameDefinitionId));
+            Assert.That(actualSinglePlayedGame.GameDefinitionName, Is.EqualTo(expectedSingleResult.GameDefinitionName));
+            Assert.That(actualSinglePlayedGame.GamingGroupId, Is.EqualTo(expectedSingleResult.GamingGroupId));
+            Assert.That(actualSinglePlayedGame.GamingGroupName, Is.EqualTo(expectedSingleResult.GamingGroupName));
+            Assert.That(actualSinglePlayedGame.PlayedGameId, Is.EqualTo(expectedSingleResult.PlayedGameId));
+            Assert.That(actualSinglePlayedGame.PlayerGameResults[0].GameRank, Is.EqualTo(expectedSingleResult.PlayerGameResults[0].GameRank));
+            Assert.That(actualSinglePlayedGame.PlayerGameResults[0].NemeStatsPointsAwarded, Is.EqualTo(expectedSingleResult.PlayerGameResults[0].NemeStatsPointsAwarded));
+            Assert.That(actualSinglePlayedGame.PlayerGameResults[0].PlayerId, Is.EqualTo(expectedSingleResult.PlayerGameResults[0].PlayerId));
+            Assert.That(actualSinglePlayedGame.PlayerGameResults[0].PlayerName, Is.EqualTo(expectedSingleResult.PlayerGameResults[0].Player.Name));
+            Assert.That(actualSinglePlayedGame.PlayerGameResults[0].PointsScored, Is.EqualTo(expectedSingleResult.PlayerGameResults[0].PointsScored));
+            Assert.That(actualSinglePlayedGame.PlayerGameResults[0].NemeStatsPointsAwarded, Is.EqualTo(expectedSingleResult.PlayerGameResults[0].NemeStatsPointsAwarded));
         }
     }
 }

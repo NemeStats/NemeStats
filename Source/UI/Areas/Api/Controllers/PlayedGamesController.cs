@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text;
 using System.Web.Http;
+using AutoMapper;
 using BusinessLogic.Export;
 using BusinessLogic.Logic;
 using BusinessLogic.Logic.PlayedGames;
@@ -22,7 +21,7 @@ namespace UI.Areas.Api.Controllers
 {
     public class PlayedGamesController : ApiController
     {
-         public const int MAX_PLAYED_GAMES_TO_EXPORT = 1000;
+        public const int MAX_PLAYED_GAMES_TO_EXPORT = 1000;
 
         private readonly IPlayedGameRetriever playedGameRetriever;
         private readonly IExcelGenerator excelGenerator;
@@ -38,9 +37,9 @@ namespace UI.Areas.Api.Controllers
             this.playedGameCreator = playedGameCreator;
         }
 
-        [ApiRoute("GamingGroups/{gamingGroupId}/PlayedGames")]
+        [ApiRoute("GamingGroups/{gamingGroupId}/PlayedGamesExcel")]
         [HttpGet]
-        public virtual HttpResponseMessage GetPlayedGames(int gamingGroupId)
+        public virtual HttpResponseMessage ExportPlayedGamesToExcel(int gamingGroupId)
         {
             var playedGames = playedGameRetriever.GetRecentGames(MAX_PLAYED_GAMES_TO_EXPORT, gamingGroupId);
 
@@ -91,30 +90,44 @@ namespace UI.Areas.Api.Controllers
             base.Dispose(disposing);
         }
 
-        [ApiRoute("GamingGroups/{gamingGroupId}/PlayedGames")]
+        [ApiRoute("GamingGroups/{gamingGroupId}/PlayedGames/")]
+        [HttpGet]
+        public HttpResponseMessage GetPlayedGames([FromBody]PlayedGameFilterMessage playedGameFilterMessage, [FromUri]int gamingGroupId)
+        {
+            var filter = new PlayedGameFilter
+            {
+                GamingGroupId = gamingGroupId
+            };
+            if(playedGameFilterMessage != null)
+            {
+                filter.StartDateGameLastUpdated = playedGameFilterMessage.StartDateGameLastUpdated;
+                filter.MaximumNumberOfResults = playedGameFilterMessage.MaximumNumberOfResults;
+            }
+            var searchResults = playedGameRetriever.SearchPlayedGames(filter);
+
+ 
+            var playedGamesSearchResultMessage = new PlayedGameSearchResultsMessage
+            {
+                PlayedGames = searchResults.Select(Mapper.Map<PlayedGameSearchResultMessage>).ToList()
+            };
+
+            return Request.CreateResponse(HttpStatusCode.OK, playedGamesSearchResultMessage);
+        }
+
+        [ApiRoute("GamingGroups/{gamingGroupId}/PlayedGames/")]
         [HttpPost]
         [ApiAuthentication]
-        public HttpResponseMessage RecordPlayedGame([FromBody]PlayedGameMessage playedGameMessage, [FromUri]int gamingGroupId, ApplicationUser applicationUser)
+        [ApiModelValidation]
+        public HttpResponseMessage RecordPlayedGame([FromBody]PlayedGameMessage playedGameMessage, [FromUri]int gamingGroupId)
         {
+            ApplicationUser applicationUser = ActionContext.ActionArguments[ApiAuthenticationAttribute.ACTION_ARGUMENT_APPLICATION_USER] as ApplicationUser;
+
             if (gamingGroupId != applicationUser.CurrentGamingGroupId)
             {
-                return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, ApiAuthenticationAttribute.UNAUTHORIZED_MESSAGE);
+                return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, ApiAuthenticationAttribute.ERROR_MESSAGE_INVALID_AUTH_TOKEN);
             }
 
-            DateTime datePlayed = DateTime.UtcNow;
-
-            if (!string.IsNullOrWhiteSpace(playedGameMessage.DatePlayed))
-            {
-                datePlayed = DateTime.ParseExact(playedGameMessage.DatePlayed, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None);
-            }
-
-            NewlyCompletedGame newlyCompletedGame = new NewlyCompletedGame
-            {
-                DatePlayed = datePlayed,
-                GameDefinitionId = playedGameMessage.GameDefinitionId,
-                Notes = playedGameMessage.Notes,
-                PlayerRanks = playedGameMessage.PlayerRanks
-            };
+            var newlyCompletedGame = BuildNewlyPlayedGame(playedGameMessage);
 
             PlayedGame playedGame = playedGameCreator.CreatePlayedGame(newlyCompletedGame, TransactionSource.RestApi, applicationUser);
             var newlyRecordedPlayedGameMessage = new NewlyRecordedPlayedGameMessage
@@ -123,6 +136,24 @@ namespace UI.Areas.Api.Controllers
             };
 
             return Request.CreateResponse(HttpStatusCode.OK, newlyRecordedPlayedGameMessage);
+        }
+
+        private static NewlyCompletedGame BuildNewlyPlayedGame(PlayedGameMessage playedGameMessage)
+        {
+            DateTime datePlayed = DateTime.UtcNow;
+
+            if (!string.IsNullOrWhiteSpace(playedGameMessage.DatePlayed))
+            {
+                datePlayed = DateTime.ParseExact(playedGameMessage.DatePlayed, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None);
+            }
+
+            return new NewlyCompletedGame
+            {
+                DatePlayed = datePlayed,
+                GameDefinitionId = playedGameMessage.GameDefinitionId,
+                Notes = playedGameMessage.Notes,
+                PlayerRanks = playedGameMessage.PlayerRanks
+            };
         }
     }
 }

@@ -26,6 +26,6 @@ namespace BusinessLogic.Models.Games
         public int PlayerId { get; set; }
         [Required]
         public int GameRank { get; set; }
-        public int PointsScored { get; set; }
+        public int? PointsScored { get; set; }
     }
 }

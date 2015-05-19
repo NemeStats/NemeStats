@@ -61,7 +61,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.GamingGroupInviteC
         public void ItThrowsAnEntityDoesNotExistExceptionIfTheInvitationDoesntExist()
         {
             BuildDataContextMock(true, false, true);
-            EntityDoesNotExistException expectedException = new EntityDoesNotExistException(invitationId);
+            var expectedException = new EntityDoesNotExistException(typeof(GamingGroupInvitation), invitationId);
 
             Exception actualException = Assert.Throws<EntityDoesNotExistException>(
                 () => gamingGroupInviteConsumer.AddNewUserToGamingGroup(currentUser.Id, invitationId));
@@ -73,7 +73,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.GamingGroupInviteC
         public void ItThrowsAnEntityDoesNotExistExceptionIfThePassedInUserDoesntExistYet()
         {
             BuildDataContextMock(false, true, true);
-            EntityDoesNotExistException expectedException = new EntityDoesNotExistException(currentUser.Id);
+            var expectedException = new EntityDoesNotExistException(typeof(ApplicationUser), currentUser.Id);
 
             Exception actualException = Assert.Throws<EntityDoesNotExistException>(
                 () => gamingGroupInviteConsumer.AddNewUserToGamingGroup(currentUser.Id, invitationId));
@@ -86,7 +86,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.GamingGroupInviteC
         {
             BuildDataContextMock(true, true, false);
 
-            EntityDoesNotExistException expectedException = new EntityDoesNotExistException(expectedInvitation.PlayerId);
+            var expectedException = new EntityDoesNotExistException(typeof(Player), expectedInvitation.PlayerId);
 
             Exception actualException = Assert.Throws<EntityDoesNotExistException>(
                 () => gamingGroupInviteConsumer.AddNewUserToGamingGroup(currentUser.Id, invitationId));

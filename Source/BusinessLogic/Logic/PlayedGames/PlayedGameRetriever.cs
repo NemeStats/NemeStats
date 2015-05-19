@@ -15,6 +15,9 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
+
+using System;
+using System.Globalization;
 using System.Security.Cryptography.X509Certificates;
 using BusinessLogic.DataAccess;
 using BusinessLogic.Exceptions;
@@ -24,6 +27,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using BusinessLogic.Models.PlayedGames;
+using BusinessLogic.Models.User;
 
 namespace BusinessLogic.Logic.PlayedGames
 {
@@ -71,7 +75,7 @@ namespace BusinessLogic.Logic.PlayedGames
 
             if (result == null)
             {
-                throw new EntityDoesNotExistException(playedGameId);
+                throw new EntityDoesNotExistException(typeof(PlayedGame), playedGameId);
             }
 
             result.PlayerGameResults = result.PlayerGameResults.OrderBy(playerGameResult => playerGameResult.GameRank).ToList();
@@ -98,6 +102,44 @@ namespace BusinessLogic.Logic.PlayedGames
                  DatePlayed = playedGame.DatePlayed
              }).Take(numberOfGames)
                                 .ToList();
+        }
+
+        public List<PlayedGameSearchResult> SearchPlayedGames(PlayedGameFilter playedGameFilter)
+        {
+            var queryable = (from playedGame in dataContext.GetQueryable<PlayedGame>()
+                                                           .OrderByDescending(game => game.DatePlayed)
+                                                           .ThenByDescending(game => game.DateCreated)
+                             select new PlayedGameSearchResult()
+                             {
+                                 PlayedGameId = playedGame.Id,
+                                 GameDefinitionId = playedGame.GameDefinitionId,
+                                 GameDefinitionName = playedGame.GameDefinition.Name,
+                                 BoardGameGeekObjectId = playedGame.GameDefinition.BoardGameGeekObjectId,
+                                 GamingGroupId = playedGame.GamingGroupId,
+                                 GamingGroupName = playedGame.GamingGroup.Name,
+                                 DatePlayed = playedGame.DatePlayed,
+                                 DateLastUpdated = playedGame.DateCreated,
+                                 PlayerGameResults = playedGame.PlayerGameResults
+                             });
+
+
+            if (playedGameFilter.GamingGroupId != null)
+            {
+                queryable = queryable.Where(query => query.GamingGroupId == playedGameFilter.GamingGroupId.Value);
+            }
+
+            if (playedGameFilter.MaximumNumberOfResults != null)
+            {
+                queryable = queryable.Take(playedGameFilter.MaximumNumberOfResults.Value);
+            }
+
+            if (!string.IsNullOrEmpty(playedGameFilter.StartDateGameLastUpdated))
+            {
+                DateTime startDate = DateTime.ParseExact(playedGameFilter.StartDateGameLastUpdated, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None);
+                queryable = queryable.Where(query => query.DateLastUpdated >= startDate.Date);
+            }
+
+            return queryable.ToList();
         }
     }
 }

@@ -14,7 +14,6 @@ using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security.Infrastructure;
 using UI.Areas.Api.Models;
 using UI.Attributes;
-using UI.Models.API;
 
 namespace UI.Areas.Api.Controllers
 {
@@ -29,7 +28,7 @@ namespace UI.Areas.Api.Controllers
             this.authTokenGenerator = authTokenGenerator;
         }
 
-        [ApiRoute("Users")]
+        [ApiRoute("Users/")]
         [HttpPost]
         public virtual async Task<HttpResponseMessage> RegisterNewUser(NewUserMessage newUserMessage)
         {

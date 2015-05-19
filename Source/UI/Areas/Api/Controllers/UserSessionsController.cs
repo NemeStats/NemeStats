@@ -6,8 +6,8 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using BusinessLogic.Logic.Users;
+using UI.Areas.Api.Models;
 using UI.Attributes;
-using UI.Models.API;
 
 namespace UI.Areas.Api.Controllers
 {
@@ -24,7 +24,7 @@ namespace UI.Areas.Api.Controllers
 
         [HttpPost]
         [ApiModelValidationAttribute]
-        [ApiRoute("UserSessions")]
+        [ApiRoute("UserSessions/")]
         public async Task<HttpResponseMessage> Login(CredentialsMessage credentialsMessage)
         {
             var user = await applicationUserManager.FindAsync(credentialsMessage.UserName, credentialsMessage.Password);

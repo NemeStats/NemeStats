@@ -26,8 +26,8 @@ using NUnit.Framework;
 using Rhino.Mocks;
 using StructureMap.AutoMocking;
 using UI.Areas.Api.Controllers;
+using UI.Areas.Api.Models;
 using UI.Models;
-using UI.Models.API;
 using UI.Transformations;
 
 namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests
@@ -65,7 +65,7 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests
         public void Get_ThrowsNotFoundHttpExceptionIfTheFeatureDoesntExist()
         {
             autoMocker.Get<IVotableFeatureRetriever>().Expect(mock => mock.RetrieveVotableFeature(Arg<string>.Is.Anything))
-                      .Throw(new EntityDoesNotExistException(""));
+                      .Throw(new EntityDoesNotExistException(typeof(VotableFeature), ""));
 
             HttpResponseException actualException = Assert.Throws<HttpResponseException>(() => autoMocker.ClassUnderTest.Get("feature that doesn't exist"));
             Assert.That(HttpStatusCode.NotFound, Is.EqualTo(actualException.Response.StatusCode));
@@ -92,7 +92,7 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests
         public void Post_ThrowsNotFoundHttpExceptionIfTheFeatureDoesntExist()
         {
             autoMocker.Get<IVotableFeatureVoter>().Expect(mock => mock.CastVote(Arg<string>.Is.Anything, Arg<bool>.Is.Anything))
-                      .Throw(new EntityDoesNotExistException(""));
+                      .Throw(new EntityDoesNotExistException(typeof(VotableFeature), ""));
 
             HttpResponseException actualException = Assert.Throws<HttpResponseException>(() => autoMocker.ClassUnderTest.Post(new FeatureVote()));
             Assert.That(HttpStatusCode.NotFound, Is.EqualTo(actualException.Response.StatusCode));

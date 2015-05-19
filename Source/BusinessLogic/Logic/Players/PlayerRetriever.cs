@@ -165,7 +165,7 @@ namespace BusinessLogic.Logic.Players
                 .Where(result => result.PlayerId == playerId)
                 //had to cast to handle the case where there is no data:
                 //http://stackoverflow.com/questions/6864311/the-cast-to-value-type-int32-failed-because-the-materialized-value-is-null
-                .Sum(playerGameResults => (int?)playerGameResults.GordonPoints) ?? 0;
+                .Sum(playerGameResults => (int?)playerGameResults.NemeStatsPointsAwarded) ?? 0;
 
             if (totalPoints.HasValue)
             {

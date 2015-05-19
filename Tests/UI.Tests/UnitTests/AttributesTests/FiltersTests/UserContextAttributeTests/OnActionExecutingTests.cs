@@ -30,6 +30,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security.DataProtection;
 using NUnit.Framework;
 using Rhino.Mocks;
+using UI.Attributes;
 using UI.Attributes.Filters;
 
 namespace UI.Tests.UnitTests.AttributesTests.FiltersTests.UserContextAttributeTests
@@ -43,20 +44,23 @@ namespace UI.Tests.UnitTests.AttributesTests.FiltersTests.UserContextAttributeTe
         private ApplicationUserManager userManager;
         private IUserStore<ApplicationUser> userStoreMock;
         private IDataProtectionProvider dataProtectionProviderMock;
+        private ClientIdCalculator clientIdCalculatorMock;
         private ApplicationUser applicationUser;
-        private string anonymousClientId = "anonymous client id";
         private NameValueCollection requestParameters;
 
         [SetUp]
         public void SetUp()
         {
-            this.actionExecutingContext = new ActionExecutingContext();
-            this.actionExecutingContext.ActionParameters = new Dictionary<string, object>();
+            this.actionExecutingContext = new ActionExecutingContext
+            {
+                ActionParameters = new Dictionary<string, object>()
+            };
             this.userStoreMock = MockRepository.GenerateMock<IUserStore<ApplicationUser>>();
             this.dataProtectionProviderMock = MockRepository.GenerateMock<IDataProtectionProvider>();
             var dataProtector = MockRepository.GenerateMock<IDataProtector>();
             this.dataProtectionProviderMock.Expect(mock => mock.Create(Arg<string>.Is.Anything)).Return(dataProtector);
             this.userManager = new ApplicationUserManager(this.userStoreMock, this.dataProtectionProviderMock);
+            clientIdCalculatorMock = MockRepository.GenerateMock<ClientIdCalculator>();
             //need to simulate like the parameter exists on the method
             this.actionExecutingContext.ActionParameters[UserContextAttribute.USER_CONTEXT_KEY] = null;
 
@@ -80,7 +84,6 @@ namespace UI.Tests.UnitTests.AttributesTests.FiltersTests.UserContextAttributeTe
             httpContextBase.Expect(mock => mock.Request)
                 .Return(requestBaseMock);
             this.requestParameters = new NameValueCollection();
-            this.requestParameters.Add(UserContextAttribute.REQUEST_PARAM_ANALYTICS_ID, this.anonymousClientId);
             requestBaseMock.Expect(mock => mock.Params)
                 .Return(this.requestParameters);
 
@@ -105,14 +108,14 @@ namespace UI.Tests.UnitTests.AttributesTests.FiltersTests.UserContextAttributeTe
                 .Repeat.Once()
                 .Return(false);
 
-            this.userContextActionFilter.OnActionExecuting(this.actionExecutingContext, this.userManager);
+            this.userContextActionFilter.OnActionExecuting(this.actionExecutingContext, this.userManager, this.clientIdCalculatorMock);
             Assert.IsInstanceOf<AnonymousApplicationUser>(this.actionExecutingContext.ActionParameters[UserContextAttribute.USER_CONTEXT_KEY]);
         }
 
         [Test]
         public void ItSetsTheUserConextActionParameterIfItIsntAlreadySet()
         {
-            this.userContextActionFilter.OnActionExecuting(this.actionExecutingContext, this.userManager);
+            this.userContextActionFilter.OnActionExecuting(this.actionExecutingContext, this.userManager, this.clientIdCalculatorMock);
 
             Assert.AreEqual(this.applicationUser, this.actionExecutingContext.ActionParameters[UserContextAttribute.USER_CONTEXT_KEY]);
         }
@@ -123,7 +126,7 @@ namespace UI.Tests.UnitTests.AttributesTests.FiltersTests.UserContextAttributeTe
             this.userContextActionFilter.RequiresGamingGroup = true;
             this.applicationUser.CurrentGamingGroupId = null;
 
-            this.userContextActionFilter.OnActionExecuting(this.actionExecutingContext, this.userManager);
+            this.userContextActionFilter.OnActionExecuting(this.actionExecutingContext, this.userManager, this.clientIdCalculatorMock);
 
             RouteValueDictionary dictionary = new RouteValueDictionary();
             dictionary.Add("Area", "");
@@ -139,7 +142,7 @@ namespace UI.Tests.UnitTests.AttributesTests.FiltersTests.UserContextAttributeTe
             this.userContextActionFilter.RequiresGamingGroup = true;
             this.applicationUser.CurrentGamingGroupId = 1;
 
-            this.userContextActionFilter.OnActionExecuting(this.actionExecutingContext, this.userManager);
+            this.userContextActionFilter.OnActionExecuting(this.actionExecutingContext, this.userManager, this.clientIdCalculatorMock);
 
             Assert.Null(this.actionExecutingContext.Result);
         }
@@ -150,7 +153,7 @@ namespace UI.Tests.UnitTests.AttributesTests.FiltersTests.UserContextAttributeTe
             this.userContextActionFilter.RequiresGamingGroup = false;
             this.applicationUser.CurrentGamingGroupId = null;
 
-            this.userContextActionFilter.OnActionExecuting(this.actionExecutingContext, this.userManager);
+            this.userContextActionFilter.OnActionExecuting(this.actionExecutingContext, this.userManager, this.clientIdCalculatorMock);
 
             Assert.Null(this.actionExecutingContext.Result);
         }
@@ -158,20 +161,13 @@ namespace UI.Tests.UnitTests.AttributesTests.FiltersTests.UserContextAttributeTe
         [Test]
         public void ItAddsTheAnonymousClientIdToTheUserIfItExists()
         {
-            this.userContextActionFilter.OnActionExecuting(this.actionExecutingContext, this.userManager);
+            const string EXPECTED_CLIENT_ID = "some client id";
+            clientIdCalculatorMock.Expect(mock => mock.GetClientId(actionExecutingContext.HttpContext.Request, applicationUser)).Return(EXPECTED_CLIENT_ID);
+
+            this.userContextActionFilter.OnActionExecuting(this.actionExecutingContext, this.userManager, this.clientIdCalculatorMock);
 
             ApplicationUser actualApplicationUser = (ApplicationUser)this.actionExecutingContext.ActionParameters[UserContextAttribute.USER_CONTEXT_KEY];
-            Assert.AreEqual(this.applicationUser.AnonymousClientId, actualApplicationUser.AnonymousClientId);
-        }
-
-        [Test]
-        public void ItSetsTheApplicationUsersAnonymousClientIdToSomeConstantIfItCannotBePulledFromTheCookie()
-        {
-            this.requestParameters.Clear();
-            this.userContextActionFilter.OnActionExecuting(this.actionExecutingContext, this.userManager);
-
-            ApplicationUser actualApplicationUser = (ApplicationUser)this.actionExecutingContext.ActionParameters[UserContextAttribute.USER_CONTEXT_KEY];
-            Assert.AreEqual(UniversalAnalyticsNemeStatsEventTracker.DEFAULT_ANONYMOUS_CLIENT_ID, actualApplicationUser.AnonymousClientId);
+            Assert.That(actualApplicationUser.AnonymousClientId, Is.EqualTo(EXPECTED_CLIENT_ID));
         }
     }
 }

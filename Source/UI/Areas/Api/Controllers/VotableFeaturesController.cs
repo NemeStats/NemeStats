@@ -15,20 +15,14 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
 using System.Web.Http;
 using AutoMapper;
 using BusinessLogic.Exceptions;
 using BusinessLogic.Logic.VotableFeatures;
 using BusinessLogic.Models;
+using UI.Areas.Api.Models;
 using UI.Models;
-using UI.Models.API;
 
 namespace UI.Areas.Api.Controllers
 {

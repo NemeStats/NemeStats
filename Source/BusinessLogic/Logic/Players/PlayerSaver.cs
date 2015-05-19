@@ -15,18 +15,17 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
-using System.Data.Entity.Infrastructure;
 using BusinessLogic.DataAccess;
 using BusinessLogic.EventTracking;
 using BusinessLogic.Exceptions;
+using BusinessLogic.Logic.Nemeses;
 using BusinessLogic.Models;
+using BusinessLogic.Models.Players;
 using BusinessLogic.Models.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using BusinessLogic.DataAccess.Repositories;
-using BusinessLogic.Logic.Nemeses;
 
 namespace BusinessLogic.Logic.Players
 {
@@ -43,14 +42,14 @@ namespace BusinessLogic.Logic.Players
             this.nemesisRecalculator = nemesisRecalculator;
         }
 
-        public Player Save(Player player, ApplicationUser currentUser)
+        public virtual Player Save(Player player, ApplicationUser currentUser)
         {
             ValidatePlayerIsNotNull(player);
             ValidatePlayerNameIsNotNullOrWhiteSpace(player.Name);
             ValidatePlayerWithThisNameDoesntAlreadyExist(player, currentUser);
             bool alreadyInDatabase = player.AlreadyInDatabase();
 
-            Player newPlayer = dataContext.Save<Player>(player, currentUser);
+            var newPlayer = dataContext.Save(player, currentUser);
             dataContext.CommitAllChanges();
 
             if (!alreadyInDatabase)
@@ -69,23 +68,24 @@ namespace BusinessLogic.Logic.Players
 
         private void ValidatePlayerWithThisNameDoesntAlreadyExist(Player player, ApplicationUser currentUser)
         {
-            if (!player.AlreadyInDatabase())
+            if (player.AlreadyInDatabase())
             {
-                Player existingPlayerWithThisName = this.dataContext.GetQueryable<Player>().FirstOrDefault(
-                                                                                       p => p.GamingGroupId == currentUser.CurrentGamingGroupId
-                                                                                            && p.Name == player.Name);
+                return;
+            }
+            Player existingPlayerWithThisName = this.dataContext.GetQueryable<Player>().FirstOrDefault(
+                                                                                                       p => p.GamingGroupId == currentUser.CurrentGamingGroupId
+                                                                                                            && p.Name == player.Name);
 
-                if (existingPlayerWithThisName != null)
-                {
-                    throw new PlayerAlreadyExistsException(existingPlayerWithThisName.Id);
-                } 
+            if (existingPlayerWithThisName != null)
+            {
+                throw new PlayerAlreadyExistsException(player.Name, existingPlayerWithThisName.Id);
             }
         }
 
         private void RecalculateNemeses(Player player, ApplicationUser currentUser)
         {
             List<int> playerIdsToRecalculate = (from thePlayer in this.dataContext.GetQueryable<Player>()
-                                                where thePlayer.Active == true
+                                                where thePlayer.Active
                                                       && thePlayer.Nemesis.NemesisPlayerId == player.Id
                                                 select thePlayer.Id).ToList();
 
@@ -108,6 +108,32 @@ namespace BusinessLogic.Logic.Players
             if (string.IsNullOrWhiteSpace(playerName))
             {
                 throw new ArgumentNullException("playerName");
+            }
+        }
+
+        public virtual void UpdatePlayer(UpdatePlayerRequest updatePlayerRequest, ApplicationUser applicationUser)
+        {
+            var player = dataContext.FindById<Player>(updatePlayerRequest.PlayerId);
+
+            bool somethingChanged = false;
+
+            if (updatePlayerRequest.Active.HasValue)
+            {
+                player.Active = updatePlayerRequest.Active.Value;
+
+                somethingChanged = true;
+            }
+
+            if (!string.IsNullOrWhiteSpace(updatePlayerRequest.Name))
+            {
+                player.Name = updatePlayerRequest.Name.Trim();
+
+                somethingChanged = true;
+            }
+
+            if (somethingChanged)
+            {
+                Save(player, applicationUser);
             }
         }
     }

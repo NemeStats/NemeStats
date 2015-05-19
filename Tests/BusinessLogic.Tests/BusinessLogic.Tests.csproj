@@ -156,6 +156,7 @@
     <Compile Include="IntegrationTests\LogicTests\GameDefinitionsTests\GameDefinitionRetrieverTests\GetAllGameDefinitionsIntegrationTests.cs" />
     <Compile Include="IntegrationTests\LogicTests\GameDefinitionsTests\GameDefinitionRetrieverTests\GetGameDefinitionDetailsIntegrationTests.cs" />
     <Compile Include="LocalAddin.cs" />
+    <Compile Include="UnitTests\DataAccessTests\NemeStatsDataContextTests\CommitAllChangesTests.cs" />
     <Compile Include="UnitTests\DataAccessTests\NemeStatsDataContextTests\DeleteByIdTests.cs" />
     <Compile Include="UnitTests\DataAccessTests\NemeStatsDataContextTests\FindByIdTests.cs" />
     <Compile Include="UnitTests\DataAccessTests\NemeStatsDataContextTests\NemeStatsDataContextTestBase.cs" />
@@ -178,10 +179,16 @@
     <Compile Include="UnitTests\LogicTests\BoardGameGeekSearcherTests\SortSearchResultsTests.cs" />
     <Compile Include="UnitTests\LogicTests\ChampionsTests\ChampionRecalculatorTests\RecalculateAllChampionsTests.cs" />
     <Compile Include="UnitTests\LogicTests\ChampionsTests\ChampionRecalculatorTests\RecalculateChampionTests.cs" />
+    <Compile Include="UnitTests\LogicTests\GameDefinitionsTests\GameDefinitionSaverTests\GameDefinitionSaverTestBase.cs" />
+    <Compile Include="UnitTests\LogicTests\GameDefinitionsTests\GameDefinitionSaverTests\UpdateGameDefinitionTests.cs" />
     <Compile Include="UnitTests\LogicTests\GamingGroupsTests\GamingGroupRetrieverTests\GamingGroupRetrieverTestBase.cs" />
     <Compile Include="UnitTests\LogicTests\GamingGroupsTests\GamingGroupRetrieverTests\GetGamingGroupsForUserTests.cs" />
+    <Compile Include="UnitTests\LogicTests\PlayedGamesTests\PlayedGameRetrieverTests\SearchPlayedGamesTests.cs" />
+    <Compile Include="UnitTests\LogicTests\PlayersTests\PlayerSaverTests\PlayerSaverTestBase.cs" />
+    <Compile Include="UnitTests\LogicTests\PlayersTests\PlayerSaverTests\UpdatePlayerTests.cs" />
     <Compile Include="UnitTests\LogicTests\PointsTests\PointsCalculatorTests.cs" />
     <Compile Include="UnitTests\LogicTests\UsersTests\ApplicationSignInManagerTests\GenerateAuthTokenTests.cs" />
+    <Compile Include="UnitTests\LogicTests\UsersTests\ApplicationUserManagerTests\ValidateAuthTokenTests.cs" />
     <Compile Include="UnitTests\LogicTests\UsersTests\GamingGroupContextSwitcherTests\SwitchGamingGroupContextTests.cs" />
     <Compile Include="UnitTests\LogicTests\UsersTests\GamingGroupInviteConsumerTests\AddNewUserToGamingGroupTests.cs" />
     <Compile Include="UnitTests\LogicTests\NemesesTests\NemesisHistoryRetrieverTests\GetNemesisHistoryTests.cs" />

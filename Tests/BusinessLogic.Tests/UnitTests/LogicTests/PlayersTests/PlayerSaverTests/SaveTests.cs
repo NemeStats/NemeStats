@@ -15,13 +15,10 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
-using System.Data.Entity.Core;
-using System.Data.SqlClient;
 using BusinessLogic.DataAccess;
-using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.EventTracking;
+using BusinessLogic.Exceptions;
 using BusinessLogic.Logic.Nemeses;
-using BusinessLogic.Logic.Players;
 using BusinessLogic.Models;
 using BusinessLogic.Models.User;
 using NUnit.Framework;
@@ -30,62 +27,18 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using BusinessLogic.Exceptions;
 
 namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerSaverTests
 {
     [TestFixture]
-    public class SaveTests
-    {
-        private IDataContext dataContextMock;
-        private INemeStatsEventTracker eventTrackerMock;
-        private INemesisRecalculator nemesisRecalculatorMock;
-        private PlayerSaver playerSaver;
-        private ApplicationUser currentUser;
-        private List<Player> players;
-        private Player playerThatAlreadyExists;
-        private int idOfPlayerThatAlreadyExists;
-            
-        [SetUp]
-        public void SetUp()
-        {
-            dataContextMock = MockRepository.GenerateMock<IDataContext>();
-            eventTrackerMock = MockRepository.GenerateMock<INemeStatsEventTracker>();
-            nemesisRecalculatorMock = MockRepository.GenerateMock<INemesisRecalculator>();
-            currentUser = new ApplicationUser
-            {
-                CurrentGamingGroupId = 12
-            };
-            this.playerThatAlreadyExists = new Player
-            {
-                Name = "the new player name"
-            };
-            idOfPlayerThatAlreadyExists = 9;
-            players = new List<Player>
-            {
-                new Player
-                {
-                    Id = idOfPlayerThatAlreadyExists,
-                    Name = this.playerThatAlreadyExists.Name,
-                    GamingGroupId = currentUser.CurrentGamingGroupId.Value
-                },
-                new Player
-                {
-                    Id = 2
-                }
-            };
-            dataContextMock.Expect(mock => mock.GetQueryable<Player>())
-                .Repeat.Once()
-                .Return(players.AsQueryable());
-            playerSaver = new PlayerSaver(dataContextMock, eventTrackerMock, nemesisRecalculatorMock);
-        }
-
+    public class SaveTests : PlayerSaverTestBase
+    { 
         [Test]
         public void ItThrowsAnArgumentNullExceptionIfThePlayerIsNull()
         {
-            ArgumentNullException expectedException = new ArgumentNullException("player");
+            var expectedException = new ArgumentNullException("player");
 
-            Exception exception = Assert.Throws<ArgumentNullException>(() => playerSaver.Save(null, currentUser));
+            Exception exception = Assert.Throws<ArgumentNullException>(() => autoMocker.ClassUnderTest.Save(null, currentUser));
 
             Assert.AreEqual(expectedException.Message, exception.Message);
         }
@@ -93,13 +46,13 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerSaverTests
         [Test]
         public void ItThrowsAnArgumentNullExceptionIfThePlayerNameIsWhitespace()
         {
-            Player player = new Player()
+            var player = new Player
             {
                 Name = "    "
             };
-            ArgumentNullException expectedException = new ArgumentNullException("playerName");
+            var expectedException = new ArgumentNullException("playerName");
 
-            Exception exception = Assert.Throws<ArgumentNullException>(() => playerSaver.Save(player, currentUser));
+            Exception exception = Assert.Throws<ArgumentNullException>(() => autoMocker.ClassUnderTest.Save(player, currentUser));
 
             Assert.AreEqual(expectedException.Message, exception.Message);
         }
@@ -107,14 +60,14 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerSaverTests
         [Test]
         public void ItSetsThePlayerName()
         {
-            Player player = new Player()
+            var player = new Player
             {
                 Name = "player name"
             };
 
-            playerSaver.Save(player, currentUser);
+            autoMocker.ClassUnderTest.Save(player, currentUser);
 
-            dataContextMock.AssertWasCalled(mock => mock.Save<Player>(
+            autoMocker.Get<IDataContext>().AssertWasCalled(mock => mock.Save(
                 Arg<Player>.Matches(savedPlayer => savedPlayer.Name == player.Name), 
                 Arg<ApplicationUser>.Is.Anything));
         }
@@ -122,32 +75,33 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerSaverTests
         [Test]
         public void TheNewPlayerIsActiveWhenCreated()
         {
-            playerSaver.Save(new Player() { Name = "player name" }, currentUser);
+            autoMocker.ClassUnderTest.Save(new Player
+            { Name = "player name" }, currentUser);
 
-            dataContextMock.AssertWasCalled(mock => mock.Save<Player>(
-                Arg<Player>.Matches(player => player.Active == true),
+            autoMocker.Get<IDataContext>().AssertWasCalled(mock => mock.Save(
+                Arg<Player>.Matches(player => player.Active),
                 Arg<ApplicationUser>.Is.Anything));
         }
 
         [Test]
         public void ItRecordsAPlayerCreatedEventIfThePlayerIsNew()
         {
-            Player player = MockRepository.GeneratePartialMock<Player>();
+            var player = MockRepository.GeneratePartialMock<Player>();
             player.Name = "player name";
             player.Expect(mock => mock.AlreadyInDatabase())
                 .Return(false);
 
-            playerSaver.Save(player, currentUser);
+            autoMocker.ClassUnderTest.Save(player, currentUser);
 
             try
             {
-                eventTrackerMock.AssertWasCalled(mock => mock.TrackPlayerCreation(currentUser));
+                autoMocker.Get<INemeStatsEventTracker>().AssertWasCalled(mock => mock.TrackPlayerCreation(currentUser));
             }catch(Exception)
             {
                 //since this happens in a task there can be a race condition where the test runs before this method is called. Hopefully this
                 // solves the problem
                 Thread.Sleep(200);
-                eventTrackerMock.AssertWasCalled(mock => mock.TrackPlayerCreation(currentUser));
+                autoMocker.Get<INemeStatsEventTracker>().AssertWasCalled(mock => mock.TrackPlayerCreation(currentUser));
 
             }
         }
@@ -155,82 +109,82 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerSaverTests
         [Test]
         public void ItDoesNotRecordAPlayerCreatedEventIfThePlayerIsNotNew()
         {
-            Player player = MockRepository.GenerateMock<Player>();
+            var player = MockRepository.GenerateMock<Player>();
             player.Name = "player name";
             player.Expect(mock => mock.AlreadyInDatabase())
                 .Return(true);
 
-            playerSaver.Save(player, currentUser);
+            autoMocker.ClassUnderTest.Save(player, currentUser);
 
-            eventTrackerMock.AssertWasNotCalled(mock => mock.TrackPlayerCreation(currentUser));
+            autoMocker.Get<INemeStatsEventTracker>().AssertWasNotCalled(mock => mock.TrackPlayerCreation(currentUser));
         }
 
         [Test]
         public void ItRecalculatesTheNemesisOfTheCurrentPlayersMinionsIfThePlayerIsGoingInactive()
         {
-            Player player = MockRepository.GeneratePartialMock<Player>();
+            var player = MockRepository.GeneratePartialMock<Player>();
             player.Name = "player name";
             player.Active = false;
             player.Id = 151516;
             player.Expect(mock => mock.AlreadyInDatabase())
                 .Return(true);
 
-            int expectedPlayerId1 = 1;
-            int expectedPlayerId2 = 2;
+            const int EXPECTED_PLAYER_ID1 = 1;
+            const int EXPECTED_PLAYER_ID2 = 2;
 
-            Player activeMinion1 = new Player()
+            var activeMinion1 = new Player
             {
-                Id = expectedPlayerId1
+                Id = EXPECTED_PLAYER_ID1
             };
-            Nemesis activeNemesis = new Nemesis()
+            var activeNemesis = new Nemesis
             { 
                 NemesisPlayerId = player.Id,
             };
             activeMinion1.Nemesis = activeNemesis;
 
-            Player activeMinion2 = new Player()
+            var activeMinion2 = new Player
             {
-                Id = expectedPlayerId2
+                Id = EXPECTED_PLAYER_ID2
             };
-            Nemesis secondActiveNemesis = new Nemesis()
+            var secondActiveNemesis = new Nemesis
             { 
                 NemesisPlayerId = player.Id,
             };
             activeMinion2.Nemesis = secondActiveNemesis;
 
-            Player inactiveMinion = new Player()
+            var inactiveMinion = new Player
             {
                 Id = -1,
                 Active = false
             };
-            Nemesis inactiveNemesis = new Nemesis()
+            var inactiveNemesis = new Nemesis
             { 
                 NemesisPlayerId = player.Id
             };
             inactiveMinion.Nemesis = inactiveNemesis;
 
-            IQueryable<Player> minionPlayers = new List<Player>()
+            var minionPlayers = new List<Player>
             {
                 activeMinion1,
                 activeMinion2,
                 inactiveMinion
-            }.AsQueryable<Player>();
+            }.AsQueryable();
 
-            dataContextMock.Expect(mock => mock.GetQueryable<Player>())
+            autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<Player>())
                 .Repeat.Any()
                 .Return(minionPlayers);
 
-            playerSaver.Save(player, currentUser);
-
-            nemesisRecalculatorMock.AssertWasCalled(mock => mock.RecalculateNemesis(activeMinion1.Id, currentUser));
-            nemesisRecalculatorMock.AssertWasCalled(mock => mock.RecalculateNemesis(activeMinion2.Id, currentUser));
-            nemesisRecalculatorMock.AssertWasNotCalled(mock => mock.RecalculateNemesis(inactiveMinion.Id, currentUser));
+            autoMocker.ClassUnderTest.Save(player, currentUser);
+            
+            autoMocker.Get<INemesisRecalculator>().AssertWasCalled(mock => mock.RecalculateNemesis(activeMinion1.Id, currentUser));
+            autoMocker.Get<INemesisRecalculator>().AssertWasCalled(mock => mock.RecalculateNemesis(activeMinion2.Id, currentUser));
+            autoMocker.Get<INemesisRecalculator>().AssertWasNotCalled(mock => mock.RecalculateNemesis(inactiveMinion.Id, currentUser));
         }
 
         [Test]
         public void ItDoesNotRecalculateTheNemesisOfTheCurrentPlayersMinionsIfThePlayerIsStillActive()
         {
-            Player player = MockRepository.GeneratePartialMock<Player>();
+            var player = MockRepository.GeneratePartialMock<Player>();
             player.Name = "player name";
             player.Active = true;
             player.Id = 151516;
@@ -238,25 +192,21 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerSaverTests
             player.Expect(mock => mock.AlreadyInDatabase())
                 .Return(true);
 
-            int currentPlayerMinionId1 = 10;
-            IQueryable<Nemesis> minionsOfInactivePlayer = new List<Nemesis>()
-            {
-                new Nemesis(){ NemesisPlayerId = player.Id, MinionPlayerId = currentPlayerMinionId1 },
-            }.AsQueryable<Nemesis>();
+            const int CURRENT_PLAYER_MINION_ID1 = 10;
 
-            dataContextMock.Expect(mock => mock.GetQueryable<Player>())
+            autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<Player>())
     .           Return(new List<Player>().AsQueryable());
 
-            playerSaver.Save(player, currentUser);
+            autoMocker.ClassUnderTest.Save(player, currentUser);
 
-            nemesisRecalculatorMock.AssertWasNotCalled(mock => mock.RecalculateNemesis(currentPlayerMinionId1, currentUser));
+            autoMocker.Get<INemesisRecalculator>().AssertWasNotCalled(mock => mock.RecalculateNemesis(CURRENT_PLAYER_MINION_ID1, currentUser));
         }
 
         [Test]
         public void ItThrowsAPlayerAlreadyExistsExceptionIfAttemptingToSaveAPlayerWithANameThatAlreadyExists()
         {    
-            PlayerAlreadyExistsException exception = Assert.Throws<PlayerAlreadyExistsException>(
-                () => playerSaver.Save(this.playerThatAlreadyExists, currentUser));
+            var exception = Assert.Throws<PlayerAlreadyExistsException>(
+                () => autoMocker.ClassUnderTest.Save(this.playerThatAlreadyExists, currentUser));
 
             Assert.AreEqual(idOfPlayerThatAlreadyExists, exception.ExistingPlayerId);
         }

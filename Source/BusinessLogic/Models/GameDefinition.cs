@@ -34,10 +34,13 @@ namespace BusinessLogic.Models
 
         public override int Id { get; set; }
 
+        [Index("IX_ID_AND_NAME", 1, IsUnique = true)]
         public override int GamingGroupId { get; set; }
 
         public int? BoardGameGeekObjectId { get; set; }
 
+        [StringLength(255)]
+        [Index("IX_ID_AND_NAME", 2, IsUnique = true)]
         [Required]
         public string Name { get; set; }
         public string Description { get; set; }

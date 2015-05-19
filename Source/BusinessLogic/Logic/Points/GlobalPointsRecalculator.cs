@@ -40,7 +40,7 @@ namespace BusinessLogic.Logic.Points
 
                 foreach (PlayerGameResult playerGameResult in playedGame.PlayerGameResults)
                 {
-                    playerGameResult.GordonPoints = newPoints[playerGameResult.PlayerId];
+                    playerGameResult.NemeStatsPointsAwarded = newPoints[playerGameResult.PlayerId];
                     dataContext.Save(playerGameResult, applicationUserForThisGamingGroup);
                 }
             }

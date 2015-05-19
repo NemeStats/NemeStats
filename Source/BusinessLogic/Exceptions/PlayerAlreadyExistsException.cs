@@ -16,20 +16,17 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace BusinessLogic.Exceptions
 {
-    public class PlayerAlreadyExistsException : Exception
+    public class PlayerAlreadyExistsException : ApiFriendlyException
     {
-        internal const string EXCEPTION_MESSAGE = "A Player with this name already exists.";
+        internal const string EXCEPTION_MESSAGE = "A Player with name '{0}' already exists in this Gaming Group.";
 
         public int ExistingPlayerId { get; set; }
 
-        public PlayerAlreadyExistsException(int existingPlayerId)
-            : base(EXCEPTION_MESSAGE)
+        public PlayerAlreadyExistsException(string playerName, int existingPlayerId)
+            : base(string.Format(EXCEPTION_MESSAGE, playerName))
         {
             ExistingPlayerId = existingPlayerId;
             

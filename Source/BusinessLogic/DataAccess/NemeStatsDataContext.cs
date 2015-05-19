@@ -147,7 +147,7 @@ namespace BusinessLogic.DataAccess
         {
             if (entity == null)
             {
-                throw new EntityDoesNotExistException(id);
+                throw new EntityDoesNotExistException(typeof(TEntity), id);
             }
         }
 

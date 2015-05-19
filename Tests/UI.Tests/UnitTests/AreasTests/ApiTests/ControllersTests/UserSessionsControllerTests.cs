@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Controllers;
 using UI.Areas.Api.Controllers;
-using UI.Models.API;
+using UI.Areas.Api.Models;
 using UI.Transformations;
 
 namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests
@@ -60,11 +60,7 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests
 
             HttpResponseMessage actualResponse = await autoMocker.ClassUnderTest.Login(credentialsMessage);
 
-            Assert.That(actualResponse.Content, Is.TypeOf(typeof(ObjectContent<HttpError>)));
-            var content = actualResponse.Content as ObjectContent<HttpError>;
-            var httpError = content.Value as HttpError;
-            Assert.That(actualResponse.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
-            Assert.That(httpError.Message, Is.EqualTo("Invalid credentials provided."));
+            AssertThatApiAction.HasThisError(actualResponse, HttpStatusCode.Unauthorized, "Invalid credentials provided.");
         }
 
         [Test]

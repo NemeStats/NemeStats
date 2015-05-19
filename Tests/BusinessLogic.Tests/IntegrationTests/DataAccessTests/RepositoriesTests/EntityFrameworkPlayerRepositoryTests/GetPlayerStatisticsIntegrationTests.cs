@@ -61,7 +61,7 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
                 {
                     if(playedGame.PlayerGameResults.Any(result => result.PlayerId == testPlayer1.Id))
                     {
-                        totalPoints += playedGame.PlayerGameResults.First(result => result.PlayerId == testPlayer1.Id).GordonPoints;
+                        totalPoints += playedGame.PlayerGameResults.First(result => result.PlayerId == testPlayer1.Id).NemeStatsPointsAwarded;
                     }
                 }
 

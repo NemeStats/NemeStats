@@ -15,7 +15,10 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
+
+using System;
 using System.Configuration;
+using System.Net;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
@@ -26,6 +29,8 @@ namespace UI
 {
     public partial class Startup
     {
+        private const string NEMESTATS_API_PATH = "api/";
+
         // For more information on configuring authentication, please visit http://go.microsoft.com/fwlink/?LinkId=301864
         public void ConfigureAuth(IAppBuilder app)
         {
@@ -33,8 +38,33 @@ namespace UI
             app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
                 AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
-                LoginPath = new PathString("/Account/Login")
+                LoginPath = new PathString("/Account/Login"),
+                Provider = new CookieAuthenticationProvider
+                {
+                    OnApplyRedirect = rd =>
+                    {
+                        if ((HttpStatusCode) rd.Response.StatusCode != HttpStatusCode.Unauthorized ||
+                            !rd.Request.Uri.AbsolutePath.ToLower().Contains(NEMESTATS_API_PATH))
+                        {
+                            rd.Response.Redirect(rd.RedirectUri);
+                        }
+                    }
+                }
             });
+
+            // AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
+            //LoginPath = new PathString("/Account/Login"),
+            //Provider = new CookieAuthenticationProvider
+            //{
+            //    OnApplyRedirect = ctx =>
+            //    {
+            //        if (!IsAjaxRequest(ctx.Request))
+            //        {
+            //            ctx.Response.Redirect(ctx.RedirectUri);
+            //        }
+            //    }
+            //}
+
             // Use a cookie to temporarily store information about a user logging in with a third party login provider
             app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
 

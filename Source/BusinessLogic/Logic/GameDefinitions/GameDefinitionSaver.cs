@@ -39,7 +39,7 @@ namespace BusinessLogic.Logic.GameDefinitions
             this.eventTracker = eventTracker;
         }
 
-        public GameDefinition Save(GameDefinition gameDefinition, ApplicationUser currentUser)
+        public virtual GameDefinition Save(GameDefinition gameDefinition, ApplicationUser currentUser)
         {
             ValidateGameDefinitionIsNotNull(gameDefinition);
             ValidateGameDefinitionNameIsNotNullOrWhitespace(gameDefinition.Name);
@@ -67,6 +67,28 @@ namespace BusinessLogic.Logic.GameDefinitions
             {
                 throw new ArgumentException(EXCEPTION_MESSAGE_GAME_DEFINITION_NAME_CANNOT_BE_NULL_OR_WHITESPACE);
             }
+        }
+
+        public virtual void UpdateGameDefinition(GameDefinitionUpdateRequest gameDefinitionUpdateRequest, ApplicationUser applicationUser)
+        {
+            var gameDefinition = dataContext.FindById<GameDefinition>(gameDefinitionUpdateRequest.GameDefinitionId);
+
+            if (gameDefinitionUpdateRequest.Active.HasValue)
+            {
+                gameDefinition.Active = gameDefinitionUpdateRequest.Active.Value;
+            }
+
+            if (!string.IsNullOrWhiteSpace(gameDefinitionUpdateRequest.Name))
+            {
+                gameDefinition.Name = gameDefinitionUpdateRequest.Name;
+            }
+
+            if (gameDefinitionUpdateRequest.BoardGameGeekObjectId.HasValue)
+            {
+                gameDefinition.BoardGameGeekObjectId = gameDefinitionUpdateRequest.BoardGameGeekObjectId;
+            }
+
+            this.Save(gameDefinition, applicationUser);
         }
     }
 }

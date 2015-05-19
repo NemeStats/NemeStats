@@ -28,28 +28,14 @@ using System.Linq;
 namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefinitionSaverTests
 {
     [TestFixture]
-    public class SaveTests
+    public class SaveTests : GameDefinitionSaverTestBase
     {
-        private IDataContext dataContextMock;
-        private INemeStatsEventTracker eventTrackerMock;
-        private GameDefinitionSaver gameDefinitionSaver;
-        private ApplicationUser currentUser;
-
-        [SetUp]
-        public void SetUp()
-        {
-            dataContextMock = MockRepository.GenerateMock<IDataContext>();
-            eventTrackerMock = MockRepository.GenerateMock<INemeStatsEventTracker>();
-            gameDefinitionSaver = new GameDefinitionSaver(dataContextMock, eventTrackerMock);
-            currentUser = new ApplicationUser();
-        }
-
         [Test]
         public void ItThrowsAnArgumentNullExceptionIfTheGameDefinitionIsNull()
         {
-            ArgumentNullException expectedException = new ArgumentNullException("gameDefinition");
+            var expectedException = new ArgumentNullException("gameDefinition");
 
-            Exception exception = Assert.Throws<ArgumentNullException>(() => gameDefinitionSaver.Save(null, currentUser));
+            Exception exception = Assert.Throws<ArgumentNullException>(() => autoMocker.ClassUnderTest.Save(null, currentUser));
 
             Assert.AreEqual(expectedException.Message, exception.Message);
         }
@@ -57,10 +43,11 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
         [Test]
         public void ItThrowsAnArgumentExceptionIfTheGameDefinitionNameIsNull()
         {
-            ArgumentException expectedException = new ArgumentException("gameDefinition.Name cannot be null or whitespace.");
-            GameDefinition gameDefinition = new GameDefinition() { Name = null };
+            var expectedException = new ArgumentException("gameDefinition.Name cannot be null or whitespace.");
+            var gameDefinition = new GameDefinition
+            { Name = null };
 
-            Exception exception = Assert.Throws<ArgumentException>(() => gameDefinitionSaver.Save(gameDefinition, currentUser));
+            Exception exception = Assert.Throws<ArgumentException>(() => autoMocker.ClassUnderTest.Save(gameDefinition, currentUser));
 
             Assert.AreEqual(expectedException.Message, exception.Message);
         }
@@ -68,14 +55,14 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
         [Test]
         public void ItThrowsAnArgumentExceptionIfTheGameDefinitionNameIsWhitespace()
         {
-            GameDefinition gameDefinition = new GameDefinition()
+            var gameDefinition = new GameDefinition
             {
                 Name = "    "
             };
-            ArgumentException expectedException = new ArgumentException("gameDefinition.Name cannot be null or whitespace.");
+            var expectedException = new ArgumentException("gameDefinition.Name cannot be null or whitespace.");
 
             Exception exception = Assert.Throws<ArgumentException>(
-                () => gameDefinitionSaver.Save(gameDefinition, currentUser));
+                () => autoMocker.ClassUnderTest.Save(gameDefinition, currentUser));
 
             Assert.AreEqual(expectedException.Message, exception.Message);
         }
@@ -83,14 +70,14 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
         [Test]
         public void ItSetsTheGameDefinitionName()
         {
-            GameDefinition gameDefinition = new GameDefinition()
+            var gameDefinition = new GameDefinition
             {
                 Name = "game definition name"
             };
 
-            gameDefinitionSaver.Save(gameDefinition, currentUser);
+            autoMocker.ClassUnderTest.Save(gameDefinition, currentUser);
 
-            dataContextMock.AssertWasCalled(mock => mock.Save<GameDefinition>(
+            autoMocker.Get<IDataContext>().AssertWasCalled(mock => mock.Save(
                 Arg<GameDefinition>.Matches(newGameDefinition => newGameDefinition.Name == gameDefinition.Name),
                 Arg<ApplicationUser>.Is.Anything));
         }
@@ -98,15 +85,15 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
         [Test]
         public void ItSetsTheGameDefinitionDescription()
         {
-            GameDefinition gameDefinition = new GameDefinition()
+            var gameDefinition = new GameDefinition
             {
                 Name = "game definition name",
                 Description = "game description"
             };
 
-            gameDefinitionSaver.Save(gameDefinition, currentUser);
+            autoMocker.ClassUnderTest.Save(gameDefinition, currentUser);
 
-            dataContextMock.AssertWasCalled(mock => mock.Save<GameDefinition>(
+            autoMocker.Get<IDataContext>().AssertWasCalled(mock => mock.Save(
                 Arg<GameDefinition>.Matches(newGameDefinition => newGameDefinition.Description == gameDefinition.Description),
                 Arg<ApplicationUser>.Is.Anything));
         }
@@ -114,28 +101,28 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
         [Test]
         public void ItRecordsAGameDefinitionCreatedEvent()
         {
-            GameDefinition gameDefinition = MockRepository.GeneratePartialMock<GameDefinition>();
+            var gameDefinition = MockRepository.GeneratePartialMock<GameDefinition>();
             gameDefinition.Name = "name";
             gameDefinition.Expect(mock => mock.AlreadyInDatabase())
                 .Return(false);
 
-            gameDefinitionSaver.Save(gameDefinition, currentUser);
+            autoMocker.ClassUnderTest.Save(gameDefinition, currentUser);
 
             //TODO this test has race conditions and may fail at random
-            eventTrackerMock.AssertWasCalled(mock => mock.TrackGameDefinitionCreation(currentUser, gameDefinition.Name));
+            autoMocker.Get<INemeStatsEventTracker>().AssertWasCalled(mock => mock.TrackGameDefinitionCreation(currentUser, gameDefinition.Name));
         }
 
         [Test]
         public void ItDoesNotRecordsAGameDefinitionCreatedEventIfTheGameDefinitionIsNotNew()
         {
-            GameDefinition gameDefinition = MockRepository.GeneratePartialMock<GameDefinition>();
+            var gameDefinition = MockRepository.GeneratePartialMock<GameDefinition>();
             gameDefinition.Name = "name";
             gameDefinition.Expect(mock => mock.AlreadyInDatabase())
                 .Return(true);
 
-            gameDefinitionSaver.Save(gameDefinition, currentUser);
+            autoMocker.ClassUnderTest.Save(gameDefinition, currentUser);
 
-            eventTrackerMock.AssertWasNotCalled(mock => mock.TrackGameDefinitionCreation(currentUser, gameDefinition.Name));
+            autoMocker.Get<INemeStatsEventTracker>().AssertWasNotCalled(mock => mock.TrackGameDefinitionCreation(currentUser, gameDefinition.Name));
         }
     }
 }

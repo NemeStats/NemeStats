@@ -85,7 +85,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.GamingGroupInviteC
         public void ItThrowsAnEntityNotFoundIfTheGamingGroupInvitationDoesNotExist()
         {
             this.SetupMocks(false, true, true, true);
-            var expectedException = new EntityDoesNotExistException(gamingGroupInvitationId);
+            var expectedException = new EntityDoesNotExistException(typeof(GamingGroupInvitation), gamingGroupInvitationId);
 
             Exception actualException = Assert.Throws<EntityDoesNotExistException>(
                 () => gamingGroupInviteConsumer.AddExistingUserToGamingGroup(this.gamingGroupInvitationId.ToString()));
@@ -94,11 +94,11 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.GamingGroupInviteC
         }
 
         [Test]
-        public void ItThrowsAnEntityNotFoundExceptionIfTheInvitedPlayerDoesNotExist()
+        public void ItThrowsAnEntityNotFoundExceptionIfTheInvitationDoesNotExist()
         {
             this.SetupMocks(true, false, true, true);
 
-            var expectedException = new EntityDoesNotExistException(invitation.RegisteredUserId);
+            var expectedException = new EntityDoesNotExistException(typeof(GamingGroupInvitation), invitation.RegisteredUserId);
 
             Exception actualException = Assert.Throws<EntityDoesNotExistException>(
                 () => gamingGroupInviteConsumer.AddExistingUserToGamingGroup(this.gamingGroupInvitationId.ToString()));

@@ -17,6 +17,7 @@
 #endregion
 using BusinessLogic.DataAccess;
 using BusinessLogic.DataAccess.Repositories;
+using BusinessLogic.DataAccess.Security;
 using BusinessLogic.EventTracking;
 using BusinessLogic.Logic.Champions;
 using BusinessLogic.Logic.Nemeses;
@@ -36,22 +37,31 @@ namespace BusinessLogic.Logic.PlayedGames
         private readonly INemeStatsEventTracker playedGameTracker;
         private readonly INemesisRecalculator nemesisRecalculator;
         private readonly IChampionRecalculator championRecalculator;
+        private readonly ISecuredEntityValidator<Player> securedEntityValidatorForPlayer;
+        private readonly ISecuredEntityValidator<GameDefinition> securedEntityValidatorForGameDefinition; 
 
         public PlayedGameCreator(
             IDataContext applicationDataContext, 
             INemeStatsEventTracker playedGameTracker, 
             INemesisRecalculator nemesisRecalculator,
-            IChampionRecalculator championRecalculator)
+            IChampionRecalculator championRecalculator, ISecuredEntityValidator<Player> securedEntityValidatorForPlayer, ISecuredEntityValidator<GameDefinition> securedEntityValidatorForGameDefinition)
         {
             this.dataContext = applicationDataContext;
             this.playedGameTracker = playedGameTracker;
             this.nemesisRecalculator = nemesisRecalculator;
             this.championRecalculator = championRecalculator;
+            this.securedEntityValidatorForPlayer = securedEntityValidatorForPlayer;
+            this.securedEntityValidatorForGameDefinition = securedEntityValidatorForGameDefinition;
         }
 
         //TODO need to have validation logic here (or on PlayedGame similar to what is on NewlyCompletedGame)
         public PlayedGame CreatePlayedGame(NewlyCompletedGame newlyCompletedGame, TransactionSource transactionSource, ApplicationUser currentUser)
         {
+            GameDefinition gameDefinition = dataContext.FindById<GameDefinition>(newlyCompletedGame.GameDefinitionId);
+            securedEntityValidatorForGameDefinition.ValidateAccess(gameDefinition, currentUser, typeof(GameDefinition), newlyCompletedGame.GameDefinitionId);
+
+            this.ValidateAccessToPlayers(newlyCompletedGame, currentUser);
+
             List<PlayerGameResult> playerGameResults = TransformNewlyCompletedGamePlayerRanksToPlayerGameResults(newlyCompletedGame);
 
             PlayedGame playedGame = TransformNewlyCompletedGameIntoPlayedGame(
@@ -74,6 +84,15 @@ namespace BusinessLogic.Logic.PlayedGames
             return playedGame;
         }
 
+        private void ValidateAccessToPlayers(NewlyCompletedGame newlyCompletedGame, ApplicationUser currentUser)
+        {
+            foreach (var playerRank in newlyCompletedGame.PlayerRanks)
+            {
+                Player player = this.dataContext.FindById<Player>(playerRank.PlayerId);
+                this.securedEntityValidatorForPlayer.ValidateAccess(player, currentUser, typeof(Player), player.Id);
+            }
+        }
+
         internal virtual List<PlayerGameResult> TransformNewlyCompletedGamePlayerRanksToPlayerGameResults(NewlyCompletedGame newlyCompletedGame)
         {
             var pointsDictionary = PointsCalculator.CalculatePoints(newlyCompletedGame.PlayerRanks);
@@ -83,7 +102,8 @@ namespace BusinessLogic.Logic.PlayedGames
                                         {
                                             PlayerId = playerRank.PlayerId,
                                             GameRank = playerRank.GameRank,
-                                            GordonPoints = pointsDictionary[playerRank.PlayerId]
+                                            NemeStatsPointsAwarded = pointsDictionary[playerRank.PlayerId],
+                                            PointsScored = playerRank.PointsScored
                                         })
                                         .ToList();
             return playerGameResults;

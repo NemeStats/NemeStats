@@ -15,20 +15,15 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using AutoMapper;
 using BusinessLogic.Models;
 using BusinessLogic.Models.GamingGroups;
+using BusinessLogic.Models.PlayedGames;
 using BusinessLogic.Models.User;
 using UI.Areas.Api.Models;
-using UI.Models.API;
+using UI.Models;
 using UI.Models.GameDefinitionModels;
 using UI.Models.GamingGroup;
-using UI.Models;
-using UI.Models.PlayedGame;
 
 namespace UI.Transformations
 {
@@ -41,6 +36,11 @@ namespace UI.Transformations
             Mapper.CreateMap<VotableFeature, VotableFeatureViewModel>(MemberList.Destination);
             Mapper.CreateMap<NewUserMessage, NewUser>(MemberList.Source);
             Mapper.CreateMap<NewlyRegisteredUser, NewlyRegisteredUserMessage>(MemberList.Source);
+            Mapper.CreateMap<PlayedGameSearchResult, PlayedGameSearchResultMessage>(MemberList.Destination)
+                  .ForSourceMember(x => x.PlayerGameResults, opt => opt.Ignore())
+                  .ForMember(x => x.DateLastUpdated, opt => opt.MapFrom(src => src.DateLastUpdated.ToString("yyyy-MM-dd")))
+                  .ForMember(x => x.DatePlayed, opt => opt.MapFrom(src => src.DatePlayed.ToString("yyyy-MM-dd")));
+            Mapper.CreateMap<PlayerGameResult, PlayerGameResultMessage>(MemberList.Destination);
         }
     }
 }
