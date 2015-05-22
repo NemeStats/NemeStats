@@ -218,5 +218,12 @@ namespace UI.Controllers
 		{
 			base.Dispose(disposing);
 		}
+
+        [HttpGet]
+        [Authorize]
+	    public ActionResult Edit(int gamingGroupID)
+	    {
+	        throw new NotImplementedException();
+	    }
 	}
 }

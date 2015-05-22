@@ -16,6 +16,7 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 using System.Web;
+using BusinessLogic.Logic.GamingGroups;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System.Linq;
@@ -33,15 +34,15 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
         {
             string gamingGroupName = "new gaming group name";
 
-            HttpStatusCodeResult httpStatusCodeResult = gamingGroupControllerPartialMock.UpdateGamingGroupName(gamingGroupName, currentUser) as HttpStatusCodeResult;
+            HttpStatusCodeResult httpStatusCodeResult = autoMocker.ClassUnderTest.UpdateGamingGroupName(gamingGroupName, currentUser) as HttpStatusCodeResult;
 
-            gamingGroupSaverMock.AssertWasCalled(saver => saver.UpdateGamingGroupName(gamingGroupName, currentUser));
+            autoMocker.Get<IGamingGroupSaver>().AssertWasCalled(saver => saver.UpdateGamingGroupName(gamingGroupName, currentUser));
         }
 
         [Test]
         public void ItReturnsAJsonResultWhenEverythingIsOk()
         {
-            JsonResult jsonResult = gamingGroupControllerPartialMock.UpdateGamingGroupName("gaming group name", currentUser) as JsonResult;
+            JsonResult jsonResult = autoMocker.ClassUnderTest.UpdateGamingGroupName("gaming group name", currentUser) as JsonResult;
 
             dynamic jsonData = jsonResult.Data;
             Assert.AreEqual((int)HttpStatusCode.OK, jsonData.StatusCode);
@@ -50,9 +51,9 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
         [Test]
         public void ItClearsTheGamingGroupCookieAfterRenaming()
         {
-            gamingGroupControllerPartialMock.UpdateGamingGroupName("gaming group name", currentUser);
+            autoMocker.ClassUnderTest.UpdateGamingGroupName("gaming group name", currentUser);
 
-            cookieHelperMock.AssertWasCalled(mock => mock.ClearCookie(
+            autoMocker.Get<ICookieHelper>().AssertWasCalled(mock => mock.ClearCookie(
                  Arg<NemeStatsCookieEnum>.Is.Equal(NemeStatsCookieEnum.gamingGroupsCookie),
                  Arg<HttpRequestBase>.Is.Anything,
                  Arg<HttpResponseBase>.Is.Anything));

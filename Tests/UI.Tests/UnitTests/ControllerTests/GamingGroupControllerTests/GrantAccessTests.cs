@@ -15,6 +15,8 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
+
+using BusinessLogic.DataAccess.GamingGroups;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System;
@@ -30,7 +32,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
         [Test]
         public void ItRedirectsToTheIndexAction()
         {
-            RedirectToRouteResult redirectResult = gamingGroupControllerPartialMock.GrantAccess(new GamingGroupViewModel(), currentUser) as RedirectToRouteResult;
+            RedirectToRouteResult redirectResult = autoMocker.ClassUnderTest.GrantAccess(new GamingGroupViewModel(), currentUser) as RedirectToRouteResult;
 
             Assert.AreEqual(MVC.GamingGroup.ActionNames.Index, redirectResult.RouteValues["action"]);
         }
@@ -42,12 +44,12 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
             {
                 InviteeEmail = string.Empty
             };
+            
+            autoMocker.ClassUnderTest.ViewData.ModelState.AddModelError("EmptyEmail", new Exception());
+            autoMocker.ClassUnderTest.GrantAccess(model, currentUser);
 
-            gamingGroupControllerPartialMock.ViewData.ModelState.AddModelError("EmptyEmail", new Exception());
-            gamingGroupControllerPartialMock.GrantAccess(model, currentUser);
-
-            Assert.IsFalse(gamingGroupControllerPartialMock.ModelState.IsValid); 
-            gamingGroupAccessGranterMock.AssertWasNotCalled(mock => mock.CreateInvitation(model.InviteeEmail, currentUser));
+            Assert.IsFalse(autoMocker.ClassUnderTest.ModelState.IsValid); 
+            autoMocker.Get<IGamingGroupAccessGranter>().AssertWasNotCalled(mock => mock.CreateInvitation(model.InviteeEmail, currentUser));
         }
 
         [Test]
@@ -58,12 +60,12 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
                 InviteeEmail = "abc@xyz.com"
             };
 
-            gamingGroupAccessGranterMock.Expect(mock => mock.CreateInvitation(model.InviteeEmail, currentUser))
+            autoMocker.Get<IGamingGroupAccessGranter>().Expect(mock => mock.CreateInvitation(model.InviteeEmail, currentUser))
                 .Repeat.Once();
 
-            gamingGroupControllerPartialMock.GrantAccess(model, currentUser);
+            autoMocker.ClassUnderTest.GrantAccess(model, currentUser);
 
-            gamingGroupAccessGranterMock.VerifyAllExpectations();
+            autoMocker.Get<IGamingGroupAccessGranter>().VerifyAllExpectations();
         }
     }
 }

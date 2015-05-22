@@ -15,6 +15,8 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
+
+using BusinessLogic.Logic.GamingGroups;
 using BusinessLogic.Models;
 using BusinessLogic.Models.GamingGroups;
 using NUnit.Framework;
@@ -23,7 +25,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using UI.Controllers;
+using UI.Controllers.Helpers;
 using UI.Models.GamingGroup;
+using UI.Transformations;
 
 namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
 {
@@ -44,20 +48,20 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
             };
             gamingGroupViewModel = new GamingGroupViewModel();
 
-            gamingGroupRetrieverMock.Expect(mock => mock.GetGamingGroupDetails(
+            autoMocker.Get<IGamingGroupRetriever>().Expect(mock => mock.GetGamingGroupDetails(
                 currentUser.CurrentGamingGroupId.Value,
                 GamingGroupController.MAX_NUMBER_OF_RECENT_GAMES))
                 .Repeat.Once()
                 .Return(gamingGroupSummary);
 
-            gamingGroupViewModelBuilderMock.Expect(mock => mock.Build(gamingGroupSummary, currentUser))
+            autoMocker.Get<IGamingGroupViewModelBuilder>().Expect(mock => mock.Build(gamingGroupSummary, currentUser))
                 .Return(gamingGroupViewModel);
         }
 
         [Test]
         public void ItReturnsTheIndexView()
         {
-            ViewResult viewResult = gamingGroupControllerPartialMock.Index(currentUser) as ViewResult;
+            ViewResult viewResult = autoMocker.ClassUnderTest.Index(currentUser) as ViewResult;
 
             Assert.AreEqual(MVC.GamingGroup.Views.Index, viewResult.ViewName);
         }
@@ -65,7 +69,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
         [Test]
         public void ItAddsAGamingGroupViewModelToTheView()
         {
-            ViewResult viewResult = gamingGroupControllerPartialMock.Index(currentUser) as ViewResult;
+            ViewResult viewResult = autoMocker.ClassUnderTest.Index(currentUser) as ViewResult;
 
             Assert.AreSame(gamingGroupViewModel, viewResult.Model);
         }
@@ -74,14 +78,14 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
         public void ItAddsTheRecentlyPlayedGamesMessageToTheViewBag()
         {
             string expectedMessage = "expected message";
-            showingXResultsMessageBuilderMock.Expect(mock => mock.BuildMessage(
+            autoMocker.Get<IShowingXResultsMessageBuilder>().Expect(mock => mock.BuildMessage(
                  GamingGroupController.MAX_NUMBER_OF_RECENT_GAMES,
                  gamingGroupSummary.PlayedGames.Count))
                      .Return(expectedMessage);
 
-            ViewResult viewResult = gamingGroupControllerPartialMock.Index(currentUser) as ViewResult;
+            ViewResult viewResult = autoMocker.ClassUnderTest.Index(currentUser) as ViewResult;
 
-            Assert.AreEqual(expectedMessage, gamingGroupControllerPartialMock.ViewBag.RecentGamesMessage);
+            Assert.AreEqual(expectedMessage, autoMocker.ClassUnderTest.ViewBag.RecentGamesMessage);
         }
     }
 }

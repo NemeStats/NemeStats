@@ -33,6 +33,8 @@ namespace BusinessLogic.Models
 
         public override int Id { get; set; }
         public string Name { get; set; }
+        public string PublicDescription { get; set; }
+        public string PublicGamingGroupWebsite { get; set; }
 
         public string OwningUserId { get; set; }
         public DateTime DateCreated { get; set; }

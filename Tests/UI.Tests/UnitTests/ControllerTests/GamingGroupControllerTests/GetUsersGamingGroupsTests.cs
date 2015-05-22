@@ -22,6 +22,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using BusinessLogic.Logic.GamingGroups;
 using BusinessLogic.Models;
 using BusinessLogic.Models.User;
 using Microsoft.Owin.Security.Provider;
@@ -53,14 +54,14 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
                     Id = currentUser.CurrentGamingGroupId.Value
                 }
             };
-            gamingGroupRetrieverMock.Expect(mock => mock.GetGamingGroupsForUser(Arg<ApplicationUser>.Is.Anything))
+            autoMocker.Get<IGamingGroupRetriever>().Expect(mock => mock.GetGamingGroupsForUser(Arg<ApplicationUser>.Is.Anything))
                 .Return(expectedGamingGroups);
         }
 
         [Test]
         public void ItReturnsAllGamingGroupsForTheUser()
         {
-            JsonResult jsonResult = gamingGroupControllerPartialMock.GetUsersGamingGroups(currentUser) as JsonResult;
+            JsonResult jsonResult = autoMocker.ClassUnderTest.GetUsersGamingGroups(currentUser) as JsonResult;
             dynamic jsonData = jsonResult.Data;
 
             Assert.That(jsonData[0].Id, Is.EqualTo(expectedGamingGroups[0].Id));
