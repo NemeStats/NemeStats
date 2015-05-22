@@ -38,7 +38,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 			var result = base.playedGameControllerPartialMock.Edit(editedGame, 1234, base.currentUser) as RedirectToRouteResult;
 
 			//--Assert
-			Assert.AreEqual("Edit", result.RouteValues["action"]);
+			Assert.AreEqual("UpdateGamingGroupName", result.RouteValues["action"]);
 		}
 
 		[Test]

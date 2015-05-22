@@ -55,7 +55,7 @@
             {
                 <div class="row">
                     <div class="col-sm-2 col-sm-offset-2">
-                        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new { @class = "btn btn-sm btn-primary" })
+                        @Html.ActionLink("UpdateGamingGroupName", "Edit", new { id = Model.Id }, new { @class = "btn btn-sm btn-primary" })
                     </div>
                 </div>
             }
@@ -182,7 +182,7 @@
                                     </a>
                                     @if (playedGameViewModel.UserCanEdit)
 									{
-										<a href="@Url.Action("Edit", "PlayedGame", new { id = playedGameViewModel.PlayedGameId })" title="Edit">
+										<a href="@Url.Action("Edit", "PlayedGame", new { id = playedGameViewModel.PlayedGameId })" title="UpdateGamingGroupName">
 											<i class="fa fa-pencil fa-2x"></i>
 										</a>
                                         <a href="@Url.Action("Delete", "PlayedGame", new { id = playedGameViewModel.PlayedGameId })" title="Delete">

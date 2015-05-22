@@ -26,14 +26,14 @@ using UI.Controllers.Helpers;
 namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
 {
     [TestFixture]
-    public class EditTests : GamingGroupControllerTestBase
+    public class UpdateGamingGroupNameTests : GamingGroupControllerTestBase
     {
         [Test]
         public void ItUpdatesTheGamingGroupName()
         {
             string gamingGroupName = "new gaming group name";
 
-            HttpStatusCodeResult httpStatusCodeResult = gamingGroupControllerPartialMock.Edit(gamingGroupName, currentUser) as HttpStatusCodeResult;
+            HttpStatusCodeResult httpStatusCodeResult = gamingGroupControllerPartialMock.UpdateGamingGroupName(gamingGroupName, currentUser) as HttpStatusCodeResult;
 
             gamingGroupSaverMock.AssertWasCalled(saver => saver.UpdateGamingGroupName(gamingGroupName, currentUser));
         }
@@ -41,7 +41,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
         [Test]
         public void ItReturnsAJsonResultWhenEverythingIsOk()
         {
-            JsonResult jsonResult = gamingGroupControllerPartialMock.Edit("gaming group name", currentUser) as JsonResult;
+            JsonResult jsonResult = gamingGroupControllerPartialMock.UpdateGamingGroupName("gaming group name", currentUser) as JsonResult;
 
             dynamic jsonData = jsonResult.Data;
             Assert.AreEqual((int)HttpStatusCode.OK, jsonData.StatusCode);
@@ -50,7 +50,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
         [Test]
         public void ItClearsTheGamingGroupCookieAfterRenaming()
         {
-            gamingGroupControllerPartialMock.Edit("gaming group name", currentUser);
+            gamingGroupControllerPartialMock.UpdateGamingGroupName("gaming group name", currentUser);
 
             cookieHelperMock.AssertWasCalled(mock => mock.ClearCookie(
                  Arg<NemeStatsCookieEnum>.Is.Equal(NemeStatsCookieEnum.gamingGroupsCookie),

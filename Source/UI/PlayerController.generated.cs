@@ -102,7 +102,7 @@ namespace UI.Controllers
             public readonly string ShowTopPlayers = "ShowTopPlayers";
             public readonly string ShowRecentNemesisChanges = "ShowRecentNemesisChanges";
             public readonly string Save = "Save";
-            public readonly string Edit = "Edit";
+            public readonly string Edit = "UpdateGamingGroupName";
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -115,7 +115,7 @@ namespace UI.Controllers
             public const string ShowTopPlayers = "ShowTopPlayers";
             public const string ShowRecentNemesisChanges = "ShowRecentNemesisChanges";
             public const string Save = "Save";
-            public const string Edit = "Edit";
+            public const string Edit = "UpdateGamingGroupName";
         }
 
 
@@ -173,7 +173,7 @@ namespace UI.Controllers
                 public readonly string _TopPlayersPartial = "_TopPlayersPartial";
                 public readonly string Create = "Create";
                 public readonly string Details = "Details";
-                public readonly string Edit = "Edit";
+                public readonly string Edit = "UpdateGamingGroupName";
                 public readonly string InvitePlayer = "InvitePlayer";
                 public readonly string RecentNemesisChanges = "RecentNemesisChanges";
                 public readonly string TopPlayers = "TopPlayers";
@@ -184,7 +184,7 @@ namespace UI.Controllers
             public readonly string _TopPlayersPartial = "~/Views/Player/_TopPlayersPartial.cshtml";
             public readonly string Create = "~/Views/Player/Create.cshtml";
             public readonly string Details = "~/Views/Player/Details.cshtml";
-            public readonly string Edit = "~/Views/Player/Edit.cshtml";
+            public readonly string Edit = "~/Views/Player/UpdateGamingGroupName.cshtml";
             public readonly string InvitePlayer = "~/Views/Player/InvitePlayer.cshtml";
             public readonly string RecentNemesisChanges = "~/Views/Player/RecentNemesisChanges.cshtml";
             public readonly string TopPlayers = "~/Views/Player/TopPlayers.cshtml";

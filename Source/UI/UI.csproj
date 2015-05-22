@@ -328,6 +328,7 @@
     <Compile Include="Models\ChampionViewModel.cs" />
     <Compile Include="Models\GameDefinitionModels\GameDefinitionSummaryViewModel.cs" />
     <Compile Include="Models\GameDefinitionModels\NewGameDefinitionViewModel.cs" />
+    <Compile Include="Models\GamingGroup\EditableGamingGroup.cs" />
     <Compile Include="Models\GamingGroup\GamingGroupPublicViewModel.cs" />
     <Compile Include="Models\IEditableViewModel.cs" />
     <Compile Include="Models\IGamingGroupAssignedViewModel.cs" />
@@ -679,6 +680,7 @@
     <Content Include="Views\PlayedGame\Edit.cshtml" />
     <Content Include="Views\PlayedGame\_PlayedGamesPlayerPartial.cshtml" />
     <Content Include="Views\PlayedGame\_PlayedGameFormPartial.cshtml" />
+    <Content Include="Views\GamingGroup\UpdateGamingGroupName.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Code\" />

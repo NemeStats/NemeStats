@@ -1,0 +1,8 @@
+﻿@model UI.Models.GamingGroup.EditableGamingGroup
+@{
+    ViewBag.Title = "UpdateGamingGroupName Gaming Group " + @Model.GamingGroupName;
+    Layout = MVC.Shared.Views._BaseLayout;
+}
+
+<h2>UpdateGamingGroupName</h2>
+@Html.TextBoxFor(model => model.GamingGroupName, new { @class = "form-control" })

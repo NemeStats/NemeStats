@@ -75,7 +75,7 @@ namespace UI.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public virtual System.Web.Mvc.ActionResult Edit()
+        public virtual System.Web.Mvc.ActionResult UpdateGamingGroupName()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Edit);
         }
@@ -117,7 +117,7 @@ namespace UI.Controllers
             public readonly string Details = "Details";
             public readonly string GetTopGamingGroups = "GetTopGamingGroups";
             public readonly string GrantAccess = "GrantAccess";
-            public readonly string Edit = "Edit";
+            public readonly string Edit = "UpdateGamingGroupName";
             public readonly string GetUsersGamingGroups = "GetUsersGamingGroups";
             public readonly string SwitchGamingGroups = "SwitchGamingGroups";
             public readonly string CreateNewGamingGroup = "CreateNewGamingGroup";
@@ -130,7 +130,7 @@ namespace UI.Controllers
             public const string Details = "Details";
             public const string GetTopGamingGroups = "GetTopGamingGroups";
             public const string GrantAccess = "GrantAccess";
-            public const string Edit = "Edit";
+            public const string Edit = "UpdateGamingGroupName";
             public const string GetUsersGamingGroups = "GetUsersGamingGroups";
             public const string SwitchGamingGroups = "SwitchGamingGroups";
             public const string CreateNewGamingGroup = "CreateNewGamingGroup";
@@ -278,7 +278,7 @@ namespace UI.Controllers
         partial void EditOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string gamingGroupName, BusinessLogic.Models.User.ApplicationUser currentUser);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult Edit(string gamingGroupName, BusinessLogic.Models.User.ApplicationUser currentUser)
+        public override System.Web.Mvc.ActionResult UpdateGamingGroupName(string gamingGroupName, BusinessLogic.Models.User.ApplicationUser currentUser)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Edit);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "gamingGroupName", gamingGroupName);

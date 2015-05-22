@@ -152,7 +152,7 @@ namespace UI.Controllers
 		[HttpPost]
 		[Authorize]
 		[UserContext]
-		public virtual ActionResult Edit(string gamingGroupName, ApplicationUser currentUser)
+		public virtual ActionResult UpdateGamingGroupName(string gamingGroupName, ApplicationUser currentUser)
 		{
 			try
 			{

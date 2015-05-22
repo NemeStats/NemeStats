@@ -213,7 +213,7 @@ namespace UI.Controllers
 			return new HttpStatusCodeResult(HttpStatusCode.NotModified);
 		}
 
-		// GET: /Player/Edit/5
+		// GET: /Player/UpdateGamingGroupName/5
 		[System.Web.Mvc.Authorize]
 		public virtual ActionResult Edit(int? id)
 		{
@@ -244,7 +244,7 @@ namespace UI.Controllers
 			return View(MVC.Player.Views.Edit, playerEditViewModel);
 		}
 
-		// POST: /Player/Edit/5
+		// POST: /Player/UpdateGamingGroupName/5
 		// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
 		// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
 		[System.Web.Mvc.Authorize]
