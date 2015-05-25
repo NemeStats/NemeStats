@@ -26,6 +26,7 @@ using NUnit.Framework;
 using Rhino.Mocks;
 using System.Collections.Generic;
 using System.Web.Mvc;
+using StructureMap.AutoMocking;
 using UI.Controllers;
 using UI.Controllers.Helpers;
 using UI.Models.PlayedGame;
@@ -35,17 +36,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 {
 	public class PlayedGameControllerTestBase
 	{
-		protected NemeStatsDataContext dataContext;
-		protected PlayedGameController playedGameController;
-		protected PlayedGameController playedGameControllerPartialMock;
-		protected IPlayedGameRetriever playedGameRetriever;
-		protected IPlayerRetriever playerRetrieverMock;
-		protected IPlayedGameDetailsViewModelBuilder playedGameDetailsBuilderMock;
-		protected IGameDefinitionRetriever gameDefinitionRetrieverMock;
-		protected IPlayedGameCreator playedGameCreatorMock;
-		protected IShowingXResultsMessageBuilder showingXResultsMessageBuilderMock;
-		protected IPlayedGameDeleter playedGameDeleterMock;
-		protected UrlHelper urlHelperMock;
+	    protected RhinoAutoMocker<PlayedGameController> autoMocker; 
 		protected string testUserName = "the test user name";
 		protected ApplicationUser currentUser;
 		protected List<GameDefinitionSummary> gameDefinitionSummaries;
@@ -59,45 +50,18 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 		[SetUp]
 		public virtual void TestSetUp()
 		{
-			dataContext = MockRepository.GenerateMock<NemeStatsDataContext>();
-			playedGameRetriever = MockRepository.GenerateMock<IPlayedGameRetriever>();
-			playerRetrieverMock = MockRepository.GenerateMock<IPlayerRetriever>();
-			playedGameDetailsBuilderMock = MockRepository.GenerateMock<IPlayedGameDetailsViewModelBuilder>();
-			gameDefinitionRetrieverMock = MockRepository.GenerateMock<IGameDefinitionRetriever>();
-			playedGameCreatorMock = MockRepository.GenerateMock<IPlayedGameCreator>();
-			showingXResultsMessageBuilderMock = MockRepository.GenerateMock<IShowingXResultsMessageBuilder>();
-			playedGameDeleterMock = MockRepository.GenerateMock<IPlayedGameDeleter>();
-			urlHelperMock = MockRepository.GenerateMock<UrlHelper>();
-			playedGameController = new Controllers.PlayedGameController(
-				dataContext,
-				playedGameRetriever,
-				playerRetrieverMock,
-				playedGameDetailsBuilderMock,
-				gameDefinitionRetrieverMock,
-				showingXResultsMessageBuilderMock,
-				playedGameCreatorMock,
-				playedGameDeleterMock);
-			playedGameController.Url = urlHelperMock;
-
-			playedGameControllerPartialMock = MockRepository.GeneratePartialMock<PlayedGameController>(
-				dataContext,
-				playedGameRetriever,
-				playerRetrieverMock,
-				playedGameDetailsBuilderMock,
-				gameDefinitionRetrieverMock,
-				showingXResultsMessageBuilderMock,
-				playedGameCreatorMock,
-				playedGameDeleterMock);
-			playedGameControllerPartialMock.Url = urlHelperMock;
+            autoMocker = new RhinoAutoMocker<PlayedGameController>();
 
 			currentUser = new ApplicationUser()
 			{
 				CurrentGamingGroupId = 1
 			};
 			gameDefinitionSummaries = new List<GameDefinitionSummary>();
-			gameDefinitionRetrieverMock.Expect(mock => mock.GetAllGameDefinitions(currentUser.CurrentGamingGroupId.Value))
+            autoMocker.Get<IGameDefinitionRetriever>().Expect(mock => mock.GetAllGameDefinitions(currentUser.CurrentGamingGroupId.Value))
 				.Repeat.Once()
 				.Return(gameDefinitionSummaries);
+
+		    autoMocker.ClassUnderTest.Url = MockRepository.GenerateMock<UrlHelper>();
 		}
 	}
 }

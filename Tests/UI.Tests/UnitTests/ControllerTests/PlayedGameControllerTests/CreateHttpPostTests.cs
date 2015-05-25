@@ -17,9 +17,11 @@
 #endregion
 
 using BusinessLogic.Logic;
+using BusinessLogic.Logic.PlayedGames;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
 using BusinessLogic.Models.User;
+using Microsoft.Owin.Security;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System.Collections.Generic;
@@ -36,12 +38,13 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 		public void ItRemainsOnTheCreatePageIfTheModelIsNotValid()
 		{
 			ViewResult expectedViewResult = new ViewResult();
-			playedGameControllerPartialMock.Expect(controller => controller.Create(currentUser))
+            autoMocker.PartialMockTheClassUnderTest();
+			autoMocker.ClassUnderTest.Expect(controller => controller.Create(currentUser))
 					.Repeat.Once()
 					.Return(expectedViewResult);
-			playedGameControllerPartialMock.ModelState.AddModelError("Test error", "this is a test error to make model state invalid");
+			autoMocker.ClassUnderTest.ModelState.AddModelError("Test error", "this is a test error to make model state invalid");
 
-			ViewResult actualResult = playedGameControllerPartialMock.Create(new NewlyCompletedGame(), currentUser) as ViewResult;
+			ViewResult actualResult = autoMocker.ClassUnderTest.Create(new NewlyCompletedGame(), currentUser) as ViewResult;
 
 			Assert.AreSame(expectedViewResult, actualResult);
 		}
@@ -56,15 +59,15 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 			};
 			string baseUrl = "base url";
 			string expectedUrl = baseUrl + "#" + GamingGroupController.SECTION_ANCHOR_RECENT_GAMES;
-			urlHelperMock.Expect(mock => mock.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name))
+            autoMocker.ClassUnderTest.Url.Expect(mock => mock.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name))
 					.Return(baseUrl);
-			ApplicationUser user = new ApplicationUser();
-			playedGameCreatorMock.Expect(x => x.CreatePlayedGame(
+
+            autoMocker.Get<IPlayedGameCreator>().Expect(x => x.CreatePlayedGame(
                 Arg<NewlyCompletedGame>.Is.Anything, 
                 Arg<TransactionSource>.Is.Anything,
                 Arg<ApplicationUser>.Is.Anything)).Repeat.Once();
 
-			RedirectResult redirectResult = playedGameController.Create(playedGame, null) as RedirectResult;
+			RedirectResult redirectResult = autoMocker.ClassUnderTest.Create(playedGame, null) as RedirectResult;
 
 			Assert.AreEqual(expectedUrl, redirectResult.Url);
 		}
@@ -78,13 +81,12 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 				PlayerRanks = new List<PlayerRank>()
 			};
 			string baseUrl = "base url";
-			string expectedUrl = baseUrl + "#" + GamingGroupController.SECTION_ANCHOR_RECENT_GAMES;
-			urlHelperMock.Expect(mock => mock.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name))
+			autoMocker.ClassUnderTest.Url.Expect(mock => mock.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name))
 					.Return(baseUrl);
 
-			playedGameController.Create(newlyCompletedGame, null);
+			autoMocker.ClassUnderTest.Create(newlyCompletedGame, null);
 
-			playedGameCreatorMock.AssertWasCalled(mock => mock.CreatePlayedGame(
+			autoMocker.Get<IPlayedGameCreator>().AssertWasCalled(mock => mock.CreatePlayedGame(
                 Arg<NewlyCompletedGame>.Is.Equal(newlyCompletedGame),
                 Arg<TransactionSource>.Is.Anything,
 				Arg<ApplicationUser>.Is.Anything));
@@ -99,9 +101,9 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 				PlayerRanks = new List<PlayerRank>()
 			};
 
-			playedGameController.Create(newlyCompletedGame, currentUser);
+			autoMocker.ClassUnderTest.Create(newlyCompletedGame, currentUser);
 
-			playedGameCreatorMock.AssertWasCalled(logic => logic.CreatePlayedGame(
+			autoMocker.Get<IPlayedGameCreator>().AssertWasCalled(logic => logic.CreatePlayedGame(
 				Arg<NewlyCompletedGame>.Is.Anything,
                 Arg<TransactionSource>.Is.Anything,
 				Arg<ApplicationUser>.Is.Equal(this.currentUser)));

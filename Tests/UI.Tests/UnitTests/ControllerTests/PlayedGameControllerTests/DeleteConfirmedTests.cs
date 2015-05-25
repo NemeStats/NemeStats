@@ -15,6 +15,8 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
+
+using BusinessLogic.Logic.PlayedGames;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System.Linq;
@@ -28,9 +30,9 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
         public void ItDeletesThePlayedGame()
         {
             int playedGameId = 6;
-            playedGameController.DeleteConfirmed(playedGameId, currentUser);
-            
-            playedGameDeleterMock.AssertWasCalled(mock => mock.DeletePlayedGame(playedGameId, currentUser));
+            autoMocker.ClassUnderTest.DeleteConfirmed(playedGameId, currentUser);
+
+            autoMocker.Get<IPlayedGameDeleter>().AssertWasCalled(mock => mock.DeletePlayedGame(playedGameId, currentUser));
         }
     }
 }

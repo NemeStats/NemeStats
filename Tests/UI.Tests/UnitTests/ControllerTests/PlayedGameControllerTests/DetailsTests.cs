@@ -15,6 +15,8 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
+
+using BusinessLogic.Logic.PlayedGames;
 using NUnit.Framework;
 using System.Linq;
 using System.Net;
@@ -22,6 +24,7 @@ using System.Web.Mvc;
 using Rhino.Mocks;
 using BusinessLogic.Models;
 using UI.Models.PlayedGame;
+using UI.Transformations;
 
 namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 {
@@ -31,13 +34,13 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
         [Test]
         public void ItNeverReturnsNull()
         {
-            Assert.NotNull(playedGameController.Details(null, null));
+            Assert.NotNull(autoMocker.ClassUnderTest.Details(null, null));
         }
 
         [Test]
         public void ItReturnsBadHttpStatusWhenNoPlayedGameIdGiven()
         {
-            HttpStatusCodeResult actualResult = playedGameController.Details(null, null) as HttpStatusCodeResult;
+            HttpStatusCodeResult actualResult = autoMocker.ClassUnderTest.Details(null, null) as HttpStatusCodeResult;
 
             Assert.AreEqual((int)HttpStatusCode.BadRequest, actualResult.StatusCode);
         }
@@ -45,7 +48,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
         [Test]
         public void ItReturns404StatusWhenNoPlayedGameIsFound()
         {
-            HttpStatusCodeResult actualResult = playedGameController.Details(-1, null) as HttpStatusCodeResult;
+            HttpStatusCodeResult actualResult = autoMocker.ClassUnderTest.Details(-1, null) as HttpStatusCodeResult;
 
             Assert.AreEqual((int)HttpStatusCode.NotFound, actualResult.StatusCode);
         }
@@ -54,19 +57,19 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
         public void ItRetrievesRequestedPlayedGame()
         {
             int playedGameId = 1351;
-            playedGameController.Details(playedGameId, currentUser);
+            autoMocker.ClassUnderTest.Details(playedGameId, currentUser);
 
-            playedGameRetriever.AssertWasCalled(x => x.GetPlayedGameDetails(playedGameId));
+            autoMocker.Get<IPlayedGameRetriever>().AssertWasCalled(x => x.GetPlayedGameDetails(playedGameId));
         }
         
         [Test]
         public void ItReturnsThePlayedGameDetailsViewWhenThePlayedGameIsFound()
         {
             int playedGameId = 1351;
-            playedGameRetriever.Expect(playedGameLogic => playedGameLogic.GetPlayedGameDetails(playedGameId))
+            autoMocker.Get<IPlayedGameRetriever>().Expect(playedGameLogic => playedGameLogic.GetPlayedGameDetails(playedGameId))
                 .Repeat.Once()
                 .Return(new PlayedGame());
-            ViewResult playedGameDetails = playedGameController.Details(playedGameId, currentUser) as ViewResult;
+            ViewResult playedGameDetails = autoMocker.ClassUnderTest.Details(playedGameId, currentUser) as ViewResult;
 
             Assert.AreEqual(MVC.PlayedGame.Views.Details, playedGameDetails.ViewName);
         }
@@ -77,14 +80,14 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
             int playedGameId = 13541;
 
             PlayedGame playedGame = new PlayedGame() { Id = 123 };
-            playedGameRetriever.Expect(x => x.GetPlayedGameDetails(playedGameId))
+            autoMocker.Get<IPlayedGameRetriever>().Expect(x => x.GetPlayedGameDetails(playedGameId))
                 .Repeat.Once()
                 .Return(playedGame);
             PlayedGameDetailsViewModel playedGameDetails = new PlayedGameDetailsViewModel();
-            playedGameDetailsBuilderMock.Expect(builder => builder.Build(playedGame, currentUser)).Repeat.Once()
+            autoMocker.Get<IPlayedGameDetailsViewModelBuilder>().Expect(builder => builder.Build(playedGame, currentUser)).Repeat.Once()
                 .Return(playedGameDetails);
 
-            ViewResult result = playedGameController.Details(playedGameId, currentUser) as ViewResult;
+            ViewResult result = autoMocker.ClassUnderTest.Details(playedGameId, currentUser) as ViewResult;
 
             PlayedGameDetailsViewModel viewModel = (PlayedGameDetailsViewModel)result.ViewData.Model;
             Assert.AreEqual(playedGameDetails, viewModel);
