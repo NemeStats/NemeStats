@@ -681,6 +681,7 @@
     <Content Include="Views\PlayedGame\_PlayedGamesPlayerPartial.cshtml" />
     <Content Include="Views\PlayedGame\_PlayedGameFormPartial.cshtml" />
     <Content Include="Views\GamingGroup\UpdateGamingGroupName.cshtml" />
+    <Content Include="Views\GamingGroup\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Code\" />

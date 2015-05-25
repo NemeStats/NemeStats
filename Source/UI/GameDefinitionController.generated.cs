@@ -104,7 +104,7 @@ namespace UI.Controllers
             public readonly string Details = "Details";
             public readonly string Create = "Create";
             public readonly string Save = "Save";
-            public readonly string Edit = "UpdateGamingGroupName";
+            public readonly string Edit = "Edit";
             public readonly string CreatePartial = "CreatePartial";
             public readonly string SearchBoardGameGeekHttpGet = "SearchBoardGameGeekHttpGet";
         }
@@ -115,7 +115,7 @@ namespace UI.Controllers
             public const string Details = "Details";
             public const string Create = "Create";
             public const string Save = "Save";
-            public const string Edit = "UpdateGamingGroupName";
+            public const string Edit = "Edit";
             public const string CreatePartial = "CreatePartial";
             public const string SearchBoardGameGeekHttpGet = "SearchBoardGameGeekHttpGet";
         }
@@ -181,13 +181,13 @@ namespace UI.Controllers
                 public readonly string _GameDefinitionsPartial = "_GameDefinitionsPartial";
                 public readonly string Create = "Create";
                 public readonly string Details = "Details";
-                public readonly string Edit = "UpdateGamingGroupName";
+                public readonly string Edit = "Edit";
             }
             public readonly string _CreatePartial = "~/Views/GameDefinition/_CreatePartial.cshtml";
             public readonly string _GameDefinitionsPartial = "~/Views/GameDefinition/_GameDefinitionsPartial.cshtml";
             public readonly string Create = "~/Views/GameDefinition/Create.cshtml";
             public readonly string Details = "~/Views/GameDefinition/Details.cshtml";
-            public readonly string Edit = "~/Views/GameDefinition/UpdateGamingGroupName.cshtml";
+            public readonly string Edit = "~/Views/GameDefinition/Edit.cshtml";
         }
     }
 
