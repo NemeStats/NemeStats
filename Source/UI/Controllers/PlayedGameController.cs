@@ -232,5 +232,10 @@ namespace UI.Controllers
 		{
 			base.Dispose(disposing);
 		}
+
+	    public object SearchPlayedGames(PlayedGamesFilterViewModel filter, ApplicationUser currentUser)
+	    {
+	        throw new System.NotImplementedException();
+	    }
 	}
 }

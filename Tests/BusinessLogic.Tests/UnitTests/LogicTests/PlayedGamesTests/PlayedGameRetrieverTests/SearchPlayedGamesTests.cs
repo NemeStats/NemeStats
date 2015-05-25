@@ -101,6 +101,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameRe
             Assert.That(results.DatePlayed, Is.EqualTo(playedGame.DatePlayed));
             Assert.That(results.GamingGroupId, Is.EqualTo(playedGame.GamingGroupId));
             Assert.That(results.GamingGroupName, Is.EqualTo(playedGame.GamingGroup.Name));
+            Assert.That(results.Notes, Is.EqualTo(playedGame.Notes));
             Assert.That(results.PlayerGameResults, Is.SameAs(playedGame.PlayerGameResults));
         }
 

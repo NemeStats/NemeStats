@@ -117,6 +117,7 @@ namespace BusinessLogic.Logic.PlayedGames
                                  BoardGameGeekObjectId = playedGame.GameDefinition.BoardGameGeekObjectId,
                                  GamingGroupId = playedGame.GamingGroupId,
                                  GamingGroupName = playedGame.GamingGroup.Name,
+                                 Notes = playedGame.Notes,
                                  DatePlayed = playedGame.DatePlayed,
                                  DateLastUpdated = playedGame.DateCreated,
                                  PlayerGameResults = playedGame.PlayerGameResults
