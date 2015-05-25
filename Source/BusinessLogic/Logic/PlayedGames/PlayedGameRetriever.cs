@@ -16,18 +16,16 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 
-using System;
-using System.Globalization;
-using System.Security.Cryptography.X509Certificates;
 using BusinessLogic.DataAccess;
 using BusinessLogic.Exceptions;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
+using BusinessLogic.Models.PlayedGames;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Globalization;
 using System.Linq;
-using BusinessLogic.Models.PlayedGames;
-using BusinessLogic.Models.User;
 
 namespace BusinessLogic.Logic.PlayedGames
 {
@@ -109,7 +107,7 @@ namespace BusinessLogic.Logic.PlayedGames
             var queryable = (from playedGame in dataContext.GetQueryable<PlayedGame>()
                                                            .OrderByDescending(game => game.DatePlayed)
                                                            .ThenByDescending(game => game.DateCreated)
-                             select new PlayedGameSearchResult()
+                             select new PlayedGameSearchResult
                              {
                                  PlayedGameId = playedGame.Id,
                                  GameDefinitionId = playedGame.GameDefinitionId,
@@ -120,7 +118,14 @@ namespace BusinessLogic.Logic.PlayedGames
                                  Notes = playedGame.Notes,
                                  DatePlayed = playedGame.DatePlayed,
                                  DateLastUpdated = playedGame.DateCreated,
-                                 PlayerGameResults = playedGame.PlayerGameResults
+                                 PlayerGameResults = playedGame.PlayerGameResults.Select(x => new PlayerResult
+                                 {
+                                     GameRank = x.GameRank,
+                                     NemeStatsPointsAwarded = x.NemeStatsPointsAwarded,
+                                     PlayerId = x.PlayerId,
+                                     PlayerName = x.Player.Name,
+                                     PointsScored = x.PointsScored
+                                 }).ToList()
                              });
 
 

@@ -15,6 +15,8 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
+
+using BusinessLogic.DataAccess;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
 using NUnit.Framework;
@@ -30,11 +32,11 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
         [Test]
         public void ItOnlyReturnsActiveGameDefinitions()
         {
-            dataContext.Expect(mock => mock.GetQueryable<GameDefinition>())
+            autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<GameDefinition>())
                 .Repeat.Once()
                 .Return(gameDefinitionQueryable);
 
-            IList<GameDefinitionSummary> gameDefinitions = retriever.GetAllGameDefinitions(currentUser.CurrentGamingGroupId.Value);
+            IList<GameDefinitionSummary> gameDefinitions = autoMocker.ClassUnderTest.GetAllGameDefinitions(currentUser.CurrentGamingGroupId.Value);
 
             Assert.True(gameDefinitions.All(gameDefinition => gameDefinition.Active));
         }
@@ -42,11 +44,11 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
         [Test]
         public void ItOnlyReturnsGameDefinitionsForTheCurrentUsersGamingGroup()
         {
-            dataContext.Expect(mock => mock.GetQueryable<GameDefinition>())
+            autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<GameDefinition>())
                 .Repeat.Once()
                 .Return(gameDefinitionQueryable);
 
-            IList<GameDefinitionSummary> gameDefinitions = retriever.GetAllGameDefinitions(currentUser.CurrentGamingGroupId.Value);
+            IList<GameDefinitionSummary> gameDefinitions = autoMocker.ClassUnderTest.GetAllGameDefinitions(currentUser.CurrentGamingGroupId.Value);
 
             Assert.True(gameDefinitions.All(gameDefinition => gameDefinition.GamingGroupId == currentUser.CurrentGamingGroupId));
         }

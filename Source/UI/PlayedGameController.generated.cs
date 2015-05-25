@@ -187,6 +187,7 @@ namespace UI.Controllers
                 public readonly string Details = "Details";
                 public readonly string Edit = "Edit";
                 public readonly string RecentlyPlayedGames = "RecentlyPlayedGames";
+                public readonly string Search = "Search";
             }
             public readonly string _PlayedGameFormPartial = "~/Views/PlayedGame/_PlayedGameFormPartial.cshtml";
             public readonly string _PlayedGamesPartial = "~/Views/PlayedGame/_PlayedGamesPartial.cshtml";
@@ -197,6 +198,7 @@ namespace UI.Controllers
             public readonly string Details = "~/Views/PlayedGame/Details.cshtml";
             public readonly string Edit = "~/Views/PlayedGame/Edit.cshtml";
             public readonly string RecentlyPlayedGames = "~/Views/PlayedGame/RecentlyPlayedGames.cshtml";
+            public readonly string Search = "~/Views/PlayedGame/Search.cshtml";
         }
     }
 

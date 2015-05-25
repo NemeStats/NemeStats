@@ -8,8 +8,12 @@ namespace UI.Models.PlayedGame
 {
     public class SearchViewModel
     {
+        public SearchViewModel()
+        {
+            Filter = new PlayedGamesFilterViewModel();
+        }
+
         public IEnumerable<SelectListItem> GameDefinitions { get; set; }
-        public string DatePlayedStart { get; set; }
-        public string DatePlayedEnd { get; set; }
+        public PlayedGamesFilterViewModel Filter { get; set; }
     }
 }

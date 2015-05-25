@@ -170,5 +170,11 @@ namespace BusinessLogic.Logic.GameDefinitions
                 }
             }
         }
+
+
+        public IList<GameDefinitionName> GetAllGameDefinitionNames(Models.User.ApplicationUser currentUser)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

@@ -233,9 +233,54 @@ namespace UI.Controllers
 			base.Dispose(disposing);
 		}
 
-	    public object SearchPlayedGames(PlayedGamesFilterViewModel filter, ApplicationUser currentUser)
-	    {
-	        throw new System.NotImplementedException();
+        [Authorize]
+        [UserContext]
+        [HttpPost]
+	    public ActionResult SearchPlayedGames(PlayedGamesFilterViewModel filter, ApplicationUser currentUser)
+        {
+            var viewModel = new SearchViewModel
+            {
+                Filter =
+                {
+                    DatePlayedEnd = filter.DatePlayedEnd,
+                    DatePlayedStart = filter.DatePlayedStart,
+                    GameDefinitionId = filter.GameDefinitionId
+                }
+            };
+
+            return View(MVC.PlayedGame.Views.Search, viewModel);
 	    }
+
+        [Authorize]
+        [UserContext]
+        [HttpGet]
+        public ActionResult SearchPlayedGames(ApplicationUser currentUser)
+        {
+            var viewModel = new SearchViewModel
+            {
+                GameDefinitions = GetAllGameDefinitionsForCurrentGamingGroup(currentUser)
+            };
+            return View(MVC.PlayedGame.Views.Search, viewModel);
+	    }
+
+        private IEnumerable<SelectListItem> GetAllGameDefinitionsForCurrentGamingGroup(ApplicationUser currentUser)
+        {
+            var gameDefinitions = gameDefinitionRetriever.GetAllGameDefinitionNames(currentUser);
+
+            var selectListItems = gameDefinitions.Select(x => new SelectListItem
+            {
+                Text = x.Name,
+                Value = x.Id.ToString()
+            }).ToList();
+
+            selectListItems.Add(new SelectListItem
+            {
+                Selected = true,
+                Text = "All",
+                Value = string.Empty
+            });
+
+            return selectListItems;
+        }
 	}
 }

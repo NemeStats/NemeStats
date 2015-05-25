@@ -19,6 +19,7 @@ using BusinessLogic.Models;
 using System.Collections.Generic;
 using System.Linq;
 using BusinessLogic.Models.Games;
+using BusinessLogic.Models.User;
 
 namespace BusinessLogic.Logic.GameDefinitions
 {
@@ -26,5 +27,6 @@ namespace BusinessLogic.Logic.GameDefinitions
     {
         IList<GameDefinitionSummary> GetAllGameDefinitions(int gamingGroupId);
         GameDefinitionSummary GetGameDefinitionDetails(int id, int numberOfPlayedGamesToRetrieve);
+        IList<GameDefinitionName> GetAllGameDefinitionNames(ApplicationUser currentUser);
     }
 }

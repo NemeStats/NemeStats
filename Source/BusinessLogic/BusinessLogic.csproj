@@ -262,12 +262,14 @@
     <Compile Include="Migrations\201505102058077_MakeNameAUniqueConstraintOnGameDefinitionWithinGamingGroup.Designer.cs">
       <DependentUpon>201505102058077_MakeNameAUniqueConstraintOnGameDefinitionWithinGamingGroup.cs</DependentUpon>
     </Compile>
+    <Compile Include="Models\Games\GameDefinitionName.cs" />
     <Compile Include="Models\GamingGroups\NewlyCreatedGamingGroupResult.cs" />
     <Compile Include="Models\GamingGroups\TopGamingGroupSummary.cs" />
     <Compile Include="Models\PlayedGames\IWinner.cs" />
     <Compile Include="Models\PlayedGames\PlayedGameExportModel.cs" />
     <Compile Include="Models\PlayedGames\PlayedGameFilter.cs" />
     <Compile Include="Models\PlayedGames\PlayedGameSearchResult.cs" />
+    <Compile Include="Models\PlayedGames\PlayerResult.cs" />
     <Compile Include="Models\PlayedGames\WinnerTypesEnum.cs" />
     <Compile Include="Models\Players\PlayerInvitation.cs" />
     <Compile Include="Logic\Players\PlayerInviter.cs" />

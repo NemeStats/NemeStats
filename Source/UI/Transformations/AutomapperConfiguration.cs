@@ -20,6 +20,7 @@ using BusinessLogic.Models;
 using BusinessLogic.Models.GamingGroups;
 using BusinessLogic.Models.PlayedGames;
 using BusinessLogic.Models.User;
+using Microsoft.Ajax.Utilities;
 using UI.Areas.Api.Models;
 using UI.Models;
 using UI.Models.GameDefinitionModels;
@@ -40,7 +41,8 @@ namespace UI.Transformations
                   .ForSourceMember(x => x.PlayerGameResults, opt => opt.Ignore())
                   .ForMember(x => x.DateLastUpdated, opt => opt.MapFrom(src => src.DateLastUpdated.ToString("yyyy-MM-dd")))
                   .ForMember(x => x.DatePlayed, opt => opt.MapFrom(src => src.DatePlayed.ToString("yyyy-MM-dd")));
-            Mapper.CreateMap<PlayerGameResult, PlayerGameResultMessage>(MemberList.Destination);
+            //Mapper.CreateMap<PlayerGameResult, PlayerGameResultMessage>(MemberList.Destination);
+            Mapper.CreateMap<PlayerResult, PlayerGameResultMessage>(MemberList.Destination);
         }
     }
 }

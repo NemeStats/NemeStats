@@ -57,14 +57,20 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameRe
         public void ItSetsAllTheFields()
         {
             autoMocker = new RhinoAutoMocker<PlayedGameRetriever>();
+            var playerGameResult = new PlayerGameResult
+            {
+                GameRank = 1,
+                PlayerId = 2,
+                PointsScored = 50,
+                Player = new Player
+                {
+                    Id = 100,
+                    Name = "some player name"
+                }
+            };
             var playerGameResults = new List<PlayerGameResult>
             {
-                new PlayerGameResult
-                {
-                    GameRank = 1,
-                    PlayerId = 2,
-                    PointsScored = 50
-                }
+               playerGameResult
             };
 
             var playedGame = new PlayedGame
@@ -102,7 +108,13 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameRe
             Assert.That(results.GamingGroupId, Is.EqualTo(playedGame.GamingGroupId));
             Assert.That(results.GamingGroupName, Is.EqualTo(playedGame.GamingGroup.Name));
             Assert.That(results.Notes, Is.EqualTo(playedGame.Notes));
-            Assert.That(results.PlayerGameResults, Is.SameAs(playedGame.PlayerGameResults));
+            var actualPlayerResult = results.PlayerGameResults[0];
+            var expectedPlayerGameResult = playedGame.PlayerGameResults[0];
+            Assert.That(actualPlayerResult.GameRank, Is.EqualTo(expectedPlayerGameResult.GameRank));
+            Assert.That(actualPlayerResult.NemeStatsPointsAwarded, Is.EqualTo(expectedPlayerGameResult.NemeStatsPointsAwarded));
+            Assert.That(actualPlayerResult.PlayerId, Is.EqualTo(expectedPlayerGameResult.PlayerId));
+            Assert.That(actualPlayerResult.PlayerName, Is.EqualTo(expectedPlayerGameResult.Player.Name));
+            Assert.That(actualPlayerResult.PointsScored, Is.EqualTo(expectedPlayerGameResult.PointsScored));
         }
 
         [Test]

@@ -228,7 +228,8 @@
     <Compile Include="UnitTests\ControllerTests\PlayedGameControllerTests\EditGetTests.cs" />
     <Compile Include="UnitTests\ControllerTests\PlayedGameControllerTests\EditPostTests.cs" />
     <Compile Include="UnitTests\ControllerTests\PlayedGameControllerTests\PlayedGameControllerTestBase.cs" />
-    <Compile Include="UnitTests\ControllerTests\PlayedGameControllerTests\SearchTests.cs" />
+    <Compile Include="UnitTests\ControllerTests\PlayedGameControllerTests\SearchHttpGetTests.cs" />
+    <Compile Include="UnitTests\ControllerTests\PlayedGameControllerTests\SearchHttpPostTests.cs" />
     <Compile Include="UnitTests\ControllerTests\PlayedGameControllerTests\ShowRecentlyPlayedGamesTests.cs" />
     <Compile Include="UnitTests\ControllerTests\PlayerControllerTests\CreateHttpGetTests.cs" />
     <Compile Include="UnitTests\ControllerTests\PlayerControllerTests\InvitePlayerHttpPostTests.cs" />
