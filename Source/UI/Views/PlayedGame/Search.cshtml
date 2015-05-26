@@ -7,37 +7,52 @@
 <h2>
     @ViewBag.Title
 </h2>
+<hr />
 
-<div class="row">
+<div class="panel-body">
     <div class="panel panel-primary">
         <div class="panel-heading">
             <h4>Search Played Games</h4>
         </div>
         <div class="panel-body">
-            <div class="row">
-                <div class="col-sm-2">
-                    <b>Game Played</b>
+            @using (Html.BeginForm())
+            {
+                <div class="row">
+                    <div class="col-sm-2">
+                        <b>Game Played</b>
+                    </div>
+                    <div class="col-sm-10">
+                        @Html.DropDownList("GameDefinition", @Model.GameDefinitions)
+                    </div>
                 </div>
-                <div class="col-sm-10">
-                    @Html.DropDownList("GameDefinition", @Model.GameDefinitions)
+                <div class="row">
+                    <div class="col-sm-2">
+                        <b>Date Played - Start</b>
+                    </div>
+                    <div class="col-sm-10">
+                        @Html.TextBox("DatePlayedStart", @Model.Filter.DatePlayedStart, new
+                        {
+                            @class = "date-picker"
+                        })
+                    </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-2">
-                    <b>Date Played - Start</b>
+                <div class="row">
+                    <div class="col-sm-2">
+                        <b>Date Played - End</b>
+                    </div>
+                    <div class="col-sm-10">
+                        @Html.TextBox("DatePlayedEnd", @Model.Filter.DatePlayedEnd, new
+                        {
+                            @class = "date-picker"
+                        })
+                    </div>
                 </div>
-                <div class="col-sm-10">
-                    @Html.TextBox("DatePlayedStart", @Model.DatePlayedStart, new { @class = "date-picker" })
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Search" class="btn btn-primary" />
+                    </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-2">
-                    <b>Date Played - End</b>
-                </div>
-                <div class="col-sm-10">
-                    @Html.TextBox("DatePlayedEnd", @Model.DatePlayedEnd, new { @class = "date-picker" })
-                </div>
-            </div>
+            }
         </div>
     </div>
 </div>

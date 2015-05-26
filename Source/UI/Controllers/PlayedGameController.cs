@@ -16,6 +16,7 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 
+using System.Globalization;
 using BusinessLogic.DataAccess;
 using BusinessLogic.Logic;
 using BusinessLogic.Logic.GameDefinitions;
@@ -228,15 +229,22 @@ namespace UI.Controllers
 		    return players.Where(item => playerRanks.Any(p => p.PlayerId.ToString() == item.Value) == false).ToList();
 		}
 
-	    protected override void Dispose(bool disposing)
-		{
-			base.Dispose(disposing);
-		}
+        [Authorize]
+        [UserContext]
+        [HttpGet]
+        public ActionResult Search(ApplicationUser currentUser)
+        {
+            var viewModel = new SearchViewModel
+            {
+                GameDefinitions = GetAllGameDefinitionsForCurrentGamingGroup(currentUser)
+            };
+            return View(MVC.PlayedGame.Views.Search, viewModel);
+        }
 
         [Authorize]
         [UserContext]
         [HttpPost]
-	    public ActionResult SearchPlayedGames(PlayedGamesFilterViewModel filter, ApplicationUser currentUser)
+	    public ActionResult Search(PlayedGamesFilterViewModel filter, ApplicationUser currentUser)
         {
             var viewModel = new SearchViewModel
             {
@@ -245,40 +253,34 @@ namespace UI.Controllers
                     DatePlayedEnd = filter.DatePlayedEnd,
                     DatePlayedStart = filter.DatePlayedStart,
                     GameDefinitionId = filter.GameDefinitionId
-                }
-            };
-
-            return View(MVC.PlayedGame.Views.Search, viewModel);
-	    }
-
-        [Authorize]
-        [UserContext]
-        [HttpGet]
-        public ActionResult SearchPlayedGames(ApplicationUser currentUser)
-        {
-            var viewModel = new SearchViewModel
-            {
+                },
                 GameDefinitions = GetAllGameDefinitionsForCurrentGamingGroup(currentUser)
             };
+
             return View(MVC.PlayedGame.Views.Search, viewModel);
 	    }
 
-        private IEnumerable<SelectListItem> GetAllGameDefinitionsForCurrentGamingGroup(ApplicationUser currentUser)
+        private IList<SelectListItem> GetAllGameDefinitionsForCurrentGamingGroup(ApplicationUser currentUser)
         {
             var gameDefinitions = gameDefinitionRetriever.GetAllGameDefinitionNames(currentUser);
-
-            var selectListItems = gameDefinitions.Select(x => new SelectListItem
+            var selectListItems = new List<SelectListItem>
             {
-                Text = x.Name,
-                Value = x.Id.ToString()
-            }).ToList();
+                new SelectListItem
+                {
+                   Selected = true,
+                    Text = "All",
+                    Value = string.Empty 
+                }
+   
+            };
 
-            selectListItems.Add(new SelectListItem
-            {
-                Selected = true,
-                Text = "All",
-                Value = string.Empty
-            });
+            selectListItems.AddRange(gameDefinitions
+                .OrderBy(gameDefinition => gameDefinition.Name)
+                .Select(x => new SelectListItem
+                    {
+                        Text = x.Name,
+                        Value = x.Id.ToString(CultureInfo.InvariantCulture)
+                    }).ToList());
 
             return selectListItems;
         }

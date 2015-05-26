@@ -16,6 +16,7 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 using System.Data.Entity;
+using System.Net.Sockets;
 using BusinessLogic.DataAccess;
 using BusinessLogic.Logic.BoardGameGeek;
 using BusinessLogic.Models;
@@ -174,7 +175,14 @@ namespace BusinessLogic.Logic.GameDefinitions
 
         public IList<GameDefinitionName> GetAllGameDefinitionNames(Models.User.ApplicationUser currentUser)
         {
-            throw new System.NotImplementedException();
+            return dataContext.GetQueryable<GameDefinition>()
+                              .Where(gameDefinition => gameDefinition.Active
+                              && gameDefinition.GamingGroupId == currentUser.CurrentGamingGroupId)
+                              .Select(gameDefiniton => new GameDefinitionName
+                              {
+                                  Id = gameDefiniton.Id,
+                                  Name = gameDefiniton.Name
+                              }).ToList();
         }
     }
 }

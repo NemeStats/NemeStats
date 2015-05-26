@@ -17,8 +17,10 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
     [TestFixture]
     public class SearchHttpGetTests : PlayedGameControllerTestBase
     {
-        private const int GAME_DEFINITION_ID = 1;
-        private const string GAME_DEFINITION_NAME = "some game definition name";
+        private const int GAME_DEFINITION_B_ID = 1;
+        private const string GAME_DEFINITION_NAME_B = "B - some game definition name";
+        private const int GAME_DEFINITION_A_ID = 2;
+        private const string GAME_DEFINITION_NAME_A = "A - some game definition name";
 
         [SetUp]
         public void SetUp()
@@ -27,18 +29,22 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
             {
                 new GameDefinitionName
                 {
-                    Name = GAME_DEFINITION_NAME,
-                    Id = GAME_DEFINITION_ID
+                    Name = GAME_DEFINITION_NAME_B,
+                    Id = GAME_DEFINITION_B_ID
+                },
+                new GameDefinitionName
+                {
+                    Name = GAME_DEFINITION_NAME_A,
+                    Id = GAME_DEFINITION_A_ID
                 }
             };
             autoMocker.Get<IGameDefinitionRetriever>().Expect(mock => mock.GetAllGameDefinitionNames(currentUser)).Return(gameDefinitionNames);
-
         }
 
         [Test]
         public void ItReturnsTheCorrectView()
         {
-            var actualResults = autoMocker.ClassUnderTest.SearchPlayedGames(currentUser) as ViewResult;
+            var actualResults = autoMocker.ClassUnderTest.Search(currentUser) as ViewResult;
 
             Assert.That(actualResults.ViewName, Is.EqualTo(MVC.PlayedGame.Views.Search));
         }
@@ -46,7 +52,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
         [Test]
         public void ItReturnsTheCorrectViewModelType()
         {
-            var actualResults = autoMocker.ClassUnderTest.SearchPlayedGames(currentUser) as ViewResult;
+            var actualResults = autoMocker.ClassUnderTest.Search(currentUser) as ViewResult;
 
             var actualViewModel = actualResults.ViewData.Model as SearchViewModel;
             Assert.That(actualViewModel, Is.TypeOf(typeof(SearchViewModel)));
@@ -55,12 +61,23 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
         [Test]
         public void ItShowsAListOfAllGameDefinitionsThisGamingGroupPlaysWithTheEmptyAllOptionSelected()
         {
-            var actualResults = autoMocker.ClassUnderTest.SearchPlayedGames(currentUser) as ViewResult;
+            var actualResults = autoMocker.ClassUnderTest.Search(currentUser) as ViewResult;
 
             var actualViewModel = actualResults.ViewData.Model as SearchViewModel;
             Assert.That(actualViewModel.GameDefinitions.First(x => x.Value == string.Empty).Text, Is.EqualTo("All"));
-            Assert.That(actualViewModel.GameDefinitions.First(x => x.Value == GAME_DEFINITION_ID.ToString(CultureInfo.InvariantCulture)).Text, Is.EqualTo(GAME_DEFINITION_NAME));
+            Assert.That(actualViewModel.GameDefinitions.First(x => x.Value == GAME_DEFINITION_B_ID.ToString(CultureInfo.InvariantCulture)).Text, Is.EqualTo(GAME_DEFINITION_NAME_B));
+            Assert.That(actualViewModel.GameDefinitions.First(x => x.Value == GAME_DEFINITION_A_ID.ToString(CultureInfo.InvariantCulture)).Text, Is.EqualTo(GAME_DEFINITION_NAME_A));
+        }
 
+        [Test]
+        public void ItListsGameDefinitionsInAlphabeticalOrderWithTheAllOptionListedFirst()
+        {
+            var actualResults = autoMocker.ClassUnderTest.Search(currentUser) as ViewResult;
+
+            var actualViewModel = actualResults.ViewData.Model as SearchViewModel;
+            Assert.That(actualViewModel.GameDefinitions[0].Text, Is.EqualTo("All"));
+            Assert.That(actualViewModel.GameDefinitions[1].Text, Is.EqualTo(GAME_DEFINITION_NAME_A));
+            Assert.That(actualViewModel.GameDefinitions[2].Text, Is.EqualTo(GAME_DEFINITION_NAME_B));
         }
     }
 }

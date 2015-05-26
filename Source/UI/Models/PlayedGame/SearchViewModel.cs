@@ -13,7 +13,7 @@ namespace UI.Models.PlayedGame
             Filter = new PlayedGamesFilterViewModel();
         }
 
-        public IEnumerable<SelectListItem> GameDefinitions { get; set; }
+        public IList<SelectListItem> GameDefinitions { get; set; }
         public PlayedGamesFilterViewModel Filter { get; set; }
     }
 }

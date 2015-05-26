@@ -19,7 +19,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
         [Test]
         public void ItReturnsTheCorrectView()
         {
-            var actualResults = autoMocker.ClassUnderTest.SearchPlayedGames(new PlayedGamesFilterViewModel(), currentUser) as ViewResult;
+            var actualResults = autoMocker.ClassUnderTest.Search(new PlayedGamesFilterViewModel(), currentUser) as ViewResult;
 
             Assert.That(actualResults.ViewName, Is.EqualTo(MVC.PlayedGame.Views.Search));
         }
@@ -27,14 +27,14 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
         [Test]
         public void ItReturnsTheCorrectViewModelType()
         {
-            var actualResults = autoMocker.ClassUnderTest.SearchPlayedGames(new PlayedGamesFilterViewModel(), currentUser) as ViewResult;
+            var actualResults = autoMocker.ClassUnderTest.Search(new PlayedGamesFilterViewModel(), currentUser) as ViewResult;
 
             var actualViewModel = actualResults.ViewData.Model as SearchViewModel;
             Assert.That(actualViewModel, Is.TypeOf(typeof(SearchViewModel)));
         }
 
         [Test]
-        public void ItReturnsTheCorrectViewModel()
+        public void ItReturnsTheCorrectFilterViewModel()
         {
             var expectedSearchResults = new List<PlayedGameSearchResult>
             {
@@ -68,7 +68,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
                 GameDefinitionId = 1
             };
 
-            var actualResults = autoMocker.ClassUnderTest.SearchPlayedGames(filter, currentUser) as ViewResult;
+            var actualResults = autoMocker.ClassUnderTest.Search(filter, currentUser) as ViewResult;
 
             var actualViewModel = actualResults.ViewData.Model as SearchViewModel;
             Assert.That(actualViewModel, Is.TypeOf(typeof(SearchViewModel)));
@@ -76,6 +76,36 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
             Assert.That(actualViewModel.Filter.DatePlayedStart, Is.EqualTo(filter.DatePlayedStart));
             Assert.That(actualViewModel.Filter.GameDefinitionId, Is.EqualTo(filter.GameDefinitionId));
         }
+
+        [Test]
+        public void ItReturnsTheCorrectSearchResults()
+        {
+            var filter = new PlayedGamesFilterViewModel
+            {
+                DatePlayedEnd = DateTime.Now.Date,
+                DatePlayedStart = DateTime.Now.Date.AddDays(-1),
+                GameDefinitionId = 1
+            };
+            var expectedResults = new List<PlayedGameSearchResult>
+            {
+                new PlayedGameSearchResult
+                {
+                    
+                }
+            };
+            autoMocker.Get<IPlayedGameRetriever>().Expect(mock => mock.SearchPlayedGames(
+                                                                                         Arg<PlayedGameFilter>.Matches(x => x.GamingGroupId == filter.GameDefinitionId
+                                                                                                                            &&
+                                                                                                                            x.StartDateGameLastUpdated ==
+                                                                                                                            filter.DatePlayedStart.Value.ToString("yyyyMMdd")
+                                                                                                                            &&
+                                                                                                                            x.EndDateGameLastUpdated ==
+                                                                                                                            filter.DatePlayedEnd.Value.ToString("yyyyMMdd"))))
+                      .Return(expectedResults);
+
+            var actualResults = autoMocker.ClassUnderTest.Search(filter, currentUser) as ViewResult;
+        }
+
 
     }
 }
