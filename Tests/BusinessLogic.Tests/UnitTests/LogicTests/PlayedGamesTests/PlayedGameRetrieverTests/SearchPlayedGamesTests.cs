@@ -57,21 +57,6 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameRe
         public void ItSetsAllTheFields()
         {
             autoMocker = new RhinoAutoMocker<PlayedGameRetriever>();
-            var playerGameResult = new PlayerGameResult
-            {
-                GameRank = 1,
-                PlayerId = 2,
-                PointsScored = 50,
-                Player = new Player
-                {
-                    Id = 100,
-                    Name = "some player name"
-                }
-            };
-            var playerGameResults = new List<PlayerGameResult>
-            {
-               playerGameResult
-            };
 
             var playedGame = new PlayedGame
             {
@@ -89,9 +74,29 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameRe
                 {
                     Name = "some game definition name",
                     BoardGameGeekObjectId = 4
-                },
-                PlayerGameResults = playerGameResults
+                }
             };
+
+            var playerGameResult = new PlayerGameResult
+            {
+                GameRank = 1,
+                PlayerId = 2,
+                PointsScored = 50,
+                Player = new Player
+                {
+                    Id = 100,
+                    Name = "some player name"
+                },
+                PlayedGame = playedGame
+            };
+
+            var playerGameResults = new List<PlayerGameResult>
+            {
+               playerGameResult
+            };
+
+            playedGame.PlayerGameResults = playerGameResults;
+
             playedGames = new List<PlayedGame>
             {
                 playedGame
@@ -115,6 +120,10 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameRe
             Assert.That(actualPlayerResult.PlayerId, Is.EqualTo(expectedPlayerGameResult.PlayerId));
             Assert.That(actualPlayerResult.PlayerName, Is.EqualTo(expectedPlayerGameResult.Player.Name));
             Assert.That(actualPlayerResult.PointsScored, Is.EqualTo(expectedPlayerGameResult.PointsScored));
+            Assert.That(actualPlayerResult.PlayedGameId, Is.EqualTo(expectedPlayerGameResult.PlayedGameId));
+            Assert.That(actualPlayerResult.DatePlayed, Is.EqualTo(expectedPlayerGameResult.PlayedGame.DatePlayed));
+            Assert.That(actualPlayerResult.GameName, Is.EqualTo(expectedPlayerGameResult.PlayedGame.GameDefinition.Name));
+            Assert.That(actualPlayerResult.GameDefinitionId, Is.EqualTo(expectedPlayerGameResult.PlayedGame.GameDefinitionId));
         }
 
         [Test]

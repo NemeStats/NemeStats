@@ -86,7 +86,7 @@ namespace UI.HtmlHelpers
                 }
             }
 
-            string nemeStatsPointsComponent = string.Format(HTML_GORDON_POINTS_TEMPLATE, playerGameResultDetails.NemeStatsPoints);
+            string nemeStatsPointsComponent = string.Format(HTML_GORDON_POINTS_TEMPLATE, playerGameResultDetails.NemeStatsPointsAwarded);
             return MvcHtmlString.Create(string.Format(HTML_TEMPLATE,
                 CSS_CLASS_GAME_RANK,
                 cssPlace,

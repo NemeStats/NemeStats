@@ -17,6 +17,7 @@
 #endregion
 
 using System.Globalization;
+using AutoMapper;
 using BusinessLogic.DataAccess;
 using BusinessLogic.Logic;
 using BusinessLogic.Logic.GameDefinitions;
@@ -24,6 +25,7 @@ using BusinessLogic.Logic.PlayedGames;
 using BusinessLogic.Logic.Players;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
+using BusinessLogic.Models.PlayedGames;
 using BusinessLogic.Models.User;
 using System.Collections.Generic;
 using System.Linq;
@@ -246,6 +248,15 @@ namespace UI.Controllers
         [HttpPost]
 	    public ActionResult Search(PlayedGamesFilterViewModel filter, ApplicationUser currentUser)
         {
+            var playedGameFilter = new PlayedGameFilter
+            {
+                EndDateGameLastUpdated = filter.DatePlayedEnd == null ? null : filter.DatePlayedEnd.Value.ToString("yyyyMMdd"),
+                GamingGroupId = currentUser.CurrentGamingGroupId,
+                StartDateGameLastUpdated = filter.DatePlayedStart == null ? null : filter.DatePlayedStart.Value.ToString("yyyyMMdd")
+            };
+            var searchResults = playedGameRetriever.SearchPlayedGames(playedGameFilter);
+            var playedGameSearchResultsViewModels = searchResults.Select(Mapper.Map<PlayedGameSearchResult, PlayedGameDetailsViewModel>).ToList();
+
             var viewModel = new SearchViewModel
             {
                 Filter =
@@ -254,7 +265,8 @@ namespace UI.Controllers
                     DatePlayedStart = filter.DatePlayedStart,
                     GameDefinitionId = filter.GameDefinitionId
                 },
-                GameDefinitions = GetAllGameDefinitionsForCurrentGamingGroup(currentUser)
+                GameDefinitions = GetAllGameDefinitionsForCurrentGamingGroup(currentUser),
+                PlayedGameSearchResults = playedGameSearchResultsViewModels
             };
 
             return View(MVC.PlayedGame.Views.Search, viewModel);
