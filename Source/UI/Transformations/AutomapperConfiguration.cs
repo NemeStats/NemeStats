@@ -43,8 +43,6 @@ namespace UI.Transformations
                   .ForMember(x => x.DateLastUpdated, opt => opt.MapFrom(src => src.DateLastUpdated.ToString("yyyy-MM-dd")))
                   .ForMember(x => x.DatePlayed, opt => opt.MapFrom(src => src.DatePlayed.ToString("yyyy-MM-dd")));
             Mapper.CreateMap<PlayerResult, PlayerGameResultMessage>(MemberList.Destination);
-            Mapper.CreateMap<PlayerResult, GameResultViewModel>(MemberList.Destination);
-            Mapper.CreateMap<PlayedGameSearchResult, PlayedGameDetailsViewModel>(MemberList.Destination);
         }
     }
 }

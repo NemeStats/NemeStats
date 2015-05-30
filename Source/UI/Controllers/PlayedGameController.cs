@@ -250,12 +250,35 @@ namespace UI.Controllers
         {
             var playedGameFilter = new PlayedGameFilter
             {
-                EndDateGameLastUpdated = filter.DatePlayedEnd == null ? null : filter.DatePlayedEnd.Value.ToString("yyyyMMdd"),
+                EndDateGameLastUpdated = filter.DatePlayedEnd == null ? null : filter.DatePlayedEnd.Value.ToString("yyyy-MM-dd"),
                 GamingGroupId = currentUser.CurrentGamingGroupId,
-                StartDateGameLastUpdated = filter.DatePlayedStart == null ? null : filter.DatePlayedStart.Value.ToString("yyyyMMdd")
+                StartDateGameLastUpdated = filter.DatePlayedStart == null ? null : filter.DatePlayedStart.Value.ToString("yyyy-MM-dd"),
+                GameDefinitionId =  filter.GameDefinitionId
             };
             var searchResults = playedGameRetriever.SearchPlayedGames(playedGameFilter);
-            var playedGameSearchResultsViewModels = searchResults.Select(Mapper.Map<PlayedGameSearchResult, PlayedGameDetailsViewModel>).ToList();
+            var playedGameSearchResultsViewModels = searchResults.Select(searchResult => new PlayedGameDetailsViewModel
+            {
+                DatePlayed = searchResult.DatePlayed,
+                GameDefinitionId = searchResult.GameDefinitionId,
+                GameDefinitionName = searchResult.GameDefinitionName,
+                GamingGroupId = searchResult.GamingGroupId,
+                GamingGroupName = searchResult.GamingGroupName,
+                Notes = searchResult.Notes,
+                PlayedGameId = searchResult.PlayedGameId,
+                UserCanEdit = currentUser.CurrentGamingGroupId ==searchResult.GamingGroupId,
+                WinnerType = PlayedGameDetailsViewModelBuilder.CalculateWinnerType(searchResult.PlayerGameResults.Select(x => x.GameRank).ToList()),
+                PlayerResults = searchResult.PlayerGameResults.Select(playerResult => new GameResultViewModel
+                {
+                    DatePlayed = searchResult.DatePlayed,
+                    GameDefinitionId = searchResult.GameDefinitionId,
+                    GameDefinitionName = searchResult.GameDefinitionName,
+                    GameRank = playerResult.GameRank,
+                    NemeStatsPointsAwarded = playerResult.NemeStatsPointsAwarded,
+                    PlayedGameId = searchResult.PlayedGameId,
+                    PlayerId = playerResult.PlayerId,
+                    PlayerName = playerResult.PlayerName
+                }).ToList()
+            }).ToList();
 
             var viewModel = new SearchViewModel
             {
@@ -268,6 +291,8 @@ namespace UI.Controllers
                 GameDefinitions = GetAllGameDefinitionsForCurrentGamingGroup(currentUser),
                 PlayedGameSearchResults = playedGameSearchResultsViewModels
             };
+
+            ViewBag.PlayedGamesPartialPanelTitle = string.Format("{0} Results", playedGameSearchResultsViewModels.Count);
 
             return View(MVC.PlayedGame.Views.Search, viewModel);
 	    }

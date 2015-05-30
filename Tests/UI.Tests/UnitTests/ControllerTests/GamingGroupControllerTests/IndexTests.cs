@@ -79,9 +79,9 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
                  gamingGroupSummary.PlayedGames.Count))
                      .Return(expectedMessage);
 
-            ViewResult viewResult = gamingGroupControllerPartialMock.Index(currentUser) as ViewResult;
+            gamingGroupControllerPartialMock.Index(currentUser);
 
-            Assert.AreEqual(expectedMessage, gamingGroupControllerPartialMock.ViewBag.RecentGamesMessage);
+            Assert.AreEqual("Recent Games " + expectedMessage, gamingGroupControllerPartialMock.ViewBag.PlayedGamesPartialPanelTitle);
         }
     }
 }

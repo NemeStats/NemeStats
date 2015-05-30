@@ -11,5 +11,6 @@ namespace BusinessLogic.Models.PlayedGames
         public string EndDateGameLastUpdated { get; set; }
         public int? MaximumNumberOfResults { get; set; }
         public int? GamingGroupId { get; set; }
+        public int? GameDefinitionId { get; set; }
     }
 }

@@ -99,7 +99,7 @@ namespace UI.Controllers
 																							   gamingGroupId,
 																							   MAX_NUMBER_OF_RECENT_GAMES);
 
-			this.ViewBag.RecentGamesMessage = this.showingXResultsMessageBuilder.BuildMessage(
+            ViewBag.PlayedGamesPartialPanelTitle = "Recent Games " + this.showingXResultsMessageBuilder.BuildMessage(
 																					MAX_NUMBER_OF_RECENT_GAMES,
 																					gamingGroupSummary.PlayedGames.Count);
 			return gamingGroupSummary;

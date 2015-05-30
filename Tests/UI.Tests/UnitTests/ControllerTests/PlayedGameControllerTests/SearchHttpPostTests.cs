@@ -12,6 +12,7 @@ using BusinessLogic.Models.PlayedGames;
 using NUnit.Framework;
 using Rhino.Mocks;
 using UI.Models.PlayedGame;
+using UI.Transformations;
 
 namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 {
@@ -22,6 +23,12 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
         private const string GAME_DEFINITION_NAME_B = "B - some game definition name";
         private const int GAME_DEFINITION_A_ID = 2;
         private const string GAME_DEFINITION_NAME_A = "A - some game definition name";
+
+        [TestFixtureSetUp]
+        public void TestFixtureSetup()
+        {
+            AutomapperConfiguration.Configure();
+        }
 
         [SetUp]
         public void SetUp()
@@ -45,6 +52,8 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
         [Test]
         public void ItReturnsTheCorrectView()
         {
+            autoMocker.Get<IPlayedGameRetriever>().Expect(mock => mock.SearchPlayedGames(Arg<PlayedGameFilter>.Is.Anything)).Return(new List<PlayedGameSearchResult>());
+
             var actualResults = autoMocker.ClassUnderTest.Search(new PlayedGamesFilterViewModel(), currentUser) as ViewResult;
 
             Assert.That(actualResults.ViewName, Is.EqualTo(MVC.PlayedGame.Views.Search));
@@ -53,6 +62,8 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
         [Test]
         public void ItReturnsTheCorrectViewModelType()
         {
+            autoMocker.Get<IPlayedGameRetriever>().Expect(mock => mock.SearchPlayedGames(Arg<PlayedGameFilter>.Is.Anything)).Return(new List<PlayedGameSearchResult>());
+
             var actualResults = autoMocker.ClassUnderTest.Search(new PlayedGamesFilterViewModel(), currentUser) as ViewResult;
 
             var actualViewModel = actualResults.ViewData.Model as SearchViewModel;
@@ -113,24 +124,38 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
                     }
                 }
             };
-            autoMocker.Get<IPlayedGameRetriever>().Expect(mock => mock.SearchPlayedGames(null))
-                .IgnoreArguments()
-                .Return(expectedSearchResults);
+
             autoMocker.Get<IPlayedGameRetriever>().Expect(mock => mock.SearchPlayedGames(
-                                                                                         Arg<PlayedGameFilter>.Matches(x => x.GamingGroupId == filter.GameDefinitionId
-                                                                                                                            &&
-                                                                                                                            x.StartDateGameLastUpdated ==
-                                                                                                                            filter.DatePlayedStart.Value.ToString("yyyyMMdd")
-                                                                                                                            &&
-                                                                                                                            x.EndDateGameLastUpdated ==
-                                                                                                                            filter.DatePlayedEnd.Value.ToString("yyyyMMdd"))))
-                      .Return(expectedSearchResults);
+                Arg<PlayedGameFilter>.Matches(
+                    x => x.GamingGroupId == currentUser.CurrentGamingGroupId
+                        && x.GameDefinitionId == filter.GameDefinitionId
+                        && x.StartDateGameLastUpdated ==
+                        filter.DatePlayedStart.Value.ToString("yyyyMMdd")
+                        && x.EndDateGameLastUpdated ==
+                        filter.DatePlayedEnd.Value.ToString("yyyyMMdd"))))
+                          .Return(expectedSearchResults);
 
             var actualResults = autoMocker.ClassUnderTest.Search(filter, currentUser) as ViewResult;
 
             var actualPlayedGameSearchResult = ((SearchViewModel)actualResults.Model).PlayedGameSearchResults[0];
             var expectedPlayedGameSearchResult = expectedSearchResults[0];
             Assert.That(actualPlayedGameSearchResult.DatePlayed, Is.EqualTo(expectedPlayedGameSearchResult.DatePlayed));
+            Assert.That(actualPlayedGameSearchResult.GameDefinitionId, Is.EqualTo(expectedPlayedGameSearchResult.GameDefinitionId));
+            Assert.That(actualPlayedGameSearchResult.GameDefinitionName, Is.EqualTo(expectedPlayedGameSearchResult.GameDefinitionName));
+            Assert.That(actualPlayedGameSearchResult.GamingGroupId, Is.EqualTo(expectedPlayedGameSearchResult.GamingGroupId));
+            Assert.That(actualPlayedGameSearchResult.GamingGroupName, Is.EqualTo(expectedPlayedGameSearchResult.GamingGroupName));
+            Assert.That(actualPlayedGameSearchResult.Notes, Is.EqualTo(expectedPlayedGameSearchResult.Notes));
+            var actualPlayerResult = actualPlayedGameSearchResult.PlayerResults[0];
+            var expectedPlayerResult = expectedPlayedGameSearchResult.PlayerGameResults[0];
+            Assert.That(actualPlayerResult.DatePlayed, Is.EqualTo(expectedPlayedGameSearchResult.DatePlayed));
+            Assert.That(actualPlayerResult.GameDefinitionId, Is.EqualTo(expectedPlayedGameSearchResult.GameDefinitionId));
+            Assert.That(actualPlayerResult.GameDefinitionName, Is.EqualTo(actualPlayedGameSearchResult.GameDefinitionName));
+            Assert.That(actualPlayerResult.GameRank, Is.EqualTo(expectedPlayerResult.GameRank));
+            Assert.That(actualPlayerResult.NemeStatsPointsAwarded, Is.EqualTo(expectedPlayerResult.NemeStatsPointsAwarded));
+            Assert.That(actualPlayerResult.PlayedGameId, Is.EqualTo(expectedPlayedGameSearchResult.PlayedGameId));
+            Assert.That(actualPlayerResult.PlayerId, Is.EqualTo(expectedPlayerResult.PlayerId));
+            Assert.That(actualPlayerResult.PlayerName, Is.EqualTo(expectedPlayerResult.PlayerName));
+
         }
 
 

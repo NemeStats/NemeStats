@@ -133,20 +133,31 @@ namespace BusinessLogic.Logic.PlayedGames
                              });
 
 
-            if (playedGameFilter.GamingGroupId != null)
+            if (playedGameFilter.GamingGroupId.HasValue)
             {
                 queryable = queryable.Where(query => query.GamingGroupId == playedGameFilter.GamingGroupId.Value);
             }
 
-            if (playedGameFilter.MaximumNumberOfResults != null)
+            if (playedGameFilter.GameDefinitionId.HasValue)
             {
-                queryable = queryable.Take(playedGameFilter.MaximumNumberOfResults.Value);
+                queryable = queryable.Where(query => query.GameDefinitionId == playedGameFilter.GameDefinitionId.Value);
             }
 
             if (!string.IsNullOrEmpty(playedGameFilter.StartDateGameLastUpdated))
             {
                 DateTime startDate = DateTime.ParseExact(playedGameFilter.StartDateGameLastUpdated, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None);
                 queryable = queryable.Where(query => query.DateLastUpdated >= startDate.Date);
+            }
+
+            if (!string.IsNullOrEmpty(playedGameFilter.EndDateGameLastUpdated))
+            {
+                DateTime endDate = DateTime.ParseExact(playedGameFilter.EndDateGameLastUpdated, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None);
+                queryable = queryable.Where(query => query.DateLastUpdated <= endDate.Date);
+            }
+
+            if (playedGameFilter.MaximumNumberOfResults.HasValue)
+            {
+                queryable = queryable.Take(playedGameFilter.MaximumNumberOfResults.Value);
             }
 
             return queryable.ToList();

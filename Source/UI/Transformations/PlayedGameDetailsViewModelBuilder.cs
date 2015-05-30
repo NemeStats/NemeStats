@@ -63,8 +63,8 @@ namespace UI.Transformations
             {
                 summary.PlayerResults.Add(playerResultBuilder.Build(playerGameResult));
             }
-
-            SetWinnerType(playedGame, summary);
+            var gameRanks = playedGame.PlayerGameResults.Select(x => x.GameRank).ToList();
+            summary.WinnerType = CalculateWinnerType(gameRanks);
 
             return summary;
         }
@@ -93,20 +93,17 @@ namespace UI.Transformations
         }
 
 
-        private static void SetWinnerType(PlayedGame playedGame, PlayedGameDetailsViewModel summary)
+        public static WinnerTypes CalculateWinnerType(IList<int> distinctGameRanks)
         {
-            if (playedGame.PlayerGameResults.All(x => x.GameRank == 1))
+            if (distinctGameRanks.All(x => x == 1))
             {
-                summary.WinnerType = WinnerTypes.TeamWin;
+                return WinnerTypes.TeamWin;
             }
-            else if (playedGame.PlayerGameResults.All(x => x.GameRank != 1))
+            if (distinctGameRanks.All(x => x != 1))
             {
-                summary.WinnerType = WinnerTypes.TeamLoss;
+                return WinnerTypes.TeamLoss;
             }
-            else
-            {
-                summary.WinnerType = WinnerTypes.PlayerWin;
-            }
+            return WinnerTypes.PlayerWin;
         }
     }
 }

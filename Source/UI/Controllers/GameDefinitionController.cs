@@ -86,7 +86,7 @@ namespace UI.Controllers
 				return new HttpUnauthorizedResult();
 			}
 
-			ViewBag.RecentGamesMessage = showingXResultsMessageBuilder.BuildMessage(NUMBER_OF_RECENT_GAMES_TO_SHOW, gameDefinitionSummary.PlayedGames.Count);
+			ViewBag.PlayedGamesPartialPanelTitle = "Recently Played Games " + showingXResultsMessageBuilder.BuildMessage(NUMBER_OF_RECENT_GAMES_TO_SHOW, gameDefinitionSummary.PlayedGames.Count);
 
 			return View(MVC.GameDefinition.Views.Details, gamingGroupGameDefinitionViewModel);
 		}

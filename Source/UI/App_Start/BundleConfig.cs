@@ -52,6 +52,7 @@ namespace UI
                 .Include("~/Scripts/Plugins/rankPlugin.js")
                 .Include("~/Scripts/GamingGroup/gamingGroup.js")
                 .Include("~/Scripts/CreatePlayedGame/createplayedgame.js")
+                .Include("~/Scripts/PlayedGame/search.js")
                 .Include("~/Scripts/PlayedGame/recordexceldownload.js")
                 .Include("~/Scripts/Player/createOrUpdatePlayer.js")
                 .Include("~/Scripts/Player/players.js")

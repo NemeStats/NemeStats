@@ -22,6 +22,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameRe
         private const int PLAYED_GAME_ID_FOR_GAME_RECORDED_IN_MARCH = 1;
         private const int PLAYED_GAME_ID_FOR_GAME_RECORDED_IN_APRIL = 2;
         private const int EXPECTED_GAMING_GROUP_ID = 30;
+        private const int EXPECTED_GAME_DEFINITION_ID = 51;
             
         [SetUp]
         public void SetUp()
@@ -37,7 +38,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameRe
                     PlayerGameResults = new List<PlayerGameResult>(),
                     GameDefinition = new GameDefinition(),
                     GamingGroup = new GamingGroup(),
-                    GamingGroupId = EXPECTED_GAMING_GROUP_ID
+                    GamingGroupId = EXPECTED_GAMING_GROUP_ID,
+                    GameDefinitionId = EXPECTED_GAME_DEFINITION_ID
                 },
                 new PlayedGame
                 {
@@ -151,6 +153,20 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameRe
         }
 
         [Test]
+        public void ItFiltersOnEndDateGameLastUpdated()
+        {
+            var filter = new PlayedGameFilter
+            {
+                EndDateGameLastUpdated = "2015-03-01"
+            };
+
+            var results = autoMocker.ClassUnderTest.SearchPlayedGames(filter);
+
+            Assert.That(results.Count, Is.EqualTo(1));
+            Assert.True(results.All(x => x.DateLastUpdated <= new DateTime(2015, 3, 1)));
+        }
+
+        [Test]
         public void ItLimitsSearchResultsToTheMaximumSpecified()
         {
             const int MAX_RESULTS = 1;
@@ -175,6 +191,19 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameRe
             var results = autoMocker.ClassUnderTest.SearchPlayedGames(filter);
 
             Assert.True(results.All(result => result.GamingGroupId == filter.GamingGroupId));
+        }
+
+        [Test]
+        public void ItFiltersOnTheGameDefinitionId()
+        {
+            var filter = new PlayedGameFilter
+            {
+                GameDefinitionId = EXPECTED_GAME_DEFINITION_ID
+            };
+
+            var results = autoMocker.ClassUnderTest.SearchPlayedGames(filter);
+
+            Assert.True(results.All(result => result.GameDefinitionId == filter.GameDefinitionId));
         }
     }
 }

@@ -119,7 +119,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
                 
             gameDefinitionControllerPartialMock.Details(gameDefinitionId, currentUser);
 
-            Assert.AreEqual(expectedMessage, gameDefinitionControllerPartialMock.ViewBag.RecentGamesMessage);
+            Assert.AreEqual("Recently Played Games " + expectedMessage, gameDefinitionControllerPartialMock.ViewBag.PlayedGamesPartialPanelTitle);
         }
     }
 }
