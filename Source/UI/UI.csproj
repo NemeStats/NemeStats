@@ -345,6 +345,7 @@
     <Compile Include="Models\PlayedGame\PlayedGameEditViewModel.cs" />
     <Compile Include="Models\PlayedGame\PlayedGameDetailsViewModel.cs" />
     <Compile Include="Models\PlayedGame\PlayedGamesFilterViewModel.cs" />
+    <Compile Include="Models\PlayedGame\PlayedGamesViewModel.cs" />
     <Compile Include="Models\PlayedGame\SearchViewModel.cs" />
     <Compile Include="Models\Players\MinionViewModel.cs" />
     <Compile Include="Models\Players\PlayerDetailsViewModel.cs" />

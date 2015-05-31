@@ -65,23 +65,9 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
         [Test]
         public void ItAddsAGamingGroupViewModelToTheView()
         {
-            ViewResult viewResult = gamingGroupControllerPartialMock.Index(currentUser) as ViewResult;
+            var viewResult = gamingGroupControllerPartialMock.Index(currentUser) as ViewResult;
 
             Assert.AreSame(gamingGroupViewModel, viewResult.Model);
-        }
-
-        [Test]
-        public void ItAddsTheRecentlyPlayedGamesMessageToTheViewBag()
-        {
-            string expectedMessage = "expected message";
-            showingXResultsMessageBuilderMock.Expect(mock => mock.BuildMessage(
-                 GamingGroupController.MAX_NUMBER_OF_RECENT_GAMES,
-                 gamingGroupSummary.PlayedGames.Count))
-                     .Return(expectedMessage);
-
-            gamingGroupControllerPartialMock.Index(currentUser);
-
-            Assert.AreEqual("Recent Games " + expectedMessage, gamingGroupControllerPartialMock.ViewBag.PlayedGamesPartialPanelTitle);
         }
     }
 }

@@ -82,9 +82,13 @@ namespace UI.Controllers
 		[UserContext]
 		public virtual ActionResult Index(ApplicationUser currentUser)
 		{
-			var gamingGroupSummary = this.GetGamingGroupSummaryAndSetRecentGamesMessage(currentUser.CurrentGamingGroupId.Value);
+			var gamingGroupSummary = this.GetGamingGroupSummary(currentUser.CurrentGamingGroupId.Value);
 
 			GamingGroupViewModel viewModel = gamingGroupViewModelBuilder.Build(gamingGroupSummary, currentUser);
+
+            //"Recent Games " + this.showingXResultsMessageBuilder.BuildMessage(
+            //                                                                        MAX_NUMBER_OF_RECENT_GAMES,
+            //                                                                        gamingGroupSummary.PlayedGames.Count);
 
 			ViewBag.RecentGamesSectionAnchorText = SECTION_ANCHOR_RECENT_GAMES;
 			ViewBag.PlayerSectionAnchorText = SECTION_ANCHOR_PLAYERS;
@@ -93,15 +97,12 @@ namespace UI.Controllers
 			return View(MVC.GamingGroup.Views.Index, viewModel);
 		}
 
-		internal virtual GamingGroupSummary GetGamingGroupSummaryAndSetRecentGamesMessage(int gamingGroupId)
+		internal virtual GamingGroupSummary GetGamingGroupSummary(int gamingGroupId)
 		{
 			GamingGroupSummary gamingGroupSummary = this.gamingGroupRetriever.GetGamingGroupDetails(
 																							   gamingGroupId,
 																							   MAX_NUMBER_OF_RECENT_GAMES);
 
-            ViewBag.PlayedGamesPartialPanelTitle = "Recent Games " + this.showingXResultsMessageBuilder.BuildMessage(
-																					MAX_NUMBER_OF_RECENT_GAMES,
-																					gamingGroupSummary.PlayedGames.Count);
 			return gamingGroupSummary;
 		}
 
@@ -109,7 +110,7 @@ namespace UI.Controllers
 		[UserContext(RequiresGamingGroup = false)]
 		public virtual ActionResult Details(int id, ApplicationUser currentUser)
 		{
-			GamingGroupSummary gamingGroupSummary = GetGamingGroupSummaryAndSetRecentGamesMessage(id);
+			GamingGroupSummary gamingGroupSummary = GetGamingGroupSummary(id);
 
 			GamingGroupPublicViewModel viewModel = new GamingGroupPublicViewModel
 			{

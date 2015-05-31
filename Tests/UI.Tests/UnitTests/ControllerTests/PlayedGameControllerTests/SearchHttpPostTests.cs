@@ -130,9 +130,9 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
                     x => x.GamingGroupId == currentUser.CurrentGamingGroupId
                         && x.GameDefinitionId == filter.GameDefinitionId
                         && x.StartDateGameLastUpdated ==
-                        filter.DatePlayedStart.Value.ToString("yyyyMMdd")
+                        filter.DatePlayedStart.Value.ToString("yyyy-MM-dd")
                         && x.EndDateGameLastUpdated ==
-                        filter.DatePlayedEnd.Value.ToString("yyyyMMdd"))))
+                        filter.DatePlayedEnd.Value.ToString("yyyy-MM-dd"))))
                           .Return(expectedSearchResults);
 
             var actualResults = autoMocker.ClassUnderTest.Search(filter, currentUser) as ViewResult;
