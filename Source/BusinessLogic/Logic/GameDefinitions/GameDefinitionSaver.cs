@@ -15,8 +15,11 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
+
+using System.Data.Entity.Infrastructure;
 using BusinessLogic.DataAccess;
 using BusinessLogic.EventTracking;
+using BusinessLogic.Exceptions;
 using BusinessLogic.Models;
 using BusinessLogic.Models.User;
 using System;
@@ -48,7 +51,16 @@ namespace BusinessLogic.Logic.GameDefinitions
             {
                 new Task(() => eventTracker.TrackGameDefinitionCreation(currentUser, gameDefinition.Name)).Start();
             }
-            GameDefinition newGameDefinition = dataContext.Save<GameDefinition>(gameDefinition, currentUser);
+
+            GameDefinition newGameDefinition;
+            try
+            {
+                newGameDefinition = dataContext.Save<GameDefinition>(gameDefinition, currentUser);
+            }
+            catch (DbUpdateException)
+            {
+                throw new DuplicateKeyException(string.Format("A Game Definition with name '{0}' already exists in this Gaming Group.", gameDefinition.Name));
+            }
 
             return newGameDefinition;
         }

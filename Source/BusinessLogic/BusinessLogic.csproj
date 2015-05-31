@@ -143,6 +143,7 @@
     <Compile Include="EventTracking\EventCategoryEnum.cs" />
     <Compile Include="EventTracking\NemeStatsEventTracker.cs" />
     <Compile Include="EventTracking\UniversalAnalyticsNemeStatsEventTracker.cs" />
+    <Compile Include="Exceptions\DuplicateKeyException.cs" />
     <Compile Include="Exceptions\EntityDoesNotExistException.cs" />
     <Compile Include="Exceptions\ApiFriendlyException.cs" />
     <Compile Include="Exceptions\PlayerAlreadyExistsException.cs" />
