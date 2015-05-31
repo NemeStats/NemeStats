@@ -29,6 +29,7 @@ using System.Web.Mvc;
 using UI.Attributes.Filters;
 using UI.Controllers.Helpers;
 using UI.Models.GamingGroup;
+using UI.Models.PlayedGame;
 using UI.Transformations;
 using UI.Transformations.PlayerTransformations;
 
@@ -120,8 +121,12 @@ namespace UI.Controllers
 					.Select(summary => gameDefinitionSummaryViewModelBuilder.Build(summary, currentUser)).ToList(),
 				Players = gamingGroupSummary.Players
 					.Select(playerWithNemesis => playerWithNemesisViewModelBuilder.Build(playerWithNemesis, currentUser)).ToList(),
-				RecentGames = gamingGroupSummary.PlayedGames
-					.Select(playedGame => playedGameDetailsViewModelBuilder.Build(playedGame, currentUser)).ToList()
+                PlayedGames = new PlayedGamesViewModel
+                {
+                    PlayedGameDetailsViewModels = gamingGroupSummary.PlayedGames
+					.Select(playedGame => playedGameDetailsViewModelBuilder.Build(playedGame, currentUser)).ToList(),
+                    PanelTitle = string.Format("Last {0} Played Games", gamingGroupSummary.PlayedGames.Count)
+                }
 			};
 
 			return View(MVC.GamingGroup.Views.Details, viewModel);

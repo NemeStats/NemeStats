@@ -30,12 +30,20 @@ namespace UI.Models.GamingGroup
 {
     public class GamingGroupPublicViewModel : IEditableViewModel
     {
+        public GamingGroupPublicViewModel()
+        {
+            PlayedGames = new PlayedGamesViewModel
+            {
+                PlayedGameDetailsViewModels = new List<PlayedGameDetailsViewModel>()
+            };
+        }
+
         public int Id { get; set; }
         [DisplayName("Gaming Group Name")]
         public string Name { get; set; }
         public bool UserCanEdit { get; set; }
         public IList<GameDefinitionSummaryViewModel> GameDefinitionSummaries { get; set; }
         public IList<PlayerWithNemesisViewModel> Players { get; set; }
-        public IList<PlayedGameDetailsViewModel> RecentGames { get; set; }
+        public PlayedGamesViewModel PlayedGames { get; set; }
     }
 }
