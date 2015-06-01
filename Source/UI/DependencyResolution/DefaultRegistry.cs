@@ -22,6 +22,7 @@ using BusinessLogic.Logic.BoardGameGeek;
 using BusinessLogic.Logic.Champions;
 using BusinessLogic.Logic.Email;
 using BusinessLogic.Logic.VotableFeatures;
+using BusinessLogic.Providers;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.DataProtection;
@@ -97,7 +98,7 @@ namespace UI.DependencyResolution {
 
             this.For<ICookieHelper>().Singleton().Use<CookieHelper>();
 
-            this.For<IDataProtectionProvider>().Singleton().Use<DpapiDataProtectionProvider>().Ctor<string>("appName").Is("NemeStats");
+            this.For<IDataProtectionProvider>().Singleton().Use<MachineKeyProtectionProvider>();
         }
 
         private void SetupTransientMappings()
