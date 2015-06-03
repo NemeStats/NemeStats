@@ -16,18 +16,16 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 
-using System;
-using System.Globalization;
-using System.Security.Cryptography.X509Certificates;
 using BusinessLogic.DataAccess;
 using BusinessLogic.Exceptions;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
+using BusinessLogic.Models.PlayedGames;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Globalization;
 using System.Linq;
-using BusinessLogic.Models.PlayedGames;
-using BusinessLogic.Models.User;
 
 namespace BusinessLogic.Logic.PlayedGames
 {
@@ -109,7 +107,7 @@ namespace BusinessLogic.Logic.PlayedGames
             var queryable = (from playedGame in dataContext.GetQueryable<PlayedGame>()
                                                            .OrderByDescending(game => game.DatePlayed)
                                                            .ThenByDescending(game => game.DateCreated)
-                             select new PlayedGameSearchResult()
+                             select new PlayedGameSearchResult
                              {
                                  PlayedGameId = playedGame.Id,
                                  GameDefinitionId = playedGame.GameDefinitionId,
@@ -117,26 +115,49 @@ namespace BusinessLogic.Logic.PlayedGames
                                  BoardGameGeekObjectId = playedGame.GameDefinition.BoardGameGeekObjectId,
                                  GamingGroupId = playedGame.GamingGroupId,
                                  GamingGroupName = playedGame.GamingGroup.Name,
+                                 Notes = playedGame.Notes,
                                  DatePlayed = playedGame.DatePlayed,
                                  DateLastUpdated = playedGame.DateCreated,
-                                 PlayerGameResults = playedGame.PlayerGameResults
+                                 PlayerGameResults = playedGame.PlayerGameResults.Select(x => new PlayerResult
+                                 {
+                                     GameRank = x.GameRank,
+                                     NemeStatsPointsAwarded = x.NemeStatsPointsAwarded,
+                                     PlayerId = x.PlayerId,
+                                     PlayerName = x.Player.Name,
+                                     PointsScored = x.PointsScored,
+                                     DatePlayed = x.PlayedGame.DatePlayed,
+                                     GameDefinitionId = x.PlayedGame.GameDefinitionId,
+                                     GameName = x.PlayedGame.GameDefinition.Name,
+                                     PlayedGameId = x.PlayedGameId
+                                 }).ToList()
                              });
 
 
-            if (playedGameFilter.GamingGroupId != null)
+            if (playedGameFilter.GamingGroupId.HasValue)
             {
                 queryable = queryable.Where(query => query.GamingGroupId == playedGameFilter.GamingGroupId.Value);
             }
 
-            if (playedGameFilter.MaximumNumberOfResults != null)
+            if (playedGameFilter.GameDefinitionId.HasValue)
             {
-                queryable = queryable.Take(playedGameFilter.MaximumNumberOfResults.Value);
+                queryable = queryable.Where(query => query.GameDefinitionId == playedGameFilter.GameDefinitionId.Value);
             }
 
             if (!string.IsNullOrEmpty(playedGameFilter.StartDateGameLastUpdated))
             {
                 DateTime startDate = DateTime.ParseExact(playedGameFilter.StartDateGameLastUpdated, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None);
                 queryable = queryable.Where(query => query.DateLastUpdated >= startDate.Date);
+            }
+
+            if (!string.IsNullOrEmpty(playedGameFilter.EndDateGameLastUpdated))
+            {
+                DateTime endDate = DateTime.ParseExact(playedGameFilter.EndDateGameLastUpdated, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None);
+                queryable = queryable.Where(query => query.DateLastUpdated <= endDate.Date);
+            }
+
+            if (playedGameFilter.MaximumNumberOfResults.HasValue)
+            {
+                queryable = queryable.Take(playedGameFilter.MaximumNumberOfResults.Value);
             }
 
             return queryable.ToList();

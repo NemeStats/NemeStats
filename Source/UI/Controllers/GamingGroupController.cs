@@ -32,6 +32,7 @@ using System.Web.Mvc;
 using UI.Attributes.Filters;
 using UI.Controllers.Helpers;
 using UI.Models.GamingGroup;
+using UI.Models.PlayedGame;
 using UI.Transformations;
 using UI.Transformations.PlayerTransformations;
 
@@ -85,9 +86,13 @@ namespace UI.Controllers
 		[UserContext]
 		public virtual ActionResult Index(ApplicationUser currentUser)
 		{
-			var gamingGroupSummary = this.GetGamingGroupSummaryAndSetRecentGamesMessage(currentUser.CurrentGamingGroupId.Value);
+			var gamingGroupSummary = this.GetGamingGroupSummary(currentUser.CurrentGamingGroupId.Value);
 
 			GamingGroupViewModel viewModel = gamingGroupViewModelBuilder.Build(gamingGroupSummary, currentUser);
+
+            //"Recent Games " + this.showingXResultsMessageBuilder.BuildMessage(
+            //                                                                        MAX_NUMBER_OF_RECENT_GAMES,
+            //                                                                        gamingGroupSummary.PlayedGames.Count);
 
 			ViewBag.RecentGamesSectionAnchorText = SECTION_ANCHOR_RECENT_GAMES;
 			ViewBag.PlayerSectionAnchorText = SECTION_ANCHOR_PLAYERS;
@@ -96,15 +101,12 @@ namespace UI.Controllers
 			return View(MVC.GamingGroup.Views.Index, viewModel);
 		}
 
-		internal virtual GamingGroupSummary GetGamingGroupSummaryAndSetRecentGamesMessage(int gamingGroupId)
+		internal virtual GamingGroupSummary GetGamingGroupSummary(int gamingGroupId)
 		{
 			GamingGroupSummary gamingGroupSummary = this.gamingGroupRetriever.GetGamingGroupDetails(
 																							   gamingGroupId,
 																							   MAX_NUMBER_OF_RECENT_GAMES);
 
-			this.ViewBag.RecentGamesMessage = this.showingXResultsMessageBuilder.BuildMessage(
-																					MAX_NUMBER_OF_RECENT_GAMES,
-																					gamingGroupSummary.PlayedGames.Count);
 			return gamingGroupSummary;
 		}
 
@@ -112,7 +114,7 @@ namespace UI.Controllers
 		[UserContext(RequiresGamingGroup = false)]
 		public virtual ActionResult Details(int id, ApplicationUser currentUser)
 		{
-			GamingGroupSummary gamingGroupSummary = GetGamingGroupSummaryAndSetRecentGamesMessage(id);
+			GamingGroupSummary gamingGroupSummary = GetGamingGroupSummary(id);
 
 			GamingGroupPublicViewModel viewModel = new GamingGroupPublicViewModel
 			{
@@ -122,8 +124,12 @@ namespace UI.Controllers
 					.Select(summary => gameDefinitionSummaryViewModelBuilder.Build(summary, currentUser)).ToList(),
 				Players = gamingGroupSummary.Players
 					.Select(playerWithNemesis => playerWithNemesisViewModelBuilder.Build(playerWithNemesis, currentUser)).ToList(),
-				RecentGames = gamingGroupSummary.PlayedGames
-					.Select(playedGame => playedGameDetailsViewModelBuilder.Build(playedGame, currentUser)).ToList()
+                PlayedGames = new PlayedGamesViewModel
+                {
+                    PlayedGameDetailsViewModels = gamingGroupSummary.PlayedGames
+					.Select(playedGame => playedGameDetailsViewModelBuilder.Build(playedGame, currentUser)).ToList(),
+                    PanelTitle = string.Format("Last {0} Played Games", gamingGroupSummary.PlayedGames.Count)
+                }
 			};
 
 			return View(MVC.GamingGroup.Views.Details, viewModel);

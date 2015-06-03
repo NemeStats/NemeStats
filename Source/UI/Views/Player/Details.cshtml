@@ -293,7 +293,7 @@
                                     @Html.ActionLink(gameResultViewModel.DatePlayed.ToShortDateString(), "Details", "PlayedGame", new { id = gameResultViewModel.PlayedGameId }, new { })
                                 </td>
                                 <td>
-                                    @Html.ActionLink(gameResultViewModel.GameName, "Details", "GameDefinition", new { id = gameResultViewModel.GameDefinitionId }, new { })
+                                    @Html.ActionLink(gameResultViewModel.GameDefinitionName, "Details", "GameDefinition", new { id = gameResultViewModel.GameDefinitionId }, new { })
                                 </td>
                                 <td>
                                     @*Don't have the WinnerType available on PlayerGameResult and this is a big refactor to make it work.*@

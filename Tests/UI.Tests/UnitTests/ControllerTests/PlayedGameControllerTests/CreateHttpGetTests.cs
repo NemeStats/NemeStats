@@ -15,6 +15,9 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
+
+using BusinessLogic.Logic.GameDefinitions;
+using BusinessLogic.Logic.Players;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
 using NUnit.Framework;
@@ -40,7 +43,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 
 			allPlayers = new List<Player>() { new Player() { Id = playerId, Name = playerName } };
 
-			playerRetrieverMock.Expect(x => x.GetAllPlayers(currentUser.CurrentGamingGroupId.Value)).Repeat.Once().Return(allPlayers);
+            autoMocker.Get<IPlayerRetriever>().Expect(x => x.GetAllPlayers(currentUser.CurrentGamingGroupId.Value)).Repeat.Once().Return(allPlayers);
 		}
 
 		[Test]
@@ -54,10 +57,10 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
                    Id = gameDefinitionId
                 }
             };
-			base.gameDefinitionRetrieverMock.Expect(mock => mock.GetAllGameDefinitions(currentUser.CurrentGamingGroupId.Value))
+			autoMocker.Get<IGameDefinitionRetriever>().Expect(mock => mock.GetAllGameDefinitions(currentUser.CurrentGamingGroupId.Value))
 				.Return(gameDefinitions);
 
-			ViewResult result = playedGameController.Create(currentUser) as ViewResult;
+			ViewResult result = autoMocker.ClassUnderTest.Create(currentUser) as ViewResult;
 
 			PlayedGameEditViewModel viewModel = (PlayedGameEditViewModel)result.Model;
 			Assert.That(viewModel.GameDefinitions.All(item => item.Value == gameDefinitionId.ToString()), Is.True);
@@ -66,7 +69,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 		[Test]
 		public void ItLoadsTheCreateView()
 		{
-			ViewResult result = playedGameController.Create(currentUser) as ViewResult;
+			ViewResult result = autoMocker.ClassUnderTest.Create(currentUser) as ViewResult;
 
 			Assert.AreEqual(MVC.PlayedGame.Views.Create, result.ViewName);
 		}

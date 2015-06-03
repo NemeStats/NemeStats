@@ -1,4 +1,4 @@
-﻿@model IList<UI.Models.PlayedGame.PlayedGameDetailsViewModel>
+﻿@model UI.Models.PlayedGame.PlayedGamesViewModel
 
 @{
     Layout = null;
@@ -9,7 +9,7 @@
 <div class="panel panel-primary">
     <div class="panel-heading">
         <h4 class="fl-left">
-            Recently Played Games @ViewBag.RecentGamesMessage
+            @Model.PanelTitle
         </h4>
         @if ((bool?)ViewData["canEdit"] == true)
         {
@@ -45,7 +45,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var playedGameDetailsViewModel in Model)
+                    @foreach (var playedGameDetailsViewModel in Model.PlayedGameDetailsViewModels)
                     {
                         <tr>
                             <td>

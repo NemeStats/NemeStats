@@ -94,19 +94,17 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.PlayedGamesCon
                 GameDefinitionName = "some game definition name",
                 GamingGroupId = 3,
                 GamingGroupName = "some gaming group name",
+                Notes = "some notes",
                 PlayedGameId = 4,
-                PlayerGameResults = new List<PlayerGameResult>
+                PlayerGameResults = new List<PlayerResult>
                 {
-                    new PlayerGameResult
+                    new PlayerResult
                     {
                         GameRank = 1,
                         PlayerId = 2,
                         PointsScored = 3,
                         NemeStatsPointsAwarded = 4,
-                        Player = new Player
-                        {
-                            Name = "some player name"
-                        }
+                        PlayerName = "some player name"
                     }
                 }
             };
@@ -133,13 +131,13 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.PlayedGamesCon
             Assert.That(actualSinglePlayedGame.GameDefinitionName, Is.EqualTo(expectedSingleResult.GameDefinitionName));
             Assert.That(actualSinglePlayedGame.GamingGroupId, Is.EqualTo(expectedSingleResult.GamingGroupId));
             Assert.That(actualSinglePlayedGame.GamingGroupName, Is.EqualTo(expectedSingleResult.GamingGroupName));
+            Assert.That(actualSinglePlayedGame.Notes, Is.EqualTo(expectedSingleResult.Notes));
             Assert.That(actualSinglePlayedGame.PlayedGameId, Is.EqualTo(expectedSingleResult.PlayedGameId));
             Assert.That(actualSinglePlayedGame.PlayerGameResults[0].GameRank, Is.EqualTo(expectedSingleResult.PlayerGameResults[0].GameRank));
             Assert.That(actualSinglePlayedGame.PlayerGameResults[0].NemeStatsPointsAwarded, Is.EqualTo(expectedSingleResult.PlayerGameResults[0].NemeStatsPointsAwarded));
             Assert.That(actualSinglePlayedGame.PlayerGameResults[0].PlayerId, Is.EqualTo(expectedSingleResult.PlayerGameResults[0].PlayerId));
-            Assert.That(actualSinglePlayedGame.PlayerGameResults[0].PlayerName, Is.EqualTo(expectedSingleResult.PlayerGameResults[0].Player.Name));
+            Assert.That(actualSinglePlayedGame.PlayerGameResults[0].PlayerName, Is.EqualTo(expectedSingleResult.PlayerGameResults[0].PlayerName));
             Assert.That(actualSinglePlayedGame.PlayerGameResults[0].PointsScored, Is.EqualTo(expectedSingleResult.PlayerGameResults[0].PointsScored));
-            Assert.That(actualSinglePlayedGame.PlayerGameResults[0].NemeStatsPointsAwarded, Is.EqualTo(expectedSingleResult.PlayerGameResults[0].NemeStatsPointsAwarded));
         }
     }
 }

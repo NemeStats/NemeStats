@@ -15,7 +15,9 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
-﻿using BusinessLogic.Models.Games;
+
+using BusinessLogic.Logic.PlayedGames;
+using BusinessLogic.Models.Games;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System.Collections.Generic;
@@ -30,15 +32,16 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 		public override void TestSetUp()
 		{
 			base.TestSetUp();
-			base.expectedViewModel = new List<PublicGameSummary>();
-			base.playedGameRetriever.Expect(mock => mock.GetRecentPublicGames(Arg<int>.Is.Anything)).Return(new List<PublicGameSummary>());
-			base.playedGameControllerPartialMock.Expect(mock => mock.ShowRecentlyPlayedGames()).Return(new ViewResult { ViewName = MVC.PlayedGame.Views.RecentlyPlayedGames, ViewData = new ViewDataDictionary(base.expectedViewModel) });
+			expectedViewModel = new List<PublicGameSummary>();
+            autoMocker.Get<IPlayedGameRetriever>().Expect(mock => mock.GetRecentPublicGames(Arg<int>.Is.Anything)).Return(new List<PublicGameSummary>());
+            autoMocker.PartialMockTheClassUnderTest();
+			autoMocker.ClassUnderTest.Expect(mock => mock.ShowRecentlyPlayedGames()).Return(new ViewResult { ViewName = MVC.PlayedGame.Views.RecentlyPlayedGames, ViewData = new ViewDataDictionary(base.expectedViewModel) });
 		}
 
 		[Test]
 		public void ItReturnsRecentlyPlayedGamesView()
 		{
-			var viewResult = playedGameControllerPartialMock.ShowRecentlyPlayedGames() as ViewResult;
+			var viewResult = autoMocker.ClassUnderTest.ShowRecentlyPlayedGames() as ViewResult;
 
 			Assert.AreEqual(MVC.PlayedGame.Views.RecentlyPlayedGames, viewResult.ViewName);
 		}
@@ -46,7 +49,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 		[Test]
 		public void ItReturnsSpecifiedRecentlyPlayedGamesModelToView()
 		{
-			var viewResult = playedGameController.ShowRecentlyPlayedGames() as ViewResult;
+			var viewResult = autoMocker.ClassUnderTest.ShowRecentlyPlayedGames() as ViewResult;
 
 			var actualViewModel = viewResult.ViewData.Model;
 

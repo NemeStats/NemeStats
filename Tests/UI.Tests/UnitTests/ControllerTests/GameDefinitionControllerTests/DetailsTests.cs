@@ -109,17 +109,12 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
         }
 
         [Test]
-        public void ItPutsTheRecentGamesMessageOnTheViewBag()
+        public void ItSetsThePlayedGamesPanelTitle()
         {
-            string expectedMessage = "expected message";
-            showingXResultsMessageBuilderMock.Expect(mock => mock.BuildMessage(
-                GameDefinitionController.NUMBER_OF_RECENT_GAMES_TO_SHOW,
-                gameDefinitionSummary.PlayedGames.Count))
-                    .Return(expectedMessage);
-                
-            gameDefinitionControllerPartialMock.Details(gameDefinitionId, currentUser);
+            var viewResult = gameDefinitionControllerPartialMock.Details(gameDefinitionId, currentUser) as ViewResult;
 
-            Assert.AreEqual(expectedMessage, gameDefinitionControllerPartialMock.ViewBag.RecentGamesMessage);
+            GameDefinitionDetailsViewModel actualGameDefinitionViewModel = (GameDefinitionDetailsViewModel)viewResult.ViewData.Model;
+            Assert.That(actualGameDefinitionViewModel.PlayedGamesPanelTitle, Is.EqualTo("Last 0 Played Games"));
         }
     }
 }

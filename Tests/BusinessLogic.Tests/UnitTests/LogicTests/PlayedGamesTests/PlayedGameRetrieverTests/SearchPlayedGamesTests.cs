@@ -22,6 +22,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameRe
         private const int PLAYED_GAME_ID_FOR_GAME_RECORDED_IN_MARCH = 1;
         private const int PLAYED_GAME_ID_FOR_GAME_RECORDED_IN_APRIL = 2;
         private const int EXPECTED_GAMING_GROUP_ID = 30;
+        private const int EXPECTED_GAME_DEFINITION_ID = 51;
             
         [SetUp]
         public void SetUp()
@@ -37,7 +38,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameRe
                     PlayerGameResults = new List<PlayerGameResult>(),
                     GameDefinition = new GameDefinition(),
                     GamingGroup = new GamingGroup(),
-                    GamingGroupId = EXPECTED_GAMING_GROUP_ID
+                    GamingGroupId = EXPECTED_GAMING_GROUP_ID,
+                    GameDefinitionId = EXPECTED_GAME_DEFINITION_ID
                 },
                 new PlayedGame
                 {
@@ -57,15 +59,6 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameRe
         public void ItSetsAllTheFields()
         {
             autoMocker = new RhinoAutoMocker<PlayedGameRetriever>();
-            var playerGameResults = new List<PlayerGameResult>
-            {
-                new PlayerGameResult
-                {
-                    GameRank = 1,
-                    PlayerId = 2,
-                    PointsScored = 50
-                }
-            };
 
             var playedGame = new PlayedGame
             {
@@ -83,9 +76,29 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameRe
                 {
                     Name = "some game definition name",
                     BoardGameGeekObjectId = 4
-                },
-                PlayerGameResults = playerGameResults
+                }
             };
+
+            var playerGameResult = new PlayerGameResult
+            {
+                GameRank = 1,
+                PlayerId = 2,
+                PointsScored = 50,
+                Player = new Player
+                {
+                    Id = 100,
+                    Name = "some player name"
+                },
+                PlayedGame = playedGame
+            };
+
+            var playerGameResults = new List<PlayerGameResult>
+            {
+               playerGameResult
+            };
+
+            playedGame.PlayerGameResults = playerGameResults;
+
             playedGames = new List<PlayedGame>
             {
                 playedGame
@@ -101,7 +114,18 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameRe
             Assert.That(results.DatePlayed, Is.EqualTo(playedGame.DatePlayed));
             Assert.That(results.GamingGroupId, Is.EqualTo(playedGame.GamingGroupId));
             Assert.That(results.GamingGroupName, Is.EqualTo(playedGame.GamingGroup.Name));
-            Assert.That(results.PlayerGameResults, Is.SameAs(playedGame.PlayerGameResults));
+            Assert.That(results.Notes, Is.EqualTo(playedGame.Notes));
+            var actualPlayerResult = results.PlayerGameResults[0];
+            var expectedPlayerGameResult = playedGame.PlayerGameResults[0];
+            Assert.That(actualPlayerResult.GameRank, Is.EqualTo(expectedPlayerGameResult.GameRank));
+            Assert.That(actualPlayerResult.NemeStatsPointsAwarded, Is.EqualTo(expectedPlayerGameResult.NemeStatsPointsAwarded));
+            Assert.That(actualPlayerResult.PlayerId, Is.EqualTo(expectedPlayerGameResult.PlayerId));
+            Assert.That(actualPlayerResult.PlayerName, Is.EqualTo(expectedPlayerGameResult.Player.Name));
+            Assert.That(actualPlayerResult.PointsScored, Is.EqualTo(expectedPlayerGameResult.PointsScored));
+            Assert.That(actualPlayerResult.PlayedGameId, Is.EqualTo(expectedPlayerGameResult.PlayedGameId));
+            Assert.That(actualPlayerResult.DatePlayed, Is.EqualTo(expectedPlayerGameResult.PlayedGame.DatePlayed));
+            Assert.That(actualPlayerResult.GameName, Is.EqualTo(expectedPlayerGameResult.PlayedGame.GameDefinition.Name));
+            Assert.That(actualPlayerResult.GameDefinitionId, Is.EqualTo(expectedPlayerGameResult.PlayedGame.GameDefinitionId));
         }
 
         [Test]
@@ -129,6 +153,20 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameRe
         }
 
         [Test]
+        public void ItFiltersOnEndDateGameLastUpdated()
+        {
+            var filter = new PlayedGameFilter
+            {
+                EndDateGameLastUpdated = "2015-03-01"
+            };
+
+            var results = autoMocker.ClassUnderTest.SearchPlayedGames(filter);
+
+            Assert.That(results.Count, Is.EqualTo(1));
+            Assert.True(results.All(x => x.DateLastUpdated <= new DateTime(2015, 3, 1)));
+        }
+
+        [Test]
         public void ItLimitsSearchResultsToTheMaximumSpecified()
         {
             const int MAX_RESULTS = 1;
@@ -153,6 +191,19 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameRe
             var results = autoMocker.ClassUnderTest.SearchPlayedGames(filter);
 
             Assert.True(results.All(result => result.GamingGroupId == filter.GamingGroupId));
+        }
+
+        [Test]
+        public void ItFiltersOnTheGameDefinitionId()
+        {
+            var filter = new PlayedGameFilter
+            {
+                GameDefinitionId = EXPECTED_GAME_DEFINITION_ID
+            };
+
+            var results = autoMocker.ClassUnderTest.SearchPlayedGames(filter);
+
+            Assert.True(results.All(result => result.GameDefinitionId == filter.GameDefinitionId));
         }
     }
 }

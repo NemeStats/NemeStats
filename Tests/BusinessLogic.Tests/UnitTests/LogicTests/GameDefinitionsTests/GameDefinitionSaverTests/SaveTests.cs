@@ -15,8 +15,11 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
+
+using System.Data.Entity.Infrastructure;
 using BusinessLogic.DataAccess;
 using BusinessLogic.EventTracking;
+using BusinessLogic.Exceptions;
 using BusinessLogic.Logic.GameDefinitions;
 using BusinessLogic.Models;
 using BusinessLogic.Models.User;
@@ -66,6 +69,26 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
 
             Assert.AreEqual(expectedException.Message, exception.Message);
         }
+
+        [Test]
+        public void ItThrowsADuplicateKeyExceptionIfThereIsADbUpdateException()
+        {
+            var gameDefinition = new GameDefinition
+            {
+                Name = "existing game definition name"
+            };
+            autoMocker.Get<IDataContext>().Expect(mock => mock.Save(
+                Arg<GameDefinition>.Is.Anything, 
+                Arg<ApplicationUser>.Is.Anything))
+                .IgnoreArguments()
+                .Throw(new DbUpdateException());
+
+            Exception exception = Assert.Throws<DuplicateKeyException>(
+                () => autoMocker.ClassUnderTest.Save(gameDefinition, currentUser));
+
+            Assert.That(exception.Message, Is.EqualTo("A Game Definition with name '" + gameDefinition.Name + "' already exists in this Gaming Group."));
+        }
+
 
         [Test]
         public void ItSetsTheGameDefinitionName()

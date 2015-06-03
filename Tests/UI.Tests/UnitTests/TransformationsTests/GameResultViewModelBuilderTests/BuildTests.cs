@@ -134,7 +134,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.GameResultViewModelBuilderTest
         [Test]
         public void ItCopiesThenemeStatsPoints()
         {
-            Assert.AreEqual(this.playerGameResult.NemeStatsPointsAwarded, this.playerGameResultDetails.NemeStatsPoints);
+            Assert.AreEqual(this.playerGameResult.NemeStatsPointsAwarded, this.playerGameResultDetails.NemeStatsPointsAwarded);
         }
 
         [Test]

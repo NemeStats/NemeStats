@@ -29,7 +29,7 @@
 
 <a name="@ViewBag.RecentGamesSectionAnchorText"></a>
 <div class="row">
-   @Html.Partial("~/Views/PlayedGame/_PlayedGamesPartial.cshtml", Model.RecentGames, new ViewDataDictionary { { "canEdit", true }, { "gamingGroupId", @Model.Id} })
+   @Html.Partial("~/Views/PlayedGame/_PlayedGamesPartial.cshtml", Model.PlayedGames, new ViewDataDictionary { { "canEdit", true }, { "gamingGroupId", @Model.Id} })
 </div>
 
 @section Scripts {

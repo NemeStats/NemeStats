@@ -196,6 +196,7 @@ and then recreated using the corresponding services for this.
     + boardGameGeekObjectId (number, optional) - Board Game Geek unique identifier for the Game Definition.
     + gamingGroupId (number, required) - NemeStats unique identifier of the Gaming Group against which this Played Game was recorded.
     + gamingGroupName (string, required) - Name of the Gaming Group.
+    + notes (string, optional) - User-entered notes about the game.
     + datePlayed (string, required) - The date that the Played Game was recorded in yyyy-MM-dd format (e.g. 2015-05-013).
     + dateLastUpdated (string, required) - The date that the Played Game was last updated in yyyy-MM-dd format (e.g. 2015-05-013). This will usually match the datePlayed unless the Played Game was updated at a later date.
     + playerGameResults (PlayerGameResult, required) - A list of PlayerGameResult objects which contain information regarding each Player's rank, points scored, and NemeStats points awarded for playing the game.
@@ -317,6 +318,7 @@ Retrieve a list of Played Games given some criteria.
                         "gameDefinitionName":"Small World",
                         "gamingGroupId":1,
                         "gamingGroupName":"RIDGID Board Gamers",
+                        "notes":"Dave Staw ran away with this one!",
                         "boardGameGeekObjectId":40692,
                         "datePlayed":"2015-04-04",
                         "dateLastUpdated":"2015-04-24"

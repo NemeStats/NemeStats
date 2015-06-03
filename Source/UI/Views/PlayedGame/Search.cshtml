@@ -1,0 +1,75 @@
+﻿@model UI.Models.PlayedGame.SearchViewModel
+
+@{
+    ViewBag.Title = "Search Played Games";
+    Layout = MVC.Shared.Views._BaseLayout;;
+}
+<h2>
+    @ViewBag.Title
+</h2>
+<hr />
+
+<div class="panel-body">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h4>Search Played Games</h4>
+        </div>
+        <div class="panel-body">
+            @using (Html.BeginForm())
+            {
+                <div class="row">
+                    <div class="col-sm-2">
+                        <b>Game Played</b>
+                    </div>
+                    <div class="col-sm-10">
+                        @Html.DropDownListFor(x => Model.Filter.GameDefinitionId, @Model.GameDefinitions)
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-2">
+                        <b>Date Played - Start</b>
+                    </div>
+                    <div class="col-sm-10">
+                        @Html.TextBoxFor(x => Model.Filter.DatePlayedStart, new
+                        {
+                            @class = "date-picker"
+                        })
+                        @Html.ValidationMessageFor(model => model.Filter.DatePlayedStart)
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-2">
+                        <b>Date Played - End</b>
+                    </div>
+                    <div class="col-sm-10">
+                        @Html.TextBoxFor(x => Model.Filter.DatePlayedEnd, new
+                        {
+                            @class = "date-picker"
+                        })
+                        @Html.ValidationMessageFor(model => model.Filter.DatePlayedEnd)
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Search" class="btn btn-primary" />
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+@if (Model.PlayedGameSearchResults != null)
+{
+    <div class="row">
+        @Html.Partial("~/Views/PlayedGame/_PlayedGamesPartial.cshtml", Model.PlayedGameSearchResults)
+    </div>
+}
+@section Scripts{
+    <script type="text/javascript">
+		//Creation
+		$(document).ready(function () {
+			var search = new window.Views.PlayedGame.Search();
+			search.init();
+		});
+    </script>
+}

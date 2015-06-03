@@ -15,20 +15,20 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
+
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
-namespace UI.Models.PlayedGame
+namespace BusinessLogic.Exceptions
 {
-    public class GameResultViewModel
+    public class DuplicateKeyException : ApiFriendlyException
     {
-        public int PlayerId { get; set; }
-        public string PlayerName { get; set; }
-        public int GameRank { get; set; }
-        public int NemeStatsPointsAwarded { get; set; }
-        public int PlayedGameId { get; set; }
-        public DateTime DatePlayed { get; set; }
-        public string GameDefinitionName { get; set; }
-        public int GameDefinitionId { get; set; }
+        internal const string EXCEPTION_MESSAGE_FORMAT = "Entity of type '{0}' with Id '{1}' does not exist.";
+
+        public DuplicateKeyException(string message) : base(message)
+        {
+
+        }
     }
 }

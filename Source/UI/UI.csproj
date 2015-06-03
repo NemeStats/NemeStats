@@ -345,6 +345,9 @@
     <Compile Include="Models\PlayedGame\GameResultViewModel.cs" />
     <Compile Include="Models\PlayedGame\PlayedGameEditViewModel.cs" />
     <Compile Include="Models\PlayedGame\PlayedGameDetailsViewModel.cs" />
+    <Compile Include="Models\PlayedGame\PlayedGamesFilterViewModel.cs" />
+    <Compile Include="Models\PlayedGame\PlayedGamesViewModel.cs" />
+    <Compile Include="Models\PlayedGame\SearchViewModel.cs" />
     <Compile Include="Models\Players\MinionViewModel.cs" />
     <Compile Include="Models\Players\PlayerDetailsViewModel.cs" />
     <Compile Include="Models\Players\PlayerEditViewModel.cs" />
@@ -523,6 +526,7 @@
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\namespace-1.0.0.js" />
     <Content Include="Scripts\namespace.min-1.0.0.js" />
+    <Content Include="Scripts\PlayedGame\search.js" />
     <Content Include="Scripts\PlayedGame\recordexceldownload.js" />
     <Content Include="Scripts\Player\createOrUpdatePlayer.js" />
     <Content Include="Scripts\Player\players.js" />
@@ -680,6 +684,7 @@
     <Content Include="Views\PlayedGame\Edit.cshtml" />
     <Content Include="Views\PlayedGame\_PlayedGamesPlayerPartial.cshtml" />
     <Content Include="Views\PlayedGame\_PlayedGameFormPartial.cshtml" />
+    <Content Include="Views\PlayedGame\Search.cshtml" />
     <Content Include="Views\GamingGroup\UpdateGamingGroupName.cshtml" />
     <Content Include="Views\GamingGroup\Edit.cshtml" />
   </ItemGroup>

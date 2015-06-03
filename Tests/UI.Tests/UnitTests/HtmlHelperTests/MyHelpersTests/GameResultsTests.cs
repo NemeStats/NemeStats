@@ -121,13 +121,13 @@ namespace UI.Tests.UnitTests.HtmlHelperTests.MyHelpersTests
             HtmlHelper helper = new HtmlHelper(new ViewContext(), new ViewPage());
             GameResultViewModel playerGameResultDetails = new GameResultViewModel()
             {
-                NemeStatsPoints = 9
+                NemeStatsPointsAwarded = 9
             };
 
             XElement result = helper.GameResults(playerGameResultDetails, WinnerTypes.PlayerWin).ToXElement();
 
             string firstNodeText = result.FirstNode.ToString();
-            string nemeStatsPointsComponent = string.Format(PlayedGameHelper.HTML_GORDON_POINTS_TEMPLATE, playerGameResultDetails.NemeStatsPoints);
+            string nemeStatsPointsComponent = string.Format(PlayedGameHelper.HTML_GORDON_POINTS_TEMPLATE, playerGameResultDetails.NemeStatsPointsAwarded);
             Assert.True(firstNodeText.EndsWith(nemeStatsPointsComponent));
         }
     }

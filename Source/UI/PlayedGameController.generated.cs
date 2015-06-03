@@ -85,6 +85,12 @@ namespace UI.Controllers
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Edit);
         }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult Search()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Search);
+        }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public PlayedGameController Actions { get { return MVC.PlayedGame; } }
@@ -107,6 +113,7 @@ namespace UI.Controllers
             public readonly string Delete = "Delete";
             public readonly string DeleteConfirmed = "Delete";
             public readonly string Edit = "Edit";
+            public readonly string Search = "Search";
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -118,6 +125,7 @@ namespace UI.Controllers
             public const string Delete = "Delete";
             public const string DeleteConfirmed = "Delete";
             public const string Edit = "Edit";
+            public const string Search = "Search";
         }
 
 
@@ -168,6 +176,15 @@ namespace UI.Controllers
             public readonly string newlyCompletedGame = "newlyCompletedGame";
             public readonly string previousGameId = "previousGameId";
         }
+        static readonly ActionParamsClass_Search s_params_Search = new ActionParamsClass_Search();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_Search SearchParams { get { return s_params_Search; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_Search
+        {
+            public readonly string currentUser = "currentUser";
+            public readonly string filter = "filter";
+        }
         static readonly ViewsClass s_views = new ViewsClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ViewsClass Views { get { return s_views; } }
@@ -187,6 +204,7 @@ namespace UI.Controllers
                 public readonly string Details = "Details";
                 public readonly string Edit = "Edit";
                 public readonly string RecentlyPlayedGames = "RecentlyPlayedGames";
+                public readonly string Search = "Search";
             }
             public readonly string _PlayedGameFormPartial = "~/Views/PlayedGame/_PlayedGameFormPartial.cshtml";
             public readonly string _PlayedGamesPartial = "~/Views/PlayedGame/_PlayedGamesPartial.cshtml";
@@ -197,6 +215,7 @@ namespace UI.Controllers
             public readonly string Details = "~/Views/PlayedGame/Details.cshtml";
             public readonly string Edit = "~/Views/PlayedGame/Edit.cshtml";
             public readonly string RecentlyPlayedGames = "~/Views/PlayedGame/RecentlyPlayedGames.cshtml";
+            public readonly string Search = "~/Views/PlayedGame/Search.cshtml";
         }
     }
 
@@ -304,6 +323,31 @@ namespace UI.Controllers
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "previousGameId", previousGameId);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "currentUser", currentUser);
             EditOverride(callInfo, newlyCompletedGame, previousGameId, currentUser);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void SearchOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, BusinessLogic.Models.User.ApplicationUser currentUser);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult Search(BusinessLogic.Models.User.ApplicationUser currentUser)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Search);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "currentUser", currentUser);
+            SearchOverride(callInfo, currentUser);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void SearchOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, UI.Models.PlayedGame.PlayedGamesFilterViewModel filter, BusinessLogic.Models.User.ApplicationUser currentUser);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult Search(UI.Models.PlayedGame.PlayedGamesFilterViewModel filter, BusinessLogic.Models.User.ApplicationUser currentUser)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Search);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "filter", filter);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "currentUser", currentUser);
+            SearchOverride(callInfo, filter, currentUser);
             return callInfo;
         }
 
