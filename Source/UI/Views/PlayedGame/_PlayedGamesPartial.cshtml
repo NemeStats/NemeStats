@@ -2,7 +2,6 @@
 
 @{
     Layout = null;
-    var fileRequestUrl = "/api/v1/GamingGroups/" + ViewData["gamingGroupid"] + "/PlayedGamesExcel";
 }
 
 @using UI.HtmlHelpers
@@ -17,8 +16,9 @@
                 @:)
             }
         </h4>
-        @if (Model.UserCanEdit)
+        @if (Model.UserCanEdit && Model.GamingGroupId.HasValue)
         {
+             var fileRequestUrl = "/api/v1/GamingGroups/" + Model.GamingGroupId.Value + "/PlayedGamesExcel";
             <div>
                 &nbsp;
                 <a href="@fileRequestUrl" id="playedGamesExcelDownload">

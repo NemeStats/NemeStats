@@ -87,10 +87,6 @@ namespace UI.Controllers
 
 			GamingGroupViewModel viewModel = gamingGroupViewModelBuilder.Build(gamingGroupSummary, currentUser);
 
-            //"Recent Games " + this.showingXResultsMessageBuilder.BuildMessage(
-            //                                                                        MAX_NUMBER_OF_RECENT_GAMES,
-            //                                                                        gamingGroupSummary.PlayedGames.Count);
-
 			ViewBag.RecentGamesSectionAnchorText = SECTION_ANCHOR_RECENT_GAMES;
 			ViewBag.PlayerSectionAnchorText = SECTION_ANCHOR_PLAYERS;
 			ViewBag.GameDefinitionSectionAnchorText = SECTION_ANCHOR_GAMEDEFINITIONS;

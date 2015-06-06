@@ -146,13 +146,13 @@ namespace BusinessLogic.Logic.PlayedGames
             if (!string.IsNullOrEmpty(playedGameFilter.StartDateGameLastUpdated))
             {
                 DateTime startDate = DateTime.ParseExact(playedGameFilter.StartDateGameLastUpdated, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None);
-                queryable = queryable.Where(query => query.DateLastUpdated >= startDate.Date);
+                queryable = queryable.Where(query => DbFunctions.TruncateTime(query.DateLastUpdated) >= startDate.Date);
             }
 
             if (!string.IsNullOrEmpty(playedGameFilter.EndDateGameLastUpdated))
             {
                 DateTime endDate = DateTime.ParseExact(playedGameFilter.EndDateGameLastUpdated, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None);
-                queryable = queryable.Where(query => query.DateLastUpdated <= endDate.Date);
+                queryable = queryable.Where(query => DbFunctions.TruncateTime(query.DateLastUpdated) <= endDate.Date);
             }
 
             if (playedGameFilter.MaximumNumberOfResults.HasValue)

@@ -65,7 +65,8 @@ namespace UI.Transformations
                 {
                     PlayedGameDetailsViewModels = details,
                     PanelTitle = string.Format("Last {0} Played Games", details.Count),
-                    UserCanEdit = currentUser != null && currentUser.CurrentGamingGroupId == gamingGroupSummary.Id
+                    UserCanEdit = currentUser != null && currentUser.CurrentGamingGroupId == gamingGroupSummary.Id,
+                    GamingGroupId = gamingGroupSummary.Id
                 }
             };
 

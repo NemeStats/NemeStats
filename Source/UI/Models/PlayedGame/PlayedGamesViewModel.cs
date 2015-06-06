@@ -10,5 +10,6 @@ namespace UI.Models.PlayedGame
         public IList<PlayedGameDetailsViewModel> PlayedGameDetailsViewModels { get; set; }
         public string PanelTitle { get; set; }
         public bool UserCanEdit { get; set; }
+        public int? GamingGroupId { get; set; }
     }
 }

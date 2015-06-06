@@ -294,7 +294,8 @@ namespace UI.Controllers
                 {
                     PlayedGameDetailsViewModels = playedGamesDetails,
                     UserCanEdit = true,
-                    PanelTitle = string.Format("{0} Results", playedGamesDetails.Count)
+                    PanelTitle = string.Format("{0} Results", playedGamesDetails.Count),
+                    GamingGroupId = currentUser.CurrentGamingGroupId
                 }
             };
             return View(MVC.PlayedGame.Views.Search, viewModel);
