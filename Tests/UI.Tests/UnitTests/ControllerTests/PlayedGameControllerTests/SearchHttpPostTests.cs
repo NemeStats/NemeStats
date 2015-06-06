@@ -137,7 +137,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 
             var actualResults = autoMocker.ClassUnderTest.Search(filter, currentUser) as ViewResult;
 
-            var actualPlayedGameSearchResult = ((SearchViewModel)actualResults.Model).PlayedGameSearchResults[0];
+            var actualPlayedGameSearchResult = ((SearchViewModel)actualResults.Model).PlayedGames.PlayedGameDetailsViewModels[0];
             var expectedPlayedGameSearchResult = expectedSearchResults[0];
             Assert.That(actualPlayedGameSearchResult.DatePlayed, Is.EqualTo(expectedPlayedGameSearchResult.DatePlayed));
             Assert.That(actualPlayedGameSearchResult.GameDefinitionId, Is.EqualTo(expectedPlayedGameSearchResult.GameDefinitionId));

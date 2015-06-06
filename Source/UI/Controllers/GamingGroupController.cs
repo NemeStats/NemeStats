@@ -113,7 +113,7 @@ namespace UI.Controllers
 		{
 			GamingGroupSummary gamingGroupSummary = GetGamingGroupSummary(id);
 
-			GamingGroupPublicViewModel viewModel = new GamingGroupPublicViewModel
+			var viewModel = new GamingGroupPublicViewModel
 			{
 				Id = gamingGroupSummary.Id,
 				Name = gamingGroupSummary.Name,
@@ -125,7 +125,8 @@ namespace UI.Controllers
                 {
                     PlayedGameDetailsViewModels = gamingGroupSummary.PlayedGames
 					.Select(playedGame => playedGameDetailsViewModelBuilder.Build(playedGame, currentUser)).ToList(),
-                    PanelTitle = string.Format("Last {0} Played Games", gamingGroupSummary.PlayedGames.Count)
+                    PanelTitle = string.Format("Last {0} Played Games", gamingGroupSummary.PlayedGames.Count),
+                    UserCanEdit = currentUser.CurrentGamingGroupId == gamingGroupSummary.Id
                 }
 			};
 

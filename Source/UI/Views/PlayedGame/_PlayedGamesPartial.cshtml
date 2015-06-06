@@ -3,17 +3,24 @@
 @{
     Layout = null;
     var fileRequestUrl = "/api/v1/GamingGroups/" + ViewData["gamingGroupid"] + "/PlayedGamesExcel";
-}           
+}
 
 @using UI.HtmlHelpers
 <div class="panel panel-primary">
     <div class="panel-heading">
         <h4 class="fl-left">
             @Model.PanelTitle
+            @if (Model.UserCanEdit)
+            {
+                @:(
+                @Html.ActionLink("Search Played Games", "Search", "PlayedGame", new { }, new { })
+                @:)
+            }
         </h4>
-        @if ((bool?)ViewData["canEdit"] == true)
+        @if (Model.UserCanEdit)
         {
-            <div>&nbsp;
+            <div>
+                &nbsp;
                 <a href="@fileRequestUrl" id="playedGamesExcelDownload">
                     <i class="fa fa-download fa-2x" style="line-height: 36px" data-container="body" data-toggle="popover" data-placement="left"
                        data-content="Export all of your played games to Microsoft Excel (.xlsx)"></i>
@@ -77,9 +84,9 @@
                                 </a>
                                 @if (playedGameDetailsViewModel.UserCanEdit)
                                 {
-									<a href="@Url.Action("Edit", "PlayedGame", new { id = playedGameDetailsViewModel.PlayedGameId })" title="Edit">
-										<i class="fa fa-pencil fa-2x"></i>
-									</a>
+                                    <a href="@Url.Action("Edit", "PlayedGame", new { id = playedGameDetailsViewModel.PlayedGameId })" title="Edit">
+                                        <i class="fa fa-pencil fa-2x"></i>
+                                    </a>
                                     <a href="@Url.Action("Delete", "PlayedGame", new { id = playedGameDetailsViewModel.PlayedGameId })" title="Delete">
                                         <i class="fa fa-trash-o fa-2x"></i>
                                     </a>

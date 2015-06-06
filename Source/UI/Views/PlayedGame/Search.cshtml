@@ -58,10 +58,10 @@
         </div>
     </div>
 </div>
-@if (Model.PlayedGameSearchResults != null)
+@if (Model.PlayedGames != null)
 {
     <div class="row">
-        @Html.Partial("~/Views/PlayedGame/_PlayedGamesPartial.cshtml", Model.PlayedGameSearchResults)
+        @Html.Partial("~/Views/PlayedGame/_PlayedGamesPartial.cshtml", Model.PlayedGames)
     </div>
 }
 @section Scripts{

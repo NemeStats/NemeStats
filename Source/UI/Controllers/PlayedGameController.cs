@@ -256,7 +256,8 @@ namespace UI.Controllers
                 GameDefinitionId =  filter.GameDefinitionId
             };
             var searchResults = playedGameRetriever.SearchPlayedGames(playedGameFilter);
-            var playedGameSearchResultsViewModels = searchResults.Select(searchResult => new PlayedGameDetailsViewModel
+
+            var playedGamesDetails = searchResults.Select(searchResult => new PlayedGameDetailsViewModel
             {
                 DatePlayed = searchResult.DatePlayed,
                 GameDefinitionId = searchResult.GameDefinitionId,
@@ -265,7 +266,7 @@ namespace UI.Controllers
                 GamingGroupName = searchResult.GamingGroupName,
                 Notes = searchResult.Notes,
                 PlayedGameId = searchResult.PlayedGameId,
-                UserCanEdit = currentUser.CurrentGamingGroupId ==searchResult.GamingGroupId,
+                UserCanEdit = true,
                 WinnerType = PlayedGameDetailsViewModelBuilder.CalculateWinnerType(searchResult.PlayerGameResults.Select(x => x.GameRank).ToList()),
                 PlayerResults = searchResult.PlayerGameResults.Select(playerResult => new GameResultViewModel
                 {
@@ -289,11 +290,13 @@ namespace UI.Controllers
                     GameDefinitionId = filter.GameDefinitionId
                 },
                 GameDefinitions = GetAllGameDefinitionsForCurrentGamingGroup(currentUser),
-                PlayedGameSearchResults = playedGameSearchResultsViewModels
+                PlayedGames = new PlayedGamesViewModel
+                {
+                    PlayedGameDetailsViewModels = playedGamesDetails,
+                    UserCanEdit = true,
+                    PanelTitle = string.Format("{0} Results", playedGamesDetails.Count)
+                }
             };
-
-            ViewBag.PlayedGamesPartialPanelTitle = string.Format("{0} Results", playedGameSearchResultsViewModels.Count);
-
             return View(MVC.PlayedGame.Views.Search, viewModel);
 	    }
 

@@ -68,16 +68,17 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.GameDefinitionsTests.G
         }
 
         [Test]
-        public void ItGetsBackChampionInformation()
+        public void ItGetsBackChampionAndPlayerInformation()
         {
             Assert.That(this.actualGameDefinitionSummaries.All(game => game.Champion != null), Is.True);
+            Assert.That(this.actualGameDefinitionSummaries.All(game => game.Champion.Player != null), Is.True);
         }
 
         [Test]
-        public void ItGetsBackPreviousChampionInformation()
+        public void ItGetsBackPreviousChampionAndPlayerInformation()
         {
             Assert.That(this.actualGameDefinitionSummaries.All(game => game.PreviousChampion != null), Is.True);
-
+            Assert.That(this.actualGameDefinitionSummaries.All(game => game.PreviousChampion.Player != null), Is.True);
         }
 
         [Test, Ignore("Miscellaneous integration test that might be occassionally useful but not worth slowing things down.")]
