@@ -15,6 +15,11 @@
 <hr />
 
 <a name="@ViewBag.PlayerSectionAnchorText"></a>
+
+<div class="row">
+	@Html.Partial(MVC.GamingGroup.Views._GamingGroupPublicDetailsPartial, Model.GamingGroupEditViewModel)
+</div>
+
 <div class="row">
     @{
         Html.RenderPartial("~/Views/Player/_PlayersPartial.cshtml", Model.Players, new ViewDataDictionary {{"canEdit", true}});

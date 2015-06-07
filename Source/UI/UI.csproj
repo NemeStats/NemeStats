@@ -687,6 +687,7 @@
     <Content Include="Views\PlayedGame\Search.cshtml" />
     <Content Include="Views\GamingGroup\UpdateGamingGroupName.cshtml" />
     <Content Include="Views\GamingGroup\Edit.cshtml" />
+    <Content Include="Views\GamingGroup\_GamingGroupPublicDetailsPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Code\" />

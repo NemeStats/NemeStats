@@ -212,7 +212,7 @@ namespace UI.Controllers
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionParamsClass_Edit
         {
-            public readonly string gamingGroupID = "gamingGroupID";
+            public readonly string gamingGroupId = "gamingGroupId";
         }
         static readonly ViewsClass s_views = new ViewsClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -224,6 +224,7 @@ namespace UI.Controllers
             public _ViewNamesClass ViewNames { get { return s_ViewNames; } }
             public class _ViewNamesClass
             {
+                public readonly string _GamingGroupPublicDetailsPartial = "_GamingGroupPublicDetailsPartial";
                 public readonly string _TopGamingGroupsPartial = "_TopGamingGroupsPartial";
                 public readonly string Details = "Details";
                 public readonly string Edit = "Edit";
@@ -231,6 +232,7 @@ namespace UI.Controllers
                 public readonly string TopGamingGroups = "TopGamingGroups";
                 public readonly string UpdateGamingGroupName = "UpdateGamingGroupName";
             }
+            public readonly string _GamingGroupPublicDetailsPartial = "~/Views/GamingGroup/_GamingGroupPublicDetailsPartial.cshtml";
             public readonly string _TopGamingGroupsPartial = "~/Views/GamingGroup/_TopGamingGroupsPartial.cshtml";
             public readonly string Details = "~/Views/GamingGroup/Details.cshtml";
             public readonly string Edit = "~/Views/GamingGroup/Edit.cshtml";
@@ -346,14 +348,14 @@ namespace UI.Controllers
         }
 
         [NonAction]
-        partial void EditOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int gamingGroupID);
+        partial void EditOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int gamingGroupId);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult Edit(int gamingGroupID)
+        public override System.Web.Mvc.ActionResult Edit(int gamingGroupId)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Edit);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "gamingGroupID", gamingGroupID);
-            EditOverride(callInfo, gamingGroupID);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "gamingGroupId", gamingGroupId);
+            EditOverride(callInfo, gamingGroupId);
             return callInfo;
         }
 

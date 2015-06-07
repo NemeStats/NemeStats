@@ -90,9 +90,9 @@ namespace UI.Controllers
 
 			GamingGroupViewModel viewModel = gamingGroupViewModelBuilder.Build(gamingGroupSummary, currentUser);
 
-            //"Recent Games " + this.showingXResultsMessageBuilder.BuildMessage(
-            //                                                                        MAX_NUMBER_OF_RECENT_GAMES,
-            //                                                                        gamingGroupSummary.PlayedGames.Count);
+			//"Recent Games " + this.showingXResultsMessageBuilder.BuildMessage(
+			//                                                                        MAX_NUMBER_OF_RECENT_GAMES,
+			//                                                                        gamingGroupSummary.PlayedGames.Count);
 
 			ViewBag.RecentGamesSectionAnchorText = SECTION_ANCHOR_RECENT_GAMES;
 			ViewBag.PlayerSectionAnchorText = SECTION_ANCHOR_PLAYERS;
@@ -124,12 +124,12 @@ namespace UI.Controllers
 					.Select(summary => gameDefinitionSummaryViewModelBuilder.Build(summary, currentUser)).ToList(),
 				Players = gamingGroupSummary.Players
 					.Select(playerWithNemesis => playerWithNemesisViewModelBuilder.Build(playerWithNemesis, currentUser)).ToList(),
-                PlayedGames = new PlayedGamesViewModel
-                {
-                    PlayedGameDetailsViewModels = gamingGroupSummary.PlayedGames
+				PlayedGames = new PlayedGamesViewModel
+				{
+					PlayedGameDetailsViewModels = gamingGroupSummary.PlayedGames
 					.Select(playedGame => playedGameDetailsViewModelBuilder.Build(playedGame, currentUser)).ToList(),
-                    PanelTitle = string.Format("Last {0} Played Games", gamingGroupSummary.PlayedGames.Count)
-                }
+					PanelTitle = string.Format("Last {0} Played Games", gamingGroupSummary.PlayedGames.Count)
+				}
 			};
 
 			return View(MVC.GamingGroup.Views.Details, viewModel);
@@ -230,8 +230,17 @@ namespace UI.Controllers
 
 		[HttpGet]
 		[Authorize]
-		public virtual ActionResult Edit(int gamingGroupID)
+		public virtual ActionResult Edit(int gamingGroupId)
 		{
+			var gamingGroup = gamingGroupRetriever.GetGamingGroupById(gamingGroupId);
+
+			var model = new GamingGroupEditViewModel
+			{
+				Name = gamingGroup.Name,
+				PublicDescription = gamingGroup.PublicDescription,
+				Website = gamingGroup.PublicGamingGroupWebsite
+			};
+
 			return View(MVC.GamingGroup.Views.Edit);
 		}
 	}

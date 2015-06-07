@@ -11,23 +11,31 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
 {
 	public class EditGetTests : GamingGroupControllerTestBase
 	{
+		private const int GAMING_GROUP_ID = 1;
+
 		[Test]
 		public void ItReturnsTheGamingGroupEditViewModel()
 		{
-			const int GAMING_GROUP_ID = 1;
-
 			var viewResult = autoMocker.ClassUnderTest.Edit(GAMING_GROUP_ID) as ViewResult;
 
 			Assert.AreEqual(MVC.GamingGroup.Views.Edit, viewResult.ViewName);
 		}
 
-		//[Test]
-		//public void ItReturnsTopGamingGroupsView()
-		//{
-		//    var viewResult = gamingGroupControllerPartialMock.GetTopGamingGroups() as ViewResult;
+		[Test]
+		public void ItSendsCorrectModelToView()
+		{
+			//--Arrange
+			var model = new GamingGroupEditViewModel
+			{
+				Name = "Awesome Gaming Group",
+			};
 
-		//    Assert.AreEqual(MVC.GamingGroup.Views.TopGamingGroups, viewResult.ViewName);
-		//}
+			//--Act
+			var viewResult = autoMocker.ClassUnderTest.Edit(GAMING_GROUP_ID) as ViewResult;
+
+			//--Assert
+			Assert.AreEqual(model, viewResult.Model);
+		}
 
 		//[Test]
 		//public void ItReturnsSpecifiedTopGamingGroupsModelToTheView()
