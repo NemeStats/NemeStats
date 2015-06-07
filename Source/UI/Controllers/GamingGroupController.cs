@@ -86,6 +86,7 @@ namespace UI.Controllers
 			var gamingGroupSummary = this.GetGamingGroupSummary(currentUser.CurrentGamingGroupId.Value);
 
 			GamingGroupViewModel viewModel = gamingGroupViewModelBuilder.Build(gamingGroupSummary, currentUser);
+		    viewModel.PlayedGames.ShowSearchLinkInResultsHeader = true;
 
 			ViewBag.RecentGamesSectionAnchorText = SECTION_ANCHOR_RECENT_GAMES;
 			ViewBag.PlayerSectionAnchorText = SECTION_ANCHOR_PLAYERS;
@@ -122,7 +123,8 @@ namespace UI.Controllers
                     PlayedGameDetailsViewModels = gamingGroupSummary.PlayedGames
 					.Select(playedGame => playedGameDetailsViewModelBuilder.Build(playedGame, currentUser)).ToList(),
                     PanelTitle = string.Format("Last {0} Played Games", gamingGroupSummary.PlayedGames.Count),
-                    UserCanEdit = currentUser.CurrentGamingGroupId == gamingGroupSummary.Id
+                    UserCanEdit = currentUser.CurrentGamingGroupId == gamingGroupSummary.Id,
+                    ShowSearchLinkInResultsHeader = false
                 }
 			};
 

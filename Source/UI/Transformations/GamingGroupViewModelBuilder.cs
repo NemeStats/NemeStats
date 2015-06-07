@@ -52,7 +52,7 @@ namespace UI.Transformations
                 = (from PlayerWithNemesis playerWithNemesis in gamingGroupSummary.Players
                    select playerWithNemesisViewModelBuilder.Build(playerWithNemesis, currentUser)).ToList();
             
-            GamingGroupViewModel viewModel = new GamingGroupViewModel()
+            var viewModel = new GamingGroupViewModel()
             {
                 Id = gamingGroupSummary.Id,
                 OwningUserId = gamingGroupSummary.OwningUserId,

@@ -155,9 +155,20 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
             Assert.That(actualPlayerResult.PlayedGameId, Is.EqualTo(expectedPlayedGameSearchResult.PlayedGameId));
             Assert.That(actualPlayerResult.PlayerId, Is.EqualTo(expectedPlayerResult.PlayerId));
             Assert.That(actualPlayerResult.PlayerName, Is.EqualTo(expectedPlayerResult.PlayerName));
-
         }
 
+        [Test]
+        public void ItDoesNotShowTheSearchLinkOnPlayedGameSearchResults()
+        {
+            autoMocker.Get<IPlayedGameRetriever>()
+                .Expect(mock => mock.SearchPlayedGames(Arg<PlayedGameFilter>.Is.Anything))
+                .Return(new List<PlayedGameSearchResult>());
+
+            var actualResults = autoMocker.ClassUnderTest.Search(new PlayedGamesFilterViewModel(), currentUser) as ViewResult;
+
+            var actualViewModel = actualResults.ViewData.Model as SearchViewModel;
+            Assert.That(actualViewModel.PlayedGames.ShowSearchLinkInResultsHeader, Is.False);
+        }
 
     }
 }

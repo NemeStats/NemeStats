@@ -9,7 +9,7 @@
     <div class="panel-heading">
         <h4 class="fl-left">
             @Model.PanelTitle
-            @if (Model.UserCanEdit)
+            @if (Model.ShowSearchLinkInResultsHeader)
             {
                 @:(
                 @Html.ActionLink("Search Played Games", "Search", "PlayedGame", new { }, new { })

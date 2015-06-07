@@ -2,14 +2,14 @@
 
 @{
     ViewBag.Title = "Search Played Games";
-    Layout = MVC.Shared.Views._BaseLayout;;
+    Layout = MVC.Shared.Views._BaseLayout; ;
 }
 <h2>
     @ViewBag.Title
 </h2>
 <hr />
 
-<div class="row">
+<div class="form-horizontal">
     <div class="panel panel-primary">
         <div class="panel-heading">
             <h4>Search Played Games</h4>
@@ -17,7 +17,7 @@
         <div class="panel-body">
             @using (Html.BeginForm())
             {
-                <div class="row">
+                <div class="form-group">
                     <div class="col-sm-2">
                         <b>Game Played</b>
                     </div>
@@ -25,7 +25,7 @@
                         @Html.DropDownListFor(x => Model.Filter.GameDefinitionId, @Model.GameDefinitions)
                     </div>
                 </div>
-                <div class="row">
+                <div class="form-group">
                     <div class="col-sm-2">
                         <b>Date Played - Start</b>
                     </div>
@@ -37,7 +37,7 @@
                         @Html.ValidationMessageFor(model => model.Filter.DatePlayedStart)
                     </div>
                 </div>
-                <div class="row">
+                <div class="form-group">
                     <div class="col-sm-2">
                         <b>Date Played - End</b>
                     </div>
@@ -60,16 +60,16 @@
 </div>
 @if (Model.PlayedGames != null)
 {
-    <div class="row">
+    <div class="form-group">
         @Html.Partial("~/Views/PlayedGame/_PlayedGamesPartial.cshtml", Model.PlayedGames)
     </div>
 }
 @section Scripts{
     <script type="text/javascript">
-		//Creation
-		$(document).ready(function () {
-			var search = new window.Views.PlayedGame.Search();
-			search.init();
-		});
+        //Creation
+        $(document).ready(function () {
+            var search = new window.Views.PlayedGame.Search();
+            search.init();
+        });
     </script>
 }

@@ -11,5 +11,6 @@ namespace UI.Models.PlayedGame
         public string PanelTitle { get; set; }
         public bool UserCanEdit { get; set; }
         public int? GamingGroupId { get; set; }
+        public bool ShowSearchLinkInResultsHeader { get; set; }
     }
 }
