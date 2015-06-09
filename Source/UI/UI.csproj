@@ -351,7 +351,9 @@
     <Compile Include="Models\Players\PlayerDetailsViewModel.cs" />
     <Compile Include="Models\Players\PlayerEditViewModel.cs" />
     <Compile Include="Models\Players\PlayerInvitationViewModel.cs" />
+    <Compile Include="Models\Players\OpposingPlayerViewModel.cs" />
     <Compile Include="Models\Players\TopPlayerViewModel.cs" />
+    <Compile Include="Models\Players\PlayerVersusPlayersViewModel.cs" />
     <Compile Include="Models\User\UserViewModel.cs" />
     <Compile Include="Models\VotableFeatureViewModel.cs" />
     <Compile Include="PlayedGameController.generated.cs">
@@ -684,6 +686,7 @@
     <Content Include="Views\PlayedGame\_PlayedGamesPlayerPartial.cshtml" />
     <Content Include="Views\PlayedGame\_PlayedGameFormPartial.cshtml" />
     <Content Include="Views\PlayedGame\Search.cshtml" />
+    <Content Include="Views\Player\_PlayerVersusPlayersPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Code\" />

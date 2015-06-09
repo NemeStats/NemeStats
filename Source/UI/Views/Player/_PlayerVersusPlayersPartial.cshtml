@@ -1,0 +1,47 @@
+﻿@model UI.Models.Players.PlayerVersusPlayersViewModel
+
+@{
+    Layout = null;
+}
+
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <h4>
+            Opponents
+        </h4>
+    </div>
+    <div class="panel-body">
+        <table class="table table-hover table-striped table-responsive">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Player Name</th>
+                    <th>Games Won</th>
+                    <th>% Won</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (UI.Models.Players.OpposingPlayerViewModel player in Model.OpposingPlayers)
+                {
+                    <tr>
+                        <td>
+                            @if (!string.IsNullOrEmpty(player.GraphichURL))
+                            {
+                                <img src="@Url.Content(player.GraphichURL)" alt="@player.GraphicExplanation" title="@player.GraphicExplanation" />
+                            }
+                        </td>
+                        <td>
+                            @Html.ActionLink(player.Name, "Details", "Player", new { id = player.PlayerId }, new { })
+                        </td>
+                        <td>
+                            @player.NumberOfGamesWonVersusThisPlayer
+                        </td>
+                        <td>
+                            @player.WinPercentageVersusThisPlayer
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
