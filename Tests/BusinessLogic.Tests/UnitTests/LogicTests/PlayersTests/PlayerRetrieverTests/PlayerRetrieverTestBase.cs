@@ -36,7 +36,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
         internal List<PlayerGameResult> playerGameResultsForFirstPlayer;
 
         [SetUp]
-        public void SetUp()
+        public void BaseSetUp()
         {
             dataContextMock = MockRepository.GenerateMock<IDataContext>();
             playerRepositoryMock = MockRepository.GenerateMock<IPlayerRepository>();

@@ -27,7 +27,7 @@ namespace BusinessLogic.DataAccess.Repositories
 {
     public class EntityFrameworkPlayerRepository : IPlayerRepository
     {
-        public int MINIMUM_NUMBER_OF_GAMES_TO_BE_A_NEMESIS = 3;
+        public const int MINIMUM_NUMBER_OF_GAMES_TO_BE_A_NEMESIS = 3;
 
         private readonly IDataContext dataContext;
 
@@ -37,18 +37,21 @@ namespace BusinessLogic.DataAccess.Repositories
         }
 
         private const string SQL_GET_WIN_LOSS_GAMES_COUNT =
-            @"SELECT SUM(NumberOfGamesLost) AS NumberOfGamesLost, SUM(NumberOfGamesWon) AS NumberOfGamesWon, PlayerId as VersusPlayerId
+            @"SELECT SUM(NumberOfGamesLost) AS NumberOfGamesLost, SUM(NumberOfGamesWon) AS NumberOfGamesWon, 
+                PlayerId as VersusPlayerId, PlayerName AS VersusPlayerName
             FROM
             (
-	            SELECT COUNT(*) AS NumberOfGamesLost, 0 AS NumberOfGamesWon, PlayerId
+	            SELECT COUNT(*) AS NumberOfGamesLost, 0 AS NumberOfGamesWon, PlayerId, PlayerName
 	              FROM
 	              (
 		              SELECT OtherResults.PlayerId
+					  ,Player.Name AS PlayerName
 		              ,OtherResults.PlayedGameId
 		              ,OtherResults.GameRank
 		              , PlayedGame.GameDefinitionId
 		              FROM PlayerGameResult Inner Join PlayedGame ON PlayergameResult.PlayedGameId = PlayedGame.Id
 		              INNER JOIN PlayerGameResult OtherResults ON PlayedGame.Id = OtherResults.PlayedGameId
+                      INNER JOIN Player ON OtherResults.PlayerId = Player.Id
 		              WHERE PlayerGameResult.PlayerId = @PlayerId
 		              AND OtherResults.GameRank < 
 			            (
@@ -58,17 +61,19 @@ namespace BusinessLogic.DataAccess.Repositories
 			            )
                         AND EXISTS (SELECT 1 FROM Player WHERE Player.Id = OtherResults.PlayerId AND Player.Active = 1)
 	               ) AS LostGames
-	               GROUP BY PlayerId
+	               GROUP BY PlayerId, PlayerName
 	               UNION
-	               SELECT 0 AS NumberOfgamesLost, COUNT(*) AS NumberOfGamesWon, PlayerId
+	               SELECT 0 AS NumberOfgamesLost, COUNT(*) AS NumberOfGamesWon, PlayerId, PlayerName
 	              FROM
 	              (
 		              SELECT OtherResults.PlayerId
+					  ,Player.Name AS PlayerName
 		              ,OtherResults.PlayedGameId
 		              ,OtherResults.GameRank
 		              , PlayedGame.GameDefinitionId
 		              FROM PlayerGameResult Inner Join PlayedGame ON PlayergameResult.PlayedGameId = PlayedGame.Id
 		              INNER JOIN PlayerGameResult OtherResults ON PlayedGame.Id = OtherResults.PlayedGameId
+                      INNER JOIN Player ON OtherResults.PlayerId = Player.Id
 		              WHERE PlayerGameResult.PlayerId = @PlayerId
 		              AND OtherResults.GameRank > 
 			            (
@@ -78,9 +83,9 @@ namespace BusinessLogic.DataAccess.Repositories
 			            ) 
                         AND EXISTS (SELECT 1 FROM Player WHERE Player.Id = OtherResults.PlayerId AND Player.Active = 1)
 	               ) AS WonGames
-	               GROUP BY PlayerId
+	               GROUP BY PlayerId, PlayerName
             ) AS X
-            GROUP BY PlayerId";
+            GROUP BY PlayerId, PlayerName";
 
         public NemesisData GetNemesisData(int playerId)
         {
@@ -124,7 +129,23 @@ namespace BusinessLogic.DataAccess.Repositories
             DbRawSqlQuery<PlayerGameSummary> data = dataContext.MakeRawSqlQuery<PlayerGameSummary>(SQL_GET_PLAYER_GAME_SUMMARY_INFO,
                 new SqlParameter("PlayerId", playerId));
 
-            return data.ToList<PlayerGameSummary>();
+            return data.ToList();
+        }
+
+        public List<PlayerVersusPlayerStatistics> GetPlayerVersusPlayersStatistics(int playerId)
+        {
+            DbRawSqlQuery<WinLossStatistics> data = dataContext.MakeRawSqlQuery<WinLossStatistics>(SQL_GET_WIN_LOSS_GAMES_COUNT,
+                new SqlParameter("PlayerId", playerId));
+
+            List<WinLossStatistics> winLossStatistics = data.ToList();
+
+            return winLossStatistics.Select(winLossStats => new PlayerVersusPlayerStatistics
+            {
+                NumberOfGamesPlayedVersusThisPlayer = winLossStats.NumberOfGamesLost + winLossStats.NumberOfGamesWon,
+                NumberOfGamesWonVersusThisPlayer = winLossStats.NumberOfGamesWon,
+                OpposingPlayerId = winLossStats.VersusPlayerId,
+                OpposingPlayerName = winLossStats.VersusPlayerName
+            }).ToList();
         }
     }
 }

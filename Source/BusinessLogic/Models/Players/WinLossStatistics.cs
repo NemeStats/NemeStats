@@ -24,5 +24,6 @@ namespace BusinessLogic.Models.Players
         public int NumberOfGamesLost { get; set; }
         public int NumberOfGamesWon { get; set; }
         public int VersusPlayerId { get; set; }
+        public string VersusPlayerName { get; set; }
     }
 }
