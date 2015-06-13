@@ -16,6 +16,7 @@
                 <tr>
                     <th></th>
                     <th>Player Name</th>
+                    <th>Games Played Vs.</th>
                     <th>Games Won</th>
                     <th>% Won</th>
                 </tr>
@@ -25,13 +26,23 @@
                 {
                     <tr>
                         <td>
-                            @if (!string.IsNullOrEmpty(player.GraphichURL))
+                            @if (player.IsNemesis)
                             {
-                                <img src="@Url.Content(player.GraphichURL)" alt="@player.GraphicExplanation" title="@player.GraphicExplanation" />
+                                <i class="fa fa-frown-o" data-container="body" data-toggle="popover" data-placement="left"
+                                   data-content="The Nemesis is the Player with the highest win % vs. this Player. Must have won at least 3 games to be designated as the Nemesis." >
+                                </i>
+                            }
+                            @if (player.IsMinion)
+                            {
+                                <i class="fa fa-thumbs-o-up" data-container="body" data-toggle="popover" data-placement="right"
+                                   data-content="Minions are Players who have this Player as a Nemesis."></i>
                             }
                         </td>
                         <td>
                             @Html.ActionLink(player.Name, "Details", "Player", new { id = player.PlayerId }, new { })
+                        </td>
+                        <td>
+                            @player.NumberOfGamesPlayedVersusThisPlayer
                         </td>
                         <td>
                             @player.NumberOfGamesWonVersusThisPlayer

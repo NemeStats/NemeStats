@@ -7,11 +7,12 @@ namespace UI.Models.Players
 {
     public class OpposingPlayerViewModel
     {
-        public string GraphichURL { get; set; }
-        public string GraphicExplanation { get; set; }
         public string Name { get; set; }
         public int PlayerId { get; set; }
         public int NumberOfGamesWonVersusThisPlayer { get; set; }
         public int WinPercentageVersusThisPlayer { get; set; }
+        public int NumberOfGamesPlayedVersusThisPlayer { get; set; }
+        public bool IsNemesis { get; set; }
+        public bool IsMinion { get; set; }
     }
 }

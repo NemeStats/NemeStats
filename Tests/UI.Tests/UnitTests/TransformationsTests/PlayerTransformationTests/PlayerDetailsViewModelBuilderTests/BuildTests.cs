@@ -40,6 +40,10 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         private PlayerDetailsViewModel playerDetailsViewModel;
         private PlayerDetailsViewModelBuilder builder;
         private ApplicationUser currentUser;
+        private PlayerVersusPlayerStatistics normalPlayer;
+        private PlayerVersusPlayerStatistics nemesisPlayer;
+        private PlayerVersusPlayerStatistics minionPlayer;
+        private PlayerVersusPlayerStatistics playerWithNoGamesPlayed;
         private string twitterMinionBraggingUrl = "some url";
         private int gamingGroupId = 123;
 
@@ -82,21 +86,45 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
                 new PlayerGameResult(){ PlayedGameId = 13, PlayedGame = playedGame2 }
             };
 
+            normalPlayer = new PlayerVersusPlayerStatistics
+            {
+                OpposingPlayerName = "Jim",
+                OpposingPlayerId = 1,
+                NumberOfGamesWonVersusThisPlayer = 10,
+                NumberOfGamesPlayedVersusThisPlayer = 20
+            };
+
+            playerWithNoGamesPlayed = new PlayerVersusPlayerStatistics
+            {
+                OpposingPlayerId = 2,
+                NumberOfGamesPlayedVersusThisPlayer = 0
+            };
+
+            minionPlayer = new PlayerVersusPlayerStatistics
+            {
+                OpposingPlayerName = "Minion Player",
+                OpposingPlayerId = 5,
+                NumberOfGamesWonVersusThisPlayer = 20,
+                NumberOfGamesPlayedVersusThisPlayer = 20
+            };
+
+            nemesisPlayer = new PlayerVersusPlayerStatistics
+            {
+                OpposingPlayerName = "nemesis player",
+                OpposingPlayerId = 3,
+                NumberOfGamesWonVersusThisPlayer = 0,
+                NumberOfGamesPlayedVersusThisPlayer = 100
+            };
+
             var nemesis = new Nemesis()
             {
-                NemesisPlayerId = 123,
+                NemesisPlayerId = nemesisPlayer.OpposingPlayerId,
                 NumberOfGamesLost = 3,
                 LossPercentage = 75,
                 NemesisPlayer = new Player()
                 {
-                    Name = "Ace Nemesis"
+                    Name = "Ace Nemesis",
                 }
-            };
-
-            var minionPlayers = new List<Player>()
-            {
-                new Player(){ Id = 1, Nemesis = new Nemesis()},
-                new Player(){ Id = 2, Nemesis = new Nemesis()}
             };
 
             playerDetails = new PlayerDetails()
@@ -113,12 +141,21 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
                         AveragePlayersPerGame = 3
                     },
                 CurrentNemesis = nemesis,
-                Minions = new List<Player>(),
+                Minions = new List<Player>
+                {
+                    new Player
+                    {
+                        Id = minionPlayer.OpposingPlayerId
+                    }
+                },
                 GamingGroupId = gamingGroupId,
                 GamingGroupName = "gaming group name",
-                PlayerVersusPlayerStatistics = new PlayerVersusPlayersStatistics
+                PlayerVersusPlayersStatistics = new List<PlayerVersusPlayerStatistics>
                 {
-                    
+                    normalPlayer,
+                    playerWithNoGamesPlayed,
+                    nemesisPlayer,
+                    minionPlayer
                 }
             };
 
@@ -426,9 +463,71 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         }
 
         [Test]
-        public void ItPopulatesTheOpposingPlayers()
+        public void ItPopulatesTheOpposingPlayerId()
         {
-            Assert.That(playerDetailsViewModel.PlayerVersusPlayers.);
+            Assert.That(playerDetailsViewModel.PlayerVersusPlayers.OpposingPlayers.Any(opposingPlayer => opposingPlayer.PlayerId == normalPlayer.OpposingPlayerId));
+        }
+
+        [Test]
+        public void ItPopulatesTheOpposingPlayerName()
+        {
+            var expectedPlayer = playerDetails.PlayerVersusPlayersStatistics.First(x => x.OpposingPlayerId == normalPlayer.OpposingPlayerId);
+            var actualPlayer = playerDetailsViewModel.PlayerVersusPlayers.OpposingPlayers.First(x => x.PlayerId == normalPlayer.OpposingPlayerId);
+
+            Assert.That(actualPlayer.Name,
+                Is.EqualTo(expectedPlayer.OpposingPlayerName));
+        }
+
+        [Test]
+        public void ItPopulatesTheNumberOfGamesPlayedVersusThisPlayer()
+        {
+            var expectedPlayer = playerDetails.PlayerVersusPlayersStatistics.First(x => x.OpposingPlayerId == normalPlayer.OpposingPlayerId);
+            var actualPlayer = playerDetailsViewModel.PlayerVersusPlayers.OpposingPlayers.First(x => x.PlayerId == normalPlayer.OpposingPlayerId);
+
+            Assert.That(actualPlayer.NumberOfGamesPlayedVersusThisPlayer,
+                Is.EqualTo(expectedPlayer.NumberOfGamesPlayedVersusThisPlayer));
+        }
+
+        [Test]
+        public void ItPopulatesTheNumberOfGamesWonVersusThisPlayer()
+        {
+            var expectedPlayer = playerDetails.PlayerVersusPlayersStatistics.First(x => x.OpposingPlayerId == normalPlayer.OpposingPlayerId);
+            var actualPlayer = playerDetailsViewModel.PlayerVersusPlayers.OpposingPlayers.First(x => x.PlayerId == normalPlayer.OpposingPlayerId);
+
+            Assert.That(actualPlayer.NumberOfGamesWonVersusThisPlayer, Is.EqualTo(expectedPlayer.NumberOfGamesWonVersusThisPlayer));
+        }
+
+        [Test]
+        public void ItPopulatesTheWinPercentageVersusThisPlayer()
+        {
+            var actualPlayer = playerDetailsViewModel.PlayerVersusPlayers.OpposingPlayers.First(x => x.PlayerId == normalPlayer.OpposingPlayerId);
+
+            Assert.That(actualPlayer.WinPercentageVersusThisPlayer, Is.EqualTo(50));
+        }
+
+        [Test]
+        public void TheWinPercentageIsZeroIfThereAreNoPlayedGamesVersusThisPlayer()
+        {
+            var actualPlayer = playerDetailsViewModel.PlayerVersusPlayers.OpposingPlayers.First(x => x.PlayerId == playerWithNoGamesPlayed.OpposingPlayerId);
+
+            Assert.That(actualPlayer.WinPercentageVersusThisPlayer, Is.EqualTo(0));
+        }
+
+        [Test]
+        public void ItSetsTheNemesisFlag()
+        {
+            var actualPlayer = playerDetailsViewModel.PlayerVersusPlayers.OpposingPlayers.First(x => x.PlayerId == nemesisPlayer.OpposingPlayerId);
+
+            Assert.That(actualPlayer.IsNemesis, Is.True);
+        }
+
+
+        [Test]
+        public void ItSetsTheMinionFlag()
+        {
+            var actualPlayer = playerDetailsViewModel.PlayerVersusPlayers.OpposingPlayers.First(x => x.PlayerId == minionPlayer.OpposingPlayerId);
+
+            Assert.That(actualPlayer.IsMinion, Is.True);
         }
     }
 }

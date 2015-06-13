@@ -5,6 +5,11 @@ namespace UI.Models.Players
 {
     public class PlayerVersusPlayersViewModel
     {
-        public IEnumerable<OpposingPlayerViewModel> OpposingPlayers { get; set; }
+        public PlayerVersusPlayersViewModel()
+        {
+            this.OpposingPlayers = new List<OpposingPlayerViewModel>(); 
+        }
+
+        public IList<OpposingPlayerViewModel> OpposingPlayers { get; set; }
     }
 }
