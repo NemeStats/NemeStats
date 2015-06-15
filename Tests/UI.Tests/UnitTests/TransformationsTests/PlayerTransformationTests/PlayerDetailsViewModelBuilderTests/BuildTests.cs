@@ -91,13 +91,12 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
                 OpposingPlayerName = "Jim",
                 OpposingPlayerId = 1,
                 NumberOfGamesWonVersusThisPlayer = 10,
-                NumberOfGamesPlayedVersusThisPlayer = 20
+                NumberOfGamesLostVersusThisPlayer = 10
             };
 
             playerWithNoGamesPlayed = new PlayerVersusPlayerStatistics
             {
-                OpposingPlayerId = 2,
-                NumberOfGamesPlayedVersusThisPlayer = 0
+                OpposingPlayerId = 2
             };
 
             minionPlayer = new PlayerVersusPlayerStatistics
@@ -105,7 +104,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
                 OpposingPlayerName = "Minion Player",
                 OpposingPlayerId = 5,
                 NumberOfGamesWonVersusThisPlayer = 20,
-                NumberOfGamesPlayedVersusThisPlayer = 20
+                NumberOfGamesLostVersusThisPlayer = 0
             };
 
             nemesisPlayer = new PlayerVersusPlayerStatistics
@@ -113,7 +112,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
                 OpposingPlayerName = "nemesis player",
                 OpposingPlayerId = 3,
                 NumberOfGamesWonVersusThisPlayer = 0,
-                NumberOfGamesPlayedVersusThisPlayer = 100
+                NumberOfGamesLostVersusThisPlayer = 100
             };
 
             var nemesis = new Nemesis()
@@ -479,13 +478,13 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         }
 
         [Test]
-        public void ItPopulatesTheNumberOfGamesPlayedVersusThisPlayer()
+        public void ItPopulatesTheNumberOfGamesLostVersusThisPlayer()
         {
             var expectedPlayer = playerDetails.PlayerVersusPlayersStatistics.First(x => x.OpposingPlayerId == normalPlayer.OpposingPlayerId);
             var actualPlayer = playerDetailsViewModel.PlayerVersusPlayers.OpposingPlayers.First(x => x.PlayerId == normalPlayer.OpposingPlayerId);
 
-            Assert.That(actualPlayer.NumberOfGamesPlayedVersusThisPlayer,
-                Is.EqualTo(expectedPlayer.NumberOfGamesPlayedVersusThisPlayer));
+            Assert.That(actualPlayer.NumberOfGamesLostVersusThisPlayer,
+                Is.EqualTo(expectedPlayer.NumberOfGamesLostVersusThisPlayer));
         }
 
         [Test]

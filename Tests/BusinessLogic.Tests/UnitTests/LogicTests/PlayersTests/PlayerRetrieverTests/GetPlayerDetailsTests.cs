@@ -155,8 +155,6 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
 
         }
 
-        //TODO need tests for the transformation... which should probably be refactored into a different class
-
         [Test]
         public void ItThrowsAKeyNotFoundExceptionIfThePlayerDoesNotExist()
         {

@@ -97,7 +97,7 @@ namespace UI.Transformations.PlayerTransformations
                     Name = playerVersusPlayerStatistics.OpposingPlayerName,
                     PlayerId = playerVersusPlayerStatistics.OpposingPlayerId,
                     NumberOfGamesWonVersusThisPlayer = playerVersusPlayerStatistics.NumberOfGamesWonVersusThisPlayer,
-                    NumberOfGamesPlayedVersusThisPlayer = playerVersusPlayerStatistics.NumberOfGamesPlayedVersusThisPlayer,
+                    NumberOfGamesLostVersusThisPlayer = playerVersusPlayerStatistics.NumberOfGamesLostVersusThisPlayer,
                     WinPercentageVersusThisPlayer = (int)winPercentage,
                     IsNemesis = (playerDetails.CurrentNemesis != null 
                         && playerDetails.CurrentNemesis.NemesisPlayerId == playerVersusPlayerStatistics.OpposingPlayerId),
@@ -112,9 +112,11 @@ namespace UI.Transformations.PlayerTransformations
         {
             decimal winPercentage = 0;
 
-            if (playerVersusPlayerStatistics.NumberOfGamesPlayedVersusThisPlayer > 0)
+            if (playerVersusPlayerStatistics.NumberOfGamesLostVersusThisPlayer + playerVersusPlayerStatistics.NumberOfGamesWonVersusThisPlayer > 0)
             {
-                winPercentage = ((decimal)playerVersusPlayerStatistics.NumberOfGamesWonVersusThisPlayer / playerVersusPlayerStatistics.NumberOfGamesPlayedVersusThisPlayer) * 100;
+                winPercentage = ((decimal)playerVersusPlayerStatistics.NumberOfGamesWonVersusThisPlayer 
+                    / (playerVersusPlayerStatistics.NumberOfGamesWonVersusThisPlayer 
+                        + playerVersusPlayerStatistics.NumberOfGamesLostVersusThisPlayer) * 100);
             }
             return winPercentage;
         }

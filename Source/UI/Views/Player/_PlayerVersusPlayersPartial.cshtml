@@ -16,8 +16,7 @@
                 <tr>
                     <th></th>
                     <th>Player Name</th>
-                    <th>Games Played Vs.</th>
-                    <th>Games Won</th>
+                    <th>Win - Loss Record Vs. Player</th>
                     <th>% Won</th>
                 </tr>
             </thead>
@@ -28,24 +27,21 @@
                         <td>
                             @if (player.IsNemesis)
                             {
-                                <i class="fa fa-frown-o" data-container="body" data-toggle="popover" data-placement="left"
-                                   data-content="The Nemesis is the Player with the highest win % vs. this Player. Must have won at least 3 games to be designated as the Nemesis." >
+                                <i class="fa fa-frown-o" data-container="body" data-toggle="popover" data-placement="right"
+                                   data-content="This is the current Player's Nemesis. The Nemesis is the Player with the highest win % vs. this Player. Must have won at least 3 games to be designated as the Nemesis." >
                                 </i>
                             }
                             @if (player.IsMinion)
                             {
                                 <i class="fa fa-thumbs-o-up" data-container="body" data-toggle="popover" data-placement="right"
-                                   data-content="Minions are Players who have this Player as a Nemesis."></i>
+                                   data-content="This is one of the current Player's Minions. Minions are Players who have this Player as a Nemesis."></i>
                             }
                         </td>
                         <td>
                             @Html.ActionLink(player.Name, "Details", "Player", new { id = player.PlayerId }, new { })
                         </td>
                         <td>
-                            @player.NumberOfGamesPlayedVersusThisPlayer
-                        </td>
-                        <td>
-                            @player.NumberOfGamesWonVersusThisPlayer
+                            @string.Format("{0} - {1}", player.NumberOfGamesWonVersusThisPlayer, player.NumberOfGamesLostVersusThisPlayer)
                         </td>
                         <td>
                             @player.WinPercentageVersusThisPlayer

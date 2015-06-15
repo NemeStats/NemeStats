@@ -141,7 +141,7 @@ namespace BusinessLogic.DataAccess.Repositories
 
             return winLossStatistics.Select(winLossStats => new PlayerVersusPlayerStatistics
             {
-                NumberOfGamesPlayedVersusThisPlayer = winLossStats.NumberOfGamesLost + winLossStats.NumberOfGamesWon,
+                NumberOfGamesLostVersusThisPlayer = winLossStats.NumberOfGamesLost,
                 NumberOfGamesWonVersusThisPlayer = winLossStats.NumberOfGamesWon,
                 OpposingPlayerId = winLossStats.VersusPlayerId,
                 OpposingPlayerName = winLossStats.VersusPlayerName
