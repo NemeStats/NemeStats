@@ -92,7 +92,7 @@ namespace BusinessLogic.DataAccess.Repositories
             DbRawSqlQuery<WinLossStatistics> data = dataContext.MakeRawSqlQuery<WinLossStatistics>(SQL_GET_WIN_LOSS_GAMES_COUNT,
                 new SqlParameter("PlayerId", playerId));
 
-            List<WinLossStatistics> winLossStatistics = data.ToList<WinLossStatistics>();
+            List<WinLossStatistics> winLossStatistics = data.ToList();
 
             NemesisData nemesisData = (from x in winLossStatistics
                           where x.NumberOfGamesLost > x.NumberOfGamesWon
@@ -137,7 +137,7 @@ namespace BusinessLogic.DataAccess.Repositories
             DbRawSqlQuery<WinLossStatistics> data = dataContext.MakeRawSqlQuery<WinLossStatistics>(SQL_GET_WIN_LOSS_GAMES_COUNT,
                 new SqlParameter("PlayerId", playerId));
 
-            List<WinLossStatistics> winLossStatistics = data.ToList();
+            List<WinLossStatistics> winLossStatistics = data.OrderByDescending(x => x.NumberOfGamesLost + x.NumberOfGamesWon).ToList();
 
             return winLossStatistics.Select(winLossStats => new PlayerVersusPlayerStatistics
             {
