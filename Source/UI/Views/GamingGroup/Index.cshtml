@@ -14,15 +14,15 @@
 
 <hr />
 
+<div class="row">
+    @Html.Partial(MVC.GamingGroup.Views._GamingGroupPublicDetailsPartial, Model)
+</div>
+
 <a name="@ViewBag.PlayerSectionAnchorText"></a>
 
 <div class="row">
-	@Html.Partial(MVC.GamingGroup.Views._GamingGroupPublicDetailsPartial, Model.GamingGroupEditViewModel)
-</div>
-
-<div class="row">
     @{
-        Html.RenderPartial("~/Views/Player/_PlayersPartial.cshtml", Model.Players, new ViewDataDictionary {{"canEdit", true}});
+        Html.RenderPartial("~/Views/Player/_PlayersPartial.cshtml", Model.Players, new ViewDataDictionary { { "canEdit", true } });
     }
 </div>
 
@@ -31,10 +31,9 @@
     @Html.Partial("~/Views/GameDefinition/_GameDefinitionsPartial.cshtml", Model.GameDefinitionSummaries, new ViewDataDictionary { { "canEdit", true } })
 </div>
 
-
 <a name="@ViewBag.RecentGamesSectionAnchorText"></a>
 <div class="row">
-   @Html.Partial("~/Views/PlayedGame/_PlayedGamesPartial.cshtml", Model.PlayedGames, new ViewDataDictionary { { "canEdit", true }, { "gamingGroupId", @Model.Id} })
+    @Html.Partial("~/Views/PlayedGame/_PlayedGamesPartial.cshtml", Model.PlayedGames, new ViewDataDictionary { { "canEdit", true }, { "gamingGroupId", @Model.Id } })
 </div>
 
 @section Scripts {

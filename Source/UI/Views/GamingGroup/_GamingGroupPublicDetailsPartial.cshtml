@@ -1,7 +1,27 @@
-﻿<div class="panel panel-primary">
-	<div class="panel-heading">
-		<h4 class="fl-left">
-			Public Description
-		</h4>
-	</div>
+﻿@model UI.Models.GamingGroup.GamingGroupViewModel
+
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <h4 class="fl-left">Public Description
+        </h4>
+        <div class="fl-right">
+            <a href="@Url.Action(MVC.GamingGroup.Edit(Model.Id))")>
+                <span class="fa fa-2x fa-pencil"></span>
+            </a>
+        </div>
+        <div class="fl-clear"></div>
+    </div>
+
+    <div class="panel-body">
+        <div>
+            @Html.LabelFor(x => x.GamingGroupEditViewModel.PublicDescription)
+        </div>
+
+        <div>
+            @Html.DisplayFor(x => x.GamingGroupEditViewModel.PublicDescription)
+        </div>
+
+        <div>@Html.LabelFor(x => x.GamingGroupEditViewModel.Website)</div>
+        <div>@Html.DisplayFor(x => x.GamingGroupEditViewModel.Website)</div>
+    </div>
 </div>

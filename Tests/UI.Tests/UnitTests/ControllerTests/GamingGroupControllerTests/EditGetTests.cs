@@ -1,50 +1,45 @@
 ﻿using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Mvc;
 using UI.Models.GamingGroup;
 
 namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
 {
-	public class EditGetTests : GamingGroupControllerTestBase
-	{
-		private const int GAMING_GROUP_ID = 1;
+    public class EditGetTests : GamingGroupControllerTestBase
+    {
+        private const int GAMING_GROUP_ID = 1;
 
-		[Test]
-		public void ItReturnsTheGamingGroupEditViewModel()
-		{
-			var viewResult = autoMocker.ClassUnderTest.Edit(GAMING_GROUP_ID) as ViewResult;
+        [Test]
+        public void ItReturnsTheGamingGroupEditViewModel()
+        {
+            var viewResult = autoMocker.ClassUnderTest.Edit(GAMING_GROUP_ID) as ViewResult;
 
-			Assert.AreEqual(MVC.GamingGroup.Views.Edit, viewResult.ViewName);
-		}
+            Assert.AreEqual(MVC.GamingGroup.Views.Edit, viewResult.ViewName);
+        }
 
-		[Test]
-		public void ItSendsCorrectModelToView()
-		{
-			//--Arrange
-			var model = new GamingGroupEditViewModel
-			{
-				Name = "Awesome Gaming Group",
-			};
+        [Test]
+        public void ItSendsCorrectModelToView()
+        {
+            //--Arrange
+            var model = new GamingGroupEditViewModel
+            {
+                PublicDescription = "Awesome Gaming Group",
+            };
 
-			//--Act
-			var viewResult = autoMocker.ClassUnderTest.Edit(GAMING_GROUP_ID) as ViewResult;
+            //--Act
+            var viewResult = autoMocker.ClassUnderTest.Edit(GAMING_GROUP_ID) as ViewResult;
 
-			//--Assert
-			Assert.AreEqual(model, viewResult.Model);
-		}
+            //--Assert
+            Assert.AreEqual(model, viewResult.Model);
+        }
 
-		//[Test]
-		//public void ItReturnsSpecifiedTopGamingGroupsModelToTheView()
-		//{
-		//    var viewResult = gamingGroupControllerPartialMock.GetTopGamingGroups() as ViewResult;
+        //[Test]
+        //public void ItReturnsSpecifiedTopGamingGroupsModelToTheView()
+        //{
+        //    var viewResult = gamingGroupControllerPartialMock.GetTopGamingGroups() as ViewResult;
 
-		//    var actualViewModel = viewResult.ViewData.Model;
+        // var actualViewModel = viewResult.ViewData.Model;
 
-		//    Assert.AreEqual(expectedViewModel, actualViewModel);
-		//}
-	}
+        //    Assert.AreEqual(expectedViewModel, actualViewModel);
+        //}
+    }
 }
