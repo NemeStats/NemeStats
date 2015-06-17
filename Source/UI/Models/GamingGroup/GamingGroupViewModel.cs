@@ -32,7 +32,7 @@ namespace UI.Models.GamingGroup
             {
                 PlayedGameDetailsViewModels = new List<PlayedGameDetailsViewModel>()
             };
-            GamingGroupEditViewModel = new GamingGroupEditViewModel();
+            PublicDetails = new GamingGroupPublicDetailsModel();
         }
 
         public int Id { get; set; }
@@ -41,7 +41,7 @@ namespace UI.Models.GamingGroup
         public string OwningUserId { get; set; }
         [DisplayName("Owning User Name")]
         public string OwningUserName { get; set; }
-        public GamingGroupEditViewModel GamingGroupEditViewModel { get; set; }
+        public GamingGroupPublicDetailsModel PublicDetails { get; set; }
         [DataType(DataType.EmailAddress)]
         [DisplayName("Invitee Email")]
         [Required(ErrorMessage = "Please enter an e-mail!", AllowEmptyStrings = false)]

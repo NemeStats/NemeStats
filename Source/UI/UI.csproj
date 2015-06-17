@@ -328,7 +328,7 @@
     <Compile Include="Models\ChampionViewModel.cs" />
     <Compile Include="Models\GameDefinitionModels\GameDefinitionSummaryViewModel.cs" />
     <Compile Include="Models\GameDefinitionModels\NewGameDefinitionViewModel.cs" />
-    <Compile Include="Models\GamingGroup\GamingGroupEditViewModel.cs" />
+    <Compile Include="Models\GamingGroup\GamingGroupPublicDetailsModel.cs" />
     <Compile Include="Models\GamingGroup\GamingGroupPublicViewModel.cs" />
     <Compile Include="Models\IEditableViewModel.cs" />
     <Compile Include="Models\IGamingGroupAssignedViewModel.cs" />

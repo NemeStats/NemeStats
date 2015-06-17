@@ -1,33 +1,36 @@
-﻿@model UI.Models.GamingGroup.GamingGroupViewModel
+﻿@model UI.Models.GamingGroup.GamingGroupPublicDetailsModel
 
 <div class="panel panel-primary">
     <div class="panel-heading">
         <h4 class="fl-left">Public Description
         </h4>
-        <div class="fl-right">
-            <a href="@Url.Action(MVC.GamingGroup.Edit(Model.Id))")>
-                <span class="fa fa-2x fa-pencil"></span>
-            </a>
-        </div>
+        @if ((bool?)ViewData["canEdit"] == true)
+        {
+            <div class="fl-right">
+                <a href="@Url.Action(MVC.GamingGroup.Edit(Model.GamingGroupId))">
+                    <span class="fa fa-2x fa-pencil"></span>
+                </a>
+            </div>
+        }
         <div class="fl-clear"></div>
     </div>
 
     <div class="panel-body">
         <div class="row">
             <div class="col-xs-2">
-                @Html.LabelFor(x => x.GamingGroupEditViewModel.PublicDescription)
+                @Html.LabelFor(x => x.PublicDescription)
             </div>
             <div class="col-xs-4">
-                @Html.DisplayFor(x => x.GamingGroupEditViewModel.PublicDescription)
+                @Html.DisplayFor(x => x.PublicDescription)
             </div>
         </div>
 
         <div class="row">
             <div class="col-xs-2">
-                @Html.LabelFor(x => x.GamingGroupEditViewModel.Website)
+                @Html.LabelFor(x => x.Website)
             </div>
             <div class="col-xs-4">
-                @Html.DisplayFor(x => x.GamingGroupEditViewModel.Website)
+                @Html.DisplayFor(x => x.Website)
             </div>
         </div>
     </div>

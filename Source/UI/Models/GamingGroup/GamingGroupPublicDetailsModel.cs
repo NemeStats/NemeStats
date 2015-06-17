@@ -2,7 +2,7 @@
 
 namespace UI.Models.GamingGroup
 {
-    public class GamingGroupEditViewModel
+    public class GamingGroupPublicDetailsModel
     {
         public int GamingGroupId { get; set; }
         public string Website { get; set; }

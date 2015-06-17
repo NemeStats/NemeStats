@@ -15,7 +15,7 @@
 <hr />
 
 <div class="row">
-    @Html.Partial(MVC.GamingGroup.Views._GamingGroupPublicDetailsPartial, Model)
+    @Html.Partial(MVC.GamingGroup.Views._GamingGroupPublicDetailsPartial, Model.PublicDetails, new ViewDataDictionary { { "canEdit", true } })
 </div>
 
 <a name="@ViewBag.PlayerSectionAnchorText"></a>

@@ -20,7 +20,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
         public void ItSendsCorrectModelToView()
         {
             //--Arrange
-            var model = new GamingGroupEditViewModel
+            var model = new GamingGroupPublicDetailsModel
             {
                 PublicDescription = "Awesome Gaming Group",
             };

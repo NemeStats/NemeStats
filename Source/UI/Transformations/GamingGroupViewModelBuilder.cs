@@ -66,8 +66,9 @@ namespace UI.Transformations
                     PlayedGameDetailsViewModels = details,
                     PanelTitle = string.Format("Last {0} Played Games", details.Count)
                 },
-                GamingGroupEditViewModel = new GamingGroupEditViewModel
+                PublicDetails = new GamingGroupPublicDetailsModel
                 {
+                    GamingGroupId = gamingGroupSummary.Id,
                     PublicDescription = gamingGroupSummary.PublicDescription,
                     Website = gamingGroupSummary.PublicGamingGroupWebsite
                 }

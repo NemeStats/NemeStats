@@ -231,7 +231,7 @@ namespace UI.Controllers
         {
             var gamingGroup = gamingGroupRetriever.GetGamingGroupById(gamingGroupId);
 
-            var model = new GamingGroupEditViewModel
+            var model = new GamingGroupPublicDetailsModel
             {
                 GamingGroupId = gamingGroupId,
                 PublicDescription = gamingGroup.PublicDescription,

@@ -1,15 +1,17 @@
-﻿@model UI.Models.GamingGroup.GamingGroupEditViewModel
+﻿@model UI.Models.GamingGroup.GamingGroupPublicDetailsModel
 @{
     ViewBag.Title = "Edit Gaming Group Public Details";
     Layout = MVC.Shared.Views._BaseLayout;
 }
 <h2>Update Gaming Group Details</h2>
+<hr />
 <div class="panel panel-primary">
     <div class="panel-heading">
         <h4 class="fl-left">Public Description
         </h4>
         <div class="fl-clear"></div>
     </div>
+
     @using (Html.BeginForm(MVC.GamingGroup.Edit(), FormMethod.Post))
     {
         @Html.HiddenFor(x => x.GamingGroupId)
