@@ -133,6 +133,25 @@ namespace BusinessLogic.Logic.PlayedGames
                              });
 
 
+            queryable = AddSearchCriteria(playedGameFilter, queryable);
+
+            var results = queryable.ToList();
+
+            SortPlayerResultsWithinEachSearchResult(results);
+
+            return results;
+        }
+
+        private static void SortPlayerResultsWithinEachSearchResult(List<PlayedGameSearchResult> results)
+        {
+            foreach (var playedGameSearchResults in results)
+            {
+                playedGameSearchResults.PlayerGameResults = playedGameSearchResults.PlayerGameResults.OrderBy(x => x.GameRank).ToList();
+            }
+        }
+
+        private static IQueryable<PlayedGameSearchResult> AddSearchCriteria(PlayedGameFilter playedGameFilter, IQueryable<PlayedGameSearchResult> queryable)
+        {
             if (playedGameFilter.GamingGroupId.HasValue)
             {
                 queryable = queryable.Where(query => query.GamingGroupId == playedGameFilter.GamingGroupId.Value);
@@ -159,8 +178,7 @@ namespace BusinessLogic.Logic.PlayedGames
             {
                 queryable = queryable.Take(playedGameFilter.MaximumNumberOfResults.Value);
             }
-
-            return queryable.ToList();
+            return queryable;
         }
     }
 }
