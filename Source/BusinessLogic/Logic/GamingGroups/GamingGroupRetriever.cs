@@ -1,20 +1,17 @@
 ﻿#region LICENSE
 
-// NemeStats is a free website for tracking the results of board games.
-//     Copyright (C) 2015 Jacob Gordon
-//
-//     This program is free software: you can redistribute it and/or modify
-//     it under the terms of the GNU General Public License as published by
-//     the Free Software Foundation, either version 3 of the License, or
-//     (at your option) any later version.
-//
-//     This program is distributed in the hope that it will be useful,
-//     but WITHOUT ANY WARRANTY; without even the implied warranty of
-//     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//     GNU General Public License for more details.
-//
-//     You should have received a copy of the GNU General Public License
-//     along with this program.  If not, see <http://www.gnu.org/licenses/>
+// NemeStats is a free website for tracking the results of board games. Copyright (C) 2015 Jacob Gordon
+// 
+// This program is free software: you can redistribute it and/or modify it under the terms of the
+// GNU General Public License as published by the Free Software Foundation, either version 3 of the
+// License, or (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+// even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+// General Public License for more details.
+// 
+// You should have received a copy of the GNU General Public License along with this program. If
+// not, see <http://www.gnu.org/licenses/>
 
 #endregion LICENSE
 
@@ -30,74 +27,76 @@ using System.Linq;
 
 namespace BusinessLogic.Logic.GamingGroups
 {
-	public class GamingGroupRetriever : IGamingGroupRetriever
-	{
-		private readonly IDataContext dataContext;
-		private readonly IPlayerRetriever playerRetriever;
-		private readonly IGameDefinitionRetriever gameDefinitionRetriever;
-		private readonly IPlayedGameRetriever playedGameRetriever;
+    public class GamingGroupRetriever : IGamingGroupRetriever
+    {
+        private readonly IDataContext dataContext;
+        private readonly IPlayerRetriever playerRetriever;
+        private readonly IGameDefinitionRetriever gameDefinitionRetriever;
+        private readonly IPlayedGameRetriever playedGameRetriever;
 
-		public GamingGroupRetriever(
-			IDataContext dataContext,
-			IPlayerRetriever playerRetriever,
-			IGameDefinitionRetriever gameDefinitionRetriever,
-			IPlayedGameRetriever playedGameRetriever)
-		{
-			this.dataContext = dataContext;
-			this.playerRetriever = playerRetriever;
-			this.gameDefinitionRetriever = gameDefinitionRetriever;
-			this.playedGameRetriever = playedGameRetriever;
-		}
+        public GamingGroupRetriever(
+            IDataContext dataContext,
+            IPlayerRetriever playerRetriever,
+            IGameDefinitionRetriever gameDefinitionRetriever,
+            IPlayedGameRetriever playedGameRetriever)
+        {
+            this.dataContext = dataContext;
+            this.playerRetriever = playerRetriever;
+            this.gameDefinitionRetriever = gameDefinitionRetriever;
+            this.playedGameRetriever = playedGameRetriever;
+        }
 
-		public GamingGroup GetGamingGroupById(int gamingGroupID)
-		{
-			var gamingGroup = dataContext.FindById<GamingGroup>(gamingGroupID);
+        public GamingGroup GetGamingGroupById(int gamingGroupID)
+        {
+            var gamingGroup = dataContext.FindById<GamingGroup>(gamingGroupID);
 
-			return gamingGroup;
-		}
+            return gamingGroup;
+        }
 
-		public GamingGroupSummary GetGamingGroupDetails(int gamingGroupId, int maxNumberOfGamesToRetrieve)
-		{
-			GamingGroup gamingGroup = dataContext.FindById<GamingGroup>(gamingGroupId);
-			GamingGroupSummary summary = new GamingGroupSummary
-			{
-				Id = gamingGroup.Id,
-				DateCreated = gamingGroup.DateCreated,
-				Name = gamingGroup.Name,
-				OwningUserId = gamingGroup.OwningUserId
-			};
+        public GamingGroupSummary GetGamingGroupDetails(int gamingGroupId, int maxNumberOfGamesToRetrieve)
+        {
+            GamingGroup gamingGroup = dataContext.FindById<GamingGroup>(gamingGroupId);
+            GamingGroupSummary summary = new GamingGroupSummary
+            {
+                Id = gamingGroup.Id,
+                DateCreated = gamingGroup.DateCreated,
+                Name = gamingGroup.Name,
+                OwningUserId = gamingGroup.OwningUserId,
+                PublicDescription = gamingGroup.PublicDescription,
+                PublicGamingGroupWebsite = gamingGroup.PublicGamingGroupWebsite
+            };
 
-			summary.PlayedGames = playedGameRetriever.GetRecentGames(maxNumberOfGamesToRetrieve, gamingGroupId);
+            summary.PlayedGames = playedGameRetriever.GetRecentGames(maxNumberOfGamesToRetrieve, gamingGroupId);
 
-			summary.Players = playerRetriever.GetAllPlayersWithNemesisInfo(gamingGroupId);
+            summary.Players = playerRetriever.GetAllPlayersWithNemesisInfo(gamingGroupId);
 
-			summary.GameDefinitionSummaries = gameDefinitionRetriever.GetAllGameDefinitions(gamingGroupId);
+            summary.GameDefinitionSummaries = gameDefinitionRetriever.GetAllGameDefinitions(gamingGroupId);
 
-			summary.OwningUser = dataContext.GetQueryable<ApplicationUser>().First(user => user.Id == gamingGroup.OwningUserId);
+            summary.OwningUser = dataContext.GetQueryable<ApplicationUser>().First(user => user.Id == gamingGroup.OwningUserId);
 
-			return summary;
-		}
+            return summary;
+        }
 
-		public List<GamingGroup> GetGamingGroupsForUser(ApplicationUser applicationUser)
-		{
-			return dataContext.GetQueryable<GamingGroup>()
-							  .Where(gamingGroup => gamingGroup.UserGamingGroups.Any(ugg => ugg.ApplicationUserId == applicationUser.Id))
-							  .ToList();
-		}
+        public List<GamingGroup> GetGamingGroupsForUser(ApplicationUser applicationUser)
+        {
+            return dataContext.GetQueryable<GamingGroup>()
+                              .Where(gamingGroup => gamingGroup.UserGamingGroups.Any(ugg => ugg.ApplicationUserId == applicationUser.Id))
+                              .ToList();
+        }
 
-		public List<TopGamingGroupSummary> GetTopGamingGroups(int numberOfTopGamingGroupsToShow)
-		{
-			return (from gamingGroup in dataContext.GetQueryable<GamingGroup>()
-					select new TopGamingGroupSummary()
-					{
-						GamingGroupId = gamingGroup.Id,
-						GamingGroupName = gamingGroup.Name,
-						NumberOfGamesPlayed = gamingGroup.PlayedGames.Count,
-						NumberOfPlayers = gamingGroup.Players.Count
-					}).OrderByDescending(gg => gg.NumberOfGamesPlayed)
-					  .ThenByDescending(gg => gg.NumberOfPlayers)
-					  .Take(numberOfTopGamingGroupsToShow)
-					  .ToList();
-		}
-	}
+        public List<TopGamingGroupSummary> GetTopGamingGroups(int numberOfTopGamingGroupsToShow)
+        {
+            return (from gamingGroup in dataContext.GetQueryable<GamingGroup>()
+                    select new TopGamingGroupSummary()
+                    {
+                        GamingGroupId = gamingGroup.Id,
+                        GamingGroupName = gamingGroup.Name,
+                        NumberOfGamesPlayed = gamingGroup.PlayedGames.Count,
+                        NumberOfPlayers = gamingGroup.Players.Count
+                    }).OrderByDescending(gg => gg.NumberOfGamesPlayed)
+                      .ThenByDescending(gg => gg.NumberOfPlayers)
+                      .Take(numberOfTopGamingGroupsToShow)
+                      .ToList();
+        }
+    }
 }

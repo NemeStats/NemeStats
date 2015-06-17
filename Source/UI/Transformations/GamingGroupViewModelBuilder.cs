@@ -57,6 +57,7 @@ namespace UI.Transformations
                 OwningUserId = gamingGroupSummary.OwningUserId,
                 Name = gamingGroupSummary.Name,
                 OwningUserName = gamingGroupSummary.OwningUser.UserName,
+
                 Players = playerWithNemesisList,
                 GameDefinitionSummaries = gamingGroupSummary.GameDefinitionSummaries
                     .Select(game => gameDefinitionSummaryViewModelBuilder.Build(game, currentUser)).ToList(),
@@ -67,8 +68,8 @@ namespace UI.Transformations
                 },
                 GamingGroupEditViewModel = new GamingGroupEditViewModel
                 {
-                    //PublicDescription = ,
-                    //Website =
+                    PublicDescription = gamingGroupSummary.PublicDescription,
+                    Website = gamingGroupSummary.PublicGamingGroupWebsite
                 }
             };
 
