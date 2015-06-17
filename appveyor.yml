@@ -179,8 +179,7 @@ build_script:
  
 test:
   assemblies:
-    - ./Tests/BusinessLogic.Tests/bin/Release/BusinessLogic.Tests.dll
-    - ./Tests/UI.Tests/bin/Release/UI.Tests.dll
+    - '**\*.Tests.dll'
  
 # to run tests from different categories as separate jobs in parallel
 #test:
