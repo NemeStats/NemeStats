@@ -1,31 +1,27 @@
 ﻿#region LICENSE
-// NemeStats is a free website for tracking the results of board games.
-//     Copyright (C) 2015 Jacob Gordon
-// 
-//     This program is free software: you can redistribute it and/or modify
-//     it under the terms of the GNU General Public License as published by
-//     the Free Software Foundation, either version 3 of the License, or
-//     (at your option) any later version.
-// 
-//     This program is distributed in the hope that it will be useful,
-//     but WITHOUT ANY WARRANTY; without even the implied warranty of
-//     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//     GNU General Public License for more details.
-// 
-//     You should have received a copy of the GNU General Public License
-//     along with this program.  If not, see <http://www.gnu.org/licenses/>
-#endregion
 
-using System;
+// NemeStats is a free website for tracking the results of board games. Copyright (C) 2015 Jacob Gordon
+// 
+// This program is free software: you can redistribute it and/or modify it under the terms of the
+// GNU General Public License as published by the Free Software Foundation, either version 3 of the
+// License, or (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+// even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+// General Public License for more details.
+// 
+// You should have received a copy of the GNU General Public License along with this program. If
+// not, see <http://www.gnu.org/licenses/>
+
+#endregion LICENSE
+
 using BusinessLogic.DataAccess;
 using BusinessLogic.EventTracking;
-using BusinessLogic.Logic.GameDefinitions;
 using BusinessLogic.Logic.Players;
-using BusinessLogic.Logic.Users;
 using BusinessLogic.Models;
 using BusinessLogic.Models.GamingGroups;
 using BusinessLogic.Models.User;
-using System.Linq;
+using System;
 using System.Threading.Tasks;
 
 namespace BusinessLogic.Logic.GamingGroups
@@ -41,8 +37,8 @@ namespace BusinessLogic.Logic.GamingGroups
         private readonly INemeStatsEventTracker eventTracker;
 
         public GamingGroupSaver(
-            IDataContext dataContext, 
-            INemeStatsEventTracker eventTracker, 
+            IDataContext dataContext,
+            INemeStatsEventTracker eventTracker,
             IPlayerSaver playerSaver)
         {
             this.dataContext = dataContext;
@@ -51,8 +47,8 @@ namespace BusinessLogic.Logic.GamingGroups
         }
 
         public virtual NewlyCreatedGamingGroupResult CreateNewGamingGroup(
-            string gamingGroupName, 
-            TransactionSource registrationSource, 
+            string gamingGroupName,
+            TransactionSource registrationSource,
             ApplicationUser currentUser)
         {
             ValidateGamingGroupName(gamingGroupName);
@@ -132,6 +128,19 @@ namespace BusinessLogic.Logic.GamingGroups
             gamingGroup.Name = gamingGroupName;
             gamingGroup = dataContext.Save(gamingGroup, currentUser);
             dataContext.CommitAllChanges();
+            return gamingGroup;
+        }
+
+        public GamingGroup UpdatePublicGamingGroupDetails(GamingGroupEditRequest request, ApplicationUser currenUser)
+        {
+            var gamingGroup = dataContext.FindById<GamingGroup>(request.GamingGroupId);
+
+            gamingGroup.PublicGamingGroupWebsite = request.Website;
+            gamingGroup.PublicDescription = request.PublicDescription;
+
+            gamingGroup = dataContext.Save(gamingGroup, currenUser);
+            dataContext.CommitAllChanges();
+
             return gamingGroup;
         }
     }

@@ -12,6 +12,7 @@
     </div>
     @using (Html.BeginForm(MVC.GamingGroup.Edit(), FormMethod.Post))
     {
+        @Html.HiddenFor(x => x.GamingGroupId)
         <div class="panel-body">
             <div>
                 @Html.LabelFor(x => x.PublicDescription)
@@ -24,8 +25,13 @@
             <div>
                 @Html.LabelFor(x => x.Website)
             </div>
+
             <div>
                 @Html.TextBoxFor(x => x.Website)
+            </div>
+
+            <div>
+                <button type="submit">Update</button>
             </div>
         </div>
     }

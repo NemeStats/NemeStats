@@ -269,6 +269,7 @@
       <DependentUpon>201505221156047_AddPublicFieldsToGamingGroup.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\Games\GameDefinitionName.cs" />
+    <Compile Include="Models\GamingGroups\GamingGroupEditRequest.cs" />
     <Compile Include="Models\GamingGroups\NewlyCreatedGamingGroupResult.cs" />
     <Compile Include="Models\GamingGroups\TopGamingGroupSummary.cs" />
     <Compile Include="Models\PlayedGames\IWinner.cs" />

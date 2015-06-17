@@ -213,6 +213,8 @@ namespace UI.Controllers
         public class ActionParamsClass_Edit
         {
             public readonly string gamingGroupId = "gamingGroupId";
+            public readonly string request = "request";
+            public readonly string curremUser = "curremUser";
         }
         static readonly ViewsClass s_views = new ViewsClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -356,6 +358,19 @@ namespace UI.Controllers
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Edit);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "gamingGroupId", gamingGroupId);
             EditOverride(callInfo, gamingGroupId);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void EditOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, BusinessLogic.Models.GamingGroups.GamingGroupEditRequest request, BusinessLogic.Models.User.ApplicationUser curremUser);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult Edit(BusinessLogic.Models.GamingGroups.GamingGroupEditRequest request, BusinessLogic.Models.User.ApplicationUser curremUser)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Edit);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "request", request);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "curremUser", curremUser);
+            EditOverride(callInfo, request, curremUser);
             return callInfo;
         }
 

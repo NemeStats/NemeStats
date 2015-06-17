@@ -233,11 +233,22 @@ namespace UI.Controllers
 
             var model = new GamingGroupEditViewModel
             {
+                GamingGroupId = gamingGroupId,
                 PublicDescription = gamingGroup.PublicDescription,
                 Website = gamingGroup.PublicGamingGroupWebsite
             };
 
-            return View(MVC.GamingGroup.Views.Edit);
+            return View(model);
+        }
+
+        [HttpPost]
+        [Authorize]
+        [UserContext]
+        public virtual ActionResult Edit(GamingGroupEditRequest request, ApplicationUser curremUser)
+        {
+            this.gamingGroupSaver.UpdatePublicGamingGroupDetails(request, curremUser);
+
+            return RedirectToAction(MVC.GamingGroup.Index());
         }
     }
 }
