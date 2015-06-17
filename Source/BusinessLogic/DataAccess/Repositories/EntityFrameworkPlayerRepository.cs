@@ -112,24 +112,37 @@ namespace BusinessLogic.DataAccess.Repositories
             return nemesisData;
         }
 
-        private const string SQL_GET_PLAYER_GAME_SUMMARY_INFO = 
+        private const string SQL_GET_PLAYER_GAME_SUMMARY_INFO =
           @"SELECT GD.[Id] AS GameDefinitionId
           ,GD.[Name] AS GameDefinitionName
-	      ,SUM(CASE WHEN PGR.GameRank = 1 THEN 1 ELSE 0 END) AS GamesWon
-	      ,COUNT(*) AS GamesPlayed
+	      ,SUM(CASE WHEN PGR.GameRank = 1 THEN 1 ELSE 0 END) AS NumberOfGamesWon
+          ,SUM(CASE WHEN PGR.GameRank <> 1 THEN 1 ELSE 0 END) AS NumberOfGamesLost
           FROM [dbo].[GameDefinition] GD 
           INNER JOIN PlayedGame PG ON GD.ID = PG.GameDefinitionID
           INNER JOIN PlayerGameResult PGR ON PG.ID = PGR.PlayedGameId
           WHERE PGR.PlayerId = @PlayerId
           GROUP BY GD.[Id], GD.[Name]
-          ORDER BY GamesPlayed DESC, GameDefinitionName";
+          ORDER BY NumberOfGamesWon DESC, NumberofGamesLost DESC, GameDefinitionName";
 
         public List<PlayerGameSummary> GetPlayerGameSummaries(int playerId)
         {
             DbRawSqlQuery<PlayerGameSummary> data = dataContext.MakeRawSqlQuery<PlayerGameSummary>(SQL_GET_PLAYER_GAME_SUMMARY_INFO,
                 new SqlParameter("PlayerId", playerId));
 
-            return data.ToList();
+            var results = data.ToList();
+
+            SetWinPercentages(results);
+
+            return results;
+        }
+
+        private static void SetWinPercentages(List<PlayerGameSummary> results)
+        {
+            foreach (var result in results)
+            {
+                result.WinPercentage = (int)((decimal)result.NumberOfGamesWon / (result.NumberOfGamesLost
+                                                                                 + result.NumberOfGamesWon) * 100);
+            }
         }
 
         public List<PlayerVersusPlayerStatistics> GetPlayerVersusPlayersStatistics(int playerId)
