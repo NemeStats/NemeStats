@@ -14,24 +14,27 @@
     {
         @Html.HiddenFor(x => x.GamingGroupId)
         <div class="panel-body">
-            <div>
-                @Html.LabelFor(x => x.PublicDescription)
+            <div class="row form-group">
+                <div class="col-xs-2">
+                    @Html.LabelFor(x => x.PublicDescription)
+                </div>
+
+                <div class="col-xs-4">
+                    @Html.TextBoxFor(x => x.PublicDescription)
+                </div>
             </div>
 
-            <div>
-                @Html.TextBoxFor(x => x.PublicDescription)
-            </div>
+            <div class="row form-group">
+                <div class="col-xs-2">
+                    @Html.LabelFor(x => x.Website)
+                </div>
 
-            <div>
-                @Html.LabelFor(x => x.Website)
+                <div class="col-xs-4">
+                    @Html.TextBoxFor(x => x.Website)
+                </div>
             </div>
-
             <div>
-                @Html.TextBoxFor(x => x.Website)
-            </div>
-
-            <div>
-                <button type="submit">Update</button>
+                <button class="btn btn-primary" type="submit">Update</button>
             </div>
         </div>
     }

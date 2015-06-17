@@ -13,15 +13,22 @@
     </div>
 
     <div class="panel-body">
-        <div>
-            @Html.LabelFor(x => x.GamingGroupEditViewModel.PublicDescription)
+        <div class="row">
+            <div class="col-xs-2">
+                @Html.LabelFor(x => x.GamingGroupEditViewModel.PublicDescription)
+            </div>
+            <div class="col-xs-4">
+                @Html.DisplayFor(x => x.GamingGroupEditViewModel.PublicDescription)
+            </div>
         </div>
 
-        <div>
-            @Html.DisplayFor(x => x.GamingGroupEditViewModel.PublicDescription)
+        <div class="row">
+            <div class="col-xs-2">
+                @Html.LabelFor(x => x.GamingGroupEditViewModel.Website)
+            </div>
+            <div class="col-xs-4">
+                @Html.DisplayFor(x => x.GamingGroupEditViewModel.Website)
+            </div>
         </div>
-
-        <div>@Html.LabelFor(x => x.GamingGroupEditViewModel.Website)</div>
-        <div>@Html.DisplayFor(x => x.GamingGroupEditViewModel.Website)</div>
     </div>
 </div>
