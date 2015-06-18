@@ -1,4 +1,4 @@
-NemeStats
+NemeStats  [![Build status](https://ci.appveyor.com/api/projects/status/q5d26a5d8v7occ16?svg=true)](https://ci.appveyor.com/project/cracker4o/nemestats)
 ===============
 
 Fun app for tracking games played and won among a fairly stable group of players. Will identify a player's Nemesis based on who beats them the most, and will generate other useful statistics.

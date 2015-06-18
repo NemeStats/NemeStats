@@ -15,6 +15,8 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
+
+using System;
 using BusinessLogic.DataAccess;
 using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.Models;
@@ -95,7 +97,7 @@ namespace BusinessLogic.Logic.Players
 
             List<Champion> championedGames = GetChampionedGames(returnPlayer.Id);
 
-            PlayerDetails playerDetails = new PlayerDetails()
+            var playerDetails = new PlayerDetails()
             {
                 Active = returnPlayer.Active,
                 ApplicationUserId = returnPlayer.ApplicationUserId,
@@ -109,7 +111,8 @@ namespace BusinessLogic.Logic.Players
                 PreviousNemesis = returnPlayer.PreviousNemesis ?? new NullNemesis(),
                 Minions = minions,
                 PlayerGameSummaries = playerGameSummaries,
-                ChampionedGames = championedGames
+                ChampionedGames = championedGames,
+                PlayerVersusPlayersStatistics = playerRepository.GetPlayerVersusPlayersStatistics(playerId)
             };
 
             return playerDetails;
@@ -153,6 +156,11 @@ namespace BusinessLogic.Logic.Players
                         .Include(result => result.PlayedGame.GameDefinition)
                         .ToList();
             return playerGameResults;
+        }
+
+        public virtual List<PlayerVersusPlayerStatistics> GetPlayerVersusPlayersStatistics(int playerId)
+        {
+            throw new NotImplementedException();
         }
 
         public virtual PlayerStatistics GetPlayerStatistics(int playerId)

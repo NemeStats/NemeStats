@@ -49,15 +49,19 @@ namespace UI.Transformations.PlayerTransformations
         {
             Validate(playerDetails);
 
-            PlayerDetailsViewModel playerDetailsViewModel = new PlayerDetailsViewModel();
-            playerDetailsViewModel.PlayerId = playerDetails.Id;
-            playerDetailsViewModel.PlayerName = playerDetails.Name;
-            playerDetailsViewModel.PlayerRegistered = playerDetails.ApplicationUserId != null;
-            playerDetailsViewModel.Active = playerDetails.Active;
-            playerDetailsViewModel.GamingGroupName = playerDetails.GamingGroupName;
-            playerDetailsViewModel.GamingGroupId = playerDetails.GamingGroupId;
-            playerDetailsViewModel.TotalGamesPlayed = playerDetails.PlayerStats.TotalGames;
-            playerDetailsViewModel.TotalPoints = playerDetails.PlayerStats.TotalPoints;
+            var playerDetailsViewModel = new PlayerDetailsViewModel
+            {
+                PlayerId = playerDetails.Id,
+                PlayerName = playerDetails.Name,
+                PlayerRegistered = playerDetails.ApplicationUserId != null,
+                Active = playerDetails.Active,
+                GamingGroupName = playerDetails.GamingGroupName,
+                GamingGroupId = playerDetails.GamingGroupId,
+                TotalGamesPlayed = playerDetails.PlayerStats.TotalGames,
+                TotalPoints = playerDetails.PlayerStats.TotalPoints
+            };
+
+            PopulatePlayerVersusPlayersViewModel(playerDetails, playerDetailsViewModel);
 
             SetTwitterBraggingUrlIfThePlayerIsTheCurrentlyLoggedInUser(playerDetails, urlForMinionBragging, currentUser, playerDetailsViewModel);
             
@@ -78,6 +82,43 @@ namespace UI.Transformations.PlayerTransformations
             SetChampionedGames(playerDetails, playerDetailsViewModel);
             
             return playerDetailsViewModel;
+        }
+
+        private static void PopulatePlayerVersusPlayersViewModel(PlayerDetails playerDetails, PlayerDetailsViewModel playerDetailsViewModel)
+        {
+            var playerVersusPlayers = new PlayerVersusPlayersViewModel();
+
+            foreach (var playerVersusPlayerStatistics in playerDetails.PlayerVersusPlayersStatistics)
+            {
+                var winPercentage = GetWinPercentage(playerVersusPlayerStatistics);
+
+                playerVersusPlayers.OpposingPlayers.Add(new OpposingPlayerViewModel
+                {
+                    Name = playerVersusPlayerStatistics.OpposingPlayerName,
+                    PlayerId = playerVersusPlayerStatistics.OpposingPlayerId,
+                    NumberOfGamesWonVersusThisPlayer = playerVersusPlayerStatistics.NumberOfGamesWonVersusThisPlayer,
+                    NumberOfGamesLostVersusThisPlayer = playerVersusPlayerStatistics.NumberOfGamesLostVersusThisPlayer,
+                    WinPercentageVersusThisPlayer = (int)winPercentage,
+                    IsNemesis = (playerDetails.CurrentNemesis != null 
+                        && playerDetails.CurrentNemesis.NemesisPlayerId == playerVersusPlayerStatistics.OpposingPlayerId),
+                    IsMinion = playerDetails.Minions.Any(x => x.Id == playerVersusPlayerStatistics.OpposingPlayerId)
+                });
+            }
+
+            playerDetailsViewModel.PlayerVersusPlayers = playerVersusPlayers;
+        }
+
+        private static decimal GetWinPercentage(PlayerVersusPlayerStatistics playerVersusPlayerStatistics)
+        {
+            decimal winPercentage = 0;
+
+            if (playerVersusPlayerStatistics.NumberOfGamesLostVersusThisPlayer + playerVersusPlayerStatistics.NumberOfGamesWonVersusThisPlayer > 0)
+            {
+                winPercentage = ((decimal)playerVersusPlayerStatistics.NumberOfGamesWonVersusThisPlayer 
+                    / (playerVersusPlayerStatistics.NumberOfGamesWonVersusThisPlayer 
+                        + playerVersusPlayerStatistics.NumberOfGamesLostVersusThisPlayer) * 100);
+            }
+            return winPercentage;
         }
 
         private static void SetTwitterBraggingUrlIfThePlayerIsTheCurrentlyLoggedInUser(PlayerDetails playerDetails,

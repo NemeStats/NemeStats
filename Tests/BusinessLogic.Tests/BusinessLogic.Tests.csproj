@@ -97,7 +97,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
     </Reference>
-    <Reference Include="Owin">
+    <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
     </Reference>
     <Reference Include="Ploeh.AutoFixture, Version=3.24.1.0, Culture=neutral, PublicKeyToken=b24654c590009d4f, processorArchitecture=MSIL">
@@ -207,7 +208,7 @@
     <Compile Include="UnitTests\LogicTests\NemesesTests\NemesisRecalculatorTests\RecalculateAllNemesesTests.cs" />
     <Compile Include="UnitTests\LogicTests\GameDefinitionsTests\GameDefinitionSaverTests\SaveTests.cs" />
     <Compile Include="UnitTests\LogicTests\GameDefinitionsTests\GameDefinitionRetrieverTests\GameDefinitionRetrieverTestBase.cs" />
-    <Compile Include="UnitTests\LogicTests\GameDefinitionsTests\GameDefinitionRetrieverTests\GetAllTests.cs" />
+    <Compile Include="UnitTests\LogicTests\GameDefinitionsTests\GameDefinitionRetrieverTests\GetAllGameDefinitionsTests.cs" />
     <Compile Include="UnitTests\LogicTests\GameDefinitionsTests\GameDefinitionRetrieverTests\GetGameDefinitionDetailsTests.cs" />
     <Compile Include="UnitTests\LogicTests\GamingGroupsTests\GamingGroupSaverTests\CreateNewGamingGroupTests.cs" />
     <Compile Include="UnitTests\LogicTests\GamingGroupsTests\GamingGroupRetrieverTests\GetGamingGroupDetailsTests.cs" />

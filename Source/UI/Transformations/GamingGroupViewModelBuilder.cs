@@ -51,7 +51,7 @@ namespace UI.Transformations
                 = (from PlayerWithNemesis playerWithNemesis in gamingGroupSummary.Players
                    select playerWithNemesisViewModelBuilder.Build(playerWithNemesis, currentUser)).ToList();
 
-            GamingGroupViewModel viewModel = new GamingGroupViewModel()
+            var viewModel = new GamingGroupViewModel()
             {
                 Id = gamingGroupSummary.Id,
                 OwningUserId = gamingGroupSummary.OwningUserId,
@@ -64,6 +64,9 @@ namespace UI.Transformations
                 PlayedGames = new PlayedGamesViewModel
                 {
                     PlayedGameDetailsViewModels = details,
+                    PanelTitle = string.Format("Last {0} Played Games", details.Count),
+                    UserCanEdit = currentUser != null && currentUser.CurrentGamingGroupId == gamingGroupSummary.Id,
+                    GamingGroupId = gamingGroupSummary.Id
                     PanelTitle = string.Format("Last {0} Played Games", details.Count)
                 },
                 PublicDetails = new GamingGroupPublicDetailsModel

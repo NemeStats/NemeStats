@@ -25,5 +25,6 @@ namespace BusinessLogic.DataAccess.Repositories
     {
         NemesisData GetNemesisData(int playerId);
         List<PlayerGameSummary> GetPlayerGameSummaries(int playerId);
+        List<PlayerVersusPlayerStatistics> GetPlayerVersusPlayersStatistics(int playerId);
     }
 }

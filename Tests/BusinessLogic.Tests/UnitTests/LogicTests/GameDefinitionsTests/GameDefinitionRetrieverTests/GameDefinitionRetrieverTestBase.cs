@@ -33,6 +33,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
         protected ApplicationUser currentUser;
         protected IQueryable<GameDefinition> gameDefinitionQueryable;
         protected int gamingGroupId = 123;
+        protected const int CHAMPION_ID = 1;
+        protected const int PREVIOUS_CHAMPION_ID = 2;
 
         [SetUp]
         public void SetUp()
@@ -47,10 +49,43 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
             {
                 new GameDefinition() { Id = 1, Active = true, GamingGroupId = gamingGroupId, PlayedGames = new List<PlayedGame>()},  
                 new GameDefinition() { Id = 2, Active = false, GamingGroupId = gamingGroupId, PlayedGames = new List<PlayedGame>() },
-                new GameDefinition() { Id = 3, Active = true, GamingGroupId = -1, PlayedGames = new List<PlayedGame>() }
-
+                new GameDefinition() 
+                { 
+                    Id = 3, 
+                    Active = true, 
+                    GamingGroupId = -1, 
+                    PlayedGames = new List<PlayedGame>(), 
+                    Champion = new Champion
+                    {
+                        Player = new Player
+                        {
+                            Id = CHAMPION_ID
+                        }
+                    },
+                    PreviousChampion = new Champion()
+                    {
+                        Player = new Player
+                        {
+                            Id = PREVIOUS_CHAMPION_ID
+                        }
+                    }
+                }
             };
             gameDefinitionQueryable = gameDefinitions.AsQueryable();
+
+            var players = new List<Player>
+            {
+                new Player
+                {
+                    Id = CHAMPION_ID
+                },
+                new Player
+                {
+                    Id = PREVIOUS_CHAMPION_ID
+                }
+            };
+
+            autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<Player>()).Return(players.AsQueryable());
         }
     }
 }

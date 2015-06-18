@@ -23,7 +23,6 @@ using System.Linq;
 
 namespace BusinessLogic.Tests.IntegrationTests
 {
-    //TODO blog post on eager vs. lazy loading, integration testing your eager loads, and entity framework gotchas
     [TestFixture]
     public class EntityFramework6LazyLoadingTests
     {

@@ -59,6 +59,8 @@ namespace BusinessLogic.Logic.GameDefinitions
                 .OrderBy(game => game.Name)
                 .ToList();
 
+            AddPlayersToChampionData(returnValue);
+
             returnValue.ForEach( summary =>
             {
                 summary.BoardGameGeekUri = BoardGameGeekUriBuilder.BuildBoardGameGeekGameUri(summary.BoardGameGeekObjectId);
@@ -66,6 +68,27 @@ namespace BusinessLogic.Logic.GameDefinitions
                 summary.PreviousChampion = summary.PreviousChampion ?? new NullChampion();
             });
             return returnValue;
+        }
+
+        private void AddPlayersToChampionData(List<GameDefinitionSummary> gameDefinitionSummaries)
+        {
+            var playerIds = gameDefinitionSummaries.Select(x => x.Champion == null ? -1 : x.Champion.PlayerId).ToList()
+                                                   .Union(gameDefinitionSummaries.Select(x => x.PreviousChampion == null ? -1 : x.PreviousChampion.PlayerId).ToList());
+
+            var players = dataContext.GetQueryable<Player>().Where(player => playerIds.Contains(player.Id)).ToList();
+
+            foreach (var gameDefinitionSummary in gameDefinitionSummaries)
+            {
+                if (gameDefinitionSummary.Champion != null)
+                {
+                    gameDefinitionSummary.Champion.Player = players.FirstOrDefault(player => player.Id == gameDefinitionSummary.Champion.PlayerId);
+                }
+
+                if (gameDefinitionSummary.PreviousChampion != null)
+                {
+                    gameDefinitionSummary.PreviousChampion.Player = players.FirstOrDefault(player => player.Id == gameDefinitionSummary.PreviousChampion.PlayerId);
+                }
+            }
         }
 
         public virtual GameDefinitionSummary GetGameDefinitionDetails(int id, int numberOfPlayedGamesToRetrieve)

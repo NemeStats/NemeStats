@@ -2,20 +2,27 @@
 
 @{
     Layout = null;
-    var fileRequestUrl = "/api/v1/GamingGroups/" + ViewData["gamingGroupid"] + "/PlayedGamesExcel";
-}           
+}
 
 @using UI.HtmlHelpers
 <div class="panel panel-primary">
     <div class="panel-heading">
         <h4 class="fl-left">
             @Model.PanelTitle
+            @if (Model.ShowSearchLinkInResultsHeader)
+            {
+                @:(
+                @Html.ActionLink("Search Played Games", "Search", "PlayedGame", new { }, new { })
+                @:)
+            }
         </h4>
-        @if ((bool?)ViewData["canEdit"] == true)
+        @if (Model.UserCanEdit && Model.GamingGroupId.HasValue)
         {
-            <div>&nbsp;
+             var fileRequestUrl = "/api/v1/GamingGroups/" + Model.GamingGroupId.Value + "/PlayedGamesExcel";
+            <div>
+                &nbsp;
                 <a href="@fileRequestUrl" id="playedGamesExcelDownload">
-                    <i class="fa fa-download fa-2x" style="line-height: 36px" data-container="body" data-toggle="popover" data-placement="left"
+                    <i class="fa fa-download fa-2x" style="line-height: 36px" data-container="body" data-toggle="popover" data-placement="right"
                        data-content="Export all of your played games to Microsoft Excel (.xlsx)"></i>
                 </a>
                 <div class="fl-right">
@@ -40,7 +47,6 @@
                             Result
                         </th>
                         <th class="col-md-1">
-
                         </th>
                     </tr>
                 </thead>

@@ -72,5 +72,15 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
 
             Assert.AreSame(gamingGroupViewModel, viewResult.Model);
         }
+
+        [Test]
+        public void ItShowsTheSearchPlayedGamesLinkInThePlayedGamePanelHeader()
+        {
+            var viewResult = gamingGroupControllerPartialMock.Index(currentUser) as ViewResult;
+
+            var viewModel = (GamingGroupViewModel)viewResult.Model;
+            Assert.That(viewModel.PlayedGames.ShowSearchLinkInResultsHeader, Is.True);
+        }
+
     }
 }

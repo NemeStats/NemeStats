@@ -124,6 +124,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="Owin">
+      <HintPath>..\..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+    </Reference>
     <Reference Include="RollbarSharp, Version=0.3.1.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\RollbarSharp.Unofficial.0.4.1\lib\net40\RollbarSharp.dll</HintPath>
@@ -239,11 +242,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Owin">
-      <HintPath>..\..\..\..\..\Users\COGORD\Documents\Visual Studio 2013\Projects\NerdScorekeeper\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="AccountController.generated.cs">
       <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>
@@ -352,7 +350,9 @@
     <Compile Include="Models\Players\PlayerDetailsViewModel.cs" />
     <Compile Include="Models\Players\PlayerEditViewModel.cs" />
     <Compile Include="Models\Players\PlayerInvitationViewModel.cs" />
+    <Compile Include="Models\Players\OpposingPlayerViewModel.cs" />
     <Compile Include="Models\Players\TopPlayerViewModel.cs" />
+    <Compile Include="Models\Players\PlayerVersusPlayersViewModel.cs" />
     <Compile Include="Models\User\UserViewModel.cs" />
     <Compile Include="Models\VotableFeatureViewModel.cs" />
     <Compile Include="PlayedGameController.generated.cs">
@@ -685,6 +685,7 @@
     <Content Include="Views\PlayedGame\_PlayedGamesPlayerPartial.cshtml" />
     <Content Include="Views\PlayedGame\_PlayedGameFormPartial.cshtml" />
     <Content Include="Views\PlayedGame\Search.cshtml" />
+    <Content Include="Views\Player\_PlayerVersusPlayersPartial.cshtml" />
     <Content Include="Views\GamingGroup\UpdateGamingGroupName.cshtml" />
     <Content Include="Views\GamingGroup\Edit.cshtml" />
     <Content Include="Views\GamingGroup\_GamingGroupPublicDetailsPartial.cshtml" />

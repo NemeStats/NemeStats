@@ -26,6 +26,7 @@ namespace BusinessLogic.Models.Players
         {
             CurrentNemesis = new NullNemesis();
             PreviousNemesis = new NullNemesis();
+            this.PlayerVersusPlayersStatistics = new List<PlayerVersusPlayerStatistics>();
         }
 
         public int Id { get; set; }
@@ -41,6 +42,7 @@ namespace BusinessLogic.Models.Players
         public Nemesis PreviousNemesis { get; set; }
         public List<Player> Minions { get; set; }
         public List<PlayerGameSummary> PlayerGameSummaries { get; set; }
-        public List<Champion> ChampionedGames { get; set; } 
+        public List<Champion> ChampionedGames { get; set; }
+        public List<PlayerVersusPlayerStatistics> PlayerVersusPlayersStatistics { get; set; }
     }
 }

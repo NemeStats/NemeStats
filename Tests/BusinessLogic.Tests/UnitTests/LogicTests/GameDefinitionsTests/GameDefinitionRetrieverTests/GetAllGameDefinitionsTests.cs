@@ -27,7 +27,7 @@ using System.Linq;
 namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefinitionRetrieverTests
 {
     [TestFixture]
-    public class GetAllTests : GameDefinitionRetrieverTestBase
+    public class GetAllGameDefinitionsTests : GameDefinitionRetrieverTestBase
     {
         [Test]
         public void ItOnlyReturnsActiveGameDefinitions()
@@ -35,6 +35,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
             autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<GameDefinition>())
                 .Repeat.Once()
                 .Return(gameDefinitionQueryable);
+
 
             IList<GameDefinitionSummary> gameDefinitions = autoMocker.ClassUnderTest.GetAllGameDefinitions(currentUser.CurrentGamingGroupId.Value);
 

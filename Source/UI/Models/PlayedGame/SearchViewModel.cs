@@ -15,6 +15,6 @@ namespace UI.Models.PlayedGame
 
         public IList<SelectListItem> GameDefinitions { get; set; }
         public PlayedGamesFilterViewModel Filter { get; set; }
-        public IList<PlayedGameDetailsViewModel> PlayedGameSearchResults { get; set; }
+        public PlayedGamesViewModel PlayedGames { get; set; }
     }
 }

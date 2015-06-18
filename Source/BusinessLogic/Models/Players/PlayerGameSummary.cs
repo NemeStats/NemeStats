@@ -26,7 +26,8 @@ namespace BusinessLogic.Models.Players
     {
         public string GameDefinitionName { get; set; }
         public int GameDefinitionId { get; set; }
-        public int GamesPlayed { get; set; }
-        public int GamesWon { get; set; }
+        public int NumberOfGamesWon { get; set; }
+        public int NumberOfGamesLost { get; set; }
+        public int WinPercentage { get; set; }
     }
 }
