@@ -179,7 +179,7 @@ build_script:
  
 test:
   assemblies:
-    - '**\*.Tests.dll'
+    - '..\Tests\**\*.Tests.dll'
  
 # to run tests from different categories as separate jobs in parallel
 #test:
