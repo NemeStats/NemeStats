@@ -21,8 +21,8 @@
                     @Html.LabelFor(x => x.PublicDescription)
                 </div>
 
-                <div class="col-xs-4">
-                    @Html.TextBoxFor(x => x.PublicDescription)
+                <div class="col-xs-6">
+                    @Html.TextAreaFor(x => x.PublicDescription, new { @class = "form-control", @rows = "8" })
                 </div>
             </div>
 
@@ -31,8 +31,8 @@
                     @Html.LabelFor(x => x.Website)
                 </div>
 
-                <div class="col-xs-4">
-                    @Html.TextBoxFor(x => x.Website)
+                <div class="col-xs-6">
+                    @Html.TextBoxFor(x => x.Website, new { @class = "form-control" })
                 </div>
             </div>
             <div>

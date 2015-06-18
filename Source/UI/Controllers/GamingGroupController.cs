@@ -126,6 +126,12 @@ namespace UI.Controllers
                     PlayedGameDetailsViewModels = gamingGroupSummary.PlayedGames
                     .Select(playedGame => playedGameDetailsViewModelBuilder.Build(playedGame, currentUser)).ToList(),
                     PanelTitle = string.Format("Last {0} Played Games", gamingGroupSummary.PlayedGames.Count)
+                },
+                PublicDetails = new GamingGroupPublicDetailsModel
+                {
+                    GamingGroupId = gamingGroupSummary.Id,
+                    PublicDescription = gamingGroupSummary.PublicDescription,
+                    Website = gamingGroupSummary.PublicGamingGroupWebsite
                 }
             };
 
