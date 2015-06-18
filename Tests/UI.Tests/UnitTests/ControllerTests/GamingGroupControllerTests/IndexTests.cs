@@ -21,10 +21,8 @@ using BusinessLogic.Models.GamingGroups;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System.Collections.Generic;
-using System.Linq;
 using System.Web.Mvc;
 using UI.Controllers;
-using UI.Controllers.Helpers;
 using UI.Models.GamingGroup;
 using UI.Transformations;
 
@@ -76,11 +74,10 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
         [Test]
         public void ItShowsTheSearchPlayedGamesLinkInThePlayedGamePanelHeader()
         {
-            var viewResult = gamingGroupControllerPartialMock.Index(currentUser) as ViewResult;
+            var viewResult = autoMocker.ClassUnderTest.Index(currentUser) as ViewResult;
 
             var viewModel = (GamingGroupViewModel)viewResult.Model;
             Assert.That(viewModel.PlayedGames.ShowSearchLinkInResultsHeader, Is.True);
         }
-
     }
 }
