@@ -213,6 +213,7 @@
     <Compile Include="UnitTests\ControllerTests\GameDefinitionControllerTests\SearchBoardGameGeekHttpGetTests.cs" />
     <Compile Include="UnitTests\ControllerTests\GamingGroupControllerTests\CreateNewGamingGroupTests.cs" />
     <Compile Include="UnitTests\ControllerTests\GamingGroupControllerTests\EditGetTests.cs" />
+    <Compile Include="UnitTests\ControllerTests\GamingGroupControllerTests\EditPostTests.cs" />
     <Compile Include="UnitTests\ControllerTests\GamingGroupControllerTests\UpdateGamingGroupNameTests.cs" />
     <Compile Include="UnitTests\ControllerTests\GamingGroupControllerTests\GamingGroupControllerTestBase.cs" />
     <Compile Include="UnitTests\ControllerTests\GamingGroupControllerTests\GetTopGamingGroupsTests.cs" />

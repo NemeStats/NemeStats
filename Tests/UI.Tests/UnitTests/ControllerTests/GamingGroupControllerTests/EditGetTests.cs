@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using Rhino.Mocks;
 using System.Web.Mvc;
 using UI.Models.GamingGroup;
 
@@ -9,10 +10,19 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
         private const int GAMING_GROUP_ID = 1;
 
         [Test]
-        public void ItReturnsTheGamingGroupEditViewModel()
+        public void ItReturnsGamingGroupEditView()
         {
+            //--Arrange
+            autoMocker.PartialMockTheClassUnderTest();
+            autoMocker.ClassUnderTest.Expect(x => x.Edit(Arg<int>.Is.Anything)).Return(new ViewResult
+            {
+                ViewName = MVC.GamingGroup.Views.Edit
+            });
+
+            //--Act
             var viewResult = autoMocker.ClassUnderTest.Edit(GAMING_GROUP_ID) as ViewResult;
 
+            //--Assert
             Assert.AreEqual(MVC.GamingGroup.Views.Edit, viewResult.ViewName);
         }
 
@@ -22,8 +32,15 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
             //--Arrange
             var model = new GamingGroupPublicDetailsModel
             {
-                PublicDescription = "Awesome Gaming Group",
+                PublicDescription = "Description",
+                Website = "Website"
             };
+
+            autoMocker.PartialMockTheClassUnderTest();
+            autoMocker.ClassUnderTest.Expect(x => x.Edit(Arg<int>.Is.Anything)).Return(new ViewResult
+            {
+                ViewData = new ViewDataDictionary(model)
+            });
 
             //--Act
             var viewResult = autoMocker.ClassUnderTest.Edit(GAMING_GROUP_ID) as ViewResult;
@@ -31,15 +48,5 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
             //--Assert
             Assert.AreEqual(model, viewResult.Model);
         }
-
-        //[Test]
-        //public void ItReturnsSpecifiedTopGamingGroupsModelToTheView()
-        //{
-        //    var viewResult = gamingGroupControllerPartialMock.GetTopGamingGroups() as ViewResult;
-
-        // var actualViewModel = viewResult.ViewData.Model;
-
-        //    Assert.AreEqual(expectedViewModel, actualViewModel);
-        //}
     }
 }
