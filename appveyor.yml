@@ -166,7 +166,8 @@ before_build:
  - nuget restore
 # scripts to run after build
 after_build:
- 
+ - nunit-console ./Tests/BusinessLogic.Tests/bin/Release/BusinessLogic.Tests.dll ./Tests/UI.Tests/bin/Release/UI.Tests.dll
+
 # to run your custom scripts instead of automatic MSBuild
 build_script:
  
@@ -177,10 +178,10 @@ build_script:
 #       tests configuration       #
 #---------------------------------#
  
-test:
-  assemblies:
-    - '..\Tests\**\*.Tests.dll'
- 
+#test:
+#  assemblies:
+#    - '..\Tests\**\*.Tests.dll'
+
 # to run tests from different categories as separate jobs in parallel
 #test:
 #  categories:
