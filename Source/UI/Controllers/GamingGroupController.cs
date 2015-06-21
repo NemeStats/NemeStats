@@ -225,21 +225,16 @@ namespace UI.Controllers
             return RedirectToAction(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name);
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            base.Dispose(disposing);
-        }
-
         [HttpGet]
         [Authorize]
-        public virtual ActionResult Edit(int gamingGroupId)
+        public virtual ActionResult Edit(int id)
         {
-            var gamingGroup = gamingGroupRetriever.GetGamingGroupById(gamingGroupId);
+            var gamingGroup = gamingGroupRetriever.GetGamingGroupById(id);
 
             var model = new GamingGroupPublicDetailsViewModel
             {
                 GamingGroupName = gamingGroup.Name,
-                GamingGroupId = gamingGroupId,
+                GamingGroupId = id,
                 PublicDescription = gamingGroup.PublicDescription,
                 Website = gamingGroup.PublicGamingGroupWebsite
             };

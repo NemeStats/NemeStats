@@ -7,7 +7,7 @@
         @if ((bool?)ViewData["canEdit"] == true)
         {
             <div class="fl-right">
-                <a href="@Url.Action(MVC.GamingGroup.Edit(Model.GamingGroupId))">
+                <a href="@Url.Action("Edit", "GamingGroup", new { id = @Model.GamingGroupId })" title="Edit">
                     <span class="fa fa-2x fa-pencil"></span>
                 </a>
             </div>
