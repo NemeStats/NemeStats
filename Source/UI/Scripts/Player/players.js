@@ -24,7 +24,7 @@ Views.Player.Players.prototype = {
                 <td> </td>\
                 <td> </td>\
                 <td> \
-                    <a href='/Player/UpdateGamingGroupName/" + player.Id + "' title='UpdateGamingGroupName'> \
+                    <a href='/Player/Edit/" + player.Id + "' title='Edit'> \
                         <i class='fa fa-pencil fa-2x'></i> \
                     </a> \
                 </td> \
