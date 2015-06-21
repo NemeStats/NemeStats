@@ -149,7 +149,7 @@ namespace UI.Controllers
 			return new HttpStatusCodeResult(HttpStatusCode.NotModified);
 		}
 
-		// GET: /GameDefinition/UpdateGamingGroupName/5
+		// GET: /GameDefinition/Edit/5
 		[Authorize]
 		[UserContext]
 		public virtual ActionResult Edit(int? id, ApplicationUser currentUser)
@@ -172,7 +172,7 @@ namespace UI.Controllers
 			return View(MVC.GameDefinition.Views.Edit, gameDefinition);
 		}
 
-		// POST: /GameDefinition/UpdateGamingGroupName/5
+        // POST: /GameDefinition/Edit/5
 		// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
 		// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
 		[HttpPost]

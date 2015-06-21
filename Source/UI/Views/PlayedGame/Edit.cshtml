@@ -13,7 +13,7 @@
 	<div class="panel-body">
 		<div class="row">
 			<div class="col-md-5">
-				@using (Html.BeginForm("UpdateGamingGroupName", MVC.PlayedGame.Name, new { previousGameId = @Model.PreviousGameId }, FormMethod.Post, new { id = "recordPlayedGame" }))
+				@using (Html.BeginForm("Edit", MVC.PlayedGame.Name, new { previousGameId = @Model.PreviousGameId }, FormMethod.Post, new { id = "recordPlayedGame" }))
 				{
 					@Html.Partial(MVC.PlayedGame.Views._PlayedGameFormPartial, Model)
 				}

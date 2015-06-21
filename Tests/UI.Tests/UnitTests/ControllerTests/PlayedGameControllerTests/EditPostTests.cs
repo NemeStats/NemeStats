@@ -42,7 +42,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 			var result = autoMocker.ClassUnderTest.Edit(editedGame, 1234, base.currentUser) as RedirectToRouteResult;
 
 			//--Assert
-			Assert.AreEqual("UpdateGamingGroupName", result.RouteValues["action"]);
+			Assert.AreEqual("Edit", result.RouteValues["action"]);
 		}
 
 		[Test]

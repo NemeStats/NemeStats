@@ -177,7 +177,7 @@ namespace UI.Controllers
 							+ "#" + GamingGroupController.SECTION_ANCHOR_RECENT_GAMES);
 		}
 
-		// GET: /PlayedGame/UpdateGamingGroupName
+        // GET: /PlayedGame/Edit
 		[Authorize]
 		[UserContext]
 		[HttpGet]
@@ -208,7 +208,7 @@ namespace UI.Controllers
 			return View(viewModel);
 		}
 
-		// POST: /PlayedGame/UpdateGamingGroupName
+        // POST: /PlayedGame/Edit
 		[Authorize]
 		[UserContext]
 		[HttpPost]
