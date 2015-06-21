@@ -2,11 +2,11 @@
 
 <div class="panel panel-primary">
     <div class="panel-heading">
-        <h4 class="fl-left">Public Description
+        <h4 class="fl-left">Public Description&nbsp;
         </h4>
         @if ((bool?)ViewData["canEdit"] == true)
         {
-            <div class="fl-right">
+            <div class="fl-left">
                 <a href="@Url.Action("Edit", "GamingGroup", new { id = @Model.GamingGroupId })" title="Edit">
                     <span class="fa fa-2x fa-pencil"></span>
                 </a>
