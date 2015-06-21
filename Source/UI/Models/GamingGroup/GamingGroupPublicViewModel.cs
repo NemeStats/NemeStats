@@ -31,14 +31,14 @@ namespace UI.Models.GamingGroup
             {
                 PlayedGameDetailsViewModels = new List<PlayedGameDetailsViewModel>()
             };
-            PublicDetails = new GamingGroupPublicDetailsModel();
+            this.PublicDetailsView = new GamingGroupPublicDetailsViewModel();
         }
 
         public int Id { get; set; }
         [DisplayName("Gaming Group Name")]
         public string Name { get; set; }
         public bool UserCanEdit { get; set; }
-        public GamingGroupPublicDetailsModel PublicDetails { get; set; }
+        public GamingGroupPublicDetailsViewModel PublicDetailsView { get; set; }
         public IList<GameDefinitionSummaryViewModel> GameDefinitionSummaries { get; set; }
         public IList<PlayerWithNemesisViewModel> Players { get; set; }
         public PlayedGamesViewModel PlayedGames { get; set; }

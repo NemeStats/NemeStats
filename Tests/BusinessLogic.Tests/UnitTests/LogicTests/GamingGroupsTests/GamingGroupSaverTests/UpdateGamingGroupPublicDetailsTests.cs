@@ -25,21 +25,25 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
         }
 
         [Test]
-        public void ItSetsGamingGroupDetails()
+        public void ItUpdatesTheGamingGroup()
         {
             //--Arrange
             var request = new GamingGroupEditRequest
             {
                 PublicDescription = "Description",
                 Website = "Website",
+                GamingGroupName = "some gaming group name",
                 GamingGroupId = currentUser.CurrentGamingGroupId.Value
             };
 
             //--Act
-            var result = gamingGroupSaver.UpdatePublicGamingGroupDetails(request, currentUser);
+            gamingGroupSaver.UpdatePublicGamingGroupDetails(request, currentUser);
 
             //--Assert
-            dataContextMock.AssertWasCalled(x => x.Save(Arg<GamingGroup>.Matches(gamingGroup => gamingGroup.Name == result.Name),
+            dataContextMock.AssertWasCalled(x => x.Save(Arg<GamingGroup>.Matches(
+                gamingGroup => gamingGroup.Name == request.GamingGroupName
+                  && gamingGroup.PublicDescription == request.PublicDescription
+                  && gamingGroup.PublicGamingGroupWebsite == request.Website),
                 Arg<ApplicationUser>.Is.Same(currentUser)));
         }
 

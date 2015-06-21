@@ -131,14 +131,15 @@ namespace BusinessLogic.Logic.GamingGroups
             return gamingGroup;
         }
 
-        public GamingGroup UpdatePublicGamingGroupDetails(GamingGroupEditRequest request, ApplicationUser currenUser)
+        public GamingGroup UpdatePublicGamingGroupDetails(GamingGroupEditRequest request, ApplicationUser currentUser)
         {
             var gamingGroup = dataContext.FindById<GamingGroup>(request.GamingGroupId);
 
-            gamingGroup.PublicGamingGroupWebsite = !request.Website.Contains("http") ? "http://" + request.Website : request.Website;
+            gamingGroup.PublicGamingGroupWebsite = request.Website;
             gamingGroup.PublicDescription = request.PublicDescription;
+            gamingGroup.Name = request.GamingGroupName;
 
-            gamingGroup = dataContext.Save(gamingGroup, currenUser);
+            gamingGroup = dataContext.Save(gamingGroup, currentUser);
             dataContext.CommitAllChanges();
 
             return gamingGroup;

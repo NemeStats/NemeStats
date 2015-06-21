@@ -1,4 +1,4 @@
-﻿@model UI.Models.GamingGroup.GamingGroupPublicDetailsModel
+﻿@model UI.Models.GamingGroup.GamingGroupPublicDetailsViewModel
 @{
     ViewBag.Title = "Edit Gaming Group Public Details";
     Layout = MVC.Shared.Views._BaseLayout;
@@ -16,6 +16,15 @@
     {
         @Html.HiddenFor(x => x.GamingGroupId)
         <div class="panel-body">
+            <div class="row form-group">
+                <div class="col-xs-2">
+                    @Html.LabelFor(x => x.GamingGroupName)
+                </div>
+
+                <div class="col-xs-6">
+                    @Html.TextBoxFor(x => x.GamingGroupName, new { @class = "form-control" })
+                </div>
+            </div>
             <div class="row form-group">
                 <div class="col-xs-2">
                     @Html.LabelFor(x => x.PublicDescription)

@@ -126,7 +126,7 @@ namespace UI.Controllers
                     UserCanEdit = currentUser.CurrentGamingGroupId == gamingGroupSummary.Id,
                     ShowSearchLinkInResultsHeader = false
                 },
-                PublicDetails = new GamingGroupPublicDetailsModel
+                PublicDetailsView = new GamingGroupPublicDetailsViewModel
                 {
                     GamingGroupId = gamingGroupSummary.Id,
                     PublicDescription = gamingGroupSummary.PublicDescription,
@@ -236,8 +236,9 @@ namespace UI.Controllers
         {
             var gamingGroup = gamingGroupRetriever.GetGamingGroupById(gamingGroupId);
 
-            var model = new GamingGroupPublicDetailsModel
+            var model = new GamingGroupPublicDetailsViewModel
             {
+                GamingGroupName = gamingGroup.Name,
                 GamingGroupId = gamingGroupId,
                 PublicDescription = gamingGroup.PublicDescription,
                 Website = gamingGroup.PublicGamingGroupWebsite

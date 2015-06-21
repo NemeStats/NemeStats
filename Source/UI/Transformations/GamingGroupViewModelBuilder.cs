@@ -68,7 +68,7 @@ namespace UI.Transformations
                     UserCanEdit = currentUser != null && currentUser.CurrentGamingGroupId == gamingGroupSummary.Id,
                     GamingGroupId = gamingGroupSummary.Id
                 },
-                PublicDetails = new GamingGroupPublicDetailsModel
+                PublicDetailsView = new GamingGroupPublicDetailsViewModel
                 {
                     GamingGroupId = gamingGroupSummary.Id,
                     PublicDescription = gamingGroupSummary.PublicDescription,

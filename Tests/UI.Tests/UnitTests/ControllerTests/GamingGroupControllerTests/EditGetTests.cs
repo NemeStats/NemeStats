@@ -30,7 +30,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
         public void ItSendsCorrectModelToView()
         {
             //--Arrange
-            var model = new GamingGroupPublicDetailsModel
+            var model = new GamingGroupPublicDetailsViewModel
             {
                 PublicDescription = "Description",
                 Website = "Website"
