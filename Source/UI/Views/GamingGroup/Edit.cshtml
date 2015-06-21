@@ -14,20 +14,21 @@
 
     @using (Html.BeginForm(MVC.GamingGroup.Edit(), FormMethod.Post))
     {
-        @Html.HiddenFor(x => x.GamingGroupId)
+        @Html.HiddenFor(model => model.GamingGroupId)
         <div class="panel-body">
             <div class="row form-group">
                 <div class="col-xs-2">
-                    @Html.LabelFor(x => x.GamingGroupName)
+                    @Html.LabelFor(model => model.GamingGroupName)
                 </div>
 
                 <div class="col-xs-6">
-                    @Html.TextBoxFor(x => x.GamingGroupName, new { @class = "form-control" })
+                    @Html.TextBoxFor(model => model.GamingGroupName, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.GamingGroupName)
                 </div>
             </div>
             <div class="row form-group">
                 <div class="col-xs-2">
-                    @Html.LabelFor(x => x.PublicDescription)
+                    @Html.LabelFor(model => model.PublicDescription)
                 </div>
 
                 <div class="col-xs-6">
@@ -42,6 +43,7 @@
 
                 <div class="col-xs-6">
                     @Html.TextBoxFor(x => x.Website, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Website)
                 </div>
             </div>
             <div>

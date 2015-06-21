@@ -1,4 +1,5 @@
-﻿using BusinessLogic.Models;
+﻿using System;
+using BusinessLogic.Models;
 using BusinessLogic.Models.GamingGroups;
 using BusinessLogic.Models.User;
 using NUnit.Core;
@@ -43,7 +44,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
             dataContextMock.AssertWasCalled(x => x.Save(Arg<GamingGroup>.Matches(
                 gamingGroup => gamingGroup.Name == request.GamingGroupName
                   && gamingGroup.PublicDescription == request.PublicDescription
-                  && gamingGroup.PublicGamingGroupWebsite == request.Website),
+                  && gamingGroup.PublicGamingGroupWebsite == request.Website.ToString()),
                 Arg<ApplicationUser>.Is.Same(currentUser)));
         }
 

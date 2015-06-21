@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace BusinessLogic.Models.GamingGroups
 {
@@ -7,6 +8,7 @@ namespace BusinessLogic.Models.GamingGroups
         public int GamingGroupId { get; set; }
         [Required]
         public string GamingGroupName { get; set; }
+        [Url]
         public string Website { get; set; }
         public string PublicDescription { get; set; }
     }

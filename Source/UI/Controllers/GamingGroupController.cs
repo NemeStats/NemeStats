@@ -26,6 +26,7 @@ using System;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using StructureMap.Query;
 using UI.Attributes.Filters;
 using UI.Controllers.Helpers;
 using UI.Models.GamingGroup;
@@ -247,9 +248,14 @@ namespace UI.Controllers
         [UserContext]
         public virtual ActionResult Edit(GamingGroupEditRequest request, ApplicationUser curremUser)
         {
-            this.gamingGroupSaver.UpdatePublicGamingGroupDetails(request, curremUser);
+            if (ModelState.IsValid)
+            {
+                this.gamingGroupSaver.UpdatePublicGamingGroupDetails(request, curremUser);
 
-            return RedirectToAction(MVC.GamingGroup.Index());
+                return RedirectToAction(MVC.GamingGroup.Index());
+            }
+
+            return (this.Edit(request.GamingGroupId));
         }
     }
 }

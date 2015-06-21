@@ -135,7 +135,7 @@ namespace BusinessLogic.Logic.GamingGroups
         {
             var gamingGroup = dataContext.FindById<GamingGroup>(request.GamingGroupId);
 
-            gamingGroup.PublicGamingGroupWebsite = request.Website;
+            gamingGroup.PublicGamingGroupWebsite = request.Website.ToString();
             gamingGroup.PublicDescription = request.PublicDescription;
             gamingGroup.Name = request.GamingGroupName;
 
