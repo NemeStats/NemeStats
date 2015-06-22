@@ -1,37 +1,14 @@
 ﻿@model UI.Models.GamingGroup.GamingGroupPublicDetailsViewModel
 
-<div class="panel panel-primary">
-    <div class="panel-heading">
-        <h4 class="fl-left">Public Description&nbsp;
-        </h4>
-        @if ((bool?)ViewData["canEdit"] == true)
-        {
-            <div class="fl-left">
-                <a href="@Url.Action("Edit", "GamingGroup", new { id = @Model.GamingGroupId })" title="Edit">
-                    <span class="fa fa-2x fa-pencil"></span>
-                </a>
-            </div>
-        }
-        <div class="fl-clear"></div>
-    </div>
+<div style="margin-left: 15px">
+    @if (!string.IsNullOrEmpty(Model.PublicDescription))
+    {
+        @Html.DisplayFor(x => x.PublicDescription)
+        <br /><br />
+    }
 
-    <div class="panel-body">
-        <div class="row">
-            <div class="col-xs-2">
-                @Html.LabelFor(x => x.PublicDescription)
-            </div>
-            <div class="col-xs-4">
-                @Html.DisplayFor(x => x.PublicDescription)
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-xs-2">
-                @Html.LabelFor(x => x.Website)
-            </div>
-            <div class="col-xs-4">
-                <a href="@Model.Website" target="_blank">@Model.Website</a>
-            </div>
-        </div>
-    </div>
+    @if (!string.IsNullOrEmpty(Model.Website))
+    {
+        <a href="@Model.Website" target="_blank">@Model.Website</a>
+    }
 </div>

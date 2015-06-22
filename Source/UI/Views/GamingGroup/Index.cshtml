@@ -6,17 +6,17 @@
 }
 
 <h2>
-    <span class="editable-title" id="gamingGroupTitle" title="Click to rename the gaming group">@Model.Name</span>
-    <a href="#" onclick="clickElement('gamingGroupTitle')" title="Edit">
+    @Model.Name
+    &nbsp;<a href="@Url.Action("Edit", "GamingGroup", new { id = @Model.Id })" title="Edit">
         <span class="fa fa-pencil"></span>
     </a>
 </h2>
 
-<hr />
-
 <div class="row">
     @Html.Partial(MVC.GamingGroup.Views._GamingGroupPublicDetailsPartial, Model.PublicDetailsView, new ViewDataDictionary { { "canEdit", true } })
 </div>
+
+<hr />
 
 <a name="@ViewBag.PlayerSectionAnchorText"></a>
 
