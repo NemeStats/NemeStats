@@ -25,8 +25,6 @@ namespace BusinessLogic.Logic.GamingGroups
     {
         NewlyCreatedGamingGroupResult CreateNewGamingGroup(string gamingGroupName, TransactionSource registrationSource, ApplicationUser currentUser);
 
-        GamingGroup UpdateGamingGroupName(string gamingGroupName, ApplicationUser currentUser);
-
         GamingGroup UpdatePublicGamingGroupDetails(GamingGroupEditRequest request, ApplicationUser currenUser);
     }
 }

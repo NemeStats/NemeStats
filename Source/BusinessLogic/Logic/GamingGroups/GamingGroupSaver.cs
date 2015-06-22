@@ -120,27 +120,18 @@ namespace BusinessLogic.Logic.GamingGroups
             return this.playerSaver.Save(player, currentUser);
         }
 
-        public GamingGroup UpdateGamingGroupName(string gamingGroupName, ApplicationUser currentUser)
-        {
-            ValidateGamingGroupName(gamingGroupName);
-
-            GamingGroup gamingGroup = dataContext.FindById<GamingGroup>(currentUser.CurrentGamingGroupId.Value);
-            gamingGroup.Name = gamingGroupName;
-            gamingGroup = dataContext.Save(gamingGroup, currentUser);
-            dataContext.CommitAllChanges();
-            return gamingGroup;
-        }
-
         public GamingGroup UpdatePublicGamingGroupDetails(GamingGroupEditRequest request, ApplicationUser currentUser)
         {
             var gamingGroup = dataContext.FindById<GamingGroup>(request.GamingGroupId);
 
-            gamingGroup.PublicGamingGroupWebsite = request.Website.ToString();
+            gamingGroup.PublicGamingGroupWebsite = request.Website;
             gamingGroup.PublicDescription = request.PublicDescription;
             gamingGroup.Name = request.GamingGroupName;
 
             gamingGroup = dataContext.Save(gamingGroup, currentUser);
             dataContext.CommitAllChanges();
+
+            eventTracker.TrackGamingGroupUpdate(currentUser);
 
             return gamingGroup;
         }

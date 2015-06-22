@@ -142,7 +142,7 @@
     <Compile Include="DataAccess\Repositories\EntityFrameworkPlayerRepository.cs" />
     <Compile Include="EventTracking\EventActionEnum.cs" />
     <Compile Include="EventTracking\EventCategoryEnum.cs" />
-    <Compile Include="EventTracking\NemeStatsEventTracker.cs" />
+    <Compile Include="EventTracking\INemeStatsEventTracker.cs" />
     <Compile Include="EventTracking\UniversalAnalyticsNemeStatsEventTracker.cs" />
     <Compile Include="Exceptions\DuplicateKeyException.cs" />
     <Compile Include="Exceptions\EntityDoesNotExistException.cs" />

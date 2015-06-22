@@ -75,12 +75,6 @@ namespace UI.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public virtual System.Web.Mvc.ActionResult UpdateGamingGroupName()
-        {
-            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateGamingGroupName);
-        }
-        [NonAction]
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult GetUsersGamingGroups()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.GetUsersGamingGroups);
@@ -123,7 +117,6 @@ namespace UI.Controllers
             public readonly string Details = "Details";
             public readonly string GetTopGamingGroups = "GetTopGamingGroups";
             public readonly string GrantAccess = "GrantAccess";
-            public readonly string UpdateGamingGroupName = "UpdateGamingGroupName";
             public readonly string GetUsersGamingGroups = "GetUsersGamingGroups";
             public readonly string SwitchGamingGroups = "SwitchGamingGroups";
             public readonly string CreateNewGamingGroup = "CreateNewGamingGroup";
@@ -137,7 +130,6 @@ namespace UI.Controllers
             public const string Details = "Details";
             public const string GetTopGamingGroups = "GetTopGamingGroups";
             public const string GrantAccess = "GrantAccess";
-            public const string UpdateGamingGroupName = "UpdateGamingGroupName";
             public const string GetUsersGamingGroups = "GetUsersGamingGroups";
             public const string SwitchGamingGroups = "SwitchGamingGroups";
             public const string CreateNewGamingGroup = "CreateNewGamingGroup";
@@ -169,15 +161,6 @@ namespace UI.Controllers
         public class ActionParamsClass_GrantAccess
         {
             public readonly string model = "model";
-            public readonly string currentUser = "currentUser";
-        }
-        static readonly ActionParamsClass_UpdateGamingGroupName s_params_UpdateGamingGroupName = new ActionParamsClass_UpdateGamingGroupName();
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public ActionParamsClass_UpdateGamingGroupName UpdateGamingGroupNameParams { get { return s_params_UpdateGamingGroupName; } }
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public class ActionParamsClass_UpdateGamingGroupName
-        {
-            public readonly string gamingGroupName = "gamingGroupName";
             public readonly string currentUser = "currentUser";
         }
         static readonly ActionParamsClass_GetUsersGamingGroups s_params_GetUsersGamingGroups = new ActionParamsClass_GetUsersGamingGroups();
@@ -212,7 +195,7 @@ namespace UI.Controllers
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionParamsClass_Edit
         {
-            public readonly string gamingGroupId = "gamingGroupId";
+            public readonly string id = "id";
             public readonly string request = "request";
             public readonly string curremUser = "curremUser";
         }
@@ -299,19 +282,6 @@ namespace UI.Controllers
         }
 
         [NonAction]
-        partial void UpdateGamingGroupNameOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string gamingGroupName, BusinessLogic.Models.User.ApplicationUser currentUser);
-
-        [NonAction]
-        public override System.Web.Mvc.ActionResult UpdateGamingGroupName(string gamingGroupName, BusinessLogic.Models.User.ApplicationUser currentUser)
-        {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateGamingGroupName);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "gamingGroupName", gamingGroupName);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "currentUser", currentUser);
-            UpdateGamingGroupNameOverride(callInfo, gamingGroupName, currentUser);
-            return callInfo;
-        }
-
-        [NonAction]
         partial void GetUsersGamingGroupsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, BusinessLogic.Models.User.ApplicationUser currentUser);
 
         [NonAction]
@@ -350,14 +320,14 @@ namespace UI.Controllers
         }
 
         [NonAction]
-        partial void EditOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int gamingGroupId);
+        partial void EditOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult Edit(int gamingGroupId)
+        public override System.Web.Mvc.ActionResult Edit(int id)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Edit);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "gamingGroupId", gamingGroupId);
-            EditOverride(callInfo, gamingGroupId);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            EditOverride(callInfo, id);
             return callInfo;
         }
 

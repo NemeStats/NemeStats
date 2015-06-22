@@ -1,4 +1,6 @@
 ﻿using System;
+using BusinessLogic.DataAccess;
+using BusinessLogic.EventTracking;
 using BusinessLogic.Models;
 using BusinessLogic.Models.GamingGroups;
 using BusinessLogic.Models.User;
@@ -8,7 +10,7 @@ using Rhino.Mocks;
 
 namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroupSaverTests
 {
-    public class UpdateGamingGroupPublicDetailsTests : GamingGroupSaverTestBase
+    public class UpdatePublicGamingGroupDetails : GamingGroupSaverTestBase
     {
         private readonly GamingGroup expectedGamingGroup = new GamingGroup();
         private readonly GamingGroup savedGamingGroup = new GamingGroup();
@@ -18,10 +20,10 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
         {
             base.SetUp();
 
-            dataContextMock.Expect(x => x.FindById<GamingGroup>(currentUser.CurrentGamingGroupId.Value))
+            autoMocker.Get<IDataContext>().Expect(x => x.FindById<GamingGroup>(Arg<int>.Is.Anything))
                 .Return(expectedGamingGroup);
 
-            dataContextMock.Expect(x => x.Save(Arg<GamingGroup>.Is.Anything, Arg<ApplicationUser>.Is.Anything))
+            autoMocker.Get<IDataContext>().Expect(x => x.Save(Arg<GamingGroup>.Is.Anything, Arg<ApplicationUser>.Is.Anything))
                 .Return(savedGamingGroup);
         }
 
@@ -38,10 +40,11 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
             };
 
             //--Act
-            gamingGroupSaver.UpdatePublicGamingGroupDetails(request, currentUser);
+            autoMocker.ClassUnderTest.UpdatePublicGamingGroupDetails(request, currentUser);
 
             //--Assert
-            dataContextMock.AssertWasCalled(x => x.Save(Arg<GamingGroup>.Matches(
+            autoMocker.Get<IDataContext>().FindById<GamingGroup>(currentUser.CurrentGamingGroupId.Value);
+            autoMocker.Get<IDataContext>().AssertWasCalled(x => x.Save(Arg<GamingGroup>.Matches(
                 gamingGroup => gamingGroup.Name == request.GamingGroupName
                   && gamingGroup.PublicDescription == request.PublicDescription
                   && gamingGroup.PublicGamingGroupWebsite == request.Website.ToString()),
@@ -52,10 +55,18 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
         public void ItReturnsTheGamingGroupThatWasSaved()
         {
             //--Act
-            var gamingGroup = gamingGroupSaver.UpdateGamingGroupName(gamingGroupName, currentUser);
+            var gamingGroup = autoMocker.ClassUnderTest.UpdatePublicGamingGroupDetails(new GamingGroupEditRequest(), currentUser);
 
             //--Assert
             Assert.AreSame(savedGamingGroup, gamingGroup);
+        }
+
+        [Test]
+        public void ItTracksThatAGamingGroupWasUpdated()
+        {
+            autoMocker.ClassUnderTest.UpdatePublicGamingGroupDetails(new GamingGroupEditRequest(), currentUser);
+
+            autoMocker.Get<INemeStatsEventTracker>().AssertWasCalled(mock => mock.TrackGamingGroupUpdate(currentUser));
         }
     }
 }

@@ -16,8 +16,11 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 
+using BusinessLogic.DataAccess;
+using BusinessLogic.EventTracking;
 using BusinessLogic.Logic;
 using BusinessLogic.Logic.GamingGroups;
+using BusinessLogic.Logic.Players;
 using BusinessLogic.Models;
 using BusinessLogic.Models.GamingGroups;
 using BusinessLogic.Models.User;
@@ -46,35 +49,35 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
             base.SetUp();
 
             expectedGamingGroup = new GamingGroup() { Id = currentUser.CurrentGamingGroupId.Value };
-            dataContextMock.Expect(mock => mock.Save(Arg<GamingGroup>.Is.Anything, Arg<ApplicationUser>.Is.Anything))
+            autoMocker.Get<IDataContext>().Expect(mock => mock.Save(Arg<GamingGroup>.Is.Anything, Arg<ApplicationUser>.Is.Anything))
                 .Return(expectedGamingGroup);
             expectedPlayer = new Player();
-            playerSaverMock.Expect(mock => mock.Save(Arg<Player>.Is.Anything, Arg<ApplicationUser>.Is.Anything)).Return(expectedPlayer);
+            autoMocker.Get<IPlayerSaver>().Expect(mock => mock.Save(Arg<Player>.Is.Anything, Arg<ApplicationUser>.Is.Anything)).Return(expectedPlayer);
             
             expectedUserGamingGroup = new UserGamingGroup
             {
                 ApplicationUserId = currentUser.Id,
                 GamingGroupId = expectedGamingGroup.Id
             };
-            dataContextMock.Expect(mock => mock.Save<UserGamingGroup>(Arg<UserGamingGroup>.Is.Anything, Arg<ApplicationUser>.Is.Anything))
+            autoMocker.Get<IDataContext>().Expect(mock => mock.Save<UserGamingGroup>(Arg<UserGamingGroup>.Is.Anything, Arg<ApplicationUser>.Is.Anything))
                            .Return(expectedUserGamingGroup);
 
             appUserRetrievedFromFindMethod = new ApplicationUser()
             {
                 Id = currentUser.Id
             };
-            dataContextMock.Expect(mock => mock.FindById<ApplicationUser>(Arg<ApplicationUser>.Is.Anything))
+            autoMocker.Get<IDataContext>().Expect(mock => mock.FindById<ApplicationUser>(Arg<ApplicationUser>.Is.Anything))
                 .Return(appUserRetrievedFromFindMethod);
-            dataContextMock.Expect(mock => mock.Save(Arg<ApplicationUser>.Is.Anything, Arg<ApplicationUser>.Is.Anything))
+            autoMocker.Get<IDataContext>().Expect(mock => mock.Save(Arg<ApplicationUser>.Is.Anything, Arg<ApplicationUser>.Is.Anything))
                  .Return(new ApplicationUser());
         }
 
         [Test]
         public void ItSetsTheOwnerToTheCurrentUser()
         {
-            gamingGroupSaver.CreateNewGamingGroup(gamingGroupName, TransactionSource.RestApi, currentUser);
+            autoMocker.ClassUnderTest.CreateNewGamingGroup(gamingGroupName, TransactionSource.RestApi, currentUser);
 
-            dataContextMock.AssertWasCalled(mock =>
+            autoMocker.Get<IDataContext>().AssertWasCalled(mock =>
                 mock.Save(Arg<GamingGroup>.Matches(group => group.OwningUserId == currentUser.Id),
                 Arg<ApplicationUser>.Is.Anything));
         }
@@ -82,9 +85,9 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
         [Test]
         public void ItSetsTheGamingGroupName()
         {
-            gamingGroupSaver.CreateNewGamingGroup(gamingGroupName, TransactionSource.RestApi, currentUser);
+            autoMocker.ClassUnderTest.CreateNewGamingGroup(gamingGroupName, TransactionSource.RestApi, currentUser);
 
-            dataContextMock.AssertWasCalled(mock =>
+            autoMocker.Get<IDataContext>().AssertWasCalled(mock =>
                 mock.Save(Arg<GamingGroup>.Matches(group => group.Name == gamingGroupName),
                 Arg<ApplicationUser>.Is.Anything));
         }
@@ -92,7 +95,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
         [Test]
         public void ItReturnsTheNewlyCreatedGamingGroupResult()
         {
-            NewlyCreatedGamingGroupResult actualResult = gamingGroupSaver.CreateNewGamingGroup(gamingGroupName, TransactionSource.RestApi, currentUser);
+            NewlyCreatedGamingGroupResult actualResult = autoMocker.ClassUnderTest.CreateNewGamingGroup(gamingGroupName, TransactionSource.RestApi, currentUser);
 
             Assert.AreSame(expectedGamingGroup, actualResult.NewlyCreatedGamingGroup);
             Assert.AreSame(expectedPlayer, actualResult.NewlyCreatedPlayer);
@@ -101,9 +104,9 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
         [Test]
         public void ItAssociatesTheUserWithTheGamingGroup()
         {
-            gamingGroupSaver.CreateNewGamingGroup(gamingGroupName, TransactionSource.RestApi, currentUser);
+            autoMocker.ClassUnderTest.CreateNewGamingGroup(gamingGroupName, TransactionSource.RestApi, currentUser);
 
-            dataContextMock.AssertWasCalled(mock => mock.Save<UserGamingGroup>(
+            autoMocker.Get<IDataContext>().AssertWasCalled(mock => mock.Save<UserGamingGroup>(
                 Arg<UserGamingGroup>.Matches(ugg => ugg.ApplicationUserId == currentUser.Id
                     && ugg.GamingGroupId == expectedGamingGroup.Id),
                 Arg<ApplicationUser>.Is.Anything));
@@ -112,9 +115,9 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
         [Test]
         public void ItUpdatesTheCurrentUsersGamingGroup()
         {
-            gamingGroupSaver.CreateNewGamingGroup(gamingGroupName, TransactionSource.RestApi, currentUser);
+            autoMocker.ClassUnderTest.CreateNewGamingGroup(gamingGroupName, TransactionSource.RestApi, currentUser);
 
-            dataContextMock.AssertWasCalled(mock => mock.Save(Arg<ApplicationUser>.Matches(
+            autoMocker.Get<IDataContext>().AssertWasCalled(mock => mock.Save(Arg<ApplicationUser>.Matches(
                 user => user.CurrentGamingGroupId == expectedGamingGroup.Id 
                     && user.Id == appUserRetrievedFromFindMethod.Id),
                     Arg<ApplicationUser>.Is.Anything));
@@ -123,9 +126,9 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
         [Test]
         public void ItCreatesANewPlayerNamedAfterTheUserName()
         {
-            gamingGroupSaver.CreateNewGamingGroup(gamingGroupName, TransactionSource.RestApi, currentUser);
+            autoMocker.ClassUnderTest.CreateNewGamingGroup(gamingGroupName, TransactionSource.RestApi, currentUser);
 
-            playerSaverMock.AssertWasCalled(mock => mock.Save(Arg<Player>.Matches(
+            autoMocker.Get<IPlayerSaver>().AssertWasCalled(mock => mock.Save(Arg<Player>.Matches(
                                         player => player.Name == currentUser.UserName
                                             && player.ApplicationUserId == currentUser.Id
                                             && player.Active), 
@@ -136,20 +139,20 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
         public void ItTracksTheGamingGroupCreation()
         {
             GamingGroup expectedGamingGroup = new GamingGroup() { Id = 123 };
-            dataContextMock.Expect(mock => mock.Save(Arg<GamingGroup>.Is.Anything, Arg<ApplicationUser>.Is.Anything))
+            autoMocker.Get<IDataContext>().Expect(mock => mock.Save(Arg<GamingGroup>.Is.Anything, Arg<ApplicationUser>.Is.Anything))
                 .Repeat.Once()
                 .Return(expectedGamingGroup);
             TransactionSource expectedRegistrationSource = TransactionSource.RestApi;
 
-            gamingGroupSaver.CreateNewGamingGroup(gamingGroupName, expectedRegistrationSource, currentUser);
+            autoMocker.ClassUnderTest.CreateNewGamingGroup(gamingGroupName, expectedRegistrationSource, currentUser);
 
-            eventTrackerMock.AssertWasCalled(mock => mock.TrackGamingGroupCreation(expectedRegistrationSource));
+            autoMocker.Get<INemeStatsEventTracker>().AssertWasCalled(mock => mock.TrackGamingGroupCreation(expectedRegistrationSource));
         }
 
         [Test]
         public void ItThrowsAnArgumentExceptionIfTheGamingGroupNameIsNull()
         {
-            Exception exception = Assert.Throws<ArgumentException>(() => gamingGroupSaver.CreateNewGamingGroup(null, TransactionSource.RestApi, currentUser));
+            Exception exception = Assert.Throws<ArgumentException>(() => autoMocker.ClassUnderTest.CreateNewGamingGroup(null, TransactionSource.RestApi, currentUser));
 
             Assert.That(exception.Message, Is.EqualTo(GamingGroupSaver.EXCEPTION_MESSAGE_GAMING_GROUP_NAME_CANNOT_BE_NULL_OR_BLANK));
         }
@@ -157,7 +160,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
         [Test]
         public void ItThrowsAnArgumentExceptionIfTheGamingGroupNameIsWhitespace()
         {
-            Exception exception = Assert.Throws<ArgumentException>(() => gamingGroupSaver.CreateNewGamingGroup("    ", TransactionSource.RestApi, currentUser));
+            Exception exception = Assert.Throws<ArgumentException>(() => autoMocker.ClassUnderTest.CreateNewGamingGroup("    ", TransactionSource.RestApi, currentUser));
 
             Assert.That(exception.Message, Is.EqualTo(GamingGroupSaver.EXCEPTION_MESSAGE_GAMING_GROUP_NAME_CANNOT_BE_NULL_OR_BLANK));
         }

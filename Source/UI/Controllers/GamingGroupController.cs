@@ -164,24 +164,6 @@ namespace UI.Controllers
         [HttpPost]
         [Authorize]
         [UserContext]
-        public virtual ActionResult UpdateGamingGroupName(string gamingGroupName, ApplicationUser currentUser)
-        {
-            try
-            {
-                gamingGroupSaver.UpdateGamingGroupName(gamingGroupName.Trim(), currentUser);
-                cookieHelper.ClearCookie(NemeStatsCookieEnum.gamingGroupsCookie, Request, Response);
-
-                return Json(new HttpStatusCodeResult(HttpStatusCode.OK));
-            }
-            catch (Exception)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.NotModified);
-            }
-        }
-
-        [HttpPost]
-        [Authorize]
-        [UserContext]
         public virtual ActionResult GetUsersGamingGroups(ApplicationUser currentUser)
         {
             var gamingGroups = gamingGroupRetriever.GetGamingGroupsForUser(currentUser);
@@ -246,11 +228,11 @@ namespace UI.Controllers
         [HttpPost]
         [Authorize]
         [UserContext]
-        public virtual ActionResult Edit(GamingGroupEditRequest request, ApplicationUser curremUser)
+        public virtual ActionResult Edit(GamingGroupEditRequest request, ApplicationUser currentUser)
         {
             if (ModelState.IsValid)
             {
-                this.gamingGroupSaver.UpdatePublicGamingGroupDetails(request, curremUser);
+                this.gamingGroupSaver.UpdatePublicGamingGroupDetails(request, currentUser);
 
                 return RedirectToAction(MVC.GamingGroup.Index());
             }
