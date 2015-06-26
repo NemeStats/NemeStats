@@ -130,6 +130,14 @@
                     <td>@Model.TotalGamesPlayed</td>
                 </tr>
                 <tr>
+                    <td><strong>Win - Loss Record:</strong></td>
+                    <td>@string.Format("{0} - {1}", Model.TotalGamesWon, Model.TotalGamesLost)</td>
+                </tr>
+                <tr>
+                    <td><strong>Win Percentage:</strong></td>
+                    <td>@Model.WinPercentage</td>
+                </tr>
+                <tr>
                     <td><strong>Total Points:</strong></td>
                     <td>@Model.TotalPoints</td>
                 </tr>

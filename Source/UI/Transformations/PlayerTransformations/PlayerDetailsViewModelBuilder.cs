@@ -58,7 +58,10 @@ namespace UI.Transformations.PlayerTransformations
                 GamingGroupName = playerDetails.GamingGroupName,
                 GamingGroupId = playerDetails.GamingGroupId,
                 TotalGamesPlayed = playerDetails.PlayerStats.TotalGames,
-                TotalPoints = playerDetails.PlayerStats.TotalPoints
+                TotalPoints = playerDetails.PlayerStats.TotalPoints,
+                TotalGamesWon = playerDetails.PlayerStats.TotalGamesWon,
+                TotalGamesLost = playerDetails.PlayerStats.TotalGamesLost,
+                WinPercentage = playerDetails.PlayerStats.WinPercentage
             };
 
             PopulatePlayerVersusPlayersViewModel(playerDetails, playerDetailsViewModel);
