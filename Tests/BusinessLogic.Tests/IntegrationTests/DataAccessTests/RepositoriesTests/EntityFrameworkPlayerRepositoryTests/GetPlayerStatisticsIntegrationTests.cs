@@ -30,19 +30,34 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
     public class GetPlayerStatisticsIntegrationTests : IntegrationTestBase
     {
         [Test]
-        public void ItGetsTheNumberOfTotalGamesPlayed()
+        public void ItGetsTheGamesPlayedMetrics()
         {
             using (IDataContext dataContext = new NemeStatsDataContext())
             {
-                INemesisHistoryRetriever nemesisHistoryRetriever = new NemesisHistoryRetriever(dataContext);
                 IPlayerRepository playerRepository = new EntityFrameworkPlayerRepository(dataContext);
                 IPlayerRetriever playerRetriever = new PlayerRetriever(dataContext, playerRepository);
                 PlayerStatistics playerStatistics = playerRetriever.GetPlayerStatistics(testPlayer1.Id);
+
                 int totalGamesForPlayer1 = testPlayedGames
-                        .Count(playedGame => playedGame.PlayerGameResults
-                            .Any(playerGameResult => playerGameResult.PlayerId == testPlayer1.Id));
-                Assert.AreEqual(totalGamesForPlayer1, playerStatistics.TotalGames);
+                    .Count(playedGame => playedGame.PlayerGameResults
+                                                   .Any(playerGameResult => playerGameResult.PlayerId == testPlayer1.Id));
+                Assert.That(playerStatistics.TotalGames, Is.EqualTo(totalGamesForPlayer1));
+
+                int totalWinsForPlayer1 = testPlayedGames
+                    .Count(playedGame => playedGame.PlayerGameResults
+                                                   .Any(playerGameResult => playerGameResult.PlayerId == testPlayer1.Id && playerGameResult.GameRank == 1));
+                Assert.That(playerStatistics.TotalGamesWon, Is.EqualTo(totalWinsForPlayer1));
+
+                int totalLossesForPlayer1 = testPlayedGames
+                    .Count(playedGame => playedGame.PlayerGameResults
+                                                   .Any(playerGameResult => playerGameResult.PlayerId == testPlayer1.Id && playerGameResult.GameRank != 1));
+                Assert.That(playerStatistics.TotalGamesLost, Is.EqualTo(totalLossesForPlayer1));
+
+                int winPercentageForPlayer1 = (int)((decimal)totalWinsForPlayer1 / (totalGamesForPlayer1) * 100);
+
+                Assert.That(playerStatistics.WinPercentage, Is.EqualTo(winPercentageForPlayer1));
             }
+
         }
 
         [Test]
@@ -50,7 +65,6 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
         {
             using (IDataContext dataContext = new NemeStatsDataContext())
             {
-                INemesisHistoryRetriever nemesisHistoryRetriever = new NemesisHistoryRetriever(dataContext);
                 IPlayerRepository playerRepository = new EntityFrameworkPlayerRepository(dataContext);
                 IPlayerRetriever playerRetriever = new PlayerRetriever(dataContext, playerRepository); 
                 PlayerStatistics playerStatistics = playerRetriever.GetPlayerStatistics(testPlayer1.Id);
@@ -74,7 +88,6 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
         {
             using (IDataContext dataContext = new NemeStatsDataContext())
             {
-                INemesisHistoryRetriever nemesisHistoryRetriever = new NemesisHistoryRetriever(dataContext);
                 IPlayerRepository playerRepository = new EntityFrameworkPlayerRepository(dataContext);
                 IPlayerRetriever playerRetriever = new PlayerRetriever(dataContext, playerRepository);
                 PlayerStatistics playerStatistics = playerRetriever.GetPlayerStatistics(testPlayer1.Id);

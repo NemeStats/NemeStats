@@ -7,6 +7,10 @@
 }
 
 <h2>@Model.Name</h2>
+
+<div class="row">
+    @Html.Partial(MVC.GamingGroup.Views._GamingGroupPublicDetailsPartial, Model.PublicDetailsView, new ViewDataDictionary { { "canEdit", false } })
+</div>
 <hr />
 
 <div class="row">

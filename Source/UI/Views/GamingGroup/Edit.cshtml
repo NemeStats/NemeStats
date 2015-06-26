@@ -1,0 +1,58 @@
+﻿@model UI.Models.GamingGroup.GamingGroupPublicDetailsViewModel
+@{
+    ViewBag.Title = "Edit Gaming Group Public Details";
+    Layout = MVC.Shared.Views._BaseLayout;
+}
+<h2>Update Gaming Group Details</h2>
+<hr />
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <h4 class="fl-left">Public Description
+        </h4>
+        <div class="fl-clear"></div>
+    </div>
+
+    @using (Html.BeginForm(MVC.GamingGroup.Edit(), FormMethod.Post))
+    {
+        @Html.HiddenFor(model => model.GamingGroupId)
+        <div class="panel-body">
+            <div class="row form-group">
+                <div class="col-xs-2">
+                    @Html.LabelFor(model => model.GamingGroupName)
+                </div>
+
+                <div class="col-xs-6">
+                    @Html.TextBoxFor(model => model.GamingGroupName, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.GamingGroupName)
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-xs-2">
+                    @Html.LabelFor(model => model.PublicDescription)
+                </div>
+
+                <div class="col-xs-6">
+                    @Html.TextAreaFor(x => x.PublicDescription, new { @class = "form-control", @rows = "8" })
+                </div>
+            </div>
+
+            <div class="row form-group">
+                <div class="col-xs-2">
+                    @Html.LabelFor(x => x.Website)
+                </div>
+
+                <div class="col-xs-6">
+                    @Html.TextBoxFor(x => x.Website, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Website)
+                </div>
+            </div>
+            <div>
+                <button class="btn btn-primary" type="submit">Update</button>
+            </div>
+        </div>
+    }
+</div>
+
+<div>
+    @Html.ActionLink("Back to Gaming Group", "Index")
+</div>

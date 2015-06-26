@@ -1,20 +1,20 @@
 ﻿#region LICENSE
-// NemeStats is a free website for tracking the results of board games.
-//     Copyright (C) 2015 Jacob Gordon
+
+// NemeStats is a free website for tracking the results of board games. Copyright (C) 2015 Jacob Gordon
 // 
-//     This program is free software: you can redistribute it and/or modify
-//     it under the terms of the GNU General Public License as published by
-//     the Free Software Foundation, either version 3 of the License, or
-//     (at your option) any later version.
+// This program is free software: you can redistribute it and/or modify it under the terms of the
+// GNU General Public License as published by the Free Software Foundation, either version 3 of the
+// License, or (at your option) any later version.
 // 
-//     This program is distributed in the hope that it will be useful,
-//     but WITHOUT ANY WARRANTY; without even the implied warranty of
-//     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//     GNU General Public License for more details.
+// This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+// even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+// General Public License for more details.
 // 
-//     You should have received a copy of the GNU General Public License
-//     along with this program.  If not, see <http://www.gnu.org/licenses/>
-#endregion
+// You should have received a copy of the GNU General Public License along with this program. If
+// not, see <http://www.gnu.org/licenses/>
+
+#endregion LICENSE
+
 using BusinessLogic.DataAccess;
 using BusinessLogic.Logic.GameDefinitions;
 using BusinessLogic.Logic.PlayedGames;
@@ -35,8 +35,8 @@ namespace BusinessLogic.Logic.GamingGroups
         private readonly IPlayedGameRetriever playedGameRetriever;
 
         public GamingGroupRetriever(
-            IDataContext dataContext, 
-            IPlayerRetriever playerRetriever, 
+            IDataContext dataContext,
+            IPlayerRetriever playerRetriever,
             IGameDefinitionRetriever gameDefinitionRetriever,
             IPlayedGameRetriever playedGameRetriever)
         {
@@ -44,6 +44,13 @@ namespace BusinessLogic.Logic.GamingGroups
             this.playerRetriever = playerRetriever;
             this.gameDefinitionRetriever = gameDefinitionRetriever;
             this.playedGameRetriever = playedGameRetriever;
+        }
+
+        public GamingGroup GetGamingGroupById(int gamingGroupID)
+        {
+            var gamingGroup = dataContext.FindById<GamingGroup>(gamingGroupID);
+
+            return gamingGroup;
         }
 
         public GamingGroupSummary GetGamingGroupDetails(int gamingGroupId, int maxNumberOfGamesToRetrieve)
@@ -54,7 +61,9 @@ namespace BusinessLogic.Logic.GamingGroups
                 Id = gamingGroup.Id,
                 DateCreated = gamingGroup.DateCreated,
                 Name = gamingGroup.Name,
-                OwningUserId = gamingGroup.OwningUserId
+                OwningUserId = gamingGroup.OwningUserId,
+                PublicDescription = gamingGroup.PublicDescription,
+                PublicGamingGroupWebsite = gamingGroup.PublicGamingGroupWebsite
             };
 
             summary.PlayedGames = playedGameRetriever.GetRecentGames(maxNumberOfGamesToRetrieve, gamingGroupId);

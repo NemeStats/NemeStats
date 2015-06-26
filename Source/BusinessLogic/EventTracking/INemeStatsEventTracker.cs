@@ -15,16 +15,20 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
-using BusinessLogic.Models;
-using BusinessLogic.Models.Players;
-using System.Collections.Generic;
-namespace BusinessLogic.Logic.Players
+
+using BusinessLogic.Logic;
+using BusinessLogic.Models.User;
+using System.Linq;
+
+namespace BusinessLogic.EventTracking
 {
-    public interface IPlayerRetriever
+    public interface INemeStatsEventTracker
     {
-        List<Player> GetAllPlayers(int gamingGroupId);
-        List<PlayerWithNemesis> GetAllPlayersWithNemesisInfo(int gamingGroupId);
-        PlayerDetails GetPlayerDetails(int playerId, int numberOfRecentGamesToRetrieve);
-        PlayerStatistics GetPlayerStatistics(int playerId);
+        void TrackPlayedGame(ApplicationUser currentUser, TransactionSource transactionSource);
+        void TrackUserRegistration(TransactionSource registrationSource);
+        void TrackGamingGroupCreation(TransactionSource registrationSource);
+        void TrackGameDefinitionCreation(ApplicationUser currentUser, string gameDefinitionName);
+        void TrackPlayerCreation(ApplicationUser currentUser);
+        void TrackGamingGroupUpdate(ApplicationUser currentUser);
     }
 }

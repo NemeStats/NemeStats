@@ -27,18 +27,13 @@ using Microsoft.Owin.Security.DataProtection;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System.Linq;
+using StructureMap.AutoMocking;
 
 namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroupSaverTests
 {
     public class GamingGroupSaverTestBase
     {
-        protected GamingGroupSaver gamingGroupSaver;
-        protected IUserStore<ApplicationUser> userStoreMock;
-        protected ApplicationUserManager applicationUserManagerMock;
-        protected IDataContext dataContextMock;
-        protected INemeStatsEventTracker eventTrackerMock;
-        protected IPlayerSaver playerSaverMock;
-        protected IDataProtectionProvider dataProtectionProviderMock;
+        protected RhinoAutoMocker<GamingGroupSaver> autoMocker;
         protected ApplicationUser currentUser = new ApplicationUser()
         {
             Id = "application user id",
@@ -49,18 +44,9 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
         [SetUp]
         public virtual void SetUp()
         {
-            userStoreMock = MockRepository.GenerateMock<IUserStore<ApplicationUser>>();
+            autoMocker = new RhinoAutoMocker<GamingGroupSaver>();
             var dataProtector = MockRepository.GenerateMock<IDataProtector>();
-            dataProtectionProviderMock = MockRepository.GenerateMock<IDataProtectionProvider>();
-            dataProtectionProviderMock.Expect(mock => mock.Create(Arg<string>.Is.Anything)).Return(dataProtector);
-            applicationUserManagerMock = MockRepository.GenerateMock<ApplicationUserManager>(userStoreMock, dataProtectionProviderMock);
-            dataContextMock = MockRepository.GenerateMock<IDataContext>();
-            playerSaverMock = MockRepository.GenerateMock<IPlayerSaver>();
-            eventTrackerMock = MockRepository.GenerateMock<INemeStatsEventTracker>();
-            gamingGroupSaver = new GamingGroupSaver(
-                dataContextMock,
-                eventTrackerMock,
-                playerSaverMock);
+            autoMocker.Get<IDataProtectionProvider>().Expect(mock => mock.Create(Arg<string>.Is.Anything)).Return(dataProtector);
         }
     }
 }

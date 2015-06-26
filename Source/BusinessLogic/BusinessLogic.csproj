@@ -142,7 +142,7 @@
     <Compile Include="DataAccess\Repositories\EntityFrameworkPlayerRepository.cs" />
     <Compile Include="EventTracking\EventActionEnum.cs" />
     <Compile Include="EventTracking\EventCategoryEnum.cs" />
-    <Compile Include="EventTracking\NemeStatsEventTracker.cs" />
+    <Compile Include="EventTracking\INemeStatsEventTracker.cs" />
     <Compile Include="EventTracking\UniversalAnalyticsNemeStatsEventTracker.cs" />
     <Compile Include="Exceptions\DuplicateKeyException.cs" />
     <Compile Include="Exceptions\EntityDoesNotExistException.cs" />
@@ -265,7 +265,12 @@
     <Compile Include="Migrations\201505102058077_MakeNameAUniqueConstraintOnGameDefinitionWithinGamingGroup.Designer.cs">
       <DependentUpon>201505102058077_MakeNameAUniqueConstraintOnGameDefinitionWithinGamingGroup.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201505221156047_AddPublicFieldsToGamingGroup.cs" />
+    <Compile Include="Migrations\201505221156047_AddPublicFieldsToGamingGroup.Designer.cs">
+      <DependentUpon>201505221156047_AddPublicFieldsToGamingGroup.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Games\GameDefinitionName.cs" />
+    <Compile Include="Models\GamingGroups\GamingGroupEditRequest.cs" />
     <Compile Include="Models\GamingGroups\NewlyCreatedGamingGroupResult.cs" />
     <Compile Include="Models\GamingGroups\TopGamingGroupSummary.cs" />
     <Compile Include="Models\PlayedGames\IWinner.cs" />
@@ -630,6 +635,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201505102058077_MakeNameAUniqueConstraintOnGameDefinitionWithinGamingGroup.resx">
       <DependentUpon>201505102058077_MakeNameAUniqueConstraintOnGameDefinitionWithinGamingGroup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201505221156047_AddPublicFieldsToGamingGroup.resx">
+      <DependentUpon>201505221156047_AddPublicFieldsToGamingGroup.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

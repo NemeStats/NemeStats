@@ -5,7 +5,7 @@ Namespace("Views.GamingGroup");
 Views.GamingGroup.GamingGroupView = function () {
     this.$container = null;
     this.$title = null;
-    this._serviceAddress = "/GamingGroup/Edit";
+    this._serviceAddress = "/GamingGroup/UpdateGamingGroupName";
     this._googleAnalytics = null;
 };
 

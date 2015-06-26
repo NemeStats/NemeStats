@@ -135,9 +135,12 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
                 PlayerGameResults = playerGameResults,
                 PlayerStats = new PlayerStatistics() 
                     { 
-                        TotalGames = 71,
+                        TotalGames = 5,
                         TotalPoints = 150,
-                        AveragePlayersPerGame = 3
+                        AveragePlayersPerGame = 3,
+                        TotalGamesLost = 1,
+                        TotalGamesWon = 4,
+                        WinPercentage = 20
                     },
                 CurrentNemesis = nemesis,
                 Minions = new List<Player>
@@ -289,6 +292,24 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         public void ItCopiesTheTotalGamesPlayed()
         {
             Assert.AreEqual(playerDetails.PlayerStats.TotalGames, playerDetailsViewModel.TotalGamesPlayed);
+        }
+
+        [Test]
+        public void ItCopiesTheTotalGamesWon()
+        {
+            Assert.AreEqual(playerDetails.PlayerStats.TotalGamesWon, playerDetailsViewModel.TotalGamesWon);
+        }
+
+        [Test]
+        public void ItCopiesTheTotalGamesLost()
+        {
+            Assert.AreEqual(playerDetails.PlayerStats.TotalGamesLost, playerDetailsViewModel.TotalGamesLost);
+        }
+
+        [Test]
+        public void ItCopiesTheWinPercentage()
+        {
+            Assert.AreEqual(playerDetails.PlayerStats.WinPercentage, playerDetailsViewModel.WinPercentage);
         }
 
         [Test]

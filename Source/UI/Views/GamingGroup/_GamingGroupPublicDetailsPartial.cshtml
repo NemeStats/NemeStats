@@ -1,0 +1,14 @@
+﻿@model UI.Models.GamingGroup.GamingGroupPublicDetailsViewModel
+
+<div style="margin-left: 15px">
+    @if (!string.IsNullOrEmpty(Model.PublicDescription))
+    {
+        @Html.DisplayFor(x => x.PublicDescription)
+        <br /><br />
+    }
+
+    @if (!string.IsNullOrEmpty(Model.Website))
+    {
+        <a href="@Model.Website" target="_blank">@Model.Website</a>
+    }
+</div>

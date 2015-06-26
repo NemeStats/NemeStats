@@ -15,6 +15,8 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
+
+using BusinessLogic.Logic.GamingGroups;
 using BusinessLogic.Models.GamingGroups;
 using NUnit.Framework;
 using System;
@@ -37,15 +39,15 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
 		public override void SetUp()
 		{
 			base.SetUp();
-
-			gamingGroupRetrieverMock.Expect(mock => mock.GetTopGamingGroups(Arg<int>.Is.Anything)).Return(new List<TopGamingGroupSummary>());
-			gamingGroupControllerPartialMock.Expect(mock => mock.GetTopGamingGroups()).Return(new ViewResult() { ViewName = MVC.GamingGroup.Views.TopGamingGroups, ViewData = new ViewDataDictionary(expectedViewModel) });
+            autoMocker.PartialMockTheClassUnderTest();
+			autoMocker.Get<IGamingGroupRetriever>().Expect(mock => mock.GetTopGamingGroups(Arg<int>.Is.Anything)).Return(new List<TopGamingGroupSummary>());
+			autoMocker.ClassUnderTest.Expect(mock => mock.GetTopGamingGroups()).Return(new ViewResult() { ViewName = MVC.GamingGroup.Views.TopGamingGroups, ViewData = new ViewDataDictionary(expectedViewModel) });
 		}
 
 		[Test]
 		public void ItReturnsTopGamingGroupsView()
 		{
-			var viewResult = gamingGroupControllerPartialMock.GetTopGamingGroups() as ViewResult;
+			var viewResult = autoMocker.ClassUnderTest.GetTopGamingGroups() as ViewResult;
 
 			Assert.AreEqual(MVC.GamingGroup.Views.TopGamingGroups, viewResult.ViewName);
 		}
@@ -53,7 +55,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
 		[Test]
 		public void ItReturnsSpecifiedTopGamingGroupsModelToTheView()
 		{
-			var viewResult = gamingGroupControllerPartialMock.GetTopGamingGroups() as ViewResult;
+			var viewResult = autoMocker.ClassUnderTest.GetTopGamingGroups() as ViewResult;
 
 			var actualViewModel = viewResult.ViewData.Model;
 

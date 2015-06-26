@@ -23,6 +23,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using BusinessLogic.Logic;
+using BusinessLogic.Logic.GamingGroups;
 using BusinessLogic.Models.User;
 using NUnit.Framework;
 using Rhino.Mocks;
@@ -38,14 +39,15 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
         public override void SetUp()
         {
  	        base.SetUp();
-            gamingGroupControllerPartialMock.Expect(mock => mock.Index(currentUser))
+            autoMocker.PartialMockTheClassUnderTest();
+            autoMocker.ClassUnderTest.Expect(mock => mock.Index(currentUser))
                                 .Return(viewResult);
         }
 
         [Test]
         public void ItRemainsOnTheIndexPageIfTheGamingGroupNameIsntSet()
         {
-            var result = gamingGroupControllerPartialMock.CreateNewGamingGroup(string.Empty, currentUser) as ViewResult;
+            var result = autoMocker.ClassUnderTest.CreateNewGamingGroup(string.Empty, currentUser) as ViewResult;
 
             Assert.That(result, Is.SameAs(viewResult));
         }
@@ -55,9 +57,9 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
         {
             string gamingGroupName = "name";
 
-            gamingGroupControllerPartialMock.CreateNewGamingGroup(gamingGroupName, currentUser);
+            autoMocker.ClassUnderTest.CreateNewGamingGroup(gamingGroupName, currentUser);
 
-            gamingGroupSaverMock.AssertWasCalled(mock => mock.CreateNewGamingGroup(gamingGroupName, TransactionSource.WebApplication, currentUser));
+            autoMocker.Get<IGamingGroupSaver>().AssertWasCalled(mock => mock.CreateNewGamingGroup(gamingGroupName, TransactionSource.WebApplication, currentUser));
         }
 
         [Test]
@@ -65,7 +67,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
         {
             string gamingGroupName = "name";
 
-            var result = gamingGroupControllerPartialMock.CreateNewGamingGroup(gamingGroupName, currentUser) as RedirectToRouteResult;
+            var result = autoMocker.ClassUnderTest.CreateNewGamingGroup(gamingGroupName, currentUser) as RedirectToRouteResult;
 
             Assert.That(result.RouteValues["action"], Is.EqualTo(MVC.GamingGroup.ActionNames.Index));
             Assert.That(result.RouteValues["controller"], Is.EqualTo(MVC.GamingGroup.Name));
@@ -75,9 +77,9 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
         [Test]
         public async Task ItClearsTheGamingGroupCookieIfTheUserSuccessfullyRegisters()
         {
-            var result = gamingGroupControllerPartialMock.CreateNewGamingGroup("some name", currentUser) as RedirectToRouteResult;
+            var result = autoMocker.ClassUnderTest.CreateNewGamingGroup("some name", currentUser) as RedirectToRouteResult;
 
-            cookieHelperMock.AssertWasCalled(mock => mock.ClearCookie(
+            autoMocker.Get<ICookieHelper>().AssertWasCalled(mock => mock.ClearCookie(
                 Arg<NemeStatsCookieEnum>.Is.Equal(NemeStatsCookieEnum.gamingGroupsCookie),
                 Arg<HttpRequestBase>.Is.Anything,
                 Arg<HttpResponseBase>.Is.Anything));

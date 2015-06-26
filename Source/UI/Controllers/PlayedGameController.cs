@@ -177,7 +177,7 @@ namespace UI.Controllers
 							+ "#" + GamingGroupController.SECTION_ANCHOR_RECENT_GAMES);
 		}
 
-		// GET: /PlayedGame/Edit
+        // GET: /PlayedGame/Edit
 		[Authorize]
 		[UserContext]
 		[HttpGet]
@@ -208,7 +208,7 @@ namespace UI.Controllers
 			return View(viewModel);
 		}
 
-		// POST: /PlayedGame/Edit
+        // POST: /PlayedGame/Edit
 		[Authorize]
 		[UserContext]
 		[HttpPost]
@@ -234,7 +234,7 @@ namespace UI.Controllers
         [Authorize]
         [UserContext]
         [HttpGet]
-        public ActionResult Search(ApplicationUser currentUser)
+        public virtual ActionResult Search(ApplicationUser currentUser)
         {
             var viewModel = new SearchViewModel
             {
@@ -246,7 +246,7 @@ namespace UI.Controllers
         [Authorize]
         [UserContext]
         [HttpPost]
-	    public ActionResult Search(PlayedGamesFilterViewModel filter, ApplicationUser currentUser)
+        public virtual ActionResult Search(PlayedGamesFilterViewModel filter, ApplicationUser currentUser)
         {
             var playedGameFilter = new PlayedGameFilter
             {

@@ -158,16 +158,21 @@ namespace BusinessLogic.Logic.Players
             return playerGameResults;
         }
 
-        public virtual List<PlayerVersusPlayerStatistics> GetPlayerVersusPlayersStatistics(int playerId)
-        {
-            throw new NotImplementedException();
-        }
-
         public virtual PlayerStatistics GetPlayerStatistics(int playerId)
         {
-            PlayerStatistics playerStatistics = new PlayerStatistics();
-            playerStatistics.TotalGames = dataContext.GetQueryable<PlayerGameResult>()
-                .Count(playerGameResults => playerGameResults.PlayerId == playerId);
+            var playerStatistics = new PlayerStatistics();
+            var winsAndLosses = dataContext.GetQueryable<PlayerGameResult>()
+                .Where(playerGameResult => playerGameResult.PlayerId == playerId)
+                .GroupBy(playergameResults => playergameResults.GameRank == 1)
+                    .Select(group => new
+                    {
+                        Winner = group.Key,
+                        NumberOfGames = group.Count()
+                    });
+            playerStatistics.TotalGames = winsAndLosses.Sum(x => x.NumberOfGames);
+            playerStatistics.TotalGamesWon = winsAndLosses.First(x => x.Winner).NumberOfGames;
+            playerStatistics.TotalGamesLost = winsAndLosses.First(x => !x.Winner).NumberOfGames;
+            playerStatistics.WinPercentage = (int)((decimal)playerStatistics.TotalGamesWon / (playerStatistics.TotalGames) * 100);
 
             int? totalPoints = dataContext.GetQueryable<PlayerGameResult>()
                 .Where(result => result.PlayerId == playerId)

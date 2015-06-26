@@ -6,18 +6,23 @@
 }
 
 <h2>
-    <span class="editable-title" id="gamingGroupTitle" title="Click to rename the gaming group">@Model.Name</span>
-    <a href="#" onclick="clickElement('gamingGroupTitle')" title="Edit">
+    @Model.Name
+    &nbsp;<a href="@Url.Action("Edit", "GamingGroup", new { id = @Model.Id })" title="Edit">
         <span class="fa fa-pencil"></span>
     </a>
 </h2>
 
+<div class="row">
+    @Html.Partial(MVC.GamingGroup.Views._GamingGroupPublicDetailsPartial, Model.PublicDetailsView, new ViewDataDictionary { { "canEdit", true } })
+</div>
+
 <hr />
 
 <a name="@ViewBag.PlayerSectionAnchorText"></a>
+
 <div class="row">
     @{
-        Html.RenderPartial("~/Views/Player/_PlayersPartial.cshtml", Model.Players, new ViewDataDictionary {{"canEdit", true}});
+        Html.RenderPartial("~/Views/Player/_PlayersPartial.cshtml", Model.Players, new ViewDataDictionary { { "canEdit", true } });
     }
 </div>
 
@@ -26,10 +31,9 @@
     @Html.Partial("~/Views/GameDefinition/_GameDefinitionsPartial.cshtml", Model.GameDefinitionSummaries, new ViewDataDictionary { { "canEdit", true } })
 </div>
 
-
 <a name="@ViewBag.RecentGamesSectionAnchorText"></a>
 <div class="row">
-   @Html.Partial("~/Views/PlayedGame/_PlayedGamesPartial.cshtml", Model.PlayedGames, new ViewDataDictionary { { "canEdit", true }, { "gamingGroupId", @Model.Id} })
+    @Html.Partial("~/Views/PlayedGame/_PlayedGamesPartial.cshtml", Model.PlayedGames, new ViewDataDictionary { { "canEdit", true }, { "gamingGroupId", @Model.Id } })
 </div>
 
 @section Scripts {
