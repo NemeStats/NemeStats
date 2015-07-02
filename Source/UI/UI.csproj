@@ -349,6 +349,7 @@
     <Compile Include="Models\Players\MinionViewModel.cs" />
     <Compile Include="Models\Players\PlayerDetailsViewModel.cs" />
     <Compile Include="Models\Players\PlayerEditViewModel.cs" />
+    <Compile Include="Models\Players\PlayerGameSummaryViewModel.cs" />
     <Compile Include="Models\Players\PlayerInvitationViewModel.cs" />
     <Compile Include="Models\Players\OpposingPlayerViewModel.cs" />
     <Compile Include="Models\Players\TopPlayerViewModel.cs" />

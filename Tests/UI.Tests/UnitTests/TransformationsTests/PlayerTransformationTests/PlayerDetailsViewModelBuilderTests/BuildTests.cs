@@ -46,10 +46,13 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         private PlayerVersusPlayerStatistics playerWithNoGamesPlayed;
         private string twitterMinionBraggingUrl = "some url";
         private int gamingGroupId = 123;
+        private int playerId = 567;
+        private int gameDefinitionIdThatIsChampionedByCurrentPlayer = 999;
 
         [SetUp]
         public void TestFixtureSetUp()
         {
+            AutomapperConfiguration.Configure();
             minionViewModelBuilderMock = MockRepository.GenerateMock<IMinionViewModelBuilder>();
 
             currentUser = new ApplicationUser()
@@ -62,7 +65,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
             var gameDefinition1 = new GameDefinition()
             {
                 Name = "test game 1",
-                Id = 1,
+                Id = gameDefinitionIdThatIsChampionedByCurrentPlayer,
                 Champion = champion
             };
             var playedGame1 = new PlayedGame()
@@ -128,7 +131,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
 
             playerDetails = new PlayerDetails()
             {
-                Id = 134,
+                Id = playerId,
                 ApplicationUserId = currentUser.Id,
                 Active = true,
                 Name = "Skipper",
@@ -158,6 +161,13 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
                     playerWithNoGamesPlayed,
                     nemesisPlayer,
                     minionPlayer
+                },
+                PlayerGameSummaries = new List<PlayerGameSummary>
+                {
+                    new PlayerGameSummary
+                    {
+                        GameDefinitionId = gameDefinitionIdThatIsChampionedByCurrentPlayer
+                    }
                 }
             };
 
@@ -374,7 +384,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         }
 
         [Test]
-        public void ItPopulatesThePlayerGameSummaries()
+        public void ItPopulatesThePlayerGameResultDetails()
         {
             var numberOfPlayerGameResults = playerDetails.PlayerGameResults.Count();
             int expectedPlayedGameId;
@@ -454,7 +464,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         [Test]
         public void ItCopiesThePlayerGameSummaries()
         {
-            Assert.AreEqual(playerDetails.PlayerGameSummaries, playerDetailsViewModel.PlayerGameSummaries);
+            //todo should put an interface over top of automapper and unit test this
         }
 
         [Test]
@@ -462,8 +472,13 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         {
             for (var i = 0; i < playerDetailsViewModel.ChampionedGames.Count; i++)
             {
-                Assert.That(playerDetailsViewModel.ChampionedGames[i].GameDefinitionName, 
+                var championViewModel = playerDetailsViewModel.ChampionedGames[i];
+                Assert.That(championViewModel.GameDefinitionName, 
                     Is.EqualTo(playerDetails.ChampionedGames[i].GameDefinition.Name));
+
+                Assert.That(playerDetailsViewModel.PlayerGameSummaries.Any(
+                    x => x.GameDefinitionId == championViewModel.GameDefinitionId
+                        && x.IsChampion));
             }
         }
 

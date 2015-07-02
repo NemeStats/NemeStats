@@ -21,12 +21,12 @@ namespace BusinessLogic.Exceptions
 {
     public class PlayerAlreadyExistsException : ApiFriendlyException
     {
-        internal const string EXCEPTION_MESSAGE = "A Player with name '{0}' already exists in this Gaming Group.";
+        internal const string EXCEPTION_MESSAGE = "A Player with name '{0}' already exists in this Gaming Group. The existing playerId is '{1}'.";
 
         public int ExistingPlayerId { get; set; }
 
         public PlayerAlreadyExistsException(string playerName, int existingPlayerId)
-            : base(string.Format(EXCEPTION_MESSAGE, playerName))
+            : base(string.Format(EXCEPTION_MESSAGE, playerName, existingPlayerId))
         {
             ExistingPlayerId = existingPlayerId;
             

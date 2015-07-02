@@ -167,6 +167,7 @@
             <table class="table table-hover table-striped  table-responsive">
                 <thead>
                     <tr>
+                        <th></th>
                         <th>Game</th>
                         <th>Win - Loss Record</th>
                         <th>% Won</th>
@@ -176,6 +177,14 @@
                     @foreach (BusinessLogic.Models.Players.PlayerGameSummary summary in @Model.PlayerGameSummaries)
                     {
                         <tr>
+                            <td>
+                                @if (summary.IsChampion)
+                                {
+                                    <i class="fa fa-trophy" data-container="body" data-toggle="popover" data-placement="right"
+                                       data-content="This Player is the Champion of this game. The Champion is the Player within the Gaming Group with the most wins of this game.">
+                                    </i>
+                                }
+                            </td>
                             <td>
                                 @Html.ActionLink(summary.GameDefinitionName, "Details", "GameDefinition", new { id = summary.GameDefinitionId }, new { })
                             </td>

@@ -15,6 +15,8 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
+
+using AutoMapper;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Players;
 using BusinessLogic.Models.User;
@@ -73,14 +75,14 @@ namespace UI.Transformations.PlayerTransformations
             SetAveragePointsPerPlayer(playerDetails, playerDetailsViewModel);
             SetUserCanEditFlag(playerDetails, currentUser, playerDetailsViewModel);
 
-            PopulatePlayerGameSummaries(playerDetails, playerDetailsViewModel);
+            this.PopulatePlayerGameResults(playerDetails, playerDetailsViewModel);
 
             PopulateNemesisData(playerDetails.CurrentNemesis, playerDetailsViewModel);
 
             playerDetailsViewModel.Minions = (from Player player in playerDetails.Minions
                                               select minionViewModelBuilder.Build(player)).ToList();
 
-            playerDetailsViewModel.PlayerGameSummaries = playerDetails.PlayerGameSummaries;
+            playerDetailsViewModel.PlayerGameSummaries = playerDetails.PlayerGameSummaries.Select(Mapper.Map<PlayerGameSummaryViewModel>).ToList();
 
             SetChampionedGames(playerDetails, playerDetailsViewModel);
             
@@ -189,6 +191,18 @@ namespace UI.Transformations.PlayerTransformations
             playerDetailsViewModel.ChampionedGames = playerDetails.ChampionedGames.Select(
                 championedGame => championViewModelBuilder.Build(championedGame))
                 .ToList();
+
+            if (playerDetails.PlayerGameSummaries == null)
+            {
+                return;
+            }
+            playerDetailsViewModel.PlayerGameSummaries
+                .Where(summary => playerDetailsViewModel
+                                    .ChampionedGames
+                                    .Select(championedGame => championedGame.GameDefinitionId)
+                                    .Contains(summary.GameDefinitionId))
+                .ToList()
+                .ForEach(x => x.IsChampion = true);
         }
 
         private static void Validate(PlayerDetails playerDetails)
@@ -240,7 +254,7 @@ namespace UI.Transformations.PlayerTransformations
             }
         }
 
-        private void PopulatePlayerGameSummaries(PlayerDetails playerDetails, PlayerDetailsViewModel playerDetailsViewModel)
+        private void PopulatePlayerGameResults(PlayerDetails playerDetails, PlayerDetailsViewModel playerDetailsViewModel)
         {
             playerDetailsViewModel.PlayerGameResultDetails = new List<GameResultViewModel>();
             GameResultViewModel gameResultViewModel;

@@ -44,7 +44,7 @@ namespace UI.Models.Players
         public int NumberOfGamesLostVersusNemesis { get; set; }
         public bool UserCanEdit { get; set; }
         public List<MinionViewModel> Minions { get; set; }
-        public List<PlayerGameSummary> PlayerGameSummaries { get; set; }
+        public List<PlayerGameSummaryViewModel> PlayerGameSummaries { get; set; }
         public List<ChampionViewModel> ChampionedGames { get; set; } 
 
         public string GamingGroupName { get; set; }
