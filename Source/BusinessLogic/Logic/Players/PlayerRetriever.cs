@@ -162,17 +162,30 @@ namespace BusinessLogic.Logic.Players
         {
             var playerStatistics = new PlayerStatistics();
             var winsAndLosses = dataContext.GetQueryable<PlayerGameResult>()
-                .Where(playerGameResult => playerGameResult.PlayerId == playerId)
-                .GroupBy(playergameResults => playergameResults.GameRank == 1)
-                    .Select(group => new
-                    {
-                        Winner = group.Key,
-                        NumberOfGames = group.Count()
-                    });
+                                           .Where(playerGameResult => playerGameResult.PlayerId == playerId)
+                                           .GroupBy(playergameResults => playergameResults.GameRank == 1)
+                                           .Select(group => new
+                                           {
+                                               Winner = group.Key,
+                                               NumberOfGames = group.Count()
+                                           }).ToList();
             playerStatistics.TotalGames = winsAndLosses.Sum(x => x.NumberOfGames);
-            playerStatistics.TotalGamesWon = winsAndLosses.First(x => x.Winner).NumberOfGames;
-            playerStatistics.TotalGamesLost = winsAndLosses.First(x => !x.Winner).NumberOfGames;
-            playerStatistics.WinPercentage = (int)((decimal)playerStatistics.TotalGamesWon / (playerStatistics.TotalGames) * 100);
+            var winData = winsAndLosses.FirstOrDefault(x => x.Winner);
+            if (winData != null)
+            {
+                playerStatistics.TotalGamesWon = winData.NumberOfGames;
+            }
+
+            var lossData = winsAndLosses.FirstOrDefault(x => !x.Winner);
+            if (lossData != null)
+            {
+                playerStatistics.TotalGamesLost = winData.NumberOfGames;
+            }
+
+            if (playerStatistics.TotalGames > 0)
+            {
+                playerStatistics.WinPercentage = (int)((decimal)playerStatistics.TotalGamesWon / (playerStatistics.TotalGames) * 100);
+            }
 
             int? totalPoints = dataContext.GetQueryable<PlayerGameResult>()
                 .Where(result => result.PlayerId == playerId)
