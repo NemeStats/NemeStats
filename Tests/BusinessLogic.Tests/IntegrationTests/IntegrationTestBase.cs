@@ -72,6 +72,8 @@ namespace BusinessLogic.Tests.IntegrationTests
         protected string testPlayer8Name = "testPlayer8";
         protected Player testPlayer9;
         protected string testPlayer9Name = "testPlayer9";
+        protected Player testPlayerWithNoPlayedGames;
+        protected string testPlayerWithNoPlayedGamesName = "test player with no played games";
         protected string testGameName = "this is test game definition name";
         protected string testGameName2 = "aaa - game definition that should sort first";
         protected string testGameNameForGameWithOtherGamingGroupId = "this is test game definition name for game with other GamingGroupId";
@@ -330,6 +332,9 @@ namespace BusinessLogic.Tests.IntegrationTests
             testPlayer9 = new Player { Name = testPlayer9Name, Active = false, GamingGroupId =  otherGamingGroupId};
             nemeStatsDbContext.Players.Add(testPlayer9);
 
+            testPlayerWithNoPlayedGames = new Player { Name = testPlayerWithNoPlayedGamesName, Active = true, GamingGroupId = primaryGamingGroupId };
+            nemeStatsDbContext.Players.Add(testPlayerWithNoPlayedGames);
+
             nemeStatsDbContext.SaveChanges();
         }
 
@@ -459,6 +464,7 @@ namespace BusinessLogic.Tests.IntegrationTests
             CleanUpPlayerByPlayerName(testPlayer7Name, nemeStatsDbContext);
             CleanUpPlayerByPlayerName(testPlayer8Name, nemeStatsDbContext);
             CleanUpPlayerByPlayerName(testPlayer9Name, nemeStatsDbContext);
+            CleanUpPlayerByPlayerName(testPlayerWithNoPlayedGamesName, nemeStatsDbContext);
         }
 
         private void CleanUpChampions(NemeStatsDbContext nemeStatsDbContext)
