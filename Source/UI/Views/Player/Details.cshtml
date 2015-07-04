@@ -72,53 +72,6 @@
 </div>
 
 <div class="row">
-    @Html.Partial("~/Views/Player/_PlayerVersusPlayersPartial.cshtml", Model.PlayerVersusPlayers)
-            </div>
-
-@if (Model.ChampionedGames.Count > 0)
-{
-    <div class="row">
-        <div class="panel panel-primary">
-            <div class="panel-heading">
-                <h4>Championed Games <i class="fa fa-question-circle" data-container="body" data-toggle="popover" data-placement="right"
-   data-content="The Champion is the Player within the Gaming Group with the most wins of this game."></i></h4>
-            </div>
-            <div class="panel-body">
-                <table class="table table-hover table-striped table-responsive">
-                    <thead>
-                        <tr>
-                            <th>Game</th>
-                            <th>Played Games</th>
-                            <th>Games Won</th>
-                            <th>% Won</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (ChampionViewModel championModel in @Model.ChampionedGames)
-                        {
-                            <tr>
-                                <td>
-                                    @Html.ActionLink(championModel.GameDefinitionName, "Details", "GameDefinition", new { id = championModel.GameDefinitionId }, new { })
-                                </td>
-                                <td>
-                                    @championModel.NumberOfGames
-                                </td>
-                                <td>
-                                    @championModel.NumberOfWins
-                                </td>
-                                <td>
-                                    @championModel.WinPercentage
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-}
-
-<div class="row">
     <div class="panel panel-primary">
         <div class="panel-heading">
             <h4>Global Statistics</h4>
@@ -158,6 +111,12 @@
     </div>
 </div>
 
+
+<div class="row">
+    @Html.Partial("~/Views/Player/_PlayerVersusPlayersPartial.cshtml", Model.PlayerVersusPlayers)
+</div>
+
+
 <div class="row">
     <div class="panel panel-primary">
         <div class="panel-heading">
@@ -167,15 +126,24 @@
             <table class="table table-hover table-striped  table-responsive">
                 <thead>
                     <tr>
+                        <th></th>
                         <th>Game</th>
                         <th>Win - Loss Record</th>
                         <th>% Won</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (BusinessLogic.Models.Players.PlayerGameSummary summary in @Model.PlayerGameSummaries)
+                    @foreach (var summary in @Model.PlayerGameSummaries)
                     {
                         <tr>
+                            <td>
+                                @if (summary.IsChampion)
+                                {
+                                    <i class="fa fa-trophy" data-container="body" data-toggle="popover" data-placement="right"
+                                       data-content="This Player is the Champion of this game. The Champion is the Player within the Gaming Group with the most wins of this game.">
+                                    </i>
+                                }
+                            </td>
                             <td>
                                 @Html.ActionLink(summary.GameDefinitionName, "Details", "GameDefinition", new { id = summary.GameDefinitionId }, new { })
                             </td>

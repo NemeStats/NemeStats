@@ -323,7 +323,6 @@
     </Compile>
     <Compile Include="HtmlHelpers\MvcHtmlStringExtension.cs" />
     <Compile Include="HtmlHelpers\PlayedGameHelper.cs" />
-    <Compile Include="Models\ChampionViewModel.cs" />
     <Compile Include="Models\GameDefinitionModels\GameDefinitionSummaryViewModel.cs" />
     <Compile Include="Models\GameDefinitionModels\NewGameDefinitionViewModel.cs" />
     <Compile Include="Models\GamingGroup\GamingGroupPublicDetailsViewModel.cs" />
@@ -349,6 +348,7 @@
     <Compile Include="Models\Players\MinionViewModel.cs" />
     <Compile Include="Models\Players\PlayerDetailsViewModel.cs" />
     <Compile Include="Models\Players\PlayerEditViewModel.cs" />
+    <Compile Include="Models\Players\PlayerGameSummaryViewModel.cs" />
     <Compile Include="Models\Players\PlayerInvitationViewModel.cs" />
     <Compile Include="Models\Players\OpposingPlayerViewModel.cs" />
     <Compile Include="Models\Players\TopPlayerViewModel.cs" />
@@ -386,8 +386,6 @@
     <Compile Include="Transformations\IPlayedGameDetailsViewModelBuilder.cs" />
     <Compile Include="Transformations\IGameResultViewModelBuilder.cs" />
     <Compile Include="Transformations\GameResultViewModelBuilder.cs" />
-    <Compile Include="Transformations\PlayerTransformations\ChampionViewModelBuilder.cs" />
-    <Compile Include="Transformations\PlayerTransformations\IChampionViewModelBuilder.cs" />
     <Compile Include="Transformations\PlayerTransformations\IMinionViewModelBuilder.cs" />
     <Compile Include="Transformations\PlayerTransformations\IPlayerDetailsViewModelBuilder.cs" />
     <Compile Include="Transformations\PlayerTransformations\IPlayerEditViewModelBuilder.cs" />
