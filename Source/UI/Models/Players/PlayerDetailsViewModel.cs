@@ -45,7 +45,6 @@ namespace UI.Models.Players
         public bool UserCanEdit { get; set; }
         public List<MinionViewModel> Minions { get; set; }
         public List<PlayerGameSummaryViewModel> PlayerGameSummaries { get; set; }
-        public List<ChampionViewModel> ChampionedGames { get; set; } 
 
         public string GamingGroupName { get; set; }
         public int GamingGroupId { get; set; }

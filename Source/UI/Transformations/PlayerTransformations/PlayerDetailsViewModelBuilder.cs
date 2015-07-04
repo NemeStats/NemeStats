@@ -38,13 +38,11 @@ namespace UI.Transformations.PlayerTransformations
 
         private readonly IGameResultViewModelBuilder gameResultViewModelBuilder;
         private readonly IMinionViewModelBuilder minionViewModelBuilder;
-        private readonly IChampionViewModelBuilder championViewModelBuilder;
 
-        public PlayerDetailsViewModelBuilder(IGameResultViewModelBuilder builder, IMinionViewModelBuilder minionViewModelBuilder, IChampionViewModelBuilder championViewModelBuilder)
+        public PlayerDetailsViewModelBuilder(IGameResultViewModelBuilder builder, IMinionViewModelBuilder minionViewModelBuilder)
         {
             gameResultViewModelBuilder = builder;
             this.minionViewModelBuilder = minionViewModelBuilder;
-            this.championViewModelBuilder = championViewModelBuilder;
         }
 
         public PlayerDetailsViewModel Build(PlayerDetails playerDetails, string urlForMinionBragging, ApplicationUser currentUser = null)
@@ -188,17 +186,12 @@ namespace UI.Transformations.PlayerTransformations
 
         private void SetChampionedGames(PlayerDetails playerDetails, PlayerDetailsViewModel playerDetailsViewModel)
         {
-            playerDetailsViewModel.ChampionedGames = playerDetails.ChampionedGames.Select(
-                championedGame => championViewModelBuilder.Build(championedGame))
-                .ToList();
-
             if (playerDetails.PlayerGameSummaries == null)
             {
                 return;
             }
             playerDetailsViewModel.PlayerGameSummaries
-                .Where(summary => playerDetailsViewModel
-                                    .ChampionedGames
+                .Where(summary => playerDetails.ChampionedGames
                                     .Select(championedGame => championedGame.GameDefinitionId)
                                     .Contains(summary.GameDefinitionId))
                 .ToList()
