@@ -29,7 +29,6 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.Players
                 Assert.That(statistics.TotalGamesWon, Is.EqualTo(0));
                 Assert.That(statistics.TotalPoints, Is.EqualTo(0));
                 Assert.That(statistics.WinPercentage, Is.EqualTo(0));
-
             } 
         }
     }

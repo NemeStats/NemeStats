@@ -179,7 +179,7 @@ namespace BusinessLogic.Logic.Players
             var lossData = winsAndLosses.FirstOrDefault(x => !x.Winner);
             if (lossData != null)
             {
-                playerStatistics.TotalGamesLost = winData.NumberOfGames;
+                playerStatistics.TotalGamesLost = lossData.NumberOfGames;
             }
 
             if (playerStatistics.TotalGames > 0)
