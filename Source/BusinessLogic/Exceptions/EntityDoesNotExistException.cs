@@ -19,6 +19,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 
 namespace BusinessLogic.Exceptions
 {
@@ -27,7 +28,7 @@ namespace BusinessLogic.Exceptions
         internal const string EXCEPTION_MESSAGE_FORMAT = "Entity of type '{0}' with Id '{1}' does not exist.";
 
         public EntityDoesNotExistException(Type entityType, object entityId)
-            : base(string.Format(EXCEPTION_MESSAGE_FORMAT, entityType.Name, entityId))
+            : base(string.Format(EXCEPTION_MESSAGE_FORMAT, entityType.Name, entityId), HttpStatusCode.NotFound)
         {
 
         }

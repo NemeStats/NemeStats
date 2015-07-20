@@ -13,9 +13,10 @@ namespace UI.Attributes
     {
         public override void OnException(HttpActionExecutedContext context)
         {
-            if (context.Exception is ApiFriendlyException)
+            var exception = context.Exception as ApiFriendlyException;
+            if (exception != null)
             {
-                context.Response = new HttpResponseMessage(HttpStatusCode.BadRequest)
+                context.Response = new HttpResponseMessage(exception.StatusCode)
                 {
                     Content = new StringContent(context.Exception.Message)
                 };

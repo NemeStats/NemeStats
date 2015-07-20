@@ -40,14 +40,14 @@ namespace UI.Tests.UnitTests.AttributesTests
         }
 
         [Test]
-        public async Task ItReturnsABadRequestIfTheExceptionIsAnEntityDoesNotExistException()
+        public async Task ItReturnsTheStatusCodeAndMessageIfItIsHandlingAnApiExceptionFilter()
         {
             var expectedException = new EntityDoesNotExistException(typeof(Player), "some id");
             context.Exception = expectedException;
 
             autoMocker.ClassUnderTest.OnException(context);
 
-            Assert.That(context.Response.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
+            Assert.That(context.Response.StatusCode, Is.EqualTo(expectedException.StatusCode));
             Assert.That(await context.Response.Content.ReadAsStringAsync(), Is.EqualTo(expectedException.Message));
         }
     }

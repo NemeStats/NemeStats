@@ -255,6 +255,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\StructuremapMvc.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Areas\Api\ApiControllerBase.cs" />
     <Compile Include="Areas\Api\Controllers\GameDefinitionsController.cs" />
     <Compile Include="Areas\Api\Controllers\PlayedGamesController.cs" />
     <Compile Include="Areas\Api\Controllers\PlayersController.cs" />

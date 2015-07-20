@@ -19,14 +19,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 
 namespace BusinessLogic.Exceptions
 {
     public class DuplicateKeyException : ApiFriendlyException
     {
-        internal const string EXCEPTION_MESSAGE_FORMAT = "Entity of type '{0}' with Id '{1}' does not exist.";
-
-        public DuplicateKeyException(string message) : base(message)
+        public DuplicateKeyException(string message) : base(message, HttpStatusCode.Conflict)
         {
 
         }
