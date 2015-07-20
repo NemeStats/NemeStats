@@ -754,6 +754,12 @@ This service will create a new Game Definition in the specified Gaming Group.
                   "gameDefinitionId" : 105156
                 }
                 
++ Response 409 (application/json)
+
+                {
+                  "message" : "A Game Definition with name 'Monopoly (1933)' already exists in this Gaming Group."
+                }
+                
 ## Update an existing Game Definition [PUT /GamingGroups/{gamingGroupId}/GameDefinitions/{gameDefinitionId}/]
 This service will update a given Player in the given Gaming Group.
 
@@ -810,5 +816,5 @@ This service will update a given Player in the given Gaming Group.
 + Response 404 (application/json)
 
                 {
-                    "message" : "A Game Definition with playerId '87658' does not exist in this Gaming Group."
+                    "message" : "A Game Definition with gameDefinitionId '87658' does not exist in this Gaming Group."
                 } 
