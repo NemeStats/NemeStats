@@ -180,7 +180,7 @@
     <Compile Include="IntegrationTests\BoardGameGeekTests\BoardGameGeekModels.cs" />
     <Compile Include="IntegrationTests\BoardGameGeekTests\BoardGameGeekIntegrationTests.cs" />
     <Compile Include="IntegrationTests\RollbarTests.cs" />
-    <Compile Include="UnitTests\AreasTests\ApiTests\ApiControllerBaseTests\InitializeTests.cs" />
+    <Compile Include="UnitTests\AreasTests\ApiTests\ApiControllerBaseTests\BuildUserContextTests.cs" />
     <Compile Include="UnitTests\AreasTests\ApiTests\ApiTestHelpers.cs" />
     <Compile Include="UnitTests\AreasTests\ApiTests\ControllersTests\ApiControllerTestBase.cs" />
     <Compile Include="UnitTests\AreasTests\ApiTests\ControllersTests\GameDefinitionsControllerTests\GetGameDefinitionsTests.cs" />

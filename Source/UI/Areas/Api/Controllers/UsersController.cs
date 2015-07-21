@@ -17,7 +17,7 @@ using UI.Attributes;
 
 namespace UI.Areas.Api.Controllers
 {
-    public class UsersController : ApiController
+    public class UsersController : ApiControllerBase
     {
         private readonly IUserRegisterer userRegisterer;
         private readonly IAuthTokenGenerator authTokenGenerator;

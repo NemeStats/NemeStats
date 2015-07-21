@@ -26,7 +26,7 @@ using UI.Models;
 
 namespace UI.Areas.Api.Controllers
 {
-    public class VotableFeaturesController : ApiController
+    public class VotableFeaturesController : ApiControllerBase
     {
         private readonly IVotableFeatureRetriever votableFeatureRetriever;
         private readonly IVotableFeatureVoter votableFeatureVoter;

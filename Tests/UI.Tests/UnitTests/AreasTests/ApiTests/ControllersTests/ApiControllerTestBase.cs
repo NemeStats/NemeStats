@@ -10,13 +10,14 @@ using BusinessLogic.Models.User;
 using NUnit.Framework;
 using Rhino.Mocks;
 using StructureMap.AutoMocking;
+using UI.Areas.Api;
 using UI.Areas.Api.Controllers;
 using UI.Attributes;
 using UI.Transformations;
 
 namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests
 {
-    public abstract class ApiControllerTestBase<T> where T : ApiController
+    public abstract class ApiControllerTestBase<T> where T : ApiControllerBase
     {
         protected RhinoAutoMocker<T> autoMocker;
         protected ApplicationUser applicationUser;
@@ -36,7 +37,8 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests
                 Id = "application user id",
                 CurrentGamingGroupId = EXPECTED_GAMING_GROUP_ID
             };
-            autoMocker.ClassUnderTest.ActionContext.ActionArguments[ApiAuthenticationAttribute.ACTION_ARGUMENT_APPLICATION_USER] = applicationUser;
+            autoMocker.ClassUnderTest.CurrentUser = this.applicationUser;
+
             this.autoMocker.ClassUnderTest.Request = new HttpRequestMessage();
             this.autoMocker.ClassUnderTest.Request.SetConfiguration(new HttpConfiguration());
         }
