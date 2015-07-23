@@ -531,6 +531,7 @@ Retrieve a list of all Players in the given Gaming Group.
                             "playerName" : "The Destroyer",
                             "playerId" : 111,
                             "active" : "true",
+                            "currentNemesisPlayerId" : null
                         },
                         {
                             "playerName" : "Herb",
@@ -541,7 +542,8 @@ Retrieve a list of all Players in the given Gaming Group.
                         {
                             "playerName" : "Marvin",
                             "playerId" : 745,
-                            "active" : "false"
+                            "active" : "false",
+                            "currentNemesisPlayerId" : null
                         }
                     ]
                 }
@@ -591,7 +593,7 @@ This service will create a new Player in the specified Gaming Group.
                 }               
 
                 
-+ Response 400 (application/json)
++ Response 409 (application/json)
 
                 {
                     "message" : "A Player with name 'Some Player Name That Already Exists In The Gaming Group' already exists in this Gaming Group. The existing playerId is '15490'."
