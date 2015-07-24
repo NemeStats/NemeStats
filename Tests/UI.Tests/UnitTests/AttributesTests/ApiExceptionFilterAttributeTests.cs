@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Http;
 using System.Web.Http.Controllers;
 using System.Web.Http.Filters;
 using BusinessLogic.Exceptions;
@@ -37,6 +38,7 @@ namespace UI.Tests.UnitTests.AttributesTests
 
                 }
             };
+            context.Request.SetConfiguration(new HttpConfiguration());
         }
 
         [Test]
@@ -48,7 +50,7 @@ namespace UI.Tests.UnitTests.AttributesTests
             autoMocker.ClassUnderTest.OnException(context);
 
             Assert.That(context.Response.StatusCode, Is.EqualTo(expectedException.StatusCode));
-            Assert.That(await context.Response.Content.ReadAsStringAsync(), Is.EqualTo(expectedException.Message));
+            Assert.That(await context.Response.Content.ReadAsStringAsync(), Is.StringContaining(expectedException.Message));
         }
     }
 }

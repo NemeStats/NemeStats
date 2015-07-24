@@ -267,6 +267,7 @@
     <Compile Include="Areas\Api\Models\FeatureVote.cs" />
     <Compile Include="Areas\Api\Models\GameDefinitionSearchResultMessage.cs" />
     <Compile Include="Areas\Api\Models\GameDefinitionsSearchResultsMessage.cs" />
+    <Compile Include="Areas\Api\Models\GenericErrorMessage.cs" />
     <Compile Include="Areas\Api\Models\NewAuthTokenMessage.cs" />
     <Compile Include="Areas\Api\Models\NewGameDefinitionMessage.cs" />
     <Compile Include="Areas\Api\Models\NewlyCreatedGameDefinitionMessage.cs" />
