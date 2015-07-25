@@ -1,7 +1,11 @@
-﻿using BusinessLogic.Logic.Users;
+﻿using System.Collections.Generic;
+using BusinessLogic.Logic.GamingGroups;
+using BusinessLogic.Logic.Users;
+using BusinessLogic.Models.Players;
 using BusinessLogic.Models.User;
 using Microsoft.AspNet.Identity;
 using NUnit.Framework;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 using Rhino.Mocks;
 using StructureMap.AutoMocking;
 using System.Linq;
@@ -16,7 +20,7 @@ using UI.Transformations;
 namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests
 {
     [TestFixture]
-    public class UsersControllerTests
+    public class UsersControllerTests : ApiControllerTestBase<UsersController>
     {
         private RhinoAutoMocker<UsersController> autoMocker;
 
@@ -35,7 +39,7 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests
         {
             autoMocker.Get<IUserRegisterer>().Expect(mock => mock.RegisterUser(Arg<NewUser>.Is.Anything)).Return(Task.FromResult(new RegisterNewUserResult{ Result = IdentityResult.Failed("some failure")}));
 
-            NewUserMessage newUserMessage = new NewUserMessage
+            var newUserMessage = new NewUserMessage
             {
                 EmailAddress = "email@email.com",
                 UserName = "username",
@@ -53,20 +57,20 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests
         [Test]
         public async Task Post_ReturnsAnHttp400BadRequestResponseWhenThereIsAnIssueRegistering()
         {
-            RegisterNewUserResult registerNewUserResult = new RegisterNewUserResult
+            var registerNewUserResult = new RegisterNewUserResult
             {
                 Result = IdentityResult.Failed("some error")
             };
             autoMocker.Get<IUserRegisterer>().Expect(mock => mock.RegisterUser(Arg<NewUser>.Is.Anything)).Return(Task.FromResult(registerNewUserResult));
 
-            NewUserMessage newUserMessage = new NewUserMessage
+            var newUserMessage = new NewUserMessage
             {
                 EmailAddress = "email@email.com",
                 UserName = "username",
                 Password = "password"
             };
 
-            HttpResponseMessage actualResponse = await autoMocker.ClassUnderTest.RegisterNewUser(newUserMessage);
+            var actualResponse = await autoMocker.ClassUnderTest.RegisterNewUser(newUserMessage);
 
             Assert.That(actualResponse.Content, Is.TypeOf(typeof(ObjectContent<HttpError>)));
             var content = actualResponse.Content as ObjectContent<HttpError>;
@@ -78,8 +82,8 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests
         [Test]
         public async Task Post_ReturnsANewlyRegisteredUserMessage()
         {
-            NewUserMessage newUserMessage = new NewUserMessage();
-            NewlyRegisteredUserMessage expectedNewlyRegisteredUserMessage = new NewlyRegisteredUserMessage
+            var newUserMessage = new NewUserMessage();
+            var expectedNewlyRegisteredUserMessage = new NewlyRegisteredUserMessage
             {
                 UserId = "user id",
                 PlayerId = 2,
@@ -87,7 +91,7 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests
                 GamingGroupId = 3,
                 GamingGroupName = "gaming group name"
             };
-            RegisterNewUserResult registerNewUserResult = new RegisterNewUserResult
+            var registerNewUserResult = new RegisterNewUserResult
             {
                 Result = IdentityResult.Success,
                 NewlyRegisteredUser = new NewlyRegisteredUser
@@ -100,20 +104,40 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests
                 }
             };
             autoMocker.Get<IUserRegisterer>().Expect(mock => mock.RegisterUser(Arg<NewUser>.Is.Anything)).Return(Task.FromResult(registerNewUserResult));
-            string expectedAuthToken = "auth token";
+            var expectedAuthToken = "auth token";
             autoMocker.Get<IAuthTokenGenerator>().Expect(mock => mock.GenerateAuthToken(expectedNewlyRegisteredUserMessage.UserId)).Return(expectedAuthToken);
 
-            HttpResponseMessage actualResponse = await autoMocker.ClassUnderTest.RegisterNewUser(newUserMessage);
+            var actualResponse = await autoMocker.ClassUnderTest.RegisterNewUser(newUserMessage);
 
             Assert.That(actualResponse.Content, Is.TypeOf(typeof(ObjectContent<NewlyRegisteredUserMessage>)));
-            ObjectContent<NewlyRegisteredUserMessage> content = actualResponse.Content as ObjectContent<NewlyRegisteredUserMessage>;
-            NewlyRegisteredUserMessage actualNewlyRegisteredUserMessage = content.Value as NewlyRegisteredUserMessage;
+            var content = actualResponse.Content as ObjectContent<NewlyRegisteredUserMessage>;
+            var actualNewlyRegisteredUserMessage = content.Value as NewlyRegisteredUserMessage;
             Assert.That(actualNewlyRegisteredUserMessage.UserId, Is.EqualTo(expectedNewlyRegisteredUserMessage.UserId));
             Assert.That(actualNewlyRegisteredUserMessage.PlayerId, Is.EqualTo(expectedNewlyRegisteredUserMessage.PlayerId));
             Assert.That(actualNewlyRegisteredUserMessage.PlayerName, Is.EqualTo(expectedNewlyRegisteredUserMessage.PlayerName));
             Assert.That(actualNewlyRegisteredUserMessage.GamingGroupId, Is.EqualTo(expectedNewlyRegisteredUserMessage.GamingGroupId));
             Assert.That(actualNewlyRegisteredUserMessage.GamingGroupName, Is.EqualTo(expectedNewlyRegisteredUserMessage.GamingGroupName));
             Assert.That(actualNewlyRegisteredUserMessage.AuthenticationToken, Is.EqualTo(expectedAuthToken));
+        }
+
+        [Test]
+        public void Get_Returns_User_Information_For_The_Given_User()
+        {
+            var EXPECTED_USER_ID = "some guid";
+            var expectedUserInformation = new UserInformation();
+            autoMocker.Get<IUserRetriever>().Expect(mock => mock.RetrieveUserInformation(EXPECTED_USER_ID, applicationUser))
+                      .Return(expectedUserInformation);
+            UserInformationMessage expectedUserInformationMessage = new UserInformationMessage();
+            autoMocker.Get<ITransformer>().Expect(mock => mock.Transform<UserInformation, UserInformationMessage>(expectedUserInformation))
+                .Return(expectedUserInformationMessage);
+            autoMocker.ClassUnderTest.CurrentUser = applicationUser;
+
+            var actualResponse = autoMocker.ClassUnderTest.GetUserInformation(EXPECTED_USER_ID);
+            
+            Assert.That(actualResponse.Content, Is.TypeOf(typeof(ObjectContent<UserInformationMessage>)));
+            var content = actualResponse.Content as ObjectContent<UserInformationMessage>;
+            var actualUserInformationMessage = content.Value as UserInformationMessage;
+            Assert.That(actualUserInformationMessage, Is.SameAs(expectedUserInformationMessage));
         }
     }
 }
