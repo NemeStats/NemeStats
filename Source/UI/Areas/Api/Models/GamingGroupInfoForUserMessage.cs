@@ -5,7 +5,7 @@ using System.Text;
 
 namespace UI.Areas.Api.Models
 {
-    public class UserGamingGroupInfo
+    public class GamingGroupInfoForUserMessage
     {
         public int GamingGroupId { get; set; }
         public string GamingGroupName { get; set; }
