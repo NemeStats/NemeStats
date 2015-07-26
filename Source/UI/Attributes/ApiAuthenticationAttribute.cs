@@ -1,17 +1,18 @@
-﻿using BusinessLogic.Logic.Users;
+﻿using System;
+using Antlr.Runtime.Misc;
+using BusinessLogic.Logic.Users;
 using BusinessLogic.Models.User;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Mvc;
+using UI.Areas.Api;
 using ActionFilterAttribute = System.Web.Http.Filters.ActionFilterAttribute;
 
 namespace UI.Attributes
 {
     public class ApiAuthenticationAttribute : ActionFilterAttribute
     {
-        public const string ACTION_ARGUMENT_APPLICATION_USER = "applicationUser";
-
         private readonly IAuthTokenValidator authTokenValidator;
         private readonly ClientIdCalculator clientIdCalculator;
         
@@ -35,6 +36,12 @@ namespace UI.Attributes
 
         public override void OnActionExecuting(System.Web.Http.Controllers.HttpActionContext actionContext)
         {
+            var apiBaseController = actionContext.ControllerContext.Controller as ApiControllerBase;
+            if (apiBaseController == null)
+            {
+                throw new InvalidOperationException("The ApiAuthentication attribute can only be applied to actions in an ApiController that extends ApiControllerBase.");
+            }
+
             if (!actionContext.Request.Headers.Contains(AUTH_HEADER))
             {
                 actionContext.Response = actionContext.Request.CreateErrorResponse(
@@ -76,7 +83,7 @@ namespace UI.Attributes
 
             applicationUser.AnonymousClientId = this.clientIdCalculator.GetClientId(actionContext.Request, applicationUser);
 
-            actionContext.ActionArguments[ACTION_ARGUMENT_APPLICATION_USER] = applicationUser;
+            apiBaseController.CurrentUser = applicationUser;
         }
     }
 }

@@ -16,10 +16,11 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 using System;
+using System.Net;
 
 namespace BusinessLogic.Exceptions
 {
-    public class PlayerAlreadyExistsException : ApiFriendlyException
+    public class PlayerAlreadyExistsException : DuplicateKeyException
     {
         internal const string EXCEPTION_MESSAGE = "A Player with name '{0}' already exists in this Gaming Group. The existing playerId is '{1}'.";
 

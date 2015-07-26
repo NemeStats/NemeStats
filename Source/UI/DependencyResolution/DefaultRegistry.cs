@@ -24,6 +24,7 @@ using BusinessLogic.Logic.Email;
 using BusinessLogic.Logic.VotableFeatures;
 using BusinessLogic.Providers;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.DataProtection;
 
@@ -42,9 +43,9 @@ namespace UI.DependencyResolution {
     using StructureMap.Graph;
     using System.Configuration.Abstractions;
     using System.Data.Entity;
-    using UI.Controllers.Helpers;
-    using UI.Transformations;
-    using UI.Transformations.PlayerTransformations;
+    using Controllers.Helpers;
+    using Transformations;
+    using Transformations.PlayerTransformations;
     using UniversalAnalyticsHttpWrapper;
     using StructureMap.Web;
     using BusinessLogic.Logic.Nemeses;
@@ -54,7 +55,7 @@ namespace UI.DependencyResolution {
         #region Constructors and Destructors
 
         public DefaultRegistry() {
-            Scan(
+            this.Scan(
                 scan => {
                     scan.TheCallingAssembly();
                     scan.WithDefaultConventions();
@@ -99,6 +100,8 @@ namespace UI.DependencyResolution {
             this.For<ICookieHelper>().Singleton().Use<CookieHelper>();
 
             this.For<IDataProtectionProvider>().Singleton().Use<MachineKeyProtectionProvider>();
+
+            this.For<ITransformer>().Singleton().Use<Transformer>();
         }
 
         private void SetupTransientMappings()
@@ -117,7 +120,7 @@ namespace UI.DependencyResolution {
             this.For<IPlayedGameRetriever>().Use<PlayedGameRetriever>();
 
             this.For<IUserStore<ApplicationUser>>()
-                .Use<Microsoft.AspNet.Identity.EntityFramework.UserStore<ApplicationUser>>();
+                .Use<UserStore<ApplicationUser>>();
 
             this.For<IShowingXResultsMessageBuilder>().Use<ShowingXResultsMessageBuilder>();
             this.For<IGamingGroupRetriever>().Use<GamingGroupRetriever>();
@@ -172,6 +175,8 @@ namespace UI.DependencyResolution {
             this.For<IAuthTokenValidator>().Use<AuthTokenValidator>();
 
             this.For(typeof(ISecuredEntityValidator<>)).Use(typeof(SecuredEntityValidator<>));
+
+            this.For<IUserRetriever>().Use<UserRetriever>();
         }
 
         private void SetupUniquePerRequestMappings()

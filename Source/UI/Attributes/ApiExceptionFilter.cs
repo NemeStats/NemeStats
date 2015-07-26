@@ -6,6 +6,7 @@ using System.Web.Http;
 using System.Web.Http.Filters;
 using Links;
 using BusinessLogic.Exceptions;
+using UI.Areas.Api.Models;
 
 namespace UI.Attributes
 {
@@ -13,19 +14,15 @@ namespace UI.Attributes
     {
         public override void OnException(HttpActionExecutedContext context)
         {
-            if (context.Exception is ApiFriendlyException)
+            var exception = context.Exception as ApiFriendlyException;
+            if (exception != null)
             {
-                context.Response = new HttpResponseMessage(HttpStatusCode.BadRequest)
-                {
-                    Content = new StringContent(context.Exception.Message)
-                };
+                context.Response = context.Request.CreateResponse(exception.StatusCode, new GenericErrorMessage(exception.Message));
             }else
             {
-                context.Response = new HttpResponseMessage(HttpStatusCode.InternalServerError)
-                {
-                    Content = new StringContent("An internal server error occurred. This isn't your fault. "
-                     + "We have been notified of the problem and will try to fix it as soon as possible.")
-                }; 
+                context.Response = context.Request.CreateResponse(HttpStatusCode.InternalServerError, 
+                    new GenericErrorMessage("An internal server error occurred. This isn't your fault. "
+                     + "We have been notified of the problem and will try to fix it as soon as possible."));
             }
         }
     }

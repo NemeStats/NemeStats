@@ -144,6 +144,7 @@
     <Compile Include="EventTracking\EventCategoryEnum.cs" />
     <Compile Include="EventTracking\INemeStatsEventTracker.cs" />
     <Compile Include="EventTracking\UniversalAnalyticsNemeStatsEventTracker.cs" />
+    <Compile Include="Exceptions\ApiAuthenticationException.cs" />
     <Compile Include="Exceptions\DuplicateKeyException.cs" />
     <Compile Include="Exceptions\EntityDoesNotExistException.cs" />
     <Compile Include="Exceptions\ApiFriendlyException.cs" />
@@ -158,6 +159,7 @@
     <Compile Include="Logic\Champions\ChampionRecalculator.cs" />
     <Compile Include="Logic\Email\EmailService.cs" />
     <Compile Include="Logic\GameDefinitions\GameDefinitionUpdateRequest.cs" />
+    <Compile Include="Logic\GamingGroups\GamingGroupInfoForUser.cs" />
     <Compile Include="Logic\Points\PointsCalculator.cs" />
     <Compile Include="Logic\Points\GlobalPointsRecalculator.cs" />
     <Compile Include="Logic\Security\MachineKeyDataProtector.cs" />
@@ -166,6 +168,8 @@
     <Compile Include="Logic\Users\AuthTokenValidator.cs" />
     <Compile Include="Logic\Users\IAuthTokenGenerator.cs" />
     <Compile Include="Logic\Users\IAuthTokenValidator.cs" />
+    <Compile Include="Logic\Users\IUserRetriever.cs" />
+    <Compile Include="Logic\Users\UserRetriever.cs" />
     <Compile Include="Logic\VotableFeatures\IVotableFeatureRetriever.cs" />
     <Compile Include="Logic\GameDefinitions\BoardGameGeekDataLinker.cs" />
     <Compile Include="Logic\Champions\IChampionRecalculator.cs" />
@@ -279,6 +283,7 @@
     <Compile Include="Models\PlayedGames\PlayedGameSearchResult.cs" />
     <Compile Include="Models\PlayedGames\PlayerResult.cs" />
     <Compile Include="Models\PlayedGames\WinnerTypesEnum.cs" />
+    <Compile Include="Models\Players\PlayerInfoForUser.cs" />
     <Compile Include="Models\Players\PlayerInvitation.cs" />
     <Compile Include="Logic\Players\PlayerInviter.cs" />
     <Compile Include="Logic\Players\PlayerSaver.cs" />
@@ -465,6 +470,7 @@
     <Compile Include="Models\Games\PlayerRank.cs" />
     <Compile Include="Models\Players\PlayerDetails.cs" />
     <Compile Include="Models\Players\WinLossStatistics.cs" />
+    <Compile Include="Models\User\UserInformation.cs" />
     <Compile Include="Models\VotableFeature.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\MachineKeyProtectionProvider.cs" />

@@ -1,31 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Http;
 using AutoMapper;
 using BusinessLogic.Logic.Users;
 using BusinessLogic.Models.User;
-using Microsoft.Ajax.Utilities;
-using Microsoft.AspNet.Identity;
-using Microsoft.Owin.Security.Infrastructure;
 using UI.Areas.Api.Models;
 using UI.Attributes;
+using UI.Transformations;
 
 namespace UI.Areas.Api.Controllers
 {
-    public class UsersController : ApiController
+    public class UsersController : ApiControllerBase
     {
         private readonly IUserRegisterer userRegisterer;
         private readonly IAuthTokenGenerator authTokenGenerator;
+        private readonly IUserRetriever userRetriever;
+        private readonly ITransformer transformer;
 
-        public UsersController(IUserRegisterer userRegisterer, IAuthTokenGenerator authTokenGenerator)
+        public UsersController(IUserRegisterer userRegisterer, IAuthTokenGenerator authTokenGenerator, IUserRetriever userRetriever, ITransformer transformer)
         {
             this.userRegisterer = userRegisterer;
             this.authTokenGenerator = authTokenGenerator;
+            this.userRetriever = userRetriever;
+            this.transformer = transformer;
         }
 
         [ApiRoute("Users/")]
@@ -45,6 +44,16 @@ namespace UI.Areas.Api.Controllers
             }
 
             return Request.CreateErrorResponse(HttpStatusCode.BadRequest, registerNewUserResult.Result.Errors.First());
+        }
+
+        [ApiRoute("Users/{userId}/")]
+        [HttpGet]
+        [ApiAuthentication]
+        public virtual HttpResponseMessage GetUserInformation(string userId)
+        {
+            var userInformation = userRetriever.RetrieveUserInformation(userId, CurrentUser);
+            var userInformationMessage = this.transformer.Transform<UserInformation, UserInformationMessage>(userInformation);
+            return Request.CreateResponse(HttpStatusCode.OK, userInformationMessage);
         }
     }
 }

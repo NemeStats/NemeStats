@@ -10,7 +10,7 @@ using UI.Attributes;
 
 namespace UI.Areas.Api.Controllers
 {
-    public class GameDefinitionsController : ApiController
+    public class GameDefinitionsController : ApiControllerBase
     {
         private readonly IGameDefinitionRetriever gameDefinitionRetriever;
         private readonly IGameDefinitionSaver gameDefinitionSaver;
@@ -49,15 +49,13 @@ namespace UI.Areas.Api.Controllers
         [HttpPost]
         public virtual HttpResponseMessage SaveNewGameDefinition([FromBody]NewGameDefinitionMessage newGameDefinitionMessage, [FromUri]int gamingGroupId)
         {
-            var applicationUser = ActionContext.ActionArguments[ApiAuthenticationAttribute.ACTION_ARGUMENT_APPLICATION_USER] as ApplicationUser;
-
             var gameDefinition = new GameDefinition
             {
                 BoardGameGeekObjectId = newGameDefinitionMessage.BoardGameGeekObjectId,
                 Name = newGameDefinitionMessage.GameDefinitionName
             };
 
-            var newGameDefinition = gameDefinitionSaver.Save(gameDefinition, applicationUser);
+            var newGameDefinition = gameDefinitionSaver.Save(gameDefinition, CurrentUser);
 
             var newlyCreatedGameDefinitionMessage = new NewlyCreatedGameDefinitionMessage
             {
@@ -86,9 +84,7 @@ namespace UI.Areas.Api.Controllers
                 GameDefinitionId = gameDefinitionId
             };
 
-            var applicationUser = ActionContext.ActionArguments[ApiAuthenticationAttribute.ACTION_ARGUMENT_APPLICATION_USER] as ApplicationUser;
-
-            gameDefinitionSaver.UpdateGameDefinition(gameDefinitionUpdateRequest, applicationUser);
+            gameDefinitionSaver.UpdateGameDefinition(gameDefinitionUpdateRequest, CurrentUser);
 
             return Request.CreateResponse(HttpStatusCode.NoContent);
         }

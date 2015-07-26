@@ -16,17 +16,16 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 using AutoMapper;
+using BusinessLogic.Logic.GamingGroups;
 using BusinessLogic.Models;
 using BusinessLogic.Models.GamingGroups;
 using BusinessLogic.Models.PlayedGames;
 using BusinessLogic.Models.Players;
 using BusinessLogic.Models.User;
-using Microsoft.Ajax.Utilities;
 using UI.Areas.Api.Models;
 using UI.Models;
 using UI.Models.GameDefinitionModels;
 using UI.Models.GamingGroup;
-using UI.Models.PlayedGame;
 using UI.Models.Players;
 
 namespace UI.Transformations
@@ -46,6 +45,9 @@ namespace UI.Transformations
                   .ForMember(x => x.DatePlayed, opt => opt.MapFrom(src => src.DatePlayed.ToString("yyyy-MM-dd")));
             Mapper.CreateMap<PlayerResult, PlayerGameResultMessage>(MemberList.Destination);
             Mapper.CreateMap<PlayerGameSummary, PlayerGameSummaryViewModel>(MemberList.Source);
+            Mapper.CreateMap<PlayerInfoForUser, PlayerInfoForUserMessage>(MemberList.Destination);
+            Mapper.CreateMap<GamingGroupInfoForUser, GamingGroupInfoForUserMessage>(MemberList.Destination);
+            Mapper.CreateMap<UserInformation, UserInformationMessage>(MemberList.Destination);
         }
     }
 }

@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Http;
 using System.Web.Http.Controllers;
 using System.Web.Http.Filters;
 using BusinessLogic.Exceptions;
@@ -37,18 +38,19 @@ namespace UI.Tests.UnitTests.AttributesTests
 
                 }
             };
+            context.Request.SetConfiguration(new HttpConfiguration());
         }
 
         [Test]
-        public async Task ItReturnsABadRequestIfTheExceptionIsAnEntityDoesNotExistException()
+        public async Task ItReturnsTheStatusCodeAndMessageIfItIsHandlingAnApiExceptionFilter()
         {
             var expectedException = new EntityDoesNotExistException(typeof(Player), "some id");
             context.Exception = expectedException;
 
             autoMocker.ClassUnderTest.OnException(context);
 
-            Assert.That(context.Response.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
-            Assert.That(await context.Response.Content.ReadAsStringAsync(), Is.EqualTo(expectedException.Message));
+            Assert.That(context.Response.StatusCode, Is.EqualTo(expectedException.StatusCode));
+            Assert.That(await context.Response.Content.ReadAsStringAsync(), Is.StringContaining(expectedException.Message));
         }
     }
 }

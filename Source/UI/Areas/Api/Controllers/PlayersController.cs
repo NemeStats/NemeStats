@@ -11,7 +11,7 @@ using UI.Attributes;
 
 namespace UI.Areas.Api.Controllers
 {
-    public class PlayersController : ApiController
+    public class PlayersController : ApiControllerBase
     {
         private readonly IPlayerSaver playerSaver;
         private readonly IPlayerRetriever playerRetriever;
@@ -50,14 +50,12 @@ namespace UI.Areas.Api.Controllers
         [HttpPost]
         public virtual HttpResponseMessage SaveNewPlayer([FromBody]NewPlayerMessage newPlayerMessage, [FromUri]int gamingGroupId)
         {
-            var applicationUser = ActionContext.ActionArguments[ApiAuthenticationAttribute.ACTION_ARGUMENT_APPLICATION_USER] as ApplicationUser;
-
             var requestedPlayer = new Player
             {
                 Name = newPlayerMessage.PlayerName
             };
 
-            var actualNewlyCreatedPlayer = playerSaver.Save(requestedPlayer, applicationUser);
+            var actualNewlyCreatedPlayer = playerSaver.Save(requestedPlayer, CurrentUser);
 
             var newlyCreatedPlayerMessage = new NewlyCreatedPlayerMessage
             {
@@ -78,8 +76,6 @@ namespace UI.Areas.Api.Controllers
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "You must pass at least one valid parameter.");
             }
 
-            ApplicationUser applicationUser = ActionContext.ActionArguments[ApiAuthenticationAttribute.ACTION_ARGUMENT_APPLICATION_USER] as ApplicationUser;
-
             var requestedPlayer = new UpdatePlayerRequest
             {
                 PlayerId = playerId,
@@ -87,7 +83,7 @@ namespace UI.Areas.Api.Controllers
                 Name = updatePlayerMessage.PlayerName
             };
 
-            playerSaver.UpdatePlayer(requestedPlayer, applicationUser);
+            playerSaver.UpdatePlayer(requestedPlayer, CurrentUser);
 
             return Request.CreateResponse(HttpStatusCode.NoContent);
         }

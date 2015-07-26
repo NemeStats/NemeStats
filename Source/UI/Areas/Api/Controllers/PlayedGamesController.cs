@@ -19,7 +19,7 @@ using UI.Attributes;
 
 namespace UI.Areas.Api.Controllers
 {
-    public class PlayedGamesController : ApiController
+    public class PlayedGamesController : ApiControllerBase
     {
         public const int MAX_PLAYED_GAMES_TO_EXPORT = 1000;
 
@@ -126,11 +126,9 @@ namespace UI.Areas.Api.Controllers
         [ApiModelValidation]
         public HttpResponseMessage RecordPlayedGame([FromBody]PlayedGameMessage playedGameMessage, [FromUri]int gamingGroupId)
         {
-            var applicationUser = ActionContext.ActionArguments[ApiAuthenticationAttribute.ACTION_ARGUMENT_APPLICATION_USER] as ApplicationUser;
-
             var newlyCompletedGame = BuildNewlyPlayedGame(playedGameMessage);
 
-            PlayedGame playedGame = playedGameCreator.CreatePlayedGame(newlyCompletedGame, TransactionSource.RestApi, applicationUser);
+            PlayedGame playedGame = playedGameCreator.CreatePlayedGame(newlyCompletedGame, TransactionSource.RestApi, CurrentUser);
             var newlyRecordedPlayedGameMessage = new NewlyRecordedPlayedGameMessage
             {
                 PlayedGameId = playedGame.Id
@@ -163,9 +161,7 @@ namespace UI.Areas.Api.Controllers
         [ApiModelValidation]
         public HttpResponseMessage DeletePlayedGame(int playedGameID, int gamingGroupId)
         {
-            var applicationUser = ActionContext.ActionArguments[ApiAuthenticationAttribute.ACTION_ARGUMENT_APPLICATION_USER] as ApplicationUser;
-
-            playedGameDeleter.DeletePlayedGame(playedGameID, applicationUser);
+            playedGameDeleter.DeletePlayedGame(playedGameID, CurrentUser); 
 
             return Request.CreateResponse(HttpStatusCode.NoContent);
         }
