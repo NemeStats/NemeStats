@@ -17,30 +17,17 @@
 #endregion
 using System;
 using System.Linq;
+using System.Net;
 
 namespace BusinessLogic.Exceptions
 {
-    public class UnauthorizedEntityAccessException : UnauthorizedAccessException
+    public class UnauthorizedEntityAccessException : ApiFriendlyException 
     {
         internal const string EXCEPTION_MESSAGE_FORMAT = "User with Id '{0}' does not have access to entity of type '{1}' with Id '{2}";
 
-        private readonly string userId;
-        private readonly Type entityType;
-        private readonly object entityId;
-
-        public UnauthorizedEntityAccessException(string userId, Type entityType, object entityId)
+        public UnauthorizedEntityAccessException(string userId, Type entityType, object entityId) 
+            : base(string.Format(EXCEPTION_MESSAGE_FORMAT, userId, entityType, entityId), HttpStatusCode.Unauthorized)
         {
-            this.userId = userId;
-            this.entityType = entityType;
-            this.entityId = entityId;
-        }
-
-        public override string Message
-        {
-            get
-            {
-                return string.Format(EXCEPTION_MESSAGE_FORMAT, userId, entityType, entityId);
-            }
         }
     }
 }
