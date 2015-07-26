@@ -75,6 +75,9 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.UserRetrieverTests
         {
             const int EXPECTED_GAMING_GROUP_ID_1 = 1;
             const string EXPECTED_GAMING_GROUP_NAME_1 = "gaming group name 1";
+            const string EXPECTED_URL = "gaming group name 1";
+            const string EXPECTED_DESCRIPTION = "gaming group name 1";
+
             expectedApplicationUser = new ApplicationUser
             {
                 Id = "some application user id",
@@ -85,7 +88,9 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.UserRetrieverTests
                         GamingGroup = new GamingGroup
                         {
                             Id = EXPECTED_GAMING_GROUP_ID_1,
-                            Name = EXPECTED_GAMING_GROUP_NAME_1
+                            Name = EXPECTED_GAMING_GROUP_NAME_1,
+                            PublicGamingGroupWebsite = EXPECTED_URL,
+                            PublicDescription = EXPECTED_DESCRIPTION
                         }
                     },
                     new UserGamingGroup
@@ -107,6 +112,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.UserRetrieverTests
             var actualGamingGroupInfo = actualResult.GamingGroups[0];
             Assert.That(actualGamingGroupInfo.GamingGroupId, Is.EqualTo(EXPECTED_GAMING_GROUP_ID_1));
             Assert.That(actualGamingGroupInfo.GamingGroupName, Is.EqualTo(EXPECTED_GAMING_GROUP_NAME_1));
+            Assert.That(actualGamingGroupInfo.GamingGroupPublicUrl, Is.EqualTo(EXPECTED_URL));
+            Assert.That(actualGamingGroupInfo.GamingGroupPublicDescription, Is.EqualTo(EXPECTED_DESCRIPTION));
             Assert.That(actualResult.UserId, Is.EqualTo(expectedApplicationUser.Id));
         }
 
@@ -114,7 +121,9 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.UserRetrieverTests
         public void It_Sets_The_Player_Information()
         {
             const int EXPECTED_PLAYER_ID_1 = 1;
-            const string EXPECTED_PLAYER_NAME_1 = "player name 1"; 
+            const string EXPECTED_PLAYER_NAME_1 = "player name 1";
+            const int EXPECTED_GAMING_GROUP_ID_1 = 2;
+
             expectedApplicationUser = new ApplicationUser
             {
                 Id = "some application user id",
@@ -130,7 +139,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.UserRetrieverTests
                     new Player
                     {
                         Id = EXPECTED_PLAYER_ID_1,
-                        Name = EXPECTED_PLAYER_NAME_1
+                        Name = EXPECTED_PLAYER_NAME_1,
+                        GamingGroupId = EXPECTED_GAMING_GROUP_ID_1 
                     },
                     new Player()
                 }
@@ -147,6 +157,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.UserRetrieverTests
             var actualPlayer = actualResult.Players[0];
             Assert.That(actualPlayer.PlayerId, Is.EqualTo(EXPECTED_PLAYER_ID_1));
             Assert.That(actualPlayer.PlayerName, Is.EqualTo(EXPECTED_PLAYER_NAME_1));
+            Assert.That(actualPlayer.GamingGroupId, Is.EqualTo(EXPECTED_GAMING_GROUP_ID_1));
         }
     }
 }

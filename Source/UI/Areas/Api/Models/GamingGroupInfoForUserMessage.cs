@@ -9,5 +9,7 @@ namespace UI.Areas.Api.Models
     {
         public int GamingGroupId { get; set; }
         public string GamingGroupName { get; set; }
+        public string GamingGroupPublicUrl { get; set; }
+        public string GamingGroupPublicDescription { get; set; }
     }
 }

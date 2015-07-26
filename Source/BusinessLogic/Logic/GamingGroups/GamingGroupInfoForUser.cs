@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 
 namespace BusinessLogic.Logic.GamingGroups
 {
@@ -9,5 +6,7 @@ namespace BusinessLogic.Logic.GamingGroups
     {
         public int GamingGroupId { get; set; }
         public string GamingGroupName { get; set; }
+        public string GamingGroupPublicUrl { get; set; }
+        public string GamingGroupPublicDescription { get; set; }
     }
 }

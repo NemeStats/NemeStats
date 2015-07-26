@@ -33,12 +33,15 @@ namespace BusinessLogic.Logic.Users
                                 GamingGroups = user.UserGamingGroups.Select(userGamingGroup => new GamingGroupInfoForUser
                                 {
                                     GamingGroupId = userGamingGroup.GamingGroup.Id,
-                                    GamingGroupName = userGamingGroup.GamingGroup.Name
+                                    GamingGroupName = userGamingGroup.GamingGroup.Name,
+                                    GamingGroupPublicDescription = userGamingGroup.GamingGroup.PublicDescription,
+                                    GamingGroupPublicUrl = userGamingGroup.GamingGroup.PublicGamingGroupWebsite
                                 }).ToList(),
                                 Players = user.Players.Select(player => new PlayerInfoForUser
                                 {
                                     PlayerId = player.Id,
-                                    PlayerName = player.Name
+                                    PlayerName = player.Name,
+                                    GamingGroupId = player.GamingGroupId
                                 }).ToList()
                               }).First();
         }

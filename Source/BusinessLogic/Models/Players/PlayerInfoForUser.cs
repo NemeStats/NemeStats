@@ -9,5 +9,6 @@ namespace BusinessLogic.Models.Players
     {
         public int PlayerId { get; set; }
         public string PlayerName { get; set; }
+        public int GamingGroupId { get; set; }
     }
 }
