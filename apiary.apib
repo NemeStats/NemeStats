@@ -97,7 +97,7 @@ sent to the email address of the new User.
         the same name of the newly created User.
         + gamingGroupId : 6326 (number, required) - The NemeStats unique identifier of the Gaming Group that was created as part
         of the User registration. The new User and Player are automatically placed in this Gaming Group.
-        This id will be important for subsequent requests to the API and should definitely be stored
+        This id wiall be important for subsequent requests to the API and should definitely be stored
         client-side.
         + gamingGroupName : some username's Gaming Group (string, required) - The name of the newly created Gaming Group.
         + authenticationToken : `6ce40b88-d366-4c5d-b60d-cfbd9107bcd9` (string, required) - The token that should be sent in the X\-Auth\-Token request header on
@@ -130,6 +130,63 @@ sent to the email address of the new User.
 
                 {
                     "message" : "Email 'someemailthatisalreadytaken@mailinator.com' is already taken."
+                }
+
+## Get User Information [GET /Users/{userId}] 
+Retrieve basic information for a given User. This service is secured so that only an X-Auth-Token for the requested User
+will return a valid response.
+
++ Parameters
+    + userId : some guid user id (string, required) - The NemeStats unique identifier for the User.
+    
++ Request ValidRequest (application/json)
+    + Headers
+            
+            X-Auth-Token: the token for the requested user
+            
++ Response 200 (application/json)
+
+                {
+                    "userName" : "sparklepants",
+                    "emailAddress" : "sparklepants@mailinator.com",
+                    "gamingGroups" : [ 
+                        {
+                            "gamingGroupId" : "209",
+                            "gamingGroupName" : "sparklepants's Gaming Group",
+                            "gamingGroupPublicDescription" : "This group was created to record games we play as a family on the weekends.",
+                            "linkedPlayerId" : "51509"
+                        },
+                        {
+                            "gamingGroupId" : "225",
+                            "gamingGroupName" : "Weekend Warriors",
+                            "gamingGroupPublicDescription" : "We are the Weekend Warriors and we like to play Magic the Gathering, Dominion, Star Realms, and other deck-building games. We play on the weekends at Dominic's Gaming House in downtown Mumbai. Email us at dgh@mailinator.com for details.",
+                            "gamingGroupPublicUrl" : "https://dghmumbai.com",
+                            "linkedPlayerId" : "53510"
+                        }
+                        ],
+                    "players" : [
+                    {
+                      "playerId": 1569,
+                      "playerName": "sparklepants",
+                      "gamingGroupId": 209
+                    },
+                    {
+                      "playerId": 1995,
+                      "playerName": "sparklepants",
+                      "gamingGroupId": 225
+                    }
+                }
+
++ Response 400 (application/json)
+
+                {
+                    "message" : "This action requires an X-Auth-Token header."
+                }
+
++ Response 401 (application/json)
+
+                {
+                    "message" : "Invalid X-Auth-Token"
                 }
 
 # User Session [/UserSessions/]
@@ -485,6 +542,7 @@ Retrieve a list of all Players in the given Gaming Group.
                             "playerName" : "The Destroyer",
                             "playerId" : 111,
                             "active" : "true",
+                            "currentNemesisPlayerId" : null
                         },
                         {
                             "playerName" : "Herb",
@@ -495,7 +553,8 @@ Retrieve a list of all Players in the given Gaming Group.
                         {
                             "playerName" : "Marvin",
                             "playerId" : 745,
-                            "active" : "false"
+                            "active" : "false",
+                            "currentNemesisPlayerId" : null
                         }
                     ]
                 }
@@ -545,7 +604,7 @@ This service will create a new Player in the specified Gaming Group.
                 }               
 
                 
-+ Response 400 (application/json)
++ Response 409 (application/json)
 
                 {
                     "message" : "A Player with name 'Some Player Name That Already Exists In The Gaming Group' already exists in this Gaming Group. The existing playerId is '15490'."
@@ -708,6 +767,12 @@ This service will create a new Game Definition in the specified Gaming Group.
                   "gameDefinitionId" : 105156
                 }
                 
++ Response 409 (application/json)
+
+                {
+                  "message" : "A Game Definition with name 'Monopoly (1933)' already exists in this Gaming Group."
+                }
+                
 ## Update an existing Game Definition [PUT /GamingGroups/{gamingGroupId}/GameDefinitions/{gameDefinitionId}/]
 This service will update a given Player in the given Gaming Group.
 
@@ -764,5 +829,5 @@ This service will update a given Player in the given Gaming Group.
 + Response 404 (application/json)
 
                 {
-                    "message" : "A Game Definition with playerId '87658' does not exist in this Gaming Group."
+                    "message" : "A Game Definition with gameDefinitionId '87658' does not exist in this Gaming Group."
                 } 
