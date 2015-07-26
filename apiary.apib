@@ -132,7 +132,7 @@ sent to the email address of the new User.
                     "message" : "Email 'someemailthatisalreadytaken@mailinator.com' is already taken."
                 }
 
-## Get Metadata for a given User [GET /Users/{userId}] 
+## Get User Information [GET /Users/{userId}] 
 Retrieve basic information for a given User. This service is secured so that only an X-Auth-Token for the requested User
 will return a valid response.
 
@@ -149,8 +149,8 @@ will return a valid response.
                 {
                     "userName" : "sparklepants",
                     "emailAddress" : "sparklepants@mailinator.com",
-                    "gamingGroups" : 
-                        [ {
+                    "gamingGroups" : [ 
+                        {
                             "gamingGroupId" : "209",
                             "gamingGroupName" : "sparklepants's Gaming Group",
                             "gamingGroupPublicDescription" : "This group was created to record games we play as a family on the weekends.",
@@ -163,7 +163,18 @@ will return a valid response.
                             "gamingGroupPublicUrl" : "https://dghmumbai.com",
                             "linkedPlayerId" : "53510"
                         }
-                        ]
+                        ],
+                    "players" : [
+                    {
+                      "playerId": 1569,
+                      "playerName": "sparklepants",
+                      "gamingGroupId": 209
+                    },
+                    {
+                      "playerId": 1995,
+                      "playerName": "sparklepants",
+                      "gamingGroupId": 225
+                    }
                 }
 
 + Response 400 (application/json)
