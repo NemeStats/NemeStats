@@ -15,11 +15,11 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
-using System;
+
 using System.Collections.Generic;
 using System.Linq;
-using BusinessLogic.Models.Games;
 using UI.Models.PlayedGame;
+using UI.Models.Players;
 
 namespace UI.Models.GameDefinitionModels
 {
@@ -28,9 +28,11 @@ namespace UI.Models.GameDefinitionModels
         public GameDefinitionDetailsViewModel()
         {
             PlayedGames = new List<PlayedGameDetailsViewModel>();
+            PlayersSummary = new PlayersSummaryViewModel();
         }
 
         public IList<PlayedGameDetailsViewModel> PlayedGames { get; set; }
         public string PlayedGamesPanelTitle { get; set; }
+        public PlayersSummaryViewModel PlayersSummary { get; set; }
     }
 }

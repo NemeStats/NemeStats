@@ -24,6 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UI.Models;
+using UI.Models.Badges;
 using UI.Models.PlayedGame;
 using UI.Models.Players;
 
@@ -89,23 +90,36 @@ namespace UI.Transformations.PlayerTransformations
 
         private static void PopulatePlayerVersusPlayersViewModel(PlayerDetails playerDetails, PlayerDetailsViewModel playerDetailsViewModel)
         {
-            var playerVersusPlayers = new PlayerVersusPlayersViewModel();
+            var playerVersusPlayers = new PlayersSummaryViewModel
+            {
+                WinLossHeader = "Win - Loss Record vs. Player"
+            };
 
             foreach (var playerVersusPlayerStatistics in playerDetails.PlayerVersusPlayersStatistics)
             {
                 var winPercentage = GetWinPercentage(playerVersusPlayerStatistics);
 
-                playerVersusPlayers.OpposingPlayers.Add(new OpposingPlayerViewModel
+                var playerSummaryViewModel = new PlayerSummaryViewModel
                 {
                     Name = playerVersusPlayerStatistics.OpposingPlayerName,
                     PlayerId = playerVersusPlayerStatistics.OpposingPlayerId,
-                    NumberOfGamesWonVersusThisPlayer = playerVersusPlayerStatistics.NumberOfGamesWonVersusThisPlayer,
-                    NumberOfGamesLostVersusThisPlayer = playerVersusPlayerStatistics.NumberOfGamesLostVersusThisPlayer,
-                    WinPercentageVersusThisPlayer = (int)winPercentage,
-                    IsNemesis = (playerDetails.CurrentNemesis != null 
-                        && playerDetails.CurrentNemesis.NemesisPlayerId == playerVersusPlayerStatistics.OpposingPlayerId),
-                    IsMinion = playerDetails.Minions.Any(x => x.Id == playerVersusPlayerStatistics.OpposingPlayerId)
-                });
+                    GamesWon = playerVersusPlayerStatistics.NumberOfGamesWonVersusThisPlayer,
+                    GamesLost = playerVersusPlayerStatistics.NumberOfGamesLostVersusThisPlayer,
+                    WinPercentage = (int)winPercentage
+                };
+
+                if (playerDetails.CurrentNemesis != null
+                    && playerDetails.CurrentNemesis.NemesisPlayerId == playerVersusPlayerStatistics.OpposingPlayerId)
+                {
+                    playerSummaryViewModel.SpecialBadgeTypes.Add(new NemesisBadgeViewModel());   
+                }
+
+                if (playerDetails.Minions.Any(x => x.Id == playerVersusPlayerStatistics.OpposingPlayerId))
+                {
+                    playerSummaryViewModel.SpecialBadgeTypes.Add(new MinionBadgeViewModel());
+                }
+
+                playerVersusPlayers.PlayerSummaries.Add(playerSummaryViewModel);
             }
 
             playerDetailsViewModel.PlayerVersusPlayers = playerVersusPlayers;

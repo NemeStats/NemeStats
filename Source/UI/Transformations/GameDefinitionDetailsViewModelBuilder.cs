@@ -28,8 +28,6 @@ namespace UI.Transformations
 {
     public class GameDefinitionDetailsViewModelBuilder : IGameDefinitionDetailsViewModelBuilder
     {
-        //TODO Discuss with Tosho. How do I avoid duplicating this logic? If I call existing GameDefinitionSummaryViewModelBuilder
-        //then I get back a GameDefinitionSummaryViewModel, not a GameDefinitionDetailsViewModel
         internal IPlayedGameDetailsViewModelBuilder playedGameDetailsViewModelBuilder;
 
         public GameDefinitionDetailsViewModelBuilder(IPlayedGameDetailsViewModelBuilder playedGameDetailsViewModelBuilder)

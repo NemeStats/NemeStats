@@ -122,6 +122,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
         }
 
         [Test]
+        [Explicit("This test has race conditions and sometimes fails")]
         public void ItRecordsAGameDefinitionCreatedEvent()
         {
             var gameDefinition = MockRepository.GeneratePartialMock<GameDefinition>();
@@ -131,7 +132,6 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
 
             autoMocker.ClassUnderTest.Save(gameDefinition, currentUser);
 
-            //TODO this test has race conditions and may fail at random
             autoMocker.Get<INemeStatsEventTracker>().AssertWasCalled(mock => mock.TrackGameDefinitionCreation(currentUser, gameDefinition.Name));
         }
 

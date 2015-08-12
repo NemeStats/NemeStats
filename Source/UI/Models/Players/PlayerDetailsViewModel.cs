@@ -49,7 +49,7 @@ namespace UI.Models.Players
         public string GamingGroupName { get; set; }
         public int GamingGroupId { get; set; }
         public string MinionBraggingTweetUrl { get; set; }
-        public PlayerVersusPlayersViewModel PlayerVersusPlayers { get; set; }
+        public PlayersSummaryViewModel PlayerVersusPlayers { get; set; }
         public int TotalGamesWon { get; set; }
         public int TotalGamesLost { get; set; }
         public int WinPercentage { get; set; }

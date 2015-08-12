@@ -1,0 +1,49 @@
+﻿@model UI.Models.Players.PlayersSummaryViewModel
+
+@{
+    Layout = null;
+}
+
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <h4>
+           Player Statistics For This Game
+        </h4>
+    </div>
+    <div class="panel-body">
+        <table class="table table-hover table-striped table-responsive">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Player Name</th>
+                    <th>@Model.WinLossHeader</th>
+                    <th>% Won</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (UI.Models.Players.PlayerSummaryViewModel playerSummary in Model.PlayerSummaries)
+                {
+                    <tr>
+                        <td>
+                            @foreach(var badge in playerSummary.SpecialBadgeTypes)
+                            {
+                                <i class="fa @badge.GetFontAwesomeCssClass()" data-container="body" data-toggle="popover" data-placement="right"
+                                   data-content="@badge.GetPopoverText()">
+                                </i>
+                            }
+                        </td>
+                        <td>
+                            @Html.ActionLink(playerSummary.Name, "Details", "Player", new { id = playerSummary.PlayerId }, new { })
+                        </td>
+                        <td>
+                            @string.Format("{0} - {1}", playerSummary.GamesWon, playerSummary.GamesLost)
+                        </td>
+                        <td>
+                            @playerSummary.WinPercentage
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

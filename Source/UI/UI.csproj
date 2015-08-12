@@ -328,6 +328,9 @@
     </Compile>
     <Compile Include="HtmlHelpers\MvcHtmlStringExtension.cs" />
     <Compile Include="HtmlHelpers\PlayedGameHelper.cs" />
+    <Compile Include="Models\Badges\BadgeBaseViewModel.cs" />
+    <Compile Include="Models\Badges\MinionBadgeViewModel.cs" />
+    <Compile Include="Models\Badges\NemesisBadgeViewModel.cs" />
     <Compile Include="Models\GameDefinitionModels\GameDefinitionSummaryViewModel.cs" />
     <Compile Include="Models\GameDefinitionModels\NewGameDefinitionViewModel.cs" />
     <Compile Include="Models\GamingGroup\GamingGroupPublicDetailsViewModel.cs" />
@@ -356,6 +359,9 @@
     <Compile Include="Models\Players\PlayerGameSummaryViewModel.cs" />
     <Compile Include="Models\Players\PlayerInvitationViewModel.cs" />
     <Compile Include="Models\Players\OpposingPlayerViewModel.cs" />
+    <Compile Include="Models\Players\PlayersSummaryViewModel.cs" />
+    <Compile Include="Models\Players\PlayerSummaryViewModel.cs" />
+    <Compile Include="Models\Players\SpecialBadgeTypeViewModel.cs" />
     <Compile Include="Models\Players\TopPlayerViewModel.cs" />
     <Compile Include="Models\Players\PlayerVersusPlayersViewModel.cs" />
     <Compile Include="Models\User\UserViewModel.cs" />
@@ -694,6 +700,7 @@
     <Content Include="Views\GamingGroup\UpdateGamingGroupName.cshtml" />
     <Content Include="Views\GamingGroup\Edit.cshtml" />
     <Content Include="Views\GamingGroup\_GamingGroupPublicDetailsPartial.cshtml" />
+    <Content Include="Views\Player\_PlayersSummaryPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Code\" />
