@@ -15,6 +15,8 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
+
+using System.Collections.Generic;
 using AutoMapper;
 using BusinessLogic.Logic.GamingGroups;
 using BusinessLogic.Models;
@@ -24,6 +26,7 @@ using BusinessLogic.Models.Players;
 using BusinessLogic.Models.User;
 using UI.Areas.Api.Models;
 using UI.Models;
+using UI.Models.Badges;
 using UI.Models.GameDefinitionModels;
 using UI.Models.GamingGroup;
 using UI.Models.Players;
@@ -48,6 +51,14 @@ namespace UI.Transformations
             Mapper.CreateMap<PlayerInfoForUser, PlayerInfoForUserMessage>(MemberList.Destination);
             Mapper.CreateMap<GamingGroupInfoForUser, GamingGroupInfoForUserMessage>(MemberList.Destination);
             Mapper.CreateMap<UserInformation, UserInformationMessage>(MemberList.Destination);
+            Mapper.CreateMap<PlayerWinRecord, PlayerSummaryViewModel>(MemberList.Destination)
+                  .ForMember(x => x.SpecialBadgeTypes,
+                             opt => opt.MapFrom(src => src.IsChampion
+                                                           ? new List<IBadgeBaseViewModel>
+                                                           {
+                                                               new MinionBadgeViewModel()
+                                                           }
+                                                           : new List<IBadgeBaseViewModel>()));
         }
     }
 }

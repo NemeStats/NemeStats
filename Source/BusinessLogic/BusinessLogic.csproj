@@ -420,6 +420,7 @@
     <Compile Include="Models\NullNemesis.cs" />
     <Compile Include="Models\Players\PlayerGameSummary.cs" />
     <Compile Include="Models\Players\PlayerVersusPlayerStatistics.cs" />
+    <Compile Include="Models\Players\PlayerWinRecord.cs" />
     <Compile Include="Models\Players\PlayerWithNemesis.cs" />
     <Compile Include="Models\Players\TopPlayer.cs" />
     <Compile Include="Models\Players\UpdatePlayerRequest.cs" />

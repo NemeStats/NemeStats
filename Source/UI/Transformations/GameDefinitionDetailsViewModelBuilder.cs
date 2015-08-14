@@ -15,24 +15,29 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
-using System;
+
 using System.Collections.Generic;
+using AutoMapper;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
+using BusinessLogic.Models.Players;
 using BusinessLogic.Models.User;
 using System.Linq;
 using UI.Models.GameDefinitionModels;
 using UI.Models.PlayedGame;
+using UI.Models.Players;
 
 namespace UI.Transformations
 {
     public class GameDefinitionDetailsViewModelBuilder : IGameDefinitionDetailsViewModelBuilder
     {
-        internal IPlayedGameDetailsViewModelBuilder playedGameDetailsViewModelBuilder;
+        private readonly IPlayedGameDetailsViewModelBuilder playedGameDetailsViewModelBuilder;
+        private readonly ITransformer transformer;
 
-        public GameDefinitionDetailsViewModelBuilder(IPlayedGameDetailsViewModelBuilder playedGameDetailsViewModelBuilder)
+        public GameDefinitionDetailsViewModelBuilder(IPlayedGameDetailsViewModelBuilder playedGameDetailsViewModelBuilder, ITransformer transformer)
         {
             this.playedGameDetailsViewModelBuilder = playedGameDetailsViewModelBuilder;
+            this.transformer = transformer;
         }
 
         public GameDefinitionDetailsViewModel Build(GameDefinitionSummary gameDefinitionSummary, ApplicationUser currentUser)
@@ -75,6 +80,13 @@ namespace UI.Transformations
                 viewModel.PreviousChampionName = gameDefinitionSummary.PreviousChampion.Player.Name;
                 viewModel.PreviousChampionPlayerId = gameDefinitionSummary.PreviousChampion.Player.Id;
             }
+
+            var playersSummaryViewModel = new PlayersSummaryViewModel
+            {
+                WinLossHeader = "Win - Loss Record",
+                PlayerSummaries = gameDefinitionSummary.PlayerWinRecords.Select(transformer.Transform<PlayerWinRecord, PlayerSummaryViewModel>).ToList()
+            };
+            viewModel.PlayersSummary = playersSummaryViewModel;
 
             return viewModel;
         }

@@ -15,16 +15,20 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
-using System;
+
+using AutoMapper;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
+using BusinessLogic.Models.Players;
 using BusinessLogic.Models.User;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System.Collections.Generic;
 using System.Linq;
+using StructureMap.AutoMocking;
 using UI.Models.GameDefinitionModels;
 using UI.Models.PlayedGame;
+using UI.Models.Players;
 using UI.Transformations;
 
 namespace UI.Tests.UnitTests.TransformationsTests
@@ -32,39 +36,42 @@ namespace UI.Tests.UnitTests.TransformationsTests
     [TestFixture]
     public class GameDefinitionDetailsViewModelBuilderTests
     {
-        protected GameDefinitionDetailsViewModelBuilder transformer;
-        protected IPlayedGameDetailsViewModelBuilder playedGameDetailsViewModelBuilder;
-        protected GameDefinitionSummary gameDefinitionSummary;
-        protected GameDefinitionDetailsViewModel viewModel;
-        protected PlayedGameDetailsViewModel playedGameDetailsViewModel1;
-        protected PlayedGameDetailsViewModel playedGameDetailsViewModel2;
-        protected ApplicationUser currentUser;
-        protected int gamingGroupid = 135;
-        protected Champion champion;
-        protected Champion previousChampion;
-        protected float championWinPercentage = 100;
-        protected int championNumberOfGames = 6;
-        protected int championNumberOfWins = 4;
-        protected string championName = "Champion Name";
-        protected int championPlayerId = 999;
-        protected string previousChampionName = "Previous Champion Name";
-        protected int previousChampionPlayerId = 998;
-        protected Player championPlayer;
-        protected Player previousChampionPlayer;
+        private RhinoAutoMocker<GameDefinitionDetailsViewModelBuilder> autoMocker; 
+        private GameDefinitionSummary gameDefinitionSummary;
+        private GameDefinitionDetailsViewModel viewModel;
+        private PlayedGameDetailsViewModel playedGameDetailsViewModel1;
+        private PlayedGameDetailsViewModel playedGameDetailsViewModel2;
+        private ApplicationUser currentUser;
+        private int gamingGroupid = 135;
+        private Champion champion;
+        private Champion previousChampion;
+        private float championWinPercentage = 100;
+        private int championNumberOfGames = 6;
+        private int championNumberOfWins = 4;
+        private string championName = "Champion Name";
+        private int championPlayerId = 999;
+        private string previousChampionName = "Previous Champion Name";
+        private int previousChampionPlayerId = 998;
+        private Player championPlayer;
+        private Player previousChampionPlayer;
+        private PlayerWinRecord playerWinRecord1;
+        private PlayerWinRecord playerWinRecord2;
+        private PlayerSummaryViewModel expectedPlayerSummary1;
+        private PlayerSummaryViewModel expectedPlayerSummary2;
 
         [TestFixtureSetUp]
         public void FixtureSetUp()
         {
-            playedGameDetailsViewModelBuilder = MockRepository.GenerateMock<IPlayedGameDetailsViewModelBuilder>();
-            transformer = new GameDefinitionDetailsViewModelBuilder(playedGameDetailsViewModelBuilder);            
+            autoMocker = new RhinoAutoMocker<GameDefinitionDetailsViewModelBuilder>();
+            autoMocker.PartialMockTheClassUnderTest();
 
             List<PlayedGame> playedGames = new List<PlayedGame>();
-            playedGames.Add(new PlayedGame()
-                {
+            playedGames.Add(new PlayedGame
+            {
                     Id = 10
                 });
             playedGameDetailsViewModel1 = new PlayedGameDetailsViewModel();
-            playedGames.Add(new PlayedGame()
+            playedGames.Add(new PlayedGame
             {
                 Id = 11
             });
@@ -90,7 +97,22 @@ namespace UI.Tests.UnitTests.TransformationsTests
             {
                 Player = previousChampionPlayer
             };
-            gameDefinitionSummary = new GameDefinitionSummary()
+            playerWinRecord1 = new PlayerWinRecord
+            {
+                GamesWon = 1,
+                GamesLost = 2,
+                Name = "player name",
+                WinPercentage = 33,
+                PlayerId = 3
+            };
+            playerWinRecord2 = new PlayerWinRecord();
+
+            autoMocker.Get<ITransformer>().Expect(mock => mock.Transform<PlayerWinRecord, PlayerSummaryViewModel>(playerWinRecord1))
+                       .Return(expectedPlayerSummary1);
+            autoMocker.Get<ITransformer>().Expect(mock => mock.Transform<PlayerWinRecord, PlayerSummaryViewModel>(playerWinRecord2))
+                 .Return(expectedPlayerSummary2); 
+
+            gameDefinitionSummary = new GameDefinitionSummary
             {
                 Id = 1,
                 Name = "game definition name",
@@ -100,18 +122,23 @@ namespace UI.Tests.UnitTests.TransformationsTests
                 PlayedGames = playedGames,
                 BoardGameGeekObjectId = 123,
                 Champion = champion,
-                PreviousChampion = previousChampion
+                PreviousChampion = previousChampion,
+                PlayerWinRecords = new List<PlayerWinRecord>
+                {
+                    playerWinRecord1,
+                    playerWinRecord2
+                } 
             };
-            currentUser = new ApplicationUser()
+            currentUser = new ApplicationUser
             {
                 CurrentGamingGroupId = gamingGroupid
             };
-            playedGameDetailsViewModelBuilder.Expect(mock => mock.Build(gameDefinitionSummary.PlayedGames[0], currentUser))
+            autoMocker.Get<IPlayedGameDetailsViewModelBuilder>().Expect(mock => mock.Build(gameDefinitionSummary.PlayedGames[0], currentUser))
                 .Return(playedGameDetailsViewModel1);
-            playedGameDetailsViewModelBuilder.Expect(mock => mock.Build(gameDefinitionSummary.PlayedGames[1], currentUser))
+            autoMocker.Get<IPlayedGameDetailsViewModelBuilder>().Expect(mock => mock.Build(gameDefinitionSummary.PlayedGames[1], currentUser))
                 .Return(playedGameDetailsViewModel2);
 
-            viewModel = transformer.Build(gameDefinitionSummary, currentUser);
+            viewModel = autoMocker.ClassUnderTest.Build(gameDefinitionSummary, currentUser);
         }
 
         [Test]
@@ -150,7 +177,7 @@ namespace UI.Tests.UnitTests.TransformationsTests
         {
             gameDefinitionSummary.PlayedGames = null;
 
-            GameDefinitionDetailsViewModel actualViewModel = transformer.Build(gameDefinitionSummary, currentUser);
+            GameDefinitionDetailsViewModel actualViewModel = autoMocker.ClassUnderTest.Build(gameDefinitionSummary, currentUser);
 
             Assert.AreEqual(new List<PlayedGameDetailsViewModel>(), actualViewModel.PlayedGames);
         }
@@ -182,16 +209,14 @@ namespace UI.Tests.UnitTests.TransformationsTests
         [Test]
         public void TheUserCanEditViewModelIfTheyShareGamingGroups()
         {
-            GameDefinitionDetailsViewModel actualViewModel = transformer.Build(gameDefinitionSummary, currentUser);
-
-            Assert.True(actualViewModel.UserCanEdit);
+            Assert.True(viewModel.UserCanEdit);
         }
 
         [Test]
         public void TheUserCanNotEditViewModelIfTheyDoNotShareGamingGroups()
         {
             currentUser.CurrentGamingGroupId = -1;
-            GameDefinitionDetailsViewModel actualViewModel = transformer.Build(gameDefinitionSummary, currentUser);
+            GameDefinitionDetailsViewModel actualViewModel = autoMocker.ClassUnderTest.Build(gameDefinitionSummary, currentUser);
 
             Assert.False(actualViewModel.UserCanEdit);
         }
@@ -199,7 +224,7 @@ namespace UI.Tests.UnitTests.TransformationsTests
         [Test]
         public void TheUserCanNotEditViewModelIfTheUserIsUnknown()
         {
-            GameDefinitionDetailsViewModel actualViewModel = transformer.Build(gameDefinitionSummary, null);
+            GameDefinitionDetailsViewModel actualViewModel = autoMocker.ClassUnderTest.Build(gameDefinitionSummary, null);
 
             Assert.False(actualViewModel.UserCanEdit);
         }
@@ -207,54 +232,65 @@ namespace UI.Tests.UnitTests.TransformationsTests
         [Test]
         public void ItSetsTheChampionNameWhenThereIsAChampion()
         {
-            var actualViewModel = transformer.Build(gameDefinitionSummary, currentUser);
-
-            Assert.That(actualViewModel.ChampionName, Is.EqualTo(championName));
+            Assert.That(viewModel.ChampionName, Is.EqualTo(championName));
         }
 
         [Test]
         public void ItSetsTheChampionWinPercentageWhenThereIsAChampion()
         {
-            var actualViewModel = transformer.Build(gameDefinitionSummary, currentUser);
-
-            Assert.That(actualViewModel.WinPercentage, Is.EqualTo(championWinPercentage));
+            Assert.That(viewModel.WinPercentage, Is.EqualTo(championWinPercentage));
         }
 
         [Test]
         public void ItSetsTheChampionGamesPlayedWhenThereIsAChampion()
         {
-            var actualViewModel = transformer.Build(gameDefinitionSummary, currentUser);
-            Assert.That(actualViewModel.NumberOfGamesPlayed, Is.EqualTo(championNumberOfGames));
+            Assert.That(viewModel.NumberOfGamesPlayed, Is.EqualTo(championNumberOfGames));
         }
 
         [Test]
         public void ItSetsTheChampionGamesWonWhenThereIsAChampion()
         {
-            var actualViewModel = transformer.Build(gameDefinitionSummary, currentUser);
-            Assert.That(actualViewModel.NumberOfWins, Is.EqualTo(championNumberOfWins));
+            Assert.That(viewModel.NumberOfWins, Is.EqualTo(championNumberOfWins));
         }
 
         [Test]
         public void ItSetsTheChampionPlayerIdWhenThereIsAChampion()
         {
-            var actualViewModel = transformer.Build(gameDefinitionSummary, currentUser);
-            Assert.That(actualViewModel.ChampionPlayerId, Is.EqualTo(championPlayerId));
+            Assert.That(viewModel.ChampionPlayerId, Is.EqualTo(championPlayerId));
         }
 
         [Test]
         public void ItSetsThePreviousChampionNameWhenThereIsAPreviousChampion()
         {
-            var actualViewModel = transformer.Build(gameDefinitionSummary, currentUser);
-
-            Assert.That(actualViewModel.PreviousChampionName, Is.EqualTo(previousChampionName));
+            Assert.That(viewModel.PreviousChampionName, Is.EqualTo(previousChampionName));
         }
 
         [Test]
         public void ItSetsThePreviousChampionPlayerIdWhenThereIsAPreviousChampion()
         {
-            var actualViewModel = transformer.Build(gameDefinitionSummary, currentUser);
+            Assert.That(viewModel.PreviousChampionPlayerId, Is.EqualTo(previousChampionPlayerId));
+        }
 
-            Assert.That(actualViewModel.PreviousChampionPlayerId, Is.EqualTo(previousChampionPlayerId));
+        [Test]
+        public void ItSetsTheWinLossHeader()
+        {
+            Assert.That(viewModel.PlayersSummary.WinLossHeader, Is.EqualTo("Win - Loss Record"));
+        }
+
+        [Test]
+        public void ItBuildsThePlayerSummaryViewModels()
+        {
+            autoMocker.Get<ITransformer>().Expect(mock => mock.Transform<PlayerWinRecord, PlayerSummaryViewModel>(playerWinRecord1))
+                       .Return(expectedPlayerSummary1);
+            autoMocker.Get<ITransformer>().Expect(mock => mock.Transform<PlayerWinRecord, PlayerSummaryViewModel>(playerWinRecord2))
+                 .Return(expectedPlayerSummary2); 
+
+            var actualResult = autoMocker.ClassUnderTest.Build(gameDefinitionSummary, currentUser);
+
+            Assert.That(actualResult.PlayersSummary.PlayerSummaries.Count, Is.EqualTo(2));
+            Assert.That(actualResult.PlayersSummary.PlayerSummaries, Contains.Item(expectedPlayerSummary1));
+            Assert.That(actualResult.PlayersSummary.PlayerSummaries, Contains.Item(expectedPlayerSummary2));
         }
     }
 }
+ 

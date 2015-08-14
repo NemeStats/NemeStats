@@ -361,7 +361,6 @@
     <Compile Include="Models\Players\OpposingPlayerViewModel.cs" />
     <Compile Include="Models\Players\PlayersSummaryViewModel.cs" />
     <Compile Include="Models\Players\PlayerSummaryViewModel.cs" />
-    <Compile Include="Models\Players\SpecialBadgeTypeViewModel.cs" />
     <Compile Include="Models\Players\TopPlayerViewModel.cs" />
     <Compile Include="Models\Players\PlayerVersusPlayersViewModel.cs" />
     <Compile Include="Models\User\UserViewModel.cs" />

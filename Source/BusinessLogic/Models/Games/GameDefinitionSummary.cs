@@ -21,6 +21,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BusinessLogic.Models.Players;
 
 namespace BusinessLogic.Models.Games
 {
@@ -29,7 +30,7 @@ namespace BusinessLogic.Models.Games
     {
         public int TotalNumberOfGamesPlayed { get; set; }
         public string GamingGroupName { get; set; }
-        //internal GameDefinition GameDefinition { get; set; }
         public Uri BoardGameGeekUri { get; set; }
+        public IList<PlayerWinRecord> PlayerWinRecords { get; set; }
     }
 }
