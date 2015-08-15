@@ -37,12 +37,12 @@ namespace BusinessLogic.Models.Players
         public string GamingGroupName { get; set; }
 
         public PlayerStatistics PlayerStats { get; set; }
-        public List<PlayerGameResult> PlayerGameResults { get; set; }
+        public IList<PlayerGameResult> PlayerGameResults { get; set; }
         public Nemesis CurrentNemesis { get; set; }
         public Nemesis PreviousNemesis { get; set; }
-        public List<Player> Minions { get; set; }
-        public List<PlayerGameSummary> PlayerGameSummaries { get; set; }
-        public List<Champion> ChampionedGames { get; set; }
-        public List<PlayerVersusPlayerStatistics> PlayerVersusPlayersStatistics { get; set; }
+        public IList<Player> Minions { get; set; }
+        public IList<PlayerGameSummary> PlayerGameSummaries { get; set; }
+        public IList<Champion> ChampionedGames { get; set; }
+        public IList<PlayerVersusPlayerStatistics> PlayerVersusPlayersStatistics { get; set; }
     }
 }

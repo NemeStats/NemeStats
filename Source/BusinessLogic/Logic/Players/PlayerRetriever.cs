@@ -93,7 +93,7 @@ namespace BusinessLogic.Logic.Players
 
             List<Player> minions = GetMinions(returnPlayer.Id);
 
-            List<PlayerGameSummary> playerGameSummaries = playerRepository.GetPlayerGameSummaries(playerId);
+            IList<PlayerGameSummary> playerGameSummaries = playerRepository.GetPlayerGameSummaries(playerId);
 
             List<Champion> championedGames = GetChampionedGames(returnPlayer.Id);
 

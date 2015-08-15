@@ -18,6 +18,7 @@
 using System.Data.Entity;
 using System.Net.Sockets;
 using BusinessLogic.DataAccess;
+using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.Logic.BoardGameGeek;
 using BusinessLogic.Models;
 using System.Collections.Generic;
@@ -28,11 +29,13 @@ namespace BusinessLogic.Logic.GameDefinitions
 {
     public class GameDefinitionRetriever : IGameDefinitionRetriever
     {
-        protected IDataContext dataContext;
+        private readonly IDataContext dataContext;
+        private readonly IPlayerRepository playerRepository;  
 
-        public GameDefinitionRetriever(IDataContext dataContext)
+        public GameDefinitionRetriever(IDataContext dataContext, IPlayerRepository playerRepository)
         {
             this.dataContext = dataContext;
+            this.playerRepository = playerRepository;
         }
 
         public virtual IList<GameDefinitionSummary> GetAllGameDefinitions(int gamingGroupId)
@@ -121,6 +124,7 @@ namespace BusinessLogic.Logic.GameDefinitions
             IList<PlayedGame> playedGames = AddPlayedGamesToTheGameDefinition(numberOfPlayedGamesToRetrieve, gameDefinitionSummary);
             IList<int> distinctPlayerIds = AddPlayerGameResultsToEachPlayedGame(playedGames);
             AddPlayersToPlayerGameResults(playedGames, distinctPlayerIds);
+            gameDefinitionSummary.PlayerWinRecords = playerRepository.GetPlayerWinRecords(id);
 
             return gameDefinitionSummary;
         }

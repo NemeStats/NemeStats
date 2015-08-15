@@ -17,6 +17,7 @@
 #endregion
 using System.Data.Entity;
 using BusinessLogic.DataAccess;
+using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.Logic.GameDefinitions;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
@@ -39,10 +40,10 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.GameDefinitionsTests.G
         {
             using(NemeStatsDataContext dataContext = new NemeStatsDataContext())
             {
-                retriever = new GameDefinitionRetriever(dataContext);
+                var playerRepository = new EntityFrameworkPlayerRepository(dataContext);
+                retriever = new GameDefinitionRetriever(dataContext, playerRepository);
                 this.actualGameDefinitionSummaries = retriever.GetAllGameDefinitions(testUserWithDefaultGamingGroup.CurrentGamingGroupId.Value);
             }
-            
         }
 
         [Test]
@@ -86,7 +87,9 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.GameDefinitionsTests.G
         {
             using (NemeStatsDataContext dataContext = new NemeStatsDataContext())
             {
-                retriever = new GameDefinitionRetriever(dataContext);
+                var playerRepository = new EntityFrameworkPlayerRepository(dataContext);
+
+                retriever = new GameDefinitionRetriever(dataContext, playerRepository);
                 IList<GameDefinitionSummary> gameDefinitionSummaries = retriever.GetAllGameDefinitions(1);
 
                 foreach (GameDefinitionSummary summary in gameDefinitionSummaries)

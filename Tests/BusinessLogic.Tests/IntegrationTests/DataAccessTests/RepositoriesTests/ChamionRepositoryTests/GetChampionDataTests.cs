@@ -16,6 +16,7 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 using BusinessLogic.DataAccess;
+using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.Logic.GameDefinitions;
 using BusinessLogic.Models;
 using NUnit.Framework;
@@ -39,7 +40,8 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
             base.FixtureSetUp();
 
             dataContext = new NemeStatsDataContext();
-            gameDefinitionRetriever = new GameDefinitionRetriever(dataContext);
+            var playerRepository = new EntityFrameworkPlayerRepository(dataContext);
+            gameDefinitionRetriever = new GameDefinitionRetriever(dataContext, playerRepository);
 
             gameDefinition = gameDefinitionRetriever.GetGameDefinitionDetails(testGameDefinitionWithOtherGamingGroupId.Id,
                 0);

@@ -502,7 +502,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
             var expectedPlayer = playerDetails.PlayerVersusPlayersStatistics.First(x => x.OpposingPlayerId == normalPlayer.OpposingPlayerId);
             var actualPlayer = playerDetailsViewModel.PlayerVersusPlayers.PlayerSummaries.First(x => x.PlayerId == normalPlayer.OpposingPlayerId);
 
-            Assert.That(actualPlayer.Name,
+            Assert.That(actualPlayer.PlayerName,
                 Is.EqualTo(expectedPlayer.OpposingPlayerName));
         }
 

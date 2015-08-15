@@ -11,7 +11,7 @@ namespace UI.Models.Players
             SpecialBadgeTypes = new List<IBadgeBaseViewModel>();    
         }
 
-        public string Name { get; set; }
+        public string PlayerName { get; set; }
         public int PlayerId { get; set; }
         public int GamesWon { get; set; }
         public int GamesLost { get; set; }

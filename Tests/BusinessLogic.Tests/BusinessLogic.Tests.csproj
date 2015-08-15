@@ -211,7 +211,6 @@
     <Compile Include="UnitTests\LogicTests\GameDefinitionsTests\GameDefinitionSaverTests\SaveTests.cs" />
     <Compile Include="UnitTests\LogicTests\GameDefinitionsTests\GameDefinitionRetrieverTests\GameDefinitionRetrieverTestBase.cs" />
     <Compile Include="UnitTests\LogicTests\GameDefinitionsTests\GameDefinitionRetrieverTests\GetAllGameDefinitionsTests.cs" />
-    <Compile Include="UnitTests\LogicTests\GameDefinitionsTests\GameDefinitionRetrieverTests\GetGameDefinitionDetailsTests.cs" />
     <Compile Include="UnitTests\LogicTests\GamingGroupsTests\GamingGroupSaverTests\CreateNewGamingGroupTests.cs" />
     <Compile Include="UnitTests\LogicTests\GamingGroupsTests\GamingGroupRetrieverTests\GetGamingGroupDetailsTests.cs" />
     <Compile Include="UnitTests\LogicTests\GamingGroupsTests\GamingGroupSaverTests\GamingGroupSaverTestBase.cs" />

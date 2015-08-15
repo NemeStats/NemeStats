@@ -16,7 +16,6 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 
-using AutoMapper;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
 using BusinessLogic.Models.Players;
@@ -101,7 +100,7 @@ namespace UI.Tests.UnitTests.TransformationsTests
             {
                 GamesWon = 1,
                 GamesLost = 2,
-                Name = "player name",
+                PlayerName = "player name",
                 WinPercentage = 33,
                 PlayerId = 3
             };

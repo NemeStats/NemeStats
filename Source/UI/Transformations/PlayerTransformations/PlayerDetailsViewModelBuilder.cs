@@ -101,7 +101,7 @@ namespace UI.Transformations.PlayerTransformations
 
                 var playerSummaryViewModel = new PlayerSummaryViewModel
                 {
-                    Name = playerVersusPlayerStatistics.OpposingPlayerName,
+                    PlayerName = playerVersusPlayerStatistics.OpposingPlayerName,
                     PlayerId = playerVersusPlayerStatistics.OpposingPlayerId,
                     GamesWon = playerVersusPlayerStatistics.NumberOfGamesWonVersusThisPlayer,
                     GamesLost = playerVersusPlayerStatistics.NumberOfGamesLostVersusThisPlayer,

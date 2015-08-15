@@ -33,7 +33,7 @@
                             }
                         </td>
                         <td>
-                            @Html.ActionLink(playerSummary.Name, "Details", "Player", new { id = playerSummary.PlayerId }, new { })
+                            @Html.ActionLink(playerSummary.PlayerName, "Details", "Player", new { id = playerSummary.PlayerId }, new { })
                         </td>
                         <td>
                             @string.Format("{0} - {1}", playerSummary.GamesWon, playerSummary.GamesLost)

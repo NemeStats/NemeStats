@@ -24,7 +24,8 @@ namespace BusinessLogic.DataAccess.Repositories
     public interface IPlayerRepository
     {
         NemesisData GetNemesisData(int playerId);
-        List<PlayerGameSummary> GetPlayerGameSummaries(int playerId);
-        List<PlayerVersusPlayerStatistics> GetPlayerVersusPlayersStatistics(int playerId);
+        IList<PlayerGameSummary> GetPlayerGameSummaries(int playerId);
+        IList<PlayerVersusPlayerStatistics> GetPlayerVersusPlayersStatistics(int playerId);
+        IList<PlayerWinRecord> GetPlayerWinRecords(int gameDefinitionId);
     }
 }
