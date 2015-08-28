@@ -5,6 +5,7 @@ If you would like contribute to the NemeStats code base please follow the steps 
 * You'll have to create a file in the root of your UI project called PrivateAppSettings.config that has settings for keys that we don't want checked into source control. If you are serious about contributing something, we can send you this file to include locally. If you are just playing around then below is a version that should let you at least run the project.
 PrivateAppSettings.config example settings
 
+```
 <appSettings>
   <add key="Rollbar.AccessToken" value="f7d858b2d08a47b98f9ab19f9e27516c" />
   <add key="Rollbar.Environment" value="development" />
@@ -16,3 +17,4 @@ PrivateAppSettings.config example settings
   <add key="emailConfirmationCallbackUrl" value="https://localhost:44300/Account/ConfirmEmail" />
   <add key="authTokenSalt" value="A3BCDF34-BA8C-4A02-92CA-AAACDF7993F3"/>
 </appSettings>
+```
