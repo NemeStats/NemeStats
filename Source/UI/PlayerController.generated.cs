@@ -5,7 +5,8 @@
 
 // Make sure the compiler doesn't complain about missing Xml comments and CLS compliance
 // 0108: suppress "Foo hides inherited member Foo. Use the new keyword if hiding was intended." when a controller and its abstract parent are both processed
-#pragma warning disable 1591, 3008, 3009, 0108
+// 0114: suppress "Foo.BarController.Baz()' hides inherited member 'Qux.BarController.Baz()'. To make the current member override that implementation, add the override keyword. Otherwise add the new keyword." when an action (with an argument) overrides an action in a parent controller
+#pragma warning disable 1591, 3008, 3009, 0108, 0114
 #region T4MVC
 
 using System;
@@ -169,6 +170,7 @@ namespace UI.Controllers
             {
                 public readonly string _CreateOrUpdatePartial = "_CreateOrUpdatePartial";
                 public readonly string _PlayersPartial = "_PlayersPartial";
+                public readonly string _PlayersSummaryPartial = "_PlayersSummaryPartial";
                 public readonly string _PlayerVersusPlayersPartial = "_PlayerVersusPlayersPartial";
                 public readonly string _RecentNemesisChangesPartial = "_RecentNemesisChangesPartial";
                 public readonly string _TopPlayersPartial = "_TopPlayersPartial";
@@ -181,6 +183,7 @@ namespace UI.Controllers
             }
             public readonly string _CreateOrUpdatePartial = "~/Views/Player/_CreateOrUpdatePartial.cshtml";
             public readonly string _PlayersPartial = "~/Views/Player/_PlayersPartial.cshtml";
+            public readonly string _PlayersSummaryPartial = "~/Views/Player/_PlayersSummaryPartial.cshtml";
             public readonly string _PlayerVersusPlayersPartial = "~/Views/Player/_PlayerVersusPlayersPartial.cshtml";
             public readonly string _RecentNemesisChangesPartial = "~/Views/Player/_RecentNemesisChangesPartial.cshtml";
             public readonly string _TopPlayersPartial = "~/Views/Player/_TopPlayersPartial.cshtml";
@@ -323,4 +326,4 @@ namespace UI.Controllers
 }
 
 #endregion T4MVC
-#pragma warning restore 1591, 3008, 3009, 0108
+#pragma warning restore 1591, 3008, 3009, 0108, 0114
