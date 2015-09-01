@@ -65,5 +65,18 @@ namespace BusinessLogic.Models
                    && this.NumberOfGames == championToCompare.NumberOfGames
                    && this.NumberOfWins == championToCompare.NumberOfWins;
         }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hashCode = this.GameDefinitionId;
+                hashCode = (hashCode * 397) ^ this.PlayerId;
+                hashCode = (hashCode * 397) ^ this.WinPercentage.GetHashCode();
+                hashCode = (hashCode * 397) ^ this.NumberOfWins;
+                hashCode = (hashCode * 397) ^ this.NumberOfGames;
+                return hashCode;
+            }
+        }
     }
 }
