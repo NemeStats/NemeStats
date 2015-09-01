@@ -26,9 +26,9 @@ namespace UI.Areas.Api.Controllers
 
         [ApiRoute("GamingGroups/{gamingGroupId}/PlayerStats/{playerId}/")]
         [HttpGet]
-        public virtual HttpResponseMessage GetPlayerStats(int id)
+        public virtual HttpResponseMessage GetPlayerStats([FromUri] int gamingGroupid, [FromUri] int playerId)
         {
-            var playerStatistics = playerRetriever.GetPlayerStatistics(id);
+            var playerStatistics = playerRetriever.GetPlayerStatistics(playerId);
             var playerStatisticsMessage = transformer.Transform<PlayerStatistics, PlayerStatisticsMessage>(playerStatistics);
 
             return Request.CreateResponse(HttpStatusCode.OK, playerStatisticsMessage);
