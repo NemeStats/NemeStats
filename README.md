@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/nemestats/nemestats.png?label=ready&title=Ready)](https://waffle.io/nemestats/nemestats)
 NemeStats  [![Build status](https://ci.appveyor.com/api/projects/status/q5d26a5d8v7occ16?svg=true)](https://ci.appveyor.com/project/cracker4o/nemestats)
 ===============
 
