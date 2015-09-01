@@ -178,27 +178,6 @@ namespace BusinessLogic.Logic.Players
             playerStatistics.TotalGamesLost = gameDefinitionTotals.SummariesOfGameDefinitionTotals.Sum(x => x.GamesLost);
             playerStatistics.TotalGamesWon = gameDefinitionTotals.SummariesOfGameDefinitionTotals.Sum(x => x.GamesWon);
 
-            //var winsAndLosses = dataContext.GetQueryable<PlayerGameResult>()
-            //                               .Where(playerGameResult => playerGameResult.PlayerId == playerId)
-            //                               .GroupBy(playergameResults => playergameResults.GameRank == 1)
-            //                               .Select(group => new
-            //                               {
-            //                                   Winner = group.Key,
-            //                                   NumberOfGames = group.Count()
-            //                               }).ToList();
-            //playerStatistics.TotalGames = winsAndLosses.Sum(x => x.NumberOfGames);
-            //var winData = winsAndLosses.FirstOrDefault(x => x.Winner);
-            //if (winData != null)
-            //{
-            //    playerStatistics.TotalGamesWon = winData.NumberOfGames;
-            //}
-
-            //var lossData = winsAndLosses.FirstOrDefault(x => !x.Winner);
-            //if (lossData != null)
-            //{
-            //    playerStatistics.TotalGamesLost = lossData.NumberOfGames;
-            //}
-
             if (playerStatistics.TotalGames > 0)
             {
                 playerStatistics.WinPercentage = (int)((decimal)playerStatistics.TotalGamesWon / (playerStatistics.TotalGames) * 100);
