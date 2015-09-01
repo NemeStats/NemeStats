@@ -25,11 +25,35 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.Players
 
                 Assert.That(statistics.TotalGames, Is.EqualTo(0));
                 Assert.That(statistics.TotalGamesLost, Is.EqualTo(0));
-                Assert.That(statistics.TotalGames, Is.EqualTo(0));
                 Assert.That(statistics.TotalGamesWon, Is.EqualTo(0));
                 Assert.That(statistics.TotalPoints, Is.EqualTo(0));
                 Assert.That(statistics.WinPercentage, Is.EqualTo(0));
+                Assert.That(statistics.AveragePlayersPerGame, Is.EqualTo(0));
+                Assert.That(statistics.GameDefinitionTotals.SummariesOfGameDefinitionTotals.Count, Is.EqualTo(0));
             } 
         }
+
+        [Test]
+        public void ItReturnsTheCorrectStatisticsForAnUndefeatedPlayer()
+        {
+            using (IDataContext dataContext = new NemeStatsDataContext())
+            {
+                var playerRetriever = new PlayerRetriever(dataContext, new EntityFrameworkPlayerRepository(dataContext));
+
+                var statistics = playerRetriever.GetPlayerStatistics(testPlayer9UndefeatedWith5Games.Id);
+
+                Assert.That(statistics.TotalGames, Is.EqualTo(5));
+                Assert.That(statistics.TotalGamesLost, Is.EqualTo(0));
+                Assert.That(statistics.TotalGamesWon, Is.EqualTo(5));
+                Assert.That(statistics.WinPercentage, Is.EqualTo(100));
+
+                var summariesOfGameDefinitionTotals = statistics.GameDefinitionTotals.SummariesOfGameDefinitionTotals;
+                Assert.That(summariesOfGameDefinitionTotals.Count, Is.EqualTo(1));
+                var gameDefinitionTotal = summariesOfGameDefinitionTotals[0];
+                Assert.That(gameDefinitionTotal.GameDefinitionId, Is.EqualTo(anotherTestGameDefinitionWithOtherGamingGroupId.Id));
+
+            }  
+        }
+
     }
 }

@@ -7,6 +7,10 @@ namespace BusinessLogic.Models.Players
 {
     public class GameDefinitionTotals
     {
+        public GameDefinitionTotals()
+        {
+            SummariesOfGameDefinitionTotals = new List<GameDefinitionTotal>();
+        }
         public IList<GameDefinitionTotal> SummariesOfGameDefinitionTotals { get; set; }
     }
 }

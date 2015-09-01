@@ -10,6 +10,6 @@ namespace UI.Areas.Api.Models
         public int GameDefinitionId { get; set; }
         public string GameDefinitionName { get; set; }
         public int GamesWon { get; set; }
-        public int GamesPlayed { get; set; }
+        public int GamesLost { get; set; }
     }
 }

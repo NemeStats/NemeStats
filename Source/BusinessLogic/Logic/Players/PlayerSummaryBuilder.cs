@@ -16,6 +16,7 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 using BusinessLogic.DataAccess;
+using BusinessLogic.Logic.Utilities;
 using BusinessLogic.Models.Players;
 using System.Collections.Generic;
 using System.Data.Entity.Infrastructure;
@@ -49,14 +50,9 @@ namespace BusinessLogic.Logic.Players
             List<TopPlayer> topPlayers = data.ToList();
             //WinPercentage as it is originally pulled back from the query contains the number of games won and we have to
             //do the below math to switch it to a win %
-            topPlayers.ForEach(player => player.WinPercentage = CalculateWinPercentage(player.WinPercentage, player.TotalNumberOfGamesPlayed));
+            topPlayers.ForEach(player => player.WinPercentage = WinPercentageCalculator.CalculateWinPercentage(player.WinPercentage, player.TotalNumberOfGamesPlayed));
 
             return topPlayers;
-        }
-
-        internal virtual int CalculateWinPercentage(int totalGamesWon, int totalGamesPlayed)
-        {
-            return (int)(((float)totalGamesWon / (float)totalGamesPlayed) * 100);
         }
     }
 }

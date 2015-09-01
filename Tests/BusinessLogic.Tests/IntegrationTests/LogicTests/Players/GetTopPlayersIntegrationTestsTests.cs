@@ -69,16 +69,5 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.Players
             Assert.True(!string.IsNullOrWhiteSpace(firstResult.PlayerName));
             Assert.Greater(firstResult.PlayerId, 0);
         }
-
-        [Test]
-        public void ItCalculatesTheWinPercentageCorrectly()
-        {
-            int totalGamesPlayed = 100;
-            int totalGamesWon = 20;
-
-            int actualWinPercentage = playerSummaryBuilderImpl.CalculateWinPercentage(totalGamesWon, totalGamesPlayed);
-
-            Assert.AreEqual(20, actualWinPercentage);
-        }
     }
 }
