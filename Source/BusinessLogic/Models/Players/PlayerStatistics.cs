@@ -27,5 +27,6 @@ namespace BusinessLogic.Models.Players
         public int TotalGamesWon { get; set; }
         public int TotalGamesLost { get; set; }
         public int WinPercentage { get; set; }
+        public GameDefinitionTotals GameDefinitionTotals { get; set; }
     }
 }

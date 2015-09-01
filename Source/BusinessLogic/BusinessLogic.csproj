@@ -283,6 +283,8 @@
     <Compile Include="Models\PlayedGames\PlayedGameSearchResult.cs" />
     <Compile Include="Models\PlayedGames\PlayerResult.cs" />
     <Compile Include="Models\PlayedGames\WinnerTypesEnum.cs" />
+    <Compile Include="Models\Players\GameDefinitionTotal.cs" />
+    <Compile Include="Models\Players\GameDefinitionTotals.cs" />
     <Compile Include="Models\Players\PlayerInfoForUser.cs" />
     <Compile Include="Models\Players\PlayerInvitation.cs" />
     <Compile Include="Logic\Players\PlayerInviter.cs" />

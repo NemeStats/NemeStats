@@ -193,6 +193,7 @@
     <Compile Include="UnitTests\AreasTests\ApiTests\ControllersTests\PlayersControllerTests\GetPlayersTests.cs" />
     <Compile Include="UnitTests\AreasTests\ApiTests\ControllersTests\PlayersControllerTests\SaveNewPlayerTests.cs" />
     <Compile Include="UnitTests\AreasTests\ApiTests\ControllersTests\PlayersControllerTests\UpdatePlayerTests.cs" />
+    <Compile Include="UnitTests\AreasTests\ApiTests\ControllersTests\PlayerStatsControllerTests\GetPlayerStatsTests.cs" />
     <Compile Include="UnitTests\AreasTests\ApiTests\ControllersTests\UsersControllerTests.cs" />
     <Compile Include="UnitTests\AreasTests\ApiTests\ControllersTests\UserSessionsControllerTests.cs" />
     <Compile Include="UnitTests\AreasTests\ApiTests\ControllersTests\VotableFeaturesControllerTests.cs" />

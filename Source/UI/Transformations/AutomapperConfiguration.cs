@@ -59,6 +59,9 @@ namespace UI.Transformations
                                                                new MinionBadgeViewModel()
                                                            }
                                                            : new List<IBadgeBaseViewModel>()));
+            Mapper.CreateMap<GameDefinitionTotal, GameDefinitionTotalMessage>(MemberList.Destination);
+            Mapper.CreateMap<GameDefinitionTotals, GameDefinitionTotalsMessage>(MemberList.Destination);
+            Mapper.CreateMap<PlayerStatistics, PlayerStatisticsMessage>(MemberList.Destination);
         }
     }
 }

@@ -259,6 +259,7 @@
     <Compile Include="Areas\Api\Controllers\GameDefinitionsController.cs" />
     <Compile Include="Areas\Api\Controllers\PlayedGamesController.cs" />
     <Compile Include="Areas\Api\Controllers\PlayersController.cs" />
+    <Compile Include="Areas\Api\Controllers\PlayerStatsController.cs" />
     <Compile Include="Areas\Api\Controllers\UsersController.cs" />
     <Compile Include="Areas\Api\Controllers\UserSessionsController.cs" />
     <Compile Include="Areas\Api\Controllers\VotableFeaturesController.cs" />
@@ -267,6 +268,8 @@
     <Compile Include="Areas\Api\Models\FeatureVote.cs" />
     <Compile Include="Areas\Api\Models\GameDefinitionSearchResultMessage.cs" />
     <Compile Include="Areas\Api\Models\GameDefinitionsSearchResultsMessage.cs" />
+    <Compile Include="Areas\Api\Models\GameDefinitionTotalMessage.cs" />
+    <Compile Include="Areas\Api\Models\GameDefinitionTotalsMessage.cs" />
     <Compile Include="Areas\Api\Models\GamingGroupInfoForUserMessage.cs" />
     <Compile Include="Areas\Api\Models\GenericErrorMessage.cs" />
     <Compile Include="Areas\Api\Models\NewAuthTokenMessage.cs" />
@@ -283,6 +286,7 @@
     <Compile Include="Areas\Api\Models\PlayedGameSearchResultsMessage.cs" />
     <Compile Include="Areas\Api\Models\PlayerGameResultsMessage.cs" />
     <Compile Include="Areas\Api\Models\PlayerSearchResultMessage.cs" />
+    <Compile Include="Areas\Api\Models\PlayerStatisticsMessage.cs" />
     <Compile Include="Areas\Api\Models\UserPlayerInfo.cs" />
     <Compile Include="Areas\Api\Models\PlayersSearchResultsMessage.cs" />
     <Compile Include="Areas\Api\Models\UpdateGameDefinitionMessage.cs" />
