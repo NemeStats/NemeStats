@@ -143,7 +143,6 @@ namespace UI.Controllers
 		[AllowAnonymous]
 		public virtual ActionResult ConsumeInvitation(string id, ApplicationUser currentUser)
 		{
-			string userEmail;
 			AddUserToGamingGroupResult result = gamingGroupInvitationConsumer.AddExistingUserToGamingGroup(id);
 
 			if (result.UserAddedToExistingGamingGroup)
