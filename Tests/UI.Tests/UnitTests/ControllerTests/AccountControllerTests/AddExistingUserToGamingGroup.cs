@@ -28,7 +28,6 @@ namespace UI.Tests.UnitTests.ControllerTests.AccountControllerTests
     public class AddExistingUserToGamingGroup : AccountControllerTestBase
     {
         private string gamingGroupInvitationId = "invitation id";
-        private string email;
 
         [SetUp]
         public override void SetUp()

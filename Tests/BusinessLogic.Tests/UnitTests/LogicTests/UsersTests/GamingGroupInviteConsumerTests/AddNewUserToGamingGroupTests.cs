@@ -33,7 +33,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.GamingGroupInviteC
         private Player expectedPlayer;
 
         [SetUp]
-        public void SetUp()
+        public void LocalSetUp()
         {
             expectedInvitation = new GamingGroupInvitation
             {

@@ -29,8 +29,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
     public class SearchBoardGameGeekHttpGetTests : GameDefinitionControllerTestBase
     {
         private List<BoardGameGeekSearchResult> expectedSearchResults;
-        private string searchText = "game name";
-        
+
         [SetUp]
         public override void SetUp()
         {

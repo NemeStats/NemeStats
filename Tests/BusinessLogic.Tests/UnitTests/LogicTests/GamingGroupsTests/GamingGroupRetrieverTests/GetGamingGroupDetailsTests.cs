@@ -32,7 +32,6 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
     public class GetGamingGroupDetailsTests : GamingGroupRetrieverTestBase
     {
         private GamingGroup expectedGamingGroup;
-        private GamingGroupInvitation expectedGamingGroupInvitation;
         private List<GameDefinitionSummary> gameDefinitionSummaries;  
 
         private int gamingGroupId = 13511;

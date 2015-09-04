@@ -24,6 +24,28 @@ namespace BusinessLogic.Models
 {
     public class Champion : EntityWithTechnicalKey<int>
     {
+        protected bool Equals(Champion other)
+        {
+            return this.GameDefinitionId == other.GameDefinitionId 
+                && this.PlayerId == other.PlayerId 
+                && this.WinPercentage.Equals(other.WinPercentage) 
+                && this.NumberOfWins == other.NumberOfWins 
+                && this.NumberOfGames == other.NumberOfGames;
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hashCode = this.GameDefinitionId;
+                hashCode = (hashCode * 397) ^ this.PlayerId;
+                hashCode = (hashCode * 397) ^ this.WinPercentage.GetHashCode();
+                hashCode = (hashCode * 397) ^ this.NumberOfWins;
+                hashCode = (hashCode * 397) ^ this.NumberOfGames;
+                return hashCode;
+            }
+        }
+
         public Champion()
         {
             DateCreated = DateTime.UtcNow;
