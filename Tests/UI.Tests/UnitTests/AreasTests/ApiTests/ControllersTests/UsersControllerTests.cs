@@ -18,18 +18,6 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests
     [TestFixture]
     public class UsersControllerTests : ApiControllerTestBase<UsersController>
     {
-        private RhinoAutoMocker<UsersController> autoMocker;
-
-        [SetUp]
-        public void SetUp()
-        {
-            autoMocker = new RhinoAutoMocker<UsersController>();
-            autoMocker.ClassUnderTest.Request = new HttpRequestMessage();
-            autoMocker.ClassUnderTest.Request.SetConfiguration(new HttpConfiguration());
-
-            AutomapperConfiguration.Configure();
-        }
-
         [Test]
         public async Task Post_RegistersTheGivenUser()
         {
