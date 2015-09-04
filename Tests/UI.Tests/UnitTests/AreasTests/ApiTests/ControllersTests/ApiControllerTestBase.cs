@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Controllers;
 using BusinessLogic.Models.User;
@@ -11,8 +7,6 @@ using NUnit.Framework;
 using Rhino.Mocks;
 using StructureMap.AutoMocking;
 using UI.Areas.Api;
-using UI.Areas.Api.Controllers;
-using UI.Attributes;
 using UI.Transformations;
 
 namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests

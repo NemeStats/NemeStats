@@ -18,7 +18,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using BusinessLogic.DataAccess;
 using BusinessLogic.Exceptions;
 using BusinessLogic.Models;
 using BusinessLogic.Models.User;

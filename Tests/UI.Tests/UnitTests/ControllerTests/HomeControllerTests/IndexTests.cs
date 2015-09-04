@@ -16,7 +16,6 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 using AutoMapper;
-using BusinessLogic.Logic.GamingGroups;
 using BusinessLogic.Logic.Nemeses;
 using BusinessLogic.Models.Games;
 using BusinessLogic.Models.Players;

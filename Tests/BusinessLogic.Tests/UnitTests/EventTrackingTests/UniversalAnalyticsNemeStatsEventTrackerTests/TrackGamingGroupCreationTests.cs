@@ -17,11 +17,9 @@
 #endregion
 using BusinessLogic.EventTracking;
 using BusinessLogic.Logic;
-using BusinessLogic.Models.User;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System.Linq;
-using UniversalAnalyticsHttpWrapper;
 
 namespace BusinessLogic.Tests.UnitTests.EventTrackingTests.UniversalAnalyticsNemeStatsEventTrackerTests
 {

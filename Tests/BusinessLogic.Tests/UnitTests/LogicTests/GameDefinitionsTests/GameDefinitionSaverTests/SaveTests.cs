@@ -20,7 +20,6 @@ using System.Data.Entity.Infrastructure;
 using BusinessLogic.DataAccess;
 using BusinessLogic.EventTracking;
 using BusinessLogic.Exceptions;
-using BusinessLogic.Logic.GameDefinitions;
 using BusinessLogic.Models;
 using BusinessLogic.Models.User;
 using NUnit.Framework;

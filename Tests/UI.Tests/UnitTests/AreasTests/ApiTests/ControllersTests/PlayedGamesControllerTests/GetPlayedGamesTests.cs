@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Net;
 using BusinessLogic.Logic.PlayedGames;
-using BusinessLogic.Models;
 using BusinessLogic.Models.PlayedGames;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System.Collections.Generic;
-using System.Net.Http;
 using UI.Areas.Api.Controllers;
 using UI.Areas.Api.Models;
 

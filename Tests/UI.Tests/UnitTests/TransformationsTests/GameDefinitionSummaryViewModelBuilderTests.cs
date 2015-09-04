@@ -19,11 +19,9 @@ using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
 using BusinessLogic.Models.User;
 using NUnit.Framework;
-using Rhino.Mocks;
 using System.Collections.Generic;
 using System.Linq;
 using UI.Models.GameDefinitionModels;
-using UI.Models.PlayedGame;
 using UI.Transformations;
 
 namespace UI.Tests.UnitTests.TransformationsTests

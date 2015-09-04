@@ -19,7 +19,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using BusinessLogic.Models.PlayedGames;
-using UI.Models;
 
 namespace UI.Models.PlayedGame
 {

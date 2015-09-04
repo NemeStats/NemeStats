@@ -23,7 +23,6 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
-using BusinessLogic.EventTracking;
 using BusinessLogic.Logic.Users;
 using BusinessLogic.Models.User;
 using Microsoft.AspNet.Identity;

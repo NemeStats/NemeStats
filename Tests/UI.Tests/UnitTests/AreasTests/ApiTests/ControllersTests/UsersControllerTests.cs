@@ -1,11 +1,7 @@
-﻿using System.Collections.Generic;
-using BusinessLogic.Logic.GamingGroups;
-using BusinessLogic.Logic.Users;
-using BusinessLogic.Models.Players;
+﻿using BusinessLogic.Logic.Users;
 using BusinessLogic.Models.User;
 using Microsoft.AspNet.Identity;
 using NUnit.Framework;
-using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 using Rhino.Mocks;
 using StructureMap.AutoMocking;
 using System.Linq;

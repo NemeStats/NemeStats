@@ -15,12 +15,8 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
-using System;
-using System.Collections.Generic;
+
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 using BusinessLogic.Models.Champions;
 
 namespace BusinessLogic.DataAccess.Repositories

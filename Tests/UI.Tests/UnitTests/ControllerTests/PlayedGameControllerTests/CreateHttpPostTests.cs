@@ -18,10 +18,8 @@
 
 using BusinessLogic.Logic;
 using BusinessLogic.Logic.PlayedGames;
-using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
 using BusinessLogic.Models.User;
-using Microsoft.Owin.Security;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System.Collections.Generic;

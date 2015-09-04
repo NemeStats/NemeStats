@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Mvc;
 using BusinessLogic.Logic.GameDefinitions;
 using BusinessLogic.Logic.PlayedGames;
-using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
 using BusinessLogic.Models.PlayedGames;
 using NUnit.Framework;

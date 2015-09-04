@@ -15,7 +15,7 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
-using BusinessLogic.Migrations;
+
 using BusinessLogic.Models;
 using BusinessLogic.Models.PlayedGames;
 using BusinessLogic.Models.User;

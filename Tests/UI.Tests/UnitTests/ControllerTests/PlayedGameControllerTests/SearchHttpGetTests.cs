@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Mvc;
 using BusinessLogic.Logic.GameDefinitions;
-using BusinessLogic.Migrations;
 using NUnit.Framework;
 using Rhino.Mocks;
 using UI.Models.PlayedGame;

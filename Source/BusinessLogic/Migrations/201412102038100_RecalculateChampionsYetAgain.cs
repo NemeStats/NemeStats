@@ -15,14 +15,9 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
-using BusinessLogic.DataAccess;
-using BusinessLogic.DataAccess.Repositories;
-using BusinessLogic.DataAccess.Security;
-using BusinessLogic.Logic.Champions;
 
 namespace BusinessLogic.Migrations
 {
-    using System;
     using System.Data.Entity.Migrations;
     
     public partial class RecalculateChampionsYetAgain : DbMigration

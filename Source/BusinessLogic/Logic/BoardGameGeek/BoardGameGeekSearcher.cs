@@ -23,7 +23,6 @@ using System.Net;
 using System.Text;
 using System.Web;
 using System.Xml.Serialization;
-using BusinessLogic.Logic.BoardGameGeek;
 using BusinessLogic.Models.Games;
 
 namespace BusinessLogic.Logic.BoardGameGeek

@@ -1,7 +1,6 @@
 ﻿using BusinessLogic.Logic.Players;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Players;
-using BusinessLogic.Models.User;
 using System.Linq;
 using System.Net;
 using System.Net.Http;

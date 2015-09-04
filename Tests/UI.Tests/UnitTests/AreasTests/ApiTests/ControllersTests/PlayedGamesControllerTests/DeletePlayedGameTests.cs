@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using BusinessLogic.Logic.PlayedGames;
 using BusinessLogic.Models.User;
 using NUnit.Framework;
 using Rhino.Mocks;
 using UI.Areas.Api.Controllers;
-using UI.Areas.Api.Models;
 
 namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.PlayedGamesControllerTests
 {

@@ -15,20 +15,14 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
-using System;
-using System.Collections.Generic;
+
 using System.Linq;
 using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
-using System.Web;
 using System.Web.Http;
 using System.Web.Http.Dispatcher;
 using System.Web.Http.ExceptionHandling;
-using Microsoft.Owin.Security.OAuth;
 using Newtonsoft.Json.Serialization;
-using RollbarSharp;
-using StructureMap;
-using StructureMap.Graph;
 using UI.Attributes;
 using UI.DependencyResolution;
 using UI.Areas.Api;

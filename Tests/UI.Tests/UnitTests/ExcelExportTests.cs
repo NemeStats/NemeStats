@@ -19,14 +19,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web;
-using BusinessLogic.Models;
 using BusinessLogic.Models.PlayedGames;
 using NUnit.Framework;
 using OfficeOpenXml;
-using UI.Models.PlayedGame;
 
 namespace UI.Tests.UnitTests
 {

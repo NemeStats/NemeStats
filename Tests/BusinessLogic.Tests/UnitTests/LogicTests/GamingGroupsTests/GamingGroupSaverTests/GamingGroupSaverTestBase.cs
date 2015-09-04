@@ -15,14 +15,9 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
-using BusinessLogic.DataAccess;
-using BusinessLogic.EventTracking;
-using BusinessLogic.Logic.GameDefinitions;
+
 using BusinessLogic.Logic.GamingGroups;
-using BusinessLogic.Logic.Players;
-using BusinessLogic.Logic.Users;
 using BusinessLogic.Models.User;
-using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security.DataProtection;
 using NUnit.Framework;
 using Rhino.Mocks;

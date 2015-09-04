@@ -15,16 +15,13 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
-using System;
-using System.Collections.Generic;
+
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using BusinessLogic.Logic;
 using BusinessLogic.Logic.GamingGroups;
-using BusinessLogic.Models.User;
 using NUnit.Framework;
 using Rhino.Mocks;
 using UI.Controllers.Helpers;

@@ -4,7 +4,6 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using BusinessLogic.Models;
-using BusinessLogic.Models.User;
 using UI.Areas.Api.Models;
 using UI.Attributes;
 
