@@ -72,7 +72,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
         }
 
         [Test]
-        public async Task ItClearsTheGamingGroupCookieIfTheUserSuccessfullyRegisters()
+        public void ItClearsTheGamingGroupCookieIfTheUserSuccessfullyRegisters()
         {
             var result = autoMocker.ClassUnderTest.CreateNewGamingGroup("some name", currentUser) as RedirectToRouteResult;
 
