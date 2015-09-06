@@ -506,6 +506,7 @@
       <DebugInfo>False</DebugInfo>
     </Content>
     <Content Include="sass\bootstrap\_variables.scss" />
+    <Content Include="Scripts\d3\gamesPlayedPieChart.js" />
     <Content Include="Scripts\d3\LICENSE" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="robots.txt" />

@@ -47,7 +47,8 @@ namespace UI
                 .Include("~/Scripts/handlebars.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/d3")
-                .Include("~/Scripts/d3/d3.js"));
+                .Include("~/Scripts/d3/d3.js")
+                .Include("~/Scripts/d3/gamesPlayedPieChart.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/custom")
                 .Include("~/Scripts/namespace-{version}.js")
