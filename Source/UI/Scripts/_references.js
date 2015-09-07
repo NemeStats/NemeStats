@@ -46,3 +46,4 @@
 /// <reference path="playedgame/search.js" />
 /// <reference path="d3/d3.js" />
 /// <reference path="d3/gamesplayedpiechart.js" />
+/// <reference path="player/playerdetails.js" />

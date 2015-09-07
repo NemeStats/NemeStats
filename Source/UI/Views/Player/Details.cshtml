@@ -205,4 +205,12 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/d3")
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var playerDetails = new window.Views.Player.Details();
+            var settings = { "playerId" : @Model.PlayerId };
+            playerDetails.init(settings);
+            playerDetails.renderGameDefinitionsPieChart();
+        });
+    </script>
 }

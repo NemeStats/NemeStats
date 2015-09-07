@@ -59,6 +59,7 @@ namespace UI
                 .Include("~/Scripts/PlayedGame/search.js")
                 .Include("~/Scripts/PlayedGame/recordexceldownload.js")
                 .Include("~/Scripts/Player/createOrUpdatePlayer.js")
+                .Include("~/Scripts/Player/playerDetails.js")
                 .Include("~/Scripts/Player/players.js")
                 .Include("~/Scripts/GameDefinition/gameDefinitionAutoComplete.js")
                 .Include("~/Scripts/GameDefinition/createGameDefinitionPartial.js")
