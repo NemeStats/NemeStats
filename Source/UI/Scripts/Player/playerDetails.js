@@ -11,7 +11,10 @@ Views.Player.Details.prototype = {
     init: function(playerId) {
         this.$playerId = playerId;
     },
-    renderGameDefinitionsPieChart : function () {
-        alert("Michael call your pie chart stuff here and use the $playerId as the playerId");
+    renderGameDefinitionsPieChart: function () {
+        var url = '/api/v1/GamingGroups/1/PlayerStats/' + this.$playerId.playerId;
+        $.get(url, function (data) {
+            drawPieChart(data.gameDefinitionTotals.summariesOfGameDefinitionTotals);
+        });
     }
 };

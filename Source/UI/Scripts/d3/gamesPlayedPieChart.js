@@ -1,11 +1,4 @@
-﻿(function (d3) {
-    var url = '/api/v1/GamingGroups/1/PlayerStats/1018';
-    $.get(url, function (data) {
-        drawPieChart(data.gameDefinitionTotals.summariesOfGameDefinitionTotals);
-    });
-})(window.d3);
-
-function drawPieChart(summariesOfGames) {
+﻿function drawPieChart(summariesOfGames) {
     var diameter = 360;
     var radius = diameter / 2;
 
