@@ -88,7 +88,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
             Exception exception = Assert.Throws<DuplicateKeyException>(
                 () => autoMocker.ClassUnderTest.Save(gameDefinition, currentUser));
 
-            Assert.That(exception.Message, Is.EqualTo("A Game Definition with name '" + gameDefinition.Name + "' already exists in this Gaming Group."));
+            Assert.That(exception.Message, Is.EqualTo("An active Game Definition with name '" + gameDefinition.Name + "' already exists in this Gaming Group."));
         }
 
         [Test]

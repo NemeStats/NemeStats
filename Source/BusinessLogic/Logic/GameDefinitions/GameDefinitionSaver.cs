@@ -51,30 +51,31 @@ namespace BusinessLogic.Logic.GameDefinitions
             {
                 new Task(() => eventTracker.TrackGameDefinitionCreation(currentUser, gameDefinition.Name)).Start();
 
-                this.HandleExistingGameDefinitionWithThisName(gameDefinition);
+                gameDefinition = this.HandleExistingGameDefinitionWithThisName(gameDefinition);
             }
 
             return dataContext.Save<GameDefinition>(gameDefinition, currentUser);
         }
 
-        private void HandleExistingGameDefinitionWithThisName(GameDefinition gameDefinition)
+        private GameDefinition HandleExistingGameDefinitionWithThisName(GameDefinition gameDefinition)
         {
             var existingGameDefinition = this.dataContext.GetQueryable<GameDefinition>().FirstOrDefault(x => x.Name == gameDefinition.Name);
             if (existingGameDefinition == null)
             {
-                return;
+                return gameDefinition;
             }
 
             if (existingGameDefinition.Active)
             {
-                throw new DuplicateKeyException(string.Format("A Game Definition with name '{0}' already exists in this Gaming Group.", gameDefinition.Name));
+                throw new DuplicateKeyException(string.Format("An active Game Definition with name '{0}' already exists in this Gaming Group.", gameDefinition.Name));
             }
 
-            gameDefinition.Id = existingGameDefinition.Id;
-            if (string.IsNullOrWhiteSpace(gameDefinition.Description))
+            if (!string.IsNullOrWhiteSpace(gameDefinition.Description))
             {
-                gameDefinition.Description = existingGameDefinition.Description;
+                existingGameDefinition.Description = gameDefinition.Description;
             }
+
+            return existingGameDefinition;
         }
 
         private static void ValidateGameDefinitionIsNotNull(GameDefinition gameDefinition)
