@@ -16,6 +16,7 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 
+using System.Collections.Generic;
 using System.Data.Entity.Infrastructure;
 using BusinessLogic.DataAccess;
 using BusinessLogic.EventTracking;
@@ -70,22 +71,108 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
         }
 
         [Test]
-        public void ItThrowsADuplicateKeyExceptionIfThereIsADbUpdateException()
+        public void ItThrowsADuplicateKeyExceptionIfThereIsAnExistingActiveGameDefinitionWithTheSameName()
         {
             var gameDefinition = new GameDefinition
             {
-                Name = "existing game definition name"
+                Name = "existing game definition name",
+                Active = true
             };
-            autoMocker.Get<IDataContext>().Expect(mock => mock.Save(
-                Arg<GameDefinition>.Is.Anything, 
-                Arg<ApplicationUser>.Is.Anything))
-                .IgnoreArguments()
-                .Throw(new DbUpdateException());
+            var gameDefinitionQueryable = new List<GameDefinition>
+            {
+                gameDefinition
+            }.AsQueryable();
+
+            autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<GameDefinition>()).Return(gameDefinitionQueryable);
 
             Exception exception = Assert.Throws<DuplicateKeyException>(
                 () => autoMocker.ClassUnderTest.Save(gameDefinition, currentUser));
 
             Assert.That(exception.Message, Is.EqualTo("A Game Definition with name '" + gameDefinition.Name + "' already exists in this Gaming Group."));
+        }
+
+        [Test]
+        public void AnExistingInactiveGameDefinitionIsReactivatedIfSomeoneTriesToAddItAgain()
+        {
+            var existingGameDefinition = new GameDefinition
+            {
+                Id = 1,
+                Name = "existing game definition name",
+                Active = false
+            };
+            var gameDefinitionQueryable = new List<GameDefinition>
+            {
+                existingGameDefinition
+            }.AsQueryable();
+            var newGameDefinition = new GameDefinition
+            {
+                Name = existingGameDefinition.Name
+            };
+            autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<GameDefinition>()).Return(gameDefinitionQueryable); 
+
+            autoMocker.ClassUnderTest.Save(newGameDefinition, currentUser);
+
+            var gameDefinitionThatWasSaved =
+                (GameDefinition)autoMocker.Get<IDataContext>().GetArgumentsForCallsMadeOn(mock => mock.Save(Arg<GameDefinition>.Is.Anything, Arg<ApplicationUser>.Is.Anything))[0][0];
+
+            Assert.That(gameDefinitionThatWasSaved.Id, Is.EqualTo(existingGameDefinition.Id));
+            Assert.That(gameDefinitionThatWasSaved.BoardGameGeekObjectId, Is.EqualTo(existingGameDefinition.BoardGameGeekObjectId));
+        }
+
+        [Test]
+        public void ReactivatingAnExistingGameDefinitionTakesTheNewDescriptionIfItIsNotBlank()
+        {
+            var existingGameDefinition = new GameDefinition
+            {
+                Id = 1,
+                Name = "existing game definition name",
+                Active = false
+            };
+            var gameDefinitionQueryable = new List<GameDefinition>
+            {
+                existingGameDefinition
+            }.AsQueryable();
+            var newGameDefinition = new GameDefinition
+            {
+                Name = existingGameDefinition.Name,
+                Description = "new description"
+            };
+            autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<GameDefinition>()).Return(gameDefinitionQueryable);
+
+            autoMocker.ClassUnderTest.Save(newGameDefinition, currentUser);
+
+            var gameDefinitionThatWasSaved =
+                (GameDefinition)autoMocker.Get<IDataContext>().GetArgumentsForCallsMadeOn(mock => mock.Save(Arg<GameDefinition>.Is.Anything, Arg<ApplicationUser>.Is.Anything))[0][0];
+
+            Assert.That(gameDefinitionThatWasSaved.Description, Is.EqualTo(newGameDefinition.Description));
+        }
+
+        [Test]
+        public void ReactivatingAnExistingGameDefinitionTakesTheOldDescriptionIfTheNewOneIsBlank()
+        {
+            var existingGameDefinition = new GameDefinition
+            {
+                Id = 1,
+                Name = "existing game definition name",
+                Description = "existing game definition description",
+                Active = false
+            };
+            var gameDefinitionQueryable = new List<GameDefinition>
+            {
+                existingGameDefinition
+            }.AsQueryable();
+            var newGameDefinition = new GameDefinition
+            {
+                Name = existingGameDefinition.Name
+            };
+            autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<GameDefinition>()).Return(gameDefinitionQueryable);
+
+            autoMocker.ClassUnderTest.Save(newGameDefinition, currentUser);
+
+            var gameDefinitionThatWasSaved =
+                (GameDefinition)autoMocker.Get<IDataContext>().GetArgumentsForCallsMadeOn(mock => mock.Save(Arg<GameDefinition>.Is.Anything, Arg<ApplicationUser>.Is.Anything))[0][0];
+
+            Assert.That(gameDefinitionThatWasSaved.Description, Is.EqualTo(existingGameDefinition.Description));
         }
 
 
@@ -96,6 +183,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
             {
                 Name = "game definition name"
             };
+            autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<GameDefinition>()).Return(new List<GameDefinition>().AsQueryable());
 
             autoMocker.ClassUnderTest.Save(gameDefinition, currentUser);
 
@@ -112,6 +200,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
                 Name = "game definition name",
                 Description = "game description"
             };
+            autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<GameDefinition>()).Return(new List<GameDefinition>().AsQueryable());
 
             autoMocker.ClassUnderTest.Save(gameDefinition, currentUser);
 

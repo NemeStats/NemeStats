@@ -50,19 +50,31 @@ namespace BusinessLogic.Logic.GameDefinitions
             if (isNewGameDefinition)
             {
                 new Task(() => eventTracker.TrackGameDefinitionCreation(currentUser, gameDefinition.Name)).Start();
+
+                this.HandleExistingGameDefinitionWithThisName(gameDefinition);
             }
 
-            GameDefinition newGameDefinition;
-            try
+            return dataContext.Save<GameDefinition>(gameDefinition, currentUser);
+        }
+
+        private void HandleExistingGameDefinitionWithThisName(GameDefinition gameDefinition)
+        {
+            var existingGameDefinition = this.dataContext.GetQueryable<GameDefinition>().FirstOrDefault(x => x.Name == gameDefinition.Name);
+            if (existingGameDefinition == null)
             {
-                newGameDefinition = dataContext.Save<GameDefinition>(gameDefinition, currentUser);
+                return;
             }
-            catch (DbUpdateException)
+
+            if (existingGameDefinition.Active)
             {
                 throw new DuplicateKeyException(string.Format("A Game Definition with name '{0}' already exists in this Gaming Group.", gameDefinition.Name));
             }
 
-            return newGameDefinition;
+            gameDefinition.Id = existingGameDefinition.Id;
+            if (string.IsNullOrWhiteSpace(gameDefinition.Description))
+            {
+                gameDefinition.Description = existingGameDefinition.Description;
+            }
         }
 
         private static void ValidateGameDefinitionIsNotNull(GameDefinition gameDefinition)
