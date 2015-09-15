@@ -19,4 +19,8 @@ PrivateAppSettings.config example settings
 </appSettings>
 ```
 
-If you run into any issues or need help getting NemeStats running locally, just email us at nemestats@gmail.com and we'd be happy to help!
+If you want to add or improve a feature, it would probably be best to run it by us via email at nemestats@gmail.com. To get your code incorporated into the code base, 
+you'll need to submit a pull request which will need to be reviewed by the development team. All business logic should be unit testing using nUnit and Rhino Automocker
+(if you need mocking).
+
+If you run into any issues or need help getting NemeStats running locally or have other questions about contributing, just email us at nemestats@gmail.com and we'd be happy to help!
