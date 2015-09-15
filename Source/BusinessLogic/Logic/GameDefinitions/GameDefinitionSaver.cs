@@ -75,6 +75,8 @@ namespace BusinessLogic.Logic.GameDefinitions
                 existingGameDefinition.Description = gameDefinition.Description;
             }
 
+            existingGameDefinition.Active = true;
+
             return existingGameDefinition;
         }
 

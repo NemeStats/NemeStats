@@ -117,6 +117,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
 
             Assert.That(gameDefinitionThatWasSaved.Id, Is.EqualTo(existingGameDefinition.Id));
             Assert.That(gameDefinitionThatWasSaved.BoardGameGeekObjectId, Is.EqualTo(existingGameDefinition.BoardGameGeekObjectId));
+            Assert.That(gameDefinitionThatWasSaved.Active, Is.EqualTo(true));
         }
 
         [Test]
