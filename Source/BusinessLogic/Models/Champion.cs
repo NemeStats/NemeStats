@@ -16,17 +16,36 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using BusinessLogic.DataAccess;
 
 namespace BusinessLogic.Models
 {
     public class Champion : EntityWithTechnicalKey<int>
     {
+        protected bool Equals(Champion other)
+        {
+            return this.GameDefinitionId == other.GameDefinitionId 
+                && this.PlayerId == other.PlayerId 
+                && this.WinPercentage.Equals(other.WinPercentage) 
+                && this.NumberOfWins == other.NumberOfWins 
+                && this.NumberOfGames == other.NumberOfGames;
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hashCode = this.GameDefinitionId;
+                hashCode = (hashCode * 397) ^ this.PlayerId;
+                hashCode = (hashCode * 397) ^ this.WinPercentage.GetHashCode();
+                hashCode = (hashCode * 397) ^ this.NumberOfWins;
+                hashCode = (hashCode * 397) ^ this.NumberOfGames;
+                return hashCode;
+            }
+        }
+
         public Champion()
         {
             DateCreated = DateTime.UtcNow;

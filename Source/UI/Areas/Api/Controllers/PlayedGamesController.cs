@@ -13,7 +13,6 @@ using BusinessLogic.Logic.PlayedGames;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
 using BusinessLogic.Models.PlayedGames;
-using BusinessLogic.Models.User;
 using UI.Areas.Api.Models;
 using UI.Attributes;
 

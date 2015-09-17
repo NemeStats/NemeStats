@@ -17,7 +17,6 @@
 #endregion
 using BusinessLogic.DataAccess;
 using BusinessLogic.DataAccess.Repositories;
-using BusinessLogic.Logic.Nemeses;
 using BusinessLogic.Logic.Players;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Players;

@@ -23,7 +23,6 @@ using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using UI.Models;
 using UI.Models.Badges;
 using UI.Models.Players;
 using UI.Transformations;

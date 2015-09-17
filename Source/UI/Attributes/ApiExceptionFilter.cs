@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net;
+﻿using System.Net;
 using System.Net.Http;
-using System.Web.Http;
 using System.Web.Http.Filters;
-using Links;
 using BusinessLogic.Exceptions;
 using UI.Areas.Api.Models;
 

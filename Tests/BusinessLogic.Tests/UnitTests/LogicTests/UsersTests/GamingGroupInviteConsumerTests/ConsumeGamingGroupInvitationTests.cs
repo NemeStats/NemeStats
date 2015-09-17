@@ -15,16 +15,9 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
-using BusinessLogic.DataAccess;
-using BusinessLogic.DataAccess.GamingGroups;
-using BusinessLogic.Logic.GamingGroups;
-using BusinessLogic.Logic.Users;
-using BusinessLogic.Models;
-using BusinessLogic.Models.User;
-using Microsoft.AspNet.Identity;
+
 using NUnit.Framework;
 using Rhino.Mocks;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 

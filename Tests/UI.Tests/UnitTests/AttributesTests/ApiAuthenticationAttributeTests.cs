@@ -1,8 +1,6 @@
 ﻿using System;
 using BusinessLogic.Logic.Users;
 using BusinessLogic.Models.User;
-using Microsoft.AspNet.Identity;
-using Microsoft.Owin.Security.DataProtection;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System.Net;
@@ -23,8 +21,6 @@ namespace UI.Tests.UnitTests.AttributesTests
         private HttpControllerContext controllerContext;
         private HttpRequestMessage request;
         private IAuthTokenValidator authTokenValidatorMock;
-        private IUserStore<ApplicationUser> userStoreMock;
-        private IDataProtectionProvider dataProtectionProviderMock;
         private ClientIdCalculator clientIdCalculatorMock;
 
         [SetUp]

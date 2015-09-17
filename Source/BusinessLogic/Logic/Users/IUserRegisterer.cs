@@ -16,7 +16,6 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 using BusinessLogic.Models.User;
-using Microsoft.AspNet.Identity;
 using System.Linq;
 using System.Threading.Tasks;
 

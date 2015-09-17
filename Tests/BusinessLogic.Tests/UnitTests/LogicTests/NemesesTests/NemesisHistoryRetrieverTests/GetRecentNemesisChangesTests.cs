@@ -18,8 +18,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using BusinessLogic.DataAccess;
 using BusinessLogic.Logic.Nemeses;
 using BusinessLogic.Models;
@@ -36,7 +34,6 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.NemesesTests.NemesisHistoryRe
         private int repeatedMinionPlayerId = 10;
         private int nemesisPlayerId1 = 1;
         private string nemesisPlayerName1 = "nemesis player name 1";
-        private int minionPlayerId1 = 200;
         private string repeatedMinionPlayerName1 = "minion player name 1";
         private int lossPercentage = 51;
 

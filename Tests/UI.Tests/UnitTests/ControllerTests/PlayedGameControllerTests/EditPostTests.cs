@@ -1,5 +1,4 @@
-﻿using System;
-using AutoMapper;
+﻿using AutoMapper;
 using BusinessLogic.Logic;
 using BusinessLogic.Logic.PlayedGames;
 using BusinessLogic.Models.Games;

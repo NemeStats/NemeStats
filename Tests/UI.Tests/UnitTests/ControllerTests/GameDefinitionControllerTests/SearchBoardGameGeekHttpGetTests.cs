@@ -15,11 +15,9 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
-using System;
+
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using BusinessLogic.Models.Games;
 using NUnit.Framework;
 using Rhino.Mocks;
@@ -31,8 +29,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
     public class SearchBoardGameGeekHttpGetTests : GameDefinitionControllerTestBase
     {
         private List<BoardGameGeekSearchResult> expectedSearchResults;
-        private string searchText = "game name";
-        
+
         [SetUp]
         public override void SetUp()
         {

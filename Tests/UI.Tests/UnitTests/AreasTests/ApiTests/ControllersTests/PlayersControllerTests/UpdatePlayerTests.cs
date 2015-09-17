@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web;
-using System.Web.Http;
 using BusinessLogic.Logic.Players;
-using BusinessLogic.Models;
 using BusinessLogic.Models.Players;
 using BusinessLogic.Models.User;
 using NUnit.Framework;

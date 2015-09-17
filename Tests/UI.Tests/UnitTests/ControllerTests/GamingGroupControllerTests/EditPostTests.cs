@@ -1,5 +1,4 @@
-﻿using System;
-using BusinessLogic.Logic.GamingGroups;
+﻿using BusinessLogic.Logic.GamingGroups;
 using BusinessLogic.Models.GamingGroups;
 using NUnit.Framework;
 using Rhino.Mocks;

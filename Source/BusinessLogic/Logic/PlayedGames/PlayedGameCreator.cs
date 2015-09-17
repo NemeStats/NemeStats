@@ -16,7 +16,6 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 using BusinessLogic.DataAccess;
-using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.DataAccess.Security;
 using BusinessLogic.EventTracking;
 using BusinessLogic.Logic.Champions;
@@ -25,7 +24,6 @@ using BusinessLogic.Logic.Points;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
 using BusinessLogic.Models.User;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 

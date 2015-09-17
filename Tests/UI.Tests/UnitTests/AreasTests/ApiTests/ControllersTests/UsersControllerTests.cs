@@ -1,11 +1,7 @@
-﻿using System.Collections.Generic;
-using BusinessLogic.Logic.GamingGroups;
-using BusinessLogic.Logic.Users;
-using BusinessLogic.Models.Players;
+﻿using BusinessLogic.Logic.Users;
 using BusinessLogic.Models.User;
 using Microsoft.AspNet.Identity;
 using NUnit.Framework;
-using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 using Rhino.Mocks;
 using StructureMap.AutoMocking;
 using System.Linq;
@@ -22,18 +18,6 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests
     [TestFixture]
     public class UsersControllerTests : ApiControllerTestBase<UsersController>
     {
-        private RhinoAutoMocker<UsersController> autoMocker;
-
-        [SetUp]
-        public void SetUp()
-        {
-            autoMocker = new RhinoAutoMocker<UsersController>();
-            autoMocker.ClassUnderTest.Request = new HttpRequestMessage();
-            autoMocker.ClassUnderTest.Request.SetConfiguration(new HttpConfiguration());
-
-            AutomapperConfiguration.Configure();
-        }
-
         [Test]
         public async Task Post_RegistersTheGivenUser()
         {

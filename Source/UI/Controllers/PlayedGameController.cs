@@ -17,7 +17,6 @@
 #endregion
 
 using System.Globalization;
-using AutoMapper;
 using BusinessLogic.DataAccess;
 using BusinessLogic.Logic;
 using BusinessLogic.Logic.GameDefinitions;

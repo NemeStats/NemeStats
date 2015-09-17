@@ -7,12 +7,9 @@ using NUnit.Framework;
 using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
-using System.Net;
 using System.Net.Http;
-using System.Web.Http;
 using UI.Areas.Api.Controllers;
 using UI.Areas.Api.Models;
-using UI.Attributes;
 
 namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.PlayedGamesControllerTests
 {
