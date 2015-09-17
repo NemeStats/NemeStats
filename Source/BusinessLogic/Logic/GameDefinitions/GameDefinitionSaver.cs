@@ -59,7 +59,8 @@ namespace BusinessLogic.Logic.GameDefinitions
 
         private GameDefinition HandleExistingGameDefinitionWithThisName(GameDefinition gameDefinition)
         {
-            var existingGameDefinition = this.dataContext.GetQueryable<GameDefinition>().FirstOrDefault(x => x.Name == gameDefinition.Name);
+            var existingGameDefinition = this.dataContext.GetQueryable<GameDefinition>()
+                .FirstOrDefault(x => x.Name == gameDefinition.Name && x.GamingGroupId == gameDefinition.GamingGroupId);
             if (existingGameDefinition == null)
             {
                 return gameDefinition;

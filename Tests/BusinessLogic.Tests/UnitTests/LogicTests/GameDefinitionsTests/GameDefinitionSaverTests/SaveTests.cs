@@ -98,6 +98,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
             {
                 Id = 1,
                 Name = "existing game definition name",
+                GamingGroupId = 2,
                 Active = false
             };
             var gameDefinitionQueryable = new List<GameDefinition>
@@ -106,7 +107,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
             }.AsQueryable();
             var newGameDefinition = new GameDefinition
             {
-                Name = existingGameDefinition.Name
+                Name = existingGameDefinition.Name,
+                GamingGroupId = existingGameDefinition.GamingGroupId
             };
             autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<GameDefinition>()).Return(gameDefinitionQueryable); 
 
