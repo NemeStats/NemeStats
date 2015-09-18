@@ -76,7 +76,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
             var gameDefinition = new GameDefinition
             {
                 Name = "existing game definition name",
-                Active = true
+                Active = true,
+                GamingGroupId = currentUser.CurrentGamingGroupId.Value
             };
             var gameDefinitionQueryable = new List<GameDefinition>
             {
@@ -98,7 +99,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
             {
                 Id = 1,
                 Name = "existing game definition name",
-                GamingGroupId = 2,
+                GamingGroupId = currentUser.CurrentGamingGroupId.Value,
                 Active = false
             };
             var gameDefinitionQueryable = new List<GameDefinition>
@@ -129,7 +130,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
             {
                 Id = 1,
                 Name = "existing game definition name",
-                Active = false
+                Active = false,
+                GamingGroupId = currentUser.CurrentGamingGroupId.Value
             };
             var gameDefinitionQueryable = new List<GameDefinition>
             {
@@ -158,7 +160,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
                 Id = 1,
                 Name = "existing game definition name",
                 Description = "existing game definition description",
-                Active = false
+                Active = false,
+                GamingGroupId = currentUser.CurrentGamingGroupId.Value
             };
             var gameDefinitionQueryable = new List<GameDefinition>
             {
