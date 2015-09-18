@@ -28,7 +28,7 @@ Here is an example of a versioned endpoint:
 
   An example would be GET /api/v1/GamingGroups/1/PlayedGames (returns all of the Played Game resources under
   the Gaming Group with Id '1')
-* Resource names are plural (e.g. GaminGroups instead of GamingGroup)
+* Resource names are plural (e.g. GamingGroups instead of GamingGroup)
 * Properties in request and response objects are camel-cased (e.g. playerId instead of PlayerId or playerid)
 * For GET requests, additional parameters or filters will be passed in via query string (e.g. `/api/v1/GamingGroups/13/Playedgames?startDate=2015-02-03`)
 * For services that require authentication (namely ones that allow data to be changed via POST/PUT/DELETE), a header for "X-Auth-Token" will need to be sent on the request to ensure that the consumer has the appropriate access.
