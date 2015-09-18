@@ -237,7 +237,7 @@ namespace UI.Controllers
         {
             var viewModel = new SearchViewModel
             {
-                GameDefinitions = GetAllGameDefinitionsForCurrentGamingGroup(currentUser)
+                GameDefinitions = GetAllGameDefinitionsForCurrentGamingGroup(currentUser.CurrentGamingGroupId.Value)
             };
             return View(MVC.PlayedGame.Views.Search, viewModel);
         }
@@ -288,7 +288,7 @@ namespace UI.Controllers
                     DatePlayedStart = filter.DatePlayedStart,
                     GameDefinitionId = filter.GameDefinitionId
                 },
-                GameDefinitions = GetAllGameDefinitionsForCurrentGamingGroup(currentUser),
+                GameDefinitions = GetAllGameDefinitionsForCurrentGamingGroup(currentUser.CurrentGamingGroupId.Value),
                 PlayedGames = new PlayedGamesViewModel
                 {
                     PlayedGameDetailsViewModels = playedGamesDetails,
@@ -301,9 +301,9 @@ namespace UI.Controllers
             return View(MVC.PlayedGame.Views.Search, viewModel);
 	    }
 
-        private IList<SelectListItem> GetAllGameDefinitionsForCurrentGamingGroup(ApplicationUser currentUser)
+        private IList<SelectListItem> GetAllGameDefinitionsForCurrentGamingGroup(int gamingGroupId)
         {
-            var gameDefinitions = gameDefinitionRetriever.GetAllGameDefinitionNames(currentUser);
+            var gameDefinitions = gameDefinitionRetriever.GetAllGameDefinitionNames(gamingGroupId);
             var selectListItems = new List<SelectListItem>
             {
                 new SelectListItem
