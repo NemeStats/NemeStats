@@ -50,7 +50,7 @@ namespace UI.Areas.Api.Controllers
             return ExportPlayedGamesToExcel(gamingGroupId);
         }
 
-        [ApiRoute("GamingGroups/{gamingGroupId}/PlayedGamesExcel")]
+        [ApiRoute("GamingGroups/{gamingGroupId}/PlayedGamesExcel", AcceptedVersions = new[] { 1 })]
         [HttpGet]
         public virtual HttpResponseMessage ExportPlayedGamesToExcel(int gamingGroupId)
         {
@@ -103,7 +103,14 @@ namespace UI.Areas.Api.Controllers
             base.Dispose(disposing);
         }
 
-        [ApiRoute("GamingGroups/{gamingGroupId}/PlayedGames/")]
+        [ApiRoute("PlayedGames/", StartingVersion = 2)]
+        [HttpGet]
+        public HttpResponseMessage GetPlayedGamesVersion2([FromBody] PlayedGameFilterMessage playedGameFilterMessage, [FromUri] int gamingGroupId)
+        {
+            return GetPlayedGames(playedGameFilterMessage, gamingGroupId);
+        }
+
+        [ApiRoute("GamingGroups/{gamingGroupId}/PlayedGames/", AcceptedVersions = new[] { 1 })]
         [HttpGet]
         public HttpResponseMessage GetPlayedGames([FromBody]PlayedGameFilterMessage playedGameFilterMessage, [FromUri]int gamingGroupId)
         {
@@ -118,7 +125,6 @@ namespace UI.Areas.Api.Controllers
             }
             var searchResults = playedGameRetriever.SearchPlayedGames(filter);
 
- 
             var playedGamesSearchResultMessage = new PlayedGameSearchResultsMessage
             {
                 PlayedGames = searchResults.Select(Mapper.Map<PlayedGameSearchResultMessage>).ToList()
