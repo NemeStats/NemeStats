@@ -16,8 +16,6 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 
-using System;
-using System.Linq.Expressions;
 using BusinessLogic.Logic.GameDefinitions;
 using System.Linq;
 using System.Net;
@@ -40,7 +38,6 @@ namespace UI.Areas.Api.Controllers
             this.gameDefinitionSaver = gameDefinitionSaver;
         }
 
-        [ApiAuthentication]
         [ApiModelValidation]
         [ApiRoute("GameDefinitions/", StartingVersion =  2)]
         [HttpGet]
@@ -69,6 +66,15 @@ namespace UI.Areas.Api.Controllers
             };
 
             return Request.CreateResponse(HttpStatusCode.OK, gameDefinitionsSearchResultsMessage);
+        }
+
+        [ApiAuthentication]
+        [ApiModelValidation]
+        [ApiRoute("GameDefinitions/", StartingVersion = 2)]
+        [HttpPost]
+        public virtual HttpResponseMessage SaveNewGameDefinitionVersion2([FromBody]NewGameDefinitionMessage newGameDefinitionMessage, [FromUri]int gamingGroupId)
+        {
+            return this.SaveNewGameDefinition(newGameDefinitionMessage, gamingGroupId);
         }
 
         [ApiAuthentication]
