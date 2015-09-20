@@ -53,7 +53,16 @@ namespace UI.Areas.Api.Controllers
 
         [ApiAuthentication]
         [ApiModelValidation]
-        [ApiRoute("GamingGroups/{gamingGroupId}/Players/")]
+        [ApiRoute("Players/", StartingVersion = 2)]
+        [HttpPost]
+        public virtual HttpResponseMessage SaveNewPlayerVersion2([FromBody] NewPlayerMessage newPlayerMessage, [FromUri] int gamingGroupId)
+        {
+            return SaveNewPlayer(newPlayerMessage, gamingGroupId);
+        }
+
+        [ApiAuthentication]
+        [ApiModelValidation]
+        [ApiRoute("GamingGroups/{gamingGroupId}/Players/", AcceptedVersions = new []{1})]
         [HttpPost]
         public virtual HttpResponseMessage SaveNewPlayer([FromBody]NewPlayerMessage newPlayerMessage, [FromUri]int gamingGroupId)
         {
