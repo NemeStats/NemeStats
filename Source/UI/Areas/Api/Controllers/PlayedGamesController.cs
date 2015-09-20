@@ -42,6 +42,14 @@ namespace UI.Areas.Api.Controllers
             this.playedGameDeleter = playedGameDeleter;
         }
 
+
+        [ApiRoute("PlayedGamesExcel/", StartingVersion = 2)]
+        [HttpGet]
+        public virtual HttpResponseMessage ExportPlayedGamesToExcelVersion2([FromUri]int gamingGroupId)
+        {
+            return ExportPlayedGamesToExcel(gamingGroupId);
+        }
+
         [ApiRoute("GamingGroups/{gamingGroupId}/PlayedGamesExcel")]
         [HttpGet]
         public virtual HttpResponseMessage ExportPlayedGamesToExcel(int gamingGroupId)
