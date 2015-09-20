@@ -133,7 +133,17 @@ namespace UI.Areas.Api.Controllers
             return Request.CreateResponse(HttpStatusCode.OK, playedGamesSearchResultMessage);
         }
 
-        [ApiRoute("GamingGroups/{gamingGroupId}/PlayedGames/")]
+
+        [ApiRoute("PlayedGames/", StartingVersion = 2)]
+        [HttpPost]
+        [ApiAuthentication]
+        [ApiModelValidation]
+        public HttpResponseMessage RecordPlayedGameVersion2([FromBody] PlayedGameMessage playedGameMessage, [FromUri] int gamingGroupId)
+        {
+            return RecordPlayedGame(playedGameMessage, gamingGroupId);
+        }
+
+        [ApiRoute("GamingGroups/{gamingGroupId}/PlayedGames/", AcceptedVersions = new[] { 1 })]
         [HttpPost]
         [ApiAuthentication]
         [ApiModelValidation]
