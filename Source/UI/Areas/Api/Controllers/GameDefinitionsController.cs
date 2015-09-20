@@ -79,7 +79,7 @@ namespace UI.Areas.Api.Controllers
 
         [ApiAuthentication]
         [ApiModelValidation]
-        [ApiRoute("GamingGroups/{gamingGroupId}/GameDefinitions/")]
+        [ApiRoute("GamingGroups/{gamingGroupId}/GameDefinitions/", AcceptedVersions = new[] { 1 })]
         [HttpPost]
         public virtual HttpResponseMessage SaveNewGameDefinition([FromBody]NewGameDefinitionMessage newGameDefinitionMessage, [FromUri]int gamingGroupId)
         {
@@ -101,7 +101,7 @@ namespace UI.Areas.Api.Controllers
 
         [ApiAuthentication]
         [ApiModelValidation]
-        [ApiRoute("GameDefinitions/{gameDefinitionId}/")]
+        [ApiRoute("GameDefinitions/{gameDefinitionId}/", StartingVersion = 2)]
         [HttpPut]
         public HttpResponseMessage UpdateGameDefinition(UpdateGameDefinitionMessage updateGameDefinitionMessage, int gameDefinitionId)
         {
@@ -110,7 +110,7 @@ namespace UI.Areas.Api.Controllers
 
         [ApiAuthentication]
         [ApiModelValidation]
-        [ApiRoute("GamingGroups/{gamingGroupId}/GameDefinitions/{gameDefinitionId}/")]
+        [ApiRoute("GamingGroups/{gamingGroupId}/GameDefinitions/{gameDefinitionId}/", AcceptedVersions = new[] { 1 })]
         [HttpPut]
         public HttpResponseMessage UpdateGameDefinition(UpdateGameDefinitionMessage updateGameDefinitionMessage, int gameDefinitionId, int gamingGroupId)
         {
