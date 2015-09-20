@@ -101,6 +101,15 @@ namespace UI.Areas.Api.Controllers
 
         [ApiAuthentication]
         [ApiModelValidation]
+        [ApiRoute("GameDefinitions/{gameDefinitionId}/")]
+        [HttpPut]
+        public HttpResponseMessage UpdateGameDefinition(UpdateGameDefinitionMessage updateGameDefinitionMessage, int gameDefinitionId)
+        {
+            return this.UpdateGameDefinition(updateGameDefinitionMessage, gameDefinitionId, CurrentUser.CurrentGamingGroupId.Value);
+        }
+
+        [ApiAuthentication]
+        [ApiModelValidation]
         [ApiRoute("GamingGroups/{gamingGroupId}/GameDefinitions/{gameDefinitionId}/")]
         [HttpPut]
         public HttpResponseMessage UpdateGameDefinition(UpdateGameDefinitionMessage updateGameDefinitionMessage, int gameDefinitionId, int gamingGroupId)
