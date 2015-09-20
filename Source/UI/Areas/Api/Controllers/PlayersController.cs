@@ -83,7 +83,16 @@ namespace UI.Areas.Api.Controllers
 
         [ApiAuthentication]
         [ApiModelValidation]
-        [ApiRoute("GamingGroups/{gamingGroupId}/Players/{playerId}/")]
+        [ApiRoute("Players/{playerId}/", StartingVersion = 2)]
+        [HttpPut]
+        public virtual HttpResponseMessage UpdatePlayerVersion2([FromBody] UpdatePlayerMessage updatePlayerMessage, [FromUri] int playerId)
+        {
+            return UpdatePlayer(updatePlayerMessage, playerId, CurrentUser.CurrentGamingGroupId.Value);
+        }
+
+        [ApiAuthentication]
+        [ApiModelValidation]
+        [ApiRoute("GamingGroups/{gamingGroupId}/Players/{playerId}/", AcceptedVersions = new []{1})]
         [HttpPut]
         public virtual HttpResponseMessage UpdatePlayer([FromBody]UpdatePlayerMessage updatePlayerMessage, [FromUri] int playerId, [FromUri]int gamingGroupId)
         {
