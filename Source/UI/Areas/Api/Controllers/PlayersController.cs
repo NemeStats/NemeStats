@@ -21,9 +21,17 @@ namespace UI.Areas.Api.Controllers
             this.playerRetriever = playerRetriever;
         }
 
+        [ApiModelValidation]
+        [ApiRoute("Players/", StartingVersion = 2)]
+        [HttpGet]
+        public virtual HttpResponseMessage GetPlayersVersion2([FromUri] int gamingGroupId)
+        {
+            return GetPlayers(gamingGroupId);
+        }
+
         [ApiAuthentication]
         [ApiModelValidation]
-        [ApiRoute("GamingGroups/{gamingGroupId}/Players/")]
+        [ApiRoute("GamingGroups/{gamingGroupId}/Players/", AcceptedVersions = new[]{1})]
         [HttpGet]
         public virtual HttpResponseMessage GetPlayers([FromUri] int gamingGroupId)
         {
