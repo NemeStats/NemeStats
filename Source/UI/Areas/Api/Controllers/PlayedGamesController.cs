@@ -178,7 +178,16 @@ namespace UI.Areas.Api.Controllers
             };
         }
 
-        [ApiRoute("GamingGroups/{gamingGroupId}/PlayedGames/{playedGameID}")]
+        [ApiRoute("PlayedGames/{playedGameID}", StartingVersion = 2)]
+        [HttpDelete]
+        [ApiAuthentication]
+        [ApiModelValidation]
+        public HttpResponseMessage DeletePlayedGame(int playedGameID)
+        {
+            return DeletePlayedGame(playedGameID, CurrentUser.CurrentGamingGroupId.Value);
+        }
+
+        [ApiRoute("GamingGroups/{gamingGroupId}/PlayedGames/{playedGameID}", AcceptedVersions = new[] { 1 })]
         [HttpDelete]
         [ApiAuthentication]
         [ApiModelValidation]
