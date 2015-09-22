@@ -72,7 +72,7 @@ namespace UI.Areas.Api.Controllers
         [ApiModelValidation]
         [ApiRoute("GameDefinitions/", StartingVersion = 2)]
         [HttpPost]
-        public virtual HttpResponseMessage SaveNewGameDefinitionVersion2([FromBody]NewGameDefinitionMessage newGameDefinitionMessage)
+        public virtual HttpResponseMessage SaveNewGameDefinition([FromBody]NewGameDefinitionMessage newGameDefinitionMessage)
         {
             return this.SaveNewGameDefinition(newGameDefinitionMessage, CurrentUser.CurrentGamingGroupId.Value);
         }
