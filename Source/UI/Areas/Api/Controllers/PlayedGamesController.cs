@@ -138,9 +138,9 @@ namespace UI.Areas.Api.Controllers
         [HttpPost]
         [ApiAuthentication]
         [ApiModelValidation]
-        public HttpResponseMessage RecordPlayedGameVersion2([FromBody] PlayedGameMessage playedGameMessage, [FromUri] int gamingGroupId)
+        public HttpResponseMessage RecordPlayedGameVersion2([FromBody] PlayedGameMessage playedGameMessage)
         {
-            return RecordPlayedGame(playedGameMessage, gamingGroupId);
+            return RecordPlayedGame(playedGameMessage, CurrentUser.CurrentGamingGroupId.Value);
         }
 
         [ApiRoute("GamingGroups/{gamingGroupId}/PlayedGames/", AcceptedVersions = new[] { 1 })]
