@@ -174,6 +174,11 @@ namespace BusinessLogic.Logic.PlayedGames
                 queryable = queryable.Where(query => DbFunctions.TruncateTime(query.DateLastUpdated) <= endDate.Date);
             }
 
+            if (playedGameFilter.PlayerId.HasValue)
+            {
+                queryable = queryable.Where(query => query.PlayerGameResults.Any(x => x.PlayerId == playedGameFilter.PlayerId));
+            }
+
             if (playedGameFilter.MaximumNumberOfResults.HasValue)
             {
                 queryable = queryable.Take(playedGameFilter.MaximumNumberOfResults.Value);

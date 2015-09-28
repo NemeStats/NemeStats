@@ -9,5 +9,7 @@ namespace UI.Areas.Api.Models
         public string StartDateGameLastUpdated { get; set; }
 
         public int? MaximumNumberOfResults { get; set; }
+        public int? PlayerId { get; set; }
+        public int? GamingGroupId { get; set; }
     }
 }
