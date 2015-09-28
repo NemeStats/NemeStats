@@ -20,6 +20,7 @@ namespace UI.Attributes
         internal const string ERROR_MESSAGE_INVALID_AUTH_TOKEN = "Invalid " + AUTH_HEADER;
         internal const string ERROR_MESSAGE_UNAUTHORIZED_TO_GAMING_GROUP = "User does not have access to Gaming Group with Id '{0}'.";
         internal const string ERROR_MESSAGE_MISSING_AUTH_TOKEN_HEADER = "This action requires an " + AUTH_HEADER + " header.";
+        internal const string ERROR_MESSAGE_USER_MUST_HAVE_A_GAMING_GROUP = "The current user must be associated with a Gaming Group to call this action. Try authenticating and getting a new auth token."; 
 
         public ApiAuthenticationAttribute()
             : this(DependencyResolver.Current.GetService<AuthTokenValidator>(), new ClientIdCalculator())
@@ -68,6 +69,14 @@ namespace UI.Attributes
                     HttpStatusCode.Unauthorized,
                     ERROR_MESSAGE_INVALID_AUTH_TOKEN);
                 return;
+            }
+
+            if (!applicationUser.CurrentGamingGroupId.HasValue)
+            {
+                actionContext.Response = actionContext.Request.CreateErrorResponse(
+                   HttpStatusCode.Unauthorized,
+                   ApiAuthenticationAttribute.ERROR_MESSAGE_USER_MUST_HAVE_A_GAMING_GROUP);
+                return; 
             }
 
             if (actionContext.ActionArguments.ContainsKey(PARAMETER_NAME_GAMING_GROUP_ID)

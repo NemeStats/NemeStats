@@ -43,7 +43,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
                     Id = GAME_DEFINITION_A_ID
                 }
             };
-            autoMocker.Get<IGameDefinitionRetriever>().Expect(mock => mock.GetAllGameDefinitionNames(currentUser)).Return(gameDefinitionNames);
+            autoMocker.Get<IGameDefinitionRetriever>().Expect(mock => mock.GetAllGameDefinitionNames(this.currentUser.CurrentGamingGroupId.Value)).Return(gameDefinitionNames);
         }
 
         [Test]
