@@ -8,6 +8,7 @@ using BusinessLogic.Models.PlayedGames;
 using NUnit.Framework;
 using Rhino.Mocks;
 using StructureMap.AutoMocking;
+using BusinessLogic.Exceptions;
 
 namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameRetrieverTests
 {
@@ -173,6 +174,20 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameRe
 
             Assert.That(results.Count, Is.EqualTo(1));
             Assert.True(results.All(x => x.DateLastUpdated.Date <= new DateTime(2015, 3, 1)));
+        }
+
+        [Test]
+        public void ItThrowsAnInvalidDateFormatExceptionIfTheDateIsntYYYYMMDD()
+        {
+            var filter = new PlayedGameFilter
+            {
+                EndDateGameLastUpdated = "2015-3-1"
+            };
+            var expectedExceptionMessage = new InvalidDateFormatException(filter.EndDateGameLastUpdated).Message;
+
+            var actualException = Assert.Throws<InvalidDateFormatException>(() => autoMocker.ClassUnderTest.SearchPlayedGames(filter));
+
+            Assert.That(actualException.Message, Is.EqualTo(expectedExceptionMessage));
         }
 
         [Test]

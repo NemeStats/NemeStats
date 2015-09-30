@@ -164,14 +164,14 @@ namespace BusinessLogic.Logic.PlayedGames
 
             if (!string.IsNullOrEmpty(playedGameFilter.StartDateGameLastUpdated))
             {
-                DateTime startDate = DateTime.ParseExact(playedGameFilter.StartDateGameLastUpdated, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None);
-                queryable = queryable.Where(query => DbFunctions.TruncateTime(query.DateLastUpdated) >= startDate.Date);
+                var startDate = ParseDateTime(playedGameFilter.StartDateGameLastUpdated);
+                queryable = queryable.Where(query => DbFunctions.TruncateTime(query.DateLastUpdated) >= startDate);
             }
 
             if (!string.IsNullOrEmpty(playedGameFilter.EndDateGameLastUpdated))
             {
-                DateTime endDate = DateTime.ParseExact(playedGameFilter.EndDateGameLastUpdated, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None);
-                queryable = queryable.Where(query => DbFunctions.TruncateTime(query.DateLastUpdated) <= endDate.Date);
+                var endDate = ParseDateTime(playedGameFilter.EndDateGameLastUpdated);
+                queryable = queryable.Where(query => DbFunctions.TruncateTime(query.DateLastUpdated) <= endDate);
             }
 
             if (playedGameFilter.PlayerId.HasValue)
@@ -184,6 +184,18 @@ namespace BusinessLogic.Logic.PlayedGames
                 queryable = queryable.Take(playedGameFilter.MaximumNumberOfResults.Value);
             }
             return queryable;
+        }
+
+        private static DateTime ParseDateTime(string inputDate)
+        {
+            try
+            {
+                return DateTime.ParseExact(inputDate, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None);
+            }
+            catch (FormatException)
+            {
+                throw new InvalidDateFormatException(inputDate);
+            }
         }
     }
 }
