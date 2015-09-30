@@ -148,6 +148,7 @@
     <Compile Include="Exceptions\DuplicateKeyException.cs" />
     <Compile Include="Exceptions\EntityDoesNotExistException.cs" />
     <Compile Include="Exceptions\ApiFriendlyException.cs" />
+    <Compile Include="Exceptions\InvalidDateFormatException.cs" />
     <Compile Include="Exceptions\PlayerAlreadyExistsException.cs" />
     <Compile Include="Exceptions\UnauthorizedEntityAccessException.cs" />
     <Compile Include="Export\ExcelGenerator.cs" />

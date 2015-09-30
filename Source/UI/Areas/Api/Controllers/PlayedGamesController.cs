@@ -105,34 +105,39 @@ namespace UI.Areas.Api.Controllers
 
         [ApiRoute("PlayedGames/", StartingVersion = 2)]
         [HttpGet]
-        public HttpResponseMessage GetPlayedGamesVersion2([FromBody] PlayedGameFilterMessage playedGameFilterMessage, [FromUri] int gamingGroupId)
+        public HttpResponseMessage GetPlayedGamesVersion2([FromUri] PlayedGameFilterMessage playedGameFilterMessage)
         {
-            return GetPlayedGames(playedGameFilterMessage, gamingGroupId);
+            return GetPlayedGameSearchResults(playedGameFilterMessage);
         }
 
         [ApiRoute("GamingGroups/{gamingGroupId}/PlayedGames/", AcceptedVersions = new[] { 1 })]
         [HttpGet]
         public HttpResponseMessage GetPlayedGames([FromBody]PlayedGameFilterMessage playedGameFilterMessage, [FromUri]int gamingGroupId)
         {
-            var filter = new PlayedGameFilter
+            playedGameFilterMessage.GamingGroupId = gamingGroupId;
+            return GetPlayedGameSearchResults(playedGameFilterMessage);
+        }
+
+        private HttpResponseMessage GetPlayedGameSearchResults(PlayedGameFilterMessage playedGameFilterMessage)
+        {
+            var filter = new PlayedGameFilter();
+
+            if (playedGameFilterMessage != null)
             {
-                GamingGroupId = gamingGroupId
-            };
-            if(playedGameFilterMessage != null)
-            {
+                filter.GamingGroupId = playedGameFilterMessage.GamingGroupId;
                 filter.StartDateGameLastUpdated = playedGameFilterMessage.StartDateGameLastUpdated;
                 filter.MaximumNumberOfResults = playedGameFilterMessage.MaximumNumberOfResults;
+                filter.PlayerId = playedGameFilterMessage.PlayerId;
             }
-            var searchResults = playedGameRetriever.SearchPlayedGames(filter);
+            var searchResults = this.playedGameRetriever.SearchPlayedGames(filter);
 
             var playedGamesSearchResultMessage = new PlayedGameSearchResultsMessage
             {
                 PlayedGames = searchResults.Select(Mapper.Map<PlayedGameSearchResultMessage>).ToList()
             };
 
-            return Request.CreateResponse(HttpStatusCode.OK, playedGamesSearchResultMessage);
+            return this.Request.CreateResponse(HttpStatusCode.OK, playedGamesSearchResultMessage);
         }
-
 
         [ApiRoute("PlayedGames/", StartingVersion = 2)]
         [HttpPost]
