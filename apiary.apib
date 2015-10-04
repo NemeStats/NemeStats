@@ -1,5 +1,5 @@
 FORMAT: 1A
-HOST: https://nerdscorekeeper.azurewebsites.net/api/v1
+HOST: https://nerdscorekeeper.azurewebsites.net/api/v2
 
 # NemeStats API
 
@@ -13,6 +13,15 @@ integrating with your own website or other application.
 
 Feel free to email us at nemestats@gmail.com if you have questions or issues.
 
+###Version Information
+This document represents Version 2 of the API, which has the following changes from the previous version:
+* /GamingGroups/{gamingGroupId}/ is removed from many of the service URIs in favor of the query string parameter.
+For Example, /api/v1/GamingGroups/{gamingGroupid}/GameDefinitions is now /api/v2/GameDefinitions/?gamingGroupId=1
+* Authorization is no longer required on a number of resources that were previously locked down. This is an attempt to
+make more of the information freely available to API consumers. Information like usernames, passwords, and email will always remain private
+and protected.
+* Documentation for version 1 of the API can be found here: http://docs.nemestats.apiary.io/#
+
 ### General Information
 
 * The API is versioned in the URL and will update whenever there are breaking changes to the API. 
@@ -21,16 +30,16 @@ to function on the old version, but all services (especially the updated ones) w
 the new version. 
 Here is an example of a versioned endpoint: 
 
-  `/api/v1/GamingGroup/1234`
+  `/api/v2/GamingGroup/1234`
 * The general format for a URI is: 
 
-  `/api/v{API version number}/{resource name}/{optional resource id}/{optional nested resource}/{optional nested resource id}`  
+  `/api/v{API version number}/{resource name}/{optional resource id}/{optional nested resource}/{optional nested resource id}`/{query string parameters}  
 
-  An example would be GET /api/v1/GamingGroups/1/PlayedGames (returns all of the Played Game resources under
-  the Gaming Group with Id '1')
-* Resource names are plural (e.g. GaminGroups instead of GamingGroup)
+  An example would be GET /api/v2/PlayedGames/&gamingGroupId=1 (returns all of the Played Game resources with
+  Gaming Group Id '1')
+* Resource names are plural (e.g. GamingGroups instead of GamingGroup)
 * Properties in request and response objects are camel-cased (e.g. playerId instead of PlayerId or playerid)
-* For GET requests, additional parameters or filters will be passed in via query string (e.g. `/api/v1/GamingGroups/13/Playedgames?startDate=2015-02-03`)
+* For GET requests, additional parameters or filters will be passed in via query string (e.g.`/api/v2/Playedgames/?gamingGroupId=123&startDate=2015-02-03`)
 * For services that require authentication (namely ones that allow data to be changed via POST/PUT/DELETE), a header for "X-Auth-Token" will need to be sent on the request to ensure that the consumer has the appropriate access.
 * All dates will be in the ISO-8601 format ([wikipedia entry](http://en.wikipedia.org/wiki/ISO_8601)). In most cases this will just be the date portion in UTC (yyyy-MM-dd) with no time information included. For example: 2015-03-20
 * Currently all services return data in JSON format only
@@ -230,11 +239,11 @@ A User Session is represented by an authentication token.
 A Gaming Group represents a group of Players who play games together. The original User that registers
 will have a new Gaming Group automatically created and associated with their account. Other Users
 can be invited (currently through the website only) to join a Gaming Group and can even create 
-additional Gaming Groups of their own. Gaming Groups have multiple nested resources: Players, 
-Game Definitions, and Played Games. These resources are described in more detail in their 
+additional Gaming Groups of their own. All Players, Game Definitions, and Played Games are associated
+with exactly one Gaming Group. These resources are described in more detail in their 
 corresponding sections.
 
-# Played Games [/GamingGroups/{gamingGroupId}/PlayedGames/]
+# Played Games [/PlayedGames/]
 A Played Game represents an event in which multiple Players were recorded as having played a 
 given game (aka Game Definition in NemeStats terms). A Played Game houses information about
 who played the game, who won, how many points were awarded, etc. The Played Game is the foundation
@@ -242,9 +251,6 @@ for all important statistics within NemeStats.
 
 Currently, updating Played Games is not supported and requires that the game needing updates be deleted
 and then recreated using the corresponding services for this.
-
-+ Parameters
-    + gamingGroupId : 923 (number, required) - The NemeStats unique identifier for the Gaming Group of the Player.
 
 + Attributes
     + playedGameId (number, required) - NemeStats unique identifier for the Played Game.
@@ -259,7 +265,7 @@ and then recreated using the corresponding services for this.
     + playerGameResults (PlayerGameResult, required) - A list of PlayerGameResult objects which contain information regarding each Player's rank, points scored, and NemeStats points awarded for playing the game.
 
 ## Create a new Played Game [POST]
-This service will record a new Played Game.
+This service will record a new Played Game under the Gaming Group of the currently logged in User.
 
 + Attributes
     + gameDefinitionId (number, required) - NemeStats unique identifier for the Game Definition (e.g. Race For the Galaxy's unique Id) of the Played Game.
@@ -321,12 +327,15 @@ This service will record a new Played Game.
                     "message" : "Invalid X-Auth-Token"
                 }
 
-## Get Played Games [GET /GamingGroups/{gamingGroupId}/PlayedGames/{?startDateGameLastUpdated,maximumNumberOfResults}] 
-Retrieve a list of Played Games given some criteria.
+## Get Played Games [GET /PlayedGames/{?gamingGroupId,startDateGameLastUpdated,endDateGameLastUpdated,playerId,maximumNumberOfResults}] 
+Retrieve a list of Played Games given some criteria. Currently limited to a single Gaming Group at a time
+via the required gamingGroupId query string parameter.
 
 + Parameters
-    + gamingGroupId : 923 (number, required) - The NemeStats unique identifier for the Gaming Group of the Player.
-    + startDateGameLastUpdated : `2015-04-26` (string, optional) - If set, all Played Games returned will be greater than or equal to this date. Dates must be in yyyy-MM-dd format.
+    + gamingGroupId : 923 (number, required) - The NemeStats unique identifier for the Gaming Group of the Played Game.
+    + startDateGameLastUpdated : `2015-04-26` (string, optional) - If set, all Played Games returned will be less than or equal to this date. Dates must be in yyyy-MM-dd format.
+    + endDateGameLastUpdated : `2015-09-30` (string, optional) - If set, all Played Games returned will be less than or equal to this date. Dates must be in yyyy-MM-dd format.
+    + playerId: 9791 (number, optional) - If set, will only return Played Games where this Player participated.
     + maximumNumberOfResults : 100 (number, optional) - The maximum number of results to be returned. The default is no limit.
         + Default: 1000000
     
@@ -467,11 +476,10 @@ Retrieve a list of Played Games given some criteria.
                     "message" : "Invalid X-Auth-Token"
                 }
 
-## Delete an existing Played Game [DELETE /GamingGroups/{gamingGroupId}/PlayedGames/{playedGameId}/]
+## Delete an existing Played Game [DELETE /PlayedGames/{playedGameId}/]
 This service will permanently delete a Played Game and re-adjust NemeStats statistics accordingly.
 
 + Parameters
-    + gamingGroupId : 923 (number, required) - The NemeStats unique identifier for the Gaming Group of the Played Game.
     + playedGameId : 16098 (number, required) - The NemeStats unique identifier of a given Played Game.
 
 + Request Valid Request (application/json)
@@ -500,12 +508,9 @@ This service will permanently delete a Played Game and re-adjust NemeStats stati
                     "message" : "A Played Game with playedGameId '-1' does not exist in this Gaming Group."
                 } 
                 
-# Players [/GamingGroups/{gamingGroupId}/Players/]
+# Players [/Players/]
 A Player represents a person in a Gaming Group. A Player must be created to log games for that person. If a given person is in multiple
 Gaming Groups, a new Player will be created for each Gaming Group. A Player may or may not be associated with a registered User.
-
-+ Parameters
-    + gamingGroupId : 923 (number, required) - The NemeStats unique identifier for the Gaming Group of the Player.
 
 + Attributes
     + playerId (number, required) - The NemeStats unique identifier for the Player.
@@ -514,8 +519,11 @@ Gaming Groups, a new Player will be created for each Gaming Group. A Player may 
     + nemesisPlayerId (number, optional) - The NemeStats unique identifier for the Player who is this Player's Nemesis. The Nemesis is the Player who has the highest win percentage vs. this Player and who has won at least 3 games.
     + active (boolean, required) - Flag indicating whether the Player is active or inactive. Inactive Players will not show up in the NemeStats website.
 
-## Get Players in Gaming Group [GET] 
+## Get Players in Gaming Group [GET /Players/{?gamingGroupId}] 
 Retrieve a list of all Players in the given Gaming Group.
+
++ Parameters
+    + gamingGroupId : 923 (number, required) - The NemeStats unique identifier for the Gaming Group of the Player.
 
 + Request ValidRequest (application/json)
     + Headers
@@ -572,7 +580,7 @@ Retrieve a list of all Players in the given Gaming Group.
                 }
 
 ## Create a new Player [POST]
-This service will create a new Player in the specified Gaming Group.
+This service will create a new Player in the currently authenticated User's Gaming Group.
 
 + Attributes
     + playerName (string, required) - The name of the Player in this Gaming Group.
@@ -622,11 +630,10 @@ This service will create a new Player in the specified Gaming Group.
                     "message" : "Invalid X-Auth-Token"
                 }
                 
-## Update an existing Player [PUT /GamingGroups/{gamingGroupId}/Players/{playerId}/]
+## Update an existing Player [PUT /Players/{playerId}/]
 This service will update a given Player in the given Gaming Group.
 
 + Parameters
-    + gamingGroupId : 923 (number, required) - The NemeStats unique identifier for the Gaming Group of the Player.
     + playerId : 12345 (number, required) - The NemeStats unique identifier of a given Player.
 
 + Attributes
@@ -685,23 +692,24 @@ This service will update a given Player in the given Gaming Group.
                     "message" : "A Player with playerId '12345' does not exist in this Gaming Group."
                 } 
                 
-# Game Definitions [/GamingGroups/{gamingGroupId}/GameDefinitions/]
+# Game Definitions [/GameDefinitions/]
 A Game Definition represents a unique game (e.g. Race For The Galaxy, Candy Land, Axis and Allies, etc.) in a Gaming Group.
 Game Definitions may be linked with Board Game Geek (BGG) to facilitate integration with that site and to bring together
 a common unique identifier for board games across different Gaming Groups.
 
-+ Parameters
-    + gamingGroupId : 923 (number, required) - The NemeStats unique identifier for the Gaming Group of the Player.
-
 + Attributes
     + gameDefinitionId (number, required) - NemeStats unique identifier for the given Game Definition.
+    + gamingGroupId (number, required) - The NemeStats unique identifier for the Gaming Group of the Game Definition.
     + gameDefinitionName (string, required) - Name of the Game Definition (e.g. 'Monopoly) within the given Gaming Group.
     + boardGameGeekObjectId (number, optional) - Board Game Geek unique identifier for the Game Definition. Used to conveniently cross reference with Board Game Geek.
     + active (boolean, required) - Flag indicating whether or not the Game Definition is still active within the Gaming Group. Inactive Game Definitions will nto show up in the NemeStats website.
 
-## Get Game Definitions in Gaming Group [GET] 
+## Get Game Definitions in Gaming Group [GET /GameDefinitions/{?gamingGroupId}] 
 Retrieve a list of all Game Definitions in the given Gaming Group.
-    
+
++ Parameters
+    + gamingGroupId : 923 (number, required) - The NemeStats unique identifier for the Gaming Group of the Game Definitions.
+
 + Request ValidRequest (application/json)
     + Headers
             
@@ -743,7 +751,7 @@ Retrieve a list of all Game Definitions in the given Gaming Group.
                 }
 
 ## Create a new Game Definition [POST]
-This service will create a new Game Definition in the specified Gaming Group.
+This service will create a new Game Definition in the currently authenticated User's Gaming Group.
 
 + Attributes
     + gameDefinitionName (string, required) - The name of the Game Definition in this Gaming Group.
@@ -773,7 +781,7 @@ This service will create a new Game Definition in the specified Gaming Group.
                   "message" : "A Game Definition with name 'Monopoly (1933)' already exists in this Gaming Group."
                 }
                 
-## Update an existing Game Definition [PUT /GamingGroups/{gamingGroupId}/GameDefinitions/{gameDefinitionId}/]
+## Update an existing Game Definition [PUT /GameDefinitions/{gameDefinitionId}/]
 This service will update a given Player in the given Gaming Group.
 
 + Parameters

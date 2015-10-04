@@ -199,11 +199,11 @@ namespace BusinessLogic.Logic.GameDefinitions
         }
 
 
-        public IList<GameDefinitionName> GetAllGameDefinitionNames(Models.User.ApplicationUser currentUser)
+        public IList<GameDefinitionName> GetAllGameDefinitionNames(int gamingGroupId)
         {
             return dataContext.GetQueryable<GameDefinition>()
                               .Where(gameDefinition => gameDefinition.Active
-                              && gameDefinition.GamingGroupId == currentUser.CurrentGamingGroupId)
+                              && gameDefinition.GamingGroupId == gamingGroupId)
                               .Select(gameDefiniton => new GameDefinitionName
                               {
                                   Id = gameDefiniton.Id,

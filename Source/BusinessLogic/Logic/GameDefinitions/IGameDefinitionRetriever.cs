@@ -27,6 +27,6 @@ namespace BusinessLogic.Logic.GameDefinitions
     {
         IList<GameDefinitionSummary> GetAllGameDefinitions(int gamingGroupId);
         GameDefinitionSummary GetGameDefinitionDetails(int id, int numberOfPlayedGamesToRetrieve);
-        IList<GameDefinitionName> GetAllGameDefinitionNames(ApplicationUser currentUser);
+        IList<GameDefinitionName> GetAllGameDefinitionNames(int gamingGroupId);
     }
 }

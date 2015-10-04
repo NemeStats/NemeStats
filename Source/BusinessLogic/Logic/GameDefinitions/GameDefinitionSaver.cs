@@ -49,18 +49,19 @@ namespace BusinessLogic.Logic.GameDefinitions
             bool isNewGameDefinition = !gameDefinition.AlreadyInDatabase();
             if (isNewGameDefinition)
             {
-                new Task(() => eventTracker.TrackGameDefinitionCreation(currentUser, gameDefinition.Name)).Start();
+                GameDefinition definition = gameDefinition;
+                new Task(() => eventTracker.TrackGameDefinitionCreation(currentUser, definition.Name)).Start();
 
-                gameDefinition = this.HandleExistingGameDefinitionWithThisName(gameDefinition);
+                gameDefinition = this.HandleExistingGameDefinitionWithThisName(gameDefinition, currentUser.CurrentGamingGroupId.Value);
             }
 
             return dataContext.Save<GameDefinition>(gameDefinition, currentUser);
         }
 
-        private GameDefinition HandleExistingGameDefinitionWithThisName(GameDefinition gameDefinition)
+        private GameDefinition HandleExistingGameDefinitionWithThisName(GameDefinition gameDefinition, int currentUsersGamingGroupId)
         {
             var existingGameDefinition = this.dataContext.GetQueryable<GameDefinition>()
-                .FirstOrDefault(x => x.Name == gameDefinition.Name && x.GamingGroupId == gameDefinition.GamingGroupId);
+                .FirstOrDefault(x => x.Name == gameDefinition.Name && x.GamingGroupId == currentUsersGamingGroupId);
             if (existingGameDefinition == null)
             {
                 return gameDefinition;
