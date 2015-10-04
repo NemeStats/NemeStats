@@ -49,7 +49,8 @@ namespace UI
             bundles.Add(new ScriptBundle("~/bundles/d3")
                 .Include("~/Scripts/d3/d3.js")
                 .Include("~/Scripts/d3/nv.d3.min.js")
-                .Include("~/Scripts/d3/gamesPlayedPieChart.js"));
+                .Include("~/Scripts/d3/gamesPlayedPieChart.js")
+                .Include("~/Scripts/d3/nemeStatsPointsLineGraph.js"));
 
             bundles.Add(new StyleBundle("~/bundles/d3/css")
                 .Include("~/Scripts/d3/css/nv.d3.css"));

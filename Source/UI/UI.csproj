@@ -513,6 +513,7 @@
     <Content Include="Scripts\CreatePlayedGame\createplayedgame.js" />
     <Content Include="Scripts\d3\d3.js" />
     <Content Include="Scripts\d3\d3.min.js" />
+    <Content Include="Scripts\d3\nemeStatsPointsLineGraph.js" />
     <Content Include="Scripts\d3\nv.d3.min.js" />
     <Content Include="Scripts\d3\css\nv.d3.css" />
     <Content Include="Scripts\GameDefinition\createGameDefinition.js" />

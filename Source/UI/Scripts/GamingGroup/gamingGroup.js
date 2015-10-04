@@ -33,6 +33,27 @@ Views.GamingGroup.GamingGroupView.prototype = {
         });
 
         this._googleAnalytics.trackGAEvent("GamingGroups", "GamingGroupRenamed", "GamingGroupRenamed");
+    },
+    renderNemeStatsPointsLineGraph: function () {
+        var url = '/api/v2/PlayedGames/?gamingGroupId=1';
+
+        $.get(url, function (data) {
+            for (var i = data.playedGames.length - 1; i >= 0; i--) {
+                for (var j = 0; j < data.playedGames[i].playerGameResults.length; j++) {
+                    var gameInfo = data.playedGames[i].playerGameResults[j];
+                    if (playerDataMap[gameInfo.playerId] == null) {
+                        playerDataMap[gameInfo.playerId] = {
+                            values: [{ x: new Date(data.playedGames[i].datePlayed), y: 0 }]
+                        };
+                        playerData.push({ values: playerDataMap[gameInfo.playerId].values, key: gameInfo.playerName });
+                    }
+                    var lastIndex = playerDataMap[gameInfo.playerId].values.length - 1;
+                    var nextValue = playerDataMap[gameInfo.playerId].values[lastIndex].y + gameInfo.nemeStatsPointsAwarded;
+                    playerDataMap[gameInfo.playerId].values.push({ x: new Date(data.playedGames[i].datePlayed), y: nextValue });
+                }
+            }
+            drawLineGraph(playerData);
+        });
     }
 }
 

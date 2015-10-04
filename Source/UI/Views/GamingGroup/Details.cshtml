@@ -24,3 +24,19 @@
 <div class="row">
     @Html.Partial("~/Views/PlayedGame/_PlayedGamesPartial.cshtml", Model.PlayedGames)
 </div>
+
+<div id="NemeStatsPointsLineGraph">
+    <svg style='height:500px;width:1140px'> </svg>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/d3")
+    @Styles.Render("~/bundles/d3/css")
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var gamingGroupDetails = new window.Views.GamingGroup.GamingGroupView();
+            var settings = { "gamingGroupId" : @Model.Id };
+            gamingGroupDetails.renderNemeStatsPointsLineGraph();
+        });
+    </script>
+}

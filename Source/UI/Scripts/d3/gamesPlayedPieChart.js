@@ -4,7 +4,8 @@
         var chart = nv.models.pieChart()
             .x(function (d) { return d.gameDefinitionName })
             .y(function (d) { return d.gamesLost + d.gamesWon })
-            .showLabels(true);
+            .showLabels(true)
+        ;
 
         d3.select("#GamesPieChart svg")
             .datum(summariesOfGames)
