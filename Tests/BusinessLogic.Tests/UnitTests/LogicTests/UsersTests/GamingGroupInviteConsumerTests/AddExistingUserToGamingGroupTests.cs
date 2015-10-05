@@ -18,7 +18,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using BusinessLogic.DataAccess;
 using BusinessLogic.Exceptions;
 using BusinessLogic.Models;
 using BusinessLogic.Models.User;
@@ -32,7 +31,6 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.GamingGroupInviteC
     {
         private readonly Guid gamingGroupInvitationId = Guid.NewGuid();
         private GamingGroupInvitation invitation;
-        private string email;
         private int gamingGroupId = 123;
         private List<UserGamingGroup> userGamingGroups;
         private Player player;

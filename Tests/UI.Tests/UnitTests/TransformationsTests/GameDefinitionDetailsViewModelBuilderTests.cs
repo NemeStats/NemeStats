@@ -64,6 +64,9 @@ namespace UI.Tests.UnitTests.TransformationsTests
             autoMocker = new RhinoAutoMocker<GameDefinitionDetailsViewModelBuilder>();
             autoMocker.PartialMockTheClassUnderTest();
 
+            expectedPlayerSummary1 = new PlayerSummaryViewModel();
+            expectedPlayerSummary2 = new PlayerSummaryViewModel();
+
             List<PlayedGame> playedGames = new List<PlayedGame>();
             playedGames.Add(new PlayedGame
             {

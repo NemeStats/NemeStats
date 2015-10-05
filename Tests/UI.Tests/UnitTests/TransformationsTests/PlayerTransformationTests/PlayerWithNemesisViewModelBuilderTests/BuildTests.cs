@@ -15,7 +15,7 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
-using BusinessLogic.Models;
+
 using BusinessLogic.Models.Players;
 using BusinessLogic.Models.User;
 using NUnit.Framework;

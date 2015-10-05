@@ -16,7 +16,6 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 using System.Data.Entity;
-using System.Net.Sockets;
 using BusinessLogic.DataAccess;
 using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.Logic.BoardGameGeek;
@@ -200,11 +199,11 @@ namespace BusinessLogic.Logic.GameDefinitions
         }
 
 
-        public IList<GameDefinitionName> GetAllGameDefinitionNames(Models.User.ApplicationUser currentUser)
+        public IList<GameDefinitionName> GetAllGameDefinitionNames(int gamingGroupId)
         {
             return dataContext.GetQueryable<GameDefinition>()
                               .Where(gameDefinition => gameDefinition.Active
-                              && gameDefinition.GamingGroupId == currentUser.CurrentGamingGroupId)
+                              && gameDefinition.GamingGroupId == gamingGroupId)
                               .Select(gameDefiniton => new GameDefinitionName
                               {
                                   Id = gameDefiniton.Id,

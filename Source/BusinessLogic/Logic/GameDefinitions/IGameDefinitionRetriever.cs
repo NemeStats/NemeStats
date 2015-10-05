@@ -15,7 +15,7 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
-using BusinessLogic.Models;
+
 using System.Collections.Generic;
 using System.Linq;
 using BusinessLogic.Models.Games;
@@ -27,6 +27,6 @@ namespace BusinessLogic.Logic.GameDefinitions
     {
         IList<GameDefinitionSummary> GetAllGameDefinitions(int gamingGroupId);
         GameDefinitionSummary GetGameDefinitionDetails(int id, int numberOfPlayedGamesToRetrieve);
-        IList<GameDefinitionName> GetAllGameDefinitionNames(ApplicationUser currentUser);
+        IList<GameDefinitionName> GetAllGameDefinitionNames(int gamingGroupId);
     }
 }

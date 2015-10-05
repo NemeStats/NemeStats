@@ -16,11 +16,9 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 
-using BusinessLogic.Models;
 using BusinessLogic.Models.GamingGroups;
 using BusinessLogic.Models.User;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace BusinessLogic.Logic.Users
 {

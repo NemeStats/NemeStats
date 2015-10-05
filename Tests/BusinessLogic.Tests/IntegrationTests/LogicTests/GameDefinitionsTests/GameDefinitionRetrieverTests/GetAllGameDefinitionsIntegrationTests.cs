@@ -15,7 +15,7 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
-using System.Data.Entity;
+
 using BusinessLogic.DataAccess;
 using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.Logic.GameDefinitions;
@@ -24,7 +24,6 @@ using BusinessLogic.Models.Games;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
-using Rhino.Mocks.Constraints;
 using Is = NUnit.Framework.Is;
 
 namespace BusinessLogic.Tests.IntegrationTests.LogicTests.GameDefinitionsTests.GameDefinitionRetrieverTests

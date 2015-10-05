@@ -28,25 +28,25 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGamesTests
     [TestFixture]
     public class GetRecentPublicGamesIntegrationTests : IntegrationTestBase
     {
-        private int numberOfGamesToRetrieve = 3;
+        private const int NUMBER_OF_GAMES_TO_RETRIEVE = 3;
 
         List<PublicGameSummary> publicGameSummaryResults;
 
         [TestFixtureSetUp]
-        public void FixtureSetUp()
+        public void LocalFixtureSetUp()
         {
             using (NemeStatsDataContext dataContext = new NemeStatsDataContext())
             {
                 PlayedGameRetriever retriever = new PlayedGameRetriever(dataContext);
 
-                publicGameSummaryResults = retriever.GetRecentPublicGames(numberOfGamesToRetrieve);
+                publicGameSummaryResults = retriever.GetRecentPublicGames(NUMBER_OF_GAMES_TO_RETRIEVE);
             }
         }
 
         [Test]
         public void ItReturnsTheSpecifiedNumberOfGames()
         {
-            Assert.True(publicGameSummaryResults.Count == numberOfGamesToRetrieve);
+            Assert.True(publicGameSummaryResults.Count == NUMBER_OF_GAMES_TO_RETRIEVE);
         }
 
         [Test]
@@ -59,7 +59,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGamesTests
                 Assert.GreaterOrEqual(lastPlayedDateTime, summary.DatePlayed);
                 lastPlayedDateTime = summary.DatePlayed;
             }
-            Assert.True(publicGameSummaryResults.Count == numberOfGamesToRetrieve);
+            Assert.True(publicGameSummaryResults.Count == NUMBER_OF_GAMES_TO_RETRIEVE);
         }
     }
 }

@@ -15,10 +15,8 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
-using BusinessLogic.DataAccess;
+
 using BusinessLogic.Logic.GameDefinitions;
-using BusinessLogic.Logic.PlayedGames;
-using BusinessLogic.Logic.Players;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
 using BusinessLogic.Models.User;
@@ -28,9 +26,7 @@ using System.Collections.Generic;
 using System.Web.Mvc;
 using StructureMap.AutoMocking;
 using UI.Controllers;
-using UI.Controllers.Helpers;
 using UI.Models.PlayedGame;
-using UI.Transformations;
 
 namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 {

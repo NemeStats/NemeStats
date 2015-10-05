@@ -24,14 +24,10 @@ using BusinessLogic.Logic.Players;
 using BusinessLogic.Models;
 using BusinessLogic.Models.GamingGroups;
 using BusinessLogic.Models.User;
-using Microsoft.AspNet.Identity;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using StructureMap.Pipeline;
 
 namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroupSaverTests
 {

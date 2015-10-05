@@ -20,7 +20,6 @@ using BusinessLogic.Models.Games;
 using System.Collections.Generic;
 using System.Linq;
 using BusinessLogic.Models.PlayedGames;
-using BusinessLogic.Models.User;
 
 namespace BusinessLogic.Logic.PlayedGames
 {

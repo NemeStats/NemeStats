@@ -23,7 +23,6 @@ using BusinessLogic.Models.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using UI.Models;
 using UI.Models.Badges;
 using UI.Models.PlayedGame;
 using UI.Models.Players;

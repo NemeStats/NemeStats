@@ -16,7 +16,6 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 using BusinessLogic.DataAccess.Repositories;
-using BusinessLogic.Logic.Nemeses;
 using NUnit.Framework;
 using System.Linq;
 using BusinessLogic.DataAccess;

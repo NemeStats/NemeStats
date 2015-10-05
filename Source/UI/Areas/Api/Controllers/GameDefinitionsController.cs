@@ -1,10 +1,27 @@
-﻿using BusinessLogic.Logic.GameDefinitions;
+﻿#region LICENSE
+// NemeStats is a free website for tracking the results of board games.
+//     Copyright (C) 2015 Jacob Gordon
+// 
+//     This program is free software: you can redistribute it and/or modify
+//     it under the terms of the GNU General Public License as published by
+//     the Free Software Foundation, either version 3 of the License, or
+//     (at your option) any later version.
+// 
+//     This program is distributed in the hope that it will be useful,
+//     but WITHOUT ANY WARRANTY; without even the implied warranty of
+//     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//     GNU General Public License for more details.
+// 
+//     You should have received a copy of the GNU General Public License
+//     along with this program.  If not, see <http://www.gnu.org/licenses/>
+#endregion
+
+using BusinessLogic.Logic.GameDefinitions;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using BusinessLogic.Models;
-using BusinessLogic.Models.User;
 using UI.Areas.Api.Models;
 using UI.Attributes;
 
@@ -21,9 +38,17 @@ namespace UI.Areas.Api.Controllers
             this.gameDefinitionSaver = gameDefinitionSaver;
         }
 
+        [ApiModelValidation]
+        [ApiRoute("GameDefinitions/", StartingVersion =  2)]
+        [HttpGet]
+        public virtual HttpResponseMessage GetGameDefinitionsVersion2([FromUri] int gamingGroupId)
+        {
+            return this.GetGameDefinitions(gamingGroupId);
+        }
+
         [ApiAuthentication]
         [ApiModelValidation]
-        [ApiRoute("GamingGroups/{gamingGroupId}/GameDefinitions/")]
+        [ApiRoute("GamingGroups/{gamingGroupId}/GameDefinitions/", AcceptedVersions = new[] { 1 })]
         [HttpGet]
         public virtual HttpResponseMessage GetGameDefinitions([FromUri] int gamingGroupId)
         {
@@ -45,7 +70,16 @@ namespace UI.Areas.Api.Controllers
 
         [ApiAuthentication]
         [ApiModelValidation]
-        [ApiRoute("GamingGroups/{gamingGroupId}/GameDefinitions/")]
+        [ApiRoute("GameDefinitions/", StartingVersion = 2)]
+        [HttpPost]
+        public virtual HttpResponseMessage SaveNewGameDefinition([FromBody]NewGameDefinitionMessage newGameDefinitionMessage)
+        {
+            return this.SaveNewGameDefinition(newGameDefinitionMessage, CurrentUser.CurrentGamingGroupId.Value);
+        }
+
+        [ApiAuthentication]
+        [ApiModelValidation]
+        [ApiRoute("GamingGroups/{gamingGroupId}/GameDefinitions/", AcceptedVersions = new[] { 1 })]
         [HttpPost]
         public virtual HttpResponseMessage SaveNewGameDefinition([FromBody]NewGameDefinitionMessage newGameDefinitionMessage, [FromUri]int gamingGroupId)
         {
@@ -67,7 +101,16 @@ namespace UI.Areas.Api.Controllers
 
         [ApiAuthentication]
         [ApiModelValidation]
-        [ApiRoute("GamingGroups/{gamingGroupId}/GameDefinitions/{gameDefinitionId}/")]
+        [ApiRoute("GameDefinitions/{gameDefinitionId}/", StartingVersion = 2)]
+        [HttpPut]
+        public HttpResponseMessage UpdateGameDefinition(UpdateGameDefinitionMessage updateGameDefinitionMessage, int gameDefinitionId)
+        {
+            return this.UpdateGameDefinition(updateGameDefinitionMessage, gameDefinitionId, CurrentUser.CurrentGamingGroupId.Value);
+        }
+
+        [ApiAuthentication]
+        [ApiModelValidation]
+        [ApiRoute("GamingGroups/{gamingGroupId}/GameDefinitions/{gameDefinitionId}/", AcceptedVersions = new[] { 1 })]
         [HttpPut]
         public HttpResponseMessage UpdateGameDefinition(UpdateGameDefinitionMessage updateGameDefinitionMessage, int gameDefinitionId, int gamingGroupId)
         {

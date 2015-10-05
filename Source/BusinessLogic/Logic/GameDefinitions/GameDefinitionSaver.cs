@@ -49,20 +49,37 @@ namespace BusinessLogic.Logic.GameDefinitions
             bool isNewGameDefinition = !gameDefinition.AlreadyInDatabase();
             if (isNewGameDefinition)
             {
-                new Task(() => eventTracker.TrackGameDefinitionCreation(currentUser, gameDefinition.Name)).Start();
+                GameDefinition definition = gameDefinition;
+                new Task(() => eventTracker.TrackGameDefinitionCreation(currentUser, definition.Name)).Start();
+
+                gameDefinition = this.HandleExistingGameDefinitionWithThisName(gameDefinition, currentUser.CurrentGamingGroupId.Value);
             }
 
-            GameDefinition newGameDefinition;
-            try
+            return dataContext.Save<GameDefinition>(gameDefinition, currentUser);
+        }
+
+        private GameDefinition HandleExistingGameDefinitionWithThisName(GameDefinition gameDefinition, int currentUsersGamingGroupId)
+        {
+            var existingGameDefinition = this.dataContext.GetQueryable<GameDefinition>()
+                .FirstOrDefault(x => x.Name == gameDefinition.Name && x.GamingGroupId == currentUsersGamingGroupId);
+            if (existingGameDefinition == null)
             {
-                newGameDefinition = dataContext.Save<GameDefinition>(gameDefinition, currentUser);
-            }
-            catch (DbUpdateException)
-            {
-                throw new DuplicateKeyException(string.Format("A Game Definition with name '{0}' already exists in this Gaming Group.", gameDefinition.Name));
+                return gameDefinition;
             }
 
-            return newGameDefinition;
+            if (existingGameDefinition.Active)
+            {
+                throw new DuplicateKeyException(string.Format("An active Game Definition with name '{0}' already exists in this Gaming Group.", gameDefinition.Name));
+            }
+
+            if (!string.IsNullOrWhiteSpace(gameDefinition.Description))
+            {
+                existingGameDefinition.Description = gameDefinition.Description;
+            }
+
+            existingGameDefinition.Active = true;
+
+            return existingGameDefinition;
         }
 
         private static void ValidateGameDefinitionIsNotNull(GameDefinition gameDefinition)

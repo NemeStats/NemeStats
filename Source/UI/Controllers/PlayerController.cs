@@ -255,7 +255,16 @@ namespace UI.Controllers
 			if (ModelState.IsValid)
 			{
 				player.Name = player.Name.Trim();
-				playerSaver.Save(player, currentUser);
+
+                var requestedPlayer = new UpdatePlayerRequest
+                {
+                    PlayerId = player.Id,
+                    Active = player.Active,
+                    Name = player.Name
+                };
+
+                playerSaver.UpdatePlayer(requestedPlayer, currentUser);
+
 				return new RedirectResult(Url.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name)
 										  + "#" + GamingGroupController.SECTION_ANCHOR_PLAYERS);
 			}

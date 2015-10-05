@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using BusinessLogic.DataAccess;
 using BusinessLogic.Models;
 using NUnit.Framework;
@@ -35,14 +32,14 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
 
             autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<GameDefinition>()).Return(gameDefinitionList.AsQueryable());
 
-            var results = autoMocker.ClassUnderTest.GetAllGameDefinitionNames(currentUser);
+            var results = autoMocker.ClassUnderTest.GetAllGameDefinitionNames(this.currentUser.CurrentGamingGroupId.Value);
 
             Assert.That(results.Count, Is.EqualTo(1));
             Assert.That(results[0].Id, Is.EqualTo(ACTIVE_GAME_DEFINITION_ID));
         }
 
         [Test]
-        public void ItReturnsOnlyGameDefinitionsInTheCurrentUsersGamingGroup()
+        public void ItReturnsOnlyGameDefinitionsInTheSpecifiedGamingGroup()
         {
             const int VALID_GAME_DEFINITION_ID = 1;
             var gameDefinitionList = new List<GameDefinition>
@@ -63,7 +60,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
 
             autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<GameDefinition>()).Return(gameDefinitionList.AsQueryable());
 
-            var results = autoMocker.ClassUnderTest.GetAllGameDefinitionNames(currentUser);
+            var results = autoMocker.ClassUnderTest.GetAllGameDefinitionNames(this.currentUser.CurrentGamingGroupId.Value);
 
             Assert.That(results.Count, Is.EqualTo(1));
             Assert.That(results[0].Id, Is.EqualTo(VALID_GAME_DEFINITION_ID));
@@ -86,7 +83,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
 
             autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<GameDefinition>()).Return(gameDefinitionList.AsQueryable());
 
-            var results = autoMocker.ClassUnderTest.GetAllGameDefinitionNames(currentUser);
+            var results = autoMocker.ClassUnderTest.GetAllGameDefinitionNames(this.currentUser.CurrentGamingGroupId.Value);
 
             Assert.That(results[0].Name, Is.EqualTo(gameDefinitionList[0].Name));
             Assert.That(results[0].Id, Is.EqualTo(gameDefinitionList[0].Id));

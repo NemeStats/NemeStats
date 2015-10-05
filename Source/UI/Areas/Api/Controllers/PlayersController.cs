@@ -1,7 +1,6 @@
 ﻿using BusinessLogic.Logic.Players;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Players;
-using BusinessLogic.Models.User;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -22,9 +21,17 @@ namespace UI.Areas.Api.Controllers
             this.playerRetriever = playerRetriever;
         }
 
+        [ApiModelValidation]
+        [ApiRoute("Players/", StartingVersion = 2)]
+        [HttpGet]
+        public virtual HttpResponseMessage GetPlayersVersion2([FromUri] int gamingGroupId)
+        {
+            return GetPlayers(gamingGroupId);
+        }
+
         [ApiAuthentication]
         [ApiModelValidation]
-        [ApiRoute("GamingGroups/{gamingGroupId}/Players/")]
+        [ApiRoute("GamingGroups/{gamingGroupId}/Players/", AcceptedVersions = new[]{1})]
         [HttpGet]
         public virtual HttpResponseMessage GetPlayers([FromUri] int gamingGroupId)
         {
@@ -46,7 +53,16 @@ namespace UI.Areas.Api.Controllers
 
         [ApiAuthentication]
         [ApiModelValidation]
-        [ApiRoute("GamingGroups/{gamingGroupId}/Players/")]
+        [ApiRoute("Players/", StartingVersion = 2)]
+        [HttpPost]
+        public virtual HttpResponseMessage SaveNewPlayer([FromBody] NewPlayerMessage newPlayerMessage)
+        {
+            return SaveNewPlayer(newPlayerMessage, CurrentUser.CurrentGamingGroupId.Value);
+        }
+
+        [ApiAuthentication]
+        [ApiModelValidation]
+        [ApiRoute("GamingGroups/{gamingGroupId}/Players/", AcceptedVersions = new []{1})]
         [HttpPost]
         public virtual HttpResponseMessage SaveNewPlayer([FromBody]NewPlayerMessage newPlayerMessage, [FromUri]int gamingGroupId)
         {
@@ -67,7 +83,16 @@ namespace UI.Areas.Api.Controllers
 
         [ApiAuthentication]
         [ApiModelValidation]
-        [ApiRoute("GamingGroups/{gamingGroupId}/Players/{playerId}/")]
+        [ApiRoute("Players/{playerId}/", StartingVersion = 2)]
+        [HttpPut]
+        public virtual HttpResponseMessage UpdatePlayerVersion2([FromBody] UpdatePlayerMessage updatePlayerMessage, [FromUri] int playerId)
+        {
+            return UpdatePlayer(updatePlayerMessage, playerId, CurrentUser.CurrentGamingGroupId.Value);
+        }
+
+        [ApiAuthentication]
+        [ApiModelValidation]
+        [ApiRoute("GamingGroups/{gamingGroupId}/Players/{playerId}/", AcceptedVersions = new []{1})]
         [HttpPut]
         public virtual HttpResponseMessage UpdatePlayer([FromBody]UpdatePlayerMessage updatePlayerMessage, [FromUri] int playerId, [FromUri]int gamingGroupId)
         {

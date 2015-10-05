@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using BusinessLogic.DataAccess;
 using BusinessLogic.Logic.PlayedGames;
 using BusinessLogic.Models;
 using BusinessLogic.Models.PlayedGames;
-using BusinessLogic.Models.User;
 using NUnit.Framework;
 using Rhino.Mocks;
 using StructureMap.AutoMocking;
+using BusinessLogic.Exceptions;
 
 namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameRetrieverTests
 {
@@ -23,6 +21,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameRe
         private const int PLAYED_GAME_ID_FOR_GAME_RECORDED_IN_APRIL = 2;
         private const int EXPECTED_GAMING_GROUP_ID = 30;
         private const int EXPECTED_GAME_DEFINITION_ID = 51;
+        private const int EXPECTED_PLAYER_ID = 62;
             
         [SetUp]
         public void SetUp()
@@ -45,7 +44,18 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameRe
                 {
                     Id = PLAYED_GAME_ID_FOR_GAME_RECORDED_IN_APRIL,
                     DateCreated = new DateTime(2015, 4, 1, 5, 5, 5),
-                    PlayerGameResults = new List<PlayerGameResult>(),
+                    PlayerGameResults = new List<PlayerGameResult>
+                    {
+                        new PlayerGameResult
+                        {
+                            PlayerId = EXPECTED_PLAYER_ID,
+                            Player = new Player(),
+                            PlayedGame = new PlayedGame
+                            {
+                                GameDefinition = new GameDefinition()
+                            }
+                        }
+                    },
                     GameDefinition = new GameDefinition(),
                     GamingGroup = new GamingGroup(),
                     GamingGroupId = 135353
@@ -167,6 +177,20 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameRe
         }
 
         [Test]
+        public void ItThrowsAnInvalidDateFormatExceptionIfTheDateIsntYYYYMMDD()
+        {
+            var filter = new PlayedGameFilter
+            {
+                EndDateGameLastUpdated = "2015-3-1"
+            };
+            var expectedExceptionMessage = new InvalidDateFormatException(filter.EndDateGameLastUpdated).Message;
+
+            var actualException = Assert.Throws<InvalidDateFormatException>(() => autoMocker.ClassUnderTest.SearchPlayedGames(filter));
+
+            Assert.That(actualException.Message, Is.EqualTo(expectedExceptionMessage));
+        }
+
+        [Test]
         public void ItLimitsSearchResultsToTheMaximumSpecified()
         {
             const int MAX_RESULTS = 1;
@@ -204,6 +228,19 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameRe
             var results = autoMocker.ClassUnderTest.SearchPlayedGames(filter);
 
             Assert.True(results.All(result => result.GameDefinitionId == filter.GameDefinitionId));
+        }
+
+        [Test]
+        public void ItFiltersOnThePlayerId()
+        {
+            var filter = new PlayedGameFilter
+            {
+                PlayerId = EXPECTED_PLAYER_ID
+            };
+
+            var results = autoMocker.ClassUnderTest.SearchPlayedGames(filter);
+
+            Assert.True(results.All(result => result.PlayerGameResults.Any(x => x.PlayerId == filter.PlayerId)));
         }
     }
 }

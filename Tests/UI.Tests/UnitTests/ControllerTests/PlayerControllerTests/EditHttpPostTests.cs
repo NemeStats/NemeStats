@@ -20,6 +20,8 @@ using NUnit.Framework;
 using Rhino.Mocks;
 using System.Linq;
 using System.Web.Mvc;
+using BusinessLogic.Models.Players;
+using BusinessLogic.Models.User;
 using UI.Controllers;
 using UI.Models.Players;
 
@@ -87,7 +89,11 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
 
             playerController.Edit(player, currentUser);
 
-            playerSaverMock.AssertWasCalled(mock => mock.Save(player, currentUser));
+            playerSaverMock.AssertWasCalled(mock => mock.UpdatePlayer(
+             Arg<UpdatePlayerRequest>.Matches(p => p.Active == player.Active
+                                 && p.Name == player.Name
+                                 && p.PlayerId == player.Id),
+             Arg<ApplicationUser>.Is.Same(currentUser)));
         }
     }
 }

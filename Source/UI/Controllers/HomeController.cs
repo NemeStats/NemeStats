@@ -27,7 +27,6 @@ using System.Linq;
 using System.Web.Mvc;
 using UI.Models.GamingGroup;
 using UI.Models.Home;
-using UI.Models.Nemeses;
 using UI.Models.Players;
 using UI.Transformations;
 using UI.Transformations.PlayerTransformations;

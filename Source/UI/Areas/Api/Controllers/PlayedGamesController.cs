@@ -13,7 +13,6 @@ using BusinessLogic.Logic.PlayedGames;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
 using BusinessLogic.Models.PlayedGames;
-using BusinessLogic.Models.User;
 using UI.Areas.Api.Models;
 using UI.Attributes;
 
@@ -43,7 +42,15 @@ namespace UI.Areas.Api.Controllers
             this.playedGameDeleter = playedGameDeleter;
         }
 
-        [ApiRoute("GamingGroups/{gamingGroupId}/PlayedGamesExcel")]
+
+        [ApiRoute("PlayedGamesExcel/", StartingVersion = 2)]
+        [HttpGet]
+        public virtual HttpResponseMessage ExportPlayedGamesToExcelVersion2([FromUri]int gamingGroupId)
+        {
+            return ExportPlayedGamesToExcel(gamingGroupId);
+        }
+
+        [ApiRoute("GamingGroups/{gamingGroupId}/PlayedGamesExcel", AcceptedVersions = new[] { 1 })]
         [HttpGet]
         public virtual HttpResponseMessage ExportPlayedGamesToExcel(int gamingGroupId)
         {
@@ -96,31 +103,52 @@ namespace UI.Areas.Api.Controllers
             base.Dispose(disposing);
         }
 
-        [ApiRoute("GamingGroups/{gamingGroupId}/PlayedGames/")]
+        [ApiRoute("PlayedGames/", StartingVersion = 2)]
+        [HttpGet]
+        public HttpResponseMessage GetPlayedGamesVersion2([FromUri] PlayedGameFilterMessage playedGameFilterMessage)
+        {
+            return GetPlayedGameSearchResults(playedGameFilterMessage);
+        }
+
+        [ApiRoute("GamingGroups/{gamingGroupId}/PlayedGames/", AcceptedVersions = new[] { 1 })]
         [HttpGet]
         public HttpResponseMessage GetPlayedGames([FromBody]PlayedGameFilterMessage playedGameFilterMessage, [FromUri]int gamingGroupId)
         {
-            var filter = new PlayedGameFilter
+            playedGameFilterMessage.GamingGroupId = gamingGroupId;
+            return GetPlayedGameSearchResults(playedGameFilterMessage);
+        }
+
+        private HttpResponseMessage GetPlayedGameSearchResults(PlayedGameFilterMessage playedGameFilterMessage)
+        {
+            var filter = new PlayedGameFilter();
+
+            if (playedGameFilterMessage != null)
             {
-                GamingGroupId = gamingGroupId
-            };
-            if(playedGameFilterMessage != null)
-            {
+                filter.GamingGroupId = playedGameFilterMessage.GamingGroupId;
                 filter.StartDateGameLastUpdated = playedGameFilterMessage.StartDateGameLastUpdated;
                 filter.MaximumNumberOfResults = playedGameFilterMessage.MaximumNumberOfResults;
+                filter.PlayerId = playedGameFilterMessage.PlayerId;
             }
-            var searchResults = playedGameRetriever.SearchPlayedGames(filter);
+            var searchResults = this.playedGameRetriever.SearchPlayedGames(filter);
 
- 
             var playedGamesSearchResultMessage = new PlayedGameSearchResultsMessage
             {
                 PlayedGames = searchResults.Select(Mapper.Map<PlayedGameSearchResultMessage>).ToList()
             };
 
-            return Request.CreateResponse(HttpStatusCode.OK, playedGamesSearchResultMessage);
+            return this.Request.CreateResponse(HttpStatusCode.OK, playedGamesSearchResultMessage);
         }
 
-        [ApiRoute("GamingGroups/{gamingGroupId}/PlayedGames/")]
+        [ApiRoute("PlayedGames/", StartingVersion = 2)]
+        [HttpPost]
+        [ApiAuthentication]
+        [ApiModelValidation]
+        public HttpResponseMessage RecordPlayedGameVersion2([FromBody] PlayedGameMessage playedGameMessage)
+        {
+            return RecordPlayedGame(playedGameMessage, CurrentUser.CurrentGamingGroupId.Value);
+        }
+
+        [ApiRoute("GamingGroups/{gamingGroupId}/PlayedGames/", AcceptedVersions = new[] { 1 })]
         [HttpPost]
         [ApiAuthentication]
         [ApiModelValidation]
@@ -155,7 +183,16 @@ namespace UI.Areas.Api.Controllers
             };
         }
 
-        [ApiRoute("GamingGroups/{gamingGroupId}/PlayedGames/{playedGameID}")]
+        [ApiRoute("PlayedGames/{playedGameID}", StartingVersion = 2)]
+        [HttpDelete]
+        [ApiAuthentication]
+        [ApiModelValidation]
+        public HttpResponseMessage DeletePlayedGame(int playedGameID)
+        {
+            return DeletePlayedGame(playedGameID, CurrentUser.CurrentGamingGroupId.Value);
+        }
+
+        [ApiRoute("GamingGroups/{gamingGroupId}/PlayedGames/{playedGameID}", AcceptedVersions = new[] { 1 })]
         [HttpDelete]
         [ApiAuthentication]
         [ApiModelValidation]

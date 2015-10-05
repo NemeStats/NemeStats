@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using BusinessLogic.DataAccess;
 using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.Logic.Players;
-using BusinessLogic.Models;
 using NUnit.Framework;
 
 namespace BusinessLogic.Tests.IntegrationTests.LogicTests.Players

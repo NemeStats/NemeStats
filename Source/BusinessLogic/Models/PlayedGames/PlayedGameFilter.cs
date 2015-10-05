@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 
 namespace BusinessLogic.Models.PlayedGames
 {
@@ -12,5 +9,6 @@ namespace BusinessLogic.Models.PlayedGames
         public int? MaximumNumberOfResults { get; set; }
         public int? GamingGroupId { get; set; }
         public int? GameDefinitionId { get; set; }
+        public int? PlayerId { get; set; }
     }
 }
