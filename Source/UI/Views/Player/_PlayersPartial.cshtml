@@ -23,16 +23,17 @@
                 <table class="table table-hover table-striped">
                     <thead>
                         <tr>
-                            <th class="col-md-4">
+                            <th class="col-md-3">
                                 Player Name
                             </th>
-                            <th class="col-md-2">
+                            <th class="col-md-1">
                                 @if ((bool?)ViewData["canEdit"] == true)
                                 {
                                     @:Registered
                                 }
                             </th>
                             <th class="col-md-2">Played Games</th>
+                            <th class="col-md-2">Total Points</th>
                             <th class="col-md-3">
                                 Previous/Current Nemesis <i class="fa fa-question-circle" data-container="body" data-toggle="popover" data-placement="left"
    data-content="The Nemesis is the Player with the highest win % vs. this Player. Must have won at least 3 games to be designated as the Nemesis."></i></th>
@@ -63,6 +64,15 @@
                                     }
                                 </td>
                                 <td>@item.NumberOfPlayedGames</td>
+                                <td>
+                                    @item.TotalPoints
+                                    @foreach (var badge in item.ChampionBadges)
+                                    {
+                                        <i class="fa @badge.GetFontAwesomeCssClass()" data-container="body" data-toggle="popover" data-placement="right"
+                                           data-content="@badge.GameName">
+                                        </i>
+                                    }
+                                </td>
                                 <td>
                                     @if (item.PreviousNemesisPlayerId.HasValue)
                                     {

@@ -15,12 +15,20 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
+
+using System.Collections.Generic;
 using System.Linq;
+using UI.Models.Badges;
 
 namespace UI.Models.Players
 {
     public class PlayerWithNemesisViewModel : IEditableViewModel
     {
+        public PlayerWithNemesisViewModel()
+        {
+            ChampionBadges = new List<ChampionBadgeViewModel>();
+        }
+
         public int PlayerId { get; set; }
         public string PlayerName { get; set; }
         public bool PlayerRegistered { get; set; }
@@ -30,5 +38,7 @@ namespace UI.Models.Players
         public string PreviousNemesisPlayerName { get; set; }
         public bool UserCanEdit { get; set; }
         public int NumberOfPlayedGames { get; set; }
+        public int TotalPoints { get; set; }
+        public IList<ChampionBadgeViewModel> ChampionBadges { get; set; }
     }
 }

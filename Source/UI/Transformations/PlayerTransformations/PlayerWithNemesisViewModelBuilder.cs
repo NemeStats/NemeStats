@@ -20,6 +20,7 @@ using System;
 using System.Linq;
 using BusinessLogic.Models.Players;
 using BusinessLogic.Models.User;
+using UI.Models.Badges;
 using UI.Models.Players;
 
 namespace UI.Transformations.PlayerTransformations
@@ -45,6 +46,10 @@ namespace UI.Transformations.PlayerTransformations
             model.PreviousNemesisPlayerName = playerWithNemesis.PreviousNemesisPlayerName;
 
             model.NumberOfPlayedGames = playerWithNemesis.NumberOfPlayedGames;
+            model.TotalPoints = playerWithNemesis.TotalPoints;
+            model.ChampionBadges =
+                playerWithNemesis.Championships.Select(
+                    c => new ChampionBadgeViewModel {GameName = c.GameDefinition.Name}).ToList();
 
             return model;
         }

@@ -20,7 +20,9 @@ using BusinessLogic.Models.Players;
 using BusinessLogic.Models.User;
 using NUnit.Framework;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using BusinessLogic.Models;
 using UI.Models.Players;
 using UI.Transformations.PlayerTransformations;
 
@@ -33,6 +35,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         private PlayerWithNemesis playerWithNemesis;
         private int gamingGroupId = 1;
         private ApplicationUser currentUser;
+        private string gameName = "gameName";
 
         [SetUp]
         public void SetUp()
@@ -48,7 +51,9 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
                 PreviousNemesisPlayerId = 400,
                 PreviousNemesisPlayerName = "previous nemesis player name",
                 GamingGroupId = gamingGroupId,
-                NumberOfPlayedGames = 1
+                NumberOfPlayedGames = 1,
+                TotalPoints = 10,
+                Championships = new List<Champion>() { new Champion() { GameDefinition = new GameDefinition() { Name = gameName } } }
             };
 
             currentUser = new ApplicationUser
@@ -135,6 +140,23 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
             PlayerWithNemesisViewModel actualViewModel = builder.Build(this.playerWithNemesis, this.currentUser);
 
             Assert.AreEqual(this.playerWithNemesis.NumberOfPlayedGames, actualViewModel.NumberOfPlayedGames);
+        }
+
+        [Test]
+        public void ItCopiesTheTotalPoints()
+        {
+            PlayerWithNemesisViewModel actualViewModel = builder.Build(this.playerWithNemesis, this.currentUser);
+
+            Assert.AreEqual(this.playerWithNemesis.TotalPoints, actualViewModel.TotalPoints);
+        }
+
+        [Test]
+        public void TheUserHasChampionBadges()
+        {
+            PlayerWithNemesisViewModel actualViewModel = builder.Build(this.playerWithNemesis, this.currentUser);
+
+            Assert.AreEqual(this.playerWithNemesis.Championships.Count(), actualViewModel.ChampionBadges.Count);
+            Assert.AreEqual(this.playerWithNemesis.Championships.First().GameDefinition.Name, actualViewModel.ChampionBadges.First().GameName);
         }
 
         [Test]

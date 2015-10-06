@@ -35,14 +35,24 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
         }
 
         [Test]
-        public void ItReturnsPlayersOrderedByTheirNameAscending()
+        public void ItReturnsPlayersOrderedByTotalPointsDescThenNameAscending()
         {
             List<PlayerWithNemesis> players = playerRetriever.GetAllPlayersWithNemesisInfo(gamingGroupId);
 
-            string lastPlayerName = "0";
+            var lastPlayerPoints = int.MaxValue;
+            var lastPlayerName = "0";
             foreach (PlayerWithNemesis player in players)
             {
-                Assert.LessOrEqual(lastPlayerName, player.PlayerName);
+                if (lastPlayerPoints.Equals(player.TotalPoints))
+                {
+                    Assert.LessOrEqual(lastPlayerName, player.PlayerName);
+                }
+                else
+                {
+                    Assert.GreaterOrEqual(lastPlayerPoints, player.TotalPoints);
+                }
+
+                lastPlayerPoints = player.TotalPoints;
                 lastPlayerName = player.PlayerName;
             }
         }
@@ -55,6 +65,24 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
             List<PlayerWithNemesis> players = playerRetriever.GetAllPlayersWithNemesisInfo(gamingGroupId);
 
             Assert.That(players[0].NumberOfPlayedGames, Is.EqualTo(expectedNumberOfGamesPlayed));
+        }
+
+        [Test]
+        public void ItReturnsTotalPoints()
+        {
+            int expectedTotalPoints = playerGameResultsForFirstPlayer.Sum(p => p.NemeStatsPointsAwarded);
+
+            List<PlayerWithNemesis> players = playerRetriever.GetAllPlayersWithNemesisInfo(gamingGroupId);
+
+            Assert.That(players[0].TotalPoints, Is.EqualTo(expectedTotalPoints));
+        }
+
+        [Test]
+        public void ItReturnsChampionships()
+        {
+            List<PlayerWithNemesis> players = playerRetriever.GetAllPlayersWithNemesisInfo(gamingGroupId);
+
+            Assert.That(players[0].Championships.First(), Is.EqualTo(playerChampionshipsForFirstPlayer.First()));
         }
     }
 }
