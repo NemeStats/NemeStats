@@ -34,8 +34,7 @@
     <script type="text/javascript">
         $(document).ready(function () {
             var gamingGroupDetails = new window.Views.GamingGroup.GamingGroupView();
-            var settings = { "gamingGroupId" : @Model.Id };
-            gamingGroupDetails.renderNemeStatsPointsLineGraph();
+            gamingGroupDetails.renderNemeStatsPointsLineGraph(@Model.Id);
         });
     </script>
 }

@@ -34,8 +34,8 @@ Views.GamingGroup.GamingGroupView.prototype = {
 
         this._googleAnalytics.trackGAEvent("GamingGroups", "GamingGroupRenamed", "GamingGroupRenamed");
     },
-    renderNemeStatsPointsLineGraph: function () {
-        var url = '/api/v2/PlayedGames/?gamingGroupId=1';
+    renderNemeStatsPointsLineGraph: function (gamingGroupId) {
+        var url = '/api/v2/PlayedGames/?gamingGroupId=' + gamingGroupId;
 
         $.get(url, function (data) {
             for (var i = data.playedGames.length - 1; i >= 0; i--) {
