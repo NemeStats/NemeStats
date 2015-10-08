@@ -25,11 +25,11 @@ namespace UI.HtmlHelpers
         public static MvcHtmlString NemePointsIco(this HtmlHelper htmlHelper, string tooltip = "", string tooltipPosition = "top")
         {
             var tootlipHtml = !string.IsNullOrEmpty(tooltip)
-                ? $"data-toggle=\"popover\" data-placement=\"{tooltipPosition}\" data-content=\"{tooltip}\""
+                ? string.Format("data-toggle=\"popover\" data-placement=\"{0}\" data-content=\"{1}\"", tooltipPosition,tooltip)
                 : "";
 
             var html =
-                $"<span class=\"fa-stack {NEMEPOINTICO_CSS_CLASS}\" {tootlipHtml}><i class=\"fa fa-circle fa-stack-2x\"></i><i class=\"fa fa-stack-1x letter\">N</i></span>";
+                string.Format("<span class=\"fa-stack {0}\" {1}><i class=\"fa fa-circle fa-stack-2x\"></i><i class=\"fa fa-stack-1x letter\">N</i></span>", NEMEPOINTICO_CSS_CLASS,tootlipHtml);
 
             return new MvcHtmlString(html);
 
