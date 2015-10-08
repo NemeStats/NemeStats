@@ -26,6 +26,6 @@ namespace BusinessLogic.Logic.Users
     {
         AddUserToGamingGroupResult AddExistingUserToGamingGroup(string gamingGroupInvitationId);
 
-        NewlyCreatedGamingGroupResult AddNewUserToGamingGroup(string applicationUserId, System.Guid guid);
+        NewlyRegisteredUser AddNewUserToGamingGroup(string applicationUserId, System.Guid guid);
     }
 }

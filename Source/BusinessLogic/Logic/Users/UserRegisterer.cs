@@ -69,11 +69,7 @@ namespace BusinessLogic.Logic.Users
 
             if(identityResult.Succeeded)
             {
-                NewlyCreatedGamingGroupResult newlyCreatedGamingGroupResult = await this.SignInAndAssociateGamingGroup(newUser, newApplicationUser);
-                newlyRegisteredUser.PlayerId = newlyCreatedGamingGroupResult.NewlyCreatedPlayer.Id;
-                newlyRegisteredUser.PlayerName = newlyCreatedGamingGroupResult.NewlyCreatedPlayer.Name;
-                newlyRegisteredUser.GamingGroupId = newlyCreatedGamingGroupResult.NewlyCreatedGamingGroup.Id;
-                newlyRegisteredUser.GamingGroupName = newlyCreatedGamingGroupResult.NewlyCreatedGamingGroup.Name;
+                newlyRegisteredUser = await this.SignInAndAssociateGamingGroup(newUser, newApplicationUser);
             }
 
             RegisterNewUserResult result = new RegisterNewUserResult
@@ -85,7 +81,7 @@ namespace BusinessLogic.Logic.Users
             return result;
         }
 
-        private async Task<NewlyCreatedGamingGroupResult> SignInAndAssociateGamingGroup(NewUser newUser, ApplicationUser newApplicationUser)
+        private async Task<NewlyRegisteredUser> SignInAndAssociateGamingGroup(NewUser newUser, ApplicationUser newApplicationUser)
         {
             new Task(() => this.eventTracker.TrackUserRegistration(newUser.Source)).Start();
 
@@ -94,18 +90,18 @@ namespace BusinessLogic.Logic.Users
                 await this.signInManager.SignInAsync(newApplicationUser, false, false);
             }
 
-            NewlyCreatedGamingGroupResult newlyCreatedGamingGroupResult;
+            NewlyRegisteredUser newlyRegisteredUser;
 
             if (newUser.GamingGroupInvitationId.HasValue)
             {
-                newlyCreatedGamingGroupResult = this.gamingGroupInviteConsumer.AddNewUserToGamingGroup(newApplicationUser.Id, newUser.GamingGroupInvitationId.Value);
+                newlyRegisteredUser = this.gamingGroupInviteConsumer.AddNewUserToGamingGroup(newApplicationUser.Id, newUser.GamingGroupInvitationId.Value);
             }
             else
             {
-                newlyCreatedGamingGroupResult = await this.firstTimeUserAuthenticator.CreateGamingGroupAndSendEmailConfirmation(newApplicationUser, newUser.Source);
+                newlyRegisteredUser = await this.firstTimeUserAuthenticator.CreateGamingGroupAndSendEmailConfirmation(newApplicationUser, newUser.Source);
             }
 
-            return newlyCreatedGamingGroupResult;
+            return newlyRegisteredUser;
         }
     }
 }
