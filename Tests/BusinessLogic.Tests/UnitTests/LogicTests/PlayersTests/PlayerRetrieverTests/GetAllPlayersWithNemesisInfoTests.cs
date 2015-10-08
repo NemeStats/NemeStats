@@ -82,7 +82,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
         {
             List<PlayerWithNemesis> players = playerRetriever.GetAllPlayersWithNemesisInfo(gamingGroupId);
 
-            Assert.That(players[0].Championships.First(), Is.EqualTo(playerChampionshipsForFirstPlayer.First()));
+            Assert.That(players[0].TotalChampionedGames, Is.EqualTo(playerChampionshipsForFirstPlayer.Count()));
         }
     }
 }

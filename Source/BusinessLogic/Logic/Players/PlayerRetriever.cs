@@ -69,16 +69,12 @@ namespace BusinessLogic.Logic.Players
                         ? player.PreviousNemesis.NemesisPlayer.Name : null,
                     GamingGroupId = player.GamingGroupId,
                     NumberOfPlayedGames = player.PlayerGameResults.Count,
-                    TotalPoints = player.PlayerGameResults.Select(pgr => pgr.NemeStatsPointsAwarded).DefaultIfEmpty(0).Sum()
+                    TotalPoints = player.PlayerGameResults.Select(pgr => pgr.NemeStatsPointsAwarded).DefaultIfEmpty(0).Sum(),
+                    TotalChampionedGames = player.PlayerGameResults.Count(pgr => pgr.PlayedGame.GameDefinition.ChampionId == player.Id)
                 }
                 ).OrderByDescending(pwn => pwn.TotalPoints).ThenBy(p => p.PlayerName)
                 .ToList();
 
-            foreach (var playerWithNemesis in playersWithNemesis)
-            {
-                playerWithNemesis.Championships = GetChampionedGames(playerWithNemesis.PlayerId);
-            }
-            
             return playersWithNemesis;
         }
 

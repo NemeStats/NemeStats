@@ -68,7 +68,8 @@ namespace UI
                 "~/sass/_bootswatch.css", new CssRewriteUrlTransform())
                 .Include("~/Content/site.css",
                     "~/Content/site-mobile.css",
-                    "~/Content/blog.css")
+                    "~/Content/blog.css",
+                    "~/Content/ui.min.css")
                 .Include("~/Content/font-awesome.min.css", new CssRewriteUrlTransform()));
 
             bundles.Add(new StyleBundle("~/Content/themes/base/css").Include(

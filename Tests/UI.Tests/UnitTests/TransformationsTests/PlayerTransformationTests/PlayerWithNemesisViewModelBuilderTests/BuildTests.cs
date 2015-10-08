@@ -53,7 +53,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
                 GamingGroupId = gamingGroupId,
                 NumberOfPlayedGames = 1,
                 TotalPoints = 10,
-                Championships = new List<Champion>() { new Champion() { GameDefinition = new GameDefinition() { Name = gameName } } }
+                TotalChampionedGames = 1
             };
 
             currentUser = new ApplicationUser
@@ -155,8 +155,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         {
             PlayerWithNemesisViewModel actualViewModel = builder.Build(this.playerWithNemesis, this.currentUser);
 
-            Assert.AreEqual(this.playerWithNemesis.Championships.Count(), actualViewModel.ChampionBadges.Count);
-            Assert.AreEqual(this.playerWithNemesis.Championships.First().GameDefinition.Name, actualViewModel.ChampionBadges.First().GameName);
+            Assert.AreEqual(this.playerWithNemesis.TotalChampionedGames, actualViewModel.TotalChampionedGames);
         }
 
         [Test]

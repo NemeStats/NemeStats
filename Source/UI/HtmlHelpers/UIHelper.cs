@@ -15,24 +15,24 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
+using System.Web.Mvc;
 
-using System.Collections.Generic;
-using System.Linq;
-
-namespace BusinessLogic.Models.Players
+namespace UI.HtmlHelpers
 {
-    public class PlayerWithNemesis
+    public static class UIHelper
     {
-        public int PlayerId { get; set; }
-        public string PlayerName { get; set; }
-        public bool PlayerRegistered { get; set; }
-        public int? NemesisPlayerId { get; set; }
-        public string NemesisPlayerName { get; set; }
-        public int? PreviousNemesisPlayerId { get; set; }
-        public string PreviousNemesisPlayerName { get; set; }
-        public int GamingGroupId { get; set; }
-        public int NumberOfPlayedGames { get; set; }
-        public int TotalPoints { get; set; }
-        public int TotalChampionedGames { get; set; }
+        internal const string NEMEPOINTICO_CSS_CLASS = "neme-points-ico";
+        public static MvcHtmlString NemePointsIco(this HtmlHelper htmlHelper, string tooltip = "", string tooltipPosition = "top")
+        {
+            var tootlipHtml = !string.IsNullOrEmpty(tooltip)
+                ? $"data-toggle=\"popover\" data-placement=\"{tooltipPosition}\" data-content=\"{tooltip}\""
+                : "";
+
+            var html =
+                $"<span class=\"fa-stack {NEMEPOINTICO_CSS_CLASS}\" {tootlipHtml}><i class=\"fa fa-circle fa-stack-2x\"></i><i class=\"fa fa-stack-1x letter\">N</i></span>";
+
+            return new MvcHtmlString(html);
+
+        }
     }
 }
