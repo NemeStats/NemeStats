@@ -31,6 +31,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.GamingGroupInviteC
         private readonly Guid invitationId = Guid.NewGuid();
         private GamingGroupInvitation expectedInvitation;
         private Player expectedPlayer;
+        private GamingGroup expectedGamingGroup;
 
         [SetUp]
         public void LocalSetUp()
@@ -40,6 +41,12 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.GamingGroupInviteC
                 GamingGroupId = 1,
                 PlayerId = 2
             };
+            expectedGamingGroup = new GamingGroup
+            {
+                Id = expectedInvitation.GamingGroupId,
+                Name = "some awesome gaming group name"
+            };
+            dataContextMock.Expect(mock => mock.FindById<GamingGroup>(expectedInvitation.GamingGroupId)).Return(expectedGamingGroup);
             expectedPlayer = new Player();
         }
 
@@ -138,6 +145,20 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.GamingGroupInviteC
             dataContextMock.AssertWasCalled(mock => mock.Save(Arg<Player>.Matches(
                 player => player.ApplicationUserId == currentUser.Id),
                 Arg<ApplicationUser>.Is.Anything));
+        }
+
+        [Test]
+        public void ItReturnsTheNewlyRegisteredUserResult()
+        {
+            BuildDataContextMock(true, true, true);
+
+            var actualResult = gamingGroupInviteConsumer.AddNewUserToGamingGroup(currentUser.Id, invitationId);
+
+            Assert.That(actualResult.GamingGroupId, Is.EqualTo(expectedGamingGroup.Id));
+            Assert.That(actualResult.GamingGroupName, Is.EqualTo(expectedGamingGroup.Name));
+            Assert.That(actualResult.PlayerId, Is.EqualTo(expectedPlayer.Id));
+            Assert.That(actualResult.PlayerName, Is.EqualTo(expectedPlayer.Name));
+            Assert.That(actualResult.UserId, Is.EqualTo(currentUser.Id));
         }
     }
 }

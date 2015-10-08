@@ -85,7 +85,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.FirstTimeAuthentic
             expectedNewlyCreatedGamingGroupResult = new NewlyCreatedGamingGroupResult
             {
                 NewlyCreatedGamingGroup = new GamingGroup {  Id = 1 },
-                NewlyCreatedPlayer = new Player { Id = 100 }
+                NewlyCreatedPlayer = new Player { Id = 100, Name = "some awesome player name"}
             };
             gamingGroupSaverMock.Expect(mock => mock.CreateNewGamingGroup(
                                                                           Arg<string>.Is.Anything,
@@ -157,11 +157,15 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.FirstTimeAuthentic
         }
 
         [Test]
-        public async Task ItReturnsTheNewlyCreatedGamingGroupResult()
+        public async Task ItReturnsANewlyRegisteredUserResult()
         {
-            NewlyCreatedGamingGroupResult result = await firstTimeAuthenticator.CreateGamingGroupAndSendEmailConfirmation(applicationUser, registrationSource);
+            var actualResult = await firstTimeAuthenticator.CreateGamingGroupAndSendEmailConfirmation(applicationUser, registrationSource);
 
-            Assert.That(result, Is.SameAs(expectedNewlyCreatedGamingGroupResult));
+            Assert.That(actualResult.GamingGroupId, Is.EqualTo(expectedNewlyCreatedGamingGroupResult.NewlyCreatedGamingGroup.Id));
+            Assert.That(actualResult.GamingGroupName, Is.EqualTo(expectedNewlyCreatedGamingGroupResult.NewlyCreatedGamingGroup.Name));
+            Assert.That(actualResult.PlayerId, Is.EqualTo(expectedNewlyCreatedGamingGroupResult.NewlyCreatedPlayer.Id));
+            Assert.That(actualResult.PlayerName, Is.EqualTo(expectedNewlyCreatedGamingGroupResult.NewlyCreatedPlayer.Name));
+            Assert.That(actualResult.UserId, Is.EqualTo(applicationUser.Id));
         }
     }
 }

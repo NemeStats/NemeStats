@@ -48,7 +48,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.UserRegistererTest
         private IGamingGroupInviteConsumer gamingGroupInviteConsumerMock;
 
         private NewUser newUser;
-        private NewlyCreatedGamingGroupResult newlyCreatedGamingGroupResult;
+        private NewlyRegisteredUser expectedNewlyRegisteredUser;
         private const string applicationUserIdAfterSaving = "new application user Id";
 
         [SetUp]
@@ -75,11 +75,12 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.UserRegistererTest
                 gamingGroupInviteConsumerMock);
 
             Guid invitationId = Guid.NewGuid();
-            int playerId = 1938;
+            const int PLAYER_ID = 1938;
             GamingGroupInvitation invitation = new GamingGroupInvitation
             {
                 Id = invitationId,
-                PlayerId = playerId
+                PlayerId = PLAYER_ID,
+                GamingGroupId = 10
             };
             newUser = new NewUser()
             {
@@ -88,10 +89,13 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.UserRegistererTest
                 GamingGroupInvitationId = invitationId,
                 Source = TransactionSource.WebApplication
             };
-            newlyCreatedGamingGroupResult = new NewlyCreatedGamingGroupResult
+            expectedNewlyRegisteredUser = new NewlyRegisteredUser
             {
-                NewlyCreatedGamingGroup = new GamingGroup{ Id = 1, Name = "some gaming group name" },
-                NewlyCreatedPlayer = new Player {  Id = 200, Name = "some player name" }
+                GamingGroupId = invitation.GamingGroupId,
+                GamingGroupName = "some awesome gaming group name",
+                PlayerId = PLAYER_ID,
+                PlayerName = "some awesome player name",
+                UserId = applicationUserIdAfterSaving
             };
             IdentityResult result = IdentityResult.Success;
 
@@ -108,11 +112,11 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.UserRegistererTest
                                          
                                          .Return(Task.FromResult(-1));
             gamingGroupInviteConsumerMock.Expect(mock => mock.AddNewUserToGamingGroup(Arg<string>.Is.Anything, Arg<Guid>.Is.Anything))
-                                         .Return(newlyCreatedGamingGroupResult);
+                                         .Return(expectedNewlyRegisteredUser);
             firstTimeUserAuthenticatorMock.Expect(mock => mock.CreateGamingGroupAndSendEmailConfirmation(
                 Arg<ApplicationUser>.Is.Anything,
                 Arg<TransactionSource>.Is.Anything))
-                .Return(Task.FromResult(newlyCreatedGamingGroupResult));
+                .Return(Task.FromResult(expectedNewlyRegisteredUser));
         }
 
         [Test]
@@ -227,10 +231,10 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.UserRegistererTest
             RegisterNewUserResult result = await userRegisterer.RegisterUser(newUser);
 
             Assert.That(result.NewlyRegisteredUser.UserId, Is.EqualTo(applicationUserIdAfterSaving));
-            Assert.That(result.NewlyRegisteredUser.PlayerId, Is.EqualTo(newlyCreatedGamingGroupResult.NewlyCreatedPlayer.Id));
-            Assert.That(result.NewlyRegisteredUser.PlayerName, Is.EqualTo(newlyCreatedGamingGroupResult.NewlyCreatedPlayer.Name));
-            Assert.That(result.NewlyRegisteredUser.GamingGroupId, Is.EqualTo(newlyCreatedGamingGroupResult.NewlyCreatedGamingGroup.Id));
-            Assert.That(result.NewlyRegisteredUser.GamingGroupName, Is.EqualTo(newlyCreatedGamingGroupResult.NewlyCreatedGamingGroup.Name));
+            Assert.That(result.NewlyRegisteredUser.PlayerId, Is.EqualTo(expectedNewlyRegisteredUser.PlayerId));
+            Assert.That(result.NewlyRegisteredUser.PlayerName, Is.EqualTo(expectedNewlyRegisteredUser.PlayerName));
+            Assert.That(result.NewlyRegisteredUser.GamingGroupId, Is.EqualTo(expectedNewlyRegisteredUser.GamingGroupId));
+            Assert.That(result.NewlyRegisteredUser.GamingGroupName, Is.EqualTo(expectedNewlyRegisteredUser.GamingGroupName));
         }
     }
 }
