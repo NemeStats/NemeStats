@@ -15,6 +15,8 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
+
+using System.Collections.Generic;
 using System.Linq;
 
 namespace UI.Models.Players
@@ -30,5 +32,7 @@ namespace UI.Models.Players
         public string PreviousNemesisPlayerName { get; set; }
         public bool UserCanEdit { get; set; }
         public int NumberOfPlayedGames { get; set; }
+        public int TotalPoints { get; set; }
+        public int TotalChampionedGames { get; set; }
     }
 }

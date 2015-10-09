@@ -54,24 +54,28 @@ namespace BusinessLogic.Logic.Players
 
         public List<PlayerWithNemesis> GetAllPlayersWithNemesisInfo(int gamingGroupId)
         {
-            return (from Player player in GetAllPlayersInGamingGroupQueryable(gamingGroupId)
-                    .Include(player => player.PlayerGameResults)
-                        select new PlayerWithNemesis
-                        {
-                           PlayerId = player.Id,
-                           PlayerName = player.Name,
-                           PlayerRegistered = !string.IsNullOrEmpty(player.ApplicationUserId),
-                           NemesisPlayerId = player.Nemesis == null ? (int?)null : player.Nemesis.NemesisPlayerId,
-                           NemesisPlayerName = player.Nemesis != null && player.Nemesis.NemesisPlayer != null 
-                            ? player.Nemesis.NemesisPlayer.Name : null,
-                           PreviousNemesisPlayerId = player.PreviousNemesis == null ? (int?)null : player.PreviousNemesis.NemesisPlayerId,
-                           PreviousNemesisPlayerName = player.PreviousNemesis != null && player.PreviousNemesis.NemesisPlayer != null 
-                            ? player.PreviousNemesis.NemesisPlayer.Name : null,
-                            GamingGroupId = player.GamingGroupId,
-                            NumberOfPlayedGames = player.PlayerGameResults.Count
-                        }
-                   ).OrderBy(playerWithNemesis => playerWithNemesis.PlayerName)
-                   .ToList();
+            var playersWithNemesis = (from Player player in GetAllPlayersInGamingGroupQueryable(gamingGroupId)
+                .Include(player => player.PlayerGameResults)
+                select new PlayerWithNemesis
+                {
+                    PlayerId = player.Id,
+                    PlayerName = player.Name,
+                    PlayerRegistered = !string.IsNullOrEmpty(player.ApplicationUserId),
+                    NemesisPlayerId = player.Nemesis == null ? (int?)null : player.Nemesis.NemesisPlayerId,
+                    NemesisPlayerName = player.Nemesis != null && player.Nemesis.NemesisPlayer != null
+                        ? player.Nemesis.NemesisPlayer.Name : null,
+                    PreviousNemesisPlayerId = player.PreviousNemesis == null ? (int?)null : player.PreviousNemesis.NemesisPlayerId,
+                    PreviousNemesisPlayerName = player.PreviousNemesis != null && player.PreviousNemesis.NemesisPlayer != null
+                        ? player.PreviousNemesis.NemesisPlayer.Name : null,
+                    GamingGroupId = player.GamingGroupId,
+                    NumberOfPlayedGames = player.PlayerGameResults.Count,
+                    TotalPoints = player.PlayerGameResults.Select(pgr => pgr.NemeStatsPointsAwarded).DefaultIfEmpty(0).Sum(),
+                    TotalChampionedGames = player.PlayerGameResults.Where(pgr => pgr.PlayedGame.GameDefinition.ChampionId == player.Id).Select(pgr=>pgr.PlayedGame.GameDefinitionId).Distinct().Count()
+                }
+                ).OrderByDescending(pwn => pwn.TotalPoints).ThenBy(p => p.PlayerName)
+                .ToList();
+
+            return playersWithNemesis;
         }
 
         public virtual PlayerDetails GetPlayerDetails(int playerId, int numberOfRecentGamesToRetrieve)
@@ -128,8 +132,8 @@ namespace BusinessLogic.Logic.Players
         internal virtual List<Player> GetMinions(int nemesisPlayerId)
         {
             return (from Player player in dataContext.GetQueryable<Player>().Include(p => p.Nemesis)
-                     where player.Nemesis.NemesisPlayerId == nemesisPlayerId
-                        select player).ToList();
+                    where player.Nemesis.NemesisPlayerId == nemesisPlayerId
+                    select player).ToList();
         }
 
         internal virtual List<Champion> GetChampionedGames(int playerId)
