@@ -70,7 +70,8 @@ namespace BusinessLogic.Logic.Players
                     GamingGroupId = player.GamingGroupId,
                     NumberOfPlayedGames = player.PlayerGameResults.Count,
                     TotalPoints = player.PlayerGameResults.Select(pgr => pgr.NemeStatsPointsAwarded).DefaultIfEmpty(0).Sum(),
-                    TotalChampionedGames = player.PlayerGameResults.Where(pgr => pgr.PlayedGame.GameDefinition.ChampionId == player.Id).Select(pgr=>pgr.PlayedGame.GameDefinitionId).Distinct().Count()
+                    //only get championed games where this player is the current champion
+                    TotalChampionedGames = player.ChampionedGames.Count(champion => champion.GameDefinition.ChampionId != null && champion.GameDefinition.ChampionId.Value == champion.Id)
                 }
                 ).OrderByDescending(pwn => pwn.TotalPoints).ThenBy(p => p.PlayerName)
                 .ToList();

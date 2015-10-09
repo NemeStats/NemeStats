@@ -44,17 +44,23 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
             dataContextMock = MockRepository.GenerateMock<IDataContext>();
             playerRepositoryMock = MockRepository.GenerateMock<IPlayerRepository>();
             playerRetriever = new PlayerRetriever(dataContextMock, playerRepositoryMock);
-            var playerId = 1;
-            var champion = new Champion
-            {
-                GameDefinition = gameDefinition,
-                PlayerId = playerId
-            };
+
+            const int CHAMPION_ID = 55;
+
             gameDefinition = new GameDefinition
             {
                 Name = "game name",
-                Champion = champion
+                ChampionId = CHAMPION_ID
             };
+
+            var playerId = 1;
+            var champion = new Champion
+            {
+                Id = CHAMPION_ID,
+                GameDefinition = gameDefinition,
+                PlayerId = playerId
+            };
+
             playerGameResultsForFirstPlayer = new List<PlayerGameResult>()
             {
                 new PlayerGameResult
@@ -72,10 +78,20 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
             };
             List<Player> players = new List<Player>()
             {
-                new Player(){ GamingGroupId = gamingGroupId, Name = "2", PlayerGameResults = new List<PlayerGameResult>() },
-                new Player(){ GamingGroupId = gamingGroupId, Name = "3", PlayerGameResults = new List<PlayerGameResult>() },
-                new Player(){ GamingGroupId = -1, Name = "1", PlayerGameResults = new List<PlayerGameResult>() },
-                new Player(){ Id = playerId,GamingGroupId = gamingGroupId, Name = "1", PlayerGameResults = playerGameResultsForFirstPlayer },
+                new Player(){ GamingGroupId = gamingGroupId, Name = "2", PlayerGameResults = new List<PlayerGameResult>(), ChampionedGames = new List<Champion>()},
+                new Player(){ GamingGroupId = gamingGroupId, Name = "3", PlayerGameResults = new List<PlayerGameResult>(), ChampionedGames = new List<Champion>() },
+                new Player(){ GamingGroupId = -1, Name = "1", PlayerGameResults = new List<PlayerGameResult>(), ChampionedGames = new List<Champion>() },
+                new Player()
+                {
+                    Id = playerId,
+                    GamingGroupId = gamingGroupId, 
+                    Name = "1", 
+                    PlayerGameResults = playerGameResultsForFirstPlayer,
+                    ChampionedGames = new List<Champion>
+                    {
+                        champion
+                    }
+                },
             };
             players[3].NemesisId = 1;
             players[3].Nemesis = new Nemesis()
