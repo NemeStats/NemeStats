@@ -124,6 +124,7 @@ namespace BusinessLogic.Logic.PlayedGames
                                      NemeStatsPointsAwarded = x.NemeStatsPointsAwarded,
                                      PlayerId = x.PlayerId,
                                      PlayerName = x.Player.Name,
+                                     PlayerActive = x.Player.Active,
                                      PointsScored = x.PointsScored,
                                      DatePlayed = x.PlayedGame.DatePlayed,
                                      GameDefinitionId = x.PlayedGame.GameDefinitionId,

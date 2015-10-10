@@ -49,7 +49,11 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameRe
                         new PlayerGameResult
                         {
                             PlayerId = EXPECTED_PLAYER_ID,
-                            Player = new Player(),
+                            Player = new Player
+                            {
+                                Name = "player name",
+                                Active = true
+                            },
                             PlayedGame = new PlayedGame
                             {
                                 GameDefinition = new GameDefinition()
@@ -131,6 +135,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameRe
             Assert.That(actualPlayerResult.NemeStatsPointsAwarded, Is.EqualTo(expectedPlayerGameResult.NemeStatsPointsAwarded));
             Assert.That(actualPlayerResult.PlayerId, Is.EqualTo(expectedPlayerGameResult.PlayerId));
             Assert.That(actualPlayerResult.PlayerName, Is.EqualTo(expectedPlayerGameResult.Player.Name));
+            Assert.That(actualPlayerResult.PlayerActive, Is.EqualTo(expectedPlayerGameResult.Player.Active));
             Assert.That(actualPlayerResult.PointsScored, Is.EqualTo(expectedPlayerGameResult.PointsScored));
             Assert.That(actualPlayerResult.PlayedGameId, Is.EqualTo(expectedPlayerGameResult.PlayedGameId));
             Assert.That(actualPlayerResult.DatePlayed, Is.EqualTo(expectedPlayerGameResult.PlayedGame.DatePlayed));
