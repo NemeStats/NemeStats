@@ -22,9 +22,9 @@ namespace UI.HtmlHelpers
     public static class UIHelper
     {
         internal const string NEMEPOINTICO_CSS_CLASS = "neme-points-ico";
-        public static MvcHtmlString NemePointsIco(this HtmlHelper htmlHelper, string tooltip = "", string tooltipPosition = "top")
+        public static MvcHtmlString NemePointsIco(this HtmlHelper htmlHelper, bool showTooltip = true, string tooltip = "Total NemePoints earned by playing games", string tooltipPosition = "top")
         {
-            var tootlipHtml = !string.IsNullOrEmpty(tooltip)
+            var tootlipHtml = showTooltip
                 ? string.Format("data-toggle=\"popover\" data-placement=\"{0}\" data-content=\"{1}\"", tooltipPosition,tooltip)
                 : "";
 

@@ -33,7 +33,7 @@ namespace BusinessLogic.Logic.Players
             FROM Player INNER JOIN PlayerGameResult ON Player.Id = PlayerGameResult.PlayerId
             WHERE Player.Active = 1
             GROUP BY Player.Id, Player.Name
-            ORDER BY TotalNumberOfGamesPlayed DESC";
+            ORDER BY TotalPoints DESC";
 
         private readonly IDataContext dataContext;
 

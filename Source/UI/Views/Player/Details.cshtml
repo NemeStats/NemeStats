@@ -57,14 +57,14 @@
                     @Html.ActionLink(@Model.GamingGroupName, "Details", "GamingGroup", new { id = @Model.GamingGroupId }, new { })
                 </div>
             </div>
-            @if(Model.UserCanEdit)
+            @if (Model.UserCanEdit)
             {
-            <div class="row">
-                <div class="col-md-2"></div>
-                <div class="col-md-2">
-                    @Html.ActionLink("Edit", "Edit", new { id = Model.PlayerId }, new { @class = "btn btn-sm btn-primary" })
+                <div class="row">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-2">
+                        @Html.ActionLink("Edit", "Edit", new { id = Model.PlayerId }, new { @class = "btn btn-sm btn-primary" })
+                    </div>
                 </div>
-            </div>
             }
         </div>
     </div>
@@ -91,7 +91,7 @@
                 </tr>
                 <tr>
                     <td><strong>Total Points:</strong></td>
-                    <td>@Model.TotalPoints @Html.NemePointsIco()</td>
+                    <td>@Model.TotalPoints @Html.NemePointsIco(showTooltip: false)</td>
                 </tr>
                 <tr>
                     <td><strong>Total Championed Games:</strong></td>

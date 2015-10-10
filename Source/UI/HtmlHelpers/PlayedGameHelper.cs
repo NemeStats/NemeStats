@@ -58,13 +58,15 @@ namespace UI.HtmlHelpers
             {
                 cssPlace = CSS_CLASS_TEAM_WIN;
                 gameRankText = PLACE_TEAM_WIN;
-            }else if (winnerType == WinnerTypes.TeamLoss)
+            }
+            else if (winnerType == WinnerTypes.TeamLoss)
             {
                 cssPlace = CSS_CLASS_TEAM_LOSS;
                 gameRankText = PLACE_EVERYONE_LOST;
-            }else
+            }
+            else
             {
-                switch(playerGameResultDetails.GameRank)
+                switch (playerGameResultDetails.GameRank)
                 {
                     case 1:
                         cssPlace = CSS_CLASS_FIRST_PLACE;
@@ -89,8 +91,8 @@ namespace UI.HtmlHelpers
                 }
             }
 
-            
-            string nemeStatsPointsComponent = string.Format(HTML_GORDON_POINTS_TEMPLATE, playerGameResultDetails.NemeStatsPointsAwarded, htmlHelper.NemePointsIco(NEMEPOINTICO_TOOLTIP, NEMEPOINTSICO_TOOLTIP_POSITION));
+
+            string nemeStatsPointsComponent = string.Format(HTML_GORDON_POINTS_TEMPLATE, playerGameResultDetails.NemeStatsPointsAwarded, htmlHelper.NemePointsIco(showTooltip: true, tooltip: NEMEPOINTICO_TOOLTIP, tooltipPosition: NEMEPOINTSICO_TOOLTIP_POSITION));
             return MvcHtmlString.Create(string.Format(HTML_TEMPLATE,
                 CSS_CLASS_GAME_RANK,
                 cssPlace,
