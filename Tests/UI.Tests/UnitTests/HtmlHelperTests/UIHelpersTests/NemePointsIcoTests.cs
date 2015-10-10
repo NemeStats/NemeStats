@@ -40,12 +40,12 @@ namespace UI.Tests.UnitTests.HtmlHelperTests.UIHelpersTests
         }
 
 
-        public class When_Tooltip_Is_Empty : NemePointsIcoTests
+        public class When_ShowTooltip_Is_False : NemePointsIcoTests
         {
             [Test]
             public void It_Renders_Span_Without_Tooltip()
             {
-                var result = helper.NemePointsIco(tooltip: String.Empty).ToXElement();
+                var result = helper.NemePointsIco(showTooltip: false).ToXElement();
 
                 Assert.AreEqual("span", result.Name.ToString());
                 Assert.True(result.FirstAttribute.ToString().Contains(UIHelper.NEMEPOINTICO_CSS_CLASS));
