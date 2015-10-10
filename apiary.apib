@@ -22,6 +22,9 @@ make more of the information freely available to API consumers. Information like
 and protected.
 * Documentation for version 1 of the API can be found here: http://docs.nemestats.apiary.io/#
 
+###Change Log
+* 2015-10-09 Added PlayerActive boolean value to PlayerGameResults, so you can conveniently tell whether the Player is still active.
+
 ### General Information
 
 * The API is versioned in the URL and will update whenever there are breaking changes to the API. 
@@ -63,6 +66,7 @@ Represents the minimum amount of data the the client needs to send to give rank 
 Represents all of the data related to a particular Player's performance in a particular Played Game.
 + playerId (number, required) - NemeStats unique identifier for the Player.
 + playerName (string, required) - The name of the Player.
++ playerActive (bool, required) - Boolean value indicating whether the player is currently Active.
 + gameRank (number, required) - The corresponding rank of the Player in this Played Game. A rank of 1 means the Player got first place, 2 means second place, and so on.
 + pointsScored (number, optional) - Integer number of points the Player scored in the Played Game.
 + nemeStatsPointsAwarded (number, required) - The number of NemeStats Points awarded to the Player for their respective rank in the Played Game.
