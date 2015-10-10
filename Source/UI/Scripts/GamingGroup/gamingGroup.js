@@ -38,6 +38,9 @@ Views.GamingGroup.GamingGroupView.prototype = {
         var url = '/api/v2/PlayedGames/?gamingGroupId=' + gamingGroupId;
 
         $.get(url, function (data) {
+            var playerDataMap = {};
+            var playerData = [];
+
             for (var i = data.playedGames.length - 1; i >= 0; i--) {
                 for (var j = 0; j < data.playedGames[i].playerGameResults.length; j++) {
                     var gameInfo = data.playedGames[i].playerGameResults[j];
@@ -52,7 +55,30 @@ Views.GamingGroup.GamingGroupView.prototype = {
                     playerDataMap[gameInfo.playerId].values.push({ x: new Date(data.playedGames[i].datePlayed), y: nextValue });
                 }
             }
-            drawLineGraph(playerData);
+
+            nv.addGraph(function () {
+                var chart = nv.models.lineChart()
+                    .useInteractiveGuideline(true)
+                    .showLegend(true)
+                    .showYAxis(true)
+                    .showXAxis(true);
+
+                chart.xAxis
+                    .axisLabel('Date')
+                    .tickFormat(function (d) {
+                        return d3.time.format('%x')(new Date(d))
+                    });
+
+                chart.yAxis
+                    .axisLabel('NemeStats Points')
+                    .tickFormat(d3.format('d'));
+
+                d3.select('#NemeStatsPointsLineGraph svg')
+                    .datum(playerData)
+                    .call(chart);
+
+                nv.utils.windowResize(function () { chart.update() });
+            });
         });
     }
 }

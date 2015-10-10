@@ -45,7 +45,5 @@
 /// <reference path="playedgame/recordexceldownload.js" />
 /// <reference path="playedgame/search.js" />
 /// <reference path="d3/d3.js" />
-/// <reference path="d3/gamesplayedpiechart.js" />
 /// <reference path="player/playerdetails.js" />
 /// <reference path="d3/nv.d3.min.js" />
-/// <reference path="d3/nemestatspointslinegraph.js" />

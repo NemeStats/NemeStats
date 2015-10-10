@@ -8,13 +8,24 @@ Views.Player.Details = function () {
 
 //Implementation
 Views.Player.Details.prototype = {
-    init: function(playerId) {
+    init: function (playerId) {
         this.$playerId = playerId;
     },
     renderGameDefinitionsPieChart: function () {
         var url = '/api/v1/GamingGroups/1/PlayerStats/' + this.$playerId.playerId;
+
         $.get(url, function (data) {
-            drawPieChart(data.gameDefinitionTotals.summariesOfGameDefinitionTotals);
+            nv.addGraph(function () {
+                var chart = nv.models.pieChart()
+                    .x(function (d) { return d.gameDefinitionName })
+                    .y(function (d) { return d.gamesLost + d.gamesWon })
+                    .showLabels(true);
+
+                d3.select("#GamesPieChart svg")
+                    .datum(data.gameDefinitionTotals.summariesOfGameDefinitionTotals)
+                    .transition().duration(350)
+                    .call(chart);
+            });
         });
     }
 };
