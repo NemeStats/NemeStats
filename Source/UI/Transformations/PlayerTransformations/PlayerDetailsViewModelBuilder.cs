@@ -84,6 +84,8 @@ namespace UI.Transformations.PlayerTransformations
             playerDetailsViewModel.PlayerGameSummaries = playerDetails.PlayerGameSummaries.Select(Mapper.Map<PlayerGameSummaryViewModel>).ToList();
 
             SetChampionedGames(playerDetails, playerDetailsViewModel);
+
+            SetFormerChampionedGames(playerDetails, playerDetailsViewModel);
             
             return playerDetailsViewModel;
         }
@@ -210,6 +212,18 @@ namespace UI.Transformations.PlayerTransformations
                                     .Contains(summary.GameDefinitionId))
                 .ToList()
                 .ForEach(x => x.IsChampion = true);
+        }
+
+        private void SetFormerChampionedGames(PlayerDetails playerDetails, PlayerDetailsViewModel playerDetailsViewModel)
+        {
+            if (playerDetails.PlayerGameSummaries == null)
+            {
+                return;
+            }
+            playerDetailsViewModel.PlayerGameSummaries
+                .Where(summary => playerDetails.FormerChampionedGames.Select(fcg=> fcg.Id).Contains(summary.GameDefinitionId))
+                .ToList()
+                .ForEach(x => x.IsFormerChampion = true);
         }
 
         private static void Validate(PlayerDetails playerDetails)

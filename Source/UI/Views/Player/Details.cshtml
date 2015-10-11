@@ -116,7 +116,7 @@
 
 
 <div class="row">
-    @Html.Partial("~/Views/Player/_PlayersSummaryPartial.cshtml", Model.PlayerVersusPlayers)
+    @Html.Partial(MVC.Player.Views._PlayersSummaryPartial, Model.PlayerVersusPlayers)
 </div>
 
 
@@ -136,7 +136,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var summary in @Model.PlayerGameSummaries)
+                    @foreach (var summary in Model.PlayerGameSummaries)
                     {
                         <tr>
                             <td>
@@ -144,6 +144,12 @@
                                 {
                                     <i class="fa fa-trophy" data-container="body" data-toggle="popover" data-placement="right"
                                        data-content="This Player is the Champion of this game. The Champion is the Player within the Gaming Group with the most wins of this game.">
+                                    </i>
+                                }
+                                @if (summary.IsFormerChampion)
+                                {
+                                    <i class="fa fa-trophy fa-slashed" data-container="body" data-toggle="popover" data-placement="right"
+                                       data-content="This Player is the former Champion of this game.">
                                     </i>
                                 }
                             </td>
