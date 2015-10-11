@@ -25,7 +25,7 @@ PrivateAppSettings.config example settings
 We are trying to keep things simple with our JavaScript. The idea is to use the "Namespace" pattern when writing new javascript files because of the clean syntax.
 
 * Please use the "Namespace()" function from the "Namespace.js" library to define new namespaces. The namespace should be set to the location of the .js file. Please check the code for examples.
-* The scripts that have a dependency on a *.cshtml file should be after them. Scripts that are meant to be reusable and shared between multiple .cshtml files should be done in the form of jQuery plugins and the file name has to make sense based on the functionality intended.
+* The scripts that have a dependency on a *.cshtml file should be named after them. Scripts that are meant to be reusable and shared between multiple .cshtml files should be done in the form of jQuery plugins and the file name has to make sense based on the functionality intended.
 * The following JavaScript example captures the essence of the pattern. It is for the Create.cshtml view of the GameDefinition controller. 
 
 ```javascript
