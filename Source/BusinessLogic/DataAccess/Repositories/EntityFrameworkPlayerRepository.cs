@@ -160,13 +160,14 @@ namespace BusinessLogic.DataAccess.Repositories
               ,SUM(CASE WHEN PGR.GameRank = 1 THEN 1 ELSE 0 END) AS GamesWon
               ,SUM(CASE WHEN PGR.GameRank <> 1 THEN 1 ELSE 0 END) AS GamesLost
               ,CONVERT(BIT, CASE WHEN Player.Id = Champion.PlayerId THEN 1 ELSE 0 END) AS IsChampion
+              ,CONVERT(BIT, CASE WHEN Player.Id = GD.PreviousChampionId THEN 1 ELSE 0 END) AS IsFormerChampion
               FROM [dbo].[GameDefinition] GD 
               INNER JOIN PlayedGame PG ON GD.ID = PG.GameDefinitionID
               INNER JOIN PlayerGameResult PGR ON PG.ID = PGR.PlayedGameId
               INNER JOIN Player ON PGR.PlayerId = Player.Id
               LEFT JOIN Champion ON Champion.Id = GD.ChampionId
               WHERE GD.Id = @GameDefinitionId
-              GROUP BY GD.[Id], GD.[Name], Player.Id, Player.Name, CONVERT(BIT, CASE WHEN Player.Id = Champion.PlayerId THEN 1 ELSE 0 END)
+              GROUP BY GD.[Id], GD.[Name], Player.Id, Player.Name, CONVERT(BIT, CASE WHEN Player.Id = Champion.PlayerId THEN 1 ELSE 0 END),CONVERT(BIT, CASE WHEN Player.Id = GD.PreviousChampionId THEN 1 ELSE 0 END) 
               ORDER BY GamesWon DESC, GamesLost DESC, PlayerName";
 
         public IList<PlayerWinRecord> GetPlayerWinRecords(int gameDefinitionId)

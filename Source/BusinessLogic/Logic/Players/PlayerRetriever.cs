@@ -101,6 +101,8 @@ namespace BusinessLogic.Logic.Players
 
             List<Champion> championedGames = GetChampionedGames(returnPlayer.Id);
 
+            var formerChampionedGames = GetFormerChampionedGames(returnPlayer.Id);
+
             var playerDetails = new PlayerDetails()
             {
                 Active = returnPlayer.Active,
@@ -116,7 +118,8 @@ namespace BusinessLogic.Logic.Players
                 Minions = minions,
                 PlayerGameSummaries = playerGameSummaries,
                 ChampionedGames = championedGames,
-                PlayerVersusPlayersStatistics = playerRepository.GetPlayerVersusPlayersStatistics(playerId)
+                PlayerVersusPlayersStatistics = playerRepository.GetPlayerVersusPlayersStatistics(playerId),
+                FormerChampionedGames =  formerChampionedGames
             };
 
             return playerDetails;
@@ -144,6 +147,16 @@ namespace BusinessLogic.Logic.Players
                      dataContext.GetQueryable<GameDefinition>().Include(g => g.Champion)
                  where gameDefinition.Champion.PlayerId == playerId
                  select gameDefinition.Champion).Include(c => c.GameDefinition)
+                 .ToList();
+        }
+
+        internal virtual List<GameDefinition> GetFormerChampionedGames(int playerId)
+        {
+            return
+                (from GameDefinition gameDefinition in
+                     dataContext.GetQueryable<GameDefinition>().Include(g => g.Champion)
+                 where gameDefinition.PreviousChampionId == playerId
+                 select gameDefinition)
                  .ToList();
         }
 

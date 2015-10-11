@@ -26,13 +26,10 @@ namespace BusinessLogic.Models.Games
     [NotMapped]
     public class GameDefinitionSummary : GameDefinition
     {
-        public GameDefinitionSummary()
-        {
-            PlayerWinRecords = new List<PlayerWinRecord>();
-        }
+
         public int TotalNumberOfGamesPlayed { get; set; }
         public string GamingGroupName { get; set; }
         public Uri BoardGameGeekUri { get; set; }
-        public IList<PlayerWinRecord> PlayerWinRecords { get; set; }
+        public IList<PlayerWinRecord> PlayerWinRecords { get; set; } = new List<PlayerWinRecord>();
     }
 }
