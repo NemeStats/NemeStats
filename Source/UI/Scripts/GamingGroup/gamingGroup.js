@@ -41,6 +41,8 @@ Views.GamingGroup.GamingGroupView.prototype = {
             var playerDataMap = {};
             var playerData = [];
 
+            console.log(data);
+
             for (var i = data.playedGames.length - 1; i >= 0; i--) {
                 for (var j = 0; j < data.playedGames[i].playerGameResults.length; j++) {
                     var gameInfo = data.playedGames[i].playerGameResults[j];
@@ -48,7 +50,7 @@ Views.GamingGroup.GamingGroupView.prototype = {
                         playerDataMap[gameInfo.playerId] = {
                             values: [{ x: new Date(data.playedGames[i].datePlayed), y: 0 }]
                         };
-                        playerData.push({ values: playerDataMap[gameInfo.playerId].values, key: gameInfo.playerName });
+                        playerData.push({ values: playerDataMap[gameInfo.playerId].values, key: gameInfo.playerName, disabled: !gameInfo.playerActive });
                     }
                     var lastIndex = playerDataMap[gameInfo.playerId].values.length - 1;
                     var nextValue = playerDataMap[gameInfo.playerId].values[lastIndex].y + gameInfo.nemeStatsPointsAwarded;
