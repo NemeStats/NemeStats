@@ -30,6 +30,7 @@ namespace BusinessLogic.Models.Games
         {
             PlayerWinRecords = new List<PlayerWinRecord>();
         }
+
         public int TotalNumberOfGamesPlayed { get; set; }
         public string GamingGroupName { get; set; }
         public Uri BoardGameGeekUri { get; set; }

@@ -197,7 +197,7 @@ namespace UI.Controllers
         {
             public readonly string id = "id";
             public readonly string request = "request";
-            public readonly string curremUser = "curremUser";
+            public readonly string currentUser = "currentUser";
         }
         static readonly ViewsClass s_views = new ViewsClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -332,15 +332,15 @@ namespace UI.Controllers
         }
 
         [NonAction]
-        partial void EditOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, BusinessLogic.Models.GamingGroups.GamingGroupEditRequest request, BusinessLogic.Models.User.ApplicationUser curremUser);
+        partial void EditOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, BusinessLogic.Models.GamingGroups.GamingGroupEditRequest request, BusinessLogic.Models.User.ApplicationUser currentUser);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult Edit(BusinessLogic.Models.GamingGroups.GamingGroupEditRequest request, BusinessLogic.Models.User.ApplicationUser curremUser)
+        public override System.Web.Mvc.ActionResult Edit(BusinessLogic.Models.GamingGroups.GamingGroupEditRequest request, BusinessLogic.Models.User.ApplicationUser currentUser)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Edit);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "request", request);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "curremUser", curremUser);
-            EditOverride(callInfo, request, curremUser);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "currentUser", currentUser);
+            EditOverride(callInfo, request, currentUser);
             return callInfo;
         }
 

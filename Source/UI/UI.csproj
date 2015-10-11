@@ -332,6 +332,7 @@
     <Compile Include="HtmlHelpers\UIHelper.cs" />
     <Compile Include="Models\Badges\BadgeBaseViewModel.cs" />
     <Compile Include="Models\Badges\ChampionBadgeViewModel.cs" />
+    <Compile Include="Models\Badges\FormerChampionBadgeViewModel.cs" />
     <Compile Include="Models\Badges\MinionBadgeViewModel.cs" />
     <Compile Include="Models\Badges\NemesisBadgeViewModel.cs" />
     <Compile Include="Models\GameDefinitionModels\GameDefinitionSummaryViewModel.cs" />
@@ -378,9 +379,9 @@
       <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>
     <Compile Include="T4MVC.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
       <DependentUpon>T4MVC.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
     </Compile>
     <Compile Include="Transformations\AutomapperConfiguration.cs" />
     <Compile Include="Transformations\GameDefinitionSummaryViewModelBuilder.cs" />
@@ -394,6 +395,7 @@
     <Compile Include="Transformations\INemesisChangeViewModelBuilder.cs" />
     <Compile Include="Transformations\ITransformer.cs" />
     <Compile Include="Transformations\NemesisChangeViewModelBuilder.cs" />
+    <Compile Include="Transformations\TransformationsHelper.cs" />
     <Compile Include="Transformations\Transformer.cs" />
     <Compile Include="Transformations\PlayedGameDetailsViewModelBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -497,6 +499,8 @@
     <Content Include="fonts\bootstrap\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\bootstrap\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\bootstrap\glyphicons-halflings-regular.eot" />
+    <Content Include="Content\ui.scss" />
+    <Content Include="Content\variables.scss" />
     <None Include="Properties\PublishProfiles\nerdscorekeeper.pubxml" />
     <None Include="Properties\PublishProfiles\Publish Local.pubxml" />
     <Content Include="sass\_bootswatch.css">
@@ -630,11 +634,11 @@
     <Content Include="Scripts\stylesheets\_bootstrap-mincer.scss" />
     <Content Include="Scripts\stylesheets\_bootstrap-compass.scss" />
     <Content Include="Scripts\stylesheets\_bootstrap.scss" />
-    <None Include="T4MVC.tt.hooks.t4" />
-    <None Include="T4MVC.tt">
+    <Content Include="T4MVC.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>T4MVC.cs</LastGenOutput>
-    </None>
+    </Content>
+    <None Include="T4MVC.tt.hooks.t4" />
     <None Include="T4MVC.tt.settings.xml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
