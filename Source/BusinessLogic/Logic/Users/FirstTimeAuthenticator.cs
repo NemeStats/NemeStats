@@ -52,7 +52,7 @@ namespace BusinessLogic.Logic.Users
             this.dataContext = dataContext;
         }
 
-        public async Task<NewlyCreatedGamingGroupResult> CreateGamingGroupAndSendEmailConfirmation(
+        public async Task<NewlyRegisteredUser> CreateGamingGroupAndSendEmailConfirmation(
             ApplicationUser applicationUser, 
             TransactionSource registrationSource)
         {
@@ -66,7 +66,14 @@ namespace BusinessLogic.Logic.Users
 
             await this.SendConfirmationEmail(applicationUser, callbackUrl);
 
-            return result;
+            return new NewlyRegisteredUser
+            {
+                GamingGroupId = result.NewlyCreatedGamingGroup.Id,
+                GamingGroupName = result.NewlyCreatedGamingGroup.Name,
+                PlayerId = result.NewlyCreatedPlayer.Id,
+                PlayerName = result.NewlyCreatedPlayer.Name,
+                UserId = applicationUser.Id
+            };
         }
 
         private string GetCallbackUrlFromConfig()

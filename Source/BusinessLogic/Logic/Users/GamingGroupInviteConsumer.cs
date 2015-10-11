@@ -146,7 +146,7 @@ namespace BusinessLogic.Logic.Users
             this.dataContext.Save(existingUser, new ApplicationUser());
         }
 
-        public NewlyCreatedGamingGroupResult AddNewUserToGamingGroup(string applicationUserId, Guid gamingGroupInvitationId)
+        public NewlyRegisteredUser AddNewUserToGamingGroup(string applicationUserId, Guid gamingGroupInvitationId)
         {
             ApplicationUser userFromDatabase = dataContext.FindById<ApplicationUser>(applicationUserId);
 
@@ -164,7 +164,16 @@ namespace BusinessLogic.Logic.Users
 
             dataContext.CommitAllChanges();
 
-            return new NewlyCreatedGamingGroupResult();
+            var gamingGroup = dataContext.FindById<GamingGroup>(invitation.GamingGroupId);
+
+            return new NewlyRegisteredUser
+            {
+                GamingGroupId = gamingGroup.Id,
+                GamingGroupName = gamingGroup.Name,
+                PlayerId = player.Id,
+                PlayerName = player.Name,
+                UserId = applicationUserId
+            };
         }
 
         private Player AssociatePlayerWithApplicationUser(GamingGroupInvitation invitation, ApplicationUser userFromDatabase)

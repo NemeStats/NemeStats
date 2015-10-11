@@ -53,5 +53,6 @@ namespace BusinessLogic.Models
         public virtual Nemesis Nemesis { get; set; }
         public virtual Nemesis PreviousNemesis { get; set; }
         public virtual IList<PlayerGameResult> PlayerGameResults { get; set; }
+        public virtual IList<Champion> ChampionedGames { get; set; }
     }
 }

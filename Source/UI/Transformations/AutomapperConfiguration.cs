@@ -56,7 +56,7 @@ namespace UI.Transformations
                              opt => opt.MapFrom(src => src.IsChampion
                                                            ? new List<IBadgeBaseViewModel>
                                                            {
-                                                               new MinionBadgeViewModel()
+                                                               new ChampionBadgeViewModel()
                                                            }
                                                            : new List<IBadgeBaseViewModel>()));
             Mapper.CreateMap<GameDefinitionTotal, GameDefinitionTotalMessage>(MemberList.Destination);

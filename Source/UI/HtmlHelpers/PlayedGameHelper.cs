@@ -40,10 +40,13 @@ namespace UI.HtmlHelpers
         internal const string CSS_CLASS_LOSER_PLACE = "loser";
         internal const string CSS_CLASS_TEAM_WIN = "gameResult-teamWin";
         internal const string CSS_CLASS_TEAM_LOSS = "gameResult-teamLoss";
+        internal const string NEMEPOINTICO_TOOLTIP = "NemePoints earned in this played game";
+        internal const string NEMEPOINTSICO_TOOLTIP_POSITION = "right";
 
-        internal static string HTML_GORDON_POINTS_TEMPLATE = " - ({0} pts.)";
+        internal static string HTML_GORDON_POINTS_TEMPLATE = " - ({0} {1})";
         internal static string HTML_TEMPLATE = "<span class=\"{0} {1}\">{2}{3}</span>";
-        
+
+
         public static MvcHtmlString GameResults(this HtmlHelper htmlHelper, GameResultViewModel playerGameResultDetails, WinnerTypes? winnerType)
         {
             Validate(playerGameResultDetails);
@@ -55,13 +58,15 @@ namespace UI.HtmlHelpers
             {
                 cssPlace = CSS_CLASS_TEAM_WIN;
                 gameRankText = PLACE_TEAM_WIN;
-            }else if (winnerType == WinnerTypes.TeamLoss)
+            }
+            else if (winnerType == WinnerTypes.TeamLoss)
             {
                 cssPlace = CSS_CLASS_TEAM_LOSS;
                 gameRankText = PLACE_EVERYONE_LOST;
-            }else
+            }
+            else
             {
-                switch(playerGameResultDetails.GameRank)
+                switch (playerGameResultDetails.GameRank)
                 {
                     case 1:
                         cssPlace = CSS_CLASS_FIRST_PLACE;
@@ -86,7 +91,8 @@ namespace UI.HtmlHelpers
                 }
             }
 
-            string nemeStatsPointsComponent = string.Format(HTML_GORDON_POINTS_TEMPLATE, playerGameResultDetails.NemeStatsPointsAwarded);
+
+            string nemeStatsPointsComponent = string.Format(HTML_GORDON_POINTS_TEMPLATE, playerGameResultDetails.NemeStatsPointsAwarded, htmlHelper.NemePointsIco(showTooltip: true, tooltip: NEMEPOINTICO_TOOLTIP, tooltipPosition: NEMEPOINTSICO_TOOLTIP_POSITION));
             return MvcHtmlString.Create(string.Format(HTML_TEMPLATE,
                 CSS_CLASS_GAME_RANK,
                 cssPlace,

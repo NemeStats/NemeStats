@@ -25,7 +25,8 @@ using UI.HtmlHelpers;
 using UI.Models.PlayedGame;
 
 namespace UI.Tests.UnitTests.HtmlHelperTests.MyHelpersTests
-{
+{   
+
     [TestFixture]
     public class GameResultsTests
     {
@@ -33,7 +34,7 @@ namespace UI.Tests.UnitTests.HtmlHelperTests.MyHelpersTests
         public void ItRequiresPlayerGameResultDetails()
         {
             HtmlHelper helper = new HtmlHelper(new ViewContext(), new ViewPage());
-            
+
             var exception = Assert.Throws<ArgumentNullException>(() =>
                 helper.GameResults(null, WinnerTypes.PlayerWin));
 
@@ -126,8 +127,8 @@ namespace UI.Tests.UnitTests.HtmlHelperTests.MyHelpersTests
             XElement result = helper.GameResults(playerGameResultDetails, WinnerTypes.PlayerWin).ToXElement();
 
             string firstNodeText = result.FirstNode.ToString();
-            string nemeStatsPointsComponent = string.Format(PlayedGameHelper.HTML_GORDON_POINTS_TEMPLATE, playerGameResultDetails.NemeStatsPointsAwarded);
-            Assert.True(firstNodeText.EndsWith(nemeStatsPointsComponent));
+
+            Assert.True(firstNodeText.Contains(playerGameResultDetails.NemeStatsPointsAwarded.ToString()));
         }
     }
 }

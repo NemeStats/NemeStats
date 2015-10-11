@@ -61,7 +61,8 @@ namespace UI.Transformations.PlayerTransformations
                 TotalPoints = playerDetails.PlayerStats.TotalPoints,
                 TotalGamesWon = playerDetails.PlayerStats.TotalGamesWon,
                 TotalGamesLost = playerDetails.PlayerStats.TotalGamesLost,
-                WinPercentage = playerDetails.PlayerStats.WinPercentage
+                WinPercentage = playerDetails.PlayerStats.WinPercentage,
+                TotalChampionedGames = playerDetails.ChampionedGames.Count
             };
 
             PopulatePlayerVersusPlayersViewModel(playerDetails, playerDetailsViewModel);

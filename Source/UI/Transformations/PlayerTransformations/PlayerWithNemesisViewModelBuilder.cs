@@ -45,6 +45,8 @@ namespace UI.Transformations.PlayerTransformations
             model.PreviousNemesisPlayerName = playerWithNemesis.PreviousNemesisPlayerName;
 
             model.NumberOfPlayedGames = playerWithNemesis.NumberOfPlayedGames;
+            model.TotalPoints = playerWithNemesis.TotalPoints;
+            model.TotalChampionedGames = playerWithNemesis.TotalChampionedGames;
 
             return model;
         }

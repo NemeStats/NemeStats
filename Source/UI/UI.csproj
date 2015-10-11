@@ -22,6 +22,7 @@
     <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -332,7 +333,9 @@
     </Compile>
     <Compile Include="HtmlHelpers\MvcHtmlStringExtension.cs" />
     <Compile Include="HtmlHelpers\PlayedGameHelper.cs" />
+    <Compile Include="HtmlHelpers\UIHelper.cs" />
     <Compile Include="Models\Badges\BadgeBaseViewModel.cs" />
+    <Compile Include="Models\Badges\ChampionBadgeViewModel.cs" />
     <Compile Include="Models\Badges\MinionBadgeViewModel.cs" />
     <Compile Include="Models\Badges\NemesisBadgeViewModel.cs" />
     <Compile Include="Models\GameDefinitionModels\GameDefinitionSummaryViewModel.cs" />
@@ -459,6 +462,12 @@
     <Content Include="Content\themes\base\tabs.css" />
     <Content Include="Content\themes\base\theme.css" />
     <Content Include="Content\themes\base\tooltip.css" />
+    <Content Include="Content\ui.css">
+      <DependentUpon>ui.scss</DependentUpon>
+    </Content>
+    <Content Include="Content\ui.min.css">
+      <DependentUpon>ui.css</DependentUpon>
+    </Content>
     <Content Include="favicon.ico" />
     <Content Include="fonts\bootstrap\glyphicons-halflings-regular.svg" />
     <Content Include="fonts\fontawesome-webfont.svg" />
