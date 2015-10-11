@@ -15,7 +15,12 @@ namespace UI.Tests.UnitTests.TransformationsTests.TransformationsHelperTests
     }
     public class MapFromPlayerWinRecord : MapSpecialBadgesTests
     {
-        public PlayerWinRecord PlayerWinRecord { get; set; } = new PlayerWinRecord();
+        public MapFromPlayerWinRecord()
+        {
+            PlayerWinRecord = new PlayerWinRecord();
+        }
+
+        public PlayerWinRecord PlayerWinRecord { get; set; }
 
 
         public class When_Is_Champion : MapFromPlayerWinRecord
