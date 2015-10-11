@@ -47,6 +47,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         private int gamingGroupId = 123;
         private int playerId = 567;
         private int gameDefinitionIdThatIsChampionedByCurrentPlayer = 999;
+        private int gameDefinitionIdThatIsFormerChampionedByCurrentPlayer = 1000;
 
         [SetUp]
         public void TestFixtureSetUp()
@@ -70,15 +71,16 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
                 Id = 1,
                 GameDefinition = gameDefinition1
             };
-            var gameDefinition2 = new GameDefinition()
+            var gameDefinitionThatIsFormerChampion = new GameDefinition()
             {
                 Name = "test game 2",
-                Id = 2
+                Id = gameDefinitionIdThatIsFormerChampionedByCurrentPlayer,
+                PreviousChampionId = playerId
             };
             var playedGame2 = new PlayedGame()
             {
                 Id = 2,
-                GameDefinition = gameDefinition2
+                GameDefinition = gameDefinitionThatIsFormerChampion
             };
             var playerGameResults = new List<PlayerGameResult>()
             {
@@ -164,6 +166,10 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
                     new PlayerGameSummary
                     {
                         GameDefinitionId = gameDefinitionIdThatIsChampionedByCurrentPlayer
+                    },
+                    new PlayerGameSummary
+                    {
+                        GameDefinitionId = gameDefinitionIdThatIsFormerChampionedByCurrentPlayer
                     }
                 }
             };
@@ -189,6 +195,12 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
                 new Champion { GameDefinition = gameDefinition1, GameDefinitionId = gameDefinitionIdThatIsChampionedByCurrentPlayer }
             };
             playerDetails.ChampionedGames = championedGames;
+
+            var formerChampionedGames = new List<GameDefinition>
+            {
+                gameDefinitionThatIsFormerChampion
+            };
+            playerDetails.FormerChampionedGames = formerChampionedGames;
 
             builder = new PlayerDetailsViewModelBuilder(gameResultViewModelBuilder, minionViewModelBuilderMock);
 
@@ -249,13 +261,32 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
             {
                 PlayerGameResults = new List<PlayerGameResult>(),
                 PlayerStats = new PlayerStatistics(),
-                Minions = new List<Player>()
+                Minions = new List<Player>(),
+                FormerChampionedGames = new List<GameDefinition>()
             };
 
             var exception = Assert.Throws<ArgumentException>(() =>
                     builder.Build(playerDetailsWithNoChampionedGames, twitterMinionBraggingUrl, currentUser));
 
             Assert.AreEqual(PlayerDetailsViewModelBuilder.EXCEPTION_CHAMPIONED_GAMES_CANNOT_BE_NULL, exception.Message);
+        }
+
+        [Test]
+        public void FormerChampionedGamesCannotBeNull()
+        {
+            var builder = new PlayerDetailsViewModelBuilder(null, null);
+            var playerDetailsWithNoChampionedGames = new PlayerDetails()
+            {
+                PlayerGameResults = new List<PlayerGameResult>(),
+                PlayerStats = new PlayerStatistics(),
+                Minions = new List<Player>(),
+                ChampionedGames = new List<Champion>()
+            };
+
+            var exception = Assert.Throws<ArgumentException>(() =>
+                    builder.Build(playerDetailsWithNoChampionedGames, twitterMinionBraggingUrl, currentUser));
+
+            Assert.AreEqual(PlayerDetailsViewModelBuilder.EXCEPTION_FORMERCHAMPIONED_GAMES_CANNOT_BE_NULL, exception.Message);
         }
 
         [Test]
@@ -466,6 +497,14 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
             Assert.That(playerDetailsViewModel.PlayerGameSummaries.Any(
                 x => x.GameDefinitionId == gameDefinitionIdThatIsChampionedByCurrentPlayer
                     && x.IsChampion));
+        }
+
+        [Test]
+        public void ItSetsTheFormerChampionedGames()
+        {
+            Assert.That(playerDetailsViewModel.PlayerGameSummaries.Any(
+                x => x.GameDefinitionId == gameDefinitionIdThatIsFormerChampionedByCurrentPlayer
+                    && x.IsFormerChampion));
         }
 
         [Test]
