@@ -19,12 +19,14 @@ Views.Player.Details.prototype = {
                 var chart = nv.models.pieChart()
                     .x(function (d) { return d.gameDefinitionName })
                     .y(function (d) { return d.gamesLost + d.gamesWon })
-                    .showLabels(true);
+                    .showLabels(false);
 
                 d3.select("#GamesPieChart svg")
                     .datum(data.gameDefinitionTotals.summariesOfGameDefinitionTotals)
                     .transition().duration(350)
                     .call(chart);
+
+                nv.utils.windowResize(function () { chart.update() });
             });
         });
     }
