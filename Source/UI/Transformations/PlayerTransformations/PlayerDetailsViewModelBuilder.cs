@@ -222,7 +222,9 @@ namespace UI.Transformations.PlayerTransformations
                 return;
             }
             playerDetailsViewModel.PlayerGameSummaries
-                .Where(summary => playerDetails.FormerChampionedGames.Select(fcg=> fcg.Id).Contains(summary.GameDefinitionId))
+                .Where(summary => playerDetails.FormerChampionedGames.Select(fcg=> fcg.Id).Contains(summary.GameDefinitionId) 
+                    //take the current champion out of the former champions list
+                    && !summary.IsChampion)
                 .ToList()
                 .ForEach(x => x.IsFormerChampion = true);
         }

@@ -153,10 +153,10 @@ namespace BusinessLogic.Logic.Players
         internal virtual List<GameDefinition> GetFormerChampionedGames(int playerId)
         {
             return
-                (from GameDefinition gameDefinition in
-                     dataContext.GetQueryable<GameDefinition>().Include(g => g.Champion)
-                 where gameDefinition.PreviousChampionId == playerId
-                 select gameDefinition)
+                (from Champion champion in
+                     dataContext.GetQueryable<Champion>().Include(c => c.GameDefinition)
+                 where champion.PlayerId == playerId
+                 select champion.GameDefinition)
                  .ToList();
         }
 
