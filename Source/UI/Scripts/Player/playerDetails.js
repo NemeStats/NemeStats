@@ -3,22 +3,20 @@ Namespace("Views.Player");
 
 //Initialization
 Views.Player.Details = function () {
-    this.$playerId = null;
+    this.$apiUri = null;
 };
 
 //Implementation
 Views.Player.Details.prototype = {
-    init: function (playerId) {
-        this.$playerId = playerId;
+    init: function (settings) {
+        this.$apiUri = settings.apiUri;
     },
     renderGameDefinitionsPieChart: function () {
-        var url = '/api/v1/GamingGroups/1/PlayerStats/' + this.$playerId.playerId;
-
-        $.get(url, function (data) {
+        $.get(this.$apiUri, function (data) {
             nv.addGraph(function () {
                 var chart = nv.models.pieChart()
-                    .x(function (d) { return d.gameDefinitionName })
-                    .y(function (d) { return d.gamesLost + d.gamesWon })
+                    .x(function (d) { return d.gameDefinitionName; })
+                    .y(function (d) { return d.gamesLost + d.gamesWon; })
                     .showLabels(false);
 
                 d3.select("#GamesPieChart svg")
@@ -26,7 +24,7 @@ Views.Player.Details.prototype = {
                     .transition().duration(350)
                     .call(chart);
 
-                nv.utils.windowResize(function () { chart.update() });
+                nv.utils.windowResize(function () { chart.update(); });
             });
         });
     }

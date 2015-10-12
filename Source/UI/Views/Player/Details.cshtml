@@ -214,7 +214,7 @@
     <script type="text/javascript">
         $(document).ready(function () {
             var playerDetails = new window.Views.Player.Details();
-            var settings = { "playerId" : @Model.PlayerId };
+            var settings = { "apiUri" : "/api/v2/GamingGroups/"+ @Model.GamingGroupId + "/PlayerStats/" + @Model.PlayerId };
             playerDetails.init(settings);
             playerDetails.renderGameDefinitionsPieChart();
         });
