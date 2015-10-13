@@ -13,15 +13,12 @@ namespace UI.Transformations
             if (playerWinRecord.IsChampion)
             {
                 result.Add(new ChampionBadgeViewModel());
-            }
-            if (playerWinRecord.IsFormerChampion)
+            }else if (playerWinRecord.IsFormerChampion)
             {
                 result.Add(new FormerChampionBadgeViewModel());
             }
 
             return result;
-
-           
         }
     }
 }

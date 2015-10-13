@@ -61,9 +61,38 @@ namespace UI.Tests.UnitTests.TransformationsTests.TransformationsHelperTests
             }
 
             [Test]
-            public void Then_ChampionBadgeViewModel_Is_Added()
+            public void Then_FormerChampionBadgeViewModel_Is_Added()
             {
                 Assert.That(ReturnedValue.Any(b => b.GetType() == typeof(FormerChampionBadgeViewModel)));
+            }
+        }
+
+        public class When_Is_Former_Champion_And_Also_Current_Champion : MapFromPlayerWinRecord
+        {
+            [SetUp]
+            public void SetUp()
+            {
+                PlayerWinRecord.IsFormerChampion = true;
+                PlayerWinRecord.IsChampion = true;
+                ReturnedValue = PlayerWinRecord.MapSpecialBadges();
+            }
+
+            [Test]
+            public void ItReturnsIBadgeBaseViewModelList()
+            {
+                Assert.IsNotNull(ReturnedValue);
+            }
+
+            [Test]
+            public void Then_ChampionBadgeViewModel_Is_Added()
+            {
+                Assert.That(ReturnedValue.Any(b => b.GetType() == typeof(ChampionBadgeViewModel)));
+            }
+
+            [Test]
+            public void Then_FormerChampionBadgeViewModel_Is_Not_Added()
+            {
+                Assert.That(ReturnedValue.All(b => b.GetType() != typeof(FormerChampionBadgeViewModel)));
             }
         }
     }
