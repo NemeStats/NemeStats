@@ -38,6 +38,7 @@ namespace BusinessLogic.Models
         public override int GamingGroupId { get; set; }
 
         public int? BoardGameGeekObjectId { get; set; }
+        public string ThumbnailImageUrl { get; set; }
 
         [StringLength(255)]
         [Index("IX_ID_AND_NAME", 2, IsUnique = true)]

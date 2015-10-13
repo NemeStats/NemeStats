@@ -274,6 +274,10 @@
     <Compile Include="Migrations\201505221156047_AddPublicFieldsToGamingGroup.Designer.cs">
       <DependentUpon>201505221156047_AddPublicFieldsToGamingGroup.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201510131345507_AddThumbnailImageUrlToGameDefinition.cs" />
+    <Compile Include="Migrations\201510131345507_AddThumbnailImageUrlToGameDefinition.Designer.cs">
+      <DependentUpon>201510131345507_AddThumbnailImageUrlToGameDefinition.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Games\GameDefinitionName.cs" />
     <Compile Include="Models\GamingGroups\GamingGroupEditRequest.cs" />
     <Compile Include="Models\GamingGroups\NewlyCreatedGamingGroupResult.cs" />
@@ -646,6 +650,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201505221156047_AddPublicFieldsToGamingGroup.resx">
       <DependentUpon>201505221156047_AddPublicFieldsToGamingGroup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201510131345507_AddThumbnailImageUrlToGameDefinition.resx">
+      <DependentUpon>201510131345507_AddThumbnailImageUrlToGameDefinition.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />
