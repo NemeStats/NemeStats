@@ -118,7 +118,7 @@ namespace BusinessLogic.Logic.Players
                 Minions = minions,
                 PlayerGameSummaries = playerGameSummaries,
                 ChampionedGames = championedGames,
-                PlayerVersusPlayersStatistics = playerRepository.GetPlayerVersusPlayersStatistics(playerId),
+                PlayerVersusPlayersStatistics = playerRepository.GetPlayerVersusPlayersStatistics(playerId)
             };
 
             return playerDetails;
