@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UI", "Source\UI\UI.csproj", "{960D6AE0-E6AE-4241-AB88-85532666AA84}"
 EndProject
@@ -22,6 +22,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		WebEssentials-Settings.json = WebEssentials-Settings.json
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BoardGameGeekApiClient", "BoardGameGeekApiClient\BoardGameGeekApiClient.csproj", "{D4EFACF4-B72B-4395-89BF-4CAA9A33C427}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,8 +65,29 @@ Global
 		{94D48899-B24B-42CE-B3D3-0D1F89D0E515}.Release|Any CPU.Build.0 = Release|Any CPU
 		{94D48899-B24B-42CE-B3D3-0D1F89D0E515}.Tosho|Any CPU.ActiveCfg = Release|Any CPU
 		{94D48899-B24B-42CE-B3D3-0D1F89D0E515}.Tosho|Any CPU.Build.0 = Release|Any CPU
+		{D4EFACF4-B72B-4395-89BF-4CAA9A33C427}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4EFACF4-B72B-4395-89BF-4CAA9A33C427}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4EFACF4-B72B-4395-89BF-4CAA9A33C427}.Jake|Any CPU.ActiveCfg = Release|Any CPU
+		{D4EFACF4-B72B-4395-89BF-4CAA9A33C427}.Jake|Any CPU.Build.0 = Release|Any CPU
+		{D4EFACF4-B72B-4395-89BF-4CAA9A33C427}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4EFACF4-B72B-4395-89BF-4CAA9A33C427}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D4EFACF4-B72B-4395-89BF-4CAA9A33C427}.Tosho|Any CPU.ActiveCfg = Release|Any CPU
+		{D4EFACF4-B72B-4395-89BF-4CAA9A33C427}.Tosho|Any CPU.Build.0 = Release|Any CPU
+		{7FF19E35-5D9D-4F67-8BB7-9026DE97E43E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7FF19E35-5D9D-4F67-8BB7-9026DE97E43E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7FF19E35-5D9D-4F67-8BB7-9026DE97E43E}.Jake|Any CPU.ActiveCfg = Release|Any CPU
+		{7FF19E35-5D9D-4F67-8BB7-9026DE97E43E}.Jake|Any CPU.Build.0 = Release|Any CPU
+		{7FF19E35-5D9D-4F67-8BB7-9026DE97E43E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7FF19E35-5D9D-4F67-8BB7-9026DE97E43E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7FF19E35-5D9D-4F67-8BB7-9026DE97E43E}.Tosho|Any CPU.ActiveCfg = Release|Any CPU
+		{7FF19E35-5D9D-4F67-8BB7-9026DE97E43E}.Tosho|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F58E10C5-089C-48A0-9D4F-1F932268A5B7} = {7503F641-5B66-4BEF-AFB3-07AB8685D459}
+		{94D48899-B24B-42CE-B3D3-0D1F89D0E515} = {7503F641-5B66-4BEF-AFB3-07AB8685D459}
+		{7FF19E35-5D9D-4F67-8BB7-9026DE97E43E} = {7503F641-5B66-4BEF-AFB3-07AB8685D459}
 	EndGlobalSection
 EndGlobal
