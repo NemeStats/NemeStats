@@ -70,7 +70,7 @@ namespace BusinessLogic.DataAccess.Repositories
                                             GameDefinitionId = gameDefinitionId
                                         }).FirstOrDefault();
 
-            if (championData == null)
+            if (championData == null || championData.NumberOfWins == 0)
             {
                 return new NullChampionData();
             }
