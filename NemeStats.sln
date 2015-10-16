@@ -23,7 +23,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		WebEssentials-Settings.json = WebEssentials-Settings.json
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{7503F641-5B66-4BEF-AFB3-07AB8685D459}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BoardGameGeekApiClient", "BoardGameGeekApiClient\BoardGameGeekApiClient.csproj", "{D4EFACF4-B72B-4395-89BF-4CAA9A33C427}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BoardGameGeekApiClient.Tests", "BoardGameGeekApiClient.Tests\BoardGameGeekApiClient.Tests.csproj", "{7FF19E35-5D9D-4F67-8BB7-9026DE97E43E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

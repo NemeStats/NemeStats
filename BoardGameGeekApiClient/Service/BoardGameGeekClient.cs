@@ -20,6 +20,7 @@ namespace BoardGameGeekApiClient.Service
 {
     public class BoardGameGeekClient : IBoardGameGeekApiClient
     {
+
         public const string BASE_URL_API_V2 = "http://www.boardgamegeek.com/xmlapi2";
 
         public async Task<GameDetails> GetGameDetails(int gameId)
@@ -88,13 +89,12 @@ namespace BoardGameGeekApiClient.Service
                 var xDoc = await ReadData(teamDataURI);
 
                 // LINQ to XML.
-                var gameCollection = from boardgame in xDoc.Descendants("item")
-                                                           select new SearchBoardGameResult
-                                                           {
-                                                               Name = boardgame.Element("name").GetStringValue("value"),
-                                                               GameId = boardgame.GetIntValue("id"),
-                                                               YearPublished = boardgame.Element("yearpublished ").GetIntValue("value")
-                                                           };
+                var gameCollection = xDoc.Descendants("item").Select(boardgame => new SearchBoardGameResult
+                {
+                    Name = boardgame.Element("name").GetStringValue("value"),
+                    GameId = boardgame.GetIntValue("id"),
+                    YearPublished = boardgame.Element("yearpublished").GetIntValue("value")
+                });
                 return gameCollection;
 
             }

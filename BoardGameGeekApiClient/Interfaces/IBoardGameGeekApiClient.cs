@@ -9,7 +9,7 @@ using BoardGameGeekApiClient.Models;
 
 namespace BoardGameGeekApiClient.Interfaces
 {
-    interface IBoardGameGeekApiClient
+    public interface IBoardGameGeekApiClient
     {
         Task<IEnumerable<SearchBoardGameResult>> SearchBoardGames(string query);
         Task<GameDetails> GetGameDetails(int gameId);
