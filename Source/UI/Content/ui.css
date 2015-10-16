@@ -5,3 +5,11 @@
     color: white;
     font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif; }
 
+.fa.fa-slashed:after {
+  position: relative;
+  content: "/";
+  font-weight: 700;
+  font-size: 1.7em;
+  left: -17px;
+  top: 2px; }
+

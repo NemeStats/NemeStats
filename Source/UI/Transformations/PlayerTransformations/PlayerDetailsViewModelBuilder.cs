@@ -35,6 +35,7 @@ namespace UI.Transformations.PlayerTransformations
         internal const string EXCEPTION_PLAYER_STATISTICS_CANNOT_BE_NULL = "PlayerDetails.PlayerStatistics cannot be null.";
         internal const string EXCEPTION_MINIONS_CANNOT_BE_NULL = "PlayerDetails.Minions cannot be null.";
         internal const string EXCEPTION_CHAMPIONED_GAMES_CANNOT_BE_NULL = "PlayerDetails.ChampionedGames cannot be null.";
+        internal const string EXCEPTION_FORMERCHAMPIONED_GAMES_CANNOT_BE_NULL = "PlayerDetails.FormerChampionedGames cannot be null.";
 
         private readonly IGameResultViewModelBuilder gameResultViewModelBuilder;
         private readonly IMinionViewModelBuilder minionViewModelBuilder;
@@ -84,6 +85,8 @@ namespace UI.Transformations.PlayerTransformations
             playerDetailsViewModel.PlayerGameSummaries = playerDetails.PlayerGameSummaries.Select(Mapper.Map<PlayerGameSummaryViewModel>).ToList();
 
             SetChampionedGames(playerDetails, playerDetailsViewModel);
+
+            SetFormerChampionedGames(playerDetails, playerDetailsViewModel);
             
             return playerDetailsViewModel;
         }
@@ -212,6 +215,20 @@ namespace UI.Transformations.PlayerTransformations
                 .ForEach(x => x.IsChampion = true);
         }
 
+        private void SetFormerChampionedGames(PlayerDetails playerDetails, PlayerDetailsViewModel playerDetailsViewModel)
+        {
+            if (playerDetails.PlayerGameSummaries == null)
+            {
+                return;
+            }
+            playerDetailsViewModel.PlayerGameSummaries
+                .Where(summary => playerDetails.FormerChampionedGames.Select(fcg=> fcg.Id).Contains(summary.GameDefinitionId) 
+                    //take the current champion out of the former champions list
+                    && !summary.IsChampion)
+                .ToList()
+                .ForEach(x => x.IsFormerChampion = true);
+        }
+
         private static void Validate(PlayerDetails playerDetails)
         {
             ValidatePlayerDetailsIsNotNull(playerDetails);
@@ -219,6 +236,7 @@ namespace UI.Transformations.PlayerTransformations
             ValidatePlayerStatisticsIsNotNull(playerDetails);
             ValidateMinions(playerDetails);
             ValidateChampionedGames(playerDetails);
+            ValidateFormerChampionedGames(playerDetails);
         }
 
         private static void ValidatePlayerDetailsIsNotNull(PlayerDetails playerDetails)
@@ -258,6 +276,14 @@ namespace UI.Transformations.PlayerTransformations
             if (playerDetails.ChampionedGames == null)
             {
                 throw new ArgumentException(EXCEPTION_CHAMPIONED_GAMES_CANNOT_BE_NULL);
+            }
+        }
+
+        private static void ValidateFormerChampionedGames(PlayerDetails playerDetails)
+        {
+            if (playerDetails.FormerChampionedGames == null)
+            {
+                throw new ArgumentException(EXCEPTION_FORMERCHAMPIONED_GAMES_CANNOT_BE_NULL);
             }
         }
 

@@ -260,6 +260,7 @@
     <Compile Include="UnitTests\TransformationsTests\PlayerTransformationTests\PlayerWithNemesisViewModelBuilderTests\BuildTests.cs" />
     <Compile Include="UnitTests\TransformationsTests\PlayerTransformationTests\TopPlayerViewModelBuilderTests\BuildTests.cs" />
     <Compile Include="UnitTests\TransformationsTests\PlayerWithNemesis.cs" />
+    <Compile Include="UnitTests\TransformationsTests\TransformationsHelperTests\MapSpecialBadgesTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

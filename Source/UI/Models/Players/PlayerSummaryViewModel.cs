@@ -7,7 +7,7 @@ namespace UI.Models.Players
     {
         public PlayerSummaryViewModel()
         {
-            SpecialBadgeTypes = new List<IBadgeBaseViewModel>();    
+            SpecialBadgeTypes = new List<IBadgeBaseViewModel>();
         }
 
         public string PlayerName { get; set; }

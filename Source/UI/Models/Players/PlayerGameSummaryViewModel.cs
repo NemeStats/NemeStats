@@ -10,5 +10,6 @@ namespace UI.Models.Players
         public int NumberOfGamesLost { get; set; }
         public int WinPercentage { get; set; }
         public bool IsChampion { get; set; }
+        public bool IsFormerChampion { get; set; }
     }
 }

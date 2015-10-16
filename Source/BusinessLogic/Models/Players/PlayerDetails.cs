@@ -43,6 +43,7 @@ namespace BusinessLogic.Models.Players
         public IList<Player> Minions { get; set; }
         public IList<PlayerGameSummary> PlayerGameSummaries { get; set; }
         public IList<Champion> ChampionedGames { get; set; }
+        public IList<GameDefinition> FormerChampionedGames { get; set; }
         public IList<PlayerVersusPlayerStatistics> PlayerVersusPlayersStatistics { get; set; }
     }
 }

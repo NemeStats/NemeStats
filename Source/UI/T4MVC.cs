@@ -375,6 +375,11 @@ namespace Links
         
         }
     
+        public static readonly string ui_scss = Url("ui.scss");
+        public static readonly string ui_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/ui.min.css") ? Url("ui.min.css") : Url("ui.css");
+             
+        public static readonly string ui_min_css = Url("ui.min.css");
+        public static readonly string variables_scss = Url("variables.scss");
     }
 
     

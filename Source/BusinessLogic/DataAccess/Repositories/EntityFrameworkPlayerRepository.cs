@@ -162,6 +162,7 @@ namespace BusinessLogic.DataAccess.Repositories
               ,SUM(CASE WHEN PGR.GameRank = 1 THEN 1 ELSE 0 END) AS GamesWon
               ,SUM(CASE WHEN PGR.GameRank <> 1 THEN 1 ELSE 0 END) AS GamesLost
               ,CONVERT(BIT, CASE WHEN Player.Id = Champion.PlayerId THEN 1 ELSE 0 END) AS IsChampion
+              ,CONVERT(BIT, CASE WHEN EXISTS(SELECT 1 FROM Champion WHERE Champion.PlayerId = Player.Id) THEN 1 ELSE 0 END) AS IsFormerChampion
               FROM [dbo].[GameDefinition] GD 
               INNER JOIN PlayedGame PG ON GD.ID = PG.GameDefinitionID
               INNER JOIN PlayerGameResult PGR ON PG.ID = PGR.PlayedGameId
