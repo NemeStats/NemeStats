@@ -31,11 +31,17 @@ namespace BoardGameGeekApiClient.Service
 
             try
             {
-                Uri teamDataURI = new Uri(string.Format(BASE_URL_API_V2 + "/thing?id={0}&stats=1", gameId));
-                XDocument xDoc = await ReadData(teamDataURI);
+                var teamDataURI = new Uri(string.Format(BASE_URL_API_V2 + "/thing?id={0}&stats=1", gameId));
+                var xDoc = await ReadData(teamDataURI);
 
+                
                 // LINQ to XML.
-                IEnumerable<GameDetails> gameCollection = from boardgame in xDoc.Descendants("items")
+                var xElements = xDoc.Descendants("items");
+                if (xElements.Count() != 1)
+                {
+                    return null;
+                }
+                var gameCollection = from boardgame in xElements
                                                           select new GameDetails
                                                           {
                                                               Name = (from p in boardgame.Element("item").Elements("name") where p.Attribute("type").Value == "primary" select p.Attribute("value").Value).SingleOrDefault(),
@@ -75,8 +81,7 @@ namespace BoardGameGeekApiClient.Service
             }
             catch (Exception ex)
             {
-                throw;
-                //return null;
+                return null;
             }
         }
 

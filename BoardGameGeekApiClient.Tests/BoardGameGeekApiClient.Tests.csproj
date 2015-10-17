@@ -45,7 +45,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IntegrationTests\BaseBoardGameGeekApiClientIntegrationTest.cs" />
-    <Compile Include="IntegrationTests\SearchBoardGamesTests.cs" />
+    <Compile Include="IntegrationTests\GetGameDetails_IntegrationTests.cs" />
+    <Compile Include="IntegrationTests\SearchBoardGames_IntegrationTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
