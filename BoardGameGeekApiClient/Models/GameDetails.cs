@@ -29,6 +29,7 @@ namespace BoardGameGeekApiClient.Models
         public List<string> Designers { get; set; }
         public List<string> Publishers { get; set; }
         public List<string> Artists { get; set; }
+        public List<string> Categories { get; set; }
         public List<PlayerPollResult> PlayerPollResults { get; set; }
 
         public List<BoardGameLink> Expansions { get; set; }

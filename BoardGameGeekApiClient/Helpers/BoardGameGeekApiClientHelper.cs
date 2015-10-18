@@ -35,74 +35,82 @@ namespace BoardGameGeekApiClient.Helpers
                 retVal = defaultValue;
             return retVal;
         }
-        public static bool GetBoolValue(this XElement element, string attribute = null, bool defaultValue = false)
-        {
-            string val = GetStringValue(element, attribute, null);
-            if (val == null)
-                return defaultValue;
 
-            int retVal;
-            if (!int.TryParse(val, out retVal))
-                return defaultValue;
-
-            return retVal == 1;
-        }
         public static decimal GetDecimalValue(this XElement element, string attribute = null, decimal defaultValue = -1)
         {
-            string val = GetStringValue(element, attribute, null);
-            if (val == null)
+            var val = GetStringValue(element, attribute, null);
+            if (string.IsNullOrEmpty(val))
                 return defaultValue;
 
             decimal retVal;
             if (!decimal.TryParse(val, out retVal))
-                return defaultValue;
-
+                retVal = defaultValue;
             return retVal;
         }
-        public static bool SetIsExpansion(this XElement Boardgame)
+
+        private static List<string> GetTypeValue(XElement boardgame, string type)
         {
-            return (from p in Boardgame.Element("item").Elements("link")
-                    where
-                        p.Attribute("type").Value == "boardgamecategory" && p.Attribute("id").Value == "1042"
-                    select p.Attribute("value").Value).FirstOrDefault() != null;
+            return (from p in boardgame.Element("item").Elements("link")
+                    where p.Attribute("type").Value == type
+                    select p.Attribute("value").Value).ToList();
         }
 
-        public static List<BoardGameLink> SetExpandsLinks(this XElement Boardgame)
+        public static List<string> GetArtists(this XElement boardgame)
         {
-            var links = from p in Boardgame.Element("item").Elements("link")
-                        where p.Attribute("type").Value == "boardgameexpansion" &&
-                            p.Attribute("inbound") != null && p.Attribute("inbound").Value == "true"
-                        select new BoardGameLink
-                        {
-                            Name = p.Attribute("value").Value,
-                            GameId = int.Parse(p.Attribute("id").Value)
-                        };
-
-            return links.ToList();
+            return GetTypeValue(boardgame, "boardgameartist");
         }
 
-        public static List<BoardGameLink> SetExpansionsLinks(this XElement Boardgame)
+        public static List<string> GetDesigners(this XElement boardgame)
+        {
+            return GetTypeValue(boardgame, "boardgamedesigner");
+        }
+
+        public static List<string> GetMechanics(this XElement boardgame)
+        {
+            return GetTypeValue(boardgame, "boardgamemechanic");
+        }
+        public static List<string> GetCategories(this XElement boardgame)
+        {
+            return GetTypeValue(boardgame, "boardgamecategory");
+        }
+
+        public static List<string> GetPublishers(this XElement boardgame)
+        {
+            return GetTypeValue(boardgame, "boardgamepublisher");
+        }
+
+        public static string GetBoardGameName(this XElement boardgame)
+        {
+            return (boardgame.Element("item").Elements("name")
+                .Where(p => p.Attribute("type").Value == "primary")
+                .Select(p => p.Attribute("value").Value)).SingleOrDefault();
+        }
+        public static bool IsExpansion(this XElement boardgame)
+        {
+            return boardgame.Element("item").GetStringValue("type") == "boardgameexpansion";
+        }
+        public static List<BoardGameLink> GetExpansionsLinks(this XElement Boardgame)
         {
             var links = from p in Boardgame.Element("item").Elements("link")
                         where p.Attribute("type").Value == "boardgameexpansion" &&
                             (p.Attribute("inbound") == null || p.Attribute("inbound").Value != "true")
                         select new BoardGameLink
                         {
-                            Name = p.Attribute("value").Value,
-                            GameId = int.Parse(p.Attribute("id").Value)
+                            Name = p.GetStringValue("value"),
+                            Id = p.GetIntValue("id")
                         };
 
             return links.ToList();
         }
 
-        public static List<PlayerPollResult> LoadPlayerPollResults(this XElement xElement)
+        public static List<PlayerPollResult> GetPlayerPollResults(this XElement xElement)
         {
-            List<PlayerPollResult> playerPollResult = new List<PlayerPollResult>();
+            var playerPollResult = new List<PlayerPollResult>();
             if (xElement != null)
             {
-                foreach (XElement results in xElement.Elements("results"))
+                foreach (var results in xElement.Elements("results"))
                 {
-                    PlayerPollResult pResult = new PlayerPollResult()
+                    var pResult = new PlayerPollResult()
                     {
                         Best = GetIntResultScore(results, "Best"),
                         Recommended = GetIntResultScore(results, "Recommended"),
@@ -114,22 +122,22 @@ namespace BoardGameGeekApiClient.Helpers
             }
             return playerPollResult;
         }
-        public static void SetNumplayers(this PlayerPollResult pResult, XElement results)
+        private static void SetNumplayers(this PlayerPollResult pResult, XElement results)
         {
 
-            string value = results.Attribute("numplayers").Value;
+            var value = results.Attribute("numplayers").Value;
             if (value.Contains("+"))
             {
                 pResult.NumPlayersIsAndHigher = true;
             }
             value = value.Replace("+", string.Empty);
 
-            int res = 0;
+            var res = 0;
             int.TryParse(value, out res);
 
             pResult.NumPlayers = res;
         }
-        public static int GetIntResultScore(this XElement results, string selector)
+        private static int GetIntResultScore(this XElement results, string selector)
         {
             int res = 0;
             try
@@ -148,7 +156,9 @@ namespace BoardGameGeekApiClient.Helpers
         }
         public static int GetRanking(this XElement rankingElement)
         {
-            string val = (from p in rankingElement.Elements("rank") where p.Attribute("id").Value == "1" select p.Attribute("value").Value).SingleOrDefault();
+            var val = (rankingElement.Elements("rank")
+                .Where(p => p.Attribute("id").Value == "1")
+                .Select(p => p.Attribute("value").Value)).SingleOrDefault();
             int rank;
 
             if (val == null)

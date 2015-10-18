@@ -49,8 +49,20 @@
     <Compile Include="IntegrationTests\SearchBoardGames_IntegrationTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UnitTests\BoardGameGeekApiClientHelper\BoardGameGeekApiClientHelper_Tests.cs" />
+    <Compile Include="UnitTests\BoardGameGeekApiClientHelper\GetArtist_Tests.cs" />
+    <Compile Include="UnitTests\BoardGameGeekApiClientHelper\GetBoardGameNameTests.cs" />
+    <Compile Include="UnitTests\BoardGameGeekApiClientHelper\GetCategories_Tests.cs" />
+    <Compile Include="UnitTests\BoardGameGeekApiClientHelper\GetDecimalValue_Tests.cs" />
+    <Compile Include="UnitTests\BoardGameGeekApiClientHelper\GetDesigner_Tests.cs" />
+    <Compile Include="UnitTests\BoardGameGeekApiClientHelper\GetExpansions_Tests.cs" />
     <Compile Include="UnitTests\BoardGameGeekApiClientHelper\GetIntValue_Tests.cs" />
+    <Compile Include="UnitTests\BoardGameGeekApiClientHelper\GetMechanincs_Tests.cs" />
+    <Compile Include="UnitTests\BoardGameGeekApiClientHelper\GetPlayerPollTests.cs" />
+    <Compile Include="UnitTests\BoardGameGeekApiClientHelper\GetPublishers_Tests.cs" />
+    <Compile Include="UnitTests\BoardGameGeekApiClientHelper\GetRankingTests.cs" />
+    <Compile Include="UnitTests\BoardGameGeekApiClientHelper\GetSimpleValues_BaseTest.cs" />
     <Compile Include="UnitTests\BoardGameGeekApiClientHelper\GetStringValue_Tests.cs" />
+    <Compile Include="UnitTests\BoardGameGeekApiClientHelper\GetTypedValues_BaseTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BoardGameGeekApiClient\BoardGameGeekApiClient.csproj">

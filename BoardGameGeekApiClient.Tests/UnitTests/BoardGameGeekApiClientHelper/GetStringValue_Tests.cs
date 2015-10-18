@@ -3,7 +3,7 @@ using NUnit.Framework;
 
 namespace BoardGameGeekApiClient.Tests.UnitTests.BoardGameGeekApiClientHelper
 {
-    public class GetStringValue_Tests : BoardGameGeekApiClientHelper_Tests
+    public class GetStringValue_Tests : GetSimpleValues_BaseTest
     {
         public string DefaultValue { get; set; }
         public string Result { get; set; }

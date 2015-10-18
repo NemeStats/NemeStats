@@ -44,46 +44,42 @@ namespace BoardGameGeekApiClient.Service
                 var gameCollection = from boardgame in xElements
                                                           select new GameDetails
                                                           {
-                                                              Name = (from p in boardgame.Element("item").Elements("name") where p.Attribute("type").Value == "primary" select p.Attribute("value").Value).SingleOrDefault(),
-                                                              GameId = int.Parse(boardgame.Element("item").Attribute("id").Value),
-                                                              Artists = (from p in boardgame.Element("item").Elements("link") where p.Attribute("type").Value == "boardgameartist" select p.Attribute("value").Value).ToList(),
-                                                              AverageRating = decimal.Parse(boardgame.Element("item").Element("statistics").Element("ratings").Element("average").Attribute("value").Value),
-                                                              BGGRating = decimal.Parse(boardgame.Element("item").Element("statistics").Element("ratings").Element("bayesaverage").Attribute("value").Value),
+                                                              Name = boardgame.GetBoardGameName(),
+                                                              GameId = boardgame.Element("item").GetIntValue("id"),
+                                                              Artists = boardgame.GetArtists(),
+                                                              AverageRating = boardgame.Element("item").Element("statistics").Element("ratings").Element("average").GetDecimalValue("value"),
+                                                              BGGRating = boardgame.Element("item").Element("statistics").Element("ratings").Element("bayesaverage").GetDecimalValue("value"),
                                                               Description = boardgame.Element("item").Element("description").Value,
-                                                              Designers = (from p in boardgame.Element("item").Elements("link") where p.Attribute("type").Value == "boardgamedesigner" select p.Attribute("value").Value).ToList(),
-                                                              Expands = boardgame.SetExpandsLinks(),
-                                                              Expansions = boardgame.SetExpansionsLinks(),
-                                                              Mechanics = (from p in boardgame.Element("item").Elements("link") where p.Attribute("type").Value == "boardgamemechanic" select p.Attribute("value").Value).ToList(),
-                                                              Image = boardgame.Element("item").Element("image") != null ? boardgame.Element("item").Element("image").Value : string.Empty,
-                                                              IsExpansion = boardgame.SetIsExpansion(),
-                                                              Thumbnail = boardgame.Element("item").Element("thumbnail") != null ? boardgame.Element("item").Element("thumbnail").Value : string.Empty,
-                                                              MaxPlayers = int.Parse(boardgame.Element("item").Element("maxplayers").Attribute("value").Value),
-                                                              MinPlayers = int.Parse(boardgame.Element("item").Element("minplayers").Attribute("value").Value),
-                                                              PlayerPollResults = boardgame.Element("item").Element("poll").LoadPlayerPollResults(),
-                                                              PlayingTime = int.Parse(boardgame.Element("item").Element("playingtime").Attribute("value").Value),
-                                                              Publishers = (from p in boardgame.Element("item").Elements("link") where p.Attribute("type").Value == "boardgamepublisher" select p.Attribute("value").Value).ToList(),
+                                                              Designers = boardgame.GetDesigners(),
+                                                              Expansions = boardgame.GetExpansionsLinks(),
+                                                              Mechanics = boardgame.GetMechanics(),
+                                                              Categories = boardgame.GetCategories(),
+                                                              Image = boardgame.Element("item").Element("image").GetStringValue(),
+                                                              IsExpansion = boardgame.IsExpansion(),
+                                                              Thumbnail = boardgame.Element("item").Element("thumbnail").GetStringValue(),
+                                                              MaxPlayers = boardgame.Element("item").Element("maxplayers").GetIntValue("value"),
+                                                              MinPlayers = boardgame.Element("item").Element("minplayers").GetIntValue("value"),
+                                                              PlayerPollResults = boardgame.Element("item").Element("poll").GetPlayerPollResults(),
+                                                              PlayingTime = boardgame.Element("item").Element("playingtime").GetIntValue("value"),
+                                                              Publishers = boardgame.GetPublishers(),
                                                               Rank = boardgame.Element("item").Element("statistics").Element("ratings").Element("ranks").GetRanking(),
-                                                              YearPublished = int.Parse(boardgame.Element("item").Element("yearpublished").Attribute("value").Value)
+                                                              YearPublished = boardgame.Element("item").Element("yearpublished").GetIntValue("value"),
                                                           };
 
                 details = gameCollection.FirstOrDefault();
 
-                if (details.Expands != null && details.Expands.Count == 0)
-                {
-                    details.Expands = null;
-                }
-                if (details.Expansions != null && details.Expansions.Count == 0)
-                {
-                    details.Expansions = null;
-                }
-
-                return details;
+               
             }
             catch (Exception ex)
             {
-                return null;
+                Debug.WriteLine("Exception on GetGameDetails for ID " + gameId + "." + ex);
             }
+
+            return details;
         }
+
+     
+
 
         public async Task<IEnumerable<SearchBoardGameResult>> SearchBoardGames(string query)
         {
