@@ -5,7 +5,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Xml.Linq;
 using BoardGameGeekApiClient.Models;
@@ -19,14 +18,11 @@ namespace BoardGameGeekApiClient.Helpers
             if (element == null)
                 return defaultValue;
 
-            if (attribute == null)
+            if (string.IsNullOrEmpty(attribute))
                 return element.Value;
 
-            XAttribute xatt = element.Attribute(attribute);
-            if (xatt == null)
-                return defaultValue;
-
-            return xatt.Value;
+            var xatt = element.Attribute(attribute);
+            return xatt != null ? xatt.Value : defaultValue;
         }
         public static int GetIntValue(this XElement element, string attribute = null, int defaultValue = -1)
         {
