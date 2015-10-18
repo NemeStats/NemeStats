@@ -35,25 +35,36 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
         }
 
         [Test]
-        public void ItReturnsPlayersOrderedByTotalPointsDescThenNameAscending()
+        public void ItReturnsPlayersOrderedByActiveAscThenTotalPointsDescThenNameAscending()
         {
             List<PlayerWithNemesis> players = playerRetriever.GetAllPlayersWithNemesisInfo(gamingGroupId);
 
             var lastPlayerPoints = int.MaxValue;
             var lastPlayerName = "0";
+            var lastActive = true;
             foreach (PlayerWithNemesis player in players)
             {
-                if (lastPlayerPoints.Equals(player.TotalPoints))
+                if (lastActive == player.PlayerActive)
                 {
-                    Assert.LessOrEqual(lastPlayerName, player.PlayerName);
+                    if (lastPlayerPoints.Equals(player.TotalPoints))
+                    {
+                        Assert.LessOrEqual(lastPlayerName, player.PlayerName);
+                    }
+                    else
+                    {
+                        Assert.GreaterOrEqual(lastPlayerPoints, player.TotalPoints);
+                    }
                 }
                 else
                 {
-                    Assert.GreaterOrEqual(lastPlayerPoints, player.TotalPoints);
+                    //if the playerActive isn't the same as last active then it should be inactive since these come last
+                    Assert.False(player.PlayerActive);
                 }
+               
 
                 lastPlayerPoints = player.TotalPoints;
                 lastPlayerName = player.PlayerName;
+                lastActive = player.PlayerActive;
             }
         }
 
