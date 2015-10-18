@@ -91,10 +91,11 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         public void ItAddsAnInactivePlayerSuffixToInactivePlayers()
         {
             playerWithNemesis.PlayerActive = false;
+            string expectedPlayerName = playerWithNemesis.PlayerName + " (INACTIVE)";
 
             PlayerWithNemesisViewModel actualViewModel = builder.Build(this.playerWithNemesis, this.currentUser);
 
-            Assert.AreEqual(this.playerWithNemesis.PlayerName + " (INACTIVE)", actualViewModel.PlayerName);
+            Assert.AreEqual(expectedPlayerName, actualViewModel.PlayerName);
         }
 
         [Test]
