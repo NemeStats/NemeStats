@@ -34,5 +34,6 @@ namespace BusinessLogic.Models.Players
         public int NumberOfPlayedGames { get; set; }
         public int TotalPoints { get; set; }
         public int TotalChampionedGames { get; set; }
+        public bool PlayerActive { get; set; }
     }
 }
