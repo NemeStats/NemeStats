@@ -7,16 +7,16 @@ namespace BoardGameGeekApiClient.Tests.UnitTests.BoardGameGeekApiClientHelper
     public class BoardGameGeekApiClientHelper_Tests
     {
         public XElement XElementToTest { get; set; }
-        public string ElementValue { get; set; }
-        public string Attribute { get; set; }
-        public string AttributeValue { get; set; }
+
+        public string ElementValue { get; set; } = "Betting/Wagering";
+
+        public string Attribute { get; set; } = "objectid";
+
+        public string AttributeValue { get; set; } = "2014";
 
         [SetUp]
         public virtual void SetUp()
         {
-            ElementValue = "Betting/Wagering";
-            Attribute = "objectid";
-            AttributeValue = "2014";
             XElementToTest = XDocument.Parse(string.Format("<boardgamemechanic {0}='{1}'>{2}</boardgamemechanic>", Attribute, AttributeValue, ElementValue)).Root;
         }
 

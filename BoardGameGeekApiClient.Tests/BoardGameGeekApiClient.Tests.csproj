@@ -49,6 +49,7 @@
     <Compile Include="IntegrationTests\SearchBoardGames_IntegrationTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UnitTests\BoardGameGeekApiClientHelper\BoardGameGeekApiClientHelper_Tests.cs" />
+    <Compile Include="UnitTests\BoardGameGeekApiClientHelper\GetIntValue_Tests.cs" />
     <Compile Include="UnitTests\BoardGameGeekApiClientHelper\GetStringValue_Tests.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -26,8 +26,8 @@ namespace BoardGameGeekApiClient.Helpers
         }
         public static int GetIntValue(this XElement element, string attribute = null, int defaultValue = -1)
         {
-            string val = GetStringValue(element, attribute, null);
-            if (val == null)
+            var val = GetStringValue(element, attribute, null);
+            if (string.IsNullOrEmpty(val))
                 return defaultValue;
 
             int retVal;
