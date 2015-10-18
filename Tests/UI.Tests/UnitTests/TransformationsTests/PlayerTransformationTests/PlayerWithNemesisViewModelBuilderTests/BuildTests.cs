@@ -46,6 +46,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
                 PlayerId = 100,
                 PlayerRegistered = true,
                 PlayerName = "player name",
+                PlayerActive = true,
                 NemesisPlayerId = 300,
                 NemesisPlayerName = "nemesis player name",
                 PreviousNemesisPlayerId = 400,
@@ -116,6 +117,14 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
             PlayerWithNemesisViewModel actualViewModel = builder.Build(this.playerWithNemesis, this.currentUser);
 
             Assert.AreEqual(this.playerWithNemesis.NemesisPlayerName, actualViewModel.NemesisPlayerName);
+        }
+
+        [Test]
+        public void ItCopiesThePlayerActiveFlag()
+        {
+            PlayerWithNemesisViewModel actualViewModel = builder.Build(this.playerWithNemesis, this.currentUser);
+
+            Assert.AreEqual(this.playerWithNemesis.PlayerActive, actualViewModel.PlayerActive);
         }
 
         [Test]
