@@ -80,11 +80,21 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         }
 
         [Test]
-        public void ItCopiesThePlayerName()
+        public void ItCopiesThePlayerNameForActivePlayers()
         {
             PlayerWithNemesisViewModel actualViewModel = builder.Build(this.playerWithNemesis, this.currentUser);
 
             Assert.AreEqual(this.playerWithNemesis.PlayerName, actualViewModel.PlayerName);
+        }
+
+        [Test]
+        public void ItAddsAnInactivePlayerSuffixToInactivePlayers()
+        {
+            playerWithNemesis.PlayerActive = false;
+
+            PlayerWithNemesisViewModel actualViewModel = builder.Build(this.playerWithNemesis, this.currentUser);
+
+            Assert.AreEqual(this.playerWithNemesis.PlayerName + " (INACTIVE)", actualViewModel.PlayerName);
         }
 
         [Test]

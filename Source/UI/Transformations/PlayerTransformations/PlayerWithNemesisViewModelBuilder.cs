@@ -30,6 +30,8 @@ namespace UI.Transformations.PlayerTransformations
         {
             ValidatePlayerNotNull(playerWithNemesis);
 
+            AddInactivePlayerSuffix(playerWithNemesis);
+
             PlayerWithNemesisViewModel model = new PlayerWithNemesisViewModel
             {
                 PlayerId = playerWithNemesis.PlayerId,
@@ -54,6 +56,14 @@ namespace UI.Transformations.PlayerTransformations
             if (player == null)
             {
                 throw new ArgumentNullException("player");
+            }
+        }
+
+        private static void AddInactivePlayerSuffix(PlayerWithNemesis playerWithNemesis)
+        {
+            if (!playerWithNemesis.PlayerActive)
+            {
+                playerWithNemesis.PlayerName += " (INACTIVE)";
             }
         }
     }
