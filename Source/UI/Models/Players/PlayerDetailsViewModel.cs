@@ -52,5 +52,6 @@ namespace UI.Models.Players
         public int TotalGamesLost { get; set; }
         public int WinPercentage { get; set; }
         public int TotalChampionedGames { get; set; }
+        public int LongestWinningStreak { get; set; }
     }
 }

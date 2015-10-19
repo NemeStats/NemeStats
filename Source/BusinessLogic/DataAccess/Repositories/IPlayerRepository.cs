@@ -27,5 +27,6 @@ namespace BusinessLogic.DataAccess.Repositories
         IList<PlayerGameSummary> GetPlayerGameSummaries(int playerId);
         IList<PlayerVersusPlayerStatistics> GetPlayerVersusPlayersStatistics(int playerId);
         IList<PlayerWinRecord> GetPlayerWinRecords(int gameDefinitionId);
+        int GetLongestWinningStreak(int playerId);
     }
 }
