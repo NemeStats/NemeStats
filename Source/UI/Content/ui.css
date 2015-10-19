@@ -13,3 +13,16 @@
   left: -17px;
   top: 2px; }
 
+.gameDefinitionsList .no-bgg-ico {
+  font-size: 40px; }
+
+.gameDefinitionsList .bgg-link {
+  font-weight: bold;
+  height: 100px;
+  overflow: hidden; }
+  .gameDefinitionsList .bgg-link .bgg-thumbnail {
+    width: auto;
+    height: 100%;
+    max-width: 200px;
+    min-height: 100px; }
+

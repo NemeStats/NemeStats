@@ -23,7 +23,17 @@
                 @Html.DisplayFor(model => model.Name)
                 @if (Model.BoardGameGeekUri != null)
                 {
-                    <a href="@Model.BoardGameGeekUri.AbsoluteUri"><img src="~/Content/Images/bgg_small.png" alt="View on BoardGameGeek.com" title="View on BoardGameGeek.com" /></a>
+                    <a href="@Model.BoardGameGeekUri.AbsoluteUri">
+                        @if (!string.IsNullOrEmpty(Model.ThumbnailImageUrl))
+                        {
+                            <img src="@Model.ThumbnailImageUrl" alt="View on BoardGameGeek.com" title="View on BoardGameGeek.com" />
+                        }
+                        else
+                        {
+                            <img src="~/Content/Images/bgg_small.png" alt="View on BoardGameGeek.com" title="View on BoardGameGeek.com" />
+                        }
+                        
+                    </a>
                 }
                 </div>
             </div>

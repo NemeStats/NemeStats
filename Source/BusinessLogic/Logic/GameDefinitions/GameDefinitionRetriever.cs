@@ -56,7 +56,8 @@ namespace BusinessLogic.Logic.GameDefinitions
                     ChampionId = gameDefinition.ChampionId,
                     PreviousChampion = gameDefinition.PreviousChampion,
                     PreviousChampionId = gameDefinition.PreviousChampionId,
-                    DateCreated = gameDefinition.DateCreated
+                    DateCreated = gameDefinition.DateCreated,
+                    ThumbnailImageUrl = gameDefinition.ThumbnailImageUrl
                 })
                 .OrderBy(game => game.Name)
                 .ToList();
@@ -115,6 +116,7 @@ namespace BusinessLogic.Logic.GameDefinitions
                                                                GamingGroupId = gameDefinition.GamingGroupId,
                                                                GamingGroupName = gameDefinition.GamingGroup.Name,
                                                                Id = gameDefinition.Id,
+                                                               ThumbnailImageUrl = gameDefinition.ThumbnailImageUrl,
                                                                TotalNumberOfGamesPlayed = gameDefinition.PlayedGames.Count,
                                                                Champion = gameDefinition.Champion ?? new NullChampion(),
                                                                PreviousChampion = gameDefinition.PreviousChampion ?? new NullChampion()

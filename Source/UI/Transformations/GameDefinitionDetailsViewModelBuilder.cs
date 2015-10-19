@@ -51,6 +51,7 @@ namespace UI.Transformations
                 GamingGroupName = gameDefinitionSummary.GamingGroupName,
                 BoardGameGeekObjectId = gameDefinitionSummary.BoardGameGeekObjectId,
                 BoardGameGeekUri = gameDefinitionSummary.BoardGameGeekUri,
+                ThumbnailImageUrl = gameDefinitionSummary.ThumbnailImageUrl,
                 UserCanEdit = (currentUser != null && gameDefinitionSummary.GamingGroupId == currentUser.CurrentGamingGroupId)
             };
 

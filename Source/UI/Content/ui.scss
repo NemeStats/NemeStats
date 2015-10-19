@@ -22,3 +22,22 @@
         }
     }
 }
+
+.gameDefinitionsList {
+    .no-bgg-ico {
+        font-size: 40px;
+    }
+
+    .bgg-link {
+        font-weight: bold;
+        height: 100px;
+        overflow: hidden;
+
+        .bgg-thumbnail {
+            width: auto;
+            height: 100%;
+            max-width: 200px;
+            min-height: 100px;
+        }
+    }
+}

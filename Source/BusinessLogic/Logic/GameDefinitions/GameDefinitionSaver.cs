@@ -25,6 +25,7 @@ using BusinessLogic.Models.User;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using BoardGameGeekApiClient.Interfaces;
 
 namespace BusinessLogic.Logic.GameDefinitions
 {
@@ -35,11 +36,13 @@ namespace BusinessLogic.Logic.GameDefinitions
 
         private readonly IDataContext dataContext;
         private readonly INemeStatsEventTracker eventTracker;
+        private readonly IBoardGameGeekApiClient _boardGameGeekApiClient;
 
-        public GameDefinitionSaver(IDataContext dataContext, INemeStatsEventTracker eventTracker)
+        public GameDefinitionSaver(IDataContext dataContext, INemeStatsEventTracker eventTracker, IBoardGameGeekApiClient boardGameGeekApiClient)
         {
             this.dataContext = dataContext;
             this.eventTracker = eventTracker;
+            _boardGameGeekApiClient = boardGameGeekApiClient;
         }
 
         public virtual GameDefinition Save(GameDefinition gameDefinition, ApplicationUser currentUser)
@@ -49,7 +52,14 @@ namespace BusinessLogic.Logic.GameDefinitions
             bool isNewGameDefinition = !gameDefinition.AlreadyInDatabase();
             if (isNewGameDefinition)
             {
-                GameDefinition definition = gameDefinition;
+                var definition = gameDefinition;
+
+                if (gameDefinition.BoardGameGeekObjectId.HasValue)
+                {
+                    var gameDetails = _boardGameGeekApiClient.GetGameDetails(gameDefinition.BoardGameGeekObjectId.Value);
+                    gameDefinition.ThumbnailImageUrl = gameDetails.Thumbnail;
+                }
+
                 new Task(() => eventTracker.TrackGameDefinitionCreation(currentUser, definition.Name)).Start();
 
                 gameDefinition = this.HandleExistingGameDefinitionWithThisName(gameDefinition, currentUser.CurrentGamingGroupId.Value);

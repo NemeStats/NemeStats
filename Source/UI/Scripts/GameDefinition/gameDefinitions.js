@@ -17,6 +17,7 @@ Views.GameDefinition.GameDefinitions.prototype = {
     onGameCreated: function (game) {
         this.$gameDefinitionsTable.find("tr:last").after(
             "<tr> \
+                <td></td> \
                 <td> \
                     <a href='/GameDefinition/Details/" + game.Id + "'>" + game.Name + "</a> \
                 </td> \
