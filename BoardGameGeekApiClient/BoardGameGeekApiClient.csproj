@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Helpers\BoardGameGeekApiClientHelper.cs" />
+    <Compile Include="Helpers\SearcherHelper.cs" />
     <Compile Include="Interfaces\IBoardGameGeekApiClient.cs" />
     <Compile Include="Models\BoardGameLink.cs" />
     <Compile Include="Models\CollectionItem.cs" />

@@ -28,7 +28,7 @@ namespace BoardGameGeekApiClient.Tests.UnitTests.BoardGameGeekClient
                 
                 base.SetUp();
 
-                Result = this.BoardGameGeekApiClient.GetGameDetails(1).Result;
+                Result = this.BoardGameGeekApiClient.GetGameDetails(1);
             }
 
             [Test]
@@ -49,7 +49,7 @@ namespace BoardGameGeekApiClient.Tests.UnitTests.BoardGameGeekClient
                 StubResponseString = "<not-an-item></not-an-item>";
                 base.SetUp();
 
-                Result = this.BoardGameGeekApiClient.GetGameDetails(1).Result;
+                Result = this.BoardGameGeekApiClient.GetGameDetails(1);
             }
 
             [Test]
@@ -69,7 +69,7 @@ namespace BoardGameGeekApiClient.Tests.UnitTests.BoardGameGeekClient
                 StubResponseString = "<items><item></item><item></item></items>";
                 base.SetUp();
 
-                Result = this.BoardGameGeekApiClient.GetGameDetails(1).Result;
+                Result = this.BoardGameGeekApiClient.GetGameDetails(1);
             }
 
             [Test]
@@ -89,7 +89,7 @@ namespace BoardGameGeekApiClient.Tests.UnitTests.BoardGameGeekClient
                 StubResponseString = "<items><item></item></items>";
                 base.SetUp();
 
-                Result = this.BoardGameGeekApiClient.GetGameDetails(1).Result;
+                Result = this.BoardGameGeekApiClient.GetGameDetails(1);
             }
 
             [Test]
@@ -109,7 +109,7 @@ namespace BoardGameGeekApiClient.Tests.UnitTests.BoardGameGeekClient
                 StubResponseString = TestsResources.GetGameDetailsData;
                 base.SetUp();
 
-                Result = this.BoardGameGeekApiClient.GetGameDetails(1).Result;
+                Result = this.BoardGameGeekApiClient.GetGameDetails(1);
             }
 
             [Test]

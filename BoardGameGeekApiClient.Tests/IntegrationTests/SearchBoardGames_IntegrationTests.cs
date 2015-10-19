@@ -34,7 +34,7 @@ namespace BoardGameGeekApiClient.Tests.IntegrationTests
             {
                 var firstResult = _result.First();
 
-                Assert.IsTrue(firstResult.Name.ToLower().Contains(Query));
+                Assert.IsTrue(firstResult.BoardGameName.ToLower().Contains(Query));
             }
         }
 

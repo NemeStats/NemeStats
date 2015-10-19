@@ -4,6 +4,7 @@ using NUnit.Framework;
 
 namespace BoardGameGeekApiClient.Tests.IntegrationTests
 {
+    [Ignore("Integration Test")]
     public abstract class BaseBoardGameGeekApiClientIntegrationTest
     {
         public IBoardGameGeekApiClient ApiClient{ get; set; }

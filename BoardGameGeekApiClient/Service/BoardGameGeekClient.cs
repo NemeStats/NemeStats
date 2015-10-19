@@ -101,17 +101,22 @@ namespace BoardGameGeekApiClient.Service
         {
             try
             {
-                var teamDataURI = new Uri(string.Format(BASE_URL_API_V2 + "/search?query={0}&type=boardgame", query));
+                var searchUrl = new Uri(string.Format(BASE_URL_API_V2 + "/search?query={0}&type=boardgame", query));
 
-                var xDoc = _apiDownloadService.DownloadApiResult(teamDataURI);
+                var xDoc = _apiDownloadService.DownloadApiResult(searchUrl);
 
                 // LINQ to XML.
                 var gameCollection = xDoc.Descendants("item").Select(boardgame => new SearchBoardGameResult
                 {
-                    Name = boardgame.Element("name").GetStringValue("value"),
-                    GameId = boardgame.GetIntValue("id"),
+                    BoardGameName = boardgame.Element("name").GetStringValue("value"),
+                    BoardGameId = boardgame.GetIntValue("id"),
                     YearPublished = boardgame.Element("yearpublished").GetIntValue("value")
                 });
+
+                if (gameCollection.Any())
+                {
+                    gameCollection = gameCollection.SortSearchResults(query);
+                }
                 return gameCollection;
 
             }

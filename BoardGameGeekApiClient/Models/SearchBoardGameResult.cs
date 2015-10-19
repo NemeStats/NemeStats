@@ -6,8 +6,8 @@ namespace BoardGameGeekApiClient.Models
 {
     public class SearchBoardGameResult
     {
-        public string Name { get; set; }
-        public int GameId { get; set; }
+        public string BoardGameName { get; set; }
+        public int BoardGameId { get; set; }
         public int YearPublished { get; set; }
     }
 }

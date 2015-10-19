@@ -30,7 +30,7 @@ namespace BoardGameGeekApiClient.Tests.UnitTests.BoardGameGeekClient
 
                 base.SetUp();
 
-                Result = this.BoardGameGeekApiClient.SearchBoardGames("").Result;
+                Result = this.BoardGameGeekApiClient.SearchBoardGames("");
 
             }
 
@@ -52,7 +52,7 @@ namespace BoardGameGeekApiClient.Tests.UnitTests.BoardGameGeekClient
                 StubResponseString = "<not-an-item></not-an-item>";
                 base.SetUp();
 
-                Result = this.BoardGameGeekApiClient.SearchBoardGames("").Result;
+                Result = this.BoardGameGeekApiClient.SearchBoardGames("");
             }
 
             [Test]
@@ -74,7 +74,7 @@ namespace BoardGameGeekApiClient.Tests.UnitTests.BoardGameGeekClient
                 StubResponseString = TestsResources.SearchBoardGamesData;
                 base.SetUp();
 
-                Result = this.BoardGameGeekApiClient.SearchBoardGames("").Result;
+                Result = this.BoardGameGeekApiClient.SearchBoardGames("");
             }
 
             [Test]

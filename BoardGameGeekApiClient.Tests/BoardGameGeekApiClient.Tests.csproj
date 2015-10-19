@@ -69,24 +69,25 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>TestsResources.resx</DependentUpon>
     </Compile>
-    <Compile Include="UnitTests\BoardGameGeekApiClientHelper\BoardGameGeekApiClientHelper_Tests.cs" />
-    <Compile Include="UnitTests\BoardGameGeekApiClientHelper\GetArtist_Tests.cs" />
-    <Compile Include="UnitTests\BoardGameGeekApiClientHelper\GetBoardGameNameTests.cs" />
-    <Compile Include="UnitTests\BoardGameGeekApiClientHelper\GetCategories_Tests.cs" />
-    <Compile Include="UnitTests\BoardGameGeekApiClientHelper\GetDecimalValue_Tests.cs" />
-    <Compile Include="UnitTests\BoardGameGeekApiClientHelper\GetDesigner_Tests.cs" />
-    <Compile Include="UnitTests\BoardGameGeekApiClientHelper\GetExpansions_Tests.cs" />
-    <Compile Include="UnitTests\BoardGameGeekApiClientHelper\GetIntValue_Tests.cs" />
-    <Compile Include="UnitTests\BoardGameGeekApiClientHelper\GetMechanincs_Tests.cs" />
-    <Compile Include="UnitTests\BoardGameGeekApiClientHelper\GetPlayerPollTests.cs" />
-    <Compile Include="UnitTests\BoardGameGeekApiClientHelper\GetPublishers_Tests.cs" />
-    <Compile Include="UnitTests\BoardGameGeekApiClientHelper\GetRankingTests.cs" />
-    <Compile Include="UnitTests\BoardGameGeekApiClientHelper\GetSimpleValues_BaseTest.cs" />
-    <Compile Include="UnitTests\BoardGameGeekApiClientHelper\GetStringValue_Tests.cs" />
-    <Compile Include="UnitTests\BoardGameGeekApiClientHelper\GetTypedValues_BaseTest.cs" />
+    <Compile Include="UnitTests\Helpers\BoardGameGeekApiClientHelper\BoardGameGeekApiClientHelper_Tests.cs" />
+    <Compile Include="UnitTests\Helpers\BoardGameGeekApiClientHelper\GetArtist_Tests.cs" />
+    <Compile Include="UnitTests\Helpers\BoardGameGeekApiClientHelper\GetBoardGameNameTests.cs" />
+    <Compile Include="UnitTests\Helpers\BoardGameGeekApiClientHelper\GetCategories_Tests.cs" />
+    <Compile Include="UnitTests\Helpers\BoardGameGeekApiClientHelper\GetDecimalValue_Tests.cs" />
+    <Compile Include="UnitTests\Helpers\BoardGameGeekApiClientHelper\GetDesigner_Tests.cs" />
+    <Compile Include="UnitTests\Helpers\BoardGameGeekApiClientHelper\GetExpansions_Tests.cs" />
+    <Compile Include="UnitTests\Helpers\BoardGameGeekApiClientHelper\GetIntValue_Tests.cs" />
+    <Compile Include="UnitTests\Helpers\BoardGameGeekApiClientHelper\GetMechanincs_Tests.cs" />
+    <Compile Include="UnitTests\Helpers\BoardGameGeekApiClientHelper\GetPlayerPollTests.cs" />
+    <Compile Include="UnitTests\Helpers\BoardGameGeekApiClientHelper\GetPublishers_Tests.cs" />
+    <Compile Include="UnitTests\Helpers\BoardGameGeekApiClientHelper\GetRankingTests.cs" />
+    <Compile Include="UnitTests\Helpers\BoardGameGeekApiClientHelper\GetSimpleValues_BaseTest.cs" />
+    <Compile Include="UnitTests\Helpers\BoardGameGeekApiClientHelper\GetStringValue_Tests.cs" />
+    <Compile Include="UnitTests\Helpers\BoardGameGeekApiClientHelper\GetTypedValues_BaseTest.cs" />
     <Compile Include="UnitTests\BoardGameGeekClient\BoardGameGeekClient_BaseTest.cs" />
     <Compile Include="UnitTests\BoardGameGeekClient\GetGameDetails_Tests.cs" />
     <Compile Include="UnitTests\BoardGameGeekClient\SearchBoardGames_Tests.cs" />
+    <Compile Include="UnitTests\Helpers\SearcherHelper\SortSearchResultsTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BoardGameGeekApiClient\BoardGameGeekApiClient.csproj">
@@ -107,6 +108,7 @@
       <LastGenOutput>TestsResources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

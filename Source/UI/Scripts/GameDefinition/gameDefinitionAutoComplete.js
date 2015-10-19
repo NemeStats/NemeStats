@@ -54,11 +54,15 @@ Views.GameDefinition.GameDefinitionAutoComplete.prototype = {
                 owner._results = [];
 
                 for (var item in data) {
+                    var label = data[item].BoardGameName;
+                    if (data[item].YearPublished != -1) {
+                        label += " (" + data[item].YearPublished + ")";
+                    }
                     owner._results.push({
-                        label: data[item].BoardGameName + " (" + data[item].YearPublished + ")",
+                        label: label,
                         value: data[item].BoardGameId
                     });
-                    owner._titles[data[item].BoardGameName + " (" + data[item].YearPublished + ")"] = data[item].BoardGameId;
+                    owner._titles[label] = data[item].BoardGameId;
                 }
                 response(owner._results);
             },

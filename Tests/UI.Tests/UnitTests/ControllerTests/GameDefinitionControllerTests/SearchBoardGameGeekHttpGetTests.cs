@@ -16,6 +16,7 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using BusinessLogic.Models.Games;
@@ -25,6 +26,8 @@ using UI.Controllers;
 
 namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
 {
+    [Obsolete]
+    [Ignore]
     [TestFixture]
     public class SearchBoardGameGeekHttpGetTests : GameDefinitionControllerTestBase
     {
@@ -53,7 +56,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
         [Test]
         public void ItRequestsExactMatchesWhenLessThanTheDesignatedNumberOfCharacters()
         {
-            string searchString = string.Empty.PadRight(GameDefinitionController.MIN_LENGTH_FOR_PARTIAL_MATCH_BOARD_GAME_GEEK_SEARCH - 1);
+            string searchString = string.Empty.PadRight(3 - 1);
             gameDefinitionControllerPartialMock.SearchBoardGameGeekHttpGet(searchString);
 
             boardGameGeekSearcherMock.AssertWasCalled(
