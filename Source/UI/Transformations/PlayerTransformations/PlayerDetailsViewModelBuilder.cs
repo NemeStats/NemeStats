@@ -63,7 +63,8 @@ namespace UI.Transformations.PlayerTransformations
                 TotalGamesWon = playerDetails.PlayerStats.TotalGamesWon,
                 TotalGamesLost = playerDetails.PlayerStats.TotalGamesLost,
                 WinPercentage = playerDetails.PlayerStats.WinPercentage,
-                TotalChampionedGames = playerDetails.ChampionedGames.Count
+                TotalChampionedGames = playerDetails.ChampionedGames.Count,
+                LongestWinningStreak = playerDetails.LongestWinningStreak
             };
 
             PopulatePlayerVersusPlayersViewModel(playerDetails, playerDetailsViewModel);

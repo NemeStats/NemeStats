@@ -103,6 +103,8 @@ namespace BusinessLogic.Logic.Players
 
             var formerChampionedGames = GetFormerChampionedGames(returnPlayer.Id);
 
+            var longestWinningStreak = playerRepository.GetLongestWinningStreak(playerId);
+
             var playerDetails = new PlayerDetails()
             {
                 Active = returnPlayer.Active,
@@ -119,7 +121,8 @@ namespace BusinessLogic.Logic.Players
                 PlayerGameSummaries = playerGameSummaries,
                 ChampionedGames = championedGames,
                 PlayerVersusPlayersStatistics = playerRepository.GetPlayerVersusPlayersStatistics(playerId),
-                FormerChampionedGames =  formerChampionedGames
+                FormerChampionedGames =  formerChampionedGames,
+                LongestWinningStreak = longestWinningStreak
             };
 
             return playerDetails;

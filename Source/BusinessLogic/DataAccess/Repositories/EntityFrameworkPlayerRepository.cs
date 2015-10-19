@@ -182,6 +182,40 @@ namespace BusinessLogic.DataAccess.Repositories
             return results;
         }
 
+        private const string SQL_GET_LONGEST_WINNING_STREAK_FOR_PLAYER =
+            @"WITH streak_cte (streak) 
+              AS (SELECT 
+                            (SELECT Count(DISTINCT id) 
+                             FROM   playergameresult matches_inner 
+                             WHERE  a.playerid = matches_inner.playerid 
+                                    AND matches_inner.id BETWEEN a.id AND b.id) AS wins 
+                     FROM   playergameresult a 
+                            JOIN playergameresult b 
+                              ON a.playerid = b.playerid 
+                                 AND b.id >= a.id 
+                     WHERE  a.playerid = @PlayerId 
+                            AND NOT EXISTS (SELECT 1 
+                                            FROM   playergameresult matches_inner 
+                                            WHERE  a.playerid = matches_inner.playerid 
+                                                   AND matches_inner.id BETWEEN 
+                                                       a.id AND b.id 
+                                                   AND matches_inner.GameRank <> 1)) 
+            SELECT Max(streak) AS MaxWinStreak
+            FROM   streak_cte";
+
+        public int GetLongestWinningStreak(int playerId)
+        {
+            var longestWinningStreak = dataContext.MakeRawSqlQuery<int?>(SQL_GET_LONGEST_WINNING_STREAK_FOR_PLAYER,
+                                                    new SqlParameter("PlayerId", playerId)).FirstOrDefault();
+
+            if (longestWinningStreak == null)
+            {
+                return 0;
+            }
+
+            return longestWinningStreak.Value;
+        }
+
         private static int CalculateWinPercentage(int gamesWon, int gamesLost)
         {
             if (gamesLost + gamesWon == 0)
