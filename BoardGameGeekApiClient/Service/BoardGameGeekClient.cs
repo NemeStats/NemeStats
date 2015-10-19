@@ -25,7 +25,7 @@ namespace BoardGameGeekApiClient.Service
 
         public const string BASE_URL_API_V2 = "http://www.boardgamegeek.com/xmlapi2";
 
-        public async Task<GameDetails> GetGameDetails(int gameId)
+        public GameDetails GetGameDetails(int gameId)
         {
 
             GameDetails details = null;
@@ -34,7 +34,7 @@ namespace BoardGameGeekApiClient.Service
             try
             {
                 var teamDataURI = new Uri(string.Format(BASE_URL_API_V2 + "/thing?id={0}&stats=1", gameId));
-                var xDoc = await _apiDownloadService.DownloadApiResult(teamDataURI);
+                var xDoc = _apiDownloadService.DownloadApiResult(teamDataURI);
 
 
                 // LINQ to XML.
@@ -97,13 +97,13 @@ namespace BoardGameGeekApiClient.Service
 
 
 
-        public async Task<IEnumerable<SearchBoardGameResult>> SearchBoardGames(string query)
+        public IEnumerable<SearchBoardGameResult> SearchBoardGames(string query)
         {
             try
             {
                 var teamDataURI = new Uri(string.Format(BASE_URL_API_V2 + "/search?query={0}&type=boardgame", query));
 
-                var xDoc = await _apiDownloadService.DownloadApiResult(teamDataURI);
+                var xDoc = _apiDownloadService.DownloadApiResult(teamDataURI);
 
                 // LINQ to XML.
                 var gameCollection = xDoc.Descendants("item").Select(boardgame => new SearchBoardGameResult

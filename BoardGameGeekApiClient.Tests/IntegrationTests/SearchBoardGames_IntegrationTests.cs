@@ -19,7 +19,7 @@ namespace BoardGameGeekApiClient.Tests.IntegrationTests
             public void SetUp()
             {
                 Query = "alchemist";
-                _result = ApiClient.SearchBoardGames(Query).Result;
+                _result = ApiClient.SearchBoardGames(Query);
             }
 
             [Test]
@@ -46,7 +46,7 @@ namespace BoardGameGeekApiClient.Tests.IntegrationTests
             public void SetUp()
             {
                 Query = "this game does not exists (or i least i hope so). now a random string: asdiasjdkoashdfkawhfi89wfy234ukzc&";
-                _result = ApiClient.SearchBoardGames(Query).Result;
+                _result = ApiClient.SearchBoardGames(Query);
             }
 
             [Test]

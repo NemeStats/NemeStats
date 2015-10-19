@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
 using System.Xml.Linq;
 using BoardGameGeekApiClient.Interfaces;
 using NUnit.Framework;
@@ -17,7 +16,7 @@ namespace BoardGameGeekApiClient.Tests.UnitTests.BoardGameGeekClient
         {
             var stub = MockRepository.GenerateStub<IApiDownloadService>();
             stub.Stub(s => s.DownloadApiResult(Arg<Uri>.Is.Anything))
-                .Return(Task.FromResult(XDocument.Parse(StubResponseString)));
+                .Return(XDocument.Parse(StubResponseString));
 
             return stub;
         }

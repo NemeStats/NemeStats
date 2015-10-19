@@ -17,7 +17,7 @@ namespace BoardGameGeekApiClient.Tests.IntegrationTests
             public void SetUp()
             {
                 GameId = 2536;
-                _result = ApiClient.GetGameDetails(GameId).Result;
+                _result = ApiClient.GetGameDetails(GameId);
             }
 
             [Test]
@@ -42,7 +42,7 @@ namespace BoardGameGeekApiClient.Tests.IntegrationTests
             public void SetUp()
             {
                 GameId = int.MaxValue;
-                _result = ApiClient.GetGameDetails(GameId).Result;
+                _result = ApiClient.GetGameDetails(GameId);
             }
 
             [Test]

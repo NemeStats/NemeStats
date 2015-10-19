@@ -4,14 +4,13 @@
 //
 
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using BoardGameGeekApiClient.Models;
 
 namespace BoardGameGeekApiClient.Interfaces
 {
     public interface IBoardGameGeekApiClient
     {
-        Task<IEnumerable<SearchBoardGameResult>> SearchBoardGames(string query);
-        Task<GameDetails> GetGameDetails(int gameId);
+        IEnumerable<SearchBoardGameResult> SearchBoardGames(string query);
+        GameDetails GetGameDetails(int gameId);
     }
 }

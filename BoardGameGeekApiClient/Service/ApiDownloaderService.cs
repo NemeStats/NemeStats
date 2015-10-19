@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Linq;
 using BoardGameGeekApiClient.Interfaces;
 
@@ -11,11 +10,7 @@ namespace BoardGameGeekApiClient.Service
 {
     public class ApiDownloaderService : IApiDownloadService
     {
-        public ApiDownloaderService()
-        {
-        }
-
-        public async Task<XDocument> DownloadApiResult(Uri requestUrl)
+        public XDocument DownloadApiResult(Uri requestUrl)
         {
             Debug.WriteLine("Downloading " + requestUrl);
             // Due to malformed header I cannot use GetContentAsync and ReadAsStringAsync :(
@@ -28,16 +23,15 @@ namespace BoardGameGeekApiClient.Service
                 retries++;
                 var request = WebRequest.CreateHttp(requestUrl);
                 request.Timeout = 15000;
-                using (var response = (HttpWebResponse)(await request.GetResponseAsync()))
+                using (var response = (HttpWebResponse)(request.GetResponse()))
                 {
-                    if (response.StatusCode == HttpStatusCode.Accepted)
+                    if (response.StatusCode == HttpStatusCode.OK)
                     {
-                        await Task.Delay(500);
-                        continue;
-                    }
-                    using (var reader = new StreamReader(response.GetResponseStream(), Encoding.UTF8))
-                    {
-                        data = XDocument.Parse(await reader.ReadToEndAsync());
+
+                        using (var reader = new StreamReader(response.GetResponseStream(), Encoding.UTF8))
+                        {
+                            data = XDocument.Parse(reader.ReadToEnd());
+                        }
                     }
                 }
             }
