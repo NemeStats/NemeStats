@@ -24,8 +24,6 @@ Views.Player.Details.prototype = {
                     return (summary2.gamesLost + summary2.gamesWon) - (summary1.gamesLost + summary1.gamesWon);
                 });
 
-                console.log(pieChartData);
-
                 if (pieChartData.length > gamesInPieChart) {
                     var restOfGamesAccumulation = pieChartData.slice(gamesInPieChart).reduce(
                         function (accumulativeSummary, summary) {
@@ -45,6 +43,10 @@ Views.Player.Details.prototype = {
                         .showLabels(false)
                           .legendPosition("top");
                     ;
+
+                    chart.tooltip.valueFormatter(function (d) {
+                        return (d * 100 / data.totalGames).toFixed() + ' %';
+                    });
 
                     d3.select("#GamesPieChart svg")
                         .datum(pieChartData)
