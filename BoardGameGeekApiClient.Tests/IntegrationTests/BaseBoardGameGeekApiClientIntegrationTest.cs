@@ -11,7 +11,7 @@ namespace BoardGameGeekApiClient.Tests.IntegrationTests
         [TestFixtureSetUp]
         public virtual void FixtureSetUp()
         {
-            ApiClient = new BoardGameGeekClient();
+            ApiClient = new BoardGameGeekClient(new ApiDownloaderService());
         }
     }
 }

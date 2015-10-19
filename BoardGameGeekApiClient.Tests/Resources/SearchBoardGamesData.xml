@@ -1,0 +1,46 @@
+﻿<items total="11" termsofuse="http://boardgamegeek.com/xmlapi/termsofuse">
+  <item type="boardgame" id="2688">
+    <name type="primary" value="Battlestar Galactica"/>
+    <yearpublished value="1978"/>
+  </item>
+  <item type="boardgame" id="6768">
+    <name type="primary" value="Battlestar Galactica"/>
+    <yearpublished value="1979"/>
+  </item>
+  <item type="boardgame" id="36006">
+    <name type="primary" value="Battlestar Galactica"/>
+    <yearpublished value="2002"/>
+  </item>
+  <item type="boardgame" id="37111">
+    <name type="primary" value="Battlestar Galactica"/>
+    <yearpublished value="2008"/>
+  </item>
+  <item type="boardgame" id="19671">
+    <name type="primary" value="Battlestar Galactica Collectible Card Game"/>
+    <yearpublished value="2006"/>
+  </item>
+  <item type="boardgame" id="40227">
+    <name type="primary" value="Battlestar Galactica: Colonial Battlefleet"/>
+    <yearpublished value="2008"/>
+  </item>
+  <item type="boardgame" id="141648">
+    <name type="primary" value="Battlestar Galactica: Daybreak Expansion"/>
+    <yearpublished value="2013"/>
+  </item>
+  <item type="boardgame" id="85905">
+    <name type="primary" value="Battlestar Galactica: Exodus Expansion"/>
+    <yearpublished value="2010"/>
+  </item>
+  <item type="boardgame" id="105136">
+    <name type="primary" value="Battlestar Galactica: Official Variant Rules"/>
+    <yearpublished value="2008"/>
+  </item>
+  <item type="boardgame" id="43539">
+    <name type="primary" value="Battlestar Galactica: Pegasus Expansion"/>
+    <yearpublished value="2009"/>
+  </item>
+  <item type="boardgame" id="21977">
+    <name type="primary" value="Pyramid (Battlestar Galactica)"/>
+    <yearpublished value="1980"/>
+  </item>
+</items>

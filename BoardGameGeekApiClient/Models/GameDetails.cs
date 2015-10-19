@@ -33,7 +33,5 @@ namespace BoardGameGeekApiClient.Models
         public List<PlayerPollResult> PlayerPollResults { get; set; }
 
         public List<BoardGameLink> Expansions { get; set; }
-        public List<BoardGameLink> Expands { get; set; }
-
     }
 }

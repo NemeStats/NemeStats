@@ -34,6 +34,22 @@
       <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Rhino.Mocks, Version=3.6.0.0, Culture=neutral, PublicKeyToken=0b3305902db7183f, processorArchitecture=MSIL">
+      <HintPath>..\packages\RhinoMocks.3.6.1\lib\net\Rhino.Mocks.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="StructureMap, Version=3.1.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\structuremap.3.1.4.143\lib\net40\StructureMap.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="StructureMap.AutoMocking, Version=3.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\structuremap.automocking.3.1.0.133\lib\net40\StructureMap.AutoMocking.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="StructureMap.Net4, Version=3.1.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\structuremap.3.1.4.143\lib\net40\StructureMap.Net4.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -48,6 +64,11 @@
     <Compile Include="IntegrationTests\GetGameDetails_IntegrationTests.cs" />
     <Compile Include="IntegrationTests\SearchBoardGames_IntegrationTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources\TestsResources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TestsResources.resx</DependentUpon>
+    </Compile>
     <Compile Include="UnitTests\BoardGameGeekApiClientHelper\BoardGameGeekApiClientHelper_Tests.cs" />
     <Compile Include="UnitTests\BoardGameGeekApiClientHelper\GetArtist_Tests.cs" />
     <Compile Include="UnitTests\BoardGameGeekApiClientHelper\GetBoardGameNameTests.cs" />
@@ -63,6 +84,9 @@
     <Compile Include="UnitTests\BoardGameGeekApiClientHelper\GetSimpleValues_BaseTest.cs" />
     <Compile Include="UnitTests\BoardGameGeekApiClientHelper\GetStringValue_Tests.cs" />
     <Compile Include="UnitTests\BoardGameGeekApiClientHelper\GetTypedValues_BaseTest.cs" />
+    <Compile Include="UnitTests\BoardGameGeekClient\BoardGameGeekClient_BaseTest.cs" />
+    <Compile Include="UnitTests\BoardGameGeekClient\GetGameDetails_Tests.cs" />
+    <Compile Include="UnitTests\BoardGameGeekClient\SearchBoardGames_Tests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BoardGameGeekApiClient\BoardGameGeekApiClient.csproj">
@@ -73,7 +97,16 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Resources\SearchBoardGamesData.xml" />
+    <Content Include="Resources\GetGameDetailsData.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\TestsResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>TestsResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
