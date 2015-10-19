@@ -49,13 +49,13 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
         private List<GameDefinition> expectedFormerChampionedGames;
         private List<PlayerVersusPlayerStatistics> expectedPlayerVersusPlayerStatistics; 
         private int gamingGroupId = 1985;
+        private int expectedLongestWinningStreak = 93;
             
         [SetUp]
         public void SetUp()
         {
             autoMocker = new RhinoAutoMocker<PlayerRetriever>();
             autoMocker.PartialMockTheClassUnderTest();
-
           
             expectedChampion = new Champion()
             {
@@ -165,6 +165,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
             autoMocker.Get<IPlayerRepository>().Expect(mock => mock.GetPlayerVersusPlayersStatistics(Arg<int>.Is.Anything))
                       .Return(expectedPlayerVersusPlayerStatistics);
 
+            autoMocker.Get<IPlayerRepository>().Expect(mock => mock.GetLongestWinningStreak(player.Id)).Return(expectedLongestWinningStreak);
         }
 
         [Test]
@@ -254,5 +255,14 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
 
             Assert.That(playerDetails.PlayerVersusPlayersStatistics, Is.EqualTo(expectedPlayerVersusPlayerStatistics));
         }
+
+        [Test]
+        public void ItSetsTheLongestWinningStreak()
+        {
+            PlayerDetails playerDetails = autoMocker.ClassUnderTest.GetPlayerDetails(player.Id, numberOfRecentGames);
+
+            Assert.That(playerDetails.LongestWinningStreak, Is.EqualTo(expectedLongestWinningStreak)); 
+        }
+
     }
 }

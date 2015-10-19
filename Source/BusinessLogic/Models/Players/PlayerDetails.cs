@@ -45,5 +45,6 @@ namespace BusinessLogic.Models.Players
         public IList<Champion> ChampionedGames { get; set; }
         public IList<GameDefinition> FormerChampionedGames { get; set; }
         public IList<PlayerVersusPlayerStatistics> PlayerVersusPlayersStatistics { get; set; }
+        public int LongestWinningStreak { get; set; }
     }
 }
