@@ -460,10 +460,16 @@
     <Content Include="Content\themes\base\tabs.css" />
     <Content Include="Content\themes\base\theme.css" />
     <Content Include="Content\themes\base\tooltip.css" />
-    <Content Include="Content\ui.css">
+    <Content Include="sass\flipscroll.css">
+      <DependentUpon>flipscroll.scss</DependentUpon>
+    </Content>
+    <Content Include="sass\flipscroll.min.css">
+      <DependentUpon>flipscroll.css</DependentUpon>
+    </Content>
+    <Content Include="sass\ui.css">
       <DependentUpon>ui.scss</DependentUpon>
     </Content>
-    <Content Include="Content\ui.min.css">
+    <Content Include="sass\ui.min.css">
       <DependentUpon>ui.css</DependentUpon>
     </Content>
     <Content Include="favicon.ico" />
@@ -499,8 +505,9 @@
     <Content Include="fonts\bootstrap\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\bootstrap\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\bootstrap\glyphicons-halflings-regular.eot" />
-    <Content Include="Content\ui.scss" />
-    <Content Include="Content\variables.scss" />
+    <Content Include="sass\ui.scss" />
+    <Content Include="sass\variables.scss" />
+    <Content Include="sass\flipscroll.scss" />
     <None Include="Properties\PublishProfiles\nerdscorekeeper.pubxml" />
     <None Include="Properties\PublishProfiles\Publish Local.pubxml" />
     <Content Include="sass\_bootswatch.css">

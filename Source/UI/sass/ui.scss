@@ -1,4 +1,5 @@
 ﻿@import "variables.scss";
+@import "bootstrap/_variables.scss";
 
 .neme-points-ico {
     color: $header-background;
@@ -24,14 +25,46 @@
 }
 
 .gameDefinitionsList {
+    &#flip-scroll {
+        @media only screen and (max-width: $screen-sm-max) {
+
+            .bgg-link-head {
+                height: 115px;
+            }
+
+            .edit-head {
+                height: 41px;
+            }
+
+            .plays-row {
+                text-align: center;
+            }
+
+            .champion-row {
+                height: 30px;
+                text-align: center;
+            }
+
+            .edit-row {
+                text-align: center;
+            }
+        }
+    }
+
+
+    .edit-row {
+        text-align: center;
+    }
+
     .no-bgg-ico {
         font-size: 40px;
     }
 
-    .bgg-link {
+    .bgg-link-row {
         font-weight: bold;
         height: 100px;
         overflow: hidden;
+        text-align: center;
 
         .bgg-thumbnail {
             width: auto;
