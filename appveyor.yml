@@ -168,6 +168,7 @@ before_build:
 after_build:
 # ./Tests/BusinessLogic.Tests/bin/Release/BusinessLogic.Tests.dll
  - nunit-console ./Tests/UI.Tests/bin/Release/UI.Tests.dll
+ - nunit-console ./BoardGameGeekApiClient.Tests/bin/Release/BoardGameGeekApiClient.Tests.dll
 
 # to run your custom scripts instead of automatic MSBuild
 build_script:
