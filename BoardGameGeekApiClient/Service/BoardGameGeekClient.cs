@@ -7,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
 using BoardGameGeekApiClient.Helpers;
 using BoardGameGeekApiClient.Interfaces;
 using BoardGameGeekApiClient.Models;
@@ -34,6 +33,7 @@ namespace BoardGameGeekApiClient.Service
             try
             {
                 var teamDataURI = new Uri(string.Format(BASE_URL_API_V2 + "/thing?id={0}&stats=1", gameId));
+                
                 var xDoc = _apiDownloadService.DownloadApiResult(teamDataURI);
 
 
@@ -97,11 +97,17 @@ namespace BoardGameGeekApiClient.Service
 
 
 
-        public IEnumerable<SearchBoardGameResult> SearchBoardGames(string query)
+        public IEnumerable<SearchBoardGameResult> SearchBoardGames(string query, bool exactMatch= false)
         {
             try
             {
-                var searchUrl = new Uri(string.Format(BASE_URL_API_V2 + "/search?query={0}&type=boardgame", query));
+                var uriString = string.Format(BASE_URL_API_V2 + "/search?query={0}&type=boardgame", query);
+                if (exactMatch)
+                {
+                    uriString += "&exact=1";
+                }
+                var searchUrl = new Uri(uriString);
+                
 
                 var xDoc = _apiDownloadService.DownloadApiResult(searchUrl);
 
