@@ -27,5 +27,6 @@ namespace BusinessLogic.Models.Players
         public int NumberOfGamesWon { get; set; }
         public int NumberOfGamesLost { get; set; }
         public int WinPercentage { get; set; }
+        public string ThumbnailImageUrl { get; set; }
     }
 }

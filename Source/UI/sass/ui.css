@@ -14,30 +14,44 @@
   top: 2px; }
 
 @media only screen and (max-width: 991px) {
+  #player-details .gameDefinitionsList#flip-scroll .badges-head {
+    padding: 5px; }
+  #player-details .gameDefinitionsList#flip-scroll .badges-col {
+    line-height: 0;
+    height: 31px; } }
+
+#player-details .gameDefinitionsList .badges-col {
+  width: 20px;
+  line-height: 100px; }
+
+#player-details .gameDefinitionsList .bgg-link-col {
+  text-align: left; }
+
+@media only screen and (max-width: 991px) {
   .gameDefinitionsList#flip-scroll .bgg-link-head {
     height: 100px; }
   .gameDefinitionsList#flip-scroll .edit-head {
     height: 40px; }
-  .gameDefinitionsList#flip-scroll .plays-row {
+  .gameDefinitionsList#flip-scroll .plays-col {
     text-align: center; }
-  .gameDefinitionsList#flip-scroll .champion-row {
+  .gameDefinitionsList#flip-scroll .champion-col {
     height: 30px;
     text-align: center; }
-  .gameDefinitionsList#flip-scroll .edit-row {
+  .gameDefinitionsList#flip-scroll .edit-col {
     text-align: center; } }
 
-.gameDefinitionsList .edit-row {
+.gameDefinitionsList .edit-col {
   text-align: center; }
 
 .gameDefinitionsList .no-bgg-ico {
   font-size: 40px; }
 
-.gameDefinitionsList .bgg-link-row {
+.gameDefinitionsList .bgg-link-col {
   font-weight: bold;
   height: 100px;
   overflow: hidden;
   text-align: center; }
-  .gameDefinitionsList .bgg-link-row .bgg-thumbnail {
+  .gameDefinitionsList .bgg-link-col .bgg-thumbnail {
     width: auto;
     height: 100%;
     max-width: 200px;

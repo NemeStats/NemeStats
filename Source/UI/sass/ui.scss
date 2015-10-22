@@ -24,6 +24,33 @@
     }
 }
 
+
+#player-details {
+    .gameDefinitionsList {
+        @media only screen and (max-width: $screen-sm-max) {
+            &#flip-scroll {
+                .badges-head {
+                    padding: 5px;
+                }
+
+                .badges-col {
+                    line-height: 0;
+                    height: 31px;
+                }
+            }
+        }
+
+        .badges-col {
+            width: 20px;
+            line-height: 100px;
+        }
+
+        .bgg-link-col {
+            text-align: left;
+        }
+    }
+}
+
 .gameDefinitionsList {
     &#flip-scroll {
         @media only screen and (max-width: $screen-sm-max) {
@@ -36,23 +63,22 @@
                 height: 40px;
             }
 
-            .plays-row {
+            .plays-col {
                 text-align: center;
             }
 
-            .champion-row {
+            .champion-col {
                 height: 30px;
                 text-align: center;
             }
 
-            .edit-row {
+            .edit-col {
                 text-align: center;
             }
         }
     }
 
-
-    .edit-row {
+    .edit-col {
         text-align: center;
     }
 
@@ -60,7 +86,7 @@
         font-size: 40px;
     }
 
-    .bgg-link-row {
+    .bgg-link-col {
         font-weight: bold;
         height: 100px;
         overflow: hidden;

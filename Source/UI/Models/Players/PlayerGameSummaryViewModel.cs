@@ -11,5 +11,6 @@ namespace UI.Models.Players
         public int WinPercentage { get; set; }
         public bool IsChampion { get; set; }
         public bool IsFormerChampion { get; set; }
+        public string ThumbnailImageUrl { get; set; }
     }
 }

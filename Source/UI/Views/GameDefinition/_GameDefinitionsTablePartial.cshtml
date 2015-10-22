@@ -34,7 +34,7 @@
                 @foreach (var item in Model)
                 {
                     <tr class="game-item">
-                        <td class="bgg-link-row">
+                        <td class="bgg-link-col">
                             @if (item.BoardGameGeekUri != null)
                             {
 
@@ -57,8 +57,8 @@
                                 @Html.ActionLink(item.Name, "Details", "GameDefinition", new { id = item.Id }, new { })
                             </b>
                         </td>
-                        <td class="plays-row">@Html.DisplayFor(modelItem => item.TotalNumberOfGamesPlayed)</td>
-                        <td class="champion-row">
+                        <td class="plays-col">@Html.DisplayFor(modelItem => item.TotalNumberOfGamesPlayed)</td>
+                        <td class="champion-col">
                             @if (item.PreviousChampionName != null)
                             {
                                 <span style="text-decoration: line-through">
@@ -83,7 +83,7 @@
                                 <span>-</span>
                             }
                         </td>
-                        <td class="edit-row">
+                        <td class="edit-col">
                             @if (item.UserCanEdit)
                             {
                                 <a href="@Url.Action("Edit", "GameDefinition", new

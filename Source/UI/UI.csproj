@@ -720,6 +720,7 @@
     <Content Include="Views\GamingGroup\Edit.cshtml" />
     <Content Include="Views\GamingGroup\_GamingGroupPublicDetailsPartial.cshtml" />
     <Content Include="Views\Player\_PlayersSummaryPartial.cshtml" />
+    <Content Include="Views\GameDefinition\_GameDefinitionsTablePartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Code\" />

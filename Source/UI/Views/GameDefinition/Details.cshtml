@@ -20,21 +20,27 @@
                     </strong>
                 </div>
                 <div class="col-sm-3">
-                @Html.DisplayFor(model => model.Name)
-                @if (Model.BoardGameGeekUri != null)
-                {
-                    <a href="@Model.BoardGameGeekUri.AbsoluteUri">
-                        @if (!string.IsNullOrEmpty(Model.ThumbnailImageUrl))
-                        {
-                            <img src="@Model.ThumbnailImageUrl" alt="View on BoardGameGeek.com" title="View on BoardGameGeek.com" />
-                        }
-                        else
-                        {
-                            <img src="~/Content/Images/bgg_small.png" alt="View on BoardGameGeek.com" title="View on BoardGameGeek.com" />
-                        }
-                        
-                    </a>
-                }
+                    @if (Model.BoardGameGeekUri != null)
+                    {
+                        <a href="@Model.BoardGameGeekUri.AbsoluteUri">
+                            @if (!string.IsNullOrEmpty(Model.ThumbnailImageUrl))
+                            {
+                                <img src="@Model.ThumbnailImageUrl" alt="View on BoardGameGeek.com" title="View on BoardGameGeek.com" />
+                            }
+                            else
+                            {
+                                @Html.DisplayFor(model => model.Name)
+                                <img src="~/Content/Images/bgg_small.png" alt="View on BoardGameGeek.com" title="View on BoardGameGeek.com" />
+                            }
+
+                        </a>
+                    }
+                    else
+                    {
+
+                        @Html.DisplayFor(model => model.Name)
+
+                    }
                 </div>
             </div>
             <div class="row">
@@ -74,76 +80,77 @@
 
 @if (Model.ChampionName != null || Model.PreviousChampionName != null)
 {
-<div class="row">
-    <div class="panel panel-primary">
-        <div class="panel-heading">
-            <h4>Champion <i class="fa fa-trophy" data-container="body" data-toggle="popover" data-placement="right"
-   data-content="The Champion is the Player within the Gaming Group with the most wins of this game."></i>
-            </h4>
-        </div>
-        <div class="panel-body">
-            <div class="table-responsive">
-                <table class="table table-hover table-striped" >
-                    <thead>
-                        <tr>
-                            <th>
-                                Previous/Current Champion
-                            </th>
-                            <th>
-                                Games Won
-                            </th>
-                            <th>
-                                Played Games
-                            </th>
-                            <th>
-                                % Won
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td class="col-md-3">
-                                @if (Model.PreviousChampionName != null)
-                                {
-                                    <span style="text-decoration: line-through">
-                                        @Html.ActionLink(Model.PreviousChampionName, 
-                                            "Details", 
-                                            "Player", 
-                                            new { id = Model.PreviousChampionPlayerId }, 
+    <div class="row">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h4>
+                    Champion <i class="fa fa-trophy" data-container="body" data-toggle="popover" data-placement="right"
+                                data-content="The Champion is the Player within the Gaming Group with the most wins of this game."></i>
+                </h4>
+            </div>
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table class="table table-hover table-striped">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Previous/Current Champion
+                                </th>
+                                <th>
+                                    Games Won
+                                </th>
+                                <th>
+                                    Played Games
+                                </th>
+                                <th>
+                                    % Won
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="col-md-3">
+                                    @if (Model.PreviousChampionName != null)
+                                    {
+                                        <span style="text-decoration: line-through">
+                                            @Html.ActionLink(Model.PreviousChampionName,
+                                            "Details",
+                                            "Player",
+                                            new { id = Model.PreviousChampionPlayerId },
                                             new { })
-                                    </span>
-                                    <span>/</span>
-                                }
-                                @if (Model.ChampionName != null)
-                                {
-                                    @Html.ActionLink(Model.ChampionName, "Details", "Player", new {id = Model.ChampionPlayerId}, new {})
-                                }
-                            </td>
-                            <td class="col-md-3">
-                                @if (Model.NumberOfWins.HasValue)
-                                {
-                                    @Model.NumberOfWins
-                                }
-                            </td>
-                            <td class="col-md-3">
-                                @if (Model.NumberOfGamesPlayed.HasValue)
-                                {
-                                    @Model.NumberOfGamesPlayed
-                                }
-                            </td>
-                            <td class="col-md-3">
-                                @if (Model.WinPercentage.HasValue)
-                                {
-                                    @Model.WinPercentage
-                                }
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                                        </span>
+                                        <span>/</span>
+                                    }
+                                    @if (Model.ChampionName != null)
+                                    {
+                                        @Html.ActionLink(Model.ChampionName, "Details", "Player", new { id = Model.ChampionPlayerId }, new { })
+                                    }
+                                </td>
+                                <td class="col-md-3">
+                                    @if (Model.NumberOfWins.HasValue)
+                                    {
+                                        @Model.NumberOfWins
+                                    }
+                                </td>
+                                <td class="col-md-3">
+                                    @if (Model.NumberOfGamesPlayed.HasValue)
+                                    {
+                                        @Model.NumberOfGamesPlayed
+                                    }
+                                </td>
+                                <td class="col-md-3">
+                                    @if (Model.WinPercentage.HasValue)
+                                    {
+                                        @Model.WinPercentage
+                                    }
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
-</div>
 }
 
 <div class="row">
