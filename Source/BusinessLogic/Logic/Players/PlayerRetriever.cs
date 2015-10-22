@@ -43,8 +43,7 @@ namespace BusinessLogic.Logic.Players
         internal IQueryable<Player> GetAllPlayersInGamingGroupQueryable(int gamingGroupId)
         {
             return dataContext.GetQueryable<Player>()
-                .Where(player => player.GamingGroupId == gamingGroupId
-                   && player.Active);
+                .Where(player => player.GamingGroupId == gamingGroupId);
         }
 
         public List<Player> GetAllPlayers(int gamingGroupId)
@@ -62,6 +61,7 @@ namespace BusinessLogic.Logic.Players
                 {
                     PlayerId = player.Id,
                     PlayerName = player.Name,
+                    PlayerActive = player.Active,
                     PlayerRegistered = !string.IsNullOrEmpty(player.ApplicationUserId),
                     NemesisPlayerId = player.Nemesis == null ? (int?)null : player.Nemesis.NemesisPlayerId,
                     NemesisPlayerName = player.Nemesis != null && player.Nemesis.NemesisPlayer != null
@@ -75,7 +75,7 @@ namespace BusinessLogic.Logic.Players
                     //only get championed games where this player is the current champion
                     TotalChampionedGames = player.ChampionedGames.Count(champion => champion.GameDefinition.ChampionId != null && champion.GameDefinition.ChampionId.Value == champion.Id)
                 }
-                ).OrderByDescending(pwn => pwn.TotalPoints).ThenBy(p => p.PlayerName)
+                ).OrderByDescending(x => x.PlayerActive).ThenByDescending(pwn => pwn.TotalPoints).ThenBy(p => p.PlayerName)
                 .ToList();
 
             return playersWithNemesis;
@@ -105,6 +105,8 @@ namespace BusinessLogic.Logic.Players
 
             var formerChampionedGames = GetFormerChampionedGames(returnPlayer.Id);
 
+            var longestWinningStreak = playerRepository.GetLongestWinningStreak(playerId);
+
             var playerDetails = new PlayerDetails()
             {
                 Active = returnPlayer.Active,
@@ -121,7 +123,8 @@ namespace BusinessLogic.Logic.Players
                 PlayerGameSummaries = playerGameSummaries,
                 ChampionedGames = championedGames,
                 PlayerVersusPlayersStatistics = playerRepository.GetPlayerVersusPlayersStatistics(playerId),
-                FormerChampionedGames =  formerChampionedGames
+                FormerChampionedGames =  formerChampionedGames,
+                LongestWinningStreak = longestWinningStreak
             };
 
             return playerDetails;

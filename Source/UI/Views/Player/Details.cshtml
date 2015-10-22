@@ -95,8 +95,7 @@
                 </tr>
                 <tr>
                     <td><strong>Total Championed Games:</strong></td>
-                    <td>@Model.TotalChampionedGames <i class="fa fa-trophy" data-toggle="popover" data-placement="top" data-content="Total games Championed by this Player"></i>
-</i></td>
+                    <td>@Model.TotalChampionedGames <i class="fa fa-trophy" data-toggle="popover" data-placement="top" data-content="Total games Championed by this Player"></i></td>
                 </tr>
                 <tr>
                     <td><strong>Average Points Per Game:</strong></td>
@@ -109,6 +108,10 @@
                 <tr>
                     <td><strong>Average Points Per Player:</strong></td>
                     <td>@Model.AveragePointsPerPlayer.ToString("N2")</td>
+                </tr>
+                <tr>
+                    <td><strong>Longest Winning Streak:</strong></td>
+                    <td>@Model.LongestWinningStreak</td>
                 </tr>
             </table>
             <div id="GamesPieChart">

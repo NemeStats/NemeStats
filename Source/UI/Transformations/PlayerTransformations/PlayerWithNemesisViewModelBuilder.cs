@@ -30,23 +30,23 @@ namespace UI.Transformations.PlayerTransformations
         {
             ValidatePlayerNotNull(playerWithNemesis);
 
-            PlayerWithNemesisViewModel model = new PlayerWithNemesisViewModel()
+            AddInactivePlayerSuffix(playerWithNemesis);
+
+            PlayerWithNemesisViewModel model = new PlayerWithNemesisViewModel
             {
                 PlayerId = playerWithNemesis.PlayerId,
                 PlayerName = playerWithNemesis.PlayerName,
+                PlayerActive = playerWithNemesis.PlayerActive,
                 PlayerRegistered = playerWithNemesis.PlayerRegistered,
-                UserCanEdit = (currentUser != null && playerWithNemesis.GamingGroupId == currentUser.CurrentGamingGroupId)
+                UserCanEdit = (currentUser != null && playerWithNemesis.GamingGroupId == currentUser.CurrentGamingGroupId),
+                NemesisPlayerId = playerWithNemesis.NemesisPlayerId,
+                NemesisPlayerName = playerWithNemesis.NemesisPlayerName,
+                PreviousNemesisPlayerId = playerWithNemesis.PreviousNemesisPlayerId,
+                PreviousNemesisPlayerName = playerWithNemesis.PreviousNemesisPlayerName,
+                NumberOfPlayedGames = playerWithNemesis.NumberOfPlayedGames,
+                TotalPoints = playerWithNemesis.TotalPoints,
+                TotalChampionedGames = playerWithNemesis.TotalChampionedGames
             };
-
-            model.NemesisPlayerId = playerWithNemesis.NemesisPlayerId;
-            model.NemesisPlayerName = playerWithNemesis.NemesisPlayerName;
-
-            model.PreviousNemesisPlayerId = playerWithNemesis.PreviousNemesisPlayerId;
-            model.PreviousNemesisPlayerName = playerWithNemesis.PreviousNemesisPlayerName;
-
-            model.NumberOfPlayedGames = playerWithNemesis.NumberOfPlayedGames;
-            model.TotalPoints = playerWithNemesis.TotalPoints;
-            model.TotalChampionedGames = playerWithNemesis.TotalChampionedGames;
 
             return model;
         }
@@ -56,6 +56,14 @@ namespace UI.Transformations.PlayerTransformations
             if (player == null)
             {
                 throw new ArgumentNullException("player");
+            }
+        }
+
+        private static void AddInactivePlayerSuffix(PlayerWithNemesis playerWithNemesis)
+        {
+            if (!playerWithNemesis.PlayerActive)
+            {
+                playerWithNemesis.PlayerName += " (INACTIVE)";
             }
         }
     }

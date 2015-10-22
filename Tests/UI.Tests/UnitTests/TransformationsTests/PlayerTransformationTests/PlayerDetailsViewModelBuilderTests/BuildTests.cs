@@ -142,6 +142,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
                 ApplicationUserId = currentUser.Id,
                 Active = true,
                 Name = "Skipper",
+                LongestWinningStreak = 39,
                 PlayerGameResults = playerGameResults,
                 PlayerStats = new PlayerStatistics() 
                     { 
@@ -617,6 +618,12 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
             var actualPlayer = playerDetailsViewModel.PlayerVersusPlayers.PlayerSummaries.First(x => x.PlayerId == minionPlayer.OpposingPlayerId);
 
             Assert.True(actualPlayer.SpecialBadgeTypes.Any(badge => badge.GetType() == typeof(MinionBadgeViewModel)));
+        }
+
+        [Test]
+        public void ItCopiesTheLongestWinningStreak()
+        {
+            Assert.AreEqual(playerDetails.LongestWinningStreak, playerDetailsViewModel.LongestWinningStreak);
         }
     }
 }

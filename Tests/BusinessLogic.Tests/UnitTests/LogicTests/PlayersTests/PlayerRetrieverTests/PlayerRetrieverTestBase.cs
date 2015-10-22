@@ -80,7 +80,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
             {
                 new Player(){ GamingGroupId = gamingGroupId, Name = "2", PlayerGameResults = new List<PlayerGameResult>(), ChampionedGames = new List<Champion>()},
                 new Player(){ GamingGroupId = gamingGroupId, Name = "3", PlayerGameResults = new List<PlayerGameResult>(), ChampionedGames = new List<Champion>() },
-                new Player(){ GamingGroupId = -1, Name = "1", PlayerGameResults = new List<PlayerGameResult>(), ChampionedGames = new List<Champion>() },
+                new Player(){ GamingGroupId = -1, Name = "not in gaming group", PlayerGameResults = new List<PlayerGameResult>(), ChampionedGames = new List<Champion>() },
                 new Player()
                 {
                     Id = playerId,
@@ -92,6 +92,11 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
                         champion
                     }
                 },
+                new Player()
+                {
+                    //player that will be last because she's inactive
+                    GamingGroupId = gamingGroupId, Name = "0", PlayerGameResults = new List<PlayerGameResult>(), ChampionedGames = new List<Champion>(), Active = false 
+                }
             };
             players[3].NemesisId = 1;
             players[3].Nemesis = new Nemesis()
