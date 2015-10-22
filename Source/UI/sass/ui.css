@@ -15,9 +15,9 @@
 
 @media only screen and (max-width: 991px) {
   .gameDefinitionsList#flip-scroll .bgg-link-head {
-    height: 115px; }
+    height: 100px; }
   .gameDefinitionsList#flip-scroll .edit-head {
-    height: 41px; }
+    height: 4px; }
   .gameDefinitionsList#flip-scroll .plays-row {
     text-align: center; }
   .gameDefinitionsList#flip-scroll .champion-row {
