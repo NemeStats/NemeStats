@@ -15,19 +15,12 @@ Views.GameDefinition.GameDefinitions.prototype = {
     },
 
     onGameCreated: function (game) {
-        this.$gameDefinitionsTable.find("tr:last").after(
-            "<tr> \
-                <td></td> \
-                <td> \
-                    <a href='/GameDefinition/Details/" + game.Id + "'>" + game.Name + "</a> \
-                </td> \
-                <td>0</td>\
-                <td> </td>\
-                <td> \
-                    <a href='/GameDefinition/Edit/" + game.Id + "' title='UpdateGamingGroupName'> \
-                        <i class='fa fa-pencil fa-3x'></i> \
-                    </a> \
-                </td> \
-            </tr>");
+        var container = $("#js-gamedefinitions");
+        if (container.length === 1) {
+            container
+                .fadeOut('fast')
+                .load('/GamingGroup/GetCurrentUserGamingGroupGameDefinitions?id=' + game.GamingGroupId)
+                .fadeIn('fast');
+        }
     }
 }
