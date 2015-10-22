@@ -39,7 +39,8 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
             base.SetUp();
 
             expectedSearchResults = new List<BoardGameGeekSearchResult>();
-            boardGameGeekSearcherMock.Expect(mock => mock.SearchForBoardGames(Arg<string>.Is.Anything, Arg<bool>.Is.Anything))
+            //TODO Victor, from here I'll leave it up to you :)
+            boardGameGeekApiClient.Expect(mock => mock.SearchForBoardGames(Arg<string>.Is.Anything, Arg<bool>.Is.Anything))
                                      .Return(expectedSearchResults);
         }
 
