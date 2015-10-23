@@ -162,6 +162,7 @@ namespace BusinessLogic.DataAccess.Repositories
               ,SUM(CASE WHEN PGR.GameRank = 1 THEN 1 ELSE 0 END) AS GamesWon
               ,SUM(CASE WHEN PGR.GameRank <> 1 THEN 1 ELSE 0 END) AS GamesLost
               ,CONVERT(BIT, CASE WHEN Player.Id = Champion.PlayerId THEN 1 ELSE 0 END) AS IsChampion
+              ,CONVERT(BIT, CASE WHEN EXISTS(SELECT 1 FROM Champion WHERE Champion.PlayerId = Player.Id) THEN 1 ELSE 0 END) AS IsFormerChampion
               FROM [dbo].[GameDefinition] GD 
               INNER JOIN PlayedGame PG ON GD.ID = PG.GameDefinitionID
               INNER JOIN PlayerGameResult PGR ON PG.ID = PGR.PlayedGameId
@@ -181,6 +182,49 @@ namespace BusinessLogic.DataAccess.Repositories
             results.ForEach(record => record.WinPercentage = WinPercentageCalculator.CalculateWinPercentage(record.GamesWon, record.GamesLost));
 
             return results;
+        }
+
+        private const string SQL_GET_LONGEST_WINNING_STREAK_FOR_PLAYER =
+            @"WITH streak_cte (streak) 
+              AS (SELECT 
+                            (SELECT Count(DISTINCT id) 
+                             FROM   playergameresult matches_inner 
+                             WHERE  a.playerid = matches_inner.playerid 
+                                    AND matches_inner.id BETWEEN a.id AND b.id) AS wins 
+                     FROM   playergameresult a 
+                            JOIN playergameresult b 
+                              ON a.playerid = b.playerid 
+                                 AND b.id >= a.id 
+                     WHERE  a.playerid = @PlayerId 
+                            AND NOT EXISTS (SELECT 1 
+                                            FROM   playergameresult matches_inner 
+                                            WHERE  a.playerid = matches_inner.playerid 
+                                                   AND matches_inner.id BETWEEN 
+                                                       a.id AND b.id 
+                                                   AND matches_inner.GameRank <> 1)) 
+            SELECT Max(streak) AS MaxWinStreak
+            FROM   streak_cte";
+
+        public int GetLongestWinningStreak(int playerId)
+        {
+            var longestWinningStreak = dataContext.MakeRawSqlQuery<int?>(SQL_GET_LONGEST_WINNING_STREAK_FOR_PLAYER,
+                                                    new SqlParameter("PlayerId", playerId)).FirstOrDefault();
+
+            if (longestWinningStreak == null)
+            {
+                return 0;
+            }
+
+            return longestWinningStreak.Value;
+        }
+
+        private static int CalculateWinPercentage(int gamesWon, int gamesLost)
+        {
+            if (gamesLost + gamesWon == 0)
+            {
+                return 0;
+            }
+            return (int)((decimal)gamesWon / (gamesLost + gamesWon) * 100);
         }
     }
 }

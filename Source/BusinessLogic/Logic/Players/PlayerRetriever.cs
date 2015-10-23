@@ -43,8 +43,7 @@ namespace BusinessLogic.Logic.Players
         internal IQueryable<Player> GetAllPlayersInGamingGroupQueryable(int gamingGroupId)
         {
             return dataContext.GetQueryable<Player>()
-                .Where(player => player.GamingGroupId == gamingGroupId
-                   && player.Active);
+                .Where(player => player.GamingGroupId == gamingGroupId);
         }
 
         public List<Player> GetAllPlayers(int gamingGroupId)
@@ -62,6 +61,7 @@ namespace BusinessLogic.Logic.Players
                 {
                     PlayerId = player.Id,
                     PlayerName = player.Name,
+                    PlayerActive = player.Active,
                     PlayerRegistered = !string.IsNullOrEmpty(player.ApplicationUserId),
                     NemesisPlayerId = player.Nemesis == null ? (int?)null : player.Nemesis.NemesisPlayerId,
                     NemesisPlayerName = player.Nemesis != null && player.Nemesis.NemesisPlayer != null
@@ -75,7 +75,7 @@ namespace BusinessLogic.Logic.Players
                     //only get championed games where this player is the current champion
                     TotalChampionedGames = player.ChampionedGames.Count(champion => champion.GameDefinition.ChampionId != null && champion.GameDefinition.ChampionId.Value == champion.Id)
                 }
-                ).OrderByDescending(pwn => pwn.TotalPoints).ThenBy(p => p.PlayerName)
+                ).OrderByDescending(x => x.PlayerActive).ThenByDescending(pwn => pwn.TotalPoints).ThenBy(p => p.PlayerName)
                 .ToList();
 
             return playersWithNemesis;
@@ -103,6 +103,10 @@ namespace BusinessLogic.Logic.Players
 
             List<Champion> championedGames = GetChampionedGames(returnPlayer.Id);
 
+            var formerChampionedGames = GetFormerChampionedGames(returnPlayer.Id);
+
+            var longestWinningStreak = playerRepository.GetLongestWinningStreak(playerId);
+
             var playerDetails = new PlayerDetails()
             {
                 Active = returnPlayer.Active,
@@ -118,7 +122,9 @@ namespace BusinessLogic.Logic.Players
                 Minions = minions,
                 PlayerGameSummaries = playerGameSummaries,
                 ChampionedGames = championedGames,
-                PlayerVersusPlayersStatistics = playerRepository.GetPlayerVersusPlayersStatistics(playerId)
+                PlayerVersusPlayersStatistics = playerRepository.GetPlayerVersusPlayersStatistics(playerId),
+                FormerChampionedGames =  formerChampionedGames,
+                LongestWinningStreak = longestWinningStreak
             };
 
             return playerDetails;
@@ -146,6 +152,16 @@ namespace BusinessLogic.Logic.Players
                      dataContext.GetQueryable<GameDefinition>().Include(g => g.Champion)
                  where gameDefinition.Champion.PlayerId == playerId
                  select gameDefinition.Champion).Include(c => c.GameDefinition)
+                 .ToList();
+        }
+
+        internal virtual List<GameDefinition> GetFormerChampionedGames(int playerId)
+        {
+            return
+                (from Champion champion in
+                     dataContext.GetQueryable<Champion>().Include(c => c.GameDefinition)
+                 where champion.PlayerId == playerId
+                 select champion.GameDefinition)
                  .ToList();
         }
 

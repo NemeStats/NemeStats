@@ -47,6 +47,10 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         private int gamingGroupId = 123;
         private int playerId = 567;
         private int gameDefinitionIdThatIsChampionedByCurrentPlayer = 999;
+        private int gameDefinitionIdThatIsFormerlyChampionedByCurrentPlayer = 1000;
+        private GameDefinition gameDefinitionThatIsFormerlyChampionedByCurrentPlayer;
+        private int gameDefinitionIdThatIsBothCurrentlyAndFormerlyChampionedByCurrentPlayer = 1001;
+        private GameDefinition gameDefinitionThatIsBothCurrentlyAndFormerlyChampionedByCurrentPlayer;
 
         [SetUp]
         public void TestFixtureSetUp()
@@ -63,22 +67,28 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
             var gameDefinition1 = new GameDefinition()
             {
                 Name = "test game 1",
-                Id = gameDefinitionIdThatIsChampionedByCurrentPlayer
+                Id = gameDefinitionIdThatIsChampionedByCurrentPlayer,
+            };
+            gameDefinitionThatIsFormerlyChampionedByCurrentPlayer = new GameDefinition
+            {
+                Name = "formerly championed game",
+                Id = gameDefinitionIdThatIsFormerlyChampionedByCurrentPlayer
+            };
+            gameDefinitionThatIsBothCurrentlyAndFormerlyChampionedByCurrentPlayer = new GameDefinition
+            {
+                Name = "currently and formerly championed game",
+                Id = gameDefinitionIdThatIsBothCurrentlyAndFormerlyChampionedByCurrentPlayer
             };
             var playedGame1 = new PlayedGame()
             {
                 Id = 1,
                 GameDefinition = gameDefinition1
             };
-            var gameDefinition2 = new GameDefinition()
-            {
-                Name = "test game 2",
-                Id = 2
-            };
+    
             var playedGame2 = new PlayedGame()
             {
                 Id = 2,
-                GameDefinition = gameDefinition2
+                GameDefinitionId = gameDefinitionIdThatIsFormerlyChampionedByCurrentPlayer
             };
             var playerGameResults = new List<PlayerGameResult>()
             {
@@ -132,6 +142,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
                 ApplicationUserId = currentUser.Id,
                 Active = true,
                 Name = "Skipper",
+                LongestWinningStreak = 39,
                 PlayerGameResults = playerGameResults,
                 PlayerStats = new PlayerStatistics() 
                     { 
@@ -164,6 +175,14 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
                     new PlayerGameSummary
                     {
                         GameDefinitionId = gameDefinitionIdThatIsChampionedByCurrentPlayer
+                    },
+                    new PlayerGameSummary
+                    {
+                        GameDefinitionId = gameDefinitionIdThatIsFormerlyChampionedByCurrentPlayer
+                    },
+                    new PlayerGameSummary
+                    {
+                        GameDefinitionId = gameDefinitionIdThatIsBothCurrentlyAndFormerlyChampionedByCurrentPlayer
                     }
                 }
             };
@@ -186,9 +205,17 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
 
             var championedGames = new List<Champion>
             {
-                new Champion { GameDefinition = gameDefinition1, GameDefinitionId = gameDefinitionIdThatIsChampionedByCurrentPlayer }
+                new Champion { GameDefinition = gameDefinition1, GameDefinitionId = gameDefinitionIdThatIsChampionedByCurrentPlayer },
+                new Champion { GameDefinition = gameDefinitionThatIsBothCurrentlyAndFormerlyChampionedByCurrentPlayer, GameDefinitionId = gameDefinitionIdThatIsBothCurrentlyAndFormerlyChampionedByCurrentPlayer }
             };
             playerDetails.ChampionedGames = championedGames;
+
+            var formerChampionedGames = new List<GameDefinition>
+            {
+                gameDefinitionThatIsFormerlyChampionedByCurrentPlayer,
+                gameDefinitionThatIsBothCurrentlyAndFormerlyChampionedByCurrentPlayer
+            };
+            playerDetails.FormerChampionedGames = formerChampionedGames;
 
             builder = new PlayerDetailsViewModelBuilder(gameResultViewModelBuilder, minionViewModelBuilderMock);
 
@@ -249,13 +276,32 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
             {
                 PlayerGameResults = new List<PlayerGameResult>(),
                 PlayerStats = new PlayerStatistics(),
-                Minions = new List<Player>()
+                Minions = new List<Player>(),
+                FormerChampionedGames = new List<GameDefinition>()
             };
 
             var exception = Assert.Throws<ArgumentException>(() =>
                     builder.Build(playerDetailsWithNoChampionedGames, twitterMinionBraggingUrl, currentUser));
 
             Assert.AreEqual(PlayerDetailsViewModelBuilder.EXCEPTION_CHAMPIONED_GAMES_CANNOT_BE_NULL, exception.Message);
+        }
+
+        [Test]
+        public void FormerChampionedGamesCannotBeNull()
+        {
+            var builder = new PlayerDetailsViewModelBuilder(null, null);
+            var playerDetailsWithNoChampionedGames = new PlayerDetails()
+            {
+                PlayerGameResults = new List<PlayerGameResult>(),
+                PlayerStats = new PlayerStatistics(),
+                Minions = new List<Player>(),
+                ChampionedGames = new List<Champion>()
+            };
+
+            var exception = Assert.Throws<ArgumentException>(() =>
+                    builder.Build(playerDetailsWithNoChampionedGames, twitterMinionBraggingUrl, currentUser));
+
+            Assert.AreEqual(PlayerDetailsViewModelBuilder.EXCEPTION_FORMERCHAMPIONED_GAMES_CANNOT_BE_NULL, exception.Message);
         }
 
         [Test]
@@ -466,6 +512,24 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
             Assert.That(playerDetailsViewModel.PlayerGameSummaries.Any(
                 x => x.GameDefinitionId == gameDefinitionIdThatIsChampionedByCurrentPlayer
                     && x.IsChampion));
+            Assert.That(playerDetailsViewModel.PlayerGameSummaries.Any(
+              x => x.GameDefinitionId == gameDefinitionIdThatIsBothCurrentlyAndFormerlyChampionedByCurrentPlayer
+                  && x.IsChampion));
+        }
+
+        [Test]
+        public void ItSetsTheFormerChampionedGamesToIncludeOnlyGamesThatAreNotCurrentlyChampioned()
+        {
+            Assert.That(playerDetailsViewModel.PlayerGameSummaries
+                .Where(x => x.IsFormerChampion).All(y => y.GameDefinitionId == gameDefinitionIdThatIsFormerlyChampionedByCurrentPlayer));
+        }
+
+        [Test]
+        public void ItDoesntSetAnyCurrentlyChampionedGamesAsFormerChampionedGames()
+        {
+            Assert.That(!playerDetailsViewModel.PlayerGameSummaries.Any(
+                x => x.GameDefinitionId == gameDefinitionIdThatIsChampionedByCurrentPlayer
+                    && x.IsFormerChampion));
         }
 
         [Test]
@@ -554,6 +618,12 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
             var actualPlayer = playerDetailsViewModel.PlayerVersusPlayers.PlayerSummaries.First(x => x.PlayerId == minionPlayer.OpposingPlayerId);
 
             Assert.True(actualPlayer.SpecialBadgeTypes.Any(badge => badge.GetType() == typeof(MinionBadgeViewModel)));
+        }
+
+        [Test]
+        public void ItCopiesTheLongestWinningStreak()
+        {
+            Assert.AreEqual(playerDetails.LongestWinningStreak, playerDetailsViewModel.LongestWinningStreak);
         }
     }
 }

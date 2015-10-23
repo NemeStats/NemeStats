@@ -42,18 +42,21 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
         private Nemesis expectedNemesis;
         private Nemesis expectedPriorNemesis;
         private Champion expectedChampion;
+        private GameDefinition expectedFormerChampionGame;
         private List<Player> expectedMinions;
         private List<PlayerGameSummary> expectedPlayerGameSummaries;
         private List<Champion> expectedChampionedGames;
+        private List<GameDefinition> expectedFormerChampionedGames;
         private List<PlayerVersusPlayerStatistics> expectedPlayerVersusPlayerStatistics; 
         private int gamingGroupId = 1985;
+        private int expectedLongestWinningStreak = 93;
             
         [SetUp]
         public void SetUp()
         {
             autoMocker = new RhinoAutoMocker<PlayerRetriever>();
             autoMocker.PartialMockTheClassUnderTest();
-
+          
             expectedChampion = new Champion()
             {
                 Id = 100,
@@ -89,6 +92,12 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
                 Nemesis = expectedNemesis,
                 PreviousNemesisId = expectedPriorNemesis.Id,
                 PreviousNemesis = expectedPriorNemesis
+            };
+            expectedFormerChampionGame = new GameDefinition
+            {
+                Id = 111,
+                PreviousChampionId = player.Id,
+                GamingGroupId = gamingGroupId
             };
             playerWithNoNemesisEver = new Player()
             {
@@ -148,10 +157,15 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
             autoMocker.ClassUnderTest.Expect(mock => mock.GetChampionedGames(Arg<int>.Is.Anything))
                 .Return(expectedChampionedGames);
 
+            expectedFormerChampionedGames = new List<GameDefinition> { expectedFormerChampionGame };
+            autoMocker.ClassUnderTest.Expect(mock => mock.GetFormerChampionedGames(Arg<int>.Is.Anything))
+                .Return(expectedFormerChampionedGames);
+
             expectedPlayerVersusPlayerStatistics = new List<PlayerVersusPlayerStatistics>();
             autoMocker.Get<IPlayerRepository>().Expect(mock => mock.GetPlayerVersusPlayersStatistics(Arg<int>.Is.Anything))
                       .Return(expectedPlayerVersusPlayerStatistics);
 
+            autoMocker.Get<IPlayerRepository>().Expect(mock => mock.GetLongestWinningStreak(player.Id)).Return(expectedLongestWinningStreak);
         }
 
         [Test]
@@ -225,6 +239,15 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
         }
 
         [Test]
+        public void ItSetsThePlayersFormerChampionedGames()
+        {
+            PlayerDetails playerDetails = autoMocker.ClassUnderTest.GetPlayerDetails(playerWithAChampionship.Id,
+                numberOfRecentGames);
+
+            Assert.That(playerDetails.FormerChampionedGames, Is.EqualTo(expectedFormerChampionedGames));
+        }
+
+        [Test]
         public void ItSetsThePlayerVersusPlayersStatistics()
         {
             PlayerDetails playerDetails = autoMocker.ClassUnderTest.GetPlayerDetails(playerWithAChampionship.Id,
@@ -232,5 +255,14 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
 
             Assert.That(playerDetails.PlayerVersusPlayersStatistics, Is.EqualTo(expectedPlayerVersusPlayerStatistics));
         }
+
+        [Test]
+        public void ItSetsTheLongestWinningStreak()
+        {
+            PlayerDetails playerDetails = autoMocker.ClassUnderTest.GetPlayerDetails(player.Id, numberOfRecentGames);
+
+            Assert.That(playerDetails.LongestWinningStreak, Is.EqualTo(expectedLongestWinningStreak)); 
+        }
+
     }
 }
