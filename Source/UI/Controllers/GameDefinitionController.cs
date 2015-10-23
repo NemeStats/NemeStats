@@ -131,7 +131,8 @@ namespace UI.Controllers
 		[Authorize]
 		[HttpPost]
 		[UserContext]
-        //TODO vulnerable to overposting. Need to change this to a request type that only has the fields that can be edited here
+        //TODO vulnerable to overposting. Need to change this to a request type that only has the fields that can be edited here. This could also
+        //probably be consolidated into one method, or just use the REST API
 		public virtual ActionResult Save(GameDefinition model, ApplicationUser currentUser)
 		{
 			if (!Request.IsAjaxRequest())
@@ -183,7 +184,7 @@ namespace UI.Controllers
 			if (ModelState.IsValid)
 			{
 				gamedefinition.Name = gamedefinition.Name.Trim();
-				dataContext.Save(gamedefinition, currentUser);
+                gameDefinitionSaver.Save(gamedefinition, currentUser);
 				dataContext.CommitAllChanges();
 				return new RedirectResult(Url.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name)
 										  + "#" + GamingGroupController.SECTION_ANCHOR_GAMEDEFINITIONS);

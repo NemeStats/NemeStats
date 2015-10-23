@@ -245,7 +245,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
         }
 
         [Test]
-        public void ItSetsTheBoardGameGeekThumbnailIfThereIsOne()
+        public void ItSetsTheBoardGameGeekThumbnailIfThereIsOneAndItsANewGameDefinition()
         {
             var gameDefinition = MockRepository.GeneratePartialMock<GameDefinition>();
             gameDefinition.Name = "name";
@@ -265,6 +265,34 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
 
             autoMocker.Get<IDataContext>().AssertWasCalled(mock => mock.Save(
                          Arg<GameDefinition>.Matches(newGameDefinition => newGameDefinition.ThumbnailImageUrl == expectedGameDetails.Thumbnail),
+                         Arg<ApplicationUser>.Is.Anything));
+        }
+
+        [Test]
+        public void ItSetsTheBoardGameGeekThumbnailIfTheBoardGameGeekObjectIdChanged()
+        {
+            var gameDefinition = MockRepository.GeneratePartialMock<GameDefinition>();
+            gameDefinition.Name = "name";
+            gameDefinition.BoardGameGeekObjectId = 1;
+            gameDefinition.Id = 3;
+            gameDefinition.Expect(mock => mock.AlreadyInDatabase())
+                .Return(true);
+            var expectedGameDetails = new GameDetails
+            {
+                Thumbnail = "some thumbnail URL"
+            };
+            var existingGameDefinitionWithDifferentBGGObjectId = new GameDefinition
+            {
+                Id = 9398483
+            };
+            autoMocker.Get<IDataContext>().Expect(mock => mock.FindById<GameDefinition>(gameDefinition.Id)).Return(existingGameDefinitionWithDifferentBGGObjectId);
+            autoMocker.Get<IBoardGameGeekApiClient>().Expect(mock => mock.GetGameDetails(gameDefinition.BoardGameGeekObjectId.Value))
+                      .Return(expectedGameDetails);
+
+            autoMocker.ClassUnderTest.Save(gameDefinition, currentUser);
+
+            autoMocker.Get<IDataContext>().AssertWasCalled(mock => mock.Save(
+                         Arg<GameDefinition>.Matches(d => d.ThumbnailImageUrl == expectedGameDetails.Thumbnail),
                          Arg<ApplicationUser>.Is.Anything));
         }
 

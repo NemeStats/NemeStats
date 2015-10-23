@@ -49,9 +49,14 @@ namespace BusinessLogic.Logic.GameDefinitions
         {
             ValidateGameDefinitionIsNotNull(gameDefinition);
             ValidateGameDefinitionNameIsNotNullOrWhitespace(gameDefinition.Name);
-            bool isNewGameDefinition = !gameDefinition.AlreadyInDatabase();
-            if (!isNewGameDefinition)
+            bool gameDefinitionAlreadyExists = gameDefinition.AlreadyInDatabase();
+            if (gameDefinitionAlreadyExists)
             {
+                var existingGameDefinition = dataContext.FindById<GameDefinition>(gameDefinition.Id);
+                if(existingGameDefinition != null && existingGameDefinition.BoardGameGeekObjectId != gameDefinition.BoardGameGeekObjectId)
+                {
+                    SetBoardGameGeekThumbnail(gameDefinition);
+                }
                 return this.dataContext.Save(gameDefinition, currentUser);
             }
             var definition = gameDefinition;
