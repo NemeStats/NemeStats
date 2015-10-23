@@ -32,6 +32,17 @@
     height: 100px; }
   .gameDefinitionsList#flip-scroll .edit-head {
     height: 40px; }
+  .gameDefinitionsList#flip-scroll .name-head {
+    height: 70px; }
+  .gameDefinitionsList#flip-scroll .name-col {
+    height: 70px;
+    max-width: 200px;
+    overflow: hidden; }
+    .gameDefinitionsList#flip-scroll .name-col a {
+      white-space: normal;
+      word-break: break-word; }
+  .gameDefinitionsList#flip-scroll .edit-col {
+    height: 47px; }
   .gameDefinitionsList#flip-scroll .plays-col {
     text-align: center; }
   .gameDefinitionsList#flip-scroll .champion-col {
@@ -50,10 +61,10 @@
   font-weight: bold;
   height: 100px;
   overflow: hidden;
-  text-align: center; }
+  text-align: center;
+  max-width: 200px; }
   .gameDefinitionsList .bgg-link-col .bgg-thumbnail {
     width: auto;
     height: 100%;
-    max-width: 200px;
     min-height: 100px; }
 

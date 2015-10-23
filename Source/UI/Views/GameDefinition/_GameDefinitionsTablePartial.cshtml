@@ -9,7 +9,7 @@
             <thead>
                 <tr>
                     <th class="col-md-2 bgg-link-head"></th>
-                    <th class="col-md-4">
+                    <th class="col-md-4 name-head">
                         Name
                     </th>
                     <th class="col-md-2">
@@ -52,7 +52,7 @@
 
                             }
                         </td>
-                        <td>
+                        <td class="name-col">
                             <b>
                                 @Html.ActionLink(item.Name, "Details", "GameDefinition", new { id = item.Id }, new { })
                             </b>

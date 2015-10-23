@@ -25,6 +25,10 @@
 }
 
 
+$gamename-height: 70px;
+$gamethumbnail-maxwidht: 200px;
+$gamethumbnail-height: 100px;
+
 #player-details {
     .gameDefinitionsList {
         @media only screen and (max-width: $screen-sm-max) {
@@ -42,7 +46,7 @@
 
         .badges-col {
             width: 20px;
-            line-height: 100px;
+            line-height: $gamethumbnail-height;
         }
 
         .bgg-link-col {
@@ -51,16 +55,36 @@
     }
 }
 
+
 .gameDefinitionsList {
     &#flip-scroll {
         @media only screen and (max-width: $screen-sm-max) {
 
             .bgg-link-head {
-                height: 100px;
+                height: $gamethumbnail-height;
             }
 
             .edit-head {
                 height: 40px;
+            }
+
+            .name-head {
+                height: $gamename-height;
+            }
+
+            .name-col {
+                height: $gamename-height;
+                max-width: $gamethumbnail-maxwidht;
+                overflow: hidden;
+
+                a {
+                    white-space: normal;
+                    word-break: break-word;
+                }
+            }
+
+            .edit-col {
+                height: 47px;
             }
 
             .plays-col {
@@ -88,15 +112,15 @@
 
     .bgg-link-col {
         font-weight: bold;
-        height: 100px;
+        height: $gamethumbnail-height;
         overflow: hidden;
         text-align: center;
+        max-width: $gamethumbnail-maxwidht;
 
         .bgg-thumbnail {
             width: auto;
             height: 100%;
-            max-width: 200px;
-            min-height: 100px;
+            min-height: $gamethumbnail-height;
         }
     }
 }

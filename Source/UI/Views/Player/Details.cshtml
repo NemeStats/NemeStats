@@ -145,7 +145,7 @@
                                         Image
                                     </span>
                                 </th>
-                                <th>Game</th>
+                                <th class="name-head">Game</th>
                                 <th>Win - Loss Record</th>
                                 <th>% Won</th>
                             </tr>
@@ -174,7 +174,7 @@
                                             <img class="bgg-thumbnail" src="@summary.ThumbnailImageUrl" alt="@summary.GameDefinitionName" />
                                         }
                                     </td>
-                                    <td>
+                                    <td class="name-col">
                                         @Html.ActionLink(summary.GameDefinitionName, "Details", "GameDefinition", new { id = summary.GameDefinitionId }, new { })
                                     </td>
                                     <td>
