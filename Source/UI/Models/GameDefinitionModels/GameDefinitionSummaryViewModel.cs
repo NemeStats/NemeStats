@@ -31,6 +31,7 @@ namespace UI.Models.GameDefinitionModels
         public int GamingGroupId { get; set; }
         public int? BoardGameGeekObjectId { get; set; }
         public Uri BoardGameGeekUri { get; set; }
+        public string ThumbnailImageUrl { get; set; }
         public string ChampionName { get; set; }
         public int? ChampionPlayerId { get; set; }
         public int? NumberOfWins { get; set; }

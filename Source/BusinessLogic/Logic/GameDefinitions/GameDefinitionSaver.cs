@@ -25,6 +25,7 @@ using BusinessLogic.Models.User;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using BoardGameGeekApiClient.Interfaces;
 
 namespace BusinessLogic.Logic.GameDefinitions
 {
@@ -35,27 +36,66 @@ namespace BusinessLogic.Logic.GameDefinitions
 
         private readonly IDataContext dataContext;
         private readonly INemeStatsEventTracker eventTracker;
+        private readonly IBoardGameGeekApiClient _boardGameGeekApiClient;
 
-        public GameDefinitionSaver(IDataContext dataContext, INemeStatsEventTracker eventTracker)
+        public GameDefinitionSaver(IDataContext dataContext, INemeStatsEventTracker eventTracker, IBoardGameGeekApiClient boardGameGeekApiClient)
         {
             this.dataContext = dataContext;
             this.eventTracker = eventTracker;
+            _boardGameGeekApiClient = boardGameGeekApiClient;
         }
 
         public virtual GameDefinition Save(GameDefinition gameDefinition, ApplicationUser currentUser)
         {
             ValidateGameDefinitionIsNotNull(gameDefinition);
             ValidateGameDefinitionNameIsNotNullOrWhitespace(gameDefinition.Name);
-            bool isNewGameDefinition = !gameDefinition.AlreadyInDatabase();
-            if (isNewGameDefinition)
+            bool gameDefinitionAlreadyExists = gameDefinition.AlreadyInDatabase();
+            if (gameDefinitionAlreadyExists)
             {
-                GameDefinition definition = gameDefinition;
-                new Task(() => eventTracker.TrackGameDefinitionCreation(currentUser, definition.Name)).Start();
-
-                gameDefinition = this.HandleExistingGameDefinitionWithThisName(gameDefinition, currentUser.CurrentGamingGroupId.Value);
+                var existingGameDefinition = dataContext.FindById<GameDefinition>(gameDefinition.Id);
+                if(existingGameDefinition != null && existingGameDefinition.BoardGameGeekObjectId != gameDefinition.BoardGameGeekObjectId)
+                {
+                    SetBoardGameGeekThumbnail(gameDefinition);
+                }
+                return this.dataContext.Save(gameDefinition, currentUser);
             }
+            var definition = gameDefinition;
+
+            this.SetBoardGameGeekThumbnail(gameDefinition);
+
+            new Task(() => this.eventTracker.TrackGameDefinitionCreation(currentUser, definition.Name)).Start();
+
+            gameDefinition = this.HandleExistingGameDefinitionWithThisName(gameDefinition, currentUser.CurrentGamingGroupId.Value);
 
             return dataContext.Save<GameDefinition>(gameDefinition, currentUser);
+        }
+
+        private static void ValidateGameDefinitionIsNotNull(GameDefinition gameDefinition)
+        {
+            if (gameDefinition == null)
+            {
+                throw new ArgumentNullException("gameDefinition");
+            }
+        }
+
+        private static void ValidateGameDefinitionNameIsNotNullOrWhitespace(string gameDefinitionName)
+        {
+            if (string.IsNullOrWhiteSpace(gameDefinitionName))
+            {
+                throw new ArgumentException(EXCEPTION_MESSAGE_GAME_DEFINITION_NAME_CANNOT_BE_NULL_OR_WHITESPACE);
+            }
+        }
+
+        private void SetBoardGameGeekThumbnail(GameDefinition gameDefinition)
+        {
+            if (gameDefinition.BoardGameGeekObjectId.HasValue)
+            {
+                var gameDetails = this._boardGameGeekApiClient.GetGameDetails(gameDefinition.BoardGameGeekObjectId.Value);
+                if (gameDetails != null)
+                {
+                    gameDefinition.ThumbnailImageUrl = gameDetails.Thumbnail;
+                }
+            }
         }
 
         private GameDefinition HandleExistingGameDefinitionWithThisName(GameDefinition gameDefinition, int currentUsersGamingGroupId)
@@ -80,22 +120,6 @@ namespace BusinessLogic.Logic.GameDefinitions
             existingGameDefinition.Active = true;
 
             return existingGameDefinition;
-        }
-
-        private static void ValidateGameDefinitionIsNotNull(GameDefinition gameDefinition)
-        {
-            if (gameDefinition == null)
-            {
-                throw new ArgumentNullException("gameDefinition");
-            }
-        }
-
-        private static void ValidateGameDefinitionNameIsNotNullOrWhitespace(string gameDefinitionName)
-        {
-            if (string.IsNullOrWhiteSpace(gameDefinitionName))
-            {
-                throw new ArgumentException(EXCEPTION_MESSAGE_GAME_DEFINITION_NAME_CANNOT_BE_NULL_OR_WHITESPACE);
-            }
         }
 
         public virtual void UpdateGameDefinition(GameDefinitionUpdateRequest gameDefinitionUpdateRequest, ApplicationUser applicationUser)

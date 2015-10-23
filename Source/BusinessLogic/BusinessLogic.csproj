@@ -159,6 +159,7 @@
     <Compile Include="Logic\BoardGameGeek\DeSerializationModels\SearchResultModels.cs" />
     <Compile Include="Logic\Champions\ChampionRecalculator.cs" />
     <Compile Include="Logic\Email\EmailService.cs" />
+    <Compile Include="Logic\GameDefinitions\BoardGameGeekThumbnailAttacher.cs" />
     <Compile Include="Logic\GameDefinitions\GameDefinitionUpdateRequest.cs" />
     <Compile Include="Logic\GamingGroups\GamingGroupInfoForUser.cs" />
     <Compile Include="Logic\Points\PointsCalculator.cs" />
@@ -273,6 +274,10 @@
     <Compile Include="Migrations\201505221156047_AddPublicFieldsToGamingGroup.cs" />
     <Compile Include="Migrations\201505221156047_AddPublicFieldsToGamingGroup.Designer.cs">
       <DependentUpon>201505221156047_AddPublicFieldsToGamingGroup.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201510131345507_AddThumbnailImageUrlToGameDefinition.cs" />
+    <Compile Include="Migrations\201510131345507_AddThumbnailImageUrlToGameDefinition.Designer.cs">
+      <DependentUpon>201510131345507_AddThumbnailImageUrlToGameDefinition.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\Games\GameDefinitionName.cs" />
     <Compile Include="Models\GamingGroups\GamingGroupEditRequest.cs" />
@@ -647,8 +652,16 @@
     <EmbeddedResource Include="Migrations\201505221156047_AddPublicFieldsToGamingGroup.resx">
       <DependentUpon>201505221156047_AddPublicFieldsToGamingGroup.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201510131345507_AddThumbnailImageUrlToGameDefinition.resx">
+      <DependentUpon>201510131345507_AddThumbnailImageUrlToGameDefinition.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\..\BoardGameGeekApiClient\BoardGameGeekApiClient.csproj">
+      <Project>{d4efacf4-b72b-4395-89bf-4caa9a33c427}</Project>
+      <Name>BoardGameGeekApiClient</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

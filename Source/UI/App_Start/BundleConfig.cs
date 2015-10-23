@@ -64,12 +64,13 @@ namespace UI
                 .Include("~/Scripts/Shared/_LoginPartial.js")
                 .Include("~/Scripts/Shared/GoogleAnalytics.js"));
 
-            bundles.Add(new StyleBundle("~/bundles/content/css").Include(
-                "~/sass/_bootswatch.css", new CssRewriteUrlTransform())
+            bundles.Add(new StyleBundle("~/bundles/content/css")
+                .Include("~/sass/_bootswatch.css", new CssRewriteUrlTransform())
+                .Include("~/sass/ui.min.css", new CssRewriteUrlTransform())
+                .Include("~/sass/flipscroll.min.css", new CssRewriteUrlTransform())
                 .Include("~/Content/site.css",
                     "~/Content/site-mobile.css",
-                    "~/Content/blog.css",
-                    "~/Content/ui.min.css")
+                    "~/Content/blog.css")
                 .Include("~/Content/font-awesome.min.css", new CssRewriteUrlTransform()));
 
             bundles.Add(new StyleBundle("~/Content/themes/base/css").Include(
