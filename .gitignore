@@ -10,6 +10,7 @@ Web.Tosho.config
 Web.Debug.config
 Web.Release.config
 PrivateAppSettings.config
+.vs/
 
 # Build results
 [Dd]ebug/
