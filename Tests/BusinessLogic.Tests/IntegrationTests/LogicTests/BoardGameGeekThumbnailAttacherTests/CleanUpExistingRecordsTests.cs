@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BusinessLogic.Logic.GameDefinitions;
+﻿using BusinessLogic.Logic.GameDefinitions;
 using NUnit.Framework;
 
 namespace BusinessLogic.Tests.IntegrationTests.LogicTests.BoardGameGeekThumbnailAttacherTests
@@ -12,9 +7,10 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.BoardGameGeekThumbnail
     public class CleanUpExistingRecordsTests
     {
         [Test]
+        [Ignore("Does a huge amount of updates to the database. Run only very deliberately.")]
         public void DoIt()
         {
-            //new BoardGameGeekThumbnailAttacher().CleanUpExistingRecords();
+            new BoardGameGeekThumbnailAttacher().CleanUpExistingRecords();
         }
 
     }

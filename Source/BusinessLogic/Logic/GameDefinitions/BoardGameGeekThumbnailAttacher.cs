@@ -4,6 +4,7 @@ using BoardGameGeekApiClient.Service;
 using BusinessLogic.DataAccess;
 using BusinessLogic.DataAccess.Security;
 using BusinessLogic.Models;
+using BusinessLogic.Models.User;
 
 namespace BusinessLogic.Logic.GameDefinitions
 {
@@ -28,9 +29,10 @@ namespace BusinessLogic.Logic.GameDefinitions
                     var client = new BoardGameGeekClient(new ApiDownloaderService());
                     foreach (int? boardGameGeekObjectId in boardGameGeekObjectIdsNeedingThumbnails)
                     {
+                        System.Threading.Thread.Sleep(500);
                         var gameDetails = client.GetGameDetails(boardGameGeekObjectId.Value);
 
-                        if (string.IsNullOrEmpty(gameDetails.Thumbnail))
+                        if (gameDetails == null || string.IsNullOrEmpty(gameDetails.Thumbnail))
                         {
                             continue;
                         }
@@ -40,7 +42,14 @@ namespace BusinessLogic.Logic.GameDefinitions
                         foreach (var gameDefinition in gameDefinitionsForThisId)
                         {
                             gameDefinition.ThumbnailImageUrl = gameDetails.Thumbnail;
+                            var applicationUserWhoWillHaveSecurityToUpdate = new ApplicationUser
+                            {
+                                CurrentGamingGroupId = gameDefinition.GamingGroupId
+                            };
+                            dataContext.Save(gameDefinition, applicationUserWhoWillHaveSecurityToUpdate);
+                            dataContext.CommitAllChanges();
                         }
+
                     }
                 }
             }
