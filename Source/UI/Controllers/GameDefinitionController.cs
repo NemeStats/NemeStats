@@ -131,6 +131,7 @@ namespace UI.Controllers
 		[Authorize]
 		[HttpPost]
 		[UserContext]
+        //TODO vulnerable to overposting. Need to change this to a request type that only has the fields that can be edited here
 		public virtual ActionResult Save(GameDefinition model, ApplicationUser currentUser)
 		{
 			if (!Request.IsAjaxRequest())

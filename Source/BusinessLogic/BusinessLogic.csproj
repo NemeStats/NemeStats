@@ -159,6 +159,7 @@
     <Compile Include="Logic\BoardGameGeek\DeSerializationModels\SearchResultModels.cs" />
     <Compile Include="Logic\Champions\ChampionRecalculator.cs" />
     <Compile Include="Logic\Email\EmailService.cs" />
+    <Compile Include="Logic\GameDefinitions\BoardGameGeekThumbnailAttacher.cs" />
     <Compile Include="Logic\GameDefinitions\GameDefinitionUpdateRequest.cs" />
     <Compile Include="Logic\GamingGroups\GamingGroupInfoForUser.cs" />
     <Compile Include="Logic\Points\PointsCalculator.cs" />
