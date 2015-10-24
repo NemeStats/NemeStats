@@ -144,6 +144,19 @@ namespace UI.Controllers
             return View(MVC.GamingGroup.Views.TopGamingGroups, topGamingGroupViewModels);
         }
 
+        [HttpGet]
+        [UserContext]
+        public virtual ActionResult GetCurrentUserGamingGroupGameDefinitions(int id, ApplicationUser currentUser)
+        {
+            var model = GetGamingGroupSummary(id)
+                .GameDefinitionSummaries
+                .Select(summary => gameDefinitionSummaryViewModelBuilder.Build(summary, currentUser)).ToList();
+
+            ViewData["canEdit"] = true;
+
+            return View(MVC.GameDefinition.Views._GameDefinitionsTablePartial, model);
+        }
+
         [HttpPost]
         [Authorize]
         [UserContext]

@@ -1,0 +1,102 @@
+﻿@model IList<UI.Models.GameDefinitionModels.GameDefinitionSummaryViewModel>
+
+@{
+    Layout = null;
+}
+<div class="panel-body">
+    <div class="gameDefinitionsList" id="flip-scroll">
+        <table class="table table-hover table-striped">
+            <thead>
+                <tr>
+                    <th class="col-md-2 bgg-link-head"></th>
+                    <th class="col-md-4 name-head">
+                        Name
+                    </th>
+                    <th class="col-md-2">
+                        <span class="hidden-xs hidden-sm">
+                            Played Games
+                        </span>
+                        <span class="hidden-md hidden-lg">
+                            Plays
+                        </span>
+                    </th>
+                    <th class="col-md-3">
+                        <span class="hidden-xs hidden-sm">
+                            Previous/Current Champion
+                        </span>
+                        <i class="fa fa-trophy" data-container="body" data-toggle="popover" data-placement="top"
+                           data-content="The Champion is the Player within the Gaming Group with the most wins of this game."></i>
+                    </th>
+                    <th class="col-md-1 edit-head">&nbsp;</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr class="game-item">
+                        <td class="bgg-link-col">
+                            @if (item.BoardGameGeekUri != null)
+                            {
+
+                                <a href="@item.BoardGameGeekUri">
+                                    @if (!string.IsNullOrEmpty(item.ThumbnailImageUrl))
+                                    {
+                                        <img class="bgg-thumbnail" src="@item.ThumbnailImageUrl" alt="View on BoardGameGeek.com" title="View on BoardGameGeek.com" />
+                                    }
+                                    else
+                                    {
+                                        <img src="~/Content/Images/bgg_small.png" alt="View on BoardGameGeek.com" title="View on BoardGameGeek.com" />
+                                    }
+
+                                </a>
+
+                            }
+                        </td>
+                        <td class="name-col">
+                            <b>
+                                @Html.ActionLink(item.Name, "Details", "GameDefinition", new { id = item.Id }, new { })
+                            </b>
+                        </td>
+                        <td class="plays-col">@Html.DisplayFor(modelItem => item.TotalNumberOfGamesPlayed)</td>
+                        <td class="champion-col">
+                            @if (item.PreviousChampionName != null)
+                            {
+                                <span style="text-decoration: line-through">
+                                    <b>
+                                        @Html.ActionLink(item.PreviousChampionName,
+                                                "Details",
+                                                "Player",
+                                                new { id = item.PreviousChampionPlayerId },
+                                                new { })
+                                    </b>
+                                </span>
+                                    <span>/</span>
+                            }
+                            @if (item.ChampionName != null)
+                            {
+                                <b>
+                                    @Html.ActionLink(item.ChampionName, "Details", "Player", new { id = item.ChampionPlayerId }, new { })
+                                </b>
+                            }
+                            else
+                            {
+                                <span>-</span>
+                            }
+                        </td>
+                        <td class="edit-col">
+                            @if (item.UserCanEdit)
+                            {
+                                <a href="@Url.Action("Edit", "GameDefinition", new
+                                             {
+                                                 id = item.Id
+                                             })" title="Edit">
+                                    <span class="fa fa-pencil fa-2x"></span>
+                                </a>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

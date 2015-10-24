@@ -24,6 +24,7 @@ using System.Web.Http;
 using BusinessLogic.Models;
 using UI.Areas.Api.Models;
 using UI.Attributes;
+using VersionedRestApi;
 
 namespace UI.Areas.Api.Controllers
 {

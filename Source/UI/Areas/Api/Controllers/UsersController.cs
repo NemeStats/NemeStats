@@ -9,6 +9,7 @@ using BusinessLogic.Models.User;
 using UI.Areas.Api.Models;
 using UI.Attributes;
 using UI.Transformations;
+using VersionedRestApi;
 
 namespace UI.Areas.Api.Controllers
 {

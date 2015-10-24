@@ -16,10 +16,12 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 
+using System;
 using System.Linq;
 
 namespace BusinessLogic.Models.Games
 {
+    [Obsolete]
     public class BoardGameGeekSearchResult
     {
         public string BoardGameName { get; set; }

@@ -27,6 +27,7 @@ using BusinessLogic.Models.Games;
 
 namespace BusinessLogic.Logic.BoardGameGeek
 {
+    [Obsolete]
     public class BoardGameGeekSearcher : IBoardGameGeekSearcher
     {
         public const string URI_FORMAT_BOARD_GAME_GEEK_SEARCH_REQUEST = "http://www.boardgamegeek.com/xmlapi/search?search={0}";
