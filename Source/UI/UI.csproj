@@ -153,9 +153,9 @@
       <HintPath>..\..\packages\structuremap.web.3.1.0.133\lib\net40\StructureMap.Web.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Configuration.Abstractions, Version=2.0.2.15, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\UniversalAnalyticsMeasurementProtocolWrapper.1.3.1\lib\net40\System.Configuration.Abstractions.dll</HintPath>
+    <Reference Include="System.Configuration.Abstractions, Version=2.0.2.21, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Configuration.Abstractions.2.0.2.21\lib\net45\System.Configuration.Abstractions.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -230,6 +230,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\UniversalAnalyticsMeasurementProtocolWrapper.1.3.1\lib\net40\UniversalAnalyticsHttpWrapper.dll</HintPath>
     </Reference>
+    <Reference Include="VersionedRestApi, Version=1.0.0.2, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\VersionedRestApi.1.0.0.2\lib\net45\VersionedRestApi.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="WebActivator">
       <HintPath>..\..\packages\WebActivator.1.5.3\lib\net40\WebActivator.dll</HintPath>
     </Reference>
@@ -293,7 +297,6 @@
     <Compile Include="Attributes\ApiAuthenticationAttribute.cs" />
     <Compile Include="Attributes\ApiExceptionFilter.cs" />
     <Compile Include="Attributes\ApiModelValidationAttribute.cs" />
-    <Compile Include="Attributes\ApiRouteAttribute.cs" />
     <Compile Include="Attributes\ClientIdCalculator.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\GameDefinitionController.cs" />

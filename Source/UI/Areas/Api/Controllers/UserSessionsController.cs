@@ -6,6 +6,7 @@ using System.Web.Http;
 using BusinessLogic.Logic.Users;
 using UI.Areas.Api.Models;
 using UI.Attributes;
+using VersionedRestApi;
 
 namespace UI.Areas.Api.Controllers
 {
