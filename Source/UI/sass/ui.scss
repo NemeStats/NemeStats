@@ -11,20 +11,6 @@
     }
 }
 
-.fa {
-    &.fa-slashed {
-        &:after {
-            position: relative;
-            content: "/";
-            font-weight: 700;
-            font-size: 1.7em;
-            left: -17px;
-            top: 2px;
-        }
-    }
-}
-
-
 $gamename-height: 70px;
 $gamethumbnail-maxwidht: 200px;
 $gamethumbnail-height: 100px;
@@ -56,7 +42,41 @@ $gamethumbnail-height: 100px;
 }
 
 
+.player-statistics {
+    .fa {
+        &.fa-trophy {
+            &.fa-slashed {
+                &:after {
+                    position: relative;
+                    content: "/";
+                    font-weight: 700;
+                    font-size: 1.7em;
+                    left: -17px;
+                    top: 2px;
+                }
+            }
+        }
+    }
+}
+
+
+
 .gameDefinitionsList {
+
+    .fa {
+        &.fa-trophy {
+            &.fa-slashed {
+                &:after {
+                    position: relative;
+                    content: "/";
+                    font-weight: 700;
+                    font-size: 1.6em;
+                    top: -21px;
+                }
+            }
+        }
+    }
+
     &#flip-scroll {
         @media only screen and (max-width: $screen-sm-max) {
 
