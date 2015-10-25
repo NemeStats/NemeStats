@@ -16,15 +16,11 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.ExceptionServices;
 using BoardGameGeekApiClient.Service;
 using BusinessLogic.DataAccess;
 using BusinessLogic.DataAccess.Security;
-using BusinessLogic.Logic.BoardGameGeek;
 using BusinessLogic.Models;
-using BusinessLogic.Models.Games;
 using BusinessLogic.Models.User;
 
 namespace BusinessLogic.Logic.GameDefinitions
