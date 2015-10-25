@@ -463,9 +463,8 @@
     <Content Include="Content\themes\base\tabs.css" />
     <Content Include="Content\themes\base\theme.css" />
     <Content Include="Content\themes\base\tooltip.css" />
-    <Content Include="css\flipscroll.min.css" />
-    <Content Include="css\ui.min.css" />
-    <Content Include="css\variables.min.css" />
+    <Content Include="css\nemestats.css" />
+    <Content Include="css\theme.css" />
     <Content Include="gruntfile.js" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\bootstrap\glyphicons-halflings-regular.svg" />
@@ -502,14 +501,13 @@
     <Content Include="fonts\bootstrap\glyphicons-halflings-regular.eot" />
     <Content Include="sass\nemestats\ui.scss" />
     <Content Include="sass\nemestats\nemestats-variables.scss" />
-    <Content Include="sass\flipscroll.scss" />
-    <Content Include="css\flipscroll.min.css.map" />
-    <Content Include="css\ui.min.css.map" />
-    <Content Include="css\variables.min.css.map" />
+    <Content Include="sass\nemestats\flipscroll.scss" />
+    <Content Include="css\nemestats.css.map" />
+    <Content Include="css\theme.css.map" />
     <None Include="package.json" />
     <None Include="Properties\PublishProfiles\nerdscorekeeper.pubxml" />
     <None Include="Properties\PublishProfiles\Publish Local.pubxml" />
-    <Content Include="sass\_bootswatch.scss">
+    <Content Include="sass\theme\_bootswatch.scss">
       <Compile>True</Compile>
       <Minify>True</Minify>
       <IgnoreWarnings>False</IgnoreWarnings>
@@ -517,7 +515,9 @@
       <CompileStyle>Nested</CompileStyle>
       <DebugInfo>False</DebugInfo>
     </Content>
-    <Content Include="sass\custom-bootstrap-variables.scss" />
+    <Content Include="sass\nemestats\custom-bootstrap-variables.scss" />
+    <Content Include="sass\imports\nemestats.scss" />
+    <Content Include="sass\imports\theme.scss" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="robots.txt" />
     <Content Include="Scripts\CreatePlayedGame\createplayedgame.js" />
@@ -633,10 +633,7 @@
     <Content Include="sass\bootstrap\_breadcrumbs.scss" />
     <Content Include="sass\bootstrap\_badges.scss" />
     <Content Include="sass\bootstrap\_alerts.scss" />
-    <Content Include="sass\_bootstrap-sprockets.scss" />
-    <Content Include="sass\_bootstrap-mincer.scss" />
-    <Content Include="sass\_bootstrap-compass.scss" />
-    <Content Include="sass\_bootstrap.scss" />
+    <Content Include="sass\imports\_bootstrap.scss" />
     <Content Include="T4MVC.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>T4MVC.cs</LastGenOutput>
@@ -722,7 +719,6 @@
     <Folder Include="App_Code\" />
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Api\Views\Shared\" />
-    <Folder Include="Scripts\stylesheets\" />
     <Folder Include="Views\Shared\DisplayTemplates\" />
   </ItemGroup>
   <ItemGroup>

@@ -58,18 +58,19 @@ namespace UI
                 .Include("~/Scripts/Player/players.js")
                 .Include("~/Scripts/GameDefinition/gameDefinitionAutoComplete.js")
                 .Include("~/Scripts/GameDefinition/createGameDefinitionPartial.js")
-				.Include("~/Scripts/GameDefinition/createGameDefinition.js")
-				.Include("~/Scripts/GameDefinition/gameDefinitions.js")
-				.Include("~/Scripts/Shared/_Layout.js")
+                .Include("~/Scripts/GameDefinition/createGameDefinition.js")
+                .Include("~/Scripts/GameDefinition/gameDefinitions.js")
+                .Include("~/Scripts/Shared/_Layout.js")
                 .Include("~/Scripts/Shared/_LoginPartial.js")
                 .Include("~/Scripts/Shared/GoogleAnalytics.js"));
 
             bundles.Add(new StyleBundle("~/bundles/content/css")
-                .IncludeDirectory("~/css", "*.css")
-                //.Include("~/css/ui.min.css")
-                //.Include("~/Content/site.css",
-                //    "~/Content/site-mobile.css",
-                //    "~/Content/blog.css")
+                .Include("~/css/bootstrap.css")
+                .Include("~/css/theme.css")
+                .Include("~/css/nemestats.css")
+                .Include("~/Content/site.css",
+                    "~/Content/site-mobile.css",
+                    "~/Content/blog.css")
                 .Include("~/Content/font-awesome.min.css", new CssRewriteUrlTransform())
                 );
 

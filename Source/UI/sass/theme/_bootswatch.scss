@@ -2,8 +2,8 @@
 // Bootswatch
 // -----------------------------------------------------
 @import url("//fonts.googleapis.com/css?family=Lato:400,700,400italic");
-@import "bootstrap/_variables.scss";
-@import "_bootstrap.scss";
+@import "../bootstrap/_variables.scss";
+@import "../imports/_bootstrap.scss";
 
 // Navbar =====================================================================
 
