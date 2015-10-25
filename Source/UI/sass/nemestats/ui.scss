@@ -1,5 +1,5 @@
-﻿@import "variables.scss";
-@import "bootstrap/_variables.scss";
+﻿@import "nemestats-variables.scss";
+@import "../bootstrap/_variables.scss";
 
 .neme-points-ico {
     color: $header-background;
@@ -14,7 +14,6 @@
 $gamename-height: 70px;
 $gamethumbnail-maxwidht: 200px;
 $gamethumbnail-height: 100px;
-
 #player-details {
     .gameDefinitionsList {
         @media only screen and (max-width: $screen-sm-max) {
@@ -129,6 +128,7 @@ $gamethumbnail-height: 100px;
     .no-bgg-ico {
         font-size: 40px;
     }
+
 
     .bgg-link-col {
         font-weight: bold;

@@ -65,13 +65,13 @@ namespace UI
                 .Include("~/Scripts/Shared/GoogleAnalytics.js"));
 
             bundles.Add(new StyleBundle("~/bundles/content/css")
-                .Include("~/sass/_bootswatch.css", new CssRewriteUrlTransform())
-                .Include("~/sass/ui.min.css", new CssRewriteUrlTransform())
-                .Include("~/sass/flipscroll.min.css", new CssRewriteUrlTransform())
-                .Include("~/Content/site.css",
-                    "~/Content/site-mobile.css",
-                    "~/Content/blog.css")
-                .Include("~/Content/font-awesome.min.css", new CssRewriteUrlTransform()));
+                .IncludeDirectory("~/css", "*.css")
+                //.Include("~/css/ui.min.css")
+                //.Include("~/Content/site.css",
+                //    "~/Content/site-mobile.css",
+                //    "~/Content/blog.css")
+                .Include("~/Content/font-awesome.min.css", new CssRewriteUrlTransform())
+                );
 
             bundles.Add(new StyleBundle("~/Content/themes/base/css").Include(
                 "~/Content/Themes/base/jquery-ui.css"));
