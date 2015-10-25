@@ -279,6 +279,11 @@
     <Compile Include="Migrations\201510131345507_AddThumbnailImageUrlToGameDefinition.Designer.cs">
       <DependentUpon>201510131345507_AddThumbnailImageUrlToGameDefinition.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201510250143349_RenameBoardGameGeekObjectId.cs" />
+    <Compile Include="Migrations\201510250143349_RenameBoardGameGeekObjectId.Designer.cs">
+      <DependentUpon>201510250143349_RenameBoardGameGeekObjectId.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\BoardGameGeekGameDefinition.cs" />
     <Compile Include="Models\Games\GameDefinitionName.cs" />
     <Compile Include="Models\GamingGroups\GamingGroupEditRequest.cs" />
     <Compile Include="Models\GamingGroups\NewlyCreatedGamingGroupResult.cs" />
@@ -654,6 +659,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201510131345507_AddThumbnailImageUrlToGameDefinition.resx">
       <DependentUpon>201510131345507_AddThumbnailImageUrlToGameDefinition.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201510250143349_RenameBoardGameGeekObjectId.resx">
+      <DependentUpon>201510250143349_RenameBoardGameGeekObjectId.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

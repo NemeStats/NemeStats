@@ -56,5 +56,8 @@ namespace BusinessLogic.Models
 
         public virtual Champion Champion { get; set; }
         public virtual Champion PreviousChampion { get; set; }
+
+        public int BoardGameGeekGameDefinitionId { get; set; }
+        public virtual BoardGameGeekGameDefinition BoardGameGeekGameDefinition { get; set; }
     }
 }
