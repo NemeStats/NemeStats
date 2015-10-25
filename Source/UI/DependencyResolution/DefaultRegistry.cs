@@ -159,8 +159,6 @@ namespace UI.DependencyResolution {
 
             this.For<IFirstTimeAuthenticator>().Use<FirstTimeAuthenticator>();
 
-            this.For<IBoardGameGeekSearcher>().Use<BoardGameGeekSearcher>();
-
             this.For<IPlayerInviter>().Use<PlayerInviter>();
 
             this.For<IIdentityMessageService>().Use<EmailService>();

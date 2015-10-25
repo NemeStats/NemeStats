@@ -18,6 +18,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.ExceptionServices;
+using BoardGameGeekApiClient.Service;
 using BusinessLogic.DataAccess;
 using BusinessLogic.DataAccess.Security;
 using BusinessLogic.Logic.BoardGameGeek;
@@ -35,20 +37,20 @@ namespace BusinessLogic.Logic.GameDefinitions
             {
                 using (NemeStatsDataContext dataContext = new NemeStatsDataContext(dbContext, new SecuredEntityValidatorFactory()))
                 {
-                    List<GameDefinition> games = dataContext.GetQueryable<GameDefinition>()
+                    var games = dataContext.GetQueryable<GameDefinition>()
                                                             .Where(game => game.BoardGameGeekObjectId == null)
                                                             .ToList();
 
-                    BoardGameGeekSearcher bggSearcher = new BoardGameGeekSearcher();
+                    var bggSearcher = new BoardGameGeekClient(new ApiDownloaderService());
                     int updateCount = 0;
 
                     foreach (GameDefinition game in games)
                     {
-                        List<BoardGameGeekSearchResult> bggResults = bggSearcher.SearchForBoardGames(game.Name.Trim(), true);
+                        var bggResults = bggSearcher.SearchBoardGames(game.Name.Trim(), true);
 
-                        if (bggResults.Count == 1)
+                        if (bggResults.Count() == 1)
                         {
-                            game.BoardGameGeekObjectId = bggResults[0].BoardGameId;
+                            game.BoardGameGeekObjectId = bggResults.First().BoardGameId;
                             ApplicationUser user = new ApplicationUser
                             {
                                 CurrentGamingGroupId = game.GamingGroupId
