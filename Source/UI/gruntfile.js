@@ -15,7 +15,7 @@
         },
         sass: {
             options: {
-                sourcemap: "auto"
+                sourceMap: true
             },
             dist: {
                 files: {
@@ -33,8 +33,8 @@
         }
     });
     grunt.loadNpmTasks('grunt-sass-globbing');
-    grunt.loadNpmTasks("grunt-contrib-sass");
     grunt.loadNpmTasks("grunt-contrib-watch");
+    grunt.loadNpmTasks("grunt-sass");
 
     grunt.registerTask('default', ['watch']);
 };
