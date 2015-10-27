@@ -25,7 +25,7 @@ using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
 using BusinessLogic.Models.User;
 
-namespace BusinessLogic.Logic.GameDefinitions
+namespace BusinessLogic.Logic.OneTimeJobs
 {
     public class BoardGameGeekDataLinker
     {

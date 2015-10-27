@@ -159,7 +159,7 @@
     <Compile Include="Logic\BoardGameGeek\DeSerializationModels\SearchResultModels.cs" />
     <Compile Include="Logic\Champions\ChampionRecalculator.cs" />
     <Compile Include="Logic\Email\EmailService.cs" />
-    <Compile Include="Logic\GameDefinitions\BoardGameGeekThumbnailAttacher.cs" />
+    <Compile Include="Logic\OneTimeJobs\BoardGameGeekThumbnailAttacher.cs" />
     <Compile Include="Logic\GameDefinitions\GameDefinitionUpdateRequest.cs" />
     <Compile Include="Logic\GamingGroups\GamingGroupInfoForUser.cs" />
     <Compile Include="Logic\Points\PointsCalculator.cs" />
@@ -173,7 +173,7 @@
     <Compile Include="Logic\Users\IUserRetriever.cs" />
     <Compile Include="Logic\Users\UserRetriever.cs" />
     <Compile Include="Logic\VotableFeatures\IVotableFeatureRetriever.cs" />
-    <Compile Include="Logic\GameDefinitions\BoardGameGeekDataLinker.cs" />
+    <Compile Include="Logic\OneTimeJobs\BoardGameGeekDataLinker.cs" />
     <Compile Include="Logic\Champions\IChampionRecalculator.cs" />
     <Compile Include="Logic\Nemeses\INemesisHistoryRetriever.cs" />
     <Compile Include="Logic\Nemeses\INemesisRecalculator.cs" />
@@ -279,9 +279,9 @@
     <Compile Include="Migrations\201510131345507_AddThumbnailImageUrlToGameDefinition.Designer.cs">
       <DependentUpon>201510131345507_AddThumbnailImageUrlToGameDefinition.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201510250143349_RenameBoardGameGeekObjectId.cs" />
-    <Compile Include="Migrations\201510250143349_RenameBoardGameGeekObjectId.Designer.cs">
-      <DependentUpon>201510250143349_RenameBoardGameGeekObjectId.cs</DependentUpon>
+    <Compile Include="Migrations\201510260223418_AddBoardGameGeekGameDefinition.cs" />
+    <Compile Include="Migrations\201510260223418_AddBoardGameGeekGameDefinition.Designer.cs">
+      <DependentUpon>201510260223418_AddBoardGameGeekGameDefinition.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\BoardGameGeekGameDefinition.cs" />
     <Compile Include="Models\Games\GameDefinitionName.cs" />
@@ -488,7 +488,9 @@
     <Compile Include="Providers\MachineKeyProtectionProvider.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="App.Debug.config">
       <DependentUpon>App.config</DependentUpon>
     </None>
@@ -660,8 +662,8 @@
     <EmbeddedResource Include="Migrations\201510131345507_AddThumbnailImageUrlToGameDefinition.resx">
       <DependentUpon>201510131345507_AddThumbnailImageUrlToGameDefinition.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201510250143349_RenameBoardGameGeekObjectId.resx">
-      <DependentUpon>201510250143349_RenameBoardGameGeekObjectId.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201510260223418_AddBoardGameGeekGameDefinition.resx">
+      <DependentUpon>201510260223418_AddBoardGameGeekGameDefinition.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

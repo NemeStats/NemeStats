@@ -37,6 +37,8 @@ namespace BusinessLogic.Models
         [Index("IX_ID_AND_NAME", 1, IsUnique = true)]
         public override int GamingGroupId { get; set; }
 
+        //TODO remove this once migration is done
+        [NotMapped]
         public int? BoardGameGeekObjectId { get; set; }
         public string ThumbnailImageUrl { get; set; }
 

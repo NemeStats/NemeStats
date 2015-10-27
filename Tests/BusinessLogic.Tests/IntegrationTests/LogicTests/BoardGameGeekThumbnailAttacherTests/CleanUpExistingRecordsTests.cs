@@ -1,4 +1,4 @@
-﻿using BusinessLogic.Logic.GameDefinitions;
+﻿using BusinessLogic.Logic.OneTimeJobs;
 using NUnit.Framework;
 
 namespace BusinessLogic.Tests.IntegrationTests.LogicTests.BoardGameGeekThumbnailAttacherTests

@@ -6,7 +6,7 @@ using BusinessLogic.DataAccess.Security;
 using BusinessLogic.Models;
 using BusinessLogic.Models.User;
 
-namespace BusinessLogic.Logic.GameDefinitions
+namespace BusinessLogic.Logic.OneTimeJobs
 {
     public class BoardGameGeekThumbnailAttacher
     {

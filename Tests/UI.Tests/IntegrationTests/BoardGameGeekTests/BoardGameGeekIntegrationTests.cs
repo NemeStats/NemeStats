@@ -17,12 +17,11 @@
 #endregion
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using BusinessLogic.DataAccess;
 using BusinessLogic.Logic.BoardGameGeek;
-using BusinessLogic.Logic.GameDefinitions;
 using BusinessLogic.Models.Games;
 using NUnit.Framework;
+using BusinessLogic.Logic.OneTimeJobs;
 
 namespace UI.Tests.IntegrationTests.BoardGameGeekTests
 {
