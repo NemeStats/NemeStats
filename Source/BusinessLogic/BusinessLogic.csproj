@@ -283,6 +283,10 @@
     <Compile Include="Migrations\201510260223418_AddBoardGameGeekGameDefinition.Designer.cs">
       <DependentUpon>201510260223418_AddBoardGameGeekGameDefinition.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201510271123195_WAT.cs" />
+    <Compile Include="Migrations\201510271123195_WAT.Designer.cs">
+      <DependentUpon>201510271123195_WAT.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\BoardGameGeekGameDefinition.cs" />
     <Compile Include="Models\Games\GameDefinitionName.cs" />
     <Compile Include="Models\GamingGroups\GamingGroupEditRequest.cs" />
@@ -664,6 +668,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201510260223418_AddBoardGameGeekGameDefinition.resx">
       <DependentUpon>201510260223418_AddBoardGameGeekGameDefinition.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201510271123195_WAT.resx">
+      <DependentUpon>201510271123195_WAT.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

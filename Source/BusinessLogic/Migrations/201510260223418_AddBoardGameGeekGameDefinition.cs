@@ -1,13 +1,6 @@
 namespace BusinessLogic.Migrations
 {
-    using DataAccess.Security;
-    using DataAccess;
-    using System;
     using System.Data.Entity.Migrations;
-    using Models;
-    using System.Collections.Generic;
-    using System.Linq;
-    using Models.User;
 
     public partial class AddBoardGameGeekGameDefinition : DbMigration
     {
