@@ -52,8 +52,8 @@
     border-left: 1px solid #babcbf; }
   #flip-scroll th:last-child, #flip-scroll td:last-child {
     border-bottom: 1px solid #babcbf; }
-
   /* sort out borders */ }
+
 .neme-points-ico {
   color: #2C3E50;
   font-size: 10px; }
@@ -67,9 +67,11 @@
   #player-details .gameDefinitionsList#flip-scroll .badges-col {
     line-height: 0;
     height: 31px; } }
+
 #player-details .gameDefinitionsList .badges-col {
   width: 20px;
   line-height: 100px; }
+
 #player-details .gameDefinitionsList .bgg-link-col {
   text-align: left; }
 
@@ -87,6 +89,7 @@
   font-weight: 700;
   font-size: 1.6em;
   top: -21px; }
+
 @media only screen and (max-width: 991px) {
   .gameDefinitionsList#flip-scroll .bgg-link-head {
     height: 100px; }
@@ -110,10 +113,13 @@
     text-align: center; }
   .gameDefinitionsList#flip-scroll .edit-col {
     text-align: center; } }
+
 .gameDefinitionsList .edit-col {
   text-align: center; }
+
 .gameDefinitionsList .no-bgg-ico {
   font-size: 40px; }
+
 .gameDefinitionsList .bgg-link-col {
   font-weight: bold;
   height: 100px;

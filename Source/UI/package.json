@@ -1,31 +1,32 @@
 {
-  "name": "NemeStats",
-  "version": "1.0.0",
-  "description": "NemeStats",
-  "author": "@jakejgordon",
-  "contributors": [
-    {
-      "name": "@cracker4o"
+    "name": "NemeStats",
+    "version": "1.0.0",
+    "description": "NemeStats",
+    "author": "@jakejgordon",
+    "contributors": [
+        {
+            "name": "@cracker4o"
+        },
+        {
+            "name": "@vfportero"
+        },
+        {
+            "name": "@mgerdes11"
+        },
+        {
+            "name": "@mkoch227"
+        },
+        {
+            "name": "@dsilva609"
+        }
+    ],
+    "dependencies": {
+        "bootstrap-sass": "^3.3.5"
     },
-    {
-      "name": "@vfportero"
+    "devDependencies": {
+        "grunt": "^0.4.5",
+        "grunt-contrib-watch": "^0.6.1",
+        "grunt-sass": "^1.1.0"
     },
-    {
-      "name": "@mgerdes11"
-    },
-    {
-      "name": "@mkoch227"
-    },
-    {
-      "name": "@dsilva609"
-    }
-  ],
-  "devDependencies": {
-    "grunt": "^0.4.5",
-    "grunt-bower-task": "^0.4.0",
-    "grunt-contrib-watch": "^0.6.1",
-    "grunt-sass-globbing": "^1.4.0",
-    "grunt-sass": "^1.1.0"
-  },
-  "license": "GNU General Public License"
+    "license": "GNU General Public License"
 }
