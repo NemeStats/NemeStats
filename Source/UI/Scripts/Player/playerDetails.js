@@ -19,7 +19,11 @@ Views.Player.Details.prototype = {
                 var gamesInPieChart = 9;
 
                 var pieChartData = data.gameDefinitionTotals.summariesOfGameDefinitionTotals;
-
+                if (pieChartData.length == 0)
+                {
+                    $("#GamesPieChart").hide();
+                    return;
+                }
                 pieChartData.sort(function (summary1, summary2) {
                     return (summary2.gamesLost + summary2.gamesWon) - (summary1.gamesLost + summary1.gamesWon);
                 });
@@ -32,7 +36,7 @@ Views.Player.Details.prototype = {
                                 gamesLost: accumulativeSummary.gamesLost + summary.gamesLost,
                                 gamesWon: accumulativeSummary.gamesWon + summary.gamesWon
                             };
-                        }, { gameDefinitionName: "Rest Of Games", gamesLost: 0, gamesWon: 0 });
+                        }, { gameDefinitionName: "All Other Games", gamesLost: 0, gamesWon: 0 });
                     pieChartData = pieChartData.slice(0, gamesInPieChart).concat(restOfGamesAccumulation);
                 }
 

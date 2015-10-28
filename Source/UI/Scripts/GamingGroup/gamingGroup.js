@@ -71,7 +71,7 @@ Views.GamingGroup.GamingGroupView.prototype = {
                         });
 
                     chart.yAxis
-                        .axisLabel('NemeStats Points')
+                        .axisLabel('NemePoints')
                         .tickFormat(d3.format('d'));
 
                     d3.select('#NemeStatsPointsLineGraph svg')
