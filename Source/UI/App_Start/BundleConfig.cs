@@ -46,6 +46,15 @@ namespace UI
             bundles.Add(new ScriptBundle("~/bundles/handlebars")
                 .Include("~/Scripts/handlebars.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/d3")
+                .Include("~/Scripts/d3/d3.js")
+                .Include("~/Scripts/d3/nv.d3.min.js")
+                .Include("~/Scripts/d3/gamesPlayedPieChart.js")
+                .Include("~/Scripts/d3/nemeStatsPointsLineGraph.js"));
+
+            bundles.Add(new StyleBundle("~/bundles/d3/css")
+                .Include("~/Scripts/d3/css/nv.d3.css"));
+
             bundles.Add(new ScriptBundle("~/bundles/custom")
                 .Include("~/Scripts/namespace-{version}.js")
                 .Include("~/Scripts/Plugins/toEditBoxPlugin.js")
@@ -55,6 +64,7 @@ namespace UI
                 .Include("~/Scripts/PlayedGame/search.js")
                 .Include("~/Scripts/PlayedGame/recordexceldownload.js")
                 .Include("~/Scripts/Player/createOrUpdatePlayer.js")
+                .Include("~/Scripts/Player/playerDetails.js")
                 .Include("~/Scripts/Player/players.js")
                 .Include("~/Scripts/GameDefinition/gameDefinitionAutoComplete.js")
                 .Include("~/Scripts/GameDefinition/createGameDefinitionPartial.js")

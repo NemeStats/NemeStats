@@ -16,6 +16,8 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 
+using System;
+using System.Web.Security.AntiXss;
 using BusinessLogic.DataAccess;
 using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.Models;
@@ -181,26 +183,21 @@ namespace BusinessLogic.Logic.Players
         public virtual PlayerStatistics GetPlayerStatistics(int playerId)
         {
             var playerStatistics = new PlayerStatistics();
-            var winsAndLosses = dataContext.GetQueryable<PlayerGameResult>()
-                                           .Where(playerGameResult => playerGameResult.PlayerId == playerId)
-                                           .GroupBy(playergameResults => playergameResults.GameRank == 1)
-                                           .Select(group => new
-                                           {
-                                               Winner = group.Key,
-                                               NumberOfGames = group.Count()
-                                           }).ToList();
-            playerStatistics.TotalGames = winsAndLosses.Sum(x => x.NumberOfGames);
-            var winData = winsAndLosses.FirstOrDefault(x => x.Winner);
-            if (winData != null)
+            var playerGameSummaries = playerRepository.GetPlayerGameSummaries(playerId);
+            var gameDefinitionTotals = new GameDefinitionTotals
             {
-                playerStatistics.TotalGamesWon = winData.NumberOfGames;
-            }
-
-            var lossData = winsAndLosses.FirstOrDefault(x => !x.Winner);
-            if (lossData != null)
-            {
-                playerStatistics.TotalGamesLost = lossData.NumberOfGames;
-            }
+                SummariesOfGameDefinitionTotals = playerGameSummaries.Select(playerGameSummary => new GameDefinitionTotal
+                {
+                    GameDefinitionId = playerGameSummary.GameDefinitionId,
+                    GameDefinitionName = playerGameSummary.GameDefinitionName,
+                    GamesLost = playerGameSummary.NumberOfGamesLost,
+                    GamesWon = playerGameSummary.NumberOfGamesWon
+                }).ToList()
+            };
+            playerStatistics.GameDefinitionTotals = gameDefinitionTotals;
+            playerStatistics.TotalGames = gameDefinitionTotals.SummariesOfGameDefinitionTotals.Sum(x => x.GamesLost + x.GamesWon);
+            playerStatistics.TotalGamesLost = gameDefinitionTotals.SummariesOfGameDefinitionTotals.Sum(x => x.GamesLost);
+            playerStatistics.TotalGamesWon = gameDefinitionTotals.SummariesOfGameDefinitionTotals.Sum(x => x.GamesWon);
 
             if (playerStatistics.TotalGames > 0)
             {

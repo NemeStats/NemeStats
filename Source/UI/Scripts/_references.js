@@ -44,3 +44,6 @@
 /// <reference path="jquery.validate.unobtrusive.min.js" />
 /// <reference path="playedgame/recordexceldownload.js" />
 /// <reference path="playedgame/search.js" />
+/// <reference path="d3/d3.js" />
+/// <reference path="player/playerdetails.js" />
+/// <reference path="d3/nv.d3.min.js" />
