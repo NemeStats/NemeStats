@@ -55,7 +55,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.Players
 
             foreach(TopPlayer topPlayer in topPlayersResult)
             {
-                Assert.LessOrEqual(topPlayer.TotalNumberOfGamesPlayed, lastPoints);
+                Assert.LessOrEqual(topPlayer.TotalPoints, lastPoints);
                 lastPoints = topPlayer.TotalPoints;
             }
         }
