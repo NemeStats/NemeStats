@@ -1,7 +1,7 @@
 ﻿@import "nemestats-variables.scss";
 
 .neme-points-ico {
-    color: $header-background;
+    color: $header-background-color;
     font-size: 10px;
 
     .letter {
@@ -10,9 +10,7 @@
     }
 }
 
-$gamename-height: 70px;
-$gamethumbnail-maxwidht: 200px;
-$gamethumbnail-height: 100px;
+
 #player-details {
     .gameDefinitionsList {
         @media only screen and (max-width: $screen-sm-max) {
