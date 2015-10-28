@@ -68,10 +68,7 @@ namespace UI
                 .Include("~/css/bootstrap.css")
                 .Include("~/css/theme.css")
                 .Include("~/css/nemestats.css")
-                .Include("~/Content/site.css",
-                    "~/Content/site-mobile.css",
-                    "~/Content/blog.css")
-                .Include("~/Content/font-awesome.min.css", new CssRewriteUrlTransform())
+                .Include("~/css/fontawesome.css")
                 );
 
             bundles.Add(new StyleBundle("~/Content/themes/base/css").Include(
