@@ -1,2 +1,12 @@
 ﻿@import '../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_variables.scss';
-$header-background: #2C3E50;
+
+//COLORS
+$header-background-color: #2C3E50;
+$team-win-color: green;
+$team-loss-color: red;
+$input-validation-error-color: #b94a48;
+
+//SIZES
+$gamename-height: 70px;
+$gamethumbnail-maxwidht: 200px;
+$gamethumbnail-height: 100px;

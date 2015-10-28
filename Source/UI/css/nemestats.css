@@ -110,7 +110,7 @@ input[type="checkbox"].input-validation-error {
   display: none; }
 
 .firstplace {
-  color: darkgreen;
+  color: #004d00;
   font-weight: bold; }
 
 .sortable {

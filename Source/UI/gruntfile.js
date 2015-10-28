@@ -38,5 +38,5 @@
     grunt.loadNpmTasks("grunt-sass");
     grunt.loadNpmTasks("grunt-contrib-copy");
 
-    grunt.registerTask('default', ['copy','watch']);
+    grunt.registerTask('default', ['sass','copy','watch']);
 };
