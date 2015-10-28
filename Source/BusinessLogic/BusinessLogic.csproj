@@ -153,10 +153,7 @@
     <Compile Include="Exceptions\UnauthorizedEntityAccessException.cs" />
     <Compile Include="Export\ExcelGenerator.cs" />
     <Compile Include="Export\IExcelGenerator.cs" />
-    <Compile Include="Logic\BoardGameGeek\BoardGameGeekSearcher.cs" />
-    <Compile Include="Logic\BoardGameGeek\BoardGameGeekUriBuilder.cs" />
-    <Compile Include="Logic\BoardGameGeek\IBoardGameGeekSearcher.cs" />
-    <Compile Include="Logic\BoardGameGeek\DeSerializationModels\SearchResultModels.cs" />
+    <Compile Include="Logic\BoardGameGeek\BoardGameGeekUrlBuilder.cs" />
     <Compile Include="Logic\Champions\ChampionRecalculator.cs" />
     <Compile Include="Logic\Email\EmailService.cs" />
     <Compile Include="Logic\GameDefinitions\BoardGameGeekThumbnailAttacher.cs" />
@@ -411,7 +408,6 @@
     <Compile Include="Models\Champion.cs" />
     <Compile Include="Models\Champions\ChampionData.cs" />
     <Compile Include="Models\Champions\NullChampionData.cs" />
-    <Compile Include="Models\Games\BoardGameGeekSearchResult.cs" />
     <Compile Include="Models\Games\ChampionStatistics.cs" />
     <Compile Include="Models\Games\GameDefinitionSummary.cs" />
     <Compile Include="Models\Games\PublicGameSummary.cs" />

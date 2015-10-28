@@ -9,6 +9,7 @@ PrivateAppSettings.config example settings
 
 ```xml
 <appSettings>
+  <add key="Database.ConnectionString" value="Data Source=.\SQLEXPRESS;Initial Catalog=NerdScorekeeper;Integrated Security=True" />
   <add key="Rollbar.AccessToken" value="f7d858b2d08a47b98f9ab19f9e27516c" />
   <add key="Rollbar.Environment" value="development" />
   <add key="UniversalAnalytics.TrackingId" value="UA-52982625-4" />

@@ -18,10 +18,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using BoardGameGeekApiClient.Service;
 using BusinessLogic.DataAccess;
-using BusinessLogic.Logic.BoardGameGeek;
 using BusinessLogic.Logic.GameDefinitions;
-using BusinessLogic.Models.Games;
 using NUnit.Framework;
 
 namespace UI.Tests.IntegrationTests.BoardGameGeekTests
@@ -161,15 +160,15 @@ namespace UI.Tests.IntegrationTests.BoardGameGeekTests
                         "Zombicide"
                     };
 
-                    BoardGameGeekSearcher bggSearcher = new BoardGameGeekSearcher();
+                    var bggSearcher = new BoardGameGeekClient(new ApiDownloaderService());
 
                     foreach (string gameName in gameNames)
                     {
-                        List<BoardGameGeekSearchResult> results = bggSearcher.SearchForBoardGames(gameName, true);
+                        var results = bggSearcher.SearchBoardGames(gameName, true);
 
-                        if (results.Count != 1)
+                        if (results.Count() != 1)
                         {
-                            Console.WriteLine(gameName + " has "+ results.Count + " results.");
+                            Console.WriteLine(gameName + " has "+ results.Count() + " results.");
                         }
                     }
                 }

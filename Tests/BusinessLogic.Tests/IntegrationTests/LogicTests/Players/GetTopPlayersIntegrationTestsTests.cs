@@ -49,14 +49,14 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.Players
         }
 
         [Test]
-        public void ItReturnsThePlayersInDescendingOrderOfTotalNumberOfGamesPlayed()
+        public void ItReturnsThePlayersInDescendingOrderOfTotalPoints()
         {
-            int lastNumberofPlayedGames = int.MaxValue;
+            int lastPoints = int.MaxValue;
 
             foreach(TopPlayer topPlayer in topPlayersResult)
             {
-                Assert.LessOrEqual(topPlayer.TotalNumberOfGamesPlayed, lastNumberofPlayedGames);
-                lastNumberofPlayedGames = topPlayer.TotalNumberOfGamesPlayed;
+                Assert.LessOrEqual(topPlayer.TotalPoints, lastPoints);
+                lastPoints = topPlayer.TotalPoints;
             }
         }
 

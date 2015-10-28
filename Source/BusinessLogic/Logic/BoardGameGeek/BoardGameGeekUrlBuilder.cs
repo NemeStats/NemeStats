@@ -15,18 +15,23 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
-
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using BusinessLogic.Models.Games;
 
 namespace BusinessLogic.Logic.BoardGameGeek
 {
-    [Obsolete]
-    public interface IBoardGameGeekSearcher
+    public static class BoardGameGeekUriBuilder
     {
-        [Obsolete]
-        List<BoardGameGeekSearchResult> SearchForBoardGames(string searchText, bool exactMatch);
+        public const string BOARD_GAME_GEEK_BOARD_GAME_BASE_URI = "http://boardgamegeek.com/boardgame/{0}";
+
+        public static Uri BuildBoardGameGeekGameUri(int? boardGameGeekBoardGameObjectId)
+        {
+            if (boardGameGeekBoardGameObjectId.HasValue)
+            {
+                return new Uri(string.Format(BOARD_GAME_GEEK_BOARD_GAME_BASE_URI, boardGameGeekBoardGameObjectId));
+            }
+
+            return null;
+        }
     }
 }
