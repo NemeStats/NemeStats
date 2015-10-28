@@ -153,9 +153,9 @@
       <HintPath>..\..\packages\structuremap.web.3.1.0.133\lib\net40\StructureMap.Web.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Configuration.Abstractions, Version=2.0.2.15, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\UniversalAnalyticsMeasurementProtocolWrapper.1.3.1\lib\net40\System.Configuration.Abstractions.dll</HintPath>
+    <Reference Include="System.Configuration.Abstractions, Version=2.0.2.21, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Configuration.Abstractions.2.0.2.21\lib\net45\System.Configuration.Abstractions.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -230,6 +230,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\UniversalAnalyticsMeasurementProtocolWrapper.1.3.1\lib\net40\UniversalAnalyticsHttpWrapper.dll</HintPath>
     </Reference>
+    <Reference Include="VersionedRestApi, Version=1.0.0.2, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\VersionedRestApi.1.0.0.2\lib\net45\VersionedRestApi.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="WebActivator">
       <HintPath>..\..\packages\WebActivator.1.5.3\lib\net40\WebActivator.dll</HintPath>
     </Reference>
@@ -297,7 +301,6 @@
     <Compile Include="Attributes\ApiAuthenticationAttribute.cs" />
     <Compile Include="Attributes\ApiExceptionFilter.cs" />
     <Compile Include="Attributes\ApiModelValidationAttribute.cs" />
-    <Compile Include="Attributes\ApiRouteAttribute.cs" />
     <Compile Include="Attributes\ClientIdCalculator.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\GameDefinitionController.cs" />
@@ -464,10 +467,16 @@
     <Content Include="Content\themes\base\tabs.css" />
     <Content Include="Content\themes\base\theme.css" />
     <Content Include="Content\themes\base\tooltip.css" />
-    <Content Include="Content\ui.css">
+    <Content Include="sass\flipscroll.css">
+      <DependentUpon>flipscroll.scss</DependentUpon>
+    </Content>
+    <Content Include="sass\flipscroll.min.css">
+      <DependentUpon>flipscroll.css</DependentUpon>
+    </Content>
+    <Content Include="sass\ui.css">
       <DependentUpon>ui.scss</DependentUpon>
     </Content>
-    <Content Include="Content\ui.min.css">
+    <Content Include="sass\ui.min.css">
       <DependentUpon>ui.css</DependentUpon>
     </Content>
     <Content Include="favicon.ico" />
@@ -503,8 +512,9 @@
     <Content Include="fonts\bootstrap\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\bootstrap\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\bootstrap\glyphicons-halflings-regular.eot" />
-    <Content Include="Content\ui.scss" />
-    <Content Include="Content\variables.scss" />
+    <Content Include="sass\ui.scss" />
+    <Content Include="sass\variables.scss" />
+    <Content Include="sass\flipscroll.scss" />
     <None Include="Properties\PublishProfiles\nerdscorekeeper.pubxml" />
     <None Include="Properties\PublishProfiles\Publish Local.pubxml" />
     <Content Include="sass\_bootswatch.css">
@@ -723,6 +733,7 @@
     <Content Include="Views\GamingGroup\Edit.cshtml" />
     <Content Include="Views\GamingGroup\_GamingGroupPublicDetailsPartial.cshtml" />
     <Content Include="Views\Player\_PlayersSummaryPartial.cshtml" />
+    <Content Include="Views\GameDefinition\_GameDefinitionsTablePartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Code\" />
@@ -738,6 +749,10 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\BoardGameGeekApiClient\BoardGameGeekApiClient.csproj">
+      <Project>{d4efacf4-b72b-4395-89bf-4caa9a33c427}</Project>
+      <Name>BoardGameGeekApiClient</Name>
+    </ProjectReference>
     <ProjectReference Include="..\BusinessLogic\BusinessLogic.csproj">
       <Project>{b1184b6a-9c68-48b6-814c-0667b69f89d2}</Project>
       <Name>BusinessLogic</Name>

@@ -7,6 +7,7 @@ using System.Net.Http;
 using System.Web.Http;
 using UI.Areas.Api.Models;
 using UI.Attributes;
+using VersionedRestApi;
 
 namespace UI.Areas.Api.Controllers
 {

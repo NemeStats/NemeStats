@@ -17,6 +17,7 @@
 #endregion
 using System.Web;
 using System.Web.Routing;
+using BoardGameGeekApiClient.Interfaces;
 using BusinessLogic.DataAccess;
 using BusinessLogic.Logic.BoardGameGeek;
 using BusinessLogic.Logic.GameDefinitions;
@@ -39,7 +40,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
         protected IGameDefinitionDetailsViewModelBuilder gameDefinitionTransformationMock;
         protected IShowingXResultsMessageBuilder showingXResultsMessageBuilderMock;
         protected IGameDefinitionSaver gameDefinitionCreatorMock;
-        protected IBoardGameGeekSearcher boardGameGeekSearcherMock;
+        protected IBoardGameGeekApiClient boardGameGeekApiClient;
         protected NemeStatsDataContext dataContextMock;
         protected UrlHelper urlHelperMock;
         protected ApplicationUser currentUser;
@@ -56,14 +57,14 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
             showingXResultsMessageBuilderMock = MockRepository.GenerateMock<IShowingXResultsMessageBuilder>();
             gameDefinitionCreatorMock = MockRepository.GenerateMock<IGameDefinitionSaver>();
             urlHelperMock = MockRepository.GenerateMock<UrlHelper>();
-            boardGameGeekSearcherMock = MockRepository.GenerateMock<IBoardGameGeekSearcher>();
+            boardGameGeekApiClient = MockRepository.GenerateMock<IBoardGameGeekApiClient>();
             gameDefinitionControllerPartialMock = MockRepository.GeneratePartialMock<GameDefinitionController>(
                 dataContextMock, 
                 gameDefinitionRetrieverMock,
                 gameDefinitionTransformationMock,
                 showingXResultsMessageBuilderMock,
                 gameDefinitionCreatorMock,
-                boardGameGeekSearcherMock);
+                boardGameGeekApiClient);
             gameDefinitionControllerPartialMock.Url = urlHelperMock;
 
             asyncRequestMock = MockRepository.GenerateMock<HttpRequestBase>();

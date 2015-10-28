@@ -6,6 +6,7 @@
     Layout = MVC.Shared.Views._BaseLayout;
 }
 
+<div id="player-details">
 <h2>@Html.DisplayFor(model => model.PlayerName)</h2>
 
 <div class="row">
@@ -116,9 +117,9 @@
             </table>
             <div id="GamesPieChart">
                 <svg style='height:400px;'> </svg>
-            </div>
         </div>
     </div>
+</div>
 </div>
 
 
@@ -133,11 +134,21 @@
             <h4>Game Statistics</h4>
         </div>
         <div class="panel-body">
-            <table class="table table-hover table-striped  table-responsive">
+                <div class="gameDefinitionsList" id="flip-scroll">
+                    <table class="table table-hover table-striped">
                 <thead>
                     <tr>
-                        <th></th>
-                        <th>Game</th>
+                                <th class="badges-head">
+                                    <span class="hidden-md hidden-lg">
+                                        Badges
+                                    </span>
+                                </th>
+                                <th class="bgg-link-head">
+                                    <span class="hidden-md hidden-lg">
+                                        Image
+                                    </span>
+                                </th>
+                                <th class="name-head">Game</th>
                         <th>Win - Loss Record</th>
                         <th>% Won</th>
                     </tr>
@@ -145,8 +156,8 @@
                 <tbody>
                     @foreach (var summary in Model.PlayerGameSummaries)
                     {
-                        <tr>
-                            <td>
+                                <tr class="game-item">
+                                    <td class="badges-col">
                                 @if (summary.IsChampion)
                                 {
                                     <i class="fa fa-trophy" data-container="body" data-toggle="popover" data-placement="right"
@@ -160,7 +171,13 @@
                                     </i>
                                 }
                             </td>
-                            <td>
+                                    <td class="bgg-link-col">
+                                        @if (summary.ThumbnailImageUrl != null)
+                                        {
+                                            <img class="bgg-thumbnail" src="@summary.ThumbnailImageUrl" alt="@summary.GameDefinitionName" />
+                                        }
+                                    </td>
+                                    <td class="name-col">
                                 @Html.ActionLink(summary.GameDefinitionName, "Details", "GameDefinition", new { id = summary.GameDefinitionId }, new { })
                             </td>
                             <td>
@@ -177,6 +194,7 @@
         </div>
     </div>
 </div>
+    </div>
 
 <div class="row">
     @if (Model.PlayerGameResultDetails.Any())

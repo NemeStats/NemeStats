@@ -15,6 +15,7 @@ using BusinessLogic.Models.Games;
 using BusinessLogic.Models.PlayedGames;
 using UI.Areas.Api.Models;
 using UI.Attributes;
+using VersionedRestApi;
 
 namespace UI.Areas.Api.Controllers
 {

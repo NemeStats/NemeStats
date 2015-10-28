@@ -16,6 +16,7 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 
+using BoardGameGeekApiClient.Interfaces;
 using BusinessLogic.DataAccess.Security;
 using BusinessLogic.Export;
 using BusinessLogic.Logic.BoardGameGeek;
@@ -61,6 +62,12 @@ namespace UI.DependencyResolution {
                     scan.WithDefaultConventions();
 					scan.With(new ControllerConvention());
                 });
+
+            this.Scan(s =>
+            {
+                s.AssemblyContainingType<IBoardGameGeekApiClient>();
+                s.RegisterConcreteTypesAgainstTheFirstInterface();
+            });
 
             this.SetupSingletonMappings();
 
@@ -151,8 +158,6 @@ namespace UI.DependencyResolution {
             this.For<IUserRegisterer>().Use<UserRegisterer>();
 
             this.For<IFirstTimeAuthenticator>().Use<FirstTimeAuthenticator>();
-
-            this.For<IBoardGameGeekSearcher>().Use<BoardGameGeekSearcher>();
 
             this.For<IPlayerInviter>().Use<PlayerInviter>();
 

@@ -9,6 +9,7 @@ PrivateAppSettings.config example settings
 
 ```xml
 <appSettings>
+  <add key="Database.ConnectionString" value="Data Source=.\SQLEXPRESS;Initial Catalog=NerdScorekeeper;Integrated Security=True" />
   <add key="Rollbar.AccessToken" value="f7d858b2d08a47b98f9ab19f9e27516c" />
   <add key="Rollbar.Environment" value="development" />
   <add key="UniversalAnalytics.TrackingId" value="UA-52982625-4" />
@@ -66,7 +67,6 @@ $(document).ready(function () {
 
 #### What's next?
 If you want to add or improve a feature, it would probably be best to run it by us via email at nemestats@gmail.com. To get your code incorporated into the code base, 
-you'll need to submit a pull request which will need to be reviewed by the development team. All business logic should be unit testing using nUnit and Rhino Automocker
-(if you need mocking).
+you'll need to submit a pull request which will need to be reviewed by the development team. All business logic should be unit tested using nUnit and Rhino Mocks/Rhino Auto Mocker (if you need mocking).
 
 If you run into any issues or need help getting NemeStats running locally or have other questions about contributing, just email us at nemestats@gmail.com and we'd be happy to help!
