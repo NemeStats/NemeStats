@@ -405,4 +405,15 @@ button > i.fa {
     height: 30px;
     text-align: center; } }
 
+.progress {
+  height: 20px;
+  margin-bottom: 0; }
+  .progress .progress-bar {
+    font-size: 18px;
+    line-height: 18px; }
+    .progress .progress-bar.won {
+      background-color: #18BC9C; }
+    .progress .progress-bar.lost {
+      background-color: #E74C3C; }
+
 /*# sourceMappingURL=nemestats.css.map */

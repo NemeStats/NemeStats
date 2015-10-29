@@ -369,11 +369,9 @@
     <Compile Include="Models\Players\PlayerEditViewModel.cs" />
     <Compile Include="Models\Players\PlayerGameSummaryViewModel.cs" />
     <Compile Include="Models\Players\PlayerInvitationViewModel.cs" />
-    <Compile Include="Models\Players\OpposingPlayerViewModel.cs" />
     <Compile Include="Models\Players\PlayersSummaryViewModel.cs" />
     <Compile Include="Models\Players\PlayerSummaryViewModel.cs" />
     <Compile Include="Models\Players\TopPlayerViewModel.cs" />
-    <Compile Include="Models\Players\PlayerVersusPlayersViewModel.cs" />
     <Compile Include="Models\User\UserViewModel.cs" />
     <Compile Include="Models\VotableFeatureViewModel.cs" />
     <Compile Include="PlayedGameController.generated.cs">
@@ -491,6 +489,7 @@
     <Content Include="App_Readme\Handlebarsjs_LICENSE" />
     <Content Include="Areas\Api\Views\web.config" />
     <Content Include="images\.keep" />
+    <None Include="sass\nemestats\player.scss" />
     <Content Include="sass\nemestats\ui.scss" />
     <Content Include="sass\nemestats\nemestats-variables.scss" />
     <Content Include="sass\nemestats\flipscroll.scss" />
@@ -647,7 +646,6 @@
     <Content Include="Views\PlayedGame\_PlayedGamesPlayerPartial.cshtml" />
     <Content Include="Views\PlayedGame\_PlayedGameFormPartial.cshtml" />
     <Content Include="Views\PlayedGame\Search.cshtml" />
-    <Content Include="Views\Player\_PlayerVersusPlayersPartial.cshtml" />
     <Content Include="Views\GamingGroup\UpdateGamingGroupName.cshtml" />
     <Content Include="Views\GamingGroup\Edit.cshtml" />
     <Content Include="Views\GamingGroup\_GamingGroupPublicDetailsPartial.cshtml" />
