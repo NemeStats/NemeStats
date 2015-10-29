@@ -10,6 +10,11 @@
         font-size: 18px;
         line-height: 18px;
 
+        @media (max-width: $screen-sm-max) {
+            font-size: 14px;
+            line-height: 20px;
+        }
+
 
         &.won {
             background-color: $brand-success;
@@ -67,6 +72,10 @@
                 border-width: 10px 0 0 10px;
                 border-color: transparent transparent transparent #ffffff;
             }
+        }
+
+        span {
+            margin-left: 5px;
         }
     }
 }

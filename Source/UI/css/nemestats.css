@@ -411,6 +411,10 @@ button > i.fa {
   .progress .progress-bar {
     font-size: 18px;
     line-height: 18px; }
+    @media (max-width: 991px) {
+      .progress .progress-bar {
+        font-size: 14px;
+        line-height: 20px; } }
     .progress .progress-bar.won {
       background-color: #18BC9C;
       position: relative; }
@@ -457,5 +461,7 @@ button > i.fa {
         border-style: solid;
         border-width: 10px 0 0 10px;
         border-color: transparent transparent transparent #ffffff; }
+    .progress .progress-bar span {
+      margin-left: 5px; }
 
 /*# sourceMappingURL=nemestats.css.map */
