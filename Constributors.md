@@ -65,6 +65,28 @@ $(document).ready(function () {
 * Let us know if you have questions or you see code that doesn't conform to the conventions.
 * Have fun!
 
+#### Compiling SASS
+We're using Node Package Manager (npm) for the CSS frameworks. In the repo exists the compiled css and fonts but, if you want to change some style, you need to follow this steps.
+
+## Using Console
+
+* Install nodeJS in your computer: https://nodejs.org/en/download/
+* Execute the node console and navigate to the UI project folder.
+* Execute 'node install'
+* To start watch and compile task: 'grunt'
+
+## Using Visual Studio
+* Install nodeJS in your computer: https://nodejs.org/en/download/
+* Install "Task Runner Explorer" extension in your Visual Studio: https://visualstudiogallery.msdn.microsoft.com/8e1b4368-4afb-467a-bc13-9650572db708/view/Discussions/2
+* Open Visual Studio and open "UI/package.json". Then change anything and save the file to start the dependencies download.
+* To start watch and compile task: In the task runner explorer window execute (double click) the task "default"
+
+Following both steps you havealready  installed all the dependecies in "node_components" folder (ignored in .gitignore) and executing the watch and compile sass grunt task.
+Now, when you change any .scss file, the grunt task will detect it and compile the sass files to the /css destination folder.
+
+
+
+
 #### What's next?
 If you want to add or improve a feature, it would probably be best to run it by us via email at nemestats@gmail.com. To get your code incorporated into the code base, 
 you'll need to submit a pull request which will need to be reviewed by the development team. All business logic should be unit tested using nUnit and Rhino Mocks/Rhino Auto Mocker (if you need mocking).

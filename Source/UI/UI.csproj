@@ -424,14 +424,10 @@
     <Compile Include="Models\GamingGroup\TopGamingGroupSummaryViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\blog.css" />
-    <Content Include="Content\font-awesome.css" />
-    <Content Include="Content\font-awesome.min.css" />
     <Content Include="Content\Images\bgg_small.png" />
     <Content Include="Content\Images\NemeStats-White.png" />
     <Content Include="Content\Images\NemeStats.png" />
     <Content Include="Content\Images\spinner.gif" />
-    <Content Include="Content\site-mobile.css" />
     <Content Include="Content\themes\base\accordion.css" />
     <Content Include="Content\themes\base\all.css" />
     <Content Include="Content\themes\base\autocomplete.css" />
@@ -467,23 +463,14 @@
     <Content Include="Content\themes\base\tabs.css" />
     <Content Include="Content\themes\base\theme.css" />
     <Content Include="Content\themes\base\tooltip.css" />
-    <Content Include="sass\flipscroll.css">
-      <DependentUpon>flipscroll.scss</DependentUpon>
-    </Content>
-    <Content Include="sass\flipscroll.min.css">
-      <DependentUpon>flipscroll.css</DependentUpon>
-    </Content>
-    <Content Include="sass\ui.css">
-      <DependentUpon>ui.scss</DependentUpon>
-    </Content>
-    <Content Include="sass\ui.min.css">
-      <DependentUpon>ui.css</DependentUpon>
-    </Content>
-    <Content Include="favicon.ico" />
-    <Content Include="fonts\bootstrap\glyphicons-halflings-regular.svg" />
+    <Content Include="css\bootstrap.css" />
+    <Content Include="css\fontawesome.css" />
+    <Content Include="css\nemestats.css" />
+    <Content Include="css\theme.css" />
     <Content Include="fonts\fontawesome-webfont.svg" />
+    <Content Include="gruntfile.js" />
+    <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
-    <Content Include="Content\Site.css" />
     <Content Include="javascripts\bootstrap-sprockets.js" />
     <Content Include="javascripts\bootstrap.js" />
     <Content Include="javascripts\bootstrap.min.js" />
@@ -500,27 +487,26 @@
     <Content Include="javascripts\bootstrap\tooltip.js" />
     <Content Include="javascripts\bootstrap\transition.js" />
     <Content Include="PrivateAppSettings.config" />
-    <Content Include="fonts\fontawesome-webfont.woff" />
-    <Content Include="fonts\fontawesome-webfont.ttf" />
-    <Content Include="fonts\fontawesome-webfont.eot" />
-    <Content Include="fonts\FontAwesome.otf" />
     <Content Include="App_Readme\Handlebarsjs_README.md" />
     <Content Include="App_Readme\Handlebarsjs_LICENSE" />
     <Content Include="Areas\Api\Views\web.config" />
     <Content Include="images\.keep" />
-    <Content Include="fonts\bootstrap\glyphicons-halflings-regular.woff2" />
-    <Content Include="fonts\bootstrap\glyphicons-halflings-regular.woff" />
-    <Content Include="fonts\bootstrap\glyphicons-halflings-regular.ttf" />
-    <Content Include="fonts\bootstrap\glyphicons-halflings-regular.eot" />
-    <Content Include="sass\ui.scss" />
-    <Content Include="sass\variables.scss" />
-    <Content Include="sass\flipscroll.scss" />
+    <Content Include="sass\nemestats\ui.scss" />
+    <Content Include="sass\nemestats\nemestats-variables.scss" />
+    <Content Include="sass\nemestats\flipscroll.scss" />
+    <Content Include="css\bootstrap.css.map" />
+    <Content Include="css\fontawesome.css.map" />
+    <Content Include="css\nemestats.css.map" />
+    <Content Include="css\theme.css.map" />
+    <Content Include="fonts\fontawesome-webfont.eot" />
+    <Content Include="fonts\fontawesome-webfont.ttf" />
+    <Content Include="fonts\fontawesome-webfont.woff" />
+    <Content Include="fonts\fontawesome-webfont.woff2" />
+    <Content Include="fonts\FontAwesome.otf" />
+    <None Include="package.json" />
     <None Include="Properties\PublishProfiles\nerdscorekeeper.pubxml" />
     <None Include="Properties\PublishProfiles\Publish Local.pubxml" />
-    <Content Include="sass\_bootswatch.css">
-      <DependentUpon>_bootswatch.scss</DependentUpon>
-    </Content>
-    <Content Include="sass\_bootswatch.scss">
+    <Content Include="sass\theme\_bootswatch.scss">
       <Compile>True</Compile>
       <Minify>True</Minify>
       <IgnoreWarnings>False</IgnoreWarnings>
@@ -528,8 +514,14 @@
       <CompileStyle>Nested</CompileStyle>
       <DebugInfo>False</DebugInfo>
     </Content>
-    <Content Include="sass\bootstrap\_variables.scss" />
+    <Content Include="sass\imports\custom-bootstrap-variables.scss" />
+    <Content Include="sass\imports\nemestats.scss" />
     <Content Include="Scripts\d3\LICENSE" />
+    <Content Include="sass\imports\theme.scss" />
+    <Content Include="sass\imports\bootstrap.scss" />
+    <Content Include="sass\nemestats\site.scss" />
+    <Content Include="sass\nemestats\mobile.scss" />
+    <Content Include="sass\imports\fontawesome.scss" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="robots.txt" />
     <Content Include="Scripts\CreatePlayedGame\createplayedgame.js" />
@@ -581,79 +573,6 @@
     <Content Include="Scripts\Shared\_Layout.js" />
     <Content Include="Scripts\Shared\_LoginPartial.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="Scripts\stylesheets\bootstrap\mixins\_vendor-prefixes.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\mixins\_text-overflow.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\mixins\_text-emphasis.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\mixins\_table-row.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\mixins\_tab-focus.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\mixins\_size.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\mixins\_responsive-visibility.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\mixins\_resize.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\mixins\_reset-filter.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\mixins\_progress-bar.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\mixins\_panels.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\mixins\_pagination.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\mixins\_opacity.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\mixins\_nav-vertical-align.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\mixins\_nav-divider.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\mixins\_list-group.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\mixins\_labels.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\mixins\_image.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\mixins\_hide-text.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\mixins\_grid-framework.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\mixins\_grid.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\mixins\_gradients.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\mixins\_forms.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\mixins\_clearfix.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\mixins\_center-block.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\mixins\_buttons.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\mixins\_border-radius.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\mixins\_background-variant.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\mixins\_alerts.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\_wells.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\_variables.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\_utilities.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\_type.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\_tooltip.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\_thumbnails.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\_theme.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\_tables.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\_scaffolding.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\_responsive-utilities.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\_responsive-embed.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\_progress-bars.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\_print.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\_popovers.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\_panels.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\_pagination.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\_pager.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\_normalize.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\_navs.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\_navbar.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\_modals.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\_mixins.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\_media.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\_list-group.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\_labels.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\_jumbotron.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\_input-groups.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\_grid.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\_glyphicons.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\_forms.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\_dropdowns.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\_component-animations.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\_code.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\_close.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\_carousel.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\_buttons.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\_button-groups.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\_breadcrumbs.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\_badges.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\_alerts.scss" />
-    <Content Include="Scripts\stylesheets\_bootstrap-sprockets.scss" />
-    <Content Include="Scripts\stylesheets\_bootstrap-mincer.scss" />
-    <Content Include="Scripts\stylesheets\_bootstrap-compass.scss" />
-    <Content Include="Scripts\stylesheets\_bootstrap.scss" />
     <Content Include="T4MVC.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>T4MVC.cs</LastGenOutput>
