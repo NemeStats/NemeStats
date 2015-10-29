@@ -51,7 +51,7 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
             championPlayerIdForGameDefinition = testPlayer7WithOtherGamingGroupId.Id;
 
             // Player ID 9 has a higher winning percentage than player 7, but is not active
-            otherChampionPlayerIdForGameDefinition = testPlayer9.Id;
+            otherChampionPlayerIdForGameDefinition = testPlayer9UndefeatedWith5Games.Id;
         }
 
         [Test]

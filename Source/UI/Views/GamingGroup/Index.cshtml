@@ -35,7 +35,13 @@
     @Html.Partial(MVC.PlayedGame.Views._PlayedGamesPartial, Model.PlayedGames, new ViewDataDictionary { { "canEdit", true }, { "gamingGroupId", @Model.Id } })
 </div>
 
+<div id="NemeStatsPointsLineGraph">
+    <svg style='height:500px;'> </svg>
+</div>
+
 @section Scripts {
+    @Scripts.Render("~/bundles/d3")
+    @Styles.Render("~/bundles/d3/css")
     <script type="text/javascript">
         //Creation
         $(document).ready(function () {
@@ -53,6 +59,8 @@
             gameDefinition.onDefinitionCreated = $.proxy(gameDefinitions.onGameCreated, gameDefinitions);
 
             var gamingGroupView = new Views.GamingGroup.GamingGroupView();
+            gamingGroupView.renderNemeStatsPointsLineGraph("/api/v2/PlayedGames/?gamingGroupId=" + @Model.Id);
+
             var googleAnalyticsObject = new window.Views.Shared.GoogleAnalytics();
             gamingGroupView.init(googleAnalyticsObject);
 
