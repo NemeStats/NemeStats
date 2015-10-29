@@ -1,0 +1,21 @@
+﻿@import "nemestats-variables.scss";
+
+//PvP progressbars
+
+.progress {
+    height: 20px;
+    margin-bottom: 0;
+
+    .progress-bar {
+        font-size: 18px;
+        line-height: 18px;
+
+        &.won {
+            background-color: $brand-success;
+        }
+
+        &.lost {
+            background-color: $brand-danger;
+        }
+    }
+}
