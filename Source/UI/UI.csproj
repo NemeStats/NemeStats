@@ -463,6 +463,11 @@
     <Content Include="Content\themes\base\tabs.css" />
     <Content Include="Content\themes\base\theme.css" />
     <Content Include="Content\themes\base\tooltip.css" />
+    <Content Include="css\bootstrap.css" />
+    <Content Include="css\fontawesome.css" />
+    <Content Include="css\nemestats.css" />
+    <Content Include="css\theme.css" />
+    <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="gruntfile.js" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
@@ -489,6 +494,15 @@
     <Content Include="sass\nemestats\ui.scss" />
     <Content Include="sass\nemestats\nemestats-variables.scss" />
     <Content Include="sass\nemestats\flipscroll.scss" />
+    <Content Include="css\bootstrap.css.map" />
+    <Content Include="css\fontawesome.css.map" />
+    <Content Include="css\nemestats.css.map" />
+    <Content Include="css\theme.css.map" />
+    <Content Include="fonts\fontawesome-webfont.eot" />
+    <Content Include="fonts\fontawesome-webfont.ttf" />
+    <Content Include="fonts\fontawesome-webfont.woff" />
+    <Content Include="fonts\fontawesome-webfont.woff2" />
+    <Content Include="fonts\FontAwesome.otf" />
     <None Include="package.json" />
     <None Include="Properties\PublishProfiles\nerdscorekeeper.pubxml" />
     <None Include="Properties\PublishProfiles\Publish Local.pubxml" />
