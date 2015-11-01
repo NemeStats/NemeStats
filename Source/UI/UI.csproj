@@ -490,8 +490,9 @@
     <Content Include="Areas\Api\Views\web.config" />
     <Content Include="images\.keep" />
     <Content Include="sass\imports\custom-fontawesome-variables.scss" />
+    <Content Include="sass\nemestats\gamedefinition.scss" />
+    <Content Include="sass\nemestats\badges.scss" />
     <None Include="sass\nemestats\player.scss" />
-    <Content Include="sass\nemestats\ui.scss" />
     <Content Include="sass\nemestats\nemestats-variables.scss" />
     <Content Include="sass\nemestats\flipscroll.scss" />
     <Content Include="css\bootstrap.css.map" />

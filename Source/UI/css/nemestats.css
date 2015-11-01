@@ -321,59 +321,6 @@ button > i.fa {
 .panel > i.fa {
   line-height: 36; }
 
-.neme-points-ico {
-  color: #2C3E50;
-  font-size: 10px; }
-  .neme-points-ico .letter {
-    color: white;
-    font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif; }
-
-@media only screen and (max-width: 991px) {
-  #player-details .gameDefinitionsList#flip-scroll .badges-head {
-    padding: 5px; }
-  #player-details .gameDefinitionsList#flip-scroll .badges-col {
-    line-height: 0;
-    height: 31px; } }
-
-#player-details .gameDefinitionsList .badges-col {
-  width: 20px;
-  line-height: 100px; }
-
-#player-details .gameDefinitionsList .bgg-link-col {
-  text-align: left; }
-
-.player-statistics .fa.fa-trophy.fa-slashed:after {
-  position: relative;
-  content: "/";
-  font-weight: 700;
-  font-size: 1.7em;
-  left: -17px;
-  top: 2px; }
-
-.gameDefinitionsList .fa.fa-trophy.fa-slashed:after {
-  position: relative;
-  content: "/";
-  font-weight: 700;
-  font-size: 1.6em;
-  top: -21px; }
-
-.gameDefinitionsList .edit-col {
-  text-align: center; }
-
-.gameDefinitionsList .no-bgg-ico {
-  font-size: 40px; }
-
-.gameDefinitionsList .bgg-link-col {
-  font-weight: bold;
-  height: 100px;
-  overflow: hidden;
-  text-align: center;
-  max-width: 200px; }
-  .gameDefinitionsList .bgg-link-col .bgg-thumbnail {
-    width: auto;
-    height: 100%;
-    min-height: 100px; }
-
 @media (max-width: 991px) {
   .home-page-icon {
     font-size: 4em; }
@@ -463,5 +410,60 @@ button > i.fa {
         border-color: transparent transparent transparent #ffffff; }
     .progress .progress-bar span {
       margin-left: 5px; }
+
+.neme-points-ico {
+  color: #2C3E50;
+  font-size: 10px; }
+  .neme-points-ico .letter {
+    color: white;
+    font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif; }
+
+.player-statistics .fa.fa-trophy.fa-slashed:after {
+  position: relative;
+  content: "/";
+  font-weight: 700;
+  font-size: 1.7em;
+  left: -17px;
+  top: 2px; }
+
+@media (max-width: 991px) {
+  #player-details .gameDefinitionsList#flip-scroll .badges-head {
+    padding: 5px; }
+  #player-details .gameDefinitionsList#flip-scroll .badges-col {
+    line-height: 0;
+    height: 31px; }
+    #player-details .gameDefinitionsList#flip-scroll .badges-col .fa.fa-trophy.fa-slashed:after {
+      top: 0;
+      left: -17px; } }
+
+#player-details .gameDefinitionsList .badges-col {
+  width: 20px;
+  line-height: 100px; }
+  #player-details .gameDefinitionsList .badges-col .fa.fa-trophy.fa-slashed:after {
+    position: relative;
+    content: "/";
+    font-weight: 700;
+    font-size: 1.6em;
+    top: -21px; }
+
+#player-details .gameDefinitionsList .bgg-link-col {
+  text-align: left; }
+
+.gameDefinitionsList .edit-col {
+  text-align: center; }
+
+.gameDefinitionsList .no-bgg-ico {
+  font-size: 40px; }
+
+.gameDefinitionsList .bgg-link-col {
+  font-weight: bold;
+  height: 100px;
+  overflow: hidden;
+  text-align: center;
+  max-width: 200px; }
+  .gameDefinitionsList .bgg-link-col .bgg-thumbnail {
+    width: auto;
+    height: 100%;
+    min-height: 100px; }
 
 /*# sourceMappingURL=nemestats.css.map */

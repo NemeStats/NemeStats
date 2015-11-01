@@ -1,0 +1,28 @@
+﻿@import "nemestats-variables.scss";
+
+
+.gameDefinitionsList {
+
+    .edit-col {
+        text-align: center;
+    }
+
+    .no-bgg-ico {
+        font-size: 40px;
+    }
+
+
+    .bgg-link-col {
+        font-weight: bold;
+        height: $gamethumbnail-height;
+        overflow: hidden;
+        text-align: center;
+        max-width: $gamethumbnail-maxwidht;
+
+        .bgg-thumbnail {
+            width: auto;
+            height: 100%;
+            min-height: $gamethumbnail-height;
+        }
+    }
+}
