@@ -64,7 +64,7 @@ namespace UI.Areas.Api.Controllers
 
             var playedGamesForExport = playedGames.Select(playedGame => new PlayedGameExportModel
             {
-                BoardGameGeekObjectId = playedGame.GameDefinition.BoardGameGeekObjectId,
+                BoardGameGeekGameDefinitionId = playedGame.GameDefinition.BoardGameGeekGameDefinitionId,
                 DateCreated = playedGame.DateCreated,
                 DatePlayed = playedGame.DatePlayed,
                 GameDefinitionId = playedGame.GameDefinitionId,

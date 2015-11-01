@@ -33,14 +33,14 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.GameDefinition
             var newGameDefinitionMessage = new NewGameDefinitionMessage
             {
                 GameDefinitionName = "some gameDefinitionName",
-                BoardGameGeekObjectId = 1
+                BoardGameGeekGameDefinitionId = 1
             };
 
             autoMocker.ClassUnderTest.SaveNewGameDefinition(newGameDefinitionMessage, 0);
 
             autoMocker.Get<IGameDefinitionSaver>().AssertWasCalled(
                 mock => mock.Save(Arg<GameDefinition>.Matches(gameDefinition => gameDefinition.Name == newGameDefinitionMessage.GameDefinitionName
-                    && gameDefinition.BoardGameGeekObjectId == newGameDefinitionMessage.BoardGameGeekObjectId),
+                    && gameDefinition.BoardGameGeekGameDefinitionId == newGameDefinitionMessage.BoardGameGeekGameDefinitionId),
                     Arg<ApplicationUser>.Is.Same(applicationUser)));
         }
 

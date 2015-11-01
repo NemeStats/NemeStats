@@ -53,7 +53,7 @@ namespace BusinessLogic.Logic.GameDefinitions
             if (gameDefinitionAlreadyExists)
             {
                 var existingGameDefinition = dataContext.FindById<GameDefinition>(gameDefinition.Id);
-                if(existingGameDefinition != null && existingGameDefinition.BoardGameGeekObjectId != gameDefinition.BoardGameGeekObjectId)
+                if(existingGameDefinition != null && existingGameDefinition.BoardGameGeekGameDefinitionId != gameDefinition.BoardGameGeekGameDefinitionId)
                 {
                     SetBoardGameGeekThumbnail(gameDefinition);
                 }
@@ -88,9 +88,9 @@ namespace BusinessLogic.Logic.GameDefinitions
 
         private void SetBoardGameGeekThumbnail(GameDefinition gameDefinition)
         {
-            if (gameDefinition.BoardGameGeekObjectId.HasValue)
+            if (gameDefinition.BoardGameGeekGameDefinitionId.HasValue)
             {
-                var gameDetails = this._boardGameGeekApiClient.GetGameDetails(gameDefinition.BoardGameGeekObjectId.Value);
+                var gameDetails = this._boardGameGeekApiClient.GetGameDetails(gameDefinition.BoardGameGeekGameDefinitionId.Value);
                 if (gameDetails != null)
                 {
                     gameDefinition.ThumbnailImageUrl = gameDetails.Thumbnail;
@@ -136,9 +136,9 @@ namespace BusinessLogic.Logic.GameDefinitions
                 gameDefinition.Name = gameDefinitionUpdateRequest.Name;
             }
 
-            if (gameDefinitionUpdateRequest.BoardGameGeekObjectId.HasValue)
+            if (gameDefinitionUpdateRequest.BoardGameGeekGameDefinitionId.HasValue)
             {
-                gameDefinition.BoardGameGeekObjectId = gameDefinitionUpdateRequest.BoardGameGeekObjectId;
+                gameDefinition.BoardGameGeekGameDefinitionId = gameDefinitionUpdateRequest.BoardGameGeekGameDefinitionId;
             }
 
             this.Save(gameDefinition, applicationUser);

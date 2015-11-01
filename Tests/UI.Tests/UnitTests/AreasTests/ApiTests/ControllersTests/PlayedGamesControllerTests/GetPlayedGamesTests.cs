@@ -114,7 +114,7 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.PlayedGamesCon
         {
             var expectedSingleResult = new PlayedGameSearchResult
             {
-                BoardGameGeekObjectId = 1,
+                BoardGameGeekGameDefinitionId = 1,
                 DateLastUpdated = DateTime.UtcNow.Date,
                 DatePlayed = DateTime.UtcNow.Date,
                 GameDefinitionId = 2,
@@ -151,7 +151,7 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.PlayedGamesCon
             var actualData = AssertThatApiAction.ReturnsThisTypeWithThisStatusCode<PlayedGameSearchResultsMessage>(actualResponse, HttpStatusCode.OK);
             Assert.That(actualData.PlayedGames.Count, Is.EqualTo(1));
             var actualSinglePlayedGame = actualData.PlayedGames[0];
-            Assert.That(actualSinglePlayedGame.BoardGameGeekObjectId, Is.EqualTo(expectedSingleResult.BoardGameGeekObjectId));
+            Assert.That(actualSinglePlayedGame.BoardGameGeekGameDefinitionId, Is.EqualTo(expectedSingleResult.BoardGameGeekGameDefinitionId));
             Assert.That(actualSinglePlayedGame.DateLastUpdated, Is.EqualTo(expectedSingleResult.DateLastUpdated.ToString("yyyy-MM-dd")));
             Assert.That(actualSinglePlayedGame.DatePlayed, Is.EqualTo(expectedSingleResult.DatePlayed.ToString("yyyy-MM-dd")));
             Assert.That(actualSinglePlayedGame.GameDefinitionId, Is.EqualTo(expectedSingleResult.GameDefinitionId));

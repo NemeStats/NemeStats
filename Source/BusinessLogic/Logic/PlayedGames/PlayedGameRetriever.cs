@@ -112,7 +112,7 @@ namespace BusinessLogic.Logic.PlayedGames
                                  PlayedGameId = playedGame.Id,
                                  GameDefinitionId = playedGame.GameDefinitionId,
                                  GameDefinitionName = playedGame.GameDefinition.Name,
-                                 BoardGameGeekObjectId = playedGame.GameDefinition.BoardGameGeekObjectId,
+                                 BoardGameGeekGameDefinitionId = playedGame.GameDefinition.BoardGameGeekGameDefinitionId,
                                  GamingGroupId = playedGame.GamingGroupId,
                                  GamingGroupName = playedGame.GamingGroup.Name,
                                  Notes = playedGame.Notes,

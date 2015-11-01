@@ -30,7 +30,7 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.GameDefinition
             {
                 GameDefinitionName = "some game definition name",
                 Active = true,
-                BoardGameGeekObjectId = 2
+                BoardGameGeekGameDefinitionId = 2
             };
 
             autoMocker.ClassUnderTest.UpdateGameDefinition(updateGameDefinitionMessage, GAME_DEFINITION_ID, GAMING_GROUP_ID);
@@ -39,7 +39,7 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.GameDefinition
                 updateRequest => updateRequest.GameDefinitionId == GAME_DEFINITION_ID
                     && updateRequest.Active == updateGameDefinitionMessage.Active
                     && updateRequest.Name == updateGameDefinitionMessage.GameDefinitionName
-                    && updateRequest.BoardGameGeekObjectId == updateGameDefinitionMessage.BoardGameGeekObjectId),
+                    && updateRequest.BoardGameGeekGameDefinitionId == updateGameDefinitionMessage.BoardGameGeekGameDefinitionId),
                     Arg<ApplicationUser>.Is.Same(applicationUser)));
         }
 

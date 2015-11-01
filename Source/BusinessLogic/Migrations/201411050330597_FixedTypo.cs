@@ -26,14 +26,14 @@ namespace BusinessLogic.Migrations
     {
         public override void Up()
         {
-            AddColumn("dbo.GameDefinition", "BoardGameGeekObjectId", c => c.Int());
+            AddColumn("dbo.GameDefinition", "BoardGameGeekGameDefinitionId", c => c.Int());
             DropColumn("dbo.GameDefinition", "BoardGameGeekObjecdtId");
         }
         
         public override void Down()
         {
             AddColumn("dbo.GameDefinition", "BoardGameGeekObjecdtId", c => c.Int());
-            DropColumn("dbo.GameDefinition", "BoardGameGeekObjectId");
+            DropColumn("dbo.GameDefinition", "BoardGameGeekGameDefinitionId");
         }
     }
 }

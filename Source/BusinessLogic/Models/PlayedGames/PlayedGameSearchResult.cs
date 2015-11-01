@@ -12,7 +12,7 @@ namespace BusinessLogic.Models.PlayedGames
         public int GamingGroupId { get; set; }
         public string GamingGroupName { get; set; }
         public string Notes { get; set; }
-        public int? BoardGameGeekObjectId { get; set; }
+        public int? BoardGameGeekGameDefinitionId { get; set; }
         public DateTime DatePlayed { get; set; }
         public DateTime DateLastUpdated { get; set; }
         public IList<PlayerResult> PlayerGameResults { get; set; }

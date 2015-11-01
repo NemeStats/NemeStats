@@ -122,7 +122,7 @@ namespace UI.Tests.UnitTests.TransformationsTests
                 GamingGroupId = gamingGroupid,
                 GamingGroupName = "gaming group name",
                 PlayedGames = playedGames,
-                BoardGameGeekObjectId = 123,
+                BoardGameGeekGameDefinitionId = 123,
                 Champion = champion,
                 PreviousChampion = previousChampion,
                 PlayerWinRecords = new List<PlayerWinRecord>
@@ -197,9 +197,9 @@ namespace UI.Tests.UnitTests.TransformationsTests
         }
 
         [Test]
-        public void ItCopiesTheBoardGameGeekObjectId()
+        public void ItCopiesTheBoardGameGeekGameDefinitionId()
         {
-            Assert.That(gameDefinitionSummary.BoardGameGeekObjectId, Is.EqualTo(viewModel.BoardGameGeekObjectId));
+            Assert.That(gameDefinitionSummary.BoardGameGeekGameDefinitionId, Is.EqualTo(viewModel.BoardGameGeekGameDefinitionId));
         }
 
         [Test]

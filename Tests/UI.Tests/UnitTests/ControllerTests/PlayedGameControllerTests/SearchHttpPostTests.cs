@@ -103,7 +103,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
             {
                 new PlayedGameSearchResult
                 {
-                    BoardGameGeekObjectId = 1,
+                    BoardGameGeekGameDefinitionId = 1,
                     GameDefinitionId = 2,
                     GameDefinitionName = "some game definition name",
                     DatePlayed = new DateTime().Date,

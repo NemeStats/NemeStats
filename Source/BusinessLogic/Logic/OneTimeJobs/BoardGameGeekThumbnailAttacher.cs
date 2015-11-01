@@ -17,27 +17,27 @@ namespace BusinessLogic.Logic.OneTimeJobs
                 using (NemeStatsDataContext dataContext = new NemeStatsDataContext(dbContext, new SecuredEntityValidatorFactory()))
                 {
                     List<GameDefinition> gameDefinitionsNeedingUpdates = dataContext.GetQueryable<GameDefinition>()
-                                                                 .Where(game => game.BoardGameGeekObjectId != null
+                                                                 .Where(game => game.BoardGameGeekGameDefinitionId != null
                                                                                 && game.ThumbnailImageUrl == null)
                                                                  .ToList();
 
-                    List<int?> boardGameGeekObjectIdsNeedingThumbnails = gameDefinitionsNeedingUpdates
-                                                                   .Select(y => y.BoardGameGeekObjectId)
+                    List<int?> BoardGameGeekGameDefinitionIdsNeedingThumbnails = gameDefinitionsNeedingUpdates
+                                                                   .Select(y => y.BoardGameGeekGameDefinitionId)
                                                                    .Distinct()
                                                                    .ToList();
 
                     var client = new BoardGameGeekClient(new ApiDownloaderService());
-                    foreach (int? boardGameGeekObjectId in boardGameGeekObjectIdsNeedingThumbnails)
+                    foreach (int? BoardGameGeekGameDefinitionId in BoardGameGeekGameDefinitionIdsNeedingThumbnails)
                     {
                         System.Threading.Thread.Sleep(500);
-                        var gameDetails = client.GetGameDetails(boardGameGeekObjectId.Value);
+                        var gameDetails = client.GetGameDetails(BoardGameGeekGameDefinitionId.Value);
 
                         if (gameDetails == null || string.IsNullOrEmpty(gameDetails.Thumbnail))
                         {
                             continue;
                         }
-                        int? id = boardGameGeekObjectId;
-                        var gameDefinitionsForThisId = gameDefinitionsNeedingUpdates.Where(x => x.BoardGameGeekObjectId == id.Value);
+                        int? id = BoardGameGeekGameDefinitionId;
+                        var gameDefinitionsForThisId = gameDefinitionsNeedingUpdates.Where(x => x.BoardGameGeekGameDefinitionId == id.Value);
 
                         foreach (var gameDefinition in gameDefinitionsForThisId)
                         {

@@ -63,7 +63,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
 			gameDefinitionCreatorMock.AssertWasCalled(mock => mock.Save(
                 Arg<GameDefinition>.Matches(x => x.Name == newGameDefinitionViewModel.Name
                                             && x.Description == newGameDefinitionViewModel.Description
-                                            && x.BoardGameGeekObjectId == newGameDefinitionViewModel.BoardGameGeekObjectId), 
+                                            && x.BoardGameGeekGameDefinitionId == newGameDefinitionViewModel.BoardGameGeekGameDefinitionId), 
                 Arg<ApplicationUser>.Is.Same(currentUser)));
 		}
 

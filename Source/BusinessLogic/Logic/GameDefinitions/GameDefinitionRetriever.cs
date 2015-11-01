@@ -45,7 +45,7 @@ namespace BusinessLogic.Logic.GameDefinitions
                 select new GameDefinitionSummary
                 {
                     Active = gameDefinition.Active,
-                    BoardGameGeekObjectId = gameDefinition.BoardGameGeekObjectId,
+                    BoardGameGeekGameDefinitionId = gameDefinition.BoardGameGeekGameDefinitionId,
                     Name = gameDefinition.Name,
                     Description = gameDefinition.Description,
                     GamingGroupId = gameDefinition.GamingGroupId,
@@ -66,7 +66,7 @@ namespace BusinessLogic.Logic.GameDefinitions
 
             returnValue.ForEach( summary =>
             {
-                summary.BoardGameGeekUri = BoardGameGeekUriBuilder.BuildBoardGameGeekGameUri(summary.BoardGameGeekObjectId);
+                summary.BoardGameGeekUri = BoardGameGeekUriBuilder.BuildBoardGameGeekGameUri(summary.BoardGameGeekGameDefinitionId);
                 summary.Champion = summary.Champion ?? new NullChampion();
                 summary.PreviousChampion = summary.PreviousChampion ?? new NullChampion();
             });
@@ -108,8 +108,8 @@ namespace BusinessLogic.Logic.GameDefinitions
             GameDefinitionSummary gameDefinitionSummary =  new GameDefinitionSummary
                                                            {
                                                                Active = gameDefinition.Active,
-                                                               BoardGameGeekObjectId = gameDefinition.BoardGameGeekObjectId,
-                                                               BoardGameGeekUri = BoardGameGeekUriBuilder.BuildBoardGameGeekGameUri(gameDefinition.BoardGameGeekObjectId),
+                                                               BoardGameGeekGameDefinitionId = gameDefinition.BoardGameGeekGameDefinitionId,
+                                                               BoardGameGeekUri = BoardGameGeekUriBuilder.BuildBoardGameGeekGameUri(gameDefinition.BoardGameGeekGameDefinitionId),
                                                                Name = gameDefinition.Name,
                                                                Description = gameDefinition.Description,
                                                                GamingGroup = gameDefinition.GamingGroup,
