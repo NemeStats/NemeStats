@@ -7,7 +7,7 @@
 <div class="panel panel-primary player-statistics">
     <div class="panel-heading">
         <h4>
-           Player Statistics For This Game
+           Player VS Player Statistics
         </h4>
     </div>
     <div class="panel-body">
@@ -36,10 +36,18 @@
                             @Html.ActionLink(playerSummary.PlayerName, "Details", "Player", new { id = playerSummary.PlayerId }, new { })
                         </td>
                         <td>
-                            @string.Format("{0} - {1}", playerSummary.GamesWon, playerSummary.GamesLost)
+                            <div class="progress" data-container="body" data-toggle="popover" data-placement="top"
+                                   data-content="@playerSummary.GamesWon games won - @playerSummary.GamesLost games lost">
+                                <div class="progress-bar won" style="width: @playerSummary.WinPercentage%">
+                                    <span>@playerSummary.GamesWon</span>
+                                </div>
+                                <div class="progress-bar lost" style="width: @playerSummary.LostPercentage%">
+                                    <span>@playerSummary.GamesLost</span>
+                                </div>
+                            </div>
                         </td>
                         <td>
-                            @playerSummary.WinPercentage
+                            @playerSummary.WinPercentage&nbsp;%
                         </td>
                     </tr>
                 }

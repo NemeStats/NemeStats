@@ -132,7 +132,7 @@ namespace UI.Controllers
 		[HttpPost]
 		[UserContext]
         //TODO vulnerable to overposting. Need to change this to a request type that only has the fields that can be edited here. This could also
-        //probably be consolidated into one method, or just use the REST API
+        //probably be consolidated into one method, or just use the REST AIP
 		public virtual ActionResult Save(GameDefinition model, ApplicationUser currentUser)
 		{
 			if (!Request.IsAjaxRequest())

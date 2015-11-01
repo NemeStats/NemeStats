@@ -18,7 +18,7 @@
 			<tr>
 				<td>@Html.ActionLink(playerSummaryViewModel.PlayerName, "Details", "Player", new { id = playerSummaryViewModel.PlayerId }, new { })</td>
 				<td>@playerSummaryViewModel.TotalNumberOfGamesPlayed</td>
-				<td>@playerSummaryViewModel.WinPercentage</td>
+				<td>@playerSummaryViewModel.WinPercentage&nbsp;%</td>
 				<td>@playerSummaryViewModel.TotalPoints</td>
 			</tr>
 		}

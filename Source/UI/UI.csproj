@@ -55,27 +55,27 @@
       <HintPath>..\..\packages\AutoMapper.3.3.1\lib\net40\AutoMapper.Net4.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\EntityFramework.6.1.2\lib\net45\EntityFramework.dll</HintPath>
+      <HintPath>..\..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\EntityFramework.6.1.2\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <HintPath>..\..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="EPPlus">
       <HintPath>..\..\packages\EPPlus.4.0.3\lib\net20\EPPlus.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Microsoft.AspNet.Identity.Core.2.2.0\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+      <HintPath>..\..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.AspNet.Identity.EntityFramework, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.0\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+      <HintPath>..\..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.1\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Owin, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Microsoft.AspNet.Identity.Owin.2.2.0\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
+      <HintPath>..\..\packages\Microsoft.AspNet.Identity.Owin.2.2.1\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Owin, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -140,13 +140,13 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\Sendgrid.5.1.0\lib\SendGridMail.dll</HintPath>
     </Reference>
-    <Reference Include="StructureMap, Version=3.1.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\structuremap.3.1.4.143\lib\net40\StructureMap.dll</HintPath>
+    <Reference Include="StructureMap, Version=3.1.6.186, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\structuremap.3.1.6.186\lib\net40\StructureMap.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="StructureMap.Net4, Version=3.1.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\structuremap.3.1.4.143\lib\net40\StructureMap.Net4.dll</HintPath>
+    <Reference Include="StructureMap.Net4, Version=3.1.6.186, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\structuremap.3.1.6.186\lib\net40\StructureMap.Net4.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="StructureMap.Web, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -223,8 +223,8 @@
     <Reference Include="System.Net.Http.WebRequest">
     </Reference>
     <Reference Include="T4MVCExtensions, Version=3.0.0.0, Culture=neutral, PublicKeyToken=7b26dc2a43f6a0d4, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\T4MVCExtensions.3.14.1\lib\net40\T4MVCExtensions.dll</HintPath>
+      <HintPath>..\..\packages\T4MVCExtensions.3.15.4\lib\net40\T4MVCExtensions.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="UniversalAnalyticsHttpWrapper, Version=1.2.0.29307, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -264,6 +264,7 @@
     <Compile Include="Areas\Api\Controllers\GameDefinitionsController.cs" />
     <Compile Include="Areas\Api\Controllers\PlayedGamesController.cs" />
     <Compile Include="Areas\Api\Controllers\PlayersController.cs" />
+    <Compile Include="Areas\Api\Controllers\PlayerStatsController.cs" />
     <Compile Include="Areas\Api\Controllers\UsersController.cs" />
     <Compile Include="Areas\Api\Controllers\UserSessionsController.cs" />
     <Compile Include="Areas\Api\Controllers\VotableFeaturesController.cs" />
@@ -272,6 +273,8 @@
     <Compile Include="Areas\Api\Models\FeatureVote.cs" />
     <Compile Include="Areas\Api\Models\GameDefinitionSearchResultMessage.cs" />
     <Compile Include="Areas\Api\Models\GameDefinitionsSearchResultsMessage.cs" />
+    <Compile Include="Areas\Api\Models\GameDefinitionTotalMessage.cs" />
+    <Compile Include="Areas\Api\Models\GameDefinitionTotalsMessage.cs" />
     <Compile Include="Areas\Api\Models\GamingGroupInfoForUserMessage.cs" />
     <Compile Include="Areas\Api\Models\GenericErrorMessage.cs" />
     <Compile Include="Areas\Api\Models\NewAuthTokenMessage.cs" />
@@ -288,6 +291,7 @@
     <Compile Include="Areas\Api\Models\PlayedGameSearchResultsMessage.cs" />
     <Compile Include="Areas\Api\Models\PlayerGameResultsMessage.cs" />
     <Compile Include="Areas\Api\Models\PlayerSearchResultMessage.cs" />
+    <Compile Include="Areas\Api\Models\PlayerStatisticsMessage.cs" />
     <Compile Include="Areas\Api\Models\UserPlayerInfo.cs" />
     <Compile Include="Areas\Api\Models\PlayersSearchResultsMessage.cs" />
     <Compile Include="Areas\Api\Models\UpdateGameDefinitionMessage.cs" />
@@ -365,11 +369,9 @@
     <Compile Include="Models\Players\PlayerEditViewModel.cs" />
     <Compile Include="Models\Players\PlayerGameSummaryViewModel.cs" />
     <Compile Include="Models\Players\PlayerInvitationViewModel.cs" />
-    <Compile Include="Models\Players\OpposingPlayerViewModel.cs" />
     <Compile Include="Models\Players\PlayersSummaryViewModel.cs" />
     <Compile Include="Models\Players\PlayerSummaryViewModel.cs" />
     <Compile Include="Models\Players\TopPlayerViewModel.cs" />
-    <Compile Include="Models\Players\PlayerVersusPlayersViewModel.cs" />
     <Compile Include="Models\User\UserViewModel.cs" />
     <Compile Include="Models\VotableFeatureViewModel.cs" />
     <Compile Include="PlayedGameController.generated.cs">
@@ -420,14 +422,10 @@
     <Compile Include="Models\GamingGroup\TopGamingGroupSummaryViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\blog.css" />
-    <Content Include="Content\font-awesome.css" />
-    <Content Include="Content\font-awesome.min.css" />
     <Content Include="Content\Images\bgg_small.png" />
     <Content Include="Content\Images\NemeStats-White.png" />
     <Content Include="Content\Images\NemeStats.png" />
     <Content Include="Content\Images\spinner.gif" />
-    <Content Include="Content\site-mobile.css" />
     <Content Include="Content\themes\base\accordion.css" />
     <Content Include="Content\themes\base\all.css" />
     <Content Include="Content\themes\base\autocomplete.css" />
@@ -463,23 +461,14 @@
     <Content Include="Content\themes\base\tabs.css" />
     <Content Include="Content\themes\base\theme.css" />
     <Content Include="Content\themes\base\tooltip.css" />
-    <Content Include="sass\flipscroll.css">
-      <DependentUpon>flipscroll.scss</DependentUpon>
-    </Content>
-    <Content Include="sass\flipscroll.min.css">
-      <DependentUpon>flipscroll.css</DependentUpon>
-    </Content>
-    <Content Include="sass\ui.css">
-      <DependentUpon>ui.scss</DependentUpon>
-    </Content>
-    <Content Include="sass\ui.min.css">
-      <DependentUpon>ui.css</DependentUpon>
-    </Content>
-    <Content Include="favicon.ico" />
-    <Content Include="fonts\bootstrap\glyphicons-halflings-regular.svg" />
+    <Content Include="css\bootstrap.css" />
+    <Content Include="css\fontawesome.css" />
+    <Content Include="css\nemestats.css" />
+    <Content Include="css\theme.css" />
     <Content Include="fonts\fontawesome-webfont.svg" />
+    <Content Include="gruntfile.js" />
+    <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
-    <Content Include="Content\Site.css" />
     <Content Include="javascripts\bootstrap-sprockets.js" />
     <Content Include="javascripts\bootstrap.js" />
     <Content Include="javascripts\bootstrap.min.js" />
@@ -496,27 +485,28 @@
     <Content Include="javascripts\bootstrap\tooltip.js" />
     <Content Include="javascripts\bootstrap\transition.js" />
     <Content Include="PrivateAppSettings.config" />
-    <Content Include="fonts\fontawesome-webfont.woff" />
-    <Content Include="fonts\fontawesome-webfont.ttf" />
-    <Content Include="fonts\fontawesome-webfont.eot" />
-    <Content Include="fonts\FontAwesome.otf" />
     <Content Include="App_Readme\Handlebarsjs_README.md" />
     <Content Include="App_Readme\Handlebarsjs_LICENSE" />
     <Content Include="Areas\Api\Views\web.config" />
     <Content Include="images\.keep" />
-    <Content Include="fonts\bootstrap\glyphicons-halflings-regular.woff2" />
-    <Content Include="fonts\bootstrap\glyphicons-halflings-regular.woff" />
-    <Content Include="fonts\bootstrap\glyphicons-halflings-regular.ttf" />
-    <Content Include="fonts\bootstrap\glyphicons-halflings-regular.eot" />
-    <Content Include="sass\ui.scss" />
-    <Content Include="sass\variables.scss" />
-    <Content Include="sass\flipscroll.scss" />
+    <Content Include="sass\imports\custom-fontawesome-variables.scss" />
+    <None Include="sass\nemestats\player.scss" />
+    <Content Include="sass\nemestats\ui.scss" />
+    <Content Include="sass\nemestats\nemestats-variables.scss" />
+    <Content Include="sass\nemestats\flipscroll.scss" />
+    <Content Include="css\bootstrap.css.map" />
+    <Content Include="css\fontawesome.css.map" />
+    <Content Include="css\nemestats.css.map" />
+    <Content Include="css\theme.css.map" />
+    <Content Include="fonts\fontawesome-webfont.eot" />
+    <Content Include="fonts\fontawesome-webfont.ttf" />
+    <Content Include="fonts\fontawesome-webfont.woff" />
+    <Content Include="fonts\fontawesome-webfont.woff2" />
+    <Content Include="fonts\FontAwesome.otf" />
+    <None Include="package.json" />
     <None Include="Properties\PublishProfiles\nerdscorekeeper.pubxml" />
     <None Include="Properties\PublishProfiles\Publish Local.pubxml" />
-    <Content Include="sass\_bootswatch.css">
-      <DependentUpon>_bootswatch.scss</DependentUpon>
-    </Content>
-    <Content Include="sass\_bootswatch.scss">
+    <Content Include="sass\theme\_bootswatch.scss">
       <Compile>True</Compile>
       <Minify>True</Minify>
       <IgnoreWarnings>False</IgnoreWarnings>
@@ -524,10 +514,21 @@
       <CompileStyle>Nested</CompileStyle>
       <DebugInfo>False</DebugInfo>
     </Content>
-    <Content Include="sass\bootstrap\_variables.scss" />
+    <Content Include="sass\imports\custom-bootstrap-variables.scss" />
+    <Content Include="sass\imports\nemestats.scss" />
+    <Content Include="Scripts\d3\LICENSE" />
+    <Content Include="sass\imports\theme.scss" />
+    <Content Include="sass\imports\bootstrap.scss" />
+    <Content Include="sass\nemestats\site.scss" />
+    <Content Include="sass\nemestats\mobile.scss" />
+    <Content Include="sass\imports\fontawesome.scss" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="robots.txt" />
     <Content Include="Scripts\CreatePlayedGame\createplayedgame.js" />
+    <Content Include="Scripts\d3\d3.js" />
+    <Content Include="Scripts\d3\d3.min.js" />
+    <Content Include="Scripts\d3\nv.d3.min.js" />
+    <Content Include="Scripts\d3\css\nv.d3.css" />
     <Content Include="Scripts\GameDefinition\createGameDefinition.js" />
     <Content Include="Scripts\GameDefinition\createGameDefinitionPartial.js" />
     <Content Include="Scripts\GameDefinition\gameDefinitionAutoComplete.js" />
@@ -561,6 +562,7 @@
     <Content Include="Scripts\namespace.min-1.0.0.js" />
     <Content Include="Scripts\PlayedGame\search.js" />
     <Content Include="Scripts\PlayedGame\recordexceldownload.js" />
+    <Content Include="Scripts\Player\playerDetails.js" />
     <Content Include="Scripts\Player\createOrUpdatePlayer.js" />
     <Content Include="Scripts\Player\players.js" />
     <Content Include="Scripts\Plugins\rankPlugin.js" />
@@ -571,79 +573,6 @@
     <Content Include="Scripts\Shared\_Layout.js" />
     <Content Include="Scripts\Shared\_LoginPartial.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="Scripts\stylesheets\bootstrap\mixins\_vendor-prefixes.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\mixins\_text-overflow.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\mixins\_text-emphasis.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\mixins\_table-row.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\mixins\_tab-focus.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\mixins\_size.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\mixins\_responsive-visibility.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\mixins\_resize.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\mixins\_reset-filter.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\mixins\_progress-bar.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\mixins\_panels.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\mixins\_pagination.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\mixins\_opacity.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\mixins\_nav-vertical-align.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\mixins\_nav-divider.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\mixins\_list-group.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\mixins\_labels.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\mixins\_image.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\mixins\_hide-text.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\mixins\_grid-framework.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\mixins\_grid.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\mixins\_gradients.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\mixins\_forms.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\mixins\_clearfix.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\mixins\_center-block.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\mixins\_buttons.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\mixins\_border-radius.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\mixins\_background-variant.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\mixins\_alerts.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\_wells.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\_variables.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\_utilities.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\_type.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\_tooltip.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\_thumbnails.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\_theme.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\_tables.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\_scaffolding.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\_responsive-utilities.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\_responsive-embed.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\_progress-bars.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\_print.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\_popovers.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\_panels.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\_pagination.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\_pager.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\_normalize.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\_navs.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\_navbar.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\_modals.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\_mixins.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\_media.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\_list-group.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\_labels.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\_jumbotron.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\_input-groups.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\_grid.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\_glyphicons.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\_forms.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\_dropdowns.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\_component-animations.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\_code.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\_close.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\_carousel.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\_buttons.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\_button-groups.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\_breadcrumbs.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\_badges.scss" />
-    <Content Include="Scripts\stylesheets\bootstrap\_alerts.scss" />
-    <Content Include="Scripts\stylesheets\_bootstrap-sprockets.scss" />
-    <Content Include="Scripts\stylesheets\_bootstrap-mincer.scss" />
-    <Content Include="Scripts\stylesheets\_bootstrap-compass.scss" />
-    <Content Include="Scripts\stylesheets\_bootstrap.scss" />
     <Content Include="T4MVC.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>T4MVC.cs</LastGenOutput>
@@ -718,7 +647,6 @@
     <Content Include="Views\PlayedGame\_PlayedGamesPlayerPartial.cshtml" />
     <Content Include="Views\PlayedGame\_PlayedGameFormPartial.cshtml" />
     <Content Include="Views\PlayedGame\Search.cshtml" />
-    <Content Include="Views\Player\_PlayerVersusPlayersPartial.cshtml" />
     <Content Include="Views\GamingGroup\UpdateGamingGroupName.cshtml" />
     <Content Include="Views\GamingGroup\Edit.cshtml" />
     <Content Include="Views\GamingGroup\_GamingGroupPublicDetailsPartial.cshtml" />

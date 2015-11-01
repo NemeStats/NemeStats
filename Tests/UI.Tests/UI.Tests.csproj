@@ -50,27 +50,27 @@
       <HintPath>..\..\packages\AutoMapper.3.3.1\lib\net40\AutoMapper.Net4.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\EntityFramework.6.1.2\lib\net45\EntityFramework.dll</HintPath>
+      <HintPath>..\..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\EntityFramework.6.1.2\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <HintPath>..\..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="EPPlus">
       <HintPath>..\..\packages\EPPlus.4.0.3\lib\net20\EPPlus.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Microsoft.AspNet.Identity.Core.2.2.0\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+      <HintPath>..\..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.AspNet.Identity.EntityFramework, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.0\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+      <HintPath>..\..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.1\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Owin, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Microsoft.AspNet.Identity.Owin.2.2.0\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
+      <HintPath>..\..\packages\Microsoft.AspNet.Identity.Owin.2.2.1\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Owin, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -208,6 +208,7 @@
     <Compile Include="UnitTests\AreasTests\ApiTests\ControllersTests\PlayersControllerTests\GetPlayersTests.cs" />
     <Compile Include="UnitTests\AreasTests\ApiTests\ControllersTests\PlayersControllerTests\SaveNewPlayerTests.cs" />
     <Compile Include="UnitTests\AreasTests\ApiTests\ControllersTests\PlayersControllerTests\UpdatePlayerTests.cs" />
+    <Compile Include="UnitTests\AreasTests\ApiTests\ControllersTests\PlayerStatsControllerTests\GetPlayerStatsTests.cs" />
     <Compile Include="UnitTests\AreasTests\ApiTests\ControllersTests\UsersControllerTests.cs" />
     <Compile Include="UnitTests\AreasTests\ApiTests\ControllersTests\UserSessionsControllerTests.cs" />
     <Compile Include="UnitTests\AreasTests\ApiTests\ControllersTests\VotableFeaturesControllerTests.cs" />
@@ -224,7 +225,6 @@
     <Compile Include="UnitTests\ControllerTests\GameDefinitionControllerTests\EditHttpPostTests.cs" />
     <Compile Include="UnitTests\ControllerTests\GameDefinitionControllerTests\GameDefinitionControllerTestBase.cs" />
     <Compile Include="UnitTests\ControllerTests\GameDefinitionControllerTests\SaveGameDefinitionPostTests.cs" />
-    <Compile Include="UnitTests\ControllerTests\GameDefinitionControllerTests\SearchBoardGameGeekHttpGetTests.cs" />
     <Compile Include="UnitTests\ControllerTests\GamingGroupControllerTests\CreateNewGamingGroupTests.cs" />
     <Compile Include="UnitTests\ControllerTests\GamingGroupControllerTests\EditGetTests.cs" />
     <Compile Include="UnitTests\ControllerTests\GamingGroupControllerTests\EditPostTests.cs" />

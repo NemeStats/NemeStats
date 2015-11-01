@@ -15,19 +15,22 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
+
 using BusinessLogic.Models;
 using BusinessLogic.Models.User;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
-using System.Linq;
+using ConfigurationManager = System.Configuration.ConfigurationManager;
 
 namespace BusinessLogic.DataAccess
 {
     public class NemeStatsDbContext : IdentityDbContext<ApplicationUser>
     {
-        public NemeStatsDbContext()
-            : base("DefaultConnection")
+        internal const string CONNECTION_STRING_KEY = "Database.ConnectionString";
+
+
+        public NemeStatsDbContext() : base(ConfigurationManager.AppSettings[CONNECTION_STRING_KEY])
         {
             this.Configuration.ProxyCreationEnabled = false;
             this.Configuration.LazyLoadingEnabled = false;

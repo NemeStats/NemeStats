@@ -16,6 +16,8 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 
+using BusinessLogic.Logic.Utilities;
+using BusinessLogic.Models;
 using BusinessLogic.Models.Nemeses;
 using BusinessLogic.Models.Players;
 using System.Collections.Generic;
@@ -132,7 +134,7 @@ namespace BusinessLogic.DataAccess.Repositories
 
             var results = data.ToList();
 
-            results.ForEach(record => record.WinPercentage = CalculateWinPercentage(record.NumberOfGamesWon, record.NumberOfGamesLost));
+            results.ForEach(record => record.WinPercentage = WinPercentageCalculator.CalculateWinPercentage(record.NumberOfGamesWon, record.NumberOfGamesLost));
 
             return results;
         }
@@ -178,7 +180,7 @@ namespace BusinessLogic.DataAccess.Repositories
 
             var results = data.ToList();
 
-            results.ForEach(record => record.WinPercentage = CalculateWinPercentage(record.GamesWon, record.GamesLost));
+            results.ForEach(record => record.WinPercentage = WinPercentageCalculator.CalculateWinPercentage(record.GamesWon, record.GamesLost));
 
             return results;
         }

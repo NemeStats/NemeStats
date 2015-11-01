@@ -51,6 +51,9 @@ namespace UI.Transformations
             Mapper.CreateMap<UserInformation, UserInformationMessage>(MemberList.Destination);
             Mapper.CreateMap<PlayerWinRecord, PlayerSummaryViewModel>(MemberList.Destination)
                   .ForMember(x => x.SpecialBadgeTypes, opt => opt.MapFrom(src => src.MapSpecialBadges()));
+            Mapper.CreateMap<GameDefinitionTotal, GameDefinitionTotalMessage>(MemberList.Destination);
+            Mapper.CreateMap<GameDefinitionTotals, GameDefinitionTotalsMessage>(MemberList.Destination);
+            Mapper.CreateMap<PlayerStatistics, PlayerStatisticsMessage>(MemberList.Destination);
         }
     }
 }

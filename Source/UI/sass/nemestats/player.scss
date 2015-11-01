@@ -1,0 +1,81 @@
+﻿@import "nemestats-variables.scss";
+
+//PvP progressbars
+
+.progress {
+    height: 20px;
+    margin-bottom: 0;
+
+    .progress-bar {
+        font-size: 18px;
+        line-height: 18px;
+
+        @media (max-width: $screen-sm-max) {
+            font-size: 14px;
+            line-height: 20px;
+        }
+
+
+        &.won {
+            background-color: $brand-success;
+            position: relative;
+
+            &:before {
+                content: ' ';
+                position: absolute;
+                right: 0;
+                top: 0;
+                width: 0;
+                height: 0;
+                border-style: solid;
+                border-width: 0 10px 10px 0;
+                border-color: transparent #ffffff transparent transparent;
+            }
+
+            &:after {
+                content: ' ';
+                position: absolute;
+                right: 0;
+                bottom: 0;
+                width: 0;
+                height: 0;
+                border-style: solid;
+                border-width: 0 0 10px 10px;
+                border-color: transparent transparent #ffffff transparent;
+            }
+        }
+
+        &.lost {
+            background-color: $brand-danger;
+            position: relative;
+
+            &:before {
+                content: ' ';
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 0;
+                height: 0;
+                border-style: solid;
+                border-width: 10px 10px 0 0;
+                border-color: #ffffff transparent transparent transparent;
+            }
+
+            &:after {
+                content: ' ';
+                position: absolute;
+                left: 0;
+                bottom: 0;
+                width: 0;
+                height: 0;
+                border-style: solid;
+                border-width: 10px 0 0 10px;
+                border-color: transparent transparent transparent #ffffff;
+            }
+        }
+
+        span {
+            margin-left: 5px;
+        }
+    }
+}

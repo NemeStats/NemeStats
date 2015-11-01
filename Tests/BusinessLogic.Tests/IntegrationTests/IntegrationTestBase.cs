@@ -70,8 +70,8 @@ namespace BusinessLogic.Tests.IntegrationTests
         protected string testPlayer7Name = "testPlayer7";
         protected Player testPlayer8WithOtherGamingGroupId;
         protected string testPlayer8Name = "testPlayer8";
-        protected Player testPlayer9;
-        protected string testPlayer9Name = "testPlayer9";
+        protected Player testPlayer9UndefeatedWith5Games;
+        protected string testPlayer9UndefeatedWith5GamesName = "testPlayer9";
         protected Player testPlayerWithNoPlayedGames;
         protected string testPlayerWithNoPlayedGamesName = "test player with no played games";
         protected string testGameName = "this is test game definition name";
@@ -284,27 +284,27 @@ namespace BusinessLogic.Tests.IntegrationTests
             playedGame = CreateTestPlayedGame(testGameDefinitionWithOtherGamingGroupId.Id, players, playerRanks, testUserWithOtherGamingGroup, playedGameCreator);
             testPlayedGames.Add(playedGame);
 
-            players = new List<Player>() { testPlayer9, testPlayer7WithOtherGamingGroupId };
+            players = new List<Player>() { testPlayer9UndefeatedWith5Games, testPlayer7WithOtherGamingGroupId };
             playerRanks = new List<int>() { 1, 2 };
             playedGame = CreateTestPlayedGame(anotherTestGameDefinitionWithOtherGamingGroupId.Id, players, playerRanks, testUserWithOtherGamingGroup, playedGameCreator);
             testPlayedGames.Add(playedGame);
 
-            players = new List<Player>() { testPlayer9, testPlayer7WithOtherGamingGroupId };
+            players = new List<Player>() { testPlayer9UndefeatedWith5Games, testPlayer7WithOtherGamingGroupId };
             playerRanks = new List<int>() { 1, 2 };
             playedGame = CreateTestPlayedGame(anotherTestGameDefinitionWithOtherGamingGroupId.Id, players, playerRanks, testUserWithOtherGamingGroup, playedGameCreator);
             testPlayedGames.Add(playedGame);
 
-            players = new List<Player>() { testPlayer9, testPlayer7WithOtherGamingGroupId };
+            players = new List<Player>() { testPlayer9UndefeatedWith5Games, testPlayer7WithOtherGamingGroupId };
             playerRanks = new List<int>() { 1, 2 };
             playedGame = CreateTestPlayedGame(anotherTestGameDefinitionWithOtherGamingGroupId.Id, players, playerRanks, testUserWithOtherGamingGroup, playedGameCreator);
             testPlayedGames.Add(playedGame);
 
-            players = new List<Player>() { testPlayer9, testPlayer7WithOtherGamingGroupId };
+            players = new List<Player>() { testPlayer9UndefeatedWith5Games, testPlayer7WithOtherGamingGroupId };
             playerRanks = new List<int>() { 1, 2 };
             playedGame = CreateTestPlayedGame(anotherTestGameDefinitionWithOtherGamingGroupId.Id, players, playerRanks, testUserWithOtherGamingGroup, playedGameCreator);
             testPlayedGames.Add(playedGame);
 
-            players = new List<Player>() { testPlayer9, testPlayer7WithOtherGamingGroupId };
+            players = new List<Player>() { testPlayer9UndefeatedWith5Games, testPlayer7WithOtherGamingGroupId };
             playerRanks = new List<int>() { 1, 2 };
             playedGame = CreateTestPlayedGame(anotherTestGameDefinitionWithOtherGamingGroupId.Id, players, playerRanks, testUserWithOtherGamingGroup, playedGameCreator);
             testPlayedGames.Add(playedGame);
@@ -329,8 +329,8 @@ namespace BusinessLogic.Tests.IntegrationTests
             nemeStatsDbContext.Players.Add(testPlayer7WithOtherGamingGroupId);
             testPlayer8WithOtherGamingGroupId = new Player() { Name = testPlayer8Name, Active = true, GamingGroupId = otherGamingGroupId };
             nemeStatsDbContext.Players.Add(testPlayer8WithOtherGamingGroupId);
-            testPlayer9 = new Player { Name = testPlayer9Name, Active = false, GamingGroupId =  otherGamingGroupId};
-            nemeStatsDbContext.Players.Add(testPlayer9);
+            testPlayer9UndefeatedWith5Games = new Player { Name = testPlayer9UndefeatedWith5GamesName, Active = false, GamingGroupId =  otherGamingGroupId};
+            nemeStatsDbContext.Players.Add(testPlayer9UndefeatedWith5Games);
 
             testPlayerWithNoPlayedGames = new Player { Name = testPlayerWithNoPlayedGamesName, Active = true, GamingGroupId = primaryGamingGroupId };
             nemeStatsDbContext.Players.Add(testPlayerWithNoPlayedGames);
@@ -463,7 +463,7 @@ namespace BusinessLogic.Tests.IntegrationTests
             CleanUpPlayerByPlayerName(testPlayer6Name, nemeStatsDbContext);
             CleanUpPlayerByPlayerName(testPlayer7Name, nemeStatsDbContext);
             CleanUpPlayerByPlayerName(testPlayer8Name, nemeStatsDbContext);
-            CleanUpPlayerByPlayerName(testPlayer9Name, nemeStatsDbContext);
+            CleanUpPlayerByPlayerName(testPlayer9UndefeatedWith5GamesName, nemeStatsDbContext);
             CleanUpPlayerByPlayerName(testPlayerWithNoPlayedGamesName, nemeStatsDbContext);
         }
 
@@ -513,7 +513,7 @@ namespace BusinessLogic.Tests.IntegrationTests
                                                    || player.Name == testPlayer6Name
                                                    || player.Name == testPlayer7Name
                                                    || player.Name == testPlayer8Name
-                                                   || player.Name == testPlayer9Name
+                                                   || player.Name == testPlayer9UndefeatedWith5GamesName
                                                    select player.Id)
                                                   .ToList();
 

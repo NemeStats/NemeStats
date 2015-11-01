@@ -1,0 +1,467 @@
+@media only screen and (max-width: 991px) {
+  #flip-scroll .cf:after {
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: " ";
+    clear: both;
+    height: 0; }
+  #flip-scroll * html .cf, #flip-scroll *:first-child + html .cf {
+    zoom: 1; }
+  #flip-scroll table {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0; }
+  #flip-scroll th, #flip-scroll td {
+    margin: 0;
+    vertical-align: top; }
+  #flip-scroll th {
+    text-align: left; }
+  #flip-scroll table {
+    display: block;
+    position: relative;
+    width: 100%; }
+  #flip-scroll thead {
+    display: block;
+    float: left; }
+  #flip-scroll tbody {
+    display: block;
+    width: auto;
+    position: relative;
+    overflow-x: auto;
+    white-space: nowrap; }
+  #flip-scroll thead tr {
+    display: block; }
+  #flip-scroll th {
+    display: block;
+    text-align: right; }
+  #flip-scroll tbody tr {
+    display: inline-block;
+    vertical-align: top; }
+  #flip-scroll td {
+    display: block;
+    min-height: 1.25em; }
+  #flip-scroll th {
+    border-bottom: 0;
+    border-left: 0; }
+  #flip-scroll td {
+    border-left: 0;
+    border-right: 0;
+    border-bottom: 0; }
+  #flip-scroll tbody tr {
+    border-left: 1px solid #babcbf; }
+  #flip-scroll th:last-child, #flip-scroll td:last-child {
+    border-bottom: 1px solid #babcbf; }
+  /* sort out borders */ }
+
+body {
+  padding-top: 50px;
+  overflow-x: hidden; }
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-bottom: 20px; }
+
+a[name] {
+  padding-top: 50px;
+  margin-top: -50px;
+  display: inline-block; }
+
+.home-container {
+  background-color: #eee; }
+
+.home-body-container {
+  background-color: #fff;
+  width: 100%;
+  padding-left: 2%;
+  padding-right: 2%; }
+
+.home-banner {
+  margin-top: 10px;
+  padding-top: 5px;
+  padding-left: 20%;
+  padding-right: 20%;
+  width: 100%;
+  display: block; }
+
+/* Set width on the form input elements since they're 100% wide by default */
+input, select {
+  max-width: 280px; }
+
+/* styles for validation helpers */
+.field-validation-error {
+  color: #b94a48; }
+
+.field-validation-valid {
+  display: none; }
+
+input.input-validation-error {
+  border: 1px solid #b94a48; }
+
+input[type="checkbox"].input-validation-error {
+  border: 0 none; }
+
+.validation-summary-errors {
+  color: #b94a48; }
+
+.validation-summary-valid {
+  display: none; }
+
+.firstplace {
+  color: #004d00;
+  font-weight: bold; }
+
+.sortable {
+  list-style-type: none;
+  margin: 0;
+  padding: 0; }
+
+ul input[type=text] {
+  width: 25px; }
+
+.homelogo {
+  background: url(/Content/Images/NemeStats-White.png) no-repeat top left;
+  display: block;
+  width: 150px;
+  text-indent: -9999px; }
+
+.margin-bottom-xs {
+  margin-bottom: 0.5em;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box; }
+
+.margin-bottom-sm {
+  margin-bottom: 1em; }
+
+.margin-bottom-md {
+  margin-bottom: 1.5em; }
+
+.margin-bottom-lg {
+  margin-bottom: 2em; }
+
+.margin-left-sm {
+  margin-left: 1em; }
+
+.margin-left-md {
+  margin-left: 1.5em; }
+
+.margin-left-lg {
+  margin-left: 2em; }
+
+.margin-sm {
+  margin: 1em; }
+
+.margin-md {
+  margin: 1.5em; }
+
+.margin-lg {
+  margin: 2em; }
+
+.line-bottom-sm {
+  border-bottom: #eee;
+  border-bottom-style: solid;
+  border-bottom-width: 1px; }
+
+.line-bottom-md {
+  border-bottom: #eee;
+  border-bottom-style: solid;
+  border-bottom-width: 2px; }
+
+.font-size-xs {
+  font-size: 0.5em; }
+
+.font-size-sm {
+  font-size: 1.5em; }
+
+.font-size-md {
+  font-size: 2.5em; }
+
+.font-size-lg {
+  font-size: 3.5em; }
+
+.line-bottom-sm:last-child {
+  border-bottom-style: hidden;
+  border-bottom-width: 0; }
+
+/*Customize the carousel*/
+/* Carousel base class */
+.carousel {
+  background-color: #eee; }
+
+.carousel-caption {
+  color: black;
+  position: inherit;
+  text-shadow: none; }
+
+/* Declare heights because of positioning of img element */
+.carousel .item {
+  min-height: 260px;
+  background-color: #eee;
+  margin-bottom: 10px; }
+
+.fl-left {
+  float: left; }
+
+.fl-right {
+  float: right; }
+
+.fl-clear {
+  clear: both; }
+
+/* tablets and desktops */
+@media (min-width: 481px) {
+  .home-page-icon {
+    font-size: 8em; } }
+
+.push-30 {
+  margin-top: 30px; }
+
+.editable-title {
+  padding: 5px;
+  cursor: pointer; }
+  .editable-title:hover {
+    background: #ddd;
+    border-radius: 4px; }
+
+.autocomplete-loading {
+  background: #fff url("/Content/Images/spinner.gif") no-repeat right center; }
+
+.leftItem {
+  display: inline-block;
+  /*max-width: 120px;*/
+  overflow: hidden;
+  padding: 5px 0 0 3px; }
+  .leftItem span {
+    display: inline-block;
+    line-height: 30px;
+    white-space: nowrap;
+    max-width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis; }
+
+.rightItem {
+  display: inline-block;
+  padding: 7px 3px 0 0; }
+
+.playerRank {
+  height: 28px;
+  width: 30px !important;
+  border-radius: 5px;
+  border-color: #18bc9c !important;
+  border-width: 3px;
+  text-align: center; }
+
+.playerItem {
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+  color: #fff;
+  background-color: #2C3E50;
+  max-width: 380px;
+  margin: 8px;
+  padding: 4px;
+  cursor: pointer;
+  border-radius: 5px;
+  position: relative;
+  white-space: nowrap;
+  margin-left: 0px; }
+  .playerItem button {
+    color: #2C3E50; }
+  .playerItem input[type="text"] {
+    color: #2C3E50;
+    border-color: #2C3E50; }
+
+.gaming-group-name {
+  min-width: 95%;
+  max-width: 95%; }
+
+.panel-text-vertical-center {
+  line-height: 43px; }
+
+a:not(.btn), table a:not(.btn), .table a:not(.btn) {
+  text-decoration: none; }
+
+a:not(.btn):hover {
+  text-decoration: underline; }
+
+a.navbar-brand:hover {
+  text-decoration: none; }
+
+table > thead :hover {
+  background-color: none !important; }
+
+h3 > a {
+  font-size: smaller; }
+
+.gameResult-teamLoss {
+  color: red; }
+
+.gameResult-teamWin {
+  color: green; }
+
+.rank-item {
+  font-size: 26px; }
+
+.upvote-count {
+  color: green;
+  font-weight: bold; }
+
+.downvote-count {
+  color: red;
+  font-weight: bold; }
+
+.btn-recordgame {
+  width: 175px;
+  margin: 3px 3px 3px 3px; }
+
+button > i.fa {
+  font-size: 20px; }
+
+.panel > i.fa {
+  line-height: 36; }
+
+.neme-points-ico {
+  color: #2C3E50;
+  font-size: 10px; }
+  .neme-points-ico .letter {
+    color: white;
+    font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif; }
+
+@media only screen and (max-width: 991px) {
+  #player-details .gameDefinitionsList#flip-scroll .badges-head {
+    padding: 5px; }
+  #player-details .gameDefinitionsList#flip-scroll .badges-col {
+    line-height: 0;
+    height: 31px; } }
+
+#player-details .gameDefinitionsList .badges-col {
+  width: 20px;
+  line-height: 100px; }
+
+#player-details .gameDefinitionsList .bgg-link-col {
+  text-align: left; }
+
+.player-statistics .fa.fa-trophy.fa-slashed:after {
+  position: relative;
+  content: "/";
+  font-weight: 700;
+  font-size: 1.7em;
+  left: -17px;
+  top: 2px; }
+
+.gameDefinitionsList .fa.fa-trophy.fa-slashed:after {
+  position: relative;
+  content: "/";
+  font-weight: 700;
+  font-size: 1.6em;
+  top: -21px; }
+
+.gameDefinitionsList .edit-col {
+  text-align: center; }
+
+.gameDefinitionsList .no-bgg-ico {
+  font-size: 40px; }
+
+.gameDefinitionsList .bgg-link-col {
+  font-weight: bold;
+  height: 100px;
+  overflow: hidden;
+  text-align: center;
+  max-width: 200px; }
+  .gameDefinitionsList .bgg-link-col .bgg-thumbnail {
+    width: auto;
+    height: 100%;
+    min-height: 100px; }
+
+@media (max-width: 991px) {
+  .home-page-icon {
+    font-size: 4em; }
+  .leftItem {
+    display: inline-block;
+    max-width: 90px;
+    overflow: hidden; } }
+
+@media only screen and (max-width: 991px) {
+  #flip-scroll .bgg-link-head {
+    height: 100px; }
+  #flip-scroll .edit-head {
+    height: 40px; }
+  #flip-scroll .name-head {
+    height: 70px; }
+  #flip-scroll .name-col {
+    height: 70px;
+    max-width: 200px;
+    overflow: hidden; }
+    #flip-scroll .name-col a {
+      white-space: normal;
+      word-break: break-word; }
+  #flip-scroll .edit-col {
+    height: 47px;
+    text-align: center; }
+  #flip-scroll .plays-col {
+    text-align: center; }
+  #flip-scroll .champion-col {
+    height: 30px;
+    text-align: center; } }
+
+.progress {
+  height: 20px;
+  margin-bottom: 0; }
+  .progress .progress-bar {
+    font-size: 18px;
+    line-height: 18px; }
+    @media (max-width: 991px) {
+      .progress .progress-bar {
+        font-size: 14px;
+        line-height: 20px; } }
+    .progress .progress-bar.won {
+      background-color: #18BC9C;
+      position: relative; }
+      .progress .progress-bar.won:before {
+        content: ' ';
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 0 10px 10px 0;
+        border-color: transparent #ffffff transparent transparent; }
+      .progress .progress-bar.won:after {
+        content: ' ';
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 0 0 10px 10px;
+        border-color: transparent transparent #ffffff transparent; }
+    .progress .progress-bar.lost {
+      background-color: #E74C3C;
+      position: relative; }
+      .progress .progress-bar.lost:before {
+        content: ' ';
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 10px 10px 0 0;
+        border-color: #ffffff transparent transparent transparent; }
+      .progress .progress-bar.lost:after {
+        content: ' ';
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 10px 0 0 10px;
+        border-color: transparent transparent transparent #ffffff; }
+    .progress .progress-bar span {
+      margin-left: 5px; }
+
+/*# sourceMappingURL=nemestats.css.map */

@@ -18,10 +18,10 @@
 using System.Data.Entity;
 using BusinessLogic.DataAccess;
 using BusinessLogic.DataAccess.Repositories;
-using BusinessLogic.Logic.BoardGameGeek;
 using BusinessLogic.Models;
 using System.Collections.Generic;
 using System.Linq;
+using BusinessLogic.Logic.BoardGameGeek;
 using BusinessLogic.Models.Games;
 
 namespace BusinessLogic.Logic.GameDefinitions

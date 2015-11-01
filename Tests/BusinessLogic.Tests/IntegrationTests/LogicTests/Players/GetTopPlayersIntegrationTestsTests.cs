@@ -49,14 +49,14 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.Players
         }
 
         [Test]
-        public void ItReturnsThePlayersInDescendingOrderOfTotalNumberOfGamesPlayed()
+        public void ItReturnsThePlayersInDescendingOrderOfTotalPoints()
         {
-            int lastNumberofPlayedGames = int.MaxValue;
+            int lastPoints = int.MaxValue;
 
             foreach(TopPlayer topPlayer in topPlayersResult)
             {
-                Assert.LessOrEqual(topPlayer.TotalNumberOfGamesPlayed, lastNumberofPlayedGames);
-                lastNumberofPlayedGames = topPlayer.TotalNumberOfGamesPlayed;
+                Assert.LessOrEqual(topPlayer.TotalPoints, lastPoints);
+                lastPoints = topPlayer.TotalPoints;
             }
         }
 
@@ -68,17 +68,6 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.Players
             Assert.Greater(firstResult.TotalPoints, 0);
             Assert.True(!string.IsNullOrWhiteSpace(firstResult.PlayerName));
             Assert.Greater(firstResult.PlayerId, 0);
-        }
-
-        [Test]
-        public void ItCalculatesTheWinPercentageCorrectly()
-        {
-            int totalGamesPlayed = 100;
-            int totalGamesWon = 20;
-
-            int actualWinPercentage = playerSummaryBuilderImpl.CalculateWinPercentage(totalGamesWon, totalGamesPlayed);
-
-            Assert.AreEqual(20, actualWinPercentage);
         }
     }
 }

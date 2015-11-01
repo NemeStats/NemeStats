@@ -46,6 +46,15 @@ namespace UI
             bundles.Add(new ScriptBundle("~/bundles/handlebars")
                 .Include("~/Scripts/handlebars.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/d3")
+                .Include("~/Scripts/d3/d3.js")
+                .Include("~/Scripts/d3/nv.d3.min.js")
+                .Include("~/Scripts/d3/gamesPlayedPieChart.js")
+                .Include("~/Scripts/d3/nemeStatsPointsLineGraph.js"));
+
+            bundles.Add(new StyleBundle("~/bundles/d3/css")
+                .Include("~/Scripts/d3/css/nv.d3.css"));
+
             bundles.Add(new ScriptBundle("~/bundles/custom")
                 .Include("~/Scripts/namespace-{version}.js")
                 .Include("~/Scripts/Plugins/toEditBoxPlugin.js")
@@ -55,23 +64,22 @@ namespace UI
                 .Include("~/Scripts/PlayedGame/search.js")
                 .Include("~/Scripts/PlayedGame/recordexceldownload.js")
                 .Include("~/Scripts/Player/createOrUpdatePlayer.js")
+                .Include("~/Scripts/Player/playerDetails.js")
                 .Include("~/Scripts/Player/players.js")
                 .Include("~/Scripts/GameDefinition/gameDefinitionAutoComplete.js")
                 .Include("~/Scripts/GameDefinition/createGameDefinitionPartial.js")
-				.Include("~/Scripts/GameDefinition/createGameDefinition.js")
-				.Include("~/Scripts/GameDefinition/gameDefinitions.js")
-				.Include("~/Scripts/Shared/_Layout.js")
+                .Include("~/Scripts/GameDefinition/createGameDefinition.js")
+                .Include("~/Scripts/GameDefinition/gameDefinitions.js")
+                .Include("~/Scripts/Shared/_Layout.js")
                 .Include("~/Scripts/Shared/_LoginPartial.js")
                 .Include("~/Scripts/Shared/GoogleAnalytics.js"));
 
             bundles.Add(new StyleBundle("~/bundles/content/css")
-                .Include("~/sass/_bootswatch.css", new CssRewriteUrlTransform())
-                .Include("~/sass/ui.min.css", new CssRewriteUrlTransform())
-                .Include("~/sass/flipscroll.min.css", new CssRewriteUrlTransform())
-                .Include("~/Content/site.css",
-                    "~/Content/site-mobile.css",
-                    "~/Content/blog.css")
-                .Include("~/Content/font-awesome.min.css", new CssRewriteUrlTransform()));
+                .Include("~/css/bootstrap.css")
+                .Include("~/css/theme.css")
+                .Include("~/css/nemestats.css")
+                .Include("~/css/fontawesome.css")
+                );
 
             bundles.Add(new StyleBundle("~/Content/themes/base/css").Include(
                 "~/Content/Themes/base/jquery-ui.css"));

@@ -50,12 +50,12 @@
       <HintPath>..\..\packages\AutoMapper.3.3.1\lib\net40\AutoMapper.Net4.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\EntityFramework.6.1.2\lib\net45\EntityFramework.dll</HintPath>
+      <HintPath>..\..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\EntityFramework.6.1.2\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <HintPath>..\..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="EPPlus">
       <HintPath>..\..\packages\EPPlus.4.0.3\lib\net20\EPPlus.dll</HintPath>
@@ -153,10 +153,7 @@
     <Compile Include="Exceptions\UnauthorizedEntityAccessException.cs" />
     <Compile Include="Export\ExcelGenerator.cs" />
     <Compile Include="Export\IExcelGenerator.cs" />
-    <Compile Include="Logic\BoardGameGeek\BoardGameGeekSearcher.cs" />
-    <Compile Include="Logic\BoardGameGeek\BoardGameGeekUriBuilder.cs" />
-    <Compile Include="Logic\BoardGameGeek\IBoardGameGeekSearcher.cs" />
-    <Compile Include="Logic\BoardGameGeek\DeSerializationModels\SearchResultModels.cs" />
+    <Compile Include="Logic\BoardGameGeek\BoardGameGeekUrlBuilder.cs" />
     <Compile Include="Logic\Champions\ChampionRecalculator.cs" />
     <Compile Include="Logic\Email\EmailService.cs" />
     <Compile Include="Logic\OneTimeJobs\BoardGameGeekThumbnailAttacher.cs" />
@@ -172,6 +169,7 @@
     <Compile Include="Logic\Users\IAuthTokenValidator.cs" />
     <Compile Include="Logic\Users\IUserRetriever.cs" />
     <Compile Include="Logic\Users\UserRetriever.cs" />
+    <Compile Include="Logic\Utilities\WinPercentageCalculator.cs" />
     <Compile Include="Logic\VotableFeatures\IVotableFeatureRetriever.cs" />
     <Compile Include="Logic\OneTimeJobs\BoardGameGeekDataLinker.cs" />
     <Compile Include="Logic\Champions\IChampionRecalculator.cs" />
@@ -298,6 +296,8 @@
     <Compile Include="Models\PlayedGames\PlayedGameSearchResult.cs" />
     <Compile Include="Models\PlayedGames\PlayerResult.cs" />
     <Compile Include="Models\PlayedGames\WinnerTypesEnum.cs" />
+    <Compile Include="Models\Players\GameDefinitionTotal.cs" />
+    <Compile Include="Models\Players\GameDefinitionTotals.cs" />
     <Compile Include="Models\Players\PlayerInfoForUser.cs" />
     <Compile Include="Models\Players\PlayerInvitation.cs" />
     <Compile Include="Logic\Players\PlayerInviter.cs" />
@@ -420,7 +420,6 @@
     <Compile Include="Models\Champion.cs" />
     <Compile Include="Models\Champions\ChampionData.cs" />
     <Compile Include="Models\Champions\NullChampionData.cs" />
-    <Compile Include="Models\Games\BoardGameGeekSearchResult.cs" />
     <Compile Include="Models\Games\ChampionStatistics.cs" />
     <Compile Include="Models\Games\GameDefinitionSummary.cs" />
     <Compile Include="Models\Games\PublicGameSummary.cs" />

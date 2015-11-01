@@ -1,0 +1,57 @@
+﻿@import "nemestats-variables.scss";
+
+@media (max-width: $screen-sm-max) {
+    .home-page-icon {
+        font-size: 4em;
+    }
+
+    .leftItem {
+        display: inline-block;
+        max-width: 90px;
+        overflow: hidden;
+    }
+
+}
+
+
+&#flip-scroll {
+    @media only screen and (max-width: $screen-sm-max) {
+
+        .bgg-link-head {
+            height: $gamethumbnail-height;
+        }
+
+        .edit-head {
+            height: 40px;
+        }
+
+        .name-head {
+            height: $gamename-height;
+        }
+
+        .name-col {
+            height: $gamename-height;
+            max-width: $gamethumbnail-maxwidht;
+            overflow: hidden;
+
+            a {
+                white-space: normal;
+                word-break: break-word;
+            }
+        }
+
+        .edit-col {
+            height: 47px;
+            text-align: center;
+        }
+
+        .plays-col {
+            text-align: center;
+        }
+
+        .champion-col {
+            height: 30px;
+            text-align: center;
+        }
+    }
+}
