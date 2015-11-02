@@ -252,7 +252,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
             gameDefinition.BoardGameGeekGameDefinitionId = 1;
             gameDefinition.Expect(mock => mock.AlreadyInDatabase())
                 .Return(false);
-          
+
             autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<GameDefinition>()).Return(new List<GameDefinition>().AsQueryable());
 
             autoMocker.ClassUnderTest.Save(gameDefinition, currentUser);
