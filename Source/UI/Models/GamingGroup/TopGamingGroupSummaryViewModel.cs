@@ -15,6 +15,9 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
+
+using BusinessLogic.Models;
+
 namespace UI.Models.GamingGroup
 {
     public class TopGamingGroupSummaryViewModel
@@ -23,5 +26,6 @@ namespace UI.Models.GamingGroup
         public int GamingGroupId { get; set; }
         public int NumberOfPlayers { get; set; }
         public int NumberOfGamesPlayed { get; set; }
+        public Player GamingGroupChampion { get; set; }
     }
 }

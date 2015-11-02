@@ -9,6 +9,7 @@
 				<th>Gaming Group</th>
 				<th>Played Games</th>
 				<th>Players</th>
+				<th>Champion</th>
 			</tr>
 		</thead>
 		@foreach (var topGamingGroup in @Model)
@@ -17,6 +18,7 @@
 				<td>@Html.ActionLink(topGamingGroup.GamingGroupName, "Details", "GamingGroup", new { id = topGamingGroup.GamingGroupId }, new { })</td>
 				<td>@topGamingGroup.NumberOfGamesPlayed</td>
 				<td>@topGamingGroup.NumberOfPlayers</td>
+				<td>@Html.ActionLink(topGamingGroup.GamingGroupChampion.Name, "Details", "Player", new { id = topGamingGroup.GamingGroupChampion.Id }, new { })</td>
 			</tr>
 		}
 	</table>

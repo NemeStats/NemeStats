@@ -32,5 +32,8 @@ namespace BusinessLogic.Models.Games
         public IWinner Winner { get; set; }
         public WinnerTypes WinnerType { get; set; }
         public Player WinningPlayer { get; set; }
+        public Uri BoardGameGeekUri { get; set; }
+        public string ThumbnailImageUrl { get; set; }
+        public int? BoardGameGeekObjectId { get; set; }
     }
 }
