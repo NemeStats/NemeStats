@@ -8,7 +8,7 @@
     @using (Html.BeginForm())
     {
         <div class="form-inline">
-            @Html.HiddenFor(m => m.BoardGameGeekObjectId)
+            @Html.HiddenFor(m => m.BoardGameGeekGameDefinitionId)
             <div class="form-group">
                 @Html.LabelFor(model => model.Name, new { @class = "control-label col-md-3 panel-text-vertical-center" })
                 @Html.TextBoxFor(model => model.Name, new { @class = "form-control col-md-2", id = "gameNameInput" })

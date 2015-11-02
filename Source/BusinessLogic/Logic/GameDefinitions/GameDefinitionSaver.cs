@@ -26,6 +26,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using BoardGameGeekApiClient.Interfaces;
+using BusinessLogic.Models.Games;
 
 namespace BusinessLogic.Logic.GameDefinitions
 {
@@ -45,7 +46,7 @@ namespace BusinessLogic.Logic.GameDefinitions
             _boardGameGeekApiClient = boardGameGeekApiClient;
         }
 
-        public virtual GameDefinition Save(GameDefinition gameDefinition, ApplicationUser currentUser)
+        public virtual GameDefinitionDisplayInfo Save(GameDefinition gameDefinition, ApplicationUser currentUser)
         {
             ValidateGameDefinitionIsNotNull(gameDefinition);
             ValidateGameDefinitionNameIsNotNullOrWhitespace(gameDefinition.Name);
@@ -53,11 +54,13 @@ namespace BusinessLogic.Logic.GameDefinitions
             if (gameDefinitionAlreadyExists)
             {
                 var existingGameDefinition = dataContext.FindById<GameDefinition>(gameDefinition.Id);
-                if(existingGameDefinition != null && existingGameDefinition.BoardGameGeekObjectId != gameDefinition.BoardGameGeekObjectId)
+                if(existingGameDefinition != null && existingGameDefinition.BoardGameGeekGameDefinitionId != gameDefinition.BoardGameGeekGameDefinitionId)
                 {
                     SetBoardGameGeekThumbnail(gameDefinition);
                 }
-                return this.dataContext.Save(gameDefinition, currentUser);
+                var savedGameDefinition = this.dataContext.Save(gameDefinition, currentUser);
+
+                return new GameDefinitionDisplayInfo();
             }
             var definition = gameDefinition;
 
@@ -67,7 +70,10 @@ namespace BusinessLogic.Logic.GameDefinitions
 
             gameDefinition = this.HandleExistingGameDefinitionWithThisName(gameDefinition, currentUser.CurrentGamingGroupId.Value);
 
-            return dataContext.Save<GameDefinition>(gameDefinition, currentUser);
+            var savedGameDefinition2 = dataContext.Save(gameDefinition, currentUser);
+
+            return new GameDefinitionDisplayInfo();
+
         }
 
         private static void ValidateGameDefinitionIsNotNull(GameDefinition gameDefinition)
@@ -88,12 +94,13 @@ namespace BusinessLogic.Logic.GameDefinitions
 
         private void SetBoardGameGeekThumbnail(GameDefinition gameDefinition)
         {
-            if (gameDefinition.BoardGameGeekObjectId.HasValue)
+            if (gameDefinition.BoardGameGeekGameDefinitionId.HasValue)
             {
-                var gameDetails = this._boardGameGeekApiClient.GetGameDetails(gameDefinition.BoardGameGeekObjectId.Value);
+                var gameDetails = this._boardGameGeekApiClient.GetGameDetails(gameDefinition.BoardGameGeekGameDefinitionId.Value);
                 if (gameDetails != null)
                 {
-                    gameDefinition.ThumbnailImageUrl = gameDetails.Thumbnail;
+                    //TODO big refactor
+                    //gameDefinition.ThumbnailImageUrl = gameDetails.Thumbnail;
                 }
             }
         }
@@ -136,12 +143,17 @@ namespace BusinessLogic.Logic.GameDefinitions
                 gameDefinition.Name = gameDefinitionUpdateRequest.Name;
             }
 
-            if (gameDefinitionUpdateRequest.BoardGameGeekObjectId.HasValue)
+            if (gameDefinitionUpdateRequest.BoardGameGeekGameDefinitionId.HasValue)
             {
-                gameDefinition.BoardGameGeekObjectId = gameDefinitionUpdateRequest.BoardGameGeekObjectId;
+                gameDefinition.BoardGameGeekGameDefinitionId = gameDefinitionUpdateRequest.BoardGameGeekGameDefinitionId;
             }
 
             this.Save(gameDefinition, applicationUser);
+        }
+
+        internal void AttachToBoardGameGeekGameDefinition(GameDefinition gameDefinition)
+        {
+            throw new NotImplementedException();
         }
     }
 }

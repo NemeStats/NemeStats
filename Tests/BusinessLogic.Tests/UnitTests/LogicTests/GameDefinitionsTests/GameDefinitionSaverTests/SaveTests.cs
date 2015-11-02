@@ -121,7 +121,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
                 (GameDefinition)autoMocker.Get<IDataContext>().GetArgumentsForCallsMadeOn(mock => mock.Save(Arg<GameDefinition>.Is.Anything, Arg<ApplicationUser>.Is.Anything))[0][0];
 
             Assert.That(gameDefinitionThatWasSaved.Id, Is.EqualTo(existingGameDefinition.Id));
-            Assert.That(gameDefinitionThatWasSaved.BoardGameGeekObjectId, Is.EqualTo(existingGameDefinition.BoardGameGeekObjectId));
+            Assert.That(gameDefinitionThatWasSaved.BoardGameGeekGameDefinitionId, Is.EqualTo(existingGameDefinition.BoardGameGeekGameDefinitionId));
             Assert.That(gameDefinitionThatWasSaved.Active, Is.EqualTo(true));
         }
 
@@ -245,35 +245,27 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
         }
 
         [Test]
-        public void ItSetsTheBoardGameGeekThumbnailIfThereIsOneAndItsANewGameDefinition()
+        public void ItAttachesToABoardGameGeekGameDefinitionIfItHasABoardGameGeekGameDefinitionId()
         {
             var gameDefinition = MockRepository.GeneratePartialMock<GameDefinition>();
             gameDefinition.Name = "name";
-            gameDefinition.BoardGameGeekObjectId = 1;
+            gameDefinition.BoardGameGeekGameDefinitionId = 1;
             gameDefinition.Expect(mock => mock.AlreadyInDatabase())
                 .Return(false);
-            var expectedGameDetails = new GameDetails
-            {
-                Thumbnail = "some thumbnail URL"
-            };
-
-            autoMocker.Get<IBoardGameGeekApiClient>().Expect(mock => mock.GetGameDetails(gameDefinition.BoardGameGeekObjectId.Value))
-                      .Return(expectedGameDetails);
+          
             autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<GameDefinition>()).Return(new List<GameDefinition>().AsQueryable());
 
             autoMocker.ClassUnderTest.Save(gameDefinition, currentUser);
 
-            autoMocker.Get<IDataContext>().AssertWasCalled(mock => mock.Save(
-                         Arg<GameDefinition>.Matches(newGameDefinition => newGameDefinition.ThumbnailImageUrl == expectedGameDetails.Thumbnail),
-                         Arg<ApplicationUser>.Is.Anything));
+            autoMocker.ClassUnderTest.AssertWasCalled(mock => mock.AttachToBoardGameGeekGameDefinition(gameDefinition));
         }
 
         [Test]
-        public void ItSetsTheBoardGameGeekThumbnailIfTheBoardGameGeekObjectIdChanged()
+        public void ItSetsTheBoardGameGeekThumbnailIfTheBoardGameGeekGameDefinitionIdChanged()
         {
             var gameDefinition = MockRepository.GeneratePartialMock<GameDefinition>();
             gameDefinition.Name = "name";
-            gameDefinition.BoardGameGeekObjectId = 1;
+            gameDefinition.BoardGameGeekGameDefinitionId = 1;
             gameDefinition.Id = 3;
             gameDefinition.Expect(mock => mock.AlreadyInDatabase())
                 .Return(true);
@@ -286,35 +278,12 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
                 Id = 9398483
             };
             autoMocker.Get<IDataContext>().Expect(mock => mock.FindById<GameDefinition>(gameDefinition.Id)).Return(existingGameDefinitionWithDifferentBGGObjectId);
-            autoMocker.Get<IBoardGameGeekApiClient>().Expect(mock => mock.GetGameDetails(gameDefinition.BoardGameGeekObjectId.Value))
+            autoMocker.Get<IBoardGameGeekApiClient>().Expect(mock => mock.GetGameDetails(gameDefinition.BoardGameGeekGameDefinitionId.Value))
                       .Return(expectedGameDetails);
 
             autoMocker.ClassUnderTest.Save(gameDefinition, currentUser);
 
-            autoMocker.Get<IDataContext>().AssertWasCalled(mock => mock.Save(
-                         Arg<GameDefinition>.Matches(d => d.ThumbnailImageUrl == expectedGameDetails.Thumbnail),
-                         Arg<ApplicationUser>.Is.Anything));
+            autoMocker.ClassUnderTest.AssertWasCalled(mock => mock.AttachToBoardGameGeekGameDefinition(gameDefinition));
         }
-
-        [Test]
-        public void ItDoesNotSetAThumbnailIfTheClientDoesntReturnAGameDefinition()
-        {
-            var gameDefinition = MockRepository.GeneratePartialMock<GameDefinition>();
-            gameDefinition.Name = "name";
-            gameDefinition.BoardGameGeekObjectId = 1;
-            gameDefinition.Expect(mock => mock.AlreadyInDatabase())
-                .Return(false);
-
-            autoMocker.Get<IBoardGameGeekApiClient>().Expect(mock => mock.GetGameDetails(gameDefinition.BoardGameGeekObjectId.Value))
-                      .Return(null);
-            autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<GameDefinition>()).Return(new List<GameDefinition>().AsQueryable());
-
-            autoMocker.ClassUnderTest.Save(gameDefinition, currentUser);
-
-            autoMocker.Get<IDataContext>().AssertWasCalled(mock => mock.Save(
-                         Arg<GameDefinition>.Matches(newGameDefinition => newGameDefinition.ThumbnailImageUrl == null),
-                         Arg<ApplicationUser>.Is.Anything)); 
-        }
-
     }
 }

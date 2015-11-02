@@ -60,7 +60,7 @@ namespace UI.Areas.Api.Controllers
                 GameDefinitions = results.Select(result => new GameDefinitionSearchResultMessage
                 {
                     Active = result.Active,
-                    BoardGameGeekObjectId = result.BoardGameGeekObjectId,
+                    BoardGameGeekGameDefinitionId = result.BoardGameGeekGameDefinitionId,
                     GameDefinitionId = result.Id,
                     GameDefinitionName = result.Name
                 }).ToList()
@@ -86,7 +86,7 @@ namespace UI.Areas.Api.Controllers
         {
             var gameDefinition = new GameDefinition
             {
-                BoardGameGeekObjectId = newGameDefinitionMessage.BoardGameGeekObjectId,
+                BoardGameGeekGameDefinitionId = newGameDefinitionMessage.BoardGameGeekGameDefinitionId,
                 Name = newGameDefinitionMessage.GameDefinitionName
             };
 
@@ -124,7 +124,7 @@ namespace UI.Areas.Api.Controllers
             {
                 Active = updateGameDefinitionMessage.Active,
                 Name = updateGameDefinitionMessage.GameDefinitionName,
-                BoardGameGeekObjectId = updateGameDefinitionMessage.BoardGameGeekObjectId,
+                BoardGameGeekGameDefinitionId = updateGameDefinitionMessage.BoardGameGeekGameDefinitionId,
                 GameDefinitionId = gameDefinitionId
             };
 

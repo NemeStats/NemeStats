@@ -43,7 +43,7 @@ namespace UI.Tests.UnitTests
                     Id = 123,
                     Notes = "some notes",
                     NumberOfPlayers = 3,
-                    BoardGameGeekObjectId = 1234,
+                    BoardGameGeekGameDefinitionId = 1234,
                     GameDefinitionName = "the game name",
                     WinningPlayerIds = "12345|123456",
                     WinningPlayerNames = "Jim|Jane"

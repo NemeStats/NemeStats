@@ -29,7 +29,7 @@ namespace UI.Models.GameDefinitionModels
         public bool UserCanEdit { get; set; }
         public string GamingGroupName { get; set; }
         public int GamingGroupId { get; set; }
-        public int? BoardGameGeekObjectId { get; set; }
+        public int? BoardGameGeekGameDefinitionId { get; set; }
         public Uri BoardGameGeekUri { get; set; }
         public string ThumbnailImageUrl { get; set; }
         public string ChampionName { get; set; }

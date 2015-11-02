@@ -16,6 +16,7 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 using BusinessLogic.Models;
+using BusinessLogic.Models.Games;
 using BusinessLogic.Models.User;
 using NUnit.Framework;
 using Rhino.Mocks;
@@ -63,7 +64,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
 			gameDefinitionCreatorMock.AssertWasCalled(mock => mock.Save(
                 Arg<GameDefinition>.Matches(x => x.Name == newGameDefinitionViewModel.Name
                                             && x.Description == newGameDefinitionViewModel.Description
-                                            && x.BoardGameGeekObjectId == newGameDefinitionViewModel.BoardGameGeekObjectId), 
+                                            && x.BoardGameGeekGameDefinitionId == newGameDefinitionViewModel.BoardGameGeekGameDefinitionId), 
                 Arg<ApplicationUser>.Is.Same(currentUser)));
 		}
 
@@ -95,7 +96,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
                 Name = "Project-Ariel"
 		    };
 		    gameDefinitionCreatorMock.Expect(mock => mock.Save(Arg<GameDefinition>.Is.Anything, Arg<ApplicationUser>.Is.Anything))
-		                             .Return(new GameDefinition()
+		                             .Return(new GameDefinitionDisplayInfo
 		                             {
 		                                 Id = expectedGameDefinitionId
 		                             });

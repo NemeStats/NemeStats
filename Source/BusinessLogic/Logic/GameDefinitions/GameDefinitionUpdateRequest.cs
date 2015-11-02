@@ -7,6 +7,6 @@ namespace BusinessLogic.Logic.GameDefinitions
         public int GameDefinitionId { get; set; }
         public bool? Active { get; set; }
         public string Name { get; set; }
-        public int? BoardGameGeekObjectId { get; set; }
+        public int? BoardGameGeekGameDefinitionId { get; set; }
     }
 }

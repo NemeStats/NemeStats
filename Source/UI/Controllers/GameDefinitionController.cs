@@ -116,10 +116,10 @@ namespace UI.Controllers
                 newGameDefinitionViewModel.Name = newGameDefinitionViewModel.Name.Trim();
                 var gameDefinition = Mapper.Map<NewGameDefinitionViewModel, GameDefinition>(newGameDefinitionViewModel);
 
-				gameDefinition = gameDefinitionSaver.Save(gameDefinition, currentUser);
+				var savedResult = gameDefinitionSaver.Save(gameDefinition, currentUser);
 
                 if (!String.IsNullOrWhiteSpace(newGameDefinitionViewModel.ReturnUrl))
-                    return new RedirectResult(newGameDefinitionViewModel.ReturnUrl + "?gameId=" + gameDefinition.Id);
+                    return new RedirectResult(newGameDefinitionViewModel.ReturnUrl + "?gameId=" + savedResult.Id);
 
 				return new RedirectResult(Url.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name)
 										+ "#" + GamingGroupController.SECTION_ANCHOR_GAMEDEFINITIONS);
@@ -143,7 +143,7 @@ namespace UI.Controllers
 			if (ModelState.IsValid)
 			{
 				model.Name = model.Name.Trim();
-				GameDefinition game = gameDefinitionSaver.Save(model, currentUser);
+				var game = gameDefinitionSaver.Save(model, currentUser);
 				return Json(game, JsonRequestBehavior.AllowGet);
 			}
 
@@ -179,7 +179,7 @@ namespace UI.Controllers
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		[UserContext]
-		public virtual ActionResult Edit([Bind(Include = "Id,Name,BoardGameGeekObjectId,Description,GamingGroupId,Active")] GameDefinition gamedefinition, ApplicationUser currentUser)
+		public virtual ActionResult Edit([Bind(Include = "Id,Name,BoardGameGeekGameDefinitionId,Description,GamingGroupId,Active")] GameDefinition gamedefinition, ApplicationUser currentUser)
 		{
 			if (ModelState.IsValid)
 			{

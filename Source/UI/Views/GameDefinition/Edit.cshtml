@@ -1,4 +1,4 @@
-﻿@model BusinessLogic.Models.GameDefinition
+﻿@model UI.Models.GameDefinitionModels.GameDefinitionEditViewModel
 
 @{
     ViewBag.Title = "Edit Game";
@@ -26,7 +26,7 @@
                     <div class="col-md-10">
                         @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.Name)
-                        @Html.HiddenFor(model => model.BoardGameGeekObjectId)
+                        @Html.HiddenFor(model => model.BoardGameGeekGameDefinitionId)
                         @Html.Hidden("GamingGroupId", @Model.GamingGroupId)
                     </div>
                 </div>
@@ -60,7 +60,7 @@
     <script type="text/javascript">
         $(document).ready(function() {
             var gameDefinitionAutoComplete = new Views.GameDefinition.GameDefinitionAutoComplete();
-            gameDefinitionAutoComplete.init($("#Name"), $("#BoardGameGeekObjectId"));
+            gameDefinitionAutoComplete.init($("#Name"), $("#BoardGameGeekGameDefinitionId"));
         });
     </script>
 }

@@ -20,7 +20,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
             {
                 Id = GAME_DEFINITION_ID,
                 Name = "some old game definition name",
-                BoardGameGeekObjectId = -1
+                BoardGameGeekGameDefinitionId = -1
             };
             autoMocker.Get<IDataContext>().Expect(mock => mock.FindById<GameDefinition>(Arg<int>.Is.Anything)).Return(expectedGameDefinition);
         }
@@ -56,17 +56,17 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
         }
 
         [Test]
-        public void ItUpdatesTheBoardGameGeekObjectId()
+        public void ItUpdatesTheBoardGameGeekGameDefinitionId()
         {
             var gameDefinitionUpdateRequest = new GameDefinitionUpdateRequest
             {
-                BoardGameGeekObjectId = 200
+                BoardGameGeekGameDefinitionId = 200
             };
             autoMocker.ClassUnderTest.UpdateGameDefinition(gameDefinitionUpdateRequest, currentUser);
 
             autoMocker.ClassUnderTest.AssertWasCalled(
                 partialMock => partialMock.Save(Arg<GameDefinition>.Matches(
-                    gameDefinition => gameDefinition.BoardGameGeekObjectId == gameDefinitionUpdateRequest.BoardGameGeekObjectId),
+                    gameDefinition => gameDefinition.BoardGameGeekGameDefinitionId == gameDefinitionUpdateRequest.BoardGameGeekGameDefinitionId),
                     Arg<ApplicationUser>.Is.Same(currentUser)));
         }
     }

@@ -45,7 +45,7 @@ namespace BusinessLogic.Logic.GameDefinitions
                 select new GameDefinitionSummary
                 {
                     Active = gameDefinition.Active,
-                    BoardGameGeekObjectId = gameDefinition.BoardGameGeekObjectId,
+                    BoardGameGeekGameDefinitionId = gameDefinition.BoardGameGeekGameDefinitionId,
                     Name = gameDefinition.Name,
                     Description = gameDefinition.Description,
                     GamingGroupId = gameDefinition.GamingGroupId,
@@ -57,7 +57,7 @@ namespace BusinessLogic.Logic.GameDefinitions
                     PreviousChampion = gameDefinition.PreviousChampion,
                     PreviousChampionId = gameDefinition.PreviousChampionId,
                     DateCreated = gameDefinition.DateCreated,
-                    ThumbnailImageUrl = gameDefinition.ThumbnailImageUrl
+                    ThumbnailImageUrl = gameDefinition.BoardGameGeekGameDefinition == null ? null : gameDefinition.BoardGameGeekGameDefinition.Thumbnail
                 })
                 .OrderBy(game => game.Name)
                 .ToList();
@@ -66,7 +66,7 @@ namespace BusinessLogic.Logic.GameDefinitions
 
             returnValue.ForEach( summary =>
             {
-                summary.BoardGameGeekUri = BoardGameGeekUriBuilder.BuildBoardGameGeekGameUri(summary.BoardGameGeekObjectId);
+                summary.BoardGameGeekUri = BoardGameGeekUriBuilder.BuildBoardGameGeekGameUri(summary.BoardGameGeekGameDefinitionId);
                 summary.Champion = summary.Champion ?? new NullChampion();
                 summary.PreviousChampion = summary.PreviousChampion ?? new NullChampion();
             });
@@ -103,20 +103,21 @@ namespace BusinessLogic.Logic.GameDefinitions
                 .Include(game => game.PreviousChampion)
                 .Include(game => game.PreviousChampion.Player)
                 .Include(game => game.GamingGroup)
+                .Include(game => game.BoardGameGeekGameDefinition)
                 .SingleOrDefault(game => game.Id == id);
 
             GameDefinitionSummary gameDefinitionSummary =  new GameDefinitionSummary
                                                            {
                                                                Active = gameDefinition.Active,
-                                                               BoardGameGeekObjectId = gameDefinition.BoardGameGeekObjectId,
-                                                               BoardGameGeekUri = BoardGameGeekUriBuilder.BuildBoardGameGeekGameUri(gameDefinition.BoardGameGeekObjectId),
+                                                               BoardGameGeekGameDefinitionId = gameDefinition.BoardGameGeekGameDefinitionId,
+                                                               BoardGameGeekUri = BoardGameGeekUriBuilder.BuildBoardGameGeekGameUri(gameDefinition.BoardGameGeekGameDefinitionId),
                                                                Name = gameDefinition.Name,
                                                                Description = gameDefinition.Description,
                                                                GamingGroup = gameDefinition.GamingGroup,
                                                                GamingGroupId = gameDefinition.GamingGroupId,
                                                                GamingGroupName = gameDefinition.GamingGroup.Name,
                                                                Id = gameDefinition.Id,
-                                                               ThumbnailImageUrl = gameDefinition.ThumbnailImageUrl,
+                                                               ThumbnailImageUrl = gameDefinition.BoardGameGeekGameDefinition == null ? null : gameDefinition.BoardGameGeekGameDefinition.Thumbnail,
                                                                TotalNumberOfGamesPlayed = gameDefinition.PlayedGames.Count,
                                                                Champion = gameDefinition.Champion ?? new NullChampion(),
                                                                PreviousChampion = gameDefinition.PreviousChampion ?? new NullChampion()

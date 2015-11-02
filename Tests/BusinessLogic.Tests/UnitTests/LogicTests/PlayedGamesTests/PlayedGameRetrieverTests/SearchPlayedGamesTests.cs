@@ -89,7 +89,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameRe
                 GameDefinition = new GameDefinition
                 {
                     Name = "some game definition name",
-                    BoardGameGeekObjectId = 4
+                    BoardGameGeekGameDefinitionId = 4
                 }
             };
 
