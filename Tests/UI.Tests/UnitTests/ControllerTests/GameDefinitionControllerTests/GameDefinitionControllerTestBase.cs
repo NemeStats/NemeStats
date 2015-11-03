@@ -46,7 +46,6 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
         protected ApplicationUser currentUser;
         protected HttpRequestBase asyncRequestMock;
 
-
         [SetUp]
         public virtual void SetUp()
         {

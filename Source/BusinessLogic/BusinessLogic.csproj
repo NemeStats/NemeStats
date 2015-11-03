@@ -289,7 +289,12 @@
     <Compile Include="Migrations\201511010229030_WAT2.Designer.cs">
       <DependentUpon>201511010229030_WAT2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201511030244129_RemoveThumbnailFromGameDefinition.cs" />
+    <Compile Include="Migrations\201511030244129_RemoveThumbnailFromGameDefinition.Designer.cs">
+      <DependentUpon>201511030244129_RemoveThumbnailFromGameDefinition.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\BoardGameGeekGameDefinition.cs" />
+    <Compile Include="Models\Games\CreateGameDefinitionRequest.cs" />
     <Compile Include="Models\Games\GameDefinitionDisplayInfo.cs" />
     <Compile Include="Models\Games\GameDefinitionName.cs" />
     <Compile Include="Models\GamingGroups\GamingGroupEditRequest.cs" />
@@ -678,6 +683,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201511010229030_WAT2.resx">
       <DependentUpon>201511010229030_WAT2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201511030244129_RemoveThumbnailFromGameDefinition.resx">
+      <DependentUpon>201511030244129_RemoveThumbnailFromGameDefinition.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

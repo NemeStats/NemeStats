@@ -27,7 +27,6 @@
                         @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.Name)
                         @Html.HiddenFor(model => model.BoardGameGeekGameDefinitionId)
-                        @Html.Hidden("GamingGroupId", @Model.GamingGroupId)
                     </div>
                 </div>
 

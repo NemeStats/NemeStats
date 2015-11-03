@@ -70,9 +70,9 @@ namespace UI.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public virtual System.Web.Mvc.ActionResult Save()
+        public virtual System.Web.Mvc.ActionResult AjaxCreate()
         {
-            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Save);
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AjaxCreate);
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -104,7 +104,7 @@ namespace UI.Controllers
         {
             public readonly string Details = "Details";
             public readonly string Create = "Create";
-            public readonly string Save = "Save";
+            public readonly string AjaxCreate = "AjaxCreate";
             public readonly string Edit = "Edit";
             public readonly string CreatePartial = "CreatePartial";
             public readonly string SearchBoardGameGeekHttpGet = "SearchBoardGameGeekHttpGet";
@@ -115,7 +115,7 @@ namespace UI.Controllers
         {
             public const string Details = "Details";
             public const string Create = "Create";
-            public const string Save = "Save";
+            public const string AjaxCreate = "AjaxCreate";
             public const string Edit = "Edit";
             public const string CreatePartial = "CreatePartial";
             public const string SearchBoardGameGeekHttpGet = "SearchBoardGameGeekHttpGet";
@@ -141,13 +141,13 @@ namespace UI.Controllers
             public readonly string newGameDefinitionViewModel = "newGameDefinitionViewModel";
             public readonly string currentUser = "currentUser";
         }
-        static readonly ActionParamsClass_Save s_params_Save = new ActionParamsClass_Save();
+        static readonly ActionParamsClass_AjaxCreate s_params_AjaxCreate = new ActionParamsClass_AjaxCreate();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public ActionParamsClass_Save SaveParams { get { return s_params_Save; } }
+        public ActionParamsClass_AjaxCreate AjaxCreateParams { get { return s_params_AjaxCreate; } }
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public class ActionParamsClass_Save
+        public class ActionParamsClass_AjaxCreate
         {
-            public readonly string model = "model";
+            public readonly string createGameDefinitionRequest = "createGameDefinitionRequest";
             public readonly string currentUser = "currentUser";
         }
         static readonly ActionParamsClass_Edit s_params_Edit = new ActionParamsClass_Edit();
@@ -158,7 +158,7 @@ namespace UI.Controllers
         {
             public readonly string id = "id";
             public readonly string currentUser = "currentUser";
-            public readonly string gamedefinition = "gamedefinition";
+            public readonly string viewModel = "viewModel";
         }
         static readonly ActionParamsClass_SearchBoardGameGeekHttpGet s_params_SearchBoardGameGeekHttpGet = new ActionParamsClass_SearchBoardGameGeekHttpGet();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -238,15 +238,15 @@ namespace UI.Controllers
         }
 
         [NonAction]
-        partial void SaveOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, BusinessLogic.Models.GameDefinition model, BusinessLogic.Models.User.ApplicationUser currentUser);
+        partial void AjaxCreateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, UI.Models.GameDefinitionModels.CreateGameDefinitionViewModel createGameDefinitionRequest, BusinessLogic.Models.User.ApplicationUser currentUser);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult Save(BusinessLogic.Models.GameDefinition model, BusinessLogic.Models.User.ApplicationUser currentUser)
+        public override System.Web.Mvc.ActionResult AjaxCreate(UI.Models.GameDefinitionModels.CreateGameDefinitionViewModel createGameDefinitionRequest, BusinessLogic.Models.User.ApplicationUser currentUser)
         {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Save);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "model", model);
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AjaxCreate);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "createGameDefinitionRequest", createGameDefinitionRequest);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "currentUser", currentUser);
-            SaveOverride(callInfo, model, currentUser);
+            AjaxCreateOverride(callInfo, createGameDefinitionRequest, currentUser);
             return callInfo;
         }
 
@@ -264,15 +264,15 @@ namespace UI.Controllers
         }
 
         [NonAction]
-        partial void EditOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, BusinessLogic.Models.GameDefinition gamedefinition, BusinessLogic.Models.User.ApplicationUser currentUser);
+        partial void EditOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, UI.Models.GameDefinitionModels.GameDefinitionEditViewModel viewModel, BusinessLogic.Models.User.ApplicationUser currentUser);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult Edit(BusinessLogic.Models.GameDefinition gamedefinition, BusinessLogic.Models.User.ApplicationUser currentUser)
+        public override System.Web.Mvc.ActionResult Edit(UI.Models.GameDefinitionModels.GameDefinitionEditViewModel viewModel, BusinessLogic.Models.User.ApplicationUser currentUser)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Edit);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "gamedefinition", gamedefinition);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "viewModel", viewModel);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "currentUser", currentUser);
-            EditOverride(callInfo, gamedefinition, currentUser);
+            EditOverride(callInfo, viewModel, currentUser);
             return callInfo;
         }
 

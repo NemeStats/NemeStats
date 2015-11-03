@@ -24,7 +24,7 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.GameDefinition
                 Id = 100
             };
 
-            autoMocker.Get<IGameDefinitionSaver>().Expect(mock => mock.Save(Arg<GameDefinition>.Is.Anything, Arg<ApplicationUser>.Is.Anything))
+            autoMocker.Get<IGameDefinitionSaver>().Expect(mock => mock.CreateGameDefinition(Arg<GameDefinition>.Is.Anything, Arg<ApplicationUser>.Is.Anything))
                       .Return(expectedGameDefinitionDisplayInfo);
         }
 
@@ -40,7 +40,7 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.GameDefinition
             autoMocker.ClassUnderTest.SaveNewGameDefinition(newGameDefinitionMessage, 0);
 
             autoMocker.Get<IGameDefinitionSaver>().AssertWasCalled(
-                mock => mock.Save(Arg<GameDefinition>.Matches(gameDefinition => gameDefinition.Name == newGameDefinitionMessage.GameDefinitionName
+                mock => mock.CreateGameDefinition(Arg<GameDefinition>.Matches(gameDefinition => gameDefinition.Name == newGameDefinitionMessage.GameDefinitionName
                     && gameDefinition.BoardGameGeekGameDefinitionId == newGameDefinitionMessage.BoardGameGeekGameDefinitionId),
                     Arg<ApplicationUser>.Is.Same(applicationUser)));
         }

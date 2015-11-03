@@ -17,7 +17,7 @@ Views.GameDefinition.CreateGameDefinitionPartial = function () {
 Views.GameDefinition.CreateGameDefinitionPartial.prototype = {
 	init: function () {
 	    var owner = this;
-		this.formAction = "/gamedefinition/save";
+		this.formAction = "/gamedefinition/ajaxcreate";
 		this.$container = $(".createGameDefinitionPartial");
 		this.$form = this.$container.find("form");
 		this.$form.attr('action', this.formAction);

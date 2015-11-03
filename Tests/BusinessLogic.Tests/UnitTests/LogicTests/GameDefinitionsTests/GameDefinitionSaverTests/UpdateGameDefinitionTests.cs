@@ -35,7 +35,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
             autoMocker.ClassUnderTest.UpdateGameDefinition(gameDefinitionUpdateRequest, currentUser);
 
             autoMocker.ClassUnderTest.AssertWasCalled(
-                partialMock => partialMock.Save(Arg<GameDefinition>.Matches(
+                partialMock => partialMock.CreateGameDefinition(Arg<GameDefinition>.Matches(
                     gameDefinition => gameDefinition.Active == gameDefinitionUpdateRequest.Active), 
                     Arg<ApplicationUser>.Is.Same(currentUser)));
         }
@@ -50,7 +50,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
             autoMocker.ClassUnderTest.UpdateGameDefinition(gameDefinitionUpdateRequest, currentUser);
 
             autoMocker.ClassUnderTest.AssertWasCalled(
-                partialMock => partialMock.Save(Arg<GameDefinition>.Matches(
+                partialMock => partialMock.CreateGameDefinition(Arg<GameDefinition>.Matches(
                     gameDefinition => gameDefinition.Name == gameDefinitionUpdateRequest.Name),
                     Arg<ApplicationUser>.Is.Same(currentUser)));
         }
@@ -65,7 +65,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
             autoMocker.ClassUnderTest.UpdateGameDefinition(gameDefinitionUpdateRequest, currentUser);
 
             autoMocker.ClassUnderTest.AssertWasCalled(
-                partialMock => partialMock.Save(Arg<GameDefinition>.Matches(
+                partialMock => partialMock.CreateGameDefinition(Arg<GameDefinition>.Matches(
                     gameDefinition => gameDefinition.BoardGameGeekGameDefinitionId == gameDefinitionUpdateRequest.BoardGameGeekGameDefinitionId),
                     Arg<ApplicationUser>.Is.Same(currentUser)));
         }

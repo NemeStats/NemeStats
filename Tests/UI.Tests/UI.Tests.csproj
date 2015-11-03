@@ -224,7 +224,7 @@
     <Compile Include="UnitTests\ControllerTests\GameDefinitionControllerTests\EditHttpGetTests.cs" />
     <Compile Include="UnitTests\ControllerTests\GameDefinitionControllerTests\EditHttpPostTests.cs" />
     <Compile Include="UnitTests\ControllerTests\GameDefinitionControllerTests\GameDefinitionControllerTestBase.cs" />
-    <Compile Include="UnitTests\ControllerTests\GameDefinitionControllerTests\SaveGameDefinitionPostTests.cs" />
+    <Compile Include="UnitTests\ControllerTests\GameDefinitionControllerTests\AjaxCreatePostTests.cs" />
     <Compile Include="UnitTests\ControllerTests\GamingGroupControllerTests\CreateNewGamingGroupTests.cs" />
     <Compile Include="UnitTests\ControllerTests\GamingGroupControllerTests\EditGetTests.cs" />
     <Compile Include="UnitTests\ControllerTests\GamingGroupControllerTests\EditPostTests.cs" />

@@ -90,7 +90,7 @@ namespace UI.Areas.Api.Controllers
                 Name = newGameDefinitionMessage.GameDefinitionName
             };
 
-            var newGameDefinition = gameDefinitionSaver.Save(gameDefinition, CurrentUser);
+            var newGameDefinition = gameDefinitionSaver.CreateGameDefinition(gameDefinition, CurrentUser);
 
             var newlyCreatedGameDefinitionMessage = new NewlyCreatedGameDefinitionMessage
             {

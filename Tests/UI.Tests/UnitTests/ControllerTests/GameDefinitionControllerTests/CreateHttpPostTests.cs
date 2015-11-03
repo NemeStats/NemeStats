@@ -61,7 +61,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
 
             gameDefinitionControllerPartialMock.Create(newGameDefinitionViewModel, currentUser);
 
-			gameDefinitionCreatorMock.AssertWasCalled(mock => mock.Save(
+			gameDefinitionCreatorMock.AssertWasCalled(mock => mock.CreateGameDefinition(
                 Arg<GameDefinition>.Matches(x => x.Name == newGameDefinitionViewModel.Name
                                             && x.Description == newGameDefinitionViewModel.Description
                                             && x.BoardGameGeekGameDefinitionId == newGameDefinitionViewModel.BoardGameGeekGameDefinitionId), 
@@ -95,7 +95,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
                 ReturnUrl = returnUrl,
                 Name = "Project-Ariel"
 		    };
-		    gameDefinitionCreatorMock.Expect(mock => mock.Save(Arg<GameDefinition>.Is.Anything, Arg<ApplicationUser>.Is.Anything))
+		    gameDefinitionCreatorMock.Expect(mock => mock.CreateGameDefinition(Arg<GameDefinition>.Is.Anything, Arg<ApplicationUser>.Is.Anything))
 		                             .Return(new GameDefinitionDisplayInfo
 		                             {
 		                                 Id = expectedGameDefinitionId

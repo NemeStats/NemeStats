@@ -46,7 +46,12 @@ namespace BusinessLogic.Logic.GameDefinitions
             _boardGameGeekApiClient = boardGameGeekApiClient;
         }
 
-        public virtual GameDefinitionDisplayInfo Save(GameDefinition gameDefinition, ApplicationUser currentUser)
+        public GameDefinition CreateGameDefinition(CreateGameDefinitionRequest createGameDefinitionRequest, ApplicationUser applicationUser)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual GameDefinitionDisplayInfo CreateGameDefinition(GameDefinition gameDefinition, ApplicationUser currentUser)
         {
             ValidateGameDefinitionIsNotNull(gameDefinition);
             ValidateGameDefinitionNameIsNotNullOrWhitespace(gameDefinition.Name);
@@ -148,7 +153,7 @@ namespace BusinessLogic.Logic.GameDefinitions
                 gameDefinition.BoardGameGeekGameDefinitionId = gameDefinitionUpdateRequest.BoardGameGeekGameDefinitionId;
             }
 
-            this.Save(gameDefinition, applicationUser);
+            this.CreateGameDefinition(gameDefinition, applicationUser);
         }
 
         internal void AttachToBoardGameGeekGameDefinition(GameDefinition gameDefinition)

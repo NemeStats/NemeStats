@@ -23,6 +23,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using UI.Models.GameDefinitionModels;
 
 namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
 {
@@ -39,19 +40,29 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
         }
 
         [Test]
-        public void ItSetsTheGameDefinitionOnTheView()
+        public void ItSetsTheGameDefinitionEditViewModelOnTheView()
         {
             GameDefinitionSummary gameDefinitionSummary = new GameDefinitionSummary()
             {
-                Id = 135
+                Id = 1,
+                Name = "some name",
+                Active = false,
+                BoardGameGeekGameDefinitionId = 2,
+                //TODO add thumbnail image url to the edit page
+                //ThumbnailImageUrl = "some url",
+                Description = "some description"
             };
             gameDefinitionRetrieverMock.Expect(mock => mock.GetGameDefinitionDetails(gameDefinitionSummary.Id, 0))
                 .Repeat.Once()
                 .Return(gameDefinitionSummary);
 
             ViewResult viewResult = gameDefinitionControllerPartialMock.Edit(gameDefinitionSummary.Id, currentUser) as ViewResult;
-
-            Assert.AreEqual(gameDefinitionSummary, viewResult.ViewData.Model);
+            var gameDefinitionEditViewModel = viewResult.ViewData.Model as GameDefinitionEditViewModel;
+            Assert.That(gameDefinitionEditViewModel, Is.Not.Null);
+            Assert.That(gameDefinitionEditViewModel.Id, Is.EqualTo(gameDefinitionSummary.Id));
+            Assert.That(gameDefinitionEditViewModel.Name, Is.EqualTo(gameDefinitionSummary.Name));
+            Assert.That(gameDefinitionEditViewModel.Active, Is.EqualTo(gameDefinitionSummary.Active));
+            Assert.That(gameDefinitionEditViewModel.BoardGameGeekGameDefinitionId, Is.EqualTo(gameDefinitionSummary.BoardGameGeekGameDefinitionId));
         }
 
         [Test]
