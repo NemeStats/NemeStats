@@ -22,6 +22,7 @@ using BusinessLogic.Models.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using BusinessLogic.Logic.BoardGameGeek;
 using UI.Models.PlayedGame;
 
 namespace UI.Transformations
@@ -43,7 +44,7 @@ namespace UI.Transformations
         public PlayedGameDetailsViewModel Build(PlayedGame playedGame, ApplicationUser currentUser)
         {
             ValidateArguments(playedGame);
-            
+
             PlayedGameDetailsViewModel summary = new PlayedGameDetailsViewModel();
             summary.GameDefinitionName = playedGame.GameDefinition.Name;
             summary.GameDefinitionId = playedGame.GameDefinitionId;
@@ -51,15 +52,18 @@ namespace UI.Transformations
             summary.DatePlayed = playedGame.DatePlayed;
             summary.GamingGroupId = playedGame.GamingGroup.Id;
             summary.GamingGroupName = playedGame.GamingGroup.Name;
+            summary.ThumbnailImageUrl = playedGame.GameDefinition.ThumbnailImageUrl;
+            summary.BoardGameGeekUri =
+                BoardGameGeekUriBuilder.BuildBoardGameGeekGameUri(playedGame.GameDefinition.BoardGameGeekObjectId);
             if (playedGame.Notes != null)
             {
                 summary.Notes = playedGame.Notes.Replace(Environment.NewLine, NEWLINE_REPLACEMENT_FOR_HTML);
             }
-            
+
             summary.UserCanEdit = (currentUser != null && playedGame.GamingGroupId == currentUser.CurrentGamingGroupId);
             summary.PlayerResults = new List<GameResultViewModel>();
-            
-            foreach(PlayerGameResult playerGameResult in playedGame.PlayerGameResults)
+
+            foreach (PlayerGameResult playerGameResult in playedGame.PlayerGameResults)
             {
                 summary.PlayerResults.Add(playerResultBuilder.Build(playerGameResult));
             }
