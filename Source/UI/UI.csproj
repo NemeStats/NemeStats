@@ -465,6 +465,7 @@
     <Content Include="css\fontawesome.css" />
     <Content Include="css\nemestats.css" />
     <Content Include="css\theme.css" />
+    <Content Include="d05312d3df6611386a98228b.html" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="gruntfile.js" />
     <Content Include="favicon.ico" />
