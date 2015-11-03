@@ -18,6 +18,7 @@
 using BusinessLogic.Models;
 using System;
 using System.Linq;
+using BusinessLogic.Logic.BoardGameGeek;
 using UI.Models.PlayedGame;
 
 namespace UI.Transformations
@@ -41,6 +42,10 @@ namespace UI.Transformations
             result.GameDefinitionName = playerGameResult.PlayedGame.GameDefinition.Name;
             result.PlayedGameId = playerGameResult.PlayedGameId;
             result.DatePlayed = playerGameResult.PlayedGame.DatePlayed;
+            result.BoardGameGeekUri =
+                BoardGameGeekUriBuilder.BuildBoardGameGeekGameUri(
+                    playerGameResult.PlayedGame.GameDefinition.BoardGameGeekObjectId);
+            result.ThumbnailImageUrl = playerGameResult.PlayedGame.GameDefinition.ThumbnailImageUrl;
 
             return result;
         }

@@ -34,5 +34,8 @@ namespace UI.Models.PlayedGame
         public IList<GameResultViewModel> PlayerResults { get; set; }
         public bool UserCanEdit { get; set; }
         public WinnerTypes? WinnerType { get; set; }
+
+        public Uri BoardGameGeekUri { get; set; }
+        public string ThumbnailImageUrl { get; set; }
     }
 }

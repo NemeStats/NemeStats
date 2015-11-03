@@ -31,9 +31,29 @@
 				<div class="col-sm-3">
 					<b>Game Played</b>
 				</div>
-				<div class="col-sm-9">
-					@Html.ActionLink(Model.GameDefinitionName, "Details", "GameDefinition", new { id = Model.GameDefinitionId }, new { })
-				</div>
+			    <div class="col-sm-9">
+                    @if (Model.BoardGameGeekUri != null)
+                    {
+                        <a href="@Model.BoardGameGeekUri.AbsoluteUri">
+                            @if (!string.IsNullOrEmpty(Model.ThumbnailImageUrl))
+                            {
+                                <img src="@Model.ThumbnailImageUrl" alt="View on BoardGameGeek.com" title="View on BoardGameGeek.com" />
+                            }
+                            else
+                            {
+                                @Html.ActionLink(Model.GameDefinitionName, "Details", "GameDefinition", new { id = Model.GameDefinitionId }, new { })
+                                <img src="~/Content/Images/bgg_small.png" alt="View on BoardGameGeek.com" title="View on BoardGameGeek.com" />
+                            }
+
+                        </a>
+                    }
+                    else
+                    {
+
+                        @Html.ActionLink(Model.GameDefinitionName, "Details", "GameDefinition", new { id = Model.GameDefinitionId }, new { })
+
+                    }
+			    </div>
 			</div>
 			<div class="row">
 				<div class="col-sm-3">
