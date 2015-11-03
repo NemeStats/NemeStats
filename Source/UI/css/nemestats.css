@@ -327,7 +327,9 @@ button > i.fa {
   .leftItem {
     display: inline-block;
     max-width: 90px;
-    overflow: hidden; } }
+    overflow: hidden; }
+  .furrghtd {
+    display: none; } }
 
 @media only screen and (max-width: 991px) {
   #flip-scroll .bgg-link-head {
