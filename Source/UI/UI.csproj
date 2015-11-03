@@ -465,6 +465,7 @@
     <Content Include="css\fontawesome.css" />
     <Content Include="css\nemestats.css" />
     <Content Include="css\theme.css" />
+    <Content Include="d05312d3df6611386a98228b.html" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="gruntfile.js" />
     <Content Include="favicon.ico" />
@@ -492,13 +493,13 @@
     <Content Include="sass\imports\custom-fontawesome-variables.scss" />
     <Content Include="sass\nemestats\gamedefinition.scss" />
     <Content Include="sass\nemestats\badges.scss" />
-    <None Include="sass\nemestats\player.scss" />
-    <Content Include="sass\nemestats\nemestats-variables.scss" />
-    <Content Include="sass\nemestats\flipscroll.scss" />
     <Content Include="css\bootstrap.css.map" />
     <Content Include="css\fontawesome.css.map" />
     <Content Include="css\nemestats.css.map" />
     <Content Include="css\theme.css.map" />
+    <None Include="sass\nemestats\player.scss" />
+    <Content Include="sass\nemestats\nemestats-variables.scss" />
+    <Content Include="sass\nemestats\flipscroll.scss" />
     <Content Include="fonts\fontawesome-webfont.eot" />
     <Content Include="fonts\fontawesome-webfont.ttf" />
     <Content Include="fonts\fontawesome-webfont.woff" />
@@ -543,6 +544,7 @@
     <Content Include="Scripts\handlebars.runtime.amd.min.js" />
     <Content Include="Scripts\handlebars.runtime.js" />
     <Content Include="Scripts\handlebars.runtime.min.js" />
+    <Content Include="Scripts\Idea.Informer\tab6.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery-2.1.3.intellisense.js" />
