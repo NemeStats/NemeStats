@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace UI.Models.GameDefinitionModels
-{ 
+{
     public class GameDefinitionEditViewModel
     {
         public int GameDefinitionId { get; set; }

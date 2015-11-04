@@ -197,6 +197,11 @@ namespace BusinessLogic.Logic.GameDefinitions
                 gameDefinition.Name = gameDefinitionUpdateRequest.Name;
             }
 
+            if (!string.IsNullOrWhiteSpace(gameDefinitionUpdateRequest.Description))
+            {
+                gameDefinition.Description = gameDefinitionUpdateRequest.Description;
+            }
+
             if (gameDefinitionUpdateRequest.BoardGameGeekGameDefinitionId.HasValue)
             {
                 gameDefinition.BoardGameGeekGameDefinitionId = gameDefinitionUpdateRequest.BoardGameGeekGameDefinitionId;

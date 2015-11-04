@@ -56,6 +56,21 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
         }
 
         [Test]
+        public void ItUpdatesTheGameDefinitionDescription()
+        {
+            var gameDefinitionUpdateRequest = new GameDefinitionUpdateRequest
+            {
+                Description = "some description"
+            };
+            autoMocker.ClassUnderTest.UpdateGameDefinition(gameDefinitionUpdateRequest, currentUser);
+
+            autoMocker.ClassUnderTest.AssertWasCalled(
+                partialMock => partialMock.CreateGameDefinition(Arg<GameDefinition>.Matches(
+                    gameDefinition => gameDefinition.Name == gameDefinitionUpdateRequest.Description),
+                    Arg<ApplicationUser>.Is.Same(currentUser)));
+        }
+
+        [Test]
         public void ItUpdatesTheBoardGameGeekGameDefinitionId()
         {
             var gameDefinitionUpdateRequest = new GameDefinitionUpdateRequest
