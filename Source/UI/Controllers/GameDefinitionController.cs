@@ -153,7 +153,7 @@ namespace UI.Controllers
         {
             return new GameDefinitionUpdateRequest
             {
-                GameDefinitionId = model.Id,
+                GameDefinitionId = model.GameDefinitionId,
                 Active = model.Active,
                 BoardGameGeekGameDefinitionId = model.BoardGameGeekGameDefinitionId,
                 Name = model.Name,

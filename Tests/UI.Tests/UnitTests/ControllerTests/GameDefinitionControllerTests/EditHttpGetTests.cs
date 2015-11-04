@@ -59,7 +59,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
             ViewResult viewResult = gameDefinitionControllerPartialMock.Edit(gameDefinitionSummary.Id, currentUser) as ViewResult;
             var gameDefinitionEditViewModel = viewResult.ViewData.Model as GameDefinitionEditViewModel;
             Assert.That(gameDefinitionEditViewModel, Is.Not.Null);
-            Assert.That(gameDefinitionEditViewModel.Id, Is.EqualTo(gameDefinitionSummary.Id));
+            Assert.That(gameDefinitionEditViewModel.GameDefinitionId, Is.EqualTo(gameDefinitionSummary.Id));
             Assert.That(gameDefinitionEditViewModel.Name, Is.EqualTo(gameDefinitionSummary.Name));
             Assert.That(gameDefinitionEditViewModel.Active, Is.EqualTo(gameDefinitionSummary.Active));
             Assert.That(gameDefinitionEditViewModel.BoardGameGeekGameDefinitionId, Is.EqualTo(gameDefinitionSummary.BoardGameGeekGameDefinitionId));

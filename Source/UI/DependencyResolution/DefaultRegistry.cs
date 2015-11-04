@@ -182,6 +182,8 @@ namespace UI.DependencyResolution {
             this.For(typeof(ISecuredEntityValidator<>)).Use(typeof(SecuredEntityValidator<>));
 
             this.For<IUserRetriever>().Use<UserRetriever>();
+
+            this.For<IBoardGameGeekGameDefinitionAttacher>().Use<BoardGameGeekGameDefinitionAttacher>();
         }
 
         private void SetupUniquePerRequestMappings()

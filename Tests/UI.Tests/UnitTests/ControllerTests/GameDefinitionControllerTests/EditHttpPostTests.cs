@@ -56,7 +56,10 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
         [Test]
         public void ItSavesTheGameDefinitionIfValidationPasses()
         {
-            var viewModel = new GameDefinitionEditViewModel();
+            var viewModel = new GameDefinitionEditViewModel
+            {
+                Name = "some name"
+            };
 
             gameDefinitionControllerPartialMock.Edit(viewModel, currentUser);
 
@@ -68,26 +71,17 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
             Assert.That(gameDefinitionUpdateRequest.Active, Is.EqualTo(viewModel.Active));
             Assert.That(gameDefinitionUpdateRequest.BoardGameGeekGameDefinitionId, Is.EqualTo(viewModel.BoardGameGeekGameDefinitionId));
             Assert.That(gameDefinitionUpdateRequest.Description, Is.EqualTo(viewModel.Description));
-            Assert.That(gameDefinitionUpdateRequest.GameDefinitionId, Is.EqualTo(viewModel.Id));
+            Assert.That(gameDefinitionUpdateRequest.GameDefinitionId, Is.EqualTo(viewModel.GameDefinitionId));
             Assert.That(gameDefinitionUpdateRequest.Name, Is.EqualTo(viewModel.Name));
-        }
-
-        [Test]
-        public void ItSavesTheGameDefinitionUsingTheCurrentUsersGamingGroup()
-        {
-            var viewModel = new GameDefinitionEditViewModel();
-
-            gameDefinitionControllerPartialMock.Edit(viewModel, currentUser);
-
-            gameDefinitionCreatorMock.AssertWasCalled(mock => mock.CreateGameDefinition(
-                Arg<GameDefinition>.Matches(game => game.GamingGroupId == currentUser.CurrentGamingGroupId.Value), 
-                Arg<ApplicationUser>.Is.Anything));
         }
 
         [Test]
         public void ItRedirectsToTheGamingGroupIndexAndGameDefinitionsSectionAfterSaving()
         {
-            var viewModel = new GameDefinitionEditViewModel();
+            var viewModel = new GameDefinitionEditViewModel
+            {
+                Name = "some name"
+            };
             string baseUrl = "base url";
             string expectedUrl = baseUrl + "#" + GamingGroupController.SECTION_ANCHOR_GAMEDEFINITIONS;
             urlHelperMock.Expect(mock => mock.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name))
