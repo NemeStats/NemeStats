@@ -138,7 +138,7 @@ namespace UI.Controllers
         public class ActionParamsClass_Create
         {
             public readonly string returnUrl = "returnUrl";
-            public readonly string newGameDefinitionViewModel = "newGameDefinitionViewModel";
+            public readonly string createGameDefinitionViewModel = "createGameDefinitionViewModel";
             public readonly string currentUser = "currentUser";
         }
         static readonly ActionParamsClass_AjaxCreate s_params_AjaxCreate = new ActionParamsClass_AjaxCreate();
@@ -147,7 +147,7 @@ namespace UI.Controllers
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionParamsClass_AjaxCreate
         {
-            public readonly string createGameDefinitionRequest = "createGameDefinitionRequest";
+            public readonly string createGameDefinitionViewModel = "createGameDefinitionViewModel";
             public readonly string currentUser = "currentUser";
         }
         static readonly ActionParamsClass_Edit s_params_Edit = new ActionParamsClass_Edit();
@@ -225,28 +225,28 @@ namespace UI.Controllers
         }
 
         [NonAction]
-        partial void CreateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, UI.Models.GameDefinitionModels.NewGameDefinitionViewModel newGameDefinitionViewModel, BusinessLogic.Models.User.ApplicationUser currentUser);
+        partial void CreateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, UI.Models.GameDefinitionModels.CreateGameDefinitionViewModel createGameDefinitionViewModel, BusinessLogic.Models.User.ApplicationUser currentUser);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult Create(UI.Models.GameDefinitionModels.NewGameDefinitionViewModel newGameDefinitionViewModel, BusinessLogic.Models.User.ApplicationUser currentUser)
+        public override System.Web.Mvc.ActionResult Create(UI.Models.GameDefinitionModels.CreateGameDefinitionViewModel createGameDefinitionViewModel, BusinessLogic.Models.User.ApplicationUser currentUser)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Create);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "newGameDefinitionViewModel", newGameDefinitionViewModel);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "createGameDefinitionViewModel", createGameDefinitionViewModel);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "currentUser", currentUser);
-            CreateOverride(callInfo, newGameDefinitionViewModel, currentUser);
+            CreateOverride(callInfo, createGameDefinitionViewModel, currentUser);
             return callInfo;
         }
 
         [NonAction]
-        partial void AjaxCreateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, UI.Models.GameDefinitionModels.CreateGameDefinitionViewModel createGameDefinitionRequest, BusinessLogic.Models.User.ApplicationUser currentUser);
+        partial void AjaxCreateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, UI.Models.GameDefinitionModels.CreateGameDefinitionViewModel createGameDefinitionViewModel, BusinessLogic.Models.User.ApplicationUser currentUser);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult AjaxCreate(UI.Models.GameDefinitionModels.CreateGameDefinitionViewModel createGameDefinitionRequest, BusinessLogic.Models.User.ApplicationUser currentUser)
+        public override System.Web.Mvc.ActionResult AjaxCreate(UI.Models.GameDefinitionModels.CreateGameDefinitionViewModel createGameDefinitionViewModel, BusinessLogic.Models.User.ApplicationUser currentUser)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AjaxCreate);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "createGameDefinitionRequest", createGameDefinitionRequest);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "createGameDefinitionViewModel", createGameDefinitionViewModel);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "currentUser", currentUser);
-            AjaxCreateOverride(callInfo, createGameDefinitionRequest, currentUser);
+            AjaxCreateOverride(callInfo, createGameDefinitionViewModel, currentUser);
             return callInfo;
         }
 

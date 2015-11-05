@@ -23,7 +23,6 @@ namespace BusinessLogic.Logic.GameDefinitions
 {
     public interface IGameDefinitionSaver
     {
-        GameDefinitionDisplayInfo CreateGameDefinition(GameDefinition gameDefinition, ApplicationUser currentUser);
         void UpdateGameDefinition(GameDefinitionUpdateRequest gameDefinitionUpdateRequest, ApplicationUser applicationUser);
         GameDefinition CreateGameDefinition(CreateGameDefinitionRequest createGameDefinitionRequest, ApplicationUser applicationUser);
     }

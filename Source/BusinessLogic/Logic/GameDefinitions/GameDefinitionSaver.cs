@@ -100,35 +100,35 @@ namespace BusinessLogic.Logic.GameDefinitions
             return dataContext.Save(existingGameDefinition, applicationUser);
         }
 
-        public virtual GameDefinitionDisplayInfo CreateGameDefinition(GameDefinition gameDefinition, ApplicationUser currentUser)
-        {
-            ValidateGameDefinitionIsNotNull(gameDefinition);
-            ValidateGameDefinitionNameIsNotNullOrWhitespace(gameDefinition.Name);
-            bool gameDefinitionAlreadyExists = gameDefinition.AlreadyInDatabase();
-            if (gameDefinitionAlreadyExists)
-            {
-                var existingGameDefinition = dataContext.FindById<GameDefinition>(gameDefinition.Id);
-                if(existingGameDefinition != null && existingGameDefinition.BoardGameGeekGameDefinitionId != gameDefinition.BoardGameGeekGameDefinitionId)
-                {
-                    SetBoardGameGeekThumbnail(gameDefinition);
-                }
-                var savedGameDefinition = this.dataContext.Save(gameDefinition, currentUser);
+        //public virtual GameDefinitionDisplayInfo CreateGameDefinition(GameDefinition gameDefinition, ApplicationUser currentUser)
+        //{
+        //    ValidateGameDefinitionIsNotNull(gameDefinition);
+        //    ValidateGameDefinitionNameIsNotNullOrWhitespace(gameDefinition.Name);
+        //    bool gameDefinitionAlreadyExists = gameDefinition.AlreadyInDatabase();
+        //    if (gameDefinitionAlreadyExists)
+        //    {
+        //        var existingGameDefinition = dataContext.FindById<GameDefinition>(gameDefinition.Id);
+        //        if(existingGameDefinition != null && existingGameDefinition.BoardGameGeekGameDefinitionId != gameDefinition.BoardGameGeekGameDefinitionId)
+        //        {
+        //            SetBoardGameGeekThumbnail(gameDefinition);
+        //        }
+        //        var savedGameDefinition = this.dataContext.Save(gameDefinition, currentUser);
 
-                return new GameDefinitionDisplayInfo();
-            }
-            var definition = gameDefinition;
+        //        return new GameDefinitionDisplayInfo();
+        //    }
+        //    var definition = gameDefinition;
 
-            this.SetBoardGameGeekThumbnail(gameDefinition);
+        //    this.SetBoardGameGeekThumbnail(gameDefinition);
 
-            new Task(() => this.eventTracker.TrackGameDefinitionCreation(currentUser, definition.Name)).Start();
+        //    new Task(() => this.eventTracker.TrackGameDefinitionCreation(currentUser, definition.Name)).Start();
 
-            gameDefinition = this.HandleExistingGameDefinitionWithThisName(gameDefinition, currentUser.CurrentGamingGroupId.Value);
+        //    gameDefinition = this.HandleExistingGameDefinitionWithThisName(gameDefinition, currentUser.CurrentGamingGroupId.Value);
 
-            var savedGameDefinition2 = dataContext.Save(gameDefinition, currentUser);
+        //    var savedGameDefinition2 = dataContext.Save(gameDefinition, currentUser);
 
-            return new GameDefinitionDisplayInfo();
+        //    return new GameDefinitionDisplayInfo();
 
-        }
+        //}
 
         private static void ValidateGameDefinitionIsNotNull(GameDefinition gameDefinition)
         {
@@ -207,7 +207,7 @@ namespace BusinessLogic.Logic.GameDefinitions
                 gameDefinition.BoardGameGeekGameDefinitionId = gameDefinitionUpdateRequest.BoardGameGeekGameDefinitionId;
             }
 
-            this.CreateGameDefinition(gameDefinition, applicationUser);
+            dataContext.Save(gameDefinition, applicationUser);
         }
     }
 }

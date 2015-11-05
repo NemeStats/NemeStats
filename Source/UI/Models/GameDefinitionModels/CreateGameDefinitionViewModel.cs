@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace UI.Models.GameDefinitionModels
+﻿namespace UI.Models.GameDefinitionModels
 {
     public class CreateGameDefinitionViewModel
     {
@@ -16,5 +11,6 @@ namespace UI.Models.GameDefinitionModels
         public int? BoardGameGeekGameDefinitionId { get; internal set; }
         public string Description { get; internal set; }
         public string Name { get; internal set; }
+        public string ReturnUrl { get; internal set; }
     }
 }

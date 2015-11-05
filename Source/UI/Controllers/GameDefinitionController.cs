@@ -96,7 +96,7 @@ namespace UI.Controllers
 		public virtual ActionResult Create(string returnUrl)
 		{
 		    return View(MVC.GameDefinition.Views.Create,
-		                new NewGameDefinitionViewModel()
+		                new CreateGameDefinitionViewModel()
 		                {
 		                    ReturnUrl = returnUrl
 		                });
@@ -109,23 +109,23 @@ namespace UI.Controllers
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		[UserContext]
-		public virtual ActionResult Create(NewGameDefinitionViewModel newGameDefinitionViewModel, ApplicationUser currentUser)
+		public virtual ActionResult Create(CreateGameDefinitionViewModel createGameDefinitionViewModel, ApplicationUser currentUser)
 		{
 			if (ModelState.IsValid)
 			{
-                newGameDefinitionViewModel.Name = newGameDefinitionViewModel.Name.Trim();
-                var gameDefinition = Mapper.Map<NewGameDefinitionViewModel, GameDefinition>(newGameDefinitionViewModel);
+                createGameDefinitionViewModel.Name = createGameDefinitionViewModel.Name.Trim();
+                var gameDefinition = Mapper.Map<CreateGameDefinitionViewModel, CreateGameDefinitionRequest>(createGameDefinitionViewModel);
 
 				var savedResult = gameDefinitionSaver.CreateGameDefinition(gameDefinition, currentUser);
 
-                if (!String.IsNullOrWhiteSpace(newGameDefinitionViewModel.ReturnUrl))
-                    return new RedirectResult(newGameDefinitionViewModel.ReturnUrl + "?gameId=" + savedResult.Id);
+                if (!String.IsNullOrWhiteSpace(createGameDefinitionViewModel.ReturnUrl))
+                    return new RedirectResult(createGameDefinitionViewModel.ReturnUrl + "?gameId=" + savedResult.Id);
 
 				return new RedirectResult(Url.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name)
 										+ "#" + GamingGroupController.SECTION_ANCHOR_GAMEDEFINITIONS);
 			}
 
-            return View(MVC.GameDefinition.Views.Create, newGameDefinitionViewModel);
+            return View(MVC.GameDefinition.Views.Create, createGameDefinitionViewModel);
 		}
 
 		[Authorize]
@@ -208,7 +208,7 @@ namespace UI.Controllers
 		[Authorize]
 		public virtual ActionResult CreatePartial()
 		{
-			return View(MVC.GameDefinition.Views._CreatePartial, new NewGameDefinitionViewModel());
+			return View(MVC.GameDefinition.Views._CreatePartial, new CreateGameDefinitionViewModel());
 		}
 
 		[Authorize]

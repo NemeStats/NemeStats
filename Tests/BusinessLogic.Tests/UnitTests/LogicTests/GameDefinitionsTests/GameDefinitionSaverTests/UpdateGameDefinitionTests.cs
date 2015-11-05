@@ -34,10 +34,9 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
             };
             autoMocker.ClassUnderTest.UpdateGameDefinition(gameDefinitionUpdateRequest, currentUser);
 
-            autoMocker.ClassUnderTest.AssertWasCalled(
-                partialMock => partialMock.CreateGameDefinition(Arg<GameDefinition>.Matches(
-                    gameDefinition => gameDefinition.Active == gameDefinitionUpdateRequest.Active), 
-                    Arg<ApplicationUser>.Is.Same(currentUser)));
+            autoMocker.Get<IDataContext>().AssertWasCalled(dataContext => dataContext.Save(
+                Arg<GameDefinition>.Matches(gameDefinition => gameDefinition.Active == gameDefinitionUpdateRequest.Active),
+                Arg<ApplicationUser>.Is.Same(currentUser)));
         }
 
         [Test]
@@ -49,10 +48,9 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
             };
             autoMocker.ClassUnderTest.UpdateGameDefinition(gameDefinitionUpdateRequest, currentUser);
 
-            autoMocker.ClassUnderTest.AssertWasCalled(
-                partialMock => partialMock.CreateGameDefinition(Arg<GameDefinition>.Matches(
-                    gameDefinition => gameDefinition.Name == gameDefinitionUpdateRequest.Name),
-                    Arg<ApplicationUser>.Is.Same(currentUser)));
+            autoMocker.Get<IDataContext>().AssertWasCalled(dataContext => dataContext.Save(
+                Arg<GameDefinition>.Matches(gameDefinition => gameDefinition.Name == gameDefinitionUpdateRequest.Name),
+                Arg<ApplicationUser>.Is.Same(currentUser)));
         }
 
         [Test]
@@ -64,10 +62,9 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
             };
             autoMocker.ClassUnderTest.UpdateGameDefinition(gameDefinitionUpdateRequest, currentUser);
 
-            autoMocker.ClassUnderTest.AssertWasCalled(
-                partialMock => partialMock.CreateGameDefinition(Arg<GameDefinition>.Matches(
-                    gameDefinition => gameDefinition.Name == gameDefinitionUpdateRequest.Description),
-                    Arg<ApplicationUser>.Is.Same(currentUser)));
+            autoMocker.Get<IDataContext>().AssertWasCalled(dataContext => dataContext.Save(
+                Arg<GameDefinition>.Matches(gameDefinition => gameDefinition.Description == gameDefinitionUpdateRequest.Description),
+                Arg<ApplicationUser>.Is.Same(currentUser)));
         }
 
         [Test]
@@ -79,10 +76,9 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
             };
             autoMocker.ClassUnderTest.UpdateGameDefinition(gameDefinitionUpdateRequest, currentUser);
 
-            autoMocker.ClassUnderTest.AssertWasCalled(
-                partialMock => partialMock.CreateGameDefinition(Arg<GameDefinition>.Matches(
-                    gameDefinition => gameDefinition.BoardGameGeekGameDefinitionId == gameDefinitionUpdateRequest.BoardGameGeekGameDefinitionId),
-                    Arg<ApplicationUser>.Is.Same(currentUser)));
+            autoMocker.Get<IDataContext>().AssertWasCalled(dataContext => dataContext.Save(
+                Arg<GameDefinition>.Matches(gameDefinition => gameDefinition.BoardGameGeekGameDefinitionId == gameDefinitionUpdateRequest.BoardGameGeekGameDefinitionId),
+                Arg<ApplicationUser>.Is.Same(currentUser)));
         }
     }
 }

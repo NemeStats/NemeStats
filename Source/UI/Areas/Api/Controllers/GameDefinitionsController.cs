@@ -25,6 +25,7 @@ using BusinessLogic.Models;
 using UI.Areas.Api.Models;
 using UI.Attributes;
 using VersionedRestApi;
+using BusinessLogic.Models.Games;
 
 namespace UI.Areas.Api.Controllers
 {
@@ -84,13 +85,13 @@ namespace UI.Areas.Api.Controllers
         [HttpPost]
         public virtual HttpResponseMessage SaveNewGameDefinition([FromBody]NewGameDefinitionMessage newGameDefinitionMessage, [FromUri]int gamingGroupId)
         {
-            var gameDefinition = new GameDefinition
+            var createGameDefinitionRequest = new CreateGameDefinitionRequest
             {
-                BoardGameGeekGameDefinitionId = newGameDefinitionMessage.BoardGameGeekGameDefinitionId,
+                BoardGameGeekGameDefinitionId = newGameDefinitionMessage.BoardGameGeekObjectId,
                 Name = newGameDefinitionMessage.GameDefinitionName
             };
 
-            var newGameDefinition = gameDefinitionSaver.CreateGameDefinition(gameDefinition, CurrentUser);
+            var newGameDefinition = gameDefinitionSaver.CreateGameDefinition(createGameDefinitionRequest, CurrentUser);
 
             var newlyCreatedGameDefinitionMessage = new NewlyCreatedGameDefinitionMessage
             {
