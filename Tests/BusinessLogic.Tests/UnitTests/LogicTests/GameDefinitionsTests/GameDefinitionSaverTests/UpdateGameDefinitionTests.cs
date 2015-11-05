@@ -1,4 +1,6 @@
-﻿using BusinessLogic.DataAccess;
+﻿using BoardGameGeekApiClient.Models;
+using BusinessLogic.DataAccess;
+using BusinessLogic.Logic.BoardGameGeek;
 using BusinessLogic.Logic.GameDefinitions;
 using BusinessLogic.Models;
 using BusinessLogic.Models.User;
@@ -68,12 +70,52 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
         }
 
         [Test]
+        public void ItCreatesANewBoardGameGeekGameDefinitionAndLinksToItIfItWasSuccessfullyCreated()
+        {
+            var gameDefinitionUpdateRequest = new GameDefinitionUpdateRequest
+            {
+                BoardGameGeekGameDefinitionId = 200
+            };
+            autoMocker.Get<IBoardGameGeekGameDefinitionCreator>().Expect(
+                mock => mock.CreateBoardGameGeekGameDefinition(gameDefinitionUpdateRequest.BoardGameGeekGameDefinitionId.Value, currentUser))
+                .Return(gameDefinitionUpdateRequest.BoardGameGeekGameDefinitionId);
+
+            autoMocker.ClassUnderTest.UpdateGameDefinition(gameDefinitionUpdateRequest, currentUser);
+
+            autoMocker.Get<IDataContext>().AssertWasCalled(dataContext => dataContext.Save(
+                Arg<GameDefinition>.Matches(gameDefinition => gameDefinition.BoardGameGeekGameDefinitionId == gameDefinitionUpdateRequest.BoardGameGeekGameDefinitionId),
+                Arg<ApplicationUser>.Is.Same(currentUser)));
+        }
+
+        [Test]
+        public void ItDoesNotUpdateTheBoardGameGeekGameDefinitionIdIfTheGameIsNotValid()
+        {
+            var gameDefinitionUpdateRequest = new GameDefinitionUpdateRequest
+            {
+                BoardGameGeekGameDefinitionId = 200
+            };
+            autoMocker.Get<IBoardGameGeekGameDefinitionCreator>().Expect(
+                mock => mock.CreateBoardGameGeekGameDefinition(gameDefinitionUpdateRequest.BoardGameGeekGameDefinitionId.Value, currentUser))
+                .Return(null);
+
+            autoMocker.ClassUnderTest.UpdateGameDefinition(gameDefinitionUpdateRequest, currentUser);
+
+            autoMocker.Get<IDataContext>().AssertWasNotCalled(dataContext => dataContext.Save(
+                Arg<GameDefinition>.Matches(gameDefinition => gameDefinition.BoardGameGeekGameDefinitionId == gameDefinitionUpdateRequest.BoardGameGeekGameDefinitionId),
+                Arg<ApplicationUser>.Is.Same(currentUser)));
+        }
+
+        [Test]
         public void ItUpdatesTheBoardGameGeekGameDefinitionId()
         {
             var gameDefinitionUpdateRequest = new GameDefinitionUpdateRequest
             {
                 BoardGameGeekGameDefinitionId = 200
             };
+            autoMocker.Get<IBoardGameGeekGameDefinitionCreator>().Expect(
+              mock => mock.CreateBoardGameGeekGameDefinition(gameDefinitionUpdateRequest.BoardGameGeekGameDefinitionId.Value, currentUser))
+              .Return(gameDefinitionUpdateRequest.BoardGameGeekGameDefinitionId);
+
             autoMocker.ClassUnderTest.UpdateGameDefinition(gameDefinitionUpdateRequest, currentUser);
 
             autoMocker.Get<IDataContext>().AssertWasCalled(dataContext => dataContext.Save(
