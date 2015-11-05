@@ -12,6 +12,7 @@ using BusinessLogic.Models;
 using BusinessLogic.Models.User;
 using BoardGameGeekApiClient.Interfaces;
 using BoardGameGeekApiClient.Models;
+using BusinessLogic.Exceptions;
 
 namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.BoardGameGeekGameDefinitionAttacherTests
 {
@@ -46,7 +47,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.BoardGam
         public void ItDoesntCreateANewRecordIfTheBoardGameGeekApiDoesntReturnAResult()
         {
             autoMocker.Get<IDataContext>().Expect(mock => mock.FindById<BoardGameGeekGameDefinition>(boardGameGeekGameDefinitionId))
-                .Return(null);
+               .Throw(new EntityDoesNotExistException(typeof(BoardGameGeekGameDefinition), boardGameGeekGameDefinitionId)); 
             autoMocker.Get<IBoardGameGeekApiClient>().Expect(mock => mock.GetGameDetails(boardGameGeekGameDefinitionId))
                 .Return(null);
 
@@ -61,7 +62,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.BoardGam
         public void ItCreatesANewRecordIfOneDoesNotExist()
         {
             autoMocker.Get<IDataContext>().Expect(mock => mock.FindById<BoardGameGeekGameDefinition>(boardGameGeekGameDefinitionId))
-                .Return(null);
+                .Throw(new EntityDoesNotExistException(typeof(BoardGameGeekGameDefinition), boardGameGeekGameDefinitionId));
             var expectedGameDetails = new GameDetails
             {
                 Thumbnail = "some thumbnail",

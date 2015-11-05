@@ -7,10 +7,10 @@
             Active = true;
         }
 
-        public bool Active { get; internal set; }
-        public int? BoardGameGeekGameDefinitionId { get; internal set; }
-        public string Description { get; internal set; }
-        public string Name { get; internal set; }
-        public string ReturnUrl { get; internal set; }
+        public bool Active { get; set; }
+        public int? BoardGameGeekGameDefinitionId { get; set; }
+        public string Description { get; set; }
+        public string Name { get; set; }
+        public string ReturnUrl { get; set; }
     }
 }

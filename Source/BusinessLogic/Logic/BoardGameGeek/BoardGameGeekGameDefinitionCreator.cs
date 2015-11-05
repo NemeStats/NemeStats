@@ -1,7 +1,9 @@
 ﻿using BoardGameGeekApiClient.Interfaces;
 using BusinessLogic.DataAccess;
+using BusinessLogic.Exceptions;
 using BusinessLogic.Models;
 using BusinessLogic.Models.User;
+using System;
 
 namespace BusinessLogic.Logic.BoardGameGeek
 {
@@ -18,11 +20,21 @@ namespace BusinessLogic.Logic.BoardGameGeek
 
         public int? CreateBoardGameGeekGameDefinition(int boardGameGeekGameDefinitionId, ApplicationUser currentUser)
         {
-            var existingRecord = dataContext.FindById<BoardGameGeekGameDefinition>(boardGameGeekGameDefinitionId);
-
-            if(existingRecord != null)
+            BoardGameGeekGameDefinition existingRecord = null;
+            try
             {
-                return boardGameGeekGameDefinitionId;
+                existingRecord = dataContext.FindById<BoardGameGeekGameDefinition>(boardGameGeekGameDefinitionId);
+                if (existingRecord != null)
+                {
+                    return boardGameGeekGameDefinitionId;
+                }
+            }
+            catch (EntityDoesNotExistException)
+            {
+                //this is OK, just means we need to create a new one
+            }catch(Exception)
+            {
+                throw;
             }
 
             var gameDetails = boardGameGeekApiClient.GetGameDetails(boardGameGeekGameDefinitionId);

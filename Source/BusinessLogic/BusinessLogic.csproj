@@ -295,6 +295,10 @@
     <Compile Include="Migrations\201511030244129_RemoveThumbnailFromGameDefinition.Designer.cs">
       <DependentUpon>201511030244129_RemoveThumbnailFromGameDefinition.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201511051243356_BoardGameGeekGameDefinitionIdentityInsert.cs" />
+    <Compile Include="Migrations\201511051243356_BoardGameGeekGameDefinitionIdentityInsert.Designer.cs">
+      <DependentUpon>201511051243356_BoardGameGeekGameDefinitionIdentityInsert.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\BoardGameGeekGameDefinition.cs" />
     <Compile Include="Models\Games\CreateGameDefinitionRequest.cs" />
     <Compile Include="Models\Games\GameDefinitionDisplayInfo.cs" />
@@ -688,6 +692,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201511030244129_RemoveThumbnailFromGameDefinition.resx">
       <DependentUpon>201511030244129_RemoveThumbnailFromGameDefinition.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201511051243356_BoardGameGeekGameDefinitionIdentityInsert.resx">
+      <DependentUpon>201511051243356_BoardGameGeekGameDefinitionIdentityInsert.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
