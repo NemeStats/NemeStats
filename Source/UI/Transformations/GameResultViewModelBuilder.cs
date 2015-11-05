@@ -44,8 +44,11 @@ namespace UI.Transformations
             result.DatePlayed = playerGameResult.PlayedGame.DatePlayed;
             result.BoardGameGeekUri =
                 BoardGameGeekUriBuilder.BuildBoardGameGeekGameUri(
-                    playerGameResult.PlayedGame.GameDefinition.BoardGameGeekObjectId);
-            result.ThumbnailImageUrl = playerGameResult.PlayedGame.GameDefinition.ThumbnailImageUrl;
+                    playerGameResult.PlayedGame.GameDefinition.BoardGameGeekGameDefinitionId);
+            if(playerGameResult.PlayedGame.GameDefinition.BoardGameGeekGameDefinition != null)
+            {
+                result.ThumbnailImageUrl = playerGameResult.PlayedGame.GameDefinition.BoardGameGeekGameDefinition.Thumbnail;
+            }
 
             return result;
         }

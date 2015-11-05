@@ -99,8 +99,9 @@ namespace BusinessLogic.Logic.PlayedGames
                             WinnerTypes.PlayerWin),
                     WinningPlayer = playedGame.PlayerGameResults.FirstOrDefault(player => player.GameRank == 1).Player,
                     DatePlayed = playedGame.DatePlayed,
-                    ThumbnailImageUrl = playedGame.GameDefinition.ThumbnailImageUrl,
-                    BoardGameGeekObjectId = playedGame.GameDefinition.BoardGameGeekObjectId
+                    ThumbnailImageUrl = playedGame.GameDefinition.BoardGameGeekGameDefinition == null 
+                        ? null : playedGame.GameDefinition.BoardGameGeekGameDefinition.Thumbnail,
+                    BoardGameGeekObjectId = playedGame.GameDefinition.BoardGameGeekGameDefinitionId
                 }).Take(numberOfGames)
                 .ToList();
 
