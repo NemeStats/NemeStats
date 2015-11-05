@@ -30,5 +30,7 @@ namespace UI.Models.PlayedGame
         public DateTime DatePlayed { get; set; }
         public string GameDefinitionName { get; set; }
         public int GameDefinitionId { get; set; }
+        public Uri BoardGameGeekUri { get; set; }
+        public string ThumbnailImageUrl { get; set; }
     }
 }

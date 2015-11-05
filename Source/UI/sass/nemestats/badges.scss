@@ -1,0 +1,85 @@
+﻿@import "nemestats-variables.scss";
+
+
+.neme-points-ico {
+    color: $header-background-color;
+    font-size: 10px;
+
+    .letter {
+        color: white;
+        font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    }
+}
+
+
+
+.player-statistics {
+    .fa {
+        &.fa-trophy {
+            &.fa-slashed {
+                &:after {
+                    position: relative;
+                    content: "/";
+                    font-weight: 700;
+                    font-size: 1.7em;
+                    left: -17px;
+                    top: 2px;
+                }
+            }
+        }
+    }
+}
+
+#player-details {
+    .gameDefinitionsList {
+
+
+
+        @media (max-width: $screen-sm-max) {
+            &#flip-scroll {
+                .badges-head {
+                    padding: 5px;
+                }
+
+                .badges-col {
+                    line-height: 0;
+                    height: 31px;
+
+                    .fa {
+                        &.fa-trophy {
+                            &.fa-slashed {
+                                &:after {
+                                    top: 0;
+                                    left:-17px;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        .badges-col {
+            width: 20px;
+            line-height: $gamethumbnail-height;
+
+            .fa {
+                &.fa-trophy {
+                    &.fa-slashed {
+                        &:after {
+                            position: relative;
+                            content: "/";
+                            font-weight: 700;
+                            font-size: 1.6em;
+                            top: -21px;
+                        }
+                    }
+                }
+            }
+        }
+
+        .bgg-link-col {
+            text-align: left;
+        }
+    }
+}

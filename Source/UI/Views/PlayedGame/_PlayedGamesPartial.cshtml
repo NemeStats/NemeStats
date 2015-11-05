@@ -34,29 +34,48 @@
     </div>
     <div class="panel-body">
         <div class="table-responsive">
-            <table class="table table-hover table-striped">
+            <table class="table table-hover table-striped gameDefinitionsList">
                 <thead>
-                    <tr>
-                        <th class="col-md-3">
-                            Game Name
-                        </th>
-                        <th class="col-md-2">
-                            Date Played
-                        </th>
-                        <th class="col-md-5">
-                            Result
-                        </th>
-                        <th class="col-md-1">
-                        </th>
-                    </tr>
+                <tr>
+                    <th></th>
+                    <th>
+                        Game Name
+                    </th>
+                    <th>
+                        Date Played
+                    </th>
+                    <th>
+                        Result
+                    </th>
+                    <th>
+                    </th>
+                </tr>
                 </thead>
                 <tbody>
                     @foreach (var playedGameDetailsViewModel in Model.PlayedGameDetailsViewModels)
                     {
-                        <tr>
+                        <tr class="game-item">
+                            <td class="bgg-link-col">
+                                @if (playedGameDetailsViewModel.BoardGameGeekUri != null)
+                                {
+
+                                    <a href="@playedGameDetailsViewModel.BoardGameGeekUri">
+                                        @if (!string.IsNullOrEmpty(playedGameDetailsViewModel.ThumbnailImageUrl))
+                                        {
+                                            <img class="bgg-thumbnail" src="@playedGameDetailsViewModel.ThumbnailImageUrl" alt="View on BoardGameGeek.com" title="View on BoardGameGeek.com" />
+                                        }
+                                        else
+                                        {
+                                            <img src="~/Content/Images/bgg_small.png" alt="View on BoardGameGeek.com" title="View on BoardGameGeek.com" />
+                                        }
+
+                                    </a>
+
+                                }
+                            </td>
                             <td>
                                 <b>
-                                    @Html.ActionLink(playedGameDetailsViewModel.GameDefinitionName, "Details", "GameDefinition", new { id = playedGameDetailsViewModel.GameDefinitionId }, new { })
+                                    @Html.ActionLink(playedGameDetailsViewModel.GameDefinitionName, "Details", "GameDefinition", new {id = playedGameDetailsViewModel.GameDefinitionId}, new {})
                                 </b>
                             </td>
                             <td>
@@ -66,27 +85,27 @@
                                 @foreach (var playerGameResultDetails in playedGameDetailsViewModel.PlayerResults)
                                 {
                                     <div class="row">
-                                        <div class="col-sm-6">
+                                        <div class="col-sm-4">
                                             <b>
-                                                @Html.ActionLink(playerGameResultDetails.PlayerName, "Details", "Player", new { id = playerGameResultDetails.PlayerId }, new { })
+                                                @Html.ActionLink(playerGameResultDetails.PlayerName, "Details", "Player", new {id = playerGameResultDetails.PlayerId}, new {})
                                             </b>
                                         </div>
-                                        <div class="col-sm-6">
+                                        <div class="col-sm-8">
                                             @Html.GameResults(playerGameResultDetails, playedGameDetailsViewModel.WinnerType)
                                         </div>
                                     </div>
                                 }
                             </td>
                             <td>
-                                <a href="@Url.Action("Details", "PlayedGame", new { id = playedGameDetailsViewModel.PlayedGameId })" title="Details">
+                                <a href="@Url.Action("Details", "PlayedGame", new {id = playedGameDetailsViewModel.PlayedGameId})" title="Details">
                                     <i class="fa fa-book fa-2x"></i>
                                 </a>
                                 @if (playedGameDetailsViewModel.UserCanEdit)
                                 {
-									<a href="@Url.Action("Edit", "PlayedGame", new { id = playedGameDetailsViewModel.PlayedGameId })" title="Edit">
-										<i class="fa fa-pencil fa-2x"></i>
-									</a>
-                                    <a href="@Url.Action("Delete", "PlayedGame", new { id = playedGameDetailsViewModel.PlayedGameId })" title="Delete">
+                                    <a href="@Url.Action("Edit", "PlayedGame", new {id = playedGameDetailsViewModel.PlayedGameId})" title="Edit">
+                                        <i class="fa fa-pencil fa-2x"></i>
+                                    </a>
+                                    <a href="@Url.Action("Delete", "PlayedGame", new {id = playedGameDetailsViewModel.PlayedGameId})" title="Delete">
                                         <i class="fa fa-trash-o fa-2x"></i>
                                     </a>
                                 }

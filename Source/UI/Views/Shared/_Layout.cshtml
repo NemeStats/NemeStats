@@ -1,4 +1,6 @@
 ﻿@using UI.App_Start
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -6,9 +8,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="msvalidate.01" content="52A9C8830987C1456378EB7E298524FB" />
     <title>@ViewBag.Title - NemeStats</title>
-    @if(ViewBag.Description != null)
+    @if (ViewBag.Description != null)
     {
-        <meta name="description" content="@ViewBag.Description"/>
+        <meta name="description" content="@ViewBag.Description" />
     }
     <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,900' rel='stylesheet' type='text/css'>
     @Styles.Render("~/bundles/content/css")
@@ -60,5 +62,34 @@
     @Scripts.Render("~/bundles/handlebars")
     @Scripts.Render("~/bundles/custom")
     @RenderSection("Scripts", required: false)
+    @Feedback()
 </body>
 </html>
+
+
+
+@helper Feedback()
+{
+    <script type="text/javascript">
+        reformal_wdg_domain = "nemestats";
+        reformal_wdg_mode = 0;
+        reformal_wdg_title = "NemeStats";
+        reformal_wdg_ltitle = "Leave feedback";
+        reformal_wdg_lfont = "";
+        reformal_wdg_lsize = "";
+        reformal_wdg_color = "#FFA000";
+        reformal_wdg_bcolor = "#516683";
+        reformal_wdg_tcolor = "#FFFFFF";
+        reformal_wdg_align = "right";
+        reformal_wdg_waction = 1;
+        reformal_wdg_vcolor = "#9FCE54";
+        reformal_wdg_cmline = "#E0E0E0";
+        reformal_wdg_glcolor = "#105895";
+        reformal_wdg_tbcolor = "#FFFFFF";
+        reformal_wdg_bimage = "8489db229aa0a66ab6b80ebbe0bb26cd.png";
+    </script>
+
+    <script type="text/javascript" language="JavaScript" src="@Url.Content(Links.Scripts.Idea_Informer.tab6_js)"></script><noscript>
+        <a href="http://nemestats.idea.informer.com">NemeStats feedback </a>
+    </noscript>
+}

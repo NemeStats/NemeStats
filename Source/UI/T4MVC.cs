@@ -139,6 +139,14 @@ namespace Links
         public static readonly string handlebars_runtime_amd_min_js = Url("handlebars.runtime.amd.min.js");
         public static readonly string handlebars_runtime_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/handlebars.runtime.min.js") ? Url("handlebars.runtime.min.js") : Url("handlebars.runtime.js");
         public static readonly string handlebars_runtime_min_js = Url("handlebars.runtime.min.js");
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public static class Idea_Informer {
+            private const string URLPATH = "~/Scripts/Idea.Informer";
+            public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
+            public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
+            public static readonly string tab6_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/tab6.min.js") ? Url("tab6.min.js") : Url("tab6.js");
+        }
+    
         public static readonly string jquery_1_10_2_intellisense_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery-1.10.2.intellisense.min.js") ? Url("jquery-1.10.2.intellisense.min.js") : Url("jquery-1.10.2.intellisense.js");
         public static readonly string jquery_1_10_2_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery-1.10.2.min.js") ? Url("jquery-1.10.2.min.js") : Url("jquery-1.10.2.js");
         public static readonly string jquery_1_10_2_min_js = Url("jquery-1.10.2.min.js");
@@ -339,6 +347,13 @@ namespace Links
                 public static class Assets
                 {
                     public const string gamingGroup_js = "~/Scripts/GamingGroup/gamingGroup.js"; 
+                }
+            }
+            public static partial class Idea_Informer 
+            {
+                public static class Assets
+                {
+                    public const string tab6_js = "~/Scripts/Idea.Informer/tab6.js"; 
                 }
             }
             public static partial class PlayedGame 

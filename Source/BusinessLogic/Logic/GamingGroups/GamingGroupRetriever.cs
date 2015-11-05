@@ -92,7 +92,8 @@ namespace BusinessLogic.Logic.GamingGroups
                         GamingGroupId = gamingGroup.Id,
                         GamingGroupName = gamingGroup.Name,
                         NumberOfGamesPlayed = gamingGroup.PlayedGames.Count,
-                        NumberOfPlayers = gamingGroup.Players.Count
+                        NumberOfPlayers = gamingGroup.Players.Count,
+                        GamingGroupChampion =  gamingGroup.Players.OrderByDescending(p=>p.PlayerGameResults.Select(pgr => pgr.NemeStatsPointsAwarded).DefaultIfEmpty(0).Sum()).FirstOrDefault()
                     }).OrderByDescending(gg => gg.NumberOfGamesPlayed)
                       .ThenByDescending(gg => gg.NumberOfPlayers)
                       .Take(numberOfTopGamingGroupsToShow)

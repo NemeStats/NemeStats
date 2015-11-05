@@ -26,5 +26,6 @@ namespace BusinessLogic.Models.GamingGroups
         public int GamingGroupId { get; set; }
         public int NumberOfPlayers { get; set; }
         public int NumberOfGamesPlayed { get; set; }
+        public Player GamingGroupChampion { get; set; }
     }
 }

@@ -39,7 +39,7 @@ namespace UI.Controllers
         internal const int NUMBER_OF_TOP_PLAYERS_TO_SHOW = 5;
         internal const int NUMBER_OF_RECENT_PUBLIC_GAMES_TO_SHOW = 5;
         internal const int NUMBER_OF_RECENT_NEMESIS_CHANGES_TO_SHOW = 5;
-        internal const int NUMBER_OF_TOP_GAMING_GROUPS_TO_SHOW = 5;
+        internal const int NUMBER_OF_TOP_GAMING_GROUPS_TO_SHOW = 15;
 
         private readonly IPlayerSummaryBuilder playerSummaryBuilder;
         private readonly ITopPlayerViewModelBuilder topPlayerViewModelBuilder;
