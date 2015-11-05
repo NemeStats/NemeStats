@@ -38,9 +38,9 @@ namespace BusinessLogic.Logic.GameDefinitions
         private readonly IDataContext dataContext;
         private readonly INemeStatsEventTracker eventTracker;
         private readonly IBoardGameGeekApiClient boardGameGeekApiClient;
-        private readonly IBoardGameGeekGameDefinitionAttacher boardGameGeekGameDefinitionAttacher;
+        private readonly IBoardGameGeekGameDefinitionCreator boardGameGeekGameDefinitionAttacher;
 
-        public GameDefinitionSaver(IDataContext dataContext, INemeStatsEventTracker eventTracker, IBoardGameGeekApiClient boardGameGeekApiClient, IBoardGameGeekGameDefinitionAttacher boardGameGeekGameDefinitionAttacher)
+        public GameDefinitionSaver(IDataContext dataContext, INemeStatsEventTracker eventTracker, IBoardGameGeekApiClient boardGameGeekApiClient, IBoardGameGeekGameDefinitionCreator boardGameGeekGameDefinitionAttacher)
         {
             this.dataContext = dataContext;
             this.eventTracker = eventTracker;
@@ -48,16 +48,16 @@ namespace BusinessLogic.Logic.GameDefinitions
             this.boardGameGeekGameDefinitionAttacher = boardGameGeekGameDefinitionAttacher;
         }
 
-        public GameDefinition CreateGameDefinition(CreateGameDefinitionRequest createGameDefinitionRequest, ApplicationUser applicationUser)
+        public GameDefinition CreateGameDefinition(CreateGameDefinitionRequest createGameDefinitionRequest, ApplicationUser currentUser)
         {
             ValidateNotNull(createGameDefinitionRequest);
 
             ValidateGameDefinitionNameIsNotNullOrWhitespace(createGameDefinitionRequest.Name);
 
-            int? boardGameGeekGameDefinitionId = CreateBoardGameGeekGameDefinition(createGameDefinitionRequest);
+            int? boardGameGeekGameDefinitionId = CreateBoardGameGeekGameDefinition(createGameDefinitionRequest, currentUser);
 
             var existingGameDefinition = dataContext.GetQueryable<GameDefinition>()
-                .FirstOrDefault(game => game.GamingGroupId == applicationUser.CurrentGamingGroupId.Value
+                .FirstOrDefault(game => game.GamingGroupId == currentUser.CurrentGamingGroupId.Value
                         && game.Name == createGameDefinitionRequest.Name);
 
             if (existingGameDefinition == null)
@@ -67,12 +67,12 @@ namespace BusinessLogic.Logic.GameDefinitions
                     Name = createGameDefinitionRequest.Name,
                     BoardGameGeekGameDefinitionId = boardGameGeekGameDefinitionId,
                     Description = createGameDefinitionRequest.Description,
-                    GamingGroupId = applicationUser.CurrentGamingGroupId.Value
+                    GamingGroupId = currentUser.CurrentGamingGroupId.Value
                 };
 
-                new Task(() => this.eventTracker.TrackGameDefinitionCreation(applicationUser, createGameDefinitionRequest.Name)).Start();
+                new Task(() => this.eventTracker.TrackGameDefinitionCreation(currentUser, createGameDefinitionRequest.Name)).Start();
 
-                return dataContext.Save(newGameDefinition, applicationUser);
+                return dataContext.Save(newGameDefinition, currentUser);
             }
 
             ValidateNotADuplicateGameDefinition(existingGameDefinition);
@@ -83,7 +83,7 @@ namespace BusinessLogic.Logic.GameDefinitions
             {
                 existingGameDefinition.Description = createGameDefinitionRequest.Description;
             }
-            return dataContext.Save(existingGameDefinition, applicationUser);
+            return dataContext.Save(existingGameDefinition, currentUser);
         }
 
 
@@ -112,12 +112,13 @@ namespace BusinessLogic.Logic.GameDefinitions
             }
         }
 
-        private int? CreateBoardGameGeekGameDefinition(CreateGameDefinitionRequest createGameDefinitionRequest)
+        private int? CreateBoardGameGeekGameDefinition(CreateGameDefinitionRequest createGameDefinitionRequest, ApplicationUser currentUser)
         {
             int? boardGameGeekGameDefinitionId = null;
             if (createGameDefinitionRequest.BoardGameGeekGameDefinitionId.HasValue)
             {
-                boardGameGeekGameDefinitionId = boardGameGeekGameDefinitionAttacher.CreateBoardGameGeekGameDefinition(createGameDefinitionRequest.BoardGameGeekGameDefinitionId);
+                boardGameGeekGameDefinitionId = boardGameGeekGameDefinitionAttacher.CreateBoardGameGeekGameDefinition(
+                    createGameDefinitionRequest.BoardGameGeekGameDefinitionId.Value, currentUser);
             }
 
             return boardGameGeekGameDefinitionId;

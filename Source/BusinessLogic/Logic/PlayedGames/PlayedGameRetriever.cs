@@ -43,7 +43,7 @@ namespace BusinessLogic.Logic.PlayedGames
         {
             List<PlayedGame> playedGames = dataContext.GetQueryable<PlayedGame>()
                 .Where(game => game.GamingGroupId == gamingGroupId)
-                .Include(playedGame => playedGame.GameDefinition)
+                .Include(playedGame => playedGame.GameDefinition.BoardGameGeekGameDefinition)
                 .Include(playedGame => playedGame.GamingGroup)
                 .Include(playedGame => playedGame.PlayerGameResults
                     .Select(playerGameResult => playerGameResult.Player))

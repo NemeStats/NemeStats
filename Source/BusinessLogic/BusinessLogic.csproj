@@ -153,9 +153,9 @@
     <Compile Include="Exceptions\UnauthorizedEntityAccessException.cs" />
     <Compile Include="Export\ExcelGenerator.cs" />
     <Compile Include="Export\IExcelGenerator.cs" />
-    <Compile Include="Logic\BoardGameGeek\BoardGameGeekGameDefinitionAttacher.cs" />
+    <Compile Include="Logic\BoardGameGeek\BoardGameGeekGameDefinitionCreator.cs" />
     <Compile Include="Logic\BoardGameGeek\BoardGameGeekUrlBuilder.cs" />
-    <Compile Include="Logic\BoardGameGeek\IBoardGameGeekGameDefinitionAttacher.cs" />
+    <Compile Include="Logic\BoardGameGeek\IBoardGameGeekGameDefinitionCreator.cs" />
     <Compile Include="Logic\Champions\ChampionRecalculator.cs" />
     <Compile Include="Logic\Email\EmailService.cs" />
     <Compile Include="Logic\OneTimeJobs\BoardGameGeekThumbnailAttacher.cs" />

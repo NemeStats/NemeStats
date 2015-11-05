@@ -183,7 +183,7 @@ namespace UI.DependencyResolution {
 
             this.For<IUserRetriever>().Use<UserRetriever>();
 
-            this.For<IBoardGameGeekGameDefinitionAttacher>().Use<BoardGameGeekGameDefinitionAttacher>();
+            this.For<IBoardGameGeekGameDefinitionCreator>().Use<BoardGameGeekGameDefinitionCreator>();
         }
 
         private void SetupUniquePerRequestMappings()

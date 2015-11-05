@@ -198,7 +198,9 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
                 Description = "some description"
             };
             autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<GameDefinition>()).Return(new List<GameDefinition>().AsQueryable());
-            autoMocker.Get<IBoardGameGeekGameDefinitionAttacher>().Expect(mock => mock.CreateBoardGameGeekGameDefinition(Arg<int?>.Is.Anything)).Return(null);
+            autoMocker.Get<IBoardGameGeekGameDefinitionCreator>().Expect(
+                mock => mock.CreateBoardGameGeekGameDefinition(Arg<int>.Is.Anything, Arg<ApplicationUser>.Is.Anything))
+                .Return(null);
 
             autoMocker.ClassUnderTest.CreateGameDefinition(createGameDefinitionRequest, currentUser);
 
@@ -266,7 +268,9 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
             {
                 Id = 2
             };
-            autoMocker.Get<IBoardGameGeekGameDefinitionAttacher>().Expect(mock => mock.CreateBoardGameGeekGameDefinition(createGameDefinitionRequest.BoardGameGeekGameDefinitionId)).Return(EXPECTED_BGG_ID);
+            autoMocker.Get<IBoardGameGeekGameDefinitionCreator>().Expect(
+                mock => mock.CreateBoardGameGeekGameDefinition(createGameDefinitionRequest.BoardGameGeekGameDefinitionId.Value, currentUser))
+                .Return(EXPECTED_BGG_ID);
 
             autoMocker.ClassUnderTest.CreateGameDefinition(createGameDefinitionRequest, currentUser);
 
