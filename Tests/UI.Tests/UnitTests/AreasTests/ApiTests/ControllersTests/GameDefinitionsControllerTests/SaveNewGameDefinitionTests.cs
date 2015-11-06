@@ -7,24 +7,25 @@ using NUnit.Framework;
 using Rhino.Mocks;
 using UI.Areas.Api.Controllers;
 using UI.Areas.Api.Models;
+using BusinessLogic.Models.Games;
 
 namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.GameDefinitionsControllerTests
 {
     [TestFixture]
     public class SaveNewGameDefinitionTests : ApiControllerTestBase<GameDefinitionsController>
     {
-        private GameDefinition expectedReturnedGameDefinition;
+        private GameDefinition expectedGameDefinition;
 
         [SetUp]
         public void SetUp()
         {
-            expectedReturnedGameDefinition = new GameDefinition
+            expectedGameDefinition = new GameDefinition
             {
                 Id = 100
             };
 
-            autoMocker.Get<IGameDefinitionSaver>().Expect(mock => mock.Save(Arg<GameDefinition>.Is.Anything, Arg<ApplicationUser>.Is.Anything))
-                      .Return(expectedReturnedGameDefinition);
+            autoMocker.Get<IGameDefinitionSaver>().Expect(mock => mock.CreateGameDefinition(Arg<CreateGameDefinitionRequest>.Is.Anything, Arg<ApplicationUser>.Is.Anything))
+                      .Return(expectedGameDefinition);
         }
 
         [Test]
@@ -39,8 +40,8 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.GameDefinition
             autoMocker.ClassUnderTest.SaveNewGameDefinition(newGameDefinitionMessage, 0);
 
             autoMocker.Get<IGameDefinitionSaver>().AssertWasCalled(
-                mock => mock.Save(Arg<GameDefinition>.Matches(gameDefinition => gameDefinition.Name == newGameDefinitionMessage.GameDefinitionName
-                    && gameDefinition.BoardGameGeekObjectId == newGameDefinitionMessage.BoardGameGeekObjectId),
+                mock => mock.CreateGameDefinition(Arg<CreateGameDefinitionRequest>.Matches(gameDefinition => gameDefinition.Name == newGameDefinitionMessage.GameDefinitionName
+                    && gameDefinition.BoardGameGeekGameDefinitionId == newGameDefinitionMessage.BoardGameGeekObjectId),
                     Arg<ApplicationUser>.Is.Same(applicationUser)));
         }
 
@@ -50,7 +51,7 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.GameDefinition
             var actualResults = autoMocker.ClassUnderTest.SaveNewGameDefinition(new NewGameDefinitionMessage(), 0);
 
             var actualData = AssertThatApiAction.ReturnsThisTypeWithThisStatusCode<NewlyCreatedGameDefinitionMessage>(actualResults, HttpStatusCode.OK);
-            Assert.That(actualData.GameDefinitionId, Is.EqualTo(expectedReturnedGameDefinition.Id));
+            Assert.That(actualData.GameDefinitionId, Is.EqualTo(expectedGameDefinition.Id));
         }
     }
 }

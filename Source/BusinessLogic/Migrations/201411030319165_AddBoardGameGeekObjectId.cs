@@ -19,7 +19,7 @@ namespace BusinessLogic.Migrations
 {
     using System.Data.Entity.Migrations;
     
-    public partial class AddBoardGameGeekObjectId : DbMigration
+    public partial class AddBoardGameGeekGameDefinitionId : DbMigration
     {
         public override void Up()
         {

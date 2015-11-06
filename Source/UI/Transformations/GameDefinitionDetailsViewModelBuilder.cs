@@ -49,7 +49,7 @@ namespace UI.Transformations
                 TotalNumberOfGamesPlayed = gameDefinitionSummary.TotalNumberOfGamesPlayed,
                 GamingGroupId = gameDefinitionSummary.GamingGroupId,
                 GamingGroupName = gameDefinitionSummary.GamingGroupName,
-                BoardGameGeekObjectId = gameDefinitionSummary.BoardGameGeekObjectId,
+                BoardGameGeekGameDefinitionId = gameDefinitionSummary.BoardGameGeekGameDefinitionId,
                 BoardGameGeekUri = gameDefinitionSummary.BoardGameGeekUri,
                 ThumbnailImageUrl = gameDefinitionSummary.ThumbnailImageUrl,
                 UserCanEdit = (currentUser != null && gameDefinitionSummary.GamingGroupId == currentUser.CurrentGamingGroupId)

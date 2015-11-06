@@ -24,7 +24,7 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.GameDefinition
                     Id = 2,
                     Name = "some game definition name",
                     Active = false,
-                    BoardGameGeekObjectId = 3
+                    BoardGameGeekGameDefinitionId = 3
                 }
             };
 
@@ -37,7 +37,7 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.GameDefinition
             Assert.That(firstActualGameDefinitionSearchResultMessage.GameDefinitionId, Is.EqualTo(expectedResults[0].Id));
             Assert.That(firstActualGameDefinitionSearchResultMessage.GameDefinitionName, Is.EqualTo(expectedResults[0].Name));
             Assert.That(firstActualGameDefinitionSearchResultMessage.Active, Is.EqualTo(expectedResults[0].Active));
-            Assert.That(firstActualGameDefinitionSearchResultMessage.BoardGameGeekObjectId, Is.EqualTo(expectedResults[0].BoardGameGeekObjectId));
+            Assert.That(firstActualGameDefinitionSearchResultMessage.BoardGameGeekGameDefinitionId, Is.EqualTo(expectedResults[0].BoardGameGeekGameDefinitionId));
 
         }
     }

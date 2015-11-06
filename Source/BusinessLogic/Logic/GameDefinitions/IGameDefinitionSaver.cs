@@ -16,14 +16,14 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 using BusinessLogic.Models;
+using BusinessLogic.Models.Games;
 using BusinessLogic.Models.User;
-using System.Linq;
 
 namespace BusinessLogic.Logic.GameDefinitions
 {
     public interface IGameDefinitionSaver
     {
-        GameDefinition Save(GameDefinition gameDefinition, ApplicationUser currentUser);
         void UpdateGameDefinition(GameDefinitionUpdateRequest gameDefinitionUpdateRequest, ApplicationUser applicationUser);
+        GameDefinition CreateGameDefinition(CreateGameDefinitionRequest createGameDefinitionRequest, ApplicationUser applicationUser);
     }
 }

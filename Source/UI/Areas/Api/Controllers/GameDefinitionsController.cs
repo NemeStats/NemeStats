@@ -25,6 +25,7 @@ using BusinessLogic.Models;
 using UI.Areas.Api.Models;
 using UI.Attributes;
 using VersionedRestApi;
+using BusinessLogic.Models.Games;
 
 namespace UI.Areas.Api.Controllers
 {
@@ -60,7 +61,7 @@ namespace UI.Areas.Api.Controllers
                 GameDefinitions = results.Select(result => new GameDefinitionSearchResultMessage
                 {
                     Active = result.Active,
-                    BoardGameGeekObjectId = result.BoardGameGeekObjectId,
+                    BoardGameGeekGameDefinitionId = result.BoardGameGeekGameDefinitionId,
                     GameDefinitionId = result.Id,
                     GameDefinitionName = result.Name
                 }).ToList()
@@ -84,13 +85,13 @@ namespace UI.Areas.Api.Controllers
         [HttpPost]
         public virtual HttpResponseMessage SaveNewGameDefinition([FromBody]NewGameDefinitionMessage newGameDefinitionMessage, [FromUri]int gamingGroupId)
         {
-            var gameDefinition = new GameDefinition
+            var createGameDefinitionRequest = new CreateGameDefinitionRequest
             {
-                BoardGameGeekObjectId = newGameDefinitionMessage.BoardGameGeekObjectId,
+                BoardGameGeekGameDefinitionId = newGameDefinitionMessage.BoardGameGeekObjectId,
                 Name = newGameDefinitionMessage.GameDefinitionName
             };
 
-            var newGameDefinition = gameDefinitionSaver.Save(gameDefinition, CurrentUser);
+            var newGameDefinition = gameDefinitionSaver.CreateGameDefinition(createGameDefinitionRequest, CurrentUser);
 
             var newlyCreatedGameDefinitionMessage = new NewlyCreatedGameDefinitionMessage
             {
@@ -124,7 +125,7 @@ namespace UI.Areas.Api.Controllers
             {
                 Active = updateGameDefinitionMessage.Active,
                 Name = updateGameDefinitionMessage.GameDefinitionName,
-                BoardGameGeekObjectId = updateGameDefinitionMessage.BoardGameGeekObjectId,
+                BoardGameGeekGameDefinitionId = updateGameDefinitionMessage.BoardGameGeekGameDefinitionId,
                 GameDefinitionId = gameDefinitionId
             };
 

@@ -96,7 +96,7 @@ namespace UI.Controllers
 		public virtual ActionResult Create(string returnUrl)
 		{
 		    return View(MVC.GameDefinition.Views.Create,
-		                new NewGameDefinitionViewModel()
+		                new CreateGameDefinitionViewModel()
 		                {
 		                    ReturnUrl = returnUrl
 		                });
@@ -109,31 +109,29 @@ namespace UI.Controllers
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		[UserContext]
-		public virtual ActionResult Create(NewGameDefinitionViewModel newGameDefinitionViewModel, ApplicationUser currentUser)
+		public virtual ActionResult Create(CreateGameDefinitionViewModel createGameDefinitionViewModel, ApplicationUser currentUser)
 		{
 			if (ModelState.IsValid)
 			{
-                newGameDefinitionViewModel.Name = newGameDefinitionViewModel.Name.Trim();
-                var gameDefinition = Mapper.Map<NewGameDefinitionViewModel, GameDefinition>(newGameDefinitionViewModel);
+                createGameDefinitionViewModel.Name = createGameDefinitionViewModel.Name.Trim();
+                var gameDefinition = Mapper.Map<CreateGameDefinitionViewModel, CreateGameDefinitionRequest>(createGameDefinitionViewModel);
 
-				gameDefinition = gameDefinitionSaver.Save(gameDefinition, currentUser);
+				var savedResult = gameDefinitionSaver.CreateGameDefinition(gameDefinition, currentUser);
 
-                if (!String.IsNullOrWhiteSpace(newGameDefinitionViewModel.ReturnUrl))
-                    return new RedirectResult(newGameDefinitionViewModel.ReturnUrl + "?gameId=" + gameDefinition.Id);
+                if (!String.IsNullOrWhiteSpace(createGameDefinitionViewModel.ReturnUrl))
+                    return new RedirectResult(createGameDefinitionViewModel.ReturnUrl + "?gameId=" + savedResult.Id);
 
 				return new RedirectResult(Url.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name)
 										+ "#" + GamingGroupController.SECTION_ANCHOR_GAMEDEFINITIONS);
 			}
 
-            return View(MVC.GameDefinition.Views.Create, newGameDefinitionViewModel);
+            return View(MVC.GameDefinition.Views.Create, createGameDefinitionViewModel);
 		}
 
 		[Authorize]
 		[HttpPost]
 		[UserContext]
-        //TODO vulnerable to overposting. Need to change this to a request type that only has the fields that can be edited here. This could also
-        //probably be consolidated into one method, or just use the REST API
-		public virtual ActionResult Save(GameDefinition model, ApplicationUser currentUser)
+		public virtual ActionResult AjaxCreate(CreateGameDefinitionViewModel createGameDefinitionViewModel, ApplicationUser currentUser)
 		{
 			if (!Request.IsAjaxRequest())
 			{
@@ -141,17 +139,30 @@ namespace UI.Controllers
 			}
 
 			if (ModelState.IsValid)
-			{
-				model.Name = model.Name.Trim();
-				GameDefinition game = gameDefinitionSaver.Save(model, currentUser);
-				return Json(game, JsonRequestBehavior.AllowGet);
-			}
+            {
+                createGameDefinitionViewModel.Name = createGameDefinitionViewModel.Name.Trim();
+                var createGameDefinitionRequest = Mapper.Map<CreateGameDefinitionRequest>(createGameDefinitionViewModel);
+                var newGameDefinition = gameDefinitionSaver.CreateGameDefinition(createGameDefinitionRequest, currentUser);
+                return Json(newGameDefinition, JsonRequestBehavior.AllowGet);
+            }
 
-			return new HttpStatusCodeResult(HttpStatusCode.NotModified);
+            return new HttpStatusCodeResult(HttpStatusCode.NotModified);
 		}
 
-		// GET: /GameDefinition/Edit/5
-		[Authorize]
+        private static GameDefinitionUpdateRequest TransformGameDefinitionEditViewModelToGameDefinitionUpdateRequest(GameDefinitionEditViewModel model)
+        {
+            return new GameDefinitionUpdateRequest
+            {
+                GameDefinitionId = model.GameDefinitionId,
+                Active = model.Active,
+                BoardGameGeekGameDefinitionId = model.BoardGameGeekGameDefinitionId,
+                Name = model.Name,
+                Description = model.Description
+            };
+        }
+
+        // GET: /GameDefinition/Edit/5
+        [Authorize]
 		[UserContext]
 		public virtual ActionResult Edit(int? id, ApplicationUser currentUser)
 		{
@@ -160,17 +171,18 @@ namespace UI.Controllers
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 			}
 
-			GameDefinition gameDefinition;
+			GameDefinitionEditViewModel gameDefinitionEditViewModel;
 			try
 			{
-				gameDefinition = gameDefinitionRetriever.GetGameDefinitionDetails(id.Value, 0);
-			}
+				var gameDefinition = gameDefinitionRetriever.GetGameDefinitionDetails(id.Value, 0);
+                gameDefinitionEditViewModel = Mapper.Map<GameDefinitionEditViewModel>(gameDefinition);
+            }
 			catch (KeyNotFoundException)
 			{
 				return HttpNotFound();
 			}
 
-			return View(MVC.GameDefinition.Views.Edit, gameDefinition);
+			return View(MVC.GameDefinition.Views.Edit, gameDefinitionEditViewModel);
 		}
 
         // POST: /GameDefinition/Edit/5
@@ -178,24 +190,25 @@ namespace UI.Controllers
 		// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		[UserContext]
-		public virtual ActionResult Edit([Bind(Include = "Id,Name,BoardGameGeekObjectId,Description,GamingGroupId,Active")] GameDefinition gamedefinition, ApplicationUser currentUser)
+        [Authorize]
+        [UserContext]
+		public virtual ActionResult Edit(GameDefinitionEditViewModel viewModel, ApplicationUser currentUser)
 		{
 			if (ModelState.IsValid)
 			{
-				gamedefinition.Name = gamedefinition.Name.Trim();
-                gameDefinitionSaver.Save(gamedefinition, currentUser);
-				dataContext.CommitAllChanges();
+                viewModel.Name = viewModel.Name.Trim();
+                var gameDefinitionUpdateRequest = Mapper.Map<GameDefinitionUpdateRequest>(viewModel);
+                gameDefinitionSaver.UpdateGameDefinition(gameDefinitionUpdateRequest, currentUser);
 				return new RedirectResult(Url.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name)
 										  + "#" + GamingGroupController.SECTION_ANCHOR_GAMEDEFINITIONS);
 			}
-			return View(MVC.GameDefinition.Views.Edit, gamedefinition);
+			return View(MVC.GameDefinition.Views.Edit, viewModel);
 		}
 
 		[Authorize]
 		public virtual ActionResult CreatePartial()
 		{
-			return View(MVC.GameDefinition.Views._CreatePartial, new NewGameDefinitionViewModel());
+			return View(MVC.GameDefinition.Views._CreatePartial, new CreateGameDefinitionViewModel());
 		}
 
 		[Authorize]

@@ -6,6 +6,6 @@ namespace UI.Areas.Api.Models
     {
         public string GameDefinitionName { get; set; }
         public bool? Active { get; set; }
-        public int? BoardGameGeekObjectId { get; set; }
+        public int? BoardGameGeekGameDefinitionId { get; set; }
     }
 }

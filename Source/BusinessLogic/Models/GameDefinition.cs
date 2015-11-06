@@ -37,9 +37,6 @@ namespace BusinessLogic.Models
         [Index("IX_ID_AND_NAME", 1, IsUnique = true)]
         public override int GamingGroupId { get; set; }
 
-        public int? BoardGameGeekObjectId { get; set; }
-        public string ThumbnailImageUrl { get; set; }
-
         [StringLength(255)]
         [Index("IX_ID_AND_NAME", 2, IsUnique = true)]
         [Required]
@@ -56,5 +53,8 @@ namespace BusinessLogic.Models
 
         public virtual Champion Champion { get; set; }
         public virtual Champion PreviousChampion { get; set; }
+
+        public int? BoardGameGeekGameDefinitionId { get; set; }
+        public virtual BoardGameGeekGameDefinition BoardGameGeekGameDefinition { get; set; }
     }
 }

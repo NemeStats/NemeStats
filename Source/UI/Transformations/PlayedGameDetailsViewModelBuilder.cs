@@ -52,9 +52,13 @@ namespace UI.Transformations
             summary.DatePlayed = playedGame.DatePlayed;
             summary.GamingGroupId = playedGame.GamingGroup.Id;
             summary.GamingGroupName = playedGame.GamingGroup.Name;
-            summary.ThumbnailImageUrl = playedGame.GameDefinition.ThumbnailImageUrl;
+
+            if(playedGame.GameDefinition.BoardGameGeekGameDefinition != null)
+            {
+                summary.ThumbnailImageUrl = playedGame.GameDefinition.BoardGameGeekGameDefinition.Thumbnail;
+            }
             summary.BoardGameGeekUri =
-                BoardGameGeekUriBuilder.BuildBoardGameGeekGameUri(playedGame.GameDefinition.BoardGameGeekObjectId);
+                BoardGameGeekUriBuilder.BuildBoardGameGeekGameUri(playedGame.GameDefinition.BoardGameGeekGameDefinitionId);
             if (playedGame.Notes != null)
             {
                 summary.Notes = playedGame.Notes.Replace(Environment.NewLine, NEWLINE_REPLACEMENT_FOR_HTML);

@@ -11,7 +11,7 @@ namespace UI.Areas.Api.Models
         public int GamingGroupId { get; set; }
         public string GamingGroupName { get; set; }
         public string Notes { get; set; }
-        public int? BoardGameGeekObjectId { get; set; }
+        public int? BoardGameGeekGameDefinitionId { get; set; }
         public string DatePlayed { get; set; }
         public string DateLastUpdated { get; set; }
         public List<PlayerGameResultMessage> PlayerGameResults;

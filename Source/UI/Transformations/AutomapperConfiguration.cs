@@ -17,8 +17,10 @@
 #endregion
 
 using AutoMapper;
+using BusinessLogic.Logic.GameDefinitions;
 using BusinessLogic.Logic.GamingGroups;
 using BusinessLogic.Models;
+using BusinessLogic.Models.Games;
 using BusinessLogic.Models.GamingGroups;
 using BusinessLogic.Models.PlayedGames;
 using BusinessLogic.Models.Players;
@@ -36,7 +38,6 @@ namespace UI.Transformations
         public static void Configure()
         {
             Mapper.CreateMap<TopGamingGroupSummary, TopGamingGroupSummaryViewModel>(MemberList.Source);
-            Mapper.CreateMap<NewGameDefinitionViewModel, GameDefinition>(MemberList.Source).ForSourceMember(x => x.ReturnUrl, opt => opt.Ignore());
             Mapper.CreateMap<VotableFeature, VotableFeatureViewModel>(MemberList.Destination);
             Mapper.CreateMap<NewUserMessage, NewUser>(MemberList.Source);
             Mapper.CreateMap<NewlyRegisteredUser, NewlyRegisteredUserMessage>(MemberList.Source);
@@ -53,6 +54,10 @@ namespace UI.Transformations
                   .ForMember(x => x.SpecialBadgeTypes, opt => opt.MapFrom(src => src.MapSpecialBadges()));
             Mapper.CreateMap<GameDefinitionTotal, GameDefinitionTotalMessage>(MemberList.Destination);
             Mapper.CreateMap<GameDefinitionTotals, GameDefinitionTotalsMessage>(MemberList.Destination);
+            Mapper.CreateMap<GameDefinition, GameDefinitionEditViewModel>(MemberList.Destination)
+                                  .ForMember(x => x.GameDefinitionId, opt => opt.MapFrom(src => src.Id));
+            Mapper.CreateMap<GameDefinitionEditViewModel, GameDefinitionUpdateRequest>(MemberList.Destination);
+            Mapper.CreateMap<CreateGameDefinitionViewModel, CreateGameDefinitionRequest>(MemberList.Destination);
             Mapper.CreateMap<PlayerStatistics, PlayerStatisticsMessage>(MemberList.Destination);
         }
     }

@@ -20,8 +20,10 @@ using System.Collections.Generic;
 using System.Linq;
 using BoardGameGeekApiClient.Service;
 using BusinessLogic.DataAccess;
-using BusinessLogic.Logic.GameDefinitions;
+using BusinessLogic.Logic.BoardGameGeek;
+using BusinessLogic.Models.Games;
 using NUnit.Framework;
+using BusinessLogic.Logic.OneTimeJobs;
 
 namespace UI.Tests.IntegrationTests.BoardGameGeekTests
 {

@@ -1,4 +1,4 @@
-﻿using BusinessLogic.Logic.GameDefinitions;
+﻿using BusinessLogic.Logic.OneTimeJobs;
 using NUnit.Framework;
 
 namespace BusinessLogic.Tests.IntegrationTests.LogicTests.BoardGameGeekThumbnailAttacherTests
@@ -10,7 +10,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.BoardGameGeekThumbnail
         [Ignore("Does a huge amount of updates to the database. Run only very deliberately.")]
         public void DoIt()
         {
-            new BoardGameGeekThumbnailAttacher().CleanUpExistingRecords();
+            //new BoardGameGeekThumbnailAttacher().CleanUpExistingRecords();
         }
 
     }
