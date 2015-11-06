@@ -104,22 +104,22 @@ MyOtzivCl = function() {
         if (!dref_mode) {
             if ('left' == dref_align) {
                 if (!dref_ext_img) {
-                    ref_ud("<div class=\"furjbqy\"><table height=\"100%\"><tr><td valign=\"middle\"><a href=\""+vlink+"\""+((dref_waction)?' target=\"_blank\"':"")+"><img src=\""+siteAdr+"tmpl/images/transp.gif\" alt=\"\" style=\"border: 0;\" width=\"22\" height=\"131\" class=\"tdsfh\" /></a></td></tr></table></div>");
+                    ref_ud("<div class=\"furjbqy\"><table height=\"100%\"><tr><td valign=\"middle\"><a id=\"js-suggest-link\" href=\""+vlink+"\""+((dref_waction)?' target=\"_blank\"':"")+"><img src=\""+siteAdr+"tmpl/images/transp.gif\" alt=\"\" style=\"border: 0;\" width=\"22\" height=\"131\" class=\"tdsfh\" /></a></td></tr></table></div>");
                 } else { 
-                    ref_ud("<div class=\"furjbqy\"><table height=\"100%\"><tr><td valign=\"middle\"><a href=\""+vlink+"\""+((dref_waction)?' target=\"_blank\"':"")+"><img src=\""+(dref_ext_img_m ?reformal_wdg_bimage : siteAdr+'files/images/buttons/'+reformal_wdg_bimage)+"\" alt=\"\" style=\"border: 0;\" class=\"tdsfh\" /></a></td></tr></table></div>");
+                    ref_ud("<div class=\"furjbqy\"><table height=\"100%\"><tr><td valign=\"middle\"><a id=\"js-suggest-link\" href=\"" + vlink + "\"" + ((dref_waction) ? ' target=\"_blank\"' : "") + "><img src=\"" + (dref_ext_img_m ? reformal_wdg_bimage : siteAdr + 'files/images/buttons/' + reformal_wdg_bimage) + "\" alt=\"\" style=\"border: 0;\" class=\"tdsfh\" /></a></td></tr></table></div>");
                 }
             } else {
                 if (!dref_ext_img)
                 {
-                    ref_ud("<div class=\"furrghtd\"><table height=\"100%\"><tr><td valign=\"middle\"><a href=\""+vlink+"\""+((dref_waction)?' target=\"_blank\"':"")+"><img src=\""+siteAdr+"tmpl/images/transp.gif\" alt=\"\" style=\"border: 0;\" width=\"22\" height=\"131\" class=\"tdsfh\" /></a></td></tr></table></div>");
+                    ref_ud("<div class=\"furrghtd\"><table height=\"100%\"><tr><td valign=\"middle\"><a id=\"js-suggest-link\" href=\"" + vlink + "\"" + ((dref_waction) ? ' target=\"_blank\"' : "") + "><img src=\"" + siteAdr + "tmpl/images/transp.gif\" alt=\"\" style=\"border: 0;\" width=\"22\" height=\"131\" class=\"tdsfh\" /></a></td></tr></table></div>");
                 }
                 else
                 {
-                    ref_ud("<div class=\"furrghtd\"><table height=\"100%\"><tr><td valign=\"middle\"><a href=\""+vlink+"\""+((dref_waction)?' target=\"_blank\"':"")+"><img src=\""+(dref_ext_img_m ?reformal_wdg_bimage : siteAdr+'files/images/buttons/'+reformal_wdg_bimage)+"\" alt=\"\" style=\"border: 0;\" class=\"tdsfh\" /></a></td></tr></table></div>");
+                    ref_ud("<div class=\"furrghtd\"><table height=\"100%\"><tr><td valign=\"middle\"><a id=\"js-suggest-link\" href=\"" + vlink + "\"" + ((dref_waction) ? ' target=\"_blank\"' : "") + "><img src=\"" + (dref_ext_img_m ? reformal_wdg_bimage : siteAdr + 'files/images/buttons/' + reformal_wdg_bimage) + "\" alt=\"\" style=\"border: 0;\" class=\"tdsfh\" /></a></td></tr></table></div>");
                 }
             }
        } else {
-	     ref_ud("<a href=\""+vlink+"\" style=\"color:"+dref_color+"; "+(dref_lfont ? 'font-family:'+dref_lfont+';' : '')+" "+(dref_lsize ? 'font-size:'+dref_lsize+';' : '')+"\""+((dref_waction)?' target=\"_blank\"':"")+">"+dref_ltitle+"</a>");
+            ref_ud("<a id=\"js-suggest-link\" href=\"" + vlink + "\" style=\"color:" + dref_color + "; " + (dref_lfont ? 'font-family:' + dref_lfont + ';' : '') + " " + (dref_lsize ? 'font-size:' + dref_lsize + ';' : '') + "\"" + ((dref_waction) ? ' target=\"_blank\"' : "") + ">" + dref_ltitle + "</a>");
        } 	
 		
 	    ref_ud("<div style=\"position: absolute; top: 50%; left: 50%;\">");

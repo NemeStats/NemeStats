@@ -70,7 +70,7 @@ namespace BusinessLogic.Export
                 worksheet.Cells[i + START_ROW_OF_NON_HEADER_DATA, INDEX_OF_DATE_PLAYED].Value = playedGameExportModel.DatePlayed;
                 worksheet.Cells[i + START_ROW_OF_NON_HEADER_DATA, INDEX_OF_GAME_DEFINITION_ID].Value = playedGameExportModel.GameDefinitionId;
                 worksheet.Cells[i + START_ROW_OF_NON_HEADER_DATA, INDEX_OF_GAME_DEFINITION_NAME].Value = playedGameExportModel.GameDefinitionName;
-                worksheet.Cells[i + START_ROW_OF_NON_HEADER_DATA, INDEX_OF_BOARD_GAME_GEEK_OBJECT_ID].Value = playedGameExportModel.BoardGameGeekObjectId;
+                worksheet.Cells[i + START_ROW_OF_NON_HEADER_DATA, INDEX_OF_BOARD_GAME_GEEK_OBJECT_ID].Value = playedGameExportModel.BoardGameGeekGameDefinitionId;
                 worksheet.Cells[i + START_ROW_OF_NON_HEADER_DATA, INDEX_OF_GAMING_GROUP_ID].Value = playedGameExportModel.GamingGroupId;
                 worksheet.Cells[i + START_ROW_OF_NON_HEADER_DATA, INDEX_OF_GAMING_GROUP_NAME].Value = playedGameExportModel.GamingGroupName;
                 worksheet.Cells[i + START_ROW_OF_NON_HEADER_DATA, INDEX_OF_DATE_RECORDED].Value = playedGameExportModel.DateCreated;

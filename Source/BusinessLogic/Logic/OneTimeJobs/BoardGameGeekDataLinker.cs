@@ -23,7 +23,7 @@ using BusinessLogic.DataAccess.Security;
 using BusinessLogic.Models;
 using BusinessLogic.Models.User;
 
-namespace BusinessLogic.Logic.GameDefinitions
+namespace BusinessLogic.Logic.OneTimeJobs
 {
     public class BoardGameGeekDataLinker
     {
@@ -34,7 +34,7 @@ namespace BusinessLogic.Logic.GameDefinitions
                 using (NemeStatsDataContext dataContext = new NemeStatsDataContext(dbContext, new SecuredEntityValidatorFactory()))
                 {
                     var games = dataContext.GetQueryable<GameDefinition>()
-                                                            .Where(game => game.BoardGameGeekObjectId == null)
+                                                            .Where(game => game.BoardGameGeekGameDefinitionId == null)
                                                             .ToList();
 
                     var bggSearcher = new BoardGameGeekClient(new ApiDownloaderService());
@@ -46,7 +46,7 @@ namespace BusinessLogic.Logic.GameDefinitions
 
                         if (bggResults.Count() == 1)
                         {
-                            game.BoardGameGeekObjectId = bggResults.First().BoardGameId;
+                            game.BoardGameGeekGameDefinitionId = bggResults.First().BoardGameId;
                             ApplicationUser user = new ApplicationUser
                             {
                                 CurrentGamingGroupId = game.GamingGroupId

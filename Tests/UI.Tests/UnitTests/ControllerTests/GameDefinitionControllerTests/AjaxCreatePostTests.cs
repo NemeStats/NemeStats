@@ -16,31 +16,43 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 
-using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
-using BusinessLogic.Models;
 using NUnit.Framework;
 using Rhino.Mocks;
+using UI.Models.GameDefinitionModels;
+using BusinessLogic.Models.User;
+using BusinessLogic.Models.Games;
 
 namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
 {
     [TestFixture]
-    public class SaveGameDefinitionPostTests : GameDefinitionControllerTestBase
+    public class AjaxCreatePostTests : GameDefinitionControllerTestBase
     {
         [Test]
-        public void ItSavesTheGame()
+        public void ItCreatesTheNewGame()
         {
-            var game = new GameDefinition()
+            var createGameDefinitionViewModel = new CreateGameDefinitionViewModel()
             {
+                Active = false,
+                BoardGameGeekGameDefinitionId = 1,
+                Description = "some description",
                 Name = "New Game"
             };
 
-            gameDefinitionControllerPartialMock.Save(game, currentUser);
+            gameDefinitionControllerPartialMock.AjaxCreate(createGameDefinitionViewModel, currentUser);
 
-            gameDefinitionCreatorMock.AssertWasCalled(mock => mock.Save(game, currentUser));
+            var arguments = gameDefinitionCreatorMock.GetArgumentsForCallsMadeOn(mock => mock.CreateGameDefinition(
+                Arg<CreateGameDefinitionRequest>.Is.Anything, 
+                Arg<ApplicationUser>.Is.Anything));
+            var createGameDefinitionRequest = arguments[0][0] as CreateGameDefinitionRequest;
+            Assert.That(createGameDefinitionRequest, Is.Not.Null);
+            Assert.That(createGameDefinitionRequest.Active, Is.EqualTo(createGameDefinitionViewModel.Active));
+            Assert.That(createGameDefinitionRequest.BoardGameGeekGameDefinitionId, Is.EqualTo(createGameDefinitionViewModel.BoardGameGeekGameDefinitionId));
+            Assert.That(createGameDefinitionRequest.Description, Is.EqualTo(createGameDefinitionViewModel.Description));
+            Assert.That(createGameDefinitionRequest.Name, Is.EqualTo(createGameDefinitionViewModel.Name));
         }
 
         [Test]
@@ -54,7 +66,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
 
             gameDefinitionControllerPartialMock.ControllerContext = new ControllerContext(context, new RouteData(), gameDefinitionControllerPartialMock);
 
-            var result = gameDefinitionControllerPartialMock.Save(new GameDefinition(), currentUser) as HttpStatusCodeResult;
+            var result = gameDefinitionControllerPartialMock.AjaxCreate(new CreateGameDefinitionViewModel(), currentUser) as HttpStatusCodeResult;
 
             Assert.AreEqual((int)HttpStatusCode.BadRequest, result.StatusCode);
         }
@@ -62,10 +74,10 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
         [Test]
         public void ItReturnsANotModifiedStatusIfValidationFails()
         {
-            var game = new GameDefinition();
+            var model = new CreateGameDefinitionViewModel();
             gameDefinitionControllerPartialMock.ModelState.AddModelError("key", "message");
 
-            var result = gameDefinitionControllerPartialMock.Save(game, currentUser) as HttpStatusCodeResult;
+            var result = gameDefinitionControllerPartialMock.AjaxCreate(model, currentUser) as HttpStatusCodeResult;
 
             Assert.AreEqual((int)HttpStatusCode.NotModified, result.StatusCode);
         }

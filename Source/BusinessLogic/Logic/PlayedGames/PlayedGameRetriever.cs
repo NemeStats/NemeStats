@@ -43,7 +43,7 @@ namespace BusinessLogic.Logic.PlayedGames
         {
             List<PlayedGame> playedGames = dataContext.GetQueryable<PlayedGame>()
                 .Where(game => game.GamingGroupId == gamingGroupId)
-                .Include(playedGame => playedGame.GameDefinition)
+                .Include(playedGame => playedGame.GameDefinition.BoardGameGeekGameDefinition)
                 .Include(playedGame => playedGame.GamingGroup)
                 .Include(playedGame => playedGame.PlayerGameResults
                     .Select(playerGameResult => playerGameResult.Player))
@@ -99,8 +99,9 @@ namespace BusinessLogic.Logic.PlayedGames
                             WinnerTypes.PlayerWin),
                     WinningPlayer = playedGame.PlayerGameResults.FirstOrDefault(player => player.GameRank == 1).Player,
                     DatePlayed = playedGame.DatePlayed,
-                    ThumbnailImageUrl = playedGame.GameDefinition.ThumbnailImageUrl,
-                    BoardGameGeekObjectId = playedGame.GameDefinition.BoardGameGeekObjectId
+                    ThumbnailImageUrl = playedGame.GameDefinition.BoardGameGeekGameDefinition == null 
+                        ? null : playedGame.GameDefinition.BoardGameGeekGameDefinition.Thumbnail,
+                    BoardGameGeekObjectId = playedGame.GameDefinition.BoardGameGeekGameDefinitionId
                 }).Take(numberOfGames)
                 .ToList();
 
@@ -122,7 +123,7 @@ namespace BusinessLogic.Logic.PlayedGames
                                  PlayedGameId = playedGame.Id,
                                  GameDefinitionId = playedGame.GameDefinitionId,
                                  GameDefinitionName = playedGame.GameDefinition.Name,
-                                 BoardGameGeekObjectId = playedGame.GameDefinition.BoardGameGeekObjectId,
+                                 BoardGameGeekGameDefinitionId = playedGame.GameDefinition.BoardGameGeekGameDefinitionId,
                                  GamingGroupId = playedGame.GamingGroupId,
                                  GamingGroupName = playedGame.GamingGroup.Name,
                                  Notes = playedGame.Notes,

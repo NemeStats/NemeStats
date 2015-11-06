@@ -1,4 +1,4 @@
-﻿@model UI.Models.GameDefinitionModels.NewGameDefinitionViewModel
+﻿@model UI.Models.GameDefinitionModels.CreateGameDefinitionViewModel
 
 @{
     ViewBag.Title = "Create a game";
@@ -18,7 +18,7 @@
             @Html.AntiForgeryToken()
             <div class="form-horizontal">
                 @Html.ValidationSummary(true)
-				@Html.HiddenFor(model => model.BoardGameGeekObjectId, new { @id = "boardGameId" })
+				@Html.HiddenFor(model => model.BoardGameGeekGameDefinitionId, new { @id = "boardGameId" })
                 <div class="form-group">
                     @Html.LabelFor(model => model.Name, new { @class = "control-label col-md-2" })
                     <div class="col-md-10">

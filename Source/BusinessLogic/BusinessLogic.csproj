@@ -153,10 +153,12 @@
     <Compile Include="Exceptions\UnauthorizedEntityAccessException.cs" />
     <Compile Include="Export\ExcelGenerator.cs" />
     <Compile Include="Export\IExcelGenerator.cs" />
+    <Compile Include="Logic\BoardGameGeek\BoardGameGeekGameDefinitionCreator.cs" />
     <Compile Include="Logic\BoardGameGeek\BoardGameGeekUrlBuilder.cs" />
+    <Compile Include="Logic\BoardGameGeek\IBoardGameGeekGameDefinitionCreator.cs" />
     <Compile Include="Logic\Champions\ChampionRecalculator.cs" />
     <Compile Include="Logic\Email\EmailService.cs" />
-    <Compile Include="Logic\GameDefinitions\BoardGameGeekThumbnailAttacher.cs" />
+    <Compile Include="Logic\OneTimeJobs\BoardGameGeekThumbnailAttacher.cs" />
     <Compile Include="Logic\GameDefinitions\GameDefinitionUpdateRequest.cs" />
     <Compile Include="Logic\GamingGroups\GamingGroupInfoForUser.cs" />
     <Compile Include="Logic\Points\PointsCalculator.cs" />
@@ -171,7 +173,7 @@
     <Compile Include="Logic\Users\UserRetriever.cs" />
     <Compile Include="Logic\Utilities\WinPercentageCalculator.cs" />
     <Compile Include="Logic\VotableFeatures\IVotableFeatureRetriever.cs" />
-    <Compile Include="Logic\GameDefinitions\BoardGameGeekDataLinker.cs" />
+    <Compile Include="Logic\OneTimeJobs\BoardGameGeekDataLinker.cs" />
     <Compile Include="Logic\Champions\IChampionRecalculator.cs" />
     <Compile Include="Logic\Nemeses\INemesisHistoryRetriever.cs" />
     <Compile Include="Logic\Nemeses\INemesisRecalculator.cs" />
@@ -277,6 +279,29 @@
     <Compile Include="Migrations\201510131345507_AddThumbnailImageUrlToGameDefinition.Designer.cs">
       <DependentUpon>201510131345507_AddThumbnailImageUrlToGameDefinition.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201510260223418_AddBoardGameGeekGameDefinition.cs" />
+    <Compile Include="Migrations\201510260223418_AddBoardGameGeekGameDefinition.Designer.cs">
+      <DependentUpon>201510260223418_AddBoardGameGeekGameDefinition.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201510271123195_WAT.cs" />
+    <Compile Include="Migrations\201510271123195_WAT.Designer.cs">
+      <DependentUpon>201510271123195_WAT.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201511010229030_WAT2.cs" />
+    <Compile Include="Migrations\201511010229030_WAT2.Designer.cs">
+      <DependentUpon>201511010229030_WAT2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201511030244129_RemoveThumbnailFromGameDefinition.cs" />
+    <Compile Include="Migrations\201511030244129_RemoveThumbnailFromGameDefinition.Designer.cs">
+      <DependentUpon>201511030244129_RemoveThumbnailFromGameDefinition.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201511051243356_BoardGameGeekGameDefinitionIdentityInsert.cs" />
+    <Compile Include="Migrations\201511051243356_BoardGameGeekGameDefinitionIdentityInsert.Designer.cs">
+      <DependentUpon>201511051243356_BoardGameGeekGameDefinitionIdentityInsert.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\BoardGameGeekGameDefinition.cs" />
+    <Compile Include="Models\Games\CreateGameDefinitionRequest.cs" />
+    <Compile Include="Models\Games\GameDefinitionDisplayInfo.cs" />
     <Compile Include="Models\Games\GameDefinitionName.cs" />
     <Compile Include="Models\GamingGroups\GamingGroupEditRequest.cs" />
     <Compile Include="Models\GamingGroups\NewlyCreatedGamingGroupResult.cs" />
@@ -482,7 +507,9 @@
     <Compile Include="Providers\MachineKeyProtectionProvider.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="App.Debug.config">
       <DependentUpon>App.config</DependentUpon>
     </None>
@@ -653,6 +680,21 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201510131345507_AddThumbnailImageUrlToGameDefinition.resx">
       <DependentUpon>201510131345507_AddThumbnailImageUrlToGameDefinition.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201510260223418_AddBoardGameGeekGameDefinition.resx">
+      <DependentUpon>201510260223418_AddBoardGameGeekGameDefinition.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201510271123195_WAT.resx">
+      <DependentUpon>201510271123195_WAT.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201511010229030_WAT2.resx">
+      <DependentUpon>201511010229030_WAT2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201511030244129_RemoveThumbnailFromGameDefinition.resx">
+      <DependentUpon>201511030244129_RemoveThumbnailFromGameDefinition.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201511051243356_BoardGameGeekGameDefinitionIdentityInsert.resx">
+      <DependentUpon>201511051243356_BoardGameGeekGameDefinitionIdentityInsert.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

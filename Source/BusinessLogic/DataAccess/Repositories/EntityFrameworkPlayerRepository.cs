@@ -117,14 +117,15 @@ namespace BusinessLogic.DataAccess.Repositories
         private const string SQL_GET_PLAYER_GAME_SUMMARY_INFO =
           @"SELECT GD.[Id] AS GameDefinitionId
           ,GD.[Name] AS GameDefinitionName
-          ,GD.[ThumbnailImageUrl] AS ThumbnailImageUrl
+          ,BGGGD.[Thumbnail] AS ThumbnailImageUrl
 	      ,SUM(CASE WHEN PGR.GameRank = 1 THEN 1 ELSE 0 END) AS NumberOfGamesWon
           ,SUM(CASE WHEN PGR.GameRank <> 1 THEN 1 ELSE 0 END) AS NumberOfGamesLost
           FROM [dbo].[GameDefinition] GD 
           INNER JOIN PlayedGame PG ON GD.ID = PG.GameDefinitionID
           INNER JOIN PlayerGameResult PGR ON PG.ID = PGR.PlayedGameId
-          WHERE PGR.PlayerId = @PlayerId
-          GROUP BY GD.[Id], GD.[Name], GD.[ThumbnailImageUrl]
+          LEFT JOIN BoardGameGeekGameDefinition BGGGD ON BGGGD.Id = GD.BoardGameGeekGameDefinitionId
+          WHERE PGR.PlayerId = @PlayerId 
+          GROUP BY GD.[Id], GD.[Name], BGGGD.[Thumbnail]
           ORDER BY NumberOfGamesWon DESC, NumberofGamesLost DESC, GameDefinitionName";
 
         public IList<PlayerGameSummary> GetPlayerGameSummaries(int playerId)

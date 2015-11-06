@@ -16,6 +16,7 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 using BusinessLogic.Models;
+using BusinessLogic.Models.Games;
 using BusinessLogic.Models.User;
 using NUnit.Framework;
 using Rhino.Mocks;
@@ -25,7 +26,7 @@ using UI.Models.GameDefinitionModels;
 
 namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
 {
-	[TestFixture]
+    [TestFixture]
 	public class CreateHttpPostTests : GameDefinitionControllerTestBase
 	{
 		[Test]
@@ -41,29 +42,29 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
 		[Test]
 		public void ItReloadsTheCurrentGameDefinitionIfValidationFails()
 		{
-			var newGameDefinitionViewModel = new NewGameDefinitionViewModel();
+			var createGameDefinitionRequest = new CreateGameDefinitionViewModel();
 			gameDefinitionControllerPartialMock.ModelState.AddModelError("key", "message");
 
-			ViewResult actionResult = gameDefinitionControllerPartialMock.Create(newGameDefinitionViewModel, currentUser) as ViewResult;
-			var actualViewModel = (NewGameDefinitionViewModel)actionResult.ViewData.Model;
+			ViewResult actionResult = gameDefinitionControllerPartialMock.Create(createGameDefinitionRequest, currentUser) as ViewResult;
+			var actualViewModel = (CreateGameDefinitionViewModel)actionResult.ViewData.Model;
 
-			Assert.AreSame(newGameDefinitionViewModel, actualViewModel);
+			Assert.AreSame(createGameDefinitionRequest, actualViewModel);
 		}
 
 		[Test]
 		public void ItSavesTheGameDefinitionIfValidationPasses()
 		{
-			var newGameDefinitionViewModel = new NewGameDefinitionViewModel()
+			var createGameDefinitionRequest = new CreateGameDefinitionViewModel()
 			{
 				Name = "game definition name"
 			};
 
-            gameDefinitionControllerPartialMock.Create(newGameDefinitionViewModel, currentUser);
+            gameDefinitionControllerPartialMock.Create(createGameDefinitionRequest, currentUser);
 
-			gameDefinitionCreatorMock.AssertWasCalled(mock => mock.Save(
-                Arg<GameDefinition>.Matches(x => x.Name == newGameDefinitionViewModel.Name
-                                            && x.Description == newGameDefinitionViewModel.Description
-                                            && x.BoardGameGeekObjectId == newGameDefinitionViewModel.BoardGameGeekObjectId), 
+			gameDefinitionCreatorMock.AssertWasCalled(mock => mock.CreateGameDefinition(
+                Arg<CreateGameDefinitionRequest>.Matches(x => x.Name == createGameDefinitionRequest.Name
+                                            && x.Description == createGameDefinitionRequest.Description
+                                            && x.BoardGameGeekGameDefinitionId == createGameDefinitionRequest.BoardGameGeekGameDefinitionId), 
                 Arg<ApplicationUser>.Is.Same(currentUser)));
 		}
 
@@ -72,14 +73,14 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
 		{
 			string baseUrl = "base url";
 			string expectedUrl = baseUrl + "#" + GamingGroupController.SECTION_ANCHOR_GAMEDEFINITIONS;
-			var newGameDefinitionViewModel = new NewGameDefinitionViewModel()
+			var createGameDefinitionRequest = new CreateGameDefinitionViewModel()
 			{
 				Name = "game definition name"
 			};
 			urlHelperMock.Expect(mock => mock.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name))
 					.Return(baseUrl);
 
-			RedirectResult redirectResult = gameDefinitionControllerPartialMock.Create(newGameDefinitionViewModel, currentUser) as RedirectResult;
+			RedirectResult redirectResult = gameDefinitionControllerPartialMock.Create(createGameDefinitionRequest, currentUser) as RedirectResult;
 
 			Assert.AreEqual(expectedUrl, redirectResult.Url);
 		}
@@ -89,19 +90,19 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
 		{
 		    int expectedGameDefinitionId = 123;
 			string returnUrl = "/PlayedGame/Create";
-		    var newGameDefinitionViewModel = new NewGameDefinitionViewModel()
+		    var createGameDefinitionRequest = new CreateGameDefinitionViewModel()
 		    {
                 ReturnUrl = returnUrl,
                 Name = "Project-Ariel"
 		    };
-		    gameDefinitionCreatorMock.Expect(mock => mock.Save(Arg<GameDefinition>.Is.Anything, Arg<ApplicationUser>.Is.Anything))
-		                             .Return(new GameDefinition()
+		    gameDefinitionCreatorMock.Expect(mock => mock.CreateGameDefinition(Arg<CreateGameDefinitionRequest>.Is.Anything, Arg<ApplicationUser>.Is.Anything))
+		                             .Return(new GameDefinition 
 		                             {
 		                                 Id = expectedGameDefinitionId
 		                             });
             string expectedUrl = returnUrl + "?gameId=" + expectedGameDefinitionId;
 
-            RedirectResult redirectResult = gameDefinitionControllerPartialMock.Create(newGameDefinitionViewModel, currentUser) as RedirectResult;
+            RedirectResult redirectResult = gameDefinitionControllerPartialMock.Create(createGameDefinitionRequest, currentUser) as RedirectResult;
 
 			Assert.AreEqual(expectedUrl, redirectResult.Url);
 		}
