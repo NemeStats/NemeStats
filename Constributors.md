@@ -13,6 +13,7 @@ PrivateAppSettings.config example settings
   <add key="Rollbar.AccessToken" value="f7d858b2d08a47b98f9ab19f9e27516c" />
   <add key="Rollbar.Environment" value="development" />
   <add key="UniversalAnalytics.TrackingId" value="UA-52982625-4" />
+  <add key="GoogleTagManager.TrackingId" value="GTM-5RBDXK" />
   <add key="googleAppId" value="260011030385-4651b4m7fsn28tc9vj13remofgji8m3l.apps.googleusercontent.com" />
   <add key="googleClientSecret" value="rEWsFL0AKxKODzJpNR6X4A2f" />
   <add key="emailServiceUserName" value="not provided -- emails wont send when running this locally" />
