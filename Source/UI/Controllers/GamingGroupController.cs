@@ -113,7 +113,9 @@ namespace UI.Controllers
                 Id = gamingGroupSummary.Id,
                 Name = gamingGroupSummary.Name,
                 GameDefinitionSummaries = gamingGroupSummary.GameDefinitionSummaries
-                    .Select(summary => gameDefinitionSummaryViewModelBuilder.Build(summary, currentUser)).ToList(),
+                    .Select(summary => gameDefinitionSummaryViewModelBuilder.Build(summary, currentUser))
+                    .OrderByDescending(summary=>summary.TotalNumberOfGamesPlayed)
+                    .ToList(),
                 Players = gamingGroupSummary.Players
                     .Select(playerWithNemesis => playerWithNemesisViewModelBuilder.Build(playerWithNemesis, currentUser)).ToList(),
                 PlayedGames = new PlayedGamesViewModel
