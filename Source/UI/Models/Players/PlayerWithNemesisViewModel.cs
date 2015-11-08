@@ -33,6 +33,7 @@ namespace UI.Models.Players
         public string PreviousNemesisPlayerName { get; set; }
         public bool UserCanEdit { get; set; }
         public int NumberOfPlayedGames { get; set; }
+        public int OverallWinPercentage { get; set; }
         public int TotalPoints { get; set; }
         public int TotalChampionedGames { get; set; }
     }

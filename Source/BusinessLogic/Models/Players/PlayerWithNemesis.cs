@@ -16,8 +16,6 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 
-using System.Collections.Generic;
-using System.Linq;
 
 namespace BusinessLogic.Models.Players
 {
@@ -31,7 +29,8 @@ namespace BusinessLogic.Models.Players
         public int? PreviousNemesisPlayerId { get; set; }
         public string PreviousNemesisPlayerName { get; set; }
         public int GamingGroupId { get; set; }
-        public int NumberOfPlayedGames { get; set; }
+        public int GamesWon { get; set; }
+        public int GamesLost { get; set; }
         public int TotalPoints { get; set; }
         public int TotalChampionedGames { get; set; }
         public bool PlayerActive { get; set; }

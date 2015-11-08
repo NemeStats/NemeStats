@@ -69,13 +69,23 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
         }
 
         [Test]
-        public void ItReturnsTheNumberOfGamesPlayed()
+        public void ItReturnsTheNumberOfGamesWon()
         {
-            int expectedNumberOfGamesPlayed = playerGameResultsForFirstPlayer.Count();
+            int expectedNumberOfGamesWon = playerGameResultsForFirstPlayer.Count(x => x.GameRank == 1);
 
             List<PlayerWithNemesis> players = playerRetriever.GetAllPlayersWithNemesisInfo(gamingGroupId);
 
-            Assert.That(players[0].NumberOfPlayedGames, Is.EqualTo(expectedNumberOfGamesPlayed));
+            Assert.That(players[0].GamesWon, Is.EqualTo(expectedNumberOfGamesWon));
+        }
+
+        [Test]
+        public void ItReturnsTheNumberOfGamesLost()
+        {
+            int expectedNumberOfGamesLost = playerGameResultsForFirstPlayer.Count(x => x.GameRank > 1);
+
+            List<PlayerWithNemesis> players = playerRetriever.GetAllPlayersWithNemesisInfo(gamingGroupId);
+
+            Assert.That(players[0].GamesLost, Is.EqualTo(expectedNumberOfGamesLost));
         }
 
         [Test]

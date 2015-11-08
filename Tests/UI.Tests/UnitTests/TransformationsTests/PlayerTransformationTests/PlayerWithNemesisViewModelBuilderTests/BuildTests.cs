@@ -52,7 +52,8 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
                 PreviousNemesisPlayerId = 400,
                 PreviousNemesisPlayerName = "previous nemesis player name",
                 GamingGroupId = gamingGroupId,
-                NumberOfPlayedGames = 1,
+                GamesLost = 1,
+                GamesWon = 1,
                 TotalPoints = 10,
                 TotalChampionedGames = 1
             };
@@ -159,7 +160,15 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         {
             PlayerWithNemesisViewModel actualViewModel = builder.Build(this.playerWithNemesis, this.currentUser);
 
-            Assert.AreEqual(this.playerWithNemesis.NumberOfPlayedGames, actualViewModel.NumberOfPlayedGames);
+            Assert.AreEqual(this.playerWithNemesis.GamesWon + playerWithNemesis.GamesLost, actualViewModel.NumberOfPlayedGames);
+        }
+
+        [Test]
+        public void ItSetsTheOverallWinPercentage()
+        {
+            PlayerWithNemesisViewModel actualViewModel = builder.Build(this.playerWithNemesis, this.currentUser);
+
+            Assert.AreEqual(50, actualViewModel.OverallWinPercentage);
         }
 
         [Test]

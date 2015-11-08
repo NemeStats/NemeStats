@@ -16,8 +16,6 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 
-using System;
-using System.Web.Security.AntiXss;
 using BusinessLogic.DataAccess;
 using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.Models;
@@ -57,20 +55,21 @@ namespace BusinessLogic.Logic.Players
         {
             var playersWithNemesis = (from Player player in GetAllPlayersInGamingGroupQueryable(gamingGroupId)
                 .Include(player => player.PlayerGameResults)
-                select new PlayerWithNemesis
-                {
-                    PlayerId = player.Id,
-                    PlayerName = player.Name,
-                    PlayerActive = player.Active,
-                    PlayerRegistered = !string.IsNullOrEmpty(player.ApplicationUserId),
-                    NemesisPlayerId = player.Nemesis == null ? (int?)null : player.Nemesis.NemesisPlayerId,
-                    NemesisPlayerName = player.Nemesis != null && player.Nemesis.NemesisPlayer != null
-                        ? player.Nemesis.NemesisPlayer.Name : null,
-                    PreviousNemesisPlayerId = player.PreviousNemesis == null ? (int?)null : player.PreviousNemesis.NemesisPlayerId,
-                    PreviousNemesisPlayerName = player.PreviousNemesis != null && player.PreviousNemesis.NemesisPlayer != null
-                        ? player.PreviousNemesis.NemesisPlayer.Name : null,
-                    GamingGroupId = player.GamingGroupId,
-                    NumberOfPlayedGames = player.PlayerGameResults.Count,
+                                      select new PlayerWithNemesis
+                                      {
+                                          PlayerId = player.Id,
+                                          PlayerName = player.Name,
+                                          PlayerActive = player.Active,
+                                          PlayerRegistered = !string.IsNullOrEmpty(player.ApplicationUserId),
+                                          NemesisPlayerId = player.Nemesis == null ? (int?)null : player.Nemesis.NemesisPlayerId,
+                                          NemesisPlayerName = player.Nemesis != null && player.Nemesis.NemesisPlayer != null
+                                              ? player.Nemesis.NemesisPlayer.Name : null,
+                                          PreviousNemesisPlayerId = player.PreviousNemesis == null ? (int?)null : player.PreviousNemesis.NemesisPlayerId,
+                                          PreviousNemesisPlayerName = player.PreviousNemesis != null && player.PreviousNemesis.NemesisPlayer != null
+                                              ? player.PreviousNemesis.NemesisPlayer.Name : null,
+                                          GamingGroupId = player.GamingGroupId,
+                                          GamesWon = player.PlayerGameResults.Count(x => x.GameRank == 1), 
+                                          GamesLost = player.PlayerGameResults.Count(x => x.GameRank > 1),
                     TotalPoints = player.PlayerGameResults.Select(pgr => pgr.NemeStatsPointsAwarded).DefaultIfEmpty(0).Sum(),
                     //only get championed games where this player is the current champion
                     TotalChampionedGames = player.ChampionedGames.Count(champion => champion.GameDefinition.ChampionId != null && champion.GameDefinition.ChampionId.Value == champion.Id)
