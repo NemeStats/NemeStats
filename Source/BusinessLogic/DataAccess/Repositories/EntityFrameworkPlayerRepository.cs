@@ -219,14 +219,5 @@ namespace BusinessLogic.DataAccess.Repositories
 
             return longestWinningStreak.Value;
         }
-
-        private static int CalculateWinPercentage(int gamesWon, int gamesLost)
-        {
-            if (gamesLost + gamesWon == 0)
-            {
-                return 0;
-            }
-            return (int)((decimal)gamesWon / (gamesLost + gamesWon) * 100);
-        }
     }
 }
