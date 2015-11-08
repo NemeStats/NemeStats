@@ -27,10 +27,11 @@
                             <th class="col-md-3">
                                 Player Name
                             </th>
-                            <th class="col-md-2">Played Games</th>
+                            <th class="col-md-1">Played Games</th>
                             <th class="col-md-1">
                                 @Html.NemePointsIco()
                             </th>
+                            <th class="col-md-1">Overall Win %</th>
                             <th class="col-md-1">
                                 <i class="fa fa-trophy"  data-toggle="popover" data-placement="top" data-content="Total games Championed by this Player"></i>
                             </th>
@@ -59,6 +60,9 @@
                                 <td>@item.NumberOfPlayedGames</td>
                                 <td>
                                     @item.TotalPoints
+                                </td>
+                                <td>
+                                    @item.OverallWinPercentage
                                 </td>
                                 <td>
                                     @item.TotalChampionedGames

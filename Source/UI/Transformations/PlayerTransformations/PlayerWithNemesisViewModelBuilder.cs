@@ -21,6 +21,7 @@ using System.Linq;
 using BusinessLogic.Models.Players;
 using BusinessLogic.Models.User;
 using UI.Models.Players;
+using BusinessLogic.Logic.Utilities;
 
 namespace UI.Transformations.PlayerTransformations
 {
@@ -43,7 +44,8 @@ namespace UI.Transformations.PlayerTransformations
                 NemesisPlayerName = playerWithNemesis.NemesisPlayerName,
                 PreviousNemesisPlayerId = playerWithNemesis.PreviousNemesisPlayerId,
                 PreviousNemesisPlayerName = playerWithNemesis.PreviousNemesisPlayerName,
-                NumberOfPlayedGames = playerWithNemesis.NumberOfPlayedGames,
+                NumberOfPlayedGames = playerWithNemesis.GamesLost + playerWithNemesis.GamesWon,
+                OverallWinPercentage = WinPercentageCalculator.CalculateWinPercentage(playerWithNemesis.GamesWon, playerWithNemesis.GamesLost),
                 TotalPoints = playerWithNemesis.TotalPoints,
                 TotalChampionedGames = playerWithNemesis.TotalChampionedGames
             };

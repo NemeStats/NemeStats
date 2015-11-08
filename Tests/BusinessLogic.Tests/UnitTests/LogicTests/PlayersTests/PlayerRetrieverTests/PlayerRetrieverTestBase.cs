@@ -65,10 +65,12 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
             {
                 new PlayerGameResult
                 {
+                    GameRank = 2,
                     NemeStatsPointsAwarded = 10
                 },
                 new PlayerGameResult
                 {
+                    GameRank = 1,
                     NemeStatsPointsAwarded = 20
                 }};
 
