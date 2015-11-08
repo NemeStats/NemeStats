@@ -60,7 +60,9 @@ namespace UI.Transformations
 
                 Players = playerWithNemesisList,
                 GameDefinitionSummaries = gamingGroupSummary.GameDefinitionSummaries
-                    .Select(game => gameDefinitionSummaryViewModelBuilder.Build(game, currentUser)).ToList(),
+                    .Select(game => gameDefinitionSummaryViewModelBuilder.Build(game, currentUser))
+                    .OrderByDescending(game=>game.TotalNumberOfGamesPlayed)
+                    .ToList(),
                 PlayedGames = new PlayedGamesViewModel
                 {
                     PlayedGameDetailsViewModels = details,
