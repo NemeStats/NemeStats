@@ -173,8 +173,7 @@ namespace BusinessLogic.Logic.Players
                         .OrderByDescending(result => result.PlayedGame.DatePlayed)
                         .ThenByDescending(result => result.PlayedGame.Id)
                         .Take(numberOfRecentGamesToRetrieve)
-                        .Include(result => result.PlayedGame)
-                        .Include(result => result.PlayedGame.GameDefinition)
+                        .Include(result => result.PlayedGame.GameDefinition.BoardGameGeekGameDefinition)
                         .ToList();
             return playerGameResults;
         }
