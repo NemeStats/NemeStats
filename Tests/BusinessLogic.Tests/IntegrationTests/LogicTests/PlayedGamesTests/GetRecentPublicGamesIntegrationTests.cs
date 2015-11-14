@@ -61,5 +61,21 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGamesTests
             }
             Assert.True(publicGameSummaryResults.Count == NUMBER_OF_GAMES_TO_RETRIEVE);
         }
+
+        [Test]
+        public void ItReturnsAtMostOneRowForEachGamingGroup()
+        {
+            HashSet<int> setOfIds = new HashSet<int>();
+
+            foreach (PublicGameSummary summary in publicGameSummaryResults)
+            {
+                if (setOfIds.Contains(summary.GamingGroupId))
+                {
+                    Assert.Fail(string.Format("GamingGroup Id '{0}' was only supposed to show up once.", summary.GamingGroupId));
+                }
+
+                setOfIds.Add(summary.GamingGroupId);
+            }
+        }
     }
 }
