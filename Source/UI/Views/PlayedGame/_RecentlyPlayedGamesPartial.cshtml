@@ -13,10 +13,11 @@
             <th>Gaming Group</th>
         </tr>
         </thead>
-
+        @{ var position = 1;}
         @foreach (var publicGame in Model)
         {
-            <tr class="game-item">
+            <tr class="game-item" data-position="@position">
+                @{ position++;}
                 <td class="bgg-link-col">
                     @if (publicGame.BoardGameGeekUri != null)
                     {
@@ -24,11 +25,11 @@
                         <a href="@publicGame.BoardGameGeekUri">
                             @if (!string.IsNullOrEmpty(publicGame.ThumbnailImageUrl))
                             {
-                                <img class="bgg-thumbnail" src="@publicGame.ThumbnailImageUrl" alt="View on BoardGameGeek.com" title="View on BoardGameGeek.com" />
+                                <img class="bgg-thumbnail" src="@publicGame.ThumbnailImageUrl" alt="View on BoardGameGeek.com" title="View on BoardGameGeek.com"/>
                             }
                             else
                             {
-                                <img src="~/Content/Images/bgg_small.png" alt="View on BoardGameGeek.com" title="View on BoardGameGeek.com" />
+                                <img src="~/Content/Images/bgg_small.png" alt="View on BoardGameGeek.com" title="View on BoardGameGeek.com"/>
                             }
 
                         </a>
