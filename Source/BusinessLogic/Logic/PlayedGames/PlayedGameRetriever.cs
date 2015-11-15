@@ -85,25 +85,33 @@ namespace BusinessLogic.Logic.PlayedGames
         public List<PublicGameSummary> GetRecentPublicGames(int numberOfGames)
         {
             var publicGameSummaries = (from playedGame in dataContext.GetQueryable<PlayedGame>()
-                .OrderByDescending(game => game.DatePlayed)
-                .ThenByDescending(game => game.DateCreated)
-                select new PublicGameSummary
-                {
-                    PlayedGameId = playedGame.Id,
-                    GameDefinitionId = playedGame.GameDefinitionId,
-                    GameDefinitionName = playedGame.GameDefinition.Name,
-                    GamingGroupId = playedGame.GamingGroupId,
-                    GamingGroupName = playedGame.GamingGroup.Name,
-                    WinnerType = (playedGame.PlayerGameResults.All(x => x.GameRank == 1) ? WinnerTypes.TeamWin :
-                        playedGame.PlayerGameResults.All(x => x.GameRank != 1) ? WinnerTypes.TeamLoss :
-                            WinnerTypes.PlayerWin),
-                    WinningPlayer = playedGame.PlayerGameResults.FirstOrDefault(player => player.GameRank == 1).Player,
-                    DatePlayed = playedGame.DatePlayed,
-                    ThumbnailImageUrl = playedGame.GameDefinition.BoardGameGeekGameDefinition == null 
-                        ? null : playedGame.GameDefinition.BoardGameGeekGameDefinition.Thumbnail,
-                    BoardGameGeekObjectId = playedGame.GameDefinition.BoardGameGeekGameDefinitionId
-                }).Take(numberOfGames)
-                .ToList();
+                 group new PublicGameSummary
+                 {
+                     PlayedGameId = playedGame.Id,
+                     GameDefinitionId = playedGame.GameDefinitionId,
+                     GameDefinitionName = playedGame.GameDefinition.Name,
+                     GamingGroupId = playedGame.GamingGroupId,
+                     GamingGroupName = playedGame.GamingGroup.Name,
+                     WinnerType = (playedGame.PlayerGameResults.All(x => x.GameRank == 1) ? WinnerTypes.TeamWin :
+                                              playedGame.PlayerGameResults.All(x => x.GameRank != 1) ? WinnerTypes.TeamLoss :
+                                                  WinnerTypes.PlayerWin),
+                     WinningPlayer = playedGame.PlayerGameResults.FirstOrDefault(player => player.GameRank == 1).Player,
+                     DatePlayed = playedGame.DatePlayed,
+                     ThumbnailImageUrl = playedGame.GameDefinition.BoardGameGeekGameDefinition == null
+                                              ? null : playedGame.GameDefinition.BoardGameGeekGameDefinition.Thumbnail,
+                     BoardGameGeekObjectId = playedGame.GameDefinition.BoardGameGeekGameDefinitionId
+                 } 
+                 by playedGame.GamingGroupId
+                 into gamingGroups
+                 select gamingGroups
+                    .OrderByDescending(x => x.DatePlayed)
+                    .ThenByDescending(y => y.PlayedGameId)
+                    .FirstOrDefault()
+                )
+                    .OrderByDescending(x => x.DatePlayed)
+                    .ThenByDescending(y => y.PlayedGameId)
+                    .Take(numberOfGames)
+                    .ToList();
 
             foreach (var publicGameSummary in publicGameSummaries)
             {
