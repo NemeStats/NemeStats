@@ -13,9 +13,11 @@
 				<th>Loss %</th>
 			</tr>
 		</thead>
+        @{ var position = 1; }
 		@foreach (UI.Models.Nemeses.NemesisChangeViewModel nemesisChange in @Model)
 		{
-			<tr>
+			<tr data-position="@position">
+                @{ position++; }
 				<td>@Html.ActionLink(nemesisChange.PlayerName, "Details", "Player", new { id = nemesisChange.PlayerId }, new { })</td>
 				<td>@Html.ActionLink(nemesisChange.NemesisPlayerName, "Details", "Player", new { id = nemesisChange.NemesisPlayerId }, new { })</td>
 				<td>@nemesisChange.LossPercentageVersusNemesis&nbsp;%</td>
