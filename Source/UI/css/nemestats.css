@@ -1,56 +1,56 @@
 @media only screen and (max-width: 991px) {
-  #flip-scroll .cf:after {
+  .flip-scroll .cf:after {
     visibility: hidden;
     display: block;
     font-size: 0;
     content: " ";
     clear: both;
     height: 0; }
-  #flip-scroll * html .cf, #flip-scroll *:first-child + html .cf {
+  .flip-scroll * html .cf, .flip-scroll *:first-child + html .cf {
     zoom: 1; }
-  #flip-scroll table {
+  .flip-scroll table {
     width: 100%;
     border-collapse: collapse;
     border-spacing: 0; }
-  #flip-scroll th, #flip-scroll td {
+  .flip-scroll th, .flip-scroll td {
     margin: 0;
     vertical-align: top; }
-  #flip-scroll th {
+  .flip-scroll th {
     text-align: left; }
-  #flip-scroll table {
+  .flip-scroll table {
     display: block;
     position: relative;
     width: 100%; }
-  #flip-scroll thead {
+  .flip-scroll thead {
     display: block;
     float: left; }
-  #flip-scroll tbody {
+  .flip-scroll tbody {
     display: block;
     width: auto;
     position: relative;
     overflow-x: auto;
     white-space: nowrap; }
-  #flip-scroll thead tr {
+  .flip-scroll thead tr {
     display: block; }
-  #flip-scroll th {
-    display: block;
+  .flip-scroll th {
+    display: block  !important;
     text-align: right; }
-  #flip-scroll tbody tr {
+  .flip-scroll tbody tr {
     display: inline-block;
     vertical-align: top; }
-  #flip-scroll td {
+  .flip-scroll td {
     display: block;
     min-height: 1.25em; }
-  #flip-scroll th {
+  .flip-scroll th {
     border-bottom: 0;
     border-left: 0; }
-  #flip-scroll td {
+  .flip-scroll td {
     border-left: 0;
     border-right: 0;
     border-bottom: 0; }
-  #flip-scroll tbody tr {
+  .flip-scroll tbody tr {
     border-left: 1px solid #babcbf; }
-  #flip-scroll th:last-child, #flip-scroll td:last-child {
+  .flip-scroll th:last-child, .flip-scroll td:last-child {
     border-bottom: 1px solid #babcbf; }
   /* sort out borders */ }
 
@@ -330,27 +330,37 @@ button > i.fa {
     overflow: hidden; } }
 
 @media only screen and (max-width: 991px) {
-  #flip-scroll .bgg-link-head {
+  .flip-scroll .bgg-link-head {
     height: 100px; }
-  #flip-scroll .edit-head {
-    height: 40px; }
-  #flip-scroll .name-head {
+  .flip-scroll .edit-head {
+    height: 48px; }
+  .flip-scroll .name-head {
     height: 70px; }
-  #flip-scroll .name-col {
+  .flip-scroll .nemesis-head {
+    height: 45px; }
+  .flip-scroll .result-head {
+    height: 105px; }
+  .flip-scroll .name-col {
     height: 70px;
     max-width: 200px;
     overflow: hidden; }
-    #flip-scroll .name-col a {
+    .flip-scroll .name-col a {
       white-space: normal;
       word-break: break-word; }
-  #flip-scroll .edit-col {
-    height: 47px;
+  .flip-scroll .edit-col {
+    height: 48px;
     text-align: center; }
-  #flip-scroll .plays-col {
+  .flip-scroll .plays-col {
     text-align: center; }
-  #flip-scroll .champion-col {
+  .flip-scroll .nemesis-col {
+    height: 45px; }
+  .flip-scroll .champion-col {
     height: 30px;
-    text-align: center; } }
+    text-align: center; }
+  .flip-scroll .result-col {
+    height: 105px;
+    overflow-y: auto;
+    overflow-x: hidden; } }
 
 .progress {
   height: 20px;
@@ -427,12 +437,12 @@ button > i.fa {
   top: 2px; }
 
 @media (max-width: 991px) {
-  #player-details .gameDefinitionsList#flip-scroll .badges-head {
+  #player-details .gameDefinitionsList.flip-scroll .badges-head {
     padding: 5px; }
-  #player-details .gameDefinitionsList#flip-scroll .badges-col {
+  #player-details .gameDefinitionsList.flip-scroll .badges-col {
     line-height: 0;
     height: 31px; }
-    #player-details .gameDefinitionsList#flip-scroll .badges-col .fa.fa-trophy.fa-slashed:after {
+    #player-details .gameDefinitionsList.flip-scroll .badges-col .fa.fa-trophy.fa-slashed:after {
       top: 0;
       left: -17px; } }
 
