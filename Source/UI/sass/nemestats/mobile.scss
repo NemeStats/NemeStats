@@ -13,7 +13,7 @@
 }
 
 
-&#flip-scroll {
+&.flip-scroll {
     @media only screen and (max-width: $screen-sm-max) {
 
         .bgg-link-head {
@@ -21,11 +21,19 @@
         }
 
         .edit-head {
-            height: 40px;
+            height: $edit-height;
         }
 
         .name-head {
             height: $gamename-height;
+        }
+
+        .nemesis-head {
+            height: $nemesis-height;
+        }
+
+        .result-head {
+            height: $result-height;
         }
 
         .name-col {
@@ -40,7 +48,7 @@
         }
 
         .edit-col {
-            height: 47px;
+            height: $edit-height;
             text-align: center;
         }
 
@@ -48,9 +56,19 @@
             text-align: center;
         }
 
+        .nemesis-col {
+            height: $nemesis-height;
+        }
+
         .champion-col {
             height: 30px;
             text-align: center;
+        }
+
+        .result-col {
+            height: $result-height;
+            overflow-y: auto;
+            overflow-x: hidden;
         }
     }
 }

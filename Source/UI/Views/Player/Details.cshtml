@@ -134,7 +134,7 @@
                 <h4>Game Statistics</h4>
             </div>
             <div class="panel-body">
-                <div class="gameDefinitionsList" id="flip-scroll">
+                <div class="gameDefinitionsList flip-scroll">
                     <table class="table table-hover table-striped">
                         <thead>
                             <tr>
@@ -203,12 +203,12 @@
                 <div class="panel-heading">
                     <h4>Recent Games @ViewBag.RecentGamesMessage</h4>
                 </div>
-                <div class="panel-body">
+                <div class="panel-body flip-scroll">
                     <table class="table table-hover table-striped">
                         <thead>
                             <tr>
-                                <th></th>
-                                <th>Game</th>
+                                <th class="bgg-link-head"></th>
+                                <th class="name-head">Game</th>
                                 <th>Date Played</th>
                                 <th>Rank</th>
                             </tr>
@@ -236,7 +236,7 @@
 
                                         }
                                     </td>
-                                    <td>
+                                    <td class="name-col">
                                         @Html.ActionLink(gameResultViewModel.GameDefinitionName, "Details", "GameDefinition", new {id = gameResultViewModel.GameDefinitionId}, new {})
                                     </td>
                                     <td>

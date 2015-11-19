@@ -20,7 +20,7 @@
             <div class="fl-clear"></div>
         </div>
         <div class="panel-body">
-            <div class="table-responsive">
+            <div class="flip-scroll">
                 <table class="table table-hover table-striped">
                     <thead class="player-table-head">
                         <tr>
@@ -35,19 +35,22 @@
                             <th class="col-md-1">
                                 <i class="fa fa-trophy"  data-toggle="popover" data-placement="top" data-content="Total games Championed by this Player"></i>
                             </th>
-                            <th class="col-md-3">
+                            <th class="col-md-3 nemesis-head">
                                 Previous/Current Nemesis <i class="fa fa-question-circle" data-toggle="popover" data-placement="top"
                                                             data-content="The Nemesis is the Player with the highest win % vs. this Player. Must have won at least 3 games to be designated as the Nemesis."></i>
                             </th>
                             <th class="col-md-1">
-                                @if ((bool?)ViewData["canEdit"] == true)
+                                @if ((bool?) ViewData["canEdit"] == true)
                                 {
                                     @:Registered
-                                    }
+                                }
                             </th>
-                            <th class="col-md-1">
+                           @if (Model.Any() && Model.First().UserCanEdit)
+                           {
+                               <th class="col-md-1 edit-head">
 
-                            </th>
+                               </th>
+                           }
                         </tr>
                     </thead>
                     <tbody id="playersListTableBody">
@@ -62,12 +65,12 @@
                                     @item.TotalPoints
                                 </td>
                                 <td>
-                                    @item.OverallWinPercentage
+                                    @item.OverallWinPercentage %
                                 </td>
                                 <td>
                                     @item.TotalChampionedGames
                                 </td>
-                                <td>
+                                <td class="nemesis-col">
                                     @if (item.PreviousNemesisPlayerId.HasValue)
                                     {
                                         <span style="text-decoration: line-through">
@@ -101,7 +104,7 @@
                                 </td>
                                 @if (item.UserCanEdit)
                                 {
-                                    <td>
+                                    <td class="edit-col">
                                         <a href="@Url.Action("Edit", "Player" , new { id=item.PlayerId })" title="Edit">
                                             <i class="fa fa-pencil fa-2x"></i>
                                         </a>

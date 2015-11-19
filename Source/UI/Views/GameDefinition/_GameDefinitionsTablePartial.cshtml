@@ -4,7 +4,7 @@
     Layout = null;
 }
 <div class="panel-body">
-    <div class="gameDefinitionsList" id="flip-scroll">
+    <div class="gameDefinitionsList flip-scroll">
         <table class="table table-hover table-striped">
             <thead>
                 <tr>
@@ -27,7 +27,10 @@
                         <i class="fa fa-trophy" data-container="body" data-toggle="popover" data-placement="top"
                            data-content="The Champion is the Player within the Gaming Group with the most wins of this game."></i>
                     </th>
-                    <th class="col-md-1 edit-head">&nbsp;</th>
+                    @if (Model.Any() && Model.First().UserCanEdit)
+                    {
+                        <th class="col-md-1 edit-head">&nbsp;</th>
+                    }
                 </tr>
             </thead>
             <tbody>

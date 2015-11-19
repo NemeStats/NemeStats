@@ -33,21 +33,21 @@
         <div class="fl-clear"></div>
     </div>
     <div class="panel-body">
-        <div class="table-responsive">
+        <div class="flip-scroll">
             <table class="table table-hover table-striped gameDefinitionsList">
                 <thead>
                 <tr>
-                    <th></th>
-                    <th>
+                    <th class="bgg-link-head"></th>
+                    <th class="name-head">
                         Game Name
                     </th>
                     <th>
                         Date Played
                     </th>
-                    <th>
+                    <th class="result-head">
                         Result
                     </th>
-                    <th>
+                    <th class="edit-head">
                     </th>
                 </tr>
                 </thead>
@@ -73,7 +73,7 @@
 
                                 }
                             </td>
-                            <td>
+                            <td class="name-col">
                                 <b>
                                     @Html.ActionLink(playedGameDetailsViewModel.GameDefinitionName, "Details", "GameDefinition", new {id = playedGameDetailsViewModel.GameDefinitionId}, new {})
                                 </b>
@@ -81,7 +81,7 @@
                             <td>
                                 @playedGameDetailsViewModel.DatePlayed.ToShortDateString()
                             </td>
-                            <td>
+                            <td class="result-col">
                                 @foreach (var playerGameResultDetails in playedGameDetailsViewModel.PlayerResults)
                                 {
                                     <div class="row">
