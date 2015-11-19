@@ -21,7 +21,7 @@
         }
 
         .edit-head {
-            height: $edit-height;
+            height: $edit-height - 8;
         }
 
         .name-head {
@@ -30,6 +30,8 @@
 
         .nemesis-head {
             height: $nemesis-height;
+            width: 100px;
+            padding-right: 0;
         }
 
         .result-head {

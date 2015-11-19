@@ -333,11 +333,13 @@ button > i.fa {
   .flip-scroll .bgg-link-head {
     height: 100px; }
   .flip-scroll .edit-head {
-    height: 48px; }
+    height: 40px; }
   .flip-scroll .name-head {
     height: 70px; }
   .flip-scroll .nemesis-head {
-    height: 45px; }
+    height: 70px;
+    width: 100px;
+    padding-right: 0; }
   .flip-scroll .result-head {
     height: 105px; }
   .flip-scroll .name-col {
@@ -353,7 +355,7 @@ button > i.fa {
   .flip-scroll .plays-col {
     text-align: center; }
   .flip-scroll .nemesis-col {
-    height: 45px; }
+    height: 70px; }
   .flip-scroll .champion-col {
     height: 30px;
     text-align: center; }
