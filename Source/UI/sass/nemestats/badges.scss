@@ -17,18 +17,14 @@
     .fa {
         &.fa-trophy {
             &.fa-slashed {
+                position: relative;
+
                 &:after {
-                    position: relative;
+                    position: absolute;
                     content: "/";
                     font-weight: 700;
                     font-size: 1.7em;
-                    left: -17px;
-                    top: 2px;
-
-                    @media (max-width: $screen-sm-max) {
-                        left: 0;
-                        top: -22px;
-                    }
+                    top: -7px;
                 }
             }
         }

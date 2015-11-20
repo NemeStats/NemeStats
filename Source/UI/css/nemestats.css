@@ -362,7 +362,6 @@ button > i.fa {
   .flip-scroll .nemesis-col {
     height: 70px; }
   .flip-scroll .champion-col {
-    height: 30px;
     text-align: center; }
   .flip-scroll .result-col {
     height: 190px;
@@ -435,17 +434,14 @@ button > i.fa {
     color: white;
     font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif; }
 
-.player-statistics .fa.fa-trophy.fa-slashed:after {
-  position: relative;
-  content: "/";
-  font-weight: 700;
-  font-size: 1.7em;
-  left: -17px;
-  top: 2px; }
-  @media (max-width: 991px) {
-    .player-statistics .fa.fa-trophy.fa-slashed:after {
-      left: 0;
-      top: -22px; } }
+.player-statistics .fa.fa-trophy.fa-slashed {
+  position: relative; }
+  .player-statistics .fa.fa-trophy.fa-slashed:after {
+    position: absolute;
+    content: "/";
+    font-weight: 700;
+    font-size: 1.7em;
+    top: -7px; }
 
 @media (max-width: 991px) {
   #player-details .gameDefinitionsList.flip-scroll .badges-head {

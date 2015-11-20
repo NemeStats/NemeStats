@@ -73,7 +73,7 @@
                                                 new { })
                                     </b>
                                 </span>
-                                    <span>/</span>
+                                <span>/</span>
                             }
                             @if (item.ChampionName != null)
                             {
@@ -86,17 +86,19 @@
                                 <span>-</span>
                             }
                         </td>
-                        <td class="edit-col">
-                            @if (item.UserCanEdit)
-                            {
+
+                        @if (item.UserCanEdit)
+                        {
+                            <td class="edit-col">
                                 <a href="@Url.Action("Edit", "GameDefinition", new
                                              {
                                                  id = item.Id
                                              })" title="Edit">
                                     <span class="fa fa-pencil fa-2x"></span>
                                 </a>
-                            }
-                        </td>
+                            </td>
+                        }
+
                     </tr>
                 }
             </tbody>
