@@ -84,6 +84,11 @@
 }
 @helper GoogleTagManager()
 {
+    <script>
+        dataLayer = [{
+            'universalAnalyticsTrackingId': '@GoogleAnalyticsConfig.GetGoogleAnalyticsTrackingId()'
+        }];
+    </script>
     <noscript>
         <iframe src="//www.googletagmanager.com/ns.html?id=@GoogleAnalyticsConfig.GetGoogleTagManagerTrackingId()"
                 height="0" width="0" style="display: none; visibility: hidden">
@@ -122,7 +127,7 @@
             m.parentNode.insertBefore(a, m)
         })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
 
-        ga('create', '@GoogleAnalyticsConfig.GetGoogleAnalyticsTrackingId()', 'auto');
+        ga('create', '@GoogleAnalyticsConfig.GetGoogleAnalyticsTrackingId()', 'auto', { 'siteSpeedSampleRate': 50 });
         ga('require', 'linkid', 'linkid.js');
         ga('send', 'pageview');
 
