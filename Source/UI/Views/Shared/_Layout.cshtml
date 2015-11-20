@@ -127,7 +127,7 @@
             m.parentNode.insertBefore(a, m)
         })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
 
-        ga('create', '@GoogleAnalyticsConfig.GetGoogleAnalyticsTrackingId()', 'auto');
+        ga('create', '@GoogleAnalyticsConfig.GetGoogleAnalyticsTrackingId()', 'auto', { 'siteSpeedSampleRate': 50 });
         ga('require', 'linkid', 'linkid.js');
         ga('send', 'pageview');
 
