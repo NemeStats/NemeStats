@@ -16,7 +16,6 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 using System;
-using System.Linq;
 using System.Web.Mvc;
 using BusinessLogic.Models.PlayedGames;
 using UI.Models.PlayedGame;
@@ -41,7 +40,7 @@ namespace UI.HtmlHelpers
         internal const string CSS_CLASS_TEAM_WIN = "gameResult-teamWin";
         internal const string CSS_CLASS_TEAM_LOSS = "gameResult-teamLoss";
         internal const string NEMEPOINTICO_TOOLTIP = "NemePoints earned in this played game";
-        internal const string NEMEPOINTSICO_TOOLTIP_POSITION = "right";
+        internal const string NEMEPOINTSICO_TOOLTIP_POSITION = "left";
 
         internal static string HTML_GORDON_POINTS_TEMPLATE = " - ({0} {1})";
         internal static string HTML_TEMPLATE = "<span class=\"{0} {1}\">{2}{3}</span>";

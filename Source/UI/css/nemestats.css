@@ -23,7 +23,8 @@
     width: 100%; }
   .flip-scroll thead {
     display: block;
-    float: left; }
+    float: left;
+    border-right: 1px solid #babcbf; }
   .flip-scroll tbody {
     display: block;
     width: auto;
@@ -33,7 +34,7 @@
   .flip-scroll thead tr {
     display: block; }
   .flip-scroll th {
-    display: block  !important;
+    display: block !important;
     text-align: right; }
   .flip-scroll tbody tr {
     display: inline-block;
@@ -50,6 +51,8 @@
     border-bottom: 0; }
   .flip-scroll tbody tr {
     border-left: 1px solid #babcbf; }
+    .flip-scroll tbody tr:first-child {
+      border-left: 0; }
   .flip-scroll th:last-child, .flip-scroll td:last-child {
     border-bottom: 1px solid #babcbf; }
   /* sort out borders */ }
@@ -333,6 +336,8 @@ button > i.fa {
   .flip-scroll .bgg-link-head {
     height: 100px; }
   .flip-scroll .edit-head {
+    height: 48px; }
+  .flip-scroll.gameDefinitionsList .edit-head {
     height: 40px; }
   .flip-scroll .name-head {
     height: 70px; }
@@ -341,7 +346,7 @@ button > i.fa {
     width: 100px;
     padding-right: 0; }
   .flip-scroll .result-head {
-    height: 105px; }
+    height: 190px; }
   .flip-scroll .name-col {
     height: 70px;
     max-width: 200px;
@@ -360,7 +365,7 @@ button > i.fa {
     height: 30px;
     text-align: center; }
   .flip-scroll .result-col {
-    height: 105px;
+    height: 190px;
     overflow-y: auto;
     overflow-x: hidden; } }
 
@@ -437,6 +442,10 @@ button > i.fa {
   font-size: 1.7em;
   left: -17px;
   top: 2px; }
+  @media (max-width: 991px) {
+    .player-statistics .fa.fa-trophy.fa-slashed:after {
+      left: 0;
+      top: -22px; } }
 
 @media (max-width: 991px) {
   #player-details .gameDefinitionsList.flip-scroll .badges-head {
