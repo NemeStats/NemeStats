@@ -24,7 +24,6 @@ using Rhino.Mocks;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
-using UI.Controllers.Helpers;
 using UI.Models;
 
 namespace UI.Tests.UnitTests.ControllerTests.AccountControllerTests
@@ -124,22 +123,5 @@ namespace UI.Tests.UnitTests.ControllerTests.AccountControllerTests
             Assert.True(accountControllerPartialMock.ModelState[string.Empty].Errors.Any(error => error.ErrorMessage == errorMessage));
         }
 
-        [Test]
-        public async Task ItClearsTheGamingGroupCookieIfTheUserSuccessfullyRegisters()
-        {
-            RegisterNewUserResult registerNewUserResult = new RegisterNewUserResult
-            {
-                Result = IdentityResult.Success
-            };
-            userRegistererMock.Expect(mock => mock.RegisterUser(Arg<NewUser>.Is.Anything))
-                  .Return(Task.FromResult(registerNewUserResult));
-
-            await accountControllerPartialMock.Register(expectedViewModel);
-
-            cookieHelperMock.AssertWasCalled(mock => mock.ClearCookie(
-                Arg<NemeStatsCookieEnum>.Is.Equal(NemeStatsCookieEnum.gamingGroupsCookie),
-                Arg<HttpRequestBase>.Is.Anything,
-                Arg<HttpResponseBase>.Is.Anything));
-        }
     }
 }

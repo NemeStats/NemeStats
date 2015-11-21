@@ -71,15 +71,5 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
 
         }
 
-        [Test]
-        public void ItClearsTheGamingGroupCookieIfTheUserSuccessfullyRegisters()
-        {
-            var result = autoMocker.ClassUnderTest.CreateNewGamingGroup("some name", currentUser) as RedirectToRouteResult;
-
-            autoMocker.Get<ICookieHelper>().AssertWasCalled(mock => mock.ClearCookie(
-                Arg<NemeStatsCookieEnum>.Is.Equal(NemeStatsCookieEnum.gamingGroupsCookie),
-                Arg<HttpRequestBase>.Is.Anything,
-                Arg<HttpResponseBase>.Is.Anything));
-        }
     }
 }

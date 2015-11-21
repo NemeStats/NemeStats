@@ -15,6 +15,8 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
+
+using BusinessLogic.Logic.GamingGroups;
 using BusinessLogic.Logic.Users;
 using BusinessLogic.Models.User;
 using Microsoft.AspNet.Identity;
@@ -22,7 +24,6 @@ using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.DataProtection;
 using NUnit.Framework;
 using Rhino.Mocks;
-using System.Linq;
 using UI.Controllers;
 using UI.Controllers.Helpers;
 using UI.Models;
@@ -38,9 +39,9 @@ namespace UI.Tests.UnitTests.ControllerTests.AccountControllerTests
         protected IUserRegisterer userRegistererMock;
         protected IFirstTimeAuthenticator firstTimeAuthenticatorMock;
         protected IAuthenticationManager authenticationManagerMock;
-        protected ICookieHelper cookieHelperMock;
         protected AccountController accountControllerPartialMock;
         protected IDataProtectionProvider dataProtectionProviderMock;
+        protected IGamingGroupRetriever gamingGroupRetrieverMock;
         protected RegisterViewModel registerViewModel;
         protected ApplicationUser currentUser;
 
@@ -54,20 +55,21 @@ namespace UI.Tests.UnitTests.ControllerTests.AccountControllerTests
             this.authenticationManagerMock = MockRepository.GenerateMock<IAuthenticationManager>();
             var dataProtector = MockRepository.GenerateMock<IDataProtector>();
             dataProtectionProviderMock = MockRepository.GenerateMock<IDataProtectionProvider>();
+            gamingGroupRetrieverMock = MockRepository.GenerateMock<IGamingGroupRetriever>();
             dataProtectionProviderMock.Expect(mock => mock.Create(Arg<string>.Is.Anything)).Return(dataProtector);
 
             userManager = new ApplicationUserManager(userStoreMock, dataProtectionProviderMock);
-            cookieHelperMock = MockRepository.GenerateMock<ICookieHelper>();
             accountControllerPartialMock = MockRepository.GeneratePartialMock<AccountController>(
                 userManager,
                 userRegistererMock,
                 this.firstTimeAuthenticatorMock,
                 this.authenticationManagerMock,
-                gamingGroupInviteConsumerMock,
-                cookieHelperMock);
+                gamingGroupInviteConsumerMock, 
+                gamingGroupRetrieverMock);
             currentUser = new ApplicationUser()
             {
-                Id = "new application user"
+                Id = "new application user",
+                CurrentGamingGroupId = 1
             };
             registerViewModel = new RegisterViewModel()
             {

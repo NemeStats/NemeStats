@@ -202,7 +202,6 @@ namespace Links
             public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
             public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
             public static readonly string _Layout_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/_Layout.min.js") ? Url("_Layout.min.js") : Url("_Layout.js");
-            public static readonly string _LoginPartial_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/_LoginPartial.min.js") ? Url("_LoginPartial.min.js") : Url("_LoginPartial.js");
             public static readonly string GoogleAnalytics_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/GoogleAnalytics.min.js") ? Url("GoogleAnalytics.min.js") : Url("GoogleAnalytics.js");
         }
     
@@ -386,7 +385,6 @@ namespace Links
                 public static class Assets
                 {
                     public const string _Layout_js = "~/Scripts/Shared/_Layout.js"; 
-                    public const string _LoginPartial_js = "~/Scripts/Shared/_LoginPartial.js"; 
                     public const string GoogleAnalytics_js = "~/Scripts/Shared/GoogleAnalytics.js"; 
                 }
             }

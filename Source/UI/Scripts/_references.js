@@ -47,5 +47,4 @@
 /// <reference path="plugins/toeditboxplugin.js" />
 /// <reference path="respond.js" />
 /// <reference path="shared/_layout.js" />
-/// <reference path="shared/_loginpartial.js" />
 /// <reference path="shared/googleanalytics.js" />

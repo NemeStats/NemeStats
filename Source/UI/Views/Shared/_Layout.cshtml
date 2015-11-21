@@ -37,7 +37,7 @@
                 <li id="navMyGamingGroup">@Html.ActionLink("My Gaming Group", "Index", "GamingGroup")</li>
                 <li id="navAbout">@Html.ActionLink("About", "About", "Home")</li>
             </ul>
-            @Html.Partial("_LoginPartial")
+            @{ Html.RenderPartial(MVC.Shared.Views._LoginPartial);}
         </div>
     </div>
 </div>

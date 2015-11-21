@@ -68,7 +68,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
         [Test]
         public void ItRetrievesOnlyGamingGroupsThatTheUserHasAccessTo()
         {
-            List<GamingGroup> actualGamingGroups = gamingGroupRetriever.GetGamingGroupsForUser(currentUser);
+            var actualGamingGroups = gamingGroupRetriever.GetGamingGroupsForUser(currentUser);
 
             Assert.That(actualGamingGroups.Count, Is.EqualTo(1));
             Assert.That(actualGamingGroups[0].Id, Is.EqualTo(gamingGroupId1));
