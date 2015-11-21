@@ -77,10 +77,11 @@ namespace BusinessLogic.Logic.GamingGroups
             return summary;
         }
 
-        public List<GamingGroup> GetGamingGroupsForUser(ApplicationUser applicationUser)
+        public IList<GamingGroupListItemModel> GetGamingGroupsForUser(ApplicationUser applicationUser)
         {
             return dataContext.GetQueryable<GamingGroup>()
                               .Where(gamingGroup => gamingGroup.UserGamingGroups.Any(ugg => ugg.ApplicationUserId == applicationUser.Id))
+                              .Select(gg => new GamingGroupListItemModel { Id = gg.Id, Name = gg.Name })
                               .ToList();
         }
 
@@ -93,7 +94,7 @@ namespace BusinessLogic.Logic.GamingGroups
                         GamingGroupName = gamingGroup.Name,
                         NumberOfGamesPlayed = gamingGroup.PlayedGames.Count,
                         NumberOfPlayers = gamingGroup.Players.Count,
-                        GamingGroupChampion =  gamingGroup.Players.OrderByDescending(p=>p.PlayerGameResults.Select(pgr => pgr.NemeStatsPointsAwarded).DefaultIfEmpty(0).Sum()).FirstOrDefault()
+                        GamingGroupChampion = gamingGroup.Players.OrderByDescending(p => p.PlayerGameResults.Select(pgr => pgr.NemeStatsPointsAwarded).DefaultIfEmpty(0).Sum()).FirstOrDefault()
                     }).OrderByDescending(gg => gg.NumberOfGamesPlayed)
                       .ThenByDescending(gg => gg.NumberOfPlayers)
                       .Take(numberOfTopGamingGroupsToShow)

@@ -173,25 +173,6 @@ namespace UI.Controllers
             return RedirectToAction(MVC.GamingGroup.ActionNames.Index, model);
         }
 
-        [HttpPost]
-        [Authorize]
-        [UserContext]
-        public virtual ActionResult GetUsersGamingGroups(ApplicationUser currentUser)
-        {
-            var gamingGroups = gamingGroupRetriever.GetGamingGroupsForUser(currentUser);
-            JsonResult jsonResult = new JsonResult();
-            var gamingGroupList = (from gamingGroup in gamingGroups
-                                   select new
-                                   {
-                                       gamingGroup.Id,
-                                       gamingGroup.Name,
-                                       IsCurrentGamingGroup = currentUser.CurrentGamingGroupId == gamingGroup.Id
-                                   }).ToList();
-
-            return Json(gamingGroupList, JsonRequestBehavior.AllowGet);
-        }
-
-        [HttpPost]
         [Authorize]
         [UserContext]
         public virtual ActionResult SwitchGamingGroups(int gamingGroupId, ApplicationUser currentUser)

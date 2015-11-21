@@ -83,6 +83,12 @@ namespace UI.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult UserGamingGroups()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UserGamingGroups);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Threading.Tasks.Task<System.Web.Mvc.ActionResult> SetPassword()
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SetPassword);
@@ -162,6 +168,8 @@ namespace UI.Controllers
             public readonly string ConsumeInvitation = "ConsumeInvitation";
             public readonly string Disassociate = "Disassociate";
             public readonly string Manage = "Manage";
+            public readonly string CreateGamingGroup = "CreateGamingGroup";
+            public readonly string UserGamingGroups = "UserGamingGroups";
             public readonly string SetPassword = "SetPassword";
             public readonly string ChangePassword = "ChangePassword";
             public readonly string ChangeEmailAddress = "ChangeEmailAddress";
@@ -188,6 +196,8 @@ namespace UI.Controllers
             public const string ConsumeInvitation = "ConsumeInvitation";
             public const string Disassociate = "Disassociate";
             public const string Manage = "Manage";
+            public const string CreateGamingGroup = "CreateGamingGroup";
+            public const string UserGamingGroups = "UserGamingGroups";
             public const string SetPassword = "SetPassword";
             public const string ChangePassword = "ChangePassword";
             public const string ChangeEmailAddress = "ChangeEmailAddress";
@@ -249,6 +259,14 @@ namespace UI.Controllers
         public class ActionParamsClass_Manage
         {
             public readonly string message = "message";
+        }
+        static readonly ActionParamsClass_UserGamingGroups s_params_UserGamingGroups = new ActionParamsClass_UserGamingGroups();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_UserGamingGroups UserGamingGroupsParams { get { return s_params_UserGamingGroups; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_UserGamingGroups
+        {
+            public readonly string currentUser = "currentUser";
         }
         static readonly ActionParamsClass_SetPassword s_params_SetPassword = new ActionParamsClass_SetPassword();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -351,6 +369,7 @@ namespace UI.Controllers
                 public readonly string _RemoveAccountPartial = "_RemoveAccountPartial";
                 public readonly string _SetPasswordPartial = "_SetPasswordPartial";
                 public readonly string ConfirmEmail = "ConfirmEmail";
+                public readonly string CreateGamingGroup = "CreateGamingGroup";
                 public readonly string ExternalLoginConfirmation = "ExternalLoginConfirmation";
                 public readonly string ExternalLoginFailure = "ExternalLoginFailure";
                 public readonly string ForgotPassword = "ForgotPassword";
@@ -362,6 +381,7 @@ namespace UI.Controllers
                 public readonly string ResetPassword = "ResetPassword";
                 public readonly string ResetPasswordConfirmation = "ResetPasswordConfirmation";
                 public readonly string SendCode = "SendCode";
+                public readonly string UserGamingGroups = "UserGamingGroups";
                 public readonly string VerifyCode = "VerifyCode";
             }
             public readonly string _ChangeEmailPartial = "~/Views/Account/_ChangeEmailPartial.cshtml";
@@ -371,6 +391,7 @@ namespace UI.Controllers
             public readonly string _RemoveAccountPartial = "~/Views/Account/_RemoveAccountPartial.cshtml";
             public readonly string _SetPasswordPartial = "~/Views/Account/_SetPasswordPartial.cshtml";
             public readonly string ConfirmEmail = "~/Views/Account/ConfirmEmail.cshtml";
+            public readonly string CreateGamingGroup = "~/Views/Account/CreateGamingGroup.cshtml";
             public readonly string ExternalLoginConfirmation = "~/Views/Account/ExternalLoginConfirmation.cshtml";
             public readonly string ExternalLoginFailure = "~/Views/Account/ExternalLoginFailure.cshtml";
             public readonly string ForgotPassword = "~/Views/Account/ForgotPassword.cshtml";
@@ -382,6 +403,7 @@ namespace UI.Controllers
             public readonly string ResetPassword = "~/Views/Account/ResetPassword.cshtml";
             public readonly string ResetPasswordConfirmation = "~/Views/Account/ResetPasswordConfirmation.cshtml";
             public readonly string SendCode = "~/Views/Account/SendCode.cshtml";
+            public readonly string UserGamingGroups = "~/Views/Account/UserGamingGroups.cshtml";
             public readonly string VerifyCode = "~/Views/Account/VerifyCode.cshtml";
         }
     }
@@ -474,6 +496,29 @@ namespace UI.Controllers
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Manage);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "message", message);
             ManageOverride(callInfo, message);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void CreateGamingGroupOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult CreateGamingGroup()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.CreateGamingGroup);
+            CreateGamingGroupOverride(callInfo);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void UserGamingGroupsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, BusinessLogic.Models.User.ApplicationUser currentUser);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult UserGamingGroups(BusinessLogic.Models.User.ApplicationUser currentUser)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UserGamingGroups);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "currentUser", currentUser);
+            UserGamingGroupsOverride(callInfo, currentUser);
             return callInfo;
         }
 

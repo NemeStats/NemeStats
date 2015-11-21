@@ -304,6 +304,7 @@
     <Compile Include="Models\Games\GameDefinitionDisplayInfo.cs" />
     <Compile Include="Models\Games\GameDefinitionName.cs" />
     <Compile Include="Models\GamingGroups\GamingGroupEditRequest.cs" />
+    <Compile Include="Models\GamingGroups\GamingGroupListItemModel.cs" />
     <Compile Include="Models\GamingGroups\NewlyCreatedGamingGroupResult.cs" />
     <Compile Include="Models\GamingGroups\TopGamingGroupSummary.cs" />
     <Compile Include="Models\PlayedGames\IWinner.cs" />

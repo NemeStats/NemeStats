@@ -18,16 +18,16 @@
             <div class="panel-body">
                     @if (ViewBag.HasLocalPassword)
                     {
-                        @Html.Partial("_ChangePasswordPartial", Model.PasswordViewModel)
+                        @Html.Partial(MVC.Account.Views._ChangePasswordPartial, Model.PasswordViewModel)
                     }
                     else
                     {
-                        @Html.Partial("_SetPasswordPartial", Model.PasswordViewModel)
+                        @Html.Partial(MVC.Account.Views._SetPasswordPartial, Model.PasswordViewModel)
                     }
                     <br /><br />
-                    @Html.Partial("_ChangeEmailPartial", Model.ChangeEmailViewModel)
+                    @Html.Partial(MVC.Account.Views._ChangeEmailPartial, Model.ChangeEmailViewModel)
                     <br /><br />
-                    @Html.Partial("_CreateGamingGroupPartial", Model.ChangeEmailViewModel)
+                    @Html.Partial(MVC.Account.Views._CreateGamingGroupPartial)
             </div>
         </div>
     </div>
@@ -40,7 +40,7 @@
                 <section id="externalLogins">
                     @Html.Action("RemoveAccountList")
                     <br /><br />
-                    @Html.Partial("_ExternalLoginsListPartial", new { Action = "LinkLogin", ReturnUrl = ViewBag.ReturnUrl })
+                    @Html.Partial(MVC.Account.Views._ExternalLoginsListPartial, new { Action = "LinkLogin", ReturnUrl = ViewBag.ReturnUrl })
                 </section>
             </div>
         </div>
