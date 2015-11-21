@@ -50,7 +50,6 @@ namespace UI.Controllers
         internal IPlayedGameDetailsViewModelBuilder playedGameDetailsViewModelBuilder;
         internal IGameDefinitionSummaryViewModelBuilder gameDefinitionSummaryViewModelBuilder;
         internal IGamingGroupContextSwitcher gamingGroupContextSwitcher;
-        internal ICookieHelper cookieHelper;
 
         public GamingGroupController(
             IGamingGroupViewModelBuilder gamingGroupViewModelBuilder,
@@ -61,8 +60,7 @@ namespace UI.Controllers
             IPlayerWithNemesisViewModelBuilder playerWithNemesisViewModelBuilder,
             IPlayedGameDetailsViewModelBuilder playedGameDetailsViewModelBuilder,
             IGameDefinitionSummaryViewModelBuilder gameDefinitionSummaryViewModelBuilder,
-            IGamingGroupContextSwitcher gamingGroupContextSwitcher,
-            ICookieHelper cookieHelper)
+            IGamingGroupContextSwitcher gamingGroupContextSwitcher)
         {
             this.gamingGroupViewModelBuilder = gamingGroupViewModelBuilder;
             this.gamingGroupAccessGranter = gamingGroupAccessGranter;
@@ -73,7 +71,6 @@ namespace UI.Controllers
             this.playedGameDetailsViewModelBuilder = playedGameDetailsViewModelBuilder;
             this.gameDefinitionSummaryViewModelBuilder = gameDefinitionSummaryViewModelBuilder;
             this.gamingGroupContextSwitcher = gamingGroupContextSwitcher;
-            this.cookieHelper = cookieHelper;
         }
 
         // GET: /GamingGroup
@@ -196,7 +193,6 @@ namespace UI.Controllers
                 return this.Index(currentUser);
             }
             this.gamingGroupSaver.CreateNewGamingGroup(gamingGroupName.Trim(), TransactionSource.WebApplication, currentUser);
-            this.cookieHelper.ClearCookie(NemeStatsCookieEnum.gamingGroupsCookie, this.Request, this.Response);
 
             return RedirectToAction(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name);
         }

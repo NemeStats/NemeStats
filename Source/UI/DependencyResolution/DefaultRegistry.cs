@@ -104,8 +104,6 @@ namespace UI.DependencyResolution {
 
             this.For<IPlayerEditViewModelBuilder>().Singleton().Use<PlayerEditViewModelBuilder>();
 
-            this.For<ICookieHelper>().Singleton().Use<CookieHelper>();
-
             this.For<IDataProtectionProvider>().Singleton().Use<MachineKeyProtectionProvider>();
 
             this.For<ITransformer>().Singleton().Use<Transformer>();
