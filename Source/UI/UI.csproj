@@ -527,6 +527,7 @@
     <Content Include="sass\nemestats\site.scss" />
     <Content Include="sass\nemestats\mobile.scss" />
     <Content Include="sass\imports\fontawesome.scss" />
+    <Content Include="sass\nemestats\utils.scss" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="robots.txt" />
     <Content Include="Scripts\CreatePlayedGame\createplayedgame.js" />

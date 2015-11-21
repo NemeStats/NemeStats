@@ -1,0 +1,51 @@
+﻿@mixin voffset($value){
+    margin-top: 5px*$value;
+}
+
+.voffset1 {
+    @include voffset(1);
+}
+
+.voffset2 {
+    @include voffset(2);
+}
+
+.voffset3 {
+    @include voffset(3);
+}
+
+.voffset4 {
+    @include voffset(4);
+}
+
+.voffset5 {
+    @include voffset(5);
+}
+
+.voffset6 {
+    @include voffset(6);
+}
+
+.voffset7 {
+    @include voffset(7);
+}
+
+.voffset8 {
+    @include voffset(8);
+}
+
+.voffset9 {
+    @include voffset(9);
+}
+
+.voffset10 {
+    @include voffset(10);
+}
+
+.voffset11 {
+    @include voffset(11);
+}
+
+.voffset12 {
+    @include voffset(12);
+}

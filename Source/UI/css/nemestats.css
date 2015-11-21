@@ -1,3 +1,39 @@
+.voffset1 {
+  margin-top: 5px; }
+
+.voffset2 {
+  margin-top: 10px; }
+
+.voffset3 {
+  margin-top: 15px; }
+
+.voffset4 {
+  margin-top: 20px; }
+
+.voffset5 {
+  margin-top: 25px; }
+
+.voffset6 {
+  margin-top: 30px; }
+
+.voffset7 {
+  margin-top: 35px; }
+
+.voffset8 {
+  margin-top: 40px; }
+
+.voffset9 {
+  margin-top: 45px; }
+
+.voffset10 {
+  margin-top: 50px; }
+
+.voffset11 {
+  margin-top: 55px; }
+
+.voffset12 {
+  margin-top: 60px; }
+
 @media only screen and (max-width: 991px) {
   .flip-scroll .cf:after {
     visibility: hidden;
