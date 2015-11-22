@@ -435,16 +435,6 @@ namespace UI.Controllers
             return (ActionResult)PartialView("_RemoveAccountPartial", linkedAccounts);
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing && userManager != null)
-            {
-                userManager.Dispose();
-                userManager = null;
-            }
-            base.Dispose(disposing);
-        }
-
         #region Helpers
 
         // Used for XSRF protection when adding external logins
