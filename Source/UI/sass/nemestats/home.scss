@@ -1,0 +1,80 @@
+﻿@import "nemestats-variables.scss";
+
+.home-container {
+    background-color: #eee;
+
+    .home-body-container {
+        background-color: #fff;
+        width: 100%;
+        padding-left: 2%;
+        padding-right: 2%;
+    }
+
+    .home-banner {
+        background: url(/Content/Images/Home/Banner.png) no-repeat center center;
+        background-size: cover;
+
+        .cta-wrapper {
+            min-height: 550px;
+
+            .panel {
+                margin-top: 80px;
+                text-align: center;
+
+                .social-login {
+
+                    button {
+                        width: 100%;
+                        font-size: 22px;
+
+                        i.fa {
+                            margin-right: 10px;
+                        }
+                    }
+                }
+
+                .common-login {
+                    background-color: #eee;
+
+                    .or {
+                        position: relative;
+                        left: 50%;
+                        margin-left: -15px;
+                        top: -15px;
+                        height: 30px;
+                        width: 30px;
+                        text-align: center;
+                        line-height: 30px;
+                        color: #4e525b;
+                        font-size: 14px;
+                        font-weight: 600;
+                        background-color: white;
+                        -webkit-border-radius: 500px;
+                        -webkit-background-clip: padding-box;
+                        -moz-border-radius: 500px;
+                        -moz-background-clip: padding;
+                        border-radius: 500px;
+                        -webkit-background-clip: padding-box;
+                        background-clip: padding-box;
+                        z-index: 2;
+                    }
+
+                    .title {
+                        font-size: $font-size-h4;
+                        margin-bottom: 20px;
+                        margin-top: -10px;
+                    }
+
+                    .form-group {
+                        margin-bottom: 5px;
+
+                        &:last-child {
+                            margin-bottom: 0;
+                            padding-bottom: 15px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

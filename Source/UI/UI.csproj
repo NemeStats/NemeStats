@@ -427,6 +427,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\Images\bgg_small.png" />
+    <Content Include="Content\Images\Home\Banner.png" />
     <Content Include="Content\Images\NemeStats-White.png" />
     <Content Include="Content\Images\NemeStats.png" />
     <Content Include="Content\Images\spinner.gif" />
@@ -500,6 +501,7 @@
     <Content Include="css\fontawesome.css.map" />
     <Content Include="css\nemestats.css.map" />
     <Content Include="css\theme.css.map" />
+    <Content Include="sass\nemestats\home.scss" />
     <None Include="sass\nemestats\player.scss" />
     <Content Include="sass\nemestats\nemestats-variables.scss" />
     <Content Include="sass\nemestats\flipscroll.scss" />
@@ -660,6 +662,7 @@
     <Content Include="Views\GameDefinition\_GameDefinitionsTablePartial.cshtml" />
     <Content Include="Views\Account\CreateGamingGroup.cshtml" />
     <Content Include="Views\Account\UserGamingGroups.cshtml" />
+    <Content Include="Views\Account\LoginForm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Code\" />

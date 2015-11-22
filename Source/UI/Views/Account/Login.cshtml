@@ -16,7 +16,8 @@
             </div>
             <div class="panel-body">
                 <section id="loginForm">
-                    @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                    //TODO: USER LOGINFORM ACTION
+                    @*@using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
                     {
                         @Html.AntiForgeryToken()
                         @Html.ValidationSummary(true)
@@ -49,7 +50,7 @@
                                 <input type="submit" value="Log in" class="btn btn-primary" />
                             </div>
                         </div>
-                    }
+                    }*@
                 </section>
             </div>
         </div>

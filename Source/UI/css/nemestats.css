@@ -93,6 +93,59 @@
     border-bottom: 1px solid #babcbf; }
   /* sort out borders */ }
 
+.home-container {
+  background-color: #eee; }
+  .home-container .home-body-container {
+    background-color: #fff;
+    width: 100%;
+    padding-left: 2%;
+    padding-right: 2%; }
+  .home-container .home-banner {
+    background: url(/Content/Images/Home/Banner.png) no-repeat center center;
+    background-size: cover; }
+    .home-container .home-banner .cta-wrapper {
+      min-height: 550px; }
+      .home-container .home-banner .cta-wrapper .panel {
+        margin-top: 80px;
+        text-align: center; }
+        .home-container .home-banner .cta-wrapper .panel .social-login button {
+          width: 100%;
+          font-size: 22px; }
+          .home-container .home-banner .cta-wrapper .panel .social-login button i.fa {
+            margin-right: 10px; }
+        .home-container .home-banner .cta-wrapper .panel .common-login {
+          background-color: #eee; }
+          .home-container .home-banner .cta-wrapper .panel .common-login .or {
+            position: relative;
+            left: 50%;
+            margin-left: -15px;
+            top: -15px;
+            height: 30px;
+            width: 30px;
+            text-align: center;
+            line-height: 30px;
+            color: #4e525b;
+            font-size: 14px;
+            font-weight: 600;
+            background-color: white;
+            -webkit-border-radius: 500px;
+            -webkit-background-clip: padding-box;
+            -moz-border-radius: 500px;
+            -moz-background-clip: padding;
+            border-radius: 500px;
+            -webkit-background-clip: padding-box;
+            background-clip: padding-box;
+            z-index: 2; }
+          .home-container .home-banner .cta-wrapper .panel .common-login .title {
+            font-size: 19px;
+            margin-bottom: 20px;
+            margin-top: -10px; }
+          .home-container .home-banner .cta-wrapper .panel .common-login .form-group {
+            margin-bottom: 5px; }
+            .home-container .home-banner .cta-wrapper .panel .common-login .form-group:last-child {
+              margin-bottom: 0;
+              padding-bottom: 15px; }
+
 body {
   padding-top: 50px;
   overflow-x: hidden; }
@@ -107,23 +160,6 @@ a[name] {
   padding-top: 50px;
   margin-top: -50px;
   display: inline-block; }
-
-.home-container {
-  background-color: #eee; }
-
-.home-body-container {
-  background-color: #fff;
-  width: 100%;
-  padding-left: 2%;
-  padding-right: 2%; }
-
-.home-banner {
-  margin-top: 10px;
-  padding-top: 5px;
-  padding-left: 20%;
-  padding-right: 20%;
-  width: 100%;
-  display: block; }
 
 /* Set width on the form input elements since they're 100% wide by default */
 input, select {
