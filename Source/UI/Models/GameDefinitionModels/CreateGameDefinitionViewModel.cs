@@ -1,4 +1,6 @@
-﻿namespace UI.Models.GameDefinitionModels
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace UI.Models.GameDefinitionModels
 {
     public class CreateGameDefinitionViewModel
     {
@@ -10,6 +12,7 @@
         public bool Active { get; set; }
         public int? BoardGameGeekGameDefinitionId { get; set; }
         public string Description { get; set; }
+        [Required]
         public string Name { get; set; }
         public string ReturnUrl { get; set; }
     }
