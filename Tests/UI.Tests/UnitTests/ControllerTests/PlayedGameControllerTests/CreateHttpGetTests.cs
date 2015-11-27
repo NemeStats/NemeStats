@@ -22,9 +22,11 @@ using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
 using NUnit.Framework;
 using Rhino.Mocks;
+using StructureMap.AutoMocking;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using UI.Controllers;
 using UI.Models.PlayedGame;
 
 namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
@@ -66,7 +68,31 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 			Assert.That(viewModel.GameDefinitions.All(item => item.Value == gameDefinitionId.ToString()), Is.True);
 		}
 
-		[Test]
+        [Test]
+        public void ItSetsTheSelectedGameDefinitionToTheFirstOneIfThereIsOnlyOne()
+        {
+            autoMocker = new RhinoAutoMocker<PlayedGameController>();
+            autoMocker.Get<IPlayerRetriever>().Expect(x => x.GetAllPlayers(currentUser.CurrentGamingGroupId.Value)).Repeat.Once().Return(allPlayers);
+
+            int gameDefinitionId = 1;
+            var gameDefinitions = new List<GameDefinitionSummary>
+            {
+                new GameDefinitionSummary
+                {
+                   Id = gameDefinitionId
+                }
+            };
+            autoMocker.Get<IGameDefinitionRetriever>().Expect(mock => mock.GetAllGameDefinitions(currentUser.CurrentGamingGroupId.Value))
+                .IgnoreArguments()
+                .Return(gameDefinitions);
+
+            ViewResult result = autoMocker.ClassUnderTest.Create(currentUser) as ViewResult;
+
+            PlayedGameEditViewModel viewModel = (PlayedGameEditViewModel)result.Model;
+            Assert.That(viewModel.GameDefinitions.First(x => x.Selected).Value, Is.EqualTo(gameDefinitionId.ToString()));
+        }
+
+        [Test]
 		public void ItLoadsTheCreateView()
 		{
 			ViewResult result = autoMocker.ClassUnderTest.Create(currentUser) as ViewResult;
