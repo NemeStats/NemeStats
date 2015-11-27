@@ -30,6 +30,7 @@ using UI.Attributes.Filters;
 using UI.Controllers.Helpers;
 using UI.Models.GameDefinitionModels;
 using UI.Transformations;
+using BusinessLogic.Exceptions;
 
 namespace UI.Controllers
 {
@@ -132,22 +133,50 @@ namespace UI.Controllers
 		[HttpPost]
 		[UserContext]
 		public virtual ActionResult AjaxCreate(CreateGameDefinitionViewModel createGameDefinitionViewModel, ApplicationUser currentUser)
-		{
-			if (!Request.IsAjaxRequest())
-			{
-				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-			}
+        {
+            if (!Request.IsAjaxRequest())
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
 
-			if (ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 createGameDefinitionViewModel.Name = createGameDefinitionViewModel.Name.Trim();
                 var createGameDefinitionRequest = Mapper.Map<CreateGameDefinitionRequest>(createGameDefinitionViewModel);
-                var newGameDefinition = gameDefinitionSaver.CreateGameDefinition(createGameDefinitionRequest, currentUser);
+
+                GameDefinition newGameDefinition;
+                try
+                {
+                    newGameDefinition = gameDefinitionSaver.CreateGameDefinition(createGameDefinitionRequest, currentUser);
+                }
+                catch (DuplicateKeyException)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "This Game Definition is already active within your Gaming Group.");
+                }
                 return Json(newGameDefinition, JsonRequestBehavior.AllowGet);
             }
 
-            return new HttpStatusCodeResult(HttpStatusCode.NotModified);
-		}
+            string errorDescription = string.Empty;
+
+            errorDescription = GetFirstModelStateError(errorDescription);
+            return new HttpStatusCodeResult(HttpStatusCode.BadRequest, errorDescription);
+        }
+
+        private string GetFirstModelStateError(string errorDescription)
+        {
+            foreach (var modelStateValue in ModelState.Values)
+            {
+                foreach (ModelState modelState in ViewData.ModelState.Values)
+                {
+                    foreach (ModelError error in modelState.Errors)
+                    {
+                        errorDescription = error.ErrorMessage;
+                    }
+                }
+            }
+
+            return errorDescription;
+        }
 
         private static GameDefinitionUpdateRequest TransformGameDefinitionEditViewModelToGameDefinitionUpdateRequest(GameDefinitionEditViewModel model)
         {

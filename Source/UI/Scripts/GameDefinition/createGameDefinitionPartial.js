@@ -44,7 +44,7 @@ Views.GameDefinition.CreateGameDefinitionPartial.prototype = {
 					owner.$gameNameInput.val('');
 				},
 				error: function (err) {
-					alert("Error " + err.status + ":\r\n" + err.statusText);
+					alert(err.statusText);
 				},
 				dataType: "json"
 			});
