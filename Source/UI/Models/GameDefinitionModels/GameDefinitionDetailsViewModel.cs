@@ -17,7 +17,6 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Linq;
 using UI.Models.PlayedGame;
 using UI.Models.Players;
 
@@ -34,5 +33,6 @@ namespace UI.Models.GameDefinitionModels
         public IList<PlayedGameDetailsViewModel> PlayedGames { get; set; }
         public string PlayedGamesPanelTitle { get; set; }
         public PlayersSummaryViewModel PlayersSummary { get; set; }
+        public string AveragePlayersPerGame { get; set; }
     }
 }
