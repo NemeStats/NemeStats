@@ -37,7 +37,6 @@
                     }
                     else
                     {
-
                         @Html.DisplayFor(model => model.Name)
 
                     }
@@ -77,6 +76,28 @@
         </div>
     </div>
 </div>
+
+
+<div class="row">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h4>Global Statistics</h4>
+        </div>
+        <div class="panel-body">
+            <table class="table table-hover table-striped">
+                <tr>
+                    <td class="col-md-2"><strong>Total Games Played:</strong></td>
+                    <td class="col-md-2">@Model.TotalNumberOfGamesPlayed</td>
+                </tr>
+                <tr>
+                    <td><strong>Average Players Per Game</strong></td>
+                    <td>@Model.AveragePlayersPerGame</td>
+                </tr>
+             </table>
+        </div>
+    </div>
+</div>
+
 
 @if (Model.ChampionName != null || Model.PreviousChampionName != null)
 {
