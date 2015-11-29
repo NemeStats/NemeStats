@@ -119,8 +119,8 @@ namespace BusinessLogic.Logic.GameDefinitions
                                                                Id = gameDefinition.Id,
                                                                ThumbnailImageUrl = gameDefinition.BoardGameGeekGameDefinition == null ? null : gameDefinition.BoardGameGeekGameDefinition.Thumbnail,
                                                                TotalNumberOfGamesPlayed = gameDefinition.PlayedGames.Count,
-                                                               AveragePlayersPerGame = gameDefinition.PlayedGames.Average(x => (decimal)x.NumberOfPlayers),
-                                                               Champion = gameDefinition.Champion ?? new NullChampion(),
+                                                               AveragePlayersPerGame = gameDefinition.PlayedGames.Select(item => (decimal)item.NumberOfPlayers).DefaultIfEmpty(0M).Average(),
+            Champion = gameDefinition.Champion ?? new NullChampion(),
                                                                PreviousChampion = gameDefinition.PreviousChampion ?? new NullChampion()
                                                            };
 
