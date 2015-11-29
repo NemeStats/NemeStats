@@ -38,6 +38,7 @@ AS
 		--days since last active is less than 30 days + 20% of the time the group was active
 		COALESCE(DATEDIFF(day, MAX(PlayedGame.DateCreated), GETDATE()), 0) < 
 		(DATEDIFF(day, GamingGroup.DateCreated, GETDATE()) * .2) + 30)
+		AND COUNT(PlayedGame.Id) > 0
 	) THEN 1 ELSE 0 END AS SeeminglyActive
  FROM GamingGroup 
  LEFT JOIN AspnetUsers ON GamingGroup.OwningUserId = AspNetUsers.Id
