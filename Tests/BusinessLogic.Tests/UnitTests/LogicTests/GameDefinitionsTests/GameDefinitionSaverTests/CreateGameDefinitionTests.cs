@@ -80,7 +80,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
             {
                 Name = "existing game definition name",
                 Active = true,
-                GamingGroupId = currentUser.CurrentGamingGroupId.Value
+                GamingGroupId = currentUser.CurrentGamingGroupId
             };
             CreateGameDefinitionRequest createGameDefinitionRequest = new CreateGameDefinitionRequest
             {
@@ -106,7 +106,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
             {
                 Id = 1,
                 Name = "existing game definition name",
-                GamingGroupId = currentUser.CurrentGamingGroupId.Value,
+                GamingGroupId = currentUser.CurrentGamingGroupId,
                 Active = false
             };
             var gameDefinitionQueryable = new List<GameDefinition>
@@ -137,7 +137,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
                 Id = 1,
                 Name = "existing game definition name",
                 Active = false,
-                GamingGroupId = currentUser.CurrentGamingGroupId.Value
+                GamingGroupId = currentUser.CurrentGamingGroupId
             };
             var gameDefinitionQueryable = new List<GameDefinition>
             {
@@ -167,7 +167,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
                 Name = "existing game definition name",
                 Description = "existing game definition description",
                 Active = false,
-                GamingGroupId = currentUser.CurrentGamingGroupId.Value
+                GamingGroupId = currentUser.CurrentGamingGroupId
             };
             var gameDefinitionQueryable = new List<GameDefinition>
             {
@@ -236,7 +236,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
             {
                 Id = 1,
                 Name = "existing game definition name",
-                GamingGroupId = currentUser.CurrentGamingGroupId.Value,
+                GamingGroupId = currentUser.CurrentGamingGroupId,
                 Active = false
             };
             var gameDefinitionQueryable = new List<GameDefinition>

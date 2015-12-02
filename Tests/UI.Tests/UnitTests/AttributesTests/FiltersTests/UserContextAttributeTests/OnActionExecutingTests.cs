@@ -120,10 +120,13 @@ namespace UI.Tests.UnitTests.AttributesTests.FiltersTests.UserContextAttributeTe
         }
 
         [Test]
-        public void IfAGamingGroupIsRequiredAndUserDoesntHaveAGaminGroupItRedirectsUserToTheLoginAction()
+        public void IfAGamingGroupIsRequiredAndUserIsAnonymousItRedirectsUserToTheLoginAction()
         {
             this.userContextActionFilter.RequiresGamingGroup = true;
-            this.applicationUser.CurrentGamingGroupId = null;
+            this.identity.BackToRecord(BackToRecordOptions.All);
+            this.identity.Expect(mock => mock.IsAuthenticated)
+                .Repeat.Once()
+                .Return(false);
 
             this.userContextActionFilter.OnActionExecuting(this.actionExecutingContext, this.userManager, this.clientIdCalculatorMock);
 
@@ -150,7 +153,10 @@ namespace UI.Tests.UnitTests.AttributesTests.FiltersTests.UserContextAttributeTe
         public void ItDoesntRedirectIfGamingGroupIsNotRequired()
         {
             this.userContextActionFilter.RequiresGamingGroup = false;
-            this.applicationUser.CurrentGamingGroupId = null;
+            this.identity.BackToRecord(BackToRecordOptions.All);
+            this.identity.Expect(mock => mock.IsAuthenticated)
+                .Repeat.Once()
+                .Return(false);
 
             this.userContextActionFilter.OnActionExecuting(this.actionExecutingContext, this.userManager, this.clientIdCalculatorMock);
 

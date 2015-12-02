@@ -71,14 +71,6 @@ namespace UI.Attributes
                 return;
             }
 
-            if (!applicationUser.CurrentGamingGroupId.HasValue)
-            {
-                actionContext.Response = actionContext.Request.CreateErrorResponse(
-                   HttpStatusCode.Unauthorized,
-                   ApiAuthenticationAttribute.ERROR_MESSAGE_USER_MUST_HAVE_A_GAMING_GROUP);
-                return; 
-            }
-
             if (actionContext.ActionArguments.ContainsKey(PARAMETER_NAME_GAMING_GROUP_ID)
                 && (int)actionContext.ActionArguments[PARAMETER_NAME_GAMING_GROUP_ID] != applicationUser.CurrentGamingGroupId)
             {

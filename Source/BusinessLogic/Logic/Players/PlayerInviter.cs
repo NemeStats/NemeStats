@@ -46,7 +46,7 @@ namespace BusinessLogic.Logic.Players
 
         public void InvitePlayer(PlayerInvitation playerInvitation, ApplicationUser currentUser)
         {
-            GamingGroup gamingGroup = dataContext.FindById<GamingGroup>(currentUser.CurrentGamingGroupId.Value);
+            GamingGroup gamingGroup = dataContext.FindById<GamingGroup>(currentUser.CurrentGamingGroupId);
 
             string existingUserId = (from ApplicationUser user in dataContext.GetQueryable<ApplicationUser>()
                                      where user.Email == playerInvitation.InvitedPlayerEmail
@@ -55,7 +55,7 @@ namespace BusinessLogic.Logic.Players
             GamingGroupInvitation gamingGroupInvitation = new GamingGroupInvitation
             {
                 DateSent = DateTime.UtcNow,
-                GamingGroupId = currentUser.CurrentGamingGroupId.Value,
+                GamingGroupId = currentUser.CurrentGamingGroupId,
                 InviteeEmail = playerInvitation.InvitedPlayerEmail,
                 InvitingUserId = currentUser.Id,
                 PlayerId = playerInvitation.InvitedPlayerId,

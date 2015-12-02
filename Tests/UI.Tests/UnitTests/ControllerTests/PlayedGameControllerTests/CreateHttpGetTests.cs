@@ -45,7 +45,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 
 			allPlayers = new List<Player>() { new Player() { Id = playerId, Name = playerName } };
 
-            autoMocker.Get<IPlayerRetriever>().Expect(x => x.GetAllPlayers(currentUser.CurrentGamingGroupId.Value)).Repeat.Once().Return(allPlayers);
+            autoMocker.Get<IPlayerRetriever>().Expect(x => x.GetAllPlayers(currentUser.CurrentGamingGroupId)).Repeat.Once().Return(allPlayers);
 		}
 
 		[Test]
@@ -59,7 +59,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
                    Id = gameDefinitionId
                 }
             };
-			autoMocker.Get<IGameDefinitionRetriever>().Expect(mock => mock.GetAllGameDefinitions(currentUser.CurrentGamingGroupId.Value))
+			autoMocker.Get<IGameDefinitionRetriever>().Expect(mock => mock.GetAllGameDefinitions(currentUser.CurrentGamingGroupId))
 				.Return(gameDefinitions);
 
 			ViewResult result = autoMocker.ClassUnderTest.Create(currentUser) as ViewResult;
@@ -72,7 +72,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
         public void ItSetsTheSelectedGameDefinitionToTheFirstOneIfThereIsOnlyOne()
         {
             autoMocker = new RhinoAutoMocker<PlayedGameController>();
-            autoMocker.Get<IPlayerRetriever>().Expect(x => x.GetAllPlayers(currentUser.CurrentGamingGroupId.Value)).Repeat.Once().Return(allPlayers);
+            autoMocker.Get<IPlayerRetriever>().Expect(x => x.GetAllPlayers(currentUser.CurrentGamingGroupId)).Repeat.Once().Return(allPlayers);
 
             int gameDefinitionId = 1;
             var gameDefinitions = new List<GameDefinitionSummary>
@@ -82,7 +82,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
                    Id = gameDefinitionId
                 }
             };
-            autoMocker.Get<IGameDefinitionRetriever>().Expect(mock => mock.GetAllGameDefinitions(currentUser.CurrentGamingGroupId.Value))
+            autoMocker.Get<IGameDefinitionRetriever>().Expect(mock => mock.GetAllGameDefinitions(currentUser.CurrentGamingGroupId))
                 .IgnoreArguments()
                 .Return(gameDefinitions);
 

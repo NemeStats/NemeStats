@@ -59,7 +59,7 @@ namespace BusinessLogic.Logic.GameDefinitions
                 currentUser);
 
             var existingGameDefinition = dataContext.GetQueryable<GameDefinition>()
-                .FirstOrDefault(game => game.GamingGroupId == currentUser.CurrentGamingGroupId.Value
+                .FirstOrDefault(game => game.GamingGroupId == currentUser.CurrentGamingGroupId
                         && game.Name == createGameDefinitionRequest.Name);
 
             if (existingGameDefinition == null)
@@ -69,7 +69,7 @@ namespace BusinessLogic.Logic.GameDefinitions
                     Name = createGameDefinitionRequest.Name,
                     BoardGameGeekGameDefinitionId = boardGameGeekGameDefinitionId,
                     Description = createGameDefinitionRequest.Description,
-                    GamingGroupId = currentUser.CurrentGamingGroupId.Value
+                    GamingGroupId = currentUser.CurrentGamingGroupId
                 };
 
                 new Task(() => this.eventTracker.TrackGameDefinitionCreation(currentUser, createGameDefinitionRequest.Name)).Start();

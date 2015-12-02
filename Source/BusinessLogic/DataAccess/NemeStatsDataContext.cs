@@ -29,7 +29,6 @@ namespace BusinessLogic.DataAccess
     {
         internal const string CONNECTION_NAME = "DefaultConnection";
         internal const string UNKNOWN_ENTITY_ID = "<unknown>";
-        internal const string EXCEPTION_MESSAGE_CURRENT_GAMING_GROUP_ID_CANNOT_BE_NULL = "currentUser.CurrentGamingGroupId cannot be null";
         internal const string EXCEPTION_MESSAGE_NO_ENTITY_EXISTS_FOR_THIS_ID = "No entity exists for Id '{0}'";
 
         private readonly SecuredEntityValidatorFactory securedEntityValidatorFactory;
@@ -107,12 +106,8 @@ namespace BusinessLogic.DataAccess
         {
             if (typeof(SecuredEntityWithTechnicalKey).IsAssignableFrom(typeof(TEntity)))
             {
-                if(currentUser.CurrentGamingGroupId == null)
-                {
-                    throw new ArgumentException(EXCEPTION_MESSAGE_CURRENT_GAMING_GROUP_ID_CANNOT_BE_NULL);
-                }
                 SecuredEntityWithTechnicalKey securedEntity = entity as SecuredEntityWithTechnicalKey;
-                securedEntity.GamingGroupId = currentUser.CurrentGamingGroupId.Value;
+                securedEntity.GamingGroupId = currentUser.CurrentGamingGroupId;
             }
         }
 

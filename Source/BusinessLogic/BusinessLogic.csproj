@@ -299,6 +299,10 @@
     <Compile Include="Migrations\201511051243356_BoardGameGeekGameDefinitionIdentityInsert.Designer.cs">
       <DependentUpon>201511051243356_BoardGameGeekGameDefinitionIdentityInsert.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201512020347125_CurrentGamingGroupIdNotNullable.cs" />
+    <Compile Include="Migrations\201512020347125_CurrentGamingGroupIdNotNullable.Designer.cs">
+      <DependentUpon>201512020347125_CurrentGamingGroupIdNotNullable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\BoardGameGeekGameDefinition.cs" />
     <Compile Include="Models\Games\CreateGameDefinitionRequest.cs" />
     <Compile Include="Models\Games\GameDefinitionDisplayInfo.cs" />
@@ -696,6 +700,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201511051243356_BoardGameGeekGameDefinitionIdentityInsert.resx">
       <DependentUpon>201511051243356_BoardGameGeekGameDefinitionIdentityInsert.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201512020347125_CurrentGamingGroupIdNotNullable.resx">
+      <DependentUpon>201512020347125_CurrentGamingGroupIdNotNullable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

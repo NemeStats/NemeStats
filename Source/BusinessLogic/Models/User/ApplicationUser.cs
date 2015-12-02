@@ -35,7 +35,7 @@ namespace BusinessLogic.Models.User
             DateCreated = DateTime.UtcNow;
         }
 
-        public virtual int? CurrentGamingGroupId { get; set; }
+        public virtual int CurrentGamingGroupId { get; set; }
         /// <summary>
         /// This is pulled from the analytics token and can not be linked back to the actual user. Used for pushing analytics
         /// events and should not be persisted to the DB.
