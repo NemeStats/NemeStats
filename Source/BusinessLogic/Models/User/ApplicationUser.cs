@@ -36,12 +36,22 @@ namespace BusinessLogic.Models.User
         }
 
         public virtual int CurrentGamingGroupId { get; set; }
+
+        private string _anonymousClientId;
+
         /// <summary>
         /// This is pulled from the analytics token and can not be linked back to the actual user. Used for pushing analytics
         /// events and should not be persisted to the DB.
         /// </summary>
         [NotMapped]
-        public virtual string AnonymousClientId { get; set; }
+        public virtual string AnonymousClientId {
+            get
+            {
+                return _anonymousClientId ?? Id.ToString();
+            }
+
+            set { _anonymousClientId = value; }
+        }
         public DateTime DateCreated { get; set; }
 
         [ForeignKey("ApplicationUserId")]
