@@ -123,9 +123,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\RhinoMocks.3.6.1\lib\net\Rhino.Mocks.dll</HintPath>
     </Reference>
-    <Reference Include="RollbarSharp, Version=0.3.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\RollbarSharp.Unofficial.0.4.1\lib\net40\RollbarSharp.dll</HintPath>
+    <Reference Include="RollbarSharp, Version=0.3.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\RollbarSharp.0.3.3.0\lib\net40\RollbarSharp.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="StructureMap, Version=3.1.4.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
