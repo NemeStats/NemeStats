@@ -47,7 +47,7 @@ namespace UI.Tests.UnitTests.ControllerTests.AccountControllerTests
                             new GamingGroupListItemModel
                 {
                     Name = "gaming group 1",
-                    Id = currentUser.CurrentGamingGroupId.Value
+                    Id = currentUser.CurrentGamingGroupId
                 }
             };
 

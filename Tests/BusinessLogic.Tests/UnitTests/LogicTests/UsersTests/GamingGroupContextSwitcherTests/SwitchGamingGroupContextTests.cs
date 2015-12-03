@@ -88,7 +88,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.GamingGroupContext
         [Test]
         public void ItDoesNotSaveIfTheUserIsAlreadySetToThatGamingGroup()
         {
-            contextSwitcher.SwitchGamingGroupContext(currentUser.CurrentGamingGroupId.Value, currentUser);
+            contextSwitcher.SwitchGamingGroupContext(currentUser.CurrentGamingGroupId, currentUser);
 
             dataContextMock.AssertWasNotCalled(mock => mock.Save(Arg<ApplicationUser>.Is.Anything, Arg<ApplicationUser>.Is.Anything));
         }

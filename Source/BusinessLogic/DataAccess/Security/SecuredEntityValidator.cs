@@ -59,11 +59,6 @@ namespace BusinessLogic.DataAccess.Security
             {
                 throw new ArgumentException(EXCEPTION_MESSAGE_CURRENT_USER_ID_CANNOT_BE_NULL);
             }
-
-            if (currentUser.CurrentGamingGroupId == null)
-            {
-                throw new ArgumentException(EXCEPTION_MESSAGE_CURRENT_USER_GAMING_GROUP_ID_CANNOT_BE_NULL);
-            }
         }
     }
 }

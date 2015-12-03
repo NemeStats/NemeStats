@@ -96,20 +96,5 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.SecurityTests.SecuredEnt
                     typeof(string), 
                     string.Empty));
         }
-
-        [Test]
-        public void ItThrowsAnArgumentExceptionIfTheGamingGroupIdIsNullAndTheEntityIsSecured()
-        {
-            Exception exception = Assert.Throws<ArgumentException>(
-                () => securedEntityValidatorForSecuredEntity.ValidateAccess(
-                    securedEntity, 
-                    new ApplicationUser(), 
-                    typeof(string), 
-                    string.Empty));
-
-            Assert.AreEqual(
-                SecuredEntityValidator<SecuredEntityWithTechnicalKey>.EXCEPTION_MESSAGE_CURRENT_USER_GAMING_GROUP_ID_CANNOT_BE_NULL, 
-                exception.Message);
-        }
     }
 }

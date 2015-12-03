@@ -36,7 +36,7 @@ namespace BusinessLogic.DataAccess.GamingGroups
             GamingGroupInvitation invitation = new GamingGroupInvitation()
             {
                 InviteeEmail = email,
-                GamingGroupId = currentUser.CurrentGamingGroupId.Value,
+                GamingGroupId = currentUser.CurrentGamingGroupId,
                 InvitingUserId = currentUser.Id,
                 DateSent = DateTime.UtcNow.Date
             };

@@ -167,27 +167,5 @@ namespace UI.Tests.UnitTests.AttributesTests
             Assert.That(this.actionContext.Response.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
             Assert.That(httpError.Message, Is.EqualTo(string.Format(ApiAuthenticationAttribute.ERROR_MESSAGE_UNAUTHORIZED_TO_GAMING_GROUP, REQUESTED_GAMING_GROUP_ID)));
         }
-
-        [Test]
-        public void ItReturnsAnUnauthorizedHttpStatusWhenTheUserDoesntHaveACurrentGamingGroupId()
-        {
-            const string TOKEN = "TEST";
-            this.request.Headers.Add(ApiAuthenticationAttribute.AUTH_HEADER, new[] { TOKEN });
-            var expectedUser = new ApplicationUser
-            {
-                Id = "some id"
-            };
-            authTokenValidatorMock.Expect(mock => mock.ValidateAuthToken(TOKEN)).Return(expectedUser);
-            const string EXPECTED_CLIENT_ID = "some client id";
-            clientIdCalculatorMock.Expect(mock => mock.GetClientId(this.request, expectedUser)).Return(EXPECTED_CLIENT_ID);
-
-            this.attribute.OnActionExecuting(this.actionContext);
-
-            Assert.That(this.actionContext.Response.Content, Is.TypeOf(typeof(ObjectContent<HttpError>)));
-            var content = this.actionContext.Response.Content as ObjectContent<HttpError>;
-            var httpError = content.Value as HttpError;
-            Assert.That(this.actionContext.Response.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
-            Assert.That(httpError.Message, Is.EqualTo(ApiAuthenticationAttribute.ERROR_MESSAGE_USER_MUST_HAVE_A_GAMING_GROUP));
-        }
     }
 }

@@ -53,7 +53,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 				CurrentGamingGroupId = 1
 			};
 			gameDefinitionSummaries = new List<GameDefinitionSummary>();
-            autoMocker.Get<IGameDefinitionRetriever>().Expect(mock => mock.GetAllGameDefinitions(currentUser.CurrentGamingGroupId.Value))
+            autoMocker.Get<IGameDefinitionRetriever>().Expect(mock => mock.GetAllGameDefinitions(currentUser.CurrentGamingGroupId))
 				.Repeat.Once()
 				.Return(gameDefinitionSummaries);
 

@@ -64,8 +64,7 @@ namespace BusinessLogic.Logic.PlayedGames
 
             PlayedGame playedGame = TransformNewlyCompletedGameIntoPlayedGame(
                 newlyCompletedGame,
-                //TODO should throw some kind of exception if GamingGroupId is null
-                currentUser.CurrentGamingGroupId.Value,
+                currentUser.CurrentGamingGroupId,
                 currentUser.Id,
                 playerGameResults);
 

@@ -93,7 +93,7 @@ namespace UI.Controllers
 		[HttpGet]
 		public virtual ActionResult Create(ApplicationUser currentUser)
         {
-            var gameDefinitionSummaries = gameDefinitionRetriever.GetAllGameDefinitions(currentUser.CurrentGamingGroupId.Value);
+            var gameDefinitionSummaries = gameDefinitionRetriever.GetAllGameDefinitions(currentUser.CurrentGamingGroupId);
 
             SelectList gameDefinitionSummariesSelectList = BuildGameDefinitionSummariesSelectList(gameDefinitionSummaries);
             var viewModel = new PlayedGameEditViewModel
@@ -157,7 +157,7 @@ namespace UI.Controllers
 
 		private IEnumerable<SelectListItem> GetAllPlayers(ApplicationUser currentUser)
 		{
-			List<Player> allPlayers = playerRetriever.GetAllPlayers(currentUser.CurrentGamingGroupId.Value);
+			List<Player> allPlayers = playerRetriever.GetAllPlayers(currentUser.CurrentGamingGroupId);
 			List<SelectListItem> allPlayersSelectList = allPlayers.Select(item => new SelectListItem
 			{
 				Text = item.Name,
@@ -205,7 +205,7 @@ namespace UI.Controllers
 		public virtual ActionResult Edit(int id, ApplicationUser currentUser)
 		{
 			var viewModel = new PlayedGameEditViewModel();
-			var gameDefinitionsList = this.gameDefinitionRetriever.GetAllGameDefinitions(currentUser.CurrentGamingGroupId.Value);
+			var gameDefinitionsList = this.gameDefinitionRetriever.GetAllGameDefinitions(currentUser.CurrentGamingGroupId);
 			viewModel.GameDefinitions = gameDefinitionsList.Select(item => new SelectListItem
 			{
 				Text = item.Name,
@@ -259,7 +259,7 @@ namespace UI.Controllers
         {
             var viewModel = new SearchViewModel
             {
-                GameDefinitions = GetAllGameDefinitionsForCurrentGamingGroup(currentUser.CurrentGamingGroupId.Value)
+                GameDefinitions = GetAllGameDefinitionsForCurrentGamingGroup(currentUser.CurrentGamingGroupId)
             };
             return View(MVC.PlayedGame.Views.Search, viewModel);
         }
@@ -310,7 +310,7 @@ namespace UI.Controllers
                     DatePlayedStart = filter.DatePlayedStart,
                     GameDefinitionId = filter.GameDefinitionId
                 },
-                GameDefinitions = GetAllGameDefinitionsForCurrentGamingGroup(currentUser.CurrentGamingGroupId.Value),
+                GameDefinitions = GetAllGameDefinitionsForCurrentGamingGroup(currentUser.CurrentGamingGroupId),
                 PlayedGames = new PlayedGamesViewModel
                 {
                     PlayedGameDetailsViewModels = playedGamesDetails,

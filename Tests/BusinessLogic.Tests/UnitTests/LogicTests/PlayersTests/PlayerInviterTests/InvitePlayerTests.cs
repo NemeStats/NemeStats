@@ -71,7 +71,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerInviterTes
             };
             gamingGroup = new GamingGroup
             {
-                Id = currentUser.CurrentGamingGroupId.Value,
+                Id = currentUser.CurrentGamingGroupId,
                 Name = "jake's Gaming Group"
             };
             gamingGroupInvitation = new GamingGroupInvitation
@@ -79,7 +79,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerInviterTes
                 Id = Guid.NewGuid()
             };
 
-            dataContextMock.Expect(mock => mock.FindById<GamingGroup>(currentUser.CurrentGamingGroupId.Value))
+            dataContextMock.Expect(mock => mock.FindById<GamingGroup>(currentUser.CurrentGamingGroupId))
                            .Return(gamingGroup);
 
             List<ApplicationUser> applicationUsers = new List<ApplicationUser>
@@ -113,7 +113,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerInviterTes
             dataContextMock.AssertWasCalled(mock => mock.Save<GamingGroupInvitation>(Arg<GamingGroupInvitation>.Matches(
                 invite => invite.PlayerId == playerInvitation.InvitedPlayerId
                 && invite.DateSent.Date == DateTime.UtcNow.Date
-                && invite.GamingGroupId == currentUser.CurrentGamingGroupId.Value
+                && invite.GamingGroupId == currentUser.CurrentGamingGroupId
                 && invite.InviteeEmail == playerInvitation.InvitedPlayerEmail
                 && invite.InvitingUserId == currentUser.Id),
                 Arg<ApplicationUser>.Is.Same(currentUser)));

@@ -58,7 +58,7 @@ namespace UI.Areas.Api.Controllers
         [HttpPost]
         public virtual HttpResponseMessage SaveNewPlayer([FromBody] NewPlayerMessage newPlayerMessage)
         {
-            return SaveNewPlayer(newPlayerMessage, CurrentUser.CurrentGamingGroupId.Value);
+            return SaveNewPlayer(newPlayerMessage, CurrentUser.CurrentGamingGroupId);
         }
 
         [ApiAuthentication]
@@ -88,7 +88,7 @@ namespace UI.Areas.Api.Controllers
         [HttpPut]
         public virtual HttpResponseMessage UpdatePlayerVersion2([FromBody] UpdatePlayerMessage updatePlayerMessage, [FromUri] int playerId)
         {
-            return UpdatePlayer(updatePlayerMessage, playerId, CurrentUser.CurrentGamingGroupId.Value);
+            return UpdatePlayer(updatePlayerMessage, playerId, CurrentUser.CurrentGamingGroupId);
         }
 
         [ApiAuthentication]

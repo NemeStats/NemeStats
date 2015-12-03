@@ -44,7 +44,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
         {
             base.SetUp();
 
-            expectedGamingGroup = new GamingGroup() { Id = currentUser.CurrentGamingGroupId.Value };
+            expectedGamingGroup = new GamingGroup() { Id = currentUser.CurrentGamingGroupId };
             autoMocker.Get<IDataContext>().Expect(mock => mock.Save(Arg<GamingGroup>.Is.Anything, Arg<ApplicationUser>.Is.Anything))
                 .Return(expectedGamingGroup);
             expectedPlayer = new Player();
