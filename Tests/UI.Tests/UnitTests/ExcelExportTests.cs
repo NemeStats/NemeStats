@@ -28,7 +28,7 @@ namespace UI.Tests.UnitTests
     [TestFixture]
     public class ExcelExportTests
     {
-        [Test, Ignore]
+        [Test, Ignore("Integration test")]
         public void ItCreatesAnExcelFile()
         {
             ExcelWorksheet worksheet;

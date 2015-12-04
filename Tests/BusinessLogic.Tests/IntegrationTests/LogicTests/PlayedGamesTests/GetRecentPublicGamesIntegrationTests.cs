@@ -32,7 +32,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGamesTests
 
         List<PublicGameSummary> publicGameSummaryResults;
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void LocalFixtureSetUp()
         {
             using (NemeStatsDataContext dataContext = new NemeStatsDataContext())

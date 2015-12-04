@@ -58,7 +58,7 @@ namespace UI.Tests.UnitTests.TransformationsTests
         private PlayerSummaryViewModel expectedPlayerSummary1;
         private PlayerSummaryViewModel expectedPlayerSummary2;
 
-        [TestFixtureSetUp]
+        [OneTimeSetUpAttribute]
         public void FixtureSetUp()
         {
             autoMocker = new RhinoAutoMocker<GameDefinitionDetailsViewModelBuilder>();

@@ -35,9 +35,9 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UtilitiesTests
             Assert.That(result, Is.EqualTo(0)); 
         }
 
-        [TestCase(1, 1, Result = 50)]
-        [TestCase(1, 2, Result = 33)]
-        [TestCase(4, 1, Result = 80)]
+        [TestCase(1, 1, ExpectedResult = 50)]
+        [TestCase(1, 2, ExpectedResult = 33)]
+        [TestCase(4, 1, ExpectedResult = 80)]
         public int TestOtherCases(int numberOfWins, int numberOfLosses)
         {
             return WinPercentageCalculator.CalculateWinPercentage(numberOfWins, numberOfLosses); 

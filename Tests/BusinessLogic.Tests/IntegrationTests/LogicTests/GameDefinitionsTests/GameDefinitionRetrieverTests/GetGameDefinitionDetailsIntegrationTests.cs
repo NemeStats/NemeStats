@@ -34,7 +34,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.GameDefinitionsTests.G
         private GameDefinitionSummary gameDefinitionSummary;
         private int numberOfGamesToRetrieve = 2;
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public override void FixtureSetUp()
         {
             base.FixtureSetUp();

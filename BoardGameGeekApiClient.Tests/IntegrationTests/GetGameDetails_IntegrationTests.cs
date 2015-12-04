@@ -24,7 +24,8 @@ namespace BoardGameGeekApiClient.Tests.IntegrationTests
             public void Then_Return_GameDetails()
             {
                 Assert.IsNotNull(_result);
-                Assert.IsNotNullOrEmpty(_result.Name);
+                Assert.That(_result.Name, Is.Not.Null);
+                Assert.That(_result.Name, Is.Not.Empty);
             }
 
             [Test]

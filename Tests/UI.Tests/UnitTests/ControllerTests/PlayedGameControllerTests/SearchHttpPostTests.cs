@@ -21,7 +21,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
         private const int GAME_DEFINITION_A_ID = 2;
         private const string GAME_DEFINITION_NAME_A = "A - some game definition name";
 
-        [TestFixtureSetUp]
+        [OneTimeSetUpAttribute]
         public void TestFixtureSetup()
         {
             AutomapperConfiguration.Configure();

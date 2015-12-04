@@ -30,16 +30,16 @@ namespace BusinessLogic.Tests.UnitTests.ModelsTests.GamesTests.ValidationTests
 	public class ValidatePlayerRanksTests
 	{
 		[Test]
-		[ExpectedException(typeof(ArgumentException), ExpectedMessage = PlayerRankValidator.EXCEPTION_MESSAGE_MUST_PASS_AT_LEAST_TWO_PLAYERS)]
 		public void ItRequiresPlayerRanks()
 		{
 			List<PlayerRank> playerRanks = null;
 
-			PlayerRankValidator.ValidatePlayerRanks(playerRanks);
+			var exception = Assert.Throws<ArgumentException>(() => PlayerRankValidator.ValidatePlayerRanks(playerRanks));
+
+            Assert.That(exception.Message, Is.EqualTo(PlayerRankValidator.EXCEPTION_MESSAGE_MUST_PASS_AT_LEAST_TWO_PLAYERS));
 		}
 
         [Test]
-        [ExpectedException(typeof(ArgumentException), ExpectedMessage = PlayerRankValidator.EXCEPTION_MESSAGE_CANNOT_HAVE_MORE_THAN_25_PLAYERS)]
         public void ItCannotHaveMoreThan25Players()
         {
             List<PlayerRank> playerRanks = new List<PlayerRank>();
@@ -52,11 +52,12 @@ namespace BusinessLogic.Tests.UnitTests.ModelsTests.GamesTests.ValidationTests
                 });
             }
 
-            PlayerRankValidator.ValidatePlayerRanks(playerRanks);
+            var exception = Assert.Throws<ArgumentException>(() => PlayerRankValidator.ValidatePlayerRanks(playerRanks));
+
+            Assert.That(exception.Message, Is.EqualTo(PlayerRankValidator.EXCEPTION_MESSAGE_CANNOT_HAVE_MORE_THAN_25_PLAYERS));
         }
 
 		[Test]
-		[ExpectedException(typeof(ArgumentException), ExpectedMessage = PlayerRankValidator.EXCEPTION_MESSAGE_MUST_PASS_AT_LEAST_TWO_PLAYERS)]
 		public void ItRequiresAtLeastOnePlayer()
 		{
 		    List<PlayerRank> playerRanks = new List<PlayerRank>
@@ -64,20 +65,22 @@ namespace BusinessLogic.Tests.UnitTests.ModelsTests.GamesTests.ValidationTests
                 new PlayerRank { PlayerId = 1, GameRank = 1 }
 		    };
 
-			PlayerRankValidator.ValidatePlayerRanks(playerRanks);
-		}
+            var exception = Assert.Throws<ArgumentException>(() => PlayerRankValidator.ValidatePlayerRanks(playerRanks));
+
+            Assert.That(exception.Message, Is.EqualTo(PlayerRankValidator.EXCEPTION_MESSAGE_MUST_PASS_AT_LEAST_TWO_PLAYERS));
+        }
 
 		[Test]
-		[ExpectedException(typeof(ArgumentException), ExpectedMessage = PlayerRankValidator.EXCEPTION_MESSAGE_EACH_PLAYER_RANK_MUST_HAVE_A_PLAYER_ID)]
 		public void ItRequiresEachPlayerRankToHaveAPlayer()
 		{
 			List<PlayerRank> playerRanks = new List<PlayerRank>() { new PlayerRank() { GameRank = 1 } };
 
-			PlayerRankValidator.ValidatePlayerRanks(playerRanks);
-		}
+            var exception = Assert.Throws<ArgumentException>(() => PlayerRankValidator.ValidatePlayerRanks(playerRanks));
+
+            Assert.That(exception.Message, Is.EqualTo(PlayerRankValidator.EXCEPTION_MESSAGE_EACH_PLAYER_RANK_MUST_HAVE_A_PLAYER_ID));
+        }
 
 		[Test]
-		[ExpectedException(typeof(ArgumentException), ExpectedMessage = PlayerRankValidator.EXCEPTION_MESSAGE_EACH_PLAYER_RANK_MUST_HAVE_A_GAME_RANK)]
 		public void ItRequiresEachPlayerRankToHaveAGameRank()
 		{
 			List<PlayerRank> playerRanks = new List<PlayerRank>()
@@ -86,30 +89,34 @@ namespace BusinessLogic.Tests.UnitTests.ModelsTests.GamesTests.ValidationTests
                                                 new PlayerRank() { PlayerId = 2 }
                                             };
 
-			PlayerRankValidator.ValidatePlayerRanks(playerRanks);
-		}
+            var exception = Assert.Throws<ArgumentException>(() => PlayerRankValidator.ValidatePlayerRanks(playerRanks));
+
+            Assert.That(exception.Message, Is.EqualTo(PlayerRankValidator.EXCEPTION_MESSAGE_EACH_PLAYER_RANK_MUST_HAVE_A_GAME_RANK));
+        }
 
 		[Test]
-		[ExpectedException(typeof(ArgumentException), ExpectedMessage = PlayerRankValidator.EXCEPTION_MESSAGE_NO_PLAYER_CAN_HAVE_A_HIGHER_RANK_THAN_THE_NUMBER_OF_PLAYERS)]
 		public void NoPlayerMayHaveARankGreaterThanTheTotalNumberOfPlayers()
 		{
 			List<PlayerRank> playerRanks = new List<PlayerRank>();
 			playerRanks.Add(new PlayerRank() { PlayerId = 1, GameRank = 1 });
 			playerRanks.Add(new PlayerRank() { PlayerId = 2, GameRank = 3 });
 
-			PlayerRankValidator.ValidatePlayerRanks(playerRanks);
-		}
+            var exception = Assert.Throws<ArgumentException>(() => PlayerRankValidator.ValidatePlayerRanks(playerRanks));
+
+            Assert.That(exception.Message, Is.EqualTo(PlayerRankValidator.EXCEPTION_MESSAGE_NO_PLAYER_CAN_HAVE_A_HIGHER_RANK_THAN_THE_NUMBER_OF_PLAYERS));
+        }
 
 		[Test]
-		[ExpectedException(typeof(ArgumentException), ExpectedMessage = PlayerRankValidator.EXCEPTION_MESSAGE_NO_PLAYER_CAN_HAVE_A_RANK_LESS_THAN_ONE)]
 		public void NoPlayersMayHaveARankLessThanOne()
 		{
 			List<PlayerRank> playerRanks = new List<PlayerRank>();
 			playerRanks.Add(new PlayerRank() { PlayerId = 1, GameRank = 1 });
 			playerRanks.Add(new PlayerRank() { PlayerId = 2, GameRank = -1 });
 
-			PlayerRankValidator.ValidatePlayerRanks(playerRanks);
-		}
+            var exception = Assert.Throws<ArgumentException>(() => PlayerRankValidator.ValidatePlayerRanks(playerRanks));
+
+            Assert.That(exception.Message, Is.EqualTo(PlayerRankValidator.EXCEPTION_MESSAGE_NO_PLAYER_CAN_HAVE_A_RANK_LESS_THAN_ONE));
+        }
 
 		[Test]
 		public void ItAcceptsAGameWithRanksOneTwoAndThreeRanks()
