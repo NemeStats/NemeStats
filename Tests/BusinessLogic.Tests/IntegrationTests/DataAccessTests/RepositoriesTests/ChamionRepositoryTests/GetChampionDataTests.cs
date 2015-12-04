@@ -34,7 +34,7 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
         private int otherChampionPlayerIdForGameDefinition;
 
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public override void FixtureSetUp()
         {
             base.FixtureSetUp();

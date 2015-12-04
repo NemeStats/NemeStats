@@ -33,7 +33,7 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
         private PlayerDetails player1Details;
         private PlayerDetails player5Details;
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public override void FixtureSetUp()
         {
             base.FixtureSetUp();
@@ -121,7 +121,7 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
             }
         }
 
-        [TestFixtureTearDown]
+        [OneTimeTearDown]
         public override void FixtureTearDown()
         {
             base.FixtureTearDown();

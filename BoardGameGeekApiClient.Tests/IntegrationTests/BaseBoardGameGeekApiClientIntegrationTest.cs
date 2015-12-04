@@ -9,7 +9,7 @@ namespace BoardGameGeekApiClient.Tests.IntegrationTests
     {
         public IBoardGameGeekApiClient ApiClient{ get; set; }
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public virtual void FixtureSetUp()
         {
             ApiClient = new BoardGameGeekClient(new ApiDownloaderService());

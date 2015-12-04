@@ -31,7 +31,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.Players
         private List<TopPlayer> topPlayersResult;
         private int expectedNumberOfPlayers = 3;
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void TestFixtureSetUp()
         {
             using(IDataContext dataContext = new NemeStatsDataContext())

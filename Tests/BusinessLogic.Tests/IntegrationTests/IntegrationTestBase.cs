@@ -96,8 +96,8 @@ namespace BusinessLogic.Tests.IntegrationTests
         protected GamingGroupInvitation testAlreadyRedeemedGamingGroupInvitation;
         protected List<int> nemesisIdsToDelete;
         protected List<int> championIdsToDelete;
-            
-        [TestFixtureSetUp]
+
+        [OneTimeSetUp]
         public virtual void FixtureSetUp()
         {
             //create a stub for this only since we don't want the slowdown of all of the universal analytics event tracking
@@ -637,7 +637,7 @@ namespace BusinessLogic.Tests.IntegrationTests
             }
         }
 
-        [TestFixtureTearDown]
+        [OneTimeTearDown]
         public virtual void FixtureTearDown()
         {
             CleanUpTestData();
