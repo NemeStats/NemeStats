@@ -60,8 +60,9 @@
       <HintPath>..\..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="EPPlus">
-      <HintPath>..\..\packages\EPPlus.4.0.3\lib\net20\EPPlus.dll</HintPath>
+    <Reference Include="EPPlus, Version=4.0.4.0, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EPPlus.4.0.4\lib\net20\EPPlus.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
@@ -422,6 +423,8 @@
     <Compile Include="Models\GamingGroup\TopGamingGroupSummaryViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\font-awesome.css" />
+    <Content Include="Content\font-awesome.min.css" />
     <Content Include="Content\Images\bgg_small.png" />
     <Content Include="Content\Images\NemeStats-White.png" />
     <Content Include="Content\Images\NemeStats.png" />
@@ -517,18 +520,18 @@
     </Content>
     <Content Include="sass\imports\custom-bootstrap-variables.scss" />
     <Content Include="sass\imports\nemestats.scss" />
-    <Content Include="Scripts\d3\LICENSE" />
     <Content Include="sass\imports\theme.scss" />
     <Content Include="sass\imports\bootstrap.scss" />
     <Content Include="sass\nemestats\site.scss" />
     <Content Include="sass\nemestats\mobile.scss" />
     <Content Include="sass\imports\fontawesome.scss" />
     <Content Include="sass\nemestats\utils.scss" />
+    <Content Include="Scripts\d3\d3.js" />
+    <Content Include="Scripts\d3\d3.min.js" />
+    <Content Include="Scripts\d3\LICENSE" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="robots.txt" />
     <Content Include="Scripts\CreatePlayedGame\createplayedgame.js" />
-    <Content Include="Scripts\d3\d3.js" />
-    <Content Include="Scripts\d3\d3.min.js" />
     <Content Include="Scripts\d3\nv.d3.min.js" />
     <Content Include="Scripts\d3\css\nv.d3.css" />
     <Content Include="Scripts\GameDefinition\createGameDefinition.js" />
