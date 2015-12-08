@@ -17,12 +17,13 @@
 #endregion
 using System.Web.Http;
 
-namespace UI.DependencyResolution {
+namespace UI.DependencyResolution
+{
     using System;
     using System.Web.Mvc;
-
-    using StructureMap.Configuration.DSL;
+    using StructureMap;
     using StructureMap.Graph;
+    using StructureMap.Graph.Scanning;
     using StructureMap.Pipeline;
     using StructureMap.TypeRules;
 
@@ -36,6 +37,21 @@ namespace UI.DependencyResolution {
             else if (type.CanBeCastTo<ApiController>() && !type.IsAbstract)
             {
                 registry.For(type).LifecycleIs(new UniquePerRequestLifecycle());
+            }
+        }
+
+        public void ScanTypes(TypeSet types, Registry registry)
+        {
+            foreach(var type in types.FindTypes(TypeClassification.Concretes | TypeClassification.Closed))
+            {
+                if (type.CanBeCastTo<Controller>() && !type.IsAbstract)
+                {
+                    registry.For(type).LifecycleIs(new UniquePerRequestLifecycle());
+                }
+                else if (type.CanBeCastTo<ApiController>() && !type.IsAbstract)
+                {
+                    registry.For(type).LifecycleIs(new UniquePerRequestLifecycle());
+                }
             }
         }
 
