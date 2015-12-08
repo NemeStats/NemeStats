@@ -66,8 +66,8 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Owin, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Microsoft.AspNet.Identity.Owin.2.2.0\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
+      <HintPath>..\..\packages\Microsoft.AspNet.Identity.Owin.2.2.1\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Owin, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -93,9 +93,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
     </Reference>
-    <Reference Include="SendGrid.SmtpApi, Version=1.2.1.0, Culture=neutral, PublicKeyToken=2ae73662c35d80e4, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\SendGrid.SmtpApi.1.2.1\lib\net40\SendGrid.SmtpApi.dll</HintPath>
+    <Reference Include="SendGrid.SmtpApi, Version=1.3.1.0, Culture=neutral, PublicKeyToken=2ae73662c35d80e4, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\SendGrid.SmtpApi.1.3.1\lib\net40\SendGrid.SmtpApi.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="SendGridMail, Version=5.1.0.0, Culture=neutral, PublicKeyToken=2ae73662c35d80e4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
