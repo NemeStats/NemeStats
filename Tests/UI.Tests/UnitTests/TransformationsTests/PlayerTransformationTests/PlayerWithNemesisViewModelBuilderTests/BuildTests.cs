@@ -35,7 +35,6 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         private PlayerWithNemesis playerWithNemesis;
         private int gamingGroupId = 1;
         private ApplicationUser currentUser;
-        private string gameName = "gameName";
 
         [SetUp]
         public void SetUp()

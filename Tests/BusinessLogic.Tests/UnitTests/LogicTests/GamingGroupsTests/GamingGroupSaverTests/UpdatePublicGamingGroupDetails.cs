@@ -34,14 +34,14 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
                 PublicDescription = "Description",
                 Website = "Website",
                 GamingGroupName = "some gaming group name",
-                GamingGroupId = currentUser.CurrentGamingGroupId.Value
+                GamingGroupId = currentUser.CurrentGamingGroupId
             };
 
             //--Act
             autoMocker.ClassUnderTest.UpdatePublicGamingGroupDetails(request, currentUser);
 
             //--Assert
-            autoMocker.Get<IDataContext>().FindById<GamingGroup>(currentUser.CurrentGamingGroupId.Value);
+            autoMocker.Get<IDataContext>().FindById<GamingGroup>(currentUser.CurrentGamingGroupId);
             autoMocker.Get<IDataContext>().AssertWasCalled(x => x.Save(Arg<GamingGroup>.Matches(
                 gamingGroup => gamingGroup.Name == request.GamingGroupName
                   && gamingGroup.PublicDescription == request.PublicDescription

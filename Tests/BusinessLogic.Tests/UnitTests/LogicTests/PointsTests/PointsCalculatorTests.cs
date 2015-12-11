@@ -85,7 +85,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PointsTests
         }
 
         [Datapoint]
-        private readonly int[] numberOfPlayersArray = new[]
+        private static readonly int[] numberOfPlayersArray = new[]
         {
             2,
             3,

@@ -46,7 +46,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
             gamingGroupViewModel = new GamingGroupViewModel();
 
             autoMocker.Get<IGamingGroupRetriever>().Expect(mock => mock.GetGamingGroupDetails(
-                currentUser.CurrentGamingGroupId.Value,
+                currentUser.CurrentGamingGroupId,
                 GamingGroupController.MAX_NUMBER_OF_RECENT_GAMES))
                 .Repeat.Once()
                 .Return(gamingGroupSummary);

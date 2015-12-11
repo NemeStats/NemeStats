@@ -43,7 +43,7 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.PlayedGamesCon
         [Test]
         public void ItRecordsThePlayedGameWithTheTransactionSourceSetToRestApi()
         {
-            this.autoMocker.ClassUnderTest.RecordPlayedGame(this.playedGameMessage, this.applicationUser.CurrentGamingGroupId.Value);
+            this.autoMocker.ClassUnderTest.RecordPlayedGame(this.playedGameMessage, this.applicationUser.CurrentGamingGroupId);
 
             this.autoMocker.Get<IPlayedGameCreator>().AssertWasCalled(mock => mock.CreatePlayedGame(
                 Arg<NewlyCompletedGame>.Is.Anything,
@@ -56,7 +56,7 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.PlayedGamesCon
         {
             DateTime expectedDateTime = new DateTime(2015, 4, 10);
 
-            this.autoMocker.ClassUnderTest.RecordPlayedGame(this.playedGameMessage, this.applicationUser.CurrentGamingGroupId.Value);
+            this.autoMocker.ClassUnderTest.RecordPlayedGame(this.playedGameMessage, this.applicationUser.CurrentGamingGroupId);
 
             this.autoMocker.Get<IPlayedGameCreator>().AssertWasCalled(mock => mock.CreatePlayedGame(
                 Arg<NewlyCompletedGame>.Matches(x => x.DatePlayed.Date == expectedDateTime.Date),
@@ -69,7 +69,7 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.PlayedGamesCon
         {
             this.playedGameMessage.DatePlayed = null;
 
-            this.autoMocker.ClassUnderTest.RecordPlayedGame(this.playedGameMessage, this.applicationUser.CurrentGamingGroupId.Value);
+            this.autoMocker.ClassUnderTest.RecordPlayedGame(this.playedGameMessage, this.applicationUser.CurrentGamingGroupId);
 
             this.autoMocker.Get<IPlayedGameCreator>().AssertWasCalled(mock => mock.CreatePlayedGame(
                 Arg<NewlyCompletedGame>.Matches(x => x.DatePlayed.Date == DateTime.UtcNow.Date),
@@ -80,7 +80,7 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.PlayedGamesCon
         [Test]
         public void ItSetsTheGameDefinitionId()
         {
-            this.autoMocker.ClassUnderTest.RecordPlayedGame(this.playedGameMessage, this.applicationUser.CurrentGamingGroupId.Value);
+            this.autoMocker.ClassUnderTest.RecordPlayedGame(this.playedGameMessage, this.applicationUser.CurrentGamingGroupId);
 
             this.autoMocker.Get<IPlayedGameCreator>().AssertWasCalled(mock => mock.CreatePlayedGame(
                 Arg<NewlyCompletedGame>.Matches(x => x.GameDefinitionId == this.playedGameMessage.GameDefinitionId),
@@ -91,7 +91,7 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.PlayedGamesCon
         [Test]
         public void ItSetsTheNotes()
         {
-            this.autoMocker.ClassUnderTest.RecordPlayedGame(this.playedGameMessage, this.applicationUser.CurrentGamingGroupId.Value);
+            this.autoMocker.ClassUnderTest.RecordPlayedGame(this.playedGameMessage, this.applicationUser.CurrentGamingGroupId);
 
             this.autoMocker.Get<IPlayedGameCreator>().AssertWasCalled(mock => mock.CreatePlayedGame(
                 Arg<NewlyCompletedGame>.Matches(x => x.Notes == this.playedGameMessage.Notes),
@@ -107,7 +107,7 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.PlayedGamesCon
                 new PlayerRank() { GameRank = 1, PlayerId = 100, PointsScored = 10 },
                 new PlayerRank() { GameRank = 2, PlayerId = 200, PointsScored = 8 }
             };
-            this.autoMocker.ClassUnderTest.RecordPlayedGame(this.playedGameMessage, this.applicationUser.CurrentGamingGroupId.Value);
+            this.autoMocker.ClassUnderTest.RecordPlayedGame(this.playedGameMessage, this.applicationUser.CurrentGamingGroupId);
             IList<object[]> arguments = this.autoMocker.Get<IPlayedGameCreator>().GetArgumentsForCallsMadeOn(mock => mock.CreatePlayedGame(
                 Arg<NewlyCompletedGame>.Is.Anything,
                 Arg<TransactionSource>.Is.Anything,
@@ -125,7 +125,7 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.PlayedGamesCon
         [Test]
         public void ItReturnsThePlayedGameIdOfTheNewlyCreatedPlayedGame()
         {
-            var actualResponse = this.autoMocker.ClassUnderTest.RecordPlayedGame(this.playedGameMessage, this.applicationUser.CurrentGamingGroupId.Value);
+            var actualResponse = this.autoMocker.ClassUnderTest.RecordPlayedGame(this.playedGameMessage, this.applicationUser.CurrentGamingGroupId);
 
             Assert.That(actualResponse.Content, Is.TypeOf(typeof(ObjectContent<NewlyRecordedPlayedGameMessage>)));
             ObjectContent<NewlyRecordedPlayedGameMessage> content = actualResponse.Content as ObjectContent<NewlyRecordedPlayedGameMessage>;

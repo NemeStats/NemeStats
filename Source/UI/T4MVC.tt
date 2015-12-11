@@ -1,6 +1,6 @@
 ﻿<#
 /*
-T4MVC Version 3.15.4
+T4MVC Version 3.16.5
 Find latest version and documentation at https://github.com/T4MVC/T4MVC/wiki/Documentation
 Discuss on StackOverflow or on GitHub (https://github.com/T4MVC/T4MVC/issues)
 
@@ -937,7 +937,7 @@ void ProcessAllViews(ProjectItem viewsProjectItem, AreaInfo area)
                 Area = area,
                 NotRealController = true,
                 Namespace = MakeClassName(settings.T4MVCNamespace, area.Name),
-                ClassName = item.Name + ControllerSuffix
+                ClassName = Sanitize(item.Name) + ControllerSuffix
             };
             area.Controllers.Add(controller);
         }
@@ -1290,34 +1290,36 @@ PopIndent();
 }
     else { #>
 <#+
+    var mapping = new Dictionary<string, Tuple<string, string>>();
+    mapping.Add(".ts", Tuple.Create(".js", ".min.js"));
+    mapping.Add(".tsx", Tuple.Create(".js", ".min.js"));
+    mapping.Add(".js", Tuple.Create(".js", ".min.js"));
+    mapping.Add(".css", Tuple.Create(".css", ".min.css"));
+
 if (!settings.ExcludedStaticFileExtensions.Any(extension => projectItem.Name.EndsWith(extension, StringComparison.OrdinalIgnoreCase))) {
-    // if it's a Typescript file
-    if (projectItem.Name.EndsWith(".ts")) {
-        string tsJavascriptName =  projectItem.Name.Replace(".ts", ".js");
-        string minifiedName = projectItem.Name.Replace(".ts", ".min.js");
+
+    var extension = Path.GetExtension(projectItem.Name);
+
+    if(mapping.ContainsKey(extension))
+    {
+        var map = mapping[extension];
+
+        if (!projectItem.Name.EndsWith(map.Item2)) {
+        string nonMinifiedName = projectItem.Name.Replace(extension, map.Item1);
+        string minifiedName = projectItem.Name.Replace(extension, map.Item2);
         if (AddTimestampToStaticLink(projectItem)) { #>
-    public static readonly string <#=name#> = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/<#=minifiedName#>") ? Url("<#=minifiedName#>")+"?"+T4MVCHelpers.TimestampString(URLPATH + "/<#=minifiedName#>") : Url("<#=tsJavascriptName#>")+"?"+T4MVCHelpers.TimestampString(URLPATH + "/<#=tsJavascriptName#>");
+    public static readonly string <#=name#> = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/<#=minifiedName#>") ? Url("<#=minifiedName#>")+"?"+T4MVCHelpers.TimestampString(URLPATH + "/<#=minifiedName#>") : Url("<#=nonMinifiedName#>")+"?"+T4MVCHelpers.TimestampString(URLPATH + "/<#=nonMinifiedName#>");
         <#+} else {#>
-    public static readonly string <#=name#> = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/<#=minifiedName#>") ? Url("<#=minifiedName#>") : Url("<#=tsJavascriptName#>");
+    public static readonly string <#=name#> = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/<#=minifiedName#>") ? Url("<#=minifiedName#>") : Url("<#=nonMinifiedName#>");
 <#+}  #>
 <#+}
-    // if it's a non-minified javascript file
-    else if (projectItem.Name.EndsWith(".js") && !projectItem.Name.EndsWith(".min.js")) {
-        string minifiedName = projectItem.Name.Replace(".js", ".min.js");
-        if (AddTimestampToStaticLink(projectItem)) { #>
-    public static readonly string <#=name#> = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/<#=minifiedName#>") ? Url("<#=minifiedName#>")+"?"+T4MVCHelpers.TimestampString(URLPATH + "/<#=minifiedName#>") : Url("<#=projectItem.Name#>")+"?"+T4MVCHelpers.TimestampString(URLPATH + "/<#=projectItem.Name#>");
-        <#+} else {#>
-    public static readonly string <#=name#> = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/<#=minifiedName#>") ? Url("<#=minifiedName#>") : Url("<#=projectItem.Name#>");
-<#+}  #>
+else if (AddTimestampToStaticLink(projectItem)) { #>
+    public static readonly string <#=name#> = Url("<#=projectItem.Name#>")+"?"+T4MVCHelpers.TimestampString(URLPATH + "/<#=projectItem.Name#>");
 <#+}
-    else if (projectItem.Name.EndsWith(".css") && !projectItem.Name.EndsWith(".min.css")) { 
-        string minifiedName = projectItem.Name.Replace(".css", ".min.css");
-        if (AddTimestampToStaticLink(projectItem)) { #>
-    public static readonly string <#=name#> = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/<#=minifiedName#>") ? Url("<#=minifiedName#>")+"?"+T4MVCHelpers.TimestampString(URLPATH + "/<#=minifiedName#>") : Url("<#=projectItem.Name#>")+"?"+T4MVCHelpers.TimestampString(URLPATH + "/<#=projectItem.Name#>");
-        <#+} else {#>
-    public static readonly string <#=name#> = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/<#=minifiedName#>") ? Url("<#=minifiedName#>") : Url("<#=projectItem.Name#>");
-        <#+}  #> 
+    else { #>
+    public static readonly string <#=name#> = Url("<#=projectItem.Name#>");
 <#+}
+    }
     else if (AddTimestampToStaticLink(projectItem)) { #>
     public static readonly string <#=name#> = Url("<#=projectItem.Name#>")+"?"+T4MVCHelpers.TimestampString(URLPATH + "/<#=projectItem.Name#>");
 <#+}
@@ -1648,6 +1650,23 @@ static string Sanitize(string token)
 static string EscapeID(string id)
 {
     return codeProvider.CreateEscapedIdentifier(id);
+}
+
+static string SanitizeDefaultValue(string defaultValue, string type)
+{
+    // Normalize default values that are
+    // 1. default(T) for some type T
+    // 2. The parameterless constructor of a value type
+    if (Regex.IsMatch(defaultValue, @"^\s*default\s*\(.*?\)"))
+    {
+        defaultValue = string.Format("default({0})", type);
+    }
+    else if(Regex.IsMatch(defaultValue, @"^\s*new\s*.*?\s*\(\s*\)"))
+    {
+        defaultValue = string.Format("new {0}()", type);
+    }
+
+    return defaultValue;
 }
 
 // Data structure to collect data about an area
@@ -2462,7 +2481,7 @@ class XmlStringArray : XmlSettingsBase, IEnumerable<string>
     }
 }
 
-/// This is the base class for the standard settings, the main settigns class should inherit from this
+/// This is the base class for the standard settings, the main settings class should inherit from this
 /// one since it provides the methods to interact with the T4 system and EnvDTE. Sub-properties can
 /// just inherit from XmlSettingsBase.
 abstract class XmlSettings : XmlSettingsBase

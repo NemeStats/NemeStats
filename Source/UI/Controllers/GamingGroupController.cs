@@ -78,7 +78,7 @@ namespace UI.Controllers
         [UserContext]
         public virtual ActionResult Index(ApplicationUser currentUser)
         {
-            var gamingGroupSummary = this.GetGamingGroupSummary(currentUser.CurrentGamingGroupId.Value);
+            var gamingGroupSummary = this.GetGamingGroupSummary(currentUser.CurrentGamingGroupId);
 
             GamingGroupViewModel viewModel = gamingGroupViewModelBuilder.Build(gamingGroupSummary, currentUser);
             viewModel.PlayedGames.ShowSearchLinkInResultsHeader = true;

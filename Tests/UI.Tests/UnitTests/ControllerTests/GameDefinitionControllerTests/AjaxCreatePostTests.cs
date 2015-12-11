@@ -25,6 +25,7 @@ using Rhino.Mocks;
 using UI.Models.GameDefinitionModels;
 using BusinessLogic.Models.User;
 using BusinessLogic.Models.Games;
+using BusinessLogic.Exceptions;
 
 namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
 {
@@ -72,14 +73,33 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
         }
 
         [Test]
-        public void ItReturnsANotModifiedStatusIfValidationFails()
+        public void ItReturnsABadRequestWithTheTheFirstModelStateErrorValidationMessageIfValidationFails()
         {
             var model = new CreateGameDefinitionViewModel();
-            gameDefinitionControllerPartialMock.ModelState.AddModelError("key", "message");
+            const string MESSAGE = "some message";
+            gameDefinitionControllerPartialMock.ModelState.AddModelError("key", MESSAGE);
 
             var result = gameDefinitionControllerPartialMock.AjaxCreate(model, currentUser) as HttpStatusCodeResult;
 
-            Assert.AreEqual((int)HttpStatusCode.NotModified, result.StatusCode);
+            Assert.AreEqual((int)HttpStatusCode.BadRequest, result.StatusCode);
+            Assert.AreEqual(result.StatusDescription, MESSAGE);
+        }
+
+        [Test]
+        public void ItReturnsAFriendlyMessageIfThereIsADuplicateKeyException()
+        {
+            var model = new CreateGameDefinitionViewModel
+            {
+                Name = "some name"
+            };
+            gameDefinitionCreatorMock.Expect(mock => mock.CreateGameDefinition(null, null))
+                .IgnoreArguments()
+                .Throw(new DuplicateKeyException("some duplicate key"));
+
+            var result = gameDefinitionControllerPartialMock.AjaxCreate(model, currentUser) as HttpStatusCodeResult;
+
+            Assert.AreEqual((int)HttpStatusCode.BadRequest, result.StatusCode);
+            Assert.AreEqual("This Game Definition is already active within your Gaming Group.", result.StatusDescription);
         }
     }
 }

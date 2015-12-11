@@ -30,7 +30,6 @@ using UI.Models;
 
 namespace UI.Tests.UnitTests.ControllerTests.AccountControllerTests
 {
-    [TestFixture]
     public class AccountControllerTestBase
     {
         protected ApplicationUserManager userManager;

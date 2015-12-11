@@ -47,6 +47,7 @@ namespace UI.Transformations
                 Name = gameDefinitionSummary.Name,
                 Description = gameDefinitionSummary.Description,
                 TotalNumberOfGamesPlayed = gameDefinitionSummary.TotalNumberOfGamesPlayed,
+                AveragePlayersPerGame = string.Format("{0:0.#}", gameDefinitionSummary.AveragePlayersPerGame),
                 GamingGroupId = gameDefinitionSummary.GamingGroupId,
                 GamingGroupName = gameDefinitionSummary.GamingGroupName,
                 BoardGameGeekGameDefinitionId = gameDefinitionSummary.BoardGameGeekGameDefinitionId,

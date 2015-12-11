@@ -35,7 +35,7 @@ namespace BusinessLogic.Logic.Users
 
         public void SwitchGamingGroupContext(int gamingGroupId, ApplicationUser currentUser)
         {
-            if (gamingGroupId == currentUser.CurrentGamingGroupId.Value)
+            if (gamingGroupId == currentUser.CurrentGamingGroupId)
             {
                 return;
             }

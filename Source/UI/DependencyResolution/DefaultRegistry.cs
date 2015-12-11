@@ -51,6 +51,7 @@ namespace UI.DependencyResolution {
     using StructureMap.Web;
     using BusinessLogic.Logic.Nemeses;
     using System.Web;
+    using StructureMap;
 
     public class DefaultRegistry : Registry {
         #region Constructors and Destructors

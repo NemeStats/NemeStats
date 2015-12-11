@@ -39,7 +39,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerSaverTests
                 {
                     Id = idOfPlayerThatAlreadyExists,
                     Name = this.playerThatAlreadyExists.Name,
-                    GamingGroupId = currentUser.CurrentGamingGroupId.Value
+                    GamingGroupId = currentUser.CurrentGamingGroupId
                 },
                 new Player
                 {

@@ -41,7 +41,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.GameDefinitionsTests.G
             {
                 var playerRepository = new EntityFrameworkPlayerRepository(dataContext);
                 retriever = new GameDefinitionRetriever(dataContext, playerRepository);
-                this.actualGameDefinitionSummaries = retriever.GetAllGameDefinitions(testUserWithDefaultGamingGroup.CurrentGamingGroupId.Value);
+                this.actualGameDefinitionSummaries = retriever.GetAllGameDefinitions(testUserWithDefaultGamingGroup.CurrentGamingGroupId);
             }
         }
 

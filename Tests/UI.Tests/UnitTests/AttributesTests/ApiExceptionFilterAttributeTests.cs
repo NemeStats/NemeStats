@@ -46,7 +46,7 @@ namespace UI.Tests.UnitTests.AttributesTests
             autoMocker.ClassUnderTest.OnException(context);
 
             Assert.That(context.Response.StatusCode, Is.EqualTo(expectedException.StatusCode));
-            Assert.That(await context.Response.Content.ReadAsStringAsync(), Is.StringContaining(expectedException.Message));
+            Assert.That(await context.Response.Content.ReadAsStringAsync(),Does.Contain(expectedException.Message));
         }
     }
 }

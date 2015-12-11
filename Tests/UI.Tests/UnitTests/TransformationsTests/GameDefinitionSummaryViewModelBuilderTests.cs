@@ -43,7 +43,7 @@ namespace UI.Tests.UnitTests.TransformationsTests
         protected Player championPlayer;
         protected Player previousChampionPlayer;
 
-        [TestFixtureSetUp]
+        [OneTimeSetUpAttribute]
         public void FixtureSetUp()
         {
             transformer = new GameDefinitionSummaryViewModelBuilder();            

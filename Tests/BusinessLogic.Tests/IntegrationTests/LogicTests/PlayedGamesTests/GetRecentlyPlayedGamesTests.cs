@@ -39,7 +39,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGamesTests
                 {
                     PlayedGameRetriever retriever = new PlayedGameRetriever(dataContext);
 
-                    List<PlayedGame> playedGames = retriever.GetRecentGames(1, testUserWithDefaultGamingGroup.CurrentGamingGroupId.Value);
+                    List<PlayedGame> playedGames = retriever.GetRecentGames(1, testUserWithDefaultGamingGroup.CurrentGamingGroupId);
                     GameDefinition gameDefinition = playedGames[0].GameDefinition;
 
                     Assert.NotNull(gameDefinition);
@@ -58,7 +58,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGamesTests
                 {
                     PlayedGameRetriever retriever = new PlayedGameRetriever(dataContext);
 
-                    List<PlayedGame> playedGames = retriever.GetRecentGames(1, testUserWithDefaultGamingGroup.CurrentGamingGroupId.Value);
+                    List<PlayedGame> playedGames = retriever.GetRecentGames(1, testUserWithDefaultGamingGroup.CurrentGamingGroupId);
                     ICollection<PlayerGameResult> playerGameResults = playedGames[0].PlayerGameResults;
 
                     Assert.NotNull(playerGameResults);
@@ -77,7 +77,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGamesTests
                 {
                     PlayedGameRetriever retriever = new PlayedGameRetriever(dataContext);
 
-                    List<PlayedGame> playedGames = retriever.GetRecentGames(1, testUserWithDefaultGamingGroup.CurrentGamingGroupId.Value);
+                    List<PlayedGame> playedGames = retriever.GetRecentGames(1, testUserWithDefaultGamingGroup.CurrentGamingGroupId);
                     List<Player> players = playedGames[0].PlayerGameResults.Select(
                         playerGameResult => new Player()
                                                 {
@@ -98,7 +98,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGamesTests
             {
                 PlayedGameRetriever retriever = new PlayedGameRetriever(dataContext);
                 int one = 1;
-                List<PlayedGame> playedGames = retriever.GetRecentGames(one, testUserWithDefaultGamingGroup.CurrentGamingGroupId.Value);
+                List<PlayedGame> playedGames = retriever.GetRecentGames(one, testUserWithDefaultGamingGroup.CurrentGamingGroupId);
 
                 Assert.AreEqual(one, playedGames.Count());
             }
@@ -111,7 +111,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGamesTests
             {
                 PlayedGameRetriever retriever = new PlayedGameRetriever(dataContext);
                 int two = 2;
-                List<PlayedGame> playedGames = retriever.GetRecentGames(two, testUserWithDefaultGamingGroup.CurrentGamingGroupId.Value);
+                List<PlayedGame> playedGames = retriever.GetRecentGames(two, testUserWithDefaultGamingGroup.CurrentGamingGroupId);
 
                 Assert.AreEqual(two, playedGames.Count());
             }
@@ -124,7 +124,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGamesTests
             {
                 PlayedGameRetriever retriever = new PlayedGameRetriever(dataContext);
                 int five = 5;
-                List<PlayedGame> playedGames = retriever.GetRecentGames(five, testUserWithDefaultGamingGroup.CurrentGamingGroupId.Value);
+                List<PlayedGame> playedGames = retriever.GetRecentGames(five, testUserWithDefaultGamingGroup.CurrentGamingGroupId);
                 List<PlayedGame> allPlayedGames = dataContext.GetQueryable<PlayedGame>()
                     .Where(game => game.GamingGroupId == testUserWithDefaultGamingGroup.CurrentGamingGroupId)
                     .ToList()
@@ -144,7 +144,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGamesTests
             {
                 PlayedGameRetriever retriever = new PlayedGameRetriever(dataContext);
                 int five = 5;
-                List<PlayedGame> playedGames = retriever.GetRecentGames(five, testUserWithDefaultGamingGroup.CurrentGamingGroupId.Value);
+                List<PlayedGame> playedGames = retriever.GetRecentGames(five, testUserWithDefaultGamingGroup.CurrentGamingGroupId);
 
                 int lastRank = -1;
 
@@ -168,7 +168,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGamesTests
             {
                 PlayedGameRetriever retriever = new PlayedGameRetriever(dataContext);
                 
-                List<PlayedGame> playedGames = retriever.GetRecentGames(20, testUserWithOtherGamingGroup.CurrentGamingGroupId.Value);
+                List<PlayedGame> playedGames = retriever.GetRecentGames(20, testUserWithOtherGamingGroup.CurrentGamingGroupId);
 
                 Assert.True(playedGames.All(game => game.GamingGroupId == testUserWithOtherGamingGroup.CurrentGamingGroupId));
             }

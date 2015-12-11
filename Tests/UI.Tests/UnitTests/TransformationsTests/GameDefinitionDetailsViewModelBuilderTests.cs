@@ -58,7 +58,7 @@ namespace UI.Tests.UnitTests.TransformationsTests
         private PlayerSummaryViewModel expectedPlayerSummary1;
         private PlayerSummaryViewModel expectedPlayerSummary2;
 
-        [TestFixtureSetUp]
+        [OneTimeSetUpAttribute]
         public void FixtureSetUp()
         {
             autoMocker = new RhinoAutoMocker<GameDefinitionDetailsViewModelBuilder>();
@@ -122,6 +122,8 @@ namespace UI.Tests.UnitTests.TransformationsTests
                 GamingGroupId = gamingGroupid,
                 GamingGroupName = "gaming group name",
                 PlayedGames = playedGames,
+                TotalNumberOfGamesPlayed = 3,
+                AveragePlayersPerGame = 2.2M,
                 BoardGameGeekGameDefinitionId = 123,
                 Champion = champion,
                 PreviousChampion = previousChampion,
@@ -165,6 +167,13 @@ namespace UI.Tests.UnitTests.TransformationsTests
         public void ItCopiesTheTotalNumberOfGamesPlayed()
         {
             Assert.AreEqual(gameDefinitionSummary.TotalNumberOfGamesPlayed, viewModel.TotalNumberOfGamesPlayed);
+        }
+
+        [Test]
+        public void ItCopiesTheAveragePlayersPerGame()
+        {
+            var expectedValue = string.Format("{0:0.#}", gameDefinitionSummary.AveragePlayersPerGame);
+            Assert.AreEqual(expectedValue, viewModel.AveragePlayersPerGame);
         }
 
         [Test]

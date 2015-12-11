@@ -92,20 +92,42 @@ namespace UI.Controllers
 		[UserContext]
 		[HttpGet]
 		public virtual ActionResult Create(ApplicationUser currentUser)
-		{
-			var viewModel = new PlayedGameEditViewModel
-			{
-				GameDefinitions = new SelectList(
-					gameDefinitionRetriever.GetAllGameDefinitions(currentUser.CurrentGamingGroupId.Value),
-					"Id",
-					"Name"),
-				Players = this.GetAllPlayers(currentUser)
-			};
+        {
+            var gameDefinitionSummaries = gameDefinitionRetriever.GetAllGameDefinitions(currentUser.CurrentGamingGroupId);
 
-			return View(MVC.PlayedGame.Views.Create, viewModel);
-		}
+            SelectList gameDefinitionSummariesSelectList = BuildGameDefinitionSummariesSelectList(gameDefinitionSummaries);
+            var viewModel = new PlayedGameEditViewModel
+            {
+                GameDefinitions = gameDefinitionSummariesSelectList,
+                Players = this.GetAllPlayers(currentUser)
+            };
 
-		[HttpGet]
+            return View(MVC.PlayedGame.Views.Create, viewModel);
+        }
+
+        private static SelectList BuildGameDefinitionSummariesSelectList(IList<GameDefinitionSummary> gameDefinitionSummaries)
+        {
+            SelectList gameDefinitionSummariesSelectList;
+            if (gameDefinitionSummaries.Count == 1)
+            {
+                gameDefinitionSummariesSelectList = new SelectList(
+                    gameDefinitionSummaries,
+                    "Id",
+                    "Name",
+                    gameDefinitionSummaries[0].Id);
+            }
+            else
+            {
+                gameDefinitionSummariesSelectList = new SelectList(
+                    gameDefinitionSummaries,
+                    "Id",
+                    "Name");
+            }
+
+            return gameDefinitionSummariesSelectList;
+        }
+
+        [HttpGet]
 		public virtual ActionResult ShowRecentlyPlayedGames()
 		{
 			var recentlyPlayedGames = playedGameRetriever.GetRecentPublicGames(NUMBER_OF_RECENT_GAMES_TO_DISPLAY);
@@ -135,7 +157,7 @@ namespace UI.Controllers
 
 		private IEnumerable<SelectListItem> GetAllPlayers(ApplicationUser currentUser)
 		{
-			List<Player> allPlayers = playerRetriever.GetAllPlayers(currentUser.CurrentGamingGroupId.Value);
+			List<Player> allPlayers = playerRetriever.GetAllPlayers(currentUser.CurrentGamingGroupId);
 			List<SelectListItem> allPlayersSelectList = allPlayers.Select(item => new SelectListItem
 			{
 				Text = item.Name,
@@ -183,7 +205,7 @@ namespace UI.Controllers
 		public virtual ActionResult Edit(int id, ApplicationUser currentUser)
 		{
 			var viewModel = new PlayedGameEditViewModel();
-			var gameDefinitionsList = this.gameDefinitionRetriever.GetAllGameDefinitions(currentUser.CurrentGamingGroupId.Value);
+			var gameDefinitionsList = this.gameDefinitionRetriever.GetAllGameDefinitions(currentUser.CurrentGamingGroupId);
 			viewModel.GameDefinitions = gameDefinitionsList.Select(item => new SelectListItem
 			{
 				Text = item.Name,
@@ -237,7 +259,7 @@ namespace UI.Controllers
         {
             var viewModel = new SearchViewModel
             {
-                GameDefinitions = GetAllGameDefinitionsForCurrentGamingGroup(currentUser.CurrentGamingGroupId.Value)
+                GameDefinitions = GetAllGameDefinitionsForCurrentGamingGroup(currentUser.CurrentGamingGroupId)
             };
             return View(MVC.PlayedGame.Views.Search, viewModel);
         }
@@ -288,7 +310,7 @@ namespace UI.Controllers
                     DatePlayedStart = filter.DatePlayedStart,
                     GameDefinitionId = filter.GameDefinitionId
                 },
-                GameDefinitions = GetAllGameDefinitionsForCurrentGamingGroup(currentUser.CurrentGamingGroupId.Value),
+                GameDefinitions = GetAllGameDefinitionsForCurrentGamingGroup(currentUser.CurrentGamingGroupId),
                 PlayedGames = new PlayedGamesViewModel
                 {
                     PlayedGameDetailsViewModels = playedGamesDetails,

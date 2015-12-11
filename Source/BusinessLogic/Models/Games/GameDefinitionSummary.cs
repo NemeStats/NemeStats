@@ -36,5 +36,6 @@ namespace BusinessLogic.Models.Games
         public Uri BoardGameGeekUri { get; set; }
         public string ThumbnailImageUrl { get; set; }
         public IList<PlayerWinRecord> PlayerWinRecords { get; set; }
+        public Decimal AveragePlayersPerGame { get; set; }
     }
 }

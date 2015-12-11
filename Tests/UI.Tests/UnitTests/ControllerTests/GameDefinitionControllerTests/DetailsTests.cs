@@ -44,7 +44,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
             gameDefinitionSummary = new GameDefinitionSummary()
             {
                 PlayedGames = new List<PlayedGame>(),
-                GamingGroupId = currentUser.CurrentGamingGroupId.Value
+                GamingGroupId = currentUser.CurrentGamingGroupId
             };
 
             gameDefinitionRetrieverMock.Expect(repo => repo.GetGameDefinitionDetails(
