@@ -10,13 +10,19 @@
         @*<img src="~/Content/Images/NemeStats.png" alt="NemeStats" style="width: 70%; margin-left:15%; margin-right:15%;" />*@
         <div class="cta-wrapper container">
             <div class="row">
+                <div class="col-md-7 subtitle">
+                    <div><img src="~/Content/Images/NemeStats-White.png"/>
+                    </div>
+                    <div class="voffset8">Board game tracking made fun!</div>
+                    
+                </div>
                 <div class="col-md-5">
                     <div class="panel panel-default">
                         <div class="panel-body social-login">
                             @using (Html.BeginForm(MVC.Account.ExternalLogin()))
                             {
                                 @Html.AntiForgeryToken()
-                                <button type="submit" class="btn btn-info btn-lg" id="Google" name="provider" value="Google" title="Log in using your Google account"><i class="fa fa-google fa-lg"></i>Access with Google</button>
+                                <button type="submit" class="btn btn-google btn-lg" id="Google" name="provider" value="Google" title="Log in using your Google account"><i class="fa fa-google fa-lg"></i>Access with Google</button>
                             }
                         </div>
                         <div class="common-login">
@@ -24,7 +30,7 @@
                             <div class="title">Access with your user</div>
                             @{ Html.RenderAction(MVC.Account.LoginForm()); }
                         </div>
-                    </div>                    
+                    </div>
                 </div>
             </div>
         </div>

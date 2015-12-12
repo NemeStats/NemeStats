@@ -509,6 +509,7 @@
     <Content Include="fonts\bootstrap\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\bootstrap\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\bootstrap\glyphicons-halflings-regular.eot" />
+    <Content Include="sass\nemestats\buttons.scss" />
     <None Include="sass\nemestats\player.scss" />
     <Content Include="sass\nemestats\nemestats-variables.scss" />
     <Content Include="sass\nemestats\flipscroll.scss" />

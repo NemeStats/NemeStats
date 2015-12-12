@@ -1,0 +1,8 @@
+﻿@import 'nemestats-variables.scss';
+@import '../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/mixins.scss';
+
+.btn {
+    &.btn-google {
+        @include button-variant(white,$google-background-color,$google-background-color)
+    }
+}

@@ -17,6 +17,18 @@
         .cta-wrapper {
             min-height: 550px;
 
+            .subtitle {
+                font-family: "Flavors";
+                font-size: 60px;
+                color: $brand-info;
+                margin-top: 40px;
+                text-align: center;
+
+                img {
+                    width: 500px;
+                }
+            }
+
             .panel {
                 margin-top: 80px;
                 text-align: center;

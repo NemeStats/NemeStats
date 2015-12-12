@@ -246,7 +246,7 @@ ul input[type=text] {
 .playerItem {
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
     color: #fff;
-    background-color: $header-background-color;
+    background-color: $brand-primary;
     max-width: 380px;
     margin: 8px;
     padding: 4px;
@@ -257,12 +257,12 @@ ul input[type=text] {
     margin-left: 0px;
 
     button {
-        color: $header-background-color;
+        color: $brand-primary;
     }
 
     input[type="text"] {
-        color: $header-background-color;
-        border-color: $header-background-color;
+        color: $brand-primary;
+        border-color: $brand-primary;
     }
 }
 
