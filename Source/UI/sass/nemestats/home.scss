@@ -15,22 +15,35 @@
         background-size: cover;
 
         .cta-wrapper {
-            min-height: 550px;
+            padding: 20px 0 40px 0;
 
             .subtitle {
-                font-family: "Flavors";
-                font-size: 60px;
-                color: $brand-info;
-                margin-top: 40px;
-                text-align: center;
+                .text {
+                    font-family: "Flavors";
+                    font-size: 60px;
+                    color: $brand-info;
+                    margin-top: 40px;
+
+                    @media (max-width: $screen-sm-max) {
+                        margin-top: 20px;
+                        text-align: center;
+                        font-size: 40px;
+                    }
+                }
 
                 img {
-                    width: 500px;
+                    padding-top: 40px;
+                    height: 150px;
+
+                    @media (max-width: $screen-sm-max) {
+                        display: block;
+                        margin: 0 auto;
+                    }
                 }
             }
 
             .panel {
-                margin-top: 80px;
+                margin-top: 40px;
                 text-align: center;
 
                 .social-login {
@@ -59,7 +72,7 @@
                         line-height: 30px;
                         color: #4e525b;
                         font-size: 14px;
-                        font-weight: 600;
+                        font-weight: $font-weight-bold;
                         background-color: white;
                         -webkit-border-radius: 500px;
                         -webkit-background-clip: padding-box;

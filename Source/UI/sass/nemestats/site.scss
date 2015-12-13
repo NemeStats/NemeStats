@@ -58,7 +58,7 @@ input {
 
 .firstplace {
     color: darken($team-win-color,10%);
-    font-weight: bold;
+    font-weight: $font-weight-bold;
 }
 
 .sortable {
@@ -311,12 +311,12 @@ h3 > a {
 
 .upvote-count {
     color: $team-win-color;
-    font-weight: bold;
+    font-weight: $font-weight-bold;
 }
 
 .downvote-count {
     color: $team-loss-color;
-    font-weight: bold;
+    font-weight: $font-weight-bold;
 }
 
 .btn-recordgame {
@@ -330,4 +330,13 @@ button > i.fa {
 
 .panel > i.fa {
     line-height: 36;
+}
+
+
+.navbar-brand {
+    padding: 10px;
+
+    img {
+        width: 120px;
+    }
 }

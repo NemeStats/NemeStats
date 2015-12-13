@@ -7,16 +7,13 @@
 
 <div class="home-container">
     <div class="home-banner">
-        @*<img src="~/Content/Images/NemeStats.png" alt="NemeStats" style="width: 70%; margin-left:15%; margin-right:15%;" />*@
         <div class="cta-wrapper container">
             <div class="row">
-                <div class="col-md-7 subtitle">
-                    <div><img src="~/Content/Images/NemeStats-White.png"/>
-                    </div>
-                    <div class="voffset8">Board game tracking made fun!</div>
-                    
+                <div class="col-md-7 col-xs-12 subtitle">
+                    <img src="~/Content/Images/NemeStats.png"/>
+                    <div class="text">Board game tracking made fun!</div>
                 </div>
-                <div class="col-md-5">
+                <div class="col-md-5 col-md-offset-0 col-xs-10 col-xs-offset-1">
                     <div class="panel panel-default">
                         <div class="panel-body social-login">
                             @using (Html.BeginForm(MVC.Account.ExternalLogin()))
@@ -36,76 +33,6 @@
         </div>
     </div>
 </div>
-
-@*<div id="mainCarousel" class="carousel slide" data-ride="carousel" data-interval="15000" data-pause="hover">
-        <ol class="carousel-indicators">
-            <li data-target="#mainCarousel" data-slide-to="0" class="active"></li>
-            <li data-target="#mainCarousel" data-slide-to="1"></li>
-        </ol>
-
-        <div class="carousel-inner">
-            <div class="item active" style="min-height: 365px;">
-                <div class="container">
-                    <div class="carousel-caption" id="homePageCarouselPage1">
-                        <h2>Keep Track Of Your Nemesis</h2>
-                        <p class="lead">
-                            NemeStats (as in "Nemesis Statistics") is a free web application for logging games played among a relatively stable group of players. It takes only
-                            a moment and will give you statistics on your win percentage, average rank in games, who is your Nemesis and who is your Minion, etc.
-                            When you register, a new "Gaming Group" will be created where you and other players in your group can watch your statistics materialize over time.
-                            <br /><br />
-                            All information is publicly accessible so feel free to browse around! If you'd like to give it a shot just @Html.ActionLink("Register", "Register", "Account", null, new { id = "carouselregister" }),
-                            set up the game and players you want to record, and start tracking!
-                        </p>
-                        <p>
-                            NemeStats is open source and accepting feature requests
-                            via <a href='https://github.com/jakejgordon/NemeStats' target="_blank">GitHub</a>. Check out the features that are being worked on or in the backlog
-                            <a href='https://waffle.io/jakejgordon/NemeStats' target="_blank">here</a>.
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="item" style="min-height: 365px;">
-                <div class="container">
-                    <div class="carousel-caption">
-                        <div class="col-md-4" id="homePageCarouselSetupGames">
-                            <span class="home-page-icon">
-                                <i class="fa fa-gamepad"></i>
-                            </span>
-                            <h2>Setup Games</h2>
-                            <p>
-                                Manage the list of Games your Gaming Group plays here. A Game Definition must be created in order to log a played game.
-                                Games may be linked to Board Game Geek for convenient linkage.
-                            </p>
-                            <p>@Html.ActionLink("Manage Games", "Index", "GamingGroup", null, null, UI.Controllers.GamingGroupController.SECTION_ANCHOR_GAMEDEFINITIONS, null, null)</p>
-                        </div>
-                        <div class="col-md-4" id="homePageCarouselSetupPlayers">
-                            <span class="home-page-icon">
-                                <i class="fa fa-users"></i>
-                            </span>
-                            <h2>Setup Players</h2>
-                            <p>
-                                Manage the list of Players in your Gaming Group. A Player must be created in order to log a played game for that Player. You can send invitations to Players so they can also record games in your Gaming Group.
-                            </p>
-                            <p>@Html.ActionLink("Manage Players", "Index", "GamingGroup", null, null, UI.Controllers.GamingGroupController.SECTION_ANCHOR_PLAYERS, null, null)</p>
-                        </div>
-                        <div class="col-md-4" id="homePageCarouselTrackGameResults">
-                            <span class="home-page-icon">
-                                <i class="fa fa-line-chart"></i>
-                            </span>
-                            <h2>Track Game Results</h2>
-
-                            <p>
-                                Log the results of your board games here. This is where the magic happens! NemeStats has a unique system for tracking played games that allows for some really sweet statistics.
-                            </p>
-
-                            <p>@Html.ActionLink("Game Results", "Create", "PlayedGame")</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>*@
 
 <div class="home-body-container">
     <div class="col-md-12">
