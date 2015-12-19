@@ -333,7 +333,7 @@ namespace UI.Controllers
             var user = await userManager.FindAsync(loginInfo.Login);
             if (user != null)
             {
-                await SignInAsync(user, isPersistent: false);
+                await SignInAsync(user, true);
 
                 if (string.IsNullOrEmpty(returnUrl))
                 {
