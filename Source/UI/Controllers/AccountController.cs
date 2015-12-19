@@ -335,6 +335,11 @@ namespace UI.Controllers
             {
                 await SignInAsync(user, isPersistent: false);
 
+                if (string.IsNullOrEmpty(returnUrl))
+                {
+                    return RedirectToAction(MVC.GamingGroup.Index(user));
+                }
+
                 return RedirectToLocal(returnUrl);
             }
             else
