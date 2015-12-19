@@ -11,7 +11,7 @@
     }
 
     .home-banner {
-        background: url(/Content/Images/Home/Banner.png) no-repeat center center;
+        background: url(/Content/Images/Home/Banner.jpg) no-repeat center center;
         background-size: cover;
 
         .cta-wrapper {
@@ -19,10 +19,11 @@
 
             .subtitle {
                 .text {
-                    font-family: "Flavors";
+                    font-family: "Audiowide";
                     font-size: 60px;
-                    color: $brand-info;
+                    color: $subtitle-color;
                     margin-top: 40px;
+                    text-shadow: 0 1px 2px #111111;
 
                     @media (max-width: $screen-sm-max) {
                         margin-top: 20px;

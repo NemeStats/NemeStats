@@ -104,15 +104,16 @@
     padding-left: 2%;
     padding-right: 2%; }
   .home-container .home-banner {
-    background: url(/Content/Images/Home/Banner.png) no-repeat center center;
+    background: url(/Content/Images/Home/Banner.jpg) no-repeat center center;
     background-size: cover; }
     .home-container .home-banner .cta-wrapper {
       padding: 20px 0 40px 0; }
       .home-container .home-banner .cta-wrapper .subtitle .text {
-        font-family: "Flavors";
+        font-family: "Audiowide";
         font-size: 60px;
-        color: #F2E394;
-        margin-top: 40px; }
+        color: #B2804D;
+        margin-top: 40px;
+        text-shadow: 0 1px 2px #111111; }
         @media (max-width: 991px) {
           .home-container .home-banner .cta-wrapper .subtitle .text {
             margin-top: 20px;
@@ -188,25 +189,25 @@ input, select {
 
 /* styles for validation helpers */
 .field-validation-error {
-  color: #D96459; }
+  color: #EB7260; }
 
 .field-validation-valid {
   display: none; }
 
 input.input-validation-error {
-  border: 1px solid #D96459; }
+  border: 1px solid #EB7260; }
 
 input[type="checkbox"].input-validation-error {
   border: 0 none; }
 
 .validation-summary-errors {
-  color: #D96459; }
+  color: #EB7260; }
 
 .validation-summary-valid {
   display: none; }
 
 .firstplace {
-  color: #446d59;
+  color: #1f827d;
   font-weight: 700; }
 
 .sortable {
@@ -353,7 +354,7 @@ ul input[type=text] {
 .playerItem {
   font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
   color: #fff;
-  background-color: #8C4646;
+  background-color: #354458;
   max-width: 380px;
   margin: 8px;
   padding: 4px;
@@ -363,10 +364,10 @@ ul input[type=text] {
   white-space: nowrap;
   margin-left: 0px; }
   .playerItem button {
-    color: #8C4646; }
+    color: #354458; }
   .playerItem input[type="text"] {
-    color: #8C4646;
-    border-color: #8C4646; }
+    color: #354458;
+    border-color: #354458; }
 
 .gaming-group-name {
   min-width: 95%;
@@ -391,20 +392,20 @@ h3 > a {
   font-size: smaller; }
 
 .gameResult-teamLoss {
-  color: #D96459; }
+  color: #EB7260; }
 
 .gameResult-teamWin {
-  color: #588C73; }
+  color: #29ABA4; }
 
 .rank-item {
   font-size: 26px; }
 
 .upvote-count {
-  color: #588C73;
+  color: #29ABA4;
   font-weight: 700; }
 
 .downvote-count {
-  color: #D96459;
+  color: #EB7260;
   font-weight: 700; }
 
 .btn-recordgame {
@@ -523,7 +524,7 @@ footer {
         font-size: 14px;
         line-height: 20px; } }
     .progress .progress-bar.won {
-      background-color: #588C73;
+      background-color: #29ABA4;
       position: relative; }
       .progress .progress-bar.won:before {
         content: ' ';
@@ -546,7 +547,7 @@ footer {
         border-width: 0 0 10px 10px;
         border-color: transparent transparent #ffffff transparent; }
     .progress .progress-bar.lost {
-      background-color: #D96459;
+      background-color: #EB7260;
       position: relative; }
       .progress .progress-bar.lost:before {
         content: ' ';
@@ -573,7 +574,7 @@ footer {
 
 /*$header-background-color: #2C3E50;*/
 .neme-points-ico {
-  color: #8C4646;
+  color: #354458;
   font-size: 10px; }
   .neme-points-ico .letter {
     color: white;

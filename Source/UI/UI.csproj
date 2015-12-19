@@ -430,7 +430,7 @@
     <Content Include="Content\font-awesome.css" />
     <Content Include="Content\font-awesome.min.css" />
     <Content Include="Content\Images\bgg_small.png" />
-    <Content Include="Content\Images\Home\Banner.png" />
+    <Content Include="Content\Images\Home\Banner.jpg" />
     <Content Include="Content\Images\NemeStats-White.png" />
     <Content Include="Content\Images\NemeStats.png" />
     <Content Include="Content\Images\spinner.gif" />
