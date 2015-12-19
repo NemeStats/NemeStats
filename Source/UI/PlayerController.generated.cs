@@ -80,6 +80,12 @@ namespace UI.Controllers
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Edit);
         }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult CurrentPlayerQuickStats()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.CurrentPlayerQuickStats);
+        }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public PlayerController Actions { get { return MVC.Player; } }
@@ -104,6 +110,7 @@ namespace UI.Controllers
             public readonly string ShowRecentNemesisChanges = "ShowRecentNemesisChanges";
             public readonly string Save = "Save";
             public readonly string Edit = "Edit";
+            public readonly string CurrentPlayerQuickStats = "CurrentPlayerQuickStats";
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -117,6 +124,7 @@ namespace UI.Controllers
             public const string ShowRecentNemesisChanges = "ShowRecentNemesisChanges";
             public const string Save = "Save";
             public const string Edit = "Edit";
+            public const string CurrentPlayerQuickStats = "CurrentPlayerQuickStats";
         }
 
 
@@ -158,6 +166,14 @@ namespace UI.Controllers
             public readonly string player = "player";
             public readonly string currentUser = "currentUser";
         }
+        static readonly ActionParamsClass_CurrentPlayerQuickStats s_params_CurrentPlayerQuickStats = new ActionParamsClass_CurrentPlayerQuickStats();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_CurrentPlayerQuickStats CurrentPlayerQuickStatsParams { get { return s_params_CurrentPlayerQuickStats; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_CurrentPlayerQuickStats
+        {
+            public readonly string currentUser = "currentUser";
+        }
         static readonly ViewsClass s_views = new ViewsClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ViewsClass Views { get { return s_views; } }
@@ -174,6 +190,7 @@ namespace UI.Controllers
                 public readonly string _RecentNemesisChangesPartial = "_RecentNemesisChangesPartial";
                 public readonly string _TopPlayersPartial = "_TopPlayersPartial";
                 public readonly string Create = "Create";
+                public readonly string CurrentPlayerQuickStats = "CurrentPlayerQuickStats";
                 public readonly string Details = "Details";
                 public readonly string Edit = "Edit";
                 public readonly string InvitePlayer = "InvitePlayer";
@@ -186,6 +203,7 @@ namespace UI.Controllers
             public readonly string _RecentNemesisChangesPartial = "~/Views/Player/_RecentNemesisChangesPartial.cshtml";
             public readonly string _TopPlayersPartial = "~/Views/Player/_TopPlayersPartial.cshtml";
             public readonly string Create = "~/Views/Player/Create.cshtml";
+            public readonly string CurrentPlayerQuickStats = "~/Views/Player/CurrentPlayerQuickStats.cshtml";
             public readonly string Details = "~/Views/Player/Details.cshtml";
             public readonly string Edit = "~/Views/Player/Edit.cshtml";
             public readonly string InvitePlayer = "~/Views/Player/InvitePlayer.cshtml";
@@ -317,6 +335,18 @@ namespace UI.Controllers
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "player", player);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "currentUser", currentUser);
             EditOverride(callInfo, player, currentUser);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void CurrentPlayerQuickStatsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, BusinessLogic.Models.User.ApplicationUser currentUser);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult CurrentPlayerQuickStats(BusinessLogic.Models.User.ApplicationUser currentUser)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.CurrentPlayerQuickStats);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "currentUser", currentUser);
+            CurrentPlayerQuickStatsOverride(callInfo, currentUser);
             return callInfo;
         }
 

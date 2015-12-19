@@ -5,4 +5,9 @@
     &.btn-google {
         @include button-variant(white,$google-background-color,$google-background-color)
     }
+
+    &.btn-action {
+        @include button-variant(white,$brand-info,$brand-primary);
+        text-transform: uppercase;
+    }
 }

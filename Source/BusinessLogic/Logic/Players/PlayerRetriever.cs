@@ -58,6 +58,7 @@ namespace BusinessLogic.Logic.Players
                                       select new PlayerWithNemesis
                                       {
                                           PlayerId = player.Id,
+                                          ApplicationUserId = player.ApplicationUserId,
                                           PlayerName = player.Name,
                                           PlayerActive = player.Active,
                                           PlayerRegistered = !string.IsNullOrEmpty(player.ApplicationUserId),

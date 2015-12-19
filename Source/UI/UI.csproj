@@ -373,6 +373,7 @@
     <Compile Include="Models\Players\PlayerEditViewModel.cs" />
     <Compile Include="Models\Players\PlayerGameSummaryViewModel.cs" />
     <Compile Include="Models\Players\PlayerInvitationViewModel.cs" />
+    <Compile Include="Models\Players\PlayerQuickStatsViewModel.cs" />
     <Compile Include="Models\Players\PlayersSummaryViewModel.cs" />
     <Compile Include="Models\Players\PlayerSummaryViewModel.cs" />
     <Compile Include="Models\Players\TopPlayerViewModel.cs" />
@@ -405,6 +406,8 @@
     <Compile Include="Transformations\INemesisChangeViewModelBuilder.cs" />
     <Compile Include="Transformations\ITransformer.cs" />
     <Compile Include="Transformations\NemesisChangeViewModelBuilder.cs" />
+    <Compile Include="Transformations\PlayerTransformations\IPlayerQuickStatsViewModelBuilder.cs" />
+    <Compile Include="Transformations\PlayerTransformations\PlayerQuickStatsViewModelBuilder.cs" />
     <Compile Include="Transformations\TransformationsHelper.cs" />
     <Compile Include="Transformations\Transformer.cs" />
     <Compile Include="Transformations\PlayedGameDetailsViewModelBuilder.cs" />
@@ -746,6 +749,7 @@
     <Content Include="Views\Account\UserGamingGroups.cshtml" />
     <Content Include="Views\Account\LoginForm.cshtml" />
     <Content Include="Views\Shared\Footer.cshtml" />
+    <Content Include="Views\Player\CurrentPlayerQuickStats.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Code\" />

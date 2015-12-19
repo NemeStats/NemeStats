@@ -1,0 +1,87 @@
+﻿@model UI.Models.Players.PlayerQuickStatsViewModel
+@{
+    Layout = null;
+}
+
+
+<div class="panel panel-default">
+    <div class="panel-body current-player-stats">
+        <a href="@Url.Action(MVC.PlayedGame.Create())" class="btn btn-action btn-lg">Record Played Game</a>
+        @if (Model.LastGamingGroupGame != null)
+        {
+
+            <div class="row voffset6 last-game-played">
+
+                <div class="col-xs-5">
+                    @Html.ActionLink("Last group game played", "Details", "PlayedGame", new { id = Model.LastGamingGroupGame.PlayedGameId }, new { })
+                    @if (Model.LastGamingGroupGame.BoardGameGeekUri != null)
+                {
+                        <div class="image-col voffset2">
+                            <a href="@Model.LastGamingGroupGame.BoardGameGeekUri">
+                                @if (!string.IsNullOrEmpty(Model.LastGamingGroupGame.ThumbnailImageUrl))
+                                {
+                                    <img class="bgg-thumbnail" src="@Model.LastGamingGroupGame.ThumbnailImageUrl" alt="View on BoardGameGeek.com" title="View on BoardGameGeek.com" />
+                                }
+                                else
+                                {
+                                    <img src="~/Content/Images/bgg_small.png" alt="View on BoardGameGeek.com" title="View on BoardGameGeek.com" />
+                                }
+
+                            </a>
+                        </div>
+
+                    }
+
+                    else
+                    {
+                        <div class="voffset2">
+                            @Model.LastGamingGroupGame.GameDefinitionName
+                        </div>
+                    }
+                </div>
+                <div class="col-xs-4">
+                    Winner:
+                    @if (Model.LastGamingGroupGame.WinnerType == BusinessLogic.Models.PlayedGames.WinnerTypes.TeamWin)
+                    {
+                        <div class="gameResult-teamWin voffset2">EVERYONE WON</div>
+                    }
+                    else if (Model.LastGamingGroupGame.WinnerType == BusinessLogic.Models.PlayedGames.WinnerTypes.TeamLoss)
+                    {
+                        <div class="gameResult-teamLoss voffset2">EVERYONE LOST</div>
+                    }
+                    else
+                    {
+                        <div class="voffset2">@Html.ActionLink(Model.LastGamingGroupGame.WinningPlayer.PlayerName, "Details", "Player", new {id = Model.LastGamingGroupGame.WinningPlayer.PlayerId}, new {})</div>
+                    }
+                </div>
+                <div class="col-xs-3">
+                    Date:
+                    <div class="voffset2">
+                        @Html.ActionLink(@Model.LastGamingGroupGame.DatePlayed.ToShortDateString(), "Details", "PlayedGame", new { id = Model.LastGamingGroupGame.PlayedGameId }, new { })
+                    </div>
+                </div>
+            </div>
+        }
+
+        <div class="row">
+            <div class="col-xs-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading"><span class="fa-stack neme-points-ico" data-toggle="popover" data-placement="top" data-content="Total NemePoints earned by playing games" data-original-title="" title=""><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x letter">N</i></span></div>
+                    <div class="panel-body stat-value"><a href="@Url.Action(MVC.GamingGroup.Index())">@Model.TotalPoints</a></div>
+                </div>
+            </div>
+            <div class="col-xs-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Games Played</div>
+                    <div class="panel-body stat-value"><a href="@Url.Action(MVC.GamingGroup.Index())">@Model.TotalGamesPlayed</a> </div>
+                </div>
+            </div>
+            <div class="col-xs-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Games Won</div>
+                    <div class="panel-body stat-value"><a href="@Url.Action(MVC.GamingGroup.Index())">@Model.TotalGamesWon</a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

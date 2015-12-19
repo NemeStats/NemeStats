@@ -47,6 +47,33 @@
                 margin-top: 40px;
                 text-align: center;
 
+
+                .current-player-stats {
+                    .btn-action {
+                        width: 100%;
+                        font-size: 22px;
+                    }
+
+                    .last-game-played {
+                        text-align:left;
+                        .image-col {
+                            height: 100px;
+                          text-align:center;
+
+                            .bgg-thumbnail {
+                                width: auto;
+                                height: 100%;
+                                min-height: 100px;
+                            }
+                        }
+                    }
+
+
+                    .stat-value {
+                        font-size: 28px;
+                    }
+                }
+
                 .social-login {
 
                     button {

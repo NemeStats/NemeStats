@@ -224,7 +224,7 @@ namespace Links
                 private const string URLPATH = "~/Content/Images/Home";
                 public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
                 public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
-                public static readonly string Banner_png = Url("Banner.png");
+                public static readonly string Banner_jpg = Url("Banner.jpg");
             }
         
             public static readonly string NemeStats_White_png = Url("NemeStats-White.png");
