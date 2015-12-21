@@ -27,7 +27,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
 		[Test]
 		public void ItReturnsRecentNemesisChangesView()
 		{
-			var viewResult = playerController.ShowRecentNemesisChanges() as ViewResult;
+			var viewResult = autoMocker.ClassUnderTest.ShowRecentNemesisChanges() as ViewResult;
 
 			Assert.AreEqual(MVC.Player.Views.RecentNemesisChanges, viewResult.ViewName);
 		}
@@ -35,7 +35,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
 		[Test]
 		public void ItReturnsSpecifiedRecentNemesisChangeModelToView()
 		{
-			var viewResult = playerController.ShowRecentNemesisChanges() as ViewResult;
+			var viewResult = autoMocker.ClassUnderTest.ShowRecentNemesisChanges() as ViewResult;
 
 			var actualViewModel = viewResult.ViewData.Model;
 

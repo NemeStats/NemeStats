@@ -27,7 +27,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         [Test]
         public void ItReturnsTheParameterlessCreateView()
         {
-            ViewResult result = playerController.Create() as ViewResult;
+            ViewResult result = autoMocker.ClassUnderTest.Create() as ViewResult;
 
             Assert.AreEqual(MVC.Player.Views.Create, result.ViewName);
         }
@@ -35,7 +35,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         [Test]
         public void ItSetsAnEmptyPlayerAsTheViewModel()
         {
-            ViewResult result = playerController.Create() as ViewResult;
+            ViewResult result = autoMocker.ClassUnderTest.Create() as ViewResult;
 
             Assert.NotNull(result.Model);
         }

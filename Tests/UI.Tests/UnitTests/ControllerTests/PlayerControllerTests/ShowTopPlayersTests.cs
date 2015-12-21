@@ -27,7 +27,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
 		[Test]
 		public void ItReturnsTopPlayerView()
 		{
-			var viewResult = playerController.ShowTopPlayers() as ViewResult;
+			var viewResult = autoMocker.ClassUnderTest.ShowTopPlayers() as ViewResult;
 
 			Assert.AreEqual(MVC.Player.Views.TopPlayers, viewResult.ViewName);
 		}
@@ -35,7 +35,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
 		[Test]
 		public void ItReturnsSpecifiedTopPlayerModelToView()
 		{
-			var viewResult = playerController.ShowTopPlayers() as ViewResult;
+			var viewResult = autoMocker.ClassUnderTest.ShowTopPlayers() as ViewResult;
 
 			var actualViewModel = viewResult.ViewData.Model;
 

@@ -25,6 +25,7 @@ using NUnit.Framework;
 using Rhino.Mocks;
 using UI.Controllers;
 using UI.Models.Players;
+using BusinessLogic.Logic.Players;
 
 namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
 {
@@ -44,7 +45,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
                 Name = "player name",
                 Id = playerId
             };
-            playerRetrieverMock.Expect(mock => mock.GetPlayerDetails(playerId, 0))
+            autoMocker.Get<IPlayerRetriever>().Expect(mock => mock.GetPlayerDetails(playerId, 0))
                               .Return(playerDetails);
         }
 
@@ -52,10 +53,10 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         public void ItReturnsNotFoundHttpStatusWhenInvalidPlayerIdGiven()
         {
             int invalidPlayerId = -1;
-            playerRetrieverMock.Expect(mock => mock.GetPlayerDetails(invalidPlayerId, 0))
+            autoMocker.Get<IPlayerRetriever>().Expect(mock => mock.GetPlayerDetails(invalidPlayerId, 0))
                                .Throw(new KeyNotFoundException());
 
-            HttpStatusCodeResult actualResult = playerController.InvitePlayer(-1, currentUser) as HttpStatusCodeResult;
+            HttpStatusCodeResult actualResult = autoMocker.ClassUnderTest.InvitePlayer(-1, currentUser) as HttpStatusCodeResult;
 
             Assert.AreEqual((int)HttpStatusCode.NotFound, actualResult.StatusCode);
         }
@@ -63,7 +64,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         [Test]
         public void ItSetsThePlayerNameAndIdOnTheViewModel()
         {
-            ViewResult viewResult = playerController.InvitePlayer(playerId, currentUser) as ViewResult;
+            ViewResult viewResult = autoMocker.ClassUnderTest.InvitePlayer(playerId, currentUser) as ViewResult;
 
             Assert.AreEqual(playerDetails.Name, ((PlayerInvitationViewModel)viewResult.Model).PlayerName);
             Assert.AreEqual(playerDetails.Id, ((PlayerInvitationViewModel)viewResult.Model).PlayerId);
@@ -74,19 +75,19 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         {
             string expectedEmailSubject = string.Format(PlayerController.EMAIL_SUBJECT_PLAYER_INVITATION, currentUser.UserName);
 
-            ViewResult viewResult = playerController.InvitePlayer(playerId, currentUser) as ViewResult;
+            ViewResult viewResult = autoMocker.ClassUnderTest.InvitePlayer(playerId, currentUser) as ViewResult;
 
             Assert.AreEqual(expectedEmailSubject, ((PlayerInvitationViewModel)viewResult.Model).EmailSubject);
         }
 
         [Test]
-        public void ItDefaultsTheEmailBodyToSayThatSomeoneHasInvitedThemToNemeStats()
+        public void ItDefaultsTheEmailBodyTosayThatSomeoneHasInvitedThemToNemeStats()
         {
             string expectedEmailBody = string.Format(
                 PlayerController.EMAIL_BODY_PLAYER_INVITATION,
                 playerDetails.GamingGroupName);
 
-            ViewResult viewResult = playerController.InvitePlayer(playerId, currentUser) as ViewResult;
+            ViewResult viewResult = autoMocker.ClassUnderTest.InvitePlayer(playerId, currentUser) as ViewResult;
 
             Assert.AreEqual(expectedEmailBody, ((PlayerInvitationViewModel)viewResult.Model).EmailBody);
         }

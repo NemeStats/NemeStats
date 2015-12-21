@@ -283,14 +283,19 @@ namespace UI.Controllers
         [UserContext]
         public virtual ActionResult CurrentPlayerQuickStats(ApplicationUser currentUser)
         {
-            var currentGamingGroup = _gamingGroupRetriever.GetGamingGroupDetails(currentUser.CurrentGamingGroupId, 1);
+            //var currentGamingGroup = _gamingGroupRetriever.GetGamingGroupDetails(currentUser.CurrentGamingGroupId, 1);
 
-            var playerId = currentGamingGroup.Players.Where(p => p.ApplicationUserId == currentUser.Id).Select(p => p.PlayerId).First();
-            var player = playerRetriever.GetPlayerDetails(playerId, 1);
+            //var playerId = currentGamingGroup.Players.Where(p => p.ApplicationUserId == currentUser.Id).Select(p => p.PlayerId).First();
+            //var player = playerRetriever.GetPlayerDetails(playerId, 1);
 
-            var model = _playerQuickStatsViewModel.Build(player.PlayerStats, currentGamingGroup.PlayedGames.FirstOrDefault(),currentUser);
+            //var playerQuickSummary = playerRetriever.GetPlayerQuickSummary(currentUser.Id);
 
-            return View(MVC.Player.Views.CurrentPlayerQuickStats, model);
+            //AutoMapper.Mapper.Map<PlayerQuickStatsViewModel>(playerQuickSummary);
+
+            //var model = _playerQuickStatsViewModel.Build(player.PlayerStats, currentGamingGroup.PlayedGames.FirstOrDefault(),currentUser);
+
+            //return View(MVC.Player.Views.CurrentPlayerQuickStats, model);
+            return null;
         }
 
         protected override void Dispose(bool disposing)
