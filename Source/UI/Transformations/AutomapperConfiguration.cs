@@ -29,6 +29,7 @@ using UI.Areas.Api.Models;
 using UI.Models;
 using UI.Models.GameDefinitionModels;
 using UI.Models.GamingGroup;
+using UI.Models.PlayedGame;
 using UI.Models.Players;
 
 namespace UI.Transformations
@@ -59,6 +60,8 @@ namespace UI.Transformations
             Mapper.CreateMap<GameDefinitionEditViewModel, GameDefinitionUpdateRequest>(MemberList.Destination);
             Mapper.CreateMap<CreateGameDefinitionViewModel, CreateGameDefinitionRequest>(MemberList.Destination);
             Mapper.CreateMap<PlayerStatistics, PlayerStatisticsMessage>(MemberList.Destination);
+            Mapper.CreateMap<PlayedGameQuickStats, PlayedGameQuickStatsViewModel>(MemberList.Destination);
+            Mapper.CreateMap<PlayerQuickStats, PlayerQuickStatsViewModel>(MemberList.Destination);
         }
     }
 }

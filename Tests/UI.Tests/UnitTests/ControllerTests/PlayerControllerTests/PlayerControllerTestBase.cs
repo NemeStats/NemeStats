@@ -31,6 +31,7 @@ using BusinessLogic.Logic.Nemeses;
 using UI.Models.Nemeses;
 using UI.Models.Players;
 using StructureMap.AutoMocking;
+using AutoMapper;
 
 namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
 {
@@ -45,6 +46,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
 		[SetUp]
 		public virtual void SetUp()
 		{
+            AutomapperConfiguration.Configure();
             autoMocker = new RhinoAutoMocker<PlayerController>();
             autoMocker.PartialMockTheClassUnderTest();
             autoMocker.ClassUnderTest.Url = MockRepository.GenerateMock<UrlHelper>();

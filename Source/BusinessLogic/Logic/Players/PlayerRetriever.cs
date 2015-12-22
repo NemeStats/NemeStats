@@ -23,6 +23,7 @@ using BusinessLogic.Models.Players;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System;
 
 namespace BusinessLogic.Logic.Players
 {
@@ -221,6 +222,11 @@ namespace BusinessLogic.Logic.Players
                     .Average(game => (int?)game.NumberOfPlayers) ?? 0F;
 
             return playerStatistics;
+        }
+
+        public PlayerQuickStats GetPlayerQuickStatsForUser(string applicationUserId)
+        {
+            throw new NotImplementedException();
         }
     }
 }

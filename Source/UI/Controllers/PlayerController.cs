@@ -33,6 +33,7 @@ using UI.Controllers.Helpers;
 using UI.Models.Players;
 using UI.Transformations;
 using UI.Transformations.PlayerTransformations;
+using AutoMapper;
 
 namespace UI.Controllers
 {
@@ -293,14 +294,10 @@ namespace UI.Controllers
             //AutoMapper.Mapper.Map<PlayerQuickStatsViewModel>(playerQuickSummary);
 
             //var model = _playerQuickStatsViewModel.Build(player.PlayerStats, currentGamingGroup.PlayedGames.FirstOrDefault(),currentUser);
+            var playerQuickStats = playerRetriever.GetPlayerQuickStatsForUser(currentUser.Id);
+            var playerQuickStatsViewModel = Mapper.Map<PlayerQuickStatsViewModel>(playerQuickStats);
 
-            //return View(MVC.Player.Views.CurrentPlayerQuickStats, model);
-            return null;
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            base.Dispose(disposing);
+            return View(MVC.Player.Views.CurrentPlayerQuickStats, playerQuickStatsViewModel);
         }
     }
 }

@@ -365,6 +365,7 @@
     <Compile Include="Models\PlayedGame\GameResultViewModel.cs" />
     <Compile Include="Models\PlayedGame\PlayedGameEditViewModel.cs" />
     <Compile Include="Models\PlayedGame\PlayedGameDetailsViewModel.cs" />
+    <Compile Include="Models\PlayedGame\PlayedGameQuickStatsViewModel.cs" />
     <Compile Include="Models\PlayedGame\PlayedGamesFilterViewModel.cs" />
     <Compile Include="Models\PlayedGame\PlayedGamesViewModel.cs" />
     <Compile Include="Models\PlayedGame\SearchViewModel.cs" />
@@ -407,7 +408,6 @@
     <Compile Include="Transformations\ITransformer.cs" />
     <Compile Include="Transformations\NemesisChangeViewModelBuilder.cs" />
     <Compile Include="Transformations\PlayerTransformations\IPlayerQuickStatsViewModelBuilder.cs" />
-    <Compile Include="Transformations\PlayerTransformations\PlayerQuickStatsViewModelBuilder.cs" />
     <Compile Include="Transformations\TransformationsHelper.cs" />
     <Compile Include="Transformations\Transformer.cs" />
     <Compile Include="Transformations\PlayedGameDetailsViewModelBuilder.cs" />

@@ -321,6 +321,7 @@
     <Compile Include="Models\PlayedGames\IWinner.cs" />
     <Compile Include="Models\PlayedGames\PlayedGameExportModel.cs" />
     <Compile Include="Models\PlayedGames\PlayedGameFilter.cs" />
+    <Compile Include="Models\PlayedGames\PlayedGameQuickStats.cs" />
     <Compile Include="Models\PlayedGames\PlayedGameSearchResult.cs" />
     <Compile Include="Models\PlayedGames\PlayerResult.cs" />
     <Compile Include="Models\PlayedGames\WinnerTypesEnum.cs" />
@@ -461,6 +462,7 @@
     <Compile Include="Models\NullChampion.cs" />
     <Compile Include="Models\NullNemesis.cs" />
     <Compile Include="Models\Players\PlayerGameSummary.cs" />
+    <Compile Include="Models\Players\PlayerQuickStats.cs" />
     <Compile Include="Models\Players\PlayerVersusPlayerStatistics.cs" />
     <Compile Include="Models\Players\PlayerWinRecord.cs" />
     <Compile Include="Models\Players\PlayerWithNemesis.cs" />
