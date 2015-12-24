@@ -129,11 +129,19 @@
       .home-container .home-banner .cta-wrapper .panel {
         margin-top: 40px;
         text-align: center; }
+        .home-container .home-banner .cta-wrapper .panel .current-player-stats .panel {
+          margin-top: 10px; }
         .home-container .home-banner .cta-wrapper .panel .current-player-stats .btn-action {
           width: 100%;
           font-size: 22px; }
+          @media (max-width: 991px) {
+            .home-container .home-banner .cta-wrapper .panel .current-player-stats .btn-action {
+              font-size: 18px; } }
         .home-container .home-banner .cta-wrapper .panel .current-player-stats .last-game-played {
           text-align: left; }
+          @media (max-width: 991px) {
+            .home-container .home-banner .cta-wrapper .panel .current-player-stats .last-game-played {
+              text-align: center; } }
           .home-container .home-banner .cta-wrapper .panel .current-player-stats .last-game-played .image-col {
             height: 100px;
             text-align: center; }
@@ -450,6 +458,11 @@ footer {
     display: inline-block;
     max-width: 90px;
     overflow: hidden; } }
+
+@media (min-width: 768px) and (max-width: 991px) {
+  .navbar-nav > li > a {
+    font-size: 13px;
+    padding-right: 5px; } }
 
 @media only screen and (max-width: 991px) {
   .flip-scroll .bgg-link-head {

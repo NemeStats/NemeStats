@@ -13,6 +13,15 @@
 }
 
 
+@media (min-width: $screen-sm-min) and (max-width: $screen-sm-max) {
+
+    .navbar-nav > li > a {
+        font-size: 13px;
+        padding-right: 5px;
+    }
+}
+
+
 &.flip-scroll {
     @media only screen and (max-width: $screen-sm-max) {
 
