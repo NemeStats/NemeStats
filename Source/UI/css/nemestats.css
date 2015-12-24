@@ -118,14 +118,16 @@
           .home-container .home-banner .cta-wrapper .subtitle .text {
             margin-top: 20px;
             text-align: center;
-            font-size: 40px; } }
+            font-size: 30px; } }
       .home-container .home-banner .cta-wrapper .subtitle img {
         padding-top: 40px;
         height: 150px; }
         @media (max-width: 991px) {
           .home-container .home-banner .cta-wrapper .subtitle img {
             display: block;
-            margin: 0 auto; } }
+            margin: 0 auto;
+            height: 100px;
+            padding-top: 20px; } }
       .home-container .home-banner .cta-wrapper .panel {
         margin-top: 40px;
         text-align: center; }
@@ -136,7 +138,7 @@
           font-size: 22px; }
           @media (max-width: 991px) {
             .home-container .home-banner .cta-wrapper .panel .current-player-stats .btn-action {
-              font-size: 18px; } }
+              font-size: 16px; } }
         .home-container .home-banner .cta-wrapper .panel .current-player-stats .last-game-played {
           text-align: left; }
           @media (max-width: 991px) {
