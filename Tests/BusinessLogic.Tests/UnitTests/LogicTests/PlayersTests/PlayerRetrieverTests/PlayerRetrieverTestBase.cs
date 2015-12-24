@@ -21,6 +21,7 @@ using BusinessLogic.Logic.Players;
 using BusinessLogic.Models;
 using NUnit.Framework;
 using Rhino.Mocks;
+using StructureMap.AutoMocking;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -28,12 +29,10 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
 {
     public class PlayerRetrieverTestBase
     {
-        internal PlayerRetriever playerRetriever;
-        internal IDataContext dataContextMock;
+        internal RhinoAutoMocker<PlayerRetriever> autoMocker;
         internal IQueryable<Player> playerQueryable;
         internal int gamingGroupId = 558585;
-        internal int totalPoints = 558585;
-        internal IPlayerRepository playerRepositoryMock;
+        internal int totalPoints = 265;
         internal List<PlayerGameResult> playerGameResultsForFirstPlayer;
         internal List<Champion> playerChampionshipsForFirstPlayer;
         internal GameDefinition gameDefinition;
@@ -41,10 +40,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
         [SetUp]
         public void BaseSetUp()
         {
-            dataContextMock = MockRepository.GenerateMock<IDataContext>();
-            playerRepositoryMock = MockRepository.GenerateMock<IPlayerRepository>();
-            playerRetriever = new PlayerRetriever(dataContextMock, playerRepositoryMock);
-
+            autoMocker = new RhinoAutoMocker<PlayerRetriever>();
+            autoMocker.PartialMockTheClassUnderTest();
             const int CHAMPION_ID = 55;
 
             gameDefinition = new GameDefinition
@@ -108,10 +105,10 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
             };
             playerQueryable = players.AsQueryable<Player>();
 
-            dataContextMock.Expect(mock => mock.GetQueryable<Player>())
+            autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<Player>())
                 .Return(playerQueryable);
 
-            dataContextMock.Expect(mock => mock.GetQueryable<GameDefinition>())
+            autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<GameDefinition>())
                 .Return(
                 new List<GameDefinition>
                 { gameDefinition }.AsQueryable());

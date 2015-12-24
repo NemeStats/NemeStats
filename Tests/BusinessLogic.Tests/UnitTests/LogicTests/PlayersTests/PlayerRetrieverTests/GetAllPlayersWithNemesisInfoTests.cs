@@ -29,7 +29,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
         [Test]
         public void ItOnlyReturnsPlayersForTheGivenGamingGroup()
         {
-            List<PlayerWithNemesis> players = playerRetriever.GetAllPlayersWithNemesisInfo(gamingGroupId);
+            List<PlayerWithNemesis> players = autoMocker.ClassUnderTest.GetAllPlayersWithNemesisInfo(gamingGroupId);
 
             Assert.True(players.All(player => player.GamingGroupId == gamingGroupId));
         }
@@ -37,7 +37,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
         [Test]
         public void ItReturnsPlayersOrderedByActiveAscThenTotalPointsDescThenNameAscending()
         {
-            List<PlayerWithNemesis> players = playerRetriever.GetAllPlayersWithNemesisInfo(gamingGroupId);
+            List<PlayerWithNemesis> players = autoMocker.ClassUnderTest.GetAllPlayersWithNemesisInfo(gamingGroupId);
 
             var lastPlayerPoints = int.MaxValue;
             var lastPlayerName = "0";
@@ -73,7 +73,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
         {
             int expectedNumberOfGamesWon = playerGameResultsForFirstPlayer.Count(x => x.GameRank == 1);
 
-            List<PlayerWithNemesis> players = playerRetriever.GetAllPlayersWithNemesisInfo(gamingGroupId);
+            List<PlayerWithNemesis> players = autoMocker.ClassUnderTest.GetAllPlayersWithNemesisInfo(gamingGroupId);
 
             Assert.That(players[0].GamesWon, Is.EqualTo(expectedNumberOfGamesWon));
         }
@@ -83,7 +83,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
         {
             int expectedNumberOfGamesLost = playerGameResultsForFirstPlayer.Count(x => x.GameRank > 1);
 
-            List<PlayerWithNemesis> players = playerRetriever.GetAllPlayersWithNemesisInfo(gamingGroupId);
+            List<PlayerWithNemesis> players = autoMocker.ClassUnderTest.GetAllPlayersWithNemesisInfo(gamingGroupId);
 
             Assert.That(players[0].GamesLost, Is.EqualTo(expectedNumberOfGamesLost));
         }
@@ -93,7 +93,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
         {
             int expectedTotalPoints = playerGameResultsForFirstPlayer.Sum(p => p.NemeStatsPointsAwarded);
 
-            List<PlayerWithNemesis> players = playerRetriever.GetAllPlayersWithNemesisInfo(gamingGroupId);
+            List<PlayerWithNemesis> players = autoMocker.ClassUnderTest.GetAllPlayersWithNemesisInfo(gamingGroupId);
 
             Assert.That(players[0].TotalPoints, Is.EqualTo(expectedTotalPoints));
         }
@@ -101,7 +101,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
         [Test]
         public void ItReturnsChampionships()
         {
-            List<PlayerWithNemesis> players = playerRetriever.GetAllPlayersWithNemesisInfo(gamingGroupId);
+            List<PlayerWithNemesis> players = autoMocker.ClassUnderTest.GetAllPlayersWithNemesisInfo(gamingGroupId);
 
             Assert.That(players[0].TotalChampionedGames, Is.EqualTo(playerChampionshipsForFirstPlayer.Count()));
         }

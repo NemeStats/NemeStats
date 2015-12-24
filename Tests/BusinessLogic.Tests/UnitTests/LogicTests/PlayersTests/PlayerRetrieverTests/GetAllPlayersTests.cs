@@ -28,7 +28,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
         [Test]
         public void ItOnlyReturnsPlayersForTheGivenGamingGroup()
         {
-            List<Player> players = playerRetriever.GetAllPlayers(gamingGroupId);
+            List<Player> players = autoMocker.ClassUnderTest.GetAllPlayers(gamingGroupId);
 
             Assert.True(players.All(player => player.GamingGroupId == gamingGroupId));
         }
@@ -36,7 +36,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
         [Test]
         public void ItReturnsPlayersOrderedByTheirNameAscending()
         {
-            List<Player> players = playerRetriever.GetAllPlayers(gamingGroupId);
+            List<Player> players = autoMocker.ClassUnderTest.GetAllPlayers(gamingGroupId);
             string lastPlayerName = "0";
             foreach(Player player in players)
             {

@@ -407,7 +407,6 @@
     <Compile Include="Transformations\INemesisChangeViewModelBuilder.cs" />
     <Compile Include="Transformations\ITransformer.cs" />
     <Compile Include="Transformations\NemesisChangeViewModelBuilder.cs" />
-    <Compile Include="Transformations\PlayerTransformations\IPlayerQuickStatsViewModelBuilder.cs" />
     <Compile Include="Transformations\TransformationsHelper.cs" />
     <Compile Include="Transformations\Transformer.cs" />
     <Compile Include="Transformations\PlayedGameDetailsViewModelBuilder.cs" />

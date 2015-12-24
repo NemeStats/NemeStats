@@ -21,6 +21,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using BusinessLogic.Models.User;
+using BusinessLogic.Models.PlayedGames;
 
 namespace BusinessLogic.Models
 {
@@ -46,5 +47,41 @@ namespace BusinessLogic.Models
         [ForeignKey("CreatedByApplicationUserId")]
         public virtual ApplicationUser CreatedByApplicationUser { get; set; }
         public virtual IList<PlayerGameResult> PlayerGameResults { get; set; }
+
+        public virtual WinnerTypes WinnerType
+        {
+            get
+            {
+                if(PlayerGameResults == null || PlayerGameResults.Count == 0)
+                {
+                    throw new InvalidOperationException("Can't calculate a WinnerType when there are no PlayedGameResults.");
+                }
+
+                if(PlayerGameResults.All(result => result.GameRank == 1))
+                {
+                    return WinnerTypes.TeamWin;
+                }
+
+                if (PlayerGameResults.All(result => result.GameRank != 1))
+                {
+                    return WinnerTypes.TeamLoss;
+                }
+
+                return WinnerTypes.PlayerWin;
+            }
+        }
+
+        public virtual Player WinningPlayer
+        {
+            get
+            {
+                if(WinnerType == WinnerTypes.PlayerWin)
+                {
+                    return PlayerGameResults.First(result => result.GameRank == 1).Player;
+                }
+
+                return null;
+            }
+        }
     }
 }

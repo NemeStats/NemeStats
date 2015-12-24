@@ -25,7 +25,7 @@ namespace BusinessLogic.Logic.Players
         List<Player> GetAllPlayers(int gamingGroupId);
         List<PlayerWithNemesis> GetAllPlayersWithNemesisInfo(int gamingGroupId);
         PlayerDetails GetPlayerDetails(int playerId, int numberOfRecentGamesToRetrieve);
-        PlayerQuickStats GetPlayerQuickStatsForUser(string applicationUserId);
+        PlayerQuickStats GetPlayerQuickStatsForUser(string applicationUserId, int gamingGroupId);
         PlayerStatistics GetPlayerStatistics(int playerId);
     }
 }

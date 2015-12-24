@@ -26,8 +26,6 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
                     BoardGameGeekUri = new Uri("http://a.com"),
                     DatePlayed = new DateTime(),
                     GameDefinitionId = 10,
-                    GamingGroupId = 11,
-                    GamingGroupName = "some gaming group name",
                     GameDefinitionName = "some game definition name",
                     PlayedGameId = 12,
                     ThumbnailImageUrl = "some url",
@@ -38,7 +36,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
             };
 
             autoMocker.Get<IPlayerRetriever>()
-                .Expect(mock => mock.GetPlayerQuickStatsForUser(currentUser.Id))
+                .Expect(mock => mock.GetPlayerQuickStatsForUser(currentUser.Id, currentUser.CurrentGamingGroupId))
                 .Return(expectedPlayerQuickSummary);
 
             var result = autoMocker.ClassUnderTest.CurrentPlayerQuickStats(currentUser) as ViewResult;
@@ -61,6 +59,19 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
             Assert.That(lastGamingGroupGameViewModel.WinnerType, Is.EqualTo(playedGameQuickStats.WinnerType));
             Assert.That(lastGamingGroupGameViewModel.WinningPlayerId, Is.EqualTo(playedGameQuickStats.WinningPlayerId));
             Assert.That(lastGamingGroupGameViewModel.WinningPlayerName, Is.EqualTo(playedGameQuickStats.WinningPlayerName));
+        }
+
+        [Test]
+        public void ItLeavesTheLastGamingGroupGameNullIfThereAreNoGames()
+        {
+            autoMocker.Get<IPlayerRetriever>()
+               .Expect(mock => mock.GetPlayerQuickStatsForUser(currentUser.Id, currentUser.CurrentGamingGroupId))
+               .Return(new PlayerQuickStats());
+
+            var result = autoMocker.ClassUnderTest.CurrentPlayerQuickStats(currentUser) as ViewResult;
+
+            var actualModel = result.Model as PlayerQuickStatsViewModel;
+            Assert.That(actualModel.LastGamingGroupGame, Is.Null);
         }
     }
 }

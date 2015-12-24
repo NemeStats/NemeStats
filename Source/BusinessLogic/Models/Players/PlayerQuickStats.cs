@@ -8,7 +8,7 @@ namespace BusinessLogic.Models.Players
         public int TotalGamesWon { get; set; }
         public int TotalPoints { get; set; }
         public int TotalGamesPlayed { get; set; }
-        public int PlayerId { get; set; }
+        public int? PlayerId { get; set; }
         public PlayedGameQuickStats LastGamingGroupGame { get; set; }
     }
 }

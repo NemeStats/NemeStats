@@ -17,6 +17,7 @@
 #endregion
 using BusinessLogic.DataAccess;
 using BusinessLogic.DataAccess.Repositories;
+using BusinessLogic.Logic.PlayedGames;
 using BusinessLogic.Logic.Players;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Players;
@@ -34,7 +35,8 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
             using (IDataContext dataContext = new NemeStatsDataContext())
             {
                 IPlayerRepository playerRepository = new EntityFrameworkPlayerRepository(dataContext);
-                IPlayerRetriever playerRetriever = new PlayerRetriever(dataContext, playerRepository);
+                IPlayedGameRetriever playedGameRetriever = new PlayedGameRetriever(dataContext);
+                IPlayerRetriever playerRetriever = new PlayerRetriever(dataContext, playerRepository, playedGameRetriever);
                 PlayerStatistics playerStatistics = playerRetriever.GetPlayerStatistics(testPlayer1.Id);
 
                 int totalGamesForPlayer1 = testPlayedGames
@@ -65,7 +67,8 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
             using (IDataContext dataContext = new NemeStatsDataContext())
             {
                 IPlayerRepository playerRepository = new EntityFrameworkPlayerRepository(dataContext);
-                IPlayerRetriever playerRetriever = new PlayerRetriever(dataContext, playerRepository); 
+                IPlayedGameRetriever playedGameRetriever = new PlayedGameRetriever(dataContext);
+                IPlayerRetriever playerRetriever = new PlayerRetriever(dataContext, playerRepository, playedGameRetriever); 
                 PlayerStatistics playerStatistics = playerRetriever.GetPlayerStatistics(testPlayer1.Id);
 
                 int totalPoints = 0;
@@ -88,7 +91,8 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
             using (IDataContext dataContext = new NemeStatsDataContext())
             {
                 IPlayerRepository playerRepository = new EntityFrameworkPlayerRepository(dataContext);
-                IPlayerRetriever playerRetriever = new PlayerRetriever(dataContext, playerRepository);
+                IPlayedGameRetriever playedGameRetriever = new PlayedGameRetriever(dataContext);
+                IPlayerRetriever playerRetriever = new PlayerRetriever(dataContext, playerRepository, playedGameRetriever);
                 PlayerStatistics playerStatistics = playerRetriever.GetPlayerStatistics(testPlayer1.Id);
 
                 float averagePlayersPerGame = (float)testPlayedGames.Where(game => game.PlayerGameResults.Any(result => result.PlayerId == testPlayer1.Id))

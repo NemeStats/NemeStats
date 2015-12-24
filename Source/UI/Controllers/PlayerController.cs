@@ -48,7 +48,6 @@ namespace UI.Controllers
         internal IDataContext dataContext;
         internal IGameResultViewModelBuilder builder;
         internal IPlayerDetailsViewModelBuilder playerDetailsViewModelBuilder;
-        private readonly IPlayerQuickStatsViewModelBuilder _playerQuickStatsViewModel;
         internal IShowingXResultsMessageBuilder showingXResultsMessageBuilder;
         internal IPlayerSaver playerSaver;
         internal IPlayerRetriever playerRetriever;
@@ -71,7 +70,7 @@ namespace UI.Controllers
             IPlayerSummaryBuilder playerSummaryBuilder,
             ITopPlayerViewModelBuilder topPlayerViewModelBuilder,
             INemesisHistoryRetriever nemesisHistoryRetriever,
-            INemesisChangeViewModelBuilder nemesisChangeViewModelBuilder, IGamingGroupRetriever gamingGroupRetriever, IPlayerQuickStatsViewModelBuilder playerQuickStatsViewModel)
+            INemesisChangeViewModelBuilder nemesisChangeViewModelBuilder, IGamingGroupRetriever gamingGroupRetriever)
         {
             this.dataContext = dataContext;
             this.builder = builder;
@@ -86,7 +85,6 @@ namespace UI.Controllers
             this.nemesisHistoryRetriever = nemesisHistoryRetriever;
             this.nemesisChangeViewModelBuilder = nemesisChangeViewModelBuilder;
             _gamingGroupRetriever = gamingGroupRetriever;
-            _playerQuickStatsViewModel = playerQuickStatsViewModel;
         }
 
         // GET: /Player/Details/5
@@ -284,17 +282,7 @@ namespace UI.Controllers
         [UserContext]
         public virtual ActionResult CurrentPlayerQuickStats(ApplicationUser currentUser)
         {
-            //var currentGamingGroup = _gamingGroupRetriever.GetGamingGroupDetails(currentUser.CurrentGamingGroupId, 1);
-
-            //var playerId = currentGamingGroup.Players.Where(p => p.ApplicationUserId == currentUser.Id).Select(p => p.PlayerId).First();
-            //var player = playerRetriever.GetPlayerDetails(playerId, 1);
-
-            //var playerQuickSummary = playerRetriever.GetPlayerQuickSummary(currentUser.Id);
-
-            //AutoMapper.Mapper.Map<PlayerQuickStatsViewModel>(playerQuickSummary);
-
-            //var model = _playerQuickStatsViewModel.Build(player.PlayerStats, currentGamingGroup.PlayedGames.FirstOrDefault(),currentUser);
-            var playerQuickStats = playerRetriever.GetPlayerQuickStatsForUser(currentUser.Id);
+            var playerQuickStats = playerRetriever.GetPlayerQuickStatsForUser(currentUser.Id, currentUser.CurrentGamingGroupId);
             var playerQuickStatsViewModel = Mapper.Map<PlayerQuickStatsViewModel>(playerQuickStats);
 
             return View(MVC.Player.Views.CurrentPlayerQuickStats, playerQuickStatsViewModel);

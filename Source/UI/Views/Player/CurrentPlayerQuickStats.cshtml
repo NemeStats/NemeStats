@@ -63,25 +63,34 @@
             </div>
         }
 
+        @if (Model.PlayerId.HasValue)
+        {
         <div class="row">
             <div class="col-xs-4">
                 <div class="panel panel-default">
                     <div class="panel-heading"><span class="fa-stack neme-points-ico" data-toggle="popover" data-placement="top" data-content="Total NemePoints earned by playing games" data-original-title="" title=""><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x letter">N</i></span></div>
-                    <div class="panel-body stat-value"><a href="@Url.Action(MVC.GamingGroup.Index())">@Model.TotalPoints</a></div>
+                    <div class="panel-body stat-value">
+                        @Html.ActionLink(@Model.TotalPoints.ToString(), "Details", "Player", new { id = Model.PlayerId }, new { })
+                    </div>
                 </div>
             </div>
             <div class="col-xs-4">
                 <div class="panel panel-default">
                     <div class="panel-heading">Games Played</div>
-                    <div class="panel-body stat-value"><a href="@Url.Action(MVC.GamingGroup.Index())">@Model.TotalGamesPlayed</a> </div>
+                    <div class="panel-body stat-value">
+                        @Html.ActionLink(@Model.TotalGamesPlayed.ToString(), "Details", "Player", new { id = Model.PlayerId }, new { })
+                    </div>
                 </div>
             </div>
             <div class="col-xs-4">
                 <div class="panel panel-default">
                     <div class="panel-heading">Games Won</div>
-                    <div class="panel-body stat-value"><a href="@Url.Action(MVC.GamingGroup.Index())">@Model.TotalGamesWon</a></div>
+                    <div class="panel-body stat-value">
+                        @Html.ActionLink(@Model.TotalGamesWon.ToString(), "Details", "Player", new { id = Model.PlayerId }, new { })
+                    </div>
                 </div>
             </div>
         </div>
+        }
     </div>
 </div>

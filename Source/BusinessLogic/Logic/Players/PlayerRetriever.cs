@@ -24,6 +24,9 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System;
+using BusinessLogic.Logic.PlayedGames;
+using BusinessLogic.Models.PlayedGames;
+using BusinessLogic.Logic.BoardGameGeek;
 
 namespace BusinessLogic.Logic.Players
 {
@@ -31,12 +34,14 @@ namespace BusinessLogic.Logic.Players
     {
         private readonly IDataContext dataContext;
         private readonly IPlayerRepository playerRepository;
+        private readonly IPlayedGameRetriever playedGameRetriever;
         public const string EXCEPTION_MESSAGE_PLAYER_COULD_NOT_BE_FOUND = "Could not find player with Id: {0}";
 
-        public PlayerRetriever(IDataContext dataContext, IPlayerRepository playerRepository)
+        public PlayerRetriever(IDataContext dataContext, IPlayerRepository playerRepository, IPlayedGameRetriever playedGameRetriever)
         {
             this.dataContext = dataContext;
             this.playerRepository = playerRepository;
+            this.playedGameRetriever = playedGameRetriever;
         }
 
         internal IQueryable<Player> GetAllPlayersInGamingGroupQueryable(int gamingGroupId)
@@ -183,6 +188,45 @@ namespace BusinessLogic.Logic.Players
         public virtual PlayerStatistics GetPlayerStatistics(int playerId)
         {
             var playerStatistics = new PlayerStatistics();
+            var gameDefinitionTotals = GetGameDefinitionTotals(playerId);
+            playerStatistics.GameDefinitionTotals = gameDefinitionTotals;
+
+            var topLevelTotals = GetTopLevelTotals(gameDefinitionTotals);
+
+            playerStatistics.TotalGames = topLevelTotals.TotalGames;
+            playerStatistics.TotalGamesLost = topLevelTotals.TotalGamesLost;
+            playerStatistics.TotalGamesWon = topLevelTotals.TotalGamesWon;
+
+            if (playerStatistics.TotalGames > 0)
+            {
+                playerStatistics.WinPercentage = (int)((decimal)playerStatistics.TotalGamesWon / (playerStatistics.TotalGames) * 100);
+            }
+
+            playerStatistics.TotalPoints = GetTotalNemePoints(playerId);
+
+            //had to cast to handle the case where there is no data:
+            //http://stackoverflow.com/questions/6864311/the-cast-to-value-type-int32-failed-because-the-materialized-value-is-null
+            playerStatistics.AveragePlayersPerGame = (float?)dataContext.GetQueryable<PlayedGame>()
+                .Where(playedGame => playedGame.PlayerGameResults.Any(result => result.PlayerId == playerId))
+                    .Average(game => (int?)game.NumberOfPlayers) ?? 0F;
+
+            return playerStatistics;
+        }
+
+        internal virtual TopLevelTotals GetTopLevelTotals(GameDefinitionTotals gameDefinitionTotals)
+        {
+            var returnResult = new TopLevelTotals
+            {
+                TotalGamesLost = gameDefinitionTotals.SummariesOfGameDefinitionTotals.Sum(x => x.GamesLost),
+                TotalGamesWon = gameDefinitionTotals.SummariesOfGameDefinitionTotals.Sum(x => x.GamesWon)
+            };
+            returnResult.TotalGames = returnResult.TotalGamesLost + returnResult.TotalGamesWon;
+
+            return returnResult;
+        }
+
+        internal virtual GameDefinitionTotals GetGameDefinitionTotals(int playerId)
+        {
             var playerGameSummaries = playerRepository.GetPlayerGameSummaries(playerId);
             var gameDefinitionTotals = new GameDefinitionTotals
             {
@@ -194,39 +238,83 @@ namespace BusinessLogic.Logic.Players
                     GamesWon = playerGameSummary.NumberOfGamesWon
                 }).ToList()
             };
-            playerStatistics.GameDefinitionTotals = gameDefinitionTotals;
-            playerStatistics.TotalGames = gameDefinitionTotals.SummariesOfGameDefinitionTotals.Sum(x => x.GamesLost + x.GamesWon);
-            playerStatistics.TotalGamesLost = gameDefinitionTotals.SummariesOfGameDefinitionTotals.Sum(x => x.GamesLost);
-            playerStatistics.TotalGamesWon = gameDefinitionTotals.SummariesOfGameDefinitionTotals.Sum(x => x.GamesWon);
-
-            if (playerStatistics.TotalGames > 0)
-            {
-                playerStatistics.WinPercentage = (int)((decimal)playerStatistics.TotalGamesWon / (playerStatistics.TotalGames) * 100);
-            }
-
-            int? totalPoints = dataContext.GetQueryable<PlayerGameResult>()
-                .Where(result => result.PlayerId == playerId)
-                //had to cast to handle the case where there is no data:
-                //http://stackoverflow.com/questions/6864311/the-cast-to-value-type-int32-failed-because-the-materialized-value-is-null
-                .Sum(playerGameResults => (int?)playerGameResults.NemeStatsPointsAwarded) ?? 0;
-
-            if (totalPoints.HasValue)
-            {
-                playerStatistics.TotalPoints = totalPoints.Value;
-            }
-
-            //had to cast to handle the case where there is no data:
-            //http://stackoverflow.com/questions/6864311/the-cast-to-value-type-int32-failed-because-the-materialized-value-is-null
-            playerStatistics.AveragePlayersPerGame = (float?)dataContext.GetQueryable<PlayedGame>()
-                .Where(playedGame => playedGame.PlayerGameResults.Any(result => result.PlayerId == playerId))
-                    .Average(game => (int?)game.NumberOfPlayers) ?? 0F;
-
-            return playerStatistics;
+            return gameDefinitionTotals;
         }
 
-        public PlayerQuickStats GetPlayerQuickStatsForUser(string applicationUserId)
+        internal class TopLevelTotals
         {
-            throw new NotImplementedException();
+            public int TotalGames { get; internal set; }
+            public int TotalGamesLost { get; internal set; }
+            public int TotalGamesWon { get; internal set; }
+        }
+
+        internal virtual int GetTotalNemePoints(int playerId)
+        {
+            int? totalPoints = dataContext.GetQueryable<PlayerGameResult>()
+                            .Where(result => result.PlayerId == playerId)
+                            //had to cast to handle the case where there is no data:
+                            //http://stackoverflow.com/questions/6864311/the-cast-to-value-type-int32-failed-because-the-materialized-value-is-null
+                            .Sum(playerGameResults => (int?)playerGameResults.NemeStatsPointsAwarded) ?? 0;
+            if(totalPoints.HasValue)
+            {
+                return totalPoints.Value;
+            }else
+            {
+                return 0;
+            }
+        }
+
+        public virtual PlayerQuickStats GetPlayerQuickStatsForUser(string applicationUserId, int gamingGroupId)
+        {
+            var q = dataContext.GetQueryable<Player>().ToList();
+            int playerIdForCurrentUser = (from player in dataContext.GetQueryable<Player>()
+                                           where player.GamingGroupId == gamingGroupId
+                                            && player.ApplicationUserId == applicationUserId
+                                          select player.Id)
+                                          .FirstOrDefault();
+
+            var returnValue = new PlayerQuickStats();
+
+            if(playerIdForCurrentUser != 0)
+            {
+                returnValue.PlayerId = playerIdForCurrentUser;
+                returnValue.TotalPoints = GetTotalNemePoints(playerIdForCurrentUser);
+
+                var gameDefinitionTotals = GetGameDefinitionTotals(playerIdForCurrentUser);
+                var topLevelTotals = GetTopLevelTotals(gameDefinitionTotals);
+                returnValue.TotalGamesPlayed = topLevelTotals.TotalGames;
+                returnValue.TotalGamesWon = topLevelTotals.TotalGamesWon;
+
+                var lastPlayedGameForGamingGroupList = playedGameRetriever.GetRecentGames(1, gamingGroupId);
+                if(lastPlayedGameForGamingGroupList.Count() == 1)
+                {
+                    var lastGame = lastPlayedGameForGamingGroupList[0];
+                    returnValue.LastGamingGroupGame = new PlayedGameQuickStats
+                    {
+                        DatePlayed = lastGame.DatePlayed,
+                        GameDefinitionName = lastGame.GameDefinition.Name,
+                        GameDefinitionId = lastGame.GameDefinitionId,
+                        PlayedGameId = lastGame.Id,
+                        WinnerType = lastGame.WinnerType
+                    };
+
+                    if(lastGame.WinningPlayer != null)
+                    {
+                        returnValue.LastGamingGroupGame.WinningPlayerId = lastGame.WinningPlayer.Id;
+                        returnValue.LastGamingGroupGame.WinningPlayerName = lastGame.WinningPlayer.Name;
+                    }
+
+                    var bggGameDefinition = lastGame.GameDefinition.BoardGameGeekGameDefinition;
+
+                    if (bggGameDefinition != null)
+                    {
+                        returnValue.LastGamingGroupGame.BoardGameGeekUri = BoardGameGeekUriBuilder.BuildBoardGameGeekGameUri(bggGameDefinition.Id);
+                        returnValue.LastGamingGroupGame.ThumbnailImageUrl = bggGameDefinition.Thumbnail;
+                    }
+                }
+            }
+
+            return returnValue;
         }
     }
 }
