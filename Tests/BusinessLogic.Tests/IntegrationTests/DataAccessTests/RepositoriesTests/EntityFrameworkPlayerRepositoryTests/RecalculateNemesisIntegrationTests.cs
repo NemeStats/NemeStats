@@ -22,6 +22,7 @@ using BusinessLogic.DataAccess;
 using BusinessLogic.Models.Players;
 using BusinessLogic.Models;
 using BusinessLogic.Logic.Players;
+using BusinessLogic.Logic.PlayedGames;
 
 namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests.EntityFrameworkPlayerRepositoryTests
 {
@@ -40,7 +41,8 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
 
             dataContext = new NemeStatsDataContext();
             IPlayerRepository playerRepository = new EntityFrameworkPlayerRepository(dataContext);
-            playerRetriever = new PlayerRetriever(dataContext, playerRepository);
+            IPlayedGameRetriever playedGameRetriever = new PlayedGameRetriever(dataContext);
+            playerRetriever = new PlayerRetriever(dataContext, playerRepository, playedGameRetriever);
             player1Details = playerRetriever.GetPlayerDetails(testPlayer1.Id, 0);
             player5Details = playerRetriever.GetPlayerDetails(testPlayer5.Id, 0);
         }

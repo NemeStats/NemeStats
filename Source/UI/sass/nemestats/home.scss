@@ -1,0 +1,133 @@
+﻿@import "nemestats-variables.scss";
+
+.home-container {
+    background-color: #eee;
+
+    .home-body-container {
+        background-color: #fff;
+        width: 100%;
+        padding-left: 2%;
+        padding-right: 2%;
+    }
+
+    .home-banner {
+        background: url(/Content/Images/Home/Banner.jpg) no-repeat center center;
+        background-size: cover;
+
+        .cta-wrapper {
+            padding: 20px 0 40px 0;
+
+            .subtitle {
+                .text {
+                    font-family: "Audiowide";
+                    font-size: 60px;
+                    color: $subtitle-color;
+                    margin-top: 40px;
+                    text-shadow: 0 1px 2px #111111;
+
+                    @media (max-width: $screen-sm-max) {
+                        margin-top: 20px;
+                        text-align: center;
+                        font-size: 40px;
+                    }
+                }
+
+                img {
+                    padding-top: 40px;
+                    height: 150px;
+
+                    @media (max-width: $screen-sm-max) {
+                        display: block;
+                        margin: 0 auto;
+                    }
+                }
+            }
+
+            .panel {
+                margin-top: 40px;
+                text-align: center;
+
+
+                .current-player-stats {
+                    .btn-action {
+                        width: 100%;
+                        font-size: 22px;
+                    }
+
+                    .last-game-played {
+                        text-align:left;
+                        .image-col {
+                            height: 100px;
+                          text-align:center;
+
+                            .bgg-thumbnail {
+                                width: auto;
+                                height: 100%;
+                                min-height: 100px;
+                            }
+                        }
+                    }
+
+
+                    .stat-value {
+                        font-size: 28px;
+                    }
+                }
+
+                .social-login {
+
+                    button {
+                        width: 100%;
+                        font-size: 22px;
+
+                        i.fa {
+                            margin-right: 10px;
+                        }
+                    }
+                }
+
+                .common-login {
+                    background-color: #eee;
+
+                    .or {
+                        position: relative;
+                        left: 50%;
+                        margin-left: -15px;
+                        top: -15px;
+                        height: 30px;
+                        width: 30px;
+                        text-align: center;
+                        line-height: 30px;
+                        color: #4e525b;
+                        font-size: 14px;
+                        font-weight: $font-weight-bold;
+                        background-color: white;
+                        -webkit-border-radius: 500px;
+                        -webkit-background-clip: padding-box;
+                        -moz-border-radius: 500px;
+                        -moz-background-clip: padding;
+                        border-radius: 500px;
+                        -webkit-background-clip: padding-box;
+                        background-clip: padding-box;
+                        z-index: 2;
+                    }
+
+                    .title {
+                        font-size: $font-size-h4;
+                        margin-bottom: 20px;
+                        margin-top: -10px;
+                    }
+
+                    .form-group {
+                        margin-bottom: 5px;
+
+                        &:last-child {
+                            margin-bottom: 0;
+                            padding-bottom: 15px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

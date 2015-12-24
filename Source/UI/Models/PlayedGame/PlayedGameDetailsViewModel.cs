@@ -32,6 +32,15 @@ namespace UI.Models.PlayedGame
         public string Notes { get; set; }
         public DateTime DatePlayed { get; set; }
         public IList<GameResultViewModel> PlayerResults { get; set; }
+
+        public GameResultViewModel WinningPlayer
+        {
+            get
+            {
+                return WinnerType == WinnerTypes.PlayerWin ? PlayerResults.First(r=>r.GameRank == 1) : null;
+            }
+        }
+
         public bool UserCanEdit { get; set; }
         public WinnerTypes? WinnerType { get; set; }
 

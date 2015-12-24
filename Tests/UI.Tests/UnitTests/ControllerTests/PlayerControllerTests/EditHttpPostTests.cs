@@ -24,6 +24,8 @@ using BusinessLogic.Models.Players;
 using BusinessLogic.Models.User;
 using UI.Controllers;
 using UI.Models.Players;
+using BusinessLogic.Logic.Players;
+using UI.Transformations.PlayerTransformations;
 
 namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
 {
@@ -37,7 +39,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         {
             base.SetUp();
 
-            playerEditViewModelBuilderMock.Expect(mock => mock.Build(Arg<Player>.Is.Anything))
+            autoMocker.Get<IPlayerEditViewModelBuilder>().Expect(mock => mock.Build(Arg<Player>.Is.Anything))
                                           .Return(expectedViewModel);
         }
 
@@ -46,14 +48,14 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         {
             string baseUrl = "base url";
             string expectedUrl = baseUrl + "#" + GamingGroupController.SECTION_ANCHOR_PLAYERS;
-            urlHelperMock.Expect(mock => mock.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name))
+            autoMocker.ClassUnderTest.Url.Expect(mock => mock.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name))
                     .Return(baseUrl);
             Player player = new Player()
             {
                 Name = "player name"
             };
 
-            RedirectResult redirectResult = playerController.Edit(player, currentUser) as RedirectResult;
+            RedirectResult redirectResult = autoMocker.ClassUnderTest.Edit(player, currentUser) as RedirectResult;
 
             Assert.AreEqual(expectedUrl, redirectResult.Url);
         }
@@ -61,9 +63,9 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         [Test]
         public void ItRemainsOnTheEditViewIfValidationFails()
         {
-            playerController.ModelState.AddModelError("key", "message");
+            autoMocker.ClassUnderTest.ModelState.AddModelError("key", "message");
 
-            ViewResult result = playerController.Edit(new Player(), currentUser) as ViewResult;
+            ViewResult result = autoMocker.ClassUnderTest.Edit(new Player(), currentUser) as ViewResult;
 
             Assert.AreEqual(MVC.Player.Views.Edit, result.ViewName);
         }
@@ -72,9 +74,9 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         public void ItPutsThePlayerOnTheViewIfValidationFails()
         {
             Player player = new Player();
-            playerController.ModelState.AddModelError("key", "message");
+            autoMocker.ClassUnderTest.ModelState.AddModelError("key", "message");
 
-            ViewResult result = playerController.Edit(player, currentUser) as ViewResult;
+            ViewResult result = autoMocker.ClassUnderTest.Edit(player, currentUser) as ViewResult;
 
             Assert.AreEqual(expectedViewModel, result.Model);
         }
@@ -87,9 +89,9 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
                 Name = "player name"
             };
 
-            playerController.Edit(player, currentUser);
+            autoMocker.ClassUnderTest.Edit(player, currentUser);
 
-            playerSaverMock.AssertWasCalled(mock => mock.UpdatePlayer(
+            autoMocker.Get<IPlayerSaver>().AssertWasCalled(mock => mock.UpdatePlayer(
              Arg<UpdatePlayerRequest>.Matches(p => p.Active == player.Active
                                  && p.Name == player.Name
                                  && p.PlayerId == player.Id),

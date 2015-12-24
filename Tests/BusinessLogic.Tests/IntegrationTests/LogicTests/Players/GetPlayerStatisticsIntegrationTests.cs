@@ -3,6 +3,7 @@ using BusinessLogic.DataAccess;
 using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.Logic.Players;
 using NUnit.Framework;
+using BusinessLogic.Logic.PlayedGames;
 
 namespace BusinessLogic.Tests.IntegrationTests.LogicTests.Players
 {
@@ -14,7 +15,8 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.Players
         {
             using (IDataContext dataContext = new NemeStatsDataContext())
             {
-                var playerRetriever = new PlayerRetriever(dataContext, new EntityFrameworkPlayerRepository(dataContext));
+                IPlayedGameRetriever playedGameRetriever = new PlayedGameRetriever(dataContext);
+                var playerRetriever = new PlayerRetriever(dataContext, new EntityFrameworkPlayerRepository(dataContext), playedGameRetriever);
 
                 var statistics = playerRetriever.GetPlayerStatistics(testPlayerWithNoPlayedGames.Id);
 
@@ -33,7 +35,8 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.Players
         {
             using (IDataContext dataContext = new NemeStatsDataContext())
             {
-                var playerRetriever = new PlayerRetriever(dataContext, new EntityFrameworkPlayerRepository(dataContext));
+                IPlayedGameRetriever playedGameRetriever = new PlayedGameRetriever(dataContext);
+                var playerRetriever = new PlayerRetriever(dataContext, new EntityFrameworkPlayerRepository(dataContext), playedGameRetriever);
 
                 var statistics = playerRetriever.GetPlayerStatistics(testPlayer9UndefeatedWith5Games.Id);
 

@@ -24,6 +24,7 @@ using NUnit.Framework;
 using Rhino.Mocks;
 using System.Linq;
 using System.Web.Mvc;
+using BusinessLogic.Logic.Players;
 
 namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
 {
@@ -38,9 +39,9 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
                 Name = "player name"
             };
             
-            playerController.Save(player, currentUser);
+            autoMocker.ClassUnderTest.Save(player, currentUser);
 
-            playerSaverMock.AssertWasCalled(mock => mock.Save(player, currentUser));
+            autoMocker.Get<IPlayerSaver>().AssertWasCalled(mock => mock.Save(player, currentUser));
         }
 
         [Test]
@@ -49,12 +50,12 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
             var context = MockRepository.GenerateMock<HttpContextBase>();
             context.Expect(x => x.Request)
                 .Repeat.Any()
-                .Return(asyncRequestMock);
-            asyncRequestMock.Headers.Clear();
+                .Return(autoMocker.Get<HttpRequestBase>());
+            autoMocker.Get<HttpRequestBase>().Headers.Clear();
 
-            playerController.ControllerContext = new ControllerContext(context, new RouteData(), playerController);
+            autoMocker.ClassUnderTest.ControllerContext = new ControllerContext(context, new RouteData(), autoMocker.ClassUnderTest);
 
-            var result = playerController.Save(new Player(), currentUser) as HttpStatusCodeResult;
+            var result = autoMocker.ClassUnderTest.Save(new Player(), currentUser) as HttpStatusCodeResult;
 
             Assert.AreEqual((int)HttpStatusCode.BadRequest, result.StatusCode);
         }
@@ -63,9 +64,9 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         public void ItReturnsANotModifiedStatusIfValidationFails()
         {
             var player = new Player();
-            playerController.ModelState.AddModelError("key", "message");
+            autoMocker.ClassUnderTest.ModelState.AddModelError("key", "message");
 
-            var result = playerController.Save(player, currentUser) as HttpStatusCodeResult;
+            var result = autoMocker.ClassUnderTest.Save(player, currentUser) as HttpStatusCodeResult;
 
             Assert.IsNotNull(result);
             Assert.AreEqual((int)HttpStatusCode.NotModified, result.StatusCode);
@@ -79,11 +80,11 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
                 Name = "player name",
                 Id = 3
             };
-            playerSaverMock.Expect(x => x.Save(player, currentUser))
+            autoMocker.Get<IPlayerSaver>().Expect(x => x.Save(player, currentUser))
                 .Repeat.Once()
                 .Throw(new PlayerAlreadyExistsException(player.Name, player.Id));
 
-            var result = playerController.Save(player, currentUser) as HttpStatusCodeResult;
+            var result = autoMocker.ClassUnderTest.Save(player, currentUser) as HttpStatusCodeResult;
 
             Assert.IsNotNull(result);
             Assert.AreEqual((int)HttpStatusCode.Conflict, result.StatusCode);

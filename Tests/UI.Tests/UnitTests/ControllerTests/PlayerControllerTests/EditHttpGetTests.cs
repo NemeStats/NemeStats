@@ -15,6 +15,7 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
+using BusinessLogic.Logic.Players;
 using BusinessLogic.Models.Players;
 using NUnit.Framework;
 using Rhino.Mocks;
@@ -34,7 +35,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         public void ItReturnsABadRequestHttpStatusCodeIfThereIsNoPlayerId()
         {
             int? nullPlayerId = null;
-            HttpStatusCodeResult result = playerController.Edit(nullPlayerId) as HttpStatusCodeResult;
+            HttpStatusCodeResult result = autoMocker.ClassUnderTest.Edit(nullPlayerId) as HttpStatusCodeResult;
 
             Assert.AreEqual((int)HttpStatusCode.BadRequest, result.StatusCode);
         }
@@ -43,9 +44,9 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         public void ItReturnsAnUnauthorizedAccessHttpStatusCodeIfTheUserDoesntHaveAccess()
         {
             int playerId = 1;
-            playerRetrieverMock.Expect(mock => mock.GetPlayerDetails(playerId, 0))
+            autoMocker.Get<IPlayerRetriever>().Expect(mock => mock.GetPlayerDetails(playerId, 0))
                 .Throw(new UnauthorizedAccessException());
-            HttpStatusCodeResult result = playerController.Edit(playerId) as HttpStatusCodeResult;
+            HttpStatusCodeResult result = autoMocker.ClassUnderTest.Edit(playerId) as HttpStatusCodeResult;
 
             Assert.AreEqual((int)HttpStatusCode.Unauthorized, result.StatusCode);
         }
@@ -54,9 +55,9 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         public void ItReturnsANotFoundHttpStatusCodeIfThePlayerDoesntExist()
         {
             int playerId = -1;
-            playerRetrieverMock.Expect(mock => mock.GetPlayerDetails(playerId, 0))
+            autoMocker.Get<IPlayerRetriever>().Expect(mock => mock.GetPlayerDetails(playerId, 0))
                 .Throw(new KeyNotFoundException());
-            HttpStatusCodeResult result = playerController.Edit(playerId) as HttpStatusCodeResult;
+            HttpStatusCodeResult result = autoMocker.ClassUnderTest.Edit(playerId) as HttpStatusCodeResult;
 
             Assert.AreEqual((int)HttpStatusCode.NotFound, result.StatusCode);
         }
@@ -65,7 +66,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         public void ItLoadsTheEditView()
         {
             int playerId = 123;
-            playerRetrieverMock.Expect(mock => mock.GetPlayerDetails(playerId, 0))
+            autoMocker.Get<IPlayerRetriever>().Expect(mock => mock.GetPlayerDetails(playerId, 0))
                 .Return(new PlayerDetails());
 
             PlayerDetails playerDetails = new PlayerDetails
@@ -73,7 +74,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
                 Id = playerId
             };
 
-            ViewResult result = playerController.Edit(playerDetails.Id) as ViewResult;
+            ViewResult result = autoMocker.ClassUnderTest.Edit(playerDetails.Id) as ViewResult;
 
             Assert.AreEqual(MVC.Player.Views.Edit, result.ViewName);
         }
@@ -82,11 +83,11 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         public void ItPutsThePlayerEditViewModelOnTheView()
         {
             PlayerDetails playerDetails = new PlayerDetails();
-            playerRetrieverMock.Expect(mock => mock.GetPlayerDetails(playerDetails.Id, 0))
+            autoMocker.Get<IPlayerRetriever>().Expect(mock => mock.GetPlayerDetails(playerDetails.Id, 0))
                 .Repeat.Once()
                 .Return(playerDetails);
 
-            ViewResult result = playerController.Edit(playerDetails.Id) as ViewResult;
+            ViewResult result = autoMocker.ClassUnderTest.Edit(playerDetails.Id) as ViewResult;
 
             var actualViewModel = (PlayerEditViewModel)result.Model;
 

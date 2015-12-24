@@ -2,7 +2,7 @@
 
 
 .neme-points-ico {
-    color: $header-background-color;
+    color: $brand-primary;
     font-size: 10px;
 
     .letter {
@@ -22,7 +22,7 @@
                 &:after {
                     position: absolute;
                     content: "/";
-                    font-weight: 700;
+                    font-weight: $font-weight-bold;
                     font-size: 1.7em;
                     top: -7px;
                 }
@@ -70,7 +70,7 @@
                         &:after {
                             position: relative;
                             content: "/";
-                            font-weight: 700;
+                            font-weight: $font-weight-bold;
                             font-size: 1.6em;
                             top: -21px;
                         }

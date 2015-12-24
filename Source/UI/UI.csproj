@@ -24,7 +24,7 @@
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
     <UseGlobalApplicationHostFile />
-    <TypeScriptToolsVersion>1.5</TypeScriptToolsVersion>
+    <TypeScriptToolsVersion>1.7</TypeScriptToolsVersion>
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -365,6 +365,7 @@
     <Compile Include="Models\PlayedGame\GameResultViewModel.cs" />
     <Compile Include="Models\PlayedGame\PlayedGameEditViewModel.cs" />
     <Compile Include="Models\PlayedGame\PlayedGameDetailsViewModel.cs" />
+    <Compile Include="Models\PlayedGame\PlayedGameQuickStatsViewModel.cs" />
     <Compile Include="Models\PlayedGame\PlayedGamesFilterViewModel.cs" />
     <Compile Include="Models\PlayedGame\PlayedGamesViewModel.cs" />
     <Compile Include="Models\PlayedGame\SearchViewModel.cs" />
@@ -373,6 +374,7 @@
     <Compile Include="Models\Players\PlayerEditViewModel.cs" />
     <Compile Include="Models\Players\PlayerGameSummaryViewModel.cs" />
     <Compile Include="Models\Players\PlayerInvitationViewModel.cs" />
+    <Compile Include="Models\Players\PlayerQuickStatsViewModel.cs" />
     <Compile Include="Models\Players\PlayersSummaryViewModel.cs" />
     <Compile Include="Models\Players\PlayerSummaryViewModel.cs" />
     <Compile Include="Models\Players\TopPlayerViewModel.cs" />
@@ -430,6 +432,7 @@
     <Content Include="Content\font-awesome.css" />
     <Content Include="Content\font-awesome.min.css" />
     <Content Include="Content\Images\bgg_small.png" />
+    <Content Include="Content\Images\Home\Banner.jpg" />
     <Content Include="Content\Images\NemeStats-White.png" />
     <Content Include="Content\Images\NemeStats.png" />
     <Content Include="Content\Images\spinner.gif" />
@@ -503,11 +506,12 @@
     <Content Include="css\fontawesome.css.map" />
     <Content Include="css\nemestats.css.map" />
     <Content Include="css\theme.css.map" />
-    <Content Include="images\.keep" />
+    <Content Include="sass\nemestats\home.scss" />
     <Content Include="fonts\bootstrap\glyphicons-halflings-regular.woff2" />
     <Content Include="fonts\bootstrap\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\bootstrap\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\bootstrap\glyphicons-halflings-regular.eot" />
+    <Content Include="sass\nemestats\buttons.scss" />
     <None Include="sass\nemestats\player.scss" />
     <Content Include="sass\nemestats\nemestats-variables.scss" />
     <Content Include="sass\nemestats\flipscroll.scss" />
@@ -742,6 +746,9 @@
     <Content Include="Views\GameDefinition\_GameDefinitionsTablePartial.cshtml" />
     <Content Include="Views\Account\CreateGamingGroup.cshtml" />
     <Content Include="Views\Account\UserGamingGroups.cshtml" />
+    <Content Include="Views\Account\LoginForm.cshtml" />
+    <Content Include="Views\Shared\Footer.cshtml" />
+    <Content Include="Views\Player\CurrentPlayerQuickStats.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Code\" />

@@ -19,26 +19,6 @@ a[name] {
     display: inline-block;
 }
 
-.home-container {
-    background-color: #eee;
-}
-
-.home-body-container {
-    background-color: #fff;
-    width: 100%;
-    padding-left: 2%;
-    padding-right: 2%;
-}
-
-.home-banner {
-    margin-top: 10px;
-    padding-top: 5px;
-    padding-left: 20%;
-    padding-right: 20%;
-    width: 100%;
-    display: block;
-}
-
 /* Set width on the form input elements since they're 100% wide by default */
 
 input, select {
@@ -78,7 +58,7 @@ input {
 
 .firstplace {
     color: darken($team-win-color,10%);
-    font-weight: bold;
+    font-weight: $font-weight-bold;
 }
 
 .sortable {
@@ -266,7 +246,7 @@ ul input[type=text] {
 .playerItem {
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
     color: #fff;
-    background-color: $header-background-color;
+    background-color: $brand-primary;
     max-width: 380px;
     margin: 8px;
     padding: 4px;
@@ -277,12 +257,12 @@ ul input[type=text] {
     margin-left: 0px;
 
     button {
-        color: $header-background-color;
+        color: $brand-primary;
     }
 
     input[type="text"] {
-        color: $header-background-color;
-        border-color: $header-background-color;
+        color: $brand-primary;
+        border-color: $brand-primary;
     }
 }
 
@@ -331,12 +311,12 @@ h3 > a {
 
 .upvote-count {
     color: $team-win-color;
-    font-weight: bold;
+    font-weight: $font-weight-bold;
 }
 
 .downvote-count {
     color: $team-loss-color;
-    font-weight: bold;
+    font-weight: $font-weight-bold;
 }
 
 .btn-recordgame {
@@ -350,4 +330,22 @@ button > i.fa {
 
 .panel > i.fa {
     line-height: 36;
+}
+
+
+.navbar-brand {
+    padding: 10px;
+
+    img {
+        width: 120px;
+    }
+}
+
+
+footer {
+    padding-bottom: 10px;
+
+    span {
+        top: 10px;
+    }
 }

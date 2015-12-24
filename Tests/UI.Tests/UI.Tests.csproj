@@ -244,6 +244,7 @@
     <Compile Include="UnitTests\ControllerTests\PlayedGameControllerTests\SearchHttpPostTests.cs" />
     <Compile Include="UnitTests\ControllerTests\PlayedGameControllerTests\ShowRecentlyPlayedGamesTests.cs" />
     <Compile Include="UnitTests\ControllerTests\PlayerControllerTests\CreateHttpGetTests.cs" />
+    <Compile Include="UnitTests\ControllerTests\PlayerControllerTests\CurrentPlayerQuickStatsTests.cs" />
     <Compile Include="UnitTests\ControllerTests\PlayerControllerTests\InvitePlayerHttpPostTests.cs" />
     <Compile Include="UnitTests\ControllerTests\PlayerControllerTests\InvitePlayerHttpGetTests.cs" />
     <Compile Include="UnitTests\ControllerTests\PlayerControllerTests\SaveHttpPostTests.cs" />

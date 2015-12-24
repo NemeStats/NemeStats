@@ -15,6 +15,7 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
+using BusinessLogic.Logic.Players;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Players;
 using NUnit.Framework;
@@ -23,13 +24,15 @@ using System.Collections.Generic;
 using System.Net;
 using System.Web.Mvc;
 using UI.Controllers;
+using UI.Controllers.Helpers;
 using UI.Models.PlayedGame;
 using UI.Models.Players;
+using UI.Transformations.PlayerTransformations;
 
 namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
 {
     [TestFixture]
-    public class PlayerControllerTests : PlayerControllerTestBase
+    public class DetailsTests : PlayerControllerTestBase
     {
         private int playerId = 1;
         private string expectedMinionUrl;
@@ -37,20 +40,20 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         public override void SetUp()
         {
             base.SetUp();
-
-            expectedMinionUrl = playerController.Url.Action(MVC.Player.ActionNames.Details, MVC.Player.Name, new { id = playerId }, "HTTPS") + "#minions";
+            
+            expectedMinionUrl = autoMocker.ClassUnderTest.Url.Action(MVC.Player.ActionNames.Details, MVC.Player.Name, new { id = playerId }, "HTTPS") + "#minions";
         }
 
         [Test]
         public void ItNeverReturnsNull()
         {
-            Assert.NotNull(playerController.Details(null, null));
+            Assert.NotNull(autoMocker.ClassUnderTest.Details(null, null));
         }
 
         [Test]
         public void ItReturnsBadHttpStatusWhenNoPlayerIdGiven()
         {
-            HttpStatusCodeResult actualResult = playerController.Details(null, null) as HttpStatusCodeResult;
+            HttpStatusCodeResult actualResult = autoMocker.ClassUnderTest.Details(null, null) as HttpStatusCodeResult;
 
             Assert.AreEqual((int)HttpStatusCode.BadRequest, actualResult.StatusCode);
         }
@@ -58,7 +61,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         [Test]
         public void ItReturns404StatusWhenNoPlayerIsFound()
         {
-            HttpStatusCodeResult actualResult = playerController.Details(-1, null) as HttpStatusCodeResult;
+            HttpStatusCodeResult actualResult = autoMocker.ClassUnderTest.Details(-1, null) as HttpStatusCodeResult;
 
             Assert.AreEqual((int)HttpStatusCode.NotFound, actualResult.StatusCode);
         }
@@ -66,16 +69,16 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         [Test]
         public void ItRetrievesRequestedPlayer()
         {
-            playerController.Details(playerId, currentUser);
+            autoMocker.ClassUnderTest.Details(playerId, currentUser);
 
-            playerRetrieverMock.AssertWasCalled(x => x.GetPlayerDetails(playerId, PlayerController.NUMBER_OF_RECENT_GAMES_TO_RETRIEVE));
+            autoMocker.Get<IPlayerRetriever>().AssertWasCalled(x => x.GetPlayerDetails(playerId, PlayerController.NUMBER_OF_RECENT_GAMES_TO_RETRIEVE));
         }
 
         [Test]
         public void ItReturnsThePlayerDetailsViewWhenThePlayerIsFound()
         {
             PlayerDetails playerDetails = new PlayerDetails(){ PlayerGameResults = new List<PlayerGameResult>() };
-            playerRetrieverMock.Expect(playerLogic => playerLogic.GetPlayerDetails(playerId, PlayerController.NUMBER_OF_RECENT_GAMES_TO_RETRIEVE))
+            autoMocker.Get<IPlayerRetriever>().Expect(playerLogic => playerLogic.GetPlayerDetails(playerId, PlayerController.NUMBER_OF_RECENT_GAMES_TO_RETRIEVE))
                 .Repeat.Once()
                 .Return(playerDetails);
 
@@ -84,11 +87,11 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
                 PlayerId = playerId,
                 PlayerGameResultDetails = new List<GameResultViewModel>()
             };
-            playerDetailsViewModelBuilderMock.Expect(viewModelBuilder => viewModelBuilder.Build(playerDetails, expectedMinionUrl, currentUser))
+            autoMocker.Get<IPlayerDetailsViewModelBuilder>().Expect(viewModelBuilder => viewModelBuilder.Build(playerDetails, expectedMinionUrl, currentUser))
                 .Repeat
                 .Once()
                 .Return(playerDetailsViewModel);
-            ViewResult viewResult = playerController.Details(playerId, currentUser) as ViewResult;
+            ViewResult viewResult = autoMocker.ClassUnderTest.Details(playerId, currentUser) as ViewResult;
 
             Assert.AreEqual(MVC.Player.Views.Details, viewResult.ViewName);
         }
@@ -97,7 +100,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         public void ItSetsThePlayerDetailsViewModelForTheFoundPlayer()
         {
             PlayerDetails playerDetails = new PlayerDetails() { Id = playerId, PlayerGameResults = new List<PlayerGameResult>() };
-            playerRetrieverMock.Expect(playerLogic => playerLogic.GetPlayerDetails(playerId, PlayerController.NUMBER_OF_RECENT_GAMES_TO_RETRIEVE))
+            autoMocker.Get<IPlayerRetriever>().Expect(playerLogic => playerLogic.GetPlayerDetails(playerId, PlayerController.NUMBER_OF_RECENT_GAMES_TO_RETRIEVE))
                 .Repeat.Once()
                 .Return(playerDetails);
 
@@ -106,12 +109,12 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
                 PlayerId = playerId,
                 PlayerGameResultDetails = new List<GameResultViewModel>()
             };
-            playerDetailsViewModelBuilderMock.Expect(viewModelBuilder => viewModelBuilder.Build(playerDetails, expectedMinionUrl, currentUser))
+            autoMocker.Get<IPlayerDetailsViewModelBuilder>().Expect(viewModelBuilder => viewModelBuilder.Build(playerDetails, expectedMinionUrl, currentUser))
                 .Repeat
                 .Once()
                 .Return(playerDetailsViewModel);
 
-            ViewResult viewResult = playerController.Details(playerId, currentUser) as ViewResult;
+            ViewResult viewResult = autoMocker.ClassUnderTest.Details(playerId, currentUser) as ViewResult;
 
             Assert.AreEqual(playerDetailsViewModel, viewResult.Model);
         }
@@ -119,16 +122,16 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         [Test]
         public void ItOnlyRetrievesTheSpecifiedNumberOfPlayers()
         {
-            playerController.Details(playerId, currentUser);
+            autoMocker.ClassUnderTest.Details(playerId, currentUser);
 
-            playerRetrieverMock.AssertWasCalled(mock => mock.GetPlayerDetails(playerId, PlayerController.NUMBER_OF_RECENT_GAMES_TO_RETRIEVE));
+            autoMocker.Get<IPlayerRetriever>().AssertWasCalled(mock => mock.GetPlayerDetails(playerId, PlayerController.NUMBER_OF_RECENT_GAMES_TO_RETRIEVE));
         }
 
         [Test]
         public void ItPutsTheRecentGamesMessageOnTheViewbag()
         {
             PlayerDetails playerDetails = new PlayerDetails(){ PlayerGameResults = new List<PlayerGameResult>() };
-            playerRetrieverMock.Expect(playerLogic => playerLogic.GetPlayerDetails(
+            autoMocker.Get<IPlayerRetriever>().Expect(playerLogic => playerLogic.GetPlayerDetails(
                 playerId, 
                 PlayerController.NUMBER_OF_RECENT_GAMES_TO_RETRIEVE))
                 .Repeat.Once()
@@ -139,19 +142,19 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
                 PlayerId = playerId,
                 PlayerGameResultDetails = new List<GameResultViewModel>()
             };
-            playerDetailsViewModelBuilderMock.Expect(viewModelBuilder => viewModelBuilder.Build(playerDetails, expectedMinionUrl, currentUser))
+            autoMocker.Get<IPlayerDetailsViewModelBuilder>().Expect(viewModelBuilder => viewModelBuilder.Build(playerDetails, expectedMinionUrl, currentUser))
                 .Repeat
                 .Once()
                 .Return(playerDetailsViewModel);
             string expectedMessage = "expected message";
-            showingXResultsMessageBuilderMock.Expect(mock => mock.BuildMessage(
+            autoMocker.Get<IShowingXResultsMessageBuilder>().Expect(mock => mock.BuildMessage(
                 PlayerController.NUMBER_OF_RECENT_GAMES_TO_RETRIEVE,
                 playerDetailsViewModel.PlayerGameResultDetails.Count))
                     .Return(expectedMessage);
 
-            playerController.Details(playerId, currentUser);
+            autoMocker.ClassUnderTest.Details(playerId, currentUser);
 
-            Assert.AreEqual(expectedMessage, playerController.ViewBag.RecentGamesMessage);
+            Assert.AreEqual(expectedMessage, autoMocker.ClassUnderTest.ViewBag.RecentGamesMessage);
         }
     }
 }

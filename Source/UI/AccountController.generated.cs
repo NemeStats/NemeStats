@@ -163,6 +163,7 @@ namespace UI.Controllers
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionNamesClass
         {
+            public readonly string LoginForm = "LoginForm";
             public readonly string Login = "Login";
             public readonly string Register = "Register";
             public readonly string ConsumeInvitation = "ConsumeInvitation";
@@ -191,6 +192,7 @@ namespace UI.Controllers
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionNameConstants
         {
+            public const string LoginForm = "LoginForm";
             public const string Login = "Login";
             public const string Register = "Register";
             public const string ConsumeInvitation = "ConsumeInvitation";
@@ -375,6 +377,7 @@ namespace UI.Controllers
                 public readonly string ForgotPassword = "ForgotPassword";
                 public readonly string ForgotPasswordConfirmation = "ForgotPasswordConfirmation";
                 public readonly string Login = "Login";
+                public readonly string LoginForm = "LoginForm";
                 public readonly string Manage = "Manage";
                 public readonly string Register = "Register";
                 public readonly string RegisterAgainstExistingGamingGroup = "RegisterAgainstExistingGamingGroup";
@@ -397,6 +400,7 @@ namespace UI.Controllers
             public readonly string ForgotPassword = "~/Views/Account/ForgotPassword.cshtml";
             public readonly string ForgotPasswordConfirmation = "~/Views/Account/ForgotPasswordConfirmation.cshtml";
             public readonly string Login = "~/Views/Account/Login.cshtml";
+            public readonly string LoginForm = "~/Views/Account/LoginForm.cshtml";
             public readonly string Manage = "~/Views/Account/Manage.cshtml";
             public readonly string Register = "~/Views/Account/Register.cshtml";
             public readonly string RegisterAgainstExistingGamingGroup = "~/Views/Account/RegisterAgainstExistingGamingGroup.cshtml";
@@ -412,6 +416,17 @@ namespace UI.Controllers
     public partial class T4MVC_AccountController : UI.Controllers.AccountController
     {
         public T4MVC_AccountController() : base(Dummy.Instance) { }
+
+        [NonAction]
+        partial void LoginFormOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult LoginForm()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.LoginForm);
+            LoginFormOverride(callInfo);
+            return callInfo;
+        }
 
         [NonAction]
         partial void LoginOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string returnUrl);

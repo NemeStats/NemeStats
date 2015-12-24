@@ -1,0 +1,13 @@
+﻿@import 'nemestats-variables.scss';
+@import '../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/mixins.scss';
+
+.btn {
+    &.btn-google {
+        @include button-variant(white,$google-background-color,$google-background-color)
+    }
+
+    &.btn-action {
+        @include button-variant(white,$brand-info,$brand-primary);
+        text-transform: uppercase;
+    }
+}

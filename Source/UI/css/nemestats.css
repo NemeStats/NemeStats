@@ -1,3 +1,4 @@
+/*$header-background-color: #2C3E50;*/
 .voffset1 {
   margin-top: 5px; }
 
@@ -34,6 +35,7 @@
 .voffset12 {
   margin-top: 60px; }
 
+/*$header-background-color: #2C3E50;*/
 @media only screen and (max-width: 991px) {
   .flip-scroll .cf:after {
     visibility: hidden;
@@ -93,6 +95,93 @@
     border-bottom: 1px solid #babcbf; }
   /* sort out borders */ }
 
+/*$header-background-color: #2C3E50;*/
+.home-container {
+  background-color: #eee; }
+  .home-container .home-body-container {
+    background-color: #fff;
+    width: 100%;
+    padding-left: 2%;
+    padding-right: 2%; }
+  .home-container .home-banner {
+    background: url(/Content/Images/Home/Banner.jpg) no-repeat center center;
+    background-size: cover; }
+    .home-container .home-banner .cta-wrapper {
+      padding: 20px 0 40px 0; }
+      .home-container .home-banner .cta-wrapper .subtitle .text {
+        font-family: "Audiowide";
+        font-size: 60px;
+        color: #B2804D;
+        margin-top: 40px;
+        text-shadow: 0 1px 2px #111111; }
+        @media (max-width: 991px) {
+          .home-container .home-banner .cta-wrapper .subtitle .text {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 40px; } }
+      .home-container .home-banner .cta-wrapper .subtitle img {
+        padding-top: 40px;
+        height: 150px; }
+        @media (max-width: 991px) {
+          .home-container .home-banner .cta-wrapper .subtitle img {
+            display: block;
+            margin: 0 auto; } }
+      .home-container .home-banner .cta-wrapper .panel {
+        margin-top: 40px;
+        text-align: center; }
+        .home-container .home-banner .cta-wrapper .panel .current-player-stats .btn-action {
+          width: 100%;
+          font-size: 22px; }
+        .home-container .home-banner .cta-wrapper .panel .current-player-stats .last-game-played {
+          text-align: left; }
+          .home-container .home-banner .cta-wrapper .panel .current-player-stats .last-game-played .image-col {
+            height: 100px;
+            text-align: center; }
+            .home-container .home-banner .cta-wrapper .panel .current-player-stats .last-game-played .image-col .bgg-thumbnail {
+              width: auto;
+              height: 100%;
+              min-height: 100px; }
+        .home-container .home-banner .cta-wrapper .panel .current-player-stats .stat-value {
+          font-size: 28px; }
+        .home-container .home-banner .cta-wrapper .panel .social-login button {
+          width: 100%;
+          font-size: 22px; }
+          .home-container .home-banner .cta-wrapper .panel .social-login button i.fa {
+            margin-right: 10px; }
+        .home-container .home-banner .cta-wrapper .panel .common-login {
+          background-color: #eee; }
+          .home-container .home-banner .cta-wrapper .panel .common-login .or {
+            position: relative;
+            left: 50%;
+            margin-left: -15px;
+            top: -15px;
+            height: 30px;
+            width: 30px;
+            text-align: center;
+            line-height: 30px;
+            color: #4e525b;
+            font-size: 14px;
+            font-weight: 700;
+            background-color: white;
+            -webkit-border-radius: 500px;
+            -webkit-background-clip: padding-box;
+            -moz-border-radius: 500px;
+            -moz-background-clip: padding;
+            border-radius: 500px;
+            -webkit-background-clip: padding-box;
+            background-clip: padding-box;
+            z-index: 2; }
+          .home-container .home-banner .cta-wrapper .panel .common-login .title {
+            font-size: 19px;
+            margin-bottom: 20px;
+            margin-top: -10px; }
+          .home-container .home-banner .cta-wrapper .panel .common-login .form-group {
+            margin-bottom: 5px; }
+            .home-container .home-banner .cta-wrapper .panel .common-login .form-group:last-child {
+              margin-bottom: 0;
+              padding-bottom: 15px; }
+
+/*$header-background-color: #2C3E50;*/
 body {
   padding-top: 50px;
   overflow-x: hidden; }
@@ -108,49 +197,32 @@ a[name] {
   margin-top: -50px;
   display: inline-block; }
 
-.home-container {
-  background-color: #eee; }
-
-.home-body-container {
-  background-color: #fff;
-  width: 100%;
-  padding-left: 2%;
-  padding-right: 2%; }
-
-.home-banner {
-  margin-top: 10px;
-  padding-top: 5px;
-  padding-left: 20%;
-  padding-right: 20%;
-  width: 100%;
-  display: block; }
-
 /* Set width on the form input elements since they're 100% wide by default */
 input, select {
   max-width: 280px; }
 
 /* styles for validation helpers */
 .field-validation-error {
-  color: #b94a48; }
+  color: #EB7260; }
 
 .field-validation-valid {
   display: none; }
 
 input.input-validation-error {
-  border: 1px solid #b94a48; }
+  border: 1px solid #EB7260; }
 
 input[type="checkbox"].input-validation-error {
   border: 0 none; }
 
 .validation-summary-errors {
-  color: #b94a48; }
+  color: #EB7260; }
 
 .validation-summary-valid {
   display: none; }
 
 .firstplace {
-  color: #004d00;
-  font-weight: bold; }
+  color: #1f827d;
+  font-weight: 700; }
 
 .sortable {
   list-style-type: none;
@@ -296,7 +368,7 @@ ul input[type=text] {
 .playerItem {
   font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
   color: #fff;
-  background-color: #2C3E50;
+  background-color: #354458;
   max-width: 380px;
   margin: 8px;
   padding: 4px;
@@ -306,10 +378,10 @@ ul input[type=text] {
   white-space: nowrap;
   margin-left: 0px; }
   .playerItem button {
-    color: #2C3E50; }
+    color: #354458; }
   .playerItem input[type="text"] {
-    color: #2C3E50;
-    border-color: #2C3E50; }
+    color: #354458;
+    border-color: #354458; }
 
 .gaming-group-name {
   min-width: 95%;
@@ -334,21 +406,21 @@ h3 > a {
   font-size: smaller; }
 
 .gameResult-teamLoss {
-  color: red; }
+  color: #EB7260; }
 
 .gameResult-teamWin {
-  color: green; }
+  color: #29ABA4; }
 
 .rank-item {
   font-size: 26px; }
 
 .upvote-count {
-  color: green;
-  font-weight: bold; }
+  color: #29ABA4;
+  font-weight: 700; }
 
 .downvote-count {
-  color: red;
-  font-weight: bold; }
+  color: #EB7260;
+  font-weight: 700; }
 
 .btn-recordgame {
   width: 175px;
@@ -360,6 +432,17 @@ button > i.fa {
 .panel > i.fa {
   line-height: 36; }
 
+.navbar-brand {
+  padding: 10px; }
+  .navbar-brand img {
+    width: 120px; }
+
+footer {
+  padding-bottom: 10px; }
+  footer span {
+    top: 10px; }
+
+/*$header-background-color: #2C3E50;*/
 @media (max-width: 991px) {
   .home-page-icon {
     font-size: 4em; }
@@ -402,6 +485,89 @@ button > i.fa {
     overflow-y: auto;
     overflow-x: hidden; } }
 
+/*$header-background-color: #2C3E50;*/
+.btn.btn-google {
+  color: white;
+  background-color: #2196F3;
+  border-color: #2196F3; }
+  .btn.btn-google:focus, .btn.btn-google.focus {
+    color: white;
+    background-color: #0c7cd5;
+    border-color: #08528d; }
+  .btn.btn-google:hover {
+    color: white;
+    background-color: #0c7cd5;
+    border-color: #0b76cc; }
+  .btn.btn-google:active, .btn.btn-google.active,
+  .open > .btn.btn-google.dropdown-toggle {
+    color: white;
+    background-color: #0c7cd5;
+    border-color: #0b76cc; }
+    .btn.btn-google:active:hover, .btn.btn-google:active:focus, .btn.btn-google:active.focus, .btn.btn-google.active:hover, .btn.btn-google.active:focus, .btn.btn-google.active.focus,
+    .open > .btn.btn-google.dropdown-toggle:hover,
+    .open > .btn.btn-google.dropdown-toggle:focus,
+    .open > .btn.btn-google.dropdown-toggle.focus {
+      color: white;
+      background-color: #0a68b4;
+      border-color: #08528d; }
+  .btn.btn-google:active, .btn.btn-google.active,
+  .open > .btn.btn-google.dropdown-toggle {
+    background-image: none; }
+  .btn.btn-google.disabled, .btn.btn-google.disabled:hover, .btn.btn-google.disabled:focus, .btn.btn-google.disabled.focus, .btn.btn-google.disabled:active, .btn.btn-google.disabled.active, .btn.btn-google[disabled], .btn.btn-google[disabled]:hover, .btn.btn-google[disabled]:focus, .btn.btn-google[disabled].focus, .btn.btn-google[disabled]:active, .btn.btn-google[disabled].active,
+  fieldset[disabled] .btn.btn-google,
+  fieldset[disabled] .btn.btn-google:hover,
+  fieldset[disabled] .btn.btn-google:focus,
+  fieldset[disabled] .btn.btn-google.focus,
+  fieldset[disabled] .btn.btn-google:active,
+  fieldset[disabled] .btn.btn-google.active {
+    background-color: #2196F3;
+    border-color: #2196F3; }
+  .btn.btn-google .badge {
+    color: #2196F3;
+    background-color: white; }
+
+.btn.btn-action {
+  color: white;
+  background-color: #3A9AD9;
+  border-color: #354458;
+  text-transform: uppercase; }
+  .btn.btn-action:focus, .btn.btn-action.focus {
+    color: white;
+    background-color: #2480bc;
+    border-color: #050708; }
+  .btn.btn-action:hover {
+    color: white;
+    background-color: #2480bc;
+    border-color: #1e2632; }
+  .btn.btn-action:active, .btn.btn-action.active,
+  .open > .btn.btn-action.dropdown-toggle {
+    color: white;
+    background-color: #2480bc;
+    border-color: #1e2632; }
+    .btn.btn-action:active:hover, .btn.btn-action:active:focus, .btn.btn-action:active.focus, .btn.btn-action.active:hover, .btn.btn-action.active:focus, .btn.btn-action.active.focus,
+    .open > .btn.btn-action.dropdown-toggle:hover,
+    .open > .btn.btn-action.dropdown-toggle:focus,
+    .open > .btn.btn-action.dropdown-toggle.focus {
+      color: white;
+      background-color: #1e6b9e;
+      border-color: #050708; }
+  .btn.btn-action:active, .btn.btn-action.active,
+  .open > .btn.btn-action.dropdown-toggle {
+    background-image: none; }
+  .btn.btn-action.disabled, .btn.btn-action.disabled:hover, .btn.btn-action.disabled:focus, .btn.btn-action.disabled.focus, .btn.btn-action.disabled:active, .btn.btn-action.disabled.active, .btn.btn-action[disabled], .btn.btn-action[disabled]:hover, .btn.btn-action[disabled]:focus, .btn.btn-action[disabled].focus, .btn.btn-action[disabled]:active, .btn.btn-action[disabled].active,
+  fieldset[disabled] .btn.btn-action,
+  fieldset[disabled] .btn.btn-action:hover,
+  fieldset[disabled] .btn.btn-action:focus,
+  fieldset[disabled] .btn.btn-action.focus,
+  fieldset[disabled] .btn.btn-action:active,
+  fieldset[disabled] .btn.btn-action.active {
+    background-color: #3A9AD9;
+    border-color: #354458; }
+  .btn.btn-action .badge {
+    color: #3A9AD9;
+    background-color: white; }
+
+/*$header-background-color: #2C3E50;*/
 .progress {
   height: 20px;
   margin-bottom: 0; }
@@ -413,7 +579,7 @@ button > i.fa {
         font-size: 14px;
         line-height: 20px; } }
     .progress .progress-bar.won {
-      background-color: #18BC9C;
+      background-color: #29ABA4;
       position: relative; }
       .progress .progress-bar.won:before {
         content: ' ';
@@ -436,7 +602,7 @@ button > i.fa {
         border-width: 0 0 10px 10px;
         border-color: transparent transparent #ffffff transparent; }
     .progress .progress-bar.lost {
-      background-color: #E74C3C;
+      background-color: #EB7260;
       position: relative; }
       .progress .progress-bar.lost:before {
         content: ' ';
@@ -461,8 +627,9 @@ button > i.fa {
     .progress .progress-bar span {
       margin-left: 5px; }
 
+/*$header-background-color: #2C3E50;*/
 .neme-points-ico {
-  color: #2C3E50;
+  color: #354458;
   font-size: 10px; }
   .neme-points-ico .letter {
     color: white;
@@ -500,6 +667,7 @@ button > i.fa {
 #player-details .gameDefinitionsList .bgg-link-col {
   text-align: left; }
 
+/*$header-background-color: #2C3E50;*/
 .gameDefinitionsList .edit-col {
   text-align: center; }
 
@@ -507,7 +675,7 @@ button > i.fa {
   font-size: 40px; }
 
 .gameDefinitionsList .bgg-link-col {
-  font-weight: bold;
+  font-weight: 700;
   height: 100px;
   overflow: hidden;
   text-align: center;

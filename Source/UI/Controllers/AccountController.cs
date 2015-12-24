@@ -62,7 +62,14 @@ namespace UI.Controllers
             _gamingGroupRetriever = gamingGroupRetriever;
         }
 
-        //
+
+        [AllowAnonymous]
+        public virtual ActionResult LoginForm()
+        {
+            var model = new LoginViewModel();
+            return View(MVC.Account.Views.LoginForm, model);
+        }
+
         // GET: /Account/Login
         [AllowAnonymous]
         public virtual ActionResult Login(string returnUrl)
@@ -211,7 +218,7 @@ namespace UI.Controllers
             var model = new UserGamingGroupsModel
             {
                 GamingGroups = gamingGroups,
-                CurrentGamingGroup = gamingGroups.First(gg=>gg.Id == currentUser.CurrentGamingGroupId),
+                CurrentGamingGroup = gamingGroups.First(gg => gg.Id == currentUser.CurrentGamingGroupId),
                 CurrentUser = currentUser
             };
             return View(MVC.Account.Views.UserGamingGroups, model);
@@ -326,7 +333,12 @@ namespace UI.Controllers
             var user = await userManager.FindAsync(loginInfo.Login);
             if (user != null)
             {
-                await SignInAsync(user, isPersistent: false);
+                await SignInAsync(user, true);
+
+                if (string.IsNullOrEmpty(returnUrl))
+                {
+                    return RedirectToAction(MVC.GamingGroup.Index(user));
+                }
 
                 return RedirectToLocal(returnUrl);
             }

@@ -17,6 +17,7 @@
 #endregion
 using BusinessLogic.DataAccess;
 using BusinessLogic.DataAccess.Repositories;
+using BusinessLogic.Logic.PlayedGames;
 using BusinessLogic.Logic.Players;
 using BusinessLogic.Models;
 using NUnit.Framework;
@@ -31,13 +32,16 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
         private IDataContext dataContext;
         private PlayerRetriever playerRetriever;
         internal IPlayerRepository playerRepository;
+        internal IPlayedGameRetriever playedGameRetriever;
 
         [SetUp]
         public void TestSetUp()
         {
             dataContext = new NemeStatsDataContext();
             playerRepository = new EntityFrameworkPlayerRepository(dataContext);
-            playerRetriever = new PlayerRetriever(dataContext, playerRepository);
+            playedGameRetriever = new PlayedGameRetriever(dataContext);
+
+            playerRetriever = new PlayerRetriever(dataContext, playerRepository, playedGameRetriever);
         }
 
         [Test]

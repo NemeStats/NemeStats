@@ -22,6 +22,8 @@ using BusinessLogic.Models.User;
 using NUnit.Framework;
 using Rhino.Mocks;
 using UI.Models.Players;
+using BusinessLogic.Logic.Players;
+using System.Web.Mvc;
 
 namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
 {
@@ -40,12 +42,12 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
             };
             ApplicationUser applicationUser = new ApplicationUser();
 
-            urlHelperMock.Expect(mock => mock.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name))
+            autoMocker.ClassUnderTest.Url.Expect(mock => mock.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name))
                 .Return("some url");
 
-            playerController.InvitePlayer(playerInvitationViewModel, applicationUser);
+            autoMocker.ClassUnderTest.InvitePlayer(playerInvitationViewModel, applicationUser);
 
-            playerInviterMock.AssertWasCalled(mock => mock.InvitePlayer(Arg<PlayerInvitation>.Matches(
+            autoMocker.Get<IPlayerInviter>().AssertWasCalled(mock => mock.InvitePlayer(Arg<PlayerInvitation>.Matches(
                 invite => invite.CustomEmailMessage == playerInvitationViewModel.EmailBody
                 && invite.EmailSubject == playerInvitationViewModel.EmailSubject
                 && invite.InvitedPlayerEmail == playerInvitationViewModel.EmailAddress

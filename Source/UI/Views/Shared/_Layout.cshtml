@@ -13,6 +13,7 @@
         <meta name="description" content="@ViewBag.Description" />
     }
     <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,900' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Audiowide' rel='stylesheet' type='text/css'>
     @Styles.Render("~/bundles/content/css")
     @Styles.Render("~/Content/themes/base/css")
     @Scripts.Render("~/bundles/modernizr")
@@ -28,11 +29,13 @@
                 <span class="icon-bar"></span>
             </button>
 
-            @Html.ActionLink("NemeStats", "Index", "Home", null, new {@class = "navbar-brand"})
+            <a href="@Url.Action(MVC.Home.Index())" class="navbar-brand">
+                <img src="~/Content/Images/NemeStats-White.png"/>
+            </a>
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                <li id="navRecordGame">@Html.ActionLink("Record Played Game", "Create", "PlayedGame")</li>
+                <li id="gtm-recordplayedgamebutton-fromnavbar">@Html.ActionLink("Record Played Game", "Create", "PlayedGame")</li>
                 <li id="navMyGamingGroup">@Html.ActionLink("My Gaming Group", "Index", "GamingGroup")</li>
                 <li id="navAbout">@Html.ActionLink("About", "About", "Home")</li>
             </ul>
