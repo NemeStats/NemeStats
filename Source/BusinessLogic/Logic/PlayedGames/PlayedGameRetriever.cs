@@ -67,6 +67,7 @@ namespace BusinessLogic.Logic.PlayedGames
             PlayedGame result = dataContext.GetQueryable<PlayedGame>()
                 .Where(playedGame => playedGame.Id == playedGameId)
                     .Include(playedGame => playedGame.GameDefinition)
+                    .Include(playedGame => playedGame.GameDefinition.BoardGameGeekGameDefinition)
                     .Include(playedGame => playedGame.GamingGroup)
                     .Include(playedGame => playedGame.PlayerGameResults
                         .Select(playerGameResult => playerGameResult.Player))
