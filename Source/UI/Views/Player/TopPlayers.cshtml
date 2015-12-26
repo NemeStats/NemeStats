@@ -7,6 +7,6 @@
 }
 
 <div class="container">
-	<h2>Top @Model.Count() Players</h2>
+    <h2 class="page-header">Top @Model.Count() Players</h2>
 	@Html.Partial(MVC.Player.Views._TopPlayersPartial, @Model)
 </div>

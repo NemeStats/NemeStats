@@ -7,6 +7,6 @@
 }
 
 <div class="container">
-	<h2>@Model.Count() Recently Played Games</h2>
+    <h2 class="page-header">@Model.Count() Recently Played Games</h2>
 	@Html.Partial(MVC.PlayedGame.Views._RecentlyPlayedGamesPartial, Model)
 </div>

@@ -5,7 +5,7 @@
     Layout = MVC.Shared.Views._BaseLayout;
 }
 
-<h2>@Model.Name</h2>
+<h2 class="page-header">@Model.Name</h2>
 
 <div class="row">
     @Html.Partial(MVC.GamingGroup.Views._GamingGroupPublicDetailsPartial, Model.PublicDetailsView, new ViewDataDictionary { { "canEdit", false } })

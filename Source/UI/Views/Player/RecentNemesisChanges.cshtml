@@ -6,6 +6,6 @@
     Layout = MVC.Shared.Views._BaseLayout;
 }
 <div class="container">
-	<h2>@Model.Count() Recent Nemesis Changes</h2>
+    <h2 class="page-header">@Model.Count() Recent Nemesis Changes</h2>
 	@Html.Partial(MVC.Player.Views._RecentNemesisChangesPartial, Model)
 </div>
