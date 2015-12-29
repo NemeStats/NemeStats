@@ -69,19 +69,29 @@
 
                     .last-game-played {
                         text-align: left;
+                        padding: 15px 0;
 
                         @media (max-width: $screen-sm-max) {
                             text-align: center;
                         }
 
                         .image-col {
-                            height: 100px;
                             text-align: center;
 
                             .bgg-thumbnail {
                                 width: auto;
-                                height: 100%;
-                                min-height: 100px;
+                                max-height: 100px;
+                                max-width: 130px;
+
+                                @media (max-width: $screen-lg-min) {
+                                    max-width: 100px;
+                                }
+
+                                @media (max-width: $screen-sm-max) {
+                                    text-align: center;
+                                    min-height: 100px;
+                                    max-width: 175px;
+                                }
                             }
                         }
                     }

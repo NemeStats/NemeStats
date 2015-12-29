@@ -140,17 +140,25 @@
             .home-container .home-banner .cta-wrapper .panel .current-player-stats .btn-action {
               font-size: 16px; } }
         .home-container .home-banner .cta-wrapper .panel .current-player-stats .last-game-played {
-          text-align: left; }
+          text-align: left;
+          padding: 15px 0; }
           @media (max-width: 991px) {
             .home-container .home-banner .cta-wrapper .panel .current-player-stats .last-game-played {
               text-align: center; } }
           .home-container .home-banner .cta-wrapper .panel .current-player-stats .last-game-played .image-col {
-            height: 100px;
             text-align: center; }
             .home-container .home-banner .cta-wrapper .panel .current-player-stats .last-game-played .image-col .bgg-thumbnail {
               width: auto;
-              height: 100%;
-              min-height: 100px; }
+              max-height: 100px;
+              max-width: 130px; }
+              @media (max-width: 1200px) {
+                .home-container .home-banner .cta-wrapper .panel .current-player-stats .last-game-played .image-col .bgg-thumbnail {
+                  max-width: 100px; } }
+              @media (max-width: 991px) {
+                .home-container .home-banner .cta-wrapper .panel .current-player-stats .last-game-played .image-col .bgg-thumbnail {
+                  text-align: center;
+                  min-height: 100px;
+                  max-width: 175px; } }
         .home-container .home-banner .cta-wrapper .panel .current-player-stats .stat-value {
           font-size: 28px; }
         .home-container .home-banner .cta-wrapper .panel .social-login button {
