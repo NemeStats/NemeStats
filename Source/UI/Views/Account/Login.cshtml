@@ -16,6 +16,7 @@
             </div>
             <div class="panel-body">
                 <section>
+                    @Html.ValidationSummary(true)
                     @{ Html.RenderAction(MVC.Account.LoginForm()); }
                 </section>
             </div>

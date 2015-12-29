@@ -7,7 +7,6 @@
 @using (Html.BeginForm(MVC.Account.Login(), FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
     @Html.AntiForgeryToken()
-    @Html.ValidationSummary(true)
 
     <div class="form-group">
         @Html.LabelFor(m => m.UserName, new { @class = "col-xs-4 control-label" })
