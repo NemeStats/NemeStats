@@ -167,8 +167,8 @@ before_build:
 # scripts to run after build
 after_build:
 # ./Tests/BusinessLogic.Tests/bin/Release/BusinessLogic.Tests.dll
- - nunit-console ./Tests/UI.Tests/bin/Release/UI.Tests.dll
- - nunit-console ./BoardGameGeekApiClient.Tests/bin/Release/BoardGameGeekApiClient.Tests.dll
+# - nunit3-console ./Tests/UI.Tests/bin/Release/UI.Tests.dll
+# - nunit3-console ./BoardGameGeekApiClient.Tests/bin/Release/BoardGameGeekApiClient.Tests.dll
 
 # to run your custom scripts instead of automatic MSBuild
 build_script:
@@ -185,23 +185,25 @@ build_script:
 #    - '..\Tests\**\*.Tests.dll'
 
 # to run tests from different categories as separate jobs in parallel
-#test:
-#  categories:
+test:
+  categories:
+   except:
+    - Integration
 #    - A            # A category common for all jobs
 #    - [UI]         # 1st job
 #    - [DAL, BL]    # 2nd job
  
 # scripts to run before tests
-before_test:
-  - echo script1
-  - ps: Write-Host "RUNNING TESTS:"
+#before_test:
+ # - echo script1
+ # - ps: Write-Host "RUNNING TESTS:"
  
 # scripts to run after tests
-after_test:
+#after_test:
  
 # to run your custom scripts instead of automatic tests
-test_script:
-  - echo TESTING COMPLETE
+#test_script:
+#  - echo TESTING COMPLETE
  
 # to disable automatic tests 
 #test: off
@@ -232,12 +234,12 @@ test_script:
 #         notifications           #
 #---------------------------------#
   
-notifications:
+#notifications:
  
-  # Email
+  Email
   - provider: Email
     to:
       - cracker4o@gmail.com
-    subject: 'Nemestats Build {{status}}'                  # optional
-    message: "{{message}}, {{commitId}}, ..."    # optional
+    subject: 'Nemestats Build {{status}}'                
+    message: "{{message}}, {{commitId}}, ..."    
     on_build_status_changed: true
