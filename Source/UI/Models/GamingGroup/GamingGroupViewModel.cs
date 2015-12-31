@@ -15,6 +15,7 @@
 
 #endregion LICENSE
 
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -33,6 +34,7 @@ namespace UI.Models.GamingGroup
                 PlayedGameDetailsViewModels = new List<PlayedGameDetailsViewModel>()
             };
             this.PublicDetailsView = new GamingGroupPublicDetailsViewModel();
+            ShowStatsToDate = DateTime.UtcNow;
         }
 
         public int Id { get; set; }
@@ -46,6 +48,8 @@ namespace UI.Models.GamingGroup
         [DisplayName("Invitee Email")]
         [Required(ErrorMessage = "Please enter an e-mail!", AllowEmptyStrings = false)]
         public string InviteeEmail { get; set; }
+        public DateTime? ShowStatsFromDate { get; set; }
+        public DateTime? ShowStatsToDate { get; set; }
         public IList<GameDefinitionSummaryViewModel> GameDefinitionSummaries { get; set; }
         public IList<PlayerWithNemesisViewModel> Players { get; set; }
         public PlayedGamesViewModel PlayedGames { get; set; }
