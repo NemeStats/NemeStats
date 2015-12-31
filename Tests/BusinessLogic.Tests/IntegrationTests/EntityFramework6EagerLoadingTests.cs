@@ -23,7 +23,7 @@ using System.Linq;
 
 namespace BusinessLogic.Tests.IntegrationTests
 {
-    [TestFixture]
+    [TestFixture, Category("Integration")]
     public class EntityFramework6LazyLoadingTests
     {
         [Test, Ignore("I disabled proxy creation and lazy loading on NemeStatsDbContext in the constructor so this would fail now.")]

@@ -27,7 +27,7 @@ using BusinessLogic.Logic.OneTimeJobs;
 
 namespace UI.Tests.IntegrationTests.BoardGameGeekTests
 {
-    [TestFixture]
+    [TestFixture, Category("Integration")]
     public class BoardGameGeekIntegrationTests
     {
         [Test, Ignore("Integration test.")]

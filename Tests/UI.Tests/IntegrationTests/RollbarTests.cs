@@ -22,7 +22,7 @@ using RollbarSharp;
 
 namespace UI.Tests.IntegrationTests
 {
-    [TestFixture]
+    [TestFixture, Category("Integration")]
     public class RollbarTests
     {
         [Test, Ignore("Integration test")]

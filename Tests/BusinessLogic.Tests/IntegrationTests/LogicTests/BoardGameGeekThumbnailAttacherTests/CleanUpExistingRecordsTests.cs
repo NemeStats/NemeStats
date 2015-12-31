@@ -3,7 +3,7 @@ using NUnit.Framework;
 
 namespace BusinessLogic.Tests.IntegrationTests.LogicTests.BoardGameGeekThumbnailAttacherTests
 {
-    [TestFixture]
+    [TestFixture, Category("Integration")]
     public class CleanUpExistingRecordsTests
     {
         [Test]

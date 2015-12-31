@@ -26,7 +26,7 @@ using NUnit.Framework;
 
 namespace BusinessLogic.Tests.IntegrationTests.LogicTests.ChampionsTests
 {
-    [TestFixture]
+    [TestFixture, Category("Integration")]
     public class RecalculateChampionTests
     {
         [Test, Ignore("Integration tests")]

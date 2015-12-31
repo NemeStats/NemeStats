@@ -36,6 +36,7 @@ using UniversalAnalyticsHttpWrapper;
 
 namespace BusinessLogic.Tests.IntegrationTests
 {
+    [TestFixture, Category("Integration")]
     public class IntegrationTestBase
     {
         protected SecuredEntityValidatorFactory securedEntityValidatorFactory = new SecuredEntityValidatorFactory();
