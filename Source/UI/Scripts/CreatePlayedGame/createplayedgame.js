@@ -153,7 +153,7 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
 		this.$playersErrorRankTooHigh.addClass("hidden");
 
 		if (selectedOption.text() == "Add A Player") {
-			return alert("You must pick a player.");
+			return;
 		}
 
 		var playerId = selectedOption.val();
