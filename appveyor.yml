@@ -234,12 +234,12 @@ test:
 #         notifications           #
 #---------------------------------#
   
-#notifications:
+notifications:
  
-  Email
+  # Email
   - provider: Email
     to:
       - cracker4o@gmail.com
-    subject: 'Nemestats Build {{status}}'                
-    message: "{{message}}, {{commitId}}, ..."    
+    subject: 'Nemestats Build {{status}}'                  # optional
+    message: "{{message}}, {{commitId}}, ..."    # optional
     on_build_status_changed: true
