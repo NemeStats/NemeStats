@@ -24,6 +24,7 @@ using BusinessLogic.Models.GamingGroups;
 using BusinessLogic.Models.User;
 using System.Collections.Generic;
 using System.Linq;
+using System;
 
 namespace BusinessLogic.Logic.GamingGroups
 {
@@ -51,6 +52,11 @@ namespace BusinessLogic.Logic.GamingGroups
             var gamingGroup = dataContext.FindById<GamingGroup>(gamingGroupID);
 
             return gamingGroup;
+        }
+
+        public GamingGroupSummary GetGamingGroupDetails(GamingGroupFilter filter)
+        {
+            throw new NotImplementedException();
         }
 
         public GamingGroupSummary GetGamingGroupDetails(int gamingGroupId, int maxNumberOfGamesToRetrieve)

@@ -54,6 +54,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
             {
                 new GameDefinitionSummary()
             };
+            //var 
             gameDefinitionRetrieverMock.Expect(mock => mock.GetAllGameDefinitions(gamingGroupId))
                                        .Return(gameDefinitionSummaries);
 

@@ -18,6 +18,7 @@
 using BusinessLogic.Logic.GamingGroups;
 using BusinessLogic.Models;
 using BusinessLogic.Models.GamingGroups;
+using BusinessLogic.Models.Utility;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System.Collections.Generic;
@@ -33,6 +34,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
     {
         private GamingGroupSummary gamingGroupSummary;
         private GamingGroupViewModel gamingGroupViewModel;
+        private GamingGroupRequest gamingGroupRequest;
 
         [Test]
         public override void SetUp()
@@ -44,10 +46,11 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
                 PlayedGames = new List<PlayedGame>()
             };
             gamingGroupViewModel = new GamingGroupViewModel();
+            gamingGroupRequest = new GamingGroupRequest();
 
-            autoMocker.Get<IGamingGroupRetriever>().Expect(mock => mock.GetGamingGroupDetails(
-                currentUser.CurrentGamingGroupId,
-                GamingGroupController.MAX_NUMBER_OF_RECENT_GAMES))
+            autoMocker.ClassUnderTest.Expect(mock => mock.GetGamingGroupSummary(
+                Arg<int>.Is.Anything,
+                Arg<IDateRangeFilter>.Is.Anything))
                 .Repeat.Once()
                 .Return(gamingGroupSummary);
 
@@ -58,7 +61,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
         [Test]
         public void ItReturnsTheIndexView()
         {
-            ViewResult viewResult = autoMocker.ClassUnderTest.Index(currentUser) as ViewResult;
+            ViewResult viewResult = autoMocker.ClassUnderTest.Index(gamingGroupRequest, currentUser) as ViewResult;
 
             Assert.AreEqual(MVC.GamingGroup.Views.Index, viewResult.ViewName);
         }
@@ -66,7 +69,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
         [Test]
         public void ItAddsAGamingGroupViewModelToTheView()
         {
-            ViewResult viewResult = autoMocker.ClassUnderTest.Index(currentUser) as ViewResult;
+            ViewResult viewResult = autoMocker.ClassUnderTest.Index(gamingGroupRequest, currentUser) as ViewResult;
 
             Assert.AreSame(gamingGroupViewModel, viewResult.Model);
         }
@@ -74,7 +77,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
         [Test]
         public void ItShowsTheSearchPlayedGamesLinkInThePlayedGamePanelHeader()
         {
-            var viewResult = autoMocker.ClassUnderTest.Index(currentUser) as ViewResult;
+            var viewResult = autoMocker.ClassUnderTest.Index(gamingGroupRequest, currentUser) as ViewResult;
 
             var viewModel = (GamingGroupViewModel)viewResult.Model;
             Assert.That(viewModel.PlayedGames.ShowSearchLinkInResultsHeader, Is.True);

@@ -25,6 +25,8 @@ using BusinessLogic.Logic.GamingGroups;
 using NUnit.Framework;
 using Rhino.Mocks;
 using UI.Controllers.Helpers;
+using UI.Models.GamingGroup;
+using BusinessLogic.Models.User;
 
 namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
 {
@@ -37,7 +39,9 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
         {
  	        base.SetUp();
             autoMocker.PartialMockTheClassUnderTest();
-            autoMocker.ClassUnderTest.Expect(mock => mock.Index(currentUser))
+            autoMocker.ClassUnderTest.Expect(mock => mock.Index(
+                Arg<GamingGroupRequest>.Is.Anything, 
+                Arg<ApplicationUser>.Is.Same(currentUser)))
                                 .Return(viewResult);
         }
 

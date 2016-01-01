@@ -22,6 +22,7 @@ using BusinessLogic.Logic.GamingGroups;
 using BusinessLogic.Logic.Users;
 using BusinessLogic.Models.GamingGroups;
 using BusinessLogic.Models.User;
+using BusinessLogic.Models.Utility;
 using System.Linq;
 using System.Web.Mvc;
 using UI.Attributes.Filters;
@@ -76,9 +77,9 @@ namespace UI.Controllers
         // GET: /GamingGroup
         [Authorize]
         [UserContext]
-        public virtual ActionResult Index(ApplicationUser currentUser)
+        public virtual ActionResult Index(GamingGroupRequest gamingGroupRequest, ApplicationUser currentUser)
         {
-            var gamingGroupSummary = this.GetGamingGroupSummary(currentUser.CurrentGamingGroupId);
+            var gamingGroupSummary = this.GetGamingGroupSummary(currentUser.CurrentGamingGroupId, gamingGroupRequest);
 
             GamingGroupViewModel viewModel = gamingGroupViewModelBuilder.Build(gamingGroupSummary, currentUser);
             viewModel.PlayedGames.ShowSearchLinkInResultsHeader = true;
@@ -90,13 +91,20 @@ namespace UI.Controllers
             return View(MVC.GamingGroup.Views.Index, viewModel);
         }
 
-        internal virtual GamingGroupSummary GetGamingGroupSummary(int gamingGroupId)
+        [NonAction]
+        internal virtual GamingGroupSummary GetGamingGroupSummary(int gamingGroupId, IDateRangeFilter dateRangeFilter = null)
         {
-            GamingGroupSummary gamingGroupSummary = this.gamingGroupRetriever.GetGamingGroupDetails(
-                                                                                               gamingGroupId,
-                                                                                               MAX_NUMBER_OF_RECENT_GAMES);
-
-            return gamingGroupSummary;
+            var filter = new GamingGroupFilter
+            {
+                NumberOfRecentGamesToShow = MAX_NUMBER_OF_RECENT_GAMES,
+                GamingGroupId = gamingGroupId
+            };
+            if(dateRangeFilter != null)
+            {
+                filter.FromDate = dateRangeFilter.FromDate;
+                filter.ToDate = dateRangeFilter.ToDate;
+            }
+            return gamingGroupRetriever.GetGamingGroupDetails(filter);
         }
 
         // GET: /GamingGroup/Details
@@ -190,7 +198,7 @@ namespace UI.Controllers
             if (string.IsNullOrWhiteSpace(gamingGroupName))
             {
                 this.ModelState.AddModelError(string.Empty, "You must enter a Gaming Group name.");
-                return this.Index(currentUser);
+                return this.Index(new GamingGroupRequest(), currentUser);
             }
             this.gamingGroupSaver.CreateNewGamingGroup(gamingGroupName.Trim(), TransactionSource.WebApplication, currentUser);
 

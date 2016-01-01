@@ -225,7 +225,9 @@
     <Compile Include="UnitTests\ControllerTests\GamingGroupControllerTests\CreateNewGamingGroupTests.cs" />
     <Compile Include="UnitTests\ControllerTests\GamingGroupControllerTests\EditGetTests.cs" />
     <Compile Include="UnitTests\ControllerTests\GamingGroupControllerTests\EditPostTests.cs" />
+    <Compile Include="UnitTests\ControllerTests\GamingGroupControllerTests\FilterMyGamingGroupTests.cs" />
     <Compile Include="UnitTests\ControllerTests\GamingGroupControllerTests\GamingGroupControllerTestBase.cs" />
+    <Compile Include="UnitTests\ControllerTests\GamingGroupControllerTests\GetGamingGroupSummaryTests.cs" />
     <Compile Include="UnitTests\ControllerTests\GamingGroupControllerTests\GetTopGamingGroupsTests.cs" />
     <Compile Include="UnitTests\ControllerTests\AccountControllerTests\UserGamingGroupsTests.cs" />
     <Compile Include="UnitTests\ControllerTests\GamingGroupControllerTests\GrantAccessTests.cs" />
