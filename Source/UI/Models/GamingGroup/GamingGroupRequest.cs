@@ -7,6 +7,5 @@ namespace UI.Models.GamingGroup
     {
         public DateTime? FromDate { get; set; }
         public DateTime? ToDate { get; set; }
-        public int GamingGroupId { get; set; }
     }
 }

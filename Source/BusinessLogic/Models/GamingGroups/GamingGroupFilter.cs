@@ -1,9 +1,10 @@
-﻿using System;
+﻿using BusinessLogic.Models.Utility;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace BusinessLogic.Models.GamingGroups
 {
-    public class GamingGroupFilter
+    public class GamingGroupFilter : IDateRangeFilter
     {
         public DateTime? FromDate { get; set; }
         public DateTime? ToDate { get; set; }

@@ -56,12 +56,7 @@ namespace BusinessLogic.Logic.GamingGroups
 
         public GamingGroupSummary GetGamingGroupDetails(GamingGroupFilter filter)
         {
-            throw new NotImplementedException();
-        }
-
-        public GamingGroupSummary GetGamingGroupDetails(int gamingGroupId, int maxNumberOfGamesToRetrieve)
-        {
-            GamingGroup gamingGroup = dataContext.FindById<GamingGroup>(gamingGroupId);
+            GamingGroup gamingGroup = dataContext.FindById<GamingGroup>(filter.GamingGroupId);
             GamingGroupSummary summary = new GamingGroupSummary
             {
                 Id = gamingGroup.Id,
@@ -72,11 +67,11 @@ namespace BusinessLogic.Logic.GamingGroups
                 PublicGamingGroupWebsite = gamingGroup.PublicGamingGroupWebsite
             };
 
-            summary.PlayedGames = playedGameRetriever.GetRecentGames(maxNumberOfGamesToRetrieve, gamingGroupId);
+            summary.PlayedGames = playedGameRetriever.GetRecentGames(filter.NumberOfRecentGamesToShow, filter.GamingGroupId);
 
-            summary.Players = playerRetriever.GetAllPlayersWithNemesisInfo(gamingGroupId);
+            summary.Players = playerRetriever.GetAllPlayersWithNemesisInfo(filter.GamingGroupId, filter);
 
-            summary.GameDefinitionSummaries = gameDefinitionRetriever.GetAllGameDefinitions(gamingGroupId);
+            summary.GameDefinitionSummaries = gameDefinitionRetriever.GetAllGameDefinitions(filter.GamingGroupId, filter);
 
             summary.OwningUser = dataContext.GetQueryable<ApplicationUser>().First(user => user.Id == gamingGroup.OwningUserId);
 

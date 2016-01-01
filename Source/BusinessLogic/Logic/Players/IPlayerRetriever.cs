@@ -17,13 +17,14 @@
 #endregion
 using BusinessLogic.Models;
 using BusinessLogic.Models.Players;
+using BusinessLogic.Models.Utility;
 using System.Collections.Generic;
 namespace BusinessLogic.Logic.Players
 {
     public interface IPlayerRetriever
     {
         List<Player> GetAllPlayers(int gamingGroupId);
-        List<PlayerWithNemesis> GetAllPlayersWithNemesisInfo(int gamingGroupId);
+        List<PlayerWithNemesis> GetAllPlayersWithNemesisInfo(int gamingGroupId, IDateRangeFilter dateRangeFilter = null);
         PlayerDetails GetPlayerDetails(int playerId, int numberOfRecentGamesToRetrieve);
         PlayerQuickStats GetPlayerQuickStatsForUser(string applicationUserId, int gamingGroupId);
         PlayerStatistics GetPlayerStatistics(int playerId);

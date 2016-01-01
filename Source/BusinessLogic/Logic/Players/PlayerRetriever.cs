@@ -27,6 +27,7 @@ using System;
 using BusinessLogic.Logic.PlayedGames;
 using BusinessLogic.Models.PlayedGames;
 using BusinessLogic.Logic.BoardGameGeek;
+using BusinessLogic.Models.Utility;
 
 namespace BusinessLogic.Logic.Players
 {
@@ -57,7 +58,7 @@ namespace BusinessLogic.Logic.Players
                 .ToList();
         }
 
-        public List<PlayerWithNemesis> GetAllPlayersWithNemesisInfo(int gamingGroupId)
+        public List<PlayerWithNemesis> GetAllPlayersWithNemesisInfo(int gamingGroupId, IDateRangeFilter dateRangeFilter = null)
         {
             var playersWithNemesis = (from Player player in GetAllPlayersInGamingGroupQueryable(gamingGroupId)
                 .Include(player => player.PlayerGameResults)

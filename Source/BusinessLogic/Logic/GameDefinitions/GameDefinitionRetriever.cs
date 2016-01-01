@@ -23,6 +23,7 @@ using System.Collections.Generic;
 using System.Linq;
 using BusinessLogic.Logic.BoardGameGeek;
 using BusinessLogic.Models.Games;
+using BusinessLogic.Models.Utility;
 
 namespace BusinessLogic.Logic.GameDefinitions
 {
@@ -37,7 +38,7 @@ namespace BusinessLogic.Logic.GameDefinitions
             this.playerRepository = playerRepository;
         }
 
-        public virtual IList<GameDefinitionSummary> GetAllGameDefinitions(int gamingGroupId)
+        public virtual IList<GameDefinitionSummary> GetAllGameDefinitions(int gamingGroupId, IDateRangeFilter dateRangeFilter = null)
         {
             var returnValue = (from gameDefinition in dataContext.GetQueryable<GameDefinition>()
                 where gameDefinition.GamingGroupId == gamingGroupId
