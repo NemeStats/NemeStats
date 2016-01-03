@@ -77,6 +77,28 @@ namespace BoardGameGeekApiClient.Tests.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &lt;user id=&quot;473677&quot; name=&quot;TradenMyr&quot; termsofuse=&quot;http://boardgamegeek.com/xmlapi/termsofuse&quot;&gt;
+        ///  &lt;firstname value=&quot;Travis&quot;/&gt;
+        ///  &lt;lastname value=&quot;Merkle&quot;/&gt;
+        ///  &lt;avatarlink value=&quot;//cf.geekdo-static.com/avatars/avatar_id34779.jpg&quot;/&gt;
+        ///  &lt;yearregistered value=&quot;2012&quot;/&gt;
+        ///  &lt;lastlogin value=&quot;2016-01-02&quot;/&gt;
+        ///  &lt;stateorprovince value=&quot;&quot;/&gt;
+        ///  &lt;country value=&quot;&quot;/&gt;
+        ///  &lt;webaddress value=&quot;&quot;/&gt;
+        ///  &lt;xboxaccount value=&quot;&quot;/&gt;
+        ///  &lt;wiiaccount value=&quot;&quot;/&gt;
+        ///  &lt;psnaccount value=&quot;&quot;/&gt;
+        ///  &lt;battlenetaccount value=&quot;&quot;/&gt;
+        ///  &lt;steamaccount value=&quot; [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string GetUserDetailsData {
+            get {
+                return ResourceManager.GetString("GetUserDetailsData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &lt;items total=&quot;11&quot; termsofuse=&quot;http://boardgamegeek.com/xmlapi/termsofuse&quot;&gt;
         ///  &lt;item type=&quot;boardgame&quot; id=&quot;2688&quot;&gt;
         ///    &lt;name type=&quot;primary&quot; value=&quot;Battlestar Galactica&quot;/&gt;

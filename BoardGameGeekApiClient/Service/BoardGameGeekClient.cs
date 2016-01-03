@@ -33,7 +33,7 @@ namespace BoardGameGeekApiClient.Service
             try
             {
                 var teamDataURI = new Uri(string.Format(BASE_URL_API_V2 + "/thing?id={0}&stats=1", gameId));
-                
+
                 var xDoc = _apiDownloadService.DownloadApiResult(teamDataURI);
 
 
@@ -94,10 +94,51 @@ namespace BoardGameGeekApiClient.Service
             return details;
         }
 
+        public UserDetails GetUserDetails(string userName)
+        {
+            UserDetails details = null;
 
 
+            try
+            {
+                var teamDataURI = new Uri(string.Format(BASE_URL_API_V2 + "/user?name={0}", userName));
 
-        public IEnumerable<SearchBoardGameResult> SearchBoardGames(string query, bool exactMatch= false)
+                var xDoc = _apiDownloadService.DownloadApiResult(teamDataURI);
+
+
+                var xElements = xDoc.Descendants("user").ToList();
+                if (xElements.Count() == 1)
+                {
+
+                    var userElement = xElements.First();
+                    int userId;
+                    if (int.TryParse(userElement.Attribute("id").Value, out userId))
+                    {
+                        var avatarLink = userElement.Element("avatarlink").GetStringValue(attribute: "value");
+                        Uri avatarUri;
+                        if (!Uri.TryCreate(avatarLink, UriKind.Absolute, out avatarUri))
+                        {
+                            avatarLink = string.Empty;
+                        }
+                        details = new UserDetails
+                        {
+                            Name = userName,
+                            Avatar = avatarLink,
+                            UserId = userId
+                        };
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("Exception on GetUserDetails for user name " + userName + "." + ex);
+            }
+
+            return details;
+        }
+
+
+        public IEnumerable<SearchBoardGameResult> SearchBoardGames(string query, bool exactMatch = false)
         {
             try
             {
@@ -107,7 +148,7 @@ namespace BoardGameGeekApiClient.Service
                     uriString += "&exact=1";
                 }
                 var searchUrl = new Uri(uriString);
-                
+
 
                 var xDoc = _apiDownloadService.DownloadApiResult(searchUrl);
 

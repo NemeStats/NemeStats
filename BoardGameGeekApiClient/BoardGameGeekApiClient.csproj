@@ -48,6 +48,7 @@
     <Compile Include="Models\CollectionItem.cs" />
     <Compile Include="Models\GameDetails.cs" />
     <Compile Include="Models\PlayerPollResult.cs" />
+    <Compile Include="Models\UserDetails.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Models\SearchBoardGameResult.cs" />
     <Compile Include="Service\ApiDownloaderService.cs" />
