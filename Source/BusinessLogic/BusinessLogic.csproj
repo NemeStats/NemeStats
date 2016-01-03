@@ -320,6 +320,10 @@
     <Compile Include="Migrations\201601031207384_AddBGGUserDefinition_NameRequired.Designer.cs">
       <DependentUpon>201601031207384_AddBGGUserDefinition_NameRequired.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201601031248381_AddBGGUserDefinition_ApplicationUserId.cs" />
+    <Compile Include="Migrations\201601031248381_AddBGGUserDefinition_ApplicationUserId.Designer.cs">
+      <DependentUpon>201601031248381_AddBGGUserDefinition_ApplicationUserId.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\BoardGameGeekGameDefinition.cs" />
     <Compile Include="Models\BoardGameGeekUserDefinition.cs" />
     <Compile Include="Models\Games\CreateGameDefinitionRequest.cs" />
@@ -729,6 +733,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201601031207384_AddBGGUserDefinition_NameRequired.resx">
       <DependentUpon>201601031207384_AddBGGUserDefinition_NameRequired.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601031248381_AddBGGUserDefinition_ApplicationUserId.resx">
+      <DependentUpon>201601031248381_AddBGGUserDefinition_ApplicationUserId.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

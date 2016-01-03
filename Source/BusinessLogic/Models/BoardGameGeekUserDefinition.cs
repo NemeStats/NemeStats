@@ -12,5 +12,6 @@ namespace BusinessLogic.Models
         public string Avatar { get; set; }
         [Required]
         public string Name { get; set; }
+        public string ApplicationUserId { get; set; }
     }
 }
