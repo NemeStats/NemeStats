@@ -517,7 +517,8 @@
     <Compile Include="Models\Players\PlayerDetails.cs" />
     <Compile Include="Models\Players\WinLossStatistics.cs" />
     <Compile Include="Models\User\UserInformation.cs" />
-    <Compile Include="Models\Utility\DateRangeFilter.cs" />
+    <Compile Include="Models\Utility\BasicDateRangeFilter.cs" />
+    <Compile Include="Models\Utility\IDateRangeFilter.cs" />
     <Compile Include="Models\VotableFeature.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\MachineKeyProtectionProvider.cs" />

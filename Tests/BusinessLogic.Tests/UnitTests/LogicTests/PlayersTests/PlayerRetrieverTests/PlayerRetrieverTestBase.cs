@@ -19,6 +19,7 @@ using BusinessLogic.DataAccess;
 using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.Logic.Players;
 using BusinessLogic.Models;
+using BusinessLogic.Models.Utility;
 using NUnit.Framework;
 using Rhino.Mocks;
 using StructureMap.AutoMocking;
@@ -63,12 +64,20 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
                 new PlayerGameResult
                 {
                     GameRank = 2,
-                    NemeStatsPointsAwarded = 10
+                    NemeStatsPointsAwarded = 10,
+                    PlayedGame = new PlayedGame
+                    {
+                        DatePlayed = new BasicDateRangeFilter().FromDate
+                    }
                 },
                 new PlayerGameResult
                 {
                     GameRank = 1,
-                    NemeStatsPointsAwarded = 20
+                    NemeStatsPointsAwarded = 20,
+                    PlayedGame = new PlayedGame
+                    {
+                        DatePlayed = new BasicDateRangeFilter().ToDate
+                    }
                 }};
 
             playerChampionshipsForFirstPlayer = new List<Champion>

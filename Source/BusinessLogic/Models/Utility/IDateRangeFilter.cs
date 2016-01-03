@@ -4,7 +4,7 @@ namespace BusinessLogic.Models.Utility
 {
     public interface IDateRangeFilter
     {
-        DateTime? FromDate { get; set; }
-        DateTime? ToDate { get; set; }
+        DateTime FromDate { get; set; }
+        DateTime ToDate { get; set; }
     }
 }
