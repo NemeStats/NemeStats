@@ -162,7 +162,9 @@
     <Compile Include="Export\IExcelGenerator.cs" />
     <Compile Include="Logic\BoardGameGeek\BoardGameGeekGameDefinitionCreator.cs" />
     <Compile Include="Logic\BoardGameGeek\BoardGameGeekUrlBuilder.cs" />
+    <Compile Include="Logic\BoardGameGeek\BoardGameGeekUserDefinitionCreator.cs" />
     <Compile Include="Logic\BoardGameGeek\IBoardGameGeekGameDefinitionCreator.cs" />
+    <Compile Include="Logic\BoardGameGeek\IBoardGameGeekUserDefinitionCreator.cs" />
     <Compile Include="Logic\Champions\ChampionRecalculator.cs" />
     <Compile Include="Logic\Email\EmailService.cs" />
     <Compile Include="Logic\OneTimeJobs\BoardGameGeekThumbnailAttacher.cs" />
@@ -310,7 +312,16 @@
     <Compile Include="Migrations\201512020347125_CurrentGamingGroupIdNotNullable.Designer.cs">
       <DependentUpon>201512020347125_CurrentGamingGroupIdNotNullable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201601031138497_AddBGGUserDefinitionTable.cs" />
+    <Compile Include="Migrations\201601031138497_AddBGGUserDefinitionTable.Designer.cs">
+      <DependentUpon>201601031138497_AddBGGUserDefinitionTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201601031207384_AddBGGUserDefinition_NameRequired.cs" />
+    <Compile Include="Migrations\201601031207384_AddBGGUserDefinition_NameRequired.Designer.cs">
+      <DependentUpon>201601031207384_AddBGGUserDefinition_NameRequired.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\BoardGameGeekGameDefinition.cs" />
+    <Compile Include="Models\BoardGameGeekUserDefinition.cs" />
     <Compile Include="Models\Games\CreateGameDefinitionRequest.cs" />
     <Compile Include="Models\Games\GameDefinitionDisplayInfo.cs" />
     <Compile Include="Models\Games\GameDefinitionName.cs" />
@@ -712,6 +723,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201512020347125_CurrentGamingGroupIdNotNullable.resx">
       <DependentUpon>201512020347125_CurrentGamingGroupIdNotNullable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601031138497_AddBGGUserDefinitionTable.resx">
+      <DependentUpon>201601031138497_AddBGGUserDefinitionTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601031207384_AddBGGUserDefinition_NameRequired.resx">
+      <DependentUpon>201601031207384_AddBGGUserDefinition_NameRequired.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
