@@ -13,7 +13,7 @@ namespace BusinessLogic.Models.Utility
         public BasicDateRangeFilter()
         {
             _fromDate = DefaultFromDate.Date;
-            _toDate = DateTime.UtcNow.Date;
+            _toDate = DateTime.UtcNow.Date.AddDays(1).AddMilliseconds(-1);
         }
 
         private DateTime _fromDate;
@@ -39,7 +39,8 @@ namespace BusinessLogic.Models.Utility
             }
             set
             {
-                _toDate = value.Date;
+                //set the date to the very end of the day
+                _toDate = value.Date.AddDays(1).AddMilliseconds(-1);
             }
         }
     }

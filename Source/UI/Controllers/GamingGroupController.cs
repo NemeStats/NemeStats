@@ -77,12 +77,13 @@ namespace UI.Controllers
         // GET: /GamingGroup
         [Authorize]
         [UserContext]
-        public virtual ActionResult Index(GamingGroupRequest gamingGroupRequest, ApplicationUser currentUser)
+        public virtual ActionResult Index([System.Web.Http.FromUri]BasicDateRangeFilter dateRangeFilter, ApplicationUser currentUser)
         {
-            var gamingGroupSummary = this.GetGamingGroupSummary(currentUser.CurrentGamingGroupId, gamingGroupRequest);
+            var gamingGroupSummary = GetGamingGroupSummary(currentUser.CurrentGamingGroupId, dateRangeFilter);
 
             GamingGroupViewModel viewModel = gamingGroupViewModelBuilder.Build(gamingGroupSummary, currentUser);
             viewModel.PlayedGames.ShowSearchLinkInResultsHeader = true;
+            viewModel.DateRangeFilter = dateRangeFilter;
 
             ViewBag.RecentGamesSectionAnchorText = SECTION_ANCHOR_RECENT_GAMES;
             ViewBag.PlayerSectionAnchorText = SECTION_ANCHOR_PLAYERS;
@@ -203,7 +204,7 @@ namespace UI.Controllers
             if (string.IsNullOrWhiteSpace(gamingGroupName))
             {
                 this.ModelState.AddModelError(string.Empty, "You must enter a Gaming Group name.");
-                return this.Index(new GamingGroupRequest(), currentUser);
+                return this.Index(new BasicDateRangeFilter(), currentUser);
             }
             this.gamingGroupSaver.CreateNewGamingGroup(gamingGroupName.Trim(), TransactionSource.WebApplication, currentUser);
 

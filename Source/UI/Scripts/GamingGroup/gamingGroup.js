@@ -27,7 +27,7 @@ Views.GamingGroup.GamingGroupView.prototype = {
             this.$settings.fromDate = options.fromDate;
         }
 
-        if (options.toDate == null) {
+        if (options.toDate != null) {
             this.$settings.toDate = options.toDate;
         }
 

@@ -427,7 +427,6 @@
     <Compile Include="Transformations\PlayerTransformations\TopPlayerViewModelBuilder.cs" />
     <Compile Include="Models\Players\PlayerWithNemesisViewModel.cs" />
     <Compile Include="Models\GamingGroup\TopGamingGroupSummaryViewModel.cs" />
-    <Compile Include="Models\GamingGroup\GamingGroupRequest.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\font-awesome.css" />

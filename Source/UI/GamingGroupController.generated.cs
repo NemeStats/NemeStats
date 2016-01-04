@@ -144,7 +144,7 @@ namespace UI.Controllers
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionParamsClass_Index
         {
-            public readonly string gamingGroupFilter = "gamingGroupFilter";
+            public readonly string dateRangeFilter = "dateRangeFilter";
             public readonly string currentUser = "currentUser";
         }
         static readonly ActionParamsClass_Details s_params_Details = new ActionParamsClass_Details();
@@ -236,15 +236,15 @@ namespace UI.Controllers
         public T4MVC_GamingGroupController() : base(Dummy.Instance) { }
 
         [NonAction]
-        partial void IndexOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, UI.Models.GamingGroup.GamingGroupRequest gamingGroupFilter, BusinessLogic.Models.User.ApplicationUser currentUser);
+        partial void IndexOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, BusinessLogic.Models.Utility.BasicDateRangeFilter dateRangeFilter, BusinessLogic.Models.User.ApplicationUser currentUser);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult Index(UI.Models.GamingGroup.GamingGroupRequest gamingGroupFilter, BusinessLogic.Models.User.ApplicationUser currentUser)
+        public override System.Web.Mvc.ActionResult Index(BusinessLogic.Models.Utility.BasicDateRangeFilter dateRangeFilter, BusinessLogic.Models.User.ApplicationUser currentUser)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Index);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "gamingGroupFilter", gamingGroupFilter);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "dateRangeFilter", dateRangeFilter);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "currentUser", currentUser);
-            IndexOverride(callInfo, gamingGroupFilter, currentUser);
+            IndexOverride(callInfo, dateRangeFilter, currentUser);
             return callInfo;
         }
 

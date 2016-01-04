@@ -17,10 +17,14 @@
 
 <hr />
 
-<label for="from">Filter Data From:</label>
-<input type="text" id="from-date-picker" name="from">
-<label for="to">to</label>
-<input type="text" id="to-date-picker" name="to">
+@using (Html.BeginForm(MVC.GamingGroup.Index(), FormMethod.Get))
+{
+    <label for="from">Filter Data From:</label>
+    <input type="text" id="from-date-picker" name="FromDate"/>
+    <label for="to">to</label>
+    <input type="text" id="to-date-picker" name="ToDate"/>
+    <button class="btn btn-primary" type="submit">Filter Statistics</button>
+}
 
 <a name="@ViewBag.PlayerSectionAnchorText"></a>
 
@@ -67,21 +71,10 @@
             gamingGroupView.renderNemeStatsPointsLineGraph("/api/v2/PlayedGames/?gamingGroupId=" + @Model.Id);
 
             var googleAnalyticsObject = new window.Views.Shared.GoogleAnalytics();
-            @if(Model.ShowStatsFromDate.HasValue)
-            {
-                @: var fromDate = new Date(@Model.ShowStatsFromDate.Value.Year, @Model.ShowStatsFromDate.Value.Month , @Model.ShowStatsFromDate.Value.Day);
-            }else
-            {
-                @: var fromDate = null;
-            }
 
-            @if(Model.ShowStatsToDate.HasValue)
-            {
-                @: var toDate = new Date(@Model.ShowStatsToDate.Value.Year, @Model.ShowStatsToDate.Value.Month , @Model.ShowStatsToDate.Value.Day);
-            }else
-            {
-                @: var toDate = null;
-            }
+            var fromDate = new Date(@Model.DateRangeFilter.FromDate.Year, @Model.DateRangeFilter.FromDate.Month - 1, @Model.DateRangeFilter.FromDate.Day);
+            var toDate = new Date(@Model.DateRangeFilter.ToDate.Year, @Model.DateRangeFilter.ToDate.Month - 1, @Model.DateRangeFilter.ToDate.Day);
+
             var options = {
                 fromDate : fromDate,
                 toDate : toDate

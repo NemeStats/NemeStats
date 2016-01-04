@@ -12,12 +12,6 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
     [TestFixture]
     public class GetGamingGroupSummaryTests : GamingGroupControllerTestBase
     {
-        [SetUp]
-        public void LocalSetUp()
-        {
-
-        }
-
         [Test]
         public void ItRetrievesTheSpecifiedNumberOfGamingGroupSummaries()
         {
@@ -63,7 +57,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
         [Test]
         public void ItUsesTheDefaultDateRangeIfNoneIsSpecified()
         {
-            var expectedDateRange = new GamingGroupRequest();
+            var expectedDateRange = new BasicDateRangeFilter();
 
             autoMocker.ClassUnderTest.GetGamingGroupSummary(0);
 
