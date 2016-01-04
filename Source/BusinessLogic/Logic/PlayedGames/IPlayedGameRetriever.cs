@@ -18,15 +18,15 @@
 using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
 using System.Collections.Generic;
-using System.Linq;
 using BusinessLogic.Models.PlayedGames;
+using BusinessLogic.Models.Utility;
 
 namespace BusinessLogic.Logic.PlayedGames
 {
     public interface IPlayedGameRetriever
     {
         PlayedGame GetPlayedGameDetails(int playedGameId);
-        List<PlayedGame> GetRecentGames(int numberOfGames, int gamingGroupId);
+        List<PlayedGame> GetRecentGames(int numberOfGames, int gamingGroupId, IDateRangeFilter dateRangeFilter = null);
         List<PublicGameSummary> GetRecentPublicGames(int numberOfGames);
         List<PlayedGameSearchResult> SearchPlayedGames(PlayedGameFilter playedGameFilter);
     }

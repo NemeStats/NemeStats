@@ -56,8 +56,8 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
             autoMocker.Get<IGamingGroupRetriever>().AssertWasCalled(
                 mock => mock.GetGamingGroupDetails(
                     Arg<GamingGroupFilter>.Matches(x =>
-                    x.FromDate == expectedFromDate
-                    && x.ToDate == expectedToDate)));
+                    x.DateRangeFilter.FromDate == expectedFromDate
+                    && x.DateRangeFilter.ToDate == expectedToDate)));
         }
 
         [Test]
@@ -70,8 +70,8 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
             autoMocker.Get<IGamingGroupRetriever>().AssertWasCalled(
                 mock => mock.GetGamingGroupDetails(
                     Arg<GamingGroupFilter>.Matches(x =>
-                    x.FromDate == expectedDateRange.FromDate
-                    && x.ToDate == expectedDateRange.ToDate)));
+                    x.DateRangeFilter.FromDate == expectedDateRange.FromDate
+                    && x.DateRangeFilter.ToDate == expectedDateRange.ToDate)));
         }
     }
 }

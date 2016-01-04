@@ -12,11 +12,35 @@ namespace BusinessLogic.Models.Utility
 
         public BasicDateRangeFilter()
         {
-            FromDate = DefaultFromDate;
-            ToDate = DateTime.UtcNow;
+            _fromDate = DefaultFromDate.Date;
+            _toDate = DateTime.UtcNow.Date;
         }
 
-        public DateTime FromDate { get; set; }
-        public DateTime ToDate { get; set; }
+        private DateTime _fromDate;
+
+        public DateTime FromDate
+        {
+            get
+            {
+                return _fromDate;
+            }
+            set
+            {
+                _fromDate = value.Date;
+            }
+        }
+        private DateTime _toDate;
+
+        public DateTime ToDate
+        {
+            get
+            {
+                return _toDate;
+            }
+            set
+            {
+                _toDate = value.Date;
+            }
+        }
     }
 }

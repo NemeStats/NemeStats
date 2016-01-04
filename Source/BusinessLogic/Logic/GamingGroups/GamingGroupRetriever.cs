@@ -67,11 +67,11 @@ namespace BusinessLogic.Logic.GamingGroups
                 PublicGamingGroupWebsite = gamingGroup.PublicGamingGroupWebsite
             };
 
-            summary.PlayedGames = playedGameRetriever.GetRecentGames(filter.NumberOfRecentGamesToShow, filter.GamingGroupId);
+            summary.PlayedGames = playedGameRetriever.GetRecentGames(filter.NumberOfRecentGamesToShow, filter.GamingGroupId, filter.DateRangeFilter);
 
-            summary.Players = playerRetriever.GetAllPlayersWithNemesisInfo(filter.GamingGroupId, filter);
+            summary.Players = playerRetriever.GetAllPlayersWithNemesisInfo(filter.GamingGroupId, filter.DateRangeFilter);
 
-            summary.GameDefinitionSummaries = gameDefinitionRetriever.GetAllGameDefinitions(filter.GamingGroupId, filter);
+            summary.GameDefinitionSummaries = gameDefinitionRetriever.GetAllGameDefinitions(filter.GamingGroupId, filter.DateRangeFilter);
 
             summary.OwningUser = dataContext.GetQueryable<ApplicationUser>().First(user => user.Id == gamingGroup.OwningUserId);
 

@@ -4,18 +4,20 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BusinessLogic.Models.GamingGroups
 {
-    public class GamingGroupFilter : IDateRangeFilter
+    public class GamingGroupFilter
     {
-        public readonly DateTime DefaultFromDate = new DateTime(2010, 1, 1);
-
-        public GamingGroupFilter()
+        public GamingGroupFilter(IDateRangeFilter dateRangeFilter = null)
         {
-            FromDate = DefaultFromDate;
-            ToDate = DateTime.UtcNow;
+            if(dateRangeFilter == null)
+            {
+                DateRangeFilter = new BasicDateRangeFilter();
+            }else
+            {
+                DateRangeFilter = dateRangeFilter;
+            }
         }
 
-        public DateTime FromDate { get; set; }
-        public DateTime ToDate { get; set; }
+        public IDateRangeFilter DateRangeFilter { get; private set; }
         [Required]
         public int GamingGroupId { get; set; }
         public int NumberOfRecentGamesToShow { get; set; }

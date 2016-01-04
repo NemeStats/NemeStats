@@ -27,6 +27,7 @@ using System.Data.Entity;
 using System.Globalization;
 using System.Linq;
 using BusinessLogic.Logic.BoardGameGeek;
+using BusinessLogic.Models.Utility;
 
 namespace BusinessLogic.Logic.PlayedGames
 {
@@ -39,10 +40,17 @@ namespace BusinessLogic.Logic.PlayedGames
             this.dataContext = dataContext;
         }
 
-        public List<PlayedGame> GetRecentGames(int numberOfGames, int gamingGroupId)
+        public List<PlayedGame> GetRecentGames(int numberOfGames, int gamingGroupId, IDateRangeFilter dateRangeFilter = null)
         {
+            if(dateRangeFilter == null)
+            {
+                dateRangeFilter = new BasicDateRangeFilter();
+            }
+
             List<PlayedGame> playedGames = dataContext.GetQueryable<PlayedGame>()
-                .Where(game => game.GamingGroupId == gamingGroupId)
+                .Where(game => game.GamingGroupId == gamingGroupId
+                            && game.DatePlayed >= dateRangeFilter.FromDate
+                                              && game.DatePlayed <= dateRangeFilter.ToDate)
                 .Include(playedGame => playedGame.GameDefinition.BoardGameGeekGameDefinition)
                 .Include(playedGame => playedGame.GamingGroup)
                 .Include(playedGame => playedGame.PlayerGameResults

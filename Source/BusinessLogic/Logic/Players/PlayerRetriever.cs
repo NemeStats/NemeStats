@@ -63,7 +63,7 @@ namespace BusinessLogic.Logic.Players
         {
             if(dateRangeFilter == null)
             {
-                dateRangeFilter = new GamingGroupFilter();
+                dateRangeFilter = new BasicDateRangeFilter();
             }
 
             var playersWithNemesis = (from Player player in GetAllPlayersInGamingGroupQueryable(gamingGroupId)
@@ -84,15 +84,15 @@ namespace BusinessLogic.Logic.Players
                                           GamingGroupId = player.GamingGroupId,
                                           GamesWon = player.PlayerGameResults.Count(
                                               x => x.GameRank == 1
-                                              && x.PlayedGame.DatePlayed.Date >= dateRangeFilter.FromDate.Date
-                                              && x.PlayedGame.DatePlayed.Date <= dateRangeFilter.ToDate.Date), 
+                                              && x.PlayedGame.DatePlayed >= dateRangeFilter.FromDate
+                                              && x.PlayedGame.DatePlayed <= dateRangeFilter.ToDate), 
                                           GamesLost = player.PlayerGameResults.Count(
                                               x => x.GameRank > 1 
-                                              && x.PlayedGame.DatePlayed.Date >= dateRangeFilter.FromDate.Date
-                                              && x.PlayedGame.DatePlayed.Date <= dateRangeFilter.ToDate.Date),
+                                              && x.PlayedGame.DatePlayed >= dateRangeFilter.FromDate
+                                              && x.PlayedGame.DatePlayed <= dateRangeFilter.ToDate),
                     TotalPoints = player.PlayerGameResults
-                        .Where(x => x.PlayedGame.DatePlayed.Date >= dateRangeFilter.FromDate.Date
-                            && x.PlayedGame.DatePlayed.Date <= dateRangeFilter.ToDate.Date)
+                        .Where(x => x.PlayedGame.DatePlayed >= dateRangeFilter.FromDate
+                            && x.PlayedGame.DatePlayed <= dateRangeFilter.ToDate)
                         .Select(pgr => pgr.NemeStatsPointsAwarded).DefaultIfEmpty(0).Sum(),
                     //only get championed games where this player is the current champion
                     TotalChampionedGames = player.ChampionedGames.Count(champion => champion.GameDefinition.ChampionId != null && champion.GameDefinition.ChampionId.Value == champion.Id)

@@ -61,7 +61,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
                 new GameDefinitionSummary()
             };
 
-            gameDefinitionRetrieverMock.Expect(mock => mock.GetAllGameDefinitions(gamingGroupId, filter))
+            gameDefinitionRetrieverMock.Expect(mock => mock.GetAllGameDefinitions(gamingGroupId, filter.DateRangeFilter))
                                        .Return(gameDefinitionSummaries);
 
             List<ApplicationUser> applicationUsers = new List<ApplicationUser>();
@@ -97,7 +97,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
         public void ItReturnsAllActivePlayersInTheGamingGroup()
         {
             List<PlayerWithNemesis> expectedPlayers = new List<PlayerWithNemesis>();
-            playerRetrieverMock.Expect(mock => mock.GetAllPlayersWithNemesisInfo(gamingGroupId, filter))
+            playerRetrieverMock.Expect(mock => mock.GetAllPlayersWithNemesisInfo(gamingGroupId, filter.DateRangeFilter))
                 .Return(expectedPlayers);
 
             GamingGroupSummary actualGamingGroup = gamingGroupRetriever.GetGamingGroupDetails(filter);
@@ -117,7 +117,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
         public void ItReturnsTheSpecifiedNumberOfPlayedGamesForTheGamingGroup()
         {
             List<PlayedGame> playedGames = new List<PlayedGame>();
-            playedGameRetriever.Expect(mock => mock.GetRecentGames(filter.NumberOfRecentGamesToShow, filter.GamingGroupId))
+            playedGameRetriever.Expect(mock => mock.GetRecentGames(filter.NumberOfRecentGamesToShow, filter.GamingGroupId, filter.DateRangeFilter))
                 .Return(playedGames);
 
             GamingGroupSummary actualGamingGroup = gamingGroupRetriever.GetGamingGroupDetails(filter);

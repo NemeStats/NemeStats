@@ -94,16 +94,21 @@ namespace UI.Controllers
         [NonAction]
         internal virtual GamingGroupSummary GetGamingGroupSummary(int gamingGroupId, IDateRangeFilter dateRangeFilter = null)
         {
-            var filter = new GamingGroupFilter
+            if(dateRangeFilter == null)
+            {
+                dateRangeFilter = new BasicDateRangeFilter();
+            }else
+            {
+                dateRangeFilter.FromDate = dateRangeFilter.FromDate;
+                dateRangeFilter.ToDate = dateRangeFilter.ToDate;
+            }
+
+            var filter = new GamingGroupFilter(dateRangeFilter)
             {
                 NumberOfRecentGamesToShow = MAX_NUMBER_OF_RECENT_GAMES,
                 GamingGroupId = gamingGroupId
             };
-            if(dateRangeFilter != null)
-            {
-                filter.FromDate = dateRangeFilter.FromDate;
-                filter.ToDate = dateRangeFilter.ToDate;
-            }
+
             return gamingGroupRetriever.GetGamingGroupDetails(filter);
         }
 

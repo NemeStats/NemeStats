@@ -5,6 +5,7 @@ using BusinessLogic.Logic.Players;
 using BusinessLogic.Models;
 using BusinessLogic.Models.PlayedGames;
 using BusinessLogic.Models.Players;
+using BusinessLogic.Models.Utility;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System;
@@ -58,7 +59,10 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
             }.AsQueryable());
             autoMocker.ClassUnderTest.Expect(mock => mock.GetGameDefinitionTotals(expectedPlayer.Id))
                 .Return(new GameDefinitionTotals());
-            autoMocker.Get<IPlayedGameRetriever>().Expect(mock => mock.GetRecentGames(Arg<int>.Is.Anything, Arg<int>.Is.Anything)).Return(new List<PlayedGame>());
+            autoMocker.Get<IPlayedGameRetriever>().Expect(mock => mock.GetRecentGames(
+                Arg<int>.Is.Anything, 
+                Arg<int>.Is.Anything,
+                Arg<IDateRangeFilter>.Is.Anything)).Return(new List<PlayedGame>());
 
             var result = autoMocker.ClassUnderTest.GetPlayerQuickStatsForUser(userId, gamingGroupId);
 
@@ -83,7 +87,10 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
             };
             autoMocker.ClassUnderTest.Expect(mock => mock.GetTopLevelTotals(gameDefinitionTotals))
                 .Return(topLevelTotals);
-            autoMocker.Get<IPlayedGameRetriever>().Expect(mock => mock.GetRecentGames(Arg<int>.Is.Anything, Arg<int>.Is.Anything)).Return(new List<PlayedGame>());
+            autoMocker.Get<IPlayedGameRetriever>().Expect(mock => mock.GetRecentGames(
+                Arg<int>.Is.Anything, 
+                Arg<int>.Is.Anything,
+                Arg<IDateRangeFilter>.Is.Anything)).Return(new List<PlayedGame>());
 
             var result = autoMocker.ClassUnderTest.GetPlayerQuickStatsForUser(userId, gamingGroupId);
 
