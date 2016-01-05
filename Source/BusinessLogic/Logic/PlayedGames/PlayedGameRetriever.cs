@@ -194,13 +194,27 @@ namespace BusinessLogic.Logic.PlayedGames
             if (!string.IsNullOrEmpty(playedGameFilter.StartDateGameLastUpdated))
             {
                 var startDate = ParseDateTime(playedGameFilter.StartDateGameLastUpdated);
-                queryable = queryable.Where(query => DbFunctions.TruncateTime(query.DateLastUpdated) >= startDate);
+                queryable = queryable.Where(query => query.DateLastUpdated >= startDate);
             }
 
             if (!string.IsNullOrEmpty(playedGameFilter.EndDateGameLastUpdated))
             {
                 var endDate = ParseDateTime(playedGameFilter.EndDateGameLastUpdated);
-                queryable = queryable.Where(query => DbFunctions.TruncateTime(query.DateLastUpdated) <= endDate);
+                endDate = endDate.Date.AddDays(1).AddMilliseconds(-1);
+                queryable = queryable.Where(query => query.DateLastUpdated <= endDate);
+            }
+
+            if (!string.IsNullOrEmpty(playedGameFilter.DatePlayedFrom))
+            {
+                var fromDate = ParseDateTime(playedGameFilter.DatePlayedFrom);
+                queryable = queryable.Where(query => query.DatePlayed >= fromDate);
+            }
+
+            if (!string.IsNullOrEmpty(playedGameFilter.DatePlayedTo))
+            {
+                var toDate = ParseDateTime(playedGameFilter.DatePlayedTo);
+                toDate = toDate.Date.AddDays(1).AddMilliseconds(-1);
+                queryable = queryable.Where(query => query.DatePlayed <= toDate);
             }
 
             if (playedGameFilter.PlayerId.HasValue)

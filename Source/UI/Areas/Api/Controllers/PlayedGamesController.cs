@@ -129,6 +129,8 @@ namespace UI.Areas.Api.Controllers
                 filter.StartDateGameLastUpdated = playedGameFilterMessage.StartDateGameLastUpdated;
                 filter.MaximumNumberOfResults = playedGameFilterMessage.MaximumNumberOfResults;
                 filter.PlayerId = playedGameFilterMessage.PlayerId;
+                filter.DatePlayedFrom = playedGameFilterMessage.DatePlayedFrom;
+                filter.DatePlayedTo = playedGameFilterMessage.DatePlayedTo;
             }
             var searchResults = this.playedGameRetriever.SearchPlayedGames(filter);
 
