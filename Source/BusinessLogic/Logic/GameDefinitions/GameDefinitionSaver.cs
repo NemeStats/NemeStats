@@ -24,7 +24,6 @@ using BusinessLogic.Models.User;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using BoardGameGeekApiClient.Interfaces;
 using BusinessLogic.Models.Games;
 using BusinessLogic.Logic.BoardGameGeek;
 
@@ -37,14 +36,12 @@ namespace BusinessLogic.Logic.GameDefinitions
 
         private readonly IDataContext dataContext;
         private readonly INemeStatsEventTracker eventTracker;
-        private readonly IBoardGameGeekApiClient boardGameGeekApiClient;
         private readonly IBoardGameGeekGameDefinitionCreator boardGameGeekGameDefinitionCreator;
 
-        public GameDefinitionSaver(IDataContext dataContext, INemeStatsEventTracker eventTracker, IBoardGameGeekApiClient boardGameGeekApiClient, IBoardGameGeekGameDefinitionCreator boardGameGeekGameDefinitionAttacher)
+        public GameDefinitionSaver(IDataContext dataContext, INemeStatsEventTracker eventTracker, IBoardGameGeekGameDefinitionCreator boardGameGeekGameDefinitionAttacher)
         {
             this.dataContext = dataContext;
             this.eventTracker = eventTracker;
-            this.boardGameGeekApiClient = boardGameGeekApiClient;
             this.boardGameGeekGameDefinitionCreator = boardGameGeekGameDefinitionAttacher;
         }
 

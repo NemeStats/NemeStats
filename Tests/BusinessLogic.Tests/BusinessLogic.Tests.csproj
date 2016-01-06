@@ -206,6 +206,8 @@
     <Compile Include="UnitTests\LogicTests\PointsTests\PointsCalculatorTests.cs" />
     <Compile Include="UnitTests\LogicTests\UsersTests\ApplicationSignInManagerTests\GenerateAuthTokenTests.cs" />
     <Compile Include="UnitTests\LogicTests\UsersTests\ApplicationUserManagerTests\ValidateAuthTokenTests.cs" />
+    <Compile Include="UnitTests\LogicTests\UsersTests\BoardGameGeekUserSaverTests\BoardGameGeekUserSaverTestBase.cs" />
+    <Compile Include="UnitTests\LogicTests\UsersTests\BoardGameGeekUserSaverTests\CreateUserDefintionTests.cs" />
     <Compile Include="UnitTests\LogicTests\UsersTests\GamingGroupContextSwitcherTests\SwitchGamingGroupContextTests.cs" />
     <Compile Include="UnitTests\LogicTests\UsersTests\GamingGroupInviteConsumerTests\AddNewUserToGamingGroupTests.cs" />
     <Compile Include="UnitTests\LogicTests\NemesesTests\NemesisHistoryRetrieverTests\GetNemesisHistoryTests.cs" />
