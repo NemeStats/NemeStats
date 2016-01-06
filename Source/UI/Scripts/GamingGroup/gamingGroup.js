@@ -40,7 +40,9 @@ Views.GamingGroup.GamingGroupView.prototype = {
             onClose: function (selectedDate) {
                 $("#to-date-picker").datepicker("option", "minDate", selectedDate);
             }
-        }).datepicker("setDate", this.$settings.fromDate);
+        }).datepicker("setDate", this.$settings.fromDate)
+            .datepicker("option", "dateFormat", "yy-mm-dd");
+
 
         this.$toDatePicker = $("#to-date-picker").datepicker({
             showOn: "button",
@@ -51,7 +53,8 @@ Views.GamingGroup.GamingGroupView.prototype = {
             onClose: function (selectedDate) {
                 $("#from-date-picker").datepicker("option", "minDate", selectedDate);
             }
-        }).datepicker("setDate", this.$settings.toDate);
+        }).datepicker("setDate", this.$settings.toDate)
+          .datepicker("option", "dateFormat", "yy-mm-dd");
     },
     renameGamingGroup: function (element) {
         var parent = this;

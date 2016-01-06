@@ -54,7 +54,9 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
 			showButtonPanel: true,
 			maxDate: new Date(),
 			minDate: new Date(2014, 1, 1)
-		}).datepicker("setDate", new Date());
+		}).datepicker("setDate", new Date())
+		    .datepicker("option", "dateFormat", "yy-mm-dd");
+
 		this.$btnEveryoneWonButton = $("#btnEveryoneWonButton");
 		this.$btnEveryoneLostButton = $("#btnEveryoneLostButton");
 		this.$removePlayerButtons = $(".btnRemovePlayer");
