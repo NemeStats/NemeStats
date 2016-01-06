@@ -21,6 +21,7 @@ using BusinessLogic.Models.GamingGroups;
 using BusinessLogic.Models.Utility;
 using NUnit.Framework;
 using Rhino.Mocks;
+using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
 using UI.Controllers;
@@ -90,6 +91,22 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
 
             var viewModel = (GamingGroupViewModel)viewResult.Model;
             Assert.That(viewModel.PlayedGames.ShowSearchLinkInResultsHeader, Is.True);
+        }
+
+        [Test]
+        public void ItAddsAModelErrorIfTheFromDateIsLaterThanTheToDate()
+        {
+            var basicDateRangeFilter = new BasicDateRangeFilter
+            {
+                FromDate = DateTime.UtcNow,
+                ToDate = DateTime.UtcNow.AddDays(-1)
+            };
+            var viewResult = autoMocker.ClassUnderTest.Index(basicDateRangeFilter, currentUser) as ViewResult;
+
+            Assert.True(viewResult.ViewData.ModelState.ContainsKey("dateRangeFilter"));
+            var modelErrorsForKey = viewResult.ViewData.ModelState["dateRangeFilter"].Errors;
+            Assert.That(modelErrorsForKey.Count, Is.EqualTo(1));
+            Assert.That(modelErrorsForKey[0].ErrorMessage, Is.EqualTo("The 'From Date' cannot be greater than the 'To Date'."));
         }
     }
 }

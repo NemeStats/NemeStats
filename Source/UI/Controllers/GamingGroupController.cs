@@ -79,6 +79,10 @@ namespace UI.Controllers
         [UserContext]
         public virtual ActionResult Index([System.Web.Http.FromUri]BasicDateRangeFilter dateRangeFilter, ApplicationUser currentUser)
         {
+            if(dateRangeFilter.ToDate < dateRangeFilter.FromDate)
+            {
+                ModelState.AddModelError("dateRangeFilter", "The 'From Date' cannot be greater than the 'To Date'.");
+            }
             var gamingGroupSummary = GetGamingGroupSummary(currentUser.CurrentGamingGroupId, dateRangeFilter);
 
             GamingGroupViewModel viewModel = gamingGroupViewModelBuilder.Build(gamingGroupSummary, currentUser);
