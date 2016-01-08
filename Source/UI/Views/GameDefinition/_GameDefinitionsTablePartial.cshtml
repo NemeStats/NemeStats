@@ -41,7 +41,7 @@
                             @if (item.BoardGameGeekUri != null)
                             {
 
-                                <a href="@item.BoardGameGeekUri">
+                                <a href="@item.BoardGameGeekUri" target="_blank;">
                                     @if (!string.IsNullOrEmpty(item.ThumbnailImageUrl))
                                     {
                                         <img class="bgg-thumbnail" src="@item.ThumbnailImageUrl" alt="View on BoardGameGeek.com" title="View on BoardGameGeek.com" />

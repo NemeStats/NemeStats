@@ -59,7 +59,7 @@
                                 @if (playedGameDetailsViewModel.BoardGameGeekUri != null)
                                 {
 
-                                    <a href="@playedGameDetailsViewModel.BoardGameGeekUri">
+                                    <a href="@playedGameDetailsViewModel.BoardGameGeekUri" target="_blank;">
                                         @if (!string.IsNullOrEmpty(playedGameDetailsViewModel.ThumbnailImageUrl))
                                         {
                                             <img class="bgg-thumbnail" src="@playedGameDetailsViewModel.ThumbnailImageUrl" alt="View on BoardGameGeek.com" title="View on BoardGameGeek.com" />
