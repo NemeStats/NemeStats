@@ -162,9 +162,7 @@
     <Compile Include="Export\IExcelGenerator.cs" />
     <Compile Include="Logic\BoardGameGeek\BoardGameGeekGameDefinitionCreator.cs" />
     <Compile Include="Logic\BoardGameGeek\BoardGameGeekUrlBuilder.cs" />
-    <Compile Include="Logic\BoardGameGeek\BoardGameGeekUserDefinitionCreator.cs" />
     <Compile Include="Logic\BoardGameGeek\IBoardGameGeekGameDefinitionCreator.cs" />
-    <Compile Include="Logic\BoardGameGeek\IBoardGameGeekUserDefinitionCreator.cs" />
     <Compile Include="Logic\Champions\ChampionRecalculator.cs" />
     <Compile Include="Logic\Email\EmailService.cs" />
     <Compile Include="Logic\OneTimeJobs\BoardGameGeekThumbnailAttacher.cs" />
@@ -176,6 +174,39 @@
     <Compile Include="Logic\TransactionSource.cs" />
     <Compile Include="Logic\Users\AuthTokenGenerator.cs" />
     <Compile Include="Logic\Users\AuthTokenValidator.cs" />
+    <Compile Include="Migrations\201601091723297_BoardGameGeekUserDefinitionIndex.cs" />
+    <Compile Include="Migrations\201601091723297_BoardGameGeekUserDefinitionIndex.Designer.cs">
+      <DependentUpon>201601091723297_BoardGameGeekUserDefinitionIndex.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201601091732360_BoardGameGeekUserDefinition_DoubleKey.cs" />
+    <Compile Include="Migrations\201601091732360_BoardGameGeekUserDefinition_DoubleKey.Designer.cs">
+      <DependentUpon>201601091732360_BoardGameGeekUserDefinition_DoubleKey.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201601091752004_BoardGameGeekUserDefinition_NameRequired.cs" />
+    <Compile Include="Migrations\201601091752004_BoardGameGeekUserDefinition_NameRequired.Designer.cs">
+      <DependentUpon>201601091752004_BoardGameGeekUserDefinition_NameRequired.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201601101331538_BoardGameGeekUserDefinition_FKMapping.cs" />
+    <Compile Include="Migrations\201601101331538_BoardGameGeekUserDefinition_FKMapping.Designer.cs">
+      <DependentUpon>201601101331538_BoardGameGeekUserDefinition_FKMapping.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201601101337443_BoardGameGeekUserDefinition_FKMapping2.cs" />
+    <Compile Include="Migrations\201601101337443_BoardGameGeekUserDefinition_FKMapping2.Designer.cs">
+      <DependentUpon>201601101337443_BoardGameGeekUserDefinition_FKMapping2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201601101343194_BoardGameGeekUserDefinition_RemoveFKMapping.cs" />
+    <Compile Include="Migrations\201601101343194_BoardGameGeekUserDefinition_RemoveFKMapping.Designer.cs">
+      <DependentUpon>201601101343194_BoardGameGeekUserDefinition_RemoveFKMapping.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201601101356213_BoardGameGeekUserDefinition_AutoincrementKey.cs" />
+    <Compile Include="Migrations\201601101356213_BoardGameGeekUserDefinition_AutoincrementKey.Designer.cs">
+      <DependentUpon>201601101356213_BoardGameGeekUserDefinition_AutoincrementKey.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201601112132408_BoardGameGeekUserDefinition_BGGUserIdOnApplicationUser.cs" />
+    <Compile Include="Migrations\201601112132408_BoardGameGeekUserDefinition_BGGUserIdOnApplicationUser.Designer.cs">
+      <DependentUpon>201601112132408_BoardGameGeekUserDefinition_BGGUserIdOnApplicationUser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\User\BoardGameGeekUserInformation.cs" />
     <Compile Include="Models\Validation\BaseValidatableRequestSaver.cs" />
     <Compile Include="Logic\Users\BoardGameGeekUserSaver.cs" />
     <Compile Include="Logic\Users\IAuthTokenGenerator.cs" />
@@ -741,6 +772,30 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201601031248381_AddBGGUserDefinition_ApplicationUserId.resx">
       <DependentUpon>201601031248381_AddBGGUserDefinition_ApplicationUserId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601091723297_BoardGameGeekUserDefinitionIndex.resx">
+      <DependentUpon>201601091723297_BoardGameGeekUserDefinitionIndex.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601091732360_BoardGameGeekUserDefinition_DoubleKey.resx">
+      <DependentUpon>201601091732360_BoardGameGeekUserDefinition_DoubleKey.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601091752004_BoardGameGeekUserDefinition_NameRequired.resx">
+      <DependentUpon>201601091752004_BoardGameGeekUserDefinition_NameRequired.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601101331538_BoardGameGeekUserDefinition_FKMapping.resx">
+      <DependentUpon>201601101331538_BoardGameGeekUserDefinition_FKMapping.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601101337443_BoardGameGeekUserDefinition_FKMapping2.resx">
+      <DependentUpon>201601101337443_BoardGameGeekUserDefinition_FKMapping2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601101343194_BoardGameGeekUserDefinition_RemoveFKMapping.resx">
+      <DependentUpon>201601101343194_BoardGameGeekUserDefinition_RemoveFKMapping.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601101356213_BoardGameGeekUserDefinition_AutoincrementKey.resx">
+      <DependentUpon>201601101356213_BoardGameGeekUserDefinition_AutoincrementKey.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601112132408_BoardGameGeekUserDefinition_BGGUserIdOnApplicationUser.resx">
+      <DependentUpon>201601112132408_BoardGameGeekUserDefinition_BGGUserIdOnApplicationUser.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -1,0 +1,27 @@
+﻿@model UI.Models.User.BoardGameGeekIntegrationModel
+@{
+    Layout = null;
+}
+
+@if (Model.IntegrationComplete)
+{
+    <div>You are logged on BGG as <b>@Model.BoardGameGeekUserName</b> :-)</div>
+}
+else
+{
+    using (Html.BeginForm(MVC.Account.SetBoardGameGeekUser(), FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    {
+        <div class="form-group">
+            <span class="col-md-4 control-label">User name</span>
+            <div class="col-md-8">
+                @Html.TextBoxFor(m => m.BoardGameGeekUserName, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.BoardGameGeekUserName)
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-8 col-md-offset-4">
+                <input type="submit" value="Update" class="btn btn-default" />
+            </div>
+        </div>
+    }
+}

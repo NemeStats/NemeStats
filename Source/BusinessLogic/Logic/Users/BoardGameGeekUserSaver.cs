@@ -9,6 +9,8 @@ namespace BusinessLogic.Logic.Users
 {
     public class BoardGameGeekUserSaver : BaseValidatableRequestSaver, IBoardGameGeekUserSaver
     {
+        internal const string EXCEPTION_MESSAGE_CURRENT_USER_ALREADY_HAVE_BGG_ACCOUNT_LINKED = "The current user has already a BoardGameGeek account linked.";
+
         private readonly IDataContext _dataContext;
 
         public BoardGameGeekUserSaver(IDataContext dataContext)
@@ -19,6 +21,7 @@ namespace BusinessLogic.Logic.Users
         public BoardGameGeekUserDefinition CreateUserDefintion(CreateBoardGameGeekUserDefinitionRequest request, ApplicationUser currentUser)
         {
             ValidateRequest(request);
+            ValidateCurrentUserHasBGGAccount(currentUser);
 
             var existingItem = _dataContext.GetQueryable<BoardGameGeekUserDefinition>().FirstOrDefault(u => u.Name.Equals(request.Name, StringComparison.InvariantCultureIgnoreCase));
 
@@ -33,6 +36,14 @@ namespace BusinessLogic.Logic.Users
             }
 
             return _dataContext.Save(existingItem, currentUser);
+        }
+
+        public void ValidateCurrentUserHasBGGAccount(ApplicationUser currentUser)
+        {
+            if (_dataContext.GetQueryable<BoardGameGeekUserDefinition>().Any(u => u.ApplicationUserId == currentUser.Id))
+            {
+                throw new ArgumentException(EXCEPTION_MESSAGE_CURRENT_USER_ALREADY_HAVE_BGG_ACCOUNT_LINKED);
+            }
         }
     }
 }

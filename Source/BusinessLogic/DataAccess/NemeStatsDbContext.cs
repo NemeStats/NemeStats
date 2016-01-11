@@ -50,7 +50,7 @@ namespace BusinessLogic.DataAccess
         public virtual DbSet<Nemesis> Nemeses { get; set; }
         public virtual DbSet<Champion> Champions { get; set; }
         public virtual DbSet<VotableFeature> VotableFeatures { get; set; }
-        
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();

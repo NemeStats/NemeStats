@@ -16,8 +16,10 @@ namespace BusinessLogic.Models.Validation
             {
                 throw new ArgumentException(typeof(T).ToString() + " : " + validationErrors.First().ErrorMessage);
             }
+
         }
 
-       
+
+
     }
 }
