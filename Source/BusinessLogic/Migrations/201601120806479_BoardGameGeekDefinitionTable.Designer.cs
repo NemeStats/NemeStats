@@ -7,13 +7,13 @@ namespace BusinessLogic.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class BoardGameGeekUserDefinition_BGGUserIdOnApplicationUser : IMigrationMetadata
+    public sealed partial class BoardGameGeekDefinitionTable : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(BoardGameGeekUserDefinition_BGGUserIdOnApplicationUser));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(BoardGameGeekDefinitionTable));
         
         string IMigrationMetadata.Id
         {
-            get { return "201601112132408_BoardGameGeekUserDefinition_BGGUserIdOnApplicationUser"; }
+            get { return "201601120806479_BoardGameGeekDefinitionTable"; }
         }
         
         string IMigrationMetadata.Source
