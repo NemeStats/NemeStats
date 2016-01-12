@@ -23,12 +23,13 @@ namespace BusinessLogic.Logic.Users
             ValidateRequest(request);
             ValidateCurrentUserHasBGGAccount(currentUser);
 
-            var existingItem = _dataContext.GetQueryable<BoardGameGeekUserDefinition>().FirstOrDefault(u => u.Name.Equals(request.Name, StringComparison.InvariantCultureIgnoreCase));
+            var existingItem = _dataContext.GetQueryable<BoardGameGeekUserDefinition>().FirstOrDefault(u => u.Id == request.BoardGameGeekUserId);
 
             if (existingItem == null)
             {
                 existingItem = new BoardGameGeekUserDefinition
                 {
+                    Id = request.BoardGameGeekUserId,
                     Name = request.Name,
                     ApplicationUserId = currentUser.Id,
                     Avatar = request.Avatar

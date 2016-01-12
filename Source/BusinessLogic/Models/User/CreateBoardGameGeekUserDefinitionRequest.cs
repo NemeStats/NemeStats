@@ -7,7 +7,8 @@ namespace BusinessLogic.Models.User
     {
         [Required]
         public string Name { get; set; }
-
         public string Avatar { get; set; }
+        [Required]
+        public int BoardGameGeekUserId { get; set; }
     }
 }

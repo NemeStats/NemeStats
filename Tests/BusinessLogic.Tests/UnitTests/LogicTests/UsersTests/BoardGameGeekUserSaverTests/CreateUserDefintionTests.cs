@@ -30,7 +30,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.BoardGameGeekUserS
         [Test]
         public void ItThrowsAnArgumentExceptionIfTheNameIsNull()
         {
-            Exception exception = Assert.Throws<ArgumentException>(() => autoMocker.ClassUnderTest.CreateUserDefintion(new CreateBoardGameGeekUserDefinitionRequest() { Name = null }, currentUser));
+            Exception exception = Assert.Throws<ArgumentException>(() => autoMocker.ClassUnderTest.CreateUserDefintion(new CreateBoardGameGeekUserDefinitionRequest() { Name = null, BoardGameGeekUserId = 1}, currentUser));
 
             Assert.IsTrue(exception.Message.Contains(typeof(CreateBoardGameGeekUserDefinitionRequest).ToString()));
         }
@@ -40,6 +40,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.BoardGameGeekUserS
         {
             var request = new CreateBoardGameGeekUserDefinitionRequest
             {
+                BoardGameGeekUserId = 1,
                 Name = "game definition name",
                 Avatar = "avatar.png"
             };
@@ -52,6 +53,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.BoardGameGeekUserS
                 Arg<ApplicationUser>.Is.Anything));
             var actualUserDefinition = args[0][0] as BoardGameGeekUserDefinition;
             Assert.That(actualUserDefinition, Is.Not.Null);
+            Assert.That(actualUserDefinition.Id, Is.EqualTo(request.BoardGameGeekUserId));
             Assert.That(actualUserDefinition.Name, Is.EqualTo(request.Name));
             Assert.That(actualUserDefinition.Avatar, Is.EqualTo(request.Avatar));
 

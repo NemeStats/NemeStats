@@ -487,7 +487,8 @@ namespace UI.Controllers
                             new CreateBoardGameGeekUserDefinitionRequest()
                             {
                                 Avatar = bggResponse.Avatar,
-                                Name = bggResponse.Name
+                                Name = bggResponse.Name,
+                                BoardGameGeekUserId = bggResponse.UserId
                             }, currentUser);
 
                         if (saverResult != null)
