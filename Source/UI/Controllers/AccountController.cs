@@ -336,7 +336,7 @@ namespace UI.Controllers
 
                 if (string.IsNullOrEmpty(returnUrl))
                 {
-                    return RedirectToAction(MVC.GamingGroup.Index(new BasicDateRangeFilter(), user));
+                    return RedirectToAction(MVC.GamingGroup.Index());
                 }
 
                 return RedirectToLocal(returnUrl);
