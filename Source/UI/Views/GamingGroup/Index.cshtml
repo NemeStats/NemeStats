@@ -33,11 +33,11 @@
     @Html.ValidationMessage("Iso8601ToDate")
     if (Model.DateRangeFilter.HasCustomDate)
     {
-        <input type="date" id="from-to-picker" name="Iso8601ToDate" value="@Model.DateRangeFilter.Iso8601ToDate" />
+        <input type="date" id="to-date-picker" name="Iso8601ToDate" value="@Model.DateRangeFilter.Iso8601ToDate" />
     }
     else
     {
-        <input type="date" id="from-to-picker" name="Iso8601ToDate" />
+        <input type="date" id="to-date-picker" name="Iso8601ToDate" />
     }
     <button class="btn btn-primary" type="submit">Filter Statistics</button>
     <br />@Html.ValidationMessage("dateRangeFilter")
@@ -94,7 +94,11 @@
 
             var googleAnalyticsObject = new window.Views.Shared.GoogleAnalytics();
 
-            gamingGroupView.init(googleAnalyticsObject);
+            var options = {
+                fromDate : fromDate,
+                toDate : toDate
+            };
+            gamingGroupView.init(googleAnalyticsObject, options);
 
             var recordexceldownload = new window.Views._PlayedGamesPartial.EventTracking();
             recordexceldownload.init(googleAnalyticsObject);
