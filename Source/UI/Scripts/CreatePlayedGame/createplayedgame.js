@@ -15,7 +15,6 @@ Views.PlayedGame.CreatePlayedGame = function () {
 	this.$playerFormData = null;
 	this.$btnAddPlayer = null;
 	this.$addPlayer = null;
-	this.$datePicker = null;
 	this.$playerItemTemplate = null;
 	this._googleAnalytics = null;
 	this._rankButtons = null;
@@ -48,15 +47,6 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
 		this.$btnAddPlayer = $("#btnAddPlayer");
 		this.$anchorAddPlayer = $("#addPlayerAnchor");
 		this.$gameDefinitionDropDown = $("[name='GameDefinitionId']");
-		this.$datePicker = $(".date-picker").datepicker({
-			showOn: "button",
-			buttonText: "<i class='fa fa-calendar'></i>",
-			showButtonPanel: true,
-			maxDate: new Date(),
-			minDate: new Date(2014, 1, 1)
-		}).datepicker("setDate", new Date())
-		    .datepicker("option", "dateFormat", "yy-mm-dd");
-
 		this.$btnEveryoneWonButton = $("#btnEveryoneWonButton");
 		this.$btnEveryoneLostButton = $("#btnEveryoneLostButton");
 		this.$removePlayerButtons = $(".btnRemovePlayer");

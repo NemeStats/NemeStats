@@ -7,11 +7,18 @@ namespace BusinessLogic.Models.Utility
     public class BasicDateRangeFilter : IDateRangeFilter
     {
         public readonly DateTime DefaultFromDate = new DateTime(2010, 1, 1);
+        public readonly DateTime DefaultToDate;
 
         public BasicDateRangeFilter()
         {
             _fromDate = DefaultFromDate.Date;
-            _toDate = DateTime.UtcNow.Date.AddDays(1).AddMilliseconds(-1);
+            DefaultToDate = DateTime.UtcNow.Date.AddDays(1).AddMilliseconds(-1);
+            _toDate = DefaultToDate;
+        }
+
+        public bool HasCustomDate
+        {
+            get { return FromDate != DefaultFromDate || ToDate != DefaultToDate; }
         }
 
         private DateTime _fromDate;

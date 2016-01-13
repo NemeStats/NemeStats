@@ -5,56 +5,17 @@ Namespace("Views.GamingGroup");
 Views.GamingGroup.GamingGroupView = function () {
     this.$container = null;
     this.$title = null;
-    this.$fromDatePicker = null;
-    this.$toDatePicker = null;
-    this.$settings = {
-        fromDate : null,
-        toDate : new Date()
-    };
     this._serviceAddress = "/GamingGroup/UpdateGamingGroupName";
     this._googleAnalytics = null;
 };
 
 //Implementation
 Views.GamingGroup.GamingGroupView.prototype = {
-    init: function (gaObject, options) {
+    init: function (gaObject) {
         var parent = this;
         this.$title = $("#gamingGroupTitle");
         this.$title.toEditBox({ onFocusOut: $.proxy(parent.renameGamingGroup, this), cssClass: 'gaming-group-name' });
         this._googleAnalytics = gaObject;
-
-        if (options.fromDate != null) {
-            this.$settings.fromDate = options.fromDate;
-        }
-
-        if (options.toDate != null) {
-            this.$settings.toDate = options.toDate;
-        }
-
-        this.$fromDatePicker = $("#from-date-picker").datepicker({
-            showOn: "button",
-            buttonText: "<i class='fa fa-calendar'></i>",
-            showButtonPanel: true,
-            maxDate: +1,
-            minDate: new Date(2014, 1, 1),
-            onClose: function (selectedDate) {
-                $("#to-date-picker").datepicker("option", "minDate", selectedDate);
-            }
-        }).datepicker("setDate", this.$settings.fromDate)
-            .datepicker("option", "dateFormat", "yy-mm-dd");
-
-
-        this.$toDatePicker = $("#to-date-picker").datepicker({
-            showOn: "button",
-            buttonText: "<i class='fa fa-calendar'></i>",
-            showButtonPanel: true,
-            maxDate: +1,
-            minDate: new Date(2014, 1, 1),
-            onClose: function (selectedDate) {
-                $("#from-date-picker").datepicker("option", "minDate", selectedDate);
-            }
-        }).datepicker("setDate", this.$settings.toDate)
-          .datepicker("option", "dateFormat", "yy-mm-dd");
     },
     renameGamingGroup: function (element) {
         var parent = this;

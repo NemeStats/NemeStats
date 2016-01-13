@@ -40,7 +40,6 @@
 /// <reference path="namespace.min-1.0.0.js" />
 /// <reference path="namespace-1.0.0.js" />
 /// <reference path="playedgame/recordexceldownload.js" />
-/// <reference path="playedgame/search.js" />
 /// <reference path="player/createorupdateplayer.js" />
 /// <reference path="player/playerdetails.js" />
 /// <reference path="player/players.js" />

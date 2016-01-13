@@ -21,10 +21,24 @@
 {
     <label for="from">Filter Data From:</label>
     @Html.ValidationMessage("Iso8601FromDate")
-    <input type="text" id="from-date-picker" name="Iso8601FromDate"/>
+    if (Model.DateRangeFilter.HasCustomDate)
+    {
+        <input type="date" id="from-date-picker" name="Iso8601FromDate" value="@Model.DateRangeFilter.Iso8601FromDate" />
+    }
+    else
+    {
+        <input type="date" id="from-date-picker" name="Iso8601FromDate" />
+    }
     <label for="to">to</label>
     @Html.ValidationMessage("Iso8601ToDate")
-    <input type="text" id="to-date-picker" name="Iso8601ToDate"/>
+    if (Model.DateRangeFilter.HasCustomDate)
+    {
+        <input type="date" id="from-to-picker" name="Iso8601ToDate" value="@Model.DateRangeFilter.Iso8601ToDate" />
+    }
+    else
+    {
+        <input type="date" id="from-to-picker" name="Iso8601ToDate" />
+    }
     <button class="btn btn-primary" type="submit">Filter Statistics</button>
     <br />@Html.ValidationMessage("dateRangeFilter")
 }
@@ -80,11 +94,7 @@
 
             var googleAnalyticsObject = new window.Views.Shared.GoogleAnalytics();
 
-            var options = {
-                fromDate : fromDate,
-                toDate : toDate
-            };
-            gamingGroupView.init(googleAnalyticsObject, options);
+            gamingGroupView.init(googleAnalyticsObject);
 
             var recordexceldownload = new window.Views._PlayedGamesPartial.EventTracking();
             recordexceldownload.init(googleAnalyticsObject);
