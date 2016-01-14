@@ -1,10 +1,6 @@
 ﻿using BusinessLogic.Models.Utility;
 using NUnit.Framework;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BusinessLogic.Tests.UnitTests.ModelsTests.UtilityTests
 {
@@ -57,6 +53,24 @@ namespace BusinessLogic.Tests.UnitTests.ModelsTests.UtilityTests
             filter.Iso8601ToDate = "2017-06-15";
 
             Assert.That(filter.ToDate, Is.EqualTo(new DateTime(2017, 6, 15)));
+        }
+
+        [Test]
+        public void ItThrowsAFormatExceptionIfTheFromDateIsInvalid()
+        {
+            var invalidDateString = "some invalid date";
+            var exception = Assert.Throws<FormatException>(() => filter.Iso8601FromDate = invalidDateString);
+
+            Assert.That(exception.Message, Is.EqualTo("'some invalid date' is not a valid YYYY-MM-DD date."));
+        }
+
+        [Test]
+        public void ItThrowsAFormatExceptionIfTheToDateIsInvalid()
+        {
+            var invalidDateString = "some invalid date";
+            var exception = Assert.Throws<FormatException>(() => filter.Iso8601ToDate = invalidDateString);
+
+            Assert.That(exception.Message, Is.EqualTo("'some invalid date' is not a valid YYYY-MM-DD date."));
         }
     }
 }

@@ -30,36 +30,45 @@ Views.GamingGroup.GamingGroupView.prototype = {
         if (options.toDate != null) {
             this.$settings.toDate = options.toDate;
         }
+        this.$fromDatePicker = $("#from-date-picker");
+        this.$toDatePicker = $("#to-date-picker");
+        var minDate = new Date(2014, 0, 1);
 
-        if (!Modernizr.inputtypes.date) {
+        if (Modernizr.inputtypes.date) {
+            //if supports HTML5 then use native date picker
+            var minDateIso8601 = minDate.toISOString().split("T")[0]
+            var currentIso8601Date = new Date().toISOString().split("T")[0];
+            this.$fromDatePicker.attr("max", currentIso8601Date);
+            this.$fromDatePicker.attr("min", minDateIso8601);
+            this.$toDatePicker.attr("max", currentIso8601Date);
+            this.$toDatePicker.attr("min", minDateIso8601);
+        }else
+        {
             // If not native HTML5 support, fallback to jQuery datePicker
-            this.$fromDatePicker = $("#from-date-picker").datepicker({
+            this.$fromDatePicker.datepicker({
                 showOn: "button",
                 buttonText: "<i class='fa fa-calendar'></i>",
                 showButtonPanel: true,
                 maxDate: +1,
-                minDate: new Date(2014, 1, 1),
+                minDate: minDate,
                 onClose: function (selectedDate) {
                     $("#to-date-picker").datepicker("option", "minDate", selectedDate);
                 }
             }).datepicker("setDate", this.$settings.fromDate)
                 .datepicker("option", "dateFormat", "yy-mm-dd");
 
-
-            this.$toDatePicker = $("#to-date-picker").datepicker({
+            this.$toDatePicker.datepicker({
                 showOn: "button",
                 buttonText: "<i class='fa fa-calendar'></i>",
                 showButtonPanel: true,
                 maxDate: +1,
-                minDate: new Date(2014, 1, 1),
+                minDate: minDate,
                 onClose: function (selectedDate) {
                     $("#from-date-picker").datepicker("option", "minDate", selectedDate);
                 }
             }).datepicker("setDate", this.$settings.toDate)
               .datepicker("option", "dateFormat", "yy-mm-dd");
         }
-
-        
     },
     renameGamingGroup: function (element) {
         var parent = this;
