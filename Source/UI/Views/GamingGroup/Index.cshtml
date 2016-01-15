@@ -19,17 +19,27 @@
 
 @using (Html.BeginForm(MVC.GamingGroup.Index(), FormMethod.Get))
 {
-    <label for="from">Filter Data From:</label>
-    @Html.ValidationMessage("Iso8601FromDate")
-    <input type="date" id="from-date-picker" name="Iso8601FromDate" value="@Model.DateRangeFilter.Iso8601FromDate" />
-   
-    <label for="to">to</label>
-    @Html.ValidationMessage("Iso8601ToDate")
-    <input type="date" id="to-date-picker" name="Iso8601ToDate" value="@Model.DateRangeFilter.Iso8601ToDate" />
-
+    <div style="float: left; padding: 4px">
+        <label for="from">Filter Data From:</label>
+        <i class="fa fa-question-circle" data-toggle="popover" data-placement="top"
+            data-content="All data will be filtered to be on our after this date."></i>
+        <br/>
+        @Html.ValidationMessage("Iso8601FromDate")
+        <input type="date" id="from-date-picker" name="Iso8601FromDate" value="@Model.DateRangeFilter.Iso8601FromDate" />
+    </div>
+    <div style="float: left; padding: 5px">
+        <label for="to">Ending Date:</label>
+        <i class="fa fa-question-circle" data-toggle="popover" data-placement="top"
+           data-content="All data will be filtered to be on our before this date."></i>
+        <br />
+        @Html.ValidationMessage("Iso8601ToDate")
+        <input type="date" id="to-date-picker" name="Iso8601ToDate" value="@Model.DateRangeFilter.Iso8601ToDate" />
+    </div>
+    <br/>
     <button class="btn btn-primary" type="submit">Filter Statistics</button>
     <br />@Html.ValidationMessage("dateRangeFilter")
 }
+<br/>
 
 <a name="@ViewBag.PlayerSectionAnchorText"></a>
 
