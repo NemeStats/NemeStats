@@ -1,0 +1,18 @@
+﻿@import "nemestats-variables.scss";
+
+.filter {
+    display: inline-block;
+
+    .control-block {
+        float: left;
+        margin-right: 10px;
+
+        @media (max-width: $screen-md-max) {
+              margin-top: 10px;
+        }
+
+        button {
+            margin-top: 10px;
+        }
+    }
+}
