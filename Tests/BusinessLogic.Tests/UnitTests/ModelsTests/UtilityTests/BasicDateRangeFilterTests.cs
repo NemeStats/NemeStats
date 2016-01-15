@@ -16,9 +16,9 @@ namespace BusinessLogic.Tests.UnitTests.ModelsTests.UtilityTests
         }
 
         [Test]
-        public void ItDefaultsTheFromDateToJanuaryFirstTwoThousandAndTen()
+        public void ItDefaultsTheFromDateToJanuaryFirstTwoThousandAndFourteen()
         {
-            Assert.That(filter.FromDate, Is.EqualTo(new DateTime(2010, 1, 1)));
+            Assert.That(filter.FromDate, Is.EqualTo(new DateTime(2014, 1, 1)));
         }
 
         [Test]
@@ -30,7 +30,7 @@ namespace BusinessLogic.Tests.UnitTests.ModelsTests.UtilityTests
         [Test]
         public void TheIso8601FromDatePropertyReturnsAnExistingFromDateInYYYYMMDD()
         {
-            Assert.That(filter.Iso8601FromDate, Is.EqualTo("2010-01-01"));
+            Assert.That(filter.Iso8601FromDate, Is.EqualTo("2014-01-01"));
         }
 
         [Test]
