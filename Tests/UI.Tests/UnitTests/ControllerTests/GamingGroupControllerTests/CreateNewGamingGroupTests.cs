@@ -16,15 +16,13 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 
-using System.Linq;
-using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
 using BusinessLogic.Logic;
 using BusinessLogic.Logic.GamingGroups;
 using NUnit.Framework;
 using Rhino.Mocks;
-using UI.Controllers.Helpers;
+using BusinessLogic.Models.User;
+using BusinessLogic.Models.Utility;
 
 namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
 {
@@ -37,7 +35,9 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
         {
  	        base.SetUp();
             autoMocker.PartialMockTheClassUnderTest();
-            autoMocker.ClassUnderTest.Expect(mock => mock.Index(currentUser))
+            autoMocker.ClassUnderTest.Expect(mock => mock.Index(
+                Arg<BasicDateRangeFilter>.Is.Anything, 
+                Arg<ApplicationUser>.Is.Same(currentUser)))
                                 .Return(viewResult);
         }
 

@@ -18,8 +18,10 @@
 using BusinessLogic.Logic.GamingGroups;
 using BusinessLogic.Models;
 using BusinessLogic.Models.GamingGroups;
+using BusinessLogic.Models.Utility;
 using NUnit.Framework;
 using Rhino.Mocks;
+using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
 using UI.Controllers;
@@ -33,6 +35,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
     {
         private GamingGroupSummary gamingGroupSummary;
         private GamingGroupViewModel gamingGroupViewModel;
+        private BasicDateRangeFilter dateRangeFilter;
 
         [Test]
         public override void SetUp()
@@ -44,10 +47,11 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
                 PlayedGames = new List<PlayedGame>()
             };
             gamingGroupViewModel = new GamingGroupViewModel();
+            dateRangeFilter = new BasicDateRangeFilter();
 
-            autoMocker.Get<IGamingGroupRetriever>().Expect(mock => mock.GetGamingGroupDetails(
-                currentUser.CurrentGamingGroupId,
-                GamingGroupController.MAX_NUMBER_OF_RECENT_GAMES))
+            autoMocker.ClassUnderTest.Expect(mock => mock.GetGamingGroupSummary(
+                Arg<int>.Is.Anything,
+                Arg<IDateRangeFilter>.Is.Anything))
                 .Repeat.Once()
                 .Return(gamingGroupSummary);
 
@@ -58,7 +62,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
         [Test]
         public void ItReturnsTheIndexView()
         {
-            ViewResult viewResult = autoMocker.ClassUnderTest.Index(currentUser) as ViewResult;
+            ViewResult viewResult = autoMocker.ClassUnderTest.Index(dateRangeFilter, currentUser) as ViewResult;
 
             Assert.AreEqual(MVC.GamingGroup.Views.Index, viewResult.ViewName);
         }
@@ -66,18 +70,43 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
         [Test]
         public void ItAddsAGamingGroupViewModelToTheView()
         {
-            ViewResult viewResult = autoMocker.ClassUnderTest.Index(currentUser) as ViewResult;
+            ViewResult viewResult = autoMocker.ClassUnderTest.Index(dateRangeFilter, currentUser) as ViewResult;
 
             Assert.AreSame(gamingGroupViewModel, viewResult.Model);
         }
 
         [Test]
+        public void ItPreservesTheDateRangeFilter()
+        {
+            ViewResult viewResult = autoMocker.ClassUnderTest.Index(dateRangeFilter, currentUser) as ViewResult;
+
+            GamingGroupViewModel model = viewResult.Model as GamingGroupViewModel;
+            Assert.AreSame(dateRangeFilter, model.DateRangeFilter);
+        }
+
+        [Test]
         public void ItShowsTheSearchPlayedGamesLinkInThePlayedGamePanelHeader()
         {
-            var viewResult = autoMocker.ClassUnderTest.Index(currentUser) as ViewResult;
+            var viewResult = autoMocker.ClassUnderTest.Index(dateRangeFilter, currentUser) as ViewResult;
 
             var viewModel = (GamingGroupViewModel)viewResult.Model;
             Assert.That(viewModel.PlayedGames.ShowSearchLinkInResultsHeader, Is.True);
+        }
+
+        [Test]
+        public void ItAddsAModelErrorIfTheFromDateIsLaterThanTheToDate()
+        {
+            var basicDateRangeFilter = new BasicDateRangeFilter
+            {
+                FromDate = DateTime.UtcNow,
+                ToDate = DateTime.UtcNow.AddDays(-1)
+            };
+            var viewResult = autoMocker.ClassUnderTest.Index(basicDateRangeFilter, currentUser) as ViewResult;
+
+            Assert.True(viewResult.ViewData.ModelState.ContainsKey("dateRangeFilter"));
+            var modelErrorsForKey = viewResult.ViewData.ModelState["dateRangeFilter"].Errors;
+            Assert.That(modelErrorsForKey.Count, Is.EqualTo(1));
+            Assert.That(modelErrorsForKey[0].ErrorMessage, Is.EqualTo("The 'From Date' cannot be greater than the 'To Date'."));
         }
     }
 }

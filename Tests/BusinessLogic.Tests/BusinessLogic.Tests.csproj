@@ -248,6 +248,7 @@
     <Compile Include="UnitTests\ModelsTests\NemesisTests\EqualsTests.cs" />
     <Compile Include="UnitTests\ModelsTests\NemesisTests\GetHashCodeTests.cs" />
     <Compile Include="UnitTests\ModelsTests\NemesisTests\SameNemesisTests.cs" />
+    <Compile Include="UnitTests\ModelsTests\UtilityTests\BasicDateRangeFilterTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

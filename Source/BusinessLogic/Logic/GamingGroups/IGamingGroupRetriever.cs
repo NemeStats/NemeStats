@@ -27,12 +27,12 @@ namespace BusinessLogic.Logic.GamingGroups
 {
 	public interface IGamingGroupRetriever
 	{
-		GamingGroup GetGamingGroupById(int gamingGroupId);
+        GamingGroupSummary GetGamingGroupDetails(GamingGroupFilter gamingGroupFilter);
 
-		GamingGroupSummary GetGamingGroupDetails(int gamingGroupId, int maxNumberOfGamesToRetrieve);
+        GamingGroup GetGamingGroupById(int gamingGroupId);
 
 		IList<GamingGroupListItemModel> GetGamingGroupsForUser(ApplicationUser applicationUser);
 
 		List<TopGamingGroupSummary> GetTopGamingGroups(int numberOfTopGamingGroupsToShow);
-	}
+    }
 }

@@ -22,7 +22,9 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameRe
         private const int EXPECTED_GAMING_GROUP_ID = 30;
         private const int EXPECTED_GAME_DEFINITION_ID = 51;
         private const int EXPECTED_PLAYER_ID = 62;
-            
+        private readonly DateTime DATE_MARCH = new DateTime(2015, 3, 1, 4, 4, 4);
+        private readonly DateTime DATE_APRIL = new DateTime(2015, 4, 1, 4, 4, 4);
+
         [SetUp]
         public void SetUp()
         {
@@ -33,7 +35,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameRe
                 new PlayedGame
                 {
                     Id = PLAYED_GAME_ID_FOR_GAME_RECORDED_IN_MARCH,
-                    DateCreated = new DateTime(2015, 3, 1, 4, 4, 4),
+                    DateCreated = DATE_MARCH,
+                    DatePlayed = DATE_MARCH,
                     PlayerGameResults = new List<PlayerGameResult>(),
                     GameDefinition = new GameDefinition(),
                     GamingGroup = new GamingGroup(),
@@ -43,7 +46,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameRe
                 new PlayedGame
                 {
                     Id = PLAYED_GAME_ID_FOR_GAME_RECORDED_IN_APRIL,
-                    DateCreated = new DateTime(2015, 4, 1, 5, 5, 5),
+                    DateCreated = DATE_APRIL,
+                    DatePlayed = DATE_APRIL,
                     PlayerGameResults = new List<PlayerGameResult>
                     {
                         new PlayerGameResult
@@ -153,26 +157,26 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameRe
             Assert.That(results.Count, Is.EqualTo(0));
         }
 
-        [Test, Ignore("This test no longer works because DbFunctions.TruncateTime is not unit testable. Bummer.")]
+        [Test]
         public void ItFiltersOnStartDateGameLastUpdated()
         {
             var filter = new PlayedGameFilter
             {
-                StartDateGameLastUpdated = "2015-04-01"
+                StartDateGameLastUpdated = DATE_APRIL.ToString("yyyy-MM-dd")
             };
 
             var results = autoMocker.ClassUnderTest.SearchPlayedGames(filter);
 
             Assert.That(results.Count, Is.EqualTo(1));
-            Assert.True(results.All(x => x.DateLastUpdated.Date >= new DateTime(2015, 4, 1)));
+            Assert.True(results.All(x => x.DateLastUpdated >= new DateTime(2015, 4, 1)));
         }
 
-        [Test, Ignore("This test no longer works because DbFunctions.TruncateTime is not unit testable. Bummer.")]
+        [Test]
         public void ItFiltersOnEndDateGameLastUpdated()
         {
             var filter = new PlayedGameFilter
             {
-                EndDateGameLastUpdated = "2015-03-01"
+                EndDateGameLastUpdated = DATE_MARCH.ToString("yyyy-MM-dd")
             };
 
             var results = autoMocker.ClassUnderTest.SearchPlayedGames(filter);
@@ -182,7 +186,49 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameRe
         }
 
         [Test]
-        public void ItThrowsAnInvalidDateFormatExceptionIfTheDateIsntYYYYMMDD()
+        public void ItFiltersOnDatePlayedFrom()
+        {
+            var filter = new PlayedGameFilter
+            {
+                DatePlayedFrom = DATE_APRIL.ToString("yyyy-MM-dd")
+            };
+
+            var results = autoMocker.ClassUnderTest.SearchPlayedGames(filter);
+
+            Assert.That(results.Count, Is.EqualTo(1));
+            Assert.True(results.All(x => x.DatePlayed >= DATE_APRIL));
+        }
+
+        [Test]
+        public void ItFiltersOnDatePlayedTo()
+        {
+            var filter = new PlayedGameFilter
+            {
+                DatePlayedTo = DATE_MARCH.ToString("yyyy-MM-dd")
+            };
+
+            var results = autoMocker.ClassUnderTest.SearchPlayedGames(filter);
+
+            Assert.That(results.Count, Is.EqualTo(1));
+            Assert.True(results.All(x => x.DatePlayed <= DATE_MARCH));
+        }
+
+        [Test]
+        public void ItThrowsAnInvalidDateFormatExceptionIfTheStartDateGameLastUpdatedIsntYYYYMMDD()
+        {
+            var filter = new PlayedGameFilter
+            {
+                StartDateGameLastUpdated = "2015-3-1"
+            };
+            var expectedExceptionMessage = new InvalidDateFormatException(filter.StartDateGameLastUpdated).Message;
+
+            var actualException = Assert.Throws<InvalidDateFormatException>(() => autoMocker.ClassUnderTest.SearchPlayedGames(filter));
+
+            Assert.That(actualException.Message, Is.EqualTo(expectedExceptionMessage));
+        }
+
+        [Test]
+        public void ItThrowsAnInvalidDateFormatExceptionIfTheEndDateGameLastUpdatedIsntYYYYMMDD()
         {
             var filter = new PlayedGameFilter
             {

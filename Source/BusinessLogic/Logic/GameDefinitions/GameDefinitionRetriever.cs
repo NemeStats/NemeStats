@@ -23,6 +23,7 @@ using System.Collections.Generic;
 using System.Linq;
 using BusinessLogic.Logic.BoardGameGeek;
 using BusinessLogic.Models.Games;
+using BusinessLogic.Models.Utility;
 
 namespace BusinessLogic.Logic.GameDefinitions
 {
@@ -37,8 +38,12 @@ namespace BusinessLogic.Logic.GameDefinitions
             this.playerRepository = playerRepository;
         }
 
-        public virtual IList<GameDefinitionSummary> GetAllGameDefinitions(int gamingGroupId)
+        public virtual IList<GameDefinitionSummary> GetAllGameDefinitions(int gamingGroupId, IDateRangeFilter dateRangeFilter = null)
         {
+            if(dateRangeFilter == null)
+            {
+                dateRangeFilter = new BasicDateRangeFilter();
+            }
             var returnValue = (from gameDefinition in dataContext.GetQueryable<GameDefinition>()
                 where gameDefinition.GamingGroupId == gamingGroupId
                         && gameDefinition.Active
@@ -50,8 +55,10 @@ namespace BusinessLogic.Logic.GameDefinitions
                     Description = gameDefinition.Description,
                     GamingGroupId = gameDefinition.GamingGroupId,
                     Id = gameDefinition.Id,
-                    PlayedGames = gameDefinition.PlayedGames,
-                    TotalNumberOfGamesPlayed = gameDefinition.PlayedGames.Count,
+                    PlayedGames = gameDefinition.PlayedGames.Where(
+                        playedGame => playedGame.DatePlayed >= dateRangeFilter.FromDate
+                            && playedGame.DatePlayed <= dateRangeFilter.ToDate)
+                            .ToList(),
                     Champion = gameDefinition.Champion,
                     ChampionId = gameDefinition.ChampionId,
                     PreviousChampion = gameDefinition.PreviousChampion,
@@ -69,6 +76,7 @@ namespace BusinessLogic.Logic.GameDefinitions
                 summary.BoardGameGeekUri = BoardGameGeekUriBuilder.BuildBoardGameGeekGameUri(summary.BoardGameGeekGameDefinitionId);
                 summary.Champion = summary.Champion ?? new NullChampion();
                 summary.PreviousChampion = summary.PreviousChampion ?? new NullChampion();
+                summary.TotalNumberOfGamesPlayed = summary.PlayedGames.Count;
             });
             return returnValue;
         }
