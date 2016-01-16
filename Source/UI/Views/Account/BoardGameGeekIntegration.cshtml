@@ -5,7 +5,18 @@
 
 @if (Model.IntegrationComplete)
 {
-    <div>You are logged on BGG as <b>@Model.BoardGameGeekUserName</b> :-)</div>
+    <div class="bgguser-integration">
+        @if (!string.IsNullOrEmpty(Model.AvatarUrl))
+        {
+            <img src="@Model.AvatarUrl" title="BGG Avatar" />
+        }
+        <span>
+            You are logged on BGG as <b><a href="@Model.BoardGameGeekUserUrl" target="_blank;">@Model.BoardGameGeekUserName</a></b> :-)
+        </span>
+    </div>
+
+
+
 }
 else
 {

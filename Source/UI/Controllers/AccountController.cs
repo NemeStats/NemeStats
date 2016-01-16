@@ -27,6 +27,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using BoardGameGeekApiClient.Interfaces;
+using BusinessLogic.Logic.BoardGameGeek;
 using BusinessLogic.Logic.GamingGroups;
 using UI.Attributes.Filters;
 using UI.Models;
@@ -318,11 +319,13 @@ namespace UI.Controllers
                 viewModel.BoardGameGeekIntegrationModel = new BoardGameGeekIntegrationModel
                 {
                     BoardGameGeekUserName = bggUser.Name,
-                    IntegrationComplete = true
+                    IntegrationComplete = true,
+                    AvatarUrl = bggUser.Avatar,
+                    BoardGameGeekUserUrl = BoardGameGeekUriBuilder.BuildBoardGameGeekUserUri(bggUser.Name)
                 };
             }
-            
-                
+
+
 
             return viewModel;
         }
@@ -496,7 +499,7 @@ namespace UI.Controllers
                         if (saverResult != null)
                         {
                             return RedirectToAction(MVC.Account.ActionNames.Manage,
-                                new {Message = ManageMessageId.SetBoardGameGeekUserSuccess});
+                                new { Message = ManageMessageId.SetBoardGameGeekUserSuccess });
                         }
                     }
                     catch (ArgumentException argumentException)
@@ -504,7 +507,7 @@ namespace UI.Controllers
                         ModelState.AddModelError(nameof(model.BoardGameGeekUserName), argumentException.Message);
                     }
                 }
-                
+
 
             }
             SetViewBag();
