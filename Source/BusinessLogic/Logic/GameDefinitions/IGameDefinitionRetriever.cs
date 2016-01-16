@@ -20,12 +20,13 @@ using System.Collections.Generic;
 using System.Linq;
 using BusinessLogic.Models.Games;
 using BusinessLogic.Models.User;
+using BusinessLogic.Models.Utility;
 
 namespace BusinessLogic.Logic.GameDefinitions
 {
     public interface IGameDefinitionRetriever
     {
-        IList<GameDefinitionSummary> GetAllGameDefinitions(int gamingGroupId);
+        IList<GameDefinitionSummary> GetAllGameDefinitions(int gamingGroupId, IDateRangeFilter dateRangeFilter = null);
         GameDefinitionSummary GetGameDefinitionDetails(int id, int numberOfPlayedGamesToRetrieve);
         IList<GameDefinitionName> GetAllGameDefinitionNames(int gamingGroupId);
     }

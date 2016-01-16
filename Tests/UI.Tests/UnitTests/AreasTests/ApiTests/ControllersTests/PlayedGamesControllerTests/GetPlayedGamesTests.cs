@@ -48,6 +48,44 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.PlayedGamesCon
         }
 
         [Test]
+        public void ItFiltersOnDatePlayedFrom()
+        {
+            var filterMessage = new PlayedGameFilterMessage
+            {
+                DatePlayedFrom = "2015-04-15"
+            };
+
+            autoMocker.Get<IPlayedGameRetriever>().Expect(
+                mock => mock.SearchPlayedGames(
+                Arg<PlayedGameFilter>.Is.Anything))
+                      .Return(new List<PlayedGameSearchResult>());
+
+            autoMocker.ClassUnderTest.GetPlayedGames(filterMessage, 1);
+
+            autoMocker.Get<IPlayedGameRetriever>().AssertWasCalled(mock => mock.SearchPlayedGames(
+                Arg<PlayedGameFilter>.Matches(filter => filter.DatePlayedFrom == filterMessage.DatePlayedFrom)));
+        }
+
+        [Test]
+        public void ItFiltersOnDatePlayedTo()
+        {
+            var filterMessage = new PlayedGameFilterMessage
+            {
+                DatePlayedTo = "2016-01-15"
+            };
+
+            autoMocker.Get<IPlayedGameRetriever>().Expect(
+                mock => mock.SearchPlayedGames(
+                Arg<PlayedGameFilter>.Is.Anything))
+                      .Return(new List<PlayedGameSearchResult>());
+
+            autoMocker.ClassUnderTest.GetPlayedGames(filterMessage, 1);
+
+            autoMocker.Get<IPlayedGameRetriever>().AssertWasCalled(mock => mock.SearchPlayedGames(
+                Arg<PlayedGameFilter>.Matches(filter => filter.DatePlayedTo == filterMessage.DatePlayedTo)));
+        }
+
+        [Test]
         public void ItFiltersOnTheGamingGroupId()
         {
             const int EXPECTED_GAMING_GROUP_ID = 1;

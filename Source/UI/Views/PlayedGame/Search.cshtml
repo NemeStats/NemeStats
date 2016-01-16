@@ -31,9 +31,10 @@
                     </div>
                     <div class="col-sm-10">
                         @Html.TextBoxFor(x => Model.Filter.DatePlayedStart, new
-                        {
-                            @class = "date-picker"
-                        })
+                   {
+                       @class = "date-picker",
+                       type = "date"
+                   })
                         @Html.ValidationMessageFor(model => model.Filter.DatePlayedStart)
                     </div>
                 </div>
@@ -43,9 +44,10 @@
                     </div>
                     <div class="col-sm-10">
                         @Html.TextBoxFor(x => Model.Filter.DatePlayedEnd, new
-                        {
-                            @class = "date-picker"
-                        })
+                   {
+                       @class = "date-picker",
+                       type="date"
+                   })
                         @Html.ValidationMessageFor(model => model.Filter.DatePlayedEnd)
                     </div>
                 </div>

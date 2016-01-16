@@ -325,6 +325,7 @@
     <Compile Include="Models\Games\GameDefinitionDisplayInfo.cs" />
     <Compile Include="Models\Games\GameDefinitionName.cs" />
     <Compile Include="Models\GamingGroups\GamingGroupEditRequest.cs" />
+    <Compile Include="Models\GamingGroups\GamingGroupFilter.cs" />
     <Compile Include="Models\GamingGroups\GamingGroupListItemModel.cs" />
     <Compile Include="Models\GamingGroups\NewlyCreatedGamingGroupResult.cs" />
     <Compile Include="Models\GamingGroups\TopGamingGroupSummary.cs" />
@@ -527,6 +528,8 @@
     <Compile Include="Models\Players\WinLossStatistics.cs" />
     <Compile Include="Models\User\UserInformation.cs" />
     <Compile Include="Models\Validation\ValidatableRequest.cs" />
+    <Compile Include="Models\Utility\BasicDateRangeFilter.cs" />
+    <Compile Include="Models\Utility\IDateRangeFilter.cs" />
     <Compile Include="Models\VotableFeature.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\MachineKeyProtectionProvider.cs" />

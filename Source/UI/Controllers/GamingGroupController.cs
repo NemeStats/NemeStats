@@ -22,6 +22,7 @@ using BusinessLogic.Logic.GamingGroups;
 using BusinessLogic.Logic.Users;
 using BusinessLogic.Models.GamingGroups;
 using BusinessLogic.Models.User;
+using BusinessLogic.Models.Utility;
 using System.Linq;
 using System.Web.Mvc;
 using UI.Attributes.Filters;
@@ -76,12 +77,17 @@ namespace UI.Controllers
         // GET: /GamingGroup
         [Authorize]
         [UserContext]
-        public virtual ActionResult Index(ApplicationUser currentUser)
+        public virtual ActionResult Index([System.Web.Http.FromUri]BasicDateRangeFilter dateRangeFilter, ApplicationUser currentUser)
         {
-            var gamingGroupSummary = this.GetGamingGroupSummary(currentUser.CurrentGamingGroupId);
+            if(dateRangeFilter.ToDate < dateRangeFilter.FromDate)
+            {
+                ModelState.AddModelError("dateRangeFilter", "The 'From Date' cannot be greater than the 'To Date'.");
+            }
+            var gamingGroupSummary = GetGamingGroupSummary(currentUser.CurrentGamingGroupId, dateRangeFilter);
 
             GamingGroupViewModel viewModel = gamingGroupViewModelBuilder.Build(gamingGroupSummary, currentUser);
             viewModel.PlayedGames.ShowSearchLinkInResultsHeader = true;
+            viewModel.DateRangeFilter = dateRangeFilter;
 
             ViewBag.RecentGamesSectionAnchorText = SECTION_ANCHOR_RECENT_GAMES;
             ViewBag.PlayerSectionAnchorText = SECTION_ANCHOR_PLAYERS;
@@ -90,13 +96,25 @@ namespace UI.Controllers
             return View(MVC.GamingGroup.Views.Index, viewModel);
         }
 
-        internal virtual GamingGroupSummary GetGamingGroupSummary(int gamingGroupId)
+        [NonAction]
+        internal virtual GamingGroupSummary GetGamingGroupSummary(int gamingGroupId, IDateRangeFilter dateRangeFilter = null)
         {
-            GamingGroupSummary gamingGroupSummary = this.gamingGroupRetriever.GetGamingGroupDetails(
-                                                                                               gamingGroupId,
-                                                                                               MAX_NUMBER_OF_RECENT_GAMES);
+            if(dateRangeFilter == null)
+            {
+                dateRangeFilter = new BasicDateRangeFilter();
+            }else
+            {
+                dateRangeFilter.FromDate = dateRangeFilter.FromDate;
+                dateRangeFilter.ToDate = dateRangeFilter.ToDate;
+            }
 
-            return gamingGroupSummary;
+            var filter = new GamingGroupFilter(dateRangeFilter)
+            {
+                NumberOfRecentGamesToShow = MAX_NUMBER_OF_RECENT_GAMES,
+                GamingGroupId = gamingGroupId
+            };
+
+            return gamingGroupRetriever.GetGamingGroupDetails(filter);
         }
 
         // GET: /GamingGroup/Details
@@ -190,7 +208,7 @@ namespace UI.Controllers
             if (string.IsNullOrWhiteSpace(gamingGroupName))
             {
                 this.ModelState.AddModelError(string.Empty, "You must enter a Gaming Group name.");
-                return this.Index(currentUser);
+                return this.Index(new BasicDateRangeFilter(), currentUser);
             }
             this.gamingGroupSaver.CreateNewGamingGroup(gamingGroupName.Trim(), TransactionSource.WebApplication, currentUser);
 

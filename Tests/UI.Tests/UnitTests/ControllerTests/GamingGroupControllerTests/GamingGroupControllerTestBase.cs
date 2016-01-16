@@ -34,6 +34,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
         public virtual void SetUp()
         {
             autoMocker = new RhinoAutoMocker<GamingGroupController>();
+            autoMocker.PartialMockTheClassUnderTest();
            
             currentUser = new ApplicationUser()
             {

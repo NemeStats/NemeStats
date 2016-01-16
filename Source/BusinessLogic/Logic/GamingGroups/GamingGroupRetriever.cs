@@ -24,6 +24,7 @@ using BusinessLogic.Models.GamingGroups;
 using BusinessLogic.Models.User;
 using System.Collections.Generic;
 using System.Linq;
+using System;
 
 namespace BusinessLogic.Logic.GamingGroups
 {
@@ -53,9 +54,9 @@ namespace BusinessLogic.Logic.GamingGroups
             return gamingGroup;
         }
 
-        public GamingGroupSummary GetGamingGroupDetails(int gamingGroupId, int maxNumberOfGamesToRetrieve)
+        public GamingGroupSummary GetGamingGroupDetails(GamingGroupFilter filter)
         {
-            GamingGroup gamingGroup = dataContext.FindById<GamingGroup>(gamingGroupId);
+            GamingGroup gamingGroup = dataContext.FindById<GamingGroup>(filter.GamingGroupId);
             GamingGroupSummary summary = new GamingGroupSummary
             {
                 Id = gamingGroup.Id,
@@ -66,11 +67,11 @@ namespace BusinessLogic.Logic.GamingGroups
                 PublicGamingGroupWebsite = gamingGroup.PublicGamingGroupWebsite
             };
 
-            summary.PlayedGames = playedGameRetriever.GetRecentGames(maxNumberOfGamesToRetrieve, gamingGroupId);
+            summary.PlayedGames = playedGameRetriever.GetRecentGames(filter.NumberOfRecentGamesToShow, filter.GamingGroupId, filter.DateRangeFilter);
 
-            summary.Players = playerRetriever.GetAllPlayersWithNemesisInfo(gamingGroupId);
+            summary.Players = playerRetriever.GetAllPlayersWithNemesisInfo(filter.GamingGroupId, filter.DateRangeFilter);
 
-            summary.GameDefinitionSummaries = gameDefinitionRetriever.GetAllGameDefinitions(gamingGroupId);
+            summary.GameDefinitionSummaries = gameDefinitionRetriever.GetAllGameDefinitions(filter.GamingGroupId, filter.DateRangeFilter);
 
             summary.OwningUser = dataContext.GetQueryable<ApplicationUser>().First(user => user.Id == gamingGroup.OwningUserId);
 

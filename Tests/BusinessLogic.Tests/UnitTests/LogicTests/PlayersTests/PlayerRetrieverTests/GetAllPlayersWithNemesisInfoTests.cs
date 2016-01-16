@@ -16,8 +16,16 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 
+using BusinessLogic.DataAccess;
+using BusinessLogic.Logic.Players;
+using BusinessLogic.Models;
+using BusinessLogic.Models.GamingGroups;
 using BusinessLogic.Models.Players;
+using BusinessLogic.Models.Utility;
 using NUnit.Framework;
+using Rhino.Mocks;
+using StructureMap.AutoMocking;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -32,6 +40,119 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
             List<PlayerWithNemesis> players = autoMocker.ClassUnderTest.GetAllPlayersWithNemesisInfo(gamingGroupId);
 
             Assert.True(players.All(player => player.GamingGroupId == gamingGroupId));
+        }
+
+        [Test]
+        public void ItFiltersPlayedGamesThatHappenedBeforeTheFromDate()
+        {
+            var autoMocker = new RhinoAutoMocker<PlayerRetriever>();
+            int gamingGroupId = 1;
+            var fromDate = new DateTime(2015, 6, 1);
+            int expectedNemePointsAwardedForEachGame = 50;
+            var queryable = new List<Player>
+            {
+                new Player
+                {
+                    GamingGroupId = gamingGroupId,
+                    PlayerGameResults = new List<PlayerGameResult>
+                    {
+                        new PlayerGameResult
+                        {
+                            GameRank = 2,
+                            PlayedGame = new PlayedGame
+                            {
+                                DatePlayed = fromDate.AddDays(-1)
+                            },
+                            NemeStatsPointsAwarded = expectedNemePointsAwardedForEachGame
+                        },
+                        new PlayerGameResult
+                        {
+                            GameRank = 1,
+                            PlayedGame = new PlayedGame
+                            {
+                                DatePlayed = fromDate.AddDays(1)
+                            },
+                            NemeStatsPointsAwarded = expectedNemePointsAwardedForEachGame
+                        },
+                        new PlayerGameResult
+                        {
+                            GameRank = 1,
+                            PlayedGame = new PlayedGame
+                            {
+                                DatePlayed = fromDate.AddDays(-1)
+                            },
+                            NemeStatsPointsAwarded = expectedNemePointsAwardedForEachGame
+                        }
+                    },
+                    ChampionedGames = new List<Champion>()
+                }
+            }.AsQueryable();
+            autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<Player>())
+                .Return(queryable);
+            var dateRangeFilter = new BasicDateRangeFilter
+            {
+                FromDate = fromDate
+            };
+
+            var players = autoMocker.ClassUnderTest.GetAllPlayersWithNemesisInfo(gamingGroupId, dateRangeFilter);
+
+            Assert.That(players.Count, Is.EqualTo(1));
+            var player = players.First();
+            Assert.That(player.GamesLost, Is.EqualTo(0));
+            Assert.That(player.GamesWon, Is.EqualTo(1));
+            Assert.That(player.TotalPoints, Is.EqualTo(expectedNemePointsAwardedForEachGame));
+        }
+
+        [Test]
+        public void ItFiltersPlayedGamesThatHappenedAfterTheToDate()
+        {
+            var autoMocker = new RhinoAutoMocker<PlayerRetriever>();
+            int gamingGroupId = 1;
+            var toDate = new DateTime(2015, 1, 1);
+            int expectedNemePointsAwardedForEachGame = 50;
+            var queryable = new List<Player>
+            {
+                new Player
+                {
+                    GamingGroupId = gamingGroupId,
+                    PlayerGameResults = new List<PlayerGameResult>
+                    {
+                        new PlayerGameResult
+                        {
+                            GameRank = 2,
+                            PlayedGame = new PlayedGame
+                            {
+                                DatePlayed = toDate.AddDays(-1)
+                            },
+                            NemeStatsPointsAwarded = expectedNemePointsAwardedForEachGame
+                        },
+                        new PlayerGameResult
+                        {
+                            GameRank = 1,
+                            PlayedGame = new PlayedGame
+                            {
+                                DatePlayed = toDate.AddDays(1)
+                            },
+                            NemeStatsPointsAwarded = expectedNemePointsAwardedForEachGame
+                        }
+                    },
+                    ChampionedGames = new List<Champion>()
+                }
+            }.AsQueryable();
+            autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<Player>())
+                .Return(queryable);
+            var dateRangeFilter = new BasicDateRangeFilter
+            {
+                ToDate = toDate
+            };
+
+            var players = autoMocker.ClassUnderTest.GetAllPlayersWithNemesisInfo(gamingGroupId, dateRangeFilter);
+
+            Assert.That(players.Count, Is.EqualTo(1));
+            var player = players.First();
+            Assert.That(player.GamesLost, Is.EqualTo(1));
+            Assert.That(player.GamesWon, Is.EqualTo(0));
+            Assert.That(player.TotalPoints, Is.EqualTo(expectedNemePointsAwardedForEachGame));
         }
 
         [Test]

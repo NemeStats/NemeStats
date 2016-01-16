@@ -31,6 +31,8 @@ using BusinessLogic.Logic.GamingGroups;
 using UI.Attributes.Filters;
 using UI.Models;
 using UI.Models.User;
+using UI.Models.GamingGroup;
+using BusinessLogic.Models.Utility;
 
 namespace UI.Controllers
 {
@@ -355,7 +357,7 @@ namespace UI.Controllers
 
                 if (string.IsNullOrEmpty(returnUrl))
                 {
-                    return RedirectToAction(MVC.GamingGroup.Index(user));
+                    return RedirectToAction(MVC.GamingGroup.Index());
                 }
 
                 return RedirectToLocal(returnUrl);
