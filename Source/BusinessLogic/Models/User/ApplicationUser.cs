@@ -21,8 +21,9 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
+using System.Security.AccessControl;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -58,6 +59,9 @@ namespace BusinessLogic.Models.User
         public virtual IList<UserGamingGroup> UserGamingGroups { get; set; }
         [ForeignKey("ApplicationUserId")]
         public virtual IList<Player> Players { get; set; }
+        [ForeignKey("ApplicationUserId")]
+        public virtual BoardGameGeekUserDefinition BoardGameGeekUser { get; set; }
+        public virtual string BoardGameGeekUserDefinitionId { get; set; }
 
         public string AuthenticationToken { get; set; }
 

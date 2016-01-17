@@ -5,15 +5,13 @@
 <hr />
 @using (Html.BeginForm("ChangeEmailAddress", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
-    if (ViewData.ModelState["password"] == null)
-    {
-        @Html.ValidationSummary()
-    }
+
     @Html.AntiForgeryToken()
     <div class="form-group">
         @Html.LabelFor(m => m.EmailAddress, new { @class = "col-md-3 control-label" })
         <div class="col-md-9">
             @Html.TextBoxFor(m => m.EmailAddress, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m=>m.EmailAddress)
         </div>
     </div>
     <div class="form-group">

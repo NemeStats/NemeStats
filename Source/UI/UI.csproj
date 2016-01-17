@@ -378,6 +378,7 @@
     <Compile Include="Models\Players\PlayersSummaryViewModel.cs" />
     <Compile Include="Models\Players\PlayerSummaryViewModel.cs" />
     <Compile Include="Models\Players\TopPlayerViewModel.cs" />
+    <Compile Include="Models\User\BoardGameGeekIntegrationModel.cs" />
     <Compile Include="Models\User\UserGamingGroupsModel.cs" />
     <Compile Include="Models\User\UserViewModel.cs" />
     <Compile Include="Models\VotableFeatureViewModel.cs" />
@@ -506,6 +507,7 @@
     <Content Include="css\fontawesome.css.map" />
     <Content Include="css\nemestats.css.map" />
     <Content Include="css\theme.css.map" />
+    <Content Include="sass\nemestats\account.scss" />
     <None Include="sass\nemestats\gaminggroup.scss" />
     <Content Include="sass\nemestats\home.scss" />
     <Content Include="fonts\bootstrap\glyphicons-halflings-regular.woff2" />
@@ -752,6 +754,7 @@
     <Content Include="Views\Account\LoginForm.cshtml" />
     <Content Include="Views\Shared\Footer.cshtml" />
     <Content Include="Views\Player\CurrentPlayerQuickStats.cshtml" />
+    <Content Include="Views\Account\BoardGameGeekIntegration.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Code\" />

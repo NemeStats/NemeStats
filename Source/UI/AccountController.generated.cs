@@ -136,6 +136,12 @@ namespace UI.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult SetBoardGameGeekUser()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SetBoardGameGeekUser);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Threading.Tasks.Task<System.Web.Mvc.ActionResult> ConfirmEmail()
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ConfirmEmail);
@@ -182,6 +188,7 @@ namespace UI.Controllers
             public readonly string LogOff = "LogOff";
             public readonly string ExternalLoginFailure = "ExternalLoginFailure";
             public readonly string RemoveAccountList = "RemoveAccountList";
+            public readonly string SetBoardGameGeekUser = "SetBoardGameGeekUser";
             public readonly string ForgotPassword = "ForgotPassword";
             public readonly string ForgotPasswordConfirmation = "ForgotPasswordConfirmation";
             public readonly string ConfirmEmail = "ConfirmEmail";
@@ -211,6 +218,7 @@ namespace UI.Controllers
             public const string LogOff = "LogOff";
             public const string ExternalLoginFailure = "ExternalLoginFailure";
             public const string RemoveAccountList = "RemoveAccountList";
+            public const string SetBoardGameGeekUser = "SetBoardGameGeekUser";
             public const string ForgotPassword = "ForgotPassword";
             public const string ForgotPasswordConfirmation = "ForgotPasswordConfirmation";
             public const string ConfirmEmail = "ConfirmEmail";
@@ -328,6 +336,15 @@ namespace UI.Controllers
             public readonly string model = "model";
             public readonly string returnUrl = "returnUrl";
         }
+        static readonly ActionParamsClass_SetBoardGameGeekUser s_params_SetBoardGameGeekUser = new ActionParamsClass_SetBoardGameGeekUser();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_SetBoardGameGeekUser SetBoardGameGeekUserParams { get { return s_params_SetBoardGameGeekUser; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_SetBoardGameGeekUser
+        {
+            public readonly string model = "model";
+            public readonly string currentUser = "currentUser";
+        }
         static readonly ActionParamsClass_ForgotPassword s_params_ForgotPassword = new ActionParamsClass_ForgotPassword();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ActionParamsClass_ForgotPassword ForgotPasswordParams { get { return s_params_ForgotPassword; } }
@@ -370,6 +387,7 @@ namespace UI.Controllers
                 public readonly string _ExternalLoginsListPartial = "_ExternalLoginsListPartial";
                 public readonly string _RemoveAccountPartial = "_RemoveAccountPartial";
                 public readonly string _SetPasswordPartial = "_SetPasswordPartial";
+                public readonly string BoardGameGeekIntegration = "BoardGameGeekIntegration";
                 public readonly string ConfirmEmail = "ConfirmEmail";
                 public readonly string CreateGamingGroup = "CreateGamingGroup";
                 public readonly string ExternalLoginConfirmation = "ExternalLoginConfirmation";
@@ -393,6 +411,7 @@ namespace UI.Controllers
             public readonly string _ExternalLoginsListPartial = "~/Views/Account/_ExternalLoginsListPartial.cshtml";
             public readonly string _RemoveAccountPartial = "~/Views/Account/_RemoveAccountPartial.cshtml";
             public readonly string _SetPasswordPartial = "~/Views/Account/_SetPasswordPartial.cshtml";
+            public readonly string BoardGameGeekIntegration = "~/Views/Account/BoardGameGeekIntegration.cshtml";
             public readonly string ConfirmEmail = "~/Views/Account/ConfirmEmail.cshtml";
             public readonly string CreateGamingGroup = "~/Views/Account/CreateGamingGroup.cshtml";
             public readonly string ExternalLoginConfirmation = "~/Views/Account/ExternalLoginConfirmation.cshtml";
@@ -664,6 +683,19 @@ namespace UI.Controllers
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.RemoveAccountList);
             RemoveAccountListOverride(callInfo);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void SetBoardGameGeekUserOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, UI.Models.User.BoardGameGeekIntegrationModel model, BusinessLogic.Models.User.ApplicationUser currentUser);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult SetBoardGameGeekUser(UI.Models.User.BoardGameGeekIntegrationModel model, BusinessLogic.Models.User.ApplicationUser currentUser)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SetBoardGameGeekUser);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "model", model);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "currentUser", currentUser);
+            SetBoardGameGeekUserOverride(callInfo, model, currentUser);
             return callInfo;
         }
 

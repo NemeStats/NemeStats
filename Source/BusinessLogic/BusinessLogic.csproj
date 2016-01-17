@@ -174,8 +174,16 @@
     <Compile Include="Logic\TransactionSource.cs" />
     <Compile Include="Logic\Users\AuthTokenGenerator.cs" />
     <Compile Include="Logic\Users\AuthTokenValidator.cs" />
+    <Compile Include="Migrations\201601120806479_BoardGameGeekDefinitionTable.cs" />
+    <Compile Include="Migrations\201601120806479_BoardGameGeekDefinitionTable.Designer.cs">
+      <DependentUpon>201601120806479_BoardGameGeekDefinitionTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\User\BoardGameGeekUserInformation.cs" />
+    <Compile Include="Models\Validation\BaseValidatableRequestSaver.cs" />
+    <Compile Include="Logic\Users\BoardGameGeekUserSaver.cs" />
     <Compile Include="Logic\Users\IAuthTokenGenerator.cs" />
     <Compile Include="Logic\Users\IAuthTokenValidator.cs" />
+    <Compile Include="Logic\Users\IBoardGameGeekUserSaver.cs" />
     <Compile Include="Logic\Users\IUserRetriever.cs" />
     <Compile Include="Logic\Users\UserRetriever.cs" />
     <Compile Include="Logic\Utilities\WinPercentageCalculator.cs" />
@@ -311,6 +319,8 @@
       <DependentUpon>201512020347125_CurrentGamingGroupIdNotNullable.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\BoardGameGeekGameDefinition.cs" />
+    <Compile Include="Models\BoardGameGeekUserDefinition.cs" />
+    <Compile Include="Models\User\CreateBoardGameGeekUserDefinitionRequest.cs" />
     <Compile Include="Models\Games\CreateGameDefinitionRequest.cs" />
     <Compile Include="Models\Games\GameDefinitionDisplayInfo.cs" />
     <Compile Include="Models\Games\GameDefinitionName.cs" />
@@ -517,6 +527,7 @@
     <Compile Include="Models\Players\PlayerDetails.cs" />
     <Compile Include="Models\Players\WinLossStatistics.cs" />
     <Compile Include="Models\User\UserInformation.cs" />
+    <Compile Include="Models\Validation\ValidatableRequest.cs" />
     <Compile Include="Models\Utility\BasicDateRangeFilter.cs" />
     <Compile Include="Models\Utility\IDateRangeFilter.cs" />
     <Compile Include="Models\VotableFeature.cs" />
@@ -715,6 +726,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201512020347125_CurrentGamingGroupIdNotNullable.resx">
       <DependentUpon>201512020347125_CurrentGamingGroupIdNotNullable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601120806479_BoardGameGeekDefinitionTable.resx">
+      <DependentUpon>201601120806479_BoardGameGeekDefinitionTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

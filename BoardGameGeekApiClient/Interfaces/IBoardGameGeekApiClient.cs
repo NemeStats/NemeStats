@@ -12,5 +12,7 @@ namespace BoardGameGeekApiClient.Interfaces
     {
         IEnumerable<SearchBoardGameResult> SearchBoardGames(string query, bool exactMatch = false);
         GameDetails GetGameDetails(int gameId);
+
+        UserDetails GetUserDetails(string userName);
     }
 }

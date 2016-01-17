@@ -16,6 +16,7 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 using System.ComponentModel.DataAnnotations;
+using UI.Models.User;
 
 namespace UI.Models
 {
@@ -62,9 +63,16 @@ namespace UI.Models
 
     public class ManageAccountViewModel
     {
+        public ManageAccountViewModel()
+        {
+            BoardGameGeekIntegrationModel = new BoardGameGeekIntegrationModel();
+        }
+
         public PasswordViewModel PasswordViewModel { get; set; }
 
         public ChangeEmailViewModel ChangeEmailViewModel { get; set; }
+
+        public BoardGameGeekIntegrationModel BoardGameGeekIntegrationModel { get; set; }
     }
 
     public class LoginViewModel

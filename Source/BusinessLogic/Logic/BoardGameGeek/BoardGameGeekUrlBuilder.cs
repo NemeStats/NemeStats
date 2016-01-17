@@ -16,19 +16,29 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 using System;
-using System.Linq;
 
 namespace BusinessLogic.Logic.BoardGameGeek
 {
     public static class BoardGameGeekUriBuilder
     {
         public const string BOARD_GAME_GEEK_BOARD_GAME_BASE_URI = "http://boardgamegeek.com/boardgame/{0}";
+        public const string BOARD_GAME_GEEK_BOARD_USER_BASE_URI = "http://boardgamegeek.com/user/{0}";
 
         public static Uri BuildBoardGameGeekGameUri(int? boardGameGeekBoardGameObjectId)
         {
             if (boardGameGeekBoardGameObjectId.HasValue)
             {
                 return new Uri(string.Format(BOARD_GAME_GEEK_BOARD_GAME_BASE_URI, boardGameGeekBoardGameObjectId));
+            }
+
+            return null;
+        }
+
+        public static Uri BuildBoardGameGeekUserUri(string userName)
+        {
+            if (!string.IsNullOrEmpty(userName))
+            {
+                return new Uri(string.Format(BOARD_GAME_GEEK_BOARD_USER_BASE_URI, userName));
             }
 
             return null;

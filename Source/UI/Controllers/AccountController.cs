@@ -26,6 +26,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using BoardGameGeekApiClient.Interfaces;
+using BusinessLogic.Logic.BoardGameGeek;
 using BusinessLogic.Logic.GamingGroups;
 using UI.Attributes.Filters;
 using UI.Models;
@@ -38,12 +40,15 @@ namespace UI.Controllers
     [Authorize]
     public partial class AccountController : Controller
     {
-        private ApplicationUserManager userManager;
+        private readonly ApplicationUserManager userManager;
         private readonly IUserRegisterer userRegisterer;
         private readonly IFirstTimeAuthenticator firstTimeAuthenticator;
         private readonly IAuthenticationManager authenticationManager;
         private readonly IGamingGroupInviteConsumer gamingGroupInvitationConsumer;
         private readonly IGamingGroupRetriever _gamingGroupRetriever;
+        private readonly IBoardGameGeekUserSaver _boardGameGeekUserSaver;
+        private readonly IBoardGameGeekApiClient _boardGameGeekApiClient;
+        private readonly IUserRetriever _userRetriever;
 
         public AccountController(
             ApplicationUserManager userManager,
@@ -51,7 +56,10 @@ namespace UI.Controllers
             IFirstTimeAuthenticator firstTimeAuthenticator,
             IAuthenticationManager authenticationManager,
             IGamingGroupInviteConsumer gamingGroupInvitationConsumer,
-            IGamingGroupRetriever gamingGroupRetriever)
+            IGamingGroupRetriever gamingGroupRetriever, 
+            IBoardGameGeekUserSaver boardGameGeekUserSaver,
+            IBoardGameGeekApiClient boardGameGeekApiClient,
+            IUserRetriever userRetriever)
         {
             this.userManager = userManager;
             this.userRegisterer = userRegisterer;
@@ -59,6 +67,9 @@ namespace UI.Controllers
             this.authenticationManager = authenticationManager;
             this.gamingGroupInvitationConsumer = gamingGroupInvitationConsumer;
             _gamingGroupRetriever = gamingGroupRetriever;
+            _boardGameGeekUserSaver = boardGameGeekUserSaver;
+            _boardGameGeekApiClient = boardGameGeekApiClient;
+            _userRetriever = userRetriever;
         }
 
 
@@ -192,6 +203,7 @@ namespace UI.Controllers
         {
             ViewBag.StatusMessage =
                 message == ManageMessageId.SetPasswordSuccess ? "Your password has been set."
+                : message == ManageMessageId.SetBoardGameGeekUserSuccess ? "Your BGG account has been linked with NemeStats successfully."
                 : message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
                 : message == ManageMessageId.ChangeEmailSuccess ? "Your email has been changed."
                 : message == ManageMessageId.RemoveLoginSuccess ? "The external login was removed."
@@ -302,6 +314,19 @@ namespace UI.Controllers
             ChangeEmailViewModel emailViewModel = new ChangeEmailViewModel();
             emailViewModel.EmailAddress = user.Email;
             viewModel.ChangeEmailViewModel = emailViewModel;
+
+            var bggUser = _userRetriever.RetrieveUserInformation(currentUserId, user).BoardGameGeekUser;
+            if (bggUser != null)
+            {
+                viewModel.BoardGameGeekIntegrationModel = new BoardGameGeekIntegrationModel
+                {
+                    BoardGameGeekUserName = bggUser.Name,
+                    AvatarUrl = bggUser.Avatar,
+                    BoardGameGeekUserUrl = BoardGameGeekUriBuilder.BuildBoardGameGeekUserUri(bggUser.Name)
+                };
+            }
+
+
 
             return viewModel;
         }
@@ -446,6 +471,50 @@ namespace UI.Controllers
             return (ActionResult)PartialView("_RemoveAccountPartial", linkedAccounts);
         }
 
+        [HttpPost]
+        [UserContext(RequiresGamingGroup = false)]
+        public virtual ActionResult SetBoardGameGeekUser(BoardGameGeekIntegrationModel model, ApplicationUser currentUser)
+        {
+            var parentViewModel = GetBaseManageAccountViewModel();
+            parentViewModel.BoardGameGeekIntegrationModel = model;
+
+            if (ModelState.IsValid)
+            {
+                var bggResponse = _boardGameGeekApiClient.GetUserDetails(model.BoardGameGeekUserName);
+                if (bggResponse == null)
+                {
+                    ModelState.AddModelError("BoardGameGeekUserName", "The user name given doesn't exist on BoardGameGeek");
+                }
+                else
+                {
+                    try
+                    {
+                        var saverResult = _boardGameGeekUserSaver.CreateUserDefintion(
+                            new CreateBoardGameGeekUserDefinitionRequest()
+                            {
+                                Avatar = bggResponse.Avatar,
+                                Name = bggResponse.Name,
+                                BoardGameGeekUserId = bggResponse.UserId
+                            }, currentUser);
+
+                        if (saverResult != null)
+                        {
+                            return RedirectToAction(MVC.Account.ActionNames.Manage,
+                                new { Message = ManageMessageId.SetBoardGameGeekUserSuccess });
+                        }
+                    }
+                    catch (ArgumentException argumentException)
+                    {
+                        ModelState.AddModelError(nameof(model.BoardGameGeekUserName), argumentException.Message);
+                    }
+                }
+
+
+            }
+            SetViewBag();
+            return View(MVC.Account.Views.Manage, parentViewModel);
+        }
+
         #region Helpers
 
         // Used for XSRF protection when adding external logins
@@ -479,6 +548,7 @@ namespace UI.Controllers
         public enum ManageMessageId
         {
             SetPasswordSuccess,
+            SetBoardGameGeekUserSuccess,
             ChangePasswordSuccess,
             ChangeEmailSuccess,
             RemoveLoginSuccess,

@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using BusinessLogic.Models.User;
+﻿using BusinessLogic.Models.User;
 
 namespace BusinessLogic.Logic.Users
 {

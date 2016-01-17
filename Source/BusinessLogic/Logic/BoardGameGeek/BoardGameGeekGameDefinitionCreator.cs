@@ -32,14 +32,15 @@ namespace BusinessLogic.Logic.BoardGameGeek
             catch (EntityDoesNotExistException)
             {
                 //this is OK, just means we need to create a new one
-            }catch(Exception)
+            }
+            catch (Exception)
             {
                 throw;
             }
 
             var gameDetails = boardGameGeekApiClient.GetGameDetails(boardGameGeekGameDefinitionId);
 
-            if(gameDetails == null)
+            if (gameDetails == null)
             {
                 return null;
             }

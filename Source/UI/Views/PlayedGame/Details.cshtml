@@ -34,7 +34,7 @@
 			    <div class="col-sm-9">
                     @if (Model.BoardGameGeekUri != null)
                     {
-                        <a href="@Model.BoardGameGeekUri.AbsoluteUri">
+                        <a href="@Model.BoardGameGeekUri.AbsoluteUri" target="_blank;">
                             @if (!string.IsNullOrEmpty(Model.ThumbnailImageUrl))
                             {
                                 <img src="@Model.ThumbnailImageUrl" alt="View on BoardGameGeek.com" title="View on BoardGameGeek.com" />

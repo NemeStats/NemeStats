@@ -1,0 +1,772 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{B1184B6A-9C68-48B6-814C-0667B69F89D2}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>BusinessLogic</RootNamespace>
+    <AssemblyName>BusinessLogic</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Jake|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Jake\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AutoMapper, Version=4.1.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\AutoMapper.4.1.1\lib\net45\AutoMapper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EPPlus, Version=4.0.4.0, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EPPlus.4.0.4\lib\net20\EPPlus.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.1\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Owin, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.Identity.Owin.2.2.1\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Microsoft.Owin.3.0.1\lib\net45\Microsoft.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Microsoft.Owin.Security.3.0.1\lib\net45\Microsoft.Owin.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Cookies, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Microsoft.Owin.Security.Cookies.3.0.1\lib\net45\Microsoft.Owin.Security.Cookies.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.OAuth, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Microsoft.Owin.Security.OAuth.3.0.1\lib\net45\Microsoft.Owin.Security.OAuth.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="SendGrid, Version=6.3.0.0, Culture=neutral, PublicKeyToken=4f047e93159395ca, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Sendgrid.6.3.0\lib\SendGrid.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SendGrid.SmtpApi, Version=1.3.1.0, Culture=neutral, PublicKeyToken=2ae73662c35d80e4, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\SendGrid.SmtpApi.1.3.1\lib\net40\SendGrid.SmtpApi.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SendGridMail, Version=6.3.0.0, Culture=neutral, PublicKeyToken=4f047e93159395ca, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Sendgrid.6.3.0\lib\SendGridMail.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Configuration.Abstractions, Version=2.0.2.15, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\UniversalAnalyticsMeasurementProtocolWrapper.1.3.1\lib\net40\System.Configuration.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="UniversalAnalyticsHttpWrapper, Version=1.2.0.29307, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\UniversalAnalyticsMeasurementProtocolWrapper.1.3.1\lib\net40\UniversalAnalyticsHttpWrapper.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DataAccess\NemeStatsDataContext.cs" />
+    <Compile Include="DataAccess\IDataContext.cs" />
+    <Compile Include="DataAccess\GamingGroups\EntityFrameworkGamingGroupAccessGranter.cs" />
+    <Compile Include="DataAccess\GamingGroups\IGamingGroupAccessGranter.cs" />
+    <Compile Include="DataAccess\NemeStatsDbContext.cs" />
+    <Compile Include="DataAccess\NemeStatsInitializer.cs" />
+    <Compile Include="DataAccess\Repositories\ChampionRepository.cs" />
+    <Compile Include="DataAccess\Repositories\IChampionRepository.cs" />
+    <Compile Include="DataAccess\SecuredEntityWithTechnicalKey.cs" />
+    <Compile Include="DataAccess\Security\ISecuredEntityValidator.cs" />
+    <Compile Include="DataAccess\Security\SecuredEntityValidatorFactory.cs" />
+    <Compile Include="DataAccess\Security\SecuredEntityValidator.cs" />
+    <Compile Include="DataAccess\ISingleColumnTechnicalKey.cs" />
+    <Compile Include="DataAccess\Repositories\IPlayerRepository.cs" />
+    <Compile Include="DataAccess\Repositories\EntityFrameworkPlayerRepository.cs" />
+    <Compile Include="EventTracking\EventActionEnum.cs" />
+    <Compile Include="EventTracking\EventCategoryEnum.cs" />
+    <Compile Include="EventTracking\INemeStatsEventTracker.cs" />
+    <Compile Include="EventTracking\UniversalAnalyticsNemeStatsEventTracker.cs" />
+    <Compile Include="Exceptions\ApiAuthenticationException.cs" />
+    <Compile Include="Exceptions\DuplicateKeyException.cs" />
+    <Compile Include="Exceptions\EntityDoesNotExistException.cs" />
+    <Compile Include="Exceptions\ApiFriendlyException.cs" />
+    <Compile Include="Exceptions\InvalidDateFormatException.cs" />
+    <Compile Include="Exceptions\PlayerAlreadyExistsException.cs" />
+    <Compile Include="Exceptions\UnauthorizedEntityAccessException.cs" />
+    <Compile Include="Export\ExcelGenerator.cs" />
+    <Compile Include="Export\IExcelGenerator.cs" />
+    <Compile Include="Logic\BoardGameGeek\BoardGameGeekGameDefinitionCreator.cs" />
+    <Compile Include="Logic\BoardGameGeek\BoardGameGeekUrlBuilder.cs" />
+    <Compile Include="Logic\BoardGameGeek\IBoardGameGeekGameDefinitionCreator.cs" />
+    <Compile Include="Logic\Champions\ChampionRecalculator.cs" />
+    <Compile Include="Logic\Email\EmailService.cs" />
+    <Compile Include="Logic\OneTimeJobs\BoardGameGeekThumbnailAttacher.cs" />
+    <Compile Include="Logic\GameDefinitions\GameDefinitionUpdateRequest.cs" />
+    <Compile Include="Logic\GamingGroups\GamingGroupInfoForUser.cs" />
+    <Compile Include="Logic\Points\PointsCalculator.cs" />
+    <Compile Include="Logic\Points\GlobalPointsRecalculator.cs" />
+    <Compile Include="Logic\Security\MachineKeyDataProtector.cs" />
+    <Compile Include="Logic\TransactionSource.cs" />
+    <Compile Include="Logic\Users\AuthTokenGenerator.cs" />
+    <Compile Include="Logic\Users\AuthTokenValidator.cs" />
+    <Compile Include="Migrations\201601120806479_BoardGameGeekDefinitionTable.cs" />
+    <Compile Include="Migrations\201601120806479_BoardGameGeekDefinitionTable.Designer.cs">
+      <DependentUpon>201601120806479_BoardGameGeekDefinitionTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\User\BoardGameGeekUserInformation.cs" />
+    <Compile Include="Models\Validation\BaseValidatableRequestSaver.cs" />
+    <Compile Include="Logic\Users\BoardGameGeekUserSaver.cs" />
+    <Compile Include="Logic\Users\IAuthTokenGenerator.cs" />
+    <Compile Include="Logic\Users\IAuthTokenValidator.cs" />
+    <Compile Include="Logic\Users\IBoardGameGeekUserSaver.cs" />
+    <Compile Include="Logic\Users\IUserRetriever.cs" />
+    <Compile Include="Logic\Users\UserRetriever.cs" />
+    <Compile Include="Logic\Utilities\WinPercentageCalculator.cs" />
+    <Compile Include="Logic\VotableFeatures\IVotableFeatureRetriever.cs" />
+    <Compile Include="Logic\OneTimeJobs\BoardGameGeekDataLinker.cs" />
+    <Compile Include="Logic\Champions\IChampionRecalculator.cs" />
+    <Compile Include="Logic\Nemeses\INemesisHistoryRetriever.cs" />
+    <Compile Include="Logic\Nemeses\INemesisRecalculator.cs" />
+    <Compile Include="Logic\Nemeses\NemesisChange.cs" />
+    <Compile Include="Logic\Nemeses\NemesisHistoryRetriever.cs" />
+    <Compile Include="Logic\Nemeses\NemesisRecalculator.cs" />
+    <Compile Include="Logic\GameDefinitions\IGameDefinitionSaver.cs" />
+    <Compile Include="Logic\GameDefinitions\GameDefinitionSaver.cs" />
+    <Compile Include="Logic\GameDefinitions\IGameDefinitionRetriever.cs" />
+    <Compile Include="Logic\GameDefinitions\GameDefinitionRetriever.cs" />
+    <Compile Include="Logic\GamingGroups\IGamingGroupSaver.cs" />
+    <Compile Include="Logic\GamingGroups\GamingGroupSaver.cs" />
+    <Compile Include="Logic\GamingGroups\IGamingGroupRetriever.cs" />
+    <Compile Include="Logic\GamingGroups\GamingGroupRetriever.cs" />
+    <Compile Include="Logic\GamingGroups\IPendingGamingGroupInvitationRetriever.cs" />
+    <Compile Include="Logic\GamingGroups\PendingGamingGroupInvitationRetriever.cs" />
+    <Compile Include="Logic\PlayedGames\IPlayedGameDeleter.cs" />
+    <Compile Include="Logic\PlayedGames\IPlayedGameCreator.cs" />
+    <Compile Include="Logic\PlayedGames\PlayedGameCreator.cs" />
+    <Compile Include="Logic\PlayedGames\IPlayedGameRetriever.cs" />
+    <Compile Include="Logic\PlayedGames\PlayedGameDeleter.cs" />
+    <Compile Include="Logic\PlayedGames\PlayedGameRetriever.cs" />
+    <Compile Include="Logic\Players\IPlayerInviter.cs" />
+    <Compile Include="Logic\Players\IPlayerSaver.cs" />
+    <Compile Include="Logic\Users\GamingGroupContextSwitcher.cs" />
+    <Compile Include="Logic\Users\IGamingGroupContextSwitcher.cs" />
+    <Compile Include="Logic\VotableFeatures\IVotableFeatureVoter.cs" />
+    <Compile Include="Logic\VotableFeatures\VotableFeatureRetriever.cs" />
+    <Compile Include="Logic\VotableFeatures\VotableFeatureVoter.cs" />
+    <Compile Include="Migrations\201411160430223_AddSupportForPlayerInvitationsOnGamingGroup.cs" />
+    <Compile Include="Migrations\201411160430223_AddSupportForPlayerInvitationsOnGamingGroup.Designer.cs">
+      <DependentUpon>201411160430223_AddSupportForPlayerInvitationsOnGamingGroup.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201411170404303_UniqueConstraintOnUserGamingGroup.cs" />
+    <Compile Include="Migrations\201411170404303_UniqueConstraintOnUserGamingGroup.Designer.cs">
+      <DependentUpon>201411170404303_UniqueConstraintOnUserGamingGroup.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201411180233114_CreateChampionTable.cs" />
+    <Compile Include="Migrations\201411180233114_CreateChampionTable.Designer.cs">
+      <DependentUpon>201411180233114_CreateChampionTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201411200237340_AddGamesPlayedAndGamesWonToChampionTable.cs" />
+    <Compile Include="Migrations\201411200237340_AddGamesPlayedAndGamesWonToChampionTable.Designer.cs">
+      <DependentUpon>201411200237340_AddGamesPlayedAndGamesWonToChampionTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201411200330450_ResetInitialChampions.cs" />
+    <Compile Include="Migrations\201411200330450_ResetInitialChampions.Designer.cs">
+      <DependentUpon>201411200330450_ResetInitialChampions.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201412021233106_AddNotesAndCreatedByApplicationUserIdToPlayedGame.cs" />
+    <Compile Include="Migrations\201412021233106_AddNotesAndCreatedByApplicationUserIdToPlayedGame.Designer.cs">
+      <DependentUpon>201412021233106_AddNotesAndCreatedByApplicationUserIdToPlayedGame.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201412050347345_RecalculateChampions.cs" />
+    <Compile Include="Migrations\201412050347345_RecalculateChampions.Designer.cs">
+      <DependentUpon>201412050347345_RecalculateChampions.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201412060313473_RecalculateChampions_Again.cs" />
+    <Compile Include="Migrations\201412060313473_RecalculateChampions_Again.Designer.cs">
+      <DependentUpon>201412060313473_RecalculateChampions_Again.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201412102038100_RecalculateChampionsYetAgain.cs" />
+    <Compile Include="Migrations\201412102038100_RecalculateChampionsYetAgain.Designer.cs">
+      <DependentUpon>201412102038100_RecalculateChampionsYetAgain.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201412260631204_GameDefinitionNameIsRequired.cs" />
+    <Compile Include="Migrations\201412260631204_GameDefinitionNameIsRequired.Designer.cs">
+      <DependentUpon>201412260631204_GameDefinitionNameIsRequired.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201502012058510_AddUniqueConstraintOnPlayerIdAndPlayedGameIdInPlayerGameResult.cs" />
+    <Compile Include="Migrations\201502012058510_AddUniqueConstraintOnPlayerIdAndPlayedGameIdInPlayerGameResult.Designer.cs">
+      <DependentUpon>201502012058510_AddUniqueConstraintOnPlayerIdAndPlayedGameIdInPlayerGameResult.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201502181205491_AddVotableFeature.cs" />
+    <Compile Include="Migrations\201502181205491_AddVotableFeature.Designer.cs">
+      <DependentUpon>201502181205491_AddVotableFeature.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201503241204333_AddAuthTokenToAspNetUsers.cs" />
+    <Compile Include="Migrations\201503241204333_AddAuthTokenToAspNetUsers.Designer.cs">
+      <DependentUpon>201503241204333_AddAuthTokenToAspNetUsers.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201504160224098_AddPointsScoredToPlayerGameResult.cs" />
+    <Compile Include="Migrations\201504160224098_AddPointsScoredToPlayerGameResult.Designer.cs">
+      <DependentUpon>201504160224098_AddPointsScoredToPlayerGameResult.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201504201657131_ChangeGordonPointsToNemeStatsPoints.cs" />
+    <Compile Include="Migrations\201504201657131_ChangeGordonPointsToNemeStatsPoints.Designer.cs">
+      <DependentUpon>201504201657131_ChangeGordonPointsToNemeStatsPoints.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201504201705047_FixedPointsScoredMisspelling.cs" />
+    <Compile Include="Migrations\201504201705047_FixedPointsScoredMisspelling.Designer.cs">
+      <DependentUpon>201504201705047_FixedPointsScoredMisspelling.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201505102058077_MakeNameAUniqueConstraintOnGameDefinitionWithinGamingGroup.cs" />
+    <Compile Include="Migrations\201505102058077_MakeNameAUniqueConstraintOnGameDefinitionWithinGamingGroup.Designer.cs">
+      <DependentUpon>201505102058077_MakeNameAUniqueConstraintOnGameDefinitionWithinGamingGroup.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201505221156047_AddPublicFieldsToGamingGroup.cs" />
+    <Compile Include="Migrations\201505221156047_AddPublicFieldsToGamingGroup.Designer.cs">
+      <DependentUpon>201505221156047_AddPublicFieldsToGamingGroup.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201510131345507_AddThumbnailImageUrlToGameDefinition.cs" />
+    <Compile Include="Migrations\201510131345507_AddThumbnailImageUrlToGameDefinition.Designer.cs">
+      <DependentUpon>201510131345507_AddThumbnailImageUrlToGameDefinition.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201510260223418_AddBoardGameGeekGameDefinition.cs" />
+    <Compile Include="Migrations\201510260223418_AddBoardGameGeekGameDefinition.Designer.cs">
+      <DependentUpon>201510260223418_AddBoardGameGeekGameDefinition.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201510271123195_WAT.cs" />
+    <Compile Include="Migrations\201510271123195_WAT.Designer.cs">
+      <DependentUpon>201510271123195_WAT.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201511010229030_WAT2.cs" />
+    <Compile Include="Migrations\201511010229030_WAT2.Designer.cs">
+      <DependentUpon>201511010229030_WAT2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201511030244129_RemoveThumbnailFromGameDefinition.cs" />
+    <Compile Include="Migrations\201511030244129_RemoveThumbnailFromGameDefinition.Designer.cs">
+      <DependentUpon>201511030244129_RemoveThumbnailFromGameDefinition.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201511051243356_BoardGameGeekGameDefinitionIdentityInsert.cs" />
+    <Compile Include="Migrations\201511051243356_BoardGameGeekGameDefinitionIdentityInsert.Designer.cs">
+      <DependentUpon>201511051243356_BoardGameGeekGameDefinitionIdentityInsert.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201512020347125_CurrentGamingGroupIdNotNullable.cs" />
+    <Compile Include="Migrations\201512020347125_CurrentGamingGroupIdNotNullable.Designer.cs">
+      <DependentUpon>201512020347125_CurrentGamingGroupIdNotNullable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\BoardGameGeekGameDefinition.cs" />
+    <Compile Include="Models\BoardGameGeekUserDefinition.cs" />
+    <Compile Include="Models\User\CreateBoardGameGeekUserDefinitionRequest.cs" />
+    <Compile Include="Models\Games\CreateGameDefinitionRequest.cs" />
+    <Compile Include="Models\Games\GameDefinitionDisplayInfo.cs" />
+    <Compile Include="Models\Games\GameDefinitionName.cs" />
+    <Compile Include="Models\GamingGroups\GamingGroupEditRequest.cs" />
+    <Compile Include="Models\GamingGroups\GamingGroupFilter.cs" />
+    <Compile Include="Models\GamingGroups\GamingGroupListItemModel.cs" />
+    <Compile Include="Models\GamingGroups\NewlyCreatedGamingGroupResult.cs" />
+    <Compile Include="Models\GamingGroups\TopGamingGroupSummary.cs" />
+    <Compile Include="Models\PlayedGames\IWinner.cs" />
+    <Compile Include="Models\PlayedGames\PlayedGameExportModel.cs" />
+    <Compile Include="Models\PlayedGames\PlayedGameFilter.cs" />
+    <Compile Include="Models\PlayedGames\PlayedGameQuickStats.cs" />
+    <Compile Include="Models\PlayedGames\PlayedGameSearchResult.cs" />
+    <Compile Include="Models\PlayedGames\PlayerResult.cs" />
+    <Compile Include="Models\PlayedGames\WinnerTypesEnum.cs" />
+    <Compile Include="Models\Players\GameDefinitionTotal.cs" />
+    <Compile Include="Models\Players\GameDefinitionTotals.cs" />
+    <Compile Include="Models\Players\PlayerInfoForUser.cs" />
+    <Compile Include="Models\Players\PlayerInvitation.cs" />
+    <Compile Include="Logic\Players\PlayerInviter.cs" />
+    <Compile Include="Logic\Players\PlayerSaver.cs" />
+    <Compile Include="Logic\Players\IPlayerRetriever.cs" />
+    <Compile Include="Logic\Players\PlayerRetriever.cs" />
+    <Compile Include="Logic\Players\IPlayerSummaryBuilder.cs" />
+    <Compile Include="Logic\Players\PlayerSummaryBuilder.cs" />
+    <Compile Include="Logic\Sms\SmsService.cs" />
+    <Compile Include="Logic\Users\ApplicationRoleManager.cs" />
+    <Compile Include="Logic\Users\ApplicationSignInManager.cs" />
+    <Compile Include="Logic\Users\ApplicationUserManager.cs" />
+    <Compile Include="Logic\Users\FirstTimeAuthenticator.cs" />
+    <Compile Include="Logic\Users\IFirstTimeAuthenticator.cs" />
+    <Compile Include="Logic\Users\IGamingGroupInviteConsumer.cs" />
+    <Compile Include="Logic\Users\GamingGroupInviteConsumer.cs" />
+    <Compile Include="Logic\Users\IUserRegisterer.cs" />
+    <Compile Include="Logic\Users\UserRegisterer.cs" />
+    <Compile Include="Migrations\201407011153551_GamingGroupsAndAspNetAuth.cs" />
+    <Compile Include="Migrations\201407011153551_GamingGroupsAndAspNetAuth.Designer.cs">
+      <DependentUpon>201407011153551_GamingGroupsAndAspNetAuth.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201407011201381_OwningUserToGamingGroup.cs" />
+    <Compile Include="Migrations\201407011201381_OwningUserToGamingGroup.Designer.cs">
+      <DependentUpon>201407011201381_OwningUserToGamingGroup.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201407012130179_AddUserGamingGroupsToApplicationUser.cs" />
+    <Compile Include="Migrations\201407012130179_AddUserGamingGroupsToApplicationUser.Designer.cs">
+      <DependentUpon>201407012130179_AddUserGamingGroupsToApplicationUser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201407032126067_AddCurrentGamingGroupIdToUser.cs" />
+    <Compile Include="Migrations\201407032126067_AddCurrentGamingGroupIdToUser.Designer.cs">
+      <DependentUpon>201407032126067_AddCurrentGamingGroupIdToUser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201407050348013_CurrentGamingGroupIdIsNotNullable.cs" />
+    <Compile Include="Migrations\201407050348013_CurrentGamingGroupIdIsNotNullable.Designer.cs">
+      <DependentUpon>201407050348013_CurrentGamingGroupIdIsNotNullable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\EntityWithTechnicalKey.cs" />
+    <Compile Include="Migrations\201407140231193_MakeCurrentGamingGroupNullableOnApplicationUser.cs" />
+    <Compile Include="Migrations\201407140231193_MakeCurrentGamingGroupNullableOnApplicationUser.Designer.cs">
+      <DependentUpon>201407140231193_MakeCurrentGamingGroupNullableOnApplicationUser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201407141118219_SetOwningUserOnExistingGamingGroup.cs" />
+    <Compile Include="Migrations\201407141118219_SetOwningUserOnExistingGamingGroup.Designer.cs">
+      <DependentUpon>201407141118219_SetOwningUserOnExistingGamingGroup.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201407151152072_AddGamingGroupInvitations.cs" />
+    <Compile Include="Migrations\201407151152072_AddGamingGroupInvitations.Designer.cs">
+      <DependentUpon>201407151152072_AddGamingGroupInvitations.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201407152140386_MakeGamingGroupInvitationGuidIdentity.cs" />
+    <Compile Include="Migrations\201407152140386_MakeGamingGroupInvitationGuidIdentity.Designer.cs">
+      <DependentUpon>201407152140386_MakeGamingGroupInvitationGuidIdentity.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201407160145234_AddedRegistrationInfoToGamingGroupInvitation.cs" />
+    <Compile Include="Migrations\201407160145234_AddedRegistrationInfoToGamingGroupInvitation.Designer.cs">
+      <DependentUpon>201407160145234_AddedRegistrationInfoToGamingGroupInvitation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201407182106234_AddUniqueIndexToPlayerNameAndGamingGroupIp.cs" />
+    <Compile Include="Migrations\201407182106234_AddUniqueIndexToPlayerNameAndGamingGroupIp.Designer.cs">
+      <DependentUpon>201407182106234_AddUniqueIndexToPlayerNameAndGamingGroupIp.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201407270144172_DropUniqueIndexOnPlayerNameAlone.cs" />
+    <Compile Include="Migrations\201407270144172_DropUniqueIndexOnPlayerNameAlone.Designer.cs">
+      <DependentUpon>201407270144172_DropUniqueIndexOnPlayerNameAlone.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201408280114204_AddDateCreatedToApplicationUser.cs" />
+    <Compile Include="Migrations\201408280114204_AddDateCreatedToApplicationUser.Designer.cs">
+      <DependentUpon>201408280114204_AddDateCreatedToApplicationUser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201408280159232_AddDateCreatedToGamingGroup.cs" />
+    <Compile Include="Migrations\201408280159232_AddDateCreatedToGamingGroup.Designer.cs">
+      <DependentUpon>201408280159232_AddDateCreatedToGamingGroup.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201409140144412_AddActiveToGameDefinition.cs" />
+    <Compile Include="Migrations\201409140144412_AddActiveToGameDefinition.Designer.cs">
+      <DependentUpon>201409140144412_AddActiveToGameDefinition.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201409142235424_PlayerNameIsNoLongerNullable.cs" />
+    <Compile Include="Migrations\201409142235424_PlayerNameIsNoLongerNullable.Designer.cs">
+      <DependentUpon>201409142235424_PlayerNameIsNoLongerNullable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201409212154322_CreateNemesisTable.cs" />
+    <Compile Include="Migrations\201409212154322_CreateNemesisTable.Designer.cs">
+      <DependentUpon>201409212154322_CreateNemesisTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201409221652230_SetAllInitialNemeses.cs" />
+    <Compile Include="Migrations\201409221652230_SetAllInitialNemeses.Designer.cs">
+      <DependentUpon>201409221652230_SetAllInitialNemeses.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201410191609475_PreviousNemesisOnPlayer.cs" />
+    <Compile Include="Migrations\201410191609475_PreviousNemesisOnPlayer.Designer.cs">
+      <DependentUpon>201410191609475_PreviousNemesisOnPlayer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201410240249244_ConfirmAllEmails.cs" />
+    <Compile Include="Migrations\201410240249244_ConfirmAllEmails.Designer.cs">
+      <DependentUpon>201410240249244_ConfirmAllEmails.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201411030319165_AddBoardGameGeekObjectId.cs" />
+    <Compile Include="Migrations\201411030319165_AddBoardGameGeekObjectId.Designer.cs">
+      <DependentUpon>201411030319165_AddBoardGameGeekObjectId.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201411050330597_FixedTypo.cs" />
+    <Compile Include="Migrations\201411050330597_FixedTypo.Designer.cs">
+      <DependentUpon>201411050330597_FixedTypo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201411050405195_LinkExistingGameDefinitionsToBoardGameGeek.cs" />
+    <Compile Include="Migrations\201411050405195_LinkExistingGameDefinitionsToBoardGameGeek.Designer.cs">
+      <DependentUpon>201411050405195_LinkExistingGameDefinitionsToBoardGameGeek.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201411090249182_AddDateCreated.cs" />
+    <Compile Include="Migrations\201411090249182_AddDateCreated.Designer.cs">
+      <DependentUpon>201411090249182_AddDateCreated.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201411150212370_AddPlayerUserRelationship.cs" />
+    <Compile Include="Migrations\201411150212370_AddPlayerUserRelationship.Designer.cs">
+      <DependentUpon>201411150212370_AddPlayerUserRelationship.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Champion.cs" />
+    <Compile Include="Models\Champions\ChampionData.cs" />
+    <Compile Include="Models\Champions\NullChampionData.cs" />
+    <Compile Include="Models\Games\ChampionStatistics.cs" />
+    <Compile Include="Models\Games\GameDefinitionSummary.cs" />
+    <Compile Include="Models\Games\PublicGameSummary.cs" />
+    <Compile Include="Models\GamingGroup.cs" />
+    <Compile Include="Models\GamingGroupInvitation.cs" />
+    <Compile Include="Models\GamingGroups\GamingGroupSummary.cs" />
+    <Compile Include="Models\Nemeses\NemesisData.cs" />
+    <Compile Include="Models\Nemeses\NemesisHistoryData.cs" />
+    <Compile Include="Models\Nemeses\NullNemesisData.cs" />
+    <Compile Include="Models\Nemesis.cs" />
+    <Compile Include="Models\NullChampion.cs" />
+    <Compile Include="Models\NullNemesis.cs" />
+    <Compile Include="Models\Players\PlayerGameSummary.cs" />
+    <Compile Include="Models\Players\PlayerQuickStats.cs" />
+    <Compile Include="Models\Players\PlayerVersusPlayerStatistics.cs" />
+    <Compile Include="Models\Players\PlayerWinRecord.cs" />
+    <Compile Include="Models\Players\PlayerWithNemesis.cs" />
+    <Compile Include="Models\Players\TopPlayer.cs" />
+    <Compile Include="Models\Players\UpdatePlayerRequest.cs" />
+    <Compile Include="Models\User\AddUserToGamingGroupResult.cs" />
+    <Compile Include="Models\User\AnonymousApplicationUser.cs" />
+    <Compile Include="Models\User\ApplicationUser.cs" />
+    <Compile Include="Models\User\NewlyRegisteredUser.cs" />
+    <Compile Include="Models\User\NewUser.cs" />
+    <Compile Include="Models\User\RegisterNewUserResult.cs" />
+    <Compile Include="Models\User\UserGamingGroup.cs" />
+    <Compile Include="Models\Players\PlayerStatistics.cs" />
+    <Compile Include="Migrations\201405220234035_Initial.cs" />
+    <Compile Include="Migrations\201405220234035_Initial.Designer.cs">
+      <DependentUpon>201405220234035_Initial.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201405240208102_Version2.cs" />
+    <Compile Include="Migrations\201405240208102_Version2.Designer.cs">
+      <DependentUpon>201405240208102_Version2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201405250232587_LowerCharacterLimitOfPlayerNameAndAddUniqueIndex.cs" />
+    <Compile Include="Migrations\201405250232587_LowerCharacterLimitOfPlayerNameAndAddUniqueIndex.Designer.cs">
+      <DependentUpon>201405250232587_LowerCharacterLimitOfPlayerNameAndAddUniqueIndex.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201405250234593_LowerCharacterLimitOfPlayerNameTo255.cs" />
+    <Compile Include="Migrations\201405250234593_LowerCharacterLimitOfPlayerNameTo255.Designer.cs">
+      <DependentUpon>201405250234593_LowerCharacterLimitOfPlayerNameTo255.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201406040157590_AddDateCreatedToPlayedGame.cs" />
+    <Compile Include="Migrations\201406040157590_AddDateCreatedToPlayedGame.Designer.cs">
+      <DependentUpon>201406040157590_AddDateCreatedToPlayedGame.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201406040204575_FixPreviousAndAddDateCreatedToPlayedGame.cs" />
+    <Compile Include="Migrations\201406040204575_FixPreviousAndAddDateCreatedToPlayedGame.Designer.cs">
+      <DependentUpon>201406040204575_FixPreviousAndAddDateCreatedToPlayedGame.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201406140253127_IntroducingGordonPoints.cs" />
+    <Compile Include="Migrations\201406140253127_IntroducingGordonPoints.Designer.cs">
+      <DependentUpon>201406140253127_IntroducingGordonPoints.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\GameDefinition.cs" />
+    <Compile Include="Models\Games\NewlyCompletedGame.cs" />
+    <Compile Include="Models\Games\Validation\PlayerRankValidationAttribute.cs" />
+    <Compile Include="Models\Games\Validation\PlayerRankValidator.cs" />
+    <Compile Include="Models\PlayedGame.cs" />
+    <Compile Include="Models\Player.cs" />
+    <Compile Include="Models\PlayerGameResult.cs" />
+    <Compile Include="Models\Games\PlayerRank.cs" />
+    <Compile Include="Models\Players\PlayerDetails.cs" />
+    <Compile Include="Models\Players\WinLossStatistics.cs" />
+    <Compile Include="Models\User\UserInformation.cs" />
+<<<<<<< HEAD
+    <Compile Include="Models\Validation\ValidatableRequest.cs" />
+=======
+    <Compile Include="Models\Utility\BasicDateRangeFilter.cs" />
+    <Compile Include="Models\Utility\IDateRangeFilter.cs" />
+>>>>>>> refs/remotes/origin/master
+    <Compile Include="Models\VotableFeature.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Providers\MachineKeyProtectionProvider.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="App.Debug.config">
+      <DependentUpon>App.config</DependentUpon>
+    </None>
+    <None Include="App.Jake.config">
+      <DependentUpon>App.config</DependentUpon>
+    </None>
+    <None Include="App.Release.config">
+      <DependentUpon>App.config</DependentUpon>
+    </None>
+    <None Include="App.Tosho.config">
+      <DependentUpon>App.config</DependentUpon>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201405220234035_Initial.resx">
+      <DependentUpon>201405220234035_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201405240208102_Version2.resx">
+      <DependentUpon>201405240208102_Version2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201405250232587_LowerCharacterLimitOfPlayerNameAndAddUniqueIndex.resx">
+      <DependentUpon>201405250232587_LowerCharacterLimitOfPlayerNameAndAddUniqueIndex.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201405250234593_LowerCharacterLimitOfPlayerNameTo255.resx">
+      <DependentUpon>201405250234593_LowerCharacterLimitOfPlayerNameTo255.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201406040157590_AddDateCreatedToPlayedGame.resx">
+      <DependentUpon>201406040157590_AddDateCreatedToPlayedGame.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201406040204575_FixPreviousAndAddDateCreatedToPlayedGame.resx">
+      <DependentUpon>201406040204575_FixPreviousAndAddDateCreatedToPlayedGame.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201406140253127_IntroducingGordonPoints.resx">
+      <DependentUpon>201406140253127_IntroducingGordonPoints.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201407011153551_GamingGroupsAndAspNetAuth.resx">
+      <DependentUpon>201407011153551_GamingGroupsAndAspNetAuth.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201407011201381_OwningUserToGamingGroup.resx">
+      <DependentUpon>201407011201381_OwningUserToGamingGroup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201407012130179_AddUserGamingGroupsToApplicationUser.resx">
+      <DependentUpon>201407012130179_AddUserGamingGroupsToApplicationUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201407032126067_AddCurrentGamingGroupIdToUser.resx">
+      <DependentUpon>201407032126067_AddCurrentGamingGroupIdToUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201407050348013_CurrentGamingGroupIdIsNotNullable.resx">
+      <DependentUpon>201407050348013_CurrentGamingGroupIdIsNotNullable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201407140231193_MakeCurrentGamingGroupNullableOnApplicationUser.resx">
+      <DependentUpon>201407140231193_MakeCurrentGamingGroupNullableOnApplicationUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201407141118219_SetOwningUserOnExistingGamingGroup.resx">
+      <DependentUpon>201407141118219_SetOwningUserOnExistingGamingGroup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201407151152072_AddGamingGroupInvitations.resx">
+      <DependentUpon>201407151152072_AddGamingGroupInvitations.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201407152140386_MakeGamingGroupInvitationGuidIdentity.resx">
+      <DependentUpon>201407152140386_MakeGamingGroupInvitationGuidIdentity.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201407160145234_AddedRegistrationInfoToGamingGroupInvitation.resx">
+      <DependentUpon>201407160145234_AddedRegistrationInfoToGamingGroupInvitation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201407182106234_AddUniqueIndexToPlayerNameAndGamingGroupIp.resx">
+      <DependentUpon>201407182106234_AddUniqueIndexToPlayerNameAndGamingGroupIp.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201407270144172_DropUniqueIndexOnPlayerNameAlone.resx">
+      <DependentUpon>201407270144172_DropUniqueIndexOnPlayerNameAlone.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201408280114204_AddDateCreatedToApplicationUser.resx">
+      <DependentUpon>201408280114204_AddDateCreatedToApplicationUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201408280159232_AddDateCreatedToGamingGroup.resx">
+      <DependentUpon>201408280159232_AddDateCreatedToGamingGroup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201409140144412_AddActiveToGameDefinition.resx">
+      <DependentUpon>201409140144412_AddActiveToGameDefinition.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201409142235424_PlayerNameIsNoLongerNullable.resx">
+      <DependentUpon>201409142235424_PlayerNameIsNoLongerNullable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201409212154322_CreateNemesisTable.resx">
+      <DependentUpon>201409212154322_CreateNemesisTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201409221652230_SetAllInitialNemeses.resx">
+      <DependentUpon>201409221652230_SetAllInitialNemeses.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201410191609475_PreviousNemesisOnPlayer.resx">
+      <DependentUpon>201410191609475_PreviousNemesisOnPlayer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201410240249244_ConfirmAllEmails.resx">
+      <DependentUpon>201410240249244_ConfirmAllEmails.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201411030319165_AddBoardGameGeekObjectId.resx">
+      <DependentUpon>201411030319165_AddBoardGameGeekObjectId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201411050330597_FixedTypo.resx">
+      <DependentUpon>201411050330597_FixedTypo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201411050405195_LinkExistingGameDefinitionsToBoardGameGeek.resx">
+      <DependentUpon>201411050405195_LinkExistingGameDefinitionsToBoardGameGeek.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201411090249182_AddDateCreated.resx">
+      <DependentUpon>201411090249182_AddDateCreated.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201411150212370_AddPlayerUserRelationship.resx">
+      <DependentUpon>201411150212370_AddPlayerUserRelationship.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201411160430223_AddSupportForPlayerInvitationsOnGamingGroup.resx">
+      <DependentUpon>201411160430223_AddSupportForPlayerInvitationsOnGamingGroup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201411170404303_UniqueConstraintOnUserGamingGroup.resx">
+      <DependentUpon>201411170404303_UniqueConstraintOnUserGamingGroup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201411180233114_CreateChampionTable.resx">
+      <DependentUpon>201411180233114_CreateChampionTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201411200237340_AddGamesPlayedAndGamesWonToChampionTable.resx">
+      <DependentUpon>201411200237340_AddGamesPlayedAndGamesWonToChampionTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201411200330450_ResetInitialChampions.resx">
+      <DependentUpon>201411200330450_ResetInitialChampions.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201412021233106_AddNotesAndCreatedByApplicationUserIdToPlayedGame.resx">
+      <DependentUpon>201412021233106_AddNotesAndCreatedByApplicationUserIdToPlayedGame.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201412050347345_RecalculateChampions.resx">
+      <DependentUpon>201412050347345_RecalculateChampions.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201412060313473_RecalculateChampions_Again.resx">
+      <DependentUpon>201412060313473_RecalculateChampions_Again.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201412102038100_RecalculateChampionsYetAgain.resx">
+      <DependentUpon>201412102038100_RecalculateChampionsYetAgain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201412260631204_GameDefinitionNameIsRequired.resx">
+      <DependentUpon>201412260631204_GameDefinitionNameIsRequired.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201502012058510_AddUniqueConstraintOnPlayerIdAndPlayedGameIdInPlayerGameResult.resx">
+      <DependentUpon>201502012058510_AddUniqueConstraintOnPlayerIdAndPlayedGameIdInPlayerGameResult.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201502181205491_AddVotableFeature.resx">
+      <DependentUpon>201502181205491_AddVotableFeature.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201503241204333_AddAuthTokenToAspNetUsers.resx">
+      <DependentUpon>201503241204333_AddAuthTokenToAspNetUsers.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201504160224098_AddPointsScoredToPlayerGameResult.resx">
+      <DependentUpon>201504160224098_AddPointsScoredToPlayerGameResult.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201504201657131_ChangeGordonPointsToNemeStatsPoints.resx">
+      <DependentUpon>201504201657131_ChangeGordonPointsToNemeStatsPoints.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201504201705047_FixedPointsScoredMisspelling.resx">
+      <DependentUpon>201504201705047_FixedPointsScoredMisspelling.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201505102058077_MakeNameAUniqueConstraintOnGameDefinitionWithinGamingGroup.resx">
+      <DependentUpon>201505102058077_MakeNameAUniqueConstraintOnGameDefinitionWithinGamingGroup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201505221156047_AddPublicFieldsToGamingGroup.resx">
+      <DependentUpon>201505221156047_AddPublicFieldsToGamingGroup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201510131345507_AddThumbnailImageUrlToGameDefinition.resx">
+      <DependentUpon>201510131345507_AddThumbnailImageUrlToGameDefinition.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201510260223418_AddBoardGameGeekGameDefinition.resx">
+      <DependentUpon>201510260223418_AddBoardGameGeekGameDefinition.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201510271123195_WAT.resx">
+      <DependentUpon>201510271123195_WAT.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201511010229030_WAT2.resx">
+      <DependentUpon>201511010229030_WAT2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201511030244129_RemoveThumbnailFromGameDefinition.resx">
+      <DependentUpon>201511030244129_RemoveThumbnailFromGameDefinition.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201511051243356_BoardGameGeekGameDefinitionIdentityInsert.resx">
+      <DependentUpon>201511051243356_BoardGameGeekGameDefinitionIdentityInsert.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201512020347125_CurrentGamingGroupIdNotNullable.resx">
+      <DependentUpon>201512020347125_CurrentGamingGroupIdNotNullable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601120806479_BoardGameGeekDefinitionTable.resx">
+      <DependentUpon>201601120806479_BoardGameGeekDefinitionTable.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\BoardGameGeekApiClient\BoardGameGeekApiClient.csproj">
+      <Project>{d4efacf4-b72b-4395-89bf-4caa9a33c427}</Project>
+      <Name>BoardGameGeekApiClient</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <UsingTask TaskName="TransformXml" AssemblyFile="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Web\Microsoft.Web.Publishing.Tasks.dll" />
+  <Target Name="AfterCompile" Condition="Exists('App.$(Configuration).config')">
+    <!--Generate transformed app config in the intermediate directory-->
+    <TransformXml Source="App.config" Destination="$(IntermediateOutputPath)$(TargetFileName).config" Transform="App.$(Configuration).config" />
+    <!--Force build process to use the transformed configuration file from now on.-->
+    <ItemGroup>
+      <AppConfigWithTargetPath Remove="App.config" />
+      <AppConfigWithTargetPath Include="$(IntermediateOutputPath)$(TargetFileName).config">
+        <TargetPath>$(TargetFileName).config</TargetPath>
+      </AppConfigWithTargetPath>
+    </ItemGroup>
+  </Target>
+  <!--Override After Publish to support ClickOnce AfterPublish. Target replaces the untransformed config file copied to the deployment directory with the transformed one.-->
+  <Target Name="AfterPublish">
+    <PropertyGroup>
+      <DeployedConfig>$(_DeploymentApplicationDir)$(TargetName)$(TargetExt).config$(_DeploymentFileMappingExtension)</DeployedConfig>
+    </PropertyGroup>
+    <!--Publish copies the untransformed App.config to deployment directory so overwrite it-->
+    <Copy Condition="Exists('$(DeployedConfig)')" SourceFiles="$(IntermediateOutputPath)$(TargetFileName).config" DestinationFiles="$(DeployedConfig)" />
+  </Target>
+</Project>
