@@ -482,7 +482,7 @@ namespace UI.Controllers
                 var bggResponse = _boardGameGeekApiClient.GetUserDetails(model.BoardGameGeekUserName);
                 if (bggResponse == null)
                 {
-                    ModelState.AddModelError("BoardGameGeekUserName", "The user name given doesn't exists on BoardGameGeek");
+                    ModelState.AddModelError("BoardGameGeekUserName", "The user name given doesn't exist on BoardGameGeek");
                 }
                 else
                 {
