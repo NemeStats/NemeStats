@@ -72,6 +72,8 @@
         @section Scripts {
             @Scripts.Render("~/bundles/d3")
             @Styles.Render("~/bundles/d3/css")
+            @Scripts.Render("~/bundles/moment")
+
             <script type="text/javascript">
                 //Creation
                 $(document).ready(function () {
@@ -89,11 +91,22 @@
                     gameDefinition.onDefinitionCreated = $.proxy(gameDefinitions.onGameCreated, gameDefinitions);
 
                     var fromDate = new Date(@Model.DateRangeFilter.FromDate.Year, (@Model.DateRangeFilter.FromDate.Month - 1), @Model.DateRangeFilter.FromDate.Day);
-                    var toDate = new Date(@Model.DateRangeFilter.ToDate.Year, (@Model.DateRangeFilter.ToDate.Month - 1), @Model.DateRangeFilter.ToDate.Day);
+                    
+                    var toDate;
+                    var toDateYYYYMMDD;
+                    @if(Model.DateRangeFilter.HasCustomDate)
+                    {
+                        @:toDate = new Date(@Model.DateRangeFilter.ToDate.Year, (@Model.DateRangeFilter.ToDate.Month - 1), @Model.DateRangeFilter.ToDate.Day);
+                        @:toDateYYYYMMDD = moment(toDate).format('YYYY-MM-DD');
+                    }
+                    else
+                    {
+                        @:toDate = new moment().toDate();
+                        @:toDateYYYYMMDD = moment().format('YYYY-MM-DD');
+                    }
 
                     var gamingGroupView = new Views.GamingGroup.GamingGroupView();
                     var fromDateYYYYMMDD = fromDate.toISOString().split("T")[0];
-                    var toDateYYYYMMDD = toDate.toISOString().split("T")[0];
                     gamingGroupView.renderNemeStatsPointsLineGraph("/api/v2/PlayedGames/?gamingGroupId=" + @Model.Id + "&datePlayedFrom=" + fromDateYYYYMMDD + "&datePlayedTo=" + toDateYYYYMMDD);
 
                     var googleAnalyticsObject = new window.Views.Shared.GoogleAnalytics();

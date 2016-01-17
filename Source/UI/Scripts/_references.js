@@ -37,6 +37,7 @@
 /// <reference path="jquery-ui-1.11.4.min.js" />
 /// <reference path="modernizr-2.6.2.js" />
 /// <reference path="modernizr-2.8.3.js" />
+/// <reference path="moment.min.js" />
 /// <reference path="namespace.min-1.0.0.js" />
 /// <reference path="namespace-1.0.0.js" />
 /// <reference path="playedgame/recordexceldownload.js" />
