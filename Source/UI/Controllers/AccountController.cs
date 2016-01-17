@@ -322,6 +322,7 @@ namespace UI.Controllers
                 {
                     BoardGameGeekUserName = bggUser.Name,
                     AvatarUrl = bggUser.Avatar,
+                    IntegrationComplete = true,
                     BoardGameGeekUserUrl = BoardGameGeekUriBuilder.BuildBoardGameGeekUserUri(bggUser.Name)
                 };
             }
