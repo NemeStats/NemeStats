@@ -578,6 +578,8 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\moment.js" />
+    <Content Include="Scripts\moment.min.js" />
     <Content Include="Scripts\namespace-1.0.0.js" />
     <Content Include="Scripts\namespace.min-1.0.0.js" />
     <Content Include="Scripts\PlayedGame\recordexceldownload.js" />

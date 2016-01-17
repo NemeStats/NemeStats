@@ -48,17 +48,28 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
         this.$btnAddPlayer = $("#btnAddPlayer");
         this.$anchorAddPlayer = $("#addPlayerAnchor");
         this.$gameDefinitionDropDown = $("[name='GameDefinitionId']");
+        this.$datePicker = $(".date-picker");
 
-        if (!Modernizr.inputtypes.date) {
+        var currentLocalIso8601Date = moment().format('YYYY-MM-DD');
+        var minDate = new Date(2014, 0, 1);
+
+        if (Modernizr.inputtypes.date) {
+            //if supports HTML5 then use native date picker
+            this.$datePicker.attr("value", currentLocalIso8601Date);
+            var minDateIso8601 = minDate.toISOString().split("T")[0];
+            this.$datePicker.attr("max", currentLocalIso8601Date);
+            this.$datePicker.attr("min", minDateIso8601);
+        } else
+        {
             // If not native HTML5 support, fallback to jQuery datePicker
-            this.$datePicker = $(".date-picker").datepicker({
+            this.$datePicker.datepicker({
                 showOn: "button",
                 buttonText: "<i class='fa fa-calendar'></i>",
                 showButtonPanel: true,
                 maxDate: new Date(),
                 minDate: new Date(2014, 1, 1)
             }).datepicker("setDate", new Date())
-    .datepicker("option", "dateFormat", "yy-mm-dd");
+                .datepicker("option", "dateFormat", "yy-mm-dd");
         }
 
         this.$btnEveryoneWonButton = $("#btnEveryoneWonButton");

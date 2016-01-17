@@ -33,14 +33,16 @@ Views.GamingGroup.GamingGroupView.prototype = {
         this.$fromDatePicker = $("#from-date-picker");
         this.$toDatePicker = $("#to-date-picker");
         var minDate = new Date(2014, 0, 1);
+        var currentLocalIso8601Date = moment().format('YYYY-MM-DD');
 
         if (Modernizr.inputtypes.date) {
             //if supports HTML5 then use native date picker
-            var minDateIso8601 = minDate.toISOString().split("T")[0]
-            var currentIso8601Date = new Date().toISOString().split("T")[0];
-            this.$fromDatePicker.attr("max", currentIso8601Date);
+            var toDateIso8601 = new moment(this.$settings.toDate).format('YYYY-MM-DD');
+            this.$toDatePicker.attr("value", toDateIso8601);
+            var minDateIso8601 = minDate.toISOString().split("T")[0];
+            this.$fromDatePicker.attr("max", currentLocalIso8601Date);
             this.$fromDatePicker.attr("min", minDateIso8601);
-            this.$toDatePicker.attr("max", currentIso8601Date);
+            this.$toDatePicker.attr("max", currentLocalIso8601Date);
             this.$toDatePicker.attr("min", minDateIso8601);
         }else
         {
@@ -49,7 +51,7 @@ Views.GamingGroup.GamingGroupView.prototype = {
                 showOn: "button",
                 buttonText: "<i class='fa fa-calendar'></i>",
                 showButtonPanel: true,
-                maxDate: +1,
+                maxDate: new Date(),
                 minDate: minDate,
                 onClose: function (selectedDate) {
                     $("#to-date-picker").datepicker("option", "minDate", selectedDate);
@@ -61,7 +63,7 @@ Views.GamingGroup.GamingGroupView.prototype = {
                 showOn: "button",
                 buttonText: "<i class='fa fa-calendar'></i>",
                 showButtonPanel: true,
-                maxDate: +1,
+                maxDate: new Date(),
                 minDate: minDate,
                 onClose: function (selectedDate) {
                     $("#from-date-picker").datepicker("option", "minDate", selectedDate);
