@@ -16,6 +16,7 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 
+using BoardGameGeekApiClient.Interfaces;
 using BusinessLogic.Logic.GamingGroups;
 using BusinessLogic.Logic.Users;
 using BusinessLogic.Models.User;
@@ -43,6 +44,9 @@ namespace UI.Tests.UnitTests.ControllerTests.AccountControllerTests
         protected IGamingGroupRetriever gamingGroupRetrieverMock;
         protected RegisterViewModel registerViewModel;
         protected ApplicationUser currentUser;
+        IBoardGameGeekApiClient boardGameGeekApiClient;
+        IBoardGameGeekUserSaver boardGameGeekUserSaver;
+        private IUserRetriever userRetriever;
 
         [SetUp]
         public virtual void SetUp()
@@ -55,6 +59,11 @@ namespace UI.Tests.UnitTests.ControllerTests.AccountControllerTests
             var dataProtector = MockRepository.GenerateMock<IDataProtector>();
             dataProtectionProviderMock = MockRepository.GenerateMock<IDataProtectionProvider>();
             gamingGroupRetrieverMock = MockRepository.GenerateMock<IGamingGroupRetriever>();
+            
+            boardGameGeekUserSaver = MockRepository.GenerateMock<IBoardGameGeekUserSaver>();
+            boardGameGeekApiClient = MockRepository.GenerateMock<IBoardGameGeekApiClient>();
+            userRetriever = MockRepository.GenerateMock<IUserRetriever>();
+
             dataProtectionProviderMock.Expect(mock => mock.Create(Arg<string>.Is.Anything)).Return(dataProtector);
 
             userManager = new ApplicationUserManager(userStoreMock, dataProtectionProviderMock);
@@ -64,7 +73,10 @@ namespace UI.Tests.UnitTests.ControllerTests.AccountControllerTests
                 this.firstTimeAuthenticatorMock,
                 this.authenticationManagerMock,
                 gamingGroupInviteConsumerMock, 
-                gamingGroupRetrieverMock);
+                gamingGroupRetrieverMock,
+                boardGameGeekUserSaver,
+                boardGameGeekApiClient,
+                userRetriever);
             currentUser = new ApplicationUser()
             {
                 Id = "new application user",

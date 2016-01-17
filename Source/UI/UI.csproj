@@ -507,6 +507,7 @@
     <Content Include="css\fontawesome.css.map" />
     <Content Include="css\nemestats.css.map" />
     <Content Include="css\theme.css.map" />
+    <Content Include="sass\nemestats\account.scss" />
     <None Include="sass\nemestats\gaminggroup.scss" />
     <Content Include="sass\nemestats\home.scss" />
     <Content Include="fonts\bootstrap\glyphicons-halflings-regular.woff2" />

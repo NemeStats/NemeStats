@@ -44,26 +44,12 @@ namespace BusinessLogic.Logic.Users
                         PlayerName = player.Name,
                         GamingGroupId = player.GamingGroupId
                     }).ToList(),
-                    BoardGameGeekUser = new BoardGameGeekUserInformation
+                    BoardGameGeekUser = user.BoardGameGeekUser != null ? new BoardGameGeekUserInformation
                     {
                         Name = user.BoardGameGeekUser.Name,
                         Avatar = user.BoardGameGeekUser.Avatar
-                    }
-        }).First();
-            //var bggUser =
-            //    dataContext.GetQueryable<BoardGameGeekUserDefinition>()
-            //        .FirstOrDefault(u => u.ApplicationUserId == userId);
-            //BoardGameGeekUserInformation bggUserInformation = null;
-            //if (bggUser != null)
-            //{
-            //    bggUserInformation = new BoardGameGeekUserInformation
-            //    {
-            //        Name = bggUser.Name,
-            //        Avatar = bggUser.Avatar
-            //    };
-            //}
-
-            //userInformation.BoardGameGeekUser = bggUserInformation;
+                    } : null
+                }).First();
 
             return userInformation;
         }

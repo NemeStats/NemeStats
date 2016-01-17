@@ -56,7 +56,10 @@ namespace UI.Controllers
             IFirstTimeAuthenticator firstTimeAuthenticator,
             IAuthenticationManager authenticationManager,
             IGamingGroupInviteConsumer gamingGroupInvitationConsumer,
-            IGamingGroupRetriever gamingGroupRetriever, IBoardGameGeekUserSaver boardGameGeekUserSaver, IBoardGameGeekApiClient boardGameGeekApiClient, IBoardGameGeekApiClient boardGameGeekApiClient1, IUserRetriever userRetriever)
+            IGamingGroupRetriever gamingGroupRetriever, 
+            IBoardGameGeekUserSaver boardGameGeekUserSaver,
+            IBoardGameGeekApiClient boardGameGeekApiClient,
+            IUserRetriever userRetriever)
         {
             this.userManager = userManager;
             this.userRegisterer = userRegisterer;
@@ -66,7 +69,6 @@ namespace UI.Controllers
             _gamingGroupRetriever = gamingGroupRetriever;
             _boardGameGeekUserSaver = boardGameGeekUserSaver;
             _boardGameGeekApiClient = boardGameGeekApiClient;
-            _boardGameGeekApiClient = boardGameGeekApiClient1;
             _userRetriever = userRetriever;
         }
 
@@ -314,12 +316,11 @@ namespace UI.Controllers
             viewModel.ChangeEmailViewModel = emailViewModel;
 
             var bggUser = _userRetriever.RetrieveUserInformation(currentUserId, user).BoardGameGeekUser;
-            if (!string.IsNullOrEmpty(bggUser.Name))
+            if (bggUser != null)
             {
                 viewModel.BoardGameGeekIntegrationModel = new BoardGameGeekIntegrationModel
                 {
                     BoardGameGeekUserName = bggUser.Name,
-                    IntegrationComplete = true,
                     AvatarUrl = bggUser.Avatar,
                     BoardGameGeekUserUrl = BoardGameGeekUriBuilder.BuildBoardGameGeekUserUri(bggUser.Name)
                 };

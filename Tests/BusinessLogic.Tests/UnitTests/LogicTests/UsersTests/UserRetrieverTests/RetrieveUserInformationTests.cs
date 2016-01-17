@@ -54,7 +54,12 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.UserRetrieverTests
                         GamingGroup = new GamingGroup()
                     }
                 },
-                Players = new List<Player>()
+                Players = new List<Player>(),
+                BoardGameGeekUser = new BoardGameGeekUserDefinition
+                {
+                    Name = "bgg name",
+                    Id = 1
+                }
             };
             var userQueryable = new List<ApplicationUser>
             {
@@ -68,6 +73,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.UserRetrieverTests
             Assert.That(actualResult.UserId, Is.EqualTo(expectedApplicationUser.Id));
             Assert.That(actualResult.UserName, Is.EqualTo(expectedApplicationUser.UserName));
             Assert.That(actualResult.Email, Is.EqualTo(expectedApplicationUser.Email));
+            Assert.That(actualResult.BoardGameGeekUser.Name, Is.EqualTo(expectedApplicationUser.BoardGameGeekUser.Name));
         }
 
         [Test]
@@ -98,7 +104,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.UserRetrieverTests
                         GamingGroup = new GamingGroup()
                     }
                 },
-                Players = new List<Player>()
+                Players = new List<Player>(),
+                BoardGameGeekUser = null
             };
             var userQueryable = new List<ApplicationUser>
             {
@@ -143,6 +150,11 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.UserRetrieverTests
                         GamingGroupId = EXPECTED_GAMING_GROUP_ID_1 
                     },
                     new Player()
+                },
+                BoardGameGeekUser = new BoardGameGeekUserDefinition
+                {
+                    Name = EXPECTED_PLAYER_NAME_1,
+                    Id = EXPECTED_PLAYER_ID_1
                 }
             };
             var userQueryable = new List<ApplicationUser>
@@ -158,6 +170,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.UserRetrieverTests
             Assert.That(actualPlayer.PlayerId, Is.EqualTo(EXPECTED_PLAYER_ID_1));
             Assert.That(actualPlayer.PlayerName, Is.EqualTo(EXPECTED_PLAYER_NAME_1));
             Assert.That(actualPlayer.GamingGroupId, Is.EqualTo(EXPECTED_GAMING_GROUP_ID_1));
+
         }
     }
 }
