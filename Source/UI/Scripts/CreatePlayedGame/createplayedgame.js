@@ -55,7 +55,6 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
 
         if (Modernizr.inputtypes.date) {
             //if supports HTML5 then use native date picker
-            this.$datePicker.attr("value", currentLocalIso8601Date);
             var minDateIso8601 = minDate.toISOString().split("T")[0];
             this.$datePicker.attr("max", currentLocalIso8601Date);
             this.$datePicker.attr("min", minDateIso8601);

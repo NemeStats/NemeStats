@@ -24,8 +24,8 @@
 	<div class="form-group">
 		@Html.LabelFor(model => model.DatePlayed, "Date Played", new { @class = "control-label col-md-3" })
 		<div class="col-md-6">
-            <input type="date" id="from-date-picker" name="DatePlayed" class="date-picker"/>
-			@Html.ValidationMessageFor(model => model.DatePlayed)
+            @Html.TextBox("DatePlayed", DateTime.Now, "{0:yyyy-MM-dd}", new { @class= "date-picker", type = "date" })
+            @Html.ValidationMessageFor(model => model.DatePlayed)
 		</div>
 	</div>
 	<div class="form-group" id="playerDiv">
