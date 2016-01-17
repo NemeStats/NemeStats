@@ -50,13 +50,12 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
         this.$gameDefinitionDropDown = $("[name='GameDefinitionId']");
         this.$datePicker = $(".date-picker");
 
-        var currentLocalIso8601Date = moment().format('YYYY-MM-DD');
         var minDate = new Date(2014, 0, 1);
 
         if (Modernizr.inputtypes.date) {
             //if supports HTML5 then use native date picker
             var minDateIso8601 = minDate.toISOString().split("T")[0];
-            this.$datePicker.attr("max", currentLocalIso8601Date);
+            this.$datePicker.attr("max", moment().add('days', 1).format('YYYY-MM-DD'));
             this.$datePicker.attr("min", minDateIso8601);
         } else
         {
