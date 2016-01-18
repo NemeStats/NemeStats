@@ -20,7 +20,7 @@ Views.GamingGroup.GamingGroupView.prototype = {
     init: function (gaObject, options) {
         var parent = this;
         this.$title = $("#gamingGroupTitle");
-        this.$title.toEditBox({ onFocusOut: $.proxy(parent.renameGamingGroup, this), cssClass: 'gaming-group-name' });
+        this.$title.toEditBox({ onFocusOut: $.proxy(parent.renameGamingGroup, this), cssClass: "gaming-group-name" });
         this._googleAnalytics = gaObject;
 
         if (options.fromDate != null) {
@@ -33,16 +33,17 @@ Views.GamingGroup.GamingGroupView.prototype = {
         this.$fromDatePicker = $("#from-date-picker");
         this.$toDatePicker = $("#to-date-picker");
         var minDate = new Date(2014, 0, 1);
-        var currentLocalIso8601Date = moment().format('YYYY-MM-DD');
+        var currentMoment = moment();
+        var currentLocalIso8601Date = currentMoment.format("YYYY-MM-DD");
 
         if (Modernizr.inputtypes.date) {
             //if supports HTML5 then use native date picker
-            var toDateIso8601 = new moment(this.$settings.toDate).format('YYYY-MM-DD');
+            var toDateIso8601 = new moment(this.$settings.toDate).format("YYYY-MM-DD");
             this.$toDatePicker.attr("value", toDateIso8601);
             var minDateIso8601 = minDate.toISOString().split("T")[0];
-            this.$fromDatePicker.attr("max", currentLocalIso8601Date);
+            this.$fromDatePicker.attr("max", currentMoment.add("days", 1).format("YYYY-MM-DD"));
             this.$fromDatePicker.attr("min", minDateIso8601);
-            this.$toDatePicker.attr("max", currentLocalIso8601Date);
+            this.$toDatePicker.attr("max", currentMoment.add("days", 1).format("YYYY-MM-DD"));
             this.$toDatePicker.attr("min", minDateIso8601);
         }else
         {
@@ -120,16 +121,16 @@ Views.GamingGroup.GamingGroupView.prototype = {
                         .showXAxis(true);
 
                     chart.xAxis
-                        .axisLabel('Date')
+                        .axisLabel("Date")
                         .tickFormat(function (d) {
-                            return d3.time.format('%x')(new Date(d))
+                            return d3.time.format("%x")(new Date(d))
                         });
 
                     chart.yAxis
-                        .axisLabel('NemePoints')
-                        .tickFormat(d3.format('d'));
+                        .axisLabel("NemePoints")
+                        .tickFormat(d3.format("d"));
 
-                    d3.select('#NemeStatsPointsLineGraph svg')
+                    d3.select("#NemeStatsPointsLineGraph svg")
                         .datum(playerData)
                         .call(chart);
 
@@ -141,5 +142,5 @@ Views.GamingGroup.GamingGroupView.prototype = {
 }
 
 var clickElement = function (elementId) {
-    $('#' + elementId).click();
+    $("#" + elementId).click();
 }
