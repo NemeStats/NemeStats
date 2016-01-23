@@ -36,5 +36,6 @@ namespace UI.Models.Players
         public int OverallWinPercentage { get; set; }
         public int TotalPoints { get; set; }
         public int TotalChampionedGames { get; set; }
+        public float AveragePointsPerGame { get; set; }
     }
 }

@@ -23,12 +23,10 @@ using BusinessLogic.Models.Players;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System;
 using BusinessLogic.Logic.PlayedGames;
 using BusinessLogic.Models.PlayedGames;
 using BusinessLogic.Logic.BoardGameGeek;
 using BusinessLogic.Models.Utility;
-using BusinessLogic.Models.GamingGroups;
 
 namespace BusinessLogic.Logic.Players
 {
@@ -61,7 +59,7 @@ namespace BusinessLogic.Logic.Players
 
         public List<PlayerWithNemesis> GetAllPlayersWithNemesisInfo(int gamingGroupId, IDateRangeFilter dateRangeFilter = null)
         {
-            if(dateRangeFilter == null)
+            if (dateRangeFilter == null)
             {
                 dateRangeFilter = new BasicDateRangeFilter();
             }
@@ -82,26 +80,22 @@ namespace BusinessLogic.Logic.Players
                                           PreviousNemesisPlayerName = player.PreviousNemesis != null && player.PreviousNemesis.NemesisPlayer != null
                                               ? player.PreviousNemesis.NemesisPlayer.Name : null,
                                           GamingGroupId = player.GamingGroupId,
-                                          GamesWon = player.PlayerGameResults.Count(
-                                              x => x.GameRank == 1
-                                              && x.PlayedGame.DatePlayed >= dateRangeFilter.FromDate
-                                              && x.PlayedGame.DatePlayed <= dateRangeFilter.ToDate), 
-                                          GamesLost = player.PlayerGameResults.Count(
-                                              x => x.GameRank > 1 
-                                              && x.PlayedGame.DatePlayed >= dateRangeFilter.FromDate
-                                              && x.PlayedGame.DatePlayed <= dateRangeFilter.ToDate),
-                    TotalPoints = player.PlayerGameResults
-                        .Where(x => x.PlayedGame.DatePlayed >= dateRangeFilter.FromDate
-                            && x.PlayedGame.DatePlayed <= dateRangeFilter.ToDate)
-                        .Select(pgr => pgr.NemeStatsPointsAwarded).DefaultIfEmpty(0).Sum(),
-                    //only get championed games where this player is the current champion
-                    TotalChampionedGames = player.ChampionedGames.Count(champion => champion.GameDefinition.ChampionId != null && champion.GameDefinition.ChampionId.Value == champion.Id)
-                }
+                                          GamesWon = player.PlayerGameResults.Where(x => x.PlayedGame.DatePlayed >= dateRangeFilter.FromDate && x.PlayedGame.DatePlayed <= dateRangeFilter.ToDate).Count(x => x.GameRank == 1),
+                                          GamesLost = player.PlayerGameResults.Where(x => x.PlayedGame.DatePlayed >= dateRangeFilter.FromDate && x.PlayedGame.DatePlayed <= dateRangeFilter.ToDate).Count(x => x.GameRank > 1),
+                                          TotalPoints = player.PlayerGameResults.Where(x => x.PlayedGame.DatePlayed >= dateRangeFilter.FromDate && x.PlayedGame.DatePlayed <= dateRangeFilter.ToDate)
+                                              .Select(pgr => pgr.NemeStatsPointsAwarded)
+                                              .DefaultIfEmpty(0)
+                                              .Sum(),
+                                          //only get championed games where this player is the current champion
+                                          TotalChampionedGames = player.ChampionedGames.Count(champion => champion.GameDefinition.ChampionId != null && champion.GameDefinition.ChampionId.Value == champion.Id)
+                                      }
                 ).OrderByDescending(x => x.PlayerActive).ThenByDescending(pwn => pwn.TotalPoints).ThenBy(p => p.PlayerName)
                 .ToList();
 
             return playersWithNemesis;
         }
+
+
 
         public virtual PlayerDetails GetPlayerDetails(int playerId, int numberOfRecentGamesToRetrieve)
         {
@@ -145,7 +139,7 @@ namespace BusinessLogic.Logic.Players
                 PlayerGameSummaries = playerGameSummaries,
                 ChampionedGames = championedGames,
                 PlayerVersusPlayersStatistics = playerRepository.GetPlayerVersusPlayersStatistics(playerId),
-                FormerChampionedGames =  formerChampionedGames,
+                FormerChampionedGames = formerChampionedGames,
                 LongestWinningStreak = longestWinningStreak
             };
 
@@ -271,10 +265,11 @@ namespace BusinessLogic.Logic.Players
                             //had to cast to handle the case where there is no data:
                             //http://stackoverflow.com/questions/6864311/the-cast-to-value-type-int32-failed-because-the-materialized-value-is-null
                             .Sum(playerGameResults => (int?)playerGameResults.NemeStatsPointsAwarded) ?? 0;
-            if(totalPoints.HasValue)
+            if (totalPoints.HasValue)
             {
                 return totalPoints.Value;
-            }else
+            }
+            else
             {
                 return 0;
             }
@@ -284,14 +279,14 @@ namespace BusinessLogic.Logic.Players
         {
             var q = dataContext.GetQueryable<Player>().ToList();
             int playerIdForCurrentUser = (from player in dataContext.GetQueryable<Player>()
-                                           where player.GamingGroupId == gamingGroupId
-                                            && player.ApplicationUserId == applicationUserId
+                                          where player.GamingGroupId == gamingGroupId
+                                           && player.ApplicationUserId == applicationUserId
                                           select player.Id)
                                           .FirstOrDefault();
 
             var returnValue = new PlayerQuickStats();
 
-            if(playerIdForCurrentUser != 0)
+            if (playerIdForCurrentUser != 0)
             {
                 returnValue.PlayerId = playerIdForCurrentUser;
                 returnValue.TotalPoints = GetTotalNemePoints(playerIdForCurrentUser);
@@ -302,7 +297,7 @@ namespace BusinessLogic.Logic.Players
                 returnValue.TotalGamesWon = topLevelTotals.TotalGamesWon;
 
                 var lastPlayedGameForGamingGroupList = playedGameRetriever.GetRecentGames(1, gamingGroupId);
-                if(lastPlayedGameForGamingGroupList.Count() == 1)
+                if (lastPlayedGameForGamingGroupList.Count() == 1)
                 {
                     var lastGame = lastPlayedGameForGamingGroupList[0];
                     returnValue.LastGamingGroupGame = new PlayedGameQuickStats
@@ -314,7 +309,7 @@ namespace BusinessLogic.Logic.Players
                         WinnerType = lastGame.WinnerType
                     };
 
-                    if(lastGame.WinningPlayer != null)
+                    if (lastGame.WinningPlayer != null)
                     {
                         returnValue.LastGamingGroupGame.WinningPlayerId = lastGame.WinningPlayer.Id;
                         returnValue.LastGamingGroupGame.WinningPlayerName = lastGame.WinningPlayer.Name;

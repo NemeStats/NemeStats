@@ -47,7 +47,8 @@ namespace UI.Transformations.PlayerTransformations
                 NumberOfPlayedGames = playerWithNemesis.GamesLost + playerWithNemesis.GamesWon,
                 OverallWinPercentage = WinPercentageCalculator.CalculateWinPercentage(playerWithNemesis.GamesWon, playerWithNemesis.GamesLost),
                 TotalPoints = playerWithNemesis.TotalPoints,
-                TotalChampionedGames = playerWithNemesis.TotalChampionedGames
+                TotalChampionedGames = playerWithNemesis.TotalChampionedGames,
+                AveragePointsPerGame = (float)playerWithNemesis.TotalPoints / (float)(playerWithNemesis.GamesWon + playerWithNemesis.GamesLost)
             };
 
             return model;

@@ -24,13 +24,14 @@
                 <table class="table table-hover table-striped">
                     <thead class="player-table-head">
                         <tr>
-                            <th class="col-md-3">
+                            <th class="col-md-2">
                                 Player Name
                             </th>
-                            <th class="col-md-1">Played Games</th>
                             <th class="col-md-1">
                                 @Html.NemePointsIco()
                             </th>
+                            <th class="col-md-1">Played Games</th>
+                            <th class="col-md-1">Avg. @Html.NemePointsIco(tooltip:"NemePoints") per game</th>
                             <th class="col-md-1">Overall Win %</th>
                             <th class="col-md-1">
                                 <i class="fa fa-trophy"  data-toggle="popover" data-placement="top" data-content="Total games Championed by this Player"></i>
@@ -60,10 +61,11 @@
                                 <td>
                                     <b>@Html.ActionLink(item.PlayerName, MVC.Player.Details(item.PlayerId, null))</b>
                                 </td>
-                                <td>@item.NumberOfPlayedGames</td>
                                 <td>
                                     @item.TotalPoints
                                 </td>
+                                <td>@item.NumberOfPlayedGames</td>
+                                <td>@item.AveragePointsPerGame.ToString("N2")</td>
                                 <td>
                                     @item.OverallWinPercentage %
                                 </td>
