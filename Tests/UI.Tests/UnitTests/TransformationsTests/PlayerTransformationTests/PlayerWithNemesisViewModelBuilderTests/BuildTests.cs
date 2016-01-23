@@ -179,6 +179,16 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         }
 
         [Test]
+        public void ItCalculatesAveragePoints()
+        {
+            PlayerWithNemesisViewModel actualViewModel = builder.Build(this.playerWithNemesis, this.currentUser);
+
+            var avgPoints = (float) playerWithNemesis.TotalPoints/
+                            (float) (playerWithNemesis.GamesWon + playerWithNemesis.GamesLost);
+            Assert.AreEqual(avgPoints, actualViewModel.AveragePointsPerGame);
+        }
+
+        [Test]
         public void TheUserHasChampionBadges()
         {
             PlayerWithNemesisViewModel actualViewModel = builder.Build(this.playerWithNemesis, this.currentUser);
