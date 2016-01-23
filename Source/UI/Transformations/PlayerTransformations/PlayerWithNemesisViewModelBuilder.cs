@@ -33,6 +33,7 @@ namespace UI.Transformations.PlayerTransformations
 
             AddInactivePlayerSuffix(playerWithNemesis);
 
+            var totalGamesPlayed = playerWithNemesis.GamesLost + playerWithNemesis.GamesWon;
             PlayerWithNemesisViewModel model = new PlayerWithNemesisViewModel
             {
                 PlayerId = playerWithNemesis.PlayerId,
@@ -44,11 +45,11 @@ namespace UI.Transformations.PlayerTransformations
                 NemesisPlayerName = playerWithNemesis.NemesisPlayerName,
                 PreviousNemesisPlayerId = playerWithNemesis.PreviousNemesisPlayerId,
                 PreviousNemesisPlayerName = playerWithNemesis.PreviousNemesisPlayerName,
-                NumberOfPlayedGames = playerWithNemesis.GamesLost + playerWithNemesis.GamesWon,
+                NumberOfPlayedGames = totalGamesPlayed,
                 OverallWinPercentage = WinPercentageCalculator.CalculateWinPercentage(playerWithNemesis.GamesWon, playerWithNemesis.GamesLost),
                 TotalPoints = playerWithNemesis.TotalPoints,
                 TotalChampionedGames = playerWithNemesis.TotalChampionedGames,
-                AveragePointsPerGame = (float)playerWithNemesis.TotalPoints / (float)(playerWithNemesis.GamesWon + playerWithNemesis.GamesLost)
+                AveragePointsPerGame = totalGamesPlayed > 0 ? (float)playerWithNemesis.TotalPoints / (float)totalGamesPlayed : 0
             };
 
             return model;
