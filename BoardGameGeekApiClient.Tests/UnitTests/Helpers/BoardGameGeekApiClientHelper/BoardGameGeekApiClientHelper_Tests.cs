@@ -1,7 +1,7 @@
 ﻿using System.Xml.Linq;
 using NUnit.Framework;
 
-namespace BoardGameGeekApiClient.Tests.UnitTests.BoardGameGeekApiClientHelper
+namespace BoardGameGeekApiClient.Tests.UnitTests.Helpers.BoardGameGeekApiClientHelper
 {
     /// <summary>
     /// Based on real result for Battle Star Galactica

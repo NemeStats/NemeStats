@@ -99,6 +99,21 @@ namespace BoardGameGeekApiClient.Tests.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &lt;items totalitems=&quot;16&quot; termsofuse=&quot;http://boardgamegeek.com/xmlapi/termsofuse&quot; pubdate=&quot;Sun, 24 Jan 2016 10:39:48 +0000&quot;&gt;
+        ///&lt;item objecttype=&quot;thing&quot; objectid=&quot;161970&quot; subtype=&quot;boardgame&quot; collid=&quot;31122356&quot;&gt;
+        ///&lt;name sortindex=&quot;1&quot;&gt;Alchemists&lt;/name&gt;
+        ///&lt;yearpublished&gt;2014&lt;/yearpublished&gt;
+        ///&lt;image&gt;//cf.geekdo-images.com/images/pic2241156.png&lt;/image&gt;
+        ///&lt;thumbnail&gt;//cf.geekdo-images.com/images/pic2241156_t.png&lt;/thumbnail&gt;
+        ///&lt;status own=&quot;1&quot; prevowned=&quot;0&quot; fortrade=&quot;0&quot; want=&quot;0&quot; wanttoplay=&quot;0&quot; wanttobuy=&quot;0&quot; wishlist=&quot;0&quot; preo [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string GetUserGamesData {
+            get {
+                return ResourceManager.GetString("GetUserGamesData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &lt;items total=&quot;11&quot; termsofuse=&quot;http://boardgamegeek.com/xmlapi/termsofuse&quot;&gt;
         ///  &lt;item type=&quot;boardgame&quot; id=&quot;2688&quot;&gt;
         ///    &lt;name type=&quot;primary&quot; value=&quot;Battlestar Galactica&quot;/&gt;

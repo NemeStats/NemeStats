@@ -1,6 +1,6 @@
 using System.Xml.Linq;
 
-namespace BoardGameGeekApiClient.Tests.UnitTests.BoardGameGeekApiClientHelper
+namespace BoardGameGeekApiClient.Tests.UnitTests.Helpers.BoardGameGeekApiClientHelper
 {
     public class GetSimpleValues_BaseTest : BoardGameGeekApiClientHelper_Tests
     {

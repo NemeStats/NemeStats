@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Xml.Linq;
 using BoardGameGeekApiClient.Helpers;
 using BoardGameGeekApiClient.Interfaces;
 using BoardGameGeekApiClient.Models;
@@ -42,45 +43,44 @@ namespace BoardGameGeekApiClient.Service
                 if (xElements.Count() == 1)
                 {
 
-                    var gameCollection = from boardgame in xElements
-                                         select new GameDetails
-                                         {
-                                             Name = boardgame.GetBoardGameName(),
-                                             GameId = boardgame.Element("item").GetIntValue("id"),
-                                             Artists = boardgame.GetArtists(),
-                                             AverageRating =
-                                                 boardgame.Element("item")
-                                                     .Element("statistics")
-                                                     .Element("ratings")
-                                                     .Element("average")
-                                                     .GetDecimalValue("value"),
-                                             BGGRating =
-                                                 boardgame.Element("item")
-                                                     .Element("statistics")
-                                                     .Element("ratings")
-                                                     .Element("bayesaverage")
-                                                     .GetDecimalValue("value"),
-                                             Description = boardgame.Element("item").Element("description").Value,
-                                             Designers = boardgame.GetDesigners(),
-                                             Expansions = boardgame.GetExpansionsLinks(),
-                                             Mechanics = boardgame.GetMechanics(),
-                                             Categories = boardgame.GetCategories(),
-                                             Image = boardgame.Element("item").Element("image").GetStringValue(),
-                                             IsExpansion = boardgame.IsExpansion(),
-                                             Thumbnail = boardgame.Element("item").Element("thumbnail").GetStringValue(),
-                                             MaxPlayers = boardgame.Element("item").Element("maxplayers").GetIntValue("value"),
-                                             MinPlayers = boardgame.Element("item").Element("minplayers").GetIntValue("value"),
-                                             PlayerPollResults = boardgame.Element("item").Element("poll").GetPlayerPollResults(),
-                                             PlayingTime = boardgame.Element("item").Element("playingtime").GetIntValue("value"),
-                                             Publishers = boardgame.GetPublishers(),
-                                             Rank =
-                                                 boardgame.Element("item")
-                                                     .Element("statistics")
-                                                     .Element("ratings")
-                                                     .Element("ranks")
-                                                     .GetRanking(),
-                                             YearPublished = boardgame.Element("item").Element("yearpublished").GetIntValue("value"),
-                                         };
+                    var gameCollection = xElements.Select(boardgame => new GameDetails
+                    {
+                        Name = boardgame.Element("item").GetBoardGameName(),
+                        GameId = boardgame.Element("item").GetIntValue("id"),
+                        Artists = boardgame.Element("item").GetArtists(),
+                        AverageRating =
+                            boardgame.Element("item")
+                                .Element("statistics")
+                                .Element("ratings")
+                                .Element("average")
+                                .GetDecimalValue("value"),
+                        BGGRating =
+                            boardgame.Element("item")
+                                .Element("statistics")
+                                .Element("ratings")
+                                .Element("bayesaverage")
+                                .GetDecimalValue("value"),
+                        Description = boardgame.Element("item").Element("description").Value,
+                        Designers = boardgame.Element("item").GetDesigners(),
+                        Expansions = boardgame.Element("item").GetExpansionsLinks(),
+                        Mechanics = boardgame.Element("item").GetMechanics(),
+                        Categories = boardgame.Element("item").GetCategories(),
+                        Image = boardgame.Element("item").Element("image").GetStringValue(),
+                        IsExpansion = boardgame.Element("item").IsExpansion(),
+                        Thumbnail = boardgame.Element("item").Element("thumbnail").GetStringValue(),
+                        MaxPlayers = boardgame.Element("item").Element("maxplayers").GetIntValue("value"),
+                        MinPlayers = boardgame.Element("item").Element("minplayers").GetIntValue("value"),
+                        PlayerPollResults = boardgame.Element("item").Element("poll").GetPlayerPollResults(),
+                        PlayingTime = boardgame.Element("item").Element("playingtime").GetIntValue("value"),
+                        Publishers = boardgame.Element("item").GetPublishers(),
+                        Rank =
+                            boardgame.Element("item")
+                                .Element("statistics")
+                                .Element("ratings")
+                                .Element("ranks")
+                                .GetRanking(),
+                        YearPublished = boardgame.Element("item").Element("yearpublished").GetIntValue("value"),
+                    });
 
                     details = gameCollection.FirstOrDefault();
 
@@ -135,6 +135,40 @@ namespace BoardGameGeekApiClient.Service
             }
 
             return details;
+        }
+
+        public List<GameDetails> GetUserGames(string userName)
+        {
+            try
+            {
+                var uriString = $"{BASE_URL_API_V2}/collection?username={userName}&own=1";
+                var url = new Uri(uriString);
+
+                var xDoc = _apiDownloadService.DownloadApiResult(url);
+
+                var xElements = xDoc.Descendants("items").ToList();
+                if (xElements.Count() == 1)
+                {
+                    var gameCollection = xElements.Descendants("item").Select(boardgame => new GameDetails
+                    {
+                        Name = boardgame.Element("name").GetStringValue(),
+                        YearPublished = boardgame.Element("yearpublished").GetIntValue(),
+                        GameId = boardgame.GetIntValue("objectid"),
+                        Image = boardgame.Element("image").GetStringValue(),
+                        Thumbnail = boardgame.Element("thumbnail").GetStringValue(),
+                        IsExpansion = boardgame.IsExpansion("subtype"),
+                    });
+
+                    return gameCollection.Where(g => !g.IsExpansion).ToList();
+                }
+            }
+
+            catch (Exception ex)
+            {
+                Debug.WriteLine("Exception on GetUserGames for User " + userName + "." + ex);
+            }
+
+            return new List<GameDetails>();
         }
 
 

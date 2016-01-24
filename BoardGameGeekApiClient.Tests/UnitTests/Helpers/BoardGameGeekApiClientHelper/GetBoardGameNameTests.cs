@@ -2,7 +2,7 @@
 using BoardGameGeekApiClient.Helpers;
 using NUnit.Framework;
 
-namespace BoardGameGeekApiClient.Tests.UnitTests.BoardGameGeekApiClientHelper
+namespace BoardGameGeekApiClient.Tests.UnitTests.Helpers.BoardGameGeekApiClientHelper
 {
     public abstract class GetBoardGameNameTests : BoardGameGeekApiClientHelper_Tests
     {
@@ -36,7 +36,7 @@ namespace BoardGameGeekApiClient.Tests.UnitTests.BoardGameGeekApiClientHelper
             public override void SetUp()
             {
                 base.SetUp();
-                Result = XElementToTest.GetBoardGameName();
+                Result = XElementToTest.Element("item").GetBoardGameName();
             }
 
             [Test]
@@ -62,7 +62,7 @@ namespace BoardGameGeekApiClient.Tests.UnitTests.BoardGameGeekApiClientHelper
             public override void SetUp()
             {
                 base.SetUp();
-                Result = XElementToTest.GetBoardGameName();
+                Result = XElementToTest.Element("item").GetBoardGameName();
             }
 
             [Test]

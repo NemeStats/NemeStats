@@ -1,7 +1,7 @@
 using BoardGameGeekApiClient.Helpers;
 using NUnit.Framework;
 
-namespace BoardGameGeekApiClient.Tests.UnitTests.BoardGameGeekApiClientHelper
+namespace BoardGameGeekApiClient.Tests.UnitTests.Helpers.BoardGameGeekApiClientHelper
 {
     public class GetIntValue_Tests : GetSimpleValues_BaseTest
     {
