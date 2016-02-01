@@ -185,6 +185,7 @@ namespace UI.Controllers
             public class _ViewNamesClass
             {
                 public readonly string _CreateOrUpdatePartial = "_CreateOrUpdatePartial";
+                public readonly string _GameDefinitionPlayersSummaryPartial = "_GameDefinitionPlayersSummaryPartial";
                 public readonly string _PlayersPartial = "_PlayersPartial";
                 public readonly string _PlayersSummaryPartial = "_PlayersSummaryPartial";
                 public readonly string _RecentNemesisChangesPartial = "_RecentNemesisChangesPartial";
@@ -198,6 +199,7 @@ namespace UI.Controllers
                 public readonly string TopPlayers = "TopPlayers";
             }
             public readonly string _CreateOrUpdatePartial = "~/Views/Player/_CreateOrUpdatePartial.cshtml";
+            public readonly string _GameDefinitionPlayersSummaryPartial = "~/Views/Player/_GameDefinitionPlayersSummaryPartial.cshtml";
             public readonly string _PlayersPartial = "~/Views/Player/_PlayersPartial.cshtml";
             public readonly string _PlayersSummaryPartial = "~/Views/Player/_PlayersSummaryPartial.cshtml";
             public readonly string _RecentNemesisChangesPartial = "~/Views/Player/_RecentNemesisChangesPartial.cshtml";

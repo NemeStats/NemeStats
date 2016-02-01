@@ -1,0 +1,68 @@
+﻿@using UI.HtmlHelpers
+@model UI.Models.Players.GameDefinitionPlayersSummaryViewModel
+
+@{
+    Layout = null;
+}
+
+<div class="panel panel-primary player-statistics">
+    <div class="panel-heading">
+        <h4>
+           Win - Loss Statistics
+        </h4>
+    </div>
+    <div class="panel-body">
+        <table class="table table-hover table-striped table-responsive">
+            <thead>
+                <tr>
+                    <th class="col-md-1"></th>
+                    <th class="col-md-2">Player Name</th>
+                    <th class="col-md-1">@Html.NemePointsIco()</th>
+                    <th class="col-md-1">Total Games</th>
+                    <th class="col-md-1">Avg. Points/Game</th>
+                    <th class="col-md-5">% Won</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (UI.Models.Players.GameDefinitionPlayerSummaryViewModel playerSummary in Model.GameDefinitionPlayerSummaries)
+                {
+                    <tr>
+                        <td>
+                            @foreach(var badge in playerSummary.SpecialBadgeTypes)
+                            {
+                                <i class="fa @badge.GetFontAwesomeCssClass()" data-container="body" data-toggle="popover" data-placement="right"
+                                   data-content="@badge.GetPopoverText()">
+                                </i>
+                            }
+                        </td>
+                        <td>
+                            @Html.ActionLink(playerSummary.PlayerName, "Details", "Player", new
+                            {
+                                id = playerSummary.PlayerId
+                            }, new
+                            {
+                            })
+                        </td>
+                        <td>@playerSummary.NemePoints</td>
+                        <td>@playerSummary.TotalGamesPlayed</td>
+                        <td>@playerSummary.AveragePointsPerGame</td>
+                        <td>
+                            <div class="progress" data-container="body" data-toggle="popover" data-placement="top"
+                                   data-content="@playerSummary.GamesWon games won - @playerSummary.GamesLost games lost">
+                                <div class="progress-bar won" style="width: @playerSummary.WinPercentage%">
+                                    <span>@playerSummary.GamesWon</span>
+                                </div>
+                                <div class="progress-bar lost" style="width: @playerSummary.LostPercentage%">
+                                    <span>@playerSummary.GamesLost</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            @playerSummary.WinPercentage&nbsp;%
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

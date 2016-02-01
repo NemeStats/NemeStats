@@ -32,6 +32,7 @@ namespace UI.Models.GameDefinitionModels
 
         public IList<PlayedGameDetailsViewModel> PlayedGames { get; set; }
         public string PlayedGamesPanelTitle { get; set; }
+        //TODO change this to GameDefinitionDetailsViewModel
         public PlayersSummaryViewModel PlayersSummary { get; set; }
         public string AveragePlayersPerGame { get; set; }
     }
