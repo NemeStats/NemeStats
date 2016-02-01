@@ -16,14 +16,14 @@ namespace BusinessLogic.Models.Utility
             _toDate = DefaultToDate;
         }
 
-        public bool HasCustomDate
+        public virtual bool HasCustomDate
         {
             get { return FromDate != DefaultFromDate || ToDate != DefaultToDate; }
         }
 
         private DateTime _fromDate;
 
-        public DateTime FromDate
+        public virtual DateTime FromDate
         {
             get
             {
@@ -36,7 +36,7 @@ namespace BusinessLogic.Models.Utility
         }
         private DateTime _toDate;
 
-        public DateTime ToDate
+        public virtual DateTime ToDate
         {
             get
             {
@@ -49,7 +49,7 @@ namespace BusinessLogic.Models.Utility
             }
         }
 
-        public string Iso8601FromDate
+        public virtual string Iso8601FromDate
         {
             get
             {
@@ -61,7 +61,7 @@ namespace BusinessLogic.Models.Utility
             }
         }
 
-        public string Iso8601ToDate
+        public virtual string Iso8601ToDate
         {
             get
             {
@@ -80,10 +80,32 @@ namespace BusinessLogic.Models.Utility
             {
                 return parsedDate;
             }
-            else
+            throw new FormatException($"'{value}' is not a valid YYYY-MM-DD date.");
+        }
+
+        public virtual bool IsValid(out string errorMessage)
+        {
+            errorMessage = null;
+            DateTime twoDaysInTheFuture = DateTime.UtcNow.Date.AddDays(1).AddMilliseconds(-1);
+            if (ToDate > twoDaysInTheFuture)
             {
-                throw new FormatException(string.Format("'{0}' is not a valid YYYY-MM-DD date.", value));
+                errorMessage = "The 'To Date' cannot be in the future.";
+                return false;
             }
+
+            if (FromDate > twoDaysInTheFuture)
+            {
+                errorMessage = "The 'From Date' cannot be in the future.";
+                return false;
+            }
+
+            if (ToDate < FromDate)
+            {
+                errorMessage = "The 'From Date' cannot be greater than the 'To Date'.";
+                return false;
+            }
+
+            return true;
         }
     }
 }

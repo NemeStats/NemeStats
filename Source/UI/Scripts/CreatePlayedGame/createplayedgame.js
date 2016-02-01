@@ -67,8 +67,8 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                 showOn: "button",
                 buttonText: "<i class='fa fa-calendar'></i>",
                 showButtonPanel: true,
-                maxDate: new Date(),
-                minDate: new Date(2014, 1, 1)
+                minDate: new Date(2014, 1, 1),
+                maxDate: new Date()
             }).datepicker("setDate", new Date())
                 .datepicker("option", "dateFormat", "yy-mm-dd");
         }
