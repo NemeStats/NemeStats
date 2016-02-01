@@ -25,6 +25,28 @@ namespace BoardGameGeekApiClient.Service
 
         public const string BASE_URL_API_V2 = "http://www.boardgamegeek.com/xmlapi2";
 
+        public string GetGameThumbnail(int gameId)
+        {
+            var thumbnail = "";
+            try
+            {
+                var apiUri = new Uri(BASE_URL_API_V2 + $"/thing?id={gameId}");
+                var xDoc = _apiDownloadService.DownloadApiResult(apiUri);
+
+                var xElements = xDoc.Descendants("items").ToList();
+                if (xElements.Count() == 1)
+                {
+                    thumbnail = xElements.First().Element("item").Element("image").GetStringValue();
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("Exception on GetGameThumbnail for ID " + gameId + "." + ex);
+            }
+
+            return thumbnail;
+        }
+
         public GameDetails GetGameDetails(int gameId)
         {
 
@@ -33,9 +55,9 @@ namespace BoardGameGeekApiClient.Service
 
             try
             {
-                var teamDataURI = new Uri(string.Format(BASE_URL_API_V2 + "/thing?id={0}&stats=1", gameId));
+                var apiUri = new Uri(BASE_URL_API_V2 + $"/thing?id={gameId}&stats=1");
 
-                var xDoc = _apiDownloadService.DownloadApiResult(teamDataURI);
+                var xDoc = _apiDownloadService.DownloadApiResult(apiUri);
 
 
                 // LINQ to XML.
@@ -172,11 +194,11 @@ namespace BoardGameGeekApiClient.Service
         }
 
 
-        public IEnumerable<SearchBoardGameResult> SearchBoardGames(string query, bool exactMatch = false)
+        public List<SearchBoardGameResult> SearchBoardGames(string query, bool exactMatch = false)
         {
             try
             {
-                var uriString = string.Format(BASE_URL_API_V2 + "/search?query={0}&type=boardgame", query);
+                var uriString = BASE_URL_API_V2 + $"/search?query={query}&type=boardgame";
                 if (exactMatch)
                 {
                     uriString += "&exact=1";
@@ -192,7 +214,7 @@ namespace BoardGameGeekApiClient.Service
                     BoardGameName = boardgame.Element("name").GetStringValue("value"),
                     BoardGameId = boardgame.GetIntValue("id"),
                     YearPublished = boardgame.Element("yearpublished").GetIntValue("value")
-                });
+                }).ToList();
 
                 if (gameCollection.Any())
                 {

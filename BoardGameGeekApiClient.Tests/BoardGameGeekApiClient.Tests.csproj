@@ -78,6 +78,7 @@
   <ItemGroup>
     <Compile Include="IntegrationTests\BaseBoardGameGeekApiClientIntegrationTest.cs" />
     <Compile Include="IntegrationTests\GetGameDetails_IntegrationTests.cs" />
+    <Compile Include="IntegrationTests\GetGameThumbnail_IntegrationTests.cs" />
     <Compile Include="IntegrationTests\GetUserDetails_IntegrationTests.cs" />
     <Compile Include="IntegrationTests\GetUserGames_IntegrationTests.cs" />
     <Compile Include="IntegrationTests\SearchBoardGames_IntegrationTests.cs" />
@@ -87,6 +88,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>TestsResources.resx</DependentUpon>
     </Compile>
+    <Compile Include="UnitTests\BoardGameGeekClient\GetGameThumbnail_Tests.cs" />
     <Compile Include="UnitTests\BoardGameGeekClient\GetUserDetails_Tests.cs" />
     <Compile Include="UnitTests\BoardGameGeekClient\GetUserGames_Tests.cs" />
     <Compile Include="UnitTests\Helpers\BoardGameGeekApiClientHelper\BoardGameGeekApiClientHelper_Tests.cs" />

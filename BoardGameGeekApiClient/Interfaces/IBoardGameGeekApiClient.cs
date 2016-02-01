@@ -10,9 +10,10 @@ namespace BoardGameGeekApiClient.Interfaces
 {
     public interface IBoardGameGeekApiClient
     {
-        IEnumerable<SearchBoardGameResult> SearchBoardGames(string query, bool exactMatch = false);
+        List<SearchBoardGameResult> SearchBoardGames(string query, bool exactMatch = false);
         GameDetails GetGameDetails(int gameId);
         UserDetails GetUserDetails(string userName);
         List<GameDetails> GetUserGames(string userName);
+        string GetGameThumbnail(int gameId);
     }
 }

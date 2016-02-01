@@ -7,7 +7,7 @@ namespace BoardGameGeekApiClient.Helpers
 {
     public static class SearcherHelper
     {
-        public static IEnumerable<SearchBoardGameResult> SortSearchResults(this IEnumerable<SearchBoardGameResult> searchResults, string searchText, int maxResultsToReturn =10)
+        public static List<SearchBoardGameResult> SortSearchResults(this List<SearchBoardGameResult> searchResults, string searchText, int maxResultsToReturn =10)
         {
             var queryable = searchResults.AsQueryable();
             var results = new List<SearchBoardGameResult>();
