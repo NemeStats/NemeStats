@@ -16,6 +16,7 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 
+using System;
 using BusinessLogic.Logic;
 using BusinessLogic.Logic.PlayedGames;
 using BusinessLogic.Models.Games;
@@ -106,5 +107,5 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
                 Arg<TransactionSource>.Is.Anything,
 				Arg<ApplicationUser>.Is.Equal(this.currentUser)));
 		}
-	}
+    }
 }
