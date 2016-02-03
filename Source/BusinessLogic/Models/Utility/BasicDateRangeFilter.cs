@@ -89,7 +89,7 @@ namespace BusinessLogic.Models.Utility
             DateTime twoDaysInTheFuture = DateTime.UtcNow.Date.AddDays(1).AddMilliseconds(-1);
             if (ToDate > twoDaysInTheFuture)
             {
-                errorMessage = "The 'To Date' cannot be in the future.";
+                errorMessage = "The 'Ending Date' cannot be in the future.";
                 return false;
             }
 

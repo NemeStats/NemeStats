@@ -16,6 +16,7 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 
+using System;
 using System.Globalization;
 using BusinessLogic.DataAccess;
 using BusinessLogic.Logic;
@@ -105,6 +106,26 @@ namespace UI.Controllers
             return View(MVC.PlayedGame.Views.Create, viewModel);
         }
 
+        // POST: /PlayedGame/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [UserContext]
+        public virtual ActionResult Create(NewlyCompletedGame newlyCompletedGame, ApplicationUser currentUser)
+        {
+            if (ModelState.IsValid)
+            {
+                playedGameCreator.CreatePlayedGame(newlyCompletedGame, TransactionSource.WebApplication, currentUser);
+
+                return new RedirectResult(Url.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name)
+                                            + "#" + GamingGroupController.SECTION_ANCHOR_RECENT_GAMES);
+            }
+
+            return Create(currentUser);
+        }
+
         private static SelectList BuildGameDefinitionSummariesSelectList(IList<GameDefinitionSummary> gameDefinitionSummaries)
         {
             SelectList gameDefinitionSummariesSelectList;
@@ -133,26 +154,6 @@ namespace UI.Controllers
 			var recentlyPlayedGames = playedGameRetriever.GetRecentPublicGames(NUMBER_OF_RECENT_GAMES_TO_DISPLAY);
 
 			return View(MVC.PlayedGame.Views.RecentlyPlayedGames, recentlyPlayedGames);
-		}
-
-		// POST: /PlayedGame/Create
-		// To protect from overposting attacks, please enable the specific properties you want to bind to, for
-		// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-		[Authorize]
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		[UserContext]
-		public virtual ActionResult Create(NewlyCompletedGame newlyCompletedGame, ApplicationUser currentUser)
-		{
-			if (ModelState.IsValid)
-			{
-				playedGameCreator.CreatePlayedGame(newlyCompletedGame, TransactionSource.WebApplication, currentUser);
-
-				return new RedirectResult(Url.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name)
-											+ "#" + GamingGroupController.SECTION_ANCHOR_RECENT_GAMES);
-			}
-
-			return Create(currentUser);
 		}
 
 		private IEnumerable<SelectListItem> GetAllPlayers(ApplicationUser currentUser)

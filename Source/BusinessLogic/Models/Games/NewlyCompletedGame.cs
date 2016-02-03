@@ -19,7 +19,7 @@ using System;
 using BusinessLogic.Models.Games.Validation;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
+using BusinessLogic.Models.Validation;
 
 namespace BusinessLogic.Models.Games
 {
@@ -43,6 +43,7 @@ namespace BusinessLogic.Models.Games
 
         [Required]
         [DataType(DataType.Date)]
+        [MaxDate]
         public DateTime DatePlayed { get; set; }
     }
 }

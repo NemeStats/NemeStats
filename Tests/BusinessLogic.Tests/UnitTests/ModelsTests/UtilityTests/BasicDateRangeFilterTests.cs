@@ -126,7 +126,7 @@ namespace BusinessLogic.Tests.UnitTests.ModelsTests.UtilityTests
                 bool isValid = filter.IsValid(out errorMessage);
 
                 Assert.That(isValid, Is.EqualTo(false));
-                Assert.That(errorMessage, Is.EqualTo("The 'To Date' cannot be in the future."));
+                Assert.That(errorMessage, Is.EqualTo("The 'Ending Date' cannot be in the future."));
             }
         }
     }

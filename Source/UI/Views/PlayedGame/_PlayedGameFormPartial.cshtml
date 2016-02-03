@@ -6,7 +6,7 @@
 	<div class="form-group">
 		<input type="hidden" value="@ViewBag.GameDefinitionId" id="newGameDefinition" />
 		@Html.LabelFor(model => model.GameDefinitionId, "The Game", new { @class = "control-label col-md-3" })
-		<div class="col-md-6">
+		<div class="col-md-8">
 			@Html.DropDownList("GameDefinitionId", Model.GameDefinitions, "Pick A Game", new
 							{
 								@id = "gameDefinitionDropDown",
@@ -23,14 +23,14 @@
 
 	<div class="form-group">
 		@Html.LabelFor(model => model.DatePlayed, "Date Played", new { @class = "control-label col-md-3" })
-		<div class="col-md-6">
+		<div class="col-md-8">
             @Html.TextBox("DatePlayed", DateTime.Now, "{0:yyyy-MM-dd}", new { @class= "date-picker", type = "date" })
             @Html.ValidationMessageFor(model => model.DatePlayed)
 		</div>
 	</div>
 	<div class="form-group" id="playerDiv">
 		@Html.LabelFor(model => model.PlayerRanks, "The Players", new { @class = "control-label col-md-3" })
-		<div class="col-md-6">
+		<div class="col-md-8">
 			@Html.DropDownList("Players", Model.Players, "Add A Player", new { @class = "form-control" })
 			<span id="players-error" class="field-validation-error hidden">
 				<span class="">Each game must have at least two players.</span>
@@ -40,8 +40,8 @@
 			</span>
 			@Html.ValidationMessageFor(model => model.PlayerRanks)
 		</div>
-		<div class="col-md-3">
-			<button type="button" id="btnAddPlayer" class=" btn btn-default" title="Create New Player">
+		<div class="col-md-1">
+			<button type="button" id="btnAddPlayer" class="btn btn-default" title="Create New Player">
 				<i class="fa fa-plus"></i>
 			</button>
 		</div>
