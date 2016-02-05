@@ -71,7 +71,7 @@ namespace UI.Transformations
             {
                 viewModel.ChampionName = gameDefinitionSummary.Champion.Player.Name;
                 viewModel.ChampionPlayerId = gameDefinitionSummary.Champion.Player.Id;
-                viewModel.WinPercentage = gameDefinitionSummary.Champion.WinPercentage;
+                viewModel.WinPercentage = gameDefinitionSummary.Champion.WinPercentage;                
                 viewModel.NumberOfGamesPlayed = gameDefinitionSummary.Champion.NumberOfGames;
                 viewModel.NumberOfWins = gameDefinitionSummary.Champion.NumberOfWins;
             }

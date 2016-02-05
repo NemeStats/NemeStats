@@ -12,7 +12,7 @@ namespace UI.Models.Players
         public int GamesWon { get; set; }
         public int GamesLost { get; set; }
         public int WinPercentage { get; set; }
-        public int LostPercentage { get; set; }
+        public int LostPercentage => 100 - WinPercentage;
         public int TotalGamesPlayed { get; set; }
         public int TotalNemePoints { get; set; }
         public float AveragePointsPerGame { get; set; }

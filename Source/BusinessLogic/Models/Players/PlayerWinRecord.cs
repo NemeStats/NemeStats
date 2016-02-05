@@ -9,7 +9,6 @@ namespace BusinessLogic.Models.Players
         public int GamesWon { get; set; }
         public int GamesLost { get; set; }
         public int WinPercentage { get; set; }
-        public int LostPercentage { get; set; }
         public bool IsChampion { get; set; }
         public bool IsFormerChampion { get; set; }
         public int TotalGamesPlayed { get; set; }
