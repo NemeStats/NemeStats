@@ -19,7 +19,7 @@
                     <th class="col-md-2">Player Name</th>
                     <th class="col-md-1">@Html.NemePointsIco()</th>
                     <th class="col-md-1">Total Games</th>
-                    <th class="col-md-1">Avg. Points/Game</th>
+                    <th class="col-md-2">Avg. @Html.NemePointsIco(tooltip: "NemePoints") per game</th>
                     <th class="col-md-5">% Won</th>
                 </tr>
             </thead>
@@ -43,9 +43,9 @@
                             {
                             })
                         </td>
-                        <td>@playerSummary.NemePoints</td>
+                        <td>@playerSummary.TotalNemePoints</td>
                         <td>@playerSummary.TotalGamesPlayed</td>
-                        <td>@playerSummary.AveragePointsPerGame</td>
+                        <td>@playerSummary.AveragePointsPerGame.ToString("N2")</td>
                         <td>
                             <div class="progress" data-container="body" data-toggle="popover" data-placement="top"
                                    data-content="@playerSummary.GamesWon games won - @playerSummary.GamesLost games lost">
