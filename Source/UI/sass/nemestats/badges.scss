@@ -31,6 +31,25 @@
     }
 }
 
+.game-player-statistics {
+    .fa {
+        &.fa-trophy {
+            &.fa-slashed {
+                position: relative;
+
+                &:after {
+                    position: absolute;
+                    content: "/";
+                    font-weight: $font-weight-bold;
+                    font-size: 1.7em;
+                    top: -7px;
+                    left:0;
+                }
+            }
+        }
+    }
+}
+
 #player-details {
     .gameDefinitionsList {
 
