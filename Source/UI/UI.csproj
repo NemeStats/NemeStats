@@ -349,6 +349,7 @@
     <Compile Include="Models\GameDefinitionModels\GameDefinitionEditViewModel.cs" />
     <Compile Include="Models\GameDefinitionModels\GameDefinitionSummaryViewModel.cs" />
     <Compile Include="Models\GameDefinitionModels\TopGameViewModel.cs" />
+    <Compile Include="Models\Players\GameDefinitionPlayersSummaryViewModel.cs" />
     <Compile Include="Models\GamingGroup\GamingGroupPublicDetailsViewModel.cs" />
     <Compile Include="Models\GamingGroup\GamingGroupPublicViewModel.cs" />
     <Compile Include="Models\IEditableViewModel.cs" />
@@ -429,6 +430,7 @@
     <Compile Include="Transformations\PlayerTransformations\TopPlayerViewModelBuilder.cs" />
     <Compile Include="Models\Players\PlayerWithNemesisViewModel.cs" />
     <Compile Include="Models\GamingGroup\TopGamingGroupSummaryViewModel.cs" />
+    <Compile Include="Models\Players\GameDefinitionPlayerSummaryViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\font-awesome.css" />
@@ -755,6 +757,7 @@
     <Content Include="Views\Player\CurrentPlayerQuickStats.cshtml" />
     <Content Include="Views\Account\BoardGameGeekIntegration.cshtml" />
     <Content Include="Views\GameDefinition\_TopGamesPartial.cshtml" />
+    <Content Include="Views\Player\_GameDefinitionPlayersSummaryPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Code\" />
