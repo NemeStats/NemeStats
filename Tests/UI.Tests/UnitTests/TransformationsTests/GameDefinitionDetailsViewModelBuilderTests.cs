@@ -55,8 +55,8 @@ namespace UI.Tests.UnitTests.TransformationsTests
         private Player previousChampionPlayer;
         private PlayerWinRecord playerWinRecord1;
         private PlayerWinRecord playerWinRecord2;
-        private PlayerSummaryViewModel expectedPlayerSummary1;
-        private PlayerSummaryViewModel expectedPlayerSummary2;
+        private GameDefinitionPlayerSummaryViewModel expectedPlayerSummary1;
+        private GameDefinitionPlayerSummaryViewModel expectedPlayerSummary2;
 
         [OneTimeSetUpAttribute]
         public void FixtureSetUp()
@@ -64,8 +64,8 @@ namespace UI.Tests.UnitTests.TransformationsTests
             autoMocker = new RhinoAutoMocker<GameDefinitionDetailsViewModelBuilder>();
             autoMocker.PartialMockTheClassUnderTest();
 
-            expectedPlayerSummary1 = new PlayerSummaryViewModel();
-            expectedPlayerSummary2 = new PlayerSummaryViewModel();
+            expectedPlayerSummary1 = new GameDefinitionPlayerSummaryViewModel();
+            expectedPlayerSummary2 = new GameDefinitionPlayerSummaryViewModel();
 
             List<PlayedGame> playedGames = new List<PlayedGame>();
             playedGames.Add(new PlayedGame
@@ -109,9 +109,9 @@ namespace UI.Tests.UnitTests.TransformationsTests
             };
             playerWinRecord2 = new PlayerWinRecord();
 
-            autoMocker.Get<ITransformer>().Expect(mock => mock.Transform<PlayerWinRecord, PlayerSummaryViewModel>(playerWinRecord1))
+            autoMocker.Get<ITransformer>().Expect(mock => mock.Transform<PlayerWinRecord, GameDefinitionPlayerSummaryViewModel>(playerWinRecord1))
                        .Return(expectedPlayerSummary1);
-            autoMocker.Get<ITransformer>().Expect(mock => mock.Transform<PlayerWinRecord, PlayerSummaryViewModel>(playerWinRecord2))
+            autoMocker.Get<ITransformer>().Expect(mock => mock.Transform<PlayerWinRecord, GameDefinitionPlayerSummaryViewModel>(playerWinRecord2))
                  .Return(expectedPlayerSummary2); 
 
             gameDefinitionSummary = new GameDefinitionSummary
@@ -283,24 +283,18 @@ namespace UI.Tests.UnitTests.TransformationsTests
         }
 
         [Test]
-        public void ItSetsTheWinLossHeader()
-        {
-            Assert.That(viewModel.PlayersSummary.WinLossHeader, Is.EqualTo("Win - Loss Record"));
-        }
-
-        [Test]
         public void ItBuildsThePlayerSummaryViewModels()
         {
-            autoMocker.Get<ITransformer>().Expect(mock => mock.Transform<PlayerWinRecord, PlayerSummaryViewModel>(playerWinRecord1))
+            autoMocker.Get<ITransformer>().Expect(mock => mock.Transform<PlayerWinRecord, GameDefinitionPlayerSummaryViewModel>(playerWinRecord1))
                        .Return(expectedPlayerSummary1);
-            autoMocker.Get<ITransformer>().Expect(mock => mock.Transform<PlayerWinRecord, PlayerSummaryViewModel>(playerWinRecord2))
+            autoMocker.Get<ITransformer>().Expect(mock => mock.Transform<PlayerWinRecord, GameDefinitionPlayerSummaryViewModel>(playerWinRecord2))
                  .Return(expectedPlayerSummary2); 
 
             var actualResult = autoMocker.ClassUnderTest.Build(gameDefinitionSummary, currentUser);
 
-            Assert.That(actualResult.PlayersSummary.PlayerSummaries.Count, Is.EqualTo(2));
-            Assert.That(actualResult.PlayersSummary.PlayerSummaries, Contains.Item(expectedPlayerSummary1));
-            Assert.That(actualResult.PlayersSummary.PlayerSummaries, Contains.Item(expectedPlayerSummary2));
+            Assert.That(actualResult.GameDefinitionPlayersSummary.GameDefinitionPlayerSummaries.Count, Is.EqualTo(2));
+            Assert.That(actualResult.GameDefinitionPlayersSummary.GameDefinitionPlayerSummaries, Contains.Item(expectedPlayerSummary1));
+            Assert.That(actualResult.GameDefinitionPlayersSummary.GameDefinitionPlayerSummaries, Contains.Item(expectedPlayerSummary2));
         }
     }
 }

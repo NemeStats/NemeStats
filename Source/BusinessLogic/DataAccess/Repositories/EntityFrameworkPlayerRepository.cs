@@ -163,8 +163,13 @@ namespace BusinessLogic.DataAccess.Repositories
               ,Player.Name AS PlayerName
               ,SUM(CASE WHEN PGR.GameRank = 1 THEN 1 ELSE 0 END) AS GamesWon
               ,SUM(CASE WHEN PGR.GameRank <> 1 THEN 1 ELSE 0 END) AS GamesLost
+              ,SUM(PGR.NemeStatsPointsAwarded) AS TotalNemePoints
               ,CONVERT(BIT, CASE WHEN Player.Id = Champion.PlayerId THEN 1 ELSE 0 END) AS IsChampion
-              ,CONVERT(BIT, CASE WHEN EXISTS(SELECT 1 FROM Champion WHERE Champion.PlayerId = Player.Id) THEN 1 ELSE 0 END) AS IsFormerChampion
+              ,CONVERT(BIT, CASE WHEN EXISTS(
+                    SELECT 1 FROM Champion 
+                    WHERE Champion.PlayerId = Player.Id 
+                    AND Champion.GameDefinitionId = GD.Id) 
+                        THEN 1 ELSE 0 END) AS IsFormerChampion
               FROM [dbo].[GameDefinition] GD 
               INNER JOIN PlayedGame PG ON GD.ID = PG.GameDefinitionID
               INNER JOIN PlayerGameResult PGR ON PG.ID = PGR.PlayedGameId
@@ -176,12 +181,20 @@ namespace BusinessLogic.DataAccess.Repositories
 
         public IList<PlayerWinRecord> GetPlayerWinRecords(int gameDefinitionId)
         {
-            DbRawSqlQuery<PlayerWinRecord> data = dataContext.MakeRawSqlQuery<PlayerWinRecord>(SQL_GET_PLAYER_INFO_FOR_GIVEN_GAME_DEFINITION,
+            var data = dataContext.MakeRawSqlQuery<PlayerWinRecord>(SQL_GET_PLAYER_INFO_FOR_GIVEN_GAME_DEFINITION,
                 new SqlParameter("GameDefinitionId", gameDefinitionId));
 
             var results = data.ToList();
 
-            results.ForEach(record => record.WinPercentage = WinPercentageCalculator.CalculateWinPercentage(record.GamesWon, record.GamesLost));
+            results.ForEach(record =>
+            {
+                record.WinPercentage = WinPercentageCalculator.CalculateWinPercentage(record.GamesWon, record.GamesLost);
+                record.TotalGamesPlayed = record.GamesLost + record.GamesWon;
+                if (record.TotalGamesPlayed > 0)
+                {
+                    record.AveragePointsPerGame = record.TotalGamesPlayed > 0 ? (float)record.TotalNemePoints / record.TotalGamesPlayed : 0;
+                }
+            });
 
             return results;
         }

@@ -41,7 +41,7 @@ namespace UI.Transformations
 
         public GameDefinitionDetailsViewModel Build(GameDefinitionSummary gameDefinitionSummary, ApplicationUser currentUser)
         {
-            GameDefinitionDetailsViewModel viewModel = new GameDefinitionDetailsViewModel()
+            var viewModel = new GameDefinitionDetailsViewModel()
             {
                 Id = gameDefinitionSummary.Id,
                 Name = gameDefinitionSummary.Name,
@@ -71,7 +71,7 @@ namespace UI.Transformations
             {
                 viewModel.ChampionName = gameDefinitionSummary.Champion.Player.Name;
                 viewModel.ChampionPlayerId = gameDefinitionSummary.Champion.Player.Id;
-                viewModel.WinPercentage = gameDefinitionSummary.Champion.WinPercentage;
+                viewModel.WinPercentage = gameDefinitionSummary.Champion.WinPercentage;                
                 viewModel.NumberOfGamesPlayed = gameDefinitionSummary.Champion.NumberOfGames;
                 viewModel.NumberOfWins = gameDefinitionSummary.Champion.NumberOfWins;
             }
@@ -82,12 +82,14 @@ namespace UI.Transformations
                 viewModel.PreviousChampionPlayerId = gameDefinitionSummary.PreviousChampion.Player.Id;
             }
 
-            var playersSummaryViewModel = new PlayersSummaryViewModel
+            var playersSummaryViewModel = new GameDefinitionPlayersSummaryViewModel
             {
-                WinLossHeader = "Win - Loss Record",
-                PlayerSummaries = gameDefinitionSummary.PlayerWinRecords.Select(transformer.Transform<PlayerWinRecord, PlayerSummaryViewModel>).ToList()
+                GameDefinitionPlayerSummaries = gameDefinitionSummary.PlayerWinRecords
+                    .Select(transformer.Transform<PlayerWinRecord, GameDefinitionPlayerSummaryViewModel>)
+                    .OrderByDescending(x => x.TotalGamesPlayed)
+                    .ToList()
             };
-            viewModel.PlayersSummary = playersSummaryViewModel;
+            viewModel.GameDefinitionPlayersSummary = playersSummaryViewModel;
 
             return viewModel;
         }

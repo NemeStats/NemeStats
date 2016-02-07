@@ -161,8 +161,8 @@ namespace Links
         public static readonly string jquery_validate_min_js = Url("jquery.validate.min.js");
         public static readonly string jquery_validate_unobtrusive_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery.validate.unobtrusive.min.js") ? Url("jquery.validate.unobtrusive.min.js") : Url("jquery.validate.unobtrusive.js");
         public static readonly string jquery_validate_unobtrusive_min_js = Url("jquery.validate.unobtrusive.min.js");
-        public static readonly string modernizr_2_6_2_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/modernizr-2.6.2.min.js") ? Url("modernizr-2.6.2.min.js") : Url("modernizr-2.6.2.js");
-        public static readonly string modernizr_2_8_3_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/modernizr-2.8.3.min.js") ? Url("modernizr-2.8.3.min.js") : Url("modernizr-2.8.3.js");
+        public static readonly string moment_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/moment.min.js") ? Url("moment.min.js") : Url("moment.js");
+        public static readonly string moment_min_js = Url("moment.min.js");
         public static readonly string namespace_1_0_0_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/namespace-1.0.0.min.js") ? Url("namespace-1.0.0.min.js") : Url("namespace-1.0.0.js");
         public static readonly string namespace_min_1_0_0_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/namespace.min-1.0.0.min.js") ? Url("namespace.min-1.0.0.min.js") : Url("namespace.min-1.0.0.js");
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -400,8 +400,8 @@ namespace Links
                 public const string jquery_validate_min_js = "~/Scripts/jquery.validate.min.js"; 
                 public const string jquery_validate_unobtrusive_js = "~/Scripts/jquery.validate.unobtrusive.js"; 
                 public const string jquery_validate_unobtrusive_min_js = "~/Scripts/jquery.validate.unobtrusive.min.js"; 
-                public const string modernizr_2_6_2_js = "~/Scripts/modernizr-2.6.2.js"; 
-                public const string modernizr_2_8_3_js = "~/Scripts/modernizr-2.8.3.js"; 
+                public const string moment_js = "~/Scripts/moment.js"; 
+                public const string moment_min_js = "~/Scripts/moment.min.js"; 
                 public const string namespace_1_0_0_js = "~/Scripts/namespace-1.0.0.js"; 
                 public const string namespace_min_1_0_0_js = "~/Scripts/namespace.min-1.0.0.js"; 
                 public const string respond_js = "~/Scripts/respond.js"; 

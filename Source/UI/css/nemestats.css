@@ -49,16 +49,15 @@
   .flip-scroll table {
     width: 100%;
     border-collapse: collapse;
-    border-spacing: 0; }
+    border-spacing: 0;
+    display: block;
+    position: relative; }
   .flip-scroll th, .flip-scroll td {
     margin: 0;
     vertical-align: top; }
   .flip-scroll th {
-    text-align: left; }
-  .flip-scroll table {
-    display: block;
-    position: relative;
-    width: 100%; }
+    text-align: right !important;
+    display: block !important; }
   .flip-scroll thead {
     display: block;
     float: left;
@@ -69,28 +68,21 @@
     position: relative;
     overflow-x: auto;
     white-space: nowrap; }
+    .flip-scroll tbody tr {
+      border-left: 1px solid #babcbf; }
+      .flip-scroll tbody tr:first-child {
+        border-left: 0; }
   .flip-scroll thead tr {
     display: block; }
-  .flip-scroll th {
-    display: block !important;
-    text-align: right; }
   .flip-scroll tbody tr {
     display: inline-block;
     vertical-align: top; }
   .flip-scroll td {
     display: block;
-    min-height: 1.25em; }
-  .flip-scroll th {
+    min-height: 1.25em;
     border-bottom: 0;
-    border-left: 0; }
-  .flip-scroll td {
     border-left: 0;
-    border-right: 0;
-    border-bottom: 0; }
-  .flip-scroll tbody tr {
-    border-left: 1px solid #babcbf; }
-    .flip-scroll tbody tr:first-child {
-      border-left: 0; }
+    border-right: 0; }
   .flip-scroll th:last-child, .flip-scroll td:last-child {
     border-bottom: 1px solid #babcbf; }
   /* sort out borders */ }
@@ -474,11 +466,19 @@ footer {
     font-size: 13px;
     padding-right: 5px; } }
 
+.game-player-statistics .flip-scroll tr {
+  width: 120px;
+  text-align: center; }
+
 @media only screen and (max-width: 991px) {
+  .flip-scroll .badges-head {
+    height: 37px; }
   .flip-scroll .bgg-link-head {
     height: 100px; }
   .flip-scroll .edit-head {
     height: 48px; }
+  .flip-scroll .avgpoints-head {
+    height: 50px; }
   .flip-scroll .name-head {
     height: 70px; }
   .flip-scroll .nemesis-head {
@@ -487,6 +487,13 @@ footer {
     padding-right: 0; }
   .flip-scroll .result-head {
     height: 190px; }
+  .flip-scroll .wonpercentage-head {
+    height: 73px;
+    padding-top: 40px; }
+  .flip-scroll .badges-col {
+    height: 37px; }
+  .flip-scroll .avgpoints-col {
+    height: 50px; }
   .flip-scroll .name-col {
     height: 70px;
     max-width: 200px;
@@ -650,6 +657,9 @@ footer {
     .progress .progress-bar span {
       margin-left: 5px; }
 
+.game-player-statistics th {
+  text-align: center; }
+
 /*$header-background-color: #2C3E50;*/
 .neme-points-ico {
   color: #354458;
@@ -666,6 +676,16 @@ footer {
     font-weight: 700;
     font-size: 1.7em;
     top: -7px; }
+
+.game-player-statistics .fa.fa-trophy.fa-slashed {
+  position: relative; }
+  .game-player-statistics .fa.fa-trophy.fa-slashed:after {
+    position: absolute;
+    content: "/";
+    font-weight: 700;
+    font-size: 1.7em;
+    top: -7px;
+    left: 0; }
 
 @media (max-width: 991px) {
   #player-details .gameDefinitionsList.flip-scroll .badges-head {
