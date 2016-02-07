@@ -62,6 +62,7 @@ namespace UI.Transformations
             Mapper.CreateMap<PlayerStatistics, PlayerStatisticsMessage>(MemberList.Destination);
             Mapper.CreateMap<PlayedGameQuickStats, PlayedGameQuickStatsViewModel>(MemberList.Destination);
             Mapper.CreateMap<PlayerQuickStats, PlayerQuickStatsViewModel>(MemberList.Destination);
+            Mapper.CreateMap<TopGame, TopGameViewModel>(MemberList.Destination);
         }
     }
 }

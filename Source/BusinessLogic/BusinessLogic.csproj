@@ -178,6 +178,7 @@
     <Compile Include="Migrations\201601120806479_BoardGameGeekDefinitionTable.Designer.cs">
       <DependentUpon>201601120806479_BoardGameGeekDefinitionTable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Models\Games\TopGame.cs" />
     <Compile Include="Models\User\BoardGameGeekUserInformation.cs" />
     <Compile Include="Models\Validation\BaseValidatableRequestSaver.cs" />
     <Compile Include="Logic\Users\BoardGameGeekUserSaver.cs" />

@@ -29,5 +29,6 @@ namespace BusinessLogic.Logic.GameDefinitions
         IList<GameDefinitionSummary> GetAllGameDefinitions(int gamingGroupId, IDateRangeFilter dateRangeFilter = null);
         GameDefinitionSummary GetGameDefinitionDetails(int id, int numberOfPlayedGamesToRetrieve);
         IList<GameDefinitionName> GetAllGameDefinitionNames(int gamingGroupId);
+        List<TopGame> GetTopGames(int numberOfDaysOfTopGames);
     }
 }

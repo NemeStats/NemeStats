@@ -222,5 +222,10 @@ namespace BusinessLogic.Logic.GameDefinitions
                                   Name = gameDefiniton.Name
                               }).ToList();
         }
+
+        public List<TopGame> GetTopGames(int numberOfDaysOfTopGames)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
