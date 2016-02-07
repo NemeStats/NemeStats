@@ -84,7 +84,10 @@ namespace UI.Transformations
 
             var playersSummaryViewModel = new GameDefinitionPlayersSummaryViewModel
             {
-                GameDefinitionPlayerSummaries = gameDefinitionSummary.PlayerWinRecords.Select(transformer.Transform<PlayerWinRecord, GameDefinitionPlayerSummaryViewModel>).ToList()
+                GameDefinitionPlayerSummaries = gameDefinitionSummary.PlayerWinRecords
+                    .Select(transformer.Transform<PlayerWinRecord, GameDefinitionPlayerSummaryViewModel>)
+                    .OrderByDescending(x => x.TotalGamesPlayed)
+                    .ToList()
             };
             viewModel.GameDefinitionPlayersSummary = playersSummaryViewModel;
 
