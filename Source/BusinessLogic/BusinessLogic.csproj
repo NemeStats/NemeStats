@@ -178,6 +178,10 @@
     <Compile Include="Migrations\201601120806479_BoardGameGeekDefinitionTable.Designer.cs">
       <DependentUpon>201601120806479_BoardGameGeekDefinitionTable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201602091230112_AddTopGamesVotableFeature.cs" />
+    <Compile Include="Migrations\201602091230112_AddTopGamesVotableFeature.Designer.cs">
+      <DependentUpon>201602091230112_AddTopGamesVotableFeature.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Games\TopGame.cs" />
     <Compile Include="Models\User\BoardGameGeekUserInformation.cs" />
     <Compile Include="Models\Validation\BaseValidatableRequestSaver.cs" />
@@ -731,6 +735,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201601120806479_BoardGameGeekDefinitionTable.resx">
       <DependentUpon>201601120806479_BoardGameGeekDefinitionTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602091230112_AddTopGamesVotableFeature.resx">
+      <DependentUpon>201602091230112_AddTopGamesVotableFeature.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

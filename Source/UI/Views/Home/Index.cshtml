@@ -63,7 +63,7 @@
     <div class="col-md-12">
         <div class="col-md-6">
             <div class="fl-left">
-                <h3>Top Games (Last 90 Days)</h3>
+                <h3>Trending Games (Last 90 Days)</h3>
             </div>
             @Html.Partial(MVC.GameDefinition.Views._TopGamesPartial, Model.TopGames)
         </div>
@@ -87,7 +87,7 @@
         $(document).ready(function () {
             $("#recentGamesVote").rank({ votableFeatureId: "RecentGlobalGames" });
             $("#topPlayersVote").rank({ votableFeatureId: "TopGlobalPlayers" });
-            $("#nemesisChangeVote").rank({ votableFeatureId: "RecentGlobalNemesisChanges" });
+            $("#topGlobalGameDefinitionsVote").rank({ votableFeatureId: "RecentGlobalTopGameDefinitions" });
             $("#gamingGroupsVote").rank({ votableFeatureId: "TopGlobalGamingGroups" });
         });
     </script>

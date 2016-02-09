@@ -34,11 +34,12 @@ namespace UI.Controllers
 {
     public partial class HomeController : Controller
     {
-        internal const int NUMBER_OF_TOP_PLAYERS_TO_SHOW = 5;
+        internal const int NUMBER_OF_TOP_PLAYERS_TO_SHOW = 15;
         internal const int NUMBER_OF_RECENT_PUBLIC_GAMES_TO_SHOW = 5;
         internal const int NUMBER_OF_RECENT_NEMESIS_CHANGES_TO_SHOW = 5;
         internal const int NUMBER_OF_TOP_GAMING_GROUPS_TO_SHOW = 15;
         internal const int NUMBER_OF_DAYS_OF_TOP_GAMES = 90;
+        internal const int NUMBER_OF_TOP_GAMES_TO_SHOW = 5;
 
         private readonly IPlayerSummaryBuilder playerSummaryBuilder;
         private readonly ITopPlayerViewModelBuilder topPlayerViewModelBuilder;
@@ -76,7 +77,7 @@ namespace UI.Controllers
 
             var topGamingGroupViewModels = topGamingGroups.Select(transformer.Transform<TopGamingGroupSummary, TopGamingGroupSummaryViewModel>).ToList();
 
-            var topGames = gameDefinitionRetriever.GetTopGames(NUMBER_OF_DAYS_OF_TOP_GAMES);
+            var topGames = gameDefinitionRetriever.GetTopGames(NUMBER_OF_TOP_GAMES_TO_SHOW, NUMBER_OF_DAYS_OF_TOP_GAMES);
             var topGameViewModels = topGames.Select(transformer.Transform<TopGame, TopGameViewModel>).ToList();
 
             var homeIndexViewModel = new HomeIndexViewModel()

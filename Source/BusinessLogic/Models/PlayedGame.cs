@@ -30,6 +30,7 @@ namespace BusinessLogic.Models
         public PlayedGame()
         {
             DateCreated = DateTime.UtcNow;
+            DatePlayed = DateTime.UtcNow;
         }
 
         public override int Id { get; set; }

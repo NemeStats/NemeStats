@@ -105,7 +105,7 @@ namespace UI.Tests.UnitTests.ControllerTests.HomeControllerTests
 
             expectedTopGame = new TopGame
             {
-                BoardGameGeekUri = new Uri("https://someuri.com"),
+                BoardGameGeekGameDefinitionId = 1,
                 GamesPlayed = 1,
                 GamingGroupsPlayingThisGame = 2,
                 ThumbnailImageUrl = "some thumbnail"
@@ -115,7 +115,7 @@ namespace UI.Tests.UnitTests.ControllerTests.HomeControllerTests
                 expectedTopGame
             };
             expectedTopGameViewModel = new TopGameViewModel();
-            _autoMocker.Get<IGameDefinitionRetriever>().Expect(mock => mock.GetTopGames(HomeController.NUMBER_OF_DAYS_OF_TOP_GAMES)).Return(expectedTopGames);
+            _autoMocker.Get<IGameDefinitionRetriever>().Expect(mock => mock.GetTopGames(HomeController.NUMBER_OF_TOP_GAMES_TO_SHOW, HomeController.NUMBER_OF_DAYS_OF_TOP_GAMES)).Return(expectedTopGames);
             _autoMocker.Get<ITransformer>().Expect(mock => mock.Transform<TopGame, TopGameViewModel>(expectedTopGames[0])).Return(expectedTopGameViewModel);
 
             viewResult = _autoMocker.ClassUnderTest.Index() as ViewResult;
