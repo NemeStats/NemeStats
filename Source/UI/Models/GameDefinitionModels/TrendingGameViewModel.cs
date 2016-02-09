@@ -2,7 +2,7 @@
 
 namespace UI.Models.GameDefinitionModels
 {
-    public class TopGameViewModel
+    public class TrendingGameViewModel
     {
         public Uri BoardGameGeekUri { get; set; }
         public string ThumbnailImageUrl { get; set; }

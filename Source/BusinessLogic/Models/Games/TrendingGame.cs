@@ -3,7 +3,7 @@ using BusinessLogic.Logic.BoardGameGeek;
 
 namespace BusinessLogic.Models.Games
 {
-    public class TopGame
+    public class TrendingGame
     {
         public Uri BoardGameGeekUri => BoardGameGeekUriBuilder.BuildBoardGameGeekGameUri(BoardGameGeekGameDefinitionId);
         public int BoardGameGeekGameDefinitionId { get; set; }

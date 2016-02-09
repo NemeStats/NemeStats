@@ -38,8 +38,8 @@ namespace UI.Controllers
         internal const int NUMBER_OF_RECENT_PUBLIC_GAMES_TO_SHOW = 5;
         internal const int NUMBER_OF_RECENT_NEMESIS_CHANGES_TO_SHOW = 5;
         internal const int NUMBER_OF_TOP_GAMING_GROUPS_TO_SHOW = 15;
-        internal const int NUMBER_OF_DAYS_OF_TOP_GAMES = 90;
-        internal const int NUMBER_OF_TOP_GAMES_TO_SHOW = 5;
+        internal const int NUMBER_OF_DAYS_OF_TRENDING_GAMES = 90;
+        internal const int NUMBER_OF_TRENDING_GAMES_TO_SHOW = 5;
 
         private readonly IPlayerSummaryBuilder playerSummaryBuilder;
         private readonly ITopPlayerViewModelBuilder topPlayerViewModelBuilder;
@@ -77,15 +77,15 @@ namespace UI.Controllers
 
             var topGamingGroupViewModels = topGamingGroups.Select(transformer.Transform<TopGamingGroupSummary, TopGamingGroupSummaryViewModel>).ToList();
 
-            var topGames = gameDefinitionRetriever.GetTopGames(NUMBER_OF_TOP_GAMES_TO_SHOW, NUMBER_OF_DAYS_OF_TOP_GAMES);
-            var topGameViewModels = topGames.Select(transformer.Transform<TopGame, TopGameViewModel>).ToList();
+            var trendingGames = gameDefinitionRetriever.GetTrendingGames(NUMBER_OF_TRENDING_GAMES_TO_SHOW, NUMBER_OF_DAYS_OF_TRENDING_GAMES);
+            var trendingGameViewModels = trendingGames.Select(transformer.Transform<TrendingGame, TrendingGameViewModel>).ToList();
 
             var homeIndexViewModel = new HomeIndexViewModel()
             {
                 TopPlayers = topPlayerViewModels,
                 RecentPublicGames = publicGameSummaries,
                 TopGamingGroups = topGamingGroupViewModels,
-                TopGames = topGameViewModels
+                TrendingGames = trendingGameViewModels
             };
             return View(MVC.Home.Views.Index, homeIndexViewModel);
         }

@@ -49,8 +49,8 @@ namespace UI.Tests.UnitTests.ControllerTests.HomeControllerTests
         private PublicGameSummary expectedPublicGameSummary;
         private List<NemesisChangeViewModel> expectedNemesisChangeViewModels;
         private TopGamingGroupSummary expectedTopGamingGroup;
-        private TopGame expectedTopGame;
-        private TopGameViewModel expectedTopGameViewModel;
+        private TrendingGame _expectedTrendingGame;
+        private TrendingGameViewModel _expectedTrendingGameViewModel;
         private TopGamingGroupSummaryViewModel expectedTopGamingGroupViewModel;
         private ViewResult viewResult;
             
@@ -103,20 +103,20 @@ namespace UI.Tests.UnitTests.ControllerTests.HomeControllerTests
                 .Expect(mock => mock.Transform<TopGamingGroupSummary, TopGamingGroupSummaryViewModel>(expectedTopGamingGroupSummaries[0]))
                 .Return(expectedTopGamingGroupViewModel);
 
-            expectedTopGame = new TopGame
+            _expectedTrendingGame = new TrendingGame
             {
                 BoardGameGeekGameDefinitionId = 1,
                 GamesPlayed = 1,
                 GamingGroupsPlayingThisGame = 2,
                 ThumbnailImageUrl = "some thumbnail"
             };
-            var expectedTopGames = new List<TopGame>
+            var expectedTopGames = new List<TrendingGame>
             {
-                expectedTopGame
+                _expectedTrendingGame
             };
-            expectedTopGameViewModel = new TopGameViewModel();
-            _autoMocker.Get<IGameDefinitionRetriever>().Expect(mock => mock.GetTopGames(HomeController.NUMBER_OF_TOP_GAMES_TO_SHOW, HomeController.NUMBER_OF_DAYS_OF_TOP_GAMES)).Return(expectedTopGames);
-            _autoMocker.Get<ITransformer>().Expect(mock => mock.Transform<TopGame, TopGameViewModel>(expectedTopGames[0])).Return(expectedTopGameViewModel);
+            _expectedTrendingGameViewModel = new TrendingGameViewModel();
+            _autoMocker.Get<IGameDefinitionRetriever>().Expect(mock => mock.GetTrendingGames(HomeController.NUMBER_OF_TRENDING_GAMES_TO_SHOW, HomeController.NUMBER_OF_DAYS_OF_TRENDING_GAMES)).Return(expectedTopGames);
+            _autoMocker.Get<ITransformer>().Expect(mock => mock.Transform<TrendingGame, TrendingGameViewModel>(expectedTopGames[0])).Return(_expectedTrendingGameViewModel);
 
             viewResult = _autoMocker.ClassUnderTest.Index() as ViewResult;
         }
@@ -148,7 +148,7 @@ namespace UI.Tests.UnitTests.ControllerTests.HomeControllerTests
         {
             var actualViewModel = (HomeIndexViewModel)viewResult.ViewData.Model;
 
-            Assert.AreSame(expectedTopGameViewModel, actualViewModel.TopGames[0]);
+            Assert.AreSame(_expectedTrendingGameViewModel, actualViewModel.TrendingGames[0]);
         }
 
         [Test]

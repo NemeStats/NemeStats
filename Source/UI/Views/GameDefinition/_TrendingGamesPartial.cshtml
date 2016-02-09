@@ -1,8 +1,8 @@
-﻿@model IEnumerable<UI.Models.GameDefinitionModels.TopGameViewModel>
+﻿@model IEnumerable<UI.Models.GameDefinitionModels.TrendingGameViewModel>
 <div id="topGlobalGameDefinitionsVote" class="fl-right" style="margin-top: 21px; margin-bottom: 10.5px;"></div>
 <div class="fl-clear"></div>
 <div class="flip-scroll">
-    <table class="table table-hover table-striped gameDefinitionsList" id="topGamesTable">
+    <table class="table table-hover table-striped gameDefinitionsList" id="trendingGamesTable">
         <thead>
             <tr>
                 <th></th>
@@ -12,17 +12,17 @@
             </tr>
         </thead>
         @{ var position = 1; }
-        @foreach (UI.Models.GameDefinitionModels.TopGameViewModel topGame in @Model)
+        @foreach (UI.Models.GameDefinitionModels.TrendingGameViewModel trendingGame in @Model)
         {
             <tr class="game-item" data-position="@position">
                 @{position++;}
                 <td class="bgg-link-col">
-                    @if (topGame.BoardGameGeekUri != null)
+                    @if (trendingGame.BoardGameGeekUri != null)
                     {
-                        <a href="@topGame.BoardGameGeekUri" target="_blank;">
-                            @if (!string.IsNullOrEmpty(topGame.ThumbnailImageUrl))
+                        <a href="@trendingGame.BoardGameGeekUri" target="_blank;">
+                            @if (!string.IsNullOrEmpty(trendingGame.ThumbnailImageUrl))
                             {
-                                <img class="bgg-thumbnail" src="@topGame.ThumbnailImageUrl" alt="View on BoardGameGeek.com" title="View on BoardGameGeek.com"/>
+                                <img class="bgg-thumbnail" src="@trendingGame.ThumbnailImageUrl" alt="View on BoardGameGeek.com" title="View on BoardGameGeek.com"/>
                             }
                             else
                             {
@@ -32,9 +32,9 @@
                         </a>
                     }
                 </td>
-                <td>@topGame.Name</td>
-                <td>@topGame.GamesPlayed</td>
-                <td>@topGame.GamingGroupsPlayingThisGame</td>
+                <td>@trendingGame.Name</td>
+                <td>@trendingGame.GamesPlayed</td>
+                <td>@trendingGame.GamingGroupsPlayingThisGame</td>
             </tr>
          }
     </table>

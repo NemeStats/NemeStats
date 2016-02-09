@@ -226,11 +226,11 @@ namespace BusinessLogic.Logic.GameDefinitions
                               }).ToList();
         }
 
-        public List<TopGame> GetTopGames(int maxNumberOfGames, int numberOfDaysOfTopGames)
+        public List<TrendingGame> GetTrendingGames(int maxNumberOfGames, int numberOfDaysOfTrendingGames)
         {
-            var startDate = DateTime.Now.Date.AddDays(-1 * numberOfDaysOfTopGames);
+            var startDate = DateTime.Now.Date.AddDays(-1 * numberOfDaysOfTrendingGames);
             return (from result in dataContext.GetQueryable<BoardGameGeekGameDefinition>()
-                    select new TopGame
+                    select new TrendingGame
                     {
                         BoardGameGeekGameDefinitionId = result.Id,
                         Name = result.Name,

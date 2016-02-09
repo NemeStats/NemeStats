@@ -10,14 +10,8 @@ using Rhino.Mocks;
 namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefinitionRetrieverTests
 {
     [TestFixture]
-    public class GetTopGamesTests : GameDefinitionRetrieverTestBase
+    public class GetTrendingGamesTests : GameDefinitionRetrieverTestBase
     {
-        [SetUp]
-        public void LocalSetUp()
-        {
-            
-        }
-
         [Test]
         public void ItOnlyReturnsCountsForPlayedGamesThatHappenedXDaysAgoOrLater()
         {
@@ -56,7 +50,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
             }.AsQueryable();
             autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<BoardGameGeekGameDefinition>()).Return(boardGameGeekGameDefinitionQueryable);
 
-            var results = autoMocker.ClassUnderTest.GetTopGames(100, days);
+            var results = autoMocker.ClassUnderTest.GetTrendingGames(100, days);
 
             Assert.That(results.Count, Is.EqualTo(1));
             Assert.That(results[0].GamesPlayed, Is.EqualTo(1));
@@ -123,7 +117,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
             autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<BoardGameGeekGameDefinition>()).Return(boardGameGeekGameDefinitionQueryable);
             int expectedNumberOfGames = 2;
 
-            var results = autoMocker.ClassUnderTest.GetTopGames(expectedNumberOfGames, 1);
+            var results = autoMocker.ClassUnderTest.GetTrendingGames(expectedNumberOfGames, 1);
 
             Assert.That(results.Count, Is.EqualTo(expectedNumberOfGames));
             Assert.That(results[0].GamesPlayed, Is.EqualTo(3));
@@ -167,7 +161,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
             autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<BoardGameGeekGameDefinition>()).Return(boardGameGeekGameDefinitionQueryable);
             int expectedNumberOfGames = 2;
 
-            var results = autoMocker.ClassUnderTest.GetTopGames(expectedNumberOfGames, 1);
+            var results = autoMocker.ClassUnderTest.GetTrendingGames(expectedNumberOfGames, 1);
 
             Assert.That(results[0].BoardGameGeekGameDefinitionId, Is.EqualTo(expectedBoardGameGeekGameDefinitionId1));
             Assert.That(results[0].BoardGameGeekUri, Is.EqualTo(BoardGameGeekUriBuilder.BuildBoardGameGeekGameUri(expectedBoardGameGeekGameDefinitionId1)));

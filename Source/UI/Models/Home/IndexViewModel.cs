@@ -37,6 +37,6 @@ namespace UI.Models.Home
         public List<TopPlayerViewModel> TopPlayers { get; set; }
         public List<PublicGameSummary> RecentPublicGames { get; set; }
         public List<TopGamingGroupSummaryViewModel> TopGamingGroups { get; set; }
-        public List<TopGameViewModel> TopGames { get; set; }
+        public List<TrendingGameViewModel> TrendingGames { get; set; }
     }
 }
