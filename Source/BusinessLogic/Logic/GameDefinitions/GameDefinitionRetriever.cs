@@ -128,7 +128,7 @@ namespace BusinessLogic.Logic.GameDefinitions
                                                                GamingGroupId = gameDefinition.GamingGroupId,
                                                                GamingGroupName = gameDefinition.GamingGroup.Name,
                                                                Id = gameDefinition.Id,
-                                                               ThumbnailImageUrl = gameDefinition.BoardGameGeekGameDefinition == null ? null : gameDefinition.BoardGameGeekGameDefinition.Thumbnail,
+                                                               ThumbnailImageUrl = gameDefinition.BoardGameGeekGameDefinition?.Thumbnail,
                                                                TotalNumberOfGamesPlayed = gameDefinition.PlayedGames.Count,
                                                                AveragePlayersPerGame = gameDefinition.PlayedGames.Select(item => (decimal)item.NumberOfPlayers).DefaultIfEmpty(0M).Average(),
             Champion = gameDefinition.Champion ?? new NullChampion(),
@@ -202,8 +202,6 @@ namespace BusinessLogic.Logic.GameDefinitions
         {
             IList<Player> players = dataContext.GetQueryable<Player>()
                 .Where(player => distinctPlayerIds.Contains(player.Id))
-                .OrderByDescending(player => player.Active)
-                .ThenBy(player => player.Name)
                 .ToList();
 
             foreach (PlayedGame playedGame in playedGames)

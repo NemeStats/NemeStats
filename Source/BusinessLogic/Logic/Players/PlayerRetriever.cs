@@ -91,7 +91,7 @@ namespace BusinessLogic.Logic.Players
                                           //only get championed games where this player is the current champion
                                           TotalChampionedGames = player.ChampionedGames.Count(champion => champion.GameDefinition.ChampionId != null && champion.GameDefinition.ChampionId.Value == champion.Id)
                                       }
-                ).OrderByDescending(x => x.PlayerActive).ThenBy(pwn => pwn.PlayerName)
+                ).OrderByDescending(x => x.PlayerActive).ThenByDescending(pwn => pwn.TotalPoints).ThenByDescending(pwn => pwn.GamesWon).ThenBy(pwn => pwn.PlayerName)
                 .ToList();
 
             return playersWithNemesis;

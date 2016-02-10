@@ -161,6 +161,7 @@ namespace BusinessLogic.DataAccess.Repositories
             @"SELECT
               Player.Id AS PlayerId
               ,Player.Name AS PlayerName
+              ,Player.Active AS PlayerActive
               ,SUM(CASE WHEN PGR.GameRank = 1 THEN 1 ELSE 0 END) AS GamesWon
               ,SUM(CASE WHEN PGR.GameRank <> 1 THEN 1 ELSE 0 END) AS GamesLost
               ,SUM(PGR.NemeStatsPointsAwarded) AS TotalNemePoints
@@ -176,8 +177,8 @@ namespace BusinessLogic.DataAccess.Repositories
               INNER JOIN Player ON PGR.PlayerId = Player.Id
               LEFT JOIN Champion ON Champion.Id = GD.ChampionId
               WHERE GD.Id = @GameDefinitionId
-              GROUP BY GD.[Id], GD.[Name], Player.Id, Player.Name, CONVERT(BIT, CASE WHEN Player.Id = Champion.PlayerId THEN 1 ELSE 0 END)
-              ORDER BY GamesWon DESC, GamesLost DESC, PlayerName";
+              GROUP BY GD.[Id], GD.[Name], Player.Id, Player.Name,Player.Active, CONVERT(BIT, CASE WHEN Player.Id = Champion.PlayerId THEN 1 ELSE 0 END)
+              ORDER BY PlayerActive DESC, TotalNemePoints DESC, GamesWon DESC, PlayerName";
 
         public IList<PlayerWinRecord> GetPlayerWinRecords(int gameDefinitionId)
         {
