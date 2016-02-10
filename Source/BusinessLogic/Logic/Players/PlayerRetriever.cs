@@ -16,6 +16,7 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 
+using System;
 using BusinessLogic.DataAccess;
 using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.Models;
@@ -53,7 +54,8 @@ namespace BusinessLogic.Logic.Players
         public List<Player> GetAllPlayers(int gamingGroupId)
         {
             return GetAllPlayersInGamingGroupQueryable(gamingGroupId)
-                .OrderBy(player => player.Name)
+                .OrderByDescending(player => player.Active)
+                .ThenBy(player => player.Name)
                 .ToList();
         }
 
@@ -89,7 +91,7 @@ namespace BusinessLogic.Logic.Players
                                           //only get championed games where this player is the current champion
                                           TotalChampionedGames = player.ChampionedGames.Count(champion => champion.GameDefinition.ChampionId != null && champion.GameDefinition.ChampionId.Value == champion.Id)
                                       }
-                ).OrderByDescending(x => x.PlayerActive).ThenByDescending(pwn => pwn.TotalPoints).ThenBy(p => p.PlayerName)
+                ).OrderByDescending(x => x.PlayerActive).ThenBy(pwn => pwn.PlayerName)
                 .ToList();
 
             return playersWithNemesis;
