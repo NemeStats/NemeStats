@@ -15,6 +15,8 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
+
+using System;
 using System.Data.Entity;
 using BusinessLogic.DataAccess;
 using BusinessLogic.DataAccess.Repositories;
@@ -199,6 +201,8 @@ namespace BusinessLogic.Logic.GameDefinitions
         {
             IList<Player> players = dataContext.GetQueryable<Player>()
                 .Where(player => distinctPlayerIds.Contains(player.Id))
+                .OrderByDescending(player => player.Active)
+                .ThenBy(player => player.Name)
                 .ToList();
 
             foreach (PlayedGame playedGame in playedGames)

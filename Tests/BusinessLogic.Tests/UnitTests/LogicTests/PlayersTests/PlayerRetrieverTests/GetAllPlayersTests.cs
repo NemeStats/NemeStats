@@ -34,13 +34,20 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
         }
 
         [Test]
-        public void ItReturnsPlayersOrderedByTheirNameAscending()
+        public void ItReturnsPlayersOrderedByActiveThenTheirNameAscending()
         {
             List<Player> players = autoMocker.ClassUnderTest.GetAllPlayers(gamingGroupId);
             string lastPlayerName = "0";
+            bool lastActive = true;
             foreach(Player player in players)
             {
+                if (!player.Active && lastActive)
+                {
+                    lastActive = false;
+                    lastPlayerName = "0";
+                }
                 Assert.LessOrEqual(lastPlayerName, player.Name);
+                
                 lastPlayerName = player.Name;
             }
         }
