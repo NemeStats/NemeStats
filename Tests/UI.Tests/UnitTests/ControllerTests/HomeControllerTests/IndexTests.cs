@@ -15,6 +15,8 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
+
+using System;
 using AutoMapper;
 using BusinessLogic.Logic.Nemeses;
 using BusinessLogic.Models.Games;
@@ -24,12 +26,19 @@ using Rhino.Mocks;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using BusinessLogic.Logic.GameDefinitions;
+using BusinessLogic.Logic.GamingGroups;
+using BusinessLogic.Logic.PlayedGames;
+using BusinessLogic.Logic.Players;
 using UI.Controllers;
 using UI.Models.GamingGroup;
 using UI.Models.Home;
 using UI.Models.Nemeses;
 using UI.Models.Players;
 using BusinessLogic.Models.GamingGroups;
+using UI.Models.GameDefinitionModels;
+using UI.Transformations;
+using UI.Transformations.PlayerTransformations;
 
 namespace UI.Tests.UnitTests.ControllerTests.HomeControllerTests
 {
@@ -40,6 +49,8 @@ namespace UI.Tests.UnitTests.ControllerTests.HomeControllerTests
         private PublicGameSummary expectedPublicGameSummary;
         private List<NemesisChangeViewModel> expectedNemesisChangeViewModels;
         private TopGamingGroupSummary expectedTopGamingGroup;
+        private TrendingGame _expectedTrendingGame;
+        private TrendingGameViewModel _expectedTrendingGameViewModel;
         private TopGamingGroupSummaryViewModel expectedTopGamingGroupViewModel;
         private ViewResult viewResult;
             
@@ -48,31 +59,31 @@ namespace UI.Tests.UnitTests.ControllerTests.HomeControllerTests
         {
             base.SetUp();
 
-            List<TopPlayer> topPlayers = new List<TopPlayer>()
+            var topPlayers = new List<TopPlayer>()
             {
                 new TopPlayer()
             };
 
-            playerSummaryBuilderMock.Expect(mock => mock.GetTopPlayers(HomeController.NUMBER_OF_TOP_PLAYERS_TO_SHOW))
+            _autoMocker.Get<IPlayerSummaryBuilder>().Expect(mock => mock.GetTopPlayers(HomeController.NUMBER_OF_TOP_PLAYERS_TO_SHOW))
                 .Return(topPlayers);
             expectedPlayer = new TopPlayerViewModel();
-            topPlayerViewModelBuilderMock.Expect(mock => mock.Build(Arg<TopPlayer>.Is.Anything))
+            _autoMocker.Get<ITopPlayerViewModelBuilder>().Expect(mock => mock.Build(Arg<TopPlayer>.Is.Anything))
                 .Return(expectedPlayer);
 
             expectedPublicGameSummary = new PublicGameSummary();
-            List<PublicGameSummary> publicGameSummaries = new List<PublicGameSummary>()
+            var publicGameSummaries = new List<PublicGameSummary>()
             {
                 expectedPublicGameSummary
             };
-            playedGameRetrieverMock.Expect(mock => mock.GetRecentPublicGames(HomeController.NUMBER_OF_RECENT_PUBLIC_GAMES_TO_SHOW))
+            _autoMocker.Get<IPlayedGameRetriever>().Expect(mock => mock.GetRecentPublicGames(HomeController.NUMBER_OF_RECENT_PUBLIC_GAMES_TO_SHOW))
                 .Return(publicGameSummaries);
 
-            List<NemesisChange> expectedNemesisChanges = new List<NemesisChange>();
-            nemesisHistoryRetrieverMock.Expect(mock => mock.GetRecentNemesisChanges(HomeController.NUMBER_OF_RECENT_NEMESIS_CHANGES_TO_SHOW))
+            var expectedNemesisChanges = new List<NemesisChange>();
+            _autoMocker.Get<INemesisHistoryRetriever>().Expect(mock => mock.GetRecentNemesisChanges(HomeController.NUMBER_OF_RECENT_NEMESIS_CHANGES_TO_SHOW))
                                    .Return(expectedNemesisChanges);
 
             expectedNemesisChangeViewModels = new List<NemesisChangeViewModel>();
-            nemesisChangeViewModelBuilderMock.Expect(mock => mock.Build(expectedNemesisChanges))
+            _autoMocker.Get<INemesisChangeViewModelBuilder>().Expect(mock => mock.Build(expectedNemesisChanges))
                                          .Return(expectedNemesisChangeViewModels);
 
             expectedTopGamingGroup = new TopGamingGroupSummary()
@@ -82,16 +93,32 @@ namespace UI.Tests.UnitTests.ControllerTests.HomeControllerTests
                 NumberOfGamesPlayed = 2,
                 NumberOfPlayers = 3
             };
-            List<TopGamingGroupSummary> expectedTopGamingGroupSummaries = new List<TopGamingGroupSummary>()
+            var expectedTopGamingGroupSummaries = new List<TopGamingGroupSummary>()
             {
                 expectedTopGamingGroup
             };
-            gamingGroupRetrieverMock.Expect(mock => mock.GetTopGamingGroups(HomeController.NUMBER_OF_TOP_GAMING_GROUPS_TO_SHOW))
+            _autoMocker.Get<IGamingGroupRetriever>().Expect(mock => mock.GetTopGamingGroups(HomeController.NUMBER_OF_TOP_GAMING_GROUPS_TO_SHOW))
                                     .Return(expectedTopGamingGroupSummaries);
-            expectedTopGamingGroupViewModel = Mapper.Map<TopGamingGroupSummary, TopGamingGroupSummaryViewModel>(expectedTopGamingGroupSummaries[0]);
+            _autoMocker.Get<ITransformer>()
+                .Expect(mock => mock.Transform<TopGamingGroupSummary, TopGamingGroupSummaryViewModel>(expectedTopGamingGroupSummaries[0]))
+                .Return(expectedTopGamingGroupViewModel);
 
-            HomeIndexViewModel indexViewModel = new HomeIndexViewModel();
-            viewResult = homeControllerPartialMock.Index() as ViewResult;
+            _expectedTrendingGame = new TrendingGame
+            {
+                BoardGameGeekGameDefinitionId = 1,
+                GamesPlayed = 1,
+                GamingGroupsPlayingThisGame = 2,
+                ThumbnailImageUrl = "some thumbnail"
+            };
+            var expectedTopGames = new List<TrendingGame>
+            {
+                _expectedTrendingGame
+            };
+            _expectedTrendingGameViewModel = new TrendingGameViewModel();
+            _autoMocker.Get<IGameDefinitionRetriever>().Expect(mock => mock.GetTrendingGames(HomeController.NUMBER_OF_TRENDING_GAMES_TO_SHOW, HomeController.NUMBER_OF_DAYS_OF_TRENDING_GAMES)).Return(expectedTopGames);
+            _autoMocker.Get<ITransformer>().Expect(mock => mock.Transform<TrendingGame, TrendingGameViewModel>(expectedTopGames[0])).Return(_expectedTrendingGameViewModel);
+
+            viewResult = _autoMocker.ClassUnderTest.Index() as ViewResult;
         }
 
         [Test]
@@ -103,7 +130,7 @@ namespace UI.Tests.UnitTests.ControllerTests.HomeControllerTests
         [Test]
         public void TheIndexHasTheRecentPlayerSummaries()
         {
-            HomeIndexViewModel actualViewModel = (HomeIndexViewModel)viewResult.ViewData.Model;
+            var actualViewModel = (HomeIndexViewModel)viewResult.ViewData.Model;
 
             Assert.AreSame(expectedPlayer, actualViewModel.TopPlayers[0]);
         }
@@ -111,29 +138,25 @@ namespace UI.Tests.UnitTests.ControllerTests.HomeControllerTests
         [Test]
         public void TheIndexHasRecentPublicGameSummaries()
         {
-            HomeIndexViewModel actualViewModel = (HomeIndexViewModel)viewResult.ViewData.Model;
+            var actualViewModel = (HomeIndexViewModel)viewResult.ViewData.Model;
 
             Assert.AreSame(expectedPublicGameSummary, actualViewModel.RecentPublicGames[0]);
         }
 
         [Test]
-        public void TheIndexHasRecentNemesisChanges()
+        public void TheIndexHasTopGames()
         {
-            HomeIndexViewModel actualViewModel = (HomeIndexViewModel)viewResult.ViewData.Model;
+            var actualViewModel = (HomeIndexViewModel)viewResult.ViewData.Model;
 
-            Assert.AreSame(expectedNemesisChangeViewModels, actualViewModel.RecentNemesisChanges);
+            Assert.AreSame(_expectedTrendingGameViewModel, actualViewModel.TrendingGames[0]);
         }
 
         [Test]
         public void TheIndexHasTopGamingGroups()
         {
-            HomeIndexViewModel actualViewModel = (HomeIndexViewModel)viewResult.ViewData.Model;
+            var actualViewModel = (HomeIndexViewModel)viewResult.ViewData.Model;
 
-            Assert.AreEqual(expectedTopGamingGroupViewModel.GamingGroupId, actualViewModel.TopGamingGroups[0].GamingGroupId);
-            Assert.AreEqual(expectedTopGamingGroupViewModel.GamingGroupName, actualViewModel.TopGamingGroups[0].GamingGroupName);
-            Assert.AreEqual(expectedTopGamingGroupViewModel.NumberOfGamesPlayed, actualViewModel.TopGamingGroups[0].NumberOfGamesPlayed);
-            Assert.AreEqual(expectedTopGamingGroupViewModel.NumberOfPlayers, actualViewModel.TopGamingGroups[0].NumberOfPlayers);
-
+            Assert.AreSame(expectedTopGamingGroupViewModel, actualViewModel.TopGamingGroups[0]);
         }
     }
 }

@@ -22,6 +22,7 @@ using BusinessLogic.DataAccess;
 using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.Models;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using BusinessLogic.Logic.BoardGameGeek;
 using BusinessLogic.Models.Games;
@@ -225,6 +226,23 @@ namespace BusinessLogic.Logic.GameDefinitions
                                   Id = gameDefiniton.Id,
                                   Name = gameDefiniton.Name
                               }).ToList();
+        }
+
+        public List<TrendingGame> GetTrendingGames(int maxNumberOfGames, int numberOfDaysOfTrendingGames)
+        {
+            var startDate = DateTime.Now.Date.AddDays(-1 * numberOfDaysOfTrendingGames);
+            return (from result in dataContext.GetQueryable<BoardGameGeekGameDefinition>()
+                    select new TrendingGame
+                    {
+                        BoardGameGeekGameDefinitionId = result.Id,
+                        Name = result.Name,
+                        GamesPlayed = result.GameDefinitions.SelectMany(x => x.PlayedGames.Where(playedGame => playedGame.DatePlayed >= startDate)).Count(),
+                        ThumbnailImageUrl = result.Thumbnail,
+                        GamingGroupsPlayingThisGame = result.GameDefinitions.Count
+                    })
+                    .OrderByDescending(x => x.GamesPlayed)
+                    .Take(maxNumberOfGames)
+                    .ToList();
         }
     }
 }

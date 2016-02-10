@@ -63,16 +63,9 @@
     <div class="col-md-12">
         <div class="col-md-6">
             <div class="fl-left">
-                @if (Model.RecentNemesisChanges.Count() != 0)
-                {
-                    <h3>@Model.RecentNemesisChanges.Count() Recent Nemesis Changes @Html.ActionLink(" - View More", MVC.Player.ShowRecentNemesisChanges())</h3>
-                }
-                else
-                {
-                    <h3>Recent Nemesis Changes</h3>
-                }
+                <h3>Trending Games (Last 90 Days)</h3>
             </div>
-            @Html.Partial(MVC.Player.Views._RecentNemesisChangesPartial, Model.RecentNemesisChanges)
+            @Html.Partial(MVC.GameDefinition.Views._TrendingGamesPartial, Model.TrendingGames)
         </div>
 
         <div class="col-md-6">
@@ -94,7 +87,7 @@
         $(document).ready(function () {
             $("#recentGamesVote").rank({ votableFeatureId: "RecentGlobalGames" });
             $("#topPlayersVote").rank({ votableFeatureId: "TopGlobalPlayers" });
-            $("#nemesisChangeVote").rank({ votableFeatureId: "RecentGlobalNemesisChanges" });
+            $("#topGlobalGameDefinitionsVote").rank({ votableFeatureId: "RecentGlobalTopGameDefinitions" });
             $("#gamingGroupsVote").rank({ votableFeatureId: "TopGlobalGamingGroups" });
         });
     </script>

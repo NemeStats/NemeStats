@@ -19,75 +19,73 @@ using AutoMapper;
 using BusinessLogic.Logic.GamingGroups;
 using BusinessLogic.Logic.PlayedGames;
 using BusinessLogic.Logic.Players;
-using BusinessLogic.Models.Games;
 using BusinessLogic.Models.GamingGroups;
-using BusinessLogic.Models.Players;
-using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using BusinessLogic.Logic.GameDefinitions;
+using BusinessLogic.Models.Games;
+using UI.Models.GameDefinitionModels;
 using UI.Models.GamingGroup;
 using UI.Models.Home;
-using UI.Models.Players;
 using UI.Transformations;
 using UI.Transformations.PlayerTransformations;
-using BusinessLogic.Logic.Nemeses;
 
 namespace UI.Controllers
 {
     public partial class HomeController : Controller
     {
-        internal const int NUMBER_OF_TOP_PLAYERS_TO_SHOW = 5;
+        internal const int NUMBER_OF_TOP_PLAYERS_TO_SHOW = 15;
         internal const int NUMBER_OF_RECENT_PUBLIC_GAMES_TO_SHOW = 5;
         internal const int NUMBER_OF_RECENT_NEMESIS_CHANGES_TO_SHOW = 5;
         internal const int NUMBER_OF_TOP_GAMING_GROUPS_TO_SHOW = 15;
+        internal const int NUMBER_OF_DAYS_OF_TRENDING_GAMES = 90;
+        internal const int NUMBER_OF_TRENDING_GAMES_TO_SHOW = 5;
 
         private readonly IPlayerSummaryBuilder playerSummaryBuilder;
         private readonly ITopPlayerViewModelBuilder topPlayerViewModelBuilder;
         private readonly IPlayedGameRetriever playedGameRetriever;
-        private readonly INemesisHistoryRetriever nemesisHistoryRetriever;
-        private readonly INemesisChangeViewModelBuilder nemesisChangeViewModelBuilder;
         private readonly IGamingGroupRetriever gamingGroupRetriever;
-
+        private readonly IGameDefinitionRetriever gameDefinitionRetriever;
+        private readonly ITransformer transformer;
 
         public HomeController(
             IPlayerSummaryBuilder playerSummaryBuilder, 
             ITopPlayerViewModelBuilder topPlayerViewModelBuilder,
-            IPlayedGameRetriever playedGameRetriever, 
-            INemesisHistoryRetriever nemesisHistoryRetriever, 
-            INemesisChangeViewModelBuilder nemesisChangeViewModelBuilder, 
-            IGamingGroupRetriever gamingGroupRetriever)
+            IPlayedGameRetriever playedGameRetriever,
+            IGamingGroupRetriever gamingGroupRetriever, 
+            IGameDefinitionRetriever gameDefinitionRetriever, 
+            ITransformer transformer)
         {
             this.playerSummaryBuilder = playerSummaryBuilder;
             this.topPlayerViewModelBuilder = topPlayerViewModelBuilder;
             this.playedGameRetriever = playedGameRetriever;
-            this.nemesisHistoryRetriever = nemesisHistoryRetriever;
-            this.nemesisChangeViewModelBuilder = nemesisChangeViewModelBuilder;
             this.gamingGroupRetriever = gamingGroupRetriever;
+            this.gameDefinitionRetriever = gameDefinitionRetriever;
+            this.transformer = transformer;
         }
 
         public virtual ActionResult Index()
         {
-            List<TopPlayer> topPlayers = playerSummaryBuilder.GetTopPlayers(NUMBER_OF_TOP_PLAYERS_TO_SHOW);
-            List<TopPlayerViewModel> topPlayerViewModels = topPlayers.Select(
+            var topPlayers = playerSummaryBuilder.GetTopPlayers(NUMBER_OF_TOP_PLAYERS_TO_SHOW);
+            var topPlayerViewModels = topPlayers.Select(
                 topPlayer => this.topPlayerViewModelBuilder.Build(topPlayer)).ToList();
 
-            List<PublicGameSummary> publicGameSummaries = playedGameRetriever
+            var publicGameSummaries = playedGameRetriever
                 .GetRecentPublicGames(NUMBER_OF_RECENT_PUBLIC_GAMES_TO_SHOW);
-
-            List<NemesisChange> nemesisChanges = nemesisHistoryRetriever.GetRecentNemesisChanges(NUMBER_OF_RECENT_NEMESIS_CHANGES_TO_SHOW);
-
-            var nemesisChangeViewModels = nemesisChangeViewModelBuilder.Build(nemesisChanges);
 
             var topGamingGroups = gamingGroupRetriever.GetTopGamingGroups(NUMBER_OF_TOP_GAMING_GROUPS_TO_SHOW);
 
-            var topGamingGroupViewModels = topGamingGroups.Select(Mapper.Map<TopGamingGroupSummary, TopGamingGroupSummaryViewModel>).ToList();
+            var topGamingGroupViewModels = topGamingGroups.Select(transformer.Transform<TopGamingGroupSummary, TopGamingGroupSummaryViewModel>).ToList();
 
-            HomeIndexViewModel homeIndexViewModel = new HomeIndexViewModel()
+            var trendingGames = gameDefinitionRetriever.GetTrendingGames(NUMBER_OF_TRENDING_GAMES_TO_SHOW, NUMBER_OF_DAYS_OF_TRENDING_GAMES);
+            var trendingGameViewModels = trendingGames.Select(transformer.Transform<TrendingGame, TrendingGameViewModel>).ToList();
+
+            var homeIndexViewModel = new HomeIndexViewModel()
             {
                 TopPlayers = topPlayerViewModels,
                 RecentPublicGames = publicGameSummaries,
-                RecentNemesisChanges = nemesisChangeViewModels,
-                TopGamingGroups = topGamingGroupViewModels
+                TopGamingGroups = topGamingGroupViewModels,
+                TrendingGames = trendingGameViewModels
             };
             return View(MVC.Home.Views.Index, homeIndexViewModel);
         }
