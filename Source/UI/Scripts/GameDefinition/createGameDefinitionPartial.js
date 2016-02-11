@@ -39,8 +39,8 @@ Views.GameDefinition.CreateGameDefinitionPartial.prototype = {
 				type: "POST",
 				url: this.formAction,
 				data: this.$form.serialize(),
-				success: function (game) {
-					owner.onDefinitionCreated(game);
+				success: function (gamingGroupId) {
+				    owner.onDefinitionCreated(gamingGroupId);
 					owner.$gameNameInput.val('');
 				},
 				error: function (err) {
