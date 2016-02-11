@@ -1,27 +1,51 @@
-﻿@model UI.Models.GameDefinitionModels.CreateGameDefinitionViewModel
+﻿@using UI.Models.User
+@model UI.Models.GameDefinitionModels.CreateGameDefinitionViewModel
 
 @{
     Layout = null;
 }
 
-<div class="createGameDefinitionPartial">
-    @using (Html.BeginForm())
-    {
-        <div class="form-inline">
-            @Html.HiddenFor(m => m.BoardGameGeekGameDefinitionId)
-            <div class="form-group">
-                @Html.LabelFor(model => model.Name, new { @class = "control-label col-md-3 panel-text-vertical-center" })
-                @Html.TextBoxFor(model => model.Name, new { @class = "form-control col-md-2", id = "gameNameInput" })
-                <div class="col-md-offset-3">
-                    @Html.ValidationMessageFor(model => model.Name)
-                </div>
-            </div>
+<div class="createGameDefinitionPartial row">
+    <div class="col-md-6">
 
-            <div class="form-group">
-                <div class="col-md-pull-2">
-                    <button class="btn btn-default" id="createGameDefinitionFromPartial">Create Game</button>
+        <form id="js-createGameForm">
+            <div class="form-inline">
+                @Html.HiddenFor(m => m.BoardGameGeekGameDefinitionId)
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Name, new { @class = "control-label col-md-3 panel-text-vertical-center" })
+                    @Html.TextBoxFor(model => model.Name, new { @class = "form-control col-md-2", id = "gameNameInput" })
+                    <div class="col-md-offset-3">
+                        @Html.ValidationMessageFor(model => model.Name)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-pull-2">
+                        <button class="btn btn-primary" id="createGameDefinitionFromPartial">Create Game</button>
+                    </div>
                 </div>
             </div>
-        </div>
-    }
+        </form>
+    </div>
+    <div class="col-md-6 importbgg">
+
+        @if (string.IsNullOrEmpty(Model.BGGUserName))
+        {
+
+            <div class="pull-right">
+                <div class="pull-right">
+                    <button class="btn btn-default" data-toggle="collapse" href="#setBGGUserName">Configure BGG user to import your games<img src="~/Content/Images/bgg_small.png" /></button>
+                </div>
+                <div class="collapse pull-right" id="setBGGUserName">@Html.Partial(MVC.Account.Views.BoardGameGeekIntegration, new BoardGameGeekIntegrationModel())</div>
+            </div>
+        }
+        else
+        {
+            using (Html.BeginForm(MVC.GameDefinition.ImportFromBGG(), FormMethod.Post))
+            {
+                <button class="btn btn-default pull-right" id="js-import-games-from-bgg">Import from BGG <img src="~/Content/Images/bgg_small.png"/></button>
+            }
+        }
+
+    </div>
 </div>

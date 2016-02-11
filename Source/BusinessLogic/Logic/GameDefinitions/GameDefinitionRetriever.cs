@@ -221,6 +221,7 @@ namespace BusinessLogic.Logic.GameDefinitions
                               && gameDefinition.GamingGroupId == gamingGroupId)
                               .Select(gameDefiniton => new GameDefinitionName
                               {
+                                  BoardGameGeekGameDefinitionId = gameDefiniton.BoardGameGeekGameDefinitionId,
                                   Id = gameDefiniton.Id,
                                   Name = gameDefiniton.Name
                               }).ToList();

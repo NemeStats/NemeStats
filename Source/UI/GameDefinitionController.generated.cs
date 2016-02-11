@@ -76,9 +76,21 @@ namespace UI.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult ImportFromBGG()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ImportFromBGG);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult Edit()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Edit);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult CreatePartial()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.CreatePartial);
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -105,6 +117,7 @@ namespace UI.Controllers
             public readonly string Details = "Details";
             public readonly string Create = "Create";
             public readonly string AjaxCreate = "AjaxCreate";
+            public readonly string ImportFromBGG = "ImportFromBGG";
             public readonly string Edit = "Edit";
             public readonly string CreatePartial = "CreatePartial";
             public readonly string SearchBoardGameGeekHttpGet = "SearchBoardGameGeekHttpGet";
@@ -116,6 +129,7 @@ namespace UI.Controllers
             public const string Details = "Details";
             public const string Create = "Create";
             public const string AjaxCreate = "AjaxCreate";
+            public const string ImportFromBGG = "ImportFromBGG";
             public const string Edit = "Edit";
             public const string CreatePartial = "CreatePartial";
             public const string SearchBoardGameGeekHttpGet = "SearchBoardGameGeekHttpGet";
@@ -150,6 +164,14 @@ namespace UI.Controllers
             public readonly string createGameDefinitionViewModel = "createGameDefinitionViewModel";
             public readonly string currentUser = "currentUser";
         }
+        static readonly ActionParamsClass_ImportFromBGG s_params_ImportFromBGG = new ActionParamsClass_ImportFromBGG();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_ImportFromBGG ImportFromBGGParams { get { return s_params_ImportFromBGG; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_ImportFromBGG
+        {
+            public readonly string currentUser = "currentUser";
+        }
         static readonly ActionParamsClass_Edit s_params_Edit = new ActionParamsClass_Edit();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ActionParamsClass_Edit EditParams { get { return s_params_Edit; } }
@@ -159,6 +181,14 @@ namespace UI.Controllers
             public readonly string id = "id";
             public readonly string currentUser = "currentUser";
             public readonly string viewModel = "viewModel";
+        }
+        static readonly ActionParamsClass_CreatePartial s_params_CreatePartial = new ActionParamsClass_CreatePartial();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_CreatePartial CreatePartialParams { get { return s_params_CreatePartial; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_CreatePartial
+        {
+            public readonly string currentUser = "currentUser";
         }
         static readonly ActionParamsClass_SearchBoardGameGeekHttpGet s_params_SearchBoardGameGeekHttpGet = new ActionParamsClass_SearchBoardGameGeekHttpGet();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -253,6 +283,18 @@ namespace UI.Controllers
         }
 
         [NonAction]
+        partial void ImportFromBGGOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, BusinessLogic.Models.User.ApplicationUser currentUser);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult ImportFromBGG(BusinessLogic.Models.User.ApplicationUser currentUser)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ImportFromBGG);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "currentUser", currentUser);
+            ImportFromBGGOverride(callInfo, currentUser);
+            return callInfo;
+        }
+
+        [NonAction]
         partial void EditOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int? id, BusinessLogic.Models.User.ApplicationUser currentUser);
 
         [NonAction]
@@ -279,13 +321,14 @@ namespace UI.Controllers
         }
 
         [NonAction]
-        partial void CreatePartialOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+        partial void CreatePartialOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, BusinessLogic.Models.User.ApplicationUser currentUser);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult CreatePartial()
+        public override System.Web.Mvc.ActionResult CreatePartial(BusinessLogic.Models.User.ApplicationUser currentUser)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.CreatePartial);
-            CreatePartialOverride(callInfo);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "currentUser", currentUser);
+            CreatePartialOverride(callInfo, currentUser);
             return callInfo;
         }
 

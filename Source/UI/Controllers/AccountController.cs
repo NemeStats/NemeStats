@@ -32,8 +32,6 @@ using BusinessLogic.Logic.GamingGroups;
 using UI.Attributes.Filters;
 using UI.Models;
 using UI.Models.User;
-using UI.Models.GamingGroup;
-using BusinessLogic.Models.Utility;
 
 namespace UI.Controllers
 {
@@ -203,7 +201,7 @@ namespace UI.Controllers
         {
             ViewBag.StatusMessage =
                 message == ManageMessageId.SetPasswordSuccess ? "Your password has been set."
-                : message == ManageMessageId.SetBoardGameGeekUserSuccess ? "Your BGG account has been linked with NemeStats successfully."
+                : message == ManageMessageId.SetBoardGameGeekUserSuccess ? "Your BGG account has been linked with NemeStats successfully. Now you can import your games on the Gaming Group page."
                 : message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
                 : message == ManageMessageId.ChangeEmailSuccess ? "Your email has been changed."
                 : message == ManageMessageId.RemoveLoginSuccess ? "The external login was removed."

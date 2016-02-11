@@ -26,7 +26,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
 		[Test]
 		public void ItReturnsACreateView()
 		{
-			ViewResult viewResult = gameDefinitionControllerPartialMock.Create(string.Empty) as ViewResult;
+			ViewResult viewResult = gameDefinitionControllerPartialMock.Create(string.Empty,currentUser) as ViewResult;
 
 			Assert.AreEqual(MVC.GameDefinition.Views.Create, viewResult.ViewName);
 		}

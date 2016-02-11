@@ -23,14 +23,17 @@ using BusinessLogic.Models.Games;
 using BusinessLogic.Models.User;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using BoardGameGeekApiClient.Interfaces;
+using BoardGameGeekApiClient.Models;
 using UI.Attributes.Filters;
 using UI.Controllers.Helpers;
 using UI.Models.GameDefinitionModels;
 using UI.Transformations;
 using BusinessLogic.Exceptions;
+using BusinessLogic.Logic.Users;
 
 namespace UI.Controllers
 {
@@ -44,13 +47,15 @@ namespace UI.Controllers
         internal IShowingXResultsMessageBuilder showingXResultsMessageBuilder;
         internal IGameDefinitionSaver gameDefinitionSaver;
         internal IBoardGameGeekApiClient _boardGameGeekApiClient;
+        private readonly IUserRetriever _userRetriever;
 
         public GameDefinitionController(IDataContext dataContext,
             IGameDefinitionRetriever gameDefinitionRetriever,
             IGameDefinitionDetailsViewModelBuilder gameDefinitionTransformation,
             IShowingXResultsMessageBuilder showingXResultsMessageBuilder,
             IGameDefinitionSaver gameDefinitionCreator,
-            IBoardGameGeekApiClient boardGameGeekApiClient)
+            IBoardGameGeekApiClient boardGameGeekApiClient,
+            IUserRetriever userRetriever)
         {
             this.dataContext = dataContext;
             this.gameDefinitionRetriever = gameDefinitionRetriever;
@@ -58,6 +63,7 @@ namespace UI.Controllers
             this.showingXResultsMessageBuilder = showingXResultsMessageBuilder;
             this.gameDefinitionSaver = gameDefinitionCreator;
             _boardGameGeekApiClient = boardGameGeekApiClient;
+            _userRetriever = userRetriever;
         }
 
         // GET: /GameDefinition/Details/5
@@ -161,6 +167,34 @@ namespace UI.Controllers
             return new HttpStatusCodeResult(HttpStatusCode.BadRequest, errorDescription);
         }
 
+        [Authorize]
+        [HttpPost]
+        [UserContext]
+        public virtual ActionResult ImportFromBGG(ApplicationUser currentUser)
+        {
+            var bggUser = _userRetriever.RetrieveUserInformation(currentUser.Id, currentUser).BoardGameGeekUser;
+            if (bggUser != null)
+            {
+                var currentGames = gameDefinitionRetriever.GetAllGameDefinitionNames(currentUser.CurrentGamingGroupId).Select(cg=>cg.BoardGameGeekGameDefinitionId);
+                var userGames = _boardGameGeekApiClient.GetUserGames(bggUser.Name);
+
+                var pendingGames = userGames.Where(g => currentGames.All(id=> g.GameId != id));
+                foreach (var bggGame in pendingGames)
+                {
+                    gameDefinitionSaver.CreateGameDefinition(new CreateGameDefinitionRequest()
+                    {
+                        Name =  $"{bggGame.Name} ({bggGame.YearPublished})",
+                        BoardGameGeekGameDefinitionId = bggGame.GameId,
+                        Active = true
+                    }, currentUser);
+                }
+            }
+
+            //TODO: Set a ViewBag message to indicate the number of games imported
+            return RedirectToAction(MVC.GamingGroup.Details());
+
+        }
+
         private string GetFirstModelStateError(string errorDescription)
         {
             foreach (var modelStateValue in ModelState.Values)
@@ -233,10 +267,13 @@ namespace UI.Controllers
             return View(MVC.GameDefinition.Views.Edit, viewModel);
         }
 
+        [UserContext]
         [Authorize]
-        public virtual ActionResult CreatePartial()
+        public virtual ActionResult CreatePartial(ApplicationUser currentUser)
         {
-            return View(MVC.GameDefinition.Views._CreatePartial, new CreateGameDefinitionViewModel());
+            var bggUser = _userRetriever.RetrieveUserInformation(currentUser.Id, currentUser).BoardGameGeekUser;
+
+            return View(MVC.GameDefinition.Views._CreatePartial, new CreateGameDefinitionViewModel() { BGGUserName = bggUser?.Name });
         }
 
         [Authorize]
