@@ -24,6 +24,7 @@ and protected.
 
 ###Change Log
 * 2015-10-09 Added PlayerActive boolean value to PlayerGameResults, so you can conveniently tell whether the Player is still active.
+* 2016-01-26 Added the ability to filter PlayedGames on datePlayedFrom and datePlayedTo.
 
 ### General Information
 
@@ -331,14 +332,16 @@ This service will record a new Played Game under the Gaming Group of the current
                     "message" : "Invalid X-Auth-Token"
                 }
 
-## Get Played Games [GET /PlayedGames/{?gamingGroupId,startDateGameLastUpdated,endDateGameLastUpdated,playerId,maximumNumberOfResults}] 
+## Get Played Games [GET /PlayedGames/{?gamingGroupId,startDateGameLastUpdated,endDateGameLastUpdated,datePlayedFrom,datePlayedTo,playerId,maximumNumberOfResults}] 
 Retrieve a list of Played Games given some criteria. Currently limited to a single Gaming Group at a time
 via the required gamingGroupId query string parameter.
 
 + Parameters
     + gamingGroupId : 923 (number, required) - The NemeStats unique identifier for the Gaming Group of the Played Game.
-    + startDateGameLastUpdated : `2015-04-26` (string, optional) - If set, all Played Games returned will be less than or equal to this date. Dates must be in yyyy-MM-dd format.
-    + endDateGameLastUpdated : `2015-09-30` (string, optional) - If set, all Played Games returned will be less than or equal to this date. Dates must be in yyyy-MM-dd format.
+    + startDateGameLastUpdated : `2015-04-26` (string, optional) - If set, all Played Games returned will have been updated greater than or equal to this date. Dates must be in yyyy-MM-dd format.
+    + endDateGameLastUpdated : `2015-09-30` (string, optional) - If set, all Played Games returned will have been updated less than or equal to this date. Dates must be in yyyy-MM-dd format.
+    + datePlayedFrom : `2015-07-01` (string, optional) - If set, all Played Games returned will returned will have been played greater than or equal to this date. Dates must be in yyyy-MM-dd format.
+    + datePlayedTo : `2015-07-15` (string, optional) - If set, all Played Games returned will have been played less than or equal to this date. Dates must be in yyyy-MM-dd format.
     + playerId: 9791 (number, optional) - If set, will only return Played Games where this Player participated.
     + maximumNumberOfResults : 100 (number, optional) - The maximum number of results to be returned. The default is no limit.
         + Default: 1000000

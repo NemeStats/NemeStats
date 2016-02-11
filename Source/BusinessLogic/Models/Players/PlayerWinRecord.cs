@@ -11,5 +11,8 @@ namespace BusinessLogic.Models.Players
         public int WinPercentage { get; set; }
         public bool IsChampion { get; set; }
         public bool IsFormerChampion { get; set; }
+        public int TotalGamesPlayed { get; set; }
+        public int TotalNemePoints { get; set; }
+        public float AveragePointsPerGame { get; set; }
     }
 }

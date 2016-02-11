@@ -57,7 +57,6 @@ namespace UI.Controllers
         internal ITopPlayerViewModelBuilder topPlayerViewModelBuilder;
         internal INemesisHistoryRetriever nemesisHistoryRetriever;
         internal INemesisChangeViewModelBuilder nemesisChangeViewModelBuilder;
-        private readonly IGamingGroupRetriever _gamingGroupRetriever;
 
         public PlayerController(IDataContext dataContext,
             IGameResultViewModelBuilder builder,
@@ -84,7 +83,6 @@ namespace UI.Controllers
             this.topPlayerViewModelBuilder = topPlayerViewModelBuilder;
             this.nemesisHistoryRetriever = nemesisHistoryRetriever;
             this.nemesisChangeViewModelBuilder = nemesisChangeViewModelBuilder;
-            _gamingGroupRetriever = gamingGroupRetriever;
         }
 
         // GET: /Player/Details/5

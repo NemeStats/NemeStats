@@ -29,6 +29,7 @@
 	@Html.ActionLink("Back To List", "Index", "GamingGroup", null, null, UI.Controllers.GamingGroupController.SECTION_ANCHOR_RECENT_GAMES, null, null)
 </div>
 @section Scripts{
+    @Scripts.Render("~/bundles/moment")
 	<script type="text/javascript">
 	    //Creation
 	    $(document).ready(function() {
@@ -44,10 +45,10 @@
 	                                                  })
 	                                          )
 	                                 );
-		createPlayedGame.init(googleAnalyticsObject, rankedPlayers);
+	        createPlayedGame.init(googleAnalyticsObject, rankedPlayers, '@Model.DatePlayed.ToString("yyyy-MM-dd")');
 
-		var createOrUpdatePlayer = new window.Views.Player.CreateOrUpdate();
-		createOrUpdatePlayer.init($.proxy(createPlayedGame.onPlayerCreated, createPlayedGame));
+		    var createOrUpdatePlayer = new window.Views.Player.CreateOrUpdate();
+		    createOrUpdatePlayer.init($.proxy(createPlayedGame.onPlayerCreated, createPlayedGame));
 	});
 </script>
 }

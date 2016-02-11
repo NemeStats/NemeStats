@@ -1,7 +1,9 @@
 @import "nemestats-variables.scss";
 
 @media only screen and (max-width: $screen-sm-max) {
+
     .flip-scroll {
+
         .cf:after {
             visibility: hidden;
             display: block;
@@ -21,6 +23,8 @@
             width: 100%;
             border-collapse: collapse;
             border-spacing: 0;
+            display: block;
+            position: relative;
         }
 
         th, td {
@@ -29,13 +33,8 @@
         }
 
         th {
-            text-align: left;
-        }
-
-        table {
-            display: block;
-            position: relative;
-            width: 100%;
+            text-align: right !important;
+            display: block !important;
         }
 
         thead {
@@ -50,15 +49,18 @@
             position: relative;
             overflow-x: auto;
             white-space: nowrap;
+
+            tr {
+                border-left: 1px solid #babcbf;
+
+                &:first-child {
+                    border-left: 0;
+                }
+            }
         }
 
         thead tr {
             display: block;
-        }
-
-        th {
-            display: block !important;
-            text-align: right;
         }
 
         tbody tr {
@@ -69,29 +71,10 @@
         td {
             display: block;
             min-height: 1.25em;
-        }
-
-        th {
             border-bottom: 0;
-            border-left: 0;
-        }
-
-        td {
             border-left: 0;
             border-right: 0;
-            border-bottom: 0;
         }
-
-        tbody {
-            tr {
-                border-left: 1px solid #babcbf;
-
-                &:first-child {
-                    border-left: 0;
-                }
-            }
-        }
-
 
         th:last-child, td:last-child {
             border-bottom: 1px solid #babcbf;

@@ -251,17 +251,6 @@ namespace UI.Controllers
         }
 
         [NonAction]
-        partial void ShowRecentlyPlayedGamesOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
-
-        [NonAction]
-        public override System.Web.Mvc.ActionResult ShowRecentlyPlayedGames()
-        {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ShowRecentlyPlayedGames);
-            ShowRecentlyPlayedGamesOverride(callInfo);
-            return callInfo;
-        }
-
-        [NonAction]
         partial void CreateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, BusinessLogic.Models.Games.NewlyCompletedGame newlyCompletedGame, BusinessLogic.Models.User.ApplicationUser currentUser);
 
         [NonAction]
@@ -271,6 +260,17 @@ namespace UI.Controllers
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "newlyCompletedGame", newlyCompletedGame);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "currentUser", currentUser);
             CreateOverride(callInfo, newlyCompletedGame, currentUser);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void ShowRecentlyPlayedGamesOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult ShowRecentlyPlayedGames()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ShowRecentlyPlayedGames);
+            ShowRecentlyPlayedGamesOverride(callInfo);
             return callInfo;
         }
 

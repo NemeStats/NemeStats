@@ -33,7 +33,7 @@ Views.PlayedGame.CreatePlayedGame = function () {
 //Implementation
 Views.PlayedGame.CreatePlayedGame.prototype = {
     //Method definitions
-    init: function (gaObject, rankedPlayers) {
+    init: function (gaObject, rankedPlayers, iso8601Date) {
         //Fields
         var parent = this;
         this._rankButtons = [];
@@ -56,20 +56,27 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
 
         if (Modernizr.inputtypes.date) {
             //if supports HTML5 then use native date picker
-            this.$datePicker.attr("value", currentLocalIso8601Date);
+            if (iso8601Date == null) {
+                this.$datePicker.attr("value", currentLocalIso8601Date);
+            } else {
+                this.$datePicker.attr("value", iso8601Date);
+            }
             var minDateIso8601 = minDate.toISOString().split("T")[0];
             this.$datePicker.attr("max", currentMoment.add("days", 1).format("YYYY-MM-DD"));
             this.$datePicker.attr("min", minDateIso8601);
-        } else
-        {
+        } else {
+            var dateToSet = new Date();
+            if (iso8601Date != null) {
+                dateToSet = new Date(iso8601Date);
+            }
             // If not native HTML5 support, fallback to jQuery datePicker
             this.$datePicker.datepicker({
                 showOn: "button",
                 buttonText: "<i class='fa fa-calendar'></i>",
                 showButtonPanel: true,
-                maxDate: new Date(),
-                minDate: new Date(2014, 1, 1)
-            }).datepicker("setDate", new Date())
+                minDate: new Date(2014, 1, 1),
+                maxDate: new Date()
+            }).datepicker("setDate", dateToSet)
                 .datepicker("option", "dateFormat", "yy-mm-dd");
         }
 

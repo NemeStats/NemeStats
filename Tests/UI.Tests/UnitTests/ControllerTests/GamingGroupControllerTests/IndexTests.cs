@@ -15,7 +15,6 @@
 
 #endregion LICENSE
 
-using BusinessLogic.Logic.GamingGroups;
 using BusinessLogic.Models;
 using BusinessLogic.Models.GamingGroups;
 using BusinessLogic.Models.Utility;
@@ -24,7 +23,6 @@ using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
-using UI.Controllers;
 using UI.Models.GamingGroup;
 using UI.Transformations;
 
@@ -94,19 +92,17 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
         }
 
         [Test]
-        public void ItAddsAModelErrorIfTheFromDateIsLaterThanTheToDate()
+        public void ItAddsAModelErrorIfTheBasicDateRangeFilterHasValidationErrors()
         {
-            var basicDateRangeFilter = new BasicDateRangeFilter
-            {
-                FromDate = DateTime.UtcNow,
-                ToDate = DateTime.UtcNow.AddDays(-1)
-            };
-            var viewResult = autoMocker.ClassUnderTest.Index(basicDateRangeFilter, currentUser) as ViewResult;
+            var basicDateRangeFilterMock = MockRepository.GenerateMock<BasicDateRangeFilter>();
+            string expectedErrorMessage = "some error message";
+            basicDateRangeFilterMock.Expect(mock => mock.IsValid(out Arg<string>.Out(expectedErrorMessage).Dummy)).Return(false);
+            var viewResult = autoMocker.ClassUnderTest.Index(basicDateRangeFilterMock, currentUser) as ViewResult;
 
             Assert.True(viewResult.ViewData.ModelState.ContainsKey("dateRangeFilter"));
             var modelErrorsForKey = viewResult.ViewData.ModelState["dateRangeFilter"].Errors;
             Assert.That(modelErrorsForKey.Count, Is.EqualTo(1));
-            Assert.That(modelErrorsForKey[0].ErrorMessage, Is.EqualTo("The 'From Date' cannot be greater than the 'To Date'."));
+            Assert.That(modelErrorsForKey[0].ErrorMessage, Is.EqualTo(expectedErrorMessage));
         }
     }
 }

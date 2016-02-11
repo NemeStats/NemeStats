@@ -348,6 +348,8 @@
     <Compile Include="Models\GameDefinitionModels\CreateGameDefinitionViewModel.cs" />
     <Compile Include="Models\GameDefinitionModels\GameDefinitionEditViewModel.cs" />
     <Compile Include="Models\GameDefinitionModels\GameDefinitionSummaryViewModel.cs" />
+    <Compile Include="Models\GameDefinitionModels\TrendingGameViewModel.cs" />
+    <Compile Include="Models\Players\GameDefinitionPlayersSummaryViewModel.cs" />
     <Compile Include="Models\GamingGroup\GamingGroupPublicDetailsViewModel.cs" />
     <Compile Include="Models\GamingGroup\GamingGroupPublicViewModel.cs" />
     <Compile Include="Models\IEditableViewModel.cs" />
@@ -428,6 +430,7 @@
     <Compile Include="Transformations\PlayerTransformations\TopPlayerViewModelBuilder.cs" />
     <Compile Include="Models\Players\PlayerWithNemesisViewModel.cs" />
     <Compile Include="Models\GamingGroup\TopGamingGroupSummaryViewModel.cs" />
+    <Compile Include="Models\Players\GameDefinitionPlayerSummaryViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\font-awesome.css" />
@@ -578,8 +581,6 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
-    <Content Include="Scripts\modernizr-2.6.2.js" />
-    <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\moment.js" />
     <Content Include="Scripts\moment.min.js" />
     <Content Include="Scripts\namespace-1.0.0.js" />
@@ -755,6 +756,8 @@
     <Content Include="Views\Shared\Footer.cshtml" />
     <Content Include="Views\Player\CurrentPlayerQuickStats.cshtml" />
     <Content Include="Views\Account\BoardGameGeekIntegration.cshtml" />
+    <Content Include="Views\GameDefinition\_TrendingGamesPartial.cshtml" />
+    <Content Include="Views\Player\_GameDefinitionPlayersSummaryPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Code\" />

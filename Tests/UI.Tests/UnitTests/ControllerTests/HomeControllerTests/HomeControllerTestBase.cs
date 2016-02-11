@@ -22,6 +22,7 @@ using BusinessLogic.Logic.Players;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System.Linq;
+using StructureMap.AutoMocking;
 using UI.Controllers;
 using UI.Transformations.PlayerTransformations;
 using UI.Transformations;
@@ -31,31 +32,13 @@ namespace UI.Tests.UnitTests.ControllerTests.HomeControllerTests
     [TestFixture]
     public class HomeControllerTestBase
     {
-        protected HomeController homeControllerPartialMock;
-        protected IPlayerSummaryBuilder playerSummaryBuilderMock;
-        protected ITopPlayerViewModelBuilder topPlayerViewModelBuilderMock;
-        protected IPlayedGameRetriever playedGameRetrieverMock;
-        protected INemesisHistoryRetriever nemesisHistoryRetrieverMock;
-        protected INemesisChangeViewModelBuilder nemesisChangeViewModelBuilderMock;
-        protected IGamingGroupRetriever gamingGroupRetrieverMock;
+        protected RhinoAutoMocker<HomeController> _autoMocker; 
 
         [SetUp]
         public virtual void SetUp()
         {
             AutomapperConfiguration.Configure();
-            playerSummaryBuilderMock = MockRepository.GenerateMock<IPlayerSummaryBuilder>();
-            topPlayerViewModelBuilderMock = MockRepository.GenerateMock<ITopPlayerViewModelBuilder>();
-            playedGameRetrieverMock = MockRepository.GenerateMock<IPlayedGameRetriever>();
-            nemesisHistoryRetrieverMock = MockRepository.GenerateMock<INemesisHistoryRetriever>();
-            nemesisChangeViewModelBuilderMock = MockRepository.GenerateMock<INemesisChangeViewModelBuilder>();
-            gamingGroupRetrieverMock = MockRepository.GenerateMock<IGamingGroupRetriever>();
-            homeControllerPartialMock = MockRepository.GeneratePartialMock<HomeController>(
-                playerSummaryBuilderMock, 
-                topPlayerViewModelBuilderMock,
-                playedGameRetrieverMock,
-                nemesisHistoryRetrieverMock,
-                nemesisChangeViewModelBuilderMock,
-                gamingGroupRetrieverMock);
+            _autoMocker = new RhinoAutoMocker<HomeController>();
         }
     }
 }
