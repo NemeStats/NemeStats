@@ -14,12 +14,12 @@ Views.GameDefinition.GameDefinitions.prototype = {
         this.$gameDefinitionsTable = this.$container.find("table");
     },
 
-    onGameCreated: function (game) {
+    onGameCreated: function (gamingGroupId) {
         var container = $("#js-gamedefinitions");
         if (container.length === 1) {
             container
                 .fadeOut('fast')
-                .load('/GamingGroup/GetCurrentUserGamingGroupGameDefinitions?id=' + game.GamingGroupId)
+                .load('/GamingGroup/GetCurrentUserGamingGroupGameDefinitions?id=' + gamingGroupId)
                 .fadeIn('fast');
         }
     }
