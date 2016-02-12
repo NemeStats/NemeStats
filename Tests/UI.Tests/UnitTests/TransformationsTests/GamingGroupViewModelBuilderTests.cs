@@ -175,10 +175,5 @@ namespace UI.Tests.UnitTests.TransformationsTests
             Assert.AreEqual(playedGames, viewModel.PlayedGames.PlayedGameDetailsViewModels);
         }
 
-        [Test]
-        public void ItSetsThePanelTitle()
-        {
-            Assert.AreEqual("Last 0 Played Games", viewModel.PlayedGames.PanelTitle);
-        }
     }
 }
