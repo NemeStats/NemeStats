@@ -18,7 +18,6 @@
 using AutoMapper;
 using BusinessLogic.DataAccess;
 using BusinessLogic.Logic.GameDefinitions;
-using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
 using BusinessLogic.Models.User;
 using System;
@@ -27,7 +26,6 @@ using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using BoardGameGeekApiClient.Interfaces;
-using BoardGameGeekApiClient.Models;
 using UI.Attributes.Filters;
 using UI.Controllers.Helpers;
 using UI.Models.GameDefinitionModels;
@@ -37,7 +35,7 @@ using BusinessLogic.Logic.Users;
 
 namespace UI.Controllers
 {
-    public partial class GameDefinitionController : Controller
+    public partial class GameDefinitionController : BaseController
     {
         internal const int NUMBER_OF_RECENT_GAMES_TO_SHOW = 5;
 
@@ -170,30 +168,49 @@ namespace UI.Controllers
         [Authorize]
         [HttpPost]
         [UserContext]
-        public virtual ActionResult ImportFromBGG(ApplicationUser currentUser)
+        public virtual ActionResult ImportFromBGG(ApplicationUser currentUser)  
         {
             var bggUser = _userRetriever.RetrieveUserInformation(currentUser.Id, currentUser).BoardGameGeekUser;
             if (bggUser != null)
             {
-                var currentGames = gameDefinitionRetriever.GetAllGameDefinitionNames(currentUser.CurrentGamingGroupId).Select(cg=>cg.BoardGameGeekGameDefinitionId);
                 var userGames = _boardGameGeekApiClient.GetUserGames(bggUser.Name);
-
-                var pendingGames = userGames.Where(g => currentGames.All(id=> g.GameId != id));
-                foreach (var bggGame in pendingGames)
+                if (!userGames.Any())
                 {
-                    gameDefinitionSaver.CreateGameDefinition(new CreateGameDefinitionRequest()
+                    this.SetTempMessage(TempMessageKeys.CREATE_GAMEDEFITION_RESULT_TEMPMESSAGE, "It seems you don't have any game on your BoardGameGeek collection :_(", "info");
+                }
+                else
+                {
+                    var currentGames =
+                        gameDefinitionRetriever.GetAllGameDefinitionNames(currentUser.CurrentGamingGroupId)
+                            .Select(cg => cg.BoardGameGeekGameDefinitionId);
+
+
+                    var pendingGames = userGames.Where(g => currentGames.All(id => g.GameId != id)).ToList();
+                    if (!pendingGames.Any())
                     {
-                        Name =  $"{bggGame.Name} ({bggGame.YearPublished})",
-                        BoardGameGeekGameDefinitionId = bggGame.GameId,
-                        Active = true
-                    }, currentUser);
+                        this.SetTempMessage(TempMessageKeys.CREATE_GAMEDEFITION_RESULT_TEMPMESSAGE, "All your BoardGameGeek games are already imported ;-)", "info");
+                    }
+                    else
+                    {
+
+                        foreach (var bggGame in pendingGames)
+                        {
+                            gameDefinitionSaver.CreateGameDefinition(new CreateGameDefinitionRequest()
+                            {
+                                Name = $"{bggGame.Name} ({bggGame.YearPublished})",
+                                BoardGameGeekGameDefinitionId = bggGame.GameId,
+                                Active = true
+                            }, currentUser);
+                        }
+                        this.SetTempMessage(TempMessageKeys.CREATE_GAMEDEFITION_RESULT_TEMPMESSAGE, $"{pendingGames.Count} games imported from your BoardGameGeek collection to NemeStats. Awesome!", "info");
+                    }
                 }
             }
 
-            //TODO: Set a ViewBag message to indicate the number of games imported
-            return RedirectToAction(MVC.GamingGroup.Details());
+            return RedirectToAction(MVC.GamingGroup.Index());
 
         }
+       
 
         private string GetFirstModelStateError(string errorDescription)
         {

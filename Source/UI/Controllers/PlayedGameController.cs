@@ -38,8 +38,8 @@ using UI.Transformations;
 
 namespace UI.Controllers
 {
-	public partial class PlayedGameController : Controller
-	{
+	public partial class PlayedGameController : BaseController
+    {
 		internal NemeStatsDataContext dataContext;
 		internal IPlayedGameRetriever playedGameRetriever;
 		internal IPlayerRetriever playerRetriever;

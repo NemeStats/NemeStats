@@ -1,4 +1,6 @@
-﻿@using UI.Models.User
+﻿@using UI.Controllers.Helpers
+@using UI.HtmlHelpers
+@using UI.Models.User
 @model UI.Models.GameDefinitionModels.CreateGameDefinitionViewModel
 
 @{
@@ -36,16 +38,21 @@
                 <div class="pull-right">
                     <button class="btn btn-default" data-toggle="collapse" href="#setBGGUserName">Configure BGG user to import your games<img src="~/Content/Images/bgg_small.png" /></button>
                 </div>
-                <div class="collapse pull-right" id="setBGGUserName">@Html.Partial(MVC.Account.Views.BoardGameGeekIntegration, new BoardGameGeekIntegrationModel())</div>
+                <div class="collapse pull-right voffset4" id="setBGGUserName">@Html.Partial(MVC.Account.Views.BoardGameGeekIntegration, new BoardGameGeekIntegrationModel())</div>
             </div>
         }
         else
         {
+
             using (Html.BeginForm(MVC.GameDefinition.ImportFromBGG(), FormMethod.Post))
             {
-                <button class="btn btn-default pull-right" id="js-import-games-from-bgg">Import from BGG <img src="~/Content/Images/bgg_small.png"/></button>
+                <button class="btn btn-default pull-right" id="js-import-games-from-bgg"><span class="fa fa-download"></span> Import from BGG <img src="~/Content/Images/bgg_small.png" /></button>
             }
+
         }
+
 
     </div>
 </div>
+
+@Html.RenderTempDataMessage(TempMessageKeys.CREATE_GAMEDEFITION_RESULT_TEMPMESSAGE)

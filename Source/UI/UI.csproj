@@ -311,6 +311,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\GameDefinitionController.cs" />
     <Compile Include="Controllers\GamingGroupController.cs" />
+    <Compile Include="Controllers\Helpers\BaseController.cs" />
     <Compile Include="Controllers\Helpers\IShowingXResultsMessageBuilder.cs" />
     <Compile Include="Controllers\Helpers\ShowingXResultsMessageBuilder.cs" />
     <Compile Include="Controllers\HomeController.cs" />

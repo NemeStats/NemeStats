@@ -1,4 +1,6 @@
-﻿@model UI.Models.ManageAccountViewModel
+﻿@using UI.Controllers.Helpers
+@using UI.HtmlHelpers
+@model UI.Models.ManageAccountViewModel
 @{
     ViewBag.Title = "Manage Account";
     Layout = MVC.Shared.Views._BaseLayout;
@@ -6,13 +8,7 @@
 
 <h2 class="page-header">@ViewBag.Title.</h2>
 
-@if (!string.IsNullOrEmpty(ViewBag.StatusMessage))
-{
-    <div class="alert alert-success">
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        @ViewBag.StatusMessage
-    </div>
-}
+@Html.RenderTempDataMessage(TempMessageKeys.MANAGE_ACCOUNT_RESULT_TEMPMESSAGE)
 
 <div class="row">
     <div class="col-md-8">

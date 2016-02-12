@@ -34,7 +34,7 @@ using UI.Transformations.PlayerTransformations;
 
 namespace UI.Controllers
 {
-    public partial class GamingGroupController : Controller
+    public partial class GamingGroupController : BaseController
     {
         public const int MAX_NUMBER_OF_RECENT_GAMES = 10;
         public const int NUMBER_OF_TOP_GAMING_GROUPS_TO_SHOW = 25;

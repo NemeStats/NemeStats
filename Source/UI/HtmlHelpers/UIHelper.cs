@@ -15,6 +15,8 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
+
+using System.Web;
 using System.Web.Mvc;
 
 namespace UI.HtmlHelpers
@@ -25,14 +27,29 @@ namespace UI.HtmlHelpers
         public static MvcHtmlString NemePointsIco(this HtmlHelper htmlHelper, bool showTooltip = true, string tooltip = "Total NemePoints earned by playing games", string tooltipPosition = "top")
         {
             var tootlipHtml = showTooltip
-                ? string.Format("data-toggle=\"popover\" data-placement=\"{0}\" data-content=\"{1}\"", tooltipPosition,tooltip)
+                ? $"data-toggle=\"popover\" data-placement=\"{tooltipPosition}\" data-content=\"{tooltip}\""
                 : "";
 
             var html =
-                string.Format("<span class=\"fa-stack {0}\" {1}><i class=\"fa fa-circle fa-stack-2x\"></i><i class=\"fa fa-stack-1x letter\">N</i></span>", NEMEPOINTICO_CSS_CLASS,tootlipHtml);
+                $"<span class=\"fa-stack {NEMEPOINTICO_CSS_CLASS}\" {tootlipHtml}><i class=\"fa fa-circle fa-stack-2x\"></i><i class=\"fa fa-stack-1x letter\">N</i></span>";
 
             return new MvcHtmlString(html);
 
+        }
+
+        public static HtmlString RenderTempDataMessage(this HtmlHelper htmlHelper, string key)
+        {
+            if (htmlHelper.ViewContext.TempData.ContainsKey(key))
+            {
+                var message = htmlHelper.ViewContext.TempData[key];
+                var kind = htmlHelper.ViewContext.TempData[key+"_kind"];
+                string html = $"<div class='alert alert-{kind} voffset4'>" +
+                              $"<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>" +
+                              $"{message}" +
+                              $"</div>";
+                return new HtmlString(html);
+            }
+            return  new HtmlString("");
         }
     }
 }
