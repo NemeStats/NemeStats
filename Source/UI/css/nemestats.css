@@ -728,8 +728,19 @@ footer {
     height: 100%;
     min-height: 100px; }
 
-.createGameDefinitionPartial .importbgg img {
-  margin-left: 5px; }
+@media (min-width: 992px) {
+  .createGameDefinitionPartial .importbgg .pulleable {
+    float: right; } }
+
+@media (max-width: 991px) {
+  .createGameDefinitionPartial .importbgg button {
+    margin-top: 10px; } }
+
+.createGameDefinitionPartial .importbgg button {
+  white-space: normal !important;
+  word-wrap: break-word; }
+  .createGameDefinitionPartial .importbgg button img {
+    margin-left: 5px; }
 
 /*$header-background-color: #2C3E50;*/
 .filter {

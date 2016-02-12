@@ -7,49 +7,46 @@
 @using UI.HtmlHelpers
 <div class="panel panel-primary">
     <div class="panel-heading">
-        <h4 class="fl-left">
-            @Model.PanelTitle
+        <h4>
+            Last <span class="badge">@Model.PlayedGameDetailsViewModels.Count</span> Played Games
             @if (Model.ShowSearchLinkInResultsHeader)
             {
                 @:(
                 @Html.ActionLink("Search Played Games", "Search", "PlayedGame", new { }, new { })
                 @:)
-            }
-        </h4>
-        @if (Model.UserCanEdit && Model.GamingGroupId.HasValue)
-        {
-             var fileRequestUrl = "/api/v1/GamingGroups/" + Model.GamingGroupId.Value + "/PlayedGamesExcel";
-            <div>
-                &nbsp;
+                 var fileRequestUrl = "/api/v1/GamingGroups/" + Model.GamingGroupId.Value + "/PlayedGamesExcel";
+
                 <a href="@fileRequestUrl" id="playedGamesExcelDownload">
                     <i class="fa fa-download fa-2x" style="line-height: 36px" data-container="body" data-toggle="popover" data-placement="right"
                        data-content="Export all of your played games to Microsoft Excel (.xlsx)"></i>
                 </a>
-                <div class="fl-right">
-                    @Html.ActionLink("Record Played Game", "Create", "PlayedGame", new { }, new { @class = "btn btn-default", @id = "gtm-recordplayedgamebutton-fromplayedgames" })
-                </div>
-            </div>
-        }
-        <div class="fl-clear"></div>
+            }
+        </h4>
     </div>
     <div class="panel-body">
+        @if (Model.UserCanEdit && Model.GamingGroupId.HasValue)
+        {
+            <div class="well">
+                @Html.ActionLink("Record Played Game", "Create", "PlayedGame", new { }, new { @class = "btn btn-primary", @id = "gtm-recordplayedgamebutton-fromplayedgames" })
+            </div>
+        }
         <div class="flip-scroll">
             <table class="table table-hover table-striped gameDefinitionsList">
                 <thead>
-                <tr>
-                    <th class="bgg-link-head"></th>
-                    <th class="name-head">
-                        Game Name
-                    </th>
-                    <th>
-                        Date Played
-                    </th>
-                    <th class="result-head">
-                        Result
-                    </th>
-                    <th class="edit-head">
-                    </th>
-                </tr>
+                    <tr>
+                        <th class="bgg-link-head"></th>
+                        <th class="name-head">
+                            Game Name
+                        </th>
+                        <th>
+                            Date Played
+                        </th>
+                        <th class="result-head">
+                            Result
+                        </th>
+                        <th class="edit-head">
+                        </th>
+                    </tr>
                 </thead>
                 <tbody>
                     @foreach (var playedGameDetailsViewModel in Model.PlayedGameDetailsViewModels)
@@ -75,7 +72,7 @@
                             </td>
                             <td class="name-col">
                                 <b>
-                                    @Html.ActionLink(playedGameDetailsViewModel.GameDefinitionName, "Details", "GameDefinition", new {id = playedGameDetailsViewModel.GameDefinitionId}, new {})
+                                    @Html.ActionLink(playedGameDetailsViewModel.GameDefinitionName, "Details", "GameDefinition", new { id = playedGameDetailsViewModel.GameDefinitionId }, new { })
                                 </b>
                             </td>
                             <td>
@@ -87,7 +84,7 @@
                                     <div class="row">
                                         <div class="col-sm-4">
                                             <b>
-                                                @Html.ActionLink(playerGameResultDetails.PlayerName, "Details", "Player", new {id = playerGameResultDetails.PlayerId}, new {})
+                                                @Html.ActionLink(playerGameResultDetails.PlayerName, "Details", "Player", new { id = playerGameResultDetails.PlayerId }, new { })
                                             </b>
                                         </div>
                                         <div class="col-sm-8">

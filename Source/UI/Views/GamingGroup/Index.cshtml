@@ -1,4 +1,6 @@
-﻿@model UI.Models.GamingGroup.GamingGroupViewModel
+﻿@using UI.Controllers.Helpers
+@using UI.HtmlHelpers
+@model UI.Models.GamingGroup.GamingGroupViewModel
 @{
     ViewBag.Title = Model.Name;
     Layout = MVC.Shared.Views._BaseLayout;
@@ -15,7 +17,9 @@
     @Html.Partial(MVC.GamingGroup.Views._GamingGroupPublicDetailsPartial, Model.PublicDetailsView, new ViewDataDictionary { { "canEdit", true } })
 </div>
 
-<hr />
+<hr/>
+
+@Html.RenderTempDataMessage(TempMessageKeys.CREATE_GAMEDEFITION_RESULT_TEMPMESSAGE)
 
 <div class="well filter">
     @using (Html.BeginForm(MVC.GamingGroup.Index(), FormMethod.Get))

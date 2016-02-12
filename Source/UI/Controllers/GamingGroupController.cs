@@ -138,7 +138,6 @@ namespace UI.Controllers
                 {
                     PlayedGameDetailsViewModels = gamingGroupSummary.PlayedGames
                     .Select(playedGame => playedGameDetailsViewModelBuilder.Build(playedGame, currentUser)).ToList(),
-                    PanelTitle = string.Format("Last {0} Played Games", gamingGroupSummary.PlayedGames.Count),
                     UserCanEdit = currentUser.CurrentGamingGroupId == gamingGroupSummary.Id,
                     ShowSearchLinkInResultsHeader = false
                 },

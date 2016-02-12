@@ -8,112 +8,111 @@
 <div class="playersList">
     <div class="panel panel-primary">
         <div class="panel-heading">
-            <h4 class="fl-left">
-                Players
+            <h4>
+                Players <span class="badge">@Model.Count</span>
             </h4>
+        </div>
+        <div class="panel-body">
             @if ((bool?)ViewData["canEdit"] == true)
             {
-                <div class="fl-right">
+                <div class="well">
                     @Html.Action("SavePlayer", "Player")
                 </div>
             }
-            <div class="fl-clear"></div>
-        </div>
-        <div class="panel-body">
             <div class="flip-scroll">
                 <table class="table table-hover table-striped">
                     <thead class="player-table-head">
-                        <tr>
-                            <th class="col-md-2">
-                                Player Name
-                            </th>
-                            <th class="col-md-1">
-                                @Html.NemePointsIco()
-                            </th>
-                            <th class="col-md-1">Played Games</th>
-                            <th class="col-md-1">Avg. @Html.NemePointsIco(tooltip:"NemePoints") per game</th>
-                            <th class="col-md-1">Overall Win %</th>
-                            <th class="col-md-1">
-                                <i class="fa fa-trophy"  data-toggle="popover" data-placement="top" data-content="Total games Championed by this Player"></i>
-                            </th>
-                            <th class="col-md-3 nemesis-head">
-                                Previous / Current Nemesis <i class="fa fa-question-circle" data-toggle="popover" data-placement="top"
-                                                            data-content="The Nemesis is the Player with the highest win % vs. this Player. Must have won at least 3 games to be designated as the Nemesis."></i>
-                            </th>
-                            <th class="col-md-1">
-                                @if ((bool?) ViewData["canEdit"] == true)
-                                {
-                                    @:Registered
-                                }
-                            </th>
-                           @if (Model.Any() && Model.First().UserCanEdit)
-                           {
-                               <th class="col-md-1 edit-head">
+                    <tr>
+                        <th class="col-md-2">
+                            Player Name
+                        </th>
+                        <th class="col-md-1">
+                            @Html.NemePointsIco()
+                        </th>
+                        <th class="col-md-1">Played Games</th>
+                        <th class="col-md-1">Avg. @Html.NemePointsIco(tooltip: "NemePoints") per game</th>
+                        <th class="col-md-1">Overall Win %</th>
+                        <th class="col-md-1">
+                            <i class="fa fa-trophy" data-toggle="popover" data-placement="top" data-content="Total games Championed by this Player"></i>
+                        </th>
+                        <th class="col-md-3 nemesis-head">
+                            Previous / Current Nemesis <i class="fa fa-question-circle" data-toggle="popover" data-placement="top"
+                                                          data-content="The Nemesis is the Player with the highest win % vs. this Player. Must have won at least 3 games to be designated as the Nemesis."></i>
+                        </th>
+                        <th class="col-md-1">
+                            @if ((bool?) ViewData["canEdit"] == true)
+                            {
+                                @:Registered
+                            }
+                        </th>
+                        @if (Model.Any() && Model.First().UserCanEdit)
+                        {
+                            <th class="col-md-1 edit-head">
 
-                               </th>
-                           }
-                        </tr>
+                            </th>
+                        }
+                    </tr>
                     </thead>
                     <tbody id="playersListTableBody">
-                        @foreach (var item in Model)
-                        {
-                            <tr>
-                                <td>
-                                    <b>@Html.ActionLink(item.PlayerName, MVC.Player.Details(item.PlayerId, null))</b>
-                                </td>
-                                <td>
-                                    @item.TotalPoints
-                                </td>
-                                <td>@item.NumberOfPlayedGames</td>
-                                <td>@item.AveragePointsPerGame.ToString("N2")</td>
-                                <td>
-                                    @item.OverallWinPercentage %
-                                </td>
-                                <td>
-                                    @item.TotalChampionedGames
-                                </td>
-                                <td class="nemesis-col">
-                                    @if (item.PreviousNemesisPlayerId.HasValue)
-                                    {
-                                        <span style="text-decoration: line-through">
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                <b>@Html.ActionLink(item.PlayerName, MVC.Player.Details(item.PlayerId, null))</b>
+                            </td>
+                            <td>
+                                @item.TotalPoints
+                            </td>
+                            <td>@item.NumberOfPlayedGames</td>
+                            <td>@item.AveragePointsPerGame.ToString("N2")</td>
+                            <td>
+                                @item.OverallWinPercentage %
+                            </td>
+                            <td>
+                                @item.TotalChampionedGames
+                            </td>
+                            <td class="nemesis-col">
+                                @if (item.PreviousNemesisPlayerId.HasValue)
+                                {
+                                    <span style="text-decoration: line-through">
                                             <b>
                                                 @Html.ActionLink(item.PreviousNemesisPlayerName, MVC.Player.Details(item.PreviousNemesisPlayerId, null))
                                             </b>
                                         </span>
-                                        @:<br />
-                                    }
+                                    @:<br/>
+                                }
 
-                                    @if (item.NemesisPlayerId.HasValue)
+                                @if (item.NemesisPlayerId.HasValue)
+                                {
+                                    <b>
+                                        @Html.ActionLink(item.NemesisPlayerName, MVC.Player.Details(item.NemesisPlayerId, null))
+                                    </b>
+                                }
+                            </td>
+                            <td>
+                                @if ((bool?) ViewData["canEdit"] == true)
+                                {
+                                    @Html.DisplayFor(modelItem => item.PlayerRegistered)
+                                    if (!item.PlayerRegistered)
                                     {
                                         <b>
-                                            @Html.ActionLink(item.NemesisPlayerName, MVC.Player.Details(item.NemesisPlayerId, null))
+                                            <a href='@Url.Action(MVC.Player.ActionNames.InvitePlayer, MVC.Player.Name, new {id = item.PlayerId})' title="Invite this player to your gaming group">
+                                                <span class="fa fa-envelope" aria-label="Invite this player to your gaming group"></span>
+                                            </a>
                                         </b>
                                     }
-                                </td>
-                                <td>
-                                    @if ((bool?)ViewData["canEdit"] == true)
-                                    {
-                                        @Html.DisplayFor(modelItem => item.PlayerRegistered)
-                                        if (!item.PlayerRegistered)
-                                        {
-                                            <b>
-                                                <a href='@Url.Action(MVC.Player.ActionNames.InvitePlayer, MVC.Player.Name, new { id = item.PlayerId })' title="Invite this player to your gaming group">
-                                                    <span class="fa fa-envelope" aria-label="Invite this player to your gaming group"></span>
-                                                </a>
-                                            </b>
-                                        }
-                                    }
-                                </td>
-                                @if (item.UserCanEdit)
-                                {
-                                    <td class="edit-col">
-                                        <a href="@Url.Action("Edit", "Player" , new { id=item.PlayerId })" title="Edit">
-                                            <i class="fa fa-pencil fa-2x"></i>
-                                        </a>
-                                    </td>
                                 }
-                            </tr>
-                        }
+                            </td>
+                            @if (item.UserCanEdit)
+                            {
+                                <td class="edit-col">
+                                    <a href="@Url.Action("Edit", "Player", new {id = item.PlayerId})" title="Edit">
+                                        <i class="fa fa-pencil fa-2x"></i>
+                                    </a>
+                                </td>
+                            }
+                        </tr>
+                    }
                     </tbody>
                 </table>
             </div>

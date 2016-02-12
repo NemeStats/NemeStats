@@ -316,7 +316,6 @@ namespace UI.Controllers
                 {
                     PlayedGameDetailsViewModels = playedGamesDetails,
                     UserCanEdit = true,
-                    PanelTitle = string.Format("{0} Results", playedGamesDetails.Count),
                     GamingGroupId = currentUser.CurrentGamingGroupId,
                     ShowSearchLinkInResultsHeader = false
                 }
