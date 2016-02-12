@@ -1,20 +1,23 @@
 ﻿#region LICENSE
+
 // NemeStats is a free website for tracking the results of board games.
 //     Copyright (C) 2015 Jacob Gordon
-// 
+//
 //     This program is free software: you can redistribute it and/or modify
 //     it under the terms of the GNU General Public License as published by
 //     the Free Software Foundation, either version 3 of the License, or
 //     (at your option) any later version.
-// 
+//
 //     This program is distributed in the hope that it will be useful,
 //     but WITHOUT ANY WARRANTY; without even the implied warranty of
 //     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //     GNU General Public License for more details.
-// 
+//
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
-#endregion
+
+#endregion LICENSE
+
 using BusinessLogic.Models;
 using BusinessLogic.Models.Players;
 using BusinessLogic.Models.User;
@@ -41,6 +44,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         private ApplicationUser currentUser;
         private PlayerVersusPlayerStatistics normalPlayer;
         private PlayerVersusPlayerStatistics nemesisPlayer;
+        private PlayerVersusPlayerStatistics previousNemesisPlayer;
         private PlayerVersusPlayerStatistics minionPlayer;
         private PlayerVersusPlayerStatistics playerWithNoGamesPlayed;
         private string twitterMinionBraggingUrl = "some url";
@@ -84,7 +88,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
                 Id = 1,
                 GameDefinition = gameDefinition1
             };
-    
+
             var playedGame2 = new PlayedGame()
             {
                 Id = 2,
@@ -125,6 +129,13 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
                 NumberOfGamesLostVersusThisPlayer = 100
             };
 
+            previousNemesisPlayer = new PlayerVersusPlayerStatistics
+            {
+                OpposingPlayerName = "Previous Nemesis Player",
+                OpposingPlayerId = 13,
+                NumberOfGamesWonVersusThisPlayer = 0,
+                NumberOfGamesLostVersusThisPlayer = 42            };
+
             var nemesis = new Nemesis()
             {
                 NemesisPlayerId = nemesisPlayer.OpposingPlayerId,
@@ -136,6 +147,17 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
                 }
             };
 
+            var previousNemesis = new Nemesis()
+            {
+                NemesisPlayerId = previousNemesisPlayer.OpposingPlayerId,
+                NumberOfGamesLost = 5,
+                LossPercentage = 66,
+                NemesisPlayer = new Player()
+                {
+                    Name = "Bravo Nemesis",
+                }
+            };
+
             playerDetails = new PlayerDetails()
             {
                 Id = playerId,
@@ -144,16 +166,17 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
                 Name = "Skipper",
                 LongestWinningStreak = 39,
                 PlayerGameResults = playerGameResults,
-                PlayerStats = new PlayerStatistics() 
-                    { 
-                        TotalGames = 5,
-                        TotalPoints = 150,
-                        AveragePlayersPerGame = 3,
-                        TotalGamesLost = 1,
-                        TotalGamesWon = 4,
-                        WinPercentage = 20
-                    },
+                PlayerStats = new PlayerStatistics()
+                {
+                    TotalGames = 5,
+                    TotalPoints = 150,
+                    AveragePlayersPerGame = 3,
+                    TotalGamesLost = 1,
+                    TotalGamesWon = 4,
+                    WinPercentage = 20
+                },
                 CurrentNemesis = nemesis,
+                PreviousNemesis = previousNemesis,
                 Minions = new List<Player>
                 {
                     new Player
@@ -168,6 +191,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
                     normalPlayer,
                     playerWithNoGamesPlayed,
                     nemesisPlayer,
+                    previousNemesisPlayer,
                     minionPlayer
                 },
                 PlayerGameSummaries = new List<PlayerGameSummary>
@@ -428,7 +452,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
             var numberOfPlayerGameResults = playerDetails.PlayerGameResults.Count();
             int expectedPlayedGameId;
             int actualPlayedGameId;
-            for(var i = 0; i < numberOfPlayerGameResults; i++)
+            for (var i = 0; i < numberOfPlayerGameResults; i++)
             {
                 expectedPlayedGameId = playerDetails.PlayerGameResults[i].PlayedGameId;
                 actualPlayedGameId = playerDetailsViewModel.PlayerGameResultDetails[i].PlayedGameId;
@@ -469,7 +493,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         [Test]
         public void ItSetsTheMinions()
         {
-            foreach(var player in playerDetails.Minions)
+            foreach (var player in playerDetails.Minions)
             {
                 Assert.True(playerDetailsViewModel.Minions.Any(minion => minion.MinionPlayerId == player.Id));
             }
@@ -610,6 +634,14 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
             var actualPlayer = playerDetailsViewModel.PlayerVersusPlayers.PlayerSummaries.First(x => x.PlayerId == nemesisPlayer.OpposingPlayerId);
 
             Assert.True(actualPlayer.SpecialBadgeTypes.Any(badge => badge.GetType() == typeof(NemesisBadgeViewModel)));
+        }
+
+        [Test]
+        public void ItAddsAPreviousNemesisBadgeToPreviousNemesisPlayer()
+        {
+            var actualPlayer = playerDetailsViewModel.PlayerVersusPlayers.PlayerSummaries.First(x => x.PlayerId == previousNemesisPlayer.OpposingPlayerId);
+
+            Assert.True(actualPlayer.SpecialBadgeTypes.Any(badge => badge.GetType() == typeof(PreviousNemesisBadgeViewModel)));
         }
 
         [Test]
