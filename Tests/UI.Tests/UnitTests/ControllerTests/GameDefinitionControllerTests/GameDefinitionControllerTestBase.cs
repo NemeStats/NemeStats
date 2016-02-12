@@ -26,6 +26,7 @@ using NUnit.Framework;
 using Rhino.Mocks;
 using System.Linq;
 using System.Web.Mvc;
+using BusinessLogic.Logic.Users;
 using UI.Controllers;
 using UI.Controllers.Helpers;
 using UI.Transformations;
@@ -45,6 +46,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
         protected UrlHelper urlHelperMock;
         protected ApplicationUser currentUser;
         protected HttpRequestBase asyncRequestMock;
+        protected IUserRetriever userRetriever;
 
         [SetUp]
         public virtual void SetUp()
@@ -57,13 +59,15 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
             gameDefinitionCreatorMock = MockRepository.GenerateMock<IGameDefinitionSaver>();
             urlHelperMock = MockRepository.GenerateMock<UrlHelper>();
             boardGameGeekApiClient = MockRepository.GenerateMock<IBoardGameGeekApiClient>();
+            userRetriever = MockRepository.GenerateMock<IUserRetriever>();
             gameDefinitionControllerPartialMock = MockRepository.GeneratePartialMock<GameDefinitionController>(
                 dataContextMock, 
                 gameDefinitionRetrieverMock,
                 gameDefinitionTransformationMock,
                 showingXResultsMessageBuilderMock,
                 gameDefinitionCreatorMock,
-                boardGameGeekApiClient);
+                boardGameGeekApiClient,
+                userRetriever);
             gameDefinitionControllerPartialMock.Url = urlHelperMock;
 
             asyncRequestMock = MockRepository.GenerateMock<HttpRequestBase>();
@@ -87,5 +91,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
                 CurrentGamingGroupId = 15151
             };
         }
+
+
     }
 }
