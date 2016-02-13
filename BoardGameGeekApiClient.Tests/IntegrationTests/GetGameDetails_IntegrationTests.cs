@@ -26,6 +26,7 @@ namespace BoardGameGeekApiClient.Tests.IntegrationTests
                 Assert.IsNotNull(_result);
                 Assert.That(_result.Name, Is.Not.Null);
                 Assert.That(_result.Name, Is.Not.Empty);
+                Assert.That(_result.AverageWeight, Is.Not.Null);
             }
 
             [Test]

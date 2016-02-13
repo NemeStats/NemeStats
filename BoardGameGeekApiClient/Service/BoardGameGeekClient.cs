@@ -76,6 +76,12 @@ namespace BoardGameGeekApiClient.Service
                                 .Element("ratings")
                                 .Element("average")
                                 .GetDecimalValue("value"),
+                        AverageWeight = 
+                            boardgame.Element("item")
+                                .Element("statistics")
+                                .Element("ratings")
+                                .Element("averageweight")
+                                .GetDecimalValue("value"),
                         BGGRating =
                             boardgame.Element("item")
                                 .Element("statistics")

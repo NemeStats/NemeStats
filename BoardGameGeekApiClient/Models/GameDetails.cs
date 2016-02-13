@@ -24,6 +24,7 @@ namespace BoardGameGeekApiClient.Models
 
         public decimal BGGRating { get; set; }
         public decimal AverageRating { get; set; }
+        public decimal AverageWeight { get; set; }
         public int Rank { get; set; }
 
         public List<string> Designers { get; set; }
