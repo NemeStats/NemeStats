@@ -11,16 +11,20 @@ using System.Xml.Linq;
 using BoardGameGeekApiClient.Helpers;
 using BoardGameGeekApiClient.Interfaces;
 using BoardGameGeekApiClient.Models;
+using RollbarSharp;
 
 namespace BoardGameGeekApiClient.Service
 {
     public class BoardGameGeekClient : IBoardGameGeekApiClient
     {
         private readonly IApiDownloadService _apiDownloadService;
+        private RollbarClient _rollbar;
+
 
         public BoardGameGeekClient(IApiDownloadService apiDownloadService)
         {
             _apiDownloadService = apiDownloadService;
+            _rollbar = new RollbarClient();
         }
 
         public const string BASE_URL_API_V2 = "http://www.boardgamegeek.com/xmlapi2";
@@ -41,7 +45,7 @@ namespace BoardGameGeekApiClient.Service
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("Exception on GetGameThumbnail for ID " + gameId + "." + ex);
+                _rollbar.SendException(ex);
             }
 
             return thumbnail;
@@ -116,7 +120,7 @@ namespace BoardGameGeekApiClient.Service
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("Exception on GetGameDetails for ID " + gameId + "." + ex);
+                _rollbar.SendException(ex);
             }
 
             return details;
@@ -159,7 +163,7 @@ namespace BoardGameGeekApiClient.Service
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("Exception on GetUserDetails for user name " + userName + "." + ex);
+                _rollbar.SendException(ex);
             }
 
             return details;
@@ -193,7 +197,7 @@ namespace BoardGameGeekApiClient.Service
 
             catch (Exception ex)
             {
-                Debug.WriteLine("Exception on GetUserGames for User " + userName + "." + ex);
+                _rollbar.SendException(ex);
             }
 
             return new List<GameDetails>();
@@ -231,7 +235,7 @@ namespace BoardGameGeekApiClient.Service
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("Exception on SearchBoardGames for query " + query + "." + ex);
+                _rollbar.SendException(ex);
                 return new List<SearchBoardGameResult>();
             }
         }

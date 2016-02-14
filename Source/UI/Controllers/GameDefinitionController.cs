@@ -202,7 +202,7 @@ namespace UI.Controllers
                                 Active = true
                             }, currentUser);
                         }
-                        this.SetTempMessage(TempMessageKeys.CREATE_GAMEDEFITION_RESULT_TEMPMESSAGE, $"{pendingGames.Count} games imported from your BoardGameGeek collection to NemeStats. Awesome!", "info");
+                        this.SetTempMessage(TempMessageKeys.CREATE_GAMEDEFITION_RESULT_TEMPMESSAGE, $"{pendingGames.Count} games imported from your BoardGameGeek collection to NemeStats. Awesome!");
                     }
                 }
             }
