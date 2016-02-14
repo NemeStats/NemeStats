@@ -24,22 +24,6 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.UserRetrieverTests
         }
 
         [Test]
-        public void It_Throws_An_UnauthorizedEntityAccessException_If_The_User_Requesting_The_Information_Is_Not_The_User_Being_Requested()
-        {
-            expectedApplicationUser = new ApplicationUser
-            {
-                Id = "some application user id",
-            };
-            const string REQUESTED_USER_ID = "some OTHER user id";
-            var expectedException = new UnauthorizedEntityAccessException(expectedApplicationUser.Id, typeof(ApplicationUser), REQUESTED_USER_ID);
-            
-            var actualException = Assert.Throws<UnauthorizedEntityAccessException>(
-                () => autoMocker.ClassUnderTest.RetrieveUserInformation(REQUESTED_USER_ID, expectedApplicationUser));
-
-            Assert.That(actualException.Message, Is.EqualTo(expectedException.Message));
-        }
-
-        [Test]
         public void It_Sets_The_Basic_User_Information_For_The_Requested_User()
         {
             expectedApplicationUser = new ApplicationUser
@@ -68,7 +52,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.UserRetrieverTests
             }.AsQueryable();
             autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<ApplicationUser>()).Return(userQueryable);
 
-            var actualResult = autoMocker.ClassUnderTest.RetrieveUserInformation(expectedApplicationUser.Id, expectedApplicationUser);
+            var actualResult = autoMocker.ClassUnderTest.RetrieveUserInformation(expectedApplicationUser);
 
             Assert.That(actualResult.UserId, Is.EqualTo(expectedApplicationUser.Id));
             Assert.That(actualResult.UserName, Is.EqualTo(expectedApplicationUser.UserName));
@@ -113,7 +97,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.UserRetrieverTests
             }.AsQueryable();
             autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<ApplicationUser>()).Return(userQueryable);
 
-            var actualResult = autoMocker.ClassUnderTest.RetrieveUserInformation(expectedApplicationUser.Id, expectedApplicationUser);
+            var actualResult = autoMocker.ClassUnderTest.RetrieveUserInformation(expectedApplicationUser);
 
             Assert.That(actualResult.GamingGroups.Count, Is.EqualTo(2));
             var actualGamingGroupInfo = actualResult.GamingGroups[0];
@@ -163,7 +147,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.UserRetrieverTests
             }.AsQueryable();
             autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<ApplicationUser>()).Return(userQueryable);
 
-            var actualResult = autoMocker.ClassUnderTest.RetrieveUserInformation(expectedApplicationUser.Id, expectedApplicationUser);
+            var actualResult = autoMocker.ClassUnderTest.RetrieveUserInformation(expectedApplicationUser);
 
             Assert.That(actualResult.Players.Count, Is.EqualTo(2));
             var actualPlayer = actualResult.Players[0];

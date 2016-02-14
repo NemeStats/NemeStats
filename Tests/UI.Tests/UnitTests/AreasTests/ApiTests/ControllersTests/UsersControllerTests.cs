@@ -107,16 +107,15 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests
         [Test]
         public void Get_Returns_User_Information_For_The_Given_User()
         {
-            var EXPECTED_USER_ID = "some guid";
             var expectedUserInformation = new UserInformation();
-            autoMocker.Get<IUserRetriever>().Expect(mock => mock.RetrieveUserInformation(EXPECTED_USER_ID, applicationUser))
+            autoMocker.Get<IUserRetriever>().Expect(mock => mock.RetrieveUserInformation(applicationUser))
                       .Return(expectedUserInformation);
             UserInformationMessage expectedUserInformationMessage = new UserInformationMessage();
             autoMocker.Get<ITransformer>().Expect(mock => mock.Transform<UserInformation, UserInformationMessage>(expectedUserInformation))
                 .Return(expectedUserInformationMessage);
             autoMocker.ClassUnderTest.CurrentUser = applicationUser;
 
-            var actualResponse = autoMocker.ClassUnderTest.GetUserInformation(EXPECTED_USER_ID);
+            var actualResponse = autoMocker.ClassUnderTest.GetUserInformation(applicationUser.Id);
             
             Assert.That(actualResponse.Content, Is.TypeOf(typeof(ObjectContent<UserInformationMessage>)));
             var content = actualResponse.Content as ObjectContent<UserInformationMessage>;

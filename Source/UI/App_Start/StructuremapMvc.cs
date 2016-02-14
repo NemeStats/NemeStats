@@ -26,7 +26,7 @@ using WebActivatorEx;
 namespace UI.App_Start {
 	using System.Web.Mvc;
 
-    using Microsoft.Web.Infrastructure.DynamicModuleHelper;
+   using Microsoft.Web.Infrastructure.DynamicModuleHelper;
 
 	using UI.DependencyResolution;
 

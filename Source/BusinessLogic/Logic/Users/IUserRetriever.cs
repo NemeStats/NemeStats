@@ -4,6 +4,6 @@ namespace BusinessLogic.Logic.Users
 {
     public interface IUserRetriever
     {
-        UserInformation RetrieveUserInformation(string expectedUserID, ApplicationUser applicationUser);
+        UserInformation RetrieveUserInformation(ApplicationUser applicationUser);
     }
 }

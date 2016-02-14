@@ -317,7 +317,7 @@ namespace UI.Controllers
             emailViewModel.EmailAddress = user.Email;
             viewModel.ChangeEmailViewModel = emailViewModel;
 
-            var bggUser = _userRetriever.RetrieveUserInformation(currentUserId, user).BoardGameGeekUser;
+            var bggUser = _userRetriever.RetrieveUserInformation(user).BoardGameGeekUser;
             if (bggUser != null)
             {
                 viewModel.BoardGameGeekIntegrationModel = new BoardGameGeekIntegrationModel

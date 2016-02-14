@@ -9,8 +9,8 @@ namespace UI.Controllers.Helpers
         public const string MANAGE_ACCOUNT_RESULT_TEMPMESSAGE = "manageaccountresult";
     }
 
-    public class BaseController : Controller
-    {     
+    public partial class BaseController : Controller
+    {
 
         public void SetTempMessage(string key, string message, string kind = "success")
         {

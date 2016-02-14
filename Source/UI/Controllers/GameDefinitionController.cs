@@ -22,7 +22,6 @@ using BusinessLogic.Models.Games;
 using BusinessLogic.Models.User;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using BoardGameGeekApiClient.Interfaces;
@@ -31,6 +30,7 @@ using UI.Controllers.Helpers;
 using UI.Models.GameDefinitionModels;
 using UI.Transformations;
 using BusinessLogic.Exceptions;
+using BusinessLogic.Logic.BoardGameGeek;
 using BusinessLogic.Logic.Users;
 
 namespace UI.Controllers
@@ -46,6 +46,7 @@ namespace UI.Controllers
         internal IGameDefinitionSaver gameDefinitionSaver;
         internal IBoardGameGeekApiClient _boardGameGeekApiClient;
         private readonly IUserRetriever _userRetriever;
+        private readonly IBoardGameGeekGamesImporter _boardGameGeekGamesImporter;
 
         public GameDefinitionController(IDataContext dataContext,
             IGameDefinitionRetriever gameDefinitionRetriever,
@@ -53,7 +54,8 @@ namespace UI.Controllers
             IShowingXResultsMessageBuilder showingXResultsMessageBuilder,
             IGameDefinitionSaver gameDefinitionCreator,
             IBoardGameGeekApiClient boardGameGeekApiClient,
-            IUserRetriever userRetriever)
+            IUserRetriever userRetriever,
+            IBoardGameGeekGamesImporter boardGameGeekGamesImporter)
         {
             this.dataContext = dataContext;
             this.gameDefinitionRetriever = gameDefinitionRetriever;
@@ -62,6 +64,7 @@ namespace UI.Controllers
             this.gameDefinitionSaver = gameDefinitionCreator;
             _boardGameGeekApiClient = boardGameGeekApiClient;
             _userRetriever = userRetriever;
+            _boardGameGeekGamesImporter = boardGameGeekGamesImporter;
         }
 
         // GET: /GameDefinition/Details/5
@@ -73,12 +76,11 @@ namespace UI.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            GameDefinitionSummary gameDefinitionSummary;
             GameDefinitionDetailsViewModel gamingGroupGameDefinitionViewModel;
 
             try
             {
-                gameDefinitionSummary = gameDefinitionRetriever.GetGameDefinitionDetails(id.Value, NUMBER_OF_RECENT_GAMES_TO_SHOW);
+                var gameDefinitionSummary = gameDefinitionRetriever.GetGameDefinitionDetails(id.Value, NUMBER_OF_RECENT_GAMES_TO_SHOW);
                 gamingGroupGameDefinitionViewModel = gameDefinitionTransformation.Build(gameDefinitionSummary, currentUser);
             }
             catch (KeyNotFoundException)
@@ -168,49 +170,29 @@ namespace UI.Controllers
         [Authorize]
         [HttpPost]
         [UserContext]
-        public virtual ActionResult ImportFromBGG(ApplicationUser currentUser)  
+        public virtual ActionResult ImportFromBGG(ApplicationUser currentUser)
         {
-            var bggUser = _userRetriever.RetrieveUserInformation(currentUser.Id, currentUser).BoardGameGeekUser;
-            if (bggUser != null)
+
+            var gamesImported = _boardGameGeekGamesImporter.ImportBoardGameGeekGames(currentUser);
+
+            if (gamesImported == null)
             {
-                var userGames = _boardGameGeekApiClient.GetUserGames(bggUser.Name);
-                if (!userGames.Any())
-                {
-                    this.SetTempMessage(TempMessageKeys.CREATE_GAMEDEFITION_RESULT_TEMPMESSAGE, "It seems you don't have any game on your BoardGameGeek collection :_(", "info");
-                }
-                else
-                {
-                    var currentGames =
-                        gameDefinitionRetriever.GetAllGameDefinitionNames(currentUser.CurrentGamingGroupId)
-                            .Select(cg => cg.BoardGameGeekGameDefinitionId);
-
-
-                    var pendingGames = userGames.Where(g => currentGames.All(id => g.GameId != id)).ToList();
-                    if (!pendingGames.Any())
-                    {
-                        this.SetTempMessage(TempMessageKeys.CREATE_GAMEDEFITION_RESULT_TEMPMESSAGE, "All your BoardGameGeek games are already imported ;-)", "info");
-                    }
-                    else
-                    {
-
-                        foreach (var bggGame in pendingGames)
-                        {
-                            gameDefinitionSaver.CreateGameDefinition(new CreateGameDefinitionRequest()
-                            {
-                                Name = $"{bggGame.Name} ({bggGame.YearPublished})",
-                                BoardGameGeekGameDefinitionId = bggGame.GameId,
-                                Active = true
-                            }, currentUser);
-                        }
-                        this.SetTempMessage(TempMessageKeys.CREATE_GAMEDEFITION_RESULT_TEMPMESSAGE, $"{pendingGames.Count} games imported from your BoardGameGeek collection to NemeStats. Awesome!");
-                    }
-                }
+                this.SetTempMessage(TempMessageKeys.CREATE_GAMEDEFITION_RESULT_TEMPMESSAGE, "It seems you don't have any game on your BoardGameGeek collection :_(", "info");
+            }
+            else if (gamesImported == 0)
+            {
+                this.SetTempMessage(TempMessageKeys.CREATE_GAMEDEFITION_RESULT_TEMPMESSAGE,
+                    "All your BoardGameGeek games are already imported ;-)", "info");
+            }
+            else
+            {
+                this.SetTempMessage(TempMessageKeys.CREATE_GAMEDEFITION_RESULT_TEMPMESSAGE, $"{gamesImported} games imported from your BoardGameGeek collection to NemeStats. Awesome!");
             }
 
             return RedirectToAction(MVC.GamingGroup.Index());
 
         }
-       
+
 
         private string GetFirstModelStateError(string errorDescription)
         {
@@ -226,18 +208,6 @@ namespace UI.Controllers
             }
 
             return errorDescription;
-        }
-
-        private static GameDefinitionUpdateRequest TransformGameDefinitionEditViewModelToGameDefinitionUpdateRequest(GameDefinitionEditViewModel model)
-        {
-            return new GameDefinitionUpdateRequest
-            {
-                GameDefinitionId = model.GameDefinitionId,
-                Active = model.Active,
-                BoardGameGeekGameDefinitionId = model.BoardGameGeekGameDefinitionId,
-                Name = model.Name,
-                Description = model.Description
-            };
         }
 
         // GET: /GameDefinition/Edit/5
@@ -284,11 +254,11 @@ namespace UI.Controllers
             return View(MVC.GameDefinition.Views.Edit, viewModel);
         }
 
-        [UserContext]
         [Authorize]
+        [UserContext]
         public virtual ActionResult CreatePartial(ApplicationUser currentUser)
         {
-            var bggUser = _userRetriever.RetrieveUserInformation(currentUser.Id, currentUser).BoardGameGeekUser;
+            var bggUser = _userRetriever.RetrieveUserInformation(currentUser).BoardGameGeekUser;
 
             return View(MVC.GameDefinition.Views._CreatePartial, new CreateGameDefinitionViewModel() { BGGUserName = bggUser?.Name });
         }
@@ -312,10 +282,5 @@ namespace UI.Controllers
             return new HttpStatusCodeResult(HttpStatusCode.NotModified);
         }
 
-
-        protected override void Dispose(bool disposing)
-        {
-            base.Dispose(disposing);
-        }
     }
 }

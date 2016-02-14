@@ -47,6 +47,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
         protected ApplicationUser currentUser;
         protected HttpRequestBase asyncRequestMock;
         protected IUserRetriever userRetriever;
+        protected IBoardGameGeekGamesImporter BoardGameGeekGamesImporter;
 
         [SetUp]
         public virtual void SetUp()
@@ -60,6 +61,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
             urlHelperMock = MockRepository.GenerateMock<UrlHelper>();
             boardGameGeekApiClient = MockRepository.GenerateMock<IBoardGameGeekApiClient>();
             userRetriever = MockRepository.GenerateMock<IUserRetriever>();
+            BoardGameGeekGamesImporter = MockRepository.GenerateMock<IBoardGameGeekGamesImporter>();
             gameDefinitionControllerPartialMock = MockRepository.GeneratePartialMock<GameDefinitionController>(
                 dataContextMock, 
                 gameDefinitionRetrieverMock,
@@ -67,7 +69,8 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
                 showingXResultsMessageBuilderMock,
                 gameDefinitionCreatorMock,
                 boardGameGeekApiClient,
-                userRetriever);
+                userRetriever,
+                BoardGameGeekGamesImporter);
             gameDefinitionControllerPartialMock.Url = urlHelperMock;
 
             asyncRequestMock = MockRepository.GenerateMock<HttpRequestBase>();

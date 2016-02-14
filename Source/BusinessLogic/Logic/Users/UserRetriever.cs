@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using BusinessLogic.DataAccess;
-using BusinessLogic.Exceptions;
 using BusinessLogic.Logic.GamingGroups;
 using BusinessLogic.Models.Players;
 using BusinessLogic.Models.User;
@@ -9,22 +8,18 @@ namespace BusinessLogic.Logic.Users
 {
     public class UserRetriever : IUserRetriever
     {
-        private readonly IDataContext dataContext;
+        private readonly IDataContext _dataContext;
 
         public UserRetriever(IDataContext dataContext)
         {
-            this.dataContext = dataContext;
+            _dataContext = dataContext;
         }
 
-        public UserInformation RetrieveUserInformation(string userId, ApplicationUser applicationUser)
+        public UserInformation RetrieveUserInformation(ApplicationUser applicationUser)
         {
-            if (userId != applicationUser.Id)
-            {
-                throw new UnauthorizedEntityAccessException(applicationUser.Id, typeof(ApplicationUser), userId);
-            }
-
-            var userInformation = dataContext.GetQueryable<ApplicationUser>()
-                .Where(user => user.Id == userId)
+           
+            var userInformation = _dataContext.GetQueryable<ApplicationUser>()
+                .Where(user => user.Id == applicationUser.Id)
                 .Select(user => new UserInformation
                 {
                     UserId = user.Id,
