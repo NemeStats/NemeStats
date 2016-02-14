@@ -1,20 +1,15 @@
-﻿using BusinessLogic.DataAccess;
+﻿using BoardGameGeekApiClient.Interfaces;
+using BoardGameGeekApiClient.Models;
+using BusinessLogic.DataAccess;
+using BusinessLogic.Exceptions;
 using BusinessLogic.Logic.BoardGameGeek;
-using NUnit.Framework;
-using StructureMap.AutoMocking;
-using Rhino.Mocks;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using BusinessLogic.Models;
 using BusinessLogic.Models.User;
-using BoardGameGeekApiClient.Interfaces;
-using BoardGameGeekApiClient.Models;
-using BusinessLogic.Exceptions;
+using NUnit.Framework;
+using Rhino.Mocks;
+using StructureMap.AutoMocking;
 
-namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.BoardGameGeekGameDefinitionAttacherTests
+namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.BoardGameGeekGameDefinitionCreatorTests
 {
     [TestFixture]
     public class CreateBoardGameGeekGameDefinitionTests

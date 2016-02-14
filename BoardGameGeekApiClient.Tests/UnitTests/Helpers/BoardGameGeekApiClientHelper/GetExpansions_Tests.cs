@@ -4,7 +4,7 @@ using BoardGameGeekApiClient.Helpers;
 using BoardGameGeekApiClient.Models;
 using NUnit.Framework;
 
-namespace BoardGameGeekApiClient.Tests.UnitTests.BoardGameGeekApiClientHelper
+namespace BoardGameGeekApiClient.Tests.UnitTests.Helpers.BoardGameGeekApiClientHelper
 {
     public class GetExpansions_Tests : GetTypedValues_BaseTest
     {

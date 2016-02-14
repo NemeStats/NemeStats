@@ -6,5 +6,6 @@ namespace BusinessLogic.Models.Games
     {
         public string Name { get; set; }
         public int Id { get; set; }
+        public int? BoardGameGeekGameDefinitionId { get; set; }
     }
 }

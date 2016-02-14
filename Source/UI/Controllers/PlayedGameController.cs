@@ -38,8 +38,8 @@ using UI.Transformations;
 
 namespace UI.Controllers
 {
-	public partial class PlayedGameController : Controller
-	{
+	public partial class PlayedGameController : BaseController
+    {
 		internal NemeStatsDataContext dataContext;
 		internal IPlayedGameRetriever playedGameRetriever;
 		internal IPlayerRetriever playerRetriever;
@@ -316,7 +316,6 @@ namespace UI.Controllers
                 {
                     PlayedGameDetailsViewModels = playedGamesDetails,
                     UserCanEdit = true,
-                    PanelTitle = string.Format("{0} Results", playedGamesDetails.Count),
                     GamingGroupId = currentUser.CurrentGamingGroupId,
                     ShowSearchLinkInResultsHeader = false
                 }

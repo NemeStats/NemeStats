@@ -6,16 +6,9 @@
 
 <div class="panel panel-primary">
     <div class="panel-heading">
-        <h4 class="fl-left">
-            Games This Group Plays
+        <h4>
+            Games This Group Plays <span class="badge">@Model.Count</span>
         </h4>
-        @if ((bool?)ViewData["canEdit"] == true)
-        {
-            <div class="fl-right">
-                @Html.Action("CreatePartial", "GameDefinition")
-            </div>
-        }
-        <div class="fl-clear"></div>
     </div>
     <div id="js-gamedefinitions">
         @Html.Partial(MVC.GameDefinition.Views._GameDefinitionsTablePartial, Model, new ViewDataDictionary { { "canEdit", ViewData["canEdit"] } })

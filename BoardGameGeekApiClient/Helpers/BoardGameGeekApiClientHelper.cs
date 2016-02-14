@@ -50,7 +50,7 @@ namespace BoardGameGeekApiClient.Helpers
 
         private static List<string> GetTypeValue(XElement boardgame, string type)
         {
-            return (from p in boardgame.Element("item").Elements("link")
+            return (from p in boardgame.Elements("link")
                     where p.Attribute("type").Value == type
                     select p.Attribute("value").Value).ToList();
         }
@@ -81,17 +81,17 @@ namespace BoardGameGeekApiClient.Helpers
 
         public static string GetBoardGameName(this XElement boardgame)
         {
-            return (boardgame.Element("item").Elements("name")
+            return (boardgame.Elements("name")
                 .Where(p => p.Attribute("type").Value == "primary")
                 .Select(p => p.Attribute("value").Value)).SingleOrDefault();
         }
-        public static bool IsExpansion(this XElement boardgame)
+        public static bool IsExpansion(this XElement boardgame, string typeAttr = "type")
         {
-            return boardgame.Element("item").GetStringValue("type") == "boardgameexpansion";
+            return boardgame.GetStringValue(typeAttr) == "boardgameexpansion";
         }
         public static List<BoardGameLink> GetExpansionsLinks(this XElement Boardgame)
         {
-            var links = from p in Boardgame.Element("item").Elements("link")
+            var links = from p in Boardgame.Elements("link")
                         where p.Attribute("type").Value == "boardgameexpansion" &&
                             (p.Attribute("inbound") == null || p.Attribute("inbound").Value != "true")
                         select new BoardGameLink

@@ -189,6 +189,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UnitTests\DataAccessTests\GamingGroupsTests\EntityFrameworkGamingGroupAccessGranterTests\EntityFrameworkGamingGroupAccessGranterTestBase.cs" />
     <Compile Include="UnitTests\EventTrackingTests\UniversalAnalyticsNemeStatsEventTrackerTests\TrackGamingGroupUpdateTests.cs" />
+    <Compile Include="UnitTests\LogicTests\BoardGameGeekTests\BoardGameGeekGamesImporterTests\BoardGameGeekGamesImporterTests.cs" />
     <Compile Include="UnitTests\LogicTests\ChampionsTests\ChampionRecalculatorTests\RecalculateAllChampionsTests.cs" />
     <Compile Include="UnitTests\LogicTests\ChampionsTests\ChampionRecalculatorTests\RecalculateChampionTests.cs" />
     <Compile Include="UnitTests\LogicTests\GameDefinitionsTests\BoardGameGeekGameDefinitionCreatorTests\CreateBoardGameGeekGameDefinitionTests.cs" />
@@ -275,9 +276,7 @@
       <Name>BusinessLogic</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="UnitTests\LogicTests\BoardGameGeekSearcherTests\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>

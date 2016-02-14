@@ -52,7 +52,7 @@ namespace UI.Areas.Api.Controllers
         [ApiAuthentication]
         public virtual HttpResponseMessage GetUserInformation(string userId)
         {
-            var userInformation = userRetriever.RetrieveUserInformation(userId, CurrentUser);
+            var userInformation = userRetriever.RetrieveUserInformation(CurrentUser);
             var userInformationMessage = this.transformer.Transform<UserInformation, UserInformationMessage>(userInformation);
             return Request.CreateResponse(HttpStatusCode.OK, userInformationMessage);
         }

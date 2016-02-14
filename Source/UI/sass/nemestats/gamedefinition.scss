@@ -26,3 +26,29 @@
         }
     }
 }
+
+.createGameDefinitionPartial {
+    .importbgg {
+        @media (min-width: $screen-md-min) {
+            .pulleable {
+                float: right;
+            }
+        }
+
+        @media (max-width: $screen-sm-max) {
+            button {
+                margin-top: 10px;
+            }
+        }
+
+
+        button {
+            white-space: normal !important;
+            word-wrap: break-word;
+
+            img {
+                margin-left: 5px;
+            }
+        }
+    }
+}

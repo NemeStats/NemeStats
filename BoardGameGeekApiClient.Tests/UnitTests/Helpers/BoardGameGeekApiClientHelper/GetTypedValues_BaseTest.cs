@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Xml.Linq;
 
-namespace BoardGameGeekApiClient.Tests.UnitTests.BoardGameGeekApiClientHelper
+namespace BoardGameGeekApiClient.Tests.UnitTests.Helpers.BoardGameGeekApiClientHelper
 {
     public abstract class GetTypedValues_BaseTest : BoardGameGeekApiClientHelper_Tests
     {
@@ -76,7 +76,7 @@ namespace BoardGameGeekApiClient.Tests.UnitTests.BoardGameGeekApiClientHelper
                     string.Join("", Designers) +
                     string.Join("", Artists) +
                     string.Join("", Publishers) +
-                    "</item></items>").Root;
+                    "</item></items>").Root.Element("item");
         }
     }
 }

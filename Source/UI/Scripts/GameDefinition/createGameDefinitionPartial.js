@@ -19,9 +19,9 @@ Views.GameDefinition.CreateGameDefinitionPartial.prototype = {
 	    var owner = this;
 		this.formAction = "/gamedefinition/ajaxcreate";
 		this.$container = $(".createGameDefinitionPartial");
-		this.$form = this.$container.find("form");
+		this.$form = this.$container.find("#js-createGameForm");
 		this.$form.attr('action', this.formAction);
-		this.$gameNameInput = this.$form.find("input[type='text']");
+		this.$gameNameInput = this.$form.find("#gameNameInput");
 	    this.$boardGameId = this.$form.find("input[type='hidden']");
 		this.$createBtn = this.$form.find("button");
 		this.$createBtn.click(function (e) {

@@ -37,7 +37,7 @@ using AutoMapper;
 
 namespace UI.Controllers
 {
-    public partial class PlayerController : Controller
+    public partial class PlayerController : BaseController
     {
         internal const int NUMBER_OF_RECENT_GAMES_TO_RETRIEVE = 10;
         internal const int NUMBER_OF_TOP_PLAYERS_TO_RETRIEVE = 25;

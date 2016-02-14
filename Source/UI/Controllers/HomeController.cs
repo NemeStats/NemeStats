@@ -24,6 +24,7 @@ using System.Linq;
 using System.Web.Mvc;
 using BusinessLogic.Logic.GameDefinitions;
 using BusinessLogic.Models.Games;
+using UI.Controllers.Helpers;
 using UI.Models.GameDefinitionModels;
 using UI.Models.GamingGroup;
 using UI.Models.Home;
@@ -32,7 +33,7 @@ using UI.Transformations.PlayerTransformations;
 
 namespace UI.Controllers
 {
-    public partial class HomeController : Controller
+    public partial class HomeController : BaseController
     {
         internal const int NUMBER_OF_TOP_PLAYERS_TO_SHOW = 15;
         internal const int NUMBER_OF_RECENT_PUBLIC_GAMES_TO_SHOW = 5;

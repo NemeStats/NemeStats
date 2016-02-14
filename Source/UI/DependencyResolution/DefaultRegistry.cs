@@ -29,7 +29,8 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.DataProtection;
 
-namespace UI.DependencyResolution {
+namespace UI.DependencyResolution
+{
     using BusinessLogic.DataAccess;
     using BusinessLogic.DataAccess.GamingGroups;
     using BusinessLogic.DataAccess.Repositories;
@@ -53,15 +54,18 @@ namespace UI.DependencyResolution {
     using System.Web;
     using StructureMap;
 
-    public class DefaultRegistry : Registry {
+    public class DefaultRegistry : Registry
+    {
         #region Constructors and Destructors
 
-        public DefaultRegistry() {
+        public DefaultRegistry()
+        {
             this.Scan(
-                scan => {
+                scan =>
+                {
                     scan.TheCallingAssembly();
                     scan.WithDefaultConventions();
-					scan.With(new ControllerConvention());
+                    scan.With(new ControllerConvention());
                 });
 
             this.Scan(s =>
@@ -185,6 +189,7 @@ namespace UI.DependencyResolution {
             this.For<IBoardGameGeekGameDefinitionCreator>().Use<BoardGameGeekGameDefinitionCreator>();
 
             this.For<IBoardGameGeekUserSaver>().Use<BoardGameGeekUserSaver>();
+            this.For<IBoardGameGeekGamesImporter>().Use<BoardGameGeekGamesImporter>();
 
         }
 

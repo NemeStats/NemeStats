@@ -3,7 +3,7 @@ using System.Linq;
 using BoardGameGeekApiClient.Helpers;
 using NUnit.Framework;
 
-namespace BoardGameGeekApiClient.Tests.UnitTests.BoardGameGeekApiClientHelper
+namespace BoardGameGeekApiClient.Tests.UnitTests.Helpers.BoardGameGeekApiClientHelper
 {
     public class GetCategories_Tests : GetTypedValues_BaseTest
     {

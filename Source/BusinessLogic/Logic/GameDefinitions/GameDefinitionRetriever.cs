@@ -22,7 +22,6 @@ using BusinessLogic.DataAccess;
 using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.Models;
 using System.Collections.Generic;
-using System.ComponentModel.Design;
 using System.Linq;
 using BusinessLogic.Logic.BoardGameGeek;
 using BusinessLogic.Models.Games;
@@ -221,6 +220,7 @@ namespace BusinessLogic.Logic.GameDefinitions
                               && gameDefinition.GamingGroupId == gamingGroupId)
                               .Select(gameDefiniton => new GameDefinitionName
                               {
+                                  BoardGameGeekGameDefinitionId = gameDefiniton.BoardGameGeekGameDefinitionId,
                                   Id = gameDefiniton.Id,
                                   Name = gameDefiniton.Name
                               }).ToList();

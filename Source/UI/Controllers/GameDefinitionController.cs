@@ -18,7 +18,6 @@
 using AutoMapper;
 using BusinessLogic.DataAccess;
 using BusinessLogic.Logic.GameDefinitions;
-using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
 using BusinessLogic.Models.User;
 using System;
@@ -31,108 +30,115 @@ using UI.Controllers.Helpers;
 using UI.Models.GameDefinitionModels;
 using UI.Transformations;
 using BusinessLogic.Exceptions;
+using BusinessLogic.Logic.BoardGameGeek;
+using BusinessLogic.Logic.Users;
 
 namespace UI.Controllers
 {
-	public partial class GameDefinitionController : Controller
-	{
-		internal const int NUMBER_OF_RECENT_GAMES_TO_SHOW = 5;
+    public partial class GameDefinitionController : BaseController
+    {
+        internal const int NUMBER_OF_RECENT_GAMES_TO_SHOW = 5;
 
-		internal IDataContext dataContext;
-		internal IGameDefinitionRetriever gameDefinitionRetriever;
-		internal IGameDefinitionDetailsViewModelBuilder gameDefinitionTransformation;
-		internal IShowingXResultsMessageBuilder showingXResultsMessageBuilder;
-		internal IGameDefinitionSaver gameDefinitionSaver;
+        internal IDataContext dataContext;
+        internal IGameDefinitionRetriever gameDefinitionRetriever;
+        internal IGameDefinitionDetailsViewModelBuilder gameDefinitionTransformation;
+        internal IShowingXResultsMessageBuilder showingXResultsMessageBuilder;
+        internal IGameDefinitionSaver gameDefinitionSaver;
         internal IBoardGameGeekApiClient _boardGameGeekApiClient;
+        private readonly IUserRetriever _userRetriever;
+        private readonly IBoardGameGeekGamesImporter _boardGameGeekGamesImporter;
 
-	    public GameDefinitionController(IDataContext dataContext,
-			IGameDefinitionRetriever gameDefinitionRetriever,
-			IGameDefinitionDetailsViewModelBuilder gameDefinitionTransformation,
-			IShowingXResultsMessageBuilder showingXResultsMessageBuilder,
-			IGameDefinitionSaver gameDefinitionCreator,
-            IBoardGameGeekApiClient boardGameGeekApiClient)
-		{
-			this.dataContext = dataContext;
-			this.gameDefinitionRetriever = gameDefinitionRetriever;
-			this.gameDefinitionTransformation = gameDefinitionTransformation;
-			this.showingXResultsMessageBuilder = showingXResultsMessageBuilder;
-			this.gameDefinitionSaver = gameDefinitionCreator;
-	        _boardGameGeekApiClient = boardGameGeekApiClient;
-		}
+        public GameDefinitionController(IDataContext dataContext,
+            IGameDefinitionRetriever gameDefinitionRetriever,
+            IGameDefinitionDetailsViewModelBuilder gameDefinitionTransformation,
+            IShowingXResultsMessageBuilder showingXResultsMessageBuilder,
+            IGameDefinitionSaver gameDefinitionCreator,
+            IBoardGameGeekApiClient boardGameGeekApiClient,
+            IUserRetriever userRetriever,
+            IBoardGameGeekGamesImporter boardGameGeekGamesImporter)
+        {
+            this.dataContext = dataContext;
+            this.gameDefinitionRetriever = gameDefinitionRetriever;
+            this.gameDefinitionTransformation = gameDefinitionTransformation;
+            this.showingXResultsMessageBuilder = showingXResultsMessageBuilder;
+            this.gameDefinitionSaver = gameDefinitionCreator;
+            _boardGameGeekApiClient = boardGameGeekApiClient;
+            _userRetriever = userRetriever;
+            _boardGameGeekGamesImporter = boardGameGeekGamesImporter;
+        }
 
-		// GET: /GameDefinition/Details/5
-		[UserContext(RequiresGamingGroup = false)]
-		public virtual ActionResult Details(int? id, ApplicationUser currentUser)
-		{
-			if (id == null)
-			{
-				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-			}
+        // GET: /GameDefinition/Details/5
+        [UserContext(RequiresGamingGroup = false)]
+        public virtual ActionResult Details(int? id, ApplicationUser currentUser)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
 
-			GameDefinitionSummary gameDefinitionSummary;
-			GameDefinitionDetailsViewModel gamingGroupGameDefinitionViewModel;
+            GameDefinitionDetailsViewModel gamingGroupGameDefinitionViewModel;
 
-			try
-			{
-				gameDefinitionSummary = gameDefinitionRetriever.GetGameDefinitionDetails(id.Value, NUMBER_OF_RECENT_GAMES_TO_SHOW);
-				gamingGroupGameDefinitionViewModel = gameDefinitionTransformation.Build(gameDefinitionSummary, currentUser);
-			}
-			catch (KeyNotFoundException)
-			{
-				return new HttpNotFoundResult();
-			}
-			catch (UnauthorizedAccessException)
-			{
-				return new HttpUnauthorizedResult();
-			}
+            try
+            {
+                var gameDefinitionSummary = gameDefinitionRetriever.GetGameDefinitionDetails(id.Value, NUMBER_OF_RECENT_GAMES_TO_SHOW);
+                gamingGroupGameDefinitionViewModel = gameDefinitionTransformation.Build(gameDefinitionSummary, currentUser);
+            }
+            catch (KeyNotFoundException)
+            {
+                return new HttpNotFoundResult();
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return new HttpUnauthorizedResult();
+            }
 
-		    gamingGroupGameDefinitionViewModel.PlayedGamesPanelTitle = 
+            gamingGroupGameDefinitionViewModel.PlayedGamesPanelTitle =
                 string.Format("Last {0} Played Games", gamingGroupGameDefinitionViewModel.PlayedGames.Count);
 
-			return View(MVC.GameDefinition.Views.Details, gamingGroupGameDefinitionViewModel);
-		}
+            return View(MVC.GameDefinition.Views.Details, gamingGroupGameDefinitionViewModel);
+        }
 
-		// GET: /GameDefinition/Create
-		[Authorize]
-		public virtual ActionResult Create(string returnUrl)
-		{
-		    return View(MVC.GameDefinition.Views.Create,
-		                new CreateGameDefinitionViewModel()
-		                {
-		                    ReturnUrl = returnUrl
-		                });
-		}
+        // GET: /GameDefinition/Create
+        [Authorize]
+        public virtual ActionResult Create(string returnUrl)
+        {
+            return View(MVC.GameDefinition.Views.Create,
+                        new CreateGameDefinitionViewModel()
+                        {
+                            ReturnUrl = returnUrl
+                        });
+        }
 
-		// POST: /GameDefinition/Create
-		// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-		// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-		[Authorize]
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		[UserContext]
-		public virtual ActionResult Create(CreateGameDefinitionViewModel createGameDefinitionViewModel, ApplicationUser currentUser)
-		{
-			if (ModelState.IsValid)
-			{
+        // POST: /GameDefinition/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [UserContext]
+        public virtual ActionResult Create(CreateGameDefinitionViewModel createGameDefinitionViewModel, ApplicationUser currentUser)
+        {
+            if (ModelState.IsValid)
+            {
                 createGameDefinitionViewModel.Name = createGameDefinitionViewModel.Name.Trim();
                 var gameDefinition = Mapper.Map<CreateGameDefinitionViewModel, CreateGameDefinitionRequest>(createGameDefinitionViewModel);
 
-				var savedResult = gameDefinitionSaver.CreateGameDefinition(gameDefinition, currentUser);
+                var savedResult = gameDefinitionSaver.CreateGameDefinition(gameDefinition, currentUser);
 
                 if (!String.IsNullOrWhiteSpace(createGameDefinitionViewModel.ReturnUrl))
                     return new RedirectResult(createGameDefinitionViewModel.ReturnUrl + "?gameId=" + savedResult.Id);
 
-				return new RedirectResult(Url.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name)
-										+ "#" + GamingGroupController.SECTION_ANCHOR_GAMEDEFINITIONS);
-			}
+                return new RedirectResult(Url.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name)
+                                        + "#" + GamingGroupController.SECTION_ANCHOR_GAMEDEFINITIONS);
+            }
 
             return View(MVC.GameDefinition.Views.Create, createGameDefinitionViewModel);
-		}
+        }
 
-		[Authorize]
-		[HttpPost]
-		[UserContext]
-		public virtual ActionResult AjaxCreate(CreateGameDefinitionViewModel createGameDefinitionViewModel, ApplicationUser currentUser)
+        [Authorize]
+        [HttpPost]
+        [UserContext]
+        public virtual ActionResult AjaxCreate(CreateGameDefinitionViewModel createGameDefinitionViewModel, ApplicationUser currentUser)
         {
             if (!Request.IsAjaxRequest())
             {
@@ -161,6 +167,33 @@ namespace UI.Controllers
             return new HttpStatusCodeResult(HttpStatusCode.BadRequest, errorDescription);
         }
 
+        [Authorize]
+        [HttpPost]
+        [UserContext]
+        public virtual ActionResult ImportFromBGG(ApplicationUser currentUser)
+        {
+
+            var gamesImported = _boardGameGeekGamesImporter.ImportBoardGameGeekGames(currentUser);
+
+            if (gamesImported == null)
+            {
+                this.SetTempMessage(TempMessageKeys.CREATE_GAMEDEFITION_RESULT_TEMPMESSAGE, "It seems you don't have any game on your BoardGameGeek collection :_(", "info");
+            }
+            else if (gamesImported == 0)
+            {
+                this.SetTempMessage(TempMessageKeys.CREATE_GAMEDEFITION_RESULT_TEMPMESSAGE,
+                    "All your BoardGameGeek games are already imported ;-)", "info");
+            }
+            else
+            {
+                this.SetTempMessage(TempMessageKeys.CREATE_GAMEDEFITION_RESULT_TEMPMESSAGE, $"{gamesImported} games imported from your BoardGameGeek collection to NemeStats. Awesome!");
+            }
+
+            return RedirectToAction(MVC.GamingGroup.Index());
+
+        }
+
+
         private string GetFirstModelStateError(string errorDescription)
         {
             foreach (var modelStateValue in ModelState.Values)
@@ -177,91 +210,77 @@ namespace UI.Controllers
             return errorDescription;
         }
 
-        private static GameDefinitionUpdateRequest TransformGameDefinitionEditViewModelToGameDefinitionUpdateRequest(GameDefinitionEditViewModel model)
-        {
-            return new GameDefinitionUpdateRequest
-            {
-                GameDefinitionId = model.GameDefinitionId,
-                Active = model.Active,
-                BoardGameGeekGameDefinitionId = model.BoardGameGeekGameDefinitionId,
-                Name = model.Name,
-                Description = model.Description
-            };
-        }
-
         // GET: /GameDefinition/Edit/5
         [Authorize]
-		[UserContext]
-		public virtual ActionResult Edit(int? id, ApplicationUser currentUser)
-		{
-			if (id == null)
-			{
-				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-			}
+        [UserContext]
+        public virtual ActionResult Edit(int? id, ApplicationUser currentUser)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
 
-			GameDefinitionEditViewModel gameDefinitionEditViewModel;
-			try
-			{
-				var gameDefinition = gameDefinitionRetriever.GetGameDefinitionDetails(id.Value, 0);
+            GameDefinitionEditViewModel gameDefinitionEditViewModel;
+            try
+            {
+                var gameDefinition = gameDefinitionRetriever.GetGameDefinitionDetails(id.Value, 0);
                 gameDefinitionEditViewModel = Mapper.Map<GameDefinitionEditViewModel>(gameDefinition);
             }
-			catch (KeyNotFoundException)
-			{
-				return HttpNotFound();
-			}
+            catch (KeyNotFoundException)
+            {
+                return HttpNotFound();
+            }
 
-			return View(MVC.GameDefinition.Views.Edit, gameDefinitionEditViewModel);
-		}
+            return View(MVC.GameDefinition.Views.Edit, gameDefinitionEditViewModel);
+        }
 
         // POST: /GameDefinition/Edit/5
-		// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-		// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-		[HttpPost]
-		[ValidateAntiForgeryToken]
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         [Authorize]
         [UserContext]
-		public virtual ActionResult Edit(GameDefinitionEditViewModel viewModel, ApplicationUser currentUser)
-		{
-			if (ModelState.IsValid)
-			{
+        public virtual ActionResult Edit(GameDefinitionEditViewModel viewModel, ApplicationUser currentUser)
+        {
+            if (ModelState.IsValid)
+            {
                 viewModel.Name = viewModel.Name.Trim();
                 var gameDefinitionUpdateRequest = Mapper.Map<GameDefinitionUpdateRequest>(viewModel);
                 gameDefinitionSaver.UpdateGameDefinition(gameDefinitionUpdateRequest, currentUser);
-				return new RedirectResult(Url.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name)
-										  + "#" + GamingGroupController.SECTION_ANCHOR_GAMEDEFINITIONS);
-			}
-			return View(MVC.GameDefinition.Views.Edit, viewModel);
-		}
+                return new RedirectResult(Url.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name)
+                                          + "#" + GamingGroupController.SECTION_ANCHOR_GAMEDEFINITIONS);
+            }
+            return View(MVC.GameDefinition.Views.Edit, viewModel);
+        }
 
-		[Authorize]
-		public virtual ActionResult CreatePartial()
-		{
-			return View(MVC.GameDefinition.Views._CreatePartial, new CreateGameDefinitionViewModel());
-		}
+        [Authorize]
+        [UserContext]
+        public virtual ActionResult CreatePartial(ApplicationUser currentUser)
+        {
+            var bggUser = _userRetriever.RetrieveUserInformation(currentUser).BoardGameGeekUser;
 
-		[Authorize]
-		[HttpGet]
-		[UserContext]
-		public virtual ActionResult SearchBoardGameGeekHttpGet(string searchText)
-		{
-			if (!Request.IsAjaxRequest())
-			{
-				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-			}
+            return View(MVC.GameDefinition.Views._CreatePartial, new CreateGameDefinitionViewModel() { BGGUserName = bggUser?.Name });
+        }
 
-			if (ModelState.IsValid)
-			{
-			    var searchResults = _boardGameGeekApiClient.SearchBoardGames(searchText);
-				return Json(searchResults, JsonRequestBehavior.AllowGet);
-			}
+        [Authorize]
+        [HttpGet]
+        [UserContext]
+        public virtual ActionResult SearchBoardGameGeekHttpGet(string searchText)
+        {
+            if (!Request.IsAjaxRequest())
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
 
-			return new HttpStatusCodeResult(HttpStatusCode.NotModified);
-		}
+            if (ModelState.IsValid)
+            {
+                var searchResults = _boardGameGeekApiClient.SearchBoardGames(searchText);
+                return Json(searchResults, JsonRequestBehavior.AllowGet);
+            }
 
+            return new HttpStatusCodeResult(HttpStatusCode.NotModified);
+        }
 
-        protected override void Dispose(bool disposing)
-		{
-			base.Dispose(disposing);
-		}
-	}
+    }
 }

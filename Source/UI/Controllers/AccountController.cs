@@ -30,15 +30,14 @@ using BoardGameGeekApiClient.Interfaces;
 using BusinessLogic.Logic.BoardGameGeek;
 using BusinessLogic.Logic.GamingGroups;
 using UI.Attributes.Filters;
+using UI.Controllers.Helpers;
 using UI.Models;
 using UI.Models.User;
-using UI.Models.GamingGroup;
-using BusinessLogic.Models.Utility;
 
 namespace UI.Controllers
 {
     [Authorize]
-    public partial class AccountController : Controller
+    public partial class AccountController : BaseController
     {
         private readonly ApplicationUserManager userManager;
         private readonly IUserRegisterer userRegisterer;
@@ -56,7 +55,7 @@ namespace UI.Controllers
             IFirstTimeAuthenticator firstTimeAuthenticator,
             IAuthenticationManager authenticationManager,
             IGamingGroupInviteConsumer gamingGroupInvitationConsumer,
-            IGamingGroupRetriever gamingGroupRetriever, 
+            IGamingGroupRetriever gamingGroupRetriever,
             IBoardGameGeekUserSaver boardGameGeekUserSaver,
             IBoardGameGeekApiClient boardGameGeekApiClient,
             IUserRetriever userRetriever)
@@ -201,14 +200,17 @@ namespace UI.Controllers
         // GET: /Account/Manage
         public virtual ActionResult Manage(ManageMessageId? message)
         {
-            ViewBag.StatusMessage =
+
+            var tempMessage =
                 message == ManageMessageId.SetPasswordSuccess ? "Your password has been set."
-                : message == ManageMessageId.SetBoardGameGeekUserSuccess ? "Your BGG account has been linked with NemeStats successfully."
+                : message == ManageMessageId.SetBoardGameGeekUserSuccess ? "Your BGG account has been linked with NemeStats successfully. Now you can import your games on the Gaming Group page."
                 : message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
                 : message == ManageMessageId.ChangeEmailSuccess ? "Your email has been changed."
                 : message == ManageMessageId.RemoveLoginSuccess ? "The external login was removed."
                 : message == ManageMessageId.Error ? "An error occurred."
                 : "";
+
+            this.SetTempMessage(TempMessageKeys.MANAGE_ACCOUNT_RESULT_TEMPMESSAGE, tempMessage, message.HasValue && message == ManageMessageId.Error ? "error" : "success");
 
             SetViewBag();
             ManageAccountViewModel viewModel = GetBaseManageAccountViewModel();
@@ -315,7 +317,7 @@ namespace UI.Controllers
             emailViewModel.EmailAddress = user.Email;
             viewModel.ChangeEmailViewModel = emailViewModel;
 
-            var bggUser = _userRetriever.RetrieveUserInformation(currentUserId, user).BoardGameGeekUser;
+            var bggUser = _userRetriever.RetrieveUserInformation(user).BoardGameGeekUser;
             if (bggUser != null)
             {
                 viewModel.BoardGameGeekIntegrationModel = new BoardGameGeekIntegrationModel
@@ -539,11 +541,7 @@ namespace UI.Controllers
         private bool HasPassword()
         {
             var user = userManager.FindById(User.Identity.GetUserId());
-            if (user != null)
-            {
-                return user.PasswordHash != null;
-            }
-            return false;
+            return user?.PasswordHash != null;
         }
 
         public enum ManageMessageId

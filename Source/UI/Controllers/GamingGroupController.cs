@@ -34,7 +34,7 @@ using UI.Transformations.PlayerTransformations;
 
 namespace UI.Controllers
 {
-    public partial class GamingGroupController : Controller
+    public partial class GamingGroupController : BaseController
     {
         public const int MAX_NUMBER_OF_RECENT_GAMES = 10;
         public const int NUMBER_OF_TOP_GAMING_GROUPS_TO_SHOW = 25;
@@ -138,7 +138,6 @@ namespace UI.Controllers
                 {
                     PlayedGameDetailsViewModels = gamingGroupSummary.PlayedGames
                     .Select(playedGame => playedGameDetailsViewModelBuilder.Build(playedGame, currentUser)).ToList(),
-                    PanelTitle = string.Format("Last {0} Played Games", gamingGroupSummary.PlayedGames.Count),
                     UserCanEdit = currentUser.CurrentGamingGroupId == gamingGroupSummary.Id,
                     ShowSearchLinkInResultsHeader = false
                 },
