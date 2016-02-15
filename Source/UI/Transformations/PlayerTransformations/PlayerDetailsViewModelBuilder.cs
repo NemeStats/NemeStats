@@ -1,20 +1,22 @@
 ﻿#region LICENSE
+
 // NemeStats is a free website for tracking the results of board games.
 //     Copyright (C) 2015 Jacob Gordon
-// 
+//
 //     This program is free software: you can redistribute it and/or modify
 //     it under the terms of the GNU General Public License as published by
 //     the Free Software Foundation, either version 3 of the License, or
 //     (at your option) any later version.
-// 
+//
 //     This program is distributed in the hope that it will be useful,
 //     but WITHOUT ANY WARRANTY; without even the implied warranty of
 //     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //     GNU General Public License for more details.
-// 
+//
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
-#endregion
+
+#endregion LICENSE
 
 using AutoMapper;
 using BusinessLogic.Models;
@@ -70,7 +72,7 @@ namespace UI.Transformations.PlayerTransformations
             PopulatePlayerVersusPlayersViewModel(playerDetails, playerDetailsViewModel);
 
             SetTwitterBraggingUrlIfThePlayerIsTheCurrentlyLoggedInUser(playerDetails, urlForMinionBragging, currentUser, playerDetailsViewModel);
-            
+
             SetAveragePointsPerGame(playerDetails, playerDetailsViewModel);
             playerDetailsViewModel.AveragePlayersPerGame = playerDetails.PlayerStats.AveragePlayersPerGame;
             SetAveragePointsPerPlayer(playerDetails, playerDetailsViewModel);
@@ -88,7 +90,7 @@ namespace UI.Transformations.PlayerTransformations
             SetChampionedGames(playerDetails, playerDetailsViewModel);
 
             SetFormerChampionedGames(playerDetails, playerDetailsViewModel);
-            
+
             return playerDetailsViewModel;
         }
 
@@ -115,7 +117,12 @@ namespace UI.Transformations.PlayerTransformations
                 if (playerDetails.CurrentNemesis != null
                     && playerDetails.CurrentNemesis.NemesisPlayerId == playerVersusPlayerStatistics.OpposingPlayerId)
                 {
-                    playerSummaryViewModel.SpecialBadgeTypes.Add(new NemesisBadgeViewModel());   
+                    playerSummaryViewModel.SpecialBadgeTypes.Add(new NemesisBadgeViewModel());
+                }
+
+                if (playerDetails.PreviousNemesis?.NemesisPlayerId == playerVersusPlayerStatistics.OpposingPlayerId)
+                {
+                    playerSummaryViewModel.SpecialBadgeTypes.Add(new PreviousNemesisBadgeViewModel());
                 }
 
                 if (playerDetails.Minions.Any(x => x.Id == playerVersusPlayerStatistics.OpposingPlayerId))
@@ -135,8 +142,8 @@ namespace UI.Transformations.PlayerTransformations
 
             if (playerVersusPlayerStatistics.NumberOfGamesLostVersusThisPlayer + playerVersusPlayerStatistics.NumberOfGamesWonVersusThisPlayer > 0)
             {
-                winPercentage = ((decimal)playerVersusPlayerStatistics.NumberOfGamesWonVersusThisPlayer 
-                    / (playerVersusPlayerStatistics.NumberOfGamesWonVersusThisPlayer 
+                winPercentage = ((decimal)playerVersusPlayerStatistics.NumberOfGamesWonVersusThisPlayer
+                    / (playerVersusPlayerStatistics.NumberOfGamesWonVersusThisPlayer
                         + playerVersusPlayerStatistics.NumberOfGamesLostVersusThisPlayer) * 100);
             }
             return winPercentage;
@@ -193,7 +200,7 @@ namespace UI.Transformations.PlayerTransformations
         private static void PopulateNemesisData(Nemesis nemesis, PlayerDetailsViewModel playerDetailsViewModel)
         {
             playerDetailsViewModel.HasNemesis = !(nemesis is NullNemesis);
-            if(playerDetailsViewModel.HasNemesis)
+            if (playerDetailsViewModel.HasNemesis)
             {
                 playerDetailsViewModel.NemesisPlayerId = nemesis.NemesisPlayerId;
                 playerDetailsViewModel.NemesisName = nemesis.NemesisPlayer.Name;
@@ -223,7 +230,7 @@ namespace UI.Transformations.PlayerTransformations
                 return;
             }
             playerDetailsViewModel.PlayerGameSummaries
-                .Where(summary => playerDetails.FormerChampionedGames.Select(fcg=> fcg.Id).Contains(summary.GameDefinitionId) 
+                .Where(summary => playerDetails.FormerChampionedGames.Select(fcg => fcg.Id).Contains(summary.GameDefinitionId)
                     //take the current champion out of the former champions list
                     && !summary.IsChampion)
                 .ToList()
