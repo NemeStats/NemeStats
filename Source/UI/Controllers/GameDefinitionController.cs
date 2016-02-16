@@ -143,16 +143,15 @@ namespace UI.Controllers
                 createGameDefinitionViewModel.Name = createGameDefinitionViewModel.Name.Trim();
                 var createGameDefinitionRequest = Mapper.Map<CreateGameDefinitionRequest>(createGameDefinitionViewModel);
 
-                GameDefinition newGameDefinition;
                 try
                 {
-                    newGameDefinition = gameDefinitionSaver.CreateGameDefinition(createGameDefinitionRequest, currentUser);
+                    gameDefinitionSaver.CreateGameDefinition(createGameDefinitionRequest, currentUser);
                 }
                 catch (DuplicateKeyException)
                 {
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "This Game Definition is already active within your Gaming Group.");
                 }
-                return Json(newGameDefinition, JsonRequestBehavior.AllowGet);
+                return Json(currentUser.CurrentGamingGroupId, JsonRequestBehavior.AllowGet);
             }
 
             string errorDescription = string.Empty;
