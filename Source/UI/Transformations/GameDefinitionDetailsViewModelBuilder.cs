@@ -22,6 +22,7 @@ using BusinessLogic.Models.Games;
 using BusinessLogic.Models.Players;
 using BusinessLogic.Models.User;
 using System.Linq;
+using BusinessLogic.Logic.Players;
 using UI.Models.GameDefinitionModels;
 using UI.Models.PlayedGame;
 using UI.Models.Players;
@@ -47,7 +48,7 @@ namespace UI.Transformations
                 Name = gameDefinitionSummary.Name,
                 Description = gameDefinitionSummary.Description,
                 TotalNumberOfGamesPlayed = gameDefinitionSummary.TotalNumberOfGamesPlayed,
-                AveragePlayersPerGame = string.Format("{0:0.#}", gameDefinitionSummary.AveragePlayersPerGame),
+                AveragePlayersPerGame = $"{gameDefinitionSummary.AveragePlayersPerGame:0.#}",
                 GamingGroupId = gameDefinitionSummary.GamingGroupId,
                 GamingGroupName = gameDefinitionSummary.GamingGroupName,
                 BoardGameGeekGameDefinitionId = gameDefinitionSummary.BoardGameGeekGameDefinitionId,
@@ -69,7 +70,9 @@ namespace UI.Transformations
 
             if (!(gameDefinitionSummary.Champion is NullChampion))
             {
-                viewModel.ChampionName = gameDefinitionSummary.Champion.Player.Name;
+                viewModel.ChampionName = PlayerNameBuilder.BuildPlayerName(
+                                                                           gameDefinitionSummary.Champion.Player.Name,
+                                                                           gameDefinitionSummary.Champion.Player.Active);
                 viewModel.ChampionPlayerId = gameDefinitionSummary.Champion.Player.Id;
                 viewModel.WinPercentage = gameDefinitionSummary.Champion.WinPercentage;                
                 viewModel.NumberOfGamesPlayed = gameDefinitionSummary.Champion.NumberOfGames;
@@ -78,7 +81,9 @@ namespace UI.Transformations
 
             if (!(gameDefinitionSummary.PreviousChampion is NullChampion))
             {
-                viewModel.PreviousChampionName = gameDefinitionSummary.PreviousChampion.Player.Name;
+                viewModel.PreviousChampionName = PlayerNameBuilder.BuildPlayerName(
+                    gameDefinitionSummary.PreviousChampion.Player.Name, 
+                    gameDefinitionSummary.PreviousChampion.Player.Active);
                 viewModel.PreviousChampionPlayerId = gameDefinitionSummary.PreviousChampion.Player.Id;
             }
 

@@ -19,6 +19,7 @@
 using AutoMapper;
 using BusinessLogic.Logic.GameDefinitions;
 using BusinessLogic.Logic.GamingGroups;
+using BusinessLogic.Logic.Players;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
 using BusinessLogic.Models.GamingGroups;
@@ -52,9 +53,11 @@ namespace UI.Transformations
             Mapper.CreateMap<GamingGroupInfoForUser, GamingGroupInfoForUserMessage>(MemberList.Destination);
             Mapper.CreateMap<UserInformation, UserInformationMessage>(MemberList.Destination);
             Mapper.CreateMap<PlayerWinRecord, PlayerSummaryViewModel>(MemberList.Destination)
-                  .ForMember(x => x.SpecialBadgeTypes, opt => opt.MapFrom(src => src.MapSpecialBadges()));
+                  .ForMember(x => x.SpecialBadgeTypes, opt => opt.MapFrom(src => src.MapSpecialBadges()))
+                  .ForMember(x => x.PlayerName, opt => opt.MapFrom(src => PlayerNameBuilder.BuildPlayerName(src.PlayerName, src.PlayerActive)));
             Mapper.CreateMap<PlayerWinRecord, GameDefinitionPlayerSummaryViewModel>(MemberList.Destination)
-                  .ForMember(x => x.SpecialBadgeTypes, opt => opt.MapFrom(src => src.MapSpecialBadges()));
+                  .ForMember(x => x.SpecialBadgeTypes, opt => opt.MapFrom(src => src.MapSpecialBadges()))
+                  .ForMember(x => x.PlayerName, opt => opt.MapFrom(src => PlayerNameBuilder.BuildPlayerName(src.PlayerName, src.PlayerActive)));
             Mapper.CreateMap<GameDefinitionTotal, GameDefinitionTotalMessage>(MemberList.Destination);
             Mapper.CreateMap<GameDefinitionTotals, GameDefinitionTotalsMessage>(MemberList.Destination);
             Mapper.CreateMap<GameDefinition, GameDefinitionEditViewModel>(MemberList.Destination)

@@ -32,5 +32,6 @@ namespace UI.Models.PlayedGame
         public int GameDefinitionId { get; set; }
         public Uri BoardGameGeekUri { get; set; }
         public string ThumbnailImageUrl { get; set; }
+        public bool PlayerActive { get; set; }
     }
 }

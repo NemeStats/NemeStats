@@ -24,6 +24,7 @@ using NUnit.Framework;
 using Rhino.Mocks;
 using System.Collections.Generic;
 using System.Linq;
+using BusinessLogic.Logic.Players;
 using StructureMap.AutoMocking;
 using UI.Models.GameDefinitionModels;
 using UI.Models.PlayedGame;
@@ -41,16 +42,16 @@ namespace UI.Tests.UnitTests.TransformationsTests
         private PlayedGameDetailsViewModel playedGameDetailsViewModel1;
         private PlayedGameDetailsViewModel playedGameDetailsViewModel2;
         private ApplicationUser currentUser;
-        private int gamingGroupid = 135;
+        private readonly int gamingGroupid = 135;
         private Champion champion;
         private Champion previousChampion;
-        private float championWinPercentage = 100;
-        private int championNumberOfGames = 6;
-        private int championNumberOfWins = 4;
-        private string championName = "Champion Name";
-        private int championPlayerId = 999;
-        private string previousChampionName = "Previous Champion Name";
-        private int previousChampionPlayerId = 998;
+        private readonly float championWinPercentage = 100;
+        private readonly int championNumberOfGames = 6;
+        private readonly int championNumberOfWins = 4;
+        private readonly string championName = "Champion Name";
+        private readonly int championPlayerId = 999;
+        private readonly string previousChampionName = "Previous Champion Name";
+        private readonly int previousChampionPlayerId = 998;
         private Player championPlayer;
         private Player previousChampionPlayer;
         private PlayerWinRecord playerWinRecord1;
@@ -81,12 +82,14 @@ namespace UI.Tests.UnitTests.TransformationsTests
             championPlayer = new Player
             {
                 Name = championName,
-                Id = championPlayerId
+                Id = championPlayerId,
+                Active = true
             };
             previousChampionPlayer = new Player
             {
                 Name = previousChampionName,
-                Id = previousChampionPlayerId
+                Id = previousChampionPlayerId,
+                Active = false
             };
             champion = new Champion
             {
@@ -243,7 +246,7 @@ namespace UI.Tests.UnitTests.TransformationsTests
         [Test]
         public void ItSetsTheChampionNameWhenThereIsAChampion()
         {
-            Assert.That(viewModel.ChampionName, Is.EqualTo(championName));
+            Assert.That(viewModel.ChampionName, Is.EqualTo(PlayerNameBuilder.BuildPlayerName(championPlayer.Name, championPlayer.Active)));
         }
 
         [Test]
@@ -273,7 +276,7 @@ namespace UI.Tests.UnitTests.TransformationsTests
         [Test]
         public void ItSetsThePreviousChampionNameWhenThereIsAPreviousChampion()
         {
-            Assert.That(viewModel.PreviousChampionName, Is.EqualTo(previousChampionName));
+            Assert.That(viewModel.PreviousChampionName, Is.EqualTo(PlayerNameBuilder.BuildPlayerName(previousChampionPlayer.Name, previousChampionPlayer.Active)));
         }
 
         [Test]

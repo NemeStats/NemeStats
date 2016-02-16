@@ -47,7 +47,7 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
         [Test]
         public void ItOnlyReturnsPlayersForTheGivenGamingGroupId()
         {
-            List<Player> players = playerRetriever.GetAllPlayers(testUserWithDefaultGamingGroup.CurrentGamingGroupId);
+            var players = playerRetriever.GetAllPlayers(testUserWithDefaultGamingGroup.CurrentGamingGroupId);
 
             Assert.True(players.All(x => x.GamingGroupId == testGamingGroup.Id));
         }
