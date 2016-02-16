@@ -158,10 +158,10 @@ namespace UI.Controllers
 
 		private IEnumerable<SelectListItem> GetAllPlayers(ApplicationUser currentUser)
 		{
-			List<Player> allPlayers = playerRetriever.GetAllPlayers(currentUser.CurrentGamingGroupId);
+			List<Player> allPlayers = playerRetriever.GetAllPlayers(currentUser.CurrentGamingGroupId, false);
 			List<SelectListItem> allPlayersSelectList = allPlayers.Select(item => new SelectListItem
 			{
-				Text = item.Name,
+				Text = PlayerNameBuilder.BuildPlayerName(item.Name, item.Active),
 				Value = item.Id.ToString()
 			}).ToList();
 

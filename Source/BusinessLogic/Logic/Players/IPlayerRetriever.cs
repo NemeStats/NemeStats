@@ -23,7 +23,7 @@ namespace BusinessLogic.Logic.Players
 {
     public interface IPlayerRetriever
     {
-        List<Player> GetAllPlayers(int gamingGroupId);
+        List<Player> GetAllPlayers(int gamingGroupId, bool includeInactive = true);
         List<PlayerWithNemesis> GetAllPlayersWithNemesisInfo(int gamingGroupId, IDateRangeFilter dateRangeFilter = null);
         PlayerDetails GetPlayerDetails(int playerId, int numberOfRecentGamesToRetrieve);
         PlayerQuickStats GetPlayerQuickStatsForUser(string applicationUserId, int gamingGroupId);

@@ -34,8 +34,8 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 	[TestFixture]
 	public class CreateHttpGetTests : PlayedGameControllerTestBase
 	{
-		private int playerId = 1938;
-		private string playerName = "Herb";
+		private readonly int playerId = 1938;
+		private readonly string playerName = "Herb";
 		private List<Player> allPlayers;
 
 		[SetUp]
@@ -45,7 +45,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 
 			allPlayers = new List<Player>() { new Player() { Id = playerId, Name = playerName } };
 
-            autoMocker.Get<IPlayerRetriever>().Expect(x => x.GetAllPlayers(currentUser.CurrentGamingGroupId)).Repeat.Once().Return(allPlayers);
+            autoMocker.Get<IPlayerRetriever>().Expect(x => x.GetAllPlayers(currentUser.CurrentGamingGroupId, false)).Repeat.Once().Return(allPlayers);
 		}
 
 		[Test]
@@ -72,7 +72,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
         public void ItSetsTheSelectedGameDefinitionToTheFirstOneIfThereIsOnlyOne()
         {
             autoMocker = new RhinoAutoMocker<PlayedGameController>();
-            autoMocker.Get<IPlayerRetriever>().Expect(x => x.GetAllPlayers(currentUser.CurrentGamingGroupId)).Repeat.Once().Return(allPlayers);
+            autoMocker.Get<IPlayerRetriever>().Expect(x => x.GetAllPlayers(currentUser.CurrentGamingGroupId, false)).Repeat.Once().Return(allPlayers);
 
             int gameDefinitionId = 1;
             var gameDefinitions = new List<GameDefinitionSummary>

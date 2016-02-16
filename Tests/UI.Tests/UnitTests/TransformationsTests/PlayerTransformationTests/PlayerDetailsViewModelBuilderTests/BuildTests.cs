@@ -26,6 +26,7 @@ using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using BusinessLogic.Logic.Players;
 using UI.Models.Badges;
 using UI.Models.Players;
 using UI.Transformations;
@@ -104,6 +105,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
             {
                 OpposingPlayerName = "Jim",
                 OpposingPlayerId = 1,
+                OpposingPlayerActive = false,
                 NumberOfGamesWonVersusThisPlayer = 10,
                 NumberOfGamesLostVersusThisPlayer = 10
             };
@@ -130,11 +132,13 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
             };
 
             previousNemesisPlayer = new PlayerVersusPlayerStatistics
-            {
+
+            {
                 OpposingPlayerName = "Previous Nemesis Player",
                 OpposingPlayerId = 13,
                 NumberOfGamesWonVersusThisPlayer = 0,
-                NumberOfGamesLostVersusThisPlayer = 42            };
+                NumberOfGamesLostVersusThisPlayer = 42
+            };
 
             var nemesis = new Nemesis()
             {
@@ -337,7 +341,8 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         [Test]
         public void ItCopiesThePlayerName()
         {
-            Assert.AreEqual(playerDetails.Name, playerDetailsViewModel.PlayerName);
+            var expectedName = PlayerNameBuilder.BuildPlayerName(playerDetails.Name, playerDetails.Active);
+            Assert.AreEqual(expectedName, playerDetailsViewModel.PlayerName);
         }
 
         [Test]
@@ -588,9 +593,10 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         {
             var expectedPlayer = playerDetails.PlayerVersusPlayersStatistics.First(x => x.OpposingPlayerId == normalPlayer.OpposingPlayerId);
             var actualPlayer = playerDetailsViewModel.PlayerVersusPlayers.PlayerSummaries.First(x => x.PlayerId == normalPlayer.OpposingPlayerId);
+            var expectedPlayerName = PlayerNameBuilder.BuildPlayerName(expectedPlayer.OpposingPlayerName, expectedPlayer.OpposingPlayerActive);
 
             Assert.That(actualPlayer.PlayerName,
-                Is.EqualTo(expectedPlayer.OpposingPlayerName));
+                Is.EqualTo(expectedPlayerName));
         }
 
         [Test]
