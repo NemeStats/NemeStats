@@ -1,5 +1,8 @@
 ﻿@import "nemestats-variables.scss";
 
+.badges-col {
+    text-align: center;
+}
 
 .neme-points-ico {
     color: $brand-primary;
@@ -11,49 +14,8 @@
     }
 }
 
-
-
-.player-statistics {
-    .fa {
-        &.fa-trophy {
-            &.fa-slashed {
-                position: relative;
-
-                &:after {
-                    position: absolute;
-                    content: "/";
-                    font-weight: $font-weight-bold;
-                    font-size: 1.7em;
-                    top: -7px;
-                }
-            }
-        }
-    }
-}
-
-.game-player-statistics {
-    .fa {
-        &.fa-trophy {
-            &.fa-slashed {
-                position: relative;
-
-                &:after {
-                    position: absolute;
-                    content: "/";
-                    font-weight: $font-weight-bold;
-                    font-size: 1.7em;
-                    top: -7px;
-                    left:0;
-                }
-            }
-        }
-    }
-}
-
 #player-details {
     .gameDefinitionsList {
-
-
 
         @media (max-width: $screen-sm-max) {
             &.flip-scroll {
@@ -64,17 +26,6 @@
                 .badges-col {
                     line-height: 0;
                     height: 31px;
-
-                    .fa {
-                        &.fa-trophy {
-                            &.fa-slashed {
-                                &:after {
-                                    top: 0;
-                                    left: -17px;
-                                }
-                            }
-                        }
-                    }
                 }
             }
         }
@@ -82,20 +33,6 @@
         .badges-col {
             width: 20px;
             line-height: $gamethumbnail-height;
-
-            .fa {
-                &.fa-trophy {
-                    &.fa-slashed {
-                        &:after {
-                            position: relative;
-                            content: "/";
-                            font-weight: $font-weight-bold;
-                            font-size: 1.6em;
-                            top: -21px;
-                        }
-                    }
-                }
-            }
         }
 
         .bgg-link-col {

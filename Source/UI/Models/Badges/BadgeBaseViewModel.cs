@@ -4,7 +4,7 @@ namespace UI.Models.Badges
 {
     public interface IBadgeBaseViewModel
     {
-        string GetFontAwesomeCssClass();
+        string GetIconCssClass();
         string GetPopoverText();
     }
 }

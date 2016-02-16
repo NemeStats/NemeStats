@@ -543,13 +543,10 @@ footer {
   .btn.btn-google:active, .btn.btn-google.active,
   .open > .btn.btn-google.dropdown-toggle {
     background-image: none; }
-  .btn.btn-google.disabled, .btn.btn-google.disabled:hover, .btn.btn-google.disabled:focus, .btn.btn-google.disabled.focus, .btn.btn-google.disabled:active, .btn.btn-google.disabled.active, .btn.btn-google[disabled], .btn.btn-google[disabled]:hover, .btn.btn-google[disabled]:focus, .btn.btn-google[disabled].focus, .btn.btn-google[disabled]:active, .btn.btn-google[disabled].active,
-  fieldset[disabled] .btn.btn-google,
+  .btn.btn-google.disabled:hover, .btn.btn-google.disabled:focus, .btn.btn-google.disabled.focus, .btn.btn-google[disabled]:hover, .btn.btn-google[disabled]:focus, .btn.btn-google[disabled].focus,
   fieldset[disabled] .btn.btn-google:hover,
   fieldset[disabled] .btn.btn-google:focus,
-  fieldset[disabled] .btn.btn-google.focus,
-  fieldset[disabled] .btn.btn-google:active,
-  fieldset[disabled] .btn.btn-google.active {
+  fieldset[disabled] .btn.btn-google.focus {
     background-color: #2196F3;
     border-color: #2196F3; }
   .btn.btn-google .badge {
@@ -584,13 +581,10 @@ footer {
   .btn.btn-action:active, .btn.btn-action.active,
   .open > .btn.btn-action.dropdown-toggle {
     background-image: none; }
-  .btn.btn-action.disabled, .btn.btn-action.disabled:hover, .btn.btn-action.disabled:focus, .btn.btn-action.disabled.focus, .btn.btn-action.disabled:active, .btn.btn-action.disabled.active, .btn.btn-action[disabled], .btn.btn-action[disabled]:hover, .btn.btn-action[disabled]:focus, .btn.btn-action[disabled].focus, .btn.btn-action[disabled]:active, .btn.btn-action[disabled].active,
-  fieldset[disabled] .btn.btn-action,
+  .btn.btn-action.disabled:hover, .btn.btn-action.disabled:focus, .btn.btn-action.disabled.focus, .btn.btn-action[disabled]:hover, .btn.btn-action[disabled]:focus, .btn.btn-action[disabled].focus,
   fieldset[disabled] .btn.btn-action:hover,
   fieldset[disabled] .btn.btn-action:focus,
-  fieldset[disabled] .btn.btn-action.focus,
-  fieldset[disabled] .btn.btn-action:active,
-  fieldset[disabled] .btn.btn-action.active {
+  fieldset[disabled] .btn.btn-action.focus {
     background-color: #3A9AD9;
     border-color: #354458; }
   .btn.btn-action .badge {
@@ -661,6 +655,9 @@ footer {
   text-align: center; }
 
 /*$header-background-color: #2C3E50;*/
+.badges-col {
+  text-align: center; }
+
 .neme-points-ico {
   color: #354458;
   font-size: 10px; }
@@ -668,44 +665,16 @@ footer {
     color: white;
     font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif; }
 
-.player-statistics .fa.fa-trophy.fa-slashed {
-  position: relative; }
-  .player-statistics .fa.fa-trophy.fa-slashed:after {
-    position: absolute;
-    content: "/";
-    font-weight: 700;
-    font-size: 1.7em;
-    top: -7px; }
-
-.game-player-statistics .fa.fa-trophy.fa-slashed {
-  position: relative; }
-  .game-player-statistics .fa.fa-trophy.fa-slashed:after {
-    position: absolute;
-    content: "/";
-    font-weight: 700;
-    font-size: 1.7em;
-    top: -7px;
-    left: 0; }
-
 @media (max-width: 991px) {
   #player-details .gameDefinitionsList.flip-scroll .badges-head {
     padding: 5px; }
   #player-details .gameDefinitionsList.flip-scroll .badges-col {
     line-height: 0;
-    height: 31px; }
-    #player-details .gameDefinitionsList.flip-scroll .badges-col .fa.fa-trophy.fa-slashed:after {
-      top: 0;
-      left: -17px; } }
+    height: 31px; } }
 
 #player-details .gameDefinitionsList .badges-col {
   width: 20px;
   line-height: 100px; }
-  #player-details .gameDefinitionsList .badges-col .fa.fa-trophy.fa-slashed:after {
-    position: relative;
-    content: "/";
-    font-weight: 700;
-    font-size: 1.6em;
-    top: -21px; }
 
 #player-details .gameDefinitionsList .bgg-link-col {
   text-align: left; }

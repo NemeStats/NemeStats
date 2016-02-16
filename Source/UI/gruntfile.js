@@ -8,7 +8,7 @@
             dist: {
                 files: {
                     'css/bootstrap.css': 'sass/imports/bootstrap.scss',
-                    'css/fontawesome.css': 'sass/imports/fontawesome.scss',
+                    'css/fonts.css': 'sass/imports/fonts.scss',
                     'css/theme.css': 'sass/imports/theme.scss',
                     'css/nemestats.css': 'sass/imports/nemestats.scss'
                 }

@@ -1,0 +1,42 @@
+﻿@import "custom-fontawesome-variables.scss";
+@import "../../node_modules/font-awesome/scss/font-awesome.scss";
+
+//CUSTOM ICONS
+$icon-font-name: "icomoon";
+$custom-font-path : $fa-font-path;
+
+/* Font Declaration
+====================*/
+
+@font-face {
+    font-family: 'NemeStats-Icons';
+    src: url('#{$custom-font-path}/#{$icon-font-name}.eot');
+    src: url('#{$custom-font-path}/#{$icon-font-name}.eot?#iefix') format('embedded-opentype'),
+         url('#{$custom-font-path}/#{$icon-font-name}.woff') format('woff'),
+         url('#{$custom-font-path}/#{$icon-font-name}.ttf') format('truetype'),
+         url('#{$custom-font-path}/#{$icon-font-name}.svg#icomoon') format('svg');
+}
+
+[class^='ns-icon-'] {
+    font-family: 'NemeStats-Icons';
+    font-style:   normal;
+    font-weight:  normal;
+    font-variant: normal;
+    line-height:  1;
+
+    display: inline-block;
+
+    padding: 0.3em 0.3em;
+    margin: 0em 0.1em;
+
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Icon Mapping
+================*/
+
+.ns-icon-nemesis:before{content: "\e901";}
+.ns-icon-former-nemesis:before{content: "\e900";}
+.ns-icon-minion:before{content: "\e907";}
+.ns-icon-former-champion:before{content: "\e904";}

@@ -481,11 +481,12 @@
     <Content Include="Content\themes\base\theme.css" />
     <Content Include="Content\themes\base\tooltip.css" />
     <Content Include="css\bootstrap.css" />
-    <Content Include="css\fontawesome.css" />
+    <Content Include="css\fonts.css" />
     <Content Include="css\nemestats.css" />
     <Content Include="css\theme.css" />
     <Content Include="fonts\bootstrap\glyphicons-halflings-regular.svg" />
     <Content Include="fonts\fontawesome-webfont.svg" />
+    <Content Include="fonts\icomoon.svg" />
     <Content Include="gruntfile.js" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
@@ -512,10 +513,13 @@
     <Content Include="sass\nemestats\gamedefinition.scss" />
     <Content Include="sass\nemestats\badges.scss" />
     <Content Include="css\bootstrap.css.map" />
-    <Content Include="css\fontawesome.css.map" />
     <Content Include="css\nemestats.css.map" />
     <Content Include="css\theme.css.map" />
     <Content Include="sass\nemestats\account.scss" />
+    <Content Include="fonts\icomoon.eot" />
+    <Content Include="fonts\icomoon.ttf" />
+    <Content Include="fonts\icomoon.woff" />
+    <Content Include="css\fonts.css.map" />
     <None Include="sass\nemestats\gaminggroup.scss" />
     <Content Include="sass\nemestats\home.scss" />
     <Content Include="fonts\bootstrap\glyphicons-halflings-regular.woff2" />
@@ -548,7 +552,7 @@
     <Content Include="sass\imports\bootstrap.scss" />
     <Content Include="sass\nemestats\site.scss" />
     <Content Include="sass\nemestats\mobile.scss" />
-    <Content Include="sass\imports\fontawesome.scss" />
+    <Content Include="sass\imports\fonts.scss" />
     <Content Include="sass\nemestats\utils.scss" />
     <Content Include="Scripts\d3\d3.js" />
     <Content Include="Scripts\d3\d3.min.js" />

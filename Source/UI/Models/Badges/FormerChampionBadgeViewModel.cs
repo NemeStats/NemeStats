@@ -2,10 +2,10 @@
 {
     public class FormerChampionBadgeViewModel : IBadgeBaseViewModel
     {
-        internal const string FONT_AWESOME_CSS_CLASS = "fa-trophy fa-slashed";
+        internal const string FONT_AWESOME_CSS_CLASS = "fa fa-trophy fa-slashed";
         internal const string POPOVER_TEXT = "This Player is the former Champion of this game.";
 
-        public string GetFontAwesomeCssClass()
+        public string GetIconCssClass()
         {
             return FONT_AWESOME_CSS_CLASS;
         }

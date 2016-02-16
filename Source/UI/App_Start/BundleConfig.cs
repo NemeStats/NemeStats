@@ -77,7 +77,7 @@ namespace UI
                 .Include("~/css/bootstrap.css")
                 .Include("~/css/theme.css")
                 .Include("~/css/nemestats.css")
-                .Include("~/css/fontawesome.css")
+                .Include("~/css/fonts.css")
                 );
 
             bundles.Add(new StyleBundle("~/Content/themes/base/css").Include(

@@ -31,7 +31,7 @@
                             <td class="badges-col">
                                 @foreach (var badge in playerSummary.SpecialBadgeTypes)
                                 {
-                                    <i class="fa @badge.GetFontAwesomeCssClass()" data-container="body" data-toggle="popover" data-placement="right"
+                                    <i class="@badge.GetIconCssClass()" data-container="body" data-toggle="popover" data-placement="right"
                                        data-content="@badge.GetPopoverText()">
                                     </i>
                                 }
