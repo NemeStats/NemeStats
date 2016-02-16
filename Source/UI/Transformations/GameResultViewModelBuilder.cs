@@ -19,6 +19,7 @@ using BusinessLogic.Models;
 using System;
 using System.Linq;
 using BusinessLogic.Logic.BoardGameGeek;
+using BusinessLogic.Logic.Players;
 using UI.Models.PlayedGame;
 
 namespace UI.Transformations
@@ -33,18 +34,19 @@ namespace UI.Transformations
         {
             Validate(playerGameResult);
 
-            GameResultViewModel result = new GameResultViewModel();
-            result.PlayerId = playerGameResult.PlayerId;
-            result.PlayerName = playerGameResult.Player.Name;
-            result.GameRank = playerGameResult.GameRank;
-            result.NemeStatsPointsAwarded = playerGameResult.NemeStatsPointsAwarded;
-            result.GameDefinitionId = playerGameResult.PlayedGame.GameDefinition.Id;
-            result.GameDefinitionName = playerGameResult.PlayedGame.GameDefinition.Name;
-            result.PlayedGameId = playerGameResult.PlayedGameId;
-            result.DatePlayed = playerGameResult.PlayedGame.DatePlayed;
-            result.BoardGameGeekUri =
-                BoardGameGeekUriBuilder.BuildBoardGameGeekGameUri(
-                    playerGameResult.PlayedGame.GameDefinition.BoardGameGeekGameDefinitionId);
+            GameResultViewModel result = new GameResultViewModel
+            {
+                PlayerId = playerGameResult.PlayerId,
+                PlayerName = PlayerNameBuilder.BuildPlayerName(playerGameResult.Player.Name, playerGameResult.Player.Active),
+                GameRank = playerGameResult.GameRank,
+                NemeStatsPointsAwarded = playerGameResult.NemeStatsPointsAwarded,
+                GameDefinitionId = playerGameResult.PlayedGame.GameDefinition.Id,
+                GameDefinitionName = playerGameResult.PlayedGame.GameDefinition.Name,
+                PlayedGameId = playerGameResult.PlayedGameId,
+                DatePlayed = playerGameResult.PlayedGame.DatePlayed,
+                BoardGameGeekUri = BoardGameGeekUriBuilder.BuildBoardGameGeekGameUri(
+                                                                                     playerGameResult.PlayedGame.GameDefinition.BoardGameGeekGameDefinitionId)
+            };
             if(playerGameResult.PlayedGame.GameDefinition.BoardGameGeekGameDefinition != null)
             {
                 result.ThumbnailImageUrl = playerGameResult.PlayedGame.GameDefinition.BoardGameGeekGameDefinition.Thumbnail;

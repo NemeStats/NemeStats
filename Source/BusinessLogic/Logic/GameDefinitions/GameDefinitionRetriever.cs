@@ -87,7 +87,7 @@ namespace BusinessLogic.Logic.GameDefinitions
         private void AddPlayersToChampionData(List<GameDefinitionSummary> gameDefinitionSummaries)
         {
             var playerIds = gameDefinitionSummaries.Select(x => x.Champion == null ? -1 : x.Champion.PlayerId).ToList()
-                                                   .Union(gameDefinitionSummaries.Select(x => x.PreviousChampion == null ? -1 : x.PreviousChampion.PlayerId).ToList());
+                                                   .Union(gameDefinitionSummaries.Select(x => x.PreviousChampion?.PlayerId ?? -1).ToList());
 
             var players = dataContext.GetQueryable<Player>().Where(player => playerIds.Contains(player.Id)).ToList();
 
@@ -107,7 +107,7 @@ namespace BusinessLogic.Logic.GameDefinitions
 
         public virtual GameDefinitionSummary GetGameDefinitionDetails(int id, int numberOfPlayedGamesToRetrieve)
         {
-            GameDefinition gameDefinition = dataContext.GetQueryable<GameDefinition>()
+            var gameDefinition = dataContext.GetQueryable<GameDefinition>()
                 .Include(game => game.PlayedGames)
                 .Include(game => game.Champion)
                 .Include(game => game.Champion.Player)
@@ -117,7 +117,7 @@ namespace BusinessLogic.Logic.GameDefinitions
                 .Include(game => game.BoardGameGeekGameDefinition)
                 .SingleOrDefault(game => game.Id == id);
 
-            GameDefinitionSummary gameDefinitionSummary =  new GameDefinitionSummary
+            var gameDefinitionSummary =  new GameDefinitionSummary
                                                            {
                                                                Active = gameDefinition.Active,
                                                                BoardGameGeekGameDefinitionId = gameDefinition.BoardGameGeekGameDefinitionId,
@@ -135,8 +135,8 @@ namespace BusinessLogic.Logic.GameDefinitions
                                                                PreviousChampion = gameDefinition.PreviousChampion ?? new NullChampion()
                                                            };
 
-            IList<PlayedGame> playedGames = AddPlayedGamesToTheGameDefinition(numberOfPlayedGamesToRetrieve, gameDefinitionSummary);
-            IList<int> distinctPlayerIds = AddPlayerGameResultsToEachPlayedGame(playedGames);
+            var playedGames = AddPlayedGamesToTheGameDefinition(numberOfPlayedGamesToRetrieve, gameDefinitionSummary);
+            var distinctPlayerIds = AddPlayerGameResultsToEachPlayedGame(playedGames);
             AddPlayersToPlayerGameResults(playedGames, distinctPlayerIds);
             gameDefinitionSummary.PlayerWinRecords = playerRepository.GetPlayerWinRecords(id);
 
@@ -153,7 +153,7 @@ namespace BusinessLogic.Logic.GameDefinitions
                 .Take(numberOfPlayedGamesToRetrieve)
                 .ToList();
 
-            foreach (PlayedGame playedGame in playedGames)
+            foreach (var playedGame in playedGames)
             {
                 playedGame.GameDefinition = gameDefinitionSummary;
             }
@@ -165,7 +165,7 @@ namespace BusinessLogic.Logic.GameDefinitions
 
         private IList<int> AddPlayerGameResultsToEachPlayedGame(IList<PlayedGame> playedGames)
         {
-            List<int> playedGameIds = (from playedGame in playedGames
+            var playedGameIds = (from playedGame in playedGames
                                        select playedGame.Id).ToList();
 
             IList<PlayerGameResult> playerGameResults = dataContext.GetQueryable<PlayerGameResult>()
@@ -173,9 +173,9 @@ namespace BusinessLogic.Logic.GameDefinitions
                 .OrderBy(playerGameResult => playerGameResult.GameRank)
                 .ToList();
 
-            HashSet<int> distinctPlayerIds = new HashSet<int>();
+            var distinctPlayerIds = new HashSet<int>();
 
-            foreach (PlayedGame playedGame in playedGames)
+            foreach (var playedGame in playedGames)
             {
                 playedGame.PlayerGameResults = (from playerGameResult in playerGameResults
                                                 where playerGameResult.PlayedGameId == playedGame.Id
@@ -189,7 +189,7 @@ namespace BusinessLogic.Logic.GameDefinitions
 
         private static void ExtractDistinctListOfPlayerIds(HashSet<int> distinctPlayerIds, PlayedGame playedGame)
         {
-            foreach (PlayerGameResult playerGameResult in playedGame.PlayerGameResults)
+            foreach (var playerGameResult in playedGame.PlayerGameResults)
             {
                 if (!distinctPlayerIds.Contains(playerGameResult.PlayerId))
                 {
@@ -204,9 +204,9 @@ namespace BusinessLogic.Logic.GameDefinitions
                 .Where(player => distinctPlayerIds.Contains(player.Id))
                 .ToList();
 
-            foreach (PlayedGame playedGame in playedGames)
+            foreach (var playedGame in playedGames)
             {
-                foreach (PlayerGameResult playerGameResult in playedGame.PlayerGameResults)
+                foreach (var playerGameResult in playedGame.PlayerGameResults)
                 {
                     playerGameResult.Player = players.First(player => player.Id == playerGameResult.PlayerId);
                 }

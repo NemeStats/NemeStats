@@ -69,13 +69,12 @@ namespace UI.Controllers
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 			}
 
-			GameDefinitionSummary gameDefinitionSummary;
-			GameDefinitionDetailsViewModel gamingGroupGameDefinitionViewModel;
+		    GameDefinitionDetailsViewModel gamingGroupGameDefinitionViewModel;
 
 			try
 			{
-				gameDefinitionSummary = gameDefinitionRetriever.GetGameDefinitionDetails(id.Value, NUMBER_OF_RECENT_GAMES_TO_SHOW);
-				gamingGroupGameDefinitionViewModel = gameDefinitionTransformation.Build(gameDefinitionSummary, currentUser);
+			    var gameDefinitionSummary = gameDefinitionRetriever.GetGameDefinitionDetails(id.Value, NUMBER_OF_RECENT_GAMES_TO_SHOW);
+			    gamingGroupGameDefinitionViewModel = gameDefinitionTransformation.Build(gameDefinitionSummary, currentUser);
 			}
 			catch (KeyNotFoundException)
 			{
@@ -86,8 +85,8 @@ namespace UI.Controllers
 				return new HttpUnauthorizedResult();
 			}
 
-		    gamingGroupGameDefinitionViewModel.PlayedGamesPanelTitle = 
-                string.Format("Last {0} Played Games", gamingGroupGameDefinitionViewModel.PlayedGames.Count);
+		    gamingGroupGameDefinitionViewModel.PlayedGamesPanelTitle =
+		        $"Last {gamingGroupGameDefinitionViewModel.PlayedGames.Count} Played Games";
 
 			return View(MVC.GameDefinition.Views.Details, gamingGroupGameDefinitionViewModel);
 		}
@@ -176,18 +175,6 @@ namespace UI.Controllers
             }
 
             return errorDescription;
-        }
-
-        private static GameDefinitionUpdateRequest TransformGameDefinitionEditViewModelToGameDefinitionUpdateRequest(GameDefinitionEditViewModel model)
-        {
-            return new GameDefinitionUpdateRequest
-            {
-                GameDefinitionId = model.GameDefinitionId,
-                Active = model.Active,
-                BoardGameGeekGameDefinitionId = model.BoardGameGeekGameDefinitionId,
-                Name = model.Name,
-                Description = model.Description
-            };
         }
 
         // GET: /GameDefinition/Edit/5

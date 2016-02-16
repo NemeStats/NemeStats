@@ -25,6 +25,7 @@ using BusinessLogic.Models.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using BusinessLogic.Logic.Players;
 using UI.Models.Badges;
 using UI.Models.PlayedGame;
 using UI.Models.Players;
@@ -107,7 +108,7 @@ namespace UI.Transformations.PlayerTransformations
 
                 var playerSummaryViewModel = new PlayerSummaryViewModel
                 {
-                    PlayerName = playerVersusPlayerStatistics.OpposingPlayerName,
+                    PlayerName = PlayerNameBuilder.BuildPlayerName(playerVersusPlayerStatistics.OpposingPlayerName, playerVersusPlayerStatistics.OpposingPlayerActive),
                     PlayerId = playerVersusPlayerStatistics.OpposingPlayerId,
                     GamesWon = playerVersusPlayerStatistics.NumberOfGamesWonVersusThisPlayer,
                     GamesLost = playerVersusPlayerStatistics.NumberOfGamesLostVersusThisPlayer,

@@ -51,9 +51,10 @@ namespace BusinessLogic.Logic.Players
                 .Where(player => player.GamingGroupId == gamingGroupId);
         }
 
-        public List<Player> GetAllPlayers(int gamingGroupId)
+        public List<Player> GetAllPlayers(int gamingGroupId, bool includeInactive = true)
         {
             return GetAllPlayersInGamingGroupQueryable(gamingGroupId)
+                .Where(x => x.Active || x.Active != includeInactive)
                 .OrderByDescending(player => player.Active)
                 .ThenBy(player => player.Name)
                 .ToList();
