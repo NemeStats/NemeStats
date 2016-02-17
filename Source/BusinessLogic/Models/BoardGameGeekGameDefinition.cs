@@ -12,6 +12,10 @@ namespace BusinessLogic.Models
         public override int Id { get; set; }
         public string Name { get; set; }
         public string Thumbnail { get; set; }
-        public virtual IList<GameDefinition> GameDefinitions { get; set; } 
+        public virtual IList<GameDefinition> GameDefinitions { get; set; }
+        public int? MaxPlayers { get; set; }
+        public int? MinPlayers { get; set; }
+        public int? PlayingTime { get; set; }
+        public decimal? AverageWeight { get; set; }
     }
 }

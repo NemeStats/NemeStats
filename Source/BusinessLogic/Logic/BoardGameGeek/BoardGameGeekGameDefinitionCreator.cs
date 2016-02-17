@@ -43,7 +43,11 @@ namespace BusinessLogic.Logic.BoardGameGeek
             {
                 Id = boardGameGeekGameDefinitionId,
                 Name = gameDetails.Name,
-                Thumbnail = gameDetails.Thumbnail
+                Thumbnail = gameDetails.Thumbnail,
+                MaxPlayers = gameDetails.MaxPlayers,
+                MinPlayers = gameDetails.MinPlayers,
+                PlayingTime = gameDetails.PlayingTime,
+                AverageWeight = gameDetails.AverageWeight
             };
 
             _dataContext.Save(newRecord, currentUser);
