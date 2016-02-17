@@ -14,17 +14,17 @@ namespace BoardGameGeekApiClient.Models
         public string Image { get; set; }
         public string Thumbnail { get; set; }
 
-        public int MinPlayers { get; set; }
-        public int MaxPlayers { get; set; }
-        public int PlayingTime { get; set; }
+        public int? MinPlayers { get; set; }
+        public int? MaxPlayers { get; set; }
+        public int? PlayingTime { get; set; }
         public List<string> Mechanics { get; set; }
 
         public bool IsExpansion { get; set; }
-        public int YearPublished { get; set; }
+        public int? YearPublished { get; set; }
 
-        public decimal BGGRating { get; set; }
-        public decimal AverageRating { get; set; }
-        public decimal AverageWeight { get; set; }
+        public decimal? BGGRating { get; set; }
+        public decimal? AverageRating { get; set; }
+        public decimal? AverageWeight { get; set; }
         public int Rank { get; set; }
 
         public List<string> Designers { get; set; }

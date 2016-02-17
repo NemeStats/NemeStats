@@ -6,7 +6,7 @@ namespace BoardGameGeekApiClient.Tests.UnitTests.Helpers.BoardGameGeekApiClientH
     public class GetDecimalValue_Tests : GetSimpleValues_BaseTest
     {
         public decimal DefaultValue { get; set; }
-        public decimal Result { get; set; }
+        public decimal? Result { get; set; }
 
         [SetUp]
         public override void SetUp()

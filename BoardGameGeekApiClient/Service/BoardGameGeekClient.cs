@@ -5,7 +5,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Xml.Linq;
 using BoardGameGeekApiClient.Helpers;
@@ -18,7 +17,7 @@ namespace BoardGameGeekApiClient.Service
     public class BoardGameGeekClient : IBoardGameGeekApiClient
     {
         private readonly IApiDownloadService _apiDownloadService;
-        private RollbarClient _rollbar;
+        private readonly RollbarClient _rollbar;
 
 
         public BoardGameGeekClient(IApiDownloadService apiDownloadService)
@@ -72,7 +71,7 @@ namespace BoardGameGeekApiClient.Service
                     var gameCollection = xElements.Select(boardgame => new GameDetails
                     {
                         Name = boardgame.Element("item").GetBoardGameName(),
-                        GameId = boardgame.Element("item").GetIntValue("id"),
+                        GameId = boardgame.Element("item").GetIntValue("id", gameId).Value,
                         Artists = boardgame.Element("item").GetArtists(),
                         AverageRating =
                             boardgame.Element("item")
@@ -185,7 +184,7 @@ namespace BoardGameGeekApiClient.Service
                     {
                         Name = boardgame.Element("name").GetStringValue(),
                         YearPublished = boardgame.Element("yearpublished").GetIntValue(),
-                        GameId = boardgame.GetIntValue("objectid"),
+                        GameId = boardgame.GetIntValue("objectid",-1).Value,
                         Image = boardgame.Element("image").GetStringValue(),
                         Thumbnail = boardgame.Element("thumbnail").GetStringValue(),
                         IsExpansion = boardgame.IsExpansion("subtype"),
@@ -222,8 +221,8 @@ namespace BoardGameGeekApiClient.Service
                 var gameCollection = xDoc.Descendants("item").Select(boardgame => new SearchBoardGameResult
                 {
                     BoardGameName = boardgame.Element("name").GetStringValue("value"),
-                    BoardGameId = boardgame.GetIntValue("id"),
-                    YearPublished = boardgame.Element("yearpublished").GetIntValue("value")
+                    BoardGameId = boardgame.GetIntValue("id",-1).Value,
+                    YearPublished = boardgame.Element("yearpublished").GetIntValue("value",-1).Value
                 }).ToList();
 
                 if (gameCollection.Any())

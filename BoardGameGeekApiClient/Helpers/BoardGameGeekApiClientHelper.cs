@@ -22,9 +22,9 @@ namespace BoardGameGeekApiClient.Helpers
                 return element.Value;
 
             var xatt = element.Attribute(attribute);
-            return xatt != null ? xatt.Value : defaultValue;
+            return xatt?.Value ?? defaultValue;
         }
-        public static int GetIntValue(this XElement element, string attribute = null, int defaultValue = -1)
+        public static int? GetIntValue(this XElement element, string attribute = null, int? defaultValue = null)
         {
             var val = GetStringValue(element, attribute, null);
             if (string.IsNullOrEmpty(val))
@@ -32,11 +32,11 @@ namespace BoardGameGeekApiClient.Helpers
 
             int retVal;
             if (!int.TryParse(val, out retVal))
-                retVal = defaultValue;
+                return defaultValue;
             return retVal;
         }
 
-        public static decimal GetDecimalValue(this XElement element, string attribute = null, decimal defaultValue = -1)
+        public static decimal? GetDecimalValue(this XElement element, string attribute = null, decimal? defaultValue = null)
         {
             var val = GetStringValue(element, attribute, null);
             if (string.IsNullOrEmpty(val))
@@ -44,7 +44,7 @@ namespace BoardGameGeekApiClient.Helpers
 
             decimal retVal;
             if (!decimal.TryParse(val, out retVal))
-                retVal = defaultValue;
+                return defaultValue;
             return retVal;
         }
 
@@ -97,7 +97,7 @@ namespace BoardGameGeekApiClient.Helpers
                         select new BoardGameLink
                         {
                             Name = p.GetStringValue("value"),
-                            Id = p.GetIntValue("id")
+                            Id = p.GetIntValue("id",-1).Value
                         };
 
             return links.ToList();

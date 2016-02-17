@@ -6,7 +6,7 @@ namespace BoardGameGeekApiClient.Tests.UnitTests.Helpers.BoardGameGeekApiClientH
     public class GetIntValue_Tests : GetSimpleValues_BaseTest
     {
         public int DefaultValue { get; set; }
-        public int Result { get; set; }
+        public int? Result { get; set; }
 
         [SetUp]
         public override void SetUp()
