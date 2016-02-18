@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Xml.Linq;
 using BoardGameGeekApiClient.Models;
@@ -43,7 +44,7 @@ namespace BoardGameGeekApiClient.Helpers
                 return defaultValue;
 
             decimal retVal;
-            if (!decimal.TryParse(val, out retVal))
+            if (!decimal.TryParse(val, NumberStyles.Any, new CultureInfo("en-US"), out retVal))
                 return defaultValue;
             return retVal;
         }
@@ -97,7 +98,7 @@ namespace BoardGameGeekApiClient.Helpers
                         select new BoardGameLink
                         {
                             Name = p.GetStringValue("value"),
-                            Id = p.GetIntValue("id",-1).Value
+                            Id = p.GetIntValue("id", -1).Value
                         };
 
             return links.ToList();
