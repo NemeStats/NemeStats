@@ -189,6 +189,10 @@
     <Compile Include="Migrations\201602181207202_NewBggFieldsToSync.Designer.cs">
       <DependentUpon>201602181207202_NewBggFieldsToSync.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201602182046472_Add-BGGGamingDefinion-Description.cs" />
+    <Compile Include="Migrations\201602182046472_Add-BGGGamingDefinion-Description.Designer.cs">
+      <DependentUpon>201602182046472_Add-BGGGamingDefinion-Description.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Games\TrendingGame.cs" />
     <Compile Include="Models\User\BoardGameGeekUserInformation.cs" />
     <Compile Include="Models\Validation\BaseValidatableRequestSaver.cs" />
@@ -748,6 +752,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201602181207202_NewBggFieldsToSync.resx">
       <DependentUpon>201602181207202_NewBggFieldsToSync.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602182046472_Add-BGGGamingDefinion-Description.resx">
+      <DependentUpon>201602182046472_Add-BGGGamingDefinion-Description.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

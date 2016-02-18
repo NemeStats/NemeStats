@@ -47,7 +47,8 @@ namespace BusinessLogic.Logic.BoardGameGeek
                 MaxPlayers = gameDetails.MaxPlayers,
                 MinPlayers = gameDetails.MinPlayers,
                 PlayingTime = gameDetails.PlayingTime,
-                AverageWeight = gameDetails.AverageWeight
+                AverageWeight = gameDetails.AverageWeight,
+                Description = gameDetails.Description
             };
 
             _dataContext.Save(newRecord, currentUser);

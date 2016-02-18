@@ -17,5 +17,6 @@ namespace BusinessLogic.Models
         public int? MinPlayers { get; set; }
         public int? PlayingTime { get; set; }
         public decimal? AverageWeight { get; set; }
+        public string Description { get; set; }
     }
 }
