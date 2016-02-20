@@ -50,7 +50,7 @@ namespace BusinessLogic.Logic.Players
             List<TopPlayer> topPlayers = data.ToList();
             //WinPercentage as it is originally pulled back from the query contains the number of games won and we have to
             //do the below math to switch it to a win %
-            topPlayers.ForEach(player => player.WinPercentage = WinPercentageCalculator.CalculateWinPercentage(player.WinPercentage, player.TotalNumberOfGamesPlayed));
+            topPlayers.ForEach(player => player.WinPercentage = WinPercentageCalculator.CalculateWinPercentage(player.WinPercentage, player.TotalNumberOfGamesPlayed - player.WinPercentage));
 
             return topPlayers;
         }
