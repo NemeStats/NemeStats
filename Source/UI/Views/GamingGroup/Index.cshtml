@@ -8,8 +8,8 @@
 
 <h2 class="page-header">
     @Model.Name
-    &nbsp;<a href="@Url.Action("Edit", "GamingGroup", new { id = @Model.Id })" title="Edit">
-        <span class="fa fa-pencil"></span>
+    <a href="@Url.Action(MVC.GamingGroup.Edit(Model.Id))" class="btn btn-xs btn-default">
+        <span class="fa fa-pencil"></span>&nbsp;Edit
     </a>
 </h2>
 

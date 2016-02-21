@@ -7,7 +7,15 @@
 }
 
 <div id="player-details">
-    <h2 class="page-header">@Html.DisplayFor(model => model.PlayerName)</h2>
+    <h2 class="page-header">
+        @Html.DisplayFor(model => model.PlayerName)
+        @if (Model.UserCanEdit)
+        {
+            <a href="@Url.Action(MVC.Player.ActionNames.Edit,MVC.Player.Name, new{id = Model.PlayerId})" class="btn btn-xs btn-default">
+                <span class="fa fa-pencil"></span>&nbsp;Edit
+            </a>
+        }
+    </h2>
 
     <div class="row">
         <div class="panel panel-primary">
@@ -58,15 +66,6 @@
                         @Html.ActionLink(@Model.GamingGroupName, "Details", "GamingGroup", new { id = @Model.GamingGroupId }, new { })
                     </div>
                 </div>
-                @if (Model.UserCanEdit)
-            {
-                    <div class="row">
-                        <div class="col-md-2"></div>
-                        <div class="col-md-2">
-                            @Html.ActionLink("Edit", "Edit", new { id = Model.PlayerId }, new { @class = "btn btn-sm btn-primary" })
-                        </div>
-                    </div>
-                }
             </div>
         </div>
     </div>
@@ -237,7 +236,7 @@
                                         }
                                     </td>
                                     <td class="name-col">
-                                        @Html.ActionLink(gameResultViewModel.GameDefinitionName, "Details", "GameDefinition", new {id = gameResultViewModel.GameDefinitionId}, new {})
+                                        @Html.ActionLink(gameResultViewModel.GameDefinitionName, "Details", "GameDefinition", new { id = gameResultViewModel.GameDefinitionId }, new { })
                                     </td>
                                     <td>
                                         @Html.ActionLink(gameResultViewModel.DatePlayed.ToShortDateString(), "Details", "PlayedGame", new { id = gameResultViewModel.PlayedGameId }, new { })
