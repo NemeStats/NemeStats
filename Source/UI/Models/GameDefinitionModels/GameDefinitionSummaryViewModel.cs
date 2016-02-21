@@ -16,6 +16,7 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 using System;
+using System.Data.Entity.Migrations.Model;
 using System.Linq;
 
 namespace UI.Models.GameDefinitionModels
@@ -29,9 +30,6 @@ namespace UI.Models.GameDefinitionModels
         public bool UserCanEdit { get; set; }
         public string GamingGroupName { get; set; }
         public int GamingGroupId { get; set; }
-        public int? BoardGameGeekGameDefinitionId { get; set; }
-        public Uri BoardGameGeekUri { get; set; }
-        public string ThumbnailImageUrl { get; set; }
         public string ChampionName { get; set; }
         public int? ChampionPlayerId { get; set; }
         public int? NumberOfWins { get; set; }
@@ -39,5 +37,9 @@ namespace UI.Models.GameDefinitionModels
         public float? WinPercentage { get; set; }
         public string PreviousChampionName { get; set; }
         public int? PreviousChampionPlayerId { get; set; }
+
+        public BoardGameGeekGameDefinitionViewModel BoardGameGeekGameDefinition { get; set; }
+
+        public bool HasBoardGameGeekDefinition => BoardGameGeekGameDefinition != null;
     }
 }

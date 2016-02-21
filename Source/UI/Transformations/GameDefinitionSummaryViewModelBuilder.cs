@@ -26,6 +26,13 @@ namespace UI.Transformations
 {
     public class GameDefinitionSummaryViewModelBuilder : IGameDefinitionSummaryViewModelBuilder
     {
+        private ITransformer _transformer;
+
+        public GameDefinitionSummaryViewModelBuilder(ITransformer transformer)
+        {
+            this._transformer = transformer;
+        }
+
         public GameDefinitionSummaryViewModel Build(GameDefinitionSummary gameDefinitionSummary, ApplicationUser currentUser)
         {
             var viewModel = new GameDefinitionDetailsViewModel
@@ -36,8 +43,7 @@ namespace UI.Transformations
                 TotalNumberOfGamesPlayed = gameDefinitionSummary.TotalNumberOfGamesPlayed,
                 GamingGroupId = gameDefinitionSummary.GamingGroupId,
                 GamingGroupName = gameDefinitionSummary.GamingGroupName,
-                BoardGameGeekUri = gameDefinitionSummary.BoardGameGeekUri,
-                ThumbnailImageUrl = gameDefinitionSummary.ThumbnailImageUrl,
+                BoardGameGeekGameDefinition = _transformer.Transform<BoardGameGeekGameDefinition,BoardGameGeekGameDefinitionViewModel>(gameDefinitionSummary.BoardGameGeekGameDefinition),
                 UserCanEdit =
                     (currentUser != null && gameDefinitionSummary.GamingGroupId == currentUser.CurrentGamingGroupId)
             };

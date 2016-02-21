@@ -211,13 +211,7 @@ namespace UI.Tests.UnitTests.TransformationsTests
         [Test]
         public void ItCopiesTheBoardGameGeekGameDefinitionId()
         {
-            Assert.That(gameDefinitionSummary.BoardGameGeekGameDefinitionId, Is.EqualTo(viewModel.BoardGameGeekGameDefinitionId));
-        }
-
-        [Test]
-        public void ItCopiesTheBoardGameGeekUri()
-        {
-            Assert.That(gameDefinitionSummary.BoardGameGeekUri, Is.EqualTo(viewModel.BoardGameGeekUri));
+            Assert.That(gameDefinitionSummary.BoardGameGeekGameDefinitionId, Is.EqualTo(viewModel.BoardGameGeekGameDefinition.BoardGameGeekGameDefinitionId));
         }
 
         [Test]

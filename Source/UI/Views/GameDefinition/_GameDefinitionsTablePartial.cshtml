@@ -44,13 +44,13 @@
             {
                 <tr class="game-item">
                     <td class="bgg-link-col">
-                        @if (item.BoardGameGeekUri != null)
+                        @if (item.HasBoardGameGeekDefinition)
                         {
 
-                            <a href="@item.BoardGameGeekUri" target="_blank;">
-                                @if (!string.IsNullOrEmpty(item.ThumbnailImageUrl))
+                            <a href="@item.BoardGameGeekGameDefinition.BoardGameGeekUri" target="_blank;">
+                                @if (!string.IsNullOrEmpty(item.BoardGameGeekGameDefinition.Thumbnail))
                                 {
-                                    <img class="bgg-thumbnail" src="@item.ThumbnailImageUrl" alt="View on BoardGameGeek.com" title="View on BoardGameGeek.com"/>
+                                    <img class="bgg-thumbnail" src="@item.BoardGameGeekGameDefinition.Thumbnail" alt="View on BoardGameGeek.com" title="View on BoardGameGeek.com"/>
                                 }
                                 else
                                 {

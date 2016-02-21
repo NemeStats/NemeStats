@@ -20,12 +20,12 @@
                     </strong>
                 </div>
                 <div class="col-sm-3">
-                    @if (Model.BoardGameGeekUri != null)
+                    @if (Model.HasBoardGameGeekDefinition)
                     {
-                        <a href="@Model.BoardGameGeekUri.AbsoluteUri" target="_blank;">
-                            @if (!string.IsNullOrEmpty(Model.ThumbnailImageUrl))
+                        <a href="@Model.BoardGameGeekGameDefinition.BoardGameGeekUri.AbsoluteUri" target="_blank;">
+                            @if (!string.IsNullOrEmpty(Model.BoardGameGeekGameDefinition.Thumbnail))
                             {
-                                <img src="@Model.ThumbnailImageUrl" alt="View on BoardGameGeek.com" title="View on BoardGameGeek.com" />
+                                <img src="@Model.BoardGameGeekGameDefinition.Thumbnail" alt="View on BoardGameGeek.com" title="View on BoardGameGeek.com" />
                             }
                             else
                             {

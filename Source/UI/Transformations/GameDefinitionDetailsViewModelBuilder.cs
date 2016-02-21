@@ -31,13 +31,13 @@ namespace UI.Transformations
 {
     public class GameDefinitionDetailsViewModelBuilder : IGameDefinitionDetailsViewModelBuilder
     {
-        private readonly IPlayedGameDetailsViewModelBuilder playedGameDetailsViewModelBuilder;
-        private readonly ITransformer transformer;
+        private readonly IPlayedGameDetailsViewModelBuilder _playedGameDetailsViewModelBuilder;
+        private readonly ITransformer _transformer;
 
         public GameDefinitionDetailsViewModelBuilder(IPlayedGameDetailsViewModelBuilder playedGameDetailsViewModelBuilder, ITransformer transformer)
         {
-            this.playedGameDetailsViewModelBuilder = playedGameDetailsViewModelBuilder;
-            this.transformer = transformer;
+            this._playedGameDetailsViewModelBuilder = playedGameDetailsViewModelBuilder;
+            this._transformer = transformer;
         }
 
         public GameDefinitionDetailsViewModel Build(GameDefinitionSummary gameDefinitionSummary, ApplicationUser currentUser)
@@ -51,10 +51,8 @@ namespace UI.Transformations
                 AveragePlayersPerGame = $"{gameDefinitionSummary.AveragePlayersPerGame:0.#}",
                 GamingGroupId = gameDefinitionSummary.GamingGroupId,
                 GamingGroupName = gameDefinitionSummary.GamingGroupName,
-                BoardGameGeekGameDefinitionId = gameDefinitionSummary.BoardGameGeekGameDefinitionId,
-                BoardGameGeekUri = gameDefinitionSummary.BoardGameGeekUri,
-                ThumbnailImageUrl = gameDefinitionSummary.ThumbnailImageUrl,
-                UserCanEdit = (currentUser != null && gameDefinitionSummary.GamingGroupId == currentUser.CurrentGamingGroupId)
+                UserCanEdit = (currentUser != null && gameDefinitionSummary.GamingGroupId == currentUser.CurrentGamingGroupId),
+                BoardGameGeekGameDefinition = _transformer.Transform<BoardGameGeekGameDefinition, BoardGameGeekGameDefinitionViewModel>(gameDefinitionSummary.BoardGameGeekGameDefinition)
             };
 
             if (gameDefinitionSummary.PlayedGames == null)
@@ -64,7 +62,7 @@ namespace UI.Transformations
             else
             {
                 viewModel.PlayedGames = (from playedGame in gameDefinitionSummary.PlayedGames
-                                         select playedGameDetailsViewModelBuilder.Build(playedGame, currentUser))
+                                         select _playedGameDetailsViewModelBuilder.Build(playedGame, currentUser))
                                    .ToList();
             }
 
@@ -74,7 +72,7 @@ namespace UI.Transformations
                                                                            gameDefinitionSummary.Champion.Player.Name,
                                                                            gameDefinitionSummary.Champion.Player.Active);
                 viewModel.ChampionPlayerId = gameDefinitionSummary.Champion.Player.Id;
-                viewModel.WinPercentage = gameDefinitionSummary.Champion.WinPercentage;                
+                viewModel.WinPercentage = gameDefinitionSummary.Champion.WinPercentage;
                 viewModel.NumberOfGamesPlayed = gameDefinitionSummary.Champion.NumberOfGames;
                 viewModel.NumberOfWins = gameDefinitionSummary.Champion.NumberOfWins;
             }
@@ -82,7 +80,7 @@ namespace UI.Transformations
             if (!(gameDefinitionSummary.PreviousChampion is NullChampion))
             {
                 viewModel.PreviousChampionName = PlayerNameBuilder.BuildPlayerName(
-                    gameDefinitionSummary.PreviousChampion.Player.Name, 
+                    gameDefinitionSummary.PreviousChampion.Player.Name,
                     gameDefinitionSummary.PreviousChampion.Player.Active);
                 viewModel.PreviousChampionPlayerId = gameDefinitionSummary.PreviousChampion.Player.Id;
             }
@@ -90,7 +88,7 @@ namespace UI.Transformations
             var playersSummaryViewModel = new GameDefinitionPlayersSummaryViewModel
             {
                 GameDefinitionPlayerSummaries = gameDefinitionSummary.PlayerWinRecords
-                    .Select(transformer.Transform<PlayerWinRecord, GameDefinitionPlayerSummaryViewModel>)
+                    .Select(_transformer.Transform<PlayerWinRecord, GameDefinitionPlayerSummaryViewModel>)
                     .ToList()
             };
             viewModel.GameDefinitionPlayersSummary = playersSummaryViewModel;
@@ -98,4 +96,6 @@ namespace UI.Transformations
             return viewModel;
         }
     }
+
+
 }

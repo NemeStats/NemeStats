@@ -17,6 +17,7 @@
 #endregion
 
 using AutoMapper;
+using BusinessLogic.Logic.BoardGameGeek;
 using BusinessLogic.Logic.GameDefinitions;
 using BusinessLogic.Logic.GamingGroups;
 using BusinessLogic.Logic.Players;
@@ -68,6 +69,8 @@ namespace UI.Transformations
             Mapper.CreateMap<PlayedGameQuickStats, PlayedGameQuickStatsViewModel>(MemberList.Destination);
             Mapper.CreateMap<PlayerQuickStats, PlayerQuickStatsViewModel>(MemberList.Destination);
             Mapper.CreateMap<TrendingGame, TrendingGameViewModel>(MemberList.Destination);
+            Mapper.CreateMap<BoardGameGeekGameDefinition, BoardGameGeekGameDefinitionViewModel>()
+                .ForMember(m => m.BoardGameGeekUri, opt => opt.MapFrom(src => BoardGameGeekUriBuilder.BuildBoardGameGeekGameUri(src.Id)));
         }
     }
 }
