@@ -19,7 +19,7 @@
                 <td class="bgg-link-col">
                     @if (trendingGame.BoardGameGeekUri != null)
                     {
-                        <a href="@trendingGame.BoardGameGeekUri" target="_blank;">
+                        <a href="@trendingGame.BoardGameGeekUri.AbsoluteUri" target="_blank;">
                             @if (!string.IsNullOrEmpty(trendingGame.ThumbnailImageUrl))
                             {
                                 <img class="bgg-thumbnail" src="@trendingGame.ThumbnailImageUrl" alt="View on BoardGameGeek.com" title="View on BoardGameGeek.com"/>

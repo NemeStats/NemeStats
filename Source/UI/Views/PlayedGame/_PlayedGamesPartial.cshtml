@@ -27,7 +27,9 @@
         @if (Model.UserCanEdit && Model.GamingGroupId.HasValue)
         {
             <div class="well">
-                @Html.ActionLink("Record Played Game", "Create", "PlayedGame", new { }, new { @class = "btn btn-primary", @id = "gtm-recordplayedgamebutton-fromplayedgames" })
+                <a href="@Url.Action(MVC.PlayedGame.ActionNames.Create, MVC.PlayedGame.Name, new {})" class="btn btn-primary" id="gtm-recordplayedgamebutton-fromplayedgames">
+                    <span class="fa fa-plus-circle"></span>&nbsp;Record Played Game
+                </a>
             </div>
         }
         <div class="flip-scroll">
@@ -56,23 +58,24 @@
                                 @if (playedGameDetailsViewModel.BoardGameGeekUri != null)
                                 {
 
-                                    <a href="@playedGameDetailsViewModel.BoardGameGeekUri" target="_blank;">
-                                        @if (!string.IsNullOrEmpty(playedGameDetailsViewModel.ThumbnailImageUrl))
-                                        {
-                                            <img class="bgg-thumbnail" src="@playedGameDetailsViewModel.ThumbnailImageUrl" alt="View on BoardGameGeek.com" title="View on BoardGameGeek.com" />
-                                        }
-                                        else
-                                        {
+                                    if (!string.IsNullOrEmpty(playedGameDetailsViewModel.ThumbnailImageUrl))
+                                    {
+                                        <a href="@Url.Action(MVC.GameDefinition.ActionNames.Details,MVC.GameDefinition.Name,new {id=playedGameDetailsViewModel.GameDefinitionId})">
+                                            <img class="bgg-thumbnail" src="@playedGameDetailsViewModel.ThumbnailImageUrl" alt="@playedGameDetailsViewModel.GameDefinitionName" title="@playedGameDetailsViewModel.GameDefinitionName" />
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <a href="@playedGameDetailsViewModel.BoardGameGeekUri.AbsoluteUri" target="_blank;">
                                             <img src="~/Content/Images/bgg_small.png" alt="View on BoardGameGeek.com" title="View on BoardGameGeek.com" />
-                                        }
-
-                                    </a>
+                                        </a>
+                                    }
 
                                 }
                             </td>
                             <td class="name-col">
                                 <b>
-                                    @Html.ActionLink(playedGameDetailsViewModel.GameDefinitionName, "Details", "GameDefinition", new { id = playedGameDetailsViewModel.GameDefinitionId }, new { })
+                                    @Html.ActionLink(playedGameDetailsViewModel.GameDefinitionName, MVC.GameDefinition.ActionNames.Details, MVC.GameDefinition.Name, new { id = playedGameDetailsViewModel.GameDefinitionId }, new { })
                                 </b>
                             </td>
                             <td>

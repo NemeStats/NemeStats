@@ -34,18 +34,19 @@
 			    <div class="col-sm-9">
                     @if (Model.BoardGameGeekUri != null)
                     {
-                        <a href="@Model.BoardGameGeekUri.AbsoluteUri" target="_blank;">
-                            @if (!string.IsNullOrEmpty(Model.ThumbnailImageUrl))
-                            {
-                                <img src="@Model.ThumbnailImageUrl" alt="View on BoardGameGeek.com" title="View on BoardGameGeek.com" />
-                            }
-                            else
-                            {
-                                @Html.ActionLink(Model.GameDefinitionName, "Details", "GameDefinition", new { id = Model.GameDefinitionId }, new { })
-                                <img src="~/Content/Images/bgg_small.png" alt="View on BoardGameGeek.com" title="View on BoardGameGeek.com" />
-                            }
 
-                        </a>
+                        if (!string.IsNullOrEmpty(Model.ThumbnailImageUrl))
+                        {
+                            <a href="@Url.Action(MVC.GameDefinition.ActionNames.Details,MVC.GameDefinition.Name,new {id=Model.GameDefinitionId})">
+                                <img class="bgg-thumbnail" src="@Model.ThumbnailImageUrl" alt="@Model.GameDefinitionName" title="@Model.GameDefinitionName" />
+                            </a>
+                        }
+                        else
+                        {
+                            <a href="@Model.BoardGameGeekUri.AbsoluteUri" target="_blank;">
+                                <img src="~/Content/Images/bgg_small.png" alt="View on BoardGameGeek.com" title="View on BoardGameGeek.com" />
+                            </a>
+                        }
                     }
                     else
                     {

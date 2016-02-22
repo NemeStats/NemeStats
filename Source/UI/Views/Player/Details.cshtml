@@ -83,7 +83,7 @@
                     </tr>
                     <tr>
                         <td><strong>Win - Loss Record:</strong></td>
-                        <td>@string.Format("{0} - {1}", Model.TotalGamesWon, Model.TotalGamesLost)</td>
+                        <td>@Model.TotalGamesWon - @Model.TotalGamesLost</td>
                     </tr>
                     <tr>
                         <td><strong>Win Percentage:</strong></td>
@@ -171,16 +171,18 @@
                                         }
                                     </td>
                                     <td class="bgg-link-col">
-                                        @if (summary.ThumbnailImageUrl != null)
+                                        @if (!string.IsNullOrEmpty(summary.ThumbnailImageUrl))
                                         {
-                                            <img class="bgg-thumbnail" src="@summary.ThumbnailImageUrl" alt="@summary.GameDefinitionName" />
+                                            <a href="@Url.Action(MVC.GameDefinition.ActionNames.Details,MVC.GameDefinition.Name,new {id=summary.GameDefinitionId})">
+                                                <img class="bgg-thumbnail" src="@summary.ThumbnailImageUrl" alt="@summary.GameDefinitionName" title="@summary.GameDefinitionName" />
+                                            </a>
                                         }
                                     </td>
                                     <td class="name-col">
                                         @Html.ActionLink(summary.GameDefinitionName, "Details", "GameDefinition", new { id = summary.GameDefinitionId }, new { })
                                     </td>
                                     <td>
-                                        @string.Format("{0} - {1}", summary.NumberOfGamesWon, summary.NumberOfGamesLost)
+                                        @summary.NumberOfGamesWon - @summary.NumberOfGamesLost
                                     </td>
                                     <td>
                                         @summary.WinPercentage
@@ -219,20 +221,19 @@
                                 <tr class="game-item">
                                     <td class="bgg-link-col">
                                         @if (gameResultViewModel.BoardGameGeekUri != null)
-                    {
-
-                                            <a href="@gameResultViewModel.BoardGameGeekUri" target="_blank;">
-                                                @if (!string.IsNullOrEmpty(gameResultViewModel.ThumbnailImageUrl))
-                                                {
-                                                    <img class="bgg-thumbnail" src="@gameResultViewModel.ThumbnailImageUrl" alt="View on BoardGameGeek.com" title="View on BoardGameGeek.com" />
-                                                }
-                                                else
-                                                {
+                                        {
+                                            if (!string.IsNullOrEmpty(gameResultViewModel.ThumbnailImageUrl))
+                                            {
+                                                <a href="@Url.Action(MVC.GameDefinition.ActionNames.Details,MVC.GameDefinition.Name,new {id=gameResultViewModel.GameDefinitionId})">
+                                                    <img class="bgg-thumbnail" src="@gameResultViewModel.ThumbnailImageUrl" alt="@gameResultViewModel.GameDefinitionName" title="@gameResultViewModel.GameDefinitionName" />
+                                                </a>
+                                            }
+                                            else
+                                            {
+                                                <a href="@gameResultViewModel.BoardGameGeekUri.AbsoluteUri" target="_blank;">
                                                     <img src="~/Content/Images/bgg_small.png" alt="View on BoardGameGeek.com" title="View on BoardGameGeek.com" />
-                                                }
-
-                                            </a>
-
+                                                </a>
+                                            }
                                         }
                                     </td>
                                     <td class="name-col">

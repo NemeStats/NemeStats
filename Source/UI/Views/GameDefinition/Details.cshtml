@@ -30,30 +30,39 @@
                         </div>
                         <div class="col-sm-4 col-sm-offset-4">
                             <table class="table well data">
-                                <tr>
-                                    <td class="text-center"><i class="fa fa-users"></i></td>
-                                    <td>@Model.BoardGameGeekGameDefinition.MinPlayers - @Model.BoardGameGeekGameDefinition.MaxPlayers players</td>
-                                </tr>
-                                <tr>
-                                    <td class="text-center"><i class="fa fa-clock-o"></i></td>
-                                    <td>about @Model.BoardGameGeekGameDefinition.PlayingTime minutes</td>
-                                </tr>
-                                <tr>
-                                    <td class="text-center"><i class="fa fa-balance-scale"></i></td>
-                                    <td>
-                                        <div class="progress @Model.BoardGameGeekGameDefinition.WeightDescription">
-                                            <div class="progress-bar" role="progressbar" aria-valuenow="@Model.BoardGameGeekGameDefinition.WeightPercent" aria-valuemin="0" aria-valuemax="100" style="width: @Model.BoardGameGeekGameDefinition.WeightPercent%;" data-toggle="popover" data-placement="bottom" data-content="@Model.BoardGameGeekGameDefinition.AverageWeight / 5">
-                                                @Model.BoardGameGeekGameDefinition.WeightDescription
+                                @if (Model.BoardGameGeekGameDefinition.MaxPlayers.HasValue && Model.BoardGameGeekGameDefinition.MinPlayers.HasValue)
+                                {
+                                    <tr>
+                                        <td class="text-center"><i class="fa fa-users"></i></td>
+                                        <td>@Model.BoardGameGeekGameDefinition.MinPlayers - @Model.BoardGameGeekGameDefinition.MaxPlayers players</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-center"><i class="fa fa-clock-o"></i></td>
+                                        <td>about @Model.BoardGameGeekGameDefinition.PlayingTime minutes</td>
+                                    </tr>
+                                }
+                                @if (Model.BoardGameGeekGameDefinition.AverageWeight.HasValue)
+                                {
+                                    <tr>
+                                        <td class="text-center"><i class="fa fa-balance-scale"></i></td>
+                                        <td>
+                                            <div class="progress @Model.BoardGameGeekGameDefinition.WeightDescription">
+                                                <div class="progress-bar" role="progressbar" aria-valuenow="@Model.BoardGameGeekGameDefinition.WeightPercent" aria-valuemin="0" aria-valuemax="100" style="width: @Model.BoardGameGeekGameDefinition.WeightPercent%;" data-toggle="popover" data-placement="bottom" data-content="@Model.BoardGameGeekGameDefinition.AverageWeight / 5">
+                                                    @Model.BoardGameGeekGameDefinition.WeightDescription
+                                                </div>
                                             </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="text-center">
-                                        <img src="~/Content/Images/bgg_small.png"/>
-                                    </td>
-                                    <td><a href="@Model.BoardGameGeekGameDefinition.BoardGameGeekUri" target="_blank;">view on boardgamegeek.com</a></td>
-                                </tr>
+                                        </td>
+                                    </tr>
+                                }
+                                @if (Model.BoardGameGeekGameDefinition.BoardGameGeekUri != null)
+                                {
+                                    <tr>
+                                        <td class="text-center">
+                                            <img src="~/Content/Images/bgg_small.png"/>
+                                        </td>
+                                        <td><a href="@Model.BoardGameGeekGameDefinition.BoardGameGeekUri.AbsoluteUri" target="_blank;">view on boardgamegeek.com</a></td>
+                                    </tr>
+                                }
                             </table>
                         </div>
 
