@@ -1,144 +1,153 @@
 ﻿#region LICENSE
+
 // NemeStats is a free website for tracking the results of board games.
 //     Copyright (C) 2015 Jacob Gordon
-// 
+//
 //     This program is free software: you can redistribute it and/or modify
 //     it under the terms of the GNU General Public License as published by
 //     the Free Software Foundation, either version 3 of the License, or
 //     (at your option) any later version.
-// 
+//
 //     This program is distributed in the hope that it will be useful,
 //     but WITHOUT ANY WARRANTY; without even the implied warranty of
 //     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //     GNU General Public License for more details.
-// 
+//
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
-#endregion
+
+#endregion LICENSE
+
 using AutoMapper;
+using BoardGameGeekApiClient.Interfaces;
 using BusinessLogic.DataAccess;
+using BusinessLogic.Exceptions;
+using BusinessLogic.Logic.BoardGameGeek;
 using BusinessLogic.Logic.GameDefinitions;
+using BusinessLogic.Logic.Users;
 using BusinessLogic.Models.Games;
 using BusinessLogic.Models.User;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Web.Mvc;
-using BoardGameGeekApiClient.Interfaces;
 using UI.Attributes.Filters;
 using UI.Controllers.Helpers;
 using UI.Models.GameDefinitionModels;
 using UI.Transformations;
-using BusinessLogic.Exceptions;
-using BusinessLogic.Logic.BoardGameGeek;
-using BusinessLogic.Logic.Users;
 
 namespace UI.Controllers
 {
     public partial class GameDefinitionController : BaseController
-	{
-		internal const int NUMBER_OF_RECENT_GAMES_TO_SHOW = 5;
+    {
+        internal const int NUMBER_OF_RECENT_GAMES_TO_SHOW = 5;
+        internal const int NUMBER_OF_TRENDING_GAMES_TO_SHOW = 25;
+        internal const int NUMBER_OF_DAYS_OF_TRENDING_GAMES = 90;
 
-		internal IDataContext dataContext;
-		internal IGameDefinitionRetriever gameDefinitionRetriever;
-		internal IGameDefinitionDetailsViewModelBuilder gameDefinitionTransformation;
-		internal IShowingXResultsMessageBuilder showingXResultsMessageBuilder;
-		internal IGameDefinitionSaver gameDefinitionSaver;
+        internal IDataContext dataContext;
+        internal IGameDefinitionRetriever gameDefinitionRetriever;
+        internal IGameDefinitionDetailsViewModelBuilder gameDefinitionTransformation;
+        internal IShowingXResultsMessageBuilder showingXResultsMessageBuilder;
+        internal IGameDefinitionSaver gameDefinitionSaver;
         internal IBoardGameGeekApiClient _boardGameGeekApiClient;
         private readonly IUserRetriever _userRetriever;
         private readonly IBoardGameGeekGamesImporter _boardGameGeekGamesImporter;
+        private readonly ITransformer _transformer;
 
-	    public GameDefinitionController(IDataContext dataContext,
-			IGameDefinitionRetriever gameDefinitionRetriever,
-			IGameDefinitionDetailsViewModelBuilder gameDefinitionTransformation,
-			IShowingXResultsMessageBuilder showingXResultsMessageBuilder,
-			IGameDefinitionSaver gameDefinitionCreator,
+        public GameDefinitionController(IDataContext dataContext,
+            IGameDefinitionRetriever gameDefinitionRetriever,
+            IGameDefinitionDetailsViewModelBuilder gameDefinitionTransformation,
+            IShowingXResultsMessageBuilder showingXResultsMessageBuilder,
+            IGameDefinitionSaver gameDefinitionCreator,
             IBoardGameGeekApiClient boardGameGeekApiClient,
             IUserRetriever userRetriever,
-            IBoardGameGeekGamesImporter boardGameGeekGamesImporter)
-		{
-			this.dataContext = dataContext;
-			this.gameDefinitionRetriever = gameDefinitionRetriever;
-			this.gameDefinitionTransformation = gameDefinitionTransformation;
-			this.showingXResultsMessageBuilder = showingXResultsMessageBuilder;
-			this.gameDefinitionSaver = gameDefinitionCreator;
-	        _boardGameGeekApiClient = boardGameGeekApiClient;
+            IBoardGameGeekGamesImporter boardGameGeekGamesImporter,
+            ITransformer transformer)
+        {
+            this.dataContext = dataContext;
+            this.gameDefinitionRetriever = gameDefinitionRetriever;
+            this.gameDefinitionTransformation = gameDefinitionTransformation;
+            this.showingXResultsMessageBuilder = showingXResultsMessageBuilder;
+            this.gameDefinitionSaver = gameDefinitionCreator;
+            _boardGameGeekApiClient = boardGameGeekApiClient;
             _userRetriever = userRetriever;
             _boardGameGeekGamesImporter = boardGameGeekGamesImporter;
-		}
+            _transformer = transformer;
+        }
 
-		// GET: /GameDefinition/Details/5
-		[UserContext(RequiresGamingGroup = false)]
-		public virtual ActionResult Details(int? id, ApplicationUser currentUser)
-		{
-			if (id == null)
-			{
-				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-			}
+        // GET: /GameDefinition/Details/5
+        [UserContext(RequiresGamingGroup = false)]
+        public virtual ActionResult Details(int? id, ApplicationUser currentUser)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
 
-			GameDefinitionDetailsViewModel gamingGroupGameDefinitionViewModel;
+            GameDefinitionDetailsViewModel gamingGroupGameDefinitionViewModel;
 
-			try
-			{
-			    var gameDefinitionSummary = gameDefinitionRetriever.GetGameDefinitionDetails(id.Value, NUMBER_OF_RECENT_GAMES_TO_SHOW);
-				gamingGroupGameDefinitionViewModel = gameDefinitionTransformation.Build(gameDefinitionSummary, currentUser);
-			}
-			catch (KeyNotFoundException)
-			{
-				return new HttpNotFoundResult();
-			}
-			catch (UnauthorizedAccessException)
-			{
-				return new HttpUnauthorizedResult();
-			}
+            try
+            {
+                var gameDefinitionSummary = gameDefinitionRetriever.GetGameDefinitionDetails(id.Value, NUMBER_OF_RECENT_GAMES_TO_SHOW);
+                gamingGroupGameDefinitionViewModel = gameDefinitionTransformation.Build(gameDefinitionSummary, currentUser);
+            }
+            catch (KeyNotFoundException)
+            {
+                return new HttpNotFoundResult();
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return new HttpUnauthorizedResult();
+            }
 
-		    gamingGroupGameDefinitionViewModel.PlayedGamesPanelTitle = 
-		        $"Last {gamingGroupGameDefinitionViewModel.PlayedGames.Count} Played Games";
+            gamingGroupGameDefinitionViewModel.PlayedGamesPanelTitle =
+                $"Last {gamingGroupGameDefinitionViewModel.PlayedGames.Count} Played Games";
 
-			return View(MVC.GameDefinition.Views.Details, gamingGroupGameDefinitionViewModel);
-		}
+            return View(MVC.GameDefinition.Views.Details, gamingGroupGameDefinitionViewModel);
+        }
 
-		// GET: /GameDefinition/Create
-		[Authorize]
-		public virtual ActionResult Create(string returnUrl)
-		{
-		    return View(MVC.GameDefinition.Views.Create,
-		                new CreateGameDefinitionViewModel()
-		                {
-		                    ReturnUrl = returnUrl
-		                });
-		}
+        // GET: /GameDefinition/Create
+        [Authorize]
+        public virtual ActionResult Create(string returnUrl)
+        {
+            return View(MVC.GameDefinition.Views.Create,
+                        new CreateGameDefinitionViewModel()
+                        {
+                            ReturnUrl = returnUrl
+                        });
+        }
 
-		// POST: /GameDefinition/Create
-		// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-		// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-		[Authorize]
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		[UserContext]
-		public virtual ActionResult Create(CreateGameDefinitionViewModel createGameDefinitionViewModel, ApplicationUser currentUser)
-		{
-			if (ModelState.IsValid)
-			{
+        // POST: /GameDefinition/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [UserContext]
+        public virtual ActionResult Create(CreateGameDefinitionViewModel createGameDefinitionViewModel, ApplicationUser currentUser)
+        {
+            if (ModelState.IsValid)
+            {
                 createGameDefinitionViewModel.Name = createGameDefinitionViewModel.Name.Trim();
                 var gameDefinition = Mapper.Map<CreateGameDefinitionViewModel, CreateGameDefinitionRequest>(createGameDefinitionViewModel);
 
-				var savedResult = gameDefinitionSaver.CreateGameDefinition(gameDefinition, currentUser);
+                var savedResult = gameDefinitionSaver.CreateGameDefinition(gameDefinition, currentUser);
 
                 if (!String.IsNullOrWhiteSpace(createGameDefinitionViewModel.ReturnUrl))
                     return new RedirectResult(createGameDefinitionViewModel.ReturnUrl + "?gameId=" + savedResult.Id);
 
-				return new RedirectResult(Url.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name)
-										+ "#" + GamingGroupController.SECTION_ANCHOR_GAMEDEFINITIONS);
-			}
+                return new RedirectResult(Url.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name)
+                                        + "#" + GamingGroupController.SECTION_ANCHOR_GAMEDEFINITIONS);
+            }
 
             return View(MVC.GameDefinition.Views.Create, createGameDefinitionViewModel);
-		}
+        }
 
-		[Authorize]
-		[HttpPost]
-		[UserContext]
-		public virtual ActionResult AjaxCreate(CreateGameDefinitionViewModel createGameDefinitionViewModel, ApplicationUser currentUser)
+        [Authorize]
+        [HttpPost]
+        [UserContext]
+        public virtual ActionResult AjaxCreate(CreateGameDefinitionViewModel createGameDefinitionViewModel, ApplicationUser currentUser)
         {
             if (!Request.IsAjaxRequest())
             {
@@ -172,7 +181,6 @@ namespace UI.Controllers
         [UserContext]
         public virtual ActionResult ImportFromBGG(ApplicationUser currentUser)
         {
-
             var gamesImported = _boardGameGeekGamesImporter.ImportBoardGameGeekGames(currentUser);
 
             if (gamesImported == null)
@@ -190,9 +198,7 @@ namespace UI.Controllers
             }
 
             return RedirectToAction(MVC.GamingGroup.Index());
-
         }
-
 
         private string GetFirstModelStateError(string errorDescription)
         {
@@ -212,75 +218,83 @@ namespace UI.Controllers
 
         // GET: /GameDefinition/Edit/5
         [Authorize]
-		[UserContext]
-		public virtual ActionResult Edit(int? id, ApplicationUser currentUser)
-		{
-			if (id == null)
-			{
-				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-			}
+        [UserContext]
+        public virtual ActionResult Edit(int? id, ApplicationUser currentUser)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
 
-			GameDefinitionEditViewModel gameDefinitionEditViewModel;
-			try
-			{
-				var gameDefinition = gameDefinitionRetriever.GetGameDefinitionDetails(id.Value, 0);
+            GameDefinitionEditViewModel gameDefinitionEditViewModel;
+            try
+            {
+                var gameDefinition = gameDefinitionRetriever.GetGameDefinitionDetails(id.Value, 0);
                 gameDefinitionEditViewModel = Mapper.Map<GameDefinitionEditViewModel>(gameDefinition);
             }
-			catch (KeyNotFoundException)
-			{
-				return HttpNotFound();
-			}
+            catch (KeyNotFoundException)
+            {
+                return HttpNotFound();
+            }
 
-			return View(MVC.GameDefinition.Views.Edit, gameDefinitionEditViewModel);
-		}
+            return View(MVC.GameDefinition.Views.Edit, gameDefinitionEditViewModel);
+        }
 
         // POST: /GameDefinition/Edit/5
-		// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-		// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-		[HttpPost]
-		[ValidateAntiForgeryToken]
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         [Authorize]
         [UserContext]
-		public virtual ActionResult Edit(GameDefinitionEditViewModel viewModel, ApplicationUser currentUser)
-		{
-			if (ModelState.IsValid)
-			{
+        public virtual ActionResult Edit(GameDefinitionEditViewModel viewModel, ApplicationUser currentUser)
+        {
+            if (ModelState.IsValid)
+            {
                 viewModel.Name = viewModel.Name.Trim();
                 var gameDefinitionUpdateRequest = Mapper.Map<GameDefinitionUpdateRequest>(viewModel);
                 gameDefinitionSaver.UpdateGameDefinition(gameDefinitionUpdateRequest, currentUser);
-				return new RedirectResult(Url.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name)
-										  + "#" + GamingGroupController.SECTION_ANCHOR_GAMEDEFINITIONS);
-			}
-			return View(MVC.GameDefinition.Views.Edit, viewModel);
-		}
+                return new RedirectResult(Url.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name)
+                                          + "#" + GamingGroupController.SECTION_ANCHOR_GAMEDEFINITIONS);
+            }
+            return View(MVC.GameDefinition.Views.Edit, viewModel);
+        }
 
-		[Authorize]
+        [Authorize]
         [UserContext]
         public virtual ActionResult CreatePartial(ApplicationUser currentUser)
-		{
+        {
             var bggUser = _userRetriever.RetrieveUserInformation(currentUser).BoardGameGeekUser;
 
             return View(MVC.GameDefinition.Views._CreatePartial, new CreateGameDefinitionViewModel() { BGGUserName = bggUser?.Name });
-		}
+        }
 
-		[Authorize]
-		[HttpGet]
-		[UserContext]
-		public virtual ActionResult SearchBoardGameGeekHttpGet(string searchText)
-		{
-			if (!Request.IsAjaxRequest())
-			{
-				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-			}
+        [Authorize]
+        [HttpGet]
+        [UserContext]
+        public virtual ActionResult SearchBoardGameGeekHttpGet(string searchText)
+        {
+            if (!Request.IsAjaxRequest())
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
 
-			if (ModelState.IsValid)
-			{
-			    var searchResults = _boardGameGeekApiClient.SearchBoardGames(searchText);
-				return Json(searchResults, JsonRequestBehavior.AllowGet);
-			}
+            if (ModelState.IsValid)
+            {
+                var searchResults = _boardGameGeekApiClient.SearchBoardGames(searchText);
+                return Json(searchResults, JsonRequestBehavior.AllowGet);
+            }
 
-			return new HttpStatusCodeResult(HttpStatusCode.NotModified);
-		}
+            return new HttpStatusCodeResult(HttpStatusCode.NotModified);
+        }
 
-	}
+        [HttpGet]
+        public virtual ActionResult ShowTrendingGames()
+        {
+            var trendingGames = gameDefinitionRetriever.GetTrendingGames(NUMBER_OF_TRENDING_GAMES_TO_SHOW, NUMBER_OF_DAYS_OF_TRENDING_GAMES);
+            var trendingGamesViewModels = trendingGames.Select(_transformer.Transform<TrendingGame, TrendingGameViewModel>).ToList();
+
+            return View(MVC.GameDefinition.Views.TrendingGames, trendingGamesViewModels);
+        }
+    }
 }
