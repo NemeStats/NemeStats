@@ -45,6 +45,7 @@
 /// <reference path="player/players.js" />
 /// <reference path="plugins/rankplugin.js" />
 /// <reference path="plugins/toeditboxplugin.js" />
+/// <reference path="readmore.min.js" />
 /// <reference path="respond.js" />
 /// <reference path="shared/_layout.js" />
 /// <reference path="shared/googleanalytics.js" />

@@ -37,25 +37,25 @@ namespace UI.Models.GameDefinitionModels
                 if (AverageWeight.HasValue)
                 {
                     var weight = (double) AverageWeight.Value;
-                    if (weight < 1.5)
+                    if (weight < 1.8)
                     {
                         return "Casual";
                     }
-                    if (weight < 2)
+                    if (weight < 2.4)
                     {
                         return "Easy";
                     }
-                    if (weight < 3)
+                    if (weight < 3.3)
                     {
-                        return "Normal";
+                        return "Advanced";
                     }
-                    if (weight < 4)
+                    if (weight < 4.1)
                     {
-                        return "Hardcore";
+                        return "Challenging";
                     }
                     if (weight < 5)
                     {
-                        return "Nightmare";
+                        return "Hardcore";
                     }
                 }
                 return string.Empty;

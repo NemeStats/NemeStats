@@ -1,5 +1,5 @@
 ﻿//Usings
-Namespace("Views.GameDefinition");
+Namespace("Views.GameDefinitions");
 
 //Initialization
 Views.GameDefinition.GameDefinitions = function () {

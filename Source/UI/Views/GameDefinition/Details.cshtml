@@ -69,19 +69,19 @@
                     </div>
                     <div class="row voffset4">
                         <div class="col-sm-12">
-                            <div class="well">
+                            <article class="well bggdescription" data-readmore="true">
                                 @if (!string.IsNullOrEmpty(Model.Description))
                                 {
-                                    <span>@Model.Description</span>
+                                    <p>@Model.Description</p>
                                 }
                                 else
                                 {
-                                    <span class="bggdescription">
+                                    <p>
                                         @Html.Raw(Model.BoardGameGeekGameDefinition.Description)
-                                    </span>
+                                    </p>
                                 }
                                 
-                            </div>
+                            </article>
                         </div>
                     </div>
                 }
