@@ -6,7 +6,7 @@ namespace UI.Models.GameDefinitionModels
     {
         private const int MaxBggWeight = 5;
 
-        public int? BoardGameGeekGameDefinitionId { get; set; }
+        public int? Id { get; set; }
         public string Name { get; set; }
         public string Thumbnail { get; set; }
         public int? MaxPlayers { get; set; }

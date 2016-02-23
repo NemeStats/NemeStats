@@ -23,7 +23,6 @@ using BusinessLogic.Models.User;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System.Collections.Generic;
-using System.Linq;
 using BusinessLogic.Logic.Players;
 using StructureMap.AutoMocking;
 using UI.Models.GameDefinitionModels;
@@ -117,6 +116,8 @@ namespace UI.Tests.UnitTests.TransformationsTests
             autoMocker.Get<ITransformer>().Expect(mock => mock.Transform<PlayerWinRecord, GameDefinitionPlayerSummaryViewModel>(playerWinRecord2))
                  .Return(expectedPlayerSummary2); 
 
+
+
             gameDefinitionSummary = new GameDefinitionSummary
             {
                 Id = 1,
@@ -128,6 +129,7 @@ namespace UI.Tests.UnitTests.TransformationsTests
                 TotalNumberOfGamesPlayed = 3,
                 AveragePlayersPerGame = 2.2M,
                 BoardGameGeekGameDefinitionId = 123,
+                BoardGameGeekGameDefinition = new BoardGameGeekGameDefinition() { Id = 123},
                 Champion = champion,
                 PreviousChampion = previousChampion,
                 PlayerWinRecords = new List<PlayerWinRecord>
@@ -206,12 +208,6 @@ namespace UI.Tests.UnitTests.TransformationsTests
         public void ItCopiesTheGamingGroupId()
         {
             Assert.AreEqual(gameDefinitionSummary.GamingGroupId, viewModel.GamingGroupId);
-        }
-
-        [Test]
-        public void ItCopiesTheBoardGameGeekGameDefinitionId()
-        {
-            Assert.That(gameDefinitionSummary.BoardGameGeekGameDefinitionId, Is.EqualTo(viewModel.BoardGameGeekGameDefinition.BoardGameGeekGameDefinitionId));
         }
 
         [Test]
