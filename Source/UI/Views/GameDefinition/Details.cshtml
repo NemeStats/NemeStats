@@ -8,14 +8,16 @@
 
 <div id="gamedefinition-details">
     <h2 class="page-header">
-        @Html.DisplayFor(model => model.Name) on @Html.ActionLink(@Model.GamingGroupName, MVC.GamingGroup.ActionNames.Details, MVC.GamingGroup.Name, new { id = @Model.GamingGroupId }, new { })
+        @Html.DisplayFor(model => model.Name) on @Html.ActionLink(@Model.GamingGroupName, MVC.GamingGroup.ActionNames.Details, MVC.GamingGroup.Name, new {id = @Model.GamingGroupId}, new {})
         @if (Model.UserCanEdit)
         {
-            <a href="@Url.Action(MVC.GameDefinition.ActionNames.Edit,MVC.GameDefinition.Name, new{id = Model.Id})" class="btn btn-xs btn-default">
+            <a href="@Url.Action(MVC.GameDefinition.ActionNames.Edit, MVC.GameDefinition.Name, new {id = Model.Id})" class="btn btn-xs btn-default">
                 <span class="fa fa-pencil"></span>&nbsp;Edit
             </a>
         }
     </h2>
+@if (Model.HasBoardGameGeekDefinition || !string.IsNullOrEmpty(Model.Description))
+{
     <div class="row ">
         <div class="panel panel-primary">
             <div class="panel-heading">
@@ -23,10 +25,10 @@
             </div>
             <div class="panel-body">
                 @if (Model.HasBoardGameGeekDefinition)
-            {
+                {
                     <div class="row">
                         <div class="col-sm-4">
-                            <img class="thumbnail" src="@Model.BoardGameGeekGameDefinition.Thumbnail" alt="@Model.Name" title="@Model.Name" />
+                            <img class="thumbnail" src="@Model.BoardGameGeekGameDefinition.Thumbnail" alt="@Model.Name" title="@Model.Name"/>
                         </div>
                         <div class="col-sm-4 col-sm-offset-4">
                             <table class="table well data">
@@ -41,7 +43,7 @@
                                         <td>about @Model.BoardGameGeekGameDefinition.PlayingTime minutes</td>
                                     </tr>
                                 }
-                                @if (Model.BoardGameGeekGameDefinition.AverageWeight.HasValue)
+                                @if (Model.BoardGameGeekGameDefinition.AverageWeight.HasValue & Model.BoardGameGeekGameDefinition.AverageWeight > 0)
                                 {
                                     <tr>
                                         <td class="text-center"><i class="fa fa-balance-scale"></i></td>
@@ -80,7 +82,7 @@
                                         @Html.Raw(Model.BoardGameGeekGameDefinition.Description)
                                     </p>
                                 }
-                                
+
                             </article>
                         </div>
                     </div>
@@ -89,7 +91,7 @@
         </div>
     </div>
 
-
+}
     <div class="row">
         <div class="panel panel-primary">
             <div class="panel-heading">
