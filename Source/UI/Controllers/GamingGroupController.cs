@@ -122,6 +122,10 @@ namespace UI.Controllers
         [UserContext(RequiresGamingGroup = false)]
         public virtual ActionResult Details(int id, ApplicationUser currentUser)
         {
+            if (currentUser.CurrentGamingGroupId == id)
+            {
+                return RedirectToAction(Index());
+            }
             GamingGroupSummary gamingGroupSummary = GetGamingGroupSummary(id);
 
             var viewModel = new GamingGroupPublicViewModel

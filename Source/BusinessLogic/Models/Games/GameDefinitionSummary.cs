@@ -15,10 +15,9 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
-using System;
+
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
 using BusinessLogic.Models.Players;
 
 namespace BusinessLogic.Models.Games
@@ -33,9 +32,7 @@ namespace BusinessLogic.Models.Games
 
         public int TotalNumberOfGamesPlayed { get; set; }
         public string GamingGroupName { get; set; }
-        public Uri BoardGameGeekUri { get; set; }
-        public string ThumbnailImageUrl { get; set; }
         public IList<PlayerWinRecord> PlayerWinRecords { get; set; }
-        public Decimal AveragePlayersPerGame { get; set; }
+        public decimal AveragePlayersPerGame { get; set; }
     }
 }

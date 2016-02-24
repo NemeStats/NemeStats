@@ -19,22 +19,21 @@
             <tr class="game-item" data-position="@position">
                 @{ position++;}
                 <td class="bgg-link-col">
-                    @if (publicGame.BoardGameGeekUri != null)
-                    {
+                
+                        @if (!string.IsNullOrEmpty(publicGame.ThumbnailImageUrl))
+                        {
+                            <a href="@Url.Action(MVC.GameDefinition.ActionNames.Details,MVC.GameDefinition.Name,new {id=publicGame.GameDefinitionId})">
+                                <img class="bgg-thumbnail" src="@publicGame.ThumbnailImageUrl" alt="@publicGame.GameDefinitionName" title="@publicGame.GameDefinitionName" />
+                            </a>
+                        }
+                        else
+                        {
+                            <a href="@publicGame.BoardGameGeekUri" target="_blank;">
+                                <img src="~/Content/Images/bgg_small.png" alt="View on BoardGameGeek.com" title="View on BoardGameGeek.com" />
+                            </a>
+                        }
 
-                        <a href="@publicGame.BoardGameGeekUri" target="_blank;">
-                            @if (!string.IsNullOrEmpty(publicGame.ThumbnailImageUrl))
-                            {
-                                <img class="bgg-thumbnail" src="@publicGame.ThumbnailImageUrl" alt="View on BoardGameGeek.com" title="View on BoardGameGeek.com"/>
-                            }
-                            else
-                            {
-                                <img src="~/Content/Images/bgg_small.png" alt="View on BoardGameGeek.com" title="View on BoardGameGeek.com"/>
-                            }
-
-                        </a>
-
-                    }
+                    
                 </td>
                 <td>@Html.ActionLink(publicGame.GameDefinitionName, "Details", "GameDefinition", new {id = publicGame.GameDefinitionId}, new {})</td>
                 @if (publicGame.WinnerType == BusinessLogic.Models.PlayedGames.WinnerTypes.TeamWin)

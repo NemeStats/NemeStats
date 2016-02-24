@@ -34,5 +34,7 @@ namespace UI.Models.GameDefinitionModels
         public string PlayedGamesPanelTitle { get; set; }
         public GameDefinitionPlayersSummaryViewModel GameDefinitionPlayersSummary { get; set; }
         public string AveragePlayersPerGame { get; set; }
+
+
     }
 }

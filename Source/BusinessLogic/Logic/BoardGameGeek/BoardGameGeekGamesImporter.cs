@@ -5,7 +5,6 @@ using BusinessLogic.Logic.GameDefinitions;
 using BusinessLogic.Logic.Users;
 using BusinessLogic.Models.Games;
 using BusinessLogic.Models.User;
-using UniversalAnalyticsHttpWrapper;
 
 namespace BusinessLogic.Logic.BoardGameGeek
 {

@@ -32,7 +32,7 @@
 
 .text-warning,
 .text-warning:hover {
-  color: #E9E0D6; }
+  color: #f0ad4e; }
 
 .text-info,
 .text-info:hover {
@@ -110,14 +110,14 @@ input {
 .has-warning .radio-inline,
 .has-warning .checkbox-inline,
 .has-warning .form-control-feedback {
-  color: #E9E0D6; }
+  color: #f0ad4e; }
 
 .has-warning .form-control,
 .has-warning .form-control:focus {
-  border: 2px solid #E9E0D6; }
+  border: 2px solid #f0ad4e; }
 
 .has-warning .input-group-addon {
-  border-color: #E9E0D6; }
+  border-color: #f0ad4e; }
 
 .has-error .help-block,
 .has-error .control-label,
@@ -200,10 +200,10 @@ a.list-group-item-success.active:hover, a.list-group-item-success.active:focus {
   background-color: #249690; }
 
 a.list-group-item-warning.active {
-  background-color: #E9E0D6; }
+  background-color: #f0ad4e; }
 
 a.list-group-item-warning.active:hover, a.list-group-item-warning.active:focus {
-  background-color: #e0d3c5; }
+  background-color: #eea236; }
 
 a.list-group-item-danger.active {
   background-color: #EB7260; }

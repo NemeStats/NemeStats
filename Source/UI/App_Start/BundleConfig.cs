@@ -38,6 +38,9 @@ namespace UI
                 .Include("~/Scripts/moment.js")
                 .Include("~/Scripts/moment.min.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/readmore")
+                .Include("~/Scripts/readmore.min.js"));
+
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/javascripts/bootstrap*",
                       "~/Scripts/respond.js"));

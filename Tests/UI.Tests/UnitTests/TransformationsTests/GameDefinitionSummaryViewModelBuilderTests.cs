@@ -46,7 +46,7 @@ namespace UI.Tests.UnitTests.TransformationsTests
         [OneTimeSetUpAttribute]
         public void FixtureSetUp()
         {
-            transformer = new GameDefinitionSummaryViewModelBuilder();            
+            transformer = new GameDefinitionSummaryViewModelBuilder(new Transformer());            
 
             List<PlayedGame> playedGames = new List<PlayedGame>();
             playedGames.Add(new PlayedGame()

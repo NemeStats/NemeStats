@@ -20,7 +20,7 @@
                         @if (Model.LastGamingGroupGame.BoardGameGeekUri != null)
                 {
                             <div class="image-col voffset2">
-                                <a href="@Model.LastGamingGroupGame.BoardGameGeekUri" target="_blank;">
+                                <a href="@Model.LastGamingGroupGame.BoardGameGeekUri.AbsoluteUri" target="_blank;">
                                     @if (!string.IsNullOrEmpty(Model.LastGamingGroupGame.ThumbnailImageUrl))
                                     {
                                         <img class="bgg-thumbnail" src="@Model.LastGamingGroupGame.ThumbnailImageUrl" alt="View on BoardGameGeek.com" title="View on BoardGameGeek.com" />

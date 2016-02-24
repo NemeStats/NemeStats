@@ -6,159 +6,172 @@
     Layout = MVC.Shared.Views._BaseLayout;
 }
 
-<h2 class="page-header">@Html.DisplayFor(model => model.Name)</h2>
-<div class="row">
-    <div class="panel panel-primary">
-        <div class="panel-heading">
-            <h4>Game Info</h4>
-        </div>
-        <div class="panel-body">
-            <div class="row">
-                <div class="col-sm-2">
-                    <strong>
-                        Name
-                    </strong>
-                </div>
-                <div class="col-sm-3">
-                    @if (Model.BoardGameGeekUri != null)
-                    {
-                        <a href="@Model.BoardGameGeekUri.AbsoluteUri" target="_blank;">
-                            @if (!string.IsNullOrEmpty(Model.ThumbnailImageUrl))
-                            {
-                                <img src="@Model.ThumbnailImageUrl" alt="View on BoardGameGeek.com" title="View on BoardGameGeek.com" />
-                            }
-                            else
-                            {
-                                @Html.DisplayFor(model => model.Name)
-                                <img src="~/Content/Images/bgg_small.png" alt="View on BoardGameGeek.com" title="View on BoardGameGeek.com" />
-                            }
-
-                        </a>
-                    }
-                    else
-                    {
-                        @Html.DisplayFor(model => model.Name)
-
-                    }
-                </div>
+<div id="gamedefinition-details">
+    <h2 class="page-header">
+        @Html.DisplayFor(model => model.Name) on @Html.ActionLink(@Model.GamingGroupName, MVC.GamingGroup.ActionNames.Details, MVC.GamingGroup.Name, new { id = @Model.GamingGroupId }, new { })
+        @if (Model.UserCanEdit)
+        {
+            <a href="@Url.Action(MVC.GameDefinition.ActionNames.Edit,MVC.GameDefinition.Name, new{id = Model.Id})" class="btn btn-xs btn-default">
+                <span class="fa fa-pencil"></span>&nbsp;Edit
+            </a>
+        }
+    </h2>
+    <div class="row ">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h4>Game Info</h4>
             </div>
-            <div class="row">
-                <div class="col-md-2">
-                    <strong>
-                        @if (!string.IsNullOrWhiteSpace(Model.Description))
-                        {
-                            @:Description
-                        }
-                    </strong>
-                </div>
-                <div class="col-sm-3">
-                    @Html.DisplayFor(model => model.Description)
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-2">
-                    <strong>
-                        Gaming Group
-                    </strong>
-                </div>
-                <div class="col-sm-3">
-                    @Html.ActionLink(@Model.GamingGroupName, "Details", "GamingGroup", new { id = @Model.GamingGroupId }, new { })
-                </div>
-            </div>
-            @if (Model.UserCanEdit)
+            <div class="panel-body">
+                @if (Model.HasBoardGameGeekDefinition)
             {
-                <div class="row">
-                    <div class="col-sm-2 col-sm-offset-2">
-                        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new { @class = "btn btn-sm btn-primary" })
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <img class="thumbnail" src="@Model.BoardGameGeekGameDefinition.Thumbnail" alt="@Model.Name" title="@Model.Name" />
+                        </div>
+                        <div class="col-sm-4 col-sm-offset-4">
+                            <table class="table well data">
+                                @if (Model.BoardGameGeekGameDefinition.MaxPlayers.HasValue && Model.BoardGameGeekGameDefinition.MinPlayers.HasValue)
+                                {
+                                    <tr>
+                                        <td class="text-center"><i class="fa fa-users"></i></td>
+                                        <td>@Model.BoardGameGeekGameDefinition.MinPlayers - @Model.BoardGameGeekGameDefinition.MaxPlayers players</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-center"><i class="fa fa-clock-o"></i></td>
+                                        <td>about @Model.BoardGameGeekGameDefinition.PlayingTime minutes</td>
+                                    </tr>
+                                }
+                                @if (Model.BoardGameGeekGameDefinition.AverageWeight.HasValue)
+                                {
+                                    <tr>
+                                        <td class="text-center"><i class="fa fa-balance-scale"></i></td>
+                                        <td>
+                                            <div class="progress @Model.BoardGameGeekGameDefinition.WeightDescription">
+                                                <div class="progress-bar" role="progressbar" aria-valuenow="@Model.BoardGameGeekGameDefinition.WeightPercent" aria-valuemin="0" aria-valuemax="100" style="width: @Model.BoardGameGeekGameDefinition.WeightPercent%;" data-toggle="popover" data-placement="bottom" data-content="@Model.BoardGameGeekGameDefinition.AverageWeight / 5">
+                                                    @Model.BoardGameGeekGameDefinition.WeightDescription
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                                @if (Model.BoardGameGeekGameDefinition.BoardGameGeekUri != null)
+                                {
+                                    <tr>
+                                        <td class="text-center">
+                                            <img src="~/Content/Images/bgg_small.png"/>
+                                        </td>
+                                        <td><a href="@Model.BoardGameGeekGameDefinition.BoardGameGeekUri.AbsoluteUri" target="_blank;">view on boardgamegeek.com</a></td>
+                                    </tr>
+                                }
+                            </table>
+                        </div>
+
                     </div>
-                </div>
-            }
+                    <div class="row voffset4">
+                        <div class="col-sm-12">
+                            <article class="well bggdescription" data-readmore="true">
+                                @if (!string.IsNullOrEmpty(Model.Description))
+                                {
+                                    <p>@Model.Description</p>
+                                }
+                                else
+                                {
+                                    <p>
+                                        @Html.Raw(Model.BoardGameGeekGameDefinition.Description)
+                                    </p>
+                                }
+                                
+                            </article>
+                        </div>
+                    </div>
+                }
+            </div>
         </div>
     </div>
-</div>
 
 
-<div class="row">
-    <div class="panel panel-primary">
-        <div class="panel-heading">
-            <h4>Global Statistics</h4>
-        </div>
-        <div class="panel-body">
-            <table class="table table-hover table-striped">
-                <tr>
-                    <td class="col-md-2"><strong>Total Games Played:</strong></td>
-                    <td class="col-md-2">@Model.TotalNumberOfGamesPlayed</td>
-                </tr>
-                <tr>
-                    <td><strong>Average Players Per Game</strong></td>
-                    <td>@Model.AveragePlayersPerGame</td>
-                </tr>
-             </table>
-        </div>
-    </div>
-</div>
-
-<div class="row">
-    @Html.Partial(MVC.Player.Views._GameDefinitionPlayersSummaryPartial, Model.GameDefinitionPlayersSummary)
-</div>
-
-<div class="row">
-    <div class="panel panel-primary">
-        <div class="panel-heading">
-            <h4>@Model.PlayedGamesPanelTitle</h4>
-        </div>
-        <div class="panel-body">
-            <div class="table-responsive">
+    <div class="row">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h4>Global Statistics</h4>
+            </div>
+            <div class="panel-body">
                 <table class="table table-hover table-striped">
-                    <thead>
-                        <tr>
-                            <th class="col-md-5">
-                                Date Played
-                            </th>
-                            <th class="col-md-6 result-head">
-                                Result
-                            </th>
-                            <th class="col-md-1 edit-head">
-
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var playedGameViewModel in @Model.PlayedGames)
-                        {
-                            <tr>
-                                <td>@playedGameViewModel.DatePlayed.ToShortDateString()</td>
-                                <td class="result-col">
-                                    @foreach (var gameResultViewModel in playedGameViewModel.PlayerResults)
-                                    {
-                                        <div class="row">
-                                            <div class="col-sm-4">
-                                                @Html.ActionLink(gameResultViewModel.PlayerName, "Details", "Player", new { id = gameResultViewModel.PlayerId }, new { })
-                                            </div>
-                                            <div class="col-sm-8">
-                                                @Html.GameResults(gameResultViewModel, playedGameViewModel.WinnerType)
-                                            </div>
-                                        </div>
-                                    }
-                                </td>
-                                <td class="edit-col">
-                                    <a href="@Url.Action("Details", "PlayedGame", new { id = playedGameViewModel.PlayedGameId })" title="Details">
-                                        <i class="fa fa-book fa-2x"></i>
-                                    </a>
-                                    @if (playedGameViewModel.UserCanEdit)
-                                    {
-                                        <a href="@Url.Action("Edit", "PlayedGame", new { id = playedGameViewModel.PlayedGameId })" title="Edit">
-                                            <i class="fa fa-pencil fa-2x"></i>
-                                        </a>
-                                        <a href="@Url.Action("Delete", "PlayedGame", new { id = playedGameViewModel.PlayedGameId })" title="Delete">
-                                            <i class="fa fa-trash-o fa-2x"></i>
-                                        </a>
-                                    }
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
+                    <tr>
+                        <td class="col-md-2"><strong>Total Games Played:</strong></td>
+                        <td class="col-md-2">@Model.TotalNumberOfGamesPlayed</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Average Players Per Game</strong></td>
+                        <td>@Model.AveragePlayersPerGame</td>
+                    </tr>
                 </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        @Html.Partial(MVC.Player.Views._GameDefinitionPlayersSummaryPartial, Model.GameDefinitionPlayersSummary)
+    </div>
+
+    <div class="row">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h4>@Model.PlayedGamesPanelTitle</h4>
+            </div>
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table class="table table-hover table-striped">
+                        <thead>
+                            <tr>
+                                <th class="col-md-5">
+                                    Date Played
+                                </th>
+                                <th class="col-md-6 result-head">
+                                    Result
+                                </th>
+                                <th class="col-md-1 edit-head">
+
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var playedGameViewModel in @Model.PlayedGames)
+                            {
+                                <tr>
+                                    <td>@playedGameViewModel.DatePlayed.ToShortDateString()</td>
+                                    <td class="result-col">
+                                        @foreach (var gameResultViewModel in playedGameViewModel.PlayerResults)
+                                        {
+                                            <div class="row">
+                                                <div class="col-sm-4">
+                                                    @Html.ActionLink(gameResultViewModel.PlayerName, "Details", "Player", new { id = gameResultViewModel.PlayerId }, new { })
+                                                </div>
+                                                <div class="col-sm-8">
+                                                    @Html.GameResults(gameResultViewModel, playedGameViewModel.WinnerType)
+                                                </div>
+                                            </div>
+                                        }
+                                    </td>
+                                    <td class="edit-col">
+                                        <a href="@Url.Action("Details", "PlayedGame", new {id = playedGameViewModel.PlayedGameId})" title="Details">
+                                            <i class="fa fa-book fa-2x"></i>
+                                        </a>
+                                        @if (playedGameViewModel.UserCanEdit)
+                                        {
+                                            <a href="@Url.Action("Edit", "PlayedGame", new {id = playedGameViewModel.PlayedGameId})" title="Edit">
+                                                <i class="fa fa-pencil fa-2x"></i>
+                                            </a>
+                                            <a href="@Url.Action("Delete", "PlayedGame", new {id = playedGameViewModel.PlayedGameId})" title="Delete">
+                                                <i class="fa fa-trash-o fa-2x"></i>
+                                            </a>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

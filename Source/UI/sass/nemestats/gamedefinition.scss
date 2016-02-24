@@ -1,5 +1,5 @@
 ﻿@import "nemestats-variables.scss";
-
+@import '../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/mixins.scss';
 
 .gameDefinitionsList {
 
@@ -48,6 +48,78 @@
 
             img {
                 margin-left: 5px;
+            }
+        }
+    }
+}
+
+#gamedefinition-details {
+    .bggdescription {
+        font-size: 0.8em;
+        overflow: hidden;
+        max-height: 100px;
+    }
+
+    .thumbnail {
+        padding: 20px;
+    }
+
+    .data {
+        font-size: 18px;
+
+        a {
+            font-size: 15px;
+        }
+
+        .fa {
+            font-size: 22px;
+        }
+
+        .progress {
+            height: 28px;
+
+            .progress-bar {
+                line-height: 24px;
+            }
+
+            &.Casual {
+                .progress-bar {
+                    @include progress-bar-variant($progress-bar-success-bg);
+                }
+
+                border: 1px solid $progress-bar-success-bg;
+            }
+
+            &.Easy {
+                .progress-bar {
+                    @include progress-bar-variant($progress-bar-success-bg);
+                }
+
+                border: 1px solid $progress-bar-success-bg;
+            }
+
+            &.Advanced {
+                .progress-bar {
+                    @include progress-bar-variant($progress-bar-warning-bg);
+                }
+
+                border: 1px solid $progress-bar-warning-bg;
+            }
+
+            &.Challenging {
+                .progress-bar {
+                    @include progress-bar-variant($progress-bar-danger-bg);
+                }
+
+                border: 1px solid $progress-bar-danger-bg;
+            }
+
+            &.Hardcore {
+                .progress-bar {
+                    @include progress-bar-variant($progress-bar-danger-bg);
+                }
+
+                border: 1px solid $progress-bar-danger-bg;
             }
         }
     }
