@@ -8,7 +8,7 @@ namespace BusinessLogic.Logic.Points
 {
     public class GlobalPointsRecalculator
     {
-        public void RecalculateAllPoints(IDataContext dataContext, int startPlayedGameId, int endPlayedGameId)
+        public void RecalculateAllPoints(IDataContext dataContext, IPointsCalculator pointsCalculator, int startPlayedGameId, int endPlayedGameId)
         {
             var allPlayedGames = (from PlayedGame playedGame in dataContext.GetQueryable<PlayedGame>()
                                   where playedGame.Id >= startPlayedGameId && playedGame.Id < endPlayedGameId
@@ -16,7 +16,8 @@ namespace BusinessLogic.Logic.Points
                                   {
                                       playedGame.Id,
                                       playedGame.GamingGroupId,
-                                      playedGame.PlayerGameResults
+                                      playedGame.PlayerGameResults,
+                                      playedGame.GameDefinition.BoardGameGeekGameDefinition
                                   }).ToList();
 
             foreach (var playedGame in allPlayedGames)
@@ -27,16 +28,19 @@ namespace BusinessLogic.Logic.Points
                     GameRank = x.GameRank
                 }).ToList();
 
-                var newPoints = PointsCalculator.CalculatePoints(playerRanks);
+                var newPoints = pointsCalculator.CalculatePoints(playerRanks, playedGame.BoardGameGeekGameDefinition);
                 
-                ApplicationUser applicationUserForThisGamingGroup = new ApplicationUser()
+                var applicationUserForThisGamingGroup = new ApplicationUser()
                 {
                     CurrentGamingGroupId = playedGame.GamingGroupId
                 };
 
-                foreach (PlayerGameResult playerGameResult in playedGame.PlayerGameResults)
+                foreach (var playerGameResult in playedGame.PlayerGameResults)
                 {
-                    playerGameResult.NemeStatsPointsAwarded = newPoints[playerGameResult.PlayerId];
+                    var scorecard = newPoints[playerGameResult.PlayerId];
+                    playerGameResult.NemeStatsPointsAwarded = scorecard.BasePoints;
+                    playerGameResult.GameDurationBonusPoints = scorecard.GameDurationBonusPoints;
+                    playerGameResult.GameWeightBonusPoints = scorecard.GameWeightBonusPoints;
                     dataContext.Save(playerGameResult, applicationUserForThisGamingGroup);
                 }
             }

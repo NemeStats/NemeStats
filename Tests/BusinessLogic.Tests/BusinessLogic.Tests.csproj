@@ -205,7 +205,9 @@
     <Compile Include="UnitTests\LogicTests\PlayersTests\PlayerRetrieverTests\GetPlayerQuickStatsForUserTests.cs" />
     <Compile Include="UnitTests\LogicTests\PlayersTests\PlayerSaverTests\PlayerSaverTestBase.cs" />
     <Compile Include="UnitTests\LogicTests\PlayersTests\PlayerSaverTests\UpdatePlayerTests.cs" />
+    <Compile Include="UnitTests\LogicTests\PointsTests\AverageGameDurationTierCalculatorTests.cs" />
     <Compile Include="UnitTests\LogicTests\PointsTests\PointsCalculatorTests.cs" />
+    <Compile Include="UnitTests\LogicTests\PointsTests\WeightTierCalculatorTests.cs" />
     <Compile Include="UnitTests\LogicTests\UsersTests\ApplicationSignInManagerTests\GenerateAuthTokenTests.cs" />
     <Compile Include="UnitTests\LogicTests\UsersTests\ApplicationUserManagerTests\ValidateAuthTokenTests.cs" />
     <Compile Include="UnitTests\LogicTests\UsersTests\BoardGameGeekUserSaverTests\BoardGameGeekUserSaverTestBase.cs" />

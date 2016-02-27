@@ -1,12 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
+using BusinessLogic.Models.PlayedGames;
 
 namespace BusinessLogic.Logic.Points
 {
-    public class PointsCalculator
+    public class PointsCalculator : IPointsCalculator
     {
+        private readonly IWeightTierCalculator _weightTierCalculator;
+        private readonly IAverageGameDurationTierCalculator _averageGameDurationTierCalculator;
+
+        public PointsCalculator(IWeightTierCalculator weightTierCalculator, 
+            IAverageGameDurationTierCalculator averageGameDurationTierCalculator)
+        {
+            _weightTierCalculator = weightTierCalculator;
+            _averageGameDurationTierCalculator = averageGameDurationTierCalculator;
+        }
+
         public static readonly Dictionary<int, int> FIBONACCI_N_PLUS_2 = new Dictionary<int, int>
         {
             {1, 1},
@@ -41,20 +53,22 @@ namespace BusinessLogic.Logic.Points
         internal const string EXCEPTION_MESSAGE_DUPLICATE_PLAYER = "Each player can only have one PlayerRank record but one or more players have duplicate PlayerRank records.";
         internal const string EXCEPTION_MESSAGE_CANNOT_EXCEED_MAX_PLAYERS = "There can be no more than 25 players.";
 
-
-        internal static Dictionary<int, int> CalculatePoints(IList<PlayerRank> playerRanks)
+        public Dictionary<int, PointsScorecard> CalculatePoints(IList<PlayerRank> playerRanks, BoardGameGeekGameDefinition bggGameDefinition)
         {
             ValidatePlayerRanks(playerRanks);
 
-            Dictionary<int, int> playerToPoints = new Dictionary<int, int>(playerRanks.Count);
+            var playerToPoints = AwardBasePoints(playerRanks);
 
-            if (EveryoneLost(playerRanks))
+            if (bggGameDefinition?.AverageWeight != null)
             {
-                GiveEveryoneTwoPoints(playerRanks, playerToPoints);
+                var weightTier = _weightTierCalculator.GetWeightTier(bggGameDefinition.AverageWeight);
+                AwardWeightBonusPoints(playerToPoints, weightTier);
             }
-            else
+
+            if (bggGameDefinition?.PlayingTime != null)
             {
-                CalculatePointsForPlayers(playerRanks, playerToPoints);
+                var gameDurationTier = _averageGameDurationTierCalculator.GetAverageGameDurationTier(bggGameDefinition.PlayingTime);
+                AwardPlayingTimeBonusPoints(playerToPoints, gameDurationTier);
             }
 
             return playerToPoints;
@@ -73,7 +87,22 @@ namespace BusinessLogic.Logic.Points
             }
         }
 
-        private static void CalculatePointsForPlayers(IList<PlayerRank> playerRanks, Dictionary<int, int> playerToPoints)
+        internal virtual Dictionary<int, PointsScorecard> AwardBasePoints(IList<PlayerRank> playerRanks)
+        {
+            var playerToPoints = new Dictionary<int, PointsScorecard>(playerRanks.Count);
+
+            if (EveryoneLost(playerRanks))
+            {
+                GiveEveryoneTwoPoints(playerRanks, playerToPoints);
+            }
+            else
+            {
+                CalculatePointsForPlayers(playerRanks, playerToPoints);
+            }
+            return playerToPoints;
+        }
+
+        internal virtual void CalculatePointsForPlayers(IList<PlayerRank> playerRanks, Dictionary<int, PointsScorecard> playerToPoints)
         {
             int totalNumberOfPlayers = playerRanks.Count;
             int totalPointsToAllocate = totalNumberOfPlayers * POINTS_PER_PLAYER;
@@ -81,7 +110,7 @@ namespace BusinessLogic.Logic.Points
 
             const int fibonacciOffset = 1;
             int highestRankSlotNotConsumed = 1;
-            
+
             for (int rank = 1; rank <= totalNumberOfPlayers; rank++)
             {
                 List<PlayerRank> playersWithThisRank = playerRanks.Where(x => x.GameRank == rank).ToList();
@@ -95,7 +124,7 @@ namespace BusinessLogic.Logic.Points
 
                     foreach (var playerRank in playersWithThisRank)
                     {
-                        playerToPoints.Add(playerRank.PlayerId, points);
+                        playerToPoints.Add(playerRank.PlayerId, new PointsScorecard { BasePoints = points });
                     }
                 }
 
@@ -103,11 +132,15 @@ namespace BusinessLogic.Logic.Points
             }
         }
 
-        private static void GiveEveryoneTwoPoints(IList<PlayerRank> playerRanks, Dictionary<int, int> playerToPoints)
+        internal virtual void GiveEveryoneTwoPoints(IList<PlayerRank> playerRanks, Dictionary<int, PointsScorecard> playerToPoints)
         {
             foreach (var playerRank in playerRanks)
             {
-                playerToPoints.Add(playerRank.PlayerId, DEFAULT_POINTS_PER_PLAYER_WHEN_EVERYONE_LOSES);
+                playerToPoints.Add(playerRank.PlayerId,
+                                   new PointsScorecard
+                                   {
+                                       BasePoints = DEFAULT_POINTS_PER_PLAYER_WHEN_EVERYONE_LOSES
+                                   });
             }
         }
 
@@ -118,7 +151,7 @@ namespace BusinessLogic.Logic.Points
 
         private static decimal FibonacciSum(int fibonacciStartIndex, int finoacciEndIndex)
         {
-            return FIBONACCI_N_PLUS_2.Where(fibonacci => fibonacci.Key >= fibonacciStartIndex 
+            return FIBONACCI_N_PLUS_2.Where(fibonacci => fibonacci.Key >= fibonacciStartIndex
                 && fibonacci.Key <= finoacciEndIndex).Sum(x => x.Value);
         }
 
@@ -131,6 +164,72 @@ namespace BusinessLogic.Logic.Points
         {
             decimal floor = Math.Floor(valueToRound);
             return (int)((valueToRound - floor) > (decimal)0.1 ? floor + 1 : floor);
+        }
+
+        internal virtual void AwardWeightBonusPoints(Dictionary<int, PointsScorecard> pointsScorecardDictionary, WeightTierEnum gameWeight)
+        {
+            decimal multiplier;
+            switch (gameWeight)
+            {
+                case WeightTierEnum.Casual:
+                case WeightTierEnum.Unknown:
+                    multiplier = 0;
+                    break;
+                case WeightTierEnum.Easy:
+                    multiplier = new decimal(.25);
+                    break;
+                case WeightTierEnum.Advanced:
+                    multiplier = new decimal(.50);
+                    break;
+                case WeightTierEnum.Challenging:
+                    multiplier = new decimal(.75);
+                    break;
+                case WeightTierEnum.Hardcore:
+                    multiplier = new decimal(1.0);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(gameWeight), gameWeight, null);
+            }
+
+            foreach (var scorecard in pointsScorecardDictionary)
+            {
+                var bonusPoints = Math.Round(multiplier * scorecard.Value.BasePoints, MidpointRounding.AwayFromZero);
+                scorecard.Value.GameWeightBonusPoints = (int)bonusPoints;
+            }
+        }
+
+        internal virtual void AwardPlayingTimeBonusPoints(
+            Dictionary<int, PointsScorecard> pointsScorecardDictionary, 
+            AverageGameDurationTierEnum gameDuration)
+        {
+            decimal multiplier;
+            switch (gameDuration)
+            {
+                case AverageGameDurationTierEnum.VeryShort:
+                case AverageGameDurationTierEnum.Unknown:
+                    multiplier = 0;
+                    break;
+                case AverageGameDurationTierEnum.Short:
+                    multiplier = new decimal(.50);
+                    break;
+                case AverageGameDurationTierEnum.Medium:
+                    multiplier = new decimal(1);
+                    break;
+                case AverageGameDurationTierEnum.Long:
+                    multiplier = new decimal(1.5);
+                    break;
+                case AverageGameDurationTierEnum.VeryLong:
+                    multiplier = new decimal(2);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(gameDuration), gameDuration, null);
+            }
+
+            foreach (var scorecard in pointsScorecardDictionary)
+            {
+                var bonusPoints = Math.Round(multiplier * scorecard.Value.BasePoints, MidpointRounding.AwayFromZero);
+                scorecard.Value.GameWeightBonusPoints = (int)bonusPoints;
+            }
         }
     }
 }

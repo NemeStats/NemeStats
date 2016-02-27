@@ -32,6 +32,8 @@ using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using BusinessLogic.Logic.Points;
+using BusinessLogic.Models.PlayedGames;
 using UniversalAnalyticsHttpWrapper;
 
 namespace BusinessLogic.Tests.IntegrationTests
@@ -188,13 +190,15 @@ namespace BusinessLogic.Tests.IntegrationTests
             IChampionRecalculator championRecalculator = new ChampionRecalculator(dataContext, championRepository);
             ISecuredEntityValidator<Player> securedEntityValidatorForPlayers = new SecuredEntityValidator<Player>();
             ISecuredEntityValidator<GameDefinition> securedEntityValidatorForGameDefinition = new SecuredEntityValidator<GameDefinition>();
+            IPointsCalculator pointsCalculator = new PointsCalculator(new WeightTierCalculator(), new AverageGameDurationTierCalculator());
             IPlayedGameCreator playedGameCreator = new PlayedGameCreator(
                 dataContext, 
                 playedGameTracker, 
                 nemesisRecalculator, 
                 championRecalculator, 
                 securedEntityValidatorForPlayers,
-                securedEntityValidatorForGameDefinition);
+                securedEntityValidatorForGameDefinition,
+                pointsCalculator);
             
             List<Player> players = new List<Player>() { testPlayer1, testPlayer2 };
             List<int> playerRanks = new List<int>() { 1, 1 };

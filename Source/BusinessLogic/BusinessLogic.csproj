@@ -171,6 +171,9 @@
     <Compile Include="Logic\GameDefinitions\GameDefinitionUpdateRequest.cs" />
     <Compile Include="Logic\GamingGroups\GamingGroupInfoForUser.cs" />
     <Compile Include="Logic\Players\PlayerNameBuilder.cs" />
+    <Compile Include="Logic\Points\AverageGameDurationTierCalculator.cs" />
+    <Compile Include="Logic\Points\IAverageGameDurationTierCalculator.cs" />
+    <Compile Include="Logic\Points\IPointsCalculator.cs" />
     <Compile Include="Logic\Points\PointsCalculator.cs" />
     <Compile Include="Logic\Points\GlobalPointsRecalculator.cs" />
     <Compile Include="Logic\Security\MachineKeyDataProtector.cs" />
@@ -193,7 +196,16 @@
     <Compile Include="Migrations\201602182046472_Add-BGGGamingDefinion-Description.Designer.cs">
       <DependentUpon>201602182046472_Add-BGGGamingDefinion-Description.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201602200343405_AddBonusPointsToPlayerGameResult.cs" />
+    <Compile Include="Migrations\201602200343405_AddBonusPointsToPlayerGameResult.Designer.cs">
+      <DependentUpon>201602200343405_AddBonusPointsToPlayerGameResult.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Games\TrendingGame.cs" />
+    <Compile Include="Logic\Points\IWeightTierCalculator.cs" />
+    <Compile Include="Models\PlayedGames\AverageGameDurationTierEnum.cs" />
+    <Compile Include="Models\PlayedGames\PointsScorecard.cs" />
+    <Compile Include="Logic\Points\WeightTierCalculator.cs" />
+    <Compile Include="Models\PlayedGames\WeightTierEnum.cs" />
     <Compile Include="Models\User\BoardGameGeekUserInformation.cs" />
     <Compile Include="Models\Validation\BaseValidatableRequestSaver.cs" />
     <Compile Include="Logic\Users\BoardGameGeekUserSaver.cs" />
@@ -755,6 +767,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201602182046472_Add-BGGGamingDefinion-Description.resx">
       <DependentUpon>201602182046472_Add-BGGGamingDefinion-Description.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602200343405_AddBonusPointsToPlayerGameResult.resx">
+      <DependentUpon>201602200343405_AddBonusPointsToPlayerGameResult.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

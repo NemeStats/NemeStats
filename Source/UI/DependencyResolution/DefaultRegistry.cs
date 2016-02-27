@@ -16,51 +16,50 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 
+using System.Configuration.Abstractions;
+using System.Data.Entity;
+using System.Web;
 using BoardGameGeekApiClient.Interfaces;
+using BusinessLogic.DataAccess;
+using BusinessLogic.DataAccess.GamingGroups;
+using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.DataAccess.Security;
+using BusinessLogic.EventTracking;
 using BusinessLogic.Export;
 using BusinessLogic.Logic.BoardGameGeek;
 using BusinessLogic.Logic.Champions;
 using BusinessLogic.Logic.Email;
+using BusinessLogic.Logic.GameDefinitions;
+using BusinessLogic.Logic.GamingGroups;
+using BusinessLogic.Logic.Nemeses;
+using BusinessLogic.Logic.PlayedGames;
+using BusinessLogic.Logic.Players;
+using BusinessLogic.Logic.Points;
+using BusinessLogic.Logic.Users;
 using BusinessLogic.Logic.VotableFeatures;
+using BusinessLogic.Models.User;
 using BusinessLogic.Providers;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.DataProtection;
+using StructureMap;
+using StructureMap.Graph;
+using StructureMap.Web;
+using UI.Controllers.Helpers;
+using UI.Transformations;
+using UI.Transformations.PlayerTransformations;
+using UniversalAnalyticsHttpWrapper;
 
 namespace UI.DependencyResolution
 {
-    using BusinessLogic.DataAccess;
-    using BusinessLogic.DataAccess.GamingGroups;
-    using BusinessLogic.DataAccess.Repositories;
-    using BusinessLogic.EventTracking;
-    using BusinessLogic.Logic.GameDefinitions;
-    using BusinessLogic.Logic.GamingGroups;
-    using BusinessLogic.Logic.PlayedGames;
-    using BusinessLogic.Logic.Players;
-    using BusinessLogic.Logic.Users;
-    using BusinessLogic.Models.User;
-    using StructureMap.Configuration.DSL;
-    using StructureMap.Graph;
-    using System.Configuration.Abstractions;
-    using System.Data.Entity;
-    using Controllers.Helpers;
-    using Transformations;
-    using Transformations.PlayerTransformations;
-    using UniversalAnalyticsHttpWrapper;
-    using StructureMap.Web;
-    using BusinessLogic.Logic.Nemeses;
-    using System.Web;
-    using StructureMap;
-
     public class DefaultRegistry : Registry
     {
         #region Constructors and Destructors
 
         public DefaultRegistry()
         {
-            this.Scan(
+            Scan(
                 scan =>
                 {
                     scan.TheCallingAssembly();
@@ -68,137 +67,141 @@ namespace UI.DependencyResolution
                     scan.With(new ControllerConvention());
                 });
 
-            this.Scan(s =>
+            Scan(s =>
             {
                 s.AssemblyContainingType<IBoardGameGeekApiClient>();
                 s.RegisterConcreteTypesAgainstTheFirstInterface();
             });
 
-            this.SetupSingletonMappings();
+            SetupSingletonMappings();
 
-            this.SetupUniquePerRequestMappings();
+            SetupUniquePerRequestMappings();
 
-            this.SetupTransientMappings();
+            SetupTransientMappings();
         }
 
         private void SetupSingletonMappings()
         {
-            this.For<IGameResultViewModelBuilder>().Singleton().Use<GameResultViewModelBuilder>();
+            For<IGameResultViewModelBuilder>().Singleton().Use<GameResultViewModelBuilder>();
 
-            this.For<IPlayerDetailsViewModelBuilder>().Singleton().Use<PlayerDetailsViewModelBuilder>();
+            For<IPlayerDetailsViewModelBuilder>().Singleton().Use<PlayerDetailsViewModelBuilder>();
 
-            this.For<IGamingGroupViewModelBuilder>().Singleton()
+            For<IGamingGroupViewModelBuilder>().Singleton()
                                                .Use<GamingGroupViewModelBuilder>();
 
-            this.For<IGamingGroupInvitationViewModelBuilder>().Singleton()
+            For<IGamingGroupInvitationViewModelBuilder>().Singleton()
                                                          .Use<GamingGroupInvitationViewModelBuilder>();
 
-            this.For<ITopPlayerViewModelBuilder>().Use<TopPlayerViewModelBuilder>();
+            For<ITopPlayerViewModelBuilder>().Use<TopPlayerViewModelBuilder>();
 
-            this.For<IPlayedGameDetailsViewModelBuilder>().Singleton().Use<PlayedGameDetailsViewModelBuilder>();
+            For<IPlayedGameDetailsViewModelBuilder>().Singleton().Use<PlayedGameDetailsViewModelBuilder>();
 
-            this.For<IPlayerWithNemesisViewModelBuilder>().Singleton().Use<PlayerWithNemesisViewModelBuilder>();
+            For<IPlayerWithNemesisViewModelBuilder>().Singleton().Use<PlayerWithNemesisViewModelBuilder>();
 
-            this.For<IMinionViewModelBuilder>().Singleton().Use<MinionViewModelBuilder>();
+            For<IMinionViewModelBuilder>().Singleton().Use<MinionViewModelBuilder>();
 
-            this.For<INemesisChangeViewModelBuilder>().Singleton().Use<NemesisChangeViewModelBuilder>();
+            For<INemesisChangeViewModelBuilder>().Singleton().Use<NemesisChangeViewModelBuilder>();
 
-            this.For<IGameDefinitionDetailsViewModelBuilder>().Singleton().Use<GameDefinitionDetailsViewModelBuilder>();
+            For<IGameDefinitionDetailsViewModelBuilder>().Singleton().Use<GameDefinitionDetailsViewModelBuilder>();
 
-            this.For<IGameDefinitionSummaryViewModelBuilder>().Singleton().Use<GameDefinitionSummaryViewModelBuilder>();
+            For<IGameDefinitionSummaryViewModelBuilder>().Singleton().Use<GameDefinitionSummaryViewModelBuilder>();
 
-            this.For<IPlayerEditViewModelBuilder>().Singleton().Use<PlayerEditViewModelBuilder>();
+            For<IPlayerEditViewModelBuilder>().Singleton().Use<PlayerEditViewModelBuilder>();
 
-            this.For<IDataProtectionProvider>().Singleton().Use<MachineKeyProtectionProvider>();
+            For<IDataProtectionProvider>().Singleton().Use<MachineKeyProtectionProvider>();
 
-            this.For<ITransformer>().Singleton().Use<Transformer>();
+            For<ITransformer>().Singleton().Use<Transformer>();
+
+            For<IAverageGameDurationTierCalculator>().Singleton().Use<IAverageGameDurationTierCalculator>();
+
+            For<IWeightTierCalculator>().Singleton().Use<WeightTierCalculator>();
         }
 
         private void SetupTransientMappings()
         {
-            this.For<IGamingGroupSaver>().Use<GamingGroupSaver>();
+            For<IGamingGroupSaver>().Use<GamingGroupSaver>();
 
-            this.For<IGamingGroupAccessGranter>().Use<EntityFrameworkGamingGroupAccessGranter>();
+            For<IGamingGroupAccessGranter>().Use<EntityFrameworkGamingGroupAccessGranter>();
 
-            this.For<IGamingGroupInviteConsumer>().Use<GamingGroupInviteConsumer>();
-            this.For<IPlayerSummaryBuilder>().Use<PlayerSummaryBuilder>();
+            For<IGamingGroupInviteConsumer>().Use<GamingGroupInviteConsumer>();
+            For<IPlayerSummaryBuilder>().Use<PlayerSummaryBuilder>();
 
-            this.For<IPlayerRepository>().Use<EntityFrameworkPlayerRepository>();
+            For<IPlayerRepository>().Use<EntityFrameworkPlayerRepository>();
 
-            this.For<IGameDefinitionRetriever>().Use<GameDefinitionRetriever>();
+            For<IGameDefinitionRetriever>().Use<GameDefinitionRetriever>();
 
-            this.For<IPlayedGameRetriever>().Use<PlayedGameRetriever>();
+            For<IPlayedGameRetriever>().Use<PlayedGameRetriever>();
 
-            this.For<IUserStore<ApplicationUser>>()
+            For<IUserStore<ApplicationUser>>()
                 .Use<UserStore<ApplicationUser>>();
 
-            this.For<IShowingXResultsMessageBuilder>().Use<ShowingXResultsMessageBuilder>();
-            this.For<IGamingGroupRetriever>().Use<GamingGroupRetriever>();
+            For<IShowingXResultsMessageBuilder>().Use<ShowingXResultsMessageBuilder>();
+            For<IGamingGroupRetriever>().Use<GamingGroupRetriever>();
 
-            this.For<IPendingGamingGroupInvitationRetriever>().Use<PendingGamingGroupInvitationRetriever>();
+            For<IPendingGamingGroupInvitationRetriever>().Use<PendingGamingGroupInvitationRetriever>();
 
-            this.For<IPlayedGameCreator>().Use<PlayedGameCreator>();
+            For<IPlayedGameCreator>().Use<PlayedGameCreator>();
 
-            this.For<INemeStatsEventTracker>().Use<UniversalAnalyticsNemeStatsEventTracker>();
+            For<INemeStatsEventTracker>().Use<UniversalAnalyticsNemeStatsEventTracker>();
 
-            this.For<IEventTracker>().Use<EventTracker>();
-            this.For<INemesisHistoryRetriever>().Use<NemesisHistoryRetriever>();
+            For<IEventTracker>().Use<EventTracker>();
+            For<INemesisHistoryRetriever>().Use<NemesisHistoryRetriever>();
 
-            this.For<IUniversalAnalyticsEventFactory>().Use<UniversalAnalyticsEventFactory>();
+            For<IUniversalAnalyticsEventFactory>().Use<UniversalAnalyticsEventFactory>();
 
-            this.For<IConfigurationManager>().Use(() => ConfigurationManager.Instance);
+            For<IConfigurationManager>().Use(() => ConfigurationManager.Instance);
 
-            this.For<IPlayerSaver>().Use<PlayerSaver>();
+            For<IPlayerSaver>().Use<PlayerSaver>();
 
-            this.For<IGameDefinitionSaver>().Use<GameDefinitionSaver>();
+            For<IGameDefinitionSaver>().Use<GameDefinitionSaver>();
 
-            this.For<IPlayerRetriever>().Use<PlayerRetriever>();
+            For<IPlayerRetriever>().Use<PlayerRetriever>();
 
-            this.For<INemesisRecalculator>().Use<NemesisRecalculator>();
+            For<INemesisRecalculator>().Use<NemesisRecalculator>();
 
-            this.For<IPlayedGameDeleter>().Use<PlayedGameDeleter>();
+            For<IPlayedGameDeleter>().Use<PlayedGameDeleter>();
 
-            this.For<IUserRegisterer>().Use<UserRegisterer>();
+            For<IUserRegisterer>().Use<UserRegisterer>();
 
-            this.For<IFirstTimeAuthenticator>().Use<FirstTimeAuthenticator>();
+            For<IFirstTimeAuthenticator>().Use<FirstTimeAuthenticator>();
 
-            this.For<IPlayerInviter>().Use<PlayerInviter>();
+            For<IPlayerInviter>().Use<PlayerInviter>();
 
-            this.For<IIdentityMessageService>().Use<EmailService>();
+            For<IIdentityMessageService>().Use<EmailService>();
 
-            this.For<IChampionRecalculator>().Use<ChampionRecalculator>();
+            For<IChampionRecalculator>().Use<ChampionRecalculator>();
 
-            this.For<IChampionRepository>().Use<ChampionRepository>();
+            For<IChampionRepository>().Use<ChampionRepository>();
 
-            this.For<IGamingGroupContextSwitcher>().Use<GamingGroupContextSwitcher>();
+            For<IGamingGroupContextSwitcher>().Use<GamingGroupContextSwitcher>();
 
-            this.For<IVotableFeatureRetriever>().Use<VotableFeatureRetriever>();
+            For<IVotableFeatureRetriever>().Use<VotableFeatureRetriever>();
 
-            this.For<IVotableFeatureVoter>().Use<VotableFeatureVoter>();
+            For<IVotableFeatureVoter>().Use<VotableFeatureVoter>();
 
-            this.For<IExcelGenerator>().Use<ExcelGenerator>();
+            For<IExcelGenerator>().Use<ExcelGenerator>();
 
-            this.For<IAuthTokenGenerator>().Use<AuthTokenGenerator>();
+            For<IAuthTokenGenerator>().Use<AuthTokenGenerator>();
 
-            this.For<IAuthTokenValidator>().Use<AuthTokenValidator>();
+            For<IAuthTokenValidator>().Use<AuthTokenValidator>();
 
-            this.For(typeof(ISecuredEntityValidator<>)).Use(typeof(SecuredEntityValidator<>));
+            For(typeof(ISecuredEntityValidator<>)).Use(typeof(SecuredEntityValidator<>));
 
-            this.For<IUserRetriever>().Use<UserRetriever>();
+            For<IUserRetriever>().Use<UserRetriever>();
 
-            this.For<IBoardGameGeekGameDefinitionCreator>().Use<BoardGameGeekGameDefinitionCreator>();
+            For<IBoardGameGeekGameDefinitionCreator>().Use<BoardGameGeekGameDefinitionCreator>();
 
-            this.For<IBoardGameGeekUserSaver>().Use<BoardGameGeekUserSaver>();
-            this.For<IBoardGameGeekGamesImporter>().Use<BoardGameGeekGamesImporter>();
+            For<IBoardGameGeekUserSaver>().Use<BoardGameGeekUserSaver>();
+            For<IBoardGameGeekGamesImporter>().Use<BoardGameGeekGamesImporter>();
 
         }
 
         private void SetupUniquePerRequestMappings()
         {
-            this.For<DbContext>().HttpContextScoped().Use<NemeStatsDbContext>();
-            this.For<IDataContext>().HttpContextScoped().Use<NemeStatsDataContext>();
-            this.For<ApplicationUserManager>().HttpContextScoped().Use<ApplicationUserManager>();
-            this.For<IAuthenticationManager>().Use(() => HttpContext.Current.GetOwinContext().Authentication);
+            For<DbContext>().HttpContextScoped().Use<NemeStatsDbContext>();
+            For<IDataContext>().HttpContextScoped().Use<NemeStatsDataContext>();
+            For<ApplicationUserManager>().HttpContextScoped().Use<ApplicationUserManager>();
+            For<IAuthenticationManager>().Use(() => HttpContext.Current.GetOwinContext().Authentication);
         }
 
         #endregion
