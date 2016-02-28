@@ -112,7 +112,9 @@ namespace UI.DependencyResolution
 
             For<ITransformer>().Singleton().Use<Transformer>();
 
-            For<IAverageGameDurationTierCalculator>().Singleton().Use<IAverageGameDurationTierCalculator>();
+            For<IPointsCalculator>().Singleton().Use<PointsCalculator>();
+
+            For<IAverageGameDurationTierCalculator>().Singleton().Use<AverageGameDurationTierCalculator>();
 
             For<IWeightTierCalculator>().Singleton().Use<WeightTierCalculator>();
         }
