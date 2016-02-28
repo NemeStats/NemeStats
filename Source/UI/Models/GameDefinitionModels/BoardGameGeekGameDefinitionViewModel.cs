@@ -1,4 +1,5 @@
 ﻿using System;
+using BusinessLogic.Logic.Points;
 
 namespace UI.Models.GameDefinitionModels
 {
@@ -36,20 +37,20 @@ namespace UI.Models.GameDefinitionModels
             {
                 if (AverageWeight.HasValue)
                 {
-                    var weight = (double) AverageWeight.Value;
-                    if (weight < 1.8)
+                    var weight = AverageWeight.Value;
+                    if (weight < WeightTierCalculator.BOARD_GAME_GEEK_WEIGHT_INCLUSIVE_LOWER_BOUND_FOR_EASY)
                     {
                         return "Casual";
                     }
-                    if (weight < 2.4)
+                    if (weight < WeightTierCalculator.BOARD_GAME_GEEK_WEIGHT_INCLUSIVE_LOWER_BOUND_FOR_ADVANCED)
                     {
                         return "Easy";
                     }
-                    if (weight < 3.3)
+                    if (weight < WeightTierCalculator.BOARD_GAME_GEEK_WEIGHT_INCLUSIVE_LOWER_BOUND_FOR_CHALLENGING)
                     {
                         return "Advanced";
                     }
-                    if (weight < 4.1)
+                    if (weight < WeightTierCalculator.BOARD_GAME_GEEK_WEIGHT_INCLUSIVE_LOWER_BOUND_FOR_HARDCORE)
                     {
                         return "Challenging";
                     }

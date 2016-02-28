@@ -228,7 +228,7 @@ namespace BusinessLogic.Logic.Points
             foreach (var scorecard in pointsScorecardDictionary)
             {
                 var bonusPoints = Math.Round(multiplier * scorecard.Value.BasePoints, MidpointRounding.AwayFromZero);
-                scorecard.Value.GameWeightBonusPoints = (int)bonusPoints;
+                scorecard.Value.GameDurationBonusPoints = (int)bonusPoints;
             }
         }
     }
