@@ -31,36 +31,7 @@ namespace UI.Models.GameDefinitionModels
             }
         }
 
-        public string WeightDescription
-        {
-            get
-            {
-                if (AverageWeight.HasValue)
-                {
-                    var weight = AverageWeight.Value;
-                    if (weight < WeightTierCalculator.BOARD_GAME_GEEK_WEIGHT_INCLUSIVE_LOWER_BOUND_FOR_EASY)
-                    {
-                        return "Casual";
-                    }
-                    if (weight < WeightTierCalculator.BOARD_GAME_GEEK_WEIGHT_INCLUSIVE_LOWER_BOUND_FOR_ADVANCED)
-                    {
-                        return "Easy";
-                    }
-                    if (weight < WeightTierCalculator.BOARD_GAME_GEEK_WEIGHT_INCLUSIVE_LOWER_BOUND_FOR_CHALLENGING)
-                    {
-                        return "Advanced";
-                    }
-                    if (weight < WeightTierCalculator.BOARD_GAME_GEEK_WEIGHT_INCLUSIVE_LOWER_BOUND_FOR_HARDCORE)
-                    {
-                        return "Challenging";
-                    }
-                    if (weight < 5)
-                    {
-                        return "Hardcore";
-                    }
-                }
-                return string.Empty;
-            } 
-        }
+        public string WeightDescription { get; set; }
+
     }
 }

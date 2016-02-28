@@ -16,20 +16,20 @@ namespace BusinessLogic.Logic.Points
             {
                 return AverageGameDurationTierEnum.Unknown;
             }
-            var weight = playingTime.Value;
-            if (weight < BOARD_GAME_GEEK_PLAYING_TIME_INCLUSIVE_LOWER_BOUND_FOR_SHORT)
+            var time = playingTime.Value;
+            if (time < BOARD_GAME_GEEK_PLAYING_TIME_INCLUSIVE_LOWER_BOUND_FOR_SHORT)
             {
                 return AverageGameDurationTierEnum.VeryShort;
             }
-            if (weight < BOARD_GAME_GEEK_PLAYING_TIME_INCLUSIVE_LOWER_BOUND_FOR_MEDIUM)
+            if (time < BOARD_GAME_GEEK_PLAYING_TIME_INCLUSIVE_LOWER_BOUND_FOR_MEDIUM)
             {
                 return AverageGameDurationTierEnum.Short;
             }
-            if (weight < BOARD_GAME_GEEK_PLAYING_TIME_INCLUSIVE_LOWER_BOUND_FOR_LONG)
+            if (time < BOARD_GAME_GEEK_PLAYING_TIME_INCLUSIVE_LOWER_BOUND_FOR_LONG)
             {
                 return AverageGameDurationTierEnum.Medium;
             }
-            if (weight < BOARD_GAME_GEEK_PLAYING_TIME_INCLUSIVE_LOWER_BOUND_FOR_VERY_LONG)
+            if (time < BOARD_GAME_GEEK_PLAYING_TIME_INCLUSIVE_LOWER_BOUND_FOR_VERY_LONG)
             {
                 return AverageGameDurationTierEnum.Long;
             }
