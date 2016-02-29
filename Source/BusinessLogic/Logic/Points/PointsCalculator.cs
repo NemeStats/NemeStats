@@ -48,7 +48,10 @@ namespace BusinessLogic.Logic.Points
             {25, 1000}
         };
 
-        internal const int DEFAULT_POINTS_PER_PLAYER_WHEN_EVERYONE_LOSES = 2;
+        public const int POINTS_PER_WEIGHT_TIER = 1;
+        public int PERCENTAGE_BONUS_PER_AVERAGE_GAME_DURATION_TIER = 40;
+        public const int DEFAULT_POINTS_PER_PLAYER_WHEN_EVERYONE_LOSES = 2;
+
         internal const int POINTS_PER_PLAYER = 10;
         internal const string EXCEPTION_MESSAGE_DUPLICATE_PLAYER = "Each player can only have one PlayerRank record but one or more players have duplicate PlayerRank records.";
         internal const string EXCEPTION_MESSAGE_CANNOT_EXCEED_MAX_PLAYERS = "There can be no more than 25 players.";
@@ -168,24 +171,24 @@ namespace BusinessLogic.Logic.Points
 
         internal virtual void AwardWeightBonusPoints(Dictionary<int, PointsScorecard> pointsScorecardDictionary, WeightTierEnum gameWeight)
         {
-            decimal multiplier;
+            int bonusPoints;
             switch (gameWeight)
             {
                 case WeightTierEnum.Casual:
                 case WeightTierEnum.Unknown:
-                    multiplier = 0;
+                    bonusPoints = 0;
                     break;
                 case WeightTierEnum.Easy:
-                    multiplier = new decimal(.25);
+                    bonusPoints = 1 * POINTS_PER_WEIGHT_TIER;
                     break;
                 case WeightTierEnum.Advanced:
-                    multiplier = new decimal(.50);
+                    bonusPoints = 2 * POINTS_PER_WEIGHT_TIER;
                     break;
                 case WeightTierEnum.Challenging:
-                    multiplier = new decimal(.75);
+                    bonusPoints = 3 * POINTS_PER_WEIGHT_TIER;
                     break;
                 case WeightTierEnum.Hardcore:
-                    multiplier = new decimal(1.0);
+                    bonusPoints = 4 * POINTS_PER_WEIGHT_TIER;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(gameWeight), gameWeight, null);
@@ -193,8 +196,7 @@ namespace BusinessLogic.Logic.Points
 
             foreach (var scorecard in pointsScorecardDictionary)
             {
-                var bonusPoints = Math.Round(multiplier * scorecard.Value.BasePoints, MidpointRounding.AwayFromZero);
-                scorecard.Value.GameWeightBonusPoints = (int)bonusPoints;
+                scorecard.Value.GameWeightBonusPoints = bonusPoints;
             }
         }
 
@@ -202,24 +204,27 @@ namespace BusinessLogic.Logic.Points
             Dictionary<int, PointsScorecard> pointsScorecardDictionary, 
             AverageGameDurationTierEnum gameDuration)
         {
-            decimal multiplier;
+            decimal multiplierPercentage;
             switch (gameDuration)
             {
                 case AverageGameDurationTierEnum.VeryShort:
                 case AverageGameDurationTierEnum.Unknown:
-                    multiplier = 0;
+                    multiplierPercentage = 0;
                     break;
                 case AverageGameDurationTierEnum.Short:
-                    multiplier = new decimal(.50);
+                    multiplierPercentage = 1 * PERCENTAGE_BONUS_PER_AVERAGE_GAME_DURATION_TIER;
                     break;
                 case AverageGameDurationTierEnum.Medium:
-                    multiplier = new decimal(1);
+                    multiplierPercentage = 2 * PERCENTAGE_BONUS_PER_AVERAGE_GAME_DURATION_TIER;
                     break;
                 case AverageGameDurationTierEnum.Long:
-                    multiplier = new decimal(1.5);
+                    multiplierPercentage = 3 * PERCENTAGE_BONUS_PER_AVERAGE_GAME_DURATION_TIER;
                     break;
                 case AverageGameDurationTierEnum.VeryLong:
-                    multiplier = new decimal(2);
+                    multiplierPercentage = 4 * PERCENTAGE_BONUS_PER_AVERAGE_GAME_DURATION_TIER;
+                    break;
+                case AverageGameDurationTierEnum.RidiculouslyLong:
+                    multiplierPercentage = 5 * PERCENTAGE_BONUS_PER_AVERAGE_GAME_DURATION_TIER;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(gameDuration), gameDuration, null);
@@ -227,7 +232,8 @@ namespace BusinessLogic.Logic.Points
 
             foreach (var scorecard in pointsScorecardDictionary)
             {
-                var bonusPoints = Math.Round(multiplier * scorecard.Value.BasePoints, MidpointRounding.AwayFromZero);
+                var basePlusWeightPoints = scorecard.Value.BasePoints + scorecard.Value.GameWeightBonusPoints;
+                var bonusPoints = Math.Round((multiplierPercentage/100) * basePlusWeightPoints, MidpointRounding.AwayFromZero);
                 scorecard.Value.GameWeightBonusPoints = (int)bonusPoints;
             }
         }

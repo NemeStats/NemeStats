@@ -470,28 +470,20 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PointsTests
 
             [Test]
             [TestCaseSource(nameof(ALL_WEIGHTS))]
-            public void ItAwardsATwentyFivePercentBonusPerEachWeightLevelBeyondTheFirstAndRoundsUp(WeightTierEnum weight)
+            public void ItAwardsOneBonusPointPerTierAboveTheFirst(WeightTierEnum weight)
             {
                 //--arrange
                 int playerOneId = 1;
-                int playerOneBasePoints = 100;
                 int playerTwoId = 2;
-                int playerTwoBasePoints = 1;
                 var pointsScorecardDictionary = new Dictionary<int, PointsScorecard>
                 {
                     {
                         playerOneId,
-                        new PointsScorecard
-                        {
-                            BasePoints = playerOneBasePoints
-                        }
+                        new PointsScorecard()
                     },
                     {
                         playerTwoId,
-                        new PointsScorecard
-                        {
-                            BasePoints = playerTwoBasePoints
-                        }
+                        new PointsScorecard()
                     }
                 };
 
@@ -509,20 +501,20 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PointsTests
                         Assert.That(playerTwoScorecard.GameWeightBonusPoints, Is.EqualTo(0));
                         break;
                     case WeightTierEnum.Easy:
-                        Assert.That(playerOneScorecard.GameWeightBonusPoints, Is.EqualTo(25));
-                        Assert.That(playerTwoScorecard.GameWeightBonusPoints, Is.EqualTo(0));
+                        Assert.That(playerOneScorecard.GameWeightBonusPoints, Is.EqualTo(1));
+                        Assert.That(playerTwoScorecard.GameWeightBonusPoints, Is.EqualTo(1));
                         break;
                     case WeightTierEnum.Advanced:
-                        Assert.That(playerOneScorecard.GameWeightBonusPoints, Is.EqualTo(50));
-                        Assert.That(playerTwoScorecard.GameWeightBonusPoints, Is.EqualTo(1));
+                        Assert.That(playerOneScorecard.GameWeightBonusPoints, Is.EqualTo(2));
+                        Assert.That(playerTwoScorecard.GameWeightBonusPoints, Is.EqualTo(2));
                         break;
                     case WeightTierEnum.Challenging:
-                        Assert.That(playerOneScorecard.GameWeightBonusPoints, Is.EqualTo(75));
-                        Assert.That(playerTwoScorecard.GameWeightBonusPoints, Is.EqualTo(1));
+                        Assert.That(playerOneScorecard.GameWeightBonusPoints, Is.EqualTo(3));
+                        Assert.That(playerTwoScorecard.GameWeightBonusPoints, Is.EqualTo(3));
                         break;
                     case WeightTierEnum.Hardcore:
-                        Assert.That(playerOneScorecard.GameWeightBonusPoints, Is.EqualTo(100));
-                        Assert.That(playerTwoScorecard.GameWeightBonusPoints, Is.EqualTo(1));
+                        Assert.That(playerOneScorecard.GameWeightBonusPoints, Is.EqualTo(4));
+                        Assert.That(playerTwoScorecard.GameWeightBonusPoints, Is.EqualTo(4));
                         break;
                     default:
                         throw new ArgumentOutOfRangeException(nameof(weight), weight, null);
@@ -551,27 +543,31 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PointsTests
 
             [Test]
             [TestCaseSource(nameof(ALL_TIERS))]
-            public void ItAwardsAFiftyPercentBonusPerEachPlayingTimeTierBeyondTheFirstAndRoundsUp(AverageGameDurationTierEnum tier)
+            public void ItAwardsAFortyPercentBonusToBasePointsPlusWeightPointsPerEachPlayingTimeTierBeyondTheFirstAndRoundsUp(AverageGameDurationTierEnum tier)
             {
                 //--arrange
                 int playerOneId = 1;
-                int playerOneBasePoints = 100;
+                int playerOneBasePoints = 70;
+                int playerOneWeightPoints = 30;
                 int playerTwoId = 2;
                 int playerTwoBasePoints = 1;
+                int playerTwoWeightPoints = 1;
                 var pointsScorecardDictionary = new Dictionary<int, PointsScorecard>
                 {
                     {
                         playerOneId,
                         new PointsScorecard
                         {
-                            BasePoints = playerOneBasePoints
+                            BasePoints = playerOneBasePoints,
+                            GameWeightBonusPoints = playerOneWeightPoints
                         }
                     },
                     {
                         playerTwoId,
                         new PointsScorecard
                         {
-                            BasePoints = playerTwoBasePoints
+                            BasePoints = playerTwoBasePoints,
+                            GameWeightBonusPoints = playerTwoWeightPoints
                         }
                     }
                 };
@@ -590,20 +586,24 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PointsTests
                         Assert.That(playerTwoScorecard.GameWeightBonusPoints, Is.EqualTo(0));
                         break;
                     case AverageGameDurationTierEnum.Short:
-                        Assert.That(playerOneScorecard.GameWeightBonusPoints, Is.EqualTo(50));
+                        Assert.That(playerOneScorecard.GameWeightBonusPoints, Is.EqualTo(40));
                         Assert.That(playerTwoScorecard.GameWeightBonusPoints, Is.EqualTo(1));
                         break;
                     case AverageGameDurationTierEnum.Medium:
-                        Assert.That(playerOneScorecard.GameWeightBonusPoints, Is.EqualTo(100));
-                        Assert.That(playerTwoScorecard.GameWeightBonusPoints, Is.EqualTo(1));
+                        Assert.That(playerOneScorecard.GameWeightBonusPoints, Is.EqualTo(80));
+                        Assert.That(playerTwoScorecard.GameWeightBonusPoints, Is.EqualTo(2));
                         break;
                     case AverageGameDurationTierEnum.Long:
-                        Assert.That(playerOneScorecard.GameWeightBonusPoints, Is.EqualTo(150));
+                        Assert.That(playerOneScorecard.GameWeightBonusPoints, Is.EqualTo(120));
                         Assert.That(playerTwoScorecard.GameWeightBonusPoints, Is.EqualTo(2));
                         break;
                     case AverageGameDurationTierEnum.VeryLong:
+                        Assert.That(playerOneScorecard.GameWeightBonusPoints, Is.EqualTo(160));
+                        Assert.That(playerTwoScorecard.GameWeightBonusPoints, Is.EqualTo(3));
+                        break;
+                    case AverageGameDurationTierEnum.RidiculouslyLong:
                         Assert.That(playerOneScorecard.GameWeightBonusPoints, Is.EqualTo(200));
-                        Assert.That(playerTwoScorecard.GameWeightBonusPoints, Is.EqualTo(2));
+                        Assert.That(playerTwoScorecard.GameWeightBonusPoints, Is.EqualTo(4));
                         break;
                     default:
                         throw new ArgumentOutOfRangeException(nameof(tier), tier, null);

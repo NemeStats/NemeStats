@@ -87,10 +87,10 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PointsTests
         }
 
         [Test]
-        public void ItReturnsMediumIfTheBoardGameGeekPlayingTimeIsLessThan90()
+        public void ItReturnsMediumIfTheBoardGameGeekPlayingTimeIsLessThan120()
         {
             //--arrange
-            var time = 89;
+            var time = 119;
 
             //--act
             var result = _calculator.GetAverageGameDurationTier(time);
@@ -100,33 +100,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PointsTests
         }
 
         [Test]
-        public void ItReturnsLongIfTheBoardGameGeekPlayingTimeIs90()
-        {
-            //--arrange
-            var time = 90;
-
-            //--act
-            var result = _calculator.GetAverageGameDurationTier(time);
-
-            //--assert
-            Assert.That(result, Is.EqualTo(AverageGameDurationTierEnum.Long));
-        }
-
-        [Test]
-        public void ItReturnsLongIfTheBoardGameGeekPlayingTimeIsLessThan120()
-        {
-            //--arrange
-            var time = 119;
-
-            //--act
-            var result = _calculator.GetAverageGameDurationTier(time);
-
-            //--assert
-            Assert.That(result, Is.EqualTo(AverageGameDurationTierEnum.Long));
-        }
-
-        [Test]
-        public void ItReturnsVeryLongIfTheBoardGameGeekPlayingTimeIs120()
+        public void ItReturnsLongIfTheBoardGameGeekPlayingTimeIs120()
         {
             //--arrange
             var time = 120;
@@ -135,20 +109,72 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PointsTests
             var result = _calculator.GetAverageGameDurationTier(time);
 
             //--assert
-            Assert.That(result, Is.EqualTo(AverageGameDurationTierEnum.VeryLong));
+            Assert.That(result, Is.EqualTo(AverageGameDurationTierEnum.Long));
         }
 
         [Test]
-        public void ItReturnsLongIfTheBoardGameGeekPlayingTimeIsGreaterThan120()
+        public void ItReturnsLongIfTheBoardGameGeekPlayingTimeIsLessThan200()
         {
             //--arrange
-            var time = 480;
+            var time = 199;
+
+            //--act
+            var result = _calculator.GetAverageGameDurationTier(time);
+
+            //--assert
+            Assert.That(result, Is.EqualTo(AverageGameDurationTierEnum.Long));
+        }
+
+        [Test]
+        public void ItReturnsVeryLongIfTheBoardGameGeekPlayingTimeIs200()
+        {
+            //--arrange
+            var time = 200;
 
             //--act
             var result = _calculator.GetAverageGameDurationTier(time);
 
             //--assert
             Assert.That(result, Is.EqualTo(AverageGameDurationTierEnum.VeryLong));
+        }
+
+        [Test]
+        public void ItReturnsVeryLongIfTheBoardGameGeekPlayingTimeIsLessThan300()
+        {
+            //--arrange
+            var time = 299;
+
+            //--act
+            var result = _calculator.GetAverageGameDurationTier(time);
+
+            //--assert
+            Assert.That(result, Is.EqualTo(AverageGameDurationTierEnum.VeryLong));
+        }
+
+        [Test]
+        public void ItReturnsRidiculouslyLongIfTheBoardGameGeekPlayingTimeIs300()
+        {
+            //--arrange
+            var time = 300;
+
+            //--act
+            var result = _calculator.GetAverageGameDurationTier(time);
+
+            //--assert
+            Assert.That(result, Is.EqualTo(AverageGameDurationTierEnum.RidiculouslyLong));
+        }
+
+        [Test]
+        public void ItReturnsRidiculouslyLongIfTheBoardGameGeekPlayingTimeIsGreaterThan300()
+        {
+            //--arrange
+            var time = 9999;
+
+            //--act
+            var result = _calculator.GetAverageGameDurationTier(time);
+
+            //--assert
+            Assert.That(result, Is.EqualTo(AverageGameDurationTierEnum.RidiculouslyLong));
         }
     }
 }

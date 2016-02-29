@@ -6,12 +6,12 @@ namespace BusinessLogic.Logic.Points
     {
         public const decimal BOARD_GAME_GEEK_PLAYING_TIME_INCLUSIVE_LOWER_BOUND_FOR_SHORT = 30;
         public const decimal BOARD_GAME_GEEK_PLAYING_TIME_INCLUSIVE_LOWER_BOUND_FOR_MEDIUM = 60;
-        public const decimal BOARD_GAME_GEEK_PLAYING_TIME_INCLUSIVE_LOWER_BOUND_FOR_LONG = 90;
-        public const decimal BOARD_GAME_GEEK_PLAYING_TIME_INCLUSIVE_LOWER_BOUND_FOR_VERY_LONG = 120;
+        public const decimal BOARD_GAME_GEEK_PLAYING_TIME_INCLUSIVE_LOWER_BOUND_FOR_LONG = 120;
+        public const decimal BOARD_GAME_GEEK_PLAYING_TIME_INCLUSIVE_LOWER_BOUND_FOR_VERY_LONG = 200;
+        public const decimal BOARD_GAME_GEEK_PLAYING_TIME_INCLUSIVE_LOWER_BOUND_FOR_RIDICULOUSLY_LONG = 300;
 
         public AverageGameDurationTierEnum GetAverageGameDurationTier(int? playingTime)
         {
-
             if (!playingTime.HasValue || playingTime == 0)
             {
                 return AverageGameDurationTierEnum.Unknown;
@@ -33,7 +33,11 @@ namespace BusinessLogic.Logic.Points
             {
                 return AverageGameDurationTierEnum.Long;
             }
-            return AverageGameDurationTierEnum.VeryLong;
+            if (weight < BOARD_GAME_GEEK_PLAYING_TIME_INCLUSIVE_LOWER_BOUND_FOR_RIDICULOUSLY_LONG)
+            {
+                return AverageGameDurationTierEnum.VeryLong;
+            }
+            return AverageGameDurationTierEnum.RidiculouslyLong;
         }
     }
 }
