@@ -234,7 +234,7 @@ namespace BusinessLogic.Logic.Points
             {
                 var basePlusWeightPoints = scorecard.Value.BasePoints + scorecard.Value.GameWeightBonusPoints;
                 var bonusPoints = Math.Round((multiplierPercentage/100) * basePlusWeightPoints, MidpointRounding.AwayFromZero);
-                scorecard.Value.GameWeightBonusPoints = (int)bonusPoints;
+                scorecard.Value.GameDurationBonusPoints = (int)bonusPoints;
             }
         }
     }

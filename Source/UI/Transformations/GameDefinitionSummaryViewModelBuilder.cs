@@ -17,6 +17,7 @@
 #endregion
 
 using System.Linq;
+using BusinessLogic.Logic.Points;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
 using BusinessLogic.Models.User;
@@ -26,11 +27,13 @@ namespace UI.Transformations
 {
     public class GameDefinitionSummaryViewModelBuilder : IGameDefinitionSummaryViewModelBuilder
     {
-        private ITransformer _transformer;
+        private readonly ITransformer _transformer;
+        private readonly IWeightTierCalculator _weightTierCalculator;
 
-        public GameDefinitionSummaryViewModelBuilder(ITransformer transformer)
+        public GameDefinitionSummaryViewModelBuilder(ITransformer transformer, IWeightTierCalculator weightTierCalculator)
         {
             this._transformer = transformer;
+            _weightTierCalculator = weightTierCalculator;
         }
 
         public GameDefinitionSummaryViewModel Build(GameDefinitionSummary gameDefinitionSummary, ApplicationUser currentUser)
@@ -47,6 +50,12 @@ namespace UI.Transformations
                 UserCanEdit =
                     (currentUser != null && gameDefinitionSummary.GamingGroupId == currentUser.CurrentGamingGroupId)
             };
+
+            //TODO untested change
+            if (viewModel.BoardGameGeekGameDefinition != null)
+            {
+                viewModel.BoardGameGeekGameDefinition.WeightDescription = _weightTierCalculator.GetWeightTier(viewModel.BoardGameGeekGameDefinition.AverageWeight).ToString();
+            }
 
             if (!(gameDefinitionSummary.Champion is NullChampion))
             {

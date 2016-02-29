@@ -23,6 +23,7 @@ using BusinessLogic.Models.Players;
 using BusinessLogic.Models.User;
 using System.Linq;
 using BusinessLogic.Logic.Players;
+using BusinessLogic.Logic.Points;
 using UI.Models.GameDefinitionModels;
 using UI.Models.PlayedGame;
 using UI.Models.Players;
@@ -33,11 +34,13 @@ namespace UI.Transformations
     {
         private readonly IPlayedGameDetailsViewModelBuilder _playedGameDetailsViewModelBuilder;
         private readonly ITransformer _transformer;
+        private readonly IWeightTierCalculator _weightTierCalculator;
 
-        public GameDefinitionDetailsViewModelBuilder(IPlayedGameDetailsViewModelBuilder playedGameDetailsViewModelBuilder, ITransformer transformer)
+        public GameDefinitionDetailsViewModelBuilder(IPlayedGameDetailsViewModelBuilder playedGameDetailsViewModelBuilder, ITransformer transformer, IWeightTierCalculator weightTierCalculator)
         {
             this._playedGameDetailsViewModelBuilder = playedGameDetailsViewModelBuilder;
             this._transformer = transformer;
+            _weightTierCalculator = weightTierCalculator;
         }
 
         public GameDefinitionDetailsViewModel Build(GameDefinitionSummary gameDefinitionSummary, ApplicationUser currentUser)
@@ -54,6 +57,12 @@ namespace UI.Transformations
                 UserCanEdit = (currentUser != null && gameDefinitionSummary.GamingGroupId == currentUser.CurrentGamingGroupId),
                 BoardGameGeekGameDefinition = _transformer.Transform<BoardGameGeekGameDefinition, BoardGameGeekGameDefinitionViewModel>(gameDefinitionSummary.BoardGameGeekGameDefinition)
             };
+
+            //TODO untested change
+            if (viewModel.BoardGameGeekGameDefinition != null)
+            {
+                viewModel.BoardGameGeekGameDefinition.WeightDescription = _weightTierCalculator.GetWeightTier(viewModel.BoardGameGeekGameDefinition.AverageWeight).ToString();
+            }
 
             if (gameDefinitionSummary.PlayedGames == null)
             {

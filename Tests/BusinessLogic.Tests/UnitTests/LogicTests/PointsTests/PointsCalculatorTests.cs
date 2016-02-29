@@ -529,6 +529,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PointsTests
             public override void SetUp()
             {
                 _autoMocker = new RhinoAutoMocker<PointsCalculator>();
+                _autoMocker.PartialMockTheClassUnderTest();
             }
 
             [Datapoint]
@@ -582,28 +583,28 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PointsTests
                 switch (tier)
                 {
                     case AverageGameDurationTierEnum.VeryShort:
-                        Assert.That(playerOneScorecard.GameWeightBonusPoints, Is.EqualTo(0));
-                        Assert.That(playerTwoScorecard.GameWeightBonusPoints, Is.EqualTo(0));
+                        Assert.That(playerOneScorecard.GameDurationBonusPoints, Is.EqualTo(0));
+                        Assert.That(playerTwoScorecard.GameDurationBonusPoints, Is.EqualTo(0));
                         break;
                     case AverageGameDurationTierEnum.Short:
-                        Assert.That(playerOneScorecard.GameWeightBonusPoints, Is.EqualTo(40));
-                        Assert.That(playerTwoScorecard.GameWeightBonusPoints, Is.EqualTo(1));
+                        Assert.That(playerOneScorecard.GameDurationBonusPoints, Is.EqualTo(40));
+                        Assert.That(playerTwoScorecard.GameDurationBonusPoints, Is.EqualTo(1));
                         break;
                     case AverageGameDurationTierEnum.Medium:
-                        Assert.That(playerOneScorecard.GameWeightBonusPoints, Is.EqualTo(80));
-                        Assert.That(playerTwoScorecard.GameWeightBonusPoints, Is.EqualTo(2));
+                        Assert.That(playerOneScorecard.GameDurationBonusPoints, Is.EqualTo(80));
+                        Assert.That(playerTwoScorecard.GameDurationBonusPoints, Is.EqualTo(2));
                         break;
                     case AverageGameDurationTierEnum.Long:
-                        Assert.That(playerOneScorecard.GameWeightBonusPoints, Is.EqualTo(120));
-                        Assert.That(playerTwoScorecard.GameWeightBonusPoints, Is.EqualTo(2));
+                        Assert.That(playerOneScorecard.GameDurationBonusPoints, Is.EqualTo(120));
+                        Assert.That(playerTwoScorecard.GameDurationBonusPoints, Is.EqualTo(2));
                         break;
                     case AverageGameDurationTierEnum.VeryLong:
-                        Assert.That(playerOneScorecard.GameWeightBonusPoints, Is.EqualTo(160));
-                        Assert.That(playerTwoScorecard.GameWeightBonusPoints, Is.EqualTo(3));
+                        Assert.That(playerOneScorecard.GameDurationBonusPoints, Is.EqualTo(160));
+                        Assert.That(playerTwoScorecard.GameDurationBonusPoints, Is.EqualTo(3));
                         break;
                     case AverageGameDurationTierEnum.RidiculouslyLong:
-                        Assert.That(playerOneScorecard.GameWeightBonusPoints, Is.EqualTo(200));
-                        Assert.That(playerTwoScorecard.GameWeightBonusPoints, Is.EqualTo(4));
+                        Assert.That(playerOneScorecard.GameDurationBonusPoints, Is.EqualTo(200));
+                        Assert.That(playerTwoScorecard.GameDurationBonusPoints, Is.EqualTo(4));
                         break;
                     default:
                         throw new ArgumentOutOfRangeException(nameof(tier), tier, null);

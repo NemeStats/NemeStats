@@ -70,7 +70,10 @@ namespace UI.Transformations
             Mapper.CreateMap<PlayerQuickStats, PlayerQuickStatsViewModel>(MemberList.Destination);
             Mapper.CreateMap<TrendingGame, TrendingGameViewModel>(MemberList.Destination);
             Mapper.CreateMap<BoardGameGeekGameDefinition, BoardGameGeekGameDefinitionViewModel>()
-                .ForMember(m => m.BoardGameGeekUri, opt => opt.MapFrom(src => BoardGameGeekUriBuilder.BuildBoardGameGeekGameUri(src.Id)));
+                .ForMember(m => m.BoardGameGeekUri,
+                    opt => opt.MapFrom(src => BoardGameGeekUriBuilder.BuildBoardGameGeekGameUri(src.Id)))
+                .ForMember(m => m.WeightDescription,
+                    opt => opt.Ignore());
         }
     }
 }
