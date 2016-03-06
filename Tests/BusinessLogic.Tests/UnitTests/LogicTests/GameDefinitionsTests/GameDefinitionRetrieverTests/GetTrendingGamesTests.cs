@@ -41,9 +41,22 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
                 {
                     GameDefinitions = new List<GameDefinition>
                     {
+                        //--this has one included played game
                         new GameDefinition
                         {
                             PlayedGames = playedGames
+                        },
+                        //--this has one included played game
+                        new GameDefinition
+                        {
+                            PlayedGames = playedGames
+                        },
+                        new GameDefinition
+                        {
+                            PlayedGames = new List<PlayedGame>
+                            {
+                                excludedPlayedGame
+                            }
                         }
                     }
                 }
@@ -53,28 +66,29 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
             var results = autoMocker.ClassUnderTest.GetTrendingGames(100, days);
 
             Assert.That(results.Count, Is.EqualTo(1));
-            Assert.That(results[0].GamesPlayed, Is.EqualTo(1));
+            Assert.That(results[0].GamesPlayed, Is.EqualTo(2));
+            Assert.That(results[0].GamingGroupsPlayingThisGame, Is.EqualTo(2));
         }
 
         [Test]
-        public void ItOnlyReturnsTheSpecifiedNumberOfTopGamesOrderedByGamesPlayed()
+        public void ItOnlyReturnsTheSpecifiedNumberOfTopGamesOrderedByTheNumberOfGamingGroupsThatPlayedTheGameThenNumberOfPlayedGames()
         {
             int expectedBoardGameGeekGameDefinition1 = 1;
             int expectedBoardGameGeekGameDefinition2 = 2;
 
-            var playedGames1 = new List<PlayedGame>
+            var threePlayedGames = new List<PlayedGame>
             {
                 new PlayedGame(),
                 new PlayedGame(),
                 new PlayedGame()
             };
 
-            var playedGames2 = new List<PlayedGame>
+            var twoPlayedGames = new List<PlayedGame>
             {
                 new PlayedGame(),
                 new PlayedGame()
             };
-            var playedGames3 = new List<PlayedGame>
+            var onePlayedGame = new List<PlayedGame>
             {
                 new PlayedGame()
             };
@@ -87,7 +101,22 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
                     {
                         new GameDefinition
                         {
-                            PlayedGames = playedGames2
+                            PlayedGames = threePlayedGames
+                        },
+                        new GameDefinition
+                        {
+                            PlayedGames = twoPlayedGames
+                        }
+                    }
+                },
+                new BoardGameGeekGameDefinition
+                {
+                    Id = expectedBoardGameGeekGameDefinition2,
+                    GameDefinitions = new List<GameDefinition>
+                    {
+                        new GameDefinition
+                        {
+                            PlayedGames = twoPlayedGames
                         }
                     }
                 },
@@ -98,18 +127,23 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
                     {
                         new GameDefinition
                         {
-                            PlayedGames = playedGames3
+                            PlayedGames = onePlayedGame
                         }
                     }
                 },
                 new BoardGameGeekGameDefinition
                 {
                     Id = expectedBoardGameGeekGameDefinition1,
+                    //--2 game definitions means 2 separate gaming groups have this game
                     GameDefinitions = new List<GameDefinition>
                     {
                         new GameDefinition
                         {
-                            PlayedGames = playedGames1
+                            PlayedGames = threePlayedGames
+                        },
+                        new GameDefinition
+                        {
+                            PlayedGames = threePlayedGames
                         }
                     }
                 }
@@ -120,9 +154,11 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
             var results = autoMocker.ClassUnderTest.GetTrendingGames(expectedNumberOfGames, 1);
 
             Assert.That(results.Count, Is.EqualTo(expectedNumberOfGames));
-            Assert.That(results[0].GamesPlayed, Is.EqualTo(3));
+            Assert.That(results[0].GamesPlayed, Is.EqualTo(6));
+            Assert.That(results[0].GamingGroupsPlayingThisGame, Is.EqualTo(2));
             Assert.That(results[0].BoardGameGeekGameDefinitionId, Is.EqualTo(expectedBoardGameGeekGameDefinition1));
-            Assert.That(results[1].GamesPlayed, Is.EqualTo(2));
+            Assert.That(results[1].GamesPlayed, Is.EqualTo(5));
+            Assert.That(results[1].GamingGroupsPlayingThisGame, Is.EqualTo(2));
             Assert.That(results[1].BoardGameGeekGameDefinitionId, Is.EqualTo(expectedBoardGameGeekGameDefinition2));
         }
 

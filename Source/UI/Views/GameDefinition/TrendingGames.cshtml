@@ -1,0 +1,12 @@
+﻿@model List<UI.Models.GameDefinitionModels.TrendingGameViewModel>
+
+@{
+    ViewBag.Title = $"Top { @Model.Count } Trending Games Over The Past { @ViewBag.NumTrendingDays } Days";
+    ViewBag.Description = "Check out the trending games on NemeStats!";
+    Layout = MVC.Shared.Views._BaseLayout;
+}
+
+<div class="container">
+    <h2 class="page-header">Top @Model.Count Trending Games Over The Past @ViewBag.NumTrendingDays Days</h2>
+    @Html.Partial(MVC.GameDefinition.Views._TrendingGamesPartial, Model)
+</div>
