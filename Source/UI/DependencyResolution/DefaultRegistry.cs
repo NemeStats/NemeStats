@@ -190,6 +190,7 @@ namespace UI.DependencyResolution
 
             this.For<IBoardGameGeekUserSaver>().Use<BoardGameGeekUserSaver>();
             this.For<IBoardGameGeekGamesImporter>().Use<BoardGameGeekGamesImporter>();
+            this.For<IBoardGameGeekCleanUp>().Use<BoardGameGeekCleanUp>();
 
         }
 

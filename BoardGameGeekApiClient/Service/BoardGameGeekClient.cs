@@ -11,6 +11,7 @@ using BoardGameGeekApiClient.Helpers;
 using BoardGameGeekApiClient.Interfaces;
 using BoardGameGeekApiClient.Models;
 using RollbarSharp;
+using System.Web;
 
 namespace BoardGameGeekApiClient.Service
 {
@@ -212,7 +213,8 @@ namespace BoardGameGeekApiClient.Service
                 {
                     uriString += "&exact=1";
                 }
-                var searchUrl = new Uri(uriString);
+
+                var searchUrl = new Uri(Uri.EscapeUriString(uriString));
 
 
                 var xDoc = _apiDownloadService.DownloadApiResult(searchUrl);
