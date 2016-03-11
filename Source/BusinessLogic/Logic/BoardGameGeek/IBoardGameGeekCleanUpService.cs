@@ -1,6 +1,6 @@
 namespace BusinessLogic.Logic.BoardGameGeek
 {
-    public interface IBoardGameGeekCleanUp
+    public interface IBoardGameGeekCleanUpService
     {
         void LinkGameDefinitionsWithBGG();
     }

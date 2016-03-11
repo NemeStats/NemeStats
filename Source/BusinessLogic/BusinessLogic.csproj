@@ -160,11 +160,11 @@
     <Compile Include="Exceptions\UnauthorizedEntityAccessException.cs" />
     <Compile Include="Export\ExcelGenerator.cs" />
     <Compile Include="Export\IExcelGenerator.cs" />
-    <Compile Include="Logic\BoardGameGeek\BoardGameGeekCleanUp.cs" />
+    <Compile Include="Logic\BoardGameGeek\BoardGameGeekCleanUpService.cs" />
     <Compile Include="Logic\BoardGameGeek\BoardGameGeekGameDefinitionCreator.cs" />
     <Compile Include="Logic\BoardGameGeek\BoardGameGeekGamesImporter.cs" />
     <Compile Include="Logic\BoardGameGeek\BoardGameGeekUrlBuilder.cs" />
-    <Compile Include="Logic\BoardGameGeek\IBoardGameGeekCleanUp.cs" />
+    <Compile Include="Logic\BoardGameGeek\IBoardGameGeekCleanUpService.cs" />
     <Compile Include="Logic\BoardGameGeek\IBoardGameGeekGameDefinitionCreator.cs" />
     <Compile Include="Logic\BoardGameGeek\IBoardGameGeekGamesImporter.cs" />
     <Compile Include="Logic\Champions\ChampionRecalculator.cs" />
