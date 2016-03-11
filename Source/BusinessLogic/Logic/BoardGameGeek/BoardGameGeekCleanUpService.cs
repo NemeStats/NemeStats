@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
 using BoardGameGeekApiClient.Interfaces;
@@ -6,64 +8,125 @@ using BoardGameGeekApiClient.Models;
 using BusinessLogic.DataAccess;
 using BusinessLogic.Models;
 using BusinessLogic.Models.User;
+using RollbarSharp;
 
 namespace BusinessLogic.Logic.BoardGameGeek
 {
+    public class BoardGameGeekCleanUpResult
+    {
+        public BoardGameGeekCleanUpResult()
+        {
+            CleanedGames = 0;
+            Success = true;
+            UncleanableGames = new List<UncleanableGame>();
+        }
+
+        public int DirtyGames { get; set; }
+        public int CleanedGames { get; set; }
+
+        public List<UncleanableGame> UncleanableGames { get; set; }
+        public TimeSpan TimeEllapsed { get; set; }
+        public bool Success { get; set; }
+
+        public class UncleanableGame
+        {
+            public string Name { get; set; }
+            public int Id { get; set; }
+            public int GamingGroupId { get; set; }
+        }
+    }
     public class BoardGameGeekCleanUpService : IBoardGameGeekCleanUpService
     {
         private const string CleanYearPattern = @"\w*\(\d{4}\)";
 
         private readonly IDataContext _dataContext;
         private readonly IBoardGameGeekApiClient _boardGameGeekApiClient;
+        private readonly RollbarClient _rollbar;
 
         public BoardGameGeekCleanUpService(IDataContext dataContext, IBoardGameGeekApiClient boardGameGeekApiClient)
         {
             this._dataContext = dataContext;
             _boardGameGeekApiClient = boardGameGeekApiClient;
+            _rollbar = new RollbarClient();
         }
 
-        public void LinkGameDefinitionsWithBGG()
+        public BoardGameGeekCleanUpResult LinkGameDefinitionsWithBGG()
         {
-            var dirtyGames = GetDirtyGames();
-
-            foreach (var game in dirtyGames)
+            var result = new BoardGameGeekCleanUpResult();
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
+            try
             {
-                var gameName = RemoveYear(game.Name);
 
-                var existingGame = GetExistingBGGGameByName(gameName);
-                if (existingGame != null)
-                {
-                    game.BoardGameGeekGameDefinitionId = existingGame.Id;
-                    _dataContext.CommitAllChanges();
-                }
-                else
-                {
 
-                    var searchResult = _boardGameGeekApiClient.SearchBoardGames(gameName, true);
-                    if (searchResult.Any())
+                var dirtyGames = GetDirtyGames();
+                result.DirtyGames = dirtyGames.Count;
+
+                foreach (var game in dirtyGames)
+                {
+                    var gameName = RemoveYear(game.Name);
+
+                    var existingGame = GetExistingBGGGameByName(gameName);
+                    if (existingGame != null)
                     {
-                        var gameToAdd = GetGameToAddFromSearch(searchResult);
-
-                        if (gameToAdd != null)
+                        UpdateGameDefinition(game, existingGame.Id, result);
+                    }
+                    else
+                    {
+                        var searchResult = _boardGameGeekApiClient.SearchBoardGames(gameName, true);
+                        if (searchResult.Any())
                         {
+                            var gameToAdd = GetGameToAddFromSearch(searchResult);
 
-                            existingGame = GetExistingBGGGameById(gameToAdd);
-                            if (existingGame != null)
+                            if (gameToAdd != null)
                             {
-                                game.BoardGameGeekGameDefinitionId = existingGame.Id;
-                            }
-                            else
-                            {
-                                var newRecord = CreateBGGGame(gameToAdd);
 
-                                game.BoardGameGeekGameDefinitionId = newRecord.Id;
-                            }
+                                existingGame = GetExistingBGGGameById(gameToAdd);
+                                if (existingGame != null)
+                                {
+                                    UpdateGameDefinition(game, existingGame.Id, result);
+                                }
+                                else
+                                {
+                                    var newRecord = CreateBGGGame(gameToAdd);
 
-                            _dataContext.CommitAllChanges();
+                                    UpdateGameDefinition(game, newRecord.Id, result);
+                                }
+                            }
                         }
+                    }
+
+                    if (game.BoardGameGeekGameDefinitionId != null)
+                    {
+                        _dataContext.CommitAllChanges();
+                    }
+                    else
+                    {
+                        result.UncleanableGames.Add(new BoardGameGeekCleanUpResult.UncleanableGame()
+                        {
+                            Name = game.Name,
+                            Id = game.Id,
+                            GamingGroupId = game.GamingGroupId
+                        });
                     }
                 }
             }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                _rollbar.SendException(ex);
+            }
+
+            stopwatch.Stop();
+            result.TimeEllapsed = stopwatch.Elapsed;
+            return result;
+        }
+
+        private void UpdateGameDefinition(GameDefinition game, int boardGameGeekGameDefinitionId,
+            BoardGameGeekCleanUpResult result)
+        {
+            game.BoardGameGeekGameDefinitionId = boardGameGeekGameDefinitionId;
+            result.CleanedGames++;
         }
 
         private BoardGameGeekGameDefinition CreateBGGGame(GameDetails gameToAdd)

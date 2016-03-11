@@ -26,6 +26,7 @@ using BusinessLogic.Models.Games;
 using BusinessLogic.Models.GamingGroups;
 using System.Linq;
 using System.Web.Mvc;
+using BusinessLogic.Logic.BoardGameGeek;
 using UI.Controllers.Helpers;
 using UI.Models.GameDefinitionModels;
 using UI.Models.GamingGroup;
