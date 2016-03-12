@@ -39,6 +39,7 @@ using BusinessLogic.Logic.VotableFeatures;
 using BusinessLogic.Models.User;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using RollbarSharp;
 using StructureMap;
 using StructureMap.Graph;
 using StructureMap.Web;
@@ -64,6 +65,8 @@ namespace NemeStats.IoC
                 s.AssemblyContainingType<IBoardGameGeekApiClient>();
                 s.RegisterConcreteTypesAgainstTheFirstInterface();
             });
+
+            this.For<IRollbarClient>().Use(new RollbarClient()).Singleton();
 
             this.SetupUniquePerRequestMappings();
 
@@ -147,7 +150,7 @@ namespace NemeStats.IoC
 
             this.For<IBoardGameGeekUserSaver>().Use<BoardGameGeekUserSaver>();
             this.For<IBoardGameGeekGamesImporter>().Use<BoardGameGeekGamesImporter>();
-            this.For<IBoardGameGeekCleanUpService>().Use<BoardGameGeekCleanUpService>();
+            this.For<IBoardGameGeekCleanUpService>().Use<BoardGameGeekCleanUpService>();            
 
         }
 

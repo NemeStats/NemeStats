@@ -18,13 +18,13 @@ namespace BusinessLogic.Jobs.BoardGameGeekCleanUpService
 
         private readonly IDataContext _dataContext;
         private readonly IBoardGameGeekApiClient _boardGameGeekApiClient;
-        private readonly RollbarClient _rollbar;
+        private readonly IRollbarClient _rollbar;
 
-        public BoardGameGeekCleanUpService(IDataContext dataContext, IBoardGameGeekApiClient boardGameGeekApiClient)
+        public BoardGameGeekCleanUpService(IDataContext dataContext, IBoardGameGeekApiClient boardGameGeekApiClient, IRollbarClient rollbar)
         {
             _dataContext = dataContext;
             _boardGameGeekApiClient = boardGameGeekApiClient;
-            _rollbar = new RollbarClient();
+            _rollbar = rollbar;
         }
 
         public LinkOrphanGamesResult LinkOrphanGames()
@@ -162,7 +162,7 @@ namespace BusinessLogic.Jobs.BoardGameGeekCleanUpService
 
         private string RemoveYear(string name)
         {
-            return Regex.Replace(name, CleanYearPattern, "");
+            return Regex.Replace(name, CleanYearPattern, "").Trim();
         }
     }
 }
