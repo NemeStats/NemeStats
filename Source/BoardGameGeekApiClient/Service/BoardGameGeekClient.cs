@@ -218,7 +218,7 @@ namespace BoardGameGeekApiClient.Service
                     uriString += "&exact=1";
                 }
 
-                var searchUrl = new Uri(Uri.EscapeUriString(uriString));
+                var searchUrl = new Uri(uriString);
 
 
                 var xDoc = _apiDownloadService.DownloadApiResult(searchUrl);

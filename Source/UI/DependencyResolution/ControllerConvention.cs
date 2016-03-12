@@ -15,18 +15,18 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
+
+using System;
 using System.Web.Http;
+using System.Web.Mvc;
+using StructureMap;
+using StructureMap.Graph;
+using StructureMap.Graph.Scanning;
+using StructureMap.Pipeline;
+using StructureMap.TypeRules;
 
 namespace UI.DependencyResolution
 {
-    using System;
-    using System.Web.Mvc;
-    using StructureMap;
-    using StructureMap.Graph;
-    using StructureMap.Graph.Scanning;
-    using StructureMap.Pipeline;
-    using StructureMap.TypeRules;
-
     public class ControllerConvention : IRegistrationConvention {
         #region Public Methods and Operators
 

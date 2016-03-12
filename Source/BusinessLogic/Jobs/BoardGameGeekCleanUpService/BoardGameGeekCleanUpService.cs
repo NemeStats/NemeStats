@@ -10,31 +10,8 @@ using BusinessLogic.Models;
 using BusinessLogic.Models.User;
 using RollbarSharp;
 
-namespace BusinessLogic.Logic.BoardGameGeek
+namespace BusinessLogic.Jobs.BoardGameGeekCleanUpService
 {
-    public class BoardGameGeekCleanUpResult
-    {
-        public BoardGameGeekCleanUpResult()
-        {
-            CleanedGames = 0;
-            Success = true;
-            UncleanableGames = new List<UncleanableGame>();
-        }
-
-        public int DirtyGames { get; set; }
-        public int CleanedGames { get; set; }
-
-        public List<UncleanableGame> UncleanableGames { get; set; }
-        public TimeSpan TimeEllapsed { get; set; }
-        public bool Success { get; set; }
-
-        public class UncleanableGame
-        {
-            public string Name { get; set; }
-            public int Id { get; set; }
-            public int GamingGroupId { get; set; }
-        }
-    }
     public class BoardGameGeekCleanUpService : IBoardGameGeekCleanUpService
     {
         private const string CleanYearPattern = @"\w*\(\d{4}\)";
@@ -45,14 +22,14 @@ namespace BusinessLogic.Logic.BoardGameGeek
 
         public BoardGameGeekCleanUpService(IDataContext dataContext, IBoardGameGeekApiClient boardGameGeekApiClient)
         {
-            this._dataContext = dataContext;
+            _dataContext = dataContext;
             _boardGameGeekApiClient = boardGameGeekApiClient;
             _rollbar = new RollbarClient();
         }
 
-        public BoardGameGeekCleanUpResult LinkGameDefinitionsWithBGG()
+        public LinkOrphanGamesResult LinkOrphanGames()
         {
-            var result = new BoardGameGeekCleanUpResult();
+            var result = new LinkOrphanGamesResult();
             var stopwatch = new Stopwatch();
             stopwatch.Start();
             try
@@ -60,7 +37,7 @@ namespace BusinessLogic.Logic.BoardGameGeek
 
 
                 var dirtyGames = GetDirtyGames();
-                result.DirtyGames = dirtyGames.Count;
+                result.OrphanGames = dirtyGames.Count;
 
                 foreach (var game in dirtyGames)
                 {
@@ -102,7 +79,7 @@ namespace BusinessLogic.Logic.BoardGameGeek
                     }
                     else
                     {
-                        result.UncleanableGames.Add(new BoardGameGeekCleanUpResult.UncleanableGame()
+                        result.StillOrphanGames.Add(new LinkOrphanGamesResult.OrphanGame()
                         {
                             Name = game.Name,
                             Id = game.Id,
@@ -123,10 +100,10 @@ namespace BusinessLogic.Logic.BoardGameGeek
         }
 
         private void UpdateGameDefinition(GameDefinition game, int boardGameGeekGameDefinitionId,
-            BoardGameGeekCleanUpResult result)
+            LinkOrphanGamesResult result)
         {
             game.BoardGameGeekGameDefinitionId = boardGameGeekGameDefinitionId;
-            result.CleanedGames++;
+            result.LinkedGames++;
         }
 
         private BoardGameGeekGameDefinition CreateBGGGame(GameDetails gameToAdd)
@@ -149,10 +126,8 @@ namespace BusinessLogic.Logic.BoardGameGeek
 
         private BoardGameGeekGameDefinition GetExistingBGGGameById(GameDetails gameToAdd)
         {
-            BoardGameGeekGameDefinition existingGame;
-            existingGame =
-                _dataContext.GetQueryable<BoardGameGeekGameDefinition>()
-                    .FirstOrDefault(bgg => bgg.Id == gameToAdd.GameId);
+            var existingGame = _dataContext.GetQueryable<BoardGameGeekGameDefinition>()
+                .FirstOrDefault(bgg => bgg.Id == gameToAdd.GameId);
             return existingGame;
         }
 
