@@ -24,7 +24,6 @@ using BusinessLogic.Logic.BoardGameGeek;
 using BusinessLogic.Models.Games;
 using NUnit.Framework;
 using BusinessLogic.Logic.OneTimeJobs;
-using RollbarSharp;
 
 namespace UI.Tests.IntegrationTests.BoardGameGeekTests
 {
@@ -163,7 +162,7 @@ namespace UI.Tests.IntegrationTests.BoardGameGeekTests
                         "Zombicide"
                     };
 
-                    var bggSearcher = new BoardGameGeekClient(new ApiDownloaderService(),new RollbarClient());
+                    var bggSearcher = new BoardGameGeekClient(new ApiDownloaderService());
 
                     foreach (string gameName in gameNames)
                     {
