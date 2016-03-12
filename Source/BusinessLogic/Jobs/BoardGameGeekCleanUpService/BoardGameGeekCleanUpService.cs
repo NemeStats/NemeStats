@@ -36,10 +36,10 @@ namespace BusinessLogic.Jobs.BoardGameGeekCleanUpService
             {
 
 
-                var dirtyGames = GetDirtyGames();
-                result.OrphanGames = dirtyGames.Count;
+                var orphanGames = GetOrphanGames();
+                result.OrphanGames = orphanGames.Count;
 
-                foreach (var game in dirtyGames)
+                foreach (var game in orphanGames)
                 {
                     var gameName = RemoveYear(game.Name);
 
@@ -153,7 +153,7 @@ namespace BusinessLogic.Jobs.BoardGameGeekCleanUpService
             return existingGame;
         }
 
-        private List<GameDefinition> GetDirtyGames()
+        private List<GameDefinition> GetOrphanGames()
         {
             var gamesWithoutBGGLink =
                 _dataContext.GetQueryable<GameDefinition>().Where(g => g.BoardGameGeekGameDefinitionId == null).ToList();
