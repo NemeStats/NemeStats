@@ -171,11 +171,14 @@
     <Compile Include="Logic\GameDefinitions\GameDefinitionUpdateRequest.cs" />
     <Compile Include="Logic\GamingGroups\GamingGroupInfoForUser.cs" />
     <Compile Include="Logic\Players\PlayerNameBuilder.cs" />
-    <Compile Include="Logic\Points\AverageGameDurationTierCalculator.cs" />
+    <Compile Include="Logic\Points\GameDurationBonusCalculator.cs" />
     <Compile Include="Logic\Points\IAverageGameDurationTierCalculator.cs" />
+    <Compile Include="Logic\Points\IGameDurationBonusCalculator.cs" />
     <Compile Include="Logic\Points\IPointsCalculator.cs" />
+    <Compile Include="Logic\Points\IWeightBonusCalculator.cs" />
     <Compile Include="Logic\Points\PointsCalculator.cs" />
     <Compile Include="Logic\Points\GlobalPointsRecalculator.cs" />
+    <Compile Include="Logic\Points\WeightBonusCalculator.cs" />
     <Compile Include="Logic\Security\MachineKeyDataProtector.cs" />
     <Compile Include="Logic\TransactionSource.cs" />
     <Compile Include="Logic\Users\AuthTokenGenerator.cs" />

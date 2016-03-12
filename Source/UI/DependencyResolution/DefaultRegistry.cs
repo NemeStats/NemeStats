@@ -114,9 +114,11 @@ namespace UI.DependencyResolution
 
             For<IPointsCalculator>().Singleton().Use<PointsCalculator>();
 
-            For<IAverageGameDurationTierCalculator>().Singleton().Use<AverageGameDurationTierCalculator>();
-
             For<IWeightTierCalculator>().Singleton().Use<WeightTierCalculator>();
+
+            For<IGameDurationBonusCalculator>().Singleton().Use<GameDurationBonusCalculator>();
+
+            For<IWeightBonusCalculator>().Singleton().Use<WeightBonusCalculator>();
         }
 
         private void SetupTransientMappings()

@@ -9,14 +9,13 @@ namespace BusinessLogic.Logic.Points
 {
     public class PointsCalculator : IPointsCalculator
     {
-        private readonly IWeightTierCalculator _weightTierCalculator;
-        private readonly IAverageGameDurationTierCalculator _averageGameDurationTierCalculator;
+        private readonly IWeightBonusCalculator _weightBonusCalculator;
+        private readonly IGameDurationBonusCalculator _gameDurationBonusCalculator;
 
-        public PointsCalculator(IWeightTierCalculator weightTierCalculator, 
-            IAverageGameDurationTierCalculator averageGameDurationTierCalculator)
+        public PointsCalculator(IWeightBonusCalculator weightBonusCalculator, IGameDurationBonusCalculator gameDurationBonusCalculator)
         {
-            _weightTierCalculator = weightTierCalculator;
-            _averageGameDurationTierCalculator = averageGameDurationTierCalculator;
+            _weightBonusCalculator = weightBonusCalculator;
+            _gameDurationBonusCalculator = gameDurationBonusCalculator;
         }
 
         public static readonly Dictionary<int, int> FIBONACCI_N_PLUS_2 = new Dictionary<int, int>
@@ -59,20 +58,10 @@ namespace BusinessLogic.Logic.Points
         public Dictionary<int, PointsScorecard> CalculatePoints(IList<PlayerRank> playerRanks, BoardGameGeekGameDefinition bggGameDefinition)
         {
             ValidatePlayerRanks(playerRanks);
-
+   
             var playerToPoints = AwardBasePoints(playerRanks);
-
-            if (bggGameDefinition?.AverageWeight != null)
-            {
-                var weightTier = _weightTierCalculator.GetWeightTier(bggGameDefinition.AverageWeight);
-                AwardWeightBonusPoints(playerToPoints, weightTier);
-            }
-
-            if (bggGameDefinition?.PlayingTime != null)
-            {
-                var gameDurationTier = _averageGameDurationTierCalculator.GetAverageGameDurationTier(bggGameDefinition.PlayingTime);
-                AwardPlayingTimeBonusPoints(playerToPoints, gameDurationTier);
-            }
+            _weightBonusCalculator.CalculateWeightBonus(playerToPoints, bggGameDefinition?.AverageWeight);
+            _gameDurationBonusCalculator.CalculateGameDurationBonus(playerToPoints, bggGameDefinition?.PlayingTime);
 
             return playerToPoints;
         }
@@ -100,12 +89,15 @@ namespace BusinessLogic.Logic.Points
             }
             else
             {
-                CalculatePointsForPlayers(playerRanks, playerToPoints);
+                GiveEveryoneNormalPoints(playerRanks, playerToPoints);
             }
+            
             return playerToPoints;
         }
 
-        internal virtual void CalculatePointsForPlayers(IList<PlayerRank> playerRanks, Dictionary<int, PointsScorecard> playerToPoints)
+        internal virtual void GiveEveryoneNormalPoints(
+            IList<PlayerRank> playerRanks, 
+            Dictionary<int, PointsScorecard> playerToPoints)
         {
             int totalNumberOfPlayers = playerRanks.Count;
             int totalPointsToAllocate = totalNumberOfPlayers * POINTS_PER_PLAYER;
@@ -135,7 +127,9 @@ namespace BusinessLogic.Logic.Points
             }
         }
 
-        internal virtual void GiveEveryoneTwoPoints(IList<PlayerRank> playerRanks, Dictionary<int, PointsScorecard> playerToPoints)
+        internal virtual void GiveEveryoneTwoPoints(
+            IList<PlayerRank> playerRanks, 
+            Dictionary<int, PointsScorecard> playerToPoints)
         {
             foreach (var playerRank in playerRanks)
             {
@@ -167,75 +161,6 @@ namespace BusinessLogic.Logic.Points
         {
             decimal floor = Math.Floor(valueToRound);
             return (int)((valueToRound - floor) > (decimal)0.1 ? floor + 1 : floor);
-        }
-
-        internal virtual void AwardWeightBonusPoints(Dictionary<int, PointsScorecard> pointsScorecardDictionary, WeightTierEnum gameWeight)
-        {
-            int bonusPoints;
-            switch (gameWeight)
-            {
-                case WeightTierEnum.Casual:
-                case WeightTierEnum.Unknown:
-                    bonusPoints = 0;
-                    break;
-                case WeightTierEnum.Easy:
-                    bonusPoints = 1 * POINTS_PER_WEIGHT_TIER;
-                    break;
-                case WeightTierEnum.Advanced:
-                    bonusPoints = 2 * POINTS_PER_WEIGHT_TIER;
-                    break;
-                case WeightTierEnum.Challenging:
-                    bonusPoints = 3 * POINTS_PER_WEIGHT_TIER;
-                    break;
-                case WeightTierEnum.Hardcore:
-                    bonusPoints = 4 * POINTS_PER_WEIGHT_TIER;
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(gameWeight), gameWeight, null);
-            }
-
-            foreach (var scorecard in pointsScorecardDictionary)
-            {
-                scorecard.Value.GameWeightBonusPoints = bonusPoints;
-            }
-        }
-
-        internal virtual void AwardPlayingTimeBonusPoints(
-            Dictionary<int, PointsScorecard> pointsScorecardDictionary, 
-            AverageGameDurationTierEnum gameDuration)
-        {
-            decimal multiplierPercentage;
-            switch (gameDuration)
-            {
-                case AverageGameDurationTierEnum.VeryShort:
-                case AverageGameDurationTierEnum.Unknown:
-                    multiplierPercentage = 0;
-                    break;
-                case AverageGameDurationTierEnum.Short:
-                    multiplierPercentage = 1 * PERCENTAGE_BONUS_PER_AVERAGE_GAME_DURATION_TIER;
-                    break;
-                case AverageGameDurationTierEnum.Medium:
-                    multiplierPercentage = 2 * PERCENTAGE_BONUS_PER_AVERAGE_GAME_DURATION_TIER;
-                    break;
-                case AverageGameDurationTierEnum.Long:
-                    multiplierPercentage = 3 * PERCENTAGE_BONUS_PER_AVERAGE_GAME_DURATION_TIER;
-                    break;
-                case AverageGameDurationTierEnum.VeryLong:
-                    multiplierPercentage = 4 * PERCENTAGE_BONUS_PER_AVERAGE_GAME_DURATION_TIER;
-                    break;
-                case AverageGameDurationTierEnum.RidiculouslyLong:
-                    multiplierPercentage = 5 * PERCENTAGE_BONUS_PER_AVERAGE_GAME_DURATION_TIER;
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(gameDuration), gameDuration, null);
-            }
-
-            foreach (var scorecard in pointsScorecardDictionary)
-            {
-                var basePlusWeightPoints = scorecard.Value.BasePoints + scorecard.Value.GameWeightBonusPoints;
-                var bonusPoints = Math.Round((multiplierPercentage/100) * basePlusWeightPoints, MidpointRounding.AwayFromZero);
-                scorecard.Value.GameDurationBonusPoints = (int)bonusPoints;
-            }
         }
     }
 }

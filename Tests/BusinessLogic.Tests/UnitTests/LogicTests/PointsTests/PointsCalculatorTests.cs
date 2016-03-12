@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using AutoMapper.Internal;
 using BusinessLogic.Logic.Points;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
@@ -26,8 +27,6 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PointsTests
         {
             _autoMocker = new RhinoAutoMocker<PointsCalculator>();
             _autoMocker.PartialMockTheClassUnderTest();
-            _autoMocker.ClassUnderTest.Expect(mock => mock.AwardWeightBonusPoints(null, WeightTierEnum.Unknown)).IgnoreArguments();
-            _autoMocker.ClassUnderTest.Expect(mock => mock.AwardPlayingTimeBonusPoints(null, AverageGameDurationTierEnum.Unknown)).IgnoreArguments();
         }
 
         [Test]
@@ -71,11 +70,11 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PointsTests
         }
 
         [Test]
-        public void ItAwardsBasePoints()
+        public void ItAwardsBasePointsWhenThereIsNoBoardGameGeekGameDefinition()
         {
             //--arrange
             var expectedPlayerRanks = new List<PlayerRank>();
-            _autoMocker.ClassUnderTest.Expect(mock => mock.AwardBasePoints(expectedPlayerRanks));
+            _autoMocker.ClassUnderTest.Expect(mock => mock.AwardBasePoints(null)).IgnoreArguments();
 
             //--act
             _autoMocker.ClassUnderTest.CalculatePoints(expectedPlayerRanks, null);
@@ -85,112 +84,22 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PointsTests
         }
 
         [Test]
-        public void ItAwardsBonusPointsForGameWeight()
+        public void ItAwardsPointsWithTheCorrectWeight()
         {
             //--arrange
-            decimal? bggAverageWeight = (decimal?)3.5;
-            var bggGameDefinition = new BoardGameGeekGameDefinition
-            {
-                AverageWeight = bggAverageWeight
-            };
-            var expectedWeight = WeightTierEnum.Advanced;
-            _autoMocker.Get<IWeightTierCalculator>().Expect(mock => mock.GetWeightTier(bggAverageWeight)).Return(expectedWeight);
             var expectedPlayerRanks = new List<PlayerRank>();
-            _autoMocker.ClassUnderTest.Expect(mock => mock.AwardWeightBonusPoints(null, expectedWeight)).IgnoreArguments();
-
-            //--act
-            _autoMocker.ClassUnderTest.CalculatePoints(new List<PlayerRank>(expectedPlayerRanks), bggGameDefinition);
-
-            //--assert
-            _autoMocker.ClassUnderTest.AssertWasCalled(mock => mock.AwardWeightBonusPoints(
-                Arg<Dictionary<int, PointsScorecard>>.Is.Anything, 
-                Arg<WeightTierEnum>.Is.Equal(expectedWeight)));
-        }
-
-        [Test]
-        public void ItDoesNotAwardsBonusPointsForGameWeightIfThereIsNoBoardGameGeekGameDefinition()
-        {
-            //--arrange
-
-            //--act
-            _autoMocker.ClassUnderTest.CalculatePoints(new List<PlayerRank>(), null);
-
-            //--assert
-            _autoMocker.ClassUnderTest.AssertWasNotCalled(mock => mock.AwardWeightBonusPoints(
-                Arg<Dictionary<int, PointsScorecard>>.Is.Anything, 
-                Arg<WeightTierEnum>.Is.Anything));
-        }
-
-        [Test]
-        public void ItItDoesNotAwardsBonusPointsForGameWeightIfThereIsBoardGameGeekGameDefinitionAverageWeight()
-        {
-            //--arrange
-            var bggGameDefinitionWithNoWeight = new BoardGameGeekGameDefinition
-            {
-                AverageWeight = null
-            };
-
-            //--act
-            _autoMocker.ClassUnderTest.CalculatePoints(new List<PlayerRank>(), bggGameDefinitionWithNoWeight);
-
-            //--assert
-            _autoMocker.ClassUnderTest.AssertWasNotCalled(mock => mock.AwardWeightBonusPoints(
-                Arg<Dictionary<int, PointsScorecard>>.Is.Anything,
-                Arg<WeightTierEnum>.Is.Anything));
-        }
-
-        [Test]
-        public void ItAwardsBonusPointsForBoardGameGeekPlayingTime()
-        {
-            //--arrange
             var bggGameDefinition = new BoardGameGeekGameDefinition
             {
-                PlayingTime = 1
-            };
-            var expectedTier = AverageGameDurationTierEnum.VeryShort;
-            _autoMocker.Get<IAverageGameDurationTierCalculator>().Expect(mock => mock.GetAverageGameDurationTier(bggGameDefinition.PlayingTime)).Return(expectedTier);
-
-            //--act
-            _autoMocker.ClassUnderTest.CalculatePoints(new List<PlayerRank>(), bggGameDefinition);
-
-            //--assert
-            _autoMocker.ClassUnderTest.AssertWasCalled(mock => mock.AwardPlayingTimeBonusPoints(
-                   Arg<Dictionary<int, PointsScorecard>>.Is.Anything,
-                   Arg<AverageGameDurationTierEnum>.Is.Equal(expectedTier)));
-        }
-
-        [Test]
-        public void ItDoesNotAwardBonusPointsForBoardGameGeekPlayingTimeIfTheBoardGameGeekGameDefinitionIsNull()
-        {
-            //--arrange
-
-            //--act
-            _autoMocker.ClassUnderTest.CalculatePoints(new List<PlayerRank>(), null);
-
-            //--assert
-            _autoMocker.ClassUnderTest.AssertWasNotCalled(mock => mock.AwardPlayingTimeBonusPoints(
-                   Arg<Dictionary<int, PointsScorecard>>.Is.Anything,
-                   Arg<AverageGameDurationTierEnum>.Is.Anything));
-        }
-
-        [Test]
-        public void ItDoesNotAwardBonusPointsForBoardGameGeekPlayingTimeIfThePlayingTimeIsNull()
-        {
-            //--arrange
-            var bggGameDefinition = new BoardGameGeekGameDefinition
-            {
-                PlayingTime = null
+                AverageWeight = -1
             };
 
             //--act
-            _autoMocker.ClassUnderTest.CalculatePoints(new List<PlayerRank>(), bggGameDefinition);
+            _autoMocker.ClassUnderTest.CalculatePoints(expectedPlayerRanks, bggGameDefinition);
 
             //--assert
-            _autoMocker.ClassUnderTest.AssertWasNotCalled(mock => mock.AwardPlayingTimeBonusPoints(
-                   Arg<Dictionary<int, PointsScorecard>>.Is.Anything,
-                   Arg<AverageGameDurationTierEnum>.Is.Anything));
+            _autoMocker.ClassUnderTest.AssertWasCalled(mock => mock.AwardBasePoints(expectedPlayerRanks));
         }
-
+ 
         [TestFixture]
         public class WhenCalculatingBasePoints : PointsCalculatorTests
         {
@@ -448,168 +357,43 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PointsTests
             //10 * (numberOfPlayers) * (fibonacciOf(numberOfPlayers + 1 - r) / fibonacciSumFrom(2, numberOfPlayers))
             //still need to make sure that ranked bucket groupings work correctly.
         }
-        
-        [TestFixture]
-        public class WhenCalculatingWeightBonusPoints : PointsCalculatorTests
-        {
-            [SetUp]
-            public override void SetUp()
-            {
-                _autoMocker = new RhinoAutoMocker<PointsCalculator>();
-            }
 
-            [Datapoint]
-            private static readonly WeightTierEnum[] ALL_WEIGHTS =
+        [Test]
+        public void ItAwardsBonusPointsForGameWeight()
+        {
+            //--arrange
+            var bggGameDefinition = new BoardGameGeekGameDefinition
             {
-                WeightTierEnum.Casual,
-                WeightTierEnum.Easy,
-                WeightTierEnum.Advanced,
-                WeightTierEnum.Challenging,
-                WeightTierEnum.Hardcore
+                AverageWeight = WeightTierCalculator.BOARD_GAME_GEEK_WEIGHT_INCLUSIVE_LOWER_BOUND_FOR_EASY - (decimal)0.01
             };
 
-            [Test]
-            [TestCaseSource(nameof(ALL_WEIGHTS))]
-            public void ItAwardsOneBonusPointPerTierAboveTheFirst(WeightTierEnum weight)
-            {
-                //--arrange
-                int playerOneId = 1;
-                int playerTwoId = 2;
-                var pointsScorecardDictionary = new Dictionary<int, PointsScorecard>
-                {
-                    {
-                        playerOneId,
-                        new PointsScorecard()
-                    },
-                    {
-                        playerTwoId,
-                        new PointsScorecard()
-                    }
-                };
+            //--act
+            _autoMocker.ClassUnderTest.CalculatePoints(new List<PlayerRank>(), bggGameDefinition);
 
-                //--act
-                _autoMocker.ClassUnderTest.AwardWeightBonusPoints(pointsScorecardDictionary, weight);
-
-                //--assert
-                var playerOneScorecard = pointsScorecardDictionary[playerOneId];
-                var playerTwoScorecard = pointsScorecardDictionary[playerTwoId];
-
-                switch (weight)
-                {
-                    case WeightTierEnum.Casual:
-                        Assert.That(playerOneScorecard.GameWeightBonusPoints, Is.EqualTo(0));
-                        Assert.That(playerTwoScorecard.GameWeightBonusPoints, Is.EqualTo(0));
-                        break;
-                    case WeightTierEnum.Easy:
-                        Assert.That(playerOneScorecard.GameWeightBonusPoints, Is.EqualTo(1));
-                        Assert.That(playerTwoScorecard.GameWeightBonusPoints, Is.EqualTo(1));
-                        break;
-                    case WeightTierEnum.Advanced:
-                        Assert.That(playerOneScorecard.GameWeightBonusPoints, Is.EqualTo(2));
-                        Assert.That(playerTwoScorecard.GameWeightBonusPoints, Is.EqualTo(2));
-                        break;
-                    case WeightTierEnum.Challenging:
-                        Assert.That(playerOneScorecard.GameWeightBonusPoints, Is.EqualTo(3));
-                        Assert.That(playerTwoScorecard.GameWeightBonusPoints, Is.EqualTo(3));
-                        break;
-                    case WeightTierEnum.Hardcore:
-                        Assert.That(playerOneScorecard.GameWeightBonusPoints, Is.EqualTo(4));
-                        Assert.That(playerTwoScorecard.GameWeightBonusPoints, Is.EqualTo(4));
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException(nameof(weight), weight, null);
-                }
-            }
+            //--assert
+            _autoMocker.Get<IWeightBonusCalculator>().AssertWasCalled(
+                                                                      mock =>
+                                                                      mock.CalculateWeightBonus(Arg<Dictionary<int, PointsScorecard>>.Is.Anything,
+                                                                                                Arg<decimal?>.Is.Equal(bggGameDefinition.AverageWeight)));
         }
 
-        [TestFixture]
-        public class WhenCalculatingGameDurationBonusPoints : PointsCalculatorTests
+        [Test]
+        public void ItAwardsBonusPointsForGameDuration()
         {
-            [SetUp]
-            public override void SetUp()
+            //--arrange
+            var bggGameDefinition = new BoardGameGeekGameDefinition
             {
-                _autoMocker = new RhinoAutoMocker<PointsCalculator>();
-                _autoMocker.PartialMockTheClassUnderTest();
-            }
-
-            [Datapoint]
-            private static readonly AverageGameDurationTierEnum[] ALL_TIERS =
-            {
-                AverageGameDurationTierEnum.VeryShort,
-                AverageGameDurationTierEnum.Short,
-                AverageGameDurationTierEnum.Medium,
-                AverageGameDurationTierEnum.Long,
-                AverageGameDurationTierEnum.VeryLong
+                PlayingTime = -1
             };
 
-            [Test]
-            [TestCaseSource(nameof(ALL_TIERS))]
-            public void ItAwardsAFortyPercentBonusToBasePointsPlusWeightPointsPerEachPlayingTimeTierBeyondTheFirstAndRoundsUp(AverageGameDurationTierEnum tier)
-            {
-                //--arrange
-                int playerOneId = 1;
-                int playerOneBasePoints = 70;
-                int playerOneWeightPoints = 30;
-                int playerTwoId = 2;
-                int playerTwoBasePoints = 1;
-                int playerTwoWeightPoints = 1;
-                var pointsScorecardDictionary = new Dictionary<int, PointsScorecard>
-                {
-                    {
-                        playerOneId,
-                        new PointsScorecard
-                        {
-                            BasePoints = playerOneBasePoints,
-                            GameWeightBonusPoints = playerOneWeightPoints
-                        }
-                    },
-                    {
-                        playerTwoId,
-                        new PointsScorecard
-                        {
-                            BasePoints = playerTwoBasePoints,
-                            GameWeightBonusPoints = playerTwoWeightPoints
-                        }
-                    }
-                };
+            //--act
+            _autoMocker.ClassUnderTest.CalculatePoints(new List<PlayerRank>(), bggGameDefinition);
 
-                //--act
-                _autoMocker.ClassUnderTest.AwardPlayingTimeBonusPoints(pointsScorecardDictionary, tier);
-
-                //--assert
-                var playerOneScorecard = pointsScorecardDictionary[playerOneId];
-                var playerTwoScorecard = pointsScorecardDictionary[playerTwoId];
-
-                switch (tier)
-                {
-                    case AverageGameDurationTierEnum.VeryShort:
-                        Assert.That(playerOneScorecard.GameDurationBonusPoints, Is.EqualTo(0));
-                        Assert.That(playerTwoScorecard.GameDurationBonusPoints, Is.EqualTo(0));
-                        break;
-                    case AverageGameDurationTierEnum.Short:
-                        Assert.That(playerOneScorecard.GameDurationBonusPoints, Is.EqualTo(40));
-                        Assert.That(playerTwoScorecard.GameDurationBonusPoints, Is.EqualTo(1));
-                        break;
-                    case AverageGameDurationTierEnum.Medium:
-                        Assert.That(playerOneScorecard.GameDurationBonusPoints, Is.EqualTo(80));
-                        Assert.That(playerTwoScorecard.GameDurationBonusPoints, Is.EqualTo(2));
-                        break;
-                    case AverageGameDurationTierEnum.Long:
-                        Assert.That(playerOneScorecard.GameDurationBonusPoints, Is.EqualTo(120));
-                        Assert.That(playerTwoScorecard.GameDurationBonusPoints, Is.EqualTo(2));
-                        break;
-                    case AverageGameDurationTierEnum.VeryLong:
-                        Assert.That(playerOneScorecard.GameDurationBonusPoints, Is.EqualTo(160));
-                        Assert.That(playerTwoScorecard.GameDurationBonusPoints, Is.EqualTo(3));
-                        break;
-                    case AverageGameDurationTierEnum.RidiculouslyLong:
-                        Assert.That(playerOneScorecard.GameDurationBonusPoints, Is.EqualTo(200));
-                        Assert.That(playerTwoScorecard.GameDurationBonusPoints, Is.EqualTo(4));
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException(nameof(tier), tier, null);
-                }
-            }
+            //--assert
+            _autoMocker.Get<IGameDurationBonusCalculator>().AssertWasCalled(
+                                                                            mock =>
+                                                                            mock.CalculateGameDurationBonus(Arg<Dictionary<int, PointsScorecard>>.Is.Anything,
+                                                                                                            Arg<int?>.Is.Equal(bggGameDefinition.PlayingTime)));
         }
     }
 }
