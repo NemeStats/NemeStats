@@ -1,6 +1,7 @@
 ﻿using BoardGameGeekApiClient.Interfaces;
 using BoardGameGeekApiClient.Service;
 using NUnit.Framework;
+using RollbarSharp;
 
 namespace BoardGameGeekApiClient.Tests.IntegrationTests
 {
@@ -13,7 +14,7 @@ namespace BoardGameGeekApiClient.Tests.IntegrationTests
         [OneTimeSetUp]
         public virtual void FixtureSetUp()
         {
-            ApiClient = new BoardGameGeekClient(new ApiDownloaderService());
+            ApiClient = new BoardGameGeekClient(new ApiDownloaderService(),new RollbarClient());
         }
     }
 }
