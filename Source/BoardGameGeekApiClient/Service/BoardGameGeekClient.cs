@@ -11,7 +11,6 @@ using BoardGameGeekApiClient.Helpers;
 using BoardGameGeekApiClient.Interfaces;
 using BoardGameGeekApiClient.Models;
 using RollbarSharp;
-using System.Web;
 
 namespace BoardGameGeekApiClient.Service
 {
