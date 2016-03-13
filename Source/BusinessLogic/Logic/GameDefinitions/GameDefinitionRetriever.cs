@@ -234,9 +234,11 @@ namespace BusinessLogic.Logic.GameDefinitions
                         Name = result.Name,
                         GamesPlayed = result.GameDefinitions.SelectMany(x => x.PlayedGames.Where(playedGame => playedGame.DatePlayed >= startDate)).Count(),
                         ThumbnailImageUrl = result.Thumbnail,
-                        GamingGroupsPlayingThisGame = result.GameDefinitions.Count
+                        GamingGroupsPlayingThisGame = result.GameDefinitions.Count(
+                            gameDefinition => gameDefinition.PlayedGames.Any(playedGame => playedGame.DatePlayed >= startDate))
                     })
-                    .OrderByDescending(x => x.GamesPlayed)
+                    .OrderByDescending(x => x.GamingGroupsPlayingThisGame)
+                    .ThenByDescending(x => x.GamesPlayed)
                     .Take(maxNumberOfGames)
                     .ToList();
         }

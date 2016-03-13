@@ -63,7 +63,7 @@
     <div class="col-md-12">
         <div class="col-md-6">
             <div class="fl-left">
-                <h3>Trending Games (Last 90 Days)</h3>
+                <h3>Trending Games (Last @ViewBag.NumTrendingGameDays Days) @Html.ActionLink(" - View More", MVC.GameDefinition.ShowTrendingGames())</h3>
             </div>
             @Html.Partial(MVC.GameDefinition.Views._TrendingGamesPartial, Model.TrendingGames)
         </div>

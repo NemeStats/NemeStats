@@ -1,34 +1,40 @@
 ﻿#region LICENSE
+
 // NemeStats is a free website for tracking the results of board games.
 //     Copyright (C) 2015 Jacob Gordon
-// 
+//
 //     This program is free software: you can redistribute it and/or modify
 //     it under the terms of the GNU General Public License as published by
 //     the Free Software Foundation, either version 3 of the License, or
 //     (at your option) any later version.
-// 
+//
 //     This program is distributed in the hope that it will be useful,
 //     but WITHOUT ANY WARRANTY; without even the implied warranty of
 //     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //     GNU General Public License for more details.
-// 
+//
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
-#endregion
-using System.Web;
-using System.Web.Routing;
+
+#endregion LICENSE
+
 using BoardGameGeekApiClient.Interfaces;
 using BusinessLogic.DataAccess;
 using BusinessLogic.Logic.BoardGameGeek;
 using BusinessLogic.Logic.GameDefinitions;
+using BusinessLogic.Logic.Users;
+using BusinessLogic.Models.Games;
 using BusinessLogic.Models.User;
 using NUnit.Framework;
 using Rhino.Mocks;
-using System.Linq;
+using StructureMap.AutoMocking;
+using System.Collections.Generic;
+using System.Web;
 using System.Web.Mvc;
-using BusinessLogic.Logic.Users;
+using System.Web.Routing;
 using UI.Controllers;
 using UI.Controllers.Helpers;
+using UI.Models.GameDefinitionModels;
 using UI.Transformations;
 
 namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
@@ -36,6 +42,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
     [TestFixture]
     public class GameDefinitionControllerTestBase
     {
+        protected RhinoAutoMocker<GameDefinitionController> autoMocker;
         protected GameDefinitionController gameDefinitionControllerPartialMock;
         protected IGameDefinitionRetriever gameDefinitionRetrieverMock;
         protected IGameDefinitionDetailsViewModelBuilder gameDefinitionTransformationMock;
@@ -48,10 +55,18 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
         protected HttpRequestBase asyncRequestMock;
         protected IUserRetriever userRetriever;
         protected IBoardGameGeekGamesImporter BoardGameGeekGamesImporter;
+        protected ITransformer transformer;
+        protected List<TrendingGame> trendingGames;
+        protected List<TrendingGameViewModel> trendingGamesGameViewModels;
 
         [SetUp]
         public virtual void SetUp()
         {
+            autoMocker = new RhinoAutoMocker<GameDefinitionController>();
+            autoMocker.Get<IGameDefinitionRetriever>()
+                .Expect(mock => mock.GetTrendingGames(GameDefinitionController.NUMBER_OF_TRENDING_GAMES_TO_SHOW,
+                    GameDefinitionController.NUMBER_OF_DAYS_OF_TRENDING_GAMES))
+                    .Return(trendingGames);
             AutomapperConfiguration.Configure();
             dataContextMock = MockRepository.GenerateMock<NemeStatsDataContext>();
             gameDefinitionRetrieverMock = MockRepository.GenerateMock<IGameDefinitionRetriever>();
@@ -62,15 +77,17 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
             boardGameGeekApiClient = MockRepository.GenerateMock<IBoardGameGeekApiClient>();
             userRetriever = MockRepository.GenerateMock<IUserRetriever>();
             BoardGameGeekGamesImporter = MockRepository.GenerateMock<IBoardGameGeekGamesImporter>();
+            transformer = MockRepository.GenerateMock<ITransformer>();
             gameDefinitionControllerPartialMock = MockRepository.GeneratePartialMock<GameDefinitionController>(
-                dataContextMock, 
+                dataContextMock,
                 gameDefinitionRetrieverMock,
                 gameDefinitionTransformationMock,
                 showingXResultsMessageBuilderMock,
                 gameDefinitionCreatorMock,
                 boardGameGeekApiClient,
                 userRetriever,
-                BoardGameGeekGamesImporter);
+                BoardGameGeekGamesImporter,
+                transformer);
             gameDefinitionControllerPartialMock.Url = urlHelperMock;
 
             asyncRequestMock = MockRepository.GenerateMock<HttpRequestBase>();
@@ -86,15 +103,13 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
                 .Repeat.Any()
                 .Return(asyncRequestMock);
 
-            gameDefinitionControllerPartialMock.ControllerContext = new ControllerContext(context, new RouteData(), gameDefinitionControllerPartialMock); 
-            
+            gameDefinitionControllerPartialMock.ControllerContext = new ControllerContext(context, new RouteData(), gameDefinitionControllerPartialMock);
+
             currentUser = new ApplicationUser()
             {
                 Id = "user id",
                 CurrentGamingGroupId = 15151
             };
         }
-
-
     }
 }
