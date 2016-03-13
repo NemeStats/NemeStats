@@ -202,16 +202,21 @@ namespace BoardGameGeekApiClient.Service
             return new List<GameDetails>();
         }
 
+        private string CleanUpQuery(string query)
+        {
+            return Uri.EscapeUriString(query.Trim());
+        }
 
         public List<SearchBoardGameResult> SearchBoardGames(string query, bool exactMatch = false)
         {
             try
             {
-                var uriString = BASE_URL_API_V2 + $"/search?query={query}&type=boardgame";
+                var uriString = BASE_URL_API_V2 + $"/search?query={CleanUpQuery(query)}&type=boardgame";
                 if (exactMatch)
                 {
                     uriString += "&exact=1";
                 }
+
                 var searchUrl = new Uri(uriString);
 
 

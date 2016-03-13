@@ -15,13 +15,12 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
+
+using System.Web;
+using StructureMap.Web.Pipeline;
+using UI.App_Start;
+
 namespace UI.DependencyResolution {
-    using System.Web;
-
-    using UI.App_Start;
-
-    using StructureMap.Web.Pipeline;
-
     public class StructureMapScopeModule : IHttpModule {
         #region Public Methods and Operators
 

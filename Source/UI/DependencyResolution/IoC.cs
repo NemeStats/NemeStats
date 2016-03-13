@@ -15,12 +15,18 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
+
+using NemeStats.IoC;
+using StructureMap;
+
 namespace UI.DependencyResolution {
-    using StructureMap;
-	
     public static class IoC {
         public static IContainer Initialize() {
-            return new Container(c => c.AddRegistry<DefaultRegistry>());
+            return new Container(c =>
+            {
+                c.AddRegistry<CommonRegistry>();
+                c.AddRegistry<WebRegistry>();
+            });
         }
     }
 }

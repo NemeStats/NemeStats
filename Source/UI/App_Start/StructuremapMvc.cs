@@ -16,8 +16,9 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 
+using BusinessLogic.DataAccess;
 using UI.App_Start;
-
+using UI.DependencyResolution;
 using WebActivatorEx;
 
 [assembly: PreApplicationStartMethod(typeof(StructuremapMvc), "Start")]
@@ -27,10 +28,7 @@ namespace UI.App_Start {
 	using System.Web.Mvc;
 
    using Microsoft.Web.Infrastructure.DynamicModuleHelper;
-
-	using UI.DependencyResolution;
-
-    using StructureMap;
+	using StructureMap;
     
 	public static class StructuremapMvc {
         #region Public Properties
