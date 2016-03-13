@@ -141,8 +141,8 @@
     <Reference Include="Owin">
       <HintPath>..\..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
     </Reference>
-    <Reference Include="RollbarSharp, Version=0.3.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\RollbarSharp.0.3.3.0\lib\net40\RollbarSharp.dll</HintPath>
+    <Reference Include="RollbarSharp, Version=0.3.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\RollbarSharp.0.3.5.0\lib\net40\RollbarSharp.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="SendGrid, Version=6.3.0.0, Culture=neutral, PublicKeyToken=4f047e93159395ca, processorArchitecture=MSIL">
@@ -327,17 +327,18 @@
     <Compile Include="Controllers\Helpers\IShowingXResultsMessageBuilder.cs" />
     <Compile Include="Controllers\Helpers\ShowingXResultsMessageBuilder.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\JobsController.cs" />
     <Compile Include="Controllers\PlayedGameController.cs" />
     <Compile Include="Controllers\PlayerController.cs" />
+    <Compile Include="Attributes\Filters\InjectingActionInvoker.cs" />
+    <Compile Include="Attributes\Filters\RollbarExceptionFilter.cs" />
+    <Compile Include="Attributes\Filters\UserContextAttribute.cs" />
     <Compile Include="DependencyResolution\ControllerConvention.cs" />
-    <Compile Include="DependencyResolution\DefaultRegistry.cs" />
     <Compile Include="DependencyResolution\IoC.cs" />
     <Compile Include="DependencyResolution\StructureMapDependencyScope.cs" />
     <Compile Include="DependencyResolution\StructureMapScopeModule.cs" />
     <Compile Include="DependencyResolution\StructureMapServiceActivator.cs" />
-    <Compile Include="Attributes\Filters\InjectingActionInvoker.cs" />
-    <Compile Include="Attributes\Filters\RollbarExceptionFilter.cs" />
-    <Compile Include="Attributes\Filters\UserContextAttribute.cs" />
+    <Compile Include="DependencyResolution\WebRegistry.cs" />
     <Compile Include="GameDefinitionController.generated.cs">
       <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>
@@ -784,6 +785,7 @@
     <Folder Include="App_Code\" />
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Api\Views\Shared\" />
+    <Folder Include="Views\Jobs\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -794,13 +796,17 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\BoardGameGeekApiClient\BoardGameGeekApiClient.csproj">
+    <ProjectReference Include="..\BoardGameGeekApiClient\BoardGameGeekApiClient.csproj">
       <Project>{d4efacf4-b72b-4395-89bf-4caa9a33c427}</Project>
       <Name>BoardGameGeekApiClient</Name>
     </ProjectReference>
     <ProjectReference Include="..\BusinessLogic\BusinessLogic.csproj">
       <Project>{b1184b6a-9c68-48b6-814c-0667b69f89d2}</Project>
       <Name>BusinessLogic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NemeStats.IoC\NemeStats.IoC.csproj">
+      <Project>{B8AF7353-C741-4E61-BED4-0EB603D0C3C0}</Project>
+      <Name>NemeStats.IoC</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

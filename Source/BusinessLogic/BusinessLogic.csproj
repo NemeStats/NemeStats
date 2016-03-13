@@ -94,6 +94,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
     </Reference>
+    <Reference Include="RollbarSharp, Version=0.3.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\RollbarSharp.0.3.5.0\lib\net40\RollbarSharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="SendGrid, Version=6.3.0.0, Culture=neutral, PublicKeyToken=4f047e93159395ca, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Sendgrid.6.3.0\lib\SendGrid.dll</HintPath>
       <Private>True</Private>
@@ -110,8 +114,8 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Configuration.Abstractions, Version=2.0.2.15, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\UniversalAnalyticsMeasurementProtocolWrapper.1.3.1\lib\net40\System.Configuration.Abstractions.dll</HintPath>
+      <HintPath>..\..\packages\System.Configuration.Abstractions.2.0.2.15\lib\net45\System.Configuration.Abstractions.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -160,9 +164,12 @@
     <Compile Include="Exceptions\UnauthorizedEntityAccessException.cs" />
     <Compile Include="Export\ExcelGenerator.cs" />
     <Compile Include="Export\IExcelGenerator.cs" />
+    <Compile Include="Jobs\BoardGameGeekCleanUpService\LinkOrphanGamesResult.cs" />
+    <Compile Include="Jobs\BoardGameGeekCleanUpService\BoardGameGeekCleanUpService.cs" />
     <Compile Include="Logic\BoardGameGeek\BoardGameGeekGameDefinitionCreator.cs" />
     <Compile Include="Logic\BoardGameGeek\BoardGameGeekGamesImporter.cs" />
     <Compile Include="Logic\BoardGameGeek\BoardGameGeekUrlBuilder.cs" />
+    <Compile Include="Jobs\BoardGameGeekCleanUpService\IBoardGameGeekCleanUpService.cs" />
     <Compile Include="Logic\BoardGameGeek\IBoardGameGeekGameDefinitionCreator.cs" />
     <Compile Include="Logic\BoardGameGeek\IBoardGameGeekGamesImporter.cs" />
     <Compile Include="Logic\Champions\ChampionRecalculator.cs" />
@@ -776,7 +783,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\BoardGameGeekApiClient\BoardGameGeekApiClient.csproj">
+    <ProjectReference Include="..\BoardGameGeekApiClient\BoardGameGeekApiClient.csproj">
       <Project>{d4efacf4-b72b-4395-89bf-4caa9a33c427}</Project>
       <Name>BoardGameGeekApiClient</Name>
     </ProjectReference>

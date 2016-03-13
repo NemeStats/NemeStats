@@ -15,16 +15,15 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using Microsoft.Practices.ServiceLocation;
+using StructureMap;
+
 namespace UI.DependencyResolution {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Web;
-
-    using Microsoft.Practices.ServiceLocation;
-
-    using StructureMap;
-	
     /// <summary>
     /// The structure map dependency scope.
     /// </summary>

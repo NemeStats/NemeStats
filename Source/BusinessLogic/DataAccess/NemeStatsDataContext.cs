@@ -66,7 +66,7 @@ namespace BusinessLogic.DataAccess
             return entity;
         }
         //TODO If the passed in TEntity that is new, the Id will not be set until SaveChanges is called
-        public virtual TEntity Save<TEntity>(TEntity entity, ApplicationUser currentUser) where TEntity : class, EntityWithTechnicalKey
+        public virtual TEntity Save<TEntity>(TEntity entity, ApplicationUser currentUser ) where TEntity : class, EntityWithTechnicalKey
         {
             ValidateArguments<TEntity>(entity, currentUser);
 

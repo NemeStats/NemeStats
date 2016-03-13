@@ -1,3 +1,4 @@
+using System.Globalization;
 using BoardGameGeekApiClient.Helpers;
 using NUnit.Framework;
 
@@ -36,13 +37,13 @@ namespace BoardGameGeekApiClient.Tests.UnitTests.Helpers.BoardGameGeekApiClientH
 
         public class When_Attribute_Is_Null_And_Element_Value_Is_Decimal : GetDecimalValue_Tests
         {
-            decimal decimalElementValue = (decimal) 100.1;
+            decimal decimalElementValue = (decimal)100.1;
 
             [SetUp]
             public override void SetUp()
             {
 
-                ElementValue = decimalElementValue.ToString();
+                ElementValue = decimalElementValue.ToString(new CultureInfo("en-US").NumberFormat);
                 base.SetUp();
                 Attribute = null;
                 Result = XElementToTest.GetDecimalValue(Attribute, DefaultValue);
@@ -94,11 +95,11 @@ namespace BoardGameGeekApiClient.Tests.UnitTests.Helpers.BoardGameGeekApiClientH
 
         public class When_Attribute_Exists_And_Is_Decimal : GetDecimalValue_Tests
         {
-            decimal integerAttributeValue = (decimal) 100.1;
+            decimal integerAttributeValue = (decimal)100.1;
             [SetUp]
             public override void SetUp()
             {
-                AttributeValue = integerAttributeValue.ToString();
+                AttributeValue = integerAttributeValue.ToString(new CultureInfo("en-US").NumberFormat);
                 base.SetUp();
                 Result = XElementToTest.GetDecimalValue(Attribute, DefaultValue);
             }
@@ -106,7 +107,7 @@ namespace BoardGameGeekApiClient.Tests.UnitTests.Helpers.BoardGameGeekApiClientH
             [Test]
             public void Then_Returns_Attribute_Value()
             {
-                Assert.AreEqual(Result, decimal.Parse(AttributeValue));
+                Assert.AreEqual(Result, decimal.Parse(AttributeValue, new CultureInfo("en-US").NumberFormat));
             }
         }
 

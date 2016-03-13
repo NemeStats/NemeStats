@@ -25,9 +25,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{7503F641-5B66-4BEF-AFB3-07AB8685D459}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BoardGameGeekApiClient", "BoardGameGeekApiClient\BoardGameGeekApiClient.csproj", "{D4EFACF4-B72B-4395-89BF-4CAA9A33C427}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BoardGameGeekApiClient", "Source\BoardGameGeekApiClient\BoardGameGeekApiClient.csproj", "{D4EFACF4-B72B-4395-89BF-4CAA9A33C427}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BoardGameGeekApiClient.Tests", "BoardGameGeekApiClient.Tests\BoardGameGeekApiClient.Tests.csproj", "{7FF19E35-5D9D-4F67-8BB7-9026DE97E43E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BoardGameGeekApiClient.Tests", "Tests\BoardGameGeekApiClient.Tests\BoardGameGeekApiClient.Tests.csproj", "{7FF19E35-5D9D-4F67-8BB7-9026DE97E43E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NemeStats.IoC", "Source\NemeStats.IoC\NemeStats.IoC.csproj", "{B8AF7353-C741-4E61-BED4-0EB603D0C3C0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -85,6 +87,14 @@ Global
 		{7FF19E35-5D9D-4F67-8BB7-9026DE97E43E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7FF19E35-5D9D-4F67-8BB7-9026DE97E43E}.Tosho|Any CPU.ActiveCfg = Release|Any CPU
 		{7FF19E35-5D9D-4F67-8BB7-9026DE97E43E}.Tosho|Any CPU.Build.0 = Release|Any CPU
+		{B8AF7353-C741-4E61-BED4-0EB603D0C3C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B8AF7353-C741-4E61-BED4-0EB603D0C3C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B8AF7353-C741-4E61-BED4-0EB603D0C3C0}.Jake|Any CPU.ActiveCfg = Release|Any CPU
+		{B8AF7353-C741-4E61-BED4-0EB603D0C3C0}.Jake|Any CPU.Build.0 = Release|Any CPU
+		{B8AF7353-C741-4E61-BED4-0EB603D0C3C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B8AF7353-C741-4E61-BED4-0EB603D0C3C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B8AF7353-C741-4E61-BED4-0EB603D0C3C0}.Tosho|Any CPU.ActiveCfg = Release|Any CPU
+		{B8AF7353-C741-4E61-BED4-0EB603D0C3C0}.Tosho|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

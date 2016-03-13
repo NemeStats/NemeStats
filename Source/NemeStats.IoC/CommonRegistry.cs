@@ -18,7 +18,6 @@
 
 using System.Configuration.Abstractions;
 using System.Data.Entity;
-using System.Web;
 using BoardGameGeekApiClient.Interfaces;
 using BusinessLogic.DataAccess;
 using BusinessLogic.DataAccess.GamingGroups;
@@ -26,45 +25,40 @@ using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.DataAccess.Security;
 using BusinessLogic.EventTracking;
 using BusinessLogic.Export;
+using BusinessLogic.Jobs.BoardGameGeekCleanUpService;
 using BusinessLogic.Logic.BoardGameGeek;
 using BusinessLogic.Logic.Champions;
 using BusinessLogic.Logic.Email;
-using BusinessLogic.Logic.GameDefinitions;
-using BusinessLogic.Logic.GamingGroups;
+    using BusinessLogic.Logic.GameDefinitions;
+    using BusinessLogic.Logic.GamingGroups;
 using BusinessLogic.Logic.Nemeses;
-using BusinessLogic.Logic.PlayedGames;
-using BusinessLogic.Logic.Players;
+    using BusinessLogic.Logic.PlayedGames;
+    using BusinessLogic.Logic.Players;
 using BusinessLogic.Logic.Points;
-using BusinessLogic.Logic.Users;
+    using BusinessLogic.Logic.Users;
 using BusinessLogic.Logic.VotableFeatures;
-using BusinessLogic.Models.User;
-using BusinessLogic.Providers;
+    using BusinessLogic.Models.User;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
-using Microsoft.Owin.Security;
-using Microsoft.Owin.Security.DataProtection;
+using RollbarSharp;
 using StructureMap;
-using StructureMap.Graph;
-using StructureMap.Web;
-using UI.Controllers.Helpers;
-using UI.Transformations;
-using UI.Transformations.PlayerTransformations;
+    using StructureMap.Graph;
+    using StructureMap.Web;
 using UniversalAnalyticsHttpWrapper;
 
-namespace UI.DependencyResolution
-{
-    public class DefaultRegistry : Registry
+namespace NemeStats.IoC
+    {
+    public class CommonRegistry : Registry
     {
         #region Constructors and Destructors
 
-        public DefaultRegistry()
+        public CommonRegistry()
         {
             Scan(
                 scan =>
                 {
                     scan.TheCallingAssembly();
                     scan.WithDefaultConventions();
-                    scan.With(new ControllerConvention());
                 });
 
             Scan(s =>
@@ -73,53 +67,13 @@ namespace UI.DependencyResolution
                 s.RegisterConcreteTypesAgainstTheFirstInterface();
             });
 
-            SetupSingletonMappings();
+            this.For<IRollbarClient>().Use(new RollbarClient()).Singleton();
 
             SetupUniquePerRequestMappings();
 
             SetupTransientMappings();
         }
 
-        private void SetupSingletonMappings()
-        {
-            For<IGameResultViewModelBuilder>().Singleton().Use<GameResultViewModelBuilder>();
-
-            For<IPlayerDetailsViewModelBuilder>().Singleton().Use<PlayerDetailsViewModelBuilder>();
-
-            For<IGamingGroupViewModelBuilder>().Singleton()
-                                               .Use<GamingGroupViewModelBuilder>();
-
-            For<IGamingGroupInvitationViewModelBuilder>().Singleton()
-                                                         .Use<GamingGroupInvitationViewModelBuilder>();
-
-            For<ITopPlayerViewModelBuilder>().Use<TopPlayerViewModelBuilder>();
-
-            For<IPlayedGameDetailsViewModelBuilder>().Singleton().Use<PlayedGameDetailsViewModelBuilder>();
-
-            For<IPlayerWithNemesisViewModelBuilder>().Singleton().Use<PlayerWithNemesisViewModelBuilder>();
-
-            For<IMinionViewModelBuilder>().Singleton().Use<MinionViewModelBuilder>();
-
-            For<INemesisChangeViewModelBuilder>().Singleton().Use<NemesisChangeViewModelBuilder>();
-
-            For<IGameDefinitionDetailsViewModelBuilder>().Singleton().Use<GameDefinitionDetailsViewModelBuilder>();
-
-            For<IGameDefinitionSummaryViewModelBuilder>().Singleton().Use<GameDefinitionSummaryViewModelBuilder>();
-
-            For<IPlayerEditViewModelBuilder>().Singleton().Use<PlayerEditViewModelBuilder>();
-
-            For<IDataProtectionProvider>().Singleton().Use<MachineKeyProtectionProvider>();
-
-            For<ITransformer>().Singleton().Use<Transformer>();
-
-            For<IPointsCalculator>().Singleton().Use<PointsCalculator>();
-
-            For<IWeightTierCalculator>().Singleton().Use<WeightTierCalculator>();
-
-            For<IGameDurationBonusCalculator>().Singleton().Use<GameDurationBonusCalculator>();
-
-            For<IWeightBonusCalculator>().Singleton().Use<WeightBonusCalculator>();
-        }
 
         private void SetupTransientMappings()
         {
@@ -139,8 +93,8 @@ namespace UI.DependencyResolution
             For<IUserStore<ApplicationUser>>()
                 .Use<UserStore<ApplicationUser>>();
 
-            For<IShowingXResultsMessageBuilder>().Use<ShowingXResultsMessageBuilder>();
-            For<IGamingGroupRetriever>().Use<GamingGroupRetriever>();
+            
+            this.For<IGamingGroupRetriever>().Use<GamingGroupRetriever>();
 
             For<IPendingGamingGroupInvitationRetriever>().Use<PendingGamingGroupInvitationRetriever>();
 
@@ -195,17 +149,17 @@ namespace UI.DependencyResolution
 
             For<IBoardGameGeekGameDefinitionCreator>().Use<BoardGameGeekGameDefinitionCreator>();
 
-            For<IBoardGameGeekUserSaver>().Use<BoardGameGeekUserSaver>();
-            For<IBoardGameGeekGamesImporter>().Use<BoardGameGeekGamesImporter>();
+            this.For<IBoardGameGeekUserSaver>().Use<BoardGameGeekUserSaver>();
+            this.For<IBoardGameGeekGamesImporter>().Use<BoardGameGeekGamesImporter>();
+            this.For<IBoardGameGeekCleanUpService>().Use<BoardGameGeekCleanUpService>();            
 
         }
 
         private void SetupUniquePerRequestMappings()
         {
-            For<DbContext>().HttpContextScoped().Use<NemeStatsDbContext>();
-            For<IDataContext>().HttpContextScoped().Use<NemeStatsDataContext>();
-            For<ApplicationUserManager>().HttpContextScoped().Use<ApplicationUserManager>();
-            For<IAuthenticationManager>().Use(() => HttpContext.Current.GetOwinContext().Authentication);
+            this.For<DbContext>().HttpContextScoped().Use<NemeStatsDbContext>();
+            this.For<IDataContext>().HttpContextScoped().Use<NemeStatsDataContext>();
+            this.For<ApplicationUserManager>().HttpContextScoped().Use<ApplicationUserManager>();
         }
 
         #endregion
