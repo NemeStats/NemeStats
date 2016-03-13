@@ -21,7 +21,6 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using BusinessLogic.Models;
 using UI.Areas.Api.Models;
 using UI.Attributes;
 using VersionedRestApi;
@@ -88,14 +87,16 @@ namespace UI.Areas.Api.Controllers
             var createGameDefinitionRequest = new CreateGameDefinitionRequest
             {
                 BoardGameGeekGameDefinitionId = newGameDefinitionMessage.BoardGameGeekObjectId,
-                Name = newGameDefinitionMessage.GameDefinitionName
+                Name = newGameDefinitionMessage.GameDefinitionName,
+                GamingGroupId = newGameDefinitionMessage.GamingGroupId
             };
 
             var newGameDefinition = gameDefinitionSaver.CreateGameDefinition(createGameDefinitionRequest, CurrentUser);
 
             var newlyCreatedGameDefinitionMessage = new NewlyCreatedGameDefinitionMessage
             {
-                GameDefinitionId = newGameDefinition.Id
+                GameDefinitionId = newGameDefinition.Id,
+                GamingGroupId = newGameDefinition.GamingGroupId
             };
 
             return Request.CreateResponse(HttpStatusCode.OK, newlyCreatedGameDefinitionMessage);

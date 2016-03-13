@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using UI.Models.User;
 
 namespace UI.Models.GameDefinitionModels
 {

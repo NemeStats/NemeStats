@@ -188,7 +188,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
         }
 
         [Test]
-        public void ItSavesANewGameDefinition()
+        public void ItSavesANewGameDefinitionOnTheCurrentUsersGamingGroupIfNoneIsSpecified()
         {
             var createGameDefinitionRequest = new CreateGameDefinitionRequest
             {
@@ -210,7 +210,27 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
             var actualGameDefinition = args[0][0] as GameDefinition;
             Assert.That(actualGameDefinition, Is.Not.Null);
             Assert.That(actualGameDefinition.Name, Is.EqualTo(createGameDefinitionRequest.Name));
+            Assert.That(actualGameDefinition.GamingGroupId, Is.EqualTo(currentUser.CurrentGamingGroupId));
+        }
 
+        [Test]
+        public void ItSavesANewGameDefinitionOnTheSpecifiedGamingGroup()
+        {
+            var createGameDefinitionRequest = new CreateGameDefinitionRequest
+            {
+                Name = "game definition name",
+                GamingGroupId = currentUser.CurrentGamingGroupId - 1
+            };
+            autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<GameDefinition>()).Return(new List<GameDefinition>().AsQueryable());
+            autoMocker.Get<IBoardGameGeekGameDefinitionCreator>().Expect(
+                mock => mock.CreateBoardGameGeekGameDefinition(Arg<int>.Is.Anything, Arg<ApplicationUser>.Is.Anything))
+                .Return(null);
+
+            autoMocker.ClassUnderTest.CreateGameDefinition(createGameDefinitionRequest, currentUser);
+
+            autoMocker.Get<IDataContext>().AssertWasCalled(mock => mock.Save(
+                Arg<GameDefinition>.Matches(x => x.GamingGroupId == createGameDefinitionRequest.GamingGroupId),
+                Arg<ApplicationUser>.Is.Anything));
         }
 
         [Test]
