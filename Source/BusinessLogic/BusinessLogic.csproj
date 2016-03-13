@@ -179,7 +179,6 @@
     <Compile Include="Logic\GamingGroups\GamingGroupInfoForUser.cs" />
     <Compile Include="Logic\Players\PlayerNameBuilder.cs" />
     <Compile Include="Logic\Points\GameDurationBonusCalculator.cs" />
-    <Compile Include="Logic\Points\IAverageGameDurationTierCalculator.cs" />
     <Compile Include="Logic\Points\IGameDurationBonusCalculator.cs" />
     <Compile Include="Logic\Points\IPointsCalculator.cs" />
     <Compile Include="Logic\Points\IWeightBonusCalculator.cs" />
