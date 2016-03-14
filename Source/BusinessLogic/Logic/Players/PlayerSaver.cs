@@ -66,6 +66,11 @@ namespace BusinessLogic.Logic.Players
             return newPlayer;
         }
 
+        public Player Save(CreatePlayerRequest createPlayerRequest, ApplicationUser applicationUser)
+        {
+            throw new NotImplementedException();
+        }
+
         private void ValidatePlayerWithThisNameDoesntAlreadyExist(Player player, ApplicationUser currentUser)
         {
             if (player.AlreadyInDatabase())

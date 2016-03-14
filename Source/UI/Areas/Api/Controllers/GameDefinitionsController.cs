@@ -88,7 +88,7 @@ namespace UI.Areas.Api.Controllers
             {
                 BoardGameGeekGameDefinitionId = newGameDefinitionMessage.BoardGameGeekObjectId,
                 Name = newGameDefinitionMessage.GameDefinitionName,
-                GamingGroupId = newGameDefinitionMessage.GamingGroupId
+                GamingGroupId = newGameDefinitionMessage.GamingGroupId ?? gamingGroupId
             };
 
             var newGameDefinition = gameDefinitionSaver.CreateGameDefinition(createGameDefinitionRequest, CurrentUser);

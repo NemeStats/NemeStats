@@ -38,7 +38,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerSaverTests
         {
             var expectedException = new ArgumentNullException("player");
 
-            Exception exception = Assert.Throws<ArgumentNullException>(() => autoMocker.ClassUnderTest.Save(null, currentUser));
+            Exception exception = Assert.Throws<ArgumentNullException>(() => autoMocker.ClassUnderTest.Save((Player)null, currentUser));
 
             Assert.AreEqual(expectedException.Message, exception.Message);
         }

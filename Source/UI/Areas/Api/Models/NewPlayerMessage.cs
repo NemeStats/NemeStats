@@ -6,5 +6,7 @@ namespace UI.Areas.Api.Models
     {
         [Required]
         public string PlayerName { get; set; }
+
+        public int? GamingGroupId { get; set; }
     }
 }

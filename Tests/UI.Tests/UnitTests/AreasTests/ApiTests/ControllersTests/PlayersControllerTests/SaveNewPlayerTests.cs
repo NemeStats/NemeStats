@@ -1,6 +1,7 @@
 ﻿using System.Net.Http;
 using BusinessLogic.Logic.Players;
 using BusinessLogic.Models;
+using BusinessLogic.Models.Players;
 using BusinessLogic.Models.User;
 using NUnit.Framework;
 using Rhino.Mocks;
@@ -12,16 +13,18 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.PlayersControl
     [TestFixture]
     public class SaveNewPlayerTests : ApiControllerTestBase<PlayersController>
     {
-        private Player expectedPlayer;
+        private Player _expectedPlayer;
+        private readonly int _expectedGamingGroupId = 2;
 
         [SetUp]
         public void SetUp()
         {
-            expectedPlayer = new Player
+            _expectedPlayer = new Player
             {
-                Id = 1
+                Id = 1,
+                GamingGroupId = _expectedGamingGroupId
             };
-            autoMocker.Get<IPlayerSaver>().Expect(mock => mock.Save(null, null)).IgnoreArguments().Return(expectedPlayer);
+            autoMocker.Get<IPlayerSaver>().Expect(mock => mock.Save(Arg<CreatePlayerRequest>.Is.Anything, Arg<ApplicationUser>.Is.Anything)).IgnoreArguments().Return(_expectedPlayer);
         }
 
         [Test]
@@ -29,25 +32,46 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.PlayersControl
         {
             var newPlayerMessage = new NewPlayerMessage
             {
-                PlayerName = "some player name"
+                PlayerName = "some player name",
+                GamingGroupId = _expectedGamingGroupId
             };
 
-            autoMocker.ClassUnderTest.SaveNewPlayer(newPlayerMessage, 0);
+            autoMocker.ClassUnderTest.SaveNewPlayer(newPlayerMessage, _expectedGamingGroupId);
 
             autoMocker.Get<IPlayerSaver>().AssertWasCalled(
-                mock => mock.Save(Arg<Player>.Matches(player => player.Name == newPlayerMessage.PlayerName), 
+                mock => mock.Save(Arg<CreatePlayerRequest>.Matches(player => player.Name == newPlayerMessage.PlayerName
+                && player.GamingGroupId == _expectedGamingGroupId),
                     Arg<ApplicationUser>.Is.Anything));
         }
 
         [Test]
-        public void ItReturnsThePlayerIdOfTheNewlyCreatedPlayer()
+        public void ItSavesTheNewPlayerUsingTheGamingGroupIdOnTheRequestInsteadOfFromTheUriIfOneIsSpecified ()
         {
-            var actualResponse = autoMocker.ClassUnderTest.SaveNewPlayer(new NewPlayerMessage(), 0);
+            var newPlayerMessage = new NewPlayerMessage
+            {
+                PlayerName = "some player name",
+                GamingGroupId = _expectedGamingGroupId
+            };
+            int someGamingGroupIdThatWontGetUsed = -100;
+
+            autoMocker.ClassUnderTest.SaveNewPlayer(newPlayerMessage, someGamingGroupIdThatWontGetUsed);
+
+            autoMocker.Get<IPlayerSaver>().AssertWasCalled(
+                mock => mock.Save(Arg<CreatePlayerRequest>.Matches(player => player.Name == newPlayerMessage.PlayerName
+                && player.GamingGroupId == _expectedGamingGroupId),
+                    Arg<ApplicationUser>.Is.Anything));
+        }
+
+        [Test]
+        public void ItReturnsThePlayerIdAndGamingGroupOfTheNewlyCreatedPlayer()
+        {
+            var actualResponse = autoMocker.ClassUnderTest.SaveNewPlayer(new NewPlayerMessage(), _expectedGamingGroupId);
 
             Assert.That(actualResponse.Content, Is.TypeOf(typeof(ObjectContent<NewlyCreatedPlayerMessage>)));
             var content = actualResponse.Content as ObjectContent<NewlyCreatedPlayerMessage>;
             var newlyCreatedPlayerMessage = content.Value as NewlyCreatedPlayerMessage;
-            Assert.That(newlyCreatedPlayerMessage.PlayerId, Is.EqualTo(expectedPlayer.Id));
+            Assert.That(newlyCreatedPlayerMessage.PlayerId, Is.EqualTo(_expectedPlayer.Id));
+            Assert.That(newlyCreatedPlayerMessage.GamingGroupId, Is.EqualTo(_expectedGamingGroupId));
         }
     }
 }
