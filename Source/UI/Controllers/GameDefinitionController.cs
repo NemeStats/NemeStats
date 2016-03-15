@@ -266,7 +266,7 @@ namespace UI.Controllers
         {
             var bggUser = _userRetriever.RetrieveUserInformation(currentUser).BoardGameGeekUser;
 
-            return View(MVC.GameDefinition.Views._CreatePartial, new CreateGameDefinitionViewModel() { BGGUserName = bggUser?.Name });
+            return View(MVC.GameDefinition.Views._CreatePartial, new CreateGameDefinitionViewModel() { BGGUserName = bggUser?.Name, GamingGroupId = currentUser.CurrentGamingGroupId});
         }
 
         [Authorize]

@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Text;
+using System.Threading;
 using System.Xml.Linq;
 using BoardGameGeekApiClient.Interfaces;
 using Microsoft.Practices.EnterpriseLibrary.TransientFaultHandling;
@@ -25,7 +26,7 @@ namespace BoardGameGeekApiClient.Service
 
         public ApiDownloaderService()
         {
-            var retryStrategy = new Incremental(5, TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(5));
+            var retryStrategy = new Incremental(5, TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(2));
             _retryPolicy = new RetryPolicy<BGGTransientErrorDetectionStrategy>(retryStrategy);
         }
 
@@ -46,6 +47,9 @@ namespace BoardGameGeekApiClient.Service
         {
             // Due to malformed header I cannot use GetContentAsync and ReadAsStringAsync :(
             // UTF-8 is now hard-coded...
+
+            //wait 100ms before each read to avoid BGG block
+            Thread.Sleep(100);
             data = null;
             while (data == null)
             {

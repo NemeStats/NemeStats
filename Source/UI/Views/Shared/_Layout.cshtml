@@ -48,10 +48,13 @@
 
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
     @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/signalr")
+    <script src="~/signalr/hubs"></script>
     @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/bundles/jqueryui")
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/handlebars")
+    @Scripts.Render("~/bundles/vue")
     @Scripts.Render("~/bundles/readmore")
     @Scripts.Render("~/bundles/custom")
     @RenderSection("Scripts", required: false)
