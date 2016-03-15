@@ -1,0 +1,101 @@
+﻿using System;
+using System.Linq;
+using System.Threading;
+using BusinessLogic.DataAccess;
+using BusinessLogic.EventTracking;
+using BusinessLogic.Exceptions;
+using BusinessLogic.Models;
+using BusinessLogic.Models.Players;
+using BusinessLogic.Models.User;
+using NUnit.Framework;
+using Rhino.Mocks;
+
+namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerSaverTests
+{
+    [TestFixture]
+    public class CreatePlayerTests : PlayerSaverTestBase
+    {
+        private CreatePlayerRequest _createPlayerRequest;
+
+        [SetUp]
+        public void SetUp()
+        {
+            _createPlayerRequest = new CreatePlayerRequest
+            {
+                Name = "player name"
+            };
+        }
+
+        [Test]
+        public void ItThrowsAnArgumentNullExceptionIfThePlayerIsNull()
+        {
+            var expectedException = new ArgumentNullException("createPlayerRequest");
+
+            Exception exception = Assert.Throws<ArgumentNullException>(() => _autoMocker.ClassUnderTest.CreatePlayer(null, _currentUser));
+
+            Assert.AreEqual(expectedException.Message, exception.Message);
+        }
+
+        [Test]
+        public void ItThrowsAnArgumentNullExceptionIfThePlayerNameIsWhitespace()
+        {
+            _createPlayerRequest.Name = "    ";
+            var expectedException = new ArgumentNullException("playerName");
+
+            Exception exception = Assert.Throws<ArgumentNullException>(() => _autoMocker.ClassUnderTest.CreatePlayer(_createPlayerRequest, _currentUser));
+
+            Assert.AreEqual(expectedException.Message, exception.Message);
+        }
+
+        [Test]
+        public void ItSetsThePlayerName()
+        {
+            _autoMocker.ClassUnderTest.CreatePlayer(_createPlayerRequest, _currentUser);
+
+            _autoMocker.Get<IDataContext>().AssertWasCalled(mock => mock.Save(
+                Arg<Player>.Matches(savedPlayer => savedPlayer.Name == _createPlayerRequest.Name),
+                Arg<ApplicationUser>.Is.Anything));
+        }
+
+        [Test]
+        public void TheNewPlayerIsActiveWhenCreated()
+        {
+            _createPlayerRequest.Name = "player name";
+            _autoMocker.ClassUnderTest.CreatePlayer(_createPlayerRequest, _currentUser);
+
+            _autoMocker.Get<IDataContext>().AssertWasCalled(mock => mock.Save(
+                Arg<Player>.Matches(player => player.Active),
+                Arg<ApplicationUser>.Is.Anything));
+        }
+
+        [Test]
+        public void ItRecordsAPlayerCreatedEvent()
+        {
+            _autoMocker.ClassUnderTest.CreatePlayer(_createPlayerRequest, _currentUser);
+
+            try
+            {
+                _autoMocker.Get<INemeStatsEventTracker>().AssertWasCalled(mock => mock.TrackPlayerCreation(_currentUser));
+            }
+            catch (Exception)
+            {
+                //since this happens in a task there can be a race condition where the test runs before this method is called. Hopefully this
+                // solves the problem
+                Thread.Sleep(200);
+                _autoMocker.Get<INemeStatsEventTracker>().AssertWasCalled(mock => mock.TrackPlayerCreation(_currentUser));
+
+            }
+        }
+
+        [Test]
+        public void ItThrowsAPlayerAlreadyExistsExceptionIfAttemptingToSaveAPlayerWithANameThatAlreadyExists()
+        {
+            _createPlayerRequest.Name = _playerThatAlreadyExists.Name;
+
+            var exception = Assert.Throws<PlayerAlreadyExistsException>(
+                () => _autoMocker.ClassUnderTest.CreatePlayer(_createPlayerRequest, _currentUser));
+
+            Assert.AreEqual(_idOfPlayerThatAlreadyExists, exception.ExistingPlayerId);
+        }
+    }
+}

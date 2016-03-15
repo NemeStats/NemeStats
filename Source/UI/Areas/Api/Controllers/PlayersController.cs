@@ -73,7 +73,7 @@ namespace UI.Areas.Api.Controllers
                 GamingGroupId = newPlayerMessage.GamingGroupId
             };
 
-            var actualNewlyCreatedPlayer = playerSaver.Save(requestedPlayer, CurrentUser);
+            var actualNewlyCreatedPlayer = playerSaver.CreatePlayer(requestedPlayer, CurrentUser);
 
             var newlyCreatedPlayerMessage = new NewlyCreatedPlayerMessage
             {

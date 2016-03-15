@@ -42,33 +42,50 @@ namespace BusinessLogic.Logic.Players
             this.nemesisRecalculator = nemesisRecalculator;
         }
 
-        public virtual Player Save(Player player, ApplicationUser currentUser)
+        public virtual Player Save(Player player, ApplicationUser applicationUser)
         {
             ValidatePlayerIsNotNull(player);
             ValidatePlayerNameIsNotNullOrWhiteSpace(player.Name);
-            ValidatePlayerWithThisNameDoesntAlreadyExist(player, currentUser);
-            bool alreadyInDatabase = player.AlreadyInDatabase();
+            ValidatePlayerWithThisNameDoesntAlreadyExist(player, applicationUser);
+            var alreadyInDatabase = player.AlreadyInDatabase();
 
-            var newPlayer = dataContext.Save(player, currentUser);
+            var newPlayer = dataContext.Save(player, applicationUser);
             dataContext.CommitAllChanges();
 
             if (!alreadyInDatabase)
             {
-                new Task(() => eventTracker.TrackPlayerCreation(currentUser)).Start();
+                new Task(() => eventTracker.TrackPlayerCreation(applicationUser)).Start();
             }else
             {
                 if(!player.Active)
                 {
-                    this.RecalculateNemeses(player, currentUser);
+                    this.RecalculateNemeses(player, applicationUser);
                 }
             }
 
             return newPlayer;
         }
 
-        public Player Save(CreatePlayerRequest createPlayerRequest, ApplicationUser applicationUser)
+        public Player CreatePlayer(CreatePlayerRequest createPlayerRequest, ApplicationUser applicationUser)
         {
-            throw new NotImplementedException();
+            if (createPlayerRequest == null)
+            {
+                throw new ArgumentNullException(nameof(createPlayerRequest));
+            }
+            ValidatePlayerNameIsNotNullOrWhiteSpace(createPlayerRequest.Name);
+            ThrowPlayerAlreadyExistsExceptionIfPlayerExistsWithThisName(createPlayerRequest.Name, applicationUser);
+            var newPlayer = new Player
+            {
+                Name = createPlayerRequest.Name,
+                Active = true
+            };
+
+            newPlayer = dataContext.Save(newPlayer, applicationUser);
+            dataContext.CommitAllChanges();
+
+            new Task(() => eventTracker.TrackPlayerCreation(applicationUser)).Start();
+
+            return newPlayer;
         }
 
         private void ValidatePlayerWithThisNameDoesntAlreadyExist(Player player, ApplicationUser currentUser)
@@ -77,24 +94,29 @@ namespace BusinessLogic.Logic.Players
             {
                 return;
             }
-            Player existingPlayerWithThisName = this.dataContext.GetQueryable<Player>().FirstOrDefault(
+            ThrowPlayerAlreadyExistsExceptionIfPlayerExistsWithThisName(player.Name, currentUser);
+        }
+
+        private void ThrowPlayerAlreadyExistsExceptionIfPlayerExistsWithThisName(string playerName, ApplicationUser currentUser)
+        {
+            var existingPlayerWithThisName = this.dataContext.GetQueryable<Player>().FirstOrDefault(
                                                                                                        p => p.GamingGroupId == currentUser.CurrentGamingGroupId
-                                                                                                            && p.Name == player.Name);
+                                                                                                            && p.Name == playerName);
 
             if (existingPlayerWithThisName != null)
             {
-                throw new PlayerAlreadyExistsException(player.Name, existingPlayerWithThisName.Id);
+                throw new PlayerAlreadyExistsException(playerName, existingPlayerWithThisName.Id);
             }
         }
 
         private void RecalculateNemeses(Player player, ApplicationUser currentUser)
         {
-            List<int> playerIdsToRecalculate = (from thePlayer in this.dataContext.GetQueryable<Player>()
+            var playerIdsToRecalculate = (from thePlayer in this.dataContext.GetQueryable<Player>()
                                                 where thePlayer.Active
                                                       && thePlayer.Nemesis.NemesisPlayerId == player.Id
                                                 select thePlayer.Id).ToList();
 
-            foreach (int playerId in playerIdsToRecalculate)
+            foreach (var playerId in playerIdsToRecalculate)
             {
                 this.nemesisRecalculator.RecalculateNemesis(playerId, currentUser);
             }
@@ -120,7 +142,7 @@ namespace BusinessLogic.Logic.Players
         {
             var player = dataContext.FindById<Player>(updatePlayerRequest.PlayerId);
 
-            bool somethingChanged = false;
+            var somethingChanged = false;
 
             if (updatePlayerRequest.Active.HasValue)
             {

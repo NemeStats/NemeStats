@@ -23,8 +23,8 @@ namespace BusinessLogic.Logic.Players
 {
     public interface IPlayerSaver
     {
-        Player Save(Player player, ApplicationUser currentUser);
-        Player Save(CreatePlayerRequest createPlayerRequest, ApplicationUser applicationUser);
+        Player Save(Player player, ApplicationUser applicationUser);
+        Player CreatePlayer(CreatePlayerRequest createPlayerRequest, ApplicationUser applicationUser);
         void UpdatePlayer(UpdatePlayerRequest updatePlayerRequest, ApplicationUser applicationUser);
     }
 }
