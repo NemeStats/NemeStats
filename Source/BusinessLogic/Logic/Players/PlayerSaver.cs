@@ -66,7 +66,7 @@ namespace BusinessLogic.Logic.Players
             return newPlayer;
         }
 
-        public Player CreatePlayer(CreatePlayerRequest createPlayerRequest, ApplicationUser applicationUser)
+        public Player CreatePlayer(CreatePlayerRequest createPlayerRequest, ApplicationUser applicationUser, bool linkCurrentUserToThisPlayer = false)
         {
             if (createPlayerRequest == null)
             {
@@ -77,7 +77,8 @@ namespace BusinessLogic.Logic.Players
             var newPlayer = new Player
             {
                 Name = createPlayerRequest.Name,
-                Active = true
+                Active = true,
+                ApplicationUserId = linkCurrentUserToThisPlayer ? applicationUser.Id : null
             };
 
             newPlayer = dataContext.Save(newPlayer, applicationUser);

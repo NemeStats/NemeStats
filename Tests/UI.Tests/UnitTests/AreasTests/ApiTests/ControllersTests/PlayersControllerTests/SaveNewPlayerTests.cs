@@ -24,7 +24,10 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.PlayersControl
                 Id = 1,
                 GamingGroupId = _expectedGamingGroupId
             };
-            autoMocker.Get<IPlayerSaver>().Expect(mock => mock.CreatePlayer(Arg<CreatePlayerRequest>.Is.Anything, Arg<ApplicationUser>.Is.Anything)).IgnoreArguments().Return(_expectedPlayer);
+            autoMocker.Get<IPlayerSaver>().Expect(mock => mock.CreatePlayer(
+                Arg<CreatePlayerRequest>.Is.Anything, 
+                Arg<ApplicationUser>.Is.Anything,
+                Arg<bool>.Is.Anything)).IgnoreArguments().Return(_expectedPlayer);
         }
 
         [Test]
@@ -41,7 +44,8 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.PlayersControl
             autoMocker.Get<IPlayerSaver>().AssertWasCalled(
                 mock => mock.CreatePlayer(Arg<CreatePlayerRequest>.Matches(player => player.Name == newPlayerMessage.PlayerName
                 && player.GamingGroupId == _expectedGamingGroupId),
-                    Arg<ApplicationUser>.Is.Anything));
+                    Arg<ApplicationUser>.Is.Anything,
+                    Arg<bool>.Is.Equal(false)));
         }
 
         [Test]
@@ -59,7 +63,8 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.PlayersControl
             autoMocker.Get<IPlayerSaver>().AssertWasCalled(
                 mock => mock.CreatePlayer(Arg<CreatePlayerRequest>.Matches(player => player.Name == newPlayerMessage.PlayerName
                 && player.GamingGroupId == _expectedGamingGroupId),
-                    Arg<ApplicationUser>.Is.Anything));
+                    Arg<ApplicationUser>.Is.Anything,
+                    Arg<bool>.Is.Anything));
         }
 
         [Test]

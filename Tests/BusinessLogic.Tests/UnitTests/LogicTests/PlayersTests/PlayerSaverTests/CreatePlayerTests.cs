@@ -69,6 +69,17 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerSaverTests
         }
 
         [Test]
+        public void ItAssociatesThePlayerWithTheCurrentUserIfRequested()
+        {
+            _createPlayerRequest.Name = "player name";
+            _autoMocker.ClassUnderTest.CreatePlayer(_createPlayerRequest, _currentUser, true);
+
+            _autoMocker.Get<IDataContext>().AssertWasCalled(mock => mock.Save(
+                Arg<Player>.Matches(player => player.ApplicationUserId == _currentUser.Id),
+                Arg<ApplicationUser>.Is.Anything));
+        }
+
+        [Test]
         public void ItRecordsAPlayerCreatedEvent()
         {
             _autoMocker.ClassUnderTest.CreatePlayer(_createPlayerRequest, _currentUser);

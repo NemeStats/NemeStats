@@ -47,7 +47,8 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
                 Arg<CreatePlayerRequest>.Matches(
                     x => x.Name == player.Name 
                     && x.GamingGroupId == currentUser.CurrentGamingGroupId), 
-                Arg<ApplicationUser>.Is.Equal(currentUser)));
+                Arg<ApplicationUser>.Is.Equal(currentUser),
+                Arg<bool>.Is.Equal(false)));
         }
 
         [Test]

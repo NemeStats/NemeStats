@@ -28,6 +28,7 @@ using NUnit.Framework;
 using Rhino.Mocks;
 using System;
 using System.Linq;
+using BusinessLogic.Models.Players;
 
 namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroupSaverTests
 {
@@ -48,7 +49,10 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
             autoMocker.Get<IDataContext>().Expect(mock => mock.Save(Arg<GamingGroup>.Is.Anything, Arg<ApplicationUser>.Is.Anything))
                 .Return(expectedGamingGroup);
             expectedPlayer = new Player();
-            autoMocker.Get<IPlayerSaver>().Expect(mock => mock.Save(Arg<Player>.Is.Anything, Arg<ApplicationUser>.Is.Anything)).Return(expectedPlayer);
+            autoMocker.Get<IPlayerSaver>().Expect(mock => mock.CreatePlayer(
+                Arg<CreatePlayerRequest>.Is.Anything, 
+                Arg<ApplicationUser>.Is.Anything,
+                Arg<bool>.Is.Anything)).Return(expectedPlayer);
             
             expectedUserGamingGroup = new UserGamingGroup
             {
@@ -120,15 +124,14 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
         }
 
         [Test]
-        public void ItCreatesANewPlayerNamedAfterTheUserName()
+        public void ItCreatesANewPlayerNamedAfterTheUserNameAndAssociatedWithTheUser()
         {
             autoMocker.ClassUnderTest.CreateNewGamingGroup(gamingGroupName, TransactionSource.RestApi, currentUser);
 
-            autoMocker.Get<IPlayerSaver>().AssertWasCalled(mock => mock.Save(Arg<Player>.Matches(
-                                        player => player.Name == currentUser.UserName
-                                            && player.ApplicationUserId == currentUser.Id
-                                            && player.Active), 
-                                            Arg<ApplicationUser>.Is.Same(currentUser)));
+            autoMocker.Get<IPlayerSaver>().AssertWasCalled(mock => mock.CreatePlayer(Arg<CreatePlayerRequest>.Matches(
+                                        player => player.Name == currentUser.UserName), 
+                                            Arg<ApplicationUser>.Is.Same(currentUser),
+                                            Arg<bool>.Is.Equal(true)));
         }
 
         [Test, Ignore("Flaky test due to async timing")]
