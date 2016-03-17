@@ -86,12 +86,18 @@ Views.GameDefinition.CreateGameDefinitionPartial.prototype = {
             var longRunningTaskHub = signalrConnection.createHubProxy("longRunningTaskHub");
 
             longRunningTaskHub.on('BGGImportDetailsProgress', function (currentGamesImported, gamesToImport, currentGameName) {
-                if (currentGamesImported === 0) {
-                    component.$data.stepPercentage =  100 / gamesToImport;
-                    component.$data.totalGamesToImport = gamesToImport;
-                }
+                //We need to set this parameters each call in case the user returns the gaminggroup view when the job running (or for new users in the same gg)
+                component.$data.stepPercentage = 100 / gamesToImport;
+                component.$data.totalGamesToImport = gamesToImport;
+                component.$data.importProgressBarVisible = true;
+
                 component.$data.currentGamesImported = currentGamesImported;
                 component.$data.currentGameName = currentGameName;
+
+                if (currentGamesImported === gamesToImport) {
+                    component.$data.importProgressBarVisible = false;
+                    window.location.reload(false);
+                }
             });
 
             signalrConnection.start().done(function () {
