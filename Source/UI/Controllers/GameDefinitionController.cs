@@ -185,7 +185,7 @@ namespace UI.Controllers
 
             if (gamesImported == null)
             {
-                this.SetTempMessage(TempMessageKeys.CREATE_GAMEDEFITION_RESULT_TEMPMESSAGE, "It seems you don't have any game on your BoardGameGeek collection :_(", "info");
+                this.SetTempMessage(TempMessageKeys.CREATE_GAMEDEFITION_RESULT_TEMPMESSAGE, "It appears as though you don't have any games in your BoardGameGeek collection :_(", "info");
             }
             else if (gamesImported == 0)
             {
@@ -266,7 +266,7 @@ namespace UI.Controllers
         {
             var bggUser = _userRetriever.RetrieveUserInformation(currentUser).BoardGameGeekUser;
 
-            return View(MVC.GameDefinition.Views._CreatePartial, new CreateGameDefinitionViewModel() { BGGUserName = bggUser?.Name });
+            return View(MVC.GameDefinition.Views._CreatePartial, new CreateGameDefinitionViewModel() { BGGUserName = bggUser?.Name, GamingGroupId = currentUser.CurrentGamingGroupId});
         }
 
         [Authorize]

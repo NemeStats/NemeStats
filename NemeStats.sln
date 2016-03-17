@@ -31,6 +31,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BoardGameGeekApiClient.Test
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NemeStats.IoC", "Source\NemeStats.IoC\NemeStats.IoC.csproj", "{B8AF7353-C741-4E61-BED4-0EB603D0C3C0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NemeStats.Hubs", "Source\NemeStats.Hubs\NemeStats.Hubs.csproj", "{036E186C-4A61-4A8F-935B-3D7DF1B7C4A6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -95,6 +97,14 @@ Global
 		{B8AF7353-C741-4E61-BED4-0EB603D0C3C0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B8AF7353-C741-4E61-BED4-0EB603D0C3C0}.Tosho|Any CPU.ActiveCfg = Release|Any CPU
 		{B8AF7353-C741-4E61-BED4-0EB603D0C3C0}.Tosho|Any CPU.Build.0 = Release|Any CPU
+		{036E186C-4A61-4A8F-935B-3D7DF1B7C4A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{036E186C-4A61-4A8F-935B-3D7DF1B7C4A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{036E186C-4A61-4A8F-935B-3D7DF1B7C4A6}.Jake|Any CPU.ActiveCfg = Release|Any CPU
+		{036E186C-4A61-4A8F-935B-3D7DF1B7C4A6}.Jake|Any CPU.Build.0 = Release|Any CPU
+		{036E186C-4A61-4A8F-935B-3D7DF1B7C4A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{036E186C-4A61-4A8F-935B-3D7DF1B7C4A6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{036E186C-4A61-4A8F-935B-3D7DF1B7C4A6}.Tosho|Any CPU.ActiveCfg = Release|Any CPU
+		{036E186C-4A61-4A8F-935B-3D7DF1B7C4A6}.Tosho|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -103,5 +113,8 @@ Global
 		{F58E10C5-089C-48A0-9D4F-1F932268A5B7} = {7503F641-5B66-4BEF-AFB3-07AB8685D459}
 		{94D48899-B24B-42CE-B3D3-0D1F89D0E515} = {7503F641-5B66-4BEF-AFB3-07AB8685D459}
 		{7FF19E35-5D9D-4F67-8BB7-9026DE97E43E} = {7503F641-5B66-4BEF-AFB3-07AB8685D459}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		EnterpriseLibraryConfigurationToolBinariesPathV6 = packages\EnterpriseLibrary.TransientFaultHandling.6.0.1304.0\lib\portable-net45+win+wp8
 	EndGlobalSection
 EndGlobal

@@ -48,6 +48,12 @@ namespace UI
             bundles.Add(new ScriptBundle("~/bundles/handlebars")
                 .Include("~/Scripts/handlebars.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/signalr")
+                .Include("~/Scripts/jquery.signalR-2.2.0.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/vue")
+                .Include("~/Scripts/vue.min.js"));
+
             bundles.Add(new ScriptBundle("~/bundles/d3")
                 .Include("~/Scripts/d3/d3.js")
                 .Include("~/Scripts/d3/nv.d3.min.js")
@@ -56,6 +62,7 @@ namespace UI
 
             bundles.Add(new StyleBundle("~/bundles/d3/css")
                 .Include("~/Scripts/d3/css/nv.d3.css"));
+
 
             bundles.Add(new ScriptBundle("~/bundles/custom")
                 .Include("~/Scripts/namespace-{version}.js")
