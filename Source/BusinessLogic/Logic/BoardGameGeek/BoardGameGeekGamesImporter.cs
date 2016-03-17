@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using BoardGameGeekApiClient.Interfaces;
+using BoardGameGeekApiClient.Models;
 using BusinessLogic.Logic.GameDefinitions;
 using BusinessLogic.Logic.Users;
 using BusinessLogic.Models.Games;
@@ -42,12 +43,8 @@ namespace BusinessLogic.Logic.BoardGameGeek
                 }
                 else
                 {
-                    var currentGames =
-                        _gameDefinitionRetriever.GetAllGameDefinitionNames(applicationUser.CurrentGamingGroupId)
-                            .Select(cg => cg.BoardGameGeekGameDefinitionId);
-
-
-                    var pendingGames = userGames.Where(g => currentGames.All(id => g.GameId != id)).ToList();
+                    var currentGames = GetCurrentGames(applicationUser);
+                    var pendingGames = GetPendingGames(userGames, currentGames);
                     if (!pendingGames.Any())
                     {
                         return 0;
@@ -62,6 +59,7 @@ namespace BusinessLogic.Logic.BoardGameGeek
                         foreach (var bggGame in pendingGames)
                         {
                             var gameName = $"{bggGame.Name} ({bggGame.YearPublished})";
+                            gamesImported++;
 
                             longRunningClients.BGGImportDetailsProgress(gamesImported, pendingGames.Count, gameName);
 
@@ -78,13 +76,27 @@ namespace BusinessLogic.Logic.BoardGameGeek
 
 
                             gameNamesImported.Add(gameName);
-                            gamesImported++;
+                            
                         }
                         return pendingGames.Count;
                     }
                 }
             }
             return null;
+        }
+
+        private static List<GameDetails> GetPendingGames(List<GameDetails> userGames, IEnumerable<int?> currentGames)
+        {
+            var pendingGames = userGames.Where(g => currentGames.All(id => g.GameId != id)).ToList();
+            return pendingGames;
+        }
+
+        private IEnumerable<int?> GetCurrentGames(ApplicationUser applicationUser)
+        {
+            var currentGames =
+                _gameDefinitionRetriever.GetAllGameDefinitionNames(applicationUser.CurrentGamingGroupId)
+                    .Select(cg => cg.BoardGameGeekGameDefinitionId);
+            return currentGames;
         }
     }
 }
