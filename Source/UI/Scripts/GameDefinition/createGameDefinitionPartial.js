@@ -96,7 +96,6 @@ Views.GameDefinition.CreateGameDefinitionPartial.prototype = {
 
                 if (currentGamesImported === gamesToImport) {
                     component.$data.importProgressBarVisible = false;
-                    window.location.reload(false);
                 }
             });
 
