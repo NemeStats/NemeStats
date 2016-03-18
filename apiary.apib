@@ -15,7 +15,10 @@ Feel free to email us at nemestats@gmail.com if you have questions or issues.
 
 ###Version Information
 This document represents Version 2 of the API, which has the following changes from the previous version:
-* /GamingGroups/{gamingGroupId}/ is removed from many of the service URIs in favor of the query string parameter.
+* /GamingGroups/{gamingGroupId}/ is removed from many of the service URIs in favor of the query string parameter for
+GET requests and a body parameter for POST requests. Creating a Player, Game Definition, or Played Game now allow you to
+optionally specify the gamingGroupId of the Gaming Group where the entity should be created. This is handy for
+situations when a User is in multiple Gaming Groups.
 For Example, /api/v1/GamingGroups/{gamingGroupid}/GameDefinitions is now /api/v2/GameDefinitions/?gamingGroupId=1
 * Authorization is no longer required on a number of resources that were previously locked down. This is an attempt to
 make more of the information freely available to API consumers. Information like usernames, passwords, and email will always remain private
@@ -23,8 +26,12 @@ and protected.
 * Documentation for version 1 of the API can be found here: http://docs.nemestats.apiary.io/#
 
 ###Change Log
-* 2015-10-09 Added PlayerActive boolean value to PlayerGameResults, so you can conveniently tell whether the Player is still active.
-* 2016-01-26 Added the ability to filter PlayedGames on datePlayedFrom and datePlayedTo.
+* 2015-10-09 Added playerActive boolean value to PlayerGameResults, so you can conveniently tell whether the Player is still active.
+* 2016-01-26 Added the ability to filter Played Games on datePlayedFrom and datePlayedTo.
+* 2-16-03-17 Added ability to specify gamingGroupId in POST body when creating Players, Game Definitions, and Played Games 
+for users with multiple Gaming Groups. Also returns gamingGroupId whenever creating a new entity since specifying gamingGroupId is not required, and this will
+enable the client to know on exactly which Gaming Group the entity was created.
+
 
 ### General Information
 
@@ -270,10 +277,11 @@ and then recreated using the corresponding services for this.
     + playerGameResults (PlayerGameResult, required) - A list of PlayerGameResult objects which contain information regarding each Player's rank, points scored, and NemeStats points awarded for playing the game.
 
 ## Create a new Played Game [POST]
-This service will record a new Played Game under the Gaming Group of the currently logged in User.
+This service will record a new Played Game under the specified Gaming Group (per the gamingGroupId). 
 
 + Attributes
     + gameDefinitionId (number, required) - NemeStats unique identifier for the Game Definition (e.g. Race For the Galaxy's unique Id) of the Played Game.
+    + gamingGroupId (number, optional) - The NemeStats unique identifier for the Gaming Group where the Played Game will be logged. If no gamingGroupId is specified, the Played Game will be recorded under the default Gaming Group of the currently logged in User. 
     + datePlayed (string, optional) - The date the game was played in yyyy-MM-dd format (e.g. 2015-04-29).
     + notes (string, optional) - Any notes or comments that the User wants to record about the game for future reference.
     + playerRanks (array[PlayerRank], required) - A collection of PlayerRank objects specifying the game rank and points scored for each Player. See below table for details.
@@ -288,6 +296,7 @@ This service will record a new Played Game under the Gaming Group of the current
 
                 {
                   "gameDefinitionId" : 1234,
+                  "gamingGroupId" : 9818
                   "datePlayed" : "2015-04-05",
                   "notes" : "Erica destroyed us with her harpy shoes of the bear-goddess",
                   "playerRanks" : [ 
@@ -317,7 +326,8 @@ This service will record a new Played Game under the Gaming Group of the current
 + Response 200 (application/json)
 
                 {
-                  "playedGameId" : 31995
+                  "playedGameId" : 31995,
+                  "gamingGroupId" : 9818
                 }
 
 + Response 400 (application/json)
@@ -587,10 +597,12 @@ Retrieve a list of all Players in the given Gaming Group.
                 }
 
 ## Create a new Player [POST]
-This service will create a new Player in the currently authenticated User's Gaming Group.
+This service will create a new Player in the specified Gaming Group (per the gamingGroupId).
 
 + Attributes
     + playerName (string, required) - The name of the Player in this Gaming Group.
+    + gamingGroupId (number, optional) - The NemeStats unique identifier for the Gaming Group where the Player will be created. If no gamingGroupId is specified, the Player will be created under the default Gaming Group of the currently logged in User.
+
 
 + Request Valid Request (application/json)
     + Headers
@@ -758,10 +770,11 @@ Retrieve a list of all Game Definitions in the given Gaming Group.
                 }
 
 ## Create a new Game Definition [POST]
-This service will create a new Game Definition in the currently authenticated User's Gaming Group.
+This service will create a new Game Definition in the specified Gaming Group (per the gamingGroupId).
 
 + Attributes
     + gameDefinitionName (string, required) - The name of the Game Definition in this Gaming Group.
+    + gamingGroupId (number, optional) - The NemeStats unique identifier for the Gaming Group where the Game Definition will be created. If no gamingGroupId is specified, the Game Definition will be created under the default Gaming Group of the currently logged in User.
     + gameDefinitionDescription (string, optional) - Description of the Game Definition.
     + boardGameGeekObjectId (number, optional) - The Board Game Geek unique identifier for the Game. 
 
@@ -773,13 +786,15 @@ This service will create a new Game Definition in the currently authenticated Us
     
                 {
                   "gameDefinitionName" : "Some Sweet Game Definition Name That Is Unique In This Gaming Group",
-                  "boardGameGeekObjectId" : 199185
+                  "boardGameGeekObjectId" : 199185,
+                  "gamingGroupId" : 195
                 }
 
 + Response 200 (application/json)
 
                 {
-                  "gameDefinitionId" : 105156
+                  "gameDefinitionId" : 105156,
+                  "gamingGroupId" : 195
                 }
                 
 + Response 409 (application/json)
@@ -845,4 +860,4 @@ This service will update a given Player in the given Gaming Group.
 
                 {
                     "message" : "A Game Definition with gameDefinitionId '87658' does not exist in this Gaming Group."
-                } 
+                }
