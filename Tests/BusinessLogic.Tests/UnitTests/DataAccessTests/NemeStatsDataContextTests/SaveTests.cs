@@ -35,7 +35,7 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.NemeStatsDataContextTest
         public void SetUp()
         {
             securedEntityValidator = MockRepository.GenerateMock<ISecuredEntityValidator<EntityWithTechnicalKey>>();
-            securedEntityValidatorFactory.Expect(mock => mock.MakeSecuredEntityValidator<EntityWithTechnicalKey>())
+            securedEntityValidatorFactory.Expect(mock => mock.MakeSecuredEntityValidator<EntityWithTechnicalKey>(dataContext))
                 .Repeat.Once()
                 .Return(securedEntityValidator);
         }

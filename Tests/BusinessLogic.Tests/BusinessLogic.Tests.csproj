@@ -209,6 +209,7 @@
     <Compile Include="UnitTests\LogicTests\PlayersTests\PlayerNameBuilderTests\BuildPlayerNameTests.cs" />
     <Compile Include="UnitTests\LogicTests\PlayersTests\PlayerRetrieverTests\GetPlayerQuickStatsForUserTests.cs" />
     <Compile Include="UnitTests\LogicTests\PlayersTests\PlayerSaverTests\PlayerSaverTestBase.cs" />
+    <Compile Include="UnitTests\LogicTests\PlayersTests\PlayerSaverTests\CreatePlayerTests.cs" />
     <Compile Include="UnitTests\LogicTests\PlayersTests\PlayerSaverTests\UpdatePlayerTests.cs" />
     <Compile Include="UnitTests\LogicTests\PointsTests\PointsCalculatorTests.cs" />
     <Compile Include="UnitTests\LogicTests\UsersTests\ApplicationSignInManagerTests\GenerateAuthTokenTests.cs" />

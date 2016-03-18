@@ -23,6 +23,7 @@ using BusinessLogic.Models.GamingGroups;
 using BusinessLogic.Models.User;
 using System;
 using System.Threading.Tasks;
+using BusinessLogic.Models.Players;
 
 namespace BusinessLogic.Logic.GamingGroups
 {
@@ -53,19 +54,19 @@ namespace BusinessLogic.Logic.GamingGroups
         {
             ValidateGamingGroupName(gamingGroupName);
 
-            GamingGroup gamingGroup = new GamingGroup()
+            var gamingGroup = new GamingGroup()
             {
                 OwningUserId = currentUser.Id,
                 Name = gamingGroupName
             };
 
-            NewlyCreatedGamingGroupResult newlyCreatedGamingGroupResult = new NewlyCreatedGamingGroupResult();
-            GamingGroup newGamingGroup = dataContext.Save<GamingGroup>(gamingGroup, currentUser);
+            var newlyCreatedGamingGroupResult = new NewlyCreatedGamingGroupResult();
+            var newGamingGroup = dataContext.Save<GamingGroup>(gamingGroup, currentUser);
             newlyCreatedGamingGroupResult.NewlyCreatedGamingGroup = newGamingGroup;
             //commit changes since we'll need the GamingGroup.Id
             dataContext.CommitAllChanges();
 
-            Player newlyCreatedPlayer = this.AssociateUserWithGamingGroup(currentUser, newGamingGroup);
+            var newlyCreatedPlayer = this.AssociateUserWithGamingGroup(currentUser, newGamingGroup);
             newlyCreatedGamingGroupResult.NewlyCreatedPlayer = newlyCreatedPlayer;
 
             new Task(() => eventTracker.TrackGamingGroupCreation(registrationSource)).Start();
@@ -92,7 +93,7 @@ namespace BusinessLogic.Logic.GamingGroups
 
         private void AddUserGamingGroupRecord(ApplicationUser currentUser, GamingGroup newGamingGroup)
         {
-            UserGamingGroup userGamingGroup = new UserGamingGroup
+            var userGamingGroup = new UserGamingGroup
             {
                 ApplicationUserId = currentUser.Id,
                 GamingGroupId = newGamingGroup.Id
@@ -103,7 +104,7 @@ namespace BusinessLogic.Logic.GamingGroups
 
         private void SetGamingGroupOnCurrentUser(ApplicationUser currentUser, GamingGroup newGamingGroup)
         {
-            ApplicationUser user = dataContext.FindById<ApplicationUser>(currentUser.Id);
+            var user = dataContext.FindById<ApplicationUser>(currentUser.Id);
             user.CurrentGamingGroupId = newGamingGroup.Id;
             dataContext.Save(user, currentUser);
 
@@ -112,12 +113,11 @@ namespace BusinessLogic.Logic.GamingGroups
 
         private Player AddUserToGamingGroupAsPlayer(ApplicationUser currentUser)
         {
-            Player player = new Player
+            var createPlayerRequest = new CreatePlayerRequest
             {
-                ApplicationUserId = currentUser.Id,
                 Name = currentUser.UserName
             };
-            return this.playerSaver.Save(player, currentUser);
+            return this.playerSaver.CreatePlayer(createPlayerRequest, currentUser, true);
         }
 
         public GamingGroup UpdatePublicGamingGroupDetails(GamingGroupEditRequest request, ApplicationUser currentUser)

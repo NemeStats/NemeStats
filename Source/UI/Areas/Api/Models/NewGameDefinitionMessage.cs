@@ -7,5 +7,6 @@ namespace UI.Areas.Api.Models
         [Required]
         public string GameDefinitionName { get; set; }
         public int? BoardGameGeekObjectId { get; set; }
+        public int? GamingGroupId { get; set; }
     }
 }

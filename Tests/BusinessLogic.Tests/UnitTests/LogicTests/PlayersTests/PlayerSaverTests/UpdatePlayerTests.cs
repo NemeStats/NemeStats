@@ -22,9 +22,9 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerSaverTests
                 Active = true,
                 Name = "some existing name"
             };
-            autoMocker.Get<IDataContext>().Expect(mock => mock.FindById<Player>(PLAYER_ID)).Return(player);
+            _autoMocker.Get<IDataContext>().Expect(mock => mock.FindById<Player>(PLAYER_ID)).Return(player);
 
-            autoMocker.PartialMockTheClassUnderTest();
+            _autoMocker.PartialMockTheClassUnderTest();
         }
 
         [Test]
@@ -36,11 +36,11 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerSaverTests
                 PlayerId = PLAYER_ID
             };
 
-            autoMocker.ClassUnderTest.UpdatePlayer(updatePlayerRequest, currentUser);
+            _autoMocker.ClassUnderTest.UpdatePlayer(updatePlayerRequest, _currentUser);
 
-            autoMocker.ClassUnderTest.AssertWasCalled(
+            _autoMocker.ClassUnderTest.AssertWasCalled(
                 mock => mock.Save(Arg<Player>.Matches(p => p.Active == updatePlayerRequest.Active.Value),
-                    Arg<ApplicationUser>.Is.Same(currentUser)));
+                    Arg<ApplicationUser>.Is.Same(_currentUser)));
         }
 
         [Test]
@@ -52,11 +52,11 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerSaverTests
                 PlayerId = PLAYER_ID
             };
 
-            autoMocker.ClassUnderTest.UpdatePlayer(updatePlayerRequest, currentUser);
+            _autoMocker.ClassUnderTest.UpdatePlayer(updatePlayerRequest, _currentUser);
 
-            autoMocker.ClassUnderTest.AssertWasCalled(
+            _autoMocker.ClassUnderTest.AssertWasCalled(
                 mock => mock.Save(Arg<Player>.Matches(p => p.Name == updatePlayerRequest.Name),
-                    Arg<ApplicationUser>.Is.Same(currentUser)));
+                    Arg<ApplicationUser>.Is.Same(_currentUser)));
         }
 
         [Test]
@@ -69,11 +69,11 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerSaverTests
                 Active = null
             };
 
-            autoMocker.ClassUnderTest.UpdatePlayer(updatePlayerRequest, currentUser);
+            _autoMocker.ClassUnderTest.UpdatePlayer(updatePlayerRequest, _currentUser);
 
-            autoMocker.ClassUnderTest.AssertWasNotCalled(
+            _autoMocker.ClassUnderTest.AssertWasNotCalled(
                 mock => mock.Save(Arg<Player>.Is.Anything,
-                    Arg<ApplicationUser>.Is.Same(currentUser)));
+                    Arg<ApplicationUser>.Is.Same(_currentUser)));
         }
     }
 }

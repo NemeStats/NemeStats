@@ -15,17 +15,16 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
-using System.Linq;
 
 namespace BusinessLogic.DataAccess.Security
 {
     public class SecuredEntityValidatorFactory
     {
-        public virtual ISecuredEntityValidator<TEntity> MakeSecuredEntityValidator<TEntity>() where TEntity : class
+        public virtual ISecuredEntityValidator<TEntity> MakeSecuredEntityValidator<TEntity>(IDataContext dataContext) where TEntity : class
         {
             //TODO this feels goofy. Should I call StructureMap directly here?
             //TODO possibly dish out a singleton since there  only needs to exist one of these per TEntity
-            return new SecuredEntityValidator<TEntity>();
+            return new SecuredEntityValidator<TEntity>(dataContext);
         }
     }
 }

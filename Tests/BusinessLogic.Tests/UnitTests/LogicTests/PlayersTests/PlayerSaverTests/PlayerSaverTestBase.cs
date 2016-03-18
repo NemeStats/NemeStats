@@ -12,43 +12,43 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerSaverTests
 {
     public class PlayerSaverTestBase
     {
-        protected RhinoAutoMocker<PlayerSaver> autoMocker;
-        protected ApplicationUser currentUser;
-        protected List<Player> players;
-        protected Player playerThatAlreadyExists;
-        protected int idOfPlayerThatAlreadyExists;
+        protected RhinoAutoMocker<PlayerSaver> _autoMocker;
+        protected ApplicationUser _currentUser;
+        protected List<Player> _players;
+        protected Player _playerThatAlreadyExists;
+        protected int _idOfPlayerThatAlreadyExists;
 
         [SetUp]
         public void SetUpBase()
         {
-            autoMocker = new RhinoAutoMocker<PlayerSaver>();
+            _autoMocker = new RhinoAutoMocker<PlayerSaver>();
 
-            currentUser = new ApplicationUser
+            _currentUser = new ApplicationUser
             {
                 CurrentGamingGroupId = 12
             };
 
-            playerThatAlreadyExists = new Player
+            _playerThatAlreadyExists = new Player
             {
                 Name = "the new player name"
             };
-            idOfPlayerThatAlreadyExists = 9;
-            players = new List<Player>
+            _idOfPlayerThatAlreadyExists = 9;
+            _players = new List<Player>
             {
                 new Player
                 {
-                    Id = idOfPlayerThatAlreadyExists,
-                    Name = this.playerThatAlreadyExists.Name,
-                    GamingGroupId = currentUser.CurrentGamingGroupId
+                    Id = _idOfPlayerThatAlreadyExists,
+                    Name = this._playerThatAlreadyExists.Name,
+                    GamingGroupId = _currentUser.CurrentGamingGroupId
                 },
                 new Player
                 {
                     Id = 2
                 }
             };
-            autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<Player>())
+            _autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<Player>())
                 .Repeat.Once()
-                .Return(players.AsQueryable());
+                .Return(_players.AsQueryable());
         }
     }
 }

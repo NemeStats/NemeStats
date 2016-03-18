@@ -153,7 +153,7 @@ namespace UI.Controllers
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionParamsClass_Save
         {
-            public readonly string model = "model";
+            public readonly string createPlayerRequest = "createPlayerRequest";
             public readonly string currentUser = "currentUser";
         }
         static readonly ActionParamsClass_Edit s_params_Edit = new ActionParamsClass_Edit();
@@ -303,15 +303,15 @@ namespace UI.Controllers
         }
 
         [NonAction]
-        partial void SaveOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, BusinessLogic.Models.Player model, BusinessLogic.Models.User.ApplicationUser currentUser);
+        partial void SaveOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, BusinessLogic.Models.Players.CreatePlayerRequest createPlayerRequest, BusinessLogic.Models.User.ApplicationUser currentUser);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult Save(BusinessLogic.Models.Player model, BusinessLogic.Models.User.ApplicationUser currentUser)
+        public override System.Web.Mvc.ActionResult Save(BusinessLogic.Models.Players.CreatePlayerRequest createPlayerRequest, BusinessLogic.Models.User.ApplicationUser currentUser)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Save);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "model", model);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "createPlayerRequest", createPlayerRequest);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "currentUser", currentUser);
-            SaveOverride(callInfo, model, currentUser);
+            SaveOverride(callInfo, createPlayerRequest, currentUser);
             return callInfo;
         }
 

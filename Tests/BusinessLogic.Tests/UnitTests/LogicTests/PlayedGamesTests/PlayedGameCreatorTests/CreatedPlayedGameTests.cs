@@ -70,12 +70,12 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameCr
         [Test]
         public void ItSavesAPlayedGameIfThereIsAGameDefinition()
         {
-            int playerOneId = 3515;
-            int playerTwoId = 15151;
-            int playerOneRank = 1;
-            int playerTwoRank = 2;
-            NewlyCompletedGame newlyCompletedGame = new NewlyCompletedGame() { GameDefinitionId = gameDefinition.Id };
-            List<PlayerRank> playerRanks = new List<PlayerRank>();
+            var playerOneId = 3515;
+            var playerTwoId = 15151;
+            var playerOneRank = 1;
+            var playerTwoRank = 2;
+            var newlyCompletedGame = new NewlyCompletedGame() { GameDefinitionId = gameDefinition.Id };
+            var playerRanks = new List<PlayerRank>();
             playerRanks.Add(new PlayerRank() { PlayerId = playerOneId, GameRank = playerOneRank });
             playerRanks.Add(new PlayerRank() { PlayerId = playerTwoId, GameRank = playerTwoRank });
             newlyCompletedGame.PlayerRanks = playerRanks;
@@ -90,13 +90,13 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameCr
         }
 
         [Test]
-        public void ItSetsnemeStatsPointsForEachPlayerGameResult()
+        public void ItSetsNemeStatsPointsForEachPlayerGameResult()
         {
-            int playerOneId = 1;
-            int playerTwoId = 2;
-            int playerOneGameRank = 1;
-            int playerTwoGameRank = 2;
-            List<PlayerRank> playerRanks = new List<PlayerRank>()
+            var playerOneId = 1;
+            var playerTwoId = 2;
+            var playerOneGameRank = 1;
+            var playerTwoGameRank = 2;
+            var playerRanks = new List<PlayerRank>()
             {
                 new PlayerRank()
                 {
@@ -109,7 +109,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameCr
                     GameRank = playerTwoGameRank
                 }
             };
-            NewlyCompletedGame newlyCompletedGame = new NewlyCompletedGame()
+            var newlyCompletedGame = new NewlyCompletedGame()
             {
                 GameDefinitionId = gameDefinition.Id,
                 PlayerRanks = playerRanks
@@ -117,25 +117,46 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameCr
 
             var pointsDictionary = PointsCalculator.CalculatePoints(playerRanks);
 
-            int playerOneExpectednemeStatsPoints = pointsDictionary[playerOneId];
-            ApplicationUser user = new ApplicationUser();
+            var playerOneExpectednemeStatsPoints = pointsDictionary[playerOneId];
+            var user = new ApplicationUser();
 
-            PlayedGame playedGame = autoMocker.ClassUnderTest.CreatePlayedGame(newlyCompletedGame, TransactionSource.WebApplication, this.currentUser);
+            var playedGame = autoMocker.ClassUnderTest.CreatePlayedGame(newlyCompletedGame, TransactionSource.WebApplication, this.currentUser);
 
             Assert.AreEqual(playerOneExpectednemeStatsPoints, playedGame.PlayerGameResults
                                                     .First(gameResult => gameResult.PlayerId == playerOneId)
                                                     .NemeStatsPointsAwarded);
 
-            int playerTwoExpectednemeStatsPoints = pointsDictionary[playerTwoId];
+            var playerTwoExpectednemeStatsPoints = pointsDictionary[playerTwoId];
             Assert.AreEqual(playerTwoExpectednemeStatsPoints, playedGame.PlayerGameResults
                                                     .First(gameResult => gameResult.PlayerId == playerTwoId)
                                                     .NemeStatsPointsAwarded);
         }
 
         [Test]
-        public void ItSetsTheGamingGroupIdToThatOfTheUser()
+        public void ItSetsTheGamingGroupIdToTheSpecifiedOne()
         {
-            NewlyCompletedGame newlyCompletedGame = new NewlyCompletedGame()
+            var newlyCompletedGame = new NewlyCompletedGame()
+            {
+                GameDefinitionId = gameDefinition.Id,
+                PlayerRanks = new List<PlayerRank>(),
+                GamingGroupId = 39
+            };
+
+            autoMocker.ClassUnderTest.Expect(logic => logic.TransformNewlyCompletedGamePlayerRanksToPlayerGameResults(newlyCompletedGame))
+                .Repeat.Once()
+                .Return(new List<PlayerGameResult>());
+
+            autoMocker.ClassUnderTest.CreatePlayedGame(newlyCompletedGame, TransactionSource.WebApplication, this.currentUser);
+
+            autoMocker.Get<IDataContext>().AssertWasCalled(mock => mock.Save(
+                Arg<PlayedGame>.Matches(game => game.GamingGroupId == newlyCompletedGame.GamingGroupId),
+                Arg<ApplicationUser>.Is.Same(currentUser)));
+        }
+
+        [Test]
+        public void ItSetsTheGamingGroupIdToThatOfTheUserIfOneIsNotSpecified()
+        {
+            var newlyCompletedGame = new NewlyCompletedGame()
             {
                 GameDefinitionId = gameDefinition.Id,
                 PlayerRanks = new List<PlayerRank>()
@@ -155,17 +176,17 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameCr
         [Test]
         public void ItRecordsAGamePlayedEvent()
         {
-            PlayerRank playerRank = new PlayerRank()
+            var playerRank = new PlayerRank()
             {
                 GameRank = 1,
                 PlayerId = 1
             };
-            NewlyCompletedGame newlyCompletedGame = new NewlyCompletedGame()
+            var newlyCompletedGame = new NewlyCompletedGame()
             {
                 GameDefinitionId = gameDefinition.Id,
                 PlayerRanks = new List<PlayerRank>() { playerRank }
             };
-            TransactionSource transactionSource = TransactionSource.RestApi;
+            var transactionSource = TransactionSource.RestApi;
 
             autoMocker.ClassUnderTest.CreatePlayedGame(newlyCompletedGame, transactionSource, this.currentUser);
 
@@ -175,10 +196,10 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameCr
         [Test]
         public void ItRecalculatesTheNemesisOfEveryPlayerInTheGame()
         {
-            int playerOneId = 1;
-            int playerTwoId = 2;
-            int playerThreeId = 3;
-            List<PlayerRank> playerRanks = new List<PlayerRank>()
+            var playerOneId = 1;
+            var playerTwoId = 2;
+            var playerThreeId = 3;
+            var playerRanks = new List<PlayerRank>()
             {
                 new PlayerRank()
                 {
@@ -196,7 +217,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameCr
                     GameRank = 3
                 }
             };
-            NewlyCompletedGame newlyCompletedGame = new NewlyCompletedGame()
+            var newlyCompletedGame = new NewlyCompletedGame()
             {
                 GameDefinitionId = gameDefinition.Id,
                 PlayerRanks = playerRanks
@@ -204,7 +225,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameCr
 
             autoMocker.ClassUnderTest.CreatePlayedGame(newlyCompletedGame, TransactionSource.WebApplication, this.currentUser);
 
-            foreach(PlayerRank playerRank in playerRanks)
+            foreach(var playerRank in playerRanks)
             {
                 autoMocker.Get<INemesisRecalculator>().AssertWasCalled(mock => mock.RecalculateNemesis(playerRank.PlayerId, currentUser));
             }
@@ -213,8 +234,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameCr
         [Test]
         public void ItRecalculatesTheChampionForTheGame()
         {
-            List<PlayerRank> playerRanks = new List<PlayerRank>();
-            NewlyCompletedGame newlyCompletedGame = new NewlyCompletedGame()
+            var playerRanks = new List<PlayerRank>();
+            var newlyCompletedGame = new NewlyCompletedGame()
             {
                 GameDefinitionId = gameDefinition.Id,
                 PlayerRanks = playerRanks
@@ -228,9 +249,9 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameCr
         [Test]
         public void ItChecksSecurityOnThePlayerId()
         {
-            List<PlayerRank> playerRanks = new List<PlayerRank>();
+            var playerRanks = new List<PlayerRank>();
             playerRanks.Add(new PlayerRank{ PlayerId = existingPlayerWithMatchingGamingGroup.Id });
-            NewlyCompletedGame newlyCompletedGame = new NewlyCompletedGame()
+            var newlyCompletedGame = new NewlyCompletedGame()
             {
                 GameDefinitionId = gameDefinition.Id,
                 PlayerRanks = playerRanks
@@ -250,8 +271,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameCr
         [Test]
         public void ItChecksSecurityOnTheGameDefinitionId()
         {
-            List<PlayerRank> playerRanks = new List<PlayerRank>();
-            NewlyCompletedGame newlyCompletedGame = new NewlyCompletedGame()
+            var playerRanks = new List<PlayerRank>();
+            var newlyCompletedGame = new NewlyCompletedGame()
             {
                 GameDefinitionId = gameDefinition.Id,
                 PlayerRanks = playerRanks

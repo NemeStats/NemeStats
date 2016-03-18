@@ -205,6 +205,7 @@
       <DependentUpon>201602182046472_Add-BGGGamingDefinion-Description.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\Games\TrendingGame.cs" />
+    <Compile Include="Models\Players\CreatePlayerRequest.cs" />
     <Compile Include="Models\User\BoardGameGeekUserInformation.cs" />
     <Compile Include="Models\Validation\BaseValidatableRequestSaver.cs" />
     <Compile Include="Logic\Users\BoardGameGeekUserSaver.cs" />

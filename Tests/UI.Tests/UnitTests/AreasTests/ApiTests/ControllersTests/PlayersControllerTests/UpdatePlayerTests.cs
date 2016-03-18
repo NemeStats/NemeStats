@@ -25,19 +25,19 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.PlayersControl
                 Active = false
             };
 
-            autoMocker.ClassUnderTest.UpdatePlayer(updatePlayerMessage, PLAYER_ID, 100);
+            _autoMocker.ClassUnderTest.UpdatePlayer(updatePlayerMessage, PLAYER_ID, 100);
 
-            autoMocker.Get<IPlayerSaver>().AssertWasCalled(mock => mock.UpdatePlayer(
+            _autoMocker.Get<IPlayerSaver>().AssertWasCalled(mock => mock.UpdatePlayer(
                 Arg<UpdatePlayerRequest>.Matches(player => player.Active == updatePlayerMessage.Active
                                     && player.Name == updatePlayerMessage.PlayerName
                                     && player.PlayerId == PLAYER_ID),
-                Arg<ApplicationUser>.Is.Same(applicationUser)));
+                Arg<ApplicationUser>.Is.Same(_applicationUser)));
         }
 
         [Test]
         public void ItReturnsABadRequestIfTheMessageIsNull()
         {
-            HttpResponseMessage actualResponse = autoMocker.ClassUnderTest.UpdatePlayer(null, 1, 100);
+            HttpResponseMessage actualResponse = _autoMocker.ClassUnderTest.UpdatePlayer(null, 1, 100);
 
             AssertThatApiAction.HasThisError(actualResponse, HttpStatusCode.BadRequest, "You must pass at least one valid parameter.");
         }
@@ -45,7 +45,7 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.PlayersControl
         [Test]
         public void ItReturnsANoContentResponse()
         {
-            var actualResults = autoMocker.ClassUnderTest.UpdatePlayer(new UpdatePlayerMessage(), 0, 0);
+            var actualResults = _autoMocker.ClassUnderTest.UpdatePlayer(new UpdatePlayerMessage(), 0, 0);
 
             AssertThatApiAction.ReturnsANoContentResponseWithNoContent(actualResults);
         }

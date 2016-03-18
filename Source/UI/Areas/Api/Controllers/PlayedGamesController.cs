@@ -13,6 +13,7 @@ using BusinessLogic.Logic.PlayedGames;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
 using BusinessLogic.Models.PlayedGames;
+using BusinessLogic.Models.User;
 using UI.Areas.Api.Models;
 using UI.Attributes;
 using VersionedRestApi;
@@ -27,8 +28,7 @@ namespace UI.Areas.Api.Controllers
         private readonly IExcelGenerator excelGenerator;
         private readonly IPlayedGameCreator playedGameCreator;
         private readonly IPlayedGameDeleter playedGameDeleter;
-
-
+        
         private MemoryStream exportMemoryStream;
 
         public PlayedGamesController(
@@ -82,7 +82,7 @@ namespace UI.Areas.Api.Controllers
 
             excelGenerator.GenerateExcelFile(playedGamesForExport, exportMemoryStream);
 
-            HttpResponseMessage responseMessage = new HttpResponseMessage(HttpStatusCode.OK)
+            var responseMessage = new HttpResponseMessage(HttpStatusCode.OK)
             {
                 Content = new StreamContent(this.exportMemoryStream)
             };
@@ -97,10 +97,7 @@ namespace UI.Areas.Api.Controllers
 
         protected override void Dispose(bool disposing)
         {
-            if (exportMemoryStream != null)
-            {
-                exportMemoryStream.Dispose();
-            }
+            exportMemoryStream?.Dispose();
             base.Dispose(disposing);
         }
 
@@ -159,10 +156,11 @@ namespace UI.Areas.Api.Controllers
         {
             var newlyCompletedGame = BuildNewlyPlayedGame(playedGameMessage);
 
-            PlayedGame playedGame = playedGameCreator.CreatePlayedGame(newlyCompletedGame, TransactionSource.RestApi, CurrentUser);
+            var playedGame = playedGameCreator.CreatePlayedGame(newlyCompletedGame, TransactionSource.RestApi, CurrentUser);
             var newlyRecordedPlayedGameMessage = new NewlyRecordedPlayedGameMessage
             {
-                PlayedGameId = playedGame.Id
+                PlayedGameId = playedGame.Id,
+                GamingGroupId = playedGame.GamingGroupId
             };
 
             return Request.CreateResponse(HttpStatusCode.OK, newlyRecordedPlayedGameMessage);
@@ -170,7 +168,7 @@ namespace UI.Areas.Api.Controllers
 
         private static NewlyCompletedGame BuildNewlyPlayedGame(PlayedGameMessage playedGameMessage)
         {
-            DateTime datePlayed = DateTime.UtcNow;
+            var datePlayed = DateTime.UtcNow;
 
             if (!string.IsNullOrWhiteSpace(playedGameMessage.DatePlayed))
             {
@@ -182,7 +180,8 @@ namespace UI.Areas.Api.Controllers
                 DatePlayed = datePlayed,
                 GameDefinitionId = playedGameMessage.GameDefinitionId,
                 Notes = playedGameMessage.Notes,
-                PlayerRanks = playedGameMessage.PlayerRanks
+                PlayerRanks = playedGameMessage.PlayerRanks,
+                GamingGroupId = playedGameMessage.GamingGroupId
             };
         }
 
