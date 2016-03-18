@@ -72,6 +72,9 @@ Views.GamingGroup.GamingGroupView.prototype = {
             }).datepicker("setDate", this.$settings.toDate)
               .datepicker("option", "dateFormat", "yy-mm-dd");
         }
+
+       
+        
     },
     renameGamingGroup: function (element) {
         var parent = this;
