@@ -24,7 +24,7 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.PlayersControl
                 Id = 1,
                 GamingGroupId = _expectedGamingGroupId
             };
-            autoMocker.Get<IPlayerSaver>().Expect(mock => mock.CreatePlayer(
+            _autoMocker.Get<IPlayerSaver>().Expect(mock => mock.CreatePlayer(
                 Arg<CreatePlayerRequest>.Is.Anything, 
                 Arg<ApplicationUser>.Is.Anything,
                 Arg<bool>.Is.Anything)).IgnoreArguments().Return(_expectedPlayer);
@@ -39,9 +39,9 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.PlayersControl
                 GamingGroupId = _expectedGamingGroupId
             };
 
-            autoMocker.ClassUnderTest.SaveNewPlayer(newPlayerMessage, _expectedGamingGroupId);
+            _autoMocker.ClassUnderTest.SaveNewPlayer(newPlayerMessage, _expectedGamingGroupId);
 
-            autoMocker.Get<IPlayerSaver>().AssertWasCalled(
+            _autoMocker.Get<IPlayerSaver>().AssertWasCalled(
                 mock => mock.CreatePlayer(Arg<CreatePlayerRequest>.Matches(player => player.Name == newPlayerMessage.PlayerName
                 && player.GamingGroupId == _expectedGamingGroupId),
                     Arg<ApplicationUser>.Is.Anything,
@@ -58,9 +58,9 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.PlayersControl
             };
             int someGamingGroupIdThatWontGetUsed = -100;
 
-            autoMocker.ClassUnderTest.SaveNewPlayer(newPlayerMessage, someGamingGroupIdThatWontGetUsed);
+            _autoMocker.ClassUnderTest.SaveNewPlayer(newPlayerMessage, someGamingGroupIdThatWontGetUsed);
 
-            autoMocker.Get<IPlayerSaver>().AssertWasCalled(
+            _autoMocker.Get<IPlayerSaver>().AssertWasCalled(
                 mock => mock.CreatePlayer(Arg<CreatePlayerRequest>.Matches(player => player.Name == newPlayerMessage.PlayerName
                 && player.GamingGroupId == _expectedGamingGroupId),
                     Arg<ApplicationUser>.Is.Anything,
@@ -70,7 +70,7 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.PlayersControl
         [Test]
         public void ItReturnsThePlayerIdAndGamingGroupOfTheNewlyCreatedPlayer()
         {
-            var actualResponse = autoMocker.ClassUnderTest.SaveNewPlayer(new NewPlayerMessage(), _expectedGamingGroupId);
+            var actualResponse = _autoMocker.ClassUnderTest.SaveNewPlayer(new NewPlayerMessage(), _expectedGamingGroupId);
 
             Assert.That(actualResponse.Content, Is.TypeOf(typeof(ObjectContent<NewlyCreatedPlayerMessage>)));
             var content = actualResponse.Content as ObjectContent<NewlyCreatedPlayerMessage>;

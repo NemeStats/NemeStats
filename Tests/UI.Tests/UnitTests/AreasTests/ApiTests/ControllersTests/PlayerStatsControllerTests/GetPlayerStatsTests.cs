@@ -28,10 +28,10 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.PlayerStatsCon
             {
                 GameDefinitionTotals = new GameDefinitionTotals()
             };
-            autoMocker.Get<IPlayerRetriever>().Expect(mock => mock.GetPlayerStatistics(PLAYER_ID)).Return(expectedPlayerStatistics);
+            _autoMocker.Get<IPlayerRetriever>().Expect(mock => mock.GetPlayerStatistics(PLAYER_ID)).Return(expectedPlayerStatistics);
 
             expectedMessage = new PlayerStatisticsMessage();
-            autoMocker.Get<ITransformer>().Expect(
+            _autoMocker.Get<ITransformer>().Expect(
                        mock => mock.Transform<PlayerStatistics, PlayerStatisticsMessage>(expectedPlayerStatistics))
                       .Return(expectedMessage);
         }
@@ -39,7 +39,7 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.PlayerStatsCon
         [Test]
         public void ItReturnsAPlayerStatisticsMessageForTheGivenPlayer()
         {
-            var results = autoMocker.ClassUnderTest.GetPlayerStats(0, PLAYER_ID);
+            var results = _autoMocker.ClassUnderTest.GetPlayerStats(0, PLAYER_ID);
 
             var model = AssertThatApiAction.ReturnsThisTypeWithThisStatusCode<PlayerStatisticsMessage>(results, HttpStatusCode.OK);
             Assert.That(model, Is.SameAs(expectedMessage));

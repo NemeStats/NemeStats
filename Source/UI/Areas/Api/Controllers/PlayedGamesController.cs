@@ -159,7 +159,8 @@ namespace UI.Areas.Api.Controllers
             var playedGame = playedGameCreator.CreatePlayedGame(newlyCompletedGame, TransactionSource.RestApi, CurrentUser);
             var newlyRecordedPlayedGameMessage = new NewlyRecordedPlayedGameMessage
             {
-                PlayedGameId = playedGame.Id
+                PlayedGameId = playedGame.Id,
+                GamingGroupId = playedGame.GamingGroupId
             };
 
             return Request.CreateResponse(HttpStatusCode.OK, newlyRecordedPlayedGameMessage);

@@ -15,15 +15,15 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.PlayedGamesCon
         {
             const int PLAYED_GAME_ID = 1;
 
-            autoMocker.ClassUnderTest.DeletePlayedGame(PLAYED_GAME_ID, this.applicationUser.CurrentGamingGroupId);
+            _autoMocker.ClassUnderTest.DeletePlayedGame(PLAYED_GAME_ID, this._applicationUser.CurrentGamingGroupId);
 
-            autoMocker.Get<IPlayedGameDeleter>().AssertWasCalled(mock => mock.DeletePlayedGame(Arg<int>.Is.Equal(PLAYED_GAME_ID), Arg<ApplicationUser>.Is.Same(this.applicationUser)));
+            _autoMocker.Get<IPlayedGameDeleter>().AssertWasCalled(mock => mock.DeletePlayedGame(Arg<int>.Is.Equal(PLAYED_GAME_ID), Arg<ApplicationUser>.Is.Same(this._applicationUser)));
         }
 
         [Test]
         public void ItReturnsANoContentResponse()
         {
-            var actualResults = autoMocker.ClassUnderTest.DeletePlayedGame(0, 0);
+            var actualResults = _autoMocker.ClassUnderTest.DeletePlayedGame(0, 0);
 
             AssertThatApiAction.ReturnsANoContentResponseWithNoContent(actualResults);
         }

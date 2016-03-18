@@ -30,9 +30,9 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.PlayersControl
             {
                 expectedPlayer
             };
-            autoMocker.Get<IPlayerRetriever>().Expect(mock => mock.GetAllPlayers(GAMING_GROUP_ID)).Return(expectedPlayers);
+            _autoMocker.Get<IPlayerRetriever>().Expect(mock => mock.GetAllPlayers(GAMING_GROUP_ID)).Return(expectedPlayers);
 
-            var actualResults = autoMocker.ClassUnderTest.GetPlayers(GAMING_GROUP_ID);
+            var actualResults = _autoMocker.ClassUnderTest.GetPlayers(GAMING_GROUP_ID);
 
             var actualData = AssertThatApiAction.ReturnsThisTypeWithThisStatusCode<PlayersSearchResultsMessage>(actualResults, HttpStatusCode.OK);
             Assert.That(actualData.Players.Count, Is.EqualTo(1));

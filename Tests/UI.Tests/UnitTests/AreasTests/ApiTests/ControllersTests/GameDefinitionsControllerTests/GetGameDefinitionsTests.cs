@@ -28,9 +28,9 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.GameDefinition
                 }
             };
 
-            autoMocker.Get<IGameDefinitionRetriever>().Expect(mock => mock.GetAllGameDefinitions(GAMING_GROUP_ID)).Return(expectedResults);
+            _autoMocker.Get<IGameDefinitionRetriever>().Expect(mock => mock.GetAllGameDefinitions(GAMING_GROUP_ID)).Return(expectedResults);
 
-            var actualResults = autoMocker.ClassUnderTest.GetGameDefinitions(GAMING_GROUP_ID);
+            var actualResults = _autoMocker.ClassUnderTest.GetGameDefinitions(GAMING_GROUP_ID);
 
             var actualData = AssertThatApiAction.ReturnsThisTypeWithThisStatusCode<GameDefinitionsSearchResultsMessage>(actualResults, HttpStatusCode.OK);
             var firstActualGameDefinitionSearchResultMessage = actualData.GameDefinitions[0];

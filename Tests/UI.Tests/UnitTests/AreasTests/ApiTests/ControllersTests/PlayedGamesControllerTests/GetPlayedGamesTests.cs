@@ -17,12 +17,12 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.PlayedGamesCon
         public void ItReturnsAnEmptyListIfThereAreNoResults()
         {
             var filterMessage = new PlayedGameFilterMessage();
-            autoMocker.Get<IPlayedGameRetriever>().Expect(
+            _autoMocker.Get<IPlayedGameRetriever>().Expect(
                 mock => mock.SearchPlayedGames(
                 Arg<PlayedGameFilter>.Is.Anything))
                       .Return(new List<PlayedGameSearchResult>());
 
-            var actualResponse = autoMocker.ClassUnderTest.GetPlayedGames(filterMessage, 1);
+            var actualResponse = _autoMocker.ClassUnderTest.GetPlayedGames(filterMessage, 1);
 
             var actualData = AssertThatApiAction.ReturnsThisTypeWithThisStatusCode<PlayedGameSearchResultsMessage>(actualResponse, HttpStatusCode.OK);
             Assert.That(actualData.PlayedGames.Count, Is.EqualTo(0));
@@ -36,14 +36,14 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.PlayedGamesCon
                 StartDateGameLastUpdated = "2015-04-15"
             };
 
-            autoMocker.Get<IPlayedGameRetriever>().Expect(
+            _autoMocker.Get<IPlayedGameRetriever>().Expect(
                 mock => mock.SearchPlayedGames(
                 Arg<PlayedGameFilter>.Is.Anything))
                       .Return(new List<PlayedGameSearchResult>());
 
-            autoMocker.ClassUnderTest.GetPlayedGames(filterMessage, 1);
+            _autoMocker.ClassUnderTest.GetPlayedGames(filterMessage, 1);
 
-            autoMocker.Get<IPlayedGameRetriever>().AssertWasCalled(mock => mock.SearchPlayedGames(
+            _autoMocker.Get<IPlayedGameRetriever>().AssertWasCalled(mock => mock.SearchPlayedGames(
                 Arg<PlayedGameFilter>.Matches(filter => filter.StartDateGameLastUpdated == filterMessage.StartDateGameLastUpdated)));
         }
 
@@ -55,14 +55,14 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.PlayedGamesCon
                 DatePlayedFrom = "2015-04-15"
             };
 
-            autoMocker.Get<IPlayedGameRetriever>().Expect(
+            _autoMocker.Get<IPlayedGameRetriever>().Expect(
                 mock => mock.SearchPlayedGames(
                 Arg<PlayedGameFilter>.Is.Anything))
                       .Return(new List<PlayedGameSearchResult>());
 
-            autoMocker.ClassUnderTest.GetPlayedGames(filterMessage, 1);
+            _autoMocker.ClassUnderTest.GetPlayedGames(filterMessage, 1);
 
-            autoMocker.Get<IPlayedGameRetriever>().AssertWasCalled(mock => mock.SearchPlayedGames(
+            _autoMocker.Get<IPlayedGameRetriever>().AssertWasCalled(mock => mock.SearchPlayedGames(
                 Arg<PlayedGameFilter>.Matches(filter => filter.DatePlayedFrom == filterMessage.DatePlayedFrom)));
         }
 
@@ -74,14 +74,14 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.PlayedGamesCon
                 DatePlayedTo = "2016-01-15"
             };
 
-            autoMocker.Get<IPlayedGameRetriever>().Expect(
+            _autoMocker.Get<IPlayedGameRetriever>().Expect(
                 mock => mock.SearchPlayedGames(
                 Arg<PlayedGameFilter>.Is.Anything))
                       .Return(new List<PlayedGameSearchResult>());
 
-            autoMocker.ClassUnderTest.GetPlayedGames(filterMessage, 1);
+            _autoMocker.ClassUnderTest.GetPlayedGames(filterMessage, 1);
 
-            autoMocker.Get<IPlayedGameRetriever>().AssertWasCalled(mock => mock.SearchPlayedGames(
+            _autoMocker.Get<IPlayedGameRetriever>().AssertWasCalled(mock => mock.SearchPlayedGames(
                 Arg<PlayedGameFilter>.Matches(filter => filter.DatePlayedTo == filterMessage.DatePlayedTo)));
         }
 
@@ -89,14 +89,14 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.PlayedGamesCon
         public void ItFiltersOnTheGamingGroupId()
         {
             const int EXPECTED_GAMING_GROUP_ID = 1;
-            autoMocker.Get<IPlayedGameRetriever>().Expect(
+            _autoMocker.Get<IPlayedGameRetriever>().Expect(
                 mock => mock.SearchPlayedGames(
                 Arg<PlayedGameFilter>.Is.Anything))
                       .Return(new List<PlayedGameSearchResult>());
 
-            autoMocker.ClassUnderTest.GetPlayedGames(new PlayedGameFilterMessage(), EXPECTED_GAMING_GROUP_ID);
+            _autoMocker.ClassUnderTest.GetPlayedGames(new PlayedGameFilterMessage(), EXPECTED_GAMING_GROUP_ID);
 
-            autoMocker.Get<IPlayedGameRetriever>().AssertWasCalled(mock => mock.SearchPlayedGames(
+            _autoMocker.Get<IPlayedGameRetriever>().AssertWasCalled(mock => mock.SearchPlayedGames(
                 Arg<PlayedGameFilter>.Matches(filter => filter.GamingGroupId == EXPECTED_GAMING_GROUP_ID)));
         }
 
@@ -104,14 +104,14 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.PlayedGamesCon
         public void ItFiltersOnPlayerId()
         {
             const int EXPECTED_PLAYER_ID = 1;
-            autoMocker.Get<IPlayedGameRetriever>().Expect(
+            _autoMocker.Get<IPlayedGameRetriever>().Expect(
                 mock => mock.SearchPlayedGames(
                 Arg<PlayedGameFilter>.Is.Anything))
                       .Return(new List<PlayedGameSearchResult>());
 
-            autoMocker.ClassUnderTest.GetPlayedGames(new PlayedGameFilterMessage{ PlayerId = EXPECTED_PLAYER_ID }, 1);
+            _autoMocker.ClassUnderTest.GetPlayedGames(new PlayedGameFilterMessage{ PlayerId = EXPECTED_PLAYER_ID }, 1);
 
-            autoMocker.Get<IPlayedGameRetriever>().AssertWasCalled(mock => mock.SearchPlayedGames(
+            _autoMocker.Get<IPlayedGameRetriever>().AssertWasCalled(mock => mock.SearchPlayedGames(
                 Arg<PlayedGameFilter>.Matches(filter => filter.PlayerId == EXPECTED_PLAYER_ID)));
         }
 
@@ -119,14 +119,14 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.PlayedGamesCon
         public void ItFiltersOnGameDefinitionId()
         {
             const int EXPECTED_PLAYER_ID = 1;
-            autoMocker.Get<IPlayedGameRetriever>().Expect(
+            _autoMocker.Get<IPlayedGameRetriever>().Expect(
                 mock => mock.SearchPlayedGames(
                 Arg<PlayedGameFilter>.Is.Anything))
                       .Return(new List<PlayedGameSearchResult>());
 
-            autoMocker.ClassUnderTest.GetPlayedGames(new PlayedGameFilterMessage { PlayerId = EXPECTED_PLAYER_ID }, 1);
+            _autoMocker.ClassUnderTest.GetPlayedGames(new PlayedGameFilterMessage { PlayerId = EXPECTED_PLAYER_ID }, 1);
 
-            autoMocker.Get<IPlayedGameRetriever>().AssertWasCalled(mock => mock.SearchPlayedGames(
+            _autoMocker.Get<IPlayedGameRetriever>().AssertWasCalled(mock => mock.SearchPlayedGames(
                 Arg<PlayedGameFilter>.Matches(filter => filter.PlayerId == EXPECTED_PLAYER_ID)));
         }
 
@@ -138,12 +138,12 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.PlayedGamesCon
                 MaximumNumberOfResults = 100
             };
 
-            autoMocker.Get<IPlayedGameRetriever>().Expect(mock => mock.SearchPlayedGames(Arg<PlayedGameFilter>.Is.Anything))
+            _autoMocker.Get<IPlayedGameRetriever>().Expect(mock => mock.SearchPlayedGames(Arg<PlayedGameFilter>.Is.Anything))
                 .Return(new List<PlayedGameSearchResult>());
 
-            autoMocker.ClassUnderTest.GetPlayedGames(filterMessage, 1);
+            _autoMocker.ClassUnderTest.GetPlayedGames(filterMessage, 1);
 
-            autoMocker.Get<IPlayedGameRetriever>().AssertWasCalled(mock => mock.SearchPlayedGames(
+            _autoMocker.Get<IPlayedGameRetriever>().AssertWasCalled(mock => mock.SearchPlayedGames(
                 Arg<PlayedGameFilter>.Matches(filter => filter.MaximumNumberOfResults == filterMessage.MaximumNumberOfResults)));
         }
 
@@ -179,12 +179,12 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.PlayedGamesCon
                 expectedSingleResult
             };
             var filterMessage = new PlayedGameFilterMessage();
-            autoMocker.Get<IPlayedGameRetriever>().Expect(
+            _autoMocker.Get<IPlayedGameRetriever>().Expect(
                 mock => mock.SearchPlayedGames(
                 Arg<PlayedGameFilter>.Is.Anything))
                       .Return(expectedResults);
 
-            var actualResponse = autoMocker.ClassUnderTest.GetPlayedGames(filterMessage, 1);
+            var actualResponse = _autoMocker.ClassUnderTest.GetPlayedGames(filterMessage, 1);
 
             var actualData = AssertThatApiAction.ReturnsThisTypeWithThisStatusCode<PlayedGameSearchResultsMessage>(actualResponse, HttpStatusCode.OK);
             Assert.That(actualData.PlayedGames.Count, Is.EqualTo(1));
