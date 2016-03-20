@@ -11,21 +11,23 @@ using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using BusinessLogic.Models.Points;
 
 namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverTests
 {
     [TestFixture]
     public class GetPlayerQuickStatsForUserTests : PlayerRetrieverTestBase
     {
-        private string userId = "user id";
-        private int expectedPoints = 1;
-        private int expectedPlayerId = 2;
+        private readonly string userId = "user id";
+        private readonly int expectedPoints = 1;
+        private readonly NemePointsSummary expectedSummary = new NemePointsSummary(1, 3, 5);
+        private readonly int expectedPlayerId = 2;
         private Player expectedPlayer;
 
         [SetUp]
         public void SetUp()
         {
-            autoMocker.ClassUnderTest.Expect(mock => mock.GetTotalNemePoints(expectedPlayerId)).Return(expectedPoints);
+            autoMocker.ClassUnderTest.Expect(mock => mock.GetNemePointsSummary(expectedPlayerId)).Return(expectedSummary);
 
             expectedPlayer = new Player
             {
@@ -66,7 +68,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
 
             var result = autoMocker.ClassUnderTest.GetPlayerQuickStatsForUser(userId, gamingGroupId);
 
-            Assert.That(result.TotalPoints, Is.EqualTo(expectedPoints));
+            Assert.That(result.NemePointsSummary, Is.EqualTo(expectedSummary));
         }
 
         [Test]

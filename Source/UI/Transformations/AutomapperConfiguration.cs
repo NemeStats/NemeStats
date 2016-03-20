@@ -26,6 +26,7 @@ using BusinessLogic.Models.Games;
 using BusinessLogic.Models.GamingGroups;
 using BusinessLogic.Models.PlayedGames;
 using BusinessLogic.Models.Players;
+using BusinessLogic.Models.Points;
 using BusinessLogic.Models.User;
 using UI.Areas.Api.Models;
 using UI.Models;
@@ -33,6 +34,7 @@ using UI.Models.GameDefinitionModels;
 using UI.Models.GamingGroup;
 using UI.Models.PlayedGame;
 using UI.Models.Players;
+using UI.Models.Points;
 
 namespace UI.Transformations
 {
@@ -70,6 +72,8 @@ namespace UI.Transformations
             Mapper.CreateMap<PlayerStatistics, PlayerStatisticsMessage>(MemberList.Destination);
             Mapper.CreateMap<PlayedGameQuickStats, PlayedGameQuickStatsViewModel>(MemberList.Destination);
             Mapper.CreateMap<PlayerQuickStats, PlayerQuickStatsViewModel>(MemberList.Destination);
+            Mapper.CreateMap<NemePointsSummary, NemePointsSummaryViewModel>(MemberList.Destination)
+                  .ConstructUsing(x => new NemePointsSummaryViewModel(x.BaseNemePoints, x.GameDurationBonusNemePoints, x.WeightBonusNemePoints));
             Mapper.CreateMap<TrendingGame, TrendingGameViewModel>(MemberList.Destination);
             Mapper.CreateMap<BoardGameGeekGameDefinition, BoardGameGeekGameDefinitionViewModel>()
                 .ForMember(m => m.BoardGameGeekUri,

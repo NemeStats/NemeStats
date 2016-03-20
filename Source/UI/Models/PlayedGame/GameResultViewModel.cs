@@ -17,6 +17,7 @@
 #endregion
 using System;
 using System.Linq;
+using UI.Models.Points;
 
 namespace UI.Models.PlayedGame
 {
@@ -25,7 +26,6 @@ namespace UI.Models.PlayedGame
         public int PlayerId { get; set; }
         public string PlayerName { get; set; }
         public int GameRank { get; set; }
-        public int NemeStatsPointsAwarded { get; set; }
         public int PlayedGameId { get; set; }
         public DateTime DatePlayed { get; set; }
         public string GameDefinitionName { get; set; }
@@ -33,8 +33,6 @@ namespace UI.Models.PlayedGame
         public Uri BoardGameGeekUri { get; set; }
         public string ThumbnailImageUrl { get; set; }
         public bool PlayerActive { get; set; }
-        public int GameDurationBonusPoints { get; set; }
-        public int GameWeightBonusPoints { get; set; }
-        public int TotalPoints { get; set; }
+        public NemePointsSummaryViewModel NemePointsSummary { get; set; }
     }
 }

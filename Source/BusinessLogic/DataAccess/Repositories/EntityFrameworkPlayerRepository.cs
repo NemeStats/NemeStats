@@ -198,7 +198,7 @@ namespace BusinessLogic.DataAccess.Repositories
                 record.TotalGamesPlayed = record.GamesLost + record.GamesWon;
                 if (record.TotalGamesPlayed > 0)
                 {
-                    record.AveragePointsPerGame = record.TotalGamesPlayed > 0 ? (float)record.TotalNemePoints / record.TotalGamesPlayed : 0;
+                    record.AveragePointsPerGame = record.TotalGamesPlayed > 0 ? (float)record.NemePointsSummary.TotalPoints / record.TotalGamesPlayed : 0;
                 }
             });
 

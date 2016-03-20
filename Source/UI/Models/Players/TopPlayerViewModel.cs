@@ -16,6 +16,7 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 using System.Linq;
+using UI.Models.Points;
 
 namespace UI.Models.Players
 {
@@ -25,6 +26,6 @@ namespace UI.Models.Players
         public string PlayerName { get; set; }
         public int TotalNumberOfGamesPlayed { get; set; }
         public int WinPercentage { get; set; }
-        public int TotalPoints { get; set; }
+        public NemePointsSummaryViewModel NemePointsSummary { get; set; }
     }
 }

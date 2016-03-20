@@ -67,7 +67,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.TopP
         [Test]
         public void ItCopiesTheTotalPoints()
         {
-            Assert.AreEqual(topPlayer.TotalPoints, topPlayerViewModel.TotalPoints);
+            Assert.AreEqual(topPlayer.TotalPoints, topPlayerViewModel.NemePointsSummary.TotalNemePoints);
         }
 
         [Test]

@@ -16,6 +16,7 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 using System.Linq;
+using BusinessLogic.Models.Points;
 
 namespace BusinessLogic.Models.Players
 {
@@ -26,11 +27,11 @@ namespace BusinessLogic.Models.Players
             GameDefinitionTotals = new GameDefinitionTotals();
         }
         public int TotalGames { get; set; }
-        public int TotalPoints { get; set; }
         public float AveragePlayersPerGame { get; set; }
         public int TotalGamesWon { get; set; }
         public int TotalGamesLost { get; set; }
         public int WinPercentage { get; set; }
         public GameDefinitionTotals GameDefinitionTotals { get; set; }
+        public NemePointsSummary NemePointsSummary { get; set; }
     }
 }

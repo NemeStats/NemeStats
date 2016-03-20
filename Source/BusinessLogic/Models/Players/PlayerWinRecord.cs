@@ -11,6 +11,7 @@
         public bool IsChampion { get; set; }
         public bool IsFormerChampion { get; set; }
         public int TotalGamesPlayed { get; set; }
+        //TODO Fix this
         public int TotalNemePoints { get; set; }
         public float AveragePointsPerGame { get; set; }
     }

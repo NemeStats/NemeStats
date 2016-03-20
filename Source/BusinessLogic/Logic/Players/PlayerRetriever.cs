@@ -27,6 +27,7 @@ using System.Linq;
 using BusinessLogic.Logic.PlayedGames;
 using BusinessLogic.Models.PlayedGames;
 using BusinessLogic.Logic.BoardGameGeek;
+using BusinessLogic.Models.Points;
 using BusinessLogic.Models.Utility;
 
 namespace BusinessLogic.Logic.Players
@@ -85,6 +86,7 @@ namespace BusinessLogic.Logic.Players
                                           GamingGroupId = player.GamingGroupId,
                                           GamesWon = player.PlayerGameResults.Where(x => x.PlayedGame.DatePlayed >= dateRangeFilter.FromDate && x.PlayedGame.DatePlayed <= dateRangeFilter.ToDate).Count(x => x.GameRank == 1),
                                           GamesLost = player.PlayerGameResults.Where(x => x.PlayedGame.DatePlayed >= dateRangeFilter.FromDate && x.PlayedGame.DatePlayed <= dateRangeFilter.ToDate).Count(x => x.GameRank > 1),
+                                          //TODO fix this
                                           TotalPoints = player.PlayerGameResults.Where(x => x.PlayedGame.DatePlayed >= dateRangeFilter.FromDate && x.PlayedGame.DatePlayed <= dateRangeFilter.ToDate)
                                               .Select(pgr => pgr.TotalPoints)
                                               .DefaultIfEmpty(0)
@@ -215,7 +217,7 @@ namespace BusinessLogic.Logic.Players
                 playerStatistics.WinPercentage = (int)((decimal)playerStatistics.TotalGamesWon / (playerStatistics.TotalGames) * 100);
             }
 
-            playerStatistics.TotalPoints = GetTotalNemePoints(playerId);
+            playerStatistics.NemePointsSummary = GetNemePointsSummary(playerId);
 
             //had to cast to handle the case where there is no data:
             //http://stackoverflow.com/questions/6864311/the-cast-to-value-type-int32-failed-because-the-materialized-value-is-null
@@ -261,21 +263,28 @@ namespace BusinessLogic.Logic.Players
             public int TotalGamesWon { get; internal set; }
         }
 
-        internal virtual int GetTotalNemePoints(int playerId)
+        internal virtual NemePointsSummary GetNemePointsSummary(int playerId)
         {
-            int? totalPoints = dataContext.GetQueryable<PlayerGameResult>()
-                            .Where(result => result.PlayerId == playerId)
+            NemePointsSummary nemePointsSummary = dataContext.GetQueryable<PlayerGameResult>()
+                                          .Where(result => result.PlayerId == playerId)
+                                          .GroupBy(x => x.PlayerId)
+                                          .Select(
+                                                  g =>
+                                                  new NemePointsSummary
+                                                  {
+                                                      BaseNemePoints = g.Sum(x => (int?)x.NemeStatsPointsAwarded) ?? 0,
+                                                      GameDurationBonusNemePoints = g.Sum(x => (int?)x.GameDurationBonusPoints) ?? 0,
+                                                      WeightBonusNemePoints = g.Sum(x => (int?)x.GameWeightBonusPoints) ?? 0
+                                                  })
+                                .SingleOrDefault();
                             //had to cast to handle the case where there is no data:
                             //http://stackoverflow.com/questions/6864311/the-cast-to-value-type-int32-failed-because-the-materialized-value-is-null
-                            .Sum(playerGameResults => (int?)playerGameResults.TotalPoints) ?? 0;
-            if (totalPoints.HasValue)
+                            //.Sum(playerGameResults => (int?)playerGameResults.TotalPoints) ?? 0;
+            if (nemePointsSummary == null)
             {
-                return totalPoints.Value;
+                return new NemePointsSummary(0, 0, 0);
             }
-            else
-            {
-                return 0;
-            }
+            return nemePointsSummary;
         }
 
         public virtual PlayerQuickStats GetPlayerQuickStatsForUser(string applicationUserId, int gamingGroupId)
@@ -292,7 +301,8 @@ namespace BusinessLogic.Logic.Players
             if (playerIdForCurrentUser != 0)
             {
                 returnValue.PlayerId = playerIdForCurrentUser;
-                returnValue.TotalPoints = GetTotalNemePoints(playerIdForCurrentUser);
+                //TODO fix this
+                returnValue.NemePointsSummary = GetNemePointsSummary(playerIdForCurrentUser);
 
                 var gameDefinitionTotals = GetGameDefinitionTotals(playerIdForCurrentUser);
                 var topLevelTotals = GetTopLevelTotals(gameDefinitionTotals);

@@ -9,6 +9,7 @@ using BusinessLogic.Models.PlayedGames;
 using NUnit.Framework;
 using Rhino.Mocks;
 using UI.Models.PlayedGame;
+using UI.Models.Points;
 using UI.Transformations;
 
 namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
@@ -114,6 +115,8 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
                         {
                             GameRank = 1,
                             NemeStatsPointsAwarded = 3,
+                            GameWeightBonusPoints = 1,
+                            GameDurationBonusPoints = 4,
                             PlayerId = 4,
                             PlayerName = "some player name",
                             PointsScored = 5
@@ -148,7 +151,8 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
             Assert.That(actualPlayerResult.GameDefinitionId, Is.EqualTo(expectedPlayedGameSearchResult.GameDefinitionId));
             Assert.That(actualPlayerResult.GameDefinitionName, Is.EqualTo(actualPlayedGameSearchResult.GameDefinitionName));
             Assert.That(actualPlayerResult.GameRank, Is.EqualTo(expectedPlayerResult.GameRank));
-            Assert.That(actualPlayerResult.NemeStatsPointsAwarded, Is.EqualTo(expectedPlayerResult.NemeStatsPointsAwarded));
+            var expectedNemePointsSummary = new NemePointsSummaryViewModel(expectedPlayerResult.NemeStatsPointsAwarded, expectedPlayerResult.GameDurationBonusPoints, expectedPlayerResult.GameWeightBonusPoints);
+            Assert.That(actualPlayerResult.NemePointsSummary, Is.EqualTo(expectedNemePointsSummary));
             Assert.That(actualPlayerResult.PlayedGameId, Is.EqualTo(expectedPlayedGameSearchResult.PlayedGameId));
             Assert.That(actualPlayerResult.PlayerId, Is.EqualTo(expectedPlayerResult.PlayerId));
             Assert.That(actualPlayerResult.PlayerName, Is.EqualTo(expectedPlayerResult.PlayerName));

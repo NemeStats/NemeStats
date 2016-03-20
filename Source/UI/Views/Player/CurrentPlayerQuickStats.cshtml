@@ -74,7 +74,7 @@
                     <div class="panel panel-default">
                         <div class="panel-heading"><span class="fa-stack neme-points-ico" data-toggle="popover" data-placement="top" data-content="Total NemePoints earned by playing games" data-original-title="" title=""><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x letter">N</i></span></div>
                         <div class="panel-body stat-value">
-                            @Html.ActionLink(@Model.TotalPoints.ToString(), "Details", "Player", new { id = Model.PlayerId }, new { })
+                            @Html.ActionLink(@Model.NemePointsSummary.TotalNemePoints.ToString(), "Details", "Player", new { id = Model.PlayerId }, new { })
                         </div>
                     </div>
                 </div>

@@ -175,7 +175,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         {
             PlayerWithNemesisViewModel actualViewModel = builder.Build(this.playerWithNemesis, this.currentUser);
 
-            Assert.AreEqual(this.playerWithNemesis.TotalPoints, actualViewModel.TotalPoints);
+            Assert.AreEqual(this.playerWithNemesis.TotalPoints, actualViewModel.NemePointsSummary.TotalNemePoints);
         }
 
         [Test]

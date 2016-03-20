@@ -27,6 +27,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using BusinessLogic.Logic.Players;
+using BusinessLogic.Models.Points;
 using UI.Models.Badges;
 using UI.Models.Players;
 using UI.Transformations;
@@ -173,7 +174,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
                 PlayerStats = new PlayerStatistics()
                 {
                     TotalGames = 5,
-                    TotalPoints = 150,
+                    NemePointsSummary = new NemePointsSummary(1, 3, 5),
                     AveragePlayersPerGame = 3,
                     TotalGamesLost = 1,
                     TotalGamesWon = 4,
@@ -403,15 +404,15 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         }
 
         [Test]
-        public void ItCopiesTheTotalPoints()
+        public void ItCopiesTheNemePointsSummary()
         {
-            Assert.AreEqual(playerDetails.PlayerStats.TotalPoints, playerDetailsViewModel.TotalPoints);
+            Assert.AreEqual(playerDetails.PlayerStats.NemePointsSummary, playerDetailsViewModel.NemePointsSummary);
         }
 
         [Test]
         public void ItSetsTheAveragePointsPerGame()
         {
-            var expectedPoints = (float)playerDetails.PlayerStats.TotalPoints / (float)playerDetails.PlayerStats.TotalGames;
+            var expectedPoints = (float)playerDetails.PlayerStats.NemePointsSummary.TotalPoints / (float)playerDetails.PlayerStats.TotalGames;
 
             Assert.AreEqual(expectedPoints, playerDetailsViewModel.AveragePointsPerGame);
         }
@@ -435,7 +436,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         [Test]
         public void ItSetsTheAveragePointsPerPlayer()
         {
-            var expectedPointsPerGame = (float)playerDetails.PlayerStats.TotalPoints / (float)playerDetails.PlayerStats.TotalGames;
+            var expectedPointsPerGame = (float)playerDetails.PlayerStats.NemePointsSummary.TotalPoints / (float)playerDetails.PlayerStats.TotalGames;
             var expectedPointsPerPlayer = expectedPointsPerGame / (float)playerDetails.PlayerStats.AveragePlayersPerGame;
 
             Assert.AreEqual(expectedPointsPerPlayer, playerDetailsViewModel.AveragePointsPerPlayer);
