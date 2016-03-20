@@ -91,7 +91,7 @@ namespace UI.HtmlHelpers
             }
 
 
-            string nemeStatsPointsComponent = string.Format(HTML_GORDON_POINTS_TEMPLATE, playerGameResultDetails.NemeStatsPointsAwarded, htmlHelper.NemePointsIco(showTooltip: true, tooltip: NEMEPOINTICO_TOOLTIP, tooltipPosition: NEMEPOINTSICO_TOOLTIP_POSITION));
+            string nemeStatsPointsComponent = string.Format(HTML_GORDON_POINTS_TEMPLATE, playerGameResultDetails.TotalPoints, htmlHelper.NemePointsIco(showTooltip: true, tooltip: NEMEPOINTICO_TOOLTIP, tooltipPosition: NEMEPOINTSICO_TOOLTIP_POSITION));
             return MvcHtmlString.Create(string.Format(HTML_TEMPLATE,
                 CSS_CLASS_GAME_RANK,
                 cssPlace,

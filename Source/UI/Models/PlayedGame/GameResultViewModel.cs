@@ -33,5 +33,8 @@ namespace UI.Models.PlayedGame
         public Uri BoardGameGeekUri { get; set; }
         public string ThumbnailImageUrl { get; set; }
         public bool PlayerActive { get; set; }
+        public int GameDurationBonusPoints { get; set; }
+        public int GameWeightBonusPoints { get; set; }
+        public int TotalPoints { get; set; }
     }
 }

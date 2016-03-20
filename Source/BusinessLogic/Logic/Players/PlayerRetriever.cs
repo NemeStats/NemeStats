@@ -86,7 +86,7 @@ namespace BusinessLogic.Logic.Players
                                           GamesWon = player.PlayerGameResults.Where(x => x.PlayedGame.DatePlayed >= dateRangeFilter.FromDate && x.PlayedGame.DatePlayed <= dateRangeFilter.ToDate).Count(x => x.GameRank == 1),
                                           GamesLost = player.PlayerGameResults.Where(x => x.PlayedGame.DatePlayed >= dateRangeFilter.FromDate && x.PlayedGame.DatePlayed <= dateRangeFilter.ToDate).Count(x => x.GameRank > 1),
                                           TotalPoints = player.PlayerGameResults.Where(x => x.PlayedGame.DatePlayed >= dateRangeFilter.FromDate && x.PlayedGame.DatePlayed <= dateRangeFilter.ToDate)
-                                              .Select(pgr => pgr.NemeStatsPointsAwarded)
+                                              .Select(pgr => pgr.TotalPoints)
                                               .DefaultIfEmpty(0)
                                               .Sum(),
                                           //only get championed games where this player is the current champion
@@ -267,7 +267,7 @@ namespace BusinessLogic.Logic.Players
                             .Where(result => result.PlayerId == playerId)
                             //had to cast to handle the case where there is no data:
                             //http://stackoverflow.com/questions/6864311/the-cast-to-value-type-int32-failed-because-the-materialized-value-is-null
-                            .Sum(playerGameResults => (int?)playerGameResults.NemeStatsPointsAwarded) ?? 0;
+                            .Sum(playerGameResults => (int?)playerGameResults.TotalPoints) ?? 0;
             if (totalPoints.HasValue)
             {
                 return totalPoints.Value;

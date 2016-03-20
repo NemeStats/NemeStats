@@ -297,6 +297,9 @@ namespace UI.Controllers
                     GameDefinitionName = searchResult.GameDefinitionName,
                     GameRank = playerResult.GameRank,
                     NemeStatsPointsAwarded = playerResult.NemeStatsPointsAwarded,
+                    GameDurationBonusPoints = playerResult.GameDurationBonusPoints,
+                    GameWeightBonusPoints = playerResult.GameWeightBonusPoints,
+                    TotalPoints = playerResult.TotalPoints,
                     PlayedGameId = searchResult.PlayedGameId,
                     PlayerId = playerResult.PlayerId,
                     PlayerName = playerResult.PlayerName
