@@ -34,6 +34,7 @@ public static partial class MVC
     public static UI.Controllers.GamingGroupController GamingGroup = new UI.Controllers.T4MVC_GamingGroupController();
     public static UI.Controllers.Helpers.BaseController Base = new UI.Controllers.Helpers.T4MVC_BaseController();
     public static UI.Controllers.HomeController Home = new UI.Controllers.T4MVC_HomeController();
+    public static UI.Controllers.JobsController Jobs = new UI.Controllers.T4MVC_JobsController();
     public static UI.Controllers.PlayedGameController PlayedGame = new UI.Controllers.T4MVC_PlayedGameController();
     public static UI.Controllers.PlayerController Player = new UI.Controllers.T4MVC_PlayerController();
     public static T4MVC.SharedController Shared = new T4MVC.SharedController();
@@ -194,6 +195,7 @@ namespace Links
             public static readonly string toEditBoxPlugin_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/toEditBoxPlugin.min.js") ? Url("toEditBoxPlugin.min.js") : Url("toEditBoxPlugin.js");
         }
     
+        public static readonly string readmore_min_js = Url("readmore.min.js");
         public static readonly string respond_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/respond.min.js") ? Url("respond.min.js") : Url("respond.js");
         public static readonly string respond_min_js = Url("respond.min.js");
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -405,6 +407,7 @@ namespace Links
                 public const string moment_min_js = "~/Scripts/moment.min.js"; 
                 public const string namespace_1_0_0_js = "~/Scripts/namespace-1.0.0.js"; 
                 public const string namespace_min_1_0_0_js = "~/Scripts/namespace.min-1.0.0.js"; 
+                public const string readmore_min_js = "~/Scripts/readmore.min.js"; 
                 public const string respond_js = "~/Scripts/respond.js"; 
                 public const string respond_min_js = "~/Scripts/respond.min.js"; 
             }

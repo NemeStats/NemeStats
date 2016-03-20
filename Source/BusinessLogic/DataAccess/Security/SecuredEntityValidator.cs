@@ -29,6 +29,13 @@ namespace BusinessLogic.DataAccess.Security
         internal const string EXCEPTION_MESSAGE_CURRENT_USER_GAMING_GROUP_ID_CANNOT_BE_NULL
             = "currentUser.CurrentGamingGroupId cannot be null";
 
+        private IDataContext _dataContext;
+
+        public SecuredEntityValidator(IDataContext dataContext)
+        {
+            _dataContext = dataContext;
+        }
+
         //TODO not sure how to enforce that TEntity is a SingleColumnWithTechnicalKey so I can get the Id, so requiring some
         //additional info to be manually passed in
         public virtual void ValidateAccess(TEntity entity, ApplicationUser currentUser, Type underlyingEntityType, object entityId)
@@ -44,7 +51,16 @@ namespace BusinessLogic.DataAccess.Security
 
             if(securedEntity.GamingGroupId != currentUser.CurrentGamingGroupId)
             {
-                throw new UnauthorizedEntityAccessException(currentUser.Id, underlyingEntityType, entityId);
+                var matchingUserGamingGroup = _dataContext.GetQueryable<UserGamingGroup>()
+                    .SingleOrDefault(
+                                    x =>
+                                    x.GamingGroupId == securedEntity.GamingGroupId &&
+                                    x.ApplicationUserId == currentUser.Id);
+
+                if (matchingUserGamingGroup == null)
+                {
+                    throw new UnauthorizedEntityAccessException(currentUser.Id, underlyingEntityType, entityId);
+                }
             }
         }
 

@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using UI.Models.User;
 
 namespace UI.Models.GameDefinitionModels
 {
@@ -17,5 +16,6 @@ namespace UI.Models.GameDefinitionModels
         public string Name { get; set; }
         public string ReturnUrl { get; set; }
         public string BGGUserName { get; set; }
+        public int GamingGroupId { get; set; }
     }
 }

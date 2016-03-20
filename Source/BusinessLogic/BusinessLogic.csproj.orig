@@ -70,6 +70,10 @@
       <HintPath>..\..\packages\Microsoft.AspNet.Identity.Owin.2.2.1\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.Core, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.SignalR.Core.2.2.0\lib\net45\Microsoft.AspNet.SignalR.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.Owin, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\Microsoft.Owin.3.0.1\lib\net45\Microsoft.Owin.dll</HintPath>
@@ -94,6 +98,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
     </Reference>
+    <Reference Include="RollbarSharp, Version=0.3.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\RollbarSharp.0.3.5.0\lib\net40\RollbarSharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="SendGrid, Version=6.3.0.0, Culture=neutral, PublicKeyToken=4f047e93159395ca, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Sendgrid.6.3.0\lib\SendGrid.dll</HintPath>
       <Private>True</Private>
@@ -110,8 +118,8 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Configuration.Abstractions, Version=2.0.2.15, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\UniversalAnalyticsMeasurementProtocolWrapper.1.3.1\lib\net40\System.Configuration.Abstractions.dll</HintPath>
+      <HintPath>..\..\packages\System.Configuration.Abstractions.2.0.2.15\lib\net45\System.Configuration.Abstractions.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -160,16 +168,27 @@
     <Compile Include="Exceptions\UnauthorizedEntityAccessException.cs" />
     <Compile Include="Export\ExcelGenerator.cs" />
     <Compile Include="Export\IExcelGenerator.cs" />
+    <Compile Include="Jobs\BoardGameGeekCleanUpService\LinkOrphanGamesResult.cs" />
+    <Compile Include="Jobs\BoardGameGeekCleanUpService\BoardGameGeekCleanUpService.cs" />
     <Compile Include="Logic\BoardGameGeek\BoardGameGeekGameDefinitionCreator.cs" />
+    <Compile Include="Logic\BoardGameGeek\BoardGameGeekGamesImporter.cs" />
     <Compile Include="Logic\BoardGameGeek\BoardGameGeekUrlBuilder.cs" />
+    <Compile Include="Jobs\BoardGameGeekCleanUpService\IBoardGameGeekCleanUpService.cs" />
     <Compile Include="Logic\BoardGameGeek\IBoardGameGeekGameDefinitionCreator.cs" />
+    <Compile Include="Logic\BoardGameGeek\IBoardGameGeekGamesImporter.cs" />
     <Compile Include="Logic\Champions\ChampionRecalculator.cs" />
     <Compile Include="Logic\Email\EmailService.cs" />
     <Compile Include="Logic\OneTimeJobs\BoardGameGeekThumbnailAttacher.cs" />
     <Compile Include="Logic\GameDefinitions\GameDefinitionUpdateRequest.cs" />
     <Compile Include="Logic\GamingGroups\GamingGroupInfoForUser.cs" />
+    <Compile Include="Logic\Players\PlayerNameBuilder.cs" />
+    <Compile Include="Logic\Points\GameDurationBonusCalculator.cs" />
+    <Compile Include="Logic\Points\IGameDurationBonusCalculator.cs" />
+    <Compile Include="Logic\Points\IPointsCalculator.cs" />
+    <Compile Include="Logic\Points\IWeightBonusCalculator.cs" />
     <Compile Include="Logic\Points\PointsCalculator.cs" />
     <Compile Include="Logic\Points\GlobalPointsRecalculator.cs" />
+    <Compile Include="Logic\Points\WeightBonusCalculator.cs" />
     <Compile Include="Logic\Security\MachineKeyDataProtector.cs" />
     <Compile Include="Logic\TransactionSource.cs" />
     <Compile Include="Logic\Users\AuthTokenGenerator.cs" />
@@ -178,6 +197,32 @@
     <Compile Include="Migrations\201601120806479_BoardGameGeekDefinitionTable.Designer.cs">
       <DependentUpon>201601120806479_BoardGameGeekDefinitionTable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201602091230112_AddTopGamesVotableFeature.cs" />
+    <Compile Include="Migrations\201602091230112_AddTopGamesVotableFeature.Designer.cs">
+      <DependentUpon>201602091230112_AddTopGamesVotableFeature.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602181207202_NewBggFieldsToSync.cs" />
+    <Compile Include="Migrations\201602181207202_NewBggFieldsToSync.Designer.cs">
+      <DependentUpon>201602181207202_NewBggFieldsToSync.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602182046472_Add-BGGGamingDefinion-Description.cs" />
+    <Compile Include="Migrations\201602182046472_Add-BGGGamingDefinion-Description.Designer.cs">
+      <DependentUpon>201602182046472_Add-BGGGamingDefinion-Description.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602200343405_AddBonusPointsToPlayerGameResult.cs" />
+    <Compile Include="Migrations\201602200343405_AddBonusPointsToPlayerGameResult.Designer.cs">
+      <DependentUpon>201602200343405_AddBonusPointsToPlayerGameResult.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Games\TrendingGame.cs" />
+<<<<<<< HEAD
+    <Compile Include="Logic\Points\IWeightTierCalculator.cs" />
+    <Compile Include="Models\PlayedGames\AverageGameDurationTierEnum.cs" />
+    <Compile Include="Models\PlayedGames\PointsScorecard.cs" />
+    <Compile Include="Logic\Points\WeightTierCalculator.cs" />
+    <Compile Include="Models\PlayedGames\WeightTierEnum.cs" />
+=======
+    <Compile Include="Models\Players\CreatePlayerRequest.cs" />
+>>>>>>> master
     <Compile Include="Models\User\BoardGameGeekUserInformation.cs" />
     <Compile Include="Models\Validation\BaseValidatableRequestSaver.cs" />
     <Compile Include="Logic\Users\BoardGameGeekUserSaver.cs" />
@@ -527,12 +572,10 @@
     <Compile Include="Models\Players\PlayerDetails.cs" />
     <Compile Include="Models\Players\WinLossStatistics.cs" />
     <Compile Include="Models\User\UserInformation.cs" />
-<<<<<<< HEAD
+    <Compile Include="Models\Validation\MaxDateAttribute.cs" />
     <Compile Include="Models\Validation\ValidatableRequest.cs" />
-=======
     <Compile Include="Models\Utility\BasicDateRangeFilter.cs" />
     <Compile Include="Models\Utility\IDateRangeFilter.cs" />
->>>>>>> refs/remotes/origin/master
     <Compile Include="Models\VotableFeature.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\MachineKeyProtectionProvider.cs" />
@@ -733,11 +776,27 @@
     <EmbeddedResource Include="Migrations\201601120806479_BoardGameGeekDefinitionTable.resx">
       <DependentUpon>201601120806479_BoardGameGeekDefinitionTable.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602091230112_AddTopGamesVotableFeature.resx">
+      <DependentUpon>201602091230112_AddTopGamesVotableFeature.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602181207202_NewBggFieldsToSync.resx">
+      <DependentUpon>201602181207202_NewBggFieldsToSync.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602182046472_Add-BGGGamingDefinion-Description.resx">
+      <DependentUpon>201602182046472_Add-BGGGamingDefinion-Description.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602200343405_AddBonusPointsToPlayerGameResult.resx">
+      <DependentUpon>201602200343405_AddBonusPointsToPlayerGameResult.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\BoardGameGeekApiClient\BoardGameGeekApiClient.csproj">
+    <ProjectReference Include="..\BoardGameGeekApiClient\BoardGameGeekApiClient.csproj">
       <Project>{d4efacf4-b72b-4395-89bf-4caa9a33c427}</Project>
       <Name>BoardGameGeekApiClient</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NemeStats.Hubs\NemeStats.Hubs.csproj">
+      <Project>{036E186C-4A61-4A8F-935B-3D7DF1B7C4A6}</Project>
+      <Name>NemeStats.Hubs</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

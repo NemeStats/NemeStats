@@ -25,6 +25,7 @@ using Owin;
 
 namespace UI
 {
+    
     public partial class Startup
     {
         private const string NEMESTATS_API_PATH = "api/";

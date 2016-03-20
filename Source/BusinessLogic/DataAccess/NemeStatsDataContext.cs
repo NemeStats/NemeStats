@@ -73,7 +73,7 @@ namespace BusinessLogic.DataAccess
             if (entity.AlreadyInDatabase())
             {
                 //TODO update comments to indicate it can throw an exception
-                ISecuredEntityValidator<TEntity> validator = securedEntityValidatorFactory.MakeSecuredEntityValidator<TEntity>();
+                ISecuredEntityValidator<TEntity> validator = securedEntityValidatorFactory.MakeSecuredEntityValidator<TEntity>(this);
                 //TODO how do I get this to be able to pull the Id from TEntity?
                 validator.ValidateAccess(entity, currentUser, typeof(TEntity), UNKNOWN_ENTITY_ID);
             }
@@ -113,7 +113,7 @@ namespace BusinessLogic.DataAccess
 
         public virtual void Delete<TEntity>(TEntity entity, ApplicationUser currentUser) where TEntity : class, EntityWithTechnicalKey
         {
-            ISecuredEntityValidator<TEntity> validator = securedEntityValidatorFactory.MakeSecuredEntityValidator<TEntity>();
+            ISecuredEntityValidator<TEntity> validator = securedEntityValidatorFactory.MakeSecuredEntityValidator<TEntity>(this);
             validator.ValidateAccess(entity, currentUser, typeof(TEntity), UNKNOWN_ENTITY_ID);
             nemeStatsDbContext.Set<TEntity>().Remove(entity);
         }
@@ -132,7 +132,7 @@ namespace BusinessLogic.DataAccess
         {
             TEntity entityToDelete = FindById<TEntity>(id);
 
-            ISecuredEntityValidator<TEntity> securedEntityValidator = securedEntityValidatorFactory.MakeSecuredEntityValidator<TEntity>();
+            ISecuredEntityValidator<TEntity> securedEntityValidator = securedEntityValidatorFactory.MakeSecuredEntityValidator<TEntity>(this);
             securedEntityValidator.ValidateAccess(entityToDelete, currentUser, typeof(TEntity), id);
 
             nemeStatsDbContext.Set<TEntity>().Remove(entityToDelete);

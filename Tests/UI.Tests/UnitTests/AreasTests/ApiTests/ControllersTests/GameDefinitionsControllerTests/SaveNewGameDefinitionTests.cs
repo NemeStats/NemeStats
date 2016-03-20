@@ -14,18 +14,20 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.GameDefinition
     [TestFixture]
     public class SaveNewGameDefinitionTests : ApiControllerTestBase<GameDefinitionsController>
     {
-        private GameDefinition expectedGameDefinition;
+        private GameDefinition _expectedGameDefinition;
+        private readonly int _expectedGamingGroupId = 1;
 
         [SetUp]
         public void SetUp()
         {
-            expectedGameDefinition = new GameDefinition
+            _expectedGameDefinition = new GameDefinition
             {
-                Id = 100
+                Id = 100,
+                GamingGroupId = _expectedGamingGroupId
             };
 
-            autoMocker.Get<IGameDefinitionSaver>().Expect(mock => mock.CreateGameDefinition(Arg<CreateGameDefinitionRequest>.Is.Anything, Arg<ApplicationUser>.Is.Anything))
-                      .Return(expectedGameDefinition);
+            _autoMocker.Get<IGameDefinitionSaver>().Expect(mock => mock.CreateGameDefinition(Arg<CreateGameDefinitionRequest>.Is.Anything, Arg<ApplicationUser>.Is.Anything))
+                      .Return(_expectedGameDefinition);
         }
 
         [Test]
@@ -34,24 +36,48 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.GameDefinition
             var newGameDefinitionMessage = new NewGameDefinitionMessage
             {
                 GameDefinitionName = "some gameDefinitionName",
-                BoardGameGeekObjectId = 1
+                BoardGameGeekObjectId = 1,
             };
 
-            autoMocker.ClassUnderTest.SaveNewGameDefinition(newGameDefinitionMessage, 0);
+            _autoMocker.ClassUnderTest.SaveNewGameDefinition(newGameDefinitionMessage, _expectedGamingGroupId);
 
-            autoMocker.Get<IGameDefinitionSaver>().AssertWasCalled(
-                mock => mock.CreateGameDefinition(Arg<CreateGameDefinitionRequest>.Matches(gameDefinition => gameDefinition.Name == newGameDefinitionMessage.GameDefinitionName
-                    && gameDefinition.BoardGameGeekGameDefinitionId == newGameDefinitionMessage.BoardGameGeekObjectId),
-                    Arg<ApplicationUser>.Is.Same(applicationUser)));
+            _autoMocker.Get<IGameDefinitionSaver>().AssertWasCalled(
+                mock => mock.CreateGameDefinition(Arg<CreateGameDefinitionRequest>.Matches(
+                    gameDefinition => gameDefinition.Name == newGameDefinitionMessage.GameDefinitionName
+                    && gameDefinition.BoardGameGeekGameDefinitionId == newGameDefinitionMessage.BoardGameGeekObjectId
+                    && gameDefinition.GamingGroupId == _expectedGamingGroupId),
+                    Arg<ApplicationUser>.Is.Same(_applicationUser)));
         }
 
         [Test]
         public void ItReturnsANewlyCreatedGameDefinitionMessage()
         {
-            var actualResults = autoMocker.ClassUnderTest.SaveNewGameDefinition(new NewGameDefinitionMessage(), 0);
+            var actualResults = _autoMocker.ClassUnderTest.SaveNewGameDefinition(new NewGameDefinitionMessage(), _expectedGamingGroupId);
 
             var actualData = AssertThatApiAction.ReturnsThisTypeWithThisStatusCode<NewlyCreatedGameDefinitionMessage>(actualResults, HttpStatusCode.OK);
-            Assert.That(actualData.GameDefinitionId, Is.EqualTo(expectedGameDefinition.Id));
+            Assert.That(actualData.GameDefinitionId, Is.EqualTo(_expectedGameDefinition.Id));
+            Assert.That(actualData.GamingGroupId, Is.EqualTo(_expectedGamingGroupId));
+        }
+
+        [Test]
+        public void ItSavesTheNewGameDefinitionUsingTheGamingGroupIdOnTheRequestIfOneIsSpecified()
+        {
+            var newGameDefinitionMessage = new NewGameDefinitionMessage
+            {
+                GameDefinitionName = "some gameDefinitionName",
+                BoardGameGeekObjectId = 1,
+                GamingGroupId = _expectedGamingGroupId
+            };
+            int someGamingGroupIdThatWontGetUsed = -100;
+
+            _autoMocker.ClassUnderTest.SaveNewGameDefinition(newGameDefinitionMessage, someGamingGroupIdThatWontGetUsed);
+
+            _autoMocker.Get<IGameDefinitionSaver>().AssertWasCalled(
+                mock => mock.CreateGameDefinition(Arg<CreateGameDefinitionRequest>.Matches(
+                    gameDefinition => gameDefinition.Name == newGameDefinitionMessage.GameDefinitionName
+                    && gameDefinition.BoardGameGeekGameDefinitionId == newGameDefinitionMessage.BoardGameGeekObjectId
+                    && gameDefinition.GamingGroupId == newGameDefinitionMessage.GamingGroupId),
+                    Arg<ApplicationUser>.Is.Same(_applicationUser)));
         }
     }
 }

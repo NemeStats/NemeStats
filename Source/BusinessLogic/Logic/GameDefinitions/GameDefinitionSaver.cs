@@ -66,7 +66,7 @@ namespace BusinessLogic.Logic.GameDefinitions
                     Name = createGameDefinitionRequest.Name,
                     BoardGameGeekGameDefinitionId = boardGameGeekGameDefinitionId,
                     Description = createGameDefinitionRequest.Description,
-                    GamingGroupId = currentUser.CurrentGamingGroupId
+                    GamingGroupId = createGameDefinitionRequest.GamingGroupId ?? currentUser.CurrentGamingGroupId
                 };
 
                 new Task(() => this.eventTracker.TrackGameDefinitionCreation(currentUser, createGameDefinitionRequest.Name)).Start();

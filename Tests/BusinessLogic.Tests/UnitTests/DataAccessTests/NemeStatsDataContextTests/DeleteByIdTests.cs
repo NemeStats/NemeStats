@@ -42,7 +42,7 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.NemeStatsDataContextTest
                 .Return(gameDefinitionDbSetMock);
 
             securedEntityValidator = MockRepository.GenerateMock<ISecuredEntityValidator<GameDefinition>>();
-            securedEntityValidatorFactory.Expect(mock => mock.MakeSecuredEntityValidator<GameDefinition>())
+            securedEntityValidatorFactory.Expect(mock => mock.MakeSecuredEntityValidator<GameDefinition>(dataContext))
                 .Repeat.Once()
                 .Return(securedEntityValidator);
         }

@@ -19,5 +19,7 @@ namespace UI.Areas.Api.Models
         [Required]
         [PlayerRankValidation]
         public List<PlayerRank> PlayerRanks { get; set; }
+
+        public int? GamingGroupId { get; set; }
     }
 }

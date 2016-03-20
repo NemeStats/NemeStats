@@ -48,7 +48,7 @@ namespace BusinessLogic.Logic.PlayedGames
             ISecuredEntityValidator<GameDefinition> securedEntityValidatorForGameDefinition, 
             IPointsCalculator pointsCalculator)
         {
-            this.dataContext = applicationDataContext;
+            dataContext = applicationDataContext;
             this.playedGameTracker = playedGameTracker;
             this.nemesisRecalculator = nemesisRecalculator;
             this.championRecalculator = championRecalculator;
@@ -76,7 +76,7 @@ namespace BusinessLogic.Logic.PlayedGames
 
             var playedGame = TransformNewlyCompletedGameIntoPlayedGame(
                 newlyCompletedGame,
-                currentUser.CurrentGamingGroupId,
+                newlyCompletedGame.GamingGroupId ?? currentUser.CurrentGamingGroupId,
                 currentUser.Id,
                 playerGameResults);
 
@@ -98,7 +98,7 @@ namespace BusinessLogic.Logic.PlayedGames
             foreach (var playerRank in newlyCompletedGame.PlayerRanks)
             {
                 var player = this.dataContext.FindById<Player>(playerRank.PlayerId);
-                this.securedEntityValidatorForPlayer.ValidateAccess(player, currentUser, typeof(Player), player.Id);
+                securedEntityValidatorForPlayer.ValidateAccess(player, currentUser, typeof(Player), player.Id);
             }
         }
 

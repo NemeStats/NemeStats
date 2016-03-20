@@ -94,7 +94,7 @@ namespace UI.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            PlayerDetails player = playerRetriever.GetPlayerDetails(id.Value, NUMBER_OF_RECENT_GAMES_TO_RETRIEVE);
+            var player = playerRetriever.GetPlayerDetails(id.Value, NUMBER_OF_RECENT_GAMES_TO_RETRIEVE);
 
             if (player == null)
             {
@@ -102,7 +102,7 @@ namespace UI.Controllers
             }
 
             var fullUrl = this.Url.Action(MVC.Player.ActionNames.Details, MVC.Player.Name, new { id }, this.Request.Url.Scheme) + "#minions";
-            PlayerDetailsViewModel playerDetailsViewModel = playerDetailsViewModelBuilder.Build(player, fullUrl, currentUser);
+            var playerDetailsViewModel = playerDetailsViewModelBuilder.Build(player, fullUrl, currentUser);
 
             ViewBag.RecentGamesMessage = showingXResultsMessageBuilder.BuildMessage(
                 NUMBER_OF_RECENT_GAMES_TO_RETRIEVE,
@@ -141,7 +141,7 @@ namespace UI.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.NotFound);
             }
 
-            string emailSubject = string.Format(EMAIL_SUBJECT_PLAYER_INVITATION, currentUser.UserName);
+            var emailSubject = string.Format(EMAIL_SUBJECT_PLAYER_INVITATION, currentUser.UserName);
 
             var playerInvitationViewModel = new PlayerInvitationViewModel
             {
@@ -174,7 +174,7 @@ namespace UI.Controllers
         [UserContext]
         public virtual ActionResult InvitePlayer(PlayerInvitationViewModel playerInvitationViewModel, ApplicationUser currentUser)
         {
-            PlayerInvitation playerInvitation = new PlayerInvitation
+            var playerInvitation = new PlayerInvitation
             {
                 InvitedPlayerId = playerInvitationViewModel.PlayerId,
                 InvitedPlayerEmail = playerInvitationViewModel.EmailAddress.Trim(),
@@ -190,7 +190,7 @@ namespace UI.Controllers
         [System.Web.Mvc.Authorize]
         [System.Web.Mvc.HttpPost]
         [UserContext]
-        public virtual ActionResult Save(Player model, ApplicationUser currentUser)
+        public virtual ActionResult Save(CreatePlayerRequest createPlayerRequest, ApplicationUser currentUser)
         {
             if (!Request.IsAjaxRequest())
             {
@@ -201,8 +201,9 @@ namespace UI.Controllers
             {
                 try
                 {
-                    model.Name = model.Name.Trim();
-                    Player player = playerSaver.Save(model, currentUser);
+                    createPlayerRequest.Name = createPlayerRequest.Name.Trim();
+                    createPlayerRequest.GamingGroupId = currentUser.CurrentGamingGroupId;
+                    var player = playerSaver.CreatePlayer(createPlayerRequest, currentUser);
                     return Json(player, JsonRequestBehavior.AllowGet);
                 }
                 catch (PlayerAlreadyExistsException playerAlreadyExistsException)

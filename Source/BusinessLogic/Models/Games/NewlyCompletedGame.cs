@@ -45,5 +45,7 @@ namespace BusinessLogic.Models.Games
         [DataType(DataType.Date)]
         [MaxDate]
         public DateTime DatePlayed { get; set; }
+
+        public int? GamingGroupId { get; set; }
     }
 }

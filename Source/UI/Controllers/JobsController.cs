@@ -3,7 +3,7 @@ using BusinessLogic.Jobs.BoardGameGeekCleanUpService;
 
 namespace UI.Controllers
 {
-    public class JobsController : Controller
+    public partial class JobsController : Controller
     {
         private readonly IBoardGameGeekCleanUpService _boardGameGeekCleanUpService;
 
@@ -13,11 +13,11 @@ namespace UI.Controllers
         }
 
         // GET: Jobs
-        public ActionResult LinkOrphanGames()
+        public virtual ActionResult LinkOrphanGames()
         {
             var result = _boardGameGeekCleanUpService.LinkOrphanGames();
 
-            return Content(result.ToString().Replace("\r\n","<br/>"));
+            return Content(result.ToString().Replace("\r\n", "<br/>"));
         }
     }
 }

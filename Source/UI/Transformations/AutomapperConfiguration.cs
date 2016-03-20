@@ -64,7 +64,9 @@ namespace UI.Transformations
             Mapper.CreateMap<GameDefinition, GameDefinitionEditViewModel>(MemberList.Destination)
                                   .ForMember(x => x.GameDefinitionId, opt => opt.MapFrom(src => src.Id));
             Mapper.CreateMap<GameDefinitionEditViewModel, GameDefinitionUpdateRequest>(MemberList.Destination);
-            Mapper.CreateMap<CreateGameDefinitionViewModel, CreateGameDefinitionRequest>(MemberList.Destination);
+            Mapper.CreateMap<CreateGameDefinitionViewModel, CreateGameDefinitionRequest>(MemberList.Destination)
+                  //for now, GamingGroupId is optional and only passed from the API
+                  .ForMember(x => x.GamingGroupId, opt => opt.Ignore());
             Mapper.CreateMap<PlayerStatistics, PlayerStatisticsMessage>(MemberList.Destination);
             Mapper.CreateMap<PlayedGameQuickStats, PlayedGameQuickStatsViewModel>(MemberList.Destination);
             Mapper.CreateMap<PlayerQuickStats, PlayerQuickStatsViewModel>(MemberList.Destination);

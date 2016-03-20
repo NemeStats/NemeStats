@@ -18,14 +18,12 @@
 using BusinessLogic.Models;
 using BusinessLogic.Models.Players;
 using BusinessLogic.Models.User;
-using System.Linq;
 
 namespace BusinessLogic.Logic.Players
 {
     public interface IPlayerSaver
     {
-        Player Save(Player player, ApplicationUser currentUser);
-
+        Player CreatePlayer(CreatePlayerRequest createPlayerRequest, ApplicationUser applicationUser, bool linkCurrentUserToThisPlayer = false);
         void UpdatePlayer(UpdatePlayerRequest updatePlayerRequest, ApplicationUser applicationUser);
     }
 }

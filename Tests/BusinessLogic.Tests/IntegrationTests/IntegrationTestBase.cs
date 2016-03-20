@@ -188,8 +188,8 @@ namespace BusinessLogic.Tests.IntegrationTests
             INemesisRecalculator nemesisRecalculator = new NemesisRecalculator(dataContext, playerRepository);
             IChampionRepository championRepository = new ChampionRepository(dataContext);
             IChampionRecalculator championRecalculator = new ChampionRecalculator(dataContext, championRepository);
-            ISecuredEntityValidator<Player> securedEntityValidatorForPlayers = new SecuredEntityValidator<Player>();
-            ISecuredEntityValidator<GameDefinition> securedEntityValidatorForGameDefinition = new SecuredEntityValidator<GameDefinition>();
+            ISecuredEntityValidator<Player> securedEntityValidatorForPlayers = new SecuredEntityValidator<Player>(dataContext);
+            ISecuredEntityValidator<GameDefinition> securedEntityValidatorForGameDefinition = new SecuredEntityValidator<GameDefinition>(dataContext);
             var weightBonusCalculator = new WeightBonusCalculator(new WeightTierCalculator());
             IPointsCalculator pointsCalculator = new PointsCalculator(weightBonusCalculator, new GameDurationBonusCalculator());
             IPlayedGameCreator playedGameCreator = new PlayedGameCreator(

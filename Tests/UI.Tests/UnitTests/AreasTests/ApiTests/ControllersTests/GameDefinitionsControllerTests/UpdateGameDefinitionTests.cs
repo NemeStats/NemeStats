@@ -16,7 +16,7 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.GameDefinition
         [Test]
         public void ItReturnsABadRequestIfTheMessageIsNull()
         {
-            HttpResponseMessage actualResponse = autoMocker.ClassUnderTest.UpdateGameDefinition(null, 0, 0);
+            HttpResponseMessage actualResponse = _autoMocker.ClassUnderTest.UpdateGameDefinition(null, 0, 0);
 
             AssertThatApiAction.HasThisError(actualResponse, HttpStatusCode.BadRequest, "You must pass at least one valid parameter.");
         }
@@ -33,20 +33,20 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.GameDefinition
                 BoardGameGeekGameDefinitionId = 2
             };
 
-            autoMocker.ClassUnderTest.UpdateGameDefinition(updateGameDefinitionMessage, GAME_DEFINITION_ID, GAMING_GROUP_ID);
+            _autoMocker.ClassUnderTest.UpdateGameDefinition(updateGameDefinitionMessage, GAME_DEFINITION_ID, GAMING_GROUP_ID);
 
-            autoMocker.Get<IGameDefinitionSaver>().AssertWasCalled(mock => mock.UpdateGameDefinition(Arg<GameDefinitionUpdateRequest>.Matches(
+            _autoMocker.Get<IGameDefinitionSaver>().AssertWasCalled(mock => mock.UpdateGameDefinition(Arg<GameDefinitionUpdateRequest>.Matches(
                 updateRequest => updateRequest.GameDefinitionId == GAME_DEFINITION_ID
                     && updateRequest.Active == updateGameDefinitionMessage.Active
                     && updateRequest.Name == updateGameDefinitionMessage.GameDefinitionName
                     && updateRequest.BoardGameGeekGameDefinitionId == updateGameDefinitionMessage.BoardGameGeekGameDefinitionId),
-                    Arg<ApplicationUser>.Is.Same(applicationUser)));
+                    Arg<ApplicationUser>.Is.Same(_applicationUser)));
         }
 
         [Test]
         public void ItReturnsANoContentResponse()
         {
-            var actualResults = autoMocker.ClassUnderTest.UpdateGameDefinition(new UpdateGameDefinitionMessage(), 0, 0);
+            var actualResults = _autoMocker.ClassUnderTest.UpdateGameDefinition(new UpdateGameDefinitionMessage(), 0, 0);
 
             AssertThatApiAction.ReturnsANoContentResponseWithNoContent(actualResults);
         }

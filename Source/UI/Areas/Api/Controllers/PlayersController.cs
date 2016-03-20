@@ -67,16 +67,18 @@ namespace UI.Areas.Api.Controllers
         [HttpPost]
         public virtual HttpResponseMessage SaveNewPlayer([FromBody]NewPlayerMessage newPlayerMessage, [FromUri]int gamingGroupId)
         {
-            var requestedPlayer = new Player
+            var requestedPlayer = new CreatePlayerRequest
             {
-                Name = newPlayerMessage.PlayerName
+                Name = newPlayerMessage.PlayerName,
+                GamingGroupId = newPlayerMessage.GamingGroupId
             };
 
-            var actualNewlyCreatedPlayer = playerSaver.Save(requestedPlayer, CurrentUser);
+            var actualNewlyCreatedPlayer = playerSaver.CreatePlayer(requestedPlayer, CurrentUser);
 
             var newlyCreatedPlayerMessage = new NewlyCreatedPlayerMessage
             {
-                PlayerId = actualNewlyCreatedPlayer.Id
+                PlayerId = actualNewlyCreatedPlayer.Id,
+                GamingGroupId = actualNewlyCreatedPlayer.GamingGroupId
             };
 
             return Request.CreateResponse(HttpStatusCode.OK, newlyCreatedPlayerMessage);
