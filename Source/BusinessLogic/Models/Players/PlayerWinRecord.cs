@@ -11,8 +11,9 @@
         public bool IsChampion { get; set; }
         public bool IsFormerChampion { get; set; }
         public int TotalGamesPlayed { get; set; }
-        //TODO Fix this
-        public int TotalNemePoints { get; set; }
+        public int BaseNemePoints { get; set; }
+        public int WeightBonusNemePoints { get; set; }
+        public int GameDurationBonusNemePoints { get; set; }
         public float AveragePointsPerGame { get; set; }
     }
 }

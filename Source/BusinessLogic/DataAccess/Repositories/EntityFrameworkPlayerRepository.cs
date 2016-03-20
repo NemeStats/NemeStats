@@ -169,7 +169,9 @@ namespace BusinessLogic.DataAccess.Repositories
               ,Player.Active AS PlayerActive
               ,SUM(CASE WHEN PGR.GameRank = 1 THEN 1 ELSE 0 END) AS GamesWon
               ,SUM(CASE WHEN PGR.GameRank <> 1 THEN 1 ELSE 0 END) AS GamesLost
-              ,SUM(PGR.NemeStatsPointsAwarded) AS TotalNemePoints
+              ,SUM(PGR.NemeStatsPointsAwarded) AS BaseNemePoints
+              ,SUM(PGR.GameWeightBonusPoints) AS WeightBonusNemePoints
+              ,SUM(PGR.GameDurationBonusPoints) AS GameDurationBonusNemePoints
               ,CONVERT(BIT, CASE WHEN Player.Id = Champion.PlayerId THEN 1 ELSE 0 END) AS IsChampion
               ,CONVERT(BIT, CASE WHEN EXISTS(
                     SELECT 1 FROM Champion 
@@ -183,7 +185,7 @@ namespace BusinessLogic.DataAccess.Repositories
               LEFT JOIN Champion ON Champion.Id = GD.ChampionId
               WHERE GD.Id = @GameDefinitionId
               GROUP BY GD.[Id], GD.[Name], Player.Id, Player.Name,Player.Active, CONVERT(BIT, CASE WHEN Player.Id = Champion.PlayerId THEN 1 ELSE 0 END)
-              ORDER BY PlayerActive DESC, TotalNemePoints DESC, GamesWon DESC, PlayerName";
+              ORDER BY PlayerActive DESC, BaseNemePoints DESC, GamesWon DESC, PlayerName";
 
         public IList<PlayerWinRecord> GetPlayerWinRecords(int gameDefinitionId)
         {
@@ -198,7 +200,8 @@ namespace BusinessLogic.DataAccess.Repositories
                 record.TotalGamesPlayed = record.GamesLost + record.GamesWon;
                 if (record.TotalGamesPlayed > 0)
                 {
-                    record.AveragePointsPerGame = record.TotalGamesPlayed > 0 ? (float)record.NemePointsSummary.TotalPoints / record.TotalGamesPlayed : 0;
+                    int totalPoints = record.GameDurationBonusNemePoints + record.BaseNemePoints + record.WeightBonusNemePoints;
+                    record.AveragePointsPerGame = record.TotalGamesPlayed > 0 ? (float)totalPoints / record.TotalGamesPlayed : 0;
                 }
             });
 
