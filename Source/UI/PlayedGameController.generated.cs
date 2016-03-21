@@ -196,6 +196,7 @@ namespace UI.Controllers
             public _ViewNamesClass ViewNames { get { return s_ViewNames; } }
             public class _ViewNamesClass
             {
+                public readonly string _GameResult = "_GameResult";
                 public readonly string _PlayedGameFormPartial = "_PlayedGameFormPartial";
                 public readonly string _PlayedGamesPartial = "_PlayedGamesPartial";
                 public readonly string _PlayedGamesPlayerPartial = "_PlayedGamesPlayerPartial";
@@ -207,6 +208,7 @@ namespace UI.Controllers
                 public readonly string RecentlyPlayedGames = "RecentlyPlayedGames";
                 public readonly string Search = "Search";
             }
+            public readonly string _GameResult = "~/Views/PlayedGame/_GameResult.cshtml";
             public readonly string _PlayedGameFormPartial = "~/Views/PlayedGame/_PlayedGameFormPartial.cshtml";
             public readonly string _PlayedGamesPartial = "~/Views/PlayedGame/_PlayedGamesPartial.cshtml";
             public readonly string _PlayedGamesPlayerPartial = "~/Views/PlayedGame/_PlayedGamesPlayerPartial.cshtml";

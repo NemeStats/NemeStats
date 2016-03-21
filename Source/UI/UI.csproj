@@ -398,6 +398,7 @@
     <Compile Include="Models\PlayedGame\PlayedGamesFilterViewModel.cs" />
     <Compile Include="Models\PlayedGame\PlayedGamesViewModel.cs" />
     <Compile Include="Models\PlayedGame\SearchViewModel.cs" />
+    <Compile Include="Models\Players\GameResultRankViewModel.cs" />
     <Compile Include="Models\Players\MinionViewModel.cs" />
     <Compile Include="Models\Players\PlayerDetailsViewModel.cs" />
     <Compile Include="Models\Players\PlayerEditViewModel.cs" />
@@ -543,6 +544,7 @@
     <Content Include="fonts\icomoon.woff" />
     <Content Include="css\fonts.css.map" />
     <Compile Include="App_Start\Startup.SignalR.cs" />
+    <Content Include="sass\nemestats\playedgame.scss" />
     <None Include="sass\nemestats\gaminggroup.scss" />
     <Content Include="sass\nemestats\home.scss" />
     <Content Include="fonts\bootstrap\glyphicons-halflings-regular.woff2" />
@@ -721,6 +723,7 @@
     <Content Include="Views\GameDefinition\_TrendingGamesPartial.cshtml" />
     <Content Include="Views\Player\_GameDefinitionPlayersSummaryPartial.cshtml" />
     <Content Include="Views\GameDefinition\TrendingGames.cshtml" />
+    <Content Include="Views\PlayedGame\_GameResult.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Code\" />

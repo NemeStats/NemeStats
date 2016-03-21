@@ -5,35 +5,47 @@
 }
 
 @using UI.HtmlHelpers
+@using UI.Models.Players
 <div class="panel panel-primary">
     <div class="panel-heading">
-        <h4>
-            Last <span class="badge">@Model.PlayedGameDetailsViewModels.Count</span> Played Games
-            @if (Model.ShowSearchLinkInResultsHeader)
-            {
-                @:(
-                @Html.ActionLink("Search Played Games", "Search", "PlayedGame", new { }, new { })
-                @:)
-                 var fileRequestUrl = "/api/v1/GamingGroups/" + Model.GamingGroupId.Value + "/PlayedGamesExcel";
-
-                <a href="@fileRequestUrl" id="playedGamesExcelDownload">
-                    <i class="fa fa-download fa-2x" style="line-height: 36px" data-container="body" data-toggle="popover" data-placement="right"
-                       data-content="Export all of your played games to Microsoft Excel (.xlsx)"></i>
-                </a>
-            }
-        </h4>
+        <h4>Last <span class="badge">@Model.PlayedGameDetailsViewModels.Count</span> Played Games</h4>
     </div>
     <div class="panel-body">
         @if (Model.UserCanEdit && Model.GamingGroupId.HasValue)
         {
             <div class="well">
-                <a href="@Url.Action(MVC.PlayedGame.ActionNames.Create, MVC.PlayedGame.Name, new {})" class="btn btn-primary" id="gtm-recordplayedgamebutton-fromplayedgames">
-                    <span class="fa fa-plus-circle"></span>&nbsp;Record Played Game
-                </a>
+                <div class="row">
+                    <div class="col-md-6">
+                        <a href="@Url.Action(MVC.PlayedGame.ActionNames.Create, MVC.PlayedGame.Name, new {})" class="btn btn-primary" id="gtm-recordplayedgamebutton-fromplayedgames">
+                            <span class="fa fa-plus-circle"></span>&nbsp;Record Played Game
+                        </a>
+                    </div>
+                    <div class="col-md-6">
+
+                        @if (Model.ShowSearchLinkInResultsHeader)
+                        {
+                            <div class="pull-right">
+                                <div class="btn-group btn-group-sm">
+                                    @{ var fileRequestUrl = "/api/v1/GamingGroups/" + Model.GamingGroupId.Value + "/PlayedGamesExcel"; }
+                                    <a href="@fileRequestUrl" id="playedGamesExcelDownload" class="btn btn-default" data-container="body" data-toggle="popover" data-placement="top"
+                                       data-content="Export all of your played games to Microsoft Excel (.xlsx)">
+                                        <i class="fa fa-download"></i>&nbsp;Export to excel
+                                    </a>
+                                    <a href="@Url.Action(MVC.PlayedGame.Search())" id="playedGamesExcelDownload" class="btn btn-default">
+                                        <i class="fa fa-search"></i>&nbsp;Advanced search
+                                    </a>
+                                </div>
+                            </div>
+                        }
+
+                    </div>
+
+
+                </div>
             </div>
         }
         <div class="flip-scroll">
-            <table class="table table-hover table-striped gameDefinitionsList">
+            <table class="table table-striped gameDefinitionsList">
                 <thead>
                     <tr>
                         <th class="bgg-link-head"></th>
@@ -84,16 +96,7 @@
                             <td class="result-col">
                                 @foreach (var playerGameResultDetails in playedGameDetailsViewModel.PlayerResults)
                                 {
-                                    <div class="row">
-                                        <div class="col-sm-4">
-                                            <b>
-                                                @Html.ActionLink(playerGameResultDetails.PlayerName, "Details", "Player", new { id = playerGameResultDetails.PlayerId }, new { })
-                                            </b>
-                                        </div>
-                                        <div class="col-sm-8">
-                                            @Html.GameResults(playerGameResultDetails, playedGameDetailsViewModel.WinnerType)
-                                        </div>
-                                    </div>
+                                    @Html.Partial(MVC.PlayedGame.Views._GameResult, new GameResultRankViewModel() { GameResult = playerGameResultDetails, WinnerType = playedGameDetailsViewModel.WinnerType })
                                 }
                             </td>
                             <td>

@@ -109,6 +109,13 @@
             height: $result-height;
             overflow-y: auto;
             overflow-x: hidden;
+
+            .game-result {
+                .alert {
+                    white-space: normal;
+                    max-width: $gamethumbnail-maxwidht;
+                }
+            }
         }
     }
 }

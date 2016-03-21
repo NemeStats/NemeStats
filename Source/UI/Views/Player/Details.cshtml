@@ -1,6 +1,7 @@
 ﻿@model UI.Models.Players.PlayerDetailsViewModel
 @using BusinessLogic.Models.PlayedGames
 @using UI.HtmlHelpers
+@using UI.Models.Players
 @{
     ViewBag.Title = @Model.PlayerName + " - " + Model.GamingGroupName;
     Layout = MVC.Shared.Views._BaseLayout;
@@ -242,9 +243,9 @@
                                     <td>
                                         @Html.ActionLink(gameResultViewModel.DatePlayed.ToShortDateString(), "Details", "PlayedGame", new { id = gameResultViewModel.PlayedGameId }, new { })
                                     </td>
-                                    <td>
+                                    <td class="result-col">
                                         @*Don't have the WinnerType available on PlayerGameResult and this is a big refactor to make it work.*@
-                                        @Html.GameResults(gameResultViewModel, WinnerTypes.PlayerWin)
+                                        @Html.Partial(MVC.PlayedGame.Views._GameResult, new GameResultRankViewModel() {GameResult = gameResultViewModel,WinnerType =  WinnerTypes.PlayerWin})
                                     </td>
                                 </tr>
                             }

@@ -432,10 +432,6 @@ h3 > a {
   color: #EB7260;
   font-weight: 700; }
 
-.btn-recordgame {
-  width: 175px;
-  margin: 3px 3px 3px 3px; }
-
 button > i.fa {
   font-size: 20px; }
 
@@ -513,7 +509,10 @@ footer {
   .flip-scroll .result-col {
     height: 190px;
     overflow-y: auto;
-    overflow-x: hidden; } }
+    overflow-x: hidden; }
+    .flip-scroll .result-col .game-result .alert {
+      white-space: normal;
+      max-width: 200px; } }
 
 /*$header-background-color: #2C3E50;*/
 .btn.btn-google {
@@ -784,5 +783,13 @@ footer {
 
 .bgguser-integration img {
   margin-right: 10px; }
+
+/*$header-background-color: #2C3E50;*/
+.game-result .total {
+  font-size: 24px;
+  cursor: pointer; }
+
+.game-result .rank .value {
+  font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif !important; }
 
 /*# sourceMappingURL=nemestats.css.map */

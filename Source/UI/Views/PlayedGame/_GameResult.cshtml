@@ -1,0 +1,89 @@
+﻿@using BusinessLogic.Models.PlayedGames
+@model UI.Models.Players.GameResultRankViewModel
+
+@{
+    Layout = null;
+}
+
+
+<div class="game-result">
+
+
+    <div class="row">
+        <div class="col-xs-6">
+            <b>
+                @Rank()
+
+                @Html.ActionLink(Model.GameResult.PlayerName, "Details", "Player", new { id = Model.GameResult.PlayerId }, new { })
+
+            </b>
+        </div>
+        @TotalPoints()
+    </div>
+
+
+
+    <div class="alert alert-info collapse" id="@Model.Id">
+        @Model.GameResult.NemeStatsPointsAwarded <span>base points</span>
+        @if (Model.GameResult.GameWeightBonusPoints > 0)
+        {
+            <span>
+                + @Model.GameResult.GameWeightBonusPoints <span class="fa fa-balance-scale" data-container="body" data-toggle="popover" data-placement="top"
+                                                                data-content="Bonus NemePoints earned due to the game weight"></span> points
+            </span>
+        }
+        @if (Model.GameResult.GameDurationBonusPoints > 0)
+        {
+            <span>
+                + @Model.GameResult.GameDurationBonusPoints <span class="fa fa-clock-o" data-container="body" data-toggle="popover" data-placement="top"
+                                                                  data-content="Bonus NemePoints earned due to the game duration"></span> points
+            </span>
+        }
+        @if (Model.GameResult.GameDurationBonusPoints < 0)
+        {
+            <span>
+                @Model.GameResult.GameDurationBonusPoints <span class="fa fa-clock-o" data-container="body" data-toggle="popover" data-placement="top"
+                                                                data-content="NemePoints penalty due to the game duration"></span> points
+            </span>
+        }
+        <span>= @Model.GameResult.TotalPoints <span class="fa-stack neme-points-ico"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x letter">N</i></span></span>
+    </div>
+</div>
+
+@helper Rank()
+{
+
+if (Model.WinnerType.HasValue && Model.WinnerType.Value == WinnerTypes.TeamWin)
+{
+        <span class="fa-stack rank" data-toggle="popover" data-placement="top" data-content="Everyone won!">
+            <i class="fa fa-square fa-stack-2x text-success"></i>
+            <i class="fa fa-inverse fa-stack-1x fa-smile-o"></i>
+        </span>
+}
+else if (Model.WinnerType.HasValue && Model.WinnerType.Value == WinnerTypes.TeamLoss)
+{
+        <span class="fa-stack rank"  data-toggle="popover" data-placement="top" data-content="Everyone lost">
+            <i class="fa fa-square fa-stack-2x text-danger"></i>
+            <i class="fa fa-inverse fa-stack-1x fa-frown-o"></i>
+        </span>
+}
+else
+{
+        <span class="fa-stack rank" data-toggle="popover" data-placement="top" data-content="Rank on game">
+            <i class="fa fa-square fa-stack-2x"></i>
+            <i class="fa fa-inverse fa-stack-1x value">@Model.GameResult.GameRank</i>
+        </span>
+}
+
+
+}
+@helper TotalPoints()
+{
+    <div class="col-xs-6 total" data-toggle="collapse" href="#@Model.Id">
+        <span class="pull-right ">
+            @Model.GameResult.TotalPoints
+            <span class="fa-stack neme-points-ico"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x letter">N</i></span>
+        </span>
+    </div>
+}
+

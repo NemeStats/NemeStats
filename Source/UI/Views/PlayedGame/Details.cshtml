@@ -1,6 +1,7 @@
 ﻿@model UI.Models.PlayedGame.PlayedGameDetailsViewModel
 @using BusinessLogic.Models.PlayedGames
 @using UI.HtmlHelpers
+@using UI.Models.Players
 @{
 	string title = @Model.GameDefinitionName + " - " + Model.DatePlayed.ToShortDateString();
 	ViewBag.Title = title + " - " + Model.GamingGroupName;
@@ -106,7 +107,7 @@
 						@Html.ActionLink(gameResultViewModel.PlayerName, "Details", "Player", new { id = gameResultViewModel.PlayerId }, new { })
 					</div>
 					<div class="col-sm-9">
-						@Html.GameResults(gameResultViewModel, Model.WinnerType)
+                        @Html.Partial(MVC.PlayedGame.Views._GameResult, new GameResultRankViewModel() { GameResult = gameResultViewModel, WinnerType = Model.WinnerType })
 					</div>
 				}
 				@if (Model.UserCanEdit)
