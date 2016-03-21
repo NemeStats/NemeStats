@@ -31,9 +31,7 @@ namespace UI.Transformations.PlayerTransformations
                 PlayerId = topPlayer.PlayerId,
                 PlayerName = topPlayer.PlayerName,
                 TotalNumberOfGamesPlayed = topPlayer.TotalNumberOfGamesPlayed,
-                //TODO fix this
-                NemePointsSummary = new NemePointsSummaryViewModel(0, 0, 0),
-                //TotalPoints = topPlayer.TotalPoints,
+                NemePointsSummary = new NemePointsSummaryViewModel(topPlayer.NemePointsSummary),
                 WinPercentage = topPlayer.WinPercentage
             };
         }

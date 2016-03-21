@@ -16,7 +16,7 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 using System.Collections.Generic;
-using System.Linq;
+using BusinessLogic.Models.Points;
 
 namespace BusinessLogic.Models.Players
 {
@@ -46,5 +46,6 @@ namespace BusinessLogic.Models.Players
         public IList<GameDefinition> FormerChampionedGames { get; set; }
         public IList<PlayerVersusPlayerStatistics> PlayerVersusPlayersStatistics { get; set; }
         public int LongestWinningStreak { get; set; }
+        public NemePointsSummary NemePointsSummary { get; set; }
     }
 }

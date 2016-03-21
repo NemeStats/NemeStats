@@ -48,7 +48,8 @@ namespace UI.Tests.UnitTests.HtmlHelperTests.MyHelpersTests
             HtmlHelper helper = new HtmlHelper(new ViewContext(), new ViewPage());
             GameResultViewModel playerGameResultDetails = new GameResultViewModel()
             {
-                GameRank = 1151
+                GameRank = 1151,
+                NemePointsSummary = new NemePointsSummaryViewModel(0, 0, 0)
             };
 
             XElement result = helper.GameResults(playerGameResultDetails, WinnerTypes.PlayerWin).ToXElement();
@@ -62,7 +63,8 @@ namespace UI.Tests.UnitTests.HtmlHelperTests.MyHelpersTests
             HtmlHelper helper = new HtmlHelper(new ViewContext(), new ViewPage());
             GameResultViewModel playerGameResultDetails = new GameResultViewModel()
             {
-                GameRank = gameRank
+                GameRank = gameRank,
+                NemePointsSummary = new NemePointsSummaryViewModel(0, 0, 0)
             };
 
             XElement result = helper.GameResults(playerGameResultDetails, winnerType).ToXElement();

@@ -48,12 +48,9 @@ namespace UI.Transformations.PlayerTransformations
                 PreviousNemesisPlayerName = playerWithNemesis.PreviousNemesisPlayerName,
                 NumberOfPlayedGames = totalGamesPlayed,
                 OverallWinPercentage = WinPercentageCalculator.CalculateWinPercentage(playerWithNemesis.GamesWon, playerWithNemesis.GamesLost),
-                //TODO fix this
-                NemePointsSummary = new NemePointsSummaryViewModel(0, 0, 0),
-                //TotalPoints = playerWithNemesis.TotalPoints,
+                NemePointsSummary = new NemePointsSummaryViewModel(playerWithNemesis.NemePointsSummary),
                 TotalChampionedGames = playerWithNemesis.TotalChampionedGames,
-                //TODO fix this
-                AveragePointsPerGame = totalGamesPlayed > 0 ? (float)playerWithNemesis.TotalPoints / (float)totalGamesPlayed : 0
+                AveragePointsPerGame = totalGamesPlayed > 0 ? (float)playerWithNemesis.NemePointsSummary.TotalPoints / (float)totalGamesPlayed : 0
             };
 
             return model;

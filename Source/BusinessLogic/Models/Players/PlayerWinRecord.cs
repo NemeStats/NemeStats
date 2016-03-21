@@ -1,4 +1,6 @@
-﻿namespace BusinessLogic.Models.Players
+﻿using BusinessLogic.Models.Points;
+
+namespace BusinessLogic.Models.Players
 {
     public class PlayerWinRecord
     {
@@ -11,9 +13,7 @@
         public bool IsChampion { get; set; }
         public bool IsFormerChampion { get; set; }
         public int TotalGamesPlayed { get; set; }
-        public int BaseNemePoints { get; set; }
-        public int WeightBonusNemePoints { get; set; }
-        public int GameDurationBonusNemePoints { get; set; }
+        public NemePointsSummary NemePointsSummary { get; set; }
         public float AveragePointsPerGame { get; set; }
     }
 }

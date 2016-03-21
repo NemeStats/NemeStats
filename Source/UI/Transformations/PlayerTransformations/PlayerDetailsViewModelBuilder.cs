@@ -63,8 +63,7 @@ namespace UI.Transformations.PlayerTransformations
                 GamingGroupName = playerDetails.GamingGroupName,
                 GamingGroupId = playerDetails.GamingGroupId,
                 TotalGamesPlayed = playerDetails.PlayerStats.TotalGames,
-                //TODO fix this
-                NemePointsSummary = new NemePointsSummaryViewModel(0, 0, 0),
+                NemePointsSummary = new NemePointsSummaryViewModel(playerDetails.NemePointsSummary),
                 TotalGamesWon = playerDetails.PlayerStats.TotalGamesWon,
                 TotalGamesLost = playerDetails.PlayerStats.TotalGamesLost,
                 WinPercentage = playerDetails.PlayerStats.WinPercentage,

@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace UI.Areas.Api.Models
+﻿namespace UI.Areas.Api.Models
 {
     public class PlayerStatisticsMessage
     {
         public int TotalGames { get; set; }
         public int TotalPoints { get; set; }
+        public int BaseNemePoints { get; set; }
+        public int WeightBonusNemePoints { get; set; }
+        public int GameDurationBonusNemePoints { get; set; }
         public float AveragePlayersPerGame { get; set; }
         public int TotalGamesWon { get; set; }
         public int TotalGamesLost { get; set; }

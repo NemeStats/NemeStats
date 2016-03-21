@@ -16,6 +16,7 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 
+using BusinessLogic.Models.Points;
 
 namespace BusinessLogic.Models.Players
 {
@@ -32,8 +33,8 @@ namespace BusinessLogic.Models.Players
         public int GamingGroupId { get; set; }
         public int GamesWon { get; set; }
         public int GamesLost { get; set; }
-        public int TotalPoints { get; set; }
         public int TotalChampionedGames { get; set; }
         public bool PlayerActive { get; set; }
+        public NemePointsSummary NemePointsSummary { get; set; }
     }
 }

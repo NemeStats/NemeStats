@@ -47,8 +47,10 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
             var actualModel = result.Model as PlayerQuickStatsViewModel;
             Assert.That(actualModel, Is.Not.Null);
             Assert.That(actualModel.PlayerId, Is.EqualTo(expectedPlayerQuickSummary.PlayerId));
-            //TODO fix this
-            var expectedNemePointsSummary = new NemePointsSummaryViewModel(0, 0, 0);
+            var expectedNemePointsSummary = new NemePointsSummaryViewModel(
+                expectedPlayerQuickSummary.NemePointsSummary.BaseNemePoints,
+                expectedPlayerQuickSummary.NemePointsSummary.GameDurationBonusNemePoints,
+                expectedPlayerQuickSummary.NemePointsSummary.WeightBonusNemePoints);
             Assert.That(actualModel.NemePointsSummary, Is.EqualTo(expectedNemePointsSummary));
             Assert.That(actualModel.TotalGamesWon, Is.EqualTo(expectedPlayerQuickSummary.TotalGamesWon));
             Assert.That(actualModel.TotalGamesPlayed, Is.EqualTo(expectedPlayerQuickSummary.TotalGamesPlayed));

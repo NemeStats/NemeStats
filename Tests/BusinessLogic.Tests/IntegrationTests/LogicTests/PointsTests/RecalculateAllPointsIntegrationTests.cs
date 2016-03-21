@@ -14,6 +14,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PointsTests
     public class RecalculateAllPointsIntegrationTests
     {
         [Test]
+        [Ignore("Recalculates all points using the current points logic!")]
         public void RecalculateAllPoints()
         {
             //--arrange

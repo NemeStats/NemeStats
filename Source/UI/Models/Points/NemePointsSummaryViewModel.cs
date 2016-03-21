@@ -1,4 +1,6 @@
-﻿namespace UI.Models.Points
+﻿using BusinessLogic.Models.Points;
+
+namespace UI.Models.Points
 {
     public class NemePointsSummaryViewModel
     {
@@ -8,6 +10,14 @@
             GameDurationBonusNemePoints = gameDurationBonusPoints;
             WeightBonusNemePoints = gameWeightBonusPoints;
             TotalNemePoints = basePoints + gameDurationBonusPoints + gameWeightBonusPoints;
+        }
+
+        public NemePointsSummaryViewModel(NemePointsSummary nemePointsSummary)
+        {
+            BaseNemePoints = nemePointsSummary.BaseNemePoints;
+            GameDurationBonusNemePoints = nemePointsSummary.GameDurationBonusNemePoints;
+            WeightBonusNemePoints = nemePointsSummary.WeightBonusNemePoints;
+            TotalNemePoints = nemePointsSummary.TotalPoints;
         }
 
         public int TotalNemePoints { get; }
