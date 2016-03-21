@@ -15,7 +15,7 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
-using System.Linq;
+using BusinessLogic.Models.Points;
 
 namespace BusinessLogic.Models.Players
 {
@@ -25,6 +25,6 @@ namespace BusinessLogic.Models.Players
         public string PlayerName { get; set; }
         public int TotalNumberOfGamesPlayed { get; set; }
         public int WinPercentage { get; set; }
-        public int TotalPoints { get; set; }
+        public NemePointsSummary NemePointsSummary { get; set; }
     }
 }

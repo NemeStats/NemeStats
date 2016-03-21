@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Diagnostics;
+using System.Linq;
 using BusinessLogic.DataAccess;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
@@ -18,8 +19,9 @@ namespace BusinessLogic.Logic.Points
                                       playedGame.GamingGroupId,
                                       playedGame.PlayerGameResults,
                                       playedGame.GameDefinition.BoardGameGeekGameDefinition
-                                  }).ToList();
+                                  }).OrderBy(x => x.Id).ToList();
 
+            int counter = 0;
             foreach (var playedGame in allPlayedGames)
             {
                 var playerRanks = playedGame.PlayerGameResults.Select(x => new PlayerRank
@@ -29,7 +31,7 @@ namespace BusinessLogic.Logic.Points
                 }).ToList();
 
                 var newPoints = pointsCalculator.CalculatePoints(playerRanks, playedGame.BoardGameGeekGameDefinition);
-                
+
                 var applicationUserForThisGamingGroup = new ApplicationUser()
                 {
                     CurrentGamingGroupId = playedGame.GamingGroupId
@@ -42,6 +44,11 @@ namespace BusinessLogic.Logic.Points
                     playerGameResult.GameDurationBonusPoints = scorecard.GameDurationBonusPoints;
                     playerGameResult.GameWeightBonusPoints = scorecard.GameWeightBonusPoints;
                     dataContext.Save(playerGameResult, applicationUserForThisGamingGroup);
+                }
+                dataContext.CommitAllChanges();
+                if (counter % 100 == 0)
+                {
+                    Debug.WriteLine("{0} games updated...", counter);
                 }
             }
         }

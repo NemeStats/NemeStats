@@ -26,6 +26,7 @@ using BusinessLogic.Models.Games;
 using BusinessLogic.Models.GamingGroups;
 using BusinessLogic.Models.PlayedGames;
 using BusinessLogic.Models.Players;
+using BusinessLogic.Models.Points;
 using BusinessLogic.Models.User;
 using UI.Areas.Api.Models;
 using UI.Models;
@@ -33,6 +34,7 @@ using UI.Models.GameDefinitionModels;
 using UI.Models.GamingGroup;
 using UI.Models.PlayedGame;
 using UI.Models.Players;
+using UI.Models.Points;
 
 namespace UI.Transformations
 {
@@ -67,9 +69,15 @@ namespace UI.Transformations
             Mapper.CreateMap<CreateGameDefinitionViewModel, CreateGameDefinitionRequest>(MemberList.Destination)
                   //for now, GamingGroupId is optional and only passed from the API
                   .ForMember(x => x.GamingGroupId, opt => opt.Ignore());
-            Mapper.CreateMap<PlayerStatistics, PlayerStatisticsMessage>(MemberList.Destination);
+            Mapper.CreateMap<PlayerStatistics, PlayerStatisticsMessage>(MemberList.Destination)
+                  .ForMember(x => x.BaseNemePoints, opt => opt.MapFrom(src => src.NemePointsSummary.BaseNemePoints))
+                  .ForMember(x => x.GameDurationBonusNemePoints, opt => opt.MapFrom(src => src.NemePointsSummary.GameDurationBonusNemePoints))
+                  .ForMember(x => x.WeightBonusNemePoints, opt => opt.MapFrom(src => src.NemePointsSummary.WeightBonusNemePoints))
+                  .ForMember(x => x.TotalPoints, opt => opt.MapFrom(src => src.NemePointsSummary.TotalPoints));
             Mapper.CreateMap<PlayedGameQuickStats, PlayedGameQuickStatsViewModel>(MemberList.Destination);
             Mapper.CreateMap<PlayerQuickStats, PlayerQuickStatsViewModel>(MemberList.Destination);
+            Mapper.CreateMap<NemePointsSummary, NemePointsSummaryViewModel>(MemberList.Destination)
+                  .ConstructUsing(x => new NemePointsSummaryViewModel(x.BaseNemePoints, x.GameDurationBonusNemePoints, x.WeightBonusNemePoints));
             Mapper.CreateMap<TrendingGame, TrendingGameViewModel>(MemberList.Destination);
             Mapper.CreateMap<BoardGameGeekGameDefinition, BoardGameGeekGameDefinitionViewModel>()
                 .ForMember(m => m.BoardGameGeekUri,

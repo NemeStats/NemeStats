@@ -100,7 +100,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
             var player = players.First();
             Assert.That(player.GamesLost, Is.EqualTo(0));
             Assert.That(player.GamesWon, Is.EqualTo(1));
-            Assert.That(player.TotalPoints, Is.EqualTo(expectedNemePointsAwardedForEachGame));
+            Assert.That(player.NemePointsSummary.TotalPoints, Is.EqualTo(expectedNemePointsAwardedForEachGame));
         }
 
         [Test]
@@ -152,7 +152,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
             var player = players.First();
             Assert.That(player.GamesLost, Is.EqualTo(1));
             Assert.That(player.GamesWon, Is.EqualTo(0));
-            Assert.That(player.TotalPoints, Is.EqualTo(expectedNemePointsAwardedForEachGame));
+            Assert.That(player.NemePointsSummary.TotalPoints, Is.EqualTo(expectedNemePointsAwardedForEachGame));
         }
 
         [Test]
@@ -167,13 +167,13 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
             {
                 if (lastActive == player.PlayerActive)
                 {
-                    if (lastPlayerPoints.Equals(player.TotalPoints))
+                    if (lastPlayerPoints.Equals(player.NemePointsSummary.TotalPoints))
                     {
                         Assert.LessOrEqual(lastPlayerName, player.PlayerName);
                     }
                     else
                     {
-                        Assert.GreaterOrEqual(lastPlayerPoints, player.TotalPoints);
+                        Assert.GreaterOrEqual(lastPlayerPoints, player.NemePointsSummary.TotalPoints);
                     }
                 }
                 else
@@ -183,7 +183,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
                 }
                
 
-                lastPlayerPoints = player.TotalPoints;
+                lastPlayerPoints = player.NemePointsSummary.TotalPoints;
                 lastPlayerName = player.PlayerName;
                 lastActive = player.PlayerActive;
             }
@@ -216,7 +216,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
 
             List<PlayerWithNemesis> players = autoMocker.ClassUnderTest.GetAllPlayersWithNemesisInfo(gamingGroupId);
 
-            Assert.That(players[0].TotalPoints, Is.EqualTo(expectedTotalPoints));
+            Assert.That(players[0].NemePointsSummary.TotalPoints, Is.EqualTo(expectedTotalPoints));
         }
 
         [Test]

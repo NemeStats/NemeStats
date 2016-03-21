@@ -21,6 +21,7 @@ using BusinessLogic.Models.Players;
 using System.Collections.Generic;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
+using BusinessLogic.Models.Points;
 
 namespace BusinessLogic.Logic.Players
 {
@@ -29,12 +30,15 @@ namespace BusinessLogic.Logic.Players
         private const string SQL_GET_TOP_PLAYERS = @"SELECT TOP {0} Player.Id AS PlayerId, 
             Player.Name AS PlayerName, 
             COUNT(*) AS TotalNumberOfGamesPlayed, 
-            SUM(PlayerGameResult.NemeStatsPointsAwarded) AS TotalPoints,
+            SUM(PlayerGameResult.NemeStatsPointsAwarded) AS BaseNemePoints,
+            SUM(PlayerGameResult.GameDurationBonusPoints) AS GameDurationBonusPoints,
+            SUM(PlayerGameResult.GameWeightBonusPoints) AS GameWeightBonusPoints,
+            SUM(PlayerGameResult.NemeStatsPointsAwarded + PlayerGameResult.GameDurationBonusPoints + PlayerGameResult.GameWeightBonusPoints) as TotalPoints,
             SUM(CASE WHEN PlayerGameResult.GameRank = 1 THEN 1 ELSE 0 END) AS WinPercentage
             FROM Player INNER JOIN PlayerGameResult ON Player.Id = PlayerGameResult.PlayerId
             WHERE Player.Active = 1
             GROUP BY Player.Id, Player.Name
-            ORDER BY TotalPoints DESC";
+            ORDER BY TotalPoints DESC, PlayerName";
 
         private readonly IDataContext dataContext;
 
@@ -43,11 +47,27 @@ namespace BusinessLogic.Logic.Players
             this.dataContext = dataContext;
         }
 
+        internal class TopPlayerWithFlatPoints : TopPlayer
+        {
+            public int BaseNemePoints { get; set; }
+            public int GameWeightBonusPoints { get; set; }
+            public int GameDurationBonusPoints { get; set; }
+            public int TotalPoints { get; set; }
+        }
+
         public virtual List<TopPlayer> GetTopPlayers(int numberOfPlayersToRetrieve)
         {
-            DbRawSqlQuery<TopPlayer> data = dataContext.MakeRawSqlQuery<TopPlayer>(string.Format(SQL_GET_TOP_PLAYERS, numberOfPlayersToRetrieve));
+            var data = dataContext.MakeRawSqlQuery<TopPlayerWithFlatPoints>(string.Format(SQL_GET_TOP_PLAYERS, numberOfPlayersToRetrieve));
 
-            List<TopPlayer> topPlayers = data.ToList();
+            var topPlayers = data.Select(x => new TopPlayer
+            {
+                NemePointsSummary = new NemePointsSummary(x.BaseNemePoints, x.GameDurationBonusPoints, x.GameWeightBonusPoints),
+                PlayerName = x.PlayerName,
+                WinPercentage = x.WinPercentage,
+                PlayerId = x.PlayerId,
+                TotalNumberOfGamesPlayed = x.TotalNumberOfGamesPlayed
+            }).ToList()
+            .ToList();
             //WinPercentage as it is originally pulled back from the query contains the number of games won and we have to
             //do the below math to switch it to a win %
             topPlayers.ForEach(player => player.WinPercentage = WinPercentageCalculator.CalculateWinPercentage(player.WinPercentage, player.TotalNumberOfGamesPlayed - player.WinPercentage));

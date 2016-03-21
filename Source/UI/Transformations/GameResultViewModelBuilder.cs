@@ -21,6 +21,7 @@ using System.Linq;
 using BusinessLogic.Logic.BoardGameGeek;
 using BusinessLogic.Logic.Players;
 using UI.Models.PlayedGame;
+using UI.Models.Points;
 
 namespace UI.Transformations
 {
@@ -39,10 +40,7 @@ namespace UI.Transformations
                 PlayerId = playerGameResult.PlayerId,
                 PlayerName = PlayerNameBuilder.BuildPlayerName(playerGameResult.Player.Name, playerGameResult.Player.Active),
                 GameRank = playerGameResult.GameRank,
-                NemeStatsPointsAwarded = playerGameResult.NemeStatsPointsAwarded,
-                GameDurationBonusPoints = playerGameResult.GameDurationBonusPoints,
-                GameWeightBonusPoints = playerGameResult.GameWeightBonusPoints,
-                TotalPoints = playerGameResult.TotalPoints,
+                NemePointsSummary = new NemePointsSummaryViewModel(playerGameResult.NemeStatsPointsAwarded, playerGameResult.GameDurationBonusPoints, playerGameResult.GameWeightBonusPoints),
                 GameDefinitionId = playerGameResult.PlayedGame.GameDefinition.Id,
                 GameDefinitionName = playerGameResult.PlayedGame.GameDefinition.Name,
                 PlayedGameId = playerGameResult.PlayedGameId,

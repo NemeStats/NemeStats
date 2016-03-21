@@ -18,6 +18,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using UI.Models.Points;
 
 namespace UI.Models.Players
 {
@@ -34,7 +35,7 @@ namespace UI.Models.Players
         public bool UserCanEdit { get; set; }
         public int NumberOfPlayedGames { get; set; }
         public int OverallWinPercentage { get; set; }
-        public int TotalPoints { get; set; }
+        public NemePointsSummaryViewModel NemePointsSummary { get; set; }
         public int TotalChampionedGames { get; set; }
         public float AveragePointsPerGame { get; set; }
     }

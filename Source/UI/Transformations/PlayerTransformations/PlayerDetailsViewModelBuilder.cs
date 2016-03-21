@@ -29,6 +29,7 @@ using BusinessLogic.Logic.Players;
 using UI.Models.Badges;
 using UI.Models.PlayedGame;
 using UI.Models.Players;
+using UI.Models.Points;
 
 namespace UI.Transformations.PlayerTransformations
 {
@@ -62,7 +63,7 @@ namespace UI.Transformations.PlayerTransformations
                 GamingGroupName = playerDetails.GamingGroupName,
                 GamingGroupId = playerDetails.GamingGroupId,
                 TotalGamesPlayed = playerDetails.PlayerStats.TotalGames,
-                TotalPoints = playerDetails.PlayerStats.TotalPoints,
+                NemePointsSummary = new NemePointsSummaryViewModel(playerDetails.NemePointsSummary),
                 TotalGamesWon = playerDetails.PlayerStats.TotalGamesWon,
                 TotalGamesLost = playerDetails.PlayerStats.TotalGamesLost,
                 WinPercentage = playerDetails.PlayerStats.WinPercentage,
@@ -169,7 +170,7 @@ namespace UI.Transformations.PlayerTransformations
             }
             else
             {
-                playerDetailsViewModel.AveragePointsPerGame = (float)playerDetails.PlayerStats.TotalPoints / (float)playerDetails.PlayerStats.TotalGames;
+                playerDetailsViewModel.AveragePointsPerGame = (float)playerDetails.PlayerStats.NemePointsSummary.TotalPoints / (float)playerDetails.PlayerStats.TotalGames;
             }
         }
 

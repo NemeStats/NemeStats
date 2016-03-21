@@ -22,6 +22,7 @@ using BusinessLogic.Models.Players;
 using BusinessLogic.Models.User;
 using UI.Models.Players;
 using BusinessLogic.Logic.Utilities;
+using UI.Models.Points;
 
 namespace UI.Transformations.PlayerTransformations
 {
@@ -47,9 +48,9 @@ namespace UI.Transformations.PlayerTransformations
                 PreviousNemesisPlayerName = playerWithNemesis.PreviousNemesisPlayerName,
                 NumberOfPlayedGames = totalGamesPlayed,
                 OverallWinPercentage = WinPercentageCalculator.CalculateWinPercentage(playerWithNemesis.GamesWon, playerWithNemesis.GamesLost),
-                TotalPoints = playerWithNemesis.TotalPoints,
+                NemePointsSummary = new NemePointsSummaryViewModel(playerWithNemesis.NemePointsSummary),
                 TotalChampionedGames = playerWithNemesis.TotalChampionedGames,
-                AveragePointsPerGame = totalGamesPlayed > 0 ? (float)playerWithNemesis.TotalPoints / (float)totalGamesPlayed : 0
+                AveragePointsPerGame = totalGamesPlayed > 0 ? (float)playerWithNemesis.NemePointsSummary.TotalPoints / (float)totalGamesPlayed : 0
             };
 
             return model;

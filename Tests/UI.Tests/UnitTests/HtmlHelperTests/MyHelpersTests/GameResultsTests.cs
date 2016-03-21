@@ -23,6 +23,7 @@ using System.Web.Mvc;
 using System.Xml.Linq;
 using UI.HtmlHelpers;
 using UI.Models.PlayedGame;
+using UI.Models.Points;
 
 namespace UI.Tests.UnitTests.HtmlHelperTests.MyHelpersTests
 {   
@@ -47,7 +48,8 @@ namespace UI.Tests.UnitTests.HtmlHelperTests.MyHelpersTests
             HtmlHelper helper = new HtmlHelper(new ViewContext(), new ViewPage());
             GameResultViewModel playerGameResultDetails = new GameResultViewModel()
             {
-                GameRank = 1151
+                GameRank = 1151,
+                NemePointsSummary = new NemePointsSummaryViewModel(0, 0, 0)
             };
 
             XElement result = helper.GameResults(playerGameResultDetails, WinnerTypes.PlayerWin).ToXElement();
@@ -61,7 +63,8 @@ namespace UI.Tests.UnitTests.HtmlHelperTests.MyHelpersTests
             HtmlHelper helper = new HtmlHelper(new ViewContext(), new ViewPage());
             GameResultViewModel playerGameResultDetails = new GameResultViewModel()
             {
-                GameRank = gameRank
+                GameRank = gameRank,
+                NemePointsSummary = new NemePointsSummaryViewModel(0, 0, 0)
             };
 
             XElement result = helper.GameResults(playerGameResultDetails, winnerType).ToXElement();
@@ -121,14 +124,14 @@ namespace UI.Tests.UnitTests.HtmlHelperTests.MyHelpersTests
             HtmlHelper helper = new HtmlHelper(new ViewContext(), new ViewPage());
             GameResultViewModel playerGameResultDetails = new GameResultViewModel()
             {
-                NemeStatsPointsAwarded = 9
+                NemePointsSummary = new NemePointsSummaryViewModel(1, 2, 3)
             };
 
             XElement result = helper.GameResults(playerGameResultDetails, WinnerTypes.PlayerWin).ToXElement();
 
             string firstNodeText = result.FirstNode.ToString();
 
-            Assert.True(firstNodeText.Contains(playerGameResultDetails.NemeStatsPointsAwarded.ToString()));
+            Assert.True(firstNodeText.Contains(playerGameResultDetails.NemePointsSummary.TotalNemePoints.ToString()));
         }
     }
 }

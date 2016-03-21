@@ -4,6 +4,7 @@ using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.Logic.Players;
 using NUnit.Framework;
 using BusinessLogic.Logic.PlayedGames;
+using BusinessLogic.Models.Points;
 
 namespace BusinessLogic.Tests.IntegrationTests.LogicTests.Players
 {
@@ -23,7 +24,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.Players
                 Assert.That(statistics.TotalGames, Is.EqualTo(0));
                 Assert.That(statistics.TotalGamesLost, Is.EqualTo(0));
                 Assert.That(statistics.TotalGamesWon, Is.EqualTo(0));
-                Assert.That(statistics.TotalPoints, Is.EqualTo(0));
+                Assert.That(statistics.NemePointsSummary, Is.EqualTo(new NemePointsSummary(0, 0, 0)));
                 Assert.That(statistics.WinPercentage, Is.EqualTo(0));
                 Assert.That(statistics.AveragePlayersPerGame, Is.EqualTo(0));
                 Assert.That(statistics.GameDefinitionTotals.SummariesOfGameDefinitionTotals.Count, Is.EqualTo(0));
