@@ -13,18 +13,18 @@ namespace UI.Models.Players
         {
             get
             {
-                var result = $"{GameResult.NemeStatsPointsAwarded} base points";
-                if (GameResult.GameWeightBonusPoints != 0)
+                var result = $"{GameResult.NemePointsSummary.BaseNemePoints} base points";
+                if (GameResult.NemePointsSummary.WeightBonusNemePoints != 0)
                 {
-                    result = result + $" + {GameResult.GameWeightBonusPoints} bonus for game weight";
+                    result = result + $" + {GameResult.NemePointsSummary.WeightBonusNemePoints} bonus for game weight";
                 }
-                if (GameResult.GameDurationBonusPoints > 0)
+                if (GameResult.NemePointsSummary.GameDurationBonusNemePoints > 0)
                 {
-                    result = result + $" + {GameResult.GameDurationBonusPoints} bonus for game duration";
+                    result = result + $" + {GameResult.NemePointsSummary.GameDurationBonusNemePoints} bonus for game duration";
                 }
-                if (GameResult.GameDurationBonusPoints < 0)
+                if (GameResult.NemePointsSummary.GameDurationBonusNemePoints < 0)
                 {
-                    result = result + $" {GameResult.GameDurationBonusPoints} penalty for game duration";
+                    result = result + $" {GameResult.NemePointsSummary.GameDurationBonusNemePoints} penalty for game duration";
                 }
 
                 return result;

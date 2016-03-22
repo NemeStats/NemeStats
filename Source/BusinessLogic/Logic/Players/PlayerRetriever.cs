@@ -319,19 +319,14 @@ namespace BusinessLogic.Logic.Players
                                                   g =>
                                                   new NemePointsSummary
                                                   {
+                                                      //had to cast to handle the case where there is no data:
+                                                      //http://stackoverflow.com/questions/6864311/the-cast-to-value-type-int32-failed-because-the-materialized-value-is-null
                                                       BaseNemePoints = g.Sum(x => (int?)x.NemeStatsPointsAwarded) ?? 0,
                                                       GameDurationBonusNemePoints = g.Sum(x => (int?)x.GameDurationBonusPoints) ?? 0,
                                                       WeightBonusNemePoints = g.Sum(x => (int?)x.GameWeightBonusPoints) ?? 0
                                                   })
                                 .SingleOrDefault();
-                            //had to cast to handle the case where there is no data:
-                            //http://stackoverflow.com/questions/6864311/the-cast-to-value-type-int32-failed-because-the-materialized-value-is-null
-                            //.Sum(playerGameResults => (int?)playerGameResults.TotalPoints) ?? 0;
-            if (nemePointsSummary == null)
-            {
-                return new NemePointsSummary(0, 0, 0);
-            }
-            return nemePointsSummary;
+            return nemePointsSummary ?? new NemePointsSummary(0, 0, 0);
         }
 
         public virtual PlayerQuickStats GetPlayerQuickStatsForUser(string applicationUserId, int gamingGroupId)
@@ -348,7 +343,6 @@ namespace BusinessLogic.Logic.Players
             if (playerIdForCurrentUser != 0)
             {
                 returnValue.PlayerId = playerIdForCurrentUser;
-                //TODO fix this
                 returnValue.NemePointsSummary = GetNemePointsSummary(playerIdForCurrentUser);
 
                 var gameDefinitionTotals = GetGameDefinitionTotals(playerIdForCurrentUser);

@@ -24,29 +24,29 @@
 
 
     <div class="alert alert-info collapse" id="@Model.Id">
-        @Model.GameResult.NemeStatsPointsAwarded <span>base points</span>
-        @if (Model.GameResult.GameWeightBonusPoints > 0)
+        @Model.GameResult.NemePointsSummary.BaseNemePoints <span>base points</span>
+        @if (Model.GameResult.NemePointsSummary.WeightBonusNemePoints > 0)
         {
             <span>
-                + @Model.GameResult.GameWeightBonusPoints <span class="fa fa-balance-scale" data-container="body" data-toggle="popover" data-placement="top"
+                + @Model.GameResult.NemePointsSummary.WeightBonusNemePoints <span class="fa fa-balance-scale" data-container="body" data-toggle="popover" data-placement="top"
                                                                 data-content="Bonus NemePoints earned due to the game weight"></span> points
             </span>
         }
-        @if (Model.GameResult.GameDurationBonusPoints > 0)
+        @if (Model.GameResult.NemePointsSummary.GameDurationBonusNemePoints > 0)
         {
             <span>
-                + @Model.GameResult.GameDurationBonusPoints <span class="fa fa-clock-o" data-container="body" data-toggle="popover" data-placement="top"
+                + @Model.GameResult.NemePointsSummary.GameDurationBonusNemePoints <span class="fa fa-clock-o" data-container="body" data-toggle="popover" data-placement="top"
                                                                   data-content="Bonus NemePoints earned due to the game duration"></span> points
             </span>
         }
-        @if (Model.GameResult.GameDurationBonusPoints < 0)
+        @if (Model.GameResult.NemePointsSummary.GameDurationBonusNemePoints < 0)
         {
             <span>
-                @Model.GameResult.GameDurationBonusPoints <span class="fa fa-clock-o" data-container="body" data-toggle="popover" data-placement="top"
+                @Model.GameResult.NemePointsSummary.GameDurationBonusNemePoints <span class="fa fa-clock-o" data-container="body" data-toggle="popover" data-placement="top"
                                                                 data-content="NemePoints penalty due to the game duration"></span> points
             </span>
         }
-        <span>= @Model.GameResult.TotalPoints <span class="fa-stack neme-points-ico"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x letter">N</i></span></span>
+        <span>= @Model.GameResult.NemePointsSummary.TotalNemePoints <span class="fa-stack neme-points-ico"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x letter">N</i></span></span>
     </div>
 </div>
 
@@ -81,7 +81,7 @@ else
 {
     <div class="col-xs-6 total" data-toggle="collapse" href="#@Model.Id">
         <span class="pull-right ">
-            @Model.GameResult.TotalPoints
+            @Model.GameResult.NemePointsSummary.TotalNemePoints
             <span class="fa-stack neme-points-ico"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x letter">N</i></span>
         </span>
     </div>

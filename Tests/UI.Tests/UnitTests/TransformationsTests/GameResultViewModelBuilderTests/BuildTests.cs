@@ -19,8 +19,10 @@
 using System;
 using BusinessLogic.Logic.Players;
 using BusinessLogic.Models;
+using BusinessLogic.Models.Points;
 using NUnit.Framework;
 using UI.Models.PlayedGame;
+using UI.Models.Points;
 using UI.Transformations;
 
 namespace UI.Tests.UnitTests.TransformationsTests.GameResultViewModelBuilderTests
@@ -135,8 +137,8 @@ namespace UI.Tests.UnitTests.TransformationsTests.GameResultViewModelBuilderTest
         [Test]
         public void ItCopiesTheNemeStatsPoints()
         {
-            //TODO Fix this
-            //Assert.AreEqual(playerGameResult.NemeStatsPointsAwarded, playerGameResultDetails.NemeStatsPointsAwarded);
+            var expected = new NemePointsSummaryViewModel(playerGameResult.NemeStatsPointsAwarded, playerGameResult.GameDurationBonusPoints, playerGameResult.GameWeightBonusPoints);
+            Assert.AreEqual(expected, playerGameResultDetails.NemePointsSummary);
         }
 
         [Test]
