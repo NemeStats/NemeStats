@@ -25,6 +25,7 @@ using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using BusinessLogic.Models.Points;
 using StructureMap.AutoMocking;
 
 namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverTests
@@ -38,18 +39,19 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
         private Player playerWithOnlyACurrentNemesis;
         private Player playerWithNoNemesisEver;
         private Player playerWithAChampionship;
-        private int numberOfRecentGames = 1;
+        private readonly int numberOfRecentGames = 1;
         private Nemesis expectedNemesis;
         private Nemesis expectedPriorNemesis;
         private Champion expectedChampion;
         private GameDefinition expectedFormerChampionGame;
+        private PlayerStatistics expectedPlayerStatistics;
         private List<Player> expectedMinions;
         private List<PlayerGameSummary> expectedPlayerGameSummaries;
         private List<Champion> expectedChampionedGames;
         private List<GameDefinition> expectedFormerChampionedGames;
         private List<PlayerVersusPlayerStatistics> expectedPlayerVersusPlayerStatistics; 
-        private int gamingGroupId = 1985;
-        private int expectedLongestWinningStreak = 93;
+        private readonly int gamingGroupId = 1985;
+        private readonly int expectedLongestWinningStreak = 93;
             
         [SetUp]
         public void SetUp()
@@ -130,11 +132,14 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
             autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<Player>())
                                                .Return(players.AsQueryable());
 
-            PlayerStatistics playerStatistics = new PlayerStatistics();
+            expectedPlayerStatistics = new PlayerStatistics
+            {
+                NemePointsSummary = new NemePointsSummary(1, 2, 4)
+            };
 
             autoMocker.ClassUnderTest.Expect(repo => repo.GetPlayerStatistics(Arg<int>.Is.Anything))
                 .Repeat.Once()
-                .Return(playerStatistics);
+                .Return(expectedPlayerStatistics);
 
             autoMocker.ClassUnderTest.Expect(mock => mock.GetPlayerGameResultsWithPlayedGameAndGameDefinition(
                 Arg<int>.Is.Anything, 
@@ -264,5 +269,12 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
             Assert.That(playerDetails.LongestWinningStreak, Is.EqualTo(expectedLongestWinningStreak)); 
         }
 
+        [Test]
+        public void ItSetsTheNemePointsSummary()
+        {
+            PlayerDetails playerDetails = autoMocker.ClassUnderTest.GetPlayerDetails(player.Id, numberOfRecentGames);
+
+            Assert.That(playerDetails.NemePointsSummary, Is.EqualTo(expectedPlayerStatistics.NemePointsSummary));
+        }
     }
 }

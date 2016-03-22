@@ -189,10 +189,7 @@ namespace BusinessLogic.Logic.Players
                 PlayerVersusPlayersStatistics = playerRepository.GetPlayerVersusPlayersStatistics(playerId),
                 FormerChampionedGames = formerChampionedGames,
                 LongestWinningStreak = longestWinningStreak,
-                NemePointsSummary = new NemePointsSummary(
-                    playerGameResults.Sum(x => x.NemeStatsPointsAwarded), 
-                    playerGameResults.Sum(y => y.GameDurationBonusPoints), 
-                    playerGameResults.Sum(z => z.GameWeightBonusPoints))
+                NemePointsSummary = playerStatistics.NemePointsSummary
             };
 
             return playerDetails;
