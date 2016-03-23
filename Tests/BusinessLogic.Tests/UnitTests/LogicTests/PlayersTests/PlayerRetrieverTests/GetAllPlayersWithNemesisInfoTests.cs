@@ -19,7 +19,6 @@
 using BusinessLogic.DataAccess;
 using BusinessLogic.Logic.Players;
 using BusinessLogic.Models;
-using BusinessLogic.Models.GamingGroups;
 using BusinessLogic.Models.Players;
 using BusinessLogic.Models.Utility;
 using NUnit.Framework;
@@ -34,6 +33,14 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
     [TestFixture]
     public class GetAllPlayersWithNemesisInfoTests : PlayerRetrieverTestBase
     {
+        [SetUp]
+        public override void BaseSetUp()
+        {
+            base.BaseSetUp();
+
+            autoMocker.ClassUnderTest.Expect(mock => mock.PopulateNemePointsSummary(Arg<int>.Is.Anything, Arg<List<PlayerWithNemesis>>.Is.Anything, Arg<IDateRangeFilter>.Is.Anything));
+        }
+
         [Test]
         public void ItOnlyReturnsPlayersForTheGivenGamingGroup()
         {
@@ -46,6 +53,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
         public void ItFiltersPlayedGamesThatHappenedBeforeTheFromDate()
         {
             var autoMocker = new RhinoAutoMocker<PlayerRetriever>();
+            autoMocker.PartialMockTheClassUnderTest();
             int gamingGroupId = 1;
             var fromDate = new DateTime(2015, 6, 1);
             int expectedNemePointsAwardedForEachGame = 50;
@@ -89,6 +97,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
             }.AsQueryable();
             autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<Player>())
                 .Return(queryable);
+            autoMocker.ClassUnderTest.Expect(mock => mock.PopulateNemePointsSummary(Arg<int>.Is.Anything, Arg<List<PlayerWithNemesis>>.Is.Anything, Arg<IDateRangeFilter>.Is.Anything));
+
             var dateRangeFilter = new BasicDateRangeFilter
             {
                 FromDate = fromDate
@@ -100,13 +110,14 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
             var player = players.First();
             Assert.That(player.GamesLost, Is.EqualTo(0));
             Assert.That(player.GamesWon, Is.EqualTo(1));
-            Assert.That(player.NemePointsSummary.TotalPoints, Is.EqualTo(expectedNemePointsAwardedForEachGame));
         }
 
         [Test]
         public void ItFiltersPlayedGamesThatHappenedAfterTheToDate()
         {
             var autoMocker = new RhinoAutoMocker<PlayerRetriever>();
+            autoMocker.PartialMockTheClassUnderTest();
+
             int gamingGroupId = 1;
             var toDate = new DateTime(2015, 1, 1);
             int expectedNemePointsAwardedForEachGame = 50;
@@ -141,6 +152,10 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
             }.AsQueryable();
             autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<Player>())
                 .Return(queryable);
+
+            autoMocker.ClassUnderTest.Expect(mock => mock.PopulateNemePointsSummary(Arg<int>.Is.Anything, Arg<List<PlayerWithNemesis>>.Is.Anything, Arg<IDateRangeFilter>.Is.Anything));
+
+
             var dateRangeFilter = new BasicDateRangeFilter
             {
                 ToDate = toDate
@@ -152,7 +167,6 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
             var player = players.First();
             Assert.That(player.GamesLost, Is.EqualTo(1));
             Assert.That(player.GamesWon, Is.EqualTo(0));
-            Assert.That(player.NemePointsSummary.TotalPoints, Is.EqualTo(expectedNemePointsAwardedForEachGame));
         }
 
         [Test]
@@ -167,13 +181,13 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
             {
                 if (lastActive == player.PlayerActive)
                 {
-                    if (lastPlayerPoints.Equals(player.NemePointsSummary.TotalPoints))
+                    if (lastPlayerPoints.Equals(player.NemePointsSummary?.TotalPoints ?? 0))
                     {
                         Assert.LessOrEqual(lastPlayerName, player.PlayerName);
                     }
                     else
                     {
-                        Assert.GreaterOrEqual(lastPlayerPoints, player.NemePointsSummary.TotalPoints);
+                        Assert.GreaterOrEqual(lastPlayerPoints, player.NemePointsSummary?.TotalPoints ?? 0);
                     }
                 }
                 else
@@ -183,7 +197,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
                 }
                
 
-                lastPlayerPoints = player.NemePointsSummary.TotalPoints;
+                lastPlayerPoints = player.NemePointsSummary?.TotalPoints ?? 0;
                 lastPlayerName = player.PlayerName;
                 lastActive = player.PlayerActive;
             }
@@ -210,21 +224,28 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
         }
 
         [Test]
-        public void ItReturnsTotalPoints()
-        {
-            int expectedTotalPoints = playerGameResultsForFirstPlayer.Sum(p => p.NemeStatsPointsAwarded);
-
-            List<PlayerWithNemesis> players = autoMocker.ClassUnderTest.GetAllPlayersWithNemesisInfo(gamingGroupId);
-
-            Assert.That(players[0].NemePointsSummary.TotalPoints, Is.EqualTo(expectedTotalPoints));
-        }
-
-        [Test]
         public void ItReturnsChampionships()
         {
             List<PlayerWithNemesis> players = autoMocker.ClassUnderTest.GetAllPlayersWithNemesisInfo(gamingGroupId);
 
             Assert.That(players[0].TotalChampionedGames, Is.EqualTo(playerChampionshipsForFirstPlayer.Count()));
+        }
+
+        [TestFixture]
+        public class WhenCallingPopulateNemePointsSummary
+        {
+            //TODO write tests for this
+            [Test]
+            public void TestName()
+            {
+                //--arrange
+
+                //--act
+                
+
+                //--assert
+            }
+
         }
     }
 }

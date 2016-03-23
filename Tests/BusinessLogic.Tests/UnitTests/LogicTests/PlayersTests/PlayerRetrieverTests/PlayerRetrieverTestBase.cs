@@ -39,7 +39,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
         internal GameDefinition gameDefinition;
 
         [SetUp]
-        public void BaseSetUp()
+        public virtual void BaseSetUp()
         {
             autoMocker = new RhinoAutoMocker<PlayerRetriever>();
             autoMocker.PartialMockTheClassUnderTest();

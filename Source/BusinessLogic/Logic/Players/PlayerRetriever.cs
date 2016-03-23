@@ -29,6 +29,7 @@ using BusinessLogic.Models.PlayedGames;
 using BusinessLogic.Logic.BoardGameGeek;
 using BusinessLogic.Models.Points;
 using BusinessLogic.Models.Utility;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
 
 namespace BusinessLogic.Logic.Players
 {
@@ -96,34 +97,6 @@ namespace BusinessLogic.Logic.Players
                                                                              x =>
                                                                              x.PlayedGame.DatePlayed >= dateRangeFilter.FromDate &&
                                                                              x.PlayedGame.DatePlayed <= dateRangeFilter.ToDate).Count(x => x.GameRank > 1),
-                                          //TODO this needs to be optimized. probably with a group by
-                                          NemePointsSummary = new NemePointsSummary
-                                          {
-                                              BaseNemePoints =
-                                                  player.PlayerGameResults.Where(
-                                                                                 x =>
-                                                                                 x.PlayedGame.DatePlayed >= dateRangeFilter.FromDate &&
-                                                                                 x.PlayedGame.DatePlayed <= dateRangeFilter.ToDate)
-                                                        .Select(pgr => pgr.NemeStatsPointsAwarded)
-                                                        .DefaultIfEmpty(0)
-                                                        .Sum(),
-                                              GameDurationBonusNemePoints =
-                                                  player.PlayerGameResults.Where(
-                                                                                 x =>
-                                                                                 x.PlayedGame.DatePlayed >= dateRangeFilter.FromDate &&
-                                                                                 x.PlayedGame.DatePlayed <= dateRangeFilter.ToDate)
-                                                        .Select(pgr => pgr.GameDurationBonusPoints)
-                                                        .DefaultIfEmpty(0)
-                                                        .Sum(),
-                                              WeightBonusNemePoints =
-                                                  player.PlayerGameResults.Where(
-                                                                                 x =>
-                                                                                 x.PlayedGame.DatePlayed >= dateRangeFilter.FromDate &&
-                                                                                 x.PlayedGame.DatePlayed <= dateRangeFilter.ToDate)
-                                                        .Select(pgr => pgr.GameWeightBonusPoints)
-                                                        .DefaultIfEmpty(0)
-                                                        .Sum()
-                                          },
                                           //only get championed games where this player is the current champion
                                           TotalChampionedGames =
                                               player.ChampionedGames.Count(
@@ -131,19 +104,40 @@ namespace BusinessLogic.Logic.Players
                                                                            champion.GameDefinition.ChampionId != null &&
                                                                            champion.GameDefinition.ChampionId.Value == champion.Id)
                                       }
-                                     ).ToList()
-                                      //--deliberately ToList() first since Linq To Entities cannot support ordering by NemePointsSummary.TotalPoints
+                                     ).ToList();
+
+            PopulateNemePointsSummary(gamingGroupId, playersWithNemesis, dateRangeFilter);
+
+            return playersWithNemesis//--deliberately ToList() first since Linq To Entities cannot support ordering by NemePointsSummary.TotalPoints
                                       .OrderByDescending(x => x.PlayerActive)
-                                      .ThenByDescending(pwn => pwn.NemePointsSummary.TotalPoints)
+                                      .ThenByDescending(pwn => pwn.NemePointsSummary?.TotalPoints ?? 0 )
                                       .ThenByDescending(pwn => pwn.GamesWon)
                                       .ThenBy(pwn => pwn.PlayerName)
                                       .ToList();
-                
-
-            return playersWithNemesis;
         }
 
+        internal virtual void PopulateNemePointsSummary(int gamingGroupId, List<PlayerWithNemesis> playersWithNemesis, IDateRangeFilter dateRangeFilter)
+        {
+            var nemePointsDictionary = (from playerGameResult in dataContext.GetQueryable<PlayerGameResult>()
+                                        where playerGameResult.PlayedGame.GamingGroupId == gamingGroupId
+                                        && playerGameResult.PlayedGame.DatePlayed >= dateRangeFilter.FromDate 
+                                        && playerGameResult.PlayedGame.DatePlayed <= dateRangeFilter.ToDate
+                                        group playerGameResult by playerGameResult.PlayerId
+                                        into groupedResults
+                                        select
+                                            new
+                                            {
+                                                BasePoints = groupedResults.Sum(x => x.NemeStatsPointsAwarded),
+                                                GameDurationBonusPoints = groupedResults.Sum(x => x.GameDurationBonusPoints),
+                                                WeightBonusPoints = groupedResults.Sum(x => x.GameWeightBonusPoints),
+                                                PlayerId = groupedResults.Key
+                                            }).ToDictionary(key => key.PlayerId, value => new NemePointsSummary(value.BasePoints, value.GameDurationBonusPoints, value.WeightBonusPoints));
 
+            foreach (var player in playersWithNemesis)
+            {
+                player.NemePointsSummary = nemePointsDictionary.ContainsKey(player.PlayerId) ? nemePointsDictionary[player.PlayerId] : new NemePointsSummary(0, 0, 0);
+            }
+        }
 
         public virtual PlayerDetails GetPlayerDetails(int playerId, int numberOfRecentGamesToRetrieve)
         {
