@@ -58,7 +58,6 @@ namespace UI.Transformations
                 BoardGameGeekGameDefinition = _transformer.Transform<BoardGameGeekGameDefinition, BoardGameGeekGameDefinitionViewModel>(gameDefinitionSummary.BoardGameGeekGameDefinition)
             };
 
-            //TODO untested change
             if (viewModel.BoardGameGeekGameDefinition != null)
             {
                 viewModel.BoardGameGeekGameDefinition.WeightDescription = _weightTierCalculator.GetWeightTier(viewModel.BoardGameGeekGameDefinition.AverageWeight).ToString();

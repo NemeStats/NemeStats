@@ -44,7 +44,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
         [Test]
         public void ItOnlyReturnsPlayersForTheGivenGamingGroup()
         {
-            List<PlayerWithNemesis> players = autoMocker.ClassUnderTest.GetAllPlayersWithNemesisInfo(gamingGroupId);
+            var players = autoMocker.ClassUnderTest.GetAllPlayersWithNemesisInfo(gamingGroupId);
 
             Assert.True(players.All(player => player.GamingGroupId == gamingGroupId));
         }
@@ -54,9 +54,9 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
         {
             var autoMocker = new RhinoAutoMocker<PlayerRetriever>();
             autoMocker.PartialMockTheClassUnderTest();
-            int gamingGroupId = 1;
+            var gamingGroupId = 1;
             var fromDate = new DateTime(2015, 6, 1);
-            int expectedNemePointsAwardedForEachGame = 50;
+            var expectedNemePointsAwardedForEachGame = 50;
             var queryable = new List<Player>
             {
                 new Player
@@ -118,9 +118,9 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
             var autoMocker = new RhinoAutoMocker<PlayerRetriever>();
             autoMocker.PartialMockTheClassUnderTest();
 
-            int gamingGroupId = 1;
+            var gamingGroupId = 1;
             var toDate = new DateTime(2015, 1, 1);
-            int expectedNemePointsAwardedForEachGame = 50;
+            var expectedNemePointsAwardedForEachGame = 50;
             var queryable = new List<Player>
             {
                 new Player
@@ -172,12 +172,12 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
         [Test]
         public void ItReturnsPlayersOrderedByActiveAscThenTotalPointsDescThenNameAscending()
         {
-            List<PlayerWithNemesis> players = autoMocker.ClassUnderTest.GetAllPlayersWithNemesisInfo(gamingGroupId);
+            var players = autoMocker.ClassUnderTest.GetAllPlayersWithNemesisInfo(gamingGroupId);
 
             var lastPlayerPoints = int.MaxValue;
             var lastPlayerName = "0";
             var lastActive = true;
-            foreach (PlayerWithNemesis player in players)
+            foreach (var player in players)
             {
                 if (lastActive == player.PlayerActive)
                 {
@@ -206,9 +206,9 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
         [Test]
         public void ItReturnsTheNumberOfGamesWon()
         {
-            int expectedNumberOfGamesWon = playerGameResultsForFirstPlayer.Count(x => x.GameRank == 1);
+            var expectedNumberOfGamesWon = playerGameResultsForFirstPlayer.Count(x => x.GameRank == 1);
 
-            List<PlayerWithNemesis> players = autoMocker.ClassUnderTest.GetAllPlayersWithNemesisInfo(gamingGroupId);
+            var players = autoMocker.ClassUnderTest.GetAllPlayersWithNemesisInfo(gamingGroupId);
 
             Assert.That(players[0].GamesWon, Is.EqualTo(expectedNumberOfGamesWon));
         }
@@ -216,9 +216,9 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
         [Test]
         public void ItReturnsTheNumberOfGamesLost()
         {
-            int expectedNumberOfGamesLost = playerGameResultsForFirstPlayer.Count(x => x.GameRank > 1);
+            var expectedNumberOfGamesLost = playerGameResultsForFirstPlayer.Count(x => x.GameRank > 1);
 
-            List<PlayerWithNemesis> players = autoMocker.ClassUnderTest.GetAllPlayersWithNemesisInfo(gamingGroupId);
+            var players = autoMocker.ClassUnderTest.GetAllPlayersWithNemesisInfo(gamingGroupId);
 
             Assert.That(players[0].GamesLost, Is.EqualTo(expectedNumberOfGamesLost));
         }
@@ -226,26 +226,167 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
         [Test]
         public void ItReturnsChampionships()
         {
-            List<PlayerWithNemesis> players = autoMocker.ClassUnderTest.GetAllPlayersWithNemesisInfo(gamingGroupId);
+            var players = autoMocker.ClassUnderTest.GetAllPlayersWithNemesisInfo(gamingGroupId);
 
             Assert.That(players[0].TotalChampionedGames, Is.EqualTo(playerChampionshipsForFirstPlayer.Count()));
         }
 
         [TestFixture]
-        public class WhenCallingPopulateNemePointsSummary
+        public class WhenCallingPopulateNemePointsSummary : GetAllPlayersWithNemesisInfoTests
         {
-            //TODO write tests for this
-            [Test]
-            public void TestName()
+            private List<PlayerGameResult> _playerGameResults;
+            private readonly int _expectedBasePoints = 1;
+            private readonly int _expectedGameDurationBonus = 10;
+            private readonly int _expectedWeightBonus = 100;
+            private readonly int _expectedGamingGroupId = 2;
+            private readonly IDateRangeFilter _dateRangeFilterThatCatchesEverything = new BasicDateRangeFilter();
+            private readonly int _playerOneId = 1;
+            private readonly int _playerTwoId = 2;
+
+            [SetUp]
+            public void SetUp()
             {
-                //--arrange
-
-                //--act
-                
-
-                //--assert
+                _playerGameResults = new List<PlayerGameResult>();
+                autoMocker = new RhinoAutoMocker<PlayerRetriever>();
             }
 
+            private PlayerGameResult MakePlayerGameResult(int playerId)
+            {
+                return new PlayerGameResult
+                {
+                    GameWeightBonusPoints = _expectedWeightBonus,
+                    GameDurationBonusPoints = _expectedGameDurationBonus,
+                    NemeStatsPointsAwarded = _expectedBasePoints,
+                    PlayedGame = new PlayedGame
+                    {
+                        GamingGroupId = _expectedGamingGroupId,
+                        DatePlayed = DateTime.Now
+                    },
+                    PlayerId = playerId
+                };
+            }
+
+            [Test]
+            public void ItReturnsTheSumOfAllNemePointsThatMatchTheGivenCriteria()
+            {
+                //--arrange
+                var playersWithNemeses = new List<PlayerWithNemesis>
+                {
+                    new PlayerWithNemesis
+                    {
+                        PlayerId = _playerOneId
+                    },
+                    new PlayerWithNemesis
+                    {
+                        PlayerId = _playerTwoId
+                    }
+                };
+                _playerGameResults.Add(MakePlayerGameResult(_playerOneId));
+                _playerGameResults.Add(MakePlayerGameResult(_playerOneId));
+                _playerGameResults.Add(MakePlayerGameResult(_playerTwoId));
+                autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<PlayerGameResult>()).Return(_playerGameResults.AsQueryable());
+
+                //--act
+                autoMocker.ClassUnderTest.PopulateNemePointsSummary(_expectedGamingGroupId, playersWithNemeses, _dateRangeFilterThatCatchesEverything);
+
+                //--assert
+                Assert.That(playersWithNemeses[0].NemePointsSummary, Is.Not.Null);
+                var actualNemePointsSummary = playersWithNemeses[0].NemePointsSummary;
+                Assert.That(actualNemePointsSummary.GameDurationBonusNemePoints, Is.EqualTo(_expectedGameDurationBonus * 2));
+                Assert.That(actualNemePointsSummary.BaseNemePoints, Is.EqualTo(_expectedBasePoints * 2));
+                Assert.That(actualNemePointsSummary.WeightBonusNemePoints, Is.EqualTo(_expectedWeightBonus * 2));
+
+                Assert.That(playersWithNemeses[1].NemePointsSummary, Is.Not.Null);
+                actualNemePointsSummary = playersWithNemeses[1].NemePointsSummary;
+                Assert.That(actualNemePointsSummary.GameDurationBonusNemePoints, Is.EqualTo(_expectedGameDurationBonus));
+                Assert.That(actualNemePointsSummary.BaseNemePoints, Is.EqualTo(_expectedBasePoints));
+                Assert.That(actualNemePointsSummary.WeightBonusNemePoints, Is.EqualTo(_expectedWeightBonus));
+            }
+
+            [Test]
+            public void ItOnlySumsUpPointsFromGamesThatHappenedAfterTheStartDate()
+            {
+                //--arrange
+                var playersWithNemeses = new List<PlayerWithNemesis>
+                {
+                    new PlayerWithNemesis
+                    {
+                        PlayerId = _playerOneId
+                    }
+                };
+                _playerGameResults.Add(MakePlayerGameResult(_playerOneId));
+                autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<PlayerGameResult>()).Return(_playerGameResults.AsQueryable());
+                var dateRangeFilter = new BasicDateRangeFilter
+                {
+                    FromDate = DateTime.Now.AddDays(1)
+                };
+
+                //--act
+                autoMocker.ClassUnderTest.PopulateNemePointsSummary(_expectedGamingGroupId, playersWithNemeses, dateRangeFilter);
+
+                //--assert
+                Assert.That(playersWithNemeses[0].NemePointsSummary, Is.Not.Null);
+                var actualNemePointsSummary = playersWithNemeses[0].NemePointsSummary;
+                Assert.That(actualNemePointsSummary.GameDurationBonusNemePoints, Is.EqualTo(0));
+                Assert.That(actualNemePointsSummary.BaseNemePoints, Is.EqualTo(0));
+                Assert.That(actualNemePointsSummary.WeightBonusNemePoints, Is.EqualTo(0));
+            }
+
+            [Test]
+            public void ItOnlySumsUpPointsFromGamesThatHappenedBeforeTheEndDate()
+            {
+                //--arrange
+                var playersWithNemeses = new List<PlayerWithNemesis>
+                {
+                    new PlayerWithNemesis
+                    {
+                        PlayerId = _playerOneId
+                    }
+                };
+                _playerGameResults.Add(MakePlayerGameResult(_playerOneId));
+                autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<PlayerGameResult>()).Return(_playerGameResults.AsQueryable());
+                var dateRangeFilter = new BasicDateRangeFilter
+                {
+                    ToDate = DateTime.Now.AddDays(-1)
+                };
+
+                //--act
+                autoMocker.ClassUnderTest.PopulateNemePointsSummary(_expectedGamingGroupId, playersWithNemeses, dateRangeFilter);
+
+                //--assert
+                Assert.That(playersWithNemeses[0].NemePointsSummary, Is.Not.Null);
+                var actualNemePointsSummary = playersWithNemeses[0].NemePointsSummary;
+                Assert.That(actualNemePointsSummary.GameDurationBonusNemePoints, Is.EqualTo(0));
+                Assert.That(actualNemePointsSummary.BaseNemePoints, Is.EqualTo(0));
+                Assert.That(actualNemePointsSummary.WeightBonusNemePoints, Is.EqualTo(0));
+            }
+
+            [Test]
+            public void ItOnlySumsUpPointsFromGamesThatInTheSpecifiedGamingGroup()
+            {
+                //--arrange
+                var playersWithNemeses = new List<PlayerWithNemesis>
+                {
+                    new PlayerWithNemesis
+                    {
+                        PlayerId = _playerOneId
+                    }
+                };
+                var playerGameResult = MakePlayerGameResult(_playerOneId);
+                playerGameResult.PlayedGame.GamingGroupId = _expectedGamingGroupId + 100;
+                _playerGameResults.Add(playerGameResult);
+                autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<PlayerGameResult>()).Return(_playerGameResults.AsQueryable());
+
+                //--act
+                autoMocker.ClassUnderTest.PopulateNemePointsSummary(_expectedGamingGroupId, playersWithNemeses, _dateRangeFilterThatCatchesEverything);
+
+                //--assert
+                Assert.That(playersWithNemeses[0].NemePointsSummary, Is.Not.Null);
+                var actualNemePointsSummary = playersWithNemeses[0].NemePointsSummary;
+                Assert.That(actualNemePointsSummary.GameDurationBonusNemePoints, Is.EqualTo(0));
+                Assert.That(actualNemePointsSummary.BaseNemePoints, Is.EqualTo(0));
+                Assert.That(actualNemePointsSummary.WeightBonusNemePoints, Is.EqualTo(0));
+            }
         }
     }
 }

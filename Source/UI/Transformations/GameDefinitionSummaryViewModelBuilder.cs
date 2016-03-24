@@ -51,7 +51,6 @@ namespace UI.Transformations
                     (currentUser != null && gameDefinitionSummary.GamingGroupId == currentUser.CurrentGamingGroupId)
             };
 
-            //TODO untested change
             if (viewModel.BoardGameGeekGameDefinition != null)
             {
                 viewModel.BoardGameGeekGameDefinition.WeightDescription = _weightTierCalculator.GetWeightTier(viewModel.BoardGameGeekGameDefinition.AverageWeight).ToString();
