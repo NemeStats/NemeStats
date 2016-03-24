@@ -100,10 +100,8 @@ namespace UI.Controllers
             return View();
         }
 
-        public virtual ActionResult Contact()
+        public virtual ActionResult AboutNemePoints()
         {
-            ViewBag.Message = "Your contact page.";
-
             return View();
         }
     }
