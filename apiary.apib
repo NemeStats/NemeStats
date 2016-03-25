@@ -26,11 +26,16 @@ and protected.
 * Documentation for version 1 of the API can be found here: http://docs.nemestats.apiary.io/#
 
 ###Change Log
+
 * 2015-10-09 Added playerActive boolean value to PlayerGameResults, so you can conveniently tell whether the Player is still active.
 * 2016-01-26 Added the ability to filter Played Games on datePlayedFrom and datePlayedTo.
-* 2-16-03-17 Added ability to specify gamingGroupId in POST body when creating Players, Game Definitions, and Played Games 
+* 2016-03-17 Added ability to specify gamingGroupId in POST body when creating Players, Game Definitions, and Played Games 
 for users with multiple Gaming Groups. Also returns gamingGroupId whenever creating a new entity since specifying gamingGroupId is not required, and this will
 enable the client to know on exactly which Gaming Group the entity was created.
+* 2016-03-25 Added bonus points for Game Weight and Average Game Duration: https://nerdscorekeeper.azurewebsites.net/Home/AboutNemePoints .
+This means the existing nemeStatsPointsAwarded field on the playerGameResult object is now the base points that are awarded. This  value doesn't
+change in the new  model, but if you want to get total points including the Game Weight and Game Duration Bonus Points,
+then you need to use the playerGameResult.totalNemeStatsPointsAwarded.
 
 
 ### General Information
@@ -78,6 +83,9 @@ Represents all of the data related to a particular Player's performance in a par
 + gameRank (number, required) - The corresponding rank of the Player in this Played Game. A rank of 1 means the Player got first place, 2 means second place, and so on.
 + pointsScored (number, optional) - Integer number of points the Player scored in the Played Game.
 + nemeStatsPointsAwarded (number, required) - The number of NemeStats Points awarded to the Player for their respective rank in the Played Game.
++ gameDurationBonusNemePoints  (number, required) - The number of bonus NemeStats Points awarded due to the BoardGameGeek average Play Time of this Game Definition.
++ gameWeightBonusNemePoints (number, required) - The number of bonus NemeStats Points awarded due to the BoardGameGeek Weight of this Game Definition.
++ totalNemeStatsPointsAwarded (number, required) - The total number of NemeStats Points awarded including all bonus points.
 
 # Group Authentication
 
@@ -372,28 +380,40 @@ via the required gamingGroupId query string parameter.
                                 "playerName":"Dave Staw",
                                 "gameRank":1,
                                 "pointsScored":15,
-                                "nemeStatsPointsAwarded":19
+                                "nemeStatsPointsAwarded":19,
+                                "gameDurationBonusNemePoints" : 38,
+                                "gameWeightBonusNemePoints" : 4,
+                                "totalNemeStatsPointsAwarded" : 61
                             },
                             {  
                                 "playerId":7,
                                 "playerName":"Redeish",
                                 "gameRank":2,
                                 "pointsScored":null,
-                                "nemeStatsPointsAwarded":11
+                                "nemeStatsPointsAwarded":11,
+                                "gameDurationBonusNemePoints" : 22,
+                                "gameWeightBonusNemePoints" : 3,
+                                "totalNemeStatsPointsAwarded" : 36
                             },
                             {  
                                 "playerId":6,
                                 "playerName":"Mike Kochel",
                                 "gameRank":3,
                                 "pointsScored":9,
-                                "nemeStatsPointsAwarded":6
+                                "nemeStatsPointsAwarded":6,
+                                "gameDurationBonusNemePoints" : 12,
+                                "gameWeightBonusNemePoints" : 3,
+                                "totalNemeStatsPointsAwarded" : 21
                             },
                             {  
                                 "playerId":5,
                                 "playerName":"Gooseman",
                                 "gameRank":3,
                                 "pointsScored":9,
-                                "nemeStatsPointsAwarded":6
+                                "nemeStatsPointsAwarded":6,
+                                "gameDurationBonusNemePoints" : 12,
+                                "gameWeightBonusNemePoints" : 3,
+                                "totalNemeStatsPointsAwarded" : 21
                             }
                         ],
                         "playedGameId":16785,
@@ -413,21 +433,30 @@ via the required gamingGroupId query string parameter.
                                 "playerName":"Charles Cai",
                                 "gameRank":2,
                                 "pointsScored":null,
-                                "nemeStatsPointsAwarded":2
+                                "nemeStatsPointsAwarded":2,
+                                "gameDurationBonusNemePoints" : 0,
+                                "gameWeightBonusNemePoints" : 0,
+                                "totalNemeStatsPointsAwarded" : 2
                             },
                             {  
                                 "playerId":1018,
                                 "playerName":"Marcus",
                                 "gameRank":2,
                                 "pointsScored":null,
-                                "nemeStatsPointsAwarded":2
+                                "nemeStatsPointsAwarded":2,
+                                "gameDurationBonusNemePoints" : 0,
+                                "gameWeightBonusNemePoints" : 0,
+                                "totalNemeStatsPointsAwarded" : 2
                             },
                             {  
                                 "playerId":9,
                                 "playerName":"Tosho",
                                 "gameRank":2,
                                 "pointsScored":null,
-                                "nemeStatsPointsAwarded":2
+                                "nemeStatsPointsAwarded":2,
+                                "gameDurationBonusNemePoints" : 0,
+                                "gameWeightBonusNemePoints" : 0,
+                                "totalNemeStatsPointsAwarded" : 2
                             }
                         ],
                         "playedGameId":16098,
@@ -446,35 +475,50 @@ via the required gamingGroupId query string parameter.
                                 "playerName":"Tosho",
                                 "gameRank":2,
                                 "pointsScored":null,
-                                "nemeStatsPointsAwarded":4
+                                "nemeStatsPointsAwarded":4,
+                                "gameDurationBonusNemePoints" : 4,
+                                "gameWeightBonusNemePoints" : 1,
+                                "totalNemeStatsPointsAwarded" : 9
                             },
                             {  
                                 "playerId":11,
                                 "playerName":"Charles Cai",
                                 "gameRank":2,
                                 "pointsScored":null,
-                                "nemeStatsPointsAwarded":4
+                                "nemeStatsPointsAwarded":4,
+                                "gameDurationBonusNemePoints" : 4,
+                                "gameWeightBonusNemePoints" : 1,
+                                "totalNemeStatsPointsAwarded" : 9
                             },
                             {  
                                 "playerId":12,
                                 "playerName":"jakejgordon",
                                 "gameRank":2,
                                 "pointsScored":null,
-                                "nemeStatsPointsAwarded":4
+                                "nemeStatsPointsAwarded":4,
+                                "gameDurationBonusNemePoints" : 4,
+                                "gameWeightBonusNemePoints" : 1,
+                                "totalNemeStatsPointsAwarded" : 9
                             },
                             {  
                                 "playerId":1018,
                                 "playerName":"Marcus",
                                 "gameRank":2,
                                 "pointsScored":null,
-                                "nemeStatsPointsAwarded":4
+                                "nemeStatsPointsAwarded":4,
+                                "gameDurationBonusNemePoints" : 4,
+                                "gameWeightBonusNemePoints" : 1,
+                                "totalNemeStatsPointsAwarded" : 9
                             },
                             {  
                                 "playerId":10,
                                 "playerName":"Tina",
                                 "gameRank":2,
                                 "pointsScored":null,
-                                "nemeStatsPointsAwarded":4
+                                "nemeStatsPointsAwarded":4,
+                                "gameDurationBonusNemePoints" : 4,
+                                "gameWeightBonusNemePoints" : 1,
+                                "totalNemeStatsPointsAwarded" : 9
                             }
                         ]
                     }
