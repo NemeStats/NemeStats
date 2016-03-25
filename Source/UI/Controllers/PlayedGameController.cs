@@ -297,7 +297,7 @@ namespace UI.Controllers
                     GameDefinitionId = searchResult.GameDefinitionId,
                     GameDefinitionName = searchResult.GameDefinitionName,
                     GameRank = playerResult.GameRank,
-                    NemePointsSummary = new NemePointsSummaryViewModel(playerResult.NemeStatsPointsAwarded, playerResult.GameDurationBonusNemePoints, playerResult.WeightBonusNemePoints),
+                    NemePointsSummary = new NemePointsSummaryViewModel(playerResult.NemeStatsPointsAwarded, playerResult.GameDurationBonusNemePoints, playerResult.GameWeightBonusNemePoints),
                     PlayedGameId = searchResult.PlayedGameId,
                     PlayerId = playerResult.PlayerId,
                     PlayerName = playerResult.PlayerName

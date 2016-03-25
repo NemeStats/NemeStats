@@ -141,7 +141,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameRe
             Assert.That(actualPlayerResult.GameRank, Is.EqualTo(expectedPlayerGameResult.GameRank));
             Assert.That(actualPlayerResult.NemeStatsPointsAwarded, Is.EqualTo(expectedPlayerGameResult.NemeStatsPointsAwarded));
             Assert.That(actualPlayerResult.GameDurationBonusNemePoints, Is.EqualTo(expectedPlayerGameResult.GameDurationBonusPoints));
-            Assert.That(actualPlayerResult.WeightBonusNemePoints, Is.EqualTo(expectedPlayerGameResult.GameWeightBonusPoints));
+            Assert.That(actualPlayerResult.GameWeightBonusNemePoints, Is.EqualTo(expectedPlayerGameResult.GameWeightBonusPoints));
             var expectedTotalPoints = expectedPlayerGameResult.NemeStatsPointsAwarded
                                       + expectedPlayerGameResult.GameDurationBonusPoints
                                       + expectedPlayerGameResult.GameWeightBonusPoints;

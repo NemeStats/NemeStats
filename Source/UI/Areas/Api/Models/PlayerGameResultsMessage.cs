@@ -8,7 +8,7 @@
         public int GameRank { get; set; }
         public int? PointsScored { get; set; }
         public int NemeStatsPointsAwarded { get; set; }
-        public int WeightBonusNemePoints { get; set; }
+        public int GameWeightBonusNemePoints { get; set; }
         public int GameDurationBonusNemePoints { get; set; }
         public int TotalNemeStatsPointsAwarded { get; set; }
     }
