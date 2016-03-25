@@ -12,7 +12,18 @@ namespace UI.Models.GameDefinitionModels
         public string Thumbnail { get; set; }
         public int? MaxPlayers { get; set; }
         public int? MinPlayers { get; set; }
-        public int? PlayingTime { get; set; }
+        public int? MaxPlayTime { get; set; }
+        public int? MinPlayTime { get; set; }
+        public int? AveragePlayTime {
+            get
+            {
+                if (MaxPlayTime.HasValue && MinPlayTime.HasValue)
+                {
+                    return (MaxPlayTime + MinPlayTime)/2;
+                }
+                return null;
+            }
+        }
         public decimal? AverageWeight { get; set; }
         public string Description { get; set; }
 

@@ -102,7 +102,8 @@ namespace BoardGameGeekApiClient.Service
                         MaxPlayers = boardgame.Element("item").Element("maxplayers").GetIntValue("value"),
                         MinPlayers = boardgame.Element("item").Element("minplayers").GetIntValue("value"),
                         PlayerPollResults = boardgame.Element("item").Element("poll").GetPlayerPollResults(),
-                        PlayingTime = boardgame.Element("item").Element("playingtime").GetIntValue("value"),
+                        MaxPlayTime = boardgame.Element("item").Element("maxplaytime").GetIntValue("value"),
+                        MinPlayTime = boardgame.Element("item").Element("minplaytime").GetIntValue("value"),
                         Publishers = boardgame.Element("item").GetPublishers(),
                         Rank =
                             boardgame.Element("item")
