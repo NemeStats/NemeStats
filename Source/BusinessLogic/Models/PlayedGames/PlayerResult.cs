@@ -14,8 +14,8 @@ namespace BusinessLogic.Models.PlayedGames
         public DateTime DatePlayed { get; set; }
         public string GameName { get; set; }
         public int GameDefinitionId { get; set; }
-        public int GameDurationBonusPoints { get; set; }
-        public int GameWeightBonusPoints { get; set; }
+        public int WeightBonusNemePoints { get; set; }
+        public int GameDurationBonusNemePoints { get; set; }
         public int TotalPoints { get; set; }
     }
 }

@@ -150,6 +150,9 @@ namespace BusinessLogic.Logic.PlayedGames
                                  {
                                      GameRank = x.GameRank,
                                      NemeStatsPointsAwarded = x.NemeStatsPointsAwarded,
+                                     GameDurationBonusNemePoints = x.GameDurationBonusPoints,
+                                     WeightBonusNemePoints = x.GameWeightBonusPoints,
+                                     TotalPoints = x.TotalPoints,
                                      PlayerId = x.PlayerId,
                                      PlayerName = x.Player.Name,
                                      PlayerActive = x.Player.Active,

@@ -115,8 +115,8 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
                         {
                             GameRank = 1,
                             NemeStatsPointsAwarded = 3,
-                            GameWeightBonusPoints = 1,
-                            GameDurationBonusPoints = 4,
+                            GameDurationBonusNemePoints = 1,
+                            WeightBonusNemePoints = 4,
                             PlayerId = 4,
                             PlayerName = "some player name",
                             PointsScored = 5
@@ -151,7 +151,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
             Assert.That(actualPlayerResult.GameDefinitionId, Is.EqualTo(expectedPlayedGameSearchResult.GameDefinitionId));
             Assert.That(actualPlayerResult.GameDefinitionName, Is.EqualTo(actualPlayedGameSearchResult.GameDefinitionName));
             Assert.That(actualPlayerResult.GameRank, Is.EqualTo(expectedPlayerResult.GameRank));
-            var expectedNemePointsSummary = new NemePointsSummaryViewModel(expectedPlayerResult.NemeStatsPointsAwarded, expectedPlayerResult.GameDurationBonusPoints, expectedPlayerResult.GameWeightBonusPoints);
+            var expectedNemePointsSummary = new NemePointsSummaryViewModel(expectedPlayerResult.NemeStatsPointsAwarded, expectedPlayerResult.GameDurationBonusNemePoints, expectedPlayerResult.WeightBonusNemePoints);
             Assert.That(actualPlayerResult.NemePointsSummary, Is.EqualTo(expectedNemePointsSummary));
             Assert.That(actualPlayerResult.PlayedGameId, Is.EqualTo(expectedPlayedGameSearchResult.PlayedGameId));
             Assert.That(actualPlayerResult.PlayerId, Is.EqualTo(expectedPlayerResult.PlayerId));
