@@ -81,6 +81,7 @@ namespace UI
                 .Include("~/Scripts/GameDefinition/gameDefinitions.js")
                 .Include("~/Scripts/Shared/_Layout.js")
                 .Include("~/Scripts/Shared/_LoginPartial.js")
+                .Include("~/Scripts/Shared/UIUtils.js")
                 .Include("~/Scripts/Shared/GoogleAnalytics.js"));
 
             bundles.Add(new StyleBundle("~/bundles/content/css")

@@ -26,6 +26,44 @@ namespace UI.Models.PlayedGame
         public int PlayerId { get; set; }
         public string PlayerName { get; set; }
         public int GameRank { get; set; }
+        private string _gameRankString;
+        public string GameRankString
+        {
+            get
+            {
+                if (_gameRankString != null)
+                {
+                    return _gameRankString;
+                }
+
+                var ones = GameRank % 10;
+                var tens = Math.Floor((decimal)GameRank / 10) % 10;
+                if (tens == 1)
+                {
+                    _gameRankString = $"{GameRank}th";
+                }
+                else
+                {
+                    switch (ones)
+                    {
+                        case 1:
+                            _gameRankString = $"{GameRank}st";
+                            break;
+                        case 2:
+                            _gameRankString = $"{GameRank}nd";
+                            break;
+                        case 3:
+                            _gameRankString = $"{GameRank}rd";
+                            break;
+                        default:
+                            _gameRankString = $"{GameRank}th";
+                            break;
+                    }
+                }
+
+                return _gameRankString;
+            }
+        }
         public int PlayedGameId { get; set; }
         public DateTime DatePlayed { get; set; }
         public string GameDefinitionName { get; set; }

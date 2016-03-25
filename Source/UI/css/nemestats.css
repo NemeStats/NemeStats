@@ -792,4 +792,9 @@ footer {
 .game-result .rank .value {
   font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif !important; }
 
+.game-result .alert a {
+  color: #E0E0E0;
+  font-size: 11px;
+  text-decoration: underline; }
+
 /*# sourceMappingURL=nemestats.css.map */

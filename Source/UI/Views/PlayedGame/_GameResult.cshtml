@@ -47,6 +47,7 @@
             </span>
         }
         <span>= @Model.GameResult.NemePointsSummary.TotalNemePoints <span class="fa-stack neme-points-ico"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x letter">N</i></span></span>
+        <div><a href="@Url.Action(MVC.Home.AboutNemePoints())">more info about NemePoints calculation</a></div>
     </div>
 </div>
 
@@ -71,7 +72,7 @@ else
 {
         <span class="fa-stack rank" data-toggle="popover" data-placement="top" data-content="Rank on game">
             <i class="fa fa-square fa-stack-2x"></i>
-            <i class="fa fa-inverse fa-stack-1x value">@Model.GameResult.GameRank</i>
+            <i class="fa fa-inverse fa-stack-1x value">@Model.GameResult.GameRankString</i>
         </span>
 }
 
@@ -79,11 +80,10 @@ else
 }
 @helper TotalPoints()
 {
-    <div class="col-xs-6 total" data-toggle="collapse" href="#@Model.Id">
-        <span class="pull-right ">
-            @Model.GameResult.NemePointsSummary.TotalNemePoints
-            <span class="fa-stack neme-points-ico"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x letter">N</i></span>
-        </span>
+    <div class="col-xs-6 total" onclick="UIUtils.toggleVisibility('#@Model.Id')">
+      
+            @Model.GameResult.NemePointsSummary.TotalNemePoints<span class="fa-stack neme-points-ico"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x letter">N</i></span>
+
     </div>
 }
 

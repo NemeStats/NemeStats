@@ -13,4 +13,12 @@
             font-family: $font-family-sans-serif !important;
         }
     }
+
+    .alert {
+        a {
+            color: #E0E0E0;
+            font-size: 11px;
+            text-decoration: underline;
+        }
+    }
 }
