@@ -383,7 +383,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PointsTests
             //--arrange
             var bggGameDefinition = new BoardGameGeekGameDefinition
             {
-                PlayingTime = -1
+                MaxPlayTime = -1
             };
 
             //--act
@@ -393,7 +393,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PointsTests
             _autoMocker.Get<IGameDurationBonusCalculator>().AssertWasCalled(
                                                                             mock =>
                                                                             mock.CalculateGameDurationBonus(Arg<Dictionary<int, PointsScorecard>>.Is.Anything,
-                                                                                                            Arg<int?>.Is.Equal(bggGameDefinition.PlayingTime)));
+                                                                                                            Arg<int?>.Is.Equal(bggGameDefinition.MaxPlayTime)));
         }
     }
 }

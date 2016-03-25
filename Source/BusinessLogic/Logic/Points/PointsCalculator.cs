@@ -61,7 +61,7 @@ namespace BusinessLogic.Logic.Points
    
             var playerToPoints = AwardBasePoints(playerRanks);
             _weightBonusCalculator.CalculateWeightBonus(playerToPoints, bggGameDefinition?.AverageWeight);
-            _gameDurationBonusCalculator.CalculateGameDurationBonus(playerToPoints, bggGameDefinition?.PlayingTime);
+            _gameDurationBonusCalculator.CalculateGameDurationBonus(playerToPoints, bggGameDefinition?.MaxPlayTime);
 
             return playerToPoints;
         }

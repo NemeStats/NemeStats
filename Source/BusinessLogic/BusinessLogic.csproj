@@ -217,6 +217,10 @@
     <Compile Include="Migrations\201603201056318_TotalPoints_ComputedProperty.Designer.cs">
       <DependentUpon>201603201056318_TotalPoints_ComputedProperty.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201603251644039_BGGGameDefinition_MinPlayTime.cs" />
+    <Compile Include="Migrations\201603251644039_BGGGameDefinition_MinPlayTime.Designer.cs">
+      <DependentUpon>201603251644039_BGGGameDefinition_MinPlayTime.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Games\TrendingGame.cs" />
     <Compile Include="Logic\Points\IWeightTierCalculator.cs" />
     <Compile Include="Models\Players\CreatePlayerRequest.cs" />
@@ -792,6 +796,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201603201056318_TotalPoints_ComputedProperty.resx">
       <DependentUpon>201603201056318_TotalPoints_ComputedProperty.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603251644039_BGGGameDefinition_MinPlayTime.resx">
+      <DependentUpon>201603251644039_BGGGameDefinition_MinPlayTime.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

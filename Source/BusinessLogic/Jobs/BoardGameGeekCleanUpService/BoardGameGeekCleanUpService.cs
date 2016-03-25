@@ -115,7 +115,8 @@ namespace BusinessLogic.Jobs.BoardGameGeekCleanUpService
                 Thumbnail = gameToAdd.Thumbnail,
                 MaxPlayers = gameToAdd.MaxPlayers,
                 MinPlayers = gameToAdd.MinPlayers,
-                PlayingTime = gameToAdd.PlayingTime,
+                MaxPlayTime = gameToAdd.MaxPlayTime,
+                MinPlayTime = gameToAdd.MinPlayTime,
                 AverageWeight = gameToAdd.AverageWeight,
                 Description = gameToAdd.Description
             };

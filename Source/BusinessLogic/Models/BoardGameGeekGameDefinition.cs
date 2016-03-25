@@ -15,7 +15,8 @@ namespace BusinessLogic.Models
         public virtual IList<GameDefinition> GameDefinitions { get; set; }
         public int? MaxPlayers { get; set; }
         public int? MinPlayers { get; set; }
-        public int? PlayingTime { get; set; }
+        public int? MaxPlayTime { get; set; }
+        public int? MinPlayTime { get; set; }
         public decimal? AverageWeight { get; set; }
         public string Description { get; set; }
     }
