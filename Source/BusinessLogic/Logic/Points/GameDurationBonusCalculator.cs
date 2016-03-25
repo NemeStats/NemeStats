@@ -23,7 +23,7 @@ namespace BusinessLogic.Logic.Points
                 numberOfHalfHourPeriods = boardGameGeekAvergePlayTime.Value / MINUTES_PER_HALF_HOUR;
             }
 
-            decimal multiplier = 0M;
+            decimal multiplier;
             switch (numberOfHalfHourPeriods)
             {
                 case 0:

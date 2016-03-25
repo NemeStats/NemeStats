@@ -10,6 +10,6 @@
         public int NemeStatsPointsAwarded { get; set; }
         public int WeightBonusNemePoints { get; set; }
         public int GameDurationBonusNemePoints { get; set; }
-        public int TotalPoints { get; set; }
+        public int TotalNemeStatsPointsAwarded { get; set; }
     }
 }
