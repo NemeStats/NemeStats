@@ -244,7 +244,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
             private readonly int _playerTwoId = 2;
 
             [SetUp]
-            public void SetUp()
+            public override void BaseSetUp()
             {
                 _playerGameResults = new List<PlayerGameResult>();
                 autoMocker = new RhinoAutoMocker<PlayerRetriever>();
