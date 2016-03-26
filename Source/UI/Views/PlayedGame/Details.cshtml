@@ -91,7 +91,7 @@
                 <br />
                 <div class="row">
                     <div class="col-sm-9 col-sm-offset-3">
-                        <a href="@Url.Action(MVC.PlayedGame.ActionNames.Delete,new {id = Model.PlayedGameId})" class="btn btn-sm btn-danger"><span class="fa fa-trash"></span> Edit</a>
+                        <a href="@Url.Action(MVC.PlayedGame.ActionNames.Delete,MVC.PlayedGame.Name, new {id = Model.PlayedGameId})" class="btn btn-sm btn-danger"><span class="fa fa-trash"></span> Delete</a>
                     </div>
                 </div>
 			}
@@ -117,7 +117,7 @@
                 @if (Model.UserCanEdit)
 				{
                     <div class="col-sm-9">
-                        <a href="@Url.Action(MVC.PlayedGame.Edit())" class="btn btn-sm btn-primary"><span class="fa fa-pencil"></span> Edit</a>
+                        <a href="@Url.Action(MVC.PlayedGame.ActionNames.Edit,MVC.PlayedGame.Name,new {id=Model.PlayedGameId})" class="btn btn-sm btn-primary"><span class="fa fa-pencil"></span> Edit</a>
                     </div>
 				}
             </div>

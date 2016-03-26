@@ -40,6 +40,9 @@
                                         <td class="text-center"><i class="fa fa-users"></i></td>
                                         <td>@Model.BoardGameGeekGameDefinition.MinPlayers - @Model.BoardGameGeekGameDefinition.MaxPlayers players</td>
                                     </tr>
+                                }
+                                @if (Model.BoardGameGeekGameDefinition.AveragePlayTime.HasValue)
+                                {
                                     <tr>
                                         <td class="text-center"><i class="fa fa-clock-o"></i></td>
                                         <td>average @Model.BoardGameGeekGameDefinition.AveragePlayTime minutes</td>
