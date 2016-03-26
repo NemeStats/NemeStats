@@ -17,8 +17,8 @@
 #endregion
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using UI.Models.PlayedGame;
+using UI.Models.Points;
 
 namespace UI.Models.Players
 {
@@ -31,7 +31,7 @@ namespace UI.Models.Players
         public bool Active { get; set; }
         public List<GameResultViewModel> PlayerGameResultDetails { get; set; }
         public int TotalGamesPlayed { get; set; }
-        public int TotalPoints { get; set; }
+        public NemePointsSummaryViewModel NemePointsSummary { get; set; }
         public float AveragePointsPerGame { get; set; }
         public float AveragePlayersPerGame { get; set; }
         public float AveragePointsPerPlayer { get; set; }

@@ -18,6 +18,7 @@
 using BusinessLogic.Models.Players;
 using System.Linq;
 using UI.Models.Players;
+using UI.Models.Points;
 
 namespace UI.Transformations.PlayerTransformations
 {
@@ -30,7 +31,7 @@ namespace UI.Transformations.PlayerTransformations
                 PlayerId = topPlayer.PlayerId,
                 PlayerName = topPlayer.PlayerName,
                 TotalNumberOfGamesPlayed = topPlayer.TotalNumberOfGamesPlayed,
-                TotalPoints = topPlayer.TotalPoints,
+                NemePointsSummary = new NemePointsSummaryViewModel(topPlayer.NemePointsSummary),
                 WinPercentage = topPlayer.WinPercentage
             };
         }

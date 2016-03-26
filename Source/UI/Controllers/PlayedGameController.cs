@@ -34,6 +34,7 @@ using System.Web.Mvc;
 using UI.Attributes.Filters;
 using UI.Controllers.Helpers;
 using UI.Models.PlayedGame;
+using UI.Models.Points;
 using UI.Transformations;
 
 namespace UI.Controllers
@@ -296,7 +297,7 @@ namespace UI.Controllers
                     GameDefinitionId = searchResult.GameDefinitionId,
                     GameDefinitionName = searchResult.GameDefinitionName,
                     GameRank = playerResult.GameRank,
-                    NemeStatsPointsAwarded = playerResult.NemeStatsPointsAwarded,
+                    NemePointsSummary = new NemePointsSummaryViewModel(playerResult.NemeStatsPointsAwarded, playerResult.GameDurationBonusNemePoints, playerResult.GameWeightBonusNemePoints),
                     PlayedGameId = searchResult.PlayedGameId,
                     PlayerId = playerResult.PlayerId,
                     PlayerName = playerResult.PlayerName

@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-namespace UI.Areas.Api.Models
+﻿namespace UI.Areas.Api.Models
 {
     public class PlayerGameResultMessage
     {
@@ -10,5 +8,8 @@ namespace UI.Areas.Api.Models
         public int GameRank { get; set; }
         public int? PointsScored { get; set; }
         public int NemeStatsPointsAwarded { get; set; }
+        public int GameWeightBonusNemePoints { get; set; }
+        public int GameDurationBonusNemePoints { get; set; }
+        public int TotalNemeStatsPointsAwarded { get; set; }
     }
 }

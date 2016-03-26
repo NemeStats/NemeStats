@@ -1,0 +1,24 @@
+﻿@import "nemestats-variables.scss";
+
+
+
+.game-result {
+    .total {
+        font-size: 24px;
+        cursor: pointer;
+    }
+
+    .rank {
+        .value {
+            font-family: $font-family-sans-serif !important;
+        }
+    }
+
+    .alert {
+        a {
+            color: #E0E0E0;
+            font-size: 11px;
+            text-decoration: underline;
+        }
+    }
+}

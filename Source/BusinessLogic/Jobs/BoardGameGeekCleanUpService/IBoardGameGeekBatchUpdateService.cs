@@ -1,7 +1,8 @@
 namespace BusinessLogic.Jobs.BoardGameGeekCleanUpService
 {
-    public interface IBoardGameGeekCleanUpService
+    public interface IBoardGameGeekBatchUpdateService
     {
         LinkOrphanGamesResult LinkOrphanGames();
+        int RefreshAllBoardGameGeekData();
     }
 }

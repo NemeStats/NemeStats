@@ -46,7 +46,8 @@ namespace BusinessLogic.Logic.BoardGameGeek
                 Thumbnail = gameDetails.Thumbnail,
                 MaxPlayers = gameDetails.MaxPlayers,
                 MinPlayers = gameDetails.MinPlayers,
-                PlayingTime = gameDetails.PlayingTime,
+                MaxPlayTime = gameDetails.MaxPlayTime,
+                MinPlayTime= gameDetails.MinPlayTime,
                 AverageWeight = gameDetails.AverageWeight,
                 Description = gameDetails.Description
             };

@@ -42,7 +42,7 @@ namespace UI.HtmlHelpers
         internal const string NEMEPOINTICO_TOOLTIP = "NemePoints earned in this played game";
         internal const string NEMEPOINTSICO_TOOLTIP_POSITION = "top";
 
-        internal static string HTML_GORDON_POINTS_TEMPLATE = " - ({0} {1})";
+        internal static string HTML_NEME_POINTS_TEMPLATE = " - ({0} {1})";
         internal static string HTML_TEMPLATE = "<span class=\"{0} {1}\">{2}{3}</span>";
 
 
@@ -91,7 +91,7 @@ namespace UI.HtmlHelpers
             }
 
 
-            string nemeStatsPointsComponent = string.Format(HTML_GORDON_POINTS_TEMPLATE, playerGameResultDetails.NemeStatsPointsAwarded, htmlHelper.NemePointsIco(showTooltip: true, tooltip: NEMEPOINTICO_TOOLTIP, tooltipPosition: NEMEPOINTSICO_TOOLTIP_POSITION));
+            string nemeStatsPointsComponent = string.Format(HTML_NEME_POINTS_TEMPLATE, playerGameResultDetails.NemePointsSummary.TotalNemePoints, htmlHelper.NemePointsIco(showTooltip: true, tooltip: NEMEPOINTICO_TOOLTIP, tooltipPosition: NEMEPOINTSICO_TOOLTIP_POSITION));
             return MvcHtmlString.Create(string.Format(HTML_TEMPLATE,
                 CSS_CLASS_GAME_RANK,
                 cssPlace,

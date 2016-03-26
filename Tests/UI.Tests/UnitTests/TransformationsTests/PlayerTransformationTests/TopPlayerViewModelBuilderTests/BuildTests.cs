@@ -18,7 +18,9 @@
 using BusinessLogic.Models.Players;
 using NUnit.Framework;
 using System.Linq;
+using BusinessLogic.Models.Points;
 using UI.Models.Players;
+using UI.Models.Points;
 using UI.Transformations.PlayerTransformations;
 
 namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.TopPlayerViewModelBuilderTests
@@ -39,7 +41,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.TopP
                 PlayerId = 1,
                 PlayerName = "player name",
                 TotalNumberOfGamesPlayed = 100,
-                TotalPoints = 1234,
+                NemePointsSummary = new NemePointsSummary(1, 5, 8),
                 WinPercentage = 75
             };
 
@@ -67,7 +69,8 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.TopP
         [Test]
         public void ItCopiesTheTotalPoints()
         {
-            Assert.AreEqual(topPlayer.TotalPoints, topPlayerViewModel.TotalPoints);
+            var expected = new NemePointsSummaryViewModel(topPlayer.NemePointsSummary);
+            Assert.AreEqual(expected, topPlayerViewModel.NemePointsSummary);
         }
 
         [Test]

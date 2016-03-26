@@ -1,4 +1,5 @@
 ﻿using System;
+using BusinessLogic.Logic.Points;
 
 namespace UI.Models.GameDefinitionModels
 {
@@ -11,7 +12,18 @@ namespace UI.Models.GameDefinitionModels
         public string Thumbnail { get; set; }
         public int? MaxPlayers { get; set; }
         public int? MinPlayers { get; set; }
-        public int? PlayingTime { get; set; }
+        public int? MaxPlayTime { get; set; }
+        public int? MinPlayTime { get; set; }
+        public int? AveragePlayTime {
+            get
+            {
+                if (MaxPlayTime.HasValue && MinPlayTime.HasValue)
+                {
+                    return (MaxPlayTime + MinPlayTime)/2;
+                }
+                return null;
+            }
+        }
         public decimal? AverageWeight { get; set; }
         public string Description { get; set; }
 
@@ -30,36 +42,7 @@ namespace UI.Models.GameDefinitionModels
             }
         }
 
-        public string WeightDescription
-        {
-            get
-            {
-                if (AverageWeight.HasValue)
-                {
-                    var weight = (double) AverageWeight.Value;
-                    if (weight < 1.8)
-                    {
-                        return "Casual";
-                    }
-                    if (weight < 2.4)
-                    {
-                        return "Easy";
-                    }
-                    if (weight < 3.3)
-                    {
-                        return "Advanced";
-                    }
-                    if (weight < 4.1)
-                    {
-                        return "Challenging";
-                    }
-                    if (weight < 5)
-                    {
-                        return "Hardcore";
-                    }
-                }
-                return string.Empty;
-            } 
-        }
+        public string WeightDescription { get; set; }
+
     }
 }

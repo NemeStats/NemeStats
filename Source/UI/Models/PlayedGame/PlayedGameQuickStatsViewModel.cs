@@ -5,6 +5,7 @@ namespace UI.Models.PlayedGame
 {
     public class PlayedGameQuickStatsViewModel
     {
+        public int GameDefinitionId { get; set; }
         public int PlayedGameId { get; set; }
         public Uri BoardGameGeekUri { get; set; }
         public string ThumbnailImageUrl { get; set; }

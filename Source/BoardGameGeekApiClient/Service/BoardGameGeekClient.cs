@@ -17,13 +17,13 @@ namespace BoardGameGeekApiClient.Service
     public class BoardGameGeekClient : IBoardGameGeekApiClient
     {
         private readonly IApiDownloadService _apiDownloadService;
-        private readonly RollbarClient _rollbar;
+        private readonly IRollbarClient _rollbar;
 
 
-        public BoardGameGeekClient(IApiDownloadService apiDownloadService)
+        public BoardGameGeekClient(IApiDownloadService apiDownloadService, IRollbarClient rollbarClient)
         {
             _apiDownloadService = apiDownloadService;
-            _rollbar = new RollbarClient();
+            _rollbar = rollbarClient;
         }
 
         public const string BASE_URL_API_V2 = "http://www.boardgamegeek.com/xmlapi2";
@@ -102,7 +102,8 @@ namespace BoardGameGeekApiClient.Service
                         MaxPlayers = boardgame.Element("item").Element("maxplayers").GetIntValue("value"),
                         MinPlayers = boardgame.Element("item").Element("minplayers").GetIntValue("value"),
                         PlayerPollResults = boardgame.Element("item").Element("poll").GetPlayerPollResults(),
-                        PlayingTime = boardgame.Element("item").Element("playingtime").GetIntValue("value"),
+                        MaxPlayTime = boardgame.Element("item").Element("maxplaytime").GetIntValue("value"),
+                        MinPlayTime = boardgame.Element("item").Element("minplaytime").GetIntValue("value"),
                         Publishers = boardgame.Element("item").GetPublishers(),
                         Rank =
                             boardgame.Element("item")

@@ -29,38 +29,39 @@ using BusinessLogic.Jobs.BoardGameGeekCleanUpService;
 using BusinessLogic.Logic.BoardGameGeek;
 using BusinessLogic.Logic.Champions;
 using BusinessLogic.Logic.Email;
-using BusinessLogic.Logic.GameDefinitions;
-using BusinessLogic.Logic.GamingGroups;
+    using BusinessLogic.Logic.GameDefinitions;
+    using BusinessLogic.Logic.GamingGroups;
 using BusinessLogic.Logic.Nemeses;
-using BusinessLogic.Logic.PlayedGames;
-using BusinessLogic.Logic.Players;
-using BusinessLogic.Logic.Users;
+    using BusinessLogic.Logic.PlayedGames;
+    using BusinessLogic.Logic.Players;
+using BusinessLogic.Logic.Points;
+    using BusinessLogic.Logic.Users;
 using BusinessLogic.Logic.VotableFeatures;
-using BusinessLogic.Models.User;
+    using BusinessLogic.Models.User;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using RollbarSharp;
 using StructureMap;
-using StructureMap.Graph;
-using StructureMap.Web;
+    using StructureMap.Graph;
+    using StructureMap.Web;
 using UniversalAnalyticsHttpWrapper;
 
 namespace NemeStats.IoC
-{
+    {
     public class CommonRegistry : Registry
     {
         #region Constructors and Destructors
 
         public CommonRegistry()
         {
-            this.Scan(
+            Scan(
                 scan =>
                 {
                     scan.TheCallingAssembly();
-                    scan.WithDefaultConventions();                    
+                    scan.WithDefaultConventions();
                 });
 
-            this.Scan(s =>
+            Scan(s =>
             {
                 s.AssemblyContainingType<IBoardGameGeekApiClient>();
                 s.RegisterConcreteTypesAgainstTheFirstInterface();
@@ -68,90 +69,94 @@ namespace NemeStats.IoC
 
             this.For<IRollbarClient>().Use(new RollbarClient()).Singleton();
 
-            this.SetupUniquePerRequestMappings();
+            SetupUniquePerRequestMappings();
 
-            this.SetupTransientMappings();
+            SetupTransientMappings();
         }
 
-   
+
         private void SetupTransientMappings()
         {
-            this.For<IGamingGroupSaver>().Use<GamingGroupSaver>();
+            For<IGamingGroupSaver>().Use<GamingGroupSaver>();
 
-            this.For<IGamingGroupAccessGranter>().Use<EntityFrameworkGamingGroupAccessGranter>();
+            For<IGamingGroupAccessGranter>().Use<EntityFrameworkGamingGroupAccessGranter>();
 
-            this.For<IGamingGroupInviteConsumer>().Use<GamingGroupInviteConsumer>();
-            this.For<IPlayerSummaryBuilder>().Use<PlayerSummaryBuilder>();
+            For<IGamingGroupInviteConsumer>().Use<GamingGroupInviteConsumer>();
+            For<IPlayerSummaryBuilder>().Use<PlayerSummaryBuilder>();
 
-            this.For<IPlayerRepository>().Use<EntityFrameworkPlayerRepository>();
+            For<IPlayerRepository>().Use<EntityFrameworkPlayerRepository>();
 
-            this.For<IGameDefinitionRetriever>().Use<GameDefinitionRetriever>();
+            For<IGameDefinitionRetriever>().Use<GameDefinitionRetriever>();
 
-            this.For<IPlayedGameRetriever>().Use<PlayedGameRetriever>();
+            For<IPlayedGameRetriever>().Use<PlayedGameRetriever>();
 
-            this.For<IUserStore<ApplicationUser>>()
+            For<IUserStore<ApplicationUser>>()
                 .Use<UserStore<ApplicationUser>>();
 
             
             this.For<IGamingGroupRetriever>().Use<GamingGroupRetriever>();
 
-            this.For<IPendingGamingGroupInvitationRetriever>().Use<PendingGamingGroupInvitationRetriever>();
+            For<IPendingGamingGroupInvitationRetriever>().Use<PendingGamingGroupInvitationRetriever>();
 
-            this.For<IPlayedGameCreator>().Use<PlayedGameCreator>();
+            For<IPlayedGameCreator>().Use<PlayedGameCreator>();
 
-            this.For<INemeStatsEventTracker>().Use<UniversalAnalyticsNemeStatsEventTracker>();
+            For<INemeStatsEventTracker>().Use<UniversalAnalyticsNemeStatsEventTracker>();
 
-            this.For<IEventTracker>().Use<EventTracker>();
-            this.For<INemesisHistoryRetriever>().Use<NemesisHistoryRetriever>();
+            For<IEventTracker>().Use<EventTracker>();
+            For<INemesisHistoryRetriever>().Use<NemesisHistoryRetriever>();
 
-            this.For<IUniversalAnalyticsEventFactory>().Use<UniversalAnalyticsEventFactory>();
+            For<IUniversalAnalyticsEventFactory>().Use<UniversalAnalyticsEventFactory>();
 
-            this.For<IConfigurationManager>().Use(() => ConfigurationManager.Instance);
+            For<IConfigurationManager>().Use(() => ConfigurationManager.Instance);
 
-            this.For<IPlayerSaver>().Use<PlayerSaver>();
+            For<IPlayerSaver>().Use<PlayerSaver>();
 
-            this.For<IGameDefinitionSaver>().Use<GameDefinitionSaver>();
+            For<IGameDefinitionSaver>().Use<GameDefinitionSaver>();
 
-            this.For<IPlayerRetriever>().Use<PlayerRetriever>();
+            For<IPlayerRetriever>().Use<PlayerRetriever>();
 
-            this.For<INemesisRecalculator>().Use<NemesisRecalculator>();
+            For<INemesisRecalculator>().Use<NemesisRecalculator>();
 
-            this.For<IPlayedGameDeleter>().Use<PlayedGameDeleter>();
+            For<IPlayedGameDeleter>().Use<PlayedGameDeleter>();
 
-            this.For<IUserRegisterer>().Use<UserRegisterer>();
+            For<IUserRegisterer>().Use<UserRegisterer>();
 
-            this.For<IFirstTimeAuthenticator>().Use<FirstTimeAuthenticator>();
+            For<IFirstTimeAuthenticator>().Use<FirstTimeAuthenticator>();
 
-            this.For<IPlayerInviter>().Use<PlayerInviter>();
+            For<IPlayerInviter>().Use<PlayerInviter>();
 
-            this.For<IIdentityMessageService>().Use<EmailService>();
+            For<IIdentityMessageService>().Use<EmailService>();
 
-            this.For<IChampionRecalculator>().Use<ChampionRecalculator>();
+            For<IChampionRecalculator>().Use<ChampionRecalculator>();
 
-            this.For<IChampionRepository>().Use<ChampionRepository>();
+            For<IChampionRepository>().Use<ChampionRepository>();
 
-            this.For<IGamingGroupContextSwitcher>().Use<GamingGroupContextSwitcher>();
+            For<IGamingGroupContextSwitcher>().Use<GamingGroupContextSwitcher>();
 
-            this.For<IVotableFeatureRetriever>().Use<VotableFeatureRetriever>();
+            For<IVotableFeatureRetriever>().Use<VotableFeatureRetriever>();
 
-            this.For<IVotableFeatureVoter>().Use<VotableFeatureVoter>();
+            For<IVotableFeatureVoter>().Use<VotableFeatureVoter>();
 
-            this.For<IExcelGenerator>().Use<ExcelGenerator>();
+            For<IExcelGenerator>().Use<ExcelGenerator>();
 
-            this.For<IAuthTokenGenerator>().Use<AuthTokenGenerator>();
+            For<IAuthTokenGenerator>().Use<AuthTokenGenerator>();
 
-            this.For<IAuthTokenValidator>().Use<AuthTokenValidator>();
+            For<IAuthTokenValidator>().Use<AuthTokenValidator>();
 
-            this.For(typeof(ISecuredEntityValidator<>)).Use(typeof(SecuredEntityValidator<>));
+            For(typeof(ISecuredEntityValidator<>)).Use(typeof(SecuredEntityValidator<>));
 
-            this.For<IUserRetriever>().Use<UserRetriever>();
+            For<IUserRetriever>().Use<UserRetriever>();
 
-            this.For<IBoardGameGeekGameDefinitionCreator>().Use<BoardGameGeekGameDefinitionCreator>();
+            For<IBoardGameGeekGameDefinitionCreator>().Use<BoardGameGeekGameDefinitionCreator>();
 
             this.For<IBoardGameGeekUserSaver>().Use<BoardGameGeekUserSaver>();
             this.For<IBoardGameGeekGamesImporter>().Use<BoardGameGeekGamesImporter>();
-            this.For<IBoardGameGeekCleanUpService>().Use<BoardGameGeekCleanUpService>();            
+            this.For<IBoardGameGeekBatchUpdateService>().Use<BoardGameGeekBatchUpdateService>();
 
+            For<IPointsCalculator>().Use<PointsCalculator>();
+            For<IWeightTierCalculator>().Use<WeightTierCalculator>();
+            For<IWeightBonusCalculator>().Use<WeightBonusCalculator>();
+            For<IGameDurationBonusCalculator>().Use<GameDurationBonusCalculator>();
         }
 
         private void SetupUniquePerRequestMappings()

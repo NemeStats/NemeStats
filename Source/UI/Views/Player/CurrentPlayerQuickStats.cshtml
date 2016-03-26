@@ -12,35 +12,23 @@
 
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    @Html.ActionLink("Last group game played", "Details", "PlayedGame", new { id = Model.LastGamingGroupGame.PlayedGameId }, new { })
+                    <a href="@Url.Action(MVC.PlayedGame.ActionNames.Details,MVC.PlayedGame.Name,new {id = Model.LastGamingGroupGame.PlayedGameId})">Last group game played</a>
                 </div>
                 <div class="panel-body last-game-played">
                     <div class="col-sm-4">
+                        <div class="image-col voffset2">
+                            <a href="@Url.Action(MVC.GameDefinition.ActionNames.Details,MVC.GameDefinition.Name,new {id= Model.LastGamingGroupGame.GameDefinitionId})">
+                                @if (!string.IsNullOrEmpty(Model.LastGamingGroupGame.ThumbnailImageUrl))
+                                {
+                                    <img class="bgg-thumbnail" src="@Model.LastGamingGroupGame.ThumbnailImageUrl" alt="@Model.LastGamingGroupGame.GameDefinitionName" title="@Model.LastGamingGroupGame.GameDefinitionName" />
+                                }
+                                else
+                                {
+                                    <span>@Model.LastGamingGroupGame.GameDefinitionName</span>
+                                }
 
-                        @if (Model.LastGamingGroupGame.BoardGameGeekUri != null)
-                {
-                            <div class="image-col voffset2">
-                                <a href="@Model.LastGamingGroupGame.BoardGameGeekUri.AbsoluteUri" target="_blank;">
-                                    @if (!string.IsNullOrEmpty(Model.LastGamingGroupGame.ThumbnailImageUrl))
-                                    {
-                                        <img class="bgg-thumbnail" src="@Model.LastGamingGroupGame.ThumbnailImageUrl" alt="View on BoardGameGeek.com" title="View on BoardGameGeek.com" />
-                                    }
-                                    else
-                                    {
-                                        <img src="~/Content/Images/bgg_small.png" alt="View on BoardGameGeek.com" title="View on BoardGameGeek.com" />
-                                    }
-
-                                </a>
-                            </div>
-
-                        }
-
-                        else
-                        {
-                            <div class="voffset2">
-                                @Model.LastGamingGroupGame.GameDefinitionName
-                            </div>
-                        }
+                            </a>
+                        </div>
                     </div>
                     <div class="col-sm-4 voffset2">
                         <span>Winner:</span>
@@ -54,13 +42,15 @@
                         }
                         else
                         {
-                            <div class="voffset2">@Html.ActionLink(Model.LastGamingGroupGame.WinningPlayerName, "Details", "Player", new { id = Model.LastGamingGroupGame.WinningPlayerId }, new { })</div>
+                            <div class="voffset2">
+                                <a href="@Url.Action(MVC.Player.ActionNames.Details,MVC.Player.Name, new {id = Model.LastGamingGroupGame.WinningPlayerId})">@Model.LastGamingGroupGame.WinningPlayerName</a>
+                            </div>
                         }
                     </div>
                     <div class="col-sm-4 voffset2">
                         <span>Date:</span>
                         <div class="voffset2">
-                            @Html.ActionLink(@Model.LastGamingGroupGame.DatePlayed.ToShortDateString(), "Details", "PlayedGame", new { id = Model.LastGamingGroupGame.PlayedGameId }, new { })
+                            <a href="@Url.Action(MVC.PlayedGame.ActionNames.Details,MVC.PlayedGame.Name, new {id = Model.LastGamingGroupGame.PlayedGameId})">@Model.LastGamingGroupGame.DatePlayed.ToShortDateString()</a>
                         </div>
                     </div>
                 </div>
@@ -74,7 +64,7 @@
                     <div class="panel panel-default">
                         <div class="panel-heading"><span class="fa-stack neme-points-ico" data-toggle="popover" data-placement="top" data-content="Total NemePoints earned by playing games" data-original-title="" title=""><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x letter">N</i></span></div>
                         <div class="panel-body stat-value">
-                            @Html.ActionLink(@Model.TotalPoints.ToString(), "Details", "Player", new { id = Model.PlayerId }, new { })
+                            @Html.ActionLink(@Model.NemePointsSummary.TotalNemePoints.ToString(), "Details", "Player", new { id = Model.PlayerId }, new { })
                         </div>
                     </div>
                 </div>

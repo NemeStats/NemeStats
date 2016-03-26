@@ -50,4 +50,5 @@
 /// <reference path="respond.js" />
 /// <reference path="shared/_layout.js" />
 /// <reference path="shared/googleanalytics.js" />
+/// <reference path="shared/uiutils.js" />
 /// <reference path="vue.min.js" />

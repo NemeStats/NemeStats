@@ -71,17 +71,24 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
                 IPlayerRetriever playerRetriever = new PlayerRetriever(dataContext, playerRepository, playedGameRetriever); 
                 PlayerStatistics playerStatistics = playerRetriever.GetPlayerStatistics(testPlayer1.Id);
 
-                int totalPoints = 0;
+                int totalBasePoints = 0;
+                int totalGameDurationPoints = 0;
+                int totalWeightBonusPoints = 0;
 
                 foreach(PlayedGame playedGame in testPlayedGames)
                 {
                     if(playedGame.PlayerGameResults.Any(result => result.PlayerId == testPlayer1.Id))
                     {
-                        totalPoints += playedGame.PlayerGameResults.First(result => result.PlayerId == testPlayer1.Id).NemeStatsPointsAwarded;
+                        var playerGameResult = playedGame.PlayerGameResults.First(result => result.PlayerId == testPlayer1.Id);
+                        totalBasePoints += playerGameResult.NemeStatsPointsAwarded;
+                        totalGameDurationPoints += playerGameResult.GameDurationBonusPoints;
+                        totalWeightBonusPoints += playerGameResult.GameWeightBonusPoints;
                     }
                 }
 
-                Assert.AreEqual(totalPoints, playerStatistics.TotalPoints);
+                Assert.AreEqual(totalBasePoints, playerStatistics.NemePointsSummary.BaseNemePoints);
+                Assert.AreEqual(totalGameDurationPoints, playerStatistics.NemePointsSummary.GameDurationBonusNemePoints);
+                Assert.AreEqual(totalWeightBonusPoints, playerStatistics.NemePointsSummary.WeightBonusNemePoints);
             }
         }
 

@@ -169,11 +169,11 @@
     <Compile Include="Export\ExcelGenerator.cs" />
     <Compile Include="Export\IExcelGenerator.cs" />
     <Compile Include="Jobs\BoardGameGeekCleanUpService\LinkOrphanGamesResult.cs" />
-    <Compile Include="Jobs\BoardGameGeekCleanUpService\BoardGameGeekCleanUpService.cs" />
+    <Compile Include="Jobs\BoardGameGeekCleanUpService\BoardGameGeekBatchUpdateService.cs" />
     <Compile Include="Logic\BoardGameGeek\BoardGameGeekGameDefinitionCreator.cs" />
     <Compile Include="Logic\BoardGameGeek\BoardGameGeekGamesImporter.cs" />
     <Compile Include="Logic\BoardGameGeek\BoardGameGeekUrlBuilder.cs" />
-    <Compile Include="Jobs\BoardGameGeekCleanUpService\IBoardGameGeekCleanUpService.cs" />
+    <Compile Include="Jobs\BoardGameGeekCleanUpService\IBoardGameGeekBatchUpdateService.cs" />
     <Compile Include="Logic\BoardGameGeek\IBoardGameGeekGameDefinitionCreator.cs" />
     <Compile Include="Logic\BoardGameGeek\IBoardGameGeekGamesImporter.cs" />
     <Compile Include="Logic\Champions\ChampionRecalculator.cs" />
@@ -182,8 +182,13 @@
     <Compile Include="Logic\GameDefinitions\GameDefinitionUpdateRequest.cs" />
     <Compile Include="Logic\GamingGroups\GamingGroupInfoForUser.cs" />
     <Compile Include="Logic\Players\PlayerNameBuilder.cs" />
+    <Compile Include="Logic\Points\GameDurationBonusCalculator.cs" />
+    <Compile Include="Logic\Points\IGameDurationBonusCalculator.cs" />
+    <Compile Include="Logic\Points\IPointsCalculator.cs" />
+    <Compile Include="Logic\Points\IWeightBonusCalculator.cs" />
     <Compile Include="Logic\Points\PointsCalculator.cs" />
     <Compile Include="Logic\Points\GlobalPointsRecalculator.cs" />
+    <Compile Include="Logic\Points\WeightBonusCalculator.cs" />
     <Compile Include="Logic\Security\MachineKeyDataProtector.cs" />
     <Compile Include="Logic\TransactionSource.cs" />
     <Compile Include="Logic\Users\AuthTokenGenerator.cs" />
@@ -204,8 +209,26 @@
     <Compile Include="Migrations\201602182046472_Add-BGGGamingDefinion-Description.Designer.cs">
       <DependentUpon>201602182046472_Add-BGGGamingDefinion-Description.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201602200343405_AddBonusPointsToPlayerGameResult.cs" />
+    <Compile Include="Migrations\201602200343405_AddBonusPointsToPlayerGameResult.Designer.cs">
+      <DependentUpon>201602200343405_AddBonusPointsToPlayerGameResult.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201603201056318_TotalPoints_ComputedProperty.cs" />
+    <Compile Include="Migrations\201603201056318_TotalPoints_ComputedProperty.Designer.cs">
+      <DependentUpon>201603201056318_TotalPoints_ComputedProperty.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201603251644039_BGGGameDefinition_MinPlayTime.cs" />
+    <Compile Include="Migrations\201603251644039_BGGGameDefinition_MinPlayTime.Designer.cs">
+      <DependentUpon>201603251644039_BGGGameDefinition_MinPlayTime.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Games\TrendingGame.cs" />
+    <Compile Include="Logic\Points\IWeightTierCalculator.cs" />
     <Compile Include="Models\Players\CreatePlayerRequest.cs" />
+    <Compile Include="Models\PlayedGames\AverageGameDurationTierEnum.cs" />
+    <Compile Include="Models\PlayedGames\PointsScorecard.cs" />
+    <Compile Include="Logic\Points\WeightTierCalculator.cs" />
+    <Compile Include="Models\PlayedGames\WeightTierEnum.cs" />
+    <Compile Include="Models\Points\NemePointsSummary.cs" />
     <Compile Include="Models\User\BoardGameGeekUserInformation.cs" />
     <Compile Include="Models\Validation\BaseValidatableRequestSaver.cs" />
     <Compile Include="Logic\Users\BoardGameGeekUserSaver.cs" />
@@ -767,6 +790,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201602182046472_Add-BGGGamingDefinion-Description.resx">
       <DependentUpon>201602182046472_Add-BGGGamingDefinion-Description.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602200343405_AddBonusPointsToPlayerGameResult.resx">
+      <DependentUpon>201602200343405_AddBonusPointsToPlayerGameResult.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603201056318_TotalPoints_ComputedProperty.resx">
+      <DependentUpon>201603201056318_TotalPoints_ComputedProperty.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603251644039_BGGGameDefinition_MinPlayTime.resx">
+      <DependentUpon>201603251644039_BGGGameDefinition_MinPlayTime.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

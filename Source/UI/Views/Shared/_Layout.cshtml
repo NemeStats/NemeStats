@@ -35,7 +35,7 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li id="gtm-recordplayedgamebutton-fromnavbar">@Html.ActionLink("Record Played Game", "Create", "PlayedGame")</li>
+                    <li id="gtm-recordplayedgamebutton-fromnavbar"><a href="@Url.Action(MVC.PlayedGame.Create())"><span class="fa fa-plus-circle"></span> Record Played Game</a></li>
                     <li id="navMyGamingGroup">@Html.ActionLink("My Gaming Group", "Index", "GamingGroup")</li>
                     <li id="navAbout">@Html.ActionLink("About", "About", "Home")</li>
                 </ul>

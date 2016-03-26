@@ -2,10 +2,12 @@
 using BusinessLogic.Models.PlayedGames;
 using BusinessLogic.Models.Players;
 using NUnit.Framework;
-using Rhino.Mocks;
 using System;
 using System.Web.Mvc;
+using BusinessLogic.Models.Points;
 using UI.Models.Players;
+using UI.Models.Points;
+using Rhino.Mocks;
 
 namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
 {
@@ -20,7 +22,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
                 PlayerId = 1,
                 TotalGamesPlayed = 4,
                 TotalGamesWon = 3,
-                TotalPoints = 500,
+                NemePointsSummary = new NemePointsSummary(1, 3, 5),
                 LastGamingGroupGame = new PlayedGameQuickStats
                 {
                     BoardGameGeekUri = new Uri("http://a.com"),
@@ -45,7 +47,11 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
             var actualModel = result.Model as PlayerQuickStatsViewModel;
             Assert.That(actualModel, Is.Not.Null);
             Assert.That(actualModel.PlayerId, Is.EqualTo(expectedPlayerQuickSummary.PlayerId));
-            Assert.That(actualModel.TotalPoints, Is.EqualTo(expectedPlayerQuickSummary.TotalPoints));
+            var expectedNemePointsSummary = new NemePointsSummaryViewModel(
+                expectedPlayerQuickSummary.NemePointsSummary.BaseNemePoints,
+                expectedPlayerQuickSummary.NemePointsSummary.GameDurationBonusNemePoints,
+                expectedPlayerQuickSummary.NemePointsSummary.WeightBonusNemePoints);
+            Assert.That(actualModel.NemePointsSummary, Is.EqualTo(expectedNemePointsSummary));
             Assert.That(actualModel.TotalGamesWon, Is.EqualTo(expectedPlayerQuickSummary.TotalGamesWon));
             Assert.That(actualModel.TotalGamesPlayed, Is.EqualTo(expectedPlayerQuickSummary.TotalGamesPlayed));
             Assert.That(actualModel.LastGamingGroupGame, Is.Not.Null);

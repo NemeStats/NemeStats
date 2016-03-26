@@ -55,8 +55,8 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.Players
 
             foreach(TopPlayer topPlayer in topPlayersResult)
             {
-                Assert.LessOrEqual(topPlayer.TotalPoints, lastPoints);
-                lastPoints = topPlayer.TotalPoints;
+                Assert.LessOrEqual(topPlayer.NemePointsSummary.TotalPoints, lastPoints);
+                lastPoints = topPlayer.NemePointsSummary.TotalPoints;
             }
         }
 
@@ -65,7 +65,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.Players
         {
             TopPlayer firstResult = topPlayersResult[0];
             Assert.Greater(firstResult.TotalNumberOfGamesPlayed, 0);
-            Assert.Greater(firstResult.TotalPoints, 0);
+            Assert.Greater(firstResult.NemePointsSummary.TotalPoints, 0);
             Assert.True(!string.IsNullOrWhiteSpace(firstResult.PlayerName));
             Assert.Greater(firstResult.PlayerId, 0);
         }

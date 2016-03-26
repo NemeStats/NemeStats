@@ -16,7 +16,6 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 
-using System;
 using BusinessLogic.DataAccess;
 using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.Models;
@@ -27,6 +26,7 @@ using System.Linq;
 using BusinessLogic.Logic.PlayedGames;
 using BusinessLogic.Models.PlayedGames;
 using BusinessLogic.Logic.BoardGameGeek;
+using BusinessLogic.Models.Points;
 using BusinessLogic.Models.Utility;
 
 namespace BusinessLogic.Logic.Players
@@ -68,7 +68,7 @@ namespace BusinessLogic.Logic.Players
             }
 
             var playersWithNemesis = (from Player player in GetAllPlayersInGamingGroupQueryable(gamingGroupId)
-                .Include(player => player.PlayerGameResults)
+                                          .Include(player => player.PlayerGameResults)
                                       select new PlayerWithNemesis
                                       {
                                           PlayerId = player.Id,
@@ -78,27 +78,64 @@ namespace BusinessLogic.Logic.Players
                                           PlayerRegistered = !string.IsNullOrEmpty(player.ApplicationUserId),
                                           NemesisPlayerId = player.Nemesis == null ? (int?)null : player.Nemesis.NemesisPlayerId,
                                           NemesisPlayerName = player.Nemesis != null && player.Nemesis.NemesisPlayer != null
-                                              ? player.Nemesis.NemesisPlayer.Name : null,
+                                                                  ? player.Nemesis.NemesisPlayer.Name
+                                                                  : null,
                                           PreviousNemesisPlayerId = player.PreviousNemesis == null ? (int?)null : player.PreviousNemesis.NemesisPlayerId,
                                           PreviousNemesisPlayerName = player.PreviousNemesis != null && player.PreviousNemesis.NemesisPlayer != null
-                                              ? player.PreviousNemesis.NemesisPlayer.Name : null,
+                                                                          ? player.PreviousNemesis.NemesisPlayer.Name
+                                                                          : null,
                                           GamingGroupId = player.GamingGroupId,
-                                          GamesWon = player.PlayerGameResults.Where(x => x.PlayedGame.DatePlayed >= dateRangeFilter.FromDate && x.PlayedGame.DatePlayed <= dateRangeFilter.ToDate).Count(x => x.GameRank == 1),
-                                          GamesLost = player.PlayerGameResults.Where(x => x.PlayedGame.DatePlayed >= dateRangeFilter.FromDate && x.PlayedGame.DatePlayed <= dateRangeFilter.ToDate).Count(x => x.GameRank > 1),
-                                          TotalPoints = player.PlayerGameResults.Where(x => x.PlayedGame.DatePlayed >= dateRangeFilter.FromDate && x.PlayedGame.DatePlayed <= dateRangeFilter.ToDate)
-                                              .Select(pgr => pgr.NemeStatsPointsAwarded)
-                                              .DefaultIfEmpty(0)
-                                              .Sum(),
+                                          GamesWon =
+                                              player.PlayerGameResults.Where(
+                                                                             x =>
+                                                                             x.PlayedGame.DatePlayed >= dateRangeFilter.FromDate &&
+                                                                             x.PlayedGame.DatePlayed <= dateRangeFilter.ToDate).Count(x => x.GameRank == 1),
+                                          GamesLost =
+                                              player.PlayerGameResults.Where(
+                                                                             x =>
+                                                                             x.PlayedGame.DatePlayed >= dateRangeFilter.FromDate &&
+                                                                             x.PlayedGame.DatePlayed <= dateRangeFilter.ToDate).Count(x => x.GameRank > 1),
                                           //only get championed games where this player is the current champion
-                                          TotalChampionedGames = player.ChampionedGames.Count(champion => champion.GameDefinition.ChampionId != null && champion.GameDefinition.ChampionId.Value == champion.Id)
+                                          TotalChampionedGames =
+                                              player.ChampionedGames.Count(
+                                                                           champion =>
+                                                                           champion.GameDefinition.ChampionId != null &&
+                                                                           champion.GameDefinition.ChampionId.Value == champion.Id)
                                       }
-                ).OrderByDescending(x => x.PlayerActive).ThenByDescending(pwn => pwn.TotalPoints).ThenByDescending(pwn => pwn.GamesWon).ThenBy(pwn => pwn.PlayerName)
-                .ToList();
+                                     ).ToList();
 
-            return playersWithNemesis;
+            PopulateNemePointsSummary(gamingGroupId, playersWithNemesis, dateRangeFilter);
+
+            return playersWithNemesis//--deliberately ToList() first since Linq To Entities cannot support ordering by NemePointsSummary.TotalPoints
+                                      .OrderByDescending(x => x.PlayerActive)
+                                      .ThenByDescending(pwn => pwn.NemePointsSummary?.TotalPoints ?? 0 )
+                                      .ThenByDescending(pwn => pwn.GamesWon)
+                                      .ThenBy(pwn => pwn.PlayerName)
+                                      .ToList();
         }
 
+        internal virtual void PopulateNemePointsSummary(int gamingGroupId, List<PlayerWithNemesis> playersWithNemesis, IDateRangeFilter dateRangeFilter)
+        {
+            var nemePointsDictionary = (from playerGameResult in dataContext.GetQueryable<PlayerGameResult>()
+                                        where playerGameResult.PlayedGame.GamingGroupId == gamingGroupId
+                                        && playerGameResult.PlayedGame.DatePlayed >= dateRangeFilter.FromDate 
+                                        && playerGameResult.PlayedGame.DatePlayed <= dateRangeFilter.ToDate
+                                        group playerGameResult by playerGameResult.PlayerId
+                                        into groupedResults
+                                        select
+                                            new
+                                            {
+                                                BasePoints = groupedResults.Sum(x => x.NemeStatsPointsAwarded),
+                                                GameDurationBonusPoints = groupedResults.Sum(x => x.GameDurationBonusPoints),
+                                                WeightBonusPoints = groupedResults.Sum(x => x.GameWeightBonusPoints),
+                                                PlayerId = groupedResults.Key
+                                            }).ToDictionary(key => key.PlayerId, value => new NemePointsSummary(value.BasePoints, value.GameDurationBonusPoints, value.WeightBonusPoints));
 
+            foreach (var player in playersWithNemesis)
+            {
+                player.NemePointsSummary = nemePointsDictionary.ContainsKey(player.PlayerId) ? nemePointsDictionary[player.PlayerId] : new NemePointsSummary(0, 0, 0);
+            }
+        }
 
         public virtual PlayerDetails GetPlayerDetails(int playerId, int numberOfRecentGamesToRetrieve)
         {
@@ -143,7 +180,8 @@ namespace BusinessLogic.Logic.Players
                 ChampionedGames = championedGames,
                 PlayerVersusPlayersStatistics = playerRepository.GetPlayerVersusPlayersStatistics(playerId),
                 FormerChampionedGames = formerChampionedGames,
-                LongestWinningStreak = longestWinningStreak
+                LongestWinningStreak = longestWinningStreak,
+                NemePointsSummary = playerStatistics.NemePointsSummary
             };
 
             return playerDetails;
@@ -215,7 +253,7 @@ namespace BusinessLogic.Logic.Players
                 playerStatistics.WinPercentage = (int)((decimal)playerStatistics.TotalGamesWon / (playerStatistics.TotalGames) * 100);
             }
 
-            playerStatistics.TotalPoints = GetTotalNemePoints(playerId);
+            playerStatistics.NemePointsSummary = GetNemePointsSummary(playerId);
 
             //had to cast to handle the case where there is no data:
             //http://stackoverflow.com/questions/6864311/the-cast-to-value-type-int32-failed-because-the-materialized-value-is-null
@@ -261,21 +299,23 @@ namespace BusinessLogic.Logic.Players
             public int TotalGamesWon { get; internal set; }
         }
 
-        internal virtual int GetTotalNemePoints(int playerId)
+        internal virtual NemePointsSummary GetNemePointsSummary(int playerId)
         {
-            int? totalPoints = dataContext.GetQueryable<PlayerGameResult>()
-                            .Where(result => result.PlayerId == playerId)
-                            //had to cast to handle the case where there is no data:
-                            //http://stackoverflow.com/questions/6864311/the-cast-to-value-type-int32-failed-because-the-materialized-value-is-null
-                            .Sum(playerGameResults => (int?)playerGameResults.NemeStatsPointsAwarded) ?? 0;
-            if (totalPoints.HasValue)
-            {
-                return totalPoints.Value;
-            }
-            else
-            {
-                return 0;
-            }
+            NemePointsSummary nemePointsSummary = dataContext.GetQueryable<PlayerGameResult>()
+                                          .Where(result => result.PlayerId == playerId)
+                                          .GroupBy(x => x.PlayerId)
+                                          .Select(
+                                                  g =>
+                                                  new NemePointsSummary
+                                                  {
+                                                      //had to cast to handle the case where there is no data:
+                                                      //http://stackoverflow.com/questions/6864311/the-cast-to-value-type-int32-failed-because-the-materialized-value-is-null
+                                                      BaseNemePoints = g.Sum(x => (int?)x.NemeStatsPointsAwarded) ?? 0,
+                                                      GameDurationBonusNemePoints = g.Sum(x => (int?)x.GameDurationBonusPoints) ?? 0,
+                                                      WeightBonusNemePoints = g.Sum(x => (int?)x.GameWeightBonusPoints) ?? 0
+                                                  })
+                                .SingleOrDefault();
+            return nemePointsSummary ?? new NemePointsSummary(0, 0, 0);
         }
 
         public virtual PlayerQuickStats GetPlayerQuickStatsForUser(string applicationUserId, int gamingGroupId)
@@ -292,7 +332,7 @@ namespace BusinessLogic.Logic.Players
             if (playerIdForCurrentUser != 0)
             {
                 returnValue.PlayerId = playerIdForCurrentUser;
-                returnValue.TotalPoints = GetTotalNemePoints(playerIdForCurrentUser);
+                returnValue.NemePointsSummary = GetNemePointsSummary(playerIdForCurrentUser);
 
                 var gameDefinitionTotals = GetGameDefinitionTotals(playerIdForCurrentUser);
                 var topLevelTotals = GetTopLevelTotals(gameDefinitionTotals);

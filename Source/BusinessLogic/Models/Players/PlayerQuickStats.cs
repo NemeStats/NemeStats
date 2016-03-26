@@ -1,12 +1,12 @@
 ﻿using BusinessLogic.Models.PlayedGames;
-using System;
+using BusinessLogic.Models.Points;
 
 namespace BusinessLogic.Models.Players
 {
     public class PlayerQuickStats
     {
         public int TotalGamesWon { get; set; }
-        public int TotalPoints { get; set; }
+        public NemePointsSummary NemePointsSummary { get; set; }
         public int TotalGamesPlayed { get; set; }
         public int? PlayerId { get; set; }
         public PlayedGameQuickStats LastGamingGroupGame { get; set; }

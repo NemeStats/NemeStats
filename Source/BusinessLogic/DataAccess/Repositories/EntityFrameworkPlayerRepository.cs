@@ -17,14 +17,12 @@
 #endregion
 
 using BusinessLogic.Logic.Utilities;
-using BusinessLogic.Models;
 using BusinessLogic.Models.Nemeses;
 using BusinessLogic.Models.Players;
 using System.Collections.Generic;
-using System.Data.Entity.Infrastructure;
 using System.Data.SqlClient;
 using System.Linq;
-using BusinessLogic.Logic.Players;
+using BusinessLogic.Models.Points;
 
 namespace BusinessLogic.DataAccess.Repositories
 {
@@ -169,7 +167,9 @@ namespace BusinessLogic.DataAccess.Repositories
               ,Player.Active AS PlayerActive
               ,SUM(CASE WHEN PGR.GameRank = 1 THEN 1 ELSE 0 END) AS GamesWon
               ,SUM(CASE WHEN PGR.GameRank <> 1 THEN 1 ELSE 0 END) AS GamesLost
-              ,SUM(PGR.NemeStatsPointsAwarded) AS TotalNemePoints
+              ,SUM(PGR.NemeStatsPointsAwarded) AS BaseNemePoints
+              ,SUM(PGR.GameWeightBonusPoints) AS WeightBonusNemePoints
+              ,SUM(PGR.GameDurationBonusPoints) AS GameDurationBonusNemePoints
               ,CONVERT(BIT, CASE WHEN Player.Id = Champion.PlayerId THEN 1 ELSE 0 END) AS IsChampion
               ,CONVERT(BIT, CASE WHEN EXISTS(
                     SELECT 1 FROM Champion 
@@ -183,14 +183,34 @@ namespace BusinessLogic.DataAccess.Repositories
               LEFT JOIN Champion ON Champion.Id = GD.ChampionId
               WHERE GD.Id = @GameDefinitionId
               GROUP BY GD.[Id], GD.[Name], Player.Id, Player.Name,Player.Active, CONVERT(BIT, CASE WHEN Player.Id = Champion.PlayerId THEN 1 ELSE 0 END)
-              ORDER BY PlayerActive DESC, TotalNemePoints DESC, GamesWon DESC, PlayerName";
+              ORDER BY PlayerActive DESC, BaseNemePoints DESC, GamesWon DESC, PlayerName";
+
+        internal class PlayerWinRecordWithFlatPoints : PlayerWinRecord
+        {
+            public int BaseNemePoints { get; set; }
+            public int WeightBonusNemePoints { get; set; }
+            public int GameDurationBonusNemePoints { get; set; }
+        }
 
         public IList<PlayerWinRecord> GetPlayerWinRecords(int gameDefinitionId)
         {
-            var data = dataContext.MakeRawSqlQuery<PlayerWinRecord>(SQL_GET_PLAYER_INFO_FOR_GIVEN_GAME_DEFINITION,
+            var data = dataContext.MakeRawSqlQuery<PlayerWinRecordWithFlatPoints>(SQL_GET_PLAYER_INFO_FOR_GIVEN_GAME_DEFINITION,
                 new SqlParameter("GameDefinitionId", gameDefinitionId));
 
-            var results = data.ToList();
+            var results = data.Select(x => new PlayerWinRecord
+            {
+                PlayerId = x.PlayerId,
+                NemePointsSummary = new NemePointsSummary(x.BaseNemePoints, x.GameDurationBonusNemePoints, x.WeightBonusNemePoints),
+                TotalGamesPlayed = x.TotalGamesPlayed,
+                AveragePointsPerGame = x.AveragePointsPerGame,
+                PlayerName = x.PlayerName,
+                GamesWon = x.GamesWon,
+                WinPercentage = x.WinPercentage,
+                PlayerActive = x.PlayerActive,
+                GamesLost = x.GamesLost,
+                IsChampion = x.IsChampion,
+                IsFormerChampion = x.IsFormerChampion
+            }).ToList();
 
             results.ForEach(record =>
             {
@@ -198,7 +218,7 @@ namespace BusinessLogic.DataAccess.Repositories
                 record.TotalGamesPlayed = record.GamesLost + record.GamesWon;
                 if (record.TotalGamesPlayed > 0)
                 {
-                    record.AveragePointsPerGame = record.TotalGamesPlayed > 0 ? (float)record.TotalNemePoints / record.TotalGamesPlayed : 0;
+                    record.AveragePointsPerGame = record.TotalGamesPlayed > 0 ? (float)record.NemePointsSummary.TotalPoints / record.TotalGamesPlayed : 0;
                 }
             });
 

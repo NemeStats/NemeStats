@@ -21,6 +21,7 @@ using BusinessLogic.Models.User;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
+using BusinessLogic.Logic.Points;
 using UI.Models.GameDefinitionModels;
 using UI.Transformations;
 
@@ -46,7 +47,7 @@ namespace UI.Tests.UnitTests.TransformationsTests
         [OneTimeSetUpAttribute]
         public void FixtureSetUp()
         {
-            transformer = new GameDefinitionSummaryViewModelBuilder(new Transformer());            
+            transformer = new GameDefinitionSummaryViewModelBuilder(new Transformer(), new WeightTierCalculator());            
 
             List<PlayedGame> playedGames = new List<PlayedGame>();
             playedGames.Add(new PlayedGame()

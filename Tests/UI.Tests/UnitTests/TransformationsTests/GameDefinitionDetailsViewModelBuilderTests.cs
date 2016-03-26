@@ -24,6 +24,7 @@ using NUnit.Framework;
 using Rhino.Mocks;
 using System.Collections.Generic;
 using BusinessLogic.Logic.Players;
+using BusinessLogic.Models.PlayedGames;
 using StructureMap.AutoMocking;
 using UI.Models.GameDefinitionModels;
 using UI.Models.PlayedGame;
@@ -115,8 +116,6 @@ namespace UI.Tests.UnitTests.TransformationsTests
                        .Return(expectedPlayerSummary1);
             autoMocker.Get<ITransformer>().Expect(mock => mock.Transform<PlayerWinRecord, GameDefinitionPlayerSummaryViewModel>(playerWinRecord2))
                  .Return(expectedPlayerSummary2); 
-
-
 
             gameDefinitionSummary = new GameDefinitionSummary
             {

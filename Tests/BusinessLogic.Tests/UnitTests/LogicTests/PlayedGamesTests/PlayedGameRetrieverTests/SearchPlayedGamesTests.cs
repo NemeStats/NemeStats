@@ -107,7 +107,10 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameRe
                     Id = 100,
                     Name = "some player name"
                 },
-                PlayedGame = playedGame
+                PlayedGame = playedGame,
+                NemeStatsPointsAwarded = 1,
+                GameWeightBonusPoints = 2,
+                GameDurationBonusPoints = 3
             };
 
             var playerGameResults = new List<PlayerGameResult>
@@ -137,6 +140,12 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameRe
             var expectedPlayerGameResult = playedGame.PlayerGameResults[0];
             Assert.That(actualPlayerResult.GameRank, Is.EqualTo(expectedPlayerGameResult.GameRank));
             Assert.That(actualPlayerResult.NemeStatsPointsAwarded, Is.EqualTo(expectedPlayerGameResult.NemeStatsPointsAwarded));
+            Assert.That(actualPlayerResult.GameDurationBonusNemePoints, Is.EqualTo(expectedPlayerGameResult.GameDurationBonusPoints));
+            Assert.That(actualPlayerResult.GameWeightBonusNemePoints, Is.EqualTo(expectedPlayerGameResult.GameWeightBonusPoints));
+            var expectedTotalPoints = expectedPlayerGameResult.NemeStatsPointsAwarded
+                                      + expectedPlayerGameResult.GameDurationBonusPoints
+                                      + expectedPlayerGameResult.GameWeightBonusPoints;
+            Assert.That(actualPlayerResult.TotalPoints, Is.EqualTo(expectedTotalPoints));
             Assert.That(actualPlayerResult.PlayerId, Is.EqualTo(expectedPlayerGameResult.PlayerId));
             Assert.That(actualPlayerResult.PlayerName, Is.EqualTo(expectedPlayerGameResult.Player.Name));
             Assert.That(actualPlayerResult.PlayerActive, Is.EqualTo(expectedPlayerGameResult.Player.Active));

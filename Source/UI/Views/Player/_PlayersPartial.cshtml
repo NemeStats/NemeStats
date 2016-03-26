@@ -61,7 +61,7 @@
                                 <b>@Html.ActionLink(item.PlayerName, MVC.Player.Details(item.PlayerId, null))</b>
                             </td>
                             <td>
-                                @item.TotalPoints
+                                @item.NemePointsSummary.TotalNemePoints
                             </td>
                             <td>@item.NumberOfPlayedGames</td>
                             <td>@item.AveragePointsPerGame.ToString("N2")</td>

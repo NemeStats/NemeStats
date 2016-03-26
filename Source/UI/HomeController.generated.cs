@@ -74,7 +74,7 @@ namespace UI.Controllers
         {
             public readonly string Index = "Index";
             public readonly string About = "About";
-            public readonly string Contact = "Contact";
+            public readonly string AboutNemePoints = "AboutNemePoints";
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -82,7 +82,7 @@ namespace UI.Controllers
         {
             public const string Index = "Index";
             public const string About = "About";
-            public const string Contact = "Contact";
+            public const string AboutNemePoints = "AboutNemePoints";
         }
 
 
@@ -97,11 +97,11 @@ namespace UI.Controllers
             public class _ViewNamesClass
             {
                 public readonly string About = "About";
-                public readonly string Contact = "Contact";
+                public readonly string AboutNemePoints = "AboutNemePoints";
                 public readonly string Index = "Index";
             }
             public readonly string About = "~/Views/Home/About.cshtml";
-            public readonly string Contact = "~/Views/Home/Contact.cshtml";
+            public readonly string AboutNemePoints = "~/Views/Home/AboutNemePoints.cshtml";
             public readonly string Index = "~/Views/Home/Index.cshtml";
         }
     }
@@ -134,13 +134,13 @@ namespace UI.Controllers
         }
 
         [NonAction]
-        partial void ContactOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+        partial void AboutNemePointsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult Contact()
+        public override System.Web.Mvc.ActionResult AboutNemePoints()
         {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Contact);
-            ContactOverride(callInfo);
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AboutNemePoints);
+            AboutNemePointsOverride(callInfo);
             return callInfo;
         }
 

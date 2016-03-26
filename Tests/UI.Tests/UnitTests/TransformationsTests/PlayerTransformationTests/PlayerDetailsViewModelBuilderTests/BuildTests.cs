@@ -27,8 +27,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using BusinessLogic.Logic.Players;
+using BusinessLogic.Models.Points;
 using UI.Models.Badges;
 using UI.Models.Players;
+using UI.Models.Points;
 using UI.Transformations;
 using UI.Transformations.PlayerTransformations;
 
@@ -48,13 +50,13 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         private PlayerVersusPlayerStatistics previousNemesisPlayer;
         private PlayerVersusPlayerStatistics minionPlayer;
         private PlayerVersusPlayerStatistics playerWithNoGamesPlayed;
-        private string twitterMinionBraggingUrl = "some url";
-        private int gamingGroupId = 123;
-        private int playerId = 567;
-        private int gameDefinitionIdThatIsChampionedByCurrentPlayer = 999;
-        private int gameDefinitionIdThatIsFormerlyChampionedByCurrentPlayer = 1000;
+        private readonly string twitterMinionBraggingUrl = "some url";
+        private readonly int gamingGroupId = 123;
+        private readonly int playerId = 567;
+        private readonly int gameDefinitionIdThatIsChampionedByCurrentPlayer = 999;
+        private readonly int gameDefinitionIdThatIsFormerlyChampionedByCurrentPlayer = 1000;
         private GameDefinition gameDefinitionThatIsFormerlyChampionedByCurrentPlayer;
-        private int gameDefinitionIdThatIsBothCurrentlyAndFormerlyChampionedByCurrentPlayer = 1001;
+        private readonly int gameDefinitionIdThatIsBothCurrentlyAndFormerlyChampionedByCurrentPlayer = 1001;
         private GameDefinition gameDefinitionThatIsBothCurrentlyAndFormerlyChampionedByCurrentPlayer;
 
         [SetUp]
@@ -173,7 +175,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
                 PlayerStats = new PlayerStatistics()
                 {
                     TotalGames = 5,
-                    TotalPoints = 150,
+                    NemePointsSummary = new NemePointsSummary(1, 3, 5),
                     AveragePlayersPerGame = 3,
                     TotalGamesLost = 1,
                     TotalGamesWon = 4,
@@ -212,7 +214,8 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
                     {
                         GameDefinitionId = gameDefinitionIdThatIsBothCurrentlyAndFormerlyChampionedByCurrentPlayer
                     }
-                }
+                },
+                NemePointsSummary = new NemePointsSummary(1, 3, 5)
             };
 
             gameResultViewModelBuilder
@@ -403,15 +406,16 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         }
 
         [Test]
-        public void ItCopiesTheTotalPoints()
+        public void ItCopiesTheNemePointsSummary()
         {
-            Assert.AreEqual(playerDetails.PlayerStats.TotalPoints, playerDetailsViewModel.TotalPoints);
+            var expected = new NemePointsSummaryViewModel(playerDetails.PlayerStats.NemePointsSummary);
+            Assert.AreEqual(expected, playerDetailsViewModel.NemePointsSummary);
         }
 
         [Test]
         public void ItSetsTheAveragePointsPerGame()
         {
-            var expectedPoints = (float)playerDetails.PlayerStats.TotalPoints / (float)playerDetails.PlayerStats.TotalGames;
+            var expectedPoints = (float)playerDetails.PlayerStats.NemePointsSummary.TotalPoints / (float)playerDetails.PlayerStats.TotalGames;
 
             Assert.AreEqual(expectedPoints, playerDetailsViewModel.AveragePointsPerGame);
         }
@@ -435,7 +439,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         [Test]
         public void ItSetsTheAveragePointsPerPlayer()
         {
-            var expectedPointsPerGame = (float)playerDetails.PlayerStats.TotalPoints / (float)playerDetails.PlayerStats.TotalGames;
+            var expectedPointsPerGame = (float)playerDetails.PlayerStats.NemePointsSummary.TotalPoints / (float)playerDetails.PlayerStats.TotalGames;
             var expectedPointsPerPlayer = expectedPointsPerGame / (float)playerDetails.PlayerStats.AveragePlayersPerGame;
 
             Assert.AreEqual(expectedPointsPerPlayer, playerDetailsViewModel.AveragePointsPerPlayer);

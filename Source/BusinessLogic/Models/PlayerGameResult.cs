@@ -31,7 +31,18 @@ namespace BusinessLogic.Models
         public int PlayerId { get; set; }
         public int GameRank { get; set; }
         public int NemeStatsPointsAwarded { get; set; }
+        public int GameWeightBonusPoints { get; set; }
+        public int GameDurationBonusPoints { get; set; }
         public int? PointsScored { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        public int TotalPoints
+        {
+            get
+            {
+                return NemeStatsPointsAwarded + GameDurationBonusPoints + GameWeightBonusPoints;
+            }
+            private set { /* needed for EF */ }
+        }
 
         public virtual PlayedGame PlayedGame { get; set; }
         public virtual Player Player { get; set; }
