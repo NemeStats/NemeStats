@@ -232,8 +232,9 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
         }
 
         [TestFixture]
-        public class WhenCallingPopulateNemePointsSummary : GetAllPlayersWithNemesisInfoTests
+        public class WhenCallingPopulateNemePointsSummary
         {
+            private RhinoAutoMocker<PlayerRetriever> _autoMocker;
             private List<PlayerGameResult> _playerGameResults;
             private readonly int _expectedBasePoints = 1;
             private readonly int _expectedGameDurationBonus = 10;
@@ -244,10 +245,10 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
             private readonly int _playerTwoId = 2;
 
             [SetUp]
-            public override void BaseSetUp()
+            public void SetUP()
             {
                 _playerGameResults = new List<PlayerGameResult>();
-                autoMocker = new RhinoAutoMocker<PlayerRetriever>();
+                _autoMocker = new RhinoAutoMocker<PlayerRetriever>();
             }
 
             private PlayerGameResult MakePlayerGameResult(int playerId)
@@ -284,10 +285,10 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
                 _playerGameResults.Add(MakePlayerGameResult(_playerOneId));
                 _playerGameResults.Add(MakePlayerGameResult(_playerOneId));
                 _playerGameResults.Add(MakePlayerGameResult(_playerTwoId));
-                autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<PlayerGameResult>()).Return(_playerGameResults.AsQueryable());
+                _autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<PlayerGameResult>()).Return(_playerGameResults.AsQueryable());
 
                 //--act
-                autoMocker.ClassUnderTest.PopulateNemePointsSummary(_expectedGamingGroupId, playersWithNemeses, _dateRangeFilterThatCatchesEverything);
+                _autoMocker.ClassUnderTest.PopulateNemePointsSummary(_expectedGamingGroupId, playersWithNemeses, _dateRangeFilterThatCatchesEverything);
 
                 //--assert
                 Assert.That(playersWithNemeses[0].NemePointsSummary, Is.Not.Null);
@@ -315,14 +316,14 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
                     }
                 };
                 _playerGameResults.Add(MakePlayerGameResult(_playerOneId));
-                autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<PlayerGameResult>()).Return(_playerGameResults.AsQueryable());
+                _autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<PlayerGameResult>()).Return(_playerGameResults.AsQueryable());
                 var dateRangeFilter = new BasicDateRangeFilter
                 {
                     FromDate = DateTime.Now.AddDays(1)
                 };
 
                 //--act
-                autoMocker.ClassUnderTest.PopulateNemePointsSummary(_expectedGamingGroupId, playersWithNemeses, dateRangeFilter);
+                _autoMocker.ClassUnderTest.PopulateNemePointsSummary(_expectedGamingGroupId, playersWithNemeses, dateRangeFilter);
 
                 //--assert
                 Assert.That(playersWithNemeses[0].NemePointsSummary, Is.Not.Null);
@@ -344,14 +345,14 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
                     }
                 };
                 _playerGameResults.Add(MakePlayerGameResult(_playerOneId));
-                autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<PlayerGameResult>()).Return(_playerGameResults.AsQueryable());
+                _autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<PlayerGameResult>()).Return(_playerGameResults.AsQueryable());
                 var dateRangeFilter = new BasicDateRangeFilter
                 {
                     ToDate = DateTime.Now.AddDays(-1)
                 };
 
                 //--act
-                autoMocker.ClassUnderTest.PopulateNemePointsSummary(_expectedGamingGroupId, playersWithNemeses, dateRangeFilter);
+                _autoMocker.ClassUnderTest.PopulateNemePointsSummary(_expectedGamingGroupId, playersWithNemeses, dateRangeFilter);
 
                 //--assert
                 Assert.That(playersWithNemeses[0].NemePointsSummary, Is.Not.Null);
@@ -375,10 +376,10 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
                 var playerGameResult = MakePlayerGameResult(_playerOneId);
                 playerGameResult.PlayedGame.GamingGroupId = _expectedGamingGroupId + 100;
                 _playerGameResults.Add(playerGameResult);
-                autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<PlayerGameResult>()).Return(_playerGameResults.AsQueryable());
+                _autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<PlayerGameResult>()).Return(_playerGameResults.AsQueryable());
 
                 //--act
-                autoMocker.ClassUnderTest.PopulateNemePointsSummary(_expectedGamingGroupId, playersWithNemeses, _dateRangeFilterThatCatchesEverything);
+                _autoMocker.ClassUnderTest.PopulateNemePointsSummary(_expectedGamingGroupId, playersWithNemeses, _dateRangeFilterThatCatchesEverything);
 
                 //--assert
                 Assert.That(playersWithNemeses[0].NemePointsSummary, Is.Not.Null);
