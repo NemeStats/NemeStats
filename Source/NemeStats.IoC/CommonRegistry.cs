@@ -151,7 +151,7 @@ namespace NemeStats.IoC
 
             this.For<IBoardGameGeekUserSaver>().Use<BoardGameGeekUserSaver>();
             this.For<IBoardGameGeekGamesImporter>().Use<BoardGameGeekGamesImporter>();
-            this.For<IBoardGameGeekCleanUpService>().Use<BoardGameGeekCleanUpService>();
+            this.For<IBoardGameGeekBatchUpdateService>().Use<BoardGameGeekBatchUpdateService>();
 
             For<IPointsCalculator>().Use<PointsCalculator>();
             For<IWeightTierCalculator>().Use<WeightTierCalculator>();

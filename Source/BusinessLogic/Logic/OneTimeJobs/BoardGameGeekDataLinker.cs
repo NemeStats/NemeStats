@@ -22,6 +22,7 @@ using BusinessLogic.DataAccess;
 using BusinessLogic.DataAccess.Security;
 using BusinessLogic.Models;
 using BusinessLogic.Models.User;
+using RollbarSharp;
 
 namespace BusinessLogic.Logic.OneTimeJobs
 {
@@ -37,7 +38,7 @@ namespace BusinessLogic.Logic.OneTimeJobs
                                                             .Where(game => game.BoardGameGeekGameDefinitionId == null)
                                                             .ToList();
 
-                    var bggSearcher = new BoardGameGeekClient(new ApiDownloaderService());
+                    var bggSearcher = new BoardGameGeekClient(new ApiDownloaderService(), new RollbarClient());
                     int updateCount = 0;
 
                     foreach (GameDefinition game in games)

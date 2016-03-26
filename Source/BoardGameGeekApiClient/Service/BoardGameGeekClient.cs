@@ -17,13 +17,13 @@ namespace BoardGameGeekApiClient.Service
     public class BoardGameGeekClient : IBoardGameGeekApiClient
     {
         private readonly IApiDownloadService _apiDownloadService;
-        private readonly RollbarClient _rollbar;
+        private readonly IRollbarClient _rollbar;
 
 
-        public BoardGameGeekClient(IApiDownloadService apiDownloadService)
+        public BoardGameGeekClient(IApiDownloadService apiDownloadService, IRollbarClient rollbarClient)
         {
             _apiDownloadService = apiDownloadService;
-            _rollbar = new RollbarClient();
+            _rollbar = rollbarClient;
         }
 
         public const string BASE_URL_API_V2 = "http://www.boardgamegeek.com/xmlapi2";

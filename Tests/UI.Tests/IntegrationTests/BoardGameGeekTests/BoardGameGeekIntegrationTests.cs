@@ -20,10 +20,10 @@ using System.Collections.Generic;
 using System.Linq;
 using BoardGameGeekApiClient.Service;
 using BusinessLogic.DataAccess;
-using BusinessLogic.Logic.BoardGameGeek;
-using BusinessLogic.Models.Games;
 using NUnit.Framework;
 using BusinessLogic.Logic.OneTimeJobs;
+using Rhino.Mocks;
+using RollbarSharp;
 
 namespace UI.Tests.IntegrationTests.BoardGameGeekTests
 {
@@ -162,7 +162,8 @@ namespace UI.Tests.IntegrationTests.BoardGameGeekTests
                         "Zombicide"
                     };
 
-                    var bggSearcher = new BoardGameGeekClient(new ApiDownloaderService());
+                    var rollbarMock = MockRepository.GenerateMock<IRollbarClient>();
+                    var bggSearcher = new BoardGameGeekClient(new ApiDownloaderService(), rollbarMock);
 
                     foreach (string gameName in gameNames)
                     {

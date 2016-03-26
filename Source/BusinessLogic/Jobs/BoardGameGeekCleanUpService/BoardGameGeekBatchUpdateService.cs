@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading;
 using BoardGameGeekApiClient.Interfaces;
 using BoardGameGeekApiClient.Models;
 using BusinessLogic.DataAccess;
@@ -12,7 +13,7 @@ using RollbarSharp;
 
 namespace BusinessLogic.Jobs.BoardGameGeekCleanUpService
 {
-    public class BoardGameGeekCleanUpService : IBoardGameGeekCleanUpService
+    public class BoardGameGeekBatchUpdateService : IBoardGameGeekBatchUpdateService
     {
         private const string CleanYearPattern = @"\w*\(\d{4}\)";
 
@@ -20,7 +21,7 @@ namespace BusinessLogic.Jobs.BoardGameGeekCleanUpService
         private readonly IBoardGameGeekApiClient _boardGameGeekApiClient;
         private readonly IRollbarClient _rollbar;
 
-        public BoardGameGeekCleanUpService(IDataContext dataContext, IBoardGameGeekApiClient boardGameGeekApiClient, IRollbarClient rollbar)
+        public BoardGameGeekBatchUpdateService(IDataContext dataContext, IBoardGameGeekApiClient boardGameGeekApiClient, IRollbarClient rollbar)
         {
             _dataContext = dataContext;
             _boardGameGeekApiClient = boardGameGeekApiClient;
@@ -164,6 +165,43 @@ namespace BusinessLogic.Jobs.BoardGameGeekCleanUpService
         private string RemoveYear(string name)
         {
             return Regex.Replace(name, CleanYearPattern, "").Trim();
+        }
+
+        public int RefreshAllBoardGameGeekData()
+        {
+            var allExistingBoardGameGeekGameDefinitions = _dataContext.GetQueryable<BoardGameGeekGameDefinition>()
+                .OrderBy(x => x.Id)
+                .ToList();
+            var anonymousUser = new AnonymousApplicationUser();
+            int totalGamesUpdated = 0;
+            foreach (var existingBoardGameGeekGameDefinition in allExistingBoardGameGeekGameDefinitions)
+            {
+                //delay between BGG calls to decrease likelyhood of getting blocked by BGG
+                Thread.Sleep(400);
+                var gameDetails = _boardGameGeekApiClient.GetGameDetails(existingBoardGameGeekGameDefinition.Id);
+
+                if (gameDetails != null)
+                {
+                    existingBoardGameGeekGameDefinition.AverageWeight = gameDetails.AverageWeight;
+                    existingBoardGameGeekGameDefinition.Description = gameDetails.Description;
+                    existingBoardGameGeekGameDefinition.MaxPlayTime = gameDetails.MaxPlayTime;
+                    existingBoardGameGeekGameDefinition.MinPlayTime = gameDetails.MinPlayTime;
+                    existingBoardGameGeekGameDefinition.MaxPlayers = gameDetails.MaxPlayers;
+                    existingBoardGameGeekGameDefinition.MinPlayers = gameDetails.MinPlayers;
+                    existingBoardGameGeekGameDefinition.Name = gameDetails.Name;
+                    existingBoardGameGeekGameDefinition.Thumbnail = gameDetails.Thumbnail;
+
+                    _dataContext.Save(existingBoardGameGeekGameDefinition, anonymousUser);
+
+                    if (totalGamesUpdated++ % 10 == 0)
+                    {
+                        _dataContext.CommitAllChanges();
+                        Debug.WriteLine("{0} BoardGameGeekGameDefinitions updated so far...", totalGamesUpdated);
+                    }
+                }
+            }
+
+            return totalGamesUpdated;
         }
     }
 }

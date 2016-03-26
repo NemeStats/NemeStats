@@ -3,6 +3,7 @@ using System.Xml.Linq;
 using BoardGameGeekApiClient.Interfaces;
 using NUnit.Framework;
 using Rhino.Mocks;
+using RollbarSharp;
 
 namespace BoardGameGeekApiClient.Tests.UnitTests.BoardGameGeekClient
 {
@@ -24,7 +25,8 @@ namespace BoardGameGeekApiClient.Tests.UnitTests.BoardGameGeekClient
         [SetUp]
         public virtual void SetUp()
         {
-            BoardGameGeekApiClient = new Service.BoardGameGeekClient(CreateStub());
+            var rollbarMock = MockRepository.GenerateMock<IRollbarClient>();
+            BoardGameGeekApiClient = new Service.BoardGameGeekClient(CreateStub(), rollbarMock);
         }
     }
 }

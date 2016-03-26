@@ -1,25 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using BoardGameGeekApiClient.Interfaces;
 using BoardGameGeekApiClient.Models;
 using BusinessLogic.DataAccess;
-using BusinessLogic.Logic.BoardGameGeek;
 using BusinessLogic.Models;
-using BusinessLogic.Models.User;
 using NUnit.Framework;
 using Rhino.Mocks;
 using RollbarSharp;
 using StructureMap.AutoMocking;
 
-namespace BusinessLogic.Tests.UnitTests.JobsTests.BoardGameGeekCleanUpService.LinkOrphanGamesTests
+namespace BusinessLogic.Tests.UnitTests.JobsTests.BoardGameGeekBatchUpdateService.LinkOrphanGamesTests
 {
     [TestFixture]
     public class LinkOrphanGamesJobTests
     {
-        private RhinoAutoMocker<Jobs.BoardGameGeekCleanUpService.BoardGameGeekCleanUpService> autoMocker;
+        private RhinoAutoMocker<Jobs.BoardGameGeekCleanUpService.BoardGameGeekBatchUpdateService> autoMocker;
         private static string okGame = "ok";
 
         private List<GameDefinition> OrphanGames = new List<GameDefinition>()
@@ -44,7 +39,7 @@ namespace BusinessLogic.Tests.UnitTests.JobsTests.BoardGameGeekCleanUpService.Li
         public virtual void SetUp()
         {
             rollbarclient = MockRepository.GenerateStub<IRollbarClient>();
-            autoMocker = new RhinoAutoMocker<Jobs.BoardGameGeekCleanUpService.BoardGameGeekCleanUpService>();
+            autoMocker = new RhinoAutoMocker<Jobs.BoardGameGeekCleanUpService.BoardGameGeekBatchUpdateService>();
             autoMocker.Inject(typeof(IRollbarClient), rollbarclient);
 
             autoMocker.Get<IDataContext>()
