@@ -7,12 +7,12 @@
             <tr>
                 <th class="bgg-link-head"></th>
                 <th>Game Name</th>
-                <th>Games Played</th>
                 <th>Gaming Groups</th>
+                <th>Games Played</th>
             </tr>
         </thead>
         @{ var position = 1; }
-        @foreach (UI.Models.GameDefinitionModels.TrendingGameViewModel trendingGame in @Model)
+        @foreach (UI.Models.GameDefinitionModels.TrendingGameViewModel trendingGame in Model)
         {
             <tr class="game-item" data-position="@position">
                 @{position++;}
