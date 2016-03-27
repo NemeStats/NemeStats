@@ -19,5 +19,20 @@ namespace BusinessLogic.Models
         public int? MinPlayTime { get; set; }
         public decimal? AverageWeight { get; set; }
         public string Description { get; set; }
+        [NotMapped]
+        public int? AveragePlayTime {
+            get
+            {
+                if (!MaxPlayTime.HasValue)
+                {
+                    return MinPlayTime;
+                }
+                if (MinPlayTime.HasValue)
+                {
+                    return (MaxPlayTime.Value + MinPlayTime.Value) / 2;
+                }
+                return MaxPlayTime;
+            }
+        }
     }
 }
