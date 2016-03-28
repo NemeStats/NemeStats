@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using BusinessLogic.DataAccess;
 using BusinessLogic.Models;
@@ -45,11 +46,8 @@ namespace BusinessLogic.Logic.Points
                     playerGameResult.GameWeightBonusPoints = scorecard.GameWeightBonusPoints;
                     dataContext.Save(playerGameResult, applicationUserForThisGamingGroup);
                 }
-                dataContext.CommitAllChanges();
-                if (counter % 100 == 0)
-                {
-                    Debug.WriteLine("{0} games updated...", counter);
-                }
+
+                Debug.WriteLine("{0} games updated... last PlayedGame.Id is {1}", ++counter, playedGame.Id);
             }
         }
     }
