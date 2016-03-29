@@ -103,5 +103,17 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PointsTests
             Assert.That(playerScorecard.GameWeightBonusPoints, Is.EqualTo(0));
             Assert.That(playerScorecard.GameDurationBonusPoints, Is.EqualTo(expectedPoints));
         }
+
+        [Test]
+        public void ItAwardsNoBonusOrPenaltyIfThePlayTimeisUnknown()
+        {
+            //--arrange
+
+            //--act
+            _autoMocker.ClassUnderTest.CalculateGameDurationBonus(_startingPointsScorecard, null);
+
+            //--assert
+            AssertPercentageBonusApplied(_startingPointsScorecard, 1);
+        }
     }
 }
