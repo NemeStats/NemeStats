@@ -17,11 +17,12 @@ namespace BusinessLogic.Logic.Points
 
         private static decimal GetMultiplier(int? boardGameGeekAvergePlayTime)
         {
-            int numberOfHalfHourPeriods = 0;
-            if (boardGameGeekAvergePlayTime.HasValue)
+            if (!boardGameGeekAvergePlayTime.HasValue)
             {
-                numberOfHalfHourPeriods = boardGameGeekAvergePlayTime.Value / MINUTES_PER_HALF_HOUR;
+                return 1;
             }
+
+            int numberOfHalfHourPeriods = boardGameGeekAvergePlayTime.Value / MINUTES_PER_HALF_HOUR;
 
             decimal multiplier;
             switch (numberOfHalfHourPeriods)
