@@ -54,6 +54,10 @@ namespace UI
             bundles.Add(new ScriptBundle("~/bundles/vue")
                 .Include("~/Scripts/vue.min.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/list")
+                .Include("~/Scripts/list.min.js")
+                .Include("~/Scripts/list.pagination.js"));
+
             bundles.Add(new ScriptBundle("~/bundles/d3")
                 .Include("~/Scripts/d3/d3.js")
                 .Include("~/Scripts/d3/nv.d3.min.js")

@@ -1,4 +1,4 @@
-﻿@mixin voffset($value){
+﻿@mixin voffset($value) {
     margin-top: 5px*$value;
 }
 
@@ -48,4 +48,29 @@
 
 .voffset12 {
     @include voffset(12);
+}
+
+
+.sort {
+    cursor: pointer;
+
+    .fa-caret-down {
+        display: none;
+    }
+
+    .fa-caret-up {
+        display: none;
+    }
+
+    &.asc {
+        .fa-caret-up {
+            display: inline !important;
+        }
+    }
+
+    &.desc {
+        .fa-caret-down {
+            display: inline !important;
+        }
+    }
 }

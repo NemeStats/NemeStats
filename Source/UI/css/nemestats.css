@@ -35,6 +35,17 @@
 .voffset12 {
   margin-top: 60px; }
 
+.sort {
+  cursor: pointer; }
+  .sort .fa-caret-down {
+    display: none; }
+  .sort .fa-caret-up {
+    display: none; }
+  .sort.asc .fa-caret-up {
+    display: inline !important; }
+  .sort.desc .fa-caret-down {
+    display: inline !important; }
+
 /*$header-background-color: #2C3E50;*/
 @media only screen and (max-width: 991px) {
   .flip-scroll .cf:after {
