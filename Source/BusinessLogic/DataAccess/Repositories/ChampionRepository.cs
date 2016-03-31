@@ -35,7 +35,8 @@ namespace BusinessLogic.DataAccess.Repositories
         }
 
         private const string CHAMPION_SQL =
-            @"SELECT TOP 1 PlayerGameResult.PlayerId,
+            //--grab the top 2 so we can see if there is a tie... in which case nothing should change
+            @"SELECT TOP 2 PlayerGameResult.PlayerId,
 	             COUNT(PlayerGameResult.PlayerId) AS NumberOfGames,
 	             SUM(CASE WHEN PlayerGameResult.GameRank = 1 THEN 1 ELSE 0 END) AS NumberOfWins,
 				 CASE WHEN Champion.PlayerId = PlayerGameResult.PlayerId THEN 1 ELSE 0 END AS CurrentChampion
@@ -60,6 +61,11 @@ namespace BusinessLogic.DataAccess.Repositories
 
             List<ChampionStatistics> championStatistics = championStatisticsData.ToList();
 
+            if (ThereIsATieForChampion(championStatistics))
+            {
+                return new NullChampionData();
+            }
+
             ChampionData championData = (from x in championStatistics
                                         select new ChampionData
                                         {
@@ -76,6 +82,16 @@ namespace BusinessLogic.DataAccess.Repositories
             }
 
             return championData;
+        }
+
+        private static bool ThereIsATieForChampion(List<ChampionStatistics> championStatistics)
+        {
+            if (championStatistics.Count() != 2)
+            {
+                return false;
+            }
+            return !championStatistics[0].IsCurrentChamption && championStatistics[0].NumberOfGames == championStatistics[1].NumberOfGames
+                   && championStatistics[0].NumberOfWins == championStatistics[1].NumberOfWins;
         }
     }
 }

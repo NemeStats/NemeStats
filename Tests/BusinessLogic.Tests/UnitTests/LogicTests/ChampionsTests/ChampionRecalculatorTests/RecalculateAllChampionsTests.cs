@@ -61,7 +61,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.ChampionsTests.ChampionRecalc
         {
             List<GameDefinition> activeGameDefinitions =
                 allGameDefinitionsQueryable.Where(gameDefinition => gameDefinition.Active).ToList();
-            championRecalculatorPartialMock.Expect(mock => mock.RecalculateChampion(Arg<int>.Is.Anything, Arg<ApplicationUser>.Is.Anything))
+            championRecalculatorPartialMock.Expect(mock => mock.RecalculateChampion(Arg<int>.Is.Anything, Arg<ApplicationUser>.Is.Anything, Arg<bool>.Is.Anything))
                 .Return(new Champion());
 
             championRecalculatorPartialMock.RecalculateAllChampions();
@@ -69,7 +69,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.ChampionsTests.ChampionRecalc
             foreach (GameDefinition gameDefinition in activeGameDefinitions)
             {
                 championRecalculatorPartialMock.AssertWasCalled(mock => 
-                    mock.RecalculateChampion(Arg<int>.Is.Equal(gameDefinition.Id), Arg<ApplicationUser>.Is.Anything));
+                    mock.RecalculateChampion(Arg<int>.Is.Equal(gameDefinition.Id), Arg<ApplicationUser>.Is.Anything, Arg<bool>.Is.Equal(true)));
             }
         }
     }

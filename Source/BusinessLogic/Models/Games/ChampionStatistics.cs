@@ -25,5 +25,6 @@ namespace BusinessLogic.Models.Games
         public int PlayerId { get; set; }
         public int NumberOfGames { get; set; }
         public int NumberOfWins { get; set; }
+        public bool IsCurrentChamption { get; set; }
     }
 }

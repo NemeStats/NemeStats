@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using BusinessLogic.DataAccess;
@@ -10,20 +11,10 @@ namespace BusinessLogic.Logic.Points
 {
     public class GlobalPointsRecalculator
     {
-        public void RecalculateAllPoints(IDataContext dataContext, IPointsCalculator pointsCalculator, int startPlayedGameId, int endPlayedGameId)
+        public void RecalculatePoints(IDataContext dataContext, IPointsCalculator pointsCalculator, List<PlayedGameToRecalculate> playedGamesToRecalculate)
         {
-            var allPlayedGames = (from PlayedGame playedGame in dataContext.GetQueryable<PlayedGame>()
-                                  where playedGame.Id >= startPlayedGameId && playedGame.Id < endPlayedGameId
-                                  select new
-                                  {
-                                      playedGame.Id,
-                                      playedGame.GamingGroupId,
-                                      playedGame.PlayerGameResults,
-                                      playedGame.GameDefinition.BoardGameGeekGameDefinition
-                                  }).OrderBy(x => x.Id).ToList();
-
             int counter = 0;
-            foreach (var playedGame in allPlayedGames)
+            foreach (var playedGame in playedGamesToRecalculate)
             {
                 var playerRanks = playedGame.PlayerGameResults.Select(x => new PlayerRank
                 {
@@ -47,8 +38,48 @@ namespace BusinessLogic.Logic.Points
                     dataContext.Save(playerGameResult, applicationUserForThisGamingGroup);
                 }
 
-                Debug.WriteLine("{0} games updated... last PlayedGame.Id is {1}", ++counter, playedGame.Id);
+                Debug.WriteLine("{0} games updated... last PlayedGame.Id is {1}", ++counter, playedGame.PlayedGameId);
             }
+        }
+
+        public void RecalculateAllPoints(IDataContext dataContext, IPointsCalculator pointsCalculator, int startPlayedGameId, int endPlayedGameId = int.MaxValue)
+        {
+            var allPlayedGames = (from PlayedGame playedGame in dataContext.GetQueryable<PlayedGame>()
+                                  where playedGame.Id >= startPlayedGameId && playedGame.Id < endPlayedGameId
+                                  select new PlayedGameToRecalculate
+                                  {
+                                      PlayedGameId = playedGame.Id,
+                                      GamingGroupId = playedGame.GamingGroupId,
+                                      PlayerGameResults = playedGame.PlayerGameResults,
+                                      BoardGameGeekGameDefinition = playedGame.GameDefinition.BoardGameGeekGameDefinition
+                                  }).OrderBy(x => x.PlayedGameId).ToList();
+
+            RecalculatePoints(dataContext, pointsCalculator, allPlayedGames);
+        }
+
+        public void RecalculateAllPointsForGamesWithNoPlayTime(IDataContext dataContext, IPointsCalculator pointsCalculator)
+        {
+            var allPlayedGames = (from PlayedGame playedGame in dataContext.GetQueryable<PlayedGame>()
+                                  where (playedGame.GameDefinition.BoardGameGeekGameDefinition == null 
+                                  || (playedGame.GameDefinition.BoardGameGeekGameDefinition.MinPlayTime == null
+                                        && playedGame.GameDefinition.BoardGameGeekGameDefinition.MaxPlayTime == null))
+                                  select new PlayedGameToRecalculate
+                                  {
+                                      PlayedGameId = playedGame.Id,
+                                      GamingGroupId = playedGame.GamingGroupId,
+                                      PlayerGameResults = playedGame.PlayerGameResults,
+                                      BoardGameGeekGameDefinition = null
+                                  }).OrderBy(x => x.PlayedGameId).ToList();
+
+            RecalculatePoints(dataContext, pointsCalculator, allPlayedGames);
+        }
+
+        public class PlayedGameToRecalculate
+        {
+            public int PlayedGameId { get; set; }
+            public int GamingGroupId { get; set; }
+            public IList<PlayerGameResult> PlayerGameResults { get; set; }
+            public BoardGameGeekGameDefinition BoardGameGeekGameDefinition { get; set; }
         }
     }
 }

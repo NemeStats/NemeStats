@@ -25,6 +25,6 @@ namespace BusinessLogic.Logic.Champions
     public interface IChampionRecalculator
     {
         void RecalculateAllChampions();
-        Champion RecalculateChampion(int gameDefinitionId, ApplicationUser applicationUser);
+        Champion RecalculateChampion(int gameDefinitionId, ApplicationUser applicationUser, bool allowedToClearExistingChampion = true);
     }
 }

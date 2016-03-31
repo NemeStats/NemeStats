@@ -55,7 +55,7 @@ namespace BusinessLogic.Logic.Champions
             }
         }
 
-        public virtual Champion RecalculateChampion(int gameDefinitionId, ApplicationUser applicationUser)
+        public virtual Champion RecalculateChampion(int gameDefinitionId, ApplicationUser applicationUser, bool allowedToClearExistingChampion = true)
         {
             GameDefinition gameDefinition = dataContext.FindById<GameDefinition>(gameDefinitionId);
 
@@ -63,7 +63,10 @@ namespace BusinessLogic.Logic.Champions
 
             if (championData is NullChampionData)
             {
-                ClearChampionId(applicationUser, gameDefinition);
+                if (allowedToClearExistingChampion)
+                {
+                    ClearChampionId(applicationUser, gameDefinition);
+                }
 
                 return new NullChampion();
             }
