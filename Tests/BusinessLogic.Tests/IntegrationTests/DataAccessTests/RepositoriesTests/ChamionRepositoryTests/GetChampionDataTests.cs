@@ -76,6 +76,12 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
         }
 
         [Test]
+        public void ItReturnsANullChampionIfThereIsATie()
+        {
+            // missing integration test but leaving this as documentation of the intent
+        }
+
+        [Test]
         public void ItSetsTheWinPercentageForTheChampion()
         {
             // The champion won 83% of all games played

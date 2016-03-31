@@ -88,7 +88,7 @@ namespace BusinessLogic.Logic.PlayedGames
             {
                 nemesisRecalculator.RecalculateNemesis(result.PlayerId, currentUser);
             }
-            championRecalculator.RecalculateChampion(playedGame.GameDefinitionId, currentUser);
+            championRecalculator.RecalculateChampion(playedGame.GameDefinitionId, currentUser, false);
 
             return playedGame;
         }

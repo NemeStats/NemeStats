@@ -26,6 +26,7 @@ using BusinessLogic.Models.Champions;
 using BusinessLogic.Models.User;
 using NUnit.Framework;
 using Rhino.Mocks;
+using StructureMap.AutoMocking;
 using Is = NUnit.Framework.Is;
 
 namespace BusinessLogic.Tests.UnitTests.LogicTests.ChampionsTests.ChampionRecalculatorTests
@@ -33,111 +34,120 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.ChampionsTests.ChampionRecalc
     [TestFixture]
     public class RecalculateChampionTests
     {
-        private IChampionRepository championRepositoryMock;
-        private IDataContext dataContextMock;
-        private ChampionRecalculator championRecalculator;
-        private ApplicationUser applicationUser;
+        private RhinoAutoMocker<ChampionRecalculator> _autoMocker; 
+        private ApplicationUser _applicationUser;
 
-        private int gameDefinitionId = 1;
-        private GameDefinition gameDefinition;
-        private int previousChampionId = 75;
-        private int newChampionId = 100;
-        private int playerChampionId = 99;
-        private Champion savedChampion;
+        private readonly int _gameDefinitionId = 1;
+        private GameDefinition _gameDefinition;
+        private readonly int _previousChampionId = 75;
+        private readonly int _newChampionId = 100;
+        private readonly int _playerChampionId = 99;
+        private Champion _savedChampion;
 
         [SetUp]
         public void SetUp()
         {
-            championRepositoryMock = MockRepository.GenerateMock<IChampionRepository>();
-            dataContextMock = MockRepository.GenerateMock<IDataContext>();
-            championRecalculator = new ChampionRecalculator(dataContextMock, championRepositoryMock);
-            applicationUser = new ApplicationUser();
+            _autoMocker = new RhinoAutoMocker<ChampionRecalculator>();
+            _applicationUser = new ApplicationUser();
 
-            gameDefinition = new GameDefinition
+            _gameDefinition = new GameDefinition
             {
-                ChampionId = previousChampionId
+                ChampionId = _previousChampionId
             };
-            dataContextMock.Expect(mock => mock.FindById<GameDefinition>(gameDefinitionId))
-                .Return(gameDefinition);
-            savedChampion = new Champion { Id = newChampionId };
-            dataContextMock.Expect(mock => mock.Save(Arg<Champion>.Is.Anything, Arg<ApplicationUser>.Is.Anything))
-                .Return(savedChampion);
+            _autoMocker.Get<IDataContext>().Expect(mock => mock.FindById<GameDefinition>(_gameDefinitionId))
+                .Return(_gameDefinition);
+            _savedChampion = new Champion { Id = _newChampionId };
+            _autoMocker.Get<IDataContext>().Expect(mock => mock.Save(Arg<Champion>.Is.Anything, Arg<ApplicationUser>.Is.Anything))
+                .Return(_savedChampion);
 
         }
 
         [Test]
-        public void ItReturnsANullChampionIfTheNewChampionIsNull()
+        public void ItReturnsANullChampionIfTheChampionWasClearedOutWithNoReplacement()
         {
-            championRepositoryMock.Expect(mock => mock.GetChampionData(gameDefinitionId))
+            _autoMocker.Get<IChampionRepository>().Expect(mock => mock.GetChampionData(_gameDefinitionId))
                 .Return(new NullChampionData());
 
-            Champion nullChampion = championRecalculator.RecalculateChampion(gameDefinitionId, applicationUser);
+            Champion nullChampion = _autoMocker.ClassUnderTest.RecalculateChampion(_gameDefinitionId, _applicationUser);
 
             Assert.That(nullChampion, Is.InstanceOf<NullChampion>());
         }
 
         [Test]
-        public void ItRemovesTheChampionIfTheNewChampionIsNullAndOneAlreadyExisted()
+        public void ItRemovesTheChampionIfAllowedAndTheNewChampionIsNullAndOneAlreadyExisted()
         {
-            championRepositoryMock.Expect(mock => mock.GetChampionData(gameDefinitionId))
+            _autoMocker.Get<IChampionRepository>().Expect(mock => mock.GetChampionData(_gameDefinitionId))
                 .Return(new NullChampionData());
 
-            championRecalculator.RecalculateChampion(gameDefinitionId, applicationUser);
+            _autoMocker.ClassUnderTest.RecalculateChampion(_gameDefinitionId, _applicationUser, true);
 
-            dataContextMock.AssertWasCalled(mock => mock.Save(
+            _autoMocker.Get<IDataContext>().AssertWasCalled(mock => mock.Save(
                 Arg<GameDefinition>.Matches(gameDefinition => gameDefinition.ChampionId == null), 
-                Arg<ApplicationUser>.Is.Equal(applicationUser)));
+                Arg<ApplicationUser>.Is.Equal(_applicationUser)));
+        }
+
+        [Test]
+        public void ItDoesNotRemoveTheExistingChampionIfNotAllowedAndTheNewChampionIsNullAndOneAlreadyExisted()
+        {
+            _autoMocker.Get<IChampionRepository>().Expect(mock => mock.GetChampionData(_gameDefinitionId))
+                .Return(new NullChampionData());
+
+            _autoMocker.ClassUnderTest.RecalculateChampion(_gameDefinitionId, _applicationUser, false);
+
+            _autoMocker.Get<IDataContext>().AssertWasNotCalled(mock => mock.Save(
+                Arg<GameDefinition>.Is.Anything,
+                Arg<ApplicationUser>.Is.Anything));
         }
 
         [Test]
         public void ItSetsTheNewChampionIfItChanged()
         {
             ChampionData championData = new ChampionData { PlayerId = -1 };
-            championRepositoryMock.Expect(mock => mock.GetChampionData(gameDefinitionId))
+            _autoMocker.Get<IChampionRepository>().Expect(mock => mock.GetChampionData(_gameDefinitionId))
                 .Return(championData);
 
-            dataContextMock.Expect(mock => mock.GetQueryable<Champion>())
+            _autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<Champion>())
                 .Return(new List<Champion>().AsQueryable());
 
-            championRecalculator.RecalculateChampion(gameDefinitionId, applicationUser);
+            _autoMocker.ClassUnderTest.RecalculateChampion(_gameDefinitionId, _applicationUser);
 
-            dataContextMock.AssertWasCalled(mock => mock.Save(
-                Arg<Champion>.Matches(champion => champion.GameDefinitionId == gameDefinitionId
+            _autoMocker.Get<IDataContext>().AssertWasCalled(mock => mock.Save(
+                Arg<Champion>.Matches(champion => champion.GameDefinitionId == _gameDefinitionId
                 && champion.PlayerId == championData.PlayerId
                 && champion.WinPercentage == championData.WinPercentage), 
-                Arg<ApplicationUser>.Is.Same(applicationUser)));
-            dataContextMock.AssertWasCalled(mock => mock.Save(
-                Arg<GameDefinition>.Matches(definition => definition.ChampionId == newChampionId), 
-                Arg<ApplicationUser>.Is.Same(applicationUser)));
+                Arg<ApplicationUser>.Is.Same(_applicationUser)));
+            _autoMocker.Get<IDataContext>().AssertWasCalled(mock => mock.Save(
+                Arg<GameDefinition>.Matches(definition => definition.ChampionId == _newChampionId), 
+                Arg<ApplicationUser>.Is.Same(_applicationUser)));
         }
 
         [Test]
         public void ItSetsThePreviousChampionIfTheCurrentOneChangesButItIsTheSamePlayer()
         {
             ChampionData championData = new ChampionData {PlayerId = -1};
-            championRepositoryMock.Expect(mock => mock.GetChampionData(gameDefinitionId))
+            _autoMocker.Get<IChampionRepository>().Expect(mock => mock.GetChampionData(_gameDefinitionId))
                 .Return(championData);
 
-            dataContextMock.Expect(mock => mock.GetQueryable<Champion>())
+            _autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<Champion>())
                 .Return(new List<Champion>().AsQueryable());
 
-            championRecalculator.RecalculateChampion(gameDefinitionId, applicationUser);
+            _autoMocker.ClassUnderTest.RecalculateChampion(_gameDefinitionId, _applicationUser);
 
-            dataContextMock.AssertWasCalled(mock => mock.Save(
-                Arg<GameDefinition>.Matches(definition => definition.PreviousChampionId == previousChampionId),
-                Arg<ApplicationUser>.Is.Same(applicationUser)));
+            _autoMocker.Get<IDataContext>().AssertWasCalled(mock => mock.Save(
+                Arg<GameDefinition>.Matches(definition => definition.PreviousChampionId == _previousChampionId),
+                Arg<ApplicationUser>.Is.Same(_applicationUser)));
         }
 
         [Test]
         public void ItSetsThePreviousChampioinIfTheCurrentOneIsCleared()
         {
-            championRepositoryMock.Expect(mock => mock.GetChampionData(gameDefinitionId))
+            _autoMocker.Get<IChampionRepository>().Expect(mock => mock.GetChampionData(_gameDefinitionId))
                 .Return(new NullChampionData());
 
-            championRecalculator.RecalculateChampion(gameDefinitionId, applicationUser);
+            _autoMocker.ClassUnderTest.RecalculateChampion(_gameDefinitionId, _applicationUser);
 
-            dataContextMock.AssertWasCalled(mock => mock.Save(
-                Arg<GameDefinition>.Matches(definition => definition.PreviousChampionId == previousChampionId),
+            _autoMocker.Get<IDataContext>().AssertWasCalled(mock => mock.Save(
+                Arg<GameDefinition>.Matches(definition => definition.PreviousChampionId == _previousChampionId),
                 Arg<ApplicationUser>.Is.Anything));
         }
 
@@ -148,29 +158,29 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.ChampionsTests.ChampionRecalc
             int winPercentage = 1;
             ChampionData championData = new ChampionData
             {
-                GameDefinitionId = gameDefinitionId,
+                GameDefinitionId = _gameDefinitionId,
                 PlayerId = championPlayerId,
                 WinPercentage = winPercentage
             };
 
-            championRepositoryMock.Expect(mock => mock.GetChampionData(gameDefinitionId))
+            _autoMocker.Get<IChampionRepository>().Expect(mock => mock.GetChampionData(_gameDefinitionId))
                 .Return(championData);
 
             List<Champion> championList = new List<Champion>();
             championList.Add(new Champion
             {
-                Id = previousChampionId,
+                Id = _previousChampionId,
                 PlayerId = championPlayerId,
-                GameDefinitionId = gameDefinitionId,
+                GameDefinitionId = _gameDefinitionId,
                 WinPercentage = winPercentage,
-                GameDefinition = new GameDefinition { ChampionId = previousChampionId }
+                GameDefinition = new GameDefinition { ChampionId = _previousChampionId }
             });
-            dataContextMock.Expect(mock => mock.GetQueryable<Champion>())
+            _autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<Champion>())
                 .Return(championList.AsQueryable());
 
-            championRecalculator.RecalculateChampion(gameDefinitionId, applicationUser);
+            _autoMocker.ClassUnderTest.RecalculateChampion(_gameDefinitionId, _applicationUser);
 
-            dataContextMock.AssertWasNotCalled(mock => mock.Save(
+            _autoMocker.Get<IDataContext>().AssertWasNotCalled(mock => mock.Save(
                 Arg<Champion>.Is.Anything,
                 Arg<ApplicationUser>.Is.Anything));
         }
@@ -184,29 +194,29 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.ChampionsTests.ChampionRecalc
             {
                 WinPercentage = winPercentage,
                 PlayerId = championPlayerId,
-                GameDefinitionId = gameDefinitionId
+                GameDefinitionId = _gameDefinitionId
             };
-            championRepositoryMock.Expect(mock => mock.GetChampionData(gameDefinitionId))
+            _autoMocker.Get<IChampionRepository>().Expect(mock => mock.GetChampionData(_gameDefinitionId))
                 .Return(championData);
 
             List<Champion> championList = new List<Champion>();
             Champion existingChampion = new Champion
             {
-                Id = previousChampionId,
+                Id = _previousChampionId,
                 PlayerId = championPlayerId,
                 WinPercentage = winPercentage + 1,
-                GameDefinitionId = gameDefinitionId,
+                GameDefinitionId = _gameDefinitionId,
                 GameDefinition = new GameDefinition()
             };
             championList.Add(existingChampion);
 
-            dataContextMock.Expect(mock => mock.GetQueryable<Champion>())
+            _autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<Champion>())
                 .Return(championList.AsQueryable());
 
-            championRecalculator.RecalculateChampion(gameDefinitionId, applicationUser);
+            _autoMocker.ClassUnderTest.RecalculateChampion(_gameDefinitionId, _applicationUser);
 
-            dataContextMock.AssertWasCalled(mock => mock.Save(
-                Arg<Champion>.Matches(champion => champion.GameDefinitionId == gameDefinitionId
+            _autoMocker.Get<IDataContext>().AssertWasCalled(mock => mock.Save(
+                Arg<Champion>.Matches(champion => champion.GameDefinitionId == _gameDefinitionId
                                         && champion.PlayerId == championPlayerId
                                         && champion.WinPercentage == winPercentage),
                 Arg<ApplicationUser>.Is.Anything));
@@ -217,25 +227,25 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.ChampionsTests.ChampionRecalc
         {
             ChampionData championData = new ChampionData
             {
-                GameDefinitionId = gameDefinitionId,
-                PlayerId = playerChampionId
+                GameDefinitionId = _gameDefinitionId,
+                PlayerId = _playerChampionId
             };
-            championRepositoryMock.Expect(mock => mock.GetChampionData(gameDefinitionId))
+            _autoMocker.Get<IChampionRepository>().Expect(mock => mock.GetChampionData(_gameDefinitionId))
                 .Return(championData);
 
             List<Champion> championList = new List<Champion>();
             Champion existingChampion = new Champion
             {
-                Id = previousChampionId,
-                PlayerId = playerChampionId,
-                GameDefinitionId = gameDefinitionId,
-                GameDefinition = new GameDefinition { ChampionId = previousChampionId }
+                Id = _previousChampionId,
+                PlayerId = _playerChampionId,
+                GameDefinitionId = _gameDefinitionId,
+                GameDefinition = new GameDefinition { ChampionId = _previousChampionId }
             };
             championList.Add(existingChampion);
-            dataContextMock.Expect(mock => mock.GetQueryable<Champion>())
+            _autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<Champion>())
                 .Return(championList.AsQueryable());
 
-            Champion actualChampion = championRecalculator.RecalculateChampion(gameDefinitionId, applicationUser);
+            Champion actualChampion = _autoMocker.ClassUnderTest.RecalculateChampion(_gameDefinitionId, _applicationUser);
 
             Assert.That(actualChampion, Is.SameAs(existingChampion));
         }
@@ -245,46 +255,46 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.ChampionsTests.ChampionRecalc
         {
             int expectedWinPercentage = 85;
             ChampionData championData = new ChampionData {WinPercentage = expectedWinPercentage};
-            championRepositoryMock.Expect(mock => mock.GetChampionData(gameDefinitionId))
+            _autoMocker.Get<IChampionRepository>().Expect(mock => mock.GetChampionData(_gameDefinitionId))
                 .Return(championData);
 
             List<Champion> championList = new List<Champion>();
             Champion existingChampion = new Champion
             {
-                Id = previousChampionId,
-                PlayerId = playerChampionId,
-                GameDefinitionId = gameDefinitionId,
+                Id = _previousChampionId,
+                PlayerId = _playerChampionId,
+                GameDefinitionId = _gameDefinitionId,
                 GameDefinition = new GameDefinition()
             };
             championList.Add(existingChampion);
-            dataContextMock.Expect(mock => mock.GetQueryable<Champion>())
+            _autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<Champion>())
                 .Return(championList.AsQueryable());
 
-            Champion actualChampion = championRecalculator.RecalculateChampion(gameDefinitionId, applicationUser);
+            Champion actualChampion = _autoMocker.ClassUnderTest.RecalculateChampion(_gameDefinitionId, _applicationUser);
 
-            Assert.That(actualChampion, Is.SameAs(savedChampion));
+            Assert.That(actualChampion, Is.SameAs(_savedChampion));
         }
 
         [Test]
         public void ItReturnsTheNewChampionIfItWasChanged()
         {
             ChampionData championData = new ChampionData {PlayerId = 10000};
-            championRepositoryMock.Expect(mock => mock.GetChampionData(gameDefinitionId))
+            _autoMocker.Get<IChampionRepository>().Expect(mock => mock.GetChampionData(_gameDefinitionId))
                 .Return(championData);
 
             List<Champion> championList = new List<Champion>();
             Champion existingChampion = new Champion
             {
-                Id = previousChampionId,
-                PlayerId = playerChampionId
+                Id = _previousChampionId,
+                PlayerId = _playerChampionId
             };
             championList.Add(existingChampion);
-            dataContextMock.Expect(mock => mock.GetQueryable<Champion>())
+            _autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<Champion>())
                 .Return(championList.AsQueryable());
 
-            Champion actualChampion = championRecalculator.RecalculateChampion(gameDefinitionId, applicationUser);
+            Champion actualChampion = _autoMocker.ClassUnderTest.RecalculateChampion(_gameDefinitionId, _applicationUser);
 
-            Assert.That(actualChampion, Is.SameAs(savedChampion));
+            Assert.That(actualChampion, Is.SameAs(_savedChampion));
         }
     }
 }

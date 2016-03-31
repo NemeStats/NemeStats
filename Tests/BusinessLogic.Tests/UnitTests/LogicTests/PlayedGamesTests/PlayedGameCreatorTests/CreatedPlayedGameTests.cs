@@ -265,7 +265,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameCr
         }
 
         [Test]
-        public void ItRecalculatesTheChampionForTheGame()
+        public void ItRecalculatesTheChampionForTheGameButDoesntClearTheExistingChampion()
         {
             var playerRanks = new List<PlayerRank>();
             var newlyCompletedGame = new NewlyCompletedGame
@@ -276,7 +276,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameCr
 
             autoMocker.ClassUnderTest.CreatePlayedGame(newlyCompletedGame, TransactionSource.WebApplication, currentUser);
 
-            autoMocker.Get<IChampionRecalculator>().AssertWasCalled(mock => mock.RecalculateChampion((int)newlyCompletedGame.GameDefinitionId, currentUser));
+            autoMocker.Get<IChampionRecalculator>().AssertWasCalled(mock => mock.RecalculateChampion(newlyCompletedGame.GameDefinitionId.Value, currentUser, false));
         }
 
         [Test]
