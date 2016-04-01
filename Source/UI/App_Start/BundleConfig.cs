@@ -43,7 +43,8 @@ namespace UI
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/javascripts/bootstrap*",
-                      "~/Scripts/respond.js"));
+                      "~/Scripts/respond.js")
+                      .Include("~/Scripts/responsive-bootstrap-toolkit.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/handlebars")
                 .Include("~/Scripts/handlebars.js"));

@@ -50,6 +50,7 @@
 /// <reference path="plugins/toeditboxplugin.js" />
 /// <reference path="readmore.min.js" />
 /// <reference path="respond.js" />
+/// <reference path="responsive-bootstrap-toolkit.js" />
 /// <reference path="shared/_layout.js" />
 /// <reference path="shared/googleanalytics.js" />
 /// <reference path="shared/uiutils.js" />
