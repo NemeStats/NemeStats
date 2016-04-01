@@ -57,6 +57,7 @@ namespace UI
 
             bundles.Add(new ScriptBundle("~/bundles/list")
                 .Include("~/Scripts/list.min.js")
+                .Include("~/Scripts/list.fuzzysearch.min.js")
                 .Include("~/Scripts/list.pagination.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/d3")

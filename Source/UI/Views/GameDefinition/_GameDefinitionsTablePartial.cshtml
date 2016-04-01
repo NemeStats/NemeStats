@@ -11,29 +11,40 @@
         </div>
                 }
     <div class="gameDefinitionsList flip-scroll" id="gameDefinitionsList">
-        <table class="table table-hover table-striped">
+        <table class="table">
+            <caption>
+                <div class="input-group input-group-sm">
+                    <div class="input-group-addon"><span class="fa fa-search"></span></div>
+                    <input type="text" class="form-control fuzzy-search" placeholder="type game name, champion...">
+                </div>
+            </caption>
             <thead>
             <tr>
                 <th class="col-md-2 bgg-link-head"></th>
-                <th class="col-md-4 name-head sort" data-sort="name">
-                    <span>Name <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
+                <th class="col-md-4 name-head">
+                    <span class="sort" data-sort="name">Name <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
+                        
                 </th>
-                <th class="col-md-2 sort desc" data-sort="plays-col">
-                    <span class="hidden-xs hidden-sm">
-                            <span>Played Games</span>
+                <th class="col-md-2">
+                    <span class=" sort desc" data-sort="plays-col">
+                            <span class="hidden-xs hidden-sm">
+                                <span>Played Games</span>
+                            </span>
+                            <span class="hidden-md hidden-lg">
+                                Plays
+                            </span>
+                            <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span>
                         </span>
-                    <span class="hidden-md hidden-lg">
-                            Plays
-                        </span>
-                    <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span>
                 </th>
-                <th class="col-md-3 sort" data-sort="champion-col">
-                    <i class="fa fa-trophy" data-container="body" data-toggle="popover" data-placement="top"
-                       data-content="The Champion is the Player within the Gaming Group with the most wins of this game."></i>
-                    <span class="hidden-xs hidden-sm">
-                            <span>Previous/Current Champion</span>
+                <th class="col-md-3">
+                    <span class="sort" data-sort="champion-col">
+                            <i class="fa fa-trophy" data-container="body" data-toggle="popover" data-placement="top"
+                               data-content="The Champion is the Player within the Gaming Group with the most wins of this game."></i>
+                            <span class="hidden-xs hidden-sm">
+                                <span>Previous/Current Champion</span>
+                            </span>
+                            <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span>
                         </span>
-                    <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span>
                 </th>
                 @if (Model.Any() && Model.First().UserCanEdit)
                 {

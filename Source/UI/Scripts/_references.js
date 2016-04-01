@@ -36,6 +36,7 @@
 /// <reference path="jquery-2.1.4.min.js" />
 /// <reference path="jquery-ui-1.11.4.js" />
 /// <reference path="jquery-ui-1.11.4.min.js" />
+/// <reference path="list.fuzzysearch.min.js" />
 /// <reference path="list.min.js" />
 /// <reference path="list.pagination.js" />
 /// <reference path="moment.min.js" />

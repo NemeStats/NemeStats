@@ -21,9 +21,9 @@ Views.GameDefinition.GameDefinitions.prototype = {
         ]
 
         if (ResponsiveBootstrapToolkit.is('>=md')) {
-            new List("gameDefinitionsList", { valueNames, page: 10, plugins: [ListPagination({ innerWindow: 10 })] });
+            new List("gameDefinitionsList", { valueNames, page: 10, plugins: [ListPagination({ innerWindow: 10 }), ListFuzzySearch()] });
         } else {
-            new List("gameDefinitionsList", { valueNames });
+            new List("gameDefinitionsList", { valueNames, plugins: [ListFuzzySearch()] });
         }
 
 
