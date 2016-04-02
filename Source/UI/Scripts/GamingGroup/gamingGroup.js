@@ -8,8 +8,8 @@ Views.GamingGroup.GamingGroupView = function () {
     this.$fromDatePicker = null;
     this.$toDatePicker = null;
     this.$settings = {
-        fromDate : null,
-        toDate : new Date()
+        fromDate: null,
+        toDate: new Date()
     };
     this._serviceAddress = "/GamingGroup/UpdateGamingGroupName";
     this._googleAnalytics = null;
@@ -45,8 +45,7 @@ Views.GamingGroup.GamingGroupView.prototype = {
             this.$fromDatePicker.attr("min", minDateIso8601);
             this.$toDatePicker.attr("max", currentMoment.add("days", 1).format("YYYY-MM-DD"));
             this.$toDatePicker.attr("min", minDateIso8601);
-        }else
-        {
+        } else {
             // If not native HTML5 support, fallback to jQuery datePicker
             this.$fromDatePicker.datepicker({
                 showOn: "button",
@@ -73,8 +72,26 @@ Views.GamingGroup.GamingGroupView.prototype = {
               .datepicker("option", "dateFormat", "yy-mm-dd");
         }
 
-       
-        
+        this.initListJs();
+
+    },
+    initListJs: function () {
+
+        var gamedefinitionsValues = ['name', 'plays-col', { name: 'champion-col', attr: 'data-champion' }];
+        var gameDefinitionTableId = "gameDefinitionsList";
+
+        var playersValues = [{ name: 'player-name-col', attr: 'data-name' }, 'total-nemepoints-col', 'played-games-col', 'avg-nemepoints-col', 'overall-win-col','championed-games-col', { name: 'nemesis-col', attr: 'data-nemesis' }];
+        var playersTableId = "playersList";
+
+
+        if (ResponsiveBootstrapToolkit.is('>=md')) {
+            new List(gameDefinitionTableId, { valueNames: gamedefinitionsValues, page: 10, plugins: [ListPagination({ innerWindow: 10 })] });
+            new List(playersTableId, { valueNames: playersValues, page: 10, plugins: [ListPagination({ innerWindow: 10 })] });
+        } else {
+            new List(gameDefinitionTableId, { valueNames: gamedefinitionsValues });
+            new List(playersTableId, { valueNames: playersValues });
+        }
+
     },
     renameGamingGroup: function (element) {
         var parent = this;

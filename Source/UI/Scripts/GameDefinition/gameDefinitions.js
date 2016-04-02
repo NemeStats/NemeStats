@@ -13,20 +13,17 @@ Views.GameDefinition.GameDefinitions.prototype = {
         this.$container = $(".gameDefinitionsList");
         this.$gameDefinitionsTable = this.$container.find("table");
 
+        //var valueNames = [
+        //   'name',
+        //   'plays-col',
+        //   { name: 'champion-col', attr: 'data-champion' },
+        //]
 
-        var valueNames = [
-            'name',
-            'plays-col',
-            { name: 'champion-col', attr: 'data-champion' },
-        ]
-
-        if (ResponsiveBootstrapToolkit.is('>=md')) {
-            new List("gameDefinitionsList", { valueNames, page: 10, plugins: [ListPagination({ innerWindow: 10 }), ListFuzzySearch()] });
-        } else {
-            new List("gameDefinitionsList", { valueNames, plugins: [ListFuzzySearch()] });
-        }
-
-
+        //if (ResponsiveBootstrapToolkit.is('>=md')) {
+        //    new List("gameDefinitionsList", { valueNames, page: 10, plugins: [ListPagination({ innerWindow: 10 })] });
+        //} else {
+        //    new List("gameDefinitionsList", { valueNames, plugins: [] });
+        //}
     },
 
     onGameCreated: function (gamingGroupId) {
