@@ -10,6 +10,19 @@ Views.Player.Details = function () {
 Views.Player.Details.prototype = {
     init: function (settings) {
         this.$apiUri = settings.apiUri;
+        this.initListJs();
+    },
+    initListJs: function () {
+
+        var gamedefinitionsValues = [{ name: 'name-col', attr: 'data-name' }, { name: 'winloss-col', attr: 'data-winloss' },'win-percentage-col' ];
+        var gameDefinitionTableId = "playedgameslist";
+
+        if (ResponsiveBootstrapToolkit.is('>=md')) {
+            new List(gameDefinitionTableId, { valueNames: gamedefinitionsValues, page: 10, plugins: [ListPagination({ innerWindow: 10 })] });
+        } else {
+            new List(gameDefinitionTableId, { valueNames: gamedefinitionsValues });
+        }
+
     },
     renderGameDefinitionsPieChart: function () {
         $.ajax({
