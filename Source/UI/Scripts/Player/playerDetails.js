@@ -23,6 +23,10 @@ Views.Player.Details.prototype = {
             new List(gameDefinitionTableId, { valueNames: gamedefinitionsValues });
         }
 
+        var playerstatisticsValues = [{ name: 'name-col', attr: 'data-name' }, { name: 'winloss-col', attr: 'data-winloss' }, 'percentagewon-col'];
+        var playerstatisticsTableId = "player-statistics";
+        new List(playerstatisticsTableId, { valueNames: playerstatisticsValues, page: 10, plugins: [ListPagination({ innerWindow: 10 })] });
+
     },
     renderGameDefinitionsPieChart: function () {
         $.ajax({
