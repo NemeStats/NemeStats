@@ -20,6 +20,7 @@
 /// <reference path="GameDefinition/createGameDefinition.js" />
 /// <reference path="gamedefinition/creategamedefinitionpartial.js" />
 /// <reference path="gamedefinition/gamedefinitionautocomplete.js" />
+/// <reference path="gamedefinition/gamedefinitionplayerssummarypartial.js" />
 /// <reference path="gamedefinition/gamedefinitions.js" />
 /// <reference path="gaminggroup/gaminggroup.js" />
 /// <reference path="handlebars.amd.min.js" />

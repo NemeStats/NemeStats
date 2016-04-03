@@ -591,6 +591,7 @@
     <Content Include="Scripts\GameDefinition\createGameDefinition.js" />
     <Content Include="Scripts\GameDefinition\createGameDefinitionPartial.js" />
     <Content Include="Scripts\GameDefinition\gameDefinitionAutoComplete.js" />
+    <Content Include="Scripts\GameDefinition\GameDefinitionPlayersSummaryPartial.js" />
     <Content Include="Scripts\GameDefinition\gameDefinitions.js" />
     <Content Include="Scripts\GamingGroup\gamingGroup.js" />
     <Content Include="Scripts\handlebars.amd.js" />
