@@ -1,4 +1,4 @@
-﻿@mixin voffset($value){
+﻿@mixin voffset($value) {
     margin-top: 5px*$value;
 }
 
@@ -48,4 +48,39 @@
 
 .voffset12 {
     @include voffset(12);
+}
+
+
+.sort {
+    cursor: pointer;
+
+    .fa-caret-down {
+        display: none;
+    }
+
+    .fa-caret-up {
+        display: none;
+    }
+
+    &.asc {
+        .fa-caret-up {
+            display: inline !important;
+        }
+    }
+
+    &.desc {
+        .fa-caret-down {
+            display: inline !important;
+        }
+    }
+}
+
+
+.input-group-xs>.form-control,
+.input-group-xs>.input-group-addon,
+.input-group-xs>.input-group-btn>.btn {
+    height: 22px;
+    padding: 1px 5px;
+    font-size: 12px;
+    line-height: 1.5;
 }

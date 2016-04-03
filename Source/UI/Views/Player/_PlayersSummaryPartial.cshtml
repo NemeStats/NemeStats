@@ -10,48 +10,61 @@
            Win - Loss Statistics
         </h4>
     </div>
-    <div class="panel-body">
-        <table class="table table-hover table-striped table-responsive">
+    <div class="panel-body" id="player-statistics">
+        <table class="table table-hover table-striped">
+            <caption>
+                <div class="input-group input-group-sm">
+                    <div class="input-group-addon"><span class="fa fa-search"></span></div>
+                    <input type="text" class="form-control search" placeholder="type player name">
+                </div>
+            </caption>
             <thead>
-                <tr>
-                    <th></th>
-                    <th>Player Name</th>
-                    <th>@Model.WinLossHeader</th>
-                    <th>% Won</th>
-                </tr>
+            <tr>
+                <th></th>
+                <th>
+                    <span class="sort" data-sort="name-col">Player Name <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
+                </th>
+                <th>
+                    <span class="sort asc" data-sort="winloss-col">@Model.WinLossHeader <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
+                </th>
+                <th>
+                    <span class="sort" data-sort="percentagewon-col">% Won <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
+                </th>
+            </tr>
             </thead>
-            <tbody>
-                @foreach (UI.Models.Players.PlayerSummaryViewModel playerSummary in Model.PlayerSummaries)
-                {
-                    <tr>
-                        <td>
-                            @foreach(var badge in playerSummary.SpecialBadgeTypes)
-                            {
-                                <i class="@badge.GetIconCssClass()" data-container="body" data-toggle="popover" data-placement="right"
-                                   data-content="@badge.GetPopoverText()">
-                                </i>
-                            }
-                        </td>
-                        <td>
-                            @Html.ActionLink(playerSummary.PlayerName, "Details", "Player", new { id = playerSummary.PlayerId }, new { })
-                        </td>
-                        <td>
-                            <div class="progress" data-container="body" data-toggle="popover" data-placement="top"
-                                   data-content="@playerSummary.GamesWon games won - @playerSummary.GamesLost games lost">
-                                <div class="progress-bar won" style="width: @playerSummary.WinPercentage%">
-                                    <span>@playerSummary.GamesWon</span>
-                                </div>
-                                <div class="progress-bar lost" style="width: @playerSummary.LostPercentage%">
-                                    <span>@playerSummary.GamesLost</span>
-                                </div>
+            <tbody class="list">
+            @foreach (UI.Models.Players.PlayerSummaryViewModel playerSummary in Model.PlayerSummaries)
+            {
+                <tr>
+                    <td>
+                        @foreach (var badge in playerSummary.SpecialBadgeTypes)
+                        {
+                            <i class="@badge.GetIconCssClass()" data-container="body" data-toggle="popover" data-placement="right"
+                               data-content="@badge.GetPopoverText()">
+                            </i>
+                        }
+                    </td>
+                    <td class="name-col" data-name="@playerSummary.PlayerName">
+                        @Html.ActionLink(playerSummary.PlayerName, "Details", "Player", new {id = playerSummary.PlayerId}, new {})
+                    </td>
+                    <td class="winloss-col" data-winloss="@(playerSummary.GamesWon - playerSummary.GamesLost)">
+                        <div class="progress" data-container="body" data-toggle="popover" data-placement="top"
+                             data-content="@playerSummary.GamesWon games won - @playerSummary.GamesLost games lost">
+                            <div class="progress-bar won" style="width: @playerSummary.WinPercentage%">
+                                <span>@playerSummary.GamesWon</span>
                             </div>
-                        </td>
-                        <td>
-                            @playerSummary.WinPercentage&nbsp;%
-                        </td>
-                    </tr>
-                }
+                            <div class="progress-bar lost" style="width: @playerSummary.LostPercentage%">
+                                <span>@playerSummary.GamesLost</span>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="percentagewon-col">
+                        @playerSummary.WinPercentage&nbsp;%
+                    </td>
+                </tr>
+            }
             </tbody>
         </table>
+        <ul class="pagination"></ul>
     </div>
 </div>

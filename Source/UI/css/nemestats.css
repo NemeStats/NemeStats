@@ -35,6 +35,25 @@
 .voffset12 {
   margin-top: 60px; }
 
+.sort {
+  cursor: pointer; }
+  .sort .fa-caret-down {
+    display: none; }
+  .sort .fa-caret-up {
+    display: none; }
+  .sort.asc .fa-caret-up {
+    display: inline !important; }
+  .sort.desc .fa-caret-down {
+    display: inline !important; }
+
+.input-group-xs > .form-control,
+.input-group-xs > .input-group-addon,
+.input-group-xs > .input-group-btn > .btn {
+  height: 22px;
+  padding: 1px 5px;
+  font-size: 12px;
+  line-height: 1.5; }
+
 /*$header-background-color: #2C3E50;*/
 @media only screen and (max-width: 991px) {
   .flip-scroll .cf:after {
@@ -52,6 +71,8 @@
     border-spacing: 0;
     display: block;
     position: relative; }
+    .flip-scroll table caption {
+      width: 220px; }
   .flip-scroll th, .flip-scroll td {
     margin: 0;
     vertical-align: top; }

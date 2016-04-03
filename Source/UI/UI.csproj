@@ -591,6 +591,7 @@
     <Content Include="Scripts\GameDefinition\createGameDefinition.js" />
     <Content Include="Scripts\GameDefinition\createGameDefinitionPartial.js" />
     <Content Include="Scripts\GameDefinition\gameDefinitionAutoComplete.js" />
+    <Content Include="Scripts\GameDefinition\GameDefinitionPlayersSummaryPartial.js" />
     <Content Include="Scripts\GameDefinition\gameDefinitions.js" />
     <Content Include="Scripts\GamingGroup\gamingGroup.js" />
     <Content Include="Scripts\handlebars.amd.js" />
@@ -618,6 +619,8 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\list.js" />
+    <Content Include="Scripts\list.pagination.js" />
     <Content Include="Scripts\moment.js" />
     <Content Include="Scripts\moment.min.js" />
     <Content Include="Scripts\namespace-1.0.0.js" />
@@ -758,6 +761,9 @@
       <Project>{B8AF7353-C741-4E61-BED4-0EB603D0C3C0}</Project>
       <Name>NemeStats.IoC</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Scripts\responsive-bootstrap-toolkit.js" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

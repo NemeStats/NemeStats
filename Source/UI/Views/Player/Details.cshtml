@@ -134,65 +134,78 @@
                 <h4>Game Statistics</h4>
             </div>
             <div class="panel-body">
-                <div class="gameDefinitionsList flip-scroll">
+                <div class="gameDefinitionsList flip-scroll" id="playedgameslist">
                     <table class="table table-hover table-striped">
+                        <caption>
+                            <div class="input-group input-group-sm">
+                                <div class="input-group-addon"><span class="fa fa-search"></span></div>
+                                <input type="text" class="form-control search" placeholder="type game name">
+                            </div>
+                        </caption>
                         <thead>
-                            <tr>
-                                <th class="badges-head">
-                                    <span class="hidden-md hidden-lg">
+                        <tr>
+                            <th class="badges-head">
+                                <span class="hidden-md hidden-lg">
                                         Badges
                                     </span>
-                                </th>
-                                <th class="bgg-link-head">
-                                    <span class="hidden-md hidden-lg">
+                            </th>
+                            <th class="bgg-link-head">
+                                <span class="hidden-md hidden-lg">
                                         Image
                                     </span>
-                                </th>
-                                <th class="name-head">Game</th>
-                                <th>Win - Loss Record</th>
-                                <th>% Won</th>
-                            </tr>
+                            </th>
+                            <th class="name-head">
+                                <span class="sort" data-sort="name-col">Name <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
+                            </th>
+                            <th>
+                                <span class="sort desc" data-sort="winloss-col">Win - Loss Record <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
+                            </th>
+                            <th>
+                                <span class="sort" data-sort="win-percentage-col">% Won <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
+                            </th>
+                        </tr>
                         </thead>
-                        <tbody>
-                            @foreach (var summary in Model.PlayerGameSummaries)
-                            {
-                                <tr class="game-item">
-                                    <td class="badges-col">
-                                        @if (summary.IsChampion)
-                                        {
-                                            <i class="fa fa-trophy" data-container="body" data-toggle="popover" data-placement="right"
-                                               data-content="This Player is the Champion of this game. The Champion is the Player within the Gaming Group with the most wins of this game.">
-                                            </i>
-                                        }
-                                        @if (summary.IsFormerChampion)
-                                        {
-                                            <i class="ns-icon-former-champion" data-container="body" data-toggle="popover" data-placement="right"
-                                               data-content="This Player is the former Champion of this game.">
-                                            </i>
-                                        }
-                                    </td>
-                                    <td class="bgg-link-col">
-                                        @if (!string.IsNullOrEmpty(summary.ThumbnailImageUrl))
-                                        {
-                                            <a href="@Url.Action(MVC.GameDefinition.ActionNames.Details,MVC.GameDefinition.Name,new {id=summary.GameDefinitionId})">
-                                                <img class="bgg-thumbnail" src="@summary.ThumbnailImageUrl" alt="@summary.GameDefinitionName" title="@summary.GameDefinitionName" />
-                                            </a>
-                                        }
-                                    </td>
-                                    <td class="name-col">
-                                        @Html.ActionLink(summary.GameDefinitionName, "Details", "GameDefinition", new { id = summary.GameDefinitionId }, new { })
-                                    </td>
-                                    <td>
-                                        @summary.NumberOfGamesWon - @summary.NumberOfGamesLost
-                                    </td>
-                                    <td>
-                                        @summary.WinPercentage
-                                    </td>
-                                </tr>
+                        <tbody class="list">
+                        @foreach (var summary in Model.PlayerGameSummaries)
+                        {
+                            <tr class="game-item">
+                                <td class="badges-col">
+                                    @if (summary.IsChampion)
+                                    {
+                                        <i class="fa fa-trophy" data-container="body" data-toggle="popover" data-placement="right"
+                                           data-content="This Player is the Champion of this game. The Champion is the Player within the Gaming Group with the most wins of this game.">
+                                        </i>
+                                    }
+                                    @if (summary.IsFormerChampion)
+                                    {
+                                        <i class="ns-icon-former-champion" data-container="body" data-toggle="popover" data-placement="right"
+                                           data-content="This Player is the former Champion of this game.">
+                                        </i>
+                                    }
+                                </td>
+                                <td class="bgg-link-col">
+                                    @if (!string.IsNullOrEmpty(summary.ThumbnailImageUrl))
+                                    {
+                                        <a href="@Url.Action(MVC.GameDefinition.ActionNames.Details, MVC.GameDefinition.Name, new {id = summary.GameDefinitionId})">
+                                            <img class="bgg-thumbnail" src="@summary.ThumbnailImageUrl" alt="@summary.GameDefinitionName" title="@summary.GameDefinitionName"/>
+                                        </a>
+                                    }
+                                </td>
+                                <td class="name-col" data-name="@summary.GameDefinitionName">
+                                    @Html.ActionLink(summary.GameDefinitionName, "Details", "GameDefinition", new {id = summary.GameDefinitionId}, new {})
+                                </td>
+                                <td class="winloss-col" data-winloss="@(summary.NumberOfGamesWon - summary.NumberOfGamesLost)">
+                                    @summary.NumberOfGamesWon - @summary.NumberOfGamesLost
+                                </td>
+                                <td class="win-percentage-col">
+                                    @summary.WinPercentage
+                                </td>
+                            </tr>
 
-                            }
+                        }
                         </tbody>
                     </table>
+                    <ul class="pagination"></ul>
                 </div>
             </div>
         </div>

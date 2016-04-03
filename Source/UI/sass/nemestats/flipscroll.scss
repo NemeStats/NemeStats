@@ -25,6 +25,10 @@
             border-spacing: 0;
             display: block;
             position: relative;
+
+            caption {
+                width: 220px;
+            }
         }
 
         th, td {

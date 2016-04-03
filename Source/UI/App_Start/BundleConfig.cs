@@ -43,7 +43,8 @@ namespace UI
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/javascripts/bootstrap*",
-                      "~/Scripts/respond.js"));
+                      "~/Scripts/respond.js")
+                      .Include("~/Scripts/responsive-bootstrap-toolkit.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/handlebars")
                 .Include("~/Scripts/handlebars.js"));
@@ -53,6 +54,10 @@ namespace UI
 
             bundles.Add(new ScriptBundle("~/bundles/vue")
                 .Include("~/Scripts/vue.min.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/list")
+                .Include("~/Scripts/list.js")
+                .Include("~/Scripts/list.pagination.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/d3")
                 .Include("~/Scripts/d3/d3.js")
@@ -79,6 +84,7 @@ namespace UI
                 .Include("~/Scripts/GameDefinition/createGameDefinitionPartial.js")
                 .Include("~/Scripts/GameDefinition/createGameDefinition.js")
                 .Include("~/Scripts/GameDefinition/gameDefinitions.js")
+                .Include("~/Scripts/GameDefinition/GameDefinitionPlayersSummaryPartial.js")
                 .Include("~/Scripts/Shared/_Layout.js")
                 .Include("~/Scripts/Shared/_LoginPartial.js")
                 .Include("~/Scripts/Shared/UIUtils.js")

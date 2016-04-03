@@ -8,23 +8,39 @@
 <div class="panel panel-primary game-player-statistics">
     <div class="panel-heading">
         <h4>
-           Win - Loss Statistics
+            Win - Loss Statistics
         </h4>
     </div>
     <div class="panel-body">
-        <div class="flip-scroll">
+        <div class="flip-scroll" id="gameplayerssummary">
             <table class="table table-hover table-striped">
+                <caption>
+                    <div class="input-group input-group-sm">
+                        <div class="input-group-addon"><span class="fa fa-search"></span></div>
+                        <input type="text" class="form-control search" placeholder="type player name">
+                    </div>
+                </caption>
                 <thead class="player-table-head">
                     <tr>
                         <th class="col-md-1 badges-head"></th>
-                        <th class="col-md-2">Name</th>
-                        <th class="col-md-1">@Html.NemePointsIco()</th>
-                        <th class="col-md-1">Total Games</th>
-                        <th class="col-md-2 avgpoints-head">Avg. @Html.NemePointsIco(tooltip: "NemePoints") per game</th>
-                        <th class="col-md-5 wonpercentage-head">% Won</th>
+                        <th class="col-md-2">
+                            <span class="sort" data-sort="name">Name <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
+                        </th>
+                        <th class="col-md-1">
+                            <span class="sort desc" data-sort="total-points">@Html.NemePointsIco() <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
+                        </th>
+                        <th class="col-md-1">
+                            <span class="sort" data-sort="plays-col">Total Games <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
+                        </th>
+                        <th class="col-md-2 avgpoints-head">
+                            <span class="sort" data-sort="avgpoints-col">Avg. @Html.NemePointsIco(tooltip: "NemePoints") per game <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
+                        </th>
+                        <th class="col-md-5 wonpercentage-head">
+                            <span class="sort" data-sort="percentage-won">% Won <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
+                        </th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody class="list">
                     @foreach (UI.Models.Players.GameDefinitionPlayerSummaryViewModel playerSummary in Model.GameDefinitionPlayerSummaries)
                     {
                         <tr>
@@ -36,7 +52,7 @@
                                     </i>
                                 }
                             </td>
-                            <td>
+                            <td class="name" data-name="@playerSummary.PlayerName">
                                 @Html.ActionLink(playerSummary.PlayerName, "Details", "Player", new
                        {
                            id = playerSummary.PlayerId
@@ -44,10 +60,10 @@
                        {
                        })
                             </td>
-                            <td>@playerSummary.NemePointsSummary.TotalNemePoints</td>
+                            <td class="total-points">@playerSummary.NemePointsSummary.TotalNemePoints</td>
                             <td class="plays-col">@playerSummary.TotalGamesPlayed</td>
                             <td class="avgpoints-col">@playerSummary.AveragePointsPerGame.ToString("N2")</td>
-                            <td>
+                            <td class="percentage-won" data-winpercentage="@playerSummary.WinPercentage">
                                 <div class="progress" data-container="body" data-toggle="popover" data-placement="top"
                                      data-content="@playerSummary.GamesWon games won - @playerSummary.GamesLost games lost">
                                     <div class="progress-bar won" style="width: @playerSummary.WinPercentage%">
@@ -65,6 +81,7 @@
                     }
                 </tbody>
             </table>
+            <ul class="pagination"></ul>
         </div>
 
     </div>
