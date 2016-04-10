@@ -221,6 +221,10 @@
     <Compile Include="Migrations\201603251644039_BGGGameDefinition_MinPlayTime.Designer.cs">
       <DependentUpon>201603251644039_BGGGameDefinition_MinPlayTime.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201604100105557_MakePointsScoredDecimal.cs" />
+    <Compile Include="Migrations\201604100105557_MakePointsScoredDecimal.Designer.cs">
+      <DependentUpon>201604100105557_MakePointsScoredDecimal.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Games\TrendingGame.cs" />
     <Compile Include="Logic\Points\IWeightTierCalculator.cs" />
     <Compile Include="Models\Players\CreatePlayerRequest.cs" />
@@ -799,6 +803,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201603251644039_BGGGameDefinition_MinPlayTime.resx">
       <DependentUpon>201603251644039_BGGGameDefinition_MinPlayTime.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201604100105557_MakePointsScoredDecimal.resx">
+      <DependentUpon>201604100105557_MakePointsScoredDecimal.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

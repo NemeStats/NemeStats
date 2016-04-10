@@ -9,7 +9,7 @@ namespace BusinessLogic.Models.PlayedGames
         public bool PlayerActive { get; set; }
         public int GameRank { get; set; }
         public int NemeStatsPointsAwarded { get; set; }
-        public int? PointsScored { get; set; }
+        public decimal? PointsScored { get; set; }
         public int PlayedGameId { get; set; }
         public DateTime DatePlayed { get; set; }
         public string GameName { get; set; }
