@@ -36,6 +36,7 @@ enable the client to know on exactly which Gaming Group the entity was created.
 This means the existing nemeStatsPointsAwarded field on the playerGameResult object is now the base points that are awarded. This  value doesn't
 change in the new  model, but if you want to get total points including the Game Weight and Game Duration Bonus Points,
 then you need to use the playerGameResult.totalNemeStatsPointsAwarded.
+* 2016-04-09 PointsScored on PlayerGameResult is now a decimal instead of an int.
 
 
 ### General Information
@@ -73,7 +74,7 @@ Here is an example of a versioned endpoint:
 Represents the minimum amount of data the the client needs to send to give rank information about a particular Player in a particular Played Game.
 + playerId (number, required) - NemeStats unique identifier for the Player.
 + gameRank (number, required) - The corresponding rank of the Player in this Played Game. A rank of 1 means the Player got first place, 2 means second place, and so on.
-+ pointsScored (number, optional) - Integer number of points the Player scored in the Played Game.
++ pointsScored (number, optional) - Decimal number of points the Player scored in the Played Game. Valid examples are -1, 20, 15.75, etc.
 
 ## PlayerGameResult (object)
 Represents all of the data related to a particular Player's performance in a particular Played Game.
