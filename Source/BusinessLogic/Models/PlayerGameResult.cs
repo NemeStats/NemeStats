@@ -33,7 +33,7 @@ namespace BusinessLogic.Models
         public int NemeStatsPointsAwarded { get; set; }
         public int GameWeightBonusPoints { get; set; }
         public int GameDurationBonusPoints { get; set; }
-        public int? PointsScored { get; set; }
+        public decimal? PointsScored { get; set; }
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public int TotalPoints
         {
