@@ -54,6 +54,9 @@
   font-size: 12px;
   line-height: 1.5; }
 
+.clickable {
+  cursor: pointer; }
+
 /*$header-background-color: #2C3E50;*/
 @media only screen and (max-width: 991px) {
   .flip-scroll .cf:after {
@@ -469,6 +472,10 @@ footer {
   footer span {
     top: 10px; }
 
+.nemepoints-breakdown a {
+  font-size: 11px;
+  text-decoration: underline; }
+
 /*$header-background-color: #2C3E50;*/
 @media (max-width: 991px) {
   .home-page-icon {
@@ -812,10 +819,5 @@ footer {
 
 .game-result .rank .value {
   font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif !important; }
-
-.game-result .alert a {
-  color: #E0E0E0;
-  font-size: 11px;
-  text-decoration: underline; }
 
 /*# sourceMappingURL=nemestats.css.map */
