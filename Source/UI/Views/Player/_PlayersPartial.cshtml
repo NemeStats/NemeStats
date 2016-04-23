@@ -79,7 +79,7 @@
                                 <td class="player-name-col" data-name="@item.PlayerName">
                                     <b>@Html.ActionLink(item.PlayerName, MVC.Player.Details(item.PlayerId, null))</b>
                                 </td>
-                                <td class="total-nemepoints-col">
+                                <td class="total-nemepoints-col" data-nemepoints="@item.NemePointsSummary.TotalNemePoints">
                                     <span data-toggle="popover" data-html="true" data-templateselector="#@item.PlayerId" data-title="NemePoints breakdown">
                                         @item.NemePointsSummary.TotalNemePoints
                                     </span>
