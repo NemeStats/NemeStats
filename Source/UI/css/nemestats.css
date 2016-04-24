@@ -467,6 +467,13 @@ button > i.fa {
   .navbar-brand img {
     width: 120px; }
 
+.navbar-right li {
+  max-width: 250px; }
+  .navbar-right li a {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; }
+
 footer {
   padding-bottom: 10px; }
   footer span {
@@ -485,10 +492,20 @@ footer {
     max-width: 90px;
     overflow: hidden; } }
 
+@media (min-width: 992px) and (max-width: 1199px) {
+  .navbar-right li {
+    max-width: 180px; } }
+
 @media (min-width: 768px) and (max-width: 991px) {
   .navbar-nav > li > a {
     font-size: 13px;
-    padding-right: 5px; } }
+    padding-right: 5px; }
+  .navbar-right li {
+    max-width: 100px; } }
+
+@media (max-width: 767px) {
+  .navbar-right li {
+    max-width: none; } }
 
 .game-player-statistics .flip-scroll tr {
   width: 120px;

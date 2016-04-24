@@ -333,6 +333,19 @@ button > i.fa {
     }
 }
 
+.navbar-right {
+    li {
+        max-width: 250px;
+
+        a {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    }
+}
+
+
 
 footer {
     padding-bottom: 10px;
