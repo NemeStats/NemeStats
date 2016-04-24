@@ -365,7 +365,8 @@
     <Compile Include="JobsController.generated.cs">
       <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Badges\BadgeBaseViewModel.cs" />
+    <Compile Include="Models\Achievements\IAchievementViewModel.cs" />
+    <Compile Include="Models\Badges\IBadgeBaseViewModel.cs" />
     <Compile Include="Models\Badges\ChampionBadgeViewModel.cs" />
     <Compile Include="Models\Badges\FormerChampionBadgeViewModel.cs" />
     <Compile Include="Models\Badges\MinionBadgeViewModel.cs" />

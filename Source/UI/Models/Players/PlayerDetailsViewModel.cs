@@ -17,6 +17,7 @@
 #endregion
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using UI.Models.Achievements;
 using UI.Models.PlayedGame;
 using UI.Models.Points;
 
@@ -53,5 +54,6 @@ namespace UI.Models.Players
         public int WinPercentage { get; set; }
         public int TotalChampionedGames { get; set; }
         public int LongestWinningStreak { get; set; }
+        public List<IAchievementViewModel> Achievements { get; set; }
     }
 }
