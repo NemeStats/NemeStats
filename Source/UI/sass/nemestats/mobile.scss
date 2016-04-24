@@ -13,12 +13,37 @@
 }
 
 
+@media (min-width: $screen-md-min) and (max-width: $screen-md-max) {
+
+    .navbar-right {
+        li {
+            max-width: 180px;
+        }
+    }
+}
+
 @media (min-width: $screen-sm-min) and (max-width: $screen-sm-max) {
 
     .navbar-nav > li > a {
         font-size: 13px;
         padding-right: 5px;
     }
+
+    .navbar-right {
+        li {
+            max-width: 100px;
+        }
+    }
+}
+
+@media (max-width: $screen-xs-max) {
+
+    .navbar-right {
+        li {
+            max-width: none;
+        }
+    }
+
 }
 
 .game-player-statistics {

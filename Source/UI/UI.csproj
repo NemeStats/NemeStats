@@ -729,12 +729,10 @@
     <Content Include="Views\GameDefinition\TrendingGames.cshtml" />
     <Content Include="Views\PlayedGame\_GameResult.cshtml" />
     <Content Include="Views\Home\AboutNemePoints.cshtml" />
+    <Content Include="Views\Shared\_NemePointsBreakdown.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Code\" />
-    <Folder Include="App_Data\" />
     <Folder Include="Areas\Api\Views\Shared\" />
-    <Folder Include="Views\Jobs\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

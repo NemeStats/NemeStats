@@ -54,6 +54,9 @@
   font-size: 12px;
   line-height: 1.5; }
 
+.clickable {
+  cursor: pointer; }
+
 /*$header-background-color: #2C3E50;*/
 @media only screen and (max-width: 991px) {
   .flip-scroll .cf:after {
@@ -464,10 +467,21 @@ button > i.fa {
   .navbar-brand img {
     width: 120px; }
 
+.navbar-right li {
+  max-width: 250px; }
+  .navbar-right li a {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; }
+
 footer {
   padding-bottom: 10px; }
   footer span {
     top: 10px; }
+
+.nemepoints-breakdown a {
+  font-size: 11px;
+  text-decoration: underline; }
 
 /*$header-background-color: #2C3E50;*/
 @media (max-width: 991px) {
@@ -478,10 +492,20 @@ footer {
     max-width: 90px;
     overflow: hidden; } }
 
+@media (min-width: 992px) and (max-width: 1199px) {
+  .navbar-right li {
+    max-width: 180px; } }
+
 @media (min-width: 768px) and (max-width: 991px) {
   .navbar-nav > li > a {
     font-size: 13px;
-    padding-right: 5px; } }
+    padding-right: 5px; }
+  .navbar-right li {
+    max-width: 100px; } }
+
+@media (max-width: 767px) {
+  .navbar-right li {
+    max-width: none; } }
 
 .game-player-statistics .flip-scroll tr {
   width: 120px;
@@ -800,7 +824,7 @@ footer {
       .filter .control-block {
         margin-top: 10px; } }
     .filter .control-block button {
-      margin-top: 10px; }
+      margin-top: 25px; }
 
 .bgguser-integration img {
   margin-right: 10px; }
@@ -812,10 +836,5 @@ footer {
 
 .game-result .rank .value {
   font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif !important; }
-
-.game-result .alert a {
-  color: #E0E0E0;
-  font-size: 11px;
-  text-decoration: underline; }
 
 /*# sourceMappingURL=nemestats.css.map */

@@ -43,6 +43,8 @@
                 <tbody class="list">
                     @foreach (UI.Models.Players.GameDefinitionPlayerSummaryViewModel playerSummary in Model.GameDefinitionPlayerSummaries)
                     {
+                        @Html.Partial("_NemePointsBreakdown", playerSummary.NemePointsSummary, new ViewDataDictionary { { "templateid", playerSummary.PlayerId } })
+
                         <tr>
                             <td class="badges-col">
                                 @foreach (var badge in playerSummary.SpecialBadgeTypes)
@@ -54,13 +56,17 @@
                             </td>
                             <td class="name" data-name="@playerSummary.PlayerName">
                                 @Html.ActionLink(playerSummary.PlayerName, "Details", "Player", new
-                       {
-                           id = playerSummary.PlayerId
-                       }, new
-                       {
-                       })
+                           {
+                               id = playerSummary.PlayerId
+                           }, new
+                           {
+                           })
                             </td>
-                            <td class="total-points">@playerSummary.NemePointsSummary.TotalNemePoints</td>
+                            <td class="total-points" data-nemepoints="@playerSummary.NemePointsSummary.TotalNemePoints">
+                                <span data-toggle="popover" data-html="true" data-templateselector="#@playerSummary.PlayerId" data-title="NemePoints breakdown">
+                                    @playerSummary.NemePointsSummary.TotalNemePoints
+                                </span>
+                            </td>
                             <td class="plays-col">@playerSummary.TotalGamesPlayed</td>
                             <td class="avgpoints-col">@playerSummary.AveragePointsPerGame.ToString("N2")</td>
                             <td class="percentage-won" data-winpercentage="@playerSummary.WinPercentage">

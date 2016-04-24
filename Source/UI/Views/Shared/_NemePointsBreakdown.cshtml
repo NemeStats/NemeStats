@@ -1,0 +1,34 @@
+﻿@model UI.Models.Points.NemePointsSummaryViewModel
+
+@{
+    Layout = null;
+}
+
+<script type="text/template" id="@ViewData["templateid"]">
+    <div class="nemepoints-breakdown">
+        @Model.BaseNemePoints <span>base points</span>
+        @if (Model.WeightBonusNemePoints > 0)
+        {
+            <span>
+                + @Model.WeightBonusNemePoints <span class="fa fa-balance-scale" data-container="body" data-toggle="popover" data-placement="top"
+                                                     data-content="Bonus NemePoints earned due to the game weight"></span> points
+            </span>
+        }
+        @if (Model.GameDurationBonusNemePoints > 0)
+        {
+            <span>
+                + @Model.GameDurationBonusNemePoints <span class="fa fa-clock-o" data-container="body" data-toggle="popover" data-placement="top"
+                                                           data-content="Bonus NemePoints earned due to the game duration"></span> points
+            </span>
+        }
+        @if (Model.GameDurationBonusNemePoints < 0)
+        {
+            <span>
+                @Model.GameDurationBonusNemePoints <span class="fa fa-clock-o" data-container="body" data-toggle="popover" data-placement="top"
+                                                         data-content="NemePoints penalty due to the game duration"></span> points
+            </span>
+        }
+        <span>= @Model.TotalNemePoints <span class="fa-stack neme-points-ico"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x letter">N</i></span></span>
+        <div><a href="@Url.Action(MVC.Home.AboutNemePoints())">more info about NemePoints calculation</a></div>
+    </div>
+</script>
