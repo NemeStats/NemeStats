@@ -54,6 +54,6 @@ namespace UI.Models.Players
         public int WinPercentage { get; set; }
         public int TotalChampionedGames { get; set; }
         public int LongestWinningStreak { get; set; }
-        public List<IAchievementViewModel> Achievements { get; set; }
+        public List<AchievementViewModel> Achievements { get; set; }
     }
 }

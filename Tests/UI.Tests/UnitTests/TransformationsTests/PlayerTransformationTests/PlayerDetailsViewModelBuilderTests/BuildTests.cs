@@ -58,6 +58,8 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         private GameDefinition gameDefinitionThatIsFormerlyChampionedByCurrentPlayer;
         private readonly int gameDefinitionIdThatIsBothCurrentlyAndFormerlyChampionedByCurrentPlayer = 1001;
         private GameDefinition gameDefinitionThatIsBothCurrentlyAndFormerlyChampionedByCurrentPlayer;
+        private Achievement achievement1;
+        private Achievement achievement2;
 
         [SetUp]
         public void TestFixtureSetUp()
@@ -248,6 +250,23 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
             };
             playerDetails.FormerChampionedGames = formerChampionedGames;
 
+            achievement1 = new Achievement {
+                Id = 1,
+                Description = "you are so good",
+                FontAwesomeIcon = "fa-trophy"
+            };
+            achievement2 = new Achievement
+            {
+                Id = 1,
+                Description = "you did something really amazing",
+                FontAwesomeIcon = "fa-toilet"
+            };
+            playerDetails.Achievements = new List<Achievement>
+            {
+                achievement1,
+                achievement2
+            };
+
             builder = new PlayerDetailsViewModelBuilder(gameResultViewModelBuilder, minionViewModelBuilderMock);
 
             playerDetailsViewModel = builder.Build(playerDetails, twitterMinionBraggingUrl, currentUser);
@@ -403,6 +422,20 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         public void ItCopiesTheGamingGroupId()
         {
             Assert.AreEqual(playerDetails.GamingGroupName, playerDetailsViewModel.GamingGroupName);
+        }
+
+        [Test]
+        public void ItCopiesTheAchievements()
+        {
+            var firstAchievement = playerDetails.Achievements[0];
+            Assert.That(firstAchievement.Name, Is.EqualTo(achievement1.Name));
+            Assert.That(firstAchievement.Description, Is.EqualTo(achievement1.Description));
+            Assert.That(firstAchievement.FontAwesomeIcon, Is.EqualTo(achievement1.FontAwesomeIcon));
+
+            var secondAchievement = playerDetails.Achievements[1];
+            Assert.That(secondAchievement.Name, Is.EqualTo(secondAchievement.Name));
+            Assert.That(secondAchievement.Description, Is.EqualTo(secondAchievement.Description));
+            Assert.That(secondAchievement.FontAwesomeIcon, Is.EqualTo(secondAchievement.FontAwesomeIcon));
         }
 
         [Test]

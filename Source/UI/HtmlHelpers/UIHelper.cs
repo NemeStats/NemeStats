@@ -39,11 +39,12 @@ namespace UI.HtmlHelpers
 
         }
 
-        public static MvcHtmlString RenderAchievement(this HtmlHelper htmlHelper, IAchievementViewModel achievement, string tooltipPosition = "top")
+        public static MvcHtmlString RenderAchievement(this HtmlHelper htmlHelper, AchievementViewModel achievement, string tooltipPosition = "top")
         {
-            var html = $"<img src=\"{achievement.ImageUrl}\" data-toggle=\"popover\" data-placement=\"{tooltipPosition}\" data-content=\"{achievement.ToolTip}\" />";
+            //TODO Victor, could use your help here! Per your suggestion, achievements have a font awesome icon instead of an image URL.
+            //var html = $"<img src=\"{achievement.ImageUrl}\" data-toggle=\"popover\" data-placement=\"{tooltipPosition}\" data-content=\"{achievement.Name} - {achievement.Description}\" />";
+            var html = "";
             return new MvcHtmlString(html);
-
         }
 
         public static HtmlString RenderTempDataMessage(this HtmlHelper htmlHelper, string key)

@@ -2,9 +2,17 @@
 
 namespace UI.Models.Achievements
 {
-    public interface IAchievementViewModel
+    public class AchievementViewModel
     {
-        Uri ImageUrl { get; set; }
-        string ToolTip { get; set; }
+        public AchievementViewModel(string name, string description, string fontAwesomeIcon)
+        {
+            Name = name;
+            Description = description;
+            FontAwesomeIcon = fontAwesomeIcon;
+        }
+
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public string FontAwesomeIcon { get; set; }
     }
 }
