@@ -11,6 +11,10 @@ namespace BusinessLogic.Models
         public string Name { get; set; }
         public string Description { get; set; }
         public string FontAwesomeIcon { get; set; }
+        public int AchievementLevel1Threshold { get; set; }
+        public int AchievementLevel2Threshold { get; set; }
+        public int AchievementLevel3Threshold { get; set; }
+        public string PlayerCalculationSql { get; set; }
 
         public virtual IList<PlayerAchievement> PlayerAchievements { get; set; }
     }

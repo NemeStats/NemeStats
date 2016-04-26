@@ -15,6 +15,10 @@ namespace BusinessLogic.Migrations
                         Name = c.String(),
                         Description = c.String(),
                         FontAwesomeIcon = c.String(),
+                        AchievementLevel1Threshold = c.Int(nullable: false),
+                        AchievementLevel2Threshold = c.Int(nullable: false),
+                        AchievementLevel3Threshold = c.Int(nullable: false),
+                        PlayerCalculationSql = c.String(),
                     })
                 .PrimaryKey(t => t.Id);
             
@@ -28,6 +32,7 @@ namespace BusinessLogic.Migrations
                         PlayedGameId = c.Int(),
                         PlayerId = c.Int(nullable: false),
                         AchievementId = c.Int(nullable: false),
+                        AchievementLevel = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Achievement", t => t.AchievementId, cascadeDelete: true)
@@ -35,9 +40,7 @@ namespace BusinessLogic.Migrations
                 .ForeignKey("dbo.PlayedGame", t => t.PlayedGameId)
                 .Index(t => t.PlayedGameId)
                 .Index(t => new { t.PlayerId, t.AchievementId }, unique: true, name: "IX_PLAYERID_AND_ACHIEVEMENTID");
-
-            //--single example Achievement
-            Sql("INSERT INTO dbo.Achievement (Id, Name, Description, FontAwesomeIcon) VALUES (1, 'Diversified', 'Played at least 5 different games.', 'fa-trophy')");
+            
         }
         
         public override void Down()

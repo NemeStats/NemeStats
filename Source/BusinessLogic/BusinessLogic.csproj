@@ -225,9 +225,13 @@
     <Compile Include="Migrations\201604100105557_MakePointsScoredDecimal.Designer.cs">
       <DependentUpon>201604100105557_MakePointsScoredDecimal.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201604250226256_Achievements.cs" />
-    <Compile Include="Migrations\201604250226256_Achievements.Designer.cs">
-      <DependentUpon>201604250226256_Achievements.cs</DependentUpon>
+    <Compile Include="Migrations\201604260135477_Achievements.cs" />
+    <Compile Include="Migrations\201604260135477_Achievements.Designer.cs">
+      <DependentUpon>201604260135477_Achievements.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201604260139082_DiversifiedAchievement.cs" />
+    <Compile Include="Migrations\201604260139082_DiversifiedAchievement.Designer.cs">
+      <DependentUpon>201604260139082_DiversifiedAchievement.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\Achievement.cs" />
     <Compile Include="Models\Games\TrendingGame.cs" />
@@ -813,8 +817,11 @@
     <EmbeddedResource Include="Migrations\201604100105557_MakePointsScoredDecimal.resx">
       <DependentUpon>201604100105557_MakePointsScoredDecimal.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201604250226256_Achievements.resx">
-      <DependentUpon>201604250226256_Achievements.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201604260135477_Achievements.resx">
+      <DependentUpon>201604260135477_Achievements.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201604260139082_DiversifiedAchievement.resx">
+      <DependentUpon>201604260139082_DiversifiedAchievement.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

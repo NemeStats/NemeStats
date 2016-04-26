@@ -6,14 +6,14 @@ namespace BusinessLogic.Migrations
     using System.Data.Entity.Migrations.Infrastructure;
     using System.Resources;
     
-    [GeneratedCode("EntityFramework.Migrations", "6.1.2-31219")]
-    public sealed partial class RemoveThumbnailFromGameDefinition : IMigrationMetadata
+    [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
+    public sealed partial class DiversifiedAchievement : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(RemoveThumbnailFromGameDefinition));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(DiversifiedAchievement));
         
         string IMigrationMetadata.Id
         {
-            get { return "201510271128375_RemoveThumbnailFromGameDefinition"; }
+            get { return "201604260139082_DiversifiedAchievement"; }
         }
         
         string IMigrationMetadata.Source
