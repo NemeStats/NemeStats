@@ -27,6 +27,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using BusinessLogic.Logic.Players;
+using BusinessLogic.Models.Achievements;
 using BusinessLogic.Models.Points;
 using UI.Models.Badges;
 using UI.Models.Players;
@@ -58,8 +59,8 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         private GameDefinition gameDefinitionThatIsFormerlyChampionedByCurrentPlayer;
         private readonly int gameDefinitionIdThatIsBothCurrentlyAndFormerlyChampionedByCurrentPlayer = 1001;
         private GameDefinition gameDefinitionThatIsBothCurrentlyAndFormerlyChampionedByCurrentPlayer;
-        private Achievement achievement1;
-        private Achievement achievement2;
+        private AwardedAchievement awardedAchievement1;
+        private AwardedAchievement awardedAchievement2;
 
         [SetUp]
         public void TestFixtureSetUp()
@@ -250,21 +251,24 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
             };
             playerDetails.FormerChampionedGames = formerChampionedGames;
 
-            achievement1 = new Achievement {
-                Id = 1,
-                Description = "you are so good",
-                FontAwesomeIcon = "fa-trophy"
-            };
-            achievement2 = new Achievement
+            awardedAchievement1 = new AwardedAchievement
             {
-                Id = 1,
-                Description = "you did something really amazing",
-                FontAwesomeIcon = "fa-toilet"
+                Description = "achievement description 1",
+                FontAwesomeIcon = "fa-trophy",
+                Name = "achievement name 1",
+                AchievementLevel = AchievementLevelEnum.Level1
             };
-            playerDetails.Achievements = new List<Achievement>
+            awardedAchievement2 = new AwardedAchievement
             {
-                achievement1,
-                achievement2
+                Description = "achievement description 2",
+                FontAwesomeIcon = "fa-trophy2",
+                Name = "achievement name 2",
+                AchievementLevel = AchievementLevelEnum.Level3
+            };
+            playerDetails.Achievements = new List<AwardedAchievement>
+            {
+                awardedAchievement1,
+                awardedAchievement2
             };
 
             builder = new PlayerDetailsViewModelBuilder(gameResultViewModelBuilder, minionViewModelBuilderMock);
@@ -428,14 +432,16 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         public void ItCopiesTheAchievements()
         {
             var firstAchievement = playerDetails.Achievements[0];
-            Assert.That(firstAchievement.Name, Is.EqualTo(achievement1.Name));
-            Assert.That(firstAchievement.Description, Is.EqualTo(achievement1.Description));
-            Assert.That(firstAchievement.FontAwesomeIcon, Is.EqualTo(achievement1.FontAwesomeIcon));
+            Assert.That(firstAchievement.Name, Is.EqualTo(awardedAchievement1.Name));
+            Assert.That(firstAchievement.Description, Is.EqualTo(awardedAchievement1.Description));
+            Assert.That(firstAchievement.FontAwesomeIcon, Is.EqualTo(awardedAchievement1.FontAwesomeIcon));
+            Assert.That(firstAchievement.AchievementLevel, Is.EqualTo(awardedAchievement1.AchievementLevel));
 
             var secondAchievement = playerDetails.Achievements[1];
             Assert.That(secondAchievement.Name, Is.EqualTo(secondAchievement.Name));
             Assert.That(secondAchievement.Description, Is.EqualTo(secondAchievement.Description));
             Assert.That(secondAchievement.FontAwesomeIcon, Is.EqualTo(secondAchievement.FontAwesomeIcon));
+            Assert.That(secondAchievement.AchievementLevel, Is.EqualTo(secondAchievement.AchievementLevel));
         }
 
         [Test]

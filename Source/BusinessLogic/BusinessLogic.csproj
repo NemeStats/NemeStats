@@ -234,6 +234,8 @@
       <DependentUpon>201604260139082_DiversifiedAchievement.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\Achievement.cs" />
+    <Compile Include="Models\Achievements\AchievementLevelEnum.cs" />
+    <Compile Include="Models\Achievements\AwardedAchievement.cs" />
     <Compile Include="Models\Games\TrendingGame.cs" />
     <Compile Include="Logic\Points\IWeightTierCalculator.cs" />
     <Compile Include="Models\PlayerAchievement.cs" />
