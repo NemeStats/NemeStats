@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations.Schema;
 using BusinessLogic.DataAccess;
+using BusinessLogic.Models.Achievements;
 
 namespace BusinessLogic.Models
 {
@@ -20,7 +21,7 @@ namespace BusinessLogic.Models
         public int PlayerId { get; set; }
         [Index("IX_PLAYERID_AND_ACHIEVEMENTID", 2, IsUnique = true)]
         public int AchievementId { get; set; }
-        public int AchievementLevel { get; set; }
+        public AchievementLevelEnum AchievementLevel { get; set; }
 
         public virtual PlayedGame PlayedGameThatTriggeredAchievement { get; set; }
         public virtual Player Player { get; set; }

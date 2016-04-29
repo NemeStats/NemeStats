@@ -6,5 +6,10 @@
         public string Description { get; set; }
         public string FontAwesomeIcon { get; set; }
         public AchievementLevelEnum AchievementLevel { get; set; }
+        public string Notes { get; set; }
+        public int AchievementLevel1Threshold { get; set; }
+        public int AchievementLevel2Threshold { get; set; }
+        public int AchievementLevel3Threshold { get; set; }
+
     }
 }
