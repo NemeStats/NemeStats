@@ -18,6 +18,7 @@
 using BusinessLogic.DataAccess;
 using BusinessLogic.DataAccess.Security;
 using BusinessLogic.EventTracking;
+using BusinessLogic.Logic.Achievements;
 using BusinessLogic.Logic.Champions;
 using BusinessLogic.Logic.Nemeses;
 using BusinessLogic.Logic.Points;
@@ -26,18 +27,20 @@ using BusinessLogic.Models.Games;
 using BusinessLogic.Models.User;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web.Hosting;
 
 namespace BusinessLogic.Logic.PlayedGames
 {
     public class PlayedGameCreator : IPlayedGameCreator
     {
-        private readonly IDataContext dataContext;
-        private readonly INemeStatsEventTracker playedGameTracker;
-        private readonly INemesisRecalculator nemesisRecalculator;
-        private readonly IChampionRecalculator championRecalculator;
-        private readonly ISecuredEntityValidator<Player> securedEntityValidatorForPlayer;
-        private readonly ISecuredEntityValidator<GameDefinition> securedEntityValidatorForGameDefinition;
-        private readonly IPointsCalculator pointsCalculator;
+        private readonly IDataContext _dataContext;
+        private readonly INemeStatsEventTracker _playedGameTracker;
+        private readonly INemesisRecalculator _nemesisRecalculator;
+        private readonly IChampionRecalculator _championRecalculator;
+        private readonly ISecuredEntityValidator<Player> _securedEntityValidatorForPlayer;
+        private readonly ISecuredEntityValidator<GameDefinition> _securedEntityValidatorForGameDefinition;
+        private readonly IPointsCalculator _pointsCalculator;
+        private readonly IAchievementAwarder _achievementAwarder;
 
         public PlayedGameCreator(
             IDataContext applicationDataContext,
@@ -46,26 +49,27 @@ namespace BusinessLogic.Logic.PlayedGames
             IChampionRecalculator championRecalculator, 
             ISecuredEntityValidator<Player> securedEntityValidatorForPlayer, 
             ISecuredEntityValidator<GameDefinition> securedEntityValidatorForGameDefinition, 
-            IPointsCalculator pointsCalculator)
+            IPointsCalculator pointsCalculator, IAchievementAwarder achievementAwarder)
         {
-            dataContext = applicationDataContext;
-            this.playedGameTracker = playedGameTracker;
-            this.nemesisRecalculator = nemesisRecalculator;
-            this.championRecalculator = championRecalculator;
-            this.securedEntityValidatorForPlayer = securedEntityValidatorForPlayer;
-            this.securedEntityValidatorForGameDefinition = securedEntityValidatorForGameDefinition;
-            this.pointsCalculator = pointsCalculator;
+            _dataContext = applicationDataContext;
+            this._playedGameTracker = playedGameTracker;
+            this._nemesisRecalculator = nemesisRecalculator;
+            this._championRecalculator = championRecalculator;
+            this._securedEntityValidatorForPlayer = securedEntityValidatorForPlayer;
+            this._securedEntityValidatorForGameDefinition = securedEntityValidatorForGameDefinition;
+            this._pointsCalculator = pointsCalculator;
+            _achievementAwarder = achievementAwarder;
         }
 
         //TODO need to have validation logic here (or on PlayedGame similar to what is on NewlyCompletedGame)
         public PlayedGame CreatePlayedGame(NewlyCompletedGame newlyCompletedGame, TransactionSource transactionSource, ApplicationUser currentUser)
         {
-            var gameDefinition = dataContext.FindById<GameDefinition>(newlyCompletedGame.GameDefinitionId);
-            securedEntityValidatorForGameDefinition.ValidateAccess(gameDefinition, currentUser, typeof(GameDefinition), newlyCompletedGame.GameDefinitionId);
+            var gameDefinition = _dataContext.FindById<GameDefinition>(newlyCompletedGame.GameDefinitionId);
+            _securedEntityValidatorForGameDefinition.ValidateAccess(gameDefinition, currentUser, typeof(GameDefinition), newlyCompletedGame.GameDefinitionId);
             BoardGameGeekGameDefinition boardGameGeekGameDefinition = null;
             if (gameDefinition.BoardGameGeekGameDefinitionId.HasValue)
             {
-                boardGameGeekGameDefinition = dataContext.FindById<BoardGameGeekGameDefinition>(gameDefinition.BoardGameGeekGameDefinitionId);
+                boardGameGeekGameDefinition = _dataContext.FindById<BoardGameGeekGameDefinition>(gameDefinition.BoardGameGeekGameDefinitionId);
             }
 
             ValidateAccessToPlayers(newlyCompletedGame, currentUser);
@@ -80,15 +84,17 @@ namespace BusinessLogic.Logic.PlayedGames
                 currentUser.Id,
                 playerGameResults);
 
-            dataContext.Save(playedGame, currentUser);
+            _dataContext.Save(playedGame, currentUser);
 
-            playedGameTracker.TrackPlayedGame(currentUser, transactionSource);
+            _playedGameTracker.TrackPlayedGame(currentUser, transactionSource);
 
             foreach (var result in playerGameResults)
             {
-                nemesisRecalculator.RecalculateNemesis(result.PlayerId, currentUser);
+                _nemesisRecalculator.RecalculateNemesis(result.PlayerId, currentUser);
             }
-            championRecalculator.RecalculateChampion(playedGame.GameDefinitionId, currentUser, false);
+            _championRecalculator.RecalculateChampion(playedGame.GameDefinitionId, currentUser, false);
+
+            AwardAchievements(playerGameResults.Select(x => x.PlayerId).ToList());
 
             return playedGame;
         }
@@ -97,8 +103,8 @@ namespace BusinessLogic.Logic.PlayedGames
         {
             foreach (var playerRank in newlyCompletedGame.PlayerRanks)
             {
-                var player = this.dataContext.FindById<Player>(playerRank.PlayerId);
-                securedEntityValidatorForPlayer.ValidateAccess(player, currentUser, typeof(Player), player.Id);
+                var player = this._dataContext.FindById<Player>(playerRank.PlayerId);
+                _securedEntityValidatorForPlayer.ValidateAccess(player, currentUser, typeof(Player), player.Id);
             }
         }
 
@@ -106,7 +112,7 @@ namespace BusinessLogic.Logic.PlayedGames
             NewlyCompletedGame newlyCompletedGame,
             BoardGameGeekGameDefinition bggGameDefinition)
         {
-            var pointsDictionary = pointsCalculator.CalculatePoints(newlyCompletedGame.PlayerRanks, bggGameDefinition);
+            var pointsDictionary = _pointsCalculator.CalculatePoints(newlyCompletedGame.PlayerRanks, bggGameDefinition);
 
             var playerGameResults = newlyCompletedGame.PlayerRanks
                                         .Select(playerRank =>
@@ -145,6 +151,11 @@ namespace BusinessLogic.Logic.PlayedGames
                 CreatedByApplicationUserId = applicationUserId
             };
             return playedGame;
+        }
+
+        internal virtual void AwardAchievements(List<int> playerIds)
+        {
+            HostingEnvironment.QueueBackgroundWorkItem(x => _achievementAwarder.AwardNewAchievements(playerIds));
         }
     }
 }
