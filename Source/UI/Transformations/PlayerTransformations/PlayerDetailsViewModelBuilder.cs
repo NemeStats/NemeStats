@@ -70,7 +70,14 @@ namespace UI.Transformations.PlayerTransformations
                 WinPercentage = playerDetails.PlayerStats.WinPercentage,
                 TotalChampionedGames = playerDetails.ChampionedGames.Count,
                 LongestWinningStreak = playerDetails.LongestWinningStreak,
-                Achievements = playerDetails.Achievements.Select(x => new AchievementViewModel(x.Name, x.Description, x.FontAwesomeIcon, x.AchievementLevel)).ToList()
+                Achievements = playerDetails.Achievements.Select(x => new AchievementViewModel(
+                    x.Name, 
+                    x.Description, 
+                    x.FontAwesomeIcon, 
+                    x.AchievementLevel,
+                    x.AchievementLevel1Threshold,
+                    x.AchievementLevel2Threshold,
+                    x.AchievementLevel3Threshold)).ToList()
             };
 
             PopulatePlayerVersusPlayersViewModel(playerDetails, playerDetailsViewModel);

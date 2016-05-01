@@ -436,12 +436,18 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
             Assert.That(firstAchievement.Description, Is.EqualTo(awardedAchievement1.Description));
             Assert.That(firstAchievement.FontAwesomeIcon, Is.EqualTo(awardedAchievement1.FontAwesomeIcon));
             Assert.That(firstAchievement.AchievementLevel, Is.EqualTo(awardedAchievement1.AchievementLevel));
+            Assert.That(firstAchievement.AchievementLevel1Threshold, Is.EqualTo(awardedAchievement1.AchievementLevel1Threshold));            Assert.That(firstAchievement.AchievementLevel1Threshold, Is.EqualTo(awardedAchievement1.AchievementLevel1Threshold));
+            Assert.That(firstAchievement.AchievementLevel2Threshold, Is.EqualTo(awardedAchievement1.AchievementLevel2Threshold));
+            Assert.That(firstAchievement.AchievementLevel3Threshold, Is.EqualTo(awardedAchievement1.AchievementLevel3Threshold));
 
             var secondAchievement = playerDetails.Achievements[1];
             Assert.That(secondAchievement.Name, Is.EqualTo(secondAchievement.Name));
             Assert.That(secondAchievement.Description, Is.EqualTo(secondAchievement.Description));
             Assert.That(secondAchievement.FontAwesomeIcon, Is.EqualTo(secondAchievement.FontAwesomeIcon));
             Assert.That(secondAchievement.AchievementLevel, Is.EqualTo(secondAchievement.AchievementLevel));
+            Assert.That(secondAchievement.AchievementLevel1Threshold, Is.EqualTo(awardedAchievement2.AchievementLevel1Threshold)); Assert.That(firstAchievement.AchievementLevel1Threshold, Is.EqualTo(awardedAchievement1.AchievementLevel1Threshold));
+            Assert.That(secondAchievement.AchievementLevel2Threshold, Is.EqualTo(awardedAchievement2.AchievementLevel2Threshold));
+            Assert.That(secondAchievement.AchievementLevel3Threshold, Is.EqualTo(awardedAchievement2.AchievementLevel3Threshold));
         }
 
         [Test]
