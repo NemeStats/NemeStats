@@ -159,3 +159,38 @@
         }
     }
 }
+
+.home-features {
+    padding: 0 50px;
+
+    .title {
+        text-align: center;
+        font-size: $font-size-h3;
+        margin: 15px 0;
+    }
+
+    .description {
+        margin-bottom: 15px;
+
+        .text {
+            min-height: 100px;
+            ul {
+                padding: 0;
+            }
+        }
+
+        button {
+            font-size: 14px;
+            margin-top: 10px;
+        }
+
+        .imgs {
+            text-align: center;
+
+            img {
+                width: 65px;
+                margin-top: 10px;
+            }
+        }
+    }
+}

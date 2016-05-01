@@ -5817,4 +5817,7 @@ button.close {
   .hidden-print {
     display: none !important; } }
 
+.modal-backdrop {
+  z-index: 0; }
+
 /*# sourceMappingURL=bootstrap.css.map */

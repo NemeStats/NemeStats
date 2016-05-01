@@ -10,7 +10,7 @@
         <div class="cta-wrapper container">
             <div class="row">
                 <div class="col-md-7 col-xs-12 subtitle">
-                    <img src="~/Content/Images/NemeStats-White.png" />
+                    <img src="~/Content/Images/NemeStats-White.png"/>
                     <div class="text">Board game tracking made fun!</div>
                 </div>
                 <div class="col-md-5 col-md-offset-0 col-xs-10 col-xs-offset-1">
@@ -30,19 +30,21 @@
                                 @{ Html.RenderAction(MVC.Account.LoginForm()); }
                             </div>
                         </div>
-                                    }
-                                    else
-                                    {
-                                        <div>
-                                            @{ Html.RenderAction(MVC.Player.CurrentPlayerQuickStats());    }
-                                        </div>
+                    }
+                    else
+                    {
+                        <div>
+                            @{ Html.RenderAction(MVC.Player.CurrentPlayerQuickStats()); }
+                        </div>
 
-                                                }
+                    }
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+@Html.Partial(MVC.Home.Views._HomeFeatures)
 
 <div class="home-body-container">
     <div class="col-md-12">
