@@ -28,8 +28,6 @@ namespace BusinessLogic.Migrations
                     {
                         Id = c.Int(nullable: false, identity: true),
                         DateCreated = c.DateTime(nullable: false),
-                        Notes = c.String(),
-                        PlayedGameId = c.Int(),
                         PlayerId = c.Int(nullable: false),
                         AchievementId = c.Int(nullable: false),
                         AchievementLevel = c.Int(nullable: false),
@@ -37,19 +35,22 @@ namespace BusinessLogic.Migrations
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Achievement", t => t.AchievementId, cascadeDelete: true)
                 .ForeignKey("dbo.Player", t => t.PlayerId, cascadeDelete: true)
-                .ForeignKey("dbo.PlayedGame", t => t.PlayedGameId)
-                .Index(t => t.PlayedGameId)
                 .Index(t => new { t.PlayerId, t.AchievementId }, unique: true, name: "IX_PLAYERID_AND_ACHIEVEMENTID");
-            
+
+            Sql(@"INSERT INTO dbo.Achievement (Id, Name, Description, FontAwesomeIcon, AchievementLevel1Threshold, AchievementLevel2Threshold, AchievementLevel3Threshold, PlayerCalculationSql) 
+            VALUES (1, 'Diversified', 'Played at least {0} different games.', 'fa-trophy', 5, 20, 100, 
+            'SELECT COUNT(DISTINCT PlayedGame.GameDefinitionId) AS Value
+              FROM[dbo].[PlayerGameResult]
+              INNER JOIN[dbo].[PlayedGame] on PlayerGameResult.PlayedGameId = PlayedGame.Id
+              WHERE PlayerGameResult.PlayerId = @playerId')");
         }
         
         public override void Down()
         {
-            DropForeignKey("dbo.PlayerAchievement", "PlayedGameId", "dbo.PlayedGame");
+            Sql("DELETE FROM Achievement");
             DropForeignKey("dbo.PlayerAchievement", "PlayerId", "dbo.Player");
             DropForeignKey("dbo.PlayerAchievement", "AchievementId", "dbo.Achievement");
             DropIndex("dbo.PlayerAchievement", "IX_PLAYERID_AND_ACHIEVEMENTID");
-            DropIndex("dbo.PlayerAchievement", new[] { "PlayedGameId" });
             DropTable("dbo.PlayerAchievement");
             DropTable("dbo.Achievement");
         }

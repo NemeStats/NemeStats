@@ -170,6 +170,8 @@
     <Compile Include="Export\IExcelGenerator.cs" />
     <Compile Include="Jobs\BoardGameGeekCleanUpService\LinkOrphanGamesResult.cs" />
     <Compile Include="Jobs\BoardGameGeekCleanUpService\BoardGameGeekBatchUpdateService.cs" />
+    <Compile Include="Logic\Achievements\AchievementAwarder.cs" />
+    <Compile Include="Logic\Achievements\IAchievementAwarder.cs" />
     <Compile Include="Logic\BoardGameGeek\BoardGameGeekGameDefinitionCreator.cs" />
     <Compile Include="Logic\BoardGameGeek\BoardGameGeekGamesImporter.cs" />
     <Compile Include="Logic\BoardGameGeek\BoardGameGeekUrlBuilder.cs" />
@@ -225,13 +227,9 @@
     <Compile Include="Migrations\201604100105557_MakePointsScoredDecimal.Designer.cs">
       <DependentUpon>201604100105557_MakePointsScoredDecimal.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201604260135477_Achievements.cs" />
-    <Compile Include="Migrations\201604260135477_Achievements.Designer.cs">
-      <DependentUpon>201604260135477_Achievements.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201604260139082_DiversifiedAchievement.cs" />
-    <Compile Include="Migrations\201604260139082_DiversifiedAchievement.Designer.cs">
-      <DependentUpon>201604260139082_DiversifiedAchievement.cs</DependentUpon>
+    <Compile Include="Migrations\201605010112294_Achievements.cs" />
+    <Compile Include="Migrations\201605010112294_Achievements.Designer.cs">
+      <DependentUpon>201605010112294_Achievements.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\Achievement.cs" />
     <Compile Include="Models\Achievements\AchievementLevelEnum.cs" />
@@ -819,11 +817,8 @@
     <EmbeddedResource Include="Migrations\201604100105557_MakePointsScoredDecimal.resx">
       <DependentUpon>201604100105557_MakePointsScoredDecimal.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201604260135477_Achievements.resx">
-      <DependentUpon>201604260135477_Achievements.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201604260139082_DiversifiedAchievement.resx">
-      <DependentUpon>201604260139082_DiversifiedAchievement.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201605010112294_Achievements.resx">
+      <DependentUpon>201605010112294_Achievements.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

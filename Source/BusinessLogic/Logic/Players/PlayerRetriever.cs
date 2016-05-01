@@ -236,7 +236,6 @@ namespace BusinessLogic.Logic.Players
                                   FontAwesomeIcon = y.Achievement.FontAwesomeIcon,
                                   AchievementLevel = y.AchievementLevel,
                                   Name = y.Achievement.Name,
-                                  Notes = y.Notes,
                                   Description = y.Achievement.Description,
                                   AchievementLevel1Threshold = y.Achievement.AchievementLevel1Threshold,
                                   AchievementLevel2Threshold = y.Achievement.AchievementLevel2Threshold,

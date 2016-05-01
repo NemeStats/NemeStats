@@ -303,8 +303,6 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
                 var expectedAchievement = new PlayerAchievement
                 {
                     AchievementLevel = AchievementLevelEnum.Level2,
-                    Notes = "some notes",
-                    PlayedGameId = 10,
                     PlayerId = player.Id,
                     Achievement = new Achievement
                     {
@@ -338,7 +336,6 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
                 Assert.That(actualAchievement.AchievementLevel, Is.EqualTo(expectedAchievement.AchievementLevel));
                 Assert.That(actualAchievement.Description, Is.EqualTo(expectedAchievement.Achievement.Description));
                 Assert.That(actualAchievement.Name, Is.EqualTo(expectedAchievement.Achievement.Name));
-                Assert.That(actualAchievement.Notes, Is.EqualTo(expectedAchievement.Notes));
                 Assert.That(actualAchievement.AchievementLevel1Threshold, Is.EqualTo(expectedAchievement.Achievement.AchievementLevel1Threshold));
                 Assert.That(actualAchievement.AchievementLevel2Threshold, Is.EqualTo(expectedAchievement.Achievement.AchievementLevel2Threshold));
                 Assert.That(actualAchievement.AchievementLevel3Threshold, Is.EqualTo(expectedAchievement.Achievement.AchievementLevel3Threshold));

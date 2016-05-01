@@ -27,6 +27,7 @@ using BusinessLogic.Models.Games;
 using BusinessLogic.Models.User;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web.Hosting;
 
 namespace BusinessLogic.Logic.PlayedGames
@@ -155,7 +156,7 @@ namespace BusinessLogic.Logic.PlayedGames
 
         internal virtual void AwardAchievements(List<int> playerIds)
         {
-            HostingEnvironment.QueueBackgroundWorkItem(x => _achievementAwarder.AwardNewAchievements(playerIds));
+            _achievementAwarder.AwardNewAchievements(playerIds);
         }
     }
 }

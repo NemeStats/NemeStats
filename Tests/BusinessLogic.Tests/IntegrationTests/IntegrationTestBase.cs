@@ -32,6 +32,7 @@ using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using BusinessLogic.Logic.Achievements;
 using BusinessLogic.Logic.Points;
 using BusinessLogic.Models.PlayedGames;
 using UniversalAnalyticsHttpWrapper;
@@ -184,14 +185,16 @@ namespace BusinessLogic.Tests.IntegrationTests
 
         private void CreatePlayedGames(NemeStatsDataContext dataContext)
         {
-            IPlayerRepository playerRepository = new EntityFrameworkPlayerRepository(dataContext);
-            INemesisRecalculator nemesisRecalculator = new NemesisRecalculator(dataContext, playerRepository);
-            IChampionRepository championRepository = new ChampionRepository(dataContext);
-            IChampionRecalculator championRecalculator = new ChampionRecalculator(dataContext, championRepository);
-            ISecuredEntityValidator<Player> securedEntityValidatorForPlayers = new SecuredEntityValidator<Player>(dataContext);
-            ISecuredEntityValidator<GameDefinition> securedEntityValidatorForGameDefinition = new SecuredEntityValidator<GameDefinition>(dataContext);
+            var playerRepository = new EntityFrameworkPlayerRepository(dataContext);
+            var nemesisRecalculator = new NemesisRecalculator(dataContext, playerRepository);
+            var championRepository = new ChampionRepository(dataContext);
+            var championRecalculator = new ChampionRecalculator(dataContext, championRepository);
+            var securedEntityValidatorForPlayers = new SecuredEntityValidator<Player>(dataContext);
+            var securedEntityValidatorForGameDefinition = new SecuredEntityValidator<GameDefinition>(dataContext);
             var weightBonusCalculator = new WeightBonusCalculator(new WeightTierCalculator());
-            IPointsCalculator pointsCalculator = new PointsCalculator(weightBonusCalculator, new GameDurationBonusCalculator());
+            var pointsCalculator = new PointsCalculator(weightBonusCalculator, new GameDurationBonusCalculator());
+            var achievementAwarder = new AchievementAwarder(dataContext);
+
             IPlayedGameCreator playedGameCreator = new PlayedGameCreator(
                 dataContext, 
                 playedGameTracker, 
@@ -199,7 +202,8 @@ namespace BusinessLogic.Tests.IntegrationTests
                 championRecalculator, 
                 securedEntityValidatorForPlayers,
                 securedEntityValidatorForGameDefinition,
-                pointsCalculator);
+                pointsCalculator,
+                achievementAwarder);
             
             List<Player> players = new List<Player>() { testPlayer1, testPlayer2 };
             List<int> playerRanks = new List<int>() { 1, 1 };

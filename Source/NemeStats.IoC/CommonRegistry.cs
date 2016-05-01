@@ -26,6 +26,7 @@ using BusinessLogic.DataAccess.Security;
 using BusinessLogic.EventTracking;
 using BusinessLogic.Export;
 using BusinessLogic.Jobs.BoardGameGeekCleanUpService;
+using BusinessLogic.Logic.Achievements;
 using BusinessLogic.Logic.BoardGameGeek;
 using BusinessLogic.Logic.Champions;
 using BusinessLogic.Logic.Email;
@@ -157,6 +158,7 @@ namespace NemeStats.IoC
             For<IWeightTierCalculator>().Use<WeightTierCalculator>();
             For<IWeightBonusCalculator>().Use<WeightBonusCalculator>();
             For<IGameDurationBonusCalculator>().Use<GameDurationBonusCalculator>();
+            For<IAchievementAwarder>().Use<AchievementAwarder>();
         }
 
         private void SetupUniquePerRequestMappings()

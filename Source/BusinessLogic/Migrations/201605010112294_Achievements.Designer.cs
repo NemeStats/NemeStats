@@ -6,14 +6,14 @@ namespace BusinessLogic.Migrations
     using System.Data.Entity.Migrations.Infrastructure;
     using System.Resources;
     
-    [GeneratedCode("EntityFramework.Migrations", "6.1.1-30610")]
-    public sealed partial class AddMiddleNameToPlayer : IMigrationMetadata
+    [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
+    public sealed partial class Achievements : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(AddMiddleNameToPlayer));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(Achievements));
         
         string IMigrationMetadata.Id
         {
-            get { return "201407291846382_AddMiddleNameToPlayer"; }
+            get { return "201605010112294_Achievements"; }
         }
         
         string IMigrationMetadata.Source

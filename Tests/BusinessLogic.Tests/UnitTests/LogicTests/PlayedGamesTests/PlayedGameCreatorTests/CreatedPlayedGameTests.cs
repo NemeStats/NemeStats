@@ -51,6 +51,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameCr
         {
             autoMocker = new RhinoAutoMocker<PlayedGameCreator>();
             autoMocker.PartialMockTheClassUnderTest();
+            autoMocker.ClassUnderTest.Expect(mock => mock.AwardAchievements(null)).IgnoreArguments();
 
             currentUser = new ApplicationUser
             {
@@ -373,8 +374,6 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameCr
                           {expectedPlayerId2, new PointsScorecard()},
                           {expectedPlayerId3, new PointsScorecard()}
                      });
-
-            autoMocker.ClassUnderTest.Expect(mock => mock.AwardAchievements(null)).IgnoreArguments();
 
             //--act
             autoMocker.ClassUnderTest.CreatePlayedGame(newlyCompletedGame, TransactionSource.WebApplication, currentUser);
