@@ -96,10 +96,12 @@ namespace UI.Controllers
             public _ViewNamesClass ViewNames { get { return s_ViewNames; } }
             public class _ViewNamesClass
             {
+                public readonly string _HomeFeatures = "_HomeFeatures";
                 public readonly string About = "About";
                 public readonly string AboutNemePoints = "AboutNemePoints";
                 public readonly string Index = "Index";
             }
+            public readonly string _HomeFeatures = "~/Views/Home/_HomeFeatures.cshtml";
             public readonly string About = "~/Views/Home/About.cshtml";
             public readonly string AboutNemePoints = "~/Views/Home/AboutNemePoints.cshtml";
             public readonly string Index = "~/Views/Home/Index.cshtml";

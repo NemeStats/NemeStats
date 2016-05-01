@@ -215,6 +215,27 @@
               margin-bottom: 0;
               padding-bottom: 15px; }
 
+.home-features {
+  padding: 0 50px; }
+  .home-features .title {
+    text-align: center;
+    font-size: 26px;
+    margin: 15px 0; }
+  .home-features .description {
+    margin-bottom: 15px; }
+    .home-features .description .text {
+      min-height: 100px; }
+      .home-features .description .text ul {
+        padding: 0; }
+    .home-features .description button {
+      font-size: 14px;
+      margin-top: 10px; }
+    .home-features .description .imgs {
+      text-align: center; }
+      .home-features .description .imgs img {
+        width: 65px;
+        margin-top: 10px; }
+
 /*$header-background-color: #2C3E50;*/
 body {
   padding-top: 50px;
