@@ -10,7 +10,7 @@
 
 
     <div class="row">
-        <div class="col-xs-8">
+        <div class="col-xs-7">
             <b>
                 @Rank()
 
@@ -21,34 +21,7 @@
         @TotalPoints()
     </div>
 
-
-
-    <div class="alert alert-info collapse" id="@Model.Id">
-        @Model.GameResult.NemePointsSummary.BaseNemePoints <span>base points</span>
-        @if (Model.GameResult.NemePointsSummary.WeightBonusNemePoints > 0)
-        {
-            <span>
-                + @Model.GameResult.NemePointsSummary.WeightBonusNemePoints <span class="fa fa-balance-scale" data-container="body" data-toggle="popover" data-placement="top"
-                                                                data-content="Bonus NemePoints earned due to the game weight"></span> points
-            </span>
-        }
-        @if (Model.GameResult.NemePointsSummary.GameDurationBonusNemePoints > 0)
-        {
-            <span>
-                + @Model.GameResult.NemePointsSummary.GameDurationBonusNemePoints <span class="fa fa-clock-o" data-container="body" data-toggle="popover" data-placement="top"
-                                                                  data-content="Bonus NemePoints earned due to the game duration"></span> points
-            </span>
-        }
-        @if (Model.GameResult.NemePointsSummary.GameDurationBonusNemePoints < 0)
-        {
-            <span>
-                @Model.GameResult.NemePointsSummary.GameDurationBonusNemePoints <span class="fa fa-clock-o" data-container="body" data-toggle="popover" data-placement="top"
-                                                                data-content="NemePoints penalty due to the game duration"></span> points
-            </span>
-        }
-        <span>= @Model.GameResult.NemePointsSummary.TotalNemePoints <span class="fa-stack neme-points-ico"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x letter">N</i></span></span>
-        <div><a href="@Url.Action(MVC.Home.AboutNemePoints())">more info about NemePoints calculation</a></div>
-    </div>
+    @Html.Partial("_NemePointsBreakdown", Model.GameResult.NemePointsSummary, new ViewDataDictionary { { "templateid", Model.Id } })
 </div>
 
 @helper Rank()
@@ -63,7 +36,7 @@ if (Model.WinnerType.HasValue && Model.WinnerType.Value == WinnerTypes.TeamWin)
 }
 else if (Model.WinnerType.HasValue && Model.WinnerType.Value == WinnerTypes.TeamLoss)
 {
-        <span class="fa-stack rank"  data-toggle="popover" data-placement="top" data-content="Everyone lost">
+        <span class="fa-stack rank" data-toggle="popover" data-placement="top" data-content="Everyone lost">
             <i class="fa fa-square fa-stack-2x text-danger"></i>
             <i class="fa fa-inverse fa-stack-1x fa-frown-o"></i>
         </span>
@@ -80,9 +53,11 @@ else
 }
 @helper TotalPoints()
 {
-    <div class="col-xs-4 total" onclick="UIUtils.toggleVisibility('#@Model.Id')">
-      
+    <div class="col-xs-5 total">
+        <span data-toggle="popover" data-html="true" data-templateselector="#@Model.Id" data-title="NemePoints breakdown">
+
             @Model.GameResult.NemePointsSummary.TotalNemePoints<span class="fa-stack neme-points-ico"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x letter">N</i></span>
+        </span>
 
     </div>
 }

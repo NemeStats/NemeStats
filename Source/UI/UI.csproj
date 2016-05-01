@@ -466,7 +466,10 @@
     <Content Include="Content\font-awesome.css" />
     <Content Include="Content\font-awesome.min.css" />
     <Content Include="Content\Images\bgg_small.png" />
+    <Content Include="Content\Images\Home\AppStore.png" />
     <Content Include="Content\Images\Home\Banner.jpg" />
+    <Content Include="Content\Images\Home\BGStats.png" />
+    <Content Include="Content\Images\Home\boardgamegeek.png" />
     <Content Include="Content\Images\NemeStats-White.png" />
     <Content Include="Content\Images\NemeStats.png" />
     <Content Include="Content\Images\spinner.gif" />
@@ -730,12 +733,11 @@
     <Content Include="Views\GameDefinition\TrendingGames.cshtml" />
     <Content Include="Views\PlayedGame\_GameResult.cshtml" />
     <Content Include="Views\Home\AboutNemePoints.cshtml" />
+    <Content Include="Views\Shared\_NemePointsBreakdown.cshtml" />
+    <Content Include="Views\Home\_HomeFeatures.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Code\" />
-    <Folder Include="App_Data\" />
     <Folder Include="Areas\Api\Views\Shared\" />
-    <Folder Include="Views\Jobs\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

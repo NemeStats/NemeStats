@@ -9,7 +9,7 @@
 
 <div id="player-details">
     <h2 class="page-header">
-        @Html.DisplayFor(model => model.PlayerName)
+        @Html.DisplayFor(model => model.PlayerName) on @Html.ActionLink(Model.GamingGroupName, MVC.GamingGroup.ActionNames.Details, MVC.GamingGroup.Name, new { id = Model.GamingGroupId }, new { })
         @if (Model.UserCanEdit)
         {
             <a href="@Url.Action(MVC.Player.ActionNames.Edit,MVC.Player.Name, new{id = Model.PlayerId})" class="btn btn-xs btn-default">
@@ -115,7 +115,12 @@
                     </tr>
                     <tr>
                         <td><strong>Total Points:</strong></td>
-                        <td>@Model.NemePointsSummary.TotalNemePoints @Html.NemePointsIco()</td>
+                        @Html.Partial("_NemePointsBreakdown", Model.NemePointsSummary, new ViewDataDictionary { { "templateid", Model.PlayerId } })
+                        <td>
+                            <span data-toggle="popover" data-html="true" data-templateselector="#@Model.PlayerId" data-title="NemePoints breakdown">
+                                @Model.NemePointsSummary.TotalNemePoints @Html.NemePointsIco()
+                            </span>
+                        </td>
                     </tr>
                     <tr>
                         <td><strong>Total Championed Games:</strong></td>

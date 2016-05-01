@@ -22,7 +22,7 @@
 
     @Html.RenderTempDataMessage(TempMessageKeys.CREATE_GAMEDEFITION_RESULT_TEMPMESSAGE)
 
-    <div class="well filter">
+    <div class="well well-sm filter">
         @using (Html.BeginForm(MVC.GamingGroup.Index(), FormMethod.Get))
         {
             <div class="control-block">
@@ -32,7 +32,7 @@
                 </div>
                 <div>
                     @Html.ValidationMessage("Iso8601FromDate")
-                    <input type="date" id="from-date-picker" name="Iso8601FromDate" value="@Model.DateRangeFilter.Iso8601FromDate" />
+                    <input class="form-control input-sm" type="date" id="from-date-picker" name="Iso8601FromDate" value="@Model.DateRangeFilter.Iso8601FromDate" />
                 </div>
             </div>
             <div class="control-block">
@@ -42,11 +42,11 @@
                 </div>
                 <div>
                     @Html.ValidationMessage("Iso8601ToDate")
-                    <input type="date" id="to-date-picker" name="Iso8601ToDate" value="@Model.DateRangeFilter.Iso8601ToDate" />
+                    <input class="form-control input-sm" type="date" id="to-date-picker" name="Iso8601ToDate" value="@Model.DateRangeFilter.Iso8601ToDate" />
                 </div>
             </div>
             <div class="control-block">
-                <button class="btn btn-primary" type="submit"><span class="fa fa-filter"></span> Filter Statistics</button>
+                <button class="btn btn-primary btn-sm" type="submit"><span class="fa fa-filter"></span> Filter Statistics</button>
                 @Html.ValidationMessage("dateRangeFilter")
             </div>
         }

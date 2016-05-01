@@ -17,16 +17,13 @@
 #endregion
 using System.Web.Http;
 using BusinessLogic.DataAccess;
-using StructureMap;
 using StructureMap.Web.Pipeline;
 using System;
 using System.Data.Entity;
-using System.Linq;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 using UI.App_Start;
-using UI.DependencyResolution;
 using UI.Transformations;
 
 namespace UI

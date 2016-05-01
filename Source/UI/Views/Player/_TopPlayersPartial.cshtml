@@ -15,7 +15,9 @@
 		</thead>
         @{ var position = 1; }
 		@foreach (UI.Models.Players.TopPlayerViewModel playerSummaryViewModel in @Model)
-		{
+        {
+            @Html.Partial("_NemePointsBreakdown", playerSummaryViewModel.NemePointsSummary, new ViewDataDictionary { { "templateid", playerSummaryViewModel.PlayerId } })
+
 			<tr data-position="@position">
                 @{ position++; }
 			    <td>@Html.ActionLink(playerSummaryViewModel.PlayerName, "Details", "Player", new
@@ -24,7 +26,11 @@
 			        }, new
 			        {
 			        })</td>
-                <td>@playerSummaryViewModel.NemePointsSummary.TotalNemePoints</td>
+			    <td>
+                    <span data-toggle="popover" data-html="true" data-templateselector="#@playerSummaryViewModel.PlayerId" data-title="NemePoints breakdown">
+                        @playerSummaryViewModel.NemePointsSummary.TotalNemePoints
+                    </span>
+			    </td>
 				<td>@playerSummaryViewModel.TotalNumberOfGamesPlayed</td>
 				<td>@playerSummaryViewModel.WinPercentage&nbsp;%</td>
 			</tr>

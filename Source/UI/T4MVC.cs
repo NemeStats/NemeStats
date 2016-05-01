@@ -121,6 +121,7 @@ namespace Links
             public static readonly string createGameDefinition_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/createGameDefinition.min.js") ? Url("createGameDefinition.min.js") : Url("createGameDefinition.js");
             public static readonly string createGameDefinitionPartial_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/createGameDefinitionPartial.min.js") ? Url("createGameDefinitionPartial.min.js") : Url("createGameDefinitionPartial.js");
             public static readonly string gameDefinitionAutoComplete_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/gameDefinitionAutoComplete.min.js") ? Url("gameDefinitionAutoComplete.min.js") : Url("gameDefinitionAutoComplete.js");
+            public static readonly string GameDefinitionPlayersSummaryPartial_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/GameDefinitionPlayersSummaryPartial.min.js") ? Url("GameDefinitionPlayersSummaryPartial.min.js") : Url("GameDefinitionPlayersSummaryPartial.js");
             public static readonly string gameDefinitions_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/gameDefinitions.min.js") ? Url("gameDefinitions.min.js") : Url("gameDefinitions.js");
         }
     
@@ -165,6 +166,8 @@ namespace Links
         public static readonly string jquery_validate_min_js = Url("jquery.validate.min.js");
         public static readonly string jquery_validate_unobtrusive_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery.validate.unobtrusive.min.js") ? Url("jquery.validate.unobtrusive.min.js") : Url("jquery.validate.unobtrusive.js");
         public static readonly string jquery_validate_unobtrusive_min_js = Url("jquery.validate.unobtrusive.min.js");
+        public static readonly string list_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/list.min.js") ? Url("list.min.js") : Url("list.js");
+        public static readonly string list_pagination_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/list.pagination.min.js") ? Url("list.pagination.min.js") : Url("list.pagination.js");
         public static readonly string moment_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/moment.min.js") ? Url("moment.min.js") : Url("moment.js");
         public static readonly string moment_min_js = Url("moment.min.js");
         public static readonly string namespace_1_0_0_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/namespace-1.0.0.min.js") ? Url("namespace-1.0.0.min.js") : Url("namespace-1.0.0.js");
@@ -200,6 +203,7 @@ namespace Links
         public static readonly string readmore_min_js = Url("readmore.min.js");
         public static readonly string respond_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/respond.min.js") ? Url("respond.min.js") : Url("respond.js");
         public static readonly string respond_min_js = Url("respond.min.js");
+        public static readonly string responsive_bootstrap_toolkit_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/responsive-bootstrap-toolkit.min.js") ? Url("responsive-bootstrap-toolkit.min.js") : Url("responsive-bootstrap-toolkit.js");
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public static class Shared {
             private const string URLPATH = "~/Scripts/Shared";
@@ -207,6 +211,7 @@ namespace Links
             public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
             public static readonly string _Layout_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/_Layout.min.js") ? Url("_Layout.min.js") : Url("_Layout.js");
             public static readonly string GoogleAnalytics_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/GoogleAnalytics.min.js") ? Url("GoogleAnalytics.min.js") : Url("GoogleAnalytics.js");
+            public static readonly string UIUtils_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/UIUtils.min.js") ? Url("UIUtils.min.js") : Url("UIUtils.js");
         }
     
         public static readonly string vue_min_js = Url("vue.min.js");
@@ -230,7 +235,10 @@ namespace Links
                 private const string URLPATH = "~/Content/Images/Home";
                 public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
                 public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
+                public static readonly string AppStore_png = Url("AppStore.png");
                 public static readonly string Banner_jpg = Url("Banner.jpg");
+                public static readonly string BGStats_png = Url("BGStats.png");
+                public static readonly string Geek_Head_jpg = Url("Geek_Head.jpg");
             }
         
             public static readonly string NemeStats_White_png = Url("NemeStats-White.png");
@@ -332,6 +340,7 @@ namespace Links
                     public const string createGameDefinition_js = "~/Scripts/GameDefinition/createGameDefinition.js"; 
                     public const string createGameDefinitionPartial_js = "~/Scripts/GameDefinition/createGameDefinitionPartial.js"; 
                     public const string gameDefinitionAutoComplete_js = "~/Scripts/GameDefinition/gameDefinitionAutoComplete.js"; 
+                    public const string GameDefinitionPlayersSummaryPartial_js = "~/Scripts/GameDefinition/GameDefinitionPlayersSummaryPartial.js"; 
                     public const string gameDefinitions_js = "~/Scripts/GameDefinition/gameDefinitions.js"; 
                 }
             }
@@ -380,6 +389,7 @@ namespace Links
                 {
                     public const string _Layout_js = "~/Scripts/Shared/_Layout.js"; 
                     public const string GoogleAnalytics_js = "~/Scripts/Shared/GoogleAnalytics.js"; 
+                    public const string UIUtils_js = "~/Scripts/Shared/UIUtils.js"; 
                 }
             }
             public static class Assets
@@ -408,6 +418,8 @@ namespace Links
                 public const string jquery_validate_min_js = "~/Scripts/jquery.validate.min.js"; 
                 public const string jquery_validate_unobtrusive_js = "~/Scripts/jquery.validate.unobtrusive.js"; 
                 public const string jquery_validate_unobtrusive_min_js = "~/Scripts/jquery.validate.unobtrusive.min.js"; 
+                public const string list_js = "~/Scripts/list.js"; 
+                public const string list_pagination_js = "~/Scripts/list.pagination.js"; 
                 public const string moment_js = "~/Scripts/moment.js"; 
                 public const string moment_min_js = "~/Scripts/moment.min.js"; 
                 public const string namespace_1_0_0_js = "~/Scripts/namespace-1.0.0.js"; 
@@ -415,6 +427,7 @@ namespace Links
                 public const string readmore_min_js = "~/Scripts/readmore.min.js"; 
                 public const string respond_js = "~/Scripts/respond.js"; 
                 public const string respond_min_js = "~/Scripts/respond.min.js"; 
+                public const string responsive_bootstrap_toolkit_js = "~/Scripts/responsive-bootstrap-toolkit.js"; 
                 public const string vue_min_js = "~/Scripts/vue.min.js"; 
             }
         }
