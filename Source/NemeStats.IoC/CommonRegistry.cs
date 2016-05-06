@@ -30,25 +30,25 @@ using BusinessLogic.Logic.Achievements;
 using BusinessLogic.Logic.BoardGameGeek;
 using BusinessLogic.Logic.Champions;
 using BusinessLogic.Logic.Email;
-    using BusinessLogic.Logic.GameDefinitions;
-    using BusinessLogic.Logic.GamingGroups;
+using BusinessLogic.Logic.GameDefinitions;
+using BusinessLogic.Logic.GamingGroups;
 using BusinessLogic.Logic.Nemeses;
-    using BusinessLogic.Logic.PlayedGames;
-    using BusinessLogic.Logic.Players;
+using BusinessLogic.Logic.PlayedGames;
+using BusinessLogic.Logic.Players;
 using BusinessLogic.Logic.Points;
-    using BusinessLogic.Logic.Users;
+using BusinessLogic.Logic.Users;
 using BusinessLogic.Logic.VotableFeatures;
-    using BusinessLogic.Models.User;
+using BusinessLogic.Models.User;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using RollbarSharp;
 using StructureMap;
-    using StructureMap.Graph;
-    using StructureMap.Web;
+using StructureMap.Graph;
+using StructureMap.Web;
 using UniversalAnalyticsHttpWrapper;
 
 namespace NemeStats.IoC
-    {
+{
     public class CommonRegistry : Registry
     {
         #region Constructors and Destructors
@@ -94,7 +94,7 @@ namespace NemeStats.IoC
             For<IUserStore<ApplicationUser>>()
                 .Use<UserStore<ApplicationUser>>();
 
-            
+
             this.For<IGamingGroupRetriever>().Use<GamingGroupRetriever>();
 
             For<IPendingGamingGroupInvitationRetriever>().Use<PendingGamingGroupInvitationRetriever>();

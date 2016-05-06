@@ -19,9 +19,12 @@ using BusinessLogic.DataAccess.Security;
 using BusinessLogic.Exceptions;
 using BusinessLogic.Models.User;
 using System;
+using System.Collections.Generic;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Migrations;
 using System.Linq;
+using BusinessLogic.Events.HandlerFactory;
+using BusinessLogic.Events.Interfaces;
 
 namespace BusinessLogic.DataAccess
 {
@@ -32,21 +35,24 @@ namespace BusinessLogic.DataAccess
         internal const string EXCEPTION_MESSAGE_NO_ENTITY_EXISTS_FOR_THIS_ID = "No entity exists for Id '{0}'";
 
         private readonly SecuredEntityValidatorFactory securedEntityValidatorFactory;
+        private readonly IBusinessLogicEventBus _eventBus;
         private readonly NemeStatsDbContext nemeStatsDbContext;
 
         //TODO do i really need this constructor? MockRepository.GenerateMock<ApplicationDbContext>() fails saying it needs a parameterless constructor
         public NemeStatsDataContext()
-            : this(new NemeStatsDbContext(), new SecuredEntityValidatorFactory())
+            : this(new NemeStatsDbContext(), new SecuredEntityValidatorFactory(), null )//TODO
         {
 
         }
 
         public NemeStatsDataContext(
             NemeStatsDbContext nemeStatsDbContext,
-            SecuredEntityValidatorFactory securedEntityValidatorFactory)
+            SecuredEntityValidatorFactory securedEntityValidatorFactory,
+            IBusinessLogicEventBus eventBus)
         {
             this.nemeStatsDbContext = nemeStatsDbContext;
             this.securedEntityValidatorFactory = securedEntityValidatorFactory;
+            _eventBus = eventBus;
         }
 
         public virtual void CommitAllChanges()
@@ -66,7 +72,7 @@ namespace BusinessLogic.DataAccess
             return entity;
         }
         //TODO If the passed in TEntity that is new, the Id will not be set until SaveChanges is called
-        public virtual TEntity Save<TEntity>(TEntity entity, ApplicationUser currentUser ) where TEntity : class, EntityWithTechnicalKey
+        public virtual TEntity Save<TEntity>(TEntity entity, ApplicationUser currentUser, List<IBusinessLogicEvent> events = null ) where TEntity : class, EntityWithTechnicalKey
         {
             ValidateArguments<TEntity>(entity, currentUser);
 
@@ -84,6 +90,14 @@ namespace BusinessLogic.DataAccess
 
             TEntity savedEntity = AddOrInsertOverride<TEntity>(entity);
             CommitAllChanges();
+
+            if (_eventBus != null && events != null && events.Any())
+            {
+                foreach (var @event in events)
+                {
+                    _eventBus.SendEvent(@event);
+                }
+            }
 
             return savedEntity;
         }

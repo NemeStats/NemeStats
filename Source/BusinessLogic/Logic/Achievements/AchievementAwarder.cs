@@ -54,14 +54,14 @@ namespace BusinessLogic.Logic.Achievements
 
             if (playerAchievementScore < achievement.AchievementLevel2Threshold)
             {
-                achievementLevel = AchievementLevelEnum.Level1;
+                achievementLevel = AchievementLevelEnum.Bronze;
             }else if (playerAchievementScore < achievement.AchievementLevel3Threshold)
             {
-                achievementLevel = AchievementLevelEnum.Level2;
+                achievementLevel = AchievementLevelEnum.Silver;
             }
             else
             {
-                achievementLevel = AchievementLevelEnum.Level3;
+                achievementLevel = AchievementLevelEnum.Gold;
             }
 
             if (existingPlayerAchievement != null)

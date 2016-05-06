@@ -17,7 +17,7 @@ namespace BusinessLogic.Tests.IntegrationTests.JobsTests.BoardGameGeekBatchUpdat
         {
             using (NemeStatsDbContext nemeStatsDbContext = new NemeStatsDbContext())
             {
-                using (var dataContext = new NemeStatsDataContext(nemeStatsDbContext, new SecuredEntityValidatorFactory()))
+                using (var dataContext = new NemeStatsDataContext(nemeStatsDbContext, new SecuredEntityValidatorFactory(),null))
                 {
                     var apiDownloaderService = new ApiDownloaderService();
                     //API failures won't get logged!

@@ -161,7 +161,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.AchievementTests.AchievementA
                         PlayerId = playerId,
                         AchievementId = achievement.Id,
                         Id = existingPlayerAchievementId,
-                        AchievementLevel = AchievementLevelEnum.Level1
+                        AchievementLevel = AchievementLevelEnum.Bronze
                     }
                 }.AsQueryable();
                 _autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<PlayerAchievement>())
@@ -210,7 +210,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.AchievementTests.AchievementA
                 Assert.That(actualPlayerAchievement, Is.Not.Null);
                 Assert.That(actualPlayerAchievement.Id, Is.EqualTo(default(int)));
                 Assert.That(actualPlayerAchievement.AchievementId, Is.EqualTo(achievement.Id));
-                Assert.That(actualPlayerAchievement.AchievementLevel, Is.EqualTo(AchievementLevelEnum.Level1));
+                Assert.That(actualPlayerAchievement.AchievementLevel, Is.EqualTo(AchievementLevelEnum.Bronze));
                 Assert.That(actualPlayerAchievement.DateCreated.Date, Is.EqualTo(DateTime.UtcNow.Date));
                 Assert.That(actualPlayerAchievement.PlayerId, Is.EqualTo(playerId));
             }
@@ -244,7 +244,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.AchievementTests.AchievementA
                 var actualPlayerAchievement = arguments[0][0] as PlayerAchievement;
                 Assert.That(actualPlayerAchievement, Is.Not.Null);
                 Assert.That(actualPlayerAchievement.AchievementId, Is.EqualTo(achievement.Id));
-                Assert.That(actualPlayerAchievement.AchievementLevel, Is.EqualTo(AchievementLevelEnum.Level1));
+                Assert.That(actualPlayerAchievement.AchievementLevel, Is.EqualTo(AchievementLevelEnum.Bronze));
                 Assert.That(actualPlayerAchievement.DateCreated.Date, Is.EqualTo(DateTime.UtcNow.Date));
                 Assert.That(actualPlayerAchievement.PlayerId, Is.EqualTo(playerId));
             }

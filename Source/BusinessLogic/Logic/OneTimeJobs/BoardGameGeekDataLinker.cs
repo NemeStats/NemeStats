@@ -32,7 +32,7 @@ namespace BusinessLogic.Logic.OneTimeJobs
         {
             using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
             {
-                using (NemeStatsDataContext dataContext = new NemeStatsDataContext(dbContext, new SecuredEntityValidatorFactory()))
+                using (NemeStatsDataContext dataContext = new NemeStatsDataContext(dbContext, new SecuredEntityValidatorFactory(), null))
                 {
                     var games = dataContext.GetQueryable<GameDefinition>()
                                                             .Where(game => game.BoardGameGeekGameDefinitionId == null)

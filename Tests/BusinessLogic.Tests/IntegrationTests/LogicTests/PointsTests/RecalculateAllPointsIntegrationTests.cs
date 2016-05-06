@@ -15,7 +15,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PointsTests
             //--arrange
             using (var dbContext = new NemeStatsDbContext())
             {
-                using (var dataContext = new NemeStatsDataContext(dbContext, new SecuredEntityValidatorFactory()))
+                using (var dataContext = new NemeStatsDataContext(dbContext, new SecuredEntityValidatorFactory(),null))
                 {
                     var weightTierCalculator = new WeightTierCalculator();
                     var weightBonusCalculator = new WeightBonusCalculator(weightTierCalculator);
@@ -35,7 +35,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PointsTests
             //--arrange
             using (var dbContext = new NemeStatsDbContext())
             {
-                using (var dataContext = new NemeStatsDataContext(dbContext, new SecuredEntityValidatorFactory()))
+                using (var dataContext = new NemeStatsDataContext(dbContext, new SecuredEntityValidatorFactory(),null))
                 {
                     var weightTierCalculator = new WeightTierCalculator();
                     var weightBonusCalculator = new WeightBonusCalculator(weightTierCalculator);

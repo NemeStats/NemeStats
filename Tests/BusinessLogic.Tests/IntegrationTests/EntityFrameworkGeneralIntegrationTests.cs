@@ -34,7 +34,7 @@ namespace BusinessLogic.Tests.IntegrationTests
         {
             using(NemeStatsDataContext dataContext = new NemeStatsDataContext(
                 new NemeStatsDbContext(), 
-                new SecuredEntityValidatorFactory()))
+                new SecuredEntityValidatorFactory(),null))
             {
                 GamingGroup gamingGroup = new GamingGroup()
                 {
@@ -57,7 +57,7 @@ namespace BusinessLogic.Tests.IntegrationTests
         {
             using (NemeStatsDataContext dataContext = new NemeStatsDataContext(
                             new NemeStatsDbContext(),
-                            new SecuredEntityValidatorFactory()))
+                            new SecuredEntityValidatorFactory(),null))
             {
                 List<Player> players = dataContext.GetQueryable<Player>()
                                         .Where(player => player.Active && player.GamingGroupId == 1)

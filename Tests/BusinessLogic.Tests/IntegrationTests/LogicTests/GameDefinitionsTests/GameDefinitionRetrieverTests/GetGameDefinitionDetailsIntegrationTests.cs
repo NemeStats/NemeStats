@@ -41,7 +41,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.GameDefinitionsTests.G
 
             using (this.dbContext = new NemeStatsDbContext())
             {
-                using (this.dataContext = new NemeStatsDataContext(this.dbContext, this.securedEntityValidatorFactory))
+                using (this.dataContext = new NemeStatsDataContext(this.dbContext, this.securedEntityValidatorFactory,null))
                 {
                     var playerRepository = new EntityFrameworkPlayerRepository(dataContext);
 

@@ -29,6 +29,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Hosting;
+using BusinessLogic.Events;
+using BusinessLogic.Events.Interfaces;
 
 namespace BusinessLogic.Logic.PlayedGames
 {
@@ -47,9 +49,9 @@ namespace BusinessLogic.Logic.PlayedGames
             IDataContext applicationDataContext,
             INemeStatsEventTracker playedGameTracker,
             INemesisRecalculator nemesisRecalculator,
-            IChampionRecalculator championRecalculator, 
-            ISecuredEntityValidator<Player> securedEntityValidatorForPlayer, 
-            ISecuredEntityValidator<GameDefinition> securedEntityValidatorForGameDefinition, 
+            IChampionRecalculator championRecalculator,
+            ISecuredEntityValidator<Player> securedEntityValidatorForPlayer,
+            ISecuredEntityValidator<GameDefinition> securedEntityValidatorForGameDefinition,
             IPointsCalculator pointsCalculator, IAchievementAwarder achievementAwarder)
         {
             _dataContext = applicationDataContext;
@@ -65,6 +67,8 @@ namespace BusinessLogic.Logic.PlayedGames
         //TODO need to have validation logic here (or on PlayedGame similar to what is on NewlyCompletedGame)
         public PlayedGame CreatePlayedGame(NewlyCompletedGame newlyCompletedGame, TransactionSource transactionSource, ApplicationUser currentUser)
         {
+            var events = new List<IBusinessLogicEvent>();
+
             var gameDefinition = _dataContext.FindById<GameDefinition>(newlyCompletedGame.GameDefinitionId);
             _securedEntityValidatorForGameDefinition.ValidateAccess(gameDefinition, currentUser, typeof(GameDefinition), newlyCompletedGame.GameDefinitionId);
             BoardGameGeekGameDefinition boardGameGeekGameDefinition = null;
@@ -85,7 +89,9 @@ namespace BusinessLogic.Logic.PlayedGames
                 currentUser.Id,
                 playerGameResults);
 
-            _dataContext.Save(playedGame, currentUser);
+
+            events.Add(new PlayedGameCreatedEvent { PlayedGameId = playedGame.Id });
+            _dataContext.Save(playedGame, currentUser, events);
 
             _playedGameTracker.TrackPlayedGame(currentUser, transactionSource);
 
@@ -95,7 +101,7 @@ namespace BusinessLogic.Logic.PlayedGames
             }
             _championRecalculator.RecalculateChampion(playedGame.GameDefinitionId, currentUser, false);
 
-            AwardAchievements(playerGameResults.Select(x => x.PlayerId).ToList());
+            //AwardAchievements(playerGameResults.Select(x => x.PlayerId).ToList());
 
             return playedGame;
         }

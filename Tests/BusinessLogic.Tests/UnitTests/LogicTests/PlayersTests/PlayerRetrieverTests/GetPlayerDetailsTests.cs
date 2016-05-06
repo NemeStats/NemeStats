@@ -302,7 +302,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
             {
                 var expectedAchievement = new PlayerAchievement
                 {
-                    AchievementLevel = AchievementLevelEnum.Level2,
+                    AchievementLevel = AchievementLevelEnum.Silver,
                     PlayerId = player.Id,
                     Achievement = new Achievement
                     {
