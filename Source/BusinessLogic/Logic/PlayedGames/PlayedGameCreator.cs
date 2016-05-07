@@ -27,14 +27,14 @@ using BusinessLogic.Models.Games;
 using BusinessLogic.Models.User;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using System.Web.Hosting;
 using BusinessLogic.Events;
+using BusinessLogic.Events.HandlerFactory;
 using BusinessLogic.Events.Interfaces;
 
 namespace BusinessLogic.Logic.PlayedGames
 {
-    public class PlayedGameCreator : IPlayedGameCreator
+
+    public class PlayedGameCreator : BusinessLogicEventSender, IPlayedGameCreator
     {
         private readonly IDataContext _dataContext;
         private readonly INemeStatsEventTracker _playedGameTracker;
@@ -43,7 +43,7 @@ namespace BusinessLogic.Logic.PlayedGames
         private readonly ISecuredEntityValidator<Player> _securedEntityValidatorForPlayer;
         private readonly ISecuredEntityValidator<GameDefinition> _securedEntityValidatorForGameDefinition;
         private readonly IPointsCalculator _pointsCalculator;
-        private readonly IAchievementAwarder _achievementAwarder;
+        //private readonly IAchievementAwarder _achievementAwarder;
 
         public PlayedGameCreator(
             IDataContext applicationDataContext,
@@ -52,7 +52,9 @@ namespace BusinessLogic.Logic.PlayedGames
             IChampionRecalculator championRecalculator,
             ISecuredEntityValidator<Player> securedEntityValidatorForPlayer,
             ISecuredEntityValidator<GameDefinition> securedEntityValidatorForGameDefinition,
-            IPointsCalculator pointsCalculator, IAchievementAwarder achievementAwarder)
+            IPointsCalculator pointsCalculator, 
+            //IAchievementAwarder achievementAwarder,
+            IBusinessLogicEventBus eventBus) : base(eventBus)
         {
             _dataContext = applicationDataContext;
             this._playedGameTracker = playedGameTracker;
@@ -61,13 +63,12 @@ namespace BusinessLogic.Logic.PlayedGames
             this._securedEntityValidatorForPlayer = securedEntityValidatorForPlayer;
             this._securedEntityValidatorForGameDefinition = securedEntityValidatorForGameDefinition;
             this._pointsCalculator = pointsCalculator;
-            _achievementAwarder = achievementAwarder;
+            //_achievementAwarder = achievementAwarder;
         }
 
         //TODO need to have validation logic here (or on PlayedGame similar to what is on NewlyCompletedGame)
         public PlayedGame CreatePlayedGame(NewlyCompletedGame newlyCompletedGame, TransactionSource transactionSource, ApplicationUser currentUser)
         {
-            var events = new List<IBusinessLogicEvent>();
 
             var gameDefinition = _dataContext.FindById<GameDefinition>(newlyCompletedGame.GameDefinitionId);
             _securedEntityValidatorForGameDefinition.ValidateAccess(gameDefinition, currentUser, typeof(GameDefinition), newlyCompletedGame.GameDefinitionId);
@@ -89,9 +90,10 @@ namespace BusinessLogic.Logic.PlayedGames
                 currentUser.Id,
                 playerGameResults);
 
+            _dataContext.Save(playedGame, currentUser);
 
-            events.Add(new PlayedGameCreatedEvent { PlayedGameId = playedGame.Id });
-            _dataContext.Save(playedGame, currentUser, events);
+
+            this.SendEvents(new IBusinessLogicEvent[] { new PlayedGameCreatedEvent() { TriggerEntityId = playedGame.Id } });
 
             _playedGameTracker.TrackPlayedGame(currentUser, transactionSource);
 
@@ -162,7 +164,7 @@ namespace BusinessLogic.Logic.PlayedGames
 
         internal virtual void AwardAchievements(List<int> playerIds)
         {
-            _achievementAwarder.AwardNewAchievements(playerIds);
+            //_achievementAwarder.AwardNewAchievements(playerIds);
         }
     }
 }

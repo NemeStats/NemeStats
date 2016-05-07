@@ -4,9 +4,9 @@ namespace BusinessLogic.Events.HandlerFactory
 {
     public class BusinessLogicEventBus : IBusinessLogicEventBus
     {
-        private readonly BusinenessLogicEventsHandlerFactory _handlerFactory;
+        private readonly BusinessLogicEventsHandlerFactory _handlerFactory;
 
-        public BusinessLogicEventBus(BusinenessLogicEventsHandlerFactory handlerFactory)
+        public BusinessLogicEventBus(BusinessLogicEventsHandlerFactory handlerFactory)
         {
             _handlerFactory = handlerFactory;
         }

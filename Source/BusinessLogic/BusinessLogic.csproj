@@ -122,6 +122,10 @@
       <HintPath>..\..\packages\structuremap.4.1.1.372\lib\net40\StructureMap.Net4.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="StructureMap.Web, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\structuremap.web.4.0.0.315\lib\net40\StructureMap.Web.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
@@ -163,14 +167,16 @@
     <Compile Include="DataAccess\ISingleColumnTechnicalKey.cs" />
     <Compile Include="DataAccess\Repositories\IPlayerRepository.cs" />
     <Compile Include="DataAccess\Repositories\EntityFrameworkPlayerRepository.cs" />
-    <Compile Include="Events\HandlerFactory\BusinenessLogicEventsHandlerFactory.cs" />
+    <Compile Include="Events\HandlerFactory\BusinessLogicEventsHandlerFactory.cs" />
     <Compile Include="Events\HandlerFactory\BusinessLogicEventBus.cs" />
+    <Compile Include="Events\HandlerFactory\BusinessLogicEventSender.cs" />
     <Compile Include="Events\HandlerFactory\EventHandlerObjectFactory.cs" />
     <Compile Include="Events\HandlerFactory\HandlerFactory.cs" />
     <Compile Include="Events\HandlerFactory\HandlerFactoryConfiguration.cs" />
     <Compile Include="Events\HandlerFactory\HandlerInstance.cs" />
     <Compile Include="Events\HandlerFactory\HandlerMetaInfo.cs" />
     <Compile Include="Events\Handlers\AchievementsEventHandler.cs" />
+    <Compile Include="Events\Handlers\BaseEventHandler.cs" />
     <Compile Include="Events\Interfaces\IBusinessLogicEventBus.cs" />
     <Compile Include="Events\Interfaces\IHandlerFactory.cs" />
     <Compile Include="Events\Interfaces\IBusinessLogicEvent.cs" />

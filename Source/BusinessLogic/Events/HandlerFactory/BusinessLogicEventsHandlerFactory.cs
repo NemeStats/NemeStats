@@ -4,9 +4,9 @@ using BusinessLogic.Events.Interfaces;
 
 namespace BusinessLogic.Events.HandlerFactory
 {
-    public class BusinenessLogicEventsHandlerFactory : HandlerFactory, IHandlerFactory
+    public class BusinessLogicEventsHandlerFactory : HandlerFactory, IHandlerFactory
     {
-        public BusinenessLogicEventsHandlerFactory(HandlerFactoryConfiguration factoryConfiguration)
+        public BusinessLogicEventsHandlerFactory(HandlerFactoryConfiguration factoryConfiguration)
             : base(factoryConfiguration, typeof(IBusinessLogicEventHandler<>), typeof(IBusinessLogicEvent))
         {
         }
@@ -14,6 +14,7 @@ namespace BusinessLogic.Events.HandlerFactory
         public IList<HandlerInstance> GetHandlers(Type messageType)
         {
             return base.GetHandlers(messageType);
+
         }
 
     }

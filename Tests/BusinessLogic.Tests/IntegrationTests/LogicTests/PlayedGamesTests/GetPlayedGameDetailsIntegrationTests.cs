@@ -64,7 +64,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGamesTests
             using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
             {
                 dbContext.Configuration.LazyLoadingEnabled = false;
-                using (NemeStatsDataContext dataContext = new NemeStatsDataContext(dbContext, securedEntityValidatorFactory,null))
+                using (NemeStatsDataContext dataContext = new NemeStatsDataContext(dbContext, securedEntityValidatorFactory))
                 {
                     PlayedGame playedGame = GetTestSubjectPlayedGame(dataContext);
                     Assert.NotNull(playedGame.GameDefinition);
@@ -78,7 +78,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGamesTests
             using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
             {
                 dbContext.Configuration.LazyLoadingEnabled = false;
-                using (NemeStatsDataContext dataContext = new NemeStatsDataContext(dbContext, securedEntityValidatorFactory,null))
+                using (NemeStatsDataContext dataContext = new NemeStatsDataContext(dbContext, securedEntityValidatorFactory))
                 {
                     PlayedGame playedGame = GetTestSubjectPlayedGame(dataContext);
                     Assert.NotNull(playedGame.PlayerGameResults[0].Player);

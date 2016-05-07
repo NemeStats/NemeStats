@@ -1,7 +1,11 @@
 using System;
+using System.Data.Entity;
 using System.Threading;
+using BusinessLogic.DataAccess;
 using BusinessLogic.Events.Interfaces;
+using BusinessLogic.Logic.Users;
 using StructureMap;
+using StructureMap.Web;
 
 namespace BusinessLogic.Events.HandlerFactory
 {
@@ -16,7 +20,11 @@ namespace BusinessLogic.Events.HandlerFactory
         {
             return new Container(x =>
             {
-                x.For<BusinenessLogicEventsHandlerFactory>().Singleton().Use(new BusinenessLogicEventsHandlerFactory(
+                x.For<DbContext>().HttpContextScoped().Use<NemeStatsDbContext>();
+                x.For<IDataContext>().HttpContextScoped().Use<NemeStatsDataContext>();
+                x.For<ApplicationUserManager>().HttpContextScoped().Use<ApplicationUserManager>();
+
+                x.For<BusinessLogicEventsHandlerFactory>().Singleton().Use(new BusinessLogicEventsHandlerFactory(
                     new HandlerFactoryConfiguration()
                         .AddHandlerAssembly(typeof(IBusinessLogicEventHandler<>).Assembly)
                         .AddMessageAssembly(typeof(IBusinessLogicEvent).Assembly)));

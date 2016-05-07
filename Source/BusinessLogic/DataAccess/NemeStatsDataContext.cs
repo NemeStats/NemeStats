@@ -23,7 +23,6 @@ using System.Collections.Generic;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Migrations;
 using System.Linq;
-using BusinessLogic.Events.HandlerFactory;
 using BusinessLogic.Events.Interfaces;
 
 namespace BusinessLogic.DataAccess
@@ -35,24 +34,21 @@ namespace BusinessLogic.DataAccess
         internal const string EXCEPTION_MESSAGE_NO_ENTITY_EXISTS_FOR_THIS_ID = "No entity exists for Id '{0}'";
 
         private readonly SecuredEntityValidatorFactory securedEntityValidatorFactory;
-        private readonly IBusinessLogicEventBus _eventBus;
         private readonly NemeStatsDbContext nemeStatsDbContext;
 
         //TODO do i really need this constructor? MockRepository.GenerateMock<ApplicationDbContext>() fails saying it needs a parameterless constructor
         public NemeStatsDataContext()
-            : this(new NemeStatsDbContext(), new SecuredEntityValidatorFactory(), null )//TODO
+            : this(new NemeStatsDbContext(), new SecuredEntityValidatorFactory() )
         {
 
         }
 
         public NemeStatsDataContext(
             NemeStatsDbContext nemeStatsDbContext,
-            SecuredEntityValidatorFactory securedEntityValidatorFactory,
-            IBusinessLogicEventBus eventBus)
+            SecuredEntityValidatorFactory securedEntityValidatorFactory)
         {
             this.nemeStatsDbContext = nemeStatsDbContext;
             this.securedEntityValidatorFactory = securedEntityValidatorFactory;
-            _eventBus = eventBus;
         }
 
         public virtual void CommitAllChanges()
@@ -90,14 +86,6 @@ namespace BusinessLogic.DataAccess
 
             TEntity savedEntity = AddOrInsertOverride<TEntity>(entity);
             CommitAllChanges();
-
-            if (_eventBus != null && events != null && events.Any())
-            {
-                foreach (var @event in events)
-                {
-                    _eventBus.SendEvent(@event);
-                }
-            }
 
             return savedEntity;
         }

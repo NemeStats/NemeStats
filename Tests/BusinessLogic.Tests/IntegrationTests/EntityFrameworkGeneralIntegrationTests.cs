@@ -34,7 +34,7 @@ namespace BusinessLogic.Tests.IntegrationTests
         {
             using(NemeStatsDataContext dataContext = new NemeStatsDataContext(
                 new NemeStatsDbContext(), 
-                new SecuredEntityValidatorFactory(),null))
+                new SecuredEntityValidatorFactory()))
             {
                 GamingGroup gamingGroup = new GamingGroup()
                 {

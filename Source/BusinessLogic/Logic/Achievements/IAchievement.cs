@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using BusinessLogic.DataAccess;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Achievements;
 
@@ -10,7 +11,7 @@ namespace BusinessLogic.Logic.Achievements
 
         Dictionary<AchievementLevelEnum, int> LevelThresholds { get; }
 
-        AchievementLevelEnum? AchievementLevelAwarded(Player player);
+        AchievementLevelEnum? AchievementLevelAwarded(int playerId, IDataContext dataContext);
     }
 
 }

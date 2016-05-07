@@ -35,7 +35,7 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
         {
             using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
             {
-                using (IDataContext dataContext = new NemeStatsDataContext(dbContext, securedEntityValidatorFactory, null))
+                using (IDataContext dataContext = new NemeStatsDataContext(dbContext, securedEntityValidatorFactory))
                 {
                     NemesisHistoryRetriever nemesisHistoryRetriever = new NemesisHistoryRetriever(dataContext);
                     IPlayerRepository playerRepository = new EntityFrameworkPlayerRepository(dataContext);
@@ -76,7 +76,7 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
         {
             using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
             {
-                using (IDataContext dataContext = new NemeStatsDataContext(dbContext, securedEntityValidatorFactory,null))
+                using (IDataContext dataContext = new NemeStatsDataContext(dbContext, securedEntityValidatorFactory))
                 {
                     dbContext.Configuration.LazyLoadingEnabled = false;
                     dbContext.Configuration.ProxyCreationEnabled = false;
@@ -96,7 +96,7 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
         {
             using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
             {
-                using (IDataContext dataContext = new NemeStatsDataContext(dbContext, securedEntityValidatorFactory,null))
+                using (IDataContext dataContext = new NemeStatsDataContext(dbContext, securedEntityValidatorFactory))
                 {
                     INemesisHistoryRetriever nemesisHistoryRetriever = new NemesisHistoryRetriever(dataContext);
                     IPlayerRepository playerRepository = new EntityFrameworkPlayerRepository(dataContext);
@@ -114,7 +114,7 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
         {
             using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
             {
-                using (IDataContext dataContext = new NemeStatsDataContext(dbContext, securedEntityValidatorFactory,null))
+                using (IDataContext dataContext = new NemeStatsDataContext(dbContext, securedEntityValidatorFactory))
                 {
                     int numberOfGamesToRetrieve = 1;
 

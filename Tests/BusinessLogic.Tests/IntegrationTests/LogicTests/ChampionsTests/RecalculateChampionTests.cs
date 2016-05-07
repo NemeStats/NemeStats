@@ -36,7 +36,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.ChampionsTests
             {
                 SecuredEntityValidatorFactory factory = new SecuredEntityValidatorFactory();
 
-                using (NemeStatsDataContext dataContext = new NemeStatsDataContext(dbContext, factory,null))
+                using (NemeStatsDataContext dataContext = new NemeStatsDataContext(dbContext, factory))
                 {
                     IChampionRepository championRepository = new ChampionRepository(dataContext);
 

@@ -4,6 +4,6 @@ namespace BusinessLogic.Events
 {
     public class PlayedGameCreatedEvent : IBusinessLogicEvent
     {
-        public int PlayedGameId { get; set; }
+        public int TriggerEntityId { get; set; }
     }
 }

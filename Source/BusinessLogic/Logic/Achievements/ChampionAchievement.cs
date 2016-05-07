@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using BusinessLogic.DataAccess;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Achievements;
 
@@ -16,11 +17,11 @@ namespace BusinessLogic.Logic.Achievements
             {AchievementLevelEnum.Gold, 50}
         };
 
-        public AchievementLevelEnum? AchievementLevelAwarded(Player player)
+        public AchievementLevelEnum? AchievementLevelAwarded(int playerId, IDataContext dataContext)
         {
-            var championedGames = player.ChampionedGames.Count();
+            var championedGames = dataContext.GetQueryable<Champion>().Count(c=>c.PlayerId == playerId);
 
-            return LevelThresholds.OrderBy(l => l.Value).FirstOrDefault(l => l.Value <= championedGames).Key;
+            return LevelThresholds.OrderByDescending(l => l.Value).FirstOrDefault(l => l.Value <= championedGames).Key;
         }
     }
 }
