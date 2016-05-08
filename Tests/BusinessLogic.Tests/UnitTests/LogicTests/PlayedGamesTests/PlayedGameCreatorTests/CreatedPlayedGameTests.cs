@@ -18,6 +18,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using AutoMapper.Internal;
 using BusinessLogic.DataAccess;
 using BusinessLogic.DataAccess.Security;
 using BusinessLogic.EventTracking;
@@ -330,5 +331,6 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameCr
                 currentUser, typeof(GameDefinition),
                 gameDefinition.Id));
         }
+
     }
 }

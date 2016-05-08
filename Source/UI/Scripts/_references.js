@@ -49,6 +49,7 @@
 /// <reference path="player/players.js" />
 /// <reference path="plugins/rankplugin.js" />
 /// <reference path="plugins/toeditboxplugin.js" />
+/// <reference path="pnotify.custom.min.js" />
 /// <reference path="readmore.min.js" />
 /// <reference path="respond.js" />
 /// <reference path="responsive-bootstrap-toolkit.js" />

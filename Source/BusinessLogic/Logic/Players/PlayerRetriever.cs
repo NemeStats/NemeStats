@@ -26,6 +26,7 @@ using System.Linq;
 using BusinessLogic.Logic.PlayedGames;
 using BusinessLogic.Models.PlayedGames;
 using BusinessLogic.Logic.BoardGameGeek;
+using BusinessLogic.Models.Achievements;
 using BusinessLogic.Models.Points;
 using BusinessLogic.Models.Utility;
 
@@ -139,7 +140,7 @@ namespace BusinessLogic.Logic.Players
 
         public virtual PlayerDetails GetPlayerDetails(int playerId, int numberOfRecentGamesToRetrieve)
         {
-            Player returnPlayer = dataContext.GetQueryable<Player>()
+            var returnPlayer = dataContext.GetQueryable<Player>()
                                              .Include(player => player.Nemesis)
                                              .Include(player => player.Nemesis.NemesisPlayer)
                                              .Include(player => player.PreviousNemesis)
@@ -149,17 +150,19 @@ namespace BusinessLogic.Logic.Players
 
             ValidatePlayerWasFound(playerId, returnPlayer);
 
-            PlayerStatistics playerStatistics = GetPlayerStatistics(playerId);
+            var playerStatistics = GetPlayerStatistics(playerId);
 
-            List<PlayerGameResult> playerGameResults = GetPlayerGameResultsWithPlayedGameAndGameDefinition(playerId, numberOfRecentGamesToRetrieve);
+            var playerGameResults = GetPlayerGameResultsWithPlayedGameAndGameDefinition(playerId, numberOfRecentGamesToRetrieve);
 
-            List<Player> minions = GetMinions(returnPlayer.Id);
+            var minions = GetMinions(returnPlayer.Id);
 
-            IList<PlayerGameSummary> playerGameSummaries = playerRepository.GetPlayerGameSummaries(playerId);
+            var playerGameSummaries = playerRepository.GetPlayerGameSummaries(playerId);
 
-            List<Champion> championedGames = GetChampionedGames(returnPlayer.Id);
+            var championedGames = GetChampionedGames(returnPlayer.Id);
 
             var formerChampionedGames = GetFormerChampionedGames(returnPlayer.Id);
+
+            var playerAchievements = GetPlayerAchievements(returnPlayer.Id);
 
             var longestWinningStreak = playerRepository.GetLongestWinningStreak(playerId);
 
@@ -181,11 +184,13 @@ namespace BusinessLogic.Logic.Players
                 PlayerVersusPlayersStatistics = playerRepository.GetPlayerVersusPlayersStatistics(playerId),
                 FormerChampionedGames = formerChampionedGames,
                 LongestWinningStreak = longestWinningStreak,
-                NemePointsSummary = playerStatistics.NemePointsSummary
+                NemePointsSummary = playerStatistics.NemePointsSummary,
+                Achievements = playerAchievements
             };
 
             return playerDetails;
         }
+
 
         private static void ValidatePlayerWasFound(int playerId, Player returnPlayer)
         {
@@ -222,11 +227,28 @@ namespace BusinessLogic.Logic.Players
                  .ToList();
         }
 
+        internal virtual List<AwardedAchievement> GetPlayerAchievements(int playerId)
+        {
+            //return dataContext.GetQueryable<PlayerAchievement>()
+            //                  .Where(x => x.PlayerId == playerId)
+            //                  .Select(y => new AwardedAchievement
+            //                  {
+            //                      FontAwesomeIcon = y.Achievement.FontAwesomeIcon,
+            //                      AchievementLevel = y.AchievementLevel,
+            //                      Name = y.Achievement.Name,
+            //                      Description = y.Achievement.Description,
+            //                      AchievementLevel1Threshold = y.Achievement.AchievementLevel1Threshold,
+            //                      AchievementLevel2Threshold = y.Achievement.AchievementLevel2Threshold,
+            //                      AchievementLevel3Threshold = y.Achievement.AchievementLevel3Threshold
+            //                  }).ToList();
+            return new List<AwardedAchievement>();
+        }
+
         internal virtual List<PlayerGameResult> GetPlayerGameResultsWithPlayedGameAndGameDefinition(
             int playerID,
             int numberOfRecentGamesToRetrieve)
         {
-            List<PlayerGameResult> playerGameResults = dataContext.GetQueryable<PlayerGameResult>()
+            var playerGameResults = dataContext.GetQueryable<PlayerGameResult>()
                         .Where(result => result.PlayerId == playerID)
                         .OrderByDescending(result => result.PlayedGame.DatePlayed)
                         .ThenByDescending(result => result.PlayedGame.Id)
@@ -301,7 +323,7 @@ namespace BusinessLogic.Logic.Players
 
         internal virtual NemePointsSummary GetNemePointsSummary(int playerId)
         {
-            NemePointsSummary nemePointsSummary = dataContext.GetQueryable<PlayerGameResult>()
+            var nemePointsSummary = dataContext.GetQueryable<PlayerGameResult>()
                                           .Where(result => result.PlayerId == playerId)
                                           .GroupBy(x => x.PlayerId)
                                           .Select(
@@ -321,7 +343,7 @@ namespace BusinessLogic.Logic.Players
         public virtual PlayerQuickStats GetPlayerQuickStatsForUser(string applicationUserId, int gamingGroupId)
         {
             var q = dataContext.GetQueryable<Player>().ToList();
-            int playerIdForCurrentUser = (from player in dataContext.GetQueryable<Player>()
+            var playerIdForCurrentUser = (from player in dataContext.GetQueryable<Player>()
                                           where player.GamingGroupId == gamingGroupId
                                            && player.ApplicationUserId == applicationUserId
                                           select player.Id)

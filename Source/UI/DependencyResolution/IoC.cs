@@ -16,6 +16,7 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 
+using System.Web.UI;
 using NemeStats.IoC;
 using StructureMap;
 
@@ -25,6 +26,7 @@ namespace UI.DependencyResolution {
             return new Container(c =>
             {
                 c.AddRegistry<CommonRegistry>();
+                c.AddRegistry<DatabaseRegistry>();
                 c.AddRegistry<WebRegistry>();
             });
         }

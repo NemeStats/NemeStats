@@ -18,6 +18,8 @@
 
 using System.Web;
 using System.Web.Mvc;
+using UI.Models;
+using UI.Models.Achievements;
 
 namespace UI.HtmlHelpers
 {
@@ -26,15 +28,23 @@ namespace UI.HtmlHelpers
         internal const string NEMEPOINTICO_CSS_CLASS = "neme-points-ico";
         public static MvcHtmlString NemePointsIco(this HtmlHelper htmlHelper, bool showTooltip = true, string tooltip = "Total NemePoints earned by playing games", string tooltipPosition = "top")
         {
-            var tootlipHtml = showTooltip
+            var tooltipHtml = showTooltip
                 ? $"data-toggle=\"popover\" data-placement=\"{tooltipPosition}\" data-content=\"{tooltip}\""
                 : "";
 
             var html =
-                $"<span class=\"fa-stack {NEMEPOINTICO_CSS_CLASS}\" {tootlipHtml}><i class=\"fa fa-circle fa-stack-2x\"></i><i class=\"fa fa-stack-1x letter\">N</i></span>";
+                $"<span class=\"fa-stack {NEMEPOINTICO_CSS_CLASS}\" {tooltipHtml}><i class=\"fa fa-circle fa-stack-2x\"></i><i class=\"fa fa-stack-1x letter\">N</i></span>";
 
             return new MvcHtmlString(html);
 
+        }
+
+        public static MvcHtmlString RenderAchievement(this HtmlHelper htmlHelper, AchievementViewModel achievement, string tooltipPosition = "top")
+        {
+            //TODO Victor, could use your help here! Per your suggestion, achievements have a font awesome icon instead of an image URL.
+            //var html = $"<img src=\"{achievement.ImageUrl}\" data-toggle=\"popover\" data-placement=\"{tooltipPosition}\" data-content=\"{achievement.Name} - {achievement.Description}\" />";
+            var html = "";
+            return new MvcHtmlString(html);
         }
 
         public static HtmlString RenderTempDataMessage(this HtmlHelper htmlHelper, string key)

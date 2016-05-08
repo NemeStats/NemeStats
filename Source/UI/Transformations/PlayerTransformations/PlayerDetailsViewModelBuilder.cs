@@ -26,6 +26,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using BusinessLogic.Logic.Players;
+using UI.Models.Achievements;
 using UI.Models.Badges;
 using UI.Models.PlayedGame;
 using UI.Models.Players;
@@ -41,13 +42,13 @@ namespace UI.Transformations.PlayerTransformations
         internal const string EXCEPTION_CHAMPIONED_GAMES_CANNOT_BE_NULL = "PlayerDetails.ChampionedGames cannot be null.";
         internal const string EXCEPTION_FORMERCHAMPIONED_GAMES_CANNOT_BE_NULL = "PlayerDetails.FormerChampionedGames cannot be null.";
 
-        private readonly IGameResultViewModelBuilder gameResultViewModelBuilder;
-        private readonly IMinionViewModelBuilder minionViewModelBuilder;
+        private readonly IGameResultViewModelBuilder _gameResultViewModelBuilder;
+        private readonly IMinionViewModelBuilder _minionViewModelBuilder;
 
         public PlayerDetailsViewModelBuilder(IGameResultViewModelBuilder builder, IMinionViewModelBuilder minionViewModelBuilder)
         {
-            gameResultViewModelBuilder = builder;
-            this.minionViewModelBuilder = minionViewModelBuilder;
+            _gameResultViewModelBuilder = builder;
+            _minionViewModelBuilder = minionViewModelBuilder;
         }
 
         public PlayerDetailsViewModel Build(PlayerDetails playerDetails, string urlForMinionBragging, ApplicationUser currentUser = null)
@@ -68,7 +69,15 @@ namespace UI.Transformations.PlayerTransformations
                 TotalGamesLost = playerDetails.PlayerStats.TotalGamesLost,
                 WinPercentage = playerDetails.PlayerStats.WinPercentage,
                 TotalChampionedGames = playerDetails.ChampionedGames.Count,
-                LongestWinningStreak = playerDetails.LongestWinningStreak
+                LongestWinningStreak = playerDetails.LongestWinningStreak,
+                Achievements = playerDetails.Achievements.Select(x => new AchievementViewModel(
+                    x.Name, 
+                    x.Description, 
+                    x.FontAwesomeIcon, 
+                    x.AchievementLevel,
+                    x.AchievementLevel1Threshold,
+                    x.AchievementLevel2Threshold,
+                    x.AchievementLevel3Threshold)).ToList()
             };
 
             PopulatePlayerVersusPlayersViewModel(playerDetails, playerDetailsViewModel);
@@ -80,12 +89,12 @@ namespace UI.Transformations.PlayerTransformations
             SetAveragePointsPerPlayer(playerDetails, playerDetailsViewModel);
             SetUserCanEditFlag(playerDetails, currentUser, playerDetailsViewModel);
 
-            this.PopulatePlayerGameResults(playerDetails, playerDetailsViewModel);
+            PopulatePlayerGameResults(playerDetails, playerDetailsViewModel);
 
             PopulateNemesisData(playerDetails.CurrentNemesis, playerDetailsViewModel);
 
             playerDetailsViewModel.Minions = (from Player player in playerDetails.Minions
-                                              select minionViewModelBuilder.Build(player)).ToList();
+                                              select _minionViewModelBuilder.Build(player)).ToList();
 
             playerDetailsViewModel.PlayerGameSummaries = playerDetails.PlayerGameSummaries.Select(Mapper.Map<PlayerGameSummaryViewModel>).ToList();
 
@@ -303,7 +312,7 @@ namespace UI.Transformations.PlayerTransformations
             GameResultViewModel gameResultViewModel;
             foreach (PlayerGameResult playerGameResult in playerDetails.PlayerGameResults)
             {
-                gameResultViewModel = gameResultViewModelBuilder.Build(playerGameResult);
+                gameResultViewModel = _gameResultViewModelBuilder.Build(playerGameResult);
                 playerDetailsViewModel.PlayerGameResultDetails.Add(gameResultViewModel);
             }
         }

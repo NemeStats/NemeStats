@@ -365,7 +365,8 @@
     <Compile Include="JobsController.generated.cs">
       <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Badges\BadgeBaseViewModel.cs" />
+    <Compile Include="Models\Achievements\AchievementViewModel.cs" />
+    <Compile Include="Models\Badges\IBadgeBaseViewModel.cs" />
     <Compile Include="Models\Badges\ChampionBadgeViewModel.cs" />
     <Compile Include="Models\Badges\FormerChampionBadgeViewModel.cs" />
     <Compile Include="Models\Badges\MinionBadgeViewModel.cs" />
@@ -510,6 +511,7 @@
     <Content Include="css\bootstrap.css" />
     <Content Include="css\fonts.css" />
     <Content Include="css\nemestats.css" />
+    <Content Include="css\pnotify.custom.min.css" />
     <Content Include="css\theme.css" />
     <Content Include="fonts\bootstrap\glyphicons-halflings-regular.svg" />
     <Content Include="fonts\fontawesome-webfont.svg" />
@@ -635,6 +637,7 @@
     <Content Include="Scripts\Player\players.js" />
     <Content Include="Scripts\Plugins\rankPlugin.js" />
     <Content Include="Scripts\Plugins\toEditBoxPlugin.js" />
+    <Content Include="Scripts\pnotify.custom.min.js" />
     <Content Include="Scripts\readmore.min.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
@@ -804,7 +807,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>60681</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:44400</IISUrl>
+          <IISUrl>https://localhost:44300</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

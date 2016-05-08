@@ -25,6 +25,7 @@ using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using BusinessLogic.Models.Achievements;
 using BusinessLogic.Models.Points;
 using StructureMap.AutoMocking;
 
@@ -77,7 +78,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
                 NemesisPlayerId = 4444,
                 NemesisPlayer = new Player()
             };
-            Nemesis nemesisForPlayerWithOnlyACurrentNemesis = new Nemesis
+            var nemesisForPlayerWithOnlyACurrentNemesis = new Nemesis
             {
                 Id = 33333,
                 NemesisPlayer = new Player()
@@ -121,7 +122,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
                 GamingGroup = new GamingGroup { Id = gamingGroupId }
             };
 
-            List<Player> players = new List<Player>()
+            var players = new List<Player>()
             {
                 player,
                 playerWithNoNemesisEver,
@@ -171,13 +172,16 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
                       .Return(expectedPlayerVersusPlayerStatistics);
 
             autoMocker.Get<IPlayerRepository>().Expect(mock => mock.GetLongestWinningStreak(player.Id)).Return(expectedLongestWinningStreak);
+
+            autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<PlayerAchievement>()).Return(new List<PlayerAchievement>().AsQueryable());
+
         }
 
         [Test]
         public void ItThrowsAKeyNotFoundExceptionIfThePlayerDoesNotExist()
         {
             const int invalidPlayerId = -1;
-            string expectedMessage = string.Format(PlayerRetriever.EXCEPTION_MESSAGE_PLAYER_COULD_NOT_BE_FOUND, invalidPlayerId);
+            var expectedMessage = string.Format(PlayerRetriever.EXCEPTION_MESSAGE_PLAYER_COULD_NOT_BE_FOUND, invalidPlayerId);
             Exception actualException = Assert.Throws<KeyNotFoundException>(
                                                                             () => autoMocker.ClassUnderTest.GetPlayerDetails(
                                                                                 invalidPlayerId, 
@@ -189,7 +193,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
         [Test]
         public void ItSetsTheCurrentNemesis()
         {
-            PlayerDetails playerDetails = autoMocker.ClassUnderTest.GetPlayerDetails(player.Id, numberOfRecentGames);
+            var playerDetails = autoMocker.ClassUnderTest.GetPlayerDetails(player.Id, numberOfRecentGames);
 
             Assert.AreSame(expectedNemesis, playerDetails.CurrentNemesis);
         }
@@ -197,7 +201,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
         [Test]
         public void ItSetsTheCurrentNemesisToANullNemesisIfThereIsNoNemesis()
         {
-            PlayerDetails playerDetails = autoMocker.ClassUnderTest.GetPlayerDetails(playerWithNoNemesisEver.Id, numberOfRecentGames);
+            var playerDetails = autoMocker.ClassUnderTest.GetPlayerDetails(playerWithNoNemesisEver.Id, numberOfRecentGames);
 
             Assert.True(playerDetails.CurrentNemesis is NullNemesis);
         }
@@ -205,7 +209,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
         [Test]
         public void ItSetsThePreviousNemesis()
         {
-            PlayerDetails playerDetails = autoMocker.ClassUnderTest.GetPlayerDetails(player.Id, numberOfRecentGames);
+            var playerDetails = autoMocker.ClassUnderTest.GetPlayerDetails(player.Id, numberOfRecentGames);
 
             Assert.AreSame(expectedPriorNemesis, playerDetails.PreviousNemesis);
         }
@@ -213,7 +217,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
         [Test]
         public void ItSetsThePreviousNemesisToANullNemesisIfThereIsNoPreviousNemesis()
         {
-            PlayerDetails playerDetails = autoMocker.ClassUnderTest.GetPlayerDetails(playerWithOnlyACurrentNemesis.Id, numberOfRecentGames);
+            var playerDetails = autoMocker.ClassUnderTest.GetPlayerDetails(playerWithOnlyACurrentNemesis.Id, numberOfRecentGames);
 
             Assert.True(playerDetails.PreviousNemesis is NullNemesis);
         }
@@ -221,7 +225,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
         [Test]
         public void ItSetsThePlayersMinions()
         {
-            PlayerDetails playerDetails = autoMocker.ClassUnderTest.GetPlayerDetails(player.Id, numberOfRecentGames);
+            var playerDetails = autoMocker.ClassUnderTest.GetPlayerDetails(player.Id, numberOfRecentGames);
 
             Assert.AreSame(this.expectedMinions, playerDetails.Minions);
         }
@@ -229,7 +233,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
         [Test]
         public void ItSetsThePlayersGameSummaries()
         {
-            PlayerDetails playerDetails = autoMocker.ClassUnderTest.GetPlayerDetails(player.Id, numberOfRecentGames);
+            var playerDetails = autoMocker.ClassUnderTest.GetPlayerDetails(player.Id, numberOfRecentGames);
 
             Assert.AreSame(expectedPlayerGameSummaries, playerDetails.PlayerGameSummaries);
         }
@@ -237,7 +241,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
         [Test]
         public void ItSetsThePlayersChampionedGames()
         {
-            PlayerDetails playerDetails = autoMocker.ClassUnderTest.GetPlayerDetails(playerWithAChampionship.Id,
+            var playerDetails = autoMocker.ClassUnderTest.GetPlayerDetails(playerWithAChampionship.Id,
                 numberOfRecentGames);
 
             Assert.That(playerDetails.ChampionedGames, Is.EqualTo(expectedChampionedGames));
@@ -246,7 +250,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
         [Test]
         public void ItSetsThePlayersFormerChampionedGames()
         {
-            PlayerDetails playerDetails = autoMocker.ClassUnderTest.GetPlayerDetails(playerWithAChampionship.Id,
+            var playerDetails = autoMocker.ClassUnderTest.GetPlayerDetails(playerWithAChampionship.Id,
                 numberOfRecentGames);
 
             Assert.That(playerDetails.FormerChampionedGames, Is.EqualTo(expectedFormerChampionedGames));
@@ -255,7 +259,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
         [Test]
         public void ItSetsThePlayerVersusPlayersStatistics()
         {
-            PlayerDetails playerDetails = autoMocker.ClassUnderTest.GetPlayerDetails(playerWithAChampionship.Id,
+            var playerDetails = autoMocker.ClassUnderTest.GetPlayerDetails(playerWithAChampionship.Id,
                 numberOfRecentGames);
 
             Assert.That(playerDetails.PlayerVersusPlayersStatistics, Is.EqualTo(expectedPlayerVersusPlayerStatistics));
@@ -264,7 +268,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
         [Test]
         public void ItSetsTheLongestWinningStreak()
         {
-            PlayerDetails playerDetails = autoMocker.ClassUnderTest.GetPlayerDetails(player.Id, numberOfRecentGames);
+            var playerDetails = autoMocker.ClassUnderTest.GetPlayerDetails(player.Id, numberOfRecentGames);
 
             Assert.That(playerDetails.LongestWinningStreak, Is.EqualTo(expectedLongestWinningStreak)); 
         }
@@ -272,9 +276,25 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
         [Test]
         public void ItSetsTheNemePointsSummary()
         {
-            PlayerDetails playerDetails = autoMocker.ClassUnderTest.GetPlayerDetails(player.Id, numberOfRecentGames);
+            var playerDetails = autoMocker.ClassUnderTest.GetPlayerDetails(player.Id, numberOfRecentGames);
 
             Assert.That(playerDetails.NemePointsSummary, Is.EqualTo(expectedPlayerStatistics.NemePointsSummary));
         }
+
+        [Test]
+        public void ItSetsThePlayersAchievements()
+        {
+            //--arrange
+            var expectedPlayerAchievements = new List<AwardedAchievement>();
+            autoMocker.ClassUnderTest.Expect(mock => mock.GetPlayerAchievements(player.Id))
+                      .Return(expectedPlayerAchievements);
+
+            //--act
+            var playerDetails = autoMocker.ClassUnderTest.GetPlayerDetails(player.Id, 0);
+
+            Assert.That(playerDetails.Achievements, Is.SameAs(expectedPlayerAchievements));
+        }
+
+
     }
 }
