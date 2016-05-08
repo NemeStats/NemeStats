@@ -18,18 +18,24 @@ namespace BusinessLogic.Events.HandlerFactory
 
         public void SendEvent(IBusinessLogicEvent @event)
         {
-            var eventHandlers = this._handlerFactory.GetHandlers(@event.GetType());
-            foreach (var handlerInstance in eventHandlers)
+
+            Task.Factory.StartNew(() =>
             {
-                try
+                var eventHandlers = this._handlerFactory.GetHandlers(@event.GetType());
+                foreach (var handlerInstance in eventHandlers)
                 {
-                    Task.Factory.StartNew(() => { handlerInstance.Handle(@event); });
-                }
-                catch (System.Exception ex)
-                {
-                    _rollbar.SendException(ex);
-                }
-            }
+                    try
+                    {
+                        handlerInstance.Handle(@event);
+                    }
+                    catch (System.Exception ex)
+                    {
+                        _rollbar.SendException(ex);
+                    }
+                }                
+            });
+
+            
         }
     }
 }

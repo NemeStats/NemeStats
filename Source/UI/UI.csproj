@@ -511,6 +511,7 @@
     <Content Include="css\bootstrap.css" />
     <Content Include="css\fonts.css" />
     <Content Include="css\nemestats.css" />
+    <Content Include="css\pnotify.custom.min.css" />
     <Content Include="css\theme.css" />
     <Content Include="fonts\bootstrap\glyphicons-halflings-regular.svg" />
     <Content Include="fonts\fontawesome-webfont.svg" />
@@ -636,6 +637,7 @@
     <Content Include="Scripts\Player\players.js" />
     <Content Include="Scripts\Plugins\rankPlugin.js" />
     <Content Include="Scripts\Plugins\toEditBoxPlugin.js" />
+    <Content Include="Scripts\pnotify.custom.min.js" />
     <Content Include="Scripts\readmore.min.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />

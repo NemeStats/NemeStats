@@ -9,7 +9,7 @@
     @Html.AntiForgeryToken()
 
     <ul class="nav navbar-nav navbar-right">
-        <li>
+        <li id="currentuserid" data-id="@User.Identity.GetUserId()">
             @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Manage", "Account", routeValues: null, htmlAttributes: new { title = "Manage" })
         </li>
         @{ Html.RenderAction(MVC.Account.UserGamingGroups()); }

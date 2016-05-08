@@ -55,6 +55,9 @@ namespace UI
             bundles.Add(new ScriptBundle("~/bundles/vue")
                 .Include("~/Scripts/vue.min.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/pnotify")
+                .Include("~/Scripts/pnotify.custom.min.js"));
+
             bundles.Add(new ScriptBundle("~/bundles/list")
                 .Include("~/Scripts/list.js")
                 .Include("~/Scripts/list.pagination.js"));
@@ -95,6 +98,7 @@ namespace UI
                 .Include("~/css/theme.css")
                 .Include("~/css/nemestats.css")
                 .Include("~/css/fonts.css")
+                .Include("~/css/pnotify.custom.min.css")
                 );
 
             bundles.Add(new StyleBundle("~/Content/themes/base/css").Include(

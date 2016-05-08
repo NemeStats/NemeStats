@@ -8,7 +8,7 @@ namespace BusinessLogic.Logic.Achievements
 {
     public class ChampionAchievement : IAchievement
     {
-        public AchievementType AchievementType => AchievementType.Champion;
+        public AchievementType AchievementId => AchievementType.Champion;
 
         public Dictionary<AchievementLevelEnum, int> LevelThresholds => new Dictionary<AchievementLevelEnum, int>
         {

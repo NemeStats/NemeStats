@@ -6,7 +6,10 @@ using BusinessLogic.DataAccess;
 using BusinessLogic.Events.Interfaces;
 using BusinessLogic.Logic.Achievements;
 using BusinessLogic.Models;
+using BusinessLogic.Models.Achievements;
 using BusinessLogic.Models.User;
+using Microsoft.AspNet.SignalR;
+using NemeStats.Hubs;
 
 namespace BusinessLogic.Events.Handlers
 {
@@ -48,7 +51,7 @@ namespace BusinessLogic.Events.Handlers
                 {
                     var currentPlayerAchievement =
                         player.PlayerAchievements.FirstOrDefault(
-                            pa => pa.AchievementId == achievement.AchievementType);
+                            pa => pa.AchievementId == achievement.AchievementId);
 
                     var levelAwarded = achievement.AchievementLevelAwarded(player.Id, DataContext);
 
@@ -58,23 +61,40 @@ namespace BusinessLogic.Events.Handlers
                         {
                             Player = player,
                             PlayerId = player.Id,
-                            AchievementId = achievement.AchievementType,
+                            AchievementId = achievement.AchievementId,
                             AchievementLevel = levelAwarded.Value,
                         };                        
 
                         DataContext.Save(playerAchievement, new AnonymousApplicationUser());
+                        DataContext.CommitAllChanges();
+
+                        NotifyPlayer(player, achievement, levelAwarded);
+                        
                     }
                     else if (currentPlayerAchievement != null && levelAwarded > currentPlayerAchievement.AchievementLevel)
                     {
                         currentPlayerAchievement.AchievementLevel = levelAwarded.Value;
                         currentPlayerAchievement.LastUpdatedDate = DateTime.UtcNow;
+
+                        DataContext.CommitAllChanges();
+
+                        NotifyPlayer(player, achievement, levelAwarded);
                     }
                 }
             }
 
-            DataContext.CommitAllChanges();
+        }
 
+        private static void NotifyPlayer(Player player, IAchievement achievement, AchievementLevelEnum? levelAwarded)
+        {
+            if (player.ApplicationUserId != null)
+            {
+                var notificationClient =
+                    GlobalHost.ConnectionManager.GetHubContext<NotificationsHub>().Clients.Group(player.ApplicationUserId);
 
+                notificationClient.NewAchievementUnlocked(achievement.AchievementId,
+                    levelAwarded.Value.ToString());
+            }
         }
     }
 

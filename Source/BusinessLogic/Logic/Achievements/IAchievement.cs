@@ -7,7 +7,7 @@ namespace BusinessLogic.Logic.Achievements
 {
     interface IAchievement
     {
-        AchievementType AchievementType { get; }
+        AchievementType AchievementId { get; }
 
         Dictionary<AchievementLevelEnum, int> LevelThresholds { get; }
 

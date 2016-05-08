@@ -89,9 +89,6 @@ namespace BusinessLogic.Logic.PlayedGames
 
             _dataContext.Save(playedGame, currentUser);
 
-
-            this.SendEvents(new IBusinessLogicEvent[] { new PlayedGameCreatedEvent() { TriggerEntityId = playedGame.Id } });
-
             _playedGameTracker.TrackPlayedGame(currentUser, transactionSource);
 
             foreach (var result in playerGameResults)
@@ -99,6 +96,8 @@ namespace BusinessLogic.Logic.PlayedGames
                 _nemesisRecalculator.RecalculateNemesis(result.PlayerId, currentUser);
             }
             _championRecalculator.RecalculateChampion(playedGame.GameDefinitionId, currentUser, false);
+
+            this.SendEvents(new IBusinessLogicEvent[] { new PlayedGameCreatedEvent() { TriggerEntityId = playedGame.Id } });
 
             return playedGame;
         }

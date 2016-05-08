@@ -8,7 +8,7 @@ namespace BusinessLogic.Logic.Achievements
 {
     public class DiversifiedAchievement : IAchievement
     {
-        public AchievementType AchievementType => AchievementType.Diversified;
+        public AchievementType AchievementId => AchievementType.Diversified;
 
         public Dictionary<AchievementLevelEnum, int> LevelThresholds => new Dictionary<AchievementLevelEnum, int>
         {
