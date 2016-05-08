@@ -43,7 +43,6 @@ namespace BusinessLogic.Logic.PlayedGames
         private readonly ISecuredEntityValidator<Player> _securedEntityValidatorForPlayer;
         private readonly ISecuredEntityValidator<GameDefinition> _securedEntityValidatorForGameDefinition;
         private readonly IPointsCalculator _pointsCalculator;
-        //private readonly IAchievementAwarder _achievementAwarder;
 
         public PlayedGameCreator(
             IDataContext applicationDataContext,
@@ -53,7 +52,6 @@ namespace BusinessLogic.Logic.PlayedGames
             ISecuredEntityValidator<Player> securedEntityValidatorForPlayer,
             ISecuredEntityValidator<GameDefinition> securedEntityValidatorForGameDefinition,
             IPointsCalculator pointsCalculator, 
-            //IAchievementAwarder achievementAwarder,
             IBusinessLogicEventBus eventBus) : base(eventBus)
         {
             _dataContext = applicationDataContext;
@@ -63,7 +61,6 @@ namespace BusinessLogic.Logic.PlayedGames
             this._securedEntityValidatorForPlayer = securedEntityValidatorForPlayer;
             this._securedEntityValidatorForGameDefinition = securedEntityValidatorForGameDefinition;
             this._pointsCalculator = pointsCalculator;
-            //_achievementAwarder = achievementAwarder;
         }
 
         //TODO need to have validation logic here (or on PlayedGame similar to what is on NewlyCompletedGame)
@@ -102,8 +99,6 @@ namespace BusinessLogic.Logic.PlayedGames
                 _nemesisRecalculator.RecalculateNemesis(result.PlayerId, currentUser);
             }
             _championRecalculator.RecalculateChampion(playedGame.GameDefinitionId, currentUser, false);
-
-            //AwardAchievements(playerGameResults.Select(x => x.PlayerId).ToList());
 
             return playedGame;
         }
@@ -162,9 +157,5 @@ namespace BusinessLogic.Logic.PlayedGames
             return playedGame;
         }
 
-        internal virtual void AwardAchievements(List<int> playerIds)
-        {
-            //_achievementAwarder.AwardNewAchievements(playerIds);
-        }
     }
 }

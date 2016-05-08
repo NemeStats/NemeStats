@@ -6,6 +6,7 @@ using BusinessLogic.DataAccess;
 using BusinessLogic.Events.Interfaces;
 using BusinessLogic.Logic.Achievements;
 using BusinessLogic.Models;
+using BusinessLogic.Models.User;
 
 namespace BusinessLogic.Events.Handlers
 {
@@ -47,16 +48,31 @@ namespace BusinessLogic.Events.Handlers
                 {
                     var currentPlayerAchievement =
                         player.PlayerAchievements.FirstOrDefault(
-                            pa => pa.AchievementId == (int)achievement.AchievementType); //TODO: Change the Id for the AchievementType enum on PlayerAchievements
+                            pa => pa.AchievementId == achievement.AchievementType);
 
                     var levelAwarded = achievement.AchievementLevelAwarded(player.Id, DataContext);
 
-                    if (levelAwarded.HasValue && currentPlayerAchievement == null || (currentPlayerAchievement != null && levelAwarded > currentPlayerAchievement.AchievementLevel))
+                    if (levelAwarded.HasValue && currentPlayerAchievement == null)
                     {
-                        //TODO: Save the PlayerAchievement on DB. We can save the trigger played game id too to show on the UI "Achievement triggered on THAT play"
+                        var playerAchievement = new PlayerAchievement
+                        {
+                            Player = player,
+                            PlayerId = player.Id,
+                            AchievementId = achievement.AchievementType,
+                            AchievementLevel = levelAwarded.Value,
+                        };                        
+
+                        DataContext.Save(playerAchievement, new AnonymousApplicationUser());
+                    }
+                    else if (currentPlayerAchievement != null && levelAwarded > currentPlayerAchievement.AchievementLevel)
+                    {
+                        currentPlayerAchievement.AchievementLevel = levelAwarded.Value;
+                        currentPlayerAchievement.LastUpdatedDate = DateTime.UtcNow;
                     }
                 }
             }
+
+            DataContext.CommitAllChanges();
 
 
         }

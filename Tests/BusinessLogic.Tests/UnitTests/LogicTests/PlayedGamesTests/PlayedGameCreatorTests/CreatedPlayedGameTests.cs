@@ -51,7 +51,6 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameCr
         {
             autoMocker = new RhinoAutoMocker<PlayedGameCreator>();
             autoMocker.PartialMockTheClassUnderTest();
-            autoMocker.ClassUnderTest.Expect(mock => mock.AwardAchievements(null)).IgnoreArguments();
 
             currentUser = new ApplicationUser
             {
@@ -333,61 +332,5 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameCr
                 gameDefinition.Id));
         }
 
-        [Test]
-        public void ItAwardsAchievementsToPlayersInTheGame()
-        {
-            //--arrange
-            int expectedPlayerId1 = 1;
-            int expectedPlayerId2 = 2;
-            int expectedPlayerId3 = 3;
-
-            var playerRanks = new List<PlayerRank>
-            {
-                new PlayerRank
-                {
-                    GameRank = 1,
-                    PlayerId = expectedPlayerId1
-                },
-                new PlayerRank
-                {
-                    GameRank = 1,
-                    PlayerId = expectedPlayerId2
-                },
-                new PlayerRank
-                {
-                    GameRank = 1,
-                    PlayerId = expectedPlayerId3
-                }
-            };
-            var newlyCompletedGame = new NewlyCompletedGame
-            {
-                GameDefinitionId = gameDefinition.Id,
-                PlayerRanks = playerRanks
-            };
-
-            autoMocker.Get<IPointsCalculator>()
-                     .Expect(mock => mock.CalculatePoints(null, null))
-                     .IgnoreArguments()
-                     .Return(new Dictionary<int, PointsScorecard>
-                     {
-                          {expectedPlayerId1, new PointsScorecard()},
-                          {expectedPlayerId2, new PointsScorecard()},
-                          {expectedPlayerId3, new PointsScorecard()}
-                     });
-
-            //--act
-            autoMocker.ClassUnderTest.CreatePlayedGame(newlyCompletedGame, TransactionSource.WebApplication, currentUser);
-
-            //--assert
-            var arguments = autoMocker.ClassUnderTest.GetArgumentsForCallsMadeOn(mock => mock.AwardAchievements(null));
-            Assert.That(arguments, Is.Not.Null);
-            Assert.That(arguments.Count, Is.EqualTo(1));
-            var actualPlayerIds = arguments[0][0] as List<int>;
-            Assert.That(actualPlayerIds, Is.Not.Null);
-            Assert.That(actualPlayerIds.Count, Is.EqualTo(3));
-            Assert.That(actualPlayerIds, Contains.Item(expectedPlayerId1));
-            Assert.That(actualPlayerIds, Contains.Item(expectedPlayerId2));
-            Assert.That(actualPlayerIds, Contains.Item(expectedPlayerId3));
-        }
     }
 }

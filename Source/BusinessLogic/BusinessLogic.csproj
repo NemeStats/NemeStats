@@ -261,7 +261,10 @@
     <Compile Include="Migrations\201605010112294_Achievements.Designer.cs">
       <DependentUpon>201605010112294_Achievements.cs</DependentUpon>
     </Compile>
-    <Compile Include="Models\Achievement.cs" />
+    <Compile Include="Migrations\201605081037190_AchievementBusinessLogic.cs" />
+    <Compile Include="Migrations\201605081037190_AchievementBusinessLogic.Designer.cs">
+      <DependentUpon>201605081037190_AchievementBusinessLogic.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Achievements\AchievementLevelEnum.cs" />
     <Compile Include="Models\Achievements\AchievementType.cs" />
     <Compile Include="Models\Achievements\AwardedAchievement.cs" />
@@ -850,6 +853,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201605010112294_Achievements.resx">
       <DependentUpon>201605010112294_Achievements.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605081037190_AchievementBusinessLogic.resx">
+      <DependentUpon>201605081037190_AchievementBusinessLogic.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

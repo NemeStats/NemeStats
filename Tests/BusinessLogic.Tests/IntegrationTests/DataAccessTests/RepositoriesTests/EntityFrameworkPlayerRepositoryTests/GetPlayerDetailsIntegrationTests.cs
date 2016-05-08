@@ -56,7 +56,7 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
         {
             using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
             {
-                using (IDataContext dataContext = new NemeStatsDataContext(dbContext, securedEntityValidatorFactory,null))
+                using (IDataContext dataContext = new NemeStatsDataContext(dbContext, securedEntityValidatorFactory))
                 {
                     dbContext.Configuration.LazyLoadingEnabled = false;
                     dbContext.Configuration.ProxyCreationEnabled = false;
@@ -134,7 +134,7 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
         {
             using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
             {
-                using (IDataContext dataContext = new NemeStatsDataContext(dbContext, securedEntityValidatorFactory,null))
+                using (IDataContext dataContext = new NemeStatsDataContext(dbContext, securedEntityValidatorFactory))
                 {
                     int numberOfGamesToRetrieve = 3;
 

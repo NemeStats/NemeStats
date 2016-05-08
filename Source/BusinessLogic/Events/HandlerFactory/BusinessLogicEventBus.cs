@@ -1,14 +1,19 @@
+using System.Threading;
+using System.Threading.Tasks;
 using BusinessLogic.Events.Interfaces;
+using RollbarSharp;
 
 namespace BusinessLogic.Events.HandlerFactory
 {
     public class BusinessLogicEventBus : IBusinessLogicEventBus
     {
         private readonly BusinessLogicEventsHandlerFactory _handlerFactory;
+        private readonly IRollbarClient _rollbar;
 
-        public BusinessLogicEventBus(BusinessLogicEventsHandlerFactory handlerFactory)
+        public BusinessLogicEventBus(BusinessLogicEventsHandlerFactory handlerFactory, IRollbarClient rollbar)
         {
             _handlerFactory = handlerFactory;
+            _rollbar = rollbar;
         }
 
         public void SendEvent(IBusinessLogicEvent @event)
@@ -18,11 +23,11 @@ namespace BusinessLogic.Events.HandlerFactory
             {
                 try
                 {
-                    handlerInstance.Handle(@event);
+                    Task.Factory.StartNew(() => { handlerInstance.Handle(@event); });
                 }
                 catch (System.Exception ex)
                 {
-                    //this.Log().Error("Error handling event " + @event.GetType() + " with handler " + handlerInstance.HandlerMetaInfo.Type, ex);
+                    _rollbar.SendException(ex);
                 }
             }
         }

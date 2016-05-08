@@ -295,51 +295,6 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
             Assert.That(playerDetails.Achievements, Is.SameAs(expectedPlayerAchievements));
         }
 
-        public class WhenCallingGetPlayerAchievements : GetPlayerDetailsTests
-        {
-            [Test]
-            public void ItSetsAllOfTheFields()
-            {
-                var expectedAchievement = new PlayerAchievement
-                {
-                    AchievementLevel = AchievementLevelEnum.Silver,
-                    PlayerId = player.Id,
-                    Achievement = new Achievement
-                    {
-                        FontAwesomeIcon = "some-fa-icon",
-                        AchievementLevel1Threshold = 1,
-                        AchievementLevel2Threshold = 2,
-                        AchievementLevel3Threshold = 3,
-                        Description = "some description",
-                        Name = "some name",
-                    }
-                };
-                var playerAchievementsQueryable = new List<PlayerAchievement>
-            {
-                expectedAchievement,
-                new PlayerAchievement
-                {
-                    PlayerId = -1
-                }
-            }.AsQueryable();
 
-                var anotherAutoMocker = new RhinoAutoMocker<PlayerRetriever>();
-
-                anotherAutoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<PlayerAchievement>()).Return(playerAchievementsQueryable);
-
-                var playerAchievements = anotherAutoMocker.ClassUnderTest.GetPlayerAchievements(player.Id);
-
-                Assert.That(playerAchievements, Is.Not.Null);
-                Assert.That(playerAchievements.Count, Is.EqualTo(1));
-                var actualAchievement = playerAchievements[0];
-                Assert.That(actualAchievement.FontAwesomeIcon, Is.EqualTo(expectedAchievement.Achievement.FontAwesomeIcon));
-                Assert.That(actualAchievement.AchievementLevel, Is.EqualTo(expectedAchievement.AchievementLevel));
-                Assert.That(actualAchievement.Description, Is.EqualTo(expectedAchievement.Achievement.Description));
-                Assert.That(actualAchievement.Name, Is.EqualTo(expectedAchievement.Achievement.Name));
-                Assert.That(actualAchievement.AchievementLevel1Threshold, Is.EqualTo(expectedAchievement.Achievement.AchievementLevel1Threshold));
-                Assert.That(actualAchievement.AchievementLevel2Threshold, Is.EqualTo(expectedAchievement.Achievement.AchievementLevel2Threshold));
-                Assert.That(actualAchievement.AchievementLevel3Threshold, Is.EqualTo(expectedAchievement.Achievement.AchievementLevel3Threshold));
-            }
-        }
     }
 }

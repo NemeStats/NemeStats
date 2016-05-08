@@ -229,18 +229,19 @@ namespace BusinessLogic.Logic.Players
 
         internal virtual List<AwardedAchievement> GetPlayerAchievements(int playerId)
         {
-            return dataContext.GetQueryable<PlayerAchievement>()
-                              .Where(x => x.PlayerId == playerId)
-                              .Select(y => new AwardedAchievement
-                              {
-                                  FontAwesomeIcon = y.Achievement.FontAwesomeIcon,
-                                  AchievementLevel = y.AchievementLevel,
-                                  Name = y.Achievement.Name,
-                                  Description = y.Achievement.Description,
-                                  AchievementLevel1Threshold = y.Achievement.AchievementLevel1Threshold,
-                                  AchievementLevel2Threshold = y.Achievement.AchievementLevel2Threshold,
-                                  AchievementLevel3Threshold = y.Achievement.AchievementLevel3Threshold
-                              }).ToList();
+            //return dataContext.GetQueryable<PlayerAchievement>()
+            //                  .Where(x => x.PlayerId == playerId)
+            //                  .Select(y => new AwardedAchievement
+            //                  {
+            //                      FontAwesomeIcon = y.Achievement.FontAwesomeIcon,
+            //                      AchievementLevel = y.AchievementLevel,
+            //                      Name = y.Achievement.Name,
+            //                      Description = y.Achievement.Description,
+            //                      AchievementLevel1Threshold = y.Achievement.AchievementLevel1Threshold,
+            //                      AchievementLevel2Threshold = y.Achievement.AchievementLevel2Threshold,
+            //                      AchievementLevel3Threshold = y.Achievement.AchievementLevel3Threshold
+            //                  }).ToList();
+            return new List<AwardedAchievement>();
         }
 
         internal virtual List<PlayerGameResult> GetPlayerGameResultsWithPlayedGameAndGameDefinition(
