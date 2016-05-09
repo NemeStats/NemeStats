@@ -256,14 +256,14 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
                 Description = "achievement description 1",
                 FontAwesomeIcon = "fa-trophy",
                 Name = "achievement name 1",
-                AchievementLevel = AchievementLevelEnum.Level1
+                AchievementLevel = AchievementLevelEnum.Bronze
             };
             awardedAchievement2 = new AwardedAchievement
             {
                 Description = "achievement description 2",
                 FontAwesomeIcon = "fa-trophy2",
                 Name = "achievement name 2",
-                AchievementLevel = AchievementLevelEnum.Level3
+                AchievementLevel = AchievementLevelEnum.Gold
             };
             playerDetails.Achievements = new List<AwardedAchievement>
             {

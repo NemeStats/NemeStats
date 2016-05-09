@@ -32,9 +32,7 @@ using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using BusinessLogic.Logic.Achievements;
 using BusinessLogic.Logic.Points;
-using BusinessLogic.Models.PlayedGames;
 using UniversalAnalyticsHttpWrapper;
 
 namespace BusinessLogic.Tests.IntegrationTests
@@ -193,7 +191,6 @@ namespace BusinessLogic.Tests.IntegrationTests
             var securedEntityValidatorForGameDefinition = new SecuredEntityValidator<GameDefinition>(dataContext);
             var weightBonusCalculator = new WeightBonusCalculator(new WeightTierCalculator());
             var pointsCalculator = new PointsCalculator(weightBonusCalculator, new GameDurationBonusCalculator());
-            var achievementAwarder = new AchievementAwarder(dataContext);
 
             IPlayedGameCreator playedGameCreator = new PlayedGameCreator(
                 dataContext, 
@@ -203,7 +200,7 @@ namespace BusinessLogic.Tests.IntegrationTests
                 securedEntityValidatorForPlayers,
                 securedEntityValidatorForGameDefinition,
                 pointsCalculator,
-                achievementAwarder);
+                new FakeEventBus());
             
             List<Player> players = new List<Player>() { testPlayer1, testPlayer2 };
             List<int> playerRanks = new List<int>() { 1, 1 };
