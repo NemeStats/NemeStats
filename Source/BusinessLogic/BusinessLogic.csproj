@@ -167,6 +167,7 @@
     <Compile Include="DataAccess\ISingleColumnTechnicalKey.cs" />
     <Compile Include="DataAccess\Repositories\IPlayerRepository.cs" />
     <Compile Include="DataAccess\Repositories\EntityFrameworkPlayerRepository.cs" />
+    <Compile Include="Events\HandlerFactory\AchievementFactory.cs" />
     <Compile Include="Events\HandlerFactory\BusinessLogicEventsHandlerFactory.cs" />
     <Compile Include="Events\HandlerFactory\BusinessLogicEventBus.cs" />
     <Compile Include="Events\HandlerFactory\BusinessLogicEventSender.cs" />

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using BusinessLogic.DataAccess;
+using BusinessLogic.Events.HandlerFactory;
 using BusinessLogic.Events.Interfaces;
 using BusinessLogic.Logic.Achievements;
 using BusinessLogic.Models;
@@ -16,27 +17,11 @@ namespace BusinessLogic.Events.Handlers
     public class AchievementsEventHandler : BaseEventHandler, IBusinessLogicEventHandler<PlayedGameCreatedEvent>
     {
 
-        private List<IAchievement> _achievements;
-
 
         public AchievementsEventHandler(IDataContext dataContext) : base(dataContext)
         {
-            InitAchievements();
         }
 
-        private void InitAchievements()
-        {
-            _achievements = new List<IAchievement>();
-            var achievementInterface = typeof(IAchievement);
-            var achievementTypes = achievementInterface.Assembly
-                .GetTypes()
-                .Where(p => achievementInterface.IsAssignableFrom(p) && !p.IsInterface);
-
-            foreach (var achievementType in achievementTypes)
-            {
-                _achievements.Add((IAchievement)Activator.CreateInstance(achievementType));
-            }
-        }
 
         public void Handle(PlayedGameCreatedEvent @event)
         {
@@ -47,7 +32,7 @@ namespace BusinessLogic.Events.Handlers
 
             foreach (var player in players.ToList())
             {
-                foreach (var achievement in _achievements)
+                foreach (var achievement in AchievementFactory.Achievements)
                 {
                     var currentPlayerAchievement =
                         player.PlayerAchievements.FirstOrDefault(

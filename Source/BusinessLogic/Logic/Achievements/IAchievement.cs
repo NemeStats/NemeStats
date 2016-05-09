@@ -5,7 +5,7 @@ using BusinessLogic.Models.Achievements;
 
 namespace BusinessLogic.Logic.Achievements
 {
-    interface IAchievement
+    public interface IAchievement
     {
         AchievementType AchievementId { get; }
 

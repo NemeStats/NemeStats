@@ -3,6 +3,7 @@ using System.Data.Entity;
 using System.Threading;
 using BusinessLogic.DataAccess;
 using BusinessLogic.Events.Interfaces;
+using BusinessLogic.Logic.Achievements;
 using BusinessLogic.Logic.Users;
 using StructureMap;
 using StructureMap.Web;
@@ -28,6 +29,12 @@ namespace BusinessLogic.Events.HandlerFactory
                     new HandlerFactoryConfiguration()
                         .AddHandlerAssembly(typeof(IBusinessLogicEventHandler<>).Assembly)
                         .AddMessageAssembly(typeof(IBusinessLogicEvent).Assembly)));
+
+                x.Scan(s =>
+                {
+                    s.AssemblyContainingType<IAchievement>();
+                    s.RegisterConcreteTypesAgainstTheFirstInterface();
+                });
             });
         }
     }
