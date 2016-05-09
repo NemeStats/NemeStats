@@ -17,10 +17,8 @@
 #endregion
 using BusinessLogic.Models.User;
 using System;
-using System.Collections.Generic;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
-using BusinessLogic.Events.Interfaces;
 
 namespace BusinessLogic.DataAccess
 {
@@ -30,7 +28,7 @@ namespace BusinessLogic.DataAccess
         DbRawSqlQuery<T> MakeRawSqlQuery<T>(string sql, params object[] parameters);
         IQueryable<TEntity> GetQueryable<TEntity>() where TEntity : class, EntityWithTechnicalKey;
         TEntity FindById<TEntity>(object id) where TEntity : class, EntityWithTechnicalKey;
-        TEntity Save<TEntity>(TEntity entity, ApplicationUser currentUser, List<IBusinessLogicEvent> events = null) where TEntity : class, EntityWithTechnicalKey;
+        TEntity Save<TEntity>(TEntity entity, ApplicationUser currentUser) where TEntity : class, EntityWithTechnicalKey;
         void Delete<TEntity>(TEntity entity, ApplicationUser currentUser) where TEntity : class, EntityWithTechnicalKey;
         void DeleteById<TEntity>(object id, ApplicationUser currentUser) where TEntity : class, EntityWithTechnicalKey;
     }

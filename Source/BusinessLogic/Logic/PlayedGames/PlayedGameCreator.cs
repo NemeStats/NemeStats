@@ -18,7 +18,6 @@
 using BusinessLogic.DataAccess;
 using BusinessLogic.DataAccess.Security;
 using BusinessLogic.EventTracking;
-using BusinessLogic.Logic.Achievements;
 using BusinessLogic.Logic.Champions;
 using BusinessLogic.Logic.Nemeses;
 using BusinessLogic.Logic.Points;
