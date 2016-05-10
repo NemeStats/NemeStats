@@ -20,7 +20,6 @@
 
 using BusinessLogic.Logic.GameDefinitions;
 using BusinessLogic.Logic.GamingGroups;
-using BusinessLogic.Logic.PlayedGames;
 using BusinessLogic.Logic.Players;
 using BusinessLogic.Models.Games;
 using BusinessLogic.Models.GamingGroups;
@@ -47,8 +46,7 @@ namespace UI.Controllers
 
         private readonly IPlayerSummaryBuilder _playerSummaryBuilder;
         private readonly ITopPlayerViewModelBuilder _topPlayerViewModelBuilder;
-        private readonly IPlayedGameRetriever _playedGameRetriever;
-        private readonly IRecentPublicGamesRetriever _recentPublicGamesRetriever;
+        private readonly RecentPublicGamesRetriever _recentPublicGamesRetriever;
         private readonly IGamingGroupRetriever _gamingGroupRetriever;
         private readonly IGameDefinitionRetriever _gameDefinitionRetriever;
         private readonly ITransformer _transformer;
@@ -56,28 +54,26 @@ namespace UI.Controllers
         public HomeController(
             IPlayerSummaryBuilder playerSummaryBuilder,
             ITopPlayerViewModelBuilder topPlayerViewModelBuilder,
-            IPlayedGameRetriever playedGameRetriever,
+            RecentPublicGamesRetriever recentPublicGamesRetriever,
             IGamingGroupRetriever gamingGroupRetriever,
             IGameDefinitionRetriever gameDefinitionRetriever,
-            ITransformer transformer, 
-            IRecentPublicGamesRetriever recentPublicGamesRetriever)
+            ITransformer transformer)
         {
-            this._playerSummaryBuilder = playerSummaryBuilder;
-            this._topPlayerViewModelBuilder = topPlayerViewModelBuilder;
-            this._playedGameRetriever = playedGameRetriever;
-            this._gamingGroupRetriever = gamingGroupRetriever;
-            this._gameDefinitionRetriever = gameDefinitionRetriever;
-            this._transformer = transformer;
+            _playerSummaryBuilder = playerSummaryBuilder;
+            _topPlayerViewModelBuilder = topPlayerViewModelBuilder;
             _recentPublicGamesRetriever = recentPublicGamesRetriever;
+            _gamingGroupRetriever = gamingGroupRetriever;
+            _gameDefinitionRetriever = gameDefinitionRetriever;
+            _transformer = transformer;
         }
 
         public virtual ActionResult Index()
         {
             var topPlayers = _playerSummaryBuilder.GetTopPlayers(NUMBER_OF_TOP_PLAYERS_TO_SHOW);
             var topPlayerViewModels = topPlayers.Select(
-                topPlayer => this._topPlayerViewModelBuilder.Build(topPlayer)).ToList();
+                topPlayer => _topPlayerViewModelBuilder.Build(topPlayer)).ToList();
 
-            var publicGameSummaries = _recentPublicGamesRetriever.GetRecentPublicGames(NUMBER_OF_RECENT_PUBLIC_GAMES_TO_SHOW);
+            var publicGameSummaries = _recentPublicGamesRetriever.GetResults(NUMBER_OF_RECENT_PUBLIC_GAMES_TO_SHOW);
 
             var topGamingGroups = _gamingGroupRetriever.GetTopGamingGroups(NUMBER_OF_TOP_GAMING_GROUPS_TO_SHOW);
 

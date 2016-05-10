@@ -141,7 +141,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Caching\Cacheable.cs" />
     <Compile Include="Caching\CacheRetriever.cs" />
+    <Compile Include="Caching\ICacheable.cs" />
     <Compile Include="Caching\ICacheRetriever.cs" />
     <Compile Include="DataAccess\NemeStatsDataContext.cs" />
     <Compile Include="DataAccess\IDataContext.cs" />
@@ -171,7 +173,6 @@
     <Compile Include="Exceptions\UnauthorizedEntityAccessException.cs" />
     <Compile Include="Export\ExcelGenerator.cs" />
     <Compile Include="Export\IExcelGenerator.cs" />
-    <Compile Include="Facades\IRecentPublicGamesRetriever.cs" />
     <Compile Include="Facades\RecentPublicGamesRetriever.cs" />
     <Compile Include="Jobs\BoardGameGeekCleanUpService\LinkOrphanGamesResult.cs" />
     <Compile Include="Jobs\BoardGameGeekCleanUpService\BoardGameGeekBatchUpdateService.cs" />

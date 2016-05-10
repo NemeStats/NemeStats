@@ -16,19 +16,16 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 
-using System;
-using AutoMapper;
 using BusinessLogic.Logic.Nemeses;
 using BusinessLogic.Models.Games;
 using BusinessLogic.Models.Players;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System.Collections.Generic;
-using System.Linq;
 using System.Web.Mvc;
+using BusinessLogic.Facades;
 using BusinessLogic.Logic.GameDefinitions;
 using BusinessLogic.Logic.GamingGroups;
-using BusinessLogic.Logic.PlayedGames;
 using BusinessLogic.Logic.Players;
 using UI.Controllers;
 using UI.Models.GamingGroup;
@@ -75,7 +72,7 @@ namespace UI.Tests.UnitTests.ControllerTests.HomeControllerTests
             {
                 expectedPublicGameSummary
             };
-            _autoMocker.Get<IPlayedGameRetriever>().Expect(mock => mock.GetRecentPublicGames(HomeController.NUMBER_OF_RECENT_PUBLIC_GAMES_TO_SHOW))
+            _autoMocker.Get<RecentPublicGamesRetriever>().Expect(mock => mock.GetResults(HomeController.NUMBER_OF_RECENT_PUBLIC_GAMES_TO_SHOW))
                 .Return(publicGameSummaries);
 
             var expectedNemesisChanges = new List<NemesisChange>();

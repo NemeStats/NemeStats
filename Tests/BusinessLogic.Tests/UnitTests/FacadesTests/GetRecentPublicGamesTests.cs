@@ -25,64 +25,42 @@ namespace BusinessLogic.Tests.UnitTests.FacadesTests
         }
 
         [Test]
-        public void ItReturnsTheItemFromTheCacheIfItExists()
+        public void ItPullsFromPlayedGameRetrieverIfTheResultsArentAlreadyInTheCache()
         {
             //--arrange
             int gamesToRetrieve = 1;
             var expectedResults = new List<PublicGameSummary>();
-            string expectedCacheKey = RecentPublicGamesRetriever.GetCacheKey(gamesToRetrieve);
-            _autoMocker.Get<ICacheRetriever>().Expect(mock => mock.TryGetItemFromCache(
-                Arg<string>.Is.Equal(expectedCacheKey), 
-                out Arg<List<PublicGameSummary>>.Out(expectedResults).Dummy))
-                       .Return(true);
+            _autoMocker.Get<IPlayedGameRetriever>().Expect(mock => mock.GetRecentPublicGames(gamesToRetrieve))
+              .Return(expectedResults);
 
             //--act
-            var actualResults = _autoMocker.ClassUnderTest.GetRecentPublicGames(gamesToRetrieve);
+            var actualResults = _autoMocker.ClassUnderTest.GetFromSource(gamesToRetrieve);
 
             //--assert
             Assert.That(actualResults, Is.SameAs(expectedResults));
         }
 
         [Test]
-        public void ItReturnsResultsFromTheDatabaseIfTheyArentAlreadyInTheCache()
+        public void TheCacheExpirationIsOneHour()
         {
-            //--arrange
-            int gamesToRetrieve = 1;
-            var expectedResults = new List<PublicGameSummary>();
-            string expectedCacheKey = RecentPublicGamesRetriever.GetCacheKey(gamesToRetrieve);
-            _autoMocker.Get<ICacheRetriever>().Expect(mock => mock.TryGetItemFromCache(
-                Arg<string>.Is.Equal(expectedCacheKey),
-                out Arg<List<PublicGameSummary>>.Out(null).Dummy))
-                       .Return(false);
-            _autoMocker.Get<IPlayedGameRetriever>().Expect(mock => mock.GetRecentPublicGames(gamesToRetrieve))
-                       .Return(expectedResults);
-
             //--act
-            var actualResults = _autoMocker.ClassUnderTest.GetRecentPublicGames(gamesToRetrieve);
+            var actualResults = _autoMocker.ClassUnderTest.GetCacheExpirationInSeconds();
 
             //--assert
-            Assert.That(actualResults, Is.SameAs(expectedResults));
+            Assert.That(actualResults, Is.EqualTo(3600));
         }
 
         [Test]
-        public void ItAddsTheResultsToTheCacheIfItHadToRetrieveFromTheDatabase()
+        public void ItReturnsTheCacheKeyAsTheTypeGuidConcatenatedWithTheInputParameters()
         {
             //--arrange
             int gamesToRetrieve = 1;
-            var expectedResults = new List<PublicGameSummary>();
-            string expectedCacheKey = RecentPublicGamesRetriever.GetCacheKey(gamesToRetrieve);
-            _autoMocker.Get<ICacheRetriever>().Expect(mock => mock.TryGetItemFromCache(
-                Arg<string>.Is.Equal(expectedCacheKey),
-                out Arg<List<PublicGameSummary>>.Out(null).Dummy))
-                       .Return(false);
-            _autoMocker.Get<IPlayedGameRetriever>().Expect(mock => mock.GetRecentPublicGames(gamesToRetrieve))
-                       .Return(expectedResults);
 
             //--act
-            var actualResults = _autoMocker.ClassUnderTest.GetRecentPublicGames(gamesToRetrieve);
+            var actualResults = _autoMocker.ClassUnderTest.GetCacheKey(gamesToRetrieve);
 
             //--assert
-            Assert.That(actualResults, Is.SameAs(expectedResults));
+            Assert.That(actualResults, Is.EqualTo(typeof(RecentPublicGamesRetriever).GUID.ToString() + gamesToRetrieve));
         }
     }
 }
