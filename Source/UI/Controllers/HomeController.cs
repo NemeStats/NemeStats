@@ -46,7 +46,7 @@ namespace UI.Controllers
 
         private readonly IPlayerSummaryBuilder _playerSummaryBuilder;
         private readonly ITopPlayerViewModelBuilder _topPlayerViewModelBuilder;
-        private readonly RecentPublicGamesRetriever _recentPublicGamesRetriever;
+        private readonly IRecentPublicGamesRetriever _recentPublicGamesRetriever;
         private readonly IGamingGroupRetriever _gamingGroupRetriever;
         private readonly IGameDefinitionRetriever _gameDefinitionRetriever;
         private readonly ITransformer _transformer;
@@ -54,7 +54,7 @@ namespace UI.Controllers
         public HomeController(
             IPlayerSummaryBuilder playerSummaryBuilder,
             ITopPlayerViewModelBuilder topPlayerViewModelBuilder,
-            RecentPublicGamesRetriever recentPublicGamesRetriever,
+            IRecentPublicGamesRetriever recentPublicGamesRetriever,
             IGamingGroupRetriever gamingGroupRetriever,
             IGameDefinitionRetriever gameDefinitionRetriever,
             ITransformer transformer)

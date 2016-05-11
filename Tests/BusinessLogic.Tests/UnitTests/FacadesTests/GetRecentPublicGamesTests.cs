@@ -49,18 +49,5 @@ namespace BusinessLogic.Tests.UnitTests.FacadesTests
             //--assert
             Assert.That(actualResults, Is.EqualTo(3600));
         }
-
-        [Test]
-        public void ItReturnsTheCacheKeyAsTheTypeGuidConcatenatedWithTheInputParameters()
-        {
-            //--arrange
-            int gamesToRetrieve = 1;
-
-            //--act
-            var actualResults = _autoMocker.ClassUnderTest.GetCacheKey(gamesToRetrieve);
-
-            //--assert
-            Assert.That(actualResults, Is.EqualTo(typeof(RecentPublicGamesRetriever).GUID.ToString() + gamesToRetrieve));
-        }
     }
 }

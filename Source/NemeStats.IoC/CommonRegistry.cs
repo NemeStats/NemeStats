@@ -19,12 +19,14 @@
 using System.Configuration.Abstractions;
 using System.Data.Entity;
 using BoardGameGeekApiClient.Interfaces;
+using BusinessLogic.Caching;
 using BusinessLogic.DataAccess;
 using BusinessLogic.DataAccess.GamingGroups;
 using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.DataAccess.Security;
 using BusinessLogic.EventTracking;
 using BusinessLogic.Export;
+using BusinessLogic.Facades;
 using BusinessLogic.Jobs.BoardGameGeekCleanUpService;
 using BusinessLogic.Logic.BoardGameGeek;
 using BusinessLogic.Logic.Champions;
@@ -157,6 +159,10 @@ namespace NemeStats.IoC
             For<IWeightTierCalculator>().Use<WeightTierCalculator>();
             For<IWeightBonusCalculator>().Use<WeightBonusCalculator>();
             For<IGameDurationBonusCalculator>().Use<GameDurationBonusCalculator>();
+
+            For<IRecentPublicGamesRetriever>().Use<RecentPublicGamesRetriever>();
+
+            For<INemeStatsCacheManager>().Use<NemeStatsCacheManager>();
         }
 
         private void SetupUniquePerRequestMappings()

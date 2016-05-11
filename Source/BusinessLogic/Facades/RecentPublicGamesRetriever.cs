@@ -5,23 +5,23 @@ using BusinessLogic.Models.Games;
 
 namespace BusinessLogic.Facades
 {
-    public class RecentPublicGamesRetriever : Cacheable<int, List<PublicGameSummary>>
+    public class RecentPublicGamesRetriever : Cacheable<int, List<PublicGameSummary>>, IRecentPublicGamesRetriever
     {
         public const int CACHE_EXPIRATION_IN_SECONDS = 60 * 60;
 
         private readonly IPlayedGameRetriever _playedGameRetriever;
 
-        public RecentPublicGamesRetriever(IPlayedGameRetriever playedGameRetriever)
+        public RecentPublicGamesRetriever(IPlayedGameRetriever playedGameRetriever, INemeStatsCacheManager cacheManager) : base(cacheManager)
         {
             _playedGameRetriever = playedGameRetriever;
         }
 
-        internal override List<PublicGameSummary> GetFromSource(int numberOfGamesToRetrieve)
+        public override List<PublicGameSummary> GetFromSource(int numberOfGamesToRetrieve)
         {
             return _playedGameRetriever.GetRecentPublicGames(numberOfGamesToRetrieve);
         }
 
-        internal override int GetCacheExpirationInSeconds()
+        public override int GetCacheExpirationInSeconds()
         {
             return CACHE_EXPIRATION_IN_SECONDS;
         }

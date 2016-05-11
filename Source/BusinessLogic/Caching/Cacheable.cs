@@ -5,34 +5,33 @@ namespace BusinessLogic.Caching
 {
     public abstract class Cacheable<TInput, TOutput> : ICacheable<TInput, TOutput>
     {
-        public TOutput GetResults(TInput inputParameter)
+        private readonly INemeStatsCacheManager _cacheManager;
+
+        protected Cacheable(INemeStatsCacheManager cacheManager)
         {
-            var memoryCache = MemoryCache.Default;
-            var cacheKey = GetCacheKey(inputParameter);
-            if (memoryCache.Contains(cacheKey))
-            {
-                var itemFromCache = memoryCache.Get(cacheKey);
-
-                return (TOutput)itemFromCache;
-            }
-
-            var itemFromDatabase = GetFromSource(inputParameter);
-            var cacheItem = new CacheItem(cacheKey, itemFromDatabase);
-
-            var cachePolicy = new CacheItemPolicy
-            {
-                AbsoluteExpiration = new DateTimeOffset(
-                    DateTime.UtcNow.AddSeconds(GetCacheExpirationInSeconds()))
-            };
-            memoryCache.Add(cacheItem, cachePolicy);
-            return itemFromDatabase;
+            _cacheManager = cacheManager;
         }
 
-        internal abstract int GetCacheExpirationInSeconds();
+        public TOutput GetResults(TInput inputParameter)
+        {
+            var cacheKey = GetCacheKey(inputParameter);
+            TOutput itemFromCache;
+            if (_cacheManager.TryGetItemFromCache<TOutput>(cacheKey, out itemFromCache))
+            {
+                return itemFromCache;
+            }
+            
+            var itemFromSource = GetFromSource(inputParameter);
+            
+            _cacheManager.AddItemToCacheWithAbsoluteExpiration(cacheKey, itemFromSource, GetCacheExpirationInSeconds());
+            return itemFromSource;
+        }
 
-        internal abstract TOutput GetFromSource(TInput inputParameter);
+        public abstract int GetCacheExpirationInSeconds();
 
-        internal string GetCacheKey(TInput inputParameter)
+        public abstract TOutput GetFromSource(TInput inputParameter);
+
+        public string GetCacheKey(TInput inputParameter)
         {
             return string.Join("|", GetType().GUID.ToString(), inputParameter.ToString());
         }

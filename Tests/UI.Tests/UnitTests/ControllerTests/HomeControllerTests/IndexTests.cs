@@ -72,7 +72,7 @@ namespace UI.Tests.UnitTests.ControllerTests.HomeControllerTests
             {
                 expectedPublicGameSummary
             };
-            _autoMocker.Get<RecentPublicGamesRetriever>().Expect(mock => mock.GetResults(HomeController.NUMBER_OF_RECENT_PUBLIC_GAMES_TO_SHOW))
+            _autoMocker.Get<IRecentPublicGamesRetriever>().Expect(mock => mock.GetResults(HomeController.NUMBER_OF_RECENT_PUBLIC_GAMES_TO_SHOW))
                 .Return(publicGameSummaries);
 
             var expectedNemesisChanges = new List<NemesisChange>();
