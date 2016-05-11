@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BusinessLogic.Caching;
+﻿using System.Collections.Generic;
 using BusinessLogic.Facades;
 using BusinessLogic.Logic.PlayedGames;
 using BusinessLogic.Models.Games;
@@ -14,7 +9,7 @@ using StructureMap.AutoMocking;
 namespace BusinessLogic.Tests.UnitTests.FacadesTests
 {
     [TestFixture]
-    public class GetRecentPublicGamesTests
+    public class RecentPublicGamesRetrieverTests
     {
         private RhinoAutoMocker<RecentPublicGamesRetriever> _autoMocker;
 

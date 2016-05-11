@@ -47,7 +47,7 @@ namespace UI.Controllers
         private readonly IPlayerSummaryBuilder _playerSummaryBuilder;
         private readonly ITopPlayerViewModelBuilder _topPlayerViewModelBuilder;
         private readonly IRecentPublicGamesRetriever _recentPublicGamesRetriever;
-        private readonly IGamingGroupRetriever _gamingGroupRetriever;
+        private readonly ITopGamingGroupsRetriever _gamingGroupRetriever;
         private readonly IGameDefinitionRetriever _gameDefinitionRetriever;
         private readonly ITransformer _transformer;
 
@@ -55,7 +55,7 @@ namespace UI.Controllers
             IPlayerSummaryBuilder playerSummaryBuilder,
             ITopPlayerViewModelBuilder topPlayerViewModelBuilder,
             IRecentPublicGamesRetriever recentPublicGamesRetriever,
-            IGamingGroupRetriever gamingGroupRetriever,
+            ITopGamingGroupsRetriever gamingGroupRetriever,
             IGameDefinitionRetriever gameDefinitionRetriever,
             ITransformer transformer)
         {
@@ -75,7 +75,7 @@ namespace UI.Controllers
 
             var publicGameSummaries = _recentPublicGamesRetriever.GetResults(NUMBER_OF_RECENT_PUBLIC_GAMES_TO_SHOW);
 
-            var topGamingGroups = _gamingGroupRetriever.GetTopGamingGroups(NUMBER_OF_TOP_GAMING_GROUPS_TO_SHOW);
+            var topGamingGroups = _gamingGroupRetriever.GetResults(NUMBER_OF_TOP_GAMING_GROUPS_TO_SHOW);
 
             var topGamingGroupViewModels = topGamingGroups.Select(_transformer.Transform<TopGamingGroupSummary, TopGamingGroupSummaryViewModel>).ToList();
 

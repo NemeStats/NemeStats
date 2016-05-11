@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using BusinessLogic.Caching;
 using BusinessLogic.Logic.PlayedGames;
+using BusinessLogic.Logic.Utilities;
 using BusinessLogic.Models.Games;
 
 namespace BusinessLogic.Facades
@@ -11,7 +12,11 @@ namespace BusinessLogic.Facades
 
         private readonly IPlayedGameRetriever _playedGameRetriever;
 
-        public RecentPublicGamesRetriever(IPlayedGameRetriever playedGameRetriever, INemeStatsCacheManager cacheManager) : base(cacheManager)
+        public RecentPublicGamesRetriever(
+            IDateUtilities dateUtilities, 
+            IPlayedGameRetriever playedGameRetriever, 
+            INemeStatsCacheManager cacheManager) 
+            : base(dateUtilities, cacheManager)
         {
             _playedGameRetriever = playedGameRetriever;
         }

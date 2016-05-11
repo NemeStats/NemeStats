@@ -25,7 +25,6 @@ using System.Collections.Generic;
 using System.Web.Mvc;
 using BusinessLogic.Facades;
 using BusinessLogic.Logic.GameDefinitions;
-using BusinessLogic.Logic.GamingGroups;
 using BusinessLogic.Logic.Players;
 using UI.Controllers;
 using UI.Models.GamingGroup;
@@ -94,7 +93,7 @@ namespace UI.Tests.UnitTests.ControllerTests.HomeControllerTests
             {
                 expectedTopGamingGroup
             };
-            _autoMocker.Get<IGamingGroupRetriever>().Expect(mock => mock.GetTopGamingGroups(HomeController.NUMBER_OF_TOP_GAMING_GROUPS_TO_SHOW))
+            _autoMocker.Get<ITopGamingGroupsRetriever>().Expect(mock => mock.GetResults(HomeController.NUMBER_OF_TOP_GAMING_GROUPS_TO_SHOW))
                                     .Return(expectedTopGamingGroupSummaries);
             _autoMocker.Get<ITransformer>()
                 .Expect(mock => mock.Transform<TopGamingGroupSummary, TopGamingGroupSummaryViewModel>(expectedTopGamingGroupSummaries[0]))

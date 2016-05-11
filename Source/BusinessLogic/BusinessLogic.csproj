@@ -176,7 +176,9 @@
     <Compile Include="Export\ExcelGenerator.cs" />
     <Compile Include="Export\IExcelGenerator.cs" />
     <Compile Include="Facades\IRecentPublicGamesRetriever.cs" />
+    <Compile Include="Facades\ITopGamingGroupsRetriever.cs" />
     <Compile Include="Facades\RecentPublicGamesRetriever.cs" />
+    <Compile Include="Facades\TopGamingGroupsRetriever.cs" />
     <Compile Include="Jobs\BoardGameGeekCleanUpService\LinkOrphanGamesResult.cs" />
     <Compile Include="Jobs\BoardGameGeekCleanUpService\BoardGameGeekBatchUpdateService.cs" />
     <Compile Include="Logic\BoardGameGeek\BoardGameGeekGameDefinitionCreator.cs" />
@@ -202,6 +204,8 @@
     <Compile Include="Logic\TransactionSource.cs" />
     <Compile Include="Logic\Users\AuthTokenGenerator.cs" />
     <Compile Include="Logic\Users\AuthTokenValidator.cs" />
+    <Compile Include="Logic\Utilities\DateUtilities.cs" />
+    <Compile Include="Logic\Utilities\IDateUtilities.cs" />
     <Compile Include="Migrations\201601120806479_BoardGameGeekDefinitionTable.cs" />
     <Compile Include="Migrations\201601120806479_BoardGameGeekDefinitionTable.Designer.cs">
       <DependentUpon>201601120806479_BoardGameGeekDefinitionTable.cs</DependentUpon>

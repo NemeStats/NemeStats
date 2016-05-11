@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.Caching;
+using BusinessLogic.Logic.Utilities;
 using BusinessLogic.Models.Players;
 using NUnit.Framework;
 using Rhino.Mocks;
@@ -20,10 +21,9 @@ namespace BusinessLogic.Tests.UnitTests.CachingTests
         internal class CacheableImplementation : Cacheable<int, PlayerStatistics>
         {
             internal static readonly int CACHE_EXPIRATION_IN_SECONDS = 123;
-            internal static readonly string CACHE_PREFIX = "CP";
             internal PlayerStatistics expectedPlayerStatisticsFromDb;
 
-            public CacheableImplementation(INemeStatsCacheManager cacheManager) : base(cacheManager)
+            public CacheableImplementation(IDateUtilities dateUtilities, INemeStatsCacheManager cacheManager) : base(dateUtilities, cacheManager)
             {
                 expectedPlayerStatisticsFromDb = new PlayerStatistics();
             }
@@ -59,7 +59,25 @@ namespace BusinessLogic.Tests.UnitTests.CachingTests
         }
 
         [Test]
-        public void ItAddsTheItemToTheCacheIfItWasntAlreadyInTheCache()
+        public void ItReturnsTheItemFromTheSourceIfItWasntAlreadyInTheCache()
+        {
+            //--arrange
+            int inputValue = 1;
+            _autoMocker.Get<INemeStatsCacheManager>()
+                       .Expect(mock => mock.TryGetItemFromCache(
+                           Arg<string>.Is.Anything,
+                           out Arg<PlayerStatistics>.Out(new PlayerStatistics()).Dummy))
+                       .Return(false);
+
+            //--act
+            var results = _autoMocker.ClassUnderTest.GetResults(inputValue);
+
+            //--assert
+            Assert.That(results, Is.SameAs(_autoMocker.ClassUnderTest.expectedPlayerStatisticsFromDb));
+        }
+
+        [Test]
+        public void ItAddsTheItemToTheCacheUsingTheSpecifiedNumberOfSecondsToExpireIfItWasntAlreadyInTheCache()
         {
             //--arrange
             int inputValue = 1;
@@ -78,22 +96,40 @@ namespace BusinessLogic.Tests.UnitTests.CachingTests
                 ));
         }
 
+
+        internal class CacheableImplementationWithDefaultExpiration : Cacheable<int, PlayerStatistics>
+        {
+            public CacheableImplementationWithDefaultExpiration(IDateUtilities dateUtilities, INemeStatsCacheManager cacheManager) : base(dateUtilities, cacheManager)
+            {
+            }
+
+            public override PlayerStatistics GetFromSource(int inputParameter)
+            {
+                return new PlayerStatistics();
+            }
+        }
+
         [Test]
-        public void ItReturnsTheItemFromTheSourceIfItWasntAlreadyInTheCache()
+        public void ItDefaultsTheCacheExpirationToTheEndOfTheDayIfNotOverridden()
         {
             //--arrange
+            var automockerForThisTestOnly = new RhinoAutoMocker<CacheableImplementationWithDefaultExpiration>();
             int inputValue = 1;
-            _autoMocker.Get<INemeStatsCacheManager>()
-                       .Expect(mock => mock.TryGetItemFromCache(
-                           Arg<string>.Is.Anything, 
-                           out Arg<PlayerStatistics>.Out(new PlayerStatistics()).Dummy))
-                       .Return(false);
+            var cacheKey = automockerForThisTestOnly.ClassUnderTest.GetCacheKey(inputValue);
+            var numberOfSecondsUntilExpiration = 42;
+            automockerForThisTestOnly.Get<IDateUtilities>().Expect(mock => mock.GetNumberOfSecondsUntilEndOfDay())
+                       .Return(numberOfSecondsUntilExpiration);
 
             //--act
-            var results = _autoMocker.ClassUnderTest.GetResults(inputValue);
+            automockerForThisTestOnly.ClassUnderTest.GetResults(inputValue);
 
             //--assert
-            Assert.That(results, Is.SameAs(_autoMocker.ClassUnderTest.expectedPlayerStatisticsFromDb));
+            automockerForThisTestOnly.Get<INemeStatsCacheManager>().AssertWasCalled(
+                mock => mock.AddItemToCacheWithAbsoluteExpiration(
+                    Arg<string>.Is.Equal(cacheKey),
+                    Arg<PlayerStatistics>.Is.Anything,
+                    Arg<int>.Is.Equal(numberOfSecondsUntilExpiration)
+                ));
         }
     }
 }

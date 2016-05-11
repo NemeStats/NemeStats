@@ -1,15 +1,18 @@
 ﻿using System;
 using System.Runtime.Caching;
+using BusinessLogic.Logic.Utilities;
 
 namespace BusinessLogic.Caching
 {
     public abstract class Cacheable<TInput, TOutput> : ICacheable<TInput, TOutput>
     {
         private readonly INemeStatsCacheManager _cacheManager;
+        private readonly IDateUtilities _dateUtilities;
 
-        protected Cacheable(INemeStatsCacheManager cacheManager)
+        protected Cacheable(IDateUtilities dateUtilities, INemeStatsCacheManager cacheManager)
         {
             _cacheManager = cacheManager;
+            _dateUtilities = dateUtilities;
         }
 
         public TOutput GetResults(TInput inputParameter)
@@ -27,7 +30,10 @@ namespace BusinessLogic.Caching
             return itemFromSource;
         }
 
-        public abstract int GetCacheExpirationInSeconds();
+        public virtual int GetCacheExpirationInSeconds()
+        {
+            return _dateUtilities.GetNumberOfSecondsUntilEndOfDay();
+        }
 
         public abstract TOutput GetFromSource(TInput inputParameter);
 

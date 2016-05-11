@@ -200,7 +200,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UnitTests\DataAccessTests\GamingGroupsTests\EntityFrameworkGamingGroupAccessGranterTests\EntityFrameworkGamingGroupAccessGranterTestBase.cs" />
     <Compile Include="UnitTests\EventTrackingTests\UniversalAnalyticsNemeStatsEventTrackerTests\TrackGamingGroupUpdateTests.cs" />
-    <Compile Include="UnitTests\FacadesTests\GetRecentPublicGamesTests.cs" />
+    <Compile Include="UnitTests\FacadesTests\RecentPublicGamesRetrieverTests.cs" />
+    <Compile Include="UnitTests\FacadesTests\TopGamingGroupsRetrieverTests.cs" />
     <Compile Include="UnitTests\JobsTests\BoardGameGeekBatchUpdateService\LinkOrphanGamesTests\LinkOrphanGamesJobTests.cs" />
     <Compile Include="UnitTests\JobsTests\BoardGameGeekBatchUpdateService\RefreshAllBoardGameGeekDataTests.cs" />
     <Compile Include="UnitTests\LogicTests\BoardGameGeekTests\BoardGameGeekGamesImporterTests\BoardGameGeekGamesImporterTests.cs" />
@@ -263,6 +264,7 @@
     <Compile Include="UnitTests\LogicTests\UsersTests\GamingGroupInviteConsumerTests\GamingGroupInviteConsumerTestBase.cs" />
     <Compile Include="UnitTests\LogicTests\UsersTests\UserRegistererTests\RegisterUserTests.cs" />
     <Compile Include="UnitTests\LogicTests\UsersTests\UserRetrieverTests\RetrieveUserInformationTests.cs" />
+    <Compile Include="UnitTests\LogicTests\UtilitiesTests\DateUtilitiesTests\GetNumberOfSecondsUntilEndOfDayTests.cs" />
     <Compile Include="UnitTests\LogicTests\UtilitiesTests\WinPercentageCalculatorTests.cs" />
     <Compile Include="UnitTests\LogicTests\VotableFeaturesTests\RetrieveVotableFeatureTests.cs" />
     <Compile Include="UnitTests\LogicTests\VotableFeaturesTests\VotableFeatureVoterTests\CastVoteTests.cs" />
