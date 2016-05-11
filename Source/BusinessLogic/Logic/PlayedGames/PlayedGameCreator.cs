@@ -86,7 +86,7 @@ namespace BusinessLogic.Logic.PlayedGames
                 currentUser.Id,
                 playerGameResults);
 
-            _dataContext.Save(playedGame, currentUser);
+            playedGame = _dataContext.Save(playedGame, currentUser);
 
             _playedGameTracker.TrackPlayedGame(currentUser, transactionSource);
 

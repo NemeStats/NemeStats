@@ -16,7 +16,7 @@ namespace BusinessLogic.Events.HandlerFactory
             _rollbar = rollbar;
         }
 
-        public void SendEvent(IBusinessLogicEvent @event)
+        public virtual void SendEvent(IBusinessLogicEvent @event)
         {
 
             Task.Factory.StartNew(() =>

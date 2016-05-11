@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using System.Linq;
 using BusinessLogic.DataAccess;
 using BusinessLogic.DataAccess.Security;
+using BusinessLogic.Events;
 using BusinessLogic.Events.HandlerFactory;
 using BusinessLogic.Events.Interfaces;
 using BusinessLogic.EventTracking;
@@ -93,12 +94,12 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameCr
             var playerOneRank = 1;
             var playerTwoRank = 2;
             var newlyCompletedGame = new NewlyCompletedGame
-            {GameDefinitionId = gameDefinition.Id};
+            { GameDefinitionId = gameDefinition.Id };
             playerRanks = new List<PlayerRank>();
             playerRanks.Add(new PlayerRank
-            {PlayerId = playerOneId, GameRank = playerOneRank});
+            { PlayerId = playerOneId, GameRank = playerOneRank });
             playerRanks.Add(new PlayerRank
-            {PlayerId = playerTwoId, GameRank = playerTwoRank});
+            { PlayerId = playerTwoId, GameRank = playerTwoRank });
             newlyCompletedGame.PlayerRanks = playerRanks;
             autoMocker.Get<IPointsCalculator>()
                 .Expect(mock => mock.CalculatePoints(null, null))
@@ -342,10 +343,20 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameCr
         [Test]
         public void It_Send_PlayedGameCreatedEvent()
         {
+            var playedGame = new PlayedGame()
+            {
+                Id = 1,
+                GameDefinitionId = 1
+            };
+
+            autoMocker.Get<IDataContext>()
+                .Stub(s => s.Save(Arg<PlayedGame>.Is.Anything, Arg<ApplicationUser>.Is.Anything))
+                .Return(playedGame);
+
             autoMocker.ClassUnderTest.CreatePlayedGame(ValidNewlyCompletedGame(), TransactionSource.WebApplication, currentUser);
 
-            //TODO: Test PlayedGameEvent was sended
 
+            autoMocker.Get<IBusinessLogicEventBus>().AssertWasCalled(mock => mock.SendEvent(Arg<IBusinessLogicEvent>.Matches(m => m.GetType() == typeof(PlayedGameCreatedEvent) && m.TriggerEntityId == playedGame.Id)));
         }
 
     }
