@@ -162,6 +162,7 @@ namespace NemeStats.IoC
 
             For<IRecentPublicGamesRetriever>().Use<RecentPublicGamesRetriever>();
 
+            For<ICacheService>().Use<MemoryCacheService>();
             For<INemeStatsCacheManager>().Use<NemeStatsCacheManager>();
         }
 

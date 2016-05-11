@@ -44,7 +44,7 @@ namespace BusinessLogic.Tests.UnitTests.CachingTests
         {
             //--arrange
             int inputValue = 1;
-            var cacheKey = _autoMocker.ClassUnderTest.GetCacheKey(inputValue);
+            var cacheKey = _autoMocker.ClassUnderTest.GetCacheKey();
             var playerStatisticsIncache = new PlayerStatistics();
             _autoMocker.Get<INemeStatsCacheManager>().Expect(mock => mock.TryGetItemFromCache(
                 Arg<string>.Is.Equal(cacheKey), 
@@ -63,7 +63,7 @@ namespace BusinessLogic.Tests.UnitTests.CachingTests
         {
             //--arrange
             int inputValue = 1;
-            var cacheKey = _autoMocker.ClassUnderTest.GetCacheKey(inputValue);
+            var cacheKey = _autoMocker.ClassUnderTest.GetCacheKey();
             var numberOfSecondsUntilExpiration = _autoMocker.ClassUnderTest.GetCacheExpirationInSeconds();
 
             //--act
