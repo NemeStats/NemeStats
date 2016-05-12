@@ -7,11 +7,11 @@ namespace BusinessLogic.Logic.Achievements
 {
     public interface IAchievement
     {
-        AchievementType AchievementId { get; }
+        AchievementId Id { get; }
+        AchievementGroup Group { get; }
 
         Dictionary<AchievementLevelEnum, int> LevelThresholds { get; }
 
-        AchievementLevelEnum? AchievementLevelAwarded(int playerId, IDataContext dataContext);
+        AchievementAwarded IsAwardedForThisPlayer(int playerId, IDataContext dataContext);
     }
-
 }

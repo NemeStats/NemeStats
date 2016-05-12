@@ -198,6 +198,7 @@
     <Compile Include="Export\IExcelGenerator.cs" />
     <Compile Include="Jobs\BoardGameGeekCleanUpService\LinkOrphanGamesResult.cs" />
     <Compile Include="Jobs\BoardGameGeekCleanUpService\BoardGameGeekBatchUpdateService.cs" />
+    <Compile Include="Logic\Achievements\AchievementAwarded.cs" />
     <Compile Include="Logic\Achievements\AchievementAwarder.cs" />
     <Compile Include="Logic\Achievements\ChampionAchievement.cs" />
     <Compile Include="Logic\Achievements\DiversifiedAchievement.cs" />
@@ -266,8 +267,12 @@
     <Compile Include="Migrations\201605081037190_AchievementBusinessLogic.Designer.cs">
       <DependentUpon>201605081037190_AchievementBusinessLogic.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201605120713125_Achievement-RelatedEntities.cs" />
+    <Compile Include="Migrations\201605120713125_Achievement-RelatedEntities.Designer.cs">
+      <DependentUpon>201605120713125_Achievement-RelatedEntities.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Achievements\AchievementLevelEnum.cs" />
-    <Compile Include="Models\Achievements\AchievementType.cs" />
+    <Compile Include="Models\Achievements\AchievementId.cs" />
     <Compile Include="Models\Achievements\AwardedAchievement.cs" />
     <Compile Include="Models\Games\TrendingGame.cs" />
     <Compile Include="Logic\Points\IWeightTierCalculator.cs" />
@@ -857,6 +862,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201605081037190_AchievementBusinessLogic.resx">
       <DependentUpon>201605081037190_AchievementBusinessLogic.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605120713125_Achievement-RelatedEntities.resx">
+      <DependentUpon>201605120713125_Achievement-RelatedEntities.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -8,7 +8,8 @@ namespace BusinessLogic.Logic.Achievements
 {
     public class ChampionAchievement : IAchievement
     {
-        public AchievementType AchievementId => AchievementType.Champion;
+        public AchievementId Id => AchievementId.Champion;
+        public AchievementGroup Group => AchievementGroup.Game;
 
         public Dictionary<AchievementLevelEnum, int> LevelThresholds => new Dictionary<AchievementLevelEnum, int>
         {
@@ -17,11 +18,19 @@ namespace BusinessLogic.Logic.Achievements
             {AchievementLevelEnum.Gold, 50}
         };
 
-        public AchievementLevelEnum? AchievementLevelAwarded(int playerId, IDataContext dataContext)
+        public AchievementAwarded IsAwardedForThisPlayer(int playerId, IDataContext dataContext)
         {
-            var championedGames = dataContext.GetQueryable<Champion>().Count(c=>c.PlayerId == playerId);
+            var result = new AchievementAwarded
+            {
+                AchievementId = this.Id
+            };
 
-            return LevelThresholds.OrderByDescending(l => l.Value).FirstOrDefault(l => l.Value <= championedGames).Key;
+            var championedGames = dataContext.GetQueryable<Champion>().Where(c=>c.PlayerId == playerId).Select(c=>c.GameDefinitionId);
+
+            result.LevelAwarded =  LevelThresholds.OrderByDescending(l => l.Value).FirstOrDefault(l => l.Value <= championedGames.Count()).Key;
+            result.RelatedEntities = championedGames.ToList();
+
+            return result;
         }
     }
 }

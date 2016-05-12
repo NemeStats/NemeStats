@@ -8,7 +8,8 @@ namespace BusinessLogic.Logic.Achievements
 {
     public class DiversifiedAchievement : IAchievement
     {
-        public AchievementType AchievementId => AchievementType.Diversified;
+        public AchievementId Id => AchievementId.Diversified;
+        public AchievementGroup Group => AchievementGroup.Game;
 
         public Dictionary<AchievementLevelEnum, int> LevelThresholds => new Dictionary<AchievementLevelEnum, int>
         {
@@ -17,17 +18,26 @@ namespace BusinessLogic.Logic.Achievements
             {AchievementLevelEnum.Gold, 100}
         };
 
-        public AchievementLevelEnum? AchievementLevelAwarded(int playerId, IDataContext dataContext)
+        public AchievementAwarded IsAwardedForThisPlayer(int playerId, IDataContext dataContext)
         {
-            var differentPlayedGamesCount =
+
+            var result = new AchievementAwarded
+            {
+                AchievementId = this.Id
+            };
+
+            var differentPlayedGames =
                 dataContext.GetQueryable<PlayerGameResult>()
                     .Where(pgr => pgr.PlayerId == playerId)
                     .Select(pgr => pgr.PlayedGame.GameDefinition.Id)
-                    .Distinct()
-                    .Count();
-             
+                    .Distinct();
 
-            return LevelThresholds.OrderByDescending(l => l.Value).FirstOrDefault(l => l.Value <= differentPlayedGamesCount).Key;
+            result.LevelAwarded =
+                LevelThresholds.OrderByDescending(l => l.Value)
+                    .FirstOrDefault(l => l.Value <= differentPlayedGames.Count())
+                    .Key;
+            result.RelatedEntities = differentPlayedGames.ToList();
+            return result;
         }
     }
 }

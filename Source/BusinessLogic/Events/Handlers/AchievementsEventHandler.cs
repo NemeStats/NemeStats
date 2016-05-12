@@ -36,34 +36,39 @@ namespace BusinessLogic.Events.Handlers
                 {
                     var currentPlayerAchievement =
                         player.PlayerAchievements.FirstOrDefault(
-                            pa => pa.AchievementId == achievement.AchievementId);
+                            pa => pa.AchievementId == achievement.Id);
 
-                    var levelAwarded = achievement.AchievementLevelAwarded(player.Id, DataContext);
+                    var achievementAwarded = achievement.IsAwardedForThisPlayer(player.Id, DataContext);
 
-                    if (levelAwarded.HasValue && currentPlayerAchievement == null)
+                    if (achievementAwarded.LevelAwarded.HasValue)
                     {
-                        var playerAchievement = new PlayerAchievement
+                        if (currentPlayerAchievement == null)
                         {
-                            Player = player,
-                            PlayerId = player.Id,
-                            AchievementId = achievement.AchievementId,
-                            AchievementLevel = levelAwarded.Value,
-                        };                        
+                            var playerAchievement = new PlayerAchievement
+                            {
+                                Player = player,
+                                PlayerId = player.Id,
+                                AchievementId = achievement.Id,
+                                AchievementLevel = achievementAwarded.LevelAwarded.Value,
+                                RelatedEntities = achievementAwarded.RelatedEntities
+                            };
 
-                        DataContext.Save(playerAchievement, new AnonymousApplicationUser());
-                        DataContext.CommitAllChanges();
+                            DataContext.Save(playerAchievement, new AnonymousApplicationUser());
+                            DataContext.CommitAllChanges();
 
-                        NotifyPlayer(player, achievement, levelAwarded);
-                        
-                    }
-                    else if (currentPlayerAchievement != null && levelAwarded > currentPlayerAchievement.AchievementLevel)
-                    {
-                        currentPlayerAchievement.AchievementLevel = levelAwarded.Value;
-                        currentPlayerAchievement.LastUpdatedDate = DateTime.UtcNow;
+                            NotifyPlayer(player, achievement, achievementAwarded.LevelAwarded);
 
-                        DataContext.CommitAllChanges();
+                        }
+                        else if (achievementAwarded.LevelAwarded.Value > currentPlayerAchievement.AchievementLevel)
+                        {
+                            currentPlayerAchievement.AchievementLevel = achievementAwarded.LevelAwarded.Value;
+                            currentPlayerAchievement.LastUpdatedDate = DateTime.UtcNow;
+                            currentPlayerAchievement.RelatedEntities = achievementAwarded.RelatedEntities;
 
-                        NotifyPlayer(player, achievement, levelAwarded);
+                            DataContext.CommitAllChanges();
+
+                            NotifyPlayer(player, achievement, achievementAwarded.LevelAwarded);
+                        }
                     }
                 }
             }
@@ -77,7 +82,7 @@ namespace BusinessLogic.Events.Handlers
                 var notificationClient =
                     GlobalHost.ConnectionManager.GetHubContext<NotificationsHub>().Clients.Group(player.ApplicationUserId);
 
-                notificationClient.NewAchievementUnlocked(achievement.AchievementId,
+                notificationClient.NewAchievementUnlocked(achievement.Id,
                     levelAwarded.Value.ToString());
             }
         }
