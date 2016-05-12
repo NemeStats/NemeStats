@@ -1,5 +1,5 @@
 FORMAT: 1A
-HOST: https://nerdscorekeeper.azurewebsites.net/api/v2
+HOST: https://nemestats.com/api/v2
 
 # NemeStats API
 
@@ -32,12 +32,13 @@ and protected.
 * 2016-03-17 Added ability to specify gamingGroupId in POST body when creating Players, Game Definitions, and Played Games 
 for users with multiple Gaming Groups. Also returns gamingGroupId whenever creating a new entity since specifying gamingGroupId is not required, and this will
 enable the client to know on exactly which Gaming Group the entity was created.
-* 2016-03-25 Added bonus points for Game Weight and Average Game Duration: https://nerdscorekeeper.azurewebsites.net/Home/AboutNemePoints .
+* 2016-03-25 Added bonus points for Game Weight and Average Game Duration: https://nemestats.com/Home/AboutNemePoints .
 This means the existing nemeStatsPointsAwarded field on the playerGameResult object is now the base points that are awarded. This  value doesn't
 change in the new  model, but if you want to get total points including the Game Weight and Game Duration Bonus Points,
 then you need to use the playerGameResult.totalNemeStatsPointsAwarded.
 * 2016-04-09 PointsScored on PlayerGameResult is now a decimal instead of an int.
-
+* 2016-05-12 Updated all documentation to use nemestats.com domain instead of nerdscorekeeper.azurewebsites.net since we now support this. The old
+domain should continue to work in the meantime, however.
 
 ### General Information
 
