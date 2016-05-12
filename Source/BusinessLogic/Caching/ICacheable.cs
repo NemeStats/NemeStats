@@ -3,7 +3,7 @@
     public interface ICacheable<in TInput, out TOutput>
     {
         int GetCacheExpirationInSeconds();
-        string GetCacheKey(TInput inputParameter);
+        string GetCacheKey();
         TOutput GetFromSource(TInput inputParameter);
         TOutput GetResults(TInput inputParameter);
     }

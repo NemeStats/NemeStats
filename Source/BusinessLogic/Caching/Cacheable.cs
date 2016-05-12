@@ -15,7 +15,7 @@ namespace BusinessLogic.Caching
 
         public TOutput GetResults(TInput inputParameter)
         {
-            var cacheKey = GetCacheKey(inputParameter);
+            var cacheKey = GetCacheKey();
             TOutput itemFromCache;
             if (_cacheManager.TryGetItemFromCache<TOutput>(cacheKey, out itemFromCache))
             {
@@ -28,6 +28,11 @@ namespace BusinessLogic.Caching
             return itemFromSource;
         }
 
+        public void EvictCache()
+        {
+            _cacheManager.EvictItemFromCache(GetCacheKey());
+        }
+
         public virtual int GetCacheExpirationInSeconds()
         {
             return _dateUtilities.GetNumberOfSecondsUntilEndOfDay();
@@ -35,9 +40,9 @@ namespace BusinessLogic.Caching
 
         public abstract TOutput GetFromSource(TInput inputParameter);
 
-        public string GetCacheKey(TInput inputParameter)
+        public string GetCacheKey()
         {
-            return string.Join("|", GetType().GUID.ToString(), inputParameter.ToString());
+            return string.Join("|", GetType().GUID.ToString(), typeof(TInput).ToString());
         }
     }
 }

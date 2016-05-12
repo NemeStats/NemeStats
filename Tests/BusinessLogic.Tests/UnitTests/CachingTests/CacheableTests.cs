@@ -44,7 +44,7 @@ namespace BusinessLogic.Tests.UnitTests.CachingTests
         {
             //--arrange
             int inputValue = 1;
-            var cacheKey = _autoMocker.ClassUnderTest.GetCacheKey(inputValue);
+            var cacheKey = _autoMocker.ClassUnderTest.GetCacheKey();
             var playerStatisticsIncache = new PlayerStatistics();
             _autoMocker.Get<INemeStatsCacheManager>().Expect(mock => mock.TryGetItemFromCache(
                 Arg<string>.Is.Equal(cacheKey), 
@@ -81,7 +81,7 @@ namespace BusinessLogic.Tests.UnitTests.CachingTests
         {
             //--arrange
             int inputValue = 1;
-            var cacheKey = _autoMocker.ClassUnderTest.GetCacheKey(inputValue);
+            var cacheKey = _autoMocker.ClassUnderTest.GetCacheKey();
             var numberOfSecondsUntilExpiration = _autoMocker.ClassUnderTest.GetCacheExpirationInSeconds();
 
             //--act
@@ -115,7 +115,7 @@ namespace BusinessLogic.Tests.UnitTests.CachingTests
             //--arrange
             var automockerForThisTestOnly = new RhinoAutoMocker<CacheableImplementationWithDefaultExpiration>();
             int inputValue = 1;
-            var cacheKey = automockerForThisTestOnly.ClassUnderTest.GetCacheKey(inputValue);
+            var cacheKey = automockerForThisTestOnly.ClassUnderTest.GetCacheKey();
             var numberOfSecondsUntilExpiration = 42;
             automockerForThisTestOnly.Get<IDateUtilities>().Expect(mock => mock.GetNumberOfSecondsUntilEndOfDay())
                        .Return(numberOfSecondsUntilExpiration);
