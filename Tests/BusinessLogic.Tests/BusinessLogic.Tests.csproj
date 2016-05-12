@@ -201,6 +201,8 @@
     <Compile Include="UnitTests\DataAccessTests\GamingGroupsTests\EntityFrameworkGamingGroupAccessGranterTests\EntityFrameworkGamingGroupAccessGranterTestBase.cs" />
     <Compile Include="UnitTests\EventTrackingTests\UniversalAnalyticsNemeStatsEventTrackerTests\TrackGamingGroupUpdateTests.cs" />
     <Compile Include="UnitTests\FacadesTests\RecentPublicGamesRetrieverTests.cs" />
+    <Compile Include="UnitTests\FacadesTests\TopPlayersRetrieverTests.cs" />
+    <Compile Include="UnitTests\FacadesTests\TrendingGamesRetrieverTests.cs" />
     <Compile Include="UnitTests\FacadesTests\TopGamingGroupsRetrieverTests.cs" />
     <Compile Include="UnitTests\JobsTests\BoardGameGeekBatchUpdateService\LinkOrphanGamesTests\LinkOrphanGamesJobTests.cs" />
     <Compile Include="UnitTests\JobsTests\BoardGameGeekBatchUpdateService\RefreshAllBoardGameGeekDataTests.cs" />

@@ -177,8 +177,12 @@
     <Compile Include="Export\IExcelGenerator.cs" />
     <Compile Include="Facades\IRecentPublicGamesRetriever.cs" />
     <Compile Include="Facades\ITopGamingGroupsRetriever.cs" />
+    <Compile Include="Facades\ITopPlayersRetriever.cs" />
+    <Compile Include="Facades\ITrendingGamesRetriever.cs" />
     <Compile Include="Facades\RecentPublicGamesRetriever.cs" />
     <Compile Include="Facades\TopGamingGroupsRetriever.cs" />
+    <Compile Include="Facades\TopPlayersRetriever.cs" />
+    <Compile Include="Facades\TrendingGamesRetriever.cs" />
     <Compile Include="Jobs\BoardGameGeekCleanUpService\LinkOrphanGamesResult.cs" />
     <Compile Include="Jobs\BoardGameGeekCleanUpService\BoardGameGeekBatchUpdateService.cs" />
     <Compile Include="Logic\BoardGameGeek\BoardGameGeekGameDefinitionCreator.cs" />
@@ -240,6 +244,7 @@
     </Compile>
     <Compile Include="Models\Games\TrendingGame.cs" />
     <Compile Include="Logic\Points\IWeightTierCalculator.cs" />
+    <Compile Include="Models\Games\TrendingGamesRequest.cs" />
     <Compile Include="Models\Players\CreatePlayerRequest.cs" />
     <Compile Include="Models\PlayedGames\AverageGameDurationTierEnum.cs" />
     <Compile Include="Models\PlayedGames\PointsScorecard.cs" />

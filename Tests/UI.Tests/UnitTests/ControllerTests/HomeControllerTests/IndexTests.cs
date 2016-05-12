@@ -24,8 +24,6 @@ using Rhino.Mocks;
 using System.Collections.Generic;
 using System.Web.Mvc;
 using BusinessLogic.Facades;
-using BusinessLogic.Logic.GameDefinitions;
-using BusinessLogic.Logic.Players;
 using UI.Controllers;
 using UI.Models.GamingGroup;
 using UI.Models.Home;
@@ -60,7 +58,7 @@ namespace UI.Tests.UnitTests.ControllerTests.HomeControllerTests
                 new TopPlayer()
             };
 
-            _autoMocker.Get<IPlayerSummaryBuilder>().Expect(mock => mock.GetTopPlayers(HomeController.NUMBER_OF_TOP_PLAYERS_TO_SHOW))
+            _autoMocker.Get<ITopPlayersRetriever>().Expect(mock => mock.GetResults(HomeController.NUMBER_OF_TOP_PLAYERS_TO_SHOW))
                 .Return(topPlayers);
             expectedPlayer = new TopPlayerViewModel();
             _autoMocker.Get<ITopPlayerViewModelBuilder>().Expect(mock => mock.Build(Arg<TopPlayer>.Is.Anything))
@@ -111,7 +109,8 @@ namespace UI.Tests.UnitTests.ControllerTests.HomeControllerTests
                 _expectedTrendingGame
             };
             _expectedTrendingGameViewModel = new TrendingGameViewModel();
-            _autoMocker.Get<IGameDefinitionRetriever>().Expect(mock => mock.GetTrendingGames(HomeController.NUMBER_OF_TRENDING_GAMES_TO_SHOW, HomeController.NUMBER_OF_DAYS_OF_TRENDING_GAMES)).Return(expectedTopGames);
+            var trendingGamesRequest = new TrendingGamesRequest(HomeController.NUMBER_OF_TRENDING_GAMES_TO_SHOW, HomeController.NUMBER_OF_DAYS_OF_TRENDING_GAMES);
+            _autoMocker.Get<ITrendingGamesRetriever>().Expect(mock => mock.GetResults(Arg<TrendingGamesRequest>.Is.Equal(trendingGamesRequest))).Return(expectedTopGames);
             _autoMocker.Get<ITransformer>().Expect(mock => mock.Transform<TrendingGame, TrendingGameViewModel>(expectedTopGames[0])).Return(_expectedTrendingGameViewModel);
 
             viewResult = _autoMocker.ClassUnderTest.Index() as ViewResult;

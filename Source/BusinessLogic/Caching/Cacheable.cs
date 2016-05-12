@@ -1,6 +1,4 @@
-﻿using System;
-using System.Runtime.Caching;
-using BusinessLogic.Logic.Utilities;
+﻿using BusinessLogic.Logic.Utilities;
 
 namespace BusinessLogic.Caching
 {
