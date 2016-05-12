@@ -1,15 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Caching;
-using System.Text;
-using System.Threading.Tasks;
 using NUnit.Framework;
 
-namespace BusinessLogic.Tests.UnitTests.CachingTests.NemeStatsCacheManagerTests
+namespace BusinessLogic.Tests.UnitTests.CachingTests.CacheServiceTests
 {
     [TestFixture]
-    public class TryGetItemFromCacheTests : NemeStatsCacheManagerTestBase
+    public class TryGetItemFromCacheTests : CacheServiceTestBase
     {
         [Test]
         public void ItReturnsFalseIfTheItemIsNotInTheCache()

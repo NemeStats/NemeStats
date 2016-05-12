@@ -13,7 +13,7 @@ namespace BusinessLogic.Facades
         public TopGamingGroupsRetriever(
             IGamingGroupRetriever gamingGroupRetriever,
             IDateUtilities dateUtilities,
-            INemeStatsCacheManager cacheManager) : base(dateUtilities, cacheManager)
+            ICacheService cacheService) : base(dateUtilities, cacheService)
         {
             _gamingGroupRetriever = gamingGroupRetriever;
         }

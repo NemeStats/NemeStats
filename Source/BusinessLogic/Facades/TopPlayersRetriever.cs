@@ -10,7 +10,7 @@ namespace BusinessLogic.Facades
     {
         private readonly IPlayerSummaryBuilder _playerSummaryBuilder;
 
-        public TopPlayersRetriever(IPlayerSummaryBuilder playerSummaryBuilder, IDateUtilities dateUtilities, INemeStatsCacheManager cacheManager) : base(dateUtilities, cacheManager)
+        public TopPlayersRetriever(IPlayerSummaryBuilder playerSummaryBuilder, IDateUtilities dateUtilities, ICacheService cacheService) : base(dateUtilities, cacheService)
         {
             _playerSummaryBuilder = playerSummaryBuilder;
         }

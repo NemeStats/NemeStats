@@ -1,17 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Caching;
-using System.Text;
-using System.Threading.Tasks;
-using BusinessLogic.Caching;
+﻿using System.Runtime.Caching;
 using NUnit.Framework;
-using StructureMap.AutoMocking;
 
-namespace BusinessLogic.Tests.UnitTests.CachingTests.NemeStatsCacheManagerTests
+namespace BusinessLogic.Tests.UnitTests.CachingTests.CacheServiceTests
 {
     [TestFixture]
-    public class AddItemToCacheWithAbsoluteExpirationTests : NemeStatsCacheManagerTestBase
+    public class AddItemToCacheWithAbsoluteExpirationTests : CacheServiceTestBase
     {
         [Test]
         public void ItAddsTheItemToTheCache()
@@ -21,7 +14,7 @@ namespace BusinessLogic.Tests.UnitTests.CachingTests.NemeStatsCacheManagerTests
             object someObject = new object();
 
             //--act
-            _autoMocker.ClassUnderTest.AddItemToCacheWithAbsoluteExpiration(cacheKey, someObject, 123);
+            _autoMocker.ClassUnderTest.AddItemToCache(cacheKey, someObject, 123);
 
             //--assert
             Assert.True(MemoryCache.Default.Contains(cacheKey));

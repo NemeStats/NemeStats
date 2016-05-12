@@ -13,7 +13,7 @@ namespace BusinessLogic.Facades
         public TrendingGamesRetriever(
             IGameDefinitionRetriever gameDefinitionRetriever,
             IDateUtilities dateUtilities, 
-            INemeStatsCacheManager cacheManager) : base(dateUtilities, cacheManager)
+            ICacheService cacheService) : base(dateUtilities, cacheService)
         {
             _gameDefinitionRetriever = gameDefinitionRetriever;
         }

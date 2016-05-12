@@ -23,7 +23,7 @@ namespace BusinessLogic.Tests.UnitTests.CachingTests
             internal static readonly int CACHE_EXPIRATION_IN_SECONDS = 123;
             internal PlayerStatistics expectedPlayerStatisticsFromDb;
 
-            public CacheableImplementation(IDateUtilities dateUtilities, INemeStatsCacheManager cacheManager) : base(dateUtilities, cacheManager)
+            public CacheableImplementation(IDateUtilities dateUtilities, ICacheService cacheService) : base(dateUtilities, cacheService)
             {
                 expectedPlayerStatisticsFromDb = new PlayerStatistics();
             }
@@ -44,9 +44,9 @@ namespace BusinessLogic.Tests.UnitTests.CachingTests
         {
             //--arrange
             int inputValue = 1;
-            var cacheKey = _autoMocker.ClassUnderTest.GetCacheKey();
+            var cacheKey = _autoMocker.ClassUnderTest.GetCacheKey(inputValue);
             var playerStatisticsIncache = new PlayerStatistics();
-            _autoMocker.Get<INemeStatsCacheManager>().Expect(mock => mock.TryGetItemFromCache(
+            _autoMocker.Get<ICacheService>().Expect(mock => mock.TryGetItemFromCache(
                 Arg<string>.Is.Equal(cacheKey), 
                 out Arg<PlayerStatistics>.Out(playerStatisticsIncache).Dummy))
                        .Return(true);
@@ -63,7 +63,7 @@ namespace BusinessLogic.Tests.UnitTests.CachingTests
         {
             //--arrange
             int inputValue = 1;
-            _autoMocker.Get<INemeStatsCacheManager>()
+            _autoMocker.Get<ICacheService>()
                        .Expect(mock => mock.TryGetItemFromCache(
                            Arg<string>.Is.Anything,
                            out Arg<PlayerStatistics>.Out(new PlayerStatistics()).Dummy))
@@ -81,15 +81,15 @@ namespace BusinessLogic.Tests.UnitTests.CachingTests
         {
             //--arrange
             int inputValue = 1;
-            var cacheKey = _autoMocker.ClassUnderTest.GetCacheKey();
+            var cacheKey = _autoMocker.ClassUnderTest.GetCacheKey(inputValue);
             var numberOfSecondsUntilExpiration = _autoMocker.ClassUnderTest.GetCacheExpirationInSeconds();
 
             //--act
             _autoMocker.ClassUnderTest.GetResults(inputValue);
 
             //--assert
-            _autoMocker.Get<INemeStatsCacheManager>().AssertWasCalled(
-                mock => mock.AddItemToCacheWithAbsoluteExpiration(
+            _autoMocker.Get<ICacheService>().AssertWasCalled(
+                mock => mock.AddItemToCache(
                     Arg<string>.Is.Equal(cacheKey),
                     Arg<PlayerStatistics>.Is.Same(_autoMocker.ClassUnderTest.expectedPlayerStatisticsFromDb),
                     Arg<int>.Is.Equal(numberOfSecondsUntilExpiration)
@@ -99,7 +99,7 @@ namespace BusinessLogic.Tests.UnitTests.CachingTests
 
         internal class CacheableImplementationWithDefaultExpiration : Cacheable<int, PlayerStatistics>
         {
-            public CacheableImplementationWithDefaultExpiration(IDateUtilities dateUtilities, INemeStatsCacheManager cacheManager) : base(dateUtilities, cacheManager)
+            public CacheableImplementationWithDefaultExpiration(IDateUtilities dateUtilities, ICacheService cacheService) : base(dateUtilities, cacheService)
             {
             }
 
@@ -115,7 +115,7 @@ namespace BusinessLogic.Tests.UnitTests.CachingTests
             //--arrange
             var automockerForThisTestOnly = new RhinoAutoMocker<CacheableImplementationWithDefaultExpiration>();
             int inputValue = 1;
-            var cacheKey = automockerForThisTestOnly.ClassUnderTest.GetCacheKey();
+            var cacheKey = automockerForThisTestOnly.ClassUnderTest.GetCacheKey(inputValue);
             var numberOfSecondsUntilExpiration = 42;
             automockerForThisTestOnly.Get<IDateUtilities>().Expect(mock => mock.GetNumberOfSecondsUntilEndOfDay())
                        .Return(numberOfSecondsUntilExpiration);
@@ -124,8 +124,8 @@ namespace BusinessLogic.Tests.UnitTests.CachingTests
             automockerForThisTestOnly.ClassUnderTest.GetResults(inputValue);
 
             //--assert
-            automockerForThisTestOnly.Get<INemeStatsCacheManager>().AssertWasCalled(
-                mock => mock.AddItemToCacheWithAbsoluteExpiration(
+            automockerForThisTestOnly.Get<ICacheService>().AssertWasCalled(
+                mock => mock.AddItemToCache(
                     Arg<string>.Is.Equal(cacheKey),
                     Arg<PlayerStatistics>.Is.Anything,
                     Arg<int>.Is.Equal(numberOfSecondsUntilExpiration)

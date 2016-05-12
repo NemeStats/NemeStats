@@ -15,8 +15,8 @@ namespace BusinessLogic.Facades
         public RecentPublicGamesRetriever(
             IDateUtilities dateUtilities, 
             IPlayedGameRetriever playedGameRetriever, 
-            INemeStatsCacheManager cacheManager) 
-            : base(dateUtilities, cacheManager)
+            ICacheService cacheService) 
+            : base(dateUtilities, cacheService)
         {
             _playedGameRetriever = playedGameRetriever;
         }

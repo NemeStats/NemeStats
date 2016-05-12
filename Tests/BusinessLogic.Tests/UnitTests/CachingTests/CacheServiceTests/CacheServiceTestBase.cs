@@ -3,16 +3,16 @@ using BusinessLogic.Caching;
 using NUnit.Framework;
 using StructureMap.AutoMocking;
 
-namespace BusinessLogic.Tests.UnitTests.CachingTests.NemeStatsCacheManagerTests
+namespace BusinessLogic.Tests.UnitTests.CachingTests.CacheServiceTests
 {
-    public class NemeStatsCacheManagerTestBase
+    public class CacheServiceTestBase
     {
-        protected RhinoAutoMocker<NemeStatsCacheManager> _autoMocker;
+        protected RhinoAutoMocker<CacheService> _autoMocker;
 
         [SetUp]
         public void SetUp()
         {
-            _autoMocker = new RhinoAutoMocker<NemeStatsCacheManager>();
+            _autoMocker = new RhinoAutoMocker<CacheService>();
         }
 
         [TearDown]

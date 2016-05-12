@@ -146,9 +146,7 @@
     <Compile Include="Caching\ICacheable.cs" />
     <Compile Include="Caching\ICacheRetriever.cs" />
     <Compile Include="Caching\ICacheService.cs" />
-    <Compile Include="Caching\INemeStatsCacheManager.cs" />
-    <Compile Include="Caching\MemoryCacheService.cs" />
-    <Compile Include="Caching\NemeStatsCacheManager.cs" />
+    <Compile Include="Caching\CacheService.cs" />
     <Compile Include="DataAccess\NemeStatsDataContext.cs" />
     <Compile Include="DataAccess\IDataContext.cs" />
     <Compile Include="DataAccess\GamingGroups\EntityFrameworkGamingGroupAccessGranter.cs" />

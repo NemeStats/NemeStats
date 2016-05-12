@@ -4,33 +4,33 @@ namespace BusinessLogic.Caching
 {
     public abstract class Cacheable<TInput, TOutput> : ICacheable<TInput, TOutput>
     {
-        private readonly INemeStatsCacheManager _cacheManager;
+        private readonly ICacheService _cacheService;
         private readonly IDateUtilities _dateUtilities;
 
-        protected Cacheable(IDateUtilities dateUtilities, INemeStatsCacheManager cacheManager)
+        protected Cacheable(IDateUtilities dateUtilities, ICacheService cacheService)
         {
-            _cacheManager = cacheManager;
+            _cacheService = cacheService;
             _dateUtilities = dateUtilities;
         }
 
         public TOutput GetResults(TInput inputParameter)
         {
-            var cacheKey = GetCacheKey();
+            var cacheKey = GetCacheKey(inputParameter);
             TOutput itemFromCache;
-            if (_cacheManager.TryGetItemFromCache<TOutput>(cacheKey, out itemFromCache))
+            if (_cacheService.TryGetItemFromCache(cacheKey, out itemFromCache))
             {
                 return itemFromCache;
             }
             
             var itemFromSource = GetFromSource(inputParameter);
             
-            _cacheManager.AddItemToCacheWithAbsoluteExpiration(cacheKey, itemFromSource, GetCacheExpirationInSeconds());
+            _cacheService.AddItemToCache(cacheKey, itemFromSource, GetCacheExpirationInSeconds());
             return itemFromSource;
         }
 
-        public void EvictCache()
+        public void EvictFromCache(TInput inputParameter)
         {
-            _cacheManager.EvictItemFromCache(GetCacheKey());
+            _cacheService.EvictItemFromCache(GetCacheKey(inputParameter));
         }
 
         public virtual int GetCacheExpirationInSeconds()
@@ -40,9 +40,9 @@ namespace BusinessLogic.Caching
 
         public abstract TOutput GetFromSource(TInput inputParameter);
 
-        public string GetCacheKey()
+        public string GetCacheKey(TInput inputParameter)
         {
-            return string.Join("|", GetType().GUID.ToString(), typeof(TInput).ToString());
+            return string.Join("|", GetType().GUID.ToString(), inputParameter.ToString());
         }
     }
 }
