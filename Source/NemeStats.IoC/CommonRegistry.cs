@@ -19,35 +19,38 @@
 using System.Configuration.Abstractions;
 using System.Data.Entity;
 using BoardGameGeekApiClient.Interfaces;
+using BusinessLogic.Caching;
 using BusinessLogic.DataAccess;
 using BusinessLogic.DataAccess.GamingGroups;
 using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.DataAccess.Security;
 using BusinessLogic.EventTracking;
 using BusinessLogic.Export;
+using BusinessLogic.Facades;
 using BusinessLogic.Jobs.BoardGameGeekCleanUpService;
 using BusinessLogic.Logic.BoardGameGeek;
 using BusinessLogic.Logic.Champions;
 using BusinessLogic.Logic.Email;
-    using BusinessLogic.Logic.GameDefinitions;
-    using BusinessLogic.Logic.GamingGroups;
+using BusinessLogic.Logic.GameDefinitions;
+using BusinessLogic.Logic.GamingGroups;
 using BusinessLogic.Logic.Nemeses;
-    using BusinessLogic.Logic.PlayedGames;
-    using BusinessLogic.Logic.Players;
+using BusinessLogic.Logic.PlayedGames;
+using BusinessLogic.Logic.Players;
 using BusinessLogic.Logic.Points;
-    using BusinessLogic.Logic.Users;
+using BusinessLogic.Logic.Users;
+using BusinessLogic.Logic.Utilities;
 using BusinessLogic.Logic.VotableFeatures;
-    using BusinessLogic.Models.User;
+using BusinessLogic.Models.User;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using RollbarSharp;
 using StructureMap;
-    using StructureMap.Graph;
-    using StructureMap.Web;
+using StructureMap.Graph;
+using StructureMap.Web;
 using UniversalAnalyticsHttpWrapper;
 
 namespace NemeStats.IoC
-    {
+{
     public class CommonRegistry : Registry
     {
         #region Constructors and Destructors
@@ -93,7 +96,7 @@ namespace NemeStats.IoC
             For<IUserStore<ApplicationUser>>()
                 .Use<UserStore<ApplicationUser>>();
 
-            
+
             this.For<IGamingGroupRetriever>().Use<GamingGroupRetriever>();
 
             For<IPendingGamingGroupInvitationRetriever>().Use<PendingGamingGroupInvitationRetriever>();
@@ -157,6 +160,16 @@ namespace NemeStats.IoC
             For<IWeightTierCalculator>().Use<WeightTierCalculator>();
             For<IWeightBonusCalculator>().Use<WeightBonusCalculator>();
             For<IGameDurationBonusCalculator>().Use<GameDurationBonusCalculator>();
+
+            For<IRecentPublicGamesRetriever>().Use<RecentPublicGamesRetriever>();
+            For<ITopGamingGroupsRetriever>().Use<TopGamingGroupsRetriever>();
+            For<ITopPlayersRetriever>().Use<TopPlayersRetriever>();
+            For<ITrendingGamesRetriever>().Use<TrendingGamesRetriever>();
+
+
+            For<ICacheService>().Use<CacheService>();
+
+            For<IDateUtilities>().Use<DateUtilities>();
         }
 
         private void SetupUniquePerRequestMappings()
