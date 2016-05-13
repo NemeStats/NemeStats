@@ -24,7 +24,7 @@ namespace BusinessLogic.Models
         public int PlayerId { get; set; }
         [Index("IX_PLAYERID_AND_ACHIEVEMENTID", 2, IsUnique = true)]
         public AchievementId AchievementId { get; set; }
-        public AchievementLevelEnum AchievementLevel { get; set; }
+        public AchievementLevel AchievementLevel { get; set; }
 
         public virtual Player Player { get; set; }
 

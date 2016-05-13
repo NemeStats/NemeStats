@@ -47,12 +47,12 @@ Views.Shared.Layout.prototype = {
             var notificationsHub = signalrConnection.createHubProxy("notificationsHub");
 
             notificationsHub.on('NewAchievementUnlocked', function(achievementId, achievementLevel) {
-                //var text = "ID: " + achievementId + " - Level: " + achievementLevel;
-                //var noty = new PNotify({
-                //    title: 'New Achievement unlocked',
-                //    text: text,
-                //    type: "success"
-                //});
+                var text = "ID: " + achievementId + " - Level: " + achievementLevel;
+                var noty = new PNotify({
+                    title: 'New Achievement unlocked',
+                    text: text,
+                    type: "success"
+                });
             });
 
             signalrConnection.start().done(function() {
@@ -65,5 +65,5 @@ Views.Shared.Layout.prototype = {
 $(document).ready(function () {
     var layout = new Views.Shared.Layout();
     layout.init();
-    layout.setupHubConnection();
+    //layout.setupHubConnection();
 });

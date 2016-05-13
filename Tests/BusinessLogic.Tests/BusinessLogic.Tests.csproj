@@ -208,6 +208,20 @@
     <Compile Include="UnitTests\FacadesTests\TopGamingGroupsRetrieverTests.cs" />
     <Compile Include="UnitTests\JobsTests\BoardGameGeekBatchUpdateService\LinkOrphanGamesTests\LinkOrphanGamesJobTests.cs" />
     <Compile Include="UnitTests\JobsTests\BoardGameGeekBatchUpdateService\RefreshAllBoardGameGeekDataTests.cs" />
+    <Compile Include="UnitTests\LogicTests\AchievementTests\DiversifiedAchievementTests\Base_DiversifiedAchievementTests.cs" />
+    <Compile Include="UnitTests\LogicTests\AchievementTests\ChampionAchievementTests\Base_ChampionAchievementTest.cs" />
+    <Compile Include="UnitTests\LogicTests\AchievementTests\ChampionAchievementTests\When_Player_Has_Exactly_Bronze_Level.cs" />
+    <Compile Include="UnitTests\LogicTests\AchievementTests\ChampionAchievementTests\When_Player_Has_Exactly_Gold_Level.cs" />
+    <Compile Include="UnitTests\LogicTests\AchievementTests\ChampionAchievementTests\When_Player_Has_Exactly_Silver_Level.cs" />
+    <Compile Include="UnitTests\LogicTests\AchievementTests\ChampionAchievementTests\When_Player_Has_Not_Enought_For_Gold_Level.cs" />
+    <Compile Include="UnitTests\LogicTests\AchievementTests\ChampionAchievementTests\When_Player_Has_Not_Enought_For_Silver_Level.cs" />
+    <Compile Include="UnitTests\LogicTests\AchievementTests\ChampionAchievementTests\When_Player_Not_Acomplish_Achievement_Requirements.cs" />
+    <Compile Include="UnitTests\LogicTests\AchievementTests\DiversifiedAchievementTests\When_Player_Has_Exactly_Bronze_Level.cs" />
+    <Compile Include="UnitTests\LogicTests\AchievementTests\DiversifiedAchievementTests\When_Player_Has_Exactly_Gold_Level.cs" />
+    <Compile Include="UnitTests\LogicTests\AchievementTests\DiversifiedAchievementTests\When_Player_Has_Exactly_Silver_Level.cs" />
+    <Compile Include="UnitTests\LogicTests\AchievementTests\DiversifiedAchievementTests\When_Player_Has_Not_Enought_For_Gold_Level.cs" />
+    <Compile Include="UnitTests\LogicTests\AchievementTests\DiversifiedAchievementTests\When_Player_Has_Not_Enought_For_Silver_Level.cs" />
+    <Compile Include="UnitTests\LogicTests\AchievementTests\DiversifiedAchievementTests\When_Player_Not_Acomplish_Achievement_Requirements.cs" />
     <Compile Include="UnitTests\LogicTests\BoardGameGeekTests\BoardGameGeekGamesImporterTests\BoardGameGeekGamesImporterTests.cs" />
     <Compile Include="UnitTests\LogicTests\ChampionsTests\ChampionRecalculatorTests\RecalculateAllChampionsTests.cs" />
     <Compile Include="UnitTests\LogicTests\ChampionsTests\ChampionRecalculatorTests\RecalculateChampionTests.cs" />
@@ -302,9 +316,7 @@
       <Name>BusinessLogic</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="UnitTests\LogicTests\AchievementTests\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>

@@ -21,5 +21,10 @@ namespace BusinessLogic.Events.HandlerFactory
                 Achievements.Add((IAchievement)EventHandlerObjectFactory.Container.GetInstance(achievementType));
             }
         }
+
+        public static T GetAchievement<T>() where T:  IAchievement
+        {
+            return (T) Achievements.FirstOrDefault(a => a.GetType() == typeof(T));
+        }
     }
 }

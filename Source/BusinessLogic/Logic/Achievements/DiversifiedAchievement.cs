@@ -11,11 +11,11 @@ namespace BusinessLogic.Logic.Achievements
         public AchievementId Id => AchievementId.Diversified;
         public AchievementGroup Group => AchievementGroup.Game;
 
-        public Dictionary<AchievementLevelEnum, int> LevelThresholds => new Dictionary<AchievementLevelEnum, int>
+        public Dictionary<AchievementLevel, int> LevelThresholds => new Dictionary<AchievementLevel, int>
         {
-            {AchievementLevelEnum.Bronze, 5},
-            {AchievementLevelEnum.Silver, 25},
-            {AchievementLevelEnum.Gold, 100}
+            {AchievementLevel.Bronze, 5},
+            {AchievementLevel.Silver, 25},
+            {AchievementLevel.Gold, 100}
         };
 
         public AchievementAwarded IsAwardedForThisPlayer(int playerId, IDataContext dataContext)
@@ -32,11 +32,15 @@ namespace BusinessLogic.Logic.Achievements
                     .Select(pgr => pgr.PlayedGame.GameDefinition.Id)
                     .Distinct();
 
-            result.LevelAwarded =
-                LevelThresholds.OrderByDescending(l => l.Value)
-                    .FirstOrDefault(l => l.Value <= differentPlayedGames.Count())
-                    .Key;
-            result.RelatedEntities = differentPlayedGames.ToList();
+            if (differentPlayedGames.Any())
+            {
+
+                result.LevelAwarded =
+                    LevelThresholds.OrderByDescending(l => l.Value)
+                        .FirstOrDefault(l => l.Value <= differentPlayedGames.Count())
+                        .Key;
+                result.RelatedEntities = differentPlayedGames.ToList();
+            }
             return result;
         }
     }

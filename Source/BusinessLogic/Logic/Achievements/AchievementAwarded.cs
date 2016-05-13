@@ -10,7 +10,7 @@ namespace BusinessLogic.Logic.Achievements
             RelatedEntities = new List<int>();
         }
 
-        public AchievementLevelEnum? LevelAwarded { get; set; }
+        public AchievementLevel? LevelAwarded { get; set; }
         public AchievementId AchievementId { get; set; }
         public List<int> RelatedEntities { get; set; }
     }

@@ -1,6 +1,6 @@
 ﻿namespace BusinessLogic.Models.Achievements
 {
-    public enum AchievementLevelEnum
+    public enum AchievementLevel
     {
         Bronze = 1,
         Silver = 2,

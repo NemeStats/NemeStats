@@ -10,7 +10,7 @@ namespace BusinessLogic.Logic.Achievements
         AchievementId Id { get; }
         AchievementGroup Group { get; }
 
-        Dictionary<AchievementLevelEnum, int> LevelThresholds { get; }
+        Dictionary<AchievementLevel, int> LevelThresholds { get; }
 
         AchievementAwarded IsAwardedForThisPlayer(int playerId, IDataContext dataContext);
     }

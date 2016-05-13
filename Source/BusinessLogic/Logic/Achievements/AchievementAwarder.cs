@@ -42,7 +42,7 @@ namespace BusinessLogic.Logic.Achievements
         //    var existingPlayerAchievement = _dataContext.GetQueryable<PlayerAchievement>()
         //                                                .FirstOrDefault(x => x.PlayerId == playerId && x.AchievementId == achievement.Id);
 
-        //    AchievementLevelEnum achievementLevel;
+        //    AchievementLevel achievementLevel;
         //    if (playerAchievementScore < achievement.AchievementLevel1Threshold)
         //    {
         //        if (existingPlayerAchievement != null)
@@ -54,14 +54,14 @@ namespace BusinessLogic.Logic.Achievements
 
         //    if (playerAchievementScore < achievement.AchievementLevel2Threshold)
         //    {
-        //        achievementLevel = AchievementLevelEnum.Bronze;
+        //        achievementLevel = AchievementLevel.Bronze;
         //    }else if (playerAchievementScore < achievement.AchievementLevel3Threshold)
         //    {
-        //        achievementLevel = AchievementLevelEnum.Silver;
+        //        achievementLevel = AchievementLevel.Silver;
         //    }
         //    else
         //    {
-        //        achievementLevel = AchievementLevelEnum.Gold;
+        //        achievementLevel = AchievementLevel.Gold;
         //    }
 
         //    if (existingPlayerAchievement != null)
@@ -79,7 +79,7 @@ namespace BusinessLogic.Logic.Achievements
 
         //}
 
-        //private void SavePlayerAchievement(int playerId, Achievement achievement, AchievementLevelEnum achievementLevel, PlayerAchievement playerAchievement = null)
+        //private void SavePlayerAchievement(int playerId, Achievement achievement, AchievementLevel achievementLevel, PlayerAchievement playerAchievement = null)
         //{
         //    if (playerAchievement == null)
         //    {

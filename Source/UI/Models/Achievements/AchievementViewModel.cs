@@ -9,7 +9,7 @@ namespace UI.Models.Achievements
             string name, 
             string description,
             string fontAwesomeIcon, 
-            AchievementLevelEnum achievementLevel,
+            AchievementLevel achievementLevel,
             int achievementLevel1Threshold,
             int achievementLevel2Threshold,
             int achievementLevel3Threshold)
@@ -26,7 +26,7 @@ namespace UI.Models.Achievements
         public string Name { get; set; }
         public string Description { get; set; }
         public string FontAwesomeIcon { get; set; }
-        public AchievementLevelEnum AchievementLevel { get; set; }
+        public AchievementLevel AchievementLevel { get; set; }
         public int AchievementLevel1Threshold { get; set; }
         public int AchievementLevel2Threshold { get; set; }
         public int AchievementLevel3Threshold { get; set; }

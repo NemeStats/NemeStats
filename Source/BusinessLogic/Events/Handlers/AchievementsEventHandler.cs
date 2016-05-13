@@ -75,7 +75,7 @@ namespace BusinessLogic.Events.Handlers
 
         }
 
-        private static void NotifyPlayer(Player player, IAchievement achievement, AchievementLevelEnum? levelAwarded)
+        private static void NotifyPlayer(Player player, IAchievement achievement, AchievementLevel? levelAwarded)
         {
             if (player.ApplicationUserId != null)
             {
