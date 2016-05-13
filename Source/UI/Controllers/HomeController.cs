@@ -20,13 +20,12 @@
 
 using BusinessLogic.Logic.GameDefinitions;
 using BusinessLogic.Logic.GamingGroups;
-using BusinessLogic.Logic.PlayedGames;
 using BusinessLogic.Logic.Players;
 using BusinessLogic.Models.Games;
 using BusinessLogic.Models.GamingGroups;
 using System.Linq;
 using System.Web.Mvc;
-using BusinessLogic.Logic.BoardGameGeek;
+using BusinessLogic.Facades;
 using UI.Controllers.Helpers;
 using UI.Models.GameDefinitionModels;
 using UI.Models.GamingGroup;
@@ -45,44 +44,44 @@ namespace UI.Controllers
         internal const int NUMBER_OF_DAYS_OF_TRENDING_GAMES = 90;
         internal const int NUMBER_OF_TRENDING_GAMES_TO_SHOW = 5;
 
-        private readonly IPlayerSummaryBuilder playerSummaryBuilder;
-        private readonly ITopPlayerViewModelBuilder topPlayerViewModelBuilder;
-        private readonly IPlayedGameRetriever playedGameRetriever;
-        private readonly IGamingGroupRetriever gamingGroupRetriever;
-        private readonly IGameDefinitionRetriever gameDefinitionRetriever;
-        private readonly ITransformer transformer;
+        private readonly ITopPlayersRetriever _topPlayersRetriever;
+        private readonly ITopPlayerViewModelBuilder _topPlayerViewModelBuilder;
+        private readonly IRecentPublicGamesRetriever _recentPublicGamesRetriever;
+        private readonly ITopGamingGroupsRetriever _topGamingGroupsRetriever;
+        private readonly ITrendingGamesRetriever _trendingGamesRetriever;
+        private readonly ITransformer _transformer;
 
         public HomeController(
-            IPlayerSummaryBuilder playerSummaryBuilder,
+            ITopPlayersRetriever topPlayersRetriever,
             ITopPlayerViewModelBuilder topPlayerViewModelBuilder,
-            IPlayedGameRetriever playedGameRetriever,
-            IGamingGroupRetriever gamingGroupRetriever,
-            IGameDefinitionRetriever gameDefinitionRetriever,
+            IRecentPublicGamesRetriever recentPublicGamesRetriever,
+            ITopGamingGroupsRetriever topGamingGroupsRetriever,
+            ITrendingGamesRetriever trendingGamesRetriever,
             ITransformer transformer)
         {
-            this.playerSummaryBuilder = playerSummaryBuilder;
-            this.topPlayerViewModelBuilder = topPlayerViewModelBuilder;
-            this.playedGameRetriever = playedGameRetriever;
-            this.gamingGroupRetriever = gamingGroupRetriever;
-            this.gameDefinitionRetriever = gameDefinitionRetriever;
-            this.transformer = transformer;
+            _topPlayersRetriever = topPlayersRetriever;
+            _topPlayerViewModelBuilder = topPlayerViewModelBuilder;
+            _recentPublicGamesRetriever = recentPublicGamesRetriever;
+            _topGamingGroupsRetriever = topGamingGroupsRetriever;
+            _trendingGamesRetriever = trendingGamesRetriever;
+            _transformer = transformer;
         }
 
         public virtual ActionResult Index()
         {
-            var topPlayers = playerSummaryBuilder.GetTopPlayers(NUMBER_OF_TOP_PLAYERS_TO_SHOW);
+            var topPlayers = _topPlayersRetriever.GetResults(NUMBER_OF_TOP_PLAYERS_TO_SHOW);
             var topPlayerViewModels = topPlayers.Select(
-                topPlayer => this.topPlayerViewModelBuilder.Build(topPlayer)).ToList();
+                topPlayer => _topPlayerViewModelBuilder.Build(topPlayer)).ToList();
 
-            var publicGameSummaries = playedGameRetriever
-                .GetRecentPublicGames(NUMBER_OF_RECENT_PUBLIC_GAMES_TO_SHOW);
+            var publicGameSummaries = _recentPublicGamesRetriever.GetResults(NUMBER_OF_RECENT_PUBLIC_GAMES_TO_SHOW);
 
-            var topGamingGroups = gamingGroupRetriever.GetTopGamingGroups(NUMBER_OF_TOP_GAMING_GROUPS_TO_SHOW);
+            var topGamingGroups = _topGamingGroupsRetriever.GetResults(NUMBER_OF_TOP_GAMING_GROUPS_TO_SHOW);
 
-            var topGamingGroupViewModels = topGamingGroups.Select(transformer.Transform<TopGamingGroupSummary, TopGamingGroupSummaryViewModel>).ToList();
+            var topGamingGroupViewModels = topGamingGroups.Select(_transformer.Transform<TopGamingGroupSummary, TopGamingGroupSummaryViewModel>).ToList();
 
-            var trendingGames = gameDefinitionRetriever.GetTrendingGames(NUMBER_OF_TRENDING_GAMES_TO_SHOW, NUMBER_OF_DAYS_OF_TRENDING_GAMES);
-            var trendingGameViewModels = trendingGames.Select(transformer.Transform<TrendingGame, TrendingGameViewModel>).ToList();
+            var trendingGamesRequest = new TrendingGamesRequest(NUMBER_OF_TRENDING_GAMES_TO_SHOW, NUMBER_OF_DAYS_OF_TRENDING_GAMES);
+            var trendingGames = _trendingGamesRetriever.GetResults(trendingGamesRequest);
+            var trendingGameViewModels = trendingGames.Select(_transformer.Transform<TrendingGame, TrendingGameViewModel>).ToList();
 
             var homeIndexViewModel = new HomeIndexViewModel()
             {

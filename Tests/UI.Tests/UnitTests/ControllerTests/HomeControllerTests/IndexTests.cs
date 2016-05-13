@@ -16,20 +16,14 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 
-using System;
-using AutoMapper;
 using BusinessLogic.Logic.Nemeses;
 using BusinessLogic.Models.Games;
 using BusinessLogic.Models.Players;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System.Collections.Generic;
-using System.Linq;
 using System.Web.Mvc;
-using BusinessLogic.Logic.GameDefinitions;
-using BusinessLogic.Logic.GamingGroups;
-using BusinessLogic.Logic.PlayedGames;
-using BusinessLogic.Logic.Players;
+using BusinessLogic.Facades;
 using UI.Controllers;
 using UI.Models.GamingGroup;
 using UI.Models.Home;
@@ -64,7 +58,7 @@ namespace UI.Tests.UnitTests.ControllerTests.HomeControllerTests
                 new TopPlayer()
             };
 
-            _autoMocker.Get<IPlayerSummaryBuilder>().Expect(mock => mock.GetTopPlayers(HomeController.NUMBER_OF_TOP_PLAYERS_TO_SHOW))
+            _autoMocker.Get<ITopPlayersRetriever>().Expect(mock => mock.GetResults(HomeController.NUMBER_OF_TOP_PLAYERS_TO_SHOW))
                 .Return(topPlayers);
             expectedPlayer = new TopPlayerViewModel();
             _autoMocker.Get<ITopPlayerViewModelBuilder>().Expect(mock => mock.Build(Arg<TopPlayer>.Is.Anything))
@@ -75,7 +69,7 @@ namespace UI.Tests.UnitTests.ControllerTests.HomeControllerTests
             {
                 expectedPublicGameSummary
             };
-            _autoMocker.Get<IPlayedGameRetriever>().Expect(mock => mock.GetRecentPublicGames(HomeController.NUMBER_OF_RECENT_PUBLIC_GAMES_TO_SHOW))
+            _autoMocker.Get<IRecentPublicGamesRetriever>().Expect(mock => mock.GetResults(HomeController.NUMBER_OF_RECENT_PUBLIC_GAMES_TO_SHOW))
                 .Return(publicGameSummaries);
 
             var expectedNemesisChanges = new List<NemesisChange>();
@@ -97,7 +91,7 @@ namespace UI.Tests.UnitTests.ControllerTests.HomeControllerTests
             {
                 expectedTopGamingGroup
             };
-            _autoMocker.Get<IGamingGroupRetriever>().Expect(mock => mock.GetTopGamingGroups(HomeController.NUMBER_OF_TOP_GAMING_GROUPS_TO_SHOW))
+            _autoMocker.Get<ITopGamingGroupsRetriever>().Expect(mock => mock.GetResults(HomeController.NUMBER_OF_TOP_GAMING_GROUPS_TO_SHOW))
                                     .Return(expectedTopGamingGroupSummaries);
             _autoMocker.Get<ITransformer>()
                 .Expect(mock => mock.Transform<TopGamingGroupSummary, TopGamingGroupSummaryViewModel>(expectedTopGamingGroupSummaries[0]))
@@ -115,7 +109,8 @@ namespace UI.Tests.UnitTests.ControllerTests.HomeControllerTests
                 _expectedTrendingGame
             };
             _expectedTrendingGameViewModel = new TrendingGameViewModel();
-            _autoMocker.Get<IGameDefinitionRetriever>().Expect(mock => mock.GetTrendingGames(HomeController.NUMBER_OF_TRENDING_GAMES_TO_SHOW, HomeController.NUMBER_OF_DAYS_OF_TRENDING_GAMES)).Return(expectedTopGames);
+            var trendingGamesRequest = new TrendingGamesRequest(HomeController.NUMBER_OF_TRENDING_GAMES_TO_SHOW, HomeController.NUMBER_OF_DAYS_OF_TRENDING_GAMES);
+            _autoMocker.Get<ITrendingGamesRetriever>().Expect(mock => mock.GetResults(Arg<TrendingGamesRequest>.Is.Equal(trendingGamesRequest))).Return(expectedTopGames);
             _autoMocker.Get<ITransformer>().Expect(mock => mock.Transform<TrendingGame, TrendingGameViewModel>(expectedTopGames[0])).Return(_expectedTrendingGameViewModel);
 
             viewResult = _autoMocker.ClassUnderTest.Index() as ViewResult;

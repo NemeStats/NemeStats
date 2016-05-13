@@ -18,6 +18,7 @@
 
 using System.Configuration.Abstractions;
 using BoardGameGeekApiClient.Interfaces;
+using BusinessLogic.Caching;
 using BusinessLogic.DataAccess.GamingGroups;
 using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.DataAccess.Security;
@@ -25,6 +26,7 @@ using BusinessLogic.Events.HandlerFactory;
 using BusinessLogic.Events.Interfaces;
 using BusinessLogic.EventTracking;
 using BusinessLogic.Export;
+using BusinessLogic.Facades;
 using BusinessLogic.Jobs.BoardGameGeekCleanUpService;
 using BusinessLogic.Logic.Achievements;
 using BusinessLogic.Logic.BoardGameGeek;
@@ -37,6 +39,7 @@ using BusinessLogic.Logic.PlayedGames;
 using BusinessLogic.Logic.Players;
 using BusinessLogic.Logic.Points;
 using BusinessLogic.Logic.Users;
+using BusinessLogic.Logic.Utilities;
 using BusinessLogic.Logic.VotableFeatures;
 using BusinessLogic.Models.User;
 using Microsoft.AspNet.Identity;
@@ -44,6 +47,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using RollbarSharp;
 using StructureMap;
 using StructureMap.Graph;
+using StructureMap.Web;
 using UniversalAnalyticsHttpWrapper;
 
 namespace NemeStats.IoC
@@ -167,6 +171,15 @@ namespace NemeStats.IoC
             For<IWeightBonusCalculator>().Use<WeightBonusCalculator>();
             For<IGameDurationBonusCalculator>().Use<GameDurationBonusCalculator>();
             //For<IAchievementAwarder>().Use<AchievementAwarder>();
+            For<IRecentPublicGamesRetriever>().Use<RecentPublicGamesRetriever>();
+            For<ITopGamingGroupsRetriever>().Use<TopGamingGroupsRetriever>();
+            For<ITopPlayersRetriever>().Use<TopPlayersRetriever>();
+            For<ITrendingGamesRetriever>().Use<TrendingGamesRetriever>();
+
+
+            For<ICacheService>().Use<CacheService>();
+
+            For<IDateUtilities>().Use<DateUtilities>();
         }
 
 
