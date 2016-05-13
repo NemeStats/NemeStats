@@ -17,7 +17,7 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Linq;
+using BusinessLogic.Models.Achievements;
 using UI.Models.Points;
 
 namespace UI.Models.Players
@@ -38,5 +38,6 @@ namespace UI.Models.Players
         public NemePointsSummaryViewModel NemePointsSummary { get; set; }
         public int TotalChampionedGames { get; set; }
         public float AveragePointsPerGame { get; set; }
+        public Dictionary<AchievementLevel, int> AchievementsPerLevel { get; set; }
     }
 }

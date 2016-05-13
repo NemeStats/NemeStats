@@ -106,20 +106,32 @@ namespace BusinessLogic.Logic.Players
                                      ).ToList();
 
             PopulateNemePointsSummary(gamingGroupId, playersWithNemesis, dateRangeFilter);
+            PopulateAchivements(playersWithNemesis);
 
             return playersWithNemesis//--deliberately ToList() first since Linq To Entities cannot support ordering by NemePointsSummary.TotalPoints
                                       .OrderByDescending(x => x.PlayerActive)
-                                      .ThenByDescending(pwn => pwn.NemePointsSummary?.TotalPoints ?? 0 )
+                                      .ThenByDescending(pwn => pwn.NemePointsSummary?.TotalPoints ?? 0)
                                       .ThenByDescending(pwn => pwn.GamesWon)
                                       .ThenBy(pwn => pwn.PlayerName)
                                       .ToList();
         }
 
+        private void PopulateAchivements(List<PlayerWithNemesis> playersWithNemesis)
+        {
+            foreach (var player in playersWithNemesis)
+            {
+                player.AchievementsPerLevel.Add(AchievementLevel.Bronze, dataContext.GetQueryable<PlayerAchievement>().Count(pa=>pa.PlayerId == player.PlayerId && pa.AchievementLevel == AchievementLevel.Bronze));
+                player.AchievementsPerLevel.Add(AchievementLevel.Silver, dataContext.GetQueryable<PlayerAchievement>().Count(pa=>pa.PlayerId == player.PlayerId && pa.AchievementLevel == AchievementLevel.Silver));
+                player.AchievementsPerLevel.Add(AchievementLevel.Gold, dataContext.GetQueryable<PlayerAchievement>().Count(pa=>pa.PlayerId == player.PlayerId && pa.AchievementLevel == AchievementLevel.Gold));
+            }
+        }
+
+
         internal virtual void PopulateNemePointsSummary(int gamingGroupId, List<PlayerWithNemesis> playersWithNemesis, IDateRangeFilter dateRangeFilter)
         {
             var nemePointsDictionary = (from playerGameResult in dataContext.GetQueryable<PlayerGameResult>()
                                         where playerGameResult.PlayedGame.GamingGroupId == gamingGroupId
-                                        && playerGameResult.PlayedGame.DatePlayed >= dateRangeFilter.FromDate 
+                                        && playerGameResult.PlayedGame.DatePlayed >= dateRangeFilter.FromDate
                                         && playerGameResult.PlayedGame.DatePlayed <= dateRangeFilter.ToDate
                                         group playerGameResult by playerGameResult.PlayerId
                                         into groupedResults

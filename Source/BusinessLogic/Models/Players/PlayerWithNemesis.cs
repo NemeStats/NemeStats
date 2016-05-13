@@ -16,6 +16,8 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 
+using System.Collections.Generic;
+using BusinessLogic.Models.Achievements;
 using BusinessLogic.Models.Points;
 
 namespace BusinessLogic.Models.Players
@@ -36,5 +38,7 @@ namespace BusinessLogic.Models.Players
         public int TotalChampionedGames { get; set; }
         public bool PlayerActive { get; set; }
         public NemePointsSummary NemePointsSummary { get; set; }
+        public Dictionary<AchievementLevel,int> AchievementsPerLevel { get; set; } = new Dictionary<AchievementLevel, int>();
+
     }
 }

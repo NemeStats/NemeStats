@@ -84,3 +84,64 @@
         text-align: center;
     }
 }
+
+.achievements {
+    display: inline-block;
+}
+
+.achievement {
+    position: relative;
+    top: -1px;
+    display: inline-block;
+    text-align: center;
+    border-radius: 50%;
+
+
+    &.bronze {
+        background-color: darken($bronze-achievement-color,15%);
+
+        .circle {
+            background-color: $bronze-achievement-color;
+        }
+
+        .content {
+            color: darken($bronze-achievement-color,35%);
+            font-weight: bold;
+        }
+    }
+
+    &.silver {
+        background-color: darken($silver-achievement-color,15%);
+
+        .circle {
+            background-color: $silver-achievement-color;
+        }
+
+        .content {
+            color: darken($silver-achievement-color,35%);
+            font-weight: bold;
+        }
+    }
+
+    &.gold {
+        background-color: darken($gold-achievement-color,7%);
+
+        .circle {
+            background-color: $gold-achievement-color;
+        }
+
+        .content {
+            color: darken($gold-achievement-color,15%);
+            font-weight: bold;
+        }
+    }
+
+    .circle {
+        width: 20px;
+        height: 20px;
+        margin: 3px;
+        text-align: center;
+        display: inline-block;
+        border-radius: 50%;
+    }
+}

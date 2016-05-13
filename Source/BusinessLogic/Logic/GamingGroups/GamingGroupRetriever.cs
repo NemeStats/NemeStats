@@ -56,8 +56,8 @@ namespace BusinessLogic.Logic.GamingGroups
 
         public GamingGroupSummary GetGamingGroupDetails(GamingGroupFilter filter)
         {
-            GamingGroup gamingGroup = dataContext.FindById<GamingGroup>(filter.GamingGroupId);
-            GamingGroupSummary summary = new GamingGroupSummary
+            var gamingGroup = dataContext.FindById<GamingGroup>(filter.GamingGroupId);
+            var summary = new GamingGroupSummary
             {
                 Id = gamingGroup.Id,
                 DateCreated = gamingGroup.DateCreated,

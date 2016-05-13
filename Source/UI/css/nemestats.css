@@ -719,6 +719,44 @@ footer {
 .game-player-statistics th {
   text-align: center; }
 
+.achievements {
+  display: inline-block; }
+
+.achievement {
+  position: relative;
+  top: -1px;
+  display: inline-block;
+  text-align: center;
+  border-radius: 50%; }
+  .achievement.bronze {
+    background-color: #fcbf4c; }
+    .achievement.bronze .circle {
+      background-color: #FDDA97; }
+    .achievement.bronze .content {
+      color: #dd9304;
+      font-weight: bold; }
+  .achievement.silver {
+    background-color: #ddddc0; }
+    .achievement.silver .circle {
+      background-color: #f8f8f2; }
+    .achievement.silver .content {
+      color: #baba7e;
+      font-weight: bold; }
+  .achievement.gold {
+    background-color: #dbc000; }
+    .achievement.gold .circle {
+      background-color: #FFDF00; }
+    .achievement.gold .content {
+      color: #b39c00;
+      font-weight: bold; }
+  .achievement .circle {
+    width: 20px;
+    height: 20px;
+    margin: 3px;
+    text-align: center;
+    display: inline-block;
+    border-radius: 50%; }
+
 /*$header-background-color: #2C3E50;*/
 .badges-col {
   text-align: center; }

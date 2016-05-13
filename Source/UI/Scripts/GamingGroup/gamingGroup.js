@@ -80,7 +80,7 @@ Views.GamingGroup.GamingGroupView.prototype = {
         var gamedefinitionsValues = ['name', 'plays-col', { name: 'champion-col', attr: 'data-champion' }];
         var gameDefinitionTableId = "gameDefinitionsList";
 
-        var playersValues = [{ name: 'player-name-col', attr: 'data-name' },{ name: 'total-nemepoints-col', attr: 'data-nemepoints' } , 'played-games-col', 'avg-nemepoints-col', 'overall-win-col','championed-games-col', { name: 'nemesis-col', attr: 'data-nemesis' }];
+        var playersValues = [{ name: 'player-name-col', attr: 'data-name' }, { name: 'total-nemepoints-col', attr: 'data-nemepoints' }, 'played-games-col', 'avg-nemepoints-col', 'overall-win-col', 'championed-games-col', { name: 'nemesis-col', attr: 'data-nemesis' }, { name: 'achievements-col', attr: 'data-achievements' }];
         var playersTableId = "playersList";
 
 
