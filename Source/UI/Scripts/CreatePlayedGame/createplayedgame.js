@@ -117,7 +117,7 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
 
         this.$btnEveryoneWonButton.on("click", function () {
             if (confirm("Are you sure you want to give every player a win?")) {
-                $(".playerRank,input[name$='.GameRank'").val(1);
+                $("input.playerRank[name$='.GameRank']").val(1);
                 parent._googleAnalytics.trackGAEvent("PlayedGames", "TeamWinRecorded", "TeamWinRecorded");
                 return true;
             } else {
@@ -127,7 +127,7 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
 
         this.$btnEveryoneLostButton.on("click", function () {
             if (confirm("Are you sure you want to give every player a loss?")) {
-                $(".playerRank,input[name$='.GameRank'").val(2);
+                $("input.playerRank[name$='.GameRank']").val(2);
                 parent._googleAnalytics.trackGAEvent("PlayedGames", "TeamLossRecorded", "TeamLossRecorded");
                 return true;
             } else {
