@@ -163,6 +163,9 @@ namespace NemeStats.IoC
 
             For<IRecentPublicGamesRetriever>().Use<RecentPublicGamesRetriever>();
             For<ITopGamingGroupsRetriever>().Use<TopGamingGroupsRetriever>();
+            For<ITopPlayersRetriever>().Use<TopPlayersRetriever>();
+            For<ITrendingGamesRetriever>().Use<TrendingGamesRetriever>();
+
 
             For<ICacheService>().Use<CacheService>();
 
