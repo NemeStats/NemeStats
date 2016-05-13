@@ -176,10 +176,10 @@
     <Compile Include="IntegrationTests\LogicTests\PointsTests\RecalculateAllPointsIntegrationTests.cs" />
     <Compile Include="LocalAddin.cs" />
     <Compile Include="UnitTests\CachingTests\CacheableTests.cs" />
-    <Compile Include="UnitTests\CachingTests\NemeStatsCacheManagerTests\AddItemToCacheWithAbsoluteExpirationTests.cs" />
-    <Compile Include="UnitTests\CachingTests\NemeStatsCacheManagerTests\EvictItemFromCacheTests.cs" />
-    <Compile Include="UnitTests\CachingTests\NemeStatsCacheManagerTests\NemeStatsCacheManagerTestBase.cs" />
-    <Compile Include="UnitTests\CachingTests\NemeStatsCacheManagerTests\TryGetItemFromCacheTests.cs" />
+    <Compile Include="UnitTests\CachingTests\CacheServiceTests\AddItemToCacheTests.cs" />
+    <Compile Include="UnitTests\CachingTests\CacheServiceTests\EvictItemFromCacheTests.cs" />
+    <Compile Include="UnitTests\CachingTests\CacheServiceTests\CacheServiceTestBase.cs" />
+    <Compile Include="UnitTests\CachingTests\CacheServiceTests\TryGetItemFromCacheTests.cs" />
     <Compile Include="UnitTests\DataAccessTests\NemeStatsDataContextTests\CommitAllChangesTests.cs" />
     <Compile Include="UnitTests\DataAccessTests\NemeStatsDataContextTests\DeleteByIdTests.cs" />
     <Compile Include="UnitTests\DataAccessTests\NemeStatsDataContextTests\FindByIdTests.cs" />
