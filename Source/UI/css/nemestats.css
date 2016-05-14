@@ -722,6 +722,12 @@ footer {
 .achievements {
   display: inline-block; }
 
+.achievement-list {
+  display: inline-block;
+  padding: 40px; }
+  .achievement-list .achievement {
+    margin-right: 10px; }
+
 .achievement {
   position: relative;
   top: -1px;
@@ -729,18 +735,18 @@ footer {
   text-align: center;
   border-radius: 50%; }
   .achievement.bronze {
-    background-color: #fcbf4c; }
+    background-color: #efb340; }
     .achievement.bronze .circle {
-      background-color: #FDDA97; }
+      background-color: #F5CF87; }
     .achievement.bronze .content {
-      color: #dd9304;
+      color: #ba7f10;
       font-weight: bold; }
   .achievement.silver {
-    background-color: #ddddc0; }
+    background-color: #bcbcb5; }
     .achievement.silver .circle {
-      background-color: #f8f8f2; }
+      background-color: #E0E0DD; }
     .achievement.silver .content {
-      color: #baba7e;
+      color: #8b8b80;
       font-weight: bold; }
   .achievement.gold {
     background-color: #dbc000; }
@@ -756,6 +762,14 @@ footer {
     text-align: center;
     display: inline-block;
     border-radius: 50%; }
+  .achievement.big .circle {
+    width: 85px;
+    height: 85px;
+    margin: 7px; }
+  .achievement.big .content {
+    font-size: 50px; }
+    .achievement.big .content > span {
+      line-height: 85px; }
 
 /*$header-background-color: #2C3E50;*/
 .badges-col {

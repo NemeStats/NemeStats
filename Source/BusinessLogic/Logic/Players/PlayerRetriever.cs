@@ -158,6 +158,7 @@ namespace BusinessLogic.Logic.Players
                                              .Include(player => player.PreviousNemesis)
                                              .Include(player => player.PreviousNemesis.NemesisPlayer)
                                              .Include(player => player.GamingGroup)
+                                             .Include(player => player.PlayerAchievements)
                                              .SingleOrDefault(player => player.Id == playerId);
 
             ValidatePlayerWasFound(playerId, returnPlayer);
@@ -173,8 +174,6 @@ namespace BusinessLogic.Logic.Players
             var championedGames = GetChampionedGames(returnPlayer.Id);
 
             var formerChampionedGames = GetFormerChampionedGames(returnPlayer.Id);
-
-            var playerAchievements = GetPlayerAchievements(returnPlayer.Id);
 
             var longestWinningStreak = playerRepository.GetLongestWinningStreak(playerId);
 
@@ -197,7 +196,7 @@ namespace BusinessLogic.Logic.Players
                 FormerChampionedGames = formerChampionedGames,
                 LongestWinningStreak = longestWinningStreak,
                 NemePointsSummary = playerStatistics.NemePointsSummary,
-                Achievements = playerAchievements
+                Achievements = returnPlayer.PlayerAchievements.ToList()
             };
 
             return playerDetails;
@@ -237,23 +236,6 @@ namespace BusinessLogic.Logic.Players
                  where champion.PlayerId == playerId
                  select champion.GameDefinition)
                  .ToList();
-        }
-
-        internal virtual List<AwardedAchievement> GetPlayerAchievements(int playerId)
-        {
-            //return dataContext.GetQueryable<PlayerAchievement>()
-            //                  .Where(x => x.PlayerId == playerId)
-            //                  .Select(y => new AwardedAchievement
-            //                  {
-            //                      FontAwesomeIcon = y.Achievement.FontAwesomeIcon,
-            //                      AchievementLevel = y.AchievementLevel,
-            //                      Name = y.Achievement.Name,
-            //                      Description = y.Achievement.Description,
-            //                      AchievementLevel1Threshold = y.Achievement.AchievementLevel1Threshold,
-            //                      AchievementLevel2Threshold = y.Achievement.AchievementLevel2Threshold,
-            //                      AchievementLevel3Threshold = y.Achievement.AchievementLevel3Threshold
-            //                  }).ToList();
-            return new List<AwardedAchievement>();
         }
 
         internal virtual List<PlayerGameResult> GetPlayerGameResultsWithPlayedGameAndGameDefinition(

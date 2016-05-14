@@ -42,6 +42,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
     {
         private IGameResultViewModelBuilder gameResultViewModelBuilder;
         private IMinionViewModelBuilder minionViewModelBuilderMock;
+        private IPlayerAchievementViewModelBuilder playerAchievementViewModelBuilderMock;
         private PlayerDetails playerDetails;
         private PlayerDetailsViewModel playerDetailsViewModel;
         private PlayerDetailsViewModelBuilder builder;
@@ -59,14 +60,13 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         private GameDefinition gameDefinitionThatIsFormerlyChampionedByCurrentPlayer;
         private readonly int gameDefinitionIdThatIsBothCurrentlyAndFormerlyChampionedByCurrentPlayer = 1001;
         private GameDefinition gameDefinitionThatIsBothCurrentlyAndFormerlyChampionedByCurrentPlayer;
-        private AwardedAchievement awardedAchievement1;
-        private AwardedAchievement awardedAchievement2;
 
         [SetUp]
         public void TestFixtureSetUp()
         {
             AutomapperConfiguration.Configure();
             minionViewModelBuilderMock = MockRepository.GenerateMock<IMinionViewModelBuilder>();
+            playerAchievementViewModelBuilderMock = MockRepository.GenerateStub<IPlayerAchievementViewModelBuilder>();
 
             currentUser = new ApplicationUser()
             {
@@ -251,27 +251,9 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
             };
             playerDetails.FormerChampionedGames = formerChampionedGames;
 
-            awardedAchievement1 = new AwardedAchievement
-            {
-                Description = "achievement description 1",
-                FontAwesomeIcon = "fa-trophy",
-                Name = "achievement name 1",
-                AchievementLevel = AchievementLevel.Bronze
-            };
-            awardedAchievement2 = new AwardedAchievement
-            {
-                Description = "achievement description 2",
-                FontAwesomeIcon = "fa-trophy2",
-                Name = "achievement name 2",
-                AchievementLevel = AchievementLevel.Gold
-            };
-            playerDetails.Achievements = new List<AwardedAchievement>
-            {
-                awardedAchievement1,
-                awardedAchievement2
-            };
+          
 
-            builder = new PlayerDetailsViewModelBuilder(gameResultViewModelBuilder, minionViewModelBuilderMock);
+            builder = new PlayerDetailsViewModelBuilder(gameResultViewModelBuilder, minionViewModelBuilderMock, playerAchievementViewModelBuilderMock);
 
             playerDetailsViewModel = builder.Build(playerDetails, twitterMinionBraggingUrl, currentUser);
         }
@@ -279,7 +261,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         [Test]
         public void PlayerDetailsCannotBeNull()
         {
-            var builder = new PlayerDetailsViewModelBuilder(null, null);
+            var builder = new PlayerDetailsViewModelBuilder(null, null, null);
 
             var exception = Assert.Throws<ArgumentNullException>(() =>
                     builder.Build(null, twitterMinionBraggingUrl, currentUser));
@@ -290,7 +272,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         [Test]
         public void ItRequiresPlayerGameResults()
         {
-            var builder = new PlayerDetailsViewModelBuilder(null, null);
+            var builder = new PlayerDetailsViewModelBuilder(null, null, null);
 
             var exception = Assert.Throws<ArgumentException>(() =>
                     builder.Build(new PlayerDetails(), twitterMinionBraggingUrl, currentUser));
@@ -301,7 +283,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         [Test]
         public void ItRequiresPlayerStatistics()
         {
-            var builder = new PlayerDetailsViewModelBuilder(null, null);
+            var builder = new PlayerDetailsViewModelBuilder(null, null, null);
             var playerDetailsWithNoStatistics = new PlayerDetails() { PlayerGameResults = new List<PlayerGameResult>() };
             var exception = Assert.Throws<ArgumentException>(() =>
                     builder.Build(playerDetailsWithNoStatistics, twitterMinionBraggingUrl, currentUser));
@@ -312,7 +294,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         [Test]
         public void MinionsCannotBeNull()
         {
-            var builder = new PlayerDetailsViewModelBuilder(null, null);
+            var builder = new PlayerDetailsViewModelBuilder(null, null, null);
             var playerDetailsWithNoMinions = new PlayerDetails() { PlayerGameResults = new List<PlayerGameResult>() };
             playerDetailsWithNoMinions.PlayerStats = new PlayerStatistics();
 
@@ -325,7 +307,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         [Test]
         public void ChampionedGamesCannotBeNull()
         {
-            var builder = new PlayerDetailsViewModelBuilder(null, null);
+            var builder = new PlayerDetailsViewModelBuilder(null, null,null);
             var playerDetailsWithNoChampionedGames = new PlayerDetails()
             {
                 PlayerGameResults = new List<PlayerGameResult>(),
@@ -343,7 +325,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         [Test]
         public void FormerChampionedGamesCannotBeNull()
         {
-            var builder = new PlayerDetailsViewModelBuilder(null, null);
+            var builder = new PlayerDetailsViewModelBuilder(null, null, null);
             var playerDetailsWithNoChampionedGames = new PlayerDetails()
             {
                 PlayerGameResults = new List<PlayerGameResult>(),
@@ -428,28 +410,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
             Assert.AreEqual(playerDetails.GamingGroupName, playerDetailsViewModel.GamingGroupName);
         }
 
-        [Test]
-        public void ItCopiesTheAchievements()
-        {
-            var firstAchievement = playerDetails.Achievements[0];
-            Assert.That(firstAchievement.Name, Is.EqualTo(awardedAchievement1.Name));
-            Assert.That(firstAchievement.Description, Is.EqualTo(awardedAchievement1.Description));
-            Assert.That(firstAchievement.FontAwesomeIcon, Is.EqualTo(awardedAchievement1.FontAwesomeIcon));
-            Assert.That(firstAchievement.AchievementLevel, Is.EqualTo(awardedAchievement1.AchievementLevel));
-            Assert.That(firstAchievement.AchievementLevel1Threshold, Is.EqualTo(awardedAchievement1.AchievementLevel1Threshold));            Assert.That(firstAchievement.AchievementLevel1Threshold, Is.EqualTo(awardedAchievement1.AchievementLevel1Threshold));
-            Assert.That(firstAchievement.AchievementLevel2Threshold, Is.EqualTo(awardedAchievement1.AchievementLevel2Threshold));
-            Assert.That(firstAchievement.AchievementLevel3Threshold, Is.EqualTo(awardedAchievement1.AchievementLevel3Threshold));
-
-            var secondAchievement = playerDetails.Achievements[1];
-            Assert.That(secondAchievement.Name, Is.EqualTo(secondAchievement.Name));
-            Assert.That(secondAchievement.Description, Is.EqualTo(secondAchievement.Description));
-            Assert.That(secondAchievement.FontAwesomeIcon, Is.EqualTo(secondAchievement.FontAwesomeIcon));
-            Assert.That(secondAchievement.AchievementLevel, Is.EqualTo(secondAchievement.AchievementLevel));
-            Assert.That(secondAchievement.AchievementLevel1Threshold, Is.EqualTo(awardedAchievement2.AchievementLevel1Threshold)); Assert.That(firstAchievement.AchievementLevel1Threshold, Is.EqualTo(awardedAchievement1.AchievementLevel1Threshold));
-            Assert.That(secondAchievement.AchievementLevel2Threshold, Is.EqualTo(awardedAchievement2.AchievementLevel2Threshold));
-            Assert.That(secondAchievement.AchievementLevel3Threshold, Is.EqualTo(awardedAchievement2.AchievementLevel3Threshold));
-        }
-
+    
         [Test]
         public void ItCopiesTheNemePointsSummary()
         {

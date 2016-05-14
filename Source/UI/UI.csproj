@@ -366,7 +366,7 @@
     <Compile Include="JobsController.generated.cs">
       <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Achievements\AchievementViewModel.cs" />
+    <Compile Include="Models\Achievements\PlayerAchievementViewModel.cs" />
     <Compile Include="Models\Badges\IBadgeBaseViewModel.cs" />
     <Compile Include="Models\Badges\ChampionBadgeViewModel.cs" />
     <Compile Include="Models\Badges\FormerChampionBadgeViewModel.cs" />
@@ -429,8 +429,10 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>
+    <Compile Include="Transformations\PlayerAchievementViewModelBuilder.cs" />
     <Compile Include="Transformations\AutomapperConfiguration.cs" />
     <Compile Include="Transformations\GameDefinitionSummaryViewModelBuilder.cs" />
+    <Compile Include="Transformations\IAchievementViewModelBuilder.cs" />
     <Compile Include="Transformations\IGameDefinitionSummaryViewModelBuilder.cs" />
     <Compile Include="Transformations\IGameDefinitionViewModelBuilder.cs" />
     <Compile Include="Transformations\GameDefinitionDetailsViewModelBuilder.cs" />
@@ -439,6 +441,7 @@
     <Compile Include="Transformations\IGamingGroupViewModelBuilder.cs" />
     <Compile Include="Transformations\GamingGroupViewModelBuilder.cs" />
     <Compile Include="Transformations\INemesisChangeViewModelBuilder.cs" />
+    <Compile Include="Transformations\IPlayerAchievementViewModelBuilder.cs" />
     <Compile Include="Transformations\ITransformer.cs" />
     <Compile Include="Transformations\NemesisChangeViewModelBuilder.cs" />
     <Compile Include="Transformations\TransformationsHelper.cs" />

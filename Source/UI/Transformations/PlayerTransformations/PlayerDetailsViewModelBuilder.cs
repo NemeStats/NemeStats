@@ -44,11 +44,13 @@ namespace UI.Transformations.PlayerTransformations
 
         private readonly IGameResultViewModelBuilder _gameResultViewModelBuilder;
         private readonly IMinionViewModelBuilder _minionViewModelBuilder;
+        private readonly IPlayerAchievementViewModelBuilder _playerAchievementViewModelBuilder;
 
-        public PlayerDetailsViewModelBuilder(IGameResultViewModelBuilder builder, IMinionViewModelBuilder minionViewModelBuilder)
+        public PlayerDetailsViewModelBuilder(IGameResultViewModelBuilder builder, IMinionViewModelBuilder minionViewModelBuilder, IPlayerAchievementViewModelBuilder playerAchievementViewModelBuilder)
         {
             _gameResultViewModelBuilder = builder;
             _minionViewModelBuilder = minionViewModelBuilder;
+            _playerAchievementViewModelBuilder = playerAchievementViewModelBuilder;
         }
 
         public PlayerDetailsViewModel Build(PlayerDetails playerDetails, string urlForMinionBragging, ApplicationUser currentUser = null)
@@ -70,14 +72,7 @@ namespace UI.Transformations.PlayerTransformations
                 WinPercentage = playerDetails.PlayerStats.WinPercentage,
                 TotalChampionedGames = playerDetails.ChampionedGames.Count,
                 LongestWinningStreak = playerDetails.LongestWinningStreak,
-                Achievements = playerDetails.Achievements.Select(x => new AchievementViewModel(
-                    x.Name, 
-                    x.Description, 
-                    x.FontAwesomeIcon, 
-                    x.AchievementLevel,
-                    x.AchievementLevel1Threshold,
-                    x.AchievementLevel2Threshold,
-                    x.AchievementLevel3Threshold)).ToList()
+                PlayerAchievements = playerDetails.Achievements.Select(pa => _playerAchievementViewModelBuilder.Build(pa)).ToList()
             };
 
             PopulatePlayerVersusPlayersViewModel(playerDetails, playerDetailsViewModel);

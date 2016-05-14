@@ -10,6 +10,9 @@ namespace BusinessLogic.Logic.Achievements
     {
         public AchievementId Id => AchievementId.Diversified;
         public AchievementGroup Group => AchievementGroup.Game;
+        public string Name => "Diversified gamer";
+        public string Description => "Play to different games to earn this achievement.";
+        public string IconClass => "fa fa-pie-chart";
 
         public Dictionary<AchievementLevel, int> LevelThresholds => new Dictionary<AchievementLevel, int>
         {

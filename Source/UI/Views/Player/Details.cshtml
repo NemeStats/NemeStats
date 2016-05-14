@@ -79,15 +79,17 @@
     <div class="row">
         <div class="panel panel-primary">
             <div class="panel-heading">
-                <h4>Badges</h4>
+                <h4>Achievements</h4>
             </div>
             
             <div class="row">
                 <div class="col-md-12">
-                    @foreach (var achievement in Model.Achievements)
-                    {
-                        @Html.RenderAchievement(achievement)
-                    }
+                    <span class="achievement-list">
+                        @foreach (var playerAchievement in Model.PlayerAchievements)
+                        {
+                            @Html.RenderPlayerAchievement(playerAchievement);
+                        }
+                    </span>
                 </div>
             </div>
                 

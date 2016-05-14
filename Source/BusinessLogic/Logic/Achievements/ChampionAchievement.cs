@@ -10,6 +10,9 @@ namespace BusinessLogic.Logic.Achievements
     {
         public AchievementId Id => AchievementId.Champion;
         public AchievementGroup Group => AchievementGroup.Game;
+        public string Name => "Champion";
+        public string Description => "Be the champion of several games";
+        public string IconClass => "fa fa-trophy";
 
         public Dictionary<AchievementLevel, int> LevelThresholds => new Dictionary<AchievementLevel, int>
         {
@@ -25,7 +28,7 @@ namespace BusinessLogic.Logic.Achievements
                 AchievementId = this.Id
             };
 
-            var championedGames = dataContext.GetQueryable<Champion>().Where(c=>c.PlayerId == playerId).Select(c=>c.GameDefinitionId);
+            var championedGames = dataContext.GetQueryable<Champion>().Where(c=>c.PlayerId == playerId).Select(c=>c.GameDefinitionId).Distinct();
 
             if (championedGames.Any())
             {

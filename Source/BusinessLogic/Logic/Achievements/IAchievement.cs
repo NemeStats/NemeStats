@@ -9,6 +9,9 @@ namespace BusinessLogic.Logic.Achievements
     {
         AchievementId Id { get; }
         AchievementGroup Group { get; }
+        string Name { get; }
+        string Description { get; }
+        string IconClass { get; }
 
         Dictionary<AchievementLevel, int> LevelThresholds { get; }
 

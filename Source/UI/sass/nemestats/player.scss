@@ -89,6 +89,15 @@
     display: inline-block;
 }
 
+.achievement-list {
+    display: inline-block;
+    padding: 40px;
+
+    .achievement {
+        margin-right: 10px;
+    }
+}
+
 .achievement {
     position: relative;
     top: -1px;
@@ -143,5 +152,21 @@
         text-align: center;
         display: inline-block;
         border-radius: 50%;
+    }
+
+    &.big {
+        .circle {
+            width: 65px;
+            height: 65px;
+            margin: 5px;
+        }
+
+        .content {
+            font-size: 40px;
+
+            > span {
+                line-height: 67px;
+            }
+        }
     }
 }

@@ -281,20 +281,6 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
             Assert.That(playerDetails.NemePointsSummary, Is.EqualTo(expectedPlayerStatistics.NemePointsSummary));
         }
 
-        [Test]
-        public void ItSetsThePlayersAchievements()
-        {
-            //--arrange
-            var expectedPlayerAchievements = new List<AwardedAchievement>();
-            autoMocker.ClassUnderTest.Expect(mock => mock.GetPlayerAchievements(player.Id))
-                      .Return(expectedPlayerAchievements);
-
-            //--act
-            var playerDetails = autoMocker.ClassUnderTest.GetPlayerDetails(player.Id, 0);
-
-            Assert.That(playerDetails.Achievements, Is.SameAs(expectedPlayerAchievements));
-        }
-
 
     }
 }
