@@ -208,6 +208,7 @@
     <Compile Include="UnitTests\FacadesTests\TopGamingGroupsRetrieverTests.cs" />
     <Compile Include="UnitTests\JobsTests\BoardGameGeekBatchUpdateService\LinkOrphanGamesTests\LinkOrphanGamesJobTests.cs" />
     <Compile Include="UnitTests\JobsTests\BoardGameGeekBatchUpdateService\RefreshAllBoardGameGeekDataTests.cs" />
+    <Compile Include="UnitTests\LogicTests\AchievementTests\BusyBeeTests.cs" />
     <Compile Include="UnitTests\LogicTests\AchievementTests\DiversifiedAchievementTests\Base_DiversifiedAchievementTests.cs" />
     <Compile Include="UnitTests\LogicTests\AchievementTests\ChampionAchievementTests\Base_ChampionAchievementTest.cs" />
     <Compile Include="UnitTests\LogicTests\AchievementTests\ChampionAchievementTests\When_Player_Has_Exactly_Bronze_Level.cs" />

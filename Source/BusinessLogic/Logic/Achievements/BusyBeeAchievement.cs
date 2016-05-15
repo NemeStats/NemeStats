@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using BusinessLogic.DataAccess;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Achievements;
@@ -35,6 +32,11 @@ namespace BusinessLogic.Logic.Achievements
                 dataContext
                     .GetQueryable<PlayerGameResult>()
                     .Count(pgr => pgr.PlayerId == playerId);
+
+            if (totalGamesPlayed < LevelThresholds[AchievementLevel.Bronze])
+            {
+                return result;
+            }
 
             result.LevelAwarded =
                 LevelThresholds.OrderByDescending(l => l.Value)
