@@ -7,7 +7,8 @@
         BusyBee = 3,
         SocialButterfly = 4,
         HotStreak = 5,
-        RiskTaker = 6
+        RiskTaker = 6,
+        YouveGotHeart = 7
     }
 
     public enum AchievementGroup
