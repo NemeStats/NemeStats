@@ -9,31 +9,38 @@ namespace BusinessLogic.Events.HandlerFactory
     public static class AchievementFactory
     {
 
-        private static readonly Type AchievementInterface = typeof(IAchievement);
-        private static readonly IEnumerable<Type> AchievementTypes;
+        private static readonly Type AchievementInterface = typeof(IAchievement);        
+        private static readonly Dictionary<AchievementId, Type> AchievementTypes = new Dictionary<AchievementId, Type>();
 
         static AchievementFactory()
         {
-            AchievementTypes = AchievementInterface.Assembly
+            var types = AchievementInterface.Assembly
                 .GetTypes()
-                .Where(p => AchievementInterface.IsAssignableFrom(p) && !p.IsInterface);
+                .Where(p => AchievementInterface.IsAssignableFrom(p) && !p.IsInterface && !p.IsAbstract);
+
+
+            foreach (var type in types)
+            {
+                var achievement = (IAchievement)EventHandlerObjectFactory.Container.GetInstance(type);
+                AchievementTypes.Add(achievement.Id, type);
+            }
         }
 
         public static List<IAchievement> GetAchivements()
         {
-            return AchievementTypes.Select(achievementType => (IAchievement) EventHandlerObjectFactory.Container.GetInstance(achievementType)).ToList();
+            return AchievementTypes.Values.Select(achievementType => (IAchievement)EventHandlerObjectFactory.Container.GetInstance(achievementType)).ToList();
         }
 
-        public static T GetAchievement<T>() where T:  IAchievement
+        public static T GetAchievement<T>() where T : IAchievement
         {
-            var type = AchievementTypes.FirstOrDefault(a => a.GetType() == typeof (T));
-            return (T)EventHandlerObjectFactory.Container.GetInstance(type) ;
+            var type = AchievementTypes.Values.FirstOrDefault(a => a.GetType() == typeof(T));
+            return (T)EventHandlerObjectFactory.Container.GetInstance(type);
         }
 
         public static IAchievement GetAchievementById(AchievementId id)
         {
-            var type = AchievementTypes.FirstOrDefault(a => (AchievementId)a.GetProperty("Id").GetValue(a) == id);
-            return (IAchievement) EventHandlerObjectFactory.Container.GetInstance(type);
+            var type = AchievementTypes[id];
+            return (IAchievement)EventHandlerObjectFactory.Container.GetInstance(type);
         }
     }
 }
