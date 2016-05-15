@@ -32,13 +32,13 @@ namespace BusinessLogic.Events.Handlers
 
             foreach (var player in players.ToList())
             {
-                foreach (var achievement in AchievementFactory.Achievements)
+                foreach (var achievement in AchievementFactory.GetAchivements())
                 {
                     var currentPlayerAchievement =
                         player.PlayerAchievements.FirstOrDefault(
                             pa => pa.AchievementId == achievement.Id);
 
-                    var achievementAwarded = achievement.IsAwardedForThisPlayer(player.Id, DataContext);
+                    var achievementAwarded = achievement.IsAwardedForThisPlayer(player.Id);
 
                     if (achievementAwarded.LevelAwarded.HasValue)
                     {

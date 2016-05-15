@@ -6,22 +6,30 @@ using BusinessLogic.Models.Achievements;
 
 namespace BusinessLogic.Logic.Achievements
 {
-    public class DiversifiedAchievement : IAchievement
+    public class DiversifiedAchievement : BaseAchievement
     {
-        public AchievementId Id => AchievementId.Diversified;
-        public AchievementGroup Group => AchievementGroup.Game;
-        public string Name => "Diversified gamer";
-        public string Description => "Play to different games to earn this achievement.";
-        public string IconClass => "fa fa-pie-chart";
+        public DiversifiedAchievement(IDataContext dataContext) : base(dataContext)
+        {
+        }
 
-        public Dictionary<AchievementLevel, int> LevelThresholds => new Dictionary<AchievementLevel, int>
+        public override AchievementId Id => AchievementId.Diversified;
+
+        public override AchievementGroup Group => AchievementGroup.Game;
+
+        public override string Name => "Diversified gamer";
+
+        public override string Description => "Play to different games to earn this achievement.";
+
+        public override string IconClass => "fa fa-pie-chart";
+
+        public override Dictionary<AchievementLevel, int> LevelThresholds => new Dictionary<AchievementLevel, int>
         {
             {AchievementLevel.Bronze, 5},
             {AchievementLevel.Silver, 25},
             {AchievementLevel.Gold, 100}
         };
 
-        public AchievementAwarded IsAwardedForThisPlayer(int playerId, IDataContext dataContext)
+        public override AchievementAwarded IsAwardedForThisPlayer(int playerId)
         {
 
             var result = new AchievementAwarded
@@ -30,7 +38,7 @@ namespace BusinessLogic.Logic.Achievements
             };
 
             var differentPlayedGames =
-                dataContext.GetQueryable<PlayerGameResult>()
+                DataContext.GetQueryable<PlayerGameResult>()
                     .Where(pgr => pgr.PlayerId == playerId)
                     .Select(pgr => pgr.PlayedGame.GameDefinition.Id)
                     .Distinct();
@@ -38,10 +46,7 @@ namespace BusinessLogic.Logic.Achievements
             if (differentPlayedGames.Any())
             {
 
-                result.LevelAwarded =
-                    LevelThresholds.OrderByDescending(l => l.Value)
-                        .FirstOrDefault(l => l.Value <= differentPlayedGames.Count())
-                        .Key;
+                result.LevelAwarded = GetLevelAwarded(differentPlayedGames.Count());
                 result.RelatedEntities = differentPlayedGames.ToList();
             }
             return result;

@@ -6,22 +6,30 @@ using BusinessLogic.Models.Achievements;
 
 namespace BusinessLogic.Logic.Achievements
 {
-    public class RiskTakerAchievement : IAchievement
+    public class RiskTakerAchievement : BaseAchievement
     {
-        public AchievementId Id => AchievementId.RiskTaker;
-        public AchievementGroup Group => AchievementGroup.Game;
-        public string Name => "Social Butterfly";
-        public string Description => "Be the only player to get first place in games with 10+ people";
-        public string IconClass => "fa fa-ambulance";
+        public RiskTakerAchievement(IDataContext dataContext) : base(dataContext)
+        {
+        }
 
-        public Dictionary<AchievementLevel, int> LevelThresholds => new Dictionary<AchievementLevel, int>
+        public override AchievementId Id => AchievementId.RiskTaker;
+
+        public override AchievementGroup Group => AchievementGroup.Game;
+
+        public override string Name => "Social Butterfly";
+
+        public override string Description => "Be the only player to get first place in games with 10+ people";
+
+        public override string IconClass => "fa fa-ambulance";
+
+        public override Dictionary<AchievementLevel, int> LevelThresholds => new Dictionary<AchievementLevel, int>
         {
             {AchievementLevel.Bronze, 1},
             {AchievementLevel.Silver, 4},
             {AchievementLevel.Gold, 20}
         };
 
-        public AchievementAwarded IsAwardedForThisPlayer(int playerId, IDataContext dataContext)
+        public override AchievementAwarded IsAwardedForThisPlayer(int playerId )
         {
             var result = new AchievementAwarded
             {
@@ -29,7 +37,7 @@ namespace BusinessLogic.Logic.Achievements
             };
 
             var numberOfGamesAsSoleWinner =
-                dataContext
+                DataContext
                     .GetQueryable<PlayedGame>()
                     .Count(x => x.PlayerGameResults.Any(y => y.PlayerId == playerId && y.GameRank == 1)
                         && !x.PlayerGameResults.Any(y => y.PlayerId != playerId && y.GameRank == 1)
@@ -40,10 +48,7 @@ namespace BusinessLogic.Logic.Achievements
                 return result;
             }
 
-            result.LevelAwarded =
-                LevelThresholds.OrderByDescending(l => l.Value)
-                    .FirstOrDefault(l => l.Value <= numberOfGamesAsSoleWinner)
-                    .Key;
+            result.LevelAwarded = GetLevelAwarded(numberOfGamesAsSoleWinner);
             return result;
         }
     }

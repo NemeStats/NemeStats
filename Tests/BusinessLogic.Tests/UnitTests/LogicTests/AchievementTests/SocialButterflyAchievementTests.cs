@@ -32,7 +32,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.AchievementTests
             SetupGamesForPlayer(_playerId, _autoMocker.ClassUnderTest.LevelThresholds[AchievementLevel.Bronze] - 1);
 
             //--act
-            var results = _autoMocker.ClassUnderTest.IsAwardedForThisPlayer(_playerId, _autoMocker.Get<IDataContext>());
+            var results = _autoMocker.ClassUnderTest.IsAwardedForThisPlayer(_playerId);
 
             //--assert
             Assert.That(results.LevelAwarded, Is.Null);
@@ -45,7 +45,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.AchievementTests
             SetupGamesForPlayer(_playerId, _autoMocker.ClassUnderTest.LevelThresholds[AchievementLevel.Bronze]);
 
             //--act
-            var results = _autoMocker.ClassUnderTest.IsAwardedForThisPlayer(_playerId, _autoMocker.Get<IDataContext>());
+            var results = _autoMocker.ClassUnderTest.IsAwardedForThisPlayer(_playerId);
 
             //--assert
             Assert.That(results.LevelAwarded, Is.EqualTo(AchievementLevel.Bronze));
@@ -58,7 +58,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.AchievementTests
             SetupGamesForPlayer(_playerId, _autoMocker.ClassUnderTest.LevelThresholds[AchievementLevel.Silver]);
 
             //--act
-            var results = _autoMocker.ClassUnderTest.IsAwardedForThisPlayer(_playerId, _autoMocker.Get<IDataContext>());
+            var results = _autoMocker.ClassUnderTest.IsAwardedForThisPlayer(_playerId);
 
             //--assert
             Assert.That(results.LevelAwarded, Is.EqualTo(AchievementLevel.Silver));
@@ -71,7 +71,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.AchievementTests
             SetupGamesForPlayer(_playerId, _autoMocker.ClassUnderTest.LevelThresholds[AchievementLevel.Gold]);
 
             //--act
-            var results = _autoMocker.ClassUnderTest.IsAwardedForThisPlayer(_playerId, _autoMocker.Get<IDataContext>());
+            var results = _autoMocker.ClassUnderTest.IsAwardedForThisPlayer(_playerId);
 
             //--assert
             Assert.That(results.LevelAwarded, Is.EqualTo(AchievementLevel.Gold));

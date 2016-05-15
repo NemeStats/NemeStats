@@ -346,20 +346,12 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameCr
         [Test]
         public void It_Send_PlayedGameCreatedEvent()
         {
-            var playedGame = new PlayedGame()
-            {
-                Id = 1,
-                GameDefinitionId = 1
-            };
 
-            autoMocker.Get<IDataContext>()
-                .Stub(s => s.Save(Arg<PlayedGame>.Is.Anything, Arg<ApplicationUser>.Is.Anything))
-                .Return(playedGame);
 
             autoMocker.ClassUnderTest.CreatePlayedGame(ValidNewlyCompletedGame(), TransactionSource.WebApplication, currentUser);
 
 
-            autoMocker.Get<IBusinessLogicEventBus>().AssertWasCalled(mock => mock.SendEvent(Arg<IBusinessLogicEvent>.Matches(m => m.GetType() == typeof(PlayedGameCreatedEvent) && m.TriggerEntityId == playedGame.Id)));
+            autoMocker.Get<IBusinessLogicEventBus>().AssertWasCalled(mock => mock.SendEvent(Arg<IBusinessLogicEvent>.Matches(m => m.GetType() == typeof(PlayedGameCreatedEvent))));
         }
 
     }

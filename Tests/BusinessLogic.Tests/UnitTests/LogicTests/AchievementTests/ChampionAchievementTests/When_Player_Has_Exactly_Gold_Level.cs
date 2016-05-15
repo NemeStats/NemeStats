@@ -21,7 +21,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.AchievementTests.ChampionAchi
         [Test]
         public void Then_Returns_Gold_Achievement()
         {
-            var result = Achievement.IsAwardedForThisPlayer(PlayerId, DataContext);
+            var result = Achievement.IsAwardedForThisPlayer(PlayerId);
             Assert.IsNotNull(result);
             Assert.IsTrue(result.LevelAwarded.HasValue);
 

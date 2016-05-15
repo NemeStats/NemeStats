@@ -14,6 +14,6 @@ namespace BusinessLogic.Logic.Achievements
 
         Dictionary<AchievementLevel, int> LevelThresholds { get; }
 
-        AchievementAwarded IsAwardedForThisPlayer(int playerId, IDataContext dataContext);
+        AchievementAwarded IsAwardedForThisPlayer(int playerId);
     }
 }
