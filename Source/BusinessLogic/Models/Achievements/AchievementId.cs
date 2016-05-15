@@ -9,7 +9,8 @@
         HotStreak = 5,
         RiskTaker = 6,
         YouveGotHeart = 7,
-        Revenge = 8
+        Hardcore = 8,
+        BoardGameGeek2016_10x10 = 9
     }
 
     public enum AchievementGroup
