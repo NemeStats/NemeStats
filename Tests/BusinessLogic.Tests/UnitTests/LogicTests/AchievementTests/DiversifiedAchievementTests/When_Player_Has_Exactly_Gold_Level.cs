@@ -10,9 +10,9 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.AchievementTests.DiversifiedA
         [SetUp]
         public override void SetUp()
         {
+            base.SetUp();
             this.InsertPlayedGames(Achievement.LevelThresholds[AchievementLevel.Gold], this.PlayerId);
             this.InsertPlayedGames(Achievement.LevelThresholds[AchievementLevel.Bronze], OtherPlayerId);
-            base.SetUp();
         }
 
         [Test]

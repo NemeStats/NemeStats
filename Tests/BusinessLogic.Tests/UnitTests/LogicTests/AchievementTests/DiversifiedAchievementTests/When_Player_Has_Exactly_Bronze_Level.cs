@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using BusinessLogic.Models.Achievements;
-using BusinessLogic.Tests.UnitTests.LogicTests.AchievementTests.ChampionAchievementTests;
 using NUnit.Framework;
 
 namespace BusinessLogic.Tests.UnitTests.LogicTests.AchievementTests.DiversifiedAchievementTests
