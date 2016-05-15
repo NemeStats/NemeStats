@@ -24,38 +24,37 @@ namespace BusinessLogic.Logic.Achievements
 
         public override Dictionary<AchievementLevel, int> LevelThresholds => new Dictionary<AchievementLevel, int>
         {
-            {AchievementLevel.Bronze, 1},
-            {AchievementLevel.Silver, 5},
-            {AchievementLevel.Gold, 20}
+            {AchievementLevel.Bronze, 8},
+            {AchievementLevel.Silver, 9},
+            {AchievementLevel.Gold, 10}
         };
+
+        public static readonly DateTime START_OF_2016 = new DateTime(2016, 1, 1);
+        public static readonly DateTime END_OF_2016 = new DateTime(2016, 12, 31);
 
         public override AchievementAwarded IsAwardedForThisPlayer(int playerId)
         {
+            throw new NotImplementedException();
             var result = new AchievementAwarded
             {
                 AchievementId = Id
             };
-            throw new NotImplementedException();
-            var totalDistinctHardcoreGamesThatTakeALongTime =
+            var numberOfGamesWith10PlaysIn2016 =
                 DataContext
                     .GetQueryable<PlayerGameResult>()
-                    .Where(x => x.PlayerId == playerId
-                                && (((x.PlayedGame.GameDefinition.BoardGameGeekGameDefinition.MinPlayTime ?? 0
-                                        + x.PlayedGame.GameDefinition.BoardGameGeekGameDefinition.MaxPlayTime ?? 0) / 2) > THREE_HOURS_WORTH_OF_MINUTES)
-                                && x.PlayedGame.GameDefinition.BoardGameGeekGameDefinition.AverageWeight
-                                >= WeightTierCalculator.BOARD_GAME_GEEK_WEIGHT_INCLUSIVE_LOWER_BOUND_FOR_HARDCORE)
-                    .Select(x => x.PlayedGame.GameDefinitionId)
-                    .Distinct()
-                    .Count();
+                    .Where(x => x.PlayerId == playerId && x.PlayedGame.DatePlayed >= START_OF_2016 && x.PlayedGame.DatePlayed <= END_OF_2016)
+                    .GroupBy(x => x.PlayedGame.GameDefinitionId)
+                    .Select(group => new { group.Key, Count = group.Count()})
+                    .Count(x => x.Count >= 10);
 
-            if (totalDistinctHardcoreGamesThatTakeALongTime < LevelThresholds[AchievementLevel.Bronze])
+            if (numberOfGamesWith10PlaysIn2016 < LevelThresholds[AchievementLevel.Bronze])
             {
                 return result;
             }
 
             result.LevelAwarded =
                 LevelThresholds.OrderByDescending(l => l.Value)
-                    .FirstOrDefault(l => l.Value <= totalDistinctHardcoreGamesThatTakeALongTime)
+                    .FirstOrDefault(l => l.Value <= numberOfGamesWith10PlaysIn2016)
                     .Key;
             return result;
         }
