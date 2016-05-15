@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using BusinessLogic.DataAccess;
-using BusinessLogic.Models;
 using BusinessLogic.Models.Achievements;
 
 namespace BusinessLogic.Logic.Achievements

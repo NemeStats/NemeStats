@@ -8,7 +8,8 @@
         SocialButterfly = 4,
         HotStreak = 5,
         RiskTaker = 6,
-        YouveGotHeart = 7
+        YouveGotHeart = 7,
+        Revenge = 8
     }
 
     public enum AchievementGroup
