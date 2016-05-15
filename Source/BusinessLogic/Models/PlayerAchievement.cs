@@ -33,8 +33,17 @@ namespace BusinessLogic.Models
         {
             get
             {
-                var entities = this.RelatedEntities_PlainArray.Split(',');
-                return entities.Select(int.Parse).ToList();
+                var result = new List<int>();
+                if (!string.IsNullOrEmpty(RelatedEntities_PlainArray))
+                {
+                    var entities = this.RelatedEntities_PlainArray.Split(',');
+                    if (entities.Any())
+                    {
+                        result = entities.Select(int.Parse).ToList();
+                    }
+                }
+
+                return result;
             }
             set { this.RelatedEntities_PlainArray = string.Join(",", value.Select(p => p.ToString()).ToArray()); }
         }

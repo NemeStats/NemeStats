@@ -72,7 +72,7 @@ namespace UI.Transformations.PlayerTransformations
                 WinPercentage = playerDetails.PlayerStats.WinPercentage,
                 TotalChampionedGames = playerDetails.ChampionedGames.Count,
                 LongestWinningStreak = playerDetails.LongestWinningStreak,
-                PlayerAchievements = playerDetails.Achievements.Select(pa => _playerAchievementViewModelBuilder.Build(pa)).ToList()
+                PlayerAchievements = playerDetails.Achievements?.Select(pa => _playerAchievementViewModelBuilder.Build(pa)).ToList() ?? new List<PlayerAchievementViewModel>()
             };
 
             PopulatePlayerVersusPlayersViewModel(playerDetails, playerDetailsViewModel);
