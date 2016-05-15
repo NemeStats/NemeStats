@@ -219,6 +219,7 @@
     <Compile Include="Logic\Achievements\DiversifiedAchievement.cs" />
     <Compile Include="Logic\Achievements\HotStreakAchievement.cs" />
     <Compile Include="Logic\Achievements\IAchievement.cs" />
+    <Compile Include="Logic\Achievements\RiskTakerAchievement.cs" />
     <Compile Include="Logic\Achievements\SocialButterflyAchievement.cs" />
     <Compile Include="Logic\BoardGameGeek\BoardGameGeekGameDefinitionCreator.cs" />
     <Compile Include="Logic\BoardGameGeek\BoardGameGeekGamesImporter.cs" />
