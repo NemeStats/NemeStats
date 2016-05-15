@@ -5,6 +5,7 @@ using BusinessLogic.DataAccess;
 using BusinessLogic.Events.Interfaces;
 using BusinessLogic.Logic.Achievements;
 using BusinessLogic.Logic.Users;
+using RollbarSharp;
 using StructureMap;
 using StructureMap.Web;
 
@@ -29,6 +30,8 @@ namespace BusinessLogic.Events.HandlerFactory
                     new HandlerFactoryConfiguration()
                         .AddHandlerAssembly(typeof(IBusinessLogicEventHandler<>).Assembly)
                         .AddMessageAssembly(typeof(IBusinessLogicEvent).Assembly)));
+
+                x.For<IRollbarClient>().Use<RollbarClient>().Singleton();
 
                 x.Scan(s =>
                 {

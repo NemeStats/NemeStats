@@ -208,6 +208,7 @@
     <Compile Include="UnitTests\FacadesTests\TopGamingGroupsRetrieverTests.cs" />
     <Compile Include="UnitTests\JobsTests\BoardGameGeekBatchUpdateService\LinkOrphanGamesTests\LinkOrphanGamesJobTests.cs" />
     <Compile Include="UnitTests\JobsTests\BoardGameGeekBatchUpdateService\RefreshAllBoardGameGeekDataTests.cs" />
+    <Compile Include="UnitTests\LogicTests\AchievementTests\DiversifiedAchievementTests\Base_AchievementsTests.cs" />
     <Compile Include="UnitTests\LogicTests\AchievementTests\HardcoreAchievementTests.cs" />
     <Compile Include="UnitTests\LogicTests\AchievementTests\YouveGotHeartAchievementTests.cs" />
     <Compile Include="UnitTests\LogicTests\AchievementTests\RiskTakerAchievementTests.cs" />

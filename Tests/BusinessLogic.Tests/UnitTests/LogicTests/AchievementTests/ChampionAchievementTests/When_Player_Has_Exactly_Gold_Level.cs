@@ -13,15 +13,14 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.AchievementTests.ChampionAchi
         public override void SetUp()
         {
             base.SetUp();
-            this.InsertChampionedGames(Achievement.LevelThresholds[AchievementLevel.Gold], this.PlayerId);
-            this.InsertChampionedGames(Achievement.LevelThresholds[AchievementLevel.Bronze], OtherPlayerId);
-            DataContext.Stub(s => s.GetQueryable<Champion>()).Return(ChampionedGames.AsQueryable());
+            this.InsertChampionedGames(Achievement.ClassUnderTest.LevelThresholds[AchievementLevel.Gold], this.PlayerId);
+            this.InsertChampionedGames(Achievement.ClassUnderTest.LevelThresholds[AchievementLevel.Bronze], OtherPlayerId);
         }
 
         [Test]
         public void Then_Returns_Gold_Achievement()
         {
-            var result = Achievement.IsAwardedForThisPlayer(PlayerId);
+            var result = Achievement.ClassUnderTest.IsAwardedForThisPlayer(PlayerId);
             Assert.IsNotNull(result);
             Assert.IsTrue(result.LevelAwarded.HasValue);
 

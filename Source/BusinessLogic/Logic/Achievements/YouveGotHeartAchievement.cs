@@ -37,7 +37,7 @@ namespace BusinessLogic.Logic.Achievements
                 AchievementId = Id
             };
 
-            var playerHasAWin = DataContext.GetQueryable<PlayerGameResult>().Any(x => x.PlayerId == 1 && x.GameRank == 1);
+            var playerHasAWin = DataContext.GetQueryable<PlayerGameResult>().Any(x => x.PlayerId == playerId && x.GameRank == 1);
 
             if (playerHasAWin)
             {

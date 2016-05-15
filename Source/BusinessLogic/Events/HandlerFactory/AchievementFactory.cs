@@ -33,7 +33,7 @@ namespace BusinessLogic.Events.HandlerFactory
 
         public static T GetAchievement<T>() where T : IAchievement
         {
-            var type = AchievementTypes.Values.FirstOrDefault(a => a.GetType() == typeof(T));
+            var type = AchievementTypes.Values.FirstOrDefault(t => t == typeof(T));
             return (T)EventHandlerObjectFactory.Container.GetInstance(type);
         }
 

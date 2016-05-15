@@ -11,13 +11,13 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.AchievementTests.DiversifiedA
         {
             base.SetUp();
             
-            this.InsertPlayedGames(Achievement.LevelThresholds[AchievementLevel.Bronze], OtherPlayerId);
+            this.InsertPlayedGames(Achievement.ClassUnderTest.LevelThresholds[AchievementLevel.Bronze], OtherPlayerId);
         }
 
         [Test]
         public void Then_Returns_No_Achievement()
         {
-            var result = Achievement.IsAwardedForThisPlayer(PlayerId);
+            var result = Achievement.ClassUnderTest.IsAwardedForThisPlayer(PlayerId);
             Assert.IsNotNull(result);
             Assert.IsFalse(result.LevelAwarded.HasValue);
             Assert.IsEmpty(result.RelatedEntities);

@@ -11,15 +11,18 @@ using BusinessLogic.Models.Achievements;
 using BusinessLogic.Models.User;
 using Microsoft.AspNet.SignalR;
 using NemeStats.Hubs;
+using RollbarSharp;
 
 namespace BusinessLogic.Events.Handlers
 {
     public class AchievementsEventHandler : BaseEventHandler, IBusinessLogicEventHandler<PlayedGameCreatedEvent>
     {
+        private readonly IRollbarClient _rollbarClient;
 
 
-        public AchievementsEventHandler(IDataContext dataContext) : base(dataContext)
+        public AchievementsEventHandler(IDataContext dataContext, IRollbarClient rollbarClient) : base(dataContext)
         {
+            _rollbarClient = rollbarClient;
         }
 
 
@@ -34,41 +37,48 @@ namespace BusinessLogic.Events.Handlers
             {
                 foreach (var achievement in AchievementFactory.GetAchivements())
                 {
-                    var currentPlayerAchievement =
-                        player.PlayerAchievements.FirstOrDefault(
-                            pa => pa.AchievementId == achievement.Id);
-
-                    var achievementAwarded = achievement.IsAwardedForThisPlayer(player.Id);
-
-                    if (achievementAwarded.LevelAwarded.HasValue)
+                    try
                     {
-                        if (currentPlayerAchievement == null)
+                        var currentPlayerAchievement =
+                            player.PlayerAchievements.FirstOrDefault(
+                                pa => pa.AchievementId == achievement.Id);
+
+                        var achievementAwarded = achievement.IsAwardedForThisPlayer(player.Id);
+
+                        if (achievementAwarded.LevelAwarded.HasValue)
                         {
-                            var playerAchievement = new PlayerAchievement
+                            if (currentPlayerAchievement == null)
                             {
-                                Player = player,
-                                PlayerId = player.Id,
-                                AchievementId = achievement.Id,
-                                AchievementLevel = achievementAwarded.LevelAwarded.Value,
-                                RelatedEntities = achievementAwarded.RelatedEntities
-                            };
+                                var playerAchievement = new PlayerAchievement
+                                {
+                                    Player = player,
+                                    PlayerId = player.Id,
+                                    AchievementId = achievement.Id,
+                                    AchievementLevel = achievementAwarded.LevelAwarded.Value,
+                                    RelatedEntities = achievementAwarded.RelatedEntities
+                                };
 
-                            DataContext.Save(playerAchievement, new AnonymousApplicationUser());
-                            DataContext.CommitAllChanges();
+                                DataContext.Save(playerAchievement, new AnonymousApplicationUser());
+                                DataContext.CommitAllChanges();
 
-                            NotifyPlayer(player, achievement, achievementAwarded.LevelAwarded);
+                                NotifyPlayer(player, achievement, achievementAwarded.LevelAwarded);
 
+                            }
+                            else if (achievementAwarded.LevelAwarded.Value > currentPlayerAchievement.AchievementLevel)
+                            {
+                                currentPlayerAchievement.AchievementLevel = achievementAwarded.LevelAwarded.Value;
+                                currentPlayerAchievement.LastUpdatedDate = DateTime.UtcNow;
+                                currentPlayerAchievement.RelatedEntities = achievementAwarded.RelatedEntities;
+
+                                DataContext.CommitAllChanges();
+
+                                NotifyPlayer(player, achievement, achievementAwarded.LevelAwarded);
+                            }
                         }
-                        else if (achievementAwarded.LevelAwarded.Value > currentPlayerAchievement.AchievementLevel)
-                        {
-                            currentPlayerAchievement.AchievementLevel = achievementAwarded.LevelAwarded.Value;
-                            currentPlayerAchievement.LastUpdatedDate = DateTime.UtcNow;
-                            currentPlayerAchievement.RelatedEntities = achievementAwarded.RelatedEntities;
-
-                            DataContext.CommitAllChanges();
-
-                            NotifyPlayer(player, achievement, achievementAwarded.LevelAwarded);
-                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        _rollbarClient.SendException(ex);
                     }
                 }
             }

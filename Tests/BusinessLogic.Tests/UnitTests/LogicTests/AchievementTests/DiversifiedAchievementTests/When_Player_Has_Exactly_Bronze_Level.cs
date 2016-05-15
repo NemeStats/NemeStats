@@ -11,14 +11,14 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.AchievementTests.DiversifiedA
         public override void SetUp()
         {
             base.SetUp();
-            this.InsertPlayedGames(Achievement.LevelThresholds[AchievementLevel.Bronze],this.PlayerId);
-            this.InsertPlayedGames(Achievement.LevelThresholds[AchievementLevel.Bronze], OtherPlayerId);
+            this.InsertPlayedGames(Achievement.ClassUnderTest.LevelThresholds[AchievementLevel.Bronze],this.PlayerId);
+            this.InsertPlayedGames(Achievement.ClassUnderTest.LevelThresholds[AchievementLevel.Bronze], OtherPlayerId);
         }
 
         [Test]
         public void Then_Returns_Bronze_Achievement()
         {
-            var result = Achievement.IsAwardedForThisPlayer(PlayerId);
+            var result = Achievement.ClassUnderTest.IsAwardedForThisPlayer(PlayerId);
             Assert.IsNotNull(result);
             Assert.IsTrue(result.LevelAwarded.HasValue);
 

@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using BusinessLogic.DataAccess;
-using BusinessLogic.Events.HandlerFactory;
 using BusinessLogic.Logic.Achievements;
 using BusinessLogic.Models;
 using NUnit.Framework;
@@ -9,9 +8,9 @@ using Rhino.Mocks;
 
 namespace BusinessLogic.Tests.UnitTests.LogicTests.AchievementTests.DiversifiedAchievementTests
 {
-    public abstract class Base_DiversifiedAchievementTests
+    public abstract class Base_DiversifiedAchievementTests : Base_AchievementsTests<DiversifiedAchievement>
     {
-        public DiversifiedAchievement Achievement;
+
         public readonly List<PlayerGameResult> PlayedGames = new List<PlayerGameResult>();
         public int PlayerId = 1;
         public int OtherPlayerId = 2;
@@ -20,10 +19,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.AchievementTests.DiversifiedA
         [SetUp]
         public virtual void SetUp()
         {
-            Achievement = AchievementFactory.GetAchievement<DiversifiedAchievement>();
-
-            DataContext = MockRepository.GenerateStub<IDataContext>();
-            DataContext.Stub(s => s.GetQueryable<PlayerGameResult>()).Return(PlayedGames.AsQueryable());
+            InitMock();
+            Achievement.Get<IDataContext>().Stub(s => s.GetQueryable<PlayerGameResult>()).Return(PlayedGames.AsQueryable());
         }
 
         public void InsertPlayedGames(int games, int playerId)
@@ -35,7 +32,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.AchievementTests.DiversifiedA
                     PlayerId = playerId,
                     PlayedGame = new PlayedGame
                     {
-                        GameDefinition = new GameDefinition() {Id = i}
+                        GameDefinition = new GameDefinition() { Id = i }
                     }
                 });
             }
