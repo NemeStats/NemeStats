@@ -17,7 +17,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.AchievementTests.DiversifiedA
         [Test]
         public void Then_Returns_No_Achievement()
         {
-            var result = Achievement.IsAwardedForThisPlayer(PlayerId, DataContext);
+            var result = Achievement.IsAwardedForThisPlayer(PlayerId);
             Assert.IsNotNull(result);
             Assert.IsFalse(result.LevelAwarded.HasValue);
             Assert.IsEmpty(result.RelatedEntities);

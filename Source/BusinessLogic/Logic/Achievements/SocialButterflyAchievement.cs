@@ -6,22 +6,30 @@ using BusinessLogic.Models.Achievements;
 
 namespace BusinessLogic.Logic.Achievements
 {
-    public class SocialButterflyAchievement : IAchievement
+    public class SocialButterflyAchievement : BaseAchievement
     {
-        public AchievementId Id => AchievementId.SocialButterfly;
-        public AchievementGroup Group => AchievementGroup.Game;
-        public string Name => "Social Butterfly";
-        public string Description => "Play games with lots of different players";
-        public string IconClass => "fa fa-smile-o";
+        public SocialButterflyAchievement(IDataContext dataContext) : base(dataContext)
+        {
+        }
 
-        public Dictionary<AchievementLevel, int> LevelThresholds => new Dictionary<AchievementLevel, int>
+        public override AchievementId Id => AchievementId.SocialButterfly;
+
+        public override AchievementGroup Group => AchievementGroup.Game;
+
+        public override string Name => "Social Butterfly";
+
+        public override string Description => "Play games with lots of different players";
+
+        public override string IconClass => "fa fa-smile-o";
+
+        public override Dictionary<AchievementLevel, int> LevelThresholds => new Dictionary<AchievementLevel, int>
         {
             {AchievementLevel.Bronze, 10},
             {AchievementLevel.Silver, 30},
             {AchievementLevel.Gold, 50}
         };
 
-        public AchievementAwarded IsAwardedForThisPlayer(int playerId, IDataContext dataContext)
+        public override AchievementAwarded IsAwardedForThisPlayer(int playerId)
         {
             var result = new AchievementAwarded
             {
@@ -29,7 +37,7 @@ namespace BusinessLogic.Logic.Achievements
             };
 
             var totalPlayersPlayedWith =
-                dataContext
+                DataContext
                     .GetQueryable<PlayedGame>()
                     .Where(x => x.PlayerGameResults.Any(y => y.PlayerId == playerId))
                     .Select(z => z.PlayerGameResults.Select(x => x.PlayerId))
@@ -41,10 +49,8 @@ namespace BusinessLogic.Logic.Achievements
                 return result;
             }
 
-            result.LevelAwarded =
-                LevelThresholds.OrderByDescending(l => l.Value)
-                    .FirstOrDefault(l => l.Value <= totalPlayersPlayedWith)
-                    .Key;
+            result.LevelAwarded = GetLevelAwarded(totalPlayersPlayedWith);
+               
             return result;
         }
     }

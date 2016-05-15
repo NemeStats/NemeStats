@@ -6,33 +6,41 @@ using BusinessLogic.Models.Achievements;
 
 namespace BusinessLogic.Logic.Achievements
 {
-    public class ChampionAchievement : IAchievement
+    public class ChampionAchievement : BaseAchievement
     {
-        public AchievementId Id => AchievementId.Champion;
-        public AchievementGroup Group => AchievementGroup.Game;
-        public string Name => "Champion";
-        public string Description => "Be the champion of several games";
-        public string IconClass => "fa fa-trophy";
+        public ChampionAchievement(IDataContext dataContext) : base(dataContext)
+        {
+        }
 
-        public Dictionary<AchievementLevel, int> LevelThresholds => new Dictionary<AchievementLevel, int>
+        public override AchievementId Id => AchievementId.Champion;
+
+        public override AchievementGroup Group => AchievementGroup.Game;
+
+        public override string Name => "Champion";
+
+        public override string Description => "Be the champion of several games";
+
+        public override string IconClass => "fa fa-trophy";
+
+        public override Dictionary<AchievementLevel, int> LevelThresholds => new Dictionary<AchievementLevel, int>
         {
             {AchievementLevel.Bronze, 1},
             {AchievementLevel.Silver, 10},
             {AchievementLevel.Gold, 50}
         };
 
-        public AchievementAwarded IsAwardedForThisPlayer(int playerId, IDataContext dataContext)
+        public override AchievementAwarded IsAwardedForThisPlayer(int playerId)
         {
             var result = new AchievementAwarded
             {
                 AchievementId = this.Id
             };
 
-            var championedGames = dataContext.GetQueryable<Champion>().Where(c=>c.PlayerId == playerId).Select(c=>c.GameDefinitionId).Distinct();
+            var championedGames = DataContext.GetQueryable<Champion>().Where(c=>c.PlayerId == playerId).Select(c=>c.GameDefinitionId).Distinct();
 
             if (championedGames.Any())
             {
-                result.LevelAwarded = LevelThresholds.OrderByDescending(l => l.Value).FirstOrDefault(l => l.Value <= championedGames.Count()).Key;
+                result.LevelAwarded = GetLevelAwarded(championedGames.Count());
                 result.RelatedEntities = championedGames.ToList();
             }
             

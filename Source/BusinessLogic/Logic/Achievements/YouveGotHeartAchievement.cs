@@ -3,32 +3,41 @@ using System.Linq;
 using BusinessLogic.DataAccess;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Achievements;
+using RollbarSharp.Serialization;
 
 namespace BusinessLogic.Logic.Achievements
 {
-    public class YouveGotHeartAchievement : IAchievement
+    public class YouveGotHeartAchievement : BaseAchievement
     {
-        public AchievementId Id => AchievementId.YouveGotHeart;
-        public AchievementGroup Group => AchievementGroup.Game;
-        public string Name => "You've got heart";
-        public string Description => "Played a lot of games without winning";
-        public string IconClass => "fa fa-heart";
+        public YouveGotHeartAchievement(IDataContext dataContext) : base(dataContext)
+        {
+        }
 
-        public Dictionary<AchievementLevel, int> LevelThresholds => new Dictionary<AchievementLevel, int>
+        public override AchievementId Id => AchievementId.YouveGotHeart;
+
+        public override AchievementGroup Group => AchievementGroup.Game;
+
+        public override string Name => "You've got heart";
+
+        public override string Description => "Played a lot of games without winning";
+
+        public override string IconClass => "fa fa-heart";
+
+        public override Dictionary<AchievementLevel, int> LevelThresholds => new Dictionary<AchievementLevel, int>
         {
             {AchievementLevel.Bronze, 10},
             {AchievementLevel.Silver, 20},
             {AchievementLevel.Gold, 30}
         };
 
-        public AchievementAwarded IsAwardedForThisPlayer(int playerId, IDataContext dataContext)
+        public override AchievementAwarded IsAwardedForThisPlayer(int playerId)
         {
             var result = new AchievementAwarded
             {
                 AchievementId = Id
             };
 
-            var playerHasAWin = dataContext.GetQueryable<PlayerGameResult>().Any(x => x.PlayerId == 1 && x.GameRank == 1);
+            var playerHasAWin = DataContext.GetQueryable<PlayerGameResult>().Any(x => x.PlayerId == 1 && x.GameRank == 1);
 
             if (playerHasAWin)
             {
@@ -37,7 +46,7 @@ namespace BusinessLogic.Logic.Achievements
 
             //TODO how to combine this into a single query with the previous query?
             var numberOfGamesWithoutWinning =
-                dataContext
+                DataContext
                     .GetQueryable<PlayerGameResult>()
                     .Count(y => y.PlayerId == playerId);
 
@@ -46,10 +55,7 @@ namespace BusinessLogic.Logic.Achievements
                 return result;
             }
 
-            result.LevelAwarded =
-                LevelThresholds.OrderByDescending(l => l.Value)
-                    .FirstOrDefault(l => l.Value <= numberOfGamesWithoutWinning)
-                    .Key;
+            result.LevelAwarded = GetLevelAwarded(numberOfGamesWithoutWinning);
             return result;
         }
     }

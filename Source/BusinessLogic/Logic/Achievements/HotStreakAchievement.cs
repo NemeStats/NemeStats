@@ -7,40 +7,48 @@ using BusinessLogic.Models.Achievements;
 
 namespace BusinessLogic.Logic.Achievements
 {
-    public class HotStreakAchievement : IAchievement
+    public class HotStreakAchievement : BaseAchievement
     {
-        public AchievementId Id => AchievementId.HotStreak;
-        public AchievementGroup Group => AchievementGroup.Game;
-        public string Name => "Hot Streak";
-        public string Description => "Win many games consecutively";
-        public string IconClass => "fa fa-fire";
+        private readonly EntityFrameworkPlayerRepository _entityFrameworkPlayerRepository;
 
-        public Dictionary<AchievementLevel, int> LevelThresholds => new Dictionary<AchievementLevel, int>
+        public HotStreakAchievement(IDataContext dataContext, EntityFrameworkPlayerRepository entityFrameworkPlayerRepository) : base(dataContext)
+        {
+            _entityFrameworkPlayerRepository = entityFrameworkPlayerRepository;
+        }
+
+        public override AchievementId Id => AchievementId.HotStreak;
+
+        public override AchievementGroup Group => AchievementGroup.Game;
+
+        public override string Name => "Hot Streak";
+
+        public override string Description => "Win many games consecutively";
+
+        public override string IconClass => "fa fa-fire";
+
+        public override Dictionary<AchievementLevel, int> LevelThresholds => new Dictionary<AchievementLevel, int>
         {
             {AchievementLevel.Bronze, 5},
             {AchievementLevel.Silver, 9},
             {AchievementLevel.Gold, 15}
         };
 
-        public AchievementAwarded IsAwardedForThisPlayer(int playerId, IDataContext dataContext)
+        public override AchievementAwarded IsAwardedForThisPlayer(int playerId)
         {
-            var playerRepository = new EntityFrameworkPlayerRepository(dataContext);
+            
             var result = new AchievementAwarded
             {
                 AchievementId = Id
             };
 
-            var longestWinStreak = playerRepository.GetLongestWinningStreak(playerId);
+            var longestWinStreak = _entityFrameworkPlayerRepository.GetLongestWinningStreak(playerId);
 
             if (longestWinStreak < LevelThresholds[AchievementLevel.Bronze])
             {
                 return result;
             }
 
-            result.LevelAwarded =
-                LevelThresholds.OrderByDescending(l => l.Value)
-                    .FirstOrDefault(l => l.Value <= longestWinStreak)
-                    .Key;
+            result.LevelAwarded = GetLevelAwarded(longestWinStreak);
             return result;
         }
     }

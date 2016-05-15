@@ -6,22 +6,32 @@ using BusinessLogic.Models.Achievements;
 
 namespace BusinessLogic.Logic.Achievements
 {
-    public class BusyBeeAchievement : IAchievement
-    {
-        public AchievementId Id => AchievementId.BusyBee;
-        public AchievementGroup Group => AchievementGroup.Game;
-        public string Name => "Busy Bee";
-        public string Description => "Play lots of games";
-        public string IconClass => "fa fa-forumbee";
 
-        public Dictionary<AchievementLevel, int> LevelThresholds => new Dictionary<AchievementLevel, int>
+
+    public class BusyBeeAchievement : BaseAchievement
+    {
+        public BusyBeeAchievement(IDataContext dataContext) : base(dataContext)
+        {
+        }
+
+        public override AchievementId Id => AchievementId.BusyBee;
+
+        public override AchievementGroup Group => AchievementGroup.Game;
+
+        public override string Name => "Busy Bee";
+
+        public override string Description => "Play lots of games";
+
+        public override string IconClass => "fa fa-forumbee";
+
+        public override Dictionary<AchievementLevel, int> LevelThresholds => new Dictionary<AchievementLevel, int>
         {
             {AchievementLevel.Bronze, 20},
             {AchievementLevel.Silver, 80},
             {AchievementLevel.Gold, 300}
         };
 
-        public AchievementAwarded IsAwardedForThisPlayer(int playerId, IDataContext dataContext)
+        public override AchievementAwarded IsAwardedForThisPlayer(int playerId)
         {
             var result = new AchievementAwarded
             {
@@ -29,7 +39,7 @@ namespace BusinessLogic.Logic.Achievements
             };
 
             var totalGamesPlayed =
-                dataContext
+                DataContext
                     .GetQueryable<PlayerGameResult>()
                     .Count(pgr => pgr.PlayerId == playerId);
 
@@ -38,10 +48,7 @@ namespace BusinessLogic.Logic.Achievements
                 return result;
             }
 
-            result.LevelAwarded =
-                LevelThresholds.OrderByDescending(l => l.Value)
-                    .FirstOrDefault(l => l.Value <= totalGamesPlayed)
-                    .Key;
+            result.LevelAwarded = GetLevelAwarded(totalGamesPlayed);
             return result;
         }
     }

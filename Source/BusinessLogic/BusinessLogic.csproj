@@ -214,6 +214,7 @@
     <Compile Include="Jobs\BoardGameGeekCleanUpService\LinkOrphanGamesResult.cs" />
     <Compile Include="Jobs\BoardGameGeekCleanUpService\BoardGameGeekBatchUpdateService.cs" />
     <Compile Include="Logic\Achievements\AchievementAwarded.cs" />
+    <Compile Include="Logic\Achievements\BaseAchievement.cs" />
     <Compile Include="Logic\Achievements\BusyBeeAchievement.cs" />
     <Compile Include="Logic\Achievements\ChampionAchievement.cs" />
     <Compile Include="Logic\Achievements\DiversifiedAchievement.cs" />
