@@ -16,9 +16,6 @@ namespace BusinessLogic.Migrations
                     })
                 .PrimaryKey(t => t.Id);
 
-            Sql("UPDATE GameDefinition SET BoardGameGeekObjectId = NULL WHERE BoardGameGeekObjectId = 0");
-
-            RenameColumn("dbo.GameDefinition", "BoardGameGeekObjectId", "BoardGameGeekGameDefinitionId");
             CreateIndex("dbo.GameDefinition", "BoardGameGeekGameDefinitionId");
             
             Sql(@"WITH BGG_CTE (Name, BoardGameGeekGameDefinitionId, ThumbnailImageUrl)
