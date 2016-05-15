@@ -214,11 +214,10 @@
     <Compile Include="Jobs\BoardGameGeekCleanUpService\LinkOrphanGamesResult.cs" />
     <Compile Include="Jobs\BoardGameGeekCleanUpService\BoardGameGeekBatchUpdateService.cs" />
     <Compile Include="Logic\Achievements\AchievementAwarded.cs" />
-    <Compile Include="Logic\Achievements\AchievementAwarder.cs" />
+    <Compile Include="Logic\Achievements\BusyBeeAchievement.cs" />
     <Compile Include="Logic\Achievements\ChampionAchievement.cs" />
     <Compile Include="Logic\Achievements\DiversifiedAchievement.cs" />
     <Compile Include="Logic\Achievements\IAchievement.cs" />
-    <Compile Include="Logic\Achievements\IAchievementAwarder.cs" />
     <Compile Include="Logic\BoardGameGeek\BoardGameGeekGameDefinitionCreator.cs" />
     <Compile Include="Logic\BoardGameGeek\BoardGameGeekGamesImporter.cs" />
     <Compile Include="Logic\BoardGameGeek\BoardGameGeekUrlBuilder.cs" />
