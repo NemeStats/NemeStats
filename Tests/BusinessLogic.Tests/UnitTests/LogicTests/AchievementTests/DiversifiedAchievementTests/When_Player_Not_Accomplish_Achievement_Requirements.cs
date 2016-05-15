@@ -1,17 +1,17 @@
 using BusinessLogic.Models.Achievements;
 using NUnit.Framework;
 
-namespace BusinessLogic.Tests.UnitTests.LogicTests.AchievementTests.ChampionAchievementTests
+namespace BusinessLogic.Tests.UnitTests.LogicTests.AchievementTests.DiversifiedAchievementTests
 {
     [TestFixture]
-    public class When_Player_Not_Acomplish_Achievement_Requirements : Base_ChampionAchievementTest
+    public class When_Player_Not_Accomplish_Achievement_Requirements : Base_DiversifiedAchievementTests
     {
         [SetUp]
         public override void SetUp()
         {
             base.SetUp();
             
-            this.InsertChampionedGames(Achievement.LevelThresholds[AchievementLevel.Bronze], OtherPlayerId);
+            this.InsertPlayedGames(Achievement.LevelThresholds[AchievementLevel.Bronze], OtherPlayerId);
         }
 
         [Test]

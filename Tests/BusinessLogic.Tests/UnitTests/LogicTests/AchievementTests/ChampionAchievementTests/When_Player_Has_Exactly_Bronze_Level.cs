@@ -1,8 +1,10 @@
 ﻿using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BusinessLogic.Models;
 using BusinessLogic.Models.Achievements;
 using NUnit.Framework;
+using Rhino.Mocks;
 
 namespace BusinessLogic.Tests.UnitTests.LogicTests.AchievementTests.ChampionAchievementTests
 {
@@ -15,6 +17,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.AchievementTests.ChampionAchi
             base.SetUp();
             this.InsertChampionedGames(Achievement.LevelThresholds[AchievementLevel.Bronze],this.PlayerId);
             this.InsertChampionedGames(Achievement.LevelThresholds[AchievementLevel.Bronze], OtherPlayerId);
+            DataContext.Stub(s => s.GetQueryable<Champion>()).Return(ChampionedGames.AsQueryable());
         }
 
         [Test]

@@ -24,14 +24,14 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.AchievementTests.ChampionAchi
             Achievement = AchievementFactory.GetAchievement<ChampionAchievement>();
             
             DataContext = MockRepository.GenerateStub<IDataContext>();
-            DataContext.Stub(s => s.GetQueryable<Champion>()).Return(ChampionedGames.AsQueryable());
         }
 
         public void InsertChampionedGames(int champions, int playerId)
         {
+            int gameDefinitionId = 1;
             for (var i = 0; i < champions; i++)
             {
-                ChampionedGames.Add(new Champion() { PlayerId = playerId, GameDefinitionId = new Random().Next() });
+                ChampionedGames.Add(new Champion() { PlayerId = playerId, GameDefinitionId = gameDefinitionId++ });
             }
         }
     }
