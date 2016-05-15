@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using BusinessLogic.DataAccess;
 using BusinessLogic.Logic.Achievements;
 using BusinessLogic.Models;
@@ -14,7 +11,7 @@ using StructureMap.AutoMocking;
 namespace BusinessLogic.Tests.UnitTests.LogicTests.AchievementTests
 {
     [TestFixture]
-    public class BusyBeeTests
+    public class BusyBeeAchievementTests
     {
         private RhinoAutoMocker<BusyBeeAchievement> _autoMocker;
         private readonly int _playerId = 1;

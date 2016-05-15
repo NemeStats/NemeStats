@@ -4,7 +4,8 @@
     {
         Diversified = 1,
         Champion = 2,
-        BusyBee = 3
+        BusyBee = 3,
+        SocialButterfly = 4
     }
 
     public enum AchievementGroup

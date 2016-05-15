@@ -208,7 +208,7 @@
     <Compile Include="UnitTests\FacadesTests\TopGamingGroupsRetrieverTests.cs" />
     <Compile Include="UnitTests\JobsTests\BoardGameGeekBatchUpdateService\LinkOrphanGamesTests\LinkOrphanGamesJobTests.cs" />
     <Compile Include="UnitTests\JobsTests\BoardGameGeekBatchUpdateService\RefreshAllBoardGameGeekDataTests.cs" />
-    <Compile Include="UnitTests\LogicTests\AchievementTests\BusyBeeTests.cs" />
+    <Compile Include="UnitTests\LogicTests\AchievementTests\BusyBeeAchievementTests.cs" />
     <Compile Include="UnitTests\LogicTests\AchievementTests\DiversifiedAchievementTests\Base_DiversifiedAchievementTests.cs" />
     <Compile Include="UnitTests\LogicTests\AchievementTests\ChampionAchievementTests\Base_ChampionAchievementTest.cs" />
     <Compile Include="UnitTests\LogicTests\AchievementTests\ChampionAchievementTests\When_Player_Has_Exactly_Bronze_Level.cs" />
@@ -223,6 +223,7 @@
     <Compile Include="UnitTests\LogicTests\AchievementTests\DiversifiedAchievementTests\When_Player_Has_Not_Enought_For_Gold_Level.cs" />
     <Compile Include="UnitTests\LogicTests\AchievementTests\DiversifiedAchievementTests\When_Player_Has_Not_Enought_For_Silver_Level.cs" />
     <Compile Include="UnitTests\LogicTests\AchievementTests\DiversifiedAchievementTests\When_Player_Not_Accomplish_Achievement_Requirements.cs" />
+    <Compile Include="UnitTests\LogicTests\AchievementTests\SocialButterflyAchievementTests.cs" />
     <Compile Include="UnitTests\LogicTests\BoardGameGeekTests\BoardGameGeekGamesImporterTests\BoardGameGeekGamesImporterTests.cs" />
     <Compile Include="UnitTests\LogicTests\ChampionsTests\ChampionRecalculatorTests\RecalculateAllChampionsTests.cs" />
     <Compile Include="UnitTests\LogicTests\ChampionsTests\ChampionRecalculatorTests\RecalculateChampionTests.cs" />
