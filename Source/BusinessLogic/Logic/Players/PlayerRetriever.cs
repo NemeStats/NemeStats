@@ -118,11 +118,22 @@ namespace BusinessLogic.Logic.Players
 
         private void PopulateAchivements(List<PlayerWithNemesis> playersWithNemesis)
         {
-            foreach (var player in playersWithNemesis)
+            var playerAchievements = dataContext.GetQueryable<PlayerAchievement>();
+            if (playerAchievements != null)
             {
-                player.AchievementsPerLevel.Add(AchievementLevel.Bronze, dataContext.GetQueryable<PlayerAchievement>().Count(pa=>pa.PlayerId == player.PlayerId && pa.AchievementLevel == AchievementLevel.Bronze));
-                player.AchievementsPerLevel.Add(AchievementLevel.Silver, dataContext.GetQueryable<PlayerAchievement>().Count(pa=>pa.PlayerId == player.PlayerId && pa.AchievementLevel == AchievementLevel.Silver));
-                player.AchievementsPerLevel.Add(AchievementLevel.Gold, dataContext.GetQueryable<PlayerAchievement>().Count(pa=>pa.PlayerId == player.PlayerId && pa.AchievementLevel == AchievementLevel.Gold));
+
+                foreach (var player in playersWithNemesis)
+                {
+                    player.AchievementsPerLevel.Add(AchievementLevel.Bronze,
+                        playerAchievements.Count(
+                            pa => pa.PlayerId == player.PlayerId && pa.AchievementLevel == AchievementLevel.Bronze));
+                    player.AchievementsPerLevel.Add(AchievementLevel.Silver,
+                        playerAchievements.Count(
+                            pa => pa.PlayerId == player.PlayerId && pa.AchievementLevel == AchievementLevel.Silver));
+                    player.AchievementsPerLevel.Add(AchievementLevel.Gold,
+                        playerAchievements.Count(
+                            pa => pa.PlayerId == player.PlayerId && pa.AchievementLevel == AchievementLevel.Gold));
+                }
             }
         }
 
@@ -196,7 +207,7 @@ namespace BusinessLogic.Logic.Players
                 FormerChampionedGames = formerChampionedGames,
                 LongestWinningStreak = longestWinningStreak,
                 NemePointsSummary = playerStatistics.NemePointsSummary,
-                Achievements = returnPlayer.PlayerAchievements.ToList()
+                Achievements = returnPlayer.PlayerAchievements?.ToList() ?? new List<PlayerAchievement>()
             };
 
             return playerDetails;

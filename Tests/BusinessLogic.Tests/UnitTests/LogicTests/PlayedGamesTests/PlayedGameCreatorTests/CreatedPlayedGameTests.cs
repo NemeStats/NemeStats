@@ -21,7 +21,6 @@ using System.Linq;
 using BusinessLogic.DataAccess;
 using BusinessLogic.DataAccess.Security;
 using BusinessLogic.Events;
-using BusinessLogic.Events.HandlerFactory;
 using BusinessLogic.Events.Interfaces;
 using BusinessLogic.EventTracking;
 using BusinessLogic.Logic;
@@ -71,6 +70,10 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameCr
                 GamingGroupId = GAMING_GROUP_ID
             };
             autoMocker.Get<IDataContext>().Expect(mock => mock.FindById<Player>(Arg<int>.Is.Anything)).Return(existingPlayerWithMatchingGamingGroup);
+            autoMocker.Get<IDataContext>()
+                .Stub(s=>s.Save(Arg<PlayedGame>.Is.Anything,Arg<ApplicationUser>.Is.Anything))
+                .Return(null)
+                .WhenCalled(a => a.ReturnValue = a.Arguments.First());
         }
 
         [Test]
