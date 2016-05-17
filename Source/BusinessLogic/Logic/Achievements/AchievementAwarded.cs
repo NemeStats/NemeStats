@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Reflection;
 using BusinessLogic.Models.Achievements;
 
 namespace BusinessLogic.Logic.Achievements
@@ -13,5 +14,7 @@ namespace BusinessLogic.Logic.Achievements
         public AchievementLevel? LevelAwarded { get; set; }
         public AchievementId AchievementId { get; set; }
         public List<int> RelatedEntities { get; set; }
+
+        public int PlayerProgress { get; set; }
     }
 }

@@ -1,0 +1,121 @@
+﻿@import "nemestats-variables.scss";
+
+$bronze-border-color: darken($bronze-achievement-color,15%);
+$silver-border-color: darken($silver-achievement-color,15%);
+$gold-border-color: darken($gold-achievement-color,15%);
+
+.achievements {
+    display: inline-block;
+}
+
+.achievement-list {
+    display: inline-block;
+    padding: 40px;
+
+    .achievement {
+        margin-right: 10px;
+    }
+}
+
+.achievement {
+    position: relative;
+    top: -1px;
+    display: inline-block;
+    text-align: center;
+    border-radius: 50%;
+
+
+    &.bronze {
+        background-color: $bronze-border-color;
+
+        .circle {
+            background-color: $bronze-achievement-color;
+        }
+
+        .content {
+            color: darken($bronze-achievement-color,35%);
+            font-weight: bold;
+        }
+    }
+
+    &.silver {
+        background-color: $silver-border-color;
+
+        .circle {
+            background-color: $silver-achievement-color;
+        }
+
+        .content {
+            color: darken($silver-achievement-color,35%);
+            font-weight: bold;
+        }
+    }
+
+    &.gold {
+        background-color: $gold-border-color;
+
+        .circle {
+            background-color: $gold-achievement-color;
+        }
+
+        .content {
+            color: darken($gold-achievement-color,15%);
+            font-weight: bold;
+        }
+    }
+
+    .circle {
+        width: 20px;
+        height: 20px;
+        margin: 3px;
+        text-align: center;
+        display: inline-block;
+        border-radius: 50%;
+    }
+
+    &.big {
+        .circle {
+            width: 65px;
+            height: 65px;
+            margin: 5px;
+        }
+
+        .content {
+            font-size: 40px;
+
+            > span {
+                line-height: 67px;
+            }
+        }
+    }
+}
+
+
+.playerachievement {
+    ul {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    .progress {
+        height: 25px;
+        margin-top: 20px;
+
+        .progress-bar {
+            min-width: 3em;
+            line-height: 25px;
+
+            &.bronze {
+                background-color: $bronze-border-color;
+            }
+
+            &.silver {
+                background-color: $silver-border-color;
+            }
+
+            &.gold {
+                background-color: $gold-border-color;
+            }
+        }
+    }
+}

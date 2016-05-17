@@ -17,7 +17,8 @@ namespace UI.Transformations
                 LevelThresholds = achievement.LevelThresholds,
                 Name = achievement.Name,
                 Description = achievement.Description,
-                IconClass = achievement.IconClass
+                IconClass = achievement.IconClass,
+                AchievementId = achievement.Id,
             };
 
         }

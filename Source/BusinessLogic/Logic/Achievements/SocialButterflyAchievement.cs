@@ -44,6 +44,8 @@ namespace BusinessLogic.Logic.Achievements
                     .Distinct()
                     .Count();
 
+            result.PlayerProgress = totalPlayersPlayedWith;
+
             if (totalPlayersPlayedWith < LevelThresholds[AchievementLevel.Bronze])
             {
                 return result;

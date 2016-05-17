@@ -23,7 +23,12 @@ namespace UI.Transformations
             {
                 AchievementLevel = playerAchievement.AchievementLevel,
                 Achievement = _achievementViewModelBuilder.Build(achievement),
-                RelatedEntities = playerAchievement.RelatedEntities
+                RelatedEntities = playerAchievement.RelatedEntities,
+                PlayerId = playerAchievement.PlayerId,
+                PlayerName = playerAchievement.Player.Name,
+                DateCreated = playerAchievement.DateCreated,
+                LastUpdatedDate = playerAchievement.LastUpdatedDate,
+                PlayerProgress = achievement.IsAwardedForThisPlayer(playerAchievement.PlayerId).PlayerProgress
             };
         }
 

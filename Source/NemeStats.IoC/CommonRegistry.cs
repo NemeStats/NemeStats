@@ -36,6 +36,7 @@ using BusinessLogic.Logic.GameDefinitions;
 using BusinessLogic.Logic.GamingGroups;
 using BusinessLogic.Logic.Nemeses;
 using BusinessLogic.Logic.PlayedGames;
+using BusinessLogic.Logic.PlayerAchievements;
 using BusinessLogic.Logic.Players;
 using BusinessLogic.Logic.Points;
 using BusinessLogic.Logic.Users;
@@ -175,6 +176,7 @@ namespace NemeStats.IoC
             For<ITopGamingGroupsRetriever>().Use<TopGamingGroupsRetriever>();
             For<ITopPlayersRetriever>().Use<TopPlayersRetriever>();
             For<ITrendingGamesRetriever>().Use<TrendingGamesRetriever>();
+            For<IPlayerAchievementRetriever>().Use<PlayerAchievementRetriever>();
 
 
             For<ICacheService>().Use<CacheService>();

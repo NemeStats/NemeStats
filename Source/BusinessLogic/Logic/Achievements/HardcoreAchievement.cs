@@ -47,6 +47,7 @@ namespace BusinessLogic.Logic.Achievements
                     .Distinct()
                     .Count();
 
+            result.PlayerProgress = totalDistinctHardcoreGamesThatTakeALongTime;
             if (totalDistinctHardcoreGamesThatTakeALongTime < LevelThresholds[AchievementLevel.Bronze])
             {
                 return result;

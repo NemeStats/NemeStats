@@ -39,10 +39,11 @@ namespace UI.HtmlHelpers
 
         }
 
-        public static MvcHtmlString RenderPlayerAchievement(this HtmlHelper htmlHelper, PlayerAchievementViewModel playerAchievement, string tooltipPosition = "top")
+        public static MvcHtmlString RenderPlayerAchievement(this HtmlHelper htmlHelper, UrlHelper url, PlayerAchievementViewModel playerAchievement, string tooltipPosition = "top")
         {
+            var achievementDetailUrl = url.Action(MVC.Achievement.Details(playerAchievement.Achievement.AchievementId, playerAchievement.PlayerId));
             var html =
-                $"<a href=\"#\">" +
+                $"<a href=\"{achievementDetailUrl}\">" +
                     $"<span class=\"achievement big {playerAchievement.AchievementLevel.ToString().ToLower()}\" data-toggle=\"popover\" data-placement=\"{tooltipPosition}\" data-content=\"{playerAchievement.Achievement.Name}\" >" +
                         $"<span class=\"circle\">" +
                             $"<span class=\"content\">" +
@@ -50,7 +51,7 @@ namespace UI.HtmlHelpers
                                 $"</span>" +
                             $"</span>" +
                         $"</span>" +
-                    $"</span>"+
+                    $"</span>" +
                 $"</a>";
 
             return new MvcHtmlString(html);
@@ -61,14 +62,14 @@ namespace UI.HtmlHelpers
             if (htmlHelper.ViewContext.TempData.ContainsKey(key))
             {
                 var message = htmlHelper.ViewContext.TempData[key];
-                var kind = htmlHelper.ViewContext.TempData[key+"_kind"];
+                var kind = htmlHelper.ViewContext.TempData[key + "_kind"];
                 string html = $"<div class='alert alert-{kind} voffset4'>" +
                               $"<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>" +
                               $"{message}" +
                               $"</div>";
                 return new HtmlString(html);
             }
-            return  new HtmlString("");
+            return new HtmlString("");
         }
     }
 }

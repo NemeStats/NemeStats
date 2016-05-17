@@ -43,6 +43,8 @@ namespace BusinessLogic.Logic.Achievements
                         && !x.PlayerGameResults.Any(y => y.PlayerId != playerId && y.GameRank == 1)
                         && x.NumberOfPlayers >= 10);
 
+            result.PlayerProgress = numberOfGamesAsSoleWinner;
+
             if (numberOfGamesAsSoleWinner < LevelThresholds[AchievementLevel.Bronze])
             {
                 return result;

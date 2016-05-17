@@ -42,6 +42,7 @@ namespace BusinessLogic.Logic.Achievements
             };
 
             var longestWinStreak = _entityFrameworkPlayerRepository.GetLongestWinningStreak(playerId);
+            result.PlayerProgress = longestWinStreak;
 
             if (longestWinStreak < LevelThresholds[AchievementLevel.Bronze])
             {

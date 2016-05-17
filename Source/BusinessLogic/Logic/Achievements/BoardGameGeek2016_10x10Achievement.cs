@@ -44,6 +44,7 @@ namespace BusinessLogic.Logic.Achievements
                     .Select(group => new { group.Key, Count = group.Count()})
                     .Count(x => x.Count >= 10);
 
+            result.PlayerProgress = numberOfGamesWith10PlaysIn2016;
             if (numberOfGamesWith10PlaysIn2016 == LevelThresholds[AchievementLevel.Gold])
             {
                 result.LevelAwarded = AchievementLevel.Gold;

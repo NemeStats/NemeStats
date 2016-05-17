@@ -38,9 +38,13 @@ namespace BusinessLogic.Logic.Achievements
 
             var championedGames = DataContext.GetQueryable<Champion>().Where(c=>c.PlayerId == playerId).Select(c=>c.GameDefinitionId).Distinct();
 
+
+
             if (championedGames.Any())
             {
-                result.LevelAwarded = GetLevelAwarded(championedGames.Count());
+                var count = championedGames.Count();
+                result.LevelAwarded = GetLevelAwarded(count);
+                result.PlayerProgress = count;
                 result.RelatedEntities = championedGames.ToList();
             }
             

@@ -719,58 +719,6 @@ footer {
 .game-player-statistics th {
   text-align: center; }
 
-.achievements {
-  display: inline-block; }
-
-.achievement-list {
-  display: inline-block;
-  padding: 40px; }
-  .achievement-list .achievement {
-    margin-right: 10px; }
-
-.achievement {
-  position: relative;
-  top: -1px;
-  display: inline-block;
-  text-align: center;
-  border-radius: 50%; }
-  .achievement.bronze {
-    background-color: #efb340; }
-    .achievement.bronze .circle {
-      background-color: #F5CF87; }
-    .achievement.bronze .content {
-      color: #ba7f10;
-      font-weight: bold; }
-  .achievement.silver {
-    background-color: #bcbcb5; }
-    .achievement.silver .circle {
-      background-color: #E0E0DD; }
-    .achievement.silver .content {
-      color: #8b8b80;
-      font-weight: bold; }
-  .achievement.gold {
-    background-color: #dbc000; }
-    .achievement.gold .circle {
-      background-color: #FFDF00; }
-    .achievement.gold .content {
-      color: #b39c00;
-      font-weight: bold; }
-  .achievement .circle {
-    width: 20px;
-    height: 20px;
-    margin: 3px;
-    text-align: center;
-    display: inline-block;
-    border-radius: 50%; }
-  .achievement.big .circle {
-    width: 85px;
-    height: 85px;
-    margin: 7px; }
-  .achievement.big .content {
-    font-size: 50px; }
-    .achievement.big .content > span {
-      line-height: 85px; }
-
 /*$header-background-color: #2C3E50;*/
 .badges-col {
   text-align: center; }
@@ -909,5 +857,75 @@ footer {
 
 .game-result .rank .value {
   font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif !important; }
+
+/*$header-background-color: #2C3E50;*/
+.achievements {
+  display: inline-block; }
+
+.achievement-list {
+  display: inline-block;
+  padding: 40px; }
+  .achievement-list .achievement {
+    margin-right: 10px; }
+
+.achievement {
+  position: relative;
+  top: -1px;
+  display: inline-block;
+  text-align: center;
+  border-radius: 50%; }
+  .achievement.bronze {
+    background-color: #efb340; }
+    .achievement.bronze .circle {
+      background-color: #F5CF87; }
+    .achievement.bronze .content {
+      color: #ba7f10;
+      font-weight: bold; }
+  .achievement.silver {
+    background-color: #bcbcb5; }
+    .achievement.silver .circle {
+      background-color: #E0E0DD; }
+    .achievement.silver .content {
+      color: #8b8b80;
+      font-weight: bold; }
+  .achievement.gold {
+    background-color: #b39c00; }
+    .achievement.gold .circle {
+      background-color: #FFDF00; }
+    .achievement.gold .content {
+      color: #b39c00;
+      font-weight: bold; }
+  .achievement .circle {
+    width: 20px;
+    height: 20px;
+    margin: 3px;
+    text-align: center;
+    display: inline-block;
+    border-radius: 50%; }
+  .achievement.big .circle {
+    width: 65px;
+    height: 65px;
+    margin: 5px; }
+  .achievement.big .content {
+    font-size: 40px; }
+    .achievement.big .content > span {
+      line-height: 67px; }
+
+.playerachievement ul {
+  text-align: center;
+  margin-top: 20px; }
+
+.playerachievement .progress {
+  height: 25px;
+  margin-top: 20px; }
+  .playerachievement .progress .progress-bar {
+    min-width: 2em;
+    line-height: 25px; }
+    .playerachievement .progress .progress-bar.bronze {
+      background-color: #efb340; }
+    .playerachievement .progress .progress-bar.silver {
+      background-color: #bcbcb5; }
+    .playerachievement .progress .progress-bar.gold {
+      background-color: #b39c00; }
 
 /*# sourceMappingURL=nemestats.css.map */

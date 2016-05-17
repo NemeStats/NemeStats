@@ -45,8 +45,9 @@ namespace BusinessLogic.Logic.Achievements
 
             if (differentPlayedGames.Any())
             {
-
-                result.LevelAwarded = GetLevelAwarded(differentPlayedGames.Count());
+                var count = differentPlayedGames.Count();
+                result.PlayerProgress = count;
+                result.LevelAwarded = GetLevelAwarded(count);
                 result.RelatedEntities = differentPlayedGames.ToList();
             }
             return result;

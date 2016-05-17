@@ -43,6 +43,8 @@ namespace BusinessLogic.Logic.Achievements
                     .GetQueryable<PlayerGameResult>()
                     .Count(pgr => pgr.PlayerId == playerId);
 
+            result.PlayerProgress = totalGamesPlayed;
+
             if (totalGamesPlayed < LevelThresholds[AchievementLevel.Bronze])
             {
                 return result;

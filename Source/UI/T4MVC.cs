@@ -30,6 +30,7 @@ public static partial class MVC
     static readonly ApiClass s_Api = new ApiClass();
     public static ApiClass Api { get { return s_Api; } }
     public static UI.Controllers.AccountController Account = new UI.Controllers.T4MVC_AccountController();
+    public static UI.Controllers.AchievementController Achievement = new UI.Controllers.T4MVC_AchievementController();
     public static UI.Controllers.GameDefinitionController GameDefinition = new UI.Controllers.T4MVC_GameDefinitionController();
     public static UI.Controllers.GamingGroupController GamingGroup = new UI.Controllers.T4MVC_GamingGroupController();
     public static UI.Controllers.Helpers.BaseController Base = new UI.Controllers.Helpers.T4MVC_BaseController();
@@ -200,6 +201,7 @@ namespace Links
             public static readonly string toEditBoxPlugin_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/toEditBoxPlugin.min.js") ? Url("toEditBoxPlugin.min.js") : Url("toEditBoxPlugin.js");
         }
     
+        public static readonly string pnotify_custom_min_js = Url("pnotify.custom.min.js");
         public static readonly string readmore_min_js = Url("readmore.min.js");
         public static readonly string respond_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/respond.min.js") ? Url("respond.min.js") : Url("respond.js");
         public static readonly string respond_min_js = Url("respond.min.js");
@@ -238,7 +240,7 @@ namespace Links
                 public static readonly string AppStore_png = Url("AppStore.png");
                 public static readonly string Banner_jpg = Url("Banner.jpg");
                 public static readonly string BGStats_png = Url("BGStats.png");
-                public static readonly string Geek_Head_jpg = Url("Geek_Head.jpg");
+                public static readonly string boardgamegeek_png = Url("boardgamegeek.png");
             }
         
             public static readonly string NemeStats_White_png = Url("NemeStats-White.png");
@@ -424,6 +426,7 @@ namespace Links
                 public const string moment_min_js = "~/Scripts/moment.min.js"; 
                 public const string namespace_1_0_0_js = "~/Scripts/namespace-1.0.0.js"; 
                 public const string namespace_min_1_0_0_js = "~/Scripts/namespace.min-1.0.0.js"; 
+                public const string pnotify_custom_min_js = "~/Scripts/pnotify.custom.min.js"; 
                 public const string readmore_min_js = "~/Scripts/readmore.min.js"; 
                 public const string respond_js = "~/Scripts/respond.js"; 
                 public const string respond_min_js = "~/Scripts/respond.min.js"; 

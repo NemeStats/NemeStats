@@ -50,6 +50,8 @@ namespace BusinessLogic.Logic.Achievements
                     .GetQueryable<PlayerGameResult>()
                     .Count(y => y.PlayerId == playerId);
 
+            result.PlayerProgress = numberOfGamesWithoutWinning;
+
             if (numberOfGamesWithoutWinning < LevelThresholds[AchievementLevel.Bronze])
             {
                 return result;

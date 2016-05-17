@@ -13,7 +13,6 @@ namespace BusinessLogic.Logic.Achievements
         string IconClass { get; }
 
         Dictionary<AchievementLevel, int> LevelThresholds { get; }
-
         AchievementAwarded IsAwardedForThisPlayer(int playerId);
     }
 }

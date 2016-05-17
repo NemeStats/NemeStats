@@ -6,6 +6,7 @@ namespace UI.Models.Achievements
 {
     public class AchievementViewModel
     {
+        public AchievementId AchievementId { get; set; }
         public Dictionary<AchievementLevel, int> LevelThresholds { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
@@ -19,6 +20,8 @@ namespace UI.Models.Achievements
         public DateTime DateCreated { get; set; }
         public DateTime LastUpdatedDate { get; set; }
         public List<int> RelatedEntities { get; set; }
-
+        public int PlayerId { get; set; }
+        public string PlayerName { get; set; }
+        public int PlayerProgress { get; set; }
     }
 }

@@ -1,0 +1,67 @@
+﻿@using BusinessLogic.Models.Achievements
+@using UI.Models.Achievements
+@model PlayerAchievementViewModel
+@{
+    ViewBag.Title = @Model.Achievement.Name + " unlocked for " + @Model.PlayerName ;
+    Layout = MVC.Shared.Views._BaseLayout;
+}
+
+
+<h2 class="page-header">@Model.Achievement.Name unlocked for <a href="@Url.Action(MVC.Player.Details(Model.PlayerId,null))">@Model.PlayerName</a> !</h2>
+<div class="panel panel-primary playerachievement">
+    <div class="panel-heading">
+        <h3>@Model.Achievement.Name</h3>
+        <div>@Model.Achievement.Description</div>
+    </div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-3">
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <span class="achievement big @Model.AchievementLevel.ToString().ToLower()">
+                            <span class="circle">
+                                <span class="content">
+                                    <span class="@Model.Achievement.IconClass"></span>
+                                </span>
+                            </span>
+                        </span>
+                    </li>
+                    <li class="list-group-item">Unlocked at: @Model.DateCreated.ToShortDateString()</li>
+                    <li class="list-group-item">Current level: @Model.AchievementLevel.ToString()</li>
+                </ul>
+            </div>
+            <div class="col-md-9">
+                @foreach (var level in Model.Achievement.LevelThresholds)
+                {
+                @PlayerProgess(level,Model.PlayerProgress)
+                }
+            </div>
+        </div>
+        <div class="row voffset4">
+            <div class="col-md-offset-1 col-md-3">
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@helper PlayerProgess(KeyValuePair<AchievementLevel, int>
+    level, int currentPlayerProgress)
+    {
+        var width = 0;
+        if (currentPlayerProgress > level.Value)
+    {
+        width = 100;
+    }
+    else
+    {
+        width = (currentPlayerProgress*100)/level.Value;
+    }
+
+    <div class="progress">
+        <div class="progress-bar @level.Key.ToString().ToLower()" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: @width.ToString()%;">
+            @currentPlayerProgress / @level.Value
+        </div>
+    </div>
+    }
