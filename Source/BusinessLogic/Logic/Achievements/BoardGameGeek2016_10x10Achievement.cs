@@ -24,8 +24,6 @@ namespace BusinessLogic.Logic.Achievements
 
         public override Dictionary<AchievementLevel, int> LevelThresholds => new Dictionary<AchievementLevel, int>
         {
-            {AchievementLevel.Bronze, 8},
-            {AchievementLevel.Silver, 9},
             {AchievementLevel.Gold, 10}
         };
 
@@ -34,7 +32,6 @@ namespace BusinessLogic.Logic.Achievements
 
         public override AchievementAwarded IsAwardedForThisPlayer(int playerId)
         {
-            throw new NotImplementedException();
             var result = new AchievementAwarded
             {
                 AchievementId = Id
@@ -47,15 +44,10 @@ namespace BusinessLogic.Logic.Achievements
                     .Select(group => new { group.Key, Count = group.Count()})
                     .Count(x => x.Count >= 10);
 
-            if (numberOfGamesWith10PlaysIn2016 < LevelThresholds[AchievementLevel.Bronze])
+            if (numberOfGamesWith10PlaysIn2016 == LevelThresholds[AchievementLevel.Gold])
             {
-                return result;
+                result.LevelAwarded = AchievementLevel.Gold;
             }
-
-            result.LevelAwarded =
-                LevelThresholds.OrderByDescending(l => l.Value)
-                    .FirstOrDefault(l => l.Value <= numberOfGamesWith10PlaysIn2016)
-                    .Key;
             return result;
         }
     }
