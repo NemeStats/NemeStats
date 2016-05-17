@@ -39,8 +39,8 @@ namespace BusinessLogic.Logic.Achievements
                 DataContext
                     .GetQueryable<PlayerGameResult>()
                     .Where(x => x.PlayerId == playerId
-                                && (((x.PlayedGame.GameDefinition.BoardGameGeekGameDefinition.MinPlayTime ?? 0
-                                        + x.PlayedGame.GameDefinition.BoardGameGeekGameDefinition.MaxPlayTime ?? 0) / 2) >= THREE_HOURS_WORTH_OF_MINUTES)
+                                && ((((x.PlayedGame.GameDefinition.BoardGameGeekGameDefinition.MinPlayTime ?? 0)
+                                        + (x.PlayedGame.GameDefinition.BoardGameGeekGameDefinition.MaxPlayTime ?? 0)) / 2) >= THREE_HOURS_WORTH_OF_MINUTES)
                                 && x.PlayedGame.GameDefinition.BoardGameGeekGameDefinition.AverageWeight
                                 >= WeightTierCalculator.BOARD_GAME_GEEK_WEIGHT_INCLUSIVE_LOWER_BOUND_FOR_HARDCORE)
                     .Select(x => x.PlayedGame.GameDefinitionId)
