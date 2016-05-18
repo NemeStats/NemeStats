@@ -1,27 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using BusinessLogic.Models.Achievements;
 
 namespace UI.Models.Achievements
 {
-    public class AchievementViewModel
+    public class PlayerAchievementViewModel : PlayerAchievementSummaryViewModel
     {
-        public AchievementId AchievementId { get; set; }
-        public Dictionary<AchievementLevel, int> LevelThresholds { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public string IconClass { get; set; }
-    }
-
-    public class PlayerAchievementViewModel
-    {
-        public AchievementViewModel Achievement { get; set; }
-        public AchievementLevel AchievementLevel { get; set; }
-        public DateTime DateCreated { get; set; }
-        public DateTime LastUpdatedDate { get; set; }
         public List<int> RelatedEntities { get; set; }
-        public int PlayerId { get; set; }
-        public string PlayerName { get; set; }
         public int PlayerProgress { get; set; }
+        
     }
 }

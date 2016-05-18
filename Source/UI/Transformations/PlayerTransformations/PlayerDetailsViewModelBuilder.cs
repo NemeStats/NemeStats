@@ -45,14 +45,14 @@ namespace UI.Transformations.PlayerTransformations
 
         private readonly IGameResultViewModelBuilder _gameResultViewModelBuilder;
         private readonly IMinionViewModelBuilder _minionViewModelBuilder;
-        private readonly PlayerAchievementToPlayerAchievementViewModelMapper _playerAchievementToPlayerAchievementViewModelMapper;
+        private readonly PlayerAchievementToPlayerAchievementSummaryViewModelMapper _playerAchievementToPlayerAchievementSummaryViewModelMapper;
 
 
-        public PlayerDetailsViewModelBuilder(IGameResultViewModelBuilder builder, IMinionViewModelBuilder minionViewModelBuilder, PlayerAchievementToPlayerAchievementViewModelMapper playerAchievementToPlayerAchievementViewModelMapper)
+        public PlayerDetailsViewModelBuilder(IGameResultViewModelBuilder builder, IMinionViewModelBuilder minionViewModelBuilder, PlayerAchievementToPlayerAchievementSummaryViewModelMapper playerAchievementToPlayerAchievementSummaryViewModelMapper)
         {
             _gameResultViewModelBuilder = builder;
             _minionViewModelBuilder = minionViewModelBuilder;
-            _playerAchievementToPlayerAchievementViewModelMapper = playerAchievementToPlayerAchievementViewModelMapper;
+            _playerAchievementToPlayerAchievementSummaryViewModelMapper = playerAchievementToPlayerAchievementSummaryViewModelMapper;
         }
 
         public PlayerDetailsViewModel Build(PlayerDetails playerDetails, string urlForMinionBragging, ApplicationUser currentUser = null)
@@ -74,7 +74,7 @@ namespace UI.Transformations.PlayerTransformations
                 WinPercentage = playerDetails.PlayerStats.WinPercentage,
                 TotalChampionedGames = playerDetails.ChampionedGames.Count,
                 LongestWinningStreak = playerDetails.LongestWinningStreak,
-                PlayerAchievements = playerDetails.Achievements?.Select(pa => _playerAchievementToPlayerAchievementViewModelMapper.Map(pa)).OrderByDescending(a=>a.AchievementLevel).ThenByDescending(a=>a.LastUpdatedDate).ToList() ?? new List<PlayerAchievementViewModel>()
+                PlayerAchievements = playerDetails.Achievements?.Select(pa => _playerAchievementToPlayerAchievementSummaryViewModelMapper.Map(pa)).OrderByDescending(a=>a.AchievementLevel).ThenByDescending(a=>a.LastUpdatedDate).ToList() ?? new List<PlayerAchievementSummaryViewModel>()
             };
 
             PopulatePlayerVersusPlayersViewModel(playerDetails, playerDetailsViewModel);

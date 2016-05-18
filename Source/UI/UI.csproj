@@ -373,7 +373,10 @@
     <Compile Include="Mappers\AchievementToAchievementViewModelMapper.cs" />
     <Compile Include="Mappers\BaseMapperService.cs" />
     <Compile Include="Mappers\IMapperService.cs" />
+    <Compile Include="Mappers\PlayerAchievementToPlayerAchievementSummaryViewModelMapper.cs" />
     <Compile Include="Mappers\PlayerAchievementToPlayerAchievementViewModelMapper.cs" />
+    <Compile Include="Models\Achievements\AchievementViewModel.cs" />
+    <Compile Include="Models\Achievements\PlayerAchievementSummaryViewModel.cs" />
     <Compile Include="Models\Achievements\PlayerAchievementViewModel.cs" />
     <Compile Include="Models\Badges\IBadgeBaseViewModel.cs" />
     <Compile Include="Models\Badges\ChampionBadgeViewModel.cs" />

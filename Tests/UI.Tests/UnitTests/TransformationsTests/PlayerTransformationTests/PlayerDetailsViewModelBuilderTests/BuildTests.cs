@@ -43,7 +43,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
     {
         private IGameResultViewModelBuilder gameResultViewModelBuilder;
         private IMinionViewModelBuilder minionViewModelBuilderMock;
-        private PlayerAchievementToPlayerAchievementViewModelMapper playerAchievementViewModelBuilderMock;
+        private PlayerAchievementToPlayerAchievementSummaryViewModelMapper playerAchievementViewModelBuilderMock;
         private PlayerDetails playerDetails;
         private PlayerDetailsViewModel playerDetailsViewModel;
         private PlayerDetailsViewModelBuilder builder;
@@ -67,7 +67,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         {
             AutomapperConfiguration.Configure();
             minionViewModelBuilderMock = MockRepository.GenerateMock<IMinionViewModelBuilder>();
-            playerAchievementViewModelBuilderMock = MockRepository.GenerateStub<PlayerAchievementToPlayerAchievementViewModelMapper>();
+            playerAchievementViewModelBuilderMock = MockRepository.GenerateStub<PlayerAchievementToPlayerAchievementSummaryViewModelMapper>();
 
             currentUser = new ApplicationUser()
             {
