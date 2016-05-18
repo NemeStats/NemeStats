@@ -21,15 +21,12 @@ using System.Linq;
 
 namespace UI.Models.GameDefinitionModels
 {
-    public class GameDefinitionSummaryViewModel : IEditableViewModel, IGamingGroupAssignedViewModel
+    public class GameDefinitionSummaryViewModel : GameDefinitionSummaryListViewModel, IEditableViewModel, IGamingGroupAssignedViewModel
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
         public string Description { get; set; }
         public int TotalNumberOfGamesPlayed { get; set; }
         public bool UserCanEdit { get; set; }
         public string GamingGroupName { get; set; }
-        public int GamingGroupId { get; set; }
         public string ChampionName { get; set; }
         public int? ChampionPlayerId { get; set; }
         public int? NumberOfWins { get; set; }
@@ -37,9 +34,6 @@ namespace UI.Models.GameDefinitionModels
         public float? WinPercentage { get; set; }
         public string PreviousChampionName { get; set; }
         public int? PreviousChampionPlayerId { get; set; }
-
-        public BoardGameGeekGameDefinitionViewModel BoardGameGeekGameDefinition { get; set; }
-
-        public bool HasBoardGameGeekDefinition => BoardGameGeekGameDefinition != null;
+        
     }
 }

@@ -372,6 +372,7 @@
     </Compile>
     <Compile Include="Mappers\AchievementToAchievementViewModelMapper.cs" />
     <Compile Include="Mappers\BaseMapperService.cs" />
+    <Compile Include="Mappers\GameDefinitionSummaryToGameDefinitionSummaryListViewModelMapper.cs" />
     <Compile Include="Mappers\IMapperService.cs" />
     <Compile Include="Mappers\PlayerAchievementToPlayerAchievementSummaryViewModelMapper.cs" />
     <Compile Include="Mappers\PlayerAchievementToPlayerAchievementViewModelMapper.cs" />
@@ -387,6 +388,7 @@
     <Compile Include="Models\GameDefinitionModels\BoardGameGeekGameDefinitionViewModel.cs" />
     <Compile Include="Models\GameDefinitionModels\CreateGameDefinitionViewModel.cs" />
     <Compile Include="Models\GameDefinitionModels\GameDefinitionEditViewModel.cs" />
+    <Compile Include="Models\GameDefinitionModels\GameDefinitionSummaryListViewModel.cs" />
     <Compile Include="Models\GameDefinitionModels\GameDefinitionSummaryViewModel.cs" />
     <Compile Include="Models\GameDefinitionModels\TrendingGameViewModel.cs" />
     <Compile Include="Models\Players\GameDefinitionPlayersSummaryViewModel.cs" />
@@ -598,6 +600,7 @@
     <Content Include="sass\nemestats\mobile.scss" />
     <Content Include="sass\imports\fonts.scss" />
     <Content Include="sass\nemestats\utils.scss" />
+    <Content Include="Scripts\Achievement\achievementDetails.js" />
     <Content Include="Scripts\d3\d3.js" />
     <Content Include="Scripts\d3\d3.min.js" />
     <Content Include="Scripts\d3\LICENSE" />

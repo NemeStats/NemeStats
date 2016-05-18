@@ -28,5 +28,6 @@ namespace BusinessLogic.Logic.GameDefinitions
         GameDefinitionSummary GetGameDefinitionDetails(int id, int numberOfPlayedGamesToRetrieve);
         IList<GameDefinitionName> GetAllGameDefinitionNames(int gamingGroupId);
         List<TrendingGame> GetTrendingGames(int maxNumberOfGames, int numberOfDaysOfTrendingGames);
+        List<GameDefinitionSummary> GetGameDefinitionSummaries(List<int> gameDefinitionIds);
     }
 }

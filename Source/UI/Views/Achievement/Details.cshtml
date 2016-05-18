@@ -10,10 +10,17 @@
 <h2 class="page-header">@Model.Achievement.Name unlocked for <a href="@Url.Action(MVC.Player.Details(Model.PlayerId,null))">@Model.PlayerName</a> !</h2>
 <div class="panel panel-primary playerachievement">
     <div class="panel-heading">
-        <h3>@Model.Achievement.Name</h3>
-        <div>@Model.Achievement.Description</div>
+        <h4>Achievement Description</h4>
     </div>
     <div class="panel-body">
+        <div class="row">
+            <div class="col-md-12">
+
+                <h2>@Model.Achievement.Name</h2>
+                <blockquote>@Model.Achievement.Description</blockquote>
+
+            </div>
+        </div>
         <div class="row">
             <div class="col-md-3">
                 <ul class="list-group">
@@ -42,16 +49,73 @@
                 </ul>
             </div>
         </div>
-        <div class="row voffset4">
-            <div class="col-md-offset-1 col-md-3">
-
-            </div>
-        </div>
-
     </div>
 </div>
+ @if (Model.RelatedGameDefintions.Any())
+        {
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <h4>Games related with this achievement <span class="badge">@Model.RelatedGameDefintions.Count</span></h4>
+    </div>
+    <div class="panel-body">
+        <div class="gameDefinitionsList flip-scroll" id="playedgameslist">
+            <table class="table">
+                <caption>
+                    <div class="input-group input-group-sm">
+                        <div class="input-group-addon"><span class="fa fa-search"></span></div>
+                        <input type="text" class="form-control search" placeholder="type game name">
+                    </div>
+                </caption>
+                <thead>
+                    <tr>
+                        <th class="bgg-link-head">
+                            <span class="hidden-md hidden-lg">
+                                Image
+                            </span>
+                        </th>
+                        <th class="name-head">
+                            <span class="sort" data-sort="name-col">Name <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
+                        </th>
+                </thead>
+                <tbody class="list">
+                    @foreach (var game in Model.RelatedGameDefintions)
+                    {
+                    <tr class="game-item">
+                        <td class="bgg-link-col">
+                            @if (game.HasBoardGameGeekDefinition)
+                            {
+                            if (!string.IsNullOrEmpty(game.BoardGameGeekGameDefinition.Thumbnail))
+                            {
+                            <a href="@Url.Action(MVC.GameDefinition.ActionNames.Details, MVC.GameDefinition.Name, new {id = game.Id})">
+                                <img class="bgg-thumbnail" src="@game.BoardGameGeekGameDefinition.Thumbnail" alt="View on BoardGameGeek.com" title="View on BoardGameGeek.com" />
+                            </a>
+                            }
+                            else
+                            {
+                            <a href="@game.BoardGameGeekGameDefinition.BoardGameGeekUri.AbsoluteUri" target="_blank;">
+                                <img src="~/Content/Images/bgg_small.png" alt="View on BoardGameGeek.com" title="View on BoardGameGeek.com" />
+                            </a>
+                            }
 
-@helper PlayerProgess(KeyValuePair<AchievementLevel, int>
+                            }
+                        </td>
+                        <td class="name-col" data-name="@game.Name">
+                            <b>
+                                @Html.ActionLink(game.Name, "Details", "GameDefinition", new {id = game.Id}, new {@class = "name"})
+                            </b>
+                        </td>
+
+                    </tr>
+                    }
+                </tbody>
+            </table>
+            <ul class="pagination"></ul>
+        </div>
+    </div>
+</div>
+    }
+
+    @helper PlayerProgess(KeyValuePair<AchievementLevel, int>
     level, int currentPlayerProgress)
     {
     var unlocked = false;
@@ -86,4 +150,16 @@
             </div>
         </div>
     </li>
+    }
+
+
+
+
+    @section Scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var achievementDetails = new window.Views.Achievement.Details();
+            achievementDetails.init();
+        });
+    </script>
     }

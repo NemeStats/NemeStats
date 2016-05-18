@@ -83,6 +83,7 @@ namespace UI
                 .Include("~/Scripts/Player/createOrUpdatePlayer.js")
                 .Include("~/Scripts/Player/playerDetails.js")
                 .Include("~/Scripts/Player/players.js")
+                .Include("~/Scripts/Achievement/achievementDetails.js")
                 .Include("~/Scripts/GameDefinition/gameDefinitionAutoComplete.js")
                 .Include("~/Scripts/GameDefinition/createGameDefinitionPartial.js")
                 .Include("~/Scripts/GameDefinition/createGameDefinition.js")

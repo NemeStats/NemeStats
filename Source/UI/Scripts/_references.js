@@ -14,6 +14,7 @@
 /// <reference path="../javascripts/bootstrap/tooltip.js" />
 /// <reference path="../javascripts/bootstrap/transition.js" />
 /// <reference path="../javascripts/bootstrap-sprockets.js" />
+/// <reference path="achievement/achievementdetails.js" />
 /// <reference path="createplayedgame/createplayedgame.js" />
 /// <reference path="d3/d3.min.js" />
 /// <reference path="d3/nv.d3.min.js" />
