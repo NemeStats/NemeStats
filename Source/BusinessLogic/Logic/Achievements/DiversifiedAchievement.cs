@@ -18,7 +18,7 @@ namespace BusinessLogic.Logic.Achievements
 
         public override string Name => "Diversified gamer";
 
-        public override string Description => "Play to different games to earn this achievement.";
+        public override string Description => "This Achievement is earned by playing lots of different Games.";
 
         public override string IconClass => "fa fa-pie-chart";
 
