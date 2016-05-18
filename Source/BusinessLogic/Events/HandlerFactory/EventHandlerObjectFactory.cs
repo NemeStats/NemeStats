@@ -31,7 +31,7 @@ namespace BusinessLogic.Events.HandlerFactory
                         .AddHandlerAssembly(typeof(IBusinessLogicEventHandler<>).Assembly)
                         .AddMessageAssembly(typeof(IBusinessLogicEvent).Assembly)));
 
-                x.For<IRollbarClient>().Use<RollbarClient>().Singleton();
+                x.For<IRollbarClient>().Use(new RollbarClient()).Singleton();
 
                 x.Scan(s =>
                 {
