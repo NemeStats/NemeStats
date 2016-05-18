@@ -374,6 +374,7 @@
     <Compile Include="Mappers\BaseMapperService.cs" />
     <Compile Include="Mappers\GameDefinitionSummaryToGameDefinitionSummaryListViewModelMapper.cs" />
     <Compile Include="Mappers\IMapperService.cs" />
+    <Compile Include="Mappers\PlayedGameQuickStatsToPlayedGameQuickStatsViewModelMapper.cs" />
     <Compile Include="Mappers\PlayerAchievementToPlayerAchievementSummaryViewModelMapper.cs" />
     <Compile Include="Mappers\PlayerAchievementToPlayerAchievementViewModelMapper.cs" />
     <Compile Include="Models\Achievements\AchievementViewModel.cs" />

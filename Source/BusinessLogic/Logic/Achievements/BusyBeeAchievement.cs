@@ -16,7 +16,7 @@ namespace BusinessLogic.Logic.Achievements
 
         public override AchievementId Id => AchievementId.BusyBee;
 
-        public override AchievementGroup Group => AchievementGroup.Game;
+        public override AchievementGroup Group => AchievementGroup.PlayedGame;
 
         public override string Name => "Busy Bee";
 
@@ -38,19 +38,21 @@ namespace BusinessLogic.Logic.Achievements
                 AchievementId = Id
             };
 
-            var totalGamesPlayed =
+            var gamesPlayed =
                 DataContext
                     .GetQueryable<PlayerGameResult>()
-                    .Count(pgr => pgr.PlayerId == playerId);
+                    .Where(pgr => pgr.PlayerId == playerId)
+                    .Select(pg=>pg.PlayedGameId);
 
-            result.PlayerProgress = totalGamesPlayed;
+            result.RelatedEntities = gamesPlayed.ToList();
+            result.PlayerProgress = gamesPlayed.Count();
 
-            if (totalGamesPlayed < LevelThresholds[AchievementLevel.Bronze])
+            if (result.PlayerProgress < LevelThresholds[AchievementLevel.Bronze])
             {
                 return result;
             }
 
-            result.LevelAwarded = GetLevelAwarded(totalGamesPlayed);
+            result.LevelAwarded = GetLevelAwarded(result.PlayerProgress);
             return result;
         }
     }

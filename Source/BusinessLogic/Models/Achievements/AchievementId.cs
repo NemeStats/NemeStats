@@ -16,6 +16,7 @@
     public enum AchievementGroup
     {
         Game = 1,
-        Player = 2
+        Player = 2,
+        PlayedGame = 3
     }
 }

@@ -1,5 +1,7 @@
 ﻿@using BusinessLogic.Models.Achievements
+@using BusinessLogic.Models.PlayedGames
 @using UI.Models.Achievements
+@using UI.Models.Players
 @model PlayerAchievementViewModel
 @{
     ViewBag.Title = @Model.Achievement.Name + " unlocked for " + @Model.PlayerName ;
@@ -53,13 +55,13 @@
 </div>
  @if (Model.RelatedGameDefintions.Any())
         {
-<div class="panel panel-primary">
+    <div class="panel panel-primary">
     <div class="panel-heading">
         <h4>Games related with this achievement <span class="badge">@Model.RelatedGameDefintions.Count</span></h4>
     </div>
     <div class="panel-body">
-        <div class="gameDefinitionsList flip-scroll" id="playedgameslist">
-            <table class="table">
+        <div class="gameDefinitionsList flip-scroll" id="gameslist">
+            <table class="table table-hover table-striped">
                 <caption>
                     <div class="input-group input-group-sm">
                         <div class="input-group-addon"><span class="fa fa-search"></span></div>
@@ -114,8 +116,66 @@
     </div>
 </div>
     }
+@if (Model.RelatedPlayedGames.Any())
+        {
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <h4>Played games related with this achievement <span class="badge">@Model.RelatedPlayedGames.Count</span></h4>
+    </div>
+    <div class="panel-body">
+        <div class="gameDefinitionsList">
+            <div class="flip-scroll" id="playedgameslist">
+                <table class="table table-hover table-striped">
+                    <caption>
+                        <div class="input-group input-group-sm">
+                            <div class="input-group-addon"><span class="fa fa-search"></span></div>
+                            <input type="text" class="form-control search" placeholder="type game name">
+                        </div>
+                    </caption>
+                    <thead>
+                    <tr>
+                        <th class="bgg-link-head"></th>
+                        <th class="name-head">
+                            <span class="sort" data-sort="name-col">Game name <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
+                        </th>
+                        <th>
+                            <span class="sort desc" data-sort="name-col">Date Played <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody class="list">
 
-    @helper PlayerProgess(KeyValuePair<AchievementLevel, int>
+                    @foreach (var gameResultViewModel in Model.RelatedPlayedGames.OrderByDescending(pg => pg.DatePlayed))
+                    {
+                        <tr class="game-item">
+                            <td class="bgg-link-col">
+
+                                @if (!string.IsNullOrEmpty(gameResultViewModel.ThumbnailImageUrl))
+                                {
+                                    <a href="@Url.Action(MVC.GameDefinition.ActionNames.Details, MVC.GameDefinition.Name, new {id = gameResultViewModel.GameDefinitionId})">
+                                        <img class="bgg-thumbnail" src="@gameResultViewModel.ThumbnailImageUrl" alt="@gameResultViewModel.GameDefinitionName" title="@gameResultViewModel.GameDefinitionName"/>
+                                    </a>
+                                }
+                            </td>
+                            <td class="name-col" data-name="@gameResultViewModel.GameDefinitionName">
+                                @Html.ActionLink(gameResultViewModel.GameDefinitionName, "Details", "GameDefinition", new {id = gameResultViewModel.GameDefinitionId}, new {})
+                            </td>
+                            <td class="date-col" data-date="@gameResultViewModel.DatePlayed.ToFileTimeUtc()">
+                                @Html.ActionLink(gameResultViewModel.DatePlayed.ToShortDateString(), "Details", "PlayedGame", new {id = gameResultViewModel.PlayedGameId}, new {})
+                            </td>
+
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+                <ul class="pagination"></ul>
+            </div>
+        </div>
+    </div>
+</div>
+    }
+
+@helper PlayerProgess(KeyValuePair<AchievementLevel, int>
     level, int currentPlayerProgress)
     {
     var unlocked = false;

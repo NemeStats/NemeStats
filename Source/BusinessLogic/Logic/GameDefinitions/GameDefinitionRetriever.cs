@@ -44,7 +44,7 @@ namespace BusinessLogic.Logic.GameDefinitions
             var dateRangeFilter = new BasicDateRangeFilter();
 
             return dataContext.GetQueryable<GameDefinition>()
-                .Where(gameDefinition => gameDefinitionIds.Any(i=> i == gameDefinition.Id))
+                .Where(gameDefinition => gameDefinitionIds.Contains(gameDefinition.Id))
                 .Select(gameDefinition => new GameDefinitionSummary
                 {
                     Active = gameDefinition.Active,
