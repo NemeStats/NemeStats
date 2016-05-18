@@ -26,6 +26,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using BusinessLogic.Logic.Players;
+using UI.Mappers;
 using UI.Models.Achievements;
 using UI.Models.Badges;
 using UI.Models.PlayedGame;
@@ -44,13 +45,14 @@ namespace UI.Transformations.PlayerTransformations
 
         private readonly IGameResultViewModelBuilder _gameResultViewModelBuilder;
         private readonly IMinionViewModelBuilder _minionViewModelBuilder;
-        private readonly IPlayerAchievementViewModelBuilder _playerAchievementViewModelBuilder;
+        private readonly PlayerAchievementToPlayerAchievementViewModelMapper _playerAchievementToPlayerAchievementViewModelMapper;
 
-        public PlayerDetailsViewModelBuilder(IGameResultViewModelBuilder builder, IMinionViewModelBuilder minionViewModelBuilder, IPlayerAchievementViewModelBuilder playerAchievementViewModelBuilder)
+
+        public PlayerDetailsViewModelBuilder(IGameResultViewModelBuilder builder, IMinionViewModelBuilder minionViewModelBuilder, PlayerAchievementToPlayerAchievementViewModelMapper playerAchievementToPlayerAchievementViewModelMapper)
         {
             _gameResultViewModelBuilder = builder;
             _minionViewModelBuilder = minionViewModelBuilder;
-            _playerAchievementViewModelBuilder = playerAchievementViewModelBuilder;
+            _playerAchievementToPlayerAchievementViewModelMapper = playerAchievementToPlayerAchievementViewModelMapper;
         }
 
         public PlayerDetailsViewModel Build(PlayerDetails playerDetails, string urlForMinionBragging, ApplicationUser currentUser = null)
@@ -72,7 +74,7 @@ namespace UI.Transformations.PlayerTransformations
                 WinPercentage = playerDetails.PlayerStats.WinPercentage,
                 TotalChampionedGames = playerDetails.ChampionedGames.Count,
                 LongestWinningStreak = playerDetails.LongestWinningStreak,
-                PlayerAchievements = playerDetails.Achievements?.Select(pa => _playerAchievementViewModelBuilder.Build(pa)).OrderByDescending(a=>a.AchievementLevel).ThenByDescending(a=>a.LastUpdatedDate).ToList() ?? new List<PlayerAchievementViewModel>()
+                PlayerAchievements = playerDetails.Achievements?.Select(pa => _playerAchievementToPlayerAchievementViewModelMapper.Map(pa)).OrderByDescending(a=>a.AchievementLevel).ThenByDescending(a=>a.LastUpdatedDate).ToList() ?? new List<PlayerAchievementViewModel>()
             };
 
             PopulatePlayerVersusPlayersViewModel(playerDetails, playerDetailsViewModel);

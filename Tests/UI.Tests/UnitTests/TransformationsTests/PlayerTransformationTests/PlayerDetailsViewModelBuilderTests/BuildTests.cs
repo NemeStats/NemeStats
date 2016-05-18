@@ -29,6 +29,7 @@ using System.Linq;
 using BusinessLogic.Logic.Players;
 using BusinessLogic.Models.Achievements;
 using BusinessLogic.Models.Points;
+using UI.Mappers;
 using UI.Models.Badges;
 using UI.Models.Players;
 using UI.Models.Points;
@@ -42,7 +43,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
     {
         private IGameResultViewModelBuilder gameResultViewModelBuilder;
         private IMinionViewModelBuilder minionViewModelBuilderMock;
-        private IPlayerAchievementViewModelBuilder playerAchievementViewModelBuilderMock;
+        private PlayerAchievementToPlayerAchievementViewModelMapper playerAchievementViewModelBuilderMock;
         private PlayerDetails playerDetails;
         private PlayerDetailsViewModel playerDetailsViewModel;
         private PlayerDetailsViewModelBuilder builder;
@@ -66,7 +67,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         {
             AutomapperConfiguration.Configure();
             minionViewModelBuilderMock = MockRepository.GenerateMock<IMinionViewModelBuilder>();
-            playerAchievementViewModelBuilderMock = MockRepository.GenerateStub<IPlayerAchievementViewModelBuilder>();
+            playerAchievementViewModelBuilderMock = MockRepository.GenerateStub<PlayerAchievementToPlayerAchievementViewModelMapper>();
 
             currentUser = new ApplicationUser()
             {

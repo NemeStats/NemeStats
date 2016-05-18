@@ -95,11 +95,15 @@ $gold-border-color: darken($gold-achievement-color,15%);
     ul {
         text-align: center;
         margin-top: 20px;
+
+        li {
+            border: 0;
+        }
     }
 
     .progress {
         height: 25px;
-        margin-top: 20px;
+
 
         .progress-bar {
             min-width: 3em;

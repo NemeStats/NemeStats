@@ -4,28 +4,29 @@ using BusinessLogic.Models.Achievements;
 using BusinessLogic.Models.User;
 using UI.Attributes.Filters;
 using UI.Controllers.Helpers;
+using UI.Mappers;
 using UI.Models;
-using UI.Transformations;
 
 namespace UI.Controllers
 {
     [RoutePrefix("achievements")]
     public partial class AchievementController : BaseController
     {
-        private readonly IPlayerAchievementViewModelBuilder _playerAchievementViewModelBuilder;
+        
         private readonly IPlayerAchievementRetriever _playerAchievementRetriever;
+        private readonly PlayerAchievementToPlayerAchievementViewModelMapper _playerAchievementToPlayerAchievementViewModelMapper;
 
-        public AchievementController(IPlayerAchievementViewModelBuilder playerAchievementViewModelBuilder, IPlayerAchievementRetriever playerAchievementRetriever)
+        public AchievementController(IPlayerAchievementRetriever playerAchievementRetriever, PlayerAchievementToPlayerAchievementViewModelMapper playerAchievementToPlayerAchievementViewModelMapper)
         {
-            _playerAchievementViewModelBuilder = playerAchievementViewModelBuilder;
             _playerAchievementRetriever = playerAchievementRetriever;
+            _playerAchievementToPlayerAchievementViewModelMapper = playerAchievementToPlayerAchievementViewModelMapper;
         }
 
         [Route("{achievementId}/player/{playerId}")]
         public virtual ActionResult Details(AchievementId achievementId, int playerId)
         {
             var playerAchievement = _playerAchievementRetriever.GetPlayerAchievement(playerId, achievementId);
-            var model = _playerAchievementViewModelBuilder.Build(playerAchievement);
+            var model = _playerAchievementToPlayerAchievementViewModelMapper.Map(playerAchievement);
             return View(MVC.Achievement.Views.Details, model);
         }
     }

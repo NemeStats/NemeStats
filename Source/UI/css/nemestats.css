@@ -914,12 +914,13 @@ footer {
 .playerachievement ul {
   text-align: center;
   margin-top: 20px; }
+  .playerachievement ul li {
+    border: 0; }
 
 .playerachievement .progress {
-  height: 25px;
-  margin-top: 20px; }
+  height: 25px; }
   .playerachievement .progress .progress-bar {
-    min-width: 2em;
+    min-width: 3em;
     line-height: 25px; }
     .playerachievement .progress .progress-bar.bronze {
       background-color: #efb340; }
