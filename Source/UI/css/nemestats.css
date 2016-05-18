@@ -729,6 +729,8 @@ footer {
   .neme-points-ico .letter {
     color: white;
     font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif; }
+    .neme-points-ico .letter:before {
+      content: "N"; }
 
 @media (max-width: 991px) {
   #player-details .gameDefinitionsList.flip-scroll .badges-head {

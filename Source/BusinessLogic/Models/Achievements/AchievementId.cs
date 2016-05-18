@@ -10,11 +10,13 @@
         RiskTaker = 6,
         YouveGotHeart = 7,
         Hardcore = 8,
-        BoardGameGeek2016_10x10 = 9
+        BoardGameGeek2016_10x10 = 9,
+        NemePoints = 10
     }
 
     public enum AchievementGroup
     {
+        NotApply=0,
         Game = 1,
         Player = 2,
         PlayedGame = 3
