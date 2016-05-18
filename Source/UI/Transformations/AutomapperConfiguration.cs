@@ -84,6 +84,7 @@ namespace UI.Transformations
                     opt => opt.MapFrom(src => BoardGameGeekUriBuilder.BuildBoardGameGeekGameUri(src.Id)))
                 .ForMember(m => m.WeightDescription,
                     opt => opt.Ignore());
+            Mapper.CreateMap<PlayedGameQuickStats, PlayedGameQuickStatsViewModel>(MemberList.Destination);
         }
     }
 }
