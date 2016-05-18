@@ -18,7 +18,7 @@ namespace BusinessLogic.Logic.Achievements
 
         public override string Name => "Social Butterfly";
 
-        public override string Description => "Be the only player to get first place in games with 10+ people";
+        public override string Description => "This achievement is earned by being the sole winner in games with 10+ people.";
 
         public override string IconClass => "fa fa-ambulance";
 

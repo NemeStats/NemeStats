@@ -18,7 +18,7 @@ namespace BusinessLogic.Logic.Achievements
 
         public override string Name => "Social Butterfly";
 
-        public override string Description => "Play games with lots of different players";
+        public override string Description => "This Achievement is earned by playing games with lots of different Players.";
 
         public override string IconClass => "fa fa-smile-o";
 

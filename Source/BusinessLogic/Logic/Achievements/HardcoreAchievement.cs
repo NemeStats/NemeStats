@@ -4,6 +4,7 @@ using BusinessLogic.DataAccess;
 using BusinessLogic.Logic.Points;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Achievements;
+using BusinessLogic.Models.PlayedGames;
 
 namespace BusinessLogic.Logic.Achievements
 {
@@ -18,7 +19,11 @@ namespace BusinessLogic.Logic.Achievements
         public override AchievementId Id => AchievementId.Hardcore;
         public override AchievementGroup Group => AchievementGroup.Game;
         public override string Name => "Hardcore";
-        public override string Description => "Plays different games that are both extreme in Board Game Geek Average Play Time and Board Game Geek Average Weight";
+
+        public override string Description => @"This Achievement is earned by playing Games that have a BoardGameGeek average play time of at least 3 hours, and an
+                                              average weight of at least " + WeightTierCalculator.BOARD_GAME_GEEK_WEIGHT_INCLUSIVE_LOWER_BOUND_FOR_HARDCORE
+                                              + " (Hardcore).";
+
         public override string IconClass => "fa fa-hand-rock-o";
 
         public override Dictionary<AchievementLevel, int> LevelThresholds => new Dictionary<AchievementLevel, int>
