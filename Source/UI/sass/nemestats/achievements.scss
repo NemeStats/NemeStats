@@ -24,6 +24,16 @@ $gold-border-color: darken($gold-achievement-color,15%);
     text-align: center;
     border-radius: 50%;
 
+    .content {
+        > span.nemepoints-achievement {
+            font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+            &:before {
+                content: "N";
+            }
+        }
+    }
+
 
     &.bronze {
         background-color: $bronze-border-color;
@@ -103,6 +113,14 @@ $gold-border-color: darken($gold-achievement-color,15%);
 
     .progress {
         height: 25px;
+
+        .progress-value {
+            position: absolute;
+            right: 0;
+            left: 0;
+            top: 2px;
+            font-weight: bold;
+        }
 
 
         .progress-bar {

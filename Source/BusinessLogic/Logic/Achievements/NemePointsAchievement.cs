@@ -16,11 +16,11 @@ namespace BusinessLogic.Logic.Achievements
 
         public override AchievementGroup Group => AchievementGroup.NotApply;
 
-        public override string Name => "NemePoints collector";
+        public override string Name => "NemePoints Collector";
 
         public override string Description => "Play games to earn NemePoints to unlock this achievement.";
 
-        public override string IconClass => "fa fa-eye"; //TODO: a custom SVG letter N
+        public override string IconClass => "nemepoints-achievement";
 
         public override Dictionary<AchievementLevel, int> LevelThresholds => new Dictionary<AchievementLevel, int>
         {
