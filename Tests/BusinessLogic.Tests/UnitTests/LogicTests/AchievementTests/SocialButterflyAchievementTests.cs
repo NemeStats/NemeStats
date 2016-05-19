@@ -79,13 +79,16 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.AchievementTests
 
         private void SetupGamesForPlayer(int playerId, int numberOfGamesToSetUp)
         {
-            var playedGames = new List<PlayedGame>();
+            var results = new List<PlayerGameResult>();
             int otherPlayerId = 100;
 
             for (int i = 0; i < numberOfGamesToSetUp; i++)
             {
-                playedGames.Add(
-                                new PlayedGame
+                results.Add(
+                            new PlayerGameResult
+                            {
+                                PlayerId = otherPlayerId,
+                                PlayedGame = new PlayedGame
                                 {
                                     PlayerGameResults = new List<PlayerGameResult>
                                     {
@@ -95,13 +98,16 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.AchievementTests
                                         },
                                         new PlayerGameResult
                                         {
-                                            PlayerId = otherPlayerId++
+                                            PlayerId = otherPlayerId
                                         }
                                     }
-                                });
+                                }
+                            });
+
+                otherPlayerId++;
             }
 
-            _autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<PlayedGame>()).Return(playedGames.AsQueryable());
+            _autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<PlayerGameResult>()).Return(results.AsQueryable());
         }
     }
 }

@@ -38,9 +38,9 @@ namespace BusinessLogic.Logic.Achievements
 
             var totalPlayersPlayedWith =
                 DataContext
-                    .GetQueryable<PlayedGame>()
-                    .Where(x => x.PlayerGameResults.Any(y => y.PlayerId == playerId))
-                    .Select(z => z.PlayerGameResults.Select(x => x.PlayerId))
+                    .GetQueryable<PlayerGameResult>()
+                    .Where(x => x.PlayedGame.PlayerGameResults.Any(y => y.PlayerId == playerId) && x.PlayerId != playerId)
+                    .Select(z => z.PlayerId)
                     .Distinct()
                     .Count();
 
