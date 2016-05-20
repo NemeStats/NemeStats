@@ -20,7 +20,7 @@ namespace BusinessLogic.Logic.Achievements
         public override AchievementGroup Group => AchievementGroup.Game;
         public override string Name => "Hardcore";
 
-        public override string Description => @"This Achievement is earned by playing Games that have a BoardGameGeek average play time of at least 3 hours, and an
+        public override string DescriptionFormat => @"This Achievement is earned by playing {0} Games that have a BoardGameGeek average play time of at least 3 hours, and an
                                               average weight of at least " + WeightTierCalculator.BOARD_GAME_GEEK_WEIGHT_INCLUSIVE_LOWER_BOUND_FOR_HARDCORE
                                               + " (Hardcore).";
 

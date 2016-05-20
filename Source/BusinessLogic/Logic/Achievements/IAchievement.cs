@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using BusinessLogic.DataAccess;
 using BusinessLogic.Models.Achievements;
 
 namespace BusinessLogic.Logic.Achievements
@@ -9,6 +8,7 @@ namespace BusinessLogic.Logic.Achievements
         AchievementId Id { get; }
         AchievementGroup Group { get; }
         string Name { get; }
+        string DescriptionFormat { get; }
         string Description { get; }
         string IconClass { get; }
 

@@ -20,7 +20,7 @@ namespace BusinessLogic.Logic.Achievements
 
         public override string Name => "Busy Bee";
 
-        public override string Description => "This Achievement is earned by playing Games -- it doesn't matter if it is a win or a loss.";
+        public override string DescriptionFormat => "This Achievement is earned by playing {0} Games -- it doesn't matter if it is a win or a loss.";
 
         public override string IconClass => "fa fa-forumbee";
 

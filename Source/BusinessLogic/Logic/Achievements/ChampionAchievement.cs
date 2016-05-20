@@ -18,7 +18,7 @@ namespace BusinessLogic.Logic.Achievements
 
         public override string Name => "Champion";
 
-        public override string Description => @"This Achievement is awarded by earning the Champion Badge. Every time the Player is awarded 
+        public override string DescriptionFormat => @"This Achievement is awarded by earning the Champion Badge {0} times. Every time the Player is awarded 
             a Champion Badge it counts toward this achievement -- even if they lose the Badge later.";
 
         public override string IconClass => "fa fa-trophy";

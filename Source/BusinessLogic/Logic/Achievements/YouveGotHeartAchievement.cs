@@ -19,7 +19,7 @@ namespace BusinessLogic.Logic.Achievements
 
         public override string Name => "You've got heart";
 
-        public override string Description => "Played a lot of games without winning";
+        public override string DescriptionFormat => "Earn this achievement by playing {0} games without winning even once.";
 
         public override string IconClass => "fa fa-heart";
 

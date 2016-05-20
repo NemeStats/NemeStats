@@ -22,7 +22,7 @@ namespace BusinessLogic.Logic.Achievements
 
         public override string Name => "Hot Streak";
 
-        public override string Description => "This Achievement is earned by winning numerous games consecutively.";
+        public override string DescriptionFormat => "This Achievement is earned by winning {0} games consecutively.";
 
         public override string IconClass => "fa fa-fire";
 
