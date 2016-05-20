@@ -78,12 +78,14 @@ namespace UI.Controllers
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionNamesClass
         {
+            public readonly string Index = "Index";
             public readonly string Details = "Details";
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionNameConstants
         {
+            public const string Index = "Index";
             public const string Details = "Details";
         }
 
@@ -108,8 +110,10 @@ namespace UI.Controllers
             public class _ViewNamesClass
             {
                 public readonly string Details = "Details";
+                public readonly string Index = "Index";
             }
             public readonly string Details = "~/Views/Achievement/Details.cshtml";
+            public readonly string Index = "~/Views/Achievement/Index.cshtml";
         }
     }
 
@@ -117,6 +121,17 @@ namespace UI.Controllers
     public partial class T4MVC_AchievementController : UI.Controllers.AchievementController
     {
         public T4MVC_AchievementController() : base(Dummy.Instance) { }
+
+        [NonAction]
+        partial void IndexOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult Index()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Index);
+            IndexOverride(callInfo);
+            return callInfo;
+        }
 
         [NonAction]
         partial void DetailsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, BusinessLogic.Models.Achievements.AchievementId achievementId, int playerId);

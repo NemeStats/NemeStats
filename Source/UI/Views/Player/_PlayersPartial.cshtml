@@ -98,28 +98,29 @@
                                 <td class="championed-games-col">
                                     @item.TotalChampionedGames
                                 </td>
-                                <td class="achievements-col" data-achievements="@item.AchievementsPerLevel.Sum(a=>a.Value)">
-                                    <span class="achievements">
-                                        <span class="achievement bronze" data-toggle="popover" data-placement="top"
-                                              data-content="Bronze Achievements">
-                                            <span class="circle">
-                                                <span class="content">@item.AchievementsPerLevel[AchievementLevel.Bronze]</span>
+                                <td class="achievements-col" data-achievements="@item.AchievementsPerLevel.Sum(a => a.Value)">
+                                    <a href="@Url.Action(MVC.Player.Details(item.PlayerId,null))">
+                                        <span class="achievements">
+                                            <span class="achievement bronze" data-toggle="popover" data-placement="top"
+                                                  data-content="Bronze Achievements">
+                                                <span class="circle">
+                                                    <span class="content">@item.AchievementsPerLevel[AchievementLevel.Bronze]</span>
+                                                </span>
+                                            </span>
+                                            <span class="achievement silver" data-toggle="popover" data-placement="top"
+                                                  data-content="Silver Achievements">
+                                                <span class="circle">
+                                                    <span class="content">@item.AchievementsPerLevel[AchievementLevel.Silver]</span>
+                                                </span>
+                                            </span>
+                                            <span class="achievement gold" data-toggle="popover" data-placement="top"
+                                                  data-content="Gold Achievements">
+                                                <span class="circle">
+                                                    <span class="content">@item.AchievementsPerLevel[AchievementLevel.Gold]</span>
+                                                </span>
                                             </span>
                                         </span>
-                                        <span class="achievement silver" data-toggle="popover" data-placement="top"
-                                           data-content="Silver Achievements">
-                                            <span class="circle">
-                                                <span class="content">@item.AchievementsPerLevel[AchievementLevel.Silver]</span>
-                                            </span>
-                                        </span>
-                                        <span class="achievement gold" data-toggle="popover" data-placement="top"
-                                              data-content="Gold Achievements">
-                                            <span class="circle">
-                                                <span class="content">@item.AchievementsPerLevel[AchievementLevel.Gold]</span>
-                                            </span>
-                                        </span>
-                                    </span>
-
+                                    </a>
                                 </td>
                                 <td class="nemesis-col" data-nemesis="@(item.NemesisPlayerId.HasValue ? item.NemesisPlayerName : " -")">
                                     @if (item.PreviousNemesisPlayerId.HasValue)

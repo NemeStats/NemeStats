@@ -88,6 +88,14 @@ namespace Links
         public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
         public static readonly string _references_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/_references.min.js") ? Url("_references.min.js") : Url("_references.js");
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public static class Achievement {
+            private const string URLPATH = "~/Scripts/Achievement";
+            public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
+            public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
+            public static readonly string achievementDetails_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/achievementDetails.min.js") ? Url("achievementDetails.min.js") : Url("achievementDetails.js");
+        }
+    
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public static class CreatePlayedGame {
             private const string URLPATH = "~/Scripts/CreatePlayedGame";
             public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
@@ -312,6 +320,13 @@ namespace Links
     {
         public static partial class Scripts 
         {
+            public static partial class Achievement 
+            {
+                public static class Assets
+                {
+                    public const string achievementDetails_js = "~/Scripts/Achievement/achievementDetails.js"; 
+                }
+            }
             public static partial class CreatePlayedGame 
             {
                 public static class Assets
