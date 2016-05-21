@@ -32,6 +32,7 @@ using System.Collections.Generic;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using BusinessLogic.Facades;
 using UI.Controllers;
 using UI.Controllers.Helpers;
 using UI.Models.GameDefinitionModels;
@@ -45,6 +46,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
         protected RhinoAutoMocker<GameDefinitionController> autoMocker;
         protected GameDefinitionController gameDefinitionControllerPartialMock;
         protected IGameDefinitionRetriever gameDefinitionRetrieverMock;
+        protected ITrendingGamesRetriever trendingGamesRetrieverMock;
         protected IGameDefinitionDetailsViewModelBuilder gameDefinitionTransformationMock;
         protected IShowingXResultsMessageBuilder showingXResultsMessageBuilderMock;
         protected IGameDefinitionSaver gameDefinitionCreatorMock;
@@ -57,7 +59,6 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
         protected IBoardGameGeekGamesImporter BoardGameGeekGamesImporter;
         protected ITransformer transformer;
         protected List<TrendingGame> trendingGames;
-        protected List<TrendingGameViewModel> trendingGamesGameViewModels;
 
         [SetUp]
         public virtual void SetUp()
@@ -70,6 +71,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
             AutomapperConfiguration.Configure();
             dataContextMock = MockRepository.GenerateMock<NemeStatsDataContext>();
             gameDefinitionRetrieverMock = MockRepository.GenerateMock<IGameDefinitionRetriever>();
+            trendingGamesRetrieverMock = MockRepository.GenerateMock<ITrendingGamesRetriever>();
             gameDefinitionTransformationMock = MockRepository.GenerateMock<IGameDefinitionDetailsViewModelBuilder>();
             showingXResultsMessageBuilderMock = MockRepository.GenerateMock<IShowingXResultsMessageBuilder>();
             gameDefinitionCreatorMock = MockRepository.GenerateMock<IGameDefinitionSaver>();
@@ -81,6 +83,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
             gameDefinitionControllerPartialMock = MockRepository.GeneratePartialMock<GameDefinitionController>(
                 dataContextMock,
                 gameDefinitionRetrieverMock,
+                trendingGamesRetrieverMock,
                 gameDefinitionTransformationMock,
                 showingXResultsMessageBuilderMock,
                 gameDefinitionCreatorMock,

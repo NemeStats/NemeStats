@@ -43,7 +43,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
                 Name = "New Game"
             };
 
-            gameDefinitionControllerPartialMock.AjaxCreate(createGameDefinitionViewModel, currentUser);
+            autoMocker.ClassUnderTest.AjaxCreate(createGameDefinitionViewModel, currentUser);
 
             var arguments = gameDefinitionCreatorMock.GetArgumentsForCallsMadeOn(mock => mock.CreateGameDefinition(
                 Arg<CreateGameDefinitionRequest>.Is.Anything, 
@@ -65,9 +65,9 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
                 .Return(asyncRequestMock);
             asyncRequestMock.Headers.Clear();
 
-            gameDefinitionControllerPartialMock.ControllerContext = new ControllerContext(context, new RouteData(), gameDefinitionControllerPartialMock);
+            autoMocker.ClassUnderTest.ControllerContext = new ControllerContext(context, new RouteData(), gameDefinitionControllerPartialMock);
 
-            var result = gameDefinitionControllerPartialMock.AjaxCreate(new CreateGameDefinitionViewModel(), currentUser) as HttpStatusCodeResult;
+            var result = autoMocker.ClassUnderTest.AjaxCreate(new CreateGameDefinitionViewModel(), currentUser) as HttpStatusCodeResult;
 
             Assert.AreEqual((int)HttpStatusCode.BadRequest, result.StatusCode);
         }
