@@ -103,5 +103,10 @@ namespace UI.Controllers
         {
             return View();
         }
+
+        public virtual ActionResult AboutBadgesAndAchievements()
+        {
+            return View();
+        }
     }
 }

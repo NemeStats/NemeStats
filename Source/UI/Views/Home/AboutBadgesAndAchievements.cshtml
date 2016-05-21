@@ -1,0 +1,55 @@
+﻿@using UI.HtmlHelpers
+@using UI.Models.Badges
+@{
+	ViewBag.Title = "Badges and Achievements";
+	Layout = MVC.Shared.Views._BaseLayout;
+}
+<h2 class="page-header">@ViewBag.Title @Html.NemePointsIco()</h2>
+
+<h3 style="text-decoration: underline">What Are Badges?</h3>
+<p>
+    "Badges" in NemeStats are special awards and designations that call out the state of a Player within a Gaming Group. The Badges that we currently support are:
+    <table>
+        <tr>
+            <td>
+                <i class="@NemesisBadgeViewModel.ICON_CSS_CLASS" data-container="body" data-toggle="popover" data-placement="right"
+                   data-content="@NemesisBadgeViewModel.POPOVER_TEXT">
+                </i>
+            </td>
+            <td>Nemesis</td>
+            <td>Become someone's Nemesis by beating them at least 3 times, having a greater than 50% win ratio vs. them, and having a higher
+                win percentage against them than anyone else.</td>
+        </tr>
+        <tr>
+            <td>
+                <i class="@MinionBadgeViewModel.FONT_AWESOME_CSS_CLASS" data-container="body" data-toggle="popover" data-placement="right"
+                   data-content="@MinionBadgeViewModel.POPOVER_TEXT">
+                </i>
+            </td>
+            <td>Minion</td>
+            <td>
+                A Minion is the opposite of a Nemesis. If you are someone's mininon, then you are their Nemesis, and vice versa. Having minions
+                is good; being a minion is bad.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <i class="@ChampionBadgeViewModel.FONT_AWESOME_CSS_CLASS" data-container="body" data-toggle="popover" data-placement="right"
+                   data-content="@ChampionBadgeViewModel.POPOVER_TEXT">
+                </i>
+            </td>
+            <td>Champion</td>
+            <td>
+                Each Game within a Gaming Group can have at most a single Champion. The Champion is the Player who has won the most games
+                of that Game. You can lose the Champion Badge if another Player wins more games of the given Game.
+            </td>
+        </tr>
+    </table>
+</p>
+
+<h3 style="text-decoration: underline">What Are Achievements?</h3>
+<p>
+    Achievements are permanent awards that Players earn by meeting certain conditions. There can be multiple levels of Achievements
+    (e.g. Bronze, Silver, Gold) that are achieved at different thresholds. Due to the intense calculations that go into some Achievements,
+    there may be a delay in the timme it takes for an Achievement to show up for a Player.
+</p>

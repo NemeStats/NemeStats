@@ -755,6 +755,7 @@
     <Content Include="Views\Shared\_NemePointsBreakdown.cshtml" />
     <Content Include="Views\Home\_HomeFeatures.cshtml" />
     <Content Include="Views\Achievement\Details.cshtml" />
+    <Content Include="Views\Home\AboutBadgesAndAchievements.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Areas\Api\Views\Shared\" />
