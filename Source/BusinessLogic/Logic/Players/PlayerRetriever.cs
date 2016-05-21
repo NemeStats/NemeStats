@@ -345,14 +345,18 @@ namespace BusinessLogic.Logic.Players
             return nemePointsSummary ?? new NemePointsSummary(0, 0, 0);
         }
 
+        public virtual int GetPlayerIdForCurrentUser(string applicationUserId, int gamingGroupId)
+        {
+            return (from player in dataContext.GetQueryable<Player>()
+                    where player.GamingGroupId == gamingGroupId
+                     && player.ApplicationUserId == applicationUserId
+                    select player.Id)
+                    .FirstOrDefault();
+        }
+
         public virtual PlayerQuickStats GetPlayerQuickStatsForUser(string applicationUserId, int gamingGroupId)
         {
-            var q = dataContext.GetQueryable<Player>().ToList();
-            var playerIdForCurrentUser = (from player in dataContext.GetQueryable<Player>()
-                                          where player.GamingGroupId == gamingGroupId
-                                           && player.ApplicationUserId == applicationUserId
-                                          select player.Id)
-                                          .FirstOrDefault();
+            var playerIdForCurrentUser = GetPlayerIdForCurrentUser(applicationUserId, gamingGroupId);
 
             var returnValue = new PlayerQuickStats();
 

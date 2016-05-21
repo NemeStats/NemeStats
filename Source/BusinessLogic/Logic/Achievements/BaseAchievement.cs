@@ -8,7 +8,7 @@ namespace BusinessLogic.Logic.Achievements
 {
     public abstract class BaseAchievement : IAchievement
     {
-        protected IDataContext DataContext { get; set; }
+        public IDataContext DataContext { get; set; }
 
         protected BaseAchievement(IDataContext dataContext)
         {
