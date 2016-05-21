@@ -16,7 +16,7 @@ namespace BusinessLogic.Logic.Achievements
 
         public override AchievementGroup Group => AchievementGroup.Game;
 
-        public override string Name => "Champion";
+        public override string Name => "Champion of Champions";
 
         public override string DescriptionFormat => @"This Achievement is awarded by earning the Champion Badge {0} times. Every time the Player is awarded 
             a Champion Badge it counts toward this Achievement -- even if they lose the Badge later.";
