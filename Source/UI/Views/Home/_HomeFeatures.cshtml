@@ -13,7 +13,7 @@
                 <div class="col-sm-6">
                     <ul>
                         <li>Create <b>multiple Gaming Groups</b></li>
-                        <li>Earn <b>Achievements and Badges</b></li>
+                        <li>Earn <b><a href="@Url.Action(MVC.Home.AboutBadgesAndAchievements())">Achievements and Badges</a></b> as well as <a href="@Url.Action(MVC.Home.AboutNemePoints())">NemePoints</a></li>
                         <li><b>Export</b> your data</li>
                     </ul>
                 </div>
@@ -92,7 +92,7 @@
             <div class="modal-body">
                 <p>
                     <b>NemeStats</b> (pronounced "Nem-eh-stats") is a <b>completely free, mobile-friendly</b> website for tracking the results of board games.
-                    Just <a href="@MVC.Account.Register()">register</a> and you'll automatically have a new Gaming Group created for you. Then set up the Players and Games you want to track, and you are all set to start logging plays!
+                    Just <a href="@Url.Action(MVC.Account.Register())">register</a> and you'll automatically have a new Gaming Group created for you. Then set up the Players and Games you want to track, and you are all set to start logging plays!
                 </p>
                 <p>
                     NemeStats adds a meta layer of fun to your gaming. As you record your games you'll get interesting statistics like <b>number of games played, win/loss percentages, average number of Players per game, longest win streak</b>, etc. You can also earn <b>badges</b> for things like becoming a Champion of a game, becoming someone's Nemesis or Minion, etc. NemeStats also has a
