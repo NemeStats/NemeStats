@@ -35,6 +35,16 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Explore<span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="@Url.Action(MVC.Achievement.Index())">Achievements</a></li>
+                            <li><a href="@Url.Action(MVC.PlayedGame.ShowRecentlyPlayedGames())">Recent games</a></li>
+                            <li><a href="@Url.Action(MVC.GameDefinition.ShowTrendingGames())">Trending games</a></li>
+                            <li><a href="@Url.Action(MVC.GamingGroup.GetTopGamingGroups())">Top gaming groups</a></li>
+                            <li><a href="@Url.Action(MVC.Player.ShowTopPlayers())">Top players</a></li>
+                        </ul>
+                    </li>
                     <li id="gtm-recordplayedgamebutton-fromnavbar"><a href="@Url.Action(MVC.PlayedGame.Create())"><span class="fa fa-plus-circle"></span> Record Played Game</a></li>
                     <li id="navMyGamingGroup">@Html.ActionLink("My Gaming Group", "Index", "GamingGroup")</li>
                     <li id="navAbout">@Html.ActionLink("About", "About", "Home")</li>

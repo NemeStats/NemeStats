@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
+using BusinessLogic.DataAccess;
 using BusinessLogic.Models.Achievements;
 
 namespace BusinessLogic.Logic.Achievements
 {
     public interface IAchievement
     {
+        IDataContext DataContext { get; set; }
         AchievementId Id { get; }
         AchievementGroup Group { get; }
         string Name { get; }

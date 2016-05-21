@@ -6,11 +6,6 @@ using BusinessLogic.Models.Achievements;
 
 namespace BusinessLogic.Logic.PlayerAchievements
 {
-    public interface IPlayerAchievementRetriever
-    {
-        PlayerAchievement GetPlayerAchievement(int playerId, AchievementId achievementId);
-    }
-
     public class PlayerAchievementRetriever : IPlayerAchievementRetriever
     {
         private readonly IDataContext _dataContext;
@@ -25,8 +20,7 @@ namespace BusinessLogic.Logic.PlayerAchievements
             return _dataContext
                 .GetQueryable<PlayerAchievement>()
                 .Include(pa => pa.Player)
-                .FirstOrDefault(pa => pa.AchievementId == achievementId && pa.PlayerId == playerId)
-                ;
+                .FirstOrDefault(pa => pa.AchievementId == achievementId && pa.PlayerId == playerId);
         }
     }
 }

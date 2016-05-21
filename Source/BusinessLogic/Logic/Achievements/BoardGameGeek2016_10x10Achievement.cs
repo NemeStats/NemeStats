@@ -20,7 +20,7 @@ namespace BusinessLogic.Logic.Achievements
         public override AchievementGroup Group => AchievementGroup.Game;
         public override string Name => "BoardGameGeek 2016 10x10 challenge";
         public override string DescriptionFormat => "Completed the BoardGameGeek 2016 10x10 challenge by playing {0} games 10 times each in 2016: http://boardgamegeek.com/geeklist/201403/2016-challenge-play-10-games-10-times-each";
-        public override string IconClass => "fa fa-question";
+        public override string IconClass => "ns-icon-dice";
 
         public override Dictionary<AchievementLevel, int> LevelThresholds => new Dictionary<AchievementLevel, int>
         {

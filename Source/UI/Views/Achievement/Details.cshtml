@@ -4,12 +4,29 @@
 @using UI.Models.Players
 @model PlayerAchievementViewModel
 @{
-    ViewBag.Title = @Model.Achievement.Name + " unlocked for " + @Model.PlayerName ;
+    if (Model.HasAnyLevelUnlocked)
+    {
+        ViewBag.Title = @Model.Achievement.Name + " unlocked for " + @Model.PlayerName;
+    }
+    else
+    {
+        ViewBag.Title = @Model.Achievement.Name;
+    }
     Layout = MVC.Shared.Views._BaseLayout;
+    string levelClass;
 }
 
-
-<h2 class="page-header">@Model.Achievement.Name unlocked for <a href="@Url.Action(MVC.Player.Details(Model.PlayerId,null))">@Model.PlayerName</a> !</h2>
+@if (Model.HasAnyLevelUnlocked)
+{
+    <h2 class="page-header">@Model.Achievement.Name unlocked for <a href="@Url.Action(MVC.Player.Details(Model.PlayerId, null))">@Model.PlayerName</a> !
+    </h2>
+    levelClass = Model.AchievementLevel.ToString().ToLower();
+}
+else
+{
+    <h2 class="page-header">@Model.Achievement.Name</h2>
+    levelClass = "bronze";
+}
 <div class="panel panel-primary playerachievement">
     <div class="panel-heading">
         <h4>Achievement Description</h4>
@@ -27,7 +44,7 @@
             <div class="col-md-3">
                 <ul class="list-group">
                     <li class="list-group-item">
-                        <span class="achievement big @Model.AchievementLevel.ToString().ToLower()">
+                        <span class="achievement big @levelClass">
                             <span class="circle">
                                 <span class="content">
                                     <span class="@Model.Achievement.IconClass"></span>
@@ -35,10 +52,14 @@
                             </span>
                         </span>
                     </li>
-                    <li class="list-group-item">Unlocked at: @Model.DateCreated.ToShortDateString()</li>
-                    @if (Model.DateCreated < Model.LastUpdatedDate)
+                    @if (Model.DateCreated.HasValue)
                     {
-                    <li class="list-group-item">Last update: @Model.LastUpdatedDate.ToShortDateString()</li>
+                        <li class="list-group-item">Unlocked at: @Model.DateCreated.Value.ToShortDateString()</li>
+                    }
+                    
+                    @if (Model.LastUpdatedDate.HasValue && Model.DateCreated < Model.LastUpdatedDate)
+                    {
+                        <li class="list-group-item">Last update: @Model.LastUpdatedDate.Value.ToShortDateString()</li>
                     }
                 </ul>
             </div>
@@ -46,7 +67,7 @@
                 <ul class="list-group">
                     @foreach (var level in Model.Achievement.LevelThresholds)
                     {
-                    @PlayerProgess(level, Model.PlayerProgress)
+                        @PlayerProgess(level, Model.PlayerProgress)
                     }
                 </ul>
             </div>
@@ -174,6 +195,61 @@
     </div>
 </div>
     }
+
+@if (Model.Achievement.Winners.Any())
+{
+    <div class="panel panel-primary">
+    <div class="panel-heading">
+        <h4>Players with this achievement <span class="badge">@Model.Achievement.Winners.Count</span></h4>
+    </div>
+    <div class="panel-body">
+        <div class="winnersList">
+            <div class="flip-scroll" id="winnersList">
+                <table class="table table-hover table-striped">
+                    <caption>
+                        <div class="input-group input-group-sm">
+                            <div class="input-group-addon"><span class="fa fa-search"></span></div>
+                            <input type="text" class="form-control search" placeholder="type player, gaming group, level...">
+                        </div>
+                    </caption>
+                    <thead>
+                        <tr>
+                            <th>
+                                <span class="sort" data-sort="name-col">Player name <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
+                            </th>
+                            <th>
+                                <span class="sort" data-sort="gaminggroup-col">Gaming group <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
+                            </th>
+                            <th>
+                                <span class="sort desc" data-sort="name-col">Date earned <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="list">
+
+                        @foreach (var winner in Model.Achievement.Winners.OrderByDescending(pg => pg.AchievementLastUpdateDate))
+                        {
+                        <tr>
+                            <td class="playername-col" data-name="@winner.PlayerName">
+                                @Html.ActionLink(winner.PlayerName, "Details", "Player", new {id = winner.PlayerId}, new {})
+                            </td>
+                            <td class="gaminggroup-col" data-name="@winner.">
+                                @Html.ActionLink(winner.GamingGroupName, "Details", "GamingGroup", new {id = winner.GamingGroupId}, new {})
+                            </td>
+                            <td class="date-col" data-date="@winner.AchievementLastUpdateDate.ToFileTimeUtc()">
+                                @Html.ActionLink(winner.AchievementLastUpdateDate.ToShortDateString(), "PlayerAchievement", "Achievement", new {achievementId = Model.Achievement.Id, playerId = winner.PlayerId}, new {})
+                            </td>
+
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+                <ul class="pagination"></ul>
+            </div>
+        </div>
+    </div>
+</div>
+}
 
 @helper PlayerProgess(KeyValuePair<AchievementLevel, int>
     level, int currentPlayerProgress)

@@ -58,9 +58,21 @@ namespace UI.Controllers
 
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult DetailsForCurrentUser()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.DetailsForCurrentUser);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult Details()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Details);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult PlayerAchievement()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.PlayerAchievement);
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -78,21 +90,45 @@ namespace UI.Controllers
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionNamesClass
         {
+            public readonly string Index = "Index";
+            public readonly string DetailsForCurrentUser = "DetailsForCurrentUser";
             public readonly string Details = "Details";
+            public readonly string PlayerAchievement = "PlayerAchievement";
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionNameConstants
         {
+            public const string Index = "Index";
+            public const string DetailsForCurrentUser = "DetailsForCurrentUser";
             public const string Details = "Details";
+            public const string PlayerAchievement = "PlayerAchievement";
         }
 
 
+        static readonly ActionParamsClass_DetailsForCurrentUser s_params_DetailsForCurrentUser = new ActionParamsClass_DetailsForCurrentUser();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_DetailsForCurrentUser DetailsForCurrentUserParams { get { return s_params_DetailsForCurrentUser; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_DetailsForCurrentUser
+        {
+            public readonly string achievementId = "achievementId";
+            public readonly string currentUser = "currentUser";
+        }
         static readonly ActionParamsClass_Details s_params_Details = new ActionParamsClass_Details();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ActionParamsClass_Details DetailsParams { get { return s_params_Details; } }
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionParamsClass_Details
+        {
+            public readonly string achievementId = "achievementId";
+            public readonly string currentUser = "currentUser";
+        }
+        static readonly ActionParamsClass_PlayerAchievement s_params_PlayerAchievement = new ActionParamsClass_PlayerAchievement();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_PlayerAchievement PlayerAchievementParams { get { return s_params_PlayerAchievement; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_PlayerAchievement
         {
             public readonly string achievementId = "achievementId";
             public readonly string playerId = "playerId";
@@ -108,8 +144,10 @@ namespace UI.Controllers
             public class _ViewNamesClass
             {
                 public readonly string Details = "Details";
+                public readonly string Index = "Index";
             }
             public readonly string Details = "~/Views/Achievement/Details.cshtml";
+            public readonly string Index = "~/Views/Achievement/Index.cshtml";
         }
     }
 
@@ -119,15 +157,52 @@ namespace UI.Controllers
         public T4MVC_AchievementController() : base(Dummy.Instance) { }
 
         [NonAction]
-        partial void DetailsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, BusinessLogic.Models.Achievements.AchievementId achievementId, int playerId);
+        partial void IndexOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult Details(BusinessLogic.Models.Achievements.AchievementId achievementId, int playerId)
+        public override System.Web.Mvc.ActionResult Index()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Index);
+            IndexOverride(callInfo);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void DetailsForCurrentUserOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, BusinessLogic.Models.Achievements.AchievementId achievementId, BusinessLogic.Models.User.ApplicationUser currentUser);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult DetailsForCurrentUser(BusinessLogic.Models.Achievements.AchievementId achievementId, BusinessLogic.Models.User.ApplicationUser currentUser)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.DetailsForCurrentUser);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "achievementId", achievementId);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "currentUser", currentUser);
+            DetailsForCurrentUserOverride(callInfo, achievementId, currentUser);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void DetailsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, BusinessLogic.Models.Achievements.AchievementId achievementId, BusinessLogic.Models.User.ApplicationUser currentUser);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult Details(BusinessLogic.Models.Achievements.AchievementId achievementId, BusinessLogic.Models.User.ApplicationUser currentUser)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Details);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "achievementId", achievementId);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "currentUser", currentUser);
+            DetailsOverride(callInfo, achievementId, currentUser);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void PlayerAchievementOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, BusinessLogic.Models.Achievements.AchievementId achievementId, int playerId);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult PlayerAchievement(BusinessLogic.Models.Achievements.AchievementId achievementId, int playerId)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.PlayerAchievement);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "achievementId", achievementId);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "playerId", playerId);
-            DetailsOverride(callInfo, achievementId, playerId);
+            PlayerAchievementOverride(callInfo, achievementId, playerId);
             return callInfo;
         }
 

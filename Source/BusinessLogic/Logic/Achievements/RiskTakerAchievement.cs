@@ -16,11 +16,11 @@ namespace BusinessLogic.Logic.Achievements
 
         public override AchievementGroup Group => AchievementGroup.Game;
 
-        public override string Name => "Social Butterfly";
+        public override string Name => "Risk Taker";
 
         public override string DescriptionFormat => "This achievement is earned by being the sole winner of games with 10+ people {0} times.";
 
-        public override string IconClass => "fa fa-ambulance";
+        public override string IconClass => "ns-icon-one";
 
         public override Dictionary<AchievementLevel, int> LevelThresholds => new Dictionary<AchievementLevel, int>
         {
