@@ -18,7 +18,7 @@ namespace BusinessLogic.Logic.Achievements
 
         public override string Name => "NemePoints Collector";
 
-        public override string DescriptionFormat => "Earn this achievement by accumulating {0} NemePoints from playing games.";
+        public override string DescriptionFormat => "Earn this Achievement by accumulating {0} NemePoints from playing games.";
 
         public override string IconClass => "nemepoints-achievement";
 

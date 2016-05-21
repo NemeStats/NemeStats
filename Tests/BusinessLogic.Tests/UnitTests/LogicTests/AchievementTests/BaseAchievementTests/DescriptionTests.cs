@@ -34,7 +34,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.AchievementTests.BaseAchievem
 
             public override string Name => "Achievement Without Thresholds";
 
-            public override string DescriptionFormat => "This achievement has no thresholds.";
+            public override string DescriptionFormat => "This Achievement has no thresholds.";
 
             public override string IconClass => "Not Applicable";
 
@@ -70,7 +70,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.AchievementTests.BaseAchievem
 
             public override string Name => "Achievement With one Level";
 
-            public override string DescriptionFormat => "Earn this achievement by doing {0} things.";
+            public override string DescriptionFormat => "Earn this Achievement by doing {0} things.";
 
             public override string IconClass => "Not Applicable";
 
@@ -110,7 +110,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.AchievementTests.BaseAchievem
 
             public override string Name => "Achievement With 3 Levels";
 
-            public override string DescriptionFormat => "Earn this achievement by doing {0} things.";
+            public override string DescriptionFormat => "Earn this Achievement by doing {0} things.";
 
             public override string IconClass => "Not Applicable";
 
