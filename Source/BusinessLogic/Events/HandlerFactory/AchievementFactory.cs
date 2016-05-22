@@ -26,7 +26,7 @@ namespace BusinessLogic.Events.HandlerFactory
             }
         }
 
-        public static List<IAchievement> GetAchivements()
+        public static List<IAchievement> GetAchievements()
         {
             return AchievementTypes.Values.Select(achievementType => (IAchievement)EventHandlerObjectFactory.Container.GetInstance(achievementType)).ToList();
         }

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using BusinessLogic.DataAccess;
@@ -35,7 +34,7 @@ namespace BusinessLogic.Events.Handlers
 
             foreach (var player in players.ToList())
             {
-                foreach (var achievement in AchievementFactory.GetAchivements())
+                foreach (var achievement in AchievementFactory.GetAchievements())
                 {
                     try
                     {

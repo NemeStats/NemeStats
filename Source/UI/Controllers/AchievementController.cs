@@ -36,7 +36,7 @@ namespace UI.Controllers
         [Route("")]
         public virtual ActionResult Index()
         {
-            var achievements = AchievementFactory.GetAchivements();
+            var achievements = AchievementFactory.GetAchievements();
             var model = new AchievementListViewModel
             {
                 Achievements = achievements.Select(a => _achievementToAchievementViewModelMapper.Map(a)).OrderByDescending(a => a.Winners.Count).ThenBy(a=>a.Name).ToList()
