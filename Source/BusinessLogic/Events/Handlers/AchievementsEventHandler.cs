@@ -44,7 +44,7 @@ namespace BusinessLogic.Events.Handlers
 
                         var achievementAwarded = achievement.IsAwardedForThisPlayer(player.Id);
 
-                        if (achievementAwarded.LevelAwarded.HasValue)
+                        if (achievementAwarded.LevelAwarded.HasValue && achievementAwarded.LevelAwarded.Value > AchievementLevel.None )
                         {
                             if (currentPlayerAchievement == null)
                             {
