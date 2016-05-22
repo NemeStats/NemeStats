@@ -43,7 +43,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
                 Name = "New Game"
             };
 
-            autoMocker.ClassUnderTest.AjaxCreate(createGameDefinitionViewModel, currentUser);
+            gameDefinitionControllerPartialMock.AjaxCreate(createGameDefinitionViewModel, currentUser);
 
             var arguments = gameDefinitionCreatorMock.GetArgumentsForCallsMadeOn(mock => mock.CreateGameDefinition(
                 Arg<CreateGameDefinitionRequest>.Is.Anything, 

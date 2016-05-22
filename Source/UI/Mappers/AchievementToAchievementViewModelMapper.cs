@@ -1,7 +1,6 @@
 using System.Data.Entity;
 using System.Linq;
 using AutoMapper;
-using BusinessLogic.DataAccess;
 using BusinessLogic.Logic.Achievements;
 using BusinessLogic.Models;
 using UI.Models.Achievements;

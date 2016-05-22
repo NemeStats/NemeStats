@@ -27,7 +27,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using BusinessLogic.Logic.Players;
-using BusinessLogic.Models.Achievements;
 using BusinessLogic.Models.Points;
 using UI.Mappers;
 using UI.Models.Badges;
@@ -67,7 +66,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         {
             AutomapperConfiguration.Configure();
             minionViewModelBuilderMock = MockRepository.GenerateMock<IMinionViewModelBuilder>();
-            playerAchievementViewModelBuilderMock = MockRepository.GenerateStub<PlayerAchievementToPlayerAchievementSummaryViewModelMapper>(MockRepository.GenerateStub<AchievementToAchievementViewModelMapper>());
+            playerAchievementViewModelBuilderMock = MockRepository.GenerateStub<PlayerAchievementToPlayerAchievementSummaryViewModelMapper>(MockRepository.GenerateStub<AchievementToAchievementViewModelMapper>(MockRepository.GenerateStub<PlayerAchievementToPlayerAchievementWinnerViewModelMapper>()));
 
             currentUser = new ApplicationUser()
             {
