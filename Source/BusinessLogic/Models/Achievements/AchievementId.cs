@@ -11,7 +11,8 @@
         YouveGotHeart = 7,
         Hardcore = 8,
         BoardGameGeek2016_10x10 = 9,
-        NemePoints = 10
+        NemePoints = 10,
+        Collaborator = 11,
     }
 
     public enum AchievementGroup
