@@ -1,8 +1,6 @@
-using System.Data.Entity;
 using System.Linq;
 using AutoMapper;
 using BusinessLogic.Logic.Achievements;
-using BusinessLogic.Models;
 using UI.Models.Achievements;
 
 namespace UI.Mappers
@@ -28,12 +26,7 @@ namespace UI.Mappers
         {
             var model = base.Map(source);
 
-            //We have to use the same context than the achievement to avoid errors. TODO: Fix the scope error
-            var winners = source.DataContext.GetQueryable<PlayerAchievement>().Where(a => a.AchievementId == source.Id)
-                .Include(a => a.Player)
-                .Include(a => a.Player.GamingGroup)
-                .ToList();
-            model.Winners = winners.Select(w=> _achievementToPlayerAchievementWinnerViewModelMapper.Map(w)).ToList();
+            model.Winners = source.Winners.Select(w=> _achievementToPlayerAchievementWinnerViewModelMapper.Map(w)).ToList();
 
             return model;
         }

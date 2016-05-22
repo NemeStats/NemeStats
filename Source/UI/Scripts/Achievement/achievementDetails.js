@@ -32,7 +32,7 @@ Views.Achievement.Details.prototype = {
             new List(playedGamesTableId, { valueNames: playedGamesValues });
         }
 
-        var winnersValues = [{ name: 'playername-col', attr: 'data-name' }, { name: 'date-col', attr: 'data-date' }, { name: 'gaminggroup-col', attr: 'data-name' }];
+        var winnersValues = [{ name: 'playername-col', attr: 'data-name' }, { name: 'date-col', attr: 'data-date' }, { name: 'gaminggroup-col', attr: 'data-name' }, 'level-col'];
         var winnerTableId = "winnersList";
 
         if (ResponsiveBootstrapToolkit.is('>=md')) {

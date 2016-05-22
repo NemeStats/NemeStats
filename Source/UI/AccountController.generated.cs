@@ -401,9 +401,7 @@ namespace UI.Controllers
                 public readonly string RegisterAgainstExistingGamingGroup = "RegisterAgainstExistingGamingGroup";
                 public readonly string ResetPassword = "ResetPassword";
                 public readonly string ResetPasswordConfirmation = "ResetPasswordConfirmation";
-                public readonly string SendCode = "SendCode";
                 public readonly string UserGamingGroups = "UserGamingGroups";
-                public readonly string VerifyCode = "VerifyCode";
             }
             public readonly string _ChangeEmailPartial = "~/Views/Account/_ChangeEmailPartial.cshtml";
             public readonly string _ChangePasswordPartial = "~/Views/Account/_ChangePasswordPartial.cshtml";
@@ -425,9 +423,7 @@ namespace UI.Controllers
             public readonly string RegisterAgainstExistingGamingGroup = "~/Views/Account/RegisterAgainstExistingGamingGroup.cshtml";
             public readonly string ResetPassword = "~/Views/Account/ResetPassword.cshtml";
             public readonly string ResetPasswordConfirmation = "~/Views/Account/ResetPasswordConfirmation.cshtml";
-            public readonly string SendCode = "~/Views/Account/SendCode.cshtml";
             public readonly string UserGamingGroups = "~/Views/Account/UserGamingGroups.cshtml";
-            public readonly string VerifyCode = "~/Views/Account/VerifyCode.cshtml";
         }
     }
 

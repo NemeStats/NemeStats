@@ -1,18 +1,24 @@
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using BusinessLogic.DataAccess;
+using BusinessLogic.Models;
 using BusinessLogic.Models.Achievements;
 
 namespace BusinessLogic.Logic.Achievements
 {
     public abstract class BaseAchievement : IAchievement
     {
-        public IDataContext DataContext { get; set; }
+        protected IDataContext DataContext { get; set; }
 
         protected BaseAchievement(IDataContext dataContext)
         {
             DataContext = dataContext;
+            Winners = dataContext.GetQueryable<PlayerAchievement>().Where(pa => pa.AchievementId == this.Id)
+                .Include(pa => pa.Player)
+                .Include(pa => pa.Player.GamingGroup)
+                .ToList();
         }
 
         protected AchievementLevel GetLevelAwarded(int count)
@@ -29,6 +35,7 @@ namespace BusinessLogic.Logic.Achievements
         public abstract string IconClass { get; }
         public abstract Dictionary<AchievementLevel, int> LevelThresholds { get; }
         public abstract AchievementAwarded IsAwardedForThisPlayer(int playerId);
+        public List<PlayerAchievement> Winners { get; set; }
 
         public string Description
         {
