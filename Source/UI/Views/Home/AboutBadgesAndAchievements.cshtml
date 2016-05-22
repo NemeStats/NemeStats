@@ -1,10 +1,9 @@
-﻿@using UI.HtmlHelpers
-@using UI.Models.Badges
+﻿@using UI.Models.Badges
 @{
 	ViewBag.Title = "Badges and Achievements";
 	Layout = MVC.Shared.Views._BaseLayout;
 }
-<h2 class="page-header">@ViewBag.Title @Html.NemePointsIco()</h2>
+<h2 class="page-header">@ViewBag.Title</h2>
 
 <h3 style="text-decoration: underline">What Are Badges?</h3>
 <p>
@@ -53,5 +52,5 @@
     (e.g. Bronze, Silver, Gold) that are achieved at different thresholds. Due to the intense calculations that go into some Achievements,
     there may be a delay in the time it takes for an Achievement to show up for a Player.
 
-    For a list of all possible Achievements, <a href="https://localhost:44300/achievements">check out the achievements page</a>.
+    For a list of all possible Achievements, <a href="@Url.Action(MVC.Achievement.Index())">check out the achievements page</a>.
 </p>
