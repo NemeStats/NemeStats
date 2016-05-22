@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using BoardGameGeekApiClient.Interfaces;
 using BoardGameGeekApiClient.Models;
-using BusinessLogic.DataAccess;
 using BusinessLogic.Logic.BoardGameGeek;
 using BusinessLogic.Logic.GameDefinitions;
 using BusinessLogic.Logic.Users;
-using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
 using BusinessLogic.Models.User;
 using NUnit.Framework;

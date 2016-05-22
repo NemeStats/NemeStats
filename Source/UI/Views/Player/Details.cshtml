@@ -18,60 +18,85 @@
         }
     </h2>
 
-    <div class="row">
-        <div class="panel panel-primary">
-            <div class="panel-heading">
-                <h4>Player Info</h4>
+<div class="row">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h4>Player Info</h4>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-2">
+                    <strong>
+                        Name
+                    </strong>
+                </div>
+
+                <div class="col-md-2">
+                    @Html.DisplayFor(model => model.PlayerName)
+                </div>
             </div>
-            <div class="panel-body">
-                <div class="row">
-                    <div class="col-md-2">
-                        <strong>
-                            Name
-                        </strong>
-                    </div>
-
-                    <div class="col-md-2">
-                        @Html.DisplayFor(model => model.PlayerName)
-                    </div>
+            <div class="row">
+                <div class="col-md-2">
+                    <strong>
+                        @Html.DisplayNameFor(model => model.PlayerRegistered)
+                    </strong>
                 </div>
-                <div class="row">
-                    <div class="col-md-2">
-                        <strong>
-                            @Html.DisplayNameFor(model => model.PlayerRegistered)
-                        </strong>
-                    </div>
 
-                    <div class="col-md-2">
-                        @Html.DisplayFor(model => model.PlayerRegistered)
-                    </div>
+                <div class="col-md-2">
+                    @Html.DisplayFor(model => model.PlayerRegistered)
                 </div>
-                <div class="row">
-                    <div class="col-md-2">
-                        <strong>
-                            @Html.DisplayNameFor(model => model.Active)
-                        </strong>
-                    </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2">
+                    <strong>
+                        @Html.DisplayNameFor(model => model.Active)
+                    </strong>
+                </div>
 
-                    <div class="col-md-2">
-                        @Html.DisplayFor(model => model.Active)
-                    </div>
+                <div class="col-md-2">
+                    @Html.DisplayFor(model => model.Active)
                 </div>
-                <div class="row">
-                    <div class="col-md-2">
-                        <strong>
-                            Gaming Group
-                        </strong>
-                    </div>
-                    <div class="col-sm-3">
-                        @Html.ActionLink(@Model.GamingGroupName, "Details", "GamingGroup", new { id = @Model.GamingGroupId }, new { })
-                    </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2">
+                    <strong>
+                        Gaming Group
+                    </strong>
+                </div>
+                <div class="col-sm-3">
+                    @Html.ActionLink(@Model.GamingGroupName, "Details", "GamingGroup", new
+                    {
+                        id = @Model.GamingGroupId
+                    }, new
+                    {
+                    })
                 </div>
             </div>
         </div>
     </div>
+</div>
 
     <div class="row">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h4>Achievements</h4>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-12">
+                    <span class="achievement-list">
+                        @foreach (var playerAchievement in Model.PlayerAchievements)
+                        {
+                            @Html.RenderPlayerAchievement(Url, playerAchievement);
+                        }
+                    </span>
+                </div>
+            </div>
+                
+        </div>
+    </div>
+
+<div class="row">
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <h4>Global Statistics</h4>

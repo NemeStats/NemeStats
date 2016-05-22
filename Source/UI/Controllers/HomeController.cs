@@ -18,9 +18,6 @@
 
 #endregion LICENSE
 
-using BusinessLogic.Logic.GameDefinitions;
-using BusinessLogic.Logic.GamingGroups;
-using BusinessLogic.Logic.Players;
 using BusinessLogic.Models.Games;
 using BusinessLogic.Models.GamingGroups;
 using System.Linq;
@@ -100,6 +97,11 @@ namespace UI.Controllers
         }
 
         public virtual ActionResult AboutNemePoints()
+        {
+            return View();
+        }
+
+        public virtual ActionResult AboutBadgesAndAchievements()
         {
             return View();
         }

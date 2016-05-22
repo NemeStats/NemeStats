@@ -2090,9 +2090,9 @@
   font-style: normal;
   font-weight: normal;
   font-variant: normal;
-  line-height: 1;
+  line-height: 1 !important;
   display: inline-block;
-  padding: 0.3em 0.3em;
+  padding: 0.3em 0;
   margin: 0em 0.1em;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale; }
@@ -2110,5 +2110,14 @@
 
 .ns-icon-former-champion:before {
   content: "\e904"; }
+
+.ns-icon-one:before {
+  content: "\e903"; }
+
+.ns-icon-group:before {
+  content: "\e902"; }
+
+.ns-icon-dice:before {
+  content: "\e905"; }
 
 /*# sourceMappingURL=fonts.css.map */

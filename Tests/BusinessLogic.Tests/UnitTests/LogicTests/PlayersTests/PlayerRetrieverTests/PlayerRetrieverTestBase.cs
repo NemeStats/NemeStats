@@ -25,6 +25,7 @@ using Rhino.Mocks;
 using StructureMap.AutoMocking;
 using System.Collections.Generic;
 using System.Linq;
+using BusinessLogic.Models.Achievements;
 
 namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverTests
 {
@@ -121,6 +122,16 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
                 .Return(
                 new List<GameDefinition>
                 { gameDefinition }.AsQueryable());
+
+            var playerAchievement =
+                new PlayerAchievement
+                {
+                    PlayerId = playerId,
+                    AchievementLevel = AchievementLevel.Bronze,
+                    AchievementId = AchievementId.BusyBee
+                };
+            autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<PlayerAchievement>())
+                .Return(new List<PlayerAchievement> { playerAchievement }.AsQueryable());
         }
     }
 }

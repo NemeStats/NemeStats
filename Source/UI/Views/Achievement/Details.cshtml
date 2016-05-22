@@ -1,0 +1,315 @@
+﻿@using BusinessLogic.Models.Achievements
+@using BusinessLogic.Models.PlayedGames
+@using UI.Models.Achievements
+@using UI.Models.Players
+@model PlayerAchievementViewModel
+@{
+    if (Model.HasAnyLevelUnlocked)
+    {
+        ViewBag.Title = @Model.Achievement.Name + " unlocked for " + @Model.PlayerName;
+    }
+    else
+    {
+        ViewBag.Title = @Model.Achievement.Name;
+    }
+    Layout = MVC.Shared.Views._BaseLayout;
+    string levelClass;
+}
+
+@if (Model.HasAnyLevelUnlocked)
+{
+    <h2 class="page-header">@Model.Achievement.Name unlocked for <a href="@Url.Action(MVC.Player.Details(Model.PlayerId, null))">@Model.PlayerName</a> !
+    </h2>
+    levelClass = Model.AchievementLevel.ToString().ToLower();
+}
+else
+{
+    <h2 class="page-header">@Model.Achievement.Name</h2>
+    levelClass = "bronze";
+}
+<div class="panel panel-primary playerachievement">
+    <div class="panel-heading">
+        <h4>Achievement Description</h4>
+    </div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-12">
+
+                <h2>@Model.Achievement.Name</h2>
+                <blockquote>@Model.Achievement.Description</blockquote>
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <span class="achievement big @levelClass">
+                            <span class="circle">
+                                <span class="content">
+                                    <span class="@Model.Achievement.IconClass"></span>
+                                </span>
+                            </span>
+                        </span>
+                    </li>
+                    @if (Model.DateCreated.HasValue)
+                    {
+                        <li class="list-group-item">Unlocked at: @Model.DateCreated.Value.ToShortDateString()</li>
+                    }
+                    
+                    @if (Model.LastUpdatedDate.HasValue && Model.DateCreated < Model.LastUpdatedDate)
+                    {
+                        <li class="list-group-item">Last update: @Model.LastUpdatedDate.Value.ToShortDateString()</li>
+                    }
+                </ul>
+            </div>
+            <div class="col-md-9">
+                <ul class="list-group">
+                    @foreach (var level in Model.Achievement.LevelThresholds)
+                    {
+                        @PlayerProgess(level, Model.PlayerProgress)
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+ @if (Model.RelatedGameDefintions.Any())
+        {
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <h4>Games related to this Achievement <span class="badge">@Model.RelatedGameDefintions.Count</span></h4>
+    </div>
+    <div class="panel-body">
+        <div class="gameDefinitionsList flip-scroll" id="gameslist">
+            <table class="table table-hover table-striped">
+                <caption>
+                    <div class="input-group input-group-sm">
+                        <div class="input-group-addon"><span class="fa fa-search"></span></div>
+                        <input type="text" class="form-control search" placeholder="type game name">
+                    </div>
+                </caption>
+                <thead>
+                    <tr>
+                        <th class="bgg-link-head">
+                            <span class="hidden-md hidden-lg">
+                                Image
+                            </span>
+                        </th>
+                        <th class="name-head">
+                            <span class="sort asc" data-sort="name-col">Name <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
+                        </th>
+                </thead>
+                <tbody class="list">
+                    @foreach (var game in Model.RelatedGameDefintions.OrderBy(g=>g.Name))
+                    {
+                    <tr class="game-item">
+                        <td class="bgg-link-col">
+                            @if (game.HasBoardGameGeekDefinition)
+                            {
+                            if (!string.IsNullOrEmpty(game.BoardGameGeekGameDefinition.Thumbnail))
+                            {
+                            <a href="@Url.Action(MVC.GameDefinition.ActionNames.Details, MVC.GameDefinition.Name, new {id = game.Id})">
+                                <img class="bgg-thumbnail" src="@game.BoardGameGeekGameDefinition.Thumbnail" alt="View on BoardGameGeek.com" title="View on BoardGameGeek.com" />
+                            </a>
+                            }
+                            else
+                            {
+                            <a href="@game.BoardGameGeekGameDefinition.BoardGameGeekUri.AbsoluteUri" target="_blank;">
+                                <img src="~/Content/Images/bgg_small.png" alt="View on BoardGameGeek.com" title="View on BoardGameGeek.com" />
+                            </a>
+                            }
+
+                            }
+                        </td>
+                        <td class="name-col" data-name="@game.Name">
+                            <b>
+                                @Html.ActionLink(game.Name, "Details", "GameDefinition", new {id = game.Id}, new {@class = "name"})
+                            </b>
+                        </td>
+
+                    </tr>
+                    }
+                </tbody>
+            </table>
+            <ul class="pagination"></ul>
+        </div>
+    </div>
+</div>
+    }
+@if (Model.RelatedPlayedGames.Any())
+        {
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <h4>Played Games related to this Achievement <span class="badge">@Model.RelatedPlayedGames.Count</span></h4>
+    </div>
+    <div class="panel-body">
+        <div class="gameDefinitionsList">
+            <div class="flip-scroll" id="playedgameslist">
+                <table class="table table-hover table-striped">
+                    <caption>
+                        <div class="input-group input-group-sm">
+                            <div class="input-group-addon"><span class="fa fa-search"></span></div>
+                            <input type="text" class="form-control search" placeholder="type game name">
+                        </div>
+                    </caption>
+                    <thead>
+                        <tr>
+                            <th class="bgg-link-head"></th>
+                            <th class="name-head">
+                                <span class="sort" data-sort="name-col">Game name <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
+                            </th>
+                            <th>
+                                <span class="sort desc" data-sort="name-col">Date Played <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="list">
+
+                        @foreach (var gameResultViewModel in Model.RelatedPlayedGames.OrderByDescending(pg => pg.DatePlayed))
+                        {
+                        <tr class="game-item">
+                            <td class="bgg-link-col">
+
+                                @if (!string.IsNullOrEmpty(gameResultViewModel.ThumbnailImageUrl))
+                                {
+                                <a href="@Url.Action(MVC.GameDefinition.ActionNames.Details, MVC.GameDefinition.Name, new {id = gameResultViewModel.GameDefinitionId})">
+                                    <img class="bgg-thumbnail" src="@gameResultViewModel.ThumbnailImageUrl" alt="@gameResultViewModel.GameDefinitionName" title="@gameResultViewModel.GameDefinitionName" />
+                                </a>
+                                }
+                            </td>
+                            <td class="name-col" data-name="@gameResultViewModel.GameDefinitionName">
+                                @Html.ActionLink(gameResultViewModel.GameDefinitionName, "Details", "GameDefinition", new {id = gameResultViewModel.GameDefinitionId}, new {})
+                            </td>
+                            <td class="date-col" data-date="@gameResultViewModel.DatePlayed.ToFileTimeUtc()">
+                                @Html.ActionLink(gameResultViewModel.DatePlayed.ToShortDateString(), "Details", "PlayedGame", new {id = gameResultViewModel.PlayedGameId}, new {})
+                            </td>
+
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+                <ul class="pagination"></ul>
+            </div>
+        </div>
+    </div>
+</div>
+    }
+
+@if (Model.Achievement.Winners.Any())
+{
+    <div class="panel panel-primary">
+    <div class="panel-heading">
+        <h4>Players with this Achievement <span class="badge">@Model.Achievement.Winners.Count</span></h4>
+    </div>
+    <div class="panel-body">
+        <div class="winnersList">
+            <div class="flip-scroll" id="winnersList">
+                <table class="table table-hover table-striped">
+                    <caption>
+                        <div class="input-group input-group-sm">
+                            <div class="input-group-addon"><span class="fa fa-search"></span></div>
+                            <input type="text" class="form-control search" placeholder="type player, gaming group, level...">
+                        </div>
+                    </caption>
+                    <thead>
+                        <tr>
+                            <th>
+                                <span class="sort" data-sort="name-col">Player name <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
+                            </th>
+                            <th>
+                                <span class="sort" data-sort="gaminggroup-col">Gaming group <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
+                            </th>
+                            <th>
+                                <span class="sort desc" data-sort="name-col">Date earned <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
+                            </th>
+                            <th>
+                                <span class="sort" data-sort="level-col">Achievement Level <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="list">
+
+                        @foreach (var winner in Model.Achievement.Winners.OrderByDescending(pg => pg.AchievementLastUpdateDate))
+                        {
+                        <tr>
+                            <td class="playername-col" data-name="@winner.PlayerName">
+                                @Html.ActionLink(winner.PlayerName, "Details", "Player", new {id = winner.PlayerId}, new {})
+                            </td>
+                            <td class="gaminggroup-col" data-name="@winner.">
+                                @Html.ActionLink(winner.GamingGroupName, "Details", "GamingGroup", new {id = winner.GamingGroupId}, new {})
+                            </td>
+                            <td class="date-col" data-date="@winner.AchievementLastUpdateDate.ToFileTimeUtc()">
+                                @Html.ActionLink(winner.AchievementLastUpdateDate.ToShortDateString(), "PlayerAchievement", "Achievement", new {achievementId = Model.Achievement.Id, playerId = winner.PlayerId}, new {})
+                            </td>
+                            <td class="level-col">
+                                @winner.AchievementLevel.ToString()
+                            </td>
+
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+                <ul class="pagination"></ul>
+            </div>
+        </div>
+    </div>
+</div>
+}
+
+@helper PlayerProgess(KeyValuePair<AchievementLevel, int>
+    level, int currentPlayerProgress)
+    {
+    var unlocked = false;
+    var width = 0;
+    if (currentPlayerProgress >= level.Value)
+    {
+    width = 100;
+    unlocked = true;
+    }
+    else
+    {
+    width = (currentPlayerProgress*100)/level.Value;
+    }
+
+
+    <li class="list-group-item">
+        <div class="row">
+            <div class="col-xs-1 level">
+                <b>@level.Key.ToString():</b>
+            </div>
+            <div class="col-xs-11">
+                <div class="progress">
+
+                    <div class="progress-value">
+                        @if (unlocked)
+                        {
+                        <span>Unlocked!</span>
+                        <span class="fa fa-check"></span>
+                        }
+                        else
+                        {
+                        <span>@currentPlayerProgress.ToString("N0") / @level.Value.ToString("N0")</span>
+                        }
+
+                    </div>
+
+                    <div class="progress-bar @level.Key.ToString().ToLower()" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: @width.ToString()%;"></div>
+                </div>
+
+            </div>
+        </div>
+    </li>
+    }
+
+
+
+
+    @section Scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var achievementDetails = new window.Views.Achievement.Details();
+            achievementDetails.init();
+        });
+    </script>
+    }

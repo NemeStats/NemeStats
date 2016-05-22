@@ -75,6 +75,7 @@ namespace UI.Controllers
             public readonly string Index = "Index";
             public readonly string About = "About";
             public readonly string AboutNemePoints = "AboutNemePoints";
+            public readonly string AboutBadgesAndAchievements = "AboutBadgesAndAchievements";
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -83,6 +84,7 @@ namespace UI.Controllers
             public const string Index = "Index";
             public const string About = "About";
             public const string AboutNemePoints = "AboutNemePoints";
+            public const string AboutBadgesAndAchievements = "AboutBadgesAndAchievements";
         }
 
 
@@ -98,11 +100,13 @@ namespace UI.Controllers
             {
                 public readonly string _HomeFeatures = "_HomeFeatures";
                 public readonly string About = "About";
+                public readonly string AboutBadgesAndAchievements = "AboutBadgesAndAchievements";
                 public readonly string AboutNemePoints = "AboutNemePoints";
                 public readonly string Index = "Index";
             }
             public readonly string _HomeFeatures = "~/Views/Home/_HomeFeatures.cshtml";
             public readonly string About = "~/Views/Home/About.cshtml";
+            public readonly string AboutBadgesAndAchievements = "~/Views/Home/AboutBadgesAndAchievements.cshtml";
             public readonly string AboutNemePoints = "~/Views/Home/AboutNemePoints.cshtml";
             public readonly string Index = "~/Views/Home/Index.cshtml";
         }
@@ -143,6 +147,17 @@ namespace UI.Controllers
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AboutNemePoints);
             AboutNemePointsOverride(callInfo);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void AboutBadgesAndAchievementsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult AboutBadgesAndAchievements()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AboutBadgesAndAchievements);
+            AboutBadgesAndAchievementsOverride(callInfo);
             return callInfo;
         }
 

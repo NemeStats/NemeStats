@@ -1,0 +1,51 @@
+﻿@using BusinessLogic.Models.Achievements
+@using UI.Models.Achievements
+@model UI.Models.Achievements.AchievementListViewModel
+@{
+    ViewBag.Title = "NemeStats Achievements";
+    Layout = MVC.Shared.Views._BaseLayout;
+}
+
+<h2 class="page-header">NemeStats Achievements</h2>
+<div class="achievementlist">
+    @for (int i = 0; i < Model.Achievements.Count; i += 3)
+    {
+    <div class="row">
+        @RenderAchievementBlock(i)
+        @RenderAchievementBlock(i + 1)
+        @RenderAchievementBlock(i + 2)
+    </div>
+    }
+</div>
+
+
+
+@helper RenderAchievementBlock(int position)
+{
+    if (Model.Achievements.Count > position)
+        {
+<div class="col-sm-4">
+    <div class="block">
+        @RenderAchievement(Model.Achievements[position])
+    </div>
+</div>
+     }
+}
+
+@helper RenderAchievement(AchievementViewModel achievement)
+    {
+
+<a href="@Url.Action("Details","Achievement", routeValues: new {achievementId = achievement.Id})">
+    <span class="achievement big @achievement.LevelThresholds.First().Key.ToString().ToLower()">
+        <span class="circle">
+            <span class="content">
+                <span class="@achievement.IconClass"></span>
+            </span>
+        </span>
+    </span>
+</a>
+
+<h4 class="name">@achievement.Name</h4>
+<h5>Earned by @achievement.Winners.Count players</h5>
+<p><a href="@Url.Action("Details","Achievement", routeValues: new {achievementId = achievement.Id})" class="btn btn-default btn-xs">View details</a></p>
+}

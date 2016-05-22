@@ -27,7 +27,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
-using BusinessLogic.Logic.GamingGroups;
 using UI.Attributes.Filters;
 using UI.Controllers.Helpers;
 using UI.Models.Players;
@@ -69,7 +68,7 @@ namespace UI.Controllers
             IPlayerSummaryBuilder playerSummaryBuilder,
             ITopPlayerViewModelBuilder topPlayerViewModelBuilder,
             INemesisHistoryRetriever nemesisHistoryRetriever,
-            INemesisChangeViewModelBuilder nemesisChangeViewModelBuilder, IGamingGroupRetriever gamingGroupRetriever)
+            INemesisChangeViewModelBuilder nemesisChangeViewModelBuilder)
         {
             this.dataContext = dataContext;
             this.builder = builder;

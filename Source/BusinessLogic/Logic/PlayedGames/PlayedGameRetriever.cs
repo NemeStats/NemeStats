@@ -243,5 +243,20 @@ namespace BusinessLogic.Logic.PlayedGames
                 throw new InvalidDateFormatException(inputDate);
             }
         }
+
+        public List<PlayedGameQuickStats> GetPlayedGamesQuickStats(List<int> playedGameIds)
+        {
+            return dataContext.GetQueryable<PlayedGame>()
+                .Where(pg => playedGameIds.Contains(pg.Id))
+                .Select(playedgame => new PlayedGameQuickStats
+                {
+                    DatePlayed = playedgame.DatePlayed,
+                    GameDefinitionName = playedgame.GameDefinition.Name,
+                    GameDefinitionId = playedgame.GameDefinitionId,
+                    PlayedGameId = playedgame.Id,
+                    ThumbnailImageUrl = playedgame.GameDefinition.BoardGameGeekGameDefinition.Thumbnail,
+                }).ToList();
+
+        }
     }
 }

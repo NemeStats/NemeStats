@@ -65,9 +65,9 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
                 .Return(asyncRequestMock);
             asyncRequestMock.Headers.Clear();
 
-            gameDefinitionControllerPartialMock.ControllerContext = new ControllerContext(context, new RouteData(), gameDefinitionControllerPartialMock);
+            autoMocker.ClassUnderTest.ControllerContext = new ControllerContext(context, new RouteData(), gameDefinitionControllerPartialMock);
 
-            var result = gameDefinitionControllerPartialMock.AjaxCreate(new CreateGameDefinitionViewModel(), currentUser) as HttpStatusCodeResult;
+            var result = autoMocker.ClassUnderTest.AjaxCreate(new CreateGameDefinitionViewModel(), currentUser) as HttpStatusCodeResult;
 
             Assert.AreEqual((int)HttpStatusCode.BadRequest, result.StatusCode);
         }

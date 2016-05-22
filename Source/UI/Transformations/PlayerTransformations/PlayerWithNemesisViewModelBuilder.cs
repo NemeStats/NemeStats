@@ -17,7 +17,6 @@
 #endregion
 
 using System;
-using System.Linq;
 using BusinessLogic.Models.Players;
 using BusinessLogic.Models.User;
 using UI.Models.Players;
@@ -26,7 +25,7 @@ using UI.Models.Points;
 
 namespace UI.Transformations.PlayerTransformations
 {
-    public class PlayerWithNemesisViewModelBuilder : UI.Transformations.PlayerTransformations.IPlayerWithNemesisViewModelBuilder
+    public class PlayerWithNemesisViewModelBuilder : IPlayerWithNemesisViewModelBuilder
     {
         public PlayerWithNemesisViewModel Build(PlayerWithNemesis playerWithNemesis, ApplicationUser currentUser)
         {
@@ -35,7 +34,7 @@ namespace UI.Transformations.PlayerTransformations
             AddInactivePlayerSuffix(playerWithNemesis);
 
             var totalGamesPlayed = playerWithNemesis.GamesLost + playerWithNemesis.GamesWon;
-            PlayerWithNemesisViewModel model = new PlayerWithNemesisViewModel
+            var model = new PlayerWithNemesisViewModel
             {
                 PlayerId = playerWithNemesis.PlayerId,
                 PlayerName = playerWithNemesis.PlayerName,
@@ -50,7 +49,8 @@ namespace UI.Transformations.PlayerTransformations
                 OverallWinPercentage = WinPercentageCalculator.CalculateWinPercentage(playerWithNemesis.GamesWon, playerWithNemesis.GamesLost),
                 NemePointsSummary = new NemePointsSummaryViewModel(playerWithNemesis.NemePointsSummary),
                 TotalChampionedGames = playerWithNemesis.TotalChampionedGames,
-                AveragePointsPerGame = totalGamesPlayed > 0 ? (float)playerWithNemesis.NemePointsSummary.TotalPoints / (float)totalGamesPlayed : 0
+                AveragePointsPerGame = totalGamesPlayed > 0 ? (float)playerWithNemesis.NemePointsSummary.TotalPoints / (float)totalGamesPlayed : 0,
+                AchievementsPerLevel = playerWithNemesis.AchievementsPerLevel
             };
 
             return model;

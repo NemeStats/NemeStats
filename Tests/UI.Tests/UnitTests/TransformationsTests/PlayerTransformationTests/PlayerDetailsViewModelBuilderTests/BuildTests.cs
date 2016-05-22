@@ -28,6 +28,7 @@ using System.Collections.Generic;
 using System.Linq;
 using BusinessLogic.Logic.Players;
 using BusinessLogic.Models.Points;
+using UI.Mappers;
 using UI.Models.Badges;
 using UI.Models.Players;
 using UI.Models.Points;
@@ -41,6 +42,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
     {
         private IGameResultViewModelBuilder gameResultViewModelBuilder;
         private IMinionViewModelBuilder minionViewModelBuilderMock;
+        private PlayerAchievementToPlayerAchievementSummaryViewModelMapper playerAchievementViewModelBuilderMock;
         private PlayerDetails playerDetails;
         private PlayerDetailsViewModel playerDetailsViewModel;
         private PlayerDetailsViewModelBuilder builder;
@@ -64,6 +66,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         {
             AutomapperConfiguration.Configure();
             minionViewModelBuilderMock = MockRepository.GenerateMock<IMinionViewModelBuilder>();
+            playerAchievementViewModelBuilderMock = MockRepository.GenerateStub<PlayerAchievementToPlayerAchievementSummaryViewModelMapper>(MockRepository.GenerateStub<AchievementToAchievementViewModelMapper>(MockRepository.GenerateStub<PlayerAchievementToPlayerAchievementWinnerViewModelMapper>()));
 
             currentUser = new ApplicationUser()
             {
@@ -248,7 +251,9 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
             };
             playerDetails.FormerChampionedGames = formerChampionedGames;
 
-            builder = new PlayerDetailsViewModelBuilder(gameResultViewModelBuilder, minionViewModelBuilderMock);
+          
+
+            builder = new PlayerDetailsViewModelBuilder(gameResultViewModelBuilder, minionViewModelBuilderMock, playerAchievementViewModelBuilderMock);
 
             playerDetailsViewModel = builder.Build(playerDetails, twitterMinionBraggingUrl, currentUser);
         }
@@ -256,7 +261,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         [Test]
         public void PlayerDetailsCannotBeNull()
         {
-            var builder = new PlayerDetailsViewModelBuilder(null, null);
+            var builder = new PlayerDetailsViewModelBuilder(null, null, null);
 
             var exception = Assert.Throws<ArgumentNullException>(() =>
                     builder.Build(null, twitterMinionBraggingUrl, currentUser));
@@ -267,7 +272,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         [Test]
         public void ItRequiresPlayerGameResults()
         {
-            var builder = new PlayerDetailsViewModelBuilder(null, null);
+            var builder = new PlayerDetailsViewModelBuilder(null, null, null);
 
             var exception = Assert.Throws<ArgumentException>(() =>
                     builder.Build(new PlayerDetails(), twitterMinionBraggingUrl, currentUser));
@@ -278,7 +283,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         [Test]
         public void ItRequiresPlayerStatistics()
         {
-            var builder = new PlayerDetailsViewModelBuilder(null, null);
+            var builder = new PlayerDetailsViewModelBuilder(null, null, null);
             var playerDetailsWithNoStatistics = new PlayerDetails() { PlayerGameResults = new List<PlayerGameResult>() };
             var exception = Assert.Throws<ArgumentException>(() =>
                     builder.Build(playerDetailsWithNoStatistics, twitterMinionBraggingUrl, currentUser));
@@ -289,7 +294,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         [Test]
         public void MinionsCannotBeNull()
         {
-            var builder = new PlayerDetailsViewModelBuilder(null, null);
+            var builder = new PlayerDetailsViewModelBuilder(null, null, null);
             var playerDetailsWithNoMinions = new PlayerDetails() { PlayerGameResults = new List<PlayerGameResult>() };
             playerDetailsWithNoMinions.PlayerStats = new PlayerStatistics();
 
@@ -302,7 +307,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         [Test]
         public void ChampionedGamesCannotBeNull()
         {
-            var builder = new PlayerDetailsViewModelBuilder(null, null);
+            var builder = new PlayerDetailsViewModelBuilder(null, null,null);
             var playerDetailsWithNoChampionedGames = new PlayerDetails()
             {
                 PlayerGameResults = new List<PlayerGameResult>(),
@@ -320,7 +325,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         [Test]
         public void FormerChampionedGamesCannotBeNull()
         {
-            var builder = new PlayerDetailsViewModelBuilder(null, null);
+            var builder = new PlayerDetailsViewModelBuilder(null, null, null);
             var playerDetailsWithNoChampionedGames = new PlayerDetails()
             {
                 PlayerGameResults = new List<PlayerGameResult>(),
@@ -405,6 +410,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
             Assert.AreEqual(playerDetails.GamingGroupName, playerDetailsViewModel.GamingGroupName);
         }
 
+    
         [Test]
         public void ItCopiesTheNemePointsSummary()
         {

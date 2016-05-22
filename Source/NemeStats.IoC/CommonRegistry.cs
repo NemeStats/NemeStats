@@ -17,17 +17,18 @@
 #endregion
 
 using System.Configuration.Abstractions;
-using System.Data.Entity;
 using BoardGameGeekApiClient.Interfaces;
 using BusinessLogic.Caching;
-using BusinessLogic.DataAccess;
 using BusinessLogic.DataAccess.GamingGroups;
 using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.DataAccess.Security;
+using BusinessLogic.Events.HandlerFactory;
+using BusinessLogic.Events.Interfaces;
 using BusinessLogic.EventTracking;
 using BusinessLogic.Export;
 using BusinessLogic.Facades;
 using BusinessLogic.Jobs.BoardGameGeekCleanUpService;
+using BusinessLogic.Logic.Achievements;
 using BusinessLogic.Logic.BoardGameGeek;
 using BusinessLogic.Logic.Champions;
 using BusinessLogic.Logic.Email;
@@ -35,6 +36,7 @@ using BusinessLogic.Logic.GameDefinitions;
 using BusinessLogic.Logic.GamingGroups;
 using BusinessLogic.Logic.Nemeses;
 using BusinessLogic.Logic.PlayedGames;
+using BusinessLogic.Logic.PlayerAchievements;
 using BusinessLogic.Logic.Players;
 using BusinessLogic.Logic.Points;
 using BusinessLogic.Logic.Users;
@@ -67,14 +69,23 @@ namespace NemeStats.IoC
             Scan(s =>
             {
                 s.AssemblyContainingType<IBoardGameGeekApiClient>();
+                s.AssemblyContainingType<IBusinessLogicEventBus>();
                 s.RegisterConcreteTypesAgainstTheFirstInterface();
             });
 
             this.For<IRollbarClient>().Use(new RollbarClient()).Singleton();
 
-            SetupUniquePerRequestMappings();
-
             SetupTransientMappings();
+
+            SetupSpecialMappings();
+        }
+
+        private void SetupSpecialMappings()
+        {
+            var busHandlerConfiguration = new HandlerFactoryConfiguration()
+                        .AddHandlerAssembly(typeof(IBusinessLogicEventHandler<>).Assembly)
+                        .AddMessageAssembly(typeof(IBusinessLogicEvent).Assembly);
+            For<HandlerFactoryConfiguration>().Use(busHandlerConfiguration).Singleton();
         }
 
 
@@ -160,11 +171,12 @@ namespace NemeStats.IoC
             For<IWeightTierCalculator>().Use<WeightTierCalculator>();
             For<IWeightBonusCalculator>().Use<WeightBonusCalculator>();
             For<IGameDurationBonusCalculator>().Use<GameDurationBonusCalculator>();
-
+            //For<IAchievementAwarder>().Use<AchievementAwarder>();
             For<IRecentPublicGamesRetriever>().Use<RecentPublicGamesRetriever>();
             For<ITopGamingGroupsRetriever>().Use<TopGamingGroupsRetriever>();
             For<ITopPlayersRetriever>().Use<TopPlayersRetriever>();
             For<ITrendingGamesRetriever>().Use<TrendingGamesRetriever>();
+            For<IPlayerAchievementRetriever>().Use<PlayerAchievementRetriever>();
 
 
             For<ICacheService>().Use<CacheService>();
@@ -172,12 +184,6 @@ namespace NemeStats.IoC
             For<IDateUtilities>().Use<DateUtilities>();
         }
 
-        private void SetupUniquePerRequestMappings()
-        {
-            this.For<DbContext>().HttpContextScoped().Use<NemeStatsDbContext>();
-            this.For<IDataContext>().HttpContextScoped().Use<NemeStatsDataContext>();
-            this.For<ApplicationUserManager>().HttpContextScoped().Use<ApplicationUserManager>();
-        }
 
         #endregion
     }

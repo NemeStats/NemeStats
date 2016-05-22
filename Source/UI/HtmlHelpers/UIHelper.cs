@@ -18,6 +18,8 @@
 
 using System.Web;
 using System.Web.Mvc;
+using UI.Models;
+using UI.Models.Achievements;
 
 namespace UI.HtmlHelpers
 {
@@ -26,15 +28,33 @@ namespace UI.HtmlHelpers
         internal const string NEMEPOINTICO_CSS_CLASS = "neme-points-ico";
         public static MvcHtmlString NemePointsIco(this HtmlHelper htmlHelper, bool showTooltip = true, string tooltip = "Total NemePoints earned by playing games", string tooltipPosition = "top")
         {
-            var tootlipHtml = showTooltip
+            var tooltipHtml = showTooltip
                 ? $"data-toggle=\"popover\" data-placement=\"{tooltipPosition}\" data-content=\"{tooltip}\""
                 : "";
 
             var html =
-                $"<span class=\"fa-stack {NEMEPOINTICO_CSS_CLASS}\" {tootlipHtml}><i class=\"fa fa-circle fa-stack-2x\"></i><i class=\"fa fa-stack-1x letter\">N</i></span>";
+                $"<span class=\"fa-stack {NEMEPOINTICO_CSS_CLASS}\" {tooltipHtml}><i class=\"fa fa-circle fa-stack-2x\"></i><i class=\"fa fa-stack-1x letter\"></i></span>";
 
             return new MvcHtmlString(html);
 
+        }
+
+        public static MvcHtmlString RenderPlayerAchievement(this HtmlHelper htmlHelper, UrlHelper url, PlayerAchievementSummaryViewModel playerAchievement, string tooltipPosition = "top")
+        {
+            var achievementDetailUrl = url.Action(MVC.Achievement.PlayerAchievement(playerAchievement.Achievement.Id, playerAchievement.PlayerId));
+            var html =
+                $"<a href=\"{achievementDetailUrl}\">" +
+                    $"<span class=\"achievement big {playerAchievement.AchievementLevel.ToString().ToLower()}\" data-toggle=\"popover\" data-placement=\"{tooltipPosition}\" data-content=\"{playerAchievement.Achievement.Name}\" >" +
+                        $"<span class=\"circle\">" +
+                            $"<span class=\"content\">" +
+                                $"<span class=\"{playerAchievement.Achievement.IconClass}\">" +
+                                $"</span>" +
+                            $"</span>" +
+                        $"</span>" +
+                    $"</span>" +
+                $"</a>";
+
+            return new MvcHtmlString(html);
         }
 
         public static HtmlString RenderTempDataMessage(this HtmlHelper htmlHelper, string key)
@@ -42,14 +62,14 @@ namespace UI.HtmlHelpers
             if (htmlHelper.ViewContext.TempData.ContainsKey(key))
             {
                 var message = htmlHelper.ViewContext.TempData[key];
-                var kind = htmlHelper.ViewContext.TempData[key+"_kind"];
+                var kind = htmlHelper.ViewContext.TempData[key + "_kind"];
                 string html = $"<div class='alert alert-{kind} voffset4'>" +
                               $"<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>" +
                               $"{message}" +
                               $"</div>";
                 return new HtmlString(html);
             }
-            return  new HtmlString("");
+            return new HtmlString("");
         }
     }
 }

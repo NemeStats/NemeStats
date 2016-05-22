@@ -126,7 +126,7 @@ namespace UI.Controllers
             {
                 return RedirectToAction(Index());
             }
-            GamingGroupSummary gamingGroupSummary = GetGamingGroupSummary(id);
+            var gamingGroupSummary = GetGamingGroupSummary(id);
 
             var viewModel = new GamingGroupPublicViewModel
             {

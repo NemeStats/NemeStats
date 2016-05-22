@@ -6,9 +6,9 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="msvalidate.01" content="52A9C8830987C1456378EB7E298524FB"/>
 
-    <title>@ViewBag.Title - NemeStats</title>
+    <meta name="msvalidate.01" content="52A9C8830987C1456378EB7E298524FB" />
+    <title>@ViewBag.Title | NemeStats</title>
     @if (ViewBag.Description != null)
     {
         <meta name="description" content="@ViewBag.Description" />
@@ -39,6 +39,26 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Explore<span class="caret"></span></a>
+                        <ul class="dropdown-menu multi-level" role="menu">
+                            <li><a href="@Url.Action(MVC.Achievement.Index())">Achievements List</a></li>
+                            <li><a href="@Url.Action(MVC.PlayedGame.ShowRecentlyPlayedGames())">Recent Games</a></li>
+                            <li><a href="@Url.Action(MVC.GameDefinition.ShowTrendingGames())">Trending Games</a></li>
+                            <li><a href="@Url.Action(MVC.GamingGroup.GetTopGamingGroups())">Top Gaming Groups</a></li>
+                            <li><a href="@Url.Action(MVC.Player.ShowTopPlayers())">Top Players</a></li>
+                            <li><a href="@Url.Action(MVC.Home.AboutBadgesAndAchievements())">About Badges and Achievements</a></li>
+                            <li class="dropdown-submenu">
+                                <a href="#">Contact</a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="http://nemestats.idea.informer.com/proj/?mod=one" target="_blank"><span class="fa fa-envelope"></span> Feedback</a></li>
+                                    <li><a href="https://nemestats-slack-invitation.herokuapp.com/" target="_blank"><span class="fa fa-slack"></span> Slack</a></li>
+                                    <li><a href="https://twitter.com/NemeStats" target="_blank"><span class="fa fa-twitter"></span> Twitter</a></li>
+                                    <li><a href="https://github.com/NemeStats/NemeStats" target="_blank"><span class="fa fa-github"></span> GitHub</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
                     <li id="gtm-recordplayedgamebutton-fromnavbar"><a href="@Url.Action(MVC.PlayedGame.Create())"><span class="fa fa-plus-circle"></span> Record Played Game</a></li>
                     <li id="navMyGamingGroup">@Html.ActionLink("My Gaming Group", "Index", "GamingGroup")</li>
                     <li id="navAbout">@Html.ActionLink("About", "About", "Home")</li>
@@ -58,6 +78,7 @@
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/handlebars")
     @Scripts.Render("~/bundles/vue")
+    @Scripts.Render("~/bundles/pnotify")
     @Scripts.Render("~/bundles/readmore")
     @Scripts.Render("~/bundles/list")
     @Scripts.Render("~/bundles/custom")

@@ -504,6 +504,51 @@ footer {
   font-size: 11px;
   text-decoration: underline; }
 
+.dropdown-submenu {
+  position: relative; }
+
+.dropdown-submenu > .dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  -webkit-border-radius: 0 6px 6px 6px;
+  -moz-border-radius: 0 6px 6px;
+  border-radius: 0 6px 6px 6px; }
+
+.dropdown-submenu:hover > .dropdown-menu {
+  display: block; }
+
+.dropdown-submenu > a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #ccc;
+  margin-top: 5px;
+  margin-right: -10px; }
+
+.dropdown-submenu:hover > a:after {
+  border-left-color: #fff; }
+
+.dropdown-submenu.pull-left {
+  float: none; }
+
+.dropdown-submenu.pull-left > .dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  -webkit-border-radius: 6px 0 6px 6px;
+  -moz-border-radius: 6px 0 6px 6px;
+  border-radius: 6px 0 6px 6px; }
+
+#aboutbadges .badgeico {
+  text-align: center;
+  font-size: 20px; }
+
 /*$header-background-color: #2C3E50;*/
 @media (max-width: 991px) {
   .home-page-icon {
@@ -522,7 +567,7 @@ footer {
     font-size: 13px;
     padding-right: 5px; }
   .navbar-right li {
-    max-width: 100px; } }
+    max-width: 85px; } }
 
 @media (max-width: 767px) {
   .navbar-right li {
@@ -729,6 +774,8 @@ footer {
   .neme-points-ico .letter {
     color: white;
     font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif; }
+    .neme-points-ico .letter:before {
+      content: "N"; }
 
 @media (max-width: 991px) {
   #player-details .gameDefinitionsList.flip-scroll .badges-head {
@@ -857,5 +904,97 @@ footer {
 
 .game-result .rank .value {
   font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif !important; }
+
+/*$header-background-color: #2C3E50;*/
+.achievements {
+  display: inline-block; }
+
+.achievement-list {
+  display: inline-block;
+  padding: 40px; }
+  .achievement-list .achievement {
+    margin-right: 10px; }
+
+.achievement {
+  position: relative;
+  top: -1px;
+  display: inline-block;
+  text-align: center;
+  border-radius: 50%; }
+  .achievement .content > span.nemepoints-achievement {
+    font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif; }
+    .achievement .content > span.nemepoints-achievement:before {
+      content: "N"; }
+  .achievement.bronze {
+    background-color: #efb340; }
+    .achievement.bronze .circle {
+      background-color: #F5CF87; }
+    .achievement.bronze .content {
+      color: #ba7f10;
+      font-weight: bold; }
+  .achievement.silver {
+    background-color: #bcbcb5; }
+    .achievement.silver .circle {
+      background-color: #E0E0DD; }
+    .achievement.silver .content {
+      color: #8b8b80;
+      font-weight: bold; }
+  .achievement.gold {
+    background-color: #b39c00; }
+    .achievement.gold .circle {
+      background-color: #FFDF00; }
+    .achievement.gold .content {
+      color: #b39c00;
+      font-weight: bold; }
+  .achievement .circle {
+    width: 20px;
+    height: 20px;
+    margin: 3px;
+    text-align: center;
+    display: inline-block;
+    border-radius: 50%; }
+  .achievement.big .circle {
+    width: 65px;
+    height: 65px;
+    margin: 5px; }
+  .achievement.big .content {
+    font-size: 40px; }
+    .achievement.big .content > span {
+      line-height: 67px; }
+
+.playerachievement ul {
+  text-align: center;
+  margin-top: 20px; }
+  .playerachievement ul li {
+    border: 0; }
+
+.playerachievement .progress {
+  height: 25px; }
+  .playerachievement .progress .progress-value {
+    position: absolute;
+    right: 0;
+    left: 0;
+    top: 2px;
+    font-weight: bold; }
+  .playerachievement .progress .progress-bar {
+    min-width: 1em;
+    line-height: 25px; }
+    .playerachievement .progress .progress-bar.bronze {
+      background-color: #efb340; }
+    .playerachievement .progress .progress-bar.silver {
+      background-color: #bcbcb5; }
+    .playerachievement .progress .progress-bar.gold {
+      background-color: #b39c00; }
+
+.achievementlist .block {
+  text-align: center;
+  padding: 30px;
+  border: 1px solid #e3e3e3;
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+  margin-top: 20px; }
+  .achievementlist .block .name {
+    min-height: 40px; }
 
 /*# sourceMappingURL=nemestats.css.map */

@@ -32,6 +32,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using BusinessLogic.Facades;
 using UI.Attributes.Filters;
 using UI.Controllers.Helpers;
 using UI.Models.GameDefinitionModels;
@@ -47,6 +48,7 @@ namespace UI.Controllers
 
         internal IDataContext dataContext;
         internal IGameDefinitionRetriever gameDefinitionRetriever;
+        internal ITrendingGamesRetriever _trendingGamesRetriever;
         internal IGameDefinitionDetailsViewModelBuilder gameDefinitionTransformation;
         internal IShowingXResultsMessageBuilder showingXResultsMessageBuilder;
         internal IGameDefinitionSaver gameDefinitionSaver;
@@ -57,6 +59,7 @@ namespace UI.Controllers
 
         public GameDefinitionController(IDataContext dataContext,
             IGameDefinitionRetriever gameDefinitionRetriever,
+            ITrendingGamesRetriever trendingGamesRetriever,
             IGameDefinitionDetailsViewModelBuilder gameDefinitionTransformation,
             IShowingXResultsMessageBuilder showingXResultsMessageBuilder,
             IGameDefinitionSaver gameDefinitionCreator,
@@ -67,9 +70,10 @@ namespace UI.Controllers
         {
             this.dataContext = dataContext;
             this.gameDefinitionRetriever = gameDefinitionRetriever;
+            _trendingGamesRetriever = trendingGamesRetriever;
             this.gameDefinitionTransformation = gameDefinitionTransformation;
             this.showingXResultsMessageBuilder = showingXResultsMessageBuilder;
-            this.gameDefinitionSaver = gameDefinitionCreator;
+            gameDefinitionSaver = gameDefinitionCreator;
             _boardGameGeekApiClient = boardGameGeekApiClient;
             _userRetriever = userRetriever;
             _boardGameGeekGamesImporter = boardGameGeekGamesImporter;
@@ -185,16 +189,16 @@ namespace UI.Controllers
 
             if (gamesImported == null)
             {
-                this.SetTempMessage(TempMessageKeys.CREATE_GAMEDEFITION_RESULT_TEMPMESSAGE, "It appears as though you don't have any games in your BoardGameGeek collection :_(", "info");
+                SetTempMessage(TempMessageKeys.CREATE_GAMEDEFITION_RESULT_TEMPMESSAGE, "It appears as though you don't have any games in your BoardGameGeek collection :_(", "info");
             }
             else if (gamesImported == 0)
             {
-                this.SetTempMessage(TempMessageKeys.CREATE_GAMEDEFITION_RESULT_TEMPMESSAGE,
+                SetTempMessage(TempMessageKeys.CREATE_GAMEDEFITION_RESULT_TEMPMESSAGE,
                     "All your BoardGameGeek games are already imported ;-)", "info");
             }
             else
             {
-                this.SetTempMessage(TempMessageKeys.CREATE_GAMEDEFITION_RESULT_TEMPMESSAGE, $"{gamesImported} games imported from your BoardGameGeek collection to NemeStats. Awesome!");
+                SetTempMessage(TempMessageKeys.CREATE_GAMEDEFITION_RESULT_TEMPMESSAGE, $"{gamesImported} games imported from your BoardGameGeek collection to NemeStats. Awesome!");
             }
 
             return RedirectToAction(MVC.GamingGroup.Index());
@@ -266,7 +270,7 @@ namespace UI.Controllers
         {
             var bggUser = _userRetriever.RetrieveUserInformation(currentUser).BoardGameGeekUser;
 
-            return View(MVC.GameDefinition.Views._CreatePartial, new CreateGameDefinitionViewModel() { BGGUserName = bggUser?.Name, GamingGroupId = currentUser.CurrentGamingGroupId});
+            return View(MVC.GameDefinition.Views._CreatePartial, new CreateGameDefinitionViewModel() { BGGUserName = bggUser?.Name, GamingGroupId = currentUser.CurrentGamingGroupId });
         }
 
         [Authorize]
@@ -291,7 +295,8 @@ namespace UI.Controllers
         [HttpGet]
         public virtual ActionResult ShowTrendingGames()
         {
-            var trendingGames = gameDefinitionRetriever.GetTrendingGames(NUMBER_OF_TRENDING_GAMES_TO_SHOW, NUMBER_OF_DAYS_OF_TRENDING_GAMES);
+            var trendingGamesRequest = new TrendingGamesRequest(NUMBER_OF_TRENDING_GAMES_TO_SHOW, NUMBER_OF_DAYS_OF_TRENDING_GAMES);
+            var trendingGames = _trendingGamesRetriever.GetResults(trendingGamesRequest);
             var trendingGamesViewModels = trendingGames.Select(_transformer.Transform<TrendingGame, TrendingGameViewModel>).ToList();
             ViewBag.NumTrendingDays = NUMBER_OF_DAYS_OF_TRENDING_GAMES;
 

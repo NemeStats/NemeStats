@@ -274,6 +274,9 @@
     <Compile Include="AccountController.generated.cs">
       <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>
+    <Compile Include="AchievementController.generated.cs">
+      <DependentUpon>T4MVC.tt</DependentUpon>
+    </Compile>
     <Compile Include="Api.SharedController.generated.cs">
       <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>
@@ -330,6 +333,7 @@
       <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AchievementController.cs" />
     <Compile Include="Controllers\GameDefinitionController.cs" />
     <Compile Include="Controllers\GamingGroupController.cs" />
     <Compile Include="Controllers\Helpers\BaseController.cs" />
@@ -366,7 +370,20 @@
     <Compile Include="JobsController.generated.cs">
       <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Badges\BadgeBaseViewModel.cs" />
+    <Compile Include="Mappers\AchievementToAchievementViewModelMapper.cs" />
+    <Compile Include="Mappers\BaseMapperService.cs" />
+    <Compile Include="Mappers\GameDefinitionSummaryToGameDefinitionSummaryListViewModelMapper.cs" />
+    <Compile Include="Mappers\IMapperService.cs" />
+    <Compile Include="Mappers\PlayedGameQuickStatsToPlayedGameQuickStatsViewModelMapper.cs" />
+    <Compile Include="Mappers\PlayerAchievementToPlayerAchievementSummaryViewModelMapper.cs" />
+    <Compile Include="Mappers\PlayerAchievementToPlayerAchievementViewModelMapper.cs" />
+    <Compile Include="Mappers\PlayerAchievementToPlayerAchievementWinnerViewModelMapper.cs" />
+    <Compile Include="Models\Achievements\AchievementDetailsViewModel.cs" />
+    <Compile Include="Models\Achievements\AchievementListViewModel.cs" />
+    <Compile Include="Models\Achievements\AchievementViewModel.cs" />
+    <Compile Include="Models\Achievements\PlayerAchievementSummaryViewModel.cs" />
+    <Compile Include="Models\Achievements\PlayerAchievementViewModel.cs" />
+    <Compile Include="Models\Badges\IBadgeBaseViewModel.cs" />
     <Compile Include="Models\Badges\ChampionBadgeViewModel.cs" />
     <Compile Include="Models\Badges\FormerChampionBadgeViewModel.cs" />
     <Compile Include="Models\Badges\MinionBadgeViewModel.cs" />
@@ -375,6 +392,7 @@
     <Compile Include="Models\GameDefinitionModels\BoardGameGeekGameDefinitionViewModel.cs" />
     <Compile Include="Models\GameDefinitionModels\CreateGameDefinitionViewModel.cs" />
     <Compile Include="Models\GameDefinitionModels\GameDefinitionEditViewModel.cs" />
+    <Compile Include="Models\GameDefinitionModels\GameDefinitionSummaryListViewModel.cs" />
     <Compile Include="Models\GameDefinitionModels\GameDefinitionSummaryViewModel.cs" />
     <Compile Include="Models\GameDefinitionModels\TrendingGameViewModel.cs" />
     <Compile Include="Models\Players\GameDefinitionPlayersSummaryViewModel.cs" />
@@ -401,6 +419,7 @@
     <Compile Include="Models\PlayedGame\SearchViewModel.cs" />
     <Compile Include="Models\Players\GameResultRankViewModel.cs" />
     <Compile Include="Models\Players\MinionViewModel.cs" />
+    <Compile Include="Models\Players\PlayerAchievementWinnerViewModel.cs" />
     <Compile Include="Models\Players\PlayerDetailsViewModel.cs" />
     <Compile Include="Models\Players\PlayerEditViewModel.cs" />
     <Compile Include="Models\Players\PlayerGameSummaryViewModel.cs" />
@@ -424,9 +443,9 @@
       <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>
     <Compile Include="T4MVC.cs">
-      <DependentUpon>T4MVC.tt</DependentUpon>
-      <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>
     <Compile Include="Transformations\AutomapperConfiguration.cs" />
     <Compile Include="Transformations\GameDefinitionSummaryViewModelBuilder.cs" />
@@ -511,6 +530,7 @@
     <Content Include="css\bootstrap.css" />
     <Content Include="css\fonts.css" />
     <Content Include="css\nemestats.css" />
+    <Content Include="css\pnotify.custom.min.css" />
     <Content Include="css\theme.css" />
     <Content Include="fonts\bootstrap\glyphicons-halflings-regular.svg" />
     <Content Include="fonts\fontawesome-webfont.svg" />
@@ -557,6 +577,7 @@
     <Content Include="fonts\bootstrap\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\bootstrap\glyphicons-halflings-regular.eot" />
     <Content Include="sass\nemestats\buttons.scss" />
+    <Content Include="sass\nemestats\achievements.scss" />
     <None Include="sass\nemestats\player.scss" />
     <Content Include="sass\nemestats\nemestats-variables.scss" />
     <Content Include="sass\nemestats\flipscroll.scss" />
@@ -584,6 +605,7 @@
     <Content Include="sass\nemestats\mobile.scss" />
     <Content Include="sass\imports\fonts.scss" />
     <Content Include="sass\nemestats\utils.scss" />
+    <Content Include="Scripts\Achievement\achievementDetails.js" />
     <Content Include="Scripts\d3\d3.js" />
     <Content Include="Scripts\d3\d3.min.js" />
     <Content Include="Scripts\d3\LICENSE" />
@@ -636,6 +658,7 @@
     <Content Include="Scripts\Player\players.js" />
     <Content Include="Scripts\Plugins\rankPlugin.js" />
     <Content Include="Scripts\Plugins\toEditBoxPlugin.js" />
+    <Content Include="Scripts\pnotify.custom.min.js" />
     <Content Include="Scripts\readmore.min.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
@@ -694,8 +717,6 @@
     <Content Include="Views\Account\ForgotPasswordConfirmation.cshtml" />
     <Content Include="Views\Account\ResetPassword.cshtml" />
     <Content Include="Views\Account\ResetPasswordConfirmation.cshtml" />
-    <Content Include="Views\Account\SendCode.cshtml" />
-    <Content Include="Views\Account\VerifyCode.cshtml" />
     <Content Include="Views\Account\ConfirmEmail.cshtml" />
     <Content Include="Views\Account\_ChangeEmailPartial.cshtml" />
     <Content Include="Views\GameDefinition\_CreatePartial.cshtml" />
@@ -735,6 +756,9 @@
     <Content Include="Views\Home\AboutNemePoints.cshtml" />
     <Content Include="Views\Shared\_NemePointsBreakdown.cshtml" />
     <Content Include="Views\Home\_HomeFeatures.cshtml" />
+    <Content Include="Views\Achievement\Details.cshtml" />
+    <Content Include="Views\Home\AboutBadgesAndAchievements.cshtml" />
+    <Content Include="Views\Achievement\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Areas\Api\Views\Shared\" />
@@ -805,7 +829,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>60681</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:44400</IISUrl>
+          <IISUrl>https://localhost:44300</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
