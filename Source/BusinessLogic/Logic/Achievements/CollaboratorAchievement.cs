@@ -50,6 +50,7 @@ namespace BusinessLogic.Logic.Achievements
 
             if (_nemestatsCollaboratorsUserIdsList.Contains(player.ApplicationUserId))
             {
+                result.PlayerProgress = 1;
                 result.LevelAwarded = AchievementLevel.Gold;
             }
             return result;
