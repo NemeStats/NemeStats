@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using BusinessLogic.DataAccess;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Achievements;
@@ -46,9 +47,10 @@ namespace BusinessLogic.Logic.Achievements
                 AchievementId = Id
             };
 
-            var player = DataContext.FindById<Player>(playerId);
 
-            if (_nemestatsCollaboratorsUserIdsList.Contains(player.ApplicationUserId))
+            var player = DataContext.GetQueryable<Player>().FirstOrDefault(p => p.Id == playerId);
+
+            if (player != null && _nemestatsCollaboratorsUserIdsList.Contains(player.ApplicationUserId))
             {
                 result.PlayerProgress = 1;
                 result.LevelAwarded = AchievementLevel.Gold;
