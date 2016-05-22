@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Achievements;
 
@@ -16,6 +17,6 @@ namespace BusinessLogic.Logic.Achievements
         Dictionary<AchievementLevel, int> LevelThresholds { get; }
         AchievementAwarded IsAwardedForThisPlayer(int playerId);
 
-        List<PlayerAchievement> Winners { get; set; }
+        Lazy<List<PlayerAchievement>> Winners { get; set; }
     }
 }

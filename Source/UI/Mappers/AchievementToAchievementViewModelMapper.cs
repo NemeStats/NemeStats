@@ -26,7 +26,7 @@ namespace UI.Mappers
         {
             var model = base.Map(source);
 
-            model.Winners = source.Winners.Select(w=> _achievementToPlayerAchievementWinnerViewModelMapper.Map(w)).ToList();
+            model.Winners = source.Winners.Value.Select(w=> _achievementToPlayerAchievementWinnerViewModelMapper.Map(w)).ToList();
 
             return model;
         }
