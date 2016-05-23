@@ -9,16 +9,6 @@ namespace BusinessLogic.Logic.Achievements
     public class CollaboratorAchievement : BaseAchievement
     {
 
-        private readonly List<string> _nemestatsCollaboratorsUserIdsList = new List<string>()
-        {
-            "4817f408-435a-41cc-8592-1a46695ab4f7", //@dsilva609
-            "57daa4a5-1506-4155-ad30-bf1e1daf97d2", //@cracker4o
-            "80629c07-b8df-4deb-a9e3-5b503ce7d7df", //@jakejgordon
-            "c51a515d-14e9-4be9-b877-2445de8e26d9", //@vfportero
-            "eaef04f3-ce87-4366-be8c-fcb4bd8339f3", //@mkoch227
-            "91534c26-d2e7-40b7-8101-dbd9782fc77e", //@mgerdes11
-            "f773124f-541f-4cba-8a60-91dc7bbd8e40" //@roricabanes
-        };
         public CollaboratorAchievement(IDataContext dataContext) : base(dataContext)
         {
 
@@ -48,9 +38,8 @@ namespace BusinessLogic.Logic.Achievements
             };
 
 
-            var player = DataContext.GetQueryable<Player>().FirstOrDefault(p => p.Id == playerId);
 
-            if (player != null && _nemestatsCollaboratorsUserIdsList.Contains(player.ApplicationUserId))
+            if (this.Winners.Value.Any(w => w.PlayerId == playerId))
             {
                 result.PlayerProgress = 1;
                 result.LevelAwarded = AchievementLevel.Gold;
