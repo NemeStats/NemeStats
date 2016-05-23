@@ -14,7 +14,7 @@ namespace BusinessLogic.Logic.Achievements
 
         public override AchievementId Id => AchievementId.RiskTaker;
 
-        public override AchievementGroup Group => AchievementGroup.Game;
+        public override AchievementGroup Group => AchievementGroup.PlayedGame;
 
         public override string Name => "Risk Taker";
 
@@ -39,18 +39,20 @@ namespace BusinessLogic.Logic.Achievements
             var numberOfGamesAsSoleWinner =
                 DataContext
                     .GetQueryable<PlayedGame>()
-                    .Count(x => x.PlayerGameResults.Any(y => y.PlayerId == playerId && y.GameRank == 1)
-                        && !x.PlayerGameResults.Any(y => y.PlayerId != playerId && y.GameRank == 1)
-                        && x.NumberOfPlayers >= 10);
+                    .Where(x => x.PlayerGameResults.Any(y => y.PlayerId == playerId && y.GameRank == 1)
+                                && !x.PlayerGameResults.Any(y => y.PlayerId != playerId && y.GameRank == 1)
+                                && x.NumberOfPlayers >= 10)
+                    .Select(g => g.Id);
 
-            result.PlayerProgress = numberOfGamesAsSoleWinner;
+            result.PlayerProgress = numberOfGamesAsSoleWinner.Count();
+            result.RelatedEntities = numberOfGamesAsSoleWinner.ToList();
 
-            if (numberOfGamesAsSoleWinner < LevelThresholds[AchievementLevel.Bronze])
+            if (result.PlayerProgress < LevelThresholds[AchievementLevel.Bronze])
             {
                 return result;
             }
 
-            result.LevelAwarded = GetLevelAwarded(numberOfGamesAsSoleWinner);
+            result.LevelAwarded = GetLevelAwarded(result.PlayerProgress);
             return result;
         }
     }

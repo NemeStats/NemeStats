@@ -15,7 +15,7 @@ namespace BusinessLogic.Logic.Achievements
 
         public override AchievementId Id => AchievementId.YouveGotHeart;
 
-        public override AchievementGroup Group => AchievementGroup.Game;
+        public override AchievementGroup Group => AchievementGroup.PlayedGame;
 
         public override string Name => "You've got heart";
 
@@ -48,16 +48,18 @@ namespace BusinessLogic.Logic.Achievements
             var numberOfGamesWithoutWinning =
                 DataContext
                     .GetQueryable<PlayerGameResult>()
-                    .Count(y => y.PlayerId == playerId);
+                    .Where(y => y.PlayerId == playerId)
+                    .Select(pg => pg.PlayedGameId);
 
-            result.PlayerProgress = numberOfGamesWithoutWinning;
+            result.PlayerProgress = numberOfGamesWithoutWinning.Count();
+            result.RelatedEntities = numberOfGamesWithoutWinning.ToList();
 
-            if (numberOfGamesWithoutWinning < LevelThresholds[AchievementLevel.Bronze])
+            if (result.PlayerProgress < LevelThresholds[AchievementLevel.Bronze])
             {
                 return result;
             }
 
-            result.LevelAwarded = GetLevelAwarded(numberOfGamesWithoutWinning);
+            result.LevelAwarded = GetLevelAwarded(result.PlayerProgress);
             return result;
         }
     }

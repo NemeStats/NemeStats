@@ -49,18 +49,18 @@ namespace BusinessLogic.Logic.Achievements
                                 && x.PlayedGame.GameDefinition.BoardGameGeekGameDefinition.AverageWeight
                                 >= WeightTierCalculator.BOARD_GAME_GEEK_WEIGHT_INCLUSIVE_LOWER_BOUND_FOR_HARDCORE)
                     .Select(x => x.PlayedGame.GameDefinitionId)
-                    .Distinct()
-                    .Count();
+                    .Distinct();
 
-            result.PlayerProgress = totalDistinctHardcoreGamesThatTakeALongTime;
-            if (totalDistinctHardcoreGamesThatTakeALongTime < LevelThresholds[AchievementLevel.Bronze])
+            result.PlayerProgress = totalDistinctHardcoreGamesThatTakeALongTime.Count();
+            result.RelatedEntities = totalDistinctHardcoreGamesThatTakeALongTime.ToList();
+            if (result.PlayerProgress < LevelThresholds[AchievementLevel.Bronze])
             {
                 return result;
             }
 
             result.LevelAwarded =
                 LevelThresholds.OrderByDescending(l => l.Value)
-                    .FirstOrDefault(l => l.Value <= totalDistinctHardcoreGamesThatTakeALongTime)
+                    .FirstOrDefault(l => l.Value <= result.PlayerProgress)
                     .Key;
             return result;
         }

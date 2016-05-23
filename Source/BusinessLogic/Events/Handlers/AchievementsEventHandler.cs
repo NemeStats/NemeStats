@@ -44,7 +44,7 @@ namespace BusinessLogic.Events.Handlers
 
                         var achievementAwarded = achievement.IsAwardedForThisPlayer(player.Id);
 
-                        if (achievementAwarded.LevelAwarded.HasValue && achievementAwarded.LevelAwarded.Value > AchievementLevel.None )
+                        if (achievementAwarded.LevelAwarded.HasValue && achievementAwarded.LevelAwarded.Value > AchievementLevel.None)
                         {
                             if (currentPlayerAchievement == null)
                             {
@@ -58,22 +58,26 @@ namespace BusinessLogic.Events.Handlers
                                 };
 
                                 DataContext.Save(playerAchievement, new AnonymousApplicationUser());
-                                DataContext.CommitAllChanges();
+
 
                                 NotifyPlayer(player, achievement, achievementAwarded.LevelAwarded);
 
                             }
-                            else if (achievementAwarded.LevelAwarded.Value > currentPlayerAchievement.AchievementLevel)
+                            else
                             {
-                                currentPlayerAchievement.AchievementLevel = achievementAwarded.LevelAwarded.Value;
-                                currentPlayerAchievement.LastUpdatedDate = DateTime.UtcNow;
                                 currentPlayerAchievement.RelatedEntities = achievementAwarded.RelatedEntities;
 
-                                DataContext.CommitAllChanges();
+                                if (achievementAwarded.LevelAwarded.Value > currentPlayerAchievement.AchievementLevel)
+                                {
+                                    currentPlayerAchievement.AchievementLevel = achievementAwarded.LevelAwarded.Value;
+                                    currentPlayerAchievement.LastUpdatedDate = DateTime.UtcNow;
 
-                                NotifyPlayer(player, achievement, achievementAwarded.LevelAwarded);
+                                    NotifyPlayer(player, achievement, achievementAwarded.LevelAwarded);
+                                }
                             }
                         }
+                        DataContext.CommitAllChanges();
+
                     }
                     catch (Exception ex)
                     {
@@ -91,8 +95,7 @@ namespace BusinessLogic.Events.Handlers
                 var notificationClient =
                     GlobalHost.ConnectionManager.GetHubContext<NotificationsHub>().Clients.Group(player.ApplicationUserId);
 
-                notificationClient.NewAchievementUnlocked(achievement.Id,
-                    levelAwarded.Value.ToString());
+                notificationClient.NewAchievementUnlocked(achievement.Id, levelAwarded.Value.ToString());
             }
         }
     }
