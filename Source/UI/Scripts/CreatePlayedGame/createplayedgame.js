@@ -50,7 +50,7 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
         this.$gameDefinitionDropDown = $("[name='GameDefinitionId']");
         this.$datePicker = $(".date-picker");
 
-        var minDate = new Date(2014, 0, 1);
+        var minDate = new Date(2000, 0, 1);
         var currentMoment = moment();
         var currentLocalIso8601Date = currentMoment.format("YYYY-MM-DD");
 
@@ -74,7 +74,7 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                 showOn: "button",
                 buttonText: "<i class='fa fa-calendar'></i>",
                 showButtonPanel: true,
-                minDate: new Date(2014, 1, 1),
+                minDate: new Date(2000, 1, 1),
                 maxDate: new Date()
             }).datepicker("setDate", dateToSet)
                 .datepicker("option", "dateFormat", "yy-mm-dd");
