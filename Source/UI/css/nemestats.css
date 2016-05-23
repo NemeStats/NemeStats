@@ -911,7 +911,7 @@ footer {
 
 .achievement-list {
   display: inline-block;
-  padding: 40px; }
+  padding: 40px 40px 20px 40px; }
   .achievement-list .achievement {
     margin-right: 10px; }
 
