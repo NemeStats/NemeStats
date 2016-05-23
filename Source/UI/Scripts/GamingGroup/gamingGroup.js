@@ -32,7 +32,7 @@ Views.GamingGroup.GamingGroupView.prototype = {
         }
         this.$fromDatePicker = $("#from-date-picker");
         this.$toDatePicker = $("#to-date-picker");
-        var minDate = new Date(2014, 0, 1);
+        var minDate = new Date(2000, 0, 1);
         var currentMoment = moment();
         var currentLocalIso8601Date = currentMoment.format("YYYY-MM-DD");
 
