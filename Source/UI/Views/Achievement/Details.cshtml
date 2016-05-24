@@ -195,6 +195,53 @@ else
     </div>
 </div>
     }
+@if (Model.RelatedPlayers.Any())
+{
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <h4>Players related to this Achievement <span class="badge">@Model.RelatedPlayers.Count</span></h4>
+    </div>
+    <div class="panel-body">
+        <div class="winnersList">
+            <div class="flip-scroll" id="playersRelatedList">
+                <table class="table table-hover table-striped">
+                    <caption>
+                        <div class="input-group input-group-sm">
+                            <div class="input-group-addon"><span class="fa fa-search"></span></div>
+                            <input type="text" class="form-control search" placeholder="type player, gaming group, level...">
+                        </div>
+                    </caption>
+                    <thead>
+                        <tr>
+                            <th>
+                                <span class="sort" data-sort="name-col">Player name <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
+                            </th>
+                            <th>
+                                <span class="sort" data-sort="gaminggroup-col">Gaming group <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="list">
+
+                        @foreach (var player in Model.RelatedPlayers)
+                        {
+                        <tr>
+                            <td class="playername-col" data-name="@player.PlayerName">
+                                @Html.ActionLink(player.PlayerName, "Details", "Player", new {id = player.PlayerId}, new {})
+                            </td>
+                            <td class="gaminggroup-col" data-name="@player.">
+                                @Html.ActionLink(player.GamingGroupName, "Details", "GamingGroup", new {id = player.GamingGroupId}, new {})
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+                <ul class="pagination"></ul>
+            </div>
+        </div>
+    </div>
+</div>
+}
 
 @if (Model.Achievement.Winners.Any())
 {

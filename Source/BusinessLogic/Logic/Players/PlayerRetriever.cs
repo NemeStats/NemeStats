@@ -354,6 +354,14 @@ namespace BusinessLogic.Logic.Players
                     .FirstOrDefault();
         }
 
+        public List<Player> GetPlayers(List<int> ids)
+        {
+            return dataContext.GetQueryable<Player>()
+                .Where(p => ids.Contains(p.Id))
+                .Include(p => p.GamingGroup)
+                .ToList();
+        }
+
         public virtual PlayerQuickStats GetPlayerQuickStatsForUser(string applicationUserId, int gamingGroupId)
         {
             var playerIdForCurrentUser = GetPlayerIdForCurrentUser(applicationUserId, gamingGroupId);

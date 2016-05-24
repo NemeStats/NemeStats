@@ -40,5 +40,14 @@ Views.Achievement.Details.prototype = {
         } else {
             new List(winnerTableId, { valueNames: winnersValues });
         }
+
+        var playersValues = [{ name: 'playername-col', attr: 'data-name' }, { name: 'date-col', attr: 'data-date' }, { name: 'gaminggroup-col', attr: 'data-name' }, 'level-col'];
+        var playersTablesIds = "playersRelatedList";
+
+        if (ResponsiveBootstrapToolkit.is('>=md')) {
+            new List(playersTablesIds, { valueNames: playersValues, page: 10, plugins: [ListPagination({ innerWindow: 10 })] });
+        } else {
+            new List(playersTablesIds, { valueNames: winnerplayersValuessValues });
+        }
     },
 };

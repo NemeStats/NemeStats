@@ -29,5 +29,6 @@ namespace BusinessLogic.Logic.Players
         PlayerQuickStats GetPlayerQuickStatsForUser(string applicationUserId, int gamingGroupId);
         PlayerStatistics GetPlayerStatistics(int playerId);
         int GetPlayerIdForCurrentUser(string applicationUserId, int gamingGroupId);
+        List<Player> GetPlayers(List<int> ids);
     }
 }

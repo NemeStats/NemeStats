@@ -378,6 +378,7 @@
     <Compile Include="Mappers\PlayerAchievementToPlayerAchievementSummaryViewModelMapper.cs" />
     <Compile Include="Mappers\PlayerAchievementToPlayerAchievementViewModelMapper.cs" />
     <Compile Include="Mappers\PlayerAchievementToPlayerAchievementWinnerViewModelMapper.cs" />
+    <Compile Include="Mappers\PlayerToPlayerListSummaryViewModelMapper.cs" />
     <Compile Include="Models\Achievements\AchievementDetailsViewModel.cs" />
     <Compile Include="Models\Achievements\AchievementListViewModel.cs" />
     <Compile Include="Models\Achievements\AchievementViewModel.cs" />
@@ -424,6 +425,7 @@
     <Compile Include="Models\Players\PlayerEditViewModel.cs" />
     <Compile Include="Models\Players\PlayerGameSummaryViewModel.cs" />
     <Compile Include="Models\Players\PlayerInvitationViewModel.cs" />
+    <Compile Include="Models\Players\PlayerListSummaryViewModel.cs" />
     <Compile Include="Models\Players\PlayerQuickStatsViewModel.cs" />
     <Compile Include="Models\Players\PlayersSummaryViewModel.cs" />
     <Compile Include="Models\Players\PlayerSummaryViewModel.cs" />

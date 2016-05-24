@@ -14,7 +14,7 @@ namespace BusinessLogic.Logic.Achievements
 
         public override AchievementId Id => AchievementId.SocialButterfly;
 
-        public override AchievementGroup Group => AchievementGroup.Game;
+        public override AchievementGroup Group => AchievementGroup.Player;
 
         public override string Name => "Social Butterfly";
 
@@ -41,17 +41,17 @@ namespace BusinessLogic.Logic.Achievements
                     .GetQueryable<PlayerGameResult>()
                     .Where(x => x.PlayedGame.PlayerGameResults.Any(y => y.PlayerId == playerId) && x.PlayerId != playerId)
                     .Select(z => z.PlayerId)
-                    .Distinct()
-                    .Count();
+                    .Distinct();
 
-            result.PlayerProgress = totalPlayersPlayedWith;
+            result.PlayerProgress = totalPlayersPlayedWith.Count();
+            result.RelatedEntities = totalPlayersPlayedWith.ToList();
 
-            if (totalPlayersPlayedWith < LevelThresholds[AchievementLevel.Bronze])
+            if (result.PlayerProgress < LevelThresholds[AchievementLevel.Bronze])
             {
                 return result;
             }
 
-            result.LevelAwarded = GetLevelAwarded(totalPlayersPlayedWith);
+            result.LevelAwarded = GetLevelAwarded(result.PlayerProgress);
                
             return result;
         }
