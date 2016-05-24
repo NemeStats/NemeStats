@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Data.Entity;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using BusinessLogic.DataAccess;
 using BusinessLogic.Events.HandlerFactory;
 using BusinessLogic.Events.Interfaces;
@@ -44,7 +46,7 @@ namespace BusinessLogic.Events.Handlers
 
                         var achievementAwarded = achievement.IsAwardedForThisPlayer(player.Id);
 
-                        if (achievementAwarded.LevelAwarded.HasValue && achievementAwarded.LevelAwarded.Value > AchievementLevel.None )
+                        if (achievementAwarded.LevelAwarded.HasValue && achievementAwarded.LevelAwarded.Value > AchievementLevel.None)
                         {
                             if (currentPlayerAchievement == null)
                             {
@@ -71,6 +73,7 @@ namespace BusinessLogic.Events.Handlers
 
                                 DataContext.CommitAllChanges();
 
+
                                 NotifyPlayer(player, achievement, achievementAwarded.LevelAwarded);
                             }
                         }
@@ -88,11 +91,16 @@ namespace BusinessLogic.Events.Handlers
         {
             if (player.ApplicationUserId != null)
             {
-                var notificationClient =
-                    GlobalHost.ConnectionManager.GetHubContext<NotificationsHub>().Clients.Group(player.ApplicationUserId);
+                Task.Factory.StartNew(() =>
+                {
+                    var notificationClient =
+                        GlobalHost.ConnectionManager.GetHubContext<NotificationsHub>()
+                            .Clients.Group(player.ApplicationUserId);
 
-                notificationClient.NewAchievementUnlocked(achievement.Id,
-                    levelAwarded.Value.ToString());
+                    Thread.Sleep(2000); // We wait 2 seconds to avoid notify when user is posting and ensure that notification is received by the signalR client. Ugly, I know...
+
+                    notificationClient.NewAchievementUnlocked(achievement.Id.ToString(), achievement.Name, achievement.IconClass, achievement.Description, levelAwarded.Value.ToString());
+                });
             }
         }
     }

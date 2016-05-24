@@ -2096,6 +2096,8 @@
   margin: 0em 0.1em;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale; }
+  [class^='ns-icon-'].fa-2x {
+    font-size: 2em; }
 
 /* Icon Mapping
 ================*/

@@ -3,7 +3,7 @@
 
 //CUSTOM ICONS
 $icon-font-name: "icomoon";
-$custom-font-path : $fa-font-path;
+$custom-font-path: $fa-font-path;
 
 /* Font Declaration
 ====================*/
@@ -11,35 +11,53 @@ $custom-font-path : $fa-font-path;
 @font-face {
     font-family: 'NemeStats-Icons';
     src: url('#{$custom-font-path}/#{$icon-font-name}.eot');
-    src: url('#{$custom-font-path}/#{$icon-font-name}.eot?#iefix') format('embedded-opentype'),
-         url('#{$custom-font-path}/#{$icon-font-name}.woff') format('woff'),
-         url('#{$custom-font-path}/#{$icon-font-name}.ttf') format('truetype'),
-         url('#{$custom-font-path}/#{$icon-font-name}.svg#icomoon') format('svg');
+    src: url('#{$custom-font-path}/#{$icon-font-name}.eot?#iefix') format('embedded-opentype'), url('#{$custom-font-path}/#{$icon-font-name}.woff') format('woff'), url('#{$custom-font-path}/#{$icon-font-name}.ttf') format('truetype'), url('#{$custom-font-path}/#{$icon-font-name}.svg#icomoon') format('svg');
 }
 
 [class^='ns-icon-'] {
     font-family: 'NemeStats-Icons';
-    font-style:   normal;
-    font-weight:  normal;
+    font-style: normal;
+    font-weight: normal;
     font-variant: normal;
-    line-height:  1 !important;
-
+    line-height: 1 !important;
     display: inline-block;
-
     padding: 0.3em 0;
     margin: 0em 0.1em;
-
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+
+    &.fa-2x {
+        font-size: 2em;
+    }
 }
 
 /* Icon Mapping
 ================*/
 
-.ns-icon-nemesis:before{content: "\e901";}
-.ns-icon-former-nemesis:before{content: "\e900";}
-.ns-icon-minion:before{content: "\e907";}
-.ns-icon-former-champion:before{content: "\e904";}
-.ns-icon-one:before{content: "\e903";}
-.ns-icon-group:before{content: "\e902";}
-.ns-icon-dice:before{content: "\e905";}
+.ns-icon-nemesis:before {
+    content: "\e901";
+}
+
+.ns-icon-former-nemesis:before {
+    content: "\e900";
+}
+
+.ns-icon-minion:before {
+    content: "\e907";
+}
+
+.ns-icon-former-champion:before {
+    content: "\e904";
+}
+
+.ns-icon-one:before {
+    content: "\e903";
+}
+
+.ns-icon-group:before {
+    content: "\e902";
+}
+
+.ns-icon-dice:before {
+    content: "\e905";
+}
