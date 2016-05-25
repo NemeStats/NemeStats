@@ -2101,25 +2101,31 @@
 
 /* Icon Mapping
 ================*/
-.ns-icon-nemesis:before {
-  content: "\e901"; }
-
 .ns-icon-former-nemesis:before {
   content: "\e900"; }
 
-.ns-icon-minion:before {
-  content: "\e907"; }
-
-.ns-icon-former-champion:before {
-  content: "\e904"; }
-
-.ns-icon-one:before {
-  content: "\e903"; }
+.ns-icon-nemesis:before {
+  content: "\e901"; }
 
 .ns-icon-group:before {
   content: "\e902"; }
 
-.ns-icon-dice:before {
+.ns-icon-one:before {
+  content: "\e903"; }
+
+.ns-icon-former-champion:before {
+  content: "\e904"; }
+
+.ns-icon-clipboard-move:before {
   content: "\e905"; }
+
+.ns-icon-dice:before {
+  content: "\e906"; }
+
+.ns-icon-minion:before {
+  content: "\e907"; }
+
+.ns-icon-medal:before {
+  content: "\e908"; }
 
 /*# sourceMappingURL=fonts.css.map */

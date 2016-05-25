@@ -13,6 +13,7 @@
         BoardGameGeek2016_10x10 = 9,
         NemePoints = 10,
         Collaborator = 11,
+        Leader = 12,
     }
 
     public enum AchievementGroup

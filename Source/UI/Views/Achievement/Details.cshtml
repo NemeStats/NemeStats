@@ -25,7 +25,7 @@
 else
 {
     <h2 class="page-header">@Model.Achievement.Name achievement</h2>
-    levelClass = "bronze";
+    levelClass = Model.Achievement.LevelThresholds.First().Key.ToString().ToLower();
 }
 <div class="panel panel-primary playerachievement">
     <div class="panel-heading">

@@ -20,7 +20,7 @@ namespace BusinessLogic.Logic.Achievements
 
         public override string DescriptionFormat => "This Achievement is earned by being the sole winner of games with 10+ people {0} times.";
 
-        public override string IconClass => "ns-icon-one";
+        public override string IconClass => "ns-icon-clipboard-move";
 
         public override Dictionary<AchievementLevel, int> LevelThresholds => new Dictionary<AchievementLevel, int>
         {
