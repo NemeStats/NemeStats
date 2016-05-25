@@ -19,7 +19,7 @@ Views.Shared.Layout.prototype = {
                 $item.popover({ trigger: 'click', content: content, placement: 'top', container: "body", viewport: $item });
                 $item.addClass("clickable");
             } else {
-                $item.popover({ trigger: 'hover',container: "body" });
+                $item.popover({ trigger: 'hover', container: "body" });
             }
         });
 
@@ -37,7 +37,7 @@ Views.Shared.Layout.prototype = {
 
         return result ? result[3] : false;
     },
-    setupHubConnection : function() {
+    setupHubConnection: function () {
         var currentUserContainer = $("#currentuserid[data-id]");
         if (currentUserContainer.length === 1) {
             var currentUserId = currentUserContainer.data("id");
@@ -46,16 +46,20 @@ Views.Shared.Layout.prototype = {
             var signalrConnection = $.hubConnection();
             var notificationsHub = signalrConnection.createHubProxy("notificationsHub");
 
-            notificationsHub.on('NewAchievementUnlocked', function(achievementId, achievementLevel) {
-                var text = "ID: " + achievementId + " - Level: " + achievementLevel;
+            notificationsHub.on('NewAchievementUnlocked', function (achievementId, achievementName, achievementIconClass, achievementDescription, achievementLevel) {
                 var noty = new PNotify({
-                    title: 'New Achievement unlocked',
-                    text: text,
-                    type: "success"
+                    title: achievementName + " unlocked!",
+                    text: 'New ' + achievementLevel + ' achievement unlocked',
+                    addclass: achievementLevel.toLowerCase() + ' clickable',
+                    icon: achievementIconClass + " fa-2x"
+                });
+
+                noty.get().css('cursor', 'pointer').click(function(e) {
+                    window.location = "/achievements/" + achievementId;
                 });
             });
 
-            signalrConnection.start().done(function() {
+            signalrConnection.start().done(function () {
                 notificationsHub.invoke("join", currentUserId);
             });
         }
@@ -65,5 +69,5 @@ Views.Shared.Layout.prototype = {
 $(document).ready(function () {
     var layout = new Views.Shared.Layout();
     layout.init();
-    //layout.setupHubConnection();
+    layout.setupHubConnection();
 });

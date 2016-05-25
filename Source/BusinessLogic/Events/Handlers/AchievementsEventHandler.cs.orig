@@ -74,9 +74,13 @@ namespace BusinessLogic.Events.Handlers
                                     currentPlayerAchievement.AchievementLevel = achievementAwarded.LevelAwarded.Value;
                                     currentPlayerAchievement.LastUpdatedDate = DateTime.UtcNow;
 
+<<<<<<< HEAD
 
+                                NotifyPlayer(player, achievement, achievementAwarded.LevelAwarded);
+=======
                                     NotifyPlayer(player, achievement, achievementAwarded.LevelAwarded);
                                 }
+>>>>>>> master
                             }
                         }
                         DataContext.CommitAllChanges();
@@ -103,8 +107,12 @@ namespace BusinessLogic.Events.Handlers
 
                     Thread.Sleep(2000); // We wait 2 seconds to avoid notify when user is posting and ensure that notification is received by the signalR client. Ugly, I know...
 
+<<<<<<< HEAD
                     notificationClient.NewAchievementUnlocked(achievement.Id.ToString(), achievement.Name, achievement.IconClass, achievement.Description, levelAwarded.Value.ToString());
                 });
+=======
+                notificationClient.NewAchievementUnlocked(achievement.Id, levelAwarded.Value.ToString());
+>>>>>>> master
             }
         }
     }

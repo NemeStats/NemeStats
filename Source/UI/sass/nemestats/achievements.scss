@@ -1,8 +1,13 @@
 ﻿@import "nemestats-variables.scss";
+@import '../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/mixins/_alerts.scss';
 
 $bronze-border-color: darken($bronze-achievement-color,15%);
 $silver-border-color: darken($silver-achievement-color,15%);
 $gold-border-color: darken($gold-achievement-color,15%);
+
+$bronze-text-color: darken($bronze-achievement-color,35%);
+$silver-text-color: darken($silver-achievement-color,35%);
+$gold-text-color: darken($gold-achievement-color,15%);
 
 .achievements {
     display: inline-block;
@@ -24,16 +29,6 @@ $gold-border-color: darken($gold-achievement-color,15%);
     text-align: center;
     border-radius: 50%;
 
-    .content {
-        > span.nemepoints-achievement {
-            font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
-
-            &:before {
-                content: "N";
-            }
-        }
-    }
-
 
     &.bronze {
         background-color: $bronze-border-color;
@@ -43,7 +38,7 @@ $gold-border-color: darken($gold-achievement-color,15%);
         }
 
         .content {
-            color: darken($bronze-achievement-color,35%);
+            color: $bronze-text-color;
             font-weight: bold;
         }
     }
@@ -56,7 +51,7 @@ $gold-border-color: darken($gold-achievement-color,15%);
         }
 
         .content {
-            color: darken($silver-achievement-color,35%);
+            color: $silver-text-color;
             font-weight: bold;
         }
     }
@@ -69,7 +64,7 @@ $gold-border-color: darken($gold-achievement-color,15%);
         }
 
         .content {
-            color: darken($gold-achievement-color,15%);
+            color: $gold-text-color;
             font-weight: bold;
         }
     }
@@ -155,5 +150,36 @@ $gold-border-color: darken($gold-achievement-color,15%);
         .name {
             min-height: 40px;
         }
+    }
+}
+
+.ui-pnotify {
+    &.bronze {
+        .alert {
+
+            @include alert-variant($bronze-achievement-color, $bronze-border-color, $bronze-text-color);
+        }
+    }
+
+    &.silver {
+        .alert {
+
+            @include alert-variant($silver-achievement-color, $silver-border-color, $silver-text-color);
+        }
+    }
+
+    &.gold {
+        .alert {
+
+            @include alert-variant($gold-achievement-color, $gold-border-color, $gold-text-color);
+        }
+    }
+}
+
+.nemepoints-achievement {
+    font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+    &:before {
+        content: "N";
     }
 }

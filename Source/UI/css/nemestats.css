@@ -921,10 +921,6 @@ footer {
   display: inline-block;
   text-align: center;
   border-radius: 50%; }
-  .achievement .content > span.nemepoints-achievement {
-    font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif; }
-    .achievement .content > span.nemepoints-achievement:before {
-      content: "N"; }
   .achievement.bronze {
     background-color: #efb340; }
     .achievement.bronze .circle {
@@ -996,5 +992,37 @@ footer {
   margin-top: 20px; }
   .achievementlist .block .name {
     min-height: 40px; }
+
+.ui-pnotify.bronze .alert {
+  background-color: #F5CF87;
+  border-color: #efb340;
+  color: #ba7f10; }
+  .ui-pnotify.bronze .alert hr {
+    border-top-color: #eda929; }
+  .ui-pnotify.bronze .alert .alert-link {
+    color: #8b5f0c; }
+
+.ui-pnotify.silver .alert {
+  background-color: #E0E0DD;
+  border-color: #bcbcb5;
+  color: #8b8b80; }
+  .ui-pnotify.silver .alert hr {
+    border-top-color: #afafa8; }
+  .ui-pnotify.silver .alert .alert-link {
+    color: #717167; }
+
+.ui-pnotify.gold .alert {
+  background-color: #FFDF00;
+  border-color: #b39c00;
+  color: #b39c00; }
+  .ui-pnotify.gold .alert hr {
+    border-top-color: #998600; }
+  .ui-pnotify.gold .alert .alert-link {
+    color: #807000; }
+
+.nemepoints-achievement {
+  font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif; }
+  .nemepoints-achievement:before {
+    content: "N"; }
 
 /*# sourceMappingURL=nemestats.css.map */

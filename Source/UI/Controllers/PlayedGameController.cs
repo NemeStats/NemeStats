@@ -120,8 +120,7 @@ namespace UI.Controllers
             {
                 playedGameCreator.CreatePlayedGame(newlyCompletedGame, TransactionSource.WebApplication, currentUser);
 
-                return new RedirectResult(Url.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name)
-                                            + "#" + GamingGroupController.SECTION_ANCHOR_RECENT_GAMES);
+                return new RedirectResult(Url.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name) + "#" + GamingGroupController.SECTION_ANCHOR_RECENT_GAMES);
             }
 
             return Create(currentUser);

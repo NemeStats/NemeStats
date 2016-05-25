@@ -761,6 +761,7 @@
     <Content Include="Views\Achievement\Details.cshtml" />
     <Content Include="Views\Home\AboutBadgesAndAchievements.cshtml" />
     <Content Include="Views\Achievement\Index.cshtml" />
+    <Content Include="Views\PlayedGame\CreateSuccess.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Areas\Api\Views\Shared\" />
