@@ -13,10 +13,11 @@ namespace BusinessLogic.Logic.Achievements
         {
         }
 
+        public static int MinNemePointsToUnlock => 250;
         public override AchievementId Id => AchievementId.TopDog;
         public override AchievementGroup Group => AchievementGroup.NotApply;
         public override string Name => "Top Dog";
-        public override string DescriptionFormat => "Be the player with the most NemePoints in your gaming group";
+        public override string DescriptionFormat => "Be the player with the most NemePoints in your gaming group. You need, at least, 250 NemePoints to unlock this achievement.";
         public override string IconClass => "ns-icon-medal";
         public override Dictionary<AchievementLevel, int> LevelThresholds => new Dictionary<AchievementLevel, int>
         {
@@ -51,7 +52,7 @@ namespace BusinessLogic.Logic.Achievements
                                     value.WeightBonusPoints))
                     .OrderByDescending(r => r.Value.TotalPoints);
 
-                if (nemePointsDictionary.First().Key == player.Id)
+                if (nemePointsDictionary.First().Key == player.Id && nemePointsDictionary.First().Value.TotalPoints >= MinNemePointsToUnlock)
                 {
                     result.LevelAwarded = LevelThresholds.First().Key;
                     result.PlayerProgress = 1;

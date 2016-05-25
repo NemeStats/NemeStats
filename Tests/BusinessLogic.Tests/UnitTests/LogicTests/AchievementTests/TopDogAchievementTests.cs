@@ -27,7 +27,21 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.AchievementTests
         public void ItDoesNotAwardTheAchievementWhenThePlayerIsNotThePlayerWithMostNemepoints()
         {
             //--arrange
-            SetupPlayedGames(winnerId: _otherId, loserId: _playerId);
+            SetupPlayedGames(winnerId: _otherId, loserId: _playerId, winnerPoints: TopDogAchievement.MinNemePointsToUnlock);
+
+            //--act
+            var results = _autoMocker.ClassUnderTest.IsAwardedForThisPlayer(_playerId);
+
+            //--assert
+            Assert.That(results.LevelAwarded, Is.Null);
+        }
+
+
+        [Test]
+        public void ItDoesNotAwardTheAchievementWhenThePlayerIsThePlayerWithMostNemepointsButHasLessThanMinNemePointsToUnlock()
+        {
+            //--arrange
+            SetupPlayedGames(winnerId: _otherId, loserId: _playerId, winnerPoints: TopDogAchievement.MinNemePointsToUnlock-1);
 
             //--act
             var results = _autoMocker.ClassUnderTest.IsAwardedForThisPlayer(_playerId);
@@ -40,7 +54,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.AchievementTests
         public void ItAwardTheAchievementWhenThePlayerIsThePlayerWithMostNemepoints()
         {
             //--arrange
-            SetupPlayedGames(winnerId: _playerId, loserId: _otherId);
+            SetupPlayedGames(winnerId: _playerId, loserId: _otherId,winnerPoints: TopDogAchievement.MinNemePointsToUnlock);
 
             //--act
             var results = _autoMocker.ClassUnderTest.IsAwardedForThisPlayer(_playerId);
@@ -49,7 +63,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.AchievementTests
             Assert.That(results.LevelAwarded, Is.EqualTo(AchievementLevel.Silver));
         }
 
-        private void SetupPlayedGames(int winnerId, int loserId)
+        private void SetupPlayedGames(int winnerId, int loserId, int winnerPoints)
         {
             var gamingGroupId = 1;
             var results = new List<PlayerGameResult>()
@@ -61,7 +75,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.AchievementTests
                         GamingGroupId = gamingGroupId
                     },
                     PlayerId = winnerId,
-                    NemeStatsPointsAwarded = 10
+                    NemeStatsPointsAwarded = winnerPoints
                 },
                 new PlayerGameResult
                 {
