@@ -7,16 +7,16 @@ using BusinessLogic.Models.Points;
 
 namespace BusinessLogic.Logic.Achievements
 {
-    public class LeaderAchievement : BaseAchievement
+    public class TopDogAchievement : BaseAchievement
     {
-        public LeaderAchievement(IDataContext dataContext) : base(dataContext)
+        public TopDogAchievement(IDataContext dataContext) : base(dataContext)
         {
         }
 
-        public override AchievementId Id => AchievementId.Leader;
+        public override AchievementId Id => AchievementId.TopDog;
         public override AchievementGroup Group => AchievementGroup.NotApply;
-        public override string Name => "Leader";
-        public override string DescriptionFormat => "Be the player on your gaming group with more NemePoints anytime";
+        public override string Name => "Top Dog";
+        public override string DescriptionFormat => "Be the player with the most NemePoints in your gaming group";
         public override string IconClass => "ns-icon-medal";
         public override Dictionary<AchievementLevel, int> LevelThresholds => new Dictionary<AchievementLevel, int>
         {

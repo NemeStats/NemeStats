@@ -11,16 +11,16 @@ using StructureMap.AutoMocking;
 namespace BusinessLogic.Tests.UnitTests.LogicTests.AchievementTests
 {
     [TestFixture]
-    public class LeaderAchievementTests
+    public class TopDogAchievementTests
     {
-        private RhinoAutoMocker<LeaderAchievement> _autoMocker;
+        private RhinoAutoMocker<TopDogAchievement> _autoMocker;
         private readonly int _playerId = 1;
         private readonly int _otherId = 2;
 
         [SetUp]
         public void SetUp()
         {
-            _autoMocker = new RhinoAutoMocker<LeaderAchievement>();
+            _autoMocker = new RhinoAutoMocker<TopDogAchievement>();
         }
 
         [Test]
