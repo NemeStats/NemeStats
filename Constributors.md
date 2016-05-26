@@ -82,7 +82,7 @@ We're using Node Package Manager (npm) for the CSS frameworks. In the repo exist
 * Open Visual Studio and open "UI/package.json". Then change anything and save the file to start the dependencies download.
 * To start watch and compile task: In the task runner explorer window execute (double click) the task "default"
 
-Following both steps you havealready  installed all the dependecies in "node_components" folder (ignored in .gitignore) and executing the watch and compile sass grunt task.
+Following both steps you have already installed all the dependecies in "node_components" folder (ignored in .gitignore) and executing the watch and compile sass grunt task.
 Now, when you change any .scss file, the grunt task will detect it and compile the sass files to the /css destination folder.
 
 
