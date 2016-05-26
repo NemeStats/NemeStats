@@ -89,7 +89,7 @@ Now, when you change any .scss file, the grunt task will detect it and compile t
 
 
 #### What's next?
-If you want to add or improve a feature, it would probably be best to run it by us via email at nemestats@gmail.com. To get your code incorporated into the code base, 
-you'll need to submit a pull request which will need to be reviewed by the development team. All business logic should be unit tested using nUnit and Rhino Mocks/Rhino Auto Mocker (if you need mocking).
+If you want to add or improve a feature, it would probably be best to run it by us via slack: https://nemestats.slack.com/messages/feedback/ or email at nemestats@gmail.com. To get your code incorporated into the code base, 
+you'll need to submit a pull request which will be checked out by the team. All business logic should be unit tested using nUnit and Rhino Mocks/Rhino Auto Mocker (if you need mocking).
 
 If you run into any issues or need help getting NemeStats running locally or have other questions about contributing, just email us at nemestats@gmail.com and we'd be happy to help!
