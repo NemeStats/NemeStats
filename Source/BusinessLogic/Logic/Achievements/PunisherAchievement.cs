@@ -20,7 +20,7 @@ namespace BusinessLogic.Logic.Achievements
 
         public override string DescriptionFormat => "This Achievement is earned when a Player becomes the Nemesis of a Player "
             + "who was previously their Nemesis. Sweet, sweet revenge! "
-            + "Must overtake {0} different Players.";
+            + " Must overtake {0} different Players.";
 
         public override string IconClass => "ns-icon-punisher";
 
@@ -43,8 +43,8 @@ namespace BusinessLogic.Logic.Achievements
                     .GetQueryable<Nemesis>()
                     .Where(nem => nem.NemesisPlayerId == playerId 
                     && nem.NemesisPlayer.CurrentAndPriorNemeses.Any(
-                        x => x.NemesisPlayerId == nem.MinionPlayerId
-                         && x.DateCreated < nem.DateCreated))
+                        min => min.NemesisPlayerId == nem.MinionPlayerId
+                         && min.DateCreated < nem.DateCreated))
                     .Select(nem => nem.MinionPlayerId)
                     .Distinct();
 
