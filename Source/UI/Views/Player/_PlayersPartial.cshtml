@@ -79,8 +79,6 @@
                         <tbody id="playersListTableBody" class="list">
                             @foreach (var item in Model)
                             {
-                            @Html.Partial("_NemePointsBreakdown", item.NemePointsSummary, new ViewDataDictionary { { "templateid", item.PlayerId } })
-
                             <tr>
                                 <td class="player-name-col" data-name="@item.PlayerName">
                                     <b>@Html.ActionLink(item.PlayerName, MVC.Player.Details(item.PlayerId, null))</b>
@@ -171,3 +169,8 @@
             </div>
         </div>
     </div>
+
+    @foreach (var item in Model)
+    {
+    @Html.Partial("_NemePointsBreakdown", item.NemePointsSummary, new ViewDataDictionary { { "templateid", item.PlayerId } })
+    }

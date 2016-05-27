@@ -4,36 +4,39 @@
 <div id="topPlayersVote" class="fl-right" style="margin-top: 21px; margin-bottom: 10.5px;"></div>
 <div class="fl-clear"></div>
 <div class="flip-scroll">
-	<table class="table table-hover table-striped" id="topPlayersTable">
-		<thead>
-			<tr>
-			    <th>Name</th>
-                <th>@Html.NemePointsIco()</th>
-				<th>Played Games</th>
-				<th>Win %</th>
-			</tr>
-		</thead>
+    <table class="table table-hover table-striped" id="topPlayersTable">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>@Html.NemePointsIco()</th>
+            <th>Played Games</th>
+            <th>Win %</th>
+        </tr>
+        </thead>
         @{ var position = 1; }
-		@foreach (UI.Models.Players.TopPlayerViewModel playerSummaryViewModel in @Model)
+        @foreach (var playerSummaryViewModel in @Model)
         {
-            @Html.Partial("_NemePointsBreakdown", playerSummaryViewModel.NemePointsSummary, new ViewDataDictionary { { "templateid", playerSummaryViewModel.PlayerId } })
-
-			<tr data-position="@position">
+            <tr data-position="@position">
                 @{ position++; }
-			    <td>@Html.ActionLink(playerSummaryViewModel.PlayerName, "Details", "Player", new
-			        {
-			            id = playerSummaryViewModel.PlayerId
-			        }, new
-			        {
-			        })</td>
-			    <td>
+                <td>@Html.ActionLink(playerSummaryViewModel.PlayerName, "Details", "Player", new
+                    {
+                        id = playerSummaryViewModel.PlayerId
+                    }, new
+                    {
+                    })</td>
+                <td>
                     <span data-toggle="popover" data-html="true" data-templateselector="#@playerSummaryViewModel.PlayerId" data-title="NemePoints breakdown">
                         @playerSummaryViewModel.NemePointsSummary.TotalNemePoints
                     </span>
-			    </td>
-				<td>@playerSummaryViewModel.TotalNumberOfGamesPlayed</td>
-				<td>@playerSummaryViewModel.WinPercentage&nbsp;%</td>
-			</tr>
-		}
-	</table>
+                </td>
+                <td>@playerSummaryViewModel.TotalNumberOfGamesPlayed</td>
+                <td>@playerSummaryViewModel.WinPercentage&nbsp;%</td>
+            </tr>
+        }
+    </table>
 </div>
+
+@foreach (var playerSummaryViewModel in @Model)
+{
+    @Html.Partial("_NemePointsBreakdown", playerSummaryViewModel.NemePointsSummary, new ViewDataDictionary {{"templateid", playerSummaryViewModel.PlayerId}})
+}
