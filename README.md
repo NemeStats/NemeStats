@@ -12,6 +12,6 @@ The following GitHub projects and corresponding NuGet packages were spawned as a
 * [Universal Analytics for DotNet](https://github.com/RIDGIDSoftwareSolutions/Universal-Analytics-For-DotNet) - This is a .NET wrapper over Google's Universal Analytics Measurement Protocol and is used to push custom events to Universal Analytics from the server side.
 * [Versioned REST API](https://github.com/RIDGIDSoftwareSolutions/versioned-rest-api) - This simple project allows us to easily handle versioning of the REST API via the url (e.g. /api/v2/Players).
 
-If you are interested in contributing, check out [the contributors readme](https://github.com/NemeStats/NemeStats/blob/master/Constributors.md)
+If you are interested in contributing, check out [the contributors readme](https://github.com/NemeStats/NemeStats/blob/master/Contributors.md)
 
 Catch us @nemestats or @jakejgordon on Twitter.
