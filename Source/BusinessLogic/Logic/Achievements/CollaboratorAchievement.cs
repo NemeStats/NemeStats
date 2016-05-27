@@ -16,7 +16,7 @@ namespace BusinessLogic.Logic.Achievements
 
         public override AchievementId Id => AchievementId.Collaborator;
 
-        public override AchievementGroup Group => AchievementGroup.NotApply;
+        public override AchievementGroup Group => AchievementGroup.NotApplicable;
 
         public override string Name => "NemeStats Collaborator";
 

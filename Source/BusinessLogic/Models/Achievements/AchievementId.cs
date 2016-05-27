@@ -14,11 +14,12 @@
         NemePoints = 10,
         Collaborator = 11,
         TopDog = 12,
+        Comeback = 13
     }
 
     public enum AchievementGroup
     {
-        NotApply=0,
+        NotApplicable=0,
         Game = 1,
         Player = 2,
         PlayedGame = 3

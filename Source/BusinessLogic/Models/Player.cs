@@ -54,5 +54,10 @@ namespace BusinessLogic.Models
         public virtual IList<PlayerGameResult> PlayerGameResults { get; set; }
         public virtual IList<Champion> ChampionedGames { get; set; }
         public virtual IList<PlayerAchievement> PlayerAchievements { get; set; }
+
+        [InverseProperty("NemesisPlayer")]
+        public virtual IList<Nemesis> CurrentAndPriorNemeses { get; set; }
+        [InverseProperty("MinionPlayer")]
+        public virtual IList<Nemesis> CurrentAndPriorMinions { get; set; }
     }
 }

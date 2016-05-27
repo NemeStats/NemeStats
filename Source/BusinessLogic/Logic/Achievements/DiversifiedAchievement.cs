@@ -16,7 +16,7 @@ namespace BusinessLogic.Logic.Achievements
 
         public override AchievementGroup Group => AchievementGroup.Game;
 
-        public override string Name => "Diversified gamer";
+        public override string Name => "Diversified Gamer";
 
         public override string DescriptionFormat => "This Achievement is earned by playing {0} different Games.";
 

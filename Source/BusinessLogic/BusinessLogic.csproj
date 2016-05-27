@@ -217,6 +217,7 @@
     <Compile Include="Logic\Achievements\BaseAchievement.cs" />
     <Compile Include="Logic\Achievements\BoardGameGeek2016_10x10Achievement.cs" />
     <Compile Include="Logic\Achievements\CollaboratorAchievement.cs" />
+    <Compile Include="Logic\Achievements\PunisherAchievement.cs" />
     <Compile Include="Logic\Achievements\HardcoreAchievement.cs" />
     <Compile Include="Logic\Achievements\BusyBeeAchievement.cs" />
     <Compile Include="Logic\Achievements\ChampionAchievement.cs" />
