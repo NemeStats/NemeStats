@@ -143,9 +143,11 @@ namespace UI.Controllers
             public _ViewNamesClass ViewNames { get { return s_ViewNames; } }
             public class _ViewNamesClass
             {
+                public readonly string _RecentAchievementsUnlocked = "_RecentAchievementsUnlocked";
                 public readonly string Details = "Details";
                 public readonly string Index = "Index";
             }
+            public readonly string _RecentAchievementsUnlocked = "~/Views/Achievement/_RecentAchievementsUnlocked.cshtml";
             public readonly string Details = "~/Views/Achievement/Details.cshtml";
             public readonly string Index = "~/Views/Achievement/Index.cshtml";
         }

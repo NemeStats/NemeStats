@@ -202,6 +202,7 @@ namespace UI.Controllers
                 public readonly string _PlayedGamesPlayerPartial = "_PlayedGamesPlayerPartial";
                 public readonly string _RecentlyPlayedGamesPartial = "_RecentlyPlayedGamesPartial";
                 public readonly string Create = "Create";
+                public readonly string CreateSuccess = "CreateSuccess";
                 public readonly string Delete = "Delete";
                 public readonly string Details = "Details";
                 public readonly string Edit = "Edit";
@@ -214,6 +215,7 @@ namespace UI.Controllers
             public readonly string _PlayedGamesPlayerPartial = "~/Views/PlayedGame/_PlayedGamesPlayerPartial.cshtml";
             public readonly string _RecentlyPlayedGamesPartial = "~/Views/PlayedGame/_RecentlyPlayedGamesPartial.cshtml";
             public readonly string Create = "~/Views/PlayedGame/Create.cshtml";
+            public readonly string CreateSuccess = "~/Views/PlayedGame/CreateSuccess.cshtml";
             public readonly string Delete = "~/Views/PlayedGame/Delete.cshtml";
             public readonly string Details = "~/Views/PlayedGame/Details.cshtml";
             public readonly string Edit = "~/Views/PlayedGame/Edit.cshtml";

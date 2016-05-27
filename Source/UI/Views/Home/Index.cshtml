@@ -72,9 +72,9 @@
 
         <div class="col-md-6">
             <div class="fl-left">
-                <h3>Top @Model.TopPlayers.Count Players @Html.ActionLink(" - View More", MVC.Player.ShowTopPlayers())</h3>
+                @*<h3>Top @Model.TopPlayers.Count Players @Html.ActionLink(" - View More", MVC.Player.ShowTopPlayers())</h3>*@
             </div>
-            @Html.Partial(MVC.Player.Views._TopPlayersPartial, Model.TopPlayers)
+            @Html.Partial(MVC.Achievement.Views._RecentAchievementsUnlocked, Model.RecentAchievementsUnlocked)
         </div>
     </div>
 </div>
