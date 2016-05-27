@@ -1,3 +1,8 @@
+NemeStats is completely open source and 100% community driven. We are always looking for contributors with the following skills:
+* Software Development - HTML/JavaScript/CSS/ASP.NET MVC and WebAPI, or quite frankly anything else! We could use API clients in various languages, integrations with other open source solutions, and an Android App :)
+* Marketing / Analytics / Lean Startup Thinking - We really need help raising awareness of NemeStats, understanding what the community needs, measuring adoption, etc.
+* UX / Graphic Design - We could always use help with improving the user experience of NemeStats.
+
 If you would like contribute to the NemeStats code base please follow the steps below. If you have any questions or issues please contact us at nemestats@gmail.com.
 
 #### Instructions
