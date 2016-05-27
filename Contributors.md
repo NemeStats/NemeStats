@@ -1,3 +1,8 @@
+NemeStats is completely open source and 100% community driven. We are always looking for contributors with the following skills:
+* Software Development - HTML/JavaScript/CSS/ASP.NET MVC and WebAPI, or quite frankly anything else! We could use API clients in various languages, integrations with other open source solutions, and an Android App :)
+* Marketing / Analytics / Lean Startup Thinking - We really need help raising awareness of NemeStats, understanding what the community needs, measuring adoption, etc.
+* UX / Graphic Design - We could always use help with improving the user experience of NemeStats.
+
 If you would like contribute to the NemeStats code base please follow the steps below. If you have any questions or issues please contact us at nemestats@gmail.com.
 
 #### Instructions
@@ -82,14 +87,14 @@ We're using Node Package Manager (npm) for the CSS frameworks. In the repo exist
 * Open Visual Studio and open "UI/package.json". Then change anything and save the file to start the dependencies download.
 * To start watch and compile task: In the task runner explorer window execute (double click) the task "default"
 
-Following both steps you havealready  installed all the dependecies in "node_components" folder (ignored in .gitignore) and executing the watch and compile sass grunt task.
+Following both steps you have already installed all the dependecies in "node_components" folder (ignored in .gitignore) and executing the watch and compile sass grunt task.
 Now, when you change any .scss file, the grunt task will detect it and compile the sass files to the /css destination folder.
 
 
 
 
 #### What's next?
-If you want to add or improve a feature, it would probably be best to run it by us via email at nemestats@gmail.com. To get your code incorporated into the code base, 
-you'll need to submit a pull request which will need to be reviewed by the development team. All business logic should be unit tested using nUnit and Rhino Mocks/Rhino Auto Mocker (if you need mocking).
+If you want to add or improve a feature, it would probably be best to run it by us via slack: https://nemestats.slack.com/messages/feedback/ or email at nemestats@gmail.com. To get your code incorporated into the code base, 
+you'll need to submit a pull request which will be checked out by the team. All business logic should be unit tested using nUnit and Rhino Mocks/Rhino Auto Mocker (if you need mocking).
 
 If you run into any issues or need help getting NemeStats running locally or have other questions about contributing, just email us at nemestats@gmail.com and we'd be happy to help!

@@ -262,13 +262,13 @@ else
                     <thead>
                         <tr>
                             <th>
-                                <span class="sort" data-sort="name-col">Player name <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
+                                <span class="sort" data-sort="playername-col">Player name <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
                             </th>
                             <th>
                                 <span class="sort" data-sort="gaminggroup-col">Gaming group <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
                             </th>
                             <th>
-                                <span class="sort desc" data-sort="name-col">Date earned <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
+                                <span class="sort desc" data-sort="date-col">Date earned <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
                             </th>
                             <th>
                                 <span class="sort" data-sort="level-col">Achievement Level <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
@@ -283,7 +283,7 @@ else
                             <td class="playername-col" data-name="@winner.PlayerName">
                                 @Html.ActionLink(winner.PlayerName, "Details", "Player", new {id = winner.PlayerId}, new {})
                             </td>
-                            <td class="gaminggroup-col" data-name="@winner.">
+                            <td class="gaminggroup-col" data-name="@winner.GamingGroupName">
                                 @Html.ActionLink(winner.GamingGroupName, "Details", "GamingGroup", new {id = winner.GamingGroupId}, new {})
                             </td>
                             <td class="date-col" data-date="@winner.AchievementLastUpdateDate.ToFileTimeUtc()">
