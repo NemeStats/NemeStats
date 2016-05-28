@@ -14,7 +14,7 @@
         NemePoints = 10,
         Collaborator = 11,
         TopDog = 12,
-        Comeback = 13
+        Punisher = 13
     }
 
     public enum AchievementGroup

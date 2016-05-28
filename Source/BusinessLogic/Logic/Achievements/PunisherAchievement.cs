@@ -12,7 +12,7 @@ namespace BusinessLogic.Logic.Achievements
         {
         }
 
-        public override AchievementId Id => AchievementId.Comeback;
+        public override AchievementId Id => AchievementId.Punisher;
 
         public override AchievementGroup Group => AchievementGroup.Player;
 
