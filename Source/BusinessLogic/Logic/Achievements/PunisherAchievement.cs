@@ -41,15 +41,16 @@ namespace BusinessLogic.Logic.Achievements
             var revengedPlayerIds =
                 DataContext
                     .GetQueryable<Nemesis>()
-                    .Where(nem => nem.NemesisPlayerId == playerId 
-                    && nem.NemesisPlayer.CurrentAndPriorNemeses.Any(
-                        min => min.NemesisPlayerId == nem.MinionPlayerId
-                         && min.DateCreated < nem.DateCreated))
+                    .Where(nem => nem.NemesisPlayerId == playerId
+                                  && nem.NemesisPlayer.CurrentAndPriorNemeses.Any(
+                                      min => min.NemesisPlayerId == nem.MinionPlayerId
+                                             && min.DateCreated < nem.DateCreated))
                     .Select(nem => nem.MinionPlayerId)
-                    .Distinct();
+                    .Distinct()
+                    .ToList();
 
-            result.RelatedEntities = revengedPlayerIds.ToList();
-            result.PlayerProgress = revengedPlayerIds.Count();
+            result.RelatedEntities = revengedPlayerIds;
+            result.PlayerProgress = revengedPlayerIds.Count;
 
             if (result.PlayerProgress < LevelThresholds[AchievementLevel.Bronze])
             {
