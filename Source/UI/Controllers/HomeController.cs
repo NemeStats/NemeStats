@@ -31,13 +31,12 @@ using UI.Models.GameDefinitionModels;
 using UI.Models.GamingGroup;
 using UI.Models.Home;
 using UI.Transformations;
-using UI.Transformations.PlayerTransformations;
 
 namespace UI.Controllers
 {
     public partial class HomeController : BaseController
     {
-        internal const int NUMBER_OF_RECENT_ACHIEVEMENTS_TO_SHOW = 15;
+        internal const int NUMBER_OF_RECENT_ACHIEVEMENTS_TO_SHOW = 10;
         internal const int NUMBER_OF_RECENT_PUBLIC_GAMES_TO_SHOW = 5;
         internal const int NUMBER_OF_RECENT_NEMESIS_CHANGES_TO_SHOW = 5;
         internal const int NUMBER_OF_TOP_GAMING_GROUPS_TO_SHOW = 15;
@@ -48,32 +47,31 @@ namespace UI.Controllers
         private readonly ITopGamingGroupsRetriever _topGamingGroupsRetriever;
         private readonly ITrendingGamesRetriever _trendingGamesRetriever;
         private readonly ITransformer _transformer;
-        private readonly IPlayerAchievementRetriever _playerAchievementRetriever;
+        private readonly IRecentPlayerAchievementsUnlockedRetreiver _recentPlayerAchievementsUnlockedRetreiver;
         private readonly PlayerAchievementToPlayerAchievementWinnerViewModelMapper _playerAchievementToPlayerAchievementWinnerViewModelMapper;
 
         public HomeController(
             IRecentPublicGamesRetriever recentPublicGamesRetriever,
             ITopGamingGroupsRetriever topGamingGroupsRetriever,
             ITrendingGamesRetriever trendingGamesRetriever,
-            ITransformer transformer,
-            IPlayerAchievementRetriever playerAchievementRetriever,
-            PlayerAchievementToPlayerAchievementWinnerViewModelMapper playerAchievementToPlayerAchievementWinnerViewModelMapper
-            )
+            ITransformer transformer,            
+            PlayerAchievementToPlayerAchievementWinnerViewModelMapper playerAchievementToPlayerAchievementWinnerViewModelMapper, 
+            IRecentPlayerAchievementsUnlockedRetreiver recentPlayerAchievementsUnlockedRetreiver)
         {
             _recentPublicGamesRetriever = recentPublicGamesRetriever;
             _topGamingGroupsRetriever = topGamingGroupsRetriever;
             _trendingGamesRetriever = trendingGamesRetriever;
             _transformer = transformer;
-            _playerAchievementRetriever = playerAchievementRetriever;
             _playerAchievementToPlayerAchievementWinnerViewModelMapper = playerAchievementToPlayerAchievementWinnerViewModelMapper;
+            _recentPlayerAchievementsUnlockedRetreiver = recentPlayerAchievementsUnlockedRetreiver;
         }
 
         public virtual ActionResult Index()
         {
 
-            var recentPlayerAchievements = _playerAchievementRetriever.GetRecentPlayerAchievementsUnlocked(new PagedQuery() {PageSize = NUMBER_OF_RECENT_ACHIEVEMENTS_TO_SHOW });
+            var recentPlayerAchievements = _recentPlayerAchievementsUnlockedRetreiver.GetResults(new GetRecentPlayerAchievementsUnlockedQuery {PageSize = NUMBER_OF_RECENT_ACHIEVEMENTS_TO_SHOW });
             var recentPlayerAchievementsViewModel =
-                recentPlayerAchievements.Select(pa => _playerAchievementToPlayerAchievementWinnerViewModelMapper.Map(pa)).ToList();
+                recentPlayerAchievements.ToMappedPagedList(_playerAchievementToPlayerAchievementWinnerViewModelMapper);
 
             var publicGameSummaries = _recentPublicGamesRetriever.GetResults(NUMBER_OF_RECENT_PUBLIC_GAMES_TO_SHOW);
 

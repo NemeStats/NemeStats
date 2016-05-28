@@ -72,7 +72,7 @@
 
         <div class="col-md-6">
             <div class="fl-left">
-                @*<h3>Top @Model.TopPlayers.Count Players @Html.ActionLink(" - View More", MVC.Player.ShowTopPlayers())</h3>*@
+                <h3>Recent @Model.RecentAchievementsUnlocked.Count Achievements unlocked @Html.ActionLink(" - View More", MVC.Achievement.RecentAchievementsUnlocked())</h3>
             </div>
             @Html.Partial(MVC.Achievement.Views._RecentAchievementsUnlocked, Model.RecentAchievementsUnlocked)
         </div>
@@ -88,7 +88,7 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $("#recentGamesVote").rank({ votableFeatureId: "RecentGlobalGames" });
-            $("#topPlayersVote").rank({ votableFeatureId: "TopGlobalPlayers" });
+            $("#recentAchievementsUnlocked").rank({ votableFeatureId: "RecentAchievementsUnlocked" });
             $("#topGlobalGameDefinitionsVote").rank({ votableFeatureId: "RecentGlobalTopGameDefinitions" });
             $("#gamingGroupsVote").rank({ votableFeatureId: "TopGlobalGamingGroups" });
         });

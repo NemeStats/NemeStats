@@ -171,12 +171,12 @@ namespace NemeStats.IoC
             For<IWeightTierCalculator>().Use<WeightTierCalculator>();
             For<IWeightBonusCalculator>().Use<WeightBonusCalculator>();
             For<IGameDurationBonusCalculator>().Use<GameDurationBonusCalculator>();
-            //For<IAchievementAwarder>().Use<AchievementAwarder>();
             For<IRecentPublicGamesRetriever>().Use<RecentPublicGamesRetriever>();
             For<ITopGamingGroupsRetriever>().Use<TopGamingGroupsRetriever>();
             For<ITopPlayersRetriever>().Use<TopPlayersRetriever>();
             For<ITrendingGamesRetriever>().Use<TrendingGamesRetriever>();
             For<IPlayerAchievementRetriever>().Use<PlayerAchievementRetriever>();
+            For<IRecentPlayerAchievementsUnlockedRetreiver>().Use<RecentPlayerAchievementsUnlockedRetreiver>();
 
 
             For<ICacheService>().Use<CacheService>();

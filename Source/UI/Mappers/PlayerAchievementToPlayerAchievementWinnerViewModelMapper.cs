@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using AutoMapper;
 using BusinessLogic.Events.HandlerFactory;
 using BusinessLogic.Models;
@@ -18,6 +19,8 @@ namespace UI.Mappers
         static PlayerAchievementToPlayerAchievementWinnerViewModelMapper()
         {
             Mapper.CreateMap<PlayerAchievement, PlayerAchievementWinnerViewModel>()
+                .ForMember(m => m.Achievement, o => o.Ignore())
+                .ForMember(m => m.AchievementId, o => o.MapFrom(p => p.AchievementId))
                 .ForMember(m => m.PlayerName, o => o.MapFrom(p => p.Player.Name))
                 .ForMember(m => m.PlayerId, o => o.MapFrom(p => p.PlayerId))
                 .ForMember(m => m.GamingGroupId, o => o.MapFrom(p => p.Player.GamingGroupId))
@@ -33,6 +36,20 @@ namespace UI.Mappers
 
             model.Achievement =
                 _achievementSummaryViewModelMapper.Map(AchievementFactory.GetAchievementById(source.AchievementId));
+
+            return model;
+        }
+
+        public override IEnumerable<PlayerAchievementWinnerViewModel> Map(IEnumerable<PlayerAchievement> source)
+        {
+            var model = base.Map(source);
+
+            foreach (var viewmodel in model)
+            {
+                viewmodel.Achievement = _achievementSummaryViewModelMapper.Map(AchievementFactory.GetAchievementById(viewmodel.AchievementId));
+            }
+
+            
 
             return model;
         }

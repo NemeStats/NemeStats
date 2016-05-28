@@ -48,7 +48,10 @@ namespace UI.Transformations.PlayerTransformations
         private readonly PlayerAchievementToPlayerAchievementSummaryViewModelMapper _playerAchievementToPlayerAchievementSummaryViewModelMapper;
 
 
-        public PlayerDetailsViewModelBuilder(IGameResultViewModelBuilder builder, IMinionViewModelBuilder minionViewModelBuilder, PlayerAchievementToPlayerAchievementSummaryViewModelMapper playerAchievementToPlayerAchievementSummaryViewModelMapper)
+        public PlayerDetailsViewModelBuilder(
+            IGameResultViewModelBuilder builder,
+            IMinionViewModelBuilder minionViewModelBuilder, 
+            PlayerAchievementToPlayerAchievementSummaryViewModelMapper playerAchievementToPlayerAchievementSummaryViewModelMapper)
         {
             _gameResultViewModelBuilder = builder;
             _minionViewModelBuilder = minionViewModelBuilder;

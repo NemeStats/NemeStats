@@ -17,6 +17,7 @@
 #endregion
 using BusinessLogic.Models.Games;
 using System.Collections.Generic;
+using PagedList;
 using UI.Models.GameDefinitionModels;
 using UI.Models.GamingGroup;
 using UI.Models.Players;
@@ -30,7 +31,7 @@ namespace UI.Models.Home
             RecentPublicGames = new List<PublicGameSummary>();
         }
 
-        public List<PlayerAchievementWinnerViewModel> RecentAchievementsUnlocked { get; set; }
+        public IPagedList<PlayerAchievementWinnerViewModel> RecentAchievementsUnlocked { get; set; }
         public List<PublicGameSummary> RecentPublicGames { get; set; }
         public List<TopGamingGroupSummaryViewModel> TopGamingGroups { get; set; }
         public List<TrendingGameViewModel> TrendingGames { get; set; }

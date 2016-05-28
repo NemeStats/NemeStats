@@ -49,7 +49,7 @@ namespace BusinessLogic.Logic.Achievements
                     .Distinct();
 
             result.RelatedEntities = revengedPlayerIds.ToList();
-            result.PlayerProgress = revengedPlayerIds.Count();
+            result.PlayerProgress = result.RelatedEntities.Count();
 
             if (result.PlayerProgress < LevelThresholds[AchievementLevel.Bronze])
             {

@@ -957,6 +957,16 @@ footer {
     font-size: 40px; }
     .achievement.big .content > span {
       line-height: 67px; }
+  .achievement.medium .circle {
+    width: 30px;
+    height: 30px;
+    margin: 5px; }
+  .achievement.medium .content {
+    font-size: 22px; }
+    .achievement.medium .content > span {
+      line-height: 0 !important; }
+      .achievement.medium .content > span[class^='ns-icon-'] {
+        line-height: 1px !important; }
 
 .playerachievement ul {
   text-align: center;
