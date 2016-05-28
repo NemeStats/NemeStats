@@ -600,6 +600,8 @@
     <Content Include="css\fonts.css.map" />
     <Compile Include="App_Start\Startup.SignalR.cs" />
     <Content Include="sass\nemestats\playedgame.scss" />
+    <None Include="Properties\PublishProfiles\nerdscorekeeper - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\nerdscorekeeper - Web Deploy.pubxml" />
     <None Include="sass\nemestats\gaminggroup.scss" />
     <Content Include="sass\nemestats\home.scss" />
     <Content Include="fonts\bootstrap\glyphicons-halflings-regular.woff2" />

@@ -6,8 +6,6 @@ using BusinessLogic.Models.Achievements;
 
 namespace BusinessLogic.Logic.Achievements
 {
-
-
     public class BusyBeeAchievement : BaseAchievement
     {
         public BusyBeeAchievement(IDataContext dataContext) : base(dataContext)
