@@ -85,7 +85,7 @@ We're using Node Package Manager (npm) for the CSS frameworks. In the repo exist
 * Install nodeJS in your computer: https://nodejs.org/en/download/
 * Install "Task Runner Explorer" extension in your Visual Studio: https://visualstudiogallery.msdn.microsoft.com/8e1b4368-4afb-467a-bc13-9650572db708/view/Discussions/2
 * Open Visual Studio and open "UI/package.json". Then change anything and save the file to start the dependencies download.
-* To start watch and compile task: In the task runner explorer window execute (double click) the task "default"
+* To start watch and compile task, open the Task Runner Explorer view (View => Other Windows => Task Runner Explorer). In the Task Runner Explorer window execute (double click) the task "default". Now any changes you make to .scss files will automatically trigger css files to recompile.
 
 Following both steps you have already installed all the dependecies in "node_components" folder (ignored in .gitignore) and executing the watch and compile sass grunt task.
 Now, when you change any .scss file, the grunt task will detect it and compile the sass files to the /css destination folder.
