@@ -1,0 +1,47 @@
+﻿@model PagedList.IPagedList<UI.Models.Players.PlayerAchievementWinnerViewModel>
+    @{
+        Layout = null;
+        var position = 1;
+    }
+
+    <div id="recentAchievementsUnlocked" class="fl-right" style="margin-top: 21px; margin-bottom: 10.5px;"></div>
+    <div class="fl-clear"></div>
+    <div class="flip-scroll">
+        <table class="table table-hover table-striped" id="topGamingGroupsTable">
+            <thead>
+                <tr>
+                    <th>Achievement</th>
+                    <th>Player</th>
+                    <th>Gaming Group</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            @foreach (var playerAchievement in Model)
+            {
+            <tr data-position="@position">
+                @{ position++; }
+                <td>
+                    <a href="@Url.Action(MVC.Achievement.PlayerAchievement(playerAchievement.Achievement.Id, playerAchievement.PlayerId))">
+                        <span class="achievement medium @playerAchievement.AchievementLevel.ToString().ToLower()">
+                            <span class="circle">
+                                <span class="content">
+                                    <span class="@playerAchievement.Achievement.IconClass"></span>
+                                </span>
+                            </span>
+                        </span>
+                        @playerAchievement.Achievement.Name
+                    </a>
+                </td>
+                <td>
+                    @Html.ActionLink(playerAchievement.PlayerName, "Details", "Player", new {id=playerAchievement.PlayerId}, new {})
+                </td>
+                <td>
+                    @Html.ActionLink(playerAchievement.GamingGroupName, "Details", "GamingGroup", new {id=playerAchievement.GamingGroupId})
+                </td>
+                <td>
+                    @playerAchievement.AchievementLastUpdateDate.ToShortDateString()
+                </td>
+            </tr>
+            }
+        </table>
+    </div>

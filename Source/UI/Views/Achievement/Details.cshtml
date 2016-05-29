@@ -19,17 +19,21 @@
 @if (Model.HasAnyLevelUnlocked)
 {
     <h2 class="page-header">@Model.Achievement.Name achievement unlocked for <a href="@Url.Action(MVC.Player.Details(Model.PlayerId, null))">@Model.PlayerName</a> !
+        <a class="btn btn-primary btn-xs" href="@Url.Action(MVC.Achievement.Index())">view all</a>
     </h2>
     levelClass = Model.AchievementLevel.ToString().ToLower();
 }
 else
 {
-    <h2 class="page-header">@Model.Achievement.Name Achievement</h2>
+    <h2 class="page-header">
+        @Model.Achievement.Name Achievement
+        <a class="btn btn-primary btn-xs" href="@Url.Action(MVC.Achievement.Index())">view all</a>
+</h2>
     levelClass = Model.Achievement.LevelThresholds.First().Key.ToString().ToLower();
 }
 <div class="panel panel-primary playerachievement">
     <div class="panel-heading">
-        <h4>Achievement Description</h4>
+        <h4>Achievement Description </h4>
     </div>
     <div class="panel-body">
         <div class="row">

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using AutoMapper;
 
 namespace UI.Mappers
@@ -7,6 +8,11 @@ namespace UI.Mappers
         public virtual TResult Map(TSource source)
         {
             return Mapper.Map<TResult>(source);
+        }
+
+        public virtual IEnumerable<TResult> Map(IEnumerable<TSource> source)
+        {
+            return Mapper.Map<IEnumerable<TResult>>(source);
         }
     }
 }

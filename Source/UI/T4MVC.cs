@@ -256,6 +256,7 @@ namespace Links
             public static readonly string spinner_gif = Url("spinner.gif");
         }
     
+        public static readonly string PagedList_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/PagedList.min.css") ? Url("PagedList.min.css") : Url("PagedList.css");
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public static class themes {
             private const string URLPATH = "~/Content/themes";
@@ -507,6 +508,7 @@ namespace Links
             {
                 public const string font_awesome_css = "~/Content/font-awesome.css";
                 public const string font_awesome_min_css = "~/Content/font-awesome.min.css";
+                public const string PagedList_css = "~/Content/PagedList.css";
             }
         }
     }

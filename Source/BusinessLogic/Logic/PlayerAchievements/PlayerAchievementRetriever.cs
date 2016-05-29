@@ -22,5 +22,6 @@ namespace BusinessLogic.Logic.PlayerAchievements
                 .Include(pa => pa.Player)
                 .FirstOrDefault(pa => pa.AchievementId == achievementId && pa.PlayerId == playerId);
         }
+   
     }
 }

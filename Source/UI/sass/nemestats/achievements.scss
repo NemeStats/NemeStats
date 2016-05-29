@@ -93,6 +93,26 @@ $gold-text-color: darken($gold-achievement-color,15%);
             }
         }
     }
+
+    &.medium {
+        .circle {
+            width: 30px;
+            height: 30px;
+            margin: 5px;
+        }
+
+        .content {
+            font-size: 22px;
+
+            > span {
+                line-height: 0 !important;
+
+                &[class^='ns-icon-'] {
+                    line-height: 1px !important;
+                }
+            }
+        }
+    }
 }
 
 

@@ -66,7 +66,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         {
             AutomapperConfiguration.Configure();
             minionViewModelBuilderMock = MockRepository.GenerateMock<IMinionViewModelBuilder>();
-            playerAchievementViewModelBuilderMock = MockRepository.GenerateStub<PlayerAchievementToPlayerAchievementSummaryViewModelMapper>(MockRepository.GenerateStub<AchievementToAchievementViewModelMapper>(MockRepository.GenerateStub<PlayerAchievementToPlayerAchievementWinnerViewModelMapper>()));
+            playerAchievementViewModelBuilderMock = MockRepository.GenerateStub<PlayerAchievementToPlayerAchievementSummaryViewModelMapper>(MockRepository.GenerateStub<AchievementToAchievementViewModelMapper>(MockRepository.GenerateStub<PlayerAchievementToPlayerAchievementWinnerViewModelMapper>(MockRepository.GenerateStub<AchievementToAchievementSummaryViewModelMapper>())));
 
             currentUser = new ApplicationUser()
             {

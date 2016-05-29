@@ -23,52 +23,55 @@ using BusinessLogic.Models.GamingGroups;
 using System.Linq;
 using System.Web.Mvc;
 using BusinessLogic.Facades;
+using BusinessLogic.Logic.PlayerAchievements;
+using BusinessLogic.Paging;
 using UI.Controllers.Helpers;
+using UI.Mappers;
 using UI.Models.GameDefinitionModels;
 using UI.Models.GamingGroup;
 using UI.Models.Home;
 using UI.Transformations;
-using UI.Transformations.PlayerTransformations;
 
 namespace UI.Controllers
 {
     public partial class HomeController : BaseController
     {
-        internal const int NUMBER_OF_TOP_PLAYERS_TO_SHOW = 15;
+        internal const int NUMBER_OF_RECENT_ACHIEVEMENTS_TO_SHOW = 10;
         internal const int NUMBER_OF_RECENT_PUBLIC_GAMES_TO_SHOW = 5;
         internal const int NUMBER_OF_RECENT_NEMESIS_CHANGES_TO_SHOW = 5;
         internal const int NUMBER_OF_TOP_GAMING_GROUPS_TO_SHOW = 15;
         internal const int NUMBER_OF_DAYS_OF_TRENDING_GAMES = 90;
         internal const int NUMBER_OF_TRENDING_GAMES_TO_SHOW = 5;
 
-        private readonly ITopPlayersRetriever _topPlayersRetriever;
-        private readonly ITopPlayerViewModelBuilder _topPlayerViewModelBuilder;
         private readonly IRecentPublicGamesRetriever _recentPublicGamesRetriever;
         private readonly ITopGamingGroupsRetriever _topGamingGroupsRetriever;
         private readonly ITrendingGamesRetriever _trendingGamesRetriever;
         private readonly ITransformer _transformer;
+        private readonly IRecentPlayerAchievementsUnlockedRetreiver _recentPlayerAchievementsUnlockedRetreiver;
+        private readonly PlayerAchievementToPlayerAchievementWinnerViewModelMapper _playerAchievementToPlayerAchievementWinnerViewModelMapper;
 
         public HomeController(
-            ITopPlayersRetriever topPlayersRetriever,
-            ITopPlayerViewModelBuilder topPlayerViewModelBuilder,
             IRecentPublicGamesRetriever recentPublicGamesRetriever,
             ITopGamingGroupsRetriever topGamingGroupsRetriever,
             ITrendingGamesRetriever trendingGamesRetriever,
-            ITransformer transformer)
+            ITransformer transformer,            
+            PlayerAchievementToPlayerAchievementWinnerViewModelMapper playerAchievementToPlayerAchievementWinnerViewModelMapper, 
+            IRecentPlayerAchievementsUnlockedRetreiver recentPlayerAchievementsUnlockedRetreiver)
         {
-            _topPlayersRetriever = topPlayersRetriever;
-            _topPlayerViewModelBuilder = topPlayerViewModelBuilder;
             _recentPublicGamesRetriever = recentPublicGamesRetriever;
             _topGamingGroupsRetriever = topGamingGroupsRetriever;
             _trendingGamesRetriever = trendingGamesRetriever;
             _transformer = transformer;
+            _playerAchievementToPlayerAchievementWinnerViewModelMapper = playerAchievementToPlayerAchievementWinnerViewModelMapper;
+            _recentPlayerAchievementsUnlockedRetreiver = recentPlayerAchievementsUnlockedRetreiver;
         }
 
         public virtual ActionResult Index()
         {
-            var topPlayers = _topPlayersRetriever.GetResults(NUMBER_OF_TOP_PLAYERS_TO_SHOW);
-            var topPlayerViewModels = topPlayers.Select(
-                topPlayer => _topPlayerViewModelBuilder.Build(topPlayer)).ToList();
+
+            var recentPlayerAchievements = _recentPlayerAchievementsUnlockedRetreiver.GetResults(new GetRecentPlayerAchievementsUnlockedQuery {PageSize = NUMBER_OF_RECENT_ACHIEVEMENTS_TO_SHOW });
+            var recentPlayerAchievementsViewModel =
+                recentPlayerAchievements.ToMappedPagedList(_playerAchievementToPlayerAchievementWinnerViewModelMapper);
 
             var publicGameSummaries = _recentPublicGamesRetriever.GetResults(NUMBER_OF_RECENT_PUBLIC_GAMES_TO_SHOW);
 
@@ -82,7 +85,7 @@ namespace UI.Controllers
 
             var homeIndexViewModel = new HomeIndexViewModel()
             {
-                TopPlayers = topPlayerViewModels,
+                RecentAchievementsUnlocked = recentPlayerAchievementsViewModel,
                 RecentPublicGames = publicGameSummaries,
                 TopGamingGroups = topGamingGroupViewModels,
                 TrendingGames = trendingGameViewModels

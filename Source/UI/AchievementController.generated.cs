@@ -94,6 +94,7 @@ namespace UI.Controllers
             public readonly string DetailsForCurrentUser = "DetailsForCurrentUser";
             public readonly string Details = "Details";
             public readonly string PlayerAchievement = "PlayerAchievement";
+            public readonly string RecentAchievementsUnlocked = "RecentAchievementsUnlocked";
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -103,6 +104,7 @@ namespace UI.Controllers
             public const string DetailsForCurrentUser = "DetailsForCurrentUser";
             public const string Details = "Details";
             public const string PlayerAchievement = "PlayerAchievement";
+            public const string RecentAchievementsUnlocked = "RecentAchievementsUnlocked";
         }
 
 
@@ -133,6 +135,14 @@ namespace UI.Controllers
             public readonly string achievementId = "achievementId";
             public readonly string playerId = "playerId";
         }
+        static readonly ActionParamsClass_RecentAchievementsUnlocked s_params_RecentAchievementsUnlocked = new ActionParamsClass_RecentAchievementsUnlocked();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_RecentAchievementsUnlocked RecentAchievementsUnlockedParams { get { return s_params_RecentAchievementsUnlocked; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_RecentAchievementsUnlocked
+        {
+            public readonly string page = "page";
+        }
         static readonly ViewsClass s_views = new ViewsClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ViewsClass Views { get { return s_views; } }
@@ -143,11 +153,15 @@ namespace UI.Controllers
             public _ViewNamesClass ViewNames { get { return s_ViewNames; } }
             public class _ViewNamesClass
             {
+                public readonly string _RecentAchievementsUnlocked = "_RecentAchievementsUnlocked";
                 public readonly string Details = "Details";
                 public readonly string Index = "Index";
+                public readonly string RecentAchievementsUnlocked = "RecentAchievementsUnlocked";
             }
+            public readonly string _RecentAchievementsUnlocked = "~/Views/Achievement/_RecentAchievementsUnlocked.cshtml";
             public readonly string Details = "~/Views/Achievement/Details.cshtml";
             public readonly string Index = "~/Views/Achievement/Index.cshtml";
+            public readonly string RecentAchievementsUnlocked = "~/Views/Achievement/RecentAchievementsUnlocked.cshtml";
         }
     }
 
@@ -203,6 +217,18 @@ namespace UI.Controllers
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "achievementId", achievementId);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "playerId", playerId);
             PlayerAchievementOverride(callInfo, achievementId, playerId);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void RecentAchievementsUnlockedOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int page);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult RecentAchievementsUnlocked(int page)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.RecentAchievementsUnlocked);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "page", page);
+            RecentAchievementsUnlockedOverride(callInfo, page);
             return callInfo;
         }
 

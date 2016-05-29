@@ -22,24 +22,29 @@ using BusinessLogic.Models.Players;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 using BusinessLogic.Facades;
+using BusinessLogic.Logic.PlayerAchievements;
+using BusinessLogic.Models;
+using BusinessLogic.Models.Achievements;
 using UI.Controllers;
 using UI.Models.GamingGroup;
 using UI.Models.Home;
 using UI.Models.Nemeses;
 using UI.Models.Players;
 using BusinessLogic.Models.GamingGroups;
+using BusinessLogic.Paging;
 using UI.Models.GameDefinitionModels;
 using UI.Transformations;
 using UI.Transformations.PlayerTransformations;
+using PagedList;
 
 namespace UI.Tests.UnitTests.ControllerTests.HomeControllerTests
 {
     [TestFixture]
     public class IndexTests : HomeControllerTestBase
     {
-        private TopPlayerViewModel expectedPlayer;
         private PublicGameSummary expectedPublicGameSummary;
         private List<NemesisChangeViewModel> expectedNemesisChangeViewModels;
         private TopGamingGroupSummary expectedTopGamingGroup;
@@ -47,22 +52,28 @@ namespace UI.Tests.UnitTests.ControllerTests.HomeControllerTests
         private TrendingGameViewModel _expectedTrendingGameViewModel;
         private TopGamingGroupSummaryViewModel expectedTopGamingGroupViewModel;
         private ViewResult viewResult;
-            
+
+        List<PlayerAchievement> recentAchievementsUnlocks;
+
         [SetUp]
         public override void SetUp()
         {
             base.SetUp();
 
-            var topPlayers = new List<TopPlayer>()
+            
+            recentAchievementsUnlocks = new List<PlayerAchievement>
             {
-                new TopPlayer()
+                new PlayerAchievement()
+                {
+                    AchievementId = AchievementId.BoardGameGeek2016_10x10
+                }
+
+
             };
 
-            _autoMocker.Get<ITopPlayersRetriever>().Expect(mock => mock.GetResults(HomeController.NUMBER_OF_TOP_PLAYERS_TO_SHOW))
-                .Return(topPlayers);
-            expectedPlayer = new TopPlayerViewModel();
-            _autoMocker.Get<ITopPlayerViewModelBuilder>().Expect(mock => mock.Build(Arg<TopPlayer>.Is.Anything))
-                .Return(expectedPlayer);
+            _autoMocker.Get<IRecentPlayerAchievementsUnlockedRetreiver>().Expect(mock => mock.GetResults(Arg<GetRecentPlayerAchievementsUnlockedQuery>.Is.Anything))
+                .Return(recentAchievementsUnlocks.ToPagedList(1, HomeController.NUMBER_OF_RECENT_ACHIEVEMENTS_TO_SHOW));
+
 
             expectedPublicGameSummary = new PublicGameSummary();
             var publicGameSummaries = new List<PublicGameSummary>()
@@ -123,11 +134,11 @@ namespace UI.Tests.UnitTests.ControllerTests.HomeControllerTests
         }
 
         [Test]
-        public void TheIndexHasTheRecentPlayerSummaries()
+        public void TheIndexHasTheRecentPlayerAchievementUnlocks()
         {
             var actualViewModel = (HomeIndexViewModel)viewResult.ViewData.Model;
 
-            Assert.AreSame(expectedPlayer, actualViewModel.TopPlayers[0]);
+            Assert.AreEqual(recentAchievementsUnlocks.First().AchievementId, actualViewModel.RecentAchievementsUnlocked[0].AchievementId);
         }
 
         [Test]

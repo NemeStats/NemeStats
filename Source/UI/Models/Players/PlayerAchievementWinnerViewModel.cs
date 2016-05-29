@@ -1,5 +1,6 @@
 ﻿using System;
 using BusinessLogic.Models.Achievements;
+using UI.Models.Achievements;
 
 namespace UI.Models.Players
 {
@@ -10,7 +11,9 @@ namespace UI.Models.Players
         public string GamingGroupId { get; set; }
         public string GamingGroupName { get; set; }
         public DateTime AchievementLastUpdateDate { get; set; }
-
         public AchievementLevel AchievementLevel { get; set; }
+        public AchievementId AchievementId { get; set; }
+        public AchievementSummaryViewModel Achievement { get; set; }
+        
     }
 }
