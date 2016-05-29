@@ -189,16 +189,16 @@ namespace UI.Controllers
 
             if (gamesImported == null)
             {
-                SetTempMessage(TempMessageKeys.CREATE_GAMEDEFITION_RESULT_TEMPMESSAGE, "It appears as though you don't have any games in your BoardGameGeek collection :_(", "info");
+                SetToastMessage(TempMessageKeys.CREATE_GAMEDEFITION_RESULT_TEMPMESSAGE, "It appears as though you don't have any games in your BoardGameGeek collection :_(", "info");
             }
             else if (gamesImported == 0)
             {
-                SetTempMessage(TempMessageKeys.CREATE_GAMEDEFITION_RESULT_TEMPMESSAGE,
+                SetToastMessage(TempMessageKeys.CREATE_GAMEDEFITION_RESULT_TEMPMESSAGE,
                     "All your BoardGameGeek games are already imported ;-)", "info");
             }
             else
             {
-                SetTempMessage(TempMessageKeys.CREATE_GAMEDEFITION_RESULT_TEMPMESSAGE, $"{gamesImported} games imported from your BoardGameGeek collection to NemeStats. Awesome!");
+                SetToastMessage(TempMessageKeys.CREATE_GAMEDEFITION_RESULT_TEMPMESSAGE, $"{gamesImported} games imported from your BoardGameGeek collection to NemeStats. Awesome!");
             }
 
             return RedirectToAction(MVC.GamingGroup.Index());

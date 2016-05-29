@@ -16,7 +16,6 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 
-using System;
 using BusinessLogic.Logic;
 using BusinessLogic.Logic.PlayedGames;
 using BusinessLogic.Models.Games;
@@ -24,9 +23,9 @@ using BusinessLogic.Models.User;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System.Collections.Generic;
-using System.Linq;
 using System.Web.Mvc;
 using UI.Controllers;
+using UI.Controllers.Helpers;
 
 namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 {
@@ -53,16 +52,21 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
         {
             //--arrange
             var expectedViewResult = new ViewResult();
+
             autoMocker.PartialMockTheClassUnderTest();
             autoMocker.ClassUnderTest.Expect(controller => controller.Create(currentUser))
                     .Repeat.Once()
                     .Return(expectedViewResult);
+            autoMocker.ClassUnderTest.Expect(mock => mock.SetToastMessage(null, null)).IgnoreArguments();
 
             //--act
             var actualResult = autoMocker.ClassUnderTest.Create(new NewlyCompletedGame(), true, currentUser) as ViewResult;
 
             //--assert
             Assert.AreSame(expectedViewResult, actualResult);
+            autoMocker.ClassUnderTest.AssertWasCalled(mock => mock.SetToastMessage(
+                TempMessageKeys.TEMP_MESSAGE_KEY_PLAYED_GAME_RECORDED, 
+                "Played Game successfully recorded"));
         }
 
         [Test]

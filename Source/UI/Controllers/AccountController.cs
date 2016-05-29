@@ -210,7 +210,7 @@ namespace UI.Controllers
                 : message == ManageMessageId.Error ? "An error occurred."
                 : "";
 
-            this.SetTempMessage(TempMessageKeys.MANAGE_ACCOUNT_RESULT_TEMPMESSAGE, tempMessage, message.HasValue && message == ManageMessageId.Error ? "error" : "success");
+            this.SetToastMessage(TempMessageKeys.MANAGE_ACCOUNT_RESULT_TEMPMESSAGE, tempMessage, message.HasValue && message == ManageMessageId.Error ? "error" : "success");
 
             SetViewBag();
             ManageAccountViewModel viewModel = GetBaseManageAccountViewModel();

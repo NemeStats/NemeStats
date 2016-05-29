@@ -42,14 +42,13 @@ namespace UI.Controllers
 {
 	public partial class PlayedGameController : BaseController
     {
-		internal NemeStatsDataContext dataContext;
-		internal IPlayedGameRetriever playedGameRetriever;
-		internal IPlayerRetriever playerRetriever;
-		internal IPlayedGameDetailsViewModelBuilder playedGameDetailsBuilder;
-		internal IPlayedGameCreator playedGameCreator;
-		internal IGameDefinitionRetriever gameDefinitionRetriever;
-		internal IShowingXResultsMessageBuilder showingXResultsMessageBuilder;
-		internal IPlayedGameDeleter playedGameDeleter;
+		private readonly NemeStatsDataContext _dataContext;
+        private readonly IPlayedGameRetriever _playedGameRetriever;
+        private readonly IPlayerRetriever _playerRetriever;
+        private readonly IPlayedGameDetailsViewModelBuilder _playedGameDetailsBuilder;
+        private readonly IPlayedGameCreator _playedGameCreator;
+        private readonly IGameDefinitionRetriever _gameDefinitionRetriever;
+	    private readonly IPlayedGameDeleter _playedGameDeleter;
 
 		internal const int NUMBER_OF_RECENT_GAMES_TO_DISPLAY = 25;
 
@@ -63,14 +62,13 @@ namespace UI.Controllers
 			IPlayedGameCreator playedGameCreator,
 			IPlayedGameDeleter playedGameDeleter)
 		{
-			this.dataContext = dataContext;
-			this.playedGameRetriever = playedGameRetriever;
-			this.playerRetriever = playerRetriever;
-			this.playedGameDetailsBuilder = builder;
-			this.gameDefinitionRetriever = gameDefinitionRetriever;
-			this.showingXResultsMessageBuilder = showingXResultsMessageBuilder;
-			this.playedGameCreator = playedGameCreator;
-			this.playedGameDeleter = playedGameDeleter;
+			this._dataContext = dataContext;
+			this._playedGameRetriever = playedGameRetriever;
+			this._playerRetriever = playerRetriever;
+			this._playedGameDetailsBuilder = builder;
+			this._gameDefinitionRetriever = gameDefinitionRetriever;
+		    this._playedGameCreator = playedGameCreator;
+			this._playedGameDeleter = playedGameDeleter;
 		}
 
 		// GET: /PlayedGame/Details/5
@@ -81,12 +79,12 @@ namespace UI.Controllers
 			{
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 			}
-			PlayedGame playedGame = playedGameRetriever.GetPlayedGameDetails(id.Value);
+			PlayedGame playedGame = _playedGameRetriever.GetPlayedGameDetails(id.Value);
 			if (playedGame == null)
 			{
 				return HttpNotFound();
 			}
-			PlayedGameDetailsViewModel playedGameDetails = playedGameDetailsBuilder.Build(playedGame, currentUser);
+			PlayedGameDetailsViewModel playedGameDetails = _playedGameDetailsBuilder.Build(playedGame, currentUser);
 			return View(MVC.PlayedGame.Views.Details, playedGameDetails);
 		}
 
@@ -96,7 +94,7 @@ namespace UI.Controllers
 		[System.Web.Mvc.HttpGet]
 		public virtual ActionResult Create(ApplicationUser currentUser)
         {
-            var gameDefinitionSummaries = gameDefinitionRetriever.GetAllGameDefinitions(currentUser.CurrentGamingGroupId);
+            var gameDefinitionSummaries = _gameDefinitionRetriever.GetAllGameDefinitions(currentUser.CurrentGamingGroupId);
 
             SelectList gameDefinitionSummariesSelectList = BuildGameDefinitionSummariesSelectList(gameDefinitionSummaries);
             var viewModel = new PlayedGameEditViewModel
@@ -119,12 +117,14 @@ namespace UI.Controllers
         {
             if (ModelState.IsValid)
             {
-                playedGameCreator.CreatePlayedGame(newlyCompletedGame, TransactionSource.WebApplication, currentUser);
+                _playedGameCreator.CreatePlayedGame(newlyCompletedGame, TransactionSource.WebApplication, currentUser);
 
                 if (!recordAnotherGameAfterThis)
                 {
                     return new RedirectResult(Url.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name) + "#" + GamingGroupController.SECTION_ANCHOR_RECENT_GAMES);
                 }
+
+                SetToastMessage(TempMessageKeys.TEMP_MESSAGE_KEY_PLAYED_GAME_RECORDED, "Played Game successfully recorded");
             }
 
             return Create(currentUser);
@@ -155,14 +155,14 @@ namespace UI.Controllers
         [System.Web.Mvc.HttpGet]
 		public virtual ActionResult ShowRecentlyPlayedGames()
 		{
-			var recentlyPlayedGames = playedGameRetriever.GetRecentPublicGames(NUMBER_OF_RECENT_GAMES_TO_DISPLAY);
+			var recentlyPlayedGames = _playedGameRetriever.GetRecentPublicGames(NUMBER_OF_RECENT_GAMES_TO_DISPLAY);
 
 			return View(MVC.PlayedGame.Views.RecentlyPlayedGames, recentlyPlayedGames);
 		}
 
 		private IEnumerable<SelectListItem> GetAllPlayers(ApplicationUser currentUser)
 		{
-			List<Player> allPlayers = playerRetriever.GetAllPlayers(currentUser.CurrentGamingGroupId, false);
+			List<Player> allPlayers = _playerRetriever.GetAllPlayers(currentUser.CurrentGamingGroupId, false);
 			List<SelectListItem> allPlayersSelectList = allPlayers.Select(item => new SelectListItem
 			{
 				Text = PlayerNameBuilder.BuildPlayerName(item.Name, item.Active),
@@ -181,7 +181,7 @@ namespace UI.Controllers
 			{
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 			}
-			PlayedGame playedgame = dataContext.GetQueryable<PlayedGame>().FirstOrDefault(playedGame => playedGame.Id == id.Value);
+			PlayedGame playedgame = _dataContext.GetQueryable<PlayedGame>().FirstOrDefault(playedGame => playedGame.Id == id.Value);
 			if (playedgame == null)
 			{
 				return HttpNotFound();
@@ -196,9 +196,9 @@ namespace UI.Controllers
 		[UserContext]
 		public virtual ActionResult DeleteConfirmed(int id, ApplicationUser currentUser)
 		{
-			playedGameDeleter.DeletePlayedGame(id, currentUser);
+			_playedGameDeleter.DeletePlayedGame(id, currentUser);
 			//TODO really don't know whether I need to commit here or if it is automatically taken care of when disposing.
-			dataContext.CommitAllChanges();
+			_dataContext.CommitAllChanges();
 			return new RedirectResult(Url.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name)
 							+ "#" + GamingGroupController.SECTION_ANCHOR_RECENT_GAMES);
 		}
@@ -210,7 +210,7 @@ namespace UI.Controllers
 		public virtual ActionResult Edit(int id, ApplicationUser currentUser)
 		{
 			var viewModel = new PlayedGameEditViewModel();
-			var gameDefinitionsList = this.gameDefinitionRetriever.GetAllGameDefinitions(currentUser.CurrentGamingGroupId);
+			var gameDefinitionsList = this._gameDefinitionRetriever.GetAllGameDefinitions(currentUser.CurrentGamingGroupId);
 			viewModel.GameDefinitions = gameDefinitionsList.Select(item => new SelectListItem
 			{
 				Text = item.Name,
@@ -220,7 +220,7 @@ namespace UI.Controllers
 
 			if (id > 0)
 			{
-				var playedGame = this.playedGameRetriever.GetPlayedGameDetails(id);
+				var playedGame = this._playedGameRetriever.GetPlayedGameDetails(id);
 				viewModel.PreviousGameId = playedGame.Id;
 				viewModel.GameDefinitionId = playedGame.GameDefinitionId;
 				viewModel.DatePlayed = playedGame.DatePlayed;
@@ -242,8 +242,8 @@ namespace UI.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				this.playedGameDeleter.DeletePlayedGame(previousGameId, currentUser);
-                this.playedGameCreator.CreatePlayedGame(newlyCompletedGame, TransactionSource.WebApplication, currentUser);
+				this._playedGameDeleter.DeletePlayedGame(previousGameId, currentUser);
+                this._playedGameCreator.CreatePlayedGame(newlyCompletedGame, TransactionSource.WebApplication, currentUser);
 
 				return new RedirectResult(Url.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name)
 											+ "#" + GamingGroupController.SECTION_ANCHOR_RECENT_GAMES);
@@ -281,7 +281,7 @@ namespace UI.Controllers
                 StartDateGameLastUpdated = filter.DatePlayedStart == null ? null : filter.DatePlayedStart.Value.ToString("yyyy-MM-dd"),
                 GameDefinitionId =  filter.GameDefinitionId
             };
-            var searchResults = playedGameRetriever.SearchPlayedGames(playedGameFilter);
+            var searchResults = _playedGameRetriever.SearchPlayedGames(playedGameFilter);
 
             var playedGamesDetails = searchResults.Select(searchResult => new PlayedGameDetailsViewModel
             {
@@ -329,7 +329,7 @@ namespace UI.Controllers
 
         private IList<SelectListItem> GetAllGameDefinitionsForCurrentGamingGroup(int gamingGroupId)
         {
-            var gameDefinitions = gameDefinitionRetriever.GetAllGameDefinitionNames(gamingGroupId);
+            var gameDefinitions = _gameDefinitionRetriever.GetAllGameDefinitionNames(gamingGroupId);
             var selectListItems = new List<SelectListItem>
             {
                 new SelectListItem
