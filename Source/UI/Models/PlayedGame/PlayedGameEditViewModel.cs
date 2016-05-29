@@ -13,5 +13,6 @@ namespace UI.Models.PlayedGame
 		public Dictionary<string, int> ExistingRankedPlayerNames { get; set; }
 
 		public int PreviousGameId { get; set; }
+	    public bool RecordAnotherGameAfterThis { get; set; }
 	}
 }

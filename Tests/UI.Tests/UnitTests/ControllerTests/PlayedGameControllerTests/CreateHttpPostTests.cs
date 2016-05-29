@@ -36,28 +36,45 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 		[Test]
 		public void ItRemainsOnTheCreatePageIfTheModelIsNotValid()
 		{
-			ViewResult expectedViewResult = new ViewResult();
+			var expectedViewResult = new ViewResult();
             autoMocker.PartialMockTheClassUnderTest();
 			autoMocker.ClassUnderTest.Expect(controller => controller.Create(currentUser))
 					.Repeat.Once()
 					.Return(expectedViewResult);
 			autoMocker.ClassUnderTest.ModelState.AddModelError("Test error", "this is a test error to make model state invalid");
 
-			ViewResult actualResult = autoMocker.ClassUnderTest.Create(new NewlyCompletedGame(), currentUser) as ViewResult;
+			var actualResult = autoMocker.ClassUnderTest.Create(new NewlyCompletedGame(), false, currentUser) as ViewResult;
 
 			Assert.AreSame(expectedViewResult, actualResult);
 		}
 
-		[Test]
+        [Test]
+        public void ItRemainsOnTheCreatePageAfterLoggingIfTheUserWantsToRecordAnotherGame()
+        {
+            //--arrange
+            var expectedViewResult = new ViewResult();
+            autoMocker.PartialMockTheClassUnderTest();
+            autoMocker.ClassUnderTest.Expect(controller => controller.Create(currentUser))
+                    .Repeat.Once()
+                    .Return(expectedViewResult);
+
+            //--act
+            var actualResult = autoMocker.ClassUnderTest.Create(new NewlyCompletedGame(), true, currentUser) as ViewResult;
+
+            //--assert
+            Assert.AreSame(expectedViewResult, actualResult);
+        }
+
+        [Test]
 		public void ItRedirectsToTheGamingGroupIndexAndRecentGamesSectionAfterSaving()
 		{
-			NewlyCompletedGame playedGame = new NewlyCompletedGame()
+			var playedGame = new NewlyCompletedGame()
 			{
 				GameDefinitionId = 1,
 				PlayerRanks = new List<PlayerRank>()
 			};
-			string baseUrl = "base url";
-			string expectedUrl = baseUrl + "#" + GamingGroupController.SECTION_ANCHOR_RECENT_GAMES;
+			var baseUrl = "base url";
+			var expectedUrl = baseUrl + "#" + GamingGroupController.SECTION_ANCHOR_RECENT_GAMES;
             autoMocker.ClassUnderTest.Url.Expect(mock => mock.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name))
 					.Return(baseUrl);
 
@@ -66,7 +83,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
                 Arg<TransactionSource>.Is.Anything,
                 Arg<ApplicationUser>.Is.Anything)).Repeat.Once();
 
-			RedirectResult redirectResult = autoMocker.ClassUnderTest.Create(playedGame, null) as RedirectResult;
+			var redirectResult = autoMocker.ClassUnderTest.Create(playedGame, false, null) as RedirectResult;
 
 			Assert.AreEqual(expectedUrl, redirectResult.Url);
 		}
@@ -74,16 +91,16 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 		[Test]
 		public void ItSavesTheNewGame()
 		{
-			NewlyCompletedGame newlyCompletedGame = new NewlyCompletedGame()
+			var newlyCompletedGame = new NewlyCompletedGame()
 			{
 				GameDefinitionId = 1,
 				PlayerRanks = new List<PlayerRank>()
 			};
-			string baseUrl = "base url";
+			var baseUrl = "base url";
 			autoMocker.ClassUnderTest.Url.Expect(mock => mock.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name))
 					.Return(baseUrl);
 
-			autoMocker.ClassUnderTest.Create(newlyCompletedGame, null);
+			autoMocker.ClassUnderTest.Create(newlyCompletedGame, false, null);
 
 			autoMocker.Get<IPlayedGameCreator>().AssertWasCalled(mock => mock.CreatePlayedGame(
                 Arg<NewlyCompletedGame>.Is.Equal(newlyCompletedGame),
@@ -94,13 +111,13 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 		[Test]
 		public void ItMakesTheRequestForTheCurrentUser()
 		{
-			NewlyCompletedGame newlyCompletedGame = new NewlyCompletedGame()
+			var newlyCompletedGame = new NewlyCompletedGame()
 			{
 				GameDefinitionId = 1,
 				PlayerRanks = new List<PlayerRank>()
 			};
 
-			autoMocker.ClassUnderTest.Create(newlyCompletedGame, currentUser);
+			autoMocker.ClassUnderTest.Create(newlyCompletedGame, false, currentUser);
 
 			autoMocker.Get<IPlayedGameCreator>().AssertWasCalled(logic => logic.CreatePlayedGame(
 				Arg<NewlyCompletedGame>.Is.Anything,

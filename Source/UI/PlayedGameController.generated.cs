@@ -147,6 +147,7 @@ namespace UI.Controllers
         {
             public readonly string currentUser = "currentUser";
             public readonly string newlyCompletedGame = "newlyCompletedGame";
+            public readonly string recordAnotherGameAfterThis = "recordAnotherGameAfterThis";
         }
         static readonly ActionParamsClass_Delete s_params_Delete = new ActionParamsClass_Delete();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -202,6 +203,7 @@ namespace UI.Controllers
                 public readonly string _PlayedGamesPlayerPartial = "_PlayedGamesPlayerPartial";
                 public readonly string _RecentlyPlayedGamesPartial = "_RecentlyPlayedGamesPartial";
                 public readonly string Create = "Create";
+                public readonly string CreateSuccess = "CreateSuccess";
                 public readonly string Delete = "Delete";
                 public readonly string Details = "Details";
                 public readonly string Edit = "Edit";
@@ -214,6 +216,7 @@ namespace UI.Controllers
             public readonly string _PlayedGamesPlayerPartial = "~/Views/PlayedGame/_PlayedGamesPlayerPartial.cshtml";
             public readonly string _RecentlyPlayedGamesPartial = "~/Views/PlayedGame/_RecentlyPlayedGamesPartial.cshtml";
             public readonly string Create = "~/Views/PlayedGame/Create.cshtml";
+            public readonly string CreateSuccess = "~/Views/PlayedGame/CreateSuccess.cshtml";
             public readonly string Delete = "~/Views/PlayedGame/Delete.cshtml";
             public readonly string Details = "~/Views/PlayedGame/Details.cshtml";
             public readonly string Edit = "~/Views/PlayedGame/Edit.cshtml";
@@ -253,15 +256,16 @@ namespace UI.Controllers
         }
 
         [NonAction]
-        partial void CreateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, BusinessLogic.Models.Games.NewlyCompletedGame newlyCompletedGame, BusinessLogic.Models.User.ApplicationUser currentUser);
+        partial void CreateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, BusinessLogic.Models.Games.NewlyCompletedGame newlyCompletedGame, bool recordAnotherGameAfterThis, BusinessLogic.Models.User.ApplicationUser currentUser);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult Create(BusinessLogic.Models.Games.NewlyCompletedGame newlyCompletedGame, BusinessLogic.Models.User.ApplicationUser currentUser)
+        public override System.Web.Mvc.ActionResult Create(BusinessLogic.Models.Games.NewlyCompletedGame newlyCompletedGame, bool recordAnotherGameAfterThis, BusinessLogic.Models.User.ApplicationUser currentUser)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Create);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "newlyCompletedGame", newlyCompletedGame);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "recordAnotherGameAfterThis", recordAnotherGameAfterThis);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "currentUser", currentUser);
-            CreateOverride(callInfo, newlyCompletedGame, currentUser);
+            CreateOverride(callInfo, newlyCompletedGame, recordAnotherGameAfterThis, currentUser);
             return callInfo;
         }
 

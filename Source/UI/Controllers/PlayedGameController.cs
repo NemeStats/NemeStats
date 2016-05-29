@@ -30,6 +30,7 @@ using BusinessLogic.Models.User;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Web.Http;
 using System.Web.Mvc;
 using UI.Attributes.Filters;
 using UI.Controllers.Helpers;
@@ -90,9 +91,9 @@ namespace UI.Controllers
 		}
 
 		// GET: /PlayedGame/Create
-		[Authorize]
+		[System.Web.Mvc.Authorize]
 		[UserContext]
-		[HttpGet]
+		[System.Web.Mvc.HttpGet]
 		public virtual ActionResult Create(ApplicationUser currentUser)
         {
             var gameDefinitionSummaries = gameDefinitionRetriever.GetAllGameDefinitions(currentUser.CurrentGamingGroupId);
@@ -110,17 +111,20 @@ namespace UI.Controllers
         // POST: /PlayedGame/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [Authorize]
-        [HttpPost]
+        [System.Web.Mvc.Authorize]
+        [System.Web.Mvc.HttpPost]
         [ValidateAntiForgeryToken]
         [UserContext]
-        public virtual ActionResult Create(NewlyCompletedGame newlyCompletedGame, ApplicationUser currentUser)
+        public virtual ActionResult Create(NewlyCompletedGame newlyCompletedGame, [FromUri]bool recordAnotherGameAfterThis, ApplicationUser currentUser)
         {
             if (ModelState.IsValid)
             {
                 playedGameCreator.CreatePlayedGame(newlyCompletedGame, TransactionSource.WebApplication, currentUser);
 
-                return new RedirectResult(Url.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name) + "#" + GamingGroupController.SECTION_ANCHOR_RECENT_GAMES);
+                if (!recordAnotherGameAfterThis)
+                {
+                    return new RedirectResult(Url.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name) + "#" + GamingGroupController.SECTION_ANCHOR_RECENT_GAMES);
+                }
             }
 
             return Create(currentUser);
@@ -148,7 +152,7 @@ namespace UI.Controllers
             return gameDefinitionSummariesSelectList;
         }
 
-        [HttpGet]
+        [System.Web.Mvc.HttpGet]
 		public virtual ActionResult ShowRecentlyPlayedGames()
 		{
 			var recentlyPlayedGames = playedGameRetriever.GetRecentPublicGames(NUMBER_OF_RECENT_GAMES_TO_DISPLAY);
@@ -169,7 +173,7 @@ namespace UI.Controllers
 		}
 
 		// GET: /PlayedGame/Delete/5
-		[Authorize]
+		[System.Web.Mvc.Authorize]
 		[UserContext]
 		public virtual ActionResult Delete(int? id, ApplicationUser currentUser)
 		{
@@ -186,8 +190,8 @@ namespace UI.Controllers
 		}
 
 		// POST: /PlayedGame/Delete/5
-		[Authorize]
-		[HttpPost, ActionName("Delete")]
+		[System.Web.Mvc.Authorize]
+		[System.Web.Mvc.HttpPost, System.Web.Mvc.ActionName("Delete")]
 		[ValidateAntiForgeryToken]
 		[UserContext]
 		public virtual ActionResult DeleteConfirmed(int id, ApplicationUser currentUser)
@@ -200,9 +204,9 @@ namespace UI.Controllers
 		}
 
         // GET: /PlayedGame/Edit
-		[Authorize]
+		[System.Web.Mvc.Authorize]
 		[UserContext]
-		[HttpGet]
+		[System.Web.Mvc.HttpGet]
 		public virtual ActionResult Edit(int id, ApplicationUser currentUser)
 		{
 			var viewModel = new PlayedGameEditViewModel();
@@ -231,9 +235,9 @@ namespace UI.Controllers
 		}
 
         // POST: /PlayedGame/Edit
-		[Authorize]
+		[System.Web.Mvc.Authorize]
 		[UserContext]
-		[HttpPost]
+		[System.Web.Mvc.HttpPost]
 		public virtual ActionResult Edit(NewlyCompletedGame newlyCompletedGame, int previousGameId, ApplicationUser currentUser)
 		{
 			if (ModelState.IsValid)
@@ -253,9 +257,9 @@ namespace UI.Controllers
 		    return players.Where(item => playerRanks.Any(p => p.PlayerId.ToString() == item.Value) == false).ToList();
 		}
 
-        [Authorize]
+        [System.Web.Mvc.Authorize]
         [UserContext]
-        [HttpGet]
+        [System.Web.Mvc.HttpGet]
         public virtual ActionResult Search(ApplicationUser currentUser)
         {
             var viewModel = new SearchViewModel
@@ -265,9 +269,9 @@ namespace UI.Controllers
             return View(MVC.PlayedGame.Views.Search, viewModel);
         }
 
-        [Authorize]
+        [System.Web.Mvc.Authorize]
         [UserContext]
-        [HttpPost]
+        [System.Web.Mvc.HttpPost]
         public virtual ActionResult Search(PlayedGamesFilterViewModel filter, ApplicationUser currentUser)
         {
             var playedGameFilter = new PlayedGameFilter
