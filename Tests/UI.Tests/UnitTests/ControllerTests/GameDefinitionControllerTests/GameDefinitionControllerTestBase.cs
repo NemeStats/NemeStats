@@ -18,11 +18,7 @@
 
 #endregion LICENSE
 
-using BoardGameGeekApiClient.Interfaces;
-using BusinessLogic.DataAccess;
-using BusinessLogic.Logic.BoardGameGeek;
 using BusinessLogic.Logic.GameDefinitions;
-using BusinessLogic.Logic.Users;
 using BusinessLogic.Models.Games;
 using BusinessLogic.Models.User;
 using NUnit.Framework;
@@ -32,10 +28,7 @@ using System.Collections.Generic;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
-using BusinessLogic.Facades;
 using UI.Controllers;
-using UI.Controllers.Helpers;
-using UI.Models.GameDefinitionModels;
 using UI.Transformations;
 
 namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
@@ -44,19 +37,9 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
     public class GameDefinitionControllerTestBase
     {
         protected RhinoAutoMocker<GameDefinitionController> autoMocker;
-        protected GameDefinitionController gameDefinitionControllerPartialMock;
-        protected IGameDefinitionRetriever gameDefinitionRetrieverMock;
-        protected ITrendingGamesRetriever trendingGamesRetrieverMock;
-        protected IGameDefinitionDetailsViewModelBuilder gameDefinitionTransformationMock;
-        protected IShowingXResultsMessageBuilder showingXResultsMessageBuilderMock;
-        protected IGameDefinitionSaver gameDefinitionCreatorMock;
-        protected IBoardGameGeekApiClient boardGameGeekApiClient;
-        protected NemeStatsDataContext dataContextMock;
         protected UrlHelper urlHelperMock;
         protected ApplicationUser currentUser;
         protected HttpRequestBase asyncRequestMock;
-        protected IUserRetriever userRetriever;
-        protected IBoardGameGeekGamesImporter BoardGameGeekGamesImporter;
         protected ITransformer transformer;
         protected List<TrendingGame> trendingGames;
 
@@ -69,30 +52,9 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
                     GameDefinitionController.NUMBER_OF_DAYS_OF_TRENDING_GAMES))
                     .Return(trendingGames);
             AutomapperConfiguration.Configure();
-            dataContextMock = MockRepository.GenerateMock<NemeStatsDataContext>();
-            gameDefinitionRetrieverMock = MockRepository.GenerateMock<IGameDefinitionRetriever>();
-            trendingGamesRetrieverMock = MockRepository.GenerateMock<ITrendingGamesRetriever>();
-            gameDefinitionTransformationMock = MockRepository.GenerateMock<IGameDefinitionDetailsViewModelBuilder>();
-            showingXResultsMessageBuilderMock = MockRepository.GenerateMock<IShowingXResultsMessageBuilder>();
-            gameDefinitionCreatorMock = MockRepository.GenerateMock<IGameDefinitionSaver>();
             urlHelperMock = MockRepository.GenerateMock<UrlHelper>();
-            boardGameGeekApiClient = MockRepository.GenerateMock<IBoardGameGeekApiClient>();
-            userRetriever = MockRepository.GenerateMock<IUserRetriever>();
-            BoardGameGeekGamesImporter = MockRepository.GenerateMock<IBoardGameGeekGamesImporter>();
-            transformer = MockRepository.GenerateMock<ITransformer>();
-            gameDefinitionControllerPartialMock = MockRepository.GeneratePartialMock<GameDefinitionController>(
-                dataContextMock,
-                gameDefinitionRetrieverMock,
-                trendingGamesRetrieverMock,
-                gameDefinitionTransformationMock,
-                showingXResultsMessageBuilderMock,
-                gameDefinitionCreatorMock,
-                boardGameGeekApiClient,
-                userRetriever,
-                BoardGameGeekGamesImporter,
-                transformer);
-            gameDefinitionControllerPartialMock.Url = urlHelperMock;
-
+            autoMocker.ClassUnderTest.Url = urlHelperMock;
+           
             asyncRequestMock = MockRepository.GenerateMock<HttpRequestBase>();
             asyncRequestMock.Expect(x => x.Headers)
                 .Repeat.Any()
@@ -105,9 +67,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
             context.Expect(x => x.Request)
                 .Repeat.Any()
                 .Return(asyncRequestMock);
-
-            gameDefinitionControllerPartialMock.ControllerContext = new ControllerContext(context, new RouteData(), gameDefinitionControllerPartialMock);
-
+            autoMocker.ClassUnderTest.ControllerContext = new ControllerContext(context, new RouteData(), autoMocker.ClassUnderTest);
             currentUser = new ApplicationUser()
             {
                 Id = "user id",

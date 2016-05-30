@@ -21,6 +21,7 @@ using BusinessLogic.Models.User;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System.Web.Mvc;
+using BusinessLogic.Logic.GameDefinitions;
 using UI.Controllers;
 using UI.Models.GameDefinitionModels;
 
@@ -32,9 +33,9 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
 		[Test]
 		public void ItStaysOnTheCreatePageIfValidationFails()
 		{
-			gameDefinitionControllerPartialMock.ModelState.AddModelError("key", "message");
+			autoMocker.ClassUnderTest.ModelState.AddModelError("key", "message");
 
-			ViewResult viewResult = gameDefinitionControllerPartialMock.Create(null, currentUser) as ViewResult;
+			ViewResult viewResult = autoMocker.ClassUnderTest.Create(null, currentUser) as ViewResult;
 
 			Assert.AreEqual(MVC.GameDefinition.Views.Create, viewResult.ViewName);
 		}
@@ -43,9 +44,9 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
 		public void ItReloadsTheCurrentGameDefinitionIfValidationFails()
 		{
 			var createGameDefinitionRequest = new CreateGameDefinitionViewModel();
-			gameDefinitionControllerPartialMock.ModelState.AddModelError("key", "message");
+			autoMocker.ClassUnderTest.ModelState.AddModelError("key", "message");
 
-			ViewResult actionResult = gameDefinitionControllerPartialMock.Create(createGameDefinitionRequest, currentUser) as ViewResult;
+			ViewResult actionResult = autoMocker.ClassUnderTest.Create(createGameDefinitionRequest, currentUser) as ViewResult;
 			var actualViewModel = (CreateGameDefinitionViewModel)actionResult.ViewData.Model;
 
 			Assert.AreSame(createGameDefinitionRequest, actualViewModel);
@@ -59,9 +60,9 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
 				Name = "game definition name"
 			};
 
-            gameDefinitionControllerPartialMock.Create(createGameDefinitionRequest, currentUser);
+            autoMocker.ClassUnderTest.Create(createGameDefinitionRequest, currentUser);
 
-			gameDefinitionCreatorMock.AssertWasCalled(mock => mock.CreateGameDefinition(
+            autoMocker.Get<IGameDefinitionSaver>().AssertWasCalled(mock => mock.CreateGameDefinition(
                 Arg<CreateGameDefinitionRequest>.Matches(x => x.Name == createGameDefinitionRequest.Name
                                             && x.Description == createGameDefinitionRequest.Description
                                             && x.BoardGameGeekGameDefinitionId == createGameDefinitionRequest.BoardGameGeekGameDefinitionId), 
@@ -77,10 +78,10 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
 			{
 				Name = "game definition name"
 			};
-			urlHelperMock.Expect(mock => mock.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name))
+			autoMocker.ClassUnderTest.Url.Expect(mock => mock.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name))
 					.Return(baseUrl);
 
-			RedirectResult redirectResult = gameDefinitionControllerPartialMock.Create(createGameDefinitionRequest, currentUser) as RedirectResult;
+			RedirectResult redirectResult = autoMocker.ClassUnderTest.Create(createGameDefinitionRequest, currentUser) as RedirectResult;
 
 			Assert.AreEqual(expectedUrl, redirectResult.Url);
 		}
@@ -95,14 +96,14 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
                 ReturnUrl = returnUrl,
                 Name = "Project-Ariel"
 		    };
-		    gameDefinitionCreatorMock.Expect(mock => mock.CreateGameDefinition(Arg<CreateGameDefinitionRequest>.Is.Anything, Arg<ApplicationUser>.Is.Anything))
+		    autoMocker.Get<IGameDefinitionSaver>().Expect(mock => mock.CreateGameDefinition(Arg<CreateGameDefinitionRequest>.Is.Anything, Arg<ApplicationUser>.Is.Anything))
 		                             .Return(new GameDefinition 
 		                             {
 		                                 Id = expectedGameDefinitionId
 		                             });
             string expectedUrl = returnUrl + "?gameId=" + expectedGameDefinitionId;
 
-            RedirectResult redirectResult = gameDefinitionControllerPartialMock.Create(createGameDefinitionRequest, currentUser) as RedirectResult;
+            RedirectResult redirectResult = autoMocker.ClassUnderTest.Create(createGameDefinitionRequest, currentUser) as RedirectResult;
 
 			Assert.AreEqual(expectedUrl, redirectResult.Url);
 		}

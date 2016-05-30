@@ -22,10 +22,10 @@ using NUnit.Framework;
 using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using UI.Models.GameDefinitionModels;
+using UI.Transformations;
 
 namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
 {
@@ -47,18 +47,18 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
                 GamingGroupId = currentUser.CurrentGamingGroupId
             };
 
-            gameDefinitionRetrieverMock.Expect(repo => repo.GetGameDefinitionDetails(
+            autoMocker.Get<IGameDefinitionRetriever>().Expect(repo => repo.GetGameDefinitionDetails(
                 Arg<int>.Is.Anything,
                 Arg<int>.Is.Anything))
                 .Return(gameDefinitionSummary);
-            gameDefinitionTransformationMock.Expect(mock => mock.Build(gameDefinitionSummary, currentUser))
+            autoMocker.Get<IGameDefinitionDetailsViewModelBuilder>().Expect(mock => mock.Build(gameDefinitionSummary, currentUser))
                 .Return(expectedViewModel);
         }
 
         [Test]
         public void ItReturnsTheDetailsView()
         {
-            ViewResult viewResult = gameDefinitionControllerPartialMock.Details(gameDefinitionId, currentUser) as ViewResult;
+            var viewResult = autoMocker.ClassUnderTest.Details(gameDefinitionId, currentUser) as ViewResult;
 
             Assert.AreEqual(MVC.GameDefinition.Views.Details, viewResult.ViewName);
         }
@@ -66,16 +66,16 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
         [Test]
         public void ItReturnsTheSpecifiedGameDefinitionViewModelOnTheView()
         {
-            ViewResult viewResult = gameDefinitionControllerPartialMock.Details(gameDefinitionId, currentUser) as ViewResult;
+            var viewResult = autoMocker.ClassUnderTest.Details(gameDefinitionId, currentUser) as ViewResult;
 
-            GameDefinitionDetailsViewModel actualGameDefinitionViewModel = (GameDefinitionDetailsViewModel)viewResult.ViewData.Model;
+            var actualGameDefinitionViewModel = (GameDefinitionDetailsViewModel)viewResult.ViewData.Model;
             Assert.AreEqual(expectedViewModel, actualGameDefinitionViewModel);
         }
 
         [Test]
         public void ItReturnsABadHttpRequestStatusCodeIfTheIdIsNull()
         {
-            HttpStatusCodeResult result = gameDefinitionControllerPartialMock.Details(null, currentUser) as HttpStatusCodeResult;
+            var result = autoMocker.ClassUnderTest.Details(null, currentUser) as HttpStatusCodeResult;
 
             Assert.AreEqual((int)HttpStatusCode.BadRequest, result.StatusCode);
         }
@@ -83,13 +83,14 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
         [Test]
         public void ItReturnsAnHttpNotFoundStatusCodeIfTheGameDefinitionIsNotFound()
         {
-            gameDefinitionControllerPartialMock.gameDefinitionRetriever = MockRepository.GenerateMock<IGameDefinitionRetriever>();
-            gameDefinitionControllerPartialMock.gameDefinitionRetriever.Expect(mock => mock.GetGameDefinitionDetails(
+            autoMocker.Get<IGameDefinitionRetriever>().BackToRecord(BackToRecordOptions.All);
+            autoMocker.Get<IGameDefinitionRetriever>().Replay();
+            autoMocker.Get<IGameDefinitionRetriever>().Expect(mock => mock.GetGameDefinitionDetails(
                 Arg<int>.Is.Anything,
                 Arg<int>.Is.Anything))
                 .Throw(new KeyNotFoundException());
 
-            HttpStatusCodeResult result = gameDefinitionControllerPartialMock.Details(999999, currentUser) as HttpStatusCodeResult;
+            var result = autoMocker.ClassUnderTest.Details(999999, currentUser) as HttpStatusCodeResult;
 
             Assert.AreEqual((int)HttpStatusCode.NotFound, result.StatusCode);
         }
@@ -97,22 +98,23 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
         [Test]
         public void ItReturnsAnHttpNotAuthorizedStatusCodeIfUserIsNotAuthorizedToViewTheGameDefintion()
         {
-            gameDefinitionControllerPartialMock.gameDefinitionRetriever = MockRepository.GenerateMock<IGameDefinitionRetriever>();
-            gameDefinitionControllerPartialMock.gameDefinitionRetriever.Expect(repo => repo.GetGameDefinitionDetails(
+            autoMocker.Get<IGameDefinitionRetriever>().BackToRecord(BackToRecordOptions.All);
+            autoMocker.Get<IGameDefinitionRetriever>().Replay();
+            autoMocker.Get<IGameDefinitionRetriever>().Expect(repo => repo.GetGameDefinitionDetails(
                 Arg<int>.Is.Anything,
                 Arg<int>.Is.Anything))
                 .Throw(new UnauthorizedAccessException());
 
-            HttpStatusCodeResult result = gameDefinitionControllerPartialMock.Details(999999, currentUser) as HttpStatusCodeResult;
+            var result = autoMocker.ClassUnderTest.Details(999999, currentUser) as HttpStatusCodeResult;
             Assert.AreEqual((int)HttpStatusCode.Unauthorized, result.StatusCode);
         }
 
         [Test]
         public void ItSetsThePlayedGamesPanelTitle()
         {
-            var viewResult = gameDefinitionControllerPartialMock.Details(gameDefinitionId, currentUser) as ViewResult;
+            var viewResult = autoMocker.ClassUnderTest.Details(gameDefinitionId, currentUser) as ViewResult;
 
-            GameDefinitionDetailsViewModel actualGameDefinitionViewModel = (GameDefinitionDetailsViewModel)viewResult.ViewData.Model;
+            var actualGameDefinitionViewModel = (GameDefinitionDetailsViewModel)viewResult.ViewData.Model;
             Assert.That(actualGameDefinitionViewModel.PlayedGamesPanelTitle, Is.EqualTo("Last 0 Played Games"));
         }
     }

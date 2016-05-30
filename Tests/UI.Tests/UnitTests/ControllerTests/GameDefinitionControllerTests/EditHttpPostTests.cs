@@ -16,11 +16,9 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 using BusinessLogic.Logic.GameDefinitions;
-using BusinessLogic.Models;
 using BusinessLogic.Models.User;
 using NUnit.Framework;
 using Rhino.Mocks;
-using System.Linq;
 using System.Web.Mvc;
 using UI.Controllers;
 using UI.Models.GameDefinitionModels;
@@ -35,9 +33,9 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
         {
             var viewModel = new GameDefinitionEditViewModel();
 
-            gameDefinitionControllerPartialMock.ModelState.AddModelError("key", "message");
+            autoMocker.ClassUnderTest.ModelState.AddModelError("key", "message");
 
-            ViewResult viewResult = gameDefinitionControllerPartialMock.Edit(viewModel, currentUser) as ViewResult;
+            var viewResult = autoMocker.ClassUnderTest.Edit(viewModel, currentUser) as ViewResult;
 
             Assert.AreEqual(MVC.GameDefinition.Views.Edit, viewResult.ViewName);
         }
@@ -46,9 +44,9 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
         public void ItReloadsTheGameDefinitionIfValidationFails()
         {
             var viewModel = new GameDefinitionEditViewModel();
-            gameDefinitionControllerPartialMock.ModelState.AddModelError("key", "message");
+            autoMocker.ClassUnderTest.ModelState.AddModelError("key", "message");
 
-            ViewResult viewResult = gameDefinitionControllerPartialMock.Edit(viewModel, currentUser) as ViewResult;
+            var viewResult = autoMocker.ClassUnderTest.Edit(viewModel, currentUser) as ViewResult;
 
             Assert.AreSame(viewModel, viewResult.Model);
         }
@@ -61,9 +59,9 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
                 Name = "some name"
             };
 
-            gameDefinitionControllerPartialMock.Edit(viewModel, currentUser);
+            autoMocker.ClassUnderTest.Edit(viewModel, currentUser);
 
-            var arguments = gameDefinitionCreatorMock.GetArgumentsForCallsMadeOn(mock => mock.UpdateGameDefinition(
+            var arguments = autoMocker.Get<IGameDefinitionSaver>().GetArgumentsForCallsMadeOn(mock => mock.UpdateGameDefinition(
                 Arg<GameDefinitionUpdateRequest>.Is.Anything,
                 Arg<ApplicationUser>.Is.Anything));
             var gameDefinitionUpdateRequest = arguments[0][0] as GameDefinitionUpdateRequest;
@@ -82,12 +80,14 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
             {
                 Name = "some name"
             };
-            string baseUrl = "base url";
-            string expectedUrl = baseUrl + "#" + GamingGroupController.SECTION_ANCHOR_GAMEDEFINITIONS;
+            var baseUrl = "base url";
+            var expectedUrl = baseUrl + "#" + GamingGroupController.SECTION_ANCHOR_GAMEDEFINITIONS;
+            urlHelperMock.BackToRecord(BackToRecordOptions.All);
+            urlHelperMock.Replay();
             urlHelperMock.Expect(mock => mock.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name))
                     .Return(baseUrl);
 
-            RedirectResult redirectResult = gameDefinitionControllerPartialMock.Edit(viewModel, currentUser) as RedirectResult;
+            var redirectResult = autoMocker.ClassUnderTest.Edit(viewModel, currentUser) as RedirectResult;
 
             Assert.AreEqual(expectedUrl, redirectResult.Url);
         }

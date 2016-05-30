@@ -26,6 +26,7 @@ using UI.Models.GameDefinitionModels;
 using BusinessLogic.Models.User;
 using BusinessLogic.Models.Games;
 using BusinessLogic.Exceptions;
+using BusinessLogic.Logic.GameDefinitions;
 
 namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
 {
@@ -43,9 +44,9 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
                 Name = "New Game"
             };
 
-            gameDefinitionControllerPartialMock.AjaxCreate(createGameDefinitionViewModel, currentUser);
+            autoMocker.ClassUnderTest.AjaxCreate(createGameDefinitionViewModel, currentUser);
 
-            var arguments = gameDefinitionCreatorMock.GetArgumentsForCallsMadeOn(mock => mock.CreateGameDefinition(
+            var arguments = autoMocker.Get<IGameDefinitionSaver>().GetArgumentsForCallsMadeOn(mock => mock.CreateGameDefinition(
                 Arg<CreateGameDefinitionRequest>.Is.Anything, 
                 Arg<ApplicationUser>.Is.Anything));
             var createGameDefinitionRequest = arguments[0][0] as CreateGameDefinitionRequest;
@@ -65,7 +66,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
                 .Return(asyncRequestMock);
             asyncRequestMock.Headers.Clear();
 
-            autoMocker.ClassUnderTest.ControllerContext = new ControllerContext(context, new RouteData(), gameDefinitionControllerPartialMock);
+            autoMocker.ClassUnderTest.ControllerContext = new ControllerContext(context, new RouteData(), autoMocker.ClassUnderTest);
 
             var result = autoMocker.ClassUnderTest.AjaxCreate(new CreateGameDefinitionViewModel(), currentUser) as HttpStatusCodeResult;
 
@@ -77,9 +78,9 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
         {
             var model = new CreateGameDefinitionViewModel();
             const string MESSAGE = "some message";
-            gameDefinitionControllerPartialMock.ModelState.AddModelError("key", MESSAGE);
+            autoMocker.ClassUnderTest.ModelState.AddModelError("key", MESSAGE);
 
-            var result = gameDefinitionControllerPartialMock.AjaxCreate(model, currentUser) as HttpStatusCodeResult;
+            var result = autoMocker.ClassUnderTest.AjaxCreate(model, currentUser) as HttpStatusCodeResult;
 
             Assert.AreEqual((int)HttpStatusCode.BadRequest, result.StatusCode);
             Assert.AreEqual(result.StatusDescription, MESSAGE);
@@ -92,11 +93,11 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
             {
                 Name = "some name"
             };
-            gameDefinitionCreatorMock.Expect(mock => mock.CreateGameDefinition(null, null))
+            autoMocker.Get<IGameDefinitionSaver>().Expect(mock => mock.CreateGameDefinition(null, null))
                 .IgnoreArguments()
                 .Throw(new DuplicateKeyException("some duplicate key"));
 
-            var result = gameDefinitionControllerPartialMock.AjaxCreate(model, currentUser) as HttpStatusCodeResult;
+            var result = autoMocker.ClassUnderTest.AjaxCreate(model, currentUser) as HttpStatusCodeResult;
 
             Assert.AreEqual((int)HttpStatusCode.BadRequest, result.StatusCode);
             Assert.AreEqual("This Game Definition is already active within your Gaming Group.", result.StatusDescription);
