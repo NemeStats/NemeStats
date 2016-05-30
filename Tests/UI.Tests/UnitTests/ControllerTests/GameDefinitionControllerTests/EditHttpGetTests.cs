@@ -20,9 +20,9 @@ using BusinessLogic.Models.Games;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using BusinessLogic.Logic.GameDefinitions;
 using UI.Models.GameDefinitionModels;
 
 namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
@@ -33,8 +33,8 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
         [Test]
         public void ItReturnsAnEditView()
         {
-            int gameDefinitionId = 111;
-            ViewResult viewResult = gameDefinitionControllerPartialMock.Edit(gameDefinitionId, currentUser) as ViewResult;
+            var gameDefinitionId = 111;
+            var viewResult = autoMocker.ClassUnderTest.Edit(gameDefinitionId, currentUser) as ViewResult;
 
             Assert.AreEqual(MVC.GameDefinition.Views.Edit, viewResult.ViewName);
         }
@@ -42,7 +42,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
         [Test]
         public void ItSetsTheGameDefinitionEditViewModelOnTheView()
         {
-            GameDefinitionSummary gameDefinitionSummary = new GameDefinitionSummary()
+            var gameDefinitionSummary = new GameDefinitionSummary()
             {
                 Id = 1,
                 Name = "some name",
@@ -52,11 +52,13 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
                 //ThumbnailImageUrl = "some url",
                 Description = "some description"
             };
-            gameDefinitionRetrieverMock.Expect(mock => mock.GetGameDefinitionDetails(gameDefinitionSummary.Id, 0))
+            autoMocker.Get<IGameDefinitionRetriever>().BackToRecord(BackToRecordOptions.All);
+            autoMocker.Get<IGameDefinitionRetriever>().Replay();
+            autoMocker.Get<IGameDefinitionRetriever>().Expect(mock => mock.GetGameDefinitionDetails(gameDefinitionSummary.Id, 0))
                 .Repeat.Once()
                 .Return(gameDefinitionSummary);
 
-            ViewResult viewResult = gameDefinitionControllerPartialMock.Edit(gameDefinitionSummary.Id, currentUser) as ViewResult;
+            var viewResult = autoMocker.ClassUnderTest.Edit(gameDefinitionSummary.Id, currentUser) as ViewResult;
             var gameDefinitionEditViewModel = viewResult.ViewData.Model as GameDefinitionEditViewModel;
             Assert.That(gameDefinitionEditViewModel, Is.Not.Null);
             Assert.That(gameDefinitionEditViewModel.GameDefinitionId, Is.EqualTo(gameDefinitionSummary.Id));
@@ -69,7 +71,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
         public void ItReturnsABadRequestHttpStatusCodeIfNoIdIsPassed()
         {
             int? nullGameId = null;
-            HttpStatusCodeResult statusCodeResult = gameDefinitionControllerPartialMock.Edit(nullGameId, currentUser) as HttpStatusCodeResult;
+            var statusCodeResult = autoMocker.ClassUnderTest.Edit(nullGameId, currentUser) as HttpStatusCodeResult;
 
             Assert.AreEqual((int)HttpStatusCode.BadRequest, statusCodeResult.StatusCode);
         }
@@ -77,11 +79,13 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
         [Test]
         public void ItReturnsANotFoundHttpStatusCodeIfNoGameDefinitionIsFound()
         {
-            int gameDefinitionId = -1;
-            gameDefinitionRetrieverMock.Expect(mock => mock.GetGameDefinitionDetails(gameDefinitionId, 0))
+            var gameDefinitionId = -1;
+            autoMocker.Get<IGameDefinitionRetriever>().BackToRecord(BackToRecordOptions.All);
+            autoMocker.Get<IGameDefinitionRetriever>().Replay();
+            autoMocker.Get<IGameDefinitionRetriever>().Expect(mock => mock.GetGameDefinitionDetails(gameDefinitionId, 0))
                 .Repeat.Once()
                 .Throw(new KeyNotFoundException());
-            HttpStatusCodeResult statusCodeResult = gameDefinitionControllerPartialMock.Edit(gameDefinitionId, currentUser) as HttpStatusCodeResult;
+            var statusCodeResult = autoMocker.ClassUnderTest.Edit(gameDefinitionId, currentUser) as HttpStatusCodeResult;
 
             Assert.AreEqual((int)HttpStatusCode.NotFound, statusCodeResult.StatusCode);
         }

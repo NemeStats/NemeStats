@@ -46,7 +46,6 @@ namespace UI.Controllers
         internal IGamingGroupAccessGranter gamingGroupAccessGranter;
         internal IGamingGroupSaver gamingGroupSaver;
         internal IGamingGroupRetriever gamingGroupRetriever;
-        internal IShowingXResultsMessageBuilder showingXResultsMessageBuilder;
         internal IPlayerWithNemesisViewModelBuilder playerWithNemesisViewModelBuilder;
         internal IPlayedGameDetailsViewModelBuilder playedGameDetailsViewModelBuilder;
         internal IGameDefinitionSummaryViewModelBuilder gameDefinitionSummaryViewModelBuilder;
@@ -57,7 +56,6 @@ namespace UI.Controllers
             IGamingGroupAccessGranter gamingGroupAccessGranter,
             IGamingGroupSaver gamingGroupSaver,
             IGamingGroupRetriever gamingGroupRetriever,
-            IShowingXResultsMessageBuilder showingXResultsMessageBuilder,
             IPlayerWithNemesisViewModelBuilder playerWithNemesisViewModelBuilder,
             IPlayedGameDetailsViewModelBuilder playedGameDetailsViewModelBuilder,
             IGameDefinitionSummaryViewModelBuilder gameDefinitionSummaryViewModelBuilder,
@@ -67,7 +65,6 @@ namespace UI.Controllers
             this.gamingGroupAccessGranter = gamingGroupAccessGranter;
             this.gamingGroupSaver = gamingGroupSaver;
             this.gamingGroupRetriever = gamingGroupRetriever;
-            this.showingXResultsMessageBuilder = showingXResultsMessageBuilder;
             this.playerWithNemesisViewModelBuilder = playerWithNemesisViewModelBuilder;
             this.playedGameDetailsViewModelBuilder = playedGameDetailsViewModelBuilder;
             this.gameDefinitionSummaryViewModelBuilder = gameDefinitionSummaryViewModelBuilder;

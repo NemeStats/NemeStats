@@ -20,7 +20,6 @@
 
 using AutoMapper;
 using BoardGameGeekApiClient.Interfaces;
-using BusinessLogic.DataAccess;
 using BusinessLogic.Exceptions;
 using BusinessLogic.Logic.BoardGameGeek;
 using BusinessLogic.Logic.GameDefinitions;
@@ -46,34 +45,28 @@ namespace UI.Controllers
         internal const int NUMBER_OF_TRENDING_GAMES_TO_SHOW = 25;
         internal const int NUMBER_OF_DAYS_OF_TRENDING_GAMES = 90;
 
-        internal IDataContext dataContext;
-        internal IGameDefinitionRetriever gameDefinitionRetriever;
-        internal ITrendingGamesRetriever _trendingGamesRetriever;
-        internal IGameDefinitionDetailsViewModelBuilder gameDefinitionTransformation;
-        internal IShowingXResultsMessageBuilder showingXResultsMessageBuilder;
-        internal IGameDefinitionSaver gameDefinitionSaver;
-        internal IBoardGameGeekApiClient _boardGameGeekApiClient;
+        private readonly IGameDefinitionRetriever _gameDefinitionRetriever;
+        private readonly ITrendingGamesRetriever _trendingGamesRetriever;
+        private readonly IGameDefinitionDetailsViewModelBuilder _gameDefinitionTransformation;
+        private readonly IGameDefinitionSaver _gameDefinitionSaver;
+        private readonly IBoardGameGeekApiClient _boardGameGeekApiClient;
         private readonly IUserRetriever _userRetriever;
         private readonly IBoardGameGeekGamesImporter _boardGameGeekGamesImporter;
         private readonly ITransformer _transformer;
 
-        public GameDefinitionController(IDataContext dataContext,
-            IGameDefinitionRetriever gameDefinitionRetriever,
+        public GameDefinitionController(IGameDefinitionRetriever gameDefinitionRetriever,
             ITrendingGamesRetriever trendingGamesRetriever,
             IGameDefinitionDetailsViewModelBuilder gameDefinitionTransformation,
-            IShowingXResultsMessageBuilder showingXResultsMessageBuilder,
             IGameDefinitionSaver gameDefinitionCreator,
             IBoardGameGeekApiClient boardGameGeekApiClient,
             IUserRetriever userRetriever,
             IBoardGameGeekGamesImporter boardGameGeekGamesImporter,
             ITransformer transformer)
         {
-            this.dataContext = dataContext;
-            this.gameDefinitionRetriever = gameDefinitionRetriever;
+            _gameDefinitionRetriever = gameDefinitionRetriever;
             _trendingGamesRetriever = trendingGamesRetriever;
-            this.gameDefinitionTransformation = gameDefinitionTransformation;
-            this.showingXResultsMessageBuilder = showingXResultsMessageBuilder;
-            gameDefinitionSaver = gameDefinitionCreator;
+            _gameDefinitionTransformation = gameDefinitionTransformation;
+            _gameDefinitionSaver = gameDefinitionCreator;
             _boardGameGeekApiClient = boardGameGeekApiClient;
             _userRetriever = userRetriever;
             _boardGameGeekGamesImporter = boardGameGeekGamesImporter;
@@ -93,8 +86,8 @@ namespace UI.Controllers
 
             try
             {
-                var gameDefinitionSummary = gameDefinitionRetriever.GetGameDefinitionDetails(id.Value, NUMBER_OF_RECENT_GAMES_TO_SHOW);
-                gamingGroupGameDefinitionViewModel = gameDefinitionTransformation.Build(gameDefinitionSummary, currentUser);
+                var gameDefinitionSummary = _gameDefinitionRetriever.GetGameDefinitionDetails(id.Value, NUMBER_OF_RECENT_GAMES_TO_SHOW);
+                gamingGroupGameDefinitionViewModel = _gameDefinitionTransformation.Build(gameDefinitionSummary, currentUser);
             }
             catch (KeyNotFoundException)
             {
@@ -136,7 +129,7 @@ namespace UI.Controllers
                 createGameDefinitionViewModel.Name = createGameDefinitionViewModel.Name.Trim();
                 var gameDefinition = Mapper.Map<CreateGameDefinitionViewModel, CreateGameDefinitionRequest>(createGameDefinitionViewModel);
 
-                var savedResult = gameDefinitionSaver.CreateGameDefinition(gameDefinition, currentUser);
+                var savedResult = _gameDefinitionSaver.CreateGameDefinition(gameDefinition, currentUser);
 
                 if (!String.IsNullOrWhiteSpace(createGameDefinitionViewModel.ReturnUrl))
                     return new RedirectResult(createGameDefinitionViewModel.ReturnUrl + "?gameId=" + savedResult.Id);
@@ -165,7 +158,7 @@ namespace UI.Controllers
 
                 try
                 {
-                    gameDefinitionSaver.CreateGameDefinition(createGameDefinitionRequest, currentUser);
+                    _gameDefinitionSaver.CreateGameDefinition(createGameDefinitionRequest, currentUser);
                 }
                 catch (DuplicateKeyException)
                 {
@@ -189,16 +182,16 @@ namespace UI.Controllers
 
             if (gamesImported == null)
             {
-                SetTempMessage(TempMessageKeys.CREATE_GAMEDEFITION_RESULT_TEMPMESSAGE, "It appears as though you don't have any games in your BoardGameGeek collection :_(", "info");
+                SetToastMessage(TempMessageKeys.CREATE_GAMEDEFITION_RESULT_TEMPMESSAGE, "It appears as though you don't have any games in your BoardGameGeek collection :_(", "info");
             }
             else if (gamesImported == 0)
             {
-                SetTempMessage(TempMessageKeys.CREATE_GAMEDEFITION_RESULT_TEMPMESSAGE,
+                SetToastMessage(TempMessageKeys.CREATE_GAMEDEFITION_RESULT_TEMPMESSAGE,
                     "All your BoardGameGeek games are already imported ;-)", "info");
             }
             else
             {
-                SetTempMessage(TempMessageKeys.CREATE_GAMEDEFITION_RESULT_TEMPMESSAGE, $"{gamesImported} games imported from your BoardGameGeek collection to NemeStats. Awesome!");
+                SetToastMessage(TempMessageKeys.CREATE_GAMEDEFITION_RESULT_TEMPMESSAGE, $"{gamesImported} games imported from your BoardGameGeek collection to NemeStats. Awesome!");
             }
 
             return RedirectToAction(MVC.GamingGroup.Index());
@@ -233,7 +226,7 @@ namespace UI.Controllers
             GameDefinitionEditViewModel gameDefinitionEditViewModel;
             try
             {
-                var gameDefinition = gameDefinitionRetriever.GetGameDefinitionDetails(id.Value, 0);
+                var gameDefinition = _gameDefinitionRetriever.GetGameDefinitionDetails(id.Value, 0);
                 gameDefinitionEditViewModel = Mapper.Map<GameDefinitionEditViewModel>(gameDefinition);
             }
             catch (KeyNotFoundException)
@@ -257,7 +250,7 @@ namespace UI.Controllers
             {
                 viewModel.Name = viewModel.Name.Trim();
                 var gameDefinitionUpdateRequest = Mapper.Map<GameDefinitionUpdateRequest>(viewModel);
-                gameDefinitionSaver.UpdateGameDefinition(gameDefinitionUpdateRequest, currentUser);
+                _gameDefinitionSaver.UpdateGameDefinition(gameDefinitionUpdateRequest, currentUser);
                 return new RedirectResult(Url.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name)
                                           + "#" + GamingGroupController.SECTION_ANCHOR_GAMEDEFINITIONS);
             }

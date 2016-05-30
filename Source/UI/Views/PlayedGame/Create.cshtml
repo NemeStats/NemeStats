@@ -1,8 +1,12 @@
-﻿@model UI.Models.PlayedGame.PlayedGameEditViewModel
+﻿@using UI.Controllers.Helpers
+@using UI.HtmlHelpers
+@model UI.Models.PlayedGame.PlayedGameEditViewModel
 @{
 	ViewBag.Title = "Record a Game";
 	Layout = MVC.Shared.Views._BaseLayout;
 }
+@Html.RenderTempDataMessage(TempMessageKeys.TEMP_MESSAGE_KEY_PLAYED_GAME_RECORDED)
+
 <h2 class="page-header">@ViewBag.Title</h2>
 <hr />
 <div class="panel panel-primary">
