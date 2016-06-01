@@ -292,7 +292,7 @@ namespace UI.Controllers
                 Notes = searchResult.Notes,
                 PlayedGameId = searchResult.PlayedGameId,
                 UserCanEdit = true,
-                WinnerType = PlayedGameDetailsViewModelBuilder.CalculateWinnerType(searchResult.PlayerGameResults.Select(x => x.GameRank).ToList()),
+                WinnerType = searchResult.WinnerType,
                 PlayerResults = searchResult.PlayerGameResults.Select(playerResult => new GameResultViewModel
                 {
                     DatePlayed = searchResult.DatePlayed,

@@ -323,6 +323,10 @@
     <Compile Include="Migrations\201605281147402_AddRecentAchievementsUnlocked.Designer.cs">
       <DependentUpon>201605281147402_AddRecentAchievementsUnlocked.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201606011117450_AddWinnerTypeToPlayedGame.cs" />
+    <Compile Include="Migrations\201606011117450_AddWinnerTypeToPlayedGame.Designer.cs">
+      <DependentUpon>201606011117450_AddWinnerTypeToPlayedGame.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Achievements\AchievementLevel.cs" />
     <Compile Include="Models\Achievements\AchievementId.cs" />
     <Compile Include="Models\Games\TrendingGame.cs" />
@@ -922,6 +926,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201605281147402_AddRecentAchievementsUnlocked.resx">
       <DependentUpon>201605281147402_AddRecentAchievementsUnlocked.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201606011117450_AddWinnerTypeToPlayedGame.resx">
+      <DependentUpon>201606011117450_AddWinnerTypeToPlayedGame.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

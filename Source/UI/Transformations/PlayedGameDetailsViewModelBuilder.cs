@@ -52,8 +52,9 @@ namespace UI.Transformations
             summary.DatePlayed = playedGame.DatePlayed;
             summary.GamingGroupId = playedGame.GamingGroup.Id;
             summary.GamingGroupName = playedGame.GamingGroup.Name;
+            summary.WinnerType = playedGame.WinnerType;
 
-            if(playedGame.GameDefinition.BoardGameGeekGameDefinition != null)
+            if (playedGame.GameDefinition.BoardGameGeekGameDefinition != null)
             {
                 summary.ThumbnailImageUrl = playedGame.GameDefinition.BoardGameGeekGameDefinition.Thumbnail;
             }
@@ -72,7 +73,6 @@ namespace UI.Transformations
                 summary.PlayerResults.Add(playerResultBuilder.Build(playerGameResult));
             }
             var gameRanks = playedGame.PlayerGameResults.Select(x => x.GameRank).ToList();
-            summary.WinnerType = CalculateWinnerType(gameRanks);
 
             return summary;
         }
@@ -98,20 +98,6 @@ namespace UI.Transformations
             {
                 throw new ArgumentException(EXCEPTION_MESSAGE_PLAYER_GAME_RESULTS_CANNOT_BE_NULL);
             }
-        }
-
-
-        public static WinnerTypes CalculateWinnerType(IList<int> distinctGameRanks)
-        {
-            if (distinctGameRanks.All(x => x == 1))
-            {
-                return WinnerTypes.TeamWin;
-            }
-            if (distinctGameRanks.All(x => x != 1))
-            {
-                return WinnerTypes.TeamLoss;
-            }
-            return WinnerTypes.PlayerWin;
         }
     }
 }

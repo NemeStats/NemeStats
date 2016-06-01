@@ -37,6 +37,7 @@ namespace BusinessLogic.Models
 
         public override int GamingGroupId { get; set; }
         public int GameDefinitionId { get; set; }
+        public WinnerTypes WinnerType { get; set; }
         public int NumberOfPlayers { get; set; }
         public DateTime DatePlayed { get; set; }
         public DateTime DateCreated { get; set; }
@@ -48,29 +49,6 @@ namespace BusinessLogic.Models
         [ForeignKey("CreatedByApplicationUserId")]
         public virtual ApplicationUser CreatedByApplicationUser { get; set; }
         public virtual IList<PlayerGameResult> PlayerGameResults { get; set; }
-
-        public virtual WinnerTypes WinnerType
-        {
-            get
-            {
-                if(PlayerGameResults == null || PlayerGameResults.Count == 0)
-                {
-                    throw new InvalidOperationException("Can't calculate a WinnerType when there are no PlayedGameResults.");
-                }
-
-                if(PlayerGameResults.All(result => result.GameRank == 1))
-                {
-                    return WinnerTypes.TeamWin;
-                }
-
-                if (PlayerGameResults.All(result => result.GameRank != 1))
-                {
-                    return WinnerTypes.TeamLoss;
-                }
-
-                return WinnerTypes.PlayerWin;
-            }
-        }
 
         public virtual Player WinningPlayer
         {

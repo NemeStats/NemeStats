@@ -16,5 +16,6 @@ namespace BusinessLogic.Models.PlayedGames
         public DateTime DatePlayed { get; set; }
         public DateTime DateLastUpdated { get; set; }
         public IList<PlayerResult> PlayerGameResults { get; set; }
+        public WinnerTypes WinnerType { get; set; }
     }
 }

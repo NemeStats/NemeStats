@@ -121,7 +121,8 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
                             PlayerName = "some player name",
                             PointsScored = 5
                         }
-                    }
+                    },
+                    WinnerType = WinnerTypes.TeamWin
                 }
             };
 
@@ -145,6 +146,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
             Assert.That(actualPlayedGameSearchResult.GamingGroupId, Is.EqualTo(expectedPlayedGameSearchResult.GamingGroupId));
             Assert.That(actualPlayedGameSearchResult.GamingGroupName, Is.EqualTo(expectedPlayedGameSearchResult.GamingGroupName));
             Assert.That(actualPlayedGameSearchResult.Notes, Is.EqualTo(expectedPlayedGameSearchResult.Notes));
+            Assert.That(actualPlayedGameSearchResult.WinnerType, Is.EqualTo(expectedPlayedGameSearchResult.WinnerType));
             var actualPlayerResult = actualPlayedGameSearchResult.PlayerResults[0];
             var expectedPlayerResult = expectedPlayedGameSearchResult.PlayerGameResults[0];
             Assert.That(actualPlayerResult.DatePlayed, Is.EqualTo(expectedPlayedGameSearchResult.DatePlayed));

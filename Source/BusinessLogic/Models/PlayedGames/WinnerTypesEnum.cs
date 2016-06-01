@@ -22,8 +22,8 @@ namespace BusinessLogic.Models.PlayedGames
 {
     public enum WinnerTypes
     {
-        TeamWin,
-        TeamLoss,
-        PlayerWin
+        PlayerWin = 1,
+        TeamWin = 2,
+        TeamLoss = 3
     }
 }
