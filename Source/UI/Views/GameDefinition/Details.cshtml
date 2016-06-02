@@ -155,7 +155,7 @@
                                                 @Html.ActionLink(gameResultViewModel.PlayerName, "Details", "Player", new {id = gameResultViewModel.PlayerId}, new {})
                                             </div>
                                             <div class="col-sm-8">
-                                                @Html.Partial(MVC.PlayedGame.Views._GameResult, new GameResultRankViewModel() {GameResult = gameResultViewModel, WinnerType = playedGameViewModel.WinnerType})
+                                                @Html.Partial(MVC.PlayedGame.Views._GameResult, gameResultViewModel)
                                             </div>
                                         </div>
                                     }

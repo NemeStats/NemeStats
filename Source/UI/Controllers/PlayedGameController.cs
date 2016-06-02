@@ -302,7 +302,8 @@ namespace UI.Controllers
                     NemePointsSummary = new NemePointsSummaryViewModel(playerResult.NemeStatsPointsAwarded, playerResult.GameDurationBonusNemePoints, playerResult.GameWeightBonusNemePoints),
                     PlayedGameId = searchResult.PlayedGameId,
                     PlayerId = playerResult.PlayerId,
-                    PlayerName = playerResult.PlayerName
+                    PlayerName = playerResult.PlayerName,
+                    WinnerType = searchResult.WinnerType
                 }).ToList()
             }).ToList();
 

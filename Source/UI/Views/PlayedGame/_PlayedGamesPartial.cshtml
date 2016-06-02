@@ -96,7 +96,7 @@
                             <td class="result-col">
                                 @foreach (var playerGameResultDetails in playedGameDetailsViewModel.PlayerResults)
                                 {
-                                    @Html.Partial(MVC.PlayedGame.Views._GameResult, new GameResultRankViewModel() { GameResult = playerGameResultDetails, WinnerType = playedGameDetailsViewModel.WinnerType })
+                                    @Html.Partial(MVC.PlayedGame.Views._GameResult, playerGameResultDetails)
                                 }
                             </td>
                             <td>

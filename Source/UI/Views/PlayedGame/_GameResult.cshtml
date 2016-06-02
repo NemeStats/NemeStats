@@ -1,5 +1,5 @@
 ﻿@using BusinessLogic.Models.PlayedGames
-@model UI.Models.Players.GameResultRankViewModel
+@model UI.Models.PlayedGame.GameResultViewModel
 
 @{
     Layout = null;
@@ -14,27 +14,27 @@
             <b>
                 @Rank()
 
-                @Html.ActionLink(Model.GameResult.PlayerName, "Details", "Player", new { id = Model.GameResult.PlayerId }, new { })
+                @Html.ActionLink(Model.PlayerName, "Details", "Player", new { id = Model.PlayerId }, new { })
 
             </b>
         </div>
         @TotalPoints()
     </div>
 
-    @Html.Partial("_NemePointsBreakdown", Model.GameResult.NemePointsSummary, new ViewDataDictionary { { "templateid", Model.Id } })
+    @Html.Partial("_NemePointsBreakdown", Model.NemePointsSummary, new ViewDataDictionary { { "templateid", Model.Id } })
 </div>
 
 @helper Rank()
 {
 
-if (Model.WinnerType.HasValue && Model.WinnerType.Value == WinnerTypes.TeamWin)
+if (@Model.WinnerType == WinnerTypes.TeamWin)
 {
         <span class="fa-stack rank" data-toggle="popover" data-placement="top" data-content="Everyone won!">
             <i class="fa fa-square fa-stack-2x text-success"></i>
             <i class="fa fa-inverse fa-stack-1x fa-smile-o"></i>
         </span>
 }
-else if (Model.WinnerType.HasValue && Model.WinnerType.Value == WinnerTypes.TeamLoss)
+else if (Model.WinnerType == WinnerTypes.TeamLoss)
 {
         <span class="fa-stack rank" data-toggle="popover" data-placement="top" data-content="Everyone lost">
             <i class="fa fa-square fa-stack-2x text-danger"></i>
@@ -45,7 +45,7 @@ else
 {
         <span class="fa-stack rank" data-toggle="popover" data-placement="top" data-content="Rank on game">
             <i class="fa fa-square fa-stack-2x"></i>
-            <i class="fa fa-inverse fa-stack-1x value">@Model.GameResult.GameRankString</i>
+            <i class="fa fa-inverse fa-stack-1x value">@Model.GameRankString</i>
         </span>
 }
 
@@ -56,7 +56,7 @@ else
     <div class="col-xs-5 total">
         <span data-toggle="popover" data-html="true" data-templateselector="#@Model.Id" data-title="NemePoints breakdown">
 
-            @Model.GameResult.NemePointsSummary.TotalNemePoints<span class="fa-stack neme-points-ico"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x letter"></i></span>
+            @Model.NemePointsSummary.TotalNemePoints<span class="fa-stack neme-points-ico"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x letter"></i></span>
         </span>
 
     </div>

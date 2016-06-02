@@ -338,6 +338,7 @@
     <Compile Include="Models\PlayedGames\PointsScorecard.cs" />
     <Compile Include="Logic\Points\WeightTierCalculator.cs" />
     <Compile Include="Models\PlayedGames\WeightTierEnum.cs" />
+    <Compile Include="Models\Players\PlayerGameResultSummary.cs" />
     <Compile Include="Models\Points\NemePointsSummary.cs" />
     <Compile Include="Models\User\BoardGameGeekUserInformation.cs" />
     <Compile Include="Models\Validation\BaseValidatableRequestSaver.cs" />

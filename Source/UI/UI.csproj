@@ -442,7 +442,6 @@
     <Compile Include="Models\PlayedGame\PlayedGamesFilterViewModel.cs" />
     <Compile Include="Models\PlayedGame\PlayedGamesViewModel.cs" />
     <Compile Include="Models\PlayedGame\SearchViewModel.cs" />
-    <Compile Include="Models\Players\GameResultRankViewModel.cs" />
     <Compile Include="Models\Players\MinionViewModel.cs" />
     <Compile Include="Models\Players\PlayerAchievementWinnerViewModel.cs" />
     <Compile Include="Models\Players\PlayerDetailsViewModel.cs" />

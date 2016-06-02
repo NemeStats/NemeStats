@@ -16,7 +16,7 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 using System;
-using System.Linq;
+using BusinessLogic.Models.PlayedGames;
 using UI.Models.Points;
 
 namespace UI.Models.PlayedGame
@@ -72,5 +72,29 @@ namespace UI.Models.PlayedGame
         public string ThumbnailImageUrl { get; set; }
         public bool PlayerActive { get; set; }
         public NemePointsSummaryViewModel NemePointsSummary { get; set; }
+        public WinnerTypes WinnerType { get; set; }
+        public string Id => $"{PlayedGameId}_{PlayerId}";
+
+        public string PointsExplanation
+        {
+            get
+            {
+                var result = $"{NemePointsSummary.BaseNemePoints} base points";
+                if (NemePointsSummary.WeightBonusNemePoints != 0)
+                {
+                    result = result + $" + {NemePointsSummary.WeightBonusNemePoints} bonus for game weight";
+                }
+                if (NemePointsSummary.GameDurationBonusNemePoints > 0)
+                {
+                    result = result + $" + {NemePointsSummary.GameDurationBonusNemePoints} bonus for game duration";
+                }
+                if (NemePointsSummary.GameDurationBonusNemePoints < 0)
+                {
+                    result = result + $" {NemePointsSummary.GameDurationBonusNemePoints} penalty for game duration";
+                }
+
+                return result;
+            }
+        }
     }
 }
