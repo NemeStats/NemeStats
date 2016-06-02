@@ -28,15 +28,15 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests
         {
             autoMocker = new RhinoAutoMocker<UserSessionsController>();
 
-            IDataProtector dataProtector = MockRepository.GenerateMock<IDataProtector>();
+            var dataProtector = MockRepository.GenerateMock<IDataProtector>();
             userStoreMock = MockRepository.GenerateMock<IUserStore<ApplicationUser>>();
-            IDataProtectionProvider dataProtectionProvider = MockRepository.GenerateMock<IDataProtectionProvider>();
+            var dataProtectionProvider = MockRepository.GenerateMock<IDataProtectionProvider>();
             dataProtectionProvider.Expect(mock => mock.Create("ASP.N‌​ET Identity")).Return(dataProtector);
-            ApplicationUserManager applicationUserManager = MockRepository.GeneratePartialMock<ApplicationUserManager>(userStoreMock, dataProtectionProvider);
+            var applicationUserManager = MockRepository.GeneratePartialMock<ApplicationUserManager>(userStoreMock, dataProtectionProvider);
             autoMocker.Inject(applicationUserManager);
 
             var controllerContextMock = MockRepository.GeneratePartialMock<HttpControllerContext>();
-            HttpActionDescriptor actionDescriptorMock = MockRepository.GenerateMock<HttpActionDescriptor>();
+            var actionDescriptorMock = MockRepository.GenerateMock<HttpActionDescriptor>();
             autoMocker.ClassUnderTest.ActionContext = new HttpActionContext(controllerContextMock, actionDescriptorMock);
             autoMocker.ClassUnderTest.Request = new HttpRequestMessage();
             autoMocker.ClassUnderTest.Request.SetConfiguration(new HttpConfiguration());
@@ -47,7 +47,7 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests
         [Test]
         public async Task ItReturnsAnHttp401NotAuthorizedResponseIfTheUsernameAndPasswordIsNotValid()
         {
-            CredentialsMessage credentialsMessage = new CredentialsMessage
+            var credentialsMessage = new CredentialsMessage
             {
                 UserName = "invalid username",
                 Password = "invalid password"
@@ -58,7 +58,7 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests
                                         Arg<string>.Matches(password => password == credentialsMessage.Password)))
                     .Return(Task.FromResult((ApplicationUser)null));
 
-            HttpResponseMessage actualResponse = await autoMocker.ClassUnderTest.Login(credentialsMessage);
+            var actualResponse = await autoMocker.ClassUnderTest.Login(credentialsMessage);
 
             AssertThatApiAction.HasThisError(actualResponse, HttpStatusCode.Unauthorized, "Invalid credentials provided.");
         }
@@ -66,15 +66,16 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests
         [Test]
         public async Task ItSavesAndReturnsANewAuthTokenIfLoginWasSuccessful()
         {
-            CredentialsMessage credentialsMessage = new CredentialsMessage
+            var credentialsMessage = new CredentialsMessage
             {
                 UserName = "valid username",
                 Password = "valid corresponding password"
             };
 
-            ApplicationUser loggedInUser = new ApplicationUser
+            var loggedInUser = new ApplicationUser
             {
-                Id = "some user id"
+                Id = "some user id",
+                AuthenticationTokenExpirationDate = new DateTime()
             };
 
             autoMocker.Get<ApplicationUserManager>().Expect(mock => mock.FindAsync(
@@ -82,15 +83,16 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests
                                         Arg<string>.Matches(password => password == credentialsMessage.Password)))
                     .Return(Task.FromResult(loggedInUser));
 
-            String someNewAuthToken = "the auth token value";
+            var someNewAuthToken = "the auth token value";
             autoMocker.Get<IAuthTokenGenerator>().Expect(mock => mock.GenerateAuthToken(loggedInUser.Id)).Return(someNewAuthToken);
 
-            HttpResponseMessage actualResponse = await autoMocker.ClassUnderTest.Login(credentialsMessage);
+            var actualResponse = await autoMocker.ClassUnderTest.Login(credentialsMessage);
 
             Assert.That(actualResponse.Content, Is.TypeOf(typeof(ObjectContent<NewAuthTokenMessage>)));
-            ObjectContent<NewAuthTokenMessage> content = actualResponse.Content as ObjectContent<NewAuthTokenMessage>;
-            NewAuthTokenMessage newAuthTokenMessage = content.Value as NewAuthTokenMessage;
+            var content = actualResponse.Content as ObjectContent<NewAuthTokenMessage>;
+            var newAuthTokenMessage = content.Value as NewAuthTokenMessage;
             Assert.That(newAuthTokenMessage.AuthenticationToken, Is.EqualTo(someNewAuthToken));
+            Assert.That(newAuthTokenMessage.ExpirationDateTime, Is.EqualTo(loggedInUser.AuthenticationTokenExpirationDate));
         }
     }
 }

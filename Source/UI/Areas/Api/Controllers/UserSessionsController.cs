@@ -34,7 +34,8 @@ namespace UI.Areas.Api.Controllers
 
             NewAuthTokenMessage newAuthTokenMessage = new NewAuthTokenMessage
             {
-                AuthenticationToken = authTokenGenerator.GenerateAuthToken(user.Id)
+                AuthenticationToken = authTokenGenerator.GenerateAuthToken(user.Id),
+                ExpirationDateTime = user.AuthenticationTokenExpirationDate
             };
             
             return Request.CreateResponse(HttpStatusCode.OK, newAuthTokenMessage);
