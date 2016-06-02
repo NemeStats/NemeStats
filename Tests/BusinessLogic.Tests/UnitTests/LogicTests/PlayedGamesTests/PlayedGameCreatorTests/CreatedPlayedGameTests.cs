@@ -79,16 +79,64 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameCr
         [Test]
         public void ItSavesAPlayedGameIfThereIsAGameDefinition()
         {
-            autoMocker.ClassUnderTest.CreatePlayedGame(ValidNewlyCompletedGame(), TransactionSource.WebApplication, currentUser);
+            var newlyCompletedPlayedGame = CreateValidNewlyCompletedGame();
+            autoMocker.ClassUnderTest.CreatePlayedGame(newlyCompletedPlayedGame, TransactionSource.WebApplication, currentUser);
 
             autoMocker.Get<IDataContext>().AssertWasCalled(mock => mock.Save(
                                                 Arg<PlayedGame>.Matches(game => game.GameDefinitionId == gameDefinition.Id
-                                                    && game.NumberOfPlayers == ValidNewlyCompletedGame().PlayerRanks.Count()
-                                                    && game.DatePlayed.Date.Equals(ValidNewlyCompletedGame().DatePlayed.Date)),
+                                                    && game.NumberOfPlayers == newlyCompletedPlayedGame.PlayerRanks.Count()
+                                                    && game.DatePlayed.Date.Equals(newlyCompletedPlayedGame.DatePlayed.Date)),
                                                 Arg<ApplicationUser>.Is.Same(currentUser)));
         }
 
-        private NewlyCompletedGame ValidNewlyCompletedGame()
+        [Test]
+        public void It_Sets_The_WinnerType_To_Team_Win_If_All_Players_Won()
+        {
+            //--arrange
+            var newlyCompletedPlayedGame = CreateValidNewlyCompletedGame();
+            newlyCompletedPlayedGame.PlayerRanks.ForEach(x => x.GameRank = 1);
+
+            //--act
+            autoMocker.ClassUnderTest.CreatePlayedGame(newlyCompletedPlayedGame, TransactionSource.WebApplication, currentUser);
+
+            //--assert
+            autoMocker.Get<IDataContext>().AssertWasCalled(mock => mock.Save(
+                                                Arg<PlayedGame>.Matches(game => game.WinnerType == WinnerTypes.TeamWin),
+                                                Arg<ApplicationUser>.Is.Anything));
+        }
+
+        [Test]
+        public void It_Sets_The_WinnerType_To_Team_Loss_If_All_Players_Lost()
+        {
+            //--arrange
+            var newlyCompletedPlayedGame = CreateValidNewlyCompletedGame();
+            newlyCompletedPlayedGame.PlayerRanks.ForEach(x => x.GameRank = 2);
+
+            //--act
+            autoMocker.ClassUnderTest.CreatePlayedGame(newlyCompletedPlayedGame, TransactionSource.WebApplication, currentUser);
+
+            //--assert
+            autoMocker.Get<IDataContext>().AssertWasCalled(mock => mock.Save(
+                                                Arg<PlayedGame>.Matches(game => game.WinnerType == WinnerTypes.TeamLoss),
+                                                Arg<ApplicationUser>.Is.Anything));
+        }
+
+        [Test]
+        public void It_Sets_The_WinnerType_To_Player_Win_If_There_Was_At_Least_One_Winner_And_One_Loser()
+        {
+            //--arrange
+            var newlyCompletedPlayedGame = CreateValidNewlyCompletedGame();
+
+            //--act
+            autoMocker.ClassUnderTest.CreatePlayedGame(newlyCompletedPlayedGame, TransactionSource.WebApplication, currentUser);
+
+            //--assert
+            autoMocker.Get<IDataContext>().AssertWasCalled(mock => mock.Save(
+                                                Arg<PlayedGame>.Matches(game => game.WinnerType == WinnerTypes.PlayerWin),
+                                                Arg<ApplicationUser>.Is.Anything));
+        }
+
+        private NewlyCompletedGame CreateValidNewlyCompletedGame()
         {
             List<PlayerRank> playerRanks;
 
@@ -346,10 +394,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameCr
         [Test]
         public void It_Send_PlayedGameCreatedEvent()
         {
-
-
-            autoMocker.ClassUnderTest.CreatePlayedGame(ValidNewlyCompletedGame(), TransactionSource.WebApplication, currentUser);
-
+            autoMocker.ClassUnderTest.CreatePlayedGame(CreateValidNewlyCompletedGame(), TransactionSource.WebApplication, currentUser);
 
             autoMocker.Get<IBusinessLogicEventBus>().AssertWasCalled(mock => mock.SendEvent(Arg<IBusinessLogicEvent>.Matches(m => m.GetType() == typeof(PlayedGameCreatedEvent))));
         }

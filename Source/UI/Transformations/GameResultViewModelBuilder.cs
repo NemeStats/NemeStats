@@ -45,7 +45,8 @@ namespace UI.Transformations
                 GameDefinitionName = playerGameResult.PlayedGame.GameDefinition.Name,
                 PlayedGameId = playerGameResult.PlayedGameId,
                 DatePlayed = playerGameResult.PlayedGame.DatePlayed,
-                BoardGameGeekUri = BoardGameGeekUriBuilder.BuildBoardGameGeekGameUri(playerGameResult.PlayedGame.GameDefinition.BoardGameGeekGameDefinitionId)
+                BoardGameGeekUri = BoardGameGeekUriBuilder.BuildBoardGameGeekGameUri(playerGameResult.PlayedGame.GameDefinition.BoardGameGeekGameDefinitionId),
+                WinnerType = playerGameResult.PlayedGame.WinnerType
             };
             if(playerGameResult.PlayedGame.GameDefinition.BoardGameGeekGameDefinition != null)
             {

@@ -121,7 +121,8 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
                             PlayerName = "some player name",
                             PointsScored = 5
                         }
-                    }
+                    },
+                    WinnerType = WinnerTypes.TeamWin
                 }
             };
 
@@ -145,17 +146,19 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
             Assert.That(actualPlayedGameSearchResult.GamingGroupId, Is.EqualTo(expectedPlayedGameSearchResult.GamingGroupId));
             Assert.That(actualPlayedGameSearchResult.GamingGroupName, Is.EqualTo(expectedPlayedGameSearchResult.GamingGroupName));
             Assert.That(actualPlayedGameSearchResult.Notes, Is.EqualTo(expectedPlayedGameSearchResult.Notes));
+            Assert.That(actualPlayedGameSearchResult.WinnerType, Is.EqualTo(expectedPlayedGameSearchResult.WinnerType));
             var actualPlayerResult = actualPlayedGameSearchResult.PlayerResults[0];
             var expectedPlayerResult = expectedPlayedGameSearchResult.PlayerGameResults[0];
             Assert.That(actualPlayerResult.DatePlayed, Is.EqualTo(expectedPlayedGameSearchResult.DatePlayed));
             Assert.That(actualPlayerResult.GameDefinitionId, Is.EqualTo(expectedPlayedGameSearchResult.GameDefinitionId));
-            Assert.That(actualPlayerResult.GameDefinitionName, Is.EqualTo(actualPlayedGameSearchResult.GameDefinitionName));
+            Assert.That(actualPlayerResult.GameDefinitionName, Is.EqualTo(expectedPlayedGameSearchResult.GameDefinitionName));
             Assert.That(actualPlayerResult.GameRank, Is.EqualTo(expectedPlayerResult.GameRank));
             var expectedNemePointsSummary = new NemePointsSummaryViewModel(expectedPlayerResult.NemeStatsPointsAwarded, expectedPlayerResult.GameDurationBonusNemePoints, expectedPlayerResult.GameWeightBonusNemePoints);
             Assert.That(actualPlayerResult.NemePointsSummary, Is.EqualTo(expectedNemePointsSummary));
             Assert.That(actualPlayerResult.PlayedGameId, Is.EqualTo(expectedPlayedGameSearchResult.PlayedGameId));
             Assert.That(actualPlayerResult.PlayerId, Is.EqualTo(expectedPlayerResult.PlayerId));
             Assert.That(actualPlayerResult.PlayerName, Is.EqualTo(expectedPlayerResult.PlayerName));
+            Assert.That(actualPlayerResult.WinnerType, Is.EqualTo(expectedPlayedGameSearchResult.WinnerType));
         }
 
         [Test]

@@ -19,6 +19,7 @@
 using System;
 using BusinessLogic.Logic.Players;
 using BusinessLogic.Models;
+using BusinessLogic.Models.PlayedGames;
 using BusinessLogic.Models.Points;
 using NUnit.Framework;
 using UI.Models.PlayedGame;
@@ -46,7 +47,8 @@ namespace UI.Tests.UnitTests.TransformationsTests.GameResultViewModelBuilderTest
             PlayedGame playedGame = new PlayedGame()
             {
                 GameDefinition = gameDefinition,
-                DatePlayed = new DateTime(2014, 09, 15)
+                DatePlayed = new DateTime(2014, 09, 15),
+                WinnerType = WinnerTypes.TeamWin
             };
             playerGameResult = new PlayerGameResult()
             {
@@ -151,6 +153,12 @@ namespace UI.Tests.UnitTests.TransformationsTests.GameResultViewModelBuilderTest
         public void ItCopiesTheDatePlayed()
         {
             Assert.AreEqual(playerGameResult.PlayedGame.DatePlayed, playerGameResultDetails.DatePlayed);
+        }
+
+        [Test]
+        public void ItCopiesTheWinnerTypeFromThePlayedGame()
+        {
+            Assert.AreEqual(playerGameResult.PlayedGame.WinnerType, playerGameResultDetails.WinnerType);
         }
     }
 }

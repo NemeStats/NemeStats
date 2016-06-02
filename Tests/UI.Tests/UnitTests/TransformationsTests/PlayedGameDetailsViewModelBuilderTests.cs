@@ -31,18 +31,18 @@ namespace UI.Tests.UnitTests.TransformationsTests
     [TestFixture]
     public class PlayedGameDetailsBuilderTests
     {
-        private PlayedGameDetailsViewModelBuilder builder;
-        private PlayedGame playedGame;
-        private GamingGroup gamingGroup;
-        private PlayedGameDetailsViewModel actualViewModel;
-        private IGameResultViewModelBuilder detailsBuilder;
-        private ApplicationUser currentUser;
-        private int gamingGroupId = 1123;
+        private PlayedGameDetailsViewModelBuilder _builder;
+        private PlayedGame _playedGame;
+        private GamingGroup _gamingGroup;
+        private PlayedGameDetailsViewModel _actualViewModel;
+        private IGameResultViewModelBuilder _detailsBuilder;
+        private ApplicationUser _currentUser;
+        private int _gamingGroupId = 1123;
 
         [SetUp]
         public void SetUp()
         {
-            this.SetItAllUp(WinnerTypes.PlayerWin);
+            SetItAllUp(WinnerTypes.PlayerWin);
         }
 
         private void SetItAllUp(WinnerTypes winnerType)
@@ -65,46 +65,47 @@ namespace UI.Tests.UnitTests.TransformationsTests
                 gameRankStack.Push(1);
             }
 
-            this.gamingGroup = new GamingGroup
+            _gamingGroup = new GamingGroup
             {
-                Id = this.gamingGroupId,
+                Id = _gamingGroupId,
                 Name = "gaming group name"
             };
-            this.playedGame = new PlayedGame
+            _playedGame = new PlayedGame
             {
                 Id = 11111,
                 GameDefinition = new GameDefinition(),
-                GamingGroup = this.gamingGroup,
+                GamingGroup = _gamingGroup,
                 GameDefinitionId = 2222,
                 PlayerGameResults = new List<PlayerGameResult>(),
-                GamingGroupId = this.gamingGroupId,
-                Notes = "some notes" + Environment.NewLine + "some notes on a separate line"
+                GamingGroupId = _gamingGroupId,
+                Notes = "some notes" + Environment.NewLine + "some notes on a separate line",
+                WinnerType = winnerType
             };
 
-            this.playedGame.PlayerGameResults.Add(new PlayerGameResult()
+            _playedGame.PlayerGameResults.Add(new PlayerGameResult()
             {
                 GameRank = gameRankStack.Pop(),
                 NemeStatsPointsAwarded = 3,
                 Id = 1,
-                PlayedGameId = this.playedGame.Id,
+                PlayedGameId = _playedGame.Id,
                 PlayerId = 1
             });
 
-            this.playedGame.PlayerGameResults.Add(new PlayerGameResult()
+            _playedGame.PlayerGameResults.Add(new PlayerGameResult()
             {
                 GameRank = gameRankStack.Pop(),
                 NemeStatsPointsAwarded = 2,
                 Id = 2,
-                PlayedGameId = this.playedGame.Id,
+                PlayedGameId = _playedGame.Id,
                 PlayerId = 2
             });
 
-            this.playedGame.PlayerGameResults.Add(new PlayerGameResult()
+            _playedGame.PlayerGameResults.Add(new PlayerGameResult()
             {
                 GameRank = gameRankStack.Pop(),
                 NemeStatsPointsAwarded = 1,
                 Id = 3,
-                PlayedGameId = this.playedGame.Id,
+                PlayedGameId = _playedGame.Id,
                 PlayerId = 3,
                 PlayedGame = new PlayedGame()
                 {
@@ -116,34 +117,34 @@ namespace UI.Tests.UnitTests.TransformationsTests
                 }
             });
 
-            this.detailsBuilder = MockRepository.GenerateMock<IGameResultViewModelBuilder>();
-            this.builder = new PlayedGameDetailsViewModelBuilder(this.detailsBuilder);
+            _detailsBuilder = MockRepository.GenerateMock<IGameResultViewModelBuilder>();
+            _builder = new PlayedGameDetailsViewModelBuilder(_detailsBuilder);
 
-            int totalPlayerGameResults = this.playedGame.PlayerGameResults.Count;
+            int totalPlayerGameResults = _playedGame.PlayerGameResults.Count;
             for (int i = 0; i < totalPlayerGameResults; i++)
             {
-                this.detailsBuilder.Expect(
-                                      x => x.Build(this.playedGame.PlayerGameResults[i]))
+                _detailsBuilder.Expect(
+                                      x => x.Build(_playedGame.PlayerGameResults[i]))
                               .Repeat
                               .Once()
                               .Return(new GameResultViewModel()
                               {
-                                  PlayerId = this.playedGame.PlayerGameResults[i].PlayerId
+                                  PlayerId = _playedGame.PlayerGameResults[i].PlayerId
                               });
             }
-            this.currentUser = new ApplicationUser()
+            _currentUser = new ApplicationUser()
             {
-                CurrentGamingGroupId = this.gamingGroupId
+                CurrentGamingGroupId = _gamingGroupId
             };
 
-            this.actualViewModel = this.builder.Build(this.playedGame, this.currentUser);
+            _actualViewModel = _builder.Build(_playedGame, _currentUser);
         }
 
         [Test]
         public void ItRequiresAPlayedGame()
         {
             var exception = Assert.Throws<ArgumentNullException>(() =>
-                    builder.Build(null, currentUser)
+                    _builder.Build(null, _currentUser)
                 );
 
             Assert.AreEqual("playedGame", exception.ParamName);
@@ -152,10 +153,10 @@ namespace UI.Tests.UnitTests.TransformationsTests
         [Test]
         public void ItRequiresAGamingGroupOnThePlayedGame()
         {
-            playedGame.GamingGroup = null;
+            _playedGame.GamingGroup = null;
 
             var exception = Assert.Throws<ArgumentException>(() =>
-                    builder.Build(playedGame, currentUser)
+                    _builder.Build(_playedGame, _currentUser)
                 );
 
             Assert.AreEqual(PlayedGameDetailsViewModelBuilder.EXCEPTION_MESSAGE_GAMING_GROUP_CANNOT_BE_NULL, exception.Message);
@@ -164,10 +165,10 @@ namespace UI.Tests.UnitTests.TransformationsTests
         [Test]
         public void ItRequiresAGameDefinitionOnThePlayedGame()
         {
-            playedGame.GameDefinition = null;
+            _playedGame.GameDefinition = null;
 
             var exception = Assert.Throws<ArgumentException>(() =>
-                    builder.Build(playedGame, currentUser)
+                    _builder.Build(_playedGame, _currentUser)
                 );
 
             Assert.AreEqual(PlayedGameDetailsViewModelBuilder.EXCEPTION_MESSAGE_GAME_DEFINITION_CANNOT_BE_NULL, exception.Message);
@@ -176,10 +177,10 @@ namespace UI.Tests.UnitTests.TransformationsTests
         [Test]
         public void ItRequiresPlayerGameResultsOnThePlayedGame()
         {
-            playedGame.PlayerGameResults = null;
+            _playedGame.PlayerGameResults = null;
 
             var exception = Assert.Throws<ArgumentException>(() =>
-                    builder.Build(playedGame, currentUser)
+                    _builder.Build(_playedGame, _currentUser)
                 );
 
             Assert.AreEqual(PlayedGameDetailsViewModelBuilder.EXCEPTION_MESSAGE_PLAYER_GAME_RESULTS_CANNOT_BE_NULL, exception.Message);
@@ -188,79 +189,66 @@ namespace UI.Tests.UnitTests.TransformationsTests
         [Test]
         public void ItCopiesTheGameId()
         {
-            Assert.AreEqual(playedGame.GameDefinitionId, this.actualViewModel.GameDefinitionId);
+            Assert.AreEqual(_playedGame.GameDefinitionId, _actualViewModel.GameDefinitionId);
         }
 
         [Test]
         public void ItCopiesThePlayedGameName()
         {
-            Assert.AreEqual(playedGame.GameDefinition.Name, this.actualViewModel.GameDefinitionName);
+            Assert.AreEqual(_playedGame.GameDefinition.Name, _actualViewModel.GameDefinitionName);
         }
 
         [Test]
         public void ItCopiesThePlayedGameId()
         {
-            Assert.AreEqual(playedGame.Id, this.actualViewModel.PlayedGameId);
+            Assert.AreEqual(_playedGame.Id, _actualViewModel.PlayedGameId);
         }
 
         [Test]
         public void ItCopiesTheDatePlayed()
         {
-            Assert.AreEqual(playedGame.DatePlayed.Ticks, this.actualViewModel.DatePlayed.Ticks);
+            Assert.AreEqual(_playedGame.DatePlayed.Ticks, _actualViewModel.DatePlayed.Ticks);
         }
 
         [Test]
         public void ItCopiesTheGamingGroupId()
         {
-            Assert.AreEqual(playedGame.GamingGroup.Id, this.actualViewModel.GamingGroupId);
+            Assert.AreEqual(_playedGame.GamingGroup.Id, _actualViewModel.GamingGroupId);
         }
 
         [Test]
         public void ItCopiesTheGamingGroupName()
         {
-            Assert.AreEqual(playedGame.GamingGroup.Name, this.actualViewModel.GamingGroupName);
+            Assert.AreEqual(_playedGame.GamingGroup.Name, _actualViewModel.GamingGroupName);
+        }
+
+        [Test]
+        public void ItCopiesTheWinnerType()
+        {
+            SetItAllUp(WinnerTypes.TeamLoss);
+
+            Assert.AreEqual(_playedGame.WinnerType, _actualViewModel.WinnerType);
         }
 
         [Test]
         public void ItCopiesTheNotesReplacingNewlinesWithBreakTags()
         {
-            Assert.That(playedGame.Notes.Replace(Environment.NewLine, PlayedGameDetailsViewModelBuilder.NEWLINE_REPLACEMENT_FOR_HTML), Is.EqualTo(this.actualViewModel.Notes));
-        }
-
-        [Test]
-        public void ItSetsTheWinnerTypeToTeamWinIfAllPlayersAreTheWinner()
-        {
-            this.SetItAllUp(WinnerTypes.TeamWin);
-            Assert.That(actualViewModel.WinnerType, Is.EqualTo(WinnerTypes.TeamWin));
-        }
-
-        [Test]
-        public void ItSetsTheWinnerTypeToTeamLossIfAllPlayersAreTheWinner()
-        {
-            this.SetItAllUp(WinnerTypes.TeamLoss);
-            Assert.That(actualViewModel.WinnerType, Is.EqualTo(WinnerTypes.TeamLoss));
-        }
-
-        [Test]
-        public void ItSetsTheWinnerTypeToPlayerWinIfASubsetOfPlayersWon()
-        {
-            this.SetItAllUp(WinnerTypes.PlayerWin);
-            Assert.That(actualViewModel.WinnerType, Is.EqualTo(WinnerTypes.PlayerWin));
+            Assert.That(_playedGame.Notes.Replace(Environment.NewLine, PlayedGameDetailsViewModelBuilder.NEWLINE_REPLACEMENT_FOR_HTML), Is.EqualTo(_actualViewModel.Notes));
         }
 
         [Test]
         public void ItTransformsPlayedGameResultsIntoPlayerGameResultSummaries()
         {
-            for (int i = 0; i < playedGame.PlayerGameResults.Count; i++)
+            for (int i = 0; i < _playedGame.PlayerGameResults.Count; i++)
             {
-                Assert.AreEqual(playedGame.PlayerGameResults[i].PlayerId, this.actualViewModel.PlayerResults[i].PlayerId);
+                Assert.AreEqual(_playedGame.PlayerGameResults[i].PlayerId, _actualViewModel.PlayerResults[i].PlayerId);
             }
         }
 
         [Test]
         public void TheUserCanEditThePlayedGameDetailsViewModelIfTheyShareGamingGroups()
         {
-            PlayedGameDetailsViewModel viewModel = builder.Build(playedGame, currentUser);
+            PlayedGameDetailsViewModel viewModel = _builder.Build(_playedGame, _currentUser);
 
             Assert.True(viewModel.UserCanEdit);
         }
@@ -268,8 +256,8 @@ namespace UI.Tests.UnitTests.TransformationsTests
         [Test]
         public void TheUserCanNotEditThePlayedGameDetailsViewModelIfTheyDoNotShareGamingGroups()
         {
-            currentUser.CurrentGamingGroupId = -1;
-            PlayedGameDetailsViewModel viewModel = builder.Build(playedGame, currentUser);
+            _currentUser.CurrentGamingGroupId = -1;
+            PlayedGameDetailsViewModel viewModel = _builder.Build(_playedGame, _currentUser);
 
             Assert.False(viewModel.UserCanEdit);
         }
@@ -277,7 +265,7 @@ namespace UI.Tests.UnitTests.TransformationsTests
         [Test]
         public void TheUserCanNotEditThePlayedGameDetailsViewModelIfTheCurrentUserIsUnknown()
         {
-            PlayedGameDetailsViewModel viewModel = builder.Build(playedGame, null);
+            PlayedGameDetailsViewModel viewModel = _builder.Build(_playedGame, null);
 
             Assert.False(viewModel.UserCanEdit);
         }

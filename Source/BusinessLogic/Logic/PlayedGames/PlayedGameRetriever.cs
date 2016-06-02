@@ -101,9 +101,7 @@ namespace BusinessLogic.Logic.PlayedGames
                      GameDefinitionName = playedGame.GameDefinition.Name,
                      GamingGroupId = playedGame.GamingGroupId,
                      GamingGroupName = playedGame.GamingGroup.Name,
-                     WinnerType = (playedGame.PlayerGameResults.All(x => x.GameRank == 1) ? WinnerTypes.TeamWin :
-                                              playedGame.PlayerGameResults.All(x => x.GameRank != 1) ? WinnerTypes.TeamLoss :
-                                                  WinnerTypes.PlayerWin),
+                     WinnerType = playedGame.WinnerType,
                      WinningPlayer = playedGame.PlayerGameResults.FirstOrDefault(player => player.GameRank == 1).Player,
                      DatePlayed = playedGame.DatePlayed,
                      ThumbnailImageUrl = playedGame.GameDefinition.BoardGameGeekGameDefinition == null

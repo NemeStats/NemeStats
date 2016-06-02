@@ -114,6 +114,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
             var expectedPlayedGame = MockRepository.GeneratePartialMock<PlayedGame>();
             expectedPlayedGame.DatePlayed = new DateTime();
             expectedPlayedGame.GameDefinitionId = 1;
+            expectedPlayedGame.WinnerType = WinnerTypes.PlayerWin;
             expectedPlayedGame.GameDefinition = new GameDefinition
             {
                 Name = "some game definition name",
@@ -129,8 +130,6 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
             {
                 expectedPlayedGame
             };
-            var expectedWinnerType = WinnerTypes.PlayerWin;
-            expectedPlayedGame.Expect(mock => mock.WinnerType).Repeat.Any().Return(expectedWinnerType);
             var expectedWinningPlayer = new Player
             {
                 Id = 93,
@@ -151,7 +150,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
             var expectedBggUri = BoardGameGeekUriBuilder.BuildBoardGameGeekGameUri(expectedBggGameDefinitionId);
             Assert.That(lastGamingGroupGame.BoardGameGeekUri, Is.EqualTo(expectedBggUri));
             Assert.That(lastGamingGroupGame.ThumbnailImageUrl, Is.EqualTo(expectedPlayedGame.GameDefinition.BoardGameGeekGameDefinition.Thumbnail));
-            Assert.That(lastGamingGroupGame.WinnerType, Is.EqualTo(expectedWinnerType));
+            Assert.That(lastGamingGroupGame.WinnerType, Is.EqualTo(expectedPlayedGame.WinnerType));
             Assert.That(lastGamingGroupGame.WinningPlayerName, Is.EqualTo(expectedWinningPlayer.Name));
             Assert.That(lastGamingGroupGame.WinningPlayerId, Is.EqualTo(expectedWinningPlayer.Id));
         }

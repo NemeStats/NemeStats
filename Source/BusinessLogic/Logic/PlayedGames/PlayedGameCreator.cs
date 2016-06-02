@@ -29,6 +29,7 @@ using System.Linq;
 using BusinessLogic.Events;
 using BusinessLogic.Events.HandlerFactory;
 using BusinessLogic.Events.Interfaces;
+using BusinessLogic.Models.PlayedGames;
 
 namespace BusinessLogic.Logic.PlayedGames
 {
@@ -54,18 +55,17 @@ namespace BusinessLogic.Logic.PlayedGames
             IBusinessLogicEventBus eventBus) : base(eventBus)
         {
             _dataContext = applicationDataContext;
-            this._playedGameTracker = playedGameTracker;
-            this._nemesisRecalculator = nemesisRecalculator;
-            this._championRecalculator = championRecalculator;
-            this._securedEntityValidatorForPlayer = securedEntityValidatorForPlayer;
-            this._securedEntityValidatorForGameDefinition = securedEntityValidatorForGameDefinition;
-            this._pointsCalculator = pointsCalculator;
+            _playedGameTracker = playedGameTracker;
+            _nemesisRecalculator = nemesisRecalculator;
+            _championRecalculator = championRecalculator;
+            _securedEntityValidatorForPlayer = securedEntityValidatorForPlayer;
+            _securedEntityValidatorForGameDefinition = securedEntityValidatorForGameDefinition;
+            _pointsCalculator = pointsCalculator;
         }
 
         //TODO need to have validation logic here (or on PlayedGame similar to what is on NewlyCompletedGame)
         public PlayedGame CreatePlayedGame(NewlyCompletedGame newlyCompletedGame, TransactionSource transactionSource, ApplicationUser currentUser)
         {
-
             var gameDefinition = _dataContext.FindById<GameDefinition>(newlyCompletedGame.GameDefinitionId);
             _securedEntityValidatorForGameDefinition.ValidateAccess(gameDefinition, currentUser, typeof(GameDefinition), newlyCompletedGame.GameDefinitionId);
             BoardGameGeekGameDefinition boardGameGeekGameDefinition = null;
@@ -96,7 +96,7 @@ namespace BusinessLogic.Logic.PlayedGames
             }
             _championRecalculator.RecalculateChampion(playedGame.GameDefinitionId, currentUser, false);
 
-            this.SendEvents(new IBusinessLogicEvent[] { new PlayedGameCreatedEvent() { TriggerEntityId = playedGame.Id } });
+            SendEvents(new IBusinessLogicEvent[] { new PlayedGameCreatedEvent() { TriggerEntityId = playedGame.Id } });
 
             return playedGame;
         }
@@ -105,7 +105,7 @@ namespace BusinessLogic.Logic.PlayedGames
         {
             foreach (var playerRank in newlyCompletedGame.PlayerRanks)
             {
-                var player = this._dataContext.FindById<Player>(playerRank.PlayerId);
+                var player = _dataContext.FindById<Player>(playerRank.PlayerId);
                 _securedEntityValidatorForPlayer.ValidateAccess(player, currentUser, typeof(Player), player.Id);
             }
         }
@@ -141,11 +141,20 @@ namespace BusinessLogic.Logic.PlayedGames
             string applicationUserId,
             List<PlayerGameResult> playerGameResults)
         {
-            var numberOfPlayers = newlyCompletedGame.PlayerRanks.Count();
-            var playedGame = new PlayedGame()
+            var winnerType = WinnerTypes.PlayerWin;
+            if (playerGameResults.All(x => x.GameRank == 1))
+            {
+                winnerType = WinnerTypes.TeamWin;
+            }else if (playerGameResults.All(x => x.GameRank > 1))
+            {
+                winnerType = WinnerTypes.TeamLoss;
+            }
+            var numberOfPlayers = newlyCompletedGame.PlayerRanks.Count;
+            var playedGame = new PlayedGame
             {
                 GameDefinitionId = newlyCompletedGame.GameDefinitionId.Value,
                 NumberOfPlayers = numberOfPlayers,
+                WinnerType = winnerType,
                 PlayerGameResults = playerGameResults,
                 DatePlayed = newlyCompletedGame.DatePlayed,
                 GamingGroupId = gamingGroupId,
