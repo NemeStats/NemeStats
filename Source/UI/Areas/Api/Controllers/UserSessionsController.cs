@@ -31,10 +31,11 @@ namespace UI.Areas.Api.Controllers
             {
                 return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Invalid credentials provided.");
             }
-
+            var authToken = authTokenGenerator.GenerateAuthToken(user.Id);
             NewAuthTokenMessage newAuthTokenMessage = new NewAuthTokenMessage
             {
-                AuthenticationToken = authTokenGenerator.GenerateAuthToken(user.Id)
+                AuthenticationToken = authToken.AuthenticationTokenString,
+                AuthenticationTokenExpirationDateTime = user.AuthenticationTokenExpirationDate
             };
             
             return Request.CreateResponse(HttpStatusCode.OK, newAuthTokenMessage);

@@ -1,10 +1,10 @@
-﻿using System.Linq;
+﻿using BusinessLogic.Models.User;
 
 namespace BusinessLogic.Logic.Users
 {
     public interface IAuthTokenGenerator
     {
-        string GenerateAuthToken(string applicationUserId);
+        AuthToken GenerateAuthToken(string applicationUserId);
         string HashAuthToken(string authToken);
     }
 }
