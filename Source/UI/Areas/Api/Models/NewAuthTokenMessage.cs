@@ -6,6 +6,6 @@ namespace UI.Areas.Api.Models
     public class NewAuthTokenMessage
     {
         public string AuthenticationToken { get; set; }
-        public DateTime? ExpirationDateTime { get; internal set; }
+        public DateTime? AuthenticationTokenExpirationDateTime { get; set; }
     }
 }

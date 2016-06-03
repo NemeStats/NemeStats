@@ -83,7 +83,7 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests
                                         Arg<string>.Matches(password => password == credentialsMessage.Password)))
                     .Return(Task.FromResult(loggedInUser));
 
-            var someNewAuthToken = "the auth token value";
+            var someNewAuthToken = new AuthToken("the auth token value", new DateTime());
             autoMocker.Get<IAuthTokenGenerator>().Expect(mock => mock.GenerateAuthToken(loggedInUser.Id)).Return(someNewAuthToken);
 
             var actualResponse = await autoMocker.ClassUnderTest.Login(credentialsMessage);
@@ -91,8 +91,8 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests
             Assert.That(actualResponse.Content, Is.TypeOf(typeof(ObjectContent<NewAuthTokenMessage>)));
             var content = actualResponse.Content as ObjectContent<NewAuthTokenMessage>;
             var newAuthTokenMessage = content.Value as NewAuthTokenMessage;
-            Assert.That(newAuthTokenMessage.AuthenticationToken, Is.EqualTo(someNewAuthToken));
-            Assert.That(newAuthTokenMessage.ExpirationDateTime, Is.EqualTo(loggedInUser.AuthenticationTokenExpirationDate));
+            Assert.That(newAuthTokenMessage.AuthenticationToken, Is.EqualTo(someNewAuthToken.AuthenticationTokenString));
+            Assert.That(newAuthTokenMessage.AuthenticationTokenExpirationDateTime, Is.EqualTo(loggedInUser.AuthenticationTokenExpirationDate));
         }
     }
 }

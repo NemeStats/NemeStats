@@ -32,15 +32,17 @@ namespace UI.Areas.Api.Controllers
         [HttpPost]
         public virtual async Task<HttpResponseMessage> RegisterNewUser(NewUserMessage newUserMessage)
         {
-            NewUser newUser = Mapper.Map<NewUserMessage, NewUser>(newUserMessage);
+            var newUser = Mapper.Map<NewUserMessage, NewUser>(newUserMessage);
 
-		    RegisterNewUserResult registerNewUserResult = await this.userRegisterer.RegisterUser(newUser);
+		    var registerNewUserResult = await this.userRegisterer.RegisterUser(newUser);
 
             if (registerNewUserResult.Result.Succeeded)
             {
-                string authToken = authTokenGenerator.GenerateAuthToken(registerNewUserResult.NewlyRegisteredUser.UserId);
-                NewlyRegisteredUserMessage newlyRegisteredUserMessage = Mapper.Map<NewlyRegisteredUser, NewlyRegisteredUserMessage>(registerNewUserResult.NewlyRegisteredUser);
-                newlyRegisteredUserMessage.AuthenticationToken = authToken;
+                var authToken = authTokenGenerator.GenerateAuthToken(registerNewUserResult.NewlyRegisteredUser.UserId);
+                var newlyRegisteredUserMessage = Mapper.Map<NewlyRegisteredUser, NewlyRegisteredUserMessage>(registerNewUserResult.NewlyRegisteredUser);
+                newlyRegisteredUserMessage.AuthenticationToken = authToken.AuthenticationTokenString;
+                newlyRegisteredUserMessage.AuthenticationTokenExpirationDateTime =
+                    authToken.AuthenticationTokenExpirationDateTime;
                 return Request.CreateResponse(HttpStatusCode.OK, newlyRegisteredUserMessage);
             }
 

@@ -1,4 +1,5 @@
-﻿using BusinessLogic.Logic.Users;
+﻿using System;
+using BusinessLogic.Logic.Users;
 using BusinessLogic.Models.User;
 using Microsoft.AspNet.Identity;
 using NUnit.Framework;
@@ -88,7 +89,9 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests
                 }
             };
             _autoMocker.Get<IUserRegisterer>().Expect(mock => mock.RegisterUser(Arg<NewUser>.Is.Anything)).Return(Task.FromResult(registerNewUserResult));
-            var expectedAuthToken = "auth token";
+            string authenticationTokenString = "some auth token string";
+            DateTime? authTokenExpiration = new DateTime();
+            var expectedAuthToken = new AuthToken(authenticationTokenString, authTokenExpiration);
             _autoMocker.Get<IAuthTokenGenerator>().Expect(mock => mock.GenerateAuthToken(expectedNewlyRegisteredUserMessage.UserId)).Return(expectedAuthToken);
 
             var actualResponse = await _autoMocker.ClassUnderTest.RegisterNewUser(newUserMessage);
@@ -101,7 +104,8 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests
             Assert.That(actualNewlyRegisteredUserMessage.PlayerName, Is.EqualTo(expectedNewlyRegisteredUserMessage.PlayerName));
             Assert.That(actualNewlyRegisteredUserMessage.GamingGroupId, Is.EqualTo(expectedNewlyRegisteredUserMessage.GamingGroupId));
             Assert.That(actualNewlyRegisteredUserMessage.GamingGroupName, Is.EqualTo(expectedNewlyRegisteredUserMessage.GamingGroupName));
-            Assert.That(actualNewlyRegisteredUserMessage.AuthenticationToken, Is.EqualTo(expectedAuthToken));
+            Assert.That(actualNewlyRegisteredUserMessage.AuthenticationToken, Is.EqualTo(expectedAuthToken.AuthenticationTokenString));
+            Assert.That(actualNewlyRegisteredUserMessage.AuthenticationTokenExpirationDateTime, Is.EqualTo(expectedAuthToken.AuthenticationTokenExpirationDateTime));
         }
 
         [Test]

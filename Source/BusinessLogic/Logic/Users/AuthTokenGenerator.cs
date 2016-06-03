@@ -5,6 +5,7 @@ using System.Security.Cryptography;
 using System.Text;
 using BusinessLogic.DataAccess;
 using BusinessLogic.Models.User;
+using BusinessLogic.Logic.Users;
 
 namespace BusinessLogic.Logic.Users
 {
@@ -20,10 +21,10 @@ namespace BusinessLogic.Logic.Users
             this.configManager = configManager;
         }
 
-        public string GenerateAuthToken(string applicationUserId)
+        public AuthToken GenerateAuthToken(string applicationUserId)
         {
-            string newAuthToken = GenerateNewAuthToken();
-            var saltedHash = this.HashAuthToken(newAuthToken);
+            string newAuthTokenString = GenerateNewAuthToken();
+            var saltedHash = this.HashAuthToken(newAuthTokenString);
 
             ApplicationUser applicationUser = dataContext.FindById<ApplicationUser>(applicationUserId);
             applicationUser.AuthenticationToken = saltedHash;
@@ -31,7 +32,7 @@ namespace BusinessLogic.Logic.Users
 
             dataContext.Save(applicationUser, applicationUser);
 
-            return newAuthToken;
+            return new AuthToken(newAuthTokenString, applicationUser.AuthenticationTokenExpirationDate);
         }
 
         internal virtual string GenerateNewAuthToken()
