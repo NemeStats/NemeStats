@@ -20,7 +20,7 @@ namespace BusinessLogic.Logic.Achievements
 
         public override string DescriptionFormat => "This Achievement is earned by playing games with {0} different Players.";
 
-        public override string IconClass => "ns-icon-group";
+        public override string IconClass => "ns-icon-butterfly";
 
         public override Dictionary<AchievementLevel, int> LevelThresholds => new Dictionary<AchievementLevel, int>
         {
