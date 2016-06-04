@@ -1,8 +1,6 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using BusinessLogic.DataAccess;
-using BusinessLogic.Events.HandlerFactory;
 using BusinessLogic.Logic.Achievements;
 using BusinessLogic.Models;
 using BusinessLogic.Tests.UnitTests.LogicTests.AchievementTests.DiversifiedAchievementTests;

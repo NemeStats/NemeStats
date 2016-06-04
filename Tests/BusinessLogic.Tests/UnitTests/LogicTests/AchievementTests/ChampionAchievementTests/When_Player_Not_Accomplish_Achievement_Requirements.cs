@@ -1,8 +1,5 @@
-using System.Linq;
-using BusinessLogic.Models;
 using BusinessLogic.Models.Achievements;
 using NUnit.Framework;
-using Rhino.Mocks;
 
 namespace BusinessLogic.Tests.UnitTests.LogicTests.AchievementTests.ChampionAchievementTests
 {

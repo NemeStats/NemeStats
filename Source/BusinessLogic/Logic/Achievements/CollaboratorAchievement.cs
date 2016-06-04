@@ -20,7 +20,7 @@ namespace BusinessLogic.Logic.Achievements
 
         public override string Name => "NemeStats Collaborator";
 
-        public override string DescriptionFormat => "This Achievement is earned for all the GitHub NemeStats Contributors... without them this website can not exist!!.";
+        public override string DescriptionFormat => "This Achievement is earned for all the GitHub NemeStats Contributors... without them this website can not exist!!";
 
         public override string IconClass => "fa fa-github";
 
@@ -36,8 +36,6 @@ namespace BusinessLogic.Logic.Achievements
             {
                 AchievementId = Id
             };
-
-
 
             if (this.Winners.Value.Any(w => w.PlayerId == playerId))
             {

@@ -37,13 +37,16 @@ namespace BusinessLogic.Logic.Achievements
                 AchievementId = this.Id
             };
 
-            var championedGames = DataContext.GetQueryable<Champion>().Where(c=>c.PlayerId == playerId).Select(c=>c.GameDefinitionId).Distinct();
-
-
-
+            var championedGames =
+                DataContext.GetQueryable<Champion>()
+                    .Where(c => c.PlayerId == playerId)
+                    .Select(c => c.GameDefinitionId)
+                    .Distinct()
+                    .ToList();
+            
             if (championedGames.Any())
             {
-                var count = championedGames.Count();
+                var count = championedGames.Count;
                 result.LevelAwarded = GetLevelAwarded(count);
                 result.PlayerProgress = count;
                 result.RelatedEntities = championedGames.ToList();

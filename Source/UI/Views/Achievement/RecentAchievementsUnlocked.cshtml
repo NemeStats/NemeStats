@@ -4,12 +4,12 @@
 @model IPagedList<UI.Models.Players.PlayerAchievementWinnerViewModel>
 
     @{
-    ViewBag.Title = "NemeStats Recent Achievements Unlocked";
+    ViewBag.Title = "Recently Unlocked Achievements";
     Layout = MVC.Shared.Views._BaseLayout;
     }
 
 <div class="container">
-    <h2 class="page-header">Recently achievement unlocked <a class="btn btn-primary btn-xs" href="@Url.Action(MVC.Achievement.Index())">view all</a></h2>
+    <h2 class="page-header">Recently Unlocked Achievements <a class="btn btn-primary btn-xs" href="@Url.Action(MVC.Achievement.Index())">view all</a></h2>
     @Html.Partial(MVC.Achievement.Views._RecentAchievementsUnlocked, Model)
 </div>
 

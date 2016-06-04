@@ -2,7 +2,6 @@
 using System.Linq;
 using BusinessLogic.DataAccess;
 using BusinessLogic.Logic.Achievements;
-using BusinessLogic.Logic.Points;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Achievements;
 using NUnit.Framework;

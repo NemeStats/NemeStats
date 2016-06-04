@@ -3,24 +3,25 @@ using System.Linq;
 using BusinessLogic.DataAccess;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Achievements;
+using BusinessLogic.Models.PlayedGames;
 
 namespace BusinessLogic.Logic.Achievements
 {
-    public class SocialButterflyAchievement : BaseAchievement
+    public class TeamPlayerAchievement : BaseAchievement
     {
-        public SocialButterflyAchievement(IDataContext dataContext) : base(dataContext)
+        public TeamPlayerAchievement(IDataContext dataContext) : base(dataContext)
         {
         }
 
-        public override AchievementId Id => AchievementId.SocialButterfly;
+        public override AchievementId Id => AchievementId.TeamPlayer;
 
-        public override AchievementGroup Group => AchievementGroup.Player;
+        public override AchievementGroup Group => AchievementGroup.PlayedGame;
 
-        public override string Name => "Social Butterfly";
+        public override string Name => "Team Player";
 
-        public override string DescriptionFormat => "This Achievement is earned by playing games with {0} different Players.";
+        public override string DescriptionFormat => "This Achievement is earned by playing {0} games where everyone either won or lost.";
 
-        public override string IconClass => "ns-icon-group";
+        public override string IconClass => "fa fa-users";
 
         public override Dictionary<AchievementLevel, int> LevelThresholds => new Dictionary<AchievementLevel, int>
         {
@@ -36,16 +37,17 @@ namespace BusinessLogic.Logic.Achievements
                 AchievementId = Id
             };
 
-            var allPlayerIdsPlayedWith =
+            var allTeamGameIds =
                 DataContext
-                    .GetQueryable<PlayerGameResult>()
-                    .Where(x => x.PlayedGame.PlayerGameResults.Any(y => y.PlayerId == playerId) && x.PlayerId != playerId)
-                    .Select(z => z.PlayerId)
+                    .GetQueryable<PlayedGame>()
+                    .Where(x => (x.WinnerType == WinnerTypes.TeamLoss || x.WinnerType == WinnerTypes.TeamWin)
+                                && x.PlayerGameResults.Any(y => y.PlayerId == playerId))
+                    .Select(z => z.Id)
                     .Distinct()
                     .ToList();
 
-            result.PlayerProgress = allPlayerIdsPlayedWith.Count;
-            result.RelatedEntities = allPlayerIdsPlayedWith;
+            result.PlayerProgress = allTeamGameIds.Count;
+            result.RelatedEntities = allTeamGameIds;
 
             if (result.PlayerProgress < LevelThresholds[AchievementLevel.Bronze])
             {
