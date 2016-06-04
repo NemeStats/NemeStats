@@ -26,8 +26,8 @@ namespace BusinessLogic.Logic.Achievements
         public override Dictionary<AchievementLevel, int> LevelThresholds => new Dictionary<AchievementLevel, int>
         {
             {AchievementLevel.Bronze, 10},
-            {AchievementLevel.Silver, 30},
-            {AchievementLevel.Gold, 50}
+            {AchievementLevel.Silver, 50},
+            {AchievementLevel.Gold, 100}
         };
 
         public override AchievementAwarded IsAwardedForThisPlayer(int playerId)
