@@ -1,6 +1,5 @@
-﻿@using BusinessLogic.Models.Achievements
-@using UI.Models.Achievements
-@model UI.Models.Achievements.AchievementListViewModel
+﻿@using UI.Models.Achievements
+@model AchievementListViewModel
 @{
     ViewBag.Title = "NemeStats Achievements";
     Layout = MVC.Shared.Views._BaseLayout;
@@ -46,6 +45,15 @@
 </a>
 
 <h4 class="name">@achievement.Name</h4>
-<h5>Earned by @achievement.Winners.Count players</h5>
+    <h5>
+        @if (!string.IsNullOrEmpty(Model.CurrentUserId))
+        {
+            if (@achievement.Winners.Any(w => w.UserId == Model.CurrentUserId))
+            {
+                <span class="fa fa-check text-success"></span>
+            }
+        }
+        Earned by @achievement.Winners.Count players
+    </h5>
 <p><a href="@Url.Action("Details","Achievement", routeValues: new {achievementId = achievement.Id})" class="btn btn-default btn-xs">View details</a></p>
 }
