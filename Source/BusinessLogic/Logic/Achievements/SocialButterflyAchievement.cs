@@ -36,15 +36,16 @@ namespace BusinessLogic.Logic.Achievements
                 AchievementId = Id
             };
 
-            var totalPlayersPlayedWith =
+            var allPlayerIdsPlayedWith =
                 DataContext
                     .GetQueryable<PlayerGameResult>()
                     .Where(x => x.PlayedGame.PlayerGameResults.Any(y => y.PlayerId == playerId) && x.PlayerId != playerId)
                     .Select(z => z.PlayerId)
-                    .Distinct();
+                    .Distinct()
+                    .ToList();
 
-            result.PlayerProgress = totalPlayersPlayedWith.Count();
-            result.RelatedEntities = totalPlayersPlayedWith.ToList();
+            result.PlayerProgress = allPlayerIdsPlayedWith.Count;
+            result.RelatedEntities = allPlayerIdsPlayedWith;
 
             if (result.PlayerProgress < LevelThresholds[AchievementLevel.Bronze])
             {

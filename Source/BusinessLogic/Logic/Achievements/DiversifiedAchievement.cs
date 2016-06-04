@@ -41,11 +41,12 @@ namespace BusinessLogic.Logic.Achievements
                 DataContext.GetQueryable<PlayerGameResult>()
                     .Where(pgr => pgr.PlayerId == playerId)
                     .Select(pgr => pgr.PlayedGame.GameDefinition.Id)
-                    .Distinct();
+                    .Distinct()
+                    .ToList();
 
             if (differentPlayedGames.Any())
             {
-                var count = differentPlayedGames.Count();
+                var count = differentPlayedGames.Count;
                 result.PlayerProgress = count;
                 result.LevelAwarded = GetLevelAwarded(count);
                 result.RelatedEntities = differentPlayedGames.ToList();
