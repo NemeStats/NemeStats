@@ -39,6 +39,7 @@ then you need to use the playerGameResult.totalNemeStatsPointsAwarded.
 * 2016-04-09 PointsScored on PlayerGameResult is now a decimal instead of an int.
 * 2016-05-12 Updated all documentation to use nemestats.com domain instead of nerdscorekeeper.azurewebsites.net since we now support this. The old
 domain should continue to work in the meantime, however.
+* 2016-06-03 Added authenticationTokenExpirationDateTime to the results of the registration (POST /Users/) and sign in (POST /UserSessions/) services.
 
 ### General Information
 
@@ -133,6 +134,8 @@ sent to the email address of the new User.
         + gamingGroupName : some username's Gaming Group (string, required) - The name of the newly created Gaming Group.
         + authenticationToken : `6ce40b88-d366-4c5d-b60d-cfbd9107bcd9` (string, required) - The token that should be sent in the X\-Auth\-Token request header on
         subsequent requests to the API that require authentication.
+        + authenticationTokenExpirationDateTime : `2016-09-03T16:47:10.387` (string, required) - The date and time (ISO-8601 format) in which the authentication token will expire.
+        Upon expiration, subsequent requests to the API using this token will return a 401 Not Authorized. 
     
 
 + Request Already In Use UserName (application/json)
@@ -228,7 +231,7 @@ will return a valid response.
 ## Create a new User Session [POST]
 Authenticates the given User and gives back an authentication token which can be sent in the X-Auth-Token
 header on subsequent requests to the API that require authentication. This authentication token will be valid
-for an arbitrarily long amount of time (most likely > 1 week but not more than a few months).
+for about 3 months or until another request to POST /UserSessions/ invalidates the token (while providing a new one).
 
 A User Session is represented by an authentication token.
 
@@ -243,6 +246,8 @@ A User Session is represented by an authentication token.
 
     + Attributes    
         + authenticationToken : some awesome token (string, required) - NemeStats unique identifier for the new User
+        + authenticationTokenExpirationDateTime : `2016-09-03T16:47:10.387` (string, required) - The date and time (ISO-8601 format) in which the authentication token will expire.
+        Upon expiration, subsequent requests to the API using this token will return a 401 Not Authorized.
 
 + Request InvalidCredentials (application/json)
                 
