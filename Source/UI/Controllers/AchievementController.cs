@@ -43,11 +43,13 @@ namespace UI.Controllers
         }
 
         [Route("")]
-        public virtual ActionResult Index()
+        [UserContext(RequiresGamingGroup = false)]
+        public virtual ActionResult Index(ApplicationUser currentUser)
         {
             var achievements = AchievementFactory.GetAchievements();
             var model = new AchievementListViewModel
             {
+                CurrentUserId = currentUser?.Id,
                 Achievements = achievements.Select(a => _achievementToAchievementViewModelMapper.Map(a)).OrderByDescending(a => a.Winners.Count).ThenBy(a => a.Name).ToList()
             };
 

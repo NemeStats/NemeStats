@@ -23,6 +23,7 @@ namespace UI.Mappers
                 .ForMember(m => m.AchievementId, o => o.MapFrom(p => p.AchievementId))
                 .ForMember(m => m.PlayerName, o => o.MapFrom(p => p.Player.Name))
                 .ForMember(m => m.PlayerId, o => o.MapFrom(p => p.PlayerId))
+                .ForMember(m => m.UserId, o => o.MapFrom(p => p.Player.ApplicationUserId))
                 .ForMember(m => m.GamingGroupId, o => o.MapFrom(p => p.Player.GamingGroupId))
                 .ForMember(m => m.GamingGroupName, o => o.MapFrom(p => p.Player.GamingGroup.Name))
                 .ForMember(m => m.AchievementLevel, o => o.MapFrom(p => p.AchievementLevel))

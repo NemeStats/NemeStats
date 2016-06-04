@@ -8,12 +8,13 @@ namespace UI.Models.Players
     {
         public string PlayerName { get; set; }
         public int PlayerId { get; set; }
+        public string UserId { get; set; }
         public string GamingGroupId { get; set; }
         public string GamingGroupName { get; set; }
         public DateTime AchievementLastUpdateDate { get; set; }
         public AchievementLevel AchievementLevel { get; set; }
         public AchievementId AchievementId { get; set; }
         public AchievementSummaryViewModel Achievement { get; set; }
-        
+
     }
 }
