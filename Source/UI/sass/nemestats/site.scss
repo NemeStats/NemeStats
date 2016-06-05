@@ -3,6 +3,9 @@
 body {
     padding-top: 50px;
     overflow-x: hidden;
+    position: relative;
+    min-height: 100%;
+    padding-bottom: 101px;
 }
 
 /* Set padding to keep content from hitting the edges */
@@ -351,7 +354,7 @@ footer {
     color: #fff;
     background-color: $brand-primary;
     padding: 25px;
-    position: fixed;
+    position: absolute;
     left: 0;
     bottom: 0;
     width: 100%;
