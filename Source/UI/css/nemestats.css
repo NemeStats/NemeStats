@@ -239,10 +239,7 @@
 /*$header-background-color: #2C3E50;*/
 body {
   padding-top: 50px;
-  overflow-x: hidden;
-  position: relative;
-  min-height: 100%;
-  padding-bottom: 101px; }
+  overflow-x: hidden; }
 
 /* Set padding to keep content from hitting the edges */
 .body-content {
@@ -501,11 +498,7 @@ button > i.fa {
 footer {
   color: #fff;
   background-color: #354458;
-  padding: 25px;
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 100%; }
+  padding: 25px; }
   footer span {
     top: 10px; }
 
@@ -573,7 +566,7 @@ footer {
 
 @media (min-width: 768px) and (max-width: 991px) {
   .navbar-nav > li > a {
-    font-size: 13px;
+    font-size: 12px;
     padding-right: 5px; }
   .navbar-right li {
     max-width: 85px; } }
