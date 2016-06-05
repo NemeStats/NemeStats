@@ -498,7 +498,11 @@ button > i.fa {
 footer {
   color: #fff;
   background-color: #354458;
-  padding: 25px; }
+  padding: 25px;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%; }
   footer span {
     top: 10px; }
 

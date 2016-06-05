@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using BusinessLogic.DataAccess;
 using BusinessLogic.Models;
@@ -31,7 +32,8 @@ namespace BusinessLogic.Logic.Achievements
             };
 
             var minions = DataContext.GetQueryable<Nemesis>()
-                .Where(n => n.NemesisPlayerId == playerId)
+                .Include(n => n.MinionPlayer)
+                .Where(n => n.NemesisPlayerId == playerId && n.MinionPlayer.NemesisId == playerId)
                 .Select(n => n.MinionPlayerId).
                 ToList();
 

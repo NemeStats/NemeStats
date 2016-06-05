@@ -93,7 +93,11 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.AchievementTests
                     {
                         Id = i,
                         NemesisPlayerId = playerId,
-                        MinionPlayerId = i
+                        MinionPlayerId = i,
+                        MinionPlayer = new Player
+                        {
+                            NemesisId = playerId
+                        }
                     });
             }
             return results;
