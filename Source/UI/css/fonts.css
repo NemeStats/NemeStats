@@ -2134,4 +2134,9 @@
 .ns-icon-butterfly:before {
   content: "\e90a"; }
 
+.ns-icon-eye-minion {
+  margin-left: 0; }
+  .ns-icon-eye-minion:before {
+    content: "\e90b"; }
+
 /*# sourceMappingURL=fonts.css.map */

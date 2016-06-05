@@ -71,13 +71,17 @@ $custom-font-path: $fa-font-path;
 }
 
 .ns-icon-punisher:before {
-    content: "\e909"; 
+    content: "\e909";
 }
 
 .ns-icon-butterfly:before {
-    content: "\e90a"; 
+    content: "\e90a";
 }
 
+.ns-icon-eye-minion {
+    margin-left: 0;
 
-
-
+    &:before {
+        content: "\e90b";
+    }
+}

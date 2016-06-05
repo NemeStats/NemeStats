@@ -79,6 +79,8 @@ $gold-text-color: darken($gold-achievement-color,15%);
     }
 
     &.big {
+
+
         .circle {
             width: 65px;
             height: 65px;
@@ -90,6 +92,8 @@ $gold-text-color: darken($gold-achievement-color,15%);
 
             > span {
                 line-height: 67px;
+
+             
             }
         }
     }
@@ -109,6 +113,7 @@ $gold-text-color: darken($gold-achievement-color,15%);
 
                 &[class^='ns-icon-'] {
                     line-height: 1px !important;
+
                 }
             }
         }
