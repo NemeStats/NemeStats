@@ -1,44 +1,47 @@
-﻿<div class="well home-features row">
-    <div class="col-md-4">
-        <div class="title">NemeStats lets you..</div>
-        <div class="description">
-            <div class="row text">
-                <div class="col-sm-6">
-                    <ul>
-                        <li><b>Track</b> the results of board game plays</li>
-                        <li>Record from your <b>mobile phone</b></li>
-                        <li>Generate interesting <b>statistics</b></li>
-                    </ul>
+﻿<div class="well home-features">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="title">NemeStats lets you..</div>
+            <div class="description">
+                <div class="row text">
+                    <div class="col-sm-6">
+                        <ul>
+                            <li><b>Track</b> the results of board game plays</li>
+                            <li>Record from your <b>mobile phone</b></li>
+                            <li>Generate interesting <b>statistics</b></li>
+                        </ul>
+                    </div>
+                    <div class="col-sm-6">
+                        <ul>
+                            <li>Create <b>multiple Gaming Groups</b></li>
+                            <li>Earn <b><a href="@Url.Action(MVC.Home.AboutBadgesAndAchievements())">Achievements and Badges</a></b> as well as <a href="@Url.Action(MVC.Home.AboutNemePoints())">NemePoints</a></li>
+                            <li><b>Export</b> your data</li>
+                        </ul>
+                    </div>
                 </div>
-                <div class="col-sm-6">
-                    <ul>
-                        <li>Create <b>multiple Gaming Groups</b></li>
-                        <li>Earn <b><a href="@Url.Action(MVC.Home.AboutBadgesAndAchievements())">Achievements and Badges</a></b> as well as <a href="@Url.Action(MVC.Home.AboutNemePoints())">NemePoints</a></li>
-                        <li><b>Export</b> your data</li>
-                    </ul>
+                <div>
+                    <button class="btn btn-default btn-sm" data-toggle="modal" data-target="#homefeature1"><span class="fa fa-info-circle"></span> more info</button>
                 </div>
-            </div>
-            <div>
-                <button class="btn btn-default btn-sm" data-toggle="modal" data-target="#homefeature1"><span class="fa fa-info-circle"></span> more info</button>
             </div>
         </div>
-    </div>
-    <div class="col-md-4">
-        <div class="title">NemeStats is enhanced with...</div>
-        <div class="description">
-            <div class="text">
-                @*<div class="row">
-                    <div class="col-sm-6">*@
-                <ul>
-                    <li>
-                        <b><a href="https://www.boardgamegeek.com/" target="_blank;">BoardGameGeek</a></b> integration
-                    </li>
-                </ul>
-                <div class="imgs">
-                    <a href="https://www.boardgamegeek.com/" target="_blank;"><img src="~/Content/Images/Home/boardgamegeek.png" /></a>
+        <div class="col-md-4">
+            <div class="title">NemeStats is enhanced with...</div>
+            <div class="description">
+                <div class="text">
+                    @*<div class="row">
+                        <div class="col-sm-6">
+                            *@
+                            <ul>
+                                <li>
+                                    <b><a href="https://www.boardgamegeek.com/" target="_blank;">BoardGameGeek</a></b> integration
+                                </li>
+                            </ul>
+                            <div class="imgs">
+                                <a href="https://www.boardgamegeek.com/" target="_blank;"><img src="~/Content/Images/Home/boardgamegeek.png" /></a>
 
 
-                    @*</div>
+                                @*
+                            </div>
                         </div>
                         <div class="col-sm-6">
                             <b><a href="https://itunes.apple.com/us/app/board-game-stats/id892542000" target="_blank;">Board Game Stats</a></b> on iOS
@@ -46,36 +49,37 @@
                                 <a href="https://itunes.apple.com/us/app/board-game-stats/id892542000" target="_blank;"><img src="~/Content/Images/Home/BGStats.png" /></a>
                             </div>
                         </div>*@
+                    </div>
                 </div>
-            </div>
-            <div>
-                <button class="btn btn-default btn-sm" data-toggle="modal" data-target="#homefeature2"><span class="fa fa-info-circle"></span> more info</button>
+                <div>
+                    <button class="btn btn-default btn-sm" data-toggle="modal" data-target="#homefeature2"><span class="fa fa-info-circle"></span> more info</button>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="col-md-4">
-        <div class="title">NemeStats is will always be...</div>
-        <div class="description">
-            <div class="text">
-                <div class="row">
-                    <div class="col-sm-6">
-                        <ul>
-                            <li>Completely <b>free</b></li>
-                            <li><b>Without</b> advertisements</li>
-                            <li>Open to feedback on <b><a href="https://nemestats-slack-invitation.herokuapp.com/" target="_blank;">Slack</a></b> and <a href="http://nemestats.idea.informer.com/proj/?mod=one" target="blank">idea.informer</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-sm-6">
-                        <ul>
-                            <li><b>Open source</b> and on <b><a href="https://github.com/NemeStats/NemeStats" target="_blank;">GitHub</a></b></li>
-                            <li>Actively developed on</li>
-                            <li>Looking for contributors</li>
-                        </ul>
+        <div class="col-md-4">
+            <div class="title">NemeStats is will always be...</div>
+            <div class="description">
+                <div class="text">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <ul>
+                                <li>Completely <b>free</b></li>
+                                <li><b>Without</b> advertisements</li>
+                                <li>Open to feedback on <b><a href="https://nemestats-slack-invitation.herokuapp.com/" target="_blank;">Slack</a></b> and <a href="http://nemestats.idea.informer.com/proj/?mod=one" target="blank">idea.informer</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-sm-6">
+                            <ul>
+                                <li><b>Open source</b> and on <b><a href="https://github.com/NemeStats/NemeStats" target="_blank;">GitHub</a></b></li>
+                                <li>Actively developed on</li>
+                                <li>Looking for contributors</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div>
-                <button class="btn btn-default btn-sm" data-toggle="modal" data-target="#homefeature3"><span class="fa fa-info-circle"></span> more info</button>
+                <div>
+                    <button class="btn btn-default btn-sm" data-toggle="modal" data-target="#homefeature3"><span class="fa fa-info-circle"></span> more info</button>
+                </div>
             </div>
         </div>
     </div>

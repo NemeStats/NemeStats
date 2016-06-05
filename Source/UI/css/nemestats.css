@@ -114,11 +114,6 @@
 /*$header-background-color: #2C3E50;*/
 .home-container {
   background-color: #eee; }
-  .home-container .home-body-container {
-    background-color: #fff;
-    width: 100%;
-    padding-left: 2%;
-    padding-right: 2%; }
   .home-container .home-banner {
     background: url(/Content/Images/Home/Banner.jpg) no-repeat center center;
     background-size: cover; }
@@ -235,6 +230,11 @@
       .home-features .description .imgs img {
         width: 65px;
         margin-top: 10px; }
+
+.home-body-container {
+  background-color: #fff;
+  width: 100%;
+  padding: 0 20px; }
 
 /*$header-background-color: #2C3E50;*/
 body {
@@ -496,7 +496,9 @@ button > i.fa {
     text-overflow: ellipsis; }
 
 footer {
-  padding-bottom: 10px; }
+  color: #fff;
+  background-color: #354458;
+  padding: 25px; }
   footer span {
     top: 10px; }
 
@@ -583,7 +585,7 @@ footer {
   .flip-scroll .bgg-link-head {
     height: 100px; }
   .flip-scroll .edit-head {
-    height: 48px; }
+    height: 52px; }
   .flip-scroll .avgpoints-head {
     height: 50px; }
   .flip-scroll .name-head {
@@ -609,7 +611,7 @@ footer {
       white-space: normal;
       word-break: break-word; }
   .flip-scroll .edit-col {
-    height: 48px;
+    height: 52px;
     text-align: center; }
   .flip-scroll .plays-col {
     text-align: center; }
@@ -623,7 +625,10 @@ footer {
     overflow-x: hidden; }
     .flip-scroll .result-col .game-result .alert {
       white-space: normal;
-      max-width: 200px; } }
+      max-width: 200px; }
+  .flip-scroll .achievement-head {
+    height: 56px;
+    line-height: 42px; } }
 
 /*$header-background-color: #2C3E50;*/
 .btn.btn-google {

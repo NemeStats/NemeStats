@@ -348,7 +348,9 @@ button > i.fa {
 
 
 footer {
-    padding-bottom: 10px;
+    color: #fff;
+    background-color: $brand-primary;
+    padding: 25px;
 
     span {
         top: 10px;
@@ -421,3 +423,4 @@ footer {
         font-size: 20px;
     }
 }
+

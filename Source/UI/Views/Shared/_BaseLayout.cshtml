@@ -2,10 +2,9 @@
 	Layout = MVC.Shared.Views._Layout;
 }
 <div class="container body-content">
-	@RenderBody()
-	<hr />
-	@{ Html.RenderPartial(MVC.Shared.Views.Footer);}
+    @RenderBody()
 </div>
+@{ Html.RenderPartial(MVC.Shared.Views.Footer);}
 @section Scripts {
 	@RenderSection("Scripts", required: false)
 }

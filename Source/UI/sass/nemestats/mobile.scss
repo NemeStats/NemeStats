@@ -43,7 +43,6 @@
             max-width: none;
         }
     }
-
 }
 
 .game-player-statistics {
@@ -141,6 +140,11 @@
                     max-width: $gamethumbnail-maxwidht;
                 }
             }
+        }
+
+        .achievement-head {
+            height: 56px;
+            line-height: 42px;
         }
     }
 }

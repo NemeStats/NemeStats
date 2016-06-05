@@ -3,12 +3,7 @@
 .home-container {
     background-color: #eee;
 
-    .home-body-container {
-        background-color: #fff;
-        width: 100%;
-        padding-left: 2%;
-        padding-right: 2%;
-    }
+
 
     .home-banner {
         background: url(/Content/Images/Home/Banner.jpg) no-repeat center center;
@@ -174,6 +169,7 @@
 
         .text {
             min-height: 100px;
+
             ul {
                 padding: 0;
             }
@@ -193,4 +189,10 @@
             }
         }
     }
+}
+
+.home-body-container {
+    background-color: #fff;
+    width: 100%;
+    padding: 0 20px;
 }
