@@ -96,7 +96,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.AchievementTests
                         MinionPlayerId = i,
                         MinionPlayer = new Player
                         {
-                            NemesisId = playerId
+                            NemesisId = i
                         }
                     });
             }

@@ -33,7 +33,7 @@ namespace BusinessLogic.Logic.Achievements
 
             var minions = DataContext.GetQueryable<Nemesis>()
                 .Include(n => n.MinionPlayer)
-                .Where(n => n.NemesisPlayerId == playerId && n.MinionPlayer.NemesisId == playerId)
+                .Where(n => n.NemesisPlayerId == playerId && n.MinionPlayer.NemesisId == n.Id)
                 .Select(n => n.MinionPlayerId).
                 ToList();
 
