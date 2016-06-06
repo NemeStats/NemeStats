@@ -144,6 +144,8 @@
         text-align: center; }
         .home-container .home-banner .cta-wrapper .panel .current-player-stats .panel {
           margin-top: 10px; }
+        .home-container .home-banner .cta-wrapper .panel .current-player-stats .panel-heading {
+          font-size: 14px; }
         .home-container .home-banner .cta-wrapper .panel .current-player-stats .btn-action {
           width: 100%;
           font-size: 22px; }
