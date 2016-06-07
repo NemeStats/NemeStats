@@ -35,7 +35,7 @@
     {
 
 <a href="@Url.Action("Details","Achievement", routeValues: new {achievementId = achievement.Id})">
-    <span class="achievement big @achievement.LevelThresholds.First().Key.ToString().ToLower()">
+    <span class="achievement big @achievement.LevelThresholds.First().Key.ToString().ToLower()" data-container="body" data-toggle="popover" data-placement="top" data-content="@achievement.Description">
         <span class="circle">
             <span class="content">
                 <span class="@achievement.IconClass"></span>
