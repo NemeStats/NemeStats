@@ -40,9 +40,9 @@ namespace BusinessLogic.Caching
 
         public abstract TOutput GetFromSource(TInput inputParameter);
 
-        public string GetCacheKey(TInput inputParameter)
+        public virtual string GetCacheKey(TInput inputParameter)
         {
-            return string.Join("|", GetType().GUID.ToString(), inputParameter.ToString());
+            return string.Join("|", GetType().GUID.ToString(), inputParameter.GetHashCode());
         }
     }
 }
