@@ -236,6 +236,12 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PointsTests
                 var expectedLoserPoints = 7;
                 Assert.That(actualPointsAwarded[winningPlayerId].BasePoints, Is.EqualTo(expectedWinnerPoints));
                 Assert.That(actualPointsAwarded[losingPlayerId].BasePoints, Is.EqualTo(expectedLoserPoints));
+
+                Assert.That(actualPointsAwarded[winningPlayerId].GameWeightBonusPoints, Is.EqualTo(0));
+                Assert.That(actualPointsAwarded[losingPlayerId].GameWeightBonusPoints, Is.EqualTo(0));
+
+                Assert.That(actualPointsAwarded[winningPlayerId].GameDurationBonusPoints, Is.EqualTo(0));
+                Assert.That(actualPointsAwarded[losingPlayerId].GameDurationBonusPoints, Is.EqualTo(0));
             }
 
             [Test]

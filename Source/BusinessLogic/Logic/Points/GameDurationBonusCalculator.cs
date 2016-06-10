@@ -19,7 +19,7 @@ namespace BusinessLogic.Logic.Points
         {
             if (!boardGameGeekAvergePlayTime.HasValue)
             {
-                return 1;
+                return 0;
             }
 
             int numberOfHalfHourPeriods = boardGameGeekAvergePlayTime.Value / MINUTES_PER_HALF_HOUR;
