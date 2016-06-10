@@ -39,24 +39,6 @@ namespace UI.HtmlHelpers
 
         }
 
-        public static MvcHtmlString RenderPlayerAchievement(this HtmlHelper htmlHelper, UrlHelper url, PlayerAchievementSummaryViewModel playerAchievement, string tooltipPosition = "top")
-        {
-            var achievementDetailUrl = url.Action(MVC.Achievement.PlayerAchievement(playerAchievement.Achievement.Id, playerAchievement.PlayerId));
-            var html =
-                $"<a href=\"{achievementDetailUrl}\">" +
-                    $"<span class=\"achievement big {playerAchievement.AchievementLevel.ToString().ToLower()}\" data-toggle=\"popover\" data-placement=\"{tooltipPosition}\" data-content=\"{playerAchievement.Achievement.Name}\" >" +
-                        $"<span class=\"circle\">" +
-                            $"<span class=\"content\">" +
-                                $"<span class=\"{playerAchievement.Achievement.IconClass}\">" +
-                                $"</span>" +
-                            $"</span>" +
-                        $"</span>" +
-                    $"</span>" +
-                $"</a>";
-
-            return new MvcHtmlString(html);
-        }
-
         public static HtmlString RenderTempDataMessage(this HtmlHelper htmlHelper, string key)
         {
             if (htmlHelper.ViewContext.TempData.ContainsKey(key))

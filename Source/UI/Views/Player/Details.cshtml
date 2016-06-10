@@ -318,12 +318,21 @@
                         }
                         else
                         {
-                        foreach (var playerAchievement in Model.PlayerAchievements)
-                        {
-                        @Html.RenderPlayerAchievement(Url, playerAchievement)
-                        ;
-
-                        }
+                            foreach (var playerAchievement in Model.PlayerAchievements)
+                            {
+                                <span class="block">
+                                    <a href="@Url.Action("PlayerAchievement", "Achievement", routeValues: new {achievementId = playerAchievement.Achievement.Id, playerId = playerAchievement.PlayerId})">
+                                        <span class="achievement big @playerAchievement.AchievementLevel.ToString().ToLower()" data-container="body" data-toggle="popover" data-placement="top" data-content="@playerAchievement.Achievement.Description">
+                                            <span class="circle">
+                                                <span class="content">
+                                                    <span class="@playerAchievement.Achievement.IconClass"></span>
+                                                </span>
+                                            </span>
+                                        </span>
+                                    </a>
+                                    <span class="title">@playerAchievement.Achievement.Name</span>
+                                </span>
+                            }
                         }
                     </span>
                 </div>

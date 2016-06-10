@@ -17,6 +17,18 @@ $gold-text-color: darken($gold-achievement-color,15%);
     display: inline-block;
     padding: 40px 40px 20px 40px;
 
+    .block {
+        display: inline-block;
+        text-align: center;
+        max-width: 100px;
+        padding: 5px;
+
+        .title {
+            display: flex;
+            margin-top: 10px;
+        }
+    }
+
     .achievement {
         margin-right: 10px;
     }
@@ -92,8 +104,6 @@ $gold-text-color: darken($gold-achievement-color,15%);
 
             > span {
                 line-height: 67px;
-
-             
             }
         }
     }
@@ -113,7 +123,6 @@ $gold-text-color: darken($gold-achievement-color,15%);
 
                 &[class^='ns-icon-'] {
                     line-height: 1px !important;
-
                 }
             }
         }

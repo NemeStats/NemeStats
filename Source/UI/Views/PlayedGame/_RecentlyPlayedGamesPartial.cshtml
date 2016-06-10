@@ -1,56 +1,47 @@
 ﻿@model IEnumerable<BusinessLogic.Models.Games.PublicGameSummary>
 
-<div id="recentGamesVote" class="fl-right" style="margin-top: 21px; margin-bottom: 10.5px;"></div>
-<div class="fl-clear"></div>
-<div class="flip-scroll">
-    <table class="table table-hover table-striped gameDefinitionsList" id="recentGamesTable">
-        <thead>
-        <tr>
-            <th class="bgg-link-head"></th>
-            <th>Game</th>
-            <th>Winner</th>
-            <th>Date</th>
-            <th>Gaming Group</th>
-        </tr>
-        </thead>
-        @{ var position = 1;}
-        @foreach (var publicGame in Model)
-        {
+    <div id="recentGamesVote" class="fl-right" style="margin-top: 21px; margin-bottom: 10.5px;"></div>
+    <div class="fl-clear"></div>
+    <div class="flip-scroll">
+        <table class="table table-hover table-striped gameDefinitionsList" id="recentGamesTable">
+            <thead>
+                <tr>
+                    <th class="bgg-link-head"></th>
+                    <th>Game</th>
+                    <th>Winner</th>
+                    <th>Date</th>
+                    <th>Gaming Group</th>
+                </tr>
+            </thead>
+            @{ var position = 1;}
+            @foreach (var publicGame in Model)
+            {
             <tr class="game-item" data-position="@position">
                 @{ position++;}
                 <td class="bgg-link-col">
-                
-                        @if (!string.IsNullOrEmpty(publicGame.ThumbnailImageUrl))
-                        {
-                            <a href="@Url.Action(MVC.GameDefinition.ActionNames.Details,MVC.GameDefinition.Name,new {id=publicGame.GameDefinitionId})">
-                                <img class="bgg-thumbnail" src="@publicGame.ThumbnailImageUrl" alt="@publicGame.GameDefinitionName" title="@publicGame.GameDefinitionName" />
-                            </a>
-                        }
-                        else
-                        {
-                            <a href="@publicGame.BoardGameGeekUri" target="_blank;">
-                                <img src="~/Content/Images/bgg_small.png" alt="View on BoardGameGeek.com" title="View on BoardGameGeek.com" />
-                            </a>
-                        }
-
-                    
+                    @if (!string.IsNullOrEmpty(publicGame.ThumbnailImageUrl))
+                    {
+                    <a href="@Url.Action(MVC.GameDefinition.ActionNames.Details,MVC.GameDefinition.Name,new {id=publicGame.GameDefinitionId})">
+                        <img class="bgg-thumbnail" src="@publicGame.ThumbnailImageUrl" alt="@publicGame.GameDefinitionName" title="@publicGame.GameDefinitionName" />
+                    </a>
+                    }
                 </td>
                 <td>@Html.ActionLink(publicGame.GameDefinitionName, "Details", "GameDefinition", new {id = publicGame.GameDefinitionId}, new {})</td>
                 @if (publicGame.WinnerType == BusinessLogic.Models.PlayedGames.WinnerTypes.TeamWin)
                 {
-                    <td class="gameResult-teamWin">EVERYONE WON</td>
+                <td class="gameResult-teamWin">EVERYONE WON</td>
                 }
                 else if (publicGame.WinnerType == BusinessLogic.Models.PlayedGames.WinnerTypes.TeamLoss)
                 {
-                    <td class="gameResult-teamLoss">EVERYONE LOST</td>
+                <td class="gameResult-teamLoss">EVERYONE LOST</td>
                 }
                 else
                 {
-                    <td>@Html.ActionLink(publicGame.WinningPlayer.Name, "Details", "Player", new {id = publicGame.WinningPlayer.Id}, new {})</td>
+                <td>@Html.ActionLink(publicGame.WinningPlayer.Name, "Details", "Player", new {id = publicGame.WinningPlayer.Id}, new {})</td>
                 }
                 <td>@Html.ActionLink(publicGame.DatePlayed.ToShortDateString(), "Details", "PlayedGame", new {id = publicGame.PlayedGameId}, new {})</td>
                 <td>@Html.ActionLink(publicGame.GamingGroupName, "Details", "GamingGroup", new {id = publicGame.GamingGroupId}, new {})</td>
             </tr>
-        }
-    </table>
-</div>
+            }
+        </table>
+    </div>
