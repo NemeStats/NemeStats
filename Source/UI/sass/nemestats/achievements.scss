@@ -19,8 +19,7 @@ $gold-text-color: darken($gold-achievement-color,15%);
 
     .block {
         display: inline-block;
-        text-align: center;
-        max-width: 100px;
+        width: 100px;
         padding: 5px;
 
         .title {
