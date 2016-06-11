@@ -921,8 +921,7 @@ footer {
   padding: 40px 40px 20px 40px; }
   .achievement-list .block {
     display: inline-block;
-    text-align: center;
-    max-width: 100px;
+    width: 100px;
     padding: 5px; }
     .achievement-list .block .title {
       display: flex;
