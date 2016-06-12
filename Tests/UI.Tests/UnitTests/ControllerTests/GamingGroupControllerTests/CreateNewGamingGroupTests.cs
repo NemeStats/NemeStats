@@ -68,7 +68,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
             var result = autoMocker.ClassUnderTest.CreateNewGamingGroup(gamingGroupName, currentUser) as RedirectToRouteResult;
 
             Assert.That(result.RouteValues["action"], Is.EqualTo(MVC.GamingGroup.ActionNames.Details));
-            Assert.That(result.RouteValues["controller"], Is.EqualTo(MVC.GamingGroup.Name));
+            Assert.IsNotNull(result.RouteValues["id"]);
 
         }
 
