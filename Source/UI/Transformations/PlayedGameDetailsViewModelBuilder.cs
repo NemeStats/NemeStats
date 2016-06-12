@@ -72,7 +72,6 @@ namespace UI.Transformations
             {
                 summary.PlayerResults.Add(playerResultBuilder.Build(playerGameResult));
             }
-            var gameRanks = playedGame.PlayerGameResults.Select(x => x.GameRank).ToList();
 
             return summary;
         }

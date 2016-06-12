@@ -422,14 +422,13 @@
     <Compile Include="Models\GameDefinitionModels\TrendingGameViewModel.cs" />
     <Compile Include="Models\Players\GameDefinitionPlayersSummaryViewModel.cs" />
     <Compile Include="Models\GamingGroup\GamingGroupPublicDetailsViewModel.cs" />
-    <Compile Include="Models\GamingGroup\GamingGroupPublicViewModel.cs" />
+    <Compile Include="Models\GamingGroup\GamingGroupViewModel.cs" />
     <Compile Include="Models\IEditableViewModel.cs" />
     <Compile Include="Models\IGamingGroupAssignedViewModel.cs" />
     <Compile Include="Models\LocalPasswordModel.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AdminViewModel.cs" />
     <Compile Include="Models\GameDefinitionModels\GameDefinitionDetailsViewModel.cs" />
-    <Compile Include="Models\GamingGroup\GamingGroupViewModel.cs" />
     <Compile Include="Models\GamingGroup\InvitationViewModel.cs" />
     <Compile Include="Models\Home\IndexViewModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />

@@ -183,6 +183,8 @@ namespace UI.Controllers
 
             playerInviter.InvitePlayer(playerInvitation, currentUser);
 
+            SetToastMessage(TempMessageKeys.TEMP_MESSAGE_KEY_PLAYER_INVITED,$"Mail to invite {playerInvitationViewModel.PlayerName} sended succesfully");
+
             return new RedirectResult(Url.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name));
         }
 

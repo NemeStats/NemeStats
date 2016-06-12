@@ -15,22 +15,21 @@
 
 #endregion LICENSE
 
-using BusinessLogic.Models.Utility;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using BusinessLogic.Models.Utility;
 using UI.Models.GameDefinitionModels;
 using UI.Models.PlayedGame;
 using UI.Models.Players;
 
 namespace UI.Models.GamingGroup
 {
-    public class GamingGroupViewModel
+    public class GamingGroupViewModel :IEditableViewModel
     {
         public GamingGroupViewModel()
         {
-            this.PlayedGames = new PlayedGamesViewModel
+            PlayedGames = new PlayedGamesViewModel
             {
                 PlayedGameDetailsViewModels = new List<PlayedGameDetailsViewModel>()
             };
@@ -40,17 +39,20 @@ namespace UI.Models.GamingGroup
         public int Id { get; set; }
         [DisplayName("Gaming Group Name")]
         public string Name { get; set; }
+        public bool UserCanEdit { get; set; }
+        public GamingGroupPublicDetailsViewModel PublicDetailsView { get; set; }
+        public IList<GameDefinitionSummaryViewModel> GameDefinitionSummaries { get; set; }
+        public IList<PlayerWithNemesisViewModel> Players { get; set; }
+        public PlayedGamesViewModel PlayedGames { get; set; }
+        public BasicDateRangeFilter DateRangeFilter { get; set; }
+
+
         public string OwningUserId { get; set; }
         [DisplayName("Owning User Name")]
         public string OwningUserName { get; set; }
-        public GamingGroupPublicDetailsViewModel PublicDetailsView { get; set; }
         [DataType(DataType.EmailAddress)]
         [DisplayName("Invitee Email")]
         [Required(ErrorMessage = "Please enter an e-mail!", AllowEmptyStrings = false)]
         public string InviteeEmail { get; set; }
-        public BasicDateRangeFilter DateRangeFilter { get; set;  }
-        public IList<GameDefinitionSummaryViewModel> GameDefinitionSummaries { get; set; }
-        public IList<PlayerWithNemesisViewModel> Players { get; set; }
-        public PlayedGamesViewModel PlayedGames { get; set; }
     }
 }
