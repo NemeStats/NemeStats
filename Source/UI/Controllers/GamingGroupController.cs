@@ -28,7 +28,6 @@ using System.Web.Mvc;
 using UI.Attributes.Filters;
 using UI.Controllers.Helpers;
 using UI.Models.GamingGroup;
-using UI.Models.PlayedGame;
 using UI.Transformations;
 using UI.Transformations.PlayerTransformations;
 
@@ -74,33 +73,47 @@ namespace UI.Controllers
         // GET: /GamingGroup
         [Authorize]
         [UserContext]
-        public virtual ActionResult Index([System.Web.Http.FromUri]BasicDateRangeFilter dateRangeFilter, ApplicationUser currentUser)
+        public virtual ActionResult Index(ApplicationUser currentUser)
         {
+            return RedirectToAction(MVC.GamingGroup.ActionNames.Details, new { id = currentUser.CurrentGamingGroupId });
+        }
+
+        [UserContext(RequiresGamingGroup = false)]
+        public virtual ActionResult Details(int id, ApplicationUser currentUser, [System.Web.Http.FromUri]BasicDateRangeFilter dateRangeFilter = null)
+        {
+
+            if (dateRangeFilter == null)
+            {
+                dateRangeFilter = new BasicDateRangeFilter();
+            }
             string errorMessage;
-            if(!dateRangeFilter.IsValid(out errorMessage))
+            if (!dateRangeFilter.IsValid(out errorMessage))
             {
                 ModelState.AddModelError("dateRangeFilter", errorMessage);
             }
-            var gamingGroupSummary = GetGamingGroupSummary(currentUser.CurrentGamingGroupId, dateRangeFilter);
 
-            GamingGroupViewModel viewModel = gamingGroupViewModelBuilder.Build(gamingGroupSummary, currentUser);
+            var gamingGroupSummary = GetGamingGroupSummary(id, dateRangeFilter);
+
+            var viewModel = gamingGroupViewModelBuilder.Build(gamingGroupSummary, currentUser);
             viewModel.PlayedGames.ShowSearchLinkInResultsHeader = true;
             viewModel.DateRangeFilter = dateRangeFilter;
+            viewModel.UserCanEdit = currentUser.CurrentGamingGroupId == id;
 
             ViewBag.RecentGamesSectionAnchorText = SECTION_ANCHOR_RECENT_GAMES;
             ViewBag.PlayerSectionAnchorText = SECTION_ANCHOR_PLAYERS;
             ViewBag.GameDefinitionSectionAnchorText = SECTION_ANCHOR_GAMEDEFINITIONS;
 
-            return View(MVC.GamingGroup.Views.Index, viewModel);
+            return View(MVC.GamingGroup.Views.Details, viewModel);
         }
 
         [NonAction]
         internal virtual GamingGroupSummary GetGamingGroupSummary(int gamingGroupId, IDateRangeFilter dateRangeFilter = null)
         {
-            if(dateRangeFilter == null)
+            if (dateRangeFilter == null)
             {
                 dateRangeFilter = new BasicDateRangeFilter();
-            }else
+            }
+            else
             {
                 dateRangeFilter.FromDate = dateRangeFilter.FromDate;
                 dateRangeFilter.ToDate = dateRangeFilter.ToDate;
@@ -116,42 +129,6 @@ namespace UI.Controllers
         }
 
         // GET: /GamingGroup/Details
-        [UserContext(RequiresGamingGroup = false)]
-        public virtual ActionResult Details(int id, ApplicationUser currentUser)
-        {
-            if (currentUser.CurrentGamingGroupId == id)
-            {
-                return RedirectToAction(Index());
-            }
-            var gamingGroupSummary = GetGamingGroupSummary(id);
-
-            var viewModel = new GamingGroupPublicViewModel
-            {
-                Id = gamingGroupSummary.Id,
-                Name = gamingGroupSummary.Name,
-                GameDefinitionSummaries = gamingGroupSummary.GameDefinitionSummaries
-                    .Select(summary => gameDefinitionSummaryViewModelBuilder.Build(summary, currentUser))
-                    .OrderByDescending(summary=>summary.TotalNumberOfGamesPlayed)
-                    .ToList(),
-                Players = gamingGroupSummary.Players
-                    .Select(playerWithNemesis => playerWithNemesisViewModelBuilder.Build(playerWithNemesis, currentUser)).ToList(),
-                PlayedGames = new PlayedGamesViewModel
-                {
-                    PlayedGameDetailsViewModels = gamingGroupSummary.PlayedGames
-                    .Select(playedGame => playedGameDetailsViewModelBuilder.Build(playedGame, currentUser)).ToList(),
-                    UserCanEdit = currentUser.CurrentGamingGroupId == gamingGroupSummary.Id,
-                    ShowSearchLinkInResultsHeader = false
-                },
-                PublicDetailsView = new GamingGroupPublicDetailsViewModel
-                {
-                    GamingGroupId = gamingGroupSummary.Id,
-                    PublicDescription = gamingGroupSummary.PublicDescription,
-                    Website = gamingGroupSummary.PublicGamingGroupWebsite
-                }
-            };
-
-            return View(MVC.GamingGroup.Views.Details, viewModel);
-        }
 
         [HttpGet]
         public virtual ActionResult GetTopGamingGroups()
@@ -183,10 +160,10 @@ namespace UI.Controllers
             if (ModelState.IsValid)
             {
                 gamingGroupAccessGranter.CreateInvitation(model.InviteeEmail, currentUser);
-                return RedirectToAction(MVC.GamingGroup.ActionNames.Index);
+                return RedirectToAction(MVC.GamingGroup.Details(model.Id, currentUser));
             }
 
-            return RedirectToAction(MVC.GamingGroup.ActionNames.Index, model);
+            return RedirectToAction(MVC.GamingGroup.ActionNames.Details, model);
         }
 
         [Authorize]
@@ -198,7 +175,7 @@ namespace UI.Controllers
                 gamingGroupContextSwitcher.SwitchGamingGroupContext(gamingGroupId, currentUser);
             }
 
-            return RedirectToAction(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name);
+            return RedirectToAction(MVC.GamingGroup.Details(gamingGroupId, currentUser));
         }
 
         [HttpPost]
@@ -209,11 +186,11 @@ namespace UI.Controllers
             if (string.IsNullOrWhiteSpace(gamingGroupName))
             {
                 this.ModelState.AddModelError(string.Empty, "You must enter a Gaming Group name.");
-                return this.Index(new BasicDateRangeFilter(), currentUser);
+                return this.Details(currentUser.CurrentGamingGroupId, currentUser);
             }
             this.gamingGroupSaver.CreateNewGamingGroup(gamingGroupName.Trim(), TransactionSource.WebApplication, currentUser);
 
-            return RedirectToAction(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name);
+            return RedirectToAction(MVC.GamingGroup.ActionNames.Details, new {id = currentUser.CurrentGamingGroupId } );
         }
 
         [HttpGet]
@@ -242,7 +219,7 @@ namespace UI.Controllers
             {
                 this.gamingGroupSaver.UpdatePublicGamingGroupDetails(request, currentUser);
 
-                return RedirectToAction(MVC.GamingGroup.Index());
+                return RedirectToAction(MVC.GamingGroup.Details(currentUser.CurrentGamingGroupId, currentUser));
             }
 
             return (this.Edit(request.GamingGroupId));

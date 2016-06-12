@@ -35,9 +35,10 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
         {
  	        base.SetUp();
             autoMocker.PartialMockTheClassUnderTest();
-            autoMocker.ClassUnderTest.Expect(mock => mock.Index(
-                Arg<BasicDateRangeFilter>.Is.Anything, 
-                Arg<ApplicationUser>.Is.Same(currentUser)))
+            autoMocker.ClassUnderTest.Expect(mock => mock.Details(
+                Arg<int>.Is.Anything,
+                Arg<ApplicationUser>.Is.Same(currentUser),
+                Arg<BasicDateRangeFilter>.Is.Anything ))
                                 .Return(viewResult);
         }
 
@@ -60,13 +61,13 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
         }
 
         [Test]
-        public void ItRedirectsToTheIndexActionAfterSaving()
+        public void ItRedirectsToTheDetailsActionAfterSaving()
         {
             string gamingGroupName = "name";
 
             var result = autoMocker.ClassUnderTest.CreateNewGamingGroup(gamingGroupName, currentUser) as RedirectToRouteResult;
 
-            Assert.That(result.RouteValues["action"], Is.EqualTo(MVC.GamingGroup.ActionNames.Index));
+            Assert.That(result.RouteValues["action"], Is.EqualTo(MVC.GamingGroup.ActionNames.Details));
             Assert.That(result.RouteValues["controller"], Is.EqualTo(MVC.GamingGroup.Name));
 
         }

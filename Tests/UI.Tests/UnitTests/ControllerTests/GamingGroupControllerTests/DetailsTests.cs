@@ -29,10 +29,10 @@ using UI.Transformations;
 namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
 {
     [TestFixture]
-    public class IndexTests : GamingGroupControllerTestBase
+    public class DetailsTests : GamingGroupControllerTestBase
     {
         private GamingGroupSummary gamingGroupSummary;
-        private GamingGroupViewModel gamingGroupViewModel;
+        private GamingGroupViewModel _gamingGroupViewModel;
         private BasicDateRangeFilter dateRangeFilter;
 
         [Test]
@@ -44,7 +44,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
             {
                 PlayedGames = new List<PlayedGame>()
             };
-            gamingGroupViewModel = new GamingGroupViewModel();
+            _gamingGroupViewModel = new GamingGroupViewModel();
             dateRangeFilter = new BasicDateRangeFilter();
 
             autoMocker.ClassUnderTest.Expect(mock => mock.GetGamingGroupSummary(
@@ -54,38 +54,38 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
                 .Return(gamingGroupSummary);
 
             autoMocker.Get<IGamingGroupViewModelBuilder>().Expect(mock => mock.Build(gamingGroupSummary, currentUser))
-                .Return(gamingGroupViewModel);
+                .Return(_gamingGroupViewModel);
         }
 
         [Test]
-        public void ItReturnsTheIndexView()
+        public void ItReturnsTheDetailsView()
         {
-            ViewResult viewResult = autoMocker.ClassUnderTest.Index(dateRangeFilter, currentUser) as ViewResult;
+            ViewResult viewResult = autoMocker.ClassUnderTest.Details(currentUser.CurrentGamingGroupId , currentUser, dateRangeFilter) as ViewResult;
 
-            Assert.AreEqual(MVC.GamingGroup.Views.Index, viewResult.ViewName);
+            Assert.AreEqual(MVC.GamingGroup.Views.Details, viewResult.ViewName);
         }
 
         [Test]
         public void ItAddsAGamingGroupViewModelToTheView()
         {
-            ViewResult viewResult = autoMocker.ClassUnderTest.Index(dateRangeFilter, currentUser) as ViewResult;
+            ViewResult viewResult = autoMocker.ClassUnderTest.Details(currentUser.CurrentGamingGroupId, currentUser, dateRangeFilter) as ViewResult;
 
-            Assert.AreSame(gamingGroupViewModel, viewResult.Model);
+            Assert.AreSame(_gamingGroupViewModel, viewResult.Model);
         }
 
         [Test]
         public void ItPreservesTheDateRangeFilter()
         {
-            ViewResult viewResult = autoMocker.ClassUnderTest.Index(dateRangeFilter, currentUser) as ViewResult;
+            ViewResult viewResult = autoMocker.ClassUnderTest.Details(currentUser.CurrentGamingGroupId, currentUser, dateRangeFilter) as ViewResult;
 
-            GamingGroupViewModel model = viewResult.Model as GamingGroupViewModel;
+            var model = viewResult.Model as GamingGroupViewModel;
             Assert.AreSame(dateRangeFilter, model.DateRangeFilter);
         }
 
         [Test]
         public void ItShowsTheSearchPlayedGamesLinkInThePlayedGamePanelHeader()
         {
-            var viewResult = autoMocker.ClassUnderTest.Index(dateRangeFilter, currentUser) as ViewResult;
+            var viewResult = autoMocker.ClassUnderTest.Details(currentUser.CurrentGamingGroupId, currentUser, dateRangeFilter) as ViewResult;
 
             var viewModel = (GamingGroupViewModel)viewResult.Model;
             Assert.That(viewModel.PlayedGames.ShowSearchLinkInResultsHeader, Is.True);
@@ -97,7 +97,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
             var basicDateRangeFilterMock = MockRepository.GenerateMock<BasicDateRangeFilter>();
             string expectedErrorMessage = "some error message";
             basicDateRangeFilterMock.Expect(mock => mock.IsValid(out Arg<string>.Out(expectedErrorMessage).Dummy)).Return(false);
-            var viewResult = autoMocker.ClassUnderTest.Index(basicDateRangeFilterMock, currentUser) as ViewResult;
+            var viewResult = autoMocker.ClassUnderTest.Details(currentUser.CurrentGamingGroupId, currentUser, basicDateRangeFilterMock) as ViewResult;
 
             Assert.True(viewResult.ViewData.ModelState.ContainsKey("dateRangeFilter"));
             var modelErrorsForKey = viewResult.ViewData.ModelState["dateRangeFilter"].Errors;

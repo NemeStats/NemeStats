@@ -30,11 +30,11 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
     public class GrantAccessTests : GamingGroupControllerTestBase
     {
         [Test]
-        public void ItRedirectsToTheIndexAction()
+        public void ItRedirectsToTheDetailsAction()
         {
             RedirectToRouteResult redirectResult = autoMocker.ClassUnderTest.GrantAccess(new GamingGroupViewModel(), currentUser) as RedirectToRouteResult;
 
-            Assert.AreEqual(MVC.GamingGroup.ActionNames.Index, redirectResult.RouteValues["action"]);
+            Assert.AreEqual(MVC.GamingGroup.ActionNames.Details, redirectResult.RouteValues["action"]);
         }
 
         [Test]
@@ -55,7 +55,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
         [Test]
         public void ItGrantsAccessToTheSpecifiedEmailAddress()
         {
-            var model = new GamingGroupViewModel 
+            var model = new GamingGroupViewModel
             {
                 InviteeEmail = "abc@xyz.com"
             };

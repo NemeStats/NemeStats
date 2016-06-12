@@ -11,45 +11,46 @@
     <div class="panel-heading">
         <h4>Invite Another Player To Your Gaming Group</h4>
     </div>
-    <p>
-        Send an email to another player inviting them to register on the site. These players will have full access to your gaming group
-        and can record games, create and de-activate players, etc.
-    </p>
     <div class="panel-body">
+        <div class="alert alert-info">
+            Send an email to another player inviting them to register on the site. These players will have full access to your gaming group
+            and can record games, create and de-activate players, etc.
+        </div>
         @using (Html.BeginForm())
         {
             @Html.AntiForgeryToken()
             <div class="form-horizontal">
                 @Html.ValidationSummary(true)
                 @Html.HiddenFor(modelItem => @Model.PlayerId)
+                @Html.HiddenFor(modelItem => @Model.PlayerName)
 
                 <div class="form-group">
-                    @Html.LabelFor(model => model.EmailAddress, new { @class = "control-label col-md-2" })
+                    @Html.LabelFor(model => model.EmailAddress, new {@class = "control-label col-md-2"})
                     <div class="col-md-10">
-                        @Html.TextBoxFor(model => model.EmailAddress, new { @class = "form-control" })
+                        @Html.TextBoxFor(model => model.EmailAddress, new {@class = "form-control"})
                         @Html.ValidationMessageFor(model => model.EmailAddress)
                     </div>
                 </div>
 
                 <div class="form-group">
-                    @Html.LabelFor(model => model.EmailSubject, new { @class = "control-label col-md-2" })
+                    @Html.LabelFor(model => model.EmailSubject, new {@class = "control-label col-md-2"})
                     <div class="col-md-10">
-                        @Html.TextBoxFor(model => model.EmailSubject, new { @class = "form-control" })
+                        @Html.TextBoxFor(model => model.EmailSubject, new {@class = "form-control"})
                         @Html.ValidationMessageFor(model => model.EmailSubject)
                     </div>
                 </div>
-                
+
                 <div class="form-group">
                     <label class="control-label col-md-2">Custom Message</label>
                     <div class="col-md-10">
-                        @Html.TextAreaFor(model => model.EmailBody, 6, 70, new { @class = "form-control" })
+                        @Html.TextAreaFor(model => model.EmailBody, 6, 70, new {@class = "form-control"})
                         @Html.ValidationMessageFor(model => model.EmailBody)
                     </div>
                 </div>
-                
+
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
-                        <input type="submit" value="Send Invitation" class="btn btn-primary" />
+                        <input type="submit" value="Send Invitation" class="btn btn-primary"/>
                     </div>
                 </div>
             </div>

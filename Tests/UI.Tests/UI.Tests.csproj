@@ -234,7 +234,7 @@
     <Compile Include="UnitTests\ControllerTests\GamingGroupControllerTests\GetTopGamingGroupsTests.cs" />
     <Compile Include="UnitTests\ControllerTests\AccountControllerTests\UserGamingGroupsTests.cs" />
     <Compile Include="UnitTests\ControllerTests\GamingGroupControllerTests\GrantAccessTests.cs" />
-    <Compile Include="UnitTests\ControllerTests\GamingGroupControllerTests\IndexTests.cs" />
+    <Compile Include="UnitTests\ControllerTests\GamingGroupControllerTests\DetailsTests.cs" />
     <Compile Include="UnitTests\ControllerTests\HelperTests\ShowingXResultsMessageBuilderTests\BuildMessageTests.cs" />
     <Compile Include="UnitTests\ControllerTests\HomeControllerTests\HomeControllerTestBase.cs" />
     <Compile Include="UnitTests\ControllerTests\HomeControllerTests\IndexTests.cs" />
