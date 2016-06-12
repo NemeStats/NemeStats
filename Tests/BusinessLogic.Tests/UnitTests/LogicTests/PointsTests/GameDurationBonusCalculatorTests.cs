@@ -113,7 +113,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PointsTests
             _autoMocker.ClassUnderTest.CalculateGameDurationBonus(_startingPointsScorecard, null);
 
             //--assert
-            AssertPercentageBonusApplied(_startingPointsScorecard, 1);
+            AssertPercentageBonusApplied(_startingPointsScorecard, 0);
         }
     }
 }
