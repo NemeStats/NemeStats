@@ -16,7 +16,8 @@
         TopDog = 12,
         Punisher = 13,
         TeamPlayer = 14,
-        DespicableMe = 15
+        DespicableMe = 15,
+        MiseryLikesCompany = 16
     }
 
     public enum AchievementGroup
