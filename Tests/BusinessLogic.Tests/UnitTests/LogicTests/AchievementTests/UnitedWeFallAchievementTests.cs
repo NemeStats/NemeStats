@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using BusinessLogic.DataAccess;
 using BusinessLogic.Logic.Achievements;
 using BusinessLogic.Models;
@@ -14,15 +11,15 @@ using StructureMap.AutoMocking;
 
 namespace BusinessLogic.Tests.UnitTests.LogicTests.AchievementTests
 {
-    public class MiseryLikesCompanyAchievementTests
+    public class UnitedWeFallAchievementTests
     {
-        private RhinoAutoMocker<MiseryLikesCompanyAchievement> _autoMocker;
+        private RhinoAutoMocker<UnitedWeFallAchievement> _autoMocker;
         private readonly int _playerId = 1;
 
         [SetUp]
         public void SetUp()
         {
-            _autoMocker = new RhinoAutoMocker<MiseryLikesCompanyAchievement>();
+            _autoMocker = new RhinoAutoMocker<UnitedWeFallAchievement>();
         }
 
         [Test]

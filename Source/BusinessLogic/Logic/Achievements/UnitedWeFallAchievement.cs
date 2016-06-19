@@ -1,26 +1,25 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using BusinessLogic.DataAccess;
-using BusinessLogic.Logic.Points;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Achievements;
 using BusinessLogic.Models.PlayedGames;
 
 namespace BusinessLogic.Logic.Achievements
 {
-    public class MiseryLikesCompanyAchievement : BaseAchievement
+    public class UnitedWeFallAchievement : BaseAchievement
     {
-        public MiseryLikesCompanyAchievement(IDataContext dataContext) : base(dataContext)
+        public UnitedWeFallAchievement(IDataContext dataContext) : base(dataContext)
         {
         }
 
-        public override AchievementId Id => AchievementId.MiseryLikesCompany;
+        public override AchievementId Id => AchievementId.UnitedWeFall;
         public override AchievementGroup Group => AchievementGroup.PlayedGame;
-        public override string Name => "Misery Likes Company";
+        public override string Name => "United We Fall";
 
         public override string DescriptionFormat => @"This Achievement is earned by losing {0} team games (where each player has the same rank at the end of the game).";
 
-        public override string IconClass => "fa fa-long-arrow-down";
+        public override string IconClass => "fa fa-inverse fa-stack-1x fa-frown-o";
 
         public override Dictionary<AchievementLevel, int> LevelThresholds => new Dictionary<AchievementLevel, int>
         {
