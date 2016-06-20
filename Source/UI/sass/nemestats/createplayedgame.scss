@@ -1,0 +1,122 @@
+﻿@import "nemestats-variables.scss";
+
+#record-played-game {
+    $color-hover: lighten($brand-primary,35%);
+
+    .steps {
+        padding: 0;
+
+        li {
+            list-style-type: none;
+            height: 80px;
+            margin-bottom: 10px;
+            margin-right: 10px;
+            display: flex;
+
+            &.arrow_box {
+                position: relative;
+                background: $well-bg;
+
+                &:not(.disabled) {
+                    &:not(.current) {
+                        cursor: pointer;
+
+                        > span {
+                            cursor: pointer;
+                        }
+
+                        &:hover {
+                            background: $color-hover;
+                            color: white;
+
+                            &:after {
+                                border-left-color: $color-hover;
+                            }
+                        }
+                    }
+                }
+
+
+                &.current {
+                    background: $brand-primary;
+                    color: white;
+                }
+            }
+
+            &.arrow_box:after {
+                left: 100%;
+                top: 50%;
+                border: solid transparent;
+                content: " ";
+                height: 0;
+                width: 0;
+                position: absolute;
+                pointer-events: none;
+                border-left-color: $well-bg;
+                border-width: 20px;
+                margin-top: -20px;
+            }
+
+
+            &.arrow_box.current:after {
+                border-left-color: $brand-primary;
+            }
+        }
+
+        .number {
+            font-size: 35px;
+            margin: 0 10px;
+            line-height: 70px;
+        }
+
+        .desc {
+            font-size: 18px;
+            line-height: 70px;
+        }
+
+        .value-desc {
+            padding-top: 10px;
+            font-size: 13px;
+            text-decoration: underline;
+        }
+
+        .value {
+            font-size: 17px;
+            overflow: hidden;
+            max-height: 45px;
+        }
+    }
+
+    .form {
+
+        .title {
+            margin-top: 0;
+            padding-bottom: 5px;
+            border-bottom: 1px solid $brand-primary;
+        }
+
+        .content {
+            background-color: $body-bg;
+            padding: 20px;
+            box-shadow: rgba(0, 0, 0, 0.2) 0 8px 17px 0, rgba(0, 0, 0, 0.188235) 0 6px 20px 0;
+            /*margin: 20px 0;*/
+            .game-image {
+                padding: 20px;
+                display: inline-block;
+                cursor: pointer;
+
+                &:hover {
+                    background-color: $color-hover;
+                }
+
+                img {
+                    width: 100px;
+                }
+
+                .name {
+                    font-size: 22px;
+                }
+            }
+        }
+    }
+}

@@ -25,6 +25,8 @@ using System.Collections.Generic;
 using System.Linq;
 using BusinessLogic.Models.Games;
 using BusinessLogic.Models.Utility;
+using BusinessLogic.Paging;
+using PagedList;
 
 namespace BusinessLogic.Logic.GameDefinitions
 {
@@ -54,8 +56,8 @@ namespace BusinessLogic.Logic.GameDefinitions
                     GamingGroupId = gameDefinition.GamingGroupId,
                     Id = gameDefinition.Id,
                     PlayedGames = gameDefinition.PlayedGames.Where(
-                        playedGame => playedGame.DatePlayed >= ((IDateRangeFilter) dateRangeFilter).FromDate
-                                      && playedGame.DatePlayed <= ((IDateRangeFilter) dateRangeFilter).ToDate)
+                        playedGame => playedGame.DatePlayed >= ((IDateRangeFilter)dateRangeFilter).FromDate
+                                      && playedGame.DatePlayed <= ((IDateRangeFilter)dateRangeFilter).ToDate)
                         .ToList(),
                     Champion = gameDefinition.Champion,
                     ChampionId = gameDefinition.ChampionId,
@@ -65,6 +67,38 @@ namespace BusinessLogic.Logic.GameDefinitions
                     BoardGameGeekGameDefinition = gameDefinition.BoardGameGeekGameDefinition
                 })
                 .ToList();
+        }
+
+        public IPagedList<GameDefinitionDisplayInfo> GetMostPlayedGames(GetMostPlayedGamesQuery query)
+        {
+            var mostPlayedGames = GetGameDefinitionDisplayInfo(query.GamingGroupId)
+                .OrderByDescending(g => g.PlayedTimes);
+
+            return mostPlayedGames.ToPagedList(query.Page, query.PageSize);
+
+        }
+
+        public IPagedList<GameDefinitionDisplayInfo> GetRecentGames(GetRecentPlayedGamesQuery query)
+        {
+            var recentGames = GetGameDefinitionDisplayInfo(query.GamingGroupId)
+               .OrderByDescending(g => g.LastDatePlayed);
+
+            return recentGames.ToPagedList(query.Page, query.PageSize);
+        }
+
+        private IQueryable<GameDefinitionDisplayInfo> GetGameDefinitionDisplayInfo(int gamingGroupÌd)
+        {
+            return dataContext.GetQueryable<GameDefinition>()
+                .Include(g => g.BoardGameGeekGameDefinition)
+                .Where(g => g.GamingGroupId == gamingGroupÌd)
+                .Select(g => new GameDefinitionDisplayInfo
+                {
+                    Id = g.Id,
+                    Name = g.Name,
+                    PlayedTimes = g.PlayedGames.Count,
+                    LastDatePlayed = g.PlayedGames.Select(p => p.DatePlayed).OrderByDescending(d => d).FirstOrDefault(),
+                    ThumbnailImageUrl = g.BoardGameGeekGameDefinition != null ? g.BoardGameGeekGameDefinition.Thumbnail : ""
+                });
         }
 
         public virtual IList<GameDefinitionSummary> GetAllGameDefinitions(int gamingGroupId, IDateRangeFilter dateRangeFilter = null)
@@ -98,7 +132,7 @@ namespace BusinessLogic.Logic.GameDefinitions
                   .OrderBy(game => game.Name)
                 .ToList();
 
-            
+
 
             AddPlayersToChampionData(returnValue);
 
@@ -240,11 +274,17 @@ namespace BusinessLogic.Logic.GameDefinitions
         }
 
 
-        public IList<GameDefinitionName> GetAllGameDefinitionNames(int gamingGroupId)
+        public IList<GameDefinitionName> GetAllGameDefinitionNames(int gamingGroupId, string nameQuery = null)
         {
-            return dataContext.GetQueryable<GameDefinition>()
-                              .Where(gameDefinition => gameDefinition.Active
-                              && gameDefinition.GamingGroupId == gamingGroupId)
+            var gameDefinitionsQuery = dataContext.GetQueryable<GameDefinition>()
+                .Where(gameDefinition => gameDefinition.Active
+                                         && gameDefinition.GamingGroupId == gamingGroupId);
+
+            if (!string.IsNullOrEmpty(nameQuery))
+            {
+                gameDefinitionsQuery = gameDefinitionsQuery.Where(g => g.Name.Contains(nameQuery));
+            }
+            return gameDefinitionsQuery
                               .Select(gameDefiniton => new GameDefinitionName
                               {
                                   BoardGameGeekGameDefinitionId = gameDefiniton.BoardGameGeekGameDefinitionId,

@@ -1,48 +1,183 @@
-﻿@using UI.Controllers.Helpers
-@using UI.HtmlHelpers
-@model UI.Models.PlayedGame.PlayedGameEditViewModel
+﻿@using UI.Models.GameDefinitionModels
+@model UI.Models.PlayedGame.CreatePlayedGameViewModel
 @{
-	ViewBag.Title = "Record a Game";
-	Layout = MVC.Shared.Views._BaseLayout;
+    ViewBag.Title = "Record a Game";
+    Layout = MVC.Shared.Views._BaseLayout;
 }
-@Html.RenderTempDataMessage(TempMessageKeys.TEMP_MESSAGE_KEY_PLAYED_GAME_RECORDED)
-
 <h2 class="page-header">@ViewBag.Title</h2>
 <hr />
-<div class="panel panel-primary">
-	<div class="panel-heading">
-		<h4>Game played</h4>
-	</div>
-	<div class="panel-body">
-		<div class="row">
-			<div class="col-md-7">
-				@using (Html.BeginForm("Create", MVC.PlayedGame.Name, FormMethod.Post, new { id = "recordPlayedGame" }))
-				{
-					@Html.Partial(MVC.PlayedGame.Views._PlayedGameFormPartial, Model)
-				}
-			</div>
-			<div id="addPlayer" class="col-md-5 hidden" style="margin-top: 90px">
-				<a href="#addPlayer" id="addPlayerAnchor"></a>
-				@Html.Action("SavePlayer", "Player")
-			</div>
-		</div>
-	</div>
+<div id="record-played-game">
+    <div class="row">
+        <div class="col-sm-3">
+            <ul class="steps">
+                <li class="arrow_box current" v-bind:class="{'current': currentStep == 1}" v-on:click="backToSelectDate">
+                    <span class="number">1</span>
+                    <span class="desc" v-show="currentStep <= 1">
+                        Set date
+                    </span>
+                    <div v-show="currentStep > 1" style="display: none">
+                        <div class="value-desc">Date:</div>
+                        <div class="value">{{ viewModel.Date | moment "LL" }}</div>
+                    </div>
+                </li>
+                <li class="arrow_box" v-bind:class="{'current': currentStep == 2,'disabled' : currentStep < 2}" v-on:click="backToSelectGame">
+                    <span class="number">2</span>
+                    <span class="desc" v-show="currentStep <= 2">
+                        Select game
+                    </span>
+                    <div v-show="currentStep > 2" style="display: none">
+                        <div class="value-desc">Game:</div>
+                        <div class="value">{{ viewModel.Game.Name }}</div>
+                    </div>
+                </li>
+                <li class="arrow_box" v-bind:class="{'current': currentStep == 3,'disabled' : currentStep < 3}" v-on:click="backToSelectPlayers">
+                    <span class="number">3</span>
+                    <span class="desc" v-show="currentStep <= 3">
+                        Select players
+                    </span>
+                    <div v-show="currentStep > 3" style="display: none">
+                        <div class="value-desc"># Players:</div>
+                        <div class="value">{{ viewModel.Players.length }} players</div>
+                    </div>
+                </li>
+                <li class="arrow_box" v-bind:class="{'current': currentStep == 4,'disabled' : currentStep < 4}">
+                    <span class="number">4</span>
+                    <span class="desc">
+                        Set game result
+                    </span>
+                </li>
+            </ul>
+        </div>
+        <div class="col-sm-9 form">
+            <div class="well">
+                <div class="alert alert-warning " style="display: none" v-show="alertVisible">
+                    <button type="button" class="close" aria-label="Close" v-on:click="hideAlert"><span aria-hidden="true">&times;</span></button>
+                    <strong>{{ alertText}}</strong>
+                </div>
+                <div v-show="currentStep == 1">
+                    <h3 class="title">Set played game date:</h3>
+                    <div class="content">
+                        <div class="form-group">
+                            <input type="date" class="form-control form-control-lg date-picker" v-model="viewModel.Date">
+                        </div>
+                        <button class="btn btn-default" v-on:click="setDateYesterday">Yesterday</button>
+                        <button class="btn btn-default" v-on:click="setDateToday">Today</button>
+                        <button class="btn btn-primary" v-on:click="gotoSelectGame">Continue</button>
+                    </div>
+
+                </div>
+                <div v-show="currentStep == 2" style="display: none">
+                    <h3 class="title">Select game played from the most played, common, search on your fullt list or create new one</h3>
+                    <div class="content">
+                        @SelectGame("Recent played games", Model.RecentPlayedGames)
+                        @SelectGame("Most played games", Model.MostPlayedGames)
+                        <h4 class="title">Pick a game</h4>
+                        <div class="form-group">
+                            <label>Search a game for your full game list:</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <span class="fa fa-search" v-show="!searchingGameDefinition"></span>
+                                    <span class="fa fa-spinner fa-spin" v-show="searchingGameDefinition"></span>
+                                </span>
+                                <input type="text" class="form-control form-control-lg typeahead" id="search-game-definition" />
+                            </div>
+                        </div>
+                        <h4 class="title">Create new game</h4>
+                        <div class="form-group">
+                            <label>Type the new game name to create it:</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <span class="fa fa-plus" v-show="!searchingBGG"></span>
+                                    <span class="fa fa-spinner fa-spin" v-show="searchingBGG"></span>
+                                </span>
+
+                                <input type="text" class="form-control form-control-lg typeahead" id="search-bgg" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div v-show="currentStep == 3" style="display: none">
+                    <h3 class="title">Select players</h3>
+                    <div class="content">
+                        <div class="row form-group">
+                            <div class="col-sm-5">
+                                <select name="from" id="optgroup" class="form-control" size="9" multiple="multiple">
+                                    <optgroup label="Recent & active players">
+                                        @foreach (var player in Model.RecentPlayers)
+                                        {
+                                            <option value="@player.PlayerId">@player.PlayerName</option>
+                                        }
+                                    </optgroup>
+                                    <optgroup label="Other active players">
+                                        @foreach (var player in Model.MostActivePlayers)
+                                        {
+                                            <option value="@player.PlayerId">@player.PlayerName</option>
+                                        }
+                                    </optgroup>
+                                    <optgroup label="Other players">
+                                        @foreach (var player in Model.OtherPlayers)
+                                        {
+                                            <option value="@player.PlayerId">@player.PlayerName</option>
+                                        }
+                                    </optgroup>
+                                </select>
+                            </div>
+
+                            <div class="col-sm-2">
+                                <button type="button" id="optgroup_rightAll" class="btn btn-block"><i class="fa fa-forward"></i></button>
+                                <button type="button" id="optgroup_rightSelected" class="btn btn-block"><i class="fa fa-chevron-right"></i></button>
+                                <button type="button" id="optgroup_leftSelected" class="btn btn-block"><i class="fa fa-chevron-left"></i></button>
+                                <button type="button" id="optgroup_leftAll" class="btn btn-block"><i class="fa fa-backward"></i></button>
+                            </div>
+
+                            <div class="col-sm-5">
+                                <select name="to" id="optgroup_to" class="form-control" size="9" multiple="multiple">
+                                    <optgroup label="You!">
+                                        <option value="@Model.UserPlayer.PlayerId">@Model.UserPlayer.PlayerName</option>
+                                    </optgroup>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <button class="btn btn-primary" v-on:click="gotoSetGameResult">Continue</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
-<div id="createdPlayedGameBack">
-	@Html.ActionLink("Back To List", "Index", "GamingGroup", null, null, UI.Controllers.GamingGroupController.SECTION_ANCHOR_RECENT_GAMES, null, null)
-</div>
 @section Scripts{
     @Scripts.Render("~/bundles/moment")
-	<script type="text/javascript">
-		//Creation
-		$(document).ready(function () {
-			var createPlayedGame = new window.Views.PlayedGame.CreatePlayedGame();
-			var googleAnalyticsObject = new window.Views.Shared.GoogleAnalytics();
-			createPlayedGame.init(googleAnalyticsObject);
+    <script type="text/javascript">
+        //Creation
+        $(document).ready(function () {
+            var createPlayedGame = new window.Views.PlayedGame.CreatePlayedGame();
+            createPlayedGame.init();
+        });
+    </script>
+}
 
-			var createOrUpdatePlayer = new window.Views.Player.CreateOrUpdate();
-			createOrUpdatePlayer.init($.proxy(createPlayedGame.onPlayerCreated, createPlayedGame));
-		});
-	</script>
+@helper SelectGame(string title, IList<GameDefinitionDisplayInfoViewModel>
+    games)
+{
+    <h4 class="title">@title</h4>
+foreach (var game in games)
+{
+        <span class="game-image" v-on:click="selectGame(@game.Id,'@game.Name.Replace("'","\"")' )">
+            @if (!string.IsNullOrEmpty(game.ThumbnailImageUrl))
+        {
+                <img src="@game.ThumbnailImageUrl" data-container="body" data-toggle="popover" data-placement="top" data-content="@game.Name" />
+            }
+            else
+            {
+                <span class="name">@game.Name</span>
+            }
+        </span>
+}
+
 }

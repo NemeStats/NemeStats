@@ -197,26 +197,26 @@ namespace UI.Controllers
             public _ViewNamesClass ViewNames { get { return s_ViewNames; } }
             public class _ViewNamesClass
             {
+                public readonly string @__Create = "__Create";
                 public readonly string _GameResult = "_GameResult";
                 public readonly string _PlayedGameFormPartial = "_PlayedGameFormPartial";
                 public readonly string _PlayedGamesPartial = "_PlayedGamesPartial";
                 public readonly string _PlayedGamesPlayerPartial = "_PlayedGamesPlayerPartial";
                 public readonly string _RecentlyPlayedGamesPartial = "_RecentlyPlayedGamesPartial";
                 public readonly string Create = "Create";
-                public readonly string CreateSuccess = "CreateSuccess";
                 public readonly string Delete = "Delete";
                 public readonly string Details = "Details";
                 public readonly string Edit = "Edit";
                 public readonly string RecentlyPlayedGames = "RecentlyPlayedGames";
                 public readonly string Search = "Search";
             }
+            public readonly string @__Create = "~/Views/PlayedGame/__Create.cshtml";
             public readonly string _GameResult = "~/Views/PlayedGame/_GameResult.cshtml";
             public readonly string _PlayedGameFormPartial = "~/Views/PlayedGame/_PlayedGameFormPartial.cshtml";
             public readonly string _PlayedGamesPartial = "~/Views/PlayedGame/_PlayedGamesPartial.cshtml";
             public readonly string _PlayedGamesPlayerPartial = "~/Views/PlayedGame/_PlayedGamesPlayerPartial.cshtml";
             public readonly string _RecentlyPlayedGamesPartial = "~/Views/PlayedGame/_RecentlyPlayedGamesPartial.cshtml";
             public readonly string Create = "~/Views/PlayedGame/Create.cshtml";
-            public readonly string CreateSuccess = "~/Views/PlayedGame/CreateSuccess.cshtml";
             public readonly string Delete = "~/Views/PlayedGame/Delete.cshtml";
             public readonly string Details = "~/Views/PlayedGame/Details.cshtml";
             public readonly string Edit = "~/Views/PlayedGame/Edit.cshtml";

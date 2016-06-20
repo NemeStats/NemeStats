@@ -1049,4 +1049,79 @@ footer {
   .nemepoints-achievement:before {
     content: "N"; }
 
+/*$header-background-color: #2C3E50;*/
+#record-played-game .steps {
+  padding: 0; }
+  #record-played-game .steps li {
+    list-style-type: none;
+    height: 80px;
+    margin-bottom: 10px;
+    margin-right: 10px;
+    display: flex; }
+    #record-played-game .steps li.arrow_box {
+      position: relative;
+      background: #ecf0f1; }
+      #record-played-game .steps li.arrow_box:not(.disabled):not(.current) {
+        cursor: pointer; }
+        #record-played-game .steps li.arrow_box:not(.disabled):not(.current) > span {
+          cursor: pointer; }
+        #record-played-game .steps li.arrow_box:not(.disabled):not(.current):hover {
+          background: #889cb7;
+          color: white; }
+          #record-played-game .steps li.arrow_box:not(.disabled):not(.current):hover:after {
+            border-left-color: #889cb7; }
+      #record-played-game .steps li.arrow_box.current {
+        background: #354458;
+        color: white; }
+    #record-played-game .steps li.arrow_box:after {
+      left: 100%;
+      top: 50%;
+      border: solid transparent;
+      content: " ";
+      height: 0;
+      width: 0;
+      position: absolute;
+      pointer-events: none;
+      border-left-color: #ecf0f1;
+      border-width: 20px;
+      margin-top: -20px; }
+    #record-played-game .steps li.arrow_box.current:after {
+      border-left-color: #354458; }
+  #record-played-game .steps .number {
+    font-size: 35px;
+    margin: 0 10px;
+    line-height: 70px; }
+  #record-played-game .steps .desc {
+    font-size: 18px;
+    line-height: 70px; }
+  #record-played-game .steps .value-desc {
+    padding-top: 10px;
+    font-size: 13px;
+    text-decoration: underline; }
+  #record-played-game .steps .value {
+    font-size: 17px;
+    overflow: hidden;
+    max-height: 45px; }
+
+#record-played-game .form .title {
+  margin-top: 0;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #354458; }
+
+#record-played-game .form .content {
+  background-color: #fff;
+  padding: 20px;
+  box-shadow: rgba(0, 0, 0, 0.2) 0 8px 17px 0, rgba(0, 0, 0, 0.188235) 0 6px 20px 0;
+  /*margin: 20px 0;*/ }
+  #record-played-game .form .content .game-image {
+    padding: 20px;
+    display: inline-block;
+    cursor: pointer; }
+    #record-played-game .form .content .game-image:hover {
+      background-color: #889cb7; }
+    #record-played-game .form .content .game-image img {
+      width: 100px; }
+    #record-played-game .form .content .game-image .name {
+      font-size: 22px; }
+
 /*# sourceMappingURL=nemestats.css.map */

@@ -697,6 +697,8 @@
     <Compile Include="Models\Utility\BasicDateRangeFilter.cs" />
     <Compile Include="Models\Utility\IDateRangeFilter.cs" />
     <Compile Include="Models\VotableFeature.cs" />
+    <Compile Include="Paging\GetMostPlayedGamesQuery.cs" />
+    <Compile Include="Paging\GetRecentPlayedGamesQuery.cs" />
     <Compile Include="Paging\GetRecentPlayerAchievementsUnlockedQuery.cs" />
     <Compile Include="Paging\PagedQuery.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
