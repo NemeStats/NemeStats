@@ -120,7 +120,6 @@ namespace UI.Controllers
                 MostPlayedGames = _gameDefinitionDisplayInfoToGameDefinitionDisplayInfoViewModelMapper.Map(mostPlayedGames).ToList(),
                 RecentPlayedGames = _gameDefinitionDisplayInfoToGameDefinitionDisplayInfoViewModelMapper.Map(recentPlayedGames).ToList(),
                 RecentPlayers = players.RecentPlayers,
-                MostActivePlayers = players.MostActivePlayers,
                 OtherPlayers = players.OtherPlayers,
                 UserPlayer = players.UserPlayer
             };

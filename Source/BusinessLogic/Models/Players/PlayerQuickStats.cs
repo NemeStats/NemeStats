@@ -16,7 +16,6 @@ namespace BusinessLogic.Models.Players
     public class PlayersToCreateModel
     {
         public List<PlayerInfoForUser> RecentPlayers { get; set; }
-        public List<PlayerInfoForUser> MostActivePlayers { get; set; }
         public List<PlayerInfoForUser> OtherPlayers { get; set; }
         public PlayerInfoForUser UserPlayer { get; set; }
     }

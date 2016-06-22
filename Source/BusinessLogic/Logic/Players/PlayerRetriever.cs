@@ -429,20 +429,12 @@ namespace BusinessLogic.Logic.Players
                 .ThenBy(p => p.Name)
                 .Take(5);
 
-            var mostActivePlayersQuery = GetPlayersToCreateQueryable(currentUserPlayer)                
-                .Where(p => recentPlayersQuery.All(rp => rp.Id != p.Id))
-                .OrderByDescending(p => p.PlayerGameResults.Count())
-                .ThenBy(p => p.Name)
-                .Take(5);
-
             var otherPlayersQuery = GetPlayersToCreateQueryable(currentUserPlayer)
                 .Where(p => recentPlayersQuery.All(rp => rp.Id != p.Id))
-                .Where(p => mostActivePlayersQuery.All(rp => rp.Id != p.Id))
                 .OrderBy(p => p.Name);
 
             var result = new PlayersToCreateModel
             {
-                MostActivePlayers = mostActivePlayersQuery.Select(GetPlayerInfoForUser).ToList(),
                 UserPlayer = GetPlayerInfoForUser(currentUserPlayer),
                 OtherPlayers = otherPlayersQuery.Select(GetPlayerInfoForUser).ToList(),
                 RecentPlayers = recentPlayersQuery.Select(GetPlayerInfoForUser).ToList()
