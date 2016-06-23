@@ -164,7 +164,8 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                     searchingGameDefinition: false,
                     searchingBGG: false,
                     alertVisible: false,
-                    alertText: ''
+                    alertText: '',
+                    newPlayerName: '',
                 },
                 methods: {
                     hideAlert: function () {
@@ -184,12 +185,6 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                             this.currentStep = parent._steps.SelectGame;
                         }
                     },
-                    backToSelectDate: function () {
-                        if (this.viewModel.Date) {
-                            this.viewModel.Date = this.viewModel.Date.format("YYYY-MM-DD");
-                            this.currentStep = parent._steps.SelectDate;
-                        }
-                    },
                     selectGame: function (id, name) {
                         this.viewModel.Game = {
                             Id: id,
@@ -197,10 +192,29 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                         };
                         this.currentStep = parent._steps.SelectPlayers;
                     },
+                    backToSelectDate: function () {
+                        if (this.viewModel.Date) {
+                            this.viewModel.Date = this.viewModel.Date.format("YYYY-MM-DD");
+                            this.currentStep = parent._steps.SelectDate;
+                        }
+                    },
                     backToSelectGame: function () {
                         if (this.viewModel.Game) {
                             this.viewModel.Game = null;
                             this.currentStep = parent._steps.SelectGame;
+                        }
+                    },
+                    backToSelectPlayers: function () {
+                        if (this.viewModel.Players.length > 1 && this.viewModel.Game != null) {
+                            this.currentStep = parent._steps.SelectPlayers;
+                        }
+                    },
+                    createNewPlayer: function() {
+                        if (this.newPlayerName) {
+                            $("#optgroup").append($('<option>', {
+                                text: this.newPlayerName
+                            }));
+                            this.newPlayerName = "";
                         }
                     },
                     gotoSetGameResult: function () {
@@ -223,9 +237,7 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                             this.alertVisible = true;
                         }
                     },
-                    backToSelectPlayers: function () {
-                        this.currentStep = parent._steps.SelectPlayers;
-                    }
+                    
                 }
             });
 

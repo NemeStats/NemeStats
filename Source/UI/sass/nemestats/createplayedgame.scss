@@ -2,6 +2,7 @@
 
 #record-played-game {
     $color-hover: lighten($brand-primary,35%);
+    $color-border: #dce4ec;
 
     .steps {
         padding: 0;
@@ -12,6 +13,7 @@
             margin-bottom: 10px;
             margin-right: 10px;
             display: flex;
+            padding-right: 5px;
 
             &.arrow_box {
                 position: relative;
@@ -116,6 +118,35 @@
                 .name {
                     font-size: 22px;
                 }
+            }
+
+            .nav-tabs {
+                border-bottom: solid 1px $color-border;
+
+                a {
+                }
+
+                .active {
+                    a {
+                        color: white;
+                        background-color: $brand-primary;
+                    }
+                }
+
+                &:not(.active) {
+                    &:hover {
+                    }
+                }
+            }
+
+            .tab-content {
+                border: solid 1px $color-border;
+                padding: 20px;
+            }
+
+            .btn-recordgame {
+                font-size: 16px;
+                padding: 20px;
             }
         }
     }

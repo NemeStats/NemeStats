@@ -91,7 +91,7 @@
                                     <span class="fa fa-spinner fa-spin" v-show="searchingBGG"></span>
                                 </span>
 
-                                <input type="text" class="form-control form-control-lg typeahead" id="search-bgg"/>
+                                <input type="text" class="form-control form-control-lg typeahead" id="search-bgg" />
                             </div>
                         </div>
                         <button class="btn btn-default" v-on:click="backToSelectDate">Back</button>
@@ -100,6 +100,7 @@
                 <div v-show="currentStep == 3" style="display: none">
                     <h3 class="title">Select players</h3>
                     <div class="content">
+                        <h4 class="title">Select from existent players:</h4>
                         <div class="row form-group">
                             <div class="col-sm-5">
                                 <select name="from" id="optgroup" class="form-control" size="9" multiple="multiple">
@@ -119,10 +120,8 @@
                             </div>
 
                             <div class="col-sm-2">
-                                <button type="button" id="optgroup_rightAll" class="btn btn-block"><i class="fa fa-forward"></i></button>
                                 <button type="button" id="optgroup_rightSelected" class="btn btn-block"><i class="fa fa-chevron-right"></i></button>
                                 <button type="button" id="optgroup_leftSelected" class="btn btn-block"><i class="fa fa-chevron-left"></i></button>
-                                <button type="button" id="optgroup_leftAll" class="btn btn-block"><i class="fa fa-backward"></i></button>
                             </div>
 
                             <div class="col-sm-5">
@@ -131,10 +130,49 @@
                                 </select>
                             </div>
                         </div>
+                        <h4 class="title">Create new:</h4>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <span class="fa fa-plus"></span>                                    
+                                </span>
+                                <input type="text" class="form-control form-control-lg" placeholder="new player name" v-model="newPlayerName"/>
+                                <button class="btn btn-default" style="margin-left: 10px;" v-on:click="createNewPlayer()">Create player</button>
+                            </div>
+                        </div>
                         <div class="row">
                             <div class="col-xs-12">
                                 <button class="btn btn-default" v-on:click="backToSelectGame">Back</button>
                                 <button class="btn btn-primary" v-on:click="gotoSetGameResult">Continue</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div v-show="currentStep == 4" style="display: none">
+                    <h3 class="title">Set game result</h3>
+                    <div class="content">
+                        <h4 class="title">Select game type:</h4>
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li role="presentation" class="active"><a href="#ranked" role="tab" data-toggle="tab">Ranked game</a></li>
+                            <li role="presentation"><a href="#cooperative" role="tab" data-toggle="tab">Cooperative game</a></li>
+                        </ul>
+
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane active" id="ranked">...</div>
+                            <div role="tabpanel" class="tab-pane" id="cooperative">
+                                <div class="row">
+                                    <div class="col-xs-offset-2 col-xs-4">
+                                        <button class="btn btn-success btn-recordgame btn-everyone-won" id="btnEveryoneWonButton" title="Record a game where everyone won (e.g. you saved the world in Pandemic)">
+                                            <i class="fa fa-smile-o"></i> Everyone Won
+                                        </button>
+                                    </div>
+                                    <div class="col-xs-4">
+                                        <button class="btn btn-danger btn-recordgame" id="btnEveryoneLostButton" title="Record a game where everyone lost (e.g. no one survived in Zombicide)">
+                                            <i class="fa fa-frown-o"></i> Everyone Lost
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 

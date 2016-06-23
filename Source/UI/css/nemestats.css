@@ -1057,7 +1057,8 @@ footer {
     height: 80px;
     margin-bottom: 10px;
     margin-right: 10px;
-    display: flex; }
+    display: flex;
+    padding-right: 5px; }
     #record-played-game .steps li.arrow_box {
       position: relative;
       background: #ecf0f1; }
@@ -1123,5 +1124,16 @@ footer {
       width: 100px; }
     #record-played-game .form .content .game-image .name {
       font-size: 22px; }
+  #record-played-game .form .content .nav-tabs {
+    border-bottom: solid 1px #dce4ec; }
+    #record-played-game .form .content .nav-tabs .active a {
+      color: white;
+      background-color: #354458; }
+  #record-played-game .form .content .tab-content {
+    border: solid 1px #dce4ec;
+    padding: 20px; }
+  #record-played-game .form .content .btn-recordgame {
+    font-size: 16px;
+    padding: 20px; }
 
 /*# sourceMappingURL=nemestats.css.map */
