@@ -19,7 +19,7 @@ namespace BusinessLogic.Logic.Achievements
 
         public override string DescriptionFormat => @"This Achievement is earned by losing {0} team games (where each player has the same rank at the end of the game).";
 
-        public override string IconClass => "fa fa-inverse fa-stack-1x fa-frown-o";
+        public override string IconClass => "fa fa-frown-o";
 
         public override Dictionary<AchievementLevel, int> LevelThresholds => new Dictionary<AchievementLevel, int>
         {
