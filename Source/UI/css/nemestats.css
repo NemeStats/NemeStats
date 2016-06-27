@@ -553,6 +553,28 @@ footer {
   text-align: center;
   font-size: 20px; }
 
+.gu-mirror {
+  position: fixed !important;
+  margin: 0 !important;
+  z-index: 9999 !important;
+  opacity: 0.8;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
+  filter: alpha(opacity=80); }
+
+.gu-hide {
+  display: none !important; }
+
+.gu-unselectable {
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important; }
+
+.gu-transit {
+  opacity: 0.2;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";
+  filter: alpha(opacity=20); }
+
 /*$header-background-color: #2C3E50;*/
 @media (max-width: 991px) {
   .home-page-icon {
@@ -1063,7 +1085,8 @@ footer {
       position: relative;
       background: #ecf0f1; }
       #record-played-game .steps li.arrow_box:not(.disabled):not(.current) {
-        cursor: pointer; }
+        cursor: pointer;
+        background-color: #b8c4d4; }
         #record-played-game .steps li.arrow_box:not(.disabled):not(.current) > span {
           cursor: pointer; }
         #record-played-game .steps li.arrow_box:not(.disabled):not(.current):hover {
@@ -1113,9 +1136,7 @@ footer {
   background-color: #fff;
   padding: 20px;
   box-shadow: rgba(0, 0, 0, 0.2) 0 8px 17px 0, rgba(0, 0, 0, 0.188235) 0 6px 20px 0;
-  /*margin: 20px 0;*/
-  /*#ranked-game {*/
-  /*}*/ }
+  /*margin: 20px 0;*/ }
   #record-played-game .form .content .game-image {
     padding: 20px;
     display: inline-block;
@@ -1132,10 +1153,11 @@ footer {
       color: white;
       background-color: #354458; }
   #record-played-game .form .content .tab-content {
-    border: solid 1px #dce4ec;
+    border: solid 1px #354458;
     padding: 20px; }
     #record-played-game .form .content .tab-content .btn-wrapper {
-      padding: 20px; }
+      padding: 20px;
+      text-align: center; }
       #record-played-game .form .content .tab-content .btn-wrapper:hover {
         background-color: #889cb7; }
       #record-played-game .form .content .tab-content .btn-wrapper .btn-recordgame {
@@ -1179,27 +1201,5 @@ footer {
     cursor: grabbing;
     cursor: -moz-grabbing;
     cursor: -webkit-grabbing; }
-
-.gu-mirror {
-  position: fixed !important;
-  margin: 0 !important;
-  z-index: 9999 !important;
-  opacity: 0.8;
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
-  filter: alpha(opacity=80); }
-
-.gu-hide {
-  display: none !important; }
-
-.gu-unselectable {
-  -webkit-user-select: none !important;
-  -moz-user-select: none !important;
-  -ms-user-select: none !important;
-  user-select: none !important; }
-
-.gu-transit {
-  opacity: 0.2;
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";
-  filter: alpha(opacity=20); }
 
 /*# sourceMappingURL=nemestats.css.map */

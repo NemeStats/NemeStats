@@ -1,6 +1,7 @@
 ﻿@import "nemestats-variables.scss";
 
 $color-hover: lighten($brand-primary,35%);
+$color-completed: lighten($brand-primary,50%);
 $color-border: #dce4ec;
 
 #record-played-game {
@@ -23,6 +24,7 @@ $color-border: #dce4ec;
                 &:not(.disabled) {
                     &:not(.current) {
                         cursor: pointer;
+                        background-color: $color-completed;
 
                         > span {
                             cursor: pointer;
@@ -141,11 +143,12 @@ $color-border: #dce4ec;
             }
 
             .tab-content {
-                border: solid 1px $color-border;
+                border: solid 1px $brand-primary;
                 padding: 20px;
 
                 .btn-wrapper {
                     padding: 20px;
+                    text-align: center;
 
                     &:hover {
                         background-color: $color-hover;
@@ -179,8 +182,7 @@ $color-border: #dce4ec;
                     }
                 }
             }
-            /*#ranked-game {*/
-            /*}*/
+
         }
     }
 }
@@ -223,34 +225,4 @@ $color-border: #dce4ec;
             cursor: -webkit-grabbing;
         }
     }
-}
-
-
-
-
-
-.gu-mirror {
-    position: fixed !important;
-    margin: 0 !important;
-    z-index: 9999 !important;
-    opacity: 0.8;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
-    filter: alpha(opacity=80);
-}
-
-.gu-hide {
-    display: none !important;
-}
-
-.gu-unselectable {
-    -webkit-user-select: none !important;
-    -moz-user-select: none !important;
-    -ms-user-select: none !important;
-    user-select: none !important;
-}
-
-.gu-transit {
-    opacity: 0.2;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";
-    filter: alpha(opacity=20);
 }

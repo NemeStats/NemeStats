@@ -10,7 +10,7 @@
     <div class="row">
         <div class="col-sm-3">
             <ul class="steps">
-                <li class="arrow_box current" v-bind:class="{'current': currentStep == 1}" v-on:click="backToSelectDate">
+                <li class="arrow_box current" v-bind:class="{'current': currentStep == 1, 'completed': currentStep > 1}" v-on:click="backToSelectDate">
                     <span class="number">1</span>
                     <span class="desc" v-show="currentStep <= 1">
                         Set date
@@ -20,7 +20,7 @@
                         <div class="value">{{ viewModel.Date | moment "LL" }}</div>
                     </div>
                 </li>
-                <li class="arrow_box" v-bind:class="{'current': currentStep == 2,'disabled' : currentStep < 2}" v-on:click="backToSelectGame">
+                <li class="arrow_box" v-bind:class="{'current': currentStep == 2,'disabled' : currentStep < 2, 'completed': currentStep > 2}" v-on:click="backToSelectGame">
                     <span class="number">2</span>
                     <span class="desc" v-show="currentStep <= 2">
                         Select game
@@ -30,7 +30,7 @@
                         <div class="value">{{ viewModel.Game.Name }}</div>
                     </div>
                 </li>
-                <li class="arrow_box" v-bind:class="{'current': currentStep == 3,'disabled' : currentStep < 3}" v-on:click="backToSelectPlayers">
+                <li class="arrow_box" v-bind:class="{'current': currentStep == 3,'disabled' : currentStep < 3,, 'completed': currentStep > 3}" v-on:click="backToSelectPlayers">
                     <span class="number">3</span>
                     <span class="desc" v-show="currentStep <= 3">
                         Select players
@@ -40,7 +40,7 @@
                         <div class="value">{{ viewModel.Players.length }} players</div>
                     </div>
                 </li>
-                <li class="arrow_box" v-bind:class="{'current': currentStep == 4,'disabled' : currentStep < 4}">
+                <li class="arrow_box" v-bind:class="{'current': currentStep == 4,'disabled' : currentStep < 4, 'completed': currentStep > 4}">
                     <span class="number">4</span>
                     <span class="desc">
                         Set game result
@@ -188,14 +188,14 @@
                                 <div role="tabpanel" class="tab-pane" id="cooperative">
                                     <div class="row">
                                         <div class="col-xs-offset-2 col-xs-4">
-                                            <div class="btn-wrapper" data-container="body" data-toggle="popover" data-placement="top" data-content="Record a game where everyone won (e.g. you saved the world in Pandemic)">
+                                            <div class="btn-wrapper" data-container="body" data-toggle="popover" data-placement="left" data-content="Record a game where everyone won (e.g. you saved the world in Pandemic)">
                                                 <button class="btn btn-success btn-recordgame btn-everyone-won" id="btnEveryoneWonButton">
                                                     <i class="fa fa-smile-o"></i> Everyone Won
                                                 </button>
                                             </div>
                                         </div>
                                         <div class="col-xs-4">
-                                            <div class="btn-wrapper" data-container="body" data-toggle="popover" data-placemenet="top" data-content="Record a game where everyone lost (e.g. no one survived in Zombicide)">
+                                            <div class="btn-wrapper" data-container="body" data-toggle="popover" data-placemenet="right" data-content="Record a game where everyone lost (e.g. no one survived in Zombicide)">
                                                 <button class="btn btn-danger btn-recordgame" id="btnEveryoneLostButton">
                                                     <i class="fa fa-frown-o"></i> Everyone Lost
                                                 </button>
