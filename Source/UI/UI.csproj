@@ -699,6 +699,7 @@
     <Content Include="Scripts\Shared\GoogleAnalytics.js" />
     <Content Include="Scripts\Shared\UIUtils.js" />
     <Content Include="Scripts\Shared\_Layout.js" />
+    <Content Include="Scripts\dragula.min.js" />
     <Content Include="Scripts\typeahead-bundle.js" />
     <Content Include="Scripts\vue-moment.js" />
     <Content Include="Scripts\vue.min.js" />

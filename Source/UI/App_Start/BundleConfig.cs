@@ -76,6 +76,7 @@ namespace UI
             bundles.Add(new ScriptBundle("~/bundles/custom")
                 .Include("~/Scripts/typeahead-bundle.js")
                 .Include("~/Scripts/multiselect.js")
+                .Include("~/Scripts/dragula.min.js")
                 .Include("~/Scripts/namespace-{version}.js")
                 .Include("~/Scripts/Plugins/toEditBoxPlugin.js")
                 .Include("~/Scripts/Plugins/rankPlugin.js")

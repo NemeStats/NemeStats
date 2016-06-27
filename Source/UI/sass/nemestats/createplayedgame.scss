@@ -1,8 +1,9 @@
 ﻿@import "nemestats-variables.scss";
 
+$color-hover: lighten($brand-primary,35%);
+$color-border: #dce4ec;
+
 #record-played-game {
-    $color-hover: lighten($brand-primary,35%);
-    $color-border: #dce4ec;
 
     .steps {
         padding: 0;
@@ -142,12 +143,114 @@
             .tab-content {
                 border: solid 1px $color-border;
                 padding: 20px;
+
+                .btn-wrapper {
+                    padding: 20px;
+
+                    &:hover {
+                        background-color: $color-hover;
+                    }
+
+                    .btn-recordgame {
+                        font-size: 16px;
+                        padding: 20px;
+                    }
+                }
             }
 
-            .btn-recordgame {
-                font-size: 16px;
-                padding: 20px;
+            .list-group.header {
+                font-size: 18px;
+                
+
+                .list-group-item {
+                    background-color: $well-bg;
+                    color: black;
+
+                    span {
+                        display: inline-block;
+
+                        &.rank {
+                            width: 75px;
+                        }
+
+                        &.score {
+                            float: right;
+                        }
+                    }
+                }
             }
+            /*#ranked-game {*/
+            /*}*/
         }
     }
+}
+
+.list-group-item {
+    color: white;
+    background-color: $brand-primary;
+    border-color: $color-border;
+
+    input {
+        display: inline-block;
+
+        &.rank {
+            width: 65px;
+            margin-right: 10px;
+        }
+
+        &.score {
+            width: 85px;
+            float: right;
+            margin-left: 10px;
+        }
+    }
+
+    button {
+        display: inline-block;
+        float: right;
+        margin: 0 5px;
+    }
+
+    cursor: move; /* fallback if grab cursor is unsupported */
+    cursor: grab;
+    cursor: -moz-grab;
+    cursor: -webkit-grab;
+
+    &:active {
+        :active {
+            cursor: grabbing;
+            cursor: -moz-grabbing;
+            cursor: -webkit-grabbing;
+        }
+    }
+}
+
+
+
+
+
+.gu-mirror {
+    position: fixed !important;
+    margin: 0 !important;
+    z-index: 9999 !important;
+    opacity: 0.8;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
+    filter: alpha(opacity=80);
+}
+
+.gu-hide {
+    display: none !important;
+}
+
+.gu-unselectable {
+    -webkit-user-select: none !important;
+    -moz-user-select: none !important;
+    -ms-user-select: none !important;
+    user-select: none !important;
+}
+
+.gu-transit {
+    opacity: 0.2;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";
+    filter: alpha(opacity=20);
 }

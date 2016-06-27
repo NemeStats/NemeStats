@@ -1113,7 +1113,9 @@ footer {
   background-color: #fff;
   padding: 20px;
   box-shadow: rgba(0, 0, 0, 0.2) 0 8px 17px 0, rgba(0, 0, 0, 0.188235) 0 6px 20px 0;
-  /*margin: 20px 0;*/ }
+  /*margin: 20px 0;*/
+  /*#ranked-game {*/
+  /*}*/ }
   #record-played-game .form .content .game-image {
     padding: 20px;
     display: inline-block;
@@ -1132,8 +1134,72 @@ footer {
   #record-played-game .form .content .tab-content {
     border: solid 1px #dce4ec;
     padding: 20px; }
-  #record-played-game .form .content .btn-recordgame {
-    font-size: 16px;
-    padding: 20px; }
+    #record-played-game .form .content .tab-content .btn-wrapper {
+      padding: 20px; }
+      #record-played-game .form .content .tab-content .btn-wrapper:hover {
+        background-color: #889cb7; }
+      #record-played-game .form .content .tab-content .btn-wrapper .btn-recordgame {
+        font-size: 16px;
+        padding: 20px; }
+  #record-played-game .form .content .list-group.header {
+    font-size: 18px; }
+    #record-played-game .form .content .list-group.header .list-group-item {
+      background-color: #ecf0f1;
+      color: black; }
+      #record-played-game .form .content .list-group.header .list-group-item span {
+        display: inline-block; }
+        #record-played-game .form .content .list-group.header .list-group-item span.rank {
+          width: 75px; }
+        #record-played-game .form .content .list-group.header .list-group-item span.score {
+          float: right; }
+
+.list-group-item {
+  color: white;
+  background-color: #354458;
+  border-color: #dce4ec;
+  cursor: move;
+  /* fallback if grab cursor is unsupported */
+  cursor: grab;
+  cursor: -moz-grab;
+  cursor: -webkit-grab; }
+  .list-group-item input {
+    display: inline-block; }
+    .list-group-item input.rank {
+      width: 65px;
+      margin-right: 10px; }
+    .list-group-item input.score {
+      width: 85px;
+      float: right;
+      margin-left: 10px; }
+  .list-group-item button {
+    display: inline-block;
+    float: right;
+    margin: 0 5px; }
+  .list-group-item:active :active {
+    cursor: grabbing;
+    cursor: -moz-grabbing;
+    cursor: -webkit-grabbing; }
+
+.gu-mirror {
+  position: fixed !important;
+  margin: 0 !important;
+  z-index: 9999 !important;
+  opacity: 0.8;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
+  filter: alpha(opacity=80); }
+
+.gu-hide {
+  display: none !important; }
+
+.gu-unselectable {
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important; }
+
+.gu-transit {
+  opacity: 0.2;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";
+  filter: alpha(opacity=20); }
 
 /*# sourceMappingURL=nemestats.css.map */

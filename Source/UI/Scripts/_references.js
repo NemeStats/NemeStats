@@ -19,6 +19,7 @@
 /// <reference path="createplayedgame/createplayedgame.js" />
 /// <reference path="d3/d3.min.js" />
 /// <reference path="d3/nv.d3.min.js" />
+/// <reference path="dragula.min.js" />
 /// <reference path="GameDefinition/createGameDefinition.js" />
 /// <reference path="gamedefinition/creategamedefinitionpartial.js" />
 /// <reference path="gamedefinition/gamedefinitionautocomplete.js" />

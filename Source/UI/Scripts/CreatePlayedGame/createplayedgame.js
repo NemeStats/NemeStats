@@ -14,10 +14,24 @@ Views.PlayedGame.CreatePlayedGame = function () {
     this._viewModel = {
         Date: null,
         Game: null,
-        Players: []
+        Players: [],
+        GameNotes: null
     };
 
     this.component = null;
+
+    this.getPlayerByRank = function (rank) {
+
+        var player = null;
+        $.each(this.component.$data.viewModel.Players, function (i, p) {
+            if (p.Rank === rank) {
+                player = p;
+                return;
+            }
+        });
+        return player;
+
+    }
 };
 
 //Implementation
@@ -26,7 +40,40 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
         this.setupDatePicker();
         this.setupAutocomplete();
         this.setupMultiselect();
+        this.setupPlayersDragAndDrop();
         this.configureViewModel();
+    },
+    setupPlayersDragAndDrop: function () {
+        var parent = this;
+        var rankedGameContainer = document.getElementById("ranked-game");
+        var list = dragula([rankedGameContainer]);
+        list.on("dragend", function (el) {
+
+            $.each($(el).parent().find("li"), function (i, player) {
+                var $player = $(player);
+                //if (player.hasClass("gu-transit")) {
+                //    $player;
+                //}
+                var index = $player.data("index");
+                parent.component.$data.viewModel.Players[index].Rank = i + 1;
+            });
+
+            //var currentIndex = $(el).data("index");
+            //var nextIndex;
+            //if (sibling == null) {
+            //    //Last position
+            //} else {
+            //    nextIndex = sibling.data("index");
+            //}
+            //var currentPlayer = parent.component.$data.viewModel.Players[currentIndex];
+            //var replacingPlayer = parent.component.$data.viewModel.Players[nextIndex];
+
+            //var currentRank = currentPlayer.Rank;
+
+            //currentPlayer.Rank = replacingPlayer.Rank;
+            //replacingPlayer.Rank = currentRank;
+        });
+
     },
     setupMultiselect: function () {
         var parent = this;
@@ -209,7 +256,7 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                             this.currentStep = parent._steps.SelectPlayers;
                         }
                     },
-                    createNewPlayer: function() {
+                    createNewPlayer: function () {
                         if (this.newPlayerName) {
                             $("#optgroup").append($('<option>', {
                                 text: this.newPlayerName
@@ -225,9 +272,14 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                             this.viewModel.Players = [];
 
                             $.each(playersSelected, function (i, $option) {
+                                var id = $option.value;
+                                if ($option.value === $option.text) {
+                                    id = null;
+                                }
                                 _this.viewModel.Players.push({
-                                    Id: $option.value,
-                                    Name: $option.text
+                                    Id: id,
+                                    Name: $option.text,
+                                    Rank: i + 1
                                 });
                             });
 
@@ -237,7 +289,24 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                             this.alertVisible = true;
                         }
                     },
-                    
+                    changeRank: function (player, increase) {
+                        var newRank;
+                        if (increase) {
+                            if (player.Rank === 1) {
+                                return;
+                            }
+                            newRank = player.Rank - 1;
+                        } else {
+                            newRank = player.Rank + 1;
+                        }
+
+                        var replacingPlayer = parent.getPlayerByRank(newRank);
+
+                        if (replacingPlayer) {
+                            replacingPlayer.Rank = player.Rank;
+                        }
+                        player.Rank = newRank;
+                    }
                 }
             });
 
@@ -246,4 +315,6 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
         }
 
     }
+
+
 };
