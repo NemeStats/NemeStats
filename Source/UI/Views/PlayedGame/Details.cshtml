@@ -3,21 +3,51 @@
 @using UI.HtmlHelpers
 @using UI.Models.Players
 @{
-	string title = @Model.GameDefinitionName + " - " + Model.DatePlayed.ToShortDateString();
-	ViewBag.Title = title + " - " + Model.GamingGroupName;
-	Layout = MVC.Shared.Views._BaseLayout;
+    string title = @Model.GameDefinitionName + " - " + Model.DatePlayed.ToShortDateString();
+    ViewBag.Title = title + " - " + Model.GamingGroupName;
+    Layout = MVC.Shared.Views._BaseLayout;
+}
+
+@section CustomMetas {
+    @{
+        var metatitle = $"Played {@Model.GameDefinitionName} on Nemestats";
+        var metadescription = $"{@Model.GamingGroupName} played {@Model.GameDefinitionName} at {@Model.DatePlayed.ToShortDateString()} and ";
+
+        if (Model.WinnerType == WinnerTypes.TeamWin)
+        {
+            metadescription += "everyone won!";
+        }
+        else if (Model.WinnerType == WinnerTypes.TeamLoss)
+        {
+            metadescription += "everyone lost!";
+        }
+        else
+        {
+            metadescription += $"{Model.PlayerResults.First().PlayerName} won!";
+        }
+    }
+
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="&#64;nemestats" />
+    <meta name="twitter:title" content="@metatitle" />
+    <meta name="twitter:description" content="@metadescription" />
+    <meta name="twitter:image" content="@Model.ThumbnailImageUrl" />
+
+    <meta name="og:title" content="@metatitle" />
+    <meta name="og:description" content="@metadescription" />
+    <meta name="og:image" content="@Model.ThumbnailImageUrl"/>
 }
 
 <h2 class="page-header">
     @title
     @if (Model.WinnerType == WinnerTypes.TeamLoss)
-	{
+    {
         <span class="gameResult-teamLoss"> - TEAM LOSS</span>
-	}
-	else if (Model.WinnerType == WinnerTypes.TeamWin)
-	{
+    }
+    else if (Model.WinnerType == WinnerTypes.TeamWin)
+    {
         <span class="gameResult-teamWin"> - TEAM WIN</span>
-	}
+    }
     <a href="https://twitter.com/share" class="twitter-share-button" data-text="Check out this game I played on &#64;nemestats :" data-size="large" data-related="nemestats" data-count="none" data-hashtags="boardgames" data-dnt="true" title="Tweet a link to this game">Tweet</a>
     <script>!function (d, s, id) { var js, fjs = d.getElementsByTagName(s)[0], p = /^http:/.test(d.location) ? 'http' : 'https'; if (!d.getElementById(id)) { js = d.createElement(s); js.id = id; js.src = p + '://platform.twitter.com/widgets.js'; fjs.parentNode.insertBefore(js, fjs); } }(document, 'script', 'twitter-wjs');</script>
 </h2>
@@ -38,15 +68,15 @@
 
                         if (!string.IsNullOrEmpty(Model.ThumbnailImageUrl))
                         {
-                        <a href="@Url.Action(MVC.GameDefinition.ActionNames.Details,MVC.GameDefinition.Name,new {id=Model.GameDefinitionId})">
-                            <img class="bgg-thumbnail" src="@Model.ThumbnailImageUrl" alt="@Model.GameDefinitionName" title="@Model.GameDefinitionName" />
-                        </a>
+                            <a href="@Url.Action(MVC.GameDefinition.ActionNames.Details,MVC.GameDefinition.Name,new {id=Model.GameDefinitionId})">
+                                <img class="bgg-thumbnail" src="@Model.ThumbnailImageUrl" alt="@Model.GameDefinitionName" title="@Model.GameDefinitionName" />
+                            </a>
                         }
                         else
                         {
-                        <a href="@Model.BoardGameGeekUri.AbsoluteUri" target="_blank;">
-                            <img src="~/Content/Images/bgg_small.png" alt="View on BoardGameGeek.com" title="View on BoardGameGeek.com" />
-                        </a>
+                            <a href="@Model.BoardGameGeekUri.AbsoluteUri" target="_blank;">
+                                <img src="~/Content/Images/bgg_small.png" alt="View on BoardGameGeek.com" title="View on BoardGameGeek.com" />
+                            </a>
                         }
                     }
                     else
@@ -70,7 +100,7 @@
                     <b>Gaming Group</b>
                 </div>
                 <div class="col-sm-9">
-                    @Html.ActionLink(@Model.GamingGroupName, "Details", "GamingGroup", new {id = @Model.GamingGroupId}, new {})
+                    @Html.ActionLink(@Model.GamingGroupName, "Details", "GamingGroup", new { id = @Model.GamingGroupId }, new { })
                 </div>
             </div>
             @if (!string.IsNullOrEmpty(Model.Notes))
@@ -87,14 +117,13 @@
                 </div>
             }
             @if (Model.UserCanEdit)
-			{
+            {
                 <br />
                 <div class="row">
                     <div class="col-sm-9 col-sm-offset-3">
                         <a href="@Url.Action(MVC.PlayedGame.ActionNames.Delete,MVC.PlayedGame.Name, new {id = Model.PlayedGameId})" class="btn btn-sm btn-danger"><span class="fa fa-trash"></span> Delete</a>
                     </div>
-                </div>
-			}
+                </div>}
         </div>
     </div>
 </div>
@@ -115,11 +144,11 @@
                     }
                 </div>
                 @if (Model.UserCanEdit)
-				{
+                {
                     <div class="col-sm-9">
                         <a href="@Url.Action(MVC.PlayedGame.ActionNames.Edit,MVC.PlayedGame.Name,new {id=Model.PlayedGameId})" class="btn btn-sm btn-primary"><span class="fa fa-pencil"></span> Edit</a>
                     </div>
-				}
+                }
             </div>
         </div>
     </div>
