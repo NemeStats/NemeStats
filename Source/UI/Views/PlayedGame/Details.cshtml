@@ -25,17 +25,19 @@
         {
             metadescription += $"{Model.PlayerResults.First().PlayerName} won!";
         }
+
+        var absoluteImageUrl = $"https:{Model.ThumbnailImageUrl}";
     }
 
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:site" content="&#64;nemestats" />
     <meta name="twitter:title" content="@metatitle" />
     <meta name="twitter:description" content="@metadescription" />
-    <meta name="twitter:image" content="@Model.ThumbnailImageUrl" />
+    <meta name="twitter:image" content="@absoluteImageUrl" />
 
     <meta name="og:title" content="@metatitle" />
     <meta name="og:description" content="@metadescription" />
-    <meta name="og:image" content="@Model.ThumbnailImageUrl"/>
+    <meta name="og:image" content="@absoluteImageUrl"/>
 }
 
 <h2 class="page-header">
