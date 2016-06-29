@@ -19,6 +19,7 @@ using System;
 using BusinessLogic.Models.Games.Validation;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using BusinessLogic.Models.PlayedGames;
 using BusinessLogic.Models.Validation;
 
 namespace BusinessLogic.Models.Games
@@ -30,8 +31,8 @@ namespace BusinessLogic.Models.Games
             DatePlayed = DateTime.UtcNow;
         }
 
-        [Required]
         public int? GameDefinitionId { get; set; }
+        public string GameDefinitionName { get; set; }
 
         public string Notes { get; set; }
 
@@ -46,6 +47,7 @@ namespace BusinessLogic.Models.Games
         [MaxDate]
         public DateTime DatePlayed { get; set; }
 
+        public WinnerTypes WinnerType { get; set; }
         public int? GamingGroupId { get; set; }
     }
 }

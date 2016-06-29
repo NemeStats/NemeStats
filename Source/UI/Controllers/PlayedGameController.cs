@@ -30,6 +30,7 @@ using BusinessLogic.Models.User;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Web.Helpers;
 using System.Web.Http;
 using System.Web.Mvc;
 using BusinessLogic.Paging;
@@ -99,22 +100,11 @@ namespace UI.Controllers
         [System.Web.Mvc.HttpGet]
         public virtual ActionResult Create(ApplicationUser currentUser)
         {
-            //var gameDefinitionSummaries = _gameDefinitionRetriever.GetAllGameDefinitions(currentUser.CurrentGamingGroupId);
-
-            //var gameDefinitionSummariesSelectList = BuildGameDefinitionSummariesSelectList(gameDefinitionSummaries);
-            //var viewModel = new PlayedGameEditViewModel
-            //{
-            //    GameDefinitions = gameDefinitionSummariesSelectList,
-            //    Players = GetAllPlayers(currentUser)
-            //};
-
-            //return View(MVC.PlayedGame.Views.Create, viewModel);
-
             var mostPlayedGames = _gameDefinitionRetriever.GetMostPlayedGames(new GetMostPlayedGamesQuery { GamingGroupId = currentUser.CurrentGamingGroupId, Page = 1, PageSize = 5 });
             var recentPlayedGames = _gameDefinitionRetriever.GetRecentGames(new GetRecentPlayedGamesQuery { GamingGroupId = currentUser.CurrentGamingGroupId, Page = 1, PageSize = 5 });
 
             var players = _playerRetriever.GetPlayersToCreate(currentUser.Id);
-            
+
             var viewModel = new CreatePlayedGameViewModel
             {
                 MostPlayedGames = _gameDefinitionDisplayInfoToGameDefinitionDisplayInfoViewModelMapper.Map(mostPlayedGames).ToList(),
@@ -133,21 +123,18 @@ namespace UI.Controllers
         [System.Web.Mvc.HttpPost]
         [ValidateAntiForgeryToken]
         [UserContext]
-        public virtual ActionResult Create(NewlyCompletedGame newlyCompletedGame, [FromUri]bool recordAnotherGameAfterThis, ApplicationUser currentUser)
+        public virtual ActionResult Create(NewlyCompletedGame newlyCompletedGame, ApplicationUser currentUser)
         {
             if (ModelState.IsValid)
             {
-                _playedGameCreator.CreatePlayedGame(newlyCompletedGame, TransactionSource.WebApplication, currentUser);
+                var playerGame = _playedGameCreator.CreatePlayedGame(newlyCompletedGame, TransactionSource.WebApplication, currentUser);
 
-                if (!recordAnotherGameAfterThis)
-                {
-                    return new RedirectResult(Url.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name) + "#" + GamingGroupController.SECTION_ANCHOR_RECENT_GAMES);
-                }
+                //SetToastMessage(TempMessageKeys.TEMP_MESSAGE_KEY_PLAYED_GAME_RECORDED, "Played Game successfully recorded");
 
-                SetToastMessage(TempMessageKeys.TEMP_MESSAGE_KEY_PLAYED_GAME_RECORDED, "Played Game successfully recorded");
+                return Json(new { success = true, playedGameId = playerGame.Id });
             }
 
-            return Create(currentUser);
+            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
         }
 
         [System.Web.Mvc.HttpGet]

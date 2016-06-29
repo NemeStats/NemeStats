@@ -66,6 +66,9 @@ namespace BusinessLogic.Logic.PlayedGames
         //TODO need to have validation logic here (or on PlayedGame similar to what is on NewlyCompletedGame)
         public PlayedGame CreatePlayedGame(NewlyCompletedGame newlyCompletedGame, TransactionSource transactionSource, ApplicationUser currentUser)
         {
+            //TODO: If GameDefinitionId is null -> Create new GameDefinition with GameDefinitionName
+            //TODO: If any PlayerId is null -> Create new Player
+
             var gameDefinition = _dataContext.FindById<GameDefinition>(newlyCompletedGame.GameDefinitionId);
             _securedEntityValidatorForGameDefinition.ValidateAccess(gameDefinition, currentUser, typeof(GameDefinition), newlyCompletedGame.GameDefinitionId);
             BoardGameGeekGameDefinition boardGameGeekGameDefinition = null;
@@ -82,7 +85,7 @@ namespace BusinessLogic.Logic.PlayedGames
 
             var playedGame = TransformNewlyCompletedGameIntoPlayedGame(
                 newlyCompletedGame,
-                newlyCompletedGame.GamingGroupId ?? currentUser.CurrentGamingGroupId,
+                currentUser.CurrentGamingGroupId,
                 currentUser.Id,
                 playerGameResults);
 
@@ -141,20 +144,13 @@ namespace BusinessLogic.Logic.PlayedGames
             string applicationUserId,
             List<PlayerGameResult> playerGameResults)
         {
-            var winnerType = WinnerTypes.PlayerWin;
-            if (playerGameResults.All(x => x.GameRank == 1))
-            {
-                winnerType = WinnerTypes.TeamWin;
-            }else if (playerGameResults.All(x => x.GameRank > 1))
-            {
-                winnerType = WinnerTypes.TeamLoss;
-            }
+           
             var numberOfPlayers = newlyCompletedGame.PlayerRanks.Count;
             var playedGame = new PlayedGame
             {
                 GameDefinitionId = newlyCompletedGame.GameDefinitionId.Value,
                 NumberOfPlayers = numberOfPlayers,
-                WinnerType = winnerType,
+                WinnerType = newlyCompletedGame.WinnerType,
                 PlayerGameResults = playerGameResults,
                 DatePlayed = newlyCompletedGame.DatePlayed,
                 GamingGroupId = gamingGroupId,

@@ -730,6 +730,43 @@ footer {
     color: #3A9AD9;
     background-color: white; }
 
+.btn.btn-twitter {
+  color: white;
+  background-color: #6cadde;
+  border-color: #6cadde; }
+  .btn.btn-twitter:focus, .btn.btn-twitter.focus {
+    color: white;
+    background-color: #4296d5;
+    border-color: #256ea5; }
+  .btn.btn-twitter:hover {
+    color: white;
+    background-color: #4296d5;
+    border-color: #3a91d3; }
+  .btn.btn-twitter:active, .btn.btn-twitter.active,
+  .open > .btn.btn-twitter.dropdown-toggle {
+    color: white;
+    background-color: #4296d5;
+    border-color: #3a91d3; }
+    .btn.btn-twitter:active:hover, .btn.btn-twitter:active:focus, .btn.btn-twitter:active.focus, .btn.btn-twitter.active:hover, .btn.btn-twitter.active:focus, .btn.btn-twitter.active.focus,
+    .open > .btn.btn-twitter.dropdown-toggle:hover,
+    .open > .btn.btn-twitter.dropdown-toggle:focus,
+    .open > .btn.btn-twitter.dropdown-toggle.focus {
+      color: white;
+      background-color: #2d84c7;
+      border-color: #256ea5; }
+  .btn.btn-twitter:active, .btn.btn-twitter.active,
+  .open > .btn.btn-twitter.dropdown-toggle {
+    background-image: none; }
+  .btn.btn-twitter.disabled:hover, .btn.btn-twitter.disabled:focus, .btn.btn-twitter.disabled.focus, .btn.btn-twitter[disabled]:hover, .btn.btn-twitter[disabled]:focus, .btn.btn-twitter[disabled].focus,
+  fieldset[disabled] .btn.btn-twitter:hover,
+  fieldset[disabled] .btn.btn-twitter:focus,
+  fieldset[disabled] .btn.btn-twitter.focus {
+    background-color: #6cadde;
+    border-color: #6cadde; }
+  .btn.btn-twitter .badge {
+    color: #6cadde;
+    background-color: white; }
+
 /*$header-background-color: #2C3E50;*/
 .progress {
   height: 20px;
@@ -1109,6 +1146,10 @@ footer {
       border-left-color: #ecf0f1;
       border-width: 20px;
       margin-top: -20px; }
+    #record-played-game .steps li.completed:after {
+      border-left-color: #b8c4d4; }
+    #record-played-game .steps li.disabled:after {
+      border-left-color: #ecf0f1; }
     #record-played-game .steps li.arrow_box.current:after {
       border-left-color: #354458; }
   #record-played-game .steps .number {
@@ -1127,6 +1168,22 @@ footer {
     overflow: hidden;
     max-height: 45px; }
 
+#record-played-game .loading {
+  z-index: 9999999;
+  display: block;
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0; }
+  #record-played-game .loading span {
+    top: 50%;
+    left: 50%;
+    position: absolute; }
+
+#record-played-game .form.postInProgress {
+  opacity: 0.2; }
+
 #record-played-game .form .title {
   margin-top: 0;
   padding-bottom: 5px;
@@ -1135,8 +1192,7 @@ footer {
 #record-played-game .form .content {
   background-color: #fff;
   padding: 20px;
-  box-shadow: rgba(0, 0, 0, 0.2) 0 8px 17px 0, rgba(0, 0, 0, 0.188235) 0 6px 20px 0;
-  /*margin: 20px 0;*/ }
+  box-shadow: rgba(0, 0, 0, 0.2) 0 8px 17px 0, rgba(0, 0, 0, 0.188235) 0 6px 20px 0; }
   #record-played-game .form .content .game-image {
     padding: 20px;
     display: inline-block;
@@ -1174,8 +1230,14 @@ footer {
           width: 75px; }
         #record-played-game .form .content .list-group.header .list-group-item span.score {
           float: right; }
+  #record-played-game .form .content .action-buttons .row {
+    margin: 20px 0; }
+  #record-played-game .form .content .action-buttons .btn {
+    padding: 20px;
+    width: 100%;
+    font-size: 16px; }
 
-.list-group-item {
+.ranked-item.list-group-item {
   color: white;
   background-color: #354458;
   border-color: #dce4ec;
@@ -1184,20 +1246,20 @@ footer {
   cursor: grab;
   cursor: -moz-grab;
   cursor: -webkit-grab; }
-  .list-group-item input {
+  .ranked-item.list-group-item input {
     display: inline-block; }
-    .list-group-item input.rank {
+    .ranked-item.list-group-item input.rank {
       width: 65px;
       margin-right: 10px; }
-    .list-group-item input.score {
+    .ranked-item.list-group-item input.score {
       width: 85px;
       float: right;
       margin-left: 10px; }
-  .list-group-item button {
+  .ranked-item.list-group-item button {
     display: inline-block;
     float: right;
     margin: 0 5px; }
-  .list-group-item:active :active {
+  .ranked-item.list-group-item:active :active {
     cursor: grabbing;
     cursor: -moz-grabbing;
     cursor: -webkit-grabbing; }

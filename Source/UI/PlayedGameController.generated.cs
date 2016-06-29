@@ -147,7 +147,6 @@ namespace UI.Controllers
         {
             public readonly string currentUser = "currentUser";
             public readonly string newlyCompletedGame = "newlyCompletedGame";
-            public readonly string recordAnotherGameAfterThis = "recordAnotherGameAfterThis";
         }
         static readonly ActionParamsClass_Delete s_params_Delete = new ActionParamsClass_Delete();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -256,16 +255,15 @@ namespace UI.Controllers
         }
 
         [NonAction]
-        partial void CreateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, BusinessLogic.Models.Games.NewlyCompletedGame newlyCompletedGame, bool recordAnotherGameAfterThis, BusinessLogic.Models.User.ApplicationUser currentUser);
+        partial void CreateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, BusinessLogic.Models.Games.NewlyCompletedGame newlyCompletedGame, BusinessLogic.Models.User.ApplicationUser currentUser);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult Create(BusinessLogic.Models.Games.NewlyCompletedGame newlyCompletedGame, bool recordAnotherGameAfterThis, BusinessLogic.Models.User.ApplicationUser currentUser)
+        public override System.Web.Mvc.ActionResult Create(BusinessLogic.Models.Games.NewlyCompletedGame newlyCompletedGame, BusinessLogic.Models.User.ApplicationUser currentUser)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Create);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "newlyCompletedGame", newlyCompletedGame);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "recordAnotherGameAfterThis", recordAnotherGameAfterThis);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "currentUser", currentUser);
-            CreateOverride(callInfo, newlyCompletedGame, recordAnotherGameAfterThis, currentUser);
+            CreateOverride(callInfo, newlyCompletedGame, currentUser);
             return callInfo;
         }
 

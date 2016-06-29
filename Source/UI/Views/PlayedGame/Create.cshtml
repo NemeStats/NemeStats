@@ -4,13 +4,20 @@
     ViewBag.Title = "Record a Game";
     Layout = MVC.Shared.Views._BaseLayout;
 }
+
 <h2 class="page-header">@ViewBag.Title</h2>
 <hr />
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "__AjaxAntiForgeryForm" }))
+{
+    @Html.AntiForgeryToken()
+}
+
+
 <div id="record-played-game">
     <div class="row">
         <div class="col-sm-3">
             <ul class="steps">
-                <li class="arrow_box current" v-bind:class="{'current': currentStep == 1, 'completed': currentStep > 1}" v-on:click="backToSelectDate">
+                <li class="arrow_box current" v-bind:class="{'current': currentStep == 1, 'completed': currentStep > 1, 'disabled': currentStep == 5}" v-on:click="backToSelectDate">
                     <span class="number">1</span>
                     <span class="desc" v-show="currentStep <= 1">
                         Set date
@@ -20,7 +27,7 @@
                         <div class="value">{{ viewModel.Date | moment "LL" }}</div>
                     </div>
                 </li>
-                <li class="arrow_box" v-bind:class="{'current': currentStep == 2,'disabled' : currentStep < 2, 'completed': currentStep > 2}" v-on:click="backToSelectGame">
+                <li class="arrow_box disabled" v-bind:class="{'current': currentStep == 2,'disabled' : currentStep < 2 || currentStep == 5, 'completed': currentStep > 2}" v-on:click="backToSelectGame">
                     <span class="number">2</span>
                     <span class="desc" v-show="currentStep <= 2">
                         Select game
@@ -30,7 +37,7 @@
                         <div class="value">{{ viewModel.Game.Name }}</div>
                     </div>
                 </li>
-                <li class="arrow_box" v-bind:class="{'current': currentStep == 3,'disabled' : currentStep < 3,, 'completed': currentStep > 3}" v-on:click="backToSelectPlayers">
+                <li class="arrow_box disabled" v-bind:class="{'current': currentStep == 3,'disabled' : currentStep < 3 || currentStep == 5, 'completed': currentStep > 3}" v-on:click="backToSelectPlayers">
                     <span class="number">3</span>
                     <span class="desc" v-show="currentStep <= 3">
                         Select players
@@ -40,13 +47,17 @@
                         <div class="value">{{ viewModel.Players.length }} players</div>
                     </div>
                 </li>
-                <li class="arrow_box" v-bind:class="{'current': currentStep == 4,'disabled' : currentStep < 4, 'completed': currentStep > 4}">
+                <li class="arrow_box disabled" v-bind:class="{'current': currentStep == 4,'disabled' : currentStep < 4 || currentStep == 5, 'completed': currentStep > 4}">
                     <span class="number">4</span>
-                    <span class="desc">
+                    <span class="desc" v-show="currentStep <= 4">
                         Set game result
                     </span>
+                    <div v-show="currentStep > 4" style="display: none">
+                        <div class="value-desc">Result:</div>
+                        <div class="value">{{ viewModel.WinnerType | winnertype }}</div>
+                    </div>
                 </li>
-                <li class="arrow_box" v-bind:class="{'current': currentStep == 5,'disabled' : currentStep < 5}">
+                <li class="arrow_box disabled" v-bind:class="{'current': currentStep == 5,'disabled' : currentStep < 5}">
                     <span class="number">5</span>
                     <span class="desc">
                         Summary
@@ -54,7 +65,7 @@
                 </li>
             </ul>
         </div>
-        <div class="col-sm-9 form">
+        <div class="col-sm-9 form" v-bind:class="{'postInProgress':postInProgress}">
             <div class="well">
                 <div class="alert alert-warning " style="display: none" v-show="alertVisible">
                     <button type="button" class="close" aria-label="Close" v-on:click="hideAlert"><span aria-hidden="true">&times;</span></button>
@@ -169,16 +180,16 @@
                                 <div role="tabpanel" class="tab-pane active" id="ranked">
                                     <ul class="list-group header">
                                         <li class="list-group-item">
-                                            <span class="rank" >Rank</span>
+                                            <span class="rank">Rank</span>
                                             <span class="player">Player</span>
-                                            <span class="score">Score (optional)</span>
+                                            @*TODO: <span class="score">Score (optional)</span>*@
                                         </li>
                                     </ul>
                                     <ul class="list-group" id="ranked-game">
-                                        <li class="list-group-item" v-for="player in viewModel.Players | orderBy 'Rank'" data-index="{{$index}}">
-                                            <input type="number" class="form-control rank" v-model="player.Rank" number/>
+                                        <li class="list-group-item ranked-item" v-for="player in viewModel.Players | orderBy 'Rank'" data-index="{{$index}}">
+                                            <input type="number" class="form-control rank" v-model="player.Rank" number />
                                             {{ player.Name }}
-                                            <input type="number" class="form-control score" v-model="player.Score" number/>
+                                            @*TODO: <input type="number" class="form-control score" v-model="player.Score" number/>*@
 
                                             <button class="btn btn-default" v-on:click="changeRank(player,true)" tabindex="-1"><span class="fa fa-arrow-up"></span></button>
                                             <button class="btn btn-default" v-on:click="changeRank(player,false)" tabindex="-1"><span class="fa fa-arrow-down"></span></button>
@@ -188,14 +199,14 @@
                                 <div role="tabpanel" class="tab-pane" id="cooperative">
                                     <div class="row">
                                         <div class="col-xs-offset-2 col-xs-4">
-                                            <div class="btn-wrapper" data-container="body" data-toggle="popover" data-placement="left" data-content="Record a game where everyone won (e.g. you saved the world in Pandemic)">
+                                            <div class="btn-wrapper" data-container="body" data-toggle="popover" data-placement="left" data-content="Record a game where everyone won (e.g. you saved the world in Pandemic)" v-on:click="setGameResult(2)">
                                                 <button class="btn btn-success btn-recordgame btn-everyone-won" id="btnEveryoneWonButton">
                                                     <i class="fa fa-smile-o"></i> Everyone Won
                                                 </button>
                                             </div>
                                         </div>
                                         <div class="col-xs-4">
-                                            <div class="btn-wrapper" data-container="body" data-toggle="popover" data-placemenet="right" data-content="Record a game where everyone lost (e.g. no one survived in Zombicide)">
+                                            <div class="btn-wrapper" data-container="body" data-toggle="popover" data-placemenet="right" data-content="Record a game where everyone lost (e.g. no one survived in Zombicide)" v-on:click="setGameResult(3)">
                                                 <button class="btn btn-danger btn-recordgame" id="btnEveryoneLostButton">
                                                     <i class="fa fa-frown-o"></i> Everyone Lost
                                                 </button>
@@ -210,11 +221,42 @@
                             <textarea v-model="viewModel.GameNotes" class="form-control" rows="4"></textarea>
                         </div>
                         <button class="btn btn-default" v-on:click="backToSelectPlayers">Back</button>
-                        <button class="btn btn-primary" v-on:click="setGameResult">Save played game</button>
+                        <button class="btn btn-primary" v-on:click="setGameResult(1)">Save played game</button>
+                    </div>
+                </div>
+                <div v-show="currentStep==5" style="display: none">
+                    <div class="content">
+                        <h2 class="title">Played game creates successfully</h2>
+                        <div class="well">
+                            <h4 style="margin-bottom: 20px"><span class="label label-default">{{ viewModel.Players.length }}</span> players played <span class="label label-default">{{ viewModel.Game.Name }}</span> at <span class="label label-default">{{ viewModel.Date | moment "LL" }}</span></h4>
+
+                            <h4 class="title">Now what?</h4>
+                            <div class="action-buttons">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <a href="@Url.Action(MVC.GamingGroup.Index())" class="btn btn-primary"><span class="fa fa-arrow-left fa-lg"></span> Go to gaming group</a>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <button class="btn btn-primary" v-on:click="gotoRecentlyPlayedGame"><span class="fa fa-share fa-lg"></span> Go to recently played game</button>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <button class="btn btn-default" v-on:click="reload"><span class="fa fa-plus-circle fa-lg"></span> Create other one</button>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <button class="btn btn-twitter"><span class="fa fa-twitter fa-lg"></span> Post on Twitter!</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
+    <div class="loading" style="display: none" v-show="postInProgress">
+        <span class="fa fa-spinner fa-spin fa-3x fa-fw"></span>
     </div>
 </div>
 

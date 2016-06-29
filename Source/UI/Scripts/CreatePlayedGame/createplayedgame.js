@@ -8,30 +8,25 @@ Views.PlayedGame.CreatePlayedGame = function () {
         SelectGame: 2,
         SelectPlayers: 3,
         SetResult: 4,
-        Confirm: 5
+        Summary: 5
     };
+
+    this._winnerTypes = {
+        PlayerWin: 1,
+        TeamWin: 2,
+        TeamLoss: 3
+    }
 
     this._viewModel = {
         Date: null,
         Game: null,
         Players: [],
-        GameNotes: null
+        GameNotes: null,
+        WinnerType: null
     };
 
     this.component = null;
 
-    this.getPlayerByRank = function (rank) {
-
-        var player = null;
-        $.each(this.component.$data.viewModel.Players, function (i, p) {
-            if (p.Rank === rank) {
-                player = p;
-                return;
-            }
-        });
-        return player;
-
-    }
 };
 
 //Implementation
@@ -51,27 +46,9 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
 
             $.each($(el).parent().find("li"), function (i, player) {
                 var $player = $(player);
-                //if (player.hasClass("gu-transit")) {
-                //    $player;
-                //}
                 var index = $player.data("index");
                 parent.component.$data.viewModel.Players[index].Rank = i + 1;
             });
-
-            //var currentIndex = $(el).data("index");
-            //var nextIndex;
-            //if (sibling == null) {
-            //    //Last position
-            //} else {
-            //    nextIndex = sibling.data("index");
-            //}
-            //var currentPlayer = parent.component.$data.viewModel.Players[currentIndex];
-            //var replacingPlayer = parent.component.$data.viewModel.Players[nextIndex];
-
-            //var currentRank = currentPlayer.Rank;
-
-            //currentPlayer.Rank = replacingPlayer.Rank;
-            //replacingPlayer.Rank = currentRank;
         });
 
     },
@@ -155,7 +132,7 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
             }
         })
             .bind('typeahead:select', function (ev, suggestion) {
-                parent.component.selectGame(suggestion.ID, suggestion.Name);
+                parent.component.selectGame(suggestion.Id, suggestion.Name);
             }).bind('typeahead:asyncrequest', function (ev, suggestion) {
                 parent.component.$data.searchingGameDefinition = true;
             });
@@ -203,6 +180,19 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
         var container = $(componentSelector);
         if (container) {
 
+            Vue.filter('winnertype', function (value) {
+                if (value === parent._winnerTypes.PlayerWin) {
+                    return "Ranked game";
+                }
+                if (value === parent._winnerTypes.TeamWin) {
+                    return "Everybody won";
+                }
+                if (value === parent._winnerTypes.TeamLoss) {
+                    return "Everybody lost";
+                }
+                return "";
+            })
+
             this.component = new Vue({
                 el: componentSelector,
                 data: {
@@ -213,6 +203,8 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                     alertVisible: false,
                     alertText: '',
                     newPlayerName: '',
+                    postInProgress: false,
+                    recentlyPlayedGameId: null
                 },
                 methods: {
                     hideAlert: function () {
@@ -300,12 +292,64 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                             newRank = player.Rank + 1;
                         }
 
-                        var replacingPlayer = parent.getPlayerByRank(newRank);
+                        var replacingPlayer = null;
+
+                        this.viewModel.Players.forEach(function (p) {
+                            if (p.Rank === newRank) {
+                                replacingPlayer = p;
+                                return;
+                            }
+                        });
 
                         if (replacingPlayer) {
                             replacingPlayer.Rank = player.Rank;
                         }
                         player.Rank = newRank;
+                    },
+                    setGameResult: function (winnerType) {
+                        var component = this;
+                        this.postInProgress = true;
+
+                        var form = $('#__AjaxAntiForgeryForm');
+                        var token = $('input[name="__RequestVerificationToken"]', form).val();
+
+                        this.viewModel.WinnerType = winnerType;
+
+                        var data = {
+                            __RequestVerificationToken: token,
+                            GameDefinitionId: this.viewModel.Game.Id,
+                            GameDefinitionName: this.viewModel.Game.Name,
+                            Notes: this.viewModel.GameNotes,
+                            DatePlayed: this.viewModel.Date.toISOString(),
+                            WinnerType: this.viewModel.WinnerType,
+                            PlayerRanks: []
+                        };
+
+                        this.viewModel.Players.forEach(function (player) {
+                            data.PlayerRanks.push({
+                                PlayerId: player.Id,
+                                GameRank: player.Rank
+                                //PointsScored: player.Score
+                            });
+                        });
+
+                        $.post("/playedgame/create", data, function (response) {
+                            component.postInProgress = false;
+                            if (response.success) {
+                                component.recentlyPlayedGameId = response.playedGameId;
+                                component.currentStep = parent._steps.Summary;
+                            } else {
+
+                            }
+                        });
+                    },
+                    gotoRecentlyPlayedGame: function () {
+
+                        window.location = "/PlayedGame/Details/" + this.recentlyPlayedGameId;
+
+                    },
+                    reload: function() {
+                        location.reload();
                     }
                 }
             });
