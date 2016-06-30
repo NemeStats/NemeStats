@@ -226,23 +226,23 @@
                 </div>
                 <div v-show="currentStep==5" style="display: none">
                     <div class="content">
-                        <h2 class="title">Played game creates successfully</h2>
+                        <h2 class="title">Played game recorded successfully</h2>
                         <div class="well">
                             <h4 style="margin-bottom: 20px"><span class="label label-default">{{ viewModel.Players.length }}</span> players played <span class="label label-default">{{ viewModel.Game.Name }}</span> at <span class="label label-default">{{ viewModel.Date | moment "LL" }}</span></h4>
 
-                            <h4 class="title">Now what?</h4>
+                            <h4 class="title">What do you want to do next?</h4>
                             <div class="action-buttons">
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <a href="@Url.Action(MVC.GamingGroup.Index())" class="btn btn-primary"><span class="fa fa-arrow-left fa-lg"></span> Go to gaming group</a>
+                                        <a href="@Url.Action(MVC.GamingGroup.Index())" class="btn btn-primary"><span class="fa fa-arrow-left fa-lg"></span> View my Gaming Group</a>
                                     </div>
                                     <div class="col-md-6">
-                                        <button class="btn btn-primary" v-on:click="gotoRecentlyPlayedGame"><span class="fa fa-share fa-lg"></span> Go to recently played game</button>
+                                        <button class="btn btn-primary" v-on:click="gotoRecentlyPlayedGame"><span class="fa fa-share fa-lg"></span>View this played game</button>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <button class="btn btn-default" v-on:click="reload"><span class="fa fa-plus-circle fa-lg"></span> Create other one</button>
+                                        <button class="btn btn-default" v-on:click="reload"><span class="fa fa-plus-circle fa-lg"></span> Record another played game</button>
                                     </div>
                                     <div class="col-md-6">
                                         <button class="btn btn-twitter"><span class="fa fa-twitter fa-lg"></span> Post on Twitter!</button>
