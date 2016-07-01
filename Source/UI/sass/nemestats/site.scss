@@ -13,6 +13,24 @@ body {
     padding-bottom: 20px;
 }
 
+
+footer {    
+    color: #fff;
+    background-color: $brand-primary;
+    padding: 25px;
+
+    &.bottom {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+    }
+
+    span {
+        top: 10px;
+    }
+}
+
 a[name] {
     padding-top: 50px;
     margin-top: -50px;
@@ -342,19 +360,6 @@ button > i.fa {
             overflow: hidden;
             text-overflow: ellipsis;
         }
-    }
-}
-
-
-
-footer {
-    color: #fff;
-    background-color: $brand-primary;
-    padding: 25px;
-
-
-    span {
-        top: 10px;
     }
 }
 

@@ -249,6 +249,18 @@ body {
   padding-right: 15px;
   padding-bottom: 20px; }
 
+footer {
+  color: #fff;
+  background-color: #354458;
+  padding: 25px; }
+  footer.bottom {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0; }
+  footer span {
+    top: 10px; }
+
 a[name] {
   padding-top: 50px;
   margin-top: -50px;
@@ -496,13 +508,6 @@ button > i.fa {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis; }
-
-footer {
-  color: #fff;
-  background-color: #354458;
-  padding: 25px; }
-  footer span {
-    top: 10px; }
 
 .nemepoints-breakdown a {
   font-size: 11px;
@@ -1221,14 +1226,14 @@ footer {
         padding: 20px; }
   #record-played-game .form .content .list-group.header {
     font-size: 18px; }
-    #record-played-game .form .content .list-group.header .list-group-item {
+    #record-played-game .form .content .list-group.header .ranked-item.list-group-item {
       background-color: #ecf0f1;
       color: black; }
-      #record-played-game .form .content .list-group.header .list-group-item span {
+      #record-played-game .form .content .list-group.header .ranked-item.list-group-item span {
         display: inline-block; }
-        #record-played-game .form .content .list-group.header .list-group-item span.rank {
+        #record-played-game .form .content .list-group.header .ranked-item.list-group-item span.rank {
           width: 75px; }
-        #record-played-game .form .content .list-group.header .list-group-item span.score {
+        #record-played-game .form .content .list-group.header .ranked-item.list-group-item span.score {
           float: right; }
   #record-played-game .form .content .action-buttons .row {
     margin: 20px 0; }
