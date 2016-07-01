@@ -67,9 +67,9 @@
         </div>
         <div class="col-sm-9 form" v-bind:class="{'postInProgress':postInProgress}">
             <div class="well">
-                <div class="alert alert-warning " style="display: none" v-show="alertVisible">
+                <div class="alert alert-danger" style="display: none" v-show="alertVisible">
                     <button type="button" class="close" aria-label="Close" v-on:click="hideAlert"><span aria-hidden="true">&times;</span></button>
-                    <strong>{{ alertText}}</strong>
+                    <strong>{{ alertText }}</strong>
                 </div>
                 <div v-show="currentStep == 1">
                     <h3 class="title">Set played game date:</h3>

@@ -126,7 +126,7 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
             templates: {
                 empty: [
                   '<div class="empty-message">',
-                    'there are no game matching this text',
+                    'there are no game matching this text on your gaming group.',
                   '</div>'
                 ].join('\n'),
             }
@@ -160,18 +160,22 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
             limit: Infinity,
             templates: {
                 empty: [
-                  '<div class="empty-message">',
-                    'there are no game matching this text',
+                  '<div class="empty-message" id="bggsearchnotfound">',
+                    'This game not exists on BGG. Click here to create it!',
                   '</div>'
                 ].join('\n'),
                 suggestion: Handlebars.compile('<div><strong>{{BoardGameName}}</strong> – {{YearPublished}}</div>')
             },
         })
             .bind('typeahead:select', function (ev, suggestion) {
-                parent.component.selectGame(null, suggestion.BoardGameName);
+                parent.component.selectGame(null, suggestion.BoardGameName, suggestion.BoardGameId);
             }).bind('typeahead:asyncrequest', function (ev, suggestion) {
                 parent.component.$data.searchingBGG = true;
             });
+
+        $(document).on('click', "#bggsearchnotfound", function (e) {
+            parent.component.selectGame(null, $("#search-bgg")[0].value);
+        });
     },
     configureViewModel: function () {
         var parent = this;
@@ -224,9 +228,10 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                             this.currentStep = parent._steps.SelectGame;
                         }
                     },
-                    selectGame: function (id, name) {
+                    selectGame: function (id, name, bggid) {
                         this.viewModel.Game = {
                             Id: id,
+                            BoardGameGeekGameDefinitionId: bggid,
                             Name: name
                         };
                         this.currentStep = parent._steps.SelectPlayers;
@@ -310,6 +315,8 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                         var component = this;
                         this.postInProgress = true;
 
+                        this.alertVisible = false;
+
                         var form = $('#__AjaxAntiForgeryForm');
                         var token = $('input[name="__RequestVerificationToken"]', form).val();
 
@@ -319,6 +326,7 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                             __RequestVerificationToken: token,
                             GameDefinitionId: this.viewModel.Game.Id,
                             GameDefinitionName: this.viewModel.Game.Name,
+                            BoardGameGeekGameDefinitionId: this.viewModel.Game.BoardGameGeekGameDefinitionId,
                             Notes: this.viewModel.GameNotes,
                             DatePlayed: this.viewModel.Date.toISOString(),
                             WinnerType: this.viewModel.WinnerType,
@@ -339,7 +347,8 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                                 component.recentlyPlayedGameId = response.playedGameId;
                                 component.currentStep = parent._steps.Summary;
                             } else {
-
+                                component.alertText = "Error creating played game. Please, try again later :_(";
+                                component.alertVisible = true;
                             }
                         });
                     },
@@ -348,7 +357,7 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                         window.location = "/PlayedGame/Details/" + this.recentlyPlayedGameId;
 
                     },
-                    reload: function() {
+                    reload: function () {
                         location.reload();
                     }
                 }
@@ -359,6 +368,4 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
         }
 
     }
-
-
 };

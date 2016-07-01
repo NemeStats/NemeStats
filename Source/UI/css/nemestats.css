@@ -112,6 +112,9 @@
   /* sort out borders */ }
 
 /*$header-background-color: #2C3E50;*/
+.home-body-container {
+  margin-bottom: 75px; }
+
 .home-container {
   background-color: #eee; }
   .home-container .home-banner {
@@ -247,12 +250,15 @@ body {
 .body-content {
   padding-left: 15px;
   padding-right: 15px;
-  padding-bottom: 20px; }
+  padding-bottom: 20px;
+  margin-bottom: 75px; }
 
 footer {
+  height: 75px;
   color: #fff;
   background-color: #354458;
-  padding: 25px; }
+  padding: 25px;
+  z-index: 999; }
   footer.bottom {
     position: fixed;
     bottom: 0;
@@ -1268,5 +1274,10 @@ button > i.fa {
     cursor: grabbing;
     cursor: -moz-grabbing;
     cursor: -webkit-grabbing; }
+
+#bggsearchnotfound {
+  cursor: pointer; }
+  #bggsearchnotfound:hover {
+    background-color: #889cb7; }
 
 /*# sourceMappingURL=nemestats.css.map */

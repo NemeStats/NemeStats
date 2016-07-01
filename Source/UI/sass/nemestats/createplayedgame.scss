@@ -121,6 +121,7 @@ $color-border: #dce4ec;
             opacity: 0.2;
         }
 
+
         .title {
             margin-top: 0;
             padding-bottom: 5px;
@@ -149,6 +150,7 @@ $color-border: #dce4ec;
                     font-size: 22px;
                 }
             }
+
 
             .nav-tabs {
                 border-bottom: solid 1px $color-border;
@@ -262,5 +264,14 @@ $color-border: #dce4ec;
             cursor: -moz-grabbing;
             cursor: -webkit-grabbing;
         }
+    }
+}
+
+
+#bggsearchnotfound {
+    cursor: pointer;
+
+    &:hover {
+        background-color: $color-hover;
     }
 }

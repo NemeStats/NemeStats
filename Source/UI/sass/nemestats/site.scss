@@ -11,13 +11,16 @@ body {
     padding-left: 15px;
     padding-right: 15px;
     padding-bottom: 20px;
+    margin-bottom: $footer-height;
 }
 
 
-footer {    
+footer {
+    height: $footer-height;
     color: #fff;
     background-color: $brand-primary;
     padding: 25px;
+    z-index: 999;
 
     &.bottom {
         position: fixed;

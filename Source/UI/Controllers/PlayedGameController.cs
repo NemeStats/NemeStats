@@ -54,6 +54,7 @@ namespace UI.Controllers
         private readonly IGameDefinitionRetriever _gameDefinitionRetriever;
         private readonly IPlayedGameDeleter _playedGameDeleter;
         private readonly GameDefinitionDisplayInfoToGameDefinitionDisplayInfoViewModelMapper _gameDefinitionDisplayInfoToGameDefinitionDisplayInfoViewModelMapper;
+        private readonly IGameDefinitionSaver _gameDefinitionSaver;
 
         internal const int NUMBER_OF_RECENT_GAMES_TO_DISPLAY = 25;
 
@@ -65,7 +66,8 @@ namespace UI.Controllers
             IGameDefinitionRetriever gameDefinitionRetriever,
             IPlayedGameCreator playedGameCreator,
             IPlayedGameDeleter playedGameDeleter,
-            GameDefinitionDisplayInfoToGameDefinitionDisplayInfoViewModelMapper gameDefinitionDisplayInfoToGameDefinitionDisplayInfoViewModelMapper)
+            GameDefinitionDisplayInfoToGameDefinitionDisplayInfoViewModelMapper gameDefinitionDisplayInfoToGameDefinitionDisplayInfoViewModelMapper,
+            IGameDefinitionSaver gameDefinitionSaver)
         {
             _dataContext = dataContext;
             _playedGameRetriever = playedGameRetriever;
@@ -75,6 +77,7 @@ namespace UI.Controllers
             _playedGameCreator = playedGameCreator;
             _playedGameDeleter = playedGameDeleter;
             _gameDefinitionDisplayInfoToGameDefinitionDisplayInfoViewModelMapper = gameDefinitionDisplayInfoToGameDefinitionDisplayInfoViewModelMapper;
+            _gameDefinitionSaver = gameDefinitionSaver;
         }
 
         // GET: /PlayedGame/Details/5
@@ -123,13 +126,27 @@ namespace UI.Controllers
         [System.Web.Mvc.HttpPost]
         [ValidateAntiForgeryToken]
         [UserContext]
-        public virtual ActionResult Create(NewlyCompletedGame newlyCompletedGame, ApplicationUser currentUser)
+        public virtual ActionResult Create(NewlyCompletedGame request, ApplicationUser currentUser)
         {
             if (ModelState.IsValid)
             {
-                var playerGame = _playedGameCreator.CreatePlayedGame(newlyCompletedGame, TransactionSource.WebApplication, currentUser);
+                if (request.GameDefinitionId == null)
+                {
+                    if (string.IsNullOrEmpty(request.GameDefinitionName))
+                    {
+                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    }
 
-                //SetToastMessage(TempMessageKeys.TEMP_MESSAGE_KEY_PLAYED_GAME_RECORDED, "Played Game successfully recorded");
+                    request.GameDefinitionId = _gameDefinitionSaver.CreateGameDefinition(new CreateGameDefinitionRequest
+                    {
+                        Active = true,
+                        Name = request.GameDefinitionName,
+                        GamingGroupId = request.GameDefinitionId??currentUser.CurrentGamingGroupId,
+                        BoardGameGeekGameDefinitionId = request.BoardGameGeekGameDefinitionId
+                    }, currentUser).Id;
+                }
+
+                var playerGame = _playedGameCreator.CreatePlayedGame(request, TransactionSource.WebApplication, currentUser);
 
                 return Json(new { success = true, playedGameId = playerGame.Id });
             }

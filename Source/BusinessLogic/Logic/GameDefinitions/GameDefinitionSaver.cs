@@ -54,7 +54,7 @@ namespace BusinessLogic.Logic.GameDefinitions
             int? boardGameGeekGameDefinitionId = CreateBoardGameGeekGameDefinition(
                 createGameDefinitionRequest.BoardGameGeekGameDefinitionId, 
                 currentUser);
-
+            
             var existingGameDefinition = dataContext.GetQueryable<GameDefinition>()
                 .FirstOrDefault(game => game.GamingGroupId == currentUser.CurrentGamingGroupId
                         && game.Name == createGameDefinitionRequest.Name);

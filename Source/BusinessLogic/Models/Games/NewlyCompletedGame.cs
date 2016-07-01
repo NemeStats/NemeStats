@@ -32,6 +32,7 @@ namespace BusinessLogic.Models.Games
         }
 
         public int? GameDefinitionId { get; set; }
+        public int? BoardGameGeekGameDefinitionId { get; set; }
         public string GameDefinitionName { get; set; }
 
         public string Notes { get; set; }
@@ -47,7 +48,8 @@ namespace BusinessLogic.Models.Games
         [MaxDate]
         public DateTime DatePlayed { get; set; }
 
-        public WinnerTypes WinnerType { get; set; }
+        public WinnerTypes? WinnerType { get; set; }
         public int? GamingGroupId { get; set; }
+        
     }
 }
