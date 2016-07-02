@@ -1,9 +1,10 @@
 using System.Collections.Generic;
 using AutoMapper;
+using UI.Mappers.Interfaces;
 
-namespace UI.Mappers
+namespace UI.Mappers.CustomMappers
 {
-    public abstract class BaseMapperService<TSource, TResult> : IMapperService<TSource, TResult> where TSource : class
+    public abstract class BaseCustomMapper<TSource, TResult> : ICustomMapper<TSource, TResult> where TSource : class
     {
         public virtual TResult Map(TSource source)
         {
@@ -15,4 +16,6 @@ namespace UI.Mappers
             return Mapper.Map<IEnumerable<TResult>>(source);
         }
     }
+
+
 }

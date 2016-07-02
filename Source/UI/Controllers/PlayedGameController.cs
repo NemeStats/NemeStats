@@ -39,7 +39,10 @@ using PagedList;
 using UI.Attributes.Filters;
 using UI.Controllers.Helpers;
 using UI.Mappers;
+using UI.Mappers.CustomMappers;
+using UI.Mappers.Interfaces;
 using UI.Models;
+using UI.Models.GameDefinitionModels;
 using UI.Models.PlayedGame;
 using UI.Models.Points;
 using UI.Transformations;
@@ -55,10 +58,9 @@ namespace UI.Controllers
         private readonly IPlayedGameCreator _playedGameCreator;
         private readonly IGameDefinitionRetriever _gameDefinitionRetriever;
         private readonly IPlayedGameDeleter _playedGameDeleter;
-        private readonly GameDefinitionDisplayInfoToGameDefinitionDisplayInfoViewModelMapper _gameDefinitionDisplayInfoToGameDefinitionDisplayInfoViewModelMapper;
         private readonly IGameDefinitionSaver _gameDefinitionSaver;
         private readonly IPlayerSaver _playerSaver;
-        private readonly CreatePlayedGameRequestToNewlyCompletedGameMapper _createokCreatePlayedGameRequestToNewlyCompletedGameMapper;
+        private readonly IMapperFactory _mapperFactory;
 
         internal const int NUMBER_OF_RECENT_GAMES_TO_DISPLAY = 25;
 
@@ -70,10 +72,9 @@ namespace UI.Controllers
             IGameDefinitionRetriever gameDefinitionRetriever,
             IPlayedGameCreator playedGameCreator,
             IPlayedGameDeleter playedGameDeleter,
-            GameDefinitionDisplayInfoToGameDefinitionDisplayInfoViewModelMapper gameDefinitionDisplayInfoToGameDefinitionDisplayInfoViewModelMapper,
             IGameDefinitionSaver gameDefinitionSaver,
-            IPlayerSaver playerSaver,
-            CreatePlayedGameRequestToNewlyCompletedGameMapper createokCreatePlayedGameRequestToNewlyCompletedGameMapper)
+            IPlayerSaver playerSaver, 
+            IMapperFactory mapperFactory)
         {
             _dataContext = dataContext;
             _playedGameRetriever = playedGameRetriever;
@@ -82,10 +83,9 @@ namespace UI.Controllers
             _gameDefinitionRetriever = gameDefinitionRetriever;
             _playedGameCreator = playedGameCreator;
             _playedGameDeleter = playedGameDeleter;
-            _gameDefinitionDisplayInfoToGameDefinitionDisplayInfoViewModelMapper = gameDefinitionDisplayInfoToGameDefinitionDisplayInfoViewModelMapper;
             _gameDefinitionSaver = gameDefinitionSaver;
             _playerSaver = playerSaver;
-            _createokCreatePlayedGameRequestToNewlyCompletedGameMapper = createokCreatePlayedGameRequestToNewlyCompletedGameMapper;
+            _mapperFactory = mapperFactory;
         }
 
         // GET: /PlayedGame/Details/5
@@ -118,8 +118,8 @@ namespace UI.Controllers
 
             var viewModel = new CreatePlayedGameViewModel
             {
-                MostPlayedGames = _gameDefinitionDisplayInfoToGameDefinitionDisplayInfoViewModelMapper.Map(mostPlayedGames).ToList(),
-                RecentPlayedGames = _gameDefinitionDisplayInfoToGameDefinitionDisplayInfoViewModelMapper.Map(recentPlayedGames).ToList(),
+                MostPlayedGames = _mapperFactory.GetMapper<GameDefinitionDisplayInfo,GameDefinitionDisplayInfoViewModel>().Map(mostPlayedGames).ToList(),
+                RecentPlayedGames = _mapperFactory.GetMapper<GameDefinitionDisplayInfo, GameDefinitionDisplayInfoViewModel>().Map(recentPlayedGames).ToList(),
                 RecentPlayers = players.RecentPlayers,
                 OtherPlayers = players.OtherPlayers,
                 UserPlayer = players.UserPlayer
@@ -162,7 +162,7 @@ namespace UI.Controllers
                     }, currentUser).Id;
                 }
 
-                var playerGame = _playedGameCreator.CreatePlayedGame(_createokCreatePlayedGameRequestToNewlyCompletedGameMapper.Map(request), TransactionSource.WebApplication, currentUser);
+                var playerGame = _playedGameCreator.CreatePlayedGame(_mapperFactory.GetMapper<CreatePlayedGameRequest,NewlyCompletedGame>().Map(request), TransactionSource.WebApplication, currentUser);
 
                 return Json(new { success = true, playedGameId = playerGame.Id });
             }

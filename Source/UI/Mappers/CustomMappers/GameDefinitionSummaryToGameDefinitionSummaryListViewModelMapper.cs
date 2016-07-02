@@ -2,9 +2,9 @@ using AutoMapper;
 using BusinessLogic.Models.Games;
 using UI.Models.GameDefinitionModels;
 
-namespace UI.Mappers
+namespace UI.Mappers.CustomMappers
 {
-    public class GameDefinitionSummaryToGameDefinitionSummaryListViewModelMapper : BaseMapperService<GameDefinitionSummary, GameDefinitionSummaryListViewModel>
+    public class GameDefinitionSummaryToGameDefinitionSummaryListViewModelMapper : BaseCustomMapper<GameDefinitionSummary, GameDefinitionSummaryListViewModel>
     {
         static GameDefinitionSummaryToGameDefinitionSummaryListViewModelMapper()
         {

@@ -2,12 +2,11 @@ using System.Linq;
 using AutoMapper;
 using BusinessLogic.Models.Games;
 using UI.Models.GameDefinitionModels;
-using UI.Models.PlayedGame;
 
-namespace UI.Mappers
+namespace UI.Mappers.CustomMappers
 {
     public class GameDefinitionDisplayInfoToGameDefinitionDisplayInfoViewModelMapper :
-        BaseMapperService<GameDefinitionDisplayInfo, GameDefinitionDisplayInfoViewModel>
+        BaseCustomMapper<GameDefinitionDisplayInfo, GameDefinitionDisplayInfoViewModel>
     {
         static GameDefinitionDisplayInfoToGameDefinitionDisplayInfoViewModelMapper()
         {
@@ -16,7 +15,7 @@ namespace UI.Mappers
     }
 
     public class CreatePlayedGameRequestToNewlyCompletedGameMapper :
-        BaseMapperService<CreatePlayedGameRequest, NewlyCompletedGame>
+        BaseCustomMapper<CreatePlayedGameRequest, NewlyCompletedGame>
     {
         private readonly CreatePlayerRankRequestToPlayerRankMapper _createPlayerRankRequestToPlayerRankMapper;
 
@@ -42,7 +41,7 @@ namespace UI.Mappers
     }
 
     public class CreatePlayerRankRequestToPlayerRankMapper :
-       BaseMapperService<CreatePlayerRankRequest, PlayerRank>
+       BaseCustomMapper<CreatePlayerRankRequest, PlayerRank>
     {
         static CreatePlayerRankRequestToPlayerRankMapper()
         {

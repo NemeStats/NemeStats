@@ -29,6 +29,7 @@ using System.Linq;
 using BusinessLogic.Logic.Players;
 using BusinessLogic.Models.Points;
 using UI.Mappers;
+using UI.Mappers.CustomMappers;
 using UI.Models.Badges;
 using UI.Models.Players;
 using UI.Models.Points;

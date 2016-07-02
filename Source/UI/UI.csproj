@@ -391,18 +391,20 @@
     <Compile Include="JobsController.generated.cs">
       <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>
-    <Compile Include="Mappers\AchievementToAchievementSummaryViewModelMapper.cs" />
-    <Compile Include="Mappers\AchievementToAchievementViewModelMapper.cs" />
-    <Compile Include="Mappers\BaseMapperService.cs" />
-    <Compile Include="Mappers\GameDefinitionDisplayInfoToGameDefinitionDisplayInfoViewModelMapper.cs" />
-    <Compile Include="Mappers\GameDefinitionSummaryToGameDefinitionSummaryListViewModelMapper.cs" />
-    <Compile Include="Mappers\IMapperService.cs" />
-    <Compile Include="Mappers\PagedListExtensions.cs" />
-    <Compile Include="Mappers\PlayedGameQuickStatsToPlayedGameQuickStatsViewModelMapper.cs" />
-    <Compile Include="Mappers\PlayerAchievementToPlayerAchievementSummaryViewModelMapper.cs" />
-    <Compile Include="Mappers\PlayerAchievementToPlayerAchievementViewModelMapper.cs" />
-    <Compile Include="Mappers\PlayerAchievementToPlayerAchievementWinnerViewModelMapper.cs" />
-    <Compile Include="Mappers\PlayerToPlayerListSummaryViewModelMapper.cs" />
+    <Compile Include="Mappers\CustomMappers\AchievementToAchievementSummaryViewModelMapper.cs" />
+    <Compile Include="Mappers\CustomMappers\AchievementToAchievementViewModelMapper.cs" />
+    <Compile Include="Mappers\CustomMappers\BaseCustomMapper.cs" />
+    <Compile Include="Mappers\CustomMappers\GameDefinitionDisplayInfoToGameDefinitionDisplayInfoViewModelMapper.cs" />
+    <Compile Include="Mappers\CustomMappers\GameDefinitionSummaryToGameDefinitionSummaryListViewModelMapper.cs" />
+    <Compile Include="Mappers\Interfaces\ICustomMapper.cs" />
+    <Compile Include="Mappers\Extensions\PagedListExtensions.cs" />
+    <Compile Include="Mappers\CustomMappers\PlayedGameQuickStatsToPlayedGameQuickStatsViewModelMapper.cs" />
+    <Compile Include="Mappers\CustomMappers\PlayerAchievementToPlayerAchievementSummaryViewModelMapper.cs" />
+    <Compile Include="Mappers\CustomMappers\PlayerAchievementToPlayerAchievementViewModelMapper.cs" />
+    <Compile Include="Mappers\CustomMappers\PlayerAchievementToPlayerAchievementWinnerViewModelMapper.cs" />
+    <Compile Include="Mappers\CustomMappers\PlayerToPlayerListSummaryViewModelMapper.cs" />
+    <Compile Include="Mappers\Interfaces\IMapperFactory.cs" />
+    <Compile Include="Mappers\MapperFactory.cs" />
     <Compile Include="Models\Achievements\AchievementDetailsViewModel.cs" />
     <Compile Include="Models\Achievements\AchievementListViewModel.cs" />
     <Compile Include="Models\Achievements\AchievementSummaryViewModel.cs" />

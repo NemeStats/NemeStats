@@ -2,9 +2,9 @@ using AutoMapper;
 using BusinessLogic.Models;
 using UI.Models.Players;
 
-namespace UI.Mappers
+namespace UI.Mappers.CustomMappers
 {
-    public class PlayerToPlayerListSummaryViewModelMapper : BaseMapperService<Player, PlayerListSummaryViewModel>
+    public class PlayerToPlayerListSummaryViewModelMapper : BaseCustomMapper<Player, PlayerListSummaryViewModel>
     {
         static PlayerToPlayerListSummaryViewModelMapper()
         {

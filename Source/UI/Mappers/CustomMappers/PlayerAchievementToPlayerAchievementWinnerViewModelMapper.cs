@@ -4,10 +4,10 @@ using BusinessLogic.Events.HandlerFactory;
 using BusinessLogic.Models;
 using UI.Models.Players;
 
-namespace UI.Mappers
+namespace UI.Mappers.CustomMappers
 {
     public class PlayerAchievementToPlayerAchievementWinnerViewModelMapper :
-        BaseMapperService<PlayerAchievement, PlayerAchievementWinnerViewModel>
+        BaseCustomMapper<PlayerAchievement, PlayerAchievementWinnerViewModel>
     {
         private readonly AchievementToAchievementSummaryViewModelMapper _achievementSummaryViewModelMapper;
 
