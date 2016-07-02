@@ -210,6 +210,11 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                     postInProgress: false,
                     recentlyPlayedGameId: null
                 },
+                computed: {
+                  newPlayedGameUrl: function() {
+                      return "/PlayedGame/Details/" + this.recentlyPlayedGameId;
+                  }  
+                },
                 methods: {
                     hideAlert: function () {
                         this.alertVisible = false;
@@ -373,9 +378,12 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                         });
                     },
                     gotoRecentlyPlayedGame: function () {
-
-                        window.location = "/PlayedGame/Details/" + this.recentlyPlayedGameId;
-
+                        window.location = this.newPlayedGameUrl;
+                    },
+                    postTweet : function() {
+                        var url = `https://nemestats.com${this.newPlayedGameUrl}&utm_source=twitter&utm_medium=tweet&utm_campaign=recentlycreatedplayedgame`;
+                        var twitterurl = `https://twitter.com/intent/tweet?hashtags=boardgames&original_referer=${encodeURIComponent(url)}&ref_src=twsrc%5Etfw&related=nemestats&text=Check%20out%20this%20game%20I%20played%20on%20%40nemestats&tw_p=tweetbutton&url=${url}`;
+                        window.open(twitterurl);
                     },
                     reload: function () {
                         location.reload();
