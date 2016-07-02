@@ -20,12 +20,17 @@ using System.Linq;
 
 namespace BusinessLogic.Models.Games
 {
-    public class PlayerRank
+    public class PlayerRank : IPlayerRank
     {
         [Required]
         public int PlayerId { get; set; }
         [Required]
         public int GameRank { get; set; }
         public int? PointsScored { get; set; }
+    }
+
+    public interface IPlayerRank
+    {
+        int GameRank { get; set; }
     }
 }

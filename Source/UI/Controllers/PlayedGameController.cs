@@ -33,11 +33,13 @@ using System.Net;
 using System.Web.Helpers;
 using System.Web.Http;
 using System.Web.Mvc;
+using BusinessLogic.Models.Players;
 using BusinessLogic.Paging;
 using PagedList;
 using UI.Attributes.Filters;
 using UI.Controllers.Helpers;
 using UI.Mappers;
+using UI.Models;
 using UI.Models.PlayedGame;
 using UI.Models.Points;
 using UI.Transformations;
@@ -55,6 +57,8 @@ namespace UI.Controllers
         private readonly IPlayedGameDeleter _playedGameDeleter;
         private readonly GameDefinitionDisplayInfoToGameDefinitionDisplayInfoViewModelMapper _gameDefinitionDisplayInfoToGameDefinitionDisplayInfoViewModelMapper;
         private readonly IGameDefinitionSaver _gameDefinitionSaver;
+        private readonly IPlayerSaver _playerSaver;
+        private readonly CreatePlayedGameRequestToNewlyCompletedGameMapper _createokCreatePlayedGameRequestToNewlyCompletedGameMapper;
 
         internal const int NUMBER_OF_RECENT_GAMES_TO_DISPLAY = 25;
 
@@ -67,7 +71,9 @@ namespace UI.Controllers
             IPlayedGameCreator playedGameCreator,
             IPlayedGameDeleter playedGameDeleter,
             GameDefinitionDisplayInfoToGameDefinitionDisplayInfoViewModelMapper gameDefinitionDisplayInfoToGameDefinitionDisplayInfoViewModelMapper,
-            IGameDefinitionSaver gameDefinitionSaver)
+            IGameDefinitionSaver gameDefinitionSaver,
+            IPlayerSaver playerSaver,
+            CreatePlayedGameRequestToNewlyCompletedGameMapper createokCreatePlayedGameRequestToNewlyCompletedGameMapper)
         {
             _dataContext = dataContext;
             _playedGameRetriever = playedGameRetriever;
@@ -78,6 +84,8 @@ namespace UI.Controllers
             _playedGameDeleter = playedGameDeleter;
             _gameDefinitionDisplayInfoToGameDefinitionDisplayInfoViewModelMapper = gameDefinitionDisplayInfoToGameDefinitionDisplayInfoViewModelMapper;
             _gameDefinitionSaver = gameDefinitionSaver;
+            _playerSaver = playerSaver;
+            _createokCreatePlayedGameRequestToNewlyCompletedGameMapper = createokCreatePlayedGameRequestToNewlyCompletedGameMapper;
         }
 
         // GET: /PlayedGame/Details/5
@@ -126,7 +134,7 @@ namespace UI.Controllers
         [System.Web.Mvc.HttpPost]
         [ValidateAntiForgeryToken]
         [UserContext]
-        public virtual ActionResult Create(NewlyCompletedGame request, ApplicationUser currentUser)
+        public virtual ActionResult Create(CreatePlayedGameRequest request, ApplicationUser currentUser)
         {
             if (ModelState.IsValid)
             {
@@ -139,19 +147,27 @@ namespace UI.Controllers
 
                     request.GameDefinitionId = _gameDefinitionSaver.CreateGameDefinition(new CreateGameDefinitionRequest
                     {
-                        Active = true,
                         Name = request.GameDefinitionName,
-                        GamingGroupId = request.GameDefinitionId??currentUser.CurrentGamingGroupId,
+                        GamingGroupId = request.GameDefinitionId ?? currentUser.CurrentGamingGroupId,
                         BoardGameGeekGameDefinitionId = request.BoardGameGeekGameDefinitionId
                     }, currentUser).Id;
                 }
 
-                var playerGame = _playedGameCreator.CreatePlayedGame(request, TransactionSource.WebApplication, currentUser);
+                foreach (var newPlayer in request.PlayerRanks.Where(p => !p.PlayerId.HasValue))
+                {
+                    newPlayer.PlayerId = _playerSaver.CreatePlayer(new CreatePlayerRequest
+                    {
+                        GamingGroupId = currentUser.CurrentGamingGroupId,
+                        Name = newPlayer.PlayerName
+                    }, currentUser).Id;
+                }
+
+                var playerGame = _playedGameCreator.CreatePlayedGame(_createokCreatePlayedGameRequestToNewlyCompletedGameMapper.Map(request), TransactionSource.WebApplication, currentUser);
 
                 return Json(new { success = true, playedGameId = playerGame.Id });
             }
 
-            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            return Json(new { success = false, errors = ModelState.Errors() }, JsonRequestBehavior.AllowGet);
         }
 
         [System.Web.Mvc.HttpGet]

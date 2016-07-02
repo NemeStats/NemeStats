@@ -422,6 +422,7 @@
     <Compile Include="Models\GameDefinitionModels\GameDefinitionSummaryListViewModel.cs" />
     <Compile Include="Models\GameDefinitionModels\GameDefinitionSummaryViewModel.cs" />
     <Compile Include="Models\GameDefinitionModels\TrendingGameViewModel.cs" />
+    <Compile Include="Models\ModelStateHelper.cs" />
     <Compile Include="Models\PlayedGame\CreatePlayedGameViewModel.cs" />
     <Compile Include="Models\Players\GameDefinitionPlayersSummaryViewModel.cs" />
     <Compile Include="Models\GamingGroup\GamingGroupPublicDetailsViewModel.cs" />

@@ -153,7 +153,7 @@
                                 <span class="input-group-addon">
                                     <span class="fa fa-plus"></span>
                                 </span>
-                                <input type="text" class="form-control form-control-lg" placeholder="new player name" v-model="newPlayerName" />
+                                <input type="text" class="form-control form-control-lg" placeholder="new player name" v-model="newPlayerName" v-on:keyup.enter="createNewPlayer()" />
                                 <button class="btn btn-default" style="margin-left: 10px;" v-on:click="createNewPlayer()">Create player</button>
                             </div>
                         </div>

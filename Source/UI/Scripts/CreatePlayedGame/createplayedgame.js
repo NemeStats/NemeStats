@@ -255,7 +255,7 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                     },
                     createNewPlayer: function () {
                         if (this.newPlayerName) {
-                            $("#optgroup").append($('<option>', {
+                            $("#optgroup_to").append($('<option>', {
                                 text: this.newPlayerName
                             }));
                             this.newPlayerName = "";
@@ -336,17 +336,37 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                         this.viewModel.Players.forEach(function (player) {
                             data.PlayerRanks.push({
                                 PlayerId: player.Id,
-                                GameRank: player.Rank
+                                GameRank: player.Rank,
+                                PlayerName: player.Name
                                 //PointsScored: player.Score
                             });
                         });
 
-                        $.post("/playedgame/create", data, function (response) {
-                            component.postInProgress = false;
-                            if (response.success) {
-                                component.recentlyPlayedGameId = response.playedGameId;
-                                component.currentStep = parent._steps.Summary;
-                            } else {
+                        $.ajax({
+                            type: "POST",
+                            url: "/playedgame/create",
+                            data: data,
+                            success: function (response) {
+                                component.postInProgress = false;
+                                if (response.success) {
+                                    component.recentlyPlayedGameId = response.playedGameId;
+                                    component.currentStep = parent._steps.Summary;
+                                } else {
+                                    
+                                    if (response.errors) {
+                                        response.errors.forEach(function (e) {
+                                            component.alertText += " - ";
+                                            component.alertText += e.Value[0];
+                                        });
+                                    } else {
+                                        component.alertText = "Error creating played game. Please, try again later :_(";
+                                    }
+                                    
+                                    component.alertVisible = true;
+                                }
+                            },
+                            error: function (XMLHTttpRequest, status, error) {
+                                component.postInProgress = false;
                                 component.alertText = "Error creating played game. Please, try again later :_(";
                                 component.alertVisible = true;
                             }

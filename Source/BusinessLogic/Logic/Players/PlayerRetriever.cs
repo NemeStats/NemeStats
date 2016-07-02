@@ -425,7 +425,6 @@ namespace BusinessLogic.Logic.Players
                         .Select(pgr => pgr.PlayedGame.DatePlayed)
                         .OrderByDescending(d => d)
                         .FirstOrDefault())
-                .ThenByDescending(p => p.PlayerGameResults.Count())
                 .ThenBy(p => p.Name)
                 .Take(5);
 

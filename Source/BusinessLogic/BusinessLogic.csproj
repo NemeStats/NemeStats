@@ -332,6 +332,7 @@
     </Compile>
     <Compile Include="Models\Achievements\AchievementLevel.cs" />
     <Compile Include="Models\Achievements\AchievementId.cs" />
+    <Compile Include="Models\Games\CreatePlayedGameRequest.cs" />
     <Compile Include="Models\Games\TrendingGame.cs" />
     <Compile Include="Logic\Points\IWeightTierCalculator.cs" />
     <Compile Include="Models\PlayerAchievement.cs" />

@@ -22,6 +22,7 @@ using System.Web.Mvc;
 using System.Web.Mvc.Ajax;
 using System.Web.Mvc.Html;
 using System.Web.Routing;
+using BusinessLogic.Models.Games;
 using T4MVC;
 namespace UI.Controllers
 {
@@ -146,7 +147,7 @@ namespace UI.Controllers
         public class ActionParamsClass_Create
         {
             public readonly string currentUser = "currentUser";
-            public readonly string newlyCompletedGame = "newlyCompletedGame";
+            public readonly string request = "request";
         }
         static readonly ActionParamsClass_Delete s_params_Delete = new ActionParamsClass_Delete();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -255,15 +256,15 @@ namespace UI.Controllers
         }
 
         [NonAction]
-        partial void CreateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, BusinessLogic.Models.Games.NewlyCompletedGame newlyCompletedGame, BusinessLogic.Models.User.ApplicationUser currentUser);
+        partial void CreateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, CreatePlayedGameRequest request, BusinessLogic.Models.User.ApplicationUser currentUser);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult Create(BusinessLogic.Models.Games.NewlyCompletedGame newlyCompletedGame, BusinessLogic.Models.User.ApplicationUser currentUser)
+        public override System.Web.Mvc.ActionResult Create(CreatePlayedGameRequest request, BusinessLogic.Models.User.ApplicationUser currentUser)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Create);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "newlyCompletedGame", newlyCompletedGame);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "request", request);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "currentUser", currentUser);
-            CreateOverride(callInfo, newlyCompletedGame, currentUser);
+            CreateOverride(callInfo, request, currentUser);
             return callInfo;
         }
 

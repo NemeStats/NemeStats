@@ -26,24 +26,22 @@ namespace BusinessLogic.Models.Games.Validation
 	    public const int MINIMUM_NUMBER_OF_PLAYERS = 2;
         public const int MAXIMUM_NUMBER_OF_PLAYERS = 25;
 		internal const string EXCEPTION_MESSAGE_NO_PLAYER_CAN_HAVE_A_RANK_LESS_THAN_ONE = "No player may have a rank less than 1.";
-		internal const string EXCEPTION_MESSAGE_EACH_PLAYER_RANK_MUST_HAVE_A_PLAYER_ID = "Each PlayerRank must have a valid PlayerId.";
 		internal const string EXCEPTION_MESSAGE_EACH_PLAYER_RANK_MUST_HAVE_A_GAME_RANK = "Each PlayerRank must have a valid GameRank.";
 		internal const string EXCEPTION_MESSAGE_MUST_PASS_AT_LEAST_TWO_PLAYERS = "Each game must have at least two players.";
 	    internal const string EXCEPTION_MESSAGE_CANNOT_HAVE_MORE_THAN_25_PLAYERS = "A game cannot have more than 25 players.";
 		internal const string EXCEPTION_MESSAGE_NO_PLAYER_CAN_HAVE_A_HIGHER_RANK_THAN_THE_NUMBER_OF_PLAYERS = "No player can have a higher rank than the total number of players in the game.";
 
-		public static void ValidatePlayerRanks(List<PlayerRank> playerRanks)
+		public static void ValidatePlayerRanks(List<IPlayerRank> playerRanks)
 		{
 			ValidateThatPlayerRanksIsNotNull(playerRanks);
-			ValidateThatAllPlayerIdsAreSet(playerRanks);
-			ValidateThatAllGameRanksAreSet(playerRanks);
+		    ValidateThatAllGameRanksAreSet(playerRanks);
 			ValidateThatThereAreAtLeastTwoPlayers(playerRanks);
 		    ValidateThatThereAreNoMoreThanTwentyFivePlayers(playerRanks);
 			ValidateThatNoPlayerHasARankGreaterThanTheNumberOfPlayers(playerRanks);
 			ValidateNoPlayerHasARankLessThanOne(playerRanks);
 		}
 
-	    private static void ValidateThatNoPlayerHasARankGreaterThanTheNumberOfPlayers(List<PlayerRank> playerRanks)
+	    private static void ValidateThatNoPlayerHasARankGreaterThanTheNumberOfPlayers(List<IPlayerRank> playerRanks)
 		{
 			if (playerRanks.Max(playerRank => playerRank.GameRank) > playerRanks.Count)
 			{
@@ -51,7 +49,7 @@ namespace BusinessLogic.Models.Games.Validation
 			}
 		}
 
-		private static void ValidateThatPlayerRanksIsNotNull(List<PlayerRank> playerRanks)
+		private static void ValidateThatPlayerRanksIsNotNull(List<IPlayerRank> playerRanks)
 		{
 			if (playerRanks == null)
 			{
@@ -59,15 +57,7 @@ namespace BusinessLogic.Models.Games.Validation
 			}
 		}
 
-		private static void ValidateThatAllPlayerIdsAreSet(List<PlayerRank> playerRanks)
-		{
-			if (playerRanks.Any(playerRank => playerRank.PlayerId == 0))
-			{
-				throw new ArgumentException(EXCEPTION_MESSAGE_EACH_PLAYER_RANK_MUST_HAVE_A_PLAYER_ID);
-			}
-		}
-
-		private static void ValidateThatAllGameRanksAreSet(List<PlayerRank> playerRanks)
+	    private static void ValidateThatAllGameRanksAreSet(List<IPlayerRank> playerRanks)
 		{
 			if (playerRanks.Any(playerRank => playerRank.GameRank == 0))
 			{
@@ -75,7 +65,7 @@ namespace BusinessLogic.Models.Games.Validation
 			}
 		}
 
-		private static void ValidateThatThereAreAtLeastTwoPlayers(List<PlayerRank> playerRanks)
+		private static void ValidateThatThereAreAtLeastTwoPlayers(List<IPlayerRank> playerRanks)
 		{
             if (playerRanks.Count < MINIMUM_NUMBER_OF_PLAYERS)
 			{
@@ -83,7 +73,7 @@ namespace BusinessLogic.Models.Games.Validation
 			}
 		}
 
-        private static void ValidateThatThereAreNoMoreThanTwentyFivePlayers(List<PlayerRank> playerRanks)
+        private static void ValidateThatThereAreNoMoreThanTwentyFivePlayers(List<IPlayerRank> playerRanks)
         {
             if (playerRanks.Count > MAXIMUM_NUMBER_OF_PLAYERS)
             {
@@ -91,7 +81,7 @@ namespace BusinessLogic.Models.Games.Validation
             }
         }
 
-		private static void ValidateNoPlayerHasARankLessThanOne(List<PlayerRank> playerRanks)
+		private static void ValidateNoPlayerHasARankLessThanOne(List<IPlayerRank> playerRanks)
 		{
 			if (playerRanks.Any(rank => rank.GameRank < 1))
 			{
