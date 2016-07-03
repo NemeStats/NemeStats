@@ -117,7 +117,7 @@ $color-border: #dce4ec;
     }
 
     .form {
-        &.postInProgress {
+        &.serverRequestInProgress {
             opacity: 0.2;
         }
 

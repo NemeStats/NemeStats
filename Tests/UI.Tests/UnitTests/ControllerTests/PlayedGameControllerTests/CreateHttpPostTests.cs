@@ -43,7 +43,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 					.Return(expectedViewResult);
 			autoMocker.ClassUnderTest.ModelState.AddModelError("Test error", "this is a test error to make model state invalid");
 
-			var actualResult = autoMocker.ClassUnderTest.Create(new CreatePlayedGameRequest(),  currentUser) as ViewResult;
+			var actualResult = autoMocker.ClassUnderTest.Create(new SavePlayedGameRequest(),  currentUser) as ViewResult;
 
 			Assert.AreSame(expectedViewResult, actualResult);
 		}
@@ -52,7 +52,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
         [Test]
 		public void ItRedirectsToTheGamingGroupIndexAndRecentGamesSectionAfterSaving()
 		{
-			var playedGame = new CreatePlayedGameRequest
+			var playedGame = new SavePlayedGameRequest
 			{
 				GameDefinitionId = 1,
 				PlayerRanks = new List<CreatePlayerRankRequest>()
@@ -75,7 +75,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 		[Test]
 		public void ItSavesTheNewGame()
 		{
-			var newlyCompletedGame = new CreatePlayedGameRequest
+			var newlyCompletedGame = new SavePlayedGameRequest
 			{
 				GameDefinitionId = 1,
 				PlayerRanks = new List<CreatePlayerRankRequest>()
@@ -95,7 +95,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 		[Test]
 		public void ItMakesTheRequestForTheCurrentUser()
 		{
-			var newlyCompletedGame = new CreatePlayedGameRequest()
+			var newlyCompletedGame = new SavePlayedGameRequest()
 			{
 				GameDefinitionId = 1,
 				PlayerRanks = new List<CreatePlayerRankRequest>()

@@ -33,5 +33,7 @@ namespace BusinessLogic.Logic.GameDefinitions
         List<GameDefinitionSummary> GetGameDefinitionSummaries(List<int> gameDefinitionIds);
         IPagedList<GameDefinitionDisplayInfo> GetMostPlayedGames(GetMostPlayedGamesQuery query);
         IPagedList<GameDefinitionDisplayInfo> GetRecentGames(GetRecentPlayedGamesQuery query);
+
+        GameDefinitionDisplayInfo GetGameDefinitionDisplayInfo(int id);
     }
 }

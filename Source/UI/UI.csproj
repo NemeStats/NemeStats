@@ -647,7 +647,6 @@
     <Content Include="Scripts\d3\LICENSE" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="robots.txt" />
-    <Content Include="Scripts\CreatePlayedGame\_createplayedgame.js" />
     <Content Include="Scripts\d3\nv.d3.min.js" />
     <Content Include="Scripts\d3\css\nv.d3.css" />
     <Content Include="Scripts\GameDefinition\createGameDefinition.js" />
@@ -745,7 +744,6 @@
     <Content Include="Views\GameDefinition\Create.cshtml" />
     <Content Include="Views\GameDefinition\Details.cshtml" />
     <Content Include="Views\GameDefinition\Edit.cshtml" />
-    <Content Include="Views\PlayedGame\__Create.cshtml" />
     <Content Include="Views\PlayedGame\Delete.cshtml" />
     <Content Include="Views\PlayedGame\Details.cshtml" />
     <Content Include="Views\GamingGroup\Index.cshtml" />
@@ -801,7 +799,7 @@
     <Content Include="Views\Achievement\Index.cshtml" />
     <Content Include="Views\Achievement\_RecentAchievementsUnlocked.cshtml" />
     <Content Include="Views\Achievement\RecentAchievementsUnlocked.cshtml" />
-    <Content Include="Views\PlayedGame\Create.cshtml" />
+    <Content Include="Views\PlayedGame\CreateOrEdit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Areas\Api\Views\Shared\" />

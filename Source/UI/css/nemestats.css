@@ -1192,7 +1192,7 @@ button > i.fa {
     left: 50%;
     position: absolute; }
 
-#record-played-game .form.postInProgress {
+#record-played-game .form.serverRequestInProgress {
   opacity: 0.2; }
 
 #record-played-game .form .title {

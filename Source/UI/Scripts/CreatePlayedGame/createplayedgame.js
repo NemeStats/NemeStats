@@ -195,25 +195,49 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                     return "Everybody lost";
                 }
                 return "";
-            })
+            });
+
+            var editMode = $(componentSelector).data("edit-mode");
+
+            if (editMode) {
+                var model = $(componentSelector).data("model");
+                this._viewModel.Date = moment(model.DatePlayed);
+                this._viewModel.Game = {
+                    Id: model.GameDefinitionId,
+                    BoardGameGeekGameDefinitionId: model.BoardGameGeekGameDefinitionId,
+                    Name: model.GameDefinitionName
+                };
+                model.PlayerRanks.forEach(function (playerRank) {
+                    parent._viewModel.Players.push({
+                        Id: playerRank.PlayerId,
+                        Name: playerRank.PlayerName,
+                        Rank: playerRank.GameRank
+                        //Score: playerRank.PointsScored
+                    });
+                });
+                this._viewModel.Notes = model.Notes;
+                this._viewModel.WinnerType = model.WinnerType;
+                this._viewModel.PlayedGameId = model.PlayedGameId;
+            }
 
             this.component = new Vue({
                 el: componentSelector,
                 data: {
                     viewModel: this._viewModel,
-                    currentStep: this._steps.SelectDate,
+                    currentStep: editMode ? this._steps.SetResult : this._steps.SelectDate,
                     searchingGameDefinition: false,
                     searchingBGG: false,
                     alertVisible: false,
                     alertText: '',
                     newPlayerName: '',
-                    postInProgress: false,
-                    recentlyPlayedGameId: null
+                    serverRequestInProgress: false,
+                    recentlyPlayedGameId: null,
+                    editMode: editMode
                 },
                 computed: {
-                  newPlayedGameUrl: function() {
-                      return "/PlayedGame/Details/" + this.recentlyPlayedGameId;
-                  }  
+                    newPlayedGameUrl: function () {
+                        return "/PlayedGame/Details/" + this.recentlyPlayedGameId;
+                    }
                 },
                 methods: {
                     hideAlert: function () {
@@ -318,7 +342,7 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                     },
                     setGameResult: function (winnerType) {
                         var component = this;
-                        this.postInProgress = true;
+                        this.serverRequestInProgress = true;
 
                         this.alertVisible = false;
 
@@ -326,7 +350,7 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                         var token = $('input[name="__RequestVerificationToken"]', form).val();
 
                         this.viewModel.WinnerType = winnerType;
-
+                        
                         var data = {
                             __RequestVerificationToken: token,
                             GameDefinitionId: this.viewModel.Game.Id,
@@ -335,13 +359,21 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                             Notes: this.viewModel.GameNotes,
                             DatePlayed: this.viewModel.Date.toISOString(),
                             WinnerType: this.viewModel.WinnerType,
-                            PlayerRanks: []
+                            PlayerRanks: [],
+                            PlayedGameId: this.viewModel.PlayedGameId,
+                            EditMode: this.editMode ? true : false
                         };
 
                         this.viewModel.Players.forEach(function (player) {
+                            var rank = player.Rank;
+                            if (component.viewModel.WinnerType == parent._winnerTypes.TeamWin) {
+                                rank = 1;
+                            } else if (component.viewModel.WinnerType == parent._winnerTypes.TeamLoss) {
+                                rank = 2;
+                            }
                             data.PlayerRanks.push({
                                 PlayerId: player.Id,
-                                GameRank: player.Rank,
+                                GameRank: rank,
                                 PlayerName: player.Name
                                 //PointsScored: player.Score
                             });
@@ -349,15 +381,15 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
 
                         $.ajax({
                             type: "POST",
-                            url: "/playedgame/create",
+                            url: "/playedgame/save",
                             data: data,
                             success: function (response) {
-                                component.postInProgress = false;
+                                component.serverRequestInProgress = false;
                                 if (response.success) {
                                     component.recentlyPlayedGameId = response.playedGameId;
                                     component.currentStep = parent._steps.Summary;
                                 } else {
-                                    
+
                                     if (response.errors) {
                                         response.errors.forEach(function (e) {
                                             component.alertText += " - ";
@@ -366,12 +398,12 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                                     } else {
                                         component.alertText = "Error creating played game. Please, try again later :_(";
                                     }
-                                    
+
                                     component.alertVisible = true;
                                 }
                             },
                             error: function (XMLHTttpRequest, status, error) {
-                                component.postInProgress = false;
+                                component.serverRequestInProgress = false;
                                 component.alertText = "Error creating played game. Please, try again later :_(";
                                 component.alertVisible = true;
                             }
@@ -380,7 +412,7 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                     gotoRecentlyPlayedGame: function () {
                         window.location = this.newPlayedGameUrl;
                     },
-                    postTweet : function() {
+                    postTweet: function () {
                         var url = `https://nemestats.com${this.newPlayedGameUrl}&utm_source=twitter&utm_medium=tweet&utm_campaign=recentlycreatedplayedgame`;
                         var twitterurl = `https://twitter.com/intent/tweet?hashtags=boardgames&original_referer=${encodeURIComponent(url)}&ref_src=twsrc%5Etfw&related=nemestats&text=Check%20out%20this%20game%20I%20played%20on%20%40nemestats&tw_p=tweetbutton&url=${url}`;
                         window.open(twitterurl);

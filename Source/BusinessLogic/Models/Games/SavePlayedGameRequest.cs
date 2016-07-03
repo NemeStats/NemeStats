@@ -7,13 +7,15 @@ using BusinessLogic.Models.Validation;
 
 namespace BusinessLogic.Models.Games
 {
-    public class CreatePlayedGameRequest
+    public class SavePlayedGameRequest
     {
-
-        public CreatePlayedGameRequest()
+        
+        public SavePlayedGameRequest()
         {
             DatePlayed = DateTime.UtcNow;
         }
+
+        public int? PlayedGameId { get; set; }
 
         public int? GameDefinitionId { get; set; }
         public int? BoardGameGeekGameDefinitionId { get; set; }
@@ -32,6 +34,8 @@ namespace BusinessLogic.Models.Games
 
         [Required]
         public WinnerTypes WinnerType { get; set; }
+
+        public bool EditMode { get; set; }
     }
 
     public class CreatePlayerRankRequest  : IPlayerRank
@@ -40,7 +44,7 @@ namespace BusinessLogic.Models.Games
         public int? PlayerId { get; set; }
         [Required]
         public int GameRank { get; set; }
-        public int? PointsScored { get; set; }
+        public decimal? PointsScored { get; set; }
 
         [Required]
         public string PlayerName { get; set; }

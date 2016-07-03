@@ -23,6 +23,7 @@ using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.Models;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using BusinessLogic.Models.Games;
 using BusinessLogic.Models.Utility;
 using BusinessLogic.Paging;
@@ -71,7 +72,7 @@ namespace BusinessLogic.Logic.GameDefinitions
 
         public IPagedList<GameDefinitionDisplayInfo> GetMostPlayedGames(GetMostPlayedGamesQuery query)
         {
-            var mostPlayedGames = GetGameDefinitionDisplayInfo(query.GamingGroupId)
+            var mostPlayedGames = GetGameDefinitionDisplayInfoQuery(query.GamingGroupId)
                 .OrderByDescending(g => g.PlayedTimes);
 
             return mostPlayedGames.ToPagedList(query.Page, query.PageSize);
@@ -80,25 +81,41 @@ namespace BusinessLogic.Logic.GameDefinitions
 
         public IPagedList<GameDefinitionDisplayInfo> GetRecentGames(GetRecentPlayedGamesQuery query)
         {
-            var recentGames = GetGameDefinitionDisplayInfo(query.GamingGroupId)
+            var recentGames = GetGameDefinitionDisplayInfoQuery(query.GamingGroupId)
                .OrderByDescending(g => g.LastDatePlayed);
 
             return recentGames.ToPagedList(query.Page, query.PageSize);
         }
 
-        private IQueryable<GameDefinitionDisplayInfo> GetGameDefinitionDisplayInfo(int gamingGroupÌd)
+        public GameDefinitionDisplayInfo GetGameDefinitionDisplayInfo(int id)
+        {
+            return dataContext.GetQueryable<GameDefinition>()
+                .Include(g => g.BoardGameGeekGameDefinition)
+                .Where(g => g.Id == id)
+                .Select(MapToGameDefinitionDisplayInfo()).FirstOrDefault();
+        }
+
+        private static Expression<Func<GameDefinition, GameDefinitionDisplayInfo>> MapToGameDefinitionDisplayInfo()
+        {
+            return g => new GameDefinitionDisplayInfo
+            {
+                Id = g.Id,
+                Name = g.Name,
+                PlayedTimes = g.PlayedGames.Count,
+                LastDatePlayed =
+                    g.PlayedGames.Select(p => p.DatePlayed).OrderByDescending(d => d).FirstOrDefault(),
+                ThumbnailImageUrl =
+                    g.BoardGameGeekGameDefinition != null ? g.BoardGameGeekGameDefinition.Thumbnail : "",
+                BoardGameGeekGameDefinitionId = g.BoardGameGeekGameDefinitionId
+            };
+        }
+
+        private IQueryable<GameDefinitionDisplayInfo> GetGameDefinitionDisplayInfoQuery(int gamingGroupÌd)
         {
             return dataContext.GetQueryable<GameDefinition>()
                 .Include(g => g.BoardGameGeekGameDefinition)
                 .Where(g => g.GamingGroupId == gamingGroupÌd)
-                .Select(g => new GameDefinitionDisplayInfo
-                {
-                    Id = g.Id,
-                    Name = g.Name,
-                    PlayedTimes = g.PlayedGames.Count,
-                    LastDatePlayed = g.PlayedGames.Select(p => p.DatePlayed).OrderByDescending(d => d).FirstOrDefault(),
-                    ThumbnailImageUrl = g.BoardGameGeekGameDefinition != null ? g.BoardGameGeekGameDefinition.Thumbnail : ""
-                });
+                .Select(MapToGameDefinitionDisplayInfo());
         }
 
         public virtual IList<GameDefinitionSummary> GetAllGameDefinitions(int gamingGroupId, IDateRangeFilter dateRangeFilter = null)

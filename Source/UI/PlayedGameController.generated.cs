@@ -22,7 +22,6 @@ using System.Web.Mvc;
 using System.Web.Mvc.Ajax;
 using System.Web.Mvc.Html;
 using System.Web.Routing;
-using BusinessLogic.Models.Games;
 using T4MVC;
 namespace UI.Controllers
 {
@@ -71,6 +70,18 @@ namespace UI.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult Save()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Save);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult Edit()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Edit);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult Delete()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Delete);
@@ -80,12 +91,6 @@ namespace UI.Controllers
         public virtual System.Web.Mvc.ActionResult DeleteConfirmed()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.DeleteConfirmed);
-        }
-        [NonAction]
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public virtual System.Web.Mvc.ActionResult Edit()
-        {
-            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Edit);
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -111,10 +116,11 @@ namespace UI.Controllers
         {
             public readonly string Details = "Details";
             public readonly string Create = "Create";
+            public readonly string Save = "Save";
+            public readonly string Edit = "Edit";
             public readonly string ShowRecentlyPlayedGames = "ShowRecentlyPlayedGames";
             public readonly string Delete = "Delete";
             public readonly string DeleteConfirmed = "Delete";
-            public readonly string Edit = "Edit";
             public readonly string Search = "Search";
         }
 
@@ -123,10 +129,11 @@ namespace UI.Controllers
         {
             public const string Details = "Details";
             public const string Create = "Create";
+            public const string Save = "Save";
+            public const string Edit = "Edit";
             public const string ShowRecentlyPlayedGames = "ShowRecentlyPlayedGames";
             public const string Delete = "Delete";
             public const string DeleteConfirmed = "Delete";
-            public const string Edit = "Edit";
             public const string Search = "Search";
         }
 
@@ -147,7 +154,24 @@ namespace UI.Controllers
         public class ActionParamsClass_Create
         {
             public readonly string currentUser = "currentUser";
+        }
+        static readonly ActionParamsClass_Save s_params_Save = new ActionParamsClass_Save();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_Save SaveParams { get { return s_params_Save; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_Save
+        {
             public readonly string request = "request";
+            public readonly string currentUser = "currentUser";
+        }
+        static readonly ActionParamsClass_Edit s_params_Edit = new ActionParamsClass_Edit();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_Edit EditParams { get { return s_params_Edit; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_Edit
+        {
+            public readonly string id = "id";
+            public readonly string currentUser = "currentUser";
         }
         static readonly ActionParamsClass_Delete s_params_Delete = new ActionParamsClass_Delete();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -166,17 +190,6 @@ namespace UI.Controllers
         {
             public readonly string id = "id";
             public readonly string currentUser = "currentUser";
-        }
-        static readonly ActionParamsClass_Edit s_params_Edit = new ActionParamsClass_Edit();
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public ActionParamsClass_Edit EditParams { get { return s_params_Edit; } }
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public class ActionParamsClass_Edit
-        {
-            public readonly string id = "id";
-            public readonly string currentUser = "currentUser";
-            public readonly string newlyCompletedGame = "newlyCompletedGame";
-            public readonly string previousGameId = "previousGameId";
         }
         static readonly ActionParamsClass_Search s_params_Search = new ActionParamsClass_Search();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -197,26 +210,24 @@ namespace UI.Controllers
             public _ViewNamesClass ViewNames { get { return s_ViewNames; } }
             public class _ViewNamesClass
             {
-                public readonly string @__Create = "__Create";
                 public readonly string _GameResult = "_GameResult";
                 public readonly string _PlayedGameFormPartial = "_PlayedGameFormPartial";
                 public readonly string _PlayedGamesPartial = "_PlayedGamesPartial";
                 public readonly string _PlayedGamesPlayerPartial = "_PlayedGamesPlayerPartial";
                 public readonly string _RecentlyPlayedGamesPartial = "_RecentlyPlayedGamesPartial";
-                public readonly string Create = "Create";
+                public readonly string CreateOrEdit = "CreateOrEdit";
                 public readonly string Delete = "Delete";
                 public readonly string Details = "Details";
                 public readonly string Edit = "Edit";
                 public readonly string RecentlyPlayedGames = "RecentlyPlayedGames";
                 public readonly string Search = "Search";
             }
-            public readonly string @__Create = "~/Views/PlayedGame/__Create.cshtml";
             public readonly string _GameResult = "~/Views/PlayedGame/_GameResult.cshtml";
             public readonly string _PlayedGameFormPartial = "~/Views/PlayedGame/_PlayedGameFormPartial.cshtml";
             public readonly string _PlayedGamesPartial = "~/Views/PlayedGame/_PlayedGamesPartial.cshtml";
             public readonly string _PlayedGamesPlayerPartial = "~/Views/PlayedGame/_PlayedGamesPlayerPartial.cshtml";
             public readonly string _RecentlyPlayedGamesPartial = "~/Views/PlayedGame/_RecentlyPlayedGamesPartial.cshtml";
-            public readonly string Create = "~/Views/PlayedGame/Create.cshtml";
+            public readonly string CreateOrEdit = "~/Views/PlayedGame/CreateOrEdit.cshtml";
             public readonly string Delete = "~/Views/PlayedGame/Delete.cshtml";
             public readonly string Details = "~/Views/PlayedGame/Details.cshtml";
             public readonly string Edit = "~/Views/PlayedGame/Edit.cshtml";
@@ -256,15 +267,28 @@ namespace UI.Controllers
         }
 
         [NonAction]
-        partial void CreateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, CreatePlayedGameRequest request, BusinessLogic.Models.User.ApplicationUser currentUser);
+        partial void SaveOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, BusinessLogic.Models.Games.SavePlayedGameRequest request, BusinessLogic.Models.User.ApplicationUser currentUser);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult Create(CreatePlayedGameRequest request, BusinessLogic.Models.User.ApplicationUser currentUser)
+        public override System.Web.Mvc.ActionResult Save(BusinessLogic.Models.Games.SavePlayedGameRequest request, BusinessLogic.Models.User.ApplicationUser currentUser)
         {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Create);
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Save);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "request", request);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "currentUser", currentUser);
-            CreateOverride(callInfo, request, currentUser);
+            SaveOverride(callInfo, request, currentUser);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void EditOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, BusinessLogic.Models.User.ApplicationUser currentUser);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult Edit(int id, BusinessLogic.Models.User.ApplicationUser currentUser)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Edit);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "currentUser", currentUser);
+            EditOverride(callInfo, id, currentUser);
             return callInfo;
         }
 
@@ -302,33 +326,6 @@ namespace UI.Controllers
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "currentUser", currentUser);
             DeleteConfirmedOverride(callInfo, id, currentUser);
-            return callInfo;
-        }
-
-        [NonAction]
-        partial void EditOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, BusinessLogic.Models.User.ApplicationUser currentUser);
-
-        [NonAction]
-        public override System.Web.Mvc.ActionResult Edit(int id, BusinessLogic.Models.User.ApplicationUser currentUser)
-        {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Edit);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "currentUser", currentUser);
-            EditOverride(callInfo, id, currentUser);
-            return callInfo;
-        }
-
-        [NonAction]
-        partial void EditOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, BusinessLogic.Models.Games.NewlyCompletedGame newlyCompletedGame, int previousGameId, BusinessLogic.Models.User.ApplicationUser currentUser);
-
-        [NonAction]
-        public override System.Web.Mvc.ActionResult Edit(BusinessLogic.Models.Games.NewlyCompletedGame newlyCompletedGame, int previousGameId, BusinessLogic.Models.User.ApplicationUser currentUser)
-        {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Edit);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "newlyCompletedGame", newlyCompletedGame);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "previousGameId", previousGameId);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "currentUser", currentUser);
-            EditOverride(callInfo, newlyCompletedGame, previousGameId, currentUser);
             return callInfo;
         }
 

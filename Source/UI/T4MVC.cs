@@ -100,7 +100,6 @@ namespace Links
             private const string URLPATH = "~/Scripts/CreatePlayedGame";
             public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
             public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
-            public static readonly string _createplayedgame_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/_createplayedgame.min.js") ? Url("_createplayedgame.min.js") : Url("_createplayedgame.js");
             public static readonly string createplayedgame_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/createplayedgame.min.js") ? Url("createplayedgame.min.js") : Url("createplayedgame.js");
         }
     
@@ -337,7 +336,6 @@ namespace Links
             {
                 public static class Assets
                 {
-                    public const string _createplayedgame_js = "~/Scripts/CreatePlayedGame/_createplayedgame.js"; 
                     public const string createplayedgame_js = "~/Scripts/CreatePlayedGame/createplayedgame.js"; 
                 }
             }

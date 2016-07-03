@@ -16,7 +16,6 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 
-using System;
 using System.Globalization;
 using BusinessLogic.DataAccess;
 using BusinessLogic.Logic;
@@ -30,16 +29,11 @@ using BusinessLogic.Models.User;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Web.Helpers;
-using System.Web.Http;
 using System.Web.Mvc;
 using BusinessLogic.Models.Players;
 using BusinessLogic.Paging;
-using PagedList;
 using UI.Attributes.Filters;
 using UI.Controllers.Helpers;
-using UI.Mappers;
-using UI.Mappers.CustomMappers;
 using UI.Mappers.Interfaces;
 using UI.Models;
 using UI.Models.GameDefinitionModels;
@@ -73,7 +67,7 @@ namespace UI.Controllers
             IPlayedGameCreator playedGameCreator,
             IPlayedGameDeleter playedGameDeleter,
             IGameDefinitionSaver gameDefinitionSaver,
-            IPlayerSaver playerSaver, 
+            IPlayerSaver playerSaver,
             IMapperFactory mapperFactory)
         {
             _dataContext = dataContext;
@@ -111,33 +105,57 @@ namespace UI.Controllers
         [System.Web.Mvc.HttpGet]
         public virtual ActionResult Create(ApplicationUser currentUser)
         {
-            var mostPlayedGames = _gameDefinitionRetriever.GetMostPlayedGames(new GetMostPlayedGamesQuery { GamingGroupId = currentUser.CurrentGamingGroupId, Page = 1, PageSize = 5 });
-            var recentPlayedGames = _gameDefinitionRetriever.GetRecentGames(new GetRecentPlayedGamesQuery { GamingGroupId = currentUser.CurrentGamingGroupId, Page = 1, PageSize = 5 });
+            var viewModel = FillCreatePlayedGameViewModel(currentUser, new CreatePlayedGameViewModel());
+            return View(MVC.PlayedGame.Views.CreateOrEdit, viewModel);
+        }
+
+        private CreatePlayedGameViewModel FillCreatePlayedGameViewModel(ApplicationUser currentUser, CreatePlayedGameViewModel viewModel)
+        {
+            var mostPlayedGames =
+                _gameDefinitionRetriever.GetMostPlayedGames(new GetMostPlayedGamesQuery
+                {
+                    GamingGroupId = currentUser.CurrentGamingGroupId,
+                    Page = 1,
+                    PageSize = 5
+                });
+            var recentPlayedGames =
+                _gameDefinitionRetriever.GetRecentGames(new GetRecentPlayedGamesQuery
+                {
+                    GamingGroupId = currentUser.CurrentGamingGroupId,
+                    Page = 1,
+                    PageSize = 5
+                });
 
             var players = _playerRetriever.GetPlayersToCreate(currentUser.Id);
 
-            var viewModel = new CreatePlayedGameViewModel
-            {
-                MostPlayedGames = _mapperFactory.GetMapper<GameDefinitionDisplayInfo,GameDefinitionDisplayInfoViewModel>().Map(mostPlayedGames).ToList(),
-                RecentPlayedGames = _mapperFactory.GetMapper<GameDefinitionDisplayInfo, GameDefinitionDisplayInfoViewModel>().Map(recentPlayedGames).ToList(),
-                RecentPlayers = players.RecentPlayers,
-                OtherPlayers = players.OtherPlayers,
-                UserPlayer = players.UserPlayer
-            };
-            return View(MVC.PlayedGame.Views.Create, viewModel);
+            viewModel.UserPlayer = players.UserPlayer;
+            viewModel.OtherPlayers = players.OtherPlayers;
+            viewModel.RecentPlayers = players.RecentPlayers;
+            viewModel.RecentPlayedGames = _mapperFactory.GetMapper<GameDefinitionDisplayInfo, GameDefinitionDisplayInfoViewModel>()
+                .Map(recentPlayedGames)
+                .ToList();
+            viewModel.MostPlayedGames = _mapperFactory.GetMapper<GameDefinitionDisplayInfo, GameDefinitionDisplayInfoViewModel>()
+                .Map(mostPlayedGames)
+                .ToList();
+            return viewModel;
         }
 
-        // POST: /PlayedGame/Create
+        // POST: /PlayedGame/Save
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [System.Web.Mvc.Authorize]
-        [System.Web.Mvc.HttpPost]
+        [Authorize]
+        [HttpPost]
         [ValidateAntiForgeryToken]
         [UserContext]
-        public virtual ActionResult Create(CreatePlayedGameRequest request, ApplicationUser currentUser)
+        public virtual ActionResult Save(SavePlayedGameRequest request, ApplicationUser currentUser)
         {
             if (ModelState.IsValid)
             {
+                if (request.EditMode && request.PlayedGameId.HasValue)
+                {
+                    _playedGameDeleter.DeletePlayedGame(request.PlayedGameId.Value, currentUser);
+                }
+
                 if (request.GameDefinitionId == null)
                 {
                     if (string.IsNullOrEmpty(request.GameDefinitionName))
@@ -162,7 +180,9 @@ namespace UI.Controllers
                     }, currentUser).Id;
                 }
 
-                var playerGame = _playedGameCreator.CreatePlayedGame(_mapperFactory.GetMapper<CreatePlayedGameRequest,NewlyCompletedGame>().Map(request), TransactionSource.WebApplication, currentUser);
+
+                var playerGame = _playedGameCreator.CreatePlayedGame(_mapperFactory.GetMapper<SavePlayedGameRequest, NewlyCompletedGame>().Map(request), TransactionSource.WebApplication, currentUser);
+
 
                 return Json(new { success = true, playedGameId = playerGame.Id });
             }
@@ -170,24 +190,40 @@ namespace UI.Controllers
             return Json(new { success = false, errors = ModelState.Errors() }, JsonRequestBehavior.AllowGet);
         }
 
+        // GET: /PlayedGame/Edit
+        [Authorize]
+        [UserContext]
+        [HttpGet]
+        public virtual ActionResult Edit(int id, ApplicationUser currentUser)
+        {
+            var viewModel = new EditPlayedGameViewModel();
+            viewModel = (EditPlayedGameViewModel)FillCreatePlayedGameViewModel(currentUser, viewModel);
+            viewModel.EditMode = true;
+            viewModel.PlayedGameId = id;
+
+            FillCreatePlayedGameViewModel(currentUser, viewModel);
+
+            var playedGame = _playedGameRetriever.GetPlayedGameDetails(id);
+            viewModel.DatePlayed = playedGame.DatePlayed;
+            viewModel.Notes = playedGame.Notes;
+            viewModel.GameDefinitionId = playedGame.GameDefinitionId;
+
+            var gameDefinition = _gameDefinitionRetriever.GetGameDefinitionDisplayInfo(playedGame.GameDefinitionId);
+            viewModel.BoardGameGeekGameDefinitionId = gameDefinition.BoardGameGeekGameDefinitionId;
+            viewModel.GameDefinitionName = gameDefinition.Name;
+
+            viewModel.PlayerRanks = playedGame.PlayerGameResults.Select(item => new CreatePlayerRankRequest { GameRank = item.GameRank, PlayerId = item.PlayerId, PlayerName = item.Player.Name, PointsScored = item.PointsScored }).ToList();
+
+            return View(MVC.PlayedGame.Views.CreateOrEdit, viewModel);
+        }
+
+
         [System.Web.Mvc.HttpGet]
         public virtual ActionResult ShowRecentlyPlayedGames()
         {
             var recentlyPlayedGames = _playedGameRetriever.GetRecentPublicGames(NUMBER_OF_RECENT_GAMES_TO_DISPLAY);
 
             return View(MVC.PlayedGame.Views.RecentlyPlayedGames, recentlyPlayedGames);
-        }
-
-        private IEnumerable<SelectListItem> GetAllPlayers(ApplicationUser currentUser)
-        {
-            var allPlayers = _playerRetriever.GetAllPlayers(currentUser.CurrentGamingGroupId, false);
-            var allPlayersSelectList = allPlayers.Select(item => new SelectListItem
-            {
-                Text = PlayerNameBuilder.BuildPlayerName(item.Name, item.Active),
-                Value = item.Id.ToString()
-            }).ToList();
-
-            return allPlayersSelectList;
         }
 
         // GET: /PlayedGame/Delete/5
@@ -221,54 +257,7 @@ namespace UI.Controllers
                             + "#" + GamingGroupController.SECTION_ANCHOR_RECENT_GAMES);
         }
 
-        // GET: /PlayedGame/Edit
-        [System.Web.Mvc.Authorize]
-        [UserContext]
-        [System.Web.Mvc.HttpGet]
-        public virtual ActionResult Edit(int id, ApplicationUser currentUser)
-        {
-            var viewModel = new PlayedGameEditViewModel();
-            var gameDefinitionsList = _gameDefinitionRetriever.GetAllGameDefinitions(currentUser.CurrentGamingGroupId);
-            viewModel.GameDefinitions = gameDefinitionsList.Select(item => new SelectListItem
-            {
-                Text = item.Name,
-                Value = item.Id.ToString()
-            }).ToList();
-            viewModel.Players = GetAllPlayers(currentUser);
 
-            if (id > 0)
-            {
-                var playedGame = _playedGameRetriever.GetPlayedGameDetails(id);
-                viewModel.PreviousGameId = playedGame.Id;
-                viewModel.GameDefinitionId = playedGame.GameDefinitionId;
-                viewModel.DatePlayed = playedGame.DatePlayed;
-                viewModel.Notes = playedGame.Notes;
-
-                viewModel.PlayerRanks = playedGame.PlayerGameResults.Select(item => new PlayerRank { GameRank = item.GameRank, PlayerId = item.PlayerId }).ToList();
-                viewModel.ExistingRankedPlayerNames = playedGame.PlayerGameResults.Select(item => new { item.Player.Name, item.Player.Id }).ToDictionary(p => p.Name, q => q.Id);
-                viewModel.Players = RemovePlayersFromExistingPlayerRanks(viewModel.Players.ToList(), viewModel.PlayerRanks);
-            }
-
-            return View(viewModel);
-        }
-
-        // POST: /PlayedGame/Edit
-        [System.Web.Mvc.Authorize]
-        [UserContext]
-        [System.Web.Mvc.HttpPost]
-        public virtual ActionResult Edit(NewlyCompletedGame newlyCompletedGame, int previousGameId, ApplicationUser currentUser)
-        {
-            if (ModelState.IsValid)
-            {
-                _playedGameDeleter.DeletePlayedGame(previousGameId, currentUser);
-                _playedGameCreator.CreatePlayedGame(newlyCompletedGame, TransactionSource.WebApplication, currentUser);
-
-                return new RedirectResult(Url.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name)
-                                            + "#" + GamingGroupController.SECTION_ANCHOR_RECENT_GAMES);
-            }
-
-            return RedirectToAction(MVC.PlayedGame.Edit(previousGameId, currentUser));
-        }
 
         private IEnumerable<SelectListItem> RemovePlayersFromExistingPlayerRanks(IEnumerable<SelectListItem> players, List<PlayerRank> playerRanks)
         {

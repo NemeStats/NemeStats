@@ -15,13 +15,13 @@ namespace UI.Mappers.CustomMappers
     }
 
     public class CreatePlayedGameRequestToNewlyCompletedGameMapper :
-        BaseCustomMapper<CreatePlayedGameRequest, NewlyCompletedGame>
+        BaseCustomMapper<SavePlayedGameRequest, NewlyCompletedGame>
     {
         private readonly CreatePlayerRankRequestToPlayerRankMapper _createPlayerRankRequestToPlayerRankMapper;
 
         static CreatePlayedGameRequestToNewlyCompletedGameMapper()
         {
-            Mapper.CreateMap<CreatePlayedGameRequest, NewlyCompletedGame>()
+            Mapper.CreateMap<SavePlayedGameRequest, NewlyCompletedGame>()
                 .ForMember(m => m.PlayerRanks, o => o.Ignore());
         }
 
@@ -30,7 +30,7 @@ namespace UI.Mappers.CustomMappers
             _createPlayerRankRequestToPlayerRankMapper = createPlayerRankRequestToPlayerRankMapper;
         }
 
-        public override NewlyCompletedGame Map(CreatePlayedGameRequest source)
+        public override NewlyCompletedGame Map(SavePlayedGameRequest source)
         {
             var result = base.Map(source);
 
