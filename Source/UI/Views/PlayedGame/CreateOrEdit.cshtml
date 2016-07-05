@@ -82,8 +82,10 @@
                         <div class="form-group">
                             <input type="date" class="form-control form-control-lg date-picker" v-model="viewModel.Date">
                         </div>
+
                         <button class="btn btn-default" v-on:click="setDateYesterday">Yesterday</button>
                         <button class="btn btn-default" v-on:click="setDateToday">Today</button>
+
                         <button class="btn btn-primary" v-on:click="gotoSelectGame">Continue</button>
                     </div>
 
@@ -125,7 +127,7 @@
                         <h4 class="title">Select from existent players:</h4>
                         <div class="row form-group">
                             <div class="col-sm-5">
-                                <select name="from" id="optgroup" class="form-control" size="9" multiple="multiple">
+                                <select name="from" id="optgroup" class="form-control optgroup" size="9" multiple="multiple">
                                     <optgroup label="Recent players">
                                         @foreach (var player in Model.RecentPlayers)
                                         {
@@ -142,12 +144,18 @@
                             </div>
 
                             <div class="col-sm-2">
-                                <button type="button" id="optgroup_rightSelected" class="btn btn-block"><i class="fa fa-chevron-right"></i></button>
-                                <button type="button" id="optgroup_leftSelected" class="btn btn-block"><i class="fa fa-chevron-left"></i></button>
+                                <div class="hidden-xs">
+                                    <button type="button" class="btn btn-block optgroup_rightSelected"><i class="fa fa-chevron-right"></i></button>
+                                    <button type="button" class="btn btn-block optgroup_leftSelected"><i class="fa fa-chevron-left"></i></button>
+                                </div>
+                                <div class="row hidden-sm hidden-md hidden-lg">
+                                    <div class="col-xs-6"><button type="button" class="btn btn-block optgroup_rightSelected"><i class="fa fa-chevron-down"></i></button></div>
+                                    <div class="col-xs-6"><button type="button" class="btn btn-block optgroup_leftSelected"><i class="fa fa-chevron-up"></i></button></div>
+                                </div>
                             </div>
 
                             <div class="col-sm-5">
-                                <select name="to" id="optgroup_to" class="form-control" size="9" multiple="multiple">
+                                <select name="to" id="optgroup_to" class="form-control optgroup" size="9" multiple="multiple">
                                     <option value="@Model.UserPlayer.PlayerId">Me (@Model.UserPlayer.PlayerName)</option>
                                 </select>
                             </div>
@@ -159,8 +167,9 @@
                                     <span class="fa fa-plus"></span>
                                 </span>
                                 <input type="text" class="form-control form-control-lg" placeholder="new player name" v-model="newPlayerName" v-on:keyup.enter="createNewPlayer()" />
-                                <button class="btn btn-default" style="margin-left: 10px;" v-on:click="createNewPlayer()">Create player</button>
+                                <button class="btn btn-default hidden-xs" style="margin-left: 10px;" v-on:click="createNewPlayer()">Create player</button>
                             </div>
+                            <button class="btn btn-default hidden-sm hidden-md hidden-lg" v-on:click="createNewPlayer()">Create player</button>
                         </div>
                         <div class="row">
                             <div class="col-xs-12">
@@ -177,13 +186,19 @@
                         <h4 class="title">Select game type:</h4>
                         <div class="form-group">
                             <ul class="nav nav-tabs" role="tablist">
-                                <li role="presentation" class="active"><a href="#ranked" role="tab" data-toggle="tab">Ranked game</a></li>
-                                <li role="presentation"><a href="#cooperative" role="tab" data-toggle="tab">Cooperative game</a></li>
+                                <li role="presentation" class="active">
+                                    <a href="#ranked" role="tab" data-toggle="tab" class="hidden-xs">Ranked game</a>
+                                    <a href="#ranked" role="tab" data-toggle="tab" class="hidden-sm hidden-md hidden-lg">Ranked</a>
+                                </li>
+                                <li role="presentation">
+                                    <a href="#cooperative" role="tab" data-toggle="tab" class="hidden-xs">Cooperative game</a>
+                                    <a href="#cooperative" role="tab" data-toggle="tab" class="hidden-sm hidden-md hidden-lg">Cooperative</a>
+                                </li>
                             </ul>
 
                             <div class="tab-content">
                                 <div role="tabpanel" class="tab-pane active" id="ranked">
-                                    <ul class="list-group header">
+                                    <ul class="list-group header hidden-xs">
                                         <li class="list-group-item">
                                             <span class="rank">Rank</span>
                                             <span class="player">Player</span>
@@ -195,22 +210,23 @@
                                             <input type="number" class="form-control rank" v-model="player.Rank" number />
                                             {{ player.Name }}
                                             @*TODO: <input type="number" class="form-control score" v-model="player.Score" number/>*@
-
-                                            <button class="btn btn-default" v-on:click="changeRank(player,true)" tabindex="-1"><span class="fa fa-arrow-up"></span></button>
-                                            <button class="btn btn-default" v-on:click="changeRank(player,false)" tabindex="-1"><span class="fa fa-arrow-down"></span></button>
+                                            <div class="change-rank-buttons">
+                                                <button class="btn btn-default" v-on:click="changeRank(player,true)" tabindex="-1"><span class="fa fa-arrow-up"></span></button>
+                                                <button class="btn btn-default" v-on:click="changeRank(player,false)" tabindex="-1"><span class="fa fa-arrow-down"></span></button>
+                                            </div>
                                         </li>
                                     </ul>
                                 </div>
                                 <div role="tabpanel" class="tab-pane" id="cooperative">
                                     <div class="row">
-                                        <div class="col-xs-offset-2 col-xs-4">
+                                        <div class="col-sm-offset-2 col-sm-4">
                                             <div class="btn-wrapper" data-container="body" data-toggle="popover" data-placement="left" data-content="Record a game where everyone won (e.g. you saved the world in Pandemic)" v-on:click="setGameResult(2)">
                                                 <button class="btn btn-success btn-recordgame btn-everyone-won" id="btnEveryoneWonButton">
                                                     <i class="fa fa-smile-o"></i> Everyone Won
                                                 </button>
                                             </div>
                                         </div>
-                                        <div class="col-xs-4">
+                                        <div class="col-sm-4">
                                             <div class="btn-wrapper" data-container="body" data-toggle="popover" data-placemenet="right" data-content="Record a game where everyone lost (e.g. no one survived in Zombicide)" v-on:click="setGameResult(3)">
                                                 <button class="btn btn-danger btn-recordgame" id="btnEveryoneLostButton">
                                                     <i class="fa fa-frown-o"></i> Everyone Lost

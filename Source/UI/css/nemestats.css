@@ -113,7 +113,7 @@
 
 /*$header-background-color: #2C3E50;*/
 .home-body-container {
-  margin-bottom: 75px; }
+  margin-bottom: 100px; }
 
 .home-container {
   background-color: #eee; }
@@ -251,10 +251,10 @@ body {
   padding-left: 15px;
   padding-right: 15px;
   padding-bottom: 20px;
-  margin-bottom: 75px; }
+  margin-bottom: 100px; }
 
 footer {
-  height: 75px;
+  height: 100px;
   color: #fff;
   background-color: #354458;
   padding: 25px;
@@ -1129,6 +1129,25 @@ button > i.fa {
     margin-right: 10px;
     display: flex;
     padding-right: 5px; }
+    @media (max-width: 768px) {
+      #record-played-game .steps li {
+        display: inline-block;
+        height: 40px; }
+        #record-played-game .steps li:before {
+          top: 20px;
+          bottom: 0;
+          position: absolute;
+          content: " ";
+          width: 13px;
+          height: 3px;
+          background-color: #ecf0f1;
+          left: 42px; }
+        #record-played-game .steps li:last-child:before {
+          display: none; }
+        #record-played-game .steps li.current:before {
+          background-color: #354458; }
+        #record-played-game .steps li.completed:before {
+          background-color: #b8c4d4; } }
     #record-played-game .steps li.arrow_box {
       position: relative;
       background: #ecf0f1; }
@@ -1157,6 +1176,9 @@ button > i.fa {
       border-left-color: #ecf0f1;
       border-width: 20px;
       margin-top: -20px; }
+      @media (max-width: 768px) {
+        #record-played-game .steps li.arrow_box:after {
+          display: none; } }
     #record-played-game .steps li.completed:after {
       border-left-color: #b8c4d4; }
     #record-played-game .steps li.disabled:after {
@@ -1167,17 +1189,30 @@ button > i.fa {
     font-size: 35px;
     margin: 0 10px;
     line-height: 70px; }
+    @media (max-width: 768px) {
+      #record-played-game .steps .number {
+        font-size: 30px;
+        line-height: normal; } }
   #record-played-game .steps .desc {
     font-size: 18px;
     line-height: 70px; }
+    @media (max-width: 768px) {
+      #record-played-game .steps .desc {
+        display: none; } }
   #record-played-game .steps .value-desc {
     padding-top: 10px;
     font-size: 13px;
     text-decoration: underline; }
+    @media (max-width: 768px) {
+      #record-played-game .steps .value-desc {
+        display: none; } }
   #record-played-game .steps .value {
     font-size: 17px;
     overflow: hidden;
     max-height: 45px; }
+    @media (max-width: 768px) {
+      #record-played-game .steps .value {
+        display: none; } }
 
 #record-played-game .loading {
   z-index: 9999999;
@@ -1208,12 +1243,22 @@ button > i.fa {
     padding: 20px;
     display: inline-block;
     cursor: pointer; }
+    @media (max-width: 768px) {
+      #record-played-game .form .content .game-image {
+        padding: 5px; } }
     #record-played-game .form .content .game-image:hover {
       background-color: #889cb7; }
     #record-played-game .form .content .game-image img {
       width: 100px; }
+      @media (max-width: 768px) {
+        #record-played-game .form .content .game-image img {
+          width: 80px; } }
     #record-played-game .form .content .game-image .name {
       font-size: 22px; }
+  @media (max-width: 768px) {
+    #record-played-game .form .content .optgroup {
+      margin: 10px 0;
+      height: 100px !important; } }
   #record-played-game .form .content .nav-tabs {
     border-bottom: solid 1px #dce4ec; }
     #record-played-game .form .content .nav-tabs .active a {
@@ -1225,6 +1270,9 @@ button > i.fa {
     #record-played-game .form .content .tab-content .btn-wrapper {
       padding: 20px;
       text-align: center; }
+      @media (max-width: 768px) {
+        #record-played-game .form .content .tab-content .btn-wrapper {
+          padding: 5px 0; } }
       #record-played-game .form .content .tab-content .btn-wrapper:hover {
         background-color: #889cb7; }
       #record-played-game .form .content .tab-content .btn-wrapper .btn-recordgame {
@@ -1247,6 +1295,16 @@ button > i.fa {
     padding: 20px;
     width: 100%;
     font-size: 16px; }
+    @media (max-width: 992px) {
+      #record-played-game .form .content .action-buttons .btn {
+        margin-bottom: 10px; } }
+    @media (max-width: 768px) {
+      #record-played-game .form .content .action-buttons .btn {
+        white-space: normal !important;
+        font-size: 14px; }
+        #record-played-game .form .content .action-buttons .btn span {
+          display: block;
+          margin-bottom: 5px; } }
 
 .ranked-item.list-group-item {
   color: white;
@@ -1257,8 +1315,14 @@ button > i.fa {
   cursor: grab;
   cursor: -moz-grab;
   cursor: -webkit-grab; }
+  @media (max-width: 768px) {
+    .ranked-item.list-group-item {
+      display: inline-block; } }
   .ranked-item.list-group-item input {
     display: inline-block; }
+    @media (max-width: 768px) {
+      .ranked-item.list-group-item input {
+        display: block; } }
     .ranked-item.list-group-item input.rank {
       width: 65px;
       margin-right: 10px; }
@@ -1266,10 +1330,21 @@ button > i.fa {
       width: 85px;
       float: right;
       margin-left: 10px; }
-  .ranked-item.list-group-item button {
-    display: inline-block;
-    float: right;
-    margin: 0 5px; }
+  .ranked-item.list-group-item .change-rank-buttons {
+    display: inline;
+    float: left; }
+    @media (min-width: 768px) {
+      .ranked-item.list-group-item .change-rank-buttons {
+        float: right; } }
+    @media (max-width: 768px) {
+      .ranked-item.list-group-item .change-rank-buttons {
+        margin-top: 10px; } }
+    .ranked-item.list-group-item .change-rank-buttons button {
+      display: inline-block;
+      margin: 0 5px; }
+      @media (min-width: 768px) {
+        .ranked-item.list-group-item .change-rank-buttons button {
+          float: right; } }
   .ranked-item.list-group-item:active :active {
     cursor: grabbing;
     cursor: -moz-grabbing;

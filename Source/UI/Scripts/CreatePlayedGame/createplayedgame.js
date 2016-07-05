@@ -57,6 +57,8 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
 
         $("#optgroup").multiselect({
             keepRenderingSort: true,
+            rightSelected: ".optgroup_rightSelected",
+            leftSelected: "optgroup_leftSelected",
             afterMoveToRight: function ($left, $right, $options) {
                 $.each($options, function (i, $option) {
                     parent.component.$data.viewModel.Players.push({
@@ -253,8 +255,12 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                     },
                     gotoSelectGame: function () {
                         if (this.viewModel.Date) {
+                            this.alertVisible = false;
                             this.viewModel.Date = moment(this.viewModel.Date).startOf("day");
                             this.currentStep = parent._steps.SelectGame;
+                        } else {
+                            this.alertText = "You must set the played game or use the yesterday/today buttons.";
+                            this.alertVisible = true;
                         }
                     },
                     selectGame: function (id, name, bggid) {

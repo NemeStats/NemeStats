@@ -17,6 +17,43 @@ $color-border: #dce4ec;
             display: flex;
             padding-right: 5px;
 
+            @media (max-width: $screen-sm-min) {
+                display: inline-block;
+                height: 40px;
+
+                &:before {
+                    top: 20px;
+                    bottom: 0;
+                    position: absolute;
+                    content: " ";
+                    width: 13px;
+                    height: 3px;
+                    background-color: $well-bg;
+                    left: 42px;
+                }
+
+                &:last-child {
+                    &:before {
+                        display: none;
+                    }
+                }
+
+                &.current {
+                    &:before {
+                        background-color: $brand-primary;
+                    }
+                }
+
+                &.completed {
+                    &:before {
+                        background-color: $color-completed;
+                    }
+                }
+            }
+
+
+
+
             &.arrow_box {
                 position: relative;
                 background: $well-bg;
@@ -49,6 +86,10 @@ $color-border: #dce4ec;
             }
 
             &.arrow_box:after {
+                @media (max-width: $screen-sm-min) {
+                    display: none;
+                }
+
                 left: 100%;
                 top: 50%;
                 border: solid transparent;
@@ -80,23 +121,40 @@ $color-border: #dce4ec;
             font-size: 35px;
             margin: 0 10px;
             line-height: 70px;
+
+            @media (max-width: $screen-sm-min) {
+                font-size: 30px;
+                line-height: normal;
+            }
         }
 
         .desc {
             font-size: 18px;
             line-height: 70px;
+
+            @media (max-width: $screen-sm-min) {
+                display: none;
+            }
         }
 
         .value-desc {
             padding-top: 10px;
             font-size: 13px;
             text-decoration: underline;
+
+            @media (max-width: $screen-sm-min) {
+                display: none;
+            }
         }
 
         .value {
             font-size: 17px;
             overflow: hidden;
             max-height: 45px;
+
+            @media (max-width: $screen-sm-min) {
+                display: none;
+            }
         }
     }
 
@@ -135,6 +193,11 @@ $color-border: #dce4ec;
 
             .game-image {
                 padding: 20px;
+
+                @media (max-width: $screen-sm-min) {
+                    padding: 5px;
+                }
+
                 display: inline-block;
                 cursor: pointer;
 
@@ -144,6 +207,10 @@ $color-border: #dce4ec;
 
                 img {
                     width: 100px;
+
+                    @media (max-width: $screen-sm-min) {
+                        width: 80px;
+                    }
                 }
 
                 .name {
@@ -151,6 +218,12 @@ $color-border: #dce4ec;
                 }
             }
 
+            .optgroup {
+                @media (max-width: $screen-sm-min) {
+                    margin: 10px 0;
+                    height: 100px !important;
+                }
+            }
 
             .nav-tabs {
                 border-bottom: solid 1px $color-border;
@@ -177,6 +250,11 @@ $color-border: #dce4ec;
 
                 .btn-wrapper {
                     padding: 20px;
+
+                    @media (max-width: $screen-sm-min) {
+                        padding: 5px 0;
+                    }
+
                     text-align: center;
 
                     &:hover {
@@ -221,6 +299,21 @@ $color-border: #dce4ec;
                     padding: 20px;
                     width: 100%;
                     font-size: 16px;
+
+                    @media (max-width: $screen-md-min) {
+                        margin-bottom: 10px;
+                    }
+
+                    @media (max-width: $screen-sm-min) {
+                        
+                        white-space:normal !important;
+                        font-size: 14px;
+
+                        span {
+                            display: block;
+                            margin-bottom: 5px;
+                        }
+                    }
                 }
             }
         }
@@ -232,8 +325,16 @@ $color-border: #dce4ec;
     background-color: $brand-primary;
     border-color: $color-border;
 
+    @media (max-width: $screen-sm-min) {
+        display: inline-block;
+    }
+
     input {
         display: inline-block;
+
+        @media (max-width: $screen-sm-min) {
+            display: block;
+        }
 
         &.rank {
             width: 65px;
@@ -247,10 +348,27 @@ $color-border: #dce4ec;
         }
     }
 
-    button {
-        display: inline-block;
-        float: right;
-        margin: 0 5px;
+    .change-rank-buttons {
+        display: inline;
+        float: left;
+
+        @media (min-width: $screen-sm-min) {
+            float: right;
+        }
+
+        @media (max-width: $screen-sm-min) {
+            margin-top: 10px;
+        }
+
+        button {
+            display: inline-block;
+
+            @media (min-width: $screen-sm-min) {
+                float: right;
+            }
+
+            margin: 0 5px;
+        }
     }
 
     cursor: move; /* fallback if grab cursor is unsupported */
