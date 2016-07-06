@@ -40,28 +40,28 @@ namespace UI.DependencyResolution
 
             this.SetupSingletonMappings();
 
-            this.SetupMapperMappings();
+            SetupMapperMappings(this);
         }
 
-        private void SetupMapperMappings()
+        public static void SetupMapperMappings(Registry r)
         {
-            this.For<IMapperFactory>().Use<MapperFactory>();
+            r.For<IMapperFactory>().Use<MapperFactory>();
 
-            this.For<ICustomMapper<GameDefinitionDisplayInfo, GameDefinitionDisplayInfoViewModel>>().Use<GameDefinitionDisplayInfoToGameDefinitionDisplayInfoViewModelMapper>();
-            this.For<ICustomMapper<GameDefinitionSummary, GameDefinitionSummaryListViewModel>>().Use<GameDefinitionSummaryToGameDefinitionSummaryListViewModelMapper>();
+            r.For<ICustomMapper<GameDefinitionDisplayInfo, GameDefinitionDisplayInfoViewModel>>().Use<GameDefinitionDisplayInfoToGameDefinitionDisplayInfoViewModelMapper>();
+            r.For<ICustomMapper<GameDefinitionSummary, GameDefinitionSummaryListViewModel>>().Use<GameDefinitionSummaryToGameDefinitionSummaryListViewModelMapper>();
 
-            this.For<ICustomMapper<SavePlayedGameRequest, NewlyCompletedGame>>().Use<CreatePlayedGameRequestToNewlyCompletedGameMapper>();
+            r.For<ICustomMapper<SavePlayedGameRequest, NewlyCompletedGame>>().Use<CreatePlayedGameRequestToNewlyCompletedGameMapper>();
 
-            this.For<ICustomMapper<IAchievement, AchievementSummaryViewModel>>().Use<AchievementToAchievementSummaryViewModelMapper>();
-            this.For<ICustomMapper<IAchievement, AchievementViewModel>>().Use<AchievementToAchievementViewModelMapper>();
+            r.For<ICustomMapper<IAchievement, AchievementSummaryViewModel>>().Use<AchievementToAchievementSummaryViewModelMapper>();
+            r.For<ICustomMapper<IAchievement, AchievementViewModel>>().Use<AchievementToAchievementViewModelMapper>();
 
-            this.For<ICustomMapper<PlayerAchievement, PlayerAchievementWinnerViewModel>>().Use<PlayerAchievementToPlayerAchievementWinnerViewModelMapper>();
-            this.For<ICustomMapper<PlayerAchievement, PlayerAchievementViewModel>>().Use<PlayerAchievementToPlayerAchievementViewModelMapper>();
-            this.For<ICustomMapper<PlayerAchievement, PlayerAchievementSummaryViewModel>>().Use<PlayerAchievementToPlayerAchievementSummaryViewModelMapper>();
-            this.For<ICustomMapper<PlayerAchievement, PlayerAchievementSummaryViewModel>>().Use<PlayerAchievementToPlayerAchievementSummaryViewModelMapper>();
+            r.For<ICustomMapper<PlayerAchievement, PlayerAchievementWinnerViewModel>>().Use<PlayerAchievementToPlayerAchievementWinnerViewModelMapper>();
+            r.For<ICustomMapper<PlayerAchievement, PlayerAchievementViewModel>>().Use<PlayerAchievementToPlayerAchievementViewModelMapper>();
+            r.For<ICustomMapper<PlayerAchievement, PlayerAchievementSummaryViewModel>>().Use<PlayerAchievementToPlayerAchievementSummaryViewModelMapper>();
+            r.For<ICustomMapper<PlayerAchievement, PlayerAchievementSummaryViewModel>>().Use<PlayerAchievementToPlayerAchievementSummaryViewModelMapper>();
 
-            this.For<ICustomMapper<Player, PlayerListSummaryViewModel>>().Use<PlayerToPlayerListSummaryViewModelMapper>();
-            this.For<ICustomMapper<PlayedGameQuickStats, PlayedGameQuickStatsViewModel>>().Use<PlayedGameQuickStatsToPlayedGameQuickStatsViewModelMapper>();
+            r.For<ICustomMapper<Player, PlayerListSummaryViewModel>>().Use<PlayerToPlayerListSummaryViewModelMapper>();
+            r.For<ICustomMapper<PlayedGameQuickStats, PlayedGameQuickStatsViewModel>>().Use<PlayedGameQuickStatsToPlayedGameQuickStatsViewModelMapper>();
 
         }
 

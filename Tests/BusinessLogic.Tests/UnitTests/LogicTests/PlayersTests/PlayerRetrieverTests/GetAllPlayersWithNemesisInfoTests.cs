@@ -261,7 +261,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
                     PlayedGame = new PlayedGame
                     {
                         GamingGroupId = _expectedGamingGroupId,
-                        DatePlayed = DateTime.Now
+                        DatePlayed = DateTime.Now.AddDays(-1)
                     },
                     PlayerId = playerId
                 };
@@ -348,7 +348,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
                 _autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<PlayerGameResult>()).Return(_playerGameResults.AsQueryable());
                 var dateRangeFilter = new BasicDateRangeFilter
                 {
-                    ToDate = DateTime.Now.AddDays(-1)
+                    ToDate = DateTime.Now.AddDays(-2)
                 };
 
                 //--act

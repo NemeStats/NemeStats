@@ -15,16 +15,22 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
-using BusinessLogic.Logic.GamingGroups;
-using BusinessLogic.Logic.Nemeses;
-using BusinessLogic.Logic.PlayedGames;
-using BusinessLogic.Logic.Players;
+
+using BusinessLogic.Logic.Achievements;
+using BusinessLogic.Models;
+using BusinessLogic.Models.Games;
+using BusinessLogic.Models.PlayedGames;
 using NUnit.Framework;
-using Rhino.Mocks;
-using System.Linq;
+using StructureMap;
 using StructureMap.AutoMocking;
 using UI.Controllers;
-using UI.Transformations.PlayerTransformations;
+using UI.Mappers;
+using UI.Mappers.CustomMappers;
+using UI.Mappers.Interfaces;
+using UI.Models.Achievements;
+using UI.Models.GameDefinitionModels;
+using UI.Models.PlayedGame;
+using UI.Models.Players;
 using UI.Transformations;
 
 namespace UI.Tests.UnitTests.ControllerTests.HomeControllerTests
@@ -39,6 +45,11 @@ namespace UI.Tests.UnitTests.ControllerTests.HomeControllerTests
         {
             AutomapperConfiguration.Configure();
             _autoMocker = new RhinoAutoMocker<HomeController>();
+
+            _autoMocker.Inject<IMapperFactory>(new MapperFactory(new Container(c =>
+            {
+                c.AddRegistry<TestRegistry>();
+            })));
         }
     }
 }

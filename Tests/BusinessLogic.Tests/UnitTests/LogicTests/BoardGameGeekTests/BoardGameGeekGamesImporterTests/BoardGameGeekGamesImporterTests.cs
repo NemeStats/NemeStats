@@ -66,7 +66,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.BoardGameGeekTests.BoardGameG
               .Return(new UserInformation() { BoardGameGeekUser = new BoardGameGeekUserInformation() });
             autoMocker.Get<IBoardGameGeekApiClient>().Expect(mock => mock.GetUserGames(Arg<string>.Is.Anything))
                .Return(bggGames);
-            autoMocker.Get<IGameDefinitionRetriever>().Expect(mock => mock.GetAllGameDefinitionNames(Arg<int>.Is.Anything))
+            autoMocker.Get<IGameDefinitionRetriever>().Expect(mock => mock.GetAllGameDefinitionNames(Arg<int>.Is.Anything, Arg<string>.Is.Anything))
                .Return(ggGames);
 
             var result = autoMocker.ClassUnderTest.ImportBoardGameGeekGames(currentUser);
@@ -84,7 +84,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.BoardGameGeekTests.BoardGameG
               .Return(new UserInformation() { BoardGameGeekUser = new BoardGameGeekUserInformation() });
             autoMocker.Get<IBoardGameGeekApiClient>().Expect(mock => mock.GetUserGames(Arg<string>.Is.Anything))
                .Return(bggGames);
-            autoMocker.Get<IGameDefinitionRetriever>().Expect(mock => mock.GetAllGameDefinitionNames(Arg<int>.Is.Anything))
+            autoMocker.Get<IGameDefinitionRetriever>().Expect(mock => mock.GetAllGameDefinitionNames(Arg<int>.Is.Anything, Arg<string>.Is.Anything))
                .Return(ggGames);
 
             var result = autoMocker.ClassUnderTest.ImportBoardGameGeekGames(currentUser);

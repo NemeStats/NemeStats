@@ -18,7 +18,6 @@
 
 using BusinessLogic.Logic.Nemeses;
 using BusinessLogic.Models.Games;
-using BusinessLogic.Models.Players;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System.Collections.Generic;
@@ -37,8 +36,10 @@ using BusinessLogic.Models.GamingGroups;
 using BusinessLogic.Paging;
 using UI.Models.GameDefinitionModels;
 using UI.Transformations;
-using UI.Transformations.PlayerTransformations;
 using PagedList;
+using UI.Mappers;
+using UI.Mappers.CustomMappers;
+using UI.Mappers.Interfaces;
 
 namespace UI.Tests.UnitTests.ControllerTests.HomeControllerTests
 {
@@ -60,7 +61,7 @@ namespace UI.Tests.UnitTests.ControllerTests.HomeControllerTests
         {
             base.SetUp();
 
-            
+
             recentAchievementsUnlocks = new List<PlayerAchievement>
             {
                 new PlayerAchievement()
@@ -124,7 +125,20 @@ namespace UI.Tests.UnitTests.ControllerTests.HomeControllerTests
             _autoMocker.Get<ITrendingGamesRetriever>().Expect(mock => mock.GetResults(Arg<TrendingGamesRequest>.Is.Equal(trendingGamesRequest))).Return(expectedTopGames);
             _autoMocker.Get<ITransformer>().Expect(mock => mock.Transform<TrendingGame, TrendingGameViewModel>(expectedTopGames[0])).Return(_expectedTrendingGameViewModel);
 
+            //var mapper = _autoMocker.Stub(s=> s.Get<ICustomMapper<PlayerAchievement, PlayerAchievementWinnerViewModel>>()
+            //    .Expect(m => m.Map(Arg<IEnumerable<PlayerAchievement>>.Is.Anything))
+            //    .Return(new List<PlayerAchievementWinnerViewModel>()
+            //    {
+            //        new PlayerAchievementWinnerViewModel {AchievementId = recentAchievementsUnlocks.First().AchievementId}
+            //    }));
+            //var mapperFactory = _autoMocker.Stub(s => s.Get<IMapperFactory>().Expect(e=>e.GetMapper<PlayerAchievement, PlayerAchievementWinnerViewModel>()).Return(
+
+            //    ));
+            
+
+
             viewResult = _autoMocker.ClassUnderTest.Index() as ViewResult;
+
         }
 
         [Test]
