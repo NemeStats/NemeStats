@@ -48,7 +48,7 @@
                         Select players
                     </span>
                     <div v-show="currentStep > 3" style="display: none">
-                        <div class="value-desc"># Players:</div>
+                        <div class="value-desc"># of Players:</div>
                         <div class="value">{{ viewModel.Players.length }} players</div>
                     </div>
                 </li>
@@ -95,7 +95,7 @@
                     <div class="content">
                         <h4 class="title">Pick a game</h4>
                         <div class="form-group">
-                            <label>Search a game for your full game list:</label>
+                            <label>Search your game list:</label>
                             <div class="input-group">
                                 <span class="input-group-addon">
                                     <span class="fa fa-search" v-show="!searchingGameDefinition"></span>
@@ -124,7 +124,7 @@
                 <div v-show="currentStep == 3" style="display: none">
                     <h3 class="title">Select players</h3>
                     <div class="content">
-                        <h4 class="title">Select from existent players:</h4>
+                        <h4 class="title">Select existing players:</h4>
                         <div class="row form-group">
                             <div class="col-sm-5">
                                 <select name="from" id="optgroup" class="form-control optgroup" size="9" multiple="multiple">
