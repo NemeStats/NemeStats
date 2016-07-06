@@ -155,7 +155,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
                     x =>
                         x.CreatePlayer(
                             Arg<CreatePlayerRequest>.Matches(
-                                m => m.Name == notExistingPlayerName), Arg<ApplicationUser>.Is.Equal(currentUser)))
+                                m => m.Name == notExistingPlayerName), Arg<ApplicationUser>.Is.Equal(currentUser), Arg<bool>.Is.Anything))
                 .Repeat.Once().Return(new Player() {Id = 2});
         }
 
