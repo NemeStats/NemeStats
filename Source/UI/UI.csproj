@@ -605,6 +605,7 @@
     <None Include="Properties\PublishProfiles\nerdscorekeeper - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\nerdscorekeeper - Web Deploy.pubxml" />
     <Content Include="sass\nemestats\createplayedgame.scss" />
+    <Content Include="sass\nemestats\animate.scss" />
     <None Include="sass\nemestats\gaminggroup.scss" />
     <Content Include="sass\nemestats\home.scss" />
     <Content Include="fonts\bootstrap\glyphicons-halflings-regular.woff2" />
