@@ -126,7 +126,7 @@ namespace UI.Controllers
                     PageSize = 5
                 });
 
-            var players = _playerRetriever.GetPlayersToCreate(currentUser.Id);
+            var players = _playerRetriever.GetPlayersToCreate(currentUser.Id, currentUser.CurrentGamingGroupId);
 
             viewModel.UserPlayer = players.UserPlayer;
             viewModel.OtherPlayers = players.OtherPlayers;

@@ -93,18 +93,22 @@
                 <div v-show="currentStep == 2" style="display: none">
                     <h3 class="title">Select game </h3>
                     <div class="content">
-                        <div class="form-group">
-                            <label>Search your game list:</label>
-                            <div class="input-group">
-                                <span class="input-group-addon">
-                                    <span class="fa fa-search" v-show="!searchingGameDefinition"></span>
-                                    <span class="fa fa-spinner fa-spin" v-show="searchingGameDefinition"></span>
-                                </span>
-                                <input type="text" class="form-control form-control-lg typeahead" id="search-game-definition" />
+                        @if (Model.RecentPlayedGames.Any() || Model.MostPlayedGames.Any())
+                        {
+                            <div class="form-group">
+                                <label>Search your game list:</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <span class="fa fa-search" v-show="!searchingGameDefinition"></span>
+                                        <span class="fa fa-spinner fa-spin" v-show="searchingGameDefinition"></span>
+                                    </span>
+                                    <input type="text" class="form-control form-control-lg typeahead" id="search-game-definition"/>
+                                </div>
                             </div>
-                        </div>
-                        @SelectGame("Recent played games", Model.RecentPlayedGames, "recentgame-click")
-                        @SelectGame("Most played games", Model.MostPlayedGames, "mostplayed-click")
+
+                            @SelectGame("Recent played games", Model.RecentPlayedGames, "recentgame-click")
+                            @SelectGame("Most played games", Model.MostPlayedGames, "mostplayed-click")
+                        }
                         <h4 class="title">Create new game</h4>
                         <div class="form-group">
                             <label>Type the new game name to create it:</label>
@@ -114,7 +118,7 @@
                                     <span class="fa fa-spinner fa-spin" v-show="searchingBGG"></span>
                                 </span>
 
-                                <input type="text" class="form-control form-control-lg typeahead" id="search-bgg" />
+                                <input type="text" class="form-control form-control-lg typeahead" id="search-bgg"/>
                             </div>
                         </div>
                         <button class="btn btn-default" v-on:click="backToSelectDate">Back</button>
@@ -127,18 +131,24 @@
                         <div class="row form-group">
                             <div class="col-sm-5">
                                 <select name="from" id="optgroup" class="form-control optgroup" size="9" multiple="multiple">
-                                    <optgroup label="Recent players">
-                                        @foreach (var player in Model.RecentPlayers)
-                                        {
-                                            <option value="@player.PlayerId">@player.PlayerName</option>
-                                        }
-                                    </optgroup>
-                                    <optgroup label="Other players">
-                                        @foreach (var player in Model.OtherPlayers)
-                                        {
-                                            <option value="@player.PlayerId">@player.PlayerName</option>
-                                        }
-                                    </optgroup>
+                                    @if (Model.RecentPlayers.Any())
+                                    {
+                                        <optgroup label="Recent players">
+                                            @foreach (var player in Model.RecentPlayers)
+                                            {
+                                                <option value="@player.PlayerId">@player.PlayerName</option>
+                                            }
+                                        </optgroup>
+                                    }
+                                    @if (Model.OtherPlayers.Any())
+                                    {
+                                        <optgroup label="Other players">
+                                            @foreach (var player in Model.OtherPlayers)
+                                            {
+                                                <option value="@player.PlayerId">@player.PlayerName</option>
+                                            }
+                                        </optgroup>
+                                    }
                                 </select>
                             </div>
 

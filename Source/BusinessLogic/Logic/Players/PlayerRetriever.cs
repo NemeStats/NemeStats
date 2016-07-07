@@ -410,9 +410,9 @@ namespace BusinessLogic.Logic.Players
             return returnValue;
         }
 
-        public PlayersToCreateModel GetPlayersToCreate(string currentUserId)
+        public PlayersToCreateModel GetPlayersToCreate(string currentUserId, int currentGamingGroupId)
         {
-            var currentUserPlayer = dataContext.GetQueryable<Player>().FirstOrDefault(p => p.ApplicationUserId == currentUserId);
+            var currentUserPlayer = dataContext.GetQueryable<Player>().FirstOrDefault(p => p.ApplicationUserId == currentUserId && p.GamingGroupId == currentGamingGroupId);
 
             if (currentUserPlayer == null)
             {

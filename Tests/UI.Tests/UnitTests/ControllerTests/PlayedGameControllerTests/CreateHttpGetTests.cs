@@ -47,7 +47,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 
             autoMocker.Get<IGameDefinitionRetriever>().Expect(x => x.GetMostPlayedGames(Arg<GetMostPlayedGamesQuery>.Is.Anything)).Repeat.Once().Return(new PagedList<GameDefinitionDisplayInfo>(new List<GameDefinitionDisplayInfo>(), 1, 1));
             autoMocker.Get<IGameDefinitionRetriever>().Expect(x => x.GetRecentGames(Arg<GetRecentPlayedGamesQuery>.Is.Anything)).Repeat.Once().Return(new PagedList<GameDefinitionDisplayInfo>(new List<GameDefinitionDisplayInfo>(), 1, 1));
-            autoMocker.Get<IPlayerRetriever>().Expect(x => x.GetPlayersToCreate(currentUser.Id)).Repeat.Once().Return(players);
+            autoMocker.Get<IPlayerRetriever>().Expect(x => x.GetPlayersToCreate(currentUser.Id, currentUser.CurrentGamingGroupId)).Repeat.Once().Return(players);
 
         }
 
