@@ -44,8 +44,8 @@ namespace BusinessLogic.Events.Handlers
                             player.PlayerAchievements.FirstOrDefault(
                                 pa => pa.AchievementId == achievement.Id);
 
-                        if (currentPlayerAchievement != null && ((int)currentPlayerAchievement.AchievementLevel) ==
-                            achievement.LevelThresholds.OrderByDescending(al => al.Key).First().Value)
+                        if (currentPlayerAchievement != null && (currentPlayerAchievement.AchievementLevel) ==
+                            achievement.LevelThresholds.OrderByDescending(al => al.Key).First().Key)
                         {
                             //Reached the max achievement, skip.
                             break;
