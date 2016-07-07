@@ -1,4 +1,5 @@
-﻿using BusinessLogic.Models.PlayedGames;
+﻿using System.Collections.Generic;
+using BusinessLogic.Models.PlayedGames;
 using BusinessLogic.Models.Points;
 
 namespace BusinessLogic.Models.Players
@@ -10,5 +11,12 @@ namespace BusinessLogic.Models.Players
         public int TotalGamesPlayed { get; set; }
         public int? PlayerId { get; set; }
         public PlayedGameQuickStats LastGamingGroupGame { get; set; }
+    }
+
+    public class PlayersToCreateModel
+    {
+        public List<PlayerInfoForUser> RecentPlayers { get; set; }
+        public List<PlayerInfoForUser> OtherPlayers { get; set; }
+        public PlayerInfoForUser UserPlayer { get; set; }
     }
 }

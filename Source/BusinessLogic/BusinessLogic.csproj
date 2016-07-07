@@ -332,6 +332,7 @@
     </Compile>
     <Compile Include="Models\Achievements\AchievementLevel.cs" />
     <Compile Include="Models\Achievements\AchievementId.cs" />
+    <Compile Include="Models\Games\SavePlayedGameRequest.cs" />
     <Compile Include="Models\Games\TrendingGame.cs" />
     <Compile Include="Logic\Points\IWeightTierCalculator.cs" />
     <Compile Include="Models\PlayerAchievement.cs" />
@@ -698,6 +699,8 @@
     <Compile Include="Models\Utility\BasicDateRangeFilter.cs" />
     <Compile Include="Models\Utility\IDateRangeFilter.cs" />
     <Compile Include="Models\VotableFeature.cs" />
+    <Compile Include="Paging\GetMostPlayedGamesQuery.cs" />
+    <Compile Include="Paging\GetRecentPlayedGamesQuery.cs" />
     <Compile Include="Paging\GetRecentPlayerAchievementsUnlockedQuery.cs" />
     <Compile Include="Paging\PagedQuery.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

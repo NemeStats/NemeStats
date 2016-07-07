@@ -1,0 +1,402 @@
+﻿@import "nemestats-variables.scss";
+
+$color-hover: lighten($brand-primary,35%);
+$color-completed: lighten($brand-primary,50%);
+$color-border: #dce4ec;
+
+#record-played-game {
+
+    .steps {
+        padding: 0;
+
+        li {
+            list-style-type: none;
+            height: 80px;
+            margin-bottom: 10px;
+            margin-right: 10px;
+            display: flex;
+            padding-right: 5px;
+
+            @media (max-width: $screen-sm-min) {
+                display: inline-block;
+                height: 40px;
+
+                &:before {
+                    top: 20px;
+                    bottom: 0;
+                    position: absolute;
+                    content: " ";
+                    width: 13px;
+                    height: 3px;
+                    background-color: $well-bg;
+                    left: 42px;
+                }
+
+                &:last-child {
+                    &:before {
+                        display: none;
+                    }
+                }
+
+                &.current {
+                    &:before {
+                        background-color: $brand-primary;
+                    }
+                }
+
+                &.completed {
+                    &:before {
+                        background-color: $color-completed;
+                    }
+                }
+            }
+
+
+
+
+            &.arrow_box {
+                position: relative;
+                background: $well-bg;
+
+                &:not(.disabled) {
+                    &:not(.current) {
+                        cursor: pointer;
+                        background-color: $color-completed;
+
+                        > span {
+                            cursor: pointer;
+                        }
+
+                        &:hover {
+                            background: $color-hover;
+                            color: white;
+
+                            &:after {
+                                border-left-color: $color-hover;
+                            }
+                        }
+                    }
+                }
+
+
+                &.current {
+                    background: $brand-primary;
+                    color: white;
+                }
+            }
+
+            &.arrow_box:after {
+                @media (max-width: $screen-sm-min) {
+                    display: none;
+                }
+
+                left: 100%;
+                top: 50%;
+                border: solid transparent;
+                content: " ";
+                height: 0;
+                width: 0;
+                position: absolute;
+                pointer-events: none;
+                border-left-color: $well-bg;
+                border-width: 20px;
+                margin-top: -20px;
+            }
+
+            &.completed:after {
+                border-left-color: $color-completed;
+            }
+
+            &.disabled:after {
+                border-left-color: $well-bg;
+            }
+
+
+            &.arrow_box.current:after {
+                border-left-color: $brand-primary;
+            }
+        }
+
+        .number {
+            font-size: 35px;
+            margin: 0 10px;
+            line-height: 70px;
+
+            @media (max-width: $screen-sm-min) {
+                font-size: 30px;
+                line-height: normal;
+            }
+        }
+
+        .desc {
+            font-size: 18px;
+            line-height: 70px;
+
+            @media (max-width: $screen-sm-min) {
+                display: none;
+            }
+        }
+
+        .value-desc {
+            padding-top: 10px;
+            font-size: 13px;
+            text-decoration: underline;
+
+            @media (max-width: $screen-sm-min) {
+                display: none;
+            }
+        }
+
+        .value {
+            font-size: 17px;
+            overflow: hidden;
+            max-height: 45px;
+
+            @media (max-width: $screen-sm-min) {
+                display: none;
+            }
+        }
+    }
+
+    .loading {
+        z-index: 9999999;
+        display: block;
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+
+        span {
+            top: 50%;
+            left: 50%;
+            position: absolute;
+        }
+    }
+
+    .form {
+        &.serverRequestInProgress {
+            opacity: 0.2;
+        }
+
+
+        .title {
+            margin-top: 0;
+            padding-bottom: 5px;
+            border-bottom: 1px solid $brand-primary;
+
+            @media (max-width: $screen-sm-min) {
+                font-size: 16px;
+                font-weight: bold;
+            }
+        }
+
+        .content {
+            background-color: $body-bg;
+            padding: 20px;
+            box-shadow: rgba(0, 0, 0, 0.2) 0 8px 17px 0, rgba(0, 0, 0, 0.188235) 0 6px 20px 0;
+
+            .game-image {
+                padding: 20px;
+
+                @media (max-width: $screen-sm-min) {
+                    padding: 5px;
+                }
+
+                display: inline-block;
+                cursor: pointer;
+
+                &:hover {
+                    background-color: $color-hover;
+                }
+
+                img {
+                    width: 100px;
+
+                    @media (max-width: $screen-sm-min) {
+                        width: 80px;
+                    }
+                }
+
+                .name {
+                    font-size: 22px;
+                }
+            }
+
+            .optgroup {
+                @media (max-width: $screen-sm-min) {
+                    margin: 10px 0;
+                    height: 100px !important;
+                }
+            }
+
+
+            .nav-tabs {
+                border-bottom: solid 1px $color-border;
+
+                a {
+                }
+
+                .active {
+                    a {
+                        color: white;
+                        background-color: $brand-primary;
+                    }
+                }
+
+                &:not(.active) {
+                    &:hover {
+                    }
+                }
+            }
+
+            .tab-content {
+                border: solid 1px $brand-primary;
+                padding: 20px;
+
+                .btn-wrapper {
+                    padding: 20px;
+
+                    @media (max-width: $screen-sm-min) {
+                        padding: 5px 0;
+                    }
+
+                    text-align: center;
+
+                    &:hover {
+                        background-color: $color-hover;
+                    }
+
+                    .btn-recordgame {
+                        font-size: 16px;
+                        padding: 20px;
+
+                        @media (max-width: $screen-sm-min) {
+                            font-size: 14px;
+                            padding: 10px;
+                        }
+                    }
+                }
+            }
+
+            .list-group.header {
+                font-size: 18px;
+
+
+                .ranked-item.list-group-item {
+                    background-color: $well-bg;
+                    color: black;
+
+                    span {
+                        display: inline-block;
+
+                        &.rank {
+                            width: 75px;
+                        }
+
+                        &.score {
+                            float: right;
+                        }
+                    }
+                }
+            }
+
+            .action-buttons {
+                .row {
+                    margin: 20px 0;
+                }
+
+                .btn {
+                    padding: 20px;
+                    width: 100%;
+                    font-size: 16px;
+
+                    @media (max-width: $screen-md-min) {
+                        margin-bottom: 10px;
+                    }
+
+                    @media (max-width: $screen-sm-min) {
+                        white-space: normal !important;
+                        font-size: 14px;
+
+                        span {
+                            display: block;
+                            margin-bottom: 5px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.ranked-item.list-group-item {
+    color: white;
+    background-color: $brand-primary;
+    border-color: $color-border;
+
+    @media (max-width: $screen-sm-min) {
+        display: inline-block;
+    }
+
+    input {
+        display: inline-block;
+
+        &.rank {
+            width: 65px;
+            margin-right: 10px;
+        }
+
+        &.score {
+            width: 85px;
+            float: right;
+            margin-left: 10px;
+        }
+    }
+
+    .change-rank-buttons {
+        display: inline;
+        float: left;
+
+        @media (min-width: $screen-sm-min) {
+            float: right;
+        }
+
+        @media (max-width: $screen-sm-min) {
+            margin-top: 10px;
+        }
+
+        button {
+            display: inline-block;
+
+            @media (min-width: $screen-sm-min) {
+                float: right;
+            }
+
+            font-size: 12px;
+            margin-right: 5px;
+        }
+    }
+
+    cursor: move; /* fallback if grab cursor is unsupported */
+    cursor: grab;
+    cursor: -moz-grab;
+    cursor: -webkit-grab;
+
+    &:active {
+        :active {
+            cursor: grabbing;
+            cursor: -moz-grabbing;
+            cursor: -webkit-grabbing;
+        }
+    }
+}
+
+
+#bggsearchnotfound {
+    cursor: pointer;
+
+    &:hover {
+        background-color: $color-hover;
+    }
+}

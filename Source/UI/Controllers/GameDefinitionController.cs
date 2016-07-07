@@ -285,6 +285,22 @@ namespace UI.Controllers
             return new HttpStatusCodeResult(HttpStatusCode.NotModified);
         }
 
+        [Authorize]
+        [HttpGet]
+        [UserContext]
+        public virtual ActionResult SearchGameDefinition(string q, ApplicationUser currentUser)
+        {
+            if (!Request.IsAjaxRequest())
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+
+            var searchResults = _gameDefinitionRetriever.GetAllGameDefinitionNames(currentUser.CurrentGamingGroupId, q);
+            return Json(searchResults, JsonRequestBehavior.AllowGet);
+
+        }
+
         [HttpGet]
         public virtual ActionResult ShowTrendingGames()
         {

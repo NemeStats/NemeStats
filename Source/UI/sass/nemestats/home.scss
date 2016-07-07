@@ -1,8 +1,10 @@
 ﻿@import "nemestats-variables.scss";
 
+.home-body-container{
+    margin-bottom: $footer-height;
+}
 .home-container {
     background-color: #eee;
-
 
 
     .home-banner {

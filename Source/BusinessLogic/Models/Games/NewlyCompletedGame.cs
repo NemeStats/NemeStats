@@ -19,6 +19,7 @@ using System;
 using BusinessLogic.Models.Games.Validation;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using BusinessLogic.Models.PlayedGames;
 using BusinessLogic.Models.Validation;
 
 namespace BusinessLogic.Models.Games
@@ -30,13 +31,12 @@ namespace BusinessLogic.Models.Games
             DatePlayed = DateTime.UtcNow;
         }
 
-        [Required]
         public int? GameDefinitionId { get; set; }
+        public int? BoardGameGeekGameDefinitionId { get; set; }
+        public string GameDefinitionName { get; set; }
 
         public string Notes { get; set; }
 
-        //TODO my validation attribute works for a List<PlayerRank>, not PlayerGameResult. How to get validation that works for
-        // both a NewlyCompletedGame and a PlayedGame....
         [PlayerRankValidationAttribute]
         [Required]
         public List<PlayerRank> PlayerRanks { get; set; }
@@ -46,6 +46,8 @@ namespace BusinessLogic.Models.Games
         [MaxDate]
         public DateTime DatePlayed { get; set; }
 
+        public WinnerTypes? WinnerType { get; set; }
         public int? GamingGroupId { get; set; }
+        
     }
 }

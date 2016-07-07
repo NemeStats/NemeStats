@@ -63,6 +63,13 @@ Views.Shared.Layout.prototype = {
                 notificationsHub.invoke("join", currentUserId);
             });
         }
+    },
+    setupDynamicStyles: function (e) {
+        if ($(document).height() > $(window).height()) {
+            $("footer").removeClass("bottom");
+        } else {
+            $("footer").addClass("bottom");
+        }
     }
 };
 
@@ -70,4 +77,7 @@ $(document).ready(function () {
     var layout = new Views.Shared.Layout();
     layout.init();
     layout.setupHubConnection();
+    layout.setupDynamicStyles();
+
+    window.onresize = layout.setupDynamicStyles;
 });

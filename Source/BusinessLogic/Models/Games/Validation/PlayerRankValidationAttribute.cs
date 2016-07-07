@@ -18,6 +18,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace BusinessLogic.Models.Games.Validation
 {
@@ -26,7 +27,7 @@ namespace BusinessLogic.Models.Games.Validation
     {
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
-            List<PlayerRank> playerRanks = value as List<PlayerRank>;
+            var playerRanks = (value as IEnumerable<IPlayerRank>).ToList();
 
             try
             {

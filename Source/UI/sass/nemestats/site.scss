@@ -11,6 +11,27 @@ body {
     padding-left: 15px;
     padding-right: 15px;
     padding-bottom: 20px;
+    margin-bottom: $footer-height;
+}
+
+
+footer {
+    height: $footer-height;
+    color: #fff;
+    background-color: $brand-primary;
+    padding: 25px;
+    z-index: 999;
+
+    &.bottom {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+    }
+
+    span {
+        top: 10px;
+    }
 }
 
 a[name] {
@@ -346,19 +367,6 @@ button > i.fa {
 }
 
 
-
-footer {
-    color: #fff;
-    background-color: $brand-primary;
-    padding: 25px;
-
-
-    span {
-        top: 10px;
-    }
-}
-
-
 .nemepoints-breakdown {
     a {
         font-size: 11px;
@@ -425,3 +433,29 @@ footer {
     }
 }
 
+//DRAGULA
+.gu-mirror {
+    position: fixed !important;
+    margin: 0 !important;
+    z-index: 9999 !important;
+    opacity: 0.8;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
+    filter: alpha(opacity=80);
+}
+
+.gu-hide {
+    display: none !important;
+}
+
+.gu-unselectable {
+    -webkit-user-select: none !important;
+    -moz-user-select: none !important;
+    -ms-user-select: none !important;
+    user-select: none !important;
+}
+
+.gu-transit {
+    opacity: 0.2;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";
+    filter: alpha(opacity=20);
+}

@@ -1,0 +1,301 @@
+﻿@using Microsoft.AspNet.SignalR.Json
+@using Newtonsoft.Json;
+@using UI.Models.GameDefinitionModels
+@model UI.Models.PlayedGame.CreatePlayedGameViewModel
+@{
+    ViewBag.Title = "Record a Game";
+    Layout = MVC.Shared.Views._BaseLayout;
+
+    var step1CurrentClass = !Model.EditMode ? "current" : "";
+    var step5CurrentClass = Model.EditMode ? "current" : "disabled";
+}
+
+<h2 class="page-header">@ViewBag.Title</h2>
+<hr />
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "__AjaxAntiForgeryForm" }))
+{
+    @Html.AntiForgeryToken()
+}
+
+
+<div id="record-played-game" data-edit-mode="@(Model.EditMode?"1":"0")" data-model="@JsonConvert.SerializeObject(Model)">
+    <div class="row">
+        <div class="col-sm-3">
+            <ul class="steps">
+                <li class="arrow_box @step1CurrentClass" v-bind:class="{'current': currentStep == 1, 'completed': currentStep > 1, 'disabled': currentStep == 5}" v-on:click="backToSelectDate">
+                    <span class="number">1</span>
+                    <span class="desc" v-show="currentStep <= 1">
+                        Set date
+                    </span>
+                    <div v-show="currentStep > 1" style="display: none">
+                        <div class="value-desc">Date:</div>
+                        <div class="value">{{ viewModel.Date | moment "LL" }}</div>
+                    </div>
+                </li>
+                <li class="arrow_box disabled" v-bind:class="{'current': currentStep == 2,'disabled' : currentStep < 2 || currentStep == 5, 'completed': currentStep > 2}" v-on:click="backToSelectGame">
+                    <span class="number">2</span>
+                    <span class="desc" v-show="currentStep <= 2">
+                        Select game
+                    </span>
+                    <div v-show="currentStep > 2" style="display: none">
+                        <div class="value-desc">Game:</div>
+                        <div class="value">{{ viewModel.Game.Name }}</div>
+                    </div>
+                </li>
+                <li class="arrow_box disabled" v-bind:class="{'current': currentStep == 3,'disabled' : currentStep < 3 || currentStep == 5, 'completed': currentStep > 3}" v-on:click="backToSelectPlayers">
+                    <span class="number">3</span>
+                    <span class="desc" v-show="currentStep <= 3">
+                        Select players
+                    </span>
+                    <div v-show="currentStep > 3" style="display: none">
+                        <div class="value-desc"># of Players:</div>
+                        <div class="value">{{ viewModel.Players.length }} players</div>
+                    </div>
+                </li>
+                <li class="arrow_box disabled" v-bind:class="{'current': currentStep == 4,'disabled' : currentStep < 4 || currentStep == 5, 'completed': currentStep > 4}">
+                    <span class="number">4</span>
+                    <span class="desc" v-show="currentStep <= 4">
+                        Set game result
+                    </span>
+                    <div v-show="currentStep > 4" style="display: none">
+                        <div class="value-desc">Result:</div>
+                        <div class="value">{{ viewModel.WinnerType | winnertype }}</div>
+                    </div>
+                </li>
+                <li class="arrow_box @step5CurrentClass" v-bind:class="{'current': currentStep == 5,'disabled' : currentStep < 5}">
+                    <span class="number">5</span>
+                    <span class="desc">
+                        Summary
+                    </span>
+                </li>
+            </ul>
+        </div>
+        <div class="col-sm-9 form" v-bind:class="{'serverRequestInProgress':serverRequestInProgress}">
+            <div class="well">
+                <div class="alert alert-danger" style="display: none" v-show="alertVisible">
+                    <button type="button" class="close" aria-label="Close" v-on:click="hideAlert"><span aria-hidden="true">&times;</span></button>
+                    <strong>{{ alertText }}</strong>
+                </div>
+                <div v-show="currentStep == 1">
+                    <h3 class="title">Set played game date:</h3>
+                    <div class="content">
+                        <div class="form-group">
+                            <input type="date" class="form-control form-control-lg date-picker" v-model="viewModel.Date">
+                        </div>
+
+                        <button class="btn btn-default" v-on:click="setDateYesterday">Yesterday</button>
+                        <button class="btn btn-default" v-on:click="setDateToday">Today</button>
+
+                        <button class="btn btn-primary" v-on:click="gotoSelectGame">Continue</button>
+                    </div>
+
+                </div>
+                <div v-show="currentStep == 2" style="display: none">
+                    <h3 class="title">Select game </h3>
+                    <div class="content">
+                        <div class="form-group">
+                            <label>Search your game list:</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <span class="fa fa-search" v-show="!searchingGameDefinition"></span>
+                                    <span class="fa fa-spinner fa-spin" v-show="searchingGameDefinition"></span>
+                                </span>
+                                <input type="text" class="form-control form-control-lg typeahead" id="search-game-definition" />
+                            </div>
+                        </div>
+                        @SelectGame("Recent played games", Model.RecentPlayedGames)
+                        @SelectGame("Most played games", Model.MostPlayedGames)
+                        <h4 class="title">Create new game</h4>
+                        <div class="form-group">
+                            <label>Type the new game name to create it:</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <span class="fa fa-plus" v-show="!searchingBGG"></span>
+                                    <span class="fa fa-spinner fa-spin" v-show="searchingBGG"></span>
+                                </span>
+
+                                <input type="text" class="form-control form-control-lg typeahead" id="search-bgg" />
+                            </div>
+                        </div>
+                        <button class="btn btn-default" v-on:click="backToSelectDate">Back</button>
+                    </div>
+                </div>
+                <div v-show="currentStep == 3" style="display: none">
+                    <h3 class="title">Select players</h3>
+                    <div class="content">
+                        <h4 class="title">Select existing players:</h4>
+                        <div class="row form-group">
+                            <div class="col-sm-5">
+                                <select name="from" id="optgroup" class="form-control optgroup" size="9" multiple="multiple">
+                                    <optgroup label="Recent players">
+                                        @foreach (var player in Model.RecentPlayers)
+                                        {
+                                            <option value="@player.PlayerId">@player.PlayerName</option>
+                                        }
+                                    </optgroup>
+                                    <optgroup label="Other players">
+                                        @foreach (var player in Model.OtherPlayers)
+                                        {
+                                            <option value="@player.PlayerId">@player.PlayerName</option>
+                                        }
+                                    </optgroup>
+                                </select>
+                            </div>
+
+                            <div class="col-sm-2">
+                                <div class="hidden-xs">
+                                    <button type="button" class="btn btn-block optgroup_rightSelected"><i class="fa fa-chevron-right"></i></button>
+                                    <button type="button" class="btn btn-block optgroup_leftSelected"><i class="fa fa-chevron-left"></i></button>
+                                </div>
+                                <div class="row hidden-sm hidden-md hidden-lg">
+                                    <div class="col-xs-6"><button type="button" class="btn btn-block optgroup_rightSelected"><i class="fa fa-chevron-down"></i></button></div>
+                                    <div class="col-xs-6"><button type="button" class="btn btn-block optgroup_leftSelected"><i class="fa fa-chevron-up"></i></button></div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-5">
+                                <select name="to" id="optgroup_to" class="form-control optgroup" size="9" multiple="multiple">
+                                    <option value="@Model.UserPlayer.PlayerId">Me (@Model.UserPlayer.PlayerName)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <h4 class="title">Create new:</h4>
+                        <div class="row form-group">
+                            <div class="col-sm-5">
+                                <input type="text" class="form-control form-control-lg" placeholder="new player name" v-model="newPlayerName" v-on:keyup.enter="createNewPlayer()" />    
+                            </div>
+                            <div class="col-sm-2">
+                                <button class="btn btn-default" v-on:click="createNewPlayer()">Create player</button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <button class="btn btn-default" v-on:click="backToSelectGame">Back</button>
+                                <button class="btn btn-primary" v-on:click="gotoSetGameResult">Continue</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div v-show="currentStep == 4" style="display: none">
+                    <h3 class="title">Set game result</h3>
+                    <div class="content">
+                        <h4 class="title">Select game type:</h4>
+                        <div class="form-group">
+                            <ul class="nav nav-tabs" role="tablist">
+                                <li role="presentation" class="active">
+                                    <a href="#ranked" role="tab" data-toggle="tab" class="hidden-xs">Ranked game</a>
+                                    <a href="#ranked" role="tab" data-toggle="tab" class="hidden-sm hidden-md hidden-lg">Ranked</a>
+                                </li>
+                                <li role="presentation">
+                                    <a href="#cooperative" role="tab" data-toggle="tab" class="hidden-xs">Cooperative game</a>
+                                    <a href="#cooperative" role="tab" data-toggle="tab" class="hidden-sm hidden-md hidden-lg">Cooperative</a>
+                                </li>
+                            </ul>
+
+                            <div class="tab-content">
+                                <div role="tabpanel" class="tab-pane active" id="ranked">
+                                    <ul class="list-group" id="ranked-game">
+                                        <li class="list-group-item ranked-item" v-for="player in viewModel.Players | orderBy 'Rank'" data-index="{{ $index }}">
+                                            <input type="number" class="form-control rank" v-model="player.Rank" number />
+                                            {{ player.Name }}
+                                            @*TODO: <input type="number" class="form-control score" v-model="player.Score" number/>*@
+                                            <div class="change-rank-buttons">
+                                                <button class="btn btn-default" v-on:click="changeRank($index, player,true)" tabindex="-1" v-show="player.Rank > 1"><span class="fa fa-arrow-up"></span></button>
+                                                <button class="btn btn-default" v-on:click="changeRank($index, player,false)" tabindex="-1" v-show="!isLastRank(player)"><span class="fa fa-arrow-down"></span></button>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div role="tabpanel" class="tab-pane" id="cooperative">
+                                    <div class="row">
+                                        <div class="col-sm-offset-2 col-sm-4">
+                                            <div class="btn-wrapper" data-container="body" data-toggle="popover" data-placement="left" data-content="Record a game where everyone won (e.g. you saved the world in Pandemic)" v-on:click="setGameResult(2)">
+                                                <button class="btn btn-success btn-recordgame btn-everyone-won" id="btnEveryoneWonButton">
+                                                    <i class="fa fa-smile-o"></i> Everyone Won
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div class="btn-wrapper" data-container="body" data-toggle="popover" data-placemenet="right" data-content="Record a game where everyone lost (e.g. no one survived in Zombicide)" v-on:click="setGameResult(3)">
+                                                <button class="btn btn-danger btn-recordgame" id="btnEveryoneLostButton">
+                                                    <i class="fa fa-frown-o"></i> Everyone Lost
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <h4 class="title">Game notes (optional)</h4>
+                            <textarea v-model="viewModel.GameNotes" class="form-control" rows="4"></textarea>
+                        </div>
+                        <button class="btn btn-default" v-on:click="backToSelectPlayers">Back</button>
+                        <button class="btn btn-primary" v-on:click="setGameResult(1)">Save played game</button>
+                    </div>
+                </div>
+                <div v-show="currentStep==5" style="display: none">
+                    <div class="content">
+                        <h2 class="title">Played game recorded successfully</h2>
+                        <div class="well">
+                            <h4 style="margin-bottom: 20px"><strong>{{ viewModel.Players.length }}</strong> players played <strong>{{ viewModel.Game.Name }}</strong> on <strong>{{ viewModel.Date | moment "LL" }}</strong></h4>
+
+                            <h4 class="title">What do you want to do next?</h4>
+                            <div class="action-buttons">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <a href="@Url.Action(MVC.GamingGroup.Index())" class="btn btn-primary"><span class="fa fa-arrow-left fa-lg"></span> View my Gaming Group</a>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <button class="btn btn-primary" v-on:click="gotoRecentlyPlayedGame"><span class="fa fa-share fa-lg"></span>View this played game</button>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <button class="btn btn-default" v-on:click="reload"><span class="fa fa-plus-circle fa-lg"></span> Record another played game</button>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <button class="btn btn-twitter" v-on:click="postTweet"><span class="fa fa-twitter fa-lg"></span> Post on Twitter!</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="loading" style="display: none" v-show="serverRequestInProgress">
+        <span class="fa fa-spinner fa-spin fa-3x fa-fw"></span>
+    </div>
+</div>
+
+@section Scripts{
+    @Scripts.Render("~/bundles/moment")
+    <script type="text/javascript">
+        //Creation
+        $(document).ready(function () {
+            var createPlayedGame = new window.Views.PlayedGame.CreatePlayedGame();
+            createPlayedGame.init();
+        });
+    </script>
+}
+
+@helper SelectGame(string title, IList<GameDefinitionDisplayInfoViewModel> games)
+{
+    <h4 class="title">@title</h4>
+foreach (var game in games)
+{
+        <span class="game-image" v-on:click="selectGame(@game.Id,'@game.Name.Replace("'","\"")' )">
+            @if (!string.IsNullOrEmpty(game.ThumbnailImageUrl))
+            {
+                <img src="@game.ThumbnailImageUrl" data-container="body" data-toggle="popover" data-placement="top" data-content="@game.Name" />
+            }
+            else
+            {
+                <span class="name">@game.Name</span>
+            }
+        </span>
+}
+}

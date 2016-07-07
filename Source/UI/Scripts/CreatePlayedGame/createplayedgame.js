@@ -3,72 +3,102 @@ Namespace("Views.PlayedGame");
 
 //Initialization
 Views.PlayedGame.CreatePlayedGame = function () {
-    this._playerRank = 1;
-    this._playerIndex = 0;
-    this.$recordPlayedGameForm = null;
-    this.$rankedPlayers = null;
-    this.$rankedPlayersListItem = null;
-    this.$playerId = null;
-    this.$players = null;
-    this.$playersErrorContainer = null;
-    this.$playersErrorRankTooHigh = null;
-    this.$playerFormData = null;
-    this.$btnAddPlayer = null;
-    this.$addPlayer = null;
-    this.$datePicker = null;
-    this.$playerItemTemplate = null;
-    this._googleAnalytics = null;
-    this._rankButtons = null;
-    this.$gameDefinitionDropDown = null;
-    this.$gameId = null;
-    this.$btnEveryoneWonButton = null;
-    this.$btnEveryoneLostButton = null;
-    this.$removePlayerButtons = null;
-    this.$buttonUp = null;
-    this.$buttonDown = null;
-    this.$document = null;
-    this.$numRankedPlayers = null;
+    this._steps = {
+        SelectDate: 1,
+        SelectGame: 2,
+        SelectPlayers: 3,
+        SetResult: 4,
+        Summary: 5
+    };
+
+    this._winnerTypes = {
+        PlayerWin: 1,
+        TeamWin: 2,
+        TeamLoss: 3
+    }
+
+    this._viewModel = {
+        Date: null,
+        Game: null,
+        Players: [],
+        GameNotes: null,
+        WinnerType: null
+    };
+
+    this.component = null;
+
 };
 
 //Implementation
 Views.PlayedGame.CreatePlayedGame.prototype = {
-    //Method definitions
-    init: function (gaObject, rankedPlayers, iso8601Date) {
-        //Fields
+    init: function () {
+        this.setupDatePicker();
+        this.setupAutocomplete();
+        this.setupMultiselect();
+        this.setupPlayersDragAndDrop();
+        this.configureViewModel();
+    },
+    setupPlayersDragAndDrop: function () {
         var parent = this;
-        this._rankButtons = [];
-        this.$recordPlayedGameForm = $("#recordPlayedGame");
-        this.$playersErrorContainer = $("#players-error");
-        this.$playersErrorRankTooHigh = $("#players-error-rank-too-high");
-        this.$rankedPlayers = $("#rankedPlayers");
-        this.$players = $("#Players");
-        this.$playerFormData = $("#playerFormData");
-        this.$playerDiv = $("#playerDiv");
-        this.$addPlayer = $("#addPlayer");
-        this.$btnAddPlayer = $("#btnAddPlayer");
-        this.$anchorAddPlayer = $("#addPlayerAnchor");
-        this.$gameDefinitionDropDown = $("[name='GameDefinitionId']");
+        var rankedGameContainer = document.getElementById("ranked-game");
+        var list = dragula([rankedGameContainer]);
+        list.on("dragend", function (el) {
+
+            $.each($(el).parent().find("li"), function (i, player) {
+                var $player = $(player);
+                var index = $player.data("index");
+                parent.component.$data.viewModel.Players[index].Rank = i + 1;
+            });
+        });
+
+    },
+    setupMultiselect: function () {
+        var parent = this;
+
+        $("#optgroup").multiselect({
+            keepRenderingSort: true,
+            rightSelected: ".optgroup_rightSelected",
+            leftSelected: ".optgroup_leftSelected",
+            afterMoveToRight: function ($left, $right, $options) {
+                $.each($options, function (i, $option) {
+                    parent.component.$data.viewModel.Players.push({
+                        Id: $option.value,
+                        Name: $option.text
+                    });
+                });
+
+            },
+            afterMoveToLeft: function ($left, $right, $options) {
+                $.each($options, function (i, $option) {
+                    $.each(parent.component.$data.viewModel.Players, function (j, player) {
+                        if (player.Id == $option.value) {
+                            parent.component.$data.viewModel.Players.pop(player);
+                            return;
+                        }
+                    });
+                });
+
+            }
+        });
+
+        $('option').mousedown(function (e) {
+            e.preventDefault();
+            $(this).prop('selected', !$(this).prop('selected'));
+            return false;
+        });
+    },
+    setupDatePicker: function () {
         this.$datePicker = $(".date-picker");
 
         var minDate = new Date(2000, 0, 1);
         var currentMoment = moment();
-        var currentLocalIso8601Date = currentMoment.format("YYYY-MM-DD");
 
         if (Modernizr.inputtypes.date) {
             //if supports HTML5 then use native date picker
-            if (iso8601Date == null) {
-                this.$datePicker.attr("value", currentLocalIso8601Date);
-            } else {
-                this.$datePicker.attr("value", iso8601Date);
-            }
             var minDateIso8601 = minDate.toISOString().split("T")[0];
             this.$datePicker.attr("max", currentMoment.add("days", 1).format("YYYY-MM-DD"));
             this.$datePicker.attr("min", minDateIso8601);
         } else {
-            var dateToSet = new Date();
-            if (iso8601Date != null) {
-                dateToSet = new Date(iso8601Date);
-            }
             // If not native HTML5 support, fallback to jQuery datePicker
             this.$datePicker.datepicker({
                 showOn: "button",
@@ -76,233 +106,359 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                 showButtonPanel: true,
                 minDate: new Date(2000, 1, 1),
                 maxDate: new Date()
-            }).datepicker("setDate", dateToSet)
-                .datepicker("option", "dateFormat", "yy-mm-dd");
+            }).datepicker("option", "dateFormat", "yy-mm-dd");
         }
-
-        this.$btnEveryoneWonButton = $("#btnEveryoneWonButton");
-        this.$btnEveryoneLostButton = $("#btnEveryoneLostButton");
-        this.$removePlayerButtons = $(".btnRemovePlayer");
-        this.$buttonUp = $(".rankButton-up");
-        this.$buttonDown = $(".rankButton-down");
-        this.$document = $(document);
-        this.$numRankedPlayers = 0;
-
-        this._googleAnalytics = gaObject;
-
-        this.$recordPlayedGameForm.on("submit", $.proxy(parent.validatePlayers, parent));
-
-        var currentRank = this.$rankedPlayers.attr("data-numRankedPlayers");
-
-        if (currentRank > 0)
-            this._playerRank = currentRank;
-
-        //Event handlers
-        this.$players.change(function () { parent.addPlayer(); });
-        this.$rankedPlayers.sortable({
-            stop: function () {
-                parent.onReorder();
-            }
-        });
-
-        this.$btnAddPlayer.on("click", function () {
-            if (parent.$addPlayer.hasClass("hidden")) {
-                parent.$addPlayer.removeClass("hidden");
-            } else {
-                parent.$addPlayer.addClass("hidden");
-            }
-            document.location = parent.$anchorAddPlayer.attr("href");
-            parent._googleAnalytics.trackGAEvent("PlayedGames", "AddNewPlayerClicked", "AddNewPlayerClicked");
-        });
-
-        this.$btnEveryoneWonButton.on("click", function () {
-            if (confirm("Are you sure you want to give every player a win?")) {
-                $("input.playerRank[name$='.GameRank']").val(1);
-                parent._googleAnalytics.trackGAEvent("PlayedGames", "TeamWinRecorded", "TeamWinRecorded");
-                return true;
-            } else {
-                return false;
-            }
-        });
-
-        this.$btnEveryoneLostButton.on("click", function () {
-            if (confirm("Are you sure you want to give every player a loss?")) {
-                $("input.playerRank[name$='.GameRank']").val(2);
-                parent._googleAnalytics.trackGAEvent("PlayedGames", "TeamLossRecorded", "TeamLossRecorded");
-                return true;
-            } else {
-                return false;
-            }
-        });
-
-        this.$playerItemTemplate = $("#player-item-template");
-
-        var shared = new Views.Shared.Layout();
-        this.$gameId = shared.getQueryString("gameId");
-
-        parent.validateGameDefinition();
-
-        this.setupButtons();
-        this.initializeRankedPlayers(rankedPlayers);
-    },
-    onReorder: function () {
-        var parent = this;
-        this.$rankedPlayersListItem = $("#rankedPlayers li");
-
-        var removePlayerButtons = $(".btnRemovePlayer");
-        removePlayerButtons.off('click').on("click", function () {
-            parent.removePlayer(this);
-        });
-
-        this.recalculateRanks();
-        this._googleAnalytics.trackGAEvent("PlayedGames", "PlayersReordered", "PlayersReordered");
-    },
-    generatePlayerRankListItemString: function (playerIndex, playerId, playerName, playerRank) {
-        var template = Handlebars.compile(this.$playerItemTemplate.html());
-        var context = { playerIndex: playerIndex, playerId: playerId, playerName: playerName, playerRank: playerRank };
-
-        return template(context);
-    },
-    initializeRankedPlayers: function (rankedPlayers) {
-        if (rankedPlayers != null) {
-            for (var i = 0; i < rankedPlayers.length; i++) {
-                var playerItem = this.generatePlayerRankListItemString(rankedPlayers[i].playerIndex, rankedPlayers[i].playerId, rankedPlayers[i].playerName, rankedPlayers[i].playerRank);
-                this.$rankedPlayers.append(playerItem);
-                this.$numRankedPlayers++;
-            }
-        }
-    },
-    addPlayer: function () {
-        var selectedOption = this.$players.find(":selected");
-        this.$playersErrorContainer.addClass("hidden");
-        this.$playersErrorRankTooHigh.addClass("hidden");
-
-        if (selectedOption.text() == "Add A Player") {
-            return;
-        }
-
-        var playerId = selectedOption.val();
-        var playerName = selectedOption.text();
-        var playerItem = this.generatePlayerRankListItemString(this._playerIndex, playerId, playerName, this._playerRank);
-
-        this.$rankedPlayers.append(playerItem);
-        this._playerIndex++;
-        this._playerRank++;
-        this.$numRankedPlayers++;
-        selectedOption.remove();
-
-        this.recalculateRanks();
-
-        return null;
-    },
-    setupButtons: function () {
+    }, setupAutocomplete: function () {
         var parent = this;
 
-        this.$document.on("click", ".btnRemovePlayer", function () {
-            parent.removePlayer(this);
+        var gameDefinitions = new Bloodhound({
+            datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+            queryTokenizer: Bloodhound.tokenizers.whitespace,
+            remote: {
+                url: '/gamedefinition/SearchGameDefinition?q=%QUERY',
+                wildcard: '%QUERY',
+                filter: function (parsedResponse) {
+                    parent.component.$data.searchingGameDefinition = false;
+                    return parsedResponse;
+                }
+            }
         });
 
-        this.$document.on("click", ".rankButton-up", function () {
-            parent.movePlayerUp(this);
+        $('#search-game-definition.typeahead').typeahead(null, {
+            name: 'gaming-group-game-definitions',
+            display: 'Name',
+            hint: true,
+            highlight: true,
+            source: gameDefinitions,
+            limit: Infinity,
+            templates: {
+                empty: [
+                  '<div class="empty-message">',
+                    'there are no game matching this text on your gaming group.',
+                  '</div>'
+                ].join('\n'),
+            }
+        })
+            .bind('typeahead:select', function (ev, suggestion) {
+                parent.component.selectGame(suggestion.Id, suggestion.Name);
+            }).bind('typeahead:asyncrequest', function (ev, suggestion) {
+                parent.component.$data.searchingGameDefinition = true;
+            });
+
+
+        var bgg = new Bloodhound({
+            datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+            queryTokenizer: Bloodhound.tokenizers.whitespace,
+            remote: {
+                url: '/gamedefinition/SearchBoardGameGeekHttpGet?searchText=%QUERY',
+                wildcard: '%QUERY',
+                filter: function (parsedResponse) {
+                    parent.component.$data.searchingBGG = false;
+                    return parsedResponse;
+                }
+            }
         });
 
-        this.$document.on("click", ".rankButton-down", function () {
-            parent.movePlayerDown(this);
+        $('#search-bgg.typeahead').typeahead(null, {
+            name: 'bgg-games',
+            hint: true,
+            highlight: true,
+            source: bgg,
+            display: 'BoardGameName',
+            limit: Infinity,
+            templates: {
+                empty: [
+                  '<div class="empty-message" id="bggsearchnotfound">',
+                    'This game not exists on BGG. Click here to create it!',
+                  '</div>'
+                ].join('\n'),
+                suggestion: Handlebars.compile('<div><strong>{{BoardGameName}}</strong> – {{YearPublished}}</div>')
+            },
+        })
+            .bind('typeahead:select', function (ev, suggestion) {
+                parent.component.selectGame(null, suggestion.BoardGameName, suggestion.BoardGameId);
+            }).bind('typeahead:asyncrequest', function (ev, suggestion) {
+                parent.component.$data.searchingBGG = true;
+            });
+
+        $(document).on('click', "#bggsearchnotfound", function (e) {
+            parent.component.selectGame(null, $("#search-bgg")[0].value);
         });
-
-        this.recalculateRanks();
     },
-    removePlayer: function (button) {
-        var playerId = $(button).data("playerid");
-        var playerName = $(button).data("playername");
-        $(button).parents('li').remove();
-        this._playerRank--;
-        this.$numRankedPlayers--;
-        var newPlayer = $('<option value="' + playerId + '">' + playerName + '</option>');
-        this.$players.append(newPlayer);
-        this.recalculateRanks();
+    configureViewModel: function () {
+        var parent = this;
 
-        this._googleAnalytics.trackGAEvent("PlayedGames", "PlayerRemoved", "PlayerRemoved");
-    },
-    movePlayerUp: function (button) {
-        var item = $(button).closest("li");
-        var previous = item.prev();
+        var componentSelector = "#record-played-game";
+        var container = $(componentSelector);
+        if (container) {
 
-        if (previous.length > 0) {
-            item.insertBefore(previous);
-            this.recalculateRanks();
-            this._googleAnalytics.trackGAEvent("PlayedGames", "PlayersReorderedViaArrow", "PlayersReorderedViaArrow");
+            Vue.filter('winnertype', function (value) {
+                if (value === parent._winnerTypes.PlayerWin) {
+                    return "Ranked game";
+                }
+                if (value === parent._winnerTypes.TeamWin) {
+                    return "Everybody won";
+                }
+                if (value === parent._winnerTypes.TeamLoss) {
+                    return "Everybody lost";
+                }
+                return "";
+            });
+
+            var editMode = $(componentSelector).data("edit-mode");
+
+            if (editMode) {
+                var model = $(componentSelector).data("model");
+                this._viewModel.Date = moment(model.DatePlayed);
+                this._viewModel.Game = {
+                    Id: model.GameDefinitionId,
+                    BoardGameGeekGameDefinitionId: model.BoardGameGeekGameDefinitionId,
+                    Name: model.GameDefinitionName
+                };
+                model.PlayerRanks.forEach(function (playerRank) {
+                    parent._viewModel.Players.push({
+                        Id: playerRank.PlayerId,
+                        Name: playerRank.PlayerName,
+                        Rank: playerRank.GameRank
+                        //Score: playerRank.PointsScored
+                    });
+                });
+                this._viewModel.Notes = model.Notes;
+                this._viewModel.WinnerType = model.WinnerType;
+                this._viewModel.PlayedGameId = model.PlayedGameId;
+            }
+
+            this.component = new Vue({
+                el: componentSelector,
+                data: {
+                    viewModel: this._viewModel,
+                    currentStep: editMode ? this._steps.SetResult : this._steps.SelectDate,
+                    searchingGameDefinition: false,
+                    searchingBGG: false,
+                    alertVisible: false,
+                    alertText: '',
+                    newPlayerName: '',
+                    serverRequestInProgress: false,
+                    recentlyPlayedGameId: null,
+                    editMode: editMode
+                },
+                computed: {
+                    newPlayedGameUrl: function () {
+                        return "/PlayedGame/Details/" + this.recentlyPlayedGameId;
+                    }
+                },
+                methods: {
+                    hideAlert: function () {
+                        this.alertVisible = false;
+                    },
+                    setDateYesterday: function () {
+                        this.viewModel.Date = moment().add("days", -1).startOf("day");
+                        this.gotoSelectGame();
+                    },
+                    setDateToday: function () {
+                        this.viewModel.Date = moment().startOf("day");
+                        this.gotoSelectGame();
+                    },
+                    gotoSelectGame: function () {
+                        if (this.viewModel.Date) {
+                            this.alertVisible = false;
+                            this.viewModel.Date = moment(this.viewModel.Date).startOf("day");
+                            this.currentStep = parent._steps.SelectGame;
+                        } else {
+                            this.alertText = "You must set the played game or use the yesterday/today buttons.";
+                            this.alertVisible = true;
+                        }
+                    },
+                    selectGame: function (id, name, bggid) {
+                        this.viewModel.Game = {
+                            Id: id,
+                            BoardGameGeekGameDefinitionId: bggid,
+                            Name: name
+                        };
+                        this.currentStep = parent._steps.SelectPlayers;
+                    },
+                    backToSelectDate: function () {
+                        if (this.viewModel.Date) {
+                            this.viewModel.Date = this.viewModel.Date.format("YYYY-MM-DD");
+                            this.currentStep = parent._steps.SelectDate;
+                        }
+                    },
+                    backToSelectGame: function () {
+                        if (this.viewModel.Game) {
+                            this.viewModel.Game = null;
+                            this.currentStep = parent._steps.SelectGame;
+                        }
+                    },
+                    backToSelectPlayers: function () {
+                        if (this.viewModel.Players.length > 1 && this.viewModel.Game != null) {
+                            this.currentStep = parent._steps.SelectPlayers;
+                        }
+                    },
+                    createNewPlayer: function () {
+                        if (this.newPlayerName) {
+                            $("#optgroup_to").append($('<option>', {
+                                text: this.newPlayerName
+                            }));
+                            this.newPlayerName = "";
+                        }
+                    },
+                    gotoSetGameResult: function () {
+                        var _this = this;
+                        var playersSelected = $("#optgroup_to option");
+                        if (playersSelected.length > 1) {
+
+                            this.viewModel.Players = [];
+
+                            $.each(playersSelected, function (i, $option) {
+                                var id = $option.value;
+                                if ($option.value === $option.text) {
+                                    id = null;
+                                }
+                                _this.viewModel.Players.push({
+                                    Id: id,
+                                    Name: $option.text,
+                                    Rank: i + 1
+                                });
+                            });
+
+                            this.currentStep = parent._steps.SetResult;
+                        } else {
+                            this.alertText = "You must select at least 2 players to continue.";
+                            this.alertVisible = true;
+                        }
+                    },
+                    changeRank: function ($index, player, increase) {
+                        var newRank;
+
+                        var elementMoved = $("[data-index=" + $index + "]");
+                        elementMoved.addClass("animated pulse");
+                        elementMoved.one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function() {
+                            $(this).removeClass("animated pulse");
+                        });
+
+                        if (increase) {
+                            if (player.Rank === 1) {
+                                return;
+                            }
+                            newRank = player.Rank - 1;
+                        } else {
+                            newRank = player.Rank + 1;
+                        }
+
+                        var replacingPlayer = null;
+
+                        this.viewModel.Players.forEach(function (p) {
+                            if (p.Rank === newRank) {
+                                replacingPlayer = p;
+                                return;
+                            }
+                        });
+
+                        if (replacingPlayer) {
+                            replacingPlayer.Rank = player.Rank;
+                        }
+                        player.Rank = newRank;
+                    },
+                    isLastRank: function (player) {
+                        var hasMoreRankThanOtherPlayer = false;
+                        var hasLessRankThanOtherPlayer = false;
+                        this.viewModel.Players.forEach(function (p) {
+                            if (player.Name !== p.Name) {
+                                if (player.Rank >= p.Rank) {
+                                    hasMoreRankThanOtherPlayer = true;
+                                } else {
+                                    hasLessRankThanOtherPlayer = true;
+                                }
+                            }
+                        });
+                        return hasMoreRankThanOtherPlayer && !hasLessRankThanOtherPlayer;
+                    },
+                    setGameResult: function (winnerType) {
+                        var component = this;
+                        this.serverRequestInProgress = true;
+
+                        this.alertVisible = false;
+
+                        var form = $('#__AjaxAntiForgeryForm');
+                        var token = $('input[name="__RequestVerificationToken"]', form).val();
+
+                        this.viewModel.WinnerType = winnerType;
+
+                        var data = {
+                            __RequestVerificationToken: token,
+                            GameDefinitionId: this.viewModel.Game.Id,
+                            GameDefinitionName: this.viewModel.Game.Name,
+                            BoardGameGeekGameDefinitionId: this.viewModel.Game.BoardGameGeekGameDefinitionId,
+                            Notes: this.viewModel.GameNotes,
+                            DatePlayed: this.viewModel.Date.toISOString(),
+                            WinnerType: this.viewModel.WinnerType,
+                            PlayerRanks: [],
+                            PlayedGameId: this.viewModel.PlayedGameId,
+                            EditMode: this.editMode ? true : false
+                        };
+
+                        this.viewModel.Players.forEach(function (player) {
+                            var rank = player.Rank;
+                            if (component.viewModel.WinnerType == parent._winnerTypes.TeamWin) {
+                                rank = 1;
+                            } else if (component.viewModel.WinnerType == parent._winnerTypes.TeamLoss) {
+                                rank = 2;
+                            }
+                            data.PlayerRanks.push({
+                                PlayerId: player.Id,
+                                GameRank: rank,
+                                PlayerName: player.Name
+                                //PointsScored: player.Score
+                            });
+                        });
+
+                        $.ajax({
+                            type: "POST",
+                            url: "/playedgame/save",
+                            data: data,
+                            success: function (response) {
+                                component.serverRequestInProgress = false;
+                                if (response.success) {
+                                    component.recentlyPlayedGameId = response.playedGameId;
+                                    component.currentStep = parent._steps.Summary;
+                                } else {
+
+                                    if (response.errors) {
+                                        response.errors.forEach(function (e) {
+                                            component.alertText += " - ";
+                                            component.alertText += e.Value[0];
+                                        });
+                                    } else {
+                                        component.alertText = "Error creating played game. Please, try again later :_(";
+                                    }
+
+                                    component.alertVisible = true;
+                                }
+                            },
+                            error: function (XMLHTttpRequest, status, error) {
+                                component.serverRequestInProgress = false;
+                                component.alertText = "Error creating played game. Please, try again later :_(";
+                                component.alertVisible = true;
+                            }
+                        });
+                    },
+                    gotoRecentlyPlayedGame: function () {
+                        window.location = this.newPlayedGameUrl;
+                    },
+                    postTweet: function () {
+                        var url = `https://nemestats.com${this.newPlayedGameUrl}&utm_source=twitter&utm_medium=tweet&utm_campaign=recentlycreatedplayedgame`;
+                        var twitterurl = `https://twitter.com/intent/tweet?hashtags=boardgames&original_referer=${encodeURIComponent(url)}&ref_src=twsrc%5Etfw&related=nemestats&text=Check%20out%20this%20game%20I%20played%20on%20%40nemestats&tw_p=tweetbutton&url=${url}`;
+                        window.open(twitterurl);
+                    },
+                    reload: function () {
+                        location.reload();
+                    }
+                }
+            });
+
+
+
         }
-    },
-    movePlayerDown: function (button) {
-        var item = $(button).closest("li");
-        var next = item.next();
 
-        if (next.length > 0) {
-            item.insertAfter(next);
-            this.recalculateRanks();
-            this._googleAnalytics.trackGAEvent("PlayedGames", "PlayersReorderedViaArrow", "PlayersReorderedViaArrow");
-        }
-    },
-    recalculateRanks: function () {
-        var playerItems = this.$rankedPlayers.children();
-        var idx = 1;
-        for (var i = 0; i < playerItems.length; i++) {
-            var playerItem = $(playerItems[i]);
-            var inputTextField = playerItem.find("input:text");
-            var inputHiddenField = playerItem.find("input:hidden");
-            inputTextField.val(idx);
-            inputTextField.attr("name", "PlayerRanks[" + i + "].GameRank");
-            inputHiddenField.attr("name", "PlayerRanks[" + i + "].PlayerId");
-            idx++;
-        }
-    },
-    onPlayerCreated: function (player) {
-        var newPlayer = $('<option value="' + player.Id + '">' + player.Name + '</option>');
-        this.$players.append(newPlayer);
-
-        this._googleAnalytics.trackGAEvent("PlayedGames", "NewPlayerAdded", "NewPlayerAdded");
-    },
-
-    validatePlayers: function (event) {
-        if (this.$numRankedPlayers < 2) {
-            this.$playersErrorContainer.removeClass("hidden");
-            return false;
-        }
-        this.$playersErrorContainer.addClass("hidden");
-
-        var allRankValues = this.$rankedPlayers.children().map(function () {
-            return $(this).find("input[type=text]").val();
-        });
-        if (Math.max.apply(Math, allRankValues) > this.$rankedPlayers.children().length) {
-            this.$playersErrorRankTooHigh.removeClass("hidden");
-            return false;
-        }
-        this.$playersErrorRankTooHigh.addClass("hidden");
-
-        return true;
-    },
-
-    validateGameDefinition: function () {
-        if ($("#gameDefinitionDropDown").data("numofdefinitions") == 0) {
-            $("#gameDefinitionDropDown").popover({ html: true });
-            $("#gameDefinitionDropDown").popover("show");
-            $(":input").prop("disabled", true);
-        } else if (this.$gameId != "")
-            this.$gameDefinitionDropDown.val(this.$gameId);
-    },
-
-    //Properties
-    set_playerIndex: function (value) {
-        this._playerIndex = value;
-    },
-    get_playerIndex: function () {
-        return this._playerIndex;
-    },
-    set_playerRank: function (value) {
-        this._playerRank = value;
-    },
-    get_playerRank: function () {
-        return this._playerRank;
     }
-}; //end prototypes
+};

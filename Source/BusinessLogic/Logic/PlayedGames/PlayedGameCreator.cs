@@ -51,7 +51,7 @@ namespace BusinessLogic.Logic.PlayedGames
             IChampionRecalculator championRecalculator,
             ISecuredEntityValidator<Player> securedEntityValidatorForPlayer,
             ISecuredEntityValidator<GameDefinition> securedEntityValidatorForGameDefinition,
-            IPointsCalculator pointsCalculator, 
+            IPointsCalculator pointsCalculator,
             IBusinessLogicEventBus eventBus) : base(eventBus)
         {
             _dataContext = applicationDataContext;
@@ -141,14 +141,26 @@ namespace BusinessLogic.Logic.PlayedGames
             string applicationUserId,
             List<PlayerGameResult> playerGameResults)
         {
+
             var winnerType = WinnerTypes.PlayerWin;
-            if (playerGameResults.All(x => x.GameRank == 1))
+
+            if (newlyCompletedGame.WinnerType.HasValue)
             {
-                winnerType = WinnerTypes.TeamWin;
-            }else if (playerGameResults.All(x => x.GameRank > 1))
-            {
-                winnerType = WinnerTypes.TeamLoss;
+                winnerType = newlyCompletedGame.WinnerType.Value;
             }
+            else
+            {
+                if (playerGameResults.All(x => x.GameRank == 1))
+                {
+                    winnerType = WinnerTypes.TeamWin;
+                }
+                else if (playerGameResults.All(x => x.GameRank > 1))
+                {
+                    winnerType = WinnerTypes.TeamLoss;
+                }
+            }
+
+
             var numberOfPlayers = newlyCompletedGame.PlayerRanks.Count;
             var playedGame = new PlayedGame
             {

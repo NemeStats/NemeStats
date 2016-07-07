@@ -10,4 +10,8 @@
         @include button-variant(white,$brand-info,$brand-primary);
         text-transform: uppercase;
     }
+
+    &.btn-twitter{
+        @include button-variant(white,$twitter-background-color,$twitter-background-color)
+    }
 }

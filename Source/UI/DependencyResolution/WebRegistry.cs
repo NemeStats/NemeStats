@@ -1,10 +1,21 @@
 using System.Web;
+using BusinessLogic.Logic.Achievements;
+using BusinessLogic.Models;
+using BusinessLogic.Models.Games;
+using BusinessLogic.Models.PlayedGames;
 using BusinessLogic.Providers;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.DataProtection;
 using StructureMap;
 using StructureMap.Graph;
 using UI.Controllers.Helpers;
+using UI.Mappers;
+using UI.Mappers.CustomMappers;
+using UI.Mappers.Interfaces;
+using UI.Models.Achievements;
+using UI.Models.GameDefinitionModels;
+using UI.Models.PlayedGame;
+using UI.Models.Players;
 using UI.Transformations;
 using UI.Transformations.PlayerTransformations;
 
@@ -20,13 +31,38 @@ namespace UI.DependencyResolution
                     scan.TheCallingAssembly();
                     scan.WithDefaultConventions();
                     scan.With(new ControllerConvention());
-                });
+                });            
 
+           
             this.SetupUniquePerRequestMappings();
 
             this.SetupTransientMappings();
 
             this.SetupSingletonMappings();
+
+            SetupMapperMappings(this);
+        }
+
+        public static void SetupMapperMappings(Registry r)
+        {
+            r.For<IMapperFactory>().Use<MapperFactory>();
+
+            r.For<ICustomMapper<GameDefinitionDisplayInfo, GameDefinitionDisplayInfoViewModel>>().Use<GameDefinitionDisplayInfoToGameDefinitionDisplayInfoViewModelMapper>();
+            r.For<ICustomMapper<GameDefinitionSummary, GameDefinitionSummaryListViewModel>>().Use<GameDefinitionSummaryToGameDefinitionSummaryListViewModelMapper>();
+
+            r.For<ICustomMapper<SavePlayedGameRequest, NewlyCompletedGame>>().Use<CreatePlayedGameRequestToNewlyCompletedGameMapper>();
+
+            r.For<ICustomMapper<IAchievement, AchievementSummaryViewModel>>().Use<AchievementToAchievementSummaryViewModelMapper>();
+            r.For<ICustomMapper<IAchievement, AchievementViewModel>>().Use<AchievementToAchievementViewModelMapper>();
+
+            r.For<ICustomMapper<PlayerAchievement, PlayerAchievementWinnerViewModel>>().Use<PlayerAchievementToPlayerAchievementWinnerViewModelMapper>();
+            r.For<ICustomMapper<PlayerAchievement, PlayerAchievementViewModel>>().Use<PlayerAchievementToPlayerAchievementViewModelMapper>();
+            r.For<ICustomMapper<PlayerAchievement, PlayerAchievementSummaryViewModel>>().Use<PlayerAchievementToPlayerAchievementSummaryViewModelMapper>();
+            r.For<ICustomMapper<PlayerAchievement, PlayerAchievementSummaryViewModel>>().Use<PlayerAchievementToPlayerAchievementSummaryViewModelMapper>();
+
+            r.For<ICustomMapper<Player, PlayerListSummaryViewModel>>().Use<PlayerToPlayerListSummaryViewModelMapper>();
+            r.For<ICustomMapper<PlayedGameQuickStats, PlayedGameQuickStatsViewModel>>().Use<PlayedGameQuickStatsToPlayedGameQuickStatsViewModelMapper>();
+
         }
 
         private void SetupSingletonMappings()
@@ -65,6 +101,7 @@ namespace UI.DependencyResolution
         private void SetupTransientMappings()
         {
             this.For<IShowingXResultsMessageBuilder>().Use<ShowingXResultsMessageBuilder>();
+
         }
 
         private void SetupUniquePerRequestMappings()

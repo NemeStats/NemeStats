@@ -195,6 +195,7 @@
   <ItemGroup>
     <Compile Include="IntegrationTests\BoardGameGeekTests\BoardGameGeekIntegrationTests.cs" />
     <Compile Include="IntegrationTests\RollbarTests.cs" />
+    <Compile Include="TestRegistry.cs" />
     <Compile Include="UnitTests\AreasTests\ApiTests\ApiControllerBaseTests\BuildUserContextTests.cs" />
     <Compile Include="UnitTests\AreasTests\ApiTests\ApiTestHelpers.cs" />
     <Compile Include="UnitTests\AreasTests\ApiTests\ControllersTests\ApiControllerTestBase.cs" />
@@ -238,12 +239,11 @@
     <Compile Include="UnitTests\ControllerTests\HelperTests\ShowingXResultsMessageBuilderTests\BuildMessageTests.cs" />
     <Compile Include="UnitTests\ControllerTests\HomeControllerTests\HomeControllerTestBase.cs" />
     <Compile Include="UnitTests\ControllerTests\HomeControllerTests\IndexTests.cs" />
-    <Compile Include="UnitTests\ControllerTests\PlayedGameControllerTests\CreateHttpPostTests.cs" />
+    <Compile Include="UnitTests\ControllerTests\PlayedGameControllerTests\SaveTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UnitTests\ControllerTests\PlayedGameControllerTests\DeleteConfirmedTests.cs" />
     <Compile Include="UnitTests\ControllerTests\PlayedGameControllerTests\DetailsTests.cs" />
     <Compile Include="UnitTests\ControllerTests\PlayedGameControllerTests\EditGetTests.cs" />
-    <Compile Include="UnitTests\ControllerTests\PlayedGameControllerTests\EditPostTests.cs" />
     <Compile Include="UnitTests\ControllerTests\PlayedGameControllerTests\PlayedGameControllerTestBase.cs" />
     <Compile Include="UnitTests\ControllerTests\PlayedGameControllerTests\SearchHttpGetTests.cs" />
     <Compile Include="UnitTests\ControllerTests\PlayedGameControllerTests\SearchHttpPostTests.cs" />

@@ -24,8 +24,11 @@ using NUnit.Framework;
 using Rhino.Mocks;
 using System.Collections.Generic;
 using System.Web.Mvc;
+using StructureMap;
 using StructureMap.AutoMocking;
 using UI.Controllers;
+using UI.Mappers;
+using UI.Mappers.Interfaces;
 using UI.Models.PlayedGame;
 
 namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
@@ -48,7 +51,12 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 		{
             autoMocker = new RhinoAutoMocker<PlayedGameController>();
 
-			currentUser = new ApplicationUser()
+            autoMocker.Inject<IMapperFactory>(new MapperFactory(new Container(c =>
+            {
+                c.AddRegistry<TestRegistry>();
+            })));
+
+            currentUser = new ApplicationUser()
 			{
 				CurrentGamingGroupId = 1
 			};

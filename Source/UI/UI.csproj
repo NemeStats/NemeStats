@@ -391,17 +391,20 @@
     <Compile Include="JobsController.generated.cs">
       <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>
-    <Compile Include="Mappers\AchievementToAchievementSummaryViewModelMapper.cs" />
-    <Compile Include="Mappers\AchievementToAchievementViewModelMapper.cs" />
-    <Compile Include="Mappers\BaseMapperService.cs" />
-    <Compile Include="Mappers\GameDefinitionSummaryToGameDefinitionSummaryListViewModelMapper.cs" />
-    <Compile Include="Mappers\IMapperService.cs" />
-    <Compile Include="Mappers\PagedListExtensions.cs" />
-    <Compile Include="Mappers\PlayedGameQuickStatsToPlayedGameQuickStatsViewModelMapper.cs" />
-    <Compile Include="Mappers\PlayerAchievementToPlayerAchievementSummaryViewModelMapper.cs" />
-    <Compile Include="Mappers\PlayerAchievementToPlayerAchievementViewModelMapper.cs" />
-    <Compile Include="Mappers\PlayerAchievementToPlayerAchievementWinnerViewModelMapper.cs" />
-    <Compile Include="Mappers\PlayerToPlayerListSummaryViewModelMapper.cs" />
+    <Compile Include="Mappers\CustomMappers\AchievementToAchievementSummaryViewModelMapper.cs" />
+    <Compile Include="Mappers\CustomMappers\AchievementToAchievementViewModelMapper.cs" />
+    <Compile Include="Mappers\CustomMappers\BaseCustomMapper.cs" />
+    <Compile Include="Mappers\CustomMappers\GameDefinitionDisplayInfoToGameDefinitionDisplayInfoViewModelMapper.cs" />
+    <Compile Include="Mappers\CustomMappers\GameDefinitionSummaryToGameDefinitionSummaryListViewModelMapper.cs" />
+    <Compile Include="Mappers\Interfaces\ICustomMapper.cs" />
+    <Compile Include="Mappers\Extensions\PagedListExtensions.cs" />
+    <Compile Include="Mappers\CustomMappers\PlayedGameQuickStatsToPlayedGameQuickStatsViewModelMapper.cs" />
+    <Compile Include="Mappers\CustomMappers\PlayerAchievementToPlayerAchievementSummaryViewModelMapper.cs" />
+    <Compile Include="Mappers\CustomMappers\PlayerAchievementToPlayerAchievementViewModelMapper.cs" />
+    <Compile Include="Mappers\CustomMappers\PlayerAchievementToPlayerAchievementWinnerViewModelMapper.cs" />
+    <Compile Include="Mappers\CustomMappers\PlayerToPlayerListSummaryViewModelMapper.cs" />
+    <Compile Include="Mappers\Interfaces\IMapperFactory.cs" />
+    <Compile Include="Mappers\MapperFactory.cs" />
     <Compile Include="Models\Achievements\AchievementDetailsViewModel.cs" />
     <Compile Include="Models\Achievements\AchievementListViewModel.cs" />
     <Compile Include="Models\Achievements\AchievementSummaryViewModel.cs" />
@@ -417,9 +420,12 @@
     <Compile Include="Models\GameDefinitionModels\BoardGameGeekGameDefinitionViewModel.cs" />
     <Compile Include="Models\GameDefinitionModels\CreateGameDefinitionViewModel.cs" />
     <Compile Include="Models\GameDefinitionModels\GameDefinitionEditViewModel.cs" />
+    <Compile Include="Models\GameDefinitionModels\GameDefinitionDisplayInfoViewModel.cs" />
     <Compile Include="Models\GameDefinitionModels\GameDefinitionSummaryListViewModel.cs" />
     <Compile Include="Models\GameDefinitionModels\GameDefinitionSummaryViewModel.cs" />
     <Compile Include="Models\GameDefinitionModels\TrendingGameViewModel.cs" />
+    <Compile Include="Models\ModelStateHelper.cs" />
+    <Compile Include="Models\PlayedGame\CreatePlayedGameViewModel.cs" />
     <Compile Include="Models\Players\GameDefinitionPlayersSummaryViewModel.cs" />
     <Compile Include="Models\GamingGroup\GamingGroupPublicDetailsViewModel.cs" />
     <Compile Include="Models\GamingGroup\GamingGroupViewModel.cs" />
@@ -557,6 +563,7 @@
     <Content Include="css\nemestats.css" />
     <Content Include="css\pnotify.custom.min.css" />
     <Content Include="css\theme.css" />
+    <Content Include="css\typeahead.css" />
     <Content Include="fonts\bootstrap\glyphicons-halflings-regular.svg" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\icomoon.svg" />
@@ -597,6 +604,8 @@
     <Content Include="sass\nemestats\playedgame.scss" />
     <None Include="Properties\PublishProfiles\nerdscorekeeper - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\nerdscorekeeper - Web Deploy.pubxml" />
+    <Content Include="sass\nemestats\createplayedgame.scss" />
+    <Content Include="sass\nemestats\animate.scss" />
     <None Include="sass\nemestats\gaminggroup.scss" />
     <Content Include="sass\nemestats\home.scss" />
     <Content Include="fonts\bootstrap\glyphicons-halflings-regular.woff2" />
@@ -633,12 +642,12 @@
     <Content Include="sass\imports\fonts.scss" />
     <Content Include="sass\nemestats\utils.scss" />
     <Content Include="Scripts\Achievement\achievementDetails.js" />
+    <Content Include="Scripts\CreatePlayedGame\createplayedgame.js" />
     <Content Include="Scripts\d3\d3.js" />
     <Content Include="Scripts\d3\d3.min.js" />
     <Content Include="Scripts\d3\LICENSE" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="robots.txt" />
-    <Content Include="Scripts\CreatePlayedGame\createplayedgame.js" />
     <Content Include="Scripts\d3\nv.d3.min.js" />
     <Content Include="Scripts\d3\css\nv.d3.css" />
     <Content Include="Scripts\GameDefinition\createGameDefinition.js" />
@@ -676,6 +685,7 @@
     <Content Include="Scripts\list.pagination.js" />
     <Content Include="Scripts\moment.js" />
     <Content Include="Scripts\moment.min.js" />
+    <Content Include="Scripts\multiselect.js" />
     <Content Include="Scripts\namespace-1.0.0.js" />
     <Content Include="Scripts\namespace.min-1.0.0.js" />
     <Content Include="Scripts\PlayedGame\recordexceldownload.js" />
@@ -692,6 +702,9 @@
     <Content Include="Scripts\Shared\GoogleAnalytics.js" />
     <Content Include="Scripts\Shared\UIUtils.js" />
     <Content Include="Scripts\Shared\_Layout.js" />
+    <Content Include="Scripts\dragula.min.js" />
+    <Content Include="Scripts\typeahead-bundle.js" />
+    <Content Include="Scripts\vue-moment.js" />
     <Content Include="Scripts\vue.min.js" />
     <Content Include="Scripts\_references.js" />
     <None Include="T4MVC.tt">
@@ -732,7 +745,6 @@
     <Content Include="Views\GameDefinition\Create.cshtml" />
     <Content Include="Views\GameDefinition\Details.cshtml" />
     <Content Include="Views\GameDefinition\Edit.cshtml" />
-    <Content Include="Views\PlayedGame\Create.cshtml" />
     <Content Include="Views\PlayedGame\Delete.cshtml" />
     <Content Include="Views\PlayedGame\Details.cshtml" />
     <Content Include="Views\GamingGroup\Index.cshtml" />
@@ -786,9 +798,9 @@
     <Content Include="Views\Achievement\Details.cshtml" />
     <Content Include="Views\Home\AboutBadgesAndAchievements.cshtml" />
     <Content Include="Views\Achievement\Index.cshtml" />
-    <Content Include="Views\PlayedGame\CreateSuccess.cshtml" />
     <Content Include="Views\Achievement\_RecentAchievementsUnlocked.cshtml" />
     <Content Include="Views\Achievement\RecentAchievementsUnlocked.cshtml" />
+    <Content Include="Views\PlayedGame\CreateOrEdit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Areas\Api\Views\Shared\" />

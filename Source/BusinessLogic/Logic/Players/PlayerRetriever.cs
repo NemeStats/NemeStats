@@ -409,5 +409,50 @@ namespace BusinessLogic.Logic.Players
 
             return returnValue;
         }
+
+        public PlayersToCreateModel GetPlayersToCreate(string currentUserId)
+        {
+            var currentUserPlayer = dataContext.GetQueryable<Player>().FirstOrDefault(p => p.ApplicationUserId == currentUserId);
+
+            if (currentUserPlayer == null)
+            {
+                return null;
+            }
+
+            var recentPlayersQuery = GetPlayersToCreateQueryable(currentUserPlayer)
+                .OrderByDescending(
+                    p => p.PlayerGameResults
+                        .Select(pgr => pgr.PlayedGame.DatePlayed)
+                        .OrderByDescending(d => d)
+                        .FirstOrDefault())
+                .ThenBy(p => p.Name)
+                .Take(5);
+
+            var otherPlayersQuery = GetPlayersToCreateQueryable(currentUserPlayer)
+                .Where(p => recentPlayersQuery.All(rp => rp.Id != p.Id))
+                .OrderBy(p => p.Name);
+
+            var result = new PlayersToCreateModel
+            {
+                UserPlayer = GetPlayerInfoForUser(currentUserPlayer),
+                OtherPlayers = otherPlayersQuery.Select(GetPlayerInfoForUser).ToList(),
+                RecentPlayers = recentPlayersQuery.Select(GetPlayerInfoForUser).ToList()
+
+            };
+
+            return result;
+        }
+
+        private IQueryable<Player> GetPlayersToCreateQueryable(Player currentUserPlayer)
+        {
+            return dataContext.GetQueryable<Player>()
+                .Where(player => player.GamingGroupId == currentUserPlayer.GamingGroupId && player.Active && player.Id != currentUserPlayer.Id)
+                .Include(p => p.PlayerGameResults);
+        }
+
+        private static PlayerInfoForUser GetPlayerInfoForUser(Player p)
+        {
+            return new PlayerInfoForUser {PlayerId = p.Id,GamingGroupId = p.GamingGroupId,PlayerName = p.Name };
+        }
     }
 }

@@ -53,7 +53,8 @@ namespace UI
                 .Include("~/Scripts/jquery.signalR-2.2.0.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/vue")
-                .Include("~/Scripts/vue.min.js"));
+                .Include("~/Scripts/vue.min.js")
+                .Include("~/Scripts/vue-moment.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/pnotify")
                 .Include("~/Scripts/pnotify.custom.min.js"));
@@ -73,6 +74,9 @@ namespace UI
 
 
             bundles.Add(new ScriptBundle("~/bundles/custom")
+                .Include("~/Scripts/typeahead-bundle.js")
+                .Include("~/Scripts/multiselect.js")
+                .Include("~/Scripts/dragula.min.js")
                 .Include("~/Scripts/namespace-{version}.js")
                 .Include("~/Scripts/Plugins/toEditBoxPlugin.js")
                 .Include("~/Scripts/Plugins/rankPlugin.js")
@@ -100,6 +104,7 @@ namespace UI
                 .Include("~/css/nemestats.css")
                 .Include("~/css/fonts.css")
                 .Include("~/css/pnotify.custom.min.css")
+                .Include("~/css/typeahead.css")
                 );
 
             bundles.Add(new StyleBundle("~/Content/themes/base/css").Include(

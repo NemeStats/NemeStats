@@ -29,6 +29,8 @@ using System.Linq;
 using BusinessLogic.Logic.Players;
 using BusinessLogic.Models.Points;
 using UI.Mappers;
+using UI.Mappers.CustomMappers;
+using UI.Mappers.Interfaces;
 using UI.Models.Badges;
 using UI.Models.Players;
 using UI.Models.Points;
@@ -42,7 +44,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
     {
         private IGameResultViewModelBuilder gameResultViewModelBuilder;
         private IMinionViewModelBuilder minionViewModelBuilderMock;
-        private PlayerAchievementToPlayerAchievementSummaryViewModelMapper playerAchievementViewModelBuilderMock;
+        private IMapperFactory mapperFactory;
         private PlayerDetails playerDetails;
         private PlayerDetailsViewModel playerDetailsViewModel;
         private PlayerDetailsViewModelBuilder builder;
@@ -66,7 +68,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         {
             AutomapperConfiguration.Configure();
             minionViewModelBuilderMock = MockRepository.GenerateMock<IMinionViewModelBuilder>();
-            playerAchievementViewModelBuilderMock = MockRepository.GenerateStub<PlayerAchievementToPlayerAchievementSummaryViewModelMapper>(MockRepository.GenerateStub<AchievementToAchievementViewModelMapper>(MockRepository.GenerateStub<PlayerAchievementToPlayerAchievementWinnerViewModelMapper>(MockRepository.GenerateStub<AchievementToAchievementSummaryViewModelMapper>())));
+            mapperFactory = MockRepository.GenerateStub<IMapperFactory>();
 
             currentUser = new ApplicationUser()
             {
@@ -253,7 +255,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
 
           
 
-            builder = new PlayerDetailsViewModelBuilder(gameResultViewModelBuilder, minionViewModelBuilderMock, playerAchievementViewModelBuilderMock);
+            builder = new PlayerDetailsViewModelBuilder(gameResultViewModelBuilder, minionViewModelBuilderMock, mapperFactory);
 
             playerDetailsViewModel = builder.Build(playerDetails, twitterMinionBraggingUrl, currentUser);
         }

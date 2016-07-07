@@ -3,9 +3,9 @@ using AutoMapper;
 using BusinessLogic.Logic.Achievements;
 using UI.Models.Achievements;
 
-namespace UI.Mappers
+namespace UI.Mappers.CustomMappers
 {
-    public class AchievementToAchievementViewModelMapper : BaseMapperService<IAchievement, AchievementViewModel>
+    public class AchievementToAchievementViewModelMapper : BaseCustomMapper<IAchievement, AchievementViewModel>
     {
         
         private readonly PlayerAchievementToPlayerAchievementWinnerViewModelMapper _achievementToPlayerAchievementWinnerViewModelMapper;

@@ -18,86 +18,54 @@
 
 using BusinessLogic.Logic.GameDefinitions;
 using BusinessLogic.Logic.Players;
-using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
 using NUnit.Framework;
 using Rhino.Mocks;
-using StructureMap.AutoMocking;
 using System.Collections.Generic;
-using System.Linq;
 using System.Web.Mvc;
-using UI.Controllers;
+using BusinessLogic.Models.Players;
+using BusinessLogic.Paging;
+using PagedList;
 using UI.Models.PlayedGame;
 
 namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 {
-	[TestFixture]
-	public class CreateHttpGetTests : PlayedGameControllerTestBase
-	{
-		private readonly int playerId = 1938;
-		private readonly string playerName = "Herb";
-		private List<Player> allPlayers;
+    [TestFixture]
+    public class CreateHttpGetTests : PlayedGameControllerTestBase
+    {
+        private readonly int playerId = 1938;
+        private readonly string playerName = "Herb";
+        private PlayersToCreateModel players;
 
-		[SetUp]
-		public override void TestSetUp()
-		{
-			base.TestSetUp();
 
-			allPlayers = new List<Player>() { new Player() { Id = playerId, Name = playerName } };
+        [SetUp]
+        public override void TestSetUp()
+        {
+            base.TestSetUp();
 
-            autoMocker.Get<IPlayerRetriever>().Expect(x => x.GetAllPlayers(currentUser.CurrentGamingGroupId, false)).Repeat.Once().Return(allPlayers);
-		}
+            players = new PlayersToCreateModel { UserPlayer = new PlayerInfoForUser() { PlayerId = playerId }, OtherPlayers = new List<PlayerInfoForUser>(), RecentPlayers = new List<PlayerInfoForUser>() };
 
-		[Test]
-		public void ItSetsTheGameDefinitionsOnTheViewModel()
-		{
-			int gameDefinitionId = 1;
-			var gameDefinitions = new List<GameDefinitionSummary>
-            {
-                new GameDefinitionSummary
-                {
-                   Id = gameDefinitionId
-                }
-            };
-			autoMocker.Get<IGameDefinitionRetriever>().Expect(mock => mock.GetAllGameDefinitions(currentUser.CurrentGamingGroupId))
-				.Return(gameDefinitions);
+            autoMocker.Get<IGameDefinitionRetriever>().Expect(x => x.GetMostPlayedGames(Arg<GetMostPlayedGamesQuery>.Is.Anything)).Repeat.Once().Return(new PagedList<GameDefinitionDisplayInfo>(new List<GameDefinitionDisplayInfo>(), 1, 1));
+            autoMocker.Get<IGameDefinitionRetriever>().Expect(x => x.GetRecentGames(Arg<GetRecentPlayedGamesQuery>.Is.Anything)).Repeat.Once().Return(new PagedList<GameDefinitionDisplayInfo>(new List<GameDefinitionDisplayInfo>(), 1, 1));
+            autoMocker.Get<IPlayerRetriever>().Expect(x => x.GetPlayersToCreate(currentUser.Id)).Repeat.Once().Return(players);
 
-			ViewResult result = autoMocker.ClassUnderTest.Create(currentUser) as ViewResult;
+        }
 
-			PlayedGameEditViewModel viewModel = (PlayedGameEditViewModel)result.Model;
-			Assert.That(viewModel.GameDefinitions.All(item => item.Value == gameDefinitionId.ToString()), Is.True);
-		}
 
         [Test]
-        public void ItSetsTheSelectedGameDefinitionToTheFirstOneIfThereIsOnlyOne()
+        public void ItLoadsTheCreateOrEditView()
         {
-            autoMocker = new RhinoAutoMocker<PlayedGameController>();
-            autoMocker.Get<IPlayerRetriever>().Expect(x => x.GetAllPlayers(currentUser.CurrentGamingGroupId, false)).Repeat.Once().Return(allPlayers);
+            var result = autoMocker.ClassUnderTest.Create(currentUser) as ViewResult;
 
-            int gameDefinitionId = 1;
-            var gameDefinitions = new List<GameDefinitionSummary>
-            {
-                new GameDefinitionSummary
-                {
-                   Id = gameDefinitionId
-                }
-            };
-            autoMocker.Get<IGameDefinitionRetriever>().Expect(mock => mock.GetAllGameDefinitions(currentUser.CurrentGamingGroupId))
-                .IgnoreArguments()
-                .Return(gameDefinitions);
-
-            ViewResult result = autoMocker.ClassUnderTest.Create(currentUser) as ViewResult;
-
-            PlayedGameEditViewModel viewModel = (PlayedGameEditViewModel)result.Model;
-            Assert.That(viewModel.GameDefinitions.First(x => x.Selected).Value, Is.EqualTo(gameDefinitionId.ToString()));
+            Assert.AreEqual(MVC.PlayedGame.Views.CreateOrEdit, result.ViewName);
         }
 
         [Test]
-		public void ItLoadsTheCreateView()
-		{
-			ViewResult result = autoMocker.ClassUnderTest.Create(currentUser) as ViewResult;
+        public void ItReturnsAFilledCreatePlayedGameViewModel()
+        {
+            var result = autoMocker.ClassUnderTest.Create(currentUser) as ViewResult;
 
-			Assert.AreEqual(MVC.PlayedGame.Views.Create, result.ViewName);
-		}
-	}
+            Assert.AreEqual(typeof(CreatePlayedGameViewModel), result.Model.GetType());
+        }
+    }
 }

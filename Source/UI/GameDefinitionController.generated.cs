@@ -98,6 +98,12 @@ namespace UI.Controllers
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SearchBoardGameGeekHttpGet);
         }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult SearchGameDefinition()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SearchGameDefinition);
+        }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public GameDefinitionController Actions { get { return MVC.GameDefinition; } }
@@ -121,6 +127,7 @@ namespace UI.Controllers
             public readonly string Edit = "Edit";
             public readonly string CreatePartial = "CreatePartial";
             public readonly string SearchBoardGameGeekHttpGet = "SearchBoardGameGeekHttpGet";
+            public readonly string SearchGameDefinition = "SearchGameDefinition";
             public readonly string ShowTrendingGames = "ShowTrendingGames";
         }
 
@@ -134,6 +141,7 @@ namespace UI.Controllers
             public const string Edit = "Edit";
             public const string CreatePartial = "CreatePartial";
             public const string SearchBoardGameGeekHttpGet = "SearchBoardGameGeekHttpGet";
+            public const string SearchGameDefinition = "SearchGameDefinition";
             public const string ShowTrendingGames = "ShowTrendingGames";
         }
 
@@ -199,6 +207,15 @@ namespace UI.Controllers
         public class ActionParamsClass_SearchBoardGameGeekHttpGet
         {
             public readonly string searchText = "searchText";
+        }
+        static readonly ActionParamsClass_SearchGameDefinition s_params_SearchGameDefinition = new ActionParamsClass_SearchGameDefinition();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_SearchGameDefinition SearchGameDefinitionParams { get { return s_params_SearchGameDefinition; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_SearchGameDefinition
+        {
+            public readonly string q = "q";
+            public readonly string currentUser = "currentUser";
         }
         static readonly ViewsClass s_views = new ViewsClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -345,6 +362,19 @@ namespace UI.Controllers
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SearchBoardGameGeekHttpGet);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "searchText", searchText);
             SearchBoardGameGeekHttpGetOverride(callInfo, searchText);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void SearchGameDefinitionOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string q, BusinessLogic.Models.User.ApplicationUser currentUser);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult SearchGameDefinition(string q, BusinessLogic.Models.User.ApplicationUser currentUser)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SearchGameDefinition);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "q", q);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "currentUser", currentUser);
+            SearchGameDefinitionOverride(callInfo, q, currentUser);
             return callInfo;
         }
 

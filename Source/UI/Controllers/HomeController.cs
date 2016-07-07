@@ -24,12 +24,17 @@ using System.Linq;
 using System.Web.Mvc;
 using BusinessLogic.Facades;
 using BusinessLogic.Logic.PlayerAchievements;
+using BusinessLogic.Models;
 using BusinessLogic.Paging;
 using UI.Controllers.Helpers;
 using UI.Mappers;
+using UI.Mappers.CustomMappers;
+using UI.Mappers.Extensions;
+using UI.Mappers.Interfaces;
 using UI.Models.GameDefinitionModels;
 using UI.Models.GamingGroup;
 using UI.Models.Home;
+using UI.Models.Players;
 using UI.Transformations;
 
 namespace UI.Controllers
@@ -48,30 +53,29 @@ namespace UI.Controllers
         private readonly ITrendingGamesRetriever _trendingGamesRetriever;
         private readonly ITransformer _transformer;
         private readonly IRecentPlayerAchievementsUnlockedRetreiver _recentPlayerAchievementsUnlockedRetreiver;
-        private readonly PlayerAchievementToPlayerAchievementWinnerViewModelMapper _playerAchievementToPlayerAchievementWinnerViewModelMapper;
+        private readonly IMapperFactory _mapperFactory;
 
         public HomeController(
             IRecentPublicGamesRetriever recentPublicGamesRetriever,
             ITopGamingGroupsRetriever topGamingGroupsRetriever,
             ITrendingGamesRetriever trendingGamesRetriever,
             ITransformer transformer,            
-            PlayerAchievementToPlayerAchievementWinnerViewModelMapper playerAchievementToPlayerAchievementWinnerViewModelMapper, 
-            IRecentPlayerAchievementsUnlockedRetreiver recentPlayerAchievementsUnlockedRetreiver)
-        {
+            IRecentPlayerAchievementsUnlockedRetreiver recentPlayerAchievementsUnlockedRetreiver,
+            IMapperFactory mapperFactory)        {
             _recentPublicGamesRetriever = recentPublicGamesRetriever;
             _topGamingGroupsRetriever = topGamingGroupsRetriever;
             _trendingGamesRetriever = trendingGamesRetriever;
             _transformer = transformer;
-            _playerAchievementToPlayerAchievementWinnerViewModelMapper = playerAchievementToPlayerAchievementWinnerViewModelMapper;
             _recentPlayerAchievementsUnlockedRetreiver = recentPlayerAchievementsUnlockedRetreiver;
-        }
+            _mapperFactory = mapperFactory;
+            }
 
         public virtual ActionResult Index()
         {
 
             var recentPlayerAchievements = _recentPlayerAchievementsUnlockedRetreiver.GetResults(new GetRecentPlayerAchievementsUnlockedQuery {PageSize = NUMBER_OF_RECENT_ACHIEVEMENTS_TO_SHOW });
             var recentPlayerAchievementsViewModel =
-                recentPlayerAchievements.ToMappedPagedList(_playerAchievementToPlayerAchievementWinnerViewModelMapper);
+                recentPlayerAchievements.ToMappedPagedList(_mapperFactory.GetMapper<PlayerAchievement,PlayerAchievementWinnerViewModel>());
 
             var publicGameSummaries = _recentPublicGamesRetriever.GetResults(NUMBER_OF_RECENT_PUBLIC_GAMES_TO_SHOW);
 

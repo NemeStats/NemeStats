@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using AutoMapper;
 using BusinessLogic.Events.HandlerFactory;
 using BusinessLogic.Logic.GameDefinitions;
@@ -9,9 +8,9 @@ using BusinessLogic.Models;
 using BusinessLogic.Models.Achievements;
 using UI.Models.Achievements;
 
-namespace UI.Mappers
+namespace UI.Mappers.CustomMappers
 {
-    public class PlayerAchievementToPlayerAchievementViewModelMapper : BaseMapperService<PlayerAchievement, PlayerAchievementViewModel>
+    public class PlayerAchievementToPlayerAchievementViewModelMapper : BaseCustomMapper<PlayerAchievement, PlayerAchievementViewModel>
     {
         static PlayerAchievementToPlayerAchievementViewModelMapper()
         {

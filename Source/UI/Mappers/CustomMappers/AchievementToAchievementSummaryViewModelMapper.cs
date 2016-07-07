@@ -1,9 +1,9 @@
 using BusinessLogic.Logic.Achievements;
 using UI.Models.Achievements;
 
-namespace UI.Mappers
+namespace UI.Mappers.CustomMappers
 {
-    public class AchievementToAchievementSummaryViewModelMapper : BaseMapperService<IAchievement , AchievementSummaryViewModel>
+    public class AchievementToAchievementSummaryViewModelMapper : BaseCustomMapper<IAchievement , AchievementSummaryViewModel>
     {
         static AchievementToAchievementSummaryViewModelMapper()
         {

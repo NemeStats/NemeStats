@@ -2,9 +2,9 @@ using AutoMapper;
 using BusinessLogic.Models.PlayedGames;
 using UI.Models.PlayedGame;
 
-namespace UI.Mappers
+namespace UI.Mappers.CustomMappers
 {
-    public class PlayedGameQuickStatsToPlayedGameQuickStatsViewModelMapper : BaseMapperService<PlayedGameQuickStats, PlayedGameQuickStatsViewModel>
+    public class PlayedGameQuickStatsToPlayedGameQuickStatsViewModelMapper : BaseCustomMapper<PlayedGameQuickStats, PlayedGameQuickStatsViewModel>
     {
         static PlayedGameQuickStatsToPlayedGameQuickStatsViewModelMapper()
         {
