@@ -83,10 +83,10 @@
                             <input type="date" class="form-control form-control-lg date-picker" v-model="viewModel.Date">
                         </div>
 
-                        <button class="btn btn-default" v-on:click="setDateYesterday">Yesterday</button>
-                        <button class="btn btn-default" v-on:click="setDateToday">Today</button>
+                        <button class="btn btn-default" id="btn-setDateYesterday" v-on:click="setDateYesterday">Yesterday</button>
+                        <button class="btn btn-default" id="btn-setDateToday" v-on:click="setDateToday">Today</button>
 
-                        <button class="btn btn-primary" v-on:click="gotoSelectGame">Continue</button>
+                        <button class="btn btn-primary" id="btn-setDateCustom" v-on:click="gotoSelectGame">Continue</button>
                     </div>
 
                 </div>
@@ -103,8 +103,8 @@
                                 <input type="text" class="form-control form-control-lg typeahead" id="search-game-definition" />
                             </div>
                         </div>
-                        @SelectGame("Recent played games", Model.RecentPlayedGames)
-                        @SelectGame("Most played games", Model.MostPlayedGames)
+                        @SelectGame("Recent played games", Model.RecentPlayedGames, "recentgame-click")
+                        @SelectGame("Most played games", Model.MostPlayedGames, "mostplayed-click")
                         <h4 class="title">Create new game</h4>
                         <div class="form-group">
                             <label>Type the new game name to create it:</label>
@@ -162,7 +162,7 @@
                         <h4 class="title">Create new:</h4>
                         <div class="row form-group">
                             <div class="col-sm-5">
-                                <input type="text" class="form-control form-control-lg" placeholder="new player name" v-model="newPlayerName" v-on:keyup.enter="createNewPlayer()" />    
+                                <input type="text" class="form-control form-control-lg" placeholder="new player name" v-model="newPlayerName" v-on:keyup.enter="createNewPlayer()" />
                             </div>
                             <div class="col-sm-2">
                                 <button class="btn btn-default" v-on:click="createNewPlayer()">Create player</button>
@@ -201,8 +201,8 @@
                                             {{ player.Name }}
                                             @*TODO: <input type="number" class="form-control score" v-model="player.Score" number/>*@
                                             <div class="change-rank-buttons">
-                                                <button class="btn btn-default" v-on:click="changeRank($index, player,true)" tabindex="-1" v-show="player.Rank > 1"><span class="fa fa-arrow-up"></span></button>
-                                                <button class="btn btn-default" v-on:click="changeRank($index, player,false)" tabindex="-1" v-show="!isLastRank(player)"><span class="fa fa-arrow-down"></span></button>
+                                                <button class="btn btn-default" id="btn-reducerank" v-on:click="changeRank($index, player,true)" tabindex="-1" v-show="player.Rank > 1"><span class="fa fa-arrow-up"></span></button>
+                                                <button class="btn btn-default" id="btn-increaserank" v-on:click="changeRank($index, player,false)" tabindex="-1" v-show="!isLastRank(player)"><span class="fa fa-arrow-down"></span></button>
                                             </div>
                                         </li>
                                     </ul>
@@ -245,18 +245,18 @@
                             <div class="action-buttons">
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <a href="@Url.Action(MVC.GamingGroup.Index())" class="btn btn-primary"><span class="fa fa-arrow-left fa-lg"></span> View my Gaming Group</a>
+                                        <a id="btn-gotogaminggroup" href="@Url.Action(MVC.GamingGroup.Index())" class="btn btn-primary"><span class="fa fa-arrow-left fa-lg"></span> View my Gaming Group</a>
                                     </div>
                                     <div class="col-md-6">
-                                        <button class="btn btn-primary" v-on:click="gotoRecentlyPlayedGame"><span class="fa fa-share fa-lg"></span>View this played game</button>
+                                        <button id="btn-gotorecentlycreatedplayedgame" class="btn btn-primary" v-on:click="gotoRecentlyPlayedGame"><span class="fa fa-share fa-lg"></span>View this played game</button>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <button class="btn btn-default" v-on:click="reload"><span class="fa fa-plus-circle fa-lg"></span> Record another played game</button>
+                                        <button id="btn-gotocreateother" class="btn btn-default" v-on:click="reload"><span class="fa fa-plus-circle fa-lg"></span> Record another played game</button>
                                     </div>
                                     <div class="col-md-6">
-                                        <button class="btn btn-twitter" v-on:click="postTweet"><span class="fa fa-twitter fa-lg"></span> Post on Twitter!</button>
+                                        <button id="btn-tweetrecentplayedgame" class="btn btn-twitter" v-on:click="postTweet"><span class="fa fa-twitter fa-lg"></span> Post on Twitter!</button>
                                     </div>
                                 </div>
                             </div>
@@ -282,7 +282,7 @@
     </script>
 }
 
-@helper SelectGame(string title, IList<GameDefinitionDisplayInfoViewModel> games)
+@helper SelectGame(string title, IList<GameDefinitionDisplayInfoViewModel> games, string gtaClass)
 {
     <h4 class="title">@title</h4>
 foreach (var game in games)
@@ -290,7 +290,7 @@ foreach (var game in games)
         <span class="game-image" v-on:click="selectGame(@game.Id,'@game.Name.Replace("'","\"")' )">
             @if (!string.IsNullOrEmpty(game.ThumbnailImageUrl))
             {
-                <img src="@game.ThumbnailImageUrl" data-container="body" data-toggle="popover" data-placement="top" data-content="@game.Name" />
+                <img src="@game.ThumbnailImageUrl" class="@gtaClass" data-container="body" data-toggle="popover" data-placement="top" data-content="@game.Name" />
             }
             else
             {

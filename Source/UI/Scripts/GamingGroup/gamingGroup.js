@@ -108,7 +108,7 @@ Views.GamingGroup.GamingGroupView.prototype = {
             dataType: "json"
         });
 
-        this._googleAnalytics.trackGAEvent("GamingGroups", "GamingGroupRenamed", "GamingGroupRenamed");
+        this.trackGAEvent("GamingGroups", "GamingGroupRenamed", "GamingGroupRenamed");
     },
     renderNemeStatsPointsLineGraph: function (url) {
         $.ajax({

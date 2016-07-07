@@ -26,7 +26,7 @@ Views.PlayedGame.CreatePlayedGame = function () {
     };
 
     this.component = null;
-
+    this.gaObject = null;
 };
 
 //Implementation
@@ -37,17 +37,20 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
         this.setupMultiselect();
         this.setupPlayersDragAndDrop();
         this.configureViewModel();
+
+        this.gaObject = new window.Views.Shared.GoogleAnalytics();
     },
     setupPlayersDragAndDrop: function () {
         var parent = this;
         var rankedGameContainer = document.getElementById("ranked-game");
         var list = dragula([rankedGameContainer]);
         list.on("dragend", function (el) {
-
             $.each($(el).parent().find("li"), function (i, player) {
                 var $player = $(player);
                 var index = $player.data("index");
                 parent.component.$data.viewModel.Players[index].Rank = i + 1;
+
+                parent.gaObject.trackGAEvent("PlayedGames", "SetRank", "DragAndDrop", index);
             });
         });
 
@@ -141,6 +144,7 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
         })
             .bind('typeahead:select', function (ev, suggestion) {
                 parent.component.selectGame(suggestion.Id, suggestion.Name);
+                parent.gaObject.trackGAEvent("PlayedGames", "SetGame", "SearchedOnYourGamingGroup");
             }).bind('typeahead:asyncrequest', function (ev, suggestion) {
                 parent.component.$data.searchingGameDefinition = true;
             });
@@ -177,6 +181,7 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
         })
             .bind('typeahead:select', function (ev, suggestion) {
                 parent.component.selectGame(null, suggestion.BoardGameName, suggestion.BoardGameId);
+                parent.gaObject.trackGAEvent("PlayedGames", "SetGame", "RecentlyCreated");
             }).bind('typeahead:asyncrequest', function (ev, suggestion) {
                 parent.component.$data.searchingBGG = true;
             });
@@ -280,17 +285,20 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                     backToSelectDate: function () {
                         if (this.viewModel.Date) {
                             this.viewModel.Date = this.viewModel.Date.format("YYYY-MM-DD");
+                            parent.gaObject.trackGAEvent("PlayedGames", "Back", "BackToSelectDate", this.currentStep);
                             this.currentStep = parent._steps.SelectDate;
                         }
                     },
                     backToSelectGame: function () {
                         if (this.viewModel.Game) {
                             this.viewModel.Game = null;
+                            parent.gaObject.trackGAEvent("PlayedGames", "Back", "BackToSelectGame", this.currentStep);
                             this.currentStep = parent._steps.SelectGame;
                         }
                     },
                     backToSelectPlayers: function () {
                         if (this.viewModel.Players.length > 1 && this.viewModel.Game != null) {
+                            parent.gaObject.trackGAEvent("PlayedGames", "Back", "BackToSelectPlayers", this.currentStep);
                             this.currentStep = parent._steps.SelectPlayers;
                         }
                     },
@@ -300,6 +308,8 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                                 text: this.newPlayerName
                             }));
                             this.newPlayerName = "";
+
+                            parent.gaObject.trackGAEvent("PlayedGames", "SetPlayers", "CreatedNewPlayer");
                         }
                     },
                     gotoSetGameResult: function () {
@@ -444,10 +454,12 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                     },
                     gotoRecentlyPlayedGame: function () {
                         window.location = this.newPlayedGameUrl;
+                        parent.gaObject.trackGAEvent("PlayedGames", "Summary", "GoToRecentlyCreatedPlayedGame", this.newPlayedGameUrl);
                     },
                     postTweet: function () {
                         var url = `https://nemestats.com${this.newPlayedGameUrl}&utm_source=twitter&utm_medium=tweet&utm_campaign=recentlycreatedplayedgame`;
                         var twitterurl = `https://twitter.com/intent/tweet?hashtags=boardgames&original_referer=${encodeURIComponent(url)}&ref_src=twsrc%5Etfw&related=nemestats&text=Check%20out%20this%20game%20I%20played%20on%20%40nemestats&tw_p=tweetbutton&url=${url}`;
+                        parent.gaObject.trackGAEvent("PlayedGames", "Summary", "Tweet", url);
                         window.open(twitterurl);
                     },
                     reload: function () {
