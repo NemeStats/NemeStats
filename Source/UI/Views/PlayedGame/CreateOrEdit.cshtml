@@ -93,7 +93,6 @@
                 <div v-show="currentStep == 2" style="display: none">
                     <h3 class="title">Select game </h3>
                     <div class="content">
-                        <h4 class="title">Pick a game</h4>
                         <div class="form-group">
                             <label>Search your game list:</label>
                             <div class="input-group">
@@ -161,15 +160,13 @@
                             </div>
                         </div>
                         <h4 class="title">Create new:</h4>
-                        <div class="form-group">
-                            <div class="input-group">
-                                <span class="input-group-addon">
-                                    <span class="fa fa-plus"></span>
-                                </span>
-                                <input type="text" class="form-control form-control-lg" placeholder="new player name" v-model="newPlayerName" v-on:keyup.enter="createNewPlayer()" />
-                                <button class="btn btn-default hidden-xs" style="margin-left: 10px;" v-on:click="createNewPlayer()">Create player</button>
+                        <div class="row form-group">
+                            <div class="col-sm-5">
+                                <input type="text" class="form-control form-control-lg" placeholder="new player name" v-model="newPlayerName" v-on:keyup.enter="createNewPlayer()" />    
                             </div>
-                            <button class="btn btn-default hidden-sm hidden-md hidden-lg" v-on:click="createNewPlayer()">Create player</button>
+                            <div class="col-sm-2">
+                                <button class="btn btn-default" v-on:click="createNewPlayer()">Create player</button>
+                            </div>
                         </div>
                         <div class="row">
                             <div class="col-xs-12">
@@ -198,21 +195,14 @@
 
                             <div class="tab-content">
                                 <div role="tabpanel" class="tab-pane active" id="ranked">
-                                    <ul class="list-group header hidden-xs">
-                                        <li class="list-group-item">
-                                            <span class="rank">Rank</span>
-                                            <span class="player">Player</span>
-                                            @*TODO: <span class="score">Score (optional)</span>*@
-                                        </li>
-                                    </ul>
                                     <ul class="list-group" id="ranked-game">
-                                        <li class="list-group-item ranked-item" v-for="player in viewModel.Players | orderBy 'Rank'" data-index="{{$index}}">
+                                        <li class="list-group-item ranked-item" v-for="player in viewModel.Players | orderBy 'Rank'" data-index="{{ $index }}">
                                             <input type="number" class="form-control rank" v-model="player.Rank" number />
                                             {{ player.Name }}
                                             @*TODO: <input type="number" class="form-control score" v-model="player.Score" number/>*@
                                             <div class="change-rank-buttons">
-                                                <button class="btn btn-default" v-on:click="changeRank(player,true)" tabindex="-1"><span class="fa fa-arrow-up"></span></button>
-                                                <button class="btn btn-default" v-on:click="changeRank(player,false)" tabindex="-1"><span class="fa fa-arrow-down"></span></button>
+                                                <button class="btn btn-default" v-on:click="changeRank($index, player,true)" tabindex="-1" v-show="player.Rank > 1"><span class="fa fa-arrow-up"></span></button>
+                                                <button class="btn btn-default" v-on:click="changeRank($index, player,false)" tabindex="-1" v-show="!isLastRank(player)"><span class="fa fa-arrow-down"></span></button>
                                             </div>
                                         </li>
                                     </ul>
@@ -249,7 +239,7 @@
                     <div class="content">
                         <h2 class="title">Played game recorded successfully</h2>
                         <div class="well">
-                            <h4 style="margin-bottom: 20px"><span class="label label-default">{{ viewModel.Players.length }}</span> players played <span class="label label-default">{{ viewModel.Game.Name }}</span> on <span class="label label-default">{{ viewModel.Date | moment "LL" }}</span></h4>
+                            <h4 style="margin-bottom: 20px"><strong>{{ viewModel.Players.length }}</strong> players played <strong>{{ viewModel.Game.Name }}</strong> on <strong>{{ viewModel.Date | moment "LL" }}</strong></h4>
 
                             <h4 class="title">What do you want to do next?</h4>
                             <div class="action-buttons">

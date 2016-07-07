@@ -184,6 +184,11 @@ $color-border: #dce4ec;
             margin-top: 0;
             padding-bottom: 5px;
             border-bottom: 1px solid $brand-primary;
+
+            @media (max-width: $screen-sm-min) {
+                font-size: 16px;
+                font-weight: bold;
+            }
         }
 
         .content {
@@ -225,6 +230,7 @@ $color-border: #dce4ec;
                 }
             }
 
+
             .nav-tabs {
                 border-bottom: solid 1px $color-border;
 
@@ -264,6 +270,11 @@ $color-border: #dce4ec;
                     .btn-recordgame {
                         font-size: 16px;
                         padding: 20px;
+
+                        @media (max-width: $screen-sm-min) {
+                            font-size: 14px;
+                            padding: 10px;
+                        }
                     }
                 }
             }
@@ -305,8 +316,7 @@ $color-border: #dce4ec;
                     }
 
                     @media (max-width: $screen-sm-min) {
-                        
-                        white-space:normal !important;
+                        white-space: normal !important;
                         font-size: 14px;
 
                         span {
@@ -331,10 +341,6 @@ $color-border: #dce4ec;
 
     input {
         display: inline-block;
-
-        @media (max-width: $screen-sm-min) {
-            display: block;
-        }
 
         &.rank {
             width: 65px;
@@ -367,7 +373,8 @@ $color-border: #dce4ec;
                 float: right;
             }
 
-            margin: 0 5px;
+            font-size: 12px;
+            margin-right: 5px;
         }
     }
 

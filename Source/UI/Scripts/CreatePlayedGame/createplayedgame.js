@@ -58,7 +58,7 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
         $("#optgroup").multiselect({
             keepRenderingSort: true,
             rightSelected: ".optgroup_rightSelected",
-            leftSelected: "optgroup_leftSelected",
+            leftSelected: ".optgroup_leftSelected",
             afterMoveToRight: function ($left, $right, $options) {
                 $.each($options, function (i, $option) {
                     parent.component.$data.viewModel.Players.push({
@@ -321,8 +321,15 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                             this.alertVisible = true;
                         }
                     },
-                    changeRank: function (player, increase) {
+                    changeRank: function ($index, player, increase) {
                         var newRank;
+
+                        var elementMoved = $("[data-index=" + $index + "]");
+                        elementMoved.addClass("animated pulse");
+                        elementMoved.one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function() {
+                            $(this).removeClass("animated pulse");
+                        });
+
                         if (increase) {
                             if (player.Rank === 1) {
                                 return;
@@ -346,6 +353,20 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                         }
                         player.Rank = newRank;
                     },
+                    isLastRank: function (player) {
+                        var hasMoreRankThanOtherPlayer = false;
+                        var hasLessRankThanOtherPlayer = false;
+                        this.viewModel.Players.forEach(function (p) {
+                            if (player.Name !== p.Name) {
+                                if (player.Rank >= p.Rank) {
+                                    hasMoreRankThanOtherPlayer = true;
+                                } else {
+                                    hasLessRankThanOtherPlayer = true;
+                                }
+                            }
+                        });
+                        return hasMoreRankThanOtherPlayer && !hasLessRankThanOtherPlayer;
+                    },
                     setGameResult: function (winnerType) {
                         var component = this;
                         this.serverRequestInProgress = true;
@@ -356,7 +377,7 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                         var token = $('input[name="__RequestVerificationToken"]', form).val();
 
                         this.viewModel.WinnerType = winnerType;
-                        
+
                         var data = {
                             __RequestVerificationToken: token,
                             GameDefinitionId: this.viewModel.Game.Id,
