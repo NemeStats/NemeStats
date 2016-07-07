@@ -79,5 +79,5 @@ $(document).ready(function () {
     layout.setupHubConnection();
     layout.setupDynamicStyles();
 
-    window.onresize = layout.setupDynamicStyles;
+    $(window).on('resize orientationChange', layout.setupDynamicStyles);
 });

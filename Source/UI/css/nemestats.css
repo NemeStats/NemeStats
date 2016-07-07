@@ -251,7 +251,8 @@ body {
   padding-left: 15px;
   padding-right: 15px;
   padding-bottom: 20px;
-  margin-bottom: 100px; }
+  margin-bottom: 100px;
+  min-height: 700px; }
 
 footer {
   height: 100px;
