@@ -80,6 +80,12 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
 
             }
         });
+
+        $('option').mousedown(function (e) {
+            e.preventDefault();
+            $(this).prop('selected', !$(this).prop('selected'));
+            return false;
+        });
     },
     setupDatePicker: function () {
         this.$datePicker = $(".date-picker");
