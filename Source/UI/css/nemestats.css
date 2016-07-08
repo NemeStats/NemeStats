@@ -1328,11 +1328,17 @@ button > i.fa {
   color: white;
   background-color: #354458;
   border-color: #dce4ec;
-  cursor: move;
-  /* fallback if grab cursor is unsupported */
-  cursor: grab;
-  cursor: -moz-grab;
-  cursor: -webkit-grab; }
+  /*cursor: move; 
+    cursor: -moz-grab;
+    cursor: -webkit-grab;
+
+    &:active {
+        :active {
+            cursor: grabbing;
+            cursor: -moz-grabbing;
+            cursor: -webkit-grabbing;
+        }
+    }*/ }
   @media (max-width: 768px) {
     .ranked-item.list-group-item {
       display: inline-block;
@@ -1341,7 +1347,7 @@ button > i.fa {
   .ranked-item.list-group-item input {
     display: inline-block; }
     .ranked-item.list-group-item input.rank {
-      width: 65px;
+      width: 51px;
       margin-right: 10px; }
     .ranked-item.list-group-item input.score {
       width: 85px;
@@ -1364,10 +1370,6 @@ button > i.fa {
           line-height: 1.5;
           border-radius: 3px;
           margin-right: 0; } }
-  .ranked-item.list-group-item:active :active {
-    cursor: grabbing;
-    cursor: -moz-grabbing;
-    cursor: -webkit-grabbing; }
 
 #bggsearchnotfound {
   cursor: pointer; }

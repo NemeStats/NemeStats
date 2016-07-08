@@ -365,7 +365,7 @@ $color-border: #dce4ec;
         display: inline-block;
 
         &.rank {
-            width: 65px;
+            width: 51px;
             margin-right: 10px;
         }
 
@@ -399,8 +399,7 @@ $color-border: #dce4ec;
         }
     }
 
-    cursor: move; /* fallback if grab cursor is unsupported */
-    cursor: grab;
+    /*cursor: move; 
     cursor: -moz-grab;
     cursor: -webkit-grab;
 
@@ -410,7 +409,7 @@ $color-border: #dce4ec;
             cursor: -moz-grabbing;
             cursor: -webkit-grabbing;
         }
-    }
+    }*/
 }
 
 

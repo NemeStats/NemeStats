@@ -34,7 +34,7 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
     init: function () {
         this.setupDatePicker();
         this.setupAutocomplete();;
-        this.setupPlayersDragAndDrop();
+        //this.setupPlayersDragAndDrop();
         this.configureViewModel();
 
         this.gaObject = new window.Views.Shared.GoogleAnalytics();
