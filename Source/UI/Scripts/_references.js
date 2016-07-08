@@ -42,7 +42,6 @@
 /// <reference path="list.js" />
 /// <reference path="list.pagination.js" />
 /// <reference path="moment.min.js" />
-/// <reference path="multiselect.js" />
 /// <reference path="namespace.min-1.0.0.js" />
 /// <reference path="namespace-1.0.0.js" />
 /// <reference path="playedgame/recordexceldownload.js" />

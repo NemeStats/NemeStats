@@ -33,8 +33,7 @@ Views.PlayedGame.CreatePlayedGame = function () {
 Views.PlayedGame.CreatePlayedGame.prototype = {
     init: function () {
         this.setupDatePicker();
-        this.setupAutocomplete();
-        this.setupMultiselect();
+        this.setupAutocomplete();;
         this.setupPlayersDragAndDrop();
         this.configureViewModel();
 
@@ -54,41 +53,6 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
             });
         });
 
-    },
-    setupMultiselect: function () {
-        var parent = this;
-
-        $("#optgroup").multiselect({
-            keepRenderingSort: true,
-            rightSelected: ".optgroup_rightSelected",
-            leftSelected: ".optgroup_leftSelected",
-            afterMoveToRight: function ($left, $right, $options) {
-                $.each($options, function (i, $option) {
-                    parent.component.$data.viewModel.Players.push({
-                        Id: $option.value,
-                        Name: $option.text
-                    });
-                });
-
-            },
-            afterMoveToLeft: function ($left, $right, $options) {
-                $.each($options, function (i, $option) {
-                    $.each(parent.component.$data.viewModel.Players, function (j, player) {
-                        if (player.Id == $option.value) {
-                            parent.component.$data.viewModel.Players.pop(player);
-                            return;
-                        }
-                    });
-                });
-
-            }
-        });
-
-        $('option').mousedown(function (e) {
-            e.preventDefault();
-            $(this).prop('selected', !$(this).prop('selected'));
-            return false;
-        });
     },
     setupDatePicker: function () {
         this.$datePicker = $(".date-picker");
@@ -111,7 +75,8 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                 maxDate: new Date()
             }).datepicker("option", "dateFormat", "yy-mm-dd");
         }
-    }, setupAutocomplete: function () {
+    },
+    setupAutocomplete: function () {
         var parent = this;
 
         var gameDefinitions = new Bloodhound({
@@ -211,9 +176,18 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
             });
 
             var editMode = $(componentSelector).data("edit-mode");
+            var model = $(componentSelector).data("model");
+
+            this._viewModel.RecentPlayers = model.RecentPlayers;
+            this._viewModel.OtherPlayers = model.OtherPlayers;
+
+            if (model.UserPlayer) {
+                model.UserPlayer.Selected = true;
+                model.UserPlayer.PlayerName += " (me)";
+                this._viewModel.RecentPlayers.push(model.UserPlayer);
+            }
 
             if (editMode) {
-                var model = $(componentSelector).data("model");
                 this._viewModel.Date = moment(model.DatePlayed);
                 this._viewModel.Game = {
                     Id: model.GameDefinitionId,
@@ -304,33 +278,53 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                     },
                     createNewPlayer: function () {
                         if (this.newPlayerName) {
-                            $("#optgroup_to").append($('<option>', {
-                                text: this.newPlayerName
-                            }));
+                            var player = {
+                                PlayerName: this.newPlayerName,
+                                Selected: true
+                            };
+                            this.viewModel.RecentPlayers.push(player);
+                            $(".recent-players").addClass("animated pulse");
+                            $(".recent-players").one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function () {
+                                $(this).removeClass("animated pulse");
+                            });
                             this.newPlayerName = "";
+
 
                             parent.gaObject.trackGAEvent("PlayedGames", "SetPlayers", "CreatedNewPlayer");
                         }
                     },
                     gotoSetGameResult: function () {
                         var _this = this;
-                        var playersSelected = $("#optgroup_to option");
-                        if (playersSelected.length > 1) {
 
-                            this.viewModel.Players = [];
+                        this.viewModel.Players = [];
+                        this.alertText = "";
+                        this.alertVisible = false;
 
-                            $.each(playersSelected, function (i, $option) {
-                                var id = $option.value;
-                                if ($option.value === $option.text) {
-                                    id = null;
-                                }
+                        var i = 1;
+
+                        this.viewModel.RecentPlayers.forEach(function(player) {
+                            if (player.Selected) {
                                 _this.viewModel.Players.push({
-                                    Id: id,
-                                    Name: $option.text,
-                                    Rank: i + 1
+                                    Id: player.PlayerId,
+                                    Name: player.PlayerName,
+                                    Rank: i
                                 });
-                            });
+                                i++;
+                            }
+                        });
 
+                        this.viewModel.OtherPlayers.forEach(function (player) {
+                            if (player.Selected) {
+                                _this.viewModel.Players.push({
+                                    Id: player.PlayerId,
+                                    Name: player.PlayerName,
+                                    Rank: i
+                                });
+                                i++;
+                            }
+                        });
+
+                        if (i > 1) {
                             this.currentStep = parent._steps.SetResult;
                         } else {
                             this.alertText = "You must select at least 2 players to continue.";

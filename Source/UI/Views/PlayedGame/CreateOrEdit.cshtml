@@ -102,7 +102,7 @@
                                         <span class="fa fa-search" v-show="!searchingGameDefinition"></span>
                                         <span class="fa fa-spinner fa-spin" v-show="searchingGameDefinition"></span>
                                     </span>
-                                    <input type="text" class="form-control form-control-lg typeahead" id="search-game-definition"/>
+                                    <input type="text" class="form-control form-control-lg typeahead" id="search-game-definition" />
                                 </div>
                             </div>
 
@@ -118,7 +118,7 @@
                                     <span class="fa fa-spinner fa-spin" v-show="searchingBGG"></span>
                                 </span>
 
-                                <input type="text" class="form-control form-control-lg typeahead" id="search-bgg"/>
+                                <input type="text" class="form-control form-control-lg typeahead" id="search-bgg" />
                             </div>
                         </div>
                         <button class="btn btn-default" v-on:click="backToSelectDate">Back</button>
@@ -126,48 +126,30 @@
                 </div>
                 <div v-show="currentStep == 3" style="display: none">
                     <h3 class="title">Select players</h3>
-                    <div class="content">
-                        <h4 class="title">Select existing players:</h4>
+                    <div class="content selectplayers">
                         <div class="row form-group">
-                            <div class="col-sm-5">
-                                <select name="from" id="optgroup" class="form-control optgroup" size="9" multiple="multiple">
-                                    @if (Model.RecentPlayers.Any())
-                                    {
-                                        <optgroup label="Recent players">
-                                            @foreach (var player in Model.RecentPlayers)
-                                            {
-                                                <option value="@player.PlayerId">@player.PlayerName</option>
-                                            }
-                                        </optgroup>
-                                    }
-                                    @if (Model.OtherPlayers.Any())
-                                    {
-                                        <optgroup label="Other players">
-                                            @foreach (var player in Model.OtherPlayers)
-                                            {
-                                                <option value="@player.PlayerId">@player.PlayerName</option>
-                                            }
-                                        </optgroup>
-                                    }
-                                </select>
+                            <div class="col-sm-6">
+                                <h4 class="title">Recent Players:</h4>
+                                <ul class="list-group recent-players">
+                                    <li class="list-group-item checkbox" v-for="player in viewModel.RecentPlayers | orderBy 'PlayerName'" v-bind:class="{'selected':player.Selected}">
+                                        <label>
+                                            <input type="checkbox" v-model="player.Selected"> {{ player.PlayerName }}
+                                        </label>
+                                    </li>
+                                </ul>
                             </div>
 
-                            <div class="col-sm-2">
-                                <div class="hidden-xs">
-                                    <button type="button" class="btn btn-block optgroup_rightSelected"><i class="fa fa-chevron-right"></i></button>
-                                    <button type="button" class="btn btn-block optgroup_leftSelected"><i class="fa fa-chevron-left"></i></button>
-                                </div>
-                                <div class="row hidden-sm hidden-md hidden-lg">
-                                    <div class="col-xs-6"><button type="button" class="btn btn-block optgroup_rightSelected"><i class="fa fa-chevron-down"></i></button></div>
-                                    <div class="col-xs-6"><button type="button" class="btn btn-block optgroup_leftSelected"><i class="fa fa-chevron-up"></i></button></div>
-                                </div>
+                            <div class="col-sm-6">
+                                <h4 class="title">Other Players:</h4>
+                                <ul class="list-group other-players">
+                                    <li class="list-group-item checkbox" v-for="player in viewModel.OtherPlayers | orderBy 'PlayerName'" v-bind:class="{'selected':player.Selected}">
+                                        <label>
+                                            <input type="checkbox" v-model="player.Selected"> {{ player.PlayerName }}
+                                        </label>
+                                    </li>
+                                </ul>
                             </div>
 
-                            <div class="col-sm-5">
-                                <select name="to" id="optgroup_to" class="form-control optgroup" size="9" multiple="multiple">
-                                    <option value="@Model.UserPlayer.PlayerId">Me (@Model.UserPlayer.PlayerName)</option>
-                                </select>
-                            </div>
                         </div>
                         <h4 class="title">Create new:</h4>
                         <div class="row form-group">
@@ -211,8 +193,8 @@
                                             {{ player.Name }}
                                             @*TODO: <input type="number" class="form-control score" v-model="player.Score" number/>*@
                                             <div class="change-rank-buttons">
-                                                <button class="btn btn-default" id="btn-reducerank" v-on:click="changeRank($index, player,true)" tabindex="-1" v-show="player.Rank > 1"><span class="fa fa-arrow-up"></span></button>
-                                                <button class="btn btn-default" id="btn-increaserank" v-on:click="changeRank($index, player,false)" tabindex="-1" v-show="!isLastRank(player)"><span class="fa fa-arrow-down"></span></button>
+                                                <button class="btn btn-default" id="btn-reducerank" v-on:click="changeRank($index, player,true)" tabindex="-1" :disabled="player.Rank === 1"><span class="fa fa-arrow-up"></span></button>
+                                                <button class="btn btn-default" id="btn-increaserank" v-on:click="changeRank($index, player,false)" tabindex="-1" :disabled="isLastRank(player)"><span class="fa fa-arrow-down"></span></button>
                                             </div>
                                         </li>
                                     </ul>
@@ -300,7 +282,7 @@ foreach (var game in games)
         <span class="game-image" v-on:click="selectGame(@game.Id,'@game.Name.Replace("'","\"")' )">
             @if (!string.IsNullOrEmpty(game.ThumbnailImageUrl))
             {
-                <img src="@game.ThumbnailImageUrl" class="@gtaClass" data-container="body" data-toggle="popover" data-placement="top" data-content="@game.Name" />
+                <img src="@game.ThumbnailImageUrl" class="@gtaClass" />
             }
             else
             {

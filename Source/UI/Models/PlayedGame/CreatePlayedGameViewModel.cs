@@ -16,9 +16,9 @@ namespace UI.Models.PlayedGame
         public List<PlayerInfoForUser> RecentPlayers { get; set; }
         public List<PlayerInfoForUser> MostActivePlayers { get; set; }
         public List<PlayerInfoForUser> OtherPlayers { get; set; }
-        public PlayerInfoForUser UserPlayer { get; set; }
         public bool EditMode { get; set; }
         public int? PlayedGameId { get; set; }
+        public PlayerInfoForUser UserPlayer { get; set; }
     }
 
     public class EditPlayedGameViewModel : CreatePlayedGameViewModel

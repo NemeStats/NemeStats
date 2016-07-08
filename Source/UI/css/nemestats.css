@@ -1260,10 +1260,19 @@ button > i.fa {
           width: 80px; } }
     #record-played-game .form .content .game-image .name {
       font-size: 22px; }
-  @media (max-width: 768px) {
-    #record-played-game .form .content .optgroup {
-      margin: 10px 0;
-      height: 100px !important; } }
+  #record-played-game .form .content.selectplayers .list-group {
+    max-height: 255px;
+    overflow: auto; }
+    @media (max-width: 768px) {
+      #record-played-game .form .content.selectplayers .list-group {
+        max-height: 150px; } }
+    #record-played-game .form .content.selectplayers .list-group .list-group-item {
+      border: solid 2px #dce4ec; }
+      #record-played-game .form .content.selectplayers .list-group .list-group-item.selected {
+        background-color: #354458;
+        color: white; }
+      #record-played-game .form .content.selectplayers .list-group .list-group-item label {
+        width: 100%; }
   #record-played-game .form .content .nav-tabs {
     border-bottom: solid 1px #dce4ec; }
     #record-played-game .form .content .nav-tabs .active a {

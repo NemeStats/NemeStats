@@ -6,6 +6,8 @@ $color-border: #dce4ec;
 
 #record-played-game {
 
+   
+
     .steps {
         padding: 0;
 
@@ -223,10 +225,28 @@ $color-border: #dce4ec;
                 }
             }
 
-            .optgroup {
-                @media (max-width: $screen-sm-min) {
-                    margin: 10px 0;
-                    height: 100px !important;
+            &.selectplayers {
+
+                .list-group {
+                    max-height: 255px;
+                    overflow: auto;
+
+                    @media (max-width: $screen-sm-min) {
+                        max-height: 150px;
+                    }
+
+                    .list-group-item {
+                        border: solid 2px $color-border;
+
+                        &.selected {
+                            background-color: $brand-primary;
+                            color: white;
+                        }
+
+                        label {
+                            width: 100%;
+                        }
+                    }
                 }
             }
 
