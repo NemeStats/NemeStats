@@ -1335,7 +1335,9 @@ button > i.fa {
   cursor: -webkit-grab; }
   @media (max-width: 768px) {
     .ranked-item.list-group-item {
-      display: inline-block; } }
+      display: inline-block;
+      width: 100%;
+      font-size: 13px; } }
   .ranked-item.list-group-item input {
     display: inline-block; }
     .ranked-item.list-group-item input.rank {
@@ -1347,20 +1349,21 @@ button > i.fa {
       margin-left: 10px; }
   .ranked-item.list-group-item .change-rank-buttons {
     display: inline;
-    float: left; }
-    @media (min-width: 768px) {
-      .ranked-item.list-group-item .change-rank-buttons {
-        float: right; } }
+    float: right;
+    margin-bottom: 10px; }
     @media (max-width: 768px) {
       .ranked-item.list-group-item .change-rank-buttons {
-        margin-top: 10px; } }
+        line-height: 40px; } }
     .ranked-item.list-group-item .change-rank-buttons button {
       display: inline-block;
       font-size: 12px;
       margin-right: 5px; }
-      @media (min-width: 768px) {
+      @media (max-width: 768px) {
         .ranked-item.list-group-item .change-rank-buttons button {
-          float: right; } }
+          padding: 2px 5px;
+          line-height: 1.5;
+          border-radius: 3px;
+          margin-right: 0; } }
   .ranked-item.list-group-item:active :active {
     cursor: grabbing;
     cursor: -moz-grabbing;

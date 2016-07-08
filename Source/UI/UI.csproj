@@ -685,7 +685,6 @@
     <Content Include="Scripts\list.pagination.js" />
     <Content Include="Scripts\moment.js" />
     <Content Include="Scripts\moment.min.js" />
-    <Content Include="Scripts\multiselect.js" />
     <Content Include="Scripts\namespace-1.0.0.js" />
     <Content Include="Scripts\namespace.min-1.0.0.js" />
     <Content Include="Scripts\PlayedGame\recordexceldownload.js" />

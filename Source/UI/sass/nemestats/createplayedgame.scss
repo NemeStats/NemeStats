@@ -6,7 +6,7 @@ $color-border: #dce4ec;
 
 #record-played-game {
 
-   
+
 
     .steps {
         padding: 0;
@@ -357,6 +357,8 @@ $color-border: #dce4ec;
 
     @media (max-width: $screen-sm-min) {
         display: inline-block;
+        width: 100%;
+        font-size: 13px;
     }
 
     input {
@@ -376,25 +378,24 @@ $color-border: #dce4ec;
 
     .change-rank-buttons {
         display: inline;
-        float: left;
-
-        @media (min-width: $screen-sm-min) {
-            float: right;
-        }
+        float: right;
+        margin-bottom: 10px;
 
         @media (max-width: $screen-sm-min) {
-            margin-top: 10px;
+            line-height: 40px;
         }
 
         button {
             display: inline-block;
-
-            @media (min-width: $screen-sm-min) {
-                float: right;
-            }
-
             font-size: 12px;
             margin-right: 5px;
+
+            @media (max-width: $screen-sm-min) {
+                padding: 2px 5px;
+                line-height: 1.5;
+                border-radius: 3px;
+                margin-right: 0;
+            }
         }
     }
 

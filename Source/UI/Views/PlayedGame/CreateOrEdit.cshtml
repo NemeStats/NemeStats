@@ -189,12 +189,13 @@
                                 <div role="tabpanel" class="tab-pane active" id="ranked">
                                     <ul class="list-group" id="ranked-game">
                                         <li class="list-group-item ranked-item" v-for="player in viewModel.Players | orderBy 'Rank'" data-index="{{ $index }}">
-                                            <input type="number" class="form-control rank" v-model="player.Rank" number />
+
+                                            <input type="number" class="form-control input-sm rank" v-model="player.Rank" number />
                                             {{ player.Name }}
-                                            @*TODO: <input type="number" class="form-control score" v-model="player.Score" number/>*@
                                             <div class="change-rank-buttons">
                                                 <button class="btn btn-default" id="btn-reducerank" v-on:click="changeRank($index, player,true)" tabindex="-1" :disabled="player.Rank === 1"><span class="fa fa-arrow-up"></span></button>
                                                 <button class="btn btn-default" id="btn-increaserank" v-on:click="changeRank($index, player,false)" tabindex="-1" :disabled="isLastRank(player)"><span class="fa fa-arrow-down"></span></button>
+
                                             </div>
                                         </li>
                                     </ul>
