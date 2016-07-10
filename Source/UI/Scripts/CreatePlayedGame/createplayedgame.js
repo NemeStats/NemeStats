@@ -34,7 +34,7 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
     init: function () {
         this.setupDatePicker();
         this.setupAutocomplete();;
-        //this.setupPlayersDragAndDrop();
+        this.setupPlayersDragAndDrop();
         this.configureViewModel();
 
         this.gaObject = new window.Views.Shared.GoogleAnalytics();
@@ -227,6 +227,10 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                     }
                 },
                 methods: {
+                    changeStep : function(step) {
+                        this.currentStep = step;
+                        window.scrollTo(0,0);
+                    },
                     hideAlert: function () {
                         this.alertVisible = false;
                     },
@@ -242,7 +246,7 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                         if (this.viewModel.Date) {
                             this.alertVisible = false;
                             this.viewModel.Date = moment(this.viewModel.Date).startOf("day");
-                            this.currentStep = parent._steps.SelectGame;
+                            this.changeStep(parent._steps.SelectGame);
                         } else {
                             this.alertText = "You must set the played game or use the yesterday/today buttons.";
                             this.alertVisible = true;
@@ -254,26 +258,26 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                             BoardGameGeekGameDefinitionId: bggid,
                             Name: name
                         };
-                        this.currentStep = parent._steps.SelectPlayers;
+                        this.changeStep(parent._steps.SelectPlayers);
                     },
                     backToSelectDate: function () {
                         if (this.viewModel.Date) {
                             this.viewModel.Date = this.viewModel.Date.format("YYYY-MM-DD");
                             parent.gaObject.trackGAEvent("PlayedGames", "Back", "BackToSelectDate", this.currentStep);
-                            this.currentStep = parent._steps.SelectDate;
+                            this.changeStep(parent._steps.SelectDate);
                         }
                     },
                     backToSelectGame: function () {
                         if (this.viewModel.Game) {
                             this.viewModel.Game = null;
                             parent.gaObject.trackGAEvent("PlayedGames", "Back", "BackToSelectGame", this.currentStep);
-                            this.currentStep = parent._steps.SelectGame;
+                            this.changeStep(parent._steps.SelectGame);
                         }
                     },
                     backToSelectPlayers: function () {
                         if (this.viewModel.Players.length > 1 && this.viewModel.Game != null) {
                             parent.gaObject.trackGAEvent("PlayedGames", "Back", "BackToSelectPlayers", this.currentStep);
-                            this.currentStep = parent._steps.SelectPlayers;
+                            this.changeStep(parent._steps.SelectPlayers);
                         }
                     },
                     createNewPlayer: function () {
@@ -325,7 +329,7 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                         });
 
                         if (i > 1) {
-                            this.currentStep = parent._steps.SetResult;
+                            this.changeStep(parent._steps.SetResult);
                         } else {
                             this.alertText = "You must select at least 2 players to continue.";
                             this.alertVisible = true;

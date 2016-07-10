@@ -1328,17 +1328,9 @@ button > i.fa {
   color: white;
   background-color: #354458;
   border-color: #dce4ec;
-  /*cursor: move; 
-    cursor: -moz-grab;
-    cursor: -webkit-grab;
-
-    &:active {
-        :active {
-            cursor: grabbing;
-            cursor: -moz-grabbing;
-            cursor: -webkit-grabbing;
-        }
-    }*/ }
+  cursor: move;
+  cursor: -moz-grab;
+  cursor: -webkit-grab; }
   @media (max-width: 768px) {
     .ranked-item.list-group-item {
       display: inline-block;
@@ -1370,6 +1362,10 @@ button > i.fa {
           line-height: 1.5;
           border-radius: 3px;
           margin-right: 0; } }
+  .ranked-item.list-group-item:active :active {
+    cursor: grabbing;
+    cursor: -moz-grabbing;
+    cursor: -webkit-grabbing; }
 
 #bggsearchnotfound {
   cursor: pointer; }
