@@ -414,12 +414,7 @@ namespace BusinessLogic.Logic.Players
         {
             var currentUserPlayer = dataContext.GetQueryable<Player>().FirstOrDefault(p => p.ApplicationUserId == currentUserId && p.GamingGroupId == currentGamingGroupId);
 
-            if (currentUserPlayer == null)
-            {
-                return null;
-            }
-
-            var recentPlayersQuery = GetPlayersToCreateQueryable(currentUserPlayer)
+            var recentPlayersQuery = GetPlayersToCreateQueryable(currentUserPlayer, currentGamingGroupId)
                 .OrderByDescending(
                     p => p.PlayerGameResults
                         .Select(pgr => pgr.PlayedGame.DatePlayed)
@@ -428,7 +423,7 @@ namespace BusinessLogic.Logic.Players
                 .ThenBy(p => p.Name)
                 .Take(5);
 
-            var otherPlayersQuery = GetPlayersToCreateQueryable(currentUserPlayer)
+            var otherPlayersQuery = GetPlayersToCreateQueryable(currentUserPlayer,currentGamingGroupId)
                 .Where(p => recentPlayersQuery.All(rp => rp.Id != p.Id))
                 .OrderBy(p => p.Name);
 
@@ -443,16 +438,27 @@ namespace BusinessLogic.Logic.Players
             return result;
         }
 
-        private IQueryable<Player> GetPlayersToCreateQueryable(Player currentUserPlayer)
+        private IQueryable<Player> GetPlayersToCreateQueryable(Player currentUserPlayer, int gaminggruopid)
         {
-            return dataContext.GetQueryable<Player>()
-                .Where(player => player.GamingGroupId == currentUserPlayer.GamingGroupId && player.Active && player.Id != currentUserPlayer.Id)
-                .Include(p => p.PlayerGameResults);
+            var query = dataContext.GetQueryable<Player>()
+                .Where(player => player.GamingGroupId == gaminggruopid && player.Active)
+                ;
+            if (currentUserPlayer != null)
+            {
+                query = query.Where(player => player.Id != currentUserPlayer.Id);
+            }
+
+
+            return query.Include(p => p.PlayerGameResults);
         }
 
         private static PlayerInfoForUser GetPlayerInfoForUser(Player p)
         {
-            return new PlayerInfoForUser {PlayerId = p.Id,GamingGroupId = p.GamingGroupId,PlayerName = p.Name };
+            if (p == null)
+            {
+                return null;
+            }
+            return new PlayerInfoForUser { PlayerId = p.Id, GamingGroupId = p.GamingGroupId, PlayerName = p.Name };
         }
     }
 }
