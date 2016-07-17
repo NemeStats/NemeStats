@@ -24,6 +24,7 @@ using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using BusinessLogic.Models;
 using StructureMap.AutoMocking;
 
 namespace BusinessLogic.Tests.UnitTests.DataAccessTests.SecurityTests.SecuredEntityValidatorTests
@@ -87,6 +88,18 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.SecurityTests.SecuredEnt
             securedEntityValidatorForEntityThatIsNotSecured.ValidateAccess(
                 "some object that doesnt extend SecuredEntityWithTechnicalKey", 
                 currentUser, 
+                typeof(string),
+                string.Empty);
+        }
+
+        [Test]
+        public void ItDoesNotThrowAnExceptionIfTheEntityDoesNotHaveAGamingGroupIdSet()
+        {
+            currentUser.CurrentGamingGroupId = 50;
+
+            securedEntityValidatorForEntityThatIsNotSecured.ValidateAccess(
+                new Player(),
+                currentUser,
                 typeof(string),
                 string.Empty);
         }

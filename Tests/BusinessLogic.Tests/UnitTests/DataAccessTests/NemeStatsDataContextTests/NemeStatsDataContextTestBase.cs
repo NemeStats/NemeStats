@@ -34,7 +34,7 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.NemeStatsDataContextTest
         protected ApplicationUser currentUser;
 
         [SetUp]
-        public void TestBaseSetUp()
+        public virtual void TestBaseSetUp()
         {
             nemeStatsDbContext = MockRepository.GenerateMock<NemeStatsDbContext>();
             securedEntityValidatorFactory = MockRepository.GeneratePartialMock<SecuredEntityValidatorFactory>();

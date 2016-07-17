@@ -29,17 +29,6 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.NemeStatsDataContextTest
     [TestFixture]
     public class SaveTests : NemeStatsDataContextTestBase
     {
-        protected ISecuredEntityValidator<EntityWithTechnicalKey> securedEntityValidator;
-
-        [SetUp]
-        public void SetUp()
-        {
-            securedEntityValidator = MockRepository.GenerateMock<ISecuredEntityValidator<EntityWithTechnicalKey>>();
-            securedEntityValidatorFactory.Expect(mock => mock.MakeSecuredEntityValidator<EntityWithTechnicalKey>(dataContext))
-                .Repeat.Once()
-                .Return(securedEntityValidator);
-        }
-
         [Test]
         public void ItThrowsAnArgumentNullExceptionIfTheEntityIsNull()
         {
@@ -61,11 +50,12 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.NemeStatsDataContextTest
         }
 
         [Test]
-        public void ItValidatesSecurityIfTheEntityIsAlreadyInTheDatabase()
+        public void ItValidatesThatTheCurrentUserHasAccessToSaveTheEntityInOneOfTheirGamingGroups()
         {
-            entityWithGamingGroup.Expect(mock => mock.AlreadyInDatabase())
-                .Repeat.Once()
-                .Return(true);
+            var securedEntityValidator = MockRepository.GenerateMock<ISecuredEntityValidator<EntityWithTechnicalKey>>();
+            securedEntityValidatorFactory.Expect(mock => mock.MakeSecuredEntityValidator<EntityWithTechnicalKey>(dataContext))
+                .IgnoreArguments()
+                .Return(securedEntityValidator);
             securedEntityValidator.Expect(mock => mock.ValidateAccess(
                 entityWithGamingGroup, 
                 currentUser, 
@@ -97,9 +87,15 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.NemeStatsDataContextTest
         }
 
         [Test]
-        public void ItSetsTheGamingGroupIdIfItIsASecuredEntityThatIsntAlreadyInTheDatabase()
+        public void ItSetsTheGamingGroupIdIfItIsASecuredEntityThatIsntAlreadyInTheDatabaseAndTheGamingGroupIdIsntAlreadySet()
         {
-            GameDefinition gameDefinition = new GameDefinition();
+            var gameDefinition = new GameDefinition();
+
+            var securedEntityValidator = MockRepository.GenerateMock<ISecuredEntityValidator<GameDefinition>>();
+            securedEntityValidatorFactory.Expect(mock => mock.MakeSecuredEntityValidator<GameDefinition>(dataContext))
+                .IgnoreArguments()
+                .Return(securedEntityValidator);
+            securedEntityValidator.Expect(mock => mock.ValidateAccess(null, null, null, null)).IgnoreArguments();
 
             dataContext.Expect(mock => mock.AddOrInsertOverride(gameDefinition))
                 .Repeat.Once()
