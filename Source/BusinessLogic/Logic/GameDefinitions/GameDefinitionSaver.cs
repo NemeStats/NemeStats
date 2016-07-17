@@ -42,7 +42,7 @@ namespace BusinessLogic.Logic.GameDefinitions
         {
             this.dataContext = dataContext;
             this.eventTracker = eventTracker;
-            this.boardGameGeekGameDefinitionCreator = boardGameGeekGameDefinitionAttacher;
+            boardGameGeekGameDefinitionCreator = boardGameGeekGameDefinitionAttacher;
         }
 
         public GameDefinition CreateGameDefinition(CreateGameDefinitionRequest createGameDefinitionRequest, ApplicationUser currentUser)
@@ -51,12 +51,14 @@ namespace BusinessLogic.Logic.GameDefinitions
 
             ValidateGameDefinitionNameIsNotNullOrWhitespace(createGameDefinitionRequest.Name);
 
+            int gamingGroupId = createGameDefinitionRequest.GamingGroupId ?? currentUser.CurrentGamingGroupId;
+
             int? boardGameGeekGameDefinitionId = CreateBoardGameGeekGameDefinition(
                 createGameDefinitionRequest.BoardGameGeekGameDefinitionId, 
                 currentUser);
             
             var existingGameDefinition = dataContext.GetQueryable<GameDefinition>()
-                .FirstOrDefault(game => game.GamingGroupId == currentUser.CurrentGamingGroupId
+                .FirstOrDefault(game => game.GamingGroupId == gamingGroupId
                         && game.Name == createGameDefinitionRequest.Name);
 
             if (existingGameDefinition == null)
@@ -66,10 +68,10 @@ namespace BusinessLogic.Logic.GameDefinitions
                     Name = createGameDefinitionRequest.Name,
                     BoardGameGeekGameDefinitionId = boardGameGeekGameDefinitionId,
                     Description = createGameDefinitionRequest.Description,
-                    GamingGroupId = createGameDefinitionRequest.GamingGroupId ?? currentUser.CurrentGamingGroupId
+                    GamingGroupId = gamingGroupId
                 };
 
-                new Task(() => this.eventTracker.TrackGameDefinitionCreation(currentUser, createGameDefinitionRequest.Name)).Start();
+                new Task(() => eventTracker.TrackGameDefinitionCreation(currentUser, createGameDefinitionRequest.Name)).Start();
 
                 return dataContext.Save(newGameDefinition, currentUser);
             }

@@ -74,7 +74,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
         }
 
         [Test]
-        public void ItThrowsADuplicateKeyExceptionIfThereIsAnExistingActiveGameDefinitionWithTheSameName()
+        public void ItThrowsADuplicateKeyExceptionIfThereIsAnExistingActiveGameDefinitionWithTheSameNameInTheCurrentUsersGamingGroupAndTheGamingGroupIsNotExplicitlySet()
         {
             var gameDefinition = new GameDefinition
             {
@@ -82,7 +82,62 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
                 Active = true,
                 GamingGroupId = currentUser.CurrentGamingGroupId
             };
-            CreateGameDefinitionRequest createGameDefinitionRequest = new CreateGameDefinitionRequest
+            var createGameDefinitionRequest = new CreateGameDefinitionRequest
+            {
+                Name = gameDefinition.Name
+            };
+            var gameDefinitionQueryable = new List<GameDefinition>
+            {
+                gameDefinition
+            }.AsQueryable();
+
+            autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<GameDefinition>()).Return(gameDefinitionQueryable);
+
+            Exception exception = Assert.Throws<DuplicateKeyException>(
+                () => autoMocker.ClassUnderTest.CreateGameDefinition(createGameDefinitionRequest, currentUser));
+
+            Assert.That(exception.Message, Is.EqualTo("An active Game Definition with name '" + gameDefinition.Name + "' already exists in this Gaming Group."));
+        }
+
+        [Test]
+        public void ItThrowsADuplicateKeyExceptionIfThereIsAnExistingActiveGameDefinitionInTheSpecifiedGamingGroup()
+        {
+            var expectedGamingGroupId = 2;
+
+            var gameDefinition = new GameDefinition
+            {
+                Name = "existing game definition name",
+                Active = true,
+                GamingGroupId = expectedGamingGroupId
+            };
+            var createGameDefinitionRequest = new CreateGameDefinitionRequest
+            {
+                Name = gameDefinition.Name,
+                GamingGroupId = expectedGamingGroupId
+            };
+            var gameDefinitionQueryable = new List<GameDefinition>
+            {
+                gameDefinition
+            }.AsQueryable();
+
+            autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<GameDefinition>()).Return(gameDefinitionQueryable);
+
+            Exception exception = Assert.Throws<DuplicateKeyException>(
+                () => autoMocker.ClassUnderTest.CreateGameDefinition(createGameDefinitionRequest, currentUser));
+
+            Assert.That(exception.Message, Is.EqualTo("An active Game Definition with name '" + gameDefinition.Name + "' already exists in this Gaming Group."));
+        }
+
+        [Test]
+        public void ItThrowsADuplicateKeyExceptionIfThereIsAnExistingActiveGameDefinitionWithTheSameNameAndTheGamingGroupIsNotExplicitlySet()
+        {
+            var gameDefinition = new GameDefinition
+            {
+                Name = "existing game definition name",
+                Active = true,
+                GamingGroupId = currentUser.CurrentGamingGroupId
+            };
+            var createGameDefinitionRequest = new CreateGameDefinitionRequest
             {
                 Name = gameDefinition.Name
             };

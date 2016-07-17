@@ -38,9 +38,17 @@ namespace BusinessLogic.DataAccess.Security
 
         //TODO not sure how to enforce that TEntity is a SingleColumnWithTechnicalKey so I can get the Id, so requiring some
         //additional info to be manually passed in
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <param name="currentUser"></param>
+        /// <param name="underlyingEntityType"></param>
+        /// <param name="entityId"></param>
+        /// <exception cref="UnauthorizedAccessException">Thrown if the user is not allowed to save this entity because the user does not have access to the gaming group.</exception>
         public virtual void ValidateAccess(TEntity entity, ApplicationUser currentUser, Type underlyingEntityType, object entityId)
         {
-            SecuredEntityWithTechnicalKey securedEntity = entity as SecuredEntityWithTechnicalKey;
+            var securedEntity = entity as SecuredEntityWithTechnicalKey;
 
             if (securedEntity == null)
             {
@@ -49,7 +57,7 @@ namespace BusinessLogic.DataAccess.Security
             
             ValidateArguments(currentUser);
 
-            if(securedEntity.GamingGroupId != currentUser.CurrentGamingGroupId)
+            if(securedEntity.GamingGroupId != default(int) && securedEntity.GamingGroupId != currentUser.CurrentGamingGroupId)
             {
                 var matchingUserGamingGroup = _dataContext.GetQueryable<UserGamingGroup>()
                     .SingleOrDefault(
