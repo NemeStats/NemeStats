@@ -235,7 +235,7 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                         this.alertVisible = false;
                     },
                     setDateYesterday: function () {
-                        this.viewModel.Date = moment().add("days", -1).startOf("day");
+                        this.viewModel.Date = moment().add(-1,"days").startOf("day");
                         this.gotoSelectGame();
                     },
                     setDateToday: function () {
