@@ -80,6 +80,37 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerSaverTests
         }
 
         [Test]
+        public void ItAssociatesThePlayerWithTheSpecifiedGamingGroup()
+        {
+            //--arrange
+            _createPlayerRequest.GamingGroupId = 53;
+
+            //--act
+            _autoMocker.ClassUnderTest.CreatePlayer(_createPlayerRequest, _currentUser);
+
+            //--assert
+            _autoMocker.Get<IDataContext>().AssertWasCalled(mock => mock.Save(
+                Arg<Player>.Matches(savedPlayer => savedPlayer.GamingGroupId == _createPlayerRequest.GamingGroupId),
+                Arg<ApplicationUser>.Is.Anything));
+        }
+
+        [Test]
+        public void ItUsesTheCurrentPlayersGamingGroupIdIfTheUserDidntSpecifyOne()
+        {
+            //--arrange
+            _createPlayerRequest.GamingGroupId = 1;
+
+            //--act
+            _autoMocker.ClassUnderTest.CreatePlayer(_createPlayerRequest, _currentUser);
+
+            //--assert
+            _autoMocker.Get<IDataContext>().AssertWasCalled(mock => mock.Save(
+                Arg<Player>.Matches(savedPlayer => savedPlayer.GamingGroupId == _createPlayerRequest.GamingGroupId),
+                Arg<ApplicationUser>.Is.Anything));
+        }
+
+
+        [Test]
         public void ItRecordsAPlayerCreatedEvent()
         {
             _autoMocker.ClassUnderTest.CreatePlayer(_createPlayerRequest, _currentUser);
