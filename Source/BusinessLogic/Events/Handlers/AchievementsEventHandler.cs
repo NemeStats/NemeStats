@@ -3,6 +3,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Web.UI.WebControls;
 using BusinessLogic.DataAccess;
 using BusinessLogic.Events.HandlerFactory;
 using BusinessLogic.Events.Interfaces;
@@ -40,53 +41,48 @@ namespace BusinessLogic.Events.Handlers
                 {
                     try
                     {
-                        var currentPlayerAchievement =
-                            player.PlayerAchievements.FirstOrDefault(
-                                pa => pa.AchievementId == achievement.Id);
+                        var currentPlayerAchievement = player.PlayerAchievements.FirstOrDefault(pa => pa.AchievementId == achievement.Id);
 
-                        if (currentPlayerAchievement != null && (currentPlayerAchievement.AchievementLevel) ==
-                            achievement.LevelThresholds.OrderByDescending(al => al.Key).First().Key)
+                        if (currentPlayerAchievement == null || (int)(currentPlayerAchievement.AchievementLevel) < (int)achievement.LevelThresholds.OrderByDescending(al => al.Key).First().Key)
                         {
-                            //Reached the max achievement, skip.
-                            break;
-                        }
 
-                        var achievementAwarded = achievement.IsAwardedForThisPlayer(player.Id);
+                            var achievementAwarded = achievement.IsAwardedForThisPlayer(player.Id);
 
-                        if (achievementAwarded.LevelAwarded.HasValue && achievementAwarded.LevelAwarded.Value > AchievementLevel.None)
-                        {
-                            if (currentPlayerAchievement == null)
+                            if (achievementAwarded.LevelAwarded.HasValue &&
+                                achievementAwarded.LevelAwarded.Value > AchievementLevel.None)
                             {
-                                var playerAchievement = new PlayerAchievement
+                                if (currentPlayerAchievement == null)
                                 {
-                                    Player = player,
-                                    PlayerId = player.Id,
-                                    AchievementId = achievement.Id,
-                                    AchievementLevel = achievementAwarded.LevelAwarded.Value,
-                                    RelatedEntities = achievementAwarded.RelatedEntities
-                                };
+                                    var playerAchievement = new PlayerAchievement
+                                    {
+                                        Player = player,
+                                        PlayerId = player.Id,
+                                        AchievementId = achievement.Id,
+                                        AchievementLevel = achievementAwarded.LevelAwarded.Value,
+                                        RelatedEntities = achievementAwarded.RelatedEntities
+                                    };
 
-                                DataContext.Save(playerAchievement, new AnonymousApplicationUser());
-
-
-                                NotifyPlayer(player, achievement, achievementAwarded.LevelAwarded);
-
-                            }
-                            else
-                            {
-                                currentPlayerAchievement.RelatedEntities = achievementAwarded.RelatedEntities;
-
-                                if (achievementAwarded.LevelAwarded.Value > currentPlayerAchievement.AchievementLevel)
-                                {
-                                    currentPlayerAchievement.AchievementLevel = achievementAwarded.LevelAwarded.Value;
-                                    currentPlayerAchievement.LastUpdatedDate = DateTime.UtcNow;
+                                    DataContext.Save(playerAchievement, new AnonymousApplicationUser());
 
 
                                     NotifyPlayer(player, achievement, achievementAwarded.LevelAwarded);
+
+                                }
+                                else
+                                {
+                                    currentPlayerAchievement.RelatedEntities = achievementAwarded.RelatedEntities;
+
+                                    if ((int)achievementAwarded.LevelAwarded.Value > (int)currentPlayerAchievement.AchievementLevel)
+                                    {
+                                        currentPlayerAchievement.AchievementLevel = achievementAwarded.LevelAwarded.Value;
+                                        currentPlayerAchievement.LastUpdatedDate = DateTime.UtcNow;
+
+                                        NotifyPlayer(player, achievement, achievementAwarded.LevelAwarded);
+                                    }
                                 }
                             }
+                            DataContext.CommitAllChanges();
                         }
-                        DataContext.CommitAllChanges();
 
                     }
                     catch (Exception ex)
