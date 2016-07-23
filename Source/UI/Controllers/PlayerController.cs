@@ -56,6 +56,7 @@ namespace UI.Controllers
         internal ITopPlayerViewModelBuilder topPlayerViewModelBuilder;
         internal INemesisHistoryRetriever nemesisHistoryRetriever;
         internal INemesisChangeViewModelBuilder nemesisChangeViewModelBuilder;
+        private readonly IPlayerDeleter _playerDeleter;
 
         public PlayerController(IDataContext dataContext,
             IGameResultViewModelBuilder builder,
@@ -68,7 +69,8 @@ namespace UI.Controllers
             IPlayerSummaryBuilder playerSummaryBuilder,
             ITopPlayerViewModelBuilder topPlayerViewModelBuilder,
             INemesisHistoryRetriever nemesisHistoryRetriever,
-            INemesisChangeViewModelBuilder nemesisChangeViewModelBuilder)
+            INemesisChangeViewModelBuilder nemesisChangeViewModelBuilder,
+            IPlayerDeleter playerDeleter)
         {
             this.dataContext = dataContext;
             this.builder = builder;
@@ -82,6 +84,7 @@ namespace UI.Controllers
             this.topPlayerViewModelBuilder = topPlayerViewModelBuilder;
             this.nemesisHistoryRetriever = nemesisHistoryRetriever;
             this.nemesisChangeViewModelBuilder = nemesisChangeViewModelBuilder;
+            _playerDeleter = playerDeleter;
         }
 
         // GET: /Player/Details/5
@@ -242,7 +245,8 @@ namespace UI.Controllers
                 Active = player.Active,
                 Id = player.Id,
                 GamingGroupId = player.GamingGroupId,
-                Name = player.Name
+                Name = player.Name,
+                IsDeleteable = !player.PlayerGameSummaries.Any()
             };
             return View(MVC.Player.Views.Edit, playerEditViewModel);
         }
@@ -264,7 +268,7 @@ namespace UI.Controllers
                 {
                     PlayerId = player.Id,
                     Active = player.Active,
-                    Name = player.Name
+                    Name = player.Name,
                 };
 
                 playerSaver.UpdatePlayer(requestedPlayer, currentUser);
@@ -276,6 +280,20 @@ namespace UI.Controllers
             var playerEditViewModel = playerEditViewModelBuilder.Build(player);
 
             return View(MVC.Player.Views.Edit, playerEditViewModel);
+        }
+
+        // POST: /Player/Delete/5
+        [System.Web.Mvc.Authorize]
+        [System.Web.Mvc.HttpPost]
+        [ValidateAntiForgeryToken]
+        [UserContext]
+        public virtual ActionResult Delete(int id, ApplicationUser currentUser)
+        {
+            _playerDeleter.DeletePlayer(id, currentUser);
+            
+            this.SetToastMessage(TempMessageKeys.TEMP_MESSAGE_KEY_PLAYER_DELETED,"Player deleted successfully");
+
+            return new RedirectResult(Url.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name));
         }
 
         [Authorize]

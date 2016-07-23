@@ -82,6 +82,12 @@ namespace UI.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult Delete()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Delete);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult CurrentPlayerQuickStats()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.CurrentPlayerQuickStats);
@@ -110,6 +116,7 @@ namespace UI.Controllers
             public readonly string ShowRecentNemesisChanges = "ShowRecentNemesisChanges";
             public readonly string Save = "Save";
             public readonly string Edit = "Edit";
+            public readonly string Delete = "Delete";
             public readonly string CurrentPlayerQuickStats = "CurrentPlayerQuickStats";
         }
 
@@ -124,6 +131,7 @@ namespace UI.Controllers
             public const string ShowRecentNemesisChanges = "ShowRecentNemesisChanges";
             public const string Save = "Save";
             public const string Edit = "Edit";
+            public const string Delete = "Delete";
             public const string CurrentPlayerQuickStats = "CurrentPlayerQuickStats";
         }
 
@@ -164,6 +172,15 @@ namespace UI.Controllers
         {
             public readonly string id = "id";
             public readonly string player = "player";
+            public readonly string currentUser = "currentUser";
+        }
+        static readonly ActionParamsClass_Delete s_params_Delete = new ActionParamsClass_Delete();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_Delete DeleteParams { get { return s_params_Delete; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_Delete
+        {
+            public readonly string id = "id";
             public readonly string currentUser = "currentUser";
         }
         static readonly ActionParamsClass_CurrentPlayerQuickStats s_params_CurrentPlayerQuickStats = new ActionParamsClass_CurrentPlayerQuickStats();
@@ -337,6 +354,19 @@ namespace UI.Controllers
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "player", player);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "currentUser", currentUser);
             EditOverride(callInfo, player, currentUser);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void DeleteOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, BusinessLogic.Models.User.ApplicationUser currentUser);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult Delete(int id, BusinessLogic.Models.User.ApplicationUser currentUser)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Delete);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "currentUser", currentUser);
+            DeleteOverride(callInfo, id, currentUser);
             return callInfo;
         }
 

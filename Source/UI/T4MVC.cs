@@ -180,7 +180,6 @@ namespace Links
         public static readonly string list_pagination_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/list.pagination.min.js") ? Url("list.pagination.min.js") : Url("list.pagination.js");
         public static readonly string moment_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/moment.min.js") ? Url("moment.min.js") : Url("moment.js");
         public static readonly string moment_min_js = Url("moment.min.js");
-        public static readonly string multiselect_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/multiselect.min.js") ? Url("multiselect.min.js") : Url("multiselect.js");
         public static readonly string namespace_1_0_0_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/namespace-1.0.0.min.js") ? Url("namespace-1.0.0.min.js") : Url("namespace-1.0.0.js");
         public static readonly string namespace_min_1_0_0_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/namespace.min-1.0.0.min.js") ? Url("namespace.min-1.0.0.min.js") : Url("namespace.min-1.0.0.js");
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -445,7 +444,6 @@ namespace Links
                 public const string list_pagination_js = "~/Scripts/list.pagination.js"; 
                 public const string moment_js = "~/Scripts/moment.js"; 
                 public const string moment_min_js = "~/Scripts/moment.min.js"; 
-                public const string multiselect_js = "~/Scripts/multiselect.js"; 
                 public const string namespace_1_0_0_js = "~/Scripts/namespace-1.0.0.js"; 
                 public const string namespace_min_1_0_0_js = "~/Scripts/namespace.min-1.0.0.js"; 
                 public const string pnotify_custom_min_js = "~/Scripts/pnotify.custom.min.js"; 

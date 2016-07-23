@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using BusinessLogic.DataAccess;
 using BusinessLogic.Logic.Players;
 using BusinessLogic.Models;
@@ -30,13 +31,38 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerDeleterTes
 
     }
 
+    public class When_Player_Not_Exists : DeletePlayerTests
+    {
+        public override void SetUp()
+        {
+            base.SetUp();
+
+            DataContextMock.Expect(m => m.GetQueryable<Player>()).Return(new List<Player>().AsQueryable());
+        }
+
+        [Test]
+        public void Then_Throw_Exception()
+        {
+            var expectedException = new ArgumentException("Player not exists","playerId");
+
+            var exception = Assert.Throws<ArgumentException>(() => PlayerDeleter.DeletePlayer(PlayerId, CurrentUser));
+
+            Assert.AreEqual(expectedException.Message, exception.Message);
+        }
+    }
+
     public class When_Player_Has_PlayedGames : DeletePlayerTests
     {
         public override void SetUp()
         {
             base.SetUp();
 
-            DataContextMock.Expect(m => m.FindById<Player>(PlayerId)).Return(new Player { Id = PlayerId, PlayerGameResults = new List<PlayerGameResult>() { new PlayerGameResult() { } } });
+            var players = new List<Player>
+            {
+                new Player {Id = PlayerId, PlayerGameResults = new List<PlayerGameResult> {new PlayerGameResult()}}
+            };
+
+            DataContextMock.Expect(m => m.GetQueryable<Player>()).Return(players.AsQueryable());
         }
 
         [Test]
@@ -44,7 +70,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerDeleterTes
         {
             var expectedException = new Exception("You can not delete players with any played game");
 
-            var exception = Assert.Throws<Exception>(() => PlayerDeleter.DeletePlayer(1, CurrentUser));
+            var exception = Assert.Throws<Exception>(() => PlayerDeleter.DeletePlayer(PlayerId, CurrentUser));
 
             Assert.AreEqual(expectedException.Message, exception.Message);
         }
@@ -56,7 +82,12 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerDeleterTes
         {
             base.SetUp();
 
-            DataContextMock.Expect(m => m.FindById<Player>(PlayerId)).Return(new Player() { Id = PlayerId, PlayerGameResults = new List<PlayerGameResult>()});
+            var players = new List<Player>
+            {
+                new Player {Id = PlayerId, PlayerGameResults = new List<PlayerGameResult> ()}
+            };
+
+            DataContextMock.Expect(m => m.GetQueryable<Player>()).Return(players.AsQueryable());
         }
 
         [Test]

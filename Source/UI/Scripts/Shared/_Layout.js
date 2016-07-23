@@ -23,6 +23,7 @@ Views.Shared.Layout.prototype = {
             }
         });
 
+        $('[data-toggle="tooltip"]').tooltip();
 
         this.$readmoreContainers = $("[data-readmore='true']");
         this.$readmoreContainers.readmore({ collapsedHeight: 100, lessLink: '<a href="#">Read less</a>', speed: 200 });

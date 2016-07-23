@@ -1,11 +1,13 @@
 ﻿@model UI.Models.Players.PlayerEditViewModel
 
 @{
-    ViewBag.Title = "Edit Player | NemeStats";
+    ViewBag.Title = "Edit Player " + Model.Name + " | NemeStats";
     Layout = MVC.Shared.Views._BaseLayout;
 }
 
-<h2 class="page-header">@ViewBag.Title</h2>
+<h2 class="page-header">
+    Edit Player @Model.Name
+</h2>
 <hr />
 
 
@@ -32,10 +34,16 @@
                 </div>
 
                 <div class="form-group">
-                    @Html.LabelFor(model => model.Active, new { @class = "control-label col-md-2" })
+
+                    <label class="control-label col-md-2">Active</label>
+
                     <div class="col-md-10">
-                        @Html.EditorFor(model => model.Active)
-                        @Html.ValidationMessageFor(model => model.Active)
+                        <div class="checkbox">
+                            <label>
+                                @Html.EditorFor(model => model.Active)
+                                @Html.ValidationMessageFor(model => model.Active)
+                            </label>
+                        </div>
                     </div>
                 </div>
 
@@ -46,6 +54,28 @@
                 </div>
             </div>
         }
+
+        <form action="@Url.Action(MVC.Player.Delete())" method="POST" class="form-horizontal">
+                @{
+                    var disabled = Model.IsDeleteable ? "" : "disabled";
+                    var tootipText = Model.IsDeleteable ? "" : "You can not delete a player with played games.";
+                }
+
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(model => model.Id)
+
+                <div class="form-group">
+                    <div class="col-md-10 col-md-offset-2">
+                        <button type="submit" class="btn btn-danger" @disabled
+                                onclick="return confirm('Are you sure of remove this player?')"
+                                title="@tootipText">
+                            <span class="fa fa-trash"></span> Delete
+                        </button>
+                    </div>
+                </div>
+            
+        </form>
+
     </div>
 </div>
 

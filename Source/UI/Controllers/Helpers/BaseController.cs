@@ -9,6 +9,7 @@ namespace UI.Controllers.Helpers
         public const string MANAGE_ACCOUNT_RESULT_TEMPMESSAGE = "manageaccountresult";
         public const string TEMP_MESSAGE_KEY_PLAYED_GAME_RECORDED = "playedgamerecorded";
         public const string TEMP_MESSAGE_KEY_PLAYER_INVITED = "playerinvitedresult";
+        public const string TEMP_MESSAGE_KEY_PLAYER_DELETED = "playerdeleted";
     }
 
     public partial class BaseController : Controller

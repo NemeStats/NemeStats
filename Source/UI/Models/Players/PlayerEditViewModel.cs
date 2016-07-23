@@ -17,6 +17,7 @@
 #endregion
 
 using System.Linq;
+using BusinessLogic.Models.User;
 
 namespace UI.Models.Players
 {
@@ -26,5 +27,7 @@ namespace UI.Models.Players
         public int Id { get; set; }
         public bool Active { get; set; }
         public int GamingGroupId { get; set; }
+
+        public bool IsDeleteable { get; set; }
     }
 }
