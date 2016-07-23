@@ -29,6 +29,7 @@ using System.Linq;
 using BusinessLogic.Events;
 using BusinessLogic.Events.HandlerFactory;
 using BusinessLogic.Events.Interfaces;
+using BusinessLogic.Exceptions;
 using BusinessLogic.Models.PlayedGames;
 
 namespace BusinessLogic.Logic.PlayedGames
@@ -68,13 +69,15 @@ namespace BusinessLogic.Logic.PlayedGames
         {
             var gameDefinition = _dataContext.FindById<GameDefinition>(newlyCompletedGame.GameDefinitionId);
             _securedEntityValidatorForGameDefinition.ValidateAccess(gameDefinition, currentUser, typeof(GameDefinition), newlyCompletedGame.GameDefinitionId);
+
+            int gamingGroupId = newlyCompletedGame.GamingGroupId ?? currentUser.CurrentGamingGroupId;
             BoardGameGeekGameDefinition boardGameGeekGameDefinition = null;
             if (gameDefinition.BoardGameGeekGameDefinitionId.HasValue)
             {
                 boardGameGeekGameDefinition = _dataContext.FindById<BoardGameGeekGameDefinition>(gameDefinition.BoardGameGeekGameDefinitionId);
             }
 
-            ValidateAccessToPlayers(newlyCompletedGame, currentUser);
+            ValidateAccessToPlayers(newlyCompletedGame.PlayerRanks, gamingGroupId, currentUser);
 
             var playerGameResults = TransformNewlyCompletedGamePlayerRanksToPlayerGameResults(
                 newlyCompletedGame,
@@ -82,7 +85,7 @@ namespace BusinessLogic.Logic.PlayedGames
 
             var playedGame = TransformNewlyCompletedGameIntoPlayedGame(
                 newlyCompletedGame,
-                newlyCompletedGame.GamingGroupId ?? currentUser.CurrentGamingGroupId,
+                gamingGroupId,
                 currentUser.Id,
                 playerGameResults);
 
@@ -101,11 +104,15 @@ namespace BusinessLogic.Logic.PlayedGames
             return playedGame;
         }
 
-        private void ValidateAccessToPlayers(NewlyCompletedGame newlyCompletedGame, ApplicationUser currentUser)
+        private void ValidateAccessToPlayers(IEnumerable<PlayerRank> playerRanks, int gamingGroupId, ApplicationUser currentUser)
         {
-            foreach (var playerRank in newlyCompletedGame.PlayerRanks)
+            foreach (var playerRank in playerRanks)
             {
                 var player = _dataContext.FindById<Player>(playerRank.PlayerId);
+                if (player.GamingGroupId != gamingGroupId)
+                {
+                    throw new PlayerNotInGamingGroupException(player.Id, gamingGroupId);
+                }
                 _securedEntityValidatorForPlayer.ValidateAccess(player, currentUser, typeof(Player), player.Id);
             }
         }
