@@ -67,7 +67,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         {
             int playerId = 123;
             autoMocker.Get<IPlayerRetriever>().Expect(mock => mock.GetPlayerDetails(playerId, 0))
-                .Return(new PlayerDetails());
+                .Return(new PlayerDetails() {PlayerGameSummaries = new List<PlayerGameSummary>()});
 
             PlayerDetails playerDetails = new PlayerDetails
             {
@@ -82,7 +82,10 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         [Test]
         public void ItPutsThePlayerEditViewModelOnTheView()
         {
-            PlayerDetails playerDetails = new PlayerDetails();
+            PlayerDetails playerDetails = new PlayerDetails()
+            {
+                PlayerGameSummaries = new List<PlayerGameSummary>() 
+            };
             autoMocker.Get<IPlayerRetriever>().Expect(mock => mock.GetPlayerDetails(playerDetails.Id, 0))
                 .Repeat.Once()
                 .Return(playerDetails);
@@ -95,7 +98,9 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
             Assert.That(playerDetails.Id, Is.EqualTo(actualViewModel.Id));
             Assert.That(playerDetails.GamingGroupId, Is.EqualTo(actualViewModel.GamingGroupId));
             Assert.That(playerDetails.Active, Is.EqualTo(actualViewModel.Active));
+            Assert.IsTrue(actualViewModel.IsDeleteable);
 
         }
+
     }
 }
