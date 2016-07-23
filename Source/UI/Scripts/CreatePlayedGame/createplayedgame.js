@@ -63,7 +63,7 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
         if (Modernizr.inputtypes.date) {
             //if supports HTML5 then use native date picker
             var minDateIso8601 = minDate.toISOString().split("T")[0];
-            this.$datePicker.attr("max", currentMoment.add("days", 1).format("YYYY-MM-DD"));
+            this.$datePicker.attr("max", currentMoment.add(1,"days").format("YYYY-MM-DD"));
             this.$datePicker.attr("min", minDateIso8601);
         } else {
             // If not native HTML5 support, fallback to jQuery datePicker
@@ -202,7 +202,7 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                         //Score: playerRank.PointsScored
                     });
                 });
-                this._viewModel.Notes = model.Notes;
+                this._viewModel.GameNotes = model.Notes;
                 this._viewModel.WinnerType = model.WinnerType;
                 this._viewModel.PlayedGameId = model.PlayedGameId;
             }
