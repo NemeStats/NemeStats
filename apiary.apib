@@ -40,6 +40,9 @@ then you need to use the playerGameResult.totalNemeStatsPointsAwarded.
 * 2016-05-12 Updated all documentation to use nemestats.com domain instead of nerdscorekeeper.azurewebsites.net since we now support this. The old
 domain should continue to work in the meantime, however.
 * 2016-06-03 Added authenticationTokenExpirationDateTime to the results of the registration (POST /Users/) and sign in (POST /UserSessions/) services.
+* 2016-07-22 Fixed API issue where newly created Players and Game Definitions were always placed in the User's default Gaming Group and not the one specified.
+Also added a 409 conflict response to POST /PlayedGames/ if any of the Players don't exist in the specified Gaming Group. Also re-fixed an issue where it wasn't
+accepting decimal places in pointsScored.
 
 ### General Information
 
@@ -83,8 +86,8 @@ Represents all of the data related to a particular Player's performance in a par
 + playerId (number, required) - NemeStats unique identifier for the Player.
 + playerName (string, required) - The name of the Player.
 + playerActive (bool, required) - Boolean value indicating whether the player is currently Active.
-+ gameRank (number, required) - The corresponding rank of the Player in this Played Game. A rank of 1 means the Player got first place, 2 means second place, and so on.
-+ pointsScored (number, optional) - Integer number of points the Player scored in the Played Game.
++ gameRank (number, required) - The corresponding integer rank of the Player in this Played Game. A rank of 1 means the Player got first place, 2 means second place, and so on.
++ pointsScored (number, optional) - Decimal number of points the Player scored in the Played Game.
 + nemeStatsPointsAwarded (number, required) - The number of NemeStats Points awarded to the Player for their respective rank in the Played Game.
 + gameDurationBonusNemePoints  (number, required) - The number of bonus NemeStats Points awarded due to the BoardGameGeek average Play Time of this Game Definition.
 + gameWeightBonusNemePoints (number, required) - The number of bonus NemeStats Points awarded due to the BoardGameGeek Weight of this Game Definition.
@@ -355,6 +358,12 @@ This service will record a new Played Game under the specified Gaming Group (per
 
                 {
                     "message" : "Invalid X-Auth-Token"
+                }
+                
++ Response 409 (application/json)
+
+                {
+                    "message" : "Player with id '19313' is not in the Gaming Group with id '1351' -- which is the Gaming Group to which the Played Game is being recorded. All Players must be in this Gaming Group."
                 }
 
 ## Get Played Games [GET /PlayedGames/{?gamingGroupId,startDateGameLastUpdated,endDateGameLastUpdated,datePlayedFrom,datePlayedTo,playerId,maximumNumberOfResults}] 
