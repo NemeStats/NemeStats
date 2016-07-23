@@ -133,6 +133,8 @@ namespace NemeStats.IoC
 
             For<IPlayedGameDeleter>().Use<PlayedGameDeleter>();
 
+            For<IPlayerDeleter>().Use<PlayerDeleter>();
+
             For<IUserRegisterer>().Use<UserRegisterer>();
 
             For<IFirstTimeAuthenticator>().Use<FirstTimeAuthenticator>();

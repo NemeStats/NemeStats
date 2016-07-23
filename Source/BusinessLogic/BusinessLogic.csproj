@@ -265,6 +265,8 @@
     <Compile Include="Logic\PlayerAchievements\IRecentPlayerAchievementsUnlockedRetreiver.cs" />
     <Compile Include="Logic\PlayerAchievements\PlayerAchievementRetriever.cs" />
     <Compile Include="Logic\PlayerAchievements\RecentPlayerAchievementsUnlockedRetreiver.cs" />
+    <Compile Include="Logic\Players\IPlayerDeleter.cs" />
+    <Compile Include="Logic\Players\PlayerDeleter.cs" />
     <Compile Include="Logic\Players\PlayerNameBuilder.cs" />
     <Compile Include="Logic\Points\GameDurationBonusCalculator.cs" />
     <Compile Include="Logic\Points\IGameDurationBonusCalculator.cs" />
