@@ -61,5 +61,7 @@ namespace BusinessLogic.Models
         //--records where this player was the Nemesis
         [InverseProperty("NemesisPlayer")]
         public virtual IList<Nemesis> CurrentAndPriorMinions { get; set; }
+
+        public virtual IList<GamingGroupInvitation> Invitations { get; set; }
     }
 }

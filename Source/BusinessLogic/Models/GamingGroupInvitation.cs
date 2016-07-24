@@ -28,7 +28,6 @@ namespace BusinessLogic.Models
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public override Guid Id { get; set; }
-        public override int GamingGroupId { get; set; }
         [StringLength(255)]
         public string InviteeEmail { get; set; }
         public string InvitingUserId { get; set; }

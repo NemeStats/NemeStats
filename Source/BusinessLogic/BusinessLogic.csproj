@@ -333,6 +333,10 @@
     <Compile Include="Migrations\201606011117450_AddWinnerTypeToPlayedGame.Designer.cs">
       <DependentUpon>201606011117450_AddWinnerTypeToPlayedGame.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201607240123197_CascadeDelete.cs" />
+    <Compile Include="Migrations\201607240123197_CascadeDelete.Designer.cs">
+      <DependentUpon>201607240123197_CascadeDelete.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Achievements\AchievementLevel.cs" />
     <Compile Include="Models\Achievements\AchievementId.cs" />
     <Compile Include="Models\Games\SavePlayedGameRequest.cs" />
@@ -940,6 +944,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201606011117450_AddWinnerTypeToPlayedGame.resx">
       <DependentUpon>201606011117450_AddWinnerTypeToPlayedGame.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201607240123197_CascadeDelete.resx">
+      <DependentUpon>201607240123197_CascadeDelete.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

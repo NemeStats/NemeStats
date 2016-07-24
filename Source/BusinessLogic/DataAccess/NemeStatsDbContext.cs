@@ -55,6 +55,16 @@ namespace BusinessLogic.DataAccess
         {
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
 
+            modelBuilder.Entity<GamingGroupInvitation>()
+            .HasRequired(i => i.RegisteredPlayer)
+            .WithMany(p => p.Invitations)
+            .WillCascadeOnDelete(true);
+
+            modelBuilder.Entity<PlayerAchievement>()
+             .HasRequired(i => i.Player)
+            .WithMany(p => p.PlayerAchievements)
+            .WillCascadeOnDelete(true);
+
             base.OnModelCreating(modelBuilder);
         }
     }
