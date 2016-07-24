@@ -246,7 +246,7 @@ namespace UI.Controllers
                 Id = player.Id,
                 GamingGroupId = player.GamingGroupId,
                 Name = player.Name,
-                IsDeleteable = !player.PlayerGameSummaries.Any()
+                IsDeleteable = !player.PlayerGameSummaries.Any() && string.IsNullOrEmpty(player.ApplicationUserId)
             };
             return View(MVC.Player.Views.Edit, playerEditViewModel);
         }
