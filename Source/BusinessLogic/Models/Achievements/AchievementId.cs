@@ -17,7 +17,8 @@
         Punisher = 13,
         TeamPlayer = 14,
         DespicableMe = 15,
-        UnitedWeFall = 16
+        UnitedWeFall = 16,
+        NickelPlated = 17
     }
 
     public enum AchievementGroup

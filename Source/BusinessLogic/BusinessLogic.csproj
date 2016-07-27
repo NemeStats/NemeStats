@@ -236,6 +236,7 @@
     <Compile Include="Logic\Achievements\BoardGameGeek2016_10x10Achievement.cs" />
     <Compile Include="Logic\Achievements\CollaboratorAchievement.cs" />
     <Compile Include="Logic\Achievements\DespicableMeAchievement.cs" />
+    <Compile Include="Logic\Achievements\NickelPlatedAchievement.cs" />
     <Compile Include="Logic\Achievements\UnitedWeFallAchievement.cs" />
     <Compile Include="Logic\Achievements\PunisherAchievement.cs" />
     <Compile Include="Logic\Achievements\HardcoreAchievement.cs" />
