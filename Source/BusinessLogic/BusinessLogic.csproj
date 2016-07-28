@@ -338,6 +338,10 @@
     <Compile Include="Migrations\201607240123197_CascadeDelete.Designer.cs">
       <DependentUpon>201607240123197_CascadeDelete.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201607281633494_CascadeDeleteAgain.cs" />
+    <Compile Include="Migrations\201607281633494_CascadeDeleteAgain.Designer.cs">
+      <DependentUpon>201607281633494_CascadeDeleteAgain.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Achievements\AchievementLevel.cs" />
     <Compile Include="Models\Achievements\AchievementId.cs" />
     <Compile Include="Models\Games\SavePlayedGameRequest.cs" />
@@ -948,6 +952,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201607240123197_CascadeDelete.resx">
       <DependentUpon>201607240123197_CascadeDelete.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201607281633494_CascadeDeleteAgain.resx">
+      <DependentUpon>201607281633494_CascadeDeleteAgain.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
