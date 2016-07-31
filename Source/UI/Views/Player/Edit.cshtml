@@ -58,7 +58,7 @@
         <form action="@Url.Action(MVC.Player.Delete())" method="POST" class="form-horizontal">
                 @{
                     var disabled = Model.IsDeleteable ? "" : "disabled";
-                    var tootipText = Model.IsDeleteable ? "" : "You can not delete a player with played games.";
+                    var tootipText = Model.IsDeleteable ? "" : "You can not delete a Player with played games.";
                 }
 
                 @Html.AntiForgeryToken()
@@ -67,7 +67,7 @@
                 <div class="form-group">
                     <div class="col-md-10 col-md-offset-2">
                         <button type="submit" class="btn btn-danger" @disabled
-                                onclick="return confirm('Are you sure of remove this player?')"
+                                onclick="return confirm('Are you sure you want to PERMANENTLY delete this Player?')"
                                 title="@tootipText">
                             <span class="fa fa-trash"></span> Delete
                         </button>
