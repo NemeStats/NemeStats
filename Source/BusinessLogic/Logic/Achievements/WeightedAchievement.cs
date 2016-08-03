@@ -22,7 +22,7 @@ namespace BusinessLogic.Logic.Achievements
 
         public override string DescriptionFormat => "This Achievement is earned by playing {0} games of each weight (Easy, Hardcore, etc).";
 
-        public override string IconClass => "fa fa-tachometer";
+        public override string IconClass => "fa fa-balance-scale";
 
         public override Dictionary<AchievementLevel, int> LevelThresholds => new Dictionary<AchievementLevel, int>
         {
