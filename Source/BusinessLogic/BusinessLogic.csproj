@@ -250,6 +250,7 @@
     <Compile Include="Logic\Achievements\NemePointsAchievement.cs" />
     <Compile Include="Logic\Achievements\RiskTakerAchievement.cs" />
     <Compile Include="Logic\Achievements\SocialButterflyAchievement.cs" />
+    <Compile Include="Logic\Achievements\WeightedAchievement.cs" />
     <Compile Include="Logic\Achievements\YouveGotHeartAchievement.cs" />
     <Compile Include="Logic\BoardGameGeek\BoardGameGeekGameDefinitionCreator.cs" />
     <Compile Include="Logic\BoardGameGeek\BoardGameGeekGamesImporter.cs" />
