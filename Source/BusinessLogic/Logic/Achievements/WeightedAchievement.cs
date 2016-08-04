@@ -57,9 +57,10 @@ namespace BusinessLogic.Logic.Achievements
                     .ToList();
 
             var noUnknownGames =
-                from item in allWeightedGames
-                where item.Key.ToString() != "Unknown"
-                select item;
+                (from item in allWeightedGames
+                    where item.Key.WeightTier != WeightTierEnum.Unknown
+                    select item).ToList();
+                
 
             if (noUnknownGames.Count() == 5)
             {
