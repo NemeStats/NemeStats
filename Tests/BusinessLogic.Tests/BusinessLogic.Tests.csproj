@@ -247,6 +247,7 @@
     <Compile Include="UnitTests\LogicTests\AchievementTests\DiversifiedAchievementTests\Base_AchievementsTests.cs" />
     <Compile Include="UnitTests\LogicTests\AchievementTests\BoardGameGeek2016_10x10AchievementTests.cs" />
     <Compile Include="UnitTests\LogicTests\AchievementTests\HardcoreAchievementTests.cs" />
+    <Compile Include="UnitTests\LogicTests\AchievementTests\WeightedAchievementTests.cs" />
     <Compile Include="UnitTests\LogicTests\AchievementTests\YouveGotHeartAchievementTests.cs" />
     <Compile Include="UnitTests\LogicTests\AchievementTests\RiskTakerAchievementTests.cs" />
     <Compile Include="UnitTests\LogicTests\AchievementTests\BusyBeeAchievementTests.cs" />
