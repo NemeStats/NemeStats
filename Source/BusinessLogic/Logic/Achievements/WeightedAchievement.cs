@@ -56,9 +56,14 @@ namespace BusinessLogic.Logic.Achievements
                     .Select(group => new { group.Key, Count = group.Count() })
                     .ToList();
 
-            if (allWeightedGames.Count() == 5)
+            var noUnknownGames =
+                from item in allWeightedGames
+                where item.Key.ToString() != "Unknown"
+                select item;
+
+            if (noUnknownGames.Count() == 5)
             {
-                result.PlayerProgress = allWeightedGames.Min(p => p.Count);
+                result.PlayerProgress = noUnknownGames.Min(p => p.Count);
             }
             else
             {
