@@ -2,14 +2,18 @@
 
 BEGIN TRANSACTION
  
+--13473
+--13477
+--13478
+--13480
 -- the main gaming group that we are clearing out
-DECLARE @gamingGroupId int = 8247
+DECLARE @gamingGroupId int = 13480
 
---indicates whether the acutal GamingGroup record itself should get blown away
-DECLARE @deletGamingGroupEntirely bit = 0
+--indicates whether the actual GamingGroup record itself should get blown away
+DECLARE @deletGamingGroupEntirely bit = 1
 --if deleting the entire gaming group, may need to provide a fallback gaming group so we can 
 --set the currentGamingGroupId of the user to this before deleting the gaming group
-DECLARE @fallbackGamingGroupId int = 8246
+DECLARE @fallbackGamingGroupId int = 45
 
 --delete played games / player game results
 DELETE pgr
@@ -23,11 +27,17 @@ DELETE FROM PlayerAchievement WHERE PlayerId IN (SELECT Id FROM Player WHERE Gam
 
 --delete champions
 ALTER TABLE GameDefinition NOCHECK CONSTRAINT ALL
+UPDATE GameDefinition SET ChampionId = NULL, PreviousChampionId = null WHERE GamingGroupId = @gamingGroupId;
+
 DELETE FROM Champion WHERE PlayerId IN (SELECT Id FROM Player WHERE GamingGroupId = @gamingGroupId);
+DELETE FROM Champion WHERE GameDefinitionId IN (SELECT GameDefinition.Id FROM GameDefinition WHERE GameDefinition.GamingGroupId = @gamingGroupId );
 
 --delete game definitions (which also can have champions)
 DELETE FROM GameDefinition WHERE GamingGroupId = @gamingGroupId;
 ALTER TABLE GameDefinition WITH CHECK CHECK CONSTRAINT ALL
+
+--blank out the Nemesis and Previous Nemesis so we can more easily delete from Nemesis
+UPDATE Player SET NemesisId = null, PreviousNemesisId = null WHERE GamingGroupId = @gamingGroupId;
 
 --delete minions in this gaming group
 DELETE FROM Nemesis WHERE MinionPlayerId IN (SELECT Id FROM Player WHERE GamingGroupId = @gamingGroupId);
@@ -47,4 +57,4 @@ BEGIN
 	DELETE FROM GamingGroup WHERE Id = @gamingGroupId
 END
 
-COMMIT TRANSACTION
+ROLLBACK TRANSACTION
