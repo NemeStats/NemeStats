@@ -18,7 +18,8 @@
         TeamPlayer = 14,
         DespicableMe = 15,
         UnitedWeFall = 16,
-        NickelPlated = 17
+        NickelPlated = 17,
+        Weighted = 18
     }
 
     public enum AchievementGroup
