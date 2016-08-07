@@ -19,7 +19,8 @@
         DespicableMe = 15,
         UnitedWeFall = 16,
         NickelPlated = 17,
-        Weighted = 18
+        Weighted = 18,
+        ClassicGamer = 19
     }
 
     public enum AchievementGroup
