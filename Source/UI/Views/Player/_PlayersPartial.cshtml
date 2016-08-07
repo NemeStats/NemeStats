@@ -1,5 +1,6 @@
 ﻿@using BusinessLogic.Models.Achievements
 @using UI.HtmlHelpers
+@using UI.Models.Badges
 @model IList<UI.Models.Players.PlayerWithNemesisViewModel>
 
     @{
@@ -58,7 +59,7 @@
                                 <th class="col-md-3 nemesis-head">
                                     <span class="sort" data-sort="nemesis-col">
                                         <i class="ns-icon-nemesis" data-toggle="popover" data-placement="top"
-                                           data-content="The Nemesis is the Player with the highest win % vs. this Player. Must have won at least 3 games to be designated as the Nemesis."></i>
+                                           data-content="@NemesisBadgeViewModel.POPOVER_TEXT"></i>
                                         <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span>
                                     </span>
                                 </th>
