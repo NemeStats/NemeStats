@@ -344,6 +344,10 @@
     <Compile Include="Migrations\201607281633494_CascadeDeleteAgain.Designer.cs">
       <DependentUpon>201607281633494_CascadeDeleteAgain.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201608080135431_AddYearToBGGDefinition.cs" />
+    <Compile Include="Migrations\201608080135431_AddYearToBGGDefinition.Designer.cs">
+      <DependentUpon>201608080135431_AddYearToBGGDefinition.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Achievements\AchievementLevel.cs" />
     <Compile Include="Models\Achievements\AchievementId.cs" />
     <Compile Include="Models\Games\SavePlayedGameRequest.cs" />
@@ -957,6 +961,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201607281633494_CascadeDeleteAgain.resx">
       <DependentUpon>201607281633494_CascadeDeleteAgain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608080135431_AddYearToBGGDefinition.resx">
+      <DependentUpon>201608080135431_AddYearToBGGDefinition.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
