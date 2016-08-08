@@ -369,7 +369,6 @@
     <Compile Include="Controllers\Helpers\IShowingXResultsMessageBuilder.cs" />
     <Compile Include="Controllers\Helpers\ShowingXResultsMessageBuilder.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\JobsController.cs" />
     <Compile Include="Controllers\PlayedGameController.cs" />
     <Compile Include="Controllers\PlayerController.cs" />
     <Compile Include="Attributes\Filters\InjectingActionInvoker.cs" />
@@ -396,9 +395,6 @@
     <Compile Include="HtmlHelpers\MvcHtmlStringExtension.cs" />
     <Compile Include="HtmlHelpers\PlayedGameHelper.cs" />
     <Compile Include="HtmlHelpers\UIHelper.cs" />
-    <Compile Include="JobsController.generated.cs">
-      <DependentUpon>T4MVC.tt</DependentUpon>
-    </Compile>
     <Compile Include="Mappers\CustomMappers\AchievementToAchievementSummaryViewModelMapper.cs" />
     <Compile Include="Mappers\CustomMappers\AchievementToAchievementViewModelMapper.cs" />
     <Compile Include="Mappers\CustomMappers\BaseCustomMapper.cs" />
@@ -593,7 +589,9 @@
     <Content Include="javascripts\bootstrap\tab.js" />
     <Content Include="javascripts\bootstrap\tooltip.js" />
     <Content Include="javascripts\bootstrap\transition.js" />
-    <Content Include="PrivateAppSettings.config" />
+    <Content Include="PrivateAppSettings.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="App_Readme\Handlebarsjs_README.md" />
     <Content Include="App_Readme\Handlebarsjs_LICENSE" />
     <Content Include="Areas\Api\Views\web.config" />
@@ -614,6 +612,7 @@
     <None Include="Properties\PublishProfiles\nerdscorekeeper - Web Deploy.pubxml" />
     <Content Include="sass\nemestats\createplayedgame.scss" />
     <Content Include="sass\nemestats\animate.scss" />
+    <Content Include="Properties\webjobs-list.json" />
     <None Include="sass\nemestats\gaminggroup.scss" />
     <Content Include="sass\nemestats\home.scss" />
     <Content Include="fonts\bootstrap\glyphicons-halflings-regular.woff2" />
@@ -901,6 +900,7 @@
     <Error Condition="!Exists('..\..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=317567." HelpKeyword="BCLBUILD2001" />
     <Error Condition="Exists('..\..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="The build restored NuGet packages. Build the project again to include these packages in the build. For more information, see http://go.microsoft.com/fwlink/?LinkID=317568." HelpKeyword="BCLBUILD2002" />
   </Target>
+  <Import Project="..\..\packages\Microsoft.Web.WebJobs.Publish.1.0.4\tools\webjobs.targets" Condition="Exists('..\..\packages\Microsoft.Web.WebJobs.Publish.1.0.4\tools\webjobs.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

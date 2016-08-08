@@ -1,0 +1,11 @@
+﻿{
+  "$schema": "http://schemastore.org/schemas/json/webjobs-list.json",
+  "WebJobs": [
+    {
+      "filePath": "../../NemeStats.ScheduledJobs/NemeStats.ScheduledJobs.csproj"
+    },
+    {
+      "filePath": "../../NemeStats.ScheduledJobs/NemeStats.ScheduledJobs.csproj"
+    }
+  ]
+}

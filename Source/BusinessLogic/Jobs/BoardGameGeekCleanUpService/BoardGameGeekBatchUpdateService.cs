@@ -13,7 +13,8 @@ using RollbarSharp;
 
 namespace BusinessLogic.Jobs.BoardGameGeekCleanUpService
 {
-    public class BoardGameGeekBatchUpdateService : IBoardGameGeekBatchUpdateService
+    public class 
+        BoardGameGeekBatchUpdateService : IBoardGameGeekBatchUpdateService
     {
         private const string CleanYearPattern = @"\w*\(\d{4}\)";
 
@@ -190,6 +191,7 @@ namespace BusinessLogic.Jobs.BoardGameGeekCleanUpService
                     existingBoardGameGeekGameDefinition.MinPlayers = gameDetails.MinPlayers;
                     existingBoardGameGeekGameDefinition.Name = gameDetails.Name;
                     existingBoardGameGeekGameDefinition.Thumbnail = gameDetails.Thumbnail;
+                    existingBoardGameGeekGameDefinition.YearPublished = gameDetails.YearPublished;
 
                     _dataContext.Save(existingBoardGameGeekGameDefinition, anonymousUser);
 
