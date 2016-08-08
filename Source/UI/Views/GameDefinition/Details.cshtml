@@ -61,6 +61,13 @@
                                             </td>
                                         </tr>
                                     }
+                                    @if (Model.BoardGameGeekGameDefinition.YearPublished.HasValue & Model.BoardGameGeekGameDefinition.YearPublished > 0)
+                                    {
+                                        <tr>
+                                            <td class="text-center"><i class="fa fa-calendar"></i></td>
+                                            <td>Published in @Model.BoardGameGeekGameDefinition.YearPublished</td>
+                                        </tr>
+                                    }
                                     @if (Model.BoardGameGeekGameDefinition.BoardGameGeekUri != null)
                                     {
                                         <tr>

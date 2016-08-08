@@ -14,6 +14,7 @@ namespace UI.Models.GameDefinitionModels
         public int? MinPlayers { get; set; }
         public int? MaxPlayTime { get; set; }
         public int? MinPlayTime { get; set; }
+        public int? YearPublished { get; set; }
         public int? AveragePlayTime {
             get
             {
