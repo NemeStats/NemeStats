@@ -6,17 +6,17 @@ using BusinessLogic.Models.Achievements;
 
 namespace BusinessLogic.Logic.Achievements
 {
-    public class ClassicGamerAchievement : BaseAchievement
+    public class TimeTravellerAchievement : BaseAchievement
     {
-        public ClassicGamerAchievement(IDataContext dataContext) : base(dataContext)
+        public TimeTravellerAchievement(IDataContext dataContext) : base(dataContext)
         {
         }
 
-        public override AchievementId Id => AchievementId.ClassicGamer;
+        public override AchievementId Id => AchievementId.TimeTraveller;
 
         public override AchievementGroup Group => AchievementGroup.Player;
 
-        public override string Name => "Classic Gamer";
+        public override string Name => "Time Traveller";
 
         public override string DescriptionFormat => "This Achievement is earned by playing games from {0} different years.";
 

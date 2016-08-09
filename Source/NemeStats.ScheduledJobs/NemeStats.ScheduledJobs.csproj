@@ -116,9 +116,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Source\UI\PrivateAppSettings.config">
-      <Link>PrivateAppSettings.config</Link>
-    </None>
     <None Include="App.config" />
     <None Include="packages.config" />
     <None Include="Properties\webjob-publish-settings.json" />
