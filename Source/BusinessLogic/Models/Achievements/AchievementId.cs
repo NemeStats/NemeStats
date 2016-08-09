@@ -20,7 +20,7 @@
         UnitedWeFall = 16,
         NickelPlated = 17,
         Weighted = 18,
-        ClassicGamer = 19
+        TimeTraveller = 19
     }
 
     public enum AchievementGroup
