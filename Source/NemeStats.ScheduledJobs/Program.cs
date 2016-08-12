@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Configuration.Abstractions;
 using System.Diagnostics;
+using System.Linq;
+using BusinessLogic.DataAccess;
 using Microsoft.Azure;
 using Microsoft.Azure.WebJobs;
 using NemeStats.IoC;
@@ -27,13 +29,11 @@ namespace NemeStats.ScheduledJobs
             config.DashboardConnectionString = CloudConfigurationManager.GetSetting("AzureWebJobsDashboard");
             config.StorageConnectionString = CloudConfigurationManager.GetSetting("AzureWebJobsStorage");
 
-            Console.WriteLine($"DashboardConnectionString: {config.DashboardConnectionString}");
-            Console.WriteLine($"StorageConnectionString: {config.StorageConnectionString}");
-
             config.UseTimers();
 
             var host = new JobHost(config);
 
+           
             host.RunAndBlock();
         }
     }

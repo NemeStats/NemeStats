@@ -11,11 +11,13 @@ namespace NemeStats.ScheduledJobs
         ///     Every day at 04:00
         /// </summary>
         /// <param name="info"></param>
+        /// <param name="log"></param>
         /// <returns></returns>
-        public static void LinkOrphanGames([TimerTrigger("0 0 4 * * *")] TimerInfo info)
+        [NoAutomaticTriggerAttribute]
+        public static void LinkOrphanGames([TimerTrigger("0 0 4 * * *")] TimerInfo info, TextWriter log)
         {
             var linkOrphanGamesResult = Program.Container.GetInstance<IBoardGameGeekBatchUpdateService>().LinkOrphanGames();
-            Console.WriteLine(linkOrphanGamesResult);
+            log.WriteLine(linkOrphanGamesResult);
         }
     }
 }
