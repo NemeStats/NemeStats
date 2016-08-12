@@ -28,7 +28,6 @@ using BusinessLogic.EventTracking;
 using BusinessLogic.Export;
 using BusinessLogic.Facades;
 using BusinessLogic.Jobs.BoardGameGeekCleanUpService;
-using BusinessLogic.Logic.Achievements;
 using BusinessLogic.Logic.BoardGameGeek;
 using BusinessLogic.Logic.Champions;
 using BusinessLogic.Logic.Email;
@@ -48,7 +47,6 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using RollbarSharp;
 using StructureMap;
 using StructureMap.Graph;
-using StructureMap.Web;
 using UniversalAnalyticsHttpWrapper;
 
 namespace NemeStats.IoC

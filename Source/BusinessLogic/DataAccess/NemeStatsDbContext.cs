@@ -16,12 +16,13 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 
+using System;
 using BusinessLogic.Models;
 using BusinessLogic.Models.User;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
-using ConfigurationManager = System.Configuration.ConfigurationManager;
+using Microsoft.Azure;
 
 namespace BusinessLogic.DataAccess
 {
@@ -29,11 +30,13 @@ namespace BusinessLogic.DataAccess
     {
         internal const string CONNECTION_STRING_KEY = "Database.ConnectionString";
 
-
-        public NemeStatsDbContext() : base(ConfigurationManager.AppSettings[CONNECTION_STRING_KEY])
+        public NemeStatsDbContext() : base(CloudConfigurationManager.GetSetting(CONNECTION_STRING_KEY))
         {
+            Console.WriteLine($"ConnectionString: " + CloudConfigurationManager.GetSetting(CONNECTION_STRING_KEY));
+
             this.Configuration.ProxyCreationEnabled = false;
             this.Configuration.LazyLoadingEnabled = false;
+
             //uncomment to turn on SQL statements printing to the console
             //this.Database.Log = s => System.Diagnostics.Debug.WriteLine(s);
         }

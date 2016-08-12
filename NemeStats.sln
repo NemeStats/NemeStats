@@ -33,6 +33,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NemeStats.IoC", "Source\Nem
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NemeStats.Hubs", "Source\NemeStats.Hubs\NemeStats.Hubs.csproj", "{036E186C-4A61-4A8F-935B-3D7DF1B7C4A6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NemeStats.ScheduledJobs", "Source\NemeStats.ScheduledJobs\NemeStats.ScheduledJobs.csproj", "{0605091D-F9BC-4AAE-B174-DB989F6C068F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -105,6 +107,14 @@ Global
 		{036E186C-4A61-4A8F-935B-3D7DF1B7C4A6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{036E186C-4A61-4A8F-935B-3D7DF1B7C4A6}.Tosho|Any CPU.ActiveCfg = Release|Any CPU
 		{036E186C-4A61-4A8F-935B-3D7DF1B7C4A6}.Tosho|Any CPU.Build.0 = Release|Any CPU
+		{0605091D-F9BC-4AAE-B174-DB989F6C068F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0605091D-F9BC-4AAE-B174-DB989F6C068F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0605091D-F9BC-4AAE-B174-DB989F6C068F}.Jake|Any CPU.ActiveCfg = Release|Any CPU
+		{0605091D-F9BC-4AAE-B174-DB989F6C068F}.Jake|Any CPU.Build.0 = Release|Any CPU
+		{0605091D-F9BC-4AAE-B174-DB989F6C068F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0605091D-F9BC-4AAE-B174-DB989F6C068F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0605091D-F9BC-4AAE-B174-DB989F6C068F}.Tosho|Any CPU.ActiveCfg = Release|Any CPU
+		{0605091D-F9BC-4AAE-B174-DB989F6C068F}.Tosho|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

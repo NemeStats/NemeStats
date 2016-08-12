@@ -35,7 +35,6 @@ public static partial class MVC
     public static UI.Controllers.GamingGroupController GamingGroup = new UI.Controllers.T4MVC_GamingGroupController();
     public static UI.Controllers.Helpers.BaseController Base = new UI.Controllers.Helpers.T4MVC_BaseController();
     public static UI.Controllers.HomeController Home = new UI.Controllers.T4MVC_HomeController();
-    public static UI.Controllers.JobsController Jobs = new UI.Controllers.T4MVC_JobsController();
     public static UI.Controllers.PlayedGameController PlayedGame = new UI.Controllers.T4MVC_PlayedGameController();
     public static UI.Controllers.PlayerController Player = new UI.Controllers.T4MVC_PlayerController();
     public static T4MVC.SharedController Shared = new T4MVC.SharedController();
