@@ -228,7 +228,7 @@ else
                     <thead>
                         <tr>
                             <th>
-                                <span class="sort" data-sort="name-col">Player name <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
+                                <span class="sort" data-sort="playername-col">Player name <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
                             </th>
                             <th>
                                 <span class="sort" data-sort="gaminggroup-col">Gaming group <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
@@ -303,7 +303,7 @@ else
                             <td class="date-col" data-date="@winner.AchievementLastUpdateDate.ToFileTimeUtc()">
                                 @Html.ActionLink(winner.AchievementLastUpdateDate.ToShortDateString(), "PlayerAchievement", "Achievement", new {achievementId = Model.Achievement.Id, playerId = winner.PlayerId}, new {})
                             </td>
-                            <td class="level-col">
+                            <td class="level-col" data-level="@((int)winner.AchievementLevel)">
                                 @winner.AchievementLevel.ToString()
                             </td>
 

@@ -32,7 +32,7 @@ Views.Achievement.Details.prototype = {
             new List(playedGamesTableId, { valueNames: playedGamesValues });
         }
 
-        var winnersValues = [{ name: 'playername-col', attr: 'data-name' }, { name: 'date-col', attr: 'data-date' }, { name: 'gaminggroup-col', attr: 'data-name' }, 'level-col'];
+        var winnersValues = [{ name: 'playername-col', attr: 'data-name' }, { name: 'date-col', attr: 'data-date' }, { name: 'gaminggroup-col', attr: 'data-name' }, { name: 'level-col', attr: 'data-level' }];
         var winnerTableId = "winnersList";
 
         if (ResponsiveBootstrapToolkit.is('>=md')) {
@@ -41,7 +41,7 @@ Views.Achievement.Details.prototype = {
             new List(winnerTableId, { valueNames: winnersValues });
         }
 
-        var playersValues = [{ name: 'playername-col', attr: 'data-name' }, { name: 'date-col', attr: 'data-date' }, { name: 'gaminggroup-col', attr: 'data-name' }, 'level-col'];
+        var playersValues = [{ name: 'playername-col', attr: 'data-name' }, { name: 'gaminggroup-col', attr: 'data-name' }];
         var playersTablesIds = "playersRelatedList";
 
         if (ResponsiveBootstrapToolkit.is('>=md')) {

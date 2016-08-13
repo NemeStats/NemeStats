@@ -157,14 +157,9 @@
                                 <td class="result-col">
                                     @foreach (var gameResultViewModel in playedGameViewModel.PlayerResults)
                                     {
-                                        <div class="row">
-                                            <div class="col-sm-4">
-                                                @Html.ActionLink(gameResultViewModel.PlayerName, "Details", "Player", new {id = gameResultViewModel.PlayerId}, new {})
-                                            </div>
-                                            <div class="col-sm-8">
+                                        
                                                 @Html.Partial(MVC.PlayedGame.Views._GameResult, gameResultViewModel)
-                                            </div>
-                                        </div>
+                                        
                                     }
                                 </td>
                                 <td class="edit-col">
