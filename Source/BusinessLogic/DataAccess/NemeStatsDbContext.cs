@@ -32,8 +32,6 @@ namespace BusinessLogic.DataAccess
 
         public NemeStatsDbContext() : base(CloudConfigurationManager.GetSetting(CONNECTION_STRING_KEY))
         {
-            Console.WriteLine($"ConnectionString: " + CloudConfigurationManager.GetSetting(CONNECTION_STRING_KEY));
-
             this.Configuration.ProxyCreationEnabled = false;
             this.Configuration.LazyLoadingEnabled = false;
 
