@@ -23,7 +23,9 @@ namespace UI.Mappers.CustomMappers
         {
             Mapper.CreateMap<SavePlayedGameRequest, NewlyCompletedGame>()
                 .ForMember(m => m.PlayerRanks, o => o.Ignore())
-                .ForMember(m => m.GamingGroupId, o => o.Ignore());
+                .ForMember(m => m.GamingGroupId, o => o.Ignore())
+                .ForMember(m => m.ExternalSourceApplicationName, o => o.Ignore())
+                .ForMember(m => m.ExternalSourceEntityId, o => o.Ignore());
         }
 
         public CreatePlayedGameRequestToNewlyCompletedGameMapper(CreatePlayerRankRequestToPlayerRankMapper createPlayerRankRequestToPlayerRankMapper)

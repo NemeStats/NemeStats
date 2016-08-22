@@ -27,7 +27,9 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.PlayedGamesCon
             {
                 DatePlayed = "2015-04-10",
                 GameDefinitionId = 1,
-                Notes = "some notes"
+                Notes = "some notes",
+                ExternalSourceApplicationName = "Laura's Awesome Python Database",
+                ExternalSourceEntityId = "12917371"
             };
 
             var expectedPlayedGame = new PlayedGame
@@ -97,6 +99,28 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.PlayedGamesCon
 
             _autoMocker.Get<IPlayedGameCreator>().AssertWasCalled(mock => mock.CreatePlayedGame(
                 Arg<NewlyCompletedGame>.Matches(x => x.Notes == _playedGameMessage.Notes),
+                Arg<TransactionSource>.Is.Anything,
+                Arg<ApplicationUser>.Is.Anything));
+        }
+
+        [Test]
+        public void ItSetsTheExternalSourceApplicationName()
+        {
+            _autoMocker.ClassUnderTest.RecordPlayedGame(_playedGameMessage, _applicationUser.CurrentGamingGroupId);
+
+            _autoMocker.Get<IPlayedGameCreator>().AssertWasCalled(mock => mock.CreatePlayedGame(
+                Arg<NewlyCompletedGame>.Matches(x => x.ExternalSourceApplicationName == _playedGameMessage.ExternalSourceApplicationName),
+                Arg<TransactionSource>.Is.Anything,
+                Arg<ApplicationUser>.Is.Anything));
+        }
+
+        [Test]
+        public void ItSetsTheExternalSourceEntityId()
+        {
+            _autoMocker.ClassUnderTest.RecordPlayedGame(_playedGameMessage, _applicationUser.CurrentGamingGroupId);
+
+            _autoMocker.Get<IPlayedGameCreator>().AssertWasCalled(mock => mock.CreatePlayedGame(
+                Arg<NewlyCompletedGame>.Matches(x => x.ExternalSourceEntityId == _playedGameMessage.ExternalSourceEntityId),
                 Arg<TransactionSource>.Is.Anything,
                 Arg<ApplicationUser>.Is.Anything));
         }

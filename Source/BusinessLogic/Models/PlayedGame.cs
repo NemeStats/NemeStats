@@ -25,7 +25,7 @@ using BusinessLogic.Models.PlayedGames;
 
 namespace BusinessLogic.Models
 {
-    public class PlayedGame : SecuredEntityWithTechnicalKey<int>
+    public class PlayedGame : SecuredEntityWithTechnicalKey<int>, ISynchable
     {
         public PlayedGame()
         {
@@ -43,6 +43,8 @@ namespace BusinessLogic.Models
         public DateTime DateCreated { get; set; }
         public string CreatedByApplicationUserId { get; set; }
         public string Notes { get; set; }
+        public string ExternalSourceApplicationName { get; set; }
+        public string ExternalSourceEntityId { get; set; }
 
         public virtual GamingGroup GamingGroup { get; set; }
         public virtual GameDefinition GameDefinition { get; set; }

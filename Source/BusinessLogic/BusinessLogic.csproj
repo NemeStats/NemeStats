@@ -217,6 +217,7 @@
     <Compile Include="EventTracking\UniversalAnalyticsNemeStatsEventTracker.cs" />
     <Compile Include="Exceptions\ApiAuthenticationException.cs" />
     <Compile Include="Exceptions\DuplicateKeyException.cs" />
+    <Compile Include="Exceptions\EntityAlreadySynchedException.cs" />
     <Compile Include="Exceptions\EntityDoesNotExistException.cs" />
     <Compile Include="Exceptions\ApiFriendlyException.cs" />
     <Compile Include="Exceptions\InvalidDateFormatException.cs" />
@@ -282,7 +283,9 @@
     <Compile Include="Logic\Points\PointsCalculator.cs" />
     <Compile Include="Logic\Points\GlobalPointsRecalculator.cs" />
     <Compile Include="Logic\Points\WeightBonusCalculator.cs" />
+    <Compile Include="Logic\Security\ISynchedEntityValidator.cs" />
     <Compile Include="Logic\Security\MachineKeyDataProtector.cs" />
+    <Compile Include="Logic\Security\SynchedPlayedGameValidator.cs" />
     <Compile Include="Logic\TransactionSource.cs" />
     <Compile Include="Logic\Users\AuthTokenGenerator.cs" />
     <Compile Include="Logic\Users\AuthTokenValidator.cs" />
@@ -352,11 +355,16 @@
     <Compile Include="Migrations\201608080135431_AddYearToBGGDefinition.Designer.cs">
       <DependentUpon>201608080135431_AddYearToBGGDefinition.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201608220135119_AddSyncableFieldsToPlayedGame.cs" />
+    <Compile Include="Migrations\201608220135119_AddSyncableFieldsToPlayedGame.Designer.cs">
+      <DependentUpon>201608220135119_AddSyncableFieldsToPlayedGame.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Achievements\AchievementLevel.cs" />
     <Compile Include="Models\Achievements\AchievementId.cs" />
     <Compile Include="Models\Games\SavePlayedGameRequest.cs" />
     <Compile Include="Models\Games\TrendingGame.cs" />
     <Compile Include="Logic\Points\IWeightTierCalculator.cs" />
+    <Compile Include="Models\ISynchable.cs" />
     <Compile Include="Models\PlayerAchievement.cs" />
     <Compile Include="Models\Games\TrendingGamesRequest.cs" />
     <Compile Include="Models\Players\CreatePlayerRequest.cs" />
@@ -968,6 +976,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201608080135431_AddYearToBGGDefinition.resx">
       <DependentUpon>201608080135431_AddYearToBGGDefinition.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608220135119_AddSyncableFieldsToPlayedGame.resx">
+      <DependentUpon>201608220135119_AddSyncableFieldsToPlayedGame.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

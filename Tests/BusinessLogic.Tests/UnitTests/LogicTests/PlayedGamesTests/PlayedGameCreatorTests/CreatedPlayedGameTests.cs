@@ -28,6 +28,7 @@ using BusinessLogic.Logic.Champions;
 using BusinessLogic.Logic.Nemeses;
 using BusinessLogic.Logic.PlayedGames;
 using BusinessLogic.Logic.Points;
+using BusinessLogic.Logic.Security;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
 using BusinessLogic.Models.PlayedGames;
@@ -397,6 +398,22 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameCr
             autoMocker.ClassUnderTest.CreatePlayedGame(CreateValidNewlyCompletedGame(), TransactionSource.WebApplication, currentUser);
 
             autoMocker.Get<IBusinessLogicEventBus>().AssertWasCalled(mock => mock.SendEvent(Arg<IBusinessLogicEvent>.Matches(m => m.GetType() == typeof(PlayedGameCreatedEvent))));
+        }
+
+        [Test]
+        public void It_Checks_If_The_Entity_Has_Already_Been_Synced_From_An_External_Source()
+        {
+            //--arrange
+            var validGame = CreateValidNewlyCompletedGame();
+            validGame.ExternalSourceEntityId = "123";
+            validGame.ExternalSourceApplicationName = "BoardGameStats";
+
+            //--act
+            autoMocker.ClassUnderTest.CreatePlayedGame(validGame, TransactionSource.WebApplication, currentUser);
+
+            //--assert
+            autoMocker.Get<ISynchedPlayedGameValidator>()
+                .AssertWasCalled(mock => mock.Validate(validGame));
         }
 
     }

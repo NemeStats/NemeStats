@@ -181,10 +181,9 @@ namespace UI.Controllers
                 }
 
 
-                var playerGame = _playedGameCreator.CreatePlayedGame(_mapperFactory.GetMapper<SavePlayedGameRequest, NewlyCompletedGame>().Map(request), TransactionSource.WebApplication, currentUser);
+                var playedGame = _playedGameCreator.CreatePlayedGame(_mapperFactory.GetMapper<SavePlayedGameRequest, NewlyCompletedGame>().Map(request), TransactionSource.WebApplication, currentUser);
 
-
-                return Json(new { success = true, playedGameId = playerGame.Id });
+                return Json(new { success = true, playedGameId = playedGame.Id });
             }
 
             return Json(new { success = false, errors = ModelState.Errors() }, JsonRequestBehavior.AllowGet);

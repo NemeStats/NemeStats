@@ -30,6 +30,7 @@ using BusinessLogic.Events;
 using BusinessLogic.Events.HandlerFactory;
 using BusinessLogic.Events.Interfaces;
 using BusinessLogic.Exceptions;
+using BusinessLogic.Logic.Security;
 using BusinessLogic.Models.PlayedGames;
 
 namespace BusinessLogic.Logic.PlayedGames
@@ -38,6 +39,7 @@ namespace BusinessLogic.Logic.PlayedGames
     public class PlayedGameCreator : BusinessLogicEventSender, IPlayedGameCreator
     {
         private readonly IDataContext _dataContext;
+        private readonly ISynchedPlayedGameValidator _synchedPlayedGameValidator;
         private readonly INemeStatsEventTracker _playedGameTracker;
         private readonly INemesisRecalculator _nemesisRecalculator;
         private readonly IChampionRecalculator _championRecalculator;
@@ -53,7 +55,8 @@ namespace BusinessLogic.Logic.PlayedGames
             ISecuredEntityValidator<Player> securedEntityValidatorForPlayer,
             ISecuredEntityValidator<GameDefinition> securedEntityValidatorForGameDefinition,
             IPointsCalculator pointsCalculator,
-            IBusinessLogicEventBus eventBus) : base(eventBus)
+            IBusinessLogicEventBus eventBus, 
+            ISynchedPlayedGameValidator synchedPlayedGameValidator) : base(eventBus)
         {
             _dataContext = applicationDataContext;
             _playedGameTracker = playedGameTracker;
@@ -62,6 +65,7 @@ namespace BusinessLogic.Logic.PlayedGames
             _securedEntityValidatorForPlayer = securedEntityValidatorForPlayer;
             _securedEntityValidatorForGameDefinition = securedEntityValidatorForGameDefinition;
             _pointsCalculator = pointsCalculator;
+            _synchedPlayedGameValidator = synchedPlayedGameValidator;
         }
 
         //TODO need to have validation logic here (or on PlayedGame similar to what is on NewlyCompletedGame)
@@ -69,6 +73,8 @@ namespace BusinessLogic.Logic.PlayedGames
         {
             var gameDefinition = _dataContext.FindById<GameDefinition>(newlyCompletedGame.GameDefinitionId);
             _securedEntityValidatorForGameDefinition.ValidateAccess(gameDefinition, currentUser, typeof(GameDefinition), newlyCompletedGame.GameDefinitionId);
+
+            _synchedPlayedGameValidator.Validate(newlyCompletedGame);
 
             int gamingGroupId = newlyCompletedGame.GamingGroupId ?? currentUser.CurrentGamingGroupId;
             BoardGameGeekGameDefinition boardGameGeekGameDefinition = null;
@@ -178,7 +184,9 @@ namespace BusinessLogic.Logic.PlayedGames
                 DatePlayed = newlyCompletedGame.DatePlayed,
                 GamingGroupId = gamingGroupId,
                 Notes = newlyCompletedGame.Notes,
-                CreatedByApplicationUserId = applicationUserId
+                CreatedByApplicationUserId = applicationUserId,
+                ExternalSourceApplicationName = newlyCompletedGame.ExternalSourceApplicationName,
+                ExternalSourceEntityId = newlyCompletedGame.ExternalSourceEntityId
             };
             return playedGame;
         }

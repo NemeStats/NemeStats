@@ -24,7 +24,7 @@ using BusinessLogic.Models.Validation;
 
 namespace BusinessLogic.Models.Games
 {
-    public class NewlyCompletedGame
+    public class NewlyCompletedGame : ISynchable
     {
         public NewlyCompletedGame()
         {
@@ -48,6 +48,7 @@ namespace BusinessLogic.Models.Games
 
         public WinnerTypes? WinnerType { get; set; }
         public int? GamingGroupId { get; set; }
-        
+        public string ExternalSourceApplicationName { get; set; }
+        public string ExternalSourceEntityId { get; set; }
     }
 }

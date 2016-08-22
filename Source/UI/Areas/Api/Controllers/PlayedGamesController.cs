@@ -179,7 +179,9 @@ namespace UI.Areas.Api.Controllers
                 GameDefinitionId = playedGameMessage.GameDefinitionId,
                 Notes = playedGameMessage.Notes,
                 PlayerRanks = playedGameMessage.PlayerRanks,
-                GamingGroupId = playedGameMessage.GamingGroupId
+                GamingGroupId = playedGameMessage.GamingGroupId,
+                ExternalSourceApplicationName = playedGameMessage.ExternalSourceApplicationName,
+                ExternalSourceEntityId = playedGameMessage.ExternalSourceEntityId
             };
         }
 
