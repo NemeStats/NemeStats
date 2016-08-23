@@ -19,11 +19,19 @@ namespace BusinessLogic.Logic.Security
         {
             if (string.IsNullOrEmpty(newlyCompletedGame.ExternalSourceApplicationName))
             {
+                if (!string.IsNullOrEmpty(newlyCompletedGame.ExternalSourceEntityId))
+                {
+                    throw new InvalidSourceException(newlyCompletedGame.ExternalSourceApplicationName, newlyCompletedGame.ExternalSourceEntityId);
+                }
                 return;
             }
 
             if (string.IsNullOrEmpty(newlyCompletedGame.ExternalSourceEntityId))
             {
+                if (!string.IsNullOrEmpty(newlyCompletedGame.ExternalSourceApplicationName))
+                {
+                    throw new InvalidSourceException(newlyCompletedGame.ExternalSourceApplicationName, newlyCompletedGame.ExternalSourceEntityId);
+                }
                 return;
             }
 
