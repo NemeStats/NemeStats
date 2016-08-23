@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
+using BusinessLogic.Models;
 
 namespace UI.Areas.Api.Models
 {
-    public class PlayedGameSearchResultMessage
+    public class PlayedGameSearchResultMessage : ISynchable
     {
         public int PlayedGameId { get; set; }
         public int GameDefinitionId { get; set; }
@@ -15,5 +15,7 @@ namespace UI.Areas.Api.Models
         public string DatePlayed { get; set; }
         public string DateLastUpdated { get; set; }
         public List<PlayerGameResultMessage> PlayerGameResults;
+        public string ExternalSourceApplicationName { get; set; }
+        public string ExternalSourceEntityId { get; set; }
     }
 }

@@ -161,6 +161,8 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.PlayedGamesCon
                 GamingGroupName = "some gaming group name",
                 Notes = "some notes",
                 PlayedGameId = 4,
+                ExternalSourceEntityId = "50",
+                ExternalSourceApplicationName = "some external app",
                 PlayerGameResults = new List<PlayerResult>
                 {
                     new PlayerResult
@@ -198,6 +200,9 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.PlayedGamesCon
             Assert.That(actualSinglePlayedGame.GamingGroupName, Is.EqualTo(expectedSingleResult.GamingGroupName));
             Assert.That(actualSinglePlayedGame.Notes, Is.EqualTo(expectedSingleResult.Notes));
             Assert.That(actualSinglePlayedGame.PlayedGameId, Is.EqualTo(expectedSingleResult.PlayedGameId));
+            Assert.That(actualSinglePlayedGame.ExternalSourceEntityId, Is.EqualTo(expectedSingleResult.ExternalSourceEntityId));
+            Assert.That(actualSinglePlayedGame.ExternalSourceApplicationName, Is.EqualTo(expectedSingleResult.ExternalSourceApplicationName));
+
             Assert.That(actualSinglePlayedGame.PlayerGameResults[0].GameRank, Is.EqualTo(expectedSingleResult.PlayerGameResults[0].GameRank));
             Assert.That(actualSinglePlayedGame.PlayerGameResults[0].NemeStatsPointsAwarded, Is.EqualTo(expectedSingleResult.PlayerGameResults[0].NemeStatsPointsAwarded));
             Assert.That(actualSinglePlayedGame.PlayerGameResults[0].PlayerId, Is.EqualTo(expectedSingleResult.PlayerGameResults[0].PlayerId));

@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace BusinessLogic.Models.PlayedGames
 {
-    public class PlayedGameSearchResult
+    public class PlayedGameSearchResult : ISynchable
     {
         public int PlayedGameId { get; set; }
         public int GameDefinitionId { get; set; }
@@ -17,5 +17,7 @@ namespace BusinessLogic.Models.PlayedGames
         public DateTime DateLastUpdated { get; set; }
         public IList<PlayerResult> PlayerGameResults { get; set; }
         public WinnerTypes WinnerType { get; set; }
+        public string ExternalSourceApplicationName { get; set; }
+        public string ExternalSourceEntityId { get; set; }
     }
 }

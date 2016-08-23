@@ -86,6 +86,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameRe
                 GameDefinitionId = 2,
                 GamingGroupId = 3,
                 Notes = "some notes",
+                ExternalSourceEntityId = "some id",
+                ExternalSourceApplicationName = "some name",
                 GamingGroup = new GamingGroup
                 {
                     Name = "some gaming group name"
@@ -136,6 +138,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameRe
             Assert.That(results.GamingGroupId, Is.EqualTo(playedGame.GamingGroupId));
             Assert.That(results.GamingGroupName, Is.EqualTo(playedGame.GamingGroup.Name));
             Assert.That(results.Notes, Is.EqualTo(playedGame.Notes));
+            Assert.That(results.ExternalSourceEntityId, Is.EqualTo(playedGame.ExternalSourceEntityId));
+            Assert.That(results.ExternalSourceApplicationName, Is.EqualTo(playedGame.ExternalSourceApplicationName));
             var actualPlayerResult = results.PlayerGameResults[0];
             var expectedPlayerGameResult = playedGame.PlayerGameResults[0];
             Assert.That(actualPlayerResult.GameRank, Is.EqualTo(expectedPlayerGameResult.GameRank));

@@ -144,6 +144,8 @@ namespace BusinessLogic.Logic.PlayedGames
                                  Notes = playedGame.Notes,
                                  DatePlayed = playedGame.DatePlayed,
                                  DateLastUpdated = playedGame.DateCreated,
+                                 ExternalSourceEntityId = playedGame.ExternalSourceEntityId,
+                                 ExternalSourceApplicationName = playedGame.ExternalSourceApplicationName,
                                  PlayerGameResults = playedGame.PlayerGameResults.Select(x => new PlayerResult
                                  {
                                      GameRank = x.GameRank,
