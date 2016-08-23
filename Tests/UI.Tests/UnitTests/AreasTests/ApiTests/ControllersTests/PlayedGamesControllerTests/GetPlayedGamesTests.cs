@@ -131,6 +131,36 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.PlayedGamesCon
         }
 
         [Test]
+        public void ItFiltersOnExclusionExternalSourceApplicationName()
+        {
+            const string EXPECTED_SOURCE_NAME = "some source name";
+            _autoMocker.Get<IPlayedGameRetriever>().Expect(
+                mock => mock.SearchPlayedGames(
+                Arg<PlayedGameFilter>.Is.Anything))
+                      .Return(new List<PlayedGameSearchResult>());
+
+            _autoMocker.ClassUnderTest.GetPlayedGames(new PlayedGameFilterMessage { ExclusionExternalSourceApplicationName = EXPECTED_SOURCE_NAME }, 1);
+
+            _autoMocker.Get<IPlayedGameRetriever>().AssertWasCalled(mock => mock.SearchPlayedGames(
+                Arg<PlayedGameFilter>.Matches(filter => filter.ExclusionExternalSourceApplicationName == EXPECTED_SOURCE_NAME)));
+        }
+
+        [Test]
+        public void ItFiltersOnInclusionExternalSourceApplicationName()
+        {
+            const string EXPECTED_SOURCE_NAME = "some source name";
+            _autoMocker.Get<IPlayedGameRetriever>().Expect(
+                mock => mock.SearchPlayedGames(
+                Arg<PlayedGameFilter>.Is.Anything))
+                      .Return(new List<PlayedGameSearchResult>());
+
+            _autoMocker.ClassUnderTest.GetPlayedGames(new PlayedGameFilterMessage { InclusionExternalSourceApplicationName = EXPECTED_SOURCE_NAME }, 1);
+
+            _autoMocker.Get<IPlayedGameRetriever>().AssertWasCalled(mock => mock.SearchPlayedGames(
+                Arg<PlayedGameFilter>.Matches(filter => filter.InclusionExternalSourceApplicationName == EXPECTED_SOURCE_NAME)));
+        }
+
+        [Test]
         public void ItLimitsTheNumberOfResultsIfSpecified()
         {
             var filterMessage = new PlayedGameFilterMessage

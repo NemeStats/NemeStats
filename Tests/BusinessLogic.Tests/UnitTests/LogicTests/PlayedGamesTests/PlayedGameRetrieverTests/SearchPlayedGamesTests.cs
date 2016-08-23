@@ -325,5 +325,20 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameRe
             Assert.True(results.All(result => result.ExternalSourceApplicationName != EXTERNAL_SOURCE_NAME));
         }
 
+        [Test]
+        public void ItFiltersOnTheInclusionExternalSourceName()
+        {
+            //--arrange
+            var filter = new PlayedGameFilter
+            {
+                InclusionExternalSourceApplicationName = EXTERNAL_SOURCE_NAME
+            };
+
+            //--act
+            var results = autoMocker.ClassUnderTest.SearchPlayedGames(filter);
+
+            //--assert
+            Assert.True(results.All(result => result.ExternalSourceApplicationName == EXTERNAL_SOURCE_NAME));
+        }
     }
 }

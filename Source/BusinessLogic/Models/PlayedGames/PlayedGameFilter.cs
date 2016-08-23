@@ -13,5 +13,6 @@ namespace BusinessLogic.Models.PlayedGames
         public string DatePlayedFrom { get; set; }
         public string DatePlayedTo { get; set; }
         public string ExclusionExternalSourceApplicationName { get; set; }
+        public string InclusionExternalSourceApplicationName { get; set; }
     }
 }

@@ -238,6 +238,15 @@ namespace BusinessLogic.Logic.PlayedGames
                             playedGameFilter.ExclusionExternalSourceApplicationName);
             }
 
+            if (!string.IsNullOrEmpty(playedGameFilter.InclusionExternalSourceApplicationName))
+            {
+                queryable =
+                    queryable.Where(
+                        query =>
+                            query.ExternalSourceApplicationName ==
+                            playedGameFilter.InclusionExternalSourceApplicationName);
+            }
+
             return queryable;
         }
 

@@ -126,6 +126,10 @@ namespace UI.Areas.Api.Controllers
                 filter.PlayerId = playedGameFilterMessage.PlayerId;
                 filter.DatePlayedFrom = playedGameFilterMessage.DatePlayedFrom;
                 filter.DatePlayedTo = playedGameFilterMessage.DatePlayedTo;
+                filter.ExclusionExternalSourceApplicationName =
+                    playedGameFilterMessage.ExclusionExternalSourceApplicationName;
+                filter.InclusionExternalSourceApplicationName =
+                    playedGameFilterMessage.InclusionExternalSourceApplicationName;
             }
             var searchResults = this.playedGameRetriever.SearchPlayedGames(filter);
 
