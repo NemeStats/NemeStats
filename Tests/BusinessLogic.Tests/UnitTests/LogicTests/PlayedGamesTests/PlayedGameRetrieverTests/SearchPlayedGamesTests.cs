@@ -24,6 +24,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameRe
         private const int EXPECTED_PLAYER_ID = 62;
         private readonly DateTime DATE_MARCH = new DateTime(2015, 3, 1, 4, 4, 4);
         private readonly DateTime DATE_APRIL = new DateTime(2015, 4, 1, 4, 4, 4);
+        private const string EXTERNAL_SOURCE_NAME = "some source name";
 
         [SetUp]
         public void SetUp()
@@ -66,7 +67,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameRe
                     },
                     GameDefinition = new GameDefinition(),
                     GamingGroup = new GamingGroup(),
-                    GamingGroupId = 135353
+                    GamingGroupId = 135353,
+                    ExternalSourceApplicationName = EXTERNAL_SOURCE_NAME
                 }
             };
 
@@ -306,5 +308,22 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameRe
 
             Assert.True(results.All(result => result.PlayerGameResults.Any(x => x.PlayerId == filter.PlayerId)));
         }
+
+        [Test]
+        public void ItFiltersOnTheExclusionExternalSourceName()
+        {
+            //--arrange
+            var filter = new PlayedGameFilter
+            {
+                ExclusionExternalSourceApplicationName = EXTERNAL_SOURCE_NAME
+            };
+
+            //--act
+            var results = autoMocker.ClassUnderTest.SearchPlayedGames(filter);
+
+            //--assert
+            Assert.True(results.All(result => result.ExternalSourceApplicationName != EXTERNAL_SOURCE_NAME));
+        }
+
     }
 }
