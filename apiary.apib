@@ -43,6 +43,10 @@ domain should continue to work in the meantime, however.
 * 2016-07-22 Fixed API issue where newly created Players and Game Definitions were always placed in the User's default Gaming Group and not the one specified.
 Also added a 409 conflict response to POST /PlayedGames/ if any of the Players don't exist in the specified Gaming Group. Also re-fixed an issue where it wasn't
 accepting decimal places in pointsScored.
+* 2016-08-22 Can now set an externalSourceApplicationName and externalSourceEntityId when posting a Played Game. Also have the ability to
+filter to either include _OR_ exclude results via inclusionExternalSourceApplicationName or exclusionExternalSourceApplicationName 
+-- respectively -- when searching Played Games. This could be useful for importing all games that didn't originate from the source app. It
+could also be used to help determine which games have not yet been synched to NemeStats.
 
 ### General Information
 
@@ -290,6 +294,8 @@ and then recreated using the corresponding services for this.
     + gamingGroupId (number, required) - NemeStats unique identifier of the Gaming Group against which this Played Game was recorded.
     + gamingGroupName (string, required) - Name of the Gaming Group.
     + notes (string, optional) - User-entered notes about the game.
+    + externalSourceApplicationName (string, optional) - A unique identifier for the name of the application that created the Played Game. E.g. could be blank (if originating from NemeStats) or could be something like "BG Stats" if it originated from Board Game Stats. It is up to the client to pick a unique name for their application and to use it consistently. If this field is set then the externalSourceEntityId just also be set. The combination of these two fields must be unique amongst all Played Games in NemeStats.
+    + externalSourceEntityId (string, optional) - Unique identifier for the Played Game in the source system. If this field is set then the externalSourceApplicationName must also be set. The combination of these two fields must be unique amongst all Played Games in NemeStats.
     + datePlayed (string, required) - The date that the Played Game was recorded in yyyy-MM-dd format (e.g. 2015-05-013).
     + dateLastUpdated (string, required) - The date that the Played Game was last updated in yyyy-MM-dd format (e.g. 2015-05-013). This will usually match the datePlayed unless the Played Game was updated at a later date.
     + playerGameResults (PlayerGameResult, required) - A list of PlayerGameResult objects which contain information regarding each Player's rank, points scored, and NemeStats points awarded for playing the game.
@@ -302,6 +308,8 @@ This service will record a new Played Game under the specified Gaming Group (per
     + gamingGroupId (number, optional) - The NemeStats unique identifier for the Gaming Group where the Played Game will be logged. If no gamingGroupId is specified, the Played Game will be recorded under the default Gaming Group of the currently logged in User. 
     + datePlayed (string, optional) - The date the game was played in yyyy-MM-dd format (e.g. 2015-04-29).
     + notes (string, optional) - Any notes or comments that the User wants to record about the game for future reference.
+    + externalSourceApplicationName (string, optional) - A unique identifier for the name of the application that created the Played Game. E.g. could be blank (if originating from NemeStats) or could be something like "BG Stats" if it originated from Board Game Stats. It is up to the client to pick a unique name for their application and to use it consistently. If this field is set then the externalSourceEntityId just also be set. The combination of these two fields must be unique amongst all Played Games in NemeStats.
+    + externalSourceEntityId (string, optional) - Unique identifier for the Played Game in the source system. If this field is set then the externalSourceApplicationName must also be set. The combination of these two fields must be unique amongst all Played Games in NemeStats. 
     + playerRanks (array[PlayerRank], required) - A collection of PlayerRank objects specifying the game rank and points scored for each Player. See below table for details.
 
 + Request Valid Request (application/json)
@@ -317,6 +325,8 @@ This service will record a new Played Game under the specified Gaming Group (per
                   "gamingGroupId" : 9818
                   "datePlayed" : "2015-04-05",
                   "notes" : "Erica destroyed us with her harpy shoes of the bear-goddess",
+                  "externalSourceApplicationName" : "Jake's Local mysql DB",
+                  "externalSourceEntityId" : "199"
                   "playerRanks" : [ 
                       { 
                         "playerId" : 456, 
@@ -366,7 +376,13 @@ This service will record a new Played Game under the specified Gaming Group (per
                     "message" : "Player with id '19313' is not in the Gaming Group with id '1351' -- which is the Gaming Group to which the Played Game is being recorded. All Players must be in this Gaming Group."
                 }
 
-## Get Played Games [GET /PlayedGames/{?gamingGroupId,startDateGameLastUpdated,endDateGameLastUpdated,datePlayedFrom,datePlayedTo,playerId,maximumNumberOfResults}] 
++ Response 409 (application/json)
+
+                {
+                    "message" : "An entity with an ExternalSourceApplicationName of 'Jakes Local mysql DB' and an ExternalSourceEntityId of '199' already exists in the Gaming Group with id '9818'."
+                }
+
+## Get Played Games [GET /PlayedGames/{?gamingGroupId,startDateGameLastUpdated,endDateGameLastUpdated,datePlayedFrom,datePlayedTo,playerId,maximumNumberOfResults,exclusionExternalSourceApplicationName,inclusionExternalSourceApplicationName}] 
 Retrieve a list of Played Games given some criteria. Currently limited to a single Gaming Group at a time
 via the required gamingGroupId query string parameter.
 
@@ -377,6 +393,10 @@ via the required gamingGroupId query string parameter.
     + datePlayedFrom : `2015-07-01` (string, optional) - If set, all Played Games returned will returned will have been played greater than or equal to this date. Dates must be in yyyy-MM-dd format.
     + datePlayedTo : `2015-07-15` (string, optional) - If set, all Played Games returned will have been played less than or equal to this date. Dates must be in yyyy-MM-dd format.
     + playerId: 9791 (number, optional) - If set, will only return Played Games where this Player participated.
+    + exclusionExternalSourceApplicationName (string, optional) - If set, only returns Played Games where the externalSourceApplicationName is NOT the specified value. This could be useful for finding any Played Games
+    that did not original from the client application. Used in conjuction with startDateGameLastUpdated it could be especially useful for mass synching.
+    + inclusionExternalSourceApplicationName (string, optional) - If set, only returns Played Games where the externalSourceApplicationName is the specified value. This could be useful for finding any Played Games
+    that originated from the source application so that the unsynched games could be determined on the client side.
     + maximumNumberOfResults : 100 (number, optional) - The maximum number of results to be returned. The default is no limit.
         + Default: 1000000
     
