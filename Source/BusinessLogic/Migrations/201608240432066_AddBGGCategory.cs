@@ -16,7 +16,16 @@ namespace BusinessLogic.Migrations
                         BoardGameGeekGameCategoryId = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.Id);
-            
+
+            CreateTable(
+                "dbo.BoardGameGeekGameCategory",
+                c => new
+                {
+                    Id = c.Int(nullable: false, identity: true),
+                    CategoryName = c.String(),
+                })
+                .PrimaryKey(t => t.Id);
+
             AddColumn("dbo.BoardGameGeekGameDefinition", "IsExpansion", c => c.Boolean(nullable: false));
             AddColumn("dbo.BoardGameGeekGameDefinition", "Rank", c => c.Int());
 
@@ -111,6 +120,7 @@ namespace BusinessLogic.Migrations
             DropColumn("dbo.BoardGameGeekGameDefinition", "Rank");
             DropColumn("dbo.BoardGameGeekGameDefinition", "IsExpansion");
             DropTable("dbo.BGGGameToCategory");
+            DropTable("dbo.BoardGameGeekGameCategory");
         }
     }
 }
