@@ -20,6 +20,8 @@ namespace BusinessLogic.Models
         public decimal? AverageWeight { get; set; }
         public string Description { get; set; }
         public int? YearPublished { get; set; }
+        public bool IsExpansion { get; set; }
+        public int? Rank { get; set; }
         [NotMapped]
         public int? AveragePlayTime {
             get

@@ -50,10 +50,26 @@ namespace BusinessLogic.Logic.BoardGameGeek
                 MinPlayTime= gameDetails.MinPlayTime,
                 AverageWeight = gameDetails.AverageWeight,
                 Description = gameDetails.Description,
-                YearPublished = gameDetails.YearPublished
+                YearPublished = gameDetails.YearPublished,
+                IsExpansion = gameDetails.IsExpansion,
+                Rank = gameDetails.Rank
             };
 
             _dataContext.Save(newRecord, currentUser);
+
+            // Save categories to BGG definition
+            foreach (var x in gameDetails.Categories)
+            {
+                var gameToCategoryToSave = new BGGGameToCategory
+                {
+                    BoardGameGeekGameDefinitionId = boardGameGeekGameDefinitionId,
+                    BoardGameGeekGameCategoryId = x.Id
+                };
+
+                _dataContext.Save(gameToCategoryToSave, currentUser);
+            }
+
+
 
             return boardGameGeekGameDefinitionId;
         }
