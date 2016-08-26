@@ -405,8 +405,6 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameCr
         {
             //--arrange
             var validGame = CreateValidNewlyCompletedGame();
-            validGame.ExternalSourceEntityId = "123";
-            validGame.ExternalSourceApplicationName = "BoardGameStats";
 
             //--act
             autoMocker.ClassUnderTest.CreatePlayedGame(validGame, TransactionSource.WebApplication, currentUser);

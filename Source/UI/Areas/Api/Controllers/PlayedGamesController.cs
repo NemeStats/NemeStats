@@ -14,6 +14,7 @@ using BusinessLogic.Models.Games;
 using BusinessLogic.Models.PlayedGames;
 using UI.Areas.Api.Models;
 using UI.Attributes;
+using UI.Transformations;
 using VersionedRestApi;
 
 namespace UI.Areas.Api.Controllers
@@ -26,19 +27,21 @@ namespace UI.Areas.Api.Controllers
         private readonly IExcelGenerator excelGenerator;
         private readonly IPlayedGameCreator playedGameCreator;
         private readonly IPlayedGameDeleter playedGameDeleter;
-        
+        private readonly ITransformer transformer;
+
         private MemoryStream exportMemoryStream;
 
         public PlayedGamesController(
             IPlayedGameRetriever playedGameRetriever, 
             IExcelGenerator excelGenerator, 
             IPlayedGameCreator playedGameCreator, 
-            IPlayedGameDeleter playedGameDeleter)
+            IPlayedGameDeleter playedGameDeleter, ITransformer transformer)
         {
             this.playedGameRetriever = playedGameRetriever;
             this.excelGenerator = excelGenerator;
             this.playedGameCreator = playedGameCreator;
             this.playedGameDeleter = playedGameDeleter;
+            this.transformer = transformer;
         }
 
 
@@ -114,31 +117,18 @@ namespace UI.Areas.Api.Controllers
             return GetPlayedGameSearchResults(playedGameFilterMessage);
         }
 
-        private HttpResponseMessage GetPlayedGameSearchResults(PlayedGameFilterMessage playedGameFilterMessage)
+        internal virtual HttpResponseMessage GetPlayedGameSearchResults(PlayedGameFilterMessage playedGameFilterMessage)
         {
-            var filter = new PlayedGameFilter();
+            var filter = transformer.Transform<PlayedGameFilterMessage, PlayedGameFilter>(playedGameFilterMessage);
 
-            if (playedGameFilterMessage != null)
-            {
-                filter.GamingGroupId = playedGameFilterMessage.GamingGroupId;
-                filter.StartDateGameLastUpdated = playedGameFilterMessage.StartDateGameLastUpdated;
-                filter.MaximumNumberOfResults = playedGameFilterMessage.MaximumNumberOfResults;
-                filter.PlayerId = playedGameFilterMessage.PlayerId;
-                filter.DatePlayedFrom = playedGameFilterMessage.DatePlayedFrom;
-                filter.DatePlayedTo = playedGameFilterMessage.DatePlayedTo;
-                filter.ExclusionExternalSourceApplicationName =
-                    playedGameFilterMessage.ExclusionExternalSourceApplicationName;
-                filter.InclusionExternalSourceApplicationName =
-                    playedGameFilterMessage.InclusionExternalSourceApplicationName;
-            }
-            var searchResults = this.playedGameRetriever.SearchPlayedGames(filter);
+            var searchResults = playedGameRetriever.SearchPlayedGames(filter);
 
             var playedGamesSearchResultMessage = new PlayedGameSearchResultsMessage
             {
                 PlayedGames = searchResults.Select(Mapper.Map<PlayedGameSearchResultMessage>).ToList()
             };
 
-            return this.Request.CreateResponse(HttpStatusCode.OK, playedGamesSearchResultMessage);
+            return Request.CreateResponse(HttpStatusCode.OK, playedGamesSearchResultMessage);
         }
 
         [ApiRoute("PlayedGames/", StartingVersion = 2)]
@@ -156,7 +146,7 @@ namespace UI.Areas.Api.Controllers
         [ApiModelValidation]
         public HttpResponseMessage RecordPlayedGame([FromBody]PlayedGameMessage playedGameMessage, [FromUri]int gamingGroupId)
         {
-            var newlyCompletedGame = BuildNewlyPlayedGame(playedGameMessage);
+            var newlyCompletedGame = transformer.Transform<PlayedGameMessage, NewlyCompletedGame>(playedGameMessage);
 
             var playedGame = playedGameCreator.CreatePlayedGame(newlyCompletedGame, TransactionSource.RestApi, CurrentUser);
             var newlyRecordedPlayedGameMessage = new NewlyRecordedPlayedGameMessage
@@ -166,27 +156,6 @@ namespace UI.Areas.Api.Controllers
             };
 
             return Request.CreateResponse(HttpStatusCode.OK, newlyRecordedPlayedGameMessage);
-        }
-
-        private static NewlyCompletedGame BuildNewlyPlayedGame(PlayedGameMessage playedGameMessage)
-        {
-            var datePlayed = DateTime.UtcNow;
-
-            if (!string.IsNullOrWhiteSpace(playedGameMessage.DatePlayed))
-            {
-                datePlayed = DateTime.ParseExact(playedGameMessage.DatePlayed, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None);
-            }
-
-            return new NewlyCompletedGame
-            {
-                DatePlayed = datePlayed,
-                GameDefinitionId = playedGameMessage.GameDefinitionId,
-                Notes = playedGameMessage.Notes,
-                PlayerRanks = playedGameMessage.PlayerRanks,
-                GamingGroupId = playedGameMessage.GamingGroupId,
-                ExternalSourceApplicationName = playedGameMessage.ExternalSourceApplicationName,
-                ExternalSourceEntityId = playedGameMessage.ExternalSourceEntityId
-            };
         }
 
         [ApiRoute("PlayedGames/{playedGameID}", StartingVersion = 2)]

@@ -7,13 +7,13 @@ namespace BusinessLogic.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class AddSyncableFieldsToPlayedGame : IMigrationMetadata
+    public sealed partial class AddPlayedGameApplicationLinkage : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(AddSyncableFieldsToPlayedGame));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(AddPlayedGameApplicationLinkage));
         
         string IMigrationMetadata.Id
         {
-            get { return "201608220135119_AddSyncableFieldsToPlayedGame"; }
+            get { return "201608240113036_AddPlayedGameApplicationLinkage"; }
         }
         
         string IMigrationMetadata.Source

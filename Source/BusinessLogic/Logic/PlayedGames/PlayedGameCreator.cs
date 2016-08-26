@@ -184,9 +184,7 @@ namespace BusinessLogic.Logic.PlayedGames
                 DatePlayed = newlyCompletedGame.DatePlayed,
                 GamingGroupId = gamingGroupId,
                 Notes = newlyCompletedGame.Notes,
-                CreatedByApplicationUserId = applicationUserId,
-                ExternalSourceApplicationName = newlyCompletedGame.ExternalSourceApplicationName,
-                ExternalSourceEntityId = newlyCompletedGame.ExternalSourceEntityId
+                CreatedByApplicationUserId = applicationUserId
             };
             return playedGame;
         }

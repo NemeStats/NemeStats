@@ -17,32 +17,22 @@ namespace BusinessLogic.Logic.Security
 
         public void Validate(NewlyCompletedGame newlyCompletedGame)
         {
-            if (string.IsNullOrEmpty(newlyCompletedGame.ExternalSourceApplicationName))
+            foreach (var applicationLinkage in newlyCompletedGame.ApplicationLinkages)
             {
-                if (!string.IsNullOrEmpty(newlyCompletedGame.ExternalSourceEntityId))
+                if (string.IsNullOrEmpty(applicationLinkage.ApplicationName) || string.IsNullOrEmpty(applicationLinkage.EntityId))
                 {
-                    throw new InvalidSourceException(newlyCompletedGame.ExternalSourceApplicationName, newlyCompletedGame.ExternalSourceEntityId);
+                    throw new InvalidSourceException(applicationLinkage.ApplicationName, applicationLinkage.EntityId);
                 }
-                return;
-            }
 
-            if (string.IsNullOrEmpty(newlyCompletedGame.ExternalSourceEntityId))
-            {
-                if (!string.IsNullOrEmpty(newlyCompletedGame.ExternalSourceApplicationName))
+                var entityWithThisSynchKeyAlreadyExists = _dataContext.GetQueryable<PlayedGameApplicationLinkage>()
+                    .Any(x => x.ApplicationName == applicationLinkage.ApplicationName
+                        && x.EntityId == applicationLinkage.EntityId
+                        && x.PlayedGame.GamingGroupId == newlyCompletedGame.GamingGroupId);
+
+                if (entityWithThisSynchKeyAlreadyExists)
                 {
-                    throw new InvalidSourceException(newlyCompletedGame.ExternalSourceApplicationName, newlyCompletedGame.ExternalSourceEntityId);
+                    throw new EntityAlreadySynchedException(applicationLinkage.ApplicationName, applicationLinkage.EntityId, newlyCompletedGame.GamingGroupId.Value);
                 }
-                return;
-            }
-
-            var entityWithThisSynchKeyAlreadyExists = _dataContext.GetQueryable<PlayedGame>()
-                .Any(x => x.ExternalSourceApplicationName == newlyCompletedGame.ExternalSourceApplicationName
-                          && x.ExternalSourceEntityId == newlyCompletedGame.ExternalSourceEntityId
-                          && x.GamingGroupId == newlyCompletedGame.GamingGroupId);
-
-            if (entityWithThisSynchKeyAlreadyExists)
-            {
-                throw new EntityAlreadySynchedException(newlyCompletedGame, newlyCompletedGame.GamingGroupId.Value);
             }
         }
     }

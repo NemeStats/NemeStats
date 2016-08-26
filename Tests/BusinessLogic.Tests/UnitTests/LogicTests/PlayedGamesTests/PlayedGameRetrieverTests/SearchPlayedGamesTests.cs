@@ -9,6 +9,7 @@ using NUnit.Framework;
 using Rhino.Mocks;
 using StructureMap.AutoMocking;
 using BusinessLogic.Exceptions;
+using Shouldly;
 
 namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameRetrieverTests
 {
@@ -25,11 +26,26 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameRe
         private readonly DateTime DATE_MARCH = new DateTime(2015, 3, 1, 4, 4, 4);
         private readonly DateTime DATE_APRIL = new DateTime(2015, 4, 1, 4, 4, 4);
         private const string EXTERNAL_SOURCE_NAME = "some source name";
+        private IList<PlayedGameApplicationLinkage> expectedLinkagesForAprilGame;
 
         [SetUp]
         public void SetUp()
         {
             autoMocker = new RhinoAutoMocker<PlayedGameRetriever>();
+
+            expectedLinkagesForAprilGame = new List<PlayedGameApplicationLinkage>
+            {
+                new PlayedGameApplicationLinkage
+                {
+                    ApplicationName = "application name 1",
+                    EntityId = "entity id 1"
+                },
+                new PlayedGameApplicationLinkage
+                {
+                    ApplicationName = "application name 2",
+                    EntityId = "entity id 2"
+                }
+            };
 
             playedGames = new List<PlayedGame>
             {
@@ -42,7 +58,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameRe
                     GameDefinition = new GameDefinition(),
                     GamingGroup = new GamingGroup(),
                     GamingGroupId = EXPECTED_GAMING_GROUP_ID,
-                    GameDefinitionId = EXPECTED_GAME_DEFINITION_ID
+                    GameDefinitionId = EXPECTED_GAME_DEFINITION_ID,
+                    ApplicationLinkages = new List<PlayedGameApplicationLinkage>()
                 },
                 new PlayedGame
                 {
@@ -68,7 +85,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameRe
                     GameDefinition = new GameDefinition(),
                     GamingGroup = new GamingGroup(),
                     GamingGroupId = 135353,
-                    ExternalSourceApplicationName = EXTERNAL_SOURCE_NAME
+                    ApplicationLinkages = expectedLinkagesForAprilGame
                 }
             };
 
@@ -88,8 +105,6 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameRe
                 GameDefinitionId = 2,
                 GamingGroupId = 3,
                 Notes = "some notes",
-                ExternalSourceEntityId = "some id",
-                ExternalSourceApplicationName = "some name",
                 GamingGroup = new GamingGroup
                 {
                     Name = "some gaming group name"
@@ -98,7 +113,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameRe
                 {
                     Name = "some game definition name",
                     BoardGameGeekGameDefinitionId = 4
-                }
+                },
+                ApplicationLinkages = new List<PlayedGameApplicationLinkage>()
             };
 
             var playerGameResult = new PlayerGameResult
@@ -140,8 +156,6 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameRe
             Assert.That(results.GamingGroupId, Is.EqualTo(playedGame.GamingGroupId));
             Assert.That(results.GamingGroupName, Is.EqualTo(playedGame.GamingGroup.Name));
             Assert.That(results.Notes, Is.EqualTo(playedGame.Notes));
-            Assert.That(results.ExternalSourceEntityId, Is.EqualTo(playedGame.ExternalSourceEntityId));
-            Assert.That(results.ExternalSourceApplicationName, Is.EqualTo(playedGame.ExternalSourceApplicationName));
             var actualPlayerResult = results.PlayerGameResults[0];
             var expectedPlayerGameResult = playedGame.PlayerGameResults[0];
             Assert.That(actualPlayerResult.GameRank, Is.EqualTo(expectedPlayerGameResult.GameRank));
@@ -160,6 +174,22 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameRe
             Assert.That(actualPlayerResult.DatePlayed, Is.EqualTo(expectedPlayerGameResult.PlayedGame.DatePlayed));
             Assert.That(actualPlayerResult.GameName, Is.EqualTo(expectedPlayerGameResult.PlayedGame.GameDefinition.Name));
             Assert.That(actualPlayerResult.GameDefinitionId, Is.EqualTo(expectedPlayerGameResult.PlayedGame.GameDefinitionId));
+        }
+
+        [Test]
+        public void ItReturnsTheApplicationLinkages()
+        {
+            //--arrange
+         
+            //--act
+            var results = autoMocker.ClassUnderTest.SearchPlayedGames(new PlayedGameFilter());
+
+            //--assert
+            var aprilResult = results.First(x => x.PlayedGameId == PLAYED_GAME_ID_FOR_GAME_RECORDED_IN_APRIL);
+            foreach (var linkage in expectedLinkagesForAprilGame)
+            {
+                aprilResult.ApplicationLinkages.ShouldContain(x => x.ApplicationName == linkage.ApplicationName && x.EntityId == linkage.EntityId);
+            }
         }
 
         [Test]
@@ -315,14 +345,14 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameRe
             //--arrange
             var filter = new PlayedGameFilter
             {
-                ExclusionExternalSourceApplicationName = EXTERNAL_SOURCE_NAME
+                ExclusionApplicationName = EXTERNAL_SOURCE_NAME
             };
 
             //--act
             var results = autoMocker.ClassUnderTest.SearchPlayedGames(filter);
 
             //--assert
-            Assert.True(results.All(result => result.ExternalSourceApplicationName != EXTERNAL_SOURCE_NAME));
+            Assert.True(results.All(result => result.ApplicationLinkages.All(x => x.ApplicationName != EXTERNAL_SOURCE_NAME)));
         }
 
         [Test]
@@ -331,14 +361,14 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameRe
             //--arrange
             var filter = new PlayedGameFilter
             {
-                InclusionExternalSourceApplicationName = EXTERNAL_SOURCE_NAME
+                InclusionApplicationName = EXTERNAL_SOURCE_NAME
             };
 
             //--act
             var results = autoMocker.ClassUnderTest.SearchPlayedGames(filter);
 
             //--assert
-            Assert.True(results.All(result => result.ExternalSourceApplicationName == EXTERNAL_SOURCE_NAME));
+            Assert.True(results.All(result => result.ApplicationLinkages.Any(x => x.ApplicationName == EXTERNAL_SOURCE_NAME)));
         }
     }
 }

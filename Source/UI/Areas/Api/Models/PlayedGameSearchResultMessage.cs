@@ -3,7 +3,7 @@ using BusinessLogic.Models;
 
 namespace UI.Areas.Api.Models
 {
-    public class PlayedGameSearchResultMessage : ISynchable
+    public class PlayedGameSearchResultMessage
     {
         public int PlayedGameId { get; set; }
         public int GameDefinitionId { get; set; }
@@ -14,8 +14,7 @@ namespace UI.Areas.Api.Models
         public int? BoardGameGeekGameDefinitionId { get; set; }
         public string DatePlayed { get; set; }
         public string DateLastUpdated { get; set; }
-        public List<PlayerGameResultMessage> PlayerGameResults;
-        public string ExternalSourceApplicationName { get; set; }
-        public string ExternalSourceEntityId { get; set; }
+        public List<PlayerGameResultMessage> PlayerGameResults { get; set; }
+        public List<ApplicationLinkageMessage> ApplicationLinkages { get; set; }
     }
 }

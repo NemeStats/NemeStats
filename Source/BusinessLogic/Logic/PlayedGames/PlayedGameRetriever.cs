@@ -144,8 +144,11 @@ namespace BusinessLogic.Logic.PlayedGames
                     Notes = playedGame.Notes,
                     DatePlayed = playedGame.DatePlayed,
                     DateLastUpdated = playedGame.DateCreated,
-                    ExternalSourceEntityId = playedGame.ExternalSourceEntityId,
-                    ExternalSourceApplicationName = playedGame.ExternalSourceApplicationName,
+                    ApplicationLinkages = playedGame.ApplicationLinkages.Select(x => new ApplicationLinkage
+                    {
+                        ApplicationName = x.ApplicationName,
+                        EntityId = x.EntityId
+                    }).ToList(),
                     PlayerGameResults = playedGame.PlayerGameResults.Select(x => new PlayerResult
                     {
                         GameRank = x.GameRank,
@@ -229,22 +232,15 @@ namespace BusinessLogic.Logic.PlayedGames
                 queryable = queryable.Take(playedGameFilter.MaximumNumberOfResults.Value);
             }
 
-            if (!string.IsNullOrEmpty(playedGameFilter.ExclusionExternalSourceApplicationName))
+            if (!string.IsNullOrEmpty(playedGameFilter.ExclusionApplicationName))
             {
-                queryable =
-                    queryable.Where(
-                        query =>
-                            query.ExternalSourceApplicationName !=
-                            playedGameFilter.ExclusionExternalSourceApplicationName);
+                queryable = queryable.Where(query => query.ApplicationLinkages.All(x => x.ApplicationName != playedGameFilter.ExclusionApplicationName));
             }
 
-            if (!string.IsNullOrEmpty(playedGameFilter.InclusionExternalSourceApplicationName))
+            if (!string.IsNullOrEmpty(playedGameFilter.InclusionApplicationName))
             {
-                queryable =
-                    queryable.Where(
-                        query =>
-                            query.ExternalSourceApplicationName ==
-                            playedGameFilter.InclusionExternalSourceApplicationName);
+                queryable = queryable.Where(query => query.ApplicationLinkages.Any(x => x.ApplicationName == playedGameFilter.ExclusionApplicationName));
+
             }
 
             return queryable;

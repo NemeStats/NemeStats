@@ -6,6 +6,7 @@ using BusinessLogic.Exceptions;
 using BusinessLogic.Logic.Security;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
+using BusinessLogic.Models.PlayedGames;
 using NUnit.Framework;
 using Rhino.Mocks;
 using Shouldly;
@@ -17,85 +18,63 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.SecurityTests.SynchedPlayedGa
     public class ValidateTests
     {
         private RhinoAutoMocker<SynchedPlayedGameValidator> _autoMocker;
-        private string _expectedSourceName = "some source name";
-        private string _expectedSourceId = "some id";
+        private string _expectedApplicationName = "some application name";
+        private string _expectedEntityId = "some id";
+        private int _expectedGamingGroupId = 10;
 
         [SetUp]
         public void SetUp()
         {
             _autoMocker = new RhinoAutoMocker<SynchedPlayedGameValidator>();
 
-            var newlyCompletedGame = CreateNewlyCompletedGame();
-
-            var playedGameQueryable = new List<PlayedGame>
+            var applicationLinkagesQueryable = new List<PlayedGameApplicationLinkage>
             {
-                new PlayedGame
-                {
-                    ExternalSourceApplicationName = newlyCompletedGame.ExternalSourceApplicationName,
-                    ExternalSourceEntityId = newlyCompletedGame.ExternalSourceEntityId,
-                    GamingGroupId = newlyCompletedGame.GamingGroupId.Value
-                },
-                new PlayedGame
-                {
-                    ExternalSourceApplicationName = string.Empty,
-                    ExternalSourceEntityId = newlyCompletedGame.ExternalSourceEntityId,
-                    GamingGroupId = newlyCompletedGame.GamingGroupId.Value
-                },
-                new PlayedGame
-                {
-                    ExternalSourceApplicationName = null,
-                    ExternalSourceEntityId = newlyCompletedGame.ExternalSourceEntityId,
-                    GamingGroupId = newlyCompletedGame.GamingGroupId.Value
-                },
-                new PlayedGame
-                {
-                    ExternalSourceApplicationName = newlyCompletedGame.ExternalSourceApplicationName,
-                    ExternalSourceEntityId = string.Empty,
-                    GamingGroupId = newlyCompletedGame.GamingGroupId.Value
-                },
-                new PlayedGame
-                {
-                    ExternalSourceApplicationName = newlyCompletedGame.ExternalSourceApplicationName,
-                    ExternalSourceEntityId = null,
-                    GamingGroupId = newlyCompletedGame.GamingGroupId.Value
-                }
-                ,new PlayedGame
-                {
-                    ExternalSourceApplicationName = newlyCompletedGame.ExternalSourceApplicationName,
-                    ExternalSourceEntityId = newlyCompletedGame.ExternalSourceEntityId,
-                    GamingGroupId = 50
-                }
+                CreateExpectedApplicationLinkage(),
+                CreateExpectedApplicationLinkage(overrideApplicationName: "some non-matching application name"),
+                CreateExpectedApplicationLinkage(overrideEntityId: "some non-matching entity id"),
+                CreateExpectedApplicationLinkage(overrideGamingGroupId: -1)
             }.AsQueryable();
 
-            _autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<PlayedGame>()).Return(playedGameQueryable);
+            _autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<PlayedGameApplicationLinkage>()).Return(applicationLinkagesQueryable);
         }
 
-        public class ExternalSourceTestCases
+        private PlayedGameApplicationLinkage CreateExpectedApplicationLinkage(
+            string overrideApplicationName = null, 
+            string overrideEntityId = null,
+            int? overrideGamingGroupId = null)
         {
-            public static IEnumerable TestCases
+            return new PlayedGameApplicationLinkage
             {
-                get
+                ApplicationName = overrideApplicationName ?? _expectedApplicationName,
+                EntityId = overrideEntityId ?? _expectedEntityId,
+                PlayedGame = new PlayedGame
                 {
-                    yield return new TestCaseData(string.Empty, string.Empty);
-                    yield return new TestCaseData(string.Empty, null);
-                    yield return new TestCaseData(null, string.Empty);
-                    yield return new TestCaseData(null, null);
+                    GamingGroupId = overrideGamingGroupId ?? _expectedGamingGroupId
                 }
-            }
+            };
         }
 
-        [Test, TestCaseSource(typeof(ExternalSourceTestCases), nameof(ExternalSourceTestCases.TestCases))]
-        public void It_Doesnt_Throw_An_EntityAlreadySynchedException_If_Both_ExternalSourceApplicationName_And_ExternalSourceEntityId_Are_Not_Set(
-            string externalSourceApplicationName,
-            string externalSourceEntityId)
+        private List<PlayedGameApplicationLinkage> CreateApplicationLinkages(string sourceApplicationName, string sourceEntityId, bool alsoAddExpectedOne = false)
         {
-            //--arrange
-            var newlyCompletedGame = CreateNewlyCompletedGame();
-            newlyCompletedGame.ExternalSourceApplicationName = externalSourceApplicationName;
-            newlyCompletedGame.ExternalSourceEntityId = externalSourceEntityId;
+            var linkages = new List<PlayedGameApplicationLinkage>
+            {
+                new PlayedGameApplicationLinkage
+                {
+                    ApplicationName = sourceApplicationName,
+                    EntityId = sourceEntityId,
+                }
+            };
 
-            //--act
-            _autoMocker.ClassUnderTest.Validate(newlyCompletedGame);
+            if (alsoAddExpectedOne)
+            {
+                linkages.Add(new PlayedGameApplicationLinkage
+                {
+                    ApplicationName = _expectedApplicationName,
+                    EntityId = _expectedEntityId,
+                });
+            }
+
+            return linkages;
         }
 
         [Test]
@@ -103,7 +82,13 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.SecurityTests.SynchedPlayedGa
         {
             //--arrange
             var newlyCompletedGame = CreateNewlyCompletedGame();
-            var expectedException = new EntityAlreadySynchedException(newlyCompletedGame, newlyCompletedGame.GamingGroupId.Value);
+            var applicationLinkage = new ApplicationLinkage
+            {
+                ApplicationName = _expectedApplicationName,
+                EntityId = _expectedEntityId
+            };
+            newlyCompletedGame.ApplicationLinkages.Add(applicationLinkage);
+            var expectedException = new EntityAlreadySynchedException(_expectedApplicationName, _expectedEntityId, newlyCompletedGame.GamingGroupId.Value);
 
             //--act
             var exception = Assert.Throws<EntityAlreadySynchedException>(() => _autoMocker.ClassUnderTest.Validate(newlyCompletedGame));
@@ -113,11 +98,15 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.SecurityTests.SynchedPlayedGa
         }
 
         [Test]
-        public void It_Doesnt_Throw_An_EntityAlreadySynchedException_If_An_Entity_With_This_ExternalSourceApplicationName_Doesnt_Exist()
+        public void It_Doesnt_Throw_An_EntityAlreadySynchedException_If_An_Entity_With_This_ApplicationName_Doesnt_Exist()
         {
             //--arrange
             var newlyCompletedGame = CreateNewlyCompletedGame();
-            newlyCompletedGame.ExternalSourceApplicationName = "some name that doesn't exist";
+            var applicationLinkage = new ApplicationLinkage
+            {
+                ApplicationName = "name that doesnt exist",
+                EntityId = _expectedEntityId
+            }; newlyCompletedGame.ApplicationLinkages.Add(applicationLinkage);
 
             //--act
             _autoMocker.ClassUnderTest.Validate(newlyCompletedGame);
@@ -139,14 +128,19 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.SecurityTests.SynchedPlayedGa
 
         [Test, TestCaseSource(typeof(OnlyOneOfTwoFieldsSetTestCases), nameof(OnlyOneOfTwoFieldsSetTestCases.TestCases))]
         public void It_Throws_An_InvalidSourceException_If_One_Of_The_External_Source_Fields_Is_Set_But_Not_The_Other(
-            string externalSourceApplicationName,
+            string applicationName,
             string externalSourceEntityId)
         {
             //--arrange
             var newlyCompletedGame = CreateNewlyCompletedGame();
-            newlyCompletedGame.ExternalSourceEntityId = externalSourceEntityId;
-            newlyCompletedGame.ExternalSourceApplicationName = externalSourceApplicationName;
-            var expectedException = new InvalidSourceException(externalSourceApplicationName, externalSourceEntityId);
+            var applicationLinkage = new ApplicationLinkage
+            {
+                ApplicationName = applicationName,
+                EntityId = externalSourceEntityId
+            };
+            newlyCompletedGame.ApplicationLinkages.Add(applicationLinkage);
+
+            var expectedException = new InvalidSourceException(applicationName, externalSourceEntityId);
 
             //--act
             var exception = Assert.Throws<InvalidSourceException>(() => _autoMocker.ClassUnderTest.Validate(newlyCompletedGame));
@@ -155,13 +149,11 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.SecurityTests.SynchedPlayedGa
             exception.Message.ShouldBe(expectedException.Message);
         }
         
-        private static NewlyCompletedGame CreateNewlyCompletedGame()
+        private NewlyCompletedGame CreateNewlyCompletedGame()
         {
             var newlyCompletedGame = new NewlyCompletedGame
             {
-                ExternalSourceEntityId = "some id",
-                ExternalSourceApplicationName = "some name",
-                GamingGroupId = 1
+                GamingGroupId = _expectedGamingGroupId
             };
             return newlyCompletedGame;
         }
