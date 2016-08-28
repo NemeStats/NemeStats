@@ -14,10 +14,12 @@ namespace BusinessLogic.Models
 
         [Index("IX_PLAYEDGAMEID_APPLICATIONID_ENTITYID", 2, IsUnique = true)]
         [Required]
+        [StringLength(255)]
         public string ApplicationName { get; set; }
 
         [Index("IX_PLAYEDGAMEID_APPLICATIONID_ENTITYID", 3, IsUnique = true)]
         [Required]
+        [StringLength(100)]
         public string EntityId { get; set; }
 
         public virtual PlayedGame PlayedGame { get; set; }

@@ -47,6 +47,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameCr
         private GameDefinition gameDefinition;
         private Player existingPlayerWithMatchingGamingGroup;
         private const int GAMING_GROUP_ID = 9;
+        private const int EXPECTED_PLAYED_GAME_ID = 50;
 
         [SetUp]
         public void TestSetUp()
@@ -61,7 +62,9 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameCr
                 AnonymousClientId = "anonymous client id"
             };
             gameDefinition = new GameDefinition
-            { Name = "game definition name", GamingGroupId = GAMING_GROUP_ID, Id = 9598 };
+            {
+                Name = "game definition name", GamingGroupId = GAMING_GROUP_ID, Id = 9598
+            };
             autoMocker.Get<IDataContext>().Expect(mock => mock.FindById<GameDefinition>(gameDefinition.Id))
                 .Return(gameDefinition);
 
@@ -72,7 +75,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameCr
             };
             autoMocker.Get<IDataContext>().Expect(mock => mock.FindById<Player>(Arg<int>.Is.Anything)).Return(existingPlayerWithMatchingGamingGroup);
             autoMocker.Get<IDataContext>()
-                .Stub(s=>s.Save(Arg<PlayedGame>.Is.Anything,Arg<ApplicationUser>.Is.Anything))
+                .Stub(s=>s.Save(Arg<PlayedGame>.Is.Anything, Arg<ApplicationUser>.Is.Anything))
                 .Return(null)
                 .WhenCalled(a => a.ReturnValue = a.Arguments.First());
         }
@@ -251,6 +254,75 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameCr
         }
 
         [Test]
+        public void ItCreatesAnApplicationLinkageForNemeStats()
+        {
+            //--arrange
+            var newlyCompletedPlayedGame = CreateValidNewlyCompletedGame();
+
+            var expectedPlayedGame = new PlayedGame
+            {
+                Id = EXPECTED_PLAYED_GAME_ID
+            };
+            autoMocker.ClassUnderTest.Expect(partialMock => partialMock.TransformNewlyCompletedGameIntoPlayedGame(null, 0, null, null))
+                .IgnoreArguments()
+                .Return(expectedPlayedGame);
+
+            //--act
+            autoMocker.ClassUnderTest.CreatePlayedGame(newlyCompletedPlayedGame, TransactionSource.WebApplication, currentUser);
+
+            //--assert
+            autoMocker.Get<IApplicationLinker>().AssertWasCalled(mock => mock.LinkApplication(
+                EXPECTED_PLAYED_GAME_ID,
+                ApplicationLinker.APPLICATION_NAME_NEMESTATS,
+                EXPECTED_PLAYED_GAME_ID.ToString()));
+        }
+
+        [Test]
+        public void ItCreatesAnApplicationLinkageForEachSpecifiedApplicationLinkage()
+        {
+            //--arrange
+            var newlyCompletedPlayedGame = CreateValidNewlyCompletedGame();
+            var expectedApplicationLinkage1 = new ApplicationLinkage
+            {
+                ApplicationName = "app1",
+                EntityId = "1"
+            };
+            var expectedApplicationLinkage2 = new ApplicationLinkage
+            {
+                ApplicationName = "app2",
+                EntityId = "2"
+            };
+            newlyCompletedPlayedGame.ApplicationLinkages = new List<ApplicationLinkage>
+            {
+                expectedApplicationLinkage1,
+                expectedApplicationLinkage2
+            };
+
+            var expectedPlayedGame = new PlayedGame
+            {
+                Id = EXPECTED_PLAYED_GAME_ID
+            };
+            autoMocker.ClassUnderTest.Expect(partialMock => partialMock.TransformNewlyCompletedGameIntoPlayedGame(null, 0, null, null))
+                .IgnoreArguments()
+                .Return(expectedPlayedGame);
+
+            //--act
+            autoMocker.ClassUnderTest.CreatePlayedGame(newlyCompletedPlayedGame, TransactionSource.WebApplication, currentUser);
+
+            //--assert
+            autoMocker.Get<IApplicationLinker>().AssertWasCalled(mock => mock.LinkApplication(
+                EXPECTED_PLAYED_GAME_ID,
+                expectedApplicationLinkage1.ApplicationName,
+                expectedApplicationLinkage1.EntityId));
+
+            autoMocker.Get<IApplicationLinker>().AssertWasCalled(mock => mock.LinkApplication(
+              EXPECTED_PLAYED_GAME_ID,
+              expectedApplicationLinkage2.ApplicationName,
+              expectedApplicationLinkage2.EntityId));
+        }
+
+
+        [Test]
         public void ItRecordsAGamePlayedEvent()
         {
             var playerRank = new PlayerRank
@@ -410,7 +482,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameCr
             autoMocker.ClassUnderTest.CreatePlayedGame(validGame, TransactionSource.WebApplication, currentUser);
 
             //--assert
-            autoMocker.Get<ISynchedPlayedGameValidator>()
+            autoMocker.Get<ILinkedPlayedGameValidator>()
                 .AssertWasCalled(mock => mock.Validate(validGame));
         }
 

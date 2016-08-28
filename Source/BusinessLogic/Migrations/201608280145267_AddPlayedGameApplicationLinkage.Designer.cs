@@ -13,7 +13,7 @@ namespace BusinessLogic.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201608240113036_AddPlayedGameApplicationLinkage"; }
+            get { return "201608280145267_AddPlayedGameApplicationLinkage"; }
         }
         
         string IMigrationMetadata.Source

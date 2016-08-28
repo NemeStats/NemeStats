@@ -6,11 +6,11 @@ using BusinessLogic.Models.Games;
 
 namespace BusinessLogic.Logic.Security
 {
-    public class SynchedPlayedGameValidator : ISynchedPlayedGameValidator
+    public class LinkedPlayedGameValidator : ILinkedPlayedGameValidator
     {
         private readonly IDataContext _dataContext;
 
-        public SynchedPlayedGameValidator(IDataContext dataContext)
+        public LinkedPlayedGameValidator(IDataContext dataContext)
         {
             _dataContext = dataContext;
         }

@@ -32,7 +32,7 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.PlayerStatsCon
 
             expectedMessage = new PlayerStatisticsMessage();
             _autoMocker.Get<ITransformer>().Expect(
-                       mock => mock.Transform<PlayerStatistics, PlayerStatisticsMessage>(expectedPlayerStatistics))
+                       mock => mock.Transform<PlayerStatisticsMessage>(expectedPlayerStatistics))
                       .Return(expectedMessage);
         }
 

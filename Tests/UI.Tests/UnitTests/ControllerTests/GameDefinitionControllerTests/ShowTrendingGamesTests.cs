@@ -45,7 +45,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
                       .Return(expectedTrendingGames);
 
             var expectedViewModel = new TrendingGameViewModel();
-            autoMocker.Get<ITransformer>().Expect(mock => mock.Transform<TrendingGame, TrendingGameViewModel>(
+            autoMocker.Get<ITransformer>().Expect(mock => mock.Transform<TrendingGameViewModel>(
                 expectedTrendingGame))
                 .Return(expectedViewModel);
             var viewResult = autoMocker.ClassUnderTest.ShowTrendingGames() as ViewResult;

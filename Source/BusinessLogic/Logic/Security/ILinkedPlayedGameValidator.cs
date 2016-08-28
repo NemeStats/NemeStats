@@ -2,7 +2,7 @@
 
 namespace BusinessLogic.Logic.Security
 {
-    public interface ISynchedPlayedGameValidator
+    public interface ILinkedPlayedGameValidator
     {
         void Validate(NewlyCompletedGame newlyCompletedGame);
     }

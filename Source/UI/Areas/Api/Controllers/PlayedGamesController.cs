@@ -119,7 +119,7 @@ namespace UI.Areas.Api.Controllers
 
         internal virtual HttpResponseMessage GetPlayedGameSearchResults(PlayedGameFilterMessage playedGameFilterMessage)
         {
-            var filter = transformer.Transform<PlayedGameFilterMessage, PlayedGameFilter>(playedGameFilterMessage);
+            var filter = transformer.Transform<PlayedGameFilter>(playedGameFilterMessage);
 
             var searchResults = playedGameRetriever.SearchPlayedGames(filter);
 
@@ -146,7 +146,7 @@ namespace UI.Areas.Api.Controllers
         [ApiModelValidation]
         public HttpResponseMessage RecordPlayedGame([FromBody]PlayedGameMessage playedGameMessage, [FromUri]int gamingGroupId)
         {
-            var newlyCompletedGame = transformer.Transform<PlayedGameMessage, NewlyCompletedGame>(playedGameMessage);
+            var newlyCompletedGame = transformer.Transform<NewlyCompletedGame>(playedGameMessage);
 
             var playedGame = playedGameCreator.CreatePlayedGame(newlyCompletedGame, TransactionSource.RestApi, CurrentUser);
             var newlyRecordedPlayedGameMessage = new NewlyRecordedPlayedGameMessage

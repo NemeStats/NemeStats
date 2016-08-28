@@ -115,7 +115,7 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests
             _autoMocker.Get<IUserRetriever>().Expect(mock => mock.RetrieveUserInformation(_applicationUser))
                       .Return(expectedUserInformation);
             UserInformationMessage expectedUserInformationMessage = new UserInformationMessage();
-            _autoMocker.Get<ITransformer>().Expect(mock => mock.Transform<UserInformation, UserInformationMessage>(expectedUserInformation))
+            _autoMocker.Get<ITransformer>().Expect(mock => mock.Transform<UserInformationMessage>(expectedUserInformation))
                 .Return(expectedUserInformationMessage);
             _autoMocker.ClassUnderTest.CurrentUser = _applicationUser;
 

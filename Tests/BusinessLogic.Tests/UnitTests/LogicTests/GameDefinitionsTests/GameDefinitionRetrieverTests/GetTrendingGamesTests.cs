@@ -16,7 +16,6 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
         public void ItOnlyReturnsCountsForPlayedGamesThatHappenedXDaysAgoOrLater()
         {
             int days = 1;
-            string expectedThumbnail = "some thumbnail";
 
             var expectedPlayedGame = new PlayedGame
             {

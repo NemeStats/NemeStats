@@ -55,7 +55,7 @@ namespace UI.Transformations
                 GamingGroupId = gameDefinitionSummary.GamingGroupId,
                 GamingGroupName = gameDefinitionSummary.GamingGroupName,
                 UserCanEdit = (currentUser != null && gameDefinitionSummary.GamingGroupId == currentUser.CurrentGamingGroupId),
-                BoardGameGeekGameDefinition = _transformer.Transform<BoardGameGeekGameDefinition, BoardGameGeekGameDefinitionViewModel>(gameDefinitionSummary.BoardGameGeekGameDefinition)
+                BoardGameGeekGameDefinition = _transformer.Transform<BoardGameGeekGameDefinitionViewModel>(gameDefinitionSummary.BoardGameGeekGameDefinition)
             };
 
             if (viewModel.BoardGameGeekGameDefinition != null)
@@ -96,7 +96,7 @@ namespace UI.Transformations
             var playersSummaryViewModel = new GameDefinitionPlayersSummaryViewModel
             {
                 GameDefinitionPlayerSummaries = gameDefinitionSummary.PlayerWinRecords
-                    .Select(_transformer.Transform<PlayerWinRecord, GameDefinitionPlayerSummaryViewModel>)
+                    .Select(_transformer.Transform<GameDefinitionPlayerSummaryViewModel>)
                     .ToList()
             };
             viewModel.GameDefinitionPlayersSummary = playersSummaryViewModel;

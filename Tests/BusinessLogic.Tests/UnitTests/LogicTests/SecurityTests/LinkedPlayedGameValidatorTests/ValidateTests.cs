@@ -12,12 +12,12 @@ using Rhino.Mocks;
 using Shouldly;
 using StructureMap.AutoMocking;
 
-namespace BusinessLogic.Tests.UnitTests.LogicTests.SecurityTests.SynchedPlayedGameValidatorTests
+namespace BusinessLogic.Tests.UnitTests.LogicTests.SecurityTests.LinkedPlayedGameValidatorTests
 {
     [TestFixture]
     public class ValidateTests
     {
-        private RhinoAutoMocker<SynchedPlayedGameValidator> _autoMocker;
+        private RhinoAutoMocker<LinkedPlayedGameValidator> _autoMocker;
         private string _expectedApplicationName = "some application name";
         private string _expectedEntityId = "some id";
         private int _expectedGamingGroupId = 10;
@@ -25,7 +25,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.SecurityTests.SynchedPlayedGa
         [SetUp]
         public void SetUp()
         {
-            _autoMocker = new RhinoAutoMocker<SynchedPlayedGameValidator>();
+            _autoMocker = new RhinoAutoMocker<LinkedPlayedGameValidator>();
 
             var applicationLinkagesQueryable = new List<PlayedGameApplicationLinkage>
             {

@@ -193,7 +193,8 @@ namespace BusinessLogic.Tests.IntegrationTests
             var securedEntityValidatorForGameDefinition = new SecuredEntityValidator<GameDefinition>(dataContext);
             var weightBonusCalculator = new WeightBonusCalculator(new WeightTierCalculator());
             var pointsCalculator = new PointsCalculator(weightBonusCalculator, new GameDurationBonusCalculator());
-            var synchedPlayedGameValidator = new SynchedPlayedGameValidator(dataContext);
+            var linkedPlayedGameValidator = new LinkedPlayedGameValidator(dataContext);
+            var applicationLinker = new ApplicationLinker(dataContext);
 
             IPlayedGameCreator playedGameCreator = new PlayedGameCreator(
                 dataContext, 
@@ -204,7 +205,8 @@ namespace BusinessLogic.Tests.IntegrationTests
                 securedEntityValidatorForGameDefinition,
                 pointsCalculator,
                 new FakeEventBus(),
-                synchedPlayedGameValidator);
+                linkedPlayedGameValidator,
+                applicationLinker);
             
             List<Player> players = new List<Player>() { testPlayer1, testPlayer2 };
             List<int> playerRanks = new List<int>() { 1, 1 };

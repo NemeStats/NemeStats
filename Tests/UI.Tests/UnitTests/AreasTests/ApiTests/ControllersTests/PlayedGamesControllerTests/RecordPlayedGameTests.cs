@@ -5,8 +5,6 @@ using BusinessLogic.Models.Games;
 using BusinessLogic.Models.User;
 using NUnit.Framework;
 using Rhino.Mocks;
-using System;
-using System.Collections.Generic;
 using System.Net.Http;
 using UI.Areas.Api.Controllers;
 using UI.Areas.Api.Models;
@@ -26,13 +24,10 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.PlayedGamesCon
         {
             _playedGameMessage = new PlayedGameMessage();
 
-            _expectedNewlyCompletedGame = new NewlyCompletedGame
-            {
-
-            };
+            _expectedNewlyCompletedGame = new NewlyCompletedGame();
 
             _autoMocker.Get<ITransformer>()
-                .Expect(mock => mock.Transform<PlayedGameMessage, NewlyCompletedGame>(_playedGameMessage))
+                .Expect(mock => mock.Transform<NewlyCompletedGame>(_playedGameMessage))
                 .IgnoreArguments()
                 .Return(_expectedNewlyCompletedGame);
 

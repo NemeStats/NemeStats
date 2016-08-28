@@ -35,17 +35,17 @@ using BusinessLogic.Models.PlayedGames;
 
 namespace BusinessLogic.Logic.PlayedGames
 {
-
     public class PlayedGameCreator : BusinessLogicEventSender, IPlayedGameCreator
     {
         private readonly IDataContext _dataContext;
-        private readonly ISynchedPlayedGameValidator _synchedPlayedGameValidator;
+        private readonly ILinkedPlayedGameValidator _linkedPlayedGameValidator;
         private readonly INemeStatsEventTracker _playedGameTracker;
         private readonly INemesisRecalculator _nemesisRecalculator;
         private readonly IChampionRecalculator _championRecalculator;
         private readonly ISecuredEntityValidator<Player> _securedEntityValidatorForPlayer;
         private readonly ISecuredEntityValidator<GameDefinition> _securedEntityValidatorForGameDefinition;
         private readonly IPointsCalculator _pointsCalculator;
+        private readonly IApplicationLinker _applicationLinker;
 
         public PlayedGameCreator(
             IDataContext applicationDataContext,
@@ -56,7 +56,7 @@ namespace BusinessLogic.Logic.PlayedGames
             ISecuredEntityValidator<GameDefinition> securedEntityValidatorForGameDefinition,
             IPointsCalculator pointsCalculator,
             IBusinessLogicEventBus eventBus, 
-            ISynchedPlayedGameValidator synchedPlayedGameValidator) : base(eventBus)
+            ILinkedPlayedGameValidator linkedPlayedGameValidator, IApplicationLinker applicationLinker) : base(eventBus)
         {
             _dataContext = applicationDataContext;
             _playedGameTracker = playedGameTracker;
@@ -65,7 +65,8 @@ namespace BusinessLogic.Logic.PlayedGames
             _securedEntityValidatorForPlayer = securedEntityValidatorForPlayer;
             _securedEntityValidatorForGameDefinition = securedEntityValidatorForGameDefinition;
             _pointsCalculator = pointsCalculator;
-            _synchedPlayedGameValidator = synchedPlayedGameValidator;
+            _linkedPlayedGameValidator = linkedPlayedGameValidator;
+            _applicationLinker = applicationLinker;
         }
 
         //TODO need to have validation logic here (or on PlayedGame similar to what is on NewlyCompletedGame)
@@ -74,7 +75,7 @@ namespace BusinessLogic.Logic.PlayedGames
             var gameDefinition = _dataContext.FindById<GameDefinition>(newlyCompletedGame.GameDefinitionId);
             _securedEntityValidatorForGameDefinition.ValidateAccess(gameDefinition, currentUser, typeof(GameDefinition), newlyCompletedGame.GameDefinitionId);
 
-            _synchedPlayedGameValidator.Validate(newlyCompletedGame);
+            _linkedPlayedGameValidator.Validate(newlyCompletedGame);
 
             int gamingGroupId = newlyCompletedGame.GamingGroupId ?? currentUser.CurrentGamingGroupId;
             BoardGameGeekGameDefinition boardGameGeekGameDefinition = null;
@@ -96,6 +97,12 @@ namespace BusinessLogic.Logic.PlayedGames
                 playerGameResults);
 
             playedGame = _dataContext.Save(playedGame, currentUser);
+
+            _applicationLinker.LinkApplication(playedGame.Id, ApplicationLinker.APPLICATION_NAME_NEMESTATS, playedGame.Id.ToString());
+            foreach (var applicationLinkage in newlyCompletedGame.ApplicationLinkages)
+            {
+                _applicationLinker.LinkApplication(playedGame.Id, applicationLinkage.ApplicationName, applicationLinkage.EntityId);
+            }
 
             _playedGameTracker.TrackPlayedGame(currentUser, transactionSource);
 

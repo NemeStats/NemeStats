@@ -106,6 +106,8 @@ namespace UI.Transformations
 
                     return datePlayed;
                 }));
+
+            Mapper.CreateMap<PlayedGameFilterMessage, PlayedGameFilter>(MemberList.Source);
         }
     }
 }

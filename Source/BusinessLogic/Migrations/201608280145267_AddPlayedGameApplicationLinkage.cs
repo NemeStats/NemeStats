@@ -13,8 +13,8 @@ namespace BusinessLogic.Migrations
                     {
                         Id = c.Int(nullable: false, identity: true),
                         PlayedGameId = c.Int(nullable: false),
-                        ApplicationName = c.String(nullable: false),
-                        EntityId = c.String(nullable: false),
+                        ApplicationName = c.String(nullable: false, maxLength: 255),
+                        EntityId = c.String(nullable: false, maxLength: 100),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.PlayedGame", t => t.PlayedGameId, cascadeDelete: true)

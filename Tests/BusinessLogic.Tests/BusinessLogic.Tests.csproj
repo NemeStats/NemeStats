@@ -282,6 +282,7 @@
     <Compile Include="UnitTests\LogicTests\GamingGroupsTests\GamingGroupRetrieverTests\GamingGroupRetrieverTestBase.cs" />
     <Compile Include="UnitTests\LogicTests\GamingGroupsTests\GamingGroupRetrieverTests\GetGamingGroupsForUserTests.cs" />
     <Compile Include="UnitTests\LogicTests\GamingGroupsTests\GamingGroupSaverTests\UpdatePublicGamingGroupDetails.cs" />
+    <Compile Include="UnitTests\LogicTests\PlayedGamesTests\ApplicationLinkerTests\ApplicationLinkerTests.cs" />
     <Compile Include="UnitTests\LogicTests\PlayedGamesTests\PlayedGameRetrieverTests\SearchPlayedGamesTests.cs" />
     <Compile Include="UnitTests\LogicTests\PlayersTests\PlayerDeleterTests\DeletePlayerTests.cs" />
     <Compile Include="UnitTests\LogicTests\PlayersTests\PlayerNameBuilderTests\BuildPlayerNameTests.cs" />
@@ -293,7 +294,7 @@
     <Compile Include="UnitTests\LogicTests\PointsTests\PointsCalculatorTests.cs" />
     <Compile Include="UnitTests\LogicTests\PointsTests\WeightBonusCalculatorTests.cs" />
     <Compile Include="UnitTests\LogicTests\PointsTests\WeightTierCalculatorTests.cs" />
-    <Compile Include="UnitTests\LogicTests\SecurityTests\SynchedPlayedGameValidatorTests\ValidateTests.cs" />
+    <Compile Include="UnitTests\LogicTests\SecurityTests\LinkedPlayedGameValidatorTests\ValidateTests.cs" />
     <Compile Include="UnitTests\LogicTests\UsersTests\ApplicationSignInManagerTests\GenerateAuthTokenTests.cs" />
     <Compile Include="UnitTests\LogicTests\UsersTests\ApplicationUserManagerTests\ValidateAuthTokenTests.cs" />
     <Compile Include="UnitTests\LogicTests\UsersTests\BoardGameGeekUserSaverTests\BoardGameGeekUserSaverTestBase.cs" />

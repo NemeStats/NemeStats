@@ -83,7 +83,6 @@ namespace BusinessLogic.Tests.UnitTests.JobsTests.BoardGameGeekBatchUpdateServic
                                                                                                      mock => mock.Save(Arg<BoardGameGeekGameDefinition>.Is.Anything,
                                                                                                                        Arg<ApplicationUser>.Is.Anything));
             Assert.That(argumentsForCallsMadeOn, Is.Not.Null);
-            object[] callForThisObject;
             BoardGameGeekGameDefinition actualBoardGameGeekGameDefinition = null;
             foreach (var call in argumentsForCallsMadeOn)
             {
