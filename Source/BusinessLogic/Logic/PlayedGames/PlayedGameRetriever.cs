@@ -239,7 +239,7 @@ namespace BusinessLogic.Logic.PlayedGames
 
             if (!string.IsNullOrEmpty(playedGameFilter.InclusionApplicationName))
             {
-                queryable = queryable.Where(query => query.ApplicationLinkages.Any(x => x.ApplicationName == playedGameFilter.ExclusionApplicationName));
+                queryable = queryable.Where(query => query.ApplicationLinkages.Any(x => x.ApplicationName == playedGameFilter.InclusionApplicationName));
 
             }
 
