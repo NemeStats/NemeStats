@@ -42,11 +42,7 @@ domain should continue to work in the meantime, however.
 * 2016-06-03 Added authenticationTokenExpirationDateTime to the results of the registration (POST /Users/) and sign in (POST /UserSessions/) services.
 * 2016-07-22 Fixed API issue where newly created Players and Game Definitions were always placed in the User's default Gaming Group and not the one specified.
 Also added a 409 conflict response to POST /PlayedGames/ if any of the Players don't exist in the specified Gaming Group. Also re-fixed an issue where it wasn't
-accepting decimal places in pointsScored.
-* 2016-08-22 Can now set an externalSourceApplicationName and externalSourceEntityId when posting a Played Game. Also have the ability to
-filter to either include _OR_ exclude results via inclusionExternalSourceApplicationName or exclusionExternalSourceApplicationName 
--- respectively -- when searching Played Games. This could be useful for importing all games that didn't originate from the source app. It
-could also be used to help determine which games have not yet been synched to NemeStats.
+accepting decimal places in pointsScored
 * 2016-08-31 Can now set a list of applicationLinkages when recording a Played Game. This will allow clients to save their own unique identifier for games and retrieve games based on this identifier. For example, a client could import all games that do not have a source application matching their application.
 
 ### General Information
