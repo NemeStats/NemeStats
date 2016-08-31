@@ -46,6 +46,7 @@ namespace BusinessLogic.DataAccess
         public virtual DbSet<BoardGameGeekUserDefinition> BoardGameGeekUserDefinitions { get; set; }
         public virtual DbSet<PlayedGame> PlayedGames { get; set; }
         public virtual DbSet<PlayerGameResult> PlayerGameResults { get; set; }
+        public virtual DbSet<PlayedGameApplicationLinkage> PlayedGameApplicationLinkages { get; set; }
         public virtual DbSet<UserGamingGroup> UserGamingGroups { get; set; }
         public virtual DbSet<GamingGroupInvitation> GamingGroupInvitations { get; set; }
         public virtual DbSet<Nemesis> Nemeses { get; set; }

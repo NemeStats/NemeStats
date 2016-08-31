@@ -20,7 +20,6 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using BusinessLogic.DataAccess;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace BusinessLogic.Models
 {

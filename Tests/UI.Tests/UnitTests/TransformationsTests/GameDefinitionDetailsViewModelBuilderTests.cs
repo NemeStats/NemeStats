@@ -112,9 +112,9 @@ namespace UI.Tests.UnitTests.TransformationsTests
             };
             playerWinRecord2 = new PlayerWinRecord();
 
-            autoMocker.Get<ITransformer>().Expect(mock => mock.Transform<PlayerWinRecord, GameDefinitionPlayerSummaryViewModel>(playerWinRecord1))
+            autoMocker.Get<ITransformer>().Expect(mock => mock.Transform<GameDefinitionPlayerSummaryViewModel>(playerWinRecord1))
                        .Return(expectedPlayerSummary1);
-            autoMocker.Get<ITransformer>().Expect(mock => mock.Transform<PlayerWinRecord, GameDefinitionPlayerSummaryViewModel>(playerWinRecord2))
+            autoMocker.Get<ITransformer>().Expect(mock => mock.Transform<GameDefinitionPlayerSummaryViewModel>(playerWinRecord2))
                  .Return(expectedPlayerSummary2); 
 
             gameDefinitionSummary = new GameDefinitionSummary
@@ -277,9 +277,9 @@ namespace UI.Tests.UnitTests.TransformationsTests
         [Test]
         public void ItBuildsThePlayerSummaryViewModels()
         {
-            autoMocker.Get<ITransformer>().Expect(mock => mock.Transform<PlayerWinRecord, GameDefinitionPlayerSummaryViewModel>(playerWinRecord1))
+            autoMocker.Get<ITransformer>().Expect(mock => mock.Transform<GameDefinitionPlayerSummaryViewModel>(playerWinRecord1))
                        .Return(expectedPlayerSummary1);
-            autoMocker.Get<ITransformer>().Expect(mock => mock.Transform<PlayerWinRecord, GameDefinitionPlayerSummaryViewModel>(playerWinRecord2))
+            autoMocker.Get<ITransformer>().Expect(mock => mock.Transform<GameDefinitionPlayerSummaryViewModel>(playerWinRecord2))
                  .Return(expectedPlayerSummary2); 
 
             var actualResult = autoMocker.ClassUnderTest.Build(gameDefinitionSummary, currentUser);

@@ -33,6 +33,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using BusinessLogic.Logic.Points;
+using BusinessLogic.Logic.Security;
 using BusinessLogic.Tests.Fakes;
 using UniversalAnalyticsHttpWrapper;
 
@@ -192,6 +193,8 @@ namespace BusinessLogic.Tests.IntegrationTests
             var securedEntityValidatorForGameDefinition = new SecuredEntityValidator<GameDefinition>(dataContext);
             var weightBonusCalculator = new WeightBonusCalculator(new WeightTierCalculator());
             var pointsCalculator = new PointsCalculator(weightBonusCalculator, new GameDurationBonusCalculator());
+            var linkedPlayedGameValidator = new LinkedPlayedGameValidator(dataContext);
+            var applicationLinker = new ApplicationLinker(dataContext);
 
             IPlayedGameCreator playedGameCreator = new PlayedGameCreator(
                 dataContext, 
@@ -201,7 +204,9 @@ namespace BusinessLogic.Tests.IntegrationTests
                 securedEntityValidatorForPlayers,
                 securedEntityValidatorForGameDefinition,
                 pointsCalculator,
-                new FakeEventBus());
+                new FakeEventBus(),
+                linkedPlayedGameValidator,
+                applicationLinker);
             
             List<Player> players = new List<Player>() { testPlayer1, testPlayer2 };
             List<int> playerRanks = new List<int>() { 1, 1 };

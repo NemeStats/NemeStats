@@ -49,6 +49,7 @@ namespace BusinessLogic.Models
         [ForeignKey("CreatedByApplicationUserId")]
         public virtual ApplicationUser CreatedByApplicationUser { get; set; }
         public virtual IList<PlayerGameResult> PlayerGameResults { get; set; }
+        public virtual IList<PlayedGameApplicationLinkage> ApplicationLinkages { get; set; }
 
         public virtual Player WinningPlayer
         {

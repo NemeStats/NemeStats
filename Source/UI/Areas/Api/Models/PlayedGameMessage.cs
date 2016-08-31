@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using BusinessLogic.Models.Games;
 using BusinessLogic.Models.Games.Validation;
 
@@ -21,5 +20,7 @@ namespace UI.Areas.Api.Models
         public List<PlayerRank> PlayerRanks { get; set; }
 
         public int? GamingGroupId { get; set; }
+
+        public IList<ApplicationLinkageMessage> ApplicationLinkages { get; set; }
     }
 }

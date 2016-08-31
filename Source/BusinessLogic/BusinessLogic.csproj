@@ -217,9 +217,11 @@
     <Compile Include="EventTracking\UniversalAnalyticsNemeStatsEventTracker.cs" />
     <Compile Include="Exceptions\ApiAuthenticationException.cs" />
     <Compile Include="Exceptions\DuplicateKeyException.cs" />
+    <Compile Include="Exceptions\EntityAlreadySynchedException.cs" />
     <Compile Include="Exceptions\EntityDoesNotExistException.cs" />
     <Compile Include="Exceptions\ApiFriendlyException.cs" />
     <Compile Include="Exceptions\InvalidDateFormatException.cs" />
+    <Compile Include="Exceptions\InvalidSourceException.cs" />
     <Compile Include="Exceptions\PlayerAlreadyExistsException.cs" />
     <Compile Include="Exceptions\PlayerNotInGamingGroupException.cs" />
     <Compile Include="Exceptions\UnauthorizedEntityAccessException.cs" />
@@ -268,6 +270,8 @@
     <Compile Include="Logic\OneTimeJobs\BoardGameGeekThumbnailAttacher.cs" />
     <Compile Include="Logic\GameDefinitions\GameDefinitionUpdateRequest.cs" />
     <Compile Include="Logic\GamingGroups\GamingGroupInfoForUser.cs" />
+    <Compile Include="Logic\PlayedGames\ApplicationLinker.cs" />
+    <Compile Include="Logic\PlayedGames\IApplicationLinker.cs" />
     <Compile Include="Logic\PlayerAchievements\IPlayerAchievementRetriever.cs" />
     <Compile Include="Logic\PlayerAchievements\IRecentPlayerAchievementsUnlockedRetreiver.cs" />
     <Compile Include="Logic\PlayerAchievements\PlayerAchievementRetriever.cs" />
@@ -282,7 +286,9 @@
     <Compile Include="Logic\Points\PointsCalculator.cs" />
     <Compile Include="Logic\Points\GlobalPointsRecalculator.cs" />
     <Compile Include="Logic\Points\WeightBonusCalculator.cs" />
+    <Compile Include="Logic\Security\ILinkedPlayedGameValidator.cs" />
     <Compile Include="Logic\Security\MachineKeyDataProtector.cs" />
+    <Compile Include="Logic\Security\LinkedPlayedGameValidator.cs" />
     <Compile Include="Logic\TransactionSource.cs" />
     <Compile Include="Logic\Users\AuthTokenGenerator.cs" />
     <Compile Include="Logic\Users\AuthTokenValidator.cs" />
@@ -352,11 +358,17 @@
     <Compile Include="Migrations\201608080135431_AddYearToBGGDefinition.Designer.cs">
       <DependentUpon>201608080135431_AddYearToBGGDefinition.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201608280145267_AddPlayedGameApplicationLinkage.cs" />
+    <Compile Include="Migrations\201608280145267_AddPlayedGameApplicationLinkage.Designer.cs">
+      <DependentUpon>201608280145267_AddPlayedGameApplicationLinkage.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Achievements\AchievementLevel.cs" />
     <Compile Include="Models\Achievements\AchievementId.cs" />
+    <Compile Include="Models\PlayedGameApplicationLinkage.cs" />
     <Compile Include="Models\Games\SavePlayedGameRequest.cs" />
     <Compile Include="Models\Games\TrendingGame.cs" />
     <Compile Include="Logic\Points\IWeightTierCalculator.cs" />
+    <Compile Include="Models\PlayedGames\ApplicationLinkage.cs" />
     <Compile Include="Models\PlayerAchievement.cs" />
     <Compile Include="Models\Games\TrendingGamesRequest.cs" />
     <Compile Include="Models\Players\CreatePlayerRequest.cs" />
@@ -968,6 +980,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201608080135431_AddYearToBGGDefinition.resx">
       <DependentUpon>201608080135431_AddYearToBGGDefinition.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608280145267_AddPlayedGameApplicationLinkage.resx">
+      <DependentUpon>201608280145267_AddPlayedGameApplicationLinkage.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

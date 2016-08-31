@@ -324,6 +324,7 @@
     <Compile Include="Areas\Api\Controllers\UsersController.cs" />
     <Compile Include="Areas\Api\Controllers\UserSessionsController.cs" />
     <Compile Include="Areas\Api\Controllers\VotableFeaturesController.cs" />
+    <Compile Include="Areas\Api\Models\ApplicationLinkageMessage.cs" />
     <Compile Include="Areas\Api\Models\CredentialsMessage.cs" />
     <Compile Include="Areas\Api\Models\DefaultEmptyResponseMessage.cs" />
     <Compile Include="Areas\Api\Models\FeatureVote.cs" />

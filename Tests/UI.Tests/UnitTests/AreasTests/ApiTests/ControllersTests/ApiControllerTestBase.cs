@@ -21,20 +21,20 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests
         public void BaseSetUp()
         {
             AutomapperConfiguration.Configure();
-            this._autoMocker = new RhinoAutoMocker<T>();
+            _autoMocker = new RhinoAutoMocker<T>();
             var controllerContextMock = MockRepository.GeneratePartialMock<HttpControllerContext>();
             var actionDescriptorMock = MockRepository.GenerateMock<HttpActionDescriptor>();
-            this._autoMocker.ClassUnderTest.ActionContext = new HttpActionContext(controllerContextMock, actionDescriptorMock);
+            _autoMocker.ClassUnderTest.ActionContext = new HttpActionContext(controllerContextMock, actionDescriptorMock);
 
-            this._applicationUser = new ApplicationUser
+            _applicationUser = new ApplicationUser
             {
                 Id = "application user id",
                 CurrentGamingGroupId = EXPECTED_GAMING_GROUP_ID
             };
-            _autoMocker.ClassUnderTest.CurrentUser = this._applicationUser;
+            _autoMocker.ClassUnderTest.CurrentUser = _applicationUser;
 
-            this._autoMocker.ClassUnderTest.Request = new HttpRequestMessage();
-            this._autoMocker.ClassUnderTest.Request.SetConfiguration(new HttpConfiguration());
+            _autoMocker.ClassUnderTest.Request = new HttpRequestMessage();
+            _autoMocker.ClassUnderTest.Request.SetConfiguration(new HttpConfiguration());
         }
     }
 }

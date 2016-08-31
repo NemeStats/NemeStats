@@ -106,7 +106,7 @@ namespace UI.Tests.UnitTests.ControllerTests.HomeControllerTests
             _autoMocker.Get<ITopGamingGroupsRetriever>().Expect(mock => mock.GetResults(HomeController.NUMBER_OF_TOP_GAMING_GROUPS_TO_SHOW))
                                     .Return(expectedTopGamingGroupSummaries);
             _autoMocker.Get<ITransformer>()
-                .Expect(mock => mock.Transform<TopGamingGroupSummary, TopGamingGroupSummaryViewModel>(expectedTopGamingGroupSummaries[0]))
+                .Expect(mock => mock.Transform<TopGamingGroupSummaryViewModel>(expectedTopGamingGroupSummaries[0]))
                 .Return(expectedTopGamingGroupViewModel);
 
             _expectedTrendingGame = new TrendingGame
@@ -123,19 +123,7 @@ namespace UI.Tests.UnitTests.ControllerTests.HomeControllerTests
             _expectedTrendingGameViewModel = new TrendingGameViewModel();
             var trendingGamesRequest = new TrendingGamesRequest(HomeController.NUMBER_OF_TRENDING_GAMES_TO_SHOW, HomeController.NUMBER_OF_DAYS_OF_TRENDING_GAMES);
             _autoMocker.Get<ITrendingGamesRetriever>().Expect(mock => mock.GetResults(Arg<TrendingGamesRequest>.Is.Equal(trendingGamesRequest))).Return(expectedTopGames);
-            _autoMocker.Get<ITransformer>().Expect(mock => mock.Transform<TrendingGame, TrendingGameViewModel>(expectedTopGames[0])).Return(_expectedTrendingGameViewModel);
-
-            //var mapper = _autoMocker.Stub(s=> s.Get<ICustomMapper<PlayerAchievement, PlayerAchievementWinnerViewModel>>()
-            //    .Expect(m => m.Map(Arg<IEnumerable<PlayerAchievement>>.Is.Anything))
-            //    .Return(new List<PlayerAchievementWinnerViewModel>()
-            //    {
-            //        new PlayerAchievementWinnerViewModel {AchievementId = recentAchievementsUnlocks.First().AchievementId}
-            //    }));
-            //var mapperFactory = _autoMocker.Stub(s => s.Get<IMapperFactory>().Expect(e=>e.GetMapper<PlayerAchievement, PlayerAchievementWinnerViewModel>()).Return(
-
-            //    ));
-            
-
+            _autoMocker.Get<ITransformer>().Expect(mock => mock.Transform<TrendingGameViewModel>(expectedTopGames[0])).Return(_expectedTrendingGameViewModel);
 
             viewResult = _autoMocker.ClassUnderTest.Index() as ViewResult;
 

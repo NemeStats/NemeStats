@@ -72,7 +72,6 @@ namespace UI.Controllers
 
         public virtual ActionResult Index()
         {
-
             var recentPlayerAchievements = _recentPlayerAchievementsUnlockedRetreiver.GetResults(new GetRecentPlayerAchievementsUnlockedQuery {PageSize = NUMBER_OF_RECENT_ACHIEVEMENTS_TO_SHOW });
             var recentPlayerAchievementsViewModel =
                 recentPlayerAchievements.ToMappedPagedList(_mapperFactory.GetMapper<PlayerAchievement,PlayerAchievementWinnerViewModel>());
@@ -81,11 +80,11 @@ namespace UI.Controllers
 
             var topGamingGroups = _topGamingGroupsRetriever.GetResults(NUMBER_OF_TOP_GAMING_GROUPS_TO_SHOW);
 
-            var topGamingGroupViewModels = topGamingGroups.Select(_transformer.Transform<TopGamingGroupSummary, TopGamingGroupSummaryViewModel>).ToList();
+            var topGamingGroupViewModels = topGamingGroups.Select(_transformer.Transform<TopGamingGroupSummaryViewModel>).ToList();
 
             var trendingGamesRequest = new TrendingGamesRequest(NUMBER_OF_TRENDING_GAMES_TO_SHOW, NUMBER_OF_DAYS_OF_TRENDING_GAMES);
             var trendingGames = _trendingGamesRetriever.GetResults(trendingGamesRequest);
-            var trendingGameViewModels = trendingGames.Select(_transformer.Transform<TrendingGame, TrendingGameViewModel>).ToList();
+            var trendingGameViewModels = trendingGames.Select(_transformer.Transform<TrendingGameViewModel>).ToList();
 
             var homeIndexViewModel = new HomeIndexViewModel()
             {

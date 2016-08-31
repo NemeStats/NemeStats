@@ -29,11 +29,10 @@ namespace BusinessLogic.Models.Games
         public NewlyCompletedGame()
         {
             DatePlayed = DateTime.UtcNow;
+            ApplicationLinkages = new List<ApplicationLinkage>();
         }
 
         public int? GameDefinitionId { get; set; }
-        public int? BoardGameGeekGameDefinitionId { get; set; }
-        public string GameDefinitionName { get; set; }
 
         public string Notes { get; set; }
 
@@ -48,6 +47,6 @@ namespace BusinessLogic.Models.Games
 
         public WinnerTypes? WinnerType { get; set; }
         public int? GamingGroupId { get; set; }
-        
+        public IList<ApplicationLinkage> ApplicationLinkages { get; set; }
     }
 }
