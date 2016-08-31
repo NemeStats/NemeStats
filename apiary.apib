@@ -311,7 +311,7 @@ This service will record a new Played Game under the specified Gaming Group (per
     + datePlayed (string, optional) - The date the game was played in yyyy-MM-dd format (e.g. 2015-04-29).
     + notes (string, optional) - Any notes or comments that the User wants to record about the game for future reference.
     + playerRanks (array[PlayerRank], required) - A collection of PlayerRank objects specifying the game rank and points scored for each Player. See below table for details.
-    + applicationLinkages (array[PlayerRank], optional) - A collection of ApplicationLinkage objects specifying external identifiers for the Played Game in other systems. Should always have at least one ApplicationLinkage with applicationName = "NemeStats" and entityId = "{NemeStats Played Game Id}".
+    + applicationLinkages (array[ApplicationLinkage], optional) - A collection of ApplicationLinkage objects specifying external identifiers for the Played Game in other systems. Should always have at least one ApplicationLinkage with applicationName = "NemeStats" and entityId = "{NemeStats Played Game Id}".
 
 + Request Valid Request (application/json)
 
