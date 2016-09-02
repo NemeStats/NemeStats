@@ -1,31 +1,11 @@
-using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace BusinessLogic.Jobs.BoardGameGeekCleanUpService
+namespace BusinessLogic.Jobs.BoardGameGeekBatchUpdateJobService
 {
-    public abstract class BaseJobResult
+    public class LinkOrphanGamesJobResult : BaseJobResult
     {
-        protected BaseJobResult()
-        {
-            Success = true;
-        }
-
-        public TimeSpan TimeEllapsed { get; set; }
-        public bool Success { get; set; }
-
-        public override string ToString()
-        {
-            var sb = new StringBuilder();
-
-            sb.AppendLine($"Job ended after {TimeEllapsed.TotalSeconds} seconds with a {Success} result");
-
-            return sb.ToString();
-        }
-    }
-    public class LinkOrphanGamesResult : BaseJobResult
-    {
-        public LinkOrphanGamesResult()
+        public LinkOrphanGamesJobResult()
         {
             LinkedGames = 0;
             StillOrphanGames = new List<OrphanGame>();

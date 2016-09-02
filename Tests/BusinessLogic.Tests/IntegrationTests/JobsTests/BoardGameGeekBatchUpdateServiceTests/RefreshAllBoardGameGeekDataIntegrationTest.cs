@@ -2,7 +2,7 @@
 using BoardGameGeekApiClient.Service;
 using BusinessLogic.DataAccess;
 using BusinessLogic.DataAccess.Security;
-using BusinessLogic.Jobs.BoardGameGeekCleanUpService;
+using BusinessLogic.Jobs.BoardGameGeekBatchUpdateJobService;
 using NUnit.Framework;
 using Rhino.Mocks;
 using RollbarSharp;
@@ -23,7 +23,7 @@ namespace BusinessLogic.Tests.IntegrationTests.JobsTests.BoardGameGeekBatchUpdat
                     //API failures won't get logged!
                     var rollbarClient = MockRepository.GenerateMock<IRollbarClient>();
                     var boardGameGeekClient = new BoardGameGeekClient(apiDownloaderService, rollbarClient);
-                    var batchUpdateService = new BoardGameGeekBatchUpdateService(dataContext, boardGameGeekClient, rollbarClient);
+                    var batchUpdateService = new BoardGameGeekBatchUpdateJobService(dataContext, boardGameGeekClient, rollbarClient);
 
                     var totalRecordsUpdated = batchUpdateService.RefreshAllBoardGameGeekData();
 

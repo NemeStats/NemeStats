@@ -235,8 +235,10 @@
     <Compile Include="Facades\TopGamingGroupsRetriever.cs" />
     <Compile Include="Facades\TopPlayersRetriever.cs" />
     <Compile Include="Facades\TrendingGamesRetriever.cs" />
-    <Compile Include="Jobs\BoardGameGeekCleanUpService\LinkOrphanGamesResult.cs" />
-    <Compile Include="Jobs\BoardGameGeekCleanUpService\BoardGameGeekBatchUpdateService.cs" />
+    <Compile Include="Jobs\BaseJobResult.cs" />
+    <Compile Include="Jobs\BaseJobService.cs" />
+    <Compile Include="Jobs\BoardGameGeekBatchUpdateJobService\LinkOrphanGamesJobResult.cs" />
+    <Compile Include="Jobs\BoardGameGeekBatchUpdateJobService\BoardGameGeekBatchUpdateJobService.cs" />
     <Compile Include="Logic\Achievements\AchievementAwarded.cs" />
     <Compile Include="Logic\Achievements\BaseAchievement.cs" />
     <Compile Include="Logic\Achievements\BoardGameGeek2016_10x10Achievement.cs" />
@@ -262,7 +264,7 @@
     <Compile Include="Logic\BoardGameGeek\BoardGameGeekGameDefinitionCreator.cs" />
     <Compile Include="Logic\BoardGameGeek\BoardGameGeekGamesImporter.cs" />
     <Compile Include="Logic\BoardGameGeek\BoardGameGeekUrlBuilder.cs" />
-    <Compile Include="Jobs\BoardGameGeekCleanUpService\IBoardGameGeekBatchUpdateService.cs" />
+    <Compile Include="Jobs\BoardGameGeekBatchUpdateJobService\IBoardGameGeekBatchUpdateJobService.cs" />
     <Compile Include="Logic\BoardGameGeek\IBoardGameGeekGameDefinitionCreator.cs" />
     <Compile Include="Logic\BoardGameGeek\IBoardGameGeekGamesImporter.cs" />
     <Compile Include="Logic\Champions\ChampionRecalculator.cs" />
