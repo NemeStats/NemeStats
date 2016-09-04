@@ -22,6 +22,7 @@ namespace BusinessLogic.Models
         public int? YearPublished { get; set; }
         public bool IsExpansion { get; set; }
         public int? Rank { get; set; }
+        public virtual IList<BoardGameGeekGameToCategory> Categories { get; set; }
         [NotMapped]
         public int? AveragePlayTime {
             get

@@ -7,13 +7,13 @@ namespace BusinessLogic.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class AddBGGCategory : IMigrationMetadata
+    public sealed partial class AddBGGCategoryLogic : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(AddBGGCategory));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(AddBGGCategoryLogic));
         
         string IMigrationMetadata.Id
         {
-            get { return "201608240432066_AddBGGCategory"; }
+            get { return "201608280155170_AddBGGCategoryLogic"; }
         }
         
         string IMigrationMetadata.Source

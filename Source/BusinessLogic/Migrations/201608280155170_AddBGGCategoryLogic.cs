@@ -3,29 +3,32 @@ namespace BusinessLogic.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class AddBGGCategory : DbMigration
+    public partial class AddBGGCategoryLogic : DbMigration
     {
         public override void Up()
         {
             CreateTable(
-                "dbo.BGGGameToCategory",
+                "dbo.BoardGameGeekGameCategory",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        CategoryName = c.String(),
+                    })
+                .PrimaryKey(t => t.Id);
+            
+            CreateTable(
+                "dbo.BoardGameGeekGameToCategory",
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
                         BoardGameGeekGameDefinitionId = c.Int(nullable: false),
                         BoardGameGeekGameCategoryId = c.Int(nullable: false),
                     })
-                .PrimaryKey(t => t.Id);
-
-            CreateTable(
-                "dbo.BoardGameGeekGameCategory",
-                c => new
-                {
-                    Id = c.Int(nullable: false, identity: true),
-                    CategoryName = c.String(),
-                })
-                .PrimaryKey(t => t.Id);
-
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.BoardGameGeekGameCategory", t => t.BoardGameGeekGameCategoryId, cascadeDelete: true)
+                .ForeignKey("dbo.BoardGameGeekGameDefinition", t => t.BoardGameGeekGameDefinitionId, cascadeDelete: true)
+                .Index(t => new { t.BoardGameGeekGameDefinitionId, t.BoardGameGeekGameCategoryId }, unique: true, name: "IX_BGGGAMEDEFINITIONID_BGGGAMECATEGORYID");
+            
             AddColumn("dbo.BoardGameGeekGameDefinition", "IsExpansion", c => c.Boolean(nullable: false));
             AddColumn("dbo.BoardGameGeekGameDefinition", "Rank", c => c.Int());
 
@@ -114,12 +117,15 @@ namespace BusinessLogic.Migrations
             this.Sql("insert into [dbo].[BoardGameGeekGameCategory] ([Id], [CategoryName]) values(1049, 'World War II')");
             this.Sql("insert into [dbo].[BoardGameGeekGameCategory] ([Id], [CategoryName]) values(2481, 'Zombies')");
         }
-
+        
         public override void Down()
         {
+            DropForeignKey("dbo.BoardGameGeekGameToCategory", "BoardGameGeekGameDefinitionId", "dbo.BoardGameGeekGameDefinition");
+            DropForeignKey("dbo.BoardGameGeekGameToCategory", "BoardGameGeekGameCategoryId", "dbo.BoardGameGeekGameCategory");
+            DropIndex("dbo.BoardGameGeekGameToCategory", "IX_BGGGAMEDEFINITIONID_BGGGAMECATEGORYID");
             DropColumn("dbo.BoardGameGeekGameDefinition", "Rank");
             DropColumn("dbo.BoardGameGeekGameDefinition", "IsExpansion");
-            DropTable("dbo.BGGGameToCategory");
+            DropTable("dbo.BoardGameGeekGameToCategory");
             DropTable("dbo.BoardGameGeekGameCategory");
         }
     }

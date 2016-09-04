@@ -3,6 +3,7 @@ using BusinessLogic.DataAccess;
 using BusinessLogic.Exceptions;
 using BusinessLogic.Models;
 using BusinessLogic.Models.User;
+using System.Collections.Generic;
 
 namespace BusinessLogic.Logic.BoardGameGeek
 {
@@ -58,18 +59,18 @@ namespace BusinessLogic.Logic.BoardGameGeek
             _dataContext.Save(newRecord, currentUser);
 
             // Save categories to BGG definition
+            var gameToCategorySave = new BoardGameGeekGameToCategory();
+
             foreach (var x in gameDetails.Categories)
             {
-                var gameToCategoryToSave = new BGGGameToCategory
-                {
-                    BoardGameGeekGameDefinitionId = boardGameGeekGameDefinitionId,
-                    BoardGameGeekGameCategoryId = x.Id
-                };
+                gameToCategorySave = new BoardGameGeekGameToCategory
+                    {
+                        BoardGameGeekGameDefinitionId = boardGameGeekGameDefinitionId,
+                        BoardGameGeekGameCategoryId = x.Id
+                    };
 
-                _dataContext.Save(gameToCategoryToSave, currentUser);
+                _dataContext.Save(gameToCategorySave, currentUser);
             }
-
-
 
             return boardGameGeekGameDefinitionId;
         }

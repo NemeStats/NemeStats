@@ -238,6 +238,7 @@
     <Compile Include="Logic\Achievements\AchievementAwarded.cs" />
     <Compile Include="Logic\Achievements\BaseAchievement.cs" />
     <Compile Include="Logic\Achievements\BoardGameGeek2016_10x10Achievement.cs" />
+    <Compile Include="Logic\Achievements\DiceChuckerAchievement.cs" />
     <Compile Include="Logic\Achievements\TimeTravellerAchievement.cs" />
     <Compile Include="Logic\Achievements\CollaboratorAchievement.cs" />
     <Compile Include="Logic\Achievements\DespicableMeAchievement.cs" />
@@ -352,13 +353,14 @@
     <Compile Include="Migrations\201608080135431_AddYearToBGGDefinition.Designer.cs">
       <DependentUpon>201608080135431_AddYearToBGGDefinition.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201608240432066_AddBGGCategory.cs" />
-    <Compile Include="Migrations\201608240432066_AddBGGCategory.Designer.cs">
-      <DependentUpon>201608240432066_AddBGGCategory.cs</DependentUpon>
+    <Compile Include="Migrations\201608280155170_AddBGGCategoryLogic.cs" />
+    <Compile Include="Migrations\201608280155170_AddBGGCategoryLogic.Designer.cs">
+      <DependentUpon>201608280155170_AddBGGCategoryLogic.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\Achievements\AchievementLevel.cs" />
     <Compile Include="Models\Achievements\AchievementId.cs" />
-    <Compile Include="Models\Games\BGGGameToCategory.cs" />
+    <Compile Include="Models\Games\BoardGameGeekGameCategory.cs" />
+    <Compile Include="Models\Games\BoardGameGeekGameToCategory.cs" />
     <Compile Include="Models\Games\GameToCategory.cs" />
     <Compile Include="Models\Games\SavePlayedGameRequest.cs" />
     <Compile Include="Models\Games\TrendingGame.cs" />
@@ -975,8 +977,8 @@
     <EmbeddedResource Include="Migrations\201608080135431_AddYearToBGGDefinition.resx">
       <DependentUpon>201608080135431_AddYearToBGGDefinition.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201608240432066_AddBGGCategory.resx">
-      <DependentUpon>201608240432066_AddBGGCategory.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201608280155170_AddBGGCategoryLogic.resx">
+      <DependentUpon>201608280155170_AddBGGCategoryLogic.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

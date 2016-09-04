@@ -237,6 +237,7 @@
     <Compile Include="UnitTests\JobsTests\BoardGameGeekBatchUpdateService\LinkOrphanGamesTests\LinkOrphanGamesJobTests.cs" />
     <Compile Include="UnitTests\JobsTests\BoardGameGeekBatchUpdateService\RefreshAllBoardGameGeekDataTests.cs" />
     <Compile Include="UnitTests\LogicTests\AchievementTests\BaseAchievementTests\DescriptionTests.cs" />
+    <Compile Include="UnitTests\LogicTests\AchievementTests\DiceChuckerAchievementTests.cs" />
     <Compile Include="UnitTests\LogicTests\AchievementTests\TimeTravellerAchievementTests.cs" />
     <Compile Include="UnitTests\LogicTests\AchievementTests\NickelPlatedAchievementTests.cs" />
     <Compile Include="UnitTests\LogicTests\AchievementTests\UnitedWeFallAchievementTests.cs" />
