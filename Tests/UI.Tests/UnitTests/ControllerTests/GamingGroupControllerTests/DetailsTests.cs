@@ -23,6 +23,10 @@ using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
+using BusinessLogic.Exceptions;
+using Shouldly;
+using StructureMap.AutoMocking;
+using UI.Controllers;
 using UI.Models.GamingGroup;
 using UI.Transformations;
 
@@ -60,15 +64,30 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
         [Test]
         public void ItReturnsTheDetailsView()
         {
-            ViewResult viewResult = autoMocker.ClassUnderTest.Details(currentUser.CurrentGamingGroupId , currentUser, dateRangeFilter) as ViewResult;
+            var viewResult = autoMocker.ClassUnderTest.Details(currentUser.CurrentGamingGroupId , currentUser, dateRangeFilter) as ViewResult;
 
             Assert.AreEqual(MVC.GamingGroup.Views.Details, viewResult.ViewName);
         }
 
         [Test]
+        public void ItReturnsA404NotFoundIfTheGamingGroupCantBeFound()
+        {
+            autoMocker = new RhinoAutoMocker<GamingGroupController>();
+            autoMocker.PartialMockTheClassUnderTest();
+    
+            autoMocker.ClassUnderTest.Expect(
+                mock => mock.GetGamingGroupSummary(Arg<int>.Is.Anything, Arg<IDateRangeFilter>.Is.Anything))
+                .Throw(new EntityDoesNotExistException(typeof(GamingGroup), currentUser.CurrentGamingGroupId));
+
+            var result = autoMocker.ClassUnderTest.Details(currentUser.CurrentGamingGroupId, currentUser, dateRangeFilter);
+
+            result.ShouldBeAssignableTo<HttpNotFoundResult>();
+        }
+
+        [Test]
         public void ItAddsAGamingGroupViewModelToTheView()
         {
-            ViewResult viewResult = autoMocker.ClassUnderTest.Details(currentUser.CurrentGamingGroupId, currentUser, dateRangeFilter) as ViewResult;
+            var viewResult = autoMocker.ClassUnderTest.Details(currentUser.CurrentGamingGroupId, currentUser, dateRangeFilter) as ViewResult;
 
             Assert.AreSame(_gamingGroupViewModel, viewResult.Model);
         }
@@ -76,7 +95,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
         [Test]
         public void ItPreservesTheDateRangeFilter()
         {
-            ViewResult viewResult = autoMocker.ClassUnderTest.Details(currentUser.CurrentGamingGroupId, currentUser, dateRangeFilter) as ViewResult;
+            var viewResult = autoMocker.ClassUnderTest.Details(currentUser.CurrentGamingGroupId, currentUser, dateRangeFilter) as ViewResult;
 
             var model = viewResult.Model as GamingGroupViewModel;
             Assert.AreSame(dateRangeFilter, model.DateRangeFilter);
@@ -95,7 +114,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
         public void ItAddsAModelErrorIfTheBasicDateRangeFilterHasValidationErrors()
         {
             var basicDateRangeFilterMock = MockRepository.GenerateMock<BasicDateRangeFilter>();
-            string expectedErrorMessage = "some error message";
+            var expectedErrorMessage = "some error message";
             basicDateRangeFilterMock.Expect(mock => mock.IsValid(out Arg<string>.Out(expectedErrorMessage).Dummy)).Return(false);
             var viewResult = autoMocker.ClassUnderTest.Details(currentUser.CurrentGamingGroupId, currentUser, basicDateRangeFilterMock) as ViewResult;
 
