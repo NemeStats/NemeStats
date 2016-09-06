@@ -24,7 +24,8 @@ namespace BoardGameGeekApiClient.Tests.UnitTests.Helpers.BoardGameGeekApiClientH
             {
                 Assert.IsNotEmpty(Result);
                 Assert.AreEqual(Categories.Count, Result.Count);
-                Assert.AreEqual("Bluffing", Result.First());
+                var firstResult = Result.First();
+                Assert.AreEqual("Bluffing", firstResult.Category);
             }
         }
 
