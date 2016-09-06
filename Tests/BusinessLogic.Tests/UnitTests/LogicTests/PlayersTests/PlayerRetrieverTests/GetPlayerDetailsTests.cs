@@ -178,7 +178,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
         }
 
         [Test]
-        public void ItThrowsAKeyNotFoundExceptionIfThePlayerDoesNotExist()
+        public void ItThrowsAnEntityDoesNotExistExceptionIfThePlayerDoesNotExist()
         {
             const int invalidPlayerId = -1;
             var expectedMessage = string.Format(PlayerRetriever.EXCEPTION_MESSAGE_PLAYER_COULD_NOT_BE_FOUND, invalidPlayerId);
