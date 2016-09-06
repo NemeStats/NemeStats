@@ -39,9 +39,9 @@ namespace BusinessLogic.Logic.Achievements
             var allDiceGames =
                 DataContext
                     .GetQueryable<PlayerGameResult>()
-                    .Where(x => x.PlayerId == playerId)
-                    .Where(x => x.PlayedGame.GameDefinition.BoardGameGeekGameDefinition.Categories.Any(o => o.BoardGameGeekGameCategory.CategoryName == "Dice"))
-                    .Select(x => (int)x.PlayedGame.GameDefinitionId)
+                    .Where(x => x.PlayerId == playerId 
+                    && x.PlayedGame.GameDefinition.BoardGameGeekGameDefinition.Categories.Any(o => o.BoardGameGeekGameCategory.CategoryName == "Dice"))
+                    .Select(x => x.PlayedGame.GameDefinitionId)
                     .Distinct()
                     .ToList();
 
