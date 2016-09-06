@@ -87,7 +87,23 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.AchievementTests
                             PlayerId = playerId,
                             PlayedGame = new PlayedGame
                             {
-                                GameDefinitionId = j + 1
+                                GameDefinitionId = j,
+                                GameDefinition = new GameDefinition
+                                {
+                                    BoardGameGeekGameDefinition = new BoardGameGeekGameDefinition
+                                    {
+                                        Categories = new List<BoardGameGeekGameToCategory>
+                                        {
+                                            new BoardGameGeekGameToCategory
+                                            {
+                                                BoardGameGeekGameCategory = new BoardGameGeekGameCategory
+                                                {
+                                                    CategoryName = "Dice"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
                             }
                         });
                 }
