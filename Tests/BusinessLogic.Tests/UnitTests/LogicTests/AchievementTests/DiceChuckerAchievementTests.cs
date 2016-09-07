@@ -79,69 +79,34 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.AchievementTests
             var playerGameResults = new List<PlayerGameResult>();
             for (int j = 0; j < numberofUniqueGamesToSetup; j++)
             {
-                for (int i = 0; i < 5; i++)
-                {
-                    playerGameResults.Add(
-                        new PlayerGameResult
+                playerGameResults.Add(
+                    new PlayerGameResult
+                    {
+                        PlayerId = playerId,
+                        PlayedGame = new PlayedGame
                         {
-                            PlayerId = playerId,
-                            PlayedGame = new PlayedGame
+                            GameDefinitionId = j,
+                            GameDefinition = new GameDefinition
                             {
-                                GameDefinitionId = j,
-                                GameDefinition = new GameDefinition
+                                BoardGameGeekGameDefinition = new BoardGameGeekGameDefinition
                                 {
-                                    BoardGameGeekGameDefinition = new BoardGameGeekGameDefinition
+                                    Categories = new List<BoardGameGeekGameToCategory>
                                     {
-                                        Categories = new List<BoardGameGeekGameToCategory>
+                                        new BoardGameGeekGameToCategory
                                         {
-                                            new BoardGameGeekGameToCategory
+                                            BoardGameGeekGameCategory = new BoardGameGeekGameCategory
                                             {
-                                                BoardGameGeekGameCategory = new BoardGameGeekGameCategory
-                                                {
-                                                    CategoryName = "Dice"
-                                                }
+                                                CategoryName = "Dice"
                                             }
                                         }
                                     }
                                 }
                             }
-                        });
-                }
+                        }
+                    });
             }
 
             _autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<PlayerGameResult>()).Return(playerGameResults.AsQueryable());
-        }
-
-        private static void AddPlayerGameResult(
-            int playerId,
-            List<PlayerGameResult> playerGameResults,
-            int gameDefinitionId)
-        {
-            var diceCategory = new BoardGameGeekGameCategory()
-            {
-                Id = 1017,
-                CategoryName = "Dice"
-            };
-
-            var gameToDiceCategory = new BoardGameGeekGameToCategory()
-            {
-                BoardGameGeekGameDefinitionId = gameDefinitionId,
-                BoardGameGeekGameCategoryId = diceCategory.Id
-            };
-
-            var gameDef = new GameDefinition();
-            //gameDef.BoardGameGeekGameDefinition.Categories = gameToDiceCategory;
-
-            playerGameResults.Add(
-                new PlayerGameResult
-                {
-                    PlayerId = playerId,
-                    PlayedGame = new PlayedGame
-                    {
-                        GameDefinitionId = gameDefinitionId,
-                        GameDefinition = gameDef
-                    }
-                });
         }
     }
 }
