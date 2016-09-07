@@ -20,7 +20,7 @@ namespace BusinessLogic.Logic.Achievements
 
         public override string DescriptionFormat => "This Achievement is earned by playing {0} different games with the BoardGameGeek Category of 'Dice'.";
 
-        public override string IconClass => "fa fa-bitbucket";
+        public override string IconClass => "ns-icon-dice-chucker";
 
         public override Dictionary<AchievementLevel, int> LevelThresholds => new Dictionary<AchievementLevel, int>
         {

@@ -1,4 +1,4 @@
-@charset "UTF-8";
+﻿@charset "UTF-8";
 /*!
  *  Font Awesome 4.5.0 by @davegandy - http://fontawesome.io - @fontawesome
  *  License - http://fontawesome.io/license (Font: SIL OFL 1.1, CSS: MIT License)
@@ -2138,5 +2138,8 @@
   margin-left: 0; }
   .ns-icon-eye-minion:before {
     content: "\e90b"; }
+
+.ns-icon-dice-chucker:before {
+  content: "\e90c"; }
 
 /*# sourceMappingURL=fonts.css.map */
