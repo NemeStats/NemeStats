@@ -11,7 +11,7 @@ namespace BusinessLogic.Migrations
                 "dbo.BoardGameGeekGameCategory",
                 c => new
                     {
-                        Id = c.Int(nullable: false, identity: true),
+                        Id = c.Int(nullable: false, identity: false),
                         CategoryName = c.String(),
                     })
                 .PrimaryKey(t => t.Id);
