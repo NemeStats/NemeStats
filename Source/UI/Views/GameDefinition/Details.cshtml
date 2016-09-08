@@ -77,6 +77,14 @@
                                             <td><a href="@Model.BoardGameGeekGameDefinition.BoardGameGeekUri.AbsoluteUri" target="_blank;">view on boardgamegeek.com</a></td>
                                         </tr>
                                     }
+                                    <tr>
+                                        <td class="text-center">
+                                            @foreach (var category in Model.BoardGameGeekGameDefinition.Categories)
+                                            {
+                                                <span class="label label-default">@category</span>
+                                            }
+                                        </td>
+                                    </tr>
                                 </table>
                             </div>
 

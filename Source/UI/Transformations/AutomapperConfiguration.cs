@@ -16,6 +16,7 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 
+using System.Linq;
 using AutoMapper;
 using BusinessLogic.Logic.BoardGameGeek;
 using BusinessLogic.Logic.GameDefinitions;
@@ -80,10 +81,9 @@ namespace UI.Transformations
                   .ConstructUsing(x => new NemePointsSummaryViewModel(x.BaseNemePoints, x.GameDurationBonusNemePoints, x.WeightBonusNemePoints));
             Mapper.CreateMap<TrendingGame, TrendingGameViewModel>(MemberList.Destination);
             Mapper.CreateMap<BoardGameGeekGameDefinition, BoardGameGeekGameDefinitionViewModel>()
-                .ForMember(m => m.BoardGameGeekUri,
-                    opt => opt.MapFrom(src => BoardGameGeekUriBuilder.BuildBoardGameGeekGameUri(src.Id)))
-                .ForMember(m => m.WeightDescription,
-                    opt => opt.Ignore());
+                .ForMember(m => m.BoardGameGeekUri,opt => opt.MapFrom(src => BoardGameGeekUriBuilder.BuildBoardGameGeekGameUri(src.Id)))
+                .ForMember(m => m.Categories, opt => opt.MapFrom(src => src.Categories.Select(c=>c.BoardGameGeekGameCategory.CategoryName)))
+                .ForMember(m => m.WeightDescription, opt => opt.Ignore());
             Mapper.CreateMap<PlayedGameQuickStats, PlayedGameQuickStatsViewModel>(MemberList.Destination);
         }
     }

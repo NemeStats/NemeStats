@@ -4,6 +4,7 @@ using BusinessLogic.DataAccess;
 using BusinessLogic.Logic.Achievements;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Achievements;
+using BusinessLogic.Models.Games;
 using NUnit.Framework;
 using Rhino.Mocks;
 using StructureMap.AutoMocking;

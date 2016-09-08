@@ -2,6 +2,7 @@
 using BusinessLogic.DataAccess;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using BusinessLogic.Models.Games;
 
 namespace BusinessLogic.Models
 {

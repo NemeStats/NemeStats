@@ -1,8 +1,8 @@
-﻿using BusinessLogic.DataAccess;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using BusinessLogic.DataAccess;
 
-namespace BusinessLogic.Models
+namespace BusinessLogic.Models.Games
 {
     public class BoardGameGeekGameToCategory : EntityWithTechnicalKey<int>
     {

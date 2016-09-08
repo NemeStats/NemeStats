@@ -4,6 +4,7 @@ using BusinessLogic.Exceptions;
 using BusinessLogic.Models;
 using BusinessLogic.Models.User;
 using System.Collections.Generic;
+using BusinessLogic.Models.Games;
 
 namespace BusinessLogic.Logic.BoardGameGeek
 {
@@ -48,7 +49,7 @@ namespace BusinessLogic.Logic.BoardGameGeek
                 MaxPlayers = gameDetails.MaxPlayers,
                 MinPlayers = gameDetails.MinPlayers,
                 MaxPlayTime = gameDetails.MaxPlayTime,
-                MinPlayTime= gameDetails.MinPlayTime,
+                MinPlayTime = gameDetails.MinPlayTime,
                 AverageWeight = gameDetails.AverageWeight,
                 Description = gameDetails.Description,
                 YearPublished = gameDetails.YearPublished,
@@ -59,15 +60,14 @@ namespace BusinessLogic.Logic.BoardGameGeek
             _dataContext.Save(newRecord, currentUser);
 
             // Save categories to BGG definition
-            var gameToCategorySave = new BoardGameGeekGameToCategory();
 
             foreach (var x in gameDetails.Categories)
             {
-                gameToCategorySave = new BoardGameGeekGameToCategory
-                    {
-                        BoardGameGeekGameDefinitionId = boardGameGeekGameDefinitionId,
-                        BoardGameGeekGameCategoryId = x.Id
-                    };
+                var gameToCategorySave = new BoardGameGeekGameToCategory
+                {
+                    BoardGameGeekGameDefinitionId = boardGameGeekGameDefinitionId,
+                    BoardGameGeekGameCategoryId = x.Id
+                };
 
                 _dataContext.Save(gameToCategorySave, currentUser);
             }

@@ -22,6 +22,7 @@ using BusinessLogic.Models.User;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
+using BusinessLogic.Models.Games;
 using Microsoft.Azure;
 
 namespace BusinessLogic.DataAccess
