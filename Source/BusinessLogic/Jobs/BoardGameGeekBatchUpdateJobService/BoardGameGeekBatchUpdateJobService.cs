@@ -8,6 +8,7 @@ using BoardGameGeekApiClient.Interfaces;
 using BoardGameGeekApiClient.Models;
 using BusinessLogic.DataAccess;
 using BusinessLogic.Models;
+using BusinessLogic.Models.Games;
 using BusinessLogic.Models.User;
 using RollbarSharp;
 
@@ -189,6 +190,21 @@ namespace BusinessLogic.Jobs.BoardGameGeekBatchUpdateJobService
                     existingBoardGameGeekGameDefinition.Name = gameDetails.Name;
                     existingBoardGameGeekGameDefinition.Thumbnail = gameDetails.Thumbnail;
                     existingBoardGameGeekGameDefinition.YearPublished = gameDetails.YearPublished;
+
+                    foreach (var gameCategory in gameDetails.Categories)
+                    {
+                        if (
+                            existingBoardGameGeekGameDefinition.Categories.All(
+                                c => c.BoardGameGeekGameCategoryId != gameCategory.Id))
+                        {
+                            existingBoardGameGeekGameDefinition.Categories.Add(new BoardGameGeekGameCategory()
+                            {
+                                BoardGameGeekGameCategoryId = gameCategory.Id,
+                                CategoryName = gameCategory.Category
+                            });
+                        }
+                    }
+                    
 
                     _dataContext.Save(existingBoardGameGeekGameDefinition, anonymousUser);
 
