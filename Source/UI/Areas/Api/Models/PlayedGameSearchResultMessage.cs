@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
+using BusinessLogic.Models;
 
 namespace UI.Areas.Api.Models
 {
@@ -14,6 +14,7 @@ namespace UI.Areas.Api.Models
         public int? BoardGameGeekGameDefinitionId { get; set; }
         public string DatePlayed { get; set; }
         public string DateLastUpdated { get; set; }
-        public List<PlayerGameResultMessage> PlayerGameResults;
+        public List<PlayerGameResultMessage> PlayerGameResults { get; set; }
+        public List<ApplicationLinkageMessage> ApplicationLinkages { get; set; }
     }
 }

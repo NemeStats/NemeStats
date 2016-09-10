@@ -217,9 +217,11 @@
     <Compile Include="EventTracking\UniversalAnalyticsNemeStatsEventTracker.cs" />
     <Compile Include="Exceptions\ApiAuthenticationException.cs" />
     <Compile Include="Exceptions\DuplicateKeyException.cs" />
+    <Compile Include="Exceptions\EntityAlreadySynchedException.cs" />
     <Compile Include="Exceptions\EntityDoesNotExistException.cs" />
     <Compile Include="Exceptions\ApiFriendlyException.cs" />
     <Compile Include="Exceptions\InvalidDateFormatException.cs" />
+    <Compile Include="Exceptions\InvalidSourceException.cs" />
     <Compile Include="Exceptions\PlayerAlreadyExistsException.cs" />
     <Compile Include="Exceptions\PlayerNotInGamingGroupException.cs" />
     <Compile Include="Exceptions\UnauthorizedEntityAccessException.cs" />
@@ -233,8 +235,10 @@
     <Compile Include="Facades\TopGamingGroupsRetriever.cs" />
     <Compile Include="Facades\TopPlayersRetriever.cs" />
     <Compile Include="Facades\TrendingGamesRetriever.cs" />
-    <Compile Include="Jobs\BoardGameGeekCleanUpService\LinkOrphanGamesResult.cs" />
-    <Compile Include="Jobs\BoardGameGeekCleanUpService\BoardGameGeekBatchUpdateService.cs" />
+    <Compile Include="Jobs\BaseJobResult.cs" />
+    <Compile Include="Jobs\BaseJobService.cs" />
+    <Compile Include="Jobs\BoardGameGeekBatchUpdateJobService\LinkOrphanGamesJobResult.cs" />
+    <Compile Include="Jobs\BoardGameGeekBatchUpdateJobService\BoardGameGeekBatchUpdateJobService.cs" />
     <Compile Include="Logic\Achievements\AchievementAwarded.cs" />
     <Compile Include="Logic\Achievements\BaseAchievement.cs" />
     <Compile Include="Logic\Achievements\BoardGameGeek2016_10x10Achievement.cs" />
@@ -261,7 +265,7 @@
     <Compile Include="Logic\BoardGameGeek\BoardGameGeekGameDefinitionCreator.cs" />
     <Compile Include="Logic\BoardGameGeek\BoardGameGeekGamesImporter.cs" />
     <Compile Include="Logic\BoardGameGeek\BoardGameGeekUrlBuilder.cs" />
-    <Compile Include="Jobs\BoardGameGeekCleanUpService\IBoardGameGeekBatchUpdateService.cs" />
+    <Compile Include="Jobs\BoardGameGeekBatchUpdateJobService\IBoardGameGeekBatchUpdateJobService.cs" />
     <Compile Include="Logic\BoardGameGeek\IBoardGameGeekGameDefinitionCreator.cs" />
     <Compile Include="Logic\BoardGameGeek\IBoardGameGeekGamesImporter.cs" />
     <Compile Include="Logic\Champions\ChampionRecalculator.cs" />
@@ -269,6 +273,8 @@
     <Compile Include="Logic\OneTimeJobs\BoardGameGeekThumbnailAttacher.cs" />
     <Compile Include="Logic\GameDefinitions\GameDefinitionUpdateRequest.cs" />
     <Compile Include="Logic\GamingGroups\GamingGroupInfoForUser.cs" />
+    <Compile Include="Logic\PlayedGames\ApplicationLinker.cs" />
+    <Compile Include="Logic\PlayedGames\IApplicationLinker.cs" />
     <Compile Include="Logic\PlayerAchievements\IPlayerAchievementRetriever.cs" />
     <Compile Include="Logic\PlayerAchievements\IRecentPlayerAchievementsUnlockedRetreiver.cs" />
     <Compile Include="Logic\PlayerAchievements\PlayerAchievementRetriever.cs" />
@@ -283,7 +289,9 @@
     <Compile Include="Logic\Points\PointsCalculator.cs" />
     <Compile Include="Logic\Points\GlobalPointsRecalculator.cs" />
     <Compile Include="Logic\Points\WeightBonusCalculator.cs" />
+    <Compile Include="Logic\Security\ILinkedPlayedGameValidator.cs" />
     <Compile Include="Logic\Security\MachineKeyDataProtector.cs" />
+    <Compile Include="Logic\Security\LinkedPlayedGameValidator.cs" />
     <Compile Include="Logic\TransactionSource.cs" />
     <Compile Include="Logic\Users\AuthTokenGenerator.cs" />
     <Compile Include="Logic\Users\AuthTokenValidator.cs" />
@@ -356,13 +364,18 @@
     <Compile Include="Migrations\201609100928186_BggCategories.cs" />
     <Compile Include="Migrations\201609100928186_BggCategories.Designer.cs">
       <DependentUpon>201609100928186_BggCategories.cs</DependentUpon>
+    <Compile Include="Migrations\201608280145267_AddPlayedGameApplicationLinkage.cs" />
+    <Compile Include="Migrations\201608280145267_AddPlayedGameApplicationLinkage.Designer.cs">
+      <DependentUpon>201608280145267_AddPlayedGameApplicationLinkage.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\Achievements\AchievementLevel.cs" />
     <Compile Include="Models\Achievements\AchievementId.cs" />
     <Compile Include="Models\Games\BoardGameGeekGameCategory.cs" />
+    <Compile Include="Models\PlayedGameApplicationLinkage.cs" />
     <Compile Include="Models\Games\SavePlayedGameRequest.cs" />
     <Compile Include="Models\Games\TrendingGame.cs" />
     <Compile Include="Logic\Points\IWeightTierCalculator.cs" />
+    <Compile Include="Models\PlayedGames\ApplicationLinkage.cs" />
     <Compile Include="Models\PlayerAchievement.cs" />
     <Compile Include="Models\Games\TrendingGamesRequest.cs" />
     <Compile Include="Models\Players\CreatePlayerRequest.cs" />
@@ -977,6 +990,8 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201609100928186_BggCategories.resx">
       <DependentUpon>201609100928186_BggCategories.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201608280145267_AddPlayedGameApplicationLinkage.resx">
+      <DependentUpon>201608280145267_AddPlayedGameApplicationLinkage.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

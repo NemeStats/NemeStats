@@ -42,7 +42,8 @@ domain should continue to work in the meantime, however.
 * 2016-06-03 Added authenticationTokenExpirationDateTime to the results of the registration (POST /Users/) and sign in (POST /UserSessions/) services.
 * 2016-07-22 Fixed API issue where newly created Players and Game Definitions were always placed in the User's default Gaming Group and not the one specified.
 Also added a 409 conflict response to POST /PlayedGames/ if any of the Players don't exist in the specified Gaming Group. Also re-fixed an issue where it wasn't
-accepting decimal places in pointsScored.
+accepting decimal places in pointsScored
+* 2016-08-31 Can now set a list of applicationLinkages when recording a Played Game. This will allow clients to save their own unique identifier for games and retrieve games based on this identifier. For example, a client could import all games that do not have a source application matching their application.
 
 ### General Information
 
@@ -92,6 +93,11 @@ Represents all of the data related to a particular Player's performance in a par
 + gameDurationBonusNemePoints  (number, required) - The number of bonus NemeStats Points awarded due to the BoardGameGeek average Play Time of this Game Definition.
 + gameWeightBonusNemePoints (number, required) - The number of bonus NemeStats Points awarded due to the BoardGameGeek Weight of this Game Definition.
 + totalNemeStatsPointsAwarded (number, required) - The total number of NemeStats Points awarded including all bonus points.
+
+## ApplicationLinkage (object)
+Represents a unique identifier for an external application that also stores a representation of this Played Game. For example, if a Played Game is also in BoardGameGeek, the client could set an applicationLinkage with the applicationName = "BGG" and the entityId = "1399193".
++ applicationName (string, required) - Unique identifier for an external application which also holds a representation of this play. Use "BGG" for BoardGameGeek and "BGStats" for Board Game Stats. Other applications can use different application names, so long as they are unique.
++ entityId (string, required) - Unique identifier within the external application. For example, BoardGameGeek has an "id" value for each play which could be passed in this field.
 
 # Group Authentication
 
@@ -290,9 +296,11 @@ and then recreated using the corresponding services for this.
     + gamingGroupId (number, required) - NemeStats unique identifier of the Gaming Group against which this Played Game was recorded.
     + gamingGroupName (string, required) - Name of the Gaming Group.
     + notes (string, optional) - User-entered notes about the game.
+
     + datePlayed (string, required) - The date that the Played Game was recorded in yyyy-MM-dd format (e.g. 2015-05-013).
     + dateLastUpdated (string, required) - The date that the Played Game was last updated in yyyy-MM-dd format (e.g. 2015-05-013). This will usually match the datePlayed unless the Played Game was updated at a later date.
     + playerGameResults (PlayerGameResult, required) - A list of PlayerGameResult objects which contain information regarding each Player's rank, points scored, and NemeStats points awarded for playing the game.
+    + applicationLinkages (ApplicationLinkage, optional) - A list of optional ApplicationLinkage objects which specify applicationName/entityId pairs representing the unique identifer for the Played Game in an external system. This combination must be unique within in a Gaming Group.
 
 ## Create a new Played Game [POST]
 This service will record a new Played Game under the specified Gaming Group (per the gamingGroupId). 
@@ -303,6 +311,7 @@ This service will record a new Played Game under the specified Gaming Group (per
     + datePlayed (string, optional) - The date the game was played in yyyy-MM-dd format (e.g. 2015-04-29).
     + notes (string, optional) - Any notes or comments that the User wants to record about the game for future reference.
     + playerRanks (array[PlayerRank], required) - A collection of PlayerRank objects specifying the game rank and points scored for each Player. See below table for details.
+    + applicationLinkages (array[ApplicationLinkage], optional) - A collection of ApplicationLinkage objects specifying external identifiers for the Played Game in other systems. Should always have at least one ApplicationLinkage with applicationName = "NemeStats" and entityId = "{NemeStats Played Game Id}".
 
 + Request Valid Request (application/json)
 
@@ -338,6 +347,16 @@ This service will record a new Played Game under the specified Gaming Group (per
                         "gameRank" : 3, 
                         "pointsScored" : 9 
                       }
+                  ],
+                  "applicationLinkages" : [
+                      {
+                        "applicationName" : "BGG",
+                        "entityId" : "18839193"
+                      },
+                      {
+                        "applicationName" : "BGStats",
+                        "entityId" : "6b71050d-e63e-41a1-a476-399b7103f127"                      
+                      }
                   ]
                 }
 
@@ -366,7 +385,13 @@ This service will record a new Played Game under the specified Gaming Group (per
                     "message" : "Player with id '19313' is not in the Gaming Group with id '1351' -- which is the Gaming Group to which the Played Game is being recorded. All Players must be in this Gaming Group."
                 }
 
-## Get Played Games [GET /PlayedGames/{?gamingGroupId,startDateGameLastUpdated,endDateGameLastUpdated,datePlayedFrom,datePlayedTo,playerId,maximumNumberOfResults}] 
++ Response 409 (application/json)
+
+                {
+                    "message" : "An entity with an ApplicationName of 'BGG' and an ExternalSourceEntityId of '18839193' already exists in the Gaming Group with id '9818'."
+                }
+
+## Get Played Games [GET /PlayedGames/{?gamingGroupId,startDateGameLastUpdated,endDateGameLastUpdated,datePlayedFrom,datePlayedTo,playerId,maximumNumberOfResults,exclusionApplicationName,inclusionApplicationName}] 
 Retrieve a list of Played Games given some criteria. Currently limited to a single Gaming Group at a time
 via the required gamingGroupId query string parameter.
 
@@ -377,6 +402,8 @@ via the required gamingGroupId query string parameter.
     + datePlayedFrom : `2015-07-01` (string, optional) - If set, all Played Games returned will returned will have been played greater than or equal to this date. Dates must be in yyyy-MM-dd format.
     + datePlayedTo : `2015-07-15` (string, optional) - If set, all Played Games returned will have been played less than or equal to this date. Dates must be in yyyy-MM-dd format.
     + playerId: 9791 (number, optional) - If set, will only return Played Games where this Player participated.
+    + exclusionApplicationName (string, optional) - If set, only returns Played Games where there are no Application Linkages with an applicationName matching the specified value. This could be useful for finding any Played Games that did not original from a particular client application. Used in conjuction with startDateGameLastUpdated it could be especially useful for mass synching.
+    + inclusionApplicationName (string, optional) - If set, only returns Played Games where there is an Application Linkage having the specified value. This could be useful for finding any Played Games that originated from the source application so that the unsynched games could be determined on the client side.
     + maximumNumberOfResults : 100 (number, optional) - The maximum number of results to be returned. The default is no limit.
         + Default: 1000000
     
@@ -432,6 +459,20 @@ via the required gamingGroupId query string parameter.
                                 "totalNemeStatsPointsAwarded" : 21
                             }
                         ],
+                        "applicationLinkages": [
+                            {
+                                "applicationName": "NemeStats",
+                                "entityId": "16785"
+                            },
+                            {
+                                "applicationName": "app2",
+                                "entityId": "app1EntityId2"
+                            },
+                            {
+                                "applicationName": "app3",
+                                "entityId": "app3EntityId3"
+                            }
+                      ]
                         "playedGameId":16785,
                         "gameDefinitionId":1,
                         "gameDefinitionName":"Small World",
@@ -475,6 +516,12 @@ via the required gamingGroupId query string parameter.
                                 "totalNemeStatsPointsAwarded" : 2
                             }
                         ],
+                        "applicationLinkages": [
+                            {
+                                "applicationName": "NemeStats",
+                                "entityId": "16098"
+                            }
+                        ]
                         "playedGameId":16098,
                         "gameDefinitionId":7720,
                         "gameDefinitionName":"Dead of Winter: A Crossroads Game (2014)",
@@ -483,60 +530,6 @@ via the required gamingGroupId query string parameter.
                         "boardGameGeekObjectId":150376,
                         "datePlayed":"2015-03-06T00:00:00",
                         "dateLastUpdated":"2015-03-06T18:11:17.33"
-                    },
-                    {  
-                        "playerGameResults":[  
-                            {  
-                                "playerId":9,
-                                "playerName":"Tosho",
-                                "gameRank":2,
-                                "pointsScored":null,
-                                "nemeStatsPointsAwarded":4,
-                                "gameDurationBonusNemePoints" : 4,
-                                "gameWeightBonusNemePoints" : 1,
-                                "totalNemeStatsPointsAwarded" : 9
-                            },
-                            {  
-                                "playerId":11,
-                                "playerName":"Charles Cai",
-                                "gameRank":2,
-                                "pointsScored":null,
-                                "nemeStatsPointsAwarded":4,
-                                "gameDurationBonusNemePoints" : 4,
-                                "gameWeightBonusNemePoints" : 1,
-                                "totalNemeStatsPointsAwarded" : 9
-                            },
-                            {  
-                                "playerId":12,
-                                "playerName":"jakejgordon",
-                                "gameRank":2,
-                                "pointsScored":null,
-                                "nemeStatsPointsAwarded":4,
-                                "gameDurationBonusNemePoints" : 4,
-                                "gameWeightBonusNemePoints" : 1,
-                                "totalNemeStatsPointsAwarded" : 9
-                            },
-                            {  
-                                "playerId":1018,
-                                "playerName":"Marcus",
-                                "gameRank":2,
-                                "pointsScored":null,
-                                "nemeStatsPointsAwarded":4,
-                                "gameDurationBonusNemePoints" : 4,
-                                "gameWeightBonusNemePoints" : 1,
-                                "totalNemeStatsPointsAwarded" : 9
-                            },
-                            {  
-                                "playerId":10,
-                                "playerName":"Tina",
-                                "gameRank":2,
-                                "pointsScored":null,
-                                "nemeStatsPointsAwarded":4,
-                                "gameDurationBonusNemePoints" : 4,
-                                "gameWeightBonusNemePoints" : 1,
-                                "totalNemeStatsPointsAwarded" : 9
-                            }
-                        ]
                     }
                 ]
             }

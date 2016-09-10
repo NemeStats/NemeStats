@@ -1,11 +1,10 @@
-﻿using System.Linq;
-using AutoMapper;
+﻿using AutoMapper;
 
 namespace UI.Transformations
 {
     public class Transformer : ITransformer
     {
-        public TDestination Transform<TSource, TDestination>(TSource source)
+        public TDestination Transform<TDestination>(object source)
         {
             return Mapper.Map<TDestination>(source);
         }

@@ -157,6 +157,10 @@
       <HintPath>..\..\packages\RollbarSharp.0.3.5.0\lib\net40\RollbarSharp.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Shouldly, Version=2.8.2.0, Culture=neutral, PublicKeyToken=6042cbcb05cbc941, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Shouldly.2.8.2\lib\net451\Shouldly.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="StructureMap, Version=4.1.1.372, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\structuremap.4.1.1.372\lib\net40\StructureMap.dll</HintPath>
       <Private>True</Private>
@@ -279,6 +283,7 @@
     <Compile Include="UnitTests\LogicTests\GamingGroupsTests\GamingGroupRetrieverTests\GamingGroupRetrieverTestBase.cs" />
     <Compile Include="UnitTests\LogicTests\GamingGroupsTests\GamingGroupRetrieverTests\GetGamingGroupsForUserTests.cs" />
     <Compile Include="UnitTests\LogicTests\GamingGroupsTests\GamingGroupSaverTests\UpdatePublicGamingGroupDetails.cs" />
+    <Compile Include="UnitTests\LogicTests\PlayedGamesTests\ApplicationLinkerTests\ApplicationLinkerTests.cs" />
     <Compile Include="UnitTests\LogicTests\PlayedGamesTests\PlayedGameRetrieverTests\SearchPlayedGamesTests.cs" />
     <Compile Include="UnitTests\LogicTests\PlayersTests\PlayerDeleterTests\DeletePlayerTests.cs" />
     <Compile Include="UnitTests\LogicTests\PlayersTests\PlayerNameBuilderTests\BuildPlayerNameTests.cs" />
@@ -290,6 +295,7 @@
     <Compile Include="UnitTests\LogicTests\PointsTests\PointsCalculatorTests.cs" />
     <Compile Include="UnitTests\LogicTests\PointsTests\WeightBonusCalculatorTests.cs" />
     <Compile Include="UnitTests\LogicTests\PointsTests\WeightTierCalculatorTests.cs" />
+    <Compile Include="UnitTests\LogicTests\SecurityTests\LinkedPlayedGameValidatorTests\ValidateTests.cs" />
     <Compile Include="UnitTests\LogicTests\UsersTests\ApplicationSignInManagerTests\GenerateAuthTokenTests.cs" />
     <Compile Include="UnitTests\LogicTests\UsersTests\ApplicationUserManagerTests\ValidateAuthTokenTests.cs" />
     <Compile Include="UnitTests\LogicTests\UsersTests\BoardGameGeekUserSaverTests\BoardGameGeekUserSaverTestBase.cs" />

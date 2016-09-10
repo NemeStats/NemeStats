@@ -11,27 +11,24 @@ using BusinessLogic.Models;
 using BusinessLogic.Models.User;
 using RollbarSharp;
 
-namespace BusinessLogic.Jobs.BoardGameGeekCleanUpService
+namespace BusinessLogic.Jobs.BoardGameGeekBatchUpdateJobService
 {
-    public class 
-        BoardGameGeekBatchUpdateService : IBoardGameGeekBatchUpdateService
+    public class BoardGameGeekBatchUpdateJobService : BaseJobService, IBoardGameGeekBatchUpdateJobService
     {
         private const string CleanYearPattern = @"\w*\(\d{4}\)";
 
         private readonly IDataContext _dataContext;
         private readonly IBoardGameGeekApiClient _boardGameGeekApiClient;
-        private readonly IRollbarClient _rollbar;
 
-        public BoardGameGeekBatchUpdateService(IDataContext dataContext, IBoardGameGeekApiClient boardGameGeekApiClient, IRollbarClient rollbar)
+        public BoardGameGeekBatchUpdateJobService(IDataContext dataContext, IBoardGameGeekApiClient boardGameGeekApiClient, IRollbarClient rollbar) : base(rollbar)
         {
             _dataContext = dataContext;
             _boardGameGeekApiClient = boardGameGeekApiClient;
-            _rollbar = rollbar;
         }
 
-        public LinkOrphanGamesResult LinkOrphanGames()
+        public LinkOrphanGamesJobResult LinkOrphanGames()
         {
-            var result = new LinkOrphanGamesResult();
+            var result = new LinkOrphanGamesJobResult();
             var stopwatch = new Stopwatch();
             stopwatch.Start();
             try
@@ -81,7 +78,7 @@ namespace BusinessLogic.Jobs.BoardGameGeekCleanUpService
                     }
                     else
                     {
-                        result.StillOrphanGames.Add(new LinkOrphanGamesResult.OrphanGame()
+                        result.StillOrphanGames.Add(new LinkOrphanGamesJobResult.OrphanGame()
                         {
                             Name = game.Name,
                             Id = game.Id,
@@ -93,7 +90,7 @@ namespace BusinessLogic.Jobs.BoardGameGeekCleanUpService
             catch (Exception ex)
             {
                 result.Success = false;
-                _rollbar.SendException(ex);
+                RollbarClient.SendException(ex);
             }
 
             stopwatch.Stop();
@@ -102,10 +99,10 @@ namespace BusinessLogic.Jobs.BoardGameGeekCleanUpService
         }
 
         private void UpdateGameDefinition(GameDefinition game, int boardGameGeekGameDefinitionId,
-            LinkOrphanGamesResult result)
+            LinkOrphanGamesJobResult jobResult)
         {
             game.BoardGameGeekGameDefinitionId = boardGameGeekGameDefinitionId;
-            result.LinkedGames++;
+            jobResult.LinkedGames++;
         }
 
         private BoardGameGeekGameDefinition CreateBGGGame(GameDetails gameToAdd)

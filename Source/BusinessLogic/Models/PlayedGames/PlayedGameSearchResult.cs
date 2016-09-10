@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace BusinessLogic.Models.PlayedGames
 {
@@ -17,5 +16,6 @@ namespace BusinessLogic.Models.PlayedGames
         public DateTime DateLastUpdated { get; set; }
         public IList<PlayerResult> PlayerGameResults { get; set; }
         public WinnerTypes WinnerType { get; set; }
+        public IList<ApplicationLinkage> ApplicationLinkages { get; set; }
     }
 }

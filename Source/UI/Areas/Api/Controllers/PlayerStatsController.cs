@@ -25,7 +25,7 @@ namespace UI.Areas.Api.Controllers
         public virtual HttpResponseMessage GetPlayerStats([FromUri] int gamingGroupId, [FromUri] int playerId)
         {
             var playerStatistics = playerRetriever.GetPlayerStatistics(playerId);
-            var playerStatisticsMessage = transformer.Transform<PlayerStatistics, PlayerStatisticsMessage>(playerStatistics);
+            var playerStatisticsMessage = transformer.Transform<PlayerStatisticsMessage>(playerStatistics);
 
             return Request.CreateResponse(HttpStatusCode.OK, playerStatisticsMessage);
         }

@@ -14,12 +14,12 @@ namespace BusinessLogic.Tests.UnitTests.JobsTests.BoardGameGeekBatchUpdateServic
     [TestFixture]
     public class RefreshAllBoardGameGeekDataTests
     {
-        private RhinoAutoMocker<Jobs.BoardGameGeekCleanUpService.BoardGameGeekBatchUpdateService> _autoMocker;
+        private RhinoAutoMocker<Jobs.BoardGameGeekBatchUpdateJobService.BoardGameGeekBatchUpdateJobService> _autoMocker;
 
         [SetUp]
         public void SetUp()
         {
-            _autoMocker = new RhinoAutoMocker<Jobs.BoardGameGeekCleanUpService.BoardGameGeekBatchUpdateService>();  
+            _autoMocker = new RhinoAutoMocker<Jobs.BoardGameGeekBatchUpdateJobService.BoardGameGeekBatchUpdateJobService>();  
         }
 
         [Test]
@@ -83,7 +83,6 @@ namespace BusinessLogic.Tests.UnitTests.JobsTests.BoardGameGeekBatchUpdateServic
                                                                                                      mock => mock.Save(Arg<BoardGameGeekGameDefinition>.Is.Anything,
                                                                                                                        Arg<ApplicationUser>.Is.Anything));
             Assert.That(argumentsForCallsMadeOn, Is.Not.Null);
-            object[] callForThisObject;
             BoardGameGeekGameDefinition actualBoardGameGeekGameDefinition = null;
             foreach (var call in argumentsForCallsMadeOn)
             {

@@ -306,7 +306,7 @@ namespace UI.Controllers
         {
             var trendingGamesRequest = new TrendingGamesRequest(NUMBER_OF_TRENDING_GAMES_TO_SHOW, NUMBER_OF_DAYS_OF_TRENDING_GAMES);
             var trendingGames = _trendingGamesRetriever.GetResults(trendingGamesRequest);
-            var trendingGamesViewModels = trendingGames.Select(_transformer.Transform<TrendingGame, TrendingGameViewModel>).ToList();
+            var trendingGamesViewModels = trendingGames.Select(_transformer.Transform<TrendingGameViewModel>).ToList();
             ViewBag.NumTrendingDays = NUMBER_OF_DAYS_OF_TRENDING_GAMES;
 
             return View(MVC.GameDefinition.Views.TrendingGames, trendingGamesViewModels);

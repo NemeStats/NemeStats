@@ -27,7 +27,7 @@ using BusinessLogic.Events.Interfaces;
 using BusinessLogic.EventTracking;
 using BusinessLogic.Export;
 using BusinessLogic.Facades;
-using BusinessLogic.Jobs.BoardGameGeekCleanUpService;
+using BusinessLogic.Jobs.BoardGameGeekBatchUpdateJobService;
 using BusinessLogic.Logic.BoardGameGeek;
 using BusinessLogic.Logic.Champions;
 using BusinessLogic.Logic.Email;
@@ -165,7 +165,7 @@ namespace NemeStats.IoC
 
             this.For<IBoardGameGeekUserSaver>().Use<BoardGameGeekUserSaver>();
             this.For<IBoardGameGeekGamesImporter>().Use<BoardGameGeekGamesImporter>();
-            this.For<IBoardGameGeekBatchUpdateService>().Use<BoardGameGeekBatchUpdateService>();
+            this.For<IBoardGameGeekBatchUpdateJobService>().Use<BoardGameGeekBatchUpdateJobService>();
 
             For<IPointsCalculator>().Use<PointsCalculator>();
             For<IWeightTierCalculator>().Use<WeightTierCalculator>();

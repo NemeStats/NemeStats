@@ -16,7 +16,10 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 
+using System;
 using System.Linq;
+using System.Collections.Generic;
+using System.Globalization;
 using AutoMapper;
 using BusinessLogic.Logic.BoardGameGeek;
 using BusinessLogic.Logic.GameDefinitions;
@@ -43,10 +46,13 @@ namespace UI.Transformations
     {
         public static void Configure()
         {
+            Mapper.CreateMap<ApplicationLinkageMessage, ApplicationLinkage>(MemberList.Destination);
+            Mapper.CreateMap<ApplicationLinkage, ApplicationLinkageMessage>(MemberList.Destination);
             Mapper.CreateMap<TopGamingGroupSummary, TopGamingGroupSummaryViewModel>(MemberList.Source);
             Mapper.CreateMap<VotableFeature, VotableFeatureViewModel>(MemberList.Destination);
             Mapper.CreateMap<NewUserMessage, NewUser>(MemberList.Source);
             Mapper.CreateMap<NewlyRegisteredUser, NewlyRegisteredUserMessage>(MemberList.Source);
+            Mapper.CreateMap<PlayedGameApplicationLinkage, ApplicationLinkage>(MemberList.Destination);
             Mapper.CreateMap<PlayedGameSearchResult, PlayedGameSearchResultMessage>(MemberList.Destination)
                   .ForSourceMember(x => x.PlayerGameResults, opt => opt.Ignore())
                   .ForMember(x => x.DateLastUpdated, opt => opt.MapFrom(src => src.DateLastUpdated.ToString("yyyy-MM-dd")))
@@ -85,6 +91,23 @@ namespace UI.Transformations
                 .ForMember(m => m.Categories,opt => opt.MapFrom(src => src.Categories.Select(c=>c.CategoryName)))
                 .ForMember(m => m.WeightDescription, opt => opt.Ignore());
             Mapper.CreateMap<PlayedGameQuickStats, PlayedGameQuickStatsViewModel>(MemberList.Destination);
+
+            //TODO this logic shouldn't be inline here
+            Mapper.CreateMap<PlayedGameMessage, NewlyCompletedGame>(MemberList.Destination)
+                .ForMember(m => m.WinnerType, opt => opt.Ignore())
+                .ForMember(m => m.DatePlayed, opt => opt.ResolveUsing(x =>
+                {
+                    var datePlayed = DateTime.UtcNow;
+
+                    if (!string.IsNullOrWhiteSpace(x.DatePlayed))
+                    {
+                        datePlayed = DateTime.ParseExact(x.DatePlayed, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None);
+                    }
+
+                    return datePlayed;
+                }));
+
+            Mapper.CreateMap<PlayedGameFilterMessage, PlayedGameFilter>(MemberList.Source);
         }
     }
 }

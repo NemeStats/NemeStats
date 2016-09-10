@@ -130,38 +130,42 @@ namespace BusinessLogic.Logic.PlayedGames
 
         public List<PlayedGameSearchResult> SearchPlayedGames(PlayedGameFilter playedGameFilter)
         {
-            var queryable = (from playedGame in dataContext.GetQueryable<PlayedGame>()
-                                                           .OrderByDescending(game => game.DatePlayed)
-                                                           .ThenByDescending(game => game.DateCreated)
-                             select new PlayedGameSearchResult
-                             {
-                                 PlayedGameId = playedGame.Id,
-                                 GameDefinitionId = playedGame.GameDefinitionId,
-                                 GameDefinitionName = playedGame.GameDefinition.Name,
-                                 BoardGameGeekGameDefinitionId = playedGame.GameDefinition.BoardGameGeekGameDefinitionId,
-                                 GamingGroupId = playedGame.GamingGroupId,
-                                 GamingGroupName = playedGame.GamingGroup.Name,
-                                 Notes = playedGame.Notes,
-                                 DatePlayed = playedGame.DatePlayed,
-                                 DateLastUpdated = playedGame.DateCreated,
-                                 PlayerGameResults = playedGame.PlayerGameResults.Select(x => new PlayerResult
-                                 {
-                                     GameRank = x.GameRank,
-                                     NemeStatsPointsAwarded = x.NemeStatsPointsAwarded,
-                                     GameDurationBonusNemePoints = x.GameDurationBonusPoints,
-                                     GameWeightBonusNemePoints = x.GameWeightBonusPoints,
-                                     TotalPoints = x.TotalPoints,
-                                     PlayerId = x.PlayerId,
-                                     PlayerName = x.Player.Name,
-                                     PlayerActive = x.Player.Active,
-                                     PointsScored = x.PointsScored,
-                                     DatePlayed = x.PlayedGame.DatePlayed,
-                                     GameDefinitionId = x.PlayedGame.GameDefinitionId,
-                                     GameName = x.PlayedGame.GameDefinition.Name,
-                                     PlayedGameId = x.PlayedGameId
-                                 }).ToList()
-                             });
-
+            var queryable = from playedGame in dataContext.GetQueryable<PlayedGame>()
+                .OrderByDescending(game => game.DatePlayed)
+                .ThenByDescending(game => game.DateCreated)
+                select new PlayedGameSearchResult
+                {
+                    PlayedGameId = playedGame.Id,
+                    GameDefinitionId = playedGame.GameDefinitionId,
+                    GameDefinitionName = playedGame.GameDefinition.Name,
+                    BoardGameGeekGameDefinitionId = playedGame.GameDefinition.BoardGameGeekGameDefinitionId,
+                    GamingGroupId = playedGame.GamingGroupId,
+                    GamingGroupName = playedGame.GamingGroup.Name,
+                    Notes = playedGame.Notes,
+                    DatePlayed = playedGame.DatePlayed,
+                    DateLastUpdated = playedGame.DateCreated,
+                    ApplicationLinkages = playedGame.ApplicationLinkages.Select(x => new ApplicationLinkage
+                    {
+                        ApplicationName = x.ApplicationName,
+                        EntityId = x.EntityId
+                    }).ToList(),
+                    PlayerGameResults = playedGame.PlayerGameResults.Select(x => new PlayerResult
+                    {
+                        GameRank = x.GameRank,
+                        NemeStatsPointsAwarded = x.NemeStatsPointsAwarded,
+                        GameDurationBonusNemePoints = x.GameDurationBonusPoints,
+                        GameWeightBonusNemePoints = x.GameWeightBonusPoints,
+                        TotalPoints = x.TotalPoints,
+                        PlayerId = x.PlayerId,
+                        PlayerName = x.Player.Name,
+                        PlayerActive = x.Player.Active,
+                        PointsScored = x.PointsScored,
+                        DatePlayed = x.PlayedGame.DatePlayed,
+                        GameDefinitionId = x.PlayedGame.GameDefinitionId,
+                        GameName = x.PlayedGame.GameDefinition.Name,
+                        PlayedGameId = x.PlayedGameId
+                    }).ToList()
+                };
 
             queryable = AddSearchCriteria(playedGameFilter, queryable);
 
@@ -227,6 +231,18 @@ namespace BusinessLogic.Logic.PlayedGames
             {
                 queryable = queryable.Take(playedGameFilter.MaximumNumberOfResults.Value);
             }
+
+            if (!string.IsNullOrEmpty(playedGameFilter.ExclusionApplicationName))
+            {
+                queryable = queryable.Where(query => query.ApplicationLinkages.All(x => x.ApplicationName != playedGameFilter.ExclusionApplicationName));
+            }
+
+            if (!string.IsNullOrEmpty(playedGameFilter.InclusionApplicationName))
+            {
+                queryable = queryable.Where(query => query.ApplicationLinkages.Any(x => x.ApplicationName == playedGameFilter.InclusionApplicationName));
+
+            }
+
             return queryable;
         }
 
