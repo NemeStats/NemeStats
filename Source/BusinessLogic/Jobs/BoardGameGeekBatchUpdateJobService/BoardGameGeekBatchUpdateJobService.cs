@@ -193,15 +193,24 @@ namespace BusinessLogic.Jobs.BoardGameGeekBatchUpdateJobService
 
                     foreach (var gameCategory in gameDetails.Categories)
                     {
-                        if (
-                            existingBoardGameGeekGameDefinition.Categories.All(
-                                c => c.BoardGameGeekGameCategoryId != gameCategory.Id))
+                        if (existingBoardGameGeekGameDefinition.Categories.All(c => !c.CategoryName.Equals(gameCategory.Category,StringComparison.InvariantCultureIgnoreCase)))
                         {
-                            existingBoardGameGeekGameDefinition.Categories.Add(new BoardGameGeekGameCategory()
+                            var existentCategory =
+                                _dataContext.GetQueryable<BoardGameGeekGameCategory>()
+                                    .FirstOrDefault(
+                                        c =>
+                                            c.CategoryName.Equals(gameCategory.Category,
+                                                StringComparison.InvariantCultureIgnoreCase));
+                            if (existentCategory == null)
                             {
-                                BoardGameGeekGameCategoryId = gameCategory.Id,
-                                CategoryName = gameCategory.Category
-                            });
+                                existentCategory = new BoardGameGeekGameCategory()
+                                {
+                                    BoardGameGeekGameCategoryId = gameCategory.Id,
+                                    CategoryName = gameCategory.Category
+                                };
+                            }
+
+                            existingBoardGameGeekGameDefinition.Categories.Add(existentCategory);
                         }
                     }
                     
