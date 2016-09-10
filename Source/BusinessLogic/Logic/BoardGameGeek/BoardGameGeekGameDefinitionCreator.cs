@@ -61,15 +61,14 @@ namespace BusinessLogic.Logic.BoardGameGeek
 
             // Save categories to BGG definition
 
-            foreach (var x in gameDetails.Categories)
+            foreach (var category in gameDetails.Categories)
             {
-                var gameToCategorySave = new BoardGameGeekGameToCategory
+                
+                newRecord.Categories.Add(new BoardGameGeekGameCategory()
                 {
-                    BoardGameGeekGameDefinitionId = boardGameGeekGameDefinitionId,
-                    BoardGameGeekGameCategoryId = x.Id
-                };
-
-                _dataContext.Save(gameToCategorySave, currentUser);
+                    BoardGameGeekGameCategoryId = category.Id,
+                    CategoryName = category.Category
+                });
             }
 
             return boardGameGeekGameDefinitionId;

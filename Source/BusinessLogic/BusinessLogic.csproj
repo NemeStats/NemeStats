@@ -353,15 +353,13 @@
     <Compile Include="Migrations\201608080135431_AddYearToBGGDefinition.Designer.cs">
       <DependentUpon>201608080135431_AddYearToBGGDefinition.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201608280155170_AddBGGCategoryLogic.cs" />
-    <Compile Include="Migrations\201608280155170_AddBGGCategoryLogic.Designer.cs">
-      <DependentUpon>201608280155170_AddBGGCategoryLogic.cs</DependentUpon>
+    <Compile Include="Migrations\201609100928186_BggCategories.cs" />
+    <Compile Include="Migrations\201609100928186_BggCategories.Designer.cs">
+      <DependentUpon>201609100928186_BggCategories.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\Achievements\AchievementLevel.cs" />
     <Compile Include="Models\Achievements\AchievementId.cs" />
     <Compile Include="Models\Games\BoardGameGeekGameCategory.cs" />
-    <Compile Include="Models\Games\BoardGameGeekGameToCategory.cs" />
-    <Compile Include="Models\Games\GameToCategory.cs" />
     <Compile Include="Models\Games\SavePlayedGameRequest.cs" />
     <Compile Include="Models\Games\TrendingGame.cs" />
     <Compile Include="Logic\Points\IWeightTierCalculator.cs" />
@@ -977,8 +975,8 @@
     <EmbeddedResource Include="Migrations\201608080135431_AddYearToBGGDefinition.resx">
       <DependentUpon>201608080135431_AddYearToBGGDefinition.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201608280155170_AddBGGCategoryLogic.resx">
-      <DependentUpon>201608280155170_AddBGGCategoryLogic.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201609100928186_BggCategories.resx">
+      <DependentUpon>201609100928186_BggCategories.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

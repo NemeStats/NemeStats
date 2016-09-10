@@ -91,18 +91,16 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.AchievementTests
                             {
                                 BoardGameGeekGameDefinition = new BoardGameGeekGameDefinition
                                 {
-                                    Categories = new List<BoardGameGeekGameToCategory>
+                                    Categories = new List<BoardGameGeekGameCategory>
                                     {
-                                        new BoardGameGeekGameToCategory
-                                        {
-                                            BoardGameGeekGameCategory = new BoardGameGeekGameCategory
+                                        new BoardGameGeekGameCategory
                                             {
                                                 CategoryName = "Dice"
                                             }
                                         }
-                                    }
                                 }
                             }
+
                         }
                     });
             }

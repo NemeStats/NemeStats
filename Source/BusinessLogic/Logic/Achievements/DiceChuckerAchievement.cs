@@ -40,7 +40,7 @@ namespace BusinessLogic.Logic.Achievements
                 DataContext
                     .GetQueryable<PlayerGameResult>()
                     .Where(x => x.PlayerId == playerId 
-                    && x.PlayedGame.GameDefinition.BoardGameGeekGameDefinition.Categories.Any(o => o.BoardGameGeekGameCategory.CategoryName == "Dice"))
+                    && x.PlayedGame.GameDefinition.BoardGameGeekGameDefinition.Categories.Any(o => o.CategoryName == "Dice"))
                     .Select(x => x.PlayedGame.GameDefinitionId)
                     .Distinct()
                     .ToList();
