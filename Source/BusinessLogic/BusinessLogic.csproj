@@ -364,6 +364,7 @@
     <Compile Include="Migrations\201609100928186_BggCategories.cs" />
     <Compile Include="Migrations\201609100928186_BggCategories.Designer.cs">
       <DependentUpon>201609100928186_BggCategories.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\201608280145267_AddPlayedGameApplicationLinkage.cs" />
     <Compile Include="Migrations\201608280145267_AddPlayedGameApplicationLinkage.Designer.cs">
       <DependentUpon>201608280145267_AddPlayedGameApplicationLinkage.cs</DependentUpon>
@@ -990,6 +991,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201609100928186_BggCategories.resx">
       <DependentUpon>201609100928186_BggCategories.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201608280145267_AddPlayedGameApplicationLinkage.resx">
       <DependentUpon>201608280145267_AddPlayedGameApplicationLinkage.cs</DependentUpon>
     </EmbeddedResource>
