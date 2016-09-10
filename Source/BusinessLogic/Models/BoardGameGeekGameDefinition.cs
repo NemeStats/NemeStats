@@ -2,6 +2,7 @@
 using BusinessLogic.DataAccess;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using BusinessLogic.Models.Games;
 
 namespace BusinessLogic.Models
 {
@@ -20,6 +21,9 @@ namespace BusinessLogic.Models
         public decimal? AverageWeight { get; set; }
         public string Description { get; set; }
         public int? YearPublished { get; set; }
+        public bool IsExpansion { get; set; }
+        public int? Rank { get; set; }
+        public virtual IList<BoardGameGeekGameCategory> Categories { get; set; } = new List<BoardGameGeekGameCategory>();
         [NotMapped]
         public int? AveragePlayTime {
             get

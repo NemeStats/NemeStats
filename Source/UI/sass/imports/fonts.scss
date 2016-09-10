@@ -35,53 +35,57 @@ $custom-font-path: $fa-font-path;
 ================*/
 
 .ns-icon-former-nemesis:before {
-    content: "\e900";
-}
-
-.ns-icon-nemesis:before {
     content: "\e901";
 }
 
-.ns-icon-group:before {
+.ns-icon-nemesis:before {
     content: "\e902";
 }
 
-.ns-icon-one:before {
+.ns-icon-group:before {
     content: "\e903";
 }
 
-.ns-icon-former-champion:before {
+.ns-icon-one:before {
     content: "\e904";
 }
 
-.ns-icon-clipboard-move:before {
+.ns-icon-former-champion:before {
     content: "\e905";
 }
 
-.ns-icon-dice:before {
+.ns-icon-clipboard-move:before {
     content: "\e906";
 }
 
-.ns-icon-minion:before {
+.ns-icon-dice:before {
     content: "\e907";
 }
 
-.ns-icon-medal:before {
+.ns-icon-minion:before {
     content: "\e908";
 }
 
-.ns-icon-punisher:before {
+.ns-icon-medal:before {
     content: "\e909";
 }
 
-.ns-icon-butterfly:before {
+.ns-icon-punisher:before {
     content: "\e90a";
+}
+
+.ns-icon-butterfly:before {
+    content: "\e90b";
 }
 
 .ns-icon-eye-minion {
     margin-left: 0;
 
     &:before {
-        content: "\e90b";
+        content: "\e90c";
     }
+}
+
+.ns-icon-dice-chucker:before {
+    content: "\e900";
 }

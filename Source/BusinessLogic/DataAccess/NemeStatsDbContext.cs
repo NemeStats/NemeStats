@@ -22,6 +22,7 @@ using BusinessLogic.Models.User;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
+using BusinessLogic.Models.Games;
 using Microsoft.Azure;
 
 namespace BusinessLogic.DataAccess
@@ -52,6 +53,7 @@ namespace BusinessLogic.DataAccess
         public virtual DbSet<Nemesis> Nemeses { get; set; }
         public virtual DbSet<Champion> Champions { get; set; }
         public virtual DbSet<VotableFeature> VotableFeatures { get; set; }
+        public virtual DbSet<BoardGameGeekGameCategory> BoardGameGeekGameCategories { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -66,6 +68,17 @@ namespace BusinessLogic.DataAccess
              .HasRequired(i => i.Player)
             .WithMany(p => p.PlayerAchievements)
             .WillCascadeOnDelete(true);
+
+            modelBuilder.Entity<BoardGameGeekGameDefinition>()
+            .HasMany(v => v.Categories)
+            .WithMany(p => p.Games)
+          .Map(
+            m =>
+        {
+            m.MapLeftKey("Id");
+            m.MapRightKey("BoardGameGeekGameCategoryId");
+            m.ToTable("BoardGameGeekGameToCategory");
+        });
 
             base.OnModelCreating(modelBuilder);
         }
