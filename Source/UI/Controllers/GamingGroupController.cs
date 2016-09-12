@@ -16,7 +16,6 @@
 #endregion LICENSE
 
 using AutoMapper;
-using BusinessLogic.DataAccess.GamingGroups;
 using BusinessLogic.Logic;
 using BusinessLogic.Logic.GamingGroups;
 using BusinessLogic.Logic.Users;
@@ -42,7 +41,6 @@ namespace UI.Controllers
         public const string SECTION_ANCHOR_RECENT_GAMES = "RecentGames";
 
         internal IGamingGroupViewModelBuilder gamingGroupViewModelBuilder;
-        internal IGamingGroupAccessGranter gamingGroupAccessGranter;
         internal IGamingGroupSaver gamingGroupSaver;
         internal IGamingGroupRetriever gamingGroupRetriever;
         internal IPlayerWithNemesisViewModelBuilder playerWithNemesisViewModelBuilder;
@@ -52,7 +50,6 @@ namespace UI.Controllers
 
         public GamingGroupController(
             IGamingGroupViewModelBuilder gamingGroupViewModelBuilder,
-            IGamingGroupAccessGranter gamingGroupAccessGranter,
             IGamingGroupSaver gamingGroupSaver,
             IGamingGroupRetriever gamingGroupRetriever,
             IPlayerWithNemesisViewModelBuilder playerWithNemesisViewModelBuilder,
@@ -61,7 +58,6 @@ namespace UI.Controllers
             IGamingGroupContextSwitcher gamingGroupContextSwitcher)
         {
             this.gamingGroupViewModelBuilder = gamingGroupViewModelBuilder;
-            this.gamingGroupAccessGranter = gamingGroupAccessGranter;
             this.gamingGroupSaver = gamingGroupSaver;
             this.gamingGroupRetriever = gamingGroupRetriever;
             this.playerWithNemesisViewModelBuilder = playerWithNemesisViewModelBuilder;
@@ -148,20 +144,6 @@ namespace UI.Controllers
             ViewData["canEdit"] = true;
 
             return View(MVC.GameDefinition.Views._GameDefinitionsTablePartial, model);
-        }
-
-        [HttpPost]
-        [Authorize]
-        [UserContext]
-        public virtual ActionResult GrantAccess(GamingGroupViewModel model, ApplicationUser currentUser)
-        {
-            if (ModelState.IsValid)
-            {
-                gamingGroupAccessGranter.CreateInvitation(model.InviteeEmail, currentUser);
-                return RedirectToAction(MVC.GamingGroup.Details(model.Id, currentUser));
-            }
-
-            return RedirectToAction(MVC.GamingGroup.ActionNames.Details, model);
         }
 
         [Authorize]

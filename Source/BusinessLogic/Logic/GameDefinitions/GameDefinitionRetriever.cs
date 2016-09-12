@@ -198,7 +198,7 @@ namespace BusinessLogic.Logic.GameDefinitions
 
             if (gameDefinition == null)
             {
-                throw new EntityDoesNotExistException(typeof(GameDefinitionSummary), id);
+                throw new EntityDoesNotExistException(typeof(GameDefinition), id);
             }
 
             var gameDefinitionSummary = new GameDefinitionSummary

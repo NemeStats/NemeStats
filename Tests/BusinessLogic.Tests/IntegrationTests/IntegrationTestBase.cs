@@ -16,7 +16,6 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 using BusinessLogic.DataAccess;
-using BusinessLogic.DataAccess.GamingGroups;
 using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.DataAccess.Security;
 using BusinessLogic.EventTracking;
@@ -150,8 +149,6 @@ namespace BusinessLogic.Tests.IntegrationTests
                     anotherTestGameDefinitionWithOtherGamingGroupId = SaveGameDefinition(nemeStatsDbContext,
                         testOtherGamingGroup.Id, testGameNameForAnotherGameWithOtherGamingGroupId);
                     SavePlayers(nemeStatsDbContext, testGamingGroup.Id, testOtherGamingGroup.Id);
-
-                    SaveGamingGroupInvitations(nemeStatsDbContext, dataContext);
                 }
 
                 using(NemeStatsDataContext dataContext = new NemeStatsDataContext())
@@ -159,20 +156,6 @@ namespace BusinessLogic.Tests.IntegrationTests
                     CreatePlayedGames(dataContext);
                 }
             }
-        }
-
-        private void SaveGamingGroupInvitations(NemeStatsDbContext nemeStatsDbContext, IDataContext dataContext)
-        {
-            EntityFrameworkGamingGroupAccessGranter accessGranter = new EntityFrameworkGamingGroupAccessGranter(dataContext);
-            testUnredeemedGamingGroupInvitation = accessGranter.CreateInvitation(testUserWithDefaultGamingGroup.Email, testUserWithDefaultGamingGroup);
-            dataContext.CommitAllChanges();
-
-            testAlreadyRedeemedGamingGroupInvitation = accessGranter.CreateInvitation(testUserWithOtherGamingGroup.Email, testUserWithDefaultGamingGroup);
-            //TODO simulating registration. Will need a separate method for this soon so this logic can be replaced
-            testAlreadyRedeemedGamingGroupInvitation.DateRegistered = DateTime.UtcNow.AddDays(1);
-            testAlreadyRedeemedGamingGroupInvitation.RegisteredUserId = testUserWithOtherGamingGroup.Id;
-            nemeStatsDbContext.GamingGroupInvitations.Add(testAlreadyRedeemedGamingGroupInvitation);
-            nemeStatsDbContext.SaveChanges();
         }
 
         private ApplicationUser UpdateDatefaultGamingGroupOnUser(ApplicationUser user, GamingGroup gamingGroup, NemeStatsDataContext dataContext)

@@ -70,21 +70,6 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
         }
 
         [Test]
-        public void ItReturnsA404NotFoundIfTheGamingGroupCantBeFound()
-        {
-            autoMocker = new RhinoAutoMocker<GamingGroupController>();
-            autoMocker.PartialMockTheClassUnderTest();
-    
-            autoMocker.ClassUnderTest.Expect(
-                mock => mock.GetGamingGroupSummary(Arg<int>.Is.Anything, Arg<IDateRangeFilter>.Is.Anything))
-                .Throw(new EntityDoesNotExistException(typeof(GamingGroup), currentUser.CurrentGamingGroupId));
-
-            var result = autoMocker.ClassUnderTest.Details(currentUser.CurrentGamingGroupId, currentUser, dateRangeFilter);
-
-            result.ShouldBeAssignableTo<HttpNotFoundResult>();
-        }
-
-        [Test]
         public void ItAddsAGamingGroupViewModelToTheView()
         {
             var viewResult = autoMocker.ClassUnderTest.Details(currentUser.CurrentGamingGroupId, currentUser, dateRangeFilter) as ViewResult;

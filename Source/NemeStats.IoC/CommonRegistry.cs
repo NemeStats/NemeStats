@@ -19,7 +19,6 @@
 using System.Configuration.Abstractions;
 using BoardGameGeekApiClient.Interfaces;
 using BusinessLogic.Caching;
-using BusinessLogic.DataAccess.GamingGroups;
 using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.DataAccess.Security;
 using BusinessLogic.Events.HandlerFactory;
@@ -90,8 +89,6 @@ namespace NemeStats.IoC
         private void SetupTransientMappings()
         {
             For<IGamingGroupSaver>().Use<GamingGroupSaver>();
-
-            For<IGamingGroupAccessGranter>().Use<EntityFrameworkGamingGroupAccessGranter>();
 
             For<IGamingGroupInviteConsumer>().Use<GamingGroupInviteConsumer>();
             For<IPlayerSummaryBuilder>().Use<PlayerSummaryBuilder>();

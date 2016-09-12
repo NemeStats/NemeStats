@@ -17,9 +17,7 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Linq;
 using BusinessLogic.DataAccess;
-using BusinessLogic.DataAccess.GamingGroups;
 using BusinessLogic.Logic.GamingGroups;
 using BusinessLogic.Logic.Users;
 using BusinessLogic.Models;
@@ -38,7 +36,6 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.GamingGroupInviteC
         protected IDataContext dataContextMock;
         protected ApplicationUserManager applicationUserManagerMock;
         protected GamingGroupInviteConsumer gamingGroupInviteConsumer;
-        protected IGamingGroupAccessGranter gamingGroupAccessGranter;
         protected IDataProtectionProvider dataProtectionProviderMock;
         protected List<GamingGroupInvitation> gamingGroupInvitations;
         protected ApplicationUser currentUser;
@@ -52,12 +49,10 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.GamingGroupInviteC
             dataProtectionProviderMock.Expect(mock => mock.Create(Arg<string>.Is.Anything)).Return(dataProtector);
             userStoreMock = MockRepository.GenerateMock<IUserStore<ApplicationUser>>();
             applicationUserManagerMock = MockRepository.GenerateMock<ApplicationUserManager>(userStoreMock, dataProtectionProviderMock);
-            gamingGroupAccessGranter = MockRepository.GenerateMock<IGamingGroupAccessGranter>();
             dataContextMock = MockRepository.GenerateMock<IDataContext>();
-            this.gamingGroupInviteConsumer = new GamingGroupInviteConsumer(
+            gamingGroupInviteConsumer = new GamingGroupInviteConsumer(
                 pendingGamingGroupInvitationRetriever, 
                 applicationUserManagerMock, 
-                gamingGroupAccessGranter,
                 dataContextMock);
             currentUser = new ApplicationUser()
             {
