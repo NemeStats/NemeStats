@@ -24,6 +24,7 @@ using BusinessLogic.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using BusinessLogic.Exceptions;
 using BusinessLogic.Models.Games;
 using BusinessLogic.Models.Utility;
 using BusinessLogic.Paging;
@@ -194,6 +195,11 @@ namespace BusinessLogic.Logic.GameDefinitions
                 .Include(game => game.GamingGroup)
                 .Include(game => game.BoardGameGeekGameDefinition)
                 .SingleOrDefault(game => game.Id == id);
+
+            if (gameDefinition == null)
+            {
+                throw new EntityDoesNotExistException(typeof(GameDefinitionSummary), id);
+            }
 
             var gameDefinitionSummary = new GameDefinitionSummary
             {

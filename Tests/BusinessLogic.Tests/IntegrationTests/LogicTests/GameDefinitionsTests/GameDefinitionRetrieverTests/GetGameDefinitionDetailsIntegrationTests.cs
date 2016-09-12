@@ -20,9 +20,12 @@ using System;
 using System.Linq;
 using BusinessLogic.DataAccess;
 using BusinessLogic.DataAccess.Repositories;
+using BusinessLogic.Exceptions;
 using BusinessLogic.Logic.GameDefinitions;
+using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
 using NUnit.Framework;
+using Shouldly;
 
 namespace BusinessLogic.Tests.IntegrationTests.LogicTests.GameDefinitionsTests.GameDefinitionRetrieverTests
 {
@@ -39,16 +42,16 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.GameDefinitionsTests.G
         {
             base.FixtureSetUp();
 
-            using (this.dbContext = new NemeStatsDbContext())
+            using (dbContext = new NemeStatsDbContext())
             {
-                using (this.dataContext = new NemeStatsDataContext(this.dbContext, this.securedEntityValidatorFactory))
+                using (dataContext = new NemeStatsDataContext(dbContext, securedEntityValidatorFactory))
                 {
                     var playerRepository = new EntityFrameworkPlayerRepository(dataContext);
 
-                    var gameDefinitionRetriever = new GameDefinitionRetriever(this.dataContext, playerRepository);
-                    this.gameDefinitionSummary = gameDefinitionRetriever.GetGameDefinitionDetails(
-                        this.testGameDefinition.Id, 
-                        this.numberOfGamesToRetrieve);
+                    var gameDefinitionRetriever = new GameDefinitionRetriever(dataContext, playerRepository);
+                    gameDefinitionSummary = gameDefinitionRetriever.GetGameDefinitionDetails(
+                        testGameDefinition.Id, 
+                        numberOfGamesToRetrieve);
                 }
             }
         }
@@ -56,20 +59,20 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.GameDefinitionsTests.G
         [Test]
         public void ItRetrievesTheSpecifiedGameDefinition()
         {
-            Assert.AreEqual(this.testGameDefinition.Id, this.gameDefinitionSummary.Id);
+            Assert.AreEqual(testGameDefinition.Id, gameDefinitionSummary.Id);
         }
 
         [Test]
         public void ItRetrievesTheLastXPlayedGames()
         {
-            Assert.AreEqual(this.numberOfGamesToRetrieve, this.gameDefinitionSummary.PlayedGames.Count);
+            Assert.AreEqual(numberOfGamesToRetrieve, gameDefinitionSummary.PlayedGames.Count);
         }
 
         [Test]
         public void ItRetrievesGamesOrderedByDateDescending()
         {
             var lastDate = new DateTime(2100, 1, 1);
-            foreach(var playedGame in this.gameDefinitionSummary.PlayedGames)
+            foreach(var playedGame in gameDefinitionSummary.PlayedGames)
             {
                 Assert.LessOrEqual(playedGame.DatePlayed, lastDate);
                 lastDate = playedGame.DatePlayed;
@@ -79,27 +82,48 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.GameDefinitionsTests.G
         [Test]
         public void ItRetrievesPlayerGameResultsForEachPlayedGame()
         {
-            Assert.Greater(this.gameDefinitionSummary.PlayedGames[0].PlayerGameResults.Count, 0);
+            Assert.Greater(gameDefinitionSummary.PlayedGames[0].PlayerGameResults.Count, 0);
         }
 
         [Test]
         public void ItRetrievesPlayerInfoForEachPlayerGameResult()
         {
-            Assert.NotNull(this.gameDefinitionSummary.PlayedGames[0].PlayerGameResults[0].Player);
+            Assert.NotNull(gameDefinitionSummary.PlayedGames[0].PlayerGameResults[0].Player);
         }
 
         [Test]
         public void ItRetrievesChampionInfoForTheGameDefinition()
         {
-            Assert.That(this.gameDefinitionSummary.Champion, Is.Not.Null);
+            Assert.That(gameDefinitionSummary.Champion, Is.Not.Null);
         }
 
         [Test]
         public void ItRetrievesThePlayerWinRecords()
         {
             //assumes there are 5 players - testplayer1 through testplayer 5
-            Assert.That(this.gameDefinitionSummary.PlayerWinRecords.Count, Is.EqualTo(5));
-            Assert.That(this.gameDefinitionSummary.PlayerWinRecords.Single(winRecord => winRecord.IsChampion), Is.Not.Null);
+            Assert.That(gameDefinitionSummary.PlayerWinRecords.Count, Is.EqualTo(5));
+            Assert.That(gameDefinitionSummary.PlayerWinRecords.Single(winRecord => winRecord.IsChampion), Is.Not.Null);
+        }
+
+        [Test]
+        public void ItThrowsAnEntityDoesNotExistExceptionIfTheIdIsntValid()
+        {
+            using (dbContext = new NemeStatsDbContext())
+            {
+                using (dataContext = new NemeStatsDataContext(dbContext, securedEntityValidatorFactory))
+                {
+                    var playerRepository = new EntityFrameworkPlayerRepository(dataContext);
+
+                    int invalidId = -1;
+                    var expectedException = new EntityDoesNotExistException(typeof(GameDefinition), invalidId);
+                    var gameDefinitionRetriever = new GameDefinitionRetriever(dataContext, playerRepository);
+
+                    var actualException = Assert.Throws<EntityDoesNotExistException>(() => 
+                        gameDefinitionRetriever.GetGameDefinitionDetails(invalidId, 0));
+
+                    actualException.Message.ShouldBe(expectedException.Message);
+                }
+            }
         }
     }
 }

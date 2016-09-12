@@ -15,7 +15,6 @@
 
 #endregion LICENSE
 
-using System;
 using AutoMapper;
 using BusinessLogic.DataAccess.GamingGroups;
 using BusinessLogic.Logic;
@@ -26,7 +25,6 @@ using BusinessLogic.Models.User;
 using BusinessLogic.Models.Utility;
 using System.Linq;
 using System.Web.Mvc;
-using BusinessLogic.Exceptions;
 using UI.Attributes.Filters;
 using UI.Controllers.Helpers;
 using UI.Models.GamingGroup;
@@ -93,24 +91,17 @@ namespace UI.Controllers
                 ModelState.AddModelError("dateRangeFilter", errorMessage);
             }
 
-            try
-            {
-                var gamingGroupSummary = GetGamingGroupSummary(id, dateRangeFilter);
-                var viewModel = gamingGroupViewModelBuilder.Build(gamingGroupSummary, currentUser);
-                viewModel.PlayedGames.ShowSearchLinkInResultsHeader = true;
-                viewModel.DateRangeFilter = dateRangeFilter;
-                viewModel.UserCanEdit = currentUser.CurrentGamingGroupId == id;
+            var gamingGroupSummary = GetGamingGroupSummary(id, dateRangeFilter);
+            var viewModel = gamingGroupViewModelBuilder.Build(gamingGroupSummary, currentUser);
+            viewModel.PlayedGames.ShowSearchLinkInResultsHeader = true;
+            viewModel.DateRangeFilter = dateRangeFilter;
+            viewModel.UserCanEdit = currentUser.CurrentGamingGroupId == id;
 
-                ViewBag.RecentGamesSectionAnchorText = SECTION_ANCHOR_RECENT_GAMES;
-                ViewBag.PlayerSectionAnchorText = SECTION_ANCHOR_PLAYERS;
-                ViewBag.GameDefinitionSectionAnchorText = SECTION_ANCHOR_GAMEDEFINITIONS;
+            ViewBag.RecentGamesSectionAnchorText = SECTION_ANCHOR_RECENT_GAMES;
+            ViewBag.PlayerSectionAnchorText = SECTION_ANCHOR_PLAYERS;
+            ViewBag.GameDefinitionSectionAnchorText = SECTION_ANCHOR_GAMEDEFINITIONS;
 
-                return View(MVC.GamingGroup.Views.Details, viewModel);
-            }
-            catch (EntityDoesNotExistException)
-            {
-                return new HttpNotFoundResult();
-            }
+            return View(MVC.GamingGroup.Views.Details, viewModel);
         }
 
         [NonAction]
