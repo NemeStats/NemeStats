@@ -37,7 +37,7 @@ namespace UI.Areas.Api.Controllers
                 AuthenticationTokenExpirationDateTime = user.AuthenticationTokenExpirationDate
             };
 
-            if (credentialsMessage.PreserveExistingAuthenticationToken)
+            if (!string.IsNullOrWhiteSpace(user.AuthenticationToken) && credentialsMessage.PreserveExistingAuthenticationToken)
             {
                 newAuthTokenMessage.AuthenticationToken = user.AuthenticationToken;
             }

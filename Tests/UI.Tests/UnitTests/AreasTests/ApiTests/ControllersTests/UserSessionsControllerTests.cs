@@ -127,5 +127,39 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests
             var newAuthTokenMessage = content.Value as NewAuthTokenMessage;
             newAuthTokenMessage.AuthenticationToken.ShouldBe(loggedInUser.AuthenticationToken);
         }
+
+        [Test]
+        public async Task ItGeneratesANewAuthTokenIfThereIsntAnExistingOneRegardlessOfThePreserveExistingAuthenticationTokenFlag()
+        {
+            var credentialsMessage = new CredentialsMessage
+            {
+                UserName = "valid username",
+                Password = "valid corresponding password",
+                PreserveExistingAuthenticationToken = true
+            };
+
+            //--user without an existng authentication token
+            var loggedInUser = new ApplicationUser
+            {
+                Id = "some user id",
+                AuthenticationTokenExpirationDate = new DateTime()
+            };
+
+            autoMocker.Get<ApplicationUserManager>().Expect(mock => mock.FindAsync(
+                                        Arg<string>.Matches(userName => userName == credentialsMessage.UserName),
+                                        Arg<string>.Matches(password => password == credentialsMessage.Password)))
+                    .Return(Task.FromResult(loggedInUser));
+
+            var someNewAuthToken = new AuthToken("the auth token value", new DateTime());
+            autoMocker.Get<IAuthTokenGenerator>().Expect(mock => mock.GenerateAuthToken(loggedInUser.Id)).Return(someNewAuthToken);
+
+            var actualResponse = await autoMocker.ClassUnderTest.Login(credentialsMessage);
+
+            Assert.That(actualResponse.Content, Is.TypeOf(typeof(ObjectContent<NewAuthTokenMessage>)));
+            var content = actualResponse.Content as ObjectContent<NewAuthTokenMessage>;
+            var newAuthTokenMessage = content.Value as NewAuthTokenMessage;
+            Assert.That(newAuthTokenMessage.AuthenticationToken, Is.EqualTo(someNewAuthToken.AuthenticationTokenString));
+            Assert.That(newAuthTokenMessage.AuthenticationTokenExpirationDateTime, Is.EqualTo(loggedInUser.AuthenticationTokenExpirationDate));
+        }
     }
 }
