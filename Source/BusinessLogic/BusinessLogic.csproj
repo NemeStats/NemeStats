@@ -182,8 +182,6 @@
     <Compile Include="Caching\CacheService.cs" />
     <Compile Include="DataAccess\NemeStatsDataContext.cs" />
     <Compile Include="DataAccess\IDataContext.cs" />
-    <Compile Include="DataAccess\GamingGroups\EntityFrameworkGamingGroupAccessGranter.cs" />
-    <Compile Include="DataAccess\GamingGroups\IGamingGroupAccessGranter.cs" />
     <Compile Include="DataAccess\NemeStatsDbContext.cs" />
     <Compile Include="DataAccess\NemeStatsInitializer.cs" />
     <Compile Include="DataAccess\Repositories\ChampionRepository.cs" />

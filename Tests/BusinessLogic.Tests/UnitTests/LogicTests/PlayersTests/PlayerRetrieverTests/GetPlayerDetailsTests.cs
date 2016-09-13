@@ -25,6 +25,7 @@ using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using BusinessLogic.Exceptions;
 using BusinessLogic.Models.Achievements;
 using BusinessLogic.Models.Points;
 using StructureMap.AutoMocking;
@@ -178,16 +179,16 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
         }
 
         [Test]
-        public void ItThrowsAKeyNotFoundExceptionIfThePlayerDoesNotExist()
+        public void ItThrowsAnEntityDoesNotExistExceptionIfThePlayerDoesNotExist()
         {
             const int invalidPlayerId = -1;
-            var expectedMessage = string.Format(PlayerRetriever.EXCEPTION_MESSAGE_PLAYER_COULD_NOT_BE_FOUND, invalidPlayerId);
-            Exception actualException = Assert.Throws<KeyNotFoundException>(
+            var expectedException = new EntityDoesNotExistException(typeof(Player), invalidPlayerId);
+            Exception actualException = Assert.Throws<EntityDoesNotExistException>(
                                                                             () => autoMocker.ClassUnderTest.GetPlayerDetails(
                                                                                 invalidPlayerId, 
                                                                                 0));
             
-            Assert.AreEqual(expectedMessage, actualException.Message);
+            Assert.AreEqual(expectedException.Message, actualException.Message);
         }
 
         [Test]

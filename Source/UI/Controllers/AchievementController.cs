@@ -97,6 +97,11 @@ namespace UI.Controllers
         public virtual ActionResult PlayerAchievement(AchievementId achievementId, int playerId)
         {
             var playerAchievement = _playerAchievementRetriever.GetPlayerAchievement(playerId, achievementId);
+            if (playerAchievement == null)
+            {
+                return new HttpNotFoundResult();
+            }
+
             var model = _mapperFactory.GetMapper<PlayerAchievement, PlayerAchievementViewModel>().Map(playerAchievement);
             return View(MVC.Achievement.Views.Details, model);
         }

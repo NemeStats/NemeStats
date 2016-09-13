@@ -126,7 +126,7 @@
                                     {
                                     <span style="text-decoration: line-through">
                                         <b>
-                                            @Html.ActionLink(item.PreviousNemesisPlayerName, MVC.Player.Details(item.PreviousNemesisPlayerId, null))
+                                            @Html.ActionLink(item.PreviousNemesisPlayerName, MVC.Player.Details(item.PreviousNemesisPlayerId.Value, null))
                                         </b>
                                     </span>
                                     @:<br />
@@ -135,7 +135,7 @@
                                     @if (item.NemesisPlayerId.HasValue)
                                     {
                                     <b>
-                                        @Html.ActionLink(item.NemesisPlayerName, MVC.Player.Details(item.NemesisPlayerId, null))
+                                        @Html.ActionLink(item.NemesisPlayerName, MVC.Player.Details(item.NemesisPlayerId.Value, null))
                                     </b>
                                     }
                                 </td>

@@ -20,7 +20,6 @@ using BusinessLogic.Models.GamingGroups;
 using BusinessLogic.Models.Utility;
 using NUnit.Framework;
 using Rhino.Mocks;
-using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
 using UI.Models.GamingGroup;
@@ -60,7 +59,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
         [Test]
         public void ItReturnsTheDetailsView()
         {
-            ViewResult viewResult = autoMocker.ClassUnderTest.Details(currentUser.CurrentGamingGroupId , currentUser, dateRangeFilter) as ViewResult;
+            var viewResult = autoMocker.ClassUnderTest.Details(currentUser.CurrentGamingGroupId , currentUser, dateRangeFilter) as ViewResult;
 
             Assert.AreEqual(MVC.GamingGroup.Views.Details, viewResult.ViewName);
         }
@@ -68,7 +67,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
         [Test]
         public void ItAddsAGamingGroupViewModelToTheView()
         {
-            ViewResult viewResult = autoMocker.ClassUnderTest.Details(currentUser.CurrentGamingGroupId, currentUser, dateRangeFilter) as ViewResult;
+            var viewResult = autoMocker.ClassUnderTest.Details(currentUser.CurrentGamingGroupId, currentUser, dateRangeFilter) as ViewResult;
 
             Assert.AreSame(_gamingGroupViewModel, viewResult.Model);
         }
@@ -76,7 +75,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
         [Test]
         public void ItPreservesTheDateRangeFilter()
         {
-            ViewResult viewResult = autoMocker.ClassUnderTest.Details(currentUser.CurrentGamingGroupId, currentUser, dateRangeFilter) as ViewResult;
+            var viewResult = autoMocker.ClassUnderTest.Details(currentUser.CurrentGamingGroupId, currentUser, dateRangeFilter) as ViewResult;
 
             var model = viewResult.Model as GamingGroupViewModel;
             Assert.AreSame(dateRangeFilter, model.DateRangeFilter);
@@ -95,7 +94,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
         public void ItAddsAModelErrorIfTheBasicDateRangeFilterHasValidationErrors()
         {
             var basicDateRangeFilterMock = MockRepository.GenerateMock<BasicDateRangeFilter>();
-            string expectedErrorMessage = "some error message";
+            var expectedErrorMessage = "some error message";
             basicDateRangeFilterMock.Expect(mock => mock.IsValid(out Arg<string>.Out(expectedErrorMessage).Dummy)).Return(false);
             var viewResult = autoMocker.ClassUnderTest.Details(currentUser.CurrentGamingGroupId, currentUser, basicDateRangeFilterMock) as ViewResult;
 

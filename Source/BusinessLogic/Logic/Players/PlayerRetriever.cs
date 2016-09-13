@@ -23,6 +23,7 @@ using BusinessLogic.Models.Players;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using BusinessLogic.Exceptions;
 using BusinessLogic.Logic.PlayedGames;
 using BusinessLogic.Models.PlayedGames;
 using BusinessLogic.Logic.BoardGameGeek;
@@ -218,7 +219,7 @@ namespace BusinessLogic.Logic.Players
         {
             if (returnPlayer == null)
             {
-                throw new KeyNotFoundException(string.Format(EXCEPTION_MESSAGE_PLAYER_COULD_NOT_BE_FOUND, playerId));
+                throw new EntityDoesNotExistException(typeof(Player), playerId);
             }
         }
 

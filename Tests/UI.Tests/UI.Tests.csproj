@@ -266,6 +266,7 @@
     <Compile Include="UnitTests\ControllerTests\AccountControllerTests\AccountControllerTestBase.cs" />
     <Compile Include="UnitTests\ControllerTests\AccountControllerTests\AddExistingUserToGamingGroup.cs" />
     <Compile Include="UnitTests\ControllerTests\AccountControllerTests\RegisterHttpPostTests.cs" />
+    <Compile Include="UnitTests\ControllerTests\AchievementControllerTests\PlayerAchievementTests.cs" />
     <Compile Include="UnitTests\ControllerTests\GameDefinitionControllerTests\CreateHttpGetTests.cs" />
     <Compile Include="UnitTests\ControllerTests\GameDefinitionControllerTests\CreateHttpPostTests.cs" />
     <Compile Include="UnitTests\ControllerTests\GameDefinitionControllerTests\DetailsTests.cs" />
@@ -281,7 +282,6 @@
     <Compile Include="UnitTests\ControllerTests\GamingGroupControllerTests\GetGamingGroupSummaryTests.cs" />
     <Compile Include="UnitTests\ControllerTests\GamingGroupControllerTests\GetTopGamingGroupsTests.cs" />
     <Compile Include="UnitTests\ControllerTests\AccountControllerTests\UserGamingGroupsTests.cs" />
-    <Compile Include="UnitTests\ControllerTests\GamingGroupControllerTests\GrantAccessTests.cs" />
     <Compile Include="UnitTests\ControllerTests\GamingGroupControllerTests\DetailsTests.cs" />
     <Compile Include="UnitTests\ControllerTests\HelperTests\ShowingXResultsMessageBuilderTests\BuildMessageTests.cs" />
     <Compile Include="UnitTests\ControllerTests\HomeControllerTests\HomeControllerTestBase.cs" />
