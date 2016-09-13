@@ -22,13 +22,12 @@ using BusinessLogic.Models.Games;
 using BusinessLogic.Models.GamingGroups;
 using System.Linq;
 using System.Web.Mvc;
+using BusinessLogic.DataAccess;
 using BusinessLogic.Facades;
 using BusinessLogic.Logic.PlayerAchievements;
 using BusinessLogic.Models;
 using BusinessLogic.Paging;
 using UI.Controllers.Helpers;
-using UI.Mappers;
-using UI.Mappers.CustomMappers;
 using UI.Mappers.Extensions;
 using UI.Mappers.Interfaces;
 using UI.Models.GameDefinitionModels;
@@ -61,7 +60,7 @@ namespace UI.Controllers
             ITrendingGamesRetriever trendingGamesRetriever,
             ITransformer transformer,            
             IRecentPlayerAchievementsUnlockedRetreiver recentPlayerAchievementsUnlockedRetreiver,
-            IMapperFactory mapperFactory)        {
+            IMapperFactory mapperFactory, IDataContext dataContext)        {
             _recentPublicGamesRetriever = recentPublicGamesRetriever;
             _topGamingGroupsRetriever = topGamingGroupsRetriever;
             _trendingGamesRetriever = trendingGamesRetriever;
@@ -98,7 +97,7 @@ namespace UI.Controllers
         }
 
         public virtual ActionResult About()
-        {
+        {            
             return View();
         }
 

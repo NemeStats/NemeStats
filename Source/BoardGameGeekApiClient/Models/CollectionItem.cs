@@ -18,6 +18,7 @@ namespace BoardGameGeekApiClient.Models
         public int MaxPlayers { get; set; }
         public int PlayingTime { get; set; }
         public List<string> Mechanics { get; set; }
+        public List<GameCategory> Categories { get; set; }
 
         public bool IsExpansion { get; set; }
         public int YearPublished { get; set; }
@@ -59,6 +60,7 @@ namespace BoardGameGeekApiClient.Models
                 MaxPlayers = this.MaxPlayers,
                 PlayingTime = this.PlayingTime,
                 Mechanics = this.Mechanics,
+                Categories = this.Categories,
                 IsExpansion = this.IsExpansion,
                 YearPublished = this.YearPublished,
                 BGGRating = this.BGGRating,

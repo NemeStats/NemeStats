@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using BusinessLogic.Logic.Points;
 
 namespace UI.Models.GameDefinitionModels
@@ -45,5 +46,6 @@ namespace UI.Models.GameDefinitionModels
 
         public string WeightDescription { get; set; }
 
+        public List<string> Categories { get; set; }
     }
 }
