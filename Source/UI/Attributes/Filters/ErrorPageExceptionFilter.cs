@@ -20,7 +20,7 @@ namespace UI.Attributes.Filters
             }
 
             response.StatusCode = (int)HttpStatusCode.InternalServerError;
-            throw new HttpException((int)HttpStatusCode.InternalServerError, exception.Message);
+            throw new HttpException((int)HttpStatusCode.InternalServerError, context.Exception.Message);
         }
     }
 }
