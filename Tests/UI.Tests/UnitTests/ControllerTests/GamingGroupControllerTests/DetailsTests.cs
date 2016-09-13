@@ -20,13 +20,8 @@ using BusinessLogic.Models.GamingGroups;
 using BusinessLogic.Models.Utility;
 using NUnit.Framework;
 using Rhino.Mocks;
-using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
-using BusinessLogic.Exceptions;
-using Shouldly;
-using StructureMap.AutoMocking;
-using UI.Controllers;
 using UI.Models.GamingGroup;
 using UI.Transformations;
 

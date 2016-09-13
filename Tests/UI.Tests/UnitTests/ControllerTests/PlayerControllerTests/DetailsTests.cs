@@ -45,30 +45,10 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         }
 
         [Test]
-        public void ItNeverReturnsNull()
-        {
-            Assert.NotNull(autoMocker.ClassUnderTest.Details(null, null));
-        }
-
-        [Test]
-        public void ItReturnsBadHttpStatusWhenNoPlayerIdGiven()
-        {
-            HttpStatusCodeResult actualResult = autoMocker.ClassUnderTest.Details(null, null) as HttpStatusCodeResult;
-
-            Assert.AreEqual((int)HttpStatusCode.BadRequest, actualResult.StatusCode);
-        }
-
-        [Test]
-        public void ItReturns404StatusWhenNoPlayerIsFound()
-        {
-            HttpStatusCodeResult actualResult = autoMocker.ClassUnderTest.Details(-1, null) as HttpStatusCodeResult;
-
-            Assert.AreEqual((int)HttpStatusCode.NotFound, actualResult.StatusCode);
-        }
-
-        [Test]
         public void ItRetrievesRequestedPlayer()
         {
+            SetupMinimumExpectations();
+
             autoMocker.ClassUnderTest.Details(playerId, currentUser);
 
             autoMocker.Get<IPlayerRetriever>().AssertWasCalled(x => x.GetPlayerDetails(playerId, PlayerController.NUMBER_OF_RECENT_GAMES_TO_RETRIEVE));
@@ -122,9 +102,24 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayerControllerTests
         [Test]
         public void ItOnlyRetrievesTheSpecifiedNumberOfPlayers()
         {
+            SetupMinimumExpectations();
+
             autoMocker.ClassUnderTest.Details(playerId, currentUser);
 
             autoMocker.Get<IPlayerRetriever>().AssertWasCalled(mock => mock.GetPlayerDetails(playerId, PlayerController.NUMBER_OF_RECENT_GAMES_TO_RETRIEVE));
+        }
+
+        private void SetupMinimumExpectations()
+        {
+            autoMocker.Get<IPlayerRetriever>().Expect(mock => mock.GetPlayerDetails(0, 0))
+                .IgnoreArguments()
+                .Return(new PlayerDetails
+                {
+                    PlayerGameResults = new List<PlayerGameResult>()
+                });
+            autoMocker.Get<IPlayerDetailsViewModelBuilder>().Expect(mock => mock.Build(null, null, null))
+                .IgnoreArguments()
+                .Return(new PlayerDetailsViewModel());
         }
 
         [Test]

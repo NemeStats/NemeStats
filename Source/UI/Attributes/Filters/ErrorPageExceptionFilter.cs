@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
+﻿using System.Net;
 using System.Web;
-using System.Web.Http.Filters;
 using System.Web.Mvc;
 using BusinessLogic.Exceptions;
-using UI.Areas.Api.Models;
 using IExceptionFilter = System.Web.Mvc.IExceptionFilter;
 
 namespace UI.Attributes.Filters

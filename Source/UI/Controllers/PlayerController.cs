@@ -89,21 +89,11 @@ namespace UI.Controllers
 
         // GET: /Player/Details/5
         [UserContext(RequiresGamingGroup = false)]
-        public virtual ActionResult Details(int? id, ApplicationUser currentUser)
+        public virtual ActionResult Details(int id, ApplicationUser currentUser)
         {
-            if (!id.HasValue)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-            var player = playerRetriever.GetPlayerDetails(id.Value, NUMBER_OF_RECENT_GAMES_TO_RETRIEVE);
-
-            if (player == null)
-            {
-                return new HttpNotFoundResult();
-            }
-
-            var fullUrl = this.Url.Action(MVC.Player.ActionNames.Details, MVC.Player.Name, new { id }, this.Request.Url.Scheme) + "#minions";
+            var player = playerRetriever.GetPlayerDetails(id, NUMBER_OF_RECENT_GAMES_TO_RETRIEVE);
+            
+            var fullUrl = Url.Action(MVC.Player.ActionNames.Details, MVC.Player.Name, new { id }, Request.Url.Scheme) + "#minions";
             var playerDetailsViewModel = playerDetailsViewModelBuilder.Build(player, fullUrl, currentUser);
 
             ViewBag.RecentGamesMessage = showingXResultsMessageBuilder.BuildMessage(
@@ -114,21 +104,21 @@ namespace UI.Controllers
         }
 
         // GET: /Player/SavePlayer
-        [System.Web.Mvc.Authorize]
+        [Authorize]
         public virtual ActionResult SavePlayer()
         {
             return View(MVC.Player.Views._CreateOrUpdatePartial, new Player());
         }
 
         // GET: /Player/Create
-        [System.Web.Mvc.Authorize]
+        [Authorize]
         public virtual ActionResult Create()
         {
             return View(MVC.Player.Views.Create, new Player());
         }
 
         // GET: /Player/InvitePlayer/5
-        [System.Web.Mvc.Authorize]
+        [Authorize]
         [UserContext]
         public virtual ActionResult InvitePlayer(int id, ApplicationUser currentUser)
         {
@@ -159,7 +149,7 @@ namespace UI.Controllers
         public virtual ActionResult ShowTopPlayers()
         {
             var topPlayers = playerSummaryBuilder.GetTopPlayers(NUMBER_OF_TOP_PLAYERS_TO_RETRIEVE);
-            var topPlayersViewModels = topPlayers.Select(topPlayer => this.topPlayerViewModelBuilder.Build(topPlayer)).ToList();
+            var topPlayersViewModels = topPlayers.Select(topPlayer => topPlayerViewModelBuilder.Build(topPlayer)).ToList();
             return View(MVC.Player.Views.TopPlayers, topPlayersViewModels);
         }
 
@@ -167,12 +157,12 @@ namespace UI.Controllers
         public virtual ActionResult ShowRecentNemesisChanges()
         {
             var recentNemesisChanges = nemesisHistoryRetriever.GetRecentNemesisChanges(NUMBER_OF_RECENT_NEMESIS_CHANGES_TO_RETRIEVE);
-            var recentNemesisChangesViewModels = this.nemesisChangeViewModelBuilder.Build(recentNemesisChanges).ToList();
+            var recentNemesisChangesViewModels = nemesisChangeViewModelBuilder.Build(recentNemesisChanges).ToList();
             return View(MVC.Player.Views.RecentNemesisChanges, recentNemesisChangesViewModels);
         }
 
-        [System.Web.Mvc.HttpPost]
-        [System.Web.Mvc.Authorize]
+        [HttpPost]
+        [Authorize]
         [UserContext]
         public virtual ActionResult InvitePlayer(PlayerInvitationViewModel playerInvitationViewModel, ApplicationUser currentUser)
         {
@@ -191,8 +181,8 @@ namespace UI.Controllers
             return new RedirectResult(Url.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name));
         }
 
-        [System.Web.Mvc.Authorize]
-        [System.Web.Mvc.HttpPost]
+        [Authorize]
+        [HttpPost]
         [UserContext]
         public virtual ActionResult Save(CreatePlayerRequest createPlayerRequest, ApplicationUser currentUser)
         {
@@ -220,7 +210,7 @@ namespace UI.Controllers
         }
 
         // GET: /Player/Edit/5
-        [System.Web.Mvc.Authorize]
+        [Authorize]
         public virtual ActionResult Edit(int? id)
         {
             if (id == null)
@@ -254,8 +244,8 @@ namespace UI.Controllers
         // POST: /Player/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [System.Web.Mvc.Authorize]
-        [System.Web.Mvc.HttpPost]
+        [Authorize]
+        [HttpPost]
         [ValidateAntiForgeryToken]
         [UserContext]
         public virtual ActionResult Edit([Bind(Include = "Id,Name,Active,GamingGroupId")] Player player, ApplicationUser currentUser)
@@ -283,15 +273,15 @@ namespace UI.Controllers
         }
 
         // POST: /Player/Delete/5
-        [System.Web.Mvc.Authorize]
-        [System.Web.Mvc.HttpPost]
+        [Authorize]
+        [HttpPost]
         [ValidateAntiForgeryToken]
         [UserContext]
         public virtual ActionResult Delete(int id, ApplicationUser currentUser)
         {
             _playerDeleter.DeletePlayer(id, currentUser);
             
-            this.SetToastMessage(TempMessageKeys.TEMP_MESSAGE_KEY_PLAYER_DELETED,"Player deleted successfully");
+            SetToastMessage(TempMessageKeys.TEMP_MESSAGE_KEY_PLAYER_DELETED,"Player deleted successfully");
 
             return new RedirectResult(Url.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name));
         }
