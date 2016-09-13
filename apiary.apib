@@ -44,6 +44,7 @@ domain should continue to work in the meantime, however.
 Also added a 409 conflict response to POST /PlayedGames/ if any of the Players don't exist in the specified Gaming Group. Also re-fixed an issue where it wasn't
 accepting decimal places in pointsScored
 * 2016-08-31 Can now set a list of applicationLinkages when recording a Played Game. This will allow clients to save their own unique identifier for games and retrieve games based on this identifier. For example, a client could import all games that do not have a source application matching their application.
+* 2016-09-13 Can now pass flag "preserveExistingAuthenticationToken" to POST /UserSessions and it will not overwrite the existing authentication token.
 
 ### General Information
 
@@ -241,6 +242,8 @@ will return a valid response.
 Authenticates the given User and gives back an authentication token which can be sent in the X-Auth-Token
 header on subsequent requests to the API that require authentication. This authentication token will be valid
 for about 3 months or until another request to POST /UserSessions/ invalidates the token (while providing a new one).
+The (optional) preserveExistingAuthenticationToken flag can be used to override the default behavior of always creating
+a authentication token.
 
 A User Session is represented by an authentication token.
 
@@ -249,6 +252,7 @@ A User Session is represented by an authentication token.
     + Attributes
         + userName : some legit username (string, required) - Username of the User being authenticated
         + password : some legit password (string, required) - Password of the User being authenticated
+        + preserveExistingAuthenticationToken : false (boolean, optional) - Flag indicating whether to generate a new authentication token when logging in vs. using the existing one. This could be useful if you have multiple devices logging in with the same account. This setting is ignored if there isn't already an existing authentication token for the user.
 
 
 + Response 200 (application/json)
