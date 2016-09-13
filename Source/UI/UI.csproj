@@ -576,6 +576,7 @@
     <Content Include="gruntfile.js" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
+    <Content Include="InternalServerError.html" />
     <Content Include="javascripts\bootstrap-sprockets.js" />
     <Content Include="javascripts\bootstrap.js" />
     <Content Include="javascripts\bootstrap.min.js" />
@@ -591,6 +592,7 @@
     <Content Include="javascripts\bootstrap\tab.js" />
     <Content Include="javascripts\bootstrap\tooltip.js" />
     <Content Include="javascripts\bootstrap\transition.js" />
+    <Content Include="NotFound.html" />
     <Content Include="PrivateAppSettings.config">
       <SubType>Designer</SubType>
     </Content>

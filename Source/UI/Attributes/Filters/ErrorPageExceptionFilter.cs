@@ -16,43 +16,17 @@ namespace UI.Attributes.Filters
     {
         public void OnException(ExceptionContext context)
         {
-            context.ExceptionHandled = true;
             var response = context.HttpContext.Response;
-
-            string errorPageHtml;
 
             var exception = context.Exception as ApiFriendlyException;
             if (exception != null)
             {
                 response.StatusCode = (int)exception.StatusCode;
-
-                if (exception.StatusCode == HttpStatusCode.NotFound)
-                {
-                    errorPageHtml =
-                        @"<html><head></head><body>Sorry that you got this error (and this primitive error page), 
-                                                but it looks like you are trying to go to a page that either no longer exists or never existed.
-                                                <a href='/'>Click here to go back to the home page</a></body></html>";
-                }
-                else
-                {
-                    var otherErrorTemplate =
-                                                @"<html><head></head><body>Sorry you got this primitive error page, but something went wrong. Here is
-                                                a cryptic error message for you: <b>{0}</b></br>
-                                                <a href='/'>Click here to go back to the home page</a></body></html>";
-                    errorPageHtml = string.Format(otherErrorTemplate, exception.Message);
-                }
-            }
-            else
-            {
-                response.StatusCode = (int)HttpStatusCode.InternalServerError;
-
-                errorPageHtml =
-                                        @"<html><head></head><body>Oh crap! An error happened and it wasn't your fault. We were able to log the error
-                                            so hopefully we'll be able to fix it soon. <a href='/'>Click here to go back to the home page</a></body></html>";
+                throw new HttpException((int)exception.StatusCode, exception.Message);
             }
 
-            response.Output.Write(errorPageHtml);
-            response.End();
+            response.StatusCode = (int)HttpStatusCode.InternalServerError;
+            throw new HttpException((int)HttpStatusCode.InternalServerError, exception.Message);
         }
     }
 }
