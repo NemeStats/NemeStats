@@ -3,6 +3,8 @@ using BusinessLogic.DataAccess;
 using BusinessLogic.Exceptions;
 using BusinessLogic.Models;
 using BusinessLogic.Models.User;
+using System.Collections.Generic;
+using BusinessLogic.Models.Games;
 
 namespace BusinessLogic.Logic.BoardGameGeek
 {
@@ -47,13 +49,27 @@ namespace BusinessLogic.Logic.BoardGameGeek
                 MaxPlayers = gameDetails.MaxPlayers,
                 MinPlayers = gameDetails.MinPlayers,
                 MaxPlayTime = gameDetails.MaxPlayTime,
-                MinPlayTime= gameDetails.MinPlayTime,
+                MinPlayTime = gameDetails.MinPlayTime,
                 AverageWeight = gameDetails.AverageWeight,
                 Description = gameDetails.Description,
-                YearPublished = gameDetails.YearPublished
+                YearPublished = gameDetails.YearPublished,
+                IsExpansion = gameDetails.IsExpansion,
+                Rank = gameDetails.Rank
             };
 
             _dataContext.Save(newRecord, currentUser);
+
+            // Save categories to BGG definition
+
+            foreach (var category in gameDetails.Categories)
+            {
+                
+                newRecord.Categories.Add(new BoardGameGeekGameCategory()
+                {
+                    BoardGameGeekGameCategoryId = category.Id,
+                    CategoryName = category.Category
+                });
+            }
 
             return boardGameGeekGameDefinitionId;
         }

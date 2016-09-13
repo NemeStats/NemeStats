@@ -1,4 +1,5 @@
-﻿using BoardGameGeekApiClient.Interfaces;
+﻿using System.Collections.Generic;
+using BoardGameGeekApiClient.Interfaces;
 using BoardGameGeekApiClient.Models;
 using BusinessLogic.DataAccess;
 using BusinessLogic.Exceptions;
@@ -61,7 +62,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.BoardGam
             var expectedGameDetails = new GameDetails
             {
                 Thumbnail = "some thumbnail",
-                Name = "some name"
+                Name = "some name",
+                Categories = new List<GameCategory>()
             };
             autoMocker.Get<IBoardGameGeekApiClient>().Expect(mock => mock.GetGameDetails(boardGameGeekGameDefinitionId))
                 .Return(expectedGameDetails);

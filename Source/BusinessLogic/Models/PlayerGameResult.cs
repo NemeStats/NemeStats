@@ -17,7 +17,6 @@
 #endregion
 using System.ComponentModel.DataAnnotations.Schema;
 using BusinessLogic.DataAccess;
-using System.Linq;
 
 namespace BusinessLogic.Models
 {

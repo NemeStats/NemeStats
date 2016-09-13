@@ -193,7 +193,11 @@ namespace BusinessLogic.Jobs.BoardGameGeekBatchUpdateJobService
 
                     foreach (var gameCategory in gameDetails.Categories)
                     {
+<<<<<<< HEAD
                         if (existingBoardGameGeekGameDefinition.Categories.All(c => !c.CategoryName.Equals(gameCategory.Category,StringComparison.InvariantCultureIgnoreCase)))
+=======
+                        if (existingBoardGameGeekGameDefinition.Categories.All(c => c.BoardGameGeekGameCategoryId != gameCategory.Id))
+>>>>>>> origin/master
                         {
                             var existentCategory =
                                 _dataContext.GetQueryable<BoardGameGeekGameCategory>()

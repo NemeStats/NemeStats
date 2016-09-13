@@ -2,12 +2,13 @@ using System.Collections.Generic;
 using System.Linq;
 using BoardGameGeekApiClient.Helpers;
 using NUnit.Framework;
+using BoardGameGeekApiClient.Models;
 
 namespace BoardGameGeekApiClient.Tests.UnitTests.Helpers.BoardGameGeekApiClientHelper
 {
     public class GetCategories_Tests : GetTypedValues_BaseTest
     {
-        public List<string> Result { get; set; }
+        public List<GameCategory> Result { get; set; }
 
         public class When_Has_Categoriess : GetCategories_Tests
         {
@@ -23,7 +24,8 @@ namespace BoardGameGeekApiClient.Tests.UnitTests.Helpers.BoardGameGeekApiClientH
             {
                 Assert.IsNotEmpty(Result);
                 Assert.AreEqual(Categories.Count, Result.Count);
-                Assert.AreEqual("Bluffing", Result.First());
+                var firstResult = Result.First();
+                Assert.AreEqual("Bluffing", firstResult.Category);
             }
         }
 

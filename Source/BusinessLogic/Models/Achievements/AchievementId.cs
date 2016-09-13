@@ -20,7 +20,8 @@
         UnitedWeFall = 16,
         NickelPlated = 17,
         Weighted = 18,
-        TimeTraveller = 19
+        TimeTraveller = 19,
+        DiceChucker = 20
     }
 
     public enum AchievementGroup
