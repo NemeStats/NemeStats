@@ -247,6 +247,7 @@
     <Compile Include="UnitTests\LogicTests\AchievementTests\MasterShufflerAchievementTests.cs" />
     <Compile Include="UnitTests\LogicTests\AchievementTests\TimeTravellerAchievementTests.cs" />
     <Compile Include="UnitTests\LogicTests\AchievementTests\NickelPlatedAchievementTests.cs" />
+    <Compile Include="UnitTests\LogicTests\AchievementTests\TotallyCategorizedAchievementTests.cs" />
     <Compile Include="UnitTests\LogicTests\AchievementTests\UnitedWeFallAchievementTests.cs" />
     <Compile Include="UnitTests\LogicTests\AchievementTests\PunisherAchievementTests.cs" />
     <Compile Include="UnitTests\LogicTests\AchievementTests\DespicableMeAchievementTests.cs" />
