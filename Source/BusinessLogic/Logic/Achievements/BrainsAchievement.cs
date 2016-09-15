@@ -16,7 +16,7 @@ namespace BusinessLogic.Logic.Achievements
 
         public override AchievementGroup Group => AchievementGroup.Game;
 
-        public override string Name => "BRAINNNNNNSSSS!";
+        public override string Name => "BRAINS!";
 
         public override string DescriptionFormat => "{0} BRAINNNNNNSSSS!";
 
