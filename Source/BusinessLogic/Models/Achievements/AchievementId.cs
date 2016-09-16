@@ -21,12 +21,17 @@
         NickelPlated = 17,
         Weighted = 18,
         TimeTraveller = 19,
-        DiceChucker = 20
+        DiceChucker = 20,
+        Brains = 21,
+        Wargamer = 22,
+        CivBuilder = 23,
+        MasterShuffler = 24,
+        TotallyCategorized = 25
     }
 
     public enum AchievementGroup
     {
-        NotApplicable=0,
+        NotApplicable = 0,
         Game = 1,
         Player = 2,
         PlayedGame = 3

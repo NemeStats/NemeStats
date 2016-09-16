@@ -238,9 +238,13 @@
     <Compile Include="UnitTests\JobsTests\BoardGameGeekBatchUpdateService\LinkOrphanGamesTests\LinkOrphanGamesJobTests.cs" />
     <Compile Include="UnitTests\JobsTests\BoardGameGeekBatchUpdateService\RefreshAllBoardGameGeekDataTests.cs" />
     <Compile Include="UnitTests\LogicTests\AchievementTests\BaseAchievementTests\DescriptionTests.cs" />
+    <Compile Include="UnitTests\LogicTests\AchievementTests\BrainsAchievementTests.cs" />
+    <Compile Include="UnitTests\LogicTests\AchievementTests\CivBuilderAchievementTests.cs" />
     <Compile Include="UnitTests\LogicTests\AchievementTests\DiceChuckerAchievementTests.cs" />
+    <Compile Include="UnitTests\LogicTests\AchievementTests\MasterShufflerAchievementTests.cs" />
     <Compile Include="UnitTests\LogicTests\AchievementTests\TimeTravellerAchievementTests.cs" />
     <Compile Include="UnitTests\LogicTests\AchievementTests\NickelPlatedAchievementTests.cs" />
+    <Compile Include="UnitTests\LogicTests\AchievementTests\TotallyCategorizedAchievementTests.cs" />
     <Compile Include="UnitTests\LogicTests\AchievementTests\UnitedWeFallAchievementTests.cs" />
     <Compile Include="UnitTests\LogicTests\AchievementTests\PunisherAchievementTests.cs" />
     <Compile Include="UnitTests\LogicTests\AchievementTests\DespicableMeAchievementTests.cs" />
@@ -250,6 +254,7 @@
     <Compile Include="UnitTests\LogicTests\AchievementTests\DiversifiedAchievementTests\Base_AchievementsTests.cs" />
     <Compile Include="UnitTests\LogicTests\AchievementTests\BoardGameGeek2016_10x10AchievementTests.cs" />
     <Compile Include="UnitTests\LogicTests\AchievementTests\HardcoreAchievementTests.cs" />
+    <Compile Include="UnitTests\LogicTests\AchievementTests\WargamerAchievementTests.cs" />
     <Compile Include="UnitTests\LogicTests\AchievementTests\WeightedAchievementTests.cs" />
     <Compile Include="UnitTests\LogicTests\AchievementTests\YouveGotHeartAchievementTests.cs" />
     <Compile Include="UnitTests\LogicTests\AchievementTests\RiskTakerAchievementTests.cs" />
