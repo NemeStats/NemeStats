@@ -1,12 +1,10 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using BusinessLogic.DataAccess;
-using BusinessLogic.Models;
 using BusinessLogic.Models.Achievements;
 
 namespace BusinessLogic.Logic.Achievements
 {
-    public class MasterShufflerAchievement : BaseAchievement
+    public class MasterShufflerAchievement : CategoryAchievement
     {
         public MasterShufflerAchievement(IDataContext dataContext) : base(dataContext)
         {
@@ -29,32 +27,7 @@ namespace BusinessLogic.Logic.Achievements
             {AchievementLevel.Gold, 75}
         };
 
-        public override AchievementAwarded IsAwardedForThisPlayer(int playerId)
-        {
-            var result = new AchievementAwarded
-            {
-                AchievementId = Id
-            };
+        public override string CategoryName => "Card Game";
 
-            var allDiceGames =
-                DataContext
-                    .GetQueryable<PlayerGameResult>()
-                    .Where(x => x.PlayerId == playerId
-                        && x.PlayedGame.GameDefinition.BoardGameGeekGameDefinition.Categories.Any(o => o.CategoryName == "Card Game"))
-                    .Select(x => x.PlayedGame.GameDefinitionId)
-                    .Distinct()
-                    .ToList();
-
-            result.PlayerProgress = allDiceGames.Count;
-            result.RelatedEntities = allDiceGames.ToList();
-
-            if (result.PlayerProgress < LevelThresholds[AchievementLevel.Bronze])
-            {
-                return result;
-            }
-
-            result.LevelAwarded = GetLevelAwarded(result.PlayerProgress);
-            return result;
-        }
     }
 }

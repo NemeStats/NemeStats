@@ -243,6 +243,7 @@
     <Compile Include="Logic\Achievements\BaseAchievement.cs" />
     <Compile Include="Logic\Achievements\BoardGameGeek2016_10x10Achievement.cs" />
     <Compile Include="Logic\Achievements\BrainsAchievement.cs" />
+    <Compile Include="Logic\Achievements\CategoryAchievement.cs" />
     <Compile Include="Logic\Achievements\CivBuilderAchievement.cs" />
     <Compile Include="Logic\Achievements\DiceChuckerAchievement.cs" />
     <Compile Include="Logic\Achievements\MasterShufflerAchievement.cs" />
