@@ -245,6 +245,8 @@
     <Compile Include="Logic\Achievements\CivBuilderAchievement.cs" />
     <Compile Include="Logic\Achievements\DiceChuckerAchievement.cs" />
     <Compile Include="Logic\Achievements\MasterShufflerAchievement.cs" />
+    <Compile Include="Logic\Achievements\MechanicAchievement.cs" />
+    <Compile Include="Logic\Achievements\MeepleMasterAchievement.cs" />
     <Compile Include="Logic\Achievements\TimeTravellerAchievement.cs" />
     <Compile Include="Logic\Achievements\CollaboratorAchievement.cs" />
     <Compile Include="Logic\Achievements\DespicableMeAchievement.cs" />
