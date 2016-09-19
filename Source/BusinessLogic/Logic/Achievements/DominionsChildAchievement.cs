@@ -4,19 +4,19 @@ using BusinessLogic.Models.Achievements;
 
 namespace BusinessLogic.Logic.Achievements
 {
-    public class ReallyGoodGuesserAchievement : MechanicAchievement
+    public class DominionsChildAchievement : MechanicAchievement
     {
-        public ReallyGoodGuesserAchievement(IDataContext dataContext) : base(dataContext)
+        public DominionsChildAchievement(IDataContext dataContext) : base(dataContext)
         {
         }
 
-        public override AchievementId Id => AchievementId.ReallyGoodGuesser;
+        public override AchievementId Id => AchievementId.DominionsChild;
 
         public override AchievementGroup Group => AchievementGroup.Game;
 
-        public override string Name => "Really Good Guesser";
+        public override string Name => "Dominion's Child";
 
-        public override string DescriptionFormat => "This Achievement is earned by playing {0} different games with the BoardGameGeek Mechanic of 'Auction/Bidding'.";
+        public override string DescriptionFormat => "This Achievement is earned by playing {0} different games with the BoardGameGeek Mechanic of 'Deck / Pool Building'.";
 
         public override string IconClass => "ns-icon-mapbuilder";
 
@@ -27,7 +27,7 @@ namespace BusinessLogic.Logic.Achievements
             {AchievementLevel.Gold, 30}
         };
 
-        public override string MechanicName => "Auction/Bidding";
+        public override string MechanicName => "Deck / Pool Building";
 
     }
 }

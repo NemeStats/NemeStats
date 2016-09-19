@@ -29,7 +29,8 @@
         TotallyCategorized = 25,
         MeepleMaster = 26,
         MapBuilder = 27,
-        ReallyGoodGuesser = 28
+        ReallyGoodGuesser = 28,
+        DominionsChild = 29
     }
 
     public enum AchievementGroup
