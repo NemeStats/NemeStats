@@ -28,7 +28,8 @@
         MasterShuffler = 24,
         TotallyCategorized = 25,
         MeepleMaster = 26,
-        MapBuilder = 27
+        MapBuilder = 27,
+        ReallyGoodGuesser = 28
     }
 
     public enum AchievementGroup
