@@ -248,6 +248,7 @@
     <Compile Include="Logic\Achievements\MapBuilderAchievement.cs" />
     <Compile Include="Logic\Achievements\MasterShufflerAchievement.cs" />
     <Compile Include="Logic\Achievements\MechanicAchievement.cs" />
+    <Compile Include="Logic\Achievements\MechanicalPurveyorAchievement.cs" />
     <Compile Include="Logic\Achievements\MeepleMasterAchievement.cs" />
     <Compile Include="Logic\Achievements\ReallyGoodGuesserAchievement.cs" />
     <Compile Include="Logic\Achievements\TimeTravellerAchievement.cs" />

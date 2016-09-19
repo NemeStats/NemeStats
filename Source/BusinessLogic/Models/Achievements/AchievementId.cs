@@ -30,7 +30,8 @@
         MeepleMaster = 26,
         MapBuilder = 27,
         ReallyGoodGuesser = 28,
-        DominionsChild = 29
+        DominionsChild = 29,
+        MechanicalPurveyor = 30
     }
 
     public enum AchievementGroup

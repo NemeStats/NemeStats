@@ -18,7 +18,7 @@ namespace BusinessLogic.Logic.Achievements
 
         public override string DescriptionFormat => "This Achievement is earned by playing {0} different games with the BoardGameGeek Mechanic of 'Deck / Pool Building'.";
 
-        public override string IconClass => "ns-icon-mapbuilder";
+        public override string IconClass => "ns-icon-deckbuilder";
 
         public override Dictionary<AchievementLevel, int> LevelThresholds => new Dictionary<AchievementLevel, int>
         {
