@@ -1,8 +1,8 @@
+using BoardGameGeekApiClient.Helpers;
+using BoardGameGeekApiClient.Models;
+using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
-using BoardGameGeekApiClient.Helpers;
-using NUnit.Framework;
-using BoardGameGeekApiClient.Models;
 
 namespace BoardGameGeekApiClient.Tests.UnitTests.Helpers.BoardGameGeekApiClientHelper
 {
@@ -24,7 +24,8 @@ namespace BoardGameGeekApiClient.Tests.UnitTests.Helpers.BoardGameGeekApiClientH
             {
                 Assert.IsNotEmpty(Result);
                 Assert.AreEqual(Mechanincs.Count, Result.Count);
-                Assert.AreEqual("Area Movement", Result.First());
+                var firstResult = Result.First();
+                Assert.AreEqual("Area Movement", firstResult.Mechanic);
             }
         }
 

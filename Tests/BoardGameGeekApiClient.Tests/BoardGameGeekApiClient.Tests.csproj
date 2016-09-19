@@ -152,7 +152,7 @@
     <Compile Include="UnitTests\Helpers\BoardGameGeekApiClientHelper\GetDesigner_Tests.cs" />
     <Compile Include="UnitTests\Helpers\BoardGameGeekApiClientHelper\GetExpansions_Tests.cs" />
     <Compile Include="UnitTests\Helpers\BoardGameGeekApiClientHelper\GetIntValue_Tests.cs" />
-    <Compile Include="UnitTests\Helpers\BoardGameGeekApiClientHelper\GetMechanincs_Tests.cs" />
+    <Compile Include="UnitTests\Helpers\BoardGameGeekApiClientHelper\GetMechanics_Tests.cs" />
     <Compile Include="UnitTests\Helpers\BoardGameGeekApiClientHelper\GetPlayerPollTests.cs" />
     <Compile Include="UnitTests\Helpers\BoardGameGeekApiClientHelper\GetPublishers_Tests.cs" />
     <Compile Include="UnitTests\Helpers\BoardGameGeekApiClientHelper\GetRankingTests.cs" />
