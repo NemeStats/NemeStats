@@ -27,7 +27,8 @@
         CivBuilder = 23,
         MasterShuffler = 24,
         TotallyCategorized = 25,
-        MeepleMaster = 26
+        MeepleMaster = 26,
+        MapBuilder = 27
     }
 
     public enum AchievementGroup

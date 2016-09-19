@@ -244,6 +244,7 @@
     <Compile Include="Logic\Achievements\CategoryAchievement.cs" />
     <Compile Include="Logic\Achievements\CivBuilderAchievement.cs" />
     <Compile Include="Logic\Achievements\DiceChuckerAchievement.cs" />
+    <Compile Include="Logic\Achievements\MapBuilderAchievement.cs" />
     <Compile Include="Logic\Achievements\MasterShufflerAchievement.cs" />
     <Compile Include="Logic\Achievements\MechanicAchievement.cs" />
     <Compile Include="Logic\Achievements\MeepleMasterAchievement.cs" />
