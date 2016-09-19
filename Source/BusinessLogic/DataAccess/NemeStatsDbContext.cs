@@ -54,6 +54,7 @@ namespace BusinessLogic.DataAccess
         public virtual DbSet<Champion> Champions { get; set; }
         public virtual DbSet<VotableFeature> VotableFeatures { get; set; }
         public virtual DbSet<BoardGameGeekGameCategory> BoardGameGeekGameCategories { get; set; }
+        public virtual DbSet<BoardGameGeekGameMechanic> BoardGameGeekGameMechanics { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -72,13 +73,22 @@ namespace BusinessLogic.DataAccess
             modelBuilder.Entity<BoardGameGeekGameDefinition>()
             .HasMany(v => v.Categories)
             .WithMany(p => p.Games)
-          .Map(
-            m =>
-        {
-            m.MapLeftKey("Id");
-            m.MapRightKey("BoardGameGeekGameCategoryId");
-            m.ToTable("BoardGameGeekGameToCategory");
-        });
+            .Map(m =>
+                    {
+                        m.MapLeftKey("Id");
+                        m.MapRightKey("BoardGameGeekGameCategoryId");
+                        m.ToTable("BoardGameGeekGameToCategory");
+                    });
+
+            modelBuilder.Entity<BoardGameGeekGameDefinition>()
+            .HasMany(v => v.Mechanics)
+            .WithMany(p => p.Games)
+            .Map(m =>
+            {
+                m.MapLeftKey("Id");
+                m.MapRightKey("BoardGameGeekGameMechanicId");
+                m.ToTable("BoardGameGeekGameToMechanic");
+            });
 
             base.OnModelCreating(modelBuilder);
         }

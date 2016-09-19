@@ -17,7 +17,7 @@ namespace BoardGameGeekApiClient.Models
         public int MinPlayers { get; set; }
         public int MaxPlayers { get; set; }
         public int PlayingTime { get; set; }
-        public List<string> Mechanics { get; set; }
+        public List<GameMechanic> Mechanics { get; set; }
         public List<GameCategory> Categories { get; set; }
 
         public bool IsExpansion { get; set; }

@@ -63,11 +63,19 @@ namespace BusinessLogic.Logic.BoardGameGeek
 
             foreach (var category in gameDetails.Categories)
             {
-                
                 newRecord.Categories.Add(new BoardGameGeekGameCategory()
                 {
                     BoardGameGeekGameCategoryId = category.Id,
                     CategoryName = category.Category
+                });
+            }
+
+            foreach (var mechanic in gameDetails.Mechanics)
+            {
+                newRecord.Mechanics.Add(new BoardGameGeekGameMechanic()
+                {
+                    BoardGameGeekGameMechanicId = mechanic.Id,
+                    MechanicName = mechanic.Mechanic
                 });
             }
 

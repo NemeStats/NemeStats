@@ -377,9 +377,14 @@
     <Compile Include="Migrations\201609101043083_2.50.Designer.cs">
       <DependentUpon>201609101043083_2.50.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201609190324438_BGGMechanics.cs" />
+    <Compile Include="Migrations\201609190324438_BGGMechanics.Designer.cs">
+      <DependentUpon>201609190324438_BGGMechanics.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Achievements\AchievementLevel.cs" />
     <Compile Include="Models\Achievements\AchievementId.cs" />
     <Compile Include="Models\Games\BoardGameGeekGameCategory.cs" />
+    <Compile Include="Models\Games\BoardGameGeekMechanic.cs" />
     <Compile Include="Models\PlayedGameApplicationLinkage.cs" />
     <Compile Include="Models\Games\SavePlayedGameRequest.cs" />
     <Compile Include="Models\Games\TrendingGame.cs" />
@@ -1005,6 +1010,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201609101043083_2.50.resx">
       <DependentUpon>201609101043083_2.50.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201609190324438_BGGMechanics.resx">
+      <DependentUpon>201609190324438_BGGMechanics.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
