@@ -77,14 +77,30 @@
                                             <td><a href="@Model.BoardGameGeekGameDefinition.BoardGameGeekUri.AbsoluteUri" target="_blank;">view on boardgamegeek.com</a></td>
                                         </tr>
                                     }
-                                    <tr>
-                                        <td colspan="2">
-                                            @foreach (var category in Model.BoardGameGeekGameDefinition.Categories)
-                                            {
-                                                <span class="label label-default">@category</span>
-                                            }
-                                        </td>
-                                    </tr>
+                                    @if (Model.BoardGameGeekGameDefinition.Categories.Count > 0)
+                                    {
+                                        <tr>
+                                            <td colspan="2">
+                                                Categories:
+                                                @foreach (var category in Model.BoardGameGeekGameDefinition.Categories)
+                                                {
+                                                    <span class="label label-default">@category</span>
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+                                    @if (Model.BoardGameGeekGameDefinition.Mechanics.Count > 0)
+                                    {
+                                        <tr>
+                                            <td colspan="2">
+                                                Mechanics:
+                                                @foreach (var mechanic in Model.BoardGameGeekGameDefinition.Mechanics)
+                                                {
+                                                    <span class="label label-default">@mechanic</span>
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
                                 </table>
                             </div>
 

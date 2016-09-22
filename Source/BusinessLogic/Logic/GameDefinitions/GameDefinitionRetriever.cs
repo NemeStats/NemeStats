@@ -195,6 +195,7 @@ namespace BusinessLogic.Logic.GameDefinitions
                 .Include(game => game.GamingGroup)
                 .Include(game => game.BoardGameGeekGameDefinition)
                 .Include(game => game.BoardGameGeekGameDefinition.Categories)
+                .Include(game => game.BoardGameGeekGameDefinition.Mechanics)
                 .SingleOrDefault(game => game.Id == id);
 
             if (gameDefinition == null)
