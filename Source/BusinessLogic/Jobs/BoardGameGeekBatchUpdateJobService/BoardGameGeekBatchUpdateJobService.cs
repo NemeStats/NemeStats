@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -169,6 +170,8 @@ namespace BusinessLogic.Jobs.BoardGameGeekBatchUpdateJobService
         public int RefreshAllBoardGameGeekData()
         {
             var allExistingBoardGameGeekGameDefinitions = _dataContext.GetQueryable<BoardGameGeekGameDefinition>()
+                .Include(g=>g.Categories)
+                .Include(g=>g.Mechanics)
                 .OrderBy(x => x.Id)
                 .ToList();
             var anonymousUser = new AnonymousApplicationUser();
