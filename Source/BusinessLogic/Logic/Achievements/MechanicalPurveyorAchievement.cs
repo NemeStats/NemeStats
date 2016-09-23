@@ -21,7 +21,7 @@ namespace BusinessLogic.Logic.Achievements
 
         public override string DescriptionFormat => "This Achievement is earned by playing games with {0} unique BoardGameGeek game Mechanics. There are 51 unique mechanics as of Sept. 2016.";
 
-        public override string IconClass => "ns-icon-mechanical";
+        public override string IconClass => "fa fa-gears";
 
         public override Dictionary<AchievementLevel, int> LevelThresholds => new Dictionary<AchievementLevel, int>
         {

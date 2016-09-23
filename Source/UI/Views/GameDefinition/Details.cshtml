@@ -37,21 +37,21 @@
                                     @if (Model.BoardGameGeekGameDefinition.MaxPlayers.HasValue && Model.BoardGameGeekGameDefinition.MinPlayers.HasValue)
                                     {
                                         <tr>
-                                            <td class="text-center"><i class="fa fa-users"></i></td>
+                                            <td class="text-center"><i class="fa fa-users" data-toggle="tooltip" data-placement="left" title="Players"></i></td>
                                             <td>@Model.BoardGameGeekGameDefinition.MinPlayers - @Model.BoardGameGeekGameDefinition.MaxPlayers players</td>
                                         </tr>
                                     }
                                     @if (Model.BoardGameGeekGameDefinition.AveragePlayTime.HasValue)
                                     {
                                         <tr>
-                                            <td class="text-center"><i class="fa fa-clock-o"></i></td>
+                                            <td class="text-center"><i class="fa fa-clock-o" data-toggle="tooltip" data-placement="left" title="Average game duration"></i></td>
                                             <td>average @Model.BoardGameGeekGameDefinition.AveragePlayTime minutes</td>
                                         </tr>
                                     }
                                     @if (Model.BoardGameGeekGameDefinition.AverageWeight.HasValue & Model.BoardGameGeekGameDefinition.AverageWeight > 0)
                                     {
                                         <tr>
-                                            <td class="text-center"><i class="fa fa-balance-scale"></i></td>
+                                            <td class="text-center"><i class="fa fa-balance-scale" data-toggle="tooltip" data-placement="left" title="BGG Game weight"></i></td>
                                             <td>
                                                 <div class="progress @Model.BoardGameGeekGameDefinition.WeightDescription">
                                                     <div class="progress-bar" role="progressbar" aria-valuenow="@Model.BoardGameGeekGameDefinition.WeightPercent" aria-valuemin="0" aria-valuemax="100" style="width: @Model.BoardGameGeekGameDefinition.WeightPercent%;" data-toggle="popover" data-placement="bottom" data-content="@Model.BoardGameGeekGameDefinition.AverageWeight / 5">
@@ -64,7 +64,7 @@
                                     @if (Model.BoardGameGeekGameDefinition.YearPublished.HasValue & Model.BoardGameGeekGameDefinition.YearPublished > 0)
                                     {
                                         <tr>
-                                            <td class="text-center"><i class="fa fa-calendar"></i></td>
+                                            <td class="text-center"><i class="fa fa-calendar" data-toggle="tooltip" data-placement="left" title="Year published"></i></td>
                                             <td>Published in @Model.BoardGameGeekGameDefinition.YearPublished</td>
                                         </tr>
                                     }
@@ -72,7 +72,7 @@
                                     {
                                         <tr>
                                             <td class="text-center">
-                                                <img src="~/Content/Images/bgg_small.png"/>
+                                                <img src="~/Content/Images/bgg_small.png" />
                                             </td>
                                             <td><a href="@Model.BoardGameGeekGameDefinition.BoardGameGeekUri.AbsoluteUri" target="_blank;">view on boardgamegeek.com</a></td>
                                         </tr>
@@ -80,8 +80,8 @@
                                     @if (Model.BoardGameGeekGameDefinition.Categories.Count > 0)
                                     {
                                         <tr>
-                                            <td colspan="2">
-                                                Categories:
+                                            <td class="text-center"><span class="fa fa-folder-open-o" data-toggle="tooltip" data-placement="left" title="Categories"></span></td>
+                                            <td>
                                                 @foreach (var category in Model.BoardGameGeekGameDefinition.Categories)
                                                 {
                                                     <span class="label label-default">@category</span>
@@ -92,8 +92,8 @@
                                     @if (Model.BoardGameGeekGameDefinition.Mechanics.Count > 0)
                                     {
                                         <tr>
-                                            <td colspan="2">
-                                                Mechanics:
+                                            <td class="text-center"><span class="fa fa-gears" data-toggle="tooltip" data-placement="left" title="Mechanics"></span></td>
+                                            <td>
                                                 @foreach (var mechanic in Model.BoardGameGeekGameDefinition.Mechanics)
                                                 {
                                                     <span class="label label-default">@mechanic</span>
