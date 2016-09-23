@@ -46,5 +46,6 @@ namespace UI.Models.PlayedGame
 
         public Uri BoardGameGeekUri { get; set; }
         public string ThumbnailImageUrl { get; set; }
+        public string ImageUrl { get; set; }
     }
 }

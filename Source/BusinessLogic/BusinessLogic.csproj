@@ -391,6 +391,10 @@
     <Compile Include="Migrations\201609231350118_Mechanics.Designer.cs">
       <DependentUpon>201609231350118_Mechanics.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201609231634345_BGG.Image.cs" />
+    <Compile Include="Migrations\201609231634345_BGG.Image.Designer.cs">
+      <DependentUpon>201609231634345_BGG.Image.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Achievements\AchievementLevel.cs" />
     <Compile Include="Models\Achievements\AchievementId.cs" />
     <Compile Include="Models\Games\BoardGameGeekGameCategory.cs" />
@@ -1026,6 +1030,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201609231350118_Mechanics.resx">
       <DependentUpon>201609231350118_Mechanics.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201609231634345_BGG.Image.resx">
+      <DependentUpon>201609231634345_BGG.Image.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

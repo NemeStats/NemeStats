@@ -96,5 +96,7 @@ namespace UI.Models.PlayedGame
                 return result;
             }
         }
+
+        public string ImageUrl { get; set; }
     }
 }

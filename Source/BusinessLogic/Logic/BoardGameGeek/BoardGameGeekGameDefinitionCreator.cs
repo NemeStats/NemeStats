@@ -46,6 +46,7 @@ namespace BusinessLogic.Logic.BoardGameGeek
                 Id = boardGameGeekGameDefinitionId,
                 Name = gameDetails.Name,
                 Thumbnail = gameDetails.Thumbnail,
+                Image = gameDetails.Image,
                 MaxPlayers = gameDetails.MaxPlayers,
                 MinPlayers = gameDetails.MinPlayers,
                 MaxPlayTime = gameDetails.MaxPlayTime,

@@ -57,6 +57,7 @@ namespace UI.Transformations
             if (playedGame.GameDefinition.BoardGameGeekGameDefinition != null)
             {
                 summary.ThumbnailImageUrl = playedGame.GameDefinition.BoardGameGeekGameDefinition.Thumbnail;
+                summary.ImageUrl = playedGame.GameDefinition.BoardGameGeekGameDefinition.Image;
             }
             summary.BoardGameGeekUri =
                 BoardGameGeekUriBuilder.BuildBoardGameGeekGameUri(playedGame.GameDefinition.BoardGameGeekGameDefinitionId);

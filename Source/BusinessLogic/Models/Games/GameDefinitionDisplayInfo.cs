@@ -13,5 +13,6 @@ namespace BusinessLogic.Models.Games
         public int? BoardGameGeekGameDefinitionId { get; set; }
         public int PlayedTimes { get; set; }
         public DateTime? LastDatePlayed { get; set; }
+        public string ImageUrl { get; set; }
     }
 }

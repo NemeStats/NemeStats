@@ -114,6 +114,7 @@ namespace BusinessLogic.Jobs.BoardGameGeekBatchUpdateJobService
                 Id = gameToAdd.GameId,
                 Name = gameToAdd.Name,
                 Thumbnail = gameToAdd.Thumbnail,
+                Image = gameToAdd.Image,
                 MaxPlayers = gameToAdd.MaxPlayers,
                 MinPlayers = gameToAdd.MinPlayers,
                 MaxPlayTime = gameToAdd.MaxPlayTime,
@@ -170,8 +171,8 @@ namespace BusinessLogic.Jobs.BoardGameGeekBatchUpdateJobService
         public int RefreshAllBoardGameGeekData()
         {
             var allExistingBoardGameGeekGameDefinitions = _dataContext.GetQueryable<BoardGameGeekGameDefinition>()
-                .Include(g=>g.Categories)
-                .Include(g=>g.Mechanics)
+                .Include(g => g.Categories)
+                .Include(g => g.Mechanics)
                 .OrderBy(x => x.Id)
                 .ToList();
             var anonymousUser = new AnonymousApplicationUser();
@@ -192,11 +193,12 @@ namespace BusinessLogic.Jobs.BoardGameGeekBatchUpdateJobService
                     existingBoardGameGeekGameDefinition.MinPlayers = gameDetails.MinPlayers;
                     existingBoardGameGeekGameDefinition.Name = gameDetails.Name;
                     existingBoardGameGeekGameDefinition.Thumbnail = gameDetails.Thumbnail;
+                    existingBoardGameGeekGameDefinition.Image = gameDetails.Image;
                     existingBoardGameGeekGameDefinition.YearPublished = gameDetails.YearPublished;
 
                     foreach (var gameCategory in gameDetails.Categories)
                     {
-                        if (existingBoardGameGeekGameDefinition.Categories.All(c => !c.CategoryName.Equals(gameCategory.Category,StringComparison.InvariantCultureIgnoreCase)))
+                        if (existingBoardGameGeekGameDefinition.Categories.All(c => !c.CategoryName.Equals(gameCategory.Category, StringComparison.InvariantCultureIgnoreCase)))
                         {
                             var existentCategory =
                                 _dataContext.GetQueryable<BoardGameGeekGameCategory>()

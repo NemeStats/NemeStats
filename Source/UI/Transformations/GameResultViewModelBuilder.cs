@@ -51,6 +51,7 @@ namespace UI.Transformations
             if(playerGameResult.PlayedGame.GameDefinition.BoardGameGeekGameDefinition != null)
             {
                 result.ThumbnailImageUrl = playerGameResult.PlayedGame.GameDefinition.BoardGameGeekGameDefinition.Thumbnail;
+                result.ImageUrl = playerGameResult.PlayedGame.GameDefinition.BoardGameGeekGameDefinition.Image;
             }
 
             return result;

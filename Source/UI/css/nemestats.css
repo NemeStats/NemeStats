@@ -907,7 +907,11 @@ button > i.fa {
   max-height: 100px; }
 
 #gamedefinition-details .thumbnail {
-  padding: 20px; }
+  padding: 20px;
+  max-height: 350px; }
+  @media (max-width: 767px) {
+    #gamedefinition-details .thumbnail {
+      max-height: 200px; } }
 
 #gamedefinition-details .data {
   font-size: 18px; }

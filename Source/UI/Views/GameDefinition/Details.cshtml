@@ -29,10 +29,18 @@
                     @if (Model.HasBoardGameGeekDefinition)
                     {
                         <div class="row">
-                            <div class="col-sm-4">
-                                <img class="thumbnail" src="@Model.BoardGameGeekGameDefinition.Thumbnail" alt="@Model.Name" title="@Model.Name"/>
+                            <div class="col-md-4">
+                                @if (!string.IsNullOrEmpty(Model.BoardGameGeekGameDefinition.Image))
+                                {
+                                    <img class="thumbnail" src="@Model.BoardGameGeekGameDefinition.Image" alt="@Model.Name" title="@Model.Name" />
+                                }
+                                else
+                                {
+                                    <img class="thumbnail" src="@Model.BoardGameGeekGameDefinition.Thumbnail" alt="@Model.Name" title="@Model.Name" />
+                                }
+                                
                             </div>
-                            <div class="col-sm-4 col-sm-offset-4">
+                            <div class="col-md-4 col-md-offset-4">
                                 <table class="table well data">
                                     @if (Model.BoardGameGeekGameDefinition.MaxPlayers.HasValue && Model.BoardGameGeekGameDefinition.MinPlayers.HasValue)
                                     {
