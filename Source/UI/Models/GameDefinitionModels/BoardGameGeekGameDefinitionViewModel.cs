@@ -47,5 +47,6 @@ namespace UI.Models.GameDefinitionModels
         public string WeightDescription { get; set; }
 
         public List<string> Categories { get; set; }
+        public List<string> Mechanics { get; set; }
     }
 }

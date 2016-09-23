@@ -2157,4 +2157,13 @@
 .ns-icon-wargamer:before {
   content: "\e90d"; }
 
+.ns-icon-deckbuilder:before {
+  content: "\e912"; }
+
+.ns-icon-mapbuilder:before {
+  content: "\e913"; }
+
+.ns-icon-meeple:before {
+  content: "\e914"; }
+
 /*# sourceMappingURL=fonts.css.map */

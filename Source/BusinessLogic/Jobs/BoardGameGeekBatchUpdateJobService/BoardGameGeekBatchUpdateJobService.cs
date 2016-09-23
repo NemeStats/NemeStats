@@ -213,7 +213,29 @@ namespace BusinessLogic.Jobs.BoardGameGeekBatchUpdateJobService
                             existingBoardGameGeekGameDefinition.Categories.Add(existentCategory);
                         }
                     }
-                    
+
+                    foreach (var gameMechanic in gameDetails.Mechanics)
+                    {
+                        if (existingBoardGameGeekGameDefinition.Mechanics.All(c => !c.MechanicName.Equals(gameMechanic.Mechanic, StringComparison.InvariantCultureIgnoreCase)))
+                        {
+                            var existentMechanic =
+                                _dataContext.GetQueryable<BoardGameGeekGameMechanic>()
+                                    .FirstOrDefault(
+                                        c =>
+                                            c.MechanicName.Equals(gameMechanic.Mechanic,
+                                                StringComparison.InvariantCultureIgnoreCase));
+                            if (existentMechanic == null)
+                            {
+                                existentMechanic = new BoardGameGeekGameMechanic()
+                                {
+                                    BoardGameGeekGameMechanicId = gameMechanic.Id,
+                                    MechanicName = gameMechanic.Mechanic
+                                };
+                            }
+
+                            existingBoardGameGeekGameDefinition.Mechanics.Add(existentMechanic);
+                        }
+                    }
 
                     _dataContext.Save(existingBoardGameGeekGameDefinition, anonymousUser);
 

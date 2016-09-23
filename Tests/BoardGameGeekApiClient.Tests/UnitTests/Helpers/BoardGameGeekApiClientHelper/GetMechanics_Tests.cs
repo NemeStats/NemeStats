@@ -1,15 +1,16 @@
+using BoardGameGeekApiClient.Helpers;
+using BoardGameGeekApiClient.Models;
+using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
-using BoardGameGeekApiClient.Helpers;
-using NUnit.Framework;
 
 namespace BoardGameGeekApiClient.Tests.UnitTests.Helpers.BoardGameGeekApiClientHelper
 {
-    public class GetMechanincs_Tests : GetTypedValues_BaseTest
+    public class GetMechanics_Tests : GetTypedValues_BaseTest
     {
-        public List<string> Result { get; set; }
+        public List<GameMechanic> Result { get; set; }
 
-        public class When_Has_Mechanincs : GetMechanincs_Tests
+        public class When_Has_Mechanincs : GetMechanics_Tests
         {
             [SetUp]
             public override void SetUp()
@@ -23,11 +24,12 @@ namespace BoardGameGeekApiClient.Tests.UnitTests.Helpers.BoardGameGeekApiClientH
             {
                 Assert.IsNotEmpty(Result);
                 Assert.AreEqual(Mechanincs.Count, Result.Count);
-                Assert.AreEqual("Area Movement", Result.First());
+                var firstResult = Result.First();
+                Assert.AreEqual("Area Movement", firstResult.Mechanic);
             }
         }
 
-        public class When_Has_No_Mechanincs : GetMechanincs_Tests
+        public class When_Has_No_Mechanincs : GetMechanics_Tests
         {
             [SetUp]
             public override void SetUp()

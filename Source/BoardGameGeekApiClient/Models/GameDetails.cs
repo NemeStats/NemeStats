@@ -18,7 +18,6 @@ namespace BoardGameGeekApiClient.Models
         public int? MaxPlayers { get; set; }
         public int? MaxPlayTime { get; set; }
         public int? MinPlayTime { get; set; }
-        public List<string> Mechanics { get; set; }
 
         public bool IsExpansion { get; set; }
         public int? YearPublished { get; set; }
@@ -31,6 +30,8 @@ namespace BoardGameGeekApiClient.Models
         public List<string> Designers { get; set; }
         public List<string> Publishers { get; set; }
         public List<string> Artists { get; set; }
+
+        public List<GameMechanic> Mechanics { get; set; } = new List<GameMechanic>();
         public List<GameCategory> Categories { get; set; } = new List<GameCategory>();
         public List<PlayerPollResult> PlayerPollResults { get; set; } = new List<PlayerPollResult>();
 

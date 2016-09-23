@@ -66,9 +66,15 @@ namespace BoardGameGeekApiClient.Helpers
             return GetTypeValue(boardgame, "boardgamedesigner");
         }
 
-        public static List<string> GetMechanics(this XElement boardgame)
+        public static List<GameMechanic> GetMechanics(this XElement boardgame)
         {
-            return GetTypeValue(boardgame, "boardgamemechanic");
+            return (from p in boardgame.Elements("link")
+                    where p.Attribute("type").Value == "boardgamemechanic"
+                    select new GameMechanic
+                    {
+                        Mechanic = p.Attribute("value").Value,
+                        Id = int.Parse(p.Attribute("id").Value)
+                    }).ToList();
         }
         public static List<GameCategory> GetCategories(this XElement boardgame)
         {

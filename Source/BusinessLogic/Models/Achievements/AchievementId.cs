@@ -26,7 +26,12 @@
         Wargamer = 22,
         CivBuilder = 23,
         MasterShuffler = 24,
-        TotallyCategorized = 25
+        TotallyCategorized = 25,
+        MeepleMaster = 26,
+        MapBuilder = 27,
+        ReallyGoodGuesser = 28,
+        DominionsChild = 29,
+        MechanicalPurveyor = 30
     }
 
     public enum AchievementGroup

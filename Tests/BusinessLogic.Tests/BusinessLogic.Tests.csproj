@@ -241,7 +241,12 @@
     <Compile Include="UnitTests\LogicTests\AchievementTests\BrainsAchievementTests.cs" />
     <Compile Include="UnitTests\LogicTests\AchievementTests\CivBuilderAchievementTests.cs" />
     <Compile Include="UnitTests\LogicTests\AchievementTests\DiceChuckerAchievementTests.cs" />
+    <Compile Include="UnitTests\LogicTests\AchievementTests\DominionsChildAchievementTests.cs" />
+    <Compile Include="UnitTests\LogicTests\AchievementTests\MapBuilderAchievementTests.cs" />
     <Compile Include="UnitTests\LogicTests\AchievementTests\MasterShufflerAchievementTests.cs" />
+    <Compile Include="UnitTests\LogicTests\AchievementTests\MechanicalPurveyorAchievementTests.cs" />
+    <Compile Include="UnitTests\LogicTests\AchievementTests\MeepleMasterAchievementTests.cs" />
+    <Compile Include="UnitTests\LogicTests\AchievementTests\ReallyGoodGuesserAchievementTests.cs" />
     <Compile Include="UnitTests\LogicTests\AchievementTests\TimeTravellerAchievementTests.cs" />
     <Compile Include="UnitTests\LogicTests\AchievementTests\NickelPlatedAchievementTests.cs" />
     <Compile Include="UnitTests\LogicTests\AchievementTests\TotallyCategorizedAchievementTests.cs" />
