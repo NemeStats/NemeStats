@@ -87,7 +87,7 @@ namespace BusinessLogic.Logic.Players
                     .Where(p => p.NemesisId == nemesisId)
                     .ToList();
 
-                foreach (var player in playersToUpdatePreviousNemesis)
+                foreach (var player in playersToUpdateCurrentNemesis)
                 {
                     player.NemesisId = null;
                 }
