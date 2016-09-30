@@ -57,7 +57,7 @@ else
                             </span>
                         </span>
                     </li>
-                    @if (Model.DateCreated.HasValue)
+                    @if (Model.DateCreated.HasValue && Model.DateCreated <= DateTime.UtcNow)
                     {
                     <li class="list-group-item">Unlocked at: @Model.DateCreated.Value.ToShortDateString()</li>
                     }
