@@ -55,6 +55,8 @@ namespace BusinessLogic.Events.Handlers
                                 {
                                     var playerAchievement = new PlayerAchievement
                                     {
+                                        DateCreated = DateTime.UtcNow,
+                                        LastUpdatedDate = DateTime.UtcNow,
                                         Player = player,
                                         PlayerId = player.Id,
                                         AchievementId = achievement.Id,

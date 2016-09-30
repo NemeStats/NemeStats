@@ -15,6 +15,8 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
+
+using System;
 using BusinessLogic.DataAccess;
 using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.Logic.Players;
@@ -126,6 +128,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
             var playerAchievement =
                 new PlayerAchievement
                 {
+                    DateCreated = DateTime.UtcNow,
+                    LastUpdatedDate = DateTime.UtcNow,
                     PlayerId = playerId,
                     AchievementLevel = AchievementLevel.Bronze,
                     AchievementId = AchievementId.BusyBee

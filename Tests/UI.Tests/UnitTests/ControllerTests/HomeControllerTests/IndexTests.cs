@@ -16,6 +16,7 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 
+using System;
 using BusinessLogic.Logic.Nemeses;
 using BusinessLogic.Models.Games;
 using NUnit.Framework;
@@ -66,6 +67,8 @@ namespace UI.Tests.UnitTests.ControllerTests.HomeControllerTests
             {
                 new PlayerAchievement()
                 {
+                    DateCreated = DateTime.UtcNow,
+                    LastUpdatedDate = DateTime.UtcNow,
                     AchievementId = AchievementId.BoardGameGeek2016_10x10
                 }
 

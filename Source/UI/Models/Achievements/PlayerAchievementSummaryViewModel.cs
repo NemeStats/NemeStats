@@ -12,6 +12,6 @@ namespace UI.Models.Achievements
         public AchievementViewModel Achievement { get; set; }
         public AchievementLevel? AchievementLevel { get; set; }
 
-        public bool HasAnyLevelUnlocked => AchievementLevel.HasValue && AchievementLevel.Value != BusinessLogic.Models.Achievements.AchievementLevel.None;
+        public bool HasAnyLevelUnlocked => AchievementLevel.HasValue && AchievementLevel.Value != BusinessLogic.Models.Achievements.AchievementLevel.None && DateCreated.HasValue && DateCreated.Value > DateTime.MinValue;
     }
 }
