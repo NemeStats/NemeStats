@@ -89,6 +89,18 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerDeleterTes
         [Test]
         public void Then_Deletes_The_Player()
         {
+            AutoMocker.Get<IDataContext>()
+                .Expect(mock => mock.GetQueryable<PlayerAchievement>())
+                .Return(new List<PlayerAchievement>().AsQueryable());
+
+            AutoMocker.Get<IDataContext>()
+                .Expect(mock => mock.GetQueryable<Champion>())
+                .Return(new List<Champion>().AsQueryable());
+
+            AutoMocker.Get<IDataContext>()
+                .Expect(mock => mock.GetQueryable<Nemesis>())
+                .Return(new List<Nemesis>().AsQueryable());
+
             AutoMocker.ClassUnderTest.DeletePlayer(1, CurrentUser);
 
             AutoMocker.Get<IDataContext>().AssertWasCalled(mock => mock.DeleteById<Player>(PlayerId, CurrentUser));
