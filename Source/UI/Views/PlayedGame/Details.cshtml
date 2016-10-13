@@ -2,6 +2,7 @@
 @using BusinessLogic.Models.PlayedGames
 @using UI.HtmlHelpers
 @using UI.Models.Players
+
 @{
     string title = @Model.GameDefinitionName + " - " + Model.DatePlayed.ToShortDateString();
     ViewBag.Title = title + " - " + Model.GamingGroupName;
@@ -50,8 +51,12 @@
     {
         <span class="gameResult-teamWin"> - TEAM WIN</span>
     }
-    <a href="https://twitter.com/share" class="twitter-share-button" data-text="Check out this game I played on &#64;nemestats :" data-size="large" data-related="nemestats" data-count="none" data-hashtags="boardgames" data-dnt="true" title="Tweet a link to this game">Tweet</a>
-    <script>!function (d, s, id) { var js, fjs = d.getElementsByTagName(s)[0], p = /^http:/.test(d.location) ? 'http' : 'https'; if (!d.getElementById(id)) { js = d.createElement(s); js.id = id; js.src = p + '://platform.twitter.com/widgets.js'; fjs.parentNode.insertBefore(js, fjs); } }(document, 'script', 'twitter-wjs');</script>
+
+    @if (Model.UserCanEdit)
+    {
+        <a href="https://twitter.com/share" class="twitter-share-button" data-text="Check out this game I played on &#64;nemestats :" data-size="large" data-related="nemestats" data-count="none" data-hashtags="boardgames" data-dnt="true" title="Tweet a link to this game">Tweet</a>
+        <script>!function (d, s, id) { var js, fjs = d.getElementsByTagName(s)[0], p = /^http:/.test(d.location) ? 'http' : 'https'; if (!d.getElementById(id)) { js = d.createElement(s); js.id = id; js.src = p + '://platform.twitter.com/widgets.js'; fjs.parentNode.insertBefore(js, fjs); } }(document, 'script', 'twitter-wjs');</script>
+    }
 </h2>
 
 <div class="row">
