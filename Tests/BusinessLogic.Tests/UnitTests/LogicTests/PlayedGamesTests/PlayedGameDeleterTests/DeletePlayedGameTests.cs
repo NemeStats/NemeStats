@@ -24,6 +24,7 @@ using BusinessLogic.Logic.PlayedGames;
 using BusinessLogic.Models.User;
 using BusinessLogic.Models;
 using BusinessLogic.Logic.Nemeses;
+using BusinessLogic.Logic.Champions;
 
 namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameDeleterTests
 {
@@ -32,6 +33,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameDe
     {
         private IDataContext dataContextMock;
         private INemesisRecalculator nemesisRecalculatorMock;
+        private IChampionRecalculator championRecalculatorMock;
         private PlayedGameDeleter playedGameDeleter;
         private ApplicationUser currentUser;
         private List<PlayerGameResult> playerGameResults;
@@ -39,21 +41,29 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameDe
         private int playerInGame1Id = 1;
         private int playerInGame2Id = 2;
         private int playerNotInGame = 9999;
+        private int gameDefinitionId = 40;
+        private PlayedGame playedGame;
 
         [SetUp]
         public void SetUp()
         {
             dataContextMock = MockRepository.GenerateMock<IDataContext>();
             nemesisRecalculatorMock = MockRepository.GenerateMock<INemesisRecalculator>();
-            playedGameDeleter = new PlayedGameDeleter(dataContextMock, nemesisRecalculatorMock);
+            championRecalculatorMock = MockRepository.GenerateMock<IChampionRecalculator>();
+            playedGameDeleter = new PlayedGameDeleter(dataContextMock, nemesisRecalculatorMock, championRecalculatorMock);
 
             currentUser = new ApplicationUser();
 
+            playedGame = new PlayedGame()
+            {
+                GameDefinitionId = gameDefinitionId
+            };
+
             playerGameResults = new List<PlayerGameResult>()
             {
-                new PlayerGameResult(){ PlayerId = playerInGame1Id, PlayedGameId = playedGameId },
-                new PlayerGameResult(){ PlayerId = playerInGame2Id, PlayedGameId = playedGameId },
-                new PlayerGameResult(){ PlayerId = 3, PlayedGameId = playedGameId + 9999 }
+                new PlayerGameResult(){ PlayerId = playerInGame1Id, PlayedGameId = playedGameId, PlayedGame = playedGame },
+                new PlayerGameResult(){ PlayerId = playerInGame2Id, PlayedGameId = playedGameId, PlayedGame = playedGame },
+                new PlayerGameResult(){ PlayerId = 3, PlayedGameId = playedGameId + 9999, PlayedGame = playedGame }
             };
 
             dataContextMock.Expect(mock => mock.GetQueryable<PlayerGameResult>())
@@ -77,6 +87,15 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameDe
             nemesisRecalculatorMock.AssertWasCalled(mock => mock.RecalculateNemesis(playerInGame1Id, currentUser));
             nemesisRecalculatorMock.AssertWasCalled(mock => mock.RecalculateNemesis(playerInGame2Id, currentUser));
             nemesisRecalculatorMock.AssertWasNotCalled(mock => mock.RecalculateNemesis(playerNotInGame, currentUser));
+        }
+
+        [Test]
+        public void ItRecalculatesTheChampionOfTheDeletedGame()
+        {
+            int playedGameIdId = 1;
+            playedGameDeleter.DeletePlayedGame(playedGameIdId, currentUser);
+
+            championRecalculatorMock.AssertWasCalled(mock => mock.RecalculateChampion(gameDefinitionId, currentUser));
         }
     }
 }

@@ -16,6 +16,7 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 using BusinessLogic.DataAccess;
+using BusinessLogic.Logic.Champions;
 using BusinessLogic.Logic.Nemeses;
 using BusinessLogic.Models;
 using BusinessLogic.Models.User;
@@ -28,11 +29,13 @@ namespace BusinessLogic.Logic.PlayedGames
     {
         private IDataContext dataContext;
         private INemesisRecalculator nemesisRecalculator;
+        private IChampionRecalculator championRecalculator;
 
-        public PlayedGameDeleter(IDataContext dataContext, INemesisRecalculator nemesisRecalculatorMock)
+        public PlayedGameDeleter(IDataContext dataContext, INemesisRecalculator nemesisRecalculatorMock, IChampionRecalculator championRecalculator)
         {
             this.dataContext = dataContext;
             this.nemesisRecalculator = nemesisRecalculatorMock;
+            this.championRecalculator = championRecalculator;
         }
 
         public void DeletePlayedGame(int playedGameId, ApplicationUser currentUser)
@@ -40,13 +43,20 @@ namespace BusinessLogic.Logic.PlayedGames
             List<int> playerIds = (from playerResult in dataContext.GetQueryable<PlayerGameResult>()
                                    where playerResult.PlayedGameId == playedGameId
                                    select playerResult.PlayerId).ToList();
+            var gameDefId = dataContext.GetQueryable<PlayerGameResult>()
+                             .Where(p => p.PlayedGameId == playedGameId)
+                             .Select(p => p.PlayedGame.GameDefinitionId)
+                             .FirstOrDefault();
+
             dataContext.DeleteById<PlayedGame>(playedGameId, currentUser);
             dataContext.CommitAllChanges();
-                     
-            foreach(int playerId in playerIds)
+
+            foreach (int playerId in playerIds)
             {
                 nemesisRecalculator.RecalculateNemesis(playerId, currentUser);
             }
+
+            championRecalculator.RecalculateChampion(gameDefId, currentUser);
         }
     }
 }
