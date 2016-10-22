@@ -82,7 +82,10 @@ namespace BusinessLogic.Logic.Players
 
                 foreach (var gameDef in gameDefinitionsWithChampionToDelete)
                 {
+                    //--clear out the current champion since recalculating may not clear out the current Champion
                     gameDef.ChampionId = null;
+                    _dataContext.Save(gameDef, currentUser);
+
                     gameDefinitionIdsThatNeedChampionRecalculated.Add(gameDef.Id);
                 }
 

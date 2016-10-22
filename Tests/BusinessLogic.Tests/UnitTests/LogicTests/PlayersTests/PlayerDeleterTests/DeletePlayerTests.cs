@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using BusinessLogic.DataAccess;
+using BusinessLogic.Logic.Champions;
 using BusinessLogic.Logic.Players;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Achievements;
@@ -26,21 +27,62 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerDeleterTes
 
             CurrentUser = new ApplicationUser();
         }
+
+        protected void SetupDefaultExpectations(
+            bool setupPlayer = true,
+            bool setupAchievements = true,
+            bool setupChampions = true,
+            bool setupNemeses = true)
+        {
+            if (setupPlayer)
+            {
+                var players = new List<Player>
+                {
+                    new Player {Id = PlayerId, PlayerGameResults = new List<PlayerGameResult> ()}
+                };
+
+                AutoMocker.Get<IDataContext>().Expect(m => m.GetQueryable<Player>()).Return(players.AsQueryable());
+            }
+
+            if (setupAchievements)
+            {
+                AutoMocker.Get<IDataContext>()
+                    .Expect(mock => mock.GetQueryable<PlayerAchievement>())
+                    .Return(new List<PlayerAchievement>().AsQueryable());
+            }
+
+            if (setupChampions)
+            {
+                AutoMocker.Get<IDataContext>()
+                    .Expect(mock => mock.GetQueryable<Champion>())
+                    .Return(new List<Champion>().AsQueryable());
+            }
+
+            if (setupNemeses)
+            {
+                AutoMocker.Get<IDataContext>()
+                    .Expect(mock => mock.GetQueryable<Nemesis>())
+                    .Return(new List<Nemesis>().AsQueryable());
+            }
+        }
     }
 
     public class When_Player_Not_Exists : DeletePlayerTests
     {
-        public override void SetUp()
-        {
-            base.SetUp();
-
-            AutoMocker.Get<IDataContext>().Expect(m => m.GetQueryable<Player>()).Return(new List<Player>().AsQueryable());
-        }
-
         [Test]
         public void Then_Throw_Exception()
         {
-            var expectedException = new ArgumentException("Player not exists","playerId");
+            SetupDefaultExpectations(setupPlayer: false);
+            var players = new List<Player>
+            {
+                new Player
+                {
+                    Id = -1
+                }
+            };
+            AutoMocker.Get<IDataContext>().Expect(m => m.GetQueryable<Player>()).Return(players.AsQueryable());
+
+            var expectedException = new ArgumentException("Player not exists", "playerId");
 
             var exception = Assert.Throws<ArgumentException>(() => AutoMocker.ClassUnderTest.DeletePlayer(PlayerId, CurrentUser));
 
@@ -50,21 +92,27 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerDeleterTes
 
     public class When_Player_Has_PlayedGames : DeletePlayerTests
     {
-        public override void SetUp()
-        {
-            base.SetUp();
-
-            var players = new List<Player>
-            {
-                new Player {Id = PlayerId, PlayerGameResults = new List<PlayerGameResult> {new PlayerGameResult()}}
-            };
-
-            AutoMocker.Get<IDataContext>().Expect(m => m.GetQueryable<Player>()).Return(players.AsQueryable());
-        }
-
         [Test]
         public void Then_Throw_Exception()
         {
+            SetupDefaultExpectations(setupPlayer: false);
+            var players = new List<Player>
+            {
+                new Player
+                {
+                    Id = PlayerId,
+                    PlayerGameResults = new List<PlayerGameResult>
+                    {
+                        new PlayerGameResult
+                        {
+                            PlayerId = PlayerId
+                        }
+                    }
+                }
+            };
+
+            AutoMocker.Get<IDataContext>().Expect(m => m.GetQueryable<Player>()).Return(players.AsQueryable());
+
             var expectedException = new Exception("You can not delete players with any played game");
 
             var exception = Assert.Throws<Exception>(() => AutoMocker.ClassUnderTest.DeletePlayer(PlayerId, CurrentUser));
@@ -75,34 +123,12 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerDeleterTes
 
     public class When_Player_Has_No_PlayedGames : DeletePlayerTests
     {
-        public override void SetUp()
-        {
-            base.SetUp();
-
-            var players = new List<Player>
-            {
-                new Player {Id = PlayerId, PlayerGameResults = new List<PlayerGameResult> ()}
-            };
-
-            AutoMocker.Get<IDataContext>().Expect(m => m.GetQueryable<Player>()).Return(players.AsQueryable());
-        }
-
         [Test]
         public void Then_Deletes_The_Player()
         {
-            AutoMocker.Get<IDataContext>()
-                .Expect(mock => mock.GetQueryable<PlayerAchievement>())
-                .Return(new List<PlayerAchievement>().AsQueryable());
+            SetupDefaultExpectations();
 
-            AutoMocker.Get<IDataContext>()
-                .Expect(mock => mock.GetQueryable<Champion>())
-                .Return(new List<Champion>().AsQueryable());
-
-            AutoMocker.Get<IDataContext>()
-                .Expect(mock => mock.GetQueryable<Nemesis>())
-                .Return(new List<Nemesis>().AsQueryable());
-
-            AutoMocker.ClassUnderTest.DeletePlayer(1, CurrentUser);
+            AutoMocker.ClassUnderTest.DeletePlayer(PlayerId, CurrentUser);
 
             AutoMocker.Get<IDataContext>().AssertWasCalled(mock => mock.DeleteById<Player>(PlayerId, CurrentUser));
         }
@@ -110,151 +136,121 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerDeleterTes
 
     public class When_Player_Has_Achievements : DeletePlayerTests
     {
-        public override void SetUp()
+        [Test]
+        public void Then_Deletes_The_Achievements_For_That_Player()
         {
-            base.SetUp();
+            SetupDefaultExpectations(setupAchievements: false);
 
             var players = new List<Player>
             {
                 new Player {Id = PlayerId, PlayerGameResults = new List<PlayerGameResult> ()}
             };
 
+            AutoMocker.Get<IDataContext>().Expect(m => m.GetQueryable<Player>()).Return(players.AsQueryable());
+
             var achievements = new List<PlayerAchievement>
             {
-                new PlayerAchievement { PlayerId = PlayerId, AchievementId = AchievementId.Champion, AchievementLevel = AchievementLevel.Bronze }
+                new PlayerAchievement
+                {
+                    Id = 1,
+                    PlayerId = PlayerId
+                },
+                new PlayerAchievement
+                {
+                    Id = 2,
+                    PlayerId = PlayerId
+                },
+                new PlayerAchievement
+                {
+                    Id = 3,
+                    PlayerId = -1
+                }
             };
-
-            AutoMocker.Get<IDataContext>().Expect(m => m.GetQueryable<Player>()).Return(players.AsQueryable());
             AutoMocker.Get<IDataContext>().Expect(m => m.GetQueryable<PlayerAchievement>()).Return(achievements.AsQueryable());
-        }
-
-        [Test]
-        public void Then_Deletes_The_Player()
-        {
-            AutoMocker.Get<IDataContext>()
-                .Expect(mock => mock.GetQueryable<PlayerAchievement>())
-                .Return(new List<PlayerAchievement>().AsQueryable());
-
-            AutoMocker.Get<IDataContext>()
-                .Expect(mock => mock.GetQueryable<Champion>())
-                .Return(new List<Champion>().AsQueryable());
-
-            AutoMocker.Get<IDataContext>()
-                .Expect(mock => mock.GetQueryable<Nemesis>())
-                .Return(new List<Nemesis>().AsQueryable());
 
             AutoMocker.ClassUnderTest.DeletePlayer(PlayerId, CurrentUser);
 
-            AutoMocker.Get<IDataContext>().AssertWasCalled(mock => mock.DeleteById<PlayerAchievement>(0, CurrentUser));
-            AutoMocker.Get<IDataContext>().AssertWasCalled(mock => mock.DeleteById<Player>(PlayerId, CurrentUser));
-        }
-    }
+            AutoMocker.Get<IDataContext>().AssertWasCalled(mock => mock.DeleteById<PlayerAchievement>(achievements[0].Id, CurrentUser));
+            AutoMocker.Get<IDataContext>().AssertWasCalled(mock => mock.DeleteById<PlayerAchievement>(achievements[1].Id, CurrentUser));
 
-    public class When_Player_Is_Champion : DeletePlayerTests
-    {
-        public override void SetUp()
-        {
-            base.SetUp();
-            var championGames = new List<GameDefinition>
-            {
-                new GameDefinition { Id = 1, ChampionId = PlayerId }
-            };
-
-            var players = new List<Player>
-            {
-                new Player {Id = PlayerId, PlayerGameResults = new List<PlayerGameResult> () }
-            };
-
-            var champions = new List<Champion>
-            {
-                new Champion { Id = 1, GameDefinitionId = 1, PlayerId = PlayerId }
-            };
-
-            AutoMocker.Get<IDataContext>().Expect(m => m.GetQueryable<Player>()).Return(players.AsQueryable());
-            AutoMocker.Get<IDataContext>().Expect(m => m.GetQueryable<GameDefinition>()).Return(championGames.AsQueryable());
-            AutoMocker.Get<IDataContext>().Expect(m => m.GetQueryable<Champion>()).Return(champions.AsQueryable());
-        }
-
-        [Test]
-        public void Then_Deletes_The_Champion()
-        {
-            AutoMocker.Get<IDataContext>()
-                .Expect(mock => mock.GetQueryable<PlayerAchievement>())
-                .Return(new List<PlayerAchievement>().AsQueryable());
-
-            AutoMocker.Get<IDataContext>()
-                .Expect(mock => mock.GetQueryable<GameDefinition>())
-                .Return(new List<GameDefinition>().AsQueryable());
-
-            AutoMocker.Get<IDataContext>()
-                .Expect(mock => mock.GetQueryable<Champion>())
-                .Return(new List<Champion>().AsQueryable());
-
-            AutoMocker.Get<IDataContext>()
-                .Expect(mock => mock.GetQueryable<Nemesis>())
-                .Return(new List<Nemesis>().AsQueryable());
-
-            AutoMocker.ClassUnderTest.DeletePlayer(1, CurrentUser);
-
-            AutoMocker.Get<IDataContext>().AssertWasCalled(mock => mock.DeleteById<Champion>(1, CurrentUser));
+            AutoMocker.Get<IDataContext>().AssertWasNotCalled(mock => mock.DeleteById<PlayerAchievement>(achievements[2].Id, CurrentUser));
         }
     }
 
     public class When_Deleted_Player_Is_Champion : DeletePlayerTests
     {
+        private int _championId = 50;
+        private int _championId2 = 51;
+        private int _championIdForDuplicateGameDefinition = 52;
+        private int _gameDefinitionId = 200;
+        private int _gameDefinitionId2 = 201;
+
         public override void SetUp()
         {
             base.SetUp();
-            var championGames = new List<GameDefinition>
-            {
-                new GameDefinition { Id = 1, ChampionId = 1 }
-            };
-
-            var playedGames = new List<PlayerGameResult>
-            {
-                new PlayerGameResult { Id = 1, PlayerId = 2 }
-            };
-
-            var players = new List<Player>
-            {
-                new Player {Id = 1, PlayerGameResults = new List<PlayerGameResult> () },
-                new Player {Id = 2, PlayerGameResults = new List<PlayerGameResult> () },
-            };
+            SetupDefaultExpectations(setupChampions: false);
 
             var champions = new List<Champion>
             {
-                new Champion { Id = 1, GameDefinitionId = 1, PlayerId = 1 }
+                new Champion
+                {
+                    PlayerId = PlayerId,
+                    Id = _championId
+                },
+                new Champion
+                {
+                    PlayerId = PlayerId,
+                    Id = _championId2
+                },
+                new Champion
+                {
+                    PlayerId = -1
+                }
             };
+            AutoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<Champion>()).Return(champions.AsQueryable());
 
-            AutoMocker.Get<IDataContext>().Expect(m => m.GetQueryable<Player>()).Return(players.AsQueryable());
-            AutoMocker.Get<IDataContext>().Expect(m => m.GetQueryable<GameDefinition>()).Return(championGames.AsQueryable());
-            AutoMocker.Get<IDataContext>().Expect(m => m.GetQueryable<Champion>()).Return(champions.AsQueryable());
+            var gameDefinitions = new List<GameDefinition>
+            {
+                new GameDefinition
+                {
+                    ChampionId = _championId,
+                    Id = _gameDefinitionId
+                },
+                new GameDefinition
+                {
+                    Id = _gameDefinitionId2,
+                    ChampionId = _championId2
+                }
+            };
+            AutoMocker.Get<IDataContext>()
+                .Expect(mock => mock.GetQueryable<GameDefinition>())
+                .Return(gameDefinitions.AsQueryable());
         }
 
         [Test]
-        public void Then_Recalculates_New_Champion()
+        public void Then_Clears_Out_The_Champion_For_Each_Championed_Game()
         {
-            AutoMocker.Get<IDataContext>()
-                .Expect(mock => mock.GetQueryable<PlayerAchievement>())
-                .Return(new List<PlayerAchievement>().AsQueryable());
+            //--arrange
 
-            AutoMocker.Get<IDataContext>()
-                .Expect(mock => mock.GetQueryable<GameDefinition>())
-                .Return(new List<GameDefinition>().AsQueryable());
-
-            AutoMocker.Get<IDataContext>()
-                .Expect(mock => mock.GetQueryable<Champion>())
-                .Return(new List<Champion>().AsQueryable());
-
-            AutoMocker.Get<IDataContext>()
-                .Expect(mock => mock.GetQueryable<Nemesis>())
-                .Return(new List<Nemesis>().AsQueryable());
-
+            //--act
             AutoMocker.ClassUnderTest.DeletePlayer(PlayerId, CurrentUser);
 
-            AutoMocker.Get<IDataContext>().AssertWasCalled(mock => mock.DeleteById<Champion>(1, CurrentUser));
+            //--assert
+            AutoMocker.Get<IDataContext>().AssertWasCalled(
+                mock => mock.Save(Arg<GameDefinition>.Matches(x => x.Id == _gameDefinitionId && x.ChampionId == null), Arg<ApplicationUser>.Is.Same(CurrentUser)));
+            AutoMocker.Get<IDataContext>().AssertWasCalled(
+                mock => mock.Save(Arg<GameDefinition>.Matches(x => x.Id == _gameDefinitionId2 && x.ChampionId == null), Arg<ApplicationUser>.Is.Same(CurrentUser)));
+        }
 
-            var champion = AutoMocker.Get<IDataContext>().GetQueryable<Champion>().ToList();
+        [Test]
+        public void Then_Recalculates_The_Champion_For_Each_Game_Championed()
+        {
+            //--act
+            AutoMocker.ClassUnderTest.DeletePlayer(PlayerId, CurrentUser);
+
+            //--assert
+            AutoMocker.Get<IChampionRecalculator>().AssertWasCalled(mock => mock.RecalculateChampion(_gameDefinitionId, CurrentUser));
+            AutoMocker.Get<IChampionRecalculator>().AssertWasCalled(mock => mock.RecalculateChampion(_gameDefinitionId2, CurrentUser));
         }
     }
 
