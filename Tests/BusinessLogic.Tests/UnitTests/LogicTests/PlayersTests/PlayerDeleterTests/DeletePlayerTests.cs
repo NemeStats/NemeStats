@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using BusinessLogic.DataAccess;
 using BusinessLogic.Logic.Champions;
+using BusinessLogic.Logic.Nemeses;
 using BusinessLogic.Logic.Players;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Achievements;
@@ -181,7 +182,6 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerDeleterTes
     {
         private int _championId = 50;
         private int _championId2 = 51;
-        private int _championIdForDuplicateGameDefinition = 52;
         private int _gameDefinitionId = 200;
         private int _gameDefinitionId2 = 201;
 
@@ -256,55 +256,123 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerDeleterTes
 
     public class When_Deleted_Player_Is_Nemesis : DeletePlayerTests
     {
+        private int _nemesisId1 = 1;
+        private int _nemesisId2 = 2;
+        private int _nemesisId3 = 3;
+        private int _nemesisId4 = 4;
+
+        private int _playerIdWithPreviousNemesis = 10;
+        private int _playerId2WithPreviousNemesis = 11;
+        private int _playerIdWithCurrentNemesis = 20;
+        private int _playerId2WithCurrentNemesis = 21;
+
         public override void SetUp()
         {
             base.SetUp();
+            SetupDefaultExpectations(setupPlayer: false, setupNemeses: false);
 
-            var playedGames = new List<PlayerGameResult>
+            var nemeses = new List<Nemesis>
             {
-                new PlayerGameResult { Id = 1, PlayerId = 2 }
+                new Nemesis
+                {
+                    NemesisPlayerId = PlayerId,
+                    Id = _nemesisId1
+                },
+                new Nemesis
+                {
+                    NemesisPlayerId = PlayerId,
+                    Id = _nemesisId2
+                },
+                new Nemesis
+                {
+                    NemesisPlayerId = PlayerId,
+                    Id = _nemesisId3
+                },
+                new Nemesis
+                {
+                    NemesisPlayerId = PlayerId,
+                    Id = _nemesisId4
+                }
             };
+
+            AutoMocker.Get<IDataContext>().Expect(m => m.GetQueryable<Nemesis>()).Return(nemeses.AsQueryable());
 
             var players = new List<Player>
             {
-                new Player {Id = 1, PlayerGameResults = new List<PlayerGameResult> (), NemesisId = 2 },
-                new Player {Id = 2, PlayerGameResults = new List<PlayerGameResult> () }
+                new Player
+                {
+                    Id = PlayerId,
+                    PlayerGameResults = new List<PlayerGameResult> ()
+                },
+                new Player
+                {
+                    Id = _playerIdWithCurrentNemesis,
+                    NemesisId = _nemesisId1
+                },
+                new Player
+                {
+                    Id = _playerId2WithCurrentNemesis,
+                    NemesisId = _nemesisId2
+                },
+                new Player
+                {
+                    Id = _playerIdWithPreviousNemesis,
+                    PreviousNemesisId = _nemesisId3
+                },
+                new Player
+                {
+                    Id = _playerId2WithPreviousNemesis,
+                    PreviousNemesisId = _nemesisId4
+                }
             };
 
             AutoMocker.Get<IDataContext>().Expect(m => m.GetQueryable<Player>()).Return(players.AsQueryable());
         }
 
         [Test]
-        public void Then_Recalculates_New_Nemesis()
+        public void Then_Clears_Out_The_Previous_Nemesis_Of_All_Players_Who_Had_This_Previous_Nemesis()
         {
-            AutoMocker.Get<IDataContext>()
-                .Expect(mock => mock.GetQueryable<PlayerAchievement>())
-                .Return(new List<PlayerAchievement>().AsQueryable());
+            //--arrange
 
-            AutoMocker.Get<IDataContext>()
-                .Expect(mock => mock.GetQueryable<GameDefinition>())
-                .Return(new List<GameDefinition>().AsQueryable());
-
-            AutoMocker.Get<IDataContext>()
-                .Expect(mock => mock.GetQueryable<Champion>())
-                .Return(new List<Champion>().AsQueryable());
-
-            AutoMocker.Get<IDataContext>()
-                .Expect(mock => mock.GetQueryable<Nemesis>())
-                .Return(new List<Nemesis>().AsQueryable());
-
+            //--act
             AutoMocker.ClassUnderTest.DeletePlayer(PlayerId, CurrentUser);
 
-            //TODO: AutoMocker.ClassUnderTest.AssertWasCalled(mock => mock.DeletePlayerNemesesRecords(1, CurrentUser));
+            //--assert
+            AutoMocker.Get<IDataContext>().AssertWasCalled(mock => mock.Save(
+                Arg<Player>.Matches(p => p.Id == _playerIdWithPreviousNemesis && p.PreviousNemesisId == null), Arg<ApplicationUser>.Is.Same(CurrentUser)));
+            AutoMocker.Get<IDataContext>().AssertWasCalled(mock => mock.Save(
+                Arg<Player>.Matches(p => p.Id == _playerId2WithPreviousNemesis && p.PreviousNemesisId == null), Arg<ApplicationUser>.Is.Same(CurrentUser)));
+        }
+
+        [Test]
+        public void Then_Clears_Out_The_Current_Nemesis_Of_All_Players_Who_Had_This_Current_Nemesis()
+        {
+            //--arrange
+
+            //--act
+            AutoMocker.ClassUnderTest.DeletePlayer(PlayerId, CurrentUser);
+
+            //--assert
+            AutoMocker.Get<IDataContext>().AssertWasCalled(mock => mock.Save(
+                Arg<Player>.Matches(p => p.Id == _playerIdWithCurrentNemesis && p.NemesisId == null), Arg<ApplicationUser>.Is.Same(CurrentUser)));
+            AutoMocker.Get<IDataContext>().AssertWasCalled(mock => mock.Save(
+                Arg<Player>.Matches(p => p.Id == _playerId2WithCurrentNemesis && p.NemesisId == null), Arg<ApplicationUser>.Is.Same(CurrentUser)));
+        }
+
+        [Test]
+        public void Then_Recalculates_The_Nemesis_For_The_Players_Who_Had_This_Current_Nemesis_Only()
+        {
+            //--arrange
+
+            //--act
+            AutoMocker.ClassUnderTest.DeletePlayer(PlayerId, CurrentUser);
+
+            //--assert
+            AutoMocker.Get<INemesisRecalculator>().AssertWasCalled(mock => mock.RecalculateNemesis(_playerIdWithCurrentNemesis, CurrentUser));
+            AutoMocker.Get<INemesisRecalculator>().AssertWasCalled(mock => mock.RecalculateNemesis(_playerId2WithCurrentNemesis, CurrentUser));
+
+            AutoMocker.Get<INemesisRecalculator>().AssertWasNotCalled(mock => mock.RecalculateNemesis(_playerIdWithPreviousNemesis, CurrentUser));
+            AutoMocker.Get<INemesisRecalculator>().AssertWasNotCalled(mock => mock.RecalculateNemesis(_playerId2WithPreviousNemesis, CurrentUser));
         }
     }
-
-    //TODO BRIAN need tests for at least the following
-    //* it deletes achievements DONE
-    //* it deletes champions DONE
-    //* it recalculates champions once per game definition - MOVED TO PlayedGameDeleter
-    //* it only recalculates champions once (not more!) for a given game definition - MOVED TO PlayedGameDeleter
-    //* it clears out the previous nemesis of any player who has this player as a previous nemesis
-    //* it clears out the current nemesis of any player who currently has this player as a nemesis
-    //* it recalculates the nemesis once (not more!) each player that had their current nemesis cleared
 }
