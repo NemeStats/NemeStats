@@ -19,7 +19,6 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
     public class GetPlayerQuickStatsForUserTests : PlayerRetrieverTestBase
     {
         private readonly string userId = "user id";
-        private readonly int expectedPoints = 1;
         private readonly NemePointsSummary expectedSummary = new NemePointsSummary(1, 3, 5);
         private readonly int expectedPlayerId = 2;
         private Player expectedPlayer;
