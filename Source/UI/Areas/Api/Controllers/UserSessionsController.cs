@@ -37,15 +37,8 @@ namespace UI.Areas.Api.Controllers
                 AuthenticationTokenExpirationDateTime = user.AuthenticationTokenExpirationDate
             };
 
-            if (!string.IsNullOrWhiteSpace(user.AuthenticationToken) && credentialsMessage.PreserveExistingAuthenticationToken)
-            {
-                newAuthTokenMessage.AuthenticationToken = user.AuthenticationToken;
-            }
-            else
-            {
-                var newAuthToken = authTokenGenerator.GenerateAuthToken(user.Id);
-                newAuthTokenMessage.AuthenticationToken = newAuthToken.AuthenticationTokenString;
-            }
+            var newAuthToken = authTokenGenerator.GenerateAuthToken(user.Id);
+            newAuthTokenMessage.AuthenticationToken = newAuthToken.AuthenticationTokenString;
 
             return Request.CreateResponse(HttpStatusCode.OK, newAuthTokenMessage);
         }

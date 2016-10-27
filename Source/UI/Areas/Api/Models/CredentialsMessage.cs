@@ -9,6 +9,6 @@ namespace UI.Areas.Api.Models
         [Required]
         public string UserName { get; set; }
 
-        public bool PreserveExistingAuthenticationToken { get; set; }
+        public string UniqueDeviceId { get; set; }
     }
 }
