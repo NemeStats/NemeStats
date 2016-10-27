@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Configuration.Abstractions;
 using System.Linq;
 using BusinessLogic.DataAccess;
 using BusinessLogic.Logic.Users;
+using BusinessLogic.Models;
 using BusinessLogic.Models.User;
 using NUnit.Framework;
 using Rhino.Mocks;
@@ -36,7 +38,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.ApplicationSignInM
         }
 
         [Test]
-        public void ItUpdatesTheAspNetUsersAuthenticationTokenWithAHashedAndSaltedToken()
+        public void It_Updates_The_Users_Auth_Token_With_A_Salted_And_Hashed_Token_When_There_Is_No_Device_Id_Specified()
         {
             _autoMocker.PartialMockTheClassUnderTest();
             const string expectedAuthToken = "some auth token";
@@ -46,6 +48,10 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.ApplicationSignInM
             _autoMocker.ClassUnderTest.Expect(mock => mock.HashAuthToken(expectedAuthToken))
                       .Return(expectedSaltedHashedAuthToken);
 
+            var authTokens = new List<UserDeviceAuthToken>().AsQueryable();
+            _autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<UserDeviceAuthToken>()).Return(authTokens);
+
+            //--act
             _autoMocker.ClassUnderTest.GenerateAuthToken(ApplicationUserId);
 
             _autoMocker.Get<IDataContext>().AssertWasCalled(mock => mock.Save(Arg<ApplicationUser>.Matches(user => user.Id == ApplicationUserId
