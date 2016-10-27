@@ -37,7 +37,7 @@ namespace UI.Areas.Api.Controllers
                 AuthenticationTokenExpirationDateTime = user.AuthenticationTokenExpirationDate
             };
 
-            var newAuthToken = authTokenGenerator.GenerateAuthToken(user.Id);
+            var newAuthToken = authTokenGenerator.GenerateAuthToken(user.Id, credentialsMessage.UniqueDeviceId);
             newAuthTokenMessage.AuthenticationToken = newAuthToken.AuthenticationTokenString;
 
             return Request.CreateResponse(HttpStatusCode.OK, newAuthTokenMessage);

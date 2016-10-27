@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Configuration.Abstractions;
-using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using BusinessLogic.DataAccess;
 using BusinessLogic.Models.User;
-using BusinessLogic.Logic.Users;
 
 namespace BusinessLogic.Logic.Users
 {
@@ -21,7 +19,7 @@ namespace BusinessLogic.Logic.Users
             this.configManager = configManager;
         }
 
-        public AuthToken GenerateAuthToken(string applicationUserId)
+        public AuthToken GenerateAuthToken(string applicationUserId, string uniqueDeviceId = null)
         {
             string newAuthTokenString = GenerateNewAuthToken();
             var saltedHash = this.HashAuthToken(newAuthTokenString);

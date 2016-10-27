@@ -70,7 +70,8 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests
             var credentialsMessage = new CredentialsMessage
             {
                 UserName = "valid username",
-                Password = "valid corresponding password"
+                Password = "valid corresponding password",
+                UniqueDeviceId = "some unique id"
             };
 
             var loggedInUser = new ApplicationUser
@@ -85,8 +86,9 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests
                     .Return(Task.FromResult(loggedInUser));
 
             var someNewAuthToken = new AuthToken("the auth token value", new DateTime());
-            autoMocker.Get<IAuthTokenGenerator>().Expect(mock => mock.GenerateAuthToken(loggedInUser.Id)).Return(someNewAuthToken);
+            autoMocker.Get<IAuthTokenGenerator>().Expect(mock => mock.GenerateAuthToken(loggedInUser.Id, credentialsMessage.UniqueDeviceId)).Return(someNewAuthToken);
 
+            //--act
             var actualResponse = await autoMocker.ClassUnderTest.Login(credentialsMessage);
 
             Assert.That(actualResponse.Content, Is.TypeOf(typeof(ObjectContent<NewAuthTokenMessage>)));
