@@ -395,6 +395,10 @@
     <Compile Include="Migrations\201609231634345_BGG.Image.Designer.cs">
       <DependentUpon>201609231634345_BGG.Image.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201610280210594_AddUserDeviceAuthToken.cs" />
+    <Compile Include="Migrations\201610280210594_AddUserDeviceAuthToken.Designer.cs">
+      <DependentUpon>201610280210594_AddUserDeviceAuthToken.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Achievements\AchievementLevel.cs" />
     <Compile Include="Models\Achievements\AchievementId.cs" />
     <Compile Include="Models\Games\BoardGameGeekGameCategory.cs" />
@@ -1034,6 +1038,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201609231634345_BGG.Image.resx">
       <DependentUpon>201609231634345_BGG.Image.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610280210594_AddUserDeviceAuthToken.resx">
+      <DependentUpon>201610280210594_AddUserDeviceAuthToken.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -32,14 +32,13 @@ namespace UI.Areas.Api.Controllers
                 return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Invalid credentials provided.");
             }
 
-            NewAuthTokenMessage newAuthTokenMessage = new NewAuthTokenMessage
-            {
-                AuthenticationTokenExpirationDateTime = user.AuthenticationTokenExpirationDate
-            };
-
             var newAuthToken = authTokenGenerator.GenerateAuthToken(user.Id, credentialsMessage.UniqueDeviceId);
-            newAuthTokenMessage.AuthenticationToken = newAuthToken.AuthenticationTokenString;
 
+            var newAuthTokenMessage = new NewAuthTokenMessage
+            {
+                AuthenticationTokenExpirationDateTime = newAuthToken.AuthenticationTokenExpirationDateTime,
+                AuthenticationToken = newAuthToken.AuthenticationTokenString
+            };
             return Request.CreateResponse(HttpStatusCode.OK, newAuthTokenMessage);
         }
     }

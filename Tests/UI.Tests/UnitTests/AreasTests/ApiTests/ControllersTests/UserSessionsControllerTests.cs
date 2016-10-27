@@ -76,8 +76,7 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests
 
             var loggedInUser = new ApplicationUser
             {
-                Id = "some user id",
-                AuthenticationTokenExpirationDate = new DateTime()
+                Id = "some user id"
             };
 
             autoMocker.Get<ApplicationUserManager>().Expect(mock => mock.FindAsync(
@@ -95,7 +94,7 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests
             var content = actualResponse.Content as ObjectContent<NewAuthTokenMessage>;
             var newAuthTokenMessage = content.Value as NewAuthTokenMessage;
             Assert.That(newAuthTokenMessage.AuthenticationToken, Is.EqualTo(someNewAuthToken.AuthenticationTokenString));
-            Assert.That(newAuthTokenMessage.AuthenticationTokenExpirationDateTime, Is.EqualTo(loggedInUser.AuthenticationTokenExpirationDate));
+            Assert.That(newAuthTokenMessage.AuthenticationTokenExpirationDateTime, Is.EqualTo(someNewAuthToken.AuthenticationTokenExpirationDateTime));
         }
     }
 }

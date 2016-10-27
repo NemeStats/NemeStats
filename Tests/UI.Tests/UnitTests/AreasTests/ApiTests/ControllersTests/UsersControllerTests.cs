@@ -90,7 +90,7 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests
             };
             _autoMocker.Get<IUserRegisterer>().Expect(mock => mock.RegisterUser(Arg<NewUser>.Is.Anything)).Return(Task.FromResult(registerNewUserResult));
             string authenticationTokenString = "some auth token string";
-            DateTime? authTokenExpiration = new DateTime();
+            DateTime authTokenExpiration = new DateTime();
             var expectedAuthToken = new AuthToken(authenticationTokenString, authTokenExpiration);
             _autoMocker.Get<IAuthTokenGenerator>().Expect(mock => mock.GenerateAuthToken(expectedNewlyRegisteredUserMessage.UserId)).Return(expectedAuthToken);
 
