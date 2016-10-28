@@ -106,7 +106,7 @@ Some services within NemeStats are completely wide open and do not require any s
 unauthorized access. However, many services (such as those that post data to a Gaming Group) require
 a valid NemeStats User account which is then in turn used to get an authorization token (i.e. an X-Auth-Token)
 to send on the request header. The following services are related to creating User accounts (and hence 
-Gaming Groups) as well as creating a User Session which provides and authentication token to send on
+Gaming Groups) as well as creating a User Session which provides an authentication token to send on
 subsequent requests to the service.
 
 # User [/Users/]
@@ -310,7 +310,7 @@ and then recreated using the corresponding services for this.
 This service will record a new Played Game under the specified Gaming Group (per the gamingGroupId). 
 
 + Attributes
-    + gameDefinitionId (number, required) - NemeStats unique identifier for the Game Definition (e.g. Race For the Galaxy's unique Id) of the Played Game.
+    + gameDefinitionId (number, required) - NemeStaots unique identifier for the Game Definition (e.g. Race For the Galaxy's unique Id) of the Played Game.
     + gamingGroupId (number, optional) - The NemeStats unique identifier for the Gaming Group where the Played Game will be logged. If no gamingGroupId is specified, the Played Game will be recorded under the default Gaming Group of the currently logged in User. 
     + datePlayed (string, optional) - The date the game was played in yyyy-MM-dd format (e.g. 2015-04-29).
     + notes (string, optional) - Any notes or comments that the User wants to record about the game for future reference.
