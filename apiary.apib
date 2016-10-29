@@ -45,6 +45,7 @@ Also added a 409 conflict response to POST /PlayedGames/ if any of the Players d
 accepting decimal places in pointsScored
 * 2016-08-31 Can now set a list of applicationLinkages when recording a Played Game. This will allow clients to save their own unique identifier for games and retrieve games based on this identifier. For example, a client could import all games that do not have a source application matching their application.
 * 2016-09-13 Can now pass flag "preserveExistingAuthenticationToken" to POST /UserSessions and it will not overwrite the existing authentication token.
+* 2016-10-28 Fixed major design issue with previous change and eliminated "preserveExistingAuthenticationToken" entirely in favor of a new optional field "uniqueDeviceId" so you can create a separate auth token per device.
 
 ### General Information
 
@@ -125,6 +126,9 @@ sent to the email address of the new User.
     + emailAddress : someemail@mailinator.com (string, required) - Email address of the User
     + userName : some username (string, required) - NemeStats username
     + password : some new password (string, required) - NemeStats password
+    + uniqueDeviceId : some unique key for the user's device (string, optional) - A unique identifier for the device of the user. It only needs to be unique in 
+    relation to the other devices that a User may have. For example, this could be used if a User has an iPhone and iPad
+    and needs to get a different auth token for both. If there can only ever be one client device for the User then this can be omitted. 
 
 + Request Valid UserName (application/json)
 
@@ -253,7 +257,10 @@ A User Session is represented by an authentication token.
         + userName : some legit username (string, required) - Username of the User being authenticated
         + password : some legit password (string, required) - Password of the User being authenticated
         + preserveExistingAuthenticationToken : false (boolean, optional) - Flag indicating whether to generate a new authentication token when logging in vs. using the existing one. This could be useful if you have multiple devices logging in with the same account. This setting is ignored if there isn't already an existing authentication token for the user.
-
+        + uniqueDeviceId : desome unique key for the user's device (string, optional) - A unique identifier for the device of the user. It only needs to be unique in 
+        relation to the other devices that a User may have. For example, this could be used if a User has an iPhone and iPad
+        and needs to get a different auth token for both. Getting a new UserSession using the same uniqueDeviceId will override/invalidate the 
+        previous auth token for that device.
 
 + Response 200 (application/json)
 
