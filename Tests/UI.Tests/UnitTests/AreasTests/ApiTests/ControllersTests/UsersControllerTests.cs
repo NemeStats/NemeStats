@@ -28,8 +28,7 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests
             {
                 EmailAddress = "email@email.com",
                 UserName = "username",
-                Password = "password"
-            };
+                Password = "password"            };
 
             await _autoMocker.ClassUnderTest.RegisterNewUser(newUserMessage);
 
@@ -67,7 +66,10 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests
         [Test]
         public async Task Post_ReturnsANewlyRegisteredUserMessage()
         {
-            var newUserMessage = new NewUserMessage();
+            var newUserMessage = new NewUserMessage
+            {
+                UniqueDeviceId = "some unique device id"
+            };
             var expectedNewlyRegisteredUserMessage = new NewlyRegisteredUserMessage
             {
                 UserId = "user id",
@@ -92,7 +94,9 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests
             string authenticationTokenString = "some auth token string";
             DateTime authTokenExpiration = new DateTime();
             var expectedAuthToken = new AuthToken(authenticationTokenString, authTokenExpiration);
-            _autoMocker.Get<IAuthTokenGenerator>().Expect(mock => mock.GenerateAuthToken(expectedNewlyRegisteredUserMessage.UserId)).Return(expectedAuthToken);
+            _autoMocker.Get<IAuthTokenGenerator>().Expect(mock => mock.GenerateAuthToken(
+                expectedNewlyRegisteredUserMessage.UserId, 
+                Arg<string>.Is.Equal(newUserMessage.UniqueDeviceId))).Return(expectedAuthToken);
 
             var actualResponse = await _autoMocker.ClassUnderTest.RegisterNewUser(newUserMessage);
 
