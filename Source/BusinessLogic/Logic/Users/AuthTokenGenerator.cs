@@ -4,8 +4,8 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using BusinessLogic.DataAccess;
+using BusinessLogic.Models;
 using BusinessLogic.Models.User;
-using BusinessLogic.Logic.Users;
 
 namespace BusinessLogic.Logic.Users
 {
@@ -21,18 +21,31 @@ namespace BusinessLogic.Logic.Users
             this.configManager = configManager;
         }
 
-        public AuthToken GenerateAuthToken(string applicationUserId)
+        public AuthToken GenerateAuthToken(string applicationUserId, string uniqueDeviceId = null)
         {
-            string newAuthTokenString = GenerateNewAuthToken();
-            var saltedHash = this.HashAuthToken(newAuthTokenString);
+            var newAuthTokenString = GenerateNewAuthToken();
+            var saltedHash = HashAuthToken(newAuthTokenString);
 
-            ApplicationUser applicationUser = dataContext.FindById<ApplicationUser>(applicationUserId);
-            applicationUser.AuthenticationToken = saltedHash;
-            applicationUser.AuthenticationTokenExpirationDate = DateTime.UtcNow.AddMonths(3);
+            var applicationUser = dataContext.FindById<ApplicationUser>(applicationUserId);
 
-            dataContext.Save(applicationUser, applicationUser);
+            var userDeviceAuthToken = dataContext.GetQueryable<UserDeviceAuthToken>()
+                .FirstOrDefault(x => x.ApplicationUserId == applicationUserId && x.DeviceId == uniqueDeviceId);
 
-            return new AuthToken(newAuthTokenString, applicationUser.AuthenticationTokenExpirationDate);
+            if (userDeviceAuthToken == null)
+            {
+                userDeviceAuthToken = new UserDeviceAuthToken
+                {
+                    ApplicationUserId = applicationUserId,
+                    DeviceId = uniqueDeviceId
+                };
+            }
+
+            userDeviceAuthToken.AuthenticationToken = saltedHash;
+            userDeviceAuthToken.AuthenticationTokenExpirationDate = DateTime.UtcNow.AddMonths(3);
+
+            dataContext.Save(userDeviceAuthToken, applicationUser);
+
+            return new AuthToken(newAuthTokenString, userDeviceAuthToken.AuthenticationTokenExpirationDate);
         }
 
         internal virtual string GenerateNewAuthToken()
@@ -45,12 +58,12 @@ namespace BusinessLogic.Logic.Users
 
         public virtual string HashAuthToken(string newAuthToken)
         {
-            string salt = configManager.AppSettings[APP_KEY_AUTH_TOKEN_SALT];
+            var salt = configManager.AppSettings[APP_KEY_AUTH_TOKEN_SALT];
 
-            byte[] saltBytes = Encoding.UTF8.GetBytes(salt);
-            byte[] authTokenBytes = Encoding.UTF8.GetBytes(newAuthToken);
+            var saltBytes = Encoding.UTF8.GetBytes(salt);
+            var authTokenBytes = Encoding.UTF8.GetBytes(newAuthToken);
 
-            return System.Text.Encoding.Default.GetString(new Rfc2898DeriveBytes(authTokenBytes, saltBytes, HASH_ITERATIONS).GetBytes(HASH_SIZE));
+            return Encoding.Default.GetString(new Rfc2898DeriveBytes(authTokenBytes, saltBytes, HASH_ITERATIONS).GetBytes(HASH_SIZE));
         }
     }
 }

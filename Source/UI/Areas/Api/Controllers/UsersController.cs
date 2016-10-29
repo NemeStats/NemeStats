@@ -38,7 +38,7 @@ namespace UI.Areas.Api.Controllers
 
             if (registerNewUserResult.Result.Succeeded)
             {
-                var authToken = authTokenGenerator.GenerateAuthToken(registerNewUserResult.NewlyRegisteredUser.UserId);
+                var authToken = authTokenGenerator.GenerateAuthToken(registerNewUserResult.NewlyRegisteredUser.UserId, newUserMessage.UniqueDeviceId);
                 var newlyRegisteredUserMessage = Mapper.Map<NewlyRegisteredUser, NewlyRegisteredUserMessage>(registerNewUserResult.NewlyRegisteredUser);
                 newlyRegisteredUserMessage.AuthenticationToken = authToken.AuthenticationTokenString;
                 newlyRegisteredUserMessage.AuthenticationTokenExpirationDateTime =

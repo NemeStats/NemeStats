@@ -55,6 +55,7 @@ namespace BusinessLogic.DataAccess
         public virtual DbSet<VotableFeature> VotableFeatures { get; set; }
         public virtual DbSet<BoardGameGeekGameCategory> BoardGameGeekGameCategories { get; set; }
         public virtual DbSet<BoardGameGeekGameMechanic> BoardGameGeekGameMechanics { get; set; }
+        public virtual DbSet<UserDeviceAuthToken> UserDeviceAuthTokens { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

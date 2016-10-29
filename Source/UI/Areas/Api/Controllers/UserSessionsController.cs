@@ -32,21 +32,13 @@ namespace UI.Areas.Api.Controllers
                 return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Invalid credentials provided.");
             }
 
-            NewAuthTokenMessage newAuthTokenMessage = new NewAuthTokenMessage
+            var newAuthToken = authTokenGenerator.GenerateAuthToken(user.Id, credentialsMessage.UniqueDeviceId);
+
+            var newAuthTokenMessage = new NewAuthTokenMessage
             {
-                AuthenticationTokenExpirationDateTime = user.AuthenticationTokenExpirationDate
+                AuthenticationTokenExpirationDateTime = newAuthToken.AuthenticationTokenExpirationDateTime,
+                AuthenticationToken = newAuthToken.AuthenticationTokenString
             };
-
-            if (!string.IsNullOrWhiteSpace(user.AuthenticationToken) && credentialsMessage.PreserveExistingAuthenticationToken)
-            {
-                newAuthTokenMessage.AuthenticationToken = user.AuthenticationToken;
-            }
-            else
-            {
-                var newAuthToken = authTokenGenerator.GenerateAuthToken(user.Id);
-                newAuthTokenMessage.AuthenticationToken = newAuthToken.AuthenticationTokenString;
-            }
-
             return Request.CreateResponse(HttpStatusCode.OK, newAuthTokenMessage);
         }
     }

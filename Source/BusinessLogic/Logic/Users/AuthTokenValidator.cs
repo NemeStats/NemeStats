@@ -20,7 +20,7 @@ namespace BusinessLogic.Logic.Users
         {
             string hashedAndSaltedAuthToken = authTokenGenerator.HashAuthToken(authToken);
             return dataContext.GetQueryable<ApplicationUser>()
-                .FirstOrDefault(x => x.AuthenticationToken == hashedAndSaltedAuthToken && DateTime.UtcNow <= x.AuthenticationTokenExpirationDate);
+                .FirstOrDefault(x => x.UserDeviceAuthTokens.Any(y => y.AuthenticationToken == hashedAndSaltedAuthToken && DateTime.UtcNow <= y.AuthenticationTokenExpirationDate));
         }
     }
 }
