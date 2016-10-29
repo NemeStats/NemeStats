@@ -50,7 +50,9 @@ namespace UI.Transformations
             Mapper.CreateMap<ApplicationLinkage, ApplicationLinkageMessage>(MemberList.Destination);
             Mapper.CreateMap<TopGamingGroupSummary, TopGamingGroupSummaryViewModel>(MemberList.Source);
             Mapper.CreateMap<VotableFeature, VotableFeatureViewModel>(MemberList.Destination);
-            Mapper.CreateMap<NewUserMessage, NewUser>(MemberList.Source);
+            Mapper.CreateMap<NewUserMessage, NewUser>(MemberList.Destination)
+                .ForMember(x => x.GamingGroupInvitationId, opt => opt.Ignore())
+                .ForMember(x => x.Source, opt => opt.Ignore());
             Mapper.CreateMap<NewlyRegisteredUser, NewlyRegisteredUserMessage>(MemberList.Source);
             Mapper.CreateMap<PlayedGameApplicationLinkage, ApplicationLinkage>(MemberList.Destination);
             Mapper.CreateMap<PlayedGameSearchResult, PlayedGameSearchResultMessage>(MemberList.Destination)
