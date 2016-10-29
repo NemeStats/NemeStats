@@ -96,7 +96,7 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests
             var expectedAuthToken = new AuthToken(authenticationTokenString, authTokenExpiration);
             _autoMocker.Get<IAuthTokenGenerator>().Expect(mock => mock.GenerateAuthToken(
                 expectedNewlyRegisteredUserMessage.UserId, 
-                Arg<string>.Is.Equal(newUserMessage.UniqueDeviceId))).Return(expectedAuthToken);
+                newUserMessage.UniqueDeviceId)).Return(expectedAuthToken);
 
             var actualResponse = await _autoMocker.ClassUnderTest.RegisterNewUser(newUserMessage);
 
