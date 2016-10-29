@@ -1,9 +1,9 @@
-﻿using BusinessLogic.Models;
+﻿using BusinessLogic.Models.User;
 
 namespace BusinessLogic.Logic.Users
 {
     public interface IAuthTokenValidator
     {
-        UserDeviceAuthToken ValidateAuthToken(string authToken);
+        ApplicationUser ValidateAuthToken(string authToken);
     }
 }

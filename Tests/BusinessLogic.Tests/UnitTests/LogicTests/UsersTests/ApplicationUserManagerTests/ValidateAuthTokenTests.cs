@@ -19,7 +19,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.ApplicationUserMan
         private UserDeviceAuthToken _expectedUserDeviceAuthTokenThatIsntExpired;
         private string expiredAuthToken = "some expired auth token";
         private UserDeviceAuthToken _expectedUserDeviceAuthTokenThatIsExpired;
-        
+        private ApplicationUser _applicationUserWithValidAuthToken ;
+
         [SetUp]
         public void SetUp()
         {
@@ -35,6 +36,14 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.ApplicationUserMan
                 AuthenticationTokenExpirationDate = DateTime.UtcNow.AddDays(3)
             };
 
+            _applicationUserWithValidAuthToken = new ApplicationUser
+            {
+                UserDeviceAuthTokens = new List<UserDeviceAuthToken>
+                {
+                    _expectedUserDeviceAuthTokenThatIsntExpired
+                }
+            };
+
             const string EXPECTED_HASHED_AND_SALTED_AUTH_TOKEN_THAT_IS_EXPIRED = "some hashed and salted auth token that is expired";
             autoMocker.Get<IAuthTokenGenerator>().Expect(mock => mock.HashAuthToken(this.expiredAuthToken)).Return(
                 EXPECTED_HASHED_AND_SALTED_AUTH_TOKEN_THAT_IS_EXPIRED);
@@ -44,21 +53,30 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UsersTests.ApplicationUserMan
                 AuthenticationToken = EXPECTED_HASHED_AND_SALTED_AUTH_TOKEN,
                 AuthenticationTokenExpirationDate = DateTime.UtcNow.AddDays(-1)
             };
-            IQueryable<UserDeviceAuthToken> userDeviceAuthTokens = new List<UserDeviceAuthToken>
+
+            var applicationUserWithExpiredAuthToken = new ApplicationUser
             {
-                _expectedUserDeviceAuthTokenThatIsntExpired,
-                _expectedUserDeviceAuthTokenThatIsExpired
+                UserDeviceAuthTokens = new List<UserDeviceAuthToken>
+                {
+                    _expectedUserDeviceAuthTokenThatIsExpired
+                }
+            };
+
+            var applicationUsersQueryable = new List<ApplicationUser>
+            {
+                _applicationUserWithValidAuthToken,
+                applicationUserWithExpiredAuthToken
             }.AsQueryable();
 
-            autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<UserDeviceAuthToken>()).Return(userDeviceAuthTokens);
+            autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<ApplicationUser>()).Return(applicationUsersQueryable);
         }
 
         [Test]
-        public void ItReturnsTheUserDeviceAuthTokenIfTheSaltedHashedTokenMatchesAndTheTokenIsNotExpired()
+        public void ItReturnsTheApplicationUserIfTheSaltedHashedTokenMatchesAndTheTokenIsNotExpired()
         {
             var result = autoMocker.ClassUnderTest.ValidateAuthToken(this.validAuthToken);
 
-            Assert.That(result, Is.EqualTo(this._expectedUserDeviceAuthTokenThatIsntExpired));
+            Assert.That(result, Is.EqualTo(_applicationUserWithValidAuthToken));
         }
 
         [Test]

@@ -2,7 +2,6 @@
 using BusinessLogic.DataAccess;
 using BusinessLogic.Models.User;
 using System;
-using BusinessLogic.Models;
 
 namespace BusinessLogic.Logic.Users
 {
@@ -17,11 +16,11 @@ namespace BusinessLogic.Logic.Users
             this.dataContext = dataContext;
         }
 
-        public UserDeviceAuthToken ValidateAuthToken(string authToken)
+        public ApplicationUser ValidateAuthToken(string authToken)
         {
             string hashedAndSaltedAuthToken = authTokenGenerator.HashAuthToken(authToken);
-            return dataContext.GetQueryable<UserDeviceAuthToken>()
-                .FirstOrDefault(x => x.AuthenticationToken == hashedAndSaltedAuthToken && DateTime.UtcNow <= x.AuthenticationTokenExpirationDate);
+            return dataContext.GetQueryable<ApplicationUser>()
+                .FirstOrDefault(x => x.UserDeviceAuthTokens.Any(y => y.AuthenticationToken == hashedAndSaltedAuthToken && DateTime.UtcNow <= y.AuthenticationTokenExpirationDate));
         }
     }
 }

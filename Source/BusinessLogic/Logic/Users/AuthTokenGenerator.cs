@@ -40,10 +40,10 @@ namespace BusinessLogic.Logic.Users
                 };
             }
 
-            dataContext.Save(userDeviceAuthToken, applicationUser);
-
             userDeviceAuthToken.AuthenticationToken = saltedHash;
             userDeviceAuthToken.AuthenticationTokenExpirationDate = DateTime.UtcNow.AddMonths(3);
+
+            dataContext.Save(userDeviceAuthToken, applicationUser);
 
             return new AuthToken(newAuthTokenString, userDeviceAuthToken.AuthenticationTokenExpirationDate);
         }

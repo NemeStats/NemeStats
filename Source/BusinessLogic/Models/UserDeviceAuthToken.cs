@@ -1,8 +1,8 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Data;
 using BusinessLogic.DataAccess;
+using BusinessLogic.Models.User;
 
 namespace BusinessLogic.Models
 {
@@ -20,6 +20,8 @@ namespace BusinessLogic.Models
         [MaxLength(128)]
         [Index("IX_ApplicationUserId_DeviceId", 1, IsUnique = true)]
         public string ApplicationUserId { get; set; }
+
+        public virtual ApplicationUser ApplicationUser { get; set; }
 
         [MaxLength(128)]
         [Index("IX_ApplicationUserId_DeviceId", 2, IsUnique = true)]
