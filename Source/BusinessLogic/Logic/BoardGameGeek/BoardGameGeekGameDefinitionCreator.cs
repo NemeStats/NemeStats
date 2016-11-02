@@ -4,6 +4,7 @@ using BusinessLogic.Exceptions;
 using BusinessLogic.Models;
 using BusinessLogic.Models.User;
 using System.Collections.Generic;
+using System.Linq;
 using BusinessLogic.Models.Games;
 
 namespace BusinessLogic.Logic.BoardGameGeek
@@ -64,20 +65,37 @@ namespace BusinessLogic.Logic.BoardGameGeek
 
             foreach (var category in gameDetails.Categories)
             {
-                newRecord.Categories.Add(new BoardGameGeekGameCategory()
+                var existentCategory = _dataContext.GetQueryable<BoardGameGeekGameCategory>().FirstOrDefault(c => c.BoardGameGeekGameCategoryId == category.Id);
+
+                if (existentCategory == null)
                 {
-                    BoardGameGeekGameCategoryId = category.Id,
-                    CategoryName = category.Category
-                });
+                    existentCategory = new BoardGameGeekGameCategory()
+                    {
+                        BoardGameGeekGameCategoryId = category.Id,
+                        CategoryName = category.Category
+                    };
+                }
+
+                newRecord.Categories.Add(existentCategory);
+
+
             }
 
             foreach (var mechanic in gameDetails.Mechanics)
             {
-                newRecord.Mechanics.Add(new BoardGameGeekGameMechanic()
+                var existentMechanic = _dataContext.GetQueryable<BoardGameGeekGameMechanic>().FirstOrDefault(c => c.BoardGameGeekGameMechanicId == mechanic.Id);
+
+                if (existentMechanic == null)
                 {
-                    BoardGameGeekGameMechanicId = mechanic.Id,
-                    MechanicName = mechanic.Mechanic
-                });
+                    existentMechanic = new BoardGameGeekGameMechanic()
+                    {
+                        BoardGameGeekGameMechanicId = mechanic.Id,
+                        MechanicName = mechanic.Mechanic
+                    };
+                }
+
+                newRecord.Mechanics.Add(existentMechanic);
+
             }
 
             return boardGameGeekGameDefinitionId;
