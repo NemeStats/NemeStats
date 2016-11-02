@@ -39,7 +39,11 @@ namespace BoardGameGeekApiClient.Service
                 var xElements = xDoc.Descendants("items").ToList();
                 if (xElements.Count() == 1)
                 {
-                    thumbnail = xElements.First().Element("item").Element("image").GetStringValue();
+                    var firstImageElement = xElements.First().Element("item").Element("image");
+                    if (firstImageElement != null)
+                    {
+                        thumbnail = firstImageElement.GetStringValue();
+                    }
                 }
             }
             catch (Exception ex)
