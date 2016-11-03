@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Data;
 using BusinessLogic.DataAccess;
 
 namespace BusinessLogic.Models.Games
@@ -11,6 +12,7 @@ namespace BusinessLogic.Models.Games
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public override int Id { get; set; }
 
+        [Index("IX_BOARDGAMEGEEKCATEGORYID", 1, IsUnique = true)]
         public int BoardGameGeekGameCategoryId { get; set; }
 
         public string CategoryName { get; set; }
