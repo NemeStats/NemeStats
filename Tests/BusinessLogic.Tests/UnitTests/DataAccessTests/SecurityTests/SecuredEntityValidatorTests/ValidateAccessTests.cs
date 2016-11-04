@@ -56,9 +56,9 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.SecurityTests.SecuredEnt
         public void ItThrowsAnUnauthorizedAccessExceptionIfTheUserDoesNotHaveAccessToTheGamingGroup()
         {
             currentUser.CurrentGamingGroupId = 999999;
-            var stringType = typeof(string);
+            
             var expectedException = new UnauthorizedEntityAccessException(currentUser.Id,
-                stringType,
+                typeof(SecuredEntityWithTechnicalKey),
                 string.Empty);
             var userGamingGroupQueryable = new List<UserGamingGroup>
             {
@@ -77,7 +77,7 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.SecurityTests.SecuredEnt
                        .Return(userGamingGroupQueryable);
 
             var exception = Assert.Throws<UnauthorizedEntityAccessException>(
-                () => _autoMocker.ClassUnderTest.ValidateAccess(securedEntity, currentUser, stringType, string.Empty));
+                () => _autoMocker.ClassUnderTest.ValidateAccess(securedEntity, currentUser, string.Empty));
 
             Assert.AreEqual(expectedException.Message, exception.Message);
         }
@@ -87,8 +87,7 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.SecurityTests.SecuredEnt
         {
             securedEntityValidatorForEntityThatIsNotSecured.ValidateAccess(
                 "some object that doesnt extend SecuredEntityWithTechnicalKey", 
-                currentUser, 
-                typeof(string),
+                currentUser,
                 string.Empty);
         }
 
@@ -100,7 +99,6 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.SecurityTests.SecuredEnt
             securedEntityValidatorForEntityThatIsNotSecured.ValidateAccess(
                 new Player(),
                 currentUser,
-                typeof(string),
                 string.Empty);
         }
 
@@ -112,7 +110,6 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.SecurityTests.SecuredEnt
             securedEntityValidatorForEntityThatIsNotSecured.ValidateAccess(
                 securedEntity,
                 currentUser,
-                typeof(string),
                 string.Empty);
         }
 
@@ -133,7 +130,6 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.SecurityTests.SecuredEnt
             securedEntityValidatorForEntityThatIsNotSecured.ValidateAccess(
                 securedEntity,
                 currentUser,
-                typeof(string),
                 string.Empty);
         }
 
@@ -143,8 +139,7 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.SecurityTests.SecuredEnt
             Assert.Throws<ArgumentNullException>(
                 () => _autoMocker.ClassUnderTest.ValidateAccess(
                     securedEntity, 
-                    null, 
-                    typeof(string), 
+                    null,                    
                     string.Empty));
         }
     }

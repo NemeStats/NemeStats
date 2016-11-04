@@ -120,7 +120,7 @@ namespace BusinessLogic.Logic.PlayedGames
         internal virtual GameDefinition ValidateAccessToGameDefinition(int gameDefinitionId, ApplicationUser currentUser)
         {
             var gameDefinition = _dataContext.FindById<GameDefinition>(gameDefinitionId);
-            _securedEntityValidatorForGameDefinition.ValidateAccess(gameDefinition, currentUser, typeof(GameDefinition), gameDefinitionId);
+            _securedEntityValidatorForGameDefinition.ValidateAccess(gameDefinition, currentUser, gameDefinitionId);
             return gameDefinition;
         }
 
@@ -133,7 +133,7 @@ namespace BusinessLogic.Logic.PlayedGames
                 {
                     throw new PlayerNotInGamingGroupException(player.Id, gamingGroupId);
                 }
-                _securedEntityValidatorForPlayer.ValidateAccess(player, currentUser, typeof(Player), player.Id);
+                _securedEntityValidatorForPlayer.ValidateAccess(player, currentUser, player.Id);
             }
         }
 

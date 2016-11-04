@@ -58,8 +58,7 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.NemeStatsDataContextTest
                 .Return(securedEntityValidator);
             securedEntityValidator.Expect(mock => mock.ValidateAccess(
                 entityWithGamingGroup, 
-                currentUser, 
-                typeof(EntityWithTechnicalKey),
+                currentUser,
                 NemeStatsDataContext.UNKNOWN_ENTITY_ID))
                 .Throw(new UnauthorizedAccessException());
             try
@@ -95,7 +94,7 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.NemeStatsDataContextTest
             securedEntityValidatorFactory.Expect(mock => mock.MakeSecuredEntityValidator<GameDefinition>(dataContext))
                 .IgnoreArguments()
                 .Return(securedEntityValidator);
-            securedEntityValidator.Expect(mock => mock.ValidateAccess(null, null, null, null)).IgnoreArguments();
+            securedEntityValidator.Expect(mock => mock.ValidateAccess(null, null, null)).IgnoreArguments();
 
             dataContext.Expect(mock => mock.AddOrInsertOverride(gameDefinition))
                 .Repeat.Once()

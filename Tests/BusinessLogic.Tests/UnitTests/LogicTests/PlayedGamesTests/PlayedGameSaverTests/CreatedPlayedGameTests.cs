@@ -406,7 +406,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameSa
 
             autoMocker.Get<ISecuredEntityValidator<Player>>().AssertWasCalled(mock => mock.ValidateAccess(
                 existingPlayerWithMatchingGamingGroup,
-                currentUser, typeof(Player),
+                currentUser,
                 existingPlayerWithMatchingGamingGroup.Id));
         }
 
@@ -424,7 +424,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameSa
 
             autoMocker.Get<ISecuredEntityValidator<GameDefinition>>().AssertWasCalled(mock => mock.ValidateAccess(
                 gameDefinition,
-                currentUser, typeof(GameDefinition),
+                currentUser,
                 gameDefinition.Id));
         }
 

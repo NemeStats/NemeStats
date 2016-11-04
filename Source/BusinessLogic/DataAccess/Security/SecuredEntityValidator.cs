@@ -36,7 +36,6 @@ namespace BusinessLogic.DataAccess.Security
             _dataContext = dataContext;
         }
 
-        //TODO GET RID OF underlyingEntityType!!
         //TODO not sure how to enforce that TEntity is a SingleColumnWithTechnicalKey so I can get the Id, so requiring some
         //additional info to be manually passed in
         /// <summary>
@@ -44,10 +43,9 @@ namespace BusinessLogic.DataAccess.Security
         /// </summary>
         /// <param name="entity"></param>
         /// <param name="currentUser"></param>
-        /// <param name="underlyingEntityType"></param>
         /// <param name="entityId"></param>
         /// <exception cref="UnauthorizedAccessException">Thrown if the user is not allowed to save this entity because the user does not have access to the gaming group.</exception>
-        public virtual void ValidateAccess(TEntity entity, ApplicationUser currentUser, Type underlyingEntityType, object entityId)
+        public virtual void ValidateAccess(TEntity entity, ApplicationUser currentUser, object entityId)
         {
             var securedEntity = entity as SecuredEntityWithTechnicalKey;
 
@@ -68,7 +66,7 @@ namespace BusinessLogic.DataAccess.Security
 
                 if (matchingUserGamingGroup == null)
                 {
-                    throw new UnauthorizedEntityAccessException(currentUser.Id, underlyingEntityType, entityId);
+                    throw new UnauthorizedEntityAccessException(currentUser.Id, typeof(TEntity), entityId);
                 }
             }
         }

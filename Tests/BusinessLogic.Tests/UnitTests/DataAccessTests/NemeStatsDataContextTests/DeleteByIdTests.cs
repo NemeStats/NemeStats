@@ -74,7 +74,6 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.NemeStatsDataContextTest
             securedEntityValidator.AssertWasCalled(mock => mock.ValidateAccess(
                 Arg<GameDefinition>.Is.Same(gameDefinition), 
                 Arg<ApplicationUser>.Is.Same(currentUser),
-                Arg<Type>.Is.Equal(typeof(GameDefinition)),
                 Arg<int>.Is.Equal(entityId)));
         }
     }
