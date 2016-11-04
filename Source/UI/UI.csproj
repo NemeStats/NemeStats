@@ -349,6 +349,8 @@
     <Compile Include="Areas\Api\Models\PlayerGameResultsMessage.cs" />
     <Compile Include="Areas\Api\Models\PlayerSearchResultMessage.cs" />
     <Compile Include="Areas\Api\Models\PlayerStatisticsMessage.cs" />
+    <Compile Include="Areas\Api\Models\SaveablePlayedGameMessageBase.cs" />
+    <Compile Include="Areas\Api\Models\UpdatedGameMessage.cs" />
     <Compile Include="Areas\Api\Models\UserPlayerInfo.cs" />
     <Compile Include="Areas\Api\Models\PlayersSearchResultsMessage.cs" />
     <Compile Include="Areas\Api\Models\UpdateGameDefinitionMessage.cs" />

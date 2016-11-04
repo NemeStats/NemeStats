@@ -15,42 +15,14 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
-using System;
-using BusinessLogic.Models.Games.Validation;
-using System.Collections.Generic;
+
 using System.ComponentModel.DataAnnotations;
-using BusinessLogic.Models.PlayedGames;
-using BusinessLogic.Models.Validation;
 
 namespace BusinessLogic.Models.Games
 {
-    public class UpdatedGame
+    public class UpdatedGame : SaveableGameBase
     {
-        public UpdatedGame()
-        {
-            DatePlayed = DateTime.UtcNow;
-            ApplicationLinkages = new List<ApplicationLinkage>();
-        }
-
         [Required]
         public int PlayedGameId { get; set; }
-
-        [Required]
-        public int GameDefinitionId { get; set; }
-
-        public string Notes { get; set; }
-
-        [PlayerRankValidationAttribute]
-        [Required]
-        public List<PlayerRank> PlayerRanks { get; set; }
-
-        [Required]
-        [DataType(DataType.Date)]
-        [MaxDate]
-        public DateTime DatePlayed { get; set; }
-
-        public WinnerTypes? WinnerType { get; set; }
-        public int? GamingGroupId { get; set; }
-        public IList<ApplicationLinkage> ApplicationLinkages { get; set; }
     }
 }

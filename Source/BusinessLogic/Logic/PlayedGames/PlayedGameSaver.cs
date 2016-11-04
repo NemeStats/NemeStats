@@ -124,7 +124,7 @@ namespace BusinessLogic.Logic.PlayedGames
             return gameDefinition;
         }
 
-        private void ValidateAccessToPlayers(IEnumerable<PlayerRank> playerRanks, int gamingGroupId, ApplicationUser currentUser)
+        internal virtual void ValidateAccessToPlayers(IEnumerable<PlayerRank> playerRanks, int gamingGroupId, ApplicationUser currentUser)
         {
             foreach (var playerRank in playerRanks)
             {
@@ -161,30 +161,22 @@ namespace BusinessLogic.Logic.PlayedGames
             return playerGameResults;
         }
 
-        //TODO this should be in its own class
+        //TODO this should be in its own class or just in AutoMapperConfiguration
         internal virtual PlayedGame TransformNewlyCompletedGameIntoPlayedGame(
             NewlyCompletedGame newlyCompletedGame,
             int gamingGroupId,
             string applicationUserId,
             List<PlayerGameResult> playerGameResults)
         {
-
             var winnerType = WinnerTypes.PlayerWin;
 
-            if (newlyCompletedGame.WinnerType.HasValue)
+            if (playerGameResults.All(x => x.GameRank == 1))
             {
-                winnerType = newlyCompletedGame.WinnerType.Value;
+                winnerType = WinnerTypes.TeamWin;
             }
-            else
+            else if (playerGameResults.All(x => x.GameRank > 1))
             {
-                if (playerGameResults.All(x => x.GameRank == 1))
-                {
-                    winnerType = WinnerTypes.TeamWin;
-                }
-                else if (playerGameResults.All(x => x.GameRank > 1))
-                {
-                    winnerType = WinnerTypes.TeamLoss;
-                }
+                winnerType = WinnerTypes.TeamLoss;
             }
 
             var numberOfPlayers = newlyCompletedGame.PlayerRanks.Count;
@@ -216,7 +208,12 @@ namespace BusinessLogic.Logic.PlayedGames
                 throw new EntityDoesNotExistException(typeof(PlayedGame), updatedGame.PlayedGameId);
             }
 
+            int gamingGroupId = updatedGame.GamingGroupId ?? playedGameWithStuff.GamingGroupId;
+
             ValidateAccessToGameDefinition(updatedGame.GameDefinitionId, currentUser);
+
+            ValidateAccessToPlayers(updatedGame.PlayerRanks, gamingGroupId, currentUser);
+
 
             return null;
         }

@@ -249,6 +249,7 @@
     <Compile Include="UnitTests\AreasTests\ApiTests\ControllersTests\GameDefinitionsControllerTests\SaveNewGameDefinitionTests.cs" />
     <Compile Include="UnitTests\AreasTests\ApiTests\ControllersTests\GameDefinitionsControllerTests\UpdateGameDefinitionTests.cs" />
     <Compile Include="UnitTests\AreasTests\ApiTests\ControllersTests\PlayedGamesControllerTests\GetPlayedGameSearchResultsTests.cs" />
+    <Compile Include="UnitTests\AreasTests\ApiTests\ControllersTests\PlayedGamesControllerTests\UpdatePlayedGameTests.cs" />
     <Compile Include="UnitTests\AreasTests\ApiTests\ControllersTests\PlayedGamesControllerTests\RecordPlayedGameTests.cs" />
     <Compile Include="UnitTests\AreasTests\ApiTests\ControllersTests\PlayedGamesControllerTests\DeletePlayedGameTests.cs" />
     <Compile Include="UnitTests\AreasTests\ApiTests\ControllersTests\PlayedGamesControllerTests\ExportPlayedGamesToExcelTests.cs" />

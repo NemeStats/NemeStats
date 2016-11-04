@@ -158,6 +158,19 @@ namespace UI.Areas.Api.Controllers
             return Request.CreateResponse(HttpStatusCode.OK, newlyRecordedPlayedGameMessage);
         }
 
+        [ApiRoute("PlayedGames/")]
+        [HttpPut]
+        [ApiAuthentication]
+        [ApiModelValidation]
+        public HttpResponseMessage UpdatePlayedGame([FromBody]UpdatedPlayedGameMessage playedPlayedGameMessage)
+        {
+            var newlyCompletedGame = transformer.Transform<UpdatedGame>(playedPlayedGameMessage);
+
+            playedGameSaver.UpdatePlayedGame(newlyCompletedGame, TransactionSource.RestApi, CurrentUser);
+
+            return Request.CreateResponse(HttpStatusCode.NoContent);
+        }
+
         [ApiRoute("PlayedGames/{playedGameID}", StartingVersion = 2)]
         [HttpDelete]
         [ApiAuthentication]

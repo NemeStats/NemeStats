@@ -95,9 +95,20 @@ namespace UI.Transformations
                 .ForMember(m => m.WeightDescription, opt => opt.Ignore());
             Mapper.CreateMap<PlayedGameQuickStats, PlayedGameQuickStatsViewModel>(MemberList.Destination);
 
-            //TODO this logic shouldn't be inline here
             Mapper.CreateMap<PlayedGameMessage, NewlyCompletedGame>(MemberList.Destination)
-                .ForMember(m => m.WinnerType, opt => opt.Ignore())
+                .ForMember(m => m.DatePlayed, opt => opt.ResolveUsing(x =>
+                {
+                    var datePlayed = DateTime.UtcNow;
+
+                    if (!string.IsNullOrWhiteSpace(x.DatePlayed))
+                    {
+                        datePlayed = DateTime.ParseExact(x.DatePlayed, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None);
+                    }
+
+                    return datePlayed;
+                }));
+
+            Mapper.CreateMap<UpdatedPlayedGameMessage, UpdatedGame>(MemberList.Destination)
                 .ForMember(m => m.DatePlayed, opt => opt.ResolveUsing(x =>
                 {
                     var datePlayed = DateTime.UtcNow;
