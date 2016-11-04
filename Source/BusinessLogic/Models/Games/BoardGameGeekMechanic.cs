@@ -11,6 +11,7 @@ namespace BusinessLogic.Models.Games
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public override int Id { get; set; }
 
+        [Index("IX_BOARDGAMEGEEKMECHANICID", 1, IsUnique = true)]
         public int BoardGameGeekGameMechanicId { get; set; }
 
         public string MechanicName { get; set; }
