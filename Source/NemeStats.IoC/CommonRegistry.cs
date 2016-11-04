@@ -107,7 +107,7 @@ namespace NemeStats.IoC
 
             For<IPendingGamingGroupInvitationRetriever>().Use<PendingGamingGroupInvitationRetriever>();
 
-            For<IPlayedGameCreator>().Use<PlayedGameCreator>();
+            For<IPlayedGameSaver>().Use<PlayedGameSaver>();
 
             For<INemeStatsEventTracker>().Use<UniversalAnalyticsNemeStatsEventTracker>();
 

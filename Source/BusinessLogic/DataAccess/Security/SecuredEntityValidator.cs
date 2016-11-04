@@ -36,6 +36,7 @@ namespace BusinessLogic.DataAccess.Security
             _dataContext = dataContext;
         }
 
+        //TODO GET RID OF underlyingEntityType!!
         //TODO not sure how to enforce that TEntity is a SingleColumnWithTechnicalKey so I can get the Id, so requiring some
         //additional info to be manually passed in
         /// <summary>

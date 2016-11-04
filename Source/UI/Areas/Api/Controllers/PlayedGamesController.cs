@@ -25,7 +25,7 @@ namespace UI.Areas.Api.Controllers
 
         private readonly IPlayedGameRetriever playedGameRetriever;
         private readonly IExcelGenerator excelGenerator;
-        private readonly IPlayedGameCreator playedGameCreator;
+        private readonly IPlayedGameSaver playedGameSaver;
         private readonly IPlayedGameDeleter playedGameDeleter;
         private readonly ITransformer transformer;
 
@@ -34,12 +34,12 @@ namespace UI.Areas.Api.Controllers
         public PlayedGamesController(
             IPlayedGameRetriever playedGameRetriever, 
             IExcelGenerator excelGenerator, 
-            IPlayedGameCreator playedGameCreator, 
+            IPlayedGameSaver playedGameSaver, 
             IPlayedGameDeleter playedGameDeleter, ITransformer transformer)
         {
             this.playedGameRetriever = playedGameRetriever;
             this.excelGenerator = excelGenerator;
-            this.playedGameCreator = playedGameCreator;
+            this.playedGameSaver = playedGameSaver;
             this.playedGameDeleter = playedGameDeleter;
             this.transformer = transformer;
         }
@@ -148,7 +148,7 @@ namespace UI.Areas.Api.Controllers
         {
             var newlyCompletedGame = transformer.Transform<NewlyCompletedGame>(playedGameMessage);
 
-            var playedGame = playedGameCreator.CreatePlayedGame(newlyCompletedGame, TransactionSource.RestApi, CurrentUser);
+            var playedGame = playedGameSaver.CreatePlayedGame(newlyCompletedGame, TransactionSource.RestApi, CurrentUser);
             var newlyRecordedPlayedGameMessage = new NewlyRecordedPlayedGameMessage
             {
                 PlayedGameId = playedGame.Id,

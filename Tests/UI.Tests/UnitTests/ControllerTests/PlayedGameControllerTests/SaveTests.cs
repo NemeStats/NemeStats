@@ -41,7 +41,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
         [SetUp]
         public virtual void SetUp()
         {
-            autoMocker.Get<IPlayedGameCreator>().Expect(mock => mock.CreatePlayedGame(
+            autoMocker.Get<IPlayedGameSaver>().Expect(mock => mock.CreatePlayedGame(
                 Arg<NewlyCompletedGame>.Is.Anything,
                 Arg<TransactionSource>.Is.Equal(TransactionSource.WebApplication),
                 Arg<ApplicationUser>.Is.Equal(currentUser)))

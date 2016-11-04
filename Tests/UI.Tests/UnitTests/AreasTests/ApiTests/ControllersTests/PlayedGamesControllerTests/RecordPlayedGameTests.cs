@@ -36,7 +36,7 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.PlayedGamesCon
                 Id = EXPECTED_PLAYED_GAME_ID,
                 GamingGroupId = EXPECTED_GAMING_GROUP_ID
             };
-            _autoMocker.Get<IPlayedGameCreator>().Expect(mock => mock.CreatePlayedGame(
+            _autoMocker.Get<IPlayedGameSaver>().Expect(mock => mock.CreatePlayedGame(
                                                                           Arg<NewlyCompletedGame>.Is.Anything,
                                                                           Arg<TransactionSource>.Is.Anything,
                                                                           Arg<ApplicationUser>.Is.Anything))
@@ -48,7 +48,7 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.PlayedGamesCon
         {
             _autoMocker.ClassUnderTest.RecordPlayedGame(_playedGameMessage, _applicationUser.CurrentGamingGroupId);
 
-            _autoMocker.Get<IPlayedGameCreator>().AssertWasCalled(mock => mock.CreatePlayedGame(
+            _autoMocker.Get<IPlayedGameSaver>().AssertWasCalled(mock => mock.CreatePlayedGame(
                 Arg<NewlyCompletedGame>.Is.Same(_expectedNewlyCompletedGame),
                 Arg<TransactionSource>.Is.Anything,
                 Arg<ApplicationUser>.Is.Same(_applicationUser)));
@@ -59,7 +59,7 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.PlayedGamesCon
         {
             _autoMocker.ClassUnderTest.RecordPlayedGame(_playedGameMessage, _applicationUser.CurrentGamingGroupId);
 
-            _autoMocker.Get<IPlayedGameCreator>().AssertWasCalled(mock => mock.CreatePlayedGame(
+            _autoMocker.Get<IPlayedGameSaver>().AssertWasCalled(mock => mock.CreatePlayedGame(
                 Arg<NewlyCompletedGame>.Is.Anything,
                 Arg<TransactionSource>.Is.Equal(TransactionSource.RestApi),
                 Arg<ApplicationUser>.Is.Anything));

@@ -49,7 +49,7 @@ namespace UI.Controllers
         private readonly IPlayedGameRetriever _playedGameRetriever;
         private readonly IPlayerRetriever _playerRetriever;
         private readonly IPlayedGameDetailsViewModelBuilder _playedGameDetailsBuilder;
-        private readonly IPlayedGameCreator _playedGameCreator;
+        private readonly IPlayedGameSaver _playedGameSaver;
         private readonly IGameDefinitionRetriever _gameDefinitionRetriever;
         private readonly IPlayedGameDeleter _playedGameDeleter;
         private readonly IGameDefinitionSaver _gameDefinitionSaver;
@@ -64,7 +64,7 @@ namespace UI.Controllers
             IPlayerRetriever playerRetriever,
             IPlayedGameDetailsViewModelBuilder builder,
             IGameDefinitionRetriever gameDefinitionRetriever,
-            IPlayedGameCreator playedGameCreator,
+            IPlayedGameSaver playedGameSaver,
             IPlayedGameDeleter playedGameDeleter,
             IGameDefinitionSaver gameDefinitionSaver,
             IPlayerSaver playerSaver,
@@ -75,7 +75,7 @@ namespace UI.Controllers
             _playerRetriever = playerRetriever;
             _playedGameDetailsBuilder = builder;
             _gameDefinitionRetriever = gameDefinitionRetriever;
-            _playedGameCreator = playedGameCreator;
+            _playedGameSaver = playedGameSaver;
             _playedGameDeleter = playedGameDeleter;
             _gameDefinitionSaver = gameDefinitionSaver;
             _playerSaver = playerSaver;
@@ -181,7 +181,7 @@ namespace UI.Controllers
                 }
 
 
-                var playedGame = _playedGameCreator.CreatePlayedGame(_mapperFactory.GetMapper<SavePlayedGameRequest, NewlyCompletedGame>().Map(request), TransactionSource.WebApplication, currentUser);
+                var playedGame = _playedGameSaver.CreatePlayedGame(_mapperFactory.GetMapper<SavePlayedGameRequest, NewlyCompletedGame>().Map(request), TransactionSource.WebApplication, currentUser);
 
                 return Json(new { success = true, playedGameId = playedGame.Id });
             }

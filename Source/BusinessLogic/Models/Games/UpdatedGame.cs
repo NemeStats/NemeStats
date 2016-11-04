@@ -24,14 +24,18 @@ using BusinessLogic.Models.Validation;
 
 namespace BusinessLogic.Models.Games
 {
-    public class NewlyCompletedGame
+    public class UpdatedGame
     {
-        public NewlyCompletedGame()
+        public UpdatedGame()
         {
             DatePlayed = DateTime.UtcNow;
             ApplicationLinkages = new List<ApplicationLinkage>();
         }
 
+        [Required]
+        public int PlayedGameId { get; set; }
+
+        [Required]
         public int GameDefinitionId { get; set; }
 
         public string Notes { get; set; }
