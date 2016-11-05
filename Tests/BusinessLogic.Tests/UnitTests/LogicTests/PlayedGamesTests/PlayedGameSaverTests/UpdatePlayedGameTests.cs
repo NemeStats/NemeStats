@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using BusinessLogic.DataAccess;
+using BusinessLogic.DataAccess.Security;
 using BusinessLogic.Exceptions;
 using BusinessLogic.Logic;
 using BusinessLogic.Models;
@@ -19,10 +21,14 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameSa
         private int _existingPlayedGameId = 1;
         private int _existingGamingGroupId;
         private int _existingGameDefinitionId = 2;
+        private int _existingBoardGameGeekGameDefinitionId = 3;
         private int _existingPlayerGameResultId1 = 10;
         private int _existingPlayerGameResultId2 = 11;
-        private int _existingPlayedGameApplicationLinkage1 = 20;
-        private int _existingPlayedGameApplicationLinkage2 = 20;
+        private int _existingPlayedGameApplicationLinkageId1 = 20;
+        private int _existingPlayedGameApplicationLinkageId2 = 20;
+        private List<PlayerGameResult> _expectedNewPlayerGameResults;
+        private PlayedGame _expectedTransformedPlayedGame;
+        private PlayedGame _expectedSavedPlayedGame;
 
         private void SetupExpectationsForExistingPlayedGame()
         {
@@ -32,9 +38,10 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameSa
             {
                 Id = 1,
                 GamingGroupId = _existingGamingGroupId,
+                GameDefinitionId = _existingGameDefinitionId,
                 GameDefinition = new GameDefinition
                 {
-                    Id = _existingGameDefinitionId
+                    BoardGameGeekGameDefinitionId = _existingBoardGameGeekGameDefinitionId
                 },
                 PlayerGameResults = new List<PlayerGameResult>
                 {
@@ -51,11 +58,11 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameSa
                 {
                     new PlayedGameApplicationLinkage
                     {
-                        Id = _existingPlayedGameApplicationLinkage1
+                        Id = _existingPlayedGameApplicationLinkageId1
                     },
                     new PlayedGameApplicationLinkage
                     {
-                        Id = _existingPlayedGameApplicationLinkage2
+                        Id = _existingPlayedGameApplicationLinkageId2
                     }
                 }
             };
@@ -67,10 +74,50 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameSa
 
             autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<PlayedGame>()).Return(playedGameQueryable);
 
+            autoMocker.ClassUnderTest.Expect(
+                partialMock =>
+                    partialMock.ValidateAccessToGameDefinition(Arg<int>.Is.Anything,
+                        Arg<ApplicationUser>.Is.Anything))
+                .Return(new GameDefinition());
+
             autoMocker.ClassUnderTest.Expect(partialMock => partialMock.ValidateAccessToPlayers(
                 Arg<List<PlayerRank>>.Is.Anything,
                 Arg<int>.Is.Anything,
                 Arg<ApplicationUser>.Is.Anything));
+
+            _expectedNewPlayerGameResults = new List<PlayerGameResult>
+            {
+                new PlayerGameResult(),
+                new PlayerGameResult(),
+                new PlayerGameResult()
+            };
+
+            autoMocker.ClassUnderTest.Expect(
+                    partialMock =>
+                            partialMock.MakePlayerGameResults(Arg<SaveableGameBase>.Is.Anything, Arg<int>.Is.Anything))
+                .Return(_expectedNewPlayerGameResults);
+
+            _expectedTransformedPlayedGame = new PlayedGame
+            {
+                Id = _existingPlayedGameId,
+                GameDefinitionId = _existingGameDefinitionId
+            };
+            autoMocker.ClassUnderTest.Expect(
+                    partialMock =>
+                        partialMock.TransformNewlyCompletedGameIntoPlayedGame(Arg<SaveableGameBase>.Is.Anything, Arg<int>.Is.Anything,
+                            Arg<string>.Is.Anything, Arg<List<PlayerGameResult>>.Is.Anything))
+                .Return(_expectedTransformedPlayedGame);
+
+            autoMocker.ClassUnderTest.Expect(partialMock => partialMock.DoPostSaveStuff(
+                Arg<TransactionSource>.Is.Anything, 
+                Arg<ApplicationUser>.Is.Anything, 
+                Arg<int>.Is.Anything, 
+                Arg<int>.Is.Anything, 
+                Arg<List<PlayerGameResult>>.Is.Anything));
+
+            autoMocker.Get<IDataContext>()
+                .Expect(mock => mock.Save(Arg<PlayedGame>.Is.Anything, Arg<ApplicationUser>.Is.Anything))
+                .Return(_expectedSavedPlayedGame);
         }
 
         [Test]
@@ -97,7 +144,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameSa
         }
 
         [Test]
-        public void It_Validates_Access_To_The_New_Game_Definition()
+        public void It_Validates_Access_To_The_Played_Game()
         {
             //--arrange
             SetupExpectationsForExistingPlayedGame();
@@ -110,11 +157,27 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameSa
                 GameDefinitionId = differentGameDefinitionId
             };
 
-            autoMocker.ClassUnderTest.Expect(
-                    partialMock =>
-                        partialMock.ValidateAccessToGameDefinition(Arg<int>.Is.Anything,
-                            Arg<ApplicationUser>.Is.Anything))
-                .Return(new GameDefinition());
+            //--act
+            autoMocker.ClassUnderTest.UpdatePlayedGame(updatedGame, TransactionSource.RestApi, currentUser);
+
+            //--assert
+            autoMocker.Get<ISecuredEntityValidator<PlayedGame>>()
+                .AssertWasCalled(mock => mock.ValidateAccess(_existingPlayedGame, currentUser, _existingPlayedGame.Id));
+        }
+
+        [Test]
+        public void It_Validates_Access_To_The_New_Game_Definition()
+        {
+            //--arrange
+            SetupExpectationsForExistingPlayedGame();
+
+            int differentGameDefinitionId = _existingGameDefinitionId + 1;
+
+            var updatedGame = new UpdatedGame
+            {
+                PlayedGameId = _existingPlayedGameId,
+                GameDefinitionId = differentGameDefinitionId
+            };
 
             //--act
             autoMocker.ClassUnderTest.UpdatePlayedGame(updatedGame, TransactionSource.RestApi, currentUser);
@@ -136,12 +199,6 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameSa
                 GameDefinitionId = differentGameDefinitionId
             };
 
-            autoMocker.ClassUnderTest.Expect(
-                    partialMock =>
-                        partialMock.ValidateAccessToGameDefinition(Arg<int>.Is.Anything,
-                            Arg<ApplicationUser>.Is.Anything))
-                .Return(new GameDefinition());
-
             //--act
             autoMocker.ClassUnderTest.UpdatePlayedGame(updatedGame, TransactionSource.RestApi, currentUser);
 
@@ -149,5 +206,175 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameSa
             autoMocker.ClassUnderTest.AssertWasCalled(partialMock => partialMock.ValidateAccessToPlayers(updatedGame.PlayerRanks, _existingGamingGroupId, currentUser));
         }
 
+        [Test]
+        public void It_Clears_Out_Existing_Player_Game_Results()
+        {
+            //--arrange
+            SetupExpectationsForExistingPlayedGame();
+
+            int differentGameDefinitionId = _existingGameDefinitionId + 1;
+
+            var updatedGame = new UpdatedGame
+            {
+                PlayedGameId = _existingPlayedGameId,
+                GameDefinitionId = differentGameDefinitionId
+            };
+
+            //--act
+            autoMocker.ClassUnderTest.UpdatePlayedGame(updatedGame, TransactionSource.RestApi, currentUser);
+
+            //--assert
+            autoMocker.Get<IDataContext>().AssertWasCalled(mock => mock.DeleteById<PlayerGameResult>(_existingPlayerGameResultId1, currentUser));
+            autoMocker.Get<IDataContext>().AssertWasCalled(mock => mock.DeleteById<PlayerGameResult>(_existingPlayerGameResultId2, currentUser));
+        }
+
+        [Test]
+        public void It_Clears_Out_Existing_Application_Linkages()
+        {
+            //--arrange
+            SetupExpectationsForExistingPlayedGame();
+
+            int differentGameDefinitionId = _existingGameDefinitionId + 1;
+
+            var updatedGame = new UpdatedGame
+            {
+                PlayedGameId = _existingPlayedGameId,
+                GameDefinitionId = differentGameDefinitionId
+            };
+
+            //--act
+            autoMocker.ClassUnderTest.UpdatePlayedGame(updatedGame, TransactionSource.RestApi, currentUser);
+
+            //--assert
+            autoMocker.Get<IDataContext>().AssertWasCalled(mock => mock.DeleteById<PlayedGameApplicationLinkage>(_existingPlayedGameApplicationLinkageId1, currentUser));
+            autoMocker.Get<IDataContext>().AssertWasCalled(mock => mock.DeleteById<PlayedGameApplicationLinkage>(_existingPlayedGameApplicationLinkageId2, currentUser));
+        }
+
+        [Test]
+        public void It_Reconstructs_The_Played_Game_Then_Updates_It()
+        {
+            //--arrange
+            SetupExpectationsForExistingPlayedGame();
+
+            int differentGameDefinitionId = _existingGameDefinitionId + 1;
+
+            var playerRank1 = new PlayerRank
+            {
+                PlayerId = 100,
+                GameRank = 1
+            };
+            var playerRank2 = new PlayerRank
+            {
+                PlayerId = 101,
+                GameRank = 1
+            };
+            var playerRank3 = new PlayerRank
+            {
+                PlayerId = 100,
+                GameRank = 1
+            };
+
+            var updatedGame = new UpdatedGame
+            {
+                PlayedGameId = _existingPlayedGameId,
+                GameDefinitionId = differentGameDefinitionId,
+                PlayerRanks = new List<PlayerRank>
+                {
+                    playerRank1,
+                    playerRank2,
+                    playerRank3
+                },
+                DatePlayed = DateTime.UtcNow
+            };
+
+            //--act
+            autoMocker.ClassUnderTest.UpdatePlayedGame(updatedGame, TransactionSource.RestApi, currentUser);
+
+            //--assert
+            autoMocker.ClassUnderTest.AssertWasCalled(
+                    partialMock =>
+                            partialMock.MakePlayerGameResults(updatedGame, _existingBoardGameGeekGameDefinitionId));
+
+            autoMocker.ClassUnderTest.AssertWasCalled(
+                partialMock =>
+                    partialMock.TransformNewlyCompletedGameIntoPlayedGame(updatedGame, _existingGamingGroupId,
+                        currentUser.Id, _expectedNewPlayerGameResults));
+
+            var arguments =
+                autoMocker.Get<IDataContext>()
+                    .GetArgumentsForCallsMadeOn(
+                        x => x.Save(Arg<PlayedGame>.Is.Anything, Arg<ApplicationUser>.Is.Anything));
+
+            arguments.ShouldNotBeNull();
+            arguments.Count.ShouldBe(1);
+            var actualPlayedGame = arguments[0][0] as PlayedGame;
+            actualPlayedGame.ShouldNotBeNull();
+            actualPlayedGame.DateUpdated.Date.ShouldBe(DateTime.UtcNow.Date);
+            actualPlayedGame.Id.ShouldBe(updatedGame.PlayedGameId);
+        }
+
+        [Test]
+        public void It_Does_All_Of_The_Post_Save_Stuff()
+        {
+            //--arrange
+            SetupExpectationsForExistingPlayedGame();
+
+            var updatedGame = new UpdatedGame
+            {
+                PlayedGameId = _existingPlayedGameId,
+                GameDefinitionId = _existingGameDefinitionId
+            };
+            var transactionSource = TransactionSource.RestApi;
+
+            //--act
+            autoMocker.ClassUnderTest.UpdatePlayedGame(updatedGame, transactionSource, currentUser);
+
+            //--assert
+            var args = autoMocker.ClassUnderTest.GetArgumentsForCallsMadeOn(
+                mock => mock.DoPostSaveStuff(
+                Arg<TransactionSource>.Is.Anything,
+                Arg<ApplicationUser>.Is.Anything,
+                Arg<int>.Is.Anything,
+                Arg<int>.Is.Anything,
+                Arg<List<PlayerGameResult>>.Is.Anything));
+
+            args.ShouldNotBeNull();
+            args.Count.ShouldBe(1);
+            var firstCall = args[0];
+
+            var actualTransactionSource = (TransactionSource)firstCall[0];
+            actualTransactionSource.ShouldBe(transactionSource);
+
+            var actualUser = firstCall[1] as ApplicationUser;
+            actualUser.ShouldBeSameAs(currentUser);
+
+            var actualPlayedGameId = (int)firstCall[2];
+            actualPlayedGameId.ShouldBe(_existingPlayedGameId);
+
+            var actualGameDefinitionId = (int) firstCall[3];
+            actualGameDefinitionId.ShouldBe(_existingGameDefinitionId);
+
+            var actualPlayerGameResults = firstCall[4] as List<PlayerGameResult>;
+            actualPlayerGameResults.ShouldBeSameAs(_expectedNewPlayerGameResults);
+        }
+
+        [Test]
+        public void It_Returns_The_Saved_Played_Game()
+        {
+            //--arrange
+            SetupExpectationsForExistingPlayedGame();
+
+            var updatedGame = new UpdatedGame
+            {
+                PlayedGameId = _existingPlayedGameId,
+                GameDefinitionId = _existingGameDefinitionId
+            };
+
+            //--act
+            var result = autoMocker.ClassUnderTest.UpdatePlayedGame(updatedGame, TransactionSource.RestApi, currentUser);
+
+            //--assert
+            result.ShouldBeSameAs(_expectedSavedPlayedGame);
+        }
     }
 }

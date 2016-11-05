@@ -206,7 +206,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameSa
                 PlayerRanks = new List<PlayerRank>()
             };
 
-            autoMocker.ClassUnderTest.Expect(logic => logic.TransformNewlyCompletedGamePlayerRanksToPlayerGameResults(null, null))
+            autoMocker.ClassUnderTest.Expect(logic => logic.MakePlayerGameResults(null, null))
                 .IgnoreArguments()
                 .Return(new List<PlayerGameResult>());
 

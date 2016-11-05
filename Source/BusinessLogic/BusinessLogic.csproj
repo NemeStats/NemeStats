@@ -403,6 +403,10 @@
     <Compile Include="Migrations\201611022341188_BGG_Category_And_Mechanics_Unique_Indexes.Designer.cs">
       <DependentUpon>201611022341188_BGG_Category_And_Mechanics_Unique_Indexes.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201611050145082_AddPlayedGameDateUpdated.cs" />
+    <Compile Include="Migrations\201611050145082_AddPlayedGameDateUpdated.Designer.cs">
+      <DependentUpon>201611050145082_AddPlayedGameDateUpdated.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Achievements\AchievementLevel.cs" />
     <Compile Include="Models\Achievements\AchievementId.cs" />
     <Compile Include="Models\Games\BoardGameGeekGameCategory.cs" />
@@ -1050,6 +1054,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201611022341188_BGG_Category_And_Mechanics_Unique_Indexes.resx">
       <DependentUpon>201611022341188_BGG_Category_And_Mechanics_Unique_Indexes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201611050145082_AddPlayedGameDateUpdated.resx">
+      <DependentUpon>201611050145082_AddPlayedGameDateUpdated.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

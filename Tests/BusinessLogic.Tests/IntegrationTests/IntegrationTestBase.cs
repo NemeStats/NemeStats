@@ -174,6 +174,7 @@ namespace BusinessLogic.Tests.IntegrationTests
             var championRecalculator = new ChampionRecalculator(dataContext, championRepository);
             var securedEntityValidatorForPlayers = new SecuredEntityValidator<Player>(dataContext);
             var securedEntityValidatorForGameDefinition = new SecuredEntityValidator<GameDefinition>(dataContext);
+            var securedEntityValidatorForPlayedGame = new SecuredEntityValidator<PlayedGame>(dataContext);
             var weightBonusCalculator = new WeightBonusCalculator(new WeightTierCalculator());
             var pointsCalculator = new PointsCalculator(weightBonusCalculator, new GameDurationBonusCalculator());
             var linkedPlayedGameValidator = new LinkedPlayedGameValidator(dataContext);
@@ -186,6 +187,7 @@ namespace BusinessLogic.Tests.IntegrationTests
                 championRecalculator, 
                 securedEntityValidatorForPlayers,
                 securedEntityValidatorForGameDefinition,
+                securedEntityValidatorForPlayedGame,
                 pointsCalculator,
                 new FakeEventBus(),
                 linkedPlayedGameValidator,

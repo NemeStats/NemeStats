@@ -45,7 +45,6 @@ namespace BusinessLogic.Tests.IntegrationTests
                 dataContext.Save(gamingGroup, testUserWithDefaultGamingGroup);
                 dataContext.CommitAllChanges();
 
-                int actualId = gamingGroup.Id;
                 Cleanup(dataContext, gamingGroup, testUserWithDefaultGamingGroup);
 
                 Assert.AreNotEqual(default(int), gamingGroup.Id);
