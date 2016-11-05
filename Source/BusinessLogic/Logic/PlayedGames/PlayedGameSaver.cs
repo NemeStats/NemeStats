@@ -97,7 +97,7 @@ namespace BusinessLogic.Logic.PlayedGames
 
             playedGame = _dataContext.Save(playedGame, currentUser);
 
-            CreateApplicationLinkages(newlyCompletedGame, playedGame);
+            CreateApplicationLinkages(newlyCompletedGame.ApplicationLinkages, playedGame.Id);
 
             DoPostSaveStuff(transactionSource, currentUser, playedGame.Id, playedGame.GameDefinitionId, playerGameResults);
 
@@ -187,13 +187,12 @@ namespace BusinessLogic.Logic.PlayedGames
             return playedGame;
         }
 
-        internal virtual void CreateApplicationLinkages(NewlyCompletedGame newlyCompletedGame, PlayedGame playedGame)
+        internal virtual void CreateApplicationLinkages(IList<ApplicationLinkage> applicationLinkages, int playedGameId)
         {
-            _applicationLinker.LinkApplication(playedGame.Id, ApplicationLinker.APPLICATION_NAME_NEMESTATS,
-                playedGame.Id.ToString());
-            foreach (var applicationLinkage in newlyCompletedGame.ApplicationLinkages)
+            _applicationLinker.LinkApplication(playedGameId, ApplicationLinker.APPLICATION_NAME_NEMESTATS, playedGameId.ToString());
+            foreach (var applicationLinkage in applicationLinkages)
             {
-                _applicationLinker.LinkApplication(playedGame.Id, applicationLinkage.ApplicationName,
+                _applicationLinker.LinkApplication(playedGameId, applicationLinkage.ApplicationName,
                     applicationLinkage.EntityId);
             }
         }
@@ -240,13 +239,35 @@ namespace BusinessLogic.Logic.PlayedGames
             updatedPlayedGame.Id = updatedGame.PlayedGameId;
             updatedPlayedGame.DateUpdated = DateTime.UtcNow;
 
-            playedGameWithStuff.PlayerGameResults.Each(x => _dataContext.DeleteById<PlayerGameResult>(x.Id, currentUser));
-            playedGameWithStuff.ApplicationLinkages.Each(x => _dataContext.DeleteById<PlayedGameApplicationLinkage>(x.Id, currentUser));
+            CleanupPlayerResultsAndApplicationLinkages(currentUser, playedGameWithStuff);
 
             var returnPlayedGame = _dataContext.Save(updatedPlayedGame, currentUser);
 
+            //--Entity Framework doesn't appear to save new child entities when updating the parent entity so we have to save them separately
+            playerGameResults.ForEach(x =>
+            {
+                x.PlayedGameId = returnPlayedGame.Id;
+                _dataContext.Save(x, currentUser);
+            });
+
+            CreateApplicationLinkages(updatedGame.ApplicationLinkages, updatedGame.PlayedGameId);
+
             DoPostSaveStuff(transactionSource, currentUser, playedGameWithStuff.Id, playedGameWithStuff.GameDefinitionId, playerGameResults);
-            return null;
+
+            return returnPlayedGame;
+        }
+
+        private void CleanupPlayerResultsAndApplicationLinkages(ApplicationUser currentUser, PlayedGame playedGameWithStuff)
+        {
+            foreach (var playerGameResult in playedGameWithStuff.PlayerGameResults.ToList())
+            {
+                _dataContext.DeleteById<PlayerGameResult>(playerGameResult.Id, currentUser);
+            }
+
+            foreach (var applicationLinkage in playedGameWithStuff.ApplicationLinkages.ToList())
+            {
+                _dataContext.DeleteById<PlayedGameApplicationLinkage>(applicationLinkage.Id, currentUser);
+            }
         }
     }
 }

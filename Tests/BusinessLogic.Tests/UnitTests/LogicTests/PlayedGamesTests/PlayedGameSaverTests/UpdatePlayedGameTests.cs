@@ -7,6 +7,7 @@ using BusinessLogic.Exceptions;
 using BusinessLogic.Logic;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
+using BusinessLogic.Models.PlayedGames;
 using BusinessLogic.Models.User;
 using NUnit.Framework;
 using Rhino.Mocks;
@@ -115,6 +116,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameSa
                 Arg<int>.Is.Anything, 
                 Arg<List<PlayerGameResult>>.Is.Anything));
 
+            _expectedSavedPlayedGame = new PlayedGame();
             autoMocker.Get<IDataContext>()
                 .Expect(mock => mock.Save(Arg<PlayedGame>.Is.Anything, Arg<ApplicationUser>.Is.Anything))
                 .Return(_expectedSavedPlayedGame);
@@ -311,6 +313,30 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameSa
             actualPlayedGame.ShouldNotBeNull();
             actualPlayedGame.DateUpdated.Date.ShouldBe(DateTime.UtcNow.Date);
             actualPlayedGame.Id.ShouldBe(updatedGame.PlayedGameId);
+        }
+
+        [Test]
+        public void It_Creates_The_Played_Game_Application_Linkages()
+        {
+            //--arrange
+            SetupExpectationsForExistingPlayedGame();
+
+            var updatedGame = new UpdatedGame
+            {
+                PlayedGameId = _existingPlayedGameId,
+                GameDefinitionId = _existingGameDefinitionId,
+                ApplicationLinkages = new List<ApplicationLinkage>
+                {
+                    new ApplicationLinkage()
+                }
+            };
+            var transactionSource = TransactionSource.RestApi;
+
+            //--act
+            autoMocker.ClassUnderTest.UpdatePlayedGame(updatedGame, transactionSource, currentUser);
+
+            //--assert
+            autoMocker.ClassUnderTest.AssertWasCalled(mock => mock.CreateApplicationLinkages(updatedGame.ApplicationLinkages, _existingPlayedGameId));
         }
 
         [Test]

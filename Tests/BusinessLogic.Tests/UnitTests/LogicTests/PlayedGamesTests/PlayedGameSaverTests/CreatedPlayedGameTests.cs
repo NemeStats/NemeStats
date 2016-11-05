@@ -23,7 +23,6 @@ using BusinessLogic.DataAccess.Security;
 using BusinessLogic.Events;
 using BusinessLogic.Events.Interfaces;
 using BusinessLogic.EventTracking;
-using BusinessLogic.Exceptions;
 using BusinessLogic.Logic;
 using BusinessLogic.Logic.Champions;
 using BusinessLogic.Logic.Nemeses;
@@ -36,14 +35,20 @@ using BusinessLogic.Models.PlayedGames;
 using BusinessLogic.Models.User;
 using NUnit.Framework;
 using Rhino.Mocks;
-using Shouldly;
-using StructureMap.AutoMocking;
 
 namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameSaverTests
 {
     [TestFixture]
     public class CreatePlayedGameTests : PlayedGameSaverTestBase
     {
+        [SetUp]
+        public void SetUp()
+        {
+            autoMocker.Get<IDataContext>()
+                .Stub(s => s.Save(Arg<PlayedGame>.Is.Anything, Arg<ApplicationUser>.Is.Anything))
+                .Return(null)
+                .WhenCalled(a => a.ReturnValue = a.Arguments.First());
+        }
         [Test]
         public void ItSavesAPlayedGameIfThereIsAGameDefinition()
         {
