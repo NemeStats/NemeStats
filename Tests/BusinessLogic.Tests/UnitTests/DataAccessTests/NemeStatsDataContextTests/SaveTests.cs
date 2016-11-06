@@ -44,7 +44,7 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.NemeStatsDataContextTest
         {
             Exception expectedException = new ArgumentNullException("currentUser");
 
-            Exception actualException = Assert.Throws<ArgumentNullException>(() => dataContext.Save<GamingGroup>(new GamingGroup(), null));
+            Exception actualException = Assert.Throws<ArgumentNullException>(() => dataContext.Save(new GamingGroup(), null));
 
             Assert.AreEqual(expectedException.Message, actualException.Message);
         }
@@ -52,37 +52,55 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.NemeStatsDataContextTest
         [Test]
         public void ItValidatesThatTheCurrentUserHasAccessToSaveTheEntityInOneOfTheirGamingGroups()
         {
-            var securedEntityValidator = MockRepository.GenerateMock<ISecuredEntityValidator<EntityWithTechnicalKey>>();
-            securedEntityValidatorFactory.Expect(mock => mock.MakeSecuredEntityValidator<EntityWithTechnicalKey>(dataContext))
+            //--arrange
+            entityWithGamingGroup.Expect(mock => mock.AlreadyInDatabase()).Return(true);
+
+            var securedEntityValidator = MockRepository.GenerateMock<ISecuredEntityValidator>();
+            securedEntityValidatorFactory.Expect(mock => mock.MakeSecuredEntityValidator<IEntityWithTechnicalKey>(dataContext))
                 .IgnoreArguments()
                 .Return(securedEntityValidator);
-            securedEntityValidator.Expect(mock => mock.ValidateAccess(
-                entityWithGamingGroup, 
-                currentUser,
-                NemeStatsDataContext.UNKNOWN_ENTITY_ID))
-                .Throw(new UnauthorizedAccessException());
-            try
-            {
-                dataContext.Save<EntityWithTechnicalKey>(entityWithGamingGroup, currentUser);
-            }
-            catch (UnauthorizedAccessException) { }
+            dataContext.Expect(mock => mock.AddOrInsertOverride(Arg<IEntityWithTechnicalKey>.Is.Anything)).Return(entityWithGamingGroup);
 
-            securedEntityValidator.VerifyAllExpectations();
+            //--act
+            dataContext.Save(entityWithGamingGroup, currentUser);
+
+            //--assert
+            securedEntityValidator.AssertWasCalled(mock => mock.ValidateAccess<IEntityWithTechnicalKey>(entityWithGamingGroup.GetIdAsObject(), currentUser));
+        }
+
+        [Test]
+        public void ItDoesntBotherValidatingTheEntityIfItIsNew()
+        {
+            //--arrange
+            dataContext.Expect(mock => mock.AddOrInsertOverride(Arg<IEntityWithTechnicalKey>.Is.Anything)).Return(entityWithGamingGroup);
+            entityWithGamingGroup.Expect(mock => mock.AlreadyInDatabase()).Return(false);
+
+            //--act
+            dataContext.Save(entityWithGamingGroup, currentUser);
+
+            //--assert
+            securedEntityValidatorFactory.AssertWasNotCalled(mock => mock.MakeSecuredEntityValidator<IEntityWithTechnicalKey>(Arg<IDataContext>.Is.Anything));
         }
 
         [Test]
         public void ItAddsOrSavesTheEntity()
         {
+            //--arrange
             entityWithGamingGroup.Expect(mock => mock.AlreadyInDatabase())
                 .Repeat.Once()
                 .Return(true);
-            dataContext.Expect(mock => mock.AddOrInsertOverride<EntityWithTechnicalKey>(entityWithGamingGroup))
+            dataContext.Expect(mock => mock.AddOrInsertOverride(entityWithGamingGroup))
                 .Repeat.Once()
                 .Return(entityWithGamingGroup);
 
-            dataContext.Save<EntityWithTechnicalKey>(entityWithGamingGroup, currentUser);
+            securedEntityValidatorFactory.Expect(mock => mock.MakeSecuredEntityValidator<IEntityWithTechnicalKey>(dataContext))
+                .Return(MockRepository.GenerateMock<ISecuredEntityValidator>());
 
-            dataContext.AssertWasCalled(mock => mock.AddOrInsertOverride<EntityWithTechnicalKey>(entityWithGamingGroup));
+            //--act
+            dataContext.Save(entityWithGamingGroup, currentUser);
+
+            //--assert
+            dataContext.AssertWasCalled(mock => mock.AddOrInsertOverride(entityWithGamingGroup));
         }
 
         [Test]
@@ -90,11 +108,11 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.NemeStatsDataContextTest
         {
             var gameDefinition = new GameDefinition();
 
-            var securedEntityValidator = MockRepository.GenerateMock<ISecuredEntityValidator<GameDefinition>>();
+            var securedEntityValidator = MockRepository.GenerateMock<ISecuredEntityValidator>();
             securedEntityValidatorFactory.Expect(mock => mock.MakeSecuredEntityValidator<GameDefinition>(dataContext))
                 .IgnoreArguments()
                 .Return(securedEntityValidator);
-            securedEntityValidator.Expect(mock => mock.ValidateAccess(null, null, null)).IgnoreArguments();
+            securedEntityValidator.Expect(mock => mock.ValidateAccess<GameDefinition>(null, null)).IgnoreArguments();
 
             dataContext.Expect(mock => mock.AddOrInsertOverride(gameDefinition))
                 .Repeat.Once()

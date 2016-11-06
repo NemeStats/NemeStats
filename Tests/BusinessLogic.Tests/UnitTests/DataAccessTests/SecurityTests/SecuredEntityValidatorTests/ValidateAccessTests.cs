@@ -32,85 +32,74 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.SecurityTests.SecuredEnt
     [TestFixture]
     public class ValidateAccessTests
     {
-        private RhinoAutoMocker<SecuredEntityValidator<SecuredEntityWithTechnicalKey>> _autoMocker; 
-        protected SecuredEntityValidator<object> securedEntityValidatorForEntityThatIsNotSecured;
-        protected SecuredEntityWithTechnicalKey securedEntity;
-        protected ApplicationUser currentUser;
-        protected int securedEntityGamingGroupId = 1;
-        protected int securedEntityId = 9;
+        private RhinoAutoMocker<SecuredEntityValidator> _autoMocker;
+        private SecuredEntityValidator _securedEntityValidatorForEntityThatIsNotSecured;
+        private GameDefinition _securedEntity;
+        private ApplicationUser _currentUser;
+        private int _securedEntityGamingGroupId = 1;
+        private int _securedEntityId = 9;
 
         [SetUp]
         public void SetUp()
         {
-            _autoMocker = new RhinoAutoMocker<SecuredEntityValidator<SecuredEntityWithTechnicalKey>>();
-            securedEntityValidatorForEntityThatIsNotSecured = new SecuredEntityValidator<object>(_autoMocker.Get<IDataContext>());
-            securedEntity = MockRepository.GenerateMock<SecuredEntityWithTechnicalKey>();
-            currentUser = new ApplicationUser();
+            _autoMocker = new RhinoAutoMocker<SecuredEntityValidator>();
+            _securedEntityValidatorForEntityThatIsNotSecured = new SecuredEntityValidator(_autoMocker.Get<IDataContext>());
+            _securedEntity = new GameDefinition
+            {
+                Id = _securedEntityId,
+                GamingGroupId = _securedEntityGamingGroupId
+            };
+            _currentUser = new ApplicationUser();
 
-            securedEntity.Expect(mock => mock.GamingGroupId)
-                 .Repeat.Any()
-                 .Return(securedEntityGamingGroupId);
+            _autoMocker.Get<IDataContext>().Expect(mock => mock.FindById<GameDefinition>(_securedEntityId))
+                .Return(_securedEntity);
         }
 
         [Test]
         public void ItThrowsAnUnauthorizedAccessExceptionIfTheUserDoesNotHaveAccessToTheGamingGroup()
         {
-            currentUser.CurrentGamingGroupId = 999999;
+            _currentUser.CurrentGamingGroupId = 999999;
             
-            var expectedException = new UnauthorizedEntityAccessException(currentUser.Id,
-                typeof(SecuredEntityWithTechnicalKey),
-                string.Empty);
+            var expectedException = new UnauthorizedEntityAccessException(_currentUser.Id,
+                _securedEntity.GetType(),
+                _securedEntityId);
             var userGamingGroupQueryable = new List<UserGamingGroup>
             {
                 new UserGamingGroup
                 {
-                    GamingGroupId = securedEntity.GamingGroupId - 1,
-                    ApplicationUserId = currentUser.Id
+                    GamingGroupId = _securedEntity.GamingGroupId - 1,
+                    ApplicationUserId = _currentUser.Id
                 },
                 new UserGamingGroup
                 {
-                    GamingGroupId = securedEntity.GamingGroupId,
-                    ApplicationUserId = currentUser.Id + "something to make it not hit"
+                    GamingGroupId = _securedEntity.GamingGroupId,
+                    ApplicationUserId = _currentUser.Id + "something to make it not hit"
                 }
             }.AsQueryable();
             _autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<UserGamingGroup>())
                        .Return(userGamingGroupQueryable);
 
             var exception = Assert.Throws<UnauthorizedEntityAccessException>(
-                () => _autoMocker.ClassUnderTest.ValidateAccess(securedEntity, currentUser, string.Empty));
+                () => _autoMocker.ClassUnderTest.ValidateAccess<GameDefinition>(_securedEntity.Id, _currentUser));
 
             Assert.AreEqual(expectedException.Message, exception.Message);
         }
 
         [Test]
-        public void ItDoesNotThrowAnExceptionIfTheEntityIsNotASecuredEntityWithTechnicalKey()
-        {
-            securedEntityValidatorForEntityThatIsNotSecured.ValidateAccess(
-                "some object that doesnt extend SecuredEntityWithTechnicalKey", 
-                currentUser,
-                string.Empty);
-        }
-
-        [Test]
         public void ItDoesNotThrowAnExceptionIfTheEntityDoesNotHaveAGamingGroupIdSet()
         {
-            currentUser.CurrentGamingGroupId = 50;
+            _currentUser.CurrentGamingGroupId = 50;
+            _securedEntity.GamingGroupId = 0;
 
-            securedEntityValidatorForEntityThatIsNotSecured.ValidateAccess(
-                new Player(),
-                currentUser,
-                string.Empty);
+            _securedEntityValidatorForEntityThatIsNotSecured.ValidateAccess<GameDefinition>(_securedEntityId, _currentUser);
         }
 
         [Test]
         public void ItDoesNotThrowAnExceptionIfTheUsersCurrentGamingGroupIsThatOfTheSecuredEntity()
         {
-            currentUser.CurrentGamingGroupId = securedEntity.GamingGroupId;
+            _currentUser.CurrentGamingGroupId = _securedEntity.GamingGroupId;
 
-            securedEntityValidatorForEntityThatIsNotSecured.ValidateAccess(
-                securedEntity,
-                currentUser,
-                string.Empty);
+            _securedEntityValidatorForEntityThatIsNotSecured.ValidateAccess<GameDefinition>(_securedEntity.Id, _currentUser);
         }
 
         [Test]
@@ -120,27 +109,22 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.SecurityTests.SecuredEnt
             {
                 new UserGamingGroup
                 {
-                    GamingGroupId = securedEntity.GamingGroupId,
-                    ApplicationUserId = currentUser.Id
+                    GamingGroupId = _securedEntity.GamingGroupId,
+                    ApplicationUserId = _currentUser.Id
                 }
             }.AsQueryable();
             _autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<UserGamingGroup>())
                        .Return(userGamingGroupQueryable);
 
-            securedEntityValidatorForEntityThatIsNotSecured.ValidateAccess(
-                securedEntity,
-                currentUser,
-                string.Empty);
+            _securedEntityValidatorForEntityThatIsNotSecured.ValidateAccess<GameDefinition>(_securedEntity.Id, _currentUser);
+
         }
 
         [Test]
         public void ItThrowsAnArgumentNullExceptionIfTheCurrentUserIsNullAndTheEntityIsSecured()
         {
             Assert.Throws<ArgumentNullException>(
-                () => _autoMocker.ClassUnderTest.ValidateAccess(
-                    securedEntity, 
-                    null,                    
-                    string.Empty));
+                () => _autoMocker.ClassUnderTest.ValidateAccess<GameDefinition>(_securedEntity.Id, null));
         }
     }
 }

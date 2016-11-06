@@ -16,13 +16,11 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 using BusinessLogic.Models.User;
-using System;
-using System.Linq;
 
 namespace BusinessLogic.DataAccess.Security
 {
-    public interface ISecuredEntityValidator<in TEntity> where TEntity : class
+    public interface ISecuredEntityValidator
     {
-        void ValidateAccess(TEntity entity, ApplicationUser currentUser, object entityId);
+        TEntity ValidateAccess<TEntity>(object primaryKeyValue, ApplicationUser currentUser) where TEntity : class, IEntityWithTechnicalKey;
     }
 }

@@ -19,7 +19,7 @@ using System.Linq;
 
 namespace BusinessLogic.DataAccess
 {
-    public abstract class EntityWithTechnicalKey<T> : EntityWithTechnicalKey, ISingleColumnTechnicalKey<T>
+    public abstract class EntityWithTechnicalKey<T> : IEntityWithTechnicalKey, ISingleColumnTechnicalKey<T>
     {
         public abstract T Id { get; set; }
 
@@ -32,10 +32,16 @@ namespace BusinessLogic.DataAccess
 
             return !Id.Equals(default(T));
         }
+
+        public object GetIdAsObject()
+        {
+            return Id;
+        }
     }
 
-    public interface EntityWithTechnicalKey
+    public interface IEntityWithTechnicalKey
     {
         bool AlreadyInDatabase();
+        object GetIdAsObject();
     }
 }

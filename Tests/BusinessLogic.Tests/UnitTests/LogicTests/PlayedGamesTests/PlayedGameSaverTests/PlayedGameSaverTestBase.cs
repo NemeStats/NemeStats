@@ -1,5 +1,5 @@
-﻿using System.Linq;
-using BusinessLogic.DataAccess;
+﻿using BusinessLogic.DataAccess;
+using BusinessLogic.DataAccess.Security;
 using BusinessLogic.Logic.PlayedGames;
 using BusinessLogic.Models;
 using BusinessLogic.Models.User;
@@ -36,8 +36,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameSa
                 GamingGroupId = GAMING_GROUP_ID,
                 Id = 9598
             };
-            autoMocker.Get<IDataContext>().Expect(mock => mock.FindById<GameDefinition>(gameDefinition.Id))
-                .Return(gameDefinition);
+
+            autoMocker.Get<ISecuredEntityValidator>().Expect(mock => mock.ValidateAccess<GameDefinition>(Arg<int>.Is.Anything, Arg<ApplicationUser>.Is.Anything)).Return(gameDefinition);
 
             existingPlayerWithMatchingGamingGroup = new Player
             {

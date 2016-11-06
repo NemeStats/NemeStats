@@ -187,12 +187,14 @@
     <Compile Include="DataAccess\Repositories\ChampionRepository.cs" />
     <Compile Include="DataAccess\Repositories\IChampionRepository.cs" />
     <Compile Include="DataAccess\SecuredEntityWithTechnicalKey.cs" />
+    <Compile Include="DataAccess\Security\GenericSecuredEntityValidator.cs" />
+    <Compile Include="DataAccess\Security\IGenericSecuredEntityValidator.cs" />
     <Compile Include="DataAccess\Security\ISecuredEntityValidator.cs" />
-    <Compile Include="DataAccess\Security\SecuredEntityValidatorFactory.cs" />
     <Compile Include="DataAccess\Security\SecuredEntityValidator.cs" />
     <Compile Include="DataAccess\ISingleColumnTechnicalKey.cs" />
     <Compile Include="DataAccess\Repositories\IPlayerRepository.cs" />
     <Compile Include="DataAccess\Repositories\EntityFrameworkPlayerRepository.cs" />
+    <Compile Include="DataAccess\Security\SecuredEntityValidatorFactory.cs" />
     <Compile Include="Events\HandlerFactory\AchievementFactory.cs" />
     <Compile Include="Events\HandlerFactory\BusinessLogicEventsHandlerFactory.cs" />
     <Compile Include="Events\HandlerFactory\BusinessLogicEventBus.cs" />

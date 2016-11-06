@@ -46,9 +46,7 @@ namespace BusinessLogic.Logic.PlayedGames
         private readonly INemeStatsEventTracker _playedGameTracker;
         private readonly INemesisRecalculator _nemesisRecalculator;
         private readonly IChampionRecalculator _championRecalculator;
-        private readonly ISecuredEntityValidator<Player> _securedEntityValidatorForPlayer;
-        private readonly ISecuredEntityValidator<GameDefinition> _securedEntityValidatorForGameDefinition;
-        private readonly ISecuredEntityValidator<PlayedGame> _securedEntityValidatorForPlayedGame;
+        private readonly ISecuredEntityValidator _securedEntityValidator;
         private readonly IPointsCalculator _pointsCalculator;
         private readonly IApplicationLinker _applicationLinker;
 
@@ -57,9 +55,7 @@ namespace BusinessLogic.Logic.PlayedGames
             INemeStatsEventTracker playedGameTracker,
             INemesisRecalculator nemesisRecalculator,
             IChampionRecalculator championRecalculator,
-            ISecuredEntityValidator<Player> securedEntityValidatorForPlayer,
-            ISecuredEntityValidator<GameDefinition> securedEntityValidatorForGameDefinition,
-            ISecuredEntityValidator<PlayedGame> securedEntityValidatorForPlayedGame,
+            ISecuredEntityValidator securedEntityValidator,
             IPointsCalculator pointsCalculator,
             IBusinessLogicEventBus eventBus, 
             ILinkedPlayedGameValidator linkedPlayedGameValidator, IApplicationLinker applicationLinker) : base(eventBus)
@@ -68,18 +64,21 @@ namespace BusinessLogic.Logic.PlayedGames
             _playedGameTracker = playedGameTracker;
             _nemesisRecalculator = nemesisRecalculator;
             _championRecalculator = championRecalculator;
-            _securedEntityValidatorForPlayer = securedEntityValidatorForPlayer;
-            _securedEntityValidatorForGameDefinition = securedEntityValidatorForGameDefinition;
+            _securedEntityValidator = securedEntityValidator;
             _pointsCalculator = pointsCalculator;
             _linkedPlayedGameValidator = linkedPlayedGameValidator;
             _applicationLinker = applicationLinker;
-            _securedEntityValidatorForPlayedGame = securedEntityValidatorForPlayedGame;
         }
 
         //TODO need to have validation logic here (or on PlayedGame similar to what is on NewlyCompletedGame)
         public PlayedGame CreatePlayedGame(NewlyCompletedGame newlyCompletedGame, TransactionSource transactionSource, ApplicationUser currentUser)
         {
-            var gameDefinition = ValidateAccessToGameDefinition(newlyCompletedGame.GameDefinitionId, currentUser);
+            if (newlyCompletedGame.GamingGroupId.HasValue && newlyCompletedGame.GamingGroupId != currentUser.CurrentGamingGroupId)
+            {
+                _securedEntityValidator.ValidateAccess<GamingGroup>(newlyCompletedGame.GamingGroupId.Value, currentUser);
+            }
+
+            var gameDefinition = _securedEntityValidator.ValidateAccess<GameDefinition>(newlyCompletedGame.GameDefinitionId, currentUser);
 
             _linkedPlayedGameValidator.Validate(newlyCompletedGame);
 
@@ -104,13 +103,6 @@ namespace BusinessLogic.Logic.PlayedGames
             return playedGame;
         }
 
-        internal virtual GameDefinition ValidateAccessToGameDefinition(int gameDefinitionId, ApplicationUser currentUser)
-        {
-            var gameDefinition = _dataContext.FindById<GameDefinition>(gameDefinitionId);
-            _securedEntityValidatorForGameDefinition.ValidateAccess(gameDefinition, currentUser, gameDefinitionId);
-            return gameDefinition;
-        }
-
         internal virtual void ValidateAccessToPlayers(IEnumerable<PlayerRank> playerRanks, int gamingGroupId, ApplicationUser currentUser)
         {
             foreach (var playerRank in playerRanks)
@@ -120,7 +112,7 @@ namespace BusinessLogic.Logic.PlayedGames
                 {
                     throw new PlayerNotInGamingGroupException(player.Id, gamingGroupId);
                 }
-                _securedEntityValidatorForPlayer.ValidateAccess(player, currentUser, player.Id);
+                _securedEntityValidator.ValidateAccess<Player>(player.Id, currentUser);
             }
         }
 
@@ -213,6 +205,13 @@ namespace BusinessLogic.Logic.PlayedGames
 
         public PlayedGame UpdatePlayedGame(UpdatedGame updatedGame, TransactionSource transactionSource, ApplicationUser currentUser)
         {
+            if (updatedGame.GamingGroupId.HasValue)
+            {
+                _securedEntityValidator.ValidateAccess<GamingGroup>(updatedGame.GamingGroupId.Value, currentUser);
+            }
+            _securedEntityValidator.ValidateAccess<PlayedGame>(updatedGame.PlayedGameId, currentUser);
+            _securedEntityValidator.ValidateAccess<GameDefinition>(updatedGame.GameDefinitionId, currentUser);
+
             var playedGameWithStuff = _dataContext.GetQueryable<PlayedGame>()
                 .Where(x => x.Id == updatedGame.PlayedGameId)
                 .Include(x => x.ApplicationLinkages)
@@ -225,11 +224,7 @@ namespace BusinessLogic.Logic.PlayedGames
                 throw new EntityDoesNotExistException(typeof(PlayedGame), updatedGame.PlayedGameId);
             }
 
-            _securedEntityValidatorForPlayedGame.ValidateAccess(playedGameWithStuff, currentUser, playedGameWithStuff.Id);
-
             var gamingGroupId = updatedGame.GamingGroupId ?? playedGameWithStuff.GamingGroupId;
-
-            ValidateAccessToGameDefinition(updatedGame.GameDefinitionId, currentUser);
 
             ValidateAccessToPlayers(updatedGame.PlayerRanks, gamingGroupId, currentUser);
             

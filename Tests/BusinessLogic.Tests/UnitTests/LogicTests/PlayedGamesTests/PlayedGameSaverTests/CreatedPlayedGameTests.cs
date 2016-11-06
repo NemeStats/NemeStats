@@ -49,6 +49,49 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameSa
                 .Return(null)
                 .WhenCalled(a => a.ReturnValue = a.Arguments.First());
         }
+
+        [Test]
+        public void It_Validates_The_User_Has_Access_To_The_Specified_Gaming_Group_Id()
+        {
+            //--arrange
+            var newlyCompletedPlayedGame = CreateValidNewlyCompletedGame();
+            newlyCompletedPlayedGame.GamingGroupId = GAMING_GROUP_ID;
+            currentUser.CurrentGamingGroupId = 42;
+
+            //--act
+            autoMocker.ClassUnderTest.CreatePlayedGame(newlyCompletedPlayedGame, TransactionSource.WebApplication, currentUser);
+
+            //--assert
+            autoMocker.Get<ISecuredEntityValidator>().AssertWasCalled(mock => mock.ValidateAccess<GamingGroup>(newlyCompletedPlayedGame.GamingGroupId.Value, currentUser));
+        }
+
+        [Test]
+        public void It_Doesnt_Bother_Validating_The_Gaming_Group_If_It_Wasnt_Explicitly_Set()
+        {
+            //--arrange
+            var newlyCompletedPlayedGame = CreateValidNewlyCompletedGame();
+
+            //--act
+            autoMocker.ClassUnderTest.CreatePlayedGame(newlyCompletedPlayedGame, TransactionSource.WebApplication, currentUser);
+
+            //--assert
+            autoMocker.Get<ISecuredEntityValidator>().AssertWasNotCalled(mock => mock.ValidateAccess<GamingGroup>(Arg<int>.Is.Anything, Arg<ApplicationUser>.Is.Anything));
+        }
+
+        [Test]
+        public void It_Doesnt_Bother_Validating_The_Gaming_Group_If_It_Matches_The_Current_Users()
+        {
+            //--arrange
+            var newlyCompletedPlayedGame = CreateValidNewlyCompletedGame();
+            newlyCompletedPlayedGame.GamingGroupId = currentUser.CurrentGamingGroupId;
+
+            //--act
+            autoMocker.ClassUnderTest.CreatePlayedGame(newlyCompletedPlayedGame, TransactionSource.WebApplication, currentUser);
+
+            //--assert
+            autoMocker.Get<ISecuredEntityValidator>().AssertWasNotCalled(mock => mock.ValidateAccess<GamingGroup>(Arg<int>.Is.Anything, Arg<ApplicationUser>.Is.Anything));
+        }
+
         [Test]
         public void ItSavesAPlayedGameIfThereIsAGameDefinition()
         {
@@ -409,10 +452,9 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameSa
 
             autoMocker.ClassUnderTest.CreatePlayedGame(newlyCompletedGame, TransactionSource.WebApplication, currentUser);
 
-            autoMocker.Get<ISecuredEntityValidator<Player>>().AssertWasCalled(mock => mock.ValidateAccess(
-                existingPlayerWithMatchingGamingGroup,
-                currentUser,
-                existingPlayerWithMatchingGamingGroup.Id));
+            autoMocker.Get<ISecuredEntityValidator>().AssertWasCalled(mock => mock.ValidateAccess<Player>(
+                existingPlayerWithMatchingGamingGroup.Id,
+                currentUser));
         }
 
         [Test]
@@ -427,10 +469,9 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameSa
 
             autoMocker.ClassUnderTest.CreatePlayedGame(newlyCompletedGame, TransactionSource.WebApplication, currentUser);
 
-            autoMocker.Get<ISecuredEntityValidator<GameDefinition>>().AssertWasCalled(mock => mock.ValidateAccess(
-                gameDefinition,
-                currentUser,
-                gameDefinition.Id));
+            autoMocker.Get<ISecuredEntityValidator>().AssertWasCalled(mock => mock.ValidateAccess<GameDefinition>(
+                gameDefinition.Id,
+                currentUser));
         }
 
         [Test]

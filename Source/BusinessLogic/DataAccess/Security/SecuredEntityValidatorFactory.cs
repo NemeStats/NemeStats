@@ -20,11 +20,9 @@ namespace BusinessLogic.DataAccess.Security
 {
     public class SecuredEntityValidatorFactory
     {
-        public virtual ISecuredEntityValidator<TEntity> MakeSecuredEntityValidator<TEntity>(IDataContext dataContext) where TEntity : class
+        public virtual ISecuredEntityValidator MakeSecuredEntityValidator<TEntity>(IDataContext dataContext) where TEntity : class
         {
-            //TODO this feels goofy. Should I call StructureMap directly here?
-            //TODO possibly dish out a singleton since there  only needs to exist one of these per TEntity
-            return new SecuredEntityValidator<TEntity>(dataContext);
+            return new SecuredEntityValidator(dataContext);
         }
     }
 }

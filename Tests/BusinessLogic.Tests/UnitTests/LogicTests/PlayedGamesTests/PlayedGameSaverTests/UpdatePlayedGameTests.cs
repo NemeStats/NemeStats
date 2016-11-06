@@ -75,10 +75,11 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameSa
 
             autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<PlayedGame>()).Return(playedGameQueryable);
 
-            autoMocker.ClassUnderTest.Expect(
-                partialMock =>
-                    partialMock.ValidateAccessToGameDefinition(Arg<int>.Is.Anything,
-                        Arg<ApplicationUser>.Is.Anything))
+            autoMocker.Get<ISecuredEntityValidator>().Expect(mock => mock.ValidateAccess<GamingGroup>(Arg<int>.Is.Anything, Arg<ApplicationUser>.Is.Anything))
+                .Return(new GamingGroup());
+            autoMocker.Get<ISecuredEntityValidator>().Expect(mock => mock.ValidateAccess<PlayedGame>(Arg<int>.Is.Anything, Arg<ApplicationUser>.Is.Anything))
+                .Return(new PlayedGame());
+            autoMocker.Get<ISecuredEntityValidator>().Expect(mock => mock.ValidateAccess<GameDefinition>(Arg<int>.Is.Anything, Arg<ApplicationUser>.Is.Anything))
                 .Return(new GameDefinition());
 
             autoMocker.ClassUnderTest.Expect(partialMock => partialMock.ValidateAccessToPlayers(
@@ -163,8 +164,30 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameSa
             autoMocker.ClassUnderTest.UpdatePlayedGame(updatedGame, TransactionSource.RestApi, currentUser);
 
             //--assert
-            autoMocker.Get<ISecuredEntityValidator<PlayedGame>>()
-                .AssertWasCalled(mock => mock.ValidateAccess(_existingPlayedGame, currentUser, _existingPlayedGame.Id));
+            autoMocker.Get<ISecuredEntityValidator>()
+                .AssertWasCalled(mock => mock.ValidateAccess<PlayedGame>(_existingPlayedGame.Id, currentUser));
+        }
+
+        [Test]
+        public void It_Validates_Access_To_The_Gaming_Group()
+        {
+            //--arrange
+            SetupExpectationsForExistingPlayedGame();
+
+            int differentGameDefinitionId = _existingGameDefinitionId + 1;
+
+            var updatedGame = new UpdatedGame
+            {
+                PlayedGameId = _existingPlayedGameId,
+                GameDefinitionId = differentGameDefinitionId,
+                GamingGroupId = 42
+            };
+
+            //--act
+            autoMocker.ClassUnderTest.UpdatePlayedGame(updatedGame, TransactionSource.RestApi, currentUser);
+
+            //--assert
+            autoMocker.Get<ISecuredEntityValidator>().AssertWasCalled(mock => mock.ValidateAccess<GamingGroup>(updatedGame.GamingGroupId.Value, currentUser));
         }
 
         [Test]
@@ -185,7 +208,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameSa
             autoMocker.ClassUnderTest.UpdatePlayedGame(updatedGame, TransactionSource.RestApi, currentUser);
 
             //--assert
-            autoMocker.ClassUnderTest.AssertWasCalled(partialMock => partialMock.ValidateAccessToGameDefinition(updatedGame.GameDefinitionId, currentUser));
+            autoMocker.Get<ISecuredEntityValidator>().AssertWasCalled(mock => mock.ValidateAccess<GameDefinition>(updatedGame.GameDefinitionId, currentUser));
         }
 
         public void It_Validates_Access_To_The_Players_In_The_Game()
