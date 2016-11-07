@@ -29,7 +29,7 @@ using System.Threading.Tasks;
 
 namespace BusinessLogic.Models.User
 {
-    public class ApplicationUser : IdentityUser, ISingleColumnTechnicalKey<string>, EntityWithTechnicalKey
+    public class ApplicationUser : IdentityUser, ISingleColumnTechnicalKey<string>, IEntityWithTechnicalKey
     {
         public ApplicationUser()
         {
@@ -68,6 +68,11 @@ namespace BusinessLogic.Models.User
         public bool AlreadyInDatabase()
         {
             return Id != null;
+        }
+
+        public object GetIdAsObject()
+        {
+            return Id;
         }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(ApplicationUserManager manager)

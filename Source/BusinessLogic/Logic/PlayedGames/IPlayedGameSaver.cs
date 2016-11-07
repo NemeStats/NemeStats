@@ -15,12 +15,16 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
+using BusinessLogic.Models;
+using BusinessLogic.Models.Games;
 using BusinessLogic.Models.User;
 
-namespace BusinessLogic.DataAccess.Security
+namespace BusinessLogic.Logic.PlayedGames
 {
-    public interface ISecuredEntityValidator
+    public interface IPlayedGameSaver
     {
-        TEntity ValidateAccess<TEntity>(object primaryKeyValue, ApplicationUser currentUser) where TEntity : class, IEntityWithTechnicalKey;
+        PlayedGame CreatePlayedGame(NewlyCompletedGame newlyCompletedGame, TransactionSource transactionSource, ApplicationUser currentUser);
+
+        PlayedGame UpdatePlayedGame(UpdatedGame updatedGame, TransactionSource transactionSource, ApplicationUser currentUser);
     }
 }

@@ -31,6 +31,7 @@ namespace BusinessLogic.Models
         {
             DateCreated = DateTime.UtcNow;
             DatePlayed = DateTime.UtcNow;
+            DateUpdated = DateTime.UtcNow;
         }
 
         public override int Id { get; set; }
@@ -41,6 +42,8 @@ namespace BusinessLogic.Models
         public int NumberOfPlayers { get; set; }
         public DateTime DatePlayed { get; set; }
         public DateTime DateCreated { get; set; }
+        public DateTime DateUpdated { get; set; }
+
         public string CreatedByApplicationUserId { get; set; }
         public string Notes { get; set; }
 

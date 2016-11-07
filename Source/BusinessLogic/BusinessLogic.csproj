@@ -187,12 +187,14 @@
     <Compile Include="DataAccess\Repositories\ChampionRepository.cs" />
     <Compile Include="DataAccess\Repositories\IChampionRepository.cs" />
     <Compile Include="DataAccess\SecuredEntityWithTechnicalKey.cs" />
+    <Compile Include="DataAccess\Security\GenericSecuredEntityValidator.cs" />
+    <Compile Include="DataAccess\Security\IGenericSecuredEntityValidator.cs" />
     <Compile Include="DataAccess\Security\ISecuredEntityValidator.cs" />
-    <Compile Include="DataAccess\Security\SecuredEntityValidatorFactory.cs" />
     <Compile Include="DataAccess\Security\SecuredEntityValidator.cs" />
     <Compile Include="DataAccess\ISingleColumnTechnicalKey.cs" />
     <Compile Include="DataAccess\Repositories\IPlayerRepository.cs" />
     <Compile Include="DataAccess\Repositories\EntityFrameworkPlayerRepository.cs" />
+    <Compile Include="DataAccess\Security\SecuredEntityValidatorFactory.cs" />
     <Compile Include="Events\HandlerFactory\AchievementFactory.cs" />
     <Compile Include="Events\HandlerFactory\BusinessLogicEventsHandlerFactory.cs" />
     <Compile Include="Events\HandlerFactory\BusinessLogicEventBus.cs" />
@@ -403,10 +405,16 @@
     <Compile Include="Migrations\201611022341188_BGG_Category_And_Mechanics_Unique_Indexes.Designer.cs">
       <DependentUpon>201611022341188_BGG_Category_And_Mechanics_Unique_Indexes.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201611050145082_AddPlayedGameDateUpdated.cs" />
+    <Compile Include="Migrations\201611050145082_AddPlayedGameDateUpdated.Designer.cs">
+      <DependentUpon>201611050145082_AddPlayedGameDateUpdated.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Achievements\AchievementLevel.cs" />
     <Compile Include="Models\Achievements\AchievementId.cs" />
     <Compile Include="Models\Games\BoardGameGeekGameCategory.cs" />
     <Compile Include="Models\Games\BoardGameGeekMechanic.cs" />
+    <Compile Include="Models\Games\RecordedGameBase.cs" />
+    <Compile Include="Models\Games\UpdatedGame.cs" />
     <Compile Include="Models\PlayedGameApplicationLinkage.cs" />
     <Compile Include="Models\Games\SavePlayedGameRequest.cs" />
     <Compile Include="Models\Games\TrendingGame.cs" />
@@ -451,8 +459,8 @@
     <Compile Include="Logic\GamingGroups\IPendingGamingGroupInvitationRetriever.cs" />
     <Compile Include="Logic\GamingGroups\PendingGamingGroupInvitationRetriever.cs" />
     <Compile Include="Logic\PlayedGames\IPlayedGameDeleter.cs" />
-    <Compile Include="Logic\PlayedGames\IPlayedGameCreator.cs" />
-    <Compile Include="Logic\PlayedGames\PlayedGameCreator.cs" />
+    <Compile Include="Logic\PlayedGames\IPlayedGameSaver.cs" />
+    <Compile Include="Logic\PlayedGames\PlayedGameSaver.cs" />
     <Compile Include="Logic\PlayedGames\IPlayedGameRetriever.cs" />
     <Compile Include="Logic\PlayedGames\PlayedGameDeleter.cs" />
     <Compile Include="Logic\PlayedGames\PlayedGameRetriever.cs" />
@@ -1048,6 +1056,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201611022341188_BGG_Category_And_Mechanics_Unique_Indexes.resx">
       <DependentUpon>201611022341188_BGG_Category_And_Mechanics_Unique_Indexes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201611050145082_AddPlayedGameDateUpdated.resx">
+      <DependentUpon>201611050145082_AddPlayedGameDateUpdated.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

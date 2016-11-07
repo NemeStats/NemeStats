@@ -20,14 +20,13 @@ using BusinessLogic.Models;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System.Data.Entity;
-using System.Linq;
 
 namespace BusinessLogic.Tests.UnitTests.DataAccessTests.NemeStatsDataContextTests
 {
     [TestFixture]
     public class FindByIdTests : NemeStatsDataContextTestBase
     {
-        private ISecuredEntityValidator<GameDefinition> securedEntityValidator;
+        private ISecuredEntityValidator securedEntityValidator;
         private DbSet<GameDefinition> gameDefinitionDbSetMock;
 
         [SetUp]
@@ -39,7 +38,7 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.NemeStatsDataContextTest
                 .Repeat.Once()
                 .Return(gameDefinitionDbSetMock);
 
-            securedEntityValidator = MockRepository.GenerateMock<ISecuredEntityValidator<GameDefinition>>();
+            securedEntityValidator = MockRepository.GenerateMock<ISecuredEntityValidator>();
             securedEntityValidatorFactory.Expect(mock => mock.MakeSecuredEntityValidator<GameDefinition>(dataContext))
                 .Repeat.Once()
                 .Return(securedEntityValidator);

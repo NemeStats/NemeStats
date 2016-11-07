@@ -172,20 +172,18 @@ namespace BusinessLogic.Tests.IntegrationTests
             var nemesisRecalculator = new NemesisRecalculator(dataContext, playerRepository);
             var championRepository = new ChampionRepository(dataContext);
             var championRecalculator = new ChampionRecalculator(dataContext, championRepository);
-            var securedEntityValidatorForPlayers = new SecuredEntityValidator<Player>(dataContext);
-            var securedEntityValidatorForGameDefinition = new SecuredEntityValidator<GameDefinition>(dataContext);
+            var securedEntityValidator = new SecuredEntityValidator(dataContext);
             var weightBonusCalculator = new WeightBonusCalculator(new WeightTierCalculator());
             var pointsCalculator = new PointsCalculator(weightBonusCalculator, new GameDurationBonusCalculator());
             var linkedPlayedGameValidator = new LinkedPlayedGameValidator(dataContext);
             var applicationLinker = new ApplicationLinker(dataContext);
 
-            IPlayedGameCreator playedGameCreator = new PlayedGameCreator(
+            IPlayedGameSaver playedGameSaver = new PlayedGameSaver(
                 dataContext, 
                 playedGameTracker, 
                 nemesisRecalculator, 
                 championRecalculator, 
-                securedEntityValidatorForPlayers,
-                securedEntityValidatorForGameDefinition,
+                securedEntityValidator,
                 pointsCalculator,
                 new FakeEventBus(),
                 linkedPlayedGameValidator,
@@ -193,116 +191,116 @@ namespace BusinessLogic.Tests.IntegrationTests
             
             List<Player> players = new List<Player>() { testPlayer1, testPlayer2 };
             List<int> playerRanks = new List<int>() { 1, 1 };
-            PlayedGame playedGame = CreateTestPlayedGame(testGameDefinition.Id, players, playerRanks, testUserWithDefaultGamingGroup, playedGameCreator);
+            PlayedGame playedGame = CreateTestPlayedGame(testGameDefinition.Id, players, playerRanks, testUserWithDefaultGamingGroup, playedGameSaver);
             testPlayedGames.Add(playedGame);
 
             players = new List<Player>() { testPlayer1, testPlayer2, testPlayer3 };
             playerRanks = new List<int>() { 1, 2, 3 };
-            playedGame = CreateTestPlayedGame(testGameDefinition.Id, players, playerRanks, testUserWithDefaultGamingGroup, playedGameCreator);
+            playedGame = CreateTestPlayedGame(testGameDefinition.Id, players, playerRanks, testUserWithDefaultGamingGroup, playedGameSaver);
             testPlayedGames.Add(playedGame);
 
             players = new List<Player>() { testPlayer1, testPlayer3, testPlayer2 };
             playerRanks = new List<int>() { 1, 2, 3 };
-            playedGame = CreateTestPlayedGame(testGameDefinition.Id, players, playerRanks, testUserWithDefaultGamingGroup, playedGameCreator);
+            playedGame = CreateTestPlayedGame(testGameDefinition.Id, players, playerRanks, testUserWithDefaultGamingGroup, playedGameSaver);
             testPlayedGames.Add(playedGame);
 
             players = new List<Player>() { testPlayer3, testPlayer1 };
             playerRanks = new List<int>() { 1, 2 };
-            playedGame = CreateTestPlayedGame(testGameDefinition.Id, players, playerRanks, testUserWithDefaultGamingGroup, playedGameCreator);
+            playedGame = CreateTestPlayedGame(testGameDefinition.Id, players, playerRanks, testUserWithDefaultGamingGroup, playedGameSaver);
             testPlayedGames.Add(playedGame);
 
             //make player4 beat player 1 three times
             players = new List<Player>() { testPlayer4, testPlayer1, testPlayer2, testPlayer3 };
             playerRanks = new List<int>() { 1, 2, 3, 4 };
-            playedGame = CreateTestPlayedGame(testGameDefinition.Id, players, playerRanks, testUserWithDefaultGamingGroup, playedGameCreator);
+            playedGame = CreateTestPlayedGame(testGameDefinition.Id, players, playerRanks, testUserWithDefaultGamingGroup, playedGameSaver);
             testPlayedGames.Add(playedGame);
 
             players = new List<Player>() { testPlayer4, testPlayer1 };
             playerRanks = new List<int>() { 1, 2 };
-            playedGame = CreateTestPlayedGame(testGameDefinition.Id, players, playerRanks, testUserWithDefaultGamingGroup, playedGameCreator);
+            playedGame = CreateTestPlayedGame(testGameDefinition.Id, players, playerRanks, testUserWithDefaultGamingGroup, playedGameSaver);
             testPlayedGames.Add(playedGame);
 
             players = new List<Player>() { testPlayer4, testPlayer1 };
             playerRanks = new List<int>() { 1, 2 };
-            playedGame = CreateTestPlayedGame(testGameDefinition.Id, players, playerRanks, testUserWithDefaultGamingGroup, playedGameCreator);
+            playedGame = CreateTestPlayedGame(testGameDefinition.Id, players, playerRanks, testUserWithDefaultGamingGroup, playedGameSaver);
             testPlayedGames.Add(playedGame);
 
             //--make the inactive player5 beat player1 3 times
             players = new List<Player>() { testPlayer5, testPlayer1 };
             playerRanks = new List<int>() { 1, 2 };
-            playedGame = CreateTestPlayedGame(testGameDefinition.Id, players, playerRanks, testUserWithDefaultGamingGroup, playedGameCreator);
+            playedGame = CreateTestPlayedGame(testGameDefinition.Id, players, playerRanks, testUserWithDefaultGamingGroup, playedGameSaver);
             testPlayedGames.Add(playedGame);
 
             players = new List<Player>() { testPlayer5, testPlayer1 };
             playerRanks = new List<int>() { 1, 2 };
-            playedGame = CreateTestPlayedGame(testGameDefinition.Id, players, playerRanks, testUserWithDefaultGamingGroup, playedGameCreator);
+            playedGame = CreateTestPlayedGame(testGameDefinition.Id, players, playerRanks, testUserWithDefaultGamingGroup, playedGameSaver);
             testPlayedGames.Add(playedGame);
 
             players = new List<Player>() { testPlayer5, testPlayer1 };
             playerRanks = new List<int>() { 1, 2 };
-            playedGame = CreateTestPlayedGame(testGameDefinition.Id, players, playerRanks, testUserWithDefaultGamingGroup, playedGameCreator);
+            playedGame = CreateTestPlayedGame(testGameDefinition.Id, players, playerRanks, testUserWithDefaultGamingGroup, playedGameSaver);
             testPlayedGames.Add(playedGame);
 
             //make player 2 be the only one who beat player 5
             players = new List<Player>() { testPlayer2, testPlayer5 };
             playerRanks = new List<int>() { 1, 2 };
-            playedGame = CreateTestPlayedGame(testGameDefinition.Id, players, playerRanks, testUserWithDefaultGamingGroup, playedGameCreator);
+            playedGame = CreateTestPlayedGame(testGameDefinition.Id, players, playerRanks, testUserWithDefaultGamingGroup, playedGameSaver);
             testPlayedGames.Add(playedGame);
 
             //--create games that have a different GamingGroupId and testPlayer7 being the champion
             players = new List<Player>() { testPlayer7WithOtherGamingGroupId };
             playerRanks = new List<int>() { 1 };
-            playedGame = CreateTestPlayedGame(testGameDefinitionWithOtherGamingGroupId.Id, players, playerRanks, testUserWithOtherGamingGroup, playedGameCreator);
+            playedGame = CreateTestPlayedGame(testGameDefinitionWithOtherGamingGroupId.Id, players, playerRanks, testUserWithOtherGamingGroup, playedGameSaver);
             testPlayedGames.Add(playedGame);
 
             players = new List<Player>() { testPlayer7WithOtherGamingGroupId, testPlayer8WithOtherGamingGroupId };
             playerRanks = new List<int>() { 1, 2 };
-            playedGame = CreateTestPlayedGame(testGameDefinitionWithOtherGamingGroupId.Id, players, playerRanks, testUserWithOtherGamingGroup, playedGameCreator);
+            playedGame = CreateTestPlayedGame(testGameDefinitionWithOtherGamingGroupId.Id, players, playerRanks, testUserWithOtherGamingGroup, playedGameSaver);
             testPlayedGames.Add(playedGame);
 
             players = new List<Player>() { testPlayer7WithOtherGamingGroupId, testPlayer8WithOtherGamingGroupId };
             playerRanks = new List<int>() { 1, 2 };
-            playedGame = CreateTestPlayedGame(testGameDefinitionWithOtherGamingGroupId.Id, players, playerRanks, testUserWithOtherGamingGroup, playedGameCreator);
+            playedGame = CreateTestPlayedGame(testGameDefinitionWithOtherGamingGroupId.Id, players, playerRanks, testUserWithOtherGamingGroup, playedGameSaver);
             testPlayedGames.Add(playedGame);
 
             players = new List<Player>() { testPlayer7WithOtherGamingGroupId, testPlayer8WithOtherGamingGroupId };
             playerRanks = new List<int>() { 1, 2 };
-            playedGame = CreateTestPlayedGame(testGameDefinitionWithOtherGamingGroupId.Id, players, playerRanks, testUserWithOtherGamingGroup, playedGameCreator);
+            playedGame = CreateTestPlayedGame(testGameDefinitionWithOtherGamingGroupId.Id, players, playerRanks, testUserWithOtherGamingGroup, playedGameSaver);
             testPlayedGames.Add(playedGame);
 
             players = new List<Player>() { testPlayer7WithOtherGamingGroupId, testPlayer8WithOtherGamingGroupId };
             playerRanks = new List<int>() { 1, 2 };
-            playedGame = CreateTestPlayedGame(testGameDefinitionWithOtherGamingGroupId.Id, players, playerRanks, testUserWithOtherGamingGroup, playedGameCreator);
+            playedGame = CreateTestPlayedGame(testGameDefinitionWithOtherGamingGroupId.Id, players, playerRanks, testUserWithOtherGamingGroup, playedGameSaver);
             testPlayedGames.Add(playedGame);
 
             players = new List<Player>() { testPlayer8WithOtherGamingGroupId, testPlayer7WithOtherGamingGroupId };
             playerRanks = new List<int>() { 1, 2 };
-            playedGame = CreateTestPlayedGame(testGameDefinitionWithOtherGamingGroupId.Id, players, playerRanks, testUserWithOtherGamingGroup, playedGameCreator);
+            playedGame = CreateTestPlayedGame(testGameDefinitionWithOtherGamingGroupId.Id, players, playerRanks, testUserWithOtherGamingGroup, playedGameSaver);
             testPlayedGames.Add(playedGame);
 
             players = new List<Player>() { testPlayer9UndefeatedWith5Games, testPlayer7WithOtherGamingGroupId };
             playerRanks = new List<int>() { 1, 2 };
-            playedGame = CreateTestPlayedGame(anotherTestGameDefinitionWithOtherGamingGroupId.Id, players, playerRanks, testUserWithOtherGamingGroup, playedGameCreator);
+            playedGame = CreateTestPlayedGame(anotherTestGameDefinitionWithOtherGamingGroupId.Id, players, playerRanks, testUserWithOtherGamingGroup, playedGameSaver);
             testPlayedGames.Add(playedGame);
 
             players = new List<Player>() { testPlayer9UndefeatedWith5Games, testPlayer7WithOtherGamingGroupId };
             playerRanks = new List<int>() { 1, 2 };
-            playedGame = CreateTestPlayedGame(anotherTestGameDefinitionWithOtherGamingGroupId.Id, players, playerRanks, testUserWithOtherGamingGroup, playedGameCreator);
+            playedGame = CreateTestPlayedGame(anotherTestGameDefinitionWithOtherGamingGroupId.Id, players, playerRanks, testUserWithOtherGamingGroup, playedGameSaver);
             testPlayedGames.Add(playedGame);
 
             players = new List<Player>() { testPlayer9UndefeatedWith5Games, testPlayer7WithOtherGamingGroupId };
             playerRanks = new List<int>() { 1, 2 };
-            playedGame = CreateTestPlayedGame(anotherTestGameDefinitionWithOtherGamingGroupId.Id, players, playerRanks, testUserWithOtherGamingGroup, playedGameCreator);
+            playedGame = CreateTestPlayedGame(anotherTestGameDefinitionWithOtherGamingGroupId.Id, players, playerRanks, testUserWithOtherGamingGroup, playedGameSaver);
             testPlayedGames.Add(playedGame);
 
             players = new List<Player>() { testPlayer9UndefeatedWith5Games, testPlayer7WithOtherGamingGroupId };
             playerRanks = new List<int>() { 1, 2 };
-            playedGame = CreateTestPlayedGame(anotherTestGameDefinitionWithOtherGamingGroupId.Id, players, playerRanks, testUserWithOtherGamingGroup, playedGameCreator);
+            playedGame = CreateTestPlayedGame(anotherTestGameDefinitionWithOtherGamingGroupId.Id, players, playerRanks, testUserWithOtherGamingGroup, playedGameSaver);
             testPlayedGames.Add(playedGame);
 
             players = new List<Player>() { testPlayer9UndefeatedWith5Games, testPlayer7WithOtherGamingGroupId };
             playerRanks = new List<int>() { 1, 2 };
-            playedGame = CreateTestPlayedGame(anotherTestGameDefinitionWithOtherGamingGroupId.Id, players, playerRanks, testUserWithOtherGamingGroup, playedGameCreator);
+            playedGame = CreateTestPlayedGame(anotherTestGameDefinitionWithOtherGamingGroupId.Id, players, playerRanks, testUserWithOtherGamingGroup, playedGameSaver);
             testPlayedGames.Add(playedGame);
         }
 
@@ -375,7 +373,7 @@ namespace BusinessLogic.Tests.IntegrationTests
             List<Player> players,
             List<int> correspondingPlayerRanks,
             ApplicationUser currentUser,
-            IPlayedGameCreator playedGameCreator)
+            IPlayedGameSaver playedGameSaver)
         {
             List<PlayerRank> playerRanks = new List<PlayerRank>();
 
@@ -394,7 +392,7 @@ namespace BusinessLogic.Tests.IntegrationTests
                     PlayerRanks = playerRanks,
                 };
 
-            return playedGameCreator.CreatePlayedGame(newlyCompletedGame, TransactionSource.WebApplication, currentUser);
+            return playedGameSaver.CreatePlayedGame(newlyCompletedGame, TransactionSource.WebApplication, currentUser);
         }
 
         private void CleanUpTestData()

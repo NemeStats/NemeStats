@@ -70,7 +70,7 @@ namespace NemeStats.IoC
                 s.RegisterConcreteTypesAgainstTheFirstInterface();
             });
 
-            this.For<IRollbarClient>().Use(new RollbarClient()).Singleton();
+            For<IRollbarClient>().Use(new RollbarClient()).Singleton();
 
             SetupTransientMappings();
 
@@ -103,11 +103,11 @@ namespace NemeStats.IoC
                 .Use<UserStore<ApplicationUser>>();
 
 
-            this.For<IGamingGroupRetriever>().Use<GamingGroupRetriever>();
+            For<IGamingGroupRetriever>().Use<GamingGroupRetriever>();
 
             For<IPendingGamingGroupInvitationRetriever>().Use<PendingGamingGroupInvitationRetriever>();
 
-            For<IPlayedGameCreator>().Use<PlayedGameCreator>();
+            For<IPlayedGameSaver>().Use<PlayedGameSaver>();
 
             For<INemeStatsEventTracker>().Use<UniversalAnalyticsNemeStatsEventTracker>();
 
@@ -154,15 +154,15 @@ namespace NemeStats.IoC
 
             For<IAuthTokenValidator>().Use<AuthTokenValidator>();
 
-            For(typeof(ISecuredEntityValidator<>)).Use(typeof(SecuredEntityValidator<>));
+            For(typeof(ISecuredEntityValidator)).Use(typeof(SecuredEntityValidator));
 
             For<IUserRetriever>().Use<UserRetriever>();
 
             For<IBoardGameGeekGameDefinitionCreator>().Use<BoardGameGeekGameDefinitionCreator>();
 
-            this.For<IBoardGameGeekUserSaver>().Use<BoardGameGeekUserSaver>();
-            this.For<IBoardGameGeekGamesImporter>().Use<BoardGameGeekGamesImporter>();
-            this.For<IBoardGameGeekBatchUpdateJobService>().Use<BoardGameGeekBatchUpdateJobService>();
+            For<IBoardGameGeekUserSaver>().Use<BoardGameGeekUserSaver>();
+            For<IBoardGameGeekGamesImporter>().Use<BoardGameGeekGamesImporter>();
+            For<IBoardGameGeekBatchUpdateJobService>().Use<BoardGameGeekBatchUpdateJobService>();
 
             For<IPointsCalculator>().Use<PointsCalculator>();
             For<IWeightTierCalculator>().Use<WeightTierCalculator>();

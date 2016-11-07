@@ -29,8 +29,8 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.NemeStatsDataContextTest
         protected NemeStatsDataContext dataContext;
         protected NemeStatsDbContext nemeStatsDbContext;
         protected SecuredEntityValidatorFactory securedEntityValidatorFactory;
-        protected EntityWithTechnicalKey entityWithGamingGroupAndTechnicalKey;
-        protected EntityWithTechnicalKey entityWithGamingGroup;
+        protected IEntityWithTechnicalKey entityWithGamingGroupAndTechnicalKey;
+        protected IEntityWithTechnicalKey entityWithGamingGroup;
         protected ApplicationUser currentUser;
 
         [SetUp]
@@ -40,11 +40,11 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.NemeStatsDataContextTest
             securedEntityValidatorFactory = MockRepository.GeneratePartialMock<SecuredEntityValidatorFactory>();
             dataContext = MockRepository.GeneratePartialMock<NemeStatsDataContext>(nemeStatsDbContext, securedEntityValidatorFactory);
            
-            entityWithGamingGroupAndTechnicalKey = MockRepository.GenerateStub<EntityWithTechnicalKey>();
+            entityWithGamingGroupAndTechnicalKey = MockRepository.GenerateStub<IEntityWithTechnicalKey>();
             entityWithGamingGroupAndTechnicalKey.Expect(mock => mock.AlreadyInDatabase())
                 .Repeat.Once()
                 .Return(true);
-            entityWithGamingGroup = MockRepository.GenerateStub<EntityWithTechnicalKey>();
+            entityWithGamingGroup = MockRepository.GenerateStub<IEntityWithTechnicalKey>();
 
             currentUser = new ApplicationUser()
             {

@@ -29,53 +29,56 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.NemeStatsDataContextTest
     [TestFixture]
     public class DeleteByIdTests : NemeStatsDataContextTestBase
     {
-        private ISecuredEntityValidator<GameDefinition> securedEntityValidator;
-        private DbSet<GameDefinition> gameDefinitionDbSetMock;
+        private ISecuredEntityValidator _securedEntityValidator;
+        private DbSet<GameDefinition> _gameDefinitionDbSetMock;
+        private GameDefinition _gameDefinition;
+
+        private int _gameDefinitionId = 1;
 
         [SetUp]
         public void SetUp()
         {
-            gameDefinitionDbSetMock = MockRepository.GenerateMock<DbSet<GameDefinition>>();
+            _gameDefinitionDbSetMock = MockRepository.GenerateMock<DbSet<GameDefinition>>();
 
             nemeStatsDbContext.Expect(mock => mock.Set<GameDefinition>())
                 .Repeat.Once()
-                .Return(gameDefinitionDbSetMock);
+                .Return(_gameDefinitionDbSetMock);
 
-            securedEntityValidator = MockRepository.GenerateMock<ISecuredEntityValidator<GameDefinition>>();
+            _securedEntityValidator = MockRepository.GenerateMock<ISecuredEntityValidator>();
             securedEntityValidatorFactory.Expect(mock => mock.MakeSecuredEntityValidator<GameDefinition>(dataContext))
                 .Repeat.Once()
-                .Return(securedEntityValidator);
+                .Return(_securedEntityValidator);
+
+            _gameDefinition = new GameDefinition
+            {
+                Id = _gameDefinitionId
+            };
+            _securedEntityValidator.Expect(mock => mock.ValidateAccess<GameDefinition>(_gameDefinitionId, currentUser))
+                .Return(_gameDefinition);
         }
 
         [Test]
         public void ItDeletesTheSpecifiedEntity()
         {
-            int id = 1;
-            GameDefinition gameDefinition = new GameDefinition() { Id = id };
-            dataContext.Expect(mock => mock.FindById<GameDefinition>(id))
-                .Return(gameDefinition);
+            //--act
+            dataContext.DeleteById<GameDefinition>(_gameDefinitionId, currentUser);
 
-            dataContext.DeleteById<GameDefinition>(id, currentUser);
-            dataContext.CommitAllChanges();
-
-            gameDefinitionDbSetMock.AssertWasCalled(mock => mock.Remove(gameDefinition));
+            _gameDefinitionDbSetMock.AssertWasCalled(mock => mock.Remove(_gameDefinition));
         }
 
         [Test]
         public void ItValidatesAccessToTheEntity()
         {
-            int entityId = 1;
-            GameDefinition gameDefinition = new GameDefinition() { Id = entityId };
-            dataContext.Expect(mock => mock.FindById<GameDefinition>(entityId))
-                .Return(gameDefinition);
+            //--arrange
+            var entityId = 1;
 
+            //--act
             dataContext.DeleteById<GameDefinition>(entityId, currentUser);
-            //TODO should probably check each 
-            securedEntityValidator.AssertWasCalled(mock => mock.ValidateAccess(
-                Arg<GameDefinition>.Is.Same(gameDefinition), 
-                Arg<ApplicationUser>.Is.Same(currentUser),
-                Arg<Type>.Is.Equal(typeof(GameDefinition)),
-                Arg<int>.Is.Equal(entityId)));
+
+            //--assert
+            _securedEntityValidator.AssertWasCalled(mock => mock.ValidateAccess<GameDefinition>(
+                Arg<int>.Is.Equal(entityId), 
+                Arg<ApplicationUser>.Is.Same(currentUser)));
         }
     }
 }
