@@ -231,6 +231,7 @@
     <Compile Include="Facades\ITopGamingGroupsRetriever.cs" />
     <Compile Include="Facades\ITopPlayersRetriever.cs" />
     <Compile Include="Facades\ITrendingGamesRetriever.cs" />
+    <Compile Include="Facades\IUniversalGameRetriever.cs" />
     <Compile Include="Facades\RecentPublicGamesRetriever.cs" />
     <Compile Include="Facades\TopGamingGroupsRetriever.cs" />
     <Compile Include="Facades\TopPlayersRetriever.cs" />
@@ -414,6 +415,7 @@
     <Compile Include="Models\Games\BoardGameGeekGameCategory.cs" />
     <Compile Include="Models\Games\BoardGameGeekMechanic.cs" />
     <Compile Include="Models\Games\RecordedGameBase.cs" />
+    <Compile Include="Models\Games\UniversalGameData.cs" />
     <Compile Include="Models\Games\UpdatedGame.cs" />
     <Compile Include="Models\PlayedGameApplicationLinkage.cs" />
     <Compile Include="Models\Games\SavePlayedGameRequest.cs" />

@@ -520,6 +520,9 @@
     <Compile Include="Models\Players\PlayerWithNemesisViewModel.cs" />
     <Compile Include="Models\GamingGroup\TopGamingGroupSummaryViewModel.cs" />
     <Compile Include="Models\Players\GameDefinitionPlayerSummaryViewModel.cs" />
+    <Compile Include="UniversalGameController.generated.cs">
+      <DependentUpon>T4MVC.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\font-awesome.css" />

@@ -15,45 +15,36 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
-using BusinessLogic.DataAccess;
-using BusinessLogic.Exceptions;
-using BusinessLogic.Logic.Nemeses;
-using BusinessLogic.Logic.Players;
-using BusinessLogic.Models;
-using BusinessLogic.Models.Players;
+
 using BusinessLogic.Models.User;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
 using System.Web.Mvc;
 using UI.Attributes.Filters;
 using UI.Controllers.Helpers;
-using UI.Models.Players;
 using UI.Transformations;
-using UI.Transformations.PlayerTransformations;
-using AutoMapper;
+using BusinessLogic.Facades;
 using UI.Models.UniversalGameModels;
 
 namespace UI.Controllers
 {
     public partial class UniversalGameController : BaseController
     {
+        private readonly ITransformer _transformer;
+        private readonly IUniversalGameRetriever _universalGameRetriever;
 
-        public UniversalGameController()
+        public UniversalGameController(ITransformer transformer, IUniversalGameRetriever universalGameRetriever)
         {
-
+            _transformer = transformer;
+            _universalGameRetriever = universalGameRetriever;
         }
 
         // GET: /Player/Details/5
         [UserContext(RequiresGamingGroup = false)]
         public virtual ActionResult Details(int id, ApplicationUser currentUser)
         {
-            UniversalGameViewModel viewModel = new UniversalGameViewModel();
-            throw new NotImplementedException();
+            var universalGameData = _universalGameRetriever.GetUniversalGameData(id, currentUser);
+            var viewModel = _transformer.Transform<UniversalGameViewModel>(universalGameData);
 
-
-            //return View(MVC.UniversalGame.Views.Details, new Player());
+            return View(MVC.UniversalGame.Views.Details, viewModel);
         }
     }
 }

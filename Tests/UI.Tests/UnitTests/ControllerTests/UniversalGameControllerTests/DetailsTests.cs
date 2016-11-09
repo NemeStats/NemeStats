@@ -1,12 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Web.Mvc;
+using BusinessLogic.Facades;
+using BusinessLogic.Models.Games;
 using BusinessLogic.Models.User;
 using NUnit.Framework;
+using Rhino.Mocks;
+using Shouldly;
 using StructureMap.AutoMocking;
 using UI.Controllers;
+using UI.Models.UniversalGameModels;
+using UI.Transformations;
 
 namespace UI.Tests.UnitTests.ControllerTests.UniversalGameControllerTests
 {
@@ -17,24 +19,37 @@ namespace UI.Tests.UnitTests.ControllerTests.UniversalGameControllerTests
 
         private int _boardGameGeekGameDefinitionId = 1;
         private ApplicationUser _currentUser;
+        private UniversalGameData _expectedUniversalGameData;
+        private UniversalGameViewModel _expectedUniversalGameViewModel;
 
         [SetUp]
         public void SetUp()
         {
             _autoMocker = new RhinoAutoMocker<UniversalGameController>();
             _currentUser = new ApplicationUser();
+
+            _expectedUniversalGameData = new UniversalGameData();
+            _expectedUniversalGameViewModel = new UniversalGameViewModel();
+
+            _autoMocker.Get<ITransformer>()
+                .Expect(mock => mock.Transform<UniversalGameViewModel>(_expectedUniversalGameData))
+                .Return(_expectedUniversalGameViewModel);
         }
 
         [Test]
-        public void It_Returns_A_UniversalGameViewModel()
+        public void It_Returns_The_UniversalGameViewModel()
         {
             //--arrange
+            _autoMocker.Get<IUniversalGameRetriever>().Expect(mock => mock.GetUniversalGameData(_boardGameGeekGameDefinitionId, _currentUser))
+                .Return(_expectedUniversalGameData);
 
             //--act
-            var result = _autoMocker.ClassUnderTest.Details(_boardGameGeekGameDefinitionId, _currentUser);
+            var result = _autoMocker.ClassUnderTest.Details(_boardGameGeekGameDefinitionId, _currentUser) as ViewResult;
 
             //--assert
+            result.ShouldNotBeNull();
+            result.ViewName.ShouldBe(MVC.UniversalGame.Views.Details);
+            result.Model.ShouldBeSameAs(_expectedUniversalGameViewModel);
         }
-
     }
 }

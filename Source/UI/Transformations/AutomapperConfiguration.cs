@@ -39,6 +39,7 @@ using UI.Models.GamingGroup;
 using UI.Models.PlayedGame;
 using UI.Models.Players;
 using UI.Models.Points;
+using UI.Models.UniversalGameModels;
 
 namespace UI.Transformations
 {
@@ -122,6 +123,8 @@ namespace UI.Transformations
                 }));
 
             Mapper.CreateMap<PlayedGameFilterMessage, PlayedGameFilter>(MemberList.Source);
+
+            Mapper.CreateMap<UniversalGameData, UniversalGameViewModel>(MemberList.Source);
         }
     }
 }
