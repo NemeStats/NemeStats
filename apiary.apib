@@ -46,6 +46,7 @@ accepting decimal places in pointsScored
 * 2016-08-31 Can now set a list of applicationLinkages when recording a Played Game. This will allow clients to save their own unique identifier for games and retrieve games based on this identifier. For example, a client could import all games that do not have a source application matching their application.
 * 2016-09-13 Can now pass flag "preserveExistingAuthenticationToken" to POST /UserSessions and it will not overwrite the existing authentication token.
 * 2016-10-28 Fixed major design issue with previous change and eliminated "preserveExistingAuthenticationToken" entirely in favor of a new optional field "uniqueDeviceId" so you can create a separate auth token per device.
+* 2016-11-07 Added support for PUT /PlayedGames/ for editing existing Played Games.
 
 ### General Information
 
@@ -315,7 +316,7 @@ and then recreated using the corresponding services for this.
 This service will record a new Played Game under the specified Gaming Group (per the gamingGroupId). 
 
 + Attributes
-    + gameDefinitionId (number, required) - NemeStaots unique identifier for the Game Definition (e.g. Race For the Galaxy's unique Id) of the Played Game.
+    + gameDefinitionId (number, required) - NemeStats unique identifier for the Game Definition (e.g. Race For the Galaxy's unique Id) of the Played Game.
     + gamingGroupId (number, optional) - The NemeStats unique identifier for the Gaming Group where the Played Game will be logged. If no gamingGroupId is specified, the Played Game will be recorded under the default Gaming Group of the currently logged in User. 
     + datePlayed (string, optional) - The date the game was played in yyyy-MM-dd format (e.g. 2015-04-29).
     + notes (string, optional) - Any notes or comments that the User wants to record about the game for future reference.
@@ -388,10 +389,22 @@ This service will record a new Played Game under the specified Gaming Group (per
                     "message" : "Invalid X-Auth-Token"
                 }
                 
++ Response 401 (application/json)
+
+                {
+                    "message" : "User with Id '8ba1050d-e6ee-41a1-a476-399b7103f219' does not have access to entity of type 'GamingGroup' with Id '9818'"
+                }               
+
++ Response 401 (application/json)
+
+                {
+                    "message" : "User with Id '8ba1050d-e6ee-41a1-a476-399b7103f219' does not have access to entity of type 'GameDefinition' with Id '1234'"
+                }  
+                
 + Response 409 (application/json)
 
                 {
-                    "message" : "Player with id '19313' is not in the Gaming Group with id '1351' -- which is the Gaming Group to which the Played Game is being recorded. All Players must be in this Gaming Group."
+                    "message" : "Player with id '456' is not in the Gaming Group with id '1351' -- which is the Gaming Group to which the Played Game is being recorded. All Players must be in this Gaming Group."
                 }
 
 + Response 409 (application/json)
@@ -399,6 +412,123 @@ This service will record a new Played Game under the specified Gaming Group (per
                 {
                     "message" : "An entity with an ApplicationName of 'BGG' and an ExternalSourceEntityId of '18839193' already exists in the Gaming Group with id '9818'."
                 }
+
+## Update an existing Played Game [PUT]
+This service will update an existing PlayedGame and will recalculate any Badges or Achievements accordingly.
+
++ Attributes
+    + playedGameId (number, required) - NemeStats unique identifier for the Played Game to update.
+    + gameDefinitionId (number, required) - NemeStats unique identifier for the Game Definition (e.g. Race For the Galaxy's unique Id) of the Played Game.
+    + gamingGroupId (number, optional) - The NemeStats unique identifier for the Gaming Group where the Played Game will be logged. If no gamingGroupId is specified, the Played Game will remain in the same Gaming Group.
+    + notes (string, optional) - Any notes or comments that the User wants to record about the game for future reference. This will overwrite any existing notes -- even if the new value would be empty.
+    + playerRanks (array[PlayerRank], required) - A collection of PlayerRank objects specifying the game rank and points scored for each Player. See below table for details.
+    + applicationLinkages (array[ApplicationLinkage], optional) - A collection of ApplicationLinkage objects specifying external identifiers for the Played Game in other systems. Should always have at least one ApplicationLinkage with applicationName = "NemeStats" and entityId = "{NemeStats Played Game Id}".
+
++ Request Valid Request (application/json)
+
+    + Headers
+            
+            X-Auth-Token: some token
+            
+    + Body
+
+                {
+                  "playedGameId" : 591831
+                  "gameDefinitionId" : 1234,
+                  "gamingGroupId" : 9818
+                  "datePlayed" : "2016-11-05",
+                  "notes" : "Erica cheated."
+                  "playerRanks" : [ 
+                      { 
+                        "playerId" : 456, 
+                        "gameRank" : 1, 
+                        "pointsScored" : 15 
+                      }, 
+                      { 
+                        "playerId" : 678, 
+                        "gameRank" : 2, 
+                        "pointsScored" : 13 
+                      }, 
+                      { 
+                        "playerId" : 356, 
+                        "gameRank" : 3, 
+                        "pointsScored" : 9 
+                      },
+                      { 
+                        "playerId" : 9175, 
+                        "gameRank" : 3, 
+                        "pointsScored" : 9 
+                      }
+                  ],
+                  "applicationLinkages" : [
+                      {
+                        "applicationName" : "BGG",
+                        "entityId" : "18839193"
+                      },
+                      {
+                        "applicationName" : "BGStats",
+                        "entityId" : "6b71050d-e63e-41a1-a476-399b7103f127"                      
+                      }
+                  ]
+                }
+
++ Response 204 (application/json)
+
+
++ Response 400 (application/json)
+
+                {
+                    "message" : "This action requires an X-Auth-Token header."
+                }
+
++ Response 401 (application/json)
+
+                {
+                    "message" : "Invalid X-Auth-Token"
+                }
+
++ Response 401 (application/json)
+
+                {
+                    "message" : "User with Id '8ba1050d-e6ee-41a1-a476-399b7103f219' does not have access to entity of type 'PlayedGame' with Id '591831'"
+                }  
+                
++ Response 401 (application/json)
+
+                {
+                    "message" : "User with Id '8ba1050d-e6ee-41a1-a476-399b7103f219' does not have access to entity of type 'GamingGroup' with Id '9818'"
+                }               
+
++ Response 401 (application/json)
+
+                {
+                    "message" : "User with Id '8ba1050d-e6ee-41a1-a476-399b7103f219' does not have access to entity of type 'GameDefinition' with Id '1234'"
+                }  
+                
++ Response 401 (application/json)
+
+                {
+                    "message" : "User with Id '8ba1050d-e6ee-41a1-a476-399b7103f219' does not have access to entity of type 'Player' with Id '456'"
+                }  
+                
++ Response 404 (application/json)
+
+                {
+                    "message" : "Entity of type 'PlayedGame' with Id '591831' does not exist."
+                }
+                
++ Response 409 (application/json)
+
+                {
+                    "message" : "Player with id '456' is not in the Gaming Group with id '9818' -- which is the Gaming Group to which the Played Game is being recorded. All Players must be in this Gaming Group."
+                }
+
++ Response 409 (application/json)
+
+                {
+                    "message" : "An entity with an ApplicationName of 'BGG' and an ExternalSourceEntityId of '18839193' already exists in the Gaming Group with id '9818'."
+                }
+
 
 ## Get Played Games [GET /PlayedGames/{?gamingGroupId,startDateGameLastUpdated,endDateGameLastUpdated,datePlayedFrom,datePlayedTo,playerId,maximumNumberOfResults,exclusionApplicationName,inclusionApplicationName}] 
 Retrieve a list of Played Games given some criteria. Currently limited to a single Gaming Group at a time
