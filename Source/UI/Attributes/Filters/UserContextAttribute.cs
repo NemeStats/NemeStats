@@ -30,6 +30,9 @@ namespace UI.Attributes.Filters
         private ApplicationUserManager userManager;
         private ClientIdCalculator clientIdCalculator;
 
+        /// <summary>
+        /// Indicates whether the action will send a redirect to the login page if the user isn't authenticated
+        /// </summary>
         public bool RequiresGamingGroup { get; set; }
 
         public UserContextAttribute()

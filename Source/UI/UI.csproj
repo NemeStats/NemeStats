@@ -374,6 +374,7 @@
     <Compile Include="Controllers\Helpers\ShowingXResultsMessageBuilder.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PlayedGameController.cs" />
+    <Compile Include="Controllers\UniversalGameController.cs" />
     <Compile Include="Controllers\PlayerController.cs" />
     <Compile Include="Attributes\Filters\InjectingActionInvoker.cs" />
     <Compile Include="Attributes\Filters\RollbarExceptionFilter.cs" />
@@ -467,6 +468,7 @@
     <Compile Include="Models\Players\PlayerSummaryViewModel.cs" />
     <Compile Include="Models\Players\TopPlayerViewModel.cs" />
     <Compile Include="Models\Points\NemePointsSummaryViewModel.cs" />
+    <Compile Include="Models\UniversalGameModels\UniversalGameViewModel.cs" />
     <Compile Include="Models\User\BoardGameGeekIntegrationModel.cs" />
     <Compile Include="Models\User\UserGamingGroupsModel.cs" />
     <Compile Include="Models\User\UserViewModel.cs" />
@@ -813,6 +815,7 @@
     <Content Include="Views\Achievement\_RecentAchievementsUnlocked.cshtml" />
     <Content Include="Views\Achievement\RecentAchievementsUnlocked.cshtml" />
     <Content Include="Views\PlayedGame\CreateOrEdit.cshtml" />
+    <Content Include="Views\UniversalGame\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Areas\Api\Views\Shared\" />
