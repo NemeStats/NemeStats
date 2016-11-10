@@ -50,7 +50,7 @@
                                         <td>
                                             <div class="progress @Model..WeightDescription">
                                                 <div class="progress-bar" role="progressbar" aria-valuenow="@Model.BoardGameGeekWeightPercent" aria-valuemin="0" aria-valuemax="100" style="width: @Model.BoardGameGeekWeightPercent%;" data-toggle="popover" data-placement="bottom" data-content="@Model.BoardGameGeekAverageWeight / 5">
-                                                    @Model.BoardGameGeekWeightDescription
+                                                    @Model.BoardGameGeekAverageWeightDescription
                                                 </div>
                                             </div>
                                         </td>
@@ -129,8 +129,8 @@
                         <td>@Model.AveragePlayersPerGame</td>
                     </tr>
                     <tr>
-                        <td><strong>Total NemePoints Awarded From This Game</strong></td>
-                        <td>@Model.TotalNemePointsAwarded</td>
+                        <td><strong>Total Gaming Groups With This Game</strong></td>
+                        <td>@Model.TotalGamingGroupsWithThisGame</td>
                     </tr>
                 </table>
             </div>

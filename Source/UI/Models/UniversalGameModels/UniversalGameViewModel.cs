@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace UI.Models.UniversalGameModels
 {
@@ -16,14 +14,13 @@ namespace UI.Models.UniversalGameModels
         public decimal? BoardGameGeekAverageWeight { get; set; }
         public string BoardGameGeekAverageWeightDescription { get; set; }
         public string BoardGameGeekWeightPercent { get; set; }
-        public string BoardGameGeekWeightDescription { get; set; }
         public int? BoardGameGeekYearPublished { get; set; }
         public Uri BoardGameGeekUri { get; set; }
         public List<string> BoardGameGeekCategories { get; set; }
         public List<string> BoardGameGeekMechanics { get; set; }
         public string BoardGameGeekDescription { get; set; }
         public int TotalNumberOfGamesPlayed { get; set; }
-        public int AveragePlayersPerGame { get; set; }
-        public int TotalNemePointsAwarded { get; set; }
+        public string AveragePlayersPerGame { get; set; }
+        public int TotalGamingGroupsWithThisGame { get; set; }
     }
 }

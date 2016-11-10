@@ -37,6 +37,7 @@ using BusinessLogic.Logic.PlayedGames;
 using BusinessLogic.Logic.PlayerAchievements;
 using BusinessLogic.Logic.Players;
 using BusinessLogic.Logic.Points;
+using BusinessLogic.Logic.UniversalGameDefinitions;
 using BusinessLogic.Logic.Users;
 using BusinessLogic.Logic.Utilities;
 using BusinessLogic.Logic.VotableFeatures;
@@ -179,6 +180,8 @@ namespace NemeStats.IoC
             For<ICacheService>().Use<CacheService>();
 
             For<IDateUtilities>().Use<DateUtilities>();
+
+            For<IUniversalGameRetriever>().Use<UniversalGameRetriever>();
         }
 
 

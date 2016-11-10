@@ -22,6 +22,7 @@ using UI.Attributes.Filters;
 using UI.Controllers.Helpers;
 using UI.Transformations;
 using BusinessLogic.Facades;
+using BusinessLogic.Logic.UniversalGameDefinitions;
 using UI.Models.UniversalGameModels;
 
 namespace UI.Controllers
@@ -41,7 +42,7 @@ namespace UI.Controllers
         [UserContext(RequiresGamingGroup = false)]
         public virtual ActionResult Details(int id, ApplicationUser currentUser)
         {
-            var universalGameData = _universalGameRetriever.GetUniversalGameData(id, currentUser);
+            var universalGameData = _universalGameRetriever.GetResults(id);
             var viewModel = _transformer.Transform<UniversalGameViewModel>(universalGameData);
 
             return View(MVC.UniversalGame.Views.Details, viewModel);

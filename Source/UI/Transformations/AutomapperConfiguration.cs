@@ -25,6 +25,7 @@ using BusinessLogic.Logic.BoardGameGeek;
 using BusinessLogic.Logic.GameDefinitions;
 using BusinessLogic.Logic.GamingGroups;
 using BusinessLogic.Logic.Players;
+using BusinessLogic.Logic.Points;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
 using BusinessLogic.Models.GamingGroups;
@@ -124,7 +125,21 @@ namespace UI.Transformations
 
             Mapper.CreateMap<PlayedGameFilterMessage, PlayedGameFilter>(MemberList.Source);
 
-            Mapper.CreateMap<UniversalGameData, UniversalGameViewModel>(MemberList.Source);
+            Mapper.CreateMap<UniversalGameData, UniversalGameViewModel>(MemberList.Destination)
+                .ForMember(m => m.BoardGameGeekUri,
+                    opt => opt.MapFrom(src => BoardGameGeekUriBuilder.BuildBoardGameGeekGameUri(src.BoardGameGeekGameDefinitionId)))
+                .ForMember(m => m.BoardGameGeekAverageWeightDescription,
+                    opt => opt.MapFrom(src => new WeightTierCalculator().GetWeightTier(src.BoardGameGeekAverageWeight).ToString()))
+                .ForMember(m => m.AveragePlayersPerGame,
+                    opt => opt.MapFrom(src => src.AveragePlayersPerGame.ToString("N1")))
+                    .ForMember(m => m.AveragePlayTime,
+                    opt =>
+                        opt.MapFrom(
+                            src =>
+                                !src.MaxPlayTime.HasValue
+                                    ? src.MinPlayTime
+                                    : (src.MinPlayTime.HasValue ? (src.MaxPlayTime.Value + src.MinPlayTime.Value)/2 : src.MaxPlayTime)));
+
         }
     }
 }

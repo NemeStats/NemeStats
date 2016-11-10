@@ -231,11 +231,12 @@
     <Compile Include="Facades\ITopGamingGroupsRetriever.cs" />
     <Compile Include="Facades\ITopPlayersRetriever.cs" />
     <Compile Include="Facades\ITrendingGamesRetriever.cs" />
-    <Compile Include="Facades\IUniversalGameRetriever.cs" />
+    <Compile Include="Logic\UniversalGameDefinitions\IUniversalGameRetriever.cs" />
     <Compile Include="Facades\RecentPublicGamesRetriever.cs" />
     <Compile Include="Facades\TopGamingGroupsRetriever.cs" />
     <Compile Include="Facades\TopPlayersRetriever.cs" />
     <Compile Include="Facades\TrendingGamesRetriever.cs" />
+    <Compile Include="Logic\UniversalGameDefinitions\UniversalGameRetriever.cs" />
     <Compile Include="Jobs\BaseJobResult.cs" />
     <Compile Include="Jobs\BaseJobService.cs" />
     <Compile Include="Jobs\BoardGameGeekBatchUpdateJobService\LinkOrphanGamesJobResult.cs" />

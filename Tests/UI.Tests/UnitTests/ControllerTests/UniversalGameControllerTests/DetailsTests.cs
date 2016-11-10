@@ -1,5 +1,6 @@
 ﻿using System.Web.Mvc;
 using BusinessLogic.Facades;
+using BusinessLogic.Logic.UniversalGameDefinitions;
 using BusinessLogic.Models.Games;
 using BusinessLogic.Models.User;
 using NUnit.Framework;
@@ -40,7 +41,7 @@ namespace UI.Tests.UnitTests.ControllerTests.UniversalGameControllerTests
         public void It_Returns_The_UniversalGameViewModel()
         {
             //--arrange
-            _autoMocker.Get<IUniversalGameRetriever>().Expect(mock => mock.GetUniversalGameData(_boardGameGeekGameDefinitionId, _currentUser))
+            _autoMocker.Get<IUniversalGameRetriever>().Expect(mock => mock.GetResults(_boardGameGeekGameDefinitionId))
                 .Return(_expectedUniversalGameData);
 
             //--act
