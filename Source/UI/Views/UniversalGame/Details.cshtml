@@ -1,13 +1,13 @@
 ﻿@model UI.Models.UniversalGameModels.UniversalGameViewModel
 
 @{
-    ViewBag.Title = Model.Name;
+    ViewBag.Title = "Universal Stats for " + Model.Name;
     Layout = MVC.Shared.Views._BaseLayout;
 }
 
 <div id="gamedefinition-details">
     <h2 class="page-header">
-        @Html.DisplayFor(model => model.Name) Universal Statistics
+        @Html.DisplayFor(model => model.Name) - Universal Statistics
     </h2>
         <div class="row ">
             <div class="panel panel-primary">

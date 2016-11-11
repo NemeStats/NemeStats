@@ -130,6 +130,8 @@ namespace UI.Transformations
                     opt => opt.MapFrom(src => BoardGameGeekUriBuilder.BuildBoardGameGeekGameUri(src.BoardGameGeekGameDefinitionId)))
                 .ForMember(m => m.BoardGameGeekAverageWeightDescription,
                     opt => opt.MapFrom(src => new WeightTierCalculator().GetWeightTier(src.BoardGameGeekAverageWeight).ToString()))
+                .ForMember(m => m.BoardGameGeekWeightPercent,
+                    opt => opt.MapFrom(src => src.BoardGameGeekAverageWeight.HasValue ? ((src.BoardGameGeekAverageWeight.Value * 100) / BoardGameGeekGameDefinitionViewModel.MaxBggWeight).ToString(CultureInfo.InvariantCulture).Replace(",", ".") : "0"))
                 .ForMember(m => m.AveragePlayersPerGame,
                     opt => opt.MapFrom(src => src.AveragePlayersPerGame.ToString("N1")))
                     .ForMember(m => m.AveragePlayTime,
@@ -139,7 +141,6 @@ namespace UI.Transformations
                                 !src.MaxPlayTime.HasValue
                                     ? src.MinPlayTime
                                     : (src.MinPlayTime.HasValue ? (src.MaxPlayTime.Value + src.MinPlayTime.Value)/2 : src.MaxPlayTime)));
-
         }
     }
 }

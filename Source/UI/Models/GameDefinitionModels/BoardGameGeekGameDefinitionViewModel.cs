@@ -6,7 +6,7 @@ namespace UI.Models.GameDefinitionModels
 {
     public class BoardGameGeekGameDefinitionViewModel
     {
-        private const int MaxBggWeight = 5;
+        public const int MaxBggWeight = 5;
 
         public int? Id { get; set; }
         public string Name { get; set; }
