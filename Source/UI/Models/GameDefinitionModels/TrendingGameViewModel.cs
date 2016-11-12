@@ -4,7 +4,7 @@ namespace UI.Models.GameDefinitionModels
 {
     public class TrendingGameViewModel
     {
-        public Uri BoardGameGeekUri { get; set; }
+        public int BoardGameGeekGameDefinitionId { get; set; }
         public string ThumbnailImageUrl { get; set; }
         public int GamesPlayed { get; set; }
         public int GamingGroupsPlayingThisGame { get; set; }

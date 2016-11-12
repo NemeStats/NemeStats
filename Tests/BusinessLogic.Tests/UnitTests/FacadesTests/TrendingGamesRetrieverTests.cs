@@ -1,10 +1,8 @@
 ﻿using System.Collections.Generic;
 using BusinessLogic.Facades;
 using BusinessLogic.Logic.GameDefinitions;
-using BusinessLogic.Logic.GamingGroups;
 using BusinessLogic.Logic.Utilities;
 using BusinessLogic.Models.Games;
-using BusinessLogic.Models.GamingGroups;
 using NUnit.Framework;
 using Rhino.Mocks;
 using StructureMap.AutoMocking;

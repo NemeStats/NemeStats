@@ -31,9 +31,18 @@
                             <table class="table well data">
                                 @if (Model.MaxPlayers.HasValue && Model.MinPlayers.HasValue)
                                 {
+                                    string numberOfPlayersString;
+                                    if (Model.MaxPlayers == Model.MinPlayers)
+                                    {
+                                        numberOfPlayersString = Model.MaxPlayers.Value.ToString();
+                                    }
+                                    else
+                                    {
+                                        numberOfPlayersString = Model.MinPlayers + " - " + Model.MaxPlayers + " players";
+                                    }
                                     <tr>
                                         <td class="text-center"><i class="fa fa-users" data-toggle="tooltip" data-placement="left" title="Players"></i></td>
-                                        <td>@Model.MinPlayers - Model.MaxPlayers players</td>
+                                        <td>@numberOfPlayersString</td>
                                     </tr>
                                 }
                                 @if (Model.AveragePlayTime.HasValue)
@@ -125,12 +134,12 @@
                         <td class="col-md-2">@Model.TotalNumberOfGamesPlayed</td>
                     </tr>
                     <tr>
-                        <td><strong>Average Players Per Game</strong></td>
-                        <td>@Model.AveragePlayersPerGame</td>
-                    </tr>
-                    <tr>
                         <td><strong>Total Gaming Groups With This Game</strong></td>
                         <td>@Model.TotalGamingGroupsWithThisGame</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Average Players Per Game</strong></td>
+                        <td>@Model.AveragePlayersPerGame</td>
                     </tr>
                 </table>
             </div>
