@@ -60,7 +60,7 @@
                         {
                             if (!string.IsNullOrEmpty(item.BoardGameGeekGameDefinition.Thumbnail))
                             {
-                                <a href="@Url.Action(MVC.GameDefinition.ActionNames.Details, MVC.GameDefinition.Name, new {id = item.Id})">
+                                <a href="@item.BoardGameGeekGameDefinition.BoardGameGeekUri.AbsoluteUri">
                                     <img class="bgg-thumbnail" src="@item.BoardGameGeekGameDefinition.Thumbnail" alt="View on BoardGameGeek.com" title="View on BoardGameGeek.com"/>
                                 </a>
                             }

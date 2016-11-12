@@ -75,10 +75,10 @@ namespace BusinessLogic.Logic.PlayedGames
         {
             if (newlyCompletedGame.GamingGroupId.HasValue && newlyCompletedGame.GamingGroupId != currentUser.CurrentGamingGroupId)
             {
-                _securedEntityValidator.ValidateAccess<GamingGroup>(newlyCompletedGame.GamingGroupId.Value, currentUser);
+                _securedEntityValidator.RetrieveAndValidateAccess<GamingGroup>(newlyCompletedGame.GamingGroupId.Value, currentUser);
             }
 
-            var gameDefinition = _securedEntityValidator.ValidateAccess<GameDefinition>(newlyCompletedGame.GameDefinitionId, currentUser);
+            var gameDefinition = _securedEntityValidator.RetrieveAndValidateAccess<GameDefinition>(newlyCompletedGame.GameDefinitionId, currentUser);
 
             _linkedPlayedGameValidator.Validate(newlyCompletedGame);
 
@@ -112,7 +112,7 @@ namespace BusinessLogic.Logic.PlayedGames
                 {
                     throw new PlayerNotInGamingGroupException(player.Id, gamingGroupId);
                 }
-                _securedEntityValidator.ValidateAccess<Player>(player.Id, currentUser);
+                _securedEntityValidator.ValidateAccess<Player>(player, currentUser);
             }
         }
 
@@ -207,10 +207,10 @@ namespace BusinessLogic.Logic.PlayedGames
         {
             if (updatedGame.GamingGroupId.HasValue)
             {
-                _securedEntityValidator.ValidateAccess<GamingGroup>(updatedGame.GamingGroupId.Value, currentUser);
+                _securedEntityValidator.RetrieveAndValidateAccess<GamingGroup>(updatedGame.GamingGroupId.Value, currentUser);
             }
-            _securedEntityValidator.ValidateAccess<PlayedGame>(updatedGame.PlayedGameId, currentUser);
-            _securedEntityValidator.ValidateAccess<GameDefinition>(updatedGame.GameDefinitionId, currentUser);
+            _securedEntityValidator.RetrieveAndValidateAccess<PlayedGame>(updatedGame.PlayedGameId, currentUser);
+            _securedEntityValidator.RetrieveAndValidateAccess<GameDefinition>(updatedGame.GameDefinitionId, currentUser);
 
             var playedGameWithStuff = _dataContext.GetQueryable<PlayedGame>()
                 .Where(x => x.Id == updatedGame.PlayedGameId)
