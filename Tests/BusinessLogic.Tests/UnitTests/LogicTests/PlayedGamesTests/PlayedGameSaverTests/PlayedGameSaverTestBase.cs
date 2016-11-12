@@ -37,7 +37,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameSa
                 Id = 9598
             };
 
-            autoMocker.Get<ISecuredEntityValidator>().Expect(mock => mock.ValidateAccess<GameDefinition>(Arg<int>.Is.Anything, Arg<ApplicationUser>.Is.Anything)).Return(gameDefinition);
+            autoMocker.Get<ISecuredEntityValidator>().Expect(mock => mock.RetrieveAndValidateAccess<GameDefinition>(Arg<int>.Is.Anything, Arg<ApplicationUser>.Is.Anything)).Return(gameDefinition);
 
             existingPlayerWithMatchingGamingGroup = new Player
             {

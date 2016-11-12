@@ -53,7 +53,7 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.NemeStatsDataContextTest
             {
                 Id = _gameDefinitionId
             };
-            _securedEntityValidator.Expect(mock => mock.ValidateAccess<GameDefinition>(_gameDefinitionId, currentUser))
+            _securedEntityValidator.Expect(mock => mock.RetrieveAndValidateAccess<GameDefinition>(_gameDefinitionId, currentUser))
                 .Return(_gameDefinition);
         }
 
@@ -76,7 +76,7 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.NemeStatsDataContextTest
             dataContext.DeleteById<GameDefinition>(entityId, currentUser);
 
             //--assert
-            _securedEntityValidator.AssertWasCalled(mock => mock.ValidateAccess<GameDefinition>(
+            _securedEntityValidator.AssertWasCalled(mock => mock.RetrieveAndValidateAccess<GameDefinition>(
                 Arg<int>.Is.Equal(entityId), 
                 Arg<ApplicationUser>.Is.Same(currentUser)));
         }

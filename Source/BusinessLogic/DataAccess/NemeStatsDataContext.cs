@@ -78,11 +78,8 @@ namespace BusinessLogic.DataAccess
         {
             ValidateArguments(entity, currentUser);
 
-            if (entity.AlreadyInDatabase())
-            {
-                var validator = securedEntityValidatorFactory.MakeSecuredEntityValidator<TEntity>(this);
-                validator.ValidateAccess<TEntity>(entity.GetIdAsObject(), currentUser);
-            }
+            var validator = securedEntityValidatorFactory.MakeSecuredEntityValidator<TEntity>(this);
+            validator.ValidateAccess<TEntity>(entity, currentUser);
 
             if (!entity.AlreadyInDatabase())
             {
@@ -124,7 +121,7 @@ namespace BusinessLogic.DataAccess
         public virtual void Delete<TEntity>(TEntity entity, ApplicationUser currentUser) where TEntity : class, IEntityWithTechnicalKey
         {
             var validator = securedEntityValidatorFactory.MakeSecuredEntityValidator<TEntity>(this);
-            validator.ValidateAccess<TEntity>(entity.GetIdAsObject(), currentUser);
+            validator.ValidateAccess<TEntity>(entity, currentUser);
             nemeStatsDbContext.Set<TEntity>().Remove(entity);
         }
 
@@ -141,7 +138,7 @@ namespace BusinessLogic.DataAccess
         public virtual void DeleteById<TEntity>(object id, ApplicationUser currentUser) where TEntity : class, IEntityWithTechnicalKey
         {
             var securedEntityValidator = securedEntityValidatorFactory.MakeSecuredEntityValidator<TEntity>(this);
-            var entityToDelete = securedEntityValidator.ValidateAccess<TEntity>(id, currentUser);
+            var entityToDelete = securedEntityValidator.RetrieveAndValidateAccess<TEntity>(id, currentUser);
 
             nemeStatsDbContext.Set<TEntity>().Remove(entityToDelete);
         }

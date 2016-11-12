@@ -65,21 +65,7 @@ namespace BusinessLogic.Tests.UnitTests.DataAccessTests.NemeStatsDataContextTest
             dataContext.Save(entityWithGamingGroup, currentUser);
 
             //--assert
-            securedEntityValidator.AssertWasCalled(mock => mock.ValidateAccess<IEntityWithTechnicalKey>(entityWithGamingGroup.GetIdAsObject(), currentUser));
-        }
-
-        [Test]
-        public void ItDoesntBotherValidatingTheEntityIfItIsNew()
-        {
-            //--arrange
-            dataContext.Expect(mock => mock.AddOrInsertOverride(Arg<IEntityWithTechnicalKey>.Is.Anything)).Return(entityWithGamingGroup);
-            entityWithGamingGroup.Expect(mock => mock.AlreadyInDatabase()).Return(false);
-
-            //--act
-            dataContext.Save(entityWithGamingGroup, currentUser);
-
-            //--assert
-            securedEntityValidatorFactory.AssertWasNotCalled(mock => mock.MakeSecuredEntityValidator<IEntityWithTechnicalKey>(Arg<IDataContext>.Is.Anything));
+            securedEntityValidator.AssertWasCalled(mock => mock.ValidateAccess<IEntityWithTechnicalKey>(entityWithGamingGroup, currentUser));
         }
 
         [Test]

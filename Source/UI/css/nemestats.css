@@ -510,7 +510,7 @@ button > i.fa {
     width: 120px; }
 
 .navbar-right li {
-  max-width: 250px; }
+  max-width: 230px; }
   .navbar-right li a {
     white-space: nowrap;
     overflow: hidden;
@@ -598,7 +598,9 @@ button > i.fa {
 
 @media (min-width: 992px) and (max-width: 1199px) {
   .navbar-right li {
-    max-width: 180px; } }
+    max-width: 170px; }
+  .navbar-nav li a {
+    padding: 20px 8px; } }
 
 @media (min-width: 768px) and (max-width: 991px) {
   .navbar-nav > li > a {
