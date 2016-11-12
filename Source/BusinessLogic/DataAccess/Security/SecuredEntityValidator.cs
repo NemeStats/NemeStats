@@ -36,16 +36,16 @@ namespace BusinessLogic.DataAccess.Security
             _dataContext = dataContext;
         }
 
-        public TEntity ValidateAccess<TEntity>(object primaryKeyValue, ApplicationUser currentUser) where TEntity : class, IEntityWithTechnicalKey
+        public virtual TEntity RetrieveAndValidateAccess<TEntity>(object primaryKeyValue, ApplicationUser currentUser) where TEntity : class, IEntityWithTechnicalKey
         {
-            ValidateArguments(currentUser);
-
             var entity = _dataContext.FindById<TEntity>(primaryKeyValue);
 
-            if (entity == null)
-            {
-                throw new EntityDoesNotExistException(typeof(TEntity), primaryKeyValue);
-            }
+            return ValidateAccess(entity, currentUser);
+        }
+
+        public virtual TEntity ValidateAccess<TEntity>(TEntity entity, ApplicationUser currentUser) where TEntity : class, IEntityWithTechnicalKey
+        {
+            ValidateArguments(currentUser);
 
             var securedEntity = entity as SecuredEntityWithTechnicalKey;
 
@@ -58,16 +58,15 @@ namespace BusinessLogic.DataAccess.Security
             {
                 var matchingUserGamingGroup = _dataContext.GetQueryable<UserGamingGroup>()
                     .SingleOrDefault(
-                                    x =>
-                                    x.GamingGroupId == securedEntity.GamingGroupId &&
-                                    x.ApplicationUserId == currentUser.Id);
+                        x =>
+                            x.GamingGroupId == securedEntity.GamingGroupId &&
+                            x.ApplicationUserId == currentUser.Id);
 
                 if (matchingUserGamingGroup == null)
                 {
-                    throw new UnauthorizedEntityAccessException(currentUser.Id, typeof(TEntity), primaryKeyValue);
+                    throw new UnauthorizedEntityAccessException(currentUser.Id, typeof(TEntity), entity.GetIdAsObject());
                 }
             }
-
             return entity;
         }
 
