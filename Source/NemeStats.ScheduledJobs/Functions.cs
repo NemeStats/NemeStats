@@ -44,13 +44,22 @@ namespace NemeStats.ScheduledJobs
         /// <param name="log"></param>
         /// <returns></returns>
         [NoAutomaticTrigger]
-        public static void RefreshOutdatedBoardGameGeekData([TimerTrigger("0 0 6 * * *")] TimerInfo info, TextWriter log, int? daysOutdated, int? maxElementsToUpdate)
+        public static void RefreshOutdatedBoardGameGeekData([TimerTrigger("0 0 6 * * *")] TimerInfo info, TextWriter log, int daysOutdated, int maxElementsToUpdate)
         {
             var clock = new Stopwatch();
 
+            if (daysOutdated == 0)
+            {
+                daysOutdated = 7;
+            }
+            if (maxElementsToUpdate == 0)
+            {
+                maxElementsToUpdate = 100;
+            }
+
             var boardGameGeekBatchUpdateJobService = Program.Container.GetInstance<IBoardGameGeekBatchUpdateJobService>();
             clock.Start();
-            var jobResult = boardGameGeekBatchUpdateJobService.RefreshOutdatedBoardGameGeekData(daysOutdated ?? 7, maxElementsToUpdate);
+            var jobResult = boardGameGeekBatchUpdateJobService.RefreshOutdatedBoardGameGeekData(daysOutdated, maxElementsToUpdate);
             clock.Stop();
 
             log.WriteLine($"Updated {jobResult} games in {clock.Elapsed}");
