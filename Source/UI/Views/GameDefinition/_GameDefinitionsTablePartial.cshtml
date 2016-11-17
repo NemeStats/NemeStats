@@ -4,12 +4,6 @@
     Layout = null;
 }
 <div class="panel-body">
-    @if ((bool?)ViewData["canEdit"] == true)
-    {
-        <div class="well">
-            @{ Html.RenderAction(MVC.GameDefinition.CreatePartial()); }
-        </div>
-                }
     <div class="gameDefinitionsList flip-scroll" id="gameDefinitionsList">
         <table class="table">
             <caption>
@@ -19,13 +13,13 @@
                 </div>
             </caption>
             <thead>
-            <tr>
-                <th class="col-md-2 bgg-link-head"></th>
-                <th class="col-md-4 name-head">
-                    <span class="sort" data-sort="name">Name <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
-                </th>
-                <th class="col-md-2">
-                    <span class="sort desc" data-sort="plays-col">
+                <tr>
+                    <th class="col-md-2 bgg-link-head"></th>
+                    <th class="col-md-4 name-head">
+                        <span class="sort" data-sort="name">Name <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span></span>
+                    </th>
+                    <th class="col-md-2">
+                        <span class="sort desc" data-sort="plays-col">
                             <span class="hidden-xs hidden-sm">
                                 <span>Played Games</span>
                             </span>
@@ -34,9 +28,9 @@
                             </span>
                             <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span>
                         </span>
-                </th>
-                <th class="col-md-3">
-                    <span class="sort" data-sort="champion-col">
+                    </th>
+                    <th class="col-md-3">
+                        <span class="sort" data-sort="champion-col">
                             <i class="fa fa-trophy" data-container="body" data-toggle="popover" data-placement="top"
                                data-content="The Champion is the Player within the Gaming Group with the most wins of this game."></i>
                             <span class="hidden-xs hidden-sm">
@@ -44,81 +38,81 @@
                             </span>
                             <span class="fa fa-caret-down"></span> <span class="fa fa-caret-up"></span>
                         </span>
-                </th>
-                @if (Model.Any() && Model.First().UserCanEdit)
-                {
-                    <th class="col-md-1 edit-head">&nbsp;</th>
-                }
-            </tr>
+                    </th>
+                    @if (Model.Any() && Model.First().UserCanEdit)
+                    {
+                        <th class="col-md-1 edit-head">&nbsp;</th>
+                    }
+                </tr>
             </thead>
             <tbody class="list">
-            @foreach (var item in Model)
+                @foreach (var item in Model)
             {
-                <tr class="game-item">
-                    <td class="bgg-link-col">
-                        @if (item.HasBoardGameGeekDefinition)
-                        {
-                            if (!string.IsNullOrEmpty(item.BoardGameGeekGameDefinition.Thumbnail))
+                    <tr class="game-item">
+                        <td class="bgg-link-col">
+                            @if (item.HasBoardGameGeekDefinition)
                             {
-                                <a href="@item.BoardGameGeekGameDefinition.BoardGameGeekUri.AbsoluteUri">
-                                    <img class="bgg-thumbnail" src="@item.BoardGameGeekGameDefinition.Thumbnail" alt="View on BoardGameGeek.com" title="View on BoardGameGeek.com"/>
-                                </a>
-                            }
-                            else
-                            {
-                                <a href="@item.BoardGameGeekGameDefinition.BoardGameGeekUri.AbsoluteUri" target="_blank;">
-                                    <img src="~/Content/Images/bgg_small.png" alt="View on BoardGameGeek.com" title="View on BoardGameGeek.com"/>
-                                </a>
-                            }
+                                if (!string.IsNullOrEmpty(item.BoardGameGeekGameDefinition.Thumbnail))
+                                {
+                                    <a href="@item.BoardGameGeekGameDefinition.BoardGameGeekUri.AbsoluteUri">
+                                        <img class="bgg-thumbnail" src="@item.BoardGameGeekGameDefinition.Thumbnail" alt="View on BoardGameGeek.com" title="View on BoardGameGeek.com" />
+                                    </a>
+                                }
+                                else
+                                {
+                                    <a href="@item.BoardGameGeekGameDefinition.BoardGameGeekUri.AbsoluteUri" target="_blank;">
+                                        <img src="~/Content/Images/bgg_small.png" alt="View on BoardGameGeek.com" title="View on BoardGameGeek.com" />
+                                    </a>
+                                }
 
-                        }
-                    </td>
-                    <td class="name-col">
-                        <b>
-                            @Html.ActionLink(item.Name, "Details", "GameDefinition", new {id = item.Id}, new {@class = "name"})
-                        </b>
-                    </td>
-                    <td class="plays-col">@Html.DisplayFor(modelItem => item.TotalNumberOfGamesPlayed)</td>
-                    <td class="champion-col" data-champion="@(item.ChampionName ?? "-")">
-                        @if (item.PreviousChampionName != null)
-                        {
-                            <span style="text-decoration: line-through">
+                            }
+                        </td>
+                        <td class="name-col">
+                            <b>
+                                @Html.ActionLink(item.Name, "Details", "GameDefinition", new { id = item.Id }, new { @class = "name" })
+                            </b>
+                        </td>
+                        <td class="plays-col">@Html.DisplayFor(modelItem => item.TotalNumberOfGamesPlayed)</td>
+                        <td class="champion-col" data-champion="@(item.ChampionName ?? "-")">
+                            @if (item.PreviousChampionName != null)
+                            {
+                                <span style="text-decoration: line-through">
                                     <b>
                                         @Html.ActionLink(item.PreviousChampionName,
                                             "Details",
                                             "Player",
-                                            new {id = item.PreviousChampionPlayerId},
-                                            new {})
+                                            new { id = item.PreviousChampionPlayerId },
+                                            new { })
                                     </b>
                                 </span>
-                            <span>/</span>
-                        }
-                        @if (item.ChampionName != null)
-                        {
-                            <b>
-                                @Html.ActionLink(item.ChampionName, "Details", "Player", new {id = item.ChampionPlayerId}, new {})
-                            </b>
-                        }
-                        else
-                        {
-                            <span>-</span>
-                        }
-                    </td>
+                                <span>/</span>
+                            }
+                            @if (item.ChampionName != null)
+                            {
+                                <b>
+                                    @Html.ActionLink(item.ChampionName, "Details", "Player", new { id = item.ChampionPlayerId }, new { })
+                                </b>
+                            }
+                            else
+                            {
+                                <span>-</span>
+                            }
+                        </td>
 
-                    @if (item.UserCanEdit)
-                    {
-                        <td class="edit-col">
-                            <a href="@Url.Action("Edit", "GameDefinition", new
+                        @if (item.UserCanEdit)
+                        {
+                            <td class="edit-col">
+                                <a href="@Url.Action("Edit", "GameDefinition", new
                                      {
                                          id = item.Id
                                      })" title="Edit">
-                                <span class="fa fa-pencil fa-2x"></span>
-                            </a>
-                        </td>
-                    }
+                                    <span class="fa fa-pencil fa-2x"></span>
+                                </a>
+                            </td>
+                        }
 
-                </tr>
-            }
+                    </tr>
+                }
             </tbody>
         </table>
         <ul class="pagination"></ul>
