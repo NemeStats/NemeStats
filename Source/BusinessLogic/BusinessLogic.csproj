@@ -409,6 +409,10 @@
     <Compile Include="Migrations\201611050145082_AddPlayedGameDateUpdated.Designer.cs">
       <DependentUpon>201611050145082_AddPlayedGameDateUpdated.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201611171855541_BGGGameDefinition_Dates.cs" />
+    <Compile Include="Migrations\201611171855541_BGGGameDefinition_Dates.Designer.cs">
+      <DependentUpon>201611171855541_BGGGameDefinition_Dates.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Achievements\AchievementLevel.cs" />
     <Compile Include="Models\Achievements\AchievementId.cs" />
     <Compile Include="Models\Games\BoardGameGeekGameCategory.cs" />
@@ -1059,6 +1063,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201611050145082_AddPlayedGameDateUpdated.resx">
       <DependentUpon>201611050145082_AddPlayedGameDateUpdated.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201611171855541_BGGGameDefinition_Dates.resx">
+      <DependentUpon>201611171855541_BGGGameDefinition_Dates.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

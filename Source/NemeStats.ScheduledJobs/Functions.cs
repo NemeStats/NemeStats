@@ -37,5 +37,23 @@ namespace NemeStats.ScheduledJobs
             
             log.WriteLine($"Updated {jobResult} games in {clock.Elapsed}");
         }
+
+        /// <summary>
+        /// Updates all the BGG data. Use with caution!
+        /// </summary>
+        /// <param name="log"></param>
+        /// <returns></returns>
+        [NoAutomaticTrigger]
+        public static void RefreshOutdatedBoardGameGeekData([TimerTrigger("0 0 6 * * *")] TimerInfo info, TextWriter log, int? daysOutdated, int? maxElementsToUpdate)
+        {
+            var clock = new Stopwatch();
+
+            var boardGameGeekBatchUpdateJobService = Program.Container.GetInstance<IBoardGameGeekBatchUpdateJobService>();
+            clock.Start();
+            var jobResult = boardGameGeekBatchUpdateJobService.RefreshOutdatedBoardGameGeekData(daysOutdated ?? 7, maxElementsToUpdate);
+            clock.Stop();
+
+            log.WriteLine($"Updated {jobResult} games in {clock.Elapsed}");
+        }
     }
 }
