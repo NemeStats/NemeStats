@@ -1,5 +1,6 @@
 ﻿@using UI.HtmlHelpers
-@model UI.Models.Players.GameDefinitionPlayersSummaryViewModel
+@using UI.Models.Players;
+@model List<GameDefinitionPlayerSummaryViewModel>
 
 @{
     Layout = null;
@@ -41,7 +42,7 @@
                 </tr>
                 </thead>
                 <tbody class="list">
-                @foreach (var playerSummary in Model.GameDefinitionPlayerSummaries)
+                @foreach (var playerSummary in Model)
                 {
 
                     <tr>
@@ -92,7 +93,7 @@
     </div>
 </div>
 
-@foreach (var playerSummary in Model.GameDefinitionPlayerSummaries)
+@foreach (var playerSummary in Model)
 {
     @Html.Partial("_NemePointsBreakdown", playerSummary.NemePointsSummary, new ViewDataDictionary {{"templateid", playerSummary.PlayerId}})
 }

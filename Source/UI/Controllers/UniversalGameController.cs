@@ -16,13 +16,17 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 
+using System.Linq;
 using BusinessLogic.Models.User;
 using System.Web.Mvc;
 using BusinessLogic.Logic;
 using BusinessLogic.Logic.BoardGameGeekGameDefinitions;
 using UI.Attributes.Filters;
 using UI.Controllers.Helpers;
+using UI.Models.GameDefinitionModels;
+using UI.Models.Players;
 using UI.Models.UniversalGameModels;
+using UI.Transformations;
 
 namespace UI.Controllers
 {
@@ -30,11 +34,13 @@ namespace UI.Controllers
     {
         private readonly ITransformer _transformer;
         private readonly IUniversalGameRetriever _universalGameRetriever;
+        private readonly IPlayedGameDetailsViewModelBuilder _playedGameDetailsViewModelBuilder;
 
-        public UniversalGameController(ITransformer transformer, IUniversalGameRetriever universalGameRetriever)
+        public UniversalGameController(ITransformer transformer, IUniversalGameRetriever universalGameRetriever, IPlayedGameDetailsViewModelBuilder playedGameDetailsViewModelBuilder)
         {
             _transformer = transformer;
             _universalGameRetriever = universalGameRetriever;
+            _playedGameDetailsViewModelBuilder = playedGameDetailsViewModelBuilder;
         }
 
         [UserContext(RequiresGamingGroup = false)]
@@ -42,6 +48,23 @@ namespace UI.Controllers
         {
             var boardGameGeekGameSummary = _universalGameRetriever.GetBoardGameGeekGameSummary(id, currentUser);
             var viewModel = _transformer.Transform<UniversalGameDetailsViewModel>(boardGameGeekGameSummary);
+
+            var gamingGroupGameDefinitionSummary = boardGameGeekGameSummary.GamingGroupGameDefinitionSummary;
+
+            if (gamingGroupGameDefinitionSummary != null)
+            {
+                viewModel.GamingGroupGameDefinitionSummary = new GamingGroupGameDefinitionViewModel
+                {
+                    Id = gamingGroupGameDefinitionSummary.Id,
+                    AveragePlayersPerGame = $"{gamingGroupGameDefinitionSummary.AveragePlayersPerGame:0.#}",
+                    Name = gamingGroupGameDefinitionSummary.GamingGroupName,
+                    PlayedGamesPanelTitle = $"Last {gamingGroupGameDefinitionSummary.PlayedGames.Count} Played Games",
+                    TotalNumberOfGamesPlayed = gamingGroupGameDefinitionSummary.TotalNumberOfGamesPlayed,
+                    PlayedGames = gamingGroupGameDefinitionSummary.PlayedGames.Select(playedGame => _playedGameDetailsViewModelBuilder.Build(playedGame, currentUser)).ToList(),
+                    GameDefinitionPlayerSummaries = gamingGroupGameDefinitionSummary.PlayerWinRecords
+                    .Select(playerWinRecord => _transformer.Transform<GameDefinitionPlayerSummaryViewModel>(playerWinRecord)).ToList()
+                };
+            }
 
             return View(MVC.UniversalGame.Views.Details, viewModel);
         }

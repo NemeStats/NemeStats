@@ -285,9 +285,9 @@ namespace UI.Tests.UnitTests.TransformationsTests
 
             var actualResult = autoMocker.ClassUnderTest.Build(gameDefinitionSummary, currentUser);
 
-            Assert.That(actualResult.GameDefinitionPlayersSummary.GameDefinitionPlayerSummaries.Count, Is.EqualTo(2));
-            Assert.That(actualResult.GameDefinitionPlayersSummary.GameDefinitionPlayerSummaries, Contains.Item(expectedPlayerSummary1));
-            Assert.That(actualResult.GameDefinitionPlayersSummary.GameDefinitionPlayerSummaries, Contains.Item(expectedPlayerSummary2));
+            Assert.That(actualResult.GameDefinitionPlayersSummary.Count, Is.EqualTo(2));
+            Assert.That(actualResult.GameDefinitionPlayersSummary, Contains.Item(expectedPlayerSummary1));
+            Assert.That(actualResult.GameDefinitionPlayersSummary, Contains.Item(expectedPlayerSummary2));
         }
     }
 }

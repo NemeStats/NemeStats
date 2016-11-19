@@ -27,12 +27,12 @@ namespace UI.Models.GameDefinitionModels
         public GameDefinitionDetailsViewModel()
         {
             PlayedGames = new List<PlayedGameDetailsViewModel>();
-            GameDefinitionPlayersSummary = new GameDefinitionPlayersSummaryViewModel();
+            GameDefinitionPlayersSummary = new List<GameDefinitionPlayerSummaryViewModel>();
         }
 
         public IList<PlayedGameDetailsViewModel> PlayedGames { get; set; }
         public string PlayedGamesPanelTitle { get; set; }
-        public GameDefinitionPlayersSummaryViewModel GameDefinitionPlayersSummary { get; set; }
+        public List<GameDefinitionPlayerSummaryViewModel> GameDefinitionPlayersSummary { get; set; }
         public string AveragePlayersPerGame { get; set; }
 
 

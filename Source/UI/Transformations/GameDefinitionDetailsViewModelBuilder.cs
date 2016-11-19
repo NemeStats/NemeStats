@@ -94,13 +94,9 @@ namespace UI.Transformations
                 viewModel.PreviousChampionPlayerId = gameDefinitionSummary.PreviousChampion.Player.Id;
             }
 
-            var playersSummaryViewModel = new GameDefinitionPlayersSummaryViewModel
-            {
-                GameDefinitionPlayerSummaries = gameDefinitionSummary.PlayerWinRecords
+            viewModel.GameDefinitionPlayersSummary = gameDefinitionSummary.PlayerWinRecords
                     .Select(_transformer.Transform<GameDefinitionPlayerSummaryViewModel>)
-                    .ToList()
-            };
-            viewModel.GameDefinitionPlayersSummary = playersSummaryViewModel;
+                    .ToList();
 
             return viewModel;
         }
