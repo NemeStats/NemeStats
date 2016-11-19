@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Data.Entity.Migrations.Model;
-using OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
 
 namespace BusinessLogic.Models.Games
 {

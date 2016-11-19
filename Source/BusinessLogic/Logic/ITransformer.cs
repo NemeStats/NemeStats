@@ -1,4 +1,4 @@
-﻿namespace UI.Transformations
+﻿namespace BusinessLogic.Logic
 {
     public interface ITransformer
     {

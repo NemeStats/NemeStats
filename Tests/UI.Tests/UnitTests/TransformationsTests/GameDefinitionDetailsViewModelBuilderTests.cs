@@ -23,6 +23,7 @@ using BusinessLogic.Models.User;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System.Collections.Generic;
+using BusinessLogic.Logic;
 using BusinessLogic.Logic.Players;
 using BusinessLogic.Models.PlayedGames;
 using StructureMap.AutoMocking;

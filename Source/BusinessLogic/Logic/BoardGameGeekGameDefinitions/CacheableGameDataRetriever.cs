@@ -5,23 +5,22 @@ using BusinessLogic.Exceptions;
 using BusinessLogic.Logic.Utilities;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
-using BusinessLogic.Models.User;
 
-namespace BusinessLogic.Logic.UniversalGameDefinitions
+namespace BusinessLogic.Logic.BoardGameGeekGameDefinitions
 {
-    public class UniversalGameRetriever : Cacheable<int, UniversalGameData>, IUniversalGameRetriever
+    public class CacheableGameDataRetriever : Cacheable<int, CacheableGameData>, ICacheableGameDataRetriever
     {
         private readonly IDataContext _dataContext;
 
-        public UniversalGameRetriever(IDateUtilities dateUtilities, ICacheService cacheService, IDataContext dataContext) : base(dateUtilities, cacheService)
+        public CacheableGameDataRetriever(IDateUtilities dateUtilities, ICacheService cacheService, IDataContext dataContext) : base(dateUtilities, cacheService)
         {
             _dataContext = dataContext;
         }
 
-        public override UniversalGameData GetFromSource(int boardGameGeekGameDefinitionId)
+        public override CacheableGameData GetFromSource(int boardGameGeekGameDefinitionId)
         {
             var result = _dataContext.GetQueryable<BoardGameGeekGameDefinition>().Where(x => x.Id == boardGameGeekGameDefinitionId)
-                .Select(x => new UniversalGameData
+                .Select(x => new CacheableGameData
                 {
                     BoardGameGeekGameDefinitionId = x.Id,
                     BoardGameGeekAverageWeight = x.AverageWeight,

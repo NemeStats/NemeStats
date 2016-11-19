@@ -32,6 +32,7 @@ using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using BusinessLogic.Facades;
+using BusinessLogic.Logic;
 using UI.Attributes.Filters;
 using UI.Controllers.Helpers;
 using UI.Models.GameDefinitionModels;

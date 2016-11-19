@@ -432,6 +432,7 @@
     <Compile Include="Models\GameDefinitionModels\GameDefinitionDisplayInfoViewModel.cs" />
     <Compile Include="Models\GameDefinitionModels\GameDefinitionSummaryListViewModel.cs" />
     <Compile Include="Models\GameDefinitionModels\GameDefinitionSummaryViewModel.cs" />
+    <Compile Include="Models\GameDefinitionModels\GamingGroupGameDefinitionViewModel.cs" />
     <Compile Include="Models\GameDefinitionModels\TrendingGameViewModel.cs" />
     <Compile Include="Models\ModelStateHelper.cs" />
     <Compile Include="Models\PlayedGame\CreatePlayedGameViewModel.cs" />
@@ -468,7 +469,7 @@
     <Compile Include="Models\Players\PlayerSummaryViewModel.cs" />
     <Compile Include="Models\Players\TopPlayerViewModel.cs" />
     <Compile Include="Models\Points\NemePointsSummaryViewModel.cs" />
-    <Compile Include="Models\UniversalGameModels\UniversalGameViewModel.cs" />
+    <Compile Include="Models\UniversalGameModels\UniversalGameDetailsViewModel.cs" />
     <Compile Include="Models\User\BoardGameGeekIntegrationModel.cs" />
     <Compile Include="Models\User\UserGamingGroupsModel.cs" />
     <Compile Include="Models\User\UserViewModel.cs" />
@@ -497,7 +498,6 @@
     <Compile Include="Transformations\IGamingGroupViewModelBuilder.cs" />
     <Compile Include="Transformations\GamingGroupViewModelBuilder.cs" />
     <Compile Include="Transformations\INemesisChangeViewModelBuilder.cs" />
-    <Compile Include="Transformations\ITransformer.cs" />
     <Compile Include="Transformations\NemesisChangeViewModelBuilder.cs" />
     <Compile Include="Transformations\TransformationsHelper.cs" />
     <Compile Include="Transformations\Transformer.cs" />

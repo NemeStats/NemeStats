@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace BusinessLogic.Models.Games
 {
-    public class UniversalGameData
+    public class BoardGameGeekGameSummary
     {
         public int BoardGameGeekGameDefinitionId { get; set; }
         public string Name { get; set; }
@@ -24,5 +20,6 @@ namespace BusinessLogic.Models.Games
         public int TotalNumberOfGamesPlayed { get; set; }
         public double AveragePlayersPerGame { get; set; }
         public int TotalGamingGroupsWithThisGame { get; set; }
+        public GameDefinitionSummary GamingGroupGameDefinitionSummary { get; set; }
     }
 }

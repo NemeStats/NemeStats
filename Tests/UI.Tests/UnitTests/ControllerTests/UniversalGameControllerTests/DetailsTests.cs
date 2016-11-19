@@ -1,6 +1,7 @@
 ﻿using System.Web.Mvc;
 using BusinessLogic.Facades;
-using BusinessLogic.Logic.UniversalGameDefinitions;
+using BusinessLogic.Logic;
+using BusinessLogic.Logic.BoardGameGeekGameDefinitions;
 using BusinessLogic.Models.Games;
 using BusinessLogic.Models.User;
 using NUnit.Framework;
@@ -20,8 +21,8 @@ namespace UI.Tests.UnitTests.ControllerTests.UniversalGameControllerTests
 
         private int _boardGameGeekGameDefinitionId = 1;
         private ApplicationUser _currentUser;
-        private UniversalGameData _expectedUniversalGameData;
-        private UniversalGameViewModel _expectedUniversalGameViewModel;
+        private BoardGameGeekGameSummary _expectedBoardGameGeekGameSummary;
+        private UniversalGameDetailsViewModel _expectedUniversalGameDetailsViewModel;
 
         [SetUp]
         public void SetUp()
@@ -29,20 +30,20 @@ namespace UI.Tests.UnitTests.ControllerTests.UniversalGameControllerTests
             _autoMocker = new RhinoAutoMocker<UniversalGameController>();
             _currentUser = new ApplicationUser();
 
-            _expectedUniversalGameData = new UniversalGameData();
-            _expectedUniversalGameViewModel = new UniversalGameViewModel();
+            _expectedBoardGameGeekGameSummary = new BoardGameGeekGameSummary();
+            _expectedUniversalGameDetailsViewModel = new UniversalGameDetailsViewModel();
 
+            _autoMocker.Get<IUniversalGameRetriever>().Expect(mock => mock.GetBoardGameGeekGameSummary(_boardGameGeekGameDefinitionId, _currentUser))
+                .Return(_expectedBoardGameGeekGameSummary);
             _autoMocker.Get<ITransformer>()
-                .Expect(mock => mock.Transform<UniversalGameViewModel>(_expectedUniversalGameData))
-                .Return(_expectedUniversalGameViewModel);
+                .Expect(mock => mock.Transform<UniversalGameDetailsViewModel>(_expectedBoardGameGeekGameSummary))
+                .Return(_expectedUniversalGameDetailsViewModel);
         }
 
         [Test]
-        public void It_Returns_The_UniversalGameViewModel()
+        public void It_Returns_The_UniversalGameDetailsViewModel()
         {
             //--arrange
-            _autoMocker.Get<IUniversalGameRetriever>().Expect(mock => mock.GetResults(_boardGameGeekGameDefinitionId))
-                .Return(_expectedUniversalGameData);
 
             //--act
             var result = _autoMocker.ClassUnderTest.Details(_boardGameGeekGameDefinitionId, _currentUser) as ViewResult;
@@ -50,7 +51,7 @@ namespace UI.Tests.UnitTests.ControllerTests.UniversalGameControllerTests
             //--assert
             result.ShouldNotBeNull();
             result.ViewName.ShouldBe(MVC.UniversalGame.Views.Details);
-            result.Model.ShouldBeSameAs(_expectedUniversalGameViewModel);
+            result.Model.ShouldBeSameAs(_expectedUniversalGameDetailsViewModel);
         }
     }
 }

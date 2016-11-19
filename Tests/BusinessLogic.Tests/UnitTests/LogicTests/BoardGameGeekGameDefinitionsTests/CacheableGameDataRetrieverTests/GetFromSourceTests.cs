@@ -2,22 +2,19 @@
 using System.Linq;
 using BusinessLogic.DataAccess;
 using BusinessLogic.Exceptions;
-using BusinessLogic.Logic.Players;
-using BusinessLogic.Logic.UniversalGameDefinitions;
-using BusinessLogic.Logic.Utilities;
+using BusinessLogic.Logic.BoardGameGeekGameDefinitions;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
-using BusinessLogic.Models.Players;
 using NUnit.Framework;
 using Rhino.Mocks;
 using Shouldly;
 using StructureMap.AutoMocking;
 
-namespace BusinessLogic.Tests.UnitTests.LogicTests.UniversalGameDefinitionsTests.UniversalGameRetrieverTests
+namespace BusinessLogic.Tests.UnitTests.LogicTests.BoardGameGeekGameDefinitionsTests.CacheableGameDataRetrieverTests
 {
-    public class UniversalGameRetrieverTests
+    public class CacheableGameDataRetrieverTests
     {
-        protected RhinoAutoMocker<UniversalGameRetriever> AutoMocker;
+        protected RhinoAutoMocker<CacheableGameDataRetriever> AutoMocker;
 
         private int _boardGameGeekGameDefinitionId = 1;
         private BoardGameGeekGameDefinition _expectedBoardGameGeekGameDefinition;
@@ -29,7 +26,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UniversalGameDefinitionsTests
         [SetUp]
         public void SetUp()
         {
-            AutoMocker = new RhinoAutoMocker<UniversalGameRetriever>();
+            AutoMocker = new RhinoAutoMocker<CacheableGameDataRetriever>();
 
             _expectedBoardGameGeekGameDefinition = new BoardGameGeekGameDefinition
             {
@@ -101,7 +98,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.UniversalGameDefinitionsTests
             AutoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<BoardGameGeekGameDefinition>()).Return(queryable);
         }
 
-        public class When_Calling_GetFromSource : UniversalGameRetrieverTests
+        public class When_Calling_GetFromSource : CacheableGameDataRetrieverTests
         {
 
             [Test]

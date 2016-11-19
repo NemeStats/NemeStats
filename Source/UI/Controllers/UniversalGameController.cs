@@ -18,11 +18,10 @@
 
 using BusinessLogic.Models.User;
 using System.Web.Mvc;
+using BusinessLogic.Logic;
+using BusinessLogic.Logic.BoardGameGeekGameDefinitions;
 using UI.Attributes.Filters;
 using UI.Controllers.Helpers;
-using UI.Transformations;
-using BusinessLogic.Facades;
-using BusinessLogic.Logic.UniversalGameDefinitions;
 using UI.Models.UniversalGameModels;
 
 namespace UI.Controllers
@@ -38,12 +37,11 @@ namespace UI.Controllers
             _universalGameRetriever = universalGameRetriever;
         }
 
-        // GET: /Player/Details/5
         [UserContext(RequiresGamingGroup = false)]
         public virtual ActionResult Details(int id, ApplicationUser currentUser)
         {
-            var universalGameData = _universalGameRetriever.GetResults(id);
-            var viewModel = _transformer.Transform<UniversalGameViewModel>(universalGameData);
+            var boardGameGeekGameSummary = _universalGameRetriever.GetBoardGameGeekGameSummary(id, currentUser);
+            var viewModel = _transformer.Transform<UniversalGameDetailsViewModel>(boardGameGeekGameSummary);
 
             return View(MVC.UniversalGame.Views.Details, viewModel);
         }

@@ -28,6 +28,7 @@ using BusinessLogic.Export;
 using BusinessLogic.Facades;
 using BusinessLogic.Jobs.BoardGameGeekBatchUpdateJobService;
 using BusinessLogic.Logic.BoardGameGeek;
+using BusinessLogic.Logic.BoardGameGeekGameDefinitions;
 using BusinessLogic.Logic.Champions;
 using BusinessLogic.Logic.Email;
 using BusinessLogic.Logic.GameDefinitions;
@@ -37,7 +38,6 @@ using BusinessLogic.Logic.PlayedGames;
 using BusinessLogic.Logic.PlayerAchievements;
 using BusinessLogic.Logic.Players;
 using BusinessLogic.Logic.Points;
-using BusinessLogic.Logic.UniversalGameDefinitions;
 using BusinessLogic.Logic.Users;
 using BusinessLogic.Logic.Utilities;
 using BusinessLogic.Logic.VotableFeatures;
@@ -181,7 +181,7 @@ namespace NemeStats.IoC
 
             For<IDateUtilities>().Use<DateUtilities>();
 
-            For<IUniversalGameRetriever>().Use<UniversalGameRetriever>();
+            For<ICacheableGameDataRetriever>().Use<CacheableGameDataRetriever>();
         }
 
 

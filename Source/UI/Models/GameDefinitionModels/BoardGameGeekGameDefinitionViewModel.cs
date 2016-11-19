@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using BusinessLogic.Logic.Points;
 
 namespace UI.Models.GameDefinitionModels
 {

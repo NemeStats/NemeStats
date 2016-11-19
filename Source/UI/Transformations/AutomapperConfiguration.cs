@@ -22,6 +22,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Web.Mvc;
 using AutoMapper;
+using BoardGameGeekApiClient.Models;
 using BusinessLogic.Logic.BoardGameGeek;
 using BusinessLogic.Logic.GameDefinitions;
 using BusinessLogic.Logic.GamingGroups;
@@ -126,7 +127,19 @@ namespace UI.Transformations
 
             Mapper.CreateMap<PlayedGameFilterMessage, PlayedGameFilter>(MemberList.Source);
 
-            Mapper.CreateMap<UniversalGameData, UniversalGameViewModel>(MemberList.Destination)
+            Mapper.CreateMap<CacheableGameData, BoardGameGeekGameSummary>(MemberList.Source);
+
+            Mapper.CreateMap<IList<PlayerWinRecord>, GameDefinitionPlayersSummaryViewModel>(MemberList.Destination)
+                .ForMember(m => m.GameDefinitionPlayerSummaries,
+                    opt => opt.MapFrom(src => src.Select(Mapper.Map<GameDefinitionPlayerSummaryViewModel>)
+                        .ToList()));
+
+            Mapper.CreateMap<GameDefinitionSummary, GamingGroupGameDefinitionViewModel>(MemberList.Destination)
+                .ForMember(m => m.AveragePlayersPerGame, opt => opt.MapFrom(src => $"{src.AveragePlayersPerGame:0.#}"))
+                .ForMember(m => m.PlayedGamesPanelTitle, opt => opt.MapFrom(src => $"Last {src.PlayedGames.Count} Played Games"))
+                .ForMember(m => m.GameDefinitionPlayersSummary, opt => opt.Ignore());
+
+            Mapper.CreateMap<BoardGameGeekGameSummary, UniversalGameDetailsViewModel>(MemberList.Destination)
                 .ForMember(m => m.BoardGameGeekUri,
                     opt => opt.MapFrom(src => BoardGameGeekUriBuilder.BuildBoardGameGeekGameUri(src.BoardGameGeekGameDefinitionId)))
                 .ForMember(m => m.BoardGameGeekAverageWeightDescription,
@@ -134,7 +147,7 @@ namespace UI.Transformations
                 .ForMember(m => m.BoardGameGeekWeightPercent,
                     opt => opt.MapFrom(src => src.BoardGameGeekAverageWeight.HasValue ? ((src.BoardGameGeekAverageWeight.Value * 100) / BoardGameGeekGameDefinitionViewModel.MaxBggWeight).ToString(CultureInfo.InvariantCulture).Replace(",", ".") : "0"))
                 .ForMember(m => m.AveragePlayersPerGame,
-                    opt => opt.MapFrom(src => src.AveragePlayersPerGame.ToString("N1")))
+                    opt => opt.MapFrom(src => $"{src.AveragePlayersPerGame:0.#}"))
                     .ForMember(m => m.AveragePlayTime,
                     opt =>
                         opt.MapFrom(
@@ -142,6 +155,7 @@ namespace UI.Transformations
                                 !src.MaxPlayTime.HasValue
                                     ? src.MinPlayTime
                                     : (src.MinPlayTime.HasValue ? (src.MaxPlayTime.Value + src.MinPlayTime.Value)/2 : src.MaxPlayTime)));
+
         }
     }
 }
