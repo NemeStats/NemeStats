@@ -107,8 +107,10 @@ namespace UI.Controllers
             public _ViewNamesClass ViewNames { get { return s_ViewNames; } }
             public class _ViewNamesClass
             {
+                public readonly string _BoardGameGeekInfo = "_BoardGameGeekInfo";
                 public readonly string Details = "Details";
             }
+            public readonly string _BoardGameGeekInfo = "~/Views/UniversalGame/_BoardGameGeekInfo.cshtml";
             public readonly string Details = "~/Views/UniversalGame/Details.cshtml";
         }
     }

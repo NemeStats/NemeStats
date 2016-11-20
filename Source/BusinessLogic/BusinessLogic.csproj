@@ -419,6 +419,7 @@
     <Compile Include="Models\Achievements\AchievementId.cs" />
     <Compile Include="Models\Games\BoardGameGeekGameCategory.cs" />
     <Compile Include="Models\Games\BoardGameGeekGameSummary.cs" />
+    <Compile Include="Models\Games\BoardGameGeekInfo.cs" />
     <Compile Include="Models\Games\BoardGameGeekMechanic.cs" />
     <Compile Include="Models\Games\RecordedGameBase.cs" />
     <Compile Include="Models\Games\CacheableGameData.cs" />

@@ -121,7 +121,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.BoardGameGeekGameDefinitionsT
                 //--arrange
 
                 //--act
-                var result = AutoMocker.ClassUnderTest.GetFromSource(_boardGameGeekGameDefinitionId);
+                var result = AutoMocker.ClassUnderTest.GetFromSource(_boardGameGeekGameDefinitionId).BoardGameGeekInfo;
 
                 //--assert
                 result.BoardGameGeekGameDefinitionId.ShouldBe(_expectedBoardGameGeekGameDefinition.Id);
@@ -143,7 +143,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.BoardGameGeekGameDefinitionsT
                 //--arrange
 
                 //--act
-                var result = AutoMocker.ClassUnderTest.GetFromSource(_boardGameGeekGameDefinitionId);
+                var result = AutoMocker.ClassUnderTest.GetFromSource(_boardGameGeekGameDefinitionId).BoardGameGeekInfo;
 
                 //--assert
                 result.BoardGameGeekMechanics.Count.ShouldBe(2);
@@ -157,7 +157,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.BoardGameGeekGameDefinitionsT
                 //--arrange
 
                 //--act
-                var result = AutoMocker.ClassUnderTest.GetFromSource(_boardGameGeekGameDefinitionId);
+                var result = AutoMocker.ClassUnderTest.GetFromSource(_boardGameGeekGameDefinitionId).BoardGameGeekInfo;
 
                 //--assert
                 result.BoardGameGeekCategories.Count.ShouldBe(2);

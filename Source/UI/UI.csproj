@@ -426,6 +426,7 @@
     <Compile Include="Models\Badges\MinionBadgeViewModel.cs" />
     <Compile Include="Models\Badges\NemesisBadgeViewModel.cs" />
     <Compile Include="Models\Badges\PreviousNemesisBadgeViewModel.cs" />
+    <Compile Include="Models\UniversalGameModels\BoardGameGeekInfoViewModel.cs" />
     <Compile Include="Models\GameDefinitionModels\BoardGameGeekGameDefinitionViewModel.cs" />
     <Compile Include="Models\GameDefinitionModels\CreateGameDefinitionViewModel.cs" />
     <Compile Include="Models\GameDefinitionModels\GameDefinitionEditViewModel.cs" />
@@ -483,9 +484,9 @@
       <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>
     <Compile Include="T4MVC.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
       <DependentUpon>T4MVC.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
     </Compile>
     <Compile Include="Transformations\AutomapperConfiguration.cs" />
     <Compile Include="Transformations\GameDefinitionSummaryViewModelBuilder.cs" />
@@ -723,10 +724,10 @@
     <Content Include="Scripts\vue-moment.js" />
     <Content Include="Scripts\vue.min.js" />
     <Content Include="Scripts\_references.js" />
-    <None Include="T4MVC.tt">
+    <Content Include="T4MVC.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>T4MVC.cs</LastGenOutput>
-    </None>
+    </Content>
     <None Include="T4MVC.tt.hooks.t4" />
     <None Include="T4MVC.tt.settings.xml" />
     <Content Include="Web.config">
@@ -818,6 +819,7 @@
     <Content Include="Views\Achievement\RecentAchievementsUnlocked.cshtml" />
     <Content Include="Views\PlayedGame\CreateOrEdit.cshtml" />
     <Content Include="Views\UniversalGame\Details.cshtml" />
+    <Content Include="Views\UniversalGame\_BoardGameGeekInfo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Areas\Api\Views\Shared\" />
