@@ -9,9 +9,10 @@
     <h2 class="page-header">
         @Html.DisplayFor(model => Model.BoardGameGeekInfo.GameName) - Universal Statistics
     </h2>
-    
-    @Html.Partial(MVC.UniversalGame.Views._BoardGameGeekInfo, Model.BoardGameGeekInfo)
 
+    <div class="row">
+        @Html.Partial(MVC.UniversalGame.Views._BoardGameGeekInfo, Model.BoardGameGeekInfo)
+    </div>
     @{
         var gamingGroupData = Model.GamingGroupGameDefinitionSummary;
     }
@@ -19,27 +20,11 @@
     @if (gamingGroupData != null)
     {
         <div class="row">
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    <h4>Statistics for <a href="@Url.Action(MVC.GamingGroup.Details().AddRouteValue("id", gamingGroupData.Id))">@gamingGroupData.Name</a></h4>
-                </div>
-                <div class="panel-body">
-                    <table class="table table-hover table-striped">
-                        <tr>
-                            <td class="col-md-2"><strong>Total Games Played:</strong></td>
-                            <td class="col-md-2">@gamingGroupData.TotalNumberOfGamesPlayed</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Average Players Per Game</strong></td>
-                            <td>@gamingGroupData.AveragePlayersPerGame</td>
-                        </tr>
-                    </table>
-                </div>
-            </div>
+            @Html.Partial(MVC.Player.Views._GameDefinitionPlayersSummaryPartial, gamingGroupData.GameDefinitionPlayerSummaries)
         </div>
 
         <div class="row">
-            @Html.Partial(MVC.Player.Views._GameDefinitionPlayersSummaryPartial, gamingGroupData.GameDefinitionPlayerSummaries)
+            @Html.Partial(MVC.GameDefinition.Views._GamingGroupGameDefinitionStatsPartial, gamingGroupData.GamingGroupGameDefinitionStats)
         </div>
 
         <div class="row">
@@ -99,6 +84,6 @@
             </div>
         </div>
     }
-    
+
 </div>
 
