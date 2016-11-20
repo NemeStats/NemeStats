@@ -41,11 +41,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
         [SetUp]
         public virtual void SetUp()
         {
-            autoMocker.Get<IPlayedGameSaver>().Expect(mock => mock.CreatePlayedGame(
-                Arg<NewlyCompletedGame>.Is.Anything,
-                Arg<TransactionSource>.Is.Equal(TransactionSource.WebApplication),
-                Arg<ApplicationUser>.Is.Equal(currentUser)))
-                .Return(new PlayedGame() { Id = 1 });
+           
 
             Request = new SavePlayedGameRequest();
         }
@@ -63,6 +59,24 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 
         }
 
+    }
+
+    public class When_EditMode_Is_False : When_ModelState_Is_Valid
+    {
+        [SetUp]
+        public override void SetUp()
+        {
+            base.SetUp();
+
+            this.Request.EditMode = false;
+
+            autoMocker.Get<IPlayedGameSaver>().Expect(mock => mock.CreatePlayedGame(
+               Arg<NewlyCompletedGame>.Is.Anything,
+               Arg<TransactionSource>.Is.Equal(TransactionSource.WebApplication),
+               Arg<ApplicationUser>.Is.Equal(currentUser)))
+               .Return(new PlayedGame() { Id = 1 });
+        }
+
 
         [Test]
         public void Then_Returns_Success_Json()
@@ -74,7 +88,6 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
             dynamic json = result.Data;
             Assert.IsTrue(json.success);
         }
-
 
     }
 
@@ -108,7 +121,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
         }
     }
 
-    public class When_GameDefinition_Name_Is_Provided : When_ModelState_Is_Valid
+    public class When_GameDefinition_Name_Is_Provided : When_EditMode_Is_False
     {
         public override void SetUp()
         {
@@ -127,7 +140,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 
     }
 
-    public class When_Some_PlayerId_Is_Not_Provided : When_ModelState_Is_Valid
+    public class When_Some_PlayerId_Is_Not_Provided : When_EditMode_Is_False
     {
         public override void SetUp()
         {
@@ -158,6 +171,39 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
                                 m => m.Name == notExistingPlayerName), Arg<ApplicationUser>.Is.Equal(currentUser), Arg<bool>.Is.Anything))
                 .Repeat.Once().Return(new Player() {Id = 2});
         }
+
+    }
+
+    public class When_EditMode_Is_True : When_ModelState_Is_Valid
+    {
+        public override void SetUp()
+        {
+            base.SetUp();
+
+            this.Request.PlayedGameId = 100;
+            this.Request.EditMode = true;
+
+            autoMocker.Get<IPlayedGameSaver>()
+                .Expect(
+                    x =>
+                        x.UpdatePlayedGame(
+                            Arg<UpdatedGame>.Matches(
+                                m => m.PlayedGameId == this.Request.PlayedGameId),Arg<TransactionSource>.Is.Equal(TransactionSource.WebApplication),  Arg<ApplicationUser>.Is.Equal(currentUser)))
+                .Repeat.Once();
+        }
+
+
+        [Test]
+        public void Then_Returns_Success_Json()
+        {
+            var result = autoMocker.ClassUnderTest.Save(Request, currentUser) as JsonResult;
+
+            Assert.IsNotNull(result);
+
+            dynamic json = result.Data;
+            Assert.IsTrue(json.success);
+        }
+
 
     }
 }
