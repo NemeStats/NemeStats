@@ -40,7 +40,7 @@ namespace BusinessLogic.Logic.BoardGameGeekGameDefinitions
                 .FirstOrDefault();
             if (gameDefinitionId != default(int))
             {
-                summary.GamingGroupGameDefinitionSummary = _gameDefinitionRetriever.GetGameDefinitionDetails(gameDefinitionId, currentUser.CurrentGamingGroupId);
+                summary.GamingGroupGameDefinitionSummary = _gameDefinitionRetriever.GetGameDefinitionDetails(gameDefinitionId, numberOfRecentlyPlayedGamesToShow);
             }
             return summary;
         }

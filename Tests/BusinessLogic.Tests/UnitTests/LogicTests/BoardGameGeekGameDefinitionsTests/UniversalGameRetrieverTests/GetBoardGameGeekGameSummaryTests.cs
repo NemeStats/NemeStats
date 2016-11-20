@@ -91,13 +91,17 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.BoardGameGeekGameDefinitionsT
         public void It_Returns_A_GameDefinitionSummary_If_The_Current_Users_Gaming_Group_Has_This_Game_Definition()
         {
             //--arrange
-            _autoMocker.Get<IGameDefinitionRetriever>().Expect(mock => mock.GetGameDefinitionDetails(Arg<int>.Is.Equal(_expectedGameDefinition.Id), Arg<int>.Is.Anything))
+            int numberOfGames = 6;
+            _autoMocker.Get<IGameDefinitionRetriever>().Expect(mock => mock.GetGameDefinitionDetails(Arg<int>.Is.Anything, Arg<int>.Is.Anything))
                 .Return(_expectedGameDefinitionSummary);
 
             //--act
-            var result = _autoMocker.ClassUnderTest.GetBoardGameGeekGameSummary(_boardGameGeekGameDefinitionId, _currentUser);
+            var result = _autoMocker.ClassUnderTest.GetBoardGameGeekGameSummary(_boardGameGeekGameDefinitionId, _currentUser, numberOfGames);
 
             //--assert
+            _autoMocker.Get<IGameDefinitionRetriever>()
+                .AssertWasCalled(
+                    mock => mock.GetGameDefinitionDetails(Arg<int>.Is.Equal(_expectedGameDefinition.Id), Arg<int>.Is.Equal(numberOfGames)));
             result.GamingGroupGameDefinitionSummary.ShouldBe(_expectedGameDefinitionSummary);
         }
     }

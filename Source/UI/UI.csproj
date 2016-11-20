@@ -824,6 +824,7 @@
     <Content Include="Views\UniversalGame\_BoardGameGeekInfo.cshtml" />
     <Content Include="Views\UniversalGame\_UniversalGameStats.cshtml" />
     <Content Include="Views\GameDefinition\_GamingGroupGameDefinitionStatsPartial.cshtml" />
+    <Content Include="Views\GameDefinition\_GameDefinitionPlayedGamesPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Areas\Api\Views\Shared\" />
