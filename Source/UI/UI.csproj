@@ -470,6 +470,7 @@
     <Compile Include="Models\Players\TopPlayerViewModel.cs" />
     <Compile Include="Models\Points\NemePointsSummaryViewModel.cs" />
     <Compile Include="Models\UniversalGameModels\UniversalGameDetailsViewModel.cs" />
+    <Compile Include="Models\UniversalGameModels\UniversalGameStatsViewModel.cs" />
     <Compile Include="Models\User\BoardGameGeekIntegrationModel.cs" />
     <Compile Include="Models\User\UserGamingGroupsModel.cs" />
     <Compile Include="Models\User\UserViewModel.cs" />
@@ -820,6 +821,7 @@
     <Content Include="Views\PlayedGame\CreateOrEdit.cshtml" />
     <Content Include="Views\UniversalGame\Details.cshtml" />
     <Content Include="Views\UniversalGame\_BoardGameGeekInfo.cshtml" />
+    <Content Include="Views\UniversalGame\_UniversalGameStats.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Areas\Api\Views\Shared\" />

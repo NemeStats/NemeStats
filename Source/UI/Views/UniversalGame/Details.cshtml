@@ -1,41 +1,17 @@
 ﻿@model UI.Models.UniversalGameModels.UniversalGameDetailsViewModel
 
 @{
-    ViewBag.Title = Model.BoardGameGeekInfo.Name + " - Universal Stats";
+    ViewBag.Title = Model.BoardGameGeekInfo.GameName + " - Universal Stats";
     Layout = MVC.Shared.Views._BaseLayout;
 }
 
 <div id="gamedefinition-details">
     <h2 class="page-header">
-        @Html.DisplayFor(model => Model.BoardGameGeekInfo.Name) - Universal Statistics
+        @Html.DisplayFor(model => Model.BoardGameGeekInfo.GameName) - Universal Statistics
     </h2>
     
     @Html.Partial(MVC.UniversalGame.Views._BoardGameGeekInfo, Model.BoardGameGeekInfo)
 
-    <div class="row">
-        <div class="panel panel-primary">
-            <div class="panel-heading">
-                <h4>Statistics For All Gaming Groups</h4>
-            </div>
-            <div class="panel-body">
-                <table class="table table-hover table-striped">
-                    <tr>
-                        <td class="col-md-2"><strong>Total Games Played on NemeStats:</strong></td>
-                        <td class="col-md-2">@Model.TotalNumberOfGamesPlayed</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Total Gaming Groups With This Game</strong></td>
-                        <td>@Model.TotalGamingGroupsWithThisGame</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Average Players Per Game</strong></td>
-                        <td>@Model.AveragePlayersPerGame</td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-    </div>
-    
     @{
         var gamingGroupData = Model.GamingGroupGameDefinitionSummary;
     }

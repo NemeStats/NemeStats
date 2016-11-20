@@ -5,7 +5,7 @@ namespace UI.Models.UniversalGameModels
 {
     public class BoardGameGeekInfoViewModel
     {
-        public string Name { get; set; }
+        public string GameName { get; set; }
         public string ImageUrl { get; set; }
         public string ThumbnailImageUrl { get; set; }
         public int? MaxPlayers { get; set; }

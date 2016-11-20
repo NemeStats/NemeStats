@@ -5,7 +5,7 @@ namespace BusinessLogic.Models.Games
     public class BoardGameGeekInfo
     {
         public int BoardGameGeekGameDefinitionId { get; set; }
-        public string Name { get; set; }
+        public string GameName { get; set; }
         public string ImageUrl { get; set; }
         public string ThumbnailImageUrl { get; set; }
         public int? MaxPlayers { get; set; }

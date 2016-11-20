@@ -133,7 +133,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.BoardGameGeekGameDefinitionsT
                 result.MinPlayers.ShouldBe(_expectedBoardGameGeekGameDefinition.MinPlayers);
                 result.MinPlayTime.ShouldBe(_expectedBoardGameGeekGameDefinition.MinPlayTime);
                 result.MaxPlayTime.ShouldBe(_expectedBoardGameGeekGameDefinition.MaxPlayTime);
-                result.Name.ShouldBe(_expectedBoardGameGeekGameDefinition.Name);
+                result.GameName.ShouldBe(_expectedBoardGameGeekGameDefinition.Name);
                 result.ThumbnailImageUrl.ShouldBe(_expectedBoardGameGeekGameDefinition.Thumbnail);
             }
 
@@ -171,7 +171,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.BoardGameGeekGameDefinitionsT
                 //--arrange
 
                 //--act
-                var result = AutoMocker.ClassUnderTest.GetFromSource(_boardGameGeekGameDefinitionId);
+                var result = AutoMocker.ClassUnderTest.GetFromSource(_boardGameGeekGameDefinitionId).UniversalGameStats;
 
                 //--assert
                 result.AveragePlayersPerGame.ShouldBe(2.5D);
@@ -183,7 +183,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.BoardGameGeekGameDefinitionsT
                 //--arrange
 
                 //--act
-                var result = AutoMocker.ClassUnderTest.GetFromSource(_boardGameGeekGameDefinitionId);
+                var result = AutoMocker.ClassUnderTest.GetFromSource(_boardGameGeekGameDefinitionId).UniversalGameStats;
 
                 //--assert
                 result.TotalNumberOfGamesPlayed.ShouldBe(2);
@@ -195,7 +195,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.BoardGameGeekGameDefinitionsT
                 //--arrange
 
                 //--act
-                var result = AutoMocker.ClassUnderTest.GetFromSource(_boardGameGeekGameDefinitionId);
+                var result = AutoMocker.ClassUnderTest.GetFromSource(_boardGameGeekGameDefinitionId).UniversalGameStats;
 
                 //--assert
                 result.TotalGamingGroupsWithThisGame.ShouldBe(2);
