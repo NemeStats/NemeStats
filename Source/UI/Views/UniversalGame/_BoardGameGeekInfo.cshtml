@@ -10,11 +10,11 @@
                 <div class="col-md-4">
                     @if (!string.IsNullOrEmpty(Model.ImageUrl))
                     {
-                        <img class="thumbnail" src="@Model.ImageUrl" alt="@Model.GameName" title="@Model.GameName" />
+                        <img class="thumbnail" src="@Model.ImageUrl" alt="@Model.GameName" title="@Model.GameName" itemprop="image"/>
                     }
                     else
                     {
-                        <img class="thumbnail" src="@Model.ThumbnailImageUrl" alt="@Model.GameName" title="@Model.GameName" />
+                        <img class="thumbnail" src="@Model.ThumbnailImageUrl" alt="@Model.GameName" title="@Model.GameName"  itemprop="image"/>
                     }
 
                 </div>
@@ -33,7 +33,7 @@
                             }
                             <tr>
                                 <td class="text-center"><i class="fa fa-users" data-toggle="tooltip" data-placement="left" title="Players"></i></td>
-                                <td>@numberOfPlayersString</td>
+                                <td itemprop="numberOfPlayers">@numberOfPlayersString</td>
                             </tr>
                         }
                         @if (Model.AveragePlayTime.HasValue)
@@ -60,7 +60,7 @@
                         {
                             <tr>
                                 <td class="text-center"><i class="fa fa-calendar" data-toggle="tooltip" data-placement="left" title="Year published"></i></td>
-                                <td>Published in @Model.BoardGameGeekYearPublished</td>
+                                <td>Published in <span itemprop="datePublished">@Model.BoardGameGeekYearPublished</span></td>
                             </tr>
                         }
                         @if (Model.BoardGameGeekUri != null)
@@ -79,7 +79,7 @@
                                 <td>
                                     @foreach (var category in Model.BoardGameGeekCategories)
                                     {
-                                        <span class="label label-default">@category</span>
+                                        <span class="label label-default" itemprop="genre">@category</span>
                                     }
                                 </td>
                             </tr>

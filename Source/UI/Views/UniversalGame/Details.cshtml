@@ -5,9 +5,9 @@
     Layout = MVC.Shared.Views._BaseLayout;
 }
 
-<div id="gamedefinition-details">
+<div id="gamedefinition-details" itemscope itemtype="http://schema.org/Game">
     <h2 class="page-header">
-        @Html.DisplayFor(model => Model.BoardGameGeekInfo.GameName) - Universal Statistics
+        <span itemprop="name">@Html.DisplayFor(model => Model.BoardGameGeekInfo.GameName)</span> - Universal Statistics
     </h2>
 
     <div class="row">
