@@ -29,12 +29,12 @@ namespace NemeStats.ScheduledJobs
         public static void RefreshAllBoardGameGeekData(TextWriter log)
         {
             var clock = new Stopwatch();
-            
+
             var boardGameGeekBatchUpdateJobService = Program.Container.GetInstance<IBoardGameGeekBatchUpdateJobService>();
             clock.Start();
             var jobResult = boardGameGeekBatchUpdateJobService.RefreshAllBoardGameGeekData();
             clock.Stop();
-            
+
             log.WriteLine($"Updated {jobResult} games in {clock.Elapsed}");
         }
 
@@ -52,14 +52,10 @@ namespace NemeStats.ScheduledJobs
             {
                 daysOutdated = 7;
             }
-            if (maxElementsToUpdate == 0)
-            {
-                maxElementsToUpdate = 100;
-            }
 
             var boardGameGeekBatchUpdateJobService = Program.Container.GetInstance<IBoardGameGeekBatchUpdateJobService>();
             clock.Start();
-            var jobResult = boardGameGeekBatchUpdateJobService.RefreshOutdatedBoardGameGeekData(daysOutdated, maxElementsToUpdate);
+            var jobResult = boardGameGeekBatchUpdateJobService.RefreshOutdatedBoardGameGeekData(daysOutdated, maxElementsToUpdate > 0 ? maxElementsToUpdate : (int?)null);
             clock.Stop();
 
             log.WriteLine($"Updated {jobResult} games in {clock.Elapsed}");
