@@ -88,11 +88,11 @@ else
         </div>
     </div>
 </div>
-@if (Model.RelatedGameDefintions.Any())
+@if (Model.RelatedGameDefinitions.Any())
 {
     <div class="panel panel-primary">
         <div class="panel-heading">
-            <h4>Games related to this Achievement <span class="badge">@Model.RelatedGameDefintions.Count</span></h4>
+            <h4>Games related to this Achievement <span class="badge">@Model.RelatedGameDefinitions.Count</span></h4>
         </div>
         <div class="panel-body">
             <div class="gameDefinitionsList flip-scroll" id="gameslist">
@@ -115,7 +115,7 @@ else
                             </th>
                     </thead>
                     <tbody class="list">
-                        @foreach (var game in Model.RelatedGameDefintions.OrderBy(g => g.Name))
+                        @foreach (var game in Model.RelatedGameDefinitions.OrderBy(g => g.Name))
                         {
                             <tr class="game-item">
                                 <td class="bgg-link-col">

@@ -19,6 +19,7 @@
 using System.Collections.Generic;
 using UI.Models.PlayedGame;
 using UI.Models.Players;
+using UI.Models.UniversalGameModels;
 
 namespace UI.Models.GameDefinitionModels
 {
@@ -30,10 +31,11 @@ namespace UI.Models.GameDefinitionModels
             GameDefinitionPlayersSummary = new List<GameDefinitionPlayerSummaryViewModel>();
         }
 
-        public IList<PlayedGameDetailsViewModel> PlayedGames { get; set; }
+        public List<PlayedGameDetailsViewModel> PlayedGames { get; set; }
         public string PlayedGamesPanelTitle { get; set; }
         public List<GameDefinitionPlayerSummaryViewModel> GameDefinitionPlayersSummary { get; set; }
         public string AveragePlayersPerGame { get; set; }
+        public BoardGameGeekInfoViewModel BoardGameGeekInfo { get; set; }
 
 
     }

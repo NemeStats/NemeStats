@@ -83,7 +83,7 @@ namespace UI.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            GameDefinitionDetailsViewModel gamingGroupGameDefinitionViewModel;
+            GameDefinitionDetailsViewModel2 gamingGroupGameDefinitionViewModel;
 
             try
             {
@@ -98,9 +98,6 @@ namespace UI.Controllers
             {
                 return new HttpUnauthorizedResult();
             }
-
-            gamingGroupGameDefinitionViewModel.PlayedGamesPanelTitle =
-                $"Last {gamingGroupGameDefinitionViewModel.PlayedGames.Count} Played Games";
 
             return View(MVC.GameDefinition.Views.Details, gamingGroupGameDefinitionViewModel);
         }

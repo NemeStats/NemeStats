@@ -34,7 +34,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
     {
         private int gameDefinitionId = 1;
         private GameDefinitionSummary gameDefinitionSummary;
-        private readonly GameDefinitionDetailsViewModel expectedViewModel = new GameDefinitionDetailsViewModel();
+        private readonly GameDefinitionDetailsViewModel2 expectedViewModel = new GameDefinitionDetailsViewModel2();
 
         [SetUp]
         public override void SetUp()
@@ -68,7 +68,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
         {
             var viewResult = autoMocker.ClassUnderTest.Details(gameDefinitionId, currentUser) as ViewResult;
 
-            var actualGameDefinitionViewModel = (GameDefinitionDetailsViewModel)viewResult.ViewData.Model;
+            var actualGameDefinitionViewModel = (GameDefinitionDetailsViewModel2)viewResult.ViewData.Model;
             Assert.AreEqual(expectedViewModel, actualGameDefinitionViewModel);
         }
 
@@ -107,15 +107,6 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
 
             var result = autoMocker.ClassUnderTest.Details(999999, currentUser) as HttpStatusCodeResult;
             Assert.AreEqual((int)HttpStatusCode.Unauthorized, result.StatusCode);
-        }
-
-        [Test]
-        public void ItSetsThePlayedGamesPanelTitle()
-        {
-            var viewResult = autoMocker.ClassUnderTest.Details(gameDefinitionId, currentUser) as ViewResult;
-
-            var actualGameDefinitionViewModel = (GameDefinitionDetailsViewModel)viewResult.ViewData.Model;
-            Assert.That(actualGameDefinitionViewModel.PlayedGamesPanelTitle, Is.EqualTo("Last 0 Played Games"));
         }
     }
 }

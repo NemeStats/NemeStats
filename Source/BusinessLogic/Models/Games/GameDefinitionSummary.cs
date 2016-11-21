@@ -34,5 +34,6 @@ namespace BusinessLogic.Models.Games
         public string GamingGroupName { get; set; }
         public IList<PlayerWinRecord> PlayerWinRecords { get; set; }
         public decimal AveragePlayersPerGame { get; set; }
+        public BoardGameGeekInfo BoardGameGeekInfo { get; set; }
     }
 }

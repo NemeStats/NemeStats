@@ -6,7 +6,6 @@ namespace UI.Models.GameDefinitionModels
         public string Name { get; set; }
         public int GamingGroupId { get; set; }
         public BoardGameGeekGameDefinitionViewModel BoardGameGeekGameDefinition { get; set; }
-
         public bool HasBoardGameGeekDefinition => BoardGameGeekGameDefinition != null;
     }
 }
