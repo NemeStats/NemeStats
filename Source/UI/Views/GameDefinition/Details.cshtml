@@ -156,9 +156,17 @@
         </div>
     </div>
 
-    <div class="row">
-        @Html.Partial(MVC.Player.Views._GameDefinitionPlayersSummaryPartial, Model.GameDefinitionPlayersSummary)
-    </div>
+<div class="row">
+    @{
+        var viewDataDictionary = new ViewDataDictionary
+        {
+            {"GamingGroupName", Model.GamingGroupName},
+            {"GamingGroupId", Model.GamingGroupId}
+        };
+    }
+
+    @Html.Partial(MVC.Player.Views._GameDefinitionPlayersSummaryPartial, Model.GameDefinitionPlayersSummary, viewDataDictionary)
+</div>
 
     <div class="row">
         <div class="panel panel-primary">

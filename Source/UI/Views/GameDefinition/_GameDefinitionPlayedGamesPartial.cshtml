@@ -2,7 +2,7 @@
 
 <div class="panel panel-primary">
     <div class="panel-heading">
-        <h4>@ViewData["PanelTitle"]</h4>
+        <h4>Last @Model.Count Played Games for <a href="@Url.Action(MVC.GamingGroup.Details().AddRouteValue("id", ViewData["GamingGroupId"]))">@ViewData["GamingGroupName"]</a></h4>
     </div>
     <div class="panel-body">
         <div class="table-responsive">

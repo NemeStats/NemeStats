@@ -55,16 +55,14 @@ namespace UI.Controllers
             {
                 viewModel.GamingGroupGameDefinitionSummary = new GamingGroupGameDefinitionViewModel
                 {
-                    Id = gamingGroupGameDefinitionSummary.Id,
-                    Name = gamingGroupGameDefinitionSummary.GamingGroupName,
+                    GamingGroupId = gamingGroupGameDefinitionSummary.GamingGroupId,
+                    GamingGroupName = gamingGroupGameDefinitionSummary.GamingGroupName,
                     PlayedGamesPanelTitle = $"Last {gamingGroupGameDefinitionSummary.PlayedGames.Count} Played Games",
                     PlayedGames = gamingGroupGameDefinitionSummary.PlayedGames.Select(playedGame => _playedGameDetailsViewModelBuilder.Build(playedGame, currentUser)).ToList(),
                     GameDefinitionPlayerSummaries = gamingGroupGameDefinitionSummary.PlayerWinRecords
                     .Select(playerWinRecord => _transformer.Transform<GameDefinitionPlayerSummaryViewModel>(playerWinRecord)).ToList(),
                     GamingGroupGameDefinitionStats = new GamingGroupGameDefinitionStatsViewModel
                     {
-                        Id = gamingGroupGameDefinitionSummary.Id,
-                        Name = gamingGroupGameDefinitionSummary.GamingGroupName,
                         AveragePlayersPerGame = $"{gamingGroupGameDefinitionSummary.AveragePlayersPerGame:0.#}",
                         TotalNumberOfGamesPlayed = gamingGroupGameDefinitionSummary.TotalNumberOfGamesPlayed
                     }

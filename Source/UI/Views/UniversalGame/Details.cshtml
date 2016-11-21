@@ -13,6 +13,9 @@
     <div class="row">
         @Html.Partial(MVC.UniversalGame.Views._BoardGameGeekInfo, Model.BoardGameGeekInfo)
     </div>
+    <div class="row">
+        @Html.Partial(MVC.UniversalGame.Views._UniversalGameStats, Model.UniversalGameStats)
+    </div>
     @{
         var gamingGroupData = Model.GamingGroupGameDefinitionSummary;
     }
@@ -20,15 +23,22 @@
     @if (gamingGroupData != null)
     {
         <div class="row">
-            @Html.Partial(MVC.Player.Views._GameDefinitionPlayersSummaryPartial, gamingGroupData.GameDefinitionPlayerSummaries)
+            @{
+                var viewDataDictionary = new ViewDataDictionary
+                {
+                    { "GamingGroupName", gamingGroupData.GamingGroupName },
+                    { "GamingGroupId", gamingGroupData.GamingGroupId }
+                };
+            }
+            @Html.Partial(MVC.Player.Views._GameDefinitionPlayersSummaryPartial, gamingGroupData.GameDefinitionPlayerSummaries, viewDataDictionary)
         </div>
 
         <div class="row">
-            @Html.Partial(MVC.GameDefinition.Views._GamingGroupGameDefinitionStatsPartial, gamingGroupData.GamingGroupGameDefinitionStats)
+            @Html.Partial(MVC.GameDefinition.Views._GamingGroupGameDefinitionStatsPartial, gamingGroupData.GamingGroupGameDefinitionStats, viewDataDictionary)
         </div>
 
         <div class="row">
-            @Html.Partial(MVC.GameDefinition.Views._GameDefinitionPlayedGamesPartial, gamingGroupData.PlayedGames, new ViewDataDictionary { { "PanelTitle", gamingGroupData.PlayedGamesPanelTitle } })
+            @Html.Partial(MVC.GameDefinition.Views._GameDefinitionPlayedGamesPartial, gamingGroupData.PlayedGames, viewDataDictionary)
         </div>
     }
 

@@ -102,8 +102,8 @@ namespace UI.Tests.UnitTests.ControllerTests.UniversalGameControllerTests
             //--assert
             var model = result.Model as UniversalGameDetailsViewModel;
             var gamingGroupSummary = model.GamingGroupGameDefinitionSummary;
-            gamingGroupSummary.Id.ShouldBe(_expectedGameDefinitionSummary.Id);
-            gamingGroupSummary.Name.ShouldBe(_expectedGameDefinitionSummary.GamingGroupName);
+            gamingGroupSummary.GamingGroupId.ShouldBe(_expectedGameDefinitionSummary.GamingGroupId);
+            gamingGroupSummary.GamingGroupName.ShouldBe(_expectedGameDefinitionSummary.GamingGroupName);
             gamingGroupSummary.PlayedGamesPanelTitle.ShouldBe("Last " + _expectedGameDefinitionSummary.PlayedGames.Count + " Played Games");
         }
 
@@ -119,8 +119,6 @@ namespace UI.Tests.UnitTests.ControllerTests.UniversalGameControllerTests
             var model = result.Model as UniversalGameDetailsViewModel;
             var gamingGroupSummary = model.GamingGroupGameDefinitionSummary;
             gamingGroupSummary.GamingGroupGameDefinitionStats.ShouldNotBeNull();
-            gamingGroupSummary.GamingGroupGameDefinitionStats.Id.ShouldBe(_expectedGameDefinitionSummary.Id);
-            gamingGroupSummary.GamingGroupGameDefinitionStats.Name.ShouldBe(_expectedGameDefinitionSummary.GamingGroupName);
             gamingGroupSummary.GamingGroupGameDefinitionStats.AveragePlayersPerGame.ShouldBe("2.6");
             gamingGroupSummary.GamingGroupGameDefinitionStats.TotalNumberOfGamesPlayed.ShouldBe(_expectedGameDefinitionSummary.TotalNumberOfGamesPlayed);
         }
