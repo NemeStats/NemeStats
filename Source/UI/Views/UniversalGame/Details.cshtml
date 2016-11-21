@@ -22,19 +22,17 @@
 
     @if (gamingGroupData != null)
     {
+        var viewDataDictionary = new ViewDataDictionary
+        {
+            {"GamingGroupName", gamingGroupData.GamingGroupName},
+            {"GamingGroupId", gamingGroupData.GamingGroupId}
+        };
         <div class="row">
-            @{
-                var viewDataDictionary = new ViewDataDictionary
-                {
-                    { "GamingGroupName", gamingGroupData.GamingGroupName },
-                    { "GamingGroupId", gamingGroupData.GamingGroupId }
-                };
-            }
-            @Html.Partial(MVC.Player.Views._GameDefinitionPlayersSummaryPartial, gamingGroupData.GameDefinitionPlayerSummaries, viewDataDictionary)
+            @Html.Partial(MVC.GameDefinition.Views._GamingGroupGameDefinitionStatsPartial, gamingGroupData.GamingGroupGameDefinitionStats, viewDataDictionary)
         </div>
 
         <div class="row">
-            @Html.Partial(MVC.GameDefinition.Views._GamingGroupGameDefinitionStatsPartial, gamingGroupData.GamingGroupGameDefinitionStats, viewDataDictionary)
+            @Html.Partial(MVC.Player.Views._GameDefinitionPlayersSummaryPartial, gamingGroupData.GameDefinitionPlayerSummaries, viewDataDictionary)
         </div>
 
         <div class="row">

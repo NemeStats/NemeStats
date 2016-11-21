@@ -8,9 +8,9 @@
     Layout = MVC.Shared.Views._BaseLayout;
 }
 
-<div id="gamedefinition-details" itemscope itemtype="http://schema.org/Game">
-    <h2 class="page-header" itemprop="name">
-        @Html.DisplayFor(model => model.Name) on @Html.ActionLink(@Model.GamingGroupName, MVC.GamingGroup.ActionNames.Details, MVC.GamingGroup.Name, new {id = @Model.GamingGroupId}, new {})
+<div id="gamedefinition-details">
+    <h2 class="page-header">
+        @Html.DisplayFor(model => model.Name) on @Html.ActionLink(@Model.GamingGroupName, MVC.GamingGroup.ActionNames.Details, MVC.GamingGroup.Name, new { id = @Model.GamingGroupId }, new { })
         @if (Model.UserCanEdit)
         {
             <a href="@Url.Action(MVC.GameDefinition.ActionNames.Edit, MVC.GameDefinition.Name, new {id = Model.Id})" class="btn btn-xs btn-default">
@@ -32,13 +32,13 @@
                             <div class="col-md-4">
                                 @if (!string.IsNullOrEmpty(Model.BoardGameGeekGameDefinition.Image))
                                 {
-                                    <img class="thumbnail" src="@Model.BoardGameGeekGameDefinition.Image" alt="@Model.Name" title="@Model.Name" itemprop="image" />
+                                    <img class="thumbnail" src="@Model.BoardGameGeekGameDefinition.Image" alt="@Model.Name" title="@Model.Name" />
                                 }
                                 else
                                 {
-                                    <img class="thumbnail" src="@Model.BoardGameGeekGameDefinition.Thumbnail" alt="@Model.Name" title="@Model.Name" itemprop="image" />
+                                    <img class="thumbnail" src="@Model.BoardGameGeekGameDefinition.Thumbnail" alt="@Model.Name" title="@Model.Name" />
                                 }
-                                
+
                             </div>
                             <div class="col-md-4 col-md-offset-4">
                                 <table class="table well data">
@@ -46,7 +46,7 @@
                                     {
                                         <tr>
                                             <td class="text-center"><i class="fa fa-users" data-toggle="tooltip" data-placement="left" title="Players"></i></td>
-                                            <td itemprop="numberOfPlayers" >@Model.BoardGameGeekGameDefinition.MinPlayers - @Model.BoardGameGeekGameDefinition.MaxPlayers players</td>
+                                            <td>@Model.BoardGameGeekGameDefinition.MinPlayers - @Model.BoardGameGeekGameDefinition.MaxPlayers players</td>
                                         </tr>
                                     }
                                     @if (Model.BoardGameGeekGameDefinition.AveragePlayTime.HasValue)
@@ -73,7 +73,7 @@
                                     {
                                         <tr>
                                             <td class="text-center"><i class="fa fa-calendar" data-toggle="tooltip" data-placement="left" title="Year published"></i></td>
-                                            <td>Published in <span itemprop="datePublished">@Model.BoardGameGeekGameDefinition.YearPublished</span></td>
+                                            <td>Published in <span>@Model.BoardGameGeekGameDefinition.YearPublished</span></td>
                                         </tr>
                                     }
                                     @if (Model.BoardGameGeekGameDefinition.BoardGameGeekUri != null)
@@ -92,7 +92,7 @@
                                             <td>
                                                 @foreach (var category in Model.BoardGameGeekGameDefinition.Categories)
                                                 {
-                                                    <span class="label label-default" itemprop="genre">@category</span>
+                                                    <span class="label label-default">@category</span>
                                                 }
                                             </td>
                                         </tr>
@@ -156,7 +156,6 @@
         </div>
     </div>
 
-<div class="row">
     @{
         var viewDataDictionary = new ViewDataDictionary
         {
@@ -164,74 +163,21 @@
             {"GamingGroupId", Model.GamingGroupId}
         };
     }
-
-    @Html.Partial(MVC.Player.Views._GameDefinitionPlayersSummaryPartial, Model.GameDefinitionPlayersSummary, viewDataDictionary)
-</div>
+    <div class="row">
+        @Html.Partial(MVC.Player.Views._GameDefinitionPlayersSummaryPartial, Model.GameDefinitionPlayersSummary, viewDataDictionary)
+    </div>
 
     <div class="row">
-        <div class="panel panel-primary">
-            <div class="panel-heading">
-                <h4>@Model.PlayedGamesPanelTitle</h4>
-            </div>
-            <div class="panel-body">
-                <div class="table-responsive">
-                    <table class="table table-hover table-striped">
-                        <thead>
-                        <tr>
-                            <th class="col-md-5">
-                                Date Played
-                            </th>
-                            <th class="col-md-6 result-head">
-                                Result
-                            </th>
-                            <th class="col-md-1 edit-head">
-
-                            </th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        @foreach (var playedGameViewModel in Model.PlayedGames)
-                        {
-                            <tr>
-                                <td>@playedGameViewModel.DatePlayed.ToShortDateString()</td>
-                                <td class="result-col">
-                                    @foreach (var gameResultViewModel in playedGameViewModel.PlayerResults)
-                                    {
-                                        
-                                                @Html.Partial(MVC.PlayedGame.Views._GameResult, gameResultViewModel)
-                                        
-                                    }
-                                </td>
-                                <td class="edit-col">
-                                    <a href="@Url.Action("Details", "PlayedGame", new {id = playedGameViewModel.PlayedGameId})" title="Details">
-                                        <i class="fa fa-book fa-2x"></i>
-                                    </a>
-                                    @if (playedGameViewModel.UserCanEdit)
-                                    {
-                                        <a href="@Url.Action("Edit", "PlayedGame", new {id = playedGameViewModel.PlayedGameId})" title="Edit">
-                                            <i class="fa fa-pencil fa-2x"></i>
-                                        </a>
-                                        <a href="@Url.Action("Delete", "PlayedGame", new {id = playedGameViewModel.PlayedGameId})" title="Delete">
-                                            <i class="fa fa-trash-o fa-2x"></i>
-                                        </a>
-                                    }
-                                </td>
-                            </tr>
-                        }
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
+        @Html.Partial(MVC.GameDefinition.Views._GameDefinitionPlayedGamesPartial, Model.PlayedGames, viewDataDictionary)
     </div>
 </div>
 
 @section Scripts{
-<script type="text/javascript">
-        $(document).ready(function() {
+    <script type="text/javascript">
+        $(document).ready(function () {
             var viewmodel = new window.Views.GameDefinition.GameDefinitionPlayersSummaryPartial();
             viewmodel.initListJs();
         });
-</script>
-    
+    </script>
+
 }
