@@ -155,7 +155,7 @@ namespace UI.Controllers
                 gamingGroupContextSwitcher.SwitchGamingGroupContext(gamingGroupId, currentUser);
             }
 
-            return RedirectToAction(MVC.GamingGroup.Details(gamingGroupId, currentUser));
+            return RedirectToAction(MVC.GamingGroup.Details().AddRouteValue("id", gamingGroupId));
         }
 
         [HttpPost]
