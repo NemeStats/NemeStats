@@ -125,6 +125,7 @@ namespace UI.Transformations
             Mapper.CreateMap<PlayedGameFilterMessage, PlayedGameFilter>(MemberList.Source);
 
             Mapper.CreateMap<BoardGameGeekInfo, BoardGameGeekInfoViewModel>()
+                 .ForMember(m => m.HideLinkToGlobalStats, opt => opt.Ignore())
                  .ForMember(m => m.BoardGameGeekUri,
                     opt => opt.MapFrom(src => BoardGameGeekUriBuilder.BuildBoardGameGeekGameUri(src.BoardGameGeekGameDefinitionId)))
                 .ForMember(m => m.BoardGameGeekAverageWeightDescription,

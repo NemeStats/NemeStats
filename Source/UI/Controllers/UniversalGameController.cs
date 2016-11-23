@@ -48,6 +48,7 @@ namespace UI.Controllers
         {
             var boardGameGeekGameSummary = _universalGameRetriever.GetBoardGameGeekGameSummary(id, currentUser);
             var viewModel = _transformer.Transform<UniversalGameDetailsViewModel>(boardGameGeekGameSummary);
+            viewModel.BoardGameGeekInfo.HideLinkToGlobalStats = true;
 
             var gamingGroupGameDefinitionSummary = boardGameGeekGameSummary.GamingGroupGameDefinitionSummary;
 

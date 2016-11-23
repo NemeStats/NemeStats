@@ -38,6 +38,7 @@ namespace BusinessLogic.Logic.BoardGameGeekGameDefinitions
                          && x.GamingGroupId == currentUser.CurrentGamingGroupId)
                 .Select(x => x.Id)
                 .FirstOrDefault();
+
             if (gameDefinitionId != default(int))
             {
                 summary.GamingGroupGameDefinitionSummary = _gameDefinitionRetriever.GetGameDefinitionDetails(gameDefinitionId, numberOfRecentlyPlayedGamesToShow);

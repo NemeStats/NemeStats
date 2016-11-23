@@ -63,13 +63,20 @@
                                 <td>Published in <span itemprop="datePublished">@Model.BoardGameGeekYearPublished</span></td>
                             </tr>
                         }
+                        @if (!Model.HideLinkToGlobalStats)
+                        {
+                            <tr>
+                                <td class="text-center"><i class="fa fa-globe" data-toggle="tooltip" data-placement="left" title="View Universal Game Page for All of NemeStats"></i></td>
+                                <td><a href="@Url.Action(MVC.UniversalGame.Details().AddRouteValue("id", Model.BoardGameGeekGameDefinitionId))" target="_blank;" alt="View Global Stats">View Global Stats</a></td>
+                            </tr>
+                        }
                         @if (Model.BoardGameGeekUri != null)
                         {
                             <tr>
                                 <td class="text-center">
-                                    <img src="~/Content/Images/bgg_small.png" />
+                                    <img src="~/Content/Images/bgg_small.png" alt="View on boardgamegeek.com"/>
                                 </td>
-                                <td><a href="@Model.BoardGameGeekUri.AbsoluteUri" target="_blank;">view on boardgamegeek.com</a></td>
+                                <td><a href="@Model.BoardGameGeekUri.AbsoluteUri" target="_blank;" alt="View on boardgamegeek.com">View on boardgamegeek.com</a></td>
                             </tr>
                         }
                         @if (Model.BoardGameGeekCategories.Count > 0)

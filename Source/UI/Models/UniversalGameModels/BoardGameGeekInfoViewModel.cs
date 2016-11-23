@@ -5,6 +5,7 @@ namespace UI.Models.UniversalGameModels
 {
     public class BoardGameGeekInfoViewModel
     {
+        public int BoardGameGeekGameDefinitionId { get; set; }
         public string GameName { get; set; }
         public string ImageUrl { get; set; }
         public string ThumbnailImageUrl { get; set; }
@@ -19,5 +20,6 @@ namespace UI.Models.UniversalGameModels
         public List<string> BoardGameGeekCategories { get; set; }
         public List<string> BoardGameGeekMechanics { get; set; }
         public string BoardGameGeekDescription { get; set; }
+        public bool HideLinkToGlobalStats { get; set; }
     }
 }

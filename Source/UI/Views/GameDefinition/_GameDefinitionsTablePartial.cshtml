@@ -1,4 +1,6 @@
-﻿@model IList<UI.Models.GameDefinitionModels.GameDefinitionSummaryViewModel>
+﻿@using UI.Models.GameDefinitionModels
+@using UI.Models.UniversalGameModels
+@model List<UI.Models.GameDefinitionModels.GameDefinitionSummaryViewModel>
 
 @{
     Layout = null;
@@ -52,21 +54,23 @@
             </tr>
             </thead>
             <tbody class="list">
+
             @foreach (var item in Model)
             {
+                BoardGameGeekInfoViewModel boardGameGeekInfo = item.BoardGameGeekInfo;
                 <tr class="game-item">
                     <td class="bgg-link-col">
-                        @if (item.HasBoardGameGeekDefinition)
+                        @if (boardGameGeekInfo != null)
                         {
-                            if (!string.IsNullOrEmpty(item.BoardGameGeekGameDefinition.Thumbnail))
+                            if (!string.IsNullOrEmpty(boardGameGeekInfo.ThumbnailImageUrl))
                             {
-                                <a href="@item.BoardGameGeekGameDefinition.BoardGameGeekUri.AbsoluteUri">
-                                    <img class="bgg-thumbnail" src="@item.BoardGameGeekGameDefinition.Thumbnail" alt="View on BoardGameGeek.com" title="View on BoardGameGeek.com"/>
+                                <a href="@boardGameGeekInfo.BoardGameGeekUri.AbsoluteUri">
+                                    <img class="bgg-thumbnail" src="@boardGameGeekInfo.ThumbnailImageUrl" alt="View on BoardGameGeek.com" title="View on BoardGameGeek.com"/>
                                 </a>
                             }
                             else
                             {
-                                <a href="@item.BoardGameGeekGameDefinition.BoardGameGeekUri.AbsoluteUri" target="_blank;">
+                                <a href="@boardGameGeekInfo.BoardGameGeekUri.AbsoluteUri" target="_blank;">
                                     <img src="~/Content/Images/bgg_small.png" alt="View on BoardGameGeek.com" title="View on BoardGameGeek.com"/>
                                 </a>
                             }

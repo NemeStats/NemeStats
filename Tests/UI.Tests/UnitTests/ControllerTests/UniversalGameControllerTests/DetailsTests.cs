@@ -66,7 +66,10 @@ namespace UI.Tests.UnitTests.ControllerTests.UniversalGameControllerTests
             {
                 GamingGroupGameDefinitionSummary = _expectedGameDefinitionSummary
             };
-            _expectedUniversalGameDetailsViewModel = new UniversalGameDetailsViewModel();
+            _expectedUniversalGameDetailsViewModel = new UniversalGameDetailsViewModel
+            {
+                BoardGameGeekInfo = new BoardGameGeekInfoViewModel()
+            };
 
             _autoMocker.Get<IUniversalGameRetriever>().Expect(mock => mock.GetBoardGameGeekGameSummary(Arg<int>.Is.Anything, Arg<ApplicationUser>.Is.Anything, Arg<int>.Is.Anything))
                 .Return(_expectedBoardGameGeekGameSummary);
@@ -121,6 +124,19 @@ namespace UI.Tests.UnitTests.ControllerTests.UniversalGameControllerTests
             gamingGroupSummary.GamingGroupGameDefinitionStats.ShouldNotBeNull();
             gamingGroupSummary.GamingGroupGameDefinitionStats.AveragePlayersPerGame.ShouldBe("2.6");
             gamingGroupSummary.GamingGroupGameDefinitionStats.TotalNumberOfGamesPlayed.ShouldBe(_expectedGameDefinitionSummary.TotalNumberOfGamesPlayed);
+        }
+
+        [Test]
+        public void It_Hides_The_Link_To_Global_Stats_Because_We_Are_Showing_The_Global_Stats_Page_Already()
+        {
+            //--arrange
+
+            //--act
+            var result = _autoMocker.ClassUnderTest.Details(_boardGameGeekGameDefinitionId, _currentUser) as ViewResult;
+
+            //--assert
+            var model = result.Model as UniversalGameDetailsViewModel;
+            model.BoardGameGeekInfo.HideLinkToGlobalStats.ShouldBe(true);
         }
 
         [Test]

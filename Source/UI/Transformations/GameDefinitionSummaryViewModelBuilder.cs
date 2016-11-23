@@ -22,6 +22,7 @@ using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
 using BusinessLogic.Models.User;
 using UI.Models.GameDefinitionModels;
+using UI.Models.UniversalGameModels;
 
 namespace UI.Transformations
 {
@@ -46,15 +47,10 @@ namespace UI.Transformations
                 TotalNumberOfGamesPlayed = gameDefinitionSummary.TotalNumberOfGamesPlayed,
                 GamingGroupId = gameDefinitionSummary.GamingGroupId,
                 GamingGroupName = gameDefinitionSummary.GamingGroupName,
-                BoardGameGeekGameDefinition = _transformer.Transform<BoardGameGeekGameDefinitionViewModel>(gameDefinitionSummary.BoardGameGeekGameDefinition),
+                BoardGameGeekInfo = _transformer.Transform<BoardGameGeekInfoViewModel>(gameDefinitionSummary.BoardGameGeekInfo),
                 UserCanEdit =
                     (currentUser != null && gameDefinitionSummary.GamingGroupId == currentUser.CurrentGamingGroupId)
             };
-
-            if (viewModel.BoardGameGeekGameDefinition != null)
-            {
-                viewModel.BoardGameGeekGameDefinition.WeightDescription = _weightTierCalculator.GetWeightTier(viewModel.BoardGameGeekGameDefinition.AverageWeight).ToString();
-            }
 
             if (!(gameDefinitionSummary.Champion is NullChampion))
             {

@@ -3,7 +3,6 @@ using BusinessLogic.DataAccess;
 using BusinessLogic.Exceptions;
 using BusinessLogic.Models;
 using BusinessLogic.Models.User;
-using System.Collections.Generic;
 using System.Linq;
 using BusinessLogic.Models.Games;
 
@@ -20,14 +19,14 @@ namespace BusinessLogic.Logic.BoardGameGeek
             _boardGameGeekApiClient = boardGameGeekApiClient;
         }
 
-        public int? CreateBoardGameGeekGameDefinition(int boardGameGeekGameDefinitionId, ApplicationUser currentUser)
+        public BoardGameGeekGameDefinition CreateBoardGameGeekGameDefinition(int boardGameGeekGameDefinitionId, ApplicationUser currentUser)
         {
             try
             {
                 var existingRecord = _dataContext.FindById<BoardGameGeekGameDefinition>(boardGameGeekGameDefinitionId);
                 if (existingRecord != null)
                 {
-                    return boardGameGeekGameDefinitionId;
+                    return existingRecord;
                 }
             }
             catch (EntityDoesNotExistException)
@@ -77,8 +76,6 @@ namespace BusinessLogic.Logic.BoardGameGeek
                 }
 
                 newRecord.Categories.Add(existentCategory);
-
-
             }
 
             foreach (var mechanic in gameDetails.Mechanics)
@@ -95,10 +92,9 @@ namespace BusinessLogic.Logic.BoardGameGeek
                 }
 
                 newRecord.Mechanics.Add(existentMechanic);
-
             }
 
-            return boardGameGeekGameDefinitionId;
+            return newRecord;
         }
     }
 }

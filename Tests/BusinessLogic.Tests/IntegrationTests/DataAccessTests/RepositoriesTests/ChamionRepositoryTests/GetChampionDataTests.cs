@@ -15,9 +15,13 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
+
+using BusinessLogic.Caching;
 using BusinessLogic.DataAccess;
 using BusinessLogic.DataAccess.Repositories;
+using BusinessLogic.Logic.BoardGameGeekGameDefinitions;
 using BusinessLogic.Logic.GameDefinitions;
+using BusinessLogic.Logic.Utilities;
 using BusinessLogic.Models;
 using NUnit.Framework;
 
@@ -30,6 +34,7 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
         private IGameDefinitionRetriever gameDefinitionRetriever;
         private GameDefinition gameDefinition;
         private GameDefinition championlessGameDefinition;
+        private CacheableGameDataRetriever cacheableGameDataRetriever;
         private int championPlayerIdForGameDefinition;
         private int otherChampionPlayerIdForGameDefinition;
 
@@ -41,7 +46,8 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
 
             dataContext = new NemeStatsDataContext();
             var playerRepository = new EntityFrameworkPlayerRepository(dataContext);
-            gameDefinitionRetriever = new GameDefinitionRetriever(dataContext, playerRepository);
+            cacheableGameDataRetriever = new CacheableGameDataRetriever(new DateUtilities(), new CacheService(), dataContext);
+            gameDefinitionRetriever = new GameDefinitionRetriever(dataContext, playerRepository, cacheableGameDataRetriever);
 
             gameDefinition = gameDefinitionRetriever.GetGameDefinitionDetails(testGameDefinitionWithOtherGamingGroupId.Id,
                 0);
