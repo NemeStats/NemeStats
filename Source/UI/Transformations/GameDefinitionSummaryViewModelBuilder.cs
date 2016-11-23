@@ -39,7 +39,7 @@ namespace UI.Transformations
 
         public GameDefinitionSummaryViewModel Build(GameDefinitionSummary gameDefinitionSummary, ApplicationUser currentUser)
         {
-            var viewModel = new GameDefinitionDetailsViewModel
+            var viewModel = new GameDefinitionSummaryViewModel
             {
                 Id = gameDefinitionSummary.Id,
                 Name = gameDefinitionSummary.Name,

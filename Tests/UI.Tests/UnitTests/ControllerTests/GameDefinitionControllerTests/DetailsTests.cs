@@ -34,7 +34,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
     {
         private int gameDefinitionId = 1;
         private GameDefinitionSummary gameDefinitionSummary;
-        private readonly GameDefinitionDetailsViewModel2 expectedViewModel = new GameDefinitionDetailsViewModel2();
+        private readonly GameDefinitionDetailsViewModel expectedViewModel = new GameDefinitionDetailsViewModel();
 
         [SetUp]
         public override void SetUp()
@@ -68,7 +68,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
         {
             var viewResult = autoMocker.ClassUnderTest.Details(gameDefinitionId, currentUser) as ViewResult;
 
-            var actualGameDefinitionViewModel = (GameDefinitionDetailsViewModel2)viewResult.ViewData.Model;
+            var actualGameDefinitionViewModel = (GameDefinitionDetailsViewModel)viewResult.ViewData.Model;
             Assert.AreEqual(expectedViewModel, actualGameDefinitionViewModel);
         }
 

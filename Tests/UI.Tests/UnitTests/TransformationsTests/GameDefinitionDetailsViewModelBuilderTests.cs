@@ -40,7 +40,7 @@ namespace UI.Tests.UnitTests.TransformationsTests
     {
         private RhinoAutoMocker<GameDefinitionDetailsViewModelBuilder> _autoMocker; 
         private GameDefinitionSummary _gameDefinitionSummary;
-        private GameDefinitionDetailsViewModel2 _viewModel;
+        private GameDefinitionDetailsViewModel _viewModel;
         private PlayedGameDetailsViewModel _playedGameDetailsViewModel1;
         private PlayedGameDetailsViewModel _playedGameDetailsViewModel2;
         private ApplicationUser _currentUser;

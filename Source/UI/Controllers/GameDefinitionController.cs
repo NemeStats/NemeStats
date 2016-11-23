@@ -83,7 +83,7 @@ namespace UI.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            GameDefinitionDetailsViewModel2 gamingGroupGameDefinitionViewModel;
+            GameDefinitionDetailsViewModel gamingGroupGameDefinitionViewModel;
 
             try
             {

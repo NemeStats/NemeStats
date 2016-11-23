@@ -46,14 +46,14 @@ namespace UI.Transformations
             _cacheableGameDataRetriever = cacheableGameDataRetriever;
         }
 
-        public GameDefinitionDetailsViewModel2 Build(GameDefinitionSummary gameDefinitionSummary, ApplicationUser currentUser)
+        public GameDefinitionDetailsViewModel Build(GameDefinitionSummary gameDefinitionSummary, ApplicationUser currentUser)
         {
             BoardGameGeekInfoViewModel boardGameGeekInfoViewModel = null;
             if (gameDefinitionSummary.BoardGameGeekGameDefinitionId.HasValue)
             {
                 boardGameGeekInfoViewModel = _transformer.Transform<BoardGameGeekInfoViewModel>(gameDefinitionSummary.BoardGameGeekInfo);
             }
-            var viewModel = new GameDefinitionDetailsViewModel2
+            var viewModel = new GameDefinitionDetailsViewModel
             {
                 GameDefinitionId = gameDefinitionSummary.Id,
                 GameDefinitionName = gameDefinitionSummary.Name,

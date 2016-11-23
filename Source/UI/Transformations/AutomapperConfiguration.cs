@@ -144,7 +144,7 @@ namespace UI.Transformations
 
             Mapper.CreateMap<UniversalGameStats, UniversalGameStatsViewModel>()
                 .ForMember(m => m.AveragePlayersPerGame,
-                    opt => opt.MapFrom(src => $"{src.AveragePlayersPerGame:0.#}"));
+                    opt => opt.MapFrom(src => $"{(src.AveragePlayersPerGame ?? 0):0.#}"));
 
             Mapper.CreateMap<BoardGameGeekGameSummary, UniversalGameDetailsViewModel>(MemberList.Destination)
                 .ForMember(m => m.GamingGroupGameDefinitionSummary, opt => opt.Ignore());

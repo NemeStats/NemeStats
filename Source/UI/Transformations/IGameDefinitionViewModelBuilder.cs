@@ -24,6 +24,6 @@ namespace UI.Transformations
 {
     public interface IGameDefinitionDetailsViewModelBuilder
     {
-        GameDefinitionDetailsViewModel2 Build(GameDefinitionSummary gameDefinitionSummary, ApplicationUser currentUser);
+        GameDefinitionDetailsViewModel Build(GameDefinitionSummary gameDefinitionSummary, ApplicationUser currentUser);
     }
 }

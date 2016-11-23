@@ -426,7 +426,7 @@
     <Compile Include="Models\Badges\MinionBadgeViewModel.cs" />
     <Compile Include="Models\Badges\NemesisBadgeViewModel.cs" />
     <Compile Include="Models\Badges\PreviousNemesisBadgeViewModel.cs" />
-    <Compile Include="Models\GameDefinitionModels\GameDefinitionDetailsViewModel2.cs" />
+    <Compile Include="Models\GameDefinitionModels\GameDefinitionDetailsViewModel.cs" />
     <Compile Include="Models\GameDefinitionModels\GamingGroupGameDefinitionStatsViewModel.cs" />
     <Compile Include="Models\UniversalGameModels\BoardGameGeekInfoViewModel.cs" />
     <Compile Include="Models\GameDefinitionModels\BoardGameGeekGameDefinitionViewModel.cs" />
@@ -446,7 +446,6 @@
     <Compile Include="Models\LocalPasswordModel.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AdminViewModel.cs" />
-    <Compile Include="Models\GameDefinitionModels\GameDefinitionDetailsViewModel.cs" />
     <Compile Include="Models\GamingGroup\InvitationViewModel.cs" />
     <Compile Include="Models\Home\IndexViewModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
