@@ -52,6 +52,7 @@ namespace UI.DependencyResolution
             r.For<ICustomMapper<GameDefinitionSummary, GameDefinitionSummaryListViewModel>>().Use<GameDefinitionSummaryToGameDefinitionSummaryListViewModelMapper>();
 
             r.For<ICustomMapper<SavePlayedGameRequest, NewlyCompletedGame>>().Use<CreatePlayedGameRequestToNewlyCompletedGameMapper>();
+            r.For<ICustomMapper<SavePlayedGameRequest, UpdatedGame>>().Use<SavePlayedGameRequestToUpdatedGameGameMapper>();
 
             r.For<ICustomMapper<IAchievement, AchievementSummaryViewModel>>().Use<AchievementToAchievementSummaryViewModelMapper>();
             r.For<ICustomMapper<IAchievement, AchievementViewModel>>().Use<AchievementToAchievementViewModelMapper>();

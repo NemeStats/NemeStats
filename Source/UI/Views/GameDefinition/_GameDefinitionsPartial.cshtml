@@ -10,8 +10,18 @@
             Games This Group Plays <span class="badge">@Model.Count</span>
         </h4>
     </div>
-    <div id="js-gamedefinitions">
-        @Html.Partial(MVC.GameDefinition.Views._GameDefinitionsTablePartial, Model, new ViewDataDictionary { { "canEdit", ViewData["canEdit"] } })
+    <div>
+        <div class="panel-body">
+            @if ((bool?)ViewData["canEdit"] == true)
+            {
+                <div class="well">
+                    @{ Html.RenderAction(MVC.GameDefinition.CreatePartial()); }
+                </div>
+            }
+            <div id="js-gamedefinitions">
+                @Html.Partial(MVC.GameDefinition.Views._GameDefinitionsTablePartial, Model, new ViewDataDictionary { { "canEdit", ViewData["canEdit"] } })
+            </div>
+        </div>
     </div>
 </div>
 

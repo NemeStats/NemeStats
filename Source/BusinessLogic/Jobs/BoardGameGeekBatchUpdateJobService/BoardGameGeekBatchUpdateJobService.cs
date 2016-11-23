@@ -168,6 +168,25 @@ namespace BusinessLogic.Jobs.BoardGameGeekBatchUpdateJobService
             return Regex.Replace(name, CleanYearPattern, "").Trim();
         }
 
+        public int RefreshOutdatedBoardGameGeekData(int daysOutdated, int? maxElementsToUpdate)
+        {
+            var outdatedDate = DateTime.UtcNow.AddDays(-1 * daysOutdated);
+            var query = _dataContext.GetQueryable<BoardGameGeekGameDefinition>()
+                .Include(g => g.Categories)
+                .Include(g => g.Mechanics)
+                .Where(g => g.DateUpdated < outdatedDate);
+
+            if (maxElementsToUpdate.HasValue)
+            {
+                query = query.Take(maxElementsToUpdate.Value);
+            }
+
+            var bggGamesToUpdate = query.OrderBy(x => x.DateUpdated).ToList();
+            var totalGamesUpdated = UpdateBoardGameGeekDefinitions(bggGamesToUpdate);
+
+            return totalGamesUpdated;
+        }
+
         public int RefreshAllBoardGameGeekData()
         {
             var allExistingBoardGameGeekGameDefinitions = _dataContext.GetQueryable<BoardGameGeekGameDefinition>()
@@ -175,9 +194,16 @@ namespace BusinessLogic.Jobs.BoardGameGeekBatchUpdateJobService
                 .Include(g => g.Mechanics)
                 .OrderBy(x => x.Id)
                 .ToList();
+            var totalGamesUpdated = UpdateBoardGameGeekDefinitions(allExistingBoardGameGeekGameDefinitions);
+
+            return totalGamesUpdated;
+        }
+
+        private int UpdateBoardGameGeekDefinitions(List<BoardGameGeekGameDefinition> boardGameGeekGameDefinitions)
+        {
             var anonymousUser = new AnonymousApplicationUser();
             int totalGamesUpdated = 0;
-            foreach (var existingBoardGameGeekGameDefinition in allExistingBoardGameGeekGameDefinitions)
+            foreach (var existingBoardGameGeekGameDefinition in boardGameGeekGameDefinitions)
             {
                 //delay between BGG calls to decrease likelyhood of getting blocked by BGG
                 Thread.Sleep(400);
@@ -185,6 +211,8 @@ namespace BusinessLogic.Jobs.BoardGameGeekBatchUpdateJobService
 
                 if (gameDetails != null)
                 {
+                    existingBoardGameGeekGameDefinition.DateUpdated = DateTime.UtcNow;
+
                     existingBoardGameGeekGameDefinition.AverageWeight = gameDetails.AverageWeight;
                     existingBoardGameGeekGameDefinition.Description = gameDetails.Description;
                     existingBoardGameGeekGameDefinition.MaxPlayTime = gameDetails.MaxPlayTime;
@@ -198,7 +226,9 @@ namespace BusinessLogic.Jobs.BoardGameGeekBatchUpdateJobService
 
                     foreach (var gameCategory in gameDetails.Categories)
                     {
-                        if (existingBoardGameGeekGameDefinition.Categories.All(c => !c.CategoryName.Equals(gameCategory.Category, StringComparison.InvariantCultureIgnoreCase)))
+                        if (
+                            existingBoardGameGeekGameDefinition.Categories.All(
+                                c => !c.CategoryName.Equals(gameCategory.Category, StringComparison.InvariantCultureIgnoreCase)))
                         {
                             var existentCategory =
                                 _dataContext.GetQueryable<BoardGameGeekGameCategory>()
@@ -221,7 +251,9 @@ namespace BusinessLogic.Jobs.BoardGameGeekBatchUpdateJobService
 
                     foreach (var gameMechanic in gameDetails.Mechanics)
                     {
-                        if (existingBoardGameGeekGameDefinition.Mechanics.All(c => !c.MechanicName.Equals(gameMechanic.Mechanic, StringComparison.InvariantCultureIgnoreCase)))
+                        if (
+                            existingBoardGameGeekGameDefinition.Mechanics.All(
+                                c => !c.MechanicName.Equals(gameMechanic.Mechanic, StringComparison.InvariantCultureIgnoreCase)))
                         {
                             var existentMechanic =
                                 _dataContext.GetQueryable<BoardGameGeekGameMechanic>()
@@ -247,10 +279,11 @@ namespace BusinessLogic.Jobs.BoardGameGeekBatchUpdateJobService
                     if (totalGamesUpdated++ % 10 == 0)
                     {
                         _dataContext.CommitAllChanges();
-                        Debug.WriteLine("{0} BoardGameGeekGameDefinitions updated so far...", totalGamesUpdated);
+                        Console.WriteLine("{0} BoardGameGeekGameDefinitions updated so far...", totalGamesUpdated);
                     }
                 }
             }
+            _dataContext.CommitAllChanges();
 
             return totalGamesUpdated;
         }

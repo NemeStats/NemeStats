@@ -405,6 +405,7 @@
     <Compile Include="Mappers\CustomMappers\BaseCustomMapper.cs" />
     <Compile Include="Mappers\CustomMappers\GameDefinitionDisplayInfoToGameDefinitionDisplayInfoViewModelMapper.cs" />
     <Compile Include="Mappers\CustomMappers\GameDefinitionSummaryToGameDefinitionSummaryListViewModelMapper.cs" />
+    <Compile Include="Mappers\CustomMappers\SavePlayedGameRequestToUpdatedGameGameMapper.cs" />
     <Compile Include="Mappers\Interfaces\ICustomMapper.cs" />
     <Compile Include="Mappers\Extensions\PagedListExtensions.cs" />
     <Compile Include="Mappers\CustomMappers\PlayedGameQuickStatsToPlayedGameQuickStatsViewModelMapper.cs" />

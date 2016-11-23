@@ -151,39 +151,51 @@ namespace UI.Controllers
         {
             if (ModelState.IsValid)
             {
+                int? resultId;
                 if (request.EditMode && request.PlayedGameId.HasValue)
                 {
-                    _playedGameDeleter.DeletePlayedGame(request.PlayedGameId.Value, currentUser);
-                }
+                    _playedGameSaver.UpdatePlayedGame(
+                        _mapperFactory.GetMapper<SavePlayedGameRequest, UpdatedGame>().Map(request),
+                        TransactionSource.WebApplication, currentUser);
 
-                if (request.GameDefinitionId == null)
+                    resultId = request.PlayedGameId;
+                }
+                else
                 {
-                    if (string.IsNullOrEmpty(request.GameDefinitionName))
+
+                    if (request.GameDefinitionId == null)
                     {
-                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                        if (string.IsNullOrEmpty(request.GameDefinitionName))
+                        {
+                            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                        }
+
+                        request.GameDefinitionId = _gameDefinitionSaver.CreateGameDefinition(new CreateGameDefinitionRequest
+                        {
+                            Name = request.GameDefinitionName,
+                            GamingGroupId = request.GameDefinitionId ?? currentUser.CurrentGamingGroupId,
+                            BoardGameGeekGameDefinitionId = request.BoardGameGeekGameDefinitionId
+                        }, currentUser).Id;
                     }
 
-                    request.GameDefinitionId = _gameDefinitionSaver.CreateGameDefinition(new CreateGameDefinitionRequest
+                    foreach (var newPlayer in request.PlayerRanks.Where(p => !p.PlayerId.HasValue))
                     {
-                        Name = request.GameDefinitionName,
-                        GamingGroupId = request.GameDefinitionId ?? currentUser.CurrentGamingGroupId,
-                        BoardGameGeekGameDefinitionId = request.BoardGameGeekGameDefinitionId
-                    }, currentUser).Id;
+                        newPlayer.PlayerId = _playerSaver.CreatePlayer(new CreatePlayerRequest
+                        {
+                            GamingGroupId = currentUser.CurrentGamingGroupId,
+                            Name = newPlayer.PlayerName
+                        }, currentUser).Id;
+                    }
+
+
+                    resultId =
+                        _playedGameSaver.CreatePlayedGame(
+                            _mapperFactory.GetMapper<SavePlayedGameRequest, NewlyCompletedGame>().Map(request),
+                            TransactionSource.WebApplication, currentUser).Id;
                 }
 
-                foreach (var newPlayer in request.PlayerRanks.Where(p => !p.PlayerId.HasValue))
-                {
-                    newPlayer.PlayerId = _playerSaver.CreatePlayer(new CreatePlayerRequest
-                    {
-                        GamingGroupId = currentUser.CurrentGamingGroupId,
-                        Name = newPlayer.PlayerName
-                    }, currentUser).Id;
-                }
 
-
-                var playedGame = _playedGameSaver.CreatePlayedGame(_mapperFactory.GetMapper<SavePlayedGameRequest, NewlyCompletedGame>().Map(request), TransactionSource.WebApplication, currentUser);
-
-                return Json(new { success = true, playedGameId = playedGame.Id });
+                return Json(new { success = true, playedGameId = resultId });
             }
 
             return Json(new { success = false, errors = ModelState.Errors() }, JsonRequestBehavior.AllowGet);

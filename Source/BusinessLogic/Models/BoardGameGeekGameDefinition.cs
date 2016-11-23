@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using BusinessLogic.DataAccess;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -8,6 +9,12 @@ namespace BusinessLogic.Models
 {
     public class BoardGameGeekGameDefinition : EntityWithTechnicalKey<int>
     {
+        public BoardGameGeekGameDefinition()
+        {
+            DateCreated = DateTime.UtcNow;
+            DateUpdated = DateTime.UtcNow;
+        }
+
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public override int Id { get; set; }
@@ -26,6 +33,10 @@ namespace BusinessLogic.Models
         public int? Rank { get; set; }
         public virtual IList<BoardGameGeekGameCategory> Categories { get; set; } = new List<BoardGameGeekGameCategory>();
         public virtual IList<BoardGameGeekGameMechanic> Mechanics { get; set; } = new List<BoardGameGeekGameMechanic>();
+
+        public DateTime DateCreated { get; set; }
+        public DateTime DateUpdated { get; set; }
+
         [NotMapped]
         public int? AveragePlayTime {
             get

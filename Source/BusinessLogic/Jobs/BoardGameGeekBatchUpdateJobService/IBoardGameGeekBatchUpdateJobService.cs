@@ -4,5 +4,6 @@ namespace BusinessLogic.Jobs.BoardGameGeekBatchUpdateJobService
     {
         LinkOrphanGamesJobResult LinkOrphanGames();
         int RefreshAllBoardGameGeekData();
+        int RefreshOutdatedBoardGameGeekData(int daysOutdated, int? maxElementsToUpdate);
     }
 }

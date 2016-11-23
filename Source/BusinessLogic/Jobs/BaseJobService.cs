@@ -1,3 +1,9 @@
+using System;
+using System.Collections.Generic;
+using System.Data.Entity;
+using System.Linq;
+using BusinessLogic.Models;
+using BusinessLogic.Models.Games;
 using RollbarSharp;
 
 namespace BusinessLogic.Jobs
@@ -10,5 +16,7 @@ namespace BusinessLogic.Jobs
         {
             RollbarClient = rollbar;
         }
+
+
     }
 }
