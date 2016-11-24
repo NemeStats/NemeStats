@@ -44,7 +44,6 @@ namespace UI.Controllers
         internal IGamingGroupSaver gamingGroupSaver;
         internal IGamingGroupRetriever gamingGroupRetriever;
         internal IPlayerWithNemesisViewModelBuilder playerWithNemesisViewModelBuilder;
-        internal IPlayedGameDetailsViewModelBuilder playedGameDetailsViewModelBuilder;
         internal IGameDefinitionSummaryViewModelBuilder gameDefinitionSummaryViewModelBuilder;
         internal IGamingGroupContextSwitcher gamingGroupContextSwitcher;
 
@@ -53,7 +52,6 @@ namespace UI.Controllers
             IGamingGroupSaver gamingGroupSaver,
             IGamingGroupRetriever gamingGroupRetriever,
             IPlayerWithNemesisViewModelBuilder playerWithNemesisViewModelBuilder,
-            IPlayedGameDetailsViewModelBuilder playedGameDetailsViewModelBuilder,
             IGameDefinitionSummaryViewModelBuilder gameDefinitionSummaryViewModelBuilder,
             IGamingGroupContextSwitcher gamingGroupContextSwitcher)
         {
@@ -61,7 +59,6 @@ namespace UI.Controllers
             this.gamingGroupSaver = gamingGroupSaver;
             this.gamingGroupRetriever = gamingGroupRetriever;
             this.playerWithNemesisViewModelBuilder = playerWithNemesisViewModelBuilder;
-            this.playedGameDetailsViewModelBuilder = playedGameDetailsViewModelBuilder;
             this.gameDefinitionSummaryViewModelBuilder = gameDefinitionSummaryViewModelBuilder;
             this.gamingGroupContextSwitcher = gamingGroupContextSwitcher;
         }

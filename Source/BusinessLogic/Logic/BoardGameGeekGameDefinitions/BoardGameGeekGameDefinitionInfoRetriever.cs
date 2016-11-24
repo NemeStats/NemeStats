@@ -8,21 +8,19 @@ using BusinessLogic.Models.Games;
 
 namespace BusinessLogic.Logic.BoardGameGeekGameDefinitions
 {
-    public class CacheableGameDataRetriever : Cacheable<int, CacheableGameData>, ICacheableGameDataRetriever
+    public class BoardGameGeekGameDefinitionInfoRetriever : Cacheable<int, BoardGameGeekInfo>, IBoardGameGeekGameDefinitionInfoRetriever
     {
         private readonly IDataContext _dataContext;
 
-        public CacheableGameDataRetriever(IDateUtilities dateUtilities, ICacheService cacheService, IDataContext dataContext) : base(dateUtilities, cacheService)
+        public BoardGameGeekGameDefinitionInfoRetriever(IDateUtilities dateUtilities, ICacheService cacheService, IDataContext dataContext) : base(dateUtilities, cacheService)
         {
             _dataContext = dataContext;
         }
 
-        public override CacheableGameData GetFromSource(int boardGameGeekGameDefinitionId)
+        public override BoardGameGeekInfo GetFromSource(int boardGameGeekGameDefinitionId)
         {
             var result = _dataContext.GetQueryable<BoardGameGeekGameDefinition>().Where(x => x.Id == boardGameGeekGameDefinitionId)
-                .Select(x => new CacheableGameData
-                {
-                    BoardGameGeekInfo = new BoardGameGeekInfo
+                .Select(x =>  new BoardGameGeekInfo
                     {
                         BoardGameGeekGameDefinitionId = x.Id,
                         BoardGameGeekAverageWeight = x.AverageWeight,
@@ -37,13 +35,6 @@ namespace BusinessLogic.Logic.BoardGameGeekGameDefinitions
                         ThumbnailImageUrl = x.Thumbnail,
                         BoardGameGeekMechanics = x.Mechanics.Select(y => y.MechanicName).ToList(),
                         BoardGameGeekCategories = x.Categories.Select(y => y.CategoryName).ToList()
-                    },
-                    UniversalGameStats = new UniversalGameStats
-                    {
-                        AveragePlayersPerGame = x.GameDefinitions.Average(y => y.PlayedGames.Select(p => p.NumberOfPlayers).Average()),
-                        TotalNumberOfGamesPlayed = x.GameDefinitions.Sum(y => y.PlayedGames.Count),
-                        TotalGamingGroupsWithThisGame = x.GameDefinitions.GroupBy(y => y.GamingGroupId).Select(z => z.Key).Count()
-                    }
                 }).FirstOrDefault();
 
             if (result == null)

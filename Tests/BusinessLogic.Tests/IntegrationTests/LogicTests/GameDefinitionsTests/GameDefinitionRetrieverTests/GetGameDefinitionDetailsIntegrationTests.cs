@@ -50,7 +50,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.GameDefinitionsTests.G
                 using (dataContext = new NemeStatsDataContext(dbContext, securedEntityValidatorFactory))
                 {
                     var playerRepository = new EntityFrameworkPlayerRepository(dataContext);
-                    var cacheableGameDataRetriever = new CacheableGameDataRetriever(new DateUtilities(), new CacheService(), dataContext);
+                    var cacheableGameDataRetriever = new BoardGameGeekGameDefinitionInfoRetriever(new DateUtilities(), new CacheService(), dataContext);
 
                     var gameDefinitionRetriever = new GameDefinitionRetriever(dataContext, playerRepository, cacheableGameDataRetriever);
                     gameDefinitionSummary = gameDefinitionRetriever.GetGameDefinitionDetails(
@@ -120,7 +120,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.GameDefinitionsTests.G
 
                     int invalidId = -1;
                     var expectedException = new EntityDoesNotExistException(typeof(GameDefinition), invalidId);
-                    var cacheableGameDataRetriever = new CacheableGameDataRetriever(new DateUtilities(), new CacheService(), dataContext);
+                    var cacheableGameDataRetriever = new BoardGameGeekGameDefinitionInfoRetriever(new DateUtilities(), new CacheService(), dataContext);
 
                     var gameDefinitionRetriever = new GameDefinitionRetriever(dataContext, playerRepository, cacheableGameDataRetriever);
 

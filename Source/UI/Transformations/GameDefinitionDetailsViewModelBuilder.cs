@@ -37,13 +37,13 @@ namespace UI.Transformations
     {
         private readonly IPlayedGameDetailsViewModelBuilder _playedGameDetailsViewModelBuilder;
         private readonly ITransformer _transformer;
-        private readonly ICacheableGameDataRetriever _cacheableGameDataRetriever;
+        private readonly IBoardGameGeekGameDefinitionInfoRetriever _boardGameGeekGameDefinitionInfoRetriever;
 
-        public GameDefinitionDetailsViewModelBuilder(IPlayedGameDetailsViewModelBuilder playedGameDetailsViewModelBuilder, ITransformer transformer, ICacheableGameDataRetriever cacheableGameDataRetriever)
+        public GameDefinitionDetailsViewModelBuilder(IPlayedGameDetailsViewModelBuilder playedGameDetailsViewModelBuilder, ITransformer transformer, IBoardGameGeekGameDefinitionInfoRetriever boardGameGeekGameDefinitionInfoRetriever)
         {
             _playedGameDetailsViewModelBuilder = playedGameDetailsViewModelBuilder;
             _transformer = transformer;
-            _cacheableGameDataRetriever = cacheableGameDataRetriever;
+            _boardGameGeekGameDefinitionInfoRetriever = boardGameGeekGameDefinitionInfoRetriever;
         }
 
         public GameDefinitionDetailsViewModel Build(GameDefinitionSummary gameDefinitionSummary, ApplicationUser currentUser)

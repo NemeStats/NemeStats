@@ -176,12 +176,13 @@ namespace NemeStats.IoC
             For<IPlayerAchievementRetriever>().Use<PlayerAchievementRetriever>();
             For<IRecentPlayerAchievementsUnlockedRetreiver>().Use<RecentPlayerAchievementsUnlockedRetreiver>();
 
-
             For<ICacheService>().Use<CacheService>();
 
             For<IDateUtilities>().Use<DateUtilities>();
 
-            For<ICacheableGameDataRetriever>().Use<CacheableGameDataRetriever>();
+            For<IBoardGameGeekGameDefinitionInfoRetriever>().Use<BoardGameGeekGameDefinitionInfoRetriever>();
+
+            For<IUniversalStatsRetriever>().Use<UniversalStatsRetriever>();
         }
 
 

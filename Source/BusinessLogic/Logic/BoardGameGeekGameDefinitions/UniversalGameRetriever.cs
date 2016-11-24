@@ -11,38 +11,50 @@ namespace BusinessLogic.Logic.BoardGameGeekGameDefinitions
     {
         public const int DEFAULT_NUMBER_OF_GAMES = 5;
 
-        private readonly ICacheableGameDataRetriever _cacheableGameDataRetriever;
-        private readonly ITransformer _transformer;
+        private readonly IBoardGameGeekGameDefinitionInfoRetriever _boardGameGeekGameDefinitionInfoRetriever;
         private readonly IGameDefinitionRetriever _gameDefinitionRetriever;
         private readonly IDataContext _dataContext;
+        private readonly IUniversalStatsRetriever _universalStatsRetriever;
 
         public UniversalGameRetriever(
-            ICacheableGameDataRetriever cacheableGameDataRetriever, 
-            ITransformer transformer, 
+            IBoardGameGeekGameDefinitionInfoRetriever boardGameGeekGameDefinitionInfoRetriever, 
             IGameDefinitionRetriever gameDefinitionRetriever, 
-            IDataContext dataContext)
+            IDataContext dataContext, IUniversalStatsRetriever universalStatsRetriever)
         {
-            _cacheableGameDataRetriever = cacheableGameDataRetriever;
-            _transformer = transformer;
+            _boardGameGeekGameDefinitionInfoRetriever = boardGameGeekGameDefinitionInfoRetriever;
             _gameDefinitionRetriever = gameDefinitionRetriever;
             _dataContext = dataContext;
+            _universalStatsRetriever = universalStatsRetriever;
         }
 
         public BoardGameGeekGameSummary GetBoardGameGeekGameSummary(int boardGameGeekGameDefinitionId, ApplicationUser currentUser, int numberOfRecentlyPlayedGamesToShow = DEFAULT_NUMBER_OF_GAMES)
         {
-            var universalData = _cacheableGameDataRetriever.GetResults(boardGameGeekGameDefinitionId);
-            var summary = _transformer.Transform<BoardGameGeekGameSummary>(universalData);
+            var boardGameGeekInfo = _boardGameGeekGameDefinitionInfoRetriever.GetResults(boardGameGeekGameDefinitionId);
+            var universalStats = _universalStatsRetriever.GetResults(boardGameGeekGameDefinitionId);
+            var gamingGroupGameDefinitionSummary = GetGamingGroupGameDefinitionSummary(boardGameGeekGameDefinitionId, currentUser.CurrentGamingGroupId, numberOfRecentlyPlayedGamesToShow);
+            return new BoardGameGeekGameSummary
+            {
+                BoardGameGeekInfo = boardGameGeekInfo,
+                UniversalGameStats = universalStats,
+                GamingGroupGameDefinitionSummary = gamingGroupGameDefinitionSummary
+            };
+        }
+
+        private GameDefinitionSummary GetGamingGroupGameDefinitionSummary(int boardGameGeekGameDefinitionId, int currentUserCurrentGamingGroupId, int numberOfRecentlyPlayedGamesToShow)
+        {
+            GameDefinitionSummary summary = null;
 
             var gameDefinitionId = _dataContext.GetQueryable<GameDefinition>().Where(
                     x => x.BoardGameGeekGameDefinitionId == boardGameGeekGameDefinitionId
-                         && x.GamingGroupId == currentUser.CurrentGamingGroupId)
+                         && x.GamingGroupId == currentUserCurrentGamingGroupId)
                 .Select(x => x.Id)
                 .FirstOrDefault();
 
             if (gameDefinitionId != default(int))
             {
-                summary.GamingGroupGameDefinitionSummary = _gameDefinitionRetriever.GetGameDefinitionDetails(gameDefinitionId, numberOfRecentlyPlayedGamesToShow);
+                summary = _gameDefinitionRetriever.GetGameDefinitionDetails(gameDefinitionId, numberOfRecentlyPlayedGamesToShow);
             }
+
             return summary;
         }
     }

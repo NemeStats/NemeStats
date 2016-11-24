@@ -21,6 +21,7 @@ using System.Linq;
 using System.Globalization;
 using AutoMapper;
 using BusinessLogic.Logic.BoardGameGeek;
+using BusinessLogic.Logic.BoardGameGeekGameDefinitions;
 using BusinessLogic.Logic.GameDefinitions;
 using BusinessLogic.Logic.GamingGroups;
 using BusinessLogic.Logic.Players;
@@ -140,16 +141,12 @@ namespace UI.Transformations
                                     ? src.MinPlayTime
                                     : (src.MinPlayTime.HasValue ? (src.MaxPlayTime.Value + src.MinPlayTime.Value) / 2 : src.MaxPlayTime)));
 
-            Mapper.CreateMap<CacheableGameData, BoardGameGeekGameSummary>(MemberList.Source);
-
             Mapper.CreateMap<UniversalGameStats, UniversalGameStatsViewModel>()
                 .ForMember(m => m.AveragePlayersPerGame,
                     opt => opt.MapFrom(src => $"{(src.AveragePlayersPerGame ?? 0):0.#}"));
 
             Mapper.CreateMap<BoardGameGeekGameSummary, UniversalGameDetailsViewModel>(MemberList.Destination)
                 .ForMember(m => m.GamingGroupGameDefinitionSummary, opt => opt.Ignore());
-
-
         }
     }
 }

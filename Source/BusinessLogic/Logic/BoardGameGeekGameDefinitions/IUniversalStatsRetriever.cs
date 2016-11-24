@@ -1,6 +1,6 @@
 ﻿#region LICENSE
 // NemeStats is a free website for tracking the results of board games.
-//     Copyright (C) 2015 Jacob Gordon
+//     Copyright (C) 2016 Jacob Gordon
 // 
 //     This program is free software: you can redistribute it and/or modify
 //     it under the terms of the GNU General Public License as published by
@@ -15,14 +15,13 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
-using BusinessLogic.Models;
-using BusinessLogic.Models.User;
-using UI.Models.PlayedGame;
 
-namespace UI.Transformations
+using BusinessLogic.Models.Games;
+
+namespace BusinessLogic.Logic.BoardGameGeekGameDefinitions
 {
-    public interface IPlayedGameDetailsViewModelBuilder
+    public interface IUniversalStatsRetriever
     {
-        PlayedGameDetailsViewModel Build(PlayedGame playedGame, ApplicationUser currentUser);
+        UniversalGameStats GetResults(int boardGameGeekGameDefinitionId);
     }
 }

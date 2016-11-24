@@ -43,7 +43,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.GameDefinitionsTests.G
             using(NemeStatsDataContext dataContext = new NemeStatsDataContext())
             {
                 var playerRepository = new EntityFrameworkPlayerRepository(dataContext);
-                var cacheableGameDataRetriever = new CacheableGameDataRetriever(new DateUtilities(), new CacheService(), dataContext);
+                var cacheableGameDataRetriever = new BoardGameGeekGameDefinitionInfoRetriever(new DateUtilities(), new CacheService(), dataContext);
 
                 retriever = new GameDefinitionRetriever(dataContext, playerRepository, cacheableGameDataRetriever);
                 actualGameDefinitionSummaries = retriever.GetAllGameDefinitions(testUserWithDefaultGamingGroup.CurrentGamingGroupId);
@@ -98,7 +98,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.GameDefinitionsTests.G
             using (NemeStatsDataContext dataContext = new NemeStatsDataContext())
             {
                 var playerRepository = new EntityFrameworkPlayerRepository(dataContext);
-                var cacheableGameDataRetriever = new CacheableGameDataRetriever(new DateUtilities(), new CacheService(), dataContext);
+                var cacheableGameDataRetriever = new BoardGameGeekGameDefinitionInfoRetriever(new DateUtilities(), new CacheService(), dataContext);
 
                 retriever = new GameDefinitionRetriever(dataContext, playerRepository, cacheableGameDataRetriever);
                 IList<GameDefinitionSummary> gameDefinitionSummaries = retriever.GetAllGameDefinitions(1);

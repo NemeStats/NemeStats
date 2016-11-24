@@ -13,7 +13,8 @@ namespace UI.Mappers.CustomMappers
         {
             Mapper.CreateMap<SavePlayedGameRequest, UpdatedGame>()
                 .ForMember(m => m.PlayerRanks, o => o.Ignore())
-                .ForMember(m => m.ApplicationLinkages, opt => opt.Ignore());
+                .ForMember(m => m.ApplicationLinkages, opt => opt.Ignore())
+                .ForMember(m => m.GamingGroupId, opt => opt.Ignore());
         }
 
         public SavePlayedGameRequestToUpdatedGameGameMapper(CreatePlayerRankRequestToPlayerRankMapper createPlayerRankRequestToPlayerRankMapper)

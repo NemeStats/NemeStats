@@ -34,7 +34,7 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
         private IGameDefinitionRetriever gameDefinitionRetriever;
         private GameDefinition gameDefinition;
         private GameDefinition championlessGameDefinition;
-        private CacheableGameDataRetriever cacheableGameDataRetriever;
+        private BoardGameGeekGameDefinitionInfoRetriever boardGameGeekGameDefinitionInfoRetriever;
         private int championPlayerIdForGameDefinition;
         private int otherChampionPlayerIdForGameDefinition;
 
@@ -46,8 +46,8 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
 
             dataContext = new NemeStatsDataContext();
             var playerRepository = new EntityFrameworkPlayerRepository(dataContext);
-            cacheableGameDataRetriever = new CacheableGameDataRetriever(new DateUtilities(), new CacheService(), dataContext);
-            gameDefinitionRetriever = new GameDefinitionRetriever(dataContext, playerRepository, cacheableGameDataRetriever);
+            boardGameGeekGameDefinitionInfoRetriever = new BoardGameGeekGameDefinitionInfoRetriever(new DateUtilities(), new CacheService(), dataContext);
+            gameDefinitionRetriever = new GameDefinitionRetriever(dataContext, playerRepository, boardGameGeekGameDefinitionInfoRetriever);
 
             gameDefinition = gameDefinitionRetriever.GetGameDefinitionDetails(testGameDefinitionWithOtherGamingGroupId.Id,
                 0);

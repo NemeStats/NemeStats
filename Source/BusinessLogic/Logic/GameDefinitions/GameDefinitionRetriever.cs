@@ -37,13 +37,13 @@ namespace BusinessLogic.Logic.GameDefinitions
     {
         private readonly IDataContext _dataContext;
         private readonly IPlayerRepository _playerRepository;
-        private readonly ICacheableGameDataRetriever _cacheableGameDataRetriever;
+        private readonly IBoardGameGeekGameDefinitionInfoRetriever _boardGameGeekGameDefinitionInfoRetriever;
 
-        public GameDefinitionRetriever(IDataContext dataContext, IPlayerRepository playerRepository, ICacheableGameDataRetriever cacheableGameDataRetriever)
+        public GameDefinitionRetriever(IDataContext dataContext, IPlayerRepository playerRepository, IBoardGameGeekGameDefinitionInfoRetriever boardGameGeekGameDefinitionInfoRetriever)
         {
             _dataContext = dataContext;
             _playerRepository = playerRepository;
-            _cacheableGameDataRetriever = cacheableGameDataRetriever;
+            _boardGameGeekGameDefinitionInfoRetriever = boardGameGeekGameDefinitionInfoRetriever;
         }
 
         public virtual List<GameDefinitionSummary> GetGameDefinitionSummaries(List<int> gameDefinitionIds)
@@ -160,7 +160,7 @@ namespace BusinessLogic.Logic.GameDefinitions
                 summary.TotalNumberOfGamesPlayed = summary.PlayedGames.Count;
                 if (summary.BoardGameGeekGameDefinitionId.HasValue)
                 {
-                    summary.BoardGameGeekInfo = _cacheableGameDataRetriever.GetResults(summary.BoardGameGeekGameDefinitionId.Value).BoardGameGeekInfo;
+                    summary.BoardGameGeekInfo = _boardGameGeekGameDefinitionInfoRetriever.GetResults(summary.BoardGameGeekGameDefinitionId.Value);
                 }
             });
             return returnValue;
@@ -206,8 +206,7 @@ namespace BusinessLogic.Logic.GameDefinitions
             BoardGameGeekInfo boardGameGeekInfo = null;
             if (gameDefinition.BoardGameGeekGameDefinitionId.HasValue)
             {
-                var cacheableGameData = _cacheableGameDataRetriever.GetResults(gameDefinition.BoardGameGeekGameDefinitionId.Value);
-                boardGameGeekInfo = cacheableGameData.BoardGameGeekInfo;
+                boardGameGeekInfo = _boardGameGeekGameDefinitionInfoRetriever.GetResults(gameDefinition.BoardGameGeekGameDefinitionId.Value);
             }
 
             var gameDefinitionSummary = new GameDefinitionSummary

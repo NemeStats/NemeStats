@@ -22,10 +22,11 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.BoardGameGeekGameDefinitionsT
 
         private int _boardGameGeekGameDefinitionId = 1;
         private ApplicationUser _currentUser;
-        private CacheableGameData _expectedCacheableData;
         private BoardGameGeekGameSummary _expectedBoardGameGeekGameSummary;
         private GameDefinitionSummary _expectedGameDefinitionSummary;
         private GameDefinition _expectedGameDefinition;
+        private UniversalGameStats _expectedUniversalStats;
+        private BoardGameGeekInfo _expectedBoardGameGeekInfo;
 
         [SetUp]
         public void SetUp()
@@ -48,19 +49,18 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.BoardGameGeekGameDefinitionsT
             }.AsQueryable();
             _autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<GameDefinition>()).Return(gameDefinitionQueryable);
 
-            _expectedCacheableData = new CacheableGameData();
-            _autoMocker.Get<ICacheableGameDataRetriever>().Expect(mock => mock.GetResults(Arg<int>.Is.Anything)).Return(_expectedCacheableData);
-
-            _expectedBoardGameGeekGameSummary = new BoardGameGeekGameSummary();
-            _autoMocker.Get<ITransformer>()
-                .Expect(mock => mock.Transform<BoardGameGeekGameSummary>(Arg<CacheableGameData>.Is.Anything))
-                .Return(_expectedBoardGameGeekGameSummary);
+            _expectedBoardGameGeekInfo = new BoardGameGeekInfo();
+            _autoMocker.Get<IBoardGameGeekGameDefinitionInfoRetriever>().Expect(mock => mock.GetResults(Arg<int>.Is.Anything)).Return(_expectedBoardGameGeekInfo);
 
             _expectedGameDefinitionSummary = new GameDefinitionSummary();
+
+            _expectedUniversalStats = new UniversalGameStats();
+            _autoMocker.Get<IUniversalStatsRetriever>().Expect(mock => mock.GetResults(Arg<int>.Is.Anything))
+                .Return(_expectedUniversalStats);
         }
 
         [Test]
-        public void It_Returns_Board_Game_Geek_Summary_Data()
+        public void It_Returns_The_BoardGameGeekInfo()
         {
             //--arrange
 
@@ -68,9 +68,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.BoardGameGeekGameDefinitionsT
             var result = _autoMocker.ClassUnderTest.GetBoardGameGeekGameSummary(_boardGameGeekGameDefinitionId, _currentUser);
 
             //--assert
-            _autoMocker.Get<ICacheableGameDataRetriever>().AssertWasCalled(mock => mock.GetResults(_boardGameGeekGameDefinitionId));
-            _autoMocker.Get<ITransformer>().AssertWasCalled(mock => mock.Transform<BoardGameGeekGameSummary>(_expectedCacheableData));
-            result.ShouldBeSameAs(_expectedBoardGameGeekGameSummary);
+            _autoMocker.Get<IBoardGameGeekGameDefinitionInfoRetriever>().AssertWasCalled(mock => mock.GetResults(_boardGameGeekGameDefinitionId));
+            result.BoardGameGeekInfo.ShouldBeSameAs(_expectedBoardGameGeekInfo);
         }
 
         [Test]
@@ -103,6 +102,21 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.BoardGameGeekGameDefinitionsT
                 .AssertWasCalled(
                     mock => mock.GetGameDefinitionDetails(Arg<int>.Is.Equal(_expectedGameDefinition.Id), Arg<int>.Is.Equal(numberOfGames)));
             result.GamingGroupGameDefinitionSummary.ShouldBe(_expectedGameDefinitionSummary);
+        }
+
+        [Test]
+        public void It_Returns_The_Universal_Stats_For_The_Board_Game_Geek_Game()
+        {
+            //--arrange
+
+            //--act
+            var result = _autoMocker.ClassUnderTest.GetBoardGameGeekGameSummary(_boardGameGeekGameDefinitionId, _currentUser, 0);
+
+            //--assert
+            _autoMocker.Get<IUniversalStatsRetriever>()
+                .AssertWasCalled(
+                    mock => mock.GetResults(_boardGameGeekGameDefinitionId));
+            result.UniversalGameStats.ShouldBe(_expectedUniversalStats);
         }
     }
 }

@@ -235,7 +235,7 @@
     <Compile Include="UnitTests\FacadesTests\TopPlayersRetrieverTests.cs" />
     <Compile Include="UnitTests\FacadesTests\TrendingGamesRetrieverTests.cs" />
     <Compile Include="UnitTests\FacadesTests\TopGamingGroupsRetrieverTests.cs" />
-    <Compile Include="UnitTests\LogicTests\BoardGameGeekGameDefinitionsTests\CacheableGameDataRetrieverTests\GetFromSourceTests.cs" />
+    <Compile Include="UnitTests\LogicTests\BoardGameGeekGameDefinitionsTests\BoardGameGeekGameDefinitionInfoRetrieverTests\GetFromSourceTests.cs" />
     <Compile Include="UnitTests\JobsTests\BoardGameGeekBatchUpdateService\LinkOrphanGamesTests\LinkOrphanGamesJobTests.cs" />
     <Compile Include="UnitTests\JobsTests\BoardGameGeekBatchUpdateService\RefreshAllBoardGameGeekDataTests.cs" />
     <Compile Include="UnitTests\LogicTests\AchievementTests\BaseAchievementTests\DescriptionTests.cs" />
@@ -281,6 +281,7 @@
     <Compile Include="UnitTests\LogicTests\AchievementTests\DiversifiedAchievementTests\When_Player_Not_Accomplish_Achievement_Requirements.cs" />
     <Compile Include="UnitTests\LogicTests\AchievementTests\SocialButterflyAchievementTests.cs" />
     <Compile Include="UnitTests\LogicTests\BoardGameGeekGameDefinitionsTests\UniversalGameRetrieverTests\GetBoardGameGeekGameSummaryTests.cs" />
+    <Compile Include="UnitTests\LogicTests\BoardGameGeekGameDefinitionsTests\UniversalStatsRetrieverTests\GetFromSourceTests.cs" />
     <Compile Include="UnitTests\LogicTests\BoardGameGeekTests\BoardGameGeekGamesImporterTests\BoardGameGeekGamesImporterTests.cs" />
     <Compile Include="UnitTests\LogicTests\ChampionsTests\ChampionRecalculatorTests\RecalculateAllChampionsTests.cs" />
     <Compile Include="UnitTests\LogicTests\ChampionsTests\ChampionRecalculatorTests\RecalculateChampionTests.cs" />

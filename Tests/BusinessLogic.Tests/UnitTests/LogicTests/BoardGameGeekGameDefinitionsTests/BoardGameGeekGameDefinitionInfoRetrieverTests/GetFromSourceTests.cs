@@ -10,11 +10,11 @@ using Rhino.Mocks;
 using Shouldly;
 using StructureMap.AutoMocking;
 
-namespace BusinessLogic.Tests.UnitTests.LogicTests.BoardGameGeekGameDefinitionsTests.CacheableGameDataRetrieverTests
+namespace BusinessLogic.Tests.UnitTests.LogicTests.BoardGameGeekGameDefinitionsTests.BoardGameGeekGameDefinitionInfoRetrieverTests
 {
-    public class CacheableGameDataRetrieverTests
+    public class BoardGameGeekGameDefinitionInfoRetrieverTests
     {
-        protected RhinoAutoMocker<CacheableGameDataRetriever> AutoMocker;
+        protected RhinoAutoMocker<BoardGameGeekGameDefinitionInfoRetriever> AutoMocker;
 
         private int _boardGameGeekGameDefinitionId = 1;
         private BoardGameGeekGameDefinition _expectedBoardGameGeekGameDefinition;
@@ -26,7 +26,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.BoardGameGeekGameDefinitionsT
         [SetUp]
         public void SetUp()
         {
-            AutoMocker = new RhinoAutoMocker<CacheableGameDataRetriever>();
+            AutoMocker = new RhinoAutoMocker<BoardGameGeekGameDefinitionInfoRetriever>();
 
             _expectedBoardGameGeekGameDefinition = new BoardGameGeekGameDefinition
             {
@@ -98,7 +98,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.BoardGameGeekGameDefinitionsT
             AutoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<BoardGameGeekGameDefinition>()).Return(queryable);
         }
 
-        public class When_Calling_GetFromSource : CacheableGameDataRetrieverTests
+        public class When_Calling_GetFromSource : BoardGameGeekGameDefinitionInfoRetrieverTests
         {
 
             [Test]
@@ -121,7 +121,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.BoardGameGeekGameDefinitionsT
                 //--arrange
 
                 //--act
-                var result = AutoMocker.ClassUnderTest.GetFromSource(_boardGameGeekGameDefinitionId).BoardGameGeekInfo;
+                var result = AutoMocker.ClassUnderTest.GetFromSource(_boardGameGeekGameDefinitionId);
 
                 //--assert
                 result.BoardGameGeekGameDefinitionId.ShouldBe(_expectedBoardGameGeekGameDefinition.Id);
@@ -143,7 +143,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.BoardGameGeekGameDefinitionsT
                 //--arrange
 
                 //--act
-                var result = AutoMocker.ClassUnderTest.GetFromSource(_boardGameGeekGameDefinitionId).BoardGameGeekInfo;
+                var result = AutoMocker.ClassUnderTest.GetFromSource(_boardGameGeekGameDefinitionId);
 
                 //--assert
                 result.BoardGameGeekMechanics.Count.ShouldBe(2);
@@ -157,48 +157,12 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.BoardGameGeekGameDefinitionsT
                 //--arrange
 
                 //--act
-                var result = AutoMocker.ClassUnderTest.GetFromSource(_boardGameGeekGameDefinitionId).BoardGameGeekInfo;
+                var result = AutoMocker.ClassUnderTest.GetFromSource(_boardGameGeekGameDefinitionId);
 
                 //--assert
                 result.BoardGameGeekCategories.Count.ShouldBe(2);
                 result.BoardGameGeekCategories.ShouldContain(_category1);
                 result.BoardGameGeekCategories.ShouldContain(_category2);
-            }
-
-            [Test]
-            public void It_Returns_The_Average_Players_Per_Game()
-            {
-                //--arrange
-
-                //--act
-                var result = AutoMocker.ClassUnderTest.GetFromSource(_boardGameGeekGameDefinitionId).UniversalGameStats;
-
-                //--assert
-                result.AveragePlayersPerGame.ShouldBe(2.5D);
-            }
-
-            [Test]
-            public void It_Returns_The_Total_Number_Of_Games_Played()
-            {
-                //--arrange
-
-                //--act
-                var result = AutoMocker.ClassUnderTest.GetFromSource(_boardGameGeekGameDefinitionId).UniversalGameStats;
-
-                //--assert
-                result.TotalNumberOfGamesPlayed.ShouldBe(2);
-            }
-
-            [Test]
-            public void It_Returns_The_Total_Number_Of_Gaming_Groups_That_Have_Played_This_Game()
-            {
-                //--arrange
-
-                //--act
-                var result = AutoMocker.ClassUnderTest.GetFromSource(_boardGameGeekGameDefinitionId).UniversalGameStats;
-
-                //--assert
-                result.TotalGamingGroupsWithThisGame.ShouldBe(2);
             }
         }
     }
