@@ -22,6 +22,7 @@ using NUnit.Framework;
 using Rhino.Mocks;
 using System.Collections.Generic;
 using System.Web.Mvc;
+using BusinessLogic.Models.PlayedGames;
 
 namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 {
@@ -33,7 +34,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 		{
 			base.TestSetUp();
 			expectedViewModel = new List<PublicGameSummary>();
-            autoMocker.Get<IPlayedGameRetriever>().Expect(mock => mock.GetRecentPublicGames(Arg<int>.Is.Anything)).Return(new List<PublicGameSummary>());
+            autoMocker.Get<IPlayedGameRetriever>().Expect(mock => mock.GetRecentPublicGames(Arg<RecentlyPlayedGamesFilter>.Is.Anything)).Return(new List<PublicGameSummary>());
             autoMocker.PartialMockTheClassUnderTest();
 			autoMocker.ClassUnderTest.Expect(mock => mock.ShowRecentlyPlayedGames()).Return(new ViewResult { ViewName = MVC.PlayedGame.Views.RecentlyPlayedGames, ViewData = new ViewDataDictionary(base.expectedViewModel) });
 		}

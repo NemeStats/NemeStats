@@ -27,6 +27,7 @@ using BusinessLogic.Facades;
 using BusinessLogic.Logic;
 using BusinessLogic.Logic.PlayerAchievements;
 using BusinessLogic.Models;
+using BusinessLogic.Models.PlayedGames;
 using BusinessLogic.Paging;
 using UI.Controllers.Helpers;
 using UI.Mappers.Extensions;
@@ -76,7 +77,11 @@ namespace UI.Controllers
             var recentPlayerAchievementsViewModel =
                 recentPlayerAchievements.ToMappedPagedList(_mapperFactory.GetMapper<PlayerAchievement,PlayerAchievementWinnerViewModel>());
 
-            var publicGameSummaries = _recentPublicGamesRetriever.GetResults(NUMBER_OF_RECENT_PUBLIC_GAMES_TO_SHOW);
+            var recentlyPlayedGamesFilter = new RecentlyPlayedGamesFilter
+            {
+                NumberOfGamesToRetrieve = NUMBER_OF_RECENT_PUBLIC_GAMES_TO_SHOW
+            };
+            var publicGameSummaries = _recentPublicGamesRetriever.GetResults(recentlyPlayedGamesFilter);
 
             var topGamingGroups = _topGamingGroupsRetriever.GetResults(NUMBER_OF_TOP_GAMING_GROUPS_TO_SHOW);
 

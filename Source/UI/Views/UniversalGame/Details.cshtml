@@ -17,6 +17,24 @@
     <div class="row">
         @Html.Partial(MVC.UniversalGame.Views._UniversalGameStats, Model.UniversalGameStats)
     </div>
+
+    <div class="row">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h4>Last @Model.RecentlyPlayedGames.Count Played Games Globally</h4>
+            </div>
+            <div class="panel-body">
+                @{
+                    var options = new ViewDataDictionary
+                    {
+                        {"showCondensed", true}
+                    };
+                }
+                @Html.Partial(MVC.PlayedGame.Views._RecentlyPlayedGamesPartial, Model.RecentlyPlayedGames, options)
+            </div>
+        </div>
+    </div>
+
     @{
         var gamingGroupData = Model.GamingGroupGameDefinitionSummary;
     }
@@ -40,6 +58,5 @@
             @Html.Partial(MVC.GameDefinition.Views._GameDefinitionPlayedGamesPartial, gamingGroupData.PlayedGames, viewDataDictionary)
         </div>
     }
-
 </div>
 

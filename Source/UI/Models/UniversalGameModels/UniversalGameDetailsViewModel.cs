@@ -1,4 +1,6 @@
-﻿using UI.Models.GameDefinitionModels;
+﻿using System.Collections.Generic;
+using BusinessLogic.Models.Games;
+using UI.Models.GameDefinitionModels;
 
 namespace UI.Models.UniversalGameModels
 {
@@ -7,5 +9,6 @@ namespace UI.Models.UniversalGameModels
         public BoardGameGeekInfoViewModel BoardGameGeekInfo { get; set; }
         public UniversalGameStatsViewModel UniversalGameStats { get; set; }
         public GamingGroupGameDefinitionViewModel GamingGroupGameDefinitionSummary { get; set; }
+        public List<PublicGameSummary> RecentlyPlayedGames { get; set; }
     }
 }

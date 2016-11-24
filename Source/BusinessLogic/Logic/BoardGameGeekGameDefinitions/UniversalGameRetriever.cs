@@ -1,8 +1,10 @@
 using System.Linq;
 using BusinessLogic.DataAccess;
+using BusinessLogic.Facades;
 using BusinessLogic.Logic.GameDefinitions;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
+using BusinessLogic.Models.PlayedGames;
 using BusinessLogic.Models.User;
 
 namespace BusinessLogic.Logic.BoardGameGeekGameDefinitions
@@ -15,28 +17,41 @@ namespace BusinessLogic.Logic.BoardGameGeekGameDefinitions
         private readonly IGameDefinitionRetriever _gameDefinitionRetriever;
         private readonly IDataContext _dataContext;
         private readonly IUniversalStatsRetriever _universalStatsRetriever;
+        private readonly IRecentPublicGamesRetriever _recentPublicGamesRetriever;
 
         public UniversalGameRetriever(
             IBoardGameGeekGameDefinitionInfoRetriever boardGameGeekGameDefinitionInfoRetriever, 
             IGameDefinitionRetriever gameDefinitionRetriever, 
-            IDataContext dataContext, IUniversalStatsRetriever universalStatsRetriever)
+            IDataContext dataContext, 
+            IUniversalStatsRetriever universalStatsRetriever, 
+            IRecentPublicGamesRetriever recentPublicGamesRetriever)
         {
             _boardGameGeekGameDefinitionInfoRetriever = boardGameGeekGameDefinitionInfoRetriever;
             _gameDefinitionRetriever = gameDefinitionRetriever;
             _dataContext = dataContext;
             _universalStatsRetriever = universalStatsRetriever;
+            _recentPublicGamesRetriever = recentPublicGamesRetriever;
         }
 
-        public BoardGameGeekGameSummary GetBoardGameGeekGameSummary(int boardGameGeekGameDefinitionId, ApplicationUser currentUser, int numberOfRecentlyPlayedGamesToShow = DEFAULT_NUMBER_OF_GAMES)
+        public BoardGameGeekGameSummary GetBoardGameGeekGameSummary(int boardGameGeekGameDefinitionId, ApplicationUser currentUser, int numberOfRecentlyPlayedGamesToRetrieve = DEFAULT_NUMBER_OF_GAMES)
         {
             var boardGameGeekInfo = _boardGameGeekGameDefinitionInfoRetriever.GetResults(boardGameGeekGameDefinitionId);
             var universalStats = _universalStatsRetriever.GetResults(boardGameGeekGameDefinitionId);
-            var gamingGroupGameDefinitionSummary = GetGamingGroupGameDefinitionSummary(boardGameGeekGameDefinitionId, currentUser.CurrentGamingGroupId, numberOfRecentlyPlayedGamesToShow);
+            var gamingGroupGameDefinitionSummary = GetGamingGroupGameDefinitionSummary(boardGameGeekGameDefinitionId, currentUser.CurrentGamingGroupId, numberOfRecentlyPlayedGamesToRetrieve);
+
+            var filter = new RecentlyPlayedGamesFilter
+            {
+                BoardGameGeekGameDefinitionId = boardGameGeekGameDefinitionId,
+                NumberOfGamesToRetrieve = numberOfRecentlyPlayedGamesToRetrieve
+            };
+            var recentlyPlayedPublicGames = _recentPublicGamesRetriever.GetResults(filter);
+
             return new BoardGameGeekGameSummary
             {
                 BoardGameGeekInfo = boardGameGeekInfo,
                 UniversalGameStats = universalStats,
-                GamingGroupGameDefinitionSummary = gamingGroupGameDefinitionSummary
+                GamingGroupGameDefinitionSummary = gamingGroupGameDefinitionSummary,
+                RecentlyPlayedGames = recentlyPlayedPublicGames
             };
         }
 

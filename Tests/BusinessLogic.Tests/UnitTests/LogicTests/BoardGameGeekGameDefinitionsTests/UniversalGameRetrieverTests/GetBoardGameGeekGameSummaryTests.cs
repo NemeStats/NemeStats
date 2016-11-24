@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using BusinessLogic.DataAccess;
+using BusinessLogic.Facades;
 using BusinessLogic.Logic;
 using BusinessLogic.Logic.BoardGameGeekGameDefinitions;
 using BusinessLogic.Logic.GameDefinitions;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
+using BusinessLogic.Models.PlayedGames;
 using BusinessLogic.Models.User;
 using NUnit.Framework;
 using Rhino.Mocks;
@@ -70,6 +72,24 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.BoardGameGeekGameDefinitionsT
             //--assert
             _autoMocker.Get<IBoardGameGeekGameDefinitionInfoRetriever>().AssertWasCalled(mock => mock.GetResults(_boardGameGeekGameDefinitionId));
             result.BoardGameGeekInfo.ShouldBeSameAs(_expectedBoardGameGeekInfo);
+        }
+
+        [Test]
+        public void It_Returns_The_Recent_Public_Game_Summaries()
+        {
+            //--arrange
+            int numberOfGamesToRetrieve = 2;
+            List<PublicGameSummary> expectedPublicGames = new List<PublicGameSummary>();
+            _autoMocker.Get<IRecentPublicGamesRetriever>().Expect(mock => mock.GetResults(Arg<RecentlyPlayedGamesFilter>.Is.Anything))
+                .Return(expectedPublicGames);
+
+            //--act
+            var result = _autoMocker.ClassUnderTest.GetBoardGameGeekGameSummary(_boardGameGeekGameDefinitionId, _currentUser, numberOfGamesToRetrieve);
+
+            //--assert
+            _autoMocker.Get<IRecentPublicGamesRetriever>().AssertWasCalled(mock => mock.GetResults(Arg<RecentlyPlayedGamesFilter>.Matches(
+                x => x.NumberOfGamesToRetrieve == numberOfGamesToRetrieve && x.BoardGameGeekGameDefinitionId == _boardGameGeekGameDefinitionId)));
+            result.RecentlyPlayedGames.ShouldBeSameAs(expectedPublicGames);
         }
 
         [Test]
