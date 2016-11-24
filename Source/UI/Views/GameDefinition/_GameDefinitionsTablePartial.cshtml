@@ -1,4 +1,6 @@
-﻿@model IList<UI.Models.GameDefinitionModels.GameDefinitionSummaryViewModel>
+﻿@using UI.Models.GameDefinitionModels
+@using UI.Models.UniversalGameModels
+@model List<UI.Models.GameDefinitionModels.GameDefinitionSummaryViewModel>
 
 @{
     Layout = null;
@@ -46,24 +48,26 @@
                 </tr>
             </thead>
             <tbody class="list">
-                @foreach (var item in Model)
+
+            @foreach (var item in Model)
             {
-                    <tr class="game-item">
-                        <td class="bgg-link-col">
-                            @if (item.HasBoardGameGeekDefinition)
+                BoardGameGeekInfoViewModel boardGameGeekInfo = item.BoardGameGeekInfo;
+                <tr class="game-item">
+                    <td class="bgg-link-col">
+                        @if (boardGameGeekInfo != null)
+                        {
+                            if (!string.IsNullOrEmpty(boardGameGeekInfo.ThumbnailImageUrl))
                             {
-                                if (!string.IsNullOrEmpty(item.BoardGameGeekGameDefinition.Thumbnail))
-                                {
-                                    <a href="@item.BoardGameGeekGameDefinition.BoardGameGeekUri.AbsoluteUri">
-                                        <img class="bgg-thumbnail" src="@item.BoardGameGeekGameDefinition.Thumbnail" alt="View on BoardGameGeek.com" title="View on BoardGameGeek.com" />
-                                    </a>
-                                }
-                                else
-                                {
-                                    <a href="@item.BoardGameGeekGameDefinition.BoardGameGeekUri.AbsoluteUri" target="_blank;">
-                                        <img src="~/Content/Images/bgg_small.png" alt="View on BoardGameGeek.com" title="View on BoardGameGeek.com" />
-                                    </a>
-                                }
+                                <a href="@Url.Action(MVC.GameDefinition.Details().AddRouteValue("id", item.Id))">
+                                    <img class="bgg-thumbnail" src="@boardGameGeekInfo.ThumbnailImageUrl" alt="View Global Stats" title="View Global Stats"/>
+                                </a>
+                            }
+                            else
+                            {
+                                <a href="@boardGameGeekInfo.BoardGameGeekUri.AbsoluteUri" target="_blank;">
+                                    <img src="~/Content/Images/bgg_small.png" alt="View Global Stats" title="View Global Stats"/>
+                                </a>
+                            }
 
                             }
                         </td>

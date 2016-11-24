@@ -374,6 +374,7 @@
     <Compile Include="Controllers\Helpers\ShowingXResultsMessageBuilder.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PlayedGameController.cs" />
+    <Compile Include="Controllers\UniversalGameController.cs" />
     <Compile Include="Controllers\PlayerController.cs" />
     <Compile Include="Attributes\Filters\InjectingActionInvoker.cs" />
     <Compile Include="Attributes\Filters\RollbarExceptionFilter.cs" />
@@ -426,16 +427,19 @@
     <Compile Include="Models\Badges\MinionBadgeViewModel.cs" />
     <Compile Include="Models\Badges\NemesisBadgeViewModel.cs" />
     <Compile Include="Models\Badges\PreviousNemesisBadgeViewModel.cs" />
+    <Compile Include="Models\GameDefinitionModels\GameDefinitionDetailsViewModel.cs" />
+    <Compile Include="Models\GameDefinitionModels\GamingGroupGameDefinitionStatsViewModel.cs" />
+    <Compile Include="Models\UniversalGameModels\BoardGameGeekInfoViewModel.cs" />
     <Compile Include="Models\GameDefinitionModels\BoardGameGeekGameDefinitionViewModel.cs" />
     <Compile Include="Models\GameDefinitionModels\CreateGameDefinitionViewModel.cs" />
     <Compile Include="Models\GameDefinitionModels\GameDefinitionEditViewModel.cs" />
     <Compile Include="Models\GameDefinitionModels\GameDefinitionDisplayInfoViewModel.cs" />
     <Compile Include="Models\GameDefinitionModels\GameDefinitionSummaryListViewModel.cs" />
     <Compile Include="Models\GameDefinitionModels\GameDefinitionSummaryViewModel.cs" />
+    <Compile Include="Models\GameDefinitionModels\GamingGroupGameDefinitionViewModel.cs" />
     <Compile Include="Models\GameDefinitionModels\TrendingGameViewModel.cs" />
     <Compile Include="Models\ModelStateHelper.cs" />
     <Compile Include="Models\PlayedGame\CreatePlayedGameViewModel.cs" />
-    <Compile Include="Models\Players\GameDefinitionPlayersSummaryViewModel.cs" />
     <Compile Include="Models\GamingGroup\GamingGroupPublicDetailsViewModel.cs" />
     <Compile Include="Models\GamingGroup\GamingGroupViewModel.cs" />
     <Compile Include="Models\IEditableViewModel.cs" />
@@ -443,7 +447,6 @@
     <Compile Include="Models\LocalPasswordModel.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AdminViewModel.cs" />
-    <Compile Include="Models\GameDefinitionModels\GameDefinitionDetailsViewModel.cs" />
     <Compile Include="Models\GamingGroup\InvitationViewModel.cs" />
     <Compile Include="Models\Home\IndexViewModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -468,6 +471,8 @@
     <Compile Include="Models\Players\PlayerSummaryViewModel.cs" />
     <Compile Include="Models\Players\TopPlayerViewModel.cs" />
     <Compile Include="Models\Points\NemePointsSummaryViewModel.cs" />
+    <Compile Include="Models\UniversalGameModels\UniversalGameDetailsViewModel.cs" />
+    <Compile Include="Models\UniversalGameModels\UniversalGameStatsViewModel.cs" />
     <Compile Include="Models\User\BoardGameGeekIntegrationModel.cs" />
     <Compile Include="Models\User\UserGamingGroupsModel.cs" />
     <Compile Include="Models\User\UserViewModel.cs" />
@@ -482,9 +487,9 @@
       <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>
     <Compile Include="T4MVC.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
       <DependentUpon>T4MVC.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
     </Compile>
     <Compile Include="Transformations\AutomapperConfiguration.cs" />
     <Compile Include="Transformations\GameDefinitionSummaryViewModelBuilder.cs" />
@@ -496,7 +501,6 @@
     <Compile Include="Transformations\IGamingGroupViewModelBuilder.cs" />
     <Compile Include="Transformations\GamingGroupViewModelBuilder.cs" />
     <Compile Include="Transformations\INemesisChangeViewModelBuilder.cs" />
-    <Compile Include="Transformations\ITransformer.cs" />
     <Compile Include="Transformations\NemesisChangeViewModelBuilder.cs" />
     <Compile Include="Transformations\TransformationsHelper.cs" />
     <Compile Include="Transformations\Transformer.cs" />
@@ -519,6 +523,9 @@
     <Compile Include="Models\Players\PlayerWithNemesisViewModel.cs" />
     <Compile Include="Models\GamingGroup\TopGamingGroupSummaryViewModel.cs" />
     <Compile Include="Models\Players\GameDefinitionPlayerSummaryViewModel.cs" />
+    <Compile Include="UniversalGameController.generated.cs">
+      <DependentUpon>T4MVC.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\font-awesome.css" />
@@ -720,10 +727,10 @@
     <Content Include="Scripts\vue-moment.js" />
     <Content Include="Scripts\vue.min.js" />
     <Content Include="Scripts\_references.js" />
-    <None Include="T4MVC.tt">
+    <Content Include="T4MVC.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>T4MVC.cs</LastGenOutput>
-    </None>
+    </Content>
     <None Include="T4MVC.tt.hooks.t4" />
     <None Include="T4MVC.tt.settings.xml" />
     <Content Include="Web.config">
@@ -814,6 +821,11 @@
     <Content Include="Views\Achievement\_RecentAchievementsUnlocked.cshtml" />
     <Content Include="Views\Achievement\RecentAchievementsUnlocked.cshtml" />
     <Content Include="Views\PlayedGame\CreateOrEdit.cshtml" />
+    <Content Include="Views\UniversalGame\Details.cshtml" />
+    <Content Include="Views\UniversalGame\_BoardGameGeekInfo.cshtml" />
+    <Content Include="Views\UniversalGame\_UniversalGameStats.cshtml" />
+    <Content Include="Views\GameDefinition\_GamingGroupGameDefinitionStatsPartial.cshtml" />
+    <Content Include="Views\GameDefinition\_GameDefinitionPlayedGamesPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Areas\Api\Views\Shared\" />

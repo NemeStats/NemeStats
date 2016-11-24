@@ -18,10 +18,13 @@
 
 using System;
 using System.Linq;
+using BusinessLogic.Caching;
 using BusinessLogic.DataAccess;
 using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.Exceptions;
+using BusinessLogic.Logic.BoardGameGeekGameDefinitions;
 using BusinessLogic.Logic.GameDefinitions;
+using BusinessLogic.Logic.Utilities;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
 using NUnit.Framework;
@@ -47,8 +50,9 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.GameDefinitionsTests.G
                 using (dataContext = new NemeStatsDataContext(dbContext, securedEntityValidatorFactory))
                 {
                     var playerRepository = new EntityFrameworkPlayerRepository(dataContext);
+                    var cacheableGameDataRetriever = new BoardGameGeekGameDefinitionInfoRetriever(new DateUtilities(), new CacheService(), dataContext);
 
-                    var gameDefinitionRetriever = new GameDefinitionRetriever(dataContext, playerRepository);
+                    var gameDefinitionRetriever = new GameDefinitionRetriever(dataContext, playerRepository, cacheableGameDataRetriever);
                     gameDefinitionSummary = gameDefinitionRetriever.GetGameDefinitionDetails(
                         testGameDefinition.Id, 
                         numberOfGamesToRetrieve);
@@ -116,7 +120,9 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.GameDefinitionsTests.G
 
                     int invalidId = -1;
                     var expectedException = new EntityDoesNotExistException(typeof(GameDefinition), invalidId);
-                    var gameDefinitionRetriever = new GameDefinitionRetriever(dataContext, playerRepository);
+                    var cacheableGameDataRetriever = new BoardGameGeekGameDefinitionInfoRetriever(new DateUtilities(), new CacheService(), dataContext);
+
+                    var gameDefinitionRetriever = new GameDefinitionRetriever(dataContext, playerRepository, cacheableGameDataRetriever);
 
                     var actualException = Assert.Throws<EntityDoesNotExistException>(() => 
                         gameDefinitionRetriever.GetGameDefinitionDetails(invalidId, 0));

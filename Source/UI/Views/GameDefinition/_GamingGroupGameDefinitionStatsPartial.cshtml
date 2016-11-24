@@ -1,0 +1,19 @@
+﻿@model UI.Models.GameDefinitionModels.GamingGroupGameDefinitionStatsViewModel
+
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <h4>Statistics for <a href="@Url.Action(MVC.GamingGroup.Details().AddRouteValue("id", ViewData["GamingGroupId"]))">@ViewData["GamingGroupName"]</a></h4>
+    </div>
+    <div class="panel-body">
+        <table class="table table-hover table-striped">
+            <tr>
+                <td class="col-md-2"><strong>Total Games Played:</strong></td>
+                <td class="col-md-2">@Model.TotalNumberOfGamesPlayed</td>
+            </tr>
+            <tr>
+                <td><strong>Average Players Per Game</strong></td>
+                <td>@Model.AveragePlayersPerGame</td>
+            </tr>
+        </table>
+    </div>
+</div>

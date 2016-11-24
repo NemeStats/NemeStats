@@ -17,22 +17,19 @@
             <tr class="game-item" data-position="@position">
                 @{position++;}
                 <td class="bgg-link-col">
-                    @if (trendingGame.BoardGameGeekUri != null)
-                    {
-                        <a href="@trendingGame.BoardGameGeekUri.AbsoluteUri" target="_blank;">
-                            @if (!string.IsNullOrEmpty(trendingGame.ThumbnailImageUrl))
-                            {
-                                <img class="bgg-thumbnail" src="@trendingGame.ThumbnailImageUrl" alt="View on BoardGameGeek.com" title="View on BoardGameGeek.com"/>
-                            }
-                            else
-                            {
-                                <img src="~/Content/Images/bgg_small.png" alt="View on BoardGameGeek.com" title="View on BoardGameGeek.com"/>
-                            }
+                    <a href="@Url.Action(MVC.UniversalGame.Details().AddRouteValue("id", trendingGame.BoardGameGeekGameDefinitionId))" target="_blank;">
+                        @if (!string.IsNullOrEmpty(trendingGame.ThumbnailImageUrl))
+                        {
+                            <img class="bgg-thumbnail" src="@trendingGame.ThumbnailImageUrl" alt="View universal stats" title="View universal stats"/>
+                        }
+                        else
+                        {
+                            <img src="~/Content/Images/bgg_small.png" alt="View universal stats" title="View universal stats"/>
+                        }
 
-                        </a>
-                    }
+                    </a>
                 </td>
-                <td>@trendingGame.Name</td>
+                <td><a href="@Url.Action(MVC.UniversalGame.Details().AddRouteValue("id", trendingGame.BoardGameGeekGameDefinitionId))" target="_blank;">@trendingGame.Name</a></td>
                 <td>@trendingGame.GamingGroupsPlayingThisGame</td>
                 <td>@trendingGame.GamesPlayed</td>
             </tr>

@@ -28,6 +28,7 @@ using BusinessLogic.Export;
 using BusinessLogic.Facades;
 using BusinessLogic.Jobs.BoardGameGeekBatchUpdateJobService;
 using BusinessLogic.Logic.BoardGameGeek;
+using BusinessLogic.Logic.BoardGameGeekGameDefinitions;
 using BusinessLogic.Logic.Champions;
 using BusinessLogic.Logic.Email;
 using BusinessLogic.Logic.GameDefinitions;
@@ -175,10 +176,13 @@ namespace NemeStats.IoC
             For<IPlayerAchievementRetriever>().Use<PlayerAchievementRetriever>();
             For<IRecentPlayerAchievementsUnlockedRetreiver>().Use<RecentPlayerAchievementsUnlockedRetreiver>();
 
-
             For<ICacheService>().Use<CacheService>();
 
             For<IDateUtilities>().Use<DateUtilities>();
+
+            For<IBoardGameGeekGameDefinitionInfoRetriever>().Use<BoardGameGeekGameDefinitionInfoRetriever>();
+
+            For<IUniversalStatsRetriever>().Use<UniversalStatsRetriever>();
         }
 
 

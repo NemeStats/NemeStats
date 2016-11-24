@@ -23,12 +23,14 @@ using BusinessLogic.Models.User;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System.Collections.Generic;
+using BusinessLogic.Logic;
+using BusinessLogic.Logic.BoardGameGeekGameDefinitions;
 using BusinessLogic.Logic.Players;
-using BusinessLogic.Models.PlayedGames;
 using StructureMap.AutoMocking;
 using UI.Models.GameDefinitionModels;
 using UI.Models.PlayedGame;
 using UI.Models.Players;
+using UI.Models.UniversalGameModels;
 using UI.Transformations;
 
 namespace UI.Tests.UnitTests.TransformationsTests
@@ -36,73 +38,74 @@ namespace UI.Tests.UnitTests.TransformationsTests
     [TestFixture]
     public class GameDefinitionDetailsViewModelBuilderTests
     {
-        private RhinoAutoMocker<GameDefinitionDetailsViewModelBuilder> autoMocker; 
-        private GameDefinitionSummary gameDefinitionSummary;
-        private GameDefinitionDetailsViewModel viewModel;
-        private PlayedGameDetailsViewModel playedGameDetailsViewModel1;
-        private PlayedGameDetailsViewModel playedGameDetailsViewModel2;
-        private ApplicationUser currentUser;
-        private readonly int gamingGroupid = 135;
-        private Champion champion;
-        private Champion previousChampion;
-        private readonly float championWinPercentage = 100;
-        private readonly int championNumberOfGames = 6;
-        private readonly int championNumberOfWins = 4;
-        private readonly string championName = "Champion Name";
-        private readonly int championPlayerId = 999;
-        private readonly string previousChampionName = "Previous Champion Name";
-        private readonly int previousChampionPlayerId = 998;
-        private Player championPlayer;
-        private Player previousChampionPlayer;
-        private PlayerWinRecord playerWinRecord1;
-        private PlayerWinRecord playerWinRecord2;
-        private GameDefinitionPlayerSummaryViewModel expectedPlayerSummary1;
-        private GameDefinitionPlayerSummaryViewModel expectedPlayerSummary2;
+        private RhinoAutoMocker<GameDefinitionDetailsViewModelBuilder> _autoMocker; 
+        private GameDefinitionSummary _gameDefinitionSummary;
+        private GameDefinitionDetailsViewModel _viewModel;
+        private PlayedGameDetailsViewModel _playedGameDetailsViewModel1;
+        private PlayedGameDetailsViewModel _playedGameDetailsViewModel2;
+        private ApplicationUser _currentUser;
+        private readonly int _gamingGroupid = 135;
+        private Champion _champion;
+        private Champion _previousChampion;
+        private readonly float _championWinPercentage = 100;
+        private readonly int _championNumberOfGames = 6;
+        private readonly int _championNumberOfWins = 4;
+        private readonly string _championName = "Champion Name";
+        private readonly int _championPlayerId = 999;
+        private readonly string _previousChampionName = "Previous Champion Name";
+        private readonly int _previousChampionPlayerId = 998;
+        private Player _championPlayer;
+        private Player _previousChampionPlayer;
+        private PlayerWinRecord _playerWinRecord1;
+        private PlayerWinRecord _playerWinRecord2;
+        private GameDefinitionPlayerSummaryViewModel _expectedPlayerSummary1;
+        private GameDefinitionPlayerSummaryViewModel _expectedPlayerSummary2;
+        private BoardGameGeekInfoViewModel _expectedBoardGameGeekInfo;
 
         [OneTimeSetUpAttribute]
         public void FixtureSetUp()
         {
-            autoMocker = new RhinoAutoMocker<GameDefinitionDetailsViewModelBuilder>();
-            autoMocker.PartialMockTheClassUnderTest();
+            _autoMocker = new RhinoAutoMocker<GameDefinitionDetailsViewModelBuilder>();
+            _autoMocker.PartialMockTheClassUnderTest();
 
-            expectedPlayerSummary1 = new GameDefinitionPlayerSummaryViewModel();
-            expectedPlayerSummary2 = new GameDefinitionPlayerSummaryViewModel();
+            _expectedPlayerSummary1 = new GameDefinitionPlayerSummaryViewModel();
+            _expectedPlayerSummary2 = new GameDefinitionPlayerSummaryViewModel();
 
             List<PlayedGame> playedGames = new List<PlayedGame>();
             playedGames.Add(new PlayedGame
             {
                     Id = 10
                 });
-            playedGameDetailsViewModel1 = new PlayedGameDetailsViewModel();
+            _playedGameDetailsViewModel1 = new PlayedGameDetailsViewModel();
             playedGames.Add(new PlayedGame
             {
                 Id = 11
             });
-            playedGameDetailsViewModel2 = new PlayedGameDetailsViewModel();
-            championPlayer = new Player
+            _playedGameDetailsViewModel2 = new PlayedGameDetailsViewModel();
+            _championPlayer = new Player
             {
-                Name = championName,
-                Id = championPlayerId,
+                Name = _championName,
+                Id = _championPlayerId,
                 Active = true
             };
-            previousChampionPlayer = new Player
+            _previousChampionPlayer = new Player
             {
-                Name = previousChampionName,
-                Id = previousChampionPlayerId,
+                Name = _previousChampionName,
+                Id = _previousChampionPlayerId,
                 Active = false
             };
-            champion = new Champion
+            _champion = new Champion
             {
-                Player = championPlayer,
-                WinPercentage = championWinPercentage,
-                NumberOfGames = championNumberOfGames,
-                NumberOfWins = championNumberOfWins
+                Player = _championPlayer,
+                WinPercentage = _championWinPercentage,
+                NumberOfGames = _championNumberOfGames,
+                NumberOfWins = _championNumberOfWins
             };
-            previousChampion = new Champion
+            _previousChampion = new Champion
             {
-                Player = previousChampionPlayer
+                Player = _previousChampionPlayer
             };
-            playerWinRecord1 = new PlayerWinRecord
+            _playerWinRecord1 = new PlayerWinRecord
             {
                 GamesWon = 1,
                 GamesLost = 2,
@@ -110,89 +113,88 @@ namespace UI.Tests.UnitTests.TransformationsTests
                 WinPercentage = 33,
                 PlayerId = 3
             };
-            playerWinRecord2 = new PlayerWinRecord();
+            _playerWinRecord2 = new PlayerWinRecord();
 
-            autoMocker.Get<ITransformer>().Expect(mock => mock.Transform<GameDefinitionPlayerSummaryViewModel>(playerWinRecord1))
-                       .Return(expectedPlayerSummary1);
-            autoMocker.Get<ITransformer>().Expect(mock => mock.Transform<GameDefinitionPlayerSummaryViewModel>(playerWinRecord2))
-                 .Return(expectedPlayerSummary2); 
+            _autoMocker.Get<ITransformer>().Expect(mock => mock.Transform<GameDefinitionPlayerSummaryViewModel>(_playerWinRecord1))
+                       .Return(_expectedPlayerSummary1);
+            _autoMocker.Get<ITransformer>().Expect(mock => mock.Transform<GameDefinitionPlayerSummaryViewModel>(_playerWinRecord2))
+                 .Return(_expectedPlayerSummary2); 
 
-            gameDefinitionSummary = new GameDefinitionSummary
+            _gameDefinitionSummary = new GameDefinitionSummary
             {
                 Id = 1,
                 Name = "game definition name",
                 Description = "game definition description",
-                GamingGroupId = gamingGroupid,
+                GamingGroupId = _gamingGroupid,
                 GamingGroupName = "gaming group name",
                 PlayedGames = playedGames,
                 TotalNumberOfGamesPlayed = 3,
                 AveragePlayersPerGame = 2.2M,
                 BoardGameGeekGameDefinitionId = 123,
                 BoardGameGeekGameDefinition = new BoardGameGeekGameDefinition() { Id = 123},
-                Champion = champion,
-                PreviousChampion = previousChampion,
+                Champion = _champion,
+                PreviousChampion = _previousChampion,
                 PlayerWinRecords = new List<PlayerWinRecord>
                 {
-                    playerWinRecord1,
-                    playerWinRecord2
-                } 
+                    _playerWinRecord1,
+                    _playerWinRecord2
+                },
+                BoardGameGeekInfo = new BoardGameGeekInfo()
             };
-            currentUser = new ApplicationUser
+            _currentUser = new ApplicationUser
             {
-                CurrentGamingGroupId = gamingGroupid
+                CurrentGamingGroupId = _gamingGroupid
             };
-            autoMocker.Get<IPlayedGameDetailsViewModelBuilder>().Expect(mock => mock.Build(gameDefinitionSummary.PlayedGames[0], currentUser))
-                .Return(playedGameDetailsViewModel1);
-            autoMocker.Get<IPlayedGameDetailsViewModelBuilder>().Expect(mock => mock.Build(gameDefinitionSummary.PlayedGames[1], currentUser))
-                .Return(playedGameDetailsViewModel2);
+            _autoMocker.Get<IPlayedGameDetailsViewModelBuilder>().Expect(mock => mock.Build(_gameDefinitionSummary.PlayedGames[0], _currentUser))
+                .Return(_playedGameDetailsViewModel1);
+            _autoMocker.Get<IPlayedGameDetailsViewModelBuilder>().Expect(mock => mock.Build(_gameDefinitionSummary.PlayedGames[1], _currentUser))
+                .Return(_playedGameDetailsViewModel2);
 
-            viewModel = autoMocker.ClassUnderTest.Build(gameDefinitionSummary, currentUser);
+            _expectedBoardGameGeekInfo = new BoardGameGeekInfoViewModel();
+            _autoMocker.Get<ITransformer>().Expect(mock => mock.Transform<BoardGameGeekInfoViewModel>(_gameDefinitionSummary.BoardGameGeekInfo))
+                .Return(_expectedBoardGameGeekInfo);
+
+            _viewModel = _autoMocker.ClassUnderTest.Build(_gameDefinitionSummary, _currentUser);
         }
 
         [Test]
         public void ItCopiesTheId()
         {
-            Assert.AreEqual(gameDefinitionSummary.Id, viewModel.Id);
+            Assert.AreEqual(_gameDefinitionSummary.Id, _viewModel.GameDefinitionId);
         }
 
         [Test]
         public void ItCopiesTheName()
         {
-            Assert.AreEqual(gameDefinitionSummary.Name, viewModel.Name);
-        }
-
-        [Test]
-        public void ItCopiesTheDescription()
-        {
-            Assert.AreEqual(gameDefinitionSummary.Description, viewModel.Description);
+            Assert.AreEqual(_gameDefinitionSummary.Name, _viewModel.GameDefinitionName);
         }
 
         [Test]
         public void ItCopiesTheTotalNumberOfGamesPlayed()
         {
-            Assert.AreEqual(gameDefinitionSummary.TotalNumberOfGamesPlayed, viewModel.TotalNumberOfGamesPlayed);
+            Assert.AreEqual(_gameDefinitionSummary.TotalNumberOfGamesPlayed, _viewModel.TotalNumberOfGamesPlayed);
         }
 
         [Test]
         public void ItCopiesTheAveragePlayersPerGame()
         {
-            var expectedValue = string.Format("{0:0.#}", gameDefinitionSummary.AveragePlayersPerGame);
-            Assert.AreEqual(expectedValue, viewModel.AveragePlayersPerGame);
+            var expectedValue = $"{_gameDefinitionSummary.AveragePlayersPerGame:0.#}";
+            Assert.AreEqual(expectedValue, _viewModel.AveragePlayersPerGame);
         }
 
         [Test]
         public void ItTransformsThePlayedGamesIntoPlayedGameDetailViewModelsAndSetsOnTheViewModel()
         {
-            Assert.AreEqual(playedGameDetailsViewModel1, viewModel.PlayedGames[0]);
-            Assert.AreEqual(playedGameDetailsViewModel2, viewModel.PlayedGames[1]);
+            Assert.AreEqual(_playedGameDetailsViewModel1, _viewModel.PlayedGames[0]);
+            Assert.AreEqual(_playedGameDetailsViewModel2, _viewModel.PlayedGames[1]);
         }
 
         [Test]
         public void ItSetsThePlayedGamesToAnEmptyListIfThereAreNone()
         {
-            gameDefinitionSummary.PlayedGames = null;
+            _gameDefinitionSummary.PlayedGames = null;
 
-            GameDefinitionDetailsViewModel actualViewModel = autoMocker.ClassUnderTest.Build(gameDefinitionSummary, currentUser);
+            var actualViewModel = _autoMocker.ClassUnderTest.Build(_gameDefinitionSummary, _currentUser);
 
             Assert.AreEqual(new List<PlayedGameDetailsViewModel>(), actualViewModel.PlayedGames);
         }
@@ -200,26 +202,26 @@ namespace UI.Tests.UnitTests.TransformationsTests
         [Test]
         public void ItCopiesTheGamingGroupName()
         {
-            Assert.AreEqual(gameDefinitionSummary.GamingGroupName, viewModel.GamingGroupName);
+            Assert.AreEqual(_gameDefinitionSummary.GamingGroupName, _viewModel.GamingGroupName);
         }
 
         [Test]
         public void ItCopiesTheGamingGroupId()
         {
-            Assert.AreEqual(gameDefinitionSummary.GamingGroupId, viewModel.GamingGroupId);
+            Assert.AreEqual(_gameDefinitionSummary.GamingGroupId, _viewModel.GamingGroupId);
         }
 
         [Test]
         public void TheUserCanEditViewModelIfTheyShareGamingGroups()
         {
-            Assert.True(viewModel.UserCanEdit);
+            Assert.True(_viewModel.UserCanEdit);
         }
 
         [Test]
         public void TheUserCanNotEditViewModelIfTheyDoNotShareGamingGroups()
         {
-            currentUser.CurrentGamingGroupId = -1;
-            GameDefinitionDetailsViewModel actualViewModel = autoMocker.ClassUnderTest.Build(gameDefinitionSummary, currentUser);
+            _currentUser.CurrentGamingGroupId = -1;
+            var actualViewModel = _autoMocker.ClassUnderTest.Build(_gameDefinitionSummary, _currentUser);
 
             Assert.False(actualViewModel.UserCanEdit);
         }
@@ -227,7 +229,7 @@ namespace UI.Tests.UnitTests.TransformationsTests
         [Test]
         public void TheUserCanNotEditViewModelIfTheUserIsUnknown()
         {
-            GameDefinitionDetailsViewModel actualViewModel = autoMocker.ClassUnderTest.Build(gameDefinitionSummary, null);
+            var actualViewModel = _autoMocker.ClassUnderTest.Build(_gameDefinitionSummary, null);
 
             Assert.False(actualViewModel.UserCanEdit);
         }
@@ -235,58 +237,71 @@ namespace UI.Tests.UnitTests.TransformationsTests
         [Test]
         public void ItSetsTheChampionNameWhenThereIsAChampion()
         {
-            Assert.That(viewModel.ChampionName, Is.EqualTo(PlayerNameBuilder.BuildPlayerName(championPlayer.Name, championPlayer.Active)));
+            Assert.That(_viewModel.ChampionName, Is.EqualTo(PlayerNameBuilder.BuildPlayerName(_championPlayer.Name, _championPlayer.Active)));
         }
 
         [Test]
         public void ItSetsTheChampionWinPercentageWhenThereIsAChampion()
         {
-            Assert.That(viewModel.WinPercentage, Is.EqualTo(championWinPercentage));
+            Assert.That(_viewModel.WinPercentage, Is.EqualTo(_championWinPercentage));
         }
 
         [Test]
         public void ItSetsTheChampionGamesPlayedWhenThereIsAChampion()
         {
-            Assert.That(viewModel.NumberOfGamesPlayed, Is.EqualTo(championNumberOfGames));
+            Assert.That(_viewModel.NumberOfGamesPlayed, Is.EqualTo(_championNumberOfGames));
         }
 
         [Test]
         public void ItSetsTheChampionGamesWonWhenThereIsAChampion()
         {
-            Assert.That(viewModel.NumberOfWins, Is.EqualTo(championNumberOfWins));
+            Assert.That(_viewModel.NumberOfWins, Is.EqualTo(_championNumberOfWins));
         }
 
         [Test]
         public void ItSetsTheChampionPlayerIdWhenThereIsAChampion()
         {
-            Assert.That(viewModel.ChampionPlayerId, Is.EqualTo(championPlayerId));
+            Assert.That(_viewModel.ChampionPlayerId, Is.EqualTo(_championPlayerId));
         }
 
         [Test]
         public void ItSetsThePreviousChampionNameWhenThereIsAPreviousChampion()
         {
-            Assert.That(viewModel.PreviousChampionName, Is.EqualTo(PlayerNameBuilder.BuildPlayerName(previousChampionPlayer.Name, previousChampionPlayer.Active)));
+            Assert.That(_viewModel.PreviousChampionName, Is.EqualTo(PlayerNameBuilder.BuildPlayerName(_previousChampionPlayer.Name, _previousChampionPlayer.Active)));
         }
 
         [Test]
         public void ItSetsThePreviousChampionPlayerIdWhenThereIsAPreviousChampion()
         {
-            Assert.That(viewModel.PreviousChampionPlayerId, Is.EqualTo(previousChampionPlayerId));
+            Assert.That(_viewModel.PreviousChampionPlayerId, Is.EqualTo(_previousChampionPlayerId));
         }
+
+        [Test]
+        public void It_Sets_The_BoardGameGeekInfo()
+        {
+            //--arrange
+
+            //--act
+            Assert.That(_viewModel.BoardGameGeekInfo, Is.Not.Null);
+            Assert.That(_viewModel.BoardGameGeekInfo, Is.SameAs(_expectedBoardGameGeekInfo));
+
+            //--assert
+        }
+
 
         [Test]
         public void ItBuildsThePlayerSummaryViewModels()
         {
-            autoMocker.Get<ITransformer>().Expect(mock => mock.Transform<GameDefinitionPlayerSummaryViewModel>(playerWinRecord1))
-                       .Return(expectedPlayerSummary1);
-            autoMocker.Get<ITransformer>().Expect(mock => mock.Transform<GameDefinitionPlayerSummaryViewModel>(playerWinRecord2))
-                 .Return(expectedPlayerSummary2); 
+            _autoMocker.Get<ITransformer>().Expect(mock => mock.Transform<GameDefinitionPlayerSummaryViewModel>(_playerWinRecord1))
+                       .Return(_expectedPlayerSummary1);
+            _autoMocker.Get<ITransformer>().Expect(mock => mock.Transform<GameDefinitionPlayerSummaryViewModel>(_playerWinRecord2))
+                 .Return(_expectedPlayerSummary2); 
 
-            var actualResult = autoMocker.ClassUnderTest.Build(gameDefinitionSummary, currentUser);
+            var actualResult = _autoMocker.ClassUnderTest.Build(_gameDefinitionSummary, _currentUser);
 
-            Assert.That(actualResult.GameDefinitionPlayersSummary.GameDefinitionPlayerSummaries.Count, Is.EqualTo(2));
-            Assert.That(actualResult.GameDefinitionPlayersSummary.GameDefinitionPlayerSummaries, Contains.Item(expectedPlayerSummary1));
-            Assert.That(actualResult.GameDefinitionPlayersSummary.GameDefinitionPlayerSummaries, Contains.Item(expectedPlayerSummary2));
+            Assert.That(actualResult.GameDefinitionPlayersSummary.Count, Is.EqualTo(2));
+            Assert.That(actualResult.GameDefinitionPlayersSummary, Contains.Item(_expectedPlayerSummary1));
+            Assert.That(actualResult.GameDefinitionPlayersSummary, Contains.Item(_expectedPlayerSummary2));
         }
     }
 }

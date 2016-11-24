@@ -28,7 +28,7 @@ namespace BusinessLogic.Logic.PlayedGames
     {
         PlayedGame GetPlayedGameDetails(int playedGameId);
         List<PlayedGame> GetRecentGames(int numberOfGames, int gamingGroupId, IDateRangeFilter dateRangeFilter = null);
-        List<PublicGameSummary> GetRecentPublicGames(int numberOfGames);
+        List<PublicGameSummary> GetRecentPublicGames(RecentlyPlayedGamesFilter filter);
         List<PlayedGameSearchResult> SearchPlayedGames(PlayedGameFilter playedGameFilter);
         List<PlayedGameQuickStats> GetPlayedGamesQuickStats(List<int> playedGameIds);
     }

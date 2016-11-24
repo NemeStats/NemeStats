@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using BusinessLogic.Facades;
+using BusinessLogic.Logic;
 using BusinessLogic.Logic.PlayerAchievements;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Achievements;
@@ -34,6 +35,7 @@ using UI.Models.Home;
 using UI.Models.Nemeses;
 using UI.Models.Players;
 using BusinessLogic.Models.GamingGroups;
+using BusinessLogic.Models.PlayedGames;
 using BusinessLogic.Paging;
 using UI.Models.GameDefinitionModels;
 using UI.Transformations;
@@ -84,7 +86,7 @@ namespace UI.Tests.UnitTests.ControllerTests.HomeControllerTests
             {
                 expectedPublicGameSummary
             };
-            _autoMocker.Get<IRecentPublicGamesRetriever>().Expect(mock => mock.GetResults(HomeController.NUMBER_OF_RECENT_PUBLIC_GAMES_TO_SHOW))
+            _autoMocker.Get<IRecentPublicGamesRetriever>().Expect(mock => mock.GetResults(Arg<RecentlyPlayedGamesFilter>.Matches(x => x.NumberOfGamesToRetrieve == HomeController.NUMBER_OF_RECENT_PUBLIC_GAMES_TO_SHOW)))
                 .Return(publicGameSummaries);
 
             var expectedNemesisChanges = new List<NemesisChange>();

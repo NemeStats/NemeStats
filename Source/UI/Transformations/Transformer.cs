@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BusinessLogic.Logic;
 
 namespace UI.Transformations
 {

@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using BusinessLogic.Exceptions;
+using BusinessLogic.Logic.BoardGameGeekGameDefinitions;
 using BusinessLogic.Models.Games;
 using BusinessLogic.Models.Utility;
 using BusinessLogic.Paging;
@@ -34,20 +35,22 @@ namespace BusinessLogic.Logic.GameDefinitions
 {
     public class GameDefinitionRetriever : IGameDefinitionRetriever
     {
-        private readonly IDataContext dataContext;
-        private readonly IPlayerRepository playerRepository;
+        private readonly IDataContext _dataContext;
+        private readonly IPlayerRepository _playerRepository;
+        private readonly IBoardGameGeekGameDefinitionInfoRetriever _boardGameGeekGameDefinitionInfoRetriever;
 
-        public GameDefinitionRetriever(IDataContext dataContext, IPlayerRepository playerRepository)
+        public GameDefinitionRetriever(IDataContext dataContext, IPlayerRepository playerRepository, IBoardGameGeekGameDefinitionInfoRetriever boardGameGeekGameDefinitionInfoRetriever)
         {
-            this.dataContext = dataContext;
-            this.playerRepository = playerRepository;
+            _dataContext = dataContext;
+            _playerRepository = playerRepository;
+            _boardGameGeekGameDefinitionInfoRetriever = boardGameGeekGameDefinitionInfoRetriever;
         }
 
         public virtual List<GameDefinitionSummary> GetGameDefinitionSummaries(List<int> gameDefinitionIds)
         {
             var dateRangeFilter = new BasicDateRangeFilter();
 
-            return dataContext.GetQueryable<GameDefinition>()
+            return _dataContext.GetQueryable<GameDefinition>()
                 .Where(gameDefinition => gameDefinitionIds.Contains(gameDefinition.Id))
                 .Select(gameDefinition => new GameDefinitionSummary
                 {
@@ -90,7 +93,7 @@ namespace BusinessLogic.Logic.GameDefinitions
 
         public GameDefinitionDisplayInfo GetGameDefinitionDisplayInfo(int id)
         {
-            return dataContext.GetQueryable<GameDefinition>()
+            return _dataContext.GetQueryable<GameDefinition>()
                 .Include(g => g.BoardGameGeekGameDefinition)
                 .Where(g => g.Id == id)
                 .Select(MapToGameDefinitionDisplayInfo()).FirstOrDefault();
@@ -112,7 +115,7 @@ namespace BusinessLogic.Logic.GameDefinitions
 
         private IQueryable<GameDefinitionDisplayInfo> GetGameDefinitionDisplayInfoQuery(int gamingGroupÌd)
         {
-            return dataContext.GetQueryable<GameDefinition>()
+            return _dataContext.GetQueryable<GameDefinition>()
                 .Include(g => g.BoardGameGeekGameDefinition)
                 .Where(g => g.GamingGroupId == gamingGroupÌd)
                 .Select(MapToGameDefinitionDisplayInfo());
@@ -125,7 +128,7 @@ namespace BusinessLogic.Logic.GameDefinitions
                 dateRangeFilter = new BasicDateRangeFilter();
             }
 
-            var returnValue = dataContext.GetQueryable<GameDefinition>()
+            var returnValue = _dataContext.GetQueryable<GameDefinition>()
                 .Where(gameDefinition => gameDefinition.GamingGroupId == gamingGroupId && gameDefinition.Active)
                 .Select(gameDefinition => new GameDefinitionSummary
                 {
@@ -143,22 +146,23 @@ namespace BusinessLogic.Logic.GameDefinitions
                     ChampionId = gameDefinition.ChampionId,
                     PreviousChampion = gameDefinition.PreviousChampion,
                     PreviousChampionId = gameDefinition.PreviousChampionId,
-                    DateCreated = gameDefinition.DateCreated,
-                    BoardGameGeekGameDefinition = gameDefinition.BoardGameGeekGameDefinition
+                    DateCreated = gameDefinition.DateCreated
                 })
                   .OrderBy(game => game.Name)
                 .ToList();
 
-
-
             AddPlayersToChampionData(returnValue);
 
             returnValue.ForEach(summary =>
-           {
-               summary.Champion = summary.Champion ?? new NullChampion();
-               summary.PreviousChampion = summary.PreviousChampion ?? new NullChampion();
-               summary.TotalNumberOfGamesPlayed = summary.PlayedGames.Count;
-           });
+            {
+                summary.Champion = summary.Champion ?? new NullChampion();
+                summary.PreviousChampion = summary.PreviousChampion ?? new NullChampion();
+                summary.TotalNumberOfGamesPlayed = summary.PlayedGames.Count;
+                if (summary.BoardGameGeekGameDefinitionId.HasValue)
+                {
+                    summary.BoardGameGeekInfo = _boardGameGeekGameDefinitionInfoRetriever.GetResults(summary.BoardGameGeekGameDefinitionId.Value);
+                }
+            });
             return returnValue;
         }
 
@@ -167,7 +171,7 @@ namespace BusinessLogic.Logic.GameDefinitions
             var playerIds = gameDefinitionSummaries.Select(x => x.Champion == null ? -1 : x.Champion.PlayerId).ToList()
                                                    .Union(gameDefinitionSummaries.Select(x => x.PreviousChampion?.PlayerId ?? -1).ToList());
 
-            var players = dataContext.GetQueryable<Player>().Where(player => playerIds.Contains(player.Id)).ToList();
+            var players = _dataContext.GetQueryable<Player>().Where(player => playerIds.Contains(player.Id)).ToList();
 
             foreach (var gameDefinitionSummary in gameDefinitionSummaries)
             {
@@ -185,21 +189,24 @@ namespace BusinessLogic.Logic.GameDefinitions
 
         public virtual GameDefinitionSummary GetGameDefinitionDetails(int id, int numberOfPlayedGamesToRetrieve)
         {
-            var gameDefinition = dataContext.GetQueryable<GameDefinition>()
+            var gameDefinition = _dataContext.GetQueryable<GameDefinition>()
                 .Include(game => game.PlayedGames)
                 .Include(game => game.Champion)
                 .Include(game => game.Champion.Player)
                 .Include(game => game.PreviousChampion)
                 .Include(game => game.PreviousChampion.Player)
                 .Include(game => game.GamingGroup)
-                .Include(game => game.BoardGameGeekGameDefinition)
-                .Include(game => game.BoardGameGeekGameDefinition.Categories)
-                .Include(game => game.BoardGameGeekGameDefinition.Mechanics)
                 .SingleOrDefault(game => game.Id == id);
 
             if (gameDefinition == null)
             {
                 throw new EntityDoesNotExistException(typeof(GameDefinition), id);
+            }
+
+            BoardGameGeekInfo boardGameGeekInfo = null;
+            if (gameDefinition.BoardGameGeekGameDefinitionId.HasValue)
+            {
+                boardGameGeekInfo = _boardGameGeekGameDefinitionInfoRetriever.GetResults(gameDefinition.BoardGameGeekGameDefinitionId.Value);
             }
 
             var gameDefinitionSummary = new GameDefinitionSummary
@@ -216,13 +223,13 @@ namespace BusinessLogic.Logic.GameDefinitions
                 AveragePlayersPerGame = gameDefinition.PlayedGames.Select(item => (decimal)item.NumberOfPlayers).DefaultIfEmpty(0M).Average(),
                 Champion = gameDefinition.Champion ?? new NullChampion(),
                 PreviousChampion = gameDefinition.PreviousChampion ?? new NullChampion(),
-                BoardGameGeekGameDefinition = gameDefinition.BoardGameGeekGameDefinition
+                BoardGameGeekInfo = boardGameGeekInfo
             };
 
             var playedGames = AddPlayedGamesToTheGameDefinition(numberOfPlayedGamesToRetrieve, gameDefinitionSummary);
             var distinctPlayerIds = AddPlayerGameResultsToEachPlayedGame(playedGames);
             AddPlayersToPlayerGameResults(playedGames, distinctPlayerIds);
-            gameDefinitionSummary.PlayerWinRecords = playerRepository.GetPlayerWinRecords(id);
+            gameDefinitionSummary.PlayerWinRecords = _playerRepository.GetPlayerWinRecords(id);
 
             return gameDefinitionSummary;
         }
@@ -231,7 +238,7 @@ namespace BusinessLogic.Logic.GameDefinitions
             int numberOfPlayedGamesToRetrieve,
             GameDefinitionSummary gameDefinitionSummary)
         {
-            IList<PlayedGame> playedGames = dataContext.GetQueryable<PlayedGame>().Include(playedGame => playedGame.PlayerGameResults)
+            IList<PlayedGame> playedGames = _dataContext.GetQueryable<PlayedGame>().Include(playedGame => playedGame.PlayerGameResults)
                 .Where(playedGame => playedGame.GameDefinitionId == gameDefinitionSummary.Id)
                 .OrderByDescending(playedGame => playedGame.DatePlayed)
                 .Take(numberOfPlayedGamesToRetrieve)
@@ -252,7 +259,7 @@ namespace BusinessLogic.Logic.GameDefinitions
             var playedGameIds = (from playedGame in playedGames
                                  select playedGame.Id).ToList();
 
-            IList<PlayerGameResult> playerGameResults = dataContext.GetQueryable<PlayerGameResult>()
+            IList<PlayerGameResult> playerGameResults = _dataContext.GetQueryable<PlayerGameResult>()
                 .Where(playerGameResult => playedGameIds.Contains(playerGameResult.PlayedGameId))
                 .OrderBy(playerGameResult => playerGameResult.GameRank)
                 .ToList();
@@ -284,7 +291,7 @@ namespace BusinessLogic.Logic.GameDefinitions
 
         private void AddPlayersToPlayerGameResults(IList<PlayedGame> playedGames, IList<int> distinctPlayerIds)
         {
-            IList<Player> players = dataContext.GetQueryable<Player>()
+            IList<Player> players = _dataContext.GetQueryable<Player>()
                 .Where(player => distinctPlayerIds.Contains(player.Id))
                 .ToList();
 
@@ -300,7 +307,7 @@ namespace BusinessLogic.Logic.GameDefinitions
 
         public IList<GameDefinitionName> GetAllGameDefinitionNames(int gamingGroupId, string nameQuery = null)
         {
-            var gameDefinitionsQuery = dataContext.GetQueryable<GameDefinition>()
+            var gameDefinitionsQuery = _dataContext.GetQueryable<GameDefinition>()
                 .Where(gameDefinition => gameDefinition.Active
                                          && gameDefinition.GamingGroupId == gamingGroupId);
 
@@ -320,7 +327,7 @@ namespace BusinessLogic.Logic.GameDefinitions
         public List<TrendingGame> GetTrendingGames(int maxNumberOfGames, int numberOfDaysOfTrendingGames)
         {
             var startDate = DateTime.Now.Date.AddDays(-1 * numberOfDaysOfTrendingGames);
-            return (from result in dataContext.GetQueryable<BoardGameGeekGameDefinition>()
+            return (from result in _dataContext.GetQueryable<BoardGameGeekGameDefinition>()
                     select new TrendingGame
                     {
                         BoardGameGeekGameDefinitionId = result.Id,

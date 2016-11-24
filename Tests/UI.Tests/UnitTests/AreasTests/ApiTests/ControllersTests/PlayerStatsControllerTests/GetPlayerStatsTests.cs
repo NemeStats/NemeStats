@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using BusinessLogic.Logic;
 using BusinessLogic.Logic.Players;
 using BusinessLogic.Models.Players;
 using NUnit.Framework;

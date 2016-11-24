@@ -228,8 +228,10 @@ namespace UI.Controllers
             public class _ViewNamesClass
             {
                 public readonly string _CreatePartial = "_CreatePartial";
+                public readonly string _GameDefinitionPlayedGamesPartial = "_GameDefinitionPlayedGamesPartial";
                 public readonly string _GameDefinitionsPartial = "_GameDefinitionsPartial";
                 public readonly string _GameDefinitionsTablePartial = "_GameDefinitionsTablePartial";
+                public readonly string _GamingGroupGameDefinitionStatsPartial = "_GamingGroupGameDefinitionStatsPartial";
                 public readonly string _TrendingGamesPartial = "_TrendingGamesPartial";
                 public readonly string Create = "Create";
                 public readonly string Details = "Details";
@@ -237,8 +239,10 @@ namespace UI.Controllers
                 public readonly string TrendingGames = "TrendingGames";
             }
             public readonly string _CreatePartial = "~/Views/GameDefinition/_CreatePartial.cshtml";
+            public readonly string _GameDefinitionPlayedGamesPartial = "~/Views/GameDefinition/_GameDefinitionPlayedGamesPartial.cshtml";
             public readonly string _GameDefinitionsPartial = "~/Views/GameDefinition/_GameDefinitionsPartial.cshtml";
             public readonly string _GameDefinitionsTablePartial = "~/Views/GameDefinition/_GameDefinitionsTablePartial.cshtml";
+            public readonly string _GamingGroupGameDefinitionStatsPartial = "~/Views/GameDefinition/_GamingGroupGameDefinitionStatsPartial.cshtml";
             public readonly string _TrendingGamesPartial = "~/Views/GameDefinition/_TrendingGamesPartial.cshtml";
             public readonly string Create = "~/Views/GameDefinition/Create.cshtml";
             public readonly string Details = "~/Views/GameDefinition/Details.cshtml";

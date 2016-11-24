@@ -108,14 +108,5 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
             var result = autoMocker.ClassUnderTest.Details(999999, currentUser) as HttpStatusCodeResult;
             Assert.AreEqual((int)HttpStatusCode.Unauthorized, result.StatusCode);
         }
-
-        [Test]
-        public void ItSetsThePlayedGamesPanelTitle()
-        {
-            var viewResult = autoMocker.ClassUnderTest.Details(gameDefinitionId, currentUser) as ViewResult;
-
-            var actualGameDefinitionViewModel = (GameDefinitionDetailsViewModel)viewResult.ViewData.Model;
-            Assert.That(actualGameDefinitionViewModel.PlayedGamesPanelTitle, Is.EqualTo("Last 0 Played Games"));
-        }
     }
 }

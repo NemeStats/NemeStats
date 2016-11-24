@@ -345,7 +345,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
             };
             autoMocker.Get<IBoardGameGeekGameDefinitionCreator>().Expect(
                 mock => mock.CreateBoardGameGeekGameDefinition(createGameDefinitionRequest.BoardGameGeekGameDefinitionId.Value, currentUser))
-                .Return(EXPECTED_BGG_ID);
+                .Return(expectedBoardGameGeekGameDefinition);
 
             autoMocker.ClassUnderTest.CreateGameDefinition(createGameDefinitionRequest, currentUser);
 

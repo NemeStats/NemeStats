@@ -3,6 +3,7 @@ using Rhino.Mocks;
 using System.Collections.Generic;
 using System.Web.Mvc;
 using BusinessLogic.Facades;
+using BusinessLogic.Logic;
 using BusinessLogic.Models.Games;
 using UI.Controllers;
 using UI.Models.GameDefinitionModels;

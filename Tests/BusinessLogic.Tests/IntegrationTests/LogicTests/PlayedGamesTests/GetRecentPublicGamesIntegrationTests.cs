@@ -22,6 +22,7 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using BusinessLogic.Models.PlayedGames;
 
 namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGamesTests
 {
@@ -37,9 +38,13 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGamesTests
         {
             using (NemeStatsDataContext dataContext = new NemeStatsDataContext())
             {
-                PlayedGameRetriever retriever = new PlayedGameRetriever(dataContext);
+                var retriever = new PlayedGameRetriever(dataContext);
 
-                publicGameSummaryResults = retriever.GetRecentPublicGames(NUMBER_OF_GAMES_TO_RETRIEVE);
+                var recentlyPlayedGamesFilter = new RecentlyPlayedGamesFilter
+                {
+                    NumberOfGamesToRetrieve = NUMBER_OF_GAMES_TO_RETRIEVE
+                };
+                publicGameSummaryResults = retriever.GetRecentPublicGames(recentlyPlayedGamesFilter);
             }
         }
 

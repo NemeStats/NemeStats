@@ -18,13 +18,14 @@
 
 using System;
 using System.Linq;
-using System.Collections.Generic;
 using System.Globalization;
 using AutoMapper;
 using BusinessLogic.Logic.BoardGameGeek;
+using BusinessLogic.Logic.BoardGameGeekGameDefinitions;
 using BusinessLogic.Logic.GameDefinitions;
 using BusinessLogic.Logic.GamingGroups;
 using BusinessLogic.Logic.Players;
+using BusinessLogic.Logic.Points;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
 using BusinessLogic.Models.GamingGroups;
@@ -39,6 +40,7 @@ using UI.Models.GamingGroup;
 using UI.Models.PlayedGame;
 using UI.Models.Players;
 using UI.Models.Points;
+using UI.Models.UniversalGameModels;
 
 namespace UI.Transformations
 {
@@ -122,6 +124,29 @@ namespace UI.Transformations
                 }));
 
             Mapper.CreateMap<PlayedGameFilterMessage, PlayedGameFilter>(MemberList.Source);
+
+            Mapper.CreateMap<BoardGameGeekInfo, BoardGameGeekInfoViewModel>()
+                 .ForMember(m => m.HideLinkToGlobalStats, opt => opt.Ignore())
+                 .ForMember(m => m.BoardGameGeekUri,
+                    opt => opt.MapFrom(src => BoardGameGeekUriBuilder.BuildBoardGameGeekGameUri(src.BoardGameGeekGameDefinitionId)))
+                .ForMember(m => m.BoardGameGeekAverageWeightDescription,
+                    opt => opt.MapFrom(src => new WeightTierCalculator().GetWeightTier(src.BoardGameGeekAverageWeight).ToString()))
+                .ForMember(m => m.BoardGameGeekWeightPercent,
+                    opt => opt.MapFrom(src => src.BoardGameGeekAverageWeight.HasValue ? ((src.BoardGameGeekAverageWeight.Value * 100) / BoardGameGeekGameDefinitionViewModel.MaxBggWeight).ToString(CultureInfo.InvariantCulture).Replace(",", ".") : "0"))
+                    .ForMember(m => m.AveragePlayTime,
+                    opt =>
+                        opt.MapFrom(
+                            src =>
+                                !src.MaxPlayTime.HasValue
+                                    ? src.MinPlayTime
+                                    : (src.MinPlayTime.HasValue ? (src.MaxPlayTime.Value + src.MinPlayTime.Value) / 2 : src.MaxPlayTime)));
+
+            Mapper.CreateMap<UniversalGameStats, UniversalGameStatsViewModel>()
+                .ForMember(m => m.AveragePlayersPerGame,
+                    opt => opt.MapFrom(src => $"{(src.AveragePlayersPerGame ?? 0):0.#}"));
+
+            Mapper.CreateMap<BoardGameGeekGameSummary, UniversalGameDetailsViewModel>(MemberList.Destination)
+                .ForMember(m => m.GamingGroupGameDefinitionSummary, opt => opt.Ignore());
         }
     }
 }

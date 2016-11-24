@@ -1,0 +1,62 @@
+﻿@model UI.Models.UniversalGameModels.UniversalGameDetailsViewModel
+
+@{
+    ViewBag.Title = Model.BoardGameGeekInfo.GameName + " - Universal Stats";
+    Layout = MVC.Shared.Views._BaseLayout;
+}
+
+<div id="gamedefinition-details" itemscope itemtype="http://schema.org/Game">
+    <h2 class="page-header">
+        <span itemprop="name">@Html.DisplayFor(model => Model.BoardGameGeekInfo.GameName)</span> - Universal Statistics
+    </h2>
+
+    <div class="row">
+        @Html.Partial(MVC.UniversalGame.Views._BoardGameGeekInfo, Model.BoardGameGeekInfo)
+    </div>
+
+    <div class="row">
+        @Html.Partial(MVC.UniversalGame.Views._UniversalGameStats, Model.UniversalGameStats)
+    </div>
+
+    <div class="row">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h4>Last @Model.RecentlyPlayedGames.Count Played Games Globally</h4>
+            </div>
+            <div class="panel-body">
+                @{
+                    var options = new ViewDataDictionary
+                    {
+                        {"showCondensed", true}
+                    };
+                }
+                @Html.Partial(MVC.PlayedGame.Views._RecentlyPlayedGamesPartial, Model.RecentlyPlayedGames, options)
+            </div>
+        </div>
+    </div>
+
+    @{
+        var gamingGroupData = Model.GamingGroupGameDefinitionSummary;
+    }
+
+    @if (gamingGroupData != null)
+    {
+        var viewDataDictionary = new ViewDataDictionary
+        {
+            {"GamingGroupName", gamingGroupData.GamingGroupName},
+            {"GamingGroupId", gamingGroupData.GamingGroupId}
+        };
+        <div class="row">
+            @Html.Partial(MVC.GameDefinition.Views._GamingGroupGameDefinitionStatsPartial, gamingGroupData.GamingGroupGameDefinitionStats, viewDataDictionary)
+        </div>
+
+        <div class="row">
+            @Html.Partial(MVC.Player.Views._GameDefinitionPlayersSummaryPartial, gamingGroupData.GameDefinitionPlayerSummaries, viewDataDictionary)
+        </div>
+
+        <div class="row">
+            @Html.Partial(MVC.GameDefinition.Views._GameDefinitionPlayedGamesPartial, gamingGroupData.PlayedGames, viewDataDictionary)
+        </div>
+    }
+</div>
+

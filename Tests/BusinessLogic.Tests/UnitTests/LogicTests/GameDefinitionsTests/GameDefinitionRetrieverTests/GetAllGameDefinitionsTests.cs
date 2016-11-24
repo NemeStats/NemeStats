@@ -108,7 +108,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
         }
 
         [Test]
-        public void ItOnlyReturnsGamesPlayedWithingTheDefaultBasicDateRangeFilterIfNoDateRangeFilterIsSpecified()
+        public void ItOnlyReturnsGamesPlayedWithinTheDefaultBasicDateRangeFilterIfNoDateRangeFilterIsSpecified()
         {
             var expectedDateRangeFilter = new BasicDateRangeFilter();
 

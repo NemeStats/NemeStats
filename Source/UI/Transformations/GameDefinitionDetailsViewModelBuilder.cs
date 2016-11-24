@@ -22,11 +22,14 @@ using BusinessLogic.Models.Games;
 using BusinessLogic.Models.Players;
 using BusinessLogic.Models.User;
 using System.Linq;
+using BusinessLogic.Logic;
+using BusinessLogic.Logic.BoardGameGeekGameDefinitions;
 using BusinessLogic.Logic.Players;
 using BusinessLogic.Logic.Points;
 using UI.Models.GameDefinitionModels;
 using UI.Models.PlayedGame;
 using UI.Models.Players;
+using UI.Models.UniversalGameModels;
 
 namespace UI.Transformations
 {
@@ -34,34 +37,33 @@ namespace UI.Transformations
     {
         private readonly IPlayedGameDetailsViewModelBuilder _playedGameDetailsViewModelBuilder;
         private readonly ITransformer _transformer;
-        private readonly IWeightTierCalculator _weightTierCalculator;
+        private readonly IBoardGameGeekGameDefinitionInfoRetriever _boardGameGeekGameDefinitionInfoRetriever;
 
-        public GameDefinitionDetailsViewModelBuilder(IPlayedGameDetailsViewModelBuilder playedGameDetailsViewModelBuilder, ITransformer transformer, IWeightTierCalculator weightTierCalculator)
+        public GameDefinitionDetailsViewModelBuilder(IPlayedGameDetailsViewModelBuilder playedGameDetailsViewModelBuilder, ITransformer transformer, IBoardGameGeekGameDefinitionInfoRetriever boardGameGeekGameDefinitionInfoRetriever)
         {
-            this._playedGameDetailsViewModelBuilder = playedGameDetailsViewModelBuilder;
-            this._transformer = transformer;
-            _weightTierCalculator = weightTierCalculator;
+            _playedGameDetailsViewModelBuilder = playedGameDetailsViewModelBuilder;
+            _transformer = transformer;
+            _boardGameGeekGameDefinitionInfoRetriever = boardGameGeekGameDefinitionInfoRetriever;
         }
 
         public GameDefinitionDetailsViewModel Build(GameDefinitionSummary gameDefinitionSummary, ApplicationUser currentUser)
         {
-            var viewModel = new GameDefinitionDetailsViewModel()
+            BoardGameGeekInfoViewModel boardGameGeekInfoViewModel = null;
+            if (gameDefinitionSummary.BoardGameGeekGameDefinitionId.HasValue)
             {
-                Id = gameDefinitionSummary.Id,
-                Name = gameDefinitionSummary.Name,
-                Description = gameDefinitionSummary.Description,
+                boardGameGeekInfoViewModel = _transformer.Transform<BoardGameGeekInfoViewModel>(gameDefinitionSummary.BoardGameGeekInfo);
+            }
+            var viewModel = new GameDefinitionDetailsViewModel
+            {
+                GameDefinitionId = gameDefinitionSummary.Id,
+                GameDefinitionName = gameDefinitionSummary.Name,
                 TotalNumberOfGamesPlayed = gameDefinitionSummary.TotalNumberOfGamesPlayed,
                 AveragePlayersPerGame = $"{gameDefinitionSummary.AveragePlayersPerGame:0.#}",
                 GamingGroupId = gameDefinitionSummary.GamingGroupId,
                 GamingGroupName = gameDefinitionSummary.GamingGroupName,
                 UserCanEdit = (currentUser != null && gameDefinitionSummary.GamingGroupId == currentUser.CurrentGamingGroupId),
-                BoardGameGeekGameDefinition = _transformer.Transform<BoardGameGeekGameDefinitionViewModel>(gameDefinitionSummary.BoardGameGeekGameDefinition)
+                BoardGameGeekInfo = boardGameGeekInfoViewModel
             };
-
-            if (viewModel.BoardGameGeekGameDefinition != null)
-            {
-                viewModel.BoardGameGeekGameDefinition.WeightDescription = _weightTierCalculator.GetWeightTier(viewModel.BoardGameGeekGameDefinition.AverageWeight).ToString();
-            }
 
             if (gameDefinitionSummary.PlayedGames == null)
             {
@@ -93,13 +95,9 @@ namespace UI.Transformations
                 viewModel.PreviousChampionPlayerId = gameDefinitionSummary.PreviousChampion.Player.Id;
             }
 
-            var playersSummaryViewModel = new GameDefinitionPlayersSummaryViewModel
-            {
-                GameDefinitionPlayerSummaries = gameDefinitionSummary.PlayerWinRecords
+            viewModel.GameDefinitionPlayersSummary = gameDefinitionSummary.PlayerWinRecords
                     .Select(_transformer.Transform<GameDefinitionPlayerSummaryViewModel>)
-                    .ToList()
-            };
-            viewModel.GameDefinitionPlayersSummary = playersSummaryViewModel;
+                    .ToList();
 
             return viewModel;
         }

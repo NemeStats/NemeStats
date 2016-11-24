@@ -32,6 +32,7 @@ using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using BusinessLogic.Facades;
+using BusinessLogic.Logic;
 using UI.Attributes.Filters;
 using UI.Controllers.Helpers;
 using UI.Models.GameDefinitionModels;
@@ -97,9 +98,6 @@ namespace UI.Controllers
             {
                 return new HttpUnauthorizedResult();
             }
-
-            gamingGroupGameDefinitionViewModel.PlayedGamesPanelTitle =
-                $"Last {gamingGroupGameDefinitionViewModel.PlayedGames.Count} Played Games";
 
             return View(MVC.GameDefinition.Views.Details, gamingGroupGameDefinitionViewModel);
         }

@@ -2,6 +2,7 @@
 using BusinessLogic.Facades;
 using BusinessLogic.Logic.PlayedGames;
 using BusinessLogic.Models.Games;
+using BusinessLogic.Models.PlayedGames;
 using NUnit.Framework;
 using Rhino.Mocks;
 using StructureMap.AutoMocking;
@@ -25,11 +26,12 @@ namespace BusinessLogic.Tests.UnitTests.FacadesTests
             //--arrange
             int gamesToRetrieve = 1;
             var expectedResults = new List<PublicGameSummary>();
-            _autoMocker.Get<IPlayedGameRetriever>().Expect(mock => mock.GetRecentPublicGames(gamesToRetrieve))
+            var recentlyPlayedGamesFilter = new RecentlyPlayedGamesFilter();
+            _autoMocker.Get<IPlayedGameRetriever>().Expect(mock => mock.GetRecentPublicGames(Arg<RecentlyPlayedGamesFilter>.Is.Equal(recentlyPlayedGamesFilter)))
               .Return(expectedResults);
 
             //--act
-            var actualResults = _autoMocker.ClassUnderTest.GetFromSource(gamesToRetrieve);
+            var actualResults = _autoMocker.ClassUnderTest.GetFromSource(recentlyPlayedGamesFilter);
 
             //--assert
             Assert.That(actualResults, Is.SameAs(expectedResults));

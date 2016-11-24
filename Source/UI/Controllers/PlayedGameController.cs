@@ -232,7 +232,11 @@ namespace UI.Controllers
         [System.Web.Mvc.HttpGet]
         public virtual ActionResult ShowRecentlyPlayedGames()
         {
-            var recentlyPlayedGames = _playedGameRetriever.GetRecentPublicGames(NUMBER_OF_RECENT_GAMES_TO_DISPLAY);
+            var recentlyPlayedGamesFilter = new RecentlyPlayedGamesFilter
+            {
+                NumberOfGamesToRetrieve = NUMBER_OF_RECENT_GAMES_TO_DISPLAY
+            };
+            var recentlyPlayedGames = _playedGameRetriever.GetRecentPublicGames(recentlyPlayedGamesFilter);
 
             return View(MVC.PlayedGame.Views.RecentlyPlayedGames, recentlyPlayedGames);
         }

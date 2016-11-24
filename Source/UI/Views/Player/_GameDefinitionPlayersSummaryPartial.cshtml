@@ -1,5 +1,6 @@
 ﻿@using UI.HtmlHelpers
-@model UI.Models.Players.GameDefinitionPlayersSummaryViewModel
+@using UI.Models.Players;
+@model List<GameDefinitionPlayerSummaryViewModel>
 
 @{
     Layout = null;
@@ -8,7 +9,7 @@
 <div class="panel panel-primary game-player-statistics">
     <div class="panel-heading">
         <h4>
-            Win - Loss Statistics
+            Win/Loss Statistics for <a href="@Url.Action(MVC.GamingGroup.Details().AddRouteValue("id", ViewData["GamingGroupId"]))">@ViewData["GamingGroupName"]</a>
         </h4>
     </div>
     <div class="panel-body">
@@ -41,7 +42,7 @@
                 </tr>
                 </thead>
                 <tbody class="list">
-                @foreach (var playerSummary in Model.GameDefinitionPlayerSummaries)
+                @foreach (var playerSummary in Model)
                 {
 
                     <tr>
@@ -92,7 +93,7 @@
     </div>
 </div>
 
-@foreach (var playerSummary in Model.GameDefinitionPlayerSummaries)
+@foreach (var playerSummary in Model)
 {
     @Html.Partial("_NemePointsBreakdown", playerSummary.NemePointsSummary, new ViewDataDictionary {{"templateid", playerSummary.PlayerId}})
 }

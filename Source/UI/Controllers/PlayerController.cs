@@ -44,7 +44,6 @@ namespace UI.Controllers
         internal const string EMAIL_SUBJECT_PLAYER_INVITATION = "Invitation from {0}";
         internal const string EMAIL_BODY_PLAYER_INVITATION = "Check out this gaming group I created to record the results of our board games!";
 
-        internal IDataContext dataContext;
         internal IGameResultViewModelBuilder builder;
         internal IPlayerDetailsViewModelBuilder playerDetailsViewModelBuilder;
         internal IShowingXResultsMessageBuilder showingXResultsMessageBuilder;
@@ -58,7 +57,7 @@ namespace UI.Controllers
         internal INemesisChangeViewModelBuilder nemesisChangeViewModelBuilder;
         private readonly IPlayerDeleter _playerDeleter;
 
-        public PlayerController(IDataContext dataContext,
+        public PlayerController(
             IGameResultViewModelBuilder builder,
             IPlayerDetailsViewModelBuilder playerDetailsViewModelBuilder,
             IShowingXResultsMessageBuilder showingXResultsMessageBuilder,
@@ -72,7 +71,6 @@ namespace UI.Controllers
             INemesisChangeViewModelBuilder nemesisChangeViewModelBuilder,
             IPlayerDeleter playerDeleter)
         {
-            this.dataContext = dataContext;
             this.builder = builder;
             this.playerDetailsViewModelBuilder = playerDetailsViewModelBuilder;
             this.showingXResultsMessageBuilder = showingXResultsMessageBuilder;

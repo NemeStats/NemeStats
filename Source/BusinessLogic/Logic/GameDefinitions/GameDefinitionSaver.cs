@@ -53,7 +53,7 @@ namespace BusinessLogic.Logic.GameDefinitions
 
             int gamingGroupId = createGameDefinitionRequest.GamingGroupId ?? currentUser.CurrentGamingGroupId;
 
-            int? boardGameGeekGameDefinitionId = CreateBoardGameGeekGameDefinition(
+            var boardGameGeekGameDefinition = CreateBoardGameGeekGameDefinition(
                 createGameDefinitionRequest.BoardGameGeekGameDefinitionId, 
                 currentUser);
             
@@ -66,7 +66,7 @@ namespace BusinessLogic.Logic.GameDefinitions
                 var newGameDefinition = new GameDefinition
                 {
                     Name = createGameDefinitionRequest.Name,
-                    BoardGameGeekGameDefinitionId = boardGameGeekGameDefinitionId,
+                    BoardGameGeekGameDefinitionId = boardGameGeekGameDefinition?.Id,
                     Description = createGameDefinitionRequest.Description,
                     GamingGroupId = gamingGroupId
                 };
@@ -79,7 +79,7 @@ namespace BusinessLogic.Logic.GameDefinitions
             ValidateNotADuplicateGameDefinition(existingGameDefinition);
 
             existingGameDefinition.Active = true;
-            existingGameDefinition.BoardGameGeekGameDefinitionId = boardGameGeekGameDefinitionId;
+            existingGameDefinition.BoardGameGeekGameDefinitionId = boardGameGeekGameDefinition?.Id;
             if (!string.IsNullOrWhiteSpace(createGameDefinitionRequest.Description))
             {
                 existingGameDefinition.Description = createGameDefinitionRequest.Description;
@@ -108,20 +108,21 @@ namespace BusinessLogic.Logic.GameDefinitions
         {
             if (existingGameDefinition.Active)
             {
-                string message = string.Format("An active Game Definition with name '{0}' already exists in this Gaming Group.", existingGameDefinition.Name);
+                string message = $"An active Game Definition with name '{existingGameDefinition.Name}' already exists in this Gaming Group.";
                 throw new DuplicateKeyException(message);
             }
         }
 
-        private int? CreateBoardGameGeekGameDefinition(int? boardGameGeekGameDefinitionId, ApplicationUser currentUser)
+        private BoardGameGeekGameDefinition CreateBoardGameGeekGameDefinition(int? boardGameGeekGameDefinitionId, ApplicationUser currentUser)
         {
+            BoardGameGeekGameDefinition newBoardGameGeekGameDefinition = null;
             if (boardGameGeekGameDefinitionId.HasValue)
             {
-                boardGameGeekGameDefinitionId = boardGameGeekGameDefinitionCreator.CreateBoardGameGeekGameDefinition(
+                newBoardGameGeekGameDefinition = boardGameGeekGameDefinitionCreator.CreateBoardGameGeekGameDefinition(
                     boardGameGeekGameDefinitionId.Value, currentUser);
             }
 
-            return boardGameGeekGameDefinitionId;
+            return newBoardGameGeekGameDefinition;
         }
 
         public virtual void UpdateGameDefinition(GameDefinitionUpdateRequest gameDefinitionUpdateRequest, ApplicationUser currentUser)
@@ -150,15 +151,17 @@ namespace BusinessLogic.Logic.GameDefinitions
 
         private void AttachToBoardGameGeekGameDefinition(int? boardGameGeekGameDefinitionId, ApplicationUser currentUser, GameDefinition gameDefinition)
         {
-            if (boardGameGeekGameDefinitionId.HasValue)
+            if (!boardGameGeekGameDefinitionId.HasValue)
             {
-                var newlyCreatedBoardGameGeekGameDefinitionId = CreateBoardGameGeekGameDefinition(
-                    boardGameGeekGameDefinitionId.Value,
-                    currentUser);
-                if (newlyCreatedBoardGameGeekGameDefinitionId.HasValue)
-                {
-                    gameDefinition.BoardGameGeekGameDefinitionId = newlyCreatedBoardGameGeekGameDefinitionId;
-                }
+                return;
+            }
+
+            var newlyCreatedBoardGameGeekGameDefinition = CreateBoardGameGeekGameDefinition(
+                boardGameGeekGameDefinitionId.Value,
+                currentUser);
+            if (newlyCreatedBoardGameGeekGameDefinition != null)
+            {
+                gameDefinition.BoardGameGeekGameDefinitionId = newlyCreatedBoardGameGeekGameDefinition.Id;
             }
         }
     }

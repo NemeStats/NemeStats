@@ -41,7 +41,7 @@ namespace UI.Models.GamingGroup
         public string Name { get; set; }
         public bool UserCanEdit { get; set; }
         public GamingGroupPublicDetailsViewModel PublicDetailsView { get; set; }
-        public IList<GameDefinitionSummaryViewModel> GameDefinitionSummaries { get; set; }
+        public List<GameDefinitionSummaryViewModel> GameDefinitionSummaries { get; set; }
         public IList<PlayerWithNemesisViewModel> Players { get; set; }
         public PlayedGamesViewModel PlayedGames { get; set; }
         public BasicDateRangeFilter DateRangeFilter { get; set; }

@@ -15,7 +15,7 @@ namespace UI.Mappers.CustomMappers
         static PlayerAchievementToPlayerAchievementViewModelMapper()
         {
             Mapper.CreateMap<PlayerAchievement, PlayerAchievementViewModel>()
-                .ForMember(m => m.RelatedGameDefintions, o => o.Ignore())
+                .ForMember(m => m.RelatedGameDefinitions, o => o.Ignore())
                 .ForMember(m => m.Achievement, o => o.Ignore())
                 .ForMember(m => m.PlayerProgress, o => o.Ignore());
         }
@@ -58,7 +58,7 @@ namespace UI.Mappers.CustomMappers
             switch (achievement.Group)
             {
                 case AchievementGroup.Game:
-                    result.RelatedGameDefintions =
+                    result.RelatedGameDefinitions =
                         _gameDefinitionRetriever.GetGameDefinitionSummaries(source.RelatedEntities)
                             .Select(g => _gameDefinitionSummaryToGameDefinitionSummaryListViewModelMapper.Map(g))
                             .ToList();

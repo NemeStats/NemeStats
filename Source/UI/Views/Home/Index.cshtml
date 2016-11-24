@@ -51,21 +51,6 @@
     <div class="row">
         <div class="col-md-6">
             <div class="fl-left">
-                <h3>@Model.RecentPublicGames.Count() Recent Games @Html.ActionLink(" - View More", MVC.PlayedGame.ShowRecentlyPlayedGames())</h3>
-            </div>
-            @Html.Partial(MVC.PlayedGame.Views._RecentlyPlayedGamesPartial, Model.RecentPublicGames)
-        </div>
-
-        <div class="col-md-6">
-            <div class="fl-left">
-                <h3>Top @Model.TopGamingGroups.Count() Gaming Groups @Html.ActionLink(" - View More", MVC.GamingGroup.GetTopGamingGroups())</h3>
-            </div>
-            @Html.Partial(MVC.GamingGroup.Views._TopGamingGroupsPartial, Model.TopGamingGroups)
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-6">
-            <div class="fl-left">
                 <h3>Trending Games (Last @ViewBag.NumTrendingGameDays Days) @Html.ActionLink(" - View More", MVC.GameDefinition.ShowTrendingGames())</h3>
             </div>
             @Html.Partial(MVC.GameDefinition.Views._TrendingGamesPartial, Model.TrendingGames)
@@ -73,9 +58,24 @@
 
         <div class="col-md-6">
             <div class="fl-left">
+                <h3>@Model.RecentPublicGames.Count() Recent Games @Html.ActionLink(" - View More", MVC.PlayedGame.ShowRecentlyPlayedGames())</h3>
+            </div>
+            @Html.Partial(MVC.PlayedGame.Views._RecentlyPlayedGamesPartial, Model.RecentPublicGames)
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="fl-left">
                 <h3>Recent @Model.RecentAchievementsUnlocked.Count Achievements Unlocked @Html.ActionLink(" - View More", MVC.Achievement.RecentAchievementsUnlocked())</h3>
             </div>
             @Html.Partial(MVC.Achievement.Views._RecentAchievementsUnlocked, Model.RecentAchievementsUnlocked)
+        </div>
+        
+        <div class="col-md-6">
+            <div class="fl-left">
+                <h3>Top @Model.TopGamingGroups.Count() Gaming Groups @Html.ActionLink(" - View More", MVC.GamingGroup.GetTopGamingGroups())</h3>
+            </div>
+            @Html.Partial(MVC.GamingGroup.Views._TopGamingGroupsPartial, Model.TopGamingGroups)
         </div>
     </div>
 </div>

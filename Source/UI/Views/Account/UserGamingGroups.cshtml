@@ -8,7 +8,7 @@
     <ul class="dropdown-menu" role="menu">
         @foreach (var gamingGroup in Model.GamingGroups)
         {
-            <li><a class="ga-topgaminggroupswitcher-switchlink" href="@Url.Action(MVC.GamingGroup.SwitchGamingGroups(gamingGroup.Id,Model.CurrentUser))">@gamingGroup.Name</a></li>
+            <li><a class="ga-topgaminggroupswitcher-switchlink" href="@Url.Action(MVC.GamingGroup.SwitchGamingGroups().AddRouteValue("gamingGroupId", gamingGroup.Id))">@gamingGroup.Name</a></li>
         }
         <li role="separator" class="divider"></li>
         <li><a class="ga-topgaminggroupswitcher-createnew" href="@Url.Action(MVC.Account.CreateGamingGroup())">Create gaming group</a></li>
