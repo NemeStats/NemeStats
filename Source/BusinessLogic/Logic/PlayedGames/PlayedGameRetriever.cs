@@ -94,7 +94,8 @@ namespace BusinessLogic.Logic.PlayedGames
         public List<PublicGameSummary> GetRecentPublicGames(RecentlyPlayedGamesFilter filter)
         {
             var publicGameSummaries = (from playedGame in dataContext.GetQueryable<PlayedGame>()
-                 group new PublicGameSummary
+                                       .Where(x => filter.BoardGameGeekGameDefinitionId == null || x.GameDefinition.BoardGameGeekGameDefinitionId == filter.BoardGameGeekGameDefinitionId)
+                                       group new PublicGameSummary
                  {
                      PlayedGameId = playedGame.Id,
                      GameDefinitionId = playedGame.GameDefinitionId,
@@ -114,7 +115,7 @@ namespace BusinessLogic.Logic.PlayedGames
                     .OrderByDescending(x => x.DatePlayed)
                     .ThenByDescending(y => y.PlayedGameId)
                     .FirstOrDefault()
-                ).Where(x => filter.BoardGameGeekGameDefinitionId == null || x.BoardGameGeekObjectId == filter.BoardGameGeekGameDefinitionId)
+                )
                     .OrderByDescending(x => x.DatePlayed)
                     .ThenByDescending(y => y.PlayedGameId)
                     .Take(filter.NumberOfGamesToRetrieve)
