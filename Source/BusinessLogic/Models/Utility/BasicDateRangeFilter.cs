@@ -5,7 +5,7 @@ namespace BusinessLogic.Models.Utility
 {
     public class BasicDateRangeFilter : IDateRangeFilter
     {
-        public readonly DateTime DefaultFromDate = new DateTime(2014, 1, 1);
+        public readonly DateTime DefaultFromDate = new DateTime(2000, 1, 1);
         public readonly DateTime DefaultToDate;
 
         public BasicDateRangeFilter()

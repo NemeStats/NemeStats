@@ -18,9 +18,9 @@ namespace BusinessLogic.Tests.UnitTests.ModelsTests.UtilityTests
         public class WhenCallingTheConstructor : BasicDateRangeFilterTests
         {
             [Test]
-            public void ItDefaultsTheFromDateToJanuaryFirstTwoThousandAndFourteen()
+            public void ItDefaultsTheFromDateToJanuaryFirstTwoThousand()
             {
-                Assert.That(filter.FromDate, Is.EqualTo(new DateTime(2014, 1, 1)));
+                Assert.That(filter.FromDate, Is.EqualTo(new DateTime(2000, 1, 1)));
             }
 
             [Test]
@@ -35,7 +35,7 @@ namespace BusinessLogic.Tests.UnitTests.ModelsTests.UtilityTests
             [Test]
             public void TheIso8601FromDatePropertyReturnsAnExistingFromDateInYYYYMMDD()
             {
-                Assert.That(filter.Iso8601FromDate, Is.EqualTo("2014-01-01"));
+                Assert.That(filter.Iso8601FromDate, Is.EqualTo("2000-01-01"));
             }
 
             [Test]
