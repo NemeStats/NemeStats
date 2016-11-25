@@ -29,6 +29,7 @@ namespace BusinessLogic.Logic.BoardGameGeekGameDefinitions
                 .Where(gd => gd.BoardGameGeekGameDefinitionId == boardGameGeekGameDefinitionId)
                 .Select(gd => gd.Champion)
                 .OrderByDescending(c => c.NumberOfWins)
+                .ThenByDescending(c => c.WinPercentage)
                 .Take(5);
 
             return topFiveChampions.Select(c => new ChampionData()
