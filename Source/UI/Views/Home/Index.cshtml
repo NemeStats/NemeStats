@@ -53,6 +53,7 @@
                 <div class="panel-heading">
                     Trending Games (Last @ViewBag.NumTrendingGameDays Days) @Html.ActionLink(" - View More", MVC.GameDefinition.ShowTrendingGames())
                     <div id="topGlobalGameDefinitionsVote" class="fl-right"></div>
+                    <div class="fl-clear"></div>
                 </div>
                 <div class="panel-body">
                     @Html.Partial(MVC.GameDefinition.Views._TrendingGamesPartial, Model.TrendingGames)
@@ -65,6 +66,7 @@
                 <div class="panel-heading">
                     @Model.RecentPublicGames.Count() Recent Games @Html.ActionLink(" - View More", MVC.PlayedGame.ShowRecentlyPlayedGames())
                     <div id="recentGamesVote" class="fl-right"></div>
+                    <div class="fl-clear"></div>
                 </div>
                 <div class="panel-body">
                     @Html.Partial(MVC.PlayedGame.Views._RecentlyPlayedGamesPartial, Model.RecentPublicGames)
@@ -78,6 +80,7 @@
                 <div class="panel-heading">
                     Recent @Model.RecentAchievementsUnlocked.Count Achievements Unlocked @Html.ActionLink(" - View More", MVC.Achievement.RecentAchievementsUnlocked())
                     <div id="recentAchievementsUnlockedVote" class="fl-right"></div>
+                    <div class="fl-clear"></div>
                 </div>
                 <div class="panel-body">
                     @Html.Partial(MVC.Achievement.Views._RecentAchievementsUnlocked, Model.RecentAchievementsUnlocked)
@@ -90,6 +93,7 @@
                 <div class="panel-heading">
                     Top @Model.TopGamingGroups.Count() Gaming Groups @Html.ActionLink(" - View More", MVC.GamingGroup.GetTopGamingGroups())
                     <div id="gamingGroupsVote" class="fl-right"></div>
+                    <div class="fl-clear"></div>
                 </div>
                 <div class="panel-body">
                     @Html.Partial(MVC.GamingGroup.Views._TopGamingGroupsPartial, Model.TopGamingGroups)
