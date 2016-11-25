@@ -48,7 +48,7 @@
                             <tr>
                                 <td class="text-center"><i class="fa fa-balance-scale" data-toggle="tooltip" data-placement="left" title="BGG Game weight"></i></td>
                                 <td>
-                                    <div class="progress @Model..WeightDescription">
+                                    <div class="progress @Model.BoardGameGeekAverageWeightDescription">
                                         <div class="progress-bar" role="progressbar" aria-valuenow="@Model.BoardGameGeekWeightPercent" aria-valuemin="0" aria-valuemax="100" style="width: @Model.BoardGameGeekWeightPercent%;" data-toggle="popover" data-placement="bottom" data-content="@Model.BoardGameGeekAverageWeight / 5">
                                             @Model.BoardGameGeekAverageWeightDescription
                                         </div>
@@ -67,7 +67,7 @@
                         {
                             <tr>
                                 <td class="text-center"><i class="fa fa-globe" data-toggle="tooltip" data-placement="left" title="View Universal Game Page for All of NemeStats"></i></td>
-                                <td><a href="@Url.Action(MVC.UniversalGame.Details().AddRouteValue("id", Model.BoardGameGeekGameDefinitionId))" target="_self;" alt="View Global Stats">View Global Stats</a></td>
+                                <td><a href="@Url.Action(MVC.UniversalGame.Details().AddRouteValue("id", Model.BoardGameGeekGameDefinitionId))" alt="View Global Stats">View Global Stats</a></td>
                             </tr>
                         }
                         @if (Model.BoardGameGeekUri != null)

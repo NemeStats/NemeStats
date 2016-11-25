@@ -21,7 +21,9 @@
     @if (Model.BoardGameGeekInfo != null)
     {
         <div class="row">
-            @Html.Partial(MVC.UniversalGame.Views._BoardGameGeekInfo, Model.BoardGameGeekInfo)
+            <div class="col-xs-12">
+                @Html.Partial(MVC.UniversalGame.Views._BoardGameGeekInfo, Model.BoardGameGeekInfo)
+            </div>
         </div>
     }
     <div class="row">

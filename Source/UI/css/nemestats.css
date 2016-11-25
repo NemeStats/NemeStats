@@ -113,7 +113,12 @@
 
 /*$header-background-color: #2C3E50;*/
 .home-body-container {
-  margin-bottom: 100px; }
+  margin-bottom: 100px;
+  background-color: #fff;
+  width: 100%;
+  padding: 0 20px; }
+  .home-body-container .panel-heading {
+    font-size: 26px; }
 
 .home-container {
   background-color: #eee; }
@@ -235,11 +240,6 @@
       .home-features .description .imgs img {
         width: 65px;
         margin-top: 10px; }
-
-.home-body-container {
-  background-color: #fff;
-  width: 100%;
-  padding: 0 20px; }
 
 /*$header-background-color: #2C3E50;*/
 body {

@@ -11,12 +11,35 @@
     </h2>
 
     <div class="row">
-        @Html.Partial(MVC.UniversalGame.Views._BoardGameGeekInfo, Model.BoardGameGeekInfo)
+        <div class="col-xs-12">
+            @Html.Partial(MVC.UniversalGame.Views._BoardGameGeekInfo, Model.BoardGameGeekInfo)
+        </div>
     </div>
 
     <div class="row">
         @Html.Partial(MVC.UniversalGame.Views._UniversalGameStats, Model.UniversalGameStats)
     </div>
+    
+
+    @if (Model.TopChampions.Count > 0)
+    {
+        <div class="row">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h4>Top @Model.TopChampions.Count Champions Globally</h4>
+                </div>
+                <div class="panel-body">
+                    @{
+                        var options = new ViewDataDictionary
+                    {
+                        {"showCondensed", true}
+                    };
+                    }
+                    @Html.Partial(MVC.Player.Views._TopChampions, Model.TopChampions, options)
+                </div>
+            </div>
+        </div>
+                        }
     
     @if (Model.RecentlyPlayedGames.Count > 0)
     {

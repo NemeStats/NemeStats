@@ -2,6 +2,14 @@
 
 .home-body-container{
     margin-bottom: $footer-height;
+
+    background-color: #fff;
+    width: 100%;
+    padding: 0 20px;
+
+    .panel-heading {
+        font-size: $font-size-h3;
+    }
 }
 .home-container {
     background-color: #eee;
@@ -193,10 +201,4 @@
             }
         }
     }
-}
-
-.home-body-container {
-    background-color: #fff;
-    width: 100%;
-    padding: 0 20px;
 }
