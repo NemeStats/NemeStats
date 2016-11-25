@@ -36,7 +36,7 @@ namespace UI.Controllers
         private readonly IUniversalGameRetriever _universalGameRetriever;
         private readonly IPlayedGameDetailsViewModelBuilder _playedGameDetailsViewModelBuilder;
 
-        public UniversalGameController(ITransformer transformer, IUniversalGameRetriever universalGameRetriever, IPlayedGameDetailsViewModelBuilder playedGameDetailsViewModelBuilder)
+        public UniversalGameController(ITransformer transformer, IUniversalGameRetriever universalGameRetriever, IPlayedGameDetailsViewModelBuilder playedGameDetailsViewModelBuilder, IUniversalTopChampionsRetreiver universalTopChampionsRetreiver)
         {
             _transformer = transformer;
             _universalGameRetriever = universalGameRetriever;

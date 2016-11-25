@@ -7,6 +7,7 @@ using BusinessLogic.Logic;
 using BusinessLogic.Logic.BoardGameGeekGameDefinitions;
 using BusinessLogic.Logic.GameDefinitions;
 using BusinessLogic.Models;
+using BusinessLogic.Models.Champions;
 using BusinessLogic.Models.Games;
 using BusinessLogic.Models.PlayedGames;
 using BusinessLogic.Models.User;
@@ -30,6 +31,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.BoardGameGeekGameDefinitionsT
         private UniversalGameStats _expectedUniversalStats;
         private BoardGameGeekInfo _expectedBoardGameGeekInfo;
 
+        private List<ChampionData> _expectedTopChampions;
+
         [SetUp]
         public void SetUp()
         {
@@ -39,15 +42,24 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.BoardGameGeekGameDefinitionsT
                 Id = "some user id"
             };
 
+
             _expectedGameDefinition = new GameDefinition
             {
                 Id = 20,
-                BoardGameGeekGameDefinitionId = _boardGameGeekGameDefinitionId
+                BoardGameGeekGameDefinitionId = _boardGameGeekGameDefinitionId,
             };
+
+            var otherGameDefinition = new GameDefinition
+            {
+                Id = 21,
+                BoardGameGeekGameDefinitionId = _boardGameGeekGameDefinitionId,
+            };
+
 
             var gameDefinitionQueryable = new List<GameDefinition>
             {
-                _expectedGameDefinition
+                _expectedGameDefinition,
+                otherGameDefinition
             }.AsQueryable();
             _autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<GameDefinition>()).Return(gameDefinitionQueryable);
 
@@ -59,6 +71,10 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.BoardGameGeekGameDefinitionsT
             _expectedUniversalStats = new UniversalGameStats();
             _autoMocker.Get<IUniversalStatsRetriever>().Expect(mock => mock.GetResults(Arg<int>.Is.Anything))
                 .Return(_expectedUniversalStats);
+
+            _expectedTopChampions = new List<ChampionData>();
+            _autoMocker.Get<IUniversalTopChampionsRetreiver>().Expect(mock => mock.GetFromSource(Arg<int>.Is.Anything))
+                .Return(_expectedTopChampions);
         }
 
         [Test]
@@ -137,6 +153,21 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.BoardGameGeekGameDefinitionsT
                 .AssertWasCalled(
                     mock => mock.GetResults(_boardGameGeekGameDefinitionId));
             result.UniversalGameStats.ShouldBe(_expectedUniversalStats);
+        }
+
+        [Test]
+        public void It_Returns_The_Top_Champions_For_The_Board_Game_Geek_Game()
+        {
+            //--arrange
+
+            //--act
+            var result = _autoMocker.ClassUnderTest.GetBoardGameGeekGameSummary(_boardGameGeekGameDefinitionId, _currentUser, 0);
+
+            //--assert
+            _autoMocker.Get<IUniversalTopChampionsRetreiver>()
+                .AssertWasCalled(
+                    mock => mock.GetFromSource(_boardGameGeekGameDefinitionId));
+            result.TopChampions.ShouldBe(_expectedTopChampions);
         }
     }
 }

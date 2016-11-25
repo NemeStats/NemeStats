@@ -16,7 +16,9 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 
+using System.Collections.Generic;
 using BusinessLogic.Models.Games;
+using BusinessLogic.Models.Players;
 
 namespace BusinessLogic.Logic.BoardGameGeekGameDefinitions
 {

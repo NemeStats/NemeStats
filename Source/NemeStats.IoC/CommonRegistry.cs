@@ -183,6 +183,7 @@ namespace NemeStats.IoC
             For<IBoardGameGeekGameDefinitionInfoRetriever>().Use<BoardGameGeekGameDefinitionInfoRetriever>();
 
             For<IUniversalStatsRetriever>().Use<UniversalStatsRetriever>();
+            For<IUniversalTopChampionsRetreiver>().Use<UniversalTopChampionsRetreiver>();
         }
 
 

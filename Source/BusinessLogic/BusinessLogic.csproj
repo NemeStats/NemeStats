@@ -279,8 +279,10 @@
     <Compile Include="Logic\Achievements\WeightedAchievement.cs" />
     <Compile Include="Logic\Achievements\YouveGotHeartAchievement.cs" />
     <Compile Include="Logic\BoardGameGeekGameDefinitions\IUniversalStatsRetriever.cs" />
+    <Compile Include="Logic\BoardGameGeekGameDefinitions\IUniversalTopChampionsRetreiver.cs" />
     <Compile Include="Logic\BoardGameGeekGameDefinitions\UniversalGameRetriever.cs" />
     <Compile Include="Logic\BoardGameGeekGameDefinitions\UniversalStatsRetriever.cs" />
+    <Compile Include="Logic\BoardGameGeekGameDefinitions\UniversalTopChampionsRetreiver.cs" />
     <Compile Include="Logic\BoardGameGeek\BoardGameGeekGameDefinitionCreator.cs" />
     <Compile Include="Logic\BoardGameGeek\BoardGameGeekGamesImporter.cs" />
     <Compile Include="Logic\BoardGameGeek\BoardGameGeekUrlBuilder.cs" />
@@ -438,6 +440,7 @@
     <Compile Include="Models\PlayedGames\RecentlyPlayedGamesFilter.cs" />
     <Compile Include="Models\PlayerAchievement.cs" />
     <Compile Include="Models\Games\TrendingGamesRequest.cs" />
+    <Compile Include="Models\Players\ChampionDataModel.cs" />
     <Compile Include="Models\Players\CreatePlayerRequest.cs" />
     <Compile Include="Models\PlayedGames\AverageGameDurationTierEnum.cs" />
     <Compile Include="Models\PlayedGames\PointsScorecard.cs" />

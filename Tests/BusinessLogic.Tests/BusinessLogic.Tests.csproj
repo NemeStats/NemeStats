@@ -282,6 +282,7 @@
     <Compile Include="UnitTests\LogicTests\AchievementTests\SocialButterflyAchievementTests.cs" />
     <Compile Include="UnitTests\LogicTests\BoardGameGeekGameDefinitionsTests\UniversalGameRetrieverTests\GetBoardGameGeekGameSummaryTests.cs" />
     <Compile Include="UnitTests\LogicTests\BoardGameGeekGameDefinitionsTests\UniversalStatsRetrieverTests\GetFromSourceTests.cs" />
+    <Compile Include="UnitTests\LogicTests\BoardGameGeekGameDefinitionsTests\UniversalTopChampionsRetreiverTests\GetFromSourceTests.cs" />
     <Compile Include="UnitTests\LogicTests\BoardGameGeekTests\BoardGameGeekGamesImporterTests\BoardGameGeekGamesImporterTests.cs" />
     <Compile Include="UnitTests\LogicTests\ChampionsTests\ChampionRecalculatorTests\RecalculateAllChampionsTests.cs" />
     <Compile Include="UnitTests\LogicTests\ChampionsTests\ChampionRecalculatorTests\RecalculateChampionTests.cs" />

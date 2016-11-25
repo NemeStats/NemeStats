@@ -206,6 +206,7 @@ namespace UI.Controllers
                 public readonly string _PlayersPartial = "_PlayersPartial";
                 public readonly string _PlayersSummaryPartial = "_PlayersSummaryPartial";
                 public readonly string _RecentNemesisChangesPartial = "_RecentNemesisChangesPartial";
+                public readonly string _TopChampions = "_TopChampions";
                 public readonly string _TopPlayersPartial = "_TopPlayersPartial";
                 public readonly string Create = "Create";
                 public readonly string CurrentPlayerQuickStats = "CurrentPlayerQuickStats";
@@ -220,6 +221,7 @@ namespace UI.Controllers
             public readonly string _PlayersPartial = "~/Views/Player/_PlayersPartial.cshtml";
             public readonly string _PlayersSummaryPartial = "~/Views/Player/_PlayersSummaryPartial.cshtml";
             public readonly string _RecentNemesisChangesPartial = "~/Views/Player/_RecentNemesisChangesPartial.cshtml";
+            public readonly string _TopChampions = "~/Views/Player/_TopChampions.cshtml";
             public readonly string _TopPlayersPartial = "~/Views/Player/_TopPlayersPartial.cshtml";
             public readonly string Create = "~/Views/Player/Create.cshtml";
             public readonly string CurrentPlayerQuickStats = "~/Views/Player/CurrentPlayerQuickStats.cshtml";

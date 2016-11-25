@@ -826,6 +826,7 @@
     <Content Include="Views\UniversalGame\_UniversalGameStats.cshtml" />
     <Content Include="Views\GameDefinition\_GamingGroupGameDefinitionStatsPartial.cshtml" />
     <Content Include="Views\GameDefinition\_GameDefinitionPlayedGamesPartial.cshtml" />
+    <Content Include="Views\Player\_TopChampions.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Areas\Api\Views\Shared\" />

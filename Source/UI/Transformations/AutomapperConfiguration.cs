@@ -27,6 +27,7 @@ using BusinessLogic.Logic.GamingGroups;
 using BusinessLogic.Logic.Players;
 using BusinessLogic.Logic.Points;
 using BusinessLogic.Models;
+using BusinessLogic.Models.Champions;
 using BusinessLogic.Models.Games;
 using BusinessLogic.Models.GamingGroups;
 using BusinessLogic.Models.PlayedGames;
@@ -147,6 +148,8 @@ namespace UI.Transformations
 
             Mapper.CreateMap<BoardGameGeekGameSummary, UniversalGameDetailsViewModel>(MemberList.Destination)
                 .ForMember(m => m.GamingGroupGameDefinitionSummary, opt => opt.Ignore());
+
+            Mapper.CreateMap<ChampionData, ChampionDataModel>(MemberList.Destination);
         }
     }
 }

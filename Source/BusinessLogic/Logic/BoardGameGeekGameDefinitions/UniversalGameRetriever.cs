@@ -18,23 +18,27 @@ namespace BusinessLogic.Logic.BoardGameGeekGameDefinitions
         private readonly IDataContext _dataContext;
         private readonly IUniversalStatsRetriever _universalStatsRetriever;
         private readonly IRecentPublicGamesRetriever _recentPublicGamesRetriever;
+        private readonly IUniversalTopChampionsRetreiver _universalTopChampionsRetreiver;
 
         public UniversalGameRetriever(
             IBoardGameGeekGameDefinitionInfoRetriever boardGameGeekGameDefinitionInfoRetriever, 
             IGameDefinitionRetriever gameDefinitionRetriever, 
             IDataContext dataContext, 
             IUniversalStatsRetriever universalStatsRetriever, 
-            IRecentPublicGamesRetriever recentPublicGamesRetriever)
+            IRecentPublicGamesRetriever recentPublicGamesRetriever,
+            IUniversalTopChampionsRetreiver universalTopChampionsRetreiver)
         {
             _boardGameGeekGameDefinitionInfoRetriever = boardGameGeekGameDefinitionInfoRetriever;
             _gameDefinitionRetriever = gameDefinitionRetriever;
             _dataContext = dataContext;
             _universalStatsRetriever = universalStatsRetriever;
             _recentPublicGamesRetriever = recentPublicGamesRetriever;
+            _universalTopChampionsRetreiver = universalTopChampionsRetreiver;
         }
 
         public BoardGameGeekGameSummary GetBoardGameGeekGameSummary(int boardGameGeekGameDefinitionId, ApplicationUser currentUser, int numberOfRecentlyPlayedGamesToRetrieve = DEFAULT_NUMBER_OF_GAMES)
         {
+            var topChampions = _universalTopChampionsRetreiver.GetFromSource(boardGameGeekGameDefinitionId);
             var boardGameGeekInfo = _boardGameGeekGameDefinitionInfoRetriever.GetResults(boardGameGeekGameDefinitionId);
             var universalStats = _universalStatsRetriever.GetResults(boardGameGeekGameDefinitionId);
             var gamingGroupGameDefinitionSummary = GetGamingGroupGameDefinitionSummary(boardGameGeekGameDefinitionId, currentUser.CurrentGamingGroupId, numberOfRecentlyPlayedGamesToRetrieve);
@@ -51,7 +55,8 @@ namespace BusinessLogic.Logic.BoardGameGeekGameDefinitions
                 BoardGameGeekInfo = boardGameGeekInfo,
                 UniversalGameStats = universalStats,
                 GamingGroupGameDefinitionSummary = gamingGroupGameDefinitionSummary,
-                RecentlyPlayedGames = recentlyPlayedPublicGames
+                RecentlyPlayedGames = recentlyPlayedPublicGames,
+                TopChampions = topChampions
             };
         }
 
@@ -72,5 +77,7 @@ namespace BusinessLogic.Logic.BoardGameGeekGameDefinitions
 
             return summary;
         }
+
+
     }
 }

@@ -1,0 +1,27 @@
+﻿@using UI.HtmlHelpers
+@model IEnumerable<BusinessLogic.Models.Players.ChampionDataModel>
+
+<div class="flip-scroll">
+    <table class="table table-hover table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Gaming Group</th>
+                <th>Games Won</th>
+                <th>Played Games</th>
+                <th>Win %</th>
+            </tr>
+        </thead>
+        @{ var position = 1; }
+        @foreach (var championDataModel in @Model)
+        {
+            <tr>
+                <td>@Html.ActionLink(championDataModel.PlayerName, "Details", "Player", new { id = championDataModel.PlayerId}, new{})</td>
+                <td>@Html.ActionLink(championDataModel.PlayerGamingGroupName, "Details", "GamingGroup", new { id = championDataModel.PlayerGamingGroupId }, new { })</td>
+                <td>@championDataModel.NumberOfWins</td>
+                <td>@championDataModel.NumberOfGames</td>
+                <td>@championDataModel.WinPercentage&nbsp;%</td>   
+        </tr>
+                    }
+    </table>
+</div>

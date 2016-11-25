@@ -6,6 +6,8 @@ using BusinessLogic.Exceptions;
 using BusinessLogic.Logic.Utilities;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
+using System.Collections;
+using BusinessLogic.Facades;
 
 namespace BusinessLogic.Logic.BoardGameGeekGameDefinitions
 {

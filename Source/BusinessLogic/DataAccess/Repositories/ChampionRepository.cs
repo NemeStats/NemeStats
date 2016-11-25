@@ -90,7 +90,7 @@ namespace BusinessLogic.DataAccess.Repositories
             {
                 return false;
             }
-            return !championStatistics[0].IsCurrentChamption && championStatistics[0].NumberOfGames == championStatistics[1].NumberOfGames
+            return !championStatistics[0].IsCurrentChampion && championStatistics[0].NumberOfGames == championStatistics[1].NumberOfGames
                    && championStatistics[0].NumberOfWins == championStatistics[1].NumberOfWins;
         }
     }
