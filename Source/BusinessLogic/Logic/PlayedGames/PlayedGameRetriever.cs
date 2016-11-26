@@ -93,9 +93,15 @@ namespace BusinessLogic.Logic.PlayedGames
 
         public List<PublicGameSummary> GetRecentPublicGames(RecentlyPlayedGamesFilter filter)
         {
-            var publicGameSummaries = (from playedGame in dataContext.GetQueryable<PlayedGame>()
-                                       .Where(x => filter.BoardGameGeekGameDefinitionId == null || x.GameDefinition.BoardGameGeekGameDefinitionId == filter.BoardGameGeekGameDefinitionId)
-                                       group new PublicGameSummary
+            var query = dataContext.GetQueryable<PlayedGame>();
+
+
+            if (filter.BoardGameGeekGameDefinitionId.HasValue)
+            {
+                query = query.Where(x => x.GameDefinition.BoardGameGeekGameDefinitionId == filter.BoardGameGeekGameDefinitionId);
+            }
+
+            var publicGameSummaries = (from playedGame in query group new PublicGameSummary
                  {
                      PlayedGameId = playedGame.Id,
                      GameDefinitionId = playedGame.GameDefinitionId,

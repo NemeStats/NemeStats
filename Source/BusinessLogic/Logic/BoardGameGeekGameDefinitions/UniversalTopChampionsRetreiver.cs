@@ -22,15 +22,14 @@ namespace BusinessLogic.Logic.BoardGameGeekGameDefinitions
 
         public override List<ChampionData> GetFromSource(int boardGameGeekGameDefinitionId)
         {
-            var topFiveChampions = _dataContext.GetQueryable<GameDefinition>()
-                .Include(gd => gd.Champion)
-                .Include(gd => gd.Champion.Player)
-                .Include(gd => gd.Champion.Player.GamingGroup)
-                .Where(gd => gd.BoardGameGeekGameDefinitionId == boardGameGeekGameDefinitionId)
-                .Select(gd => gd.Champion)
+            var topFiveChampions = _dataContext.GetQueryable<Champion>()
+                .Where(c => c.GameDefinition.BoardGameGeekGameDefinitionId == boardGameGeekGameDefinitionId)
+                .Include(c=>c.Player)
+                .Include(c=>c.Player.GamingGroup)
                 .OrderByDescending(c => c.NumberOfWins)
                 .ThenByDescending(c => c.WinPercentage)
-                .Take(5);
+                .Take(5)
+                .ToList();
 
             return topFiveChampions.Select(c => new ChampionData()
             {
@@ -38,11 +37,12 @@ namespace BusinessLogic.Logic.BoardGameGeekGameDefinitions
                 GameDefinitionId = c.GameDefinitionId,
                 NumberOfGames = c.NumberOfGames,
                 PlayerId = c.PlayerId,
-                WinPercentage = 100 * c.NumberOfWins / c.NumberOfGames,
+                WinPercentage = 100*c.NumberOfWins/c.NumberOfGames,
                 PlayerName = c.Player.Name,
                 PlayerGamingGroupId = c.Player.GamingGroupId,
                 PlayerGamingGroupName = c.Player.GamingGroup.Name
             }).ToList();
+
 
         }
     }
