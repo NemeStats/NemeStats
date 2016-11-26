@@ -313,10 +313,6 @@ $color-border: #dce4ec;
                         &.rank {
                             width: 75px;
                         }
-
-                        &.score {
-                            float: right;
-                        }
                     }
                 }
             }
@@ -350,7 +346,15 @@ $color-border: #dce4ec;
     }
 }
 
-.ranked-item.list-group-item {
+#ranked-game {
+    li {
+        cursor: move;
+        cursor: -moz-grab;
+        cursor: -webkit-grab;
+    }
+}
+
+.result-item.list-group-item {
     color: white;
     background-color: $brand-primary;
     border-color: $color-border;
@@ -370,16 +374,14 @@ $color-border: #dce4ec;
         }
 
         &.score {
-            width: 85px;
-            float: right;
-            margin-left: 10px;
+            width: 72px;
+            margin-right: 10px;
         }
     }
 
-    .change-rank-buttons {
+    .result-float-right {
         display: inline;
         float: right;
-        margin-bottom: 10px;
 
         @media (max-width: $screen-sm-min) {
             line-height: 40px;
@@ -398,10 +400,6 @@ $color-border: #dce4ec;
             }
         }
     }
-
-    cursor: move; 
-    cursor: -moz-grab;
-    cursor: -webkit-grab;
 
     &:active {
         :active {

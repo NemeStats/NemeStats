@@ -17,12 +17,19 @@ Views.PlayedGame.CreatePlayedGame = function () {
         TeamLoss: 3
     }
 
+    this._gameTypes = {
+        Ranked: 1,
+        Scored: 2,
+        Cooperative: 3
+    }
+
     this._viewModel = {
         Date: null,
         Game: null,
         Players: [],
         GameNotes: null,
-        WinnerType: null
+        WinnerType: null,
+        GameType: this._gameTypes.Ranked
     };
 
     this.component = null;
@@ -175,6 +182,15 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                 return "";
             });
 
+            Vue.filter('scoredposition', function (index) {
+                var scorePosition = index + 1;
+
+                var s = ["th", "st", "nd", "rd"],
+                v = scorePosition % 100;
+                return scorePosition + (s[(v - 20) % 10] || s[v] || s[0]);
+
+            });
+
             var editMode = $(componentSelector).data("edit-mode");
             var model = $(componentSelector).data("model");
 
@@ -198,8 +214,8 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                     parent._viewModel.Players.push({
                         Id: playerRank.PlayerId,
                         Name: playerRank.PlayerName,
-                        Rank: playerRank.GameRank
-                        //Score: playerRank.PointsScored
+                        Rank: playerRank.GameRank,
+                        PointsScored: playerRank.PointsScored
                     });
                 });
                 this._viewModel.GameNotes = model.Notes;
@@ -311,7 +327,8 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                                 _this.viewModel.Players.push({
                                     Id: player.PlayerId,
                                     Name: player.PlayerName,
-                                    Rank: i
+                                    Rank: i,
+                                    PointsScored: 0
                                 });
                                 i++;
                             }
@@ -322,7 +339,8 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                                 _this.viewModel.Players.push({
                                     Id: player.PlayerId,
                                     Name: player.PlayerName,
-                                    Rank: i
+                                    Rank: i,
+                                    PointsScored: 0
                                 });
                                 i++;
                             }
@@ -334,6 +352,9 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                             this.alertText = "You must select at least 2 players to continue.";
                             this.alertVisible = true;
                         }
+                    },
+                    setGameType: function(gameType) {
+                        this.viewModel.GameType = gameType;
                     },
                     changeRank: function ($index, player, increase) {
                         var newRank;
@@ -405,6 +426,16 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                             EditMode: this.editMode ? true : false
                         };
 
+                        if (this.viewModel.GameType === parent._gameTypes.Scored) {
+                            var playersByScore = this.viewModel.Players
+                                .sort(function (a, b) { return b.PointsScored - a.PointsScored });
+
+                            for (var i = 1; i <= playersByScore.length; i++) {
+                                playersByScore[i - 1].Rank = i;
+                            }
+
+                        }
+
                         this.viewModel.Players.forEach(function (player) {
                             var rank = player.Rank;
                             if (component.viewModel.WinnerType == parent._winnerTypes.TeamWin) {
@@ -415,8 +446,8 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                             data.PlayerRanks.push({
                                 PlayerId: player.Id,
                                 GameRank: rank,
-                                PlayerName: player.Name
-                                //PointsScored: player.Score
+                                PlayerName: player.Name,
+                                PointsScored: player.PointsScored
                             });
                         });
 

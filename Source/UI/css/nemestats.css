@@ -1311,8 +1311,6 @@ button > i.fa {
         display: inline-block; }
         #record-played-game .form .content .list-group.header .ranked-item.list-group-item span.rank {
           width: 75px; }
-        #record-played-game .form .content .list-group.header .ranked-item.list-group-item span.score {
-          float: right; }
   #record-played-game .form .content .action-buttons .row {
     margin: 20px 0; }
   #record-played-game .form .content .action-buttons .btn {
@@ -1330,45 +1328,45 @@ button > i.fa {
           display: block;
           margin-bottom: 5px; } }
 
-.ranked-item.list-group-item {
-  color: white;
-  background-color: #354458;
-  border-color: #dce4ec;
+#ranked-game li {
   cursor: move;
   cursor: -moz-grab;
   cursor: -webkit-grab; }
+
+.result-item.list-group-item {
+  color: white;
+  background-color: #354458;
+  border-color: #dce4ec; }
   @media (max-width: 768px) {
-    .ranked-item.list-group-item {
+    .result-item.list-group-item {
       display: inline-block;
       width: 100%;
       font-size: 13px; } }
-  .ranked-item.list-group-item input {
+  .result-item.list-group-item input {
     display: inline-block; }
-    .ranked-item.list-group-item input.rank {
+    .result-item.list-group-item input.rank {
       width: 51px;
       margin-right: 10px; }
-    .ranked-item.list-group-item input.score {
-      width: 85px;
-      float: right;
-      margin-left: 10px; }
-  .ranked-item.list-group-item .change-rank-buttons {
+    .result-item.list-group-item input.score {
+      width: 72px;
+      margin-right: 10px; }
+  .result-item.list-group-item .result-float-right {
     display: inline;
-    float: right;
-    margin-bottom: 10px; }
+    float: right; }
     @media (max-width: 768px) {
-      .ranked-item.list-group-item .change-rank-buttons {
+      .result-item.list-group-item .result-float-right {
         line-height: 40px; } }
-    .ranked-item.list-group-item .change-rank-buttons button {
+    .result-item.list-group-item .result-float-right button {
       display: inline-block;
       font-size: 12px;
       margin-right: 5px; }
       @media (max-width: 768px) {
-        .ranked-item.list-group-item .change-rank-buttons button {
+        .result-item.list-group-item .result-float-right button {
           padding: 2px 5px;
           line-height: 1.5;
           border-radius: 3px;
           margin-right: 0; } }
-  .ranked-item.list-group-item:active :active {
+  .result-item.list-group-item:active :active {
     cursor: grabbing;
     cursor: -moz-grabbing;
     cursor: -webkit-grabbing; }
