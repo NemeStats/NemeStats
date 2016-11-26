@@ -28,7 +28,7 @@ namespace BusinessLogic.Logic.BoardGameGeekGameDefinitions
                 {
                     AveragePlayersPerGame = x.GameDefinitions.Average(y => y.PlayedGames.Select(p => p.NumberOfPlayers).Average()),
                     TotalNumberOfGamesPlayed = x.GameDefinitions.Sum(y => y.PlayedGames.Count),
-                    TotalGamingGroupsWithThisGame = x.GameDefinitions.GroupBy(y => y.GamingGroupId).Select(z => z.Key).Count()
+                    TotalGamingGroupsWithThisGame = x.GameDefinitions.Where(g=>g.Active && g.PlayedGames.Any()).GroupBy(y => y.GamingGroupId).Select(z => z.Key).Count()
                 }).SingleOrDefault();
 
             if (result == null)

@@ -23,7 +23,7 @@ namespace BusinessLogic.Logic.BoardGameGeekGameDefinitions
         public override List<ChampionData> GetFromSource(int boardGameGeekGameDefinitionId)
         {
             var topFiveChampions = _dataContext.GetQueryable<Champion>()
-                .Where(c => c.GameDefinition.BoardGameGeekGameDefinitionId == boardGameGeekGameDefinitionId)
+                .Where(c => c.GameDefinition.BoardGameGeekGameDefinitionId == boardGameGeekGameDefinitionId && c.GameDefinition.ChampionId == c.Id)
                 .Include(c=>c.Player)
                 .Include(c=>c.Player.GamingGroup)
                 .OrderByDescending(c => c.NumberOfWins)
