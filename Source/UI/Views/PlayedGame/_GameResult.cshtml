@@ -15,6 +15,11 @@
                 @Rank()
 
                 @Html.ActionLink(Model.PlayerName, "Details", "Player", new { id = Model.PlayerId }, new { })
+                
+                @if (Model.PointsScored.HasValue && Model.ShowPointsScored)
+                {
+                    <span class="small">(@Model.PointsScored.Value.ToString("N0") game points scored)</span>
+                }
 
             </b>
         </div>

@@ -225,11 +225,11 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
 
             gameResultViewModelBuilder
                 = MockRepository.GenerateMock<IGameResultViewModelBuilder>();
-            gameResultViewModelBuilder.Expect(build => build.Build(playerGameResults[0]))
+            gameResultViewModelBuilder.Expect(build => build.Build(playerGameResults[0], TODO))
                     .Repeat
                     .Once()
                     .Return(new Models.PlayedGame.GameResultViewModel() { PlayedGameId = playerGameResults[0].PlayedGameId });
-            gameResultViewModelBuilder.Expect(build => build.Build(playerGameResults[1]))
+            gameResultViewModelBuilder.Expect(build => build.Build(playerGameResults[1], TODO))
                     .Repeat
                     .Once()
                     .Return(new Models.PlayedGame.GameResultViewModel() { PlayedGameId = playerGameResults[1].PlayedGameId });

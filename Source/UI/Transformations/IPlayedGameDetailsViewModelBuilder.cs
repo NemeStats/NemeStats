@@ -23,6 +23,6 @@ namespace UI.Transformations
 {
     public interface IPlayedGameDetailsViewModelBuilder
     {
-        PlayedGameDetailsViewModel Build(PlayedGame playedGame, ApplicationUser currentUser);
+        PlayedGameDetailsViewModel Build(PlayedGame playedGame, ApplicationUser currentUser, bool showPointsScored = false);
     }
 }

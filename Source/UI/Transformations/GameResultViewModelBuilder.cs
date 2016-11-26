@@ -31,7 +31,7 @@ namespace UI.Transformations
         internal const string EXCEPTION_GAME_DEFINITION_CANNOT_BE_NULL = "PlayerGameResult.PlayedGame.GameDefinition cannot be null.";
         internal const string EXCEPTION_PLAYED_GAME_CANNOT_BE_NULL = "PlayerGameResult.PlayedGame cannot be null.";
 
-        public GameResultViewModel Build(PlayerGameResult playerGameResult)
+        public GameResultViewModel Build(PlayerGameResult playerGameResult, bool showPointsScored = false)
         {
             Validate(playerGameResult);
 
@@ -39,6 +39,7 @@ namespace UI.Transformations
             {
                 PlayerId = playerGameResult.PlayerId,
                 PlayerName = PlayerNameBuilder.BuildPlayerName(playerGameResult.Player.Name, playerGameResult.Player.Active),
+                PointsScored = playerGameResult.PointsScored,
                 GameRank = playerGameResult.GameRank,
                 NemePointsSummary = new NemePointsSummaryViewModel(playerGameResult.NemeStatsPointsAwarded, playerGameResult.GameDurationBonusPoints, playerGameResult.GameWeightBonusPoints),
                 GameDefinitionId = playerGameResult.PlayedGame.GameDefinition.Id,
@@ -46,7 +47,8 @@ namespace UI.Transformations
                 PlayedGameId = playerGameResult.PlayedGameId,
                 DatePlayed = playerGameResult.PlayedGame.DatePlayed,
                 BoardGameGeekUri = BoardGameGeekUriBuilder.BuildBoardGameGeekGameUri(playerGameResult.PlayedGame.GameDefinition.BoardGameGeekGameDefinitionId),
-                WinnerType = playerGameResult.PlayedGame.WinnerType
+                WinnerType = playerGameResult.PlayedGame.WinnerType,
+                ShowPointsScored = showPointsScored
             };
             if(playerGameResult.PlayedGame.GameDefinition.BoardGameGeekGameDefinition != null)
             {

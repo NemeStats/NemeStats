@@ -23,6 +23,6 @@ namespace UI.Transformations
 {
     public interface IGameResultViewModelBuilder
     {
-        GameResultViewModel Build(PlayerGameResult playerGameResult);
+        GameResultViewModel Build(PlayerGameResult playerGameResult, bool showPointsScored = false);
     }
 }
