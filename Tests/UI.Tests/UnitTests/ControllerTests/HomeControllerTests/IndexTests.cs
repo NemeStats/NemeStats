@@ -110,6 +110,8 @@ namespace UI.Tests.UnitTests.ControllerTests.HomeControllerTests
             };
             _autoMocker.Get<ITopGamingGroupsRetriever>().Expect(mock => mock.GetResults(HomeController.NUMBER_OF_TOP_GAMING_GROUPS_TO_SHOW))
                                     .Return(expectedTopGamingGroupSummaries);
+
+            expectedTopGamingGroupViewModel = new TopGamingGroupSummaryViewModel();
             _autoMocker.Get<ITransformer>()
                 .Expect(mock => mock.Transform<TopGamingGroupSummaryViewModel>(expectedTopGamingGroupSummaries[0]))
                 .Return(expectedTopGamingGroupViewModel);

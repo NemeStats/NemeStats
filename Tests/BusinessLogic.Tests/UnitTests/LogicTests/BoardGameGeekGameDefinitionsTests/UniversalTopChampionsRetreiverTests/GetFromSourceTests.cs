@@ -16,6 +16,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.BoardGameGeekGameDefinitionsT
         private int _boardGameGeekGameDefinitionId = 1;
         private RhinoAutoMocker<UniversalTopChampionsRetreiver> _autoMocker;
         private BoardGameGeekGameDefinition _expectedBoardGameGeekGameDefinition;
+        private GameDefinition _expectedFirstChampionGameDefinition;
 
         private Champion _topChampion;
         private Champion _champion2;
@@ -25,9 +26,21 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.BoardGameGeekGameDefinitionsT
         {
             _autoMocker = new RhinoAutoMocker<UniversalTopChampionsRetreiver>();
 
+            _expectedFirstChampionGameDefinition = new GameDefinition
+            {
+                Id = 20,
+                BoardGameGeekGameDefinitionId = _boardGameGeekGameDefinitionId
+            };
+
+            var otherGameDefinition = new GameDefinition
+            {
+                Id = 21,
+                BoardGameGeekGameDefinitionId = _boardGameGeekGameDefinitionId
+            };
+
             _topChampion = new Champion
             {
-                GameDefinitionId = 1,
+                GameDefinitionId = _expectedFirstChampionGameDefinition.Id,
                 WinPercentage = 100,
                 NumberOfWins = 2,
                 NumberOfGames = 2,
@@ -40,11 +53,12 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.BoardGameGeekGameDefinitionsT
                     {
                         Name = "gaming group 1"
                     }
-                }
+                },
+                GameDefinition = _expectedFirstChampionGameDefinition
             };
             _champion2 = new Champion
             {
-                GameDefinitionId = 2,
+                GameDefinitionId = otherGameDefinition.Id,
                 WinPercentage = 50,
                 NumberOfWins = 1,
                 NumberOfGames = 2,
@@ -57,32 +71,17 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.BoardGameGeekGameDefinitionsT
                     {
                         Name = "gaming group 2"
                     }
-                }
+                },
+                GameDefinition = otherGameDefinition
             };
 
-            var expectedGameDefinition = new GameDefinition
+            var championQueryable = new List<Champion>
             {
-                Id = 20,
-                BoardGameGeekGameDefinitionId = _boardGameGeekGameDefinitionId,
-                Champion = _topChampion
-            };
-
-            var otherGameDefinition = new GameDefinition
-            {
-                Id = 21,
-                BoardGameGeekGameDefinitionId = _boardGameGeekGameDefinitionId,
-                Champion = _champion2
-            };
-
-
-            var gameDefinitionQueryable = new List<GameDefinition>
-            {
-                expectedGameDefinition,
-                otherGameDefinition
+                _topChampion,
+                _champion2
             }.AsQueryable();
-
-            
-            _autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<GameDefinition>()).Return(gameDefinitionQueryable);
+        
+            _autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<Champion>()).Return(championQueryable);
         }
 
         [Test]
@@ -108,8 +107,16 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.BoardGameGeekGameDefinitionsT
 
             //--assert
             result.Count.ShouldBe(2);
-            result.First().PlayerId.ShouldBe(_topChampion.PlayerId);
+            var firstChampion = result.First();
+            firstChampion.PlayerId.ShouldBe(_topChampion.PlayerId);
+            firstChampion.GameDefinitionId.ShouldBe(_expectedFirstChampionGameDefinition.Id);
+            firstChampion.NumberOfGames.ShouldBe(_topChampion.NumberOfGames);
+            firstChampion.NumberOfWins.ShouldBe(_topChampion.NumberOfWins);
+            firstChampion.PlayerGamingGroupId.ShouldBe(_topChampion.Player.GamingGroupId);
+            firstChampion.PlayerGamingGroupName.ShouldBe(_topChampion.Player.GamingGroup.Name);
+            firstChampion.PlayerName.ShouldBe(_topChampion.Player.Name);
+            firstChampion.WinPercentage.ShouldBe(100 * _topChampion.NumberOfWins / _topChampion.NumberOfGames);
         }
-        
+
     }
 }
