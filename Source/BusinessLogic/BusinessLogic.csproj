@@ -231,6 +231,7 @@
     <Compile Include="Facades\ITopGamingGroupsRetriever.cs" />
     <Compile Include="Facades\ITopPlayersRetriever.cs" />
     <Compile Include="Facades\ITrendingGamesRetriever.cs" />
+    <Compile Include="Logic\Achievements\HolidayGamerAchievement.cs" />
     <Compile Include="Logic\BoardGameGeekGameDefinitions\IBoardGameGeekGameDefinitionInfoRetriever.cs" />
     <Compile Include="Logic\BoardGameGeekGameDefinitions\IGameDetailsRetriever.cs" />
     <Compile Include="Logic\BoardGameGeekGameDefinitions\IUniversalGameRetriever.cs" />
