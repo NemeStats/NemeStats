@@ -4,27 +4,44 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8" />
+    <!-- Google Tag Manager -->
+    <script>
+        (function (w, d, s, l, i) {
+        w[l] = w[l] || []; w[l].push({
+        'gtm.start':
+        new Date().getTime(), event: 'gtm.js'
+        }); var f = d.getElementsByTagName(s)[0],
+        j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+        'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', '@GoogleAnalyticsConfig.GetGoogleTagManagerTrackingId()');</script>
+    <!-- End Google Tag Manager -->
+    <!-- End Google Tag Manager -->
+    <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta name="msvalidate.01" content="52A9C8830987C1456378EB7E298524FB" />
+    <meta name="msvalidate.01" content="52A9C8830987C1456378EB7E298524FB"/>
     <title>@ViewBag.Title | NemeStats</title>
     @if (ViewBag.Description != null)
     {
-        <meta name="description" content="@ViewBag.Description" />
+        <meta name="description" content="@ViewBag.Description"/>
     }
     <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,900' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Audiowide' rel='stylesheet' type='text/css'>
     @*nemestats.com verification*@
     <meta name="google-site-verification" content="5M6V9FQPDVcCL7_xBf7P7BLFmZFaWrOFUjizO1rPbvU"/>
-    <meta name="og:site_name" content="NemeStats" />
+    <meta name="og:site_name" content="NemeStats"/>
     @RenderSection("CustomMetas", required: false)
 
     @Styles.Render("~/bundles/content/css")
     @Styles.Render("~/Content/themes/base/css")
 </head>
 <body>
-    @GoogleTagManager()
+    <!-- Google Tag Manager (noscript) -->
+    <noscript>
+        <iframe src="https://www.googletagmanager.com/ns.html?id=@GoogleAnalyticsConfig.GetGoogleTagManagerTrackingId()"
+                height="0" width="0" style="display:none;visibility:hidden"></iframe>
+    </noscript>
+    <!-- End Google Tag Manager (noscript) -->
     <div class="navbar navbar-default navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
@@ -116,35 +133,5 @@
     <script type="text/javascript" language="JavaScript" src="@Url.Content(Links.Scripts.Idea_Informer.tab6_js)"></script><noscript>
         <a href="http://nemestats.idea.informer.com">NemeStats feedback </a>
     </noscript>
-}
-@helper GoogleTagManager()
-{
-    <script>
-        dataLayer = [{
-            'universalAnalyticsTrackingId': '@GoogleAnalyticsConfig.GetGoogleAnalyticsTrackingId()'
-        }];
-    </script>
-    <noscript>
-        <iframe src="//www.googletagmanager.com/ns.html?id=@GoogleAnalyticsConfig.GetGoogleTagManagerTrackingId()"
-                height="0" width="0" style="display: none; visibility: hidden">
-        </iframe>
-    </noscript>
-    <script>
-        (function(w, d, s, l, i) {
-            w[l] = w[l] || [];
-            w[l].push({
-                'gtm.start':
-                    new Date().getTime(),
-                event: 'gtm.js'
-            });
-            var f = d.getElementsByTagName(s)[0],
-                j = d.createElement(s),
-                dl = l != 'dataLayer' ? '&l=' + l : '';
-            j.async = true;
-            j.src =
-                '//www.googletagmanager.com/gtm.js?id=' + i + dl;
-            f.parentNode.insertBefore(j, f);
-        })(window, document, 'script', 'dataLayer', '@GoogleAnalyticsConfig.GetGoogleTagManagerTrackingId()');
-    </script>
 }
 
