@@ -235,6 +235,7 @@
     <Compile Include="UnitTests\FacadesTests\TopPlayersRetrieverTests.cs" />
     <Compile Include="UnitTests\FacadesTests\TrendingGamesRetrieverTests.cs" />
     <Compile Include="UnitTests\FacadesTests\TopGamingGroupsRetrieverTests.cs" />
+    <Compile Include="UnitTests\LogicTests\AchievementTests\HolidayGamerAchievementTests.cs" />
     <Compile Include="UnitTests\LogicTests\BoardGameGeekGameDefinitionsTests\BoardGameGeekGameDefinitionInfoRetrieverTests\GetFromSourceTests.cs" />
     <Compile Include="UnitTests\JobsTests\BoardGameGeekBatchUpdateService\LinkOrphanGamesTests\LinkOrphanGamesJobTests.cs" />
     <Compile Include="UnitTests\JobsTests\BoardGameGeekBatchUpdateService\RefreshAllBoardGameGeekDataTests.cs" />
