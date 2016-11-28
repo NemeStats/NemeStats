@@ -100,6 +100,7 @@ namespace BusinessLogic.DataAccess.Repositories
             var nemesisData = (from x in winLossStatistics
                           where x.NumberOfGamesLost > x.NumberOfGamesWon
                           && x.NumberOfGamesLost >= MINIMUM_NUMBER_OF_GAMES_TO_BE_A_NEMESIS
+                          && x.VersusPlayerActive
                           select new NemesisData
                           {
                               NumberOfGamesLost = x.NumberOfGamesLost,

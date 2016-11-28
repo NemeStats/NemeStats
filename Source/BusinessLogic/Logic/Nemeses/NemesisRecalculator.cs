@@ -38,13 +38,13 @@ namespace BusinessLogic.Logic.Nemeses
 
         public void RecalculateAllNemeses()
         {
-            List<Player> activePlayers = dataContext.GetQueryable<Player>()
+            var activePlayers = dataContext.GetQueryable<Player>()
                                             .Where(player => player.Active == true)
                                             .ToList();
 
-            ApplicationUser applicationUser = new ApplicationUser();
+            var applicationUser = new ApplicationUser();
 
-            foreach(Player activePlayer in activePlayers)
+            foreach(var activePlayer in activePlayers)
             {
                 applicationUser.CurrentGamingGroupId = activePlayer.GamingGroupId;
 
@@ -54,9 +54,9 @@ namespace BusinessLogic.Logic.Nemeses
 
         public virtual Nemesis RecalculateNemesis(int playerId, ApplicationUser currentUser)
         {
-            Player minionPlayer = dataContext.FindById<Player>(playerId);
+            var minionPlayer = dataContext.FindById<Player>(playerId);
 
-            NemesisData nemesisData = playerRepository.GetNemesisData(playerId);
+            var nemesisData = playerRepository.GetNemesisData(playerId);
 
             if (nemesisData is NullNemesisData)
             {
@@ -65,11 +65,11 @@ namespace BusinessLogic.Logic.Nemeses
                 return new NullNemesis();
             }
 
-            Nemesis existingNemesis = dataContext.GetQueryable<Nemesis>()
-                                        .Where(nemesis => nemesis.Id == minionPlayer.NemesisId)
-                                        .FirstOrDefault();
+            var existingNemesis = dataContext
+                                        .GetQueryable<Nemesis>()
+                                        .FirstOrDefault(nemesis => nemesis.Id == minionPlayer.NemesisId);
 
-            Nemesis newNemesis = new Nemesis()
+            var newNemesis = new Nemesis()
             {
                 LossPercentage = nemesisData.LossPercentage,
                 NumberOfGamesLost = nemesisData.NumberOfGamesLost,
@@ -100,7 +100,7 @@ namespace BusinessLogic.Logic.Nemeses
             {
                 existingNemesis.NumberOfGamesLost = newNemesis.NumberOfGamesLost;
                 existingNemesis.LossPercentage = newNemesis.LossPercentage;
-                Nemesis returnNemesis = dataContext.Save<Nemesis>(existingNemesis, currentUser);
+                var returnNemesis = dataContext.Save<Nemesis>(existingNemesis, currentUser);
                 dataContext.CommitAllChanges();
                 return returnNemesis;
             }
