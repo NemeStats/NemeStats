@@ -15,12 +15,10 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.BoardGameGeekGameDefinitionsT
     {
         private int _boardGameGeekGameDefinitionId = 1;
         private RhinoAutoMocker<UniversalTopChampionsRetreiver> _autoMocker;
-        private BoardGameGeekGameDefinition _expectedBoardGameGeekGameDefinition;
         private GameDefinition _expectedFirstChampionGameDefinition;
 
         private int _topChampionId = 50;
         private int _champion2Id = 51;
-        private int _invalidChampionId = 52;
         private Champion _topChampion;
         private Champion _champion2;
         private Champion _championThatIsNoLongerTheCurrentChampionForTheGameDefinition;
