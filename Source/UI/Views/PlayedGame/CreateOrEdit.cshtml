@@ -194,7 +194,7 @@
                                     <ul class="list-group" id="ranked-game">
                                         <li class="list-group-item result-item" v-for="player in viewModel.Players | orderBy 'Rank'" data-index="{{ $index }}">
 
-                                            <input type="number" class="form-control input-sm rank" v-model="player.Rank" number />
+                                            <input type="number" class="form-control input-sm rank" v-model="player.Rank" number @@click="focus" />
                                             {{ player.Name }}
                                             <div class="result-float-right">
                                                 <button class="btn btn-default" id="btn-reducerank" v-on:click="changeRank($index, player,true)" tabindex="-1" :disabled="player.Rank === 1"><span class="fa fa-arrow-up"></span></button>
@@ -207,10 +207,10 @@
                                 <div role="tabpanel" class="tab-pane" id="scored">
                                     <ul class="list-group" id="scored-game">
                                         <li class="list-group-item result-item" v-for="player in viewModel.Players | orderBy 'PointsScored' -1" data-index="{{ $index }}">
-                                            <strong>{{$index | scoredposition}}</strong> - 
+                                            <strong>{{ player.RankScored | scoredposition }}</strong> - 
                                             {{ player.Name }}
                                             <div class="result-float-right">
-                                                <input type="number" class="form-control input-sm score" v-model="player.PointsScored" number/> points
+                                                <input type="number" class="form-control input-sm score" v-model="player.PointsScored" number v-on:blur="recalculateRankScored" @@click="focus"/> points
                                             </div>
                                             <div class="fl-clear"></div>
                                         </li>

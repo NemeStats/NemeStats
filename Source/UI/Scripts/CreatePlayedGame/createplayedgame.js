@@ -182,12 +182,10 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                 return "";
             });
 
-            Vue.filter('scoredposition', function (index) {
-                var scorePosition = index + 1;
-
+            Vue.filter('scoredposition', function (rank) {
                 var s = ["th", "st", "nd", "rd"],
-                v = scorePosition % 100;
-                return scorePosition + (s[(v - 20) % 10] || s[v] || s[0]);
+                v = rank % 100;
+                return rank + (s[(v - 20) % 10] || s[v] || s[0]);
 
             });
 
@@ -215,7 +213,8 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                         Id: playerRank.PlayerId,
                         Name: playerRank.PlayerName,
                         Rank: playerRank.GameRank,
-                        PointsScored: playerRank.PointsScored
+                        PointsScored: playerRank.PointsScored,
+                        RankScored: playerRank.GameRank
                     });
                 });
                 this._viewModel.GameNotes = model.Notes;
@@ -328,7 +327,8 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                                     Id: player.PlayerId,
                                     Name: player.PlayerName,
                                     Rank: i,
-                                    PointsScored: 0
+                                    PointsScored: 0,
+                                    RankScored: 1
                                 });
                                 i++;
                             }
@@ -340,7 +340,8 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                                     Id: player.PlayerId,
                                     Name: player.PlayerName,
                                     Rank: i,
-                                    PointsScored: 0
+                                    PointsScored: 0,
+                                    RankScored: 1
                                 });
                                 i++;
                             }
@@ -402,6 +403,25 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                         });
                         return hasMoreRankThanOtherPlayer && !hasLessRankThanOtherPlayer;
                     },
+                    focus: function(e) {
+                        e.target.select();
+                    }, 
+                    recalculateRankScored: function(e) {
+                        var playersByScore = this.viewModel.Players
+                            .sort(function (a, b) { return b.PointsScored - a.PointsScored });
+
+                        var currentRank = 1;
+                        for (var i = 1; i <= playersByScore.length; i++) {
+                            var currentPlayer = playersByScore[i - 1];
+                            var nextPlayer = playersByScore[i];
+
+                            currentPlayer.RankScored = currentRank;
+
+                            if (nextPlayer && nextPlayer.PointsScored < currentPlayer.PointsScored) {
+                                currentRank++;
+                            }
+                        }
+                    },
                     setGameResult: function (winnerType) {
                         var component = this;
                         this.serverRequestInProgress = true;
@@ -426,22 +446,15 @@ Views.PlayedGame.CreatePlayedGame.prototype = {
                             EditMode: this.editMode ? true : false
                         };
 
-                        if (this.viewModel.GameType === parent._gameTypes.Scored) {
-                            var playersByScore = this.viewModel.Players
-                                .sort(function (a, b) { return b.PointsScored - a.PointsScored });
-
-                            for (var i = 1; i <= playersByScore.length; i++) {
-                                playersByScore[i - 1].Rank = i;
-                            }
-
-                        }
-
+                        
                         this.viewModel.Players.forEach(function (player) {
                             var rank = player.Rank;
-                            if (component.viewModel.WinnerType == parent._winnerTypes.TeamWin) {
+                            if (component.viewModel.WinnerType === parent._winnerTypes.TeamWin) {
                                 rank = 1;
-                            } else if (component.viewModel.WinnerType == parent._winnerTypes.TeamLoss) {
+                            } else if (component.viewModel.WinnerType === parent._winnerTypes.TeamLoss) {
                                 rank = 2;
+                            } else if (component.viewModel.GameType === parent._gameTypes.Scored) {
+                                rank = player.RankScored;
                             }
                             data.PlayerRanks.push({
                                 PlayerId: player.Id,
