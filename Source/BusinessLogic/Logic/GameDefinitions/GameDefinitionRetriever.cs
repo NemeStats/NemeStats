@@ -50,7 +50,7 @@ namespace BusinessLogic.Logic.GameDefinitions
         {
             var dateRangeFilter = new BasicDateRangeFilter();
 
-            return _dataContext.GetQueryable<GameDefinition>()
+            var gameDefinitionSummaries = _dataContext.GetQueryable<GameDefinition>()
                 .Where(gameDefinition => gameDefinitionIds.Contains(gameDefinition.Id))
                 .Select(gameDefinition => new GameDefinitionSummary
                 {
@@ -72,6 +72,12 @@ namespace BusinessLogic.Logic.GameDefinitions
                     BoardGameGeekGameDefinition = gameDefinition.BoardGameGeekGameDefinition
                 })
                 .ToList();
+
+            gameDefinitionSummaries.ForEach(x => x.BoardGameGeekInfo = x.BoardGameGeekGameDefinitionId.HasValue ?
+                        _boardGameGeekGameDefinitionInfoRetriever.GetResults(x.BoardGameGeekGameDefinitionId.Value)
+                        : null);
+
+            return gameDefinitionSummaries;
         }
 
         public IPagedList<GameDefinitionDisplayInfo> GetMostPlayedGames(GetMostPlayedGamesQuery query)
