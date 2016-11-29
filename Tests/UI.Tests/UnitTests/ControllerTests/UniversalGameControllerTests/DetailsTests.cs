@@ -144,11 +144,11 @@ namespace UI.Tests.UnitTests.ControllerTests.UniversalGameControllerTests
         {
             //--arrange
             var expectedPlayedGameDetailViewModel1 = new PlayedGameDetailsViewModel();
-            _autoMocker.Get<IPlayedGameDetailsViewModelBuilder>().Expect(mock => mock.Build(_expectedPlayedGame1, _currentUser))
+            _autoMocker.Get<IPlayedGameDetailsViewModelBuilder>().Expect(mock => mock.Build(_expectedPlayedGame1, _currentUser, true))
                 .Return(expectedPlayedGameDetailViewModel1);
 
             var expectedPlayedGameDetailViewModel2 = new PlayedGameDetailsViewModel();
-            _autoMocker.Get<IPlayedGameDetailsViewModelBuilder>().Expect(mock => mock.Build(_expectedPlayedGame2, _currentUser))
+            _autoMocker.Get<IPlayedGameDetailsViewModelBuilder>().Expect(mock => mock.Build(_expectedPlayedGame2, _currentUser, true))
                 .Return(expectedPlayedGameDetailViewModel2);
 
             //--act
