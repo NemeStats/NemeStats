@@ -141,18 +141,15 @@
         </div>
         <div class="panel-body">
             <div class="row">
-                <div class="col-sm-3">
+                <div class="col-md-6">
                     @foreach (var gameResultViewModel in Model.PlayerResults)
                     {
-
-
                         @Html.Partial(MVC.PlayedGame.Views._GameResult, gameResultViewModel)
-
                     }
                 </div>
                 @if (Model.UserCanEdit)
                 {
-                    <div class="col-sm-9">
+                    <div class="col-md-6">
                         <a href="@Url.Action(MVC.PlayedGame.ActionNames.Edit,MVC.PlayedGame.Name,new {id=Model.PlayedGameId})" class="btn btn-sm btn-primary"><span class="fa fa-pencil"></span> Edit</a>
                     </div>
                 }

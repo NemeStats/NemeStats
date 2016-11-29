@@ -95,7 +95,7 @@ namespace UI.Controllers
             {
                 return HttpNotFound();
             }
-            var playedGameDetails = _playedGameDetailsBuilder.Build(playedGame, currentUser);
+            var playedGameDetails = _playedGameDetailsBuilder.Build(playedGame, currentUser, true);
             return View(MVC.PlayedGame.Views.Details, playedGameDetails);
         }
 
@@ -326,6 +326,7 @@ namespace UI.Controllers
                     PlayedGameId = searchResult.PlayedGameId,
                     PlayerId = playerResult.PlayerId,
                     PlayerName = playerResult.PlayerName,
+                    PointsScored = playerResult.PointsScored,
                     WinnerType = searchResult.WinnerType
                 }).ToList()
             }).ToList();

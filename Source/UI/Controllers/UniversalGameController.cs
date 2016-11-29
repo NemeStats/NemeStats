@@ -59,7 +59,7 @@ namespace UI.Controllers
                     GamingGroupId = gamingGroupGameDefinitionSummary.GamingGroupId,
                     GamingGroupName = gamingGroupGameDefinitionSummary.GamingGroupName,
                     PlayedGamesPanelTitle = $"Last {gamingGroupGameDefinitionSummary.PlayedGames.Count} Played Games",
-                    PlayedGames = gamingGroupGameDefinitionSummary.PlayedGames.Select(playedGame => _playedGameDetailsViewModelBuilder.Build(playedGame, currentUser)).ToList(),
+                    PlayedGames = gamingGroupGameDefinitionSummary.PlayedGames.Select(playedGame => _playedGameDetailsViewModelBuilder.Build(playedGame, currentUser, true)).ToList(),
                     GameDefinitionPlayerSummaries = gamingGroupGameDefinitionSummary.PlayerWinRecords
                     .Select(playerWinRecord => _transformer.Transform<GameDefinitionPlayerSummaryViewModel>(playerWinRecord)).ToList(),
                     GamingGroupGameDefinitionStats = new GamingGroupGameDefinitionStatsViewModel

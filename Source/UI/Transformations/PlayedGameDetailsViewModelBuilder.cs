@@ -41,7 +41,7 @@ namespace UI.Transformations
             playerResultBuilder = playerGameResultBuilder;
         }
 
-        public PlayedGameDetailsViewModel Build(PlayedGame playedGame, ApplicationUser currentUser)
+        public PlayedGameDetailsViewModel Build(PlayedGame playedGame, ApplicationUser currentUser, bool showPointsScored = false)
         {
             ValidateArguments(playedGame);
 
@@ -69,9 +69,11 @@ namespace UI.Transformations
             summary.UserCanEdit = (currentUser != null && playedGame.GamingGroupId == currentUser.CurrentGamingGroupId);
             summary.PlayerResults = new List<GameResultViewModel>();
 
+            showPointsScored = showPointsScored && playedGame.PlayerGameResults.All(pgr => pgr.PointsScored.HasValue && pgr.PointsScored > 0);
+
             foreach (PlayerGameResult playerGameResult in playedGame.PlayerGameResults)
             {
-                summary.PlayerResults.Add(playerResultBuilder.Build(playerGameResult));
+                summary.PlayerResults.Add(playerResultBuilder.Build(playerGameResult, showPointsScored));
             }
 
             return summary;

@@ -103,7 +103,8 @@ namespace UI.Tests.UnitTests.TransformationsTests
 
             playedGameDetailsViewModelBuilderMock.Expect(mock => mock.Build(
                 Arg<PlayedGame>.Is.Anything,
-                Arg<ApplicationUser>.Is.Anything))
+                Arg<ApplicationUser>.Is.Anything,
+                Arg<bool>.Is.Anything))
                 .Return(new PlayedGameDetailsViewModel());
 
             currentUser = new ApplicationUser();

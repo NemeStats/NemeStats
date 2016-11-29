@@ -52,7 +52,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 
             Assert.AreEqual((int)HttpStatusCode.NotFound, actualResult.StatusCode);
         }
-        
+
         [Test]
         public void ItRetrievesRequestedPlayedGame()
         {
@@ -61,7 +61,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 
             autoMocker.Get<IPlayedGameRetriever>().AssertWasCalled(x => x.GetPlayedGameDetails(playedGameId));
         }
-        
+
         [Test]
         public void ItReturnsThePlayedGameDetailsViewWhenThePlayedGameIsFound()
         {
@@ -84,13 +84,13 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
                 .Repeat.Once()
                 .Return(playedGame);
             PlayedGameDetailsViewModel playedGameDetails = new PlayedGameDetailsViewModel();
-            autoMocker.Get<IPlayedGameDetailsViewModelBuilder>().Expect(builder => builder.Build(playedGame, currentUser)).Repeat.Once()
+            autoMocker.Get<IPlayedGameDetailsViewModelBuilder>().Expect(builder => builder.Build(playedGame, currentUser, true)).Repeat.Once()
                 .Return(playedGameDetails);
 
             ViewResult result = autoMocker.ClassUnderTest.Details(playedGameId, currentUser) as ViewResult;
 
             PlayedGameDetailsViewModel viewModel = (PlayedGameDetailsViewModel)result.ViewData.Model;
             Assert.AreEqual(playedGameDetails, viewModel);
-        } 
+        }
     }
 }

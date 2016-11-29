@@ -137,7 +137,7 @@ namespace UI.Tests.UnitTests.TransformationsTests
                 CurrentGamingGroupId = _gamingGroupId
             };
 
-            _actualViewModel = _builder.Build(_playedGame, _currentUser);
+            _actualViewModel = _builder.Build(_playedGame, _currentUser, false);
         }
 
         [Test]

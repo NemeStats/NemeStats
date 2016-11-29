@@ -145,9 +145,9 @@ namespace UI.Tests.UnitTests.TransformationsTests
             {
                 CurrentGamingGroupId = _gamingGroupid
             };
-            _autoMocker.Get<IPlayedGameDetailsViewModelBuilder>().Expect(mock => mock.Build(_gameDefinitionSummary.PlayedGames[0], _currentUser))
+            _autoMocker.Get<IPlayedGameDetailsViewModelBuilder>().Expect(mock => mock.Build(_gameDefinitionSummary.PlayedGames[0], _currentUser, true))
                 .Return(_playedGameDetailsViewModel1);
-            _autoMocker.Get<IPlayedGameDetailsViewModelBuilder>().Expect(mock => mock.Build(_gameDefinitionSummary.PlayedGames[1], _currentUser))
+            _autoMocker.Get<IPlayedGameDetailsViewModelBuilder>().Expect(mock => mock.Build(_gameDefinitionSummary.PlayedGames[1], _currentUser, true))
                 .Return(_playedGameDetailsViewModel2);
 
             _expectedBoardGameGeekInfo = new BoardGameGeekInfoViewModel();

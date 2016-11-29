@@ -37,13 +37,12 @@ namespace UI.Transformations
     {
         private readonly IPlayedGameDetailsViewModelBuilder _playedGameDetailsViewModelBuilder;
         private readonly ITransformer _transformer;
-        private readonly IBoardGameGeekGameDefinitionInfoRetriever _boardGameGeekGameDefinitionInfoRetriever;
 
-        public GameDefinitionDetailsViewModelBuilder(IPlayedGameDetailsViewModelBuilder playedGameDetailsViewModelBuilder, ITransformer transformer, IBoardGameGeekGameDefinitionInfoRetriever boardGameGeekGameDefinitionInfoRetriever)
+        public GameDefinitionDetailsViewModelBuilder(IPlayedGameDetailsViewModelBuilder playedGameDetailsViewModelBuilder, ITransformer transformer)
         {
             _playedGameDetailsViewModelBuilder = playedGameDetailsViewModelBuilder;
             _transformer = transformer;
-            _boardGameGeekGameDefinitionInfoRetriever = boardGameGeekGameDefinitionInfoRetriever;
+
         }
 
         public GameDefinitionDetailsViewModel Build(GameDefinitionSummary gameDefinitionSummary, ApplicationUser currentUser)
@@ -72,7 +71,7 @@ namespace UI.Transformations
             else
             {
                 viewModel.PlayedGames = (from playedGame in gameDefinitionSummary.PlayedGames
-                                         select _playedGameDetailsViewModelBuilder.Build(playedGame, currentUser))
+                                         select _playedGameDetailsViewModelBuilder.Build(playedGame, currentUser,true))
                                    .ToList();
             }
 

@@ -98,5 +98,9 @@ namespace UI.Models.PlayedGame
         }
 
         public string ImageUrl { get; set; }
+
+        public decimal? PointsScored { get; set; }
+
+        public bool ShowPointsScored { get; set; }
     }
 }
