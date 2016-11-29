@@ -1,9 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Web.UI.WebControls;
 using BusinessLogic.DataAccess;
 using BusinessLogic.Events.HandlerFactory;
 using BusinessLogic.Events.Interfaces;
@@ -21,79 +21,98 @@ namespace BusinessLogic.Events.Handlers
     {
         private readonly IRollbarClient _rollbarClient;
 
-
         public AchievementsEventHandler(IDataContext dataContext, IRollbarClient rollbarClient) : base(dataContext)
         {
             _rollbarClient = rollbarClient;
         }
 
+        private static readonly object GlobalLockObject = new object();
 
-        public void Handle(PlayedGameCreatedEvent @event)
+        public bool Handle(PlayedGameCreatedEvent @event)
         {
-            var players =
-                DataContext.GetQueryable<PlayerGameResult>().Where(p => p.PlayedGameId == @event.TriggerEntityId)
-                .Select(p => p.Player)
-                .Include(p => p.PlayerAchievements);
+            bool noExceptions = true;
 
-            foreach (var player in players.ToList())
+            //--this is a weak solution to duplicate key exceptions getting logged when multiple games are recorded in quick succession. A better solution
+            //  would be to only lock at the playerId level instead of locking across the board
+            lock (GlobalLockObject)
             {
-                foreach (var achievement in AchievementFactory.GetAchievements())
+                var players =
+                    DataContext.GetQueryable<PlayerGameResult>().Where(p => p.PlayedGameId == @event.TriggerEntityId)
+                        .Select(p => p.Player)
+                        .Include(p => p.PlayerAchievements);
+
+                foreach (var player in players.ToList())
                 {
-                    try
+                    foreach (var achievement in AchievementFactory.GetAchievements())
                     {
-                        var currentPlayerAchievement = player.PlayerAchievements.FirstOrDefault(pa => pa.AchievementId == achievement.Id);
-
-                        if (currentPlayerAchievement == null || (int)(currentPlayerAchievement.AchievementLevel) < (int)achievement.LevelThresholds.OrderByDescending(al => al.Key).First().Key)
+                        try
                         {
-
-                            var achievementAwarded = achievement.IsAwardedForThisPlayer(player.Id);
-
-                            if (achievementAwarded.LevelAwarded.HasValue &&
-                                achievementAwarded.LevelAwarded.Value > AchievementLevel.None)
-                            {
-                                if (currentPlayerAchievement == null)
-                                {
-                                    var playerAchievement = new PlayerAchievement
-                                    {
-                                        DateCreated = DateTime.UtcNow,
-                                        LastUpdatedDate = DateTime.UtcNow,
-                                        Player = player,
-                                        PlayerId = player.Id,
-                                        AchievementId = achievement.Id,
-                                        AchievementLevel = achievementAwarded.LevelAwarded.Value,
-                                        RelatedEntities = achievementAwarded.RelatedEntities
-                                    };
-
-                                    DataContext.Save(playerAchievement, new AnonymousApplicationUser());
-
-
-                                    NotifyPlayer(player, achievement, achievementAwarded.LevelAwarded);
-
-                                }
-                                else
-                                {
-                                    currentPlayerAchievement.RelatedEntities = achievementAwarded.RelatedEntities;
-
-                                    if ((int)achievementAwarded.LevelAwarded.Value > (int)currentPlayerAchievement.AchievementLevel)
-                                    {
-                                        currentPlayerAchievement.AchievementLevel = achievementAwarded.LevelAwarded.Value;
-                                        currentPlayerAchievement.LastUpdatedDate = DateTime.UtcNow;
-
-                                        NotifyPlayer(player, achievement, achievementAwarded.LevelAwarded);
-                                    }
-                                }
-                            }
-                            DataContext.CommitAllChanges();
+                            ProcessAchievement(player, achievement);
                         }
-
-                    }
-                    catch (Exception ex)
-                    {
-                        _rollbarClient.SendException(ex);
+                        catch (Exception ex)
+                        {
+                            _rollbarClient.SendException(ex);
+                            noExceptions = false;
+                        }
                     }
                 }
             }
 
+            return noExceptions;
+        }
+
+        private void ProcessAchievement(Player player, IAchievement achievement)
+        {
+            var currentPlayerAchievement = player.PlayerAchievements.FirstOrDefault(pa => pa.AchievementId == achievement.Id);
+
+            if (currentPlayerAchievement == null ||
+                (int) (currentPlayerAchievement.AchievementLevel) <
+                (int) achievement.LevelThresholds.OrderByDescending(al => al.Key).First().Key)
+            {
+                var achievementAwarded = achievement.IsAwardedForThisPlayer(player.Id);
+
+                if (achievementAwarded.LevelAwarded.HasValue &&
+                    achievementAwarded.LevelAwarded.Value > AchievementLevel.None)
+                {
+                    CreateOrUpdateAchievement(player, achievement, currentPlayerAchievement, achievementAwarded);
+                }
+                DataContext.CommitAllChanges();
+            }
+        }
+
+        private void CreateOrUpdateAchievement(Player player, IAchievement achievement, PlayerAchievement currentPlayerAchievement,
+            AchievementAwarded achievementAwarded)
+        {
+            if (currentPlayerAchievement == null)
+            {
+                var playerAchievement = new PlayerAchievement
+                {
+                    DateCreated = DateTime.UtcNow,
+                    LastUpdatedDate = DateTime.UtcNow,
+                    Player = player,
+                    PlayerId = player.Id,
+                    AchievementId = achievement.Id,
+                    AchievementLevel = achievementAwarded.LevelAwarded.Value,
+                    RelatedEntities = achievementAwarded.RelatedEntities
+                };
+
+                DataContext.Save(playerAchievement, new AnonymousApplicationUser());
+
+
+                NotifyPlayer(player, achievement, achievementAwarded.LevelAwarded);
+            }
+            else
+            {
+                currentPlayerAchievement.RelatedEntities = achievementAwarded.RelatedEntities;
+
+                if ((int) achievementAwarded.LevelAwarded.Value > (int) currentPlayerAchievement.AchievementLevel)
+                {
+                    currentPlayerAchievement.AchievementLevel = achievementAwarded.LevelAwarded.Value;
+                    currentPlayerAchievement.LastUpdatedDate = DateTime.UtcNow;
+
+                    NotifyPlayer(player, achievement, achievementAwarded.LevelAwarded);
+                }
+            }
         }
 
         private static void NotifyPlayer(Player player, IAchievement achievement, AchievementLevel? levelAwarded)

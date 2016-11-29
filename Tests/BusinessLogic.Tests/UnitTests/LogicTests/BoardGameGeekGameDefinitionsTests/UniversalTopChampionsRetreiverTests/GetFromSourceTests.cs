@@ -15,11 +15,13 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.BoardGameGeekGameDefinitionsT
     {
         private int _boardGameGeekGameDefinitionId = 1;
         private RhinoAutoMocker<UniversalTopChampionsRetreiver> _autoMocker;
-        private BoardGameGeekGameDefinition _expectedBoardGameGeekGameDefinition;
         private GameDefinition _expectedFirstChampionGameDefinition;
 
+        private int _topChampionId = 50;
+        private int _champion2Id = 51;
         private Champion _topChampion;
         private Champion _champion2;
+        private Champion _championThatIsNoLongerTheCurrentChampionForTheGameDefinition;
 
         [SetUp]
         public void SetUp()
@@ -29,22 +31,25 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.BoardGameGeekGameDefinitionsT
             _expectedFirstChampionGameDefinition = new GameDefinition
             {
                 Id = 20,
-                BoardGameGeekGameDefinitionId = _boardGameGeekGameDefinitionId
+                BoardGameGeekGameDefinitionId = _boardGameGeekGameDefinitionId,
+                ChampionId = _topChampionId
             };
 
             var otherGameDefinition = new GameDefinition
             {
                 Id = 21,
-                BoardGameGeekGameDefinitionId = _boardGameGeekGameDefinitionId
+                BoardGameGeekGameDefinitionId = _boardGameGeekGameDefinitionId,
+                ChampionId = _champion2Id
             };
 
             _topChampion = new Champion
             {
+                Id = _topChampionId,
                 GameDefinitionId = _expectedFirstChampionGameDefinition.Id,
                 WinPercentage = 100,
                 NumberOfWins = 2,
                 NumberOfGames = 2,
-                PlayerId = 100,
+                PlayerId = 200,
                 Player = new Player()
                 {
                     Name = "player name 1",
@@ -58,11 +63,31 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.BoardGameGeekGameDefinitionsT
             };
             _champion2 = new Champion
             {
+                Id = _champion2Id,
                 GameDefinitionId = otherGameDefinition.Id,
                 WinPercentage = 50,
                 NumberOfWins = 1,
                 NumberOfGames = 2,
-                PlayerId = 101,
+                PlayerId = 201,
+                Player = new Player()
+                {
+                    Name = "player name 2",
+                    GamingGroupId = 201,
+                    GamingGroup = new GamingGroup
+                    {
+                        Name = "gaming group 2"
+                    }
+                },
+                GameDefinition = otherGameDefinition
+            };
+            _championThatIsNoLongerTheCurrentChampionForTheGameDefinition = new Champion
+            {
+                Id = -1,
+                GameDefinitionId = otherGameDefinition.Id,
+                WinPercentage = 50,
+                NumberOfWins = 1,
+                NumberOfGames = 2,
+                PlayerId = 202,
                 Player = new Player()
                 {
                     Name = "player name 2",
@@ -78,7 +103,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.BoardGameGeekGameDefinitionsT
             var championQueryable = new List<Champion>
             {
                 _topChampion,
-                _champion2
+                _champion2,
+                _championThatIsNoLongerTheCurrentChampionForTheGameDefinition
             }.AsQueryable();
         
             _autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<Champion>()).Return(championQueryable);
@@ -98,7 +124,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.BoardGameGeekGameDefinitionsT
         }
 
         [Test]
-        public void It_Returns_Top_Champions()
+        public void It_Returns_Top_Champions_For_Active_GameDefinitions_Only()
         {
             //--arrange
 
@@ -107,7 +133,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.BoardGameGeekGameDefinitionsT
 
             //--assert
             result.Count.ShouldBe(2);
-            var firstChampion = result.First();
+            var firstChampion = result[0];
             firstChampion.PlayerId.ShouldBe(_topChampion.PlayerId);
             firstChampion.GameDefinitionId.ShouldBe(_expectedFirstChampionGameDefinition.Id);
             firstChampion.NumberOfGames.ShouldBe(_topChampion.NumberOfGames);
@@ -116,7 +142,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.BoardGameGeekGameDefinitionsT
             firstChampion.PlayerGamingGroupName.ShouldBe(_topChampion.Player.GamingGroup.Name);
             firstChampion.PlayerName.ShouldBe(_topChampion.Player.Name);
             firstChampion.WinPercentage.ShouldBe(100 * _topChampion.NumberOfWins / _topChampion.NumberOfGames);
+            var secondChampion = result[1];
+            secondChampion.PlayerId.ShouldBe(_champion2.PlayerId);
         }
-
     }
 }

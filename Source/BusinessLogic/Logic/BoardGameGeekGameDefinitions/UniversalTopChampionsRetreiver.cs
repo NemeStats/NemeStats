@@ -21,7 +21,8 @@ namespace BusinessLogic.Logic.BoardGameGeekGameDefinitions
         public override List<ChampionData> GetFromSource(int boardGameGeekGameDefinitionId)
         {
             return _dataContext.GetQueryable<Champion>()
-                .Where(c => c.GameDefinition.BoardGameGeekGameDefinitionId == boardGameGeekGameDefinitionId)
+                .Where(c => c.GameDefinition.BoardGameGeekGameDefinitionId == boardGameGeekGameDefinitionId 
+                    && c.GameDefinition.ChampionId == c.Id)
                 .OrderByDescending(c => c.NumberOfWins)
                 .ThenByDescending(c => c.WinPercentage)
                 .Take(5)
