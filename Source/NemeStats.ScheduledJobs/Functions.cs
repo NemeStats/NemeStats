@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.IO;
 using BusinessLogic.Jobs.BoardGameGeekBatchUpdateJobService;
+using BusinessLogic.Jobs.SitemapGeneratorService;
 using Microsoft.Azure.WebJobs;
 
 namespace NemeStats.ScheduledJobs
@@ -59,6 +60,19 @@ namespace NemeStats.ScheduledJobs
             clock.Stop();
 
             log.WriteLine($"Updated {jobResult} games in {clock.Elapsed}");
+        }
+
+        /// <summary>
+        /// Every day at 08:00
+        /// </summary>
+        /// <param name="info"></param>
+        /// <param name="log"></param>
+        /// <returns></returns>
+        [NoAutomaticTrigger]
+        public static void RebuildSitemaps([TimerTrigger("0 0 8 * * *")] TimerInfo info, TextWriter log)
+        {
+            var result = Program.Container.GetInstance<ISitemapGeneratorService>().RegenerateSitemaps();
+            log.WriteLine($"Generated {result.NumberOfSitemapsGenerated} sitemaps in {result.TimeElapsedInMilliseconds} milliseconds.");
         }
     }
 }

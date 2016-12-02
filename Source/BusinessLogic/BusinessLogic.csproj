@@ -231,6 +231,9 @@
     <Compile Include="Facades\ITopGamingGroupsRetriever.cs" />
     <Compile Include="Facades\ITopPlayersRetriever.cs" />
     <Compile Include="Facades\ITrendingGamesRetriever.cs" />
+    <Compile Include="Jobs\SitemapGeneratorService\ISitemapGeneratorService.cs" />
+    <Compile Include="Jobs\SitemapGeneratorService\RegenerateSitemapsJobResult.cs" />
+    <Compile Include="Jobs\SitemapGeneratorService\SitemapGeneratorService.cs" />
     <Compile Include="Logic\Achievements\HolidayGamerAchievement.cs" />
     <Compile Include="Logic\BoardGameGeekGameDefinitions\IBoardGameGeekGameDefinitionInfoRetriever.cs" />
     <Compile Include="Logic\BoardGameGeekGameDefinitions\IGameDetailsRetriever.cs" />
