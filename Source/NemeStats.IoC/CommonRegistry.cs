@@ -26,7 +26,7 @@ using BusinessLogic.Events.Interfaces;
 using BusinessLogic.EventTracking;
 using BusinessLogic.Export;
 using BusinessLogic.Facades;
-using BusinessLogic.Jobs.BoardGameGeekBatchUpdateJobService;
+using BusinessLogic.Jobs.BoardGameGeekBatchUpdate;
 using BusinessLogic.Logic.BoardGameGeek;
 using BusinessLogic.Logic.BoardGameGeekGameDefinitions;
 using BusinessLogic.Logic.Champions;

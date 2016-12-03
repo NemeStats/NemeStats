@@ -3,6 +3,7 @@ using System.Linq;
 using BoardGameGeekApiClient.Interfaces;
 using BoardGameGeekApiClient.Models;
 using BusinessLogic.DataAccess;
+using BusinessLogic.Jobs.BoardGameGeekBatchUpdate;
 using BusinessLogic.Models;
 using NUnit.Framework;
 using Rhino.Mocks;
@@ -14,7 +15,7 @@ namespace BusinessLogic.Tests.UnitTests.JobsTests.BoardGameGeekBatchUpdateServic
     [TestFixture]
     public class LinkOrphanGamesJobTests
     {
-        private RhinoAutoMocker<Jobs.BoardGameGeekBatchUpdateJobService.BoardGameGeekBatchUpdateJobService> autoMocker;
+        private RhinoAutoMocker<BoardGameGeekBatchUpdateJobService> autoMocker;
         private static string okGame = "ok";
 
         private List<GameDefinition> OrphanGames = new List<GameDefinition>()
@@ -39,7 +40,7 @@ namespace BusinessLogic.Tests.UnitTests.JobsTests.BoardGameGeekBatchUpdateServic
         public virtual void SetUp()
         {
             rollbarclient = MockRepository.GenerateStub<IRollbarClient>();
-            autoMocker = new RhinoAutoMocker<Jobs.BoardGameGeekBatchUpdateJobService.BoardGameGeekBatchUpdateJobService>();
+            autoMocker = new RhinoAutoMocker<BoardGameGeekBatchUpdateJobService>();
             autoMocker.Inject(typeof(IRollbarClient), rollbarclient);
 
             autoMocker.Get<IDataContext>()

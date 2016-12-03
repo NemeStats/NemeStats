@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 
-namespace BusinessLogic.Jobs.SitemapGeneratorService
+namespace BusinessLogic.Jobs.SitemapGenerator
 {
     public class SitemapGeneratorService : ISitemapGeneratorService
     {

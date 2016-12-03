@@ -2,7 +2,7 @@
 using BoardGameGeekApiClient.Service;
 using BusinessLogic.DataAccess;
 using BusinessLogic.DataAccess.Security;
-using BusinessLogic.Jobs.BoardGameGeekBatchUpdateJobService;
+using BusinessLogic.Jobs.BoardGameGeekBatchUpdate;
 using NUnit.Framework;
 using Rhino.Mocks;
 using RollbarSharp;

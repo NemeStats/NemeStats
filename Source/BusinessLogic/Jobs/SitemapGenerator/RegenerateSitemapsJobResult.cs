@@ -1,4 +1,4 @@
-﻿namespace BusinessLogic.Jobs.SitemapGeneratorService
+﻿namespace BusinessLogic.Jobs.SitemapGenerator
 {
     public class RegenerateSitemapsJobResult
     {

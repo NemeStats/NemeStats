@@ -1,5 +1,5 @@
 ﻿using System.IO;
-using BusinessLogic.Jobs.SitemapGeneratorService;
+using BusinessLogic.Jobs.SitemapGenerator;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Timers;
 using Moq;

@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using System.IO;
-using BusinessLogic.Jobs.BoardGameGeekBatchUpdateJobService;
-using BusinessLogic.Jobs.SitemapGeneratorService;
+using BusinessLogic.Jobs.BoardGameGeekBatchUpdate;
+using BusinessLogic.Jobs.SitemapGenerator;
 using Microsoft.Azure.WebJobs;
 
 namespace NemeStats.ScheduledJobs
@@ -68,7 +68,6 @@ namespace NemeStats.ScheduledJobs
         /// <param name="info"></param>
         /// <param name="log"></param>
         /// <returns></returns>
-        [NoAutomaticTrigger]
         public static void RebuildSitemaps([TimerTrigger("0 0 8 * * *")] TimerInfo info, TextWriter log)
         {
             var result = Program.Container.GetInstance<ISitemapGeneratorService>().RegenerateSitemaps();
