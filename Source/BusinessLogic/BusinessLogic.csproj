@@ -130,12 +130,8 @@
       <HintPath>..\..\packages\Sendgrid.6.3.0\lib\SendGridMail.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="StructureMap, Version=4.1.1.372, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\structuremap.4.1.1.372\lib\net40\StructureMap.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="StructureMap.Net4, Version=4.1.1.372, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\structuremap.4.1.1.372\lib\net40\StructureMap.Net4.dll</HintPath>
+    <Reference Include="StructureMap, Version=4.4.2.472, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\StructureMap.4.4.2\lib\net45\StructureMap.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="StructureMap.Web, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -170,6 +166,10 @@
     </Reference>
     <Reference Include="X.PagedList, Version=1.24.1.31653, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
       <HintPath>..\..\packages\X.PagedList.1.24.1.320\lib\net451\X.PagedList.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="X.Web.Sitemap, Version=1.1.5.2, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\xsitemap.1.1.5.2\lib\net40-client\X.Web.Sitemap.dll</HintPath>
       <Private>True</Private>
     </Reference>
   </ItemGroup>

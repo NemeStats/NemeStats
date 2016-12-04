@@ -1,46 +1,41 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using BusinessLogic.Jobs.SitemapGenerator;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Timers;
-using Moq;
+using NSubstitute;
 using NUnit.Framework;
 using StructureMap;
-using StructureMap.AutoMocking.Moq;
 
 namespace NemeStats.ScheduledJobs.Tests.FunctionsTests.RebuildSitemapsTests
 {
     public class RebuildSitemapsTests
     {
-        private Mock<IContainer> _containerMock;
-        private Mock<TextWriter> _textWriterMock;
-        private Mock<TimerInfo> _timerInfoMock;
-        private Mock<ISitemapGeneratorService> _sitemapGeneratorServiceMock;
+        private IContainer _containerMock;
+        private TextWriter _textWriterMock;
+        private TimerInfo _timerInfoMock;
+        private ISitemapGeneratorService _sitemapGeneratorServiceMock;
         private RegenerateSitemapsJobResult _expectedJobResult;
 
         [SetUp]
         public void SetUp()
         {
-            _containerMock = new Mock<IContainer>();
-            Program.Container = _containerMock.Object;
+            _containerMock = Substitute.For<IContainer>();
+            Program.Container = _containerMock;
 
-            _textWriterMock = new Mock<TextWriter>();
-            var timerSchedule = new Mock<TimerSchedule>().Object;
-            _timerInfoMock = new Mock<TimerInfo>(timerSchedule);
-            _sitemapGeneratorServiceMock = new Mock<ISitemapGeneratorService>();
+            _textWriterMock = Substitute.For<TextWriter>();
+            var timerSchedule = Substitute.For<TimerSchedule>();
+            _timerInfoMock = Substitute.For<TimerInfo>(timerSchedule);
+            _sitemapGeneratorServiceMock = Substitute.For<ISitemapGeneratorService>();
 
-            _containerMock.Setup(x => x.GetInstance<ISitemapGeneratorService>()).Returns(_sitemapGeneratorServiceMock.Object);
+            _containerMock.GetInstance<ISitemapGeneratorService>().Returns(_sitemapGeneratorServiceMock);
 
             _expectedJobResult = new RegenerateSitemapsJobResult
             {
                 TimeElapsedInMilliseconds = 1000,
                 NumberOfSitemapsGenerated = 20
             };
-            _sitemapGeneratorServiceMock.Setup(x => x.RegenerateSitemaps())
-                .Returns(_expectedJobResult)
-                .Verifiable();
-
-            _textWriterMock.Setup(x => x.WriteLine(It.IsAny<string>())).Verifiable();
-
+            _sitemapGeneratorServiceMock.RegenerateSitemaps().Returns(_expectedJobResult);
         }
 
         [Test]
@@ -49,10 +44,10 @@ namespace NemeStats.ScheduledJobs.Tests.FunctionsTests.RebuildSitemapsTests
             //--arrange
 
             //--act
-            Functions.RebuildSitemaps(_timerInfoMock.Object, _textWriterMock.Object);
+            Functions.RebuildSitemaps(_timerInfoMock, _textWriterMock);
 
             //--assert
-            _sitemapGeneratorServiceMock.Verify();
+            _sitemapGeneratorServiceMock.Received().RegenerateSitemaps();
         }
 
         [Test]
@@ -61,10 +56,10 @@ namespace NemeStats.ScheduledJobs.Tests.FunctionsTests.RebuildSitemapsTests
             //--arrange
 
             //--act
-            Functions.RebuildSitemaps(_timerInfoMock.Object, _textWriterMock.Object);
+            Functions.RebuildSitemaps(_timerInfoMock, _textWriterMock);
 
             //--assert
-            _textWriterMock.Verify(x => x.WriteLine(It.Is<string>(message => message == $"Generated {_expectedJobResult.NumberOfSitemapsGenerated} sitemaps in {_expectedJobResult.TimeElapsedInMilliseconds} milliseconds.")));
+            _textWriterMock.Received().WriteLine(Arg.Is<string>(x => x == $"Generated {_expectedJobResult.NumberOfSitemapsGenerated} sitemaps in {_expectedJobResult.TimeElapsedInMilliseconds} milliseconds."));
         }
     }
 }

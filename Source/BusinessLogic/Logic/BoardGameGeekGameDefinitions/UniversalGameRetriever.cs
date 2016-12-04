@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using BusinessLogic.DataAccess;
 using BusinessLogic.Facades;
@@ -58,6 +59,11 @@ namespace BusinessLogic.Logic.BoardGameGeekGameDefinitions
                 RecentlyPlayedGames = recentlyPlayedPublicGames,
                 TopChampions = topChampions
             };
+        }
+
+        public List<int> GetAllActiveBoardGameGeekGameDefinitionIds()
+        {
+            throw new System.NotImplementedException();
         }
 
         private GameDefinitionSummary GetGamingGroupGameDefinitionSummary(int boardGameGeekGameDefinitionId, int currentUserCurrentGamingGroupId, int numberOfRecentlyPlayedGamesToShow)
