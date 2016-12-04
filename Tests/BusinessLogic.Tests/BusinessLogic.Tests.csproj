@@ -395,6 +395,10 @@
       <Project>{b1184b6a-9c68-48b6-814c-0667b69f89d2}</Project>
       <Name>BusinessLogic</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Source\X.Web.Sitemap\X.Web.Sitemap.csproj">
+      <Project>{1f291039-c319-4f03-966f-3bf947b7e5d2}</Project>
+      <Name>X.Web.Sitemap</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

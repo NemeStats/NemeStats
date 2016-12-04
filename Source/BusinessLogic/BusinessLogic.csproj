@@ -168,10 +168,6 @@
       <HintPath>..\..\packages\X.PagedList.1.24.1.320\lib\net451\X.PagedList.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="X.Web.Sitemap, Version=1.1.5.2, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\xsitemap.1.1.5.2\lib\net40-client\X.Web.Sitemap.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Caching\Cacheable.cs" />
@@ -1095,6 +1091,10 @@
     <ProjectReference Include="..\NemeStats.Hubs\NemeStats.Hubs.csproj">
       <Project>{036E186C-4A61-4A8F-935B-3D7DF1B7C4A6}</Project>
       <Name>NemeStats.Hubs</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\X.Web.Sitemap\X.Web.Sitemap.csproj">
+      <Project>{1f291039-c319-4f03-966f-3bf947b7e5d2}</Project>
+      <Name>X.Web.Sitemap</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
