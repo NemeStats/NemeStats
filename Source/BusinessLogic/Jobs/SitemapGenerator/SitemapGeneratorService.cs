@@ -1,49 +1,51 @@
-﻿using System;
-using System.Configuration.Abstractions;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using BusinessLogic.Logic.BoardGameGeekGameDefinitions;
 using X.Web.Sitemap;
 
 namespace BusinessLogic.Jobs.SitemapGenerator
 {
     public class SitemapGeneratorService : ISitemapGeneratorService
     {
-        private readonly IUniversalGameRetriever _universalGameRetriever;
-        private readonly IConfigurationManager _configurationManager;
+        private readonly IUniversalGameSitemapGenerator _universalGameSitemapGenerator;
+        private readonly IGamingGroupsSitemapGenerator _gamingGroupsSitemapGenerator;
+        private readonly IStaticPagesSitemapGenerator _staticPagesSitemapGenerator;
+        private readonly ISitemapIndexGenerator _sitemapIndexGenerator;
 
-        public SitemapGeneratorService(IUniversalGameRetriever universalGameRetriever)
+        internal const string AppKeySitemapLocation = "sitemapLocation";
+
+        public SitemapGeneratorService(
+            ISitemapIndexGenerator sitemapIndexGenerator,
+            IUniversalGameSitemapGenerator universalGameSitemapGenerator, 
+            IGamingGroupsSitemapGenerator gamingGroupsSitemapGenerator, 
+            IStaticPagesSitemapGenerator staticPagesSitemapGenerator)
         {
-            _universalGameRetriever = universalGameRetriever;
+            _sitemapIndexGenerator = sitemapIndexGenerator;
+            _universalGameSitemapGenerator = universalGameSitemapGenerator;
+            _gamingGroupsSitemapGenerator = gamingGroupsSitemapGenerator;
+            _staticPagesSitemapGenerator = staticPagesSitemapGenerator;
         }
 
         public RegenerateSitemapsJobResult RegenerateSitemaps()
         {
             var clock = new Stopwatch();
             clock.Start();
-            BuildUniversalGameDefininitionsSitemaps();
+
+            var sitemapInfos = new List<SitemapInfo>(3);
+
+            sitemapInfos.Add(_staticPagesSitemapGenerator.BuildStaticPagesSitemap());
+
+            sitemapInfos.AddRange(_universalGameSitemapGenerator.BuildUniversalGamesSitemaps());
+
+            sitemapInfos.AddRange(_gamingGroupsSitemapGenerator.BuildGamingGroupSitemaps());
+
+            _sitemapIndexGenerator.GenerateSitemapIndex(sitemapInfos);
+
             clock.Stop();
-            return null;
-        }
-
-        private void BuildUniversalGameDefininitionsSitemaps()
-        {
-            Sitemap sitemap = new Sitemap();
-            var boardGameGeekGameDefinitionIds = _universalGameRetriever.GetAllActiveBoardGameGeekGameDefinitionIds();
-
-            var urls = boardGameGeekGameDefinitionIds.Select(id => new Url
+            return new RegenerateSitemapsJobResult
             {
-                ChangeFrequency = ChangeFrequency.Daily,
-                Location = $"https://nemestats.com/UniversalGame/Details/{id}",
-                Priority = .7,
-                TimeStamp = DateTime.Now
-            });
-
-            //var sitemapLocation = _configurationManager.AppSettings.Get;
-
-            // var url = 
-
-            //sitemap.Add(Url.CreateUrl());
+                TimeElapsedInMilliseconds = clock.ElapsedMilliseconds,
+                NumberOfSitemapsGenerated = sitemapInfos.Count
+            };
         }
     }
 }

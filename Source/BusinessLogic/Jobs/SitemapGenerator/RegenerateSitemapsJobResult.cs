@@ -2,7 +2,7 @@
 {
     public class RegenerateSitemapsJobResult
     {
-        public int TimeElapsedInMilliseconds { get; set; }
+        public long TimeElapsedInMilliseconds { get; set; }
         public int NumberOfSitemapsGenerated { get; set; }
     }
 }
