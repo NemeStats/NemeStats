@@ -1,5 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Configuration.Abstractions;
 using System.Diagnostics;
+using System.IO;
+using System.Linq;
 using X.Web.Sitemap;
 
 namespace BusinessLogic.Jobs.SitemapGenerator
@@ -10,19 +14,23 @@ namespace BusinessLogic.Jobs.SitemapGenerator
         private readonly IGamingGroupsSitemapGenerator _gamingGroupsSitemapGenerator;
         private readonly IStaticPagesSitemapGenerator _staticPagesSitemapGenerator;
         private readonly ISitemapIndexGenerator _sitemapIndexGenerator;
+        private readonly IConfigurationManager _configurationManager;
 
-        internal const string AppKeySitemapLocation = "sitemapLocation";
+        internal const string AppSettingsKeySitemapLocationFilePath = "sitemapLocationFilePath";
+        internal const string AppSettingsKeySitemapLocationHttpPath = "sitemapLocationHttpPath";
 
         public SitemapGeneratorService(
             ISitemapIndexGenerator sitemapIndexGenerator,
             IUniversalGameSitemapGenerator universalGameSitemapGenerator, 
             IGamingGroupsSitemapGenerator gamingGroupsSitemapGenerator, 
-            IStaticPagesSitemapGenerator staticPagesSitemapGenerator)
+            IStaticPagesSitemapGenerator staticPagesSitemapGenerator, 
+            IConfigurationManager configurationManager)
         {
             _sitemapIndexGenerator = sitemapIndexGenerator;
             _universalGameSitemapGenerator = universalGameSitemapGenerator;
             _gamingGroupsSitemapGenerator = gamingGroupsSitemapGenerator;
             _staticPagesSitemapGenerator = staticPagesSitemapGenerator;
+            _configurationManager = configurationManager;
         }
 
         public RegenerateSitemapsJobResult RegenerateSitemaps()
@@ -30,21 +38,28 @@ namespace BusinessLogic.Jobs.SitemapGenerator
             var clock = new Stopwatch();
             clock.Start();
 
-            var sitemapInfos = new List<SitemapInfo>(3);
+            var appSettings = _configurationManager.AppSettings;
+            var targetFileSystemDirectoryPath = appSettings.Get(AppSettingsKeySitemapLocationFilePath);
+            var targetFileSystemDirectoryInfo = new DirectoryInfo(targetFileSystemDirectoryPath);
 
-            sitemapInfos.Add(_staticPagesSitemapGenerator.BuildStaticPagesSitemap());
+            var fileInfos = new List<FileInfo>(3);
 
-            sitemapInfos.AddRange(_universalGameSitemapGenerator.BuildUniversalGamesSitemaps());
+            fileInfos.Add(_staticPagesSitemapGenerator.BuildStaticPagesSitemap(targetFileSystemDirectoryInfo));
 
-            sitemapInfos.AddRange(_gamingGroupsSitemapGenerator.BuildGamingGroupSitemaps());
+            fileInfos.AddRange(_universalGameSitemapGenerator.BuildUniversalGamesSitemaps(targetFileSystemDirectoryInfo));
 
-            _sitemapIndexGenerator.GenerateSitemapIndex(sitemapInfos);
+            fileInfos.AddRange(_gamingGroupsSitemapGenerator.BuildGamingGroupSitemaps(targetFileSystemDirectoryInfo));
+
+            string baseUri = appSettings.Get(AppSettingsKeySitemapLocationHttpPath);
+            var dateModified = DateTime.UtcNow.Date;
+            var sitemapInfos = fileInfos.Select(x => new SitemapInfo(new Uri(baseUri + x.Name), dateModified)).ToList();
+            _sitemapIndexGenerator.GenerateSitemapIndex(sitemapInfos, targetFileSystemDirectoryInfo, "sitemapindex.xml");
 
             clock.Stop();
             return new RegenerateSitemapsJobResult
             {
                 TimeElapsedInMilliseconds = clock.ElapsedMilliseconds,
-                NumberOfSitemapsGenerated = sitemapInfos.Count
+                NumberOfSitemapsGenerated = fileInfos.Count
             };
         }
     }

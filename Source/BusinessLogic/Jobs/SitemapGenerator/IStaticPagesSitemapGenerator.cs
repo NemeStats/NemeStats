@@ -1,9 +1,10 @@
-﻿using X.Web.Sitemap;
+﻿using System.IO;
+using X.Web.Sitemap;
 
 namespace BusinessLogic.Jobs.SitemapGenerator
 {
     public interface IStaticPagesSitemapGenerator
     {
-        SitemapInfo BuildStaticPagesSitemap();
+        FileInfo BuildStaticPagesSitemap(DirectoryInfo @is);
     }
 }

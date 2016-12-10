@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
-using X.Web.Sitemap;
+using System.IO;
 
 namespace BusinessLogic.Jobs.SitemapGenerator
 {
     public interface IUniversalGameSitemapGenerator
     {
-        List<SitemapInfo> BuildUniversalGamesSitemaps();
+        List<FileInfo> BuildUniversalGamesSitemaps(DirectoryInfo targetDirectory);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using BusinessLogic.Logic.BoardGameGeekGameDefinitions;
 using X.Web.Sitemap;
@@ -17,7 +18,7 @@ namespace BusinessLogic.Jobs.SitemapGenerator
             _sitemapGenerator = sitemapGenerator;
         }
 
-        public List<SitemapInfo> BuildUniversalGamesSitemaps()
+        public List<FileInfo> BuildUniversalGamesSitemaps(DirectoryInfo targetDirectory)
         {
             var boardGameGeekGameDefinitionIds = _universalGameRetriever.GetAllActiveBoardGameGeekGameDefinitionIds();
 
@@ -29,9 +30,7 @@ namespace BusinessLogic.Jobs.SitemapGenerator
                 TimeStamp = DateTime.UtcNow
             }).ToList();
 
-            _sitemapGenerator.GenerateSitemaps(urls);
-
-            return null;
+            return _sitemapGenerator.GenerateSitemaps(urls, targetDirectory);
         }
     }
 }
