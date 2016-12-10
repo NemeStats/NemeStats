@@ -4,12 +4,12 @@ using System.IO;
 using BusinessLogic.Jobs.SitemapGenerator;
 using BusinessLogic.Logic.BoardGameGeekGameDefinitions;
 using NSubstitute;
-using NUnit.Framework;
 using NSubstituteAutoMocker;
+using NUnit.Framework;
 using Shouldly;
 using X.Web.Sitemap;
 
-namespace BusinessLogic.Tests.UnitTests.JobsTests.SitemapGeneratorTests
+namespace BusinessLogic.Tests.UnitTests.JobsTests.SitemapGeneratorTests.UniversalGameSitemapGeneratorTests
 {
     public class BuildUniversalGamesSitemapsTests
     {

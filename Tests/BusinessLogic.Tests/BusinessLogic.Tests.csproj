@@ -245,7 +245,8 @@
     <Compile Include="UnitTests\FacadesTests\TrendingGamesRetrieverTests.cs" />
     <Compile Include="UnitTests\FacadesTests\TopGamingGroupsRetrieverTests.cs" />
     <Compile Include="UnitTests\JobsTests\SitemapGeneratorTests\SitemapGeneratorServiceTests\RegenerateSitemapsTests.cs" />
-    <Compile Include="UnitTests\JobsTests\SitemapGeneratorTests\BuildUniversalGamesSitemapsTests.cs" />
+    <Compile Include="UnitTests\JobsTests\SitemapGeneratorTests\StaticPagesSitemapGeneratorTests\BuildStaticPagesSitemapTests.cs" />
+    <Compile Include="UnitTests\JobsTests\SitemapGeneratorTests\UniversalGameSitemapGeneratorTests\BuildUniversalGamesSitemapsTests.cs" />
     <Compile Include="UnitTests\LogicTests\AchievementTests\HolidayGamerAchievementTests.cs" />
     <Compile Include="UnitTests\LogicTests\BoardGameGeekGameDefinitionsTests\BoardGameGeekGameDefinitionInfoRetrieverTests\GetFromSourceTests.cs" />
     <Compile Include="UnitTests\JobsTests\BoardGameGeekBatchUpdateService\LinkOrphanGamesTests\LinkOrphanGamesJobTests.cs" />
@@ -401,9 +402,7 @@
       <Name>X.Web.Sitemap</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="UnitTests\JobsTests\SitemapGeneratorTests\UniversalGameSitemapGeneratorTests\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
