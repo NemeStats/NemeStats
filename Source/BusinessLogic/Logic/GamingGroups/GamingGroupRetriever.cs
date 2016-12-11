@@ -101,5 +101,10 @@ namespace BusinessLogic.Logic.GamingGroups
                       .Take(numberOfTopGamingGroupsToShow)
                       .ToList();
         }
+
+        public List<GamingGroupSitemapInfo> GetGamingGroupsSitemapInfo()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
