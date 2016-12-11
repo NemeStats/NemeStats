@@ -307,6 +307,7 @@
     <Compile Include="UnitTests\LogicTests\GameDefinitionsTests\GameDefinitionSaverTests\UpdateGameDefinitionTests.cs" />
     <Compile Include="UnitTests\LogicTests\GamingGroupsTests\GamingGroupRetrieverTests\GamingGroupRetrieverTestBase.cs" />
     <Compile Include="UnitTests\LogicTests\GamingGroupsTests\GamingGroupRetrieverTests\GetGamingGroupsForUserTests.cs" />
+    <Compile Include="UnitTests\LogicTests\GamingGroupsTests\GamingGroupRetrieverTests\GetGamingGroupsSitemapInfoTests.cs" />
     <Compile Include="UnitTests\LogicTests\GamingGroupsTests\GamingGroupSaverTests\UpdatePublicGamingGroupDetails.cs" />
     <Compile Include="UnitTests\LogicTests\PlayedGamesTests\ApplicationLinkerTests\ApplicationLinkerTests.cs" />
     <Compile Include="UnitTests\LogicTests\PlayedGamesTests\PlayedGameRetrieverTests\SearchPlayedGamesTests.cs" />

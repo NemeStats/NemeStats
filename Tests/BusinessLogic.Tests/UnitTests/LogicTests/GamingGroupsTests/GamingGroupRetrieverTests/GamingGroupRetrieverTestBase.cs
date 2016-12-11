@@ -16,41 +16,24 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 
-using System.Linq;
-using BusinessLogic.DataAccess;
-using BusinessLogic.Logic.GameDefinitions;
 using BusinessLogic.Logic.GamingGroups;
-using BusinessLogic.Logic.PlayedGames;
-using BusinessLogic.Logic.Players;
 using BusinessLogic.Models.User;
 using NUnit.Framework;
-using Rhino.Mocks;
+using StructureMap.AutoMocking;
 
 namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroupRetrieverTests
 {
     public class GamingGroupRetrieverTestBase
     {
-        protected GamingGroupRetriever gamingGroupRetriever;
-        protected IDataContext dataContextMock;
-        protected IPlayerRetriever playerRetrieverMock;
-        protected IGameDefinitionRetriever gameDefinitionRetrieverMock;
-        protected IPlayedGameRetriever playedGameRetriever;
-        protected ApplicationUser currentUser;
+        protected RhinoAutoMocker<GamingGroupRetriever> AutoMocker;
+        protected ApplicationUser CurrentUser;
 
         [SetUp]
         public virtual void SetUp()
         {
-            dataContextMock = MockRepository.GenerateMock<IDataContext>();
-            playerRetrieverMock = MockRepository.GenerateMock<IPlayerRetriever>();
-            gameDefinitionRetrieverMock = MockRepository.GenerateMock<IGameDefinitionRetriever>();
-            playedGameRetriever = MockRepository.GenerateMock<IPlayedGameRetriever>();
-            gamingGroupRetriever = new GamingGroupRetriever(
-                dataContextMock,
-                playerRetrieverMock,
-                gameDefinitionRetrieverMock,
-                playedGameRetriever);
+            AutoMocker = new RhinoAutoMocker<GamingGroupRetriever>();
 
-            currentUser = new ApplicationUser()
+            CurrentUser = new ApplicationUser()
             {
                 Id = "application user",
                 UserName = "user name",
