@@ -89,7 +89,7 @@ namespace BusinessLogic.Logic.GamingGroups
         public List<TopGamingGroupSummary> GetTopGamingGroups(int numberOfTopGamingGroupsToShow)
         {
             return (from gamingGroup in dataContext.GetQueryable<GamingGroup>()
-                    select new TopGamingGroupSummary()
+                    select new TopGamingGroupSummary
                     {
                         GamingGroupId = gamingGroup.Id,
                         GamingGroupName = gamingGroup.Name,
@@ -104,7 +104,14 @@ namespace BusinessLogic.Logic.GamingGroups
 
         public List<GamingGroupSitemapInfo> GetGamingGroupsSitemapInfo()
         {
-            throw new NotImplementedException();
+            return dataContext.GetQueryable<GamingGroup>()
+                .Where(x => x.PlayedGames.Any(playedGame => playedGame.DatePlayed >= DateTime.UtcNow.Date.AddDays(-30)))
+                .Select(x => new GamingGroupSitemapInfo
+                {
+                    GamingGroupId = x.Id,
+                    DateLastGamePlayed =
+                        x.PlayedGames.OrderByDescending(playedGame => playedGame.DatePlayed).Select(playedGame => playedGame.DatePlayed).First()
+                }).ToList();
         }
     }
 }
