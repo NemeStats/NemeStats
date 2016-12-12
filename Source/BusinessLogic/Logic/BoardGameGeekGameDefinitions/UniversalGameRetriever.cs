@@ -61,7 +61,7 @@ namespace BusinessLogic.Logic.BoardGameGeekGameDefinitions
             };
         }
 
-        public List<int> GetAllActiveBoardGameGeekGameDefinitionIds()
+        public List<UniversalGameSitemapInfo> GetAllActiveBoardGameGeekGameDefinitionSitemapInfos()
         {
             throw new System.NotImplementedException();
         }

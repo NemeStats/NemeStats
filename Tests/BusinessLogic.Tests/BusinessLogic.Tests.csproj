@@ -206,7 +206,9 @@
     <Compile Include="IntegrationTests\DataAccessTests\NemeStatsDataContextTests\GetQueryableIntegrationTests.cs" />
     <Compile Include="IntegrationTests\DataAccessTests\RepositoriesTests\ChamionRepositoryTests\GetChampionDataTests.cs" />
     <Compile Include="Fakes\FakeEventBus.cs" />
+    <Compile Include="IntegrationTests\IntegrationTestIoCBase.cs" />
     <Compile Include="IntegrationTests\JobsTests\BoardGameGeekBatchUpdateServiceTests\RefreshAllBoardGameGeekDataIntegrationTest.cs" />
+    <Compile Include="IntegrationTests\JobsTests\SitemapGeneratorTests\SitemapGeneratorServiceTests\RegenerateSitemapsIntegrationTests.cs" />
     <Compile Include="IntegrationTests\LogicTests\BoardGameGeekThumbnailAttacherTests\CleanUpExistingRecordsTests.cs" />
     <Compile Include="IntegrationTests\LogicTests\ChampionsTests\RecalculateChampionTests.cs" />
     <Compile Include="IntegrationTests\LogicTests\EventsTests\AchievementsEventHandlerIntegrationTests.cs" />
@@ -398,6 +400,10 @@
     <ProjectReference Include="..\..\Source\BusinessLogic\BusinessLogic.csproj">
       <Project>{b1184b6a-9c68-48b6-814c-0667b69f89d2}</Project>
       <Name>BusinessLogic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Source\NemeStats.IoC\NemeStats.IoC.csproj">
+      <Project>{b8af7353-c741-4e61-bed4-0eb603d0c3c0}</Project>
+      <Name>NemeStats.IoC</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Source\X.Web.Sitemap\X.Web.Sitemap.csproj">
       <Project>{1f291039-c319-4f03-966f-3bf947b7e5d2}</Project>

@@ -136,8 +136,6 @@ namespace BusinessLogic.Tests.UnitTests.JobsTests.SitemapGeneratorTests.GamingGr
         public void It_Saves_Sitemaps_In_The_Specified_Directory()
         {
             //--arrange
-            List<Url> generateSiteMapArgs = null;
-            _autoMocker.Get<ISitemapGenerator>().GenerateSitemaps(Arg.Do<List<Url>>(x => generateSiteMapArgs = x), Arg.Any<DirectoryInfo>(), Arg.Any<string>());
 
             //--act
             _autoMocker.ClassUnderTest.BuildGamingGroupSitemaps(_targetDirectory);

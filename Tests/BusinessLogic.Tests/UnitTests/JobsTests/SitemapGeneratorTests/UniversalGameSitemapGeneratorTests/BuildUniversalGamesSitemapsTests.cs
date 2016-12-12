@@ -1,8 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using BusinessLogic.Jobs.SitemapGenerator;
 using BusinessLogic.Logic.BoardGameGeekGameDefinitions;
+using BusinessLogic.Models.Games;
 using NSubstitute;
 using NSubstituteAutoMocker;
 using NUnit.Framework;
@@ -13,7 +15,9 @@ namespace BusinessLogic.Tests.UnitTests.JobsTests.SitemapGeneratorTests.Universa
 {
     public class BuildUniversalGamesSitemapsTests
     {
-        private List<int> _expectedUniversalGameIds;
+        private UniversalGameSitemapInfo _gameWithRecentPlay;
+        private UniversalGameSitemapInfo _gameWithNoRecentPlay;
+        private UniversalGameSitemapInfo _gameWithNoPlays;
 
         private NSubstituteAutoMocker<UniversalGameSitemapGenerator> _autoMocker;
         private List<FileInfo> expectedFileInfo;
@@ -24,12 +28,28 @@ namespace BusinessLogic.Tests.UnitTests.JobsTests.SitemapGeneratorTests.Universa
         {
             _autoMocker = new NSubstituteAutoMocker<UniversalGameSitemapGenerator>();
 
-            _expectedUniversalGameIds = new List<int>
+            _gameWithRecentPlay = new UniversalGameSitemapInfo
             {
-                1,
-                2
+                BoardGameGeekGameDefinitionId = 1,
+                DateLastGamePlayed = DateTime.UtcNow.Date.AddDays(-30)
             };
-            _autoMocker.Get<IUniversalGameRetriever>().GetAllActiveBoardGameGeekGameDefinitionIds().Returns(_expectedUniversalGameIds);
+            _gameWithNoRecentPlay = new UniversalGameSitemapInfo
+            {
+                BoardGameGeekGameDefinitionId = 2,
+                DateLastGamePlayed = DateTime.UtcNow.Date.AddDays(-31)
+            };
+            _gameWithNoPlays = new UniversalGameSitemapInfo
+            {
+                BoardGameGeekGameDefinitionId = 3,
+                DateLastGamePlayed = null
+            };
+            var expectedUniversalGameSitemapInfos = new List<UniversalGameSitemapInfo>
+            {
+                _gameWithRecentPlay,
+                _gameWithNoRecentPlay,
+                _gameWithNoPlays
+            };
+            _autoMocker.Get<IUniversalGameRetriever>().GetAllActiveBoardGameGeekGameDefinitionSitemapInfos().Returns(expectedUniversalGameSitemapInfos);
 
             expectedFileInfo = new List<FileInfo>();
             _autoMocker.Get<ISitemapGenerator>().GenerateSitemaps(Arg.Any<List<Url>>(), Arg.Any<DirectoryInfo>(), Arg.Any<string>())
@@ -49,47 +69,98 @@ namespace BusinessLogic.Tests.UnitTests.JobsTests.SitemapGeneratorTests.Universa
             _autoMocker.ClassUnderTest.BuildUniversalGamesSitemaps(_targetDirectory);
 
             //--assert
-            _autoMocker.Get<IUniversalGameRetriever>().Received().GetAllActiveBoardGameGeekGameDefinitionIds();
+            _autoMocker.Get<IUniversalGameRetriever>().Received().GetAllActiveBoardGameGeekGameDefinitionSitemapInfos();
 
             generateSiteMapArgs.ShouldNotBeNull();
 
-            generateSiteMapArgs.Count.ShouldBe(2);
-            generateSiteMapArgs[0].Location.ShouldBe("https://nemestats.com/UniversalGame/Details/" + _expectedUniversalGameIds[0]);
-            generateSiteMapArgs[0].LastMod.ShouldBe(DateTime.UtcNow.ToString("yyyy-MM-dd"));
-            generateSiteMapArgs[0].Priority.ShouldBe(.7);
-            generateSiteMapArgs[0].ChangeFrequency.ShouldBe(ChangeFrequency.Daily);
+            generateSiteMapArgs.Count.ShouldBe(3);
+            generateSiteMapArgs[0].Location.ShouldBe("https://nemestats.com/UniversalGame/Details/" + _gameWithRecentPlay.BoardGameGeekGameDefinitionId);
+            generateSiteMapArgs[1].Location.ShouldBe("https://nemestats.com/UniversalGame/Details/" + _gameWithNoRecentPlay.BoardGameGeekGameDefinitionId);
+            generateSiteMapArgs[2].Location.ShouldBe("https://nemestats.com/UniversalGame/Details/" + _gameWithNoPlays.BoardGameGeekGameDefinitionId);
+        }
 
-            generateSiteMapArgs[1].Location.ShouldBe("https://nemestats.com/UniversalGame/Details/" + _expectedUniversalGameIds[1]);
-            generateSiteMapArgs[1].LastMod.ShouldBe(DateTime.UtcNow.ToString("yyyy-MM-dd"));
-            generateSiteMapArgs[1].Priority.ShouldBe(.7);
-            generateSiteMapArgs[1].ChangeFrequency.ShouldBe(ChangeFrequency.Daily);
+        [Test]
+        public void It_Sets_The_LastMod_Date_To_The_Date_Of_The_Last_Played_Game()
+        {
+            //--arrange
+
+            //--act
+            _autoMocker.ClassUnderTest.BuildUniversalGamesSitemaps(_targetDirectory);
+
+            //--assert
+            _autoMocker.Get<ISitemapGenerator>().Received().GenerateSitemaps(
+                Arg.Is<List<Url>>(x => x.Any(y => y.TimeStamp.Date == _gameWithRecentPlay.DateLastGamePlayed.Value.Date)),
+                Arg.Any<DirectoryInfo>(),
+                Arg.Any<string>());
+            _autoMocker.Get<ISitemapGenerator>().Received().GenerateSitemaps(
+                Arg.Is<List<Url>>(x => x.Any(y => y.TimeStamp.Date == _gameWithNoRecentPlay.DateLastGamePlayed)),
+                Arg.Any<DirectoryInfo>(),
+                Arg.Any<string>());
+        }
+
+        [Test]
+        public void It_Sets_The_LastMod_Date_To_The_DateCreated_Of_The_BoardGameGeekGameDefinition_If_There_Are_No_Plays()
+        {
+            //--arrange
+
+            //--act
+            _autoMocker.ClassUnderTest.BuildUniversalGamesSitemaps(_targetDirectory);
+
+            //--assert
+            _autoMocker.Get<ISitemapGenerator>().Received().GenerateSitemaps(
+                Arg.Is<List<Url>>(x => x.Any(y => y.TimeStamp.Date == _gameWithNoPlays.DateCreated.Date)),
+                Arg.Any<DirectoryInfo>(),
+                Arg.Any<string>());
+        }
+
+        public class When_Last_Game_Played_Within_Last_30_Days : BuildUniversalGamesSitemapsTests
+        {
+            [Test]
+            public void It_Sets_The_Priority_To_Point_Eight_And_Change_Frequency_To_Weekly()
+            {
+                //--arrange
+
+                //--act
+                _autoMocker.ClassUnderTest.BuildUniversalGamesSitemaps(_targetDirectory);
+
+                //--assert
+                _autoMocker.Get<IUniversalGameRetriever>().Received().GetAllActiveBoardGameGeekGameDefinitionSitemapInfos();
+                _autoMocker.Get<ISitemapGenerator>().Received(1).GenerateSitemaps(
+                    Arg.Is<List<Url>>(x => x.Any(y => y.ChangeFrequency == ChangeFrequency.Weekly && y.Priority == .8)),
+                    Arg.Any<DirectoryInfo>(),
+                    Arg.Any<string>());
+            }
+        }
+
+        public class When_Last_Game_Played_Older_Than_30_Days : BuildUniversalGamesSitemapsTests
+        {
+            [Test]
+            public void It_Sets_The_Priority_To_Point_Seven_And_Change_Frequency_To_Monthly()
+            {
+                //--arrange
+
+                //--act
+                _autoMocker.ClassUnderTest.BuildUniversalGamesSitemaps(_targetDirectory);
+
+                //--assert
+                _autoMocker.Get<IUniversalGameRetriever>().Received().GetAllActiveBoardGameGeekGameDefinitionSitemapInfos();
+                _autoMocker.Get<ISitemapGenerator>().Received(1).GenerateSitemaps(
+                    Arg.Is<List<Url>>(x => x.Any(y => y.ChangeFrequency == ChangeFrequency.Monthly && y.Priority == .7)),
+                    Arg.Any<DirectoryInfo>(),
+                    Arg.Any<string>());
+            }
         }
 
         [Test]
         public void It_Saves_Sitemaps_In_The_Specified_Directory()
         {
             //--arrange
-            List<Url> generateSiteMapArgs = null;
-            _autoMocker.Get<ISitemapGenerator>().GenerateSitemaps(Arg.Do<List<Url>>(x => generateSiteMapArgs = x), Arg.Any<DirectoryInfo>(), Arg.Any<string>());
 
             //--act
             _autoMocker.ClassUnderTest.BuildUniversalGamesSitemaps(_targetDirectory);
 
             //--assert
             _autoMocker.Get<ISitemapGenerator>().GenerateSitemaps(Arg.Any<List<Url>>(), Arg.Is<DirectoryInfo>(x => x == _targetDirectory), Arg.Any<string>());
-
-            generateSiteMapArgs.ShouldNotBeNull();
-
-            generateSiteMapArgs.Count.ShouldBe(2);
-            generateSiteMapArgs[0].Location.ShouldBe("https://nemestats.com/UniversalGame/Details/" + _expectedUniversalGameIds[0]);
-            generateSiteMapArgs[0].LastMod.ShouldBe(DateTime.UtcNow.ToString("yyyy-MM-dd"));
-            generateSiteMapArgs[0].Priority.ShouldBe(.7);
-            generateSiteMapArgs[0].ChangeFrequency.ShouldBe(ChangeFrequency.Daily);
-
-            generateSiteMapArgs[1].Location.ShouldBe("https://nemestats.com/UniversalGame/Details/" + _expectedUniversalGameIds[1]);
-            generateSiteMapArgs[1].LastMod.ShouldBe(DateTime.UtcNow.ToString("yyyy-MM-dd"));
-            generateSiteMapArgs[1].Priority.ShouldBe(.7);
-            generateSiteMapArgs[1].ChangeFrequency.ShouldBe(ChangeFrequency.Daily);
         }
 
         [Test]

@@ -20,14 +20,18 @@ namespace BusinessLogic.Jobs.SitemapGenerator
 
         public List<FileInfo> BuildUniversalGamesSitemaps(DirectoryInfo targetDirectory)
         {
-            var boardGameGeekGameDefinitionIds = _universalGameRetriever.GetAllActiveBoardGameGeekGameDefinitionIds();
+            var boardGameGeekGameDefinitionIds = _universalGameRetriever.GetAllActiveBoardGameGeekGameDefinitionSitemapInfos();
 
-            var urls = boardGameGeekGameDefinitionIds.Select(id => new Url
+            var urls = boardGameGeekGameDefinitionIds.Select(sitemapInfo =>
             {
-                ChangeFrequency = ChangeFrequency.Daily,
-                Location = $"https://nemestats.com/UniversalGame/Details/{id}",
-                Priority = .7,
-                TimeStamp = DateTime.UtcNow
+                var hasPlayWithinLastThirtyDays = sitemapInfo.DateLastGamePlayed?.Date >= DateTime.UtcNow.Date.AddDays(-30);
+                return new Url
+                {
+                    ChangeFrequency = hasPlayWithinLastThirtyDays ? ChangeFrequency.Weekly : ChangeFrequency.Monthly,
+                    Location = $"https://nemestats.com/UniversalGame/Details/{sitemapInfo.BoardGameGeekGameDefinitionId}",
+                    Priority = hasPlayWithinLastThirtyDays ? .8 : .7,
+                    TimeStamp = sitemapInfo.DateLastGamePlayed ?? sitemapInfo.DateCreated
+                };
             }).ToList();
 
             return _sitemapGenerator.GenerateSitemaps(urls, targetDirectory);
