@@ -125,3 +125,13 @@ $custom-font-path: $fa-font-path;
 .ns-icon-second-place:before {
     content: "\e915";
 }
+
+.ns-icon-bgg {
+    font-size: 55px;
+    padding: 5px 0 0 0;
+
+    &:before {
+        content: "\e916";
+    }
+
+}
