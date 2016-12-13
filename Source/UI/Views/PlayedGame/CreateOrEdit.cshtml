@@ -210,7 +210,7 @@
                                             <strong>{{ player.RankScored | scoredposition }}</strong> - 
                                             {{ player.Name }}
                                             <div class="result-float-right">
-                                                <input type="number" class="form-control input-sm score" v-model="player.PointsScored" number v-on:blur="recalculateRankScored" @@click="focus"/> points
+                                                <input type="number" class="form-control input-sm score" v-model.number="player.PointsScored" number v-on:blur="recalculateRankScored" @@click="focus" debounce="500"/> points
                                             </div>
                                             <div class="fl-clear"></div>
                                         </li>
