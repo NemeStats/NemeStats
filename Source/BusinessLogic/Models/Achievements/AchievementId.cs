@@ -32,7 +32,8 @@
         ReallyGoodGuesser = 28,
         DominionsChild = 29,
         MechanicalPurveyor = 30,
-        HolidayGamer = 31
+        HolidayGamer = 31,
+        SoClose = 32
     }
 
     public enum AchievementGroup
