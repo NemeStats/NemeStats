@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using BusinessLogic.DataAccess;
+using BusinessLogic.Exceptions;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Achievements;
 
@@ -35,10 +36,13 @@ namespace BusinessLogic.Logic.Achievements
             {
                 AchievementId = Id
             };
+
+            var userId = DataContext.FindById<Player>(playerId).ApplicationUserId;
+
             var numberOfGamesWith10PlaysIn2016 =
                 DataContext
                     .GetQueryable<PlayerGameResult>()
-                    .Where(x => x.PlayerId == playerId && x.PlayedGame.DatePlayed >= START_OF_2016 && x.PlayedGame.DatePlayed <= END_OF_2016)
+                    .Where(x => x.Player.ApplicationUserId == userId && x.PlayedGame.DatePlayed >= START_OF_2016 && x.PlayedGame.DatePlayed <= END_OF_2016)
                     .GroupBy(x => x.PlayedGame.GameDefinitionId)
                     .Select(group => new { group.Key, Count = group.Count()})
                     .Count(x => x.Count >= 10);

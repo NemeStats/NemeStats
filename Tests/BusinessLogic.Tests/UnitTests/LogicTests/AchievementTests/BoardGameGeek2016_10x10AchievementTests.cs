@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using BusinessLogic.DataAccess;
 using BusinessLogic.Logic.Achievements;
@@ -15,6 +16,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.AchievementTests
     {
         private RhinoAutoMocker<BoardGameGeek2016_10x10Achievement> _autoMocker;
         private readonly int _playerId = 1;
+        private readonly string _applicationUserId = "the user's id";
         private int _targetNumberOfDistinctGames;
         private int _numberOfTimesEachGameMustBePlayed;
 
@@ -24,13 +26,16 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.AchievementTests
             _autoMocker = new RhinoAutoMocker<BoardGameGeek2016_10x10Achievement>();
             _targetNumberOfDistinctGames = _autoMocker.ClassUnderTest.LevelThresholds[AchievementLevel.Gold];
             _numberOfTimesEachGameMustBePlayed = _autoMocker.ClassUnderTest.LevelThresholds[AchievementLevel.Gold];
+            _autoMocker.Get<IDataContext>()
+                .Expect(mock => mock.FindById<Player>(_playerId))
+                .Return(new Player {ApplicationUserId = _applicationUserId});
         }
 
         [Test]
         public void ItDoesNotAwardTheAchievementWhenThePlayerHasntPlayedEnoughDistinctGames()
         {
             //--arrange
-            SetupValidGames(_playerId, _targetNumberOfDistinctGames - 1, _numberOfTimesEachGameMustBePlayed);
+            SetupValidGames(_targetNumberOfDistinctGames - 1, _numberOfTimesEachGameMustBePlayed);
 
             //--act
             var results = _autoMocker.ClassUnderTest.IsAwardedForThisPlayer(_playerId);
@@ -43,7 +48,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.AchievementTests
         public void ItDoesNotAwardTheAchievementWhenThePlayerHasntPlayedEnoughOfEachDistinctGame()
         {
             //--arrange
-            SetupValidGames(_playerId, _targetNumberOfDistinctGames, _numberOfTimesEachGameMustBePlayed - 1);
+            SetupValidGames(_targetNumberOfDistinctGames, _numberOfTimesEachGameMustBePlayed - 1);
             //--act
             var results = _autoMocker.ClassUnderTest.IsAwardedForThisPlayer(_playerId);
 
@@ -56,12 +61,26 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.AchievementTests
         {
             //--arrange
             //setup 9 games that are played 10 times
-            var playerGameResults = MakePlayerGameResults(_playerId, _targetNumberOfDistinctGames -1, _numberOfTimesEachGameMustBePlayed);
-            //setup some games that would have put the player over the threshold except for the fact that it's the wrong player id
+            var playerGameResults = MakePlayerGameResults(_targetNumberOfDistinctGames -1, _numberOfTimesEachGameMustBePlayed);
+            //setup some games that would have put the player over the threshold except for the fact that the applicationUserId is wrong
             for (int i = 0; i < _numberOfTimesEachGameMustBePlayed; i++)
             {
-                AddPlayerGameResult(_playerId - 1, playerGameResults, i + 100);
+                AddPlayerGameResult(playerGameResults, 500, "invalidUserId");
             }
+            //too old date played
+            var tooOldDate = new DateTime(2015, 12, 31);
+            for (int i = 0; i < _numberOfTimesEachGameMustBePlayed; i++)
+            {
+                AddPlayerGameResult(playerGameResults, 600, _applicationUserId, tooOldDate);
+            }
+
+            //too new date played
+            var tooNewDate = new DateTime(2017, 1, 1);
+            for (int i = 0; i < _numberOfTimesEachGameMustBePlayed; i++)
+            {
+                AddPlayerGameResult(playerGameResults, 700, _applicationUserId, tooNewDate);
+            }
+
             _autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<PlayerGameResult>()).Return(playerGameResults.AsQueryable());
 
             //--act
@@ -76,7 +95,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.AchievementTests
         public void ItAwardsGoldWhenPlayerHasExactlyGoldNumberOfPlayedGames()
         {
             //--arrange
-            SetupValidGames(_playerId, _autoMocker.ClassUnderTest.LevelThresholds[AchievementLevel.Gold], 10);
+            SetupValidGames(_autoMocker.ClassUnderTest.LevelThresholds[AchievementLevel.Gold], 10);
 
             //--act
             var results = _autoMocker.ClassUnderTest.IsAwardedForThisPlayer(_playerId);
@@ -85,13 +104,27 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.AchievementTests
             Assert.That(results.LevelAwarded, Is.EqualTo(AchievementLevel.Gold));
         }
 
-        private void SetupValidGames(int playerId, int numberOfGameDefinitionsToSetUp, int numberOfPlayedGamesToSetupForEachGameDefinition)
+        [Test]
+        public void ItIncludesPlayedGamesSoLongAsTheApplicationUserIdMatches()
         {
-            var playerGameResults = MakePlayerGameResults(playerId, numberOfGameDefinitionsToSetUp, numberOfPlayedGamesToSetupForEachGameDefinition);
+            //--arrange
+            var playerGameResults = MakePlayerGameResults(_autoMocker.ClassUnderTest.LevelThresholds[AchievementLevel.Gold], 10);
+
+            _autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<PlayerGameResult>()).Return(playerGameResults.AsQueryable());
+            //--act
+            var results = _autoMocker.ClassUnderTest.IsAwardedForThisPlayer(_playerId);
+
+            //--assert
+            Assert.That(results.LevelAwarded, Is.EqualTo(AchievementLevel.Gold));
+        }
+
+        private void SetupValidGames(int numberOfGameDefinitionsToSetUp, int numberOfPlayedGamesToSetupForEachGameDefinition)
+        {
+            var playerGameResults = MakePlayerGameResults(numberOfGameDefinitionsToSetUp, numberOfPlayedGamesToSetupForEachGameDefinition);
             _autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<PlayerGameResult>()).Return(playerGameResults.AsQueryable());
         }
 
-        private List<PlayerGameResult> MakePlayerGameResults(int playerId, int numberOfGameDefinitionsToSetUp, int numberOfPlayedGamesToSetupForEachGameDefinition)
+        private List<PlayerGameResult> MakePlayerGameResults(int numberOfGameDefinitionsToSetUp, int numberOfPlayedGamesToSetupForEachGameDefinition)
         {
             var playerGameResults = new List<PlayerGameResult>();
 
@@ -99,7 +132,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.AchievementTests
             {
                 for (int j = 0; j < numberOfPlayedGamesToSetupForEachGameDefinition; j++)
                 {
-                    AddPlayerGameResult(playerId, playerGameResults, i);
+                    AddPlayerGameResult(playerGameResults, i, _applicationUserId);
                 }
             }
 
@@ -107,17 +140,26 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.AchievementTests
         }
 
         private static void AddPlayerGameResult(
-            int playerId, 
-            List<PlayerGameResult> playerGameResults, 
-            int gameDefinitionId)
+            List<PlayerGameResult> playerGameResults,
+            int gameDefinitionId,
+            string applicationUserId,
+            DateTime? datePlayed = null)
         {
+            if (datePlayed == null)
+            {
+                datePlayed = new DateTime(2016, 1, 1);
+            }
             playerGameResults.Add(
                                   new PlayerGameResult
                                   {
-                                      PlayerId = playerId,
+                                      Player = new Player
+                                      {
+                                          ApplicationUserId = applicationUserId
+                                      },
                                       PlayedGame = new PlayedGame
                                       {
-                                          GameDefinitionId = gameDefinitionId
+                                          GameDefinitionId = gameDefinitionId,
+                                          DatePlayed = datePlayed.Value
                                       }
                                   });
         }
