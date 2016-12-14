@@ -105,13 +105,15 @@ namespace BusinessLogic.Logic.GamingGroups
         public List<GamingGroupSitemapInfo> GetGamingGroupsSitemapInfo()
         {
             return dataContext.GetQueryable<GamingGroup>()
-                .Where(x => x.PlayedGames.Any(playedGame => playedGame.DatePlayed >= DateTime.UtcNow.Date.AddDays(-30)))
                 .Select(x => new GamingGroupSitemapInfo
                 {
                     GamingGroupId = x.Id,
+                    DateCreated = x.DateCreated,
                     DateLastGamePlayed =
-                        x.PlayedGames.OrderByDescending(playedGame => playedGame.DatePlayed).Select(playedGame => playedGame.DatePlayed).First()
-                }).ToList();
+                        x.PlayedGames.OrderByDescending(playedGame => playedGame.DatePlayed).Select(playedGame => playedGame.DatePlayed).FirstOrDefault() 
+                })
+                .OrderBy(x => x.GamingGroupId)
+                .ToList();
         }
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using BusinessLogic.DataAccess;
@@ -63,7 +64,17 @@ namespace BusinessLogic.Logic.BoardGameGeekGameDefinitions
 
         public List<UniversalGameSitemapInfo> GetAllActiveBoardGameGeekGameDefinitionSitemapInfos()
         {
-            throw new System.NotImplementedException();
+            return _dataContext.GetQueryable<BoardGameGeekGameDefinition>()
+                .Select(x =>  new UniversalGameSitemapInfo
+                {
+                    BoardGameGeekGameDefinitionId = x.Id,
+                    DateCreated = x.DateCreated,
+                    DateLastGamePlayed = x.GameDefinitions.SelectMany(y => y.PlayedGames
+                        .Select(playedGame => playedGame.DatePlayed))
+                        .OrderByDescending(date => date)
+                        .FirstOrDefault()
+                }).OrderBy(x => x.BoardGameGeekGameDefinitionId)
+                .ToList();
         }
 
         private GameDefinitionSummary GetGamingGroupGameDefinitionSummary(int boardGameGeekGameDefinitionId, int currentUserCurrentGamingGroupId, int numberOfRecentlyPlayedGamesToShow)

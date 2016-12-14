@@ -6,5 +6,6 @@ namespace BusinessLogic.Models.GamingGroups
     {
         public int GamingGroupId { get; set; }
         public DateTime DateLastGamePlayed { get; set; }
+        public DateTime DateCreated { get; set; }
     }
 }

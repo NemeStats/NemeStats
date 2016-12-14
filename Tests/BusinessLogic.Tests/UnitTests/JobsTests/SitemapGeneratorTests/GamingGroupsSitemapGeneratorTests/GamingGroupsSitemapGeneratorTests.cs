@@ -22,6 +22,8 @@ namespace BusinessLogic.Tests.UnitTests.JobsTests.SitemapGeneratorTests.GamingGr
         private List<GamingGroupSitemapInfo> _expectedGamingGroupSitemapInfo;
         private GamingGroupSitemapInfo _sitemapInfoForGamingGroupWithRecentPlay;
         private GamingGroupSitemapInfo _sitemapInfoForGamingGroupWithNoRecentPlays;
+        private GamingGroupSitemapInfo _sitemapInfoForGamingGroupWithNoPlays;
+
 
         [SetUp]
         public void SetUp()
@@ -31,17 +33,26 @@ namespace BusinessLogic.Tests.UnitTests.JobsTests.SitemapGeneratorTests.GamingGr
             _sitemapInfoForGamingGroupWithRecentPlay = new GamingGroupSitemapInfo
             {
                 GamingGroupId = 1,
-                DateLastGamePlayed = DateTime.UtcNow.Date.AddDays(-30)
+                DateLastGamePlayed = DateTime.UtcNow.Date.AddDays(-30),
+                DateCreated = DateTime.UtcNow.AddDays(-50)
             };
             _sitemapInfoForGamingGroupWithNoRecentPlays = new GamingGroupSitemapInfo
             {
                 GamingGroupId = 2,
-                DateLastGamePlayed = DateTime.UtcNow.Date.AddDays(-31)
+                DateLastGamePlayed = DateTime.UtcNow.Date.AddDays(-31),
+                DateCreated = DateTime.UtcNow.AddDays(-60)
+            };
+            _sitemapInfoForGamingGroupWithNoPlays = new GamingGroupSitemapInfo
+            {
+                GamingGroupId = 3,
+                DateLastGamePlayed = DateTime.MinValue,
+                DateCreated = DateTime.UtcNow.AddDays(-14)
             };
             _expectedGamingGroupSitemapInfo = new List<GamingGroupSitemapInfo>
             {
                 _sitemapInfoForGamingGroupWithRecentPlay,
-                _sitemapInfoForGamingGroupWithNoRecentPlays
+                _sitemapInfoForGamingGroupWithNoRecentPlays,
+                _sitemapInfoForGamingGroupWithNoPlays
             };
 
             _autoMocker.Get<IGamingGroupRetriever>().GetGamingGroupsSitemapInfo().Returns(_expectedGamingGroupSitemapInfo);
@@ -68,35 +79,16 @@ namespace BusinessLogic.Tests.UnitTests.JobsTests.SitemapGeneratorTests.GamingGr
 
             generateSiteMapArgs.ShouldNotBeNull();
 
-            generateSiteMapArgs.Count.ShouldBe(2);
-            generateSiteMapArgs[0].Location.ShouldBe("https://nemestats.com/GamingGroup/Details/" + _expectedGamingGroupSitemapInfo[0].GamingGroupId);
-            generateSiteMapArgs[1].Location.ShouldBe("https://nemestats.com/GamingGroup/Details/" + _expectedGamingGroupSitemapInfo[1].GamingGroupId);
-        }
-
-        [Test]
-        public void It_Sets_The_Last_Mod_Date_To_The_Date_Of_The_Last_Play()
-        {
-            //--arrange
-
-            //--act
-            _autoMocker.ClassUnderTest.BuildGamingGroupSitemaps(_targetDirectory);
-
-            //--assert
-            _autoMocker.Get<IGamingGroupRetriever>().Received().GetGamingGroupsSitemapInfo();
-            _autoMocker.Get<ISitemapGenerator>().Received().GenerateSitemaps(
-                Arg.Is<List<Url>>(x => x.Any(y => y.TimeStamp.Date == _sitemapInfoForGamingGroupWithRecentPlay.DateLastGamePlayed.Date)),
-                Arg.Any<DirectoryInfo>(),
-                Arg.Any<string>());
-            _autoMocker.Get<ISitemapGenerator>().Received().GenerateSitemaps(
-                Arg.Is<List<Url>>(x => x.Any(y => y.TimeStamp.Date == _sitemapInfoForGamingGroupWithNoRecentPlays.DateLastGamePlayed.Date)),
-                Arg.Any<DirectoryInfo>(),
-                Arg.Any<string>());
+            generateSiteMapArgs.Count.ShouldBe(3);
+            generateSiteMapArgs.ShouldContain(x => x.Location == "https://nemestats.com/GamingGroup/Details/" + _expectedGamingGroupSitemapInfo[0].GamingGroupId);
+            generateSiteMapArgs.ShouldContain(x => x.Location == "https://nemestats.com/GamingGroup/Details/" + _expectedGamingGroupSitemapInfo[1].GamingGroupId);
+            generateSiteMapArgs.ShouldContain(x => x.Location == "https://nemestats.com/GamingGroup/Details/" + _expectedGamingGroupSitemapInfo[2].GamingGroupId);
         }
 
         public class When_Last_Game_Played_Within_Last_30_Days : GamingGroupsSitemapGeneratorTests
         {
             [Test]
-            public void It_Sets_The_Priority_To_Point_Seven_And_Change_Frequency_To_Weekly()
+            public void It_Sets_The_Priority_To_Point_Six_And_Change_Frequency_To_Weekly()
             {
                 //--arrange
 
@@ -106,7 +98,9 @@ namespace BusinessLogic.Tests.UnitTests.JobsTests.SitemapGeneratorTests.GamingGr
                 //--assert
                 _autoMocker.Get<IGamingGroupRetriever>().Received().GetGamingGroupsSitemapInfo();
                 _autoMocker.Get<ISitemapGenerator>().Received(1).GenerateSitemaps(
-                    Arg.Is<List<Url>>(x => x.Any(y => y.ChangeFrequency == ChangeFrequency.Weekly && y.Priority == .7)),
+                    Arg.Is<List<Url>>(x => x.Any(y => y.ChangeFrequency == ChangeFrequency.Weekly 
+                        && y.Priority == .6
+                        && y.TimeStamp.Date == _sitemapInfoForGamingGroupWithRecentPlay.DateLastGamePlayed.Date)),
                     Arg.Any<DirectoryInfo>(),
                     Arg.Any<string>());
             }
@@ -115,7 +109,7 @@ namespace BusinessLogic.Tests.UnitTests.JobsTests.SitemapGeneratorTests.GamingGr
         public class When_Last_Game_Played_Older_Than_30_Days : GamingGroupsSitemapGeneratorTests
         {
             [Test]
-            public void It_Sets_The_Priority_To_Point_Six_And_Change_Frequency_To_Yearly()
+            public void It_Sets_The_Priority_To_Point_Five_And_Change_Frequency_To_Monthly()
             {
                 //--arrange
 
@@ -125,7 +119,30 @@ namespace BusinessLogic.Tests.UnitTests.JobsTests.SitemapGeneratorTests.GamingGr
                 //--assert
                 _autoMocker.Get<IGamingGroupRetriever>().Received().GetGamingGroupsSitemapInfo();
                 _autoMocker.Get<ISitemapGenerator>().Received(1).GenerateSitemaps(
-                    Arg.Is<List<Url>>(x => x.Any(y => y.ChangeFrequency == ChangeFrequency.Yearly && y.Priority == .6)),
+                    Arg.Is<List<Url>>(x => x.Any(y => y.ChangeFrequency == ChangeFrequency.Monthly 
+                        && y.Priority == .5 
+                        && y.TimeStamp.Date == _sitemapInfoForGamingGroupWithNoRecentPlays.DateLastGamePlayed.Date)),
+                    Arg.Any<DirectoryInfo>(),
+                    Arg.Any<string>());
+            }
+        }
+
+        public class When_There_Are_No_Played_Games : GamingGroupsSitemapGeneratorTests
+        {
+            [Test]
+            public void It_Sets_The_Priority_To_Point_Three_And_Change_Frequency_To_Yearly_And_Last_Mod_Date_To_Gaming_Group_Created_Date()
+            {
+                //--arrange
+
+                //--act
+                _autoMocker.ClassUnderTest.BuildGamingGroupSitemaps(_targetDirectory);
+
+                //--assert
+                _autoMocker.Get<IGamingGroupRetriever>().Received().GetGamingGroupsSitemapInfo();
+                _autoMocker.Get<ISitemapGenerator>().Received(1).GenerateSitemaps(
+                    Arg.Is<List<Url>>(x => x.Any(y => y.ChangeFrequency == ChangeFrequency.Yearly 
+                        && y.Priority == .3 
+                        && y.TimeStamp.Date == _sitemapInfoForGamingGroupWithNoPlays.DateCreated.Date)),
                     Arg.Any<DirectoryInfo>(),
                     Arg.Any<string>());
             }
@@ -133,7 +150,7 @@ namespace BusinessLogic.Tests.UnitTests.JobsTests.SitemapGeneratorTests.GamingGr
 
 
         [Test]
-        public void It_Saves_Sitemaps_In_The_Specified_Directory()
+        public void It_Saves_Sitemaps_In_The_Specified_Directory_With_A_Name_Of_GamingGroupsSitemap()
         {
             //--arrange
 
@@ -141,7 +158,7 @@ namespace BusinessLogic.Tests.UnitTests.JobsTests.SitemapGeneratorTests.GamingGr
             _autoMocker.ClassUnderTest.BuildGamingGroupSitemaps(_targetDirectory);
 
             //--assert
-            _autoMocker.Get<ISitemapGenerator>().GenerateSitemaps(Arg.Any<List<Url>>(), Arg.Is<DirectoryInfo>(x => x == _targetDirectory), Arg.Any<string>());
+            _autoMocker.Get<ISitemapGenerator>().Received().GenerateSitemaps(Arg.Any<List<Url>>(), Arg.Is<DirectoryInfo>(x => x == _targetDirectory), Arg.Is<string>(x => x == "gaminggroupssitemap"));
         }
 
         [Test]

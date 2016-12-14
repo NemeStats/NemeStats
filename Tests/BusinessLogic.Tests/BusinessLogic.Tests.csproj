@@ -296,6 +296,7 @@
     <Compile Include="UnitTests\LogicTests\AchievementTests\DiversifiedAchievementTests\When_Player_Has_Not_Enought_For_Silver_Level.cs" />
     <Compile Include="UnitTests\LogicTests\AchievementTests\DiversifiedAchievementTests\When_Player_Not_Accomplish_Achievement_Requirements.cs" />
     <Compile Include="UnitTests\LogicTests\AchievementTests\SocialButterflyAchievementTests.cs" />
+    <Compile Include="UnitTests\LogicTests\BoardGameGeekGameDefinitionsTests\UniversalGameRetrieverTests\GetAllActiveBoardGameGeekGameDefinitionSitemapInfosTests.cs" />
     <Compile Include="UnitTests\LogicTests\BoardGameGeekGameDefinitionsTests\UniversalGameRetrieverTests\GetBoardGameGeekGameSummaryTests.cs" />
     <Compile Include="UnitTests\LogicTests\BoardGameGeekGameDefinitionsTests\UniversalStatsRetrieverTests\GetFromSourceTests.cs" />
     <Compile Include="UnitTests\LogicTests\BoardGameGeekGameDefinitionsTests\UniversalTopChampionsRetreiverTests\GetFromSourceTests.cs" />

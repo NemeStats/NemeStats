@@ -24,17 +24,33 @@ namespace BusinessLogic.Jobs.SitemapGenerator
 
             var urls = gamingGroupSitemapInfo.Select(sitemapInfo =>
             {
-                var hasPlayWithinLastThirtyDays = sitemapInfo.DateLastGamePlayed.Date >= DateTime.UtcNow.Date.AddDays(-30);
-                return new Url
+                var url = new Url
                 {
-                    ChangeFrequency = hasPlayWithinLastThirtyDays ? ChangeFrequency.Weekly : ChangeFrequency.Yearly,
-                    Location = $"https://nemestats.com/GamingGroup/Details/{sitemapInfo.GamingGroupId}",
-                    Priority = hasPlayWithinLastThirtyDays ? .7 : .6,
-                    TimeStamp = sitemapInfo.DateLastGamePlayed
+                    Location = $"https://nemestats.com/GamingGroup/Details/{sitemapInfo.GamingGroupId}"
                 };
+
+                if (sitemapInfo.DateLastGamePlayed == DateTime.MinValue)
+                {
+                    url.Priority = .3;
+                    url.ChangeFrequency = ChangeFrequency.Yearly;
+                    url.TimeStamp = sitemapInfo.DateCreated;
+                }
+                else if (sitemapInfo.DateLastGamePlayed < DateTime.UtcNow.Date.AddDays(-30))
+                {
+                    url.Priority = .5;
+                    url.ChangeFrequency = ChangeFrequency.Monthly;
+                    url.TimeStamp = sitemapInfo.DateLastGamePlayed;
+                }
+                else
+                {
+                    url.Priority = .6;
+                    url.ChangeFrequency = ChangeFrequency.Weekly;
+                    url.TimeStamp = sitemapInfo.DateLastGamePlayed;
+                }
+                return url;
             }).ToList();
 
-            return _sitemapGenerator.GenerateSitemaps(urls, targetDirectory);
+            return _sitemapGenerator.GenerateSitemaps(urls, targetDirectory, "gaminggroupssitemap");
         }
     }
 }

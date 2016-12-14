@@ -13,6 +13,7 @@ using X.Web.Sitemap;
 
 namespace BusinessLogic.Tests.UnitTests.JobsTests.SitemapGeneratorTests.UniversalGameSitemapGeneratorTests
 {
+    [TestFixture]
     public class BuildUniversalGamesSitemapsTests
     {
         private UniversalGameSitemapInfo _gameWithRecentPlay;
@@ -31,17 +32,20 @@ namespace BusinessLogic.Tests.UnitTests.JobsTests.SitemapGeneratorTests.Universa
             _gameWithRecentPlay = new UniversalGameSitemapInfo
             {
                 BoardGameGeekGameDefinitionId = 1,
-                DateLastGamePlayed = DateTime.UtcNow.Date.AddDays(-30)
+                DateLastGamePlayed = DateTime.UtcNow.Date.AddDays(-30),
+                DateCreated = DateTime.UtcNow.AddDays(-100)
             };
             _gameWithNoRecentPlay = new UniversalGameSitemapInfo
             {
                 BoardGameGeekGameDefinitionId = 2,
-                DateLastGamePlayed = DateTime.UtcNow.Date.AddDays(-31)
+                DateLastGamePlayed = DateTime.UtcNow.Date.AddDays(-31),
+                DateCreated = DateTime.UtcNow.AddDays(-200)
             };
             _gameWithNoPlays = new UniversalGameSitemapInfo
             {
                 BoardGameGeekGameDefinitionId = 3,
-                DateLastGamePlayed = null
+                DateLastGamePlayed = DateTime.MinValue,
+                DateCreated = DateTime.UtcNow.AddDays(-300)
             };
             var expectedUniversalGameSitemapInfos = new List<UniversalGameSitemapInfo>
             {
@@ -74,9 +78,9 @@ namespace BusinessLogic.Tests.UnitTests.JobsTests.SitemapGeneratorTests.Universa
             generateSiteMapArgs.ShouldNotBeNull();
 
             generateSiteMapArgs.Count.ShouldBe(3);
-            generateSiteMapArgs[0].Location.ShouldBe("https://nemestats.com/UniversalGame/Details/" + _gameWithRecentPlay.BoardGameGeekGameDefinitionId);
-            generateSiteMapArgs[1].Location.ShouldBe("https://nemestats.com/UniversalGame/Details/" + _gameWithNoRecentPlay.BoardGameGeekGameDefinitionId);
-            generateSiteMapArgs[2].Location.ShouldBe("https://nemestats.com/UniversalGame/Details/" + _gameWithNoPlays.BoardGameGeekGameDefinitionId);
+            generateSiteMapArgs.ShouldContain(x => x.Location == "https://nemestats.com/UniversalGame/Details/" + _gameWithRecentPlay.BoardGameGeekGameDefinitionId);
+            generateSiteMapArgs.ShouldContain(x => x.Location == "https://nemestats.com/UniversalGame/Details/" + _gameWithNoPlays.BoardGameGeekGameDefinitionId);
+            generateSiteMapArgs.ShouldContain(x => x.Location == "https://nemestats.com/UniversalGame/Details/" + _gameWithNoRecentPlay.BoardGameGeekGameDefinitionId);
         }
 
         [Test]
@@ -89,7 +93,7 @@ namespace BusinessLogic.Tests.UnitTests.JobsTests.SitemapGeneratorTests.Universa
 
             //--assert
             _autoMocker.Get<ISitemapGenerator>().Received().GenerateSitemaps(
-                Arg.Is<List<Url>>(x => x.Any(y => y.TimeStamp.Date == _gameWithRecentPlay.DateLastGamePlayed.Value.Date)),
+                Arg.Is<List<Url>>(x => x.Any(y => y.TimeStamp.Date == _gameWithRecentPlay.DateLastGamePlayed.Date)),
                 Arg.Any<DirectoryInfo>(),
                 Arg.Any<string>());
             _autoMocker.Get<ISitemapGenerator>().Received().GenerateSitemaps(
@@ -152,7 +156,7 @@ namespace BusinessLogic.Tests.UnitTests.JobsTests.SitemapGeneratorTests.Universa
         }
 
         [Test]
-        public void It_Saves_Sitemaps_In_The_Specified_Directory()
+        public void It_Saves_Sitemaps_In_The_Specified_Directory_With_A_Name_Of_UniversalGamesSitemap()
         {
             //--arrange
 
@@ -160,7 +164,7 @@ namespace BusinessLogic.Tests.UnitTests.JobsTests.SitemapGeneratorTests.Universa
             _autoMocker.ClassUnderTest.BuildUniversalGamesSitemaps(_targetDirectory);
 
             //--assert
-            _autoMocker.Get<ISitemapGenerator>().GenerateSitemaps(Arg.Any<List<Url>>(), Arg.Is<DirectoryInfo>(x => x == _targetDirectory), Arg.Any<string>());
+            _autoMocker.Get<ISitemapGenerator>().Received().GenerateSitemaps(Arg.Any<List<Url>>(), Arg.Is<DirectoryInfo>(x => x == _targetDirectory), Arg.Is<string>(x => x == "universalgamessitemap"));
         }
 
         [Test]

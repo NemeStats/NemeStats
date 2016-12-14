@@ -24,17 +24,17 @@ namespace BusinessLogic.Jobs.SitemapGenerator
 
             var urls = boardGameGeekGameDefinitionIds.Select(sitemapInfo =>
             {
-                var hasPlayWithinLastThirtyDays = sitemapInfo.DateLastGamePlayed?.Date >= DateTime.UtcNow.Date.AddDays(-30);
+                var hasPlayWithinLastThirtyDays = sitemapInfo.DateLastGamePlayed.Date >= DateTime.UtcNow.Date.AddDays(-30);
                 return new Url
                 {
                     ChangeFrequency = hasPlayWithinLastThirtyDays ? ChangeFrequency.Weekly : ChangeFrequency.Monthly,
                     Location = $"https://nemestats.com/UniversalGame/Details/{sitemapInfo.BoardGameGeekGameDefinitionId}",
                     Priority = hasPlayWithinLastThirtyDays ? .8 : .7,
-                    TimeStamp = sitemapInfo.DateLastGamePlayed ?? sitemapInfo.DateCreated
+                    TimeStamp = sitemapInfo.DateLastGamePlayed == DateTime.MinValue ? sitemapInfo.DateCreated : sitemapInfo.DateLastGamePlayed
                 };
             }).ToList();
 
-            return _sitemapGenerator.GenerateSitemaps(urls, targetDirectory);
+            return _sitemapGenerator.GenerateSitemaps(urls, targetDirectory, "universalgamessitemap");
         }
     }
 }
