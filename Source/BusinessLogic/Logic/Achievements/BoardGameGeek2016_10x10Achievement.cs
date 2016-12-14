@@ -38,14 +38,20 @@ namespace BusinessLogic.Logic.Achievements
             var numberOfGamesWith10PlaysIn2016 =
                 DataContext
                     .GetQueryable<PlayerGameResult>()
-                    .Where(x => x.PlayerId == playerId && x.PlayedGame.DatePlayed >= START_OF_2016 && x.PlayedGame.DatePlayed <= END_OF_2016)
+                    .Where(
+                        x =>
+                            x.PlayerId == playerId && x.PlayedGame.DatePlayed >= START_OF_2016 &&
+                            x.PlayedGame.DatePlayed <= END_OF_2016)
                     .GroupBy(x => x.PlayedGame.GameDefinitionId)
-                    .Select(group => new { group.Key, Count = group.Count()})
-                    .Count(x => x.Count >= 10);
+                    .Select(group => new { group.Key, Count = group.Count() })
+                    .Where(x => x.Count >= 10)
+                    .Select(s => s.Key)
+                    .ToList();
 
-            result.PlayerProgress = numberOfGamesWith10PlaysIn2016;
-            if (numberOfGamesWith10PlaysIn2016 == LevelThresholds[AchievementLevel.Gold])
+            result.PlayerProgress = numberOfGamesWith10PlaysIn2016.Count();
+            if (result.PlayerProgress == LevelThresholds[AchievementLevel.Gold])
             {
+                result.RelatedEntities = numberOfGamesWith10PlaysIn2016;
                 result.LevelAwarded = AchievementLevel.Gold;
             }
             return result;
