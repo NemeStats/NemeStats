@@ -27,6 +27,7 @@ using BusinessLogic.EventTracking;
 using BusinessLogic.Export;
 using BusinessLogic.Facades;
 using BusinessLogic.Jobs.BoardGameGeekBatchUpdate;
+using BusinessLogic.Jobs.SitemapGenerator;
 using BusinessLogic.Logic.BoardGameGeek;
 using BusinessLogic.Logic.BoardGameGeekGameDefinitions;
 using BusinessLogic.Logic.Champions;
@@ -48,6 +49,7 @@ using RollbarSharp;
 using StructureMap;
 using StructureMap.Graph;
 using UniversalAnalyticsHttpWrapper;
+using X.Web.Sitemap;
 
 namespace NemeStats.IoC
 {
@@ -184,6 +186,11 @@ namespace NemeStats.IoC
 
             For<IUniversalStatsRetriever>().Use<UniversalStatsRetriever>();
             For<IUniversalTopChampionsRetreiver>().Use<UniversalTopChampionsRetreiver>();
+
+            For<ISitemapGeneratorService>().Use<SitemapGeneratorService>();
+            For<ISitemapIndexGenerator>().Use<SitemapIndexGenerator>();
+            For<ISitemapGenerator>().Use<SitemapGenerator>();
+
         }
 
 
