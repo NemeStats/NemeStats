@@ -9,8 +9,6 @@ using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.DataProtection;
 using StructureMap;
 using StructureMap.Graph;
-using UI.Controllers.Helpers;
-using UI.Mappers;
 using UI.Mappers.CustomMappers;
 using UI.Mappers.Interfaces;
 using UI.Models.Achievements;

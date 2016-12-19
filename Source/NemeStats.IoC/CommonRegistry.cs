@@ -29,7 +29,6 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using RollbarSharp;
 using StructureMap;
-using StructureMap.Diagnostics;
 using StructureMap.Graph;
 using UniversalAnalyticsHttpWrapper;
 
