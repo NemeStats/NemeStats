@@ -18,34 +18,18 @@
 
 using System.Configuration.Abstractions;
 using BoardGameGeekApiClient.Interfaces;
-using BusinessLogic.Caching;
 using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.DataAccess.Security;
 using BusinessLogic.Events.HandlerFactory;
 using BusinessLogic.Events.Interfaces;
 using BusinessLogic.EventTracking;
-using BusinessLogic.Export;
-using BusinessLogic.Facades;
-using BusinessLogic.Jobs.BoardGameGeekBatchUpdateJobService;
-using BusinessLogic.Logic.BoardGameGeek;
-using BusinessLogic.Logic.BoardGameGeekGameDefinitions;
-using BusinessLogic.Logic.Champions;
 using BusinessLogic.Logic.Email;
-using BusinessLogic.Logic.GameDefinitions;
-using BusinessLogic.Logic.GamingGroups;
-using BusinessLogic.Logic.Nemeses;
-using BusinessLogic.Logic.PlayedGames;
-using BusinessLogic.Logic.PlayerAchievements;
-using BusinessLogic.Logic.Players;
-using BusinessLogic.Logic.Points;
-using BusinessLogic.Logic.Users;
-using BusinessLogic.Logic.Utilities;
-using BusinessLogic.Logic.VotableFeatures;
 using BusinessLogic.Models.User;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using RollbarSharp;
 using StructureMap;
+using StructureMap.Diagnostics;
 using StructureMap.Graph;
 using UniversalAnalyticsHttpWrapper;
 
@@ -61,15 +45,13 @@ namespace NemeStats.IoC
                 scan =>
                 {
                     scan.TheCallingAssembly();
+                    scan.AssemblyContainingType<IBoardGameGeekApiClient>();
+                    scan.AssemblyContainingType<IBusinessLogicEventBus>();
+                    scan.RegisterConcreteTypesAgainstTheFirstInterface();
                     scan.WithDefaultConventions();
                 });
 
-            Scan(s =>
-            {
-                s.AssemblyContainingType<IBoardGameGeekApiClient>();
-                s.AssemblyContainingType<IBusinessLogicEventBus>();
-                s.RegisterConcreteTypesAgainstTheFirstInterface();
-            });
+            
 
             For<IRollbarClient>().Use(new RollbarClient()).Singleton();
 
@@ -89,101 +71,21 @@ namespace NemeStats.IoC
 
         private void SetupTransientMappings()
         {
-            For<IGamingGroupSaver>().Use<GamingGroupSaver>();
-
-            For<IGamingGroupInviteConsumer>().Use<GamingGroupInviteConsumer>();
-            For<IPlayerSummaryBuilder>().Use<PlayerSummaryBuilder>();
-
             For<IPlayerRepository>().Use<EntityFrameworkPlayerRepository>();
-
-            For<IGameDefinitionRetriever>().Use<GameDefinitionRetriever>();
-
-            For<IPlayedGameRetriever>().Use<PlayedGameRetriever>();
-
+            
             For<IUserStore<ApplicationUser>>()
                 .Use<UserStore<ApplicationUser>>();
 
 
-            For<IGamingGroupRetriever>().Use<GamingGroupRetriever>();
-
-            For<IPendingGamingGroupInvitationRetriever>().Use<PendingGamingGroupInvitationRetriever>();
-
-            For<IPlayedGameSaver>().Use<PlayedGameSaver>();
-
+            For<IUniversalAnalyticsEventFactory>().Use<UniversalAnalyticsEventFactory>();
+            For<IEventTracker>().Use<EventTracker>();
             For<INemeStatsEventTracker>().Use<UniversalAnalyticsNemeStatsEventTracker>();
 
-            For<IEventTracker>().Use<EventTracker>();
-            For<INemesisHistoryRetriever>().Use<NemesisHistoryRetriever>();
-
-            For<IUniversalAnalyticsEventFactory>().Use<UniversalAnalyticsEventFactory>();
-
             For<IConfigurationManager>().Use(() => ConfigurationManager.Instance);
-
-            For<IPlayerSaver>().Use<PlayerSaver>();
-
-            For<IGameDefinitionSaver>().Use<GameDefinitionSaver>();
-
-            For<IPlayerRetriever>().Use<PlayerRetriever>();
-
-            For<INemesisRecalculator>().Use<NemesisRecalculator>();
-
-            For<IPlayedGameDeleter>().Use<PlayedGameDeleter>();
-
-            For<IPlayerDeleter>().Use<PlayerDeleter>();
-
-            For<IUserRegisterer>().Use<UserRegisterer>();
-
-            For<IFirstTimeAuthenticator>().Use<FirstTimeAuthenticator>();
-
-            For<IPlayerInviter>().Use<PlayerInviter>();
-
+        
             For<IIdentityMessageService>().Use<EmailService>();
 
-            For<IChampionRecalculator>().Use<ChampionRecalculator>();
-
-            For<IChampionRepository>().Use<ChampionRepository>();
-
-            For<IGamingGroupContextSwitcher>().Use<GamingGroupContextSwitcher>();
-
-            For<IVotableFeatureRetriever>().Use<VotableFeatureRetriever>();
-
-            For<IVotableFeatureVoter>().Use<VotableFeatureVoter>();
-
-            For<IExcelGenerator>().Use<ExcelGenerator>();
-
-            For<IAuthTokenGenerator>().Use<AuthTokenGenerator>();
-
-            For<IAuthTokenValidator>().Use<AuthTokenValidator>();
-
             For(typeof(ISecuredEntityValidator)).Use(typeof(SecuredEntityValidator));
-
-            For<IUserRetriever>().Use<UserRetriever>();
-
-            For<IBoardGameGeekGameDefinitionCreator>().Use<BoardGameGeekGameDefinitionCreator>();
-
-            For<IBoardGameGeekUserSaver>().Use<BoardGameGeekUserSaver>();
-            For<IBoardGameGeekGamesImporter>().Use<BoardGameGeekGamesImporter>();
-            For<IBoardGameGeekBatchUpdateJobService>().Use<BoardGameGeekBatchUpdateJobService>();
-
-            For<IPointsCalculator>().Use<PointsCalculator>();
-            For<IWeightTierCalculator>().Use<WeightTierCalculator>();
-            For<IWeightBonusCalculator>().Use<WeightBonusCalculator>();
-            For<IGameDurationBonusCalculator>().Use<GameDurationBonusCalculator>();
-            For<IRecentPublicGamesRetriever>().Use<RecentPublicGamesRetriever>();
-            For<ITopGamingGroupsRetriever>().Use<TopGamingGroupsRetriever>();
-            For<ITopPlayersRetriever>().Use<TopPlayersRetriever>();
-            For<ITrendingGamesRetriever>().Use<TrendingGamesRetriever>();
-            For<IPlayerAchievementRetriever>().Use<PlayerAchievementRetriever>();
-            For<IRecentPlayerAchievementsUnlockedRetreiver>().Use<RecentPlayerAchievementsUnlockedRetreiver>();
-
-            For<ICacheService>().Use<CacheService>();
-
-            For<IDateUtilities>().Use<DateUtilities>();
-
-            For<IBoardGameGeekGameDefinitionInfoRetriever>().Use<BoardGameGeekGameDefinitionInfoRetriever>();
-
-            For<IUniversalStatsRetriever>().Use<UniversalStatsRetriever>();
-            For<IUniversalTopChampionsRetreiver>().Use<UniversalTopChampionsRetreiver>();
         }
 
 

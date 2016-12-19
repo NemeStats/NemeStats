@@ -26,7 +26,7 @@ namespace UI.DependencyResolution
     {
         public WebRegistry()
         {
-            this.Scan(
+            Scan(
                 scan =>
                 {
                     scan.TheCallingAssembly();
@@ -35,19 +35,15 @@ namespace UI.DependencyResolution
                 });            
 
            
-            this.SetupUniquePerRequestMappings();
+            SetupUniquePerRequestMappings();
 
-            this.SetupTransientMappings();
-
-            this.SetupSingletonMappings();
+            SetupSingletonMappings();
 
             SetupMapperMappings(this);
         }
 
         public static void SetupMapperMappings(Registry r)
         {
-            r.For<IMapperFactory>().Use<MapperFactory>();
-
             r.For<ICustomMapper<GameDefinitionDisplayInfo, GameDefinitionDisplayInfoViewModel>>().Use<GameDefinitionDisplayInfoToGameDefinitionDisplayInfoViewModelMapper>();
             r.For<ICustomMapper<GameDefinitionSummary, GameDefinitionSummaryListViewModel>>().Use<GameDefinitionSummaryToGameDefinitionSummaryListViewModelMapper>();
 
@@ -69,46 +65,40 @@ namespace UI.DependencyResolution
 
         private void SetupSingletonMappings()
         {
-            this.For<IGameResultViewModelBuilder>().Singleton().Use<GameResultViewModelBuilder>();
+            For<IGameResultViewModelBuilder>().Singleton().Use<GameResultViewModelBuilder>();
 
-            this.For<IPlayerDetailsViewModelBuilder>().Singleton().Use<PlayerDetailsViewModelBuilder>();
+            For<IPlayerDetailsViewModelBuilder>().Singleton().Use<PlayerDetailsViewModelBuilder>();
 
-            this.For<IGamingGroupViewModelBuilder>().Singleton()
+            For<IGamingGroupViewModelBuilder>().Singleton()
                                                .Use<GamingGroupViewModelBuilder>();
 
-            this.For<IGamingGroupInvitationViewModelBuilder>().Singleton()
+            For<IGamingGroupInvitationViewModelBuilder>().Singleton()
                                                          .Use<GamingGroupInvitationViewModelBuilder>();
 
-            this.For<ITopPlayerViewModelBuilder>().Use<TopPlayerViewModelBuilder>();
+            For<ITopPlayerViewModelBuilder>().Use<TopPlayerViewModelBuilder>();
 
-            this.For<IPlayedGameDetailsViewModelBuilder>().Singleton().Use<PlayedGameDetailsViewModelBuilder>();
+            For<IPlayedGameDetailsViewModelBuilder>().Singleton().Use<PlayedGameDetailsViewModelBuilder>();
 
-            this.For<IPlayerWithNemesisViewModelBuilder>().Singleton().Use<PlayerWithNemesisViewModelBuilder>();
+            For<IPlayerWithNemesisViewModelBuilder>().Singleton().Use<PlayerWithNemesisViewModelBuilder>();
 
-            this.For<IMinionViewModelBuilder>().Singleton().Use<MinionViewModelBuilder>();
+            For<IMinionViewModelBuilder>().Singleton().Use<MinionViewModelBuilder>();
 
-            this.For<INemesisChangeViewModelBuilder>().Singleton().Use<NemesisChangeViewModelBuilder>();
+            For<INemesisChangeViewModelBuilder>().Singleton().Use<NemesisChangeViewModelBuilder>();
 
-            this.For<IGameDefinitionDetailsViewModelBuilder>().Singleton().Use<GameDefinitionDetailsViewModelBuilder>();
+            For<IGameDefinitionDetailsViewModelBuilder>().Singleton().Use<GameDefinitionDetailsViewModelBuilder>();
 
-            this.For<IGameDefinitionSummaryViewModelBuilder>().Singleton().Use<GameDefinitionSummaryViewModelBuilder>();
+            For<IGameDefinitionSummaryViewModelBuilder>().Singleton().Use<GameDefinitionSummaryViewModelBuilder>();
 
-            this.For<IPlayerEditViewModelBuilder>().Singleton().Use<PlayerEditViewModelBuilder>();
+            For<IPlayerEditViewModelBuilder>().Singleton().Use<PlayerEditViewModelBuilder>();
 
-            this.For<IDataProtectionProvider>().Singleton().Use<MachineKeyProtectionProvider>();
+            For<IDataProtectionProvider>().Singleton().Use<MachineKeyProtectionProvider>();
 
-            this.For<ITransformer>().Singleton().Use<Transformer>();
-        }
-
-        private void SetupTransientMappings()
-        {
-            this.For<IShowingXResultsMessageBuilder>().Use<ShowingXResultsMessageBuilder>();
-
+            For<ITransformer>().Singleton().Use<Transformer>();
         }
 
         private void SetupUniquePerRequestMappings()
         {
-            this.For<IAuthenticationManager>().Use(() => HttpContext.Current.GetOwinContext().Authentication);
+            For<IAuthenticationManager>().Use(() => HttpContext.Current.GetOwinContext().Authentication);
         }
     }
 }
