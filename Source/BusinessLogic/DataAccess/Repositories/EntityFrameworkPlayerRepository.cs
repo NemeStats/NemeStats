@@ -228,12 +228,12 @@ namespace BusinessLogic.DataAccess.Repositories
 
         private const string SQL_GET_LONGEST_WINNING_STREAK_FOR_PLAYER =
             @"WITH cte AS 
-	            (SELECT a.*, b.DatePlayed,
-	            ROW_NUMBER() OVER (PARTITION BY a.PlayerId ORDER BY b.DatePlayed, b.Id) 
-                    - ROW_NUMBER() OVER (PARTITION BY PlayerId, GameRank ORDER BY b.DatePlayed, b.Id) AS [GroupID]
-	            FROM PlayerGameResult a 
-	            JOIn PlayedGame b on b.Id = a.PlayedGameId
-	            where a.PlayerId = @PlayerId),
+	            (SELECT PlayerGameResult.PlayerId, PlayerGameResult.GameRank, PlayedGame.DatePlayed,
+	            ROW_NUMBER() OVER (PARTITION BY PlayerGameResult.PlayerId ORDER BY PlayedGame.DatePlayed, PlayedGame.Id) 
+                    - ROW_NUMBER() OVER (PARTITION BY PlayerId, GameRank ORDER BY PlayedGame.DatePlayed, PlayedGame.Id) AS [GroupID]
+	            FROM PlayerGameResult 
+	            JOIN PlayedGame on PlayedGame.Id = PlayerGameResult.PlayedGameId
+	            WHERE PlayerGameResult.PlayerId = @PlayerId),
             -- Calculate Wins/Loses totals per each playerId
 	            cte1 AS (SELECT PlayerId, 
 	            SUM(CASE WHEN GameRank = 1 THEN 1 ELSE 0 END) AS [Wins],
