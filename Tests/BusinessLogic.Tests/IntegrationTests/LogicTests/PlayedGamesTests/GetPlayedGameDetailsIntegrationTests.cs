@@ -16,7 +16,6 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 using System;
-using BusinessLogic.DataAccess;
 using BusinessLogic.Exceptions;
 using BusinessLogic.Logic.PlayedGames;
 using BusinessLogic.Models;

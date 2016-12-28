@@ -15,13 +15,12 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
-using BusinessLogic.DataAccess;
+
 using BusinessLogic.Logic.PlayedGames;
 using BusinessLogic.Models.Games;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using BusinessLogic.Models.PlayedGames;
 
 namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGamesTests
@@ -29,29 +28,24 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGamesTests
     [TestFixture]
     public class GetRecentPublicGamesIntegrationTests : IntegrationTestBase
     {
-        private const int NUMBER_OF_GAMES_TO_RETRIEVE = 3;
+        private const int NumberOfGamesToRetrieve = 3;
 
-        List<PublicGameSummary> publicGameSummaryResults;
+        List<PublicGameSummary> _publicGameSummaryResults;
 
         [OneTimeSetUp]
         public void LocalFixtureSetUp()
         {
-            using (NemeStatsDataContext dataContext = new NemeStatsDataContext())
+            var recentlyPlayedGamesFilter = new RecentlyPlayedGamesFilter
             {
-                var retriever = new PlayedGameRetriever(dataContext);
-
-                var recentlyPlayedGamesFilter = new RecentlyPlayedGamesFilter
-                {
-                    NumberOfGamesToRetrieve = NUMBER_OF_GAMES_TO_RETRIEVE
-                };
-                publicGameSummaryResults = retriever.GetRecentPublicGames(recentlyPlayedGamesFilter);
-            }
+                NumberOfGamesToRetrieve = NumberOfGamesToRetrieve
+            };
+            _publicGameSummaryResults = GetInstance<PlayedGameRetriever>().GetRecentPublicGames(recentlyPlayedGamesFilter);
         }
 
         [Test]
         public void ItReturnsTheSpecifiedNumberOfGames()
         {
-            Assert.True(publicGameSummaryResults.Count == NUMBER_OF_GAMES_TO_RETRIEVE);
+            Assert.True(_publicGameSummaryResults.Count == NumberOfGamesToRetrieve);
         }
 
         [Test]
@@ -59,12 +53,12 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGamesTests
         {
             DateTime lastPlayedDateTime = new DateTime(2099, 1, 1);
 
-            foreach(PublicGameSummary summary in publicGameSummaryResults)
+            foreach (PublicGameSummary summary in _publicGameSummaryResults)
             {
                 Assert.GreaterOrEqual(lastPlayedDateTime, summary.DatePlayed);
                 lastPlayedDateTime = summary.DatePlayed;
             }
-            Assert.True(publicGameSummaryResults.Count == NUMBER_OF_GAMES_TO_RETRIEVE);
+            Assert.True(_publicGameSummaryResults.Count == NumberOfGamesToRetrieve);
         }
 
         [Test]
@@ -72,7 +66,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGamesTests
         {
             HashSet<int> setOfIds = new HashSet<int>();
 
-            foreach (PublicGameSummary summary in publicGameSummaryResults)
+            foreach (PublicGameSummary summary in _publicGameSummaryResults)
             {
                 if (setOfIds.Contains(summary.GamingGroupId))
                 {
