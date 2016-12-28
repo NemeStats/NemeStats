@@ -29,15 +29,18 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
     [TestFixture]
     public class GetPlayerStatisticsIntegrationTests : IntegrationTestBase
     {
+        private PlayerRetriever _playerRetriever;
+
+        [SetUp]
+        public void SetUp()
+        {
+            _playerRetriever = GetInstance<PlayerRetriever>();
+        }
+
         [Test]
         public void ItGetsTheGamesPlayedMetrics()
         {
-            using (IDataContext dataContext = new NemeStatsDataContext())
-            {
-                IPlayerRepository playerRepository = new EntityFrameworkPlayerRepository(dataContext);
-                IPlayedGameRetriever playedGameRetriever = new PlayedGameRetriever(dataContext);
-                IPlayerRetriever playerRetriever = new PlayerRetriever(dataContext, playerRepository, playedGameRetriever);
-                PlayerStatistics playerStatistics = playerRetriever.GetPlayerStatistics(testPlayer1.Id);
+                PlayerStatistics playerStatistics = _playerRetriever.GetPlayerStatistics(testPlayer1.Id);
 
                 int totalGamesForPlayer1 = testPlayedGames
                     .Count(playedGame => playedGame.PlayerGameResults
@@ -57,56 +60,42 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
                 int winPercentageForPlayer1 = (int)((decimal)totalWinsForPlayer1 / (totalGamesForPlayer1) * 100);
 
                 Assert.That(playerStatistics.WinPercentage, Is.EqualTo(winPercentageForPlayer1));
-            }
-
         }
 
         [Test]
         public void ItGetsTheTotalPoints()
         {
-            using (IDataContext dataContext = new NemeStatsDataContext())
+            PlayerStatistics playerStatistics = _playerRetriever.GetPlayerStatistics(testPlayer1.Id);
+
+            int totalBasePoints = 0;
+            int totalGameDurationPoints = 0;
+            int totalWeightBonusPoints = 0;
+
+            foreach(PlayedGame playedGame in testPlayedGames)
             {
-                IPlayerRepository playerRepository = new EntityFrameworkPlayerRepository(dataContext);
-                IPlayedGameRetriever playedGameRetriever = new PlayedGameRetriever(dataContext);
-                IPlayerRetriever playerRetriever = new PlayerRetriever(dataContext, playerRepository, playedGameRetriever); 
-                PlayerStatistics playerStatistics = playerRetriever.GetPlayerStatistics(testPlayer1.Id);
-
-                int totalBasePoints = 0;
-                int totalGameDurationPoints = 0;
-                int totalWeightBonusPoints = 0;
-
-                foreach(PlayedGame playedGame in testPlayedGames)
+                if(playedGame.PlayerGameResults.Any(result => result.PlayerId == testPlayer1.Id))
                 {
-                    if(playedGame.PlayerGameResults.Any(result => result.PlayerId == testPlayer1.Id))
-                    {
-                        var playerGameResult = playedGame.PlayerGameResults.First(result => result.PlayerId == testPlayer1.Id);
-                        totalBasePoints += playerGameResult.NemeStatsPointsAwarded;
-                        totalGameDurationPoints += playerGameResult.GameDurationBonusPoints;
-                        totalWeightBonusPoints += playerGameResult.GameWeightBonusPoints;
-                    }
+                    var playerGameResult = playedGame.PlayerGameResults.First(result => result.PlayerId == testPlayer1.Id);
+                    totalBasePoints += playerGameResult.NemeStatsPointsAwarded;
+                    totalGameDurationPoints += playerGameResult.GameDurationBonusPoints;
+                    totalWeightBonusPoints += playerGameResult.GameWeightBonusPoints;
                 }
-
-                Assert.AreEqual(totalBasePoints, playerStatistics.NemePointsSummary.BaseNemePoints);
-                Assert.AreEqual(totalGameDurationPoints, playerStatistics.NemePointsSummary.GameDurationBonusNemePoints);
-                Assert.AreEqual(totalWeightBonusPoints, playerStatistics.NemePointsSummary.WeightBonusNemePoints);
             }
+
+            Assert.AreEqual(totalBasePoints, playerStatistics.NemePointsSummary.BaseNemePoints);
+            Assert.AreEqual(totalGameDurationPoints, playerStatistics.NemePointsSummary.GameDurationBonusNemePoints);
+            Assert.AreEqual(totalWeightBonusPoints, playerStatistics.NemePointsSummary.WeightBonusNemePoints);
         }
 
         [Test]
         public void ItGetsTheAveragePlayersPerGame()
         {
-            using (IDataContext dataContext = new NemeStatsDataContext())
-            {
-                IPlayerRepository playerRepository = new EntityFrameworkPlayerRepository(dataContext);
-                IPlayedGameRetriever playedGameRetriever = new PlayedGameRetriever(dataContext);
-                IPlayerRetriever playerRetriever = new PlayerRetriever(dataContext, playerRepository, playedGameRetriever);
-                PlayerStatistics playerStatistics = playerRetriever.GetPlayerStatistics(testPlayer1.Id);
+            PlayerStatistics playerStatistics = _playerRetriever.GetPlayerStatistics(testPlayer1.Id);
 
-                float averagePlayersPerGame = (float)testPlayedGames.Where(game => game.PlayerGameResults.Any(result => result.PlayerId == testPlayer1.Id))
-                    .Average(game => game.NumberOfPlayers);
+            float averagePlayersPerGame = (float)testPlayedGames.Where(game => game.PlayerGameResults.Any(result => result.PlayerId == testPlayer1.Id))
+                .Average(game => game.NumberOfPlayers);
 
-                Assert.AreEqual(averagePlayersPerGame, playerStatistics.AveragePlayersPerGame);
-            }
+            Assert.AreEqual(averagePlayersPerGame, playerStatistics.AveragePlayersPerGame);
         }
     }
 }
