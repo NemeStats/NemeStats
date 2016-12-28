@@ -34,26 +34,20 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.GameDefinitionsTests.G
     [TestFixture]
     public class GetAllGameDefinitionsIntegrationTests : IntegrationTestBase
     {
-        protected GameDefinitionRetriever retriever;
-        protected IList<GameDefinitionSummary> actualGameDefinitionSummaries;
+        private GameDefinitionRetriever _retriever;
+        private IList<GameDefinitionSummary> _actualGameDefinitionSummaries;
 
         [SetUp]
         public void SetUp()
         {
-            using(NemeStatsDataContext dataContext = new NemeStatsDataContext())
-            {
-                var playerRepository = new EntityFrameworkPlayerRepository(dataContext);
-                var cacheableGameDataRetriever = new BoardGameGeekGameDefinitionInfoRetriever(new DateUtilities(), new CacheService(), dataContext);
-
-                retriever = new GameDefinitionRetriever(dataContext, playerRepository, cacheableGameDataRetriever);
-                actualGameDefinitionSummaries = retriever.GetAllGameDefinitions(testUserWithDefaultGamingGroup.CurrentGamingGroupId);
-            }
+            _retriever = GetInstance<GameDefinitionRetriever>();
+            _actualGameDefinitionSummaries = _retriever.GetAllGameDefinitions(testUserWithDefaultGamingGroup.CurrentGamingGroupId);
         }
 
         [Test]
         public void ItOnlyGetsGameDefinitionsForTheCurrentPlayersGamingGroup()
         {
-            Assert.True(actualGameDefinitionSummaries.All(game => game.GamingGroupId == testUserWithDefaultGamingGroup.CurrentGamingGroupId));
+            Assert.True(_actualGameDefinitionSummaries.All(game => game.GamingGroupId == testUserWithDefaultGamingGroup.CurrentGamingGroupId));
         }
 
         [Test]
@@ -61,7 +55,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.GameDefinitionsTests.G
         {
             string previousName = null;
 
-            foreach (GameDefinition gameDefinition in actualGameDefinitionSummaries)
+            foreach (GameDefinition gameDefinition in _actualGameDefinitionSummaries)
             {
                 if (previousName != null)
                 {
@@ -75,41 +69,34 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.GameDefinitionsTests.G
         [Test]
         public void ItGetsBackChampionAndPlayerInformation()
         {
-            Assert.That(actualGameDefinitionSummaries.All(game => game.Champion != null), Is.True);
-            Assert.That(actualGameDefinitionSummaries.All(game => game.Champion.Player != null), Is.True);
+            Assert.That(_actualGameDefinitionSummaries.All(game => game.Champion != null), Is.True);
+            Assert.That(_actualGameDefinitionSummaries.All(game => game.Champion.Player != null), Is.True);
         }
 
         [Test]
         public void ItGetsBackPreviousChampionAndPlayerInformation()
         {
-            Assert.That(actualGameDefinitionSummaries.All(game => game.PreviousChampion != null), Is.True);
-            Assert.That(actualGameDefinitionSummaries.All(game => game.PreviousChampion.Player != null), Is.True);
+            Assert.That(_actualGameDefinitionSummaries.All(game => game.PreviousChampion != null), Is.True);
+            Assert.That(_actualGameDefinitionSummaries.All(game => game.PreviousChampion.Player != null), Is.True);
         }
 
         [Test]
         public void ItGetsTheBoardGameGeekInfo()
         {
-            Assert.That(actualGameDefinitionSummaries.First(x => x.Id == testGameDefinition.Id).BoardGameGeekInfo, Is.Not.Null);
+            Assert.That(_actualGameDefinitionSummaries.First(x => x.Id == testGameDefinition.Id).BoardGameGeekInfo, Is.Not.Null);
         }
 
         [Test, Ignore("Miscellaneous integration test that might be occassionally useful but not worth slowing things down.")]
         public void TryGamingGroup1()
         {
-            using (NemeStatsDataContext dataContext = new NemeStatsDataContext())
+            var gameDefinitionSummaries = _retriever.GetAllGameDefinitions(1);
+
+            foreach (var summary in gameDefinitionSummaries)
             {
-                var playerRepository = new EntityFrameworkPlayerRepository(dataContext);
-                var cacheableGameDataRetriever = new BoardGameGeekGameDefinitionInfoRetriever(new DateUtilities(), new CacheService(), dataContext);
-
-                retriever = new GameDefinitionRetriever(dataContext, playerRepository, cacheableGameDataRetriever);
-                IList<GameDefinitionSummary> gameDefinitionSummaries = retriever.GetAllGameDefinitions(1);
-
-                foreach (GameDefinitionSummary summary in gameDefinitionSummaries)
+                if (summary.ChampionId != null)
                 {
-                    if (summary.ChampionId != null)
-                    {
-                        Assert.That(summary.Champion, Is.Not.Null);
-                        Assert.That(summary.Champion.Player, Is.Not.Null);
-                    }
+                    Assert.That(summary.Champion, Is.Not.Null);
+                    Assert.That(summary.Champion.Player, Is.Not.Null);
                 }
             }
         }

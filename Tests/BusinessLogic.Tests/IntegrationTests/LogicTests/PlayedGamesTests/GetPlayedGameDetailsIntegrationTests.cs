@@ -28,78 +28,55 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.PlayedGamesTests
     [TestFixture]
     public class GetPlayedGameDetailsIntegrationTests : IntegrationTestBase
     {
-        private PlayedGame GetTestSubjectPlayedGame(NemeStatsDataContext dataContextToTestWith)
+        private PlayedGameRetriever _playedGameRetriever;
+
+        [SetUp]
+        public void SetUp()
         {
-            return new PlayedGameRetriever(dataContextToTestWith)
-                .GetPlayedGameDetails(testPlayedGames[0].Id);
+            _playedGameRetriever = GetInstance<PlayedGameRetriever>();
+        }
+        private PlayedGame GetTestSubjectPlayedGame()
+        {
+            return _playedGameRetriever.GetPlayedGameDetails(testPlayedGames[0].Id);
         }
 
         [Test]
         public void ItRetrievesThePlayedGame()
         {
-            using (NemeStatsDataContext dbContext = new NemeStatsDataContext())
-            {
-                PlayedGame playedGame = GetTestSubjectPlayedGame(dbContext);
-                Assert.NotNull(playedGame);
-            }
+            var playedGame = GetTestSubjectPlayedGame();
+            Assert.NotNull(playedGame);
         }
 
         [Test]
-        public void ItEagerlyFetchesTheGameResults()
+        public void ItFetchesTheGameResults()
         {
-            using(NemeStatsDbContext dbContext = new NemeStatsDbContext())
-            {
-                dbContext.Configuration.LazyLoadingEnabled = false;
-                using (NemeStatsDataContext dataContext = new NemeStatsDataContext(dbContext, securedEntityValidatorFactory))
-                {
-                    PlayedGame playedGame = GetTestSubjectPlayedGame(dataContext);
-                    Assert.GreaterOrEqual(testPlayedGames[0].PlayerGameResults.Count, playedGame.PlayerGameResults.Count());
-                }
-            }
+            var playedGame = GetTestSubjectPlayedGame();
+            Assert.GreaterOrEqual(testPlayedGames[0].PlayerGameResults.Count, playedGame.PlayerGameResults.Count());
         }
 
         [Test]
-        public void ItEagerlyFetchesTheGameDefinition()
+        public void ItFetchesTheGameDefinition()
         {
-            using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
-            {
-                dbContext.Configuration.LazyLoadingEnabled = false;
-                using (NemeStatsDataContext dataContext = new NemeStatsDataContext(dbContext, securedEntityValidatorFactory))
-                {
-                    PlayedGame playedGame = GetTestSubjectPlayedGame(dataContext);
-                    Assert.NotNull(playedGame.GameDefinition);
-                }
-            }
+            var playedGame = GetTestSubjectPlayedGame();
+            Assert.NotNull(playedGame.GameDefinition);
         }
 
         [Test]
-        public void ItEagerlyFetchesThePlayers()
+        public void ItFetchesThePlayers()
         {
-            using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
-            {
-                dbContext.Configuration.LazyLoadingEnabled = false;
-                using (NemeStatsDataContext dataContext = new NemeStatsDataContext(dbContext, securedEntityValidatorFactory))
-                {
-                    PlayedGame playedGame = GetTestSubjectPlayedGame(dataContext);
-                    Assert.NotNull(playedGame.PlayerGameResults[0].Player);
-                }
-            }
+            var playedGame = GetTestSubjectPlayedGame();
+            Assert.NotNull(playedGame.PlayerGameResults[0].Player);
         }
 
         [Test]
         public void ItThrowsAnEntityDoesNotExistExceptionIfTheIdIsInvalid()
         {
-            int invalidId = -1;
+            var invalidId = -1;
             var expectedException = new EntityDoesNotExistException(typeof(PlayedGame), invalidId);
 
-            using (NemeStatsDataContext dataContext = new NemeStatsDataContext())
-            {
-                PlayedGameRetriever retriever = new PlayedGameRetriever(dataContext);
+            Exception actualException = Assert.Throws<EntityDoesNotExistException>(() => _playedGameRetriever.GetPlayedGameDetails(invalidId));
 
-                Exception actualException = Assert.Throws<EntityDoesNotExistException>(() => retriever.GetPlayedGameDetails(invalidId));
-
-                Assert.That(expectedException.Message, Is.EqualTo(actualException.Message));
-            }
+            Assert.That(expectedException.Message, Is.EqualTo(actualException.Message));
         }
     }
 }
