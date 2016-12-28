@@ -15,10 +15,10 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
-using NUnit.Framework;
-using System.Linq;
 
-namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.NemeStatsDataContextTests.ApplicationDataContextTests
+using NUnit.Framework;
+
+namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.NemeStatsDataContextTests
 {
     [TestFixture]
     public class GetQueryableIntegrationTests : IntegrationTestBase
