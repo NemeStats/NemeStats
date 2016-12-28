@@ -20,8 +20,6 @@ using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.Logic.Nemeses;
 using BusinessLogic.Logic.PlayedGames;
 using BusinessLogic.Logic.Players;
-using BusinessLogic.Models;
-using BusinessLogic.Models.Players;
 using NUnit.Framework;
 using System.Linq;
 
@@ -30,129 +28,67 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
     [TestFixture]
     public class GetPlayerDetailsIntegrationTests : IntegrationTestBase
     {
+        private PlayerRetriever _playerRetriever;
+
+        [SetUp]
+        public void SetUp()
+        {
+            _playerRetriever = GetInstance<PlayerRetriever>();
+        }
+
         [Test]
         public void ItEagerlyFetchesPlayerGameResults()
         {
-            using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
-            {
-                using (IDataContext dataContext = new NemeStatsDataContext(dbContext, securedEntityValidatorFactory))
-                {
-                    NemesisHistoryRetriever nemesisHistoryRetriever = new NemesisHistoryRetriever(dataContext);
-                    IPlayerRepository playerRepository = new EntityFrameworkPlayerRepository(dataContext);
-                    IPlayedGameRetriever playedGameRetriever = new PlayedGameRetriever(dataContext);
-                    PlayerRetriever playerRetriever = new PlayerRetriever(dataContext, playerRepository, playedGameRetriever);
-
-                    dbContext.Configuration.LazyLoadingEnabled = false;
-                    dbContext.Configuration.ProxyCreationEnabled = false;
-
-                    PlayerDetails playerDetails = playerRetriever.GetPlayerDetails(testPlayer1.Id, 1);
-                    Assert.NotNull(playerDetails.PlayerGameResults, "Failed to retrieve PlayerGameResults.");
-                }
-            }
+            var playerDetails = _playerRetriever.GetPlayerDetails(testPlayer1.Id, 1);
+            Assert.NotNull(playerDetails.PlayerGameResults, "Failed to retrieve PlayerGameResults.");
         }
 
         [Test]
         public void ItEagerlyFetchesPlayedGames()
         {
-            using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
-            {
-                using (IDataContext dataContext = new NemeStatsDataContext(dbContext, securedEntityValidatorFactory))
-                {
-                    dbContext.Configuration.LazyLoadingEnabled = false;
-                    dbContext.Configuration.ProxyCreationEnabled = false;
-                    INemesisHistoryRetriever nemesisHistoryRetriever = new NemesisHistoryRetriever(dataContext);
-                    IPlayerRepository playerRepository = new EntityFrameworkPlayerRepository(dataContext);
-                    IPlayedGameRetriever playedGameRetriever = new PlayedGameRetriever(dataContext);
-                    IPlayerRetriever playerRetriever = new PlayerRetriever(dataContext, playerRepository, playedGameRetriever);
-                    PlayerDetails testPlayerDetails = playerRetriever.GetPlayerDetails(testPlayer1.Id, 1);
+            var testPlayerDetails = _playerRetriever.GetPlayerDetails(testPlayer1.Id, 1);
 
-                    Assert.NotNull(testPlayerDetails.PlayerGameResults.First().PlayedGame);
-                }
-            }
+            Assert.NotNull(testPlayerDetails.PlayerGameResults.First().PlayedGame);
         }
 
         [Test]
         public void ItEagerlyFetchesGameDefinitions()
         {
-            using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
-            {
-                using (IDataContext dataContext = new NemeStatsDataContext(dbContext, securedEntityValidatorFactory))
-                {
-                    dbContext.Configuration.LazyLoadingEnabled = false;
-                    dbContext.Configuration.ProxyCreationEnabled = false;
-                    INemesisHistoryRetriever nemesisHistoryRetriever = new NemesisHistoryRetriever(dataContext);
-                    IPlayerRepository playerRepository = new EntityFrameworkPlayerRepository(dataContext);
-                    IPlayedGameRetriever playedGameRetriever = new PlayedGameRetriever(dataContext);
-                    IPlayerRetriever playerRetriever = new PlayerRetriever(dataContext, playerRepository, playedGameRetriever);
-                    PlayerDetails testPlayerDetails = playerRetriever.GetPlayerDetails(testPlayer1.Id, 1);
+            var testPlayerDetails = _playerRetriever.GetPlayerDetails(testPlayer1.Id, 1);
 
-                    Assert.NotNull(testPlayerDetails.PlayerGameResults.First().PlayedGame.GameDefinition);
-                }
-            }
+            Assert.NotNull(testPlayerDetails.PlayerGameResults.First().PlayedGame.GameDefinition);
         }
 
         [Test]
         public void ItSetsPlayerStatistics()
         {
-            using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
-            {
-                using (IDataContext dataContext = new NemeStatsDataContext(dbContext, securedEntityValidatorFactory))
-                {
-                    INemesisHistoryRetriever nemesisHistoryRetriever = new NemesisHistoryRetriever(dataContext);
-                    IPlayerRepository playerRepository = new EntityFrameworkPlayerRepository(dataContext);
-                    IPlayedGameRetriever playedGameRetriever = new PlayedGameRetriever(dataContext);
-                    IPlayerRetriever playerRetriever = new PlayerRetriever(dataContext,  playerRepository, playedGameRetriever);
-                    PlayerDetails playerDetails = playerRetriever.GetPlayerDetails(testPlayer1.Id, 1);
+            var playerDetails = _playerRetriever.GetPlayerDetails(testPlayer1.Id, 1);
 
-                    Assert.NotNull(playerDetails.PlayerStats);
-                }
-            }
+            Assert.NotNull(playerDetails.PlayerStats);
         }
 
         [Test]
         public void ItOnlyGetsTheSpecifiedNumberOfRecentGames()
         {
-            using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
-            {
-                using (IDataContext dataContext = new NemeStatsDataContext(dbContext, securedEntityValidatorFactory))
-                {
-                    int numberOfGamesToRetrieve = 1;
+            int numberOfGamesToRetrieve = 2;
+            var playerDetails = _playerRetriever.GetPlayerDetails(testPlayer1.Id, numberOfGamesToRetrieve);
 
-                    INemesisHistoryRetriever nemesisHistoryRetriever = new NemesisHistoryRetriever(dataContext);
-                    IPlayerRepository playerRepository = new EntityFrameworkPlayerRepository(dataContext);
-                    IPlayedGameRetriever playedGameRetriever = new PlayedGameRetriever(dataContext);
-                    IPlayerRetriever playerRetriever = new PlayerRetriever(dataContext, playerRepository, playedGameRetriever);
-                    PlayerDetails playerDetails = playerRetriever.GetPlayerDetails(testPlayer1.Id, numberOfGamesToRetrieve);
-
-                    Assert.AreEqual(numberOfGamesToRetrieve, playerDetails.PlayerGameResults.Count);
-                }
-            }
+            Assert.AreEqual(numberOfGamesToRetrieve, playerDetails.PlayerGameResults.Count);
         }
 
         [Test]
         public void ItOrdersPlayerGameResultsByTheDatePlayedDescending()
         {
-            using (NemeStatsDbContext dbContext = new NemeStatsDbContext())
+            var numberOfGamesToRetrieve = 3;
+            var playerDetails = _playerRetriever.GetPlayerDetails(testPlayer1.Id, numberOfGamesToRetrieve);
+
+            var lastTicks = long.MaxValue; ;
+            Assert.IsTrue(playerDetails.PlayerGameResults.Count == numberOfGamesToRetrieve);
+            foreach (var result in playerDetails.PlayerGameResults)
             {
-                using (IDataContext dataContext = new NemeStatsDataContext(dbContext, securedEntityValidatorFactory))
-                {
-                    int numberOfGamesToRetrieve = 3;
+                Assert.GreaterOrEqual(lastTicks, result.PlayedGame.DatePlayed.Ticks);
 
-                    INemesisHistoryRetriever nemesisHistoryRetriever = new NemesisHistoryRetriever(dataContext);
-                    IPlayerRepository playerRepository = new EntityFrameworkPlayerRepository(dataContext);
-                    IPlayedGameRetriever playedGameRetriever = new PlayedGameRetriever(dataContext);
-                    IPlayerRetriever playerRetriever = new PlayerRetriever(dataContext, playerRepository, playedGameRetriever);
-                    PlayerDetails playerDetails = playerRetriever.GetPlayerDetails(testPlayer1.Id, numberOfGamesToRetrieve);
-
-                    long lastTicks = long.MaxValue; ;
-                    Assert.IsTrue(playerDetails.PlayerGameResults.Count == numberOfGamesToRetrieve);
-                    foreach (PlayerGameResult result in playerDetails.PlayerGameResults)
-                    {
-                        Assert.GreaterOrEqual(lastTicks, result.PlayedGame.DatePlayed.Ticks);
-
-                        lastTicks = result.PlayedGame.DatePlayed.Ticks;
-                    }
-                }
+                lastTicks = result.PlayedGame.DatePlayed.Ticks;
             }
         }
     }

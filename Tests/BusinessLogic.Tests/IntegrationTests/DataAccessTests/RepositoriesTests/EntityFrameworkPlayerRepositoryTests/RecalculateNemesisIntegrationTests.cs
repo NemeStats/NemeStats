@@ -17,7 +17,6 @@
 #endregion
 using BusinessLogic.DataAccess.Repositories;
 using NUnit.Framework;
-using System.Linq;
 using BusinessLogic.DataAccess;
 using BusinessLogic.Models.Players;
 using BusinessLogic.Models;
