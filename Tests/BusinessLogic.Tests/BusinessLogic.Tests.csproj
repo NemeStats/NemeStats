@@ -394,6 +394,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\X.Web.Sitemap\X.Web.Sitemap.csproj">
+      <Project>{1f291039-c319-4f03-966f-3bf947b7e5d2}</Project>
+      <Name>X.Web.Sitemap</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Source\BoardGameGeekApiClient\BoardGameGeekApiClient.csproj">
       <Project>{d4efacf4-b72b-4395-89bf-4caa9a33c427}</Project>
       <Name>BoardGameGeekApiClient</Name>
@@ -405,10 +409,6 @@
     <ProjectReference Include="..\..\Source\NemeStats.IoC\NemeStats.IoC.csproj">
       <Project>{b8af7353-c741-4e61-bed4-0eb603d0c3c0}</Project>
       <Name>NemeStats.IoC</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Source\X.Web.Sitemap\X.Web.Sitemap.csproj">
-      <Project>{1f291039-c319-4f03-966f-3bf947b7e5d2}</Project>
-      <Name>X.Web.Sitemap</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

@@ -106,6 +106,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\X.Web.Sitemap\X.Web.Sitemap.csproj">
+      <Project>{1f291039-c319-4f03-966f-3bf947b7e5d2}</Project>
+      <Name>X.Web.Sitemap</Name>
+    </ProjectReference>
     <ProjectReference Include="..\BoardGameGeekApiClient\BoardGameGeekApiClient.csproj">
       <Project>{D4EFACF4-B72B-4395-89BF-4CAA9A33C427}</Project>
       <Name>BoardGameGeekApiClient</Name>
@@ -113,10 +117,6 @@
     <ProjectReference Include="..\BusinessLogic\BusinessLogic.csproj">
       <Project>{B1184B6A-9C68-48B6-814C-0667B69F89D2}</Project>
       <Name>BusinessLogic</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\X.Web.Sitemap\X.Web.Sitemap.csproj">
-      <Project>{1F291039-C319-4F03-966F-3BF947B7E5D2}</Project>
-      <Name>X.Web.Sitemap</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

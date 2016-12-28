@@ -37,7 +37,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NemeStats.ScheduledJobs", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NemeStats.ScheduledJobs.Tests", "Tests\NemeStats.ScheduledJobs.Tests\NemeStats.ScheduledJobs.Tests\NemeStats.ScheduledJobs.Tests.csproj", "{F552198C-8177-4C98-8339-2EF1D513291B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "X.Web.Sitemap", "Source\X.Web.Sitemap\X.Web.Sitemap.csproj", "{1F291039-C319-4F03-966F-3BF947B7E5D2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "X.Web.Sitemap", "..\X.Web.Sitemap\X.Web.Sitemap.csproj", "{1F291039-C319-4F03-966F-3BF947B7E5D2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

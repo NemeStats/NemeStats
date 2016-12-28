@@ -1094,6 +1094,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\X.Web.Sitemap\X.Web.Sitemap.csproj">
+      <Project>{1f291039-c319-4f03-966f-3bf947b7e5d2}</Project>
+      <Name>X.Web.Sitemap</Name>
+    </ProjectReference>
     <ProjectReference Include="..\BoardGameGeekApiClient\BoardGameGeekApiClient.csproj">
       <Project>{d4efacf4-b72b-4395-89bf-4caa9a33c427}</Project>
       <Name>BoardGameGeekApiClient</Name>
@@ -1101,10 +1105,6 @@
     <ProjectReference Include="..\NemeStats.Hubs\NemeStats.Hubs.csproj">
       <Project>{036E186C-4A61-4A8F-935B-3D7DF1B7C4A6}</Project>
       <Name>NemeStats.Hubs</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\X.Web.Sitemap\X.Web.Sitemap.csproj">
-      <Project>{1f291039-c319-4f03-966f-3bf947b7e5d2}</Project>
-      <Name>X.Web.Sitemap</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
