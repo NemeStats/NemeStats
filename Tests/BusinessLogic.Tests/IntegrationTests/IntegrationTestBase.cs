@@ -42,7 +42,7 @@ using UniversalAnalyticsHttpWrapper;
 namespace BusinessLogic.Tests.IntegrationTests
 {
     [TestFixture, Category("Integration")]
-    public class IntegrationTestBase//TODO figure out StructureMap issue : IntegrationTestIoCBase
+    public class IntegrationTestBase : IntegrationTestIoCBase
     {
         public const int BOARD_GAME_GEEK_ID_FOR_RACE_FOR_THE_GALAXY = 28143;
 
