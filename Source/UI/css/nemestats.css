@@ -1056,6 +1056,9 @@ button > i.fa {
     font-size: 22px; }
     .achievement.medium .content > span {
       line-height: 0 !important; }
+      .achievement.medium .content > span.ns-icon-bgg {
+        font-size: 25px;
+        padding: 15px 0 0 0; }
       .achievement.medium .content > span[class^='ns-icon-'] {
         line-height: 1px !important; }
 

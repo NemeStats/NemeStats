@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using BusinessLogic.DataAccess;
 using BusinessLogic.Logic.Achievements;
@@ -62,6 +63,16 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.AchievementTests
             {
                 AddPlayerGameResult(_playerId - 1, playerGameResults, i + 100);
             }
+            //setup some games that would have put the player over the threshold except for the fact that it's prior to 2016
+            for (int i = 0; i < _numberOfTimesEachGameMustBePlayed; i++)
+            {
+                AddPlayerGameResult(_playerId - 1, playerGameResults, i + 100, new DateTime(2015, 12, 31));
+            }
+            //setup some games that would have put the player over the threshold except for the fact that it's after 2016
+            for (int i = 0; i < _numberOfTimesEachGameMustBePlayed; i++)
+            {
+                AddPlayerGameResult(_playerId - 1, playerGameResults, i + 100, new DateTime(2017, 1, 1));
+            }
             _autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<PlayerGameResult>()).Return(playerGameResults.AsQueryable());
 
             //--act
@@ -70,7 +81,6 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.AchievementTests
             //--assert
             Assert.That(results.LevelAwarded, Is.Null);
         }
-
 
         [Test]
         public void ItAwardsGoldWhenPlayerHasExactlyGoldNumberOfPlayedGames()
@@ -109,7 +119,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.AchievementTests
         private static void AddPlayerGameResult(
             int playerId, 
             List<PlayerGameResult> playerGameResults, 
-            int gameDefinitionId)
+            int gameDefinitionId,
+            DateTime? datePlayed = null)
         {
             playerGameResults.Add(
                                   new PlayerGameResult
@@ -117,7 +128,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.AchievementTests
                                       PlayerId = playerId,
                                       PlayedGame = new PlayedGame
                                       {
-                                          GameDefinitionId = gameDefinitionId
+                                          GameDefinitionId = gameDefinitionId,
+                                          DatePlayed = datePlayed ?? new DateTime(2016, 1, 1)
                                       }
                                   });
         }

@@ -93,6 +93,10 @@
       <HintPath>..\..\packages\UniversalAnalyticsMeasurementProtocolWrapper.1.3.1\lib\net40\UniversalAnalyticsHttpWrapper.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="X.Web.Sitemap, Version=1.5.0.41634, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\xsitemap.1.5.0.100\lib\net40-client\X.Web.Sitemap.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommonRegistry.cs" />
@@ -106,10 +110,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\X.Web.Sitemap\X.Web.Sitemap.csproj">
-      <Project>{1f291039-c319-4f03-966f-3bf947b7e5d2}</Project>
-      <Name>X.Web.Sitemap</Name>
-    </ProjectReference>
     <ProjectReference Include="..\BoardGameGeekApiClient\BoardGameGeekApiClient.csproj">
       <Project>{D4EFACF4-B72B-4395-89BF-4CAA9A33C427}</Project>
       <Name>BoardGameGeekApiClient</Name>

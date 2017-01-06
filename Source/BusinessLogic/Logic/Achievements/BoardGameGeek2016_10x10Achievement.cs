@@ -19,7 +19,7 @@ namespace BusinessLogic.Logic.Achievements
         public override AchievementGroup Group => AchievementGroup.Game;
         public override string Name => "BoardGameGeek 2016 10x10 Challenge";
         public override string DescriptionFormat => "Completed the BoardGameGeek 2016 10x10 challenge by playing {0} games 10 times each in 2016: http://boardgamegeek.com/geeklist/201403/2016-challenge-play-10-games-10-times-each";
-        public override string IconClass => "ns-icon-dice";
+        public override string IconClass => "ns-icon-bgg";
 
         public override Dictionary<AchievementLevel, int> LevelThresholds => new Dictionary<AchievementLevel, int>
         {
@@ -38,14 +38,20 @@ namespace BusinessLogic.Logic.Achievements
             var numberOfGamesWith10PlaysIn2016 =
                 DataContext
                     .GetQueryable<PlayerGameResult>()
-                    .Where(x => x.PlayerId == playerId && x.PlayedGame.DatePlayed >= START_OF_2016 && x.PlayedGame.DatePlayed <= END_OF_2016)
+                    .Where(
+                        x =>
+                            x.PlayerId == playerId && x.PlayedGame.DatePlayed >= START_OF_2016 &&
+                            x.PlayedGame.DatePlayed <= END_OF_2016)
                     .GroupBy(x => x.PlayedGame.GameDefinitionId)
-                    .Select(group => new { group.Key, Count = group.Count()})
-                    .Count(x => x.Count >= 10);
+                    .Select(group => new { group.Key, Count = group.Count() })
+                    .Where(x => x.Count >= 10)
+                    .Select(s => s.Key)
+                    .ToList();
 
-            result.PlayerProgress = numberOfGamesWith10PlaysIn2016;
-            if (numberOfGamesWith10PlaysIn2016 == LevelThresholds[AchievementLevel.Gold])
+            result.PlayerProgress = numberOfGamesWith10PlaysIn2016.Count();
+            if (result.PlayerProgress == LevelThresholds[AchievementLevel.Gold])
             {
+                result.RelatedEntities = numberOfGamesWith10PlaysIn2016;
                 result.LevelAwarded = AchievementLevel.Gold;
             }
             return result;

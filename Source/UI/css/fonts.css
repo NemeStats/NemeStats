@@ -2166,4 +2166,13 @@
 .ns-icon-meeple:before {
   content: "\e914"; }
 
+.ns-icon-second-place:before {
+  content: "\e915"; }
+
+.ns-icon-bgg {
+  font-size: 55px;
+  padding: 5px 0 0 0; }
+  .ns-icon-bgg:before {
+    content: "\e916"; }
+
 /*# sourceMappingURL=fonts.css.map */
