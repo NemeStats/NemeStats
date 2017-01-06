@@ -61,17 +61,18 @@ namespace NemeStats.ScheduledJobs
 
             log.WriteLine($"Updated {jobResult} games in {clock.Elapsed}");
         }
-
-        /// <summary>
-        /// Every day at 08:00
-        /// </summary>
-        /// <param name="info"></param>
-        /// <param name="log"></param>
-        /// <returns></returns>
-        public static void RebuildSitemaps([TimerTrigger("0 0 8 * * *")] TimerInfo info, TextWriter log)
-        {
-            var result = Program.Container.GetInstance<ISitemapGeneratorService>().RegenerateSitemaps();
-            log.WriteLine($"Generated {result.NumberOfSitemapsGenerated} sitemaps in {result.TimeElapsedInMilliseconds} milliseconds.");
-        }
+        
+        //TODO finish implementing this on 
+        ///// <summary>
+        ///// Every day at 08:00
+        ///// </summary>
+        ///// <param name="info"></param>
+        ///// <param name="log"></param>
+        ///// <returns></returns>
+        //public static void RebuildSitemaps([TimerTrigger("0 0 8 * * *")] TimerInfo info, TextWriter log)
+        //{
+        //    var result = Program.Container.GetInstance<ISitemapGeneratorService>().RegenerateSitemaps();
+        //    log.WriteLine($"Generated {result.NumberOfSitemapsGenerated} sitemaps in {result.TimeElapsedInMilliseconds} milliseconds.");
+        //}
     }
 }
