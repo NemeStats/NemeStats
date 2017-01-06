@@ -39,17 +39,17 @@ namespace NemeStats.ScheduledJobs.Tests.FunctionsTests.RebuildSitemapsTests
         }
 
         //TODO this will be completed in Issue #564
-        //[Test]
-        //public void It_Rebuilds_The_Sitemap()
-        //{
-        //    //--arrange
+        [Test]
+        public void It_Rebuilds_The_Sitemap()
+        {
+            ////--arrange
 
-        //    //--act
-        //    Functions.RebuildSitemaps(_timerInfoMock, _textWriterMock);
+            ////--act
+            //Functions.RebuildSitemaps(_timerInfoMock, _textWriterMock);
 
-        //    //--assert
-        //    _sitemapGeneratorServiceMock.Received().RegenerateSitemaps();
-        //}
+            ////--assert
+            //_sitemapGeneratorServiceMock.Received().RegenerateSitemaps();
+        }
 
         //[Test]
         //public void It_Logs_The_Results_Of_The_Job()
