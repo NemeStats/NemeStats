@@ -130,12 +130,8 @@
       <HintPath>..\..\packages\Sendgrid.6.3.0\lib\SendGridMail.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="StructureMap, Version=4.1.1.372, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\structuremap.4.1.1.372\lib\net40\StructureMap.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="StructureMap.Net4, Version=4.1.1.372, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\structuremap.4.1.1.372\lib\net40\StructureMap.Net4.dll</HintPath>
+    <Reference Include="StructureMap, Version=4.4.2.472, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\StructureMap.4.4.2\lib\net45\StructureMap.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="StructureMap.Web, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -170,6 +166,10 @@
     </Reference>
     <Reference Include="X.PagedList, Version=1.24.1.31653, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
       <HintPath>..\..\packages\X.PagedList.1.24.1.320\lib\net451\X.PagedList.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="X.Web.Sitemap, Version=1.5.0.41634, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\xsitemap.1.5.0.100\lib\net40-client\X.Web.Sitemap.dll</HintPath>
       <Private>True</Private>
     </Reference>
   </ItemGroup>
@@ -231,6 +231,15 @@
     <Compile Include="Facades\ITopGamingGroupsRetriever.cs" />
     <Compile Include="Facades\ITopPlayersRetriever.cs" />
     <Compile Include="Facades\ITrendingGamesRetriever.cs" />
+    <Compile Include="Jobs\SitemapGenerator\GamingGroupsSitemapGenerator.cs" />
+    <Compile Include="Jobs\SitemapGenerator\IGamingGroupsSitemapGenerator.cs" />
+    <Compile Include="Jobs\SitemapGenerator\ISitemapGeneratorService.cs" />
+    <Compile Include="Jobs\SitemapGenerator\IStaticPagesSitemapGenerator.cs" />
+    <Compile Include="Jobs\SitemapGenerator\IUniversalGameSitemapGenerator.cs" />
+    <Compile Include="Jobs\SitemapGenerator\RegenerateSitemapsJobResult.cs" />
+    <Compile Include="Jobs\SitemapGenerator\SitemapGeneratorService.cs" />
+    <Compile Include="Jobs\SitemapGenerator\StaticPagesSitemapGenerator.cs" />
+    <Compile Include="Jobs\SitemapGenerator\UniversalGameSitemapGenerator.cs" />
     <Compile Include="Logic\Achievements\HolidayGamerAchievement.cs" />
     <Compile Include="Logic\Achievements\SoCloseAchievement.cs" />
     <Compile Include="Logic\BoardGameGeekGameDefinitions\IBoardGameGeekGameDefinitionInfoRetriever.cs" />
@@ -243,8 +252,8 @@
     <Compile Include="Logic\BoardGameGeekGameDefinitions\BoardGameGeekGameDefinitionInfoRetriever.cs" />
     <Compile Include="Jobs\BaseJobResult.cs" />
     <Compile Include="Jobs\BaseJobService.cs" />
-    <Compile Include="Jobs\BoardGameGeekBatchUpdateJobService\LinkOrphanGamesJobResult.cs" />
-    <Compile Include="Jobs\BoardGameGeekBatchUpdateJobService\BoardGameGeekBatchUpdateJobService.cs" />
+    <Compile Include="Jobs\BoardGameGeekBatchUpdate\LinkOrphanGamesJobResult.cs" />
+    <Compile Include="Jobs\BoardGameGeekBatchUpdate\BoardGameGeekBatchUpdateJobService.cs" />
     <Compile Include="Logic\Achievements\AchievementAwarded.cs" />
     <Compile Include="Logic\Achievements\BaseAchievement.cs" />
     <Compile Include="Logic\Achievements\BoardGameGeek2016_10x10Achievement.cs" />
@@ -288,7 +297,7 @@
     <Compile Include="Logic\BoardGameGeek\BoardGameGeekGameDefinitionCreator.cs" />
     <Compile Include="Logic\BoardGameGeek\BoardGameGeekGamesImporter.cs" />
     <Compile Include="Logic\BoardGameGeek\BoardGameGeekUrlBuilder.cs" />
-    <Compile Include="Jobs\BoardGameGeekBatchUpdateJobService\IBoardGameGeekBatchUpdateJobService.cs" />
+    <Compile Include="Jobs\BoardGameGeekBatchUpdate\IBoardGameGeekBatchUpdateJobService.cs" />
     <Compile Include="Logic\BoardGameGeek\IBoardGameGeekGameDefinitionCreator.cs" />
     <Compile Include="Logic\BoardGameGeek\IBoardGameGeekGamesImporter.cs" />
     <Compile Include="Logic\Champions\ChampionRecalculator.cs" />
@@ -432,8 +441,10 @@
     <Compile Include="Models\Games\BoardGameGeekInfo.cs" />
     <Compile Include="Models\Games\BoardGameGeekMechanic.cs" />
     <Compile Include="Models\Games\RecordedGameBase.cs" />
+    <Compile Include="Models\Games\UniversalGameSitemapInfo.cs" />
     <Compile Include="Models\Games\UniversalGameStats.cs" />
     <Compile Include="Models\Games\UpdatedGame.cs" />
+    <Compile Include="Models\GamingGroups\GamingGroupSitemapInfo.cs" />
     <Compile Include="Models\PlayedGameApplicationLinkage.cs" />
     <Compile Include="Models\Games\SavePlayedGameRequest.cs" />
     <Compile Include="Models\Games\TrendingGame.cs" />
@@ -829,7 +840,9 @@
     <None Include="App.Tosho.config">
       <DependentUpon>App.config</DependentUpon>
     </None>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
@@ -1095,7 +1108,9 @@
       <Name>NemeStats.Hubs</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Logic\Sitemaps\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

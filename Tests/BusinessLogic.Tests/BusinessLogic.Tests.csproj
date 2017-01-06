@@ -46,6 +46,10 @@
       <HintPath>..\..\packages\AutoMapper.4.1.1\lib\net45\AutoMapper.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Castle.Core, Version=3.3.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Castle.Core.3.3.3\lib\net45\Castle.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
       <Private>True</Private>
@@ -100,6 +104,14 @@
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NSubstitute, Version=1.10.0.0, Culture=neutral, PublicKeyToken=92dd2e9066daa5ca, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NSubstitute.1.10.0.0\lib\net45\NSubstitute.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NSubstituteAutoMocker, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NSubstituteAutoMocker.1.1.0.0\lib\net45\NSubstituteAutoMocker.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="nunit.core, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
@@ -161,16 +173,12 @@
       <HintPath>..\..\packages\Shouldly.2.8.2\lib\net451\Shouldly.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="StructureMap, Version=4.1.1.372, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\structuremap.4.1.1.372\lib\net40\StructureMap.dll</HintPath>
+    <Reference Include="StructureMap, Version=4.4.2.472, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\StructureMap.4.4.2\lib\net45\StructureMap.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="StructureMap.AutoMocking, Version=4.0.0.315, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\structuremap.automocking.4.0.0.315\lib\net40\StructureMap.AutoMocking.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="StructureMap.Net4, Version=4.1.1.372, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\structuremap.4.1.1.372\lib\net40\StructureMap.Net4.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -192,13 +200,19 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\UniversalAnalyticsMeasurementProtocolWrapper.1.3.1\lib\net40\UniversalAnalyticsHttpWrapper.dll</HintPath>
     </Reference>
+    <Reference Include="X.Web.Sitemap, Version=1.5.0.41634, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\xsitemap.1.5.0.100\lib\net40-client\X.Web.Sitemap.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IntegrationTests\DataAccessTests\NemeStatsDataContextTests\FindByIdIntegrationTests.cs" />
     <Compile Include="IntegrationTests\DataAccessTests\NemeStatsDataContextTests\GetQueryableIntegrationTests.cs" />
     <Compile Include="IntegrationTests\DataAccessTests\RepositoriesTests\ChamionRepositoryTests\GetChampionDataTests.cs" />
     <Compile Include="Fakes\FakeEventBus.cs" />
+    <Compile Include="IntegrationTests\IntegrationTestIoCBase.cs" />
     <Compile Include="IntegrationTests\JobsTests\BoardGameGeekBatchUpdateServiceTests\RefreshAllBoardGameGeekDataIntegrationTest.cs" />
+    <Compile Include="IntegrationTests\JobsTests\SitemapGeneratorTests\SitemapGeneratorServiceTests\RegenerateSitemapsIntegrationTests.cs" />
     <Compile Include="IntegrationTests\LogicTests\BoardGameGeekThumbnailAttacherTests\CleanUpExistingRecordsTests.cs" />
     <Compile Include="IntegrationTests\LogicTests\ChampionsTests\RecalculateChampionTests.cs" />
     <Compile Include="IntegrationTests\LogicTests\EventsTests\AchievementsEventHandlerIntegrationTests.cs" />
@@ -236,6 +250,10 @@
     <Compile Include="UnitTests\FacadesTests\TopPlayersRetrieverTests.cs" />
     <Compile Include="UnitTests\FacadesTests\TrendingGamesRetrieverTests.cs" />
     <Compile Include="UnitTests\FacadesTests\TopGamingGroupsRetrieverTests.cs" />
+    <Compile Include="UnitTests\JobsTests\SitemapGeneratorTests\SitemapGeneratorServiceTests\RegenerateSitemapsTests.cs" />
+    <Compile Include="UnitTests\JobsTests\SitemapGeneratorTests\StaticPagesSitemapGeneratorTests\BuildStaticPagesSitemapTests.cs" />
+    <Compile Include="UnitTests\JobsTests\SitemapGeneratorTests\GamingGroupsSitemapGeneratorTests\GamingGroupsSitemapGeneratorTests.cs" />
+    <Compile Include="UnitTests\JobsTests\SitemapGeneratorTests\UniversalGameSitemapGeneratorTests\BuildUniversalGamesSitemapsTests.cs" />
     <Compile Include="UnitTests\LogicTests\AchievementTests\HolidayGamerAchievementTests.cs" />
     <Compile Include="UnitTests\LogicTests\AchievementTests\SoCloseAchievementTests.cs" />
     <Compile Include="UnitTests\LogicTests\BoardGameGeekGameDefinitionsTests\BoardGameGeekGameDefinitionInfoRetrieverTests\GetFromSourceTests.cs" />
@@ -283,6 +301,7 @@
     <Compile Include="UnitTests\LogicTests\AchievementTests\DiversifiedAchievementTests\When_Player_Has_Not_Enought_For_Silver_Level.cs" />
     <Compile Include="UnitTests\LogicTests\AchievementTests\DiversifiedAchievementTests\When_Player_Not_Accomplish_Achievement_Requirements.cs" />
     <Compile Include="UnitTests\LogicTests\AchievementTests\SocialButterflyAchievementTests.cs" />
+    <Compile Include="UnitTests\LogicTests\BoardGameGeekGameDefinitionsTests\UniversalGameRetrieverTests\GetAllActiveBoardGameGeekGameDefinitionSitemapInfosTests.cs" />
     <Compile Include="UnitTests\LogicTests\BoardGameGeekGameDefinitionsTests\UniversalGameRetrieverTests\GetBoardGameGeekGameSummaryTests.cs" />
     <Compile Include="UnitTests\LogicTests\BoardGameGeekGameDefinitionsTests\UniversalStatsRetrieverTests\GetFromSourceTests.cs" />
     <Compile Include="UnitTests\LogicTests\BoardGameGeekGameDefinitionsTests\UniversalTopChampionsRetreiverTests\GetFromSourceTests.cs" />
@@ -296,6 +315,7 @@
     <Compile Include="UnitTests\LogicTests\GameDefinitionsTests\GameDefinitionSaverTests\UpdateGameDefinitionTests.cs" />
     <Compile Include="UnitTests\LogicTests\GamingGroupsTests\GamingGroupRetrieverTests\GamingGroupRetrieverTestBase.cs" />
     <Compile Include="UnitTests\LogicTests\GamingGroupsTests\GamingGroupRetrieverTests\GetGamingGroupsForUserTests.cs" />
+    <Compile Include="UnitTests\LogicTests\GamingGroupsTests\GamingGroupRetrieverTests\GetGamingGroupsSitemapInfoTests.cs" />
     <Compile Include="UnitTests\LogicTests\GamingGroupsTests\GamingGroupSaverTests\UpdatePublicGamingGroupDetails.cs" />
     <Compile Include="UnitTests\LogicTests\PlayedGamesTests\ApplicationLinkerTests\ApplicationLinkerTests.cs" />
     <Compile Include="UnitTests\LogicTests\PlayedGamesTests\PlayedGameRetrieverTests\SearchPlayedGamesTests.cs" />
@@ -362,7 +382,9 @@
     <Compile Include="UnitTests\ModelsTests\UtilityTests\BasicDateRangeFilterTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="App.Debug.config">
       <DependentUpon>App.config</DependentUpon>
     </None>
@@ -372,7 +394,9 @@
     <None Include="App.Release.config">
       <DependentUpon>App.config</DependentUpon>
     </None>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Source\BoardGameGeekApiClient\BoardGameGeekApiClient.csproj">
@@ -382,6 +406,10 @@
     <ProjectReference Include="..\..\Source\BusinessLogic\BusinessLogic.csproj">
       <Project>{b1184b6a-9c68-48b6-814c-0667b69f89d2}</Project>
       <Name>BusinessLogic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Source\NemeStats.IoC\NemeStats.IoC.csproj">
+      <Project>{b8af7353-c741-4e61-bed4-0eb603d0c3c0}</Project>
+      <Name>NemeStats.IoC</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

@@ -18,6 +18,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using BusinessLogic.DataAccess;
 using BusinessLogic.Models;
 using BusinessLogic.Models.User;
 using NUnit.Framework;
@@ -44,7 +45,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
                     {
                         new UserGamingGroup
                         {
-                            ApplicationUserId = currentUser.Id
+                            ApplicationUserId = CurrentUser.Id
                         }
                     }
                 },
@@ -61,14 +62,14 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
                 }
             };
 
-            dataContextMock.Expect(mock => mock.GetQueryable<GamingGroup>())
+            AutoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<GamingGroup>())
                            .Return(gamingGroupList.AsQueryable());
         }
 
         [Test]
         public void ItRetrievesOnlyGamingGroupsThatTheUserHasAccessTo()
         {
-            var actualGamingGroups = gamingGroupRetriever.GetGamingGroupsForUser(currentUser);
+            var actualGamingGroups = AutoMocker.ClassUnderTest.GetGamingGroupsForUser(CurrentUser);
 
             Assert.That(actualGamingGroups.Count, Is.EqualTo(1));
             Assert.That(actualGamingGroups[0].Id, Is.EqualTo(gamingGroupId1));

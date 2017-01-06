@@ -3,7 +3,7 @@
 @model UI.Models.GamingGroup.GamingGroupViewModel
 @{
     ViewBag.Title = Model.Name;
-    ViewBag.Description = "View full details for the Gaming Group: " + Model.Name;
+    ViewBag.Description = $"View stats, recent plays, and other details about the Gaming Group '{Model.Name}' on NemeStats.";
     Layout = MVC.Shared.Views._BaseLayout;
 }
 

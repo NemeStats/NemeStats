@@ -15,11 +15,19 @@ namespace NemeStats.ScheduledJobs
     {
         private static IContainer _container;
 
-        public static IContainer Container => _container ?? (_container = new Container(c =>
+        public static IContainer Container
+        {
+            get
             {
-                c.AddRegistry<CommonRegistry>();
-                c.AddRegistry<DatabaseRegistry>();
-            }));
+                return _container ?? (_container = new Container(c =>
+                       {
+                           c.AddRegistry<CommonRegistry>();
+                           c.AddRegistry<DatabaseRegistry>();
+                       }));
+            }
+            //for testing only!
+            internal set { _container = value; }
+        }
 
         private static void Main()
         {

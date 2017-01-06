@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace BusinessLogic.Jobs.BoardGameGeekBatchUpdateJobService
+namespace BusinessLogic.Jobs.BoardGameGeekBatchUpdate
 {
     public class LinkOrphanGamesJobResult : BaseJobResult
     {

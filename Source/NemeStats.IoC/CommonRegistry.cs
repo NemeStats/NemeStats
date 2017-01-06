@@ -23,6 +23,7 @@ using BusinessLogic.DataAccess.Security;
 using BusinessLogic.Events.HandlerFactory;
 using BusinessLogic.Events.Interfaces;
 using BusinessLogic.EventTracking;
+using BusinessLogic.Jobs.SitemapGenerator;
 using BusinessLogic.Logic.Email;
 using BusinessLogic.Models.User;
 using Microsoft.AspNet.Identity;
@@ -31,6 +32,7 @@ using RollbarSharp;
 using StructureMap;
 using StructureMap.Graph;
 using UniversalAnalyticsHttpWrapper;
+using X.Web.Sitemap;
 
 namespace NemeStats.IoC
 {
@@ -85,6 +87,10 @@ namespace NemeStats.IoC
             For<IIdentityMessageService>().Use<EmailService>();
 
             For(typeof(ISecuredEntityValidator)).Use(typeof(SecuredEntityValidator));
+
+            For<ISitemapGeneratorService>().Use<SitemapGeneratorService>();
+            For<ISitemapIndexGenerator>().Use<SitemapIndexGenerator>();
+            For<ISitemapGenerator>().Use<SitemapGenerator>();
         }
 
 

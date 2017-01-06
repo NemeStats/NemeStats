@@ -3,6 +3,7 @@ using System.Linq;
 using BoardGameGeekApiClient.Interfaces;
 using BoardGameGeekApiClient.Models;
 using BusinessLogic.DataAccess;
+using BusinessLogic.Jobs.BoardGameGeekBatchUpdate;
 using BusinessLogic.Models;
 using BusinessLogic.Models.User;
 using NUnit.Framework;
@@ -14,12 +15,12 @@ namespace BusinessLogic.Tests.UnitTests.JobsTests.BoardGameGeekBatchUpdateServic
     [TestFixture]
     public class RefreshAllBoardGameGeekDataTests
     {
-        private RhinoAutoMocker<Jobs.BoardGameGeekBatchUpdateJobService.BoardGameGeekBatchUpdateJobService> _autoMocker;
+        private RhinoAutoMocker<BoardGameGeekBatchUpdateJobService> _autoMocker;
 
         [SetUp]
         public void SetUp()
         {
-            _autoMocker = new RhinoAutoMocker<Jobs.BoardGameGeekBatchUpdateJobService.BoardGameGeekBatchUpdateJobService>();  
+            _autoMocker = new RhinoAutoMocker<BoardGameGeekBatchUpdateJobService>();  
         }
 
         [Test]

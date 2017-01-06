@@ -44,7 +44,7 @@ namespace BusinessLogic.Models
         public bool Active { get; set; }
         public DateTime DateCreated { get; set; }
 
-        public virtual IList<PlayedGame> PlayedGames { get; set; }
+        public virtual IList<PlayedGame> PlayedGames { get; set; } = new List<PlayedGame>();
         public virtual GamingGroup GamingGroup { get; set; }
 
         public int? ChampionId { get; set; }

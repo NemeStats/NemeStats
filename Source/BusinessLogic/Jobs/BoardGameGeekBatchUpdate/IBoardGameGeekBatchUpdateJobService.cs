@@ -1,4 +1,4 @@
-namespace BusinessLogic.Jobs.BoardGameGeekBatchUpdateJobService
+namespace BusinessLogic.Jobs.BoardGameGeekBatchUpdate
 {
     public interface IBoardGameGeekBatchUpdateJobService
     {

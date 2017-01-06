@@ -13,7 +13,7 @@ using BusinessLogic.Models.Games;
 using BusinessLogic.Models.User;
 using RollbarSharp;
 
-namespace BusinessLogic.Jobs.BoardGameGeekBatchUpdateJobService
+namespace BusinessLogic.Jobs.BoardGameGeekBatchUpdate
 {
     public class BoardGameGeekBatchUpdateJobService : BaseJobService, IBoardGameGeekBatchUpdateJobService
     {

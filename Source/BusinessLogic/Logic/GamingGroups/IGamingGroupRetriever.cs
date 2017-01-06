@@ -34,5 +34,6 @@ namespace BusinessLogic.Logic.GamingGroups
 		IList<GamingGroupListItemModel> GetGamingGroupsForUser(ApplicationUser applicationUser);
 
 		List<TopGamingGroupSummary> GetTopGamingGroups(int numberOfTopGamingGroupsToShow);
-    }
+	    List<GamingGroupSitemapInfo> GetGamingGroupsSitemapInfo();
+	}
 }

@@ -21,7 +21,7 @@ namespace BusinessLogic.Models
         public string Name { get; set; }
         public string Thumbnail { get; set; }
         public string Image { get; set; }
-        public virtual IList<GameDefinition> GameDefinitions { get; set; }
+        public virtual IList<GameDefinition> GameDefinitions { get; set; } = new List<GameDefinition>();
         public int? MaxPlayers { get; set; }
         public int? MinPlayers { get; set; }
         public int? MaxPlayTime { get; set; }

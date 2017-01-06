@@ -3,7 +3,8 @@
 @using UI.HtmlHelpers
 @using UI.Models.Players
 @{
-    ViewBag.Title = @Model.PlayerName + " - " + Model.GamingGroupName;
+    ViewBag.Title = Model.PlayerName + " - " + Model.GamingGroupName;
+    ViewBag.Description = $"View stats and details about the Player called '{Model.PlayerName}' on NemeStats.";
     Layout = MVC.Shared.Views._BaseLayout;
 }
 
