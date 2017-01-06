@@ -38,28 +38,29 @@ namespace NemeStats.ScheduledJobs.Tests.FunctionsTests.RebuildSitemapsTests
             _sitemapGeneratorServiceMock.RegenerateSitemaps().Returns(_expectedJobResult);
         }
 
-        [Test]
-        public void It_Rebuilds_The_Sitemap()
-        {
-            //--arrange
+        //TODO this will be completed in Issue #564
+        //[Test]
+        //public void It_Rebuilds_The_Sitemap()
+        //{
+        //    //--arrange
 
-            //--act
-            Functions.RebuildSitemaps(_timerInfoMock, _textWriterMock);
+        //    //--act
+        //    Functions.RebuildSitemaps(_timerInfoMock, _textWriterMock);
 
-            //--assert
-            _sitemapGeneratorServiceMock.Received().RegenerateSitemaps();
-        }
+        //    //--assert
+        //    _sitemapGeneratorServiceMock.Received().RegenerateSitemaps();
+        //}
 
-        [Test]
-        public void It_Logs_The_Results_Of_The_Job()
-        {
-            //--arrange
+        //[Test]
+        //public void It_Logs_The_Results_Of_The_Job()
+        //{
+        //    //--arrange
 
-            //--act
-            Functions.RebuildSitemaps(_timerInfoMock, _textWriterMock);
+        //    //--act
+        //    Functions.RebuildSitemaps(_timerInfoMock, _textWriterMock);
 
-            //--assert
-            _textWriterMock.Received().WriteLine(Arg.Is<string>(x => x == $"Generated {_expectedJobResult.NumberOfSitemapsGenerated} sitemaps in {_expectedJobResult.TimeElapsedInMilliseconds} milliseconds."));
-        }
+        //    //--assert
+        //    _textWriterMock.Received().WriteLine(Arg.Is<string>(x => x == $"Generated {_expectedJobResult.NumberOfSitemapsGenerated} sitemaps in {_expectedJobResult.TimeElapsedInMilliseconds} milliseconds."));
+        //}
     }
 }
