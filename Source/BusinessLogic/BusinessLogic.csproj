@@ -241,6 +241,7 @@
     <Compile Include="Jobs\SitemapGenerator\StaticPagesSitemapGenerator.cs" />
     <Compile Include="Jobs\SitemapGenerator\UniversalGameSitemapGenerator.cs" />
     <Compile Include="Logic\Achievements\HolidayGamerAchievement.cs" />
+    <Compile Include="Logic\Achievements\SoCloseAchievement.cs" />
     <Compile Include="Logic\BoardGameGeekGameDefinitions\IBoardGameGeekGameDefinitionInfoRetriever.cs" />
     <Compile Include="Logic\BoardGameGeekGameDefinitions\IGameDetailsRetriever.cs" />
     <Compile Include="Logic\BoardGameGeekGameDefinitions\IUniversalGameRetriever.cs" />

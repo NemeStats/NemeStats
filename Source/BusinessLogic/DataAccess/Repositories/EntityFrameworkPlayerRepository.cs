@@ -227,25 +227,25 @@ namespace BusinessLogic.DataAccess.Repositories
         }
 
         private const string SQL_GET_LONGEST_WINNING_STREAK_FOR_PLAYER =
-            @"WITH streak_cte (streak) 
-              AS (SELECT 
-                            (SELECT Count(DISTINCT id) 
-                             FROM   playergameresult matches_inner 
-                             WHERE  a.playerid = matches_inner.playerid 
-                                    AND matches_inner.id BETWEEN a.id AND b.id) AS wins 
-                     FROM   playergameresult a 
-                            JOIN playergameresult b 
-                              ON a.playerid = b.playerid 
-                                 AND b.id >= a.id 
-                     WHERE  a.playerid = @PlayerId 
-                            AND NOT EXISTS (SELECT 1 
-                                            FROM   playergameresult matches_inner 
-                                            WHERE  a.playerid = matches_inner.playerid 
-                                                   AND matches_inner.id BETWEEN 
-                                                       a.id AND b.id 
-                                                   AND matches_inner.GameRank <> 1)) 
-            SELECT Max(streak) AS MaxWinStreak
-            FROM   streak_cte";
+            @"WITH cte AS 
+	            (SELECT PlayerGameResult.PlayerId, PlayerGameResult.GameRank, PlayedGame.DatePlayed,
+	            ROW_NUMBER() OVER (PARTITION BY PlayerGameResult.PlayerId ORDER BY PlayedGame.DatePlayed, PlayedGame.Id) 
+                    - ROW_NUMBER() OVER (PARTITION BY PlayerId, GameRank ORDER BY PlayedGame.DatePlayed, PlayedGame.Id) AS [GroupID]
+	            FROM PlayerGameResult 
+	            JOIN PlayedGame on PlayedGame.Id = PlayerGameResult.PlayedGameId
+	            WHERE PlayerGameResult.PlayerId = @PlayerId),
+            -- Calculate Wins/Loses totals per each playerId
+	            cte1 AS (SELECT PlayerId, 
+	            SUM(CASE WHEN GameRank = 1 THEN 1 ELSE 0 END) AS [Wins],
+	            GroupId	
+	            FROM cte
+	            GROUP BY PlayerId, GroupID),
+            -- Rank from highest to lowest wins
+	            cteSummary AS (SELECT *, RANK() OVER (ORDER BY Wins DESC) AS WinsRank
+	            FROM cte1)
+            -- Get final results
+	            SELECT [Wins]
+	             FROM cteSummary WHERE WinsRank = 1";
 
         public int GetLongestWinningStreak(int playerId)
         {
