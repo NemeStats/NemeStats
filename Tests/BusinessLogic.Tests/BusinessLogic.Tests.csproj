@@ -208,6 +208,7 @@
   <ItemGroup>
     <Compile Include="IntegrationTests\DataAccessTests\NemeStatsDataContextTests\FindByIdIntegrationTests.cs" />
     <Compile Include="IntegrationTests\DataAccessTests\NemeStatsDataContextTests\GetQueryableIntegrationTests.cs" />
+    <Compile Include="IntegrationTests\EntityFrameworkTransactionTests.cs" />
     <Compile Include="IntegrationTests\DataAccessTests\RepositoriesTests\ChamionRepositoryTests\GetChampionDataTests.cs" />
     <Compile Include="Fakes\FakeEventBus.cs" />
     <Compile Include="IntegrationTests\IntegrationTestIoCBase.cs" />
@@ -222,6 +223,7 @@
     <Compile Include="IntegrationTests\LogicTests\GameDefinitionsTests\GameDefinitionRetrieverTests\GetGameDefinitionDetailsIntegrationTests.cs" />
     <Compile Include="IntegrationTests\LogicTests\Players\GetPlayerStatisticsIntegrationTests.cs" />
     <Compile Include="IntegrationTests\LogicTests\PointsTests\RecalculateAllPointsIntegrationTests.cs" />
+    <Compile Include="IntegrationTests\StructureMapIntegrationTests.cs" />
     <Compile Include="LocalAddin.cs" />
     <Compile Include="UnitTests\CachingTests\CacheableTests.cs" />
     <Compile Include="UnitTests\CachingTests\CacheServiceTests\AddItemToCacheTests.cs" />

@@ -19,6 +19,11 @@ namespace BusinessLogic.Tests.IntegrationTests
             return _container.GetInstance<T>();
         }
 
+        protected T GetInstanceFromRootContainer<T>()
+        {
+            return RootContainer.GetInstance<T>();
+        }
+
         protected void Inject<T>(T instance) where T : class
         {
             _container.Configure(cfg => cfg.For<T>().Use(instance));
