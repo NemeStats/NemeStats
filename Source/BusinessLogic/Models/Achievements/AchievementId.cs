@@ -33,7 +33,8 @@
         DominionsChild = 29,
         MechanicalPurveyor = 30,
         HolidayGamer = 31,
-        SoClose = 32
+        SoClose = 32,
+        BoardGameGeek2017_10x10 = 33,
     }
 
     public enum AchievementGroup

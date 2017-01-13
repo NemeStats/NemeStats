@@ -240,6 +240,8 @@
     <Compile Include="Jobs\SitemapGenerator\SitemapGeneratorService.cs" />
     <Compile Include="Jobs\SitemapGenerator\StaticPagesSitemapGenerator.cs" />
     <Compile Include="Jobs\SitemapGenerator\UniversalGameSitemapGenerator.cs" />
+    <Compile Include="Logic\Achievements\BoardGameGeek2017_10x10Achievement.cs" />
+    <Compile Include="Logic\Achievements\BoardGameGeek_10x10Achievement.cs" />
     <Compile Include="Logic\Achievements\HolidayGamerAchievement.cs" />
     <Compile Include="Logic\Achievements\SoCloseAchievement.cs" />
     <Compile Include="Logic\BoardGameGeekGameDefinitions\IBoardGameGeekGameDefinitionInfoRetriever.cs" />

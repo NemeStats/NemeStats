@@ -12,7 +12,7 @@ using StructureMap.AutoMocking;
 namespace BusinessLogic.Tests.UnitTests.LogicTests.AchievementTests
 {
     [TestFixture]
-    public class BoardGameGeek2016_10x10AchievementTests
+    public class BoardGameGeek_10x10AchievementTests
     {
         private RhinoAutoMocker<BoardGameGeek2016_10x10Achievement> _autoMocker;
         private readonly int _playerId = 1;

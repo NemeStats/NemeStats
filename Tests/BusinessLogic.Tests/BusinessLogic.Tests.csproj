@@ -279,7 +279,7 @@
     <Compile Include="UnitTests\LogicTests\AchievementTests\TopDogAchievementTests.cs" />
     <Compile Include="UnitTests\LogicTests\AchievementTests\NemePointsAchievementTests.cs" />
     <Compile Include="UnitTests\LogicTests\AchievementTests\DiversifiedAchievementTests\Base_AchievementsTests.cs" />
-    <Compile Include="UnitTests\LogicTests\AchievementTests\BoardGameGeek2016_10x10AchievementTests.cs" />
+    <Compile Include="UnitTests\LogicTests\AchievementTests\BoardGameGeek_10x10AchievementTests.cs" />
     <Compile Include="UnitTests\LogicTests\AchievementTests\HardcoreAchievementTests.cs" />
     <Compile Include="UnitTests\LogicTests\AchievementTests\WargamerAchievementTests.cs" />
     <Compile Include="UnitTests\LogicTests\AchievementTests\WeightedAchievementTests.cs" />
