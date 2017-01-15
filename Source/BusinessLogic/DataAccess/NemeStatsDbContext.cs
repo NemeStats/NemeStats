@@ -52,6 +52,7 @@ namespace BusinessLogic.DataAccess
         public virtual DbSet<GamingGroupInvitation> GamingGroupInvitations { get; set; }
         public virtual DbSet<Nemesis> Nemeses { get; set; }
         public virtual DbSet<Champion> Champions { get; set; }
+        public virtual DbSet<MVP> Mvps { get; set; }
         public virtual DbSet<VotableFeature> VotableFeatures { get; set; }
         public virtual DbSet<BoardGameGeekGameCategory> BoardGameGeekGameCategories { get; set; }
         public virtual DbSet<BoardGameGeekGameMechanic> BoardGameGeekGameMechanics { get; set; }

@@ -186,6 +186,8 @@
     <Compile Include="DataAccess\NemeStatsInitializer.cs" />
     <Compile Include="DataAccess\Repositories\ChampionRepository.cs" />
     <Compile Include="DataAccess\Repositories\IChampionRepository.cs" />
+    <Compile Include="DataAccess\Repositories\IMVPRepository.cs" />
+    <Compile Include="DataAccess\Repositories\MVPRepository.cs" />
     <Compile Include="DataAccess\SecuredEntityWithTechnicalKey.cs" />
     <Compile Include="DataAccess\Security\GenericSecuredEntityValidator.cs" />
     <Compile Include="DataAccess\Security\IGenericSecuredEntityValidator.cs" />
@@ -447,6 +449,8 @@
     <Compile Include="Models\Games\UniversalGameStats.cs" />
     <Compile Include="Models\Games\UpdatedGame.cs" />
     <Compile Include="Models\GamingGroups\GamingGroupSitemapInfo.cs" />
+    <Compile Include="Models\Mvp.cs" />
+    <Compile Include="Models\MVP\MVPData.cs" />
     <Compile Include="Models\PlayedGameApplicationLinkage.cs" />
     <Compile Include="Models\Games\SavePlayedGameRequest.cs" />
     <Compile Include="Models\Games\TrendingGame.cs" />
