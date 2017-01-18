@@ -19,6 +19,8 @@ using BusinessLogic.DataAccess.Security;
 using BusinessLogic.Exceptions;
 using BusinessLogic.Models.User;
 using System;
+using System.Data;
+using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Migrations;
 using System.Linq;
@@ -128,6 +130,16 @@ namespace BusinessLogic.DataAccess
         public virtual DbRawSqlQuery<T> MakeRawSqlQuery<T>(string sql, params object[] parameters)
         {
             return nemeStatsDbContext.Database.SqlQuery<T>(sql, parameters);
+        }
+
+        public DbContextTransaction CurrentTransaction()
+        {
+            return nemeStatsDbContext.Database.CurrentTransaction;
+        }
+
+        public DbContextTransaction BeginTransaction(IsolationLevel isolationLevel = IsolationLevel.ReadCommitted)
+        {
+            return nemeStatsDbContext.Database.BeginTransaction(isolationLevel);
         }
 
         public virtual void Dispose()

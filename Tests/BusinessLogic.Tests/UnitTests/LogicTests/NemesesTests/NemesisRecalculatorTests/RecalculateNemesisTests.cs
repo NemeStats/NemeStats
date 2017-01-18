@@ -65,10 +65,10 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.NemesesTests.NemesisRecalcula
         [Test]
         public void ItReturnsANullNemesisIfTheNewNemesisIsNull()
         {
-            _playerRepositoryMock.Expect(mock => mock.GetNemesisData(_playerId))
+            _playerRepositoryMock.Expect(mock => mock.GetNemesisData(_playerId, _dataContextMock))
                                         .Return(new NullNemesisData());
 
-            Nemesis nullNemesis = _nemesisRecalculator.RecalculateNemesis(_playerId, _currentUser);
+            Nemesis nullNemesis = _nemesisRecalculator.RecalculateNemesis(_playerId, _currentUser, _dataContextMock);
 
             Assert.True(nullNemesis is NullNemesis);
         }
@@ -76,10 +76,10 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.NemesesTests.NemesisRecalcula
         [Test]
         public void ItClearsTheNemesisIfTheNewNemesisIsNullAndOneAlreadyExisted()
         {
-            _playerRepositoryMock.Expect(mock => mock.GetNemesisData(_playerId))
+            _playerRepositoryMock.Expect(mock => mock.GetNemesisData(_playerId, _dataContextMock))
                                         .Return(new NullNemesisData());
 
-            _nemesisRecalculator.RecalculateNemesis(_playerId, _currentUser);
+            _nemesisRecalculator.RecalculateNemesis(_playerId, _currentUser, _dataContextMock);
 
             _dataContextMock.AssertWasCalled(mock => mock.Save<Player>(
                 Arg<Player>.Matches(player => player.NemesisId == null), 
@@ -90,13 +90,13 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.NemesesTests.NemesisRecalcula
         public void ItSetsTheNewNemesisIfItChanged()
         {
             NemesisData nemesisData = new NemesisData() { NemesisPlayerId = -1 };
-            _playerRepositoryMock.Expect(mock => mock.GetNemesisData(_playerId))
+            _playerRepositoryMock.Expect(mock => mock.GetNemesisData(_playerId, _dataContextMock))
                             .Return(nemesisData);
 
             _dataContextMock.Expect(mock => mock.GetQueryable<Nemesis>())
                 .Return(new List<Nemesis>().AsQueryable());
 
-            _nemesisRecalculator.RecalculateNemesis(_playerId, _currentUser);
+            _nemesisRecalculator.RecalculateNemesis(_playerId, _currentUser, _dataContextMock);
 
             _dataContextMock.AssertWasCalled(mock => mock.Save<Nemesis>(
                 Arg<Nemesis>.Matches(savedNemesis => savedNemesis.MinionPlayerId == _playerId
@@ -112,13 +112,13 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.NemesesTests.NemesisRecalcula
         public void ItSetsThePreviousNemesisIfTheCurrentOneChanges()
         {
             NemesisData nemesisData = new NemesisData() { NemesisPlayerId = -1 };
-            _playerRepositoryMock.Expect(mock => mock.GetNemesisData(_playerId))
+            _playerRepositoryMock.Expect(mock => mock.GetNemesisData(_playerId, _dataContextMock))
                             .Return(nemesisData);
 
             _dataContextMock.Expect(mock => mock.GetQueryable<Nemesis>())
                 .Return(new List<Nemesis>().AsQueryable());
 
-            _nemesisRecalculator.RecalculateNemesis(_playerId, _currentUser);
+            _nemesisRecalculator.RecalculateNemesis(_playerId, _currentUser, _dataContextMock);
 
             _dataContextMock.AssertWasCalled(mock => mock.Save<Player>(
                 Arg<Player>.Matches(player => player.PreviousNemesisId == _existingNemesisId), Arg<ApplicationUser>.Is.Same(_currentUser)));
@@ -127,10 +127,10 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.NemesesTests.NemesisRecalcula
         [Test]
         public void ItSetsThePreviousNemesisIfTheCurrentOneIsCleared()
         {
-            _playerRepositoryMock.Expect(mock => mock.GetNemesisData(_playerId))
+            _playerRepositoryMock.Expect(mock => mock.GetNemesisData(_playerId, _dataContextMock))
                             .Return(new NullNemesisData());
 
-            _nemesisRecalculator.RecalculateNemesis(_playerId, _currentUser);
+            _nemesisRecalculator.RecalculateNemesis(_playerId, _currentUser, _dataContextMock);
 
             _dataContextMock.AssertWasCalled(mock => mock.Save<Player>(
                 Arg<Player>.Matches(player => player.PreviousNemesisId == _existingNemesisId),
@@ -149,7 +149,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.NemesesTests.NemesisRecalcula
                 NumberOfGamesLost = gamesLost,
                 LossPercentage = lossPercentage
             };
-            _playerRepositoryMock.Expect(mock => mock.GetNemesisData(_playerId))
+            _playerRepositoryMock.Expect(mock => mock.GetNemesisData(_playerId, _dataContextMock))
                             .Return(nemesisData);
 
             List<Nemesis> nemesisList = new List<Nemesis>();
@@ -164,7 +164,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.NemesesTests.NemesisRecalcula
             _dataContextMock.Expect(mock => mock.GetQueryable<Nemesis>())
                 .Return(nemesisList.AsQueryable());
 
-            _nemesisRecalculator.RecalculateNemesis(_playerId, _currentUser);
+            _nemesisRecalculator.RecalculateNemesis(_playerId, _currentUser, _dataContextMock);
 
             _dataContextMock.AssertWasNotCalled(mock => mock.Save<Nemesis>(
                 Arg<Nemesis>.Is.Anything,
@@ -183,7 +183,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.NemesesTests.NemesisRecalcula
                 NumberOfGamesLost = gamesLost,
                 LossPercentage = lossPercentage
             };
-            _playerRepositoryMock.Expect(mock => mock.GetNemesisData(_playerId))
+            _playerRepositoryMock.Expect(mock => mock.GetNemesisData(_playerId, _dataContextMock))
                             .Return(nemesisData);
 
             List<Nemesis> nemesisList = new List<Nemesis>();
@@ -200,7 +200,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.NemesesTests.NemesisRecalcula
             _dataContextMock.Expect(mock => mock.GetQueryable<Nemesis>())
                 .Return(nemesisList.AsQueryable());
 
-            _nemesisRecalculator.RecalculateNemesis(_playerId, _currentUser);
+            _nemesisRecalculator.RecalculateNemesis(_playerId, _currentUser, _dataContextMock);
 
             _dataContextMock.AssertWasCalled(mock => mock.Save<Nemesis>(
                 Arg<Nemesis>.Matches(nem => nem.Id == _existingNemesisId
@@ -215,7 +215,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.NemesesTests.NemesisRecalcula
         public void ItReturnsTheExistingNemesisIfNothingChanged()
         {
             NemesisData nemesisData = new NemesisData();
-            _playerRepositoryMock.Expect(mock => mock.GetNemesisData(_playerId))
+            _playerRepositoryMock.Expect(mock => mock.GetNemesisData(_playerId, _dataContextMock))
                             .Return(nemesisData);
 
             List<Nemesis> nemesisList = new List<Nemesis>();
@@ -228,7 +228,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.NemesesTests.NemesisRecalcula
             _dataContextMock.Expect(mock => mock.GetQueryable<Nemesis>())
                 .Return(nemesisList.AsQueryable());
 
-            Nemesis actualNemesis = _nemesisRecalculator.RecalculateNemesis(_playerId, _currentUser);
+            Nemesis actualNemesis = _nemesisRecalculator.RecalculateNemesis(_playerId, _currentUser, _dataContextMock);
 
             Assert.AreSame(existingNemesis, actualNemesis);
         }
@@ -238,7 +238,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.NemesesTests.NemesisRecalcula
         {
             int expectedLossPercentage = 15;
             NemesisData nemesisData = new NemesisData() { LossPercentage = expectedLossPercentage };
-            _playerRepositoryMock.Expect(mock => mock.GetNemesisData(_playerId))
+            _playerRepositoryMock.Expect(mock => mock.GetNemesisData(_playerId, _dataContextMock))
                             .Return(nemesisData);
 
             List<Nemesis> nemesisList = new List<Nemesis>();
@@ -252,7 +252,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.NemesesTests.NemesisRecalcula
             _dataContextMock.Expect(mock => mock.GetQueryable<Nemesis>())
                 .Return(nemesisList.AsQueryable());
 
-            Nemesis actualNemesis = _nemesisRecalculator.RecalculateNemesis(_playerId, _currentUser);
+            Nemesis actualNemesis = _nemesisRecalculator.RecalculateNemesis(_playerId, _currentUser, _dataContextMock);
 
             Assert.AreSame(_savedNemesis, actualNemesis);
         }
@@ -262,7 +262,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.NemesesTests.NemesisRecalcula
         {
             //change the nemesis
             NemesisData nemesisData = new NemesisData() { NemesisPlayerId = 19383 };
-            _playerRepositoryMock.Expect(mock => mock.GetNemesisData(_playerId))
+            _playerRepositoryMock.Expect(mock => mock.GetNemesisData(_playerId, _dataContextMock))
                             .Return(nemesisData);
 
             List<Nemesis> nemesisList = new List<Nemesis>();
@@ -276,7 +276,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.NemesesTests.NemesisRecalcula
             _dataContextMock.Expect(mock => mock.GetQueryable<Nemesis>())
                 .Return(nemesisList.AsQueryable());
 
-            Nemesis actualNemesis = _nemesisRecalculator.RecalculateNemesis(_playerId, _currentUser);
+            Nemesis actualNemesis = _nemesisRecalculator.RecalculateNemesis(_playerId, _currentUser, _dataContextMock);
 
             Assert.AreSame(_savedNemesis, actualNemesis);
         }

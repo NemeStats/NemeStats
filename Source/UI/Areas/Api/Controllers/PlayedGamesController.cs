@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -14,34 +13,36 @@ using BusinessLogic.Models.Games;
 using BusinessLogic.Models.PlayedGames;
 using UI.Areas.Api.Models;
 using UI.Attributes;
-using UI.Transformations;
 using VersionedRestApi;
 
 namespace UI.Areas.Api.Controllers
 {
     public class PlayedGamesController : ApiControllerBase
     {
-        public const int MAX_PLAYED_GAMES_TO_EXPORT = 1000;
+        public const int MaxPlayedGamesToExport = 1000;
 
-        private readonly IPlayedGameRetriever playedGameRetriever;
-        private readonly IExcelGenerator excelGenerator;
-        private readonly IPlayedGameSaver playedGameSaver;
-        private readonly IPlayedGameDeleter playedGameDeleter;
-        private readonly ITransformer transformer;
+        private readonly IPlayedGameRetriever _playedGameRetriever;
+        private readonly IExcelGenerator _excelGenerator;
+        private readonly IPlayedGameSaver _playedGameSaver;
+        private readonly ICreatePlayedGameComponent _createPlayedGameComponent;
+        private readonly IPlayedGameDeleter _playedGameDeleter;
+        private readonly ITransformer _transformer;
 
-        private MemoryStream exportMemoryStream;
+        private MemoryStream _exportMemoryStream;
 
         public PlayedGamesController(
             IPlayedGameRetriever playedGameRetriever, 
             IExcelGenerator excelGenerator, 
             IPlayedGameSaver playedGameSaver, 
-            IPlayedGameDeleter playedGameDeleter, ITransformer transformer)
+            IPlayedGameDeleter playedGameDeleter, ITransformer transformer, 
+            ICreatePlayedGameComponent createPlayedGameComponent)
         {
-            this.playedGameRetriever = playedGameRetriever;
-            this.excelGenerator = excelGenerator;
-            this.playedGameSaver = playedGameSaver;
-            this.playedGameDeleter = playedGameDeleter;
-            this.transformer = transformer;
+            _playedGameRetriever = playedGameRetriever;
+            _excelGenerator = excelGenerator;
+            _playedGameSaver = playedGameSaver;
+            _playedGameDeleter = playedGameDeleter;
+            _transformer = transformer;
+            _createPlayedGameComponent = createPlayedGameComponent;
         }
 
 
@@ -56,7 +57,7 @@ namespace UI.Areas.Api.Controllers
         [HttpGet]
         public virtual HttpResponseMessage ExportPlayedGamesToExcel(int gamingGroupId)
         {
-            var playedGames = playedGameRetriever.GetRecentGames(MAX_PLAYED_GAMES_TO_EXPORT, gamingGroupId);
+            var playedGames = _playedGameRetriever.GetRecentGames(MaxPlayedGamesToExport, gamingGroupId);
 
             if (playedGames.Count == 0)
             {
@@ -79,13 +80,13 @@ namespace UI.Areas.Api.Controllers
                 WinningPlayerNames = String.Join(",", playedGame.PlayerGameResults.Where(result => result.GameRank == 1).Select(result => result.Player.Name).ToList())
             }).ToList();
 
-            exportMemoryStream = new MemoryStream();
+            _exportMemoryStream = new MemoryStream();
 
-            excelGenerator.GenerateExcelFile(playedGamesForExport, exportMemoryStream);
+            _excelGenerator.GenerateExcelFile(playedGamesForExport, _exportMemoryStream);
 
             var responseMessage = new HttpResponseMessage(HttpStatusCode.OK)
             {
-                Content = new StreamContent(this.exportMemoryStream)
+                Content = new StreamContent(_exportMemoryStream)
             };
             responseMessage.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
             {
@@ -98,7 +99,7 @@ namespace UI.Areas.Api.Controllers
 
         protected override void Dispose(bool disposing)
         {
-            exportMemoryStream?.Dispose();
+            _exportMemoryStream?.Dispose();
             base.Dispose(disposing);
         }
 
@@ -119,9 +120,9 @@ namespace UI.Areas.Api.Controllers
 
         internal virtual HttpResponseMessage GetPlayedGameSearchResults(PlayedGameFilterMessage playedGameFilterMessage)
         {
-            var filter = transformer.Transform<PlayedGameFilter>(playedGameFilterMessage);
+            var filter = _transformer.Transform<PlayedGameFilter>(playedGameFilterMessage);
 
-            var searchResults = playedGameRetriever.SearchPlayedGames(filter);
+            var searchResults = _playedGameRetriever.SearchPlayedGames(filter);
 
             var playedGamesSearchResultMessage = new PlayedGameSearchResultsMessage
             {
@@ -146,9 +147,10 @@ namespace UI.Areas.Api.Controllers
         [ApiModelValidation]
         public HttpResponseMessage RecordPlayedGame([FromBody]PlayedGameMessage playedGameMessage, [FromUri]int gamingGroupId)
         {
-            var newlyCompletedGame = transformer.Transform<NewlyCompletedGame>(playedGameMessage);
+            var newlyCompletedGame = _transformer.Transform<NewlyCompletedGame>(playedGameMessage);
+            newlyCompletedGame.TransactionSource = TransactionSource.RestApi;
 
-            var playedGame = playedGameSaver.CreatePlayedGame(newlyCompletedGame, TransactionSource.RestApi, CurrentUser);
+            var playedGame = _createPlayedGameComponent.Execute(newlyCompletedGame, CurrentUser);
             var newlyRecordedPlayedGameMessage = new NewlyRecordedPlayedGameMessage
             {
                 PlayedGameId = playedGame.Id,
@@ -164,9 +166,9 @@ namespace UI.Areas.Api.Controllers
         [ApiModelValidation]
         public HttpResponseMessage UpdatePlayedGame([FromBody]UpdatedPlayedGameMessage playedPlayedGameMessage)
         {
-            var newlyCompletedGame = transformer.Transform<UpdatedGame>(playedPlayedGameMessage);
+            var newlyCompletedGame = _transformer.Transform<UpdatedGame>(playedPlayedGameMessage);
 
-            playedGameSaver.UpdatePlayedGame(newlyCompletedGame, TransactionSource.RestApi, CurrentUser);
+            _playedGameSaver.UpdatePlayedGame(newlyCompletedGame, TransactionSource.RestApi, CurrentUser);
 
             return Request.CreateResponse(HttpStatusCode.NoContent);
         }
@@ -175,18 +177,18 @@ namespace UI.Areas.Api.Controllers
         [HttpDelete]
         [ApiAuthentication]
         [ApiModelValidation]
-        public HttpResponseMessage DeletePlayedGame(int playedGameID)
+        public HttpResponseMessage DeletePlayedGame(int playedGameId)
         {
-            return DeletePlayedGame(playedGameID, CurrentUser.CurrentGamingGroupId);
+            return DeletePlayedGame(playedGameId, CurrentUser.CurrentGamingGroupId);
         }
 
         [ApiRoute("GamingGroups/{gamingGroupId}/PlayedGames/{playedGameID}", AcceptedVersions = new[] { 1 })]
         [HttpDelete]
         [ApiAuthentication]
         [ApiModelValidation]
-        public HttpResponseMessage DeletePlayedGame(int playedGameID, int gamingGroupId)
+        public HttpResponseMessage DeletePlayedGame(int playedGameId, int gamingGroupId)
         {
-            playedGameDeleter.DeletePlayedGame(playedGameID, CurrentUser); 
+            _playedGameDeleter.DeletePlayedGame(playedGameId, CurrentUser); 
 
             return Request.CreateResponse(HttpStatusCode.NoContent);
         }

@@ -16,10 +16,12 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 
+using BusinessLogic.Logic;
+
 namespace BusinessLogic.Models.Games
 {
     public class NewlyCompletedGame : SaveableGameBase
     {
-        
+        public TransactionSource TransactionSource { get; set; }
     }
 }

@@ -6,6 +6,8 @@ using BusinessLogic.Models.User;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System.Net.Http;
+using NemeStats.TestingHelpers.NemeStatsTestingExtensions;
+using Shouldly;
 using UI.Areas.Api.Controllers;
 using UI.Areas.Api.Models;
 using UI.Transformations;
@@ -36,22 +38,10 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.PlayedGamesCon
                 Id = EXPECTED_PLAYED_GAME_ID,
                 GamingGroupId = EXPECTED_GAMING_GROUP_ID
             };
-            _autoMocker.Get<IPlayedGameSaver>().Expect(mock => mock.CreatePlayedGame(
+            _autoMocker.Get<ICreatePlayedGameComponent>().Expect(mock => mock.Execute(
                                                                           Arg<NewlyCompletedGame>.Is.Anything,
-                                                                          Arg<TransactionSource>.Is.Anything,
                                                                           Arg<ApplicationUser>.Is.Anything))
                     .Return(expectedPlayedGame);
-        }
-
-        [Test]
-        public void ItRecordsThePlayedGame()
-        {
-            _autoMocker.ClassUnderTest.RecordPlayedGame(_playedGameMessage, _applicationUser.CurrentGamingGroupId);
-
-            _autoMocker.Get<IPlayedGameSaver>().AssertWasCalled(mock => mock.CreatePlayedGame(
-                Arg<NewlyCompletedGame>.Is.Same(_expectedNewlyCompletedGame),
-                Arg<TransactionSource>.Is.Anything,
-                Arg<ApplicationUser>.Is.Same(_applicationUser)));
         }
 
         [Test]
@@ -59,10 +49,13 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.PlayedGamesCon
         {
             _autoMocker.ClassUnderTest.RecordPlayedGame(_playedGameMessage, _applicationUser.CurrentGamingGroupId);
 
-            _autoMocker.Get<IPlayedGameSaver>().AssertWasCalled(mock => mock.CreatePlayedGame(
+            var arguments = _autoMocker.Get<ICreatePlayedGameComponent>().GetArgumentsForCallsMadeOn(mock => mock.Execute(
                 Arg<NewlyCompletedGame>.Is.Anything,
-                Arg<TransactionSource>.Is.Equal(TransactionSource.RestApi),
-                Arg<ApplicationUser>.Is.Anything));
+                Arg<ApplicationUser>.Is.Same(_applicationUser)));
+
+            var actualNewlyCompletedGame = arguments.AssertFirstCallIsType<NewlyCompletedGame>(0);
+            actualNewlyCompletedGame.ShouldBeSameAs(_expectedNewlyCompletedGame);
+            actualNewlyCompletedGame.TransactionSource.ShouldBe(TransactionSource.RestApi);
         }
 
         [Test]

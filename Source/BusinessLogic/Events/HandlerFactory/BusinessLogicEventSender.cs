@@ -4,7 +4,7 @@ using BusinessLogic.Events.Interfaces;
 
 namespace BusinessLogic.Events.HandlerFactory
 {
-    public abstract class BusinessLogicEventSender: IBusinessLogicEventSender
+    public class BusinessLogicEventSender: IBusinessLogicEventSender
     {
         private readonly IBusinessLogicEventBus _eventBus;
 
@@ -25,7 +25,7 @@ namespace BusinessLogic.Events.HandlerFactory
         }
     }
 
-    internal interface IBusinessLogicEventSender
+    public interface IBusinessLogicEventSender
     {
         void SendEvents(IList<IBusinessLogicEvent> events);
     }

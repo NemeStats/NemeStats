@@ -235,7 +235,7 @@ namespace BusinessLogic.Logic.GameDefinitions
             var playedGames = AddPlayedGamesToTheGameDefinition(numberOfPlayedGamesToRetrieve, gameDefinitionSummary);
             var distinctPlayerIds = AddPlayerGameResultsToEachPlayedGame(playedGames);
             AddPlayersToPlayerGameResults(playedGames, distinctPlayerIds);
-            gameDefinitionSummary.PlayerWinRecords = _playerRepository.GetPlayerWinRecords(id);
+            gameDefinitionSummary.PlayerWinRecords = _playerRepository.GetPlayerWinRecords(id, _dataContext);
 
             return gameDefinitionSummary;
         }

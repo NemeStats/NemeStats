@@ -30,13 +30,13 @@ namespace BusinessLogic.Logic.Champions
 
     public class ChampionRecalculator : IChampionRecalculator
     {
-        private readonly IDataContext dataContext;
-        private readonly IChampionRepository championRepository;
+        private readonly IDataContext _dataContext;
+        private readonly IChampionRepository _championRepository;
 
         public ChampionRecalculator(IDataContext dataContext, IChampionRepository championRepository)
         {
-            this.dataContext = dataContext;
-            this.championRepository = championRepository;
+            this._dataContext = dataContext;
+            this._championRepository = championRepository;
         }
 
         public void RecalculateAllChampions()
@@ -44,22 +44,22 @@ namespace BusinessLogic.Logic.Champions
             ApplicationUser applicationUser = new ApplicationUser();
 
             List<GameDefinition> gameDefinitions =
-                dataContext.GetQueryable<GameDefinition>()
+                _dataContext.GetQueryable<GameDefinition>()
                     .Where(definition => definition.Active)
                     .ToList();
 
             foreach (GameDefinition gameDefinition in gameDefinitions)
             {
                 applicationUser.CurrentGamingGroupId = gameDefinition.GamingGroupId;
-                RecalculateChampion(gameDefinition.Id, applicationUser);
+                RecalculateChampion(gameDefinition.Id, applicationUser, _dataContext);
             }
         }
 
-        public virtual Champion RecalculateChampion(int gameDefinitionId, ApplicationUser applicationUser, bool allowedToClearExistingChampion = true)
+        public virtual Champion RecalculateChampion(int gameDefinitionId, ApplicationUser applicationUser, IDataContext toClearExistingChampion, bool allowedToClearExistingChampion = true)
         {
-            GameDefinition gameDefinition = dataContext.FindById<GameDefinition>(gameDefinitionId);
+            GameDefinition gameDefinition = _dataContext.FindById<GameDefinition>(gameDefinitionId);
 
-            ChampionData championData = championRepository.GetChampionData(gameDefinitionId);
+            ChampionData championData = _championRepository.GetChampionData(gameDefinitionId);
 
             if (championData is NullChampionData)
             {
@@ -72,7 +72,7 @@ namespace BusinessLogic.Logic.Champions
             }
 
             Champion existingChampion =
-                dataContext.GetQueryable<Champion>()
+                _dataContext.GetQueryable<Champion>()
                     .Include(champion => champion.GameDefinition)
                 .FirstOrDefault(champion => champion.GameDefinitionId == gameDefinitionId && champion.GameDefinition.ChampionId == champion.Id);
 
@@ -93,11 +93,11 @@ namespace BusinessLogic.Logic.Champions
             }
             else
             {
-                savedChampion = dataContext.Save(newChampion, applicationUser);
-                dataContext.CommitAllChanges();
+                savedChampion = _dataContext.Save(newChampion, applicationUser);
+                _dataContext.CommitAllChanges();
                 gameDefinition.PreviousChampionId = gameDefinition.ChampionId;
                 gameDefinition.ChampionId = savedChampion.Id;
-                dataContext.Save(gameDefinition, applicationUser);
+                _dataContext.Save(gameDefinition, applicationUser);
             }
 
             return savedChampion;
@@ -109,7 +109,7 @@ namespace BusinessLogic.Logic.Champions
             {
                 gameDefinition.PreviousChampionId = gameDefinition.ChampionId;
                 gameDefinition.ChampionId = null;
-                dataContext.Save(gameDefinition, applicationUser);
+                _dataContext.Save(gameDefinition, applicationUser);
             }
         }
 
@@ -120,8 +120,8 @@ namespace BusinessLogic.Logic.Champions
                 existingChampion.WinPercentage = newChampion.WinPercentage;
                 existingChampion.NumberOfGames = newChampion.NumberOfGames;
                 existingChampion.NumberOfWins = newChampion.NumberOfWins;
-                Champion returnChampion = dataContext.Save(existingChampion, applicationUser);
-                dataContext.CommitAllChanges();
+                Champion returnChampion = _dataContext.Save(existingChampion, applicationUser);
+                _dataContext.CommitAllChanges();
                 return returnChampion;
             }
             return existingChampion;

@@ -31,18 +31,18 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.ChampionsTests.ChampionRecalc
     [TestFixture]
     public class RecalculateAllChampionsTests
     {
-        private IDataContext dataContextMock;
-        private IChampionRepository championRepositoryMock;
-        private ChampionRecalculator championRecalculatorPartialMock;
-        private IQueryable<GameDefinition> allGameDefinitionsQueryable;
+        private IDataContext _dataContextMock;
+        private IChampionRepository _championRepositoryMock;
+        private ChampionRecalculator _championRecalculatorPartialMock;
+        private IQueryable<GameDefinition> _allGameDefinitionsQueryable;
 
         [SetUp]
         public void SetUp()
         {
-            dataContextMock = MockRepository.GenerateMock<IDataContext>();
-            championRepositoryMock = MockRepository.GenerateMock<IChampionRepository>();
-            championRecalculatorPartialMock = MockRepository.GeneratePartialMock<ChampionRecalculator>(dataContextMock,
-                championRepositoryMock);
+            _dataContextMock = MockRepository.GenerateMock<IDataContext>();
+            _championRepositoryMock = MockRepository.GenerateMock<IChampionRepository>();
+            _championRecalculatorPartialMock = MockRepository.GeneratePartialMock<ChampionRecalculator>(_dataContextMock,
+                _championRepositoryMock);
 
             List<GameDefinition> allGameDefinitions = new List<GameDefinition>
             {
@@ -51,25 +51,25 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.ChampionsTests.ChampionRecalc
                 new GameDefinition { Active = false, Id = 3 }
             };
 
-            allGameDefinitionsQueryable = allGameDefinitions.AsQueryable();
+            _allGameDefinitionsQueryable = allGameDefinitions.AsQueryable();
 
-            dataContextMock.Expect(mock => mock.GetQueryable<GameDefinition>()).Return(allGameDefinitionsQueryable);
+            _dataContextMock.Expect(mock => mock.GetQueryable<GameDefinition>()).Return(_allGameDefinitionsQueryable);
         }
 
         [Test]
         public void ItCalculatesTheChampionForEachActiveGameDefinition()
         {
             List<GameDefinition> activeGameDefinitions =
-                allGameDefinitionsQueryable.Where(gameDefinition => gameDefinition.Active).ToList();
-            championRecalculatorPartialMock.Expect(mock => mock.RecalculateChampion(Arg<int>.Is.Anything, Arg<ApplicationUser>.Is.Anything, Arg<bool>.Is.Anything))
+                _allGameDefinitionsQueryable.Where(gameDefinition => gameDefinition.Active).ToList();
+            _championRecalculatorPartialMock.Expect(mock => mock.RecalculateChampion(Arg<int>.Is.Anything, Arg<ApplicationUser>.Is.Anything, Arg<IDataContext>.Is.Anything, Arg<bool>.Is.Anything))
                 .Return(new Champion());
 
-            championRecalculatorPartialMock.RecalculateAllChampions();
+            _championRecalculatorPartialMock.RecalculateAllChampions();
 
             foreach (GameDefinition gameDefinition in activeGameDefinitions)
             {
-                championRecalculatorPartialMock.AssertWasCalled(mock => 
-                    mock.RecalculateChampion(Arg<int>.Is.Equal(gameDefinition.Id), Arg<ApplicationUser>.Is.Anything, Arg<bool>.Is.Equal(true)));
+                _championRecalculatorPartialMock.AssertWasCalled(mock => 
+                    mock.RecalculateChampion(Arg<int>.Is.Equal(gameDefinition.Id), Arg<ApplicationUser>.Is.Anything, Arg<IDataContext>.Is.Anything, Arg<bool>.Is.Equal(true)));
             }
         }
     }

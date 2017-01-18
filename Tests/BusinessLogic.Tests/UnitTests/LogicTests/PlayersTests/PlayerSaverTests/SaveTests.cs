@@ -176,9 +176,9 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerSaverTests
 
             _autoMocker.ClassUnderTest.Save(player, _currentUser);
             
-            _autoMocker.Get<INemesisRecalculator>().AssertWasCalled(mock => mock.RecalculateNemesis(activeMinion1.Id, _currentUser));
-            _autoMocker.Get<INemesisRecalculator>().AssertWasCalled(mock => mock.RecalculateNemesis(activeMinion2.Id, _currentUser));
-            _autoMocker.Get<INemesisRecalculator>().AssertWasNotCalled(mock => mock.RecalculateNemesis(inactiveMinion.Id, _currentUser));
+            _autoMocker.Get<INemesisRecalculator>().AssertWasCalled(mock => mock.RecalculateNemesis(activeMinion1.Id, _currentUser, _autoMocker.Get<IDataContext>()));
+            _autoMocker.Get<INemesisRecalculator>().AssertWasCalled(mock => mock.RecalculateNemesis(activeMinion2.Id, _currentUser, _autoMocker.Get<IDataContext>()));
+            _autoMocker.Get<INemesisRecalculator>().AssertWasNotCalled(mock => mock.RecalculateNemesis(inactiveMinion.Id, _currentUser, _autoMocker.Get<IDataContext>()));
         }
 
         [Test]
@@ -199,14 +199,14 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerSaverTests
 
             _autoMocker.ClassUnderTest.Save(player, _currentUser);
 
-            _autoMocker.Get<INemesisRecalculator>().AssertWasNotCalled(mock => mock.RecalculateNemesis(CURRENT_PLAYER_MINION_ID1, _currentUser));
+            _autoMocker.Get<INemesisRecalculator>().AssertWasNotCalled(mock => mock.RecalculateNemesis(CURRENT_PLAYER_MINION_ID1, _currentUser, _autoMocker.Get<IDataContext>()));
         }
 
         [Test]
         public void ItThrowsAPlayerAlreadyExistsExceptionIfAttemptingToSaveAPlayerWithANameThatAlreadyExists()
         {    
             var exception = Assert.Throws<PlayerAlreadyExistsException>(
-                () => _autoMocker.ClassUnderTest.Save(this._playerThatAlreadyExists, _currentUser));
+                () => _autoMocker.ClassUnderTest.Save(_playerThatAlreadyExists, _currentUser));
 
             Assert.AreEqual(_idOfPlayerThatAlreadyExists, exception.ExistingPlayerId);
         }

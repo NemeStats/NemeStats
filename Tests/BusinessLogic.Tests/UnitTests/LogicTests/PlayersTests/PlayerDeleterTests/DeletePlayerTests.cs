@@ -249,8 +249,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerDeleterTes
             AutoMocker.ClassUnderTest.DeletePlayer(PlayerId, CurrentUser);
 
             //--assert
-            AutoMocker.Get<IChampionRecalculator>().AssertWasCalled(mock => mock.RecalculateChampion(_gameDefinitionId, CurrentUser));
-            AutoMocker.Get<IChampionRecalculator>().AssertWasCalled(mock => mock.RecalculateChampion(_gameDefinitionId2, CurrentUser));
+            AutoMocker.Get<IChampionRecalculator>().AssertWasCalled(mock => mock.RecalculateChampion(_gameDefinitionId, CurrentUser, AutoMocker.Get<IDataContext>()));
+            AutoMocker.Get<IChampionRecalculator>().AssertWasCalled(mock => mock.RecalculateChampion(_gameDefinitionId2, CurrentUser, AutoMocker.Get<IDataContext>()));
         }
     }
 
@@ -368,11 +368,11 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerDeleterTes
             AutoMocker.ClassUnderTest.DeletePlayer(PlayerId, CurrentUser);
 
             //--assert
-            AutoMocker.Get<INemesisRecalculator>().AssertWasCalled(mock => mock.RecalculateNemesis(_playerIdWithCurrentNemesis, CurrentUser));
-            AutoMocker.Get<INemesisRecalculator>().AssertWasCalled(mock => mock.RecalculateNemesis(_playerId2WithCurrentNemesis, CurrentUser));
+            AutoMocker.Get<INemesisRecalculator>().AssertWasCalled(mock => mock.RecalculateNemesis(_playerIdWithCurrentNemesis, CurrentUser, AutoMocker.Get<IDataContext>()));
+            AutoMocker.Get<INemesisRecalculator>().AssertWasCalled(mock => mock.RecalculateNemesis(_playerId2WithCurrentNemesis, CurrentUser, AutoMocker.Get<IDataContext>()));
 
-            AutoMocker.Get<INemesisRecalculator>().AssertWasNotCalled(mock => mock.RecalculateNemesis(_playerIdWithPreviousNemesis, CurrentUser));
-            AutoMocker.Get<INemesisRecalculator>().AssertWasNotCalled(mock => mock.RecalculateNemesis(_playerId2WithPreviousNemesis, CurrentUser));
+            AutoMocker.Get<INemesisRecalculator>().AssertWasNotCalled(mock => mock.RecalculateNemesis(_playerIdWithPreviousNemesis, CurrentUser, AutoMocker.Get<IDataContext>()));
+            AutoMocker.Get<INemesisRecalculator>().AssertWasNotCalled(mock => mock.RecalculateNemesis(_playerId2WithPreviousNemesis, CurrentUser, AutoMocker.Get<IDataContext>()));
         }
     }
 }

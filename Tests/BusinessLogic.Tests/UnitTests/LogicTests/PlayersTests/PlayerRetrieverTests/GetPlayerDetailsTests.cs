@@ -157,7 +157,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
             {
                 new PlayerGameSummary()
             };
-            autoMocker.Get<IPlayerRepository>().Expect(mock => mock.GetPlayerGameSummaries(Arg<int>.Is.Anything))
+            autoMocker.Get<IPlayerRepository>().Expect(mock => mock.GetPlayerGameSummaries(Arg<int>.Is.Anything, Arg<IDataContext>.Is.Anything))
                                 .Return(expectedPlayerGameSummaries);
 
             expectedChampionedGames = new List<Champion> { expectedChampion };
@@ -169,10 +169,10 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
                 .Return(expectedFormerChampionedGames);
 
             expectedPlayerVersusPlayerStatistics = new List<PlayerVersusPlayerStatistics>();
-            autoMocker.Get<IPlayerRepository>().Expect(mock => mock.GetPlayerVersusPlayersStatistics(Arg<int>.Is.Anything))
+            autoMocker.Get<IPlayerRepository>().Expect(mock => mock.GetPlayerVersusPlayersStatistics(Arg<int>.Is.Anything, Arg<IDataContext>.Is.Anything))
                       .Return(expectedPlayerVersusPlayerStatistics);
 
-            autoMocker.Get<IPlayerRepository>().Expect(mock => mock.GetLongestWinningStreak(player.Id)).Return(expectedLongestWinningStreak);
+            autoMocker.Get<IPlayerRepository>().Expect(mock => mock.GetLongestWinningStreak(player.Id, Arg<IDataContext>.Is.Anything)).Return(expectedLongestWinningStreak);
 
             autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<PlayerAchievement>()).Return(new List<PlayerAchievement>().AsQueryable());
 

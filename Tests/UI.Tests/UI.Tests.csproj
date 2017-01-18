@@ -329,6 +329,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\NemeStats.TestingHelpers\NemeStats.TestingHelpers.csproj">
+      <Project>{025A287A-14D5-4F5D-A476-5D2FE1B5FBB3}</Project>
+      <Name>NemeStats.TestingHelpers</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Source\BoardGameGeekApiClient\BoardGameGeekApiClient.csproj">
       <Project>{d4efacf4-b72b-4395-89bf-4caa9a33c427}</Project>
       <Name>BoardGameGeekApiClient</Name>

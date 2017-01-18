@@ -16,7 +16,7 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 
-using System.Linq;
+using BusinessLogic.DataAccess;
 using BusinessLogic.Models;
 using BusinessLogic.Models.User;
 
@@ -25,6 +25,6 @@ namespace BusinessLogic.Logic.Champions
     public interface IChampionRecalculator
     {
         void RecalculateAllChampions();
-        Champion RecalculateChampion(int gameDefinitionId, ApplicationUser applicationUser, bool allowedToClearExistingChampion = true);
+        Champion RecalculateChampion(int gameDefinitionId, ApplicationUser applicationUser, IDataContext dataContext, bool allowedToClearExistingChampion = true);
     }
 }

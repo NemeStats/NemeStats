@@ -31,71 +31,71 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameDe
     [TestFixture]
     public class DeletePlayedGameTests
     {
-        private IDataContext dataContextMock;
-        private INemesisRecalculator nemesisRecalculatorMock;
-        private IChampionRecalculator championRecalculatorMock;
-        private PlayedGameDeleter playedGameDeleter;
-        private ApplicationUser currentUser;
-        private List<PlayerGameResult> playerGameResults;
-        private int playedGameId = 1;
-        private int playerInGame1Id = 1;
-        private int playerInGame2Id = 2;
-        private int playerNotInGame = 9999;
-        private int gameDefinitionId = 40;
-        private PlayedGame playedGame;
+        private IDataContext _dataContextMock;
+        private INemesisRecalculator _nemesisRecalculatorMock;
+        private IChampionRecalculator _championRecalculatorMock;
+        private PlayedGameDeleter _playedGameDeleter;
+        private ApplicationUser _currentUser;
+        private List<PlayerGameResult> _playerGameResults;
+        private int _playedGameId = 1;
+        private int _playerInGame1Id = 1;
+        private int _playerInGame2Id = 2;
+        private int _playerNotInGame = 9999;
+        private int _gameDefinitionId = 40;
+        private PlayedGame _playedGame;
 
         [SetUp]
         public void SetUp()
         {
-            dataContextMock = MockRepository.GenerateMock<IDataContext>();
-            nemesisRecalculatorMock = MockRepository.GenerateMock<INemesisRecalculator>();
-            championRecalculatorMock = MockRepository.GenerateMock<IChampionRecalculator>();
-            playedGameDeleter = new PlayedGameDeleter(dataContextMock, nemesisRecalculatorMock, championRecalculatorMock);
+            _dataContextMock = MockRepository.GenerateMock<IDataContext>();
+            _nemesisRecalculatorMock = MockRepository.GenerateMock<INemesisRecalculator>();
+            _championRecalculatorMock = MockRepository.GenerateMock<IChampionRecalculator>();
+            _playedGameDeleter = new PlayedGameDeleter(_dataContextMock, _nemesisRecalculatorMock, _championRecalculatorMock);
 
-            currentUser = new ApplicationUser();
+            _currentUser = new ApplicationUser();
 
-            playedGame = new PlayedGame()
+            _playedGame = new PlayedGame()
             {
-                GameDefinitionId = gameDefinitionId
+                GameDefinitionId = _gameDefinitionId
             };
 
-            playerGameResults = new List<PlayerGameResult>()
+            _playerGameResults = new List<PlayerGameResult>()
             {
-                new PlayerGameResult(){ PlayerId = playerInGame1Id, PlayedGameId = playedGameId, PlayedGame = playedGame },
-                new PlayerGameResult(){ PlayerId = playerInGame2Id, PlayedGameId = playedGameId, PlayedGame = playedGame },
-                new PlayerGameResult(){ PlayerId = 3, PlayedGameId = playedGameId + 9999, PlayedGame = playedGame }
+                new PlayerGameResult(){ PlayerId = _playerInGame1Id, PlayedGameId = _playedGameId, PlayedGame = _playedGame },
+                new PlayerGameResult(){ PlayerId = _playerInGame2Id, PlayedGameId = _playedGameId, PlayedGame = _playedGame },
+                new PlayerGameResult(){ PlayerId = 3, PlayedGameId = _playedGameId + 9999, PlayedGame = _playedGame }
             };
 
-            dataContextMock.Expect(mock => mock.GetQueryable<PlayerGameResult>())
-                .Return(playerGameResults.AsQueryable());
+            _dataContextMock.Expect(mock => mock.GetQueryable<PlayerGameResult>())
+                .Return(_playerGameResults.AsQueryable());
         }
 
         [Test]
         public void ItDeletesTheSpecifiedPlayedGame()
         {
-            playedGameDeleter.DeletePlayedGame(playedGameId, currentUser);
+            _playedGameDeleter.DeletePlayedGame(_playedGameId, _currentUser);
 
-            dataContextMock.AssertWasCalled(mock => mock.DeleteById<PlayedGame>(playedGameId, currentUser));
+            _dataContextMock.AssertWasCalled(mock => mock.DeleteById<PlayedGame>(_playedGameId, _currentUser));
         }
 
         [Test]
         public void ItRecalculatesTheNemesesOfAllPlayersInTheDeletedGame()
         {
             int playedGameIdId = 1;
-            playedGameDeleter.DeletePlayedGame(playedGameIdId, currentUser);
+            _playedGameDeleter.DeletePlayedGame(playedGameIdId, _currentUser);
 
-            nemesisRecalculatorMock.AssertWasCalled(mock => mock.RecalculateNemesis(playerInGame1Id, currentUser));
-            nemesisRecalculatorMock.AssertWasCalled(mock => mock.RecalculateNemesis(playerInGame2Id, currentUser));
-            nemesisRecalculatorMock.AssertWasNotCalled(mock => mock.RecalculateNemesis(playerNotInGame, currentUser));
+            _nemesisRecalculatorMock.AssertWasCalled(mock => mock.RecalculateNemesis(_playerInGame1Id, _currentUser, _dataContextMock));
+            _nemesisRecalculatorMock.AssertWasCalled(mock => mock.RecalculateNemesis(_playerInGame2Id, _currentUser, _dataContextMock));
+            _nemesisRecalculatorMock.AssertWasNotCalled(mock => mock.RecalculateNemesis(_playerNotInGame, _currentUser, _dataContextMock));
         }
 
         [Test]
         public void ItRecalculatesTheChampionOfTheDeletedGame()
         {
             int playedGameIdId = 1;
-            playedGameDeleter.DeletePlayedGame(playedGameIdId, currentUser);
+            _playedGameDeleter.DeletePlayedGame(playedGameIdId, _currentUser);
 
-            championRecalculatorMock.AssertWasCalled(mock => mock.RecalculateChampion(gameDefinitionId, currentUser));
+            _championRecalculatorMock.AssertWasCalled(mock => mock.RecalculateChampion(_gameDefinitionId, _currentUser, _dataContextMock));
         }
     }
 }

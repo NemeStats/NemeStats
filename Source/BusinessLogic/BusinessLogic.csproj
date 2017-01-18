@@ -180,6 +180,8 @@
     <Compile Include="Caching\ICacheRetriever.cs" />
     <Compile Include="Caching\ICacheService.cs" />
     <Compile Include="Caching\CacheService.cs" />
+    <Compile Include="Components\DbComponentBase.cs" />
+    <Compile Include="Components\TransactionalComponentBase.cs" />
     <Compile Include="DataAccess\NemeStatsDataContext.cs" />
     <Compile Include="DataAccess\IDataContext.cs" />
     <Compile Include="DataAccess\NemeStatsDbContext.cs" />
@@ -307,7 +309,9 @@
     <Compile Include="Logic\GameDefinitions\GameDefinitionUpdateRequest.cs" />
     <Compile Include="Logic\GamingGroups\GamingGroupInfoForUser.cs" />
     <Compile Include="Logic\PlayedGames\ApplicationLinker.cs" />
+    <Compile Include="Logic\PlayedGames\CreatePlayedGameComponent.cs" />
     <Compile Include="Logic\PlayedGames\IApplicationLinker.cs" />
+    <Compile Include="Logic\PlayedGames\ICreatePlayedGameComponent.cs" />
     <Compile Include="Logic\PlayerAchievements\IPlayerAchievementRetriever.cs" />
     <Compile Include="Logic\PlayerAchievements\IRecentPlayerAchievementsUnlockedRetreiver.cs" />
     <Compile Include="Logic\PlayerAchievements\PlayerAchievementRetriever.cs" />

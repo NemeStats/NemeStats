@@ -20,26 +20,25 @@ using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Nemeses;
 using BusinessLogic.Models.User;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace BusinessLogic.Logic.Nemeses
 {
     public class NemesisRecalculator : INemesisRecalculator
     {
-        private readonly IDataContext dataContext;
-        private readonly IPlayerRepository playerRepository;
+        private readonly IDataContext _dataContext;
+        private readonly IPlayerRepository _playerRepository;
 
         public NemesisRecalculator(IDataContext dataContext, IPlayerRepository playerRepository)
         {
-            this.dataContext = dataContext;
-            this.playerRepository = playerRepository;
+            this._dataContext = dataContext;
+            this._playerRepository = playerRepository;
         }
 
         public void RecalculateAllNemeses()
         {
-            var activePlayers = dataContext.GetQueryable<Player>()
-                                            .Where(player => player.Active == true)
+            var activePlayers = _dataContext.GetQueryable<Player>()
+                                            .Where(player => player.Active)
                                             .ToList();
 
             var applicationUser = new ApplicationUser();
@@ -48,15 +47,15 @@ namespace BusinessLogic.Logic.Nemeses
             {
                 applicationUser.CurrentGamingGroupId = activePlayer.GamingGroupId;
 
-                this.RecalculateNemesis(activePlayer.Id, applicationUser);
+                this.RecalculateNemesis(activePlayer.Id, applicationUser, _dataContext);
             }
         }
 
-        public virtual Nemesis RecalculateNemesis(int playerId, ApplicationUser currentUser)
+        public virtual Nemesis RecalculateNemesis(int playerId, ApplicationUser currentUser, IDataContext dataContext)
         {
             var minionPlayer = dataContext.FindById<Player>(playerId);
 
-            var nemesisData = playerRepository.GetNemesisData(playerId);
+            var nemesisData = _playerRepository.GetNemesisData(playerId, dataContext);
 
             if (nemesisData is NullNemesisData)
             {
@@ -65,7 +64,7 @@ namespace BusinessLogic.Logic.Nemeses
                 return new NullNemesis();
             }
 
-            var existingNemesis = dataContext
+            var existingNemesis = _dataContext
                                         .GetQueryable<Nemesis>()
                                         .FirstOrDefault(nemesis => nemesis.Id == minionPlayer.NemesisId);
 
@@ -84,11 +83,11 @@ namespace BusinessLogic.Logic.Nemeses
                 savedNemesis = UpdateExistingNemesisIfNeeded(currentUser, existingNemesis, newNemesis);
             }else
             {
-                savedNemesis = dataContext.Save<Nemesis>(newNemesis, currentUser);
-                dataContext.CommitAllChanges();
+                savedNemesis = _dataContext.Save<Nemesis>(newNemesis, currentUser);
+                _dataContext.CommitAllChanges();
                 minionPlayer.PreviousNemesisId = minionPlayer.NemesisId;
                 minionPlayer.NemesisId = savedNemesis.Id;
-                dataContext.Save<Player>(minionPlayer, currentUser);
+                _dataContext.Save<Player>(minionPlayer, currentUser);
             }
 
             return savedNemesis;
@@ -100,8 +99,8 @@ namespace BusinessLogic.Logic.Nemeses
             {
                 existingNemesis.NumberOfGamesLost = newNemesis.NumberOfGamesLost;
                 existingNemesis.LossPercentage = newNemesis.LossPercentage;
-                var returnNemesis = dataContext.Save<Nemesis>(existingNemesis, currentUser);
-                dataContext.CommitAllChanges();
+                var returnNemesis = _dataContext.Save<Nemesis>(existingNemesis, currentUser);
+                _dataContext.CommitAllChanges();
                 return returnNemesis;
             }
             return existingNemesis;
@@ -113,7 +112,7 @@ namespace BusinessLogic.Logic.Nemeses
             {
                 minionPlayer.PreviousNemesisId = minionPlayer.NemesisId;
                 minionPlayer.NemesisId = null;
-                dataContext.Save<Player>(minionPlayer, currentUser);
+                _dataContext.Save<Player>(minionPlayer, currentUser);
             }
         }
     }

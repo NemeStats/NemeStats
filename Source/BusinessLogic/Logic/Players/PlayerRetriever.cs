@@ -35,21 +35,21 @@ namespace BusinessLogic.Logic.Players
 {
     public class PlayerRetriever : IPlayerRetriever
     {
-        private readonly IDataContext dataContext;
-        private readonly IPlayerRepository playerRepository;
-        private readonly IPlayedGameRetriever playedGameRetriever;
-        public const string EXCEPTION_MESSAGE_PLAYER_COULD_NOT_BE_FOUND = "Could not find player with Id: {0}";
+        private readonly IDataContext _dataContext;
+        private readonly IPlayerRepository _playerRepository;
+        private readonly IPlayedGameRetriever _playedGameRetriever;
+        public const string ExceptionMessagePlayerCouldNotBeFound = "Could not find player with Id: {0}";
 
         public PlayerRetriever(IDataContext dataContext, IPlayerRepository playerRepository, IPlayedGameRetriever playedGameRetriever)
         {
-            this.dataContext = dataContext;
-            this.playerRepository = playerRepository;
-            this.playedGameRetriever = playedGameRetriever;
+            this._dataContext = dataContext;
+            this._playerRepository = playerRepository;
+            this._playedGameRetriever = playedGameRetriever;
         }
 
         internal IQueryable<Player> GetAllPlayersInGamingGroupQueryable(int gamingGroupId)
         {
-            return dataContext.GetQueryable<Player>()
+            return _dataContext.GetQueryable<Player>()
                 .Where(player => player.GamingGroupId == gamingGroupId);
         }
 
@@ -119,7 +119,7 @@ namespace BusinessLogic.Logic.Players
 
         private void PopulateAchivements(List<PlayerWithNemesis> playersWithNemesis)
         {
-            var playerAchievements = dataContext.GetQueryable<PlayerAchievement>();
+            var playerAchievements = _dataContext.GetQueryable<PlayerAchievement>();
             if (playerAchievements != null)
             {
 
@@ -141,7 +141,7 @@ namespace BusinessLogic.Logic.Players
 
         internal virtual void PopulateNemePointsSummary(int gamingGroupId, List<PlayerWithNemesis> playersWithNemesis, IDateRangeFilter dateRangeFilter)
         {
-            var nemePointsDictionary = (from playerGameResult in dataContext.GetQueryable<PlayerGameResult>()
+            var nemePointsDictionary = (from playerGameResult in _dataContext.GetQueryable<PlayerGameResult>()
                                         where playerGameResult.PlayedGame.GamingGroupId == gamingGroupId
                                         && playerGameResult.PlayedGame.DatePlayed >= dateRangeFilter.FromDate
                                         && playerGameResult.PlayedGame.DatePlayed <= dateRangeFilter.ToDate
@@ -164,7 +164,7 @@ namespace BusinessLogic.Logic.Players
 
         public virtual PlayerDetails GetPlayerDetails(int playerId, int numberOfRecentGamesToRetrieve)
         {
-            var returnPlayer = dataContext.GetQueryable<Player>()
+            var returnPlayer = _dataContext.GetQueryable<Player>()
                                              .Include(player => player.Nemesis)
                                              .Include(player => player.Nemesis.NemesisPlayer)
                                              .Include(player => player.PreviousNemesis)
@@ -181,13 +181,13 @@ namespace BusinessLogic.Logic.Players
 
             var minions = GetMinions(returnPlayer.Id);
 
-            var playerGameSummaries = playerRepository.GetPlayerGameSummaries(playerId);
+            var playerGameSummaries = _playerRepository.GetPlayerGameSummaries(playerId, _dataContext);
 
             var championedGames = GetChampionedGames(returnPlayer.Id);
 
             var formerChampionedGames = GetFormerChampionedGames(returnPlayer.Id);
 
-            var longestWinningStreak = playerRepository.GetLongestWinningStreak(playerId);
+            var longestWinningStreak = _playerRepository.GetLongestWinningStreak(playerId, _dataContext);
 
             var playerDetails = new PlayerDetails()
             {
@@ -204,7 +204,7 @@ namespace BusinessLogic.Logic.Players
                 Minions = minions,
                 PlayerGameSummaries = playerGameSummaries,
                 ChampionedGames = championedGames,
-                PlayerVersusPlayersStatistics = playerRepository.GetPlayerVersusPlayersStatistics(playerId),
+                PlayerVersusPlayersStatistics = _playerRepository.GetPlayerVersusPlayersStatistics(playerId, _dataContext),
                 FormerChampionedGames = formerChampionedGames,
                 LongestWinningStreak = longestWinningStreak,
                 NemePointsSummary = playerStatistics.NemePointsSummary,
@@ -225,7 +225,7 @@ namespace BusinessLogic.Logic.Players
 
         internal virtual List<Player> GetMinions(int nemesisPlayerId)
         {
-            return (from Player player in dataContext.GetQueryable<Player>().Include(p => p.Nemesis)
+            return (from Player player in _dataContext.GetQueryable<Player>().Include(p => p.Nemesis)
                     where player.Nemesis.NemesisPlayerId == nemesisPlayerId
                     select player).ToList();
         }
@@ -234,7 +234,7 @@ namespace BusinessLogic.Logic.Players
         {
             return
                 (from GameDefinition gameDefinition in
-                     dataContext.GetQueryable<GameDefinition>().Include(g => g.Champion)
+                     _dataContext.GetQueryable<GameDefinition>().Include(g => g.Champion)
                  where gameDefinition.Champion.PlayerId == playerId
                  select gameDefinition.Champion).Include(c => c.GameDefinition)
                  .ToList();
@@ -244,18 +244,18 @@ namespace BusinessLogic.Logic.Players
         {
             return
                 (from Champion champion in
-                     dataContext.GetQueryable<Champion>().Include(c => c.GameDefinition)
+                     _dataContext.GetQueryable<Champion>().Include(c => c.GameDefinition)
                  where champion.PlayerId == playerId
                  select champion.GameDefinition)
                  .ToList();
         }
 
         internal virtual List<PlayerGameResult> GetPlayerGameResultsWithPlayedGameAndGameDefinition(
-            int playerID,
+            int playerId,
             int numberOfRecentGamesToRetrieve)
         {
-            var playerGameResults = dataContext.GetQueryable<PlayerGameResult>()
-                        .Where(result => result.PlayerId == playerID)
+            var playerGameResults = _dataContext.GetQueryable<PlayerGameResult>()
+                        .Where(result => result.PlayerId == playerId)
                         .OrderByDescending(result => result.PlayedGame.DatePlayed)
                         .ThenByDescending(result => result.PlayedGame.Id)
                         .Take(numberOfRecentGamesToRetrieve)
@@ -285,7 +285,7 @@ namespace BusinessLogic.Logic.Players
 
             //had to cast to handle the case where there is no data:
             //http://stackoverflow.com/questions/6864311/the-cast-to-value-type-int32-failed-because-the-materialized-value-is-null
-            playerStatistics.AveragePlayersPerGame = (float?)dataContext.GetQueryable<PlayedGame>()
+            playerStatistics.AveragePlayersPerGame = (float?)_dataContext.GetQueryable<PlayedGame>()
                 .Where(playedGame => playedGame.PlayerGameResults.Any(result => result.PlayerId == playerId))
                     .Average(game => (int?)game.NumberOfPlayers) ?? 0F;
 
@@ -306,7 +306,7 @@ namespace BusinessLogic.Logic.Players
 
         internal virtual GameDefinitionTotals GetGameDefinitionTotals(int playerId)
         {
-            var playerGameSummaries = playerRepository.GetPlayerGameSummaries(playerId);
+            var playerGameSummaries = _playerRepository.GetPlayerGameSummaries(playerId, _dataContext);
             var gameDefinitionTotals = new GameDefinitionTotals
             {
                 SummariesOfGameDefinitionTotals = playerGameSummaries.Select(playerGameSummary => new GameDefinitionTotal
@@ -329,7 +329,7 @@ namespace BusinessLogic.Logic.Players
 
         internal virtual NemePointsSummary GetNemePointsSummary(int playerId)
         {
-            var nemePointsSummary = dataContext.GetQueryable<PlayerGameResult>()
+            var nemePointsSummary = _dataContext.GetQueryable<PlayerGameResult>()
                                           .Where(result => result.PlayerId == playerId)
                                           .GroupBy(x => x.PlayerId)
                                           .Select(
@@ -348,7 +348,7 @@ namespace BusinessLogic.Logic.Players
 
         public virtual int GetPlayerIdForCurrentUser(string applicationUserId, int gamingGroupId)
         {
-            return (from player in dataContext.GetQueryable<Player>()
+            return (from player in _dataContext.GetQueryable<Player>()
                     where player.GamingGroupId == gamingGroupId
                      && player.ApplicationUserId == applicationUserId
                     select player.Id)
@@ -357,7 +357,7 @@ namespace BusinessLogic.Logic.Players
 
         public List<Player> GetPlayers(List<int> ids)
         {
-            return dataContext.GetQueryable<Player>()
+            return _dataContext.GetQueryable<Player>()
                 .Where(p => ids.Contains(p.Id))
                 .Include(p => p.GamingGroup)
                 .ToList();
@@ -379,7 +379,7 @@ namespace BusinessLogic.Logic.Players
                 returnValue.TotalGamesPlayed = topLevelTotals.TotalGames;
                 returnValue.TotalGamesWon = topLevelTotals.TotalGamesWon;
 
-                var lastPlayedGameForGamingGroupList = playedGameRetriever.GetRecentGames(1, gamingGroupId);
+                var lastPlayedGameForGamingGroupList = _playedGameRetriever.GetRecentGames(1, gamingGroupId);
                 if (lastPlayedGameForGamingGroupList.Count() == 1)
                 {
                     var lastGame = lastPlayedGameForGamingGroupList[0];
@@ -413,7 +413,7 @@ namespace BusinessLogic.Logic.Players
 
         public PlayersToCreateModel GetPlayersToCreate(string currentUserId, int currentGamingGroupId)
         {
-            var currentUserPlayer = dataContext.GetQueryable<Player>().FirstOrDefault(p => p.ApplicationUserId == currentUserId && p.GamingGroupId == currentGamingGroupId);
+            var currentUserPlayer = _dataContext.GetQueryable<Player>().FirstOrDefault(p => p.ApplicationUserId == currentUserId && p.GamingGroupId == currentGamingGroupId);
 
             var recentPlayersQuery = GetPlayersToCreateQueryable(currentUserPlayer, currentGamingGroupId)
                 .OrderByDescending(
@@ -441,7 +441,7 @@ namespace BusinessLogic.Logic.Players
 
         private IQueryable<Player> GetPlayersToCreateQueryable(Player currentUserPlayer, int gaminggruopid)
         {
-            var query = dataContext.GetQueryable<Player>()
+            var query = _dataContext.GetQueryable<Player>()
                 .Where(player => player.GamingGroupId == gaminggruopid && player.Active)
                 ;
             if (currentUserPlayer != null)

@@ -99,6 +99,7 @@ namespace UI.Transformations
             Mapper.CreateMap<PlayedGameQuickStats, PlayedGameQuickStatsViewModel>(MemberList.Destination);
 
             Mapper.CreateMap<PlayedGameMessage, NewlyCompletedGame>(MemberList.Destination)
+                .ForMember(m => m.TransactionSource, opt => opt.Ignore())
                 .ForMember(m => m.DatePlayed, opt => opt.ResolveUsing(x =>
                 {
                     var datePlayed = DateTime.UtcNow;

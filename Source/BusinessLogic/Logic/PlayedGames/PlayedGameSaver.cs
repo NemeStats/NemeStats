@@ -29,7 +29,6 @@ using BusinessLogic.Models.User;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using AutoMapper.Internal;
 using BusinessLogic.Events;
 using BusinessLogic.Events.HandlerFactory;
 using BusinessLogic.Events.Interfaces;
@@ -58,7 +57,8 @@ namespace BusinessLogic.Logic.PlayedGames
             ISecuredEntityValidator securedEntityValidator,
             IPointsCalculator pointsCalculator,
             IBusinessLogicEventBus eventBus, 
-            ILinkedPlayedGameValidator linkedPlayedGameValidator, IApplicationLinker applicationLinker) : base(eventBus)
+            ILinkedPlayedGameValidator linkedPlayedGameValidator, 
+            IApplicationLinker applicationLinker) : base(eventBus)
         {
             _dataContext = applicationDataContext;
             _playedGameTracker = playedGameTracker;
@@ -70,60 +70,27 @@ namespace BusinessLogic.Logic.PlayedGames
             _applicationLinker = applicationLinker;
         }
 
-        //TODO need to have validation logic here (or on PlayedGame similar to what is on NewlyCompletedGame)
-        public PlayedGame CreatePlayedGame(NewlyCompletedGame newlyCompletedGame, TransactionSource transactionSource, ApplicationUser currentUser)
-        {
-            if (newlyCompletedGame.GamingGroupId.HasValue && newlyCompletedGame.GamingGroupId != currentUser.CurrentGamingGroupId)
-            {
-                _securedEntityValidator.RetrieveAndValidateAccess<GamingGroup>(newlyCompletedGame.GamingGroupId.Value, currentUser);
-            }
-
-            var gameDefinition = _securedEntityValidator.RetrieveAndValidateAccess<GameDefinition>(newlyCompletedGame.GameDefinitionId, currentUser);
-
-            _linkedPlayedGameValidator.Validate(newlyCompletedGame);
-
-            var gamingGroupId = newlyCompletedGame.GamingGroupId ?? currentUser.CurrentGamingGroupId;
-
-            ValidateAccessToPlayers(newlyCompletedGame.PlayerRanks, gamingGroupId, currentUser);
-
-            var playerGameResults = MakePlayerGameResults(newlyCompletedGame, gameDefinition.BoardGameGeekGameDefinitionId);
-
-            var playedGame = TransformNewlyCompletedGameIntoPlayedGame(
-                newlyCompletedGame,
-                gamingGroupId,
-                currentUser.Id,
-                playerGameResults);
-
-            playedGame = _dataContext.Save(playedGame, currentUser);
-
-            CreateApplicationLinkages(newlyCompletedGame.ApplicationLinkages, playedGame.Id);
-
-            DoPostSaveStuff(transactionSource, currentUser, playedGame.Id, playedGame.GameDefinitionId, playerGameResults);
-
-            return playedGame;
-        }
-
-        internal virtual void ValidateAccessToPlayers(IEnumerable<PlayerRank> playerRanks, int gamingGroupId, ApplicationUser currentUser)
+        public virtual void ValidateAccessToPlayers(IEnumerable<PlayerRank> playerRanks, int gamingGroupId, ApplicationUser currentUser, IDataContext dataContext)
         {
             foreach (var playerRank in playerRanks)
             {
-                var player = _dataContext.FindById<Player>(playerRank.PlayerId);
+                var player = dataContext.FindById<Player>(playerRank.PlayerId);
                 if (player.GamingGroupId != gamingGroupId)
                 {
                     throw new PlayerNotInGamingGroupException(player.Id, gamingGroupId);
                 }
-                _securedEntityValidator.ValidateAccess<Player>(player, currentUser);
+                _securedEntityValidator.ValidateAccess(player, currentUser);
             }
         }
 
-        internal virtual List<PlayerGameResult> MakePlayerGameResults(
+        public virtual List<PlayerGameResult> MakePlayerGameResults(
            SaveableGameBase savedGame,
-           int? boardGameGeekGameDefinitionId)
+           int? boardGameGeekGameDefinitionId, IDataContext dataContext)
         {
             BoardGameGeekGameDefinition boardGameGeekGameDefinition = null;
             if (boardGameGeekGameDefinitionId.HasValue)
             {
-                boardGameGeekGameDefinition = _dataContext.FindById<BoardGameGeekGameDefinition>(boardGameGeekGameDefinitionId.Value);
+                boardGameGeekGameDefinition = dataContext.FindById<BoardGameGeekGameDefinition>(boardGameGeekGameDefinitionId.Value);
             }
 
             var pointsDictionary = _pointsCalculator.CalculatePoints(savedGame.PlayerRanks, boardGameGeekGameDefinition);
@@ -147,7 +114,7 @@ namespace BusinessLogic.Logic.PlayedGames
         }
 
         //TODO this should be in its own class or just in AutoMapperConfiguration
-        internal virtual PlayedGame TransformNewlyCompletedGameIntoPlayedGame(
+        public virtual PlayedGame TransformNewlyCompletedGameIntoPlayedGame(
             SaveableGameBase savedGame,
             int gamingGroupId,
             string applicationUserId,
@@ -179,26 +146,34 @@ namespace BusinessLogic.Logic.PlayedGames
             return playedGame;
         }
 
-        internal virtual void CreateApplicationLinkages(IList<ApplicationLinkage> applicationLinkages, int playedGameId)
+        public virtual void CreateApplicationLinkages(IList<ApplicationLinkage> applicationLinkages, int playedGameId, IDataContext dataContext)
         {
-            _applicationLinker.LinkApplication(playedGameId, ApplicationLinker.APPLICATION_NAME_NEMESTATS, playedGameId.ToString());
+            _applicationLinker.LinkApplication(playedGameId, ApplicationLinker.APPLICATION_NAME_NEMESTATS, playedGameId.ToString(), dataContext);
             foreach (var applicationLinkage in applicationLinkages)
             {
-                _applicationLinker.LinkApplication(playedGameId, applicationLinkage.ApplicationName,
-                    applicationLinkage.EntityId);
+                _applicationLinker.LinkApplication(
+                    playedGameId, 
+                    applicationLinkage.ApplicationName,
+                    applicationLinkage.EntityId,
+                    dataContext);
             }
         }
 
-        internal virtual void DoPostSaveStuff(TransactionSource transactionSource,
-            ApplicationUser currentUser, int playedGameId, int gameDefinitionId, List<PlayerGameResult> playerGameResults)
+        public virtual void DoPostSaveStuff(
+            TransactionSource transactionSource,
+            ApplicationUser currentUser, 
+            int playedGameId, 
+            int gameDefinitionId, 
+            List<PlayerGameResult> playerGameResults, 
+            IDataContext dataContext)
         {
             _playedGameTracker.TrackPlayedGame(currentUser, transactionSource);
 
             foreach (var result in playerGameResults)
             {
-                _nemesisRecalculator.RecalculateNemesis(result.PlayerId, currentUser);
+                _nemesisRecalculator.RecalculateNemesis(result.PlayerId, currentUser, dataContext);
             }
-            _championRecalculator.RecalculateChampion(gameDefinitionId, currentUser, false);
+            _championRecalculator.RecalculateChampion(gameDefinitionId, currentUser, dataContext, false);
 
             SendEvents(new IBusinessLogicEvent[] {new PlayedGameCreatedEvent() {TriggerEntityId = playedGameId}});
         }
@@ -226,9 +201,9 @@ namespace BusinessLogic.Logic.PlayedGames
 
             var gamingGroupId = updatedGame.GamingGroupId ?? playedGameWithStuff.GamingGroupId;
 
-            ValidateAccessToPlayers(updatedGame.PlayerRanks, gamingGroupId, currentUser);
+            ValidateAccessToPlayers(updatedGame.PlayerRanks, gamingGroupId, currentUser, _dataContext);
             
-            var playerGameResults = MakePlayerGameResults(updatedGame, playedGameWithStuff.GameDefinition?.BoardGameGeekGameDefinitionId);
+            var playerGameResults = MakePlayerGameResults(updatedGame, playedGameWithStuff.GameDefinition?.BoardGameGeekGameDefinitionId, _dataContext);
             var updatedPlayedGame = TransformNewlyCompletedGameIntoPlayedGame(updatedGame, gamingGroupId, currentUser.Id, playerGameResults);
 
             updatedPlayedGame.Id = updatedGame.PlayedGameId;
@@ -245,9 +220,9 @@ namespace BusinessLogic.Logic.PlayedGames
                 _dataContext.Save(x, currentUser);
             });
 
-            CreateApplicationLinkages(updatedGame.ApplicationLinkages, updatedGame.PlayedGameId);
+            CreateApplicationLinkages(updatedGame.ApplicationLinkages, updatedGame.PlayedGameId, _dataContext);
 
-            DoPostSaveStuff(transactionSource, currentUser, playedGameWithStuff.Id, playedGameWithStuff.GameDefinitionId, playerGameResults);
+            DoPostSaveStuff(transactionSource, currentUser, playedGameWithStuff.Id, playedGameWithStuff.GameDefinitionId, playerGameResults, _dataContext);
 
             return returnPlayedGame;
         }

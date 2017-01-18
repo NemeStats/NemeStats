@@ -23,10 +23,10 @@ namespace BusinessLogic.DataAccess.Repositories
 {
     public interface IPlayerRepository
     {
-        NemesisData GetNemesisData(int playerId);
-        IList<PlayerGameSummary> GetPlayerGameSummaries(int playerId);
-        IList<PlayerVersusPlayerStatistics> GetPlayerVersusPlayersStatistics(int playerId);
-        IList<PlayerWinRecord> GetPlayerWinRecords(int gameDefinitionId);
-        int GetLongestWinningStreak(int playerId);
+        NemesisData GetNemesisData(int playerId, IDataContext dataContext);
+        IList<PlayerGameSummary> GetPlayerGameSummaries(int playerId, IDataContext dataContext);
+        IList<PlayerVersusPlayerStatistics> GetPlayerVersusPlayersStatistics(int playerId, IDataContext dataContext);
+        IList<PlayerWinRecord> GetPlayerWinRecords(int gameDefinitionId, IDataContext dataContext);
+        int GetLongestWinningStreak(int playerId, IDataContext dataContext);
     }
 }
