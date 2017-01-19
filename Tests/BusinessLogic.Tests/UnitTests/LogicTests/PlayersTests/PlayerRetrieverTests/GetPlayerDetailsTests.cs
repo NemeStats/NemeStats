@@ -149,9 +149,9 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
                             .Repeat.Once()
                             .Return(player.PlayerGameResults.ToList());
 
-            this.expectedMinions = new List<Player>();
+            expectedMinions = new List<Player>();
             autoMocker.ClassUnderTest.Expect(mock => mock.GetMinions(Arg<int>.Is.Anything))
-                .Return(this.expectedMinions);
+                .Return(expectedMinions);
 
             expectedPlayerGameSummaries = new List<PlayerGameSummary>
             {
@@ -172,7 +172,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
             autoMocker.Get<IPlayerRepository>().Expect(mock => mock.GetPlayerVersusPlayersStatistics(Arg<int>.Is.Anything, Arg<IDataContext>.Is.Anything))
                       .Return(expectedPlayerVersusPlayerStatistics);
 
-            autoMocker.Get<IPlayerRepository>().Expect(mock => mock.GetLongestWinningStreak(player.Id, Arg<IDataContext>.Is.Anything)).Return(expectedLongestWinningStreak);
+            autoMocker.Get<IPlayerRepository>().Expect(mock => mock.GetLongestWinningStreak(Arg<int>.Is.Equal(player.Id), Arg<IDataContext>.Is.Anything)).Return(expectedLongestWinningStreak);
 
             autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<PlayerAchievement>()).Return(new List<PlayerAchievement>().AsQueryable());
 
@@ -228,7 +228,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
         {
             var playerDetails = autoMocker.ClassUnderTest.GetPlayerDetails(player.Id, numberOfRecentGames);
 
-            Assert.AreSame(this.expectedMinions, playerDetails.Minions);
+            Assert.AreSame(expectedMinions, playerDetails.Minions);
         }
 
         [Test]

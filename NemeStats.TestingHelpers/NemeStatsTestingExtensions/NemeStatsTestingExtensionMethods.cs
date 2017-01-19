@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using NemeStats.TestingHelpers.NemeStatsTestingExtensions.NemeStatsTestingExtensionsTests;
+using NUnit.Framework;
 using Shouldly;
 
 namespace NemeStats.TestingHelpers.NemeStatsTestingExtensions
@@ -10,16 +13,32 @@ namespace NemeStats.TestingHelpers.NemeStatsTestingExtensions
         /// on the result of RhinoMocks's .GetArgumentsForCallsMadeOn which returns an IList of object[]
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="argumentsForCallsMadeOnMethod"></param>
-        /// <param name="expectedParameterIndex"></param>
+        /// <param name="argumentsForCallsMadeOnMethod">The result of RhinoMocks's .GetArgumentsForCallsMadeOn which returns an IList of object[]</param>
+        /// <param name="expectedParameterIndex">The index of the parameter of type T.</param>
+        /// <exception cref="ArgumentException">Throws an argument exception if the requested index is greater than the number of parameters</exception>
         /// <returns>The argument at the specified parameter index</returns>
         public static T AssertFirstCallIsType<T>(this IList<object[]> argumentsForCallsMadeOnMethod, int expectedParameterIndex) where T: class
         {
-            argumentsForCallsMadeOnMethod.ShouldNotBeNull();
-            argumentsForCallsMadeOnMethod.Count.ShouldBe(1);
+            if (argumentsForCallsMadeOnMethod == null || argumentsForCallsMadeOnMethod.Count == 0)
+            {
+                Assert.Fail($"{nameof(argumentsForCallsMadeOnMethod)} cannot be null or empty.");
+            }
+
+            if (argumentsForCallsMadeOnMethod.Count > 1)
+            {
+                Assert.Fail($"Expected only 1 call, but received {argumentsForCallsMadeOnMethod.Count}.");
+            }
             var firstCall = argumentsForCallsMadeOnMethod[0];
+            if (expectedParameterIndex >= firstCall.Length)
+            {
+                throw new ArgumentException($"expectedParameterIndex value of '{expectedParameterIndex}'is greater than the number of parameters ('{firstCall.Length}').");
+            }
             var actualParameter = firstCall[expectedParameterIndex] as T;
-            actualParameter.ShouldNotBeNull();
+
+            if (actualParameter == null)
+            {
+                Assert.Fail($"Expected the parameter at index '{expectedParameterIndex}' to be of type '{typeof(T)}', but it was not.'");
+            }
             return actualParameter;
         }
     }

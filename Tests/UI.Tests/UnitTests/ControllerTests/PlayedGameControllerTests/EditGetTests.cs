@@ -17,22 +17,22 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 		{
 			base.TestSetUp();
 
-			base.playerList = new List<Player> { new Player { Id = 42, Name = "Smitty Werbenjagermanjensen" } };
-			base.playerSelectList = this.playerList.Select(item => new SelectListItem { Text = item.Name, Value = item.Id.ToString() }).ToList();
-			base.gameDefinitionList = new List<GameDefinition> { new GameDefinition { Id = 1, Name = "Betrayal At The House On The Hill" } };
-			base.gameDefinitionSelectList = this.gameDefinitionList.Select(item => new SelectListItem { Text = item.Name, Value = item.Id.ToString() }).ToList();
-			base.expectedPopulatedCompletedGameViewModel = new PlayedGameEditViewModel { GameDefinitions = base.gameDefinitionSelectList, Players = base.playerSelectList };
+			base.PlayerList = new List<Player> { new Player { Id = 42, Name = "Smitty Werbenjagermanjensen" } };
+			base.PlayerSelectList = this.PlayerList.Select(item => new SelectListItem { Text = item.Name, Value = item.Id.ToString() }).ToList();
+			base.GameDefinitionList = new List<GameDefinition> { new GameDefinition { Id = 1, Name = "Betrayal At The House On The Hill" } };
+			base.GameDefinitionSelectList = this.GameDefinitionList.Select(item => new SelectListItem { Text = item.Name, Value = item.Id.ToString() }).ToList();
+			base.ExpectedPopulatedCompletedGameViewModel = new PlayedGameEditViewModel { GameDefinitions = base.GameDefinitionSelectList, Players = base.PlayerSelectList };
 		}
 
 		[Test]
 		public void ThatEditGetActionReturnsAView()
 		{
 			//--Arrange
-            autoMocker.PartialMockTheClassUnderTest();
-			autoMocker.ClassUnderTest.Expect(mock => mock.Edit()).Return(new ViewResult { ViewName = MVC.PlayedGame.Views.Edit });
+            AutoMocker.PartialMockTheClassUnderTest();
+			AutoMocker.ClassUnderTest.Expect(mock => mock.Edit()).Return(new ViewResult { ViewName = MVC.PlayedGame.Views.Edit });
 
 			//--Act
-			var result = autoMocker.ClassUnderTest.Edit() as ViewResult;
+			var result = AutoMocker.ClassUnderTest.Edit() as ViewResult;
 
 			//--Assert
 			Assert.AreEqual(MVC.PlayedGame.Views.Edit, result.ViewName);
@@ -42,14 +42,14 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 		public void ThatWhenGameIDIsNotZeroPopulatedModelIsSentToView()
 		{
 			//--Arrange
-            autoMocker.PartialMockTheClassUnderTest();
-			autoMocker.ClassUnderTest.Expect(mock => mock.Edit(Arg<int>.Is.Anything, Arg<ApplicationUser>.Is.Anything)).Return(new ViewResult { ViewData = new ViewDataDictionary(base.expectedPopulatedCompletedGameViewModel) });
+            AutoMocker.PartialMockTheClassUnderTest();
+			AutoMocker.ClassUnderTest.Expect(mock => mock.Edit(Arg<int>.Is.Anything, Arg<ApplicationUser>.Is.Anything)).Return(new ViewResult { ViewData = new ViewDataDictionary(base.ExpectedPopulatedCompletedGameViewModel) });
 
 			//--Act
-			var result = autoMocker.ClassUnderTest.Edit(1, base.currentUser) as ViewResult;
+			var result = AutoMocker.ClassUnderTest.Edit(1, base.CurrentUser) as ViewResult;
 
 			//--Assert
-			Assert.AreEqual(base.expectedPopulatedCompletedGameViewModel, result.ViewData.Model);
+			Assert.AreEqual(base.ExpectedPopulatedCompletedGameViewModel, result.ViewData.Model);
 		}
 	}
 }

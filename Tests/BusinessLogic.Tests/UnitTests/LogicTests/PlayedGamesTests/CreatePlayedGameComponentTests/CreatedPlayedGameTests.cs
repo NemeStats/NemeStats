@@ -38,12 +38,13 @@ using StructureMap.AutoMocking;
 namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.CreatePlayedGameComponentTests
 {
     [TestFixture]
-    public class ExecuteTransactionTests
+    public class ExecuteTests
     {
         private RhinoAutoMocker<CreatePlayedGameComponent> _autoMocker;
 
         private int GAMING_GROUP_ID = 1;
-        private GameDefinition _gameDefinition;
+        private GameDefinition _expectedGameDefinition;
+        private PlayedGame _expectedPlayedGame;
         private ApplicationUser _currentUser;
         private IDataContext _dataContext;
 
@@ -52,19 +53,33 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.CreatePlayed
         {
             _currentUser = new ApplicationUser();
 
-            _gameDefinition = new GameDefinition
+            _expectedGameDefinition = new GameDefinition
             {
                 Name = "game definition name",
                 GamingGroupId = GAMING_GROUP_ID,
                 Id = 9598
             };
 
+            _expectedPlayedGame = new PlayedGame
+            {
+                Id = 2
+            };
+
             _autoMocker = new RhinoAutoMocker<CreatePlayedGameComponent>();
             _dataContext = MockRepository.GenerateMock<IDataContext>();
-            _autoMocker.Get<IDataContext>()
-                .Stub(s => s.Save(Arg<PlayedGame>.Is.Anything, Arg<ApplicationUser>.Is.Anything))
-                .Return(null)
-                .WhenCalled(a => a.ReturnValue = a.Arguments.First());
+
+            _autoMocker.Get<ISecuredEntityValidator>().Expect(mock => mock.RetrieveAndValidateAccess<GameDefinition>(
+                    Arg<int>.Is.Anything,
+                    Arg<ApplicationUser>.Is.Anything))
+                .Return(_expectedGameDefinition);
+
+            _autoMocker.Get<IPlayedGameSaver>().Expect(mock => mock.TransformNewlyCompletedGameIntoPlayedGame(null, 0, null, null))
+                .IgnoreArguments()
+                .Return(_expectedPlayedGame);
+
+            _dataContext
+                .Expect(s => s.Save(Arg<PlayedGame>.Is.Anything, Arg<ApplicationUser>.Is.Anything))
+                .Return(_expectedPlayedGame);
         }
 
         [Test]
@@ -76,7 +91,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.CreatePlayed
             _currentUser.CurrentGamingGroupId = 42;
 
             //--act
-            _autoMocker.ClassUnderTest.ExecuteTransaction(newlyCompletedPlayedGame, _currentUser, _dataContext);
+            _autoMocker.ClassUnderTest.Execute(newlyCompletedPlayedGame, _currentUser, _dataContext);
 
             //--assert
             _autoMocker.Get<ISecuredEntityValidator>().AssertWasCalled(mock => mock.RetrieveAndValidateAccess<GamingGroup>(newlyCompletedPlayedGame.GamingGroupId.Value, _currentUser));
@@ -89,7 +104,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.CreatePlayed
             var newlyCompletedPlayedGame = CreateValidNewlyCompletedGame();
 
             //--act
-            _autoMocker.ClassUnderTest.ExecuteTransaction(newlyCompletedPlayedGame, _currentUser, _dataContext);
+            _autoMocker.ClassUnderTest.Execute(newlyCompletedPlayedGame, _currentUser, _dataContext);
 
             //--assert
             _autoMocker.Get<ISecuredEntityValidator>().AssertWasNotCalled(mock => mock.RetrieveAndValidateAccess<GamingGroup>(Arg<int>.Is.Anything, Arg<ApplicationUser>.Is.Anything));
@@ -103,7 +118,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.CreatePlayed
             newlyCompletedPlayedGame.GamingGroupId = _currentUser.CurrentGamingGroupId;
 
             //--act
-            _autoMocker.ClassUnderTest.ExecuteTransaction(newlyCompletedPlayedGame, _currentUser, _dataContext);
+            _autoMocker.ClassUnderTest.Execute(newlyCompletedPlayedGame, _currentUser, _dataContext);
 
             //--assert
             _autoMocker.Get<ISecuredEntityValidator>().AssertWasNotCalled(mock => mock.RetrieveAndValidateAccess<GamingGroup>(Arg<int>.Is.Anything, Arg<ApplicationUser>.Is.Anything));
@@ -113,10 +128,10 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.CreatePlayed
         public void ItSavesAPlayedGameIfThereIsAGameDefinition()
         {
             var newlyCompletedPlayedGame = CreateValidNewlyCompletedGame();
-            _autoMocker.ClassUnderTest.ExecuteTransaction(newlyCompletedPlayedGame, _currentUser, _dataContext);
+            _autoMocker.ClassUnderTest.Execute(newlyCompletedPlayedGame, _currentUser, _dataContext);
 
             _dataContext.AssertWasCalled(mock => mock.Save(
-                                                Arg<PlayedGame>.Matches(game => game.GameDefinitionId == _gameDefinition.Id
+                                                Arg<PlayedGame>.Matches(game => game.GameDefinitionId == _expectedGameDefinition.Id
                                                     && game.NumberOfPlayers == newlyCompletedPlayedGame.PlayerRanks.Count()
                                                     && game.DatePlayed.Date.Equals(newlyCompletedPlayedGame.DatePlayed.Date)),
                                                 Arg<ApplicationUser>.Is.Same(_currentUser)));
@@ -130,7 +145,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.CreatePlayed
             newlyCompletedPlayedGame.PlayerRanks.ForEach(x => x.GameRank = 1);
 
             //--act
-            _autoMocker.ClassUnderTest.ExecuteTransaction(newlyCompletedPlayedGame, _currentUser, _dataContext);
+            _autoMocker.ClassUnderTest.Execute(newlyCompletedPlayedGame, _currentUser, _dataContext);
 
             //--assert
             _autoMocker.Get<IDataContext>().AssertWasCalled(mock => mock.Save(
@@ -146,7 +161,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.CreatePlayed
             newlyCompletedPlayedGame.PlayerRanks.ForEach(x => x.GameRank = 2);
 
             //--act
-            _autoMocker.ClassUnderTest.ExecuteTransaction(newlyCompletedPlayedGame, _currentUser, _dataContext);
+            _autoMocker.ClassUnderTest.Execute(newlyCompletedPlayedGame, _currentUser, _dataContext);
 
             //--assert
             _autoMocker.Get<IDataContext>().AssertWasCalled(mock => mock.Save(
@@ -161,7 +176,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.CreatePlayed
             var newlyCompletedPlayedGame = CreateValidNewlyCompletedGame();
 
             //--act
-            _autoMocker.ClassUnderTest.ExecuteTransaction(newlyCompletedPlayedGame, _currentUser, _dataContext);
+            _autoMocker.ClassUnderTest.Execute(newlyCompletedPlayedGame, _currentUser, _dataContext);
 
             //--assert
             _autoMocker.Get<IDataContext>().AssertWasCalled(mock => mock.Save(
@@ -178,7 +193,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.CreatePlayed
             var playerOneRank = 1;
             var playerTwoRank = 2;
             var newlyCompletedGame = new NewlyCompletedGame
-            { GameDefinitionId = _gameDefinition.Id };
+            { GameDefinitionId = _expectedGameDefinition.Id };
             playerRanks = new List<PlayerRank>();
             playerRanks.Add(new PlayerRank
             { PlayerId = playerOneId, GameRank = playerOneRank });
@@ -216,15 +231,15 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.CreatePlayed
                     GameRank = playerTwoGameRank
                 }
             };
-            _gameDefinition.BoardGameGeekGameDefinitionId = 11;
+            _expectedGameDefinition.BoardGameGeekGameDefinitionId = 11;
             var newlyCompletedPlayedGame = new NewlyCompletedGame
             {
-                GameDefinitionId = _gameDefinition.Id,
+                GameDefinitionId = _expectedGameDefinition.Id,
                 PlayerRanks = playerRanks
             };
             var expectedBoardGameGeekGameDefinition = new BoardGameGeekGameDefinition();
             _autoMocker.Get<IDataContext>()
-                      .Expect(mock => mock.FindById<BoardGameGeekGameDefinition>(_gameDefinition.BoardGameGeekGameDefinitionId))
+                      .Expect(mock => mock.FindById<BoardGameGeekGameDefinition>(_expectedGameDefinition.BoardGameGeekGameDefinitionId))
                       .Return(expectedBoardGameGeekGameDefinition);
 
             var playerOneScorecard = new PointsScorecard
@@ -249,7 +264,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.CreatePlayed
                 .Return(expectedPointsDictionary);
 
             //--Act
-            var playedGame = _autoMocker.ClassUnderTest.ExecuteTransaction(newlyCompletedPlayedGame, _currentUser, _dataContext);
+            var playedGame = _autoMocker.ClassUnderTest.Execute(newlyCompletedPlayedGame, _currentUser, _dataContext);
 
             var playerOne = playedGame.PlayerGameResults.First(gameResult => gameResult.PlayerId == playerOneId);
             Assert.That(playerOne.GameDurationBonusPoints, Is.EqualTo(playerOneScorecard.GameDurationBonusPoints));
@@ -267,7 +282,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.CreatePlayed
         {
             var newlyCompletedPlayedGame = new NewlyCompletedGame
             {
-                GameDefinitionId = _gameDefinition.Id,
+                GameDefinitionId = _expectedGameDefinition.Id,
                 PlayerRanks = new List<PlayerRank>()
             };
 
@@ -275,7 +290,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.CreatePlayed
                 .IgnoreArguments()
                 .Return(new List<PlayerGameResult>());
 
-            _autoMocker.ClassUnderTest.ExecuteTransaction(newlyCompletedPlayedGame, _currentUser, _dataContext);
+            _autoMocker.ClassUnderTest.Execute(newlyCompletedPlayedGame, _currentUser, _dataContext);
 
             _dataContext.AssertWasCalled(mock => mock.Save(
                 Arg<PlayedGame>.Matches(game => game.GamingGroupId == _currentUser.CurrentGamingGroupId),
@@ -288,22 +303,14 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.CreatePlayed
             //--arrange
             var newlyCompletedPlayedGame = CreateValidNewlyCompletedGame();
 
-            var expectedPlayedGame = new PlayedGame
-            {
-                Id = 42
-            };
-            _autoMocker.Get<IPlayedGameSaver>().Expect(partialMock => partialMock.TransformNewlyCompletedGameIntoPlayedGame(null, 0, null, null))
-                .IgnoreArguments()
-                .Return(expectedPlayedGame);
-
             //--act
-            _autoMocker.ClassUnderTest.ExecuteTransaction(newlyCompletedPlayedGame, _currentUser, _dataContext);
+            _autoMocker.ClassUnderTest.Execute(newlyCompletedPlayedGame, _currentUser, _dataContext);
 
             //--assert
             _autoMocker.Get<IApplicationLinker>().AssertWasCalled(mock => mock.LinkApplication(
-                expectedPlayedGame.Id,
+                _expectedPlayedGame.Id,
                 ApplicationLinker.APPLICATION_NAME_NEMESTATS,
-                expectedPlayedGame.Id.ToString(), 
+                _expectedPlayedGame.Id.ToString(), 
                 _dataContext));
         }
 
@@ -331,7 +338,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.CreatePlayed
                 .Return(expectedPlayedGame);
 
             //--act
-            _autoMocker.ClassUnderTest.ExecuteTransaction(newlyCompletedPlayedGame, _currentUser, _dataContext);
+            _autoMocker.ClassUnderTest.Execute(newlyCompletedPlayedGame, _currentUser, _dataContext);
 
             //--assert
             _autoMocker.Get<IPlayedGameSaver>().AssertWasCalled(mock => mock.CreateApplicationLinkages(
@@ -351,7 +358,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.CreatePlayed
             };
             var newlyCompletedGame = new NewlyCompletedGame
             {
-                GameDefinitionId = _gameDefinition.Id,
+                GameDefinitionId = _expectedGameDefinition.Id,
                 PlayerRanks = new List<PlayerRank>
                 { playerRank }
             };
@@ -364,7 +371,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.CreatePlayed
                               {playerRank.PlayerId, new PointsScorecard()}
               });
 
-            _autoMocker.ClassUnderTest.ExecuteTransaction(newlyCompletedGame, _currentUser, _dataContext);
+            _autoMocker.ClassUnderTest.Execute(newlyCompletedGame, _currentUser, _dataContext);
 
             _autoMocker.Get<INemeStatsEventTracker>().AssertWasCalled(mock => mock.TrackPlayedGame(_currentUser, transactionSource));
         }
@@ -376,12 +383,12 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.CreatePlayed
 
             var newlyCompletedGame = new NewlyCompletedGame
             {
-                GameDefinitionId = _gameDefinition.Id,
+                GameDefinitionId = _expectedGameDefinition.Id,
                 PlayerRanks = playerRanks,
                 GamingGroupId = 42
             };
             
-            _autoMocker.ClassUnderTest.ExecuteTransaction(newlyCompletedGame, _currentUser, _dataContext);
+            _autoMocker.ClassUnderTest.Execute(newlyCompletedGame, _currentUser, _dataContext);
 
             _autoMocker.Get<IPlayedGameSaver>().AssertWasCalled(mock => mock.ValidateAccessToPlayers(
                 newlyCompletedGame.PlayerRanks, 
@@ -396,14 +403,14 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.CreatePlayed
             var playerRanks = new List<PlayerRank>();
             var newlyCompletedGame = new NewlyCompletedGame
             {
-                GameDefinitionId = _gameDefinition.Id,
+                GameDefinitionId = _expectedGameDefinition.Id,
                 PlayerRanks = playerRanks
             };
 
-            _autoMocker.ClassUnderTest.ExecuteTransaction(newlyCompletedGame, _currentUser, _dataContext);
+            _autoMocker.ClassUnderTest.Execute(newlyCompletedGame, _currentUser, _dataContext);
 
             _autoMocker.Get<ISecuredEntityValidator>().AssertWasCalled(mock => mock.RetrieveAndValidateAccess<GameDefinition>(
-                _gameDefinition.Id,
+                _expectedGameDefinition.Id,
                 _currentUser));
         }
 
@@ -414,7 +421,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.CreatePlayed
             var validGame = CreateValidNewlyCompletedGame();
 
             //--act
-            _autoMocker.ClassUnderTest.ExecuteTransaction(validGame, _currentUser, _dataContext);
+            _autoMocker.ClassUnderTest.Execute(validGame, _currentUser, _dataContext);
 
             //--assert
             _autoMocker.Get<IBusinessLogicEventBus>().AssertWasCalled(mock => mock.SendEvent(Arg<IBusinessLogicEvent>.Matches(m => m.GetType() == typeof(PlayedGameCreatedEvent))));
@@ -427,7 +434,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.CreatePlayed
             var validGame = CreateValidNewlyCompletedGame();
 
             //--act
-            _autoMocker.ClassUnderTest.ExecuteTransaction(validGame, _currentUser, _dataContext);
+            _autoMocker.ClassUnderTest.Execute(validGame, _currentUser, _dataContext);
 
             //--assert
             _autoMocker.Get<ILinkedPlayedGameValidator>()

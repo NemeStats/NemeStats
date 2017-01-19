@@ -35,37 +35,37 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 {
 	public class PlayedGameControllerTestBase
 	{
-	    protected RhinoAutoMocker<PlayedGameController> autoMocker; 
-		protected string testUserName = "the test user name";
-		protected ApplicationUser currentUser;
-		protected List<GameDefinitionSummary> gameDefinitionSummaries;
-		protected List<PublicGameSummary> expectedViewModel;
-		protected PlayedGameEditViewModel expectedPopulatedCompletedGameViewModel;
-		protected List<Player> playerList;
-		protected List<SelectListItem> playerSelectList;
-		protected List<GameDefinition> gameDefinitionList;
-		protected List<SelectListItem> gameDefinitionSelectList;
+	    protected RhinoAutoMocker<PlayedGameController> AutoMocker; 
+		protected string TestUserName = "the test user name";
+		protected ApplicationUser CurrentUser;
+		protected List<GameDefinitionSummary> GameDefinitionSummaries;
+		protected List<PublicGameSummary> ExpectedViewModel;
+		protected PlayedGameEditViewModel ExpectedPopulatedCompletedGameViewModel;
+		protected List<Player> PlayerList;
+		protected List<SelectListItem> PlayerSelectList;
+		protected List<GameDefinition> GameDefinitionList;
+		protected List<SelectListItem> GameDefinitionSelectList;
 
 		[SetUp]
 		public virtual void TestSetUp()
 		{
-            autoMocker = new RhinoAutoMocker<PlayedGameController>();
+            AutoMocker = new RhinoAutoMocker<PlayedGameController>();
 
-            autoMocker.Inject<IMapperFactory>(new MapperFactory(new Container(c =>
+            AutoMocker.Inject<IMapperFactory>(new MapperFactory(new Container(c =>
             {
                 c.AddRegistry<TestRegistry>();
             })));
 
-            currentUser = new ApplicationUser()
+            CurrentUser = new ApplicationUser()
 			{
 				CurrentGamingGroupId = 1
 			};
-			gameDefinitionSummaries = new List<GameDefinitionSummary>();
-            autoMocker.Get<IGameDefinitionRetriever>().Expect(mock => mock.GetAllGameDefinitions(currentUser.CurrentGamingGroupId))
+			GameDefinitionSummaries = new List<GameDefinitionSummary>();
+            AutoMocker.Get<IGameDefinitionRetriever>().Expect(mock => mock.GetAllGameDefinitions(CurrentUser.CurrentGamingGroupId))
 				.Repeat.Once()
-				.Return(gameDefinitionSummaries);
+				.Return(GameDefinitionSummaries);
 
-		    autoMocker.ClassUnderTest.Url = MockRepository.GenerateMock<UrlHelper>();
+		    AutoMocker.ClassUnderTest.Url = MockRepository.GenerateMock<UrlHelper>();
 		}
 	}
 }

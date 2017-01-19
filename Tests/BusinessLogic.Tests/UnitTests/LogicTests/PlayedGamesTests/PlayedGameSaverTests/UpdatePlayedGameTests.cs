@@ -86,7 +86,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameSa
                 Arg<List<PlayerRank>>.Is.Anything,
                 Arg<int>.Is.Anything,
                 Arg<ApplicationUser>.Is.Anything, 
-                AutoMocker.Get<IDataContext>()));
+                Arg<IDataContext>.Is.Anything));
 
             _expectedNewPlayerGameResults = new List<PlayerGameResult>
             {
@@ -97,7 +97,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameSa
 
             AutoMocker.ClassUnderTest.Expect(
                     partialMock =>
-                            partialMock.MakePlayerGameResults(Arg<SaveableGameBase>.Is.Anything, Arg<int>.Is.Anything, AutoMocker.Get<IDataContext>()))
+                            partialMock.MakePlayerGameResults(Arg<SaveableGameBase>.Is.Anything, Arg<int>.Is.Anything, Arg<IDataContext>.Is.Anything))
                 .Return(_expectedNewPlayerGameResults);
 
             _expectedTransformedPlayedGame = new PlayedGame
@@ -116,8 +116,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameSa
                 Arg<ApplicationUser>.Is.Anything, 
                 Arg<int>.Is.Anything, 
                 Arg<int>.Is.Anything, 
-                Arg<List<PlayerGameResult>>.Is.Anything, 
-                AutoMocker.Get<IDataContext>()));
+                Arg<List<PlayerGameResult>>.Is.Anything,
+                Arg<IDataContext>.Is.Anything));
 
             _expectedSavedPlayedGame = new PlayedGame();
             AutoMocker.Get<IDataContext>()
@@ -388,8 +388,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameSa
                 Arg<ApplicationUser>.Is.Anything,
                 Arg<int>.Is.Anything,
                 Arg<int>.Is.Anything,
-                Arg<List<PlayerGameResult>>.Is.Anything, 
-                AutoMocker.Get<IDataContext>()));
+                Arg<List<PlayerGameResult>>.Is.Anything,
+                Arg<IDataContext>.Is.Anything));
 
             args.ShouldNotBeNull();
             args.Count.ShouldBe(1);
