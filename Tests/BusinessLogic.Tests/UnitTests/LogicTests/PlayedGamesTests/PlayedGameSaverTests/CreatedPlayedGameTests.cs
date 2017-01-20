@@ -25,6 +25,7 @@ using BusinessLogic.Events.Interfaces;
 using BusinessLogic.EventTracking;
 using BusinessLogic.Logic;
 using BusinessLogic.Logic.Champions;
+using BusinessLogic.Logic.MVP;
 using BusinessLogic.Logic.Nemeses;
 using BusinessLogic.Logic.PlayedGames;
 using BusinessLogic.Logic.Points;
@@ -422,6 +423,21 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameSa
             autoMocker.ClassUnderTest.CreatePlayedGame(newlyCompletedGame, TransactionSource.WebApplication, currentUser);
 
             autoMocker.Get<IChampionRecalculator>().AssertWasCalled(mock => mock.RecalculateChampion(newlyCompletedGame.GameDefinitionId, currentUser, false));
+        }
+
+        [Test]
+        public void ItRecalculatesTheMVPForTheGameButDoesntClearTheExistingMVP()
+        {
+            var playerRanks = new List<PlayerRank>();
+            var newlyCompletedGame = new NewlyCompletedGame
+            {
+                GameDefinitionId = gameDefinition.Id,
+                PlayerRanks = playerRanks
+            };
+
+            autoMocker.ClassUnderTest.CreatePlayedGame(newlyCompletedGame, TransactionSource.WebApplication, currentUser);
+
+            autoMocker.Get<IMVPRecalculator>().AssertWasCalled(mock => mock.RecalculateMVP(newlyCompletedGame.GameDefinitionId, currentUser, false));
         }
 
         [Test]

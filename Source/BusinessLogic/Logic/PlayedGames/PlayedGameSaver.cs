@@ -34,6 +34,7 @@ using BusinessLogic.Events;
 using BusinessLogic.Events.HandlerFactory;
 using BusinessLogic.Events.Interfaces;
 using BusinessLogic.Exceptions;
+using BusinessLogic.Logic.MVP;
 using BusinessLogic.Logic.Security;
 using BusinessLogic.Models.PlayedGames;
 
@@ -49,6 +50,7 @@ namespace BusinessLogic.Logic.PlayedGames
         private readonly ISecuredEntityValidator _securedEntityValidator;
         private readonly IPointsCalculator _pointsCalculator;
         private readonly IApplicationLinker _applicationLinker;
+        private readonly IMVPRecalculator _mvpRecalculator;
 
         public PlayedGameSaver(
             IDataContext applicationDataContext,
@@ -58,7 +60,9 @@ namespace BusinessLogic.Logic.PlayedGames
             ISecuredEntityValidator securedEntityValidator,
             IPointsCalculator pointsCalculator,
             IBusinessLogicEventBus eventBus, 
-            ILinkedPlayedGameValidator linkedPlayedGameValidator, IApplicationLinker applicationLinker) : base(eventBus)
+            ILinkedPlayedGameValidator linkedPlayedGameValidator, 
+            IApplicationLinker applicationLinker,
+            IMVPRecalculator mvpRecalculator) : base(eventBus)
         {
             _dataContext = applicationDataContext;
             _playedGameTracker = playedGameTracker;
@@ -68,6 +72,7 @@ namespace BusinessLogic.Logic.PlayedGames
             _pointsCalculator = pointsCalculator;
             _linkedPlayedGameValidator = linkedPlayedGameValidator;
             _applicationLinker = applicationLinker;
+            _mvpRecalculator = mvpRecalculator;
         }
 
         //TODO need to have validation logic here (or on PlayedGame similar to what is on NewlyCompletedGame)
@@ -199,6 +204,7 @@ namespace BusinessLogic.Logic.PlayedGames
                 _nemesisRecalculator.RecalculateNemesis(result.PlayerId, currentUser);
             }
             _championRecalculator.RecalculateChampion(gameDefinitionId, currentUser, false);
+            _mvpRecalculator.RecalculateMVP(gameDefinitionId, currentUser, false);
 
             SendEvents(new IBusinessLogicEvent[] {new PlayedGameCreatedEvent() {TriggerEntityId = playedGameId}});
         }

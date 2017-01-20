@@ -33,6 +33,7 @@ using System.Collections.Generic;
 using System.Linq;
 using BoardGameGeekApiClient.Service;
 using BusinessLogic.Logic.BoardGameGeek;
+using BusinessLogic.Logic.MVP;
 using BusinessLogic.Logic.Points;
 using BusinessLogic.Logic.Security;
 using BusinessLogic.Tests.Fakes;
@@ -185,6 +186,8 @@ namespace BusinessLogic.Tests.IntegrationTests
         {
             var playerRepository = new EntityFrameworkPlayerRepository(dataContext);
             var nemesisRecalculator = new NemesisRecalculator(dataContext, playerRepository);
+            var mvpRepository = new MVPRepository(dataContext);
+            var mvpRecalculator = new MVPRecalculator(mvpRepository, dataContext);
             var championRepository = new ChampionRepository(dataContext);
             var championRecalculator = new ChampionRecalculator(dataContext, championRepository);
             var securedEntityValidator = new SecuredEntityValidator(dataContext);
@@ -202,7 +205,9 @@ namespace BusinessLogic.Tests.IntegrationTests
                 pointsCalculator,
                 new FakeEventBus(),
                 linkedPlayedGameValidator,
-                applicationLinker);
+                applicationLinker,
+                mvpRecalculator
+                );
             
             List<Player> players = new List<Player> { testPlayer1, testPlayer2 };
             List<int> playerRanks = new List<int> { 1, 1 };
