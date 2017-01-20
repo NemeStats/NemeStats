@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace BusinessLogic.Models.MVPData
+namespace BusinessLogic.Models.MVPModels
 {
     public class MVPData
     {
@@ -12,7 +8,7 @@ namespace BusinessLogic.Models.MVPData
 
         public DateTime DatePlayed { get; set; }
 
-        public int Id { get; set; }
+        public int PlayedGameResultId { get; set; }
         public int PlayerId { get; set; }
     }
 }

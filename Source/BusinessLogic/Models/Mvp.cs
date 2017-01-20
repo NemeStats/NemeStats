@@ -6,12 +6,17 @@ namespace BusinessLogic.Models
 {
     public class MVP : EntityWithTechnicalKey<int>
     {
+        public MVP()
+        {
+            DateCreated = DateTime.UtcNow;
+        }
+
         public override int Id { get; set; }
-        public int PlayerGameResultId { get; set; }
+        public int PlayedGameResultId { get; set; }
         public int PlayerId { get; set; }
         public DateTime DateCreated { get; set; }
 
-        [ForeignKey("PlayerGameResultId")]
+        [ForeignKey("PlayedGameResultId")]
         public virtual PlayerGameResult PlayerGameResult { get; set; }
 
         public decimal PointsScored { get; set; }

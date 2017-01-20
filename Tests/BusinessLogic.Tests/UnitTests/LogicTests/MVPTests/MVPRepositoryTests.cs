@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using BusinessLogic.DataAccess;
 using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.Models;
-using BusinessLogic.Models.MVPData;
+using BusinessLogic.Models.MVPModels;
 using NSubstitute;
 using NUnit.Framework;
 using Rhino.Mocks;
@@ -82,7 +82,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.MVPTests
                 [Test]
                 public void Then_Return_MVP()
                 {
-                    Result.Id.ShouldBe(MVPPlayerGameResultId);
+                    Result.PlayedGameResultId.ShouldBe(MVPPlayerGameResultId);
                     Result.PlayerId.ShouldBe(MVPPlayerId);
                     Result.PointsScored.ShouldBe(1);
                 }
@@ -104,7 +104,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.MVPTests
                 [Test]
                 public void Then_Return_MVP()
                 {
-                    Result.Id.ShouldBe(MVPPlayerGameResultId);
+                    Result.PlayedGameResultId.ShouldBe(MVPPlayerGameResultId);
                     Result.PlayerId.ShouldBe(MVPPlayerId);
                     Result.PointsScored.ShouldBe(100);
                 }

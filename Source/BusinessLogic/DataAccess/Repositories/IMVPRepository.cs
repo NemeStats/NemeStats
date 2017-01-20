@@ -1,4 +1,4 @@
-using BusinessLogic.Models.MVPData;
+using BusinessLogic.Models.MVPModels;
 
 namespace BusinessLogic.DataAccess.Repositories
 {

@@ -3,7 +3,7 @@ using System.Data.Entity;
 using System.Data.SqlClient;
 using System.Linq;
 using BusinessLogic.Models;
-using BusinessLogic.Models.MVPData;
+using BusinessLogic.Models.MVPModels;
 
 namespace BusinessLogic.DataAccess.Repositories
 {
@@ -32,7 +32,7 @@ namespace BusinessLogic.DataAccess.Repositories
                 .ThenBy(pgr => pgr.PlayedGame.DatePlayed)
                 .Select(pgr => new MVPData()
                 {
-                    Id = pgr.Id,
+                    PlayedGameResultId = pgr.Id,
                     PointsScored = pgr.PointsScored.Value,
                     PlayerId = pgr.PlayerId,
                     DatePlayed = pgr.PlayedGame.DatePlayed

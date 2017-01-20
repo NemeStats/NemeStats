@@ -307,6 +307,8 @@
     <Compile Include="Logic\Champions\ChampionRecalculator.cs" />
     <Compile Include="Logic\Email\EmailService.cs" />
     <Compile Include="Logic\ITransformer.cs" />
+    <Compile Include="Logic\MVP\IMVPRecalculator.cs" />
+    <Compile Include="Logic\MVP\MVPRecalculator.cs" />
     <Compile Include="Logic\OneTimeJobs\BoardGameGeekThumbnailAttacher.cs" />
     <Compile Include="Logic\GameDefinitions\GameDefinitionUpdateRequest.cs" />
     <Compile Include="Logic\GamingGroups\GamingGroupInfoForUser.cs" />
@@ -438,6 +440,10 @@
     <Compile Include="Migrations\201611171855541_BGGGameDefinition_Dates.Designer.cs">
       <DependentUpon>201611171855541_BGGGameDefinition_Dates.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201701201713257_MVP.cs" />
+    <Compile Include="Migrations\201701201713257_MVP.Designer.cs">
+      <DependentUpon>201701201713257_MVP.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Achievements\AchievementLevel.cs" />
     <Compile Include="Models\Achievements\AchievementId.cs" />
     <Compile Include="Models\Games\BoardGameGeekGameCategory.cs" />
@@ -450,7 +456,7 @@
     <Compile Include="Models\Games\UpdatedGame.cs" />
     <Compile Include="Models\GamingGroups\GamingGroupSitemapInfo.cs" />
     <Compile Include="Models\Mvp.cs" />
-    <Compile Include="Models\MVP\MVPData.cs" />
+    <Compile Include="Models\MVPModels\MVPData.cs" />
     <Compile Include="Models\PlayedGameApplicationLinkage.cs" />
     <Compile Include="Models\Games\SavePlayedGameRequest.cs" />
     <Compile Include="Models\Games\TrendingGame.cs" />
@@ -1102,6 +1108,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201611171855541_BGGGameDefinition_Dates.resx">
       <DependentUpon>201611171855541_BGGGameDefinition_Dates.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201701201713257_MVP.resx">
+      <DependentUpon>201701201713257_MVP.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
