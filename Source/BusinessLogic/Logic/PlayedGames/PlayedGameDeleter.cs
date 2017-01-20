@@ -22,41 +22,65 @@ using BusinessLogic.Models;
 using BusinessLogic.Models.User;
 using System.Collections.Generic;
 using System.Linq;
+using BusinessLogic.Logic.MVP;
 
 namespace BusinessLogic.Logic.PlayedGames
 {
     public class PlayedGameDeleter : IPlayedGameDeleter
     {
-        private IDataContext dataContext;
-        private INemesisRecalculator nemesisRecalculator;
-        private IChampionRecalculator championRecalculator;
+        private readonly IDataContext _dataContext;
+        private readonly INemesisRecalculator _nemesisRecalculator;
+        private readonly IChampionRecalculator _championRecalculator;
+        private readonly IMVPRecalculator _mvpRecalculator;
 
-        public PlayedGameDeleter(IDataContext dataContext, INemesisRecalculator nemesisRecalculatorMock, IChampionRecalculator championRecalculator)
+        public PlayedGameDeleter(IDataContext dataContext, INemesisRecalculator nemesisRecalculatorMock, IChampionRecalculator championRecalculator, IMVPRecalculator mvpRecalculator)
         {
-            this.dataContext = dataContext;
-            this.nemesisRecalculator = nemesisRecalculatorMock;
-            this.championRecalculator = championRecalculator;
+            this._dataContext = dataContext;
+            this._nemesisRecalculator = nemesisRecalculatorMock;
+            this._championRecalculator = championRecalculator;
+            _mvpRecalculator = mvpRecalculator;
         }
 
         public void DeletePlayedGame(int playedGameId, ApplicationUser currentUser)
         {
-            List<int> playerIds = (from playerResult in dataContext.GetQueryable<PlayerGameResult>()
+            var playedGameResults = (from playerResult in _dataContext.GetQueryable<PlayerGameResult>()
                                    where playerResult.PlayedGameId == playedGameId
-                                   select playerResult.PlayerId).ToList();
-            var gameDefId = dataContext.GetQueryable<PlayerGameResult>()
+                                   select playerResult).ToList();
+            var gameDefId = _dataContext.GetQueryable<PlayerGameResult>()
                              .Where(p => p.PlayedGameId == playedGameId)
                              .Select(p => p.PlayedGame.GameDefinitionId)
                              .FirstOrDefault();
 
-            dataContext.DeleteById<PlayedGame>(playedGameId, currentUser);
-            dataContext.CommitAllChanges();
-
-            foreach (int playerId in playerIds)
+            foreach (var playedGameResult in playedGameResults)
             {
-                nemesisRecalculator.RecalculateNemesis(playerId, currentUser);
+
+                var mvp = _dataContext.GetQueryable<Models.MVP>().FirstOrDefault(m => m.PlayedGameResultId == playedGameResult.Id);
+
+                if (mvp != null)
+                {
+                    var gameDefinition = _dataContext.FindById<GameDefinition>(gameDefId);
+                    gameDefinition.MVPId = gameDefinition.PreviousMVPId;
+                    gameDefinition.PreviousMVPId = null;
+
+                    _dataContext.DeleteById<Models.MVP>(mvp.Id, currentUser);
+
+                    _dataContext.CommitAllChanges();
+                }
+
             }
 
-            championRecalculator.RecalculateChampion(gameDefId, currentUser);
+            
+
+            _dataContext.DeleteById<PlayedGame>(playedGameId, currentUser);
+            _dataContext.CommitAllChanges();
+
+            foreach (int playerId in playedGameResults.Select(pgr=>pgr.PlayerId).ToList())
+            {
+                _nemesisRecalculator.RecalculateNemesis(playerId, currentUser);
+            }
+
+            _championRecalculator.RecalculateChampion(gameDefId, currentUser);
+            _mvpRecalculator.RecalculateMVP(gameDefId, currentUser);
         }
     }
 }
