@@ -9,6 +9,7 @@ using Shouldly;
 namespace BusinessLogic.Tests.IntegrationTests
 {
     [TestFixture]
+    [Category("Integration")]
     public class EntityFrameworkTransactionTests : IntegrationTestIoCBase
     {
         private int _someGamingGroupId;

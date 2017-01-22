@@ -30,6 +30,7 @@ using Shouldly;
 namespace BusinessLogic.Tests.IntegrationTests
 {
     [TestFixture]
+    [Category("Integration")]
     public class EntityFrameworkGeneralIntegrationTests : IntegrationTestBase
     {
         [Test]
