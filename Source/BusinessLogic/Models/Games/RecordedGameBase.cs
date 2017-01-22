@@ -13,6 +13,7 @@ namespace BusinessLogic.Models.Games
         {
             DatePlayed = DateTime.UtcNow;
             ApplicationLinkages = new List<ApplicationLinkage>();
+            PlayerRanks = new List<PlayerRank>();
         }
 
         public int GameDefinitionId { get; set; }

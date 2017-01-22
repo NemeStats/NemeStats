@@ -2,6 +2,7 @@
 using BusinessLogic.DataAccess;
 using BusinessLogic.Logic.PlayedGames;
 using BusinessLogic.Models;
+using BusinessLogic.Models.Games;
 using BusinessLogic.Models.PlayedGames;
 using NUnit.Framework;
 using Rhino.Mocks;
@@ -11,6 +12,24 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameSa
     [TestFixture]
     public class CreateApplicationLinkagesTests : PlayedGameSaverTestBase
     {
+        [Test]
+        public void ItCreatesAnApplicationLinkageForNemeStats()
+        {
+            //--arrange
+            int playedGameId = 1;
+            var dataContext = MockRepository.GenerateMock<IDataContext>();
+
+            //--act
+            AutoMocker.ClassUnderTest.CreateApplicationLinkages(new List<ApplicationLinkage>(), playedGameId, dataContext);
+
+            //--assert
+            AutoMocker.Get<IApplicationLinker>().AssertWasCalled(mock => mock.LinkApplication(
+                playedGameId,
+                ApplicationLinker.APPLICATION_NAME_NEMESTATS,
+                playedGameId.ToString(),
+                dataContext));
+        }
+
         [Test]
         public void ItCreatesAnApplicationLinkageForEachSpecifiedApplicationLinkage()
         {

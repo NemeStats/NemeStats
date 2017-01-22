@@ -206,6 +206,7 @@
     <Compile Include="Events\HandlerFactory\HandlerFactoryConfiguration.cs" />
     <Compile Include="Events\HandlerFactory\HandlerInstance.cs" />
     <Compile Include="Events\HandlerFactory\HandlerMetaInfo.cs" />
+    <Compile Include="Events\HandlerFactory\IBusinessLogicEventSender.cs" />
     <Compile Include="Events\Handlers\AchievementsEventHandler.cs" />
     <Compile Include="Events\Handlers\BaseEventHandler.cs" />
     <Compile Include="Events\Interfaces\IBusinessLogicEventBus.cs" />

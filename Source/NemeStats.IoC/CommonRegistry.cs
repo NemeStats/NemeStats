@@ -52,8 +52,6 @@ namespace NemeStats.IoC
                     scan.WithDefaultConventions();
                 });
 
-            
-
             For<IRollbarClient>().Use(new RollbarClient()).Singleton();
 
             SetupTransientMappings();

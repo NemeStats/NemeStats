@@ -28,7 +28,7 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.NemeStatsDataCont
         [Test]
         public void ItCanFindAnEntityUsingAnIntId()
         {
-            using (var dataContext = GetInstance<IDataContext>())
+            using (var dataContext = GetInstanceFromRootContainer<IDataContext>())
             {
                 var gameDefinition = dataContext.FindById<GameDefinition>(testGameDefinition.Id);
                 Assert.NotNull(gameDefinition);

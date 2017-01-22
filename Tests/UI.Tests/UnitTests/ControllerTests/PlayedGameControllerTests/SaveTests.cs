@@ -30,7 +30,6 @@ using BusinessLogic.Logic.Players;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Players;
 using Shouldly;
-using UI.Mappers.Interfaces;
 
 namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 {
@@ -70,12 +69,6 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 
             Request.EditMode = false;
 
-            var customMapper = MockRepository.GenerateMock<ICustomMapper<SavePlayedGameRequest, NewlyCompletedGame>>();
-            var mapperFactoryMock = AutoMocker.Get<IMapperFactory>();
-            mapperFactoryMock.Expect(mock => mock.GetMapper<SavePlayedGameRequest, NewlyCompletedGame>()).Return(customMapper);
-            _expectedNewlyCompletedGame = new NewlyCompletedGame();
-            customMapper.Expect(mock => mock.Map(Arg<SavePlayedGameRequest>.Is.Anything)).Return(_expectedNewlyCompletedGame);
-
             AutoMocker.Get<ICreatePlayedGameComponent>().Expect(mock => mock.Execute(
                Arg<NewlyCompletedGame>.Is.Anything,
                Arg<ApplicationUser>.Is.Equal(CurrentUser)))
@@ -109,9 +102,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
             var firstCall = arguments[0];
             var actualNewlyCompletedGame = firstCall[0] as NewlyCompletedGame;
             actualNewlyCompletedGame.ShouldNotBeNull();
-
         }
-
     }
 
     public class When_GameDefinitionId_Is_Not_Provided : SaveTests

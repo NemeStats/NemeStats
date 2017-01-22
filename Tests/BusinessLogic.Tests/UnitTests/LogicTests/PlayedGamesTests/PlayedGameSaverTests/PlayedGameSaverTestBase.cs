@@ -14,6 +14,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameSa
         protected RhinoAutoMocker<PlayedGameSaver> AutoMocker;
         protected ApplicationUser CurrentUser;
         protected GameDefinition GameDefinition;
+        protected IDataContext DataContextMock;
         protected Player ExistingPlayerWithMatchingGamingGroup;
         protected const int GAMING_GROUP_ID = 9;
         protected const int EXPECTED_PLAYED_GAME_ID = 50;
@@ -23,6 +24,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameSa
         {
             AutoMocker = new RhinoAutoMocker<PlayedGameSaver>();
             AutoMocker.PartialMockTheClassUnderTest();
+            DataContextMock = MockRepository.GenerateMock<IDataContext>();
 
             CurrentUser = new ApplicationUser
             {
@@ -34,7 +36,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameSa
             {
                 Name = "game definition name",
                 GamingGroupId = GAMING_GROUP_ID,
-                Id = 9598
+                Id = 9598,
+                BoardGameGeekGameDefinitionId = 13
             };
 
             AutoMocker.Get<ISecuredEntityValidator>().Expect(mock => mock.RetrieveAndValidateAccess<GameDefinition>(Arg<int>.Is.Anything, Arg<ApplicationUser>.Is.Anything)).Return(GameDefinition);

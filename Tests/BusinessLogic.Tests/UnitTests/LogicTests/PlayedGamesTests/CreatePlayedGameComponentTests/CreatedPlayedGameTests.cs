@@ -22,8 +22,6 @@ using BusinessLogic.DataAccess;
 using BusinessLogic.DataAccess.Security;
 using BusinessLogic.Events;
 using BusinessLogic.Events.Interfaces;
-using BusinessLogic.EventTracking;
-using BusinessLogic.Logic;
 using BusinessLogic.Logic.PlayedGames;
 using BusinessLogic.Logic.Points;
 using BusinessLogic.Logic.Security;
@@ -31,8 +29,10 @@ using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
 using BusinessLogic.Models.PlayedGames;
 using BusinessLogic.Models.User;
+using NemeStats.TestingHelpers.NemeStatsTestingExtensions;
 using NUnit.Framework;
 using Rhino.Mocks;
+using Shouldly;
 using StructureMap.AutoMocking;
 
 namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.CreatePlayedGameComponentTests
@@ -62,7 +62,9 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.CreatePlayed
 
             _expectedPlayedGame = new PlayedGame
             {
-                Id = 2
+                Id = 2,
+                GameDefinitionId = _expectedGameDefinition.Id,
+                NumberOfPlayers = 3
             };
 
             _autoMocker = new RhinoAutoMocker<CreatePlayedGameComponent>();
@@ -125,52 +127,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.CreatePlayed
         }
 
         [Test]
-        public void ItSavesAPlayedGameIfThereIsAGameDefinition()
-        {
-            var newlyCompletedPlayedGame = CreateValidNewlyCompletedGame();
-            _autoMocker.ClassUnderTest.Execute(newlyCompletedPlayedGame, _currentUser, _dataContext);
-
-            _dataContext.AssertWasCalled(mock => mock.Save(
-                                                Arg<PlayedGame>.Matches(game => game.GameDefinitionId == _expectedGameDefinition.Id
-                                                    && game.NumberOfPlayers == newlyCompletedPlayedGame.PlayerRanks.Count()
-                                                    && game.DatePlayed.Date.Equals(newlyCompletedPlayedGame.DatePlayed.Date)),
-                                                Arg<ApplicationUser>.Is.Same(_currentUser)));
-        }
-
-        [Test]
-        public void It_Sets_The_WinnerType_To_Team_Win_If_All_Players_Won()
-        {
-            //--arrange
-            var newlyCompletedPlayedGame = CreateValidNewlyCompletedGame();
-            newlyCompletedPlayedGame.PlayerRanks.ForEach(x => x.GameRank = 1);
-
-            //--act
-            _autoMocker.ClassUnderTest.Execute(newlyCompletedPlayedGame, _currentUser, _dataContext);
-
-            //--assert
-            _autoMocker.Get<IDataContext>().AssertWasCalled(mock => mock.Save(
-                                                Arg<PlayedGame>.Matches(game => game.WinnerType == WinnerTypes.TeamWin),
-                                                Arg<ApplicationUser>.Is.Anything));
-        }
-
-        [Test]
-        public void It_Sets_The_WinnerType_To_Team_Loss_If_All_Players_Lost()
-        {
-            //--arrange
-            var newlyCompletedPlayedGame = CreateValidNewlyCompletedGame();
-            newlyCompletedPlayedGame.PlayerRanks.ForEach(x => x.GameRank = 2);
-
-            //--act
-            _autoMocker.ClassUnderTest.Execute(newlyCompletedPlayedGame, _currentUser, _dataContext);
-
-            //--assert
-            _autoMocker.Get<IDataContext>().AssertWasCalled(mock => mock.Save(
-                                                Arg<PlayedGame>.Matches(game => game.WinnerType == WinnerTypes.TeamLoss),
-                                                Arg<ApplicationUser>.Is.Anything));
-        }
-
-        [Test]
-        public void It_Sets_The_WinnerType_To_Player_Win_If_There_Was_At_Least_One_Winner_And_One_Loser()
+        public void It_Saves_The_Played_Game()
         {
             //--arrange
             var newlyCompletedPlayedGame = CreateValidNewlyCompletedGame();
@@ -179,9 +136,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.CreatePlayed
             _autoMocker.ClassUnderTest.Execute(newlyCompletedPlayedGame, _currentUser, _dataContext);
 
             //--assert
-            _autoMocker.Get<IDataContext>().AssertWasCalled(mock => mock.Save(
-                                                Arg<PlayedGame>.Matches(game => game.WinnerType == WinnerTypes.PlayerWin),
-                                                Arg<ApplicationUser>.Is.Anything));
+            _dataContext.AssertWasCalled(mock => mock.Save(Arg<PlayedGame>.Is.Same(_expectedPlayedGame), Arg<ApplicationUser>.Is.Same(_currentUser)));
         }
 
         private NewlyCompletedGame CreateValidNewlyCompletedGame()
@@ -212,72 +167,6 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.CreatePlayed
         }
 
         [Test]
-        public void ItSetsNemePointsForEachPlayerGameResult()
-        {
-            var playerOneId = 1;
-            var playerTwoId = 2;
-            var playerOneGameRank = 1;
-            var playerTwoGameRank = 2;
-            var playerRanks = new List<PlayerRank>
-            {
-                new PlayerRank
-                {
-                    PlayerId = playerOneId,
-                    GameRank = playerOneGameRank
-                },
-                new PlayerRank
-                {
-                    PlayerId = playerTwoId,
-                    GameRank = playerTwoGameRank
-                }
-            };
-            _expectedGameDefinition.BoardGameGeekGameDefinitionId = 11;
-            var newlyCompletedPlayedGame = new NewlyCompletedGame
-            {
-                GameDefinitionId = _expectedGameDefinition.Id,
-                PlayerRanks = playerRanks
-            };
-            var expectedBoardGameGeekGameDefinition = new BoardGameGeekGameDefinition();
-            _autoMocker.Get<IDataContext>()
-                      .Expect(mock => mock.FindById<BoardGameGeekGameDefinition>(_expectedGameDefinition.BoardGameGeekGameDefinitionId))
-                      .Return(expectedBoardGameGeekGameDefinition);
-
-            var playerOneScorecard = new PointsScorecard
-            {
-                BasePoints = 1,
-                GameDurationBonusPoints = 2,
-                GameWeightBonusPoints = 3
-            };
-            var playerTwoScorecard = new PointsScorecard
-            {
-                BasePoints = 4,
-                GameDurationBonusPoints = 5,
-                GameWeightBonusPoints = 6
-            };
-            var expectedPointsDictionary = new Dictionary<int, PointsScorecard>
-            {
-                {playerOneId, playerOneScorecard},
-                {playerTwoId, playerTwoScorecard}
-            };
-
-            _autoMocker.Get<IPointsCalculator>().Expect(mock => mock.CalculatePoints(playerRanks, expectedBoardGameGeekGameDefinition))
-                .Return(expectedPointsDictionary);
-
-            //--Act
-            var playedGame = _autoMocker.ClassUnderTest.Execute(newlyCompletedPlayedGame, _currentUser, _dataContext);
-
-            var playerOne = playedGame.PlayerGameResults.First(gameResult => gameResult.PlayerId == playerOneId);
-            Assert.That(playerOne.GameDurationBonusPoints, Is.EqualTo(playerOneScorecard.GameDurationBonusPoints));
-            Assert.That(playerOne.GameWeightBonusPoints, Is.EqualTo(playerOneScorecard.GameWeightBonusPoints));
-            Assert.That(playerOne.NemeStatsPointsAwarded, Is.EqualTo(playerOneScorecard.BasePoints));
-
-            var playerTwo = playedGame.PlayerGameResults.First(gameResult => gameResult.PlayerId == playerTwoId);
-            Assert.That(playerTwo.GameDurationBonusPoints, Is.EqualTo(playerTwoScorecard.GameDurationBonusPoints));
-            Assert.That(playerTwo.GameWeightBonusPoints, Is.EqualTo(playerTwoScorecard.GameWeightBonusPoints));
-            Assert.That(playerTwo.NemeStatsPointsAwarded, Is.EqualTo(playerTwoScorecard.BasePoints));
-        }
-
-        [Test]
         public void ItSetsTheGamingGroupIdToThatOfTheUser()
         {
             var newlyCompletedPlayedGame = new NewlyCompletedGame
@@ -298,23 +187,6 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.CreatePlayed
         }
 
         [Test]
-        public void ItCreatesAnApplicationLinkageForNemeStats()
-        {
-            //--arrange
-            var newlyCompletedPlayedGame = CreateValidNewlyCompletedGame();
-
-            //--act
-            _autoMocker.ClassUnderTest.Execute(newlyCompletedPlayedGame, _currentUser, _dataContext);
-
-            //--assert
-            _autoMocker.Get<IApplicationLinker>().AssertWasCalled(mock => mock.LinkApplication(
-                _expectedPlayedGame.Id,
-                ApplicationLinker.APPLICATION_NAME_NEMESTATS,
-                _expectedPlayedGame.Id.ToString(), 
-                _dataContext));
-        }
-
-        [Test]
         public void ItCreatesApplicationLinkages()
         {
             //--arrange
@@ -329,51 +201,14 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.CreatePlayed
                 expectedApplicationLinkage1
             };
 
-            var expectedPlayedGame = new PlayedGame
-            {
-                Id = 31
-            };
-            _autoMocker.Get<IPlayedGameSaver>().Expect(partialMock => partialMock.TransformNewlyCompletedGameIntoPlayedGame(null, 0, null, null))
-                .IgnoreArguments()
-                .Return(expectedPlayedGame);
-
             //--act
             _autoMocker.ClassUnderTest.Execute(newlyCompletedPlayedGame, _currentUser, _dataContext);
 
             //--assert
             _autoMocker.Get<IPlayedGameSaver>().AssertWasCalled(mock => mock.CreateApplicationLinkages(
                 newlyCompletedPlayedGame.ApplicationLinkages,
-                expectedPlayedGame.Id,
+                _expectedPlayedGame.Id,
                 _dataContext));
-        }
-
-
-        [Test]
-        public void ItRecordsAGamePlayedEvent()
-        {
-            var playerRank = new PlayerRank
-            {
-                GameRank = 1,
-                PlayerId = 1
-            };
-            var newlyCompletedGame = new NewlyCompletedGame
-            {
-                GameDefinitionId = _expectedGameDefinition.Id,
-                PlayerRanks = new List<PlayerRank>
-                { playerRank }
-            };
-            var transactionSource = TransactionSource.RestApi;
-            _autoMocker.Get<IPointsCalculator>()
-              .Expect(mock => mock.CalculatePoints(null, null))
-              .IgnoreArguments()
-              .Return(new Dictionary<int, PointsScorecard>
-              {
-                              {playerRank.PlayerId, new PointsScorecard()}
-              });
-
-            _autoMocker.ClassUnderTest.Execute(newlyCompletedGame, _currentUser, _dataContext);
-
-            _autoMocker.Get<INemeStatsEventTracker>().AssertWasCalled(mock => mock.TrackPlayedGame(_currentUser, transactionSource));
         }
 
         [Test]
@@ -412,19 +247,6 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.CreatePlayed
             _autoMocker.Get<ISecuredEntityValidator>().AssertWasCalled(mock => mock.RetrieveAndValidateAccess<GameDefinition>(
                 _expectedGameDefinition.Id,
                 _currentUser));
-        }
-
-        [Test]
-        public void It_Send_PlayedGameCreatedEvent()
-        {
-            //--arrange
-            var validGame = CreateValidNewlyCompletedGame();
-
-            //--act
-            _autoMocker.ClassUnderTest.Execute(validGame, _currentUser, _dataContext);
-
-            //--assert
-            _autoMocker.Get<IBusinessLogicEventBus>().AssertWasCalled(mock => mock.SendEvent(Arg<IBusinessLogicEvent>.Matches(m => m.GetType() == typeof(PlayedGameCreatedEvent))));
         }
 
         [Test]

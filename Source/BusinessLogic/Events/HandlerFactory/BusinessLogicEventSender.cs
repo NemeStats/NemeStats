@@ -8,7 +8,7 @@ namespace BusinessLogic.Events.HandlerFactory
     {
         private readonly IBusinessLogicEventBus _eventBus;
 
-        protected BusinessLogicEventSender(IBusinessLogicEventBus eventBus)
+        public BusinessLogicEventSender(IBusinessLogicEventBus eventBus)
         {
             _eventBus = eventBus;
         }
@@ -23,10 +23,5 @@ namespace BusinessLogic.Events.HandlerFactory
                 }
             }
         }
-    }
-
-    public interface IBusinessLogicEventSender
-    {
-        void SendEvents(IList<IBusinessLogicEvent> events);
     }
 }

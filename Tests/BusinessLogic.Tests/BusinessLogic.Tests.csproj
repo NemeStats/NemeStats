@@ -130,8 +130,8 @@
       <HintPath>..\..\packages\NUnit3TestAdapter.3.4.0\lib\nunit.engine.api.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="nunit.framework, Version=3.4.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\NUnit.3.4.1\lib\net45\nunit.framework.dll</HintPath>
+    <Reference Include="nunit.framework, Version=3.6.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NUnit.3.6.0\lib\net45\nunit.framework.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="nunit.util, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
@@ -323,7 +323,9 @@
     <Compile Include="UnitTests\LogicTests\PlayedGamesTests\PlayedGameRetrieverTests\SearchPlayedGamesTests.cs" />
     <Compile Include="UnitTests\LogicTests\PlayedGamesTests\PlayedGameSaverTests\CreateApplicationLinkagesTests.cs" />
     <Compile Include="UnitTests\LogicTests\PlayedGamesTests\PlayedGameSaverTests\DoPostSaveStuffTests.cs" />
+    <Compile Include="UnitTests\LogicTests\PlayedGamesTests\PlayedGameSaverTests\MakePlayerGameResultsTests.cs" />
     <Compile Include="UnitTests\LogicTests\PlayedGamesTests\PlayedGameSaverTests\PlayedGameSaverTestBase.cs" />
+    <Compile Include="UnitTests\LogicTests\PlayedGamesTests\PlayedGameSaverTests\TransformNewlyCompletedGameIntoPlayedGameTests.cs" />
     <Compile Include="UnitTests\LogicTests\PlayedGamesTests\PlayedGameSaverTests\UpdatePlayedGameTests.cs" />
     <Compile Include="UnitTests\LogicTests\PlayedGamesTests\PlayedGameSaverTests\ValidateAccessToPlayersTests.cs" />
     <Compile Include="UnitTests\LogicTests\PlayersTests\PlayerDeleterTests\DeletePlayerTests.cs" />
@@ -404,6 +406,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\NemeStats.TestingHelpers\NemeStats.TestingHelpers.csproj">
+      <Project>{025A287A-14D5-4F5D-A476-5D2FE1B5FBB3}</Project>
+      <Name>NemeStats.TestingHelpers</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Source\BoardGameGeekApiClient\BoardGameGeekApiClient.csproj">
       <Project>{d4efacf4-b72b-4395-89bf-4caa9a33c427}</Project>
       <Name>BoardGameGeekApiClient</Name>

@@ -38,16 +38,16 @@ using BusinessLogic.Models.PlayedGames;
 
 namespace BusinessLogic.Logic.PlayedGames
 {
-    public class PlayedGameSaver : BusinessLogicEventSender, IPlayedGameSaver
+    public class PlayedGameSaver : IPlayedGameSaver
     {
         private readonly IDataContext _dataContext;
-        private readonly ILinkedPlayedGameValidator _linkedPlayedGameValidator;
         private readonly INemeStatsEventTracker _playedGameTracker;
         private readonly INemesisRecalculator _nemesisRecalculator;
         private readonly IChampionRecalculator _championRecalculator;
         private readonly ISecuredEntityValidator _securedEntityValidator;
         private readonly IPointsCalculator _pointsCalculator;
         private readonly IApplicationLinker _applicationLinker;
+        private readonly IBusinessLogicEventSender _businessLogicEventSender;
 
         public PlayedGameSaver(
             IDataContext applicationDataContext,
@@ -56,9 +56,8 @@ namespace BusinessLogic.Logic.PlayedGames
             IChampionRecalculator championRecalculator,
             ISecuredEntityValidator securedEntityValidator,
             IPointsCalculator pointsCalculator,
-            IBusinessLogicEventBus eventBus, 
-            ILinkedPlayedGameValidator linkedPlayedGameValidator, 
-            IApplicationLinker applicationLinker) : base(eventBus)
+            IApplicationLinker applicationLinker, 
+            IBusinessLogicEventSender businessLogicEventSender)
         {
             _dataContext = applicationDataContext;
             _playedGameTracker = playedGameTracker;
@@ -66,8 +65,8 @@ namespace BusinessLogic.Logic.PlayedGames
             _championRecalculator = championRecalculator;
             _securedEntityValidator = securedEntityValidator;
             _pointsCalculator = pointsCalculator;
-            _linkedPlayedGameValidator = linkedPlayedGameValidator;
             _applicationLinker = applicationLinker;
+            _businessLogicEventSender = businessLogicEventSender;
         }
 
         public virtual void ValidateAccessToPlayers(IEnumerable<PlayerRank> playerRanks, int gamingGroupId, ApplicationUser currentUser, IDataContext dataContext)
@@ -175,7 +174,7 @@ namespace BusinessLogic.Logic.PlayedGames
             }
             _championRecalculator.RecalculateChampion(gameDefinitionId, currentUser, dataContext, false);
 
-            SendEvents(new IBusinessLogicEvent[] {new PlayedGameCreatedEvent() {TriggerEntityId = playedGameId}});
+            _businessLogicEventSender.SendEvents(new IBusinessLogicEvent[] {new PlayedGameCreatedEvent() {TriggerEntityId = playedGameId}});
         }
 
         public PlayedGame UpdatePlayedGame(UpdatedGame updatedGame, TransactionSource transactionSource, ApplicationUser currentUser)
