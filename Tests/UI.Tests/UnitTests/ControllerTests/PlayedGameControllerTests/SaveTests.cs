@@ -48,20 +48,17 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 
     public class When_ModelState_Is_Valid : SaveTests
     {
-
         [SetUp]
-        public virtual void SetUp()
+        public override void SetUp()
         {
+            base.SetUp();
             Request.GameDefinitionId = 1;
             Request.PlayerRanks = new List<CreatePlayerRankRequest>();
         }
-
     }
 
     public class When_EditMode_Is_False : When_ModelState_Is_Valid
     {
-        private NewlyCompletedGame _expectedNewlyCompletedGame;
-
         [SetUp]
         public override void SetUp()
         {
