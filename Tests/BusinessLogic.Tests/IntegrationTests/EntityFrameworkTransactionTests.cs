@@ -23,6 +23,12 @@ namespace BusinessLogic.Tests.IntegrationTests
             }
         }
 
+        [OneTimeTearDown]
+        public void OneTimeTearDown()
+        {
+            DisposeNestedContainer();
+        }
+
         [Test]
         public void Entity_Framework_Demonstration_Of_Transactions_And_Entity_Ids()
         {

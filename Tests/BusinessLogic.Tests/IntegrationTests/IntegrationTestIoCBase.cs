@@ -11,14 +11,24 @@ namespace BusinessLogic.Tests.IntegrationTests
             c.AddRegistry<DatabaseRegistry>();
         });
 
-        private readonly IContainer _container
+        private readonly IContainer _nestedContainer
             = RootContainer.GetNestedContainer();
 
+        /// <summary>
+        /// Returns an instance from the nested container. This will get automatically disposed 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
         protected T GetInstance<T>()
         {
-            return _container.GetInstance<T>();
+            return _nestedContainer.GetInstance<T>();
         }
 
+        /// <summary>
+        /// Returns an instance from the root container that will NOT automatically be disposed. You must dispose it yourself (or keep in a using statement ideally)
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
         protected T GetInstanceFromRootContainer<T>()
         {
             return RootContainer.GetInstance<T>();
@@ -26,7 +36,12 @@ namespace BusinessLogic.Tests.IntegrationTests
 
         protected void Inject<T>(T instance) where T : class
         {
-            _container.Configure(cfg => cfg.For<T>().Use(instance));
+            _nestedContainer.Configure(cfg => cfg.For<T>().Use(instance));
+        }
+
+        protected void DisposeNestedContainer()
+        {
+            _nestedContainer.Dispose();
         }
     }
 }

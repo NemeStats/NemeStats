@@ -645,6 +645,7 @@ namespace BusinessLogic.Tests.IntegrationTests
         public virtual void FixtureTearDown()
         {
             CleanUpTestData();
+            DisposeNestedContainer();
         }
     }
 }

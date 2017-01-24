@@ -30,7 +30,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.ChampionsTests
         [Test, Ignore("Integration tests")]
         public void RecalculateForSingleGame()
         {
-            using (var dataContext = GetInstance<IDataContext>())
+            using (var dataContext = GetInstanceFromRootContainer<IDataContext>())
             {
                 IChampionRepository championRepository = new ChampionRepository(dataContext);
 
@@ -42,6 +42,12 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.ChampionsTests
                 };
                 championRecalculator.RecalculateChampion(2005, user, dataContext);
             }
+        }
+
+        [OneTimeTearDown]
+        public void OneTimeTearDown()
+        {
+            DisposeNestedContainer();
         }
     }
 }
