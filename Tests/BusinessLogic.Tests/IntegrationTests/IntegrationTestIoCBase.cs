@@ -5,6 +5,11 @@ namespace BusinessLogic.Tests.IntegrationTests
 {
     public abstract class IntegrationTestIoCBase
     {
+        ~IntegrationTestIoCBase()
+        {
+            _nestedContainer?.Dispose();
+        }
+
         private static readonly IContainer RootContainer = new Container(c =>
         {
             c.AddRegistry<CommonRegistry>();
@@ -37,11 +42,6 @@ namespace BusinessLogic.Tests.IntegrationTests
         protected void Inject<T>(T instance) where T : class
         {
             _nestedContainer.Configure(cfg => cfg.For<T>().Use(instance));
-        }
-
-        protected void DisposeNestedContainer()
-        {
-            _nestedContainer.Dispose();
         }
     }
 }

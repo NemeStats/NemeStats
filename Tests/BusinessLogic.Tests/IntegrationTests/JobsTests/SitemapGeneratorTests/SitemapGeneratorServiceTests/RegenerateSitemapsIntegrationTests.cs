@@ -16,11 +16,5 @@ namespace BusinessLogic.Tests.IntegrationTests.JobsTests.SitemapGeneratorTests.S
             //--acts
             sitemapGeneratorService.RegenerateSitemaps();
         }
-
-        [OneTimeTearDown]
-        public void OneTimeTearDown()
-        {
-            DisposeNestedContainer();
-        }
     }
 }

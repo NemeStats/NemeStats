@@ -43,11 +43,5 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.ChampionsTests
                 championRecalculator.RecalculateChampion(2005, user, dataContext);
             }
         }
-
-        [OneTimeTearDown]
-        public void OneTimeTearDown()
-        {
-            DisposeNestedContainer();
-        }
     }
 }

@@ -640,12 +640,5 @@ namespace BusinessLogic.Tests.IntegrationTests
                 catch (Exception) { }
             }
         }
-
-        [OneTimeTearDown]
-        public virtual void FixtureTearDown()
-        {
-            CleanUpTestData();
-            DisposeNestedContainer();
-        }
     }
 }
