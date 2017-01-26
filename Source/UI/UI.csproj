@@ -826,6 +826,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Areas\Api\Views\Shared\" />
+    <Folder Include="sitemaps\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">
