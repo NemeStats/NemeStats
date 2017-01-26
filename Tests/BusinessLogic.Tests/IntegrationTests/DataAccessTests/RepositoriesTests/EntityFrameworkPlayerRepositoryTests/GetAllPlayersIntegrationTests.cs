@@ -15,13 +15,9 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
-using BusinessLogic.DataAccess;
-using BusinessLogic.DataAccess.Repositories;
-using BusinessLogic.Logic.PlayedGames;
+
 using BusinessLogic.Logic.Players;
-using BusinessLogic.Models;
 using NUnit.Framework;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests.EntityFrameworkPlayerRepositoryTests
@@ -29,33 +25,20 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
     [TestFixture]
     public class GetAllPlayersIntegrationTests : IntegrationTestBase
     {
-        private IDataContext dataContext;
-        private PlayerRetriever playerRetriever;
-        internal IPlayerRepository playerRepository;
-        internal IPlayedGameRetriever playedGameRetriever;
+        private PlayerRetriever _playerRetriever;
 
         [SetUp]
         public void TestSetUp()
         {
-            dataContext = new NemeStatsDataContext();
-            playerRepository = new EntityFrameworkPlayerRepository(dataContext);
-            playedGameRetriever = new PlayedGameRetriever(dataContext);
-
-            playerRetriever = new PlayerRetriever(dataContext, playerRepository, playedGameRetriever);
+            _playerRetriever = GetInstance<PlayerRetriever>();
         }
 
         [Test]
         public void ItOnlyReturnsPlayersForTheGivenGamingGroupId()
         {
-            var players = playerRetriever.GetAllPlayers(testUserWithDefaultGamingGroup.CurrentGamingGroupId);
+            var players = _playerRetriever.GetAllPlayers(testUserWithDefaultGamingGroup.CurrentGamingGroupId);
 
             Assert.True(players.All(x => x.GamingGroupId == testGamingGroup.Id));
-        }
-
-        [TearDown]
-        public void TearDown()
-        {
-            dataContext.Dispose();
         }
     }
 }

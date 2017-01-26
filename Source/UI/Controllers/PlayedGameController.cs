@@ -55,6 +55,7 @@ namespace UI.Controllers
         private readonly IGameDefinitionSaver _gameDefinitionSaver;
         private readonly IPlayerSaver _playerSaver;
         private readonly IMapperFactory _mapperFactory;
+        private readonly ICreatePlayedGameComponent _createPlayedGameComponent;
 
         internal const int NUMBER_OF_RECENT_GAMES_TO_DISPLAY = 25;
 
@@ -68,7 +69,8 @@ namespace UI.Controllers
             IPlayedGameDeleter playedGameDeleter,
             IGameDefinitionSaver gameDefinitionSaver,
             IPlayerSaver playerSaver,
-            IMapperFactory mapperFactory)
+            IMapperFactory mapperFactory, 
+            ICreatePlayedGameComponent createPlayedGameComponent)
         {
             _dataContext = dataContext;
             _playedGameRetriever = playedGameRetriever;
@@ -80,6 +82,7 @@ namespace UI.Controllers
             _gameDefinitionSaver = gameDefinitionSaver;
             _playerSaver = playerSaver;
             _mapperFactory = mapperFactory;
+            _createPlayedGameComponent = createPlayedGameComponent;
         }
 
         // GET: /PlayedGame/Details/5
@@ -162,7 +165,6 @@ namespace UI.Controllers
                 }
                 else
                 {
-
                     if (request.GameDefinitionId == null)
                     {
                         if (string.IsNullOrEmpty(request.GameDefinitionName))
@@ -187,11 +189,10 @@ namespace UI.Controllers
                         }, currentUser).Id;
                     }
 
-
+                    var newlyCompletedGame = _mapperFactory.GetMapper<SavePlayedGameRequest, NewlyCompletedGame>().Map(request);
+                    newlyCompletedGame.TransactionSource = TransactionSource.WebApplication;
                     resultId =
-                        _playedGameSaver.CreatePlayedGame(
-                            _mapperFactory.GetMapper<SavePlayedGameRequest, NewlyCompletedGame>().Map(request),
-                            TransactionSource.WebApplication, currentUser).Id;
+                        _createPlayedGameComponent.Execute(newlyCompletedGame, currentUser).Id;
                 }
 
 

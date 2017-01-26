@@ -165,7 +165,7 @@ namespace BusinessLogic.Logic.Players
 
             foreach (var playerId in playerIdsToRecalculate)
             {
-                _nemesisRecalculator.RecalculateNemesis(playerId, currentUser);
+                _nemesisRecalculator.RecalculateNemesis(playerId, currentUser, _dataContext);
             }
         }
     }

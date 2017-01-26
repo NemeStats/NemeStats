@@ -34,7 +34,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.ChampionsTests.ChampionRecalc
     [TestFixture]
     public class RecalculateChampionTests
     {
-        private RhinoAutoMocker<ChampionRecalculator> _autoMocker; 
+        private RhinoAutoMocker<ChampionRecalculator> _autoMocker;
+        private IDataContext _dataContext;
         private ApplicationUser _applicationUser;
 
         private readonly int _gameDefinitionId = 1;
@@ -48,6 +49,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.ChampionsTests.ChampionRecalc
         public void SetUp()
         {
             _autoMocker = new RhinoAutoMocker<ChampionRecalculator>();
+            _dataContext = MockRepository.GenerateMock<IDataContext>();
             _applicationUser = new ApplicationUser();
 
             _gameDefinition = new GameDefinition
@@ -68,7 +70,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.ChampionsTests.ChampionRecalc
             _autoMocker.Get<IChampionRepository>().Expect(mock => mock.GetChampionData(_gameDefinitionId))
                 .Return(new NullChampionData());
 
-            Champion nullChampion = _autoMocker.ClassUnderTest.RecalculateChampion(_gameDefinitionId, _applicationUser);
+            Champion nullChampion = _autoMocker.ClassUnderTest.RecalculateChampion(_gameDefinitionId, _applicationUser, _dataContext);
 
             Assert.That(nullChampion, Is.InstanceOf<NullChampion>());
         }
@@ -79,7 +81,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.ChampionsTests.ChampionRecalc
             _autoMocker.Get<IChampionRepository>().Expect(mock => mock.GetChampionData(_gameDefinitionId))
                 .Return(new NullChampionData());
 
-            _autoMocker.ClassUnderTest.RecalculateChampion(_gameDefinitionId, _applicationUser, true);
+            _autoMocker.ClassUnderTest.RecalculateChampion(_gameDefinitionId, _applicationUser, _dataContext, true);
 
             _autoMocker.Get<IDataContext>().AssertWasCalled(mock => mock.Save(
                 Arg<GameDefinition>.Matches(gameDefinition => gameDefinition.ChampionId == null), 
@@ -92,7 +94,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.ChampionsTests.ChampionRecalc
             _autoMocker.Get<IChampionRepository>().Expect(mock => mock.GetChampionData(_gameDefinitionId))
                 .Return(new NullChampionData());
 
-            _autoMocker.ClassUnderTest.RecalculateChampion(_gameDefinitionId, _applicationUser, false);
+            _autoMocker.ClassUnderTest.RecalculateChampion(_gameDefinitionId, _applicationUser, _dataContext, false);
 
             _autoMocker.Get<IDataContext>().AssertWasNotCalled(mock => mock.Save(
                 Arg<GameDefinition>.Is.Anything,
@@ -109,7 +111,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.ChampionsTests.ChampionRecalc
             _autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<Champion>())
                 .Return(new List<Champion>().AsQueryable());
 
-            _autoMocker.ClassUnderTest.RecalculateChampion(_gameDefinitionId, _applicationUser);
+            _autoMocker.ClassUnderTest.RecalculateChampion(_gameDefinitionId, _applicationUser, _dataContext);
 
             _autoMocker.Get<IDataContext>().AssertWasCalled(mock => mock.Save(
                 Arg<Champion>.Matches(champion => champion.GameDefinitionId == _gameDefinitionId
@@ -131,7 +133,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.ChampionsTests.ChampionRecalc
             _autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<Champion>())
                 .Return(new List<Champion>().AsQueryable());
 
-            _autoMocker.ClassUnderTest.RecalculateChampion(_gameDefinitionId, _applicationUser);
+            _autoMocker.ClassUnderTest.RecalculateChampion(_gameDefinitionId, _applicationUser, _dataContext);
 
             _autoMocker.Get<IDataContext>().AssertWasCalled(mock => mock.Save(
                 Arg<GameDefinition>.Matches(definition => definition.PreviousChampionId == _previousChampionId),
@@ -144,7 +146,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.ChampionsTests.ChampionRecalc
             _autoMocker.Get<IChampionRepository>().Expect(mock => mock.GetChampionData(_gameDefinitionId))
                 .Return(new NullChampionData());
 
-            _autoMocker.ClassUnderTest.RecalculateChampion(_gameDefinitionId, _applicationUser);
+            _autoMocker.ClassUnderTest.RecalculateChampion(_gameDefinitionId, _applicationUser, _dataContext);
 
             _autoMocker.Get<IDataContext>().AssertWasCalled(mock => mock.Save(
                 Arg<GameDefinition>.Matches(definition => definition.PreviousChampionId == _previousChampionId),
@@ -178,7 +180,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.ChampionsTests.ChampionRecalc
             _autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<Champion>())
                 .Return(championList.AsQueryable());
 
-            _autoMocker.ClassUnderTest.RecalculateChampion(_gameDefinitionId, _applicationUser);
+            _autoMocker.ClassUnderTest.RecalculateChampion(_gameDefinitionId, _applicationUser, _dataContext);
 
             _autoMocker.Get<IDataContext>().AssertWasNotCalled(mock => mock.Save(
                 Arg<Champion>.Is.Anything,
@@ -213,7 +215,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.ChampionsTests.ChampionRecalc
             _autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<Champion>())
                 .Return(championList.AsQueryable());
 
-            _autoMocker.ClassUnderTest.RecalculateChampion(_gameDefinitionId, _applicationUser);
+            _autoMocker.ClassUnderTest.RecalculateChampion(_gameDefinitionId, _applicationUser, _dataContext);
 
             _autoMocker.Get<IDataContext>().AssertWasCalled(mock => mock.Save(
                 Arg<Champion>.Matches(champion => champion.GameDefinitionId == _gameDefinitionId
@@ -245,7 +247,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.ChampionsTests.ChampionRecalc
             _autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<Champion>())
                 .Return(championList.AsQueryable());
 
-            Champion actualChampion = _autoMocker.ClassUnderTest.RecalculateChampion(_gameDefinitionId, _applicationUser);
+            Champion actualChampion = _autoMocker.ClassUnderTest.RecalculateChampion(_gameDefinitionId, _applicationUser, _dataContext);
 
             Assert.That(actualChampion, Is.SameAs(existingChampion));
         }
@@ -270,7 +272,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.ChampionsTests.ChampionRecalc
             _autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<Champion>())
                 .Return(championList.AsQueryable());
 
-            Champion actualChampion = _autoMocker.ClassUnderTest.RecalculateChampion(_gameDefinitionId, _applicationUser);
+            Champion actualChampion = _autoMocker.ClassUnderTest.RecalculateChampion(_gameDefinitionId, _applicationUser, _dataContext);
 
             Assert.That(actualChampion, Is.SameAs(_savedChampion));
         }
@@ -292,7 +294,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.ChampionsTests.ChampionRecalc
             _autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<Champion>())
                 .Return(championList.AsQueryable());
 
-            Champion actualChampion = _autoMocker.ClassUnderTest.RecalculateChampion(_gameDefinitionId, _applicationUser);
+            Champion actualChampion = _autoMocker.ClassUnderTest.RecalculateChampion(_gameDefinitionId, _applicationUser, _dataContext);
 
             Assert.That(actualChampion, Is.SameAs(_savedChampion));
         }

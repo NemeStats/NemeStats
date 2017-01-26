@@ -8,13 +8,6 @@ namespace BusinessLogic.Logic.PlayedGames
     {
         public const string APPLICATION_NAME_NEMESTATS = "NemeStats";
 
-        private readonly IDataContext _dataContext;
-
-        public ApplicationLinker(IDataContext dataContext)
-        {
-            _dataContext = dataContext;
-        }
-
         /// <summary>
         /// LinkedPlayedGameValidator should be called before calling this method since validation can occur before saving the PlayedGame and this
         /// method requires the PlayedGame to be saved first.
@@ -22,7 +15,8 @@ namespace BusinessLogic.Logic.PlayedGames
         /// <param name="playedGameId"></param>
         /// <param name="applicationName"></param>
         /// <param name="entityId"></param>
-        public void LinkApplication(int playedGameId, string applicationName, string entityId)
+        /// <param name="dataContext"></param>
+        public void LinkApplication(int playedGameId, string applicationName, string entityId, IDataContext dataContext)
         {
             var applicationLinkage = new PlayedGameApplicationLinkage
             {
@@ -31,7 +25,7 @@ namespace BusinessLogic.Logic.PlayedGames
                 PlayedGameId = playedGameId
             };
 
-            _dataContext.Save(applicationLinkage, new AnonymousApplicationUser());
+            dataContext.Save(applicationLinkage, new AnonymousApplicationUser());
         }
     }
 }

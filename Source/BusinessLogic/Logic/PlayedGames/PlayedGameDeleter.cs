@@ -53,10 +53,10 @@ namespace BusinessLogic.Logic.PlayedGames
 
             foreach (int playerId in playerIds)
             {
-                nemesisRecalculator.RecalculateNemesis(playerId, currentUser);
+                nemesisRecalculator.RecalculateNemesis(playerId, currentUser, dataContext);
             }
 
-            championRecalculator.RecalculateChampion(gameDefId, currentUser);
+            championRecalculator.RecalculateChampion(gameDefId, currentUser, dataContext);
         }
     }
 }

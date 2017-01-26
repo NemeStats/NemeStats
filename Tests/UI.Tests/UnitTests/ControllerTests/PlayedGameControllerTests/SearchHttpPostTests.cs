@@ -44,15 +44,15 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
                     Id = GAME_DEFINITION_A_ID
                 }
             };
-            autoMocker.Get<IGameDefinitionRetriever>().Expect(mock => mock.GetAllGameDefinitionNames(this.currentUser.CurrentGamingGroupId)).Return(gameDefinitionNames);
+            AutoMocker.Get<IGameDefinitionRetriever>().Expect(mock => mock.GetAllGameDefinitionNames(this.CurrentUser.CurrentGamingGroupId)).Return(gameDefinitionNames);
         }
 
         [Test]
         public void ItReturnsTheCorrectView()
         {
-            autoMocker.Get<IPlayedGameRetriever>().Expect(mock => mock.SearchPlayedGames(Arg<PlayedGameFilter>.Is.Anything)).Return(new List<PlayedGameSearchResult>());
+            AutoMocker.Get<IPlayedGameRetriever>().Expect(mock => mock.SearchPlayedGames(Arg<PlayedGameFilter>.Is.Anything)).Return(new List<PlayedGameSearchResult>());
 
-            var actualResults = autoMocker.ClassUnderTest.Search(new PlayedGamesFilterViewModel(), currentUser) as ViewResult;
+            var actualResults = AutoMocker.ClassUnderTest.Search(new PlayedGamesFilterViewModel(), CurrentUser) as ViewResult;
 
             Assert.That(actualResults.ViewName, Is.EqualTo(MVC.PlayedGame.Views.Search));
         }
@@ -60,9 +60,9 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
         [Test]
         public void ItReturnsTheCorrectViewModelType()
         {
-            autoMocker.Get<IPlayedGameRetriever>().Expect(mock => mock.SearchPlayedGames(Arg<PlayedGameFilter>.Is.Anything)).Return(new List<PlayedGameSearchResult>());
+            AutoMocker.Get<IPlayedGameRetriever>().Expect(mock => mock.SearchPlayedGames(Arg<PlayedGameFilter>.Is.Anything)).Return(new List<PlayedGameSearchResult>());
 
-            var actualResults = autoMocker.ClassUnderTest.Search(new PlayedGamesFilterViewModel(), currentUser) as ViewResult;
+            var actualResults = AutoMocker.ClassUnderTest.Search(new PlayedGamesFilterViewModel(), CurrentUser) as ViewResult;
 
             var actualViewModel = actualResults.ViewData.Model as SearchViewModel;
             Assert.That(actualViewModel, Is.TypeOf(typeof(SearchViewModel)));
@@ -72,7 +72,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
         public void ItReturnsTheCorrectFilterViewModel()
         {
             
-            autoMocker.Get<IPlayedGameRetriever>().Expect(mock => mock.SearchPlayedGames(null))
+            AutoMocker.Get<IPlayedGameRetriever>().Expect(mock => mock.SearchPlayedGames(null))
                 .IgnoreArguments()
                 .Return(new List<PlayedGameSearchResult>());
             var filter = new PlayedGamesFilterViewModel
@@ -82,7 +82,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
                 GameDefinitionId = 1
             };
 
-            var actualResults = autoMocker.ClassUnderTest.Search(filter, currentUser) as ViewResult;
+            var actualResults = AutoMocker.ClassUnderTest.Search(filter, CurrentUser) as ViewResult;
 
             var actualViewModel = actualResults.ViewData.Model as SearchViewModel;
             Assert.That(actualViewModel, Is.TypeOf(typeof(SearchViewModel)));
@@ -126,9 +126,9 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
                 }
             };
 
-            autoMocker.Get<IPlayedGameRetriever>().Expect(mock => mock.SearchPlayedGames(
+            AutoMocker.Get<IPlayedGameRetriever>().Expect(mock => mock.SearchPlayedGames(
                 Arg<PlayedGameFilter>.Matches(
-                    x => x.GamingGroupId == currentUser.CurrentGamingGroupId
+                    x => x.GamingGroupId == CurrentUser.CurrentGamingGroupId
                         && x.GameDefinitionId == filter.GameDefinitionId
                         && x.StartDateGameLastUpdated ==
                         filter.DatePlayedStart.Value.ToString("yyyy-MM-dd")
@@ -136,7 +136,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
                         filter.DatePlayedEnd.Value.ToString("yyyy-MM-dd"))))
                           .Return(expectedSearchResults);
 
-            var actualResults = autoMocker.ClassUnderTest.Search(filter, currentUser) as ViewResult;
+            var actualResults = AutoMocker.ClassUnderTest.Search(filter, CurrentUser) as ViewResult;
 
             var actualPlayedGameSearchResult = ((SearchViewModel)actualResults.Model).PlayedGames.PlayedGameDetailsViewModels[0];
             var expectedPlayedGameSearchResult = expectedSearchResults[0];
@@ -164,11 +164,11 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
         [Test]
         public void ItDoesNotShowTheSearchLinkOnPlayedGameSearchResults()
         {
-            autoMocker.Get<IPlayedGameRetriever>()
+            AutoMocker.Get<IPlayedGameRetriever>()
                 .Expect(mock => mock.SearchPlayedGames(Arg<PlayedGameFilter>.Is.Anything))
                 .Return(new List<PlayedGameSearchResult>());
 
-            var actualResults = autoMocker.ClassUnderTest.Search(new PlayedGamesFilterViewModel(), currentUser) as ViewResult;
+            var actualResults = AutoMocker.ClassUnderTest.Search(new PlayedGamesFilterViewModel(), CurrentUser) as ViewResult;
 
             var actualViewModel = actualResults.ViewData.Model as SearchViewModel;
             Assert.That(actualViewModel.PlayedGames.ShowSearchLinkInResultsHeader, Is.False);

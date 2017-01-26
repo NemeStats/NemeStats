@@ -25,26 +25,14 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.NemeStatsDataCont
     [TestFixture]
     public class FindByIdIntegrationTests : IntegrationTestBase
     {
-        protected NemeStatsDataContext dataContext;
-
-        [SetUp]
-        public void SetUp()
-        {
-            dataContext = new NemeStatsDataContext();
-        }
-
-        [TearDown]
-        public void TearDown()
-        {
-            dataContext.Dispose();
-        }
-
         [Test]
         public void ItCanFindAnEntityUsingAnIntId()
         {
-            GameDefinition gameDefinition = dataContext.FindById<GameDefinition>(testGameDefinition.Id);
-
-            Assert.NotNull(gameDefinition);
+            using (var dataContext = GetInstanceFromRootContainer<IDataContext>())
+            {
+                var gameDefinition = dataContext.FindById<GameDefinition>(testGameDefinition.Id);
+                Assert.NotNull(gameDefinition);
+            }
         }
     }
 }

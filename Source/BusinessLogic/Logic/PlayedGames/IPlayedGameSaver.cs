@@ -15,16 +15,29 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
+
+using System.Collections.Generic;
+using BusinessLogic.DataAccess;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
+using BusinessLogic.Models.PlayedGames;
 using BusinessLogic.Models.User;
 
 namespace BusinessLogic.Logic.PlayedGames
 {
     public interface IPlayedGameSaver
     {
-        PlayedGame CreatePlayedGame(NewlyCompletedGame newlyCompletedGame, TransactionSource transactionSource, ApplicationUser currentUser);
-
         PlayedGame UpdatePlayedGame(UpdatedGame updatedGame, TransactionSource transactionSource, ApplicationUser currentUser);
+
+        void CreateApplicationLinkages(IList<ApplicationLinkage> applicationLinkages, int playedGameId, IDataContext dataContext);
+
+        void ValidateAccessToPlayers(IEnumerable<PlayerRank> playerRanks, int gamingGroupId, ApplicationUser currentUser, IDataContext dataContext);
+
+        List<PlayerGameResult> MakePlayerGameResults(SaveableGameBase savedGame, int? boardGameGeekGameDefinitionId, IDataContext dataContext);
+
+        PlayedGame TransformNewlyCompletedGameIntoPlayedGame(SaveableGameBase savedGame, int gamingGroupId, string applicationUserId, List<PlayerGameResult> playerGameResults);
+
+        void DoPostSaveStuff(TransactionSource transactionSource, ApplicationUser currentUser, int playedGameId, int gameDefinitionId,
+            List<PlayerGameResult> playerGameResults, IDataContext dataContext);
     }
 }

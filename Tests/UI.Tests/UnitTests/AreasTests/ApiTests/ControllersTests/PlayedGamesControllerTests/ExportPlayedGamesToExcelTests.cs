@@ -54,7 +54,7 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.PlayedGamesCon
                     PlayerGameResults = new List<PlayerGameResult>()
                 }
             };
-            autoMocker.Get<IPlayedGameRetriever>().Expect(mock => mock.GetRecentGames(PlayedGamesController.MAX_PLAYED_GAMES_TO_EXPORT, gamingGroupId))
+            autoMocker.Get<IPlayedGameRetriever>().Expect(mock => mock.GetRecentGames(PlayedGamesController.MaxPlayedGamesToExport, gamingGroupId))
                         .Return(expectedPlayedGames);
 
             autoMocker.ClassUnderTest.ExportPlayedGamesToExcel(gamingGroupId);
@@ -68,7 +68,7 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.PlayedGamesCon
         {
             int gamingGroupId = 1;
             List<PlayedGame> expectedPlayedGames = new List<PlayedGame>();
-            autoMocker.Get<IPlayedGameRetriever>().Expect(mock => mock.GetRecentGames(PlayedGamesController.MAX_PLAYED_GAMES_TO_EXPORT, gamingGroupId))
+            autoMocker.Get<IPlayedGameRetriever>().Expect(mock => mock.GetRecentGames(PlayedGamesController.MaxPlayedGamesToExport, gamingGroupId))
                         .Return(expectedPlayedGames);
 
             HttpResponseMessage response = autoMocker.ClassUnderTest.ExportPlayedGamesToExcel(gamingGroupId);

@@ -13,11 +13,13 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.ApplicationL
     public class ApplicationLinkerTests
     {
         private RhinoAutoMocker<ApplicationLinker> _autoMocker;
+        private IDataContext _dataContext;
 
         [SetUp]
         public void SetUp()
         {
             _autoMocker = new RhinoAutoMocker<ApplicationLinker>();
+            _dataContext = MockRepository.GenerateMock<IDataContext>();
         }
 
         [Test]
@@ -29,10 +31,10 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.ApplicationL
             string entityId = "some entity id";
 
             //--act
-            _autoMocker.ClassUnderTest.LinkApplication(playedGameId, applicationName, entityId);
+            _autoMocker.ClassUnderTest.LinkApplication(playedGameId, applicationName, entityId, _dataContext);
 
             //--assert
-            var callsMadeOn = _autoMocker.Get<IDataContext>().GetArgumentsForCallsMadeOn(
+            var callsMadeOn = _dataContext.GetArgumentsForCallsMadeOn(
                 mock => mock.Save(Arg<PlayedGameApplicationLinkage>.Is.Anything, Arg<ApplicationUser>.Is.Anything));
 
             callsMadeOn.ShouldNotBeNull();

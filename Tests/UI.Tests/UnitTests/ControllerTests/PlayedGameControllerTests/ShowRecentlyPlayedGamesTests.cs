@@ -33,16 +33,16 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 		public override void TestSetUp()
 		{
 			base.TestSetUp();
-			expectedViewModel = new List<PublicGameSummary>();
-            autoMocker.Get<IPlayedGameRetriever>().Expect(mock => mock.GetRecentPublicGames(Arg<RecentlyPlayedGamesFilter>.Is.Anything)).Return(new List<PublicGameSummary>());
-            autoMocker.PartialMockTheClassUnderTest();
-			autoMocker.ClassUnderTest.Expect(mock => mock.ShowRecentlyPlayedGames()).Return(new ViewResult { ViewName = MVC.PlayedGame.Views.RecentlyPlayedGames, ViewData = new ViewDataDictionary(base.expectedViewModel) });
+			ExpectedViewModel = new List<PublicGameSummary>();
+            AutoMocker.Get<IPlayedGameRetriever>().Expect(mock => mock.GetRecentPublicGames(Arg<RecentlyPlayedGamesFilter>.Is.Anything)).Return(new List<PublicGameSummary>());
+            AutoMocker.PartialMockTheClassUnderTest();
+			AutoMocker.ClassUnderTest.Expect(mock => mock.ShowRecentlyPlayedGames()).Return(new ViewResult { ViewName = MVC.PlayedGame.Views.RecentlyPlayedGames, ViewData = new ViewDataDictionary(base.ExpectedViewModel) });
 		}
 
 		[Test]
 		public void ItReturnsRecentlyPlayedGamesView()
 		{
-			var viewResult = autoMocker.ClassUnderTest.ShowRecentlyPlayedGames() as ViewResult;
+			var viewResult = AutoMocker.ClassUnderTest.ShowRecentlyPlayedGames() as ViewResult;
 
 			Assert.AreEqual(MVC.PlayedGame.Views.RecentlyPlayedGames, viewResult.ViewName);
 		}
@@ -50,11 +50,11 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 		[Test]
 		public void ItReturnsSpecifiedRecentlyPlayedGamesModelToView()
 		{
-			var viewResult = autoMocker.ClassUnderTest.ShowRecentlyPlayedGames() as ViewResult;
+			var viewResult = AutoMocker.ClassUnderTest.ShowRecentlyPlayedGames() as ViewResult;
 
 			var actualViewModel = viewResult.ViewData.Model;
 
-			Assert.AreEqual(base.expectedViewModel, actualViewModel);
+			Assert.AreEqual(base.ExpectedViewModel, actualViewModel);
 		}
 	}
 }

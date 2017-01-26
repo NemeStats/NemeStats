@@ -30,13 +30,6 @@ namespace BusinessLogic.DataAccess.Repositories
     {
         public const int MINIMUM_NUMBER_OF_GAMES_TO_BE_A_NEMESIS = 3;
 
-        private readonly IDataContext dataContext;
-
-        public EntityFrameworkPlayerRepository(IDataContext dataContext)
-        {
-            this.dataContext = dataContext;
-        }
-
         private const string SQL_GET_WIN_LOSS_GAMES_COUNT =
             @"SELECT SUM(NumberOfGamesLost) AS NumberOfGamesLost, SUM(NumberOfGamesWon) AS NumberOfGamesWon, 
                 PlayerId as VersusPlayerId, PlayerName AS VersusPlayerName, PlayerActive AS VersusPlayerActive
@@ -90,7 +83,7 @@ namespace BusinessLogic.DataAccess.Repositories
             ) AS X
             GROUP BY PlayerId, PlayerName, PlayerActive";
 
-        public NemesisData GetNemesisData(int playerId)
+        public NemesisData GetNemesisData(int playerId, IDataContext dataContext)
         {
             var data = dataContext.MakeRawSqlQuery<WinLossStatistics>(SQL_GET_WIN_LOSS_GAMES_COUNT,
                 new SqlParameter("PlayerId", playerId));
@@ -130,7 +123,7 @@ namespace BusinessLogic.DataAccess.Repositories
           GROUP BY GD.[Id], GD.[Name], BGGGD.[Thumbnail]
           ORDER BY NumberOfGamesWon DESC, NumberofGamesLost DESC, GameDefinitionName";
 
-        public IList<PlayerGameSummary> GetPlayerGameSummaries(int playerId)
+        public IList<PlayerGameSummary> GetPlayerGameSummaries(int playerId, IDataContext dataContext)
         {
             var data = dataContext.MakeRawSqlQuery<PlayerGameSummary>(SQL_GET_PLAYER_GAME_SUMMARY_INFO,
                 new SqlParameter("PlayerId", playerId));
@@ -142,7 +135,7 @@ namespace BusinessLogic.DataAccess.Repositories
             return results;
         }
 
-        public IList<PlayerVersusPlayerStatistics> GetPlayerVersusPlayersStatistics(int playerId)
+        public IList<PlayerVersusPlayerStatistics> GetPlayerVersusPlayersStatistics(int playerId, IDataContext dataContext)
         {
             var data = dataContext.MakeRawSqlQuery<WinLossStatistics>(SQL_GET_WIN_LOSS_GAMES_COUNT,
                 new SqlParameter("PlayerId", playerId));
@@ -193,7 +186,7 @@ namespace BusinessLogic.DataAccess.Repositories
             public int GameDurationBonusNemePoints { get; set; }
         }
 
-        public IList<PlayerWinRecord> GetPlayerWinRecords(int gameDefinitionId)
+        public IList<PlayerWinRecord> GetPlayerWinRecords(int gameDefinitionId, IDataContext dataContext)
         {
             var data = dataContext.MakeRawSqlQuery<PlayerWinRecordWithFlatPoints>(SQL_GET_PLAYER_INFO_FOR_GIVEN_GAME_DEFINITION,
                 new SqlParameter("GameDefinitionId", gameDefinitionId));
@@ -247,7 +240,7 @@ namespace BusinessLogic.DataAccess.Repositories
 	            SELECT [Wins]
 	             FROM cteSummary WHERE WinsRank = 1";
 
-        public int GetLongestWinningStreak(int playerId)
+        public int GetLongestWinningStreak(int playerId, IDataContext dataContext)
         {
             var longestWinningStreak = dataContext.MakeRawSqlQuery<int?>(SQL_GET_LONGEST_WINNING_STREAK_FOR_PLAYER,
                                                     new SqlParameter("PlayerId", playerId)).FirstOrDefault();

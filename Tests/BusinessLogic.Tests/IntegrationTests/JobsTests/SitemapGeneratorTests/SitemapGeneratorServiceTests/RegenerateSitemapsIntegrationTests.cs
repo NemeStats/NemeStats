@@ -16,6 +16,5 @@ namespace BusinessLogic.Tests.IntegrationTests.JobsTests.SitemapGeneratorTests.S
             //--acts
             sitemapGeneratorService.RegenerateSitemaps();
         }
-
     }
 }

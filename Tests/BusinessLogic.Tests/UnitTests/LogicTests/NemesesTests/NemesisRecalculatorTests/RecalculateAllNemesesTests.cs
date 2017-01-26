@@ -30,44 +30,45 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.NemesesTests.NemesisRecalcula
     [TestFixture]
     public class RecalculateAllNemesesTests
     {
-        private IDataContext dataContextMock;
-        private IPlayerRepository playerRepositoryMock;
-        private NemesisRecalculator nemesisRecalculatorPartialMock;
-        private IQueryable<Player> allPlayersQueryable;
+        private IDataContext _dataContextMock;
+        private IPlayerRepository _playerRepositoryMock;
+        private NemesisRecalculator _nemesisRecalculatorPartialMock;
+        private IQueryable<Player> _allPlayersQueryable;
 
         [SetUp]
         public void SetUp()
         {
-            dataContextMock = MockRepository.GenerateMock<IDataContext>();
-            playerRepositoryMock = MockRepository.GenerateMock<IPlayerRepository>();
-            nemesisRecalculatorPartialMock = MockRepository.GeneratePartialMock<NemesisRecalculator>(dataContextMock, playerRepositoryMock);
+            _dataContextMock = MockRepository.GenerateMock<IDataContext>();
+            _playerRepositoryMock = MockRepository.GenerateMock<IPlayerRepository>();
+            _nemesisRecalculatorPartialMock = MockRepository.GeneratePartialMock<NemesisRecalculator>(_dataContextMock, _playerRepositoryMock);
 
-            List<Player> allPlayers = new List<Player>()
+            var allPlayers = new List<Player>()
             {
                 new Player(){ Active = true, Id = 1 },
                 new Player(){ Active = true, Id = 2 },
                 new Player(){ Active = false, Id = 3 }
             };
 
-            allPlayersQueryable = allPlayers.AsQueryable();
+            _allPlayersQueryable = allPlayers.AsQueryable();
 
-            dataContextMock.Expect(mock => mock.GetQueryable<Player>())
-                .Return(allPlayersQueryable);
+            _dataContextMock.Expect(mock => mock.GetQueryable<Player>())
+                .Return(_allPlayersQueryable);
         }
 
         [Test]
         public void ItRecalculatesTheNemesisForEachActivePlayerInTheGamingGroupUsingAFakeUserThatHasAccessToThatPlayersGamingGroup()
         {
-            List<Player> activePlayersOnly = allPlayersQueryable.Where(player => player.Active == true).ToList();
-            nemesisRecalculatorPartialMock.Expect(mock => mock.RecalculateNemesis(Arg<int>.Is.Anything, Arg<ApplicationUser>.Is.Anything));
+            var activePlayersOnly = _allPlayersQueryable.Where(player => player.Active == true).ToList();
+            _nemesisRecalculatorPartialMock.Expect(mock => mock.RecalculateNemesis(Arg<int>.Is.Anything, Arg<ApplicationUser>.Is.Anything, Arg<IDataContext>.Is.Anything));
 
-            nemesisRecalculatorPartialMock.RecalculateAllNemeses();
+            _nemesisRecalculatorPartialMock.RecalculateAllNemeses();
 
-            foreach(Player activePlayer in activePlayersOnly)
+            foreach(var activePlayer in activePlayersOnly)
             {
-                nemesisRecalculatorPartialMock.AssertWasCalled(mock => mock.RecalculateNemesis(
+                _nemesisRecalculatorPartialMock.AssertWasCalled(mock => mock.RecalculateNemesis(
                     Arg<int>.Is.Equal(activePlayer.Id), 
-                    Arg<ApplicationUser>.Matches(appUser => appUser.CurrentGamingGroupId == activePlayer.GamingGroupId)));
+                    Arg<ApplicationUser>.Matches(appUser => appUser.CurrentGamingGroupId == activePlayer.GamingGroupId),
+                    Arg<IDataContext>.Is.Anything));
             }
         }
     }

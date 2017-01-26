@@ -18,12 +18,13 @@
 using BusinessLogic.Models;
 using BusinessLogic.Models.User;
 using System.Linq;
+using BusinessLogic.DataAccess;
 
 namespace BusinessLogic.Logic.Nemeses
 {
     public interface INemesisRecalculator
     {
         void RecalculateAllNemeses();
-        Nemesis RecalculateNemesis(int playerId, ApplicationUser currentUser);
+        Nemesis RecalculateNemesis(int playerId, ApplicationUser currentUser, IDataContext dataContext);
     }
 }

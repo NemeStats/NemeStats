@@ -15,6 +15,8 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
+
+using System;
 using BusinessLogic.DataAccess;
 using BusinessLogic.DataAccess.Security;
 using BusinessLogic.Models;
@@ -23,42 +25,37 @@ using NUnit.Framework;
 using System.Linq;
 using System.Data.Entity;
 using System.Collections.Generic;
+using Shouldly;
 
 namespace BusinessLogic.Tests.IntegrationTests
 {
     [TestFixture]
+    [Category("Integration")]
     public class EntityFrameworkGeneralIntegrationTests : IntegrationTestBase
     {
-        [Test, Ignore("just learning Entity Framework")]
+        [Test]
         public void TheAddOrInsertExtensionMethodSetsTheIdOnNewEntities()
         {
-            using(NemeStatsDataContext dataContext = new NemeStatsDataContext(
-                new NemeStatsDbContext(), 
-                new SecuredEntityValidatorFactory()))
+            var dataContext = GetInstance<IDataContext>();
+            GamingGroup gamingGroup = new GamingGroup()
             {
-                GamingGroup gamingGroup = new GamingGroup()
-                {
-                    Name = "new gaming group without an ID yet",
-                    OwningUserId = testUserWithDefaultGamingGroup.Id
-                };
+                Name = "new gaming group without an ID yet",
+                OwningUserId = testUserWithDefaultGamingGroup.Id
+            };
 
-                dataContext.Save(gamingGroup, testUserWithDefaultGamingGroup);
-                dataContext.CommitAllChanges();
+            dataContext.Save(gamingGroup, testUserWithDefaultGamingGroup);
+            dataContext.CommitAllChanges();
 
-                Cleanup(dataContext, gamingGroup, testUserWithDefaultGamingGroup);
+            Cleanup(dataContext, gamingGroup, testUserWithDefaultGamingGroup);
 
-                Assert.AreNotEqual(default(int), gamingGroup.Id);
-            }
+            Assert.AreNotEqual(default(int), gamingGroup.Id);
         }
 
-        [Test, Ignore("playing around")]
+        [Test]
         public void TestIncludeMethod()
         {
-            using (NemeStatsDataContext dataContext = new NemeStatsDataContext(
-                            new NemeStatsDbContext(),
-                            new SecuredEntityValidatorFactory()))
-            {
-                List<Player> players = dataContext.GetQueryable<Player>()
+            var dataContext = GetInstance<IDataContext>();
+            List<Player> players = dataContext.GetQueryable<Player>()
                                         .Where(player => player.Active && player.GamingGroupId == 1)
                                         .Include(player => player.Nemesis)
                                         .Include(player => player.Nemesis.NemesisPlayer)
@@ -66,23 +63,22 @@ namespace BusinessLogic.Tests.IntegrationTests
                                         .OrderBy(player => player.Name)
                                         .ToList();
 
-                List<Player> playersWithNemesisid = players.Where(player => player.NemesisId != null).ToList();
+            List<Player> playersWithNemesisid = players.Where(player => player.NemesisId != null).ToList();
 
-                Assert.Greater(playersWithNemesisid.Count, 0);
-            }
+            Assert.Greater(playersWithNemesisid.Count, 0);
         }
 
         private static void Cleanup(
-            NemeStatsDataContext dbContext, 
+            IDataContext dataContext, 
             GamingGroup gamingGroup, 
             ApplicationUser currentUser)
         {
-            GamingGroup gamingGroupToDelete = dbContext.GetQueryable<GamingGroup>()
-                .Where(game => game.Name == gamingGroup.Name).FirstOrDefault();
+            GamingGroup gamingGroupToDelete = dataContext
+                .GetQueryable<GamingGroup>().FirstOrDefault(game => game.Name == gamingGroup.Name);
             if (gamingGroupToDelete != null)
             {
-                dbContext.Delete(gamingGroupToDelete, currentUser);
-                dbContext.CommitAllChanges();
+                dataContext.Delete(gamingGroupToDelete, currentUser);
+                dataContext.CommitAllChanges();
             }
         }
     }

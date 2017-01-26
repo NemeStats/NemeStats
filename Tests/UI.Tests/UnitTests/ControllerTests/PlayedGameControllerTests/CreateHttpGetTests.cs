@@ -26,6 +26,7 @@ using System.Web.Mvc;
 using BusinessLogic.Models.Players;
 using BusinessLogic.Paging;
 using PagedList;
+using UI.Mappers.Interfaces;
 using UI.Models.PlayedGame;
 
 namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
@@ -33,9 +34,8 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
     [TestFixture]
     public class CreateHttpGetTests : PlayedGameControllerTestBase
     {
-        private readonly int playerId = 1938;
-        private readonly string playerName = "Herb";
-        private PlayersToCreateModel players;
+        private readonly int _playerId = 1938;
+        private PlayersToCreateModel _players;
 
 
         [SetUp]
@@ -43,19 +43,17 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
         {
             base.TestSetUp();
 
-            players = new PlayersToCreateModel { UserPlayer = new PlayerInfoForUser() { PlayerId = playerId }, OtherPlayers = new List<PlayerInfoForUser>(), RecentPlayers = new List<PlayerInfoForUser>() };
+            _players = new PlayersToCreateModel { UserPlayer = new PlayerInfoForUser { PlayerId = _playerId }, OtherPlayers = new List<PlayerInfoForUser>(), RecentPlayers = new List<PlayerInfoForUser>() };
 
-            autoMocker.Get<IGameDefinitionRetriever>().Expect(x => x.GetMostPlayedGames(Arg<GetMostPlayedGamesQuery>.Is.Anything)).Repeat.Once().Return(new PagedList<GameDefinitionDisplayInfo>(new List<GameDefinitionDisplayInfo>(), 1, 1));
-            autoMocker.Get<IGameDefinitionRetriever>().Expect(x => x.GetRecentGames(Arg<GetRecentPlayedGamesQuery>.Is.Anything)).Repeat.Once().Return(new PagedList<GameDefinitionDisplayInfo>(new List<GameDefinitionDisplayInfo>(), 1, 1));
-            autoMocker.Get<IPlayerRetriever>().Expect(x => x.GetPlayersToCreate(currentUser.Id, currentUser.CurrentGamingGroupId)).Repeat.Once().Return(players);
-
+            AutoMocker.Get<IGameDefinitionRetriever>().Expect(x => x.GetMostPlayedGames(Arg<GetMostPlayedGamesQuery>.Is.Anything)).Repeat.Once().Return(new PagedList<GameDefinitionDisplayInfo>(new List<GameDefinitionDisplayInfo>(), 1, 1));
+            AutoMocker.Get<IGameDefinitionRetriever>().Expect(x => x.GetRecentGames(Arg<GetRecentPlayedGamesQuery>.Is.Anything)).Repeat.Once().Return(new PagedList<GameDefinitionDisplayInfo>(new List<GameDefinitionDisplayInfo>(), 1, 1));
+            AutoMocker.Get<IPlayerRetriever>().Expect(x => x.GetPlayersToCreate(CurrentUser.Id, CurrentUser.CurrentGamingGroupId)).Repeat.Once().Return(_players);
         }
-
 
         [Test]
         public void ItLoadsTheCreateOrEditView()
         {
-            var result = autoMocker.ClassUnderTest.Create(currentUser) as ViewResult;
+            var result = AutoMocker.ClassUnderTest.Create(CurrentUser) as ViewResult;
 
             Assert.AreEqual(MVC.PlayedGame.Views.CreateOrEdit, result.ViewName);
         }
@@ -63,7 +61,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
         [Test]
         public void ItReturnsAFilledCreatePlayedGameViewModel()
         {
-            var result = autoMocker.ClassUnderTest.Create(currentUser) as ViewResult;
+            var result = AutoMocker.ClassUnderTest.Create(CurrentUser) as ViewResult;
 
             Assert.AreEqual(typeof(CreatePlayedGameViewModel), result.Model.GetType());
         }

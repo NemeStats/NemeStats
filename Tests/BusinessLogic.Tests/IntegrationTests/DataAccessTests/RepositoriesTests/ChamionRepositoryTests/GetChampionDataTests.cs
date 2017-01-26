@@ -16,12 +16,7 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 
-using BusinessLogic.Caching;
-using BusinessLogic.DataAccess;
-using BusinessLogic.DataAccess.Repositories;
-using BusinessLogic.Logic.BoardGameGeekGameDefinitions;
 using BusinessLogic.Logic.GameDefinitions;
-using BusinessLogic.Logic.Utilities;
 using BusinessLogic.Models;
 using NUnit.Framework;
 
@@ -30,55 +25,49 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
     [TestFixture]
     public class GetChampionTests : IntegrationTestBase
     {
-        private IDataContext dataContext;
-        private IGameDefinitionRetriever gameDefinitionRetriever;
-        private GameDefinition gameDefinition;
-        private GameDefinition championlessGameDefinition;
-        private BoardGameGeekGameDefinitionInfoRetriever boardGameGeekGameDefinitionInfoRetriever;
-        private int championPlayerIdForGameDefinition;
-        private int otherChampionPlayerIdForGameDefinition;
+        private IGameDefinitionRetriever _gameDefinitionRetriever;
+        private GameDefinition _gameDefinition;
+        private GameDefinition _championlessGameDefinition;
+        private int _championPlayerIdForGameDefinition;
+        private int _otherChampionPlayerIdForGameDefinition;
 
 
         [OneTimeSetUp]
         public override void FixtureSetUp()
         {
             base.FixtureSetUp();
+            _gameDefinitionRetriever = GetInstance<GameDefinitionRetriever>();
 
-            dataContext = new NemeStatsDataContext();
-            var playerRepository = new EntityFrameworkPlayerRepository(dataContext);
-            boardGameGeekGameDefinitionInfoRetriever = new BoardGameGeekGameDefinitionInfoRetriever(new DateUtilities(), new CacheService(), dataContext);
-            gameDefinitionRetriever = new GameDefinitionRetriever(dataContext, playerRepository, boardGameGeekGameDefinitionInfoRetriever);
-
-            gameDefinition = gameDefinitionRetriever.GetGameDefinitionDetails(testGameDefinitionWithOtherGamingGroupId.Id,
+            _gameDefinition = _gameDefinitionRetriever.GetGameDefinitionDetails(testGameDefinitionWithOtherGamingGroupId.Id,
                 0);
-            championlessGameDefinition = gameDefinitionRetriever.GetGameDefinitionDetails(gameDefinitionWithNoChampion.Id, 0);
+            _championlessGameDefinition = _gameDefinitionRetriever.GetGameDefinitionDetails(gameDefinitionWithNoChampion.Id, 0);
 
             // Player ID 1 has a winning percentage high enough to be considered the champion
-            championPlayerIdForGameDefinition = testPlayer7WithOtherGamingGroupId.Id;
+            _championPlayerIdForGameDefinition = testPlayer7WithOtherGamingGroupId.Id;
 
             // Player ID 9 has a higher winning percentage than player 7, but is not active
-            otherChampionPlayerIdForGameDefinition = testPlayer9UndefeatedWith5Games.Id;
+            _otherChampionPlayerIdForGameDefinition = testPlayer9UndefeatedWith5Games.Id;
         }
 
         [Test]
         public void ItGetsThePlayerWithTheHighestWinPercentage()
         {
             // Player 7 won 75% of the GameDefinition's total games played
-            Assert.That(gameDefinition.Champion.PlayerId, Is.EqualTo(championPlayerIdForGameDefinition));
+            Assert.That(_gameDefinition.Champion.PlayerId, Is.EqualTo(_championPlayerIdForGameDefinition));
         }
 
         [Test]
         public void AChampionMustBeActive()
         {
             // Player 8 won 100% of the GameDefinition's total games played, but is inactive
-            Assert.That(otherChampionPlayerIdForGameDefinition, Is.Not.EqualTo(gameDefinition.Champion.PlayerId));
+            Assert.That(_otherChampionPlayerIdForGameDefinition, Is.Not.EqualTo(_gameDefinition.Champion.PlayerId));
         }
 
         [Test]
         public void ItReturnsANullChampionIfThereIsntAChampion()
         {
             // The game definition has recorded games, but no player has played three games
-            Assert.That(championlessGameDefinition.Champion, Is.InstanceOf<NullChampion>());
+            Assert.That(_championlessGameDefinition.Champion, Is.InstanceOf<NullChampion>());
         }
 
         [Test]
@@ -91,28 +80,21 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
         public void ItSetsTheWinPercentageForTheChampion()
         {
             // The champion won 83% of all games played
-            Assert.That(gameDefinition.Champion.WinPercentage, Is.EqualTo(83));
+            Assert.That(_gameDefinition.Champion.WinPercentage, Is.EqualTo(83));
         }
 
         [Test]
         public void ItSetsTheNumberOfGamesForTheChampion()
         {
             // The champion played 6 games
-            Assert.That(gameDefinition.Champion.NumberOfGames, Is.EqualTo(6));
+            Assert.That(_gameDefinition.Champion.NumberOfGames, Is.EqualTo(6));
         }
 
         [Test]
         public void ItSetsTheNumberOfWinsForTheChampion()
         {
             // The champion won 5 games
-            Assert.That(gameDefinition.Champion.NumberOfWins, Is.EqualTo(5));
-        }
-
-        [TearDown]
-        public override void FixtureTearDown()
-        {
-            base.FixtureTearDown();
-            dataContext.Dispose();
+            Assert.That(_gameDefinition.Champion.NumberOfWins, Is.EqualTo(5));
         }
     }
 }

@@ -29,6 +29,7 @@ using BusinessLogic.Logic.GameDefinitions;
 using BusinessLogic.Logic.Players;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Players;
+using Shouldly;
 
 namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 {
@@ -41,24 +42,19 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
         [SetUp]
         public virtual void SetUp()
         {
-           
-
             Request = new SavePlayedGameRequest();
         }
     }
 
     public class When_ModelState_Is_Valid : SaveTests
     {
-
         [SetUp]
-        public virtual void SetUp()
+        public override void SetUp()
         {
-
+            base.SetUp();
             Request.GameDefinitionId = 1;
             Request.PlayerRanks = new List<CreatePlayerRankRequest>();
-
         }
-
     }
 
     public class When_EditMode_Is_False : When_ModelState_Is_Valid
@@ -68,20 +64,18 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
         {
             base.SetUp();
 
-            this.Request.EditMode = false;
+            Request.EditMode = false;
 
-            autoMocker.Get<IPlayedGameSaver>().Expect(mock => mock.CreatePlayedGame(
+            AutoMocker.Get<ICreatePlayedGameComponent>().Expect(mock => mock.Execute(
                Arg<NewlyCompletedGame>.Is.Anything,
-               Arg<TransactionSource>.Is.Equal(TransactionSource.WebApplication),
-               Arg<ApplicationUser>.Is.Equal(currentUser)))
-               .Return(new PlayedGame() { Id = 1 });
+               Arg<ApplicationUser>.Is.Equal(CurrentUser)))
+               .Return(new PlayedGame { Id = 1 });
         }
-
 
         [Test]
         public void Then_Returns_Success_Json()
         {
-            var result = autoMocker.ClassUnderTest.Save(Request, currentUser) as JsonResult;
+            var result = AutoMocker.ClassUnderTest.Save(Request, CurrentUser) as JsonResult;
 
             Assert.IsNotNull(result);
 
@@ -89,6 +83,23 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
             Assert.IsTrue(json.success);
         }
 
+        [Test]
+        public void Then_Creates_New_Played_Game_With_Transaction_Source_Of_Web()
+        {
+            //--arrange
+
+            //--act
+            AutoMocker.ClassUnderTest.Save(Request, CurrentUser);
+
+            //--assert
+            var arguments = AutoMocker.Get<ICreatePlayedGameComponent>().GetArgumentsForCallsMadeOn(
+                mock => mock.Execute(Arg<NewlyCompletedGame>.Is.Anything, Arg<ApplicationUser>.Is.Anything));
+            arguments.ShouldNotBeNull();
+            arguments.Count.ShouldBe(1);
+            var firstCall = arguments[0];
+            var actualNewlyCompletedGame = firstCall[0] as NewlyCompletedGame;
+            actualNewlyCompletedGame.ShouldNotBeNull();
+        }
     }
 
     public class When_GameDefinitionId_Is_Not_Provided : SaveTests
@@ -97,7 +108,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
         {
             base.SetUp();
 
-            this.Request.GameDefinitionId = null;
+            Request.GameDefinitionId = null;
         }
 
     }
@@ -108,13 +119,13 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
         {
             base.SetUp();
 
-            this.Request.GameDefinitionName = null;
+            Request.GameDefinitionName = null;
         }
 
         [Test]
         public void Then_Return_BadRequest()
         {
-            var result = autoMocker.ClassUnderTest.Save(Request, currentUser) as HttpStatusCodeResult;
+            var result = AutoMocker.ClassUnderTest.Save(Request, CurrentUser) as HttpStatusCodeResult;
 
             Assert.IsNotNull(result);
             Assert.AreEqual((int)HttpStatusCode.BadRequest, result.StatusCode);
@@ -127,14 +138,14 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
         {
             base.SetUp();
 
-            this.Request.GameDefinitionName = "Test game";
+            Request.GameDefinitionName = "Test game";
 
-            autoMocker.Get<IGameDefinitionSaver>()
+            AutoMocker.Get<IGameDefinitionSaver>()
                 .Expect(
                     x =>
                         x.CreateGameDefinition(
                             Arg<CreateGameDefinitionRequest>.Matches(
-                                m => m.Name == this.Request.GameDefinitionName), Arg<ApplicationUser>.Is.Equal(currentUser)))
+                                m => m.Name == Request.GameDefinitionName), Arg<ApplicationUser>.Is.Equal(CurrentUser)))
                 .Repeat.Once().Return(new GameDefinition());
         }
 
@@ -148,28 +159,28 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 
             var notExistingPlayerName = "not exists";
 
-            this.Request.PlayerRanks = new List<CreatePlayerRankRequest>
+            Request.PlayerRanks = new List<CreatePlayerRankRequest>
             {
-                new CreatePlayerRankRequest()
+                new CreatePlayerRankRequest
                 {
                     GameRank = 1,
                     PlayerId = 1,
                     PlayerName = "existing player"
                 },
-                new CreatePlayerRankRequest()
+                new CreatePlayerRankRequest
                 {
                     GameRank = 2,
                     PlayerName = notExistingPlayerName
                 }
             };
 
-            autoMocker.Get<IPlayerSaver>()
+            AutoMocker.Get<IPlayerSaver>()
                 .Expect(
                     x =>
                         x.CreatePlayer(
                             Arg<CreatePlayerRequest>.Matches(
-                                m => m.Name == notExistingPlayerName), Arg<ApplicationUser>.Is.Equal(currentUser), Arg<bool>.Is.Anything))
-                .Repeat.Once().Return(new Player() {Id = 2});
+                                m => m.Name == notExistingPlayerName), Arg<ApplicationUser>.Is.Equal(CurrentUser), Arg<bool>.Is.Anything))
+                .Repeat.Once().Return(new Player {Id = 2});
         }
 
     }
@@ -180,15 +191,15 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
         {
             base.SetUp();
 
-            this.Request.PlayedGameId = 100;
-            this.Request.EditMode = true;
+            Request.PlayedGameId = 100;
+            Request.EditMode = true;
 
-            autoMocker.Get<IPlayedGameSaver>()
+            AutoMocker.Get<IPlayedGameSaver>()
                 .Expect(
                     x =>
                         x.UpdatePlayedGame(
                             Arg<UpdatedGame>.Matches(
-                                m => m.PlayedGameId == this.Request.PlayedGameId),Arg<TransactionSource>.Is.Equal(TransactionSource.WebApplication),  Arg<ApplicationUser>.Is.Equal(currentUser)))
+                                m => m.PlayedGameId == Request.PlayedGameId),Arg<TransactionSource>.Is.Equal(TransactionSource.WebApplication),  Arg<ApplicationUser>.Is.Equal(CurrentUser)))
                 .Repeat.Once();
         }
 
@@ -196,7 +207,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
         [Test]
         public void Then_Returns_Success_Json()
         {
-            var result = autoMocker.ClassUnderTest.Save(Request, currentUser) as JsonResult;
+            var result = AutoMocker.ClassUnderTest.Save(Request, CurrentUser) as JsonResult;
 
             Assert.IsNotNull(result);
 

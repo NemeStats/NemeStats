@@ -35,48 +35,37 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.GameDefinitionsTests.G
     [TestFixture]
     public class GetGameDefinitionDetailsIntegrationTests : IntegrationTestBase
     {
-        private NemeStatsDbContext dbContext;
-        private IDataContext dataContext;
-        private GameDefinitionSummary gameDefinitionSummary;
-        private int numberOfGamesToRetrieve = 2;
+        private GameDefinitionSummary _gameDefinitionSummary;
+        private int _numberOfGamesToRetrieve = 2;
 
         [OneTimeSetUp]
         public override void FixtureSetUp()
         {
             base.FixtureSetUp();
 
-            using (dbContext = new NemeStatsDbContext())
-            {
-                using (dataContext = new NemeStatsDataContext(dbContext, securedEntityValidatorFactory))
-                {
-                    var playerRepository = new EntityFrameworkPlayerRepository(dataContext);
-                    var cacheableGameDataRetriever = new BoardGameGeekGameDefinitionInfoRetriever(new DateUtilities(), new CacheService(), dataContext);
-
-                    var gameDefinitionRetriever = new GameDefinitionRetriever(dataContext, playerRepository, cacheableGameDataRetriever);
-                    gameDefinitionSummary = gameDefinitionRetriever.GetGameDefinitionDetails(
-                        testGameDefinition.Id, 
-                        numberOfGamesToRetrieve);
-                }
-            }
+            var gameDefinitionRetriever = GetInstance<GameDefinitionRetriever>();
+            _gameDefinitionSummary = gameDefinitionRetriever.GetGameDefinitionDetails(
+                testGameDefinition.Id, 
+                _numberOfGamesToRetrieve);
         }
 
         [Test]
         public void ItRetrievesTheSpecifiedGameDefinition()
         {
-            Assert.AreEqual(testGameDefinition.Id, gameDefinitionSummary.Id);
+            Assert.AreEqual(testGameDefinition.Id, _gameDefinitionSummary.Id);
         }
 
         [Test]
         public void ItRetrievesTheLastXPlayedGames()
         {
-            Assert.AreEqual(numberOfGamesToRetrieve, gameDefinitionSummary.PlayedGames.Count);
+            Assert.AreEqual(_numberOfGamesToRetrieve, _gameDefinitionSummary.PlayedGames.Count);
         }
 
         [Test]
         public void ItRetrievesGamesOrderedByDateDescending()
         {
             var lastDate = new DateTime(2100, 1, 1);
-            foreach(var playedGame in gameDefinitionSummary.PlayedGames)
+            foreach(var playedGame in _gameDefinitionSummary.PlayedGames)
             {
                 Assert.LessOrEqual(playedGame.DatePlayed, lastDate);
                 lastDate = playedGame.DatePlayed;
@@ -86,50 +75,40 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.GameDefinitionsTests.G
         [Test]
         public void ItRetrievesPlayerGameResultsForEachPlayedGame()
         {
-            Assert.Greater(gameDefinitionSummary.PlayedGames[0].PlayerGameResults.Count, 0);
+            Assert.Greater(_gameDefinitionSummary.PlayedGames[0].PlayerGameResults.Count, 0);
         }
 
         [Test]
         public void ItRetrievesPlayerInfoForEachPlayerGameResult()
         {
-            Assert.NotNull(gameDefinitionSummary.PlayedGames[0].PlayerGameResults[0].Player);
+            Assert.NotNull(_gameDefinitionSummary.PlayedGames[0].PlayerGameResults[0].Player);
         }
 
         [Test]
         public void ItRetrievesChampionInfoForTheGameDefinition()
         {
-            Assert.That(gameDefinitionSummary.Champion, Is.Not.Null);
+            Assert.That(_gameDefinitionSummary.Champion, Is.Not.Null);
         }
 
         [Test]
         public void ItRetrievesThePlayerWinRecords()
         {
             //assumes there are 5 players - testplayer1 through testplayer 5
-            Assert.That(gameDefinitionSummary.PlayerWinRecords.Count, Is.EqualTo(5));
-            Assert.That(gameDefinitionSummary.PlayerWinRecords.Single(winRecord => winRecord.IsChampion), Is.Not.Null);
+            Assert.That(_gameDefinitionSummary.PlayerWinRecords.Count, Is.EqualTo(5));
+            Assert.That(_gameDefinitionSummary.PlayerWinRecords.Single(winRecord => winRecord.IsChampion), Is.Not.Null);
         }
 
         [Test]
         public void ItThrowsAnEntityDoesNotExistExceptionIfTheIdIsntValid()
         {
-            using (dbContext = new NemeStatsDbContext())
-            {
-                using (dataContext = new NemeStatsDataContext(dbContext, securedEntityValidatorFactory))
-                {
-                    var playerRepository = new EntityFrameworkPlayerRepository(dataContext);
+            int invalidId = -1;
+            var expectedException = new EntityDoesNotExistException(typeof(GameDefinition), invalidId);
+            var gameDefinitionRetriever = GetInstance<GameDefinitionRetriever>();
 
-                    int invalidId = -1;
-                    var expectedException = new EntityDoesNotExistException(typeof(GameDefinition), invalidId);
-                    var cacheableGameDataRetriever = new BoardGameGeekGameDefinitionInfoRetriever(new DateUtilities(), new CacheService(), dataContext);
+            var actualException = Assert.Throws<EntityDoesNotExistException>(() => 
+                gameDefinitionRetriever.GetGameDefinitionDetails(invalidId, 0));
 
-                    var gameDefinitionRetriever = new GameDefinitionRetriever(dataContext, playerRepository, cacheableGameDataRetriever);
-
-                    var actualException = Assert.Throws<EntityDoesNotExistException>(() => 
-                        gameDefinitionRetriever.GetGameDefinitionDetails(invalidId, 0));
-
-                    actualException.Message.ShouldBe(expectedException.Message);
-                }
-            }
+            actualException.Message.ShouldBe(expectedException.Message);
         }
     }
 }

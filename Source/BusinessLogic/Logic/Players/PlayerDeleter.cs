@@ -97,7 +97,7 @@ namespace BusinessLogic.Logic.Players
 
         private void RecalculateChampions(IEnumerable<int> gameDefinitionIds, ApplicationUser currentUser)
         {
-            gameDefinitionIds.Each(x => _championRecalculator.RecalculateChampion(x, currentUser));
+            gameDefinitionIds.Each(x => _championRecalculator.RecalculateChampion(x, currentUser, _dataContext));
         }
 
         private void DeletePlayerNemesesRecords(int playerId, ApplicationUser currentUser)
@@ -150,7 +150,7 @@ namespace BusinessLogic.Logic.Players
 
         private void RecalculateNemesis(IEnumerable<int> playerIdsThatNeedNewNemesis, ApplicationUser currentUser)
         {
-            playerIdsThatNeedNewNemesis.Each((x => _nemesisRecalculator.RecalculateNemesis(x, currentUser)));
+            playerIdsThatNeedNewNemesis.Each(x => _nemesisRecalculator.RecalculateNemesis(x, currentUser, _dataContext));
         }
     }
 }

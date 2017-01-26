@@ -15,21 +15,18 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
-using BusinessLogic.DataAccess.Repositories;
+
 using NUnit.Framework;
-using System.Linq;
 using BusinessLogic.DataAccess;
 using BusinessLogic.Models.Players;
 using BusinessLogic.Models;
 using BusinessLogic.Logic.Players;
-using BusinessLogic.Logic.PlayedGames;
 
 namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests.EntityFrameworkPlayerRepositoryTests
 {
     [TestFixture]
     public class GetNemesisTests : IntegrationTestBase
     {
-        private IDataContext dataContext;
         private IPlayerRetriever playerRetriever;
         private PlayerDetails player1Details;
         private PlayerDetails player5Details;
@@ -39,10 +36,7 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
         {
             base.FixtureSetUp();
 
-            dataContext = new NemeStatsDataContext();
-            IPlayerRepository playerRepository = new EntityFrameworkPlayerRepository(dataContext);
-            IPlayedGameRetriever playedGameRetriever = new PlayedGameRetriever(dataContext);
-            playerRetriever = new PlayerRetriever(dataContext, playerRepository, playedGameRetriever);
+            playerRetriever = GetInstance<PlayerRetriever>();
             player1Details = playerRetriever.GetPlayerDetails(testPlayer1.Id, 0);
             player5Details = playerRetriever.GetPlayerDetails(testPlayer5.Id, 0);
         }
@@ -98,36 +92,23 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
         [Test]
         public void ItSetsTheNemesisIdOnThePlayer()
         {
-            using(NemeStatsDbContext nemeStatsDbContext = new NemeStatsDbContext())
+            using(NemeStatsDataContext nemeStatsDataContext = new NemeStatsDataContext())
             {
-                using(NemeStatsDataContext nemeStatsDataContext = new NemeStatsDataContext())
-                {
-                    Player player1 = nemeStatsDataContext.FindById<Player>(testPlayer1.Id);
+                Player player1 = nemeStatsDataContext.FindById<Player>(testPlayer1.Id);
 
-                    Assert.NotNull(player1.NemesisId);
-                }
+                Assert.NotNull(player1.NemesisId);
             }
         }
 
         [Test]
         public void ItClearsTheNemesisIdIfThePlayerHasNoNemesis()
         {
-            using (NemeStatsDbContext nemeStatsDbContext = new NemeStatsDbContext())
+            using (NemeStatsDataContext nemeStatsDataContext = new NemeStatsDataContext())
             {
-                using (NemeStatsDataContext nemeStatsDataContext = new NemeStatsDataContext())
-                {
-                    Player player5 = nemeStatsDataContext.FindById<Player>(testPlayer5.Id);
+                Player player5 = nemeStatsDataContext.FindById<Player>(testPlayer5.Id);
 
-                    Assert.Null(player5.NemesisId);
-                }
+                Assert.Null(player5.NemesisId);
             }
-        }
-
-        [OneTimeTearDown]
-        public override void FixtureTearDown()
-        {
-            base.FixtureTearDown();
-            dataContext.Dispose();
         }
     }
 }

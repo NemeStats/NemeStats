@@ -30,9 +30,9 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
         public void ItDeletesThePlayedGame()
         {
             int playedGameId = 6;
-            autoMocker.ClassUnderTest.DeleteConfirmed(playedGameId, currentUser);
+            AutoMocker.ClassUnderTest.DeleteConfirmed(playedGameId, CurrentUser);
 
-            autoMocker.Get<IPlayedGameDeleter>().AssertWasCalled(mock => mock.DeletePlayedGame(playedGameId, currentUser));
+            AutoMocker.Get<IPlayedGameDeleter>().AssertWasCalled(mock => mock.DeletePlayedGame(playedGameId, CurrentUser));
         }
     }
 }

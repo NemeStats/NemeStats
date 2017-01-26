@@ -27,25 +27,22 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.Players
     [TestFixture]
     public class GetTopPlayersIntegrationTests : IntegrationTestBase
     {
-        private PlayerSummaryBuilder playerSummaryBuilderImpl;
-        private List<TopPlayer> topPlayersResult;
-        private int expectedNumberOfPlayers = 3;
+        private PlayerSummaryBuilder _playerSummaryBuilder;
+        private List<TopPlayer> _topPlayersResult;
+        private int _expectedNumberOfPlayers = 3;
 
         [OneTimeSetUp]
         public void TestFixtureSetUp()
         {
-            using(IDataContext dataContext = new NemeStatsDataContext())
-            {
-                playerSummaryBuilderImpl = new PlayerSummaryBuilder(dataContext);
+                _playerSummaryBuilder = GetInstance<PlayerSummaryBuilder>();
 
-                topPlayersResult = playerSummaryBuilderImpl.GetTopPlayers(3);
-            }
+                _topPlayersResult = _playerSummaryBuilder.GetTopPlayers(3);
         }
 
         [Test]
         public void ItGetsTheSpecifiedNumberOfPlayers()
         {
-            Assert.AreEqual(expectedNumberOfPlayers, topPlayersResult.Count);
+            Assert.AreEqual(_expectedNumberOfPlayers, _topPlayersResult.Count);
         }
 
         [Test]
@@ -53,7 +50,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.Players
         {
             int lastPoints = int.MaxValue;
 
-            foreach(TopPlayer topPlayer in topPlayersResult)
+            foreach(TopPlayer topPlayer in _topPlayersResult)
             {
                 Assert.LessOrEqual(topPlayer.NemePointsSummary.TotalPoints, lastPoints);
                 lastPoints = topPlayer.NemePointsSummary.TotalPoints;
@@ -63,7 +60,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.Players
         [Test]
         public void ItHasAllOfTheData()
         {
-            TopPlayer firstResult = topPlayersResult[0];
+            TopPlayer firstResult = _topPlayersResult[0];
             Assert.Greater(firstResult.TotalNumberOfGamesPlayed, 0);
             Assert.Greater(firstResult.NemePointsSummary.TotalPoints, 0);
             Assert.True(!string.IsNullOrWhiteSpace(firstResult.PlayerName));
