@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Net;
+﻿using System.Net;
 using BusinessLogic.Logic.GameDefinitions;
 using BusinessLogic.Models;
 using BusinessLogic.Models.User;
@@ -26,7 +25,7 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.GameDefinition
                 GamingGroupId = _expectedGamingGroupId
             };
 
-            _autoMocker.Get<IGameDefinitionSaver>().Expect(mock => mock.CreateGameDefinition(Arg<CreateGameDefinitionRequest>.Is.Anything, Arg<ApplicationUser>.Is.Anything))
+            _autoMocker.Get<ICreateGameDefinitionComponent>().Expect(mock => mock.Execute(Arg<CreateGameDefinitionRequest>.Is.Anything, Arg<ApplicationUser>.Is.Anything))
                       .Return(_expectedGameDefinition);
         }
 
@@ -41,8 +40,8 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.GameDefinition
 
             _autoMocker.ClassUnderTest.SaveNewGameDefinition(newGameDefinitionMessage, _expectedGamingGroupId);
 
-            _autoMocker.Get<IGameDefinitionSaver>().AssertWasCalled(
-                mock => mock.CreateGameDefinition(Arg<CreateGameDefinitionRequest>.Matches(
+            _autoMocker.Get<ICreateGameDefinitionComponent>().AssertWasCalled(
+                mock => mock.Execute(Arg<CreateGameDefinitionRequest>.Matches(
                     gameDefinition => gameDefinition.Name == newGameDefinitionMessage.GameDefinitionName
                     && gameDefinition.BoardGameGeekGameDefinitionId == newGameDefinitionMessage.BoardGameGeekObjectId
                     && gameDefinition.GamingGroupId == _expectedGamingGroupId),
@@ -72,8 +71,8 @@ namespace UI.Tests.UnitTests.AreasTests.ApiTests.ControllersTests.GameDefinition
 
             _autoMocker.ClassUnderTest.SaveNewGameDefinition(newGameDefinitionMessage, someGamingGroupIdThatWontGetUsed);
 
-            _autoMocker.Get<IGameDefinitionSaver>().AssertWasCalled(
-                mock => mock.CreateGameDefinition(Arg<CreateGameDefinitionRequest>.Matches(
+            _autoMocker.Get<ICreateGameDefinitionComponent>().AssertWasCalled(
+                mock => mock.Execute(Arg<CreateGameDefinitionRequest>.Matches(
                     gameDefinition => gameDefinition.Name == newGameDefinitionMessage.GameDefinitionName
                     && gameDefinition.BoardGameGeekGameDefinitionId == newGameDefinitionMessage.BoardGameGeekObjectId
                     && gameDefinition.GamingGroupId == newGameDefinitionMessage.GamingGroupId),
