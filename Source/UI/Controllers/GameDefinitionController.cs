@@ -54,6 +54,7 @@ namespace UI.Controllers
         private readonly IUserRetriever _userRetriever;
         private readonly IBoardGameGeekGamesImporter _boardGameGeekGamesImporter;
         private readonly ITransformer _transformer;
+        private readonly ICreateGameDefinitionComponent _createGameDefinitionComponent;
 
         public GameDefinitionController(IGameDefinitionRetriever gameDefinitionRetriever,
             ITrendingGamesRetriever trendingGamesRetriever,
@@ -62,7 +63,7 @@ namespace UI.Controllers
             IBoardGameGeekApiClient boardGameGeekApiClient,
             IUserRetriever userRetriever,
             IBoardGameGeekGamesImporter boardGameGeekGamesImporter,
-            ITransformer transformer)
+            ITransformer transformer, ICreateGameDefinitionComponent createGameDefinitionComponent)
         {
             _gameDefinitionRetriever = gameDefinitionRetriever;
             _trendingGamesRetriever = trendingGamesRetriever;
@@ -72,6 +73,7 @@ namespace UI.Controllers
             _userRetriever = userRetriever;
             _boardGameGeekGamesImporter = boardGameGeekGamesImporter;
             _transformer = transformer;
+            _createGameDefinitionComponent = createGameDefinitionComponent;
         }
 
         // GET: /GameDefinition/Details/5
@@ -125,11 +127,11 @@ namespace UI.Controllers
             if (ModelState.IsValid)
             {
                 createGameDefinitionViewModel.Name = createGameDefinitionViewModel.Name.Trim();
-                var gameDefinition = Mapper.Map<CreateGameDefinitionViewModel, CreateGameDefinitionRequest>(createGameDefinitionViewModel);
+                var createGameDefinitionRequest = Mapper.Map<CreateGameDefinitionViewModel, CreateGameDefinitionRequest>(createGameDefinitionViewModel);
 
-                var savedResult = _gameDefinitionSaver.CreateGameDefinition(gameDefinition, currentUser);
+                var savedResult = _createGameDefinitionComponent.Execute(createGameDefinitionRequest, currentUser);
 
-                if (!String.IsNullOrWhiteSpace(createGameDefinitionViewModel.ReturnUrl))
+                if (!string.IsNullOrWhiteSpace(createGameDefinitionViewModel.ReturnUrl))
                     return new RedirectResult(createGameDefinitionViewModel.ReturnUrl + "?gameId=" + savedResult.Id);
 
                 return new RedirectResult(Url.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name)
@@ -156,7 +158,7 @@ namespace UI.Controllers
 
                 try
                 {
-                    _gameDefinitionSaver.CreateGameDefinition(createGameDefinitionRequest, currentUser);
+                    _createGameDefinitionComponent.Execute(createGameDefinitionRequest, currentUser);
                 }
                 catch (DuplicateKeyException)
                 {
@@ -165,7 +167,7 @@ namespace UI.Controllers
                 return Json(currentUser.CurrentGamingGroupId, JsonRequestBehavior.AllowGet);
             }
 
-            string errorDescription = string.Empty;
+            var errorDescription = string.Empty;
 
             errorDescription = GetFirstModelStateError(errorDescription);
             return new HttpStatusCodeResult(HttpStatusCode.BadRequest, errorDescription);
@@ -199,9 +201,9 @@ namespace UI.Controllers
         {
             foreach (var modelStateValue in ModelState.Values)
             {
-                foreach (ModelState modelState in ViewData.ModelState.Values)
+                foreach (var modelState in ViewData.ModelState.Values)
                 {
-                    foreach (ModelError error in modelState.Errors)
+                    foreach (var error in modelState.Errors)
                     {
                         errorDescription = error.ErrorMessage;
                     }

@@ -46,7 +46,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
 
             autoMocker.ClassUnderTest.AjaxCreate(createGameDefinitionViewModel, currentUser);
 
-            var arguments = autoMocker.Get<IGameDefinitionSaver>().GetArgumentsForCallsMadeOn(mock => mock.CreateGameDefinition(
+            var arguments = autoMocker.Get<ICreateGameDefinitionComponent>().GetArgumentsForCallsMadeOn(mock => mock.Execute(
                 Arg<CreateGameDefinitionRequest>.Is.Anything, 
                 Arg<ApplicationUser>.Is.Anything));
             var createGameDefinitionRequest = arguments[0][0] as CreateGameDefinitionRequest;
@@ -93,7 +93,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
             {
                 Name = "some name"
             };
-            autoMocker.Get<IGameDefinitionSaver>().Expect(mock => mock.CreateGameDefinition(null, null))
+            autoMocker.Get<ICreateGameDefinitionComponent>().Expect(mock => mock.Execute(null, null))
                 .IgnoreArguments()
                 .Throw(new DuplicateKeyException("some duplicate key"));
 
