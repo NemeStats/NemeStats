@@ -312,6 +312,7 @@
     <Compile Include="UnitTests\LogicTests\ChampionsTests\ChampionRecalculatorTests\RecalculateAllChampionsTests.cs" />
     <Compile Include="UnitTests\LogicTests\ChampionsTests\ChampionRecalculatorTests\RecalculateChampionTests.cs" />
     <Compile Include="UnitTests\LogicTests\GameDefinitionsTests\BoardGameGeekGameDefinitionCreatorTests\CreateBoardGameGeekGameDefinitionTests.cs" />
+    <Compile Include="UnitTests\LogicTests\GameDefinitionsTests\CreateGameDefinitionComponentTests\ExecuteTests.cs" />
     <Compile Include="UnitTests\LogicTests\GameDefinitionsTests\GameDefinitionRetrieverTests\GetAllGameDefinitionNamesTests.cs" />
     <Compile Include="UnitTests\LogicTests\GameDefinitionsTests\GameDefinitionRetrieverTests\GetTrendingGamesTests.cs" />
     <Compile Include="UnitTests\LogicTests\GameDefinitionsTests\GameDefinitionSaverTests\GameDefinitionSaverTestBase.cs" />
