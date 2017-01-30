@@ -31,18 +31,18 @@ namespace BusinessLogic.Logic.GameDefinitions
 {
     public class GameDefinitionSaver : IGameDefinitionSaver
     {
-        internal const string EXCEPTION_MESSAGE_GAME_DEFINITION_NAME_CANNOT_BE_NULL_OR_WHITESPACE 
+        internal const string ExceptionMessageGameDefinitionNameCannotBeNullOrWhitespace 
             = "gameDefinition.Name cannot be null or whitespace.";
 
-        private readonly IDataContext dataContext;
-        private readonly INemeStatsEventTracker eventTracker;
-        private readonly IBoardGameGeekGameDefinitionCreator boardGameGeekGameDefinitionCreator;
+        private readonly IDataContext _dataContext;
+        private readonly INemeStatsEventTracker _eventTracker;
+        private readonly IBoardGameGeekGameDefinitionCreator _boardGameGeekGameDefinitionCreator;
 
         public GameDefinitionSaver(IDataContext dataContext, INemeStatsEventTracker eventTracker, IBoardGameGeekGameDefinitionCreator boardGameGeekGameDefinitionAttacher)
         {
-            this.dataContext = dataContext;
-            this.eventTracker = eventTracker;
-            boardGameGeekGameDefinitionCreator = boardGameGeekGameDefinitionAttacher;
+            _dataContext = dataContext;
+            _eventTracker = eventTracker;
+            _boardGameGeekGameDefinitionCreator = boardGameGeekGameDefinitionAttacher;
         }
 
         public GameDefinition CreateGameDefinition(CreateGameDefinitionRequest createGameDefinitionRequest, ApplicationUser currentUser)
@@ -57,7 +57,7 @@ namespace BusinessLogic.Logic.GameDefinitions
                 createGameDefinitionRequest.BoardGameGeekGameDefinitionId, 
                 currentUser);
             
-            var existingGameDefinition = dataContext.GetQueryable<GameDefinition>()
+            var existingGameDefinition = _dataContext.GetQueryable<GameDefinition>()
                 .FirstOrDefault(game => game.GamingGroupId == gamingGroupId
                         && game.Name == createGameDefinitionRequest.Name);
 
@@ -71,9 +71,9 @@ namespace BusinessLogic.Logic.GameDefinitions
                     GamingGroupId = gamingGroupId
                 };
 
-                new Task(() => eventTracker.TrackGameDefinitionCreation(currentUser, createGameDefinitionRequest.Name)).Start();
+                new Task(() => _eventTracker.TrackGameDefinitionCreation(currentUser, createGameDefinitionRequest.Name)).Start();
 
-                return dataContext.Save(newGameDefinition, currentUser);
+                return _dataContext.Save(newGameDefinition, currentUser);
             }
 
             ValidateNotADuplicateGameDefinition(existingGameDefinition);
@@ -84,7 +84,7 @@ namespace BusinessLogic.Logic.GameDefinitions
             {
                 existingGameDefinition.Description = createGameDefinitionRequest.Description;
             }
-            return dataContext.Save(existingGameDefinition, currentUser);
+            return _dataContext.Save(existingGameDefinition, currentUser);
         }
 
 
@@ -92,7 +92,7 @@ namespace BusinessLogic.Logic.GameDefinitions
         {
             if (createGameDefinitionRequest == null)
             {
-                throw new ArgumentNullException("createGameDefinitionRequest");
+                throw new ArgumentNullException(nameof(createGameDefinitionRequest));
             }
         }
 
@@ -118,7 +118,7 @@ namespace BusinessLogic.Logic.GameDefinitions
             BoardGameGeekGameDefinition newBoardGameGeekGameDefinition = null;
             if (boardGameGeekGameDefinitionId.HasValue)
             {
-                newBoardGameGeekGameDefinition = boardGameGeekGameDefinitionCreator.CreateBoardGameGeekGameDefinition(
+                newBoardGameGeekGameDefinition = _boardGameGeekGameDefinitionCreator.CreateBoardGameGeekGameDefinition(
                     boardGameGeekGameDefinitionId.Value, currentUser);
             }
 
@@ -127,7 +127,7 @@ namespace BusinessLogic.Logic.GameDefinitions
 
         public virtual void UpdateGameDefinition(GameDefinitionUpdateRequest gameDefinitionUpdateRequest, ApplicationUser currentUser)
         {
-            var gameDefinition = dataContext.FindById<GameDefinition>(gameDefinitionUpdateRequest.GameDefinitionId);
+            var gameDefinition = _dataContext.FindById<GameDefinition>(gameDefinitionUpdateRequest.GameDefinitionId);
 
             if (gameDefinitionUpdateRequest.Active.HasValue)
             {
@@ -146,7 +146,7 @@ namespace BusinessLogic.Logic.GameDefinitions
 
             AttachToBoardGameGeekGameDefinition(gameDefinitionUpdateRequest.BoardGameGeekGameDefinitionId, currentUser, gameDefinition);
 
-            dataContext.Save(gameDefinition, currentUser);
+            _dataContext.Save(gameDefinition, currentUser);
         }
 
         private void AttachToBoardGameGeekGameDefinition(int? boardGameGeekGameDefinitionId, ApplicationUser currentUser, GameDefinition gameDefinition)

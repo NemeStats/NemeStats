@@ -17,14 +17,18 @@ namespace BusinessLogic.Logic.BoardGameGeek
         private readonly IUserRetriever _userRetriever;
         private readonly IBoardGameGeekApiClient _boardGameGeekApiClient;
         private readonly IGameDefinitionRetriever _gameDefinitionRetriever;
-        private readonly IGameDefinitionSaver _gameDefinitionSaver;
+        private readonly ICreateGameDefinitionComponent _createGameDefinitionComponent;
 
-        public BoardGameGeekGamesImporter(IUserRetriever userRetriever, IBoardGameGeekApiClient boardGameGeekApiClient, IGameDefinitionRetriever gameDefinitionRetriever, IGameDefinitionSaver gameDefinitionSaver)
+        public BoardGameGeekGamesImporter(
+            IUserRetriever userRetriever, 
+            IBoardGameGeekApiClient boardGameGeekApiClient, 
+            IGameDefinitionRetriever gameDefinitionRetriever, 
+            ICreateGameDefinitionComponent createGameDefinitionComponent)
         {
             _userRetriever = userRetriever;
             _boardGameGeekApiClient = boardGameGeekApiClient;
             _gameDefinitionRetriever = gameDefinitionRetriever;
-            _gameDefinitionSaver = gameDefinitionSaver;
+            _createGameDefinitionComponent = createGameDefinitionComponent;
         }
 
         public int? ImportBoardGameGeekGames(ApplicationUser applicationUser)
@@ -41,48 +45,45 @@ namespace BusinessLogic.Logic.BoardGameGeek
                 {
                     return null;
                 }
-                else
+                var currentGames = GetCurrentGames(applicationUser);
+                var pendingGames = GetPendingGames(userGames, currentGames);
+                if (!pendingGames.Any())
                 {
-                    var currentGames = GetCurrentGames(applicationUser);
-                    var pendingGames = GetPendingGames(userGames, currentGames);
-                    if (!pendingGames.Any())
-                    {
-                        return 0;
-                    }
-                    else
-                    {
-                        var longRunningClients = GlobalHost.ConnectionManager.GetHubContext<LongRunningTaskHub>().Clients.Group(applicationUser.CurrentGamingGroupId.ToString());
-
-                        int gamesImported = 0;
-                        var gameNamesImported = new List<string>();
-                        
-                        foreach (var bggGame in pendingGames)
-                        {
-                            var gameName = $"{bggGame.Name} ({bggGame.YearPublished})";
-                            gamesImported++;
-
-                            longRunningClients.BGGImportDetailsProgress(gamesImported, pendingGames.Count, gameName);
-
-                            if (!gameNamesImported.Contains(gameName))
-                            {
-
-                                _gameDefinitionSaver.CreateGameDefinition(new CreateGameDefinitionRequest()
-                                {
-                                    Name = $"{bggGame.Name} ({bggGame.YearPublished})",
-                                    BoardGameGeekGameDefinitionId = bggGame.GameId,
-                                    Active = true
-                                }, applicationUser);
-                            }
-
-
-                            gameNamesImported.Add(gameName);
-                            
-                        }
-                        return pendingGames.Count;
-                    }
+                    return 0;
                 }
+                var longRunningClients = GlobalHost.ConnectionManager.GetHubContext<LongRunningTaskHub>().Clients.Group(applicationUser.CurrentGamingGroupId.ToString());
+
+                int gamesImported = 0;
+                var gameNamesImported = new List<string>();
+                        
+                CreateGameDefinitions(applicationUser, pendingGames, gamesImported, longRunningClients, gameNamesImported);
+                return pendingGames.Count;
             }
             return null;
+        }
+
+        private void CreateGameDefinitions(ApplicationUser applicationUser, List<GameDetails> pendingGames, int gamesImported, dynamic longRunningClients,
+            List<string> gameNamesImported)
+        {
+            foreach (var bggGame in pendingGames)
+            {
+                var gameName = $"{bggGame.Name} ({bggGame.YearPublished})";
+                gamesImported++;
+
+                longRunningClients.BGGImportDetailsProgress(gamesImported, pendingGames.Count, gameName);
+
+                if (!gameNamesImported.Contains(gameName))
+                {
+                    _createGameDefinitionComponent.Execute(new CreateGameDefinitionRequest
+                    {
+                        Name = $"{bggGame.Name} ({bggGame.YearPublished})",
+                        BoardGameGeekGameDefinitionId = bggGame.GameId,
+                        Active = true
+                    }, applicationUser);
+                }
+
+                gameNamesImported.Add(gameName);
+            }
         }
 
         private static List<GameDetails> GetPendingGames(List<GameDetails> userGames, IEnumerable<int?> currentGames)

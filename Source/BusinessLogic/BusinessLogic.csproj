@@ -307,6 +307,8 @@
     <Compile Include="Logic\BoardGameGeek\IBoardGameGeekGamesImporter.cs" />
     <Compile Include="Logic\Champions\ChampionRecalculator.cs" />
     <Compile Include="Logic\Email\EmailService.cs" />
+    <Compile Include="Logic\GameDefinitions\CreateGameDefinitionComponent.cs" />
+    <Compile Include="Logic\GameDefinitions\ICreateGameDefinitionComponent.cs" />
     <Compile Include="Logic\ITransformer.cs" />
     <Compile Include="Logic\OneTimeJobs\BoardGameGeekThumbnailAttacher.cs" />
     <Compile Include="Logic\GameDefinitions\GameDefinitionUpdateRequest.cs" />
