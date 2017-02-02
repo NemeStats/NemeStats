@@ -22,9 +22,9 @@ namespace BusinessLogic.Events.HandlerFactory
         {
             return new Container(x =>
             {
-                x.For<DbContext>().Transient().Use<NemeStatsDbContext>();
-                x.For<IDataContext>().Transient().Use<NemeStatsDataContext>();
-                x.For<ApplicationUserManager>().Transient().Use<ApplicationUserManager>();
+                x.For<DbContext>().HybridHttpOrThreadLocalScoped().Use<NemeStatsDbContext>();
+                x.For<IDataContext>().HybridHttpOrThreadLocalScoped().Use<NemeStatsDataContext>();
+                x.For<ApplicationUserManager>().HybridHttpOrThreadLocalScoped().Use<ApplicationUserManager>();
 
                 x.For<BusinessLogicEventsHandlerFactory>().Singleton().Use(new BusinessLogicEventsHandlerFactory(
                     new HandlerFactoryConfiguration()
