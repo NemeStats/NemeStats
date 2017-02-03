@@ -31,10 +31,12 @@ namespace BusinessLogic.DataAccess
     {
         internal const string CONNECTION_STRING_KEY = "Database.ConnectionString";
 
-        public NemeStatsDbContext() : base(CloudConfigurationManager.GetSetting(CONNECTION_STRING_KEY))
+        public NemeStatsDbContext() : base(CloudConfigurationManager.GetSetting(CONNECTION_STRING_KEY, false))
         {
-            this.Configuration.ProxyCreationEnabled = false;
-            this.Configuration.LazyLoadingEnabled = false;
+            Configuration.ProxyCreationEnabled = false;
+            Configuration.LazyLoadingEnabled = false;
+            Database.SetInitializer<NemeStatsDbContext>(null);
+
 
             //uncomment to turn on SQL statements printing to the console
             //this.Database.Log = s => System.Diagnostics.Debug.WriteLine(s);
