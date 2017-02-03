@@ -10,9 +10,9 @@ namespace NemeStats.IoC
     {
         public DatabaseRegistry()
         {
-            For<DbContext>().Transient().Use<NemeStatsDbContext>();
-            For<IDataContext>().Transient().Use<NemeStatsDataContext>();
-            For<ApplicationUserManager>().Transient().Use<ApplicationUserManager>();
+            For<DbContext>().HybridHttpOrThreadLocalScoped().Use<NemeStatsDbContext>();
+            For<IDataContext>().HybridHttpOrThreadLocalScoped().Use<NemeStatsDataContext>();
+            For<ApplicationUserManager>().HybridHttpOrThreadLocalScoped().Use<ApplicationUserManager>();
         }
 
     }
