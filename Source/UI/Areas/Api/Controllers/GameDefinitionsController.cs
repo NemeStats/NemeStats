@@ -30,13 +30,15 @@ namespace UI.Areas.Api.Controllers
 {
     public class GameDefinitionsController : ApiControllerBase
     {
-        private readonly IGameDefinitionRetriever gameDefinitionRetriever;
-        private readonly IGameDefinitionSaver gameDefinitionSaver;
+        private readonly IGameDefinitionRetriever _gameDefinitionRetriever;
+        private readonly IGameDefinitionSaver _gameDefinitionSaver;
+        private readonly ICreateGameDefinitionComponent _createGameDefinitionComponent;
 
-        public GameDefinitionsController(IGameDefinitionRetriever gameDefinitionRetriever, IGameDefinitionSaver gameDefinitionSaver)
+        public GameDefinitionsController(IGameDefinitionRetriever gameDefinitionRetriever, IGameDefinitionSaver gameDefinitionSaver, ICreateGameDefinitionComponent createGameDefinitionComponent)
         {
-            this.gameDefinitionRetriever = gameDefinitionRetriever;
-            this.gameDefinitionSaver = gameDefinitionSaver;
+            _gameDefinitionRetriever = gameDefinitionRetriever;
+            _gameDefinitionSaver = gameDefinitionSaver;
+            _createGameDefinitionComponent = createGameDefinitionComponent;
         }
 
         [ApiModelValidation]
@@ -44,7 +46,7 @@ namespace UI.Areas.Api.Controllers
         [HttpGet]
         public virtual HttpResponseMessage GetGameDefinitionsVersion2([FromUri] int gamingGroupId)
         {
-            return this.GetGameDefinitions(gamingGroupId);
+            return GetGameDefinitions(gamingGroupId);
         }
 
         [ApiAuthentication]
@@ -53,7 +55,7 @@ namespace UI.Areas.Api.Controllers
         [HttpGet]
         public virtual HttpResponseMessage GetGameDefinitions([FromUri] int gamingGroupId)
         {
-            var results = gameDefinitionRetriever.GetAllGameDefinitions(gamingGroupId);
+            var results = _gameDefinitionRetriever.GetAllGameDefinitions(gamingGroupId);
 
             var gameDefinitionsSearchResultsMessage = new GameDefinitionsSearchResultsMessage
             {
@@ -75,7 +77,7 @@ namespace UI.Areas.Api.Controllers
         [HttpPost]
         public virtual HttpResponseMessage SaveNewGameDefinition([FromBody]NewGameDefinitionMessage newGameDefinitionMessage)
         {
-            return this.SaveNewGameDefinition(newGameDefinitionMessage, CurrentUser.CurrentGamingGroupId);
+            return SaveNewGameDefinition(newGameDefinitionMessage, CurrentUser.CurrentGamingGroupId);
         }
 
         [ApiAuthentication]
@@ -91,7 +93,7 @@ namespace UI.Areas.Api.Controllers
                 GamingGroupId = newGameDefinitionMessage.GamingGroupId ?? gamingGroupId
             };
 
-            var newGameDefinition = gameDefinitionSaver.CreateGameDefinition(createGameDefinitionRequest, CurrentUser);
+            var newGameDefinition = _createGameDefinitionComponent.Execute(createGameDefinitionRequest, CurrentUser);
 
             var newlyCreatedGameDefinitionMessage = new NewlyCreatedGameDefinitionMessage
             {
@@ -108,7 +110,7 @@ namespace UI.Areas.Api.Controllers
         [HttpPut]
         public HttpResponseMessage UpdateGameDefinition(UpdateGameDefinitionMessage updateGameDefinitionMessage, int gameDefinitionId)
         {
-            return this.UpdateGameDefinition(updateGameDefinitionMessage, gameDefinitionId, CurrentUser.CurrentGamingGroupId);
+            return UpdateGameDefinition(updateGameDefinitionMessage, gameDefinitionId, CurrentUser.CurrentGamingGroupId);
         }
 
         [ApiAuthentication]
@@ -130,7 +132,7 @@ namespace UI.Areas.Api.Controllers
                 GameDefinitionId = gameDefinitionId
             };
 
-            gameDefinitionSaver.UpdateGameDefinition(gameDefinitionUpdateRequest, CurrentUser);
+            _gameDefinitionSaver.UpdateGameDefinition(gameDefinitionUpdateRequest, CurrentUser);
 
             return Request.CreateResponse(HttpStatusCode.NoContent);
         }

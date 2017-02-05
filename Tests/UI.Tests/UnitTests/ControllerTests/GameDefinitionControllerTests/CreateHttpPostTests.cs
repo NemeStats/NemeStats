@@ -62,7 +62,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
 
             autoMocker.ClassUnderTest.Create(createGameDefinitionRequest, currentUser);
 
-            autoMocker.Get<IGameDefinitionSaver>().AssertWasCalled(mock => mock.CreateGameDefinition(
+            autoMocker.Get<ICreateGameDefinitionComponent>().AssertWasCalled(mock => mock.Execute(
                 Arg<CreateGameDefinitionRequest>.Matches(x => x.Name == createGameDefinitionRequest.Name
                                             && x.Description == createGameDefinitionRequest.Description
                                             && x.BoardGameGeekGameDefinitionId == createGameDefinitionRequest.BoardGameGeekGameDefinitionId), 
@@ -96,7 +96,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GameDefinitionControllerTests
                 ReturnUrl = returnUrl,
                 Name = "Project-Ariel"
 		    };
-		    autoMocker.Get<IGameDefinitionSaver>().Expect(mock => mock.CreateGameDefinition(Arg<CreateGameDefinitionRequest>.Is.Anything, Arg<ApplicationUser>.Is.Anything))
+		    autoMocker.Get<ICreateGameDefinitionComponent>().Expect(mock => mock.Execute(Arg<CreateGameDefinitionRequest>.Is.Anything, Arg<ApplicationUser>.Is.Anything))
 		                             .Return(new GameDefinition 
 		                             {
 		                                 Id = expectedGameDefinitionId

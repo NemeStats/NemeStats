@@ -31,86 +31,18 @@ namespace BusinessLogic.Logic.GameDefinitions
 {
     public class GameDefinitionSaver : IGameDefinitionSaver
     {
-        internal const string EXCEPTION_MESSAGE_GAME_DEFINITION_NAME_CANNOT_BE_NULL_OR_WHITESPACE 
+        internal const string ExceptionMessageGameDefinitionNameCannotBeNullOrWhitespace 
             = "gameDefinition.Name cannot be null or whitespace.";
 
-        private readonly IDataContext dataContext;
-        private readonly INemeStatsEventTracker eventTracker;
-        private readonly IBoardGameGeekGameDefinitionCreator boardGameGeekGameDefinitionCreator;
+        private readonly IDataContext _dataContext;
+        private readonly INemeStatsEventTracker _eventTracker;
+        private readonly IBoardGameGeekGameDefinitionCreator _boardGameGeekGameDefinitionCreator;
 
         public GameDefinitionSaver(IDataContext dataContext, INemeStatsEventTracker eventTracker, IBoardGameGeekGameDefinitionCreator boardGameGeekGameDefinitionAttacher)
         {
-            this.dataContext = dataContext;
-            this.eventTracker = eventTracker;
-            boardGameGeekGameDefinitionCreator = boardGameGeekGameDefinitionAttacher;
-        }
-
-        public GameDefinition CreateGameDefinition(CreateGameDefinitionRequest createGameDefinitionRequest, ApplicationUser currentUser)
-        {
-            ValidateNotNull(createGameDefinitionRequest);
-
-            ValidateGameDefinitionNameIsNotNullOrWhitespace(createGameDefinitionRequest.Name);
-
-            int gamingGroupId = createGameDefinitionRequest.GamingGroupId ?? currentUser.CurrentGamingGroupId;
-
-            var boardGameGeekGameDefinition = CreateBoardGameGeekGameDefinition(
-                createGameDefinitionRequest.BoardGameGeekGameDefinitionId, 
-                currentUser);
-            
-            var existingGameDefinition = dataContext.GetQueryable<GameDefinition>()
-                .FirstOrDefault(game => game.GamingGroupId == gamingGroupId
-                        && game.Name == createGameDefinitionRequest.Name);
-
-            if (existingGameDefinition == null)
-            {
-                var newGameDefinition = new GameDefinition
-                {
-                    Name = createGameDefinitionRequest.Name,
-                    BoardGameGeekGameDefinitionId = boardGameGeekGameDefinition?.Id,
-                    Description = createGameDefinitionRequest.Description,
-                    GamingGroupId = gamingGroupId
-                };
-
-                new Task(() => eventTracker.TrackGameDefinitionCreation(currentUser, createGameDefinitionRequest.Name)).Start();
-
-                return dataContext.Save(newGameDefinition, currentUser);
-            }
-
-            ValidateNotADuplicateGameDefinition(existingGameDefinition);
-
-            existingGameDefinition.Active = true;
-            existingGameDefinition.BoardGameGeekGameDefinitionId = boardGameGeekGameDefinition?.Id;
-            if (!string.IsNullOrWhiteSpace(createGameDefinitionRequest.Description))
-            {
-                existingGameDefinition.Description = createGameDefinitionRequest.Description;
-            }
-            return dataContext.Save(existingGameDefinition, currentUser);
-        }
-
-
-        private static void ValidateNotNull(CreateGameDefinitionRequest createGameDefinitionRequest)
-        {
-            if (createGameDefinitionRequest == null)
-            {
-                throw new ArgumentNullException("createGameDefinitionRequest");
-            }
-        }
-
-        private static void ValidateGameDefinitionNameIsNotNullOrWhitespace(string gameDefinitionName)
-        {
-            if (string.IsNullOrWhiteSpace(gameDefinitionName))
-            {
-                throw new ArgumentException("createGameDefinitionRequest.Name cannot be null or whitespace.");
-            }
-        }
-
-        private static void ValidateNotADuplicateGameDefinition(GameDefinition existingGameDefinition)
-        {
-            if (existingGameDefinition.Active)
-            {
-                string message = $"An active Game Definition with name '{existingGameDefinition.Name}' already exists in this Gaming Group.";
-                throw new DuplicateKeyException(message);
-            }
+            _dataContext = dataContext;
+            _eventTracker = eventTracker;
+            _boardGameGeekGameDefinitionCreator = boardGameGeekGameDefinitionAttacher;
         }
 
         private BoardGameGeekGameDefinition CreateBoardGameGeekGameDefinition(int? boardGameGeekGameDefinitionId, ApplicationUser currentUser)
@@ -118,7 +50,7 @@ namespace BusinessLogic.Logic.GameDefinitions
             BoardGameGeekGameDefinition newBoardGameGeekGameDefinition = null;
             if (boardGameGeekGameDefinitionId.HasValue)
             {
-                newBoardGameGeekGameDefinition = boardGameGeekGameDefinitionCreator.CreateBoardGameGeekGameDefinition(
+                newBoardGameGeekGameDefinition = _boardGameGeekGameDefinitionCreator.CreateBoardGameGeekGameDefinition(
                     boardGameGeekGameDefinitionId.Value, currentUser);
             }
 
@@ -127,7 +59,7 @@ namespace BusinessLogic.Logic.GameDefinitions
 
         public virtual void UpdateGameDefinition(GameDefinitionUpdateRequest gameDefinitionUpdateRequest, ApplicationUser currentUser)
         {
-            var gameDefinition = dataContext.FindById<GameDefinition>(gameDefinitionUpdateRequest.GameDefinitionId);
+            var gameDefinition = _dataContext.FindById<GameDefinition>(gameDefinitionUpdateRequest.GameDefinitionId);
 
             if (gameDefinitionUpdateRequest.Active.HasValue)
             {
@@ -146,7 +78,7 @@ namespace BusinessLogic.Logic.GameDefinitions
 
             AttachToBoardGameGeekGameDefinition(gameDefinitionUpdateRequest.BoardGameGeekGameDefinitionId, currentUser, gameDefinition);
 
-            dataContext.Save(gameDefinition, currentUser);
+            _dataContext.Save(gameDefinition, currentUser);
         }
 
         private void AttachToBoardGameGeekGameDefinition(int? boardGameGeekGameDefinitionId, ApplicationUser currentUser, GameDefinition gameDefinition)

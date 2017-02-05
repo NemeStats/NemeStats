@@ -52,10 +52,10 @@ namespace UI.Controllers
         private readonly IPlayedGameSaver _playedGameSaver;
         private readonly IGameDefinitionRetriever _gameDefinitionRetriever;
         private readonly IPlayedGameDeleter _playedGameDeleter;
-        private readonly IGameDefinitionSaver _gameDefinitionSaver;
         private readonly IPlayerSaver _playerSaver;
         private readonly IMapperFactory _mapperFactory;
         private readonly ICreatePlayedGameComponent _createPlayedGameComponent;
+        private readonly ICreateGameDefinitionComponent _createGameDefinitionComponent;
 
         internal const int NUMBER_OF_RECENT_GAMES_TO_DISPLAY = 25;
 
@@ -67,10 +67,10 @@ namespace UI.Controllers
             IGameDefinitionRetriever gameDefinitionRetriever,
             IPlayedGameSaver playedGameSaver,
             IPlayedGameDeleter playedGameDeleter,
-            IGameDefinitionSaver gameDefinitionSaver,
             IPlayerSaver playerSaver,
             IMapperFactory mapperFactory, 
-            ICreatePlayedGameComponent createPlayedGameComponent)
+            ICreatePlayedGameComponent createPlayedGameComponent, 
+            ICreateGameDefinitionComponent createGameDefinitionComponent)
         {
             _dataContext = dataContext;
             _playedGameRetriever = playedGameRetriever;
@@ -79,10 +79,10 @@ namespace UI.Controllers
             _gameDefinitionRetriever = gameDefinitionRetriever;
             _playedGameSaver = playedGameSaver;
             _playedGameDeleter = playedGameDeleter;
-            _gameDefinitionSaver = gameDefinitionSaver;
             _playerSaver = playerSaver;
             _mapperFactory = mapperFactory;
             _createPlayedGameComponent = createPlayedGameComponent;
+            _createGameDefinitionComponent = createGameDefinitionComponent;
         }
 
         // GET: /PlayedGame/Details/5
@@ -172,7 +172,7 @@ namespace UI.Controllers
                             return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
                         }
 
-                        request.GameDefinitionId = _gameDefinitionSaver.CreateGameDefinition(new CreateGameDefinitionRequest
+                        request.GameDefinitionId = _createGameDefinitionComponent.Execute(new CreateGameDefinitionRequest
                         {
                             Name = request.GameDefinitionName,
                             GamingGroupId = request.GameDefinitionId ?? currentUser.CurrentGamingGroupId,
@@ -267,17 +267,9 @@ namespace UI.Controllers
         public virtual ActionResult DeleteConfirmed(int id, ApplicationUser currentUser)
         {
             _playedGameDeleter.DeletePlayedGame(id, currentUser);
-            //TODO really don't know whether I need to commit here or if it is automatically taken care of when disposing.
-            _dataContext.CommitAllChanges();
+
             return new RedirectResult(Url.Action(MVC.GamingGroup.ActionNames.Index, MVC.GamingGroup.Name)
                             + "#" + GamingGroupController.SECTION_ANCHOR_RECENT_GAMES);
-        }
-
-
-
-        private IEnumerable<SelectListItem> RemovePlayersFromExistingPlayerRanks(IEnumerable<SelectListItem> players, List<PlayerRank> playerRanks)
-        {
-            return players.Where(item => playerRanks.Any(p => p.PlayerId.ToString() == item.Value) == false).ToList();
         }
 
         [System.Web.Mvc.Authorize]
@@ -299,9 +291,9 @@ namespace UI.Controllers
         {
             var playedGameFilter = new PlayedGameFilter
             {
-                EndDateGameLastUpdated = filter.DatePlayedEnd == null ? null : filter.DatePlayedEnd.Value.ToString("yyyy-MM-dd"),
+                EndDateGameLastUpdated = filter.DatePlayedEnd?.ToString("yyyy-MM-dd"),
                 GamingGroupId = currentUser.CurrentGamingGroupId,
-                StartDateGameLastUpdated = filter.DatePlayedStart == null ? null : filter.DatePlayedStart.Value.ToString("yyyy-MM-dd"),
+                StartDateGameLastUpdated = filter.DatePlayedStart?.ToString("yyyy-MM-dd"),
                 GameDefinitionId = filter.GameDefinitionId
             };
             var searchResults = _playedGameRetriever.SearchPlayedGames(playedGameFilter);

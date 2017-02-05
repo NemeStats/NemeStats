@@ -1,47 +1,45 @@
-﻿#region LICENSE
-// NemeStats is a free website for tracking the results of board games.
-//     Copyright (C) 2015 Jacob Gordon
-// 
-//     This program is free software: you can redistribute it and/or modify
-//     it under the terms of the GNU General Public License as published by
-//     the Free Software Foundation, either version 3 of the License, or
-//     (at your option) any later version.
-// 
-//     This program is distributed in the hope that it will be useful,
-//     but WITHOUT ANY WARRANTY; without even the implied warranty of
-//     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//     GNU General Public License for more details.
-// 
-//     You should have received a copy of the GNU General Public License
-//     along with this program.  If not, see <http://www.gnu.org/licenses/>
-#endregion
-
+﻿using System;
 using System.Collections.Generic;
-using BoardGameGeekApiClient.Interfaces;
-using BoardGameGeekApiClient.Models;
+using System.Linq;
 using BusinessLogic.DataAccess;
 using BusinessLogic.EventTracking;
 using BusinessLogic.Exceptions;
+using BusinessLogic.Logic.BoardGameGeek;
+using BusinessLogic.Logic.GameDefinitions;
 using BusinessLogic.Models;
+using BusinessLogic.Models.Games;
 using BusinessLogic.Models.User;
 using NUnit.Framework;
 using Rhino.Mocks;
-using System;
-using System.Linq;
-using BusinessLogic.Models.Games;
-using BusinessLogic.Logic.BoardGameGeek;
+using StructureMap.AutoMocking;
 
-namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefinitionSaverTests
+namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.CreateGameDefinitionComponentTests
 {
     [TestFixture]
-    public class CreateGameDefinitionTests : GameDefinitionSaverTestBase
+    public class ExecuteTests
     {
+        private RhinoAutoMocker<CreateGameDefinitionComponent> _autoMocker;
+        private IDataContext _dataContextMock;
+        private ApplicationUser _currentUser;
+
+        [SetUp]
+        public void BaseSetUp()
+        {
+            _autoMocker = new RhinoAutoMocker<CreateGameDefinitionComponent>();
+            _dataContextMock = MockRepository.GenerateMock<IDataContext>();
+
+            _currentUser = new ApplicationUser
+            {
+                Id = "some application user id",
+                CurrentGamingGroupId = 100
+            };
+        }
         [Test]
         public void ItThrowsAnArgumentNullExceptionIfTheModelIsNull()
         {
             var expectedException = new ArgumentNullException("createGameDefinitionRequest");
 
-            Exception exception = Assert.Throws<ArgumentNullException>(() => autoMocker.ClassUnderTest.CreateGameDefinition((CreateGameDefinitionRequest)null, currentUser));
+            Exception exception = Assert.Throws<ArgumentNullException>(() => _autoMocker.ClassUnderTest.Execute((CreateGameDefinitionRequest)null, _currentUser, _dataContextMock));
 
             Assert.AreEqual(expectedException.Message, exception.Message);
         }
@@ -53,7 +51,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
             var gameDefinition = new CreateGameDefinitionRequest
             { Name = null };
 
-            Exception exception = Assert.Throws<ArgumentException>(() => autoMocker.ClassUnderTest.CreateGameDefinition(gameDefinition, currentUser));
+            Exception exception = Assert.Throws<ArgumentException>(() => _autoMocker.ClassUnderTest.Execute(gameDefinition, _currentUser, _dataContextMock));
 
             Assert.AreEqual(expectedException.Message, exception.Message);
         }
@@ -68,7 +66,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
             var expectedException = new ArgumentException("createGameDefinitionRequest.Name cannot be null or whitespace.");
 
             Exception exception = Assert.Throws<ArgumentException>(
-                () => autoMocker.ClassUnderTest.CreateGameDefinition(gameDefinition, currentUser));
+                () => _autoMocker.ClassUnderTest.Execute(gameDefinition, _currentUser, _dataContextMock));
 
             Assert.AreEqual(expectedException.Message, exception.Message);
         }
@@ -80,7 +78,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
             {
                 Name = "existing game definition name",
                 Active = true,
-                GamingGroupId = currentUser.CurrentGamingGroupId
+                GamingGroupId = _currentUser.CurrentGamingGroupId
             };
             var createGameDefinitionRequest = new CreateGameDefinitionRequest
             {
@@ -91,10 +89,10 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
                 gameDefinition
             }.AsQueryable();
 
-            autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<GameDefinition>()).Return(gameDefinitionQueryable);
+            _dataContextMock.Expect(mock => mock.GetQueryable<GameDefinition>()).Return(gameDefinitionQueryable);
 
             Exception exception = Assert.Throws<DuplicateKeyException>(
-                () => autoMocker.ClassUnderTest.CreateGameDefinition(createGameDefinitionRequest, currentUser));
+                () => _autoMocker.ClassUnderTest.Execute(createGameDefinitionRequest, _currentUser, _dataContextMock));
 
             Assert.That(exception.Message, Is.EqualTo("An active Game Definition with name '" + gameDefinition.Name + "' already exists in this Gaming Group."));
         }
@@ -120,10 +118,10 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
                 gameDefinition
             }.AsQueryable();
 
-            autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<GameDefinition>()).Return(gameDefinitionQueryable);
+            _dataContextMock.Expect(mock => mock.GetQueryable<GameDefinition>()).Return(gameDefinitionQueryable);
 
             Exception exception = Assert.Throws<DuplicateKeyException>(
-                () => autoMocker.ClassUnderTest.CreateGameDefinition(createGameDefinitionRequest, currentUser));
+                () => _autoMocker.ClassUnderTest.Execute(createGameDefinitionRequest, _currentUser, _dataContextMock));
 
             Assert.That(exception.Message, Is.EqualTo("An active Game Definition with name '" + gameDefinition.Name + "' already exists in this Gaming Group."));
         }
@@ -135,7 +133,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
             {
                 Name = "existing game definition name",
                 Active = true,
-                GamingGroupId = currentUser.CurrentGamingGroupId
+                GamingGroupId = _currentUser.CurrentGamingGroupId
             };
             var createGameDefinitionRequest = new CreateGameDefinitionRequest
             {
@@ -146,10 +144,10 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
                 gameDefinition
             }.AsQueryable();
 
-            autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<GameDefinition>()).Return(gameDefinitionQueryable);
+            _dataContextMock.Expect(mock => mock.GetQueryable<GameDefinition>()).Return(gameDefinitionQueryable);
 
             Exception exception = Assert.Throws<DuplicateKeyException>(
-                () => autoMocker.ClassUnderTest.CreateGameDefinition(createGameDefinitionRequest, currentUser));
+                () => _autoMocker.ClassUnderTest.Execute(createGameDefinitionRequest, _currentUser, _dataContextMock));
 
             Assert.That(exception.Message, Is.EqualTo("An active Game Definition with name '" + gameDefinition.Name + "' already exists in this Gaming Group."));
         }
@@ -161,23 +159,23 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
             {
                 Id = 1,
                 Name = "existing game definition name",
-                GamingGroupId = currentUser.CurrentGamingGroupId,
+                GamingGroupId = _currentUser.CurrentGamingGroupId,
                 Active = false
             };
             var gameDefinitionQueryable = new List<GameDefinition>
             {
                 existingGameDefinition
             }.AsQueryable();
-            var newGameDefinition = new CreateGameDefinitionRequest 
+            var newGameDefinition = new CreateGameDefinitionRequest
             {
                 Name = existingGameDefinition.Name
             };
-            autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<GameDefinition>()).Return(gameDefinitionQueryable); 
+            _dataContextMock.Expect(mock => mock.GetQueryable<GameDefinition>()).Return(gameDefinitionQueryable);
 
-            autoMocker.ClassUnderTest.CreateGameDefinition(newGameDefinition, currentUser);
+            _autoMocker.ClassUnderTest.Execute(newGameDefinition, _currentUser, _dataContextMock);
 
             var gameDefinitionThatWasSaved =
-                (GameDefinition)autoMocker.Get<IDataContext>().GetArgumentsForCallsMadeOn(mock => mock.Save(Arg<GameDefinition>.Is.Anything, Arg<ApplicationUser>.Is.Anything))[0][0];
+                (GameDefinition)_dataContextMock.GetArgumentsForCallsMadeOn(mock => mock.Save(Arg<GameDefinition>.Is.Anything, Arg<ApplicationUser>.Is.Anything))[0][0];
 
             Assert.That(gameDefinitionThatWasSaved.Id, Is.EqualTo(existingGameDefinition.Id));
             Assert.That(gameDefinitionThatWasSaved.BoardGameGeekGameDefinitionId, Is.EqualTo(existingGameDefinition.BoardGameGeekGameDefinitionId));
@@ -192,23 +190,23 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
                 Id = 1,
                 Name = "existing game definition name",
                 Active = false,
-                GamingGroupId = currentUser.CurrentGamingGroupId
+                GamingGroupId = _currentUser.CurrentGamingGroupId
             };
             var gameDefinitionQueryable = new List<GameDefinition>
             {
                 existingGameDefinition
             }.AsQueryable();
-            var newGameDefinition = new CreateGameDefinitionRequest 
+            var newGameDefinition = new CreateGameDefinitionRequest
             {
                 Name = existingGameDefinition.Name,
                 Description = "new description"
             };
-            autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<GameDefinition>()).Return(gameDefinitionQueryable);
+            _dataContextMock.Expect(mock => mock.GetQueryable<GameDefinition>()).Return(gameDefinitionQueryable);
 
-            autoMocker.ClassUnderTest.CreateGameDefinition(newGameDefinition, currentUser);
+            _autoMocker.ClassUnderTest.Execute(newGameDefinition, _currentUser, _dataContextMock);
 
             var gameDefinitionThatWasSaved =
-                (GameDefinition)autoMocker.Get<IDataContext>().GetArgumentsForCallsMadeOn(mock => mock.Save(Arg<GameDefinition>.Is.Anything, Arg<ApplicationUser>.Is.Anything))[0][0];
+                (GameDefinition)_dataContextMock.GetArgumentsForCallsMadeOn(mock => mock.Save(Arg<GameDefinition>.Is.Anything, Arg<ApplicationUser>.Is.Anything))[0][0];
 
             Assert.That(gameDefinitionThatWasSaved.Description, Is.EqualTo(newGameDefinition.Description));
         }
@@ -222,7 +220,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
                 Name = "existing game definition name",
                 Description = "existing game definition description",
                 Active = false,
-                GamingGroupId = currentUser.CurrentGamingGroupId
+                GamingGroupId = _currentUser.CurrentGamingGroupId
             };
             var gameDefinitionQueryable = new List<GameDefinition>
             {
@@ -232,12 +230,12 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
             {
                 Name = existingGameDefinition.Name
             };
-            autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<GameDefinition>()).Return(gameDefinitionQueryable);
+            _dataContextMock.Expect(mock => mock.GetQueryable<GameDefinition>()).Return(gameDefinitionQueryable);
 
-            autoMocker.ClassUnderTest.CreateGameDefinition(newGameDefinition, currentUser);
+            _autoMocker.ClassUnderTest.Execute(newGameDefinition, _currentUser, _dataContextMock);
 
             var gameDefinitionThatWasSaved =
-                (GameDefinition)autoMocker.Get<IDataContext>().GetArgumentsForCallsMadeOn(mock => mock.Save(Arg<GameDefinition>.Is.Anything, Arg<ApplicationUser>.Is.Anything))[0][0];
+                (GameDefinition)_dataContextMock.GetArgumentsForCallsMadeOn(mock => mock.Save(Arg<GameDefinition>.Is.Anything, Arg<ApplicationUser>.Is.Anything))[0][0];
 
             Assert.That(gameDefinitionThatWasSaved.Description, Is.EqualTo(existingGameDefinition.Description));
         }
@@ -252,20 +250,20 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
                 BoardGameGeekGameDefinitionId = 12,
                 Description = "some description"
             };
-            autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<GameDefinition>()).Return(new List<GameDefinition>().AsQueryable());
-            autoMocker.Get<IBoardGameGeekGameDefinitionCreator>().Expect(
+            _dataContextMock.Expect(mock => mock.GetQueryable<GameDefinition>()).Return(new List<GameDefinition>().AsQueryable());
+            _autoMocker.Get<IBoardGameGeekGameDefinitionCreator>().Expect(
                 mock => mock.CreateBoardGameGeekGameDefinition(Arg<int>.Is.Anything, Arg<ApplicationUser>.Is.Anything))
                 .Return(null);
 
-            autoMocker.ClassUnderTest.CreateGameDefinition(createGameDefinitionRequest, currentUser);
+            _autoMocker.ClassUnderTest.Execute(createGameDefinitionRequest, _currentUser, _dataContextMock);
 
-            var args = autoMocker.Get<IDataContext>().GetArgumentsForCallsMadeOn(mock => mock.Save(
+            var args = _dataContextMock.GetArgumentsForCallsMadeOn(mock => mock.Save(
                 Arg<GameDefinition>.Is.Anything,
                 Arg<ApplicationUser>.Is.Anything));
             var actualGameDefinition = args[0][0] as GameDefinition;
             Assert.That(actualGameDefinition, Is.Not.Null);
             Assert.That(actualGameDefinition.Name, Is.EqualTo(createGameDefinitionRequest.Name));
-            Assert.That(actualGameDefinition.GamingGroupId, Is.EqualTo(currentUser.CurrentGamingGroupId));
+            Assert.That(actualGameDefinition.GamingGroupId, Is.EqualTo(_currentUser.CurrentGamingGroupId));
         }
 
         [Test]
@@ -274,16 +272,16 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
             var createGameDefinitionRequest = new CreateGameDefinitionRequest
             {
                 Name = "game definition name",
-                GamingGroupId = currentUser.CurrentGamingGroupId - 1
+                GamingGroupId = _currentUser.CurrentGamingGroupId - 1
             };
-            autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<GameDefinition>()).Return(new List<GameDefinition>().AsQueryable());
-            autoMocker.Get<IBoardGameGeekGameDefinitionCreator>().Expect(
+            _dataContextMock.Expect(mock => mock.GetQueryable<GameDefinition>()).Return(new List<GameDefinition>().AsQueryable());
+            _autoMocker.Get<IBoardGameGeekGameDefinitionCreator>().Expect(
                 mock => mock.CreateBoardGameGeekGameDefinition(Arg<int>.Is.Anything, Arg<ApplicationUser>.Is.Anything))
                 .Return(null);
 
-            autoMocker.ClassUnderTest.CreateGameDefinition(createGameDefinitionRequest, currentUser);
+            _autoMocker.ClassUnderTest.Execute(createGameDefinitionRequest, _currentUser, _dataContextMock);
 
-            autoMocker.Get<IDataContext>().AssertWasCalled(mock => mock.Save(
+            _dataContextMock.AssertWasCalled(mock => mock.Save(
                 Arg<GameDefinition>.Matches(x => x.GamingGroupId == createGameDefinitionRequest.GamingGroupId),
                 Arg<ApplicationUser>.Is.Anything));
         }
@@ -297,11 +295,11 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
                 Name = "some name"
             };
 
-            autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<GameDefinition>()).Return(new List<GameDefinition>().AsQueryable());
+            _dataContextMock.Expect(mock => mock.GetQueryable<GameDefinition>()).Return(new List<GameDefinition>().AsQueryable());
 
-            autoMocker.ClassUnderTest.CreateGameDefinition(gameDefinition, currentUser);
+            _autoMocker.ClassUnderTest.Execute(gameDefinition, _currentUser, _dataContextMock);
 
-            autoMocker.Get<INemeStatsEventTracker>().AssertWasCalled(mock => mock.TrackGameDefinitionCreation(currentUser, gameDefinition.Name));
+            _autoMocker.Get<INemeStatsEventTracker>().AssertWasCalled(mock => mock.TrackGameDefinitionCreation(_currentUser, gameDefinition.Name));
         }
 
         [Test]
@@ -311,7 +309,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
             {
                 Id = 1,
                 Name = "existing game definition name",
-                GamingGroupId = currentUser.CurrentGamingGroupId,
+                GamingGroupId = _currentUser.CurrentGamingGroupId,
                 Active = false
             };
             var gameDefinitionQueryable = new List<GameDefinition>
@@ -322,11 +320,11 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
             {
                 Name = existingGameDefinition.Name
             };
-            autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<GameDefinition>()).Return(gameDefinitionQueryable); ;
+            _dataContextMock.Expect(mock => mock.GetQueryable<GameDefinition>()).Return(gameDefinitionQueryable); ;
 
-            autoMocker.ClassUnderTest.CreateGameDefinition(newGameDefinition, currentUser);
+            _autoMocker.ClassUnderTest.Execute(newGameDefinition, _currentUser, _dataContextMock);
 
-            autoMocker.Get<INemeStatsEventTracker>().AssertWasNotCalled(mock => mock.TrackGameDefinitionCreation(currentUser, newGameDefinition.Name));
+            _autoMocker.Get<INemeStatsEventTracker>().AssertWasNotCalled(mock => mock.TrackGameDefinitionCreation(_currentUser, newGameDefinition.Name));
         }
 
         [Test]
@@ -337,24 +335,25 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GameDefinitionsTests.GameDefi
                 Name = "some new game name",
                 BoardGameGeekGameDefinitionId = 1
             };
-            autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<GameDefinition>()).Return(new List<GameDefinition>().AsQueryable());
+            _dataContextMock.Expect(mock => mock.GetQueryable<GameDefinition>()).Return(new List<GameDefinition>().AsQueryable());
             const int EXPECTED_BGG_ID = 2;
             var expectedBoardGameGeekGameDefinition = new BoardGameGeekGameDefinition
             {
                 Id = 2
             };
-            autoMocker.Get<IBoardGameGeekGameDefinitionCreator>().Expect(
-                mock => mock.CreateBoardGameGeekGameDefinition(createGameDefinitionRequest.BoardGameGeekGameDefinitionId.Value, currentUser))
+            _autoMocker.Get<IBoardGameGeekGameDefinitionCreator>().Expect(
+                mock => mock.CreateBoardGameGeekGameDefinition(createGameDefinitionRequest.BoardGameGeekGameDefinitionId.Value, _currentUser))
                 .Return(expectedBoardGameGeekGameDefinition);
 
-            autoMocker.ClassUnderTest.CreateGameDefinition(createGameDefinitionRequest, currentUser);
+            _autoMocker.ClassUnderTest.Execute(createGameDefinitionRequest, _currentUser, _dataContextMock);
 
-            var args = autoMocker.Get<IDataContext>().GetArgumentsForCallsMadeOn(
+            var args = _dataContextMock.GetArgumentsForCallsMadeOn(
                 dataContext => dataContext.Save(Arg<GameDefinition>.Is.Anything, Arg<ApplicationUser>.Is.Anything));
 
             var actualGameDefinition = args[0][0] as GameDefinition;
             Assert.That(actualGameDefinition, Is.Not.Null);
             Assert.That(actualGameDefinition.BoardGameGeekGameDefinitionId, Is.EqualTo(EXPECTED_BGG_ID));
         }
+
     }
 }

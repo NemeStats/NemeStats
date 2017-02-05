@@ -15,8 +15,7 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
-using BusinessLogic.Models;
-using BusinessLogic.Models.Games;
+
 using BusinessLogic.Models.User;
 
 namespace BusinessLogic.Logic.GameDefinitions
@@ -24,6 +23,5 @@ namespace BusinessLogic.Logic.GameDefinitions
     public interface IGameDefinitionSaver
     {
         void UpdateGameDefinition(GameDefinitionUpdateRequest gameDefinitionUpdateRequest, ApplicationUser applicationUser);
-        GameDefinition CreateGameDefinition(CreateGameDefinitionRequest createGameDefinitionRequest, ApplicationUser applicationUser);
     }
 }

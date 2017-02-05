@@ -132,25 +132,6 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
         }
     }
 
-    public class When_GameDefinition_Name_Is_Provided : When_EditMode_Is_False
-    {
-        public override void SetUp()
-        {
-            base.SetUp();
-
-            Request.GameDefinitionName = "Test game";
-
-            AutoMocker.Get<IGameDefinitionSaver>()
-                .Expect(
-                    x =>
-                        x.CreateGameDefinition(
-                            Arg<CreateGameDefinitionRequest>.Matches(
-                                m => m.Name == Request.GameDefinitionName), Arg<ApplicationUser>.Is.Equal(CurrentUser)))
-                .Repeat.Once().Return(new GameDefinition());
-        }
-
-    }
-
     public class When_Some_PlayerId_Is_Not_Provided : When_EditMode_Is_False
     {
         public override void SetUp()
