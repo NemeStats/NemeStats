@@ -31,7 +31,7 @@
      }
 }
 
-@helper RenderAchievement(AchievementViewModel achievement)
+@helper RenderAchievement(AchievementTileViewModel achievement)
     {
 
 <a href="@Url.Action("Details","Achievement", routeValues: new {achievementId = achievement.Id})">
@@ -48,12 +48,12 @@
     <h5>
         @if (!string.IsNullOrEmpty(Model.CurrentUserId))
         {
-            if (@achievement.Winners.Any(w => w.UserId == Model.CurrentUserId))
+            if (achievement.CurrentPlayerUnlockedThisAchievement)
             {
                 <span class="fa fa-check text-success"></span>
             }
         }
-        Earned by @achievement.Winners.Count players
+        Earned by @achievement.NumberOfPlayersWithThisAchievement players
     </h5>
 <p><a href="@Url.Action("Details","Achievement", routeValues: new {achievementId = achievement.Id})" class="btn btn-default btn-xs">View details</a></p>
 }

@@ -6,11 +6,11 @@
 @{
     if (Model.HasAnyLevelUnlocked)
     {
-        ViewBag.Title = @Model.Achievement.Name + " unlocked for " + @Model.PlayerName;
+        ViewBag.Title = @Model.AchievementTile.Name + " unlocked for " + @Model.PlayerName;
     }
     else
     {
-        ViewBag.Title = @Model.Achievement.Name;
+        ViewBag.Title = @Model.AchievementTile.Name;
     }
     Layout = MVC.Shared.Views._BaseLayout;
     string levelClass;
@@ -19,7 +19,7 @@
 @if (Model.HasAnyLevelUnlocked)
 {
     <h2 class="page-header">
-        @Model.Achievement.Name achievement unlocked for <a href="@Url.Action(MVC.Player.Details(Model.PlayerId, null))">@Model.PlayerName</a> !
+        @Model.AchievementTile.Name achievement unlocked for <a href="@Url.Action(MVC.Player.Details(Model.PlayerId, null))">@Model.PlayerName</a> !
         <a class="btn btn-primary btn-xs" href="@Url.Action(MVC.Achievement.Index())">view all</a>
     </h2>
     levelClass = Model.AchievementLevel.ToString().ToLower();
@@ -27,10 +27,10 @@
 else
 {
     <h2 class="page-header">
-        @Model.Achievement.Name Achievement
+        @Model.AchievementTile.Name Achievement
         <a class="btn btn-primary btn-xs" href="@Url.Action(MVC.Achievement.Index())">view all</a>
     </h2>
-    levelClass = Model.Achievement.LevelThresholds.First().Key.ToString().ToLower();
+    levelClass = Model.AchievementTile.LevelThresholds.First().Key.ToString().ToLower();
 }
 <div class="panel panel-primary playerachievement">
     <div class="panel-heading">
@@ -40,8 +40,8 @@ else
         <div class="row">
             <div class="col-md-12">
 
-                <h2>@Model.Achievement.Name</h2>
-                <blockquote>@Model.Achievement.Description</blockquote>
+                <h2>@Model.AchievementTile.Name</h2>
+                <blockquote>@Model.AchievementTile.Description</blockquote>
 
             </div>
         </div>
@@ -52,7 +52,7 @@ else
                         <span class="achievement big @levelClass">
                             <span class="circle">
                                 <span class="content">
-                                    <span class="@Model.Achievement.IconClass"></span>
+                                    <span class="@Model.AchievementTile.IconClass"></span>
                                 </span>
                             </span>
                         </span>
@@ -79,7 +79,7 @@ else
                 }
 
                 <ul class="list-group">
-                    @foreach (var level in Model.Achievement.LevelThresholds)
+                    @foreach (var level in Model.AchievementTile.LevelThresholds)
                     {
                         @PlayerProgess(level, Model.PlayerProgress)
                     }
@@ -257,11 +257,11 @@ else
     </div>
 }
 
-@if (Model.Achievement.Winners.Any())
+@if (Model.AchievementTile.Winners.Any())
 {
     <div class="panel panel-primary">
         <div class="panel-heading">
-            <h4>Players with this Achievement <span class="badge">@Model.Achievement.Winners.Count</span></h4>
+            <h4>Players with this Achievement <span class="badge">@Model.AchievementTile.Winners.Count</span></h4>
         </div>
         <div class="panel-body">
             <div class="winnersList">
@@ -291,7 +291,7 @@ else
                         </thead>
                         <tbody class="list">
 
-                            @foreach (var winner in Model.Achievement.Winners.OrderByDescending(pg => pg.AchievementLastUpdateDate))
+                            @foreach (var winner in Model.AchievementTile.Winners.OrderByDescending(pg => pg.AchievementLastUpdateDate))
                             {
                                 <tr>
                                     <td class="playername-col" data-name="@winner.PlayerName">
@@ -301,7 +301,7 @@ else
                                         @Html.ActionLink(winner.GamingGroupName, "Details", "GamingGroup", new { id = winner.GamingGroupId }, new { })
                                     </td>
                                     <td class="date-col" data-date="@winner.AchievementLastUpdateDate.ToFileTimeUtc()">
-                                        @Html.ActionLink(winner.AchievementLastUpdateDate.ToShortDateString(), "PlayerAchievement", "Achievement", new { achievementId = Model.Achievement.Id, playerId = winner.PlayerId }, new { })
+                                        @Html.ActionLink(winner.AchievementLastUpdateDate.ToShortDateString(), "PlayerAchievement", "Achievement", new { achievementId = Model.AchievementTile.Id, playerId = winner.PlayerId }, new { })
                                     </td>
                                     <td class="level-col" data-level="@((int)winner.AchievementLevel)">
                                         @winner.AchievementLevel.ToString()

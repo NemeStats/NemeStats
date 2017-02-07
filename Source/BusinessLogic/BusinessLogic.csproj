@@ -243,9 +243,11 @@
     <Compile Include="Jobs\SitemapGenerator\SitemapGeneratorService.cs" />
     <Compile Include="Jobs\SitemapGenerator\StaticPagesSitemapGenerator.cs" />
     <Compile Include="Jobs\SitemapGenerator\UniversalGameSitemapGenerator.cs" />
+    <Compile Include="Logic\Achievements\AchievementRetriever.cs" />
     <Compile Include="Logic\Achievements\BoardGameGeek2017_10x10Achievement.cs" />
     <Compile Include="Logic\Achievements\BoardGameGeek_10x10Achievement.cs" />
     <Compile Include="Logic\Achievements\HolidayGamerAchievement.cs" />
+    <Compile Include="Logic\Achievements\IAchievementRetriever.cs" />
     <Compile Include="Logic\Achievements\SoCloseAchievement.cs" />
     <Compile Include="Logic\BoardGameGeekGameDefinitions\IBoardGameGeekGameDefinitionInfoRetriever.cs" />
     <Compile Include="Logic\BoardGameGeekGameDefinitions\IGameDetailsRetriever.cs" />
@@ -445,6 +447,7 @@
     </Compile>
     <Compile Include="Models\Achievements\AchievementLevel.cs" />
     <Compile Include="Models\Achievements\AchievementId.cs" />
+    <Compile Include="Models\Achievements\AchievementSummary.cs" />
     <Compile Include="Models\Games\BoardGameGeekGameCategory.cs" />
     <Compile Include="Models\Games\BoardGameGeekGameSummary.cs" />
     <Compile Include="Models\Games\BoardGameGeekInfo.cs" />

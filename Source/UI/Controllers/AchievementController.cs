@@ -1,6 +1,9 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 using BusinessLogic.Events.HandlerFactory;
+using BusinessLogic.Logic;
 using BusinessLogic.Logic.Achievements;
 using BusinessLogic.Logic.PlayerAchievements;
 using BusinessLogic.Logic.Players;
@@ -25,32 +28,36 @@ namespace UI.Controllers
         private readonly IPlayerRetriever _playerRetriever;
         private readonly IRecentPlayerAchievementsUnlockedRetreiver _recentPlayerAchievementsUnlockedRetreiver;
         private readonly IMapperFactory _mapperFactory;
+        private readonly IAchievementRetriever _achievementRetriever;
+        private readonly ITransformer _transformer;
 
         public AchievementController(IPlayerAchievementRetriever playerAchievementRetriever,
             IPlayerRetriever playerRetriever,
             IRecentPlayerAchievementsUnlockedRetreiver recentPlayerAchievementsUnlockedRetreiver,
-            IMapperFactory mapperFactory
-            )
+            IMapperFactory mapperFactory, 
+            IAchievementRetriever achievementRetriever, 
+            ITransformer transformer)
         {
             _playerAchievementRetriever = playerAchievementRetriever;
             _playerRetriever = playerRetriever;
             _recentPlayerAchievementsUnlockedRetreiver = recentPlayerAchievementsUnlockedRetreiver;
             _mapperFactory = mapperFactory;
+            _achievementRetriever = achievementRetriever;
+            _transformer = transformer;
         }
 
         [Route("")]
         [UserContext(RequiresGamingGroup = false)]
         public virtual ActionResult Index(ApplicationUser currentUser)
         {
-            var achievements = AchievementFactory.GetAchievements();
+            var achievements = _achievementRetriever.GetAllAchievementSummaries(currentUser);
             var model = new AchievementListViewModel
             {
                 CurrentUserId = currentUser?.Id,
-                Achievements = achievements.Select(a => _mapperFactory.GetMapper<IAchievement,AchievementViewModel>().Map(a)).OrderByDescending(a => a.Winners.Count).ThenBy(a => a.Name).ToList()
+                Achievements = _transformer.Transform<List<AchievementTileViewModel>>(achievements)
             };
 
             return View(MVC.Achievement.Views.Index, model);
-
         }
 
         [Route("{achievementId}/currentplayer")]
