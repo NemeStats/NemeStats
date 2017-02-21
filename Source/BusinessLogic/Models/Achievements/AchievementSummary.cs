@@ -10,6 +10,10 @@ namespace BusinessLogic.Models.Achievements
         public Dictionary<AchievementLevel, int> LevelThresholds { get; set; }
         public string Description { get; set; }
         public AchievementGroup Group { get; set; }
+    }
+
+    public class AggregateAchievementSummary : AchievementSummary
+    {
         public int NumberOfPlayersWithThisAchievement { get; set; }
         public bool CurrentPlayerUnlockedThisAchievement { get; set; }
     }

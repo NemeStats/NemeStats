@@ -331,6 +331,7 @@
     <Compile Include="UnitTests\LogicTests\PlayedGamesTests\PlayedGameSaverTests\TransformNewlyCompletedGameIntoPlayedGameTests.cs" />
     <Compile Include="UnitTests\LogicTests\PlayedGamesTests\PlayedGameSaverTests\UpdatePlayedGameTests.cs" />
     <Compile Include="UnitTests\LogicTests\PlayedGamesTests\PlayedGameSaverTests\ValidateAccessToPlayersTests.cs" />
+    <Compile Include="UnitTests\LogicTests\PlayerAchievementTests\GetCurrentPlayerAchievementDetailsTests.cs" />
     <Compile Include="UnitTests\LogicTests\PlayersTests\PlayerDeleterTests\DeletePlayerTests.cs" />
     <Compile Include="UnitTests\LogicTests\PlayersTests\PlayerNameBuilderTests\BuildPlayerNameTests.cs" />
     <Compile Include="UnitTests\LogicTests\PlayersTests\PlayerRetrieverTests\GetPlayerQuickStatsForUserTests.cs" />

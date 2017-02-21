@@ -2,6 +2,7 @@
 
 namespace BusinessLogic.Models.Games
 {
+    //TODO this should only have a constructor with read-only properties
     public class BoardGameGeekInfo
     {
         public int BoardGameGeekGameDefinitionId { get; set; }

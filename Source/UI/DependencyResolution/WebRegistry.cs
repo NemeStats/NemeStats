@@ -51,7 +51,6 @@ namespace UI.DependencyResolution
             r.For<ICustomMapper<IAchievement, AchievementSummaryViewModel>>().Use<AchievementToAchievementSummaryViewModelMapper>();
 
             r.For<ICustomMapper<PlayerAchievement, PlayerAchievementWinnerViewModel>>().Use<PlayerAchievementToPlayerAchievementWinnerViewModelMapper>();
-            r.For<ICustomMapper<PlayerAchievement, PlayerAchievementViewModel>>().Use<PlayerAchievementToPlayerAchievementViewModelMapper>();
 
             r.For<ICustomMapper<Player, PlayerListSummaryViewModel>>().Use<PlayerToPlayerListSummaryViewModelMapper>();
             r.For<ICustomMapper<PlayedGameQuickStats, PlayedGameQuickStatsViewModel>>().Use<PlayedGameQuickStatsToPlayedGameQuickStatsViewModelMapper>();

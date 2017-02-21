@@ -9,7 +9,6 @@ namespace UI.Models.Achievements
         public DateTime? LastUpdatedDate { get; set; }
         public int PlayerId { get; set; }
         public string PlayerName { get; set; }
-        public AchievementTileViewModel AchievementTile { get; set; }
         public AchievementLevel? AchievementLevel { get; set; }
 
         public bool HasAnyLevelUnlocked => AchievementLevel.HasValue && AchievementLevel.Value != BusinessLogic.Models.Achievements.AchievementLevel.None && DateCreated.HasValue && DateCreated.Value > DateTime.MinValue;

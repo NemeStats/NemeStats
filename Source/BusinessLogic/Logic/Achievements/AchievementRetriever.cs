@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using BusinessLogic.DataAccess;
 using BusinessLogic.Events.HandlerFactory;
@@ -17,11 +18,11 @@ namespace BusinessLogic.Logic.Achievements
             _dataContext = dataContext;
         }
 
-        public List<AchievementSummary> GetAllAchievementSummaries(ApplicationUser currentUser)
+        public List<AggregateAchievementSummary> GetAllAchievementSummaries(ApplicationUser currentUser)
         {
             var allAchievementsInTheDatabase = _dataContext.GetQueryable<PlayerAchievement>()
                 .GroupBy(x => x.AchievementId)
-                .Select(x => new AchievementSummary
+                .Select(x => new
                 {
                     Id = x.Key,
                     NumberOfPlayersWithThisAchievement = x.Count()
@@ -38,7 +39,7 @@ namespace BusinessLogic.Logic.Achievements
 
             var allAchievements = GetAllAchievements();
 
-            return allAchievements.Select(x => new AchievementSummary
+            return allAchievements.Select(x => new AggregateAchievementSummary
             {
                 Id = x.Id,
                 Name = x.Name,
@@ -55,6 +56,12 @@ namespace BusinessLogic.Logic.Achievements
         internal virtual List<IAchievement> GetAllAchievements()
         {
             return AchievementFactory.GetAchievements();
+        }
+
+        [Obsolete("calling this obsolete so I remember to update this")]
+        public IAchievement GetAchievement(AchievementId achievementId)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

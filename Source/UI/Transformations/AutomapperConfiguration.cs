@@ -154,11 +154,6 @@ namespace UI.Transformations
             Mapper.CreateMap<ChampionData, ChampionDataModel>(MemberList.Destination);
 
             Mapper.CreateMap<AchievementSummary, AchievementTileViewModel>();
-
-            Mapper.CreateMap<PlayerAchievement, PlayerAchievementViewModel>()
-                .ForMember(m => m.RelatedGameDefinitions, o => o.Ignore())
-                .ForMember(m => m.AchievementTile, o => o.Ignore())
-                .ForMember(m => m.PlayerProgress, o => o.Ignore());
         }
     }
 }

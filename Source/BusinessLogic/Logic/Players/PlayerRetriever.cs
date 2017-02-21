@@ -346,35 +346,27 @@ namespace BusinessLogic.Logic.Players
             return nemePointsSummary ?? new NemePointsSummary(0, 0, 0);
         }
 
-        public virtual int GetPlayerIdForCurrentUser(string applicationUserId, int gamingGroupId)
+        public virtual Player GetPlayerForCurrentUser(string applicationUserId, int gamingGroupId)
         {
             return (from player in _dataContext.GetQueryable<Player>()
                     where player.GamingGroupId == gamingGroupId
                      && player.ApplicationUserId == applicationUserId
-                    select player.Id)
+                    select player)
                     .FirstOrDefault();
-        }
-
-        public List<Player> GetPlayers(List<int> ids)
-        {
-            return _dataContext.GetQueryable<Player>()
-                .Where(p => ids.Contains(p.Id))
-                .Include(p => p.GamingGroup)
-                .ToList();
         }
 
         public virtual PlayerQuickStats GetPlayerQuickStatsForUser(string applicationUserId, int gamingGroupId)
         {
-            var playerIdForCurrentUser = GetPlayerIdForCurrentUser(applicationUserId, gamingGroupId);
+            var playerForCurrentUser = GetPlayerForCurrentUser(applicationUserId, gamingGroupId);
 
             var returnValue = new PlayerQuickStats();
 
-            if (playerIdForCurrentUser != 0)
+            if (playerForCurrentUser != null)
             {
-                returnValue.PlayerId = playerIdForCurrentUser;
-                returnValue.NemePointsSummary = GetNemePointsSummary(playerIdForCurrentUser);
+                returnValue.PlayerId = playerForCurrentUser.Id;
+                returnValue.NemePointsSummary = GetNemePointsSummary(playerForCurrentUser.Id);
 
-                var gameDefinitionTotals = GetGameDefinitionTotals(playerIdForCurrentUser);
+                var gameDefinitionTotals = GetGameDefinitionTotals(playerForCurrentUser.Id);
                 var topLevelTotals = GetTopLevelTotals(gameDefinitionTotals);
                 returnValue.TotalGamesPlayed = topLevelTotals.TotalGames;
                 returnValue.TotalGamesWon = topLevelTotals.TotalGamesWon;

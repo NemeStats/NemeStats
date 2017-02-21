@@ -447,7 +447,12 @@
     </Compile>
     <Compile Include="Models\Achievements\AchievementLevel.cs" />
     <Compile Include="Models\Achievements\AchievementId.cs" />
+    <Compile Include="Models\Achievements\AchievementRelatedGameDefinitionSummary.cs" />
+    <Compile Include="Models\Achievements\AchievementRelatedPlayedGameSummary.cs" />
+    <Compile Include="Models\Achievements\AchievementRelatedPlayerSummary.cs" />
     <Compile Include="Models\Achievements\AchievementSummary.cs" />
+    <Compile Include="Models\Achievements\AchievementWinner.cs" />
+    <Compile Include="Models\Achievements\PlayerAchievementDetails.cs" />
     <Compile Include="Models\Games\BoardGameGeekGameCategory.cs" />
     <Compile Include="Models\Games\BoardGameGeekGameSummary.cs" />
     <Compile Include="Models\Games\BoardGameGeekInfo.cs" />

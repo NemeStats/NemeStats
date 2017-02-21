@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using AutoMapper;
 using BusinessLogic.Events.HandlerFactory;
 using BusinessLogic.Logic;
 using BusinessLogic.Logic.Achievements;
@@ -16,6 +17,8 @@ using UI.Controllers.Helpers;
 using UI.Models.Achievements;
 using UI.Mappers.Extensions;
 using UI.Mappers.Interfaces;
+using UI.Models.GameDefinitionModels;
+using UI.Models.PlayedGame;
 using UI.Models.Players;
 
 namespace UI.Controllers
@@ -64,22 +67,22 @@ namespace UI.Controllers
         [UserContext]
         public virtual ActionResult DetailsForCurrentUser(AchievementId achievementId, ApplicationUser currentUser)
         {
-            var playerId = _playerRetriever.GetPlayerIdForCurrentUser(currentUser.Id, currentUser.CurrentGamingGroupId);
+            var playerAchievementDetails = _playerAchievementRetriever.GetCurrentPlayerAchievementDetails(achievementId, currentUser);
+            var playerAchievementViewModel =
+                _transformer.Transform<PlayerAchievementViewModel>(playerAchievementDetails);
 
-            var playerAchievement = _playerAchievementRetriever.GetPlayerAchievement(playerId, achievementId);
+            return View(MVC.Achievement.Views.Details, playerAchievementViewModel);
+        }
 
-            if (playerAchievement != null)
-            {
-                return PlayerAchievement(achievementId, playerId);
-            }
-
-            playerAchievement = new PlayerAchievement
-            {
-                AchievementId = achievementId,
-                PlayerId = playerId
-            };
-            var model = _mapperFactory.GetMapper<PlayerAchievement, PlayerAchievementViewModel>().Map(playerAchievement);
-            return View(MVC.Achievement.Views.Details, model);
+        static AchievementController()
+        {
+            Mapper.CreateMap<AchievementRelatedPlayedGameSummary, PlayedGameQuickStatsViewModel>();
+            Mapper.CreateMap<AchievementRelatedGameDefinitionSummary, GameDefinitionSummaryListViewModel>();
+            Mapper.CreateMap<AchievementRelatedPlayerSummary, PlayerListSummaryViewModel>();
+            Mapper.CreateMap<AggregateAchievementSummary, AchievementTileViewModel>();
+            Mapper.CreateMap<AchievementWinner, AchievementWinnerViewModel>();
+            Mapper.CreateMap<PlayerAchievementDetails, PlayerAchievementViewModel>();
+                //.ForMember(m => m.AchievementTile, opt => opt.MapFrom(x => x.AggregateAchievementSummary))
         }
 
         [Route("{achievementId}")]

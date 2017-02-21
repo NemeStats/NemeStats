@@ -28,8 +28,7 @@ namespace BusinessLogic.Logic.Players
         PlayerDetails GetPlayerDetails(int playerId, int numberOfRecentGamesToRetrieve);
         PlayerQuickStats GetPlayerQuickStatsForUser(string applicationUserId, int gamingGroupId);
         PlayerStatistics GetPlayerStatistics(int playerId);
-        int GetPlayerIdForCurrentUser(string applicationUserId, int gamingGroupId);
-        List<Player> GetPlayers(List<int> ids);
+        Player GetPlayerForCurrentUser(string applicationUserId, int gamingGroupId);
         PlayersToCreateModel GetPlayersToCreate(string currentUserId, int currentGamingGroupId);
     }
 }
