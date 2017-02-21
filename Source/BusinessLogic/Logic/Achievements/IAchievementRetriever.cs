@@ -6,6 +6,7 @@ namespace BusinessLogic.Logic.Achievements
 {
     public interface IAchievementRetriever
     {
-        List<AchievementSummary> GetAllAchievementSummaries(ApplicationUser currentUser);
+        List<AggregateAchievementSummary> GetAllAchievementSummaries(ApplicationUser currentUser);
+        IAchievement GetAchievement(AchievementId achievementId);
     }
 }

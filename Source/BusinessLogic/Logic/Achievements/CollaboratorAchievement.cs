@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using BusinessLogic.DataAccess;
-using BusinessLogic.Models;
 using BusinessLogic.Models.Achievements;
 
 namespace BusinessLogic.Logic.Achievements
@@ -37,6 +35,7 @@ namespace BusinessLogic.Logic.Achievements
                 AchievementId = Id
             };
 
+            //TODO this will go away. Need to refactor
             if (this.Winners.Value.Any(w => w.PlayerId == playerId))
             {
                 result.PlayerProgress = 1;
