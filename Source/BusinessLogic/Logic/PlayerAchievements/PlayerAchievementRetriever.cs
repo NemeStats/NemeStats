@@ -8,6 +8,7 @@ using BusinessLogic.Logic.BoardGameGeekGameDefinitions;
 using BusinessLogic.Logic.Players;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Achievements;
+using BusinessLogic.Models.PlayedGames;
 using BusinessLogic.Models.User;
 
 namespace BusinessLogic.Logic.PlayerAchievements
@@ -118,11 +119,11 @@ namespace BusinessLogic.Logic.PlayerAchievements
                             BoardGameGeekGameDefinitionId = x.GameDefinition.BoardGameGeekGameDefinitionId,
                             GameDefinitionName = x.GameDefinition.Name,
                             PlayedGameId = x.Id,
-                            WinningPlayerId = x.WinningPlayer.Id,
-                            WinningPlayerName = x.WinningPlayer.Name,
                             ThumbnailImageUrl =
                                 x.GameDefinition.BoardGameGeekGameDefinition == null ? null : x.GameDefinition.BoardGameGeekGameDefinition.Thumbnail
-                        }).ToList();
+                        })
+                        .OrderByDescending(x => x.DatePlayed)
+                        .ToList();
                     break;
                 case AchievementGroup.Player:
                     result.RelatedPlayers = _dataContext.GetQueryable<Player>()
