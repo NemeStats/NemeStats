@@ -14,6 +14,7 @@ using BusinessLogic.Models.Achievements;
 using BusinessLogic.Models.Games;
 using BusinessLogic.Models.PlayedGames;
 using BusinessLogic.Models.User;
+using NSubstitute;
 using NUnit.Framework;
 using Rhino.Mocks;
 using Shouldly;
@@ -217,6 +218,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayerAchievementTests
             private BoardGameGeekInfo _expectedBoardGameGeekInfo;
             private PlayedGame _expectedPlayedGame1;
             private PlayedGame _expectedPlayedGame2;
+            private Player _expectedPlayer1;
+            private Player _expectedPlayer2;
 
             [SetUp]
             public override void SetUp()
@@ -227,35 +230,43 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayerAchievementTests
 
                 _entityIds = new List<int> { _expectedEntityId1, _expectedEntityId2 };
 
-                _expectedGameDefinition = new GameDefinition
+                SetUpGameDefinitionStuff();
+
+                SetUpPlayedGameStuff();
+
+                _expectedPlayer1 = new Player
                 {
                     Id = _expectedEntityId1,
-                    GamingGroupId = 4,
-                    Name = "zzz some game definition name",
-                    Description = "some game definition description",
-                    BoardGameGeekGameDefinitionId = 53
+                    Name = "aaa player 1 name",
+                    GamingGroupId = 1000,
+                    GamingGroup = new GamingGroup
+                    {
+                        Name = "Gaming group name 1"
+                    }
                 };
-                _expectedGameDefinitionWithNoBoardGameGeekGameDefinitionId = new GameDefinition
+
+                _expectedPlayer2 = new Player
                 {
                     Id = _expectedEntityId2,
-                    GamingGroupId = 4,
-                    Name = "aaa some game definition name 2",
-                    Description = "some game definition description 2",
-                    BoardGameGeekGameDefinitionId = null
-                };
-                var gameDefinitionQueryable = new List<GameDefinition>
-                {
-                    //--add this one first to make sure that the query orders correctly
-                    _expectedGameDefinition,
-                    _expectedGameDefinitionWithNoBoardGameGeekGameDefinitionId,
-                    new GameDefinition
+                    Name = "bbb player 2 name",
+                    GamingGroupId = 1001,
+                    GamingGroup = new GamingGroup
                     {
-                        Id = -1
+                        Name = "Gaming group name 2"
                     }
+                };
+
+                var playerQueryable = new List<Player>
+                {
+                    _expectedPlayer2,
+                    _expectedPlayer1,
+                    new Player()
                 }.AsQueryable();
+                _autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<Player>()).Return(playerQueryable);
+            }
 
-                _autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<GameDefinition>()).Return(gameDefinitionQueryable);
-
+            private void SetUpPlayedGameStuff()
+            {
                 _expectedBoardGameGeekInfo = new BoardGameGeekInfo
                 {
                     BoardGameGeekGameDefinitionId = _expectedGameDefinition.BoardGameGeekGameDefinitionId.Value
@@ -302,6 +313,38 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayerAchievementTests
                     new PlayedGame()
                 }.AsQueryable();
                 _autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<PlayedGame>()).Return(playedGameQueryable);
+            }
+
+            private void SetUpGameDefinitionStuff()
+            {
+                _expectedGameDefinition = new GameDefinition
+                {
+                    Id = _expectedEntityId1,
+                    GamingGroupId = 4,
+                    Name = "zzz some game definition name",
+                    Description = "some game definition description",
+                    BoardGameGeekGameDefinitionId = 53
+                };
+                _expectedGameDefinitionWithNoBoardGameGeekGameDefinitionId = new GameDefinition
+                {
+                    Id = _expectedEntityId2,
+                    GamingGroupId = 4,
+                    Name = "aaa some game definition name 2",
+                    Description = "some game definition description 2",
+                    BoardGameGeekGameDefinitionId = null
+                };
+                var gameDefinitionQueryable = new List<GameDefinition>
+                {
+                    //--add this one first to make sure that the query orders correctly
+                    _expectedGameDefinition,
+                    _expectedGameDefinitionWithNoBoardGameGeekGameDefinitionId,
+                    new GameDefinition
+                    {
+                        Id = -1
+                    }
+                }.AsQueryable();
+
+                _autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<GameDefinition>()).Return(gameDefinitionQueryable);
             }
 
             [Test]
@@ -355,6 +398,30 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayerAchievementTests
                 secondResult.PlayedGameId.ShouldBe(_expectedPlayedGame2.Id);
                 secondResult.ThumbnailImageUrl.ShouldBeNull();
                 secondResult.WinnerType.ShouldBe(_expectedPlayedGame2.WinnerType);
+            }
+
+            public void It_Sets_Related_Players_When_The_AchievementGroup_Is_Player_And_Orders_By_Player_Name()
+            {
+                //--arrange
+
+                //--act
+                _autoMocker.ClassUnderTest.SetRelatedEntities(AchievementGroup.Player, _playerAchievementDetails, _entityIds);
+
+                //--assert
+                _playerAchievementDetails.RelatedPlayers.ShouldNotBeNull();
+                _playerAchievementDetails.RelatedPlayers.Count.ShouldBe(2);
+
+                var firstResult = _playerAchievementDetails.RelatedPlayers[0];
+                firstResult.GamingGroupId.ShouldBe(_expectedPlayer1.GamingGroupId);
+                firstResult.GamingGroupName.ShouldBe(_expectedPlayer1.GamingGroup.Name);
+                firstResult.PlayerId.ShouldBe(_expectedPlayer1.Id);
+                firstResult.PlayerName.ShouldBe(_expectedPlayer1.Name);
+
+                var secondResult = _playerAchievementDetails.RelatedPlayers[1];
+                secondResult.GamingGroupId.ShouldBe(_expectedPlayer2.GamingGroupId);
+                secondResult.GamingGroupName.ShouldBe(_expectedPlayer2.GamingGroup.Name);
+                secondResult.PlayerId.ShouldBe(_expectedPlayer2.Id);
+                secondResult.PlayerName.ShouldBe(_expectedPlayer2.Name);
             }
         }
     }
