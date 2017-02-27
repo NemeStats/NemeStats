@@ -1,9 +1,8 @@
 ﻿using System;
-using BusinessLogic.Models.Achievements;
 
-namespace UI.Models.Players
+namespace BusinessLogic.Models.Achievements
 {
-    public class PlayerAchievementWinnerViewModel
+    public class PlayerAchievementWinner
     {
         public AchievementId AchievementId { get; set; }
         public string AchievementName { get; set; }
@@ -11,7 +10,7 @@ namespace UI.Models.Players
         public string PlayerName { get; set; }
         public int PlayerId { get; set; }
         public string UserId { get; set; }
-        public string GamingGroupId { get; set; }
+        public int GamingGroupId { get; set; }
         public string GamingGroupName { get; set; }
         public DateTime AchievementLastUpdateDate { get; set; }
         public AchievementLevel AchievementLevel { get; set; }

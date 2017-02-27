@@ -396,7 +396,6 @@
     <Compile Include="HtmlHelpers\MvcHtmlStringExtension.cs" />
     <Compile Include="HtmlHelpers\PlayedGameHelper.cs" />
     <Compile Include="HtmlHelpers\UIHelper.cs" />
-    <Compile Include="Mappers\CustomMappers\AchievementToAchievementSummaryViewModelMapper.cs" />
     <Compile Include="Mappers\CustomMappers\BaseCustomMapper.cs" />
     <Compile Include="Mappers\CustomMappers\GameDefinitionDisplayInfoToGameDefinitionDisplayInfoViewModelMapper.cs" />
     <Compile Include="Mappers\CustomMappers\GameDefinitionSummaryToGameDefinitionSummaryListViewModelMapper.cs" />
@@ -404,13 +403,11 @@
     <Compile Include="Mappers\Interfaces\ICustomMapper.cs" />
     <Compile Include="Mappers\Extensions\PagedListExtensions.cs" />
     <Compile Include="Mappers\CustomMappers\PlayedGameQuickStatsToPlayedGameQuickStatsViewModelMapper.cs" />
-    <Compile Include="Mappers\CustomMappers\PlayerAchievementToPlayerAchievementWinnerViewModelMapper.cs" />
     <Compile Include="Mappers\CustomMappers\PlayerToPlayerListSummaryViewModelMapper.cs" />
     <Compile Include="Mappers\Interfaces\IMapperFactory.cs" />
     <Compile Include="Mappers\MapperFactory.cs" />
     <Compile Include="Models\Achievements\AchievementDetailsViewModel.cs" />
     <Compile Include="Models\Achievements\AchievementListViewModel.cs" />
-    <Compile Include="Models\Achievements\AchievementSummaryViewModel.cs" />
     <Compile Include="Models\Achievements\AchievementTileViewModel.cs" />
     <Compile Include="Models\Achievements\AchievementWinnerViewModel.cs" />
     <Compile Include="Models\Achievements\PlayerAchievementSummaryViewModel.cs" />

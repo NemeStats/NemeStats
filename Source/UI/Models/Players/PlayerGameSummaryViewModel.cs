@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-namespace UI.Models.Players
+﻿namespace UI.Models.Players
 {
     public class PlayerGameSummaryViewModel
     {

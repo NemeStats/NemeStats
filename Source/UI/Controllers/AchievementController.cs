@@ -74,17 +74,6 @@ namespace UI.Controllers
             return View(MVC.Achievement.Views.Details, playerAchievementViewModel);
         }
 
-        static AchievementController()
-        {
-            Mapper.CreateMap<AchievementRelatedPlayedGameSummary, PlayedGameQuickStatsViewModel>();
-            Mapper.CreateMap<AchievementRelatedGameDefinitionSummary, GameDefinitionSummaryListViewModel>();
-            Mapper.CreateMap<AchievementRelatedPlayerSummary, PlayerListSummaryViewModel>();
-            Mapper.CreateMap<AggregateAchievementSummary, AchievementTileViewModel>();
-            Mapper.CreateMap<AchievementWinner, AchievementWinnerViewModel>();
-            Mapper.CreateMap<PlayerAchievementDetails, PlayerAchievementViewModel>();
-                //.ForMember(m => m.AchievementTile, opt => opt.MapFrom(x => x.AggregateAchievementSummary))
-        }
-
         [Route("{achievementId}")]
         [UserContext(RequiresGamingGroup = false)]
         public virtual ActionResult Details(AchievementId achievementId, ApplicationUser currentUser)
@@ -94,13 +83,10 @@ namespace UI.Controllers
                 return DetailsForCurrentUser(achievementId, currentUser);
             }
 
-            var playerAchievement = new PlayerAchievement
-            {
-                AchievementId = achievementId,
-                PlayerId = 0
-            };
-            var model = _mapperFactory.GetMapper<PlayerAchievement, PlayerAchievementViewModel>().Map(playerAchievement);
-            return View(MVC.Achievement.Views.Details, model);
+            var playerAchievemenDetails = _playerAchievementRetriever.GetCurrentPlayerAchievementDetails(achievementId, currentUser);
+
+            var viewModel = _transformer.Transform<PlayerAchievementViewModel>(playerAchievemenDetails);
+            return View(MVC.Achievement.Views.Details, viewModel);
         }
 
         [Route("{achievementId}/player/{playerId}")]
@@ -126,7 +112,7 @@ namespace UI.Controllers
                     Page = page
                 });
 
-            var model = recentUnlocks.ToMappedPagedList(_mapperFactory.GetMapper<PlayerAchievement, PlayerAchievementWinnerViewModel>());
+            var model = recentUnlocks.ToTransformedPagedList<PlayerAchievementWinner, PlayerAchievementWinnerViewModel>(_transformer);
 
             return View(MVC.Achievement.Views.RecentAchievementsUnlocked, model);
         }

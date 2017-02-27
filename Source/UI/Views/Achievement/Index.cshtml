@@ -34,7 +34,7 @@
 @helper RenderAchievement(AchievementTileViewModel achievement)
     {
 
-<a href="@Url.Action("Details","Achievement", routeValues: new {achievementId = achievement.Id})">
+<a href="@Url.Action("Details","Achievement", routeValues: new {achievementId = achievement.AchievementId})">
     <span class="achievement big @achievement.LevelThresholds.First().Key.ToString().ToLower()" data-container="body" data-toggle="popover" data-placement="top" data-content="@achievement.Description">
         <span class="circle">
             <span class="content">
@@ -44,7 +44,7 @@
     </span>
 </a>
 
-<h4 class="name">@achievement.Name</h4>
+<h4 class="name">@achievement.AchievementName</h4>
     <h5>
         @if (!string.IsNullOrEmpty(Model.CurrentUserId))
         {
@@ -55,5 +55,5 @@
         }
         Earned by @achievement.NumberOfPlayersWithThisAchievement players
     </h5>
-<p><a href="@Url.Action("Details","Achievement", routeValues: new {achievementId = achievement.Id})" class="btn btn-default btn-xs">View details</a></p>
+<p><a href="@Url.Action("Details","Achievement", routeValues: new {achievementId = achievement.AchievementId})" class="btn btn-default btn-xs">View details</a></p>
 }

@@ -153,7 +153,21 @@ namespace UI.Transformations
 
             Mapper.CreateMap<ChampionData, ChampionDataModel>(MemberList.Destination);
 
-            Mapper.CreateMap<AchievementSummary, AchievementTileViewModel>();
+            Mapper.CreateMap<AchievementSummary, AchievementTileViewModel>(MemberList.Destination);
+
+            Mapper.CreateMap<AchievementRelatedPlayerSummary, PlayerListSummaryViewModel>();
+
+            Mapper.CreateMap<PlayerAchievementWinner, PlayerAchievementWinnerViewModel>();
+
+            Mapper.CreateMap<AchievementWinner, AchievementWinnerViewModel>();
+
+            Mapper.CreateMap<PlayerAchievementDetails, PlayerAchievementViewModel>();
+
+            Mapper.CreateMap<AggregateAchievementSummary, AchievementTileViewModel>();
+
+            Mapper.CreateMap<AchievementRelatedGameDefinitionSummary, GameDefinitionSummaryListViewModel>();
+
+            Mapper.CreateMap<AchievementRelatedPlayedGameSummary, PlayedGameQuickStatsViewModel>();
         }
     }
 }

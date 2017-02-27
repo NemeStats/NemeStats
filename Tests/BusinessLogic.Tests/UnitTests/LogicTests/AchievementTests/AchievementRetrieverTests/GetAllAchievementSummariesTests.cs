@@ -81,29 +81,29 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.AchievementTests.AchievementR
             results.Count.ShouldBe(3);
             
             var achievement1 = results[0];
-            achievement1.Id.ShouldBe(_achievement1.Id);
+            achievement1.AchievementId.ShouldBe(_achievement1.Id);
             achievement1.Description.ShouldBe(_achievement1.Description);
             achievement1.NumberOfPlayersWithThisAchievement.ShouldBe(2);
             achievement1.Group.ShouldBe(_achievement1.Group);
             achievement1.IconClass.ShouldBe(_achievement1.IconClass);
             achievement1.LevelThresholds.ShouldBe(_achievement1.LevelThresholds);
-            achievement1.Name.ShouldBe(_achievement1.Name);
+            achievement1.AchievementName.ShouldBe(_achievement1.Name);
             achievement1.CurrentPlayerUnlockedThisAchievement.ShouldBeTrue();
 
             var achievement2 = results[1];
-            achievement2.Id.ShouldBe(_achievement2.Id);
+            achievement2.AchievementId.ShouldBe(_achievement2.Id);
             achievement2.Description.ShouldBe(achievement2.Description);
             achievement2.NumberOfPlayersWithThisAchievement.ShouldBe(1);
             achievement2.Group.ShouldBe(achievement2.Group);
             achievement2.IconClass.ShouldBe(achievement2.IconClass);
             achievement2.LevelThresholds.ShouldBe(achievement2.LevelThresholds);
-            achievement2.Name.ShouldBe(achievement2.Name);
+            achievement2.AchievementName.ShouldBe(achievement2.AchievementName);
             achievement2.CurrentPlayerUnlockedThisAchievement.ShouldBeFalse();
 
             //--don't bother checking the rest of third achievement because the previous 2 are good enough 
             //  (and I'm a little lazy, but not too lazy to write this comment :P
             var achievement3 = results[2];
-            achievement3.Id.ShouldBe(_achievementNoOneHas.Id);
+            achievement3.AchievementId.ShouldBe(_achievementNoOneHas.Id);
         }
 
         [Test]

@@ -94,19 +94,27 @@ namespace BusinessLogic.Logic.PlayerAchievements
             switch (achievementGroup)
             {
                 case AchievementGroup.Game:
-                    result.RelatedGameDefinitions = _dataContext.GetQueryable<GameDefinition>()
-                        .Where(x => relatedEntityIds.Contains(x.Id))
-                        .Select(x => new AchievementRelatedGameDefinitionSummary
+                  var intermediateAnonymousResult = _dataContext.GetQueryable<GameDefinition>()
+                    .Where(x => relatedEntityIds.Contains(x.Id))
+                    .Select(x => new
+                    {
+                        AchievementRelatedGameDefinitionSummary = new AchievementRelatedGameDefinitionSummary
                         {
                             Id = x.Id,
-                            Name = x.Name,
-                            GamingGroupId = x.GamingGroupId,
-                            BoardGameGeekInfo = x.BoardGameGeekGameDefinitionId == null
-                                ? null
-                                : _boardGameGeekGameDefinitionInfoRetriever.GetResults(x.BoardGameGeekGameDefinitionId.Value),
-                        })
-                        .OrderBy(x => x.Name)
-                        .ToList();
+                                Name = x.Name,
+                                GamingGroupId = x.GamingGroupId
+                        },
+                        x.BoardGameGeekGameDefinitionId
+                    } )
+                    .OrderBy(x => x.AchievementRelatedGameDefinitionSummary.Name)
+                    .ToList();
+
+                    foreach (var recordWithABoardGameGeekGameDefinitionId in intermediateAnonymousResult.Where(x => x.BoardGameGeekGameDefinitionId != null))
+                    {
+                        recordWithABoardGameGeekGameDefinitionId.AchievementRelatedGameDefinitionSummary.BoardGameGeekInfo =
+                            _boardGameGeekGameDefinitionInfoRetriever.GetResults(recordWithABoardGameGeekGameDefinitionId.BoardGameGeekGameDefinitionId.Value);
+                    }
+                    result.RelatedGameDefinitions = intermediateAnonymousResult.Select(x => x.AchievementRelatedGameDefinitionSummary).ToList();
                     break;
                 case AchievementGroup.PlayedGame:
                     result.RelatedPlayedGames = _dataContext.GetQueryable<PlayedGame>()

@@ -1,6 +1,5 @@
 using System.Web;
 using BusinessLogic.Logic;
-using BusinessLogic.Logic.Achievements;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
 using BusinessLogic.Models.PlayedGames;
@@ -8,10 +7,8 @@ using BusinessLogic.Providers;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.DataProtection;
 using StructureMap;
-using StructureMap.Graph;
 using UI.Mappers.CustomMappers;
 using UI.Mappers.Interfaces;
-using UI.Models.Achievements;
 using UI.Models.GameDefinitionModels;
 using UI.Models.PlayedGame;
 using UI.Models.Players;
@@ -47,10 +44,6 @@ namespace UI.DependencyResolution
 
             r.For<ICustomMapper<SavePlayedGameRequest, NewlyCompletedGame>>().Use<CreatePlayedGameRequestToNewlyCompletedGameMapper>();
             r.For<ICustomMapper<SavePlayedGameRequest, UpdatedGame>>().Use<SavePlayedGameRequestToUpdatedGameGameMapper>();
-
-            r.For<ICustomMapper<IAchievement, AchievementSummaryViewModel>>().Use<AchievementToAchievementSummaryViewModelMapper>();
-
-            r.For<ICustomMapper<PlayerAchievement, PlayerAchievementWinnerViewModel>>().Use<PlayerAchievementToPlayerAchievementWinnerViewModelMapper>();
 
             r.For<ICustomMapper<Player, PlayerListSummaryViewModel>>().Use<PlayerToPlayerListSummaryViewModelMapper>();
             r.For<ICustomMapper<PlayedGameQuickStats, PlayedGameQuickStatsViewModel>>().Use<PlayedGameQuickStatsToPlayedGameQuickStatsViewModelMapper>();

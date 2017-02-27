@@ -41,8 +41,8 @@ namespace BusinessLogic.Logic.Achievements
 
             return allAchievements.Select(x => new AggregateAchievementSummary
             {
-                Id = x.Id,
-                Name = x.Name,
+                AchievementId = x.Id,
+                AchievementName = x.Name,
                 CurrentPlayerUnlockedThisAchievement = allAchievementsThisPlayerHasEarned.Contains(x.Id),
                 NumberOfPlayersWithThisAchievement =
                     allAchievementsInTheDatabase.ContainsKey(x.Id) ? allAchievementsInTheDatabase[x.Id].NumberOfPlayersWithThisAchievement : 0,
@@ -58,10 +58,9 @@ namespace BusinessLogic.Logic.Achievements
             return AchievementFactory.GetAchievements();
         }
 
-        [Obsolete("calling this obsolete so I remember to update this")]
         public IAchievement GetAchievement(AchievementId achievementId)
         {
-            throw new System.NotImplementedException();
+            return AchievementFactory.GetAchievementById(achievementId);
         }
     }
 }
