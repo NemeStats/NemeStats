@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using BusinessLogic.DataAccess;
+using BusinessLogic.Models;
 using BusinessLogic.Models.Achievements;
 
 namespace BusinessLogic.Logic.Achievements
@@ -36,8 +37,8 @@ namespace BusinessLogic.Logic.Achievements
                 AchievementId = Id
             };
 
-            //TODO this will go away. Need to refactor
-            if (this.Winners.Value.Any(w => w.PlayerId == playerId))
+            var thisPlayerEarnedTheAchievement = DataContext.GetQueryable<PlayerAchievement>().Any(x => x.PlayerId == playerId);
+            if (thisPlayerEarnedTheAchievement)
             {
                 result.PlayerProgress = 1;
                 result.LevelAwarded = AchievementLevel.Gold;

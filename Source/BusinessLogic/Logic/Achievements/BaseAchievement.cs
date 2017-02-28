@@ -30,8 +30,6 @@ namespace BusinessLogic.Logic.Achievements
         public abstract string IconClass { get; }
         public abstract Dictionary<AchievementLevel, int> LevelThresholds { get; }
         public abstract AchievementAwarded IsAwardedForThisPlayer(int playerId);
-        [Obsolete("this is going away soon... on this branch")]
-        public Lazy<List<PlayerAchievement>> Winners { get; set; }
 
         public string Description
         {
