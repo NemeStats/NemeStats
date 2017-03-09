@@ -28,21 +28,18 @@ namespace UI.Controllers
     {
 
         private readonly IPlayerAchievementRetriever _playerAchievementRetriever;
-        private readonly IPlayerRetriever _playerRetriever;
         private readonly IRecentPlayerAchievementsUnlockedRetreiver _recentPlayerAchievementsUnlockedRetreiver;
         private readonly IMapperFactory _mapperFactory;
         private readonly IAchievementRetriever _achievementRetriever;
         private readonly ITransformer _transformer;
 
         public AchievementController(IPlayerAchievementRetriever playerAchievementRetriever,
-            IPlayerRetriever playerRetriever,
             IRecentPlayerAchievementsUnlockedRetreiver recentPlayerAchievementsUnlockedRetreiver,
             IMapperFactory mapperFactory, 
             IAchievementRetriever achievementRetriever, 
             ITransformer transformer)
         {
             _playerAchievementRetriever = playerAchievementRetriever;
-            _playerRetriever = playerRetriever;
             _recentPlayerAchievementsUnlockedRetreiver = recentPlayerAchievementsUnlockedRetreiver;
             _mapperFactory = mapperFactory;
             _achievementRetriever = achievementRetriever;

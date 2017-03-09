@@ -26,11 +26,12 @@ using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using BusinessLogic.Logic;
 using BusinessLogic.Logic.Players;
+using BusinessLogic.Models.Achievements;
 using BusinessLogic.Models.Points;
-using UI.Mappers;
-using UI.Mappers.CustomMappers;
-using UI.Mappers.Interfaces;
+using StructureMap.AutoMocking;
+using UI.Models.Achievements;
 using UI.Models.Badges;
 using UI.Models.Players;
 using UI.Models.Points;
@@ -42,12 +43,9 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
     [TestFixture]
     public class BuildTests
     {
-        private IGameResultViewModelBuilder gameResultViewModelBuilder;
-        private IMinionViewModelBuilder minionViewModelBuilderMock;
-        private IMapperFactory mapperFactory;
+        private RhinoAutoMocker<PlayerDetailsViewModelBuilder> _autoMocker;
         private PlayerDetails playerDetails;
         private PlayerDetailsViewModel playerDetailsViewModel;
-        private PlayerDetailsViewModelBuilder builder;
         private ApplicationUser currentUser;
         private PlayerVersusPlayerStatistics normalPlayer;
         private PlayerVersusPlayerStatistics nemesisPlayer;
@@ -66,9 +64,10 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         [SetUp]
         public void TestFixtureSetUp()
         {
+            _autoMocker = new RhinoAutoMocker<PlayerDetailsViewModelBuilder>();
+
+            //TODO shouldn't have to do this. Probably need a test base
             AutomapperConfiguration.Configure();
-            minionViewModelBuilderMock = MockRepository.GenerateMock<IMinionViewModelBuilder>();
-            mapperFactory = MockRepository.GenerateStub<IMapperFactory>();
 
             currentUser = new ApplicationUser()
             {
@@ -220,22 +219,24 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
                         GameDefinitionId = gameDefinitionIdThatIsBothCurrentlyAndFormerlyChampionedByCurrentPlayer
                     }
                 },
-                NemePointsSummary = new NemePointsSummary(1, 3, 5)
+                NemePointsSummary = new NemePointsSummary(1, 3, 5),
+                Achievements = new List<PlayerAchievementWinner>
+                {
+                    new PlayerAchievementWinner()
+                }
             };
 
-            gameResultViewModelBuilder
-                = MockRepository.GenerateMock<IGameResultViewModelBuilder>();
-            gameResultViewModelBuilder.Expect(build => build.Build(playerGameResults[0]))
+            _autoMocker.Get<IGameResultViewModelBuilder>().Expect(build => build.Build(playerGameResults[0]))
                     .Repeat
                     .Once()
                     .Return(new Models.PlayedGame.GameResultViewModel() { PlayedGameId = playerGameResults[0].PlayedGameId });
-            gameResultViewModelBuilder.Expect(build => build.Build(playerGameResults[1]))
+            _autoMocker.Get<IGameResultViewModelBuilder>().Expect(build => build.Build(playerGameResults[1]))
                     .Repeat
                     .Once()
                     .Return(new Models.PlayedGame.GameResultViewModel() { PlayedGameId = playerGameResults[1].PlayedGameId });
             foreach (var player in playerDetails.Minions)
             {
-                minionViewModelBuilderMock.Expect(mock => mock.Build(player))
+                _autoMocker.Get<IMinionViewModelBuilder>().Expect(mock => mock.Build(player))
                     .Return(new MinionViewModel() { MinionPlayerId = player.Id });
             }
 
@@ -253,20 +254,21 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
             };
             playerDetails.FormerChampionedGames = formerChampionedGames;
 
-          
+            foreach (var achievement in playerDetails.Achievements)
+            {
+                _autoMocker.Get<ITransformer>()
+                    .Expect(mock => mock.Transform<PlayerAchievementSummaryViewModel>(achievement))
+                    .Return(new PlayerAchievementSummaryViewModel());
+            }
 
-            builder = new PlayerDetailsViewModelBuilder(gameResultViewModelBuilder, minionViewModelBuilderMock, mapperFactory);
-
-            playerDetailsViewModel = builder.Build(playerDetails, twitterMinionBraggingUrl, currentUser);
+            playerDetailsViewModel = _autoMocker.ClassUnderTest.Build(playerDetails, twitterMinionBraggingUrl, currentUser);
         }
 
         [Test]
         public void PlayerDetailsCannotBeNull()
         {
-            var builder = new PlayerDetailsViewModelBuilder(null, null, null);
-
             var exception = Assert.Throws<ArgumentNullException>(() =>
-                    builder.Build(null, twitterMinionBraggingUrl, currentUser));
+                    _autoMocker.ClassUnderTest.Build(null, twitterMinionBraggingUrl, currentUser));
 
             Assert.AreEqual("playerDetails", exception.ParamName);
         }
@@ -274,10 +276,8 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         [Test]
         public void ItRequiresPlayerGameResults()
         {
-            var builder = new PlayerDetailsViewModelBuilder(null, null, null);
-
             var exception = Assert.Throws<ArgumentException>(() =>
-                    builder.Build(new PlayerDetails(), twitterMinionBraggingUrl, currentUser));
+                    _autoMocker.ClassUnderTest.Build(new PlayerDetails(), twitterMinionBraggingUrl, currentUser));
 
             Assert.AreEqual(PlayerDetailsViewModelBuilder.EXCEPTION_PLAYER_GAME_RESULTS_CANNOT_BE_NULL, exception.Message);
         }
@@ -285,10 +285,9 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         [Test]
         public void ItRequiresPlayerStatistics()
         {
-            var builder = new PlayerDetailsViewModelBuilder(null, null, null);
             var playerDetailsWithNoStatistics = new PlayerDetails() { PlayerGameResults = new List<PlayerGameResult>() };
             var exception = Assert.Throws<ArgumentException>(() =>
-                    builder.Build(playerDetailsWithNoStatistics, twitterMinionBraggingUrl, currentUser));
+                    _autoMocker.ClassUnderTest.Build(playerDetailsWithNoStatistics, twitterMinionBraggingUrl, currentUser));
 
             Assert.AreEqual(PlayerDetailsViewModelBuilder.EXCEPTION_PLAYER_STATISTICS_CANNOT_BE_NULL, exception.Message);
         }
@@ -296,12 +295,11 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         [Test]
         public void MinionsCannotBeNull()
         {
-            var builder = new PlayerDetailsViewModelBuilder(null, null, null);
             var playerDetailsWithNoMinions = new PlayerDetails() { PlayerGameResults = new List<PlayerGameResult>() };
             playerDetailsWithNoMinions.PlayerStats = new PlayerStatistics();
 
             var exception = Assert.Throws<ArgumentException>(() =>
-                    builder.Build(playerDetailsWithNoMinions, twitterMinionBraggingUrl, currentUser));
+                    _autoMocker.ClassUnderTest.Build(playerDetailsWithNoMinions, twitterMinionBraggingUrl, currentUser));
 
             Assert.AreEqual(PlayerDetailsViewModelBuilder.EXCEPTION_MINIONS_CANNOT_BE_NULL, exception.Message);
         }
@@ -309,7 +307,6 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         [Test]
         public void ChampionedGamesCannotBeNull()
         {
-            var builder = new PlayerDetailsViewModelBuilder(null, null,null);
             var playerDetailsWithNoChampionedGames = new PlayerDetails()
             {
                 PlayerGameResults = new List<PlayerGameResult>(),
@@ -319,7 +316,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
             };
 
             var exception = Assert.Throws<ArgumentException>(() =>
-                    builder.Build(playerDetailsWithNoChampionedGames, twitterMinionBraggingUrl, currentUser));
+                    _autoMocker.ClassUnderTest.Build(playerDetailsWithNoChampionedGames, twitterMinionBraggingUrl, currentUser));
 
             Assert.AreEqual(PlayerDetailsViewModelBuilder.EXCEPTION_CHAMPIONED_GAMES_CANNOT_BE_NULL, exception.Message);
         }
@@ -327,7 +324,6 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         [Test]
         public void FormerChampionedGamesCannotBeNull()
         {
-            var builder = new PlayerDetailsViewModelBuilder(null, null, null);
             var playerDetailsWithNoChampionedGames = new PlayerDetails()
             {
                 PlayerGameResults = new List<PlayerGameResult>(),
@@ -337,7 +333,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
             };
 
             var exception = Assert.Throws<ArgumentException>(() =>
-                    builder.Build(playerDetailsWithNoChampionedGames, twitterMinionBraggingUrl, currentUser));
+                    _autoMocker.ClassUnderTest.Build(playerDetailsWithNoChampionedGames, twitterMinionBraggingUrl, currentUser));
 
             Assert.AreEqual(PlayerDetailsViewModelBuilder.EXCEPTION_FORMERCHAMPIONED_GAMES_CANNOT_BE_NULL, exception.Message);
         }
@@ -365,7 +361,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         public void ItSetsThePlayerRegisteredFlagToFalseIfThereIsNoApplicationUserIdOnThePlayer()
         {
             playerDetails.ApplicationUserId = null;
-            playerDetailsViewModel = builder.Build(playerDetails, twitterMinionBraggingUrl, currentUser);
+            playerDetailsViewModel = _autoMocker.ClassUnderTest.Build(playerDetails, twitterMinionBraggingUrl, currentUser);
 
             Assert.AreEqual(false, playerDetailsViewModel.PlayerRegistered);
         }
@@ -433,7 +429,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         {
             playerDetails.PlayerStats.TotalGames = 0;
 
-            playerDetailsViewModel = builder.Build(playerDetails, twitterMinionBraggingUrl, currentUser);
+            playerDetailsViewModel = _autoMocker.ClassUnderTest.Build(playerDetails, twitterMinionBraggingUrl, currentUser);
 
             Assert.AreEqual(0, playerDetailsViewModel.AveragePointsPerGame);
         }
@@ -458,7 +454,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         {
             playerDetails.PlayerStats.AveragePlayersPerGame = 0;
 
-            var viewModel = builder.Build(playerDetails, twitterMinionBraggingUrl, currentUser);
+            var viewModel = _autoMocker.ClassUnderTest.Build(playerDetails, twitterMinionBraggingUrl, currentUser);
 
             Assert.AreEqual(0, viewModel.AveragePointsPerPlayer);
         }
@@ -519,7 +515,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         [Test]
         public void TheUserCanEditViewModelIfTheyShareGamingGroups()
         {
-            var viewModel = builder.Build(playerDetails, twitterMinionBraggingUrl, currentUser);
+            var viewModel = _autoMocker.ClassUnderTest.Build(playerDetails, twitterMinionBraggingUrl, currentUser);
 
             Assert.True(viewModel.UserCanEdit);
         }
@@ -528,7 +524,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         public void TheUserCanNotEditViewModelIfTheyDoNotShareGamingGroups()
         {
             currentUser.CurrentGamingGroupId = -1;
-            var viewModel = builder.Build(playerDetails, twitterMinionBraggingUrl, currentUser);
+            var viewModel = _autoMocker.ClassUnderTest.Build(playerDetails, twitterMinionBraggingUrl, currentUser);
 
             Assert.False(viewModel.UserCanEdit);
         }
@@ -536,7 +532,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         [Test]
         public void TheUserCanNotEditViewModelIfTheUserIsUnknown()
         {
-            var viewModel = builder.Build(playerDetails, twitterMinionBraggingUrl, null);
+            var viewModel = _autoMocker.ClassUnderTest.Build(playerDetails, twitterMinionBraggingUrl, null);
 
             Assert.False(viewModel.UserCanEdit);
         }
@@ -544,7 +540,20 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         [Test]
         public void ItCopiesThePlayerGameSummaries()
         {
-            //todo should put an interface over top of automapper and unit test this
+            //--arrange
+            foreach (var playerGameSummary in playerDetails.PlayerGameSummaries)
+            {
+                _autoMocker.Get<ITransformer>()
+                    .Expect(mock => mock.Transform<PlayerGameSummaryViewModel>(playerGameSummary))
+                    .Return(new PlayerGameSummaryViewModel());
+
+            }
+
+            //--act
+            var viewModel = _autoMocker.ClassUnderTest.Build(playerDetails, twitterMinionBraggingUrl, null);
+
+            //--assert
+            Assert.That(viewModel.PlayerGameSummaries.Count, Is.EqualTo(playerDetails.PlayerGameSummaries.Count));
         }
 
         [Test]
@@ -583,7 +592,7 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         public void ItDoesNotSetTheTwitterBraggingUrlIfTCurrentUserIsNotThePlayerBeingTransformed()
         {
             currentUser.Id = "some different user id";
-            var viewModel = builder.Build(playerDetails, twitterMinionBraggingUrl, currentUser);
+            var viewModel = _autoMocker.ClassUnderTest.Build(playerDetails, twitterMinionBraggingUrl, currentUser);
 
             Assert.That(null, Is.EqualTo(viewModel.MinionBraggingTweetUrl));
         }
@@ -675,5 +684,29 @@ namespace UI.Tests.UnitTests.TransformationsTests.PlayerTransformationTests.Play
         {
             Assert.AreEqual(playerDetails.LongestWinningStreak, playerDetailsViewModel.LongestWinningStreak);
         }
+
+        [Test]
+        public void ItPopulatesThePlayerAchievement()
+        {
+            //--arrange
+
+            //--act
+
+            //--assert
+            Assert.That(playerDetailsViewModel.PlayerAchievements.Count, Is.EqualTo(playerDetails.Achievements.Count));
+        }
+
+        [Test]
+        public void ItOrdersAchievementsByTheAchievementLevelDescendingThenTheLastUpdatedDate()
+        {
+            //--arrange
+
+            //--act
+            //TODO should test this if we ever go to change the code again....
+
+            //--assert
+        }
+
+
     }
 }

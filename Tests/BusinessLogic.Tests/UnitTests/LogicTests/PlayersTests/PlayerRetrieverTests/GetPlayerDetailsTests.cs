@@ -26,8 +26,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using BusinessLogic.Exceptions;
+using BusinessLogic.Logic.PlayerAchievements;
 using BusinessLogic.Models.Achievements;
 using BusinessLogic.Models.Points;
+using BusinessLogic.Paging;
+using NemeStats.TestingHelpers.NemeStatsTestingExtensions;
+using PagedList;
 using StructureMap.AutoMocking;
 
 namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverTests
@@ -51,7 +55,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
         private List<PlayerGameSummary> expectedPlayerGameSummaries;
         private List<Champion> expectedChampionedGames;
         private List<GameDefinition> expectedFormerChampionedGames;
-        private List<PlayerVersusPlayerStatistics> expectedPlayerVersusPlayerStatistics; 
+        private List<PlayerVersusPlayerStatistics> expectedPlayerVersusPlayerStatistics;
+        private IPagedList<PlayerAchievementWinner> expectedPlayerAchievementWinnersPageableList;
         private readonly int gamingGroupId = 1985;
         private readonly int expectedLongestWinningStreak = 93;
             
@@ -174,8 +179,15 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
 
             autoMocker.Get<IPlayerRepository>().Expect(mock => mock.GetLongestWinningStreak(Arg<int>.Is.Equal(player.Id), Arg<IDataContext>.Is.Anything)).Return(expectedLongestWinningStreak);
 
-            autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<PlayerAchievement>()).Return(new List<PlayerAchievement>().AsQueryable());
+            expectedPlayerAchievementWinnersPageableList = new List<PlayerAchievementWinner>
+            {
+                new PlayerAchievementWinner(),
+                new PlayerAchievementWinner()
+            }.ToPagedList(1, 2);
 
+            autoMocker.Get<IRecentPlayerAchievementsUnlockedRetreiver>()
+                .Expect(mock => mock.GetResults(Arg<GetRecentPlayerAchievementsUnlockedQuery>.Is.Anything))
+                .Return(expectedPlayerAchievementWinnersPageableList);
         }
 
         [Test]
@@ -282,6 +294,22 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
             Assert.That(playerDetails.NemePointsSummary, Is.EqualTo(expectedPlayerStatistics.NemePointsSummary));
         }
 
+        [Test]
+        public void ItSetsThePlayersAchievements()
+        {
+            //--act
+            var playerDetails = autoMocker.ClassUnderTest.GetPlayerDetails(player.Id, numberOfRecentGames);
 
+            //--assert
+            var arguments =
+                autoMocker.Get<IRecentPlayerAchievementsUnlockedRetreiver>()
+                    .GetArgumentsForCallsMadeOn(x => x.GetResults(Arg<GetRecentPlayerAchievementsUnlockedQuery>.Is.Anything));
+            var query = arguments.AssertFirstCallIsType<GetRecentPlayerAchievementsUnlockedQuery>();
+            Assert.That(query.PlayerId, Is.EqualTo(player.Id));
+            Assert.That(query.Page, Is.EqualTo(1));
+            Assert.That(query.PageSize, Is.EqualTo(int.MaxValue));
+
+            Assert.That(playerDetails.Achievements, Is.EqualTo(expectedPlayerAchievementWinnersPageableList));
+        }
     }
 }

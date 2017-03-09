@@ -7,5 +7,7 @@
             return $"{this.GetType()}-{this.Page}-{this.PageSize}";
 
         }
+
+        public int? PlayerId { get; set; }
     }
 }

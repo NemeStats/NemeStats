@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
+﻿using System.Linq;
 using BusinessLogic.Caching;
 using BusinessLogic.DataAccess;
 using BusinessLogic.Logic.Achievements;
@@ -33,6 +31,7 @@ namespace BusinessLogic.Logic.PlayerAchievements
         {
             var playerAchievementWinnersQueryable =
                 _dataContext.GetQueryable<PlayerAchievement>()
+                    .Where(x => query.PlayerId == null || x.PlayerId == query.PlayerId.Value)
                     .Select(x => new PlayerAchievementWinner
                     {
                         AchievementId = x.AchievementId,

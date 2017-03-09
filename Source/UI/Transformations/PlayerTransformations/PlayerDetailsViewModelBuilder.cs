@@ -25,7 +25,9 @@ using BusinessLogic.Models.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using BusinessLogic.Logic;
 using BusinessLogic.Logic.Players;
+using BusinessLogic.Models.Achievements;
 using UI.Mappers;
 using UI.Mappers.CustomMappers;
 using UI.Mappers.Interfaces;
@@ -47,17 +49,17 @@ namespace UI.Transformations.PlayerTransformations
 
         private readonly IGameResultViewModelBuilder _gameResultViewModelBuilder;
         private readonly IMinionViewModelBuilder _minionViewModelBuilder;
-        private readonly IMapperFactory _mapperFactory;
+        private readonly ITransformer _transformer;
 
 
         public PlayerDetailsViewModelBuilder(
             IGameResultViewModelBuilder builder,
             IMinionViewModelBuilder minionViewModelBuilder, 
-            IMapperFactory mapperFactory)
+            ITransformer transformer)
         {
             _gameResultViewModelBuilder = builder;
             _minionViewModelBuilder = minionViewModelBuilder;
-            _mapperFactory = mapperFactory;
+            _transformer = transformer;
         }
 
         public PlayerDetailsViewModel Build(PlayerDetails playerDetails, string urlForMinionBragging, ApplicationUser currentUser = null)
@@ -79,7 +81,10 @@ namespace UI.Transformations.PlayerTransformations
                 WinPercentage = playerDetails.PlayerStats.WinPercentage,
                 TotalChampionedGames = playerDetails.ChampionedGames.Count,
                 LongestWinningStreak = playerDetails.LongestWinningStreak,
-                PlayerAchievements = playerDetails.Achievements?.Select(pa => _mapperFactory.GetMapper<PlayerAchievement,PlayerAchievementSummaryViewModel>().Map(pa)).OrderByDescending(a=>a.AchievementLevel).ThenByDescending(a=>a.LastUpdatedDate).ToList() ?? new List<PlayerAchievementSummaryViewModel>()
+                PlayerAchievements = playerDetails.Achievements.Select(x => _transformer.Transform<PlayerAchievementSummaryViewModel>(x))
+                .OrderByDescending(a => a.AchievementLevel)
+                                                  .ThenByDescending(a => a.LastUpdatedDate)
+                                                  .ToList()
             };
 
             PopulatePlayerVersusPlayersViewModel(playerDetails, playerDetailsViewModel);

@@ -124,6 +124,7 @@ namespace UI.Controllers
 
             try
             {
+                //TODO this method is overkill for just getting the player name
                 playerDetails = playerRetriever.GetPlayerDetails(id, 0);
             }
             catch (KeyNotFoundException)
