@@ -89,14 +89,17 @@ namespace UI.Controllers
         [Route("{achievementId}/player/{playerId}")]
         public virtual ActionResult PlayerAchievement(AchievementId achievementId, int playerId)
         {
-            var playerAchievement = _playerAchievementRetriever.GetPlayerAchievement(playerId, achievementId);
-            if (playerAchievement == null)
+            var query = new PlayerAchievementQuery(achievementId, playerId);
+            var playerAchievementDetails = _playerAchievementRetriever.GetPlayerAchievement(query);
+            if (playerAchievementDetails == null)
             {
                 return new HttpNotFoundResult();
             }
 
-            var model = _mapperFactory.GetMapper<PlayerAchievement, PlayerAchievementViewModel>().Map(playerAchievement);
-            return View(MVC.Achievement.Views.Details, model);
+            var playerAchievementViewModel =
+                _transformer.Transform<PlayerAchievementViewModel>(playerAchievementDetails);
+
+            return View(MVC.Achievement.Views.Details, playerAchievementViewModel);
         }
 
         [Route("recent-unlocks/{page}")]

@@ -1,4 +1,5 @@
 ﻿using System.Web.Mvc;
+using BusinessLogic.Logic;
 using BusinessLogic.Logic.PlayerAchievements;
 using BusinessLogic.Models.Achievements;
 using NUnit.Framework;
@@ -6,6 +7,7 @@ using Rhino.Mocks;
 using Shouldly;
 using StructureMap.AutoMocking;
 using UI.Controllers;
+using UI.Models.Achievements;
 
 namespace UI.Tests.UnitTests.ControllerTests.AchievementControllerTests
 {
@@ -25,15 +27,42 @@ namespace UI.Tests.UnitTests.ControllerTests.AchievementControllerTests
         {
             //--arrange
             var achievementId = AchievementId.BusyBee;
-            _autoMocker.Get<IPlayerAchievementRetriever>().Expect(mock => mock.GetPlayerAchievement(0, achievementId))
+            int playerId = -1;
+            var playerAchievementQuery = new PlayerAchievementQuery(achievementId, playerId);
+            _autoMocker.Get<IPlayerAchievementRetriever>().Expect(mock => mock.GetPlayerAchievement(playerAchievementQuery))
                 .IgnoreArguments()
                 .Return(null);
 
             //--act
-            var result = _autoMocker.ClassUnderTest.PlayerAchievement(achievementId, 0);
+            var result = _autoMocker.ClassUnderTest.PlayerAchievement(achievementId, playerId);
 
             //--assert
             result.ShouldBeAssignableTo<HttpNotFoundResult>();
+        }
+
+        [Test]
+        public void It_Returns_The_Player_Achievement_For_The_Specified_Player()
+        {
+            //--arrange
+            var achievementId = AchievementId.BusyBee;
+            int playerId = 1;
+            var expectedPlayerAchievementDetails = new PlayerAchievementDetails();
+            _autoMocker.Get<IPlayerAchievementRetriever>().Expect(mock => mock.GetPlayerAchievement(Arg<PlayerAchievementQuery>.Is.Anything))
+                .Return(expectedPlayerAchievementDetails);
+            var expectedViewModel = new PlayerAchievementViewModel();
+            _autoMocker.Get<ITransformer>().Expect(mock => mock.Transform<PlayerAchievementViewModel>(expectedPlayerAchievementDetails))
+                .Return(expectedViewModel);
+
+            //--act
+            var result = _autoMocker.ClassUnderTest.PlayerAchievement(achievementId, playerId) as ViewResult;
+
+            //--assert
+            _autoMocker.Get<IPlayerAchievementRetriever>().AssertWasCalled(
+                x => x.GetPlayerAchievement(Arg<PlayerAchievementQuery>.Matches(y => y.AchievementId == achievementId && y.PlayerId == playerId)));
+            result.ShouldNotBeNull();
+            var viewModel = result.Model as PlayerAchievementViewModel;
+            viewModel.ShouldNotBeNull();
+            viewModel.ShouldBeSameAs(expectedViewModel);
         }
 
     }

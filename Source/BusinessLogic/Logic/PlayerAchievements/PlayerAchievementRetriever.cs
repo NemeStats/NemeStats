@@ -8,7 +8,6 @@ using BusinessLogic.Logic.BoardGameGeekGameDefinitions;
 using BusinessLogic.Logic.Players;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Achievements;
-using BusinessLogic.Models.PlayedGames;
 using BusinessLogic.Models.User;
 
 namespace BusinessLogic.Logic.PlayerAchievements
@@ -39,6 +38,7 @@ namespace BusinessLogic.Logic.PlayerAchievements
                 .FirstOrDefault(pa => pa.AchievementId == achievementId && pa.PlayerId == playerId);
         }
 
+        [Obsolete("will replace all calls with a call to GetPlayerAchievement()")]
         public virtual PlayerAchievementDetails GetCurrentPlayerAchievementDetails(AchievementId achievementId, ApplicationUser currentUser)
         {
             var achievement = _achievementRetriever.GetAchievement(achievementId);
@@ -147,6 +147,53 @@ namespace BusinessLogic.Logic.PlayerAchievements
                 case AchievementGroup.NotApplicable:
                     break;
             }
+        }
+
+        public virtual PlayerAchievementDetails GetPlayerAchievement(PlayerAchievementQuery playerAchievementQuery)
+        {
+            var achievementId = playerAchievementQuery.AchievementId;
+            var achievement = _achievementRetriever.GetAchievement(achievementId);
+
+            var result = new PlayerAchievementDetails
+            {
+                AchievementId = achievementId,
+                AchievementDescription = achievement.Description,
+                AchievementIconClass = achievement.IconClass,
+                AchievementName = achievement.Name,
+                LevelThresholds = achievement.LevelThresholds
+            };
+
+            result.NumberOfPlayersWithThisAchievement = _dataContext.GetQueryable<PlayerAchievement>().Count(y => y.AchievementId == achievementId);
+
+
+            var player = _dataContext.FindById<Player>(playerAchievementQuery.PlayerId);
+
+            if (player != null)
+            {
+                result.PlayerId = player.Id;
+                result.PlayerName = player.Name;
+
+                var achievementAwarded = achievement.IsAwardedForThisPlayer(player.Id);
+
+                result.AchievementLevel = achievementAwarded.LevelAwarded;
+                result.PlayerProgress = achievementAwarded.PlayerProgress;
+
+                SetRelatedEntities(achievement.Group, result, achievementAwarded.RelatedEntities);
+            }
+
+            var playerAchievement = _dataContext
+                .GetQueryable<PlayerAchievement>()
+                .FirstOrDefault(x => x.AchievementId == achievementId && x.PlayerId == playerAchievementQuery.PlayerId);
+
+            if (playerAchievement == null)
+            {
+                return result;
+            }
+
+            result.DateCreated = playerAchievement.DateCreated;
+            result.LastUpdatedDate = playerAchievement.LastUpdatedDate;
+
+            return result;
         }
     }
 }

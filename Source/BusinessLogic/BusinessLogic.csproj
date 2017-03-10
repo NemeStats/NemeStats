@@ -453,6 +453,7 @@
     <Compile Include="Models\Achievements\AchievementSummary.cs" />
     <Compile Include="Models\Achievements\AchievementWinner.cs" />
     <Compile Include="Models\Achievements\PlayerAchievementDetails.cs" />
+    <Compile Include="Models\Achievements\PlayerAchievementQuery.cs" />
     <Compile Include="Models\Achievements\PlayerAchievementWinner.cs" />
     <Compile Include="Models\Games\BoardGameGeekGameCategory.cs" />
     <Compile Include="Models\Games\BoardGameGeekGameSummary.cs" />
