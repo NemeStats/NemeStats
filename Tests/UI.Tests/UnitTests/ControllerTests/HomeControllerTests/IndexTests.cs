@@ -21,7 +21,6 @@ using BusinessLogic.Models.Games;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System.Collections.Generic;
-using System.Linq;
 using System.Web.Mvc;
 using BusinessLogic.Facades;
 using BusinessLogic.Logic;
@@ -38,6 +37,7 @@ using UI.Models.GameDefinitionModels;
 using UI.Transformations;
 using PagedList;
 using Shouldly;
+using UI.Models.Players;
 
 namespace UI.Tests.UnitTests.ControllerTests.HomeControllerTests
 {
@@ -51,18 +51,28 @@ namespace UI.Tests.UnitTests.ControllerTests.HomeControllerTests
         private TopGamingGroupSummaryViewModel _expectedTopGamingGroupViewModel;
         private ViewResult _viewResult;
 
-        private List<PlayerAchievementWinner> _recentAchievementsUnlocks;
+        private IPagedList<PlayerAchievementWinner> _recentAchievementsUnlocks;
         private List<PublicGameSummary> _publicGameSummaries;
 
         [SetUp]
         public override void SetUp()
         {
             base.SetUp();
-            
-            _recentAchievementsUnlocks = new List<PlayerAchievementWinner>();
+
+            _recentAchievementsUnlocks = new List<PlayerAchievementWinner>
+            {
+                new PlayerAchievementWinner(),
+                new PlayerAchievementWinner()
+            }.ToPagedList(1, int.MaxValue);
 
             _autoMocker.Get<IRecentPlayerAchievementsUnlockedRetreiver>().Expect(mock => mock.GetResults(Arg<GetRecentPlayerAchievementsUnlockedQuery>.Is.Anything))
-                .Return(_recentAchievementsUnlocks.ToPagedList(1, HomeController.NUMBER_OF_RECENT_ACHIEVEMENTS_TO_SHOW));
+                .Return(_recentAchievementsUnlocks);
+
+            //--this is the transformation that happens in the ToTransformedPagedList
+            _autoMocker.Get<ITransformer>().Expect(mock => mock.Transform<PlayerAchievementWinnerViewModel>(Arg<PlayerAchievementWinner>.Is.Anything))
+                .Repeat.Any()
+                .Return(new PlayerAchievementWinnerViewModel());
+
 
             _publicGameSummaries = new List<PublicGameSummary>();
             _autoMocker.Get<IRecentPublicGamesRetriever>().Expect(mock => mock.GetResults(Arg<RecentlyPlayedGamesFilter>.Matches(x => x.NumberOfGamesToRetrieve == HomeController.NUMBER_OF_RECENT_PUBLIC_GAMES_TO_SHOW)))
@@ -112,7 +122,6 @@ namespace UI.Tests.UnitTests.ControllerTests.HomeControllerTests
             _autoMocker.Get<ITransformer>().Expect(mock => mock.Transform<TrendingGameViewModel>(expectedTopGames[0])).Return(_expectedTrendingGameViewModel);
 
             _viewResult = _autoMocker.ClassUnderTest.Index() as ViewResult;
-
         }
 
         [Test]
@@ -126,7 +135,7 @@ namespace UI.Tests.UnitTests.ControllerTests.HomeControllerTests
         {
             var actualViewModel = (HomeIndexViewModel)_viewResult.ViewData.Model;
 
-            actualViewModel.RecentAchievementsUnlocked.ShouldBeSameAs(_recentAchievementsUnlocks);
+            actualViewModel.RecentAchievementsUnlocked.Count.ShouldBe(_recentAchievementsUnlocks.Count);
         }
 
         [Test]
