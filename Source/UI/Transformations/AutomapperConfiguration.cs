@@ -163,6 +163,8 @@ namespace UI.Transformations
 
             Mapper.CreateMap<AggregateAchievementSummary, AchievementTileViewModel>();
 
+            Mapper.CreateMap<PlayerAchievementWinner, PlayerAchievementSummaryViewModel>();
+
             Mapper.CreateMap<AchievementRelatedGameDefinitionSummary, GameDefinitionSummaryListViewModel>();
 
             Mapper.CreateMap<AchievementRelatedPlayedGameSummary, PlayedGameQuickStatsViewModel>();
