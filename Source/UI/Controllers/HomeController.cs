@@ -18,20 +18,16 @@
 
 #endregion LICENSE
 
-using System.Collections.Generic;
 using BusinessLogic.Models.Games;
-using BusinessLogic.Models.GamingGroups;
 using System.Linq;
 using System.Web.Mvc;
 using BusinessLogic.DataAccess;
 using BusinessLogic.Facades;
 using BusinessLogic.Logic;
 using BusinessLogic.Logic.PlayerAchievements;
-using BusinessLogic.Models;
 using BusinessLogic.Models.Achievements;
 using BusinessLogic.Models.PlayedGames;
 using BusinessLogic.Paging;
-using PagedList;
 using UI.Controllers.Helpers;
 using UI.Mappers.Extensions;
 using UI.Mappers.Interfaces;
@@ -39,7 +35,6 @@ using UI.Models.GameDefinitionModels;
 using UI.Models.GamingGroup;
 using UI.Models.Home;
 using UI.Models.Players;
-using UI.Transformations;
 
 namespace UI.Controllers
 {
