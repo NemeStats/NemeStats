@@ -51,7 +51,7 @@ namespace UI.Controllers
         private readonly ITopGamingGroupsRetriever _topGamingGroupsRetriever;
         private readonly ITrendingGamesRetriever _trendingGamesRetriever;
         private readonly ITransformer _transformer;
-        private readonly IRecentPlayerAchievementsUnlockedRetreiver _recentPlayerAchievementsUnlockedRetreiver;
+        private readonly IRecentPlayerAchievementsUnlockedRetriever _recentPlayerAchievementsUnlockedRetriever;
         private readonly IMapperFactory _mapperFactory;
 
         public HomeController(
@@ -59,20 +59,20 @@ namespace UI.Controllers
             ITopGamingGroupsRetriever topGamingGroupsRetriever,
             ITrendingGamesRetriever trendingGamesRetriever,
             ITransformer transformer,            
-            IRecentPlayerAchievementsUnlockedRetreiver recentPlayerAchievementsUnlockedRetreiver,
+            IRecentPlayerAchievementsUnlockedRetriever recentPlayerAchievementsUnlockedRetriever,
             IMapperFactory mapperFactory, IDataContext dataContext)
         {
             _recentPublicGamesRetriever = recentPublicGamesRetriever;
             _topGamingGroupsRetriever = topGamingGroupsRetriever;
             _trendingGamesRetriever = trendingGamesRetriever;
             _transformer = transformer;
-            _recentPlayerAchievementsUnlockedRetreiver = recentPlayerAchievementsUnlockedRetreiver;
+            _recentPlayerAchievementsUnlockedRetriever = recentPlayerAchievementsUnlockedRetriever;
             _mapperFactory = mapperFactory;
         }
 
         public virtual ActionResult Index()
         {
-            var recentPlayerAchievementWinners = _recentPlayerAchievementsUnlockedRetreiver.GetResults(new GetRecentPlayerAchievementsUnlockedQuery {PageSize = NUMBER_OF_RECENT_ACHIEVEMENTS_TO_SHOW });
+            var recentPlayerAchievementWinners = _recentPlayerAchievementsUnlockedRetriever.GetResults(new GetRecentPlayerAchievementsUnlockedQuery {PageSize = NUMBER_OF_RECENT_ACHIEVEMENTS_TO_SHOW });
             var recentPlayerAchievementWinnerViewModel = recentPlayerAchievementWinners.ToTransformedPagedList<PlayerAchievementWinner, PlayerAchievementWinnerViewModel>(_transformer);
 
             var recentlyPlayedGamesFilter = new RecentlyPlayedGamesFilter

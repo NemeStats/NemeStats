@@ -46,8 +46,8 @@ namespace BusinessLogic.Logic.PlayerAchievements
             var result = new PlayerAchievementDetails
             {
                 AchievementId = achievementId,
-                AchievementDescription = achievement.Description,
-                AchievementIconClass = achievement.IconClass,
+                Description = achievement.Description,
+                IconClass = achievement.IconClass,
                 AchievementName = achievement.Name,
                 LevelThresholds = achievement.LevelThresholds
             };
@@ -118,7 +118,7 @@ namespace BusinessLogic.Logic.PlayerAchievements
                     break;
                 case AchievementGroup.PlayedGame:
                     result.RelatedPlayedGames = _dataContext.GetQueryable<PlayedGame>()
-                        .Where(x => relatedEntityIds.Contains(x.Id))
+                        .Where(y => relatedEntityIds.Contains(y.Id))
                         .Select(x => new AchievementRelatedPlayedGameSummary
                         {
                             GameDefinitionId = x.GameDefinitionId,
@@ -128,7 +128,11 @@ namespace BusinessLogic.Logic.PlayerAchievements
                             GameDefinitionName = x.GameDefinition.Name,
                             PlayedGameId = x.Id,
                             ThumbnailImageUrl =
-                                x.GameDefinition.BoardGameGeekGameDefinition == null ? null : x.GameDefinition.BoardGameGeekGameDefinition.Thumbnail
+                                x.GameDefinition.BoardGameGeekGameDefinition == null
+                                    ? null
+                                    : x.GameDefinition.BoardGameGeekGameDefinition.Thumbnail,
+                            WinningPlayerName = x.PlayerGameResults.FirstOrDefault(y => y.GameRank == 1).Player.Name,
+                            WinningPlayerId = x.PlayerGameResults.FirstOrDefault(y => y.GameRank == 1).PlayerId
                         })
                         .OrderByDescending(x => x.DatePlayed)
                         .ToList();
@@ -157,8 +161,8 @@ namespace BusinessLogic.Logic.PlayerAchievements
             var result = new PlayerAchievementDetails
             {
                 AchievementId = achievementId,
-                AchievementDescription = achievement.Description,
-                AchievementIconClass = achievement.IconClass,
+                Description = achievement.Description,
+                IconClass = achievement.IconClass,
                 AchievementName = achievement.Name,
                 LevelThresholds = achievement.LevelThresholds
             };

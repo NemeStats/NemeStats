@@ -185,7 +185,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
                 new PlayerAchievementWinner()
             }.ToPagedList(1, 2);
 
-            autoMocker.Get<IRecentPlayerAchievementsUnlockedRetreiver>()
+            autoMocker.Get<IRecentPlayerAchievementsUnlockedRetriever>()
                 .Expect(mock => mock.GetResults(Arg<GetRecentPlayerAchievementsUnlockedQuery>.Is.Anything))
                 .Return(expectedPlayerAchievementWinnersPageableList);
         }
@@ -302,7 +302,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
 
             //--assert
             var arguments =
-                autoMocker.Get<IRecentPlayerAchievementsUnlockedRetreiver>()
+                autoMocker.Get<IRecentPlayerAchievementsUnlockedRetriever>()
                     .GetArgumentsForCallsMadeOn(x => x.GetResults(Arg<GetRecentPlayerAchievementsUnlockedQuery>.Is.Anything));
             var query = arguments.AssertFirstCallIsType<GetRecentPlayerAchievementsUnlockedQuery>();
             Assert.That(query.PlayerId, Is.EqualTo(player.Id));

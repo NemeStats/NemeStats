@@ -40,19 +40,19 @@ namespace BusinessLogic.Logic.Players
         private readonly IDataContext _dataContext;
         private readonly IPlayerRepository _playerRepository;
         private readonly IPlayedGameRetriever _playedGameRetriever;
-        private readonly IRecentPlayerAchievementsUnlockedRetreiver _recentPlayerAchievementsUnlockedRetreiver;
+        private readonly IRecentPlayerAchievementsUnlockedRetriever _recentPlayerAchievementsUnlockedRetriever;
         public const string ExceptionMessagePlayerCouldNotBeFound = "Could not find player with Id: {0}";
 
         public PlayerRetriever(
             IDataContext dataContext, 
             IPlayerRepository playerRepository, 
             IPlayedGameRetriever playedGameRetriever, 
-            IRecentPlayerAchievementsUnlockedRetreiver recentPlayerAchievementsUnlockedRetreiver)
+            IRecentPlayerAchievementsUnlockedRetriever recentPlayerAchievementsUnlockedRetriever)
         {
             _dataContext = dataContext;
             _playerRepository = playerRepository;
             _playedGameRetriever = playedGameRetriever;
-            _recentPlayerAchievementsUnlockedRetreiver = recentPlayerAchievementsUnlockedRetreiver;
+            _recentPlayerAchievementsUnlockedRetriever = recentPlayerAchievementsUnlockedRetriever;
         }
 
         internal IQueryable<Player> GetAllPlayersInGamingGroupQueryable(int gamingGroupId)
@@ -202,7 +202,7 @@ namespace BusinessLogic.Logic.Players
                 Page = 1,
                 PageSize = int.MaxValue
             };
-            var recentAchievementsUnlocked = _recentPlayerAchievementsUnlockedRetreiver.GetResults(query);
+            var recentAchievementsUnlocked = _recentPlayerAchievementsUnlockedRetriever.GetResults(query);
 
             var playerDetails = new PlayerDetails()
             {

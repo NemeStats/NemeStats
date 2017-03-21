@@ -10,14 +10,14 @@ using PagedList;
 
 namespace BusinessLogic.Logic.PlayerAchievements
 {
-    public class RecentPlayerAchievementsUnlockedRetreiver : Cacheable<GetRecentPlayerAchievementsUnlockedQuery, IPagedList<PlayerAchievementWinner>>, IRecentPlayerAchievementsUnlockedRetreiver
+    public class RecentPlayerAchievementsUnlockedRetriever : Cacheable<GetRecentPlayerAchievementsUnlockedQuery, IPagedList<PlayerAchievementWinner>>, IRecentPlayerAchievementsUnlockedRetriever
     {
         public const int CACHE_EXPIRATION_IN_SECONDS = 60 * 60;
 
         private readonly IDataContext _dataContext;
         private readonly IAchievementRetriever _achievementRetriever;
 
-        public RecentPlayerAchievementsUnlockedRetreiver(
+        public RecentPlayerAchievementsUnlockedRetriever(
             IDateUtilities dateUtilities, 
             ICacheService cacheService, 
             IDataContext dataContext, 
@@ -41,7 +41,9 @@ namespace BusinessLogic.Logic.PlayerAchievements
                         GamingGroupName = x.Player.GamingGroup.Name,
                         PlayerId = x.PlayerId,
                         PlayerName = x.Player.Name,
-                        UserId = x.Player.ApplicationUserId
+                        UserId = x.Player.ApplicationUserId,
+                        DateCreated = x.DateCreated,
+                        LastUpdatedDate = x.LastUpdatedDate
                     })
                     .OrderByDescending(p => p.AchievementLastUpdateDate);
 
@@ -54,6 +56,7 @@ namespace BusinessLogic.Logic.PlayerAchievements
                 var achievement = distinctAchievements[playerAchievementWinner.AchievementId];
                 playerAchievementWinner.IconClass = achievement.IconClass;
                 playerAchievementWinner.AchievementName = achievement.Name;
+                playerAchievementWinner.Description = achievement.Description;
             }
 
             return pagedList;

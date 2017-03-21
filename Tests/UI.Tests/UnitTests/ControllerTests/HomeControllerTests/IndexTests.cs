@@ -65,7 +65,7 @@ namespace UI.Tests.UnitTests.ControllerTests.HomeControllerTests
                 new PlayerAchievementWinner()
             }.ToPagedList(1, int.MaxValue);
 
-            _autoMocker.Get<IRecentPlayerAchievementsUnlockedRetreiver>().Expect(mock => mock.GetResults(Arg<GetRecentPlayerAchievementsUnlockedQuery>.Is.Anything))
+            _autoMocker.Get<IRecentPlayerAchievementsUnlockedRetriever>().Expect(mock => mock.GetResults(Arg<GetRecentPlayerAchievementsUnlockedQuery>.Is.Anything))
                 .Return(_recentAchievementsUnlocks);
 
             //--this is the transformation that happens in the ToTransformedPagedList

@@ -4,7 +4,7 @@ using PagedList;
 
 namespace BusinessLogic.Logic.PlayerAchievements
 {
-    public interface IRecentPlayerAchievementsUnlockedRetreiver
+    public interface IRecentPlayerAchievementsUnlockedRetriever
     {
         IPagedList<PlayerAchievementWinner> GetResults(GetRecentPlayerAchievementsUnlockedQuery query);
     }

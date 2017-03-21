@@ -12,5 +12,7 @@ namespace BusinessLogic.Models.Achievements
         public string GameDefinitionName { get; set; }
         public DateTime DatePlayed { get; set; }
         public WinnerTypes WinnerType { get; set; }
+        public int? WinningPlayerId { get; set; }
+        public string WinningPlayerName { get; set; }
     }
 }

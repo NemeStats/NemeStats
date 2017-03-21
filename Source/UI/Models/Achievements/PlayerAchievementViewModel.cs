@@ -13,10 +13,7 @@ namespace UI.Models.Achievements
         public List<PlayedGameQuickStatsViewModel> RelatedPlayedGames { get; set; } = new List<PlayedGameQuickStatsViewModel>();
         public List<PlayerListSummaryViewModel> RelatedPlayers { get; set; } = new List<PlayerListSummaryViewModel>();
         public List<AchievementWinnerViewModel> Winners { get; set; } = new List<AchievementWinnerViewModel>();
-        public string AchievementName { get; set; }
         public IEnumerable<KeyValuePair<AchievementLevel, int>> LevelThresholds { get; set; }
-        public string AchievementDescription { get; set; }
-        public string AchievementIconClass { get; set; }
         public int NumberOfPlayersWithThisAchievement { get; set; }
         public AchievementId AchievementId { get; set; }
     }

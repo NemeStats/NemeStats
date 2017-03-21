@@ -28,19 +28,19 @@ namespace UI.Controllers
     {
 
         private readonly IPlayerAchievementRetriever _playerAchievementRetriever;
-        private readonly IRecentPlayerAchievementsUnlockedRetreiver _recentPlayerAchievementsUnlockedRetreiver;
+        private readonly IRecentPlayerAchievementsUnlockedRetriever _recentPlayerAchievementsUnlockedRetriever;
         private readonly IMapperFactory _mapperFactory;
         private readonly IAchievementRetriever _achievementRetriever;
         private readonly ITransformer _transformer;
 
         public AchievementController(IPlayerAchievementRetriever playerAchievementRetriever,
-            IRecentPlayerAchievementsUnlockedRetreiver recentPlayerAchievementsUnlockedRetreiver,
+            IRecentPlayerAchievementsUnlockedRetriever recentPlayerAchievementsUnlockedRetriever,
             IMapperFactory mapperFactory, 
             IAchievementRetriever achievementRetriever, 
             ITransformer transformer)
         {
             _playerAchievementRetriever = playerAchievementRetriever;
-            _recentPlayerAchievementsUnlockedRetreiver = recentPlayerAchievementsUnlockedRetreiver;
+            _recentPlayerAchievementsUnlockedRetriever = recentPlayerAchievementsUnlockedRetriever;
             _mapperFactory = mapperFactory;
             _achievementRetriever = achievementRetriever;
             _transformer = transformer;
@@ -106,7 +106,7 @@ namespace UI.Controllers
         public virtual ActionResult RecentAchievementsUnlocked(int page = 1)
         {
             var recentUnlocks =
-                _recentPlayerAchievementsUnlockedRetreiver.GetResults(new GetRecentPlayerAchievementsUnlockedQuery
+                _recentPlayerAchievementsUnlockedRetriever.GetResults(new GetRecentPlayerAchievementsUnlockedQuery
                 {
                     PageSize = 25,
                     Page = page

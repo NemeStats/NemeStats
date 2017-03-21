@@ -95,8 +95,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayerAchievementTests
             //--assert
             result.ShouldNotBeNull();
             result.AchievementId.ShouldBe(expectedAchievement.Id);
-            result.AchievementDescription.ShouldBe(expectedAchievement.Description);
-            result.AchievementIconClass.ShouldBe(expectedAchievement.IconClass);
+            result.Description.ShouldBe(expectedAchievement.Description);
+            result.IconClass.ShouldBe(expectedAchievement.IconClass);
             result.LevelThresholds.ShouldBe(expectedAchievement.LevelThresholds);
         }
 
@@ -272,7 +272,20 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayerAchievementTests
                             Thumbnail = "some thumbnail"
                         }
                     },
-                    PlayerGameResults = new List<PlayerGameResult>(),
+                    //--have to set PlayerGameResults with a winner so that LINQ doesn't blow up -- even though EntityFramework can handle this just fine
+                    PlayerGameResults = new List<PlayerGameResult>
+                    {
+                        new PlayerGameResult
+                        {
+                            GameRank = 1,
+                            PlayerId = 51,
+                            Player = new Player
+                            {
+                                Name = "some player name"
+
+                            }
+                        }
+                    },
                     WinnerType = WinnerTypes.PlayerWin,
                     DatePlayed = DateTime.UtcNow
                 };
@@ -284,7 +297,19 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayerAchievementTests
                         Id = 102,
                         Name = "game 2 name"
                     },
-                    PlayerGameResults = new List<PlayerGameResult>(),
+                    PlayerGameResults = new List<PlayerGameResult>
+                    {
+                        new PlayerGameResult
+                        {
+                            GameRank = 1,
+                            PlayerId = 51,
+                            Player = new Player
+                            {
+                                Name = "some player name"
+
+                            }
+                        }
+                    },
                     WinnerType = WinnerTypes.TeamLoss,
                     DatePlayed = DateTime.UtcNow.AddDays(-10)
                 };
@@ -294,7 +319,22 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayerAchievementTests
                     //--add this one first to make sure that the query orders correctly
                     _expectedPlayedGame2,
                     _expectedPlayedGame1,
-                    new PlayedGame()
+                    new PlayedGame
+                    {
+                        PlayerGameResults = new List<PlayerGameResult>
+                        {
+                            new PlayerGameResult
+                            {
+                                GameRank = 1,
+                                PlayerId = 51,
+                                Player = new Player
+                                {
+                                    Name = "some player name"
+                                    
+                                }
+                            }
+                        }
+                    }
                 }.AsQueryable();
                 _autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<PlayedGame>()).Return(playedGameQueryable);
             }

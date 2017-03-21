@@ -7,6 +7,9 @@ namespace BusinessLogic.Models.Achievements
         public AchievementId AchievementId { get; set; }
         public string AchievementName { get; set; }
         public string IconClass { get; set; }
+        public DateTime DateCreated { get; set; }
+        public DateTime LastUpdatedDate { get; set; }
+        public string Description { get; set; }
         public string PlayerName { get; set; }
         public int PlayerId { get; set; }
         public string UserId { get; set; }

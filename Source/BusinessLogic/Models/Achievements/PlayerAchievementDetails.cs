@@ -13,8 +13,8 @@ namespace BusinessLogic.Models.Achievements
         public AchievementLevel? AchievementLevel { get; set; }
         public string AchievementName { get; set; }
         public Dictionary<AchievementLevel, int> LevelThresholds { get; set; }
-        public string AchievementDescription { get; set; }
-        public string AchievementIconClass { get; set; }
+        public string Description { get; set; }
+        public string IconClass { get; set; }
         public int NumberOfPlayersWithThisAchievement { get; set; }
         public int PlayerProgress { get; set; }
         public List<AchievementRelatedGameDefinitionSummary> RelatedGameDefinitions { get; set; } = new List<AchievementRelatedGameDefinitionSummary>();
