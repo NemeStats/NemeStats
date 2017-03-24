@@ -83,7 +83,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerSaverTests
                 Arg<ApplicationUser>.Is.Anything));
         }
 
-        [Test]
+        [Test, Ignore("This test is flaky due to fire-and-forget task")]
         public void ItRecordsAPlayerCreatedEventIfThePlayerIsNew()
         {
             var player = MockRepository.GeneratePartialMock<Player>();
