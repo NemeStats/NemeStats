@@ -31,23 +31,42 @@ namespace BusinessLogic.Tests.IntegrationTests
 {
     [TestFixture]
     [Category("Integration")]
-    public class EntityFrameworkGeneralIntegrationTests : IntegrationTestBase
+    public class EntityFrameworkGeneralIntegrationTests : IntegrationTestIoCBase
     {
+        private int _playerIdWithNoPlayedGames;
+        private int _somePlayedGameId;
+        private ApplicationUser _userWithGamingGroup;
+
+        [OneTimeSetUp]
+        public void LocalOneTimeSetUp()
+        {
+            var dataContext = GetInstance<IDataContext>();
+            _playerIdWithNoPlayedGames =
+                dataContext.GetQueryable<Player>()
+                .Where(x => !x.PlayerGameResults.Any())
+                .Select(x => x.Id)
+                .First();
+
+            _somePlayedGameId = dataContext.GetQueryable<PlayedGame>().Select(x => x.Id).First();
+
+            _userWithGamingGroup = dataContext.GetQueryable<ApplicationUser>().First(x => x.CurrentGamingGroupId > 0);
+        }
+
         [Test]
         public void TheAddOrInsertExtensionMethodSetsTheIdOnNewEntities()
         {
             using (var dataContext = GetInstanceFromRootContainer<IDataContext>())
             {
-                var gamingGroup = new GamingGroup()
+                var gamingGroup = new GamingGroup
                 {
                     Name = "new gaming group without an ID yet",
-                    OwningUserId = testUserWithDefaultGamingGroup.Id
+                    OwningUserId = _userWithGamingGroup.Id
                 };
 
-                dataContext.Save(gamingGroup, testUserWithDefaultGamingGroup);
+                dataContext.Save(gamingGroup, _userWithGamingGroup);
                 dataContext.CommitAllChanges();
 
-                Cleanup(dataContext, gamingGroup, testUserWithDefaultGamingGroup);
+                Cleanup(dataContext, gamingGroup, _userWithGamingGroup);
 
                 gamingGroup.Id.ShouldNotBe(default(int));
             }
@@ -56,20 +75,19 @@ namespace BusinessLogic.Tests.IntegrationTests
         [Test]
         public void TestIncludeMethod()
         {
-            using (var dataContext = GetInstanceFromRootContainer<IDataContext>())
-            {
-                var players = dataContext.GetQueryable<Player>()
-                             .Where(player => player.Active && player.GamingGroupId == 1)
-                             .Include(player => player.Nemesis)
-                             .Include(player => player.Nemesis.NemesisPlayer)
+            var dataContext = GetInstance<IDataContext>();
 
-                             .OrderBy(player => player.Name)
-                             .ToList();
+            var players = dataContext.GetQueryable<Player>()
+                            .Where(player => player.Active && player.GamingGroupId == 1)
+                            .Include(player => player.Nemesis)
+                            .Include(player => player.Nemesis.NemesisPlayer)
 
-                var playersWithNemesisid = players.Where(player => player.NemesisId != null).ToList();
+                            .OrderBy(player => player.Name)
+                            .ToList();
 
-                playersWithNemesisid.Count.ShouldBeGreaterThan(0);
-            }
+            var playersWithNemesisid = players.Where(player => player.NemesisId != null).ToList();
+
+            playersWithNemesisid.Count.ShouldBeGreaterThan(0);
         }
 
         [Test]
@@ -78,7 +96,7 @@ namespace BusinessLogic.Tests.IntegrationTests
             using (var dataContext = GetInstanceFromRootContainer<IDataContext>())
             {
                 var result = dataContext.GetQueryable<PlayedGame>()
-                    .Where(player => player.Id == testPlayerWithNoPlayedGames.Id)
+                    .Where(player => player.Id == _playerIdWithNoPlayedGames)
                     .Select(x => x.PlayerGameResults)
                     .FirstOrDefault();
 
@@ -139,63 +157,60 @@ namespace BusinessLogic.Tests.IntegrationTests
         [Test]
         public void FirstOrDefaultReturnsNullAndDoesntBlowUpWhenAccessingARelatedEntity()
         {
-            using (var dataContext = GetInstanceFromRootContainer<IDataContext>())
-            {
-                var result = dataContext.GetQueryable<PlayedGame>()
-                    .Where(player => player.Id == testPlayerWithNoPlayedGames.Id)
-                    .Select(x => x.PlayerGameResults.FirstOrDefault().Player)
-                    .FirstOrDefault();
+            var dataContext = GetInstance<IDataContext>();
 
-                result.ShouldBeNull();
+            var result = dataContext.GetQueryable<PlayedGame>()
+                .Where(player => player.Id == _playerIdWithNoPlayedGames)
+                .Select(x => x.PlayerGameResults.FirstOrDefault().Player)
+                .FirstOrDefault();
 
-                /*
-                SELECT 
-                    [Limit2].[Id] AS [Id], 
-                    [Limit2].[GamingGroupId] AS [GamingGroupId], 
-                    [Limit2].[Name] AS [Name], 
-                    [Limit2].[ApplicationUserId] AS [ApplicationUserId], 
-                    [Limit2].[Active] AS [Active], 
-                    [Limit2].[NemesisId] AS [NemesisId], 
-                    [Limit2].[PreviousNemesisId] AS [PreviousNemesisId], 
-                    [Limit2].[DateCreated] AS [DateCreated]
-                    FROM ( SELECT TOP (1) 
-                        [Extent3].[Id] AS [Id], 
-                        [Extent3].[GamingGroupId] AS [GamingGroupId], 
-                        [Extent3].[Name] AS [Name], 
-                        [Extent3].[ApplicationUserId] AS [ApplicationUserId], 
-                        [Extent3].[Active] AS [Active], 
-                        [Extent3].[NemesisId] AS [NemesisId], 
-                        [Extent3].[PreviousNemesisId] AS [PreviousNemesisId], 
-                        [Extent3].[DateCreated] AS [DateCreated]
-                        FROM   (SELECT 
-                            (SELECT TOP (1) 
-                                [Extent2].[PlayerId] AS [PlayerId]
-                                FROM [dbo].[PlayerGameResult] AS [Extent2]
-                                WHERE [Extent1].[Id] = [Extent2].[PlayedGameId]) AS [C1]
-                            FROM [dbo].[PlayedGame] AS [Extent1]
-                            WHERE [Extent1].[Id] = @p__linq__0 ) AS [Project2]
-                        LEFT OUTER JOIN [dbo].[Player] AS [Extent3] ON [Project2].[C1] = [Extent3].[Id]
-                    )  AS [Limit2]
-                 * */
-            }
+            result.ShouldBeNull();
+
+            /*
+            SELECT 
+                [Limit2].[Id] AS [Id], 
+                [Limit2].[GamingGroupId] AS [GamingGroupId], 
+                [Limit2].[Name] AS [Name], 
+                [Limit2].[ApplicationUserId] AS [ApplicationUserId], 
+                [Limit2].[Active] AS [Active], 
+                [Limit2].[NemesisId] AS [NemesisId], 
+                [Limit2].[PreviousNemesisId] AS [PreviousNemesisId], 
+                [Limit2].[DateCreated] AS [DateCreated]
+                FROM ( SELECT TOP (1) 
+                    [Extent3].[Id] AS [Id], 
+                    [Extent3].[GamingGroupId] AS [GamingGroupId], 
+                    [Extent3].[Name] AS [Name], 
+                    [Extent3].[ApplicationUserId] AS [ApplicationUserId], 
+                    [Extent3].[Active] AS [Active], 
+                    [Extent3].[NemesisId] AS [NemesisId], 
+                    [Extent3].[PreviousNemesisId] AS [PreviousNemesisId], 
+                    [Extent3].[DateCreated] AS [DateCreated]
+                    FROM   (SELECT 
+                        (SELECT TOP (1) 
+                            [Extent2].[PlayerId] AS [PlayerId]
+                            FROM [dbo].[PlayerGameResult] AS [Extent2]
+                            WHERE [Extent1].[Id] = [Extent2].[PlayedGameId]) AS [C1]
+                        FROM [dbo].[PlayedGame] AS [Extent1]
+                        WHERE [Extent1].[Id] = @p__linq__0 ) AS [Project2]
+                    LEFT OUTER JOIN [dbo].[Player] AS [Extent3] ON [Project2].[C1] = [Extent3].[Id]
+                )  AS [Limit2]
+                * */
         }
 
         [Test]
         public void ItDoesntCareAboutOtherwiseWeirdDistantRelationshipPullingWhenThereAreNoResultsToProjectInTheFirstPlace()
         {
-            using (var dataContext = GetInstanceFromRootContainer<IDataContext>())
-            {
-                int invalidPlayerId = -1;
-                var result = dataContext.GetQueryable<PlayedGame>()
-                    .Where(player => player.Id == invalidPlayerId)
-                    .Select(x => new
-                    {
-                        SomeDistantThing = x.PlayerGameResults.FirstOrDefault().Player.ChampionedGames.FirstOrDefault(),
-                        x.PlayerGameResults.FirstOrDefault().Player.Id
-                    }).ToList();
-                result.ShouldNotBeNull();
-                result.Count.ShouldBe(0);
-            }
+            var dataContext = GetInstance<IDataContext>();
+            int invalidPlayerId = -1;
+            var result = dataContext.GetQueryable<PlayedGame>()
+                .Where(player => player.Id == invalidPlayerId)
+                .Select(x => new
+                {
+                    SomeDistantThing = x.PlayerGameResults.FirstOrDefault().Player.ChampionedGames.FirstOrDefault(),
+                    x.PlayerGameResults.FirstOrDefault().Player.Id
+                }).ToList();
+            result.ShouldNotBeNull();
+            result.Count.ShouldBe(0);
             /*
             SELECT
             CASE WHEN(EXISTS(SELECT
@@ -218,9 +233,8 @@ namespace BusinessLogic.Tests.IntegrationTests
         {
             using (var dataContext = GetInstanceFromRootContainer<IDataContext>())
             {
-                int playedGameId = testPlayedGames[0].Id;
                 var result = dataContext.GetQueryable<PlayedGame>()
-                    .Where(playedGame => playedGame.Id == playedGameId)
+                    .Where(playedGame => playedGame.Id == _somePlayedGameId)
                     .Select(x => new AchievementRelatedPlayedGameSummary
                     {
                         //--only pull records where the Player had rank -42 (i.e. none of the PlayerGameResults)
@@ -259,19 +273,17 @@ namespace BusinessLogic.Tests.IntegrationTests
         [Test]
         public void ItBlowsUpWhenAccessingAnOptionalRelationshipFieldWithoutCheckingForNullUsingPureLinq()
         {
-            int playedGameId = testPlayedGames[0].Id;
-
             var playedGameQueryable = new List<PlayedGame>
             {
                 new PlayedGame
                 {
-                    Id = playedGameId,
+                    Id = _somePlayedGameId,
                     PlayerGameResults = new List<PlayerGameResult>()
                 }
             }.AsQueryable();
 
             Assert.Throws<NullReferenceException>(() => playedGameQueryable
-                .Where(playedGame => playedGame.Id == playedGameId)
+                .Where(playedGame => playedGame.Id == _somePlayedGameId)
                 .Select(x => new AchievementRelatedPlayedGameSummary
                 {
                     //--only pull records where the Player had rank -42 (i.e. none of the PlayerGameResults)
@@ -280,48 +292,6 @@ namespace BusinessLogic.Tests.IntegrationTests
                 }).ToList());
         }
 
-        [Test]
-        public void FirstOrDefaultDoesnGenerateABadQueryWhenCheckingForNullAndPullingTheResultantProperty()
-        {
-            using (var dataContext = GetInstanceFromRootContainer<IDataContext>())
-            {
-                var result = dataContext.GetQueryable<PlayedGame>()
-                    .Where(player => player.Id == testPlayer9UndefeatedWith5Games.Id)
-                    .Select(x => x.PlayerGameResults.FirstOrDefault().Player != null ? x.PlayerGameResults.FirstOrDefault().Player.Name : null)
-                    .FirstOrDefault();
-
-                result.ShouldBeNull();
-
-                //--go check out the resultant query
-                /*
-                SELECT
-                    [Limit3].[C1] AS[C1]
-                    FROM(SELECT TOP(1)
-                        CASE WHEN([Project5].[Id] IS NOT NULL) THEN[Extent5].[Name] END AS[C1]
-                        FROM(SELECT
-                            [Project3].[Id1] AS[Id],
-                            (SELECT TOP(1)
-                                [Extent4].[PlayerId] AS[PlayerId]
-                                FROM[dbo].[PlayerGameResult] AS[Extent4]
-                                WHERE[Project3].[Id] = [Extent4].[PlayerId]) AS[C1]
-                            FROM(SELECT
-                                [Project2].[Id] AS[Id],
-                                [Extent3].[Id] AS[Id1]
-                                FROM(SELECT
-                                    [Extent1].[Id] AS[Id],
-                                    (SELECT TOP(1)
-                                        [Extent2].[PlayerId] AS[PlayerId]
-                                        FROM[dbo].[PlayerGameResult] AS[Extent2]
-                                        WHERE[Extent1].[Id] = [Extent2].[PlayerId]) AS[C1]
-                                    FROM[dbo].[Player] AS[Extent1]
-                                    WHERE[Extent1].[Id] = @p__linq__0) AS[Project2]
-                                LEFT OUTER JOIN[dbo].[Player] AS[Extent3] ON[Project2].[C1] = [Extent3].[Id]
-                            )  AS[Project3] ) AS[Project5]
-                        LEFT OUTER JOIN[dbo].[Player] AS[Extent5] ON[Project5].[C1] = [Extent5].[Id]
-                    )  AS[Limit3]
-                    */
-            }
-        }
 
         [Test]
         public void GrabbingTwoSeparateFieldsInADistantRelationIsntTerrible()
@@ -329,7 +299,7 @@ namespace BusinessLogic.Tests.IntegrationTests
             using (var dataContext = GetInstanceFromRootContainer<IDataContext>())
             {
                 var result = dataContext.GetQueryable<PlayedGame>()
-                    .Where(player => player.Id == testPlayerWithNoPlayedGames.Id)
+                    .Where(player => player.Id == _playerIdWithNoPlayedGames)
                     .Select(x => new
                         {
                             Name = x.PlayerGameResults.FirstOrDefault() != null ? x.PlayerGameResults.FirstOrDefault().Player.Name : null,
@@ -404,29 +374,25 @@ namespace BusinessLogic.Tests.IntegrationTests
             }
         }
 
+        //TODO finish this
         [Test]
-        public void GrabbingTwoSeparateFieldsInADistantProjectionIsntTerrible()
+        public void It_Wraps_Everything_In_A_Transaction_Automatically()
         {
             using (var dataContext = GetInstanceFromRootContainer<IDataContext>())
             {
-                int playedGameId = testPlayedGames[0].Id;
-                var result = dataContext.GetQueryable<PlayedGame>()
-                    .Where(playedGame => playedGame.Id == playedGameId)
-                    .Select(x => new
-                    {
-                        Name = x.PlayerGameResults.FirstOrDefault() != null ? x.PlayerGameResults.FirstOrDefault().Player.Name : null,
-                        Id = x.PlayerGameResults.FirstOrDefault() != null ? x.PlayerGameResults.FirstOrDefault().Player.Id : 0
-                    })
-                    .FirstOrDefault();
+                var firstPlayedGame = dataContext.GetQueryable<PlayedGame>().First();
 
-                result.ShouldNotBeNull();
+                firstPlayedGame.Notes = "Integration test note: " + DateTime.UtcNow;
+
+                //var firstGameDefinition = dataContext.GetQueryable<>()
             }
         }
 
-            private static void Cleanup(
-            IDataContext dataContext, 
-            GamingGroup gamingGroup, 
-            ApplicationUser currentUser)
+
+        private static void Cleanup(
+        IDataContext dataContext, 
+        GamingGroup gamingGroup, 
+        ApplicationUser currentUser)
         {
             var gamingGroupToDelete = dataContext
                 .GetQueryable<GamingGroup>().FirstOrDefault(game => game.Name == gamingGroup.Name);

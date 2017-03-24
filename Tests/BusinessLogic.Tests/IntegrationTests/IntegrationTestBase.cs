@@ -100,6 +100,9 @@ namespace BusinessLogic.Tests.IntegrationTests
         protected List<int> nemesisIdsToDelete;
         protected List<int> championIdsToDelete;
 
+        private IDataContext _dataContext;
+        private NemeStatsDbContext _nemeStatsDbContext;
+
         [OneTimeSetUp]
         public virtual void FixtureSetUp()
         {
@@ -110,219 +113,220 @@ namespace BusinessLogic.Tests.IntegrationTests
              
             playedGameTracker = new UniversalAnalyticsNemeStatsEventTracker(eventTrackerStub, eventFactory);
 
-            using (NemeStatsDbContext nemeStatsDbContext = new NemeStatsDbContext())
+            _dataContext = GetInstance<IDataContext>();
+            _nemeStatsDbContext = GetInstance<NemeStatsDbContext>();
+
+            CleanUpTestData();
+
+            testUserWithDefaultGamingGroup = SaveApplicationUser(testApplicationUserNameForUserWithDefaultGamingGroup, "a@mailinator.com");
+            testUserWithDefaultGamingGroupAndNoInvites = SaveApplicationUser(testApplicationUserNameForUserWithDefaultGamingGroupAndNoInvites, "a2@mailinator.com");
+            testUserWithOtherGamingGroup = SaveApplicationUser(testApplicationUserNameForUserWithOtherGamingGroup, "b@mailinator.com");
+            testUserWithThirdGamingGroup = SaveApplicationUser(testApplicationUserNameForUserWithThirdGamingGroup, "c@mailinator.com");
+
+
+                testGamingGroup = SaveGamingGroup(testGamingGroup1Name, testUserWithDefaultGamingGroup);
+                testUserWithDefaultGamingGroup = UpdateDatefaultGamingGroupOnUser(testUserWithDefaultGamingGroup, testGamingGroup);
+                testOtherGamingGroup = SaveGamingGroup(testGamingGroup2Name, testUserWithOtherGamingGroup);
+                testUserWithOtherGamingGroup = UpdateDatefaultGamingGroupOnUser(testUserWithOtherGamingGroup, testOtherGamingGroup);
+                testThirdGamingGroup = SaveGamingGroup(testGamingGroup3Name, testUserWithThirdGamingGroup);
+                testUserWithThirdGamingGroup = UpdateDatefaultGamingGroupOnUser(testUserWithThirdGamingGroup, testThirdGamingGroup);
+
+                testBoardGameGeekGameDefinition = SaveBoardGameGeekGameDefinition();
+
+                testGameDefinition = SaveGameDefinition(testGamingGroup.Id, testGameName, testBoardGameGeekGameDefinition.Id);
+                testGameDefinition2 = SaveGameDefinition(testGamingGroup.Id, testGameName2);
+                testGameDefinitionWithOtherGamingGroupId = SaveGameDefinition(testOtherGamingGroup.Id, testGameNameForGameWithOtherGamingGroupId);
+                gameDefinitionWithNoChampion = SaveGameDefinition(testThirdGamingGroup.Id,
+                    gameDefinitionWithNoChampionName);
+                anotherTestGameDefinitionWithOtherGamingGroupId = SaveGameDefinition(testOtherGamingGroup.Id, testGameNameForAnotherGameWithOtherGamingGroupId);
+                SavePlayers(testGamingGroup.Id, testOtherGamingGroup.Id);
+
+                CreatePlayedGames();
+        }
+
+        [OneTimeTearDown]
+        public virtual void TestFixtureTearDown()
+        {
+            try
             {
-                CleanUpTestData();
+                _nemeStatsDbContext.Dispose();
+            }
+            catch (Exception)
+            {
+            }
 
-                testUserWithDefaultGamingGroup = SaveApplicationUser(
-                    nemeStatsDbContext,
-                    testApplicationUserNameForUserWithDefaultGamingGroup,
-                    "a@mailinator.com");
-                testUserWithDefaultGamingGroupAndNoInvites = SaveApplicationUser(
-                    nemeStatsDbContext,
-                    testApplicationUserNameForUserWithDefaultGamingGroupAndNoInvites,
-                    "a2@mailinator.com");
-                testUserWithOtherGamingGroup = SaveApplicationUser(
-                    nemeStatsDbContext,
-                    testApplicationUserNameForUserWithOtherGamingGroup,
-                    "b@mailinator.com");
-                testUserWithThirdGamingGroup = SaveApplicationUser(
-                    nemeStatsDbContext,
-                    testApplicationUserNameForUserWithThirdGamingGroup, 
-                    "c@mailinator.com");
-
-                using (NemeStatsDataContext dataContext = new NemeStatsDataContext())
-                {
-                    testGamingGroup = SaveGamingGroup(dataContext, testGamingGroup1Name, testUserWithDefaultGamingGroup);
-                    testUserWithDefaultGamingGroup = UpdateDatefaultGamingGroupOnUser(testUserWithDefaultGamingGroup, testGamingGroup, dataContext);
-                    testOtherGamingGroup = SaveGamingGroup(dataContext, testGamingGroup2Name, testUserWithOtherGamingGroup);
-                    testUserWithOtherGamingGroup = UpdateDatefaultGamingGroupOnUser(testUserWithOtherGamingGroup, testOtherGamingGroup, dataContext);
-                    testThirdGamingGroup = SaveGamingGroup(dataContext, testGamingGroup3Name, testUserWithThirdGamingGroup);
-                    testUserWithThirdGamingGroup = UpdateDatefaultGamingGroupOnUser(testUserWithThirdGamingGroup,
-                        testThirdGamingGroup, dataContext);
-
-                    testBoardGameGeekGameDefinition = SaveBoardGameGeekGameDefinition(dataContext);
-
-                    testGameDefinition = SaveGameDefinition(nemeStatsDbContext, testGamingGroup.Id, testGameName, testBoardGameGeekGameDefinition.Id);
-                    testGameDefinition2 = SaveGameDefinition(nemeStatsDbContext, testGamingGroup.Id, testGameName2);
-                    testGameDefinitionWithOtherGamingGroupId = SaveGameDefinition(nemeStatsDbContext, testOtherGamingGroup.Id, testGameNameForGameWithOtherGamingGroupId);
-                    gameDefinitionWithNoChampion = SaveGameDefinition(nemeStatsDbContext, testThirdGamingGroup.Id,
-                        gameDefinitionWithNoChampionName);
-                    anotherTestGameDefinitionWithOtherGamingGroupId = SaveGameDefinition(nemeStatsDbContext,
-                        testOtherGamingGroup.Id, testGameNameForAnotherGameWithOtherGamingGroupId);
-                    SavePlayers(nemeStatsDbContext, testGamingGroup.Id, testOtherGamingGroup.Id);
-                }
-
-                using(NemeStatsDataContext dataContext = new NemeStatsDataContext())
-                {
-                    CreatePlayedGames(dataContext);
-                }
+            try
+            {
+                _dataContext.Dispose();
+            }
+            catch (Exception)
+            {
             }
         }
 
-        private ApplicationUser UpdateDatefaultGamingGroupOnUser(ApplicationUser user, GamingGroup gamingGroup, NemeStatsDataContext dataContext)
+        private ApplicationUser UpdateDatefaultGamingGroupOnUser(ApplicationUser user, GamingGroup gamingGroup)
         {
             user.CurrentGamingGroupId = gamingGroup.Id;
-            dataContext.CommitAllChanges();
+            _dataContext.CommitAllChanges();
 
             return user;
         }
 
-        private BoardGameGeekGameDefinition SaveBoardGameGeekGameDefinition(NemeStatsDataContext dataContext)
+        private BoardGameGeekGameDefinition SaveBoardGameGeekGameDefinition()
         {
-            var boardGameGeekDefinitionCreator = new BoardGameGeekGameDefinitionCreator(dataContext, new BoardGameGeekClient(new ApiDownloaderService(), MockRepository.GenerateMock<IRollbarClient>()));
+            var boardGameGeekDefinitionCreator = new BoardGameGeekGameDefinitionCreator(_dataContext, new BoardGameGeekClient(new ApiDownloaderService(), MockRepository.GenerateMock<IRollbarClient>()));
             return boardGameGeekDefinitionCreator.CreateBoardGameGeekGameDefinition(BOARD_GAME_GEEK_ID_FOR_RACE_FOR_THE_GALAXY,
                 testUserWithDefaultGamingGroup);
         }
 
-        private void CreatePlayedGames(NemeStatsDataContext dataContext)
+        private void CreatePlayedGames()
         {
             var createPlayedGameComponent = GetInstance<CreatePlayedGameComponent>();
 
             List<Player> players = new List<Player> { testPlayer1, testPlayer2 };
             List<int> playerRanks = new List<int> { 1, 1 };
-            PlayedGame playedGame = CreateTestPlayedGame(testGameDefinition.Id, players, playerRanks, testUserWithDefaultGamingGroup, createPlayedGameComponent, dataContext);
+            PlayedGame playedGame = CreateTestPlayedGame(testGameDefinition.Id, players, playerRanks, testUserWithDefaultGamingGroup, createPlayedGameComponent, _dataContext);
             testPlayedGames.Add(playedGame);
 
             players = new List<Player> { testPlayer1, testPlayer2, testPlayer3 };
             playerRanks = new List<int> { 1, 2, 3 };
-            playedGame = CreateTestPlayedGame(testGameDefinition.Id, players, playerRanks, testUserWithDefaultGamingGroup, createPlayedGameComponent, dataContext);
+            playedGame = CreateTestPlayedGame(testGameDefinition.Id, players, playerRanks, testUserWithDefaultGamingGroup, createPlayedGameComponent, _dataContext);
             testPlayedGames.Add(playedGame);
 
             players = new List<Player> { testPlayer1, testPlayer3, testPlayer2 };
             playerRanks = new List<int> { 1, 2, 3 };
-            playedGame = CreateTestPlayedGame(testGameDefinition.Id, players, playerRanks, testUserWithDefaultGamingGroup, createPlayedGameComponent, dataContext);
+            playedGame = CreateTestPlayedGame(testGameDefinition.Id, players, playerRanks, testUserWithDefaultGamingGroup, createPlayedGameComponent, _dataContext);
             testPlayedGames.Add(playedGame);
 
             players = new List<Player> { testPlayer3, testPlayer1 };
             playerRanks = new List<int> { 1, 2 };
-            playedGame = CreateTestPlayedGame(testGameDefinition.Id, players, playerRanks, testUserWithDefaultGamingGroup, createPlayedGameComponent, dataContext);
+            playedGame = CreateTestPlayedGame(testGameDefinition.Id, players, playerRanks, testUserWithDefaultGamingGroup, createPlayedGameComponent, _dataContext);
             testPlayedGames.Add(playedGame);
 
             //make player4 beat player 1 three times
             players = new List<Player> { testPlayer4, testPlayer1, testPlayer2, testPlayer3 };
             playerRanks = new List<int> { 1, 2, 3, 4 };
-            playedGame = CreateTestPlayedGame(testGameDefinition.Id, players, playerRanks, testUserWithDefaultGamingGroup, createPlayedGameComponent, dataContext);
+            playedGame = CreateTestPlayedGame(testGameDefinition.Id, players, playerRanks, testUserWithDefaultGamingGroup, createPlayedGameComponent, _dataContext);
             testPlayedGames.Add(playedGame);
 
             players = new List<Player> { testPlayer4, testPlayer1 };
             playerRanks = new List<int> { 1, 2 };
-            playedGame = CreateTestPlayedGame(testGameDefinition.Id, players, playerRanks, testUserWithDefaultGamingGroup, createPlayedGameComponent, dataContext);
+            playedGame = CreateTestPlayedGame(testGameDefinition.Id, players, playerRanks, testUserWithDefaultGamingGroup, createPlayedGameComponent, _dataContext);
             testPlayedGames.Add(playedGame);
 
             players = new List<Player> { testPlayer4, testPlayer1 };
             playerRanks = new List<int> { 1, 2 };
-            playedGame = CreateTestPlayedGame(testGameDefinition.Id, players, playerRanks, testUserWithDefaultGamingGroup, createPlayedGameComponent, dataContext);
+            playedGame = CreateTestPlayedGame(testGameDefinition.Id, players, playerRanks, testUserWithDefaultGamingGroup, createPlayedGameComponent, _dataContext);
             testPlayedGames.Add(playedGame);
 
             //--make the inactive player5 beat player1 3 times
             players = new List<Player> { testPlayer5, testPlayer1 };
             playerRanks = new List<int> { 1, 2 };
-            playedGame = CreateTestPlayedGame(testGameDefinition.Id, players, playerRanks, testUserWithDefaultGamingGroup, createPlayedGameComponent, dataContext);
+            playedGame = CreateTestPlayedGame(testGameDefinition.Id, players, playerRanks, testUserWithDefaultGamingGroup, createPlayedGameComponent, _dataContext);
             testPlayedGames.Add(playedGame);
 
             players = new List<Player> { testPlayer5, testPlayer1 };
             playerRanks = new List<int> { 1, 2 };
-            playedGame = CreateTestPlayedGame(testGameDefinition.Id, players, playerRanks, testUserWithDefaultGamingGroup, createPlayedGameComponent, dataContext);
+            playedGame = CreateTestPlayedGame(testGameDefinition.Id, players, playerRanks, testUserWithDefaultGamingGroup, createPlayedGameComponent, _dataContext);
             testPlayedGames.Add(playedGame);
 
             players = new List<Player> { testPlayer5, testPlayer1 };
             playerRanks = new List<int> { 1, 2 };
-            playedGame = CreateTestPlayedGame(testGameDefinition.Id, players, playerRanks, testUserWithDefaultGamingGroup, createPlayedGameComponent, dataContext);
+            playedGame = CreateTestPlayedGame(testGameDefinition.Id, players, playerRanks, testUserWithDefaultGamingGroup, createPlayedGameComponent, _dataContext);
             testPlayedGames.Add(playedGame);
 
             //make player 2 be the only one who beat player 5
             players = new List<Player> { testPlayer2, testPlayer5 };
             playerRanks = new List<int> { 1, 2 };
-            playedGame = CreateTestPlayedGame(testGameDefinition.Id, players, playerRanks, testUserWithDefaultGamingGroup, createPlayedGameComponent, dataContext);
+            playedGame = CreateTestPlayedGame(testGameDefinition.Id, players, playerRanks, testUserWithDefaultGamingGroup, createPlayedGameComponent, _dataContext);
             testPlayedGames.Add(playedGame);
 
             //--create games that have a different GamingGroupId and testPlayer7 being the champion
             players = new List<Player> { testPlayer7WithOtherGamingGroupId };
             playerRanks = new List<int> { 1 };
-            playedGame = CreateTestPlayedGame(testGameDefinitionWithOtherGamingGroupId.Id, players, playerRanks, testUserWithOtherGamingGroup, createPlayedGameComponent, dataContext);
+            playedGame = CreateTestPlayedGame(testGameDefinitionWithOtherGamingGroupId.Id, players, playerRanks, testUserWithOtherGamingGroup, createPlayedGameComponent, _dataContext);
             testPlayedGames.Add(playedGame);
 
             players = new List<Player> { testPlayer7WithOtherGamingGroupId, testPlayer8WithOtherGamingGroupId };
             playerRanks = new List<int> { 1, 2 };
-            playedGame = CreateTestPlayedGame(testGameDefinitionWithOtherGamingGroupId.Id, players, playerRanks, testUserWithOtherGamingGroup, createPlayedGameComponent, dataContext);
+            playedGame = CreateTestPlayedGame(testGameDefinitionWithOtherGamingGroupId.Id, players, playerRanks, testUserWithOtherGamingGroup, createPlayedGameComponent, _dataContext);
             testPlayedGames.Add(playedGame);
 
             players = new List<Player> { testPlayer7WithOtherGamingGroupId, testPlayer8WithOtherGamingGroupId };
             playerRanks = new List<int> { 1, 2 };
-            playedGame = CreateTestPlayedGame(testGameDefinitionWithOtherGamingGroupId.Id, players, playerRanks, testUserWithOtherGamingGroup, createPlayedGameComponent, dataContext);
+            playedGame = CreateTestPlayedGame(testGameDefinitionWithOtherGamingGroupId.Id, players, playerRanks, testUserWithOtherGamingGroup, createPlayedGameComponent, _dataContext);
             testPlayedGames.Add(playedGame);
 
             players = new List<Player> { testPlayer7WithOtherGamingGroupId, testPlayer8WithOtherGamingGroupId };
             playerRanks = new List<int> { 1, 2 };
-            playedGame = CreateTestPlayedGame(testGameDefinitionWithOtherGamingGroupId.Id, players, playerRanks, testUserWithOtherGamingGroup, createPlayedGameComponent, dataContext);
+            playedGame = CreateTestPlayedGame(testGameDefinitionWithOtherGamingGroupId.Id, players, playerRanks, testUserWithOtherGamingGroup, createPlayedGameComponent, _dataContext);
             testPlayedGames.Add(playedGame);
 
             players = new List<Player> { testPlayer7WithOtherGamingGroupId, testPlayer8WithOtherGamingGroupId };
             playerRanks = new List<int> { 1, 2 };
-            playedGame = CreateTestPlayedGame(testGameDefinitionWithOtherGamingGroupId.Id, players, playerRanks, testUserWithOtherGamingGroup, createPlayedGameComponent, dataContext);
+            playedGame = CreateTestPlayedGame(testGameDefinitionWithOtherGamingGroupId.Id, players, playerRanks, testUserWithOtherGamingGroup, createPlayedGameComponent, _dataContext);
             testPlayedGames.Add(playedGame);
 
             players = new List<Player> { testPlayer8WithOtherGamingGroupId, testPlayer7WithOtherGamingGroupId };
             playerRanks = new List<int> { 1, 2 };
-            playedGame = CreateTestPlayedGame(testGameDefinitionWithOtherGamingGroupId.Id, players, playerRanks, testUserWithOtherGamingGroup, createPlayedGameComponent, dataContext);
+            playedGame = CreateTestPlayedGame(testGameDefinitionWithOtherGamingGroupId.Id, players, playerRanks, testUserWithOtherGamingGroup, createPlayedGameComponent, _dataContext);
             testPlayedGames.Add(playedGame);
 
             players = new List<Player> { testPlayer9UndefeatedWith5Games, testPlayer7WithOtherGamingGroupId };
             playerRanks = new List<int> { 1, 2 };
-            playedGame = CreateTestPlayedGame(anotherTestGameDefinitionWithOtherGamingGroupId.Id, players, playerRanks, testUserWithOtherGamingGroup, createPlayedGameComponent, dataContext);
+            playedGame = CreateTestPlayedGame(anotherTestGameDefinitionWithOtherGamingGroupId.Id, players, playerRanks, testUserWithOtherGamingGroup, createPlayedGameComponent, _dataContext);
             testPlayedGames.Add(playedGame);
 
             players = new List<Player> { testPlayer9UndefeatedWith5Games, testPlayer7WithOtherGamingGroupId };
             playerRanks = new List<int> { 1, 2 };
-            playedGame = CreateTestPlayedGame(anotherTestGameDefinitionWithOtherGamingGroupId.Id, players, playerRanks, testUserWithOtherGamingGroup, createPlayedGameComponent, dataContext);
+            playedGame = CreateTestPlayedGame(anotherTestGameDefinitionWithOtherGamingGroupId.Id, players, playerRanks, testUserWithOtherGamingGroup, createPlayedGameComponent, _dataContext);
             testPlayedGames.Add(playedGame);
 
             players = new List<Player> { testPlayer9UndefeatedWith5Games, testPlayer7WithOtherGamingGroupId };
             playerRanks = new List<int> { 1, 2 };
-            playedGame = CreateTestPlayedGame(anotherTestGameDefinitionWithOtherGamingGroupId.Id, players, playerRanks, testUserWithOtherGamingGroup, createPlayedGameComponent, dataContext);
+            playedGame = CreateTestPlayedGame(anotherTestGameDefinitionWithOtherGamingGroupId.Id, players, playerRanks, testUserWithOtherGamingGroup, createPlayedGameComponent, _dataContext);
             testPlayedGames.Add(playedGame);
 
             players = new List<Player> { testPlayer9UndefeatedWith5Games, testPlayer7WithOtherGamingGroupId };
             playerRanks = new List<int> { 1, 2 };
-            playedGame = CreateTestPlayedGame(anotherTestGameDefinitionWithOtherGamingGroupId.Id, players, playerRanks, testUserWithOtherGamingGroup, createPlayedGameComponent, dataContext);
+            playedGame = CreateTestPlayedGame(anotherTestGameDefinitionWithOtherGamingGroupId.Id, players, playerRanks, testUserWithOtherGamingGroup, createPlayedGameComponent, _dataContext);
             testPlayedGames.Add(playedGame);
 
             players = new List<Player> { testPlayer9UndefeatedWith5Games, testPlayer7WithOtherGamingGroupId };
             playerRanks = new List<int> { 1, 2 };
-            playedGame = CreateTestPlayedGame(anotherTestGameDefinitionWithOtherGamingGroupId.Id, players, playerRanks, testUserWithOtherGamingGroup, createPlayedGameComponent, dataContext);
+            playedGame = CreateTestPlayedGame(anotherTestGameDefinitionWithOtherGamingGroupId.Id, players, playerRanks, testUserWithOtherGamingGroup, createPlayedGameComponent, _dataContext);
             testPlayedGames.Add(playedGame);
         }
 
-        private void SavePlayers(NemeStatsDbContext nemeStatsDbContext, int primaryGamingGroupId, int otherGamingGroupId)
+        private void SavePlayers(int primaryGamingGroupId, int otherGamingGroupId)
         {
             testPlayer1 = new Player { Name = testPlayer1Name, Active = true, GamingGroupId = primaryGamingGroupId };
-            nemeStatsDbContext.Players.Add(testPlayer1);
+            _nemeStatsDbContext.Players.Add(testPlayer1);
             testPlayer2 = new Player { Name = testPlayer2Name, Active = true, GamingGroupId = primaryGamingGroupId };
-            nemeStatsDbContext.Players.Add(testPlayer2);
+            _nemeStatsDbContext.Players.Add(testPlayer2);
             testPlayer3 = new Player { Name = testPlayer3Name, Active = true, GamingGroupId = primaryGamingGroupId };
-            nemeStatsDbContext.Players.Add(testPlayer3);
+            _nemeStatsDbContext.Players.Add(testPlayer3);
             testPlayer4 = new Player { Name = testPlayer4Name, Active = true, GamingGroupId = primaryGamingGroupId };
-            nemeStatsDbContext.Players.Add(testPlayer4);
+            _nemeStatsDbContext.Players.Add(testPlayer4);
             testPlayer5 = new Player { Name = testPlayer5Name, Active = false, GamingGroupId = primaryGamingGroupId };
-            nemeStatsDbContext.Players.Add(testPlayer5);
+            _nemeStatsDbContext.Players.Add(testPlayer5);
             testPlayer6 = new Player { Name = testPlayer6Name, Active = true, GamingGroupId = primaryGamingGroupId };
-            nemeStatsDbContext.Players.Add(testPlayer6);
+            _nemeStatsDbContext.Players.Add(testPlayer6);
 
             testPlayer7WithOtherGamingGroupId = new Player { Name = testPlayer7Name, Active = true, GamingGroupId = otherGamingGroupId };
-            nemeStatsDbContext.Players.Add(testPlayer7WithOtherGamingGroupId);
+            _nemeStatsDbContext.Players.Add(testPlayer7WithOtherGamingGroupId);
             testPlayer8WithOtherGamingGroupId = new Player { Name = testPlayer8Name, Active = true, GamingGroupId = otherGamingGroupId };
-            nemeStatsDbContext.Players.Add(testPlayer8WithOtherGamingGroupId);
+            _nemeStatsDbContext.Players.Add(testPlayer8WithOtherGamingGroupId);
             testPlayer9UndefeatedWith5Games = new Player { Name = testPlayer9UndefeatedWith5GamesName, Active = false, GamingGroupId =  otherGamingGroupId};
-            nemeStatsDbContext.Players.Add(testPlayer9UndefeatedWith5Games);
+            _nemeStatsDbContext.Players.Add(testPlayer9UndefeatedWith5Games);
 
             testPlayerWithNoPlayedGames = new Player { Name = testPlayerWithNoPlayedGamesName, Active = true, GamingGroupId = primaryGamingGroupId };
-            nemeStatsDbContext.Players.Add(testPlayerWithNoPlayedGames);
+            _nemeStatsDbContext.Players.Add(testPlayerWithNoPlayedGames);
 
-            nemeStatsDbContext.SaveChanges();
+            _nemeStatsDbContext.SaveChanges();
         }
 
-        private GameDefinition SaveGameDefinition(NemeStatsDbContext nemeStatsDbContext, int gamingGroupId, string gameDefinitionName, int? boardGameGeekGameDefinitionid = null)
+        private GameDefinition SaveGameDefinition(int gamingGroupId, string gameDefinitionName, int? boardGameGeekGameDefinitionid = null)
         {
             GameDefinition gameDefinition = new GameDefinition
             {
@@ -331,13 +335,13 @@ namespace BusinessLogic.Tests.IntegrationTests
                 GamingGroupId = gamingGroupId,
                 BoardGameGeekGameDefinitionId = boardGameGeekGameDefinitionid
             };
-            nemeStatsDbContext.GameDefinitions.Add(gameDefinition);
-            nemeStatsDbContext.SaveChanges();
+            _nemeStatsDbContext.GameDefinitions.Add(gameDefinition);
+            _nemeStatsDbContext.SaveChanges();
 
             return gameDefinition;
         }
 
-        private ApplicationUser SaveApplicationUser(NemeStatsDbContext nemeStatsDbContext, string userName, string email)
+        private ApplicationUser SaveApplicationUser(string userName, string email)
         {
             ApplicationUser applicationUser = new ApplicationUser
             {
@@ -349,17 +353,17 @@ namespace BusinessLogic.Tests.IntegrationTests
                 AccessFailedCount = 0,
                 AnonymousClientId = new Guid().ToString()
             };
-            nemeStatsDbContext.Users.Add(applicationUser);
-            nemeStatsDbContext.SaveChanges();
+            _nemeStatsDbContext.Users.Add(applicationUser);
+            _nemeStatsDbContext.SaveChanges();
 
             return applicationUser;
         }
 
-        private GamingGroup SaveGamingGroup(NemeStatsDataContext dataContext, string gamingGroupName, ApplicationUser owningUser)
+        private GamingGroup SaveGamingGroup(string gamingGroupName, ApplicationUser owningUser)
         {
             GamingGroup gamingGroup = new GamingGroup { Name = gamingGroupName, OwningUserId = owningUser.Id };
-            dataContext.Save(gamingGroup, owningUser);
-            dataContext.CommitAllChanges();
+            _dataContext.Save(gamingGroup, owningUser);
+            _dataContext.CommitAllChanges();
 
             return gamingGroup;
         }
@@ -370,7 +374,7 @@ namespace BusinessLogic.Tests.IntegrationTests
             List<int> correspondingPlayerRanks,
             ApplicationUser currentUser,
             CreatePlayedGameComponent createdPlayedGameComponent,
-            IDataContext dataContext)
+            IDataContext _dataContext)
         {
             List<PlayerRank> playerRanks = new List<PlayerRank>();
 
@@ -390,47 +394,44 @@ namespace BusinessLogic.Tests.IntegrationTests
                     TransactionSource = TransactionSource.WebApplication
             };
 
-            return createdPlayedGameComponent.Execute(newlyCompletedGame, currentUser, dataContext);
+            return createdPlayedGameComponent.Execute(newlyCompletedGame, currentUser, _dataContext);
         }
 
         private void CleanUpTestData()
         {
-            using (NemeStatsDbContext nemeStatsDbContext = new NemeStatsDbContext())
-            {
-                CleanUpPlayerGameResults(nemeStatsDbContext);
-                CleanUpPlayedGames(nemeStatsDbContext);
-                nemeStatsDbContext.SaveChanges();
+            CleanUpPlayerGameResults();
+            CleanUpPlayedGames();
+            _nemeStatsDbContext.SaveChanges();
                 
-                CleanUpChampions(nemeStatsDbContext);
-                CleanUpGameDefinitions(nemeStatsDbContext, testGameName);
-                CleanUpGameDefinitions(nemeStatsDbContext, testGameName2);
-                CleanUpGameDefinitions(nemeStatsDbContext, testGameNameForGameWithOtherGamingGroupId);
-                CleanUpGameDefinitions(nemeStatsDbContext, testGameNameForAnotherGameWithOtherGamingGroupId);
-                CleanUpGameDefinitions(nemeStatsDbContext, gameDefinitionWithNoChampionName);
-                CleanUpBoardGameGeekGameDefinitions(nemeStatsDbContext, testBoardGameGeekGameDefinition);
-                CleanUpPlayers(nemeStatsDbContext);
-                nemeStatsDbContext.SaveChanges();
+            CleanUpChampions();
+            CleanUpGameDefinitions(testGameName);
+            CleanUpGameDefinitions(testGameName2);
+            CleanUpGameDefinitions(testGameNameForGameWithOtherGamingGroupId);
+            CleanUpGameDefinitions(testGameNameForAnotherGameWithOtherGamingGroupId);
+            CleanUpGameDefinitions(gameDefinitionWithNoChampionName);
+            CleanUpBoardGameGeekGameDefinitions(testBoardGameGeekGameDefinition);
+            CleanUpPlayers();
+            _nemeStatsDbContext.SaveChanges();
 
-                CleanUpGamingGroup(testGamingGroup1Name, nemeStatsDbContext);
-                CleanUpGamingGroup(testGamingGroup2Name, nemeStatsDbContext);
-                CleanUpGamingGroup(testGamingGroup3Name, nemeStatsDbContext);
-                nemeStatsDbContext.SaveChanges();
+            CleanUpGamingGroup(testGamingGroup1Name);
+            CleanUpGamingGroup(testGamingGroup2Name);
+            CleanUpGamingGroup(testGamingGroup3Name);
+            _nemeStatsDbContext.SaveChanges();
 
-                CleanUpGamingGroupInvitation(testInviteeEmail1, nemeStatsDbContext);
-                CleanUpGamingGroupInvitation(testInviteeEmail2, nemeStatsDbContext);
-                nemeStatsDbContext.SaveChanges();
+            CleanUpGamingGroupInvitation(testInviteeEmail1);
+            CleanUpGamingGroupInvitation(testInviteeEmail2);
+            _nemeStatsDbContext.SaveChanges();
 
-                CleanUpApplicationUser(testApplicationUserNameForUserWithDefaultGamingGroup, nemeStatsDbContext);
-                CleanUpApplicationUser(testApplicationUserNameForUserWithOtherGamingGroup, nemeStatsDbContext);
-                CleanUpApplicationUser(testApplicationUserNameForUserWithDefaultGamingGroupAndNoInvites, nemeStatsDbContext);
-                CleanUpApplicationUser(testApplicationUserNameForUserWithThirdGamingGroup, nemeStatsDbContext);
-                nemeStatsDbContext.SaveChanges();
-            }
+            CleanUpApplicationUser(testApplicationUserNameForUserWithDefaultGamingGroup);
+            CleanUpApplicationUser(testApplicationUserNameForUserWithOtherGamingGroup);
+            CleanUpApplicationUser(testApplicationUserNameForUserWithDefaultGamingGroupAndNoInvites);
+            CleanUpApplicationUser(testApplicationUserNameForUserWithThirdGamingGroup);
+            _nemeStatsDbContext.SaveChanges();
         }
 
-        private void CleanUpGamingGroupInvitation(string inviteeEmail, NemeStatsDbContext nemeStatsDbContext)
+        private void CleanUpGamingGroupInvitation(string inviteeEmail)
         {
-            GamingGroupInvitation invitation = (from gamingGroupInvitation in nemeStatsDbContext.GamingGroupInvitations
+            GamingGroupInvitation invitation = (from gamingGroupInvitation in _nemeStatsDbContext.GamingGroupInvitations
                                                        where gamingGroupInvitation.InviteeEmail == inviteeEmail
                                                 select gamingGroupInvitation).FirstOrDefault();
 
@@ -438,31 +439,31 @@ namespace BusinessLogic.Tests.IntegrationTests
             {
                 try
                 {
-                    nemeStatsDbContext.GamingGroupInvitations.Remove(invitation);
+                    _nemeStatsDbContext.GamingGroupInvitations.Remove(invitation);
                 }
                 catch (Exception) { }
             }
         }
 
-        private void CleanUpPlayers(NemeStatsDbContext nemeStatsDbContext)
+        private void CleanUpPlayers()
         {
-            CleanUpNemeses(nemeStatsDbContext);
+            CleanUpNemeses();
 
-            CleanUpPlayerByPlayerName(testPlayer1Name, nemeStatsDbContext);
-            CleanUpPlayerByPlayerName(testPlayer2Name, nemeStatsDbContext);
-            CleanUpPlayerByPlayerName(testPlayer3Name, nemeStatsDbContext);
-            CleanUpPlayerByPlayerName(testPlayer4Name, nemeStatsDbContext);
-            CleanUpPlayerByPlayerName(testPlayer5Name, nemeStatsDbContext);
-            CleanUpPlayerByPlayerName(testPlayer6Name, nemeStatsDbContext);
-            CleanUpPlayerByPlayerName(testPlayer7Name, nemeStatsDbContext);
-            CleanUpPlayerByPlayerName(testPlayer8Name, nemeStatsDbContext);
-            CleanUpPlayerByPlayerName(testPlayer9UndefeatedWith5GamesName, nemeStatsDbContext);
-            CleanUpPlayerByPlayerName(testPlayerWithNoPlayedGamesName, nemeStatsDbContext);
+            CleanUpPlayerByPlayerName(testPlayer1Name);
+            CleanUpPlayerByPlayerName(testPlayer2Name);
+            CleanUpPlayerByPlayerName(testPlayer3Name);
+            CleanUpPlayerByPlayerName(testPlayer4Name);
+            CleanUpPlayerByPlayerName(testPlayer5Name);
+            CleanUpPlayerByPlayerName(testPlayer6Name);
+            CleanUpPlayerByPlayerName(testPlayer7Name);
+            CleanUpPlayerByPlayerName(testPlayer8Name);
+            CleanUpPlayerByPlayerName(testPlayer9UndefeatedWith5GamesName);
+            CleanUpPlayerByPlayerName(testPlayerWithNoPlayedGamesName);
         }
 
-        private void CleanUpChampions(NemeStatsDbContext nemeStatsDbContext)
+        private void CleanUpChampions()
         {
-            List<int> gameDefinitionIdsToClearChampionId = (from gameDefinition in nemeStatsDbContext.GameDefinitions
+            List<int> gameDefinitionIdsToClearChampionId = (from gameDefinition in _nemeStatsDbContext.GameDefinitions
                                                             where gameDefinition.Name == testGameName
                                                                 || gameDefinition.Name == testGameName2
                                                                 || gameDefinition.Name == testGameNameForGameWithOtherGamingGroupId
@@ -470,7 +471,7 @@ namespace BusinessLogic.Tests.IntegrationTests
                                                             select gameDefinition.Id)
                                                             .ToList();
 
-            championIdsToDelete = (from champion in nemeStatsDbContext.Champions
+            championIdsToDelete = (from champion in _nemeStatsDbContext.Champions
                                     where gameDefinitionIdsToClearChampionId.Contains(champion.GameDefinitionId)
                                     select champion.Id)
                                     .Distinct()
@@ -479,23 +480,23 @@ namespace BusinessLogic.Tests.IntegrationTests
             GameDefinition gameDefinitionNeedingChampionCleared;
             foreach (int gameDefinitionId in gameDefinitionIdsToClearChampionId)
             {
-                gameDefinitionNeedingChampionCleared = nemeStatsDbContext.GameDefinitions.Find(gameDefinitionId);
+                gameDefinitionNeedingChampionCleared = _nemeStatsDbContext.GameDefinitions.Find(gameDefinitionId);
                 gameDefinitionNeedingChampionCleared.ChampionId = null;
             }
-            nemeStatsDbContext.SaveChanges();
+            _nemeStatsDbContext.SaveChanges();
 
             Champion championToDelete;
             foreach (int championId in championIdsToDelete)
             {
-                championToDelete = nemeStatsDbContext.Champions.Find(championId);
-                nemeStatsDbContext.Champions.Remove(championToDelete);
+                championToDelete = _nemeStatsDbContext.Champions.Find(championId);
+                _nemeStatsDbContext.Champions.Remove(championToDelete);
             }
-            nemeStatsDbContext.SaveChanges();
+            _nemeStatsDbContext.SaveChanges();
         }
 
-        private void CleanUpNemeses(NemeStatsDbContext nemeStatsDbContext)
+        private void CleanUpNemeses()
         {
-            List<int> playerIdsToClearNemesisId = (from player in nemeStatsDbContext.Players
+            List<int> playerIdsToClearNemesisId = (from player in _nemeStatsDbContext.Players
                                                    where player.Name == testPlayer1Name
                                                    || player.Name == testPlayer1Name
                                                    || player.Name == testPlayer2Name
@@ -510,7 +511,7 @@ namespace BusinessLogic.Tests.IntegrationTests
                                                    select player.Id)
                                                   .ToList();
 
-            nemesisIdsToDelete = (from nemesis in nemeStatsDbContext.Nemeses
+            nemesisIdsToDelete = (from nemesis in _nemeStatsDbContext.Nemeses
                                   where playerIdsToClearNemesisId.Contains(nemesis.NemesisPlayerId)
                                   select nemesis.Id)
                                             .Distinct()
@@ -519,25 +520,25 @@ namespace BusinessLogic.Tests.IntegrationTests
             Player playerNeedingNemesisCleared;
             foreach (int playerId in playerIdsToClearNemesisId)
             {
-                playerNeedingNemesisCleared = nemeStatsDbContext.Players.Find(playerId);
+                playerNeedingNemesisCleared = _nemeStatsDbContext.Players.Find(playerId);
                 if (playerNeedingNemesisCleared.NemesisId != null)
                 {
                     playerNeedingNemesisCleared.NemesisId = null;
                 }
             }
-            nemeStatsDbContext.SaveChanges();
+            _nemeStatsDbContext.SaveChanges();
             Nemesis nemesisToDelete;
             foreach (int nemesisId in nemesisIdsToDelete)
             {
-                nemesisToDelete = nemeStatsDbContext.Nemeses.Find(nemesisId);
-                nemeStatsDbContext.Nemeses.Remove(nemesisToDelete);
+                nemesisToDelete = _nemeStatsDbContext.Nemeses.Find(nemesisId);
+                _nemeStatsDbContext.Nemeses.Remove(nemesisToDelete);
             }
-            nemeStatsDbContext.SaveChanges();
+            _nemeStatsDbContext.SaveChanges();
         }
 
-        private void CleanUpApplicationUser(string testApplicationUserName, NemeStatsDbContext nemeStatsDbContext)
+        private void CleanUpApplicationUser(string testApplicationUserName)
         {
-            ApplicationUser applicationUserToDelete = (from applicationUser in nemeStatsDbContext.Users
+            ApplicationUser applicationUserToDelete = (from applicationUser in _nemeStatsDbContext.Users
                                                        where applicationUser.UserName == testApplicationUserName
                                                        select applicationUser).FirstOrDefault();
 
@@ -545,15 +546,15 @@ namespace BusinessLogic.Tests.IntegrationTests
             {
                 try
                 {
-                    nemeStatsDbContext.Users.Remove(applicationUserToDelete);
+                    _nemeStatsDbContext.Users.Remove(applicationUserToDelete);
                 }
                 catch (Exception) { }
             }
         }
 
-        private void CleanUpGamingGroup(string testGamingGroupName, NemeStatsDbContext nemeStatsDbContext)
+        private void CleanUpGamingGroup(string testGamingGroupName)
         {
-            GamingGroup gamingGroupToDelete = (from gamingGroup in nemeStatsDbContext.GamingGroups
+            GamingGroup gamingGroupToDelete = (from gamingGroup in _nemeStatsDbContext.GamingGroups
                                                where gamingGroup.Name == testGamingGroupName
                                                select gamingGroup).FirstOrDefault();
 
@@ -561,15 +562,15 @@ namespace BusinessLogic.Tests.IntegrationTests
             {
                 try
                 {
-                    nemeStatsDbContext.GamingGroups.Remove(gamingGroupToDelete);
+                    _nemeStatsDbContext.GamingGroups.Remove(gamingGroupToDelete);
                 }
                 catch (Exception) { }
             }
         }
 
-        private void CleanUpPlayedGames(NemeStatsDbContext nemeStatsDbContext)
+        private void CleanUpPlayedGames()
         {
-            List<PlayedGame> playedGamesToDelete = (from playedGame in nemeStatsDbContext.PlayedGames
+            List<PlayedGame> playedGamesToDelete = (from playedGame in _nemeStatsDbContext.PlayedGames
                                                     where playedGame.GameDefinition.Name == testGameName
                                                     select playedGame).ToList();
 
@@ -577,15 +578,15 @@ namespace BusinessLogic.Tests.IntegrationTests
             {
                 try
                 {
-                    nemeStatsDbContext.PlayedGames.Remove(playedGame);
+                    _nemeStatsDbContext.PlayedGames.Remove(playedGame);
                 }
                 catch (Exception) { }
             }
         }
 
-        private void CleanUpPlayerGameResults(NemeStatsDbContext nemeStatsDbContext)
+        private void CleanUpPlayerGameResults()
         {
-            List<PlayerGameResult> playerGameResultsToDelete = (from playerGameResult in nemeStatsDbContext.PlayerGameResults
+            List<PlayerGameResult> playerGameResultsToDelete = (from playerGameResult in _nemeStatsDbContext.PlayerGameResults
                                                                 where playerGameResult.PlayedGame.GameDefinition.Name == testGameName
                                                                 select playerGameResult).ToList();
 
@@ -593,15 +594,15 @@ namespace BusinessLogic.Tests.IntegrationTests
             {
                 try
                 {
-                    nemeStatsDbContext.PlayerGameResults.Remove(playerGameResult);
+                    _nemeStatsDbContext.PlayerGameResults.Remove(playerGameResult);
                 }
                 catch (Exception) { }
             }
         }
 
-        private void CleanUpGameDefinitions(NemeStatsDbContext nemeStatsDbContext, string gameDefinitionName)
+        private void CleanUpGameDefinitions(string gameDefinitionName)
         {
-            List<GameDefinition> gameDefinitionsToDelete = (from game in nemeStatsDbContext.GameDefinitions
+            List<GameDefinition> gameDefinitionsToDelete = (from game in _nemeStatsDbContext.GameDefinitions
                                                             where game.Name == gameDefinitionName
                                                             select game).ToList();
 
@@ -609,33 +610,33 @@ namespace BusinessLogic.Tests.IntegrationTests
             {
                 try
                 {
-                    nemeStatsDbContext.GameDefinitions.Remove(game);
+                    _nemeStatsDbContext.GameDefinitions.Remove(game);
                 }
                 catch (Exception) { }
             }
         }
 
-        private void CleanUpBoardGameGeekGameDefinitions(NemeStatsDbContext nemeStatsDbContext, BoardGameGeekGameDefinition boardGameGeekGameDefinition)
+        private void CleanUpBoardGameGeekGameDefinitions(BoardGameGeekGameDefinition boardGameGeekGameDefinition)
         {
             try
             {
-                nemeStatsDbContext.BoardGameGeekGameDefinitions.Remove(boardGameGeekGameDefinition);
+                _nemeStatsDbContext.BoardGameGeekGameDefinitions.Remove(boardGameGeekGameDefinition);
             }
             catch (Exception)
             {
             }
         }
 
-        private static void CleanUpPlayerByPlayerName(string playerName, NemeStatsDbContext nemeStatsDbContext)
+        private void CleanUpPlayerByPlayerName(string playerName)
         {
-            Player playerToDelete = nemeStatsDbContext.Players.FirstOrDefault(player => player.Name == playerName);
+            Player playerToDelete = _nemeStatsDbContext.Players.FirstOrDefault(player => player.Name == playerName);
 
             if (playerToDelete != null)
             {
                 try
                 {
-                    nemeStatsDbContext.Players.Remove(playerToDelete);
-                    nemeStatsDbContext.SaveChanges();
+                    _nemeStatsDbContext.Players.Remove(playerToDelete);
+                    _nemeStatsDbContext.SaveChanges();
                 }
                 catch (Exception) { }
             }
