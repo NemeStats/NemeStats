@@ -363,14 +363,176 @@ namespace BusinessLogic.Tests.IntegrationTests
 
 
         [Test]
-        public void It_Wraps_Everything_In_A_Transaction_Automatically()
+        public void It_Wraps_Updates_In_A_Transaction_Implicitly()
         {
             var dataContext = GetInstance<IDataContext>();
             var firstPlayedGame = dataContext.GetQueryable<PlayedGame>().First();
+            var applicationUserWhoCanSave = new ApplicationUser
+            {
+                CurrentGamingGroupId = firstPlayedGame.GamingGroupId
+            };
 
             firstPlayedGame.Notes = "Integration test note: " + DateTime.UtcNow;
+            dataContext.Save(firstPlayedGame, applicationUserWhoCanSave);
 
-            //var firstGameDefinition = dataContext.GetQueryable<>()
+            var firstGameDefinition = dataContext.GetQueryable<GameDefinition>().First(x => x.GamingGroupId == applicationUserWhoCanSave.CurrentGamingGroupId);
+            int numberOfCharactersToSubstring = firstGameDefinition.Name.Length > 100 ? 100 : firstGameDefinition.Name.Length;
+            firstGameDefinition.Name = (Guid.NewGuid() + firstGameDefinition.Name).Substring(0, numberOfCharactersToSubstring);
+            dataContext.Save(firstGameDefinition, applicationUserWhoCanSave);
+
+            dataContext.Dispose();
+
+            #region See The Sql
+
+            /*
+            
+            Opened connection at 3/24/2017 12:46:07 PM -04:00
+
+            SELECT TOP (1) 
+                [c].[Id] AS [Id], 
+                [c].[GamingGroupId] AS [GamingGroupId], 
+                [c].[GameDefinitionId] AS [GameDefinitionId], 
+                [c].[WinnerType] AS [WinnerType], 
+                [c].[NumberOfPlayers] AS [NumberOfPlayers], 
+                [c].[DatePlayed] AS [DatePlayed], 
+                [c].[DateCreated] AS [DateCreated], 
+                [c].[DateUpdated] AS [DateUpdated], 
+                [c].[CreatedByApplicationUserId] AS [CreatedByApplicationUserId], 
+                [c].[Notes] AS [Notes]
+                FROM [dbo].[PlayedGame] AS [c]
+
+
+            -- Executing at 3/24/2017 12:46:07 PM -04:00
+
+            -- Completed in 0 ms with result: SqlDataReader
+
+
+
+            Closed connection at 3/24/2017 12:46:07 PM -04:00
+
+            Opened connection at 3/24/2017 12:46:10 PM -04:00
+
+            SELECT TOP (2) 
+                [Extent1].[Id] AS [Id], 
+                [Extent1].[GamingGroupId] AS [GamingGroupId], 
+                [Extent1].[GameDefinitionId] AS [GameDefinitionId], 
+                [Extent1].[WinnerType] AS [WinnerType], 
+                [Extent1].[NumberOfPlayers] AS [NumberOfPlayers], 
+                [Extent1].[DatePlayed] AS [DatePlayed], 
+                [Extent1].[DateCreated] AS [DateCreated], 
+                [Extent1].[DateUpdated] AS [DateUpdated], 
+                [Extent1].[CreatedByApplicationUserId] AS [CreatedByApplicationUserId], 
+                [Extent1].[Notes] AS [Notes]
+                FROM [dbo].[PlayedGame] AS [Extent1]
+                WHERE 4 = [Extent1].[Id]
+
+
+            -- Executing at 3/24/2017 12:46:10 PM -04:00
+
+            -- Completed in 0 ms with result: SqlDataReader
+
+
+
+            Closed connection at 3/24/2017 12:46:10 PM -04:00
+
+            Opened connection at 3/24/2017 12:46:10 PM -04:00
+
+            Started transaction at 3/24/2017 12:46:10 PM -04:00
+
+            UPDATE [dbo].[PlayedGame]
+            SET [Notes] = @0
+            WHERE ([Id] = @1)
+
+            -- @0: 'Integration test note: 3/24/2017 4:46:09 PM' (Type = String, Size = -1)
+
+            -- @1: '4' (Type = Int32)
+
+            -- Executing at 3/24/2017 12:46:10 PM -04:00
+
+            -- Completed in 5 ms with result: 1
+
+
+
+            Committed transaction at 3/24/2017 12:46:10 PM -04:00
+
+            Closed connection at 3/24/2017 12:46:10 PM -04:00
+
+            Opened connection at 3/24/2017 12:46:11 PM -04:00
+
+            SELECT TOP (1) 
+                [Extent1].[Id] AS [Id], 
+                [Extent1].[GamingGroupId] AS [GamingGroupId], 
+                [Extent1].[Name] AS [Name], 
+                [Extent1].[Description] AS [Description], 
+                [Extent1].[Active] AS [Active], 
+                [Extent1].[DateCreated] AS [DateCreated], 
+                [Extent1].[ChampionId] AS [ChampionId], 
+                [Extent1].[PreviousChampionId] AS [PreviousChampionId], 
+                [Extent1].[BoardGameGeekGameDefinitionId] AS [BoardGameGeekGameDefinitionId]
+                FROM [dbo].[GameDefinition] AS [Extent1]
+                WHERE [Extent1].[GamingGroupId] = @p__linq__0
+
+
+            -- p__linq__0: '1' (Type = Int32, IsNullable = false)
+
+            -- Executing at 3/24/2017 12:46:11 PM -04:00
+
+            -- Completed in 0 ms with result: SqlDataReader
+
+
+
+            Closed connection at 3/24/2017 12:46:11 PM -04:00
+
+            Opened connection at 3/24/2017 12:46:13 PM -04:00
+
+            SELECT TOP (2) 
+                [Extent1].[Id] AS [Id], 
+                [Extent1].[GamingGroupId] AS [GamingGroupId], 
+                [Extent1].[Name] AS [Name], 
+                [Extent1].[Description] AS [Description], 
+                [Extent1].[Active] AS [Active], 
+                [Extent1].[DateCreated] AS [DateCreated], 
+                [Extent1].[ChampionId] AS [ChampionId], 
+                [Extent1].[PreviousChampionId] AS [PreviousChampionId], 
+                [Extent1].[BoardGameGeekGameDefinitionId] AS [BoardGameGeekGameDefinitionId]
+                FROM [dbo].[GameDefinition] AS [Extent1]
+                WHERE 27458 = [Extent1].[Id]
+
+
+            -- Executing at 3/24/2017 12:46:13 PM -04:00
+
+            -- Completed in 1 ms with result: SqlDataReader
+
+
+
+            Closed connection at 3/24/2017 12:46:13 PM -04:00
+
+            Opened connection at 3/24/2017 12:46:13 PM -04:00
+
+            Started transaction at 3/24/2017 12:46:13 PM -04:00
+
+            UPDATE [dbo].[GameDefinition]
+            SET [Name] = @0
+            WHERE ([Id] = @1)
+
+            -- @0: '01b16aaa-faf1-4c9a-9798-161bddf9dde' (Type = String, Size = 255)
+
+            -- @1: '27458' (Type = Int32)
+
+            -- Executing at 3/24/2017 12:46:13 PM -04:00
+
+            -- Completed in 1 ms with result: 1
+
+
+
+            Committed transaction at 3/24/2017 12:46:13 PM -04:00
+
+            Closed connection at 3/24/2017 12:46:13 PM -04:00
+
+
+             */
+
+            #endregion
         }
 
 
