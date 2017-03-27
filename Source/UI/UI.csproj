@@ -70,12 +70,12 @@
       <HintPath>..\..\packages\EPPlus.4.0.4\lib\net20\EPPlus.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Exceptionless, Version=4.0.1886.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Exceptionless.4.0.1886\lib\net45\Exceptionless.dll</HintPath>
+    <Reference Include="Exceptionless, Version=4.0.1934.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Exceptionless.4.0.1934\lib\net45\Exceptionless.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Exceptionless.Mvc, Version=4.0.1886.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Exceptionless.Mvc.4.0.1886\lib\net45\Exceptionless.Mvc.dll</HintPath>
+    <Reference Include="Exceptionless.Mvc, Version=4.0.1934.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Exceptionless.Mvc.4.0.1934\lib\net45\Exceptionless.Mvc.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -373,7 +373,7 @@
     <Compile Include="Controllers\UniversalGameController.cs" />
     <Compile Include="Controllers\PlayerController.cs" />
     <Compile Include="Attributes\Filters\InjectingActionInvoker.cs" />
-    <Compile Include="Attributes\Filters\RollbarExceptionFilter.cs" />
+    <Compile Include="Attributes\Filters\ExternalServiceExceptionFilter.cs" />
     <Compile Include="Attributes\Filters\UserContextAttribute.cs" />
     <Compile Include="DependencyResolution\ControllerConvention.cs" />
     <Compile Include="DependencyResolution\IoC.cs" />
