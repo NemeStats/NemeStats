@@ -16,11 +16,11 @@ namespace UI.Attributes.Filters
             if (exception != null)
             {
                 response.StatusCode = (int)exception.StatusCode;
-                throw new HttpException((int)exception.StatusCode, exception.Message);
+                throw new HttpException((int)exception.StatusCode, exception.Message, context.Exception);
             }
 
             response.StatusCode = (int)HttpStatusCode.InternalServerError;
-            throw new HttpException((int)HttpStatusCode.InternalServerError, context.Exception.Message);
+            throw new HttpException((int)HttpStatusCode.InternalServerError, context.Exception.Message, context.Exception);
         }
     }
 }
