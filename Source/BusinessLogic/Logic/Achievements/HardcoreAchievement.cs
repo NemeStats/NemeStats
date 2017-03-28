@@ -4,7 +4,6 @@ using BusinessLogic.DataAccess;
 using BusinessLogic.Logic.Points;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Achievements;
-using BusinessLogic.Models.PlayedGames;
 
 namespace BusinessLogic.Logic.Achievements
 {

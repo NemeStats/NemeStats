@@ -19,15 +19,15 @@
             <tr data-position="@position">
                 @{ position++; }
                 <td>
-                    <a href="@Url.Action(MVC.Achievement.Details(playerAchievement.Achievement.Id, null))">
+                    <a href="@Url.Action(MVC.Achievement.Details(playerAchievement.AchievementId, null))">
                         <span class="achievement medium @playerAchievement.AchievementLevel.ToString().ToLower()">
                             <span class="circle">
                                 <span class="content">
-                                    <span class="@playerAchievement.Achievement.IconClass"></span>
+                                    <span class="@playerAchievement.IconClass"></span>
                                 </span>
                             </span>
                         </span>
-                        @playerAchievement.Achievement.Name
+                        @playerAchievement.AchievementName
                     </a>
                 </td>
                 <td>
@@ -37,7 +37,7 @@
                     @Html.ActionLink(playerAchievement.GamingGroupName, "Details", "GamingGroup", new {id=playerAchievement.GamingGroupId}, new {})
                 </td>
                 <td>
-                    <a href="@Url.Action(MVC.Achievement.PlayerAchievement(playerAchievement.Achievement.Id,playerAchievement.PlayerId))">@playerAchievement.AchievementLastUpdateDate.ToShortDateString()</a>
+                    <a href="@Url.Action(MVC.Achievement.PlayerAchievement(playerAchievement.AchievementId, playerAchievement.PlayerId))">@playerAchievement.AchievementLastUpdateDate.ToShortDateString()</a>
                 </td>
             </tr>
             }

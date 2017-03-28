@@ -6,7 +6,7 @@
         public int PlayerId { get; set; }
 
         public string GamingGroupName { get; set; }
-        public string GamingGroupId { get; set; }
+        public int GamingGroupId { get; set; }
 
     }
 }

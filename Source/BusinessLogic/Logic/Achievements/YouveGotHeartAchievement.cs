@@ -3,7 +3,6 @@ using System.Linq;
 using BusinessLogic.DataAccess;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Achievements;
-using RollbarSharp.Serialization;
 
 namespace BusinessLogic.Logic.Achievements
 {

@@ -18,7 +18,6 @@
 using BusinessLogic.DataAccess;
 using BusinessLogic.Models;
 using NUnit.Framework;
-using System.Linq;
 
 namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.NemeStatsDataContextTests
 {
@@ -28,11 +27,8 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.NemeStatsDataCont
         [Test]
         public void ItCanFindAnEntityUsingAnIntId()
         {
-            using (var dataContext = GetInstanceFromRootContainer<IDataContext>())
-            {
-                var gameDefinition = dataContext.FindById<GameDefinition>(testGameDefinition.Id);
-                Assert.NotNull(gameDefinition);
-            }
+            var gameDefinition = GetInstance<IDataContext>().FindById<GameDefinition>(testGameDefinition.Id);
+            Assert.NotNull(gameDefinition);
         }
     }
 }

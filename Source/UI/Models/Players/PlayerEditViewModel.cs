@@ -16,9 +16,6 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 
-using System.Linq;
-using BusinessLogic.Models.User;
-
 namespace UI.Models.Players
 {
     public class PlayerEditViewModel

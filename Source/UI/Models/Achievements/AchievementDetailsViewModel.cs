@@ -2,7 +2,7 @@
 {
     public class AchievementDetailsViewModel
     {
-        public AchievementViewModel Achievement { get; set; }
+        public AchievementTileViewModel AchievementTile { get; set; }
 
     }
 }

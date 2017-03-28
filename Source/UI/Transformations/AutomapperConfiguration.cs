@@ -21,12 +21,12 @@ using System.Linq;
 using System.Globalization;
 using AutoMapper;
 using BusinessLogic.Logic.BoardGameGeek;
-using BusinessLogic.Logic.BoardGameGeekGameDefinitions;
 using BusinessLogic.Logic.GameDefinitions;
 using BusinessLogic.Logic.GamingGroups;
 using BusinessLogic.Logic.Players;
 using BusinessLogic.Logic.Points;
 using BusinessLogic.Models;
+using BusinessLogic.Models.Achievements;
 using BusinessLogic.Models.Champions;
 using BusinessLogic.Models.Games;
 using BusinessLogic.Models.GamingGroups;
@@ -36,6 +36,7 @@ using BusinessLogic.Models.Points;
 using BusinessLogic.Models.User;
 using UI.Areas.Api.Models;
 using UI.Models;
+using UI.Models.Achievements;
 using UI.Models.GameDefinitionModels;
 using UI.Models.GamingGroup;
 using UI.Models.PlayedGame;
@@ -151,6 +152,24 @@ namespace UI.Transformations
                 .ForMember(m => m.GamingGroupGameDefinitionSummary, opt => opt.Ignore());
 
             Mapper.CreateMap<ChampionData, ChampionDataModel>(MemberList.Destination);
+
+            Mapper.CreateMap<AchievementRelatedPlayerSummary, PlayerListSummaryViewModel>();
+
+            Mapper.CreateMap<PlayerAchievementWinner, PlayerAchievementWinnerViewModel>();
+
+            Mapper.CreateMap<AchievementWinner, AchievementWinnerViewModel>();
+
+            Mapper.CreateMap<PlayerAchievementDetails, PlayerAchievementViewModel>();
+
+            Mapper.CreateMap<AggregateAchievementSummary, AchievementTileViewModel>();
+
+            Mapper.CreateMap<PlayerAchievementWinner, PlayerAchievementSummaryViewModel>();
+
+            Mapper.CreateMap<AchievementRelatedGameDefinitionSummary, GameDefinitionSummaryListViewModel>();
+
+            Mapper.CreateMap<AchievementRelatedPlayedGameSummary, PlayedGameQuickStatsViewModel>()
+                .ForMember(m => m.BoardGameGeekUri,
+                    opt => opt.MapFrom(y => BoardGameGeekUriBuilder.BuildBoardGameGeekGameUri(y.BoardGameGeekGameDefinitionId)));
         }
     }
 }

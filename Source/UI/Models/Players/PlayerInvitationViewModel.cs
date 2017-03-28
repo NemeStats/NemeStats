@@ -17,7 +17,6 @@
 #endregion
 
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 
 namespace UI.Models.Players
 {

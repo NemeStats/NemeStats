@@ -19,7 +19,7 @@ namespace BusinessLogic.Models
         public AchievementId AchievementId { get; set; }
         public AchievementLevel AchievementLevel { get; set; }
 
-        public virtual Player Player { get; set; }
+        public virtual Player Player { get; set; } = new Player();
 
         [NotMapped]
         public List<int> RelatedEntities

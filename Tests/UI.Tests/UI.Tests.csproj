@@ -261,8 +261,11 @@
     <Compile Include="UnitTests\AttributesTests\ApiExceptionFilterAttributeTests.cs" />
     <Compile Include="UnitTests\AttributesTests\ApiModelValidationAttributeTests.cs" />
     <Compile Include="UnitTests\ControllerTests\AccountControllerTests\AccountControllerTestBase.cs" />
+    <Compile Include="UnitTests\ControllerTests\AchievementControllerTests\AchievementControllerTestBase.cs" />
     <Compile Include="UnitTests\ControllerTests\AccountControllerTests\AddExistingUserToGamingGroup.cs" />
     <Compile Include="UnitTests\ControllerTests\AccountControllerTests\RegisterHttpPostTests.cs" />
+    <Compile Include="UnitTests\ControllerTests\AchievementControllerTests\DetailsForCurrentUserTests.cs" />
+    <Compile Include="UnitTests\ControllerTests\AchievementControllerTests\IndexTests.cs" />
     <Compile Include="UnitTests\ControllerTests\AchievementControllerTests\PlayerAchievementTests.cs" />
     <Compile Include="UnitTests\ControllerTests\GameDefinitionControllerTests\CreateHttpGetTests.cs" />
     <Compile Include="UnitTests\ControllerTests\GameDefinitionControllerTests\CreateHttpPostTests.cs" />

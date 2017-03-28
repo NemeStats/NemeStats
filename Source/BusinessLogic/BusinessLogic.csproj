@@ -243,9 +243,11 @@
     <Compile Include="Jobs\SitemapGenerator\SitemapGeneratorService.cs" />
     <Compile Include="Jobs\SitemapGenerator\StaticPagesSitemapGenerator.cs" />
     <Compile Include="Jobs\SitemapGenerator\UniversalGameSitemapGenerator.cs" />
+    <Compile Include="Logic\Achievements\AchievementRetriever.cs" />
     <Compile Include="Logic\Achievements\BoardGameGeek2017_10x10Achievement.cs" />
     <Compile Include="Logic\Achievements\BoardGameGeek_10x10Achievement.cs" />
     <Compile Include="Logic\Achievements\HolidayGamerAchievement.cs" />
+    <Compile Include="Logic\Achievements\IAchievementRetriever.cs" />
     <Compile Include="Logic\Achievements\SoCloseAchievement.cs" />
     <Compile Include="Logic\BoardGameGeekGameDefinitions\IBoardGameGeekGameDefinitionInfoRetriever.cs" />
     <Compile Include="Logic\BoardGameGeekGameDefinitions\IGameDetailsRetriever.cs" />
@@ -318,9 +320,9 @@
     <Compile Include="Logic\PlayedGames\IApplicationLinker.cs" />
     <Compile Include="Logic\PlayedGames\ICreatePlayedGameComponent.cs" />
     <Compile Include="Logic\PlayerAchievements\IPlayerAchievementRetriever.cs" />
-    <Compile Include="Logic\PlayerAchievements\IRecentPlayerAchievementsUnlockedRetreiver.cs" />
+    <Compile Include="Logic\PlayerAchievements\IRecentPlayerAchievementsUnlockedRetriever.cs" />
     <Compile Include="Logic\PlayerAchievements\PlayerAchievementRetriever.cs" />
-    <Compile Include="Logic\PlayerAchievements\RecentPlayerAchievementsUnlockedRetreiver.cs" />
+    <Compile Include="Logic\PlayerAchievements\RecentPlayerAchievementsUnlockedRetriever.cs" />
     <Compile Include="Logic\Players\IPlayerDeleter.cs" />
     <Compile Include="Logic\Players\PlayerDeleter.cs" />
     <Compile Include="Logic\Players\PlayerNameBuilder.cs" />
@@ -445,6 +447,14 @@
     </Compile>
     <Compile Include="Models\Achievements\AchievementLevel.cs" />
     <Compile Include="Models\Achievements\AchievementId.cs" />
+    <Compile Include="Models\Achievements\AchievementRelatedGameDefinitionSummary.cs" />
+    <Compile Include="Models\Achievements\AchievementRelatedPlayedGameSummary.cs" />
+    <Compile Include="Models\Achievements\AchievementRelatedPlayerSummary.cs" />
+    <Compile Include="Models\Achievements\AchievementSummary.cs" />
+    <Compile Include="Models\Achievements\AchievementWinner.cs" />
+    <Compile Include="Models\Achievements\PlayerAchievementDetails.cs" />
+    <Compile Include="Models\Achievements\PlayerAchievementQuery.cs" />
+    <Compile Include="Models\Achievements\PlayerAchievementWinner.cs" />
     <Compile Include="Models\Games\BoardGameGeekGameCategory.cs" />
     <Compile Include="Models\Games\BoardGameGeekGameSummary.cs" />
     <Compile Include="Models\Games\BoardGameGeekInfo.cs" />
@@ -1119,6 +1129,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Logic\Sitemaps\" />
+    <Folder Include="Transformations\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

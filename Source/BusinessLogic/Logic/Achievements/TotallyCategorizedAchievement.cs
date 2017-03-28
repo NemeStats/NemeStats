@@ -2,7 +2,6 @@
 using System.Linq;
 using BusinessLogic.DataAccess;
 using BusinessLogic.Models;
-using BusinessLogic.Models.Games;
 using BusinessLogic.Models.Achievements;
 
 namespace BusinessLogic.Logic.Achievements

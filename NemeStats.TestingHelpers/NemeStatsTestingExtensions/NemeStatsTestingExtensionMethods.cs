@@ -17,7 +17,7 @@ namespace NemeStats.TestingHelpers.NemeStatsTestingExtensions
         /// <param name="expectedParameterIndex">The index of the parameter of type T.</param>
         /// <exception cref="ArgumentException">Throws an argument exception if the requested index is greater than the number of parameters</exception>
         /// <returns>The argument at the specified parameter index</returns>
-        public static T AssertFirstCallIsType<T>(this IList<object[]> argumentsForCallsMadeOnMethod, int expectedParameterIndex) where T: class
+        public static T AssertFirstCallIsType<T>(this IList<object[]> argumentsForCallsMadeOnMethod, int expectedParameterIndex = 0) where T: class
         {
             if (argumentsForCallsMadeOnMethod == null || argumentsForCallsMadeOnMethod.Count == 0)
             {

@@ -17,7 +17,6 @@
 #endregion
 using BusinessLogic.EventTracking;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
 
 namespace BusinessLogic.Models.User
 {
@@ -26,25 +25,8 @@ namespace BusinessLogic.Models.User
     {
         public const string USER_NAME_ANONYMOUS = "Anonymous User";
 
-        public AnonymousApplicationUser()
-        {
+        public override string AnonymousClientId => UniversalAnalyticsNemeStatsEventTracker.DEFAULT_ANONYMOUS_CLIENT_ID;
 
-        }
-
-        public override string AnonymousClientId
-        {
-            get
-            {
-                return UniversalAnalyticsNemeStatsEventTracker.DEFAULT_ANONYMOUS_CLIENT_ID;
-            }
-        }
-
-        public override string UserName
-        {
-            get
-            {
-                return USER_NAME_ANONYMOUS;
-            }
-        }
+        public override string UserName => USER_NAME_ANONYMOUS;
     }
 }

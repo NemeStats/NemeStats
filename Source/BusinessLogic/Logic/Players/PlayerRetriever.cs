@@ -27,9 +27,11 @@ using BusinessLogic.Exceptions;
 using BusinessLogic.Logic.PlayedGames;
 using BusinessLogic.Models.PlayedGames;
 using BusinessLogic.Logic.BoardGameGeek;
+using BusinessLogic.Logic.PlayerAchievements;
 using BusinessLogic.Models.Achievements;
 using BusinessLogic.Models.Points;
 using BusinessLogic.Models.Utility;
+using BusinessLogic.Paging;
 
 namespace BusinessLogic.Logic.Players
 {
@@ -38,13 +40,19 @@ namespace BusinessLogic.Logic.Players
         private readonly IDataContext _dataContext;
         private readonly IPlayerRepository _playerRepository;
         private readonly IPlayedGameRetriever _playedGameRetriever;
+        private readonly IRecentPlayerAchievementsUnlockedRetriever _recentPlayerAchievementsUnlockedRetriever;
         public const string ExceptionMessagePlayerCouldNotBeFound = "Could not find player with Id: {0}";
 
-        public PlayerRetriever(IDataContext dataContext, IPlayerRepository playerRepository, IPlayedGameRetriever playedGameRetriever)
+        public PlayerRetriever(
+            IDataContext dataContext, 
+            IPlayerRepository playerRepository, 
+            IPlayedGameRetriever playedGameRetriever, 
+            IRecentPlayerAchievementsUnlockedRetriever recentPlayerAchievementsUnlockedRetriever)
         {
-            this._dataContext = dataContext;
-            this._playerRepository = playerRepository;
-            this._playedGameRetriever = playedGameRetriever;
+            _dataContext = dataContext;
+            _playerRepository = playerRepository;
+            _playedGameRetriever = playedGameRetriever;
+            _recentPlayerAchievementsUnlockedRetriever = recentPlayerAchievementsUnlockedRetriever;
         }
 
         internal IQueryable<Player> GetAllPlayersInGamingGroupQueryable(int gamingGroupId)
@@ -170,7 +178,6 @@ namespace BusinessLogic.Logic.Players
                                              .Include(player => player.PreviousNemesis)
                                              .Include(player => player.PreviousNemesis.NemesisPlayer)
                                              .Include(player => player.GamingGroup)
-                                             .Include(player => player.PlayerAchievements)
                                              .SingleOrDefault(player => player.Id == playerId);
 
             ValidatePlayerWasFound(playerId, returnPlayer);
@@ -188,6 +195,14 @@ namespace BusinessLogic.Logic.Players
             var formerChampionedGames = GetFormerChampionedGames(returnPlayer.Id);
 
             var longestWinningStreak = _playerRepository.GetLongestWinningStreak(playerId, _dataContext);
+
+            var query = new GetRecentPlayerAchievementsUnlockedQuery
+            {
+                PlayerId = playerId,
+                Page = 1,
+                PageSize = int.MaxValue
+            };
+            var recentAchievementsUnlocked = _recentPlayerAchievementsUnlockedRetriever.GetResults(query);
 
             var playerDetails = new PlayerDetails()
             {
@@ -208,7 +223,7 @@ namespace BusinessLogic.Logic.Players
                 FormerChampionedGames = formerChampionedGames,
                 LongestWinningStreak = longestWinningStreak,
                 NemePointsSummary = playerStatistics.NemePointsSummary,
-                Achievements = returnPlayer.PlayerAchievements?.ToList() ?? new List<PlayerAchievement>()
+                Achievements = recentAchievementsUnlocked.ToList()
             };
 
             return playerDetails;
@@ -346,35 +361,27 @@ namespace BusinessLogic.Logic.Players
             return nemePointsSummary ?? new NemePointsSummary(0, 0, 0);
         }
 
-        public virtual int GetPlayerIdForCurrentUser(string applicationUserId, int gamingGroupId)
+        public virtual Player GetPlayerForCurrentUser(string applicationUserId, int gamingGroupId)
         {
             return (from player in _dataContext.GetQueryable<Player>()
                     where player.GamingGroupId == gamingGroupId
                      && player.ApplicationUserId == applicationUserId
-                    select player.Id)
+                    select player)
                     .FirstOrDefault();
-        }
-
-        public List<Player> GetPlayers(List<int> ids)
-        {
-            return _dataContext.GetQueryable<Player>()
-                .Where(p => ids.Contains(p.Id))
-                .Include(p => p.GamingGroup)
-                .ToList();
         }
 
         public virtual PlayerQuickStats GetPlayerQuickStatsForUser(string applicationUserId, int gamingGroupId)
         {
-            var playerIdForCurrentUser = GetPlayerIdForCurrentUser(applicationUserId, gamingGroupId);
+            var playerForCurrentUser = GetPlayerForCurrentUser(applicationUserId, gamingGroupId);
 
             var returnValue = new PlayerQuickStats();
 
-            if (playerIdForCurrentUser != 0)
+            if (playerForCurrentUser != null)
             {
-                returnValue.PlayerId = playerIdForCurrentUser;
-                returnValue.NemePointsSummary = GetNemePointsSummary(playerIdForCurrentUser);
+                returnValue.PlayerId = playerForCurrentUser.Id;
+                returnValue.NemePointsSummary = GetNemePointsSummary(playerForCurrentUser.Id);
 
-                var gameDefinitionTotals = GetGameDefinitionTotals(playerIdForCurrentUser);
+                var gameDefinitionTotals = GetGameDefinitionTotals(playerForCurrentUser.Id);
                 var topLevelTotals = GetTopLevelTotals(gameDefinitionTotals);
                 returnValue.TotalGamesPlayed = topLevelTotals.TotalGames;
                 returnValue.TotalGamesWon = topLevelTotals.TotalGamesWon;

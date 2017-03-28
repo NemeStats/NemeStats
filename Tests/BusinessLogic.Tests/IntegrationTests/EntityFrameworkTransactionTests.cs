@@ -17,10 +17,7 @@ namespace BusinessLogic.Tests.IntegrationTests
         [OneTimeSetUp]
         public void LocalOneTimeSetup()
         {
-            using (var dataContext = GetInstanceFromRootContainer<IDataContext>())
-            {
-                _someGamingGroupId = dataContext.GetQueryable<GamingGroup>().First().Id;
-            }
+            _someGamingGroupId = GetInstance<IDataContext>().GetQueryable<GamingGroup>().First().Id;
         }
 
         [Test]
@@ -73,20 +70,17 @@ namespace BusinessLogic.Tests.IntegrationTests
             using (var dbContext = GetInstanceFromRootContainer<NemeStatsDbContext>())
             {
                 //--create a transaction from the DB context but just let it get disposed
-                using (var transaction = dbContext.Database.BeginTransaction())
+                using (dbContext.Database.BeginTransaction())
                 {
                     dbContext.Set<Player>().Add(newPlayer);
                     dbContext.SaveChanges();
                 }
             }
 
-            using (var dataContext = GetInstanceFromRootContainer<IDataContext>())
-            {
-                var playerAfterDisposed = dataContext.GetQueryable<Player>()
-                    .FirstOrDefault(x => x.Name == newPlayer.Name);
+            var playerAfterDisposed = GetInstance<IDataContext>().GetQueryable<Player>()
+                .FirstOrDefault(x => x.Name == newPlayer.Name);
 
-                playerAfterDisposed.ShouldBeNull();
-            }
+            playerAfterDisposed.ShouldBeNull();
         }
     }
 }

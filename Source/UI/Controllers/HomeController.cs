@@ -19,14 +19,13 @@
 #endregion LICENSE
 
 using BusinessLogic.Models.Games;
-using BusinessLogic.Models.GamingGroups;
 using System.Linq;
 using System.Web.Mvc;
 using BusinessLogic.DataAccess;
 using BusinessLogic.Facades;
 using BusinessLogic.Logic;
 using BusinessLogic.Logic.PlayerAchievements;
-using BusinessLogic.Models;
+using BusinessLogic.Models.Achievements;
 using BusinessLogic.Models.PlayedGames;
 using BusinessLogic.Paging;
 using UI.Controllers.Helpers;
@@ -36,7 +35,6 @@ using UI.Models.GameDefinitionModels;
 using UI.Models.GamingGroup;
 using UI.Models.Home;
 using UI.Models.Players;
-using UI.Transformations;
 
 namespace UI.Controllers
 {
@@ -53,7 +51,7 @@ namespace UI.Controllers
         private readonly ITopGamingGroupsRetriever _topGamingGroupsRetriever;
         private readonly ITrendingGamesRetriever _trendingGamesRetriever;
         private readonly ITransformer _transformer;
-        private readonly IRecentPlayerAchievementsUnlockedRetreiver _recentPlayerAchievementsUnlockedRetreiver;
+        private readonly IRecentPlayerAchievementsUnlockedRetriever _recentPlayerAchievementsUnlockedRetriever;
         private readonly IMapperFactory _mapperFactory;
 
         public HomeController(
@@ -61,21 +59,21 @@ namespace UI.Controllers
             ITopGamingGroupsRetriever topGamingGroupsRetriever,
             ITrendingGamesRetriever trendingGamesRetriever,
             ITransformer transformer,            
-            IRecentPlayerAchievementsUnlockedRetreiver recentPlayerAchievementsUnlockedRetreiver,
-            IMapperFactory mapperFactory, IDataContext dataContext)        {
+            IRecentPlayerAchievementsUnlockedRetriever recentPlayerAchievementsUnlockedRetriever,
+            IMapperFactory mapperFactory, IDataContext dataContext)
+        {
             _recentPublicGamesRetriever = recentPublicGamesRetriever;
             _topGamingGroupsRetriever = topGamingGroupsRetriever;
             _trendingGamesRetriever = trendingGamesRetriever;
             _transformer = transformer;
-            _recentPlayerAchievementsUnlockedRetreiver = recentPlayerAchievementsUnlockedRetreiver;
+            _recentPlayerAchievementsUnlockedRetriever = recentPlayerAchievementsUnlockedRetriever;
             _mapperFactory = mapperFactory;
-            }
+        }
 
         public virtual ActionResult Index()
         {
-            var recentPlayerAchievements = _recentPlayerAchievementsUnlockedRetreiver.GetResults(new GetRecentPlayerAchievementsUnlockedQuery {PageSize = NUMBER_OF_RECENT_ACHIEVEMENTS_TO_SHOW });
-            var recentPlayerAchievementsViewModel =
-                recentPlayerAchievements.ToMappedPagedList(_mapperFactory.GetMapper<PlayerAchievement,PlayerAchievementWinnerViewModel>());
+            var recentPlayerAchievementWinners = _recentPlayerAchievementsUnlockedRetriever.GetResults(new GetRecentPlayerAchievementsUnlockedQuery {PageSize = NUMBER_OF_RECENT_ACHIEVEMENTS_TO_SHOW });
+            var recentPlayerAchievementWinnerViewModel = recentPlayerAchievementWinners.ToTransformedPagedList<PlayerAchievementWinner, PlayerAchievementWinnerViewModel>(_transformer);
 
             var recentlyPlayedGamesFilter = new RecentlyPlayedGamesFilter
             {
@@ -93,7 +91,7 @@ namespace UI.Controllers
 
             var homeIndexViewModel = new HomeIndexViewModel()
             {
-                RecentAchievementsUnlocked = recentPlayerAchievementsViewModel,
+                RecentAchievementsUnlocked = recentPlayerAchievementWinnerViewModel,
                 RecentPublicGames = publicGameSummaries,
                 TopGamingGroups = topGamingGroupViewModels,
                 TrendingGames = trendingGameViewModels

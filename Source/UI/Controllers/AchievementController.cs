@@ -1,6 +1,10 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
+using AutoMapper;
 using BusinessLogic.Events.HandlerFactory;
+using BusinessLogic.Logic;
 using BusinessLogic.Logic.Achievements;
 using BusinessLogic.Logic.PlayerAchievements;
 using BusinessLogic.Logic.Players;
@@ -13,6 +17,8 @@ using UI.Controllers.Helpers;
 using UI.Models.Achievements;
 using UI.Mappers.Extensions;
 using UI.Mappers.Interfaces;
+using UI.Models.GameDefinitionModels;
+using UI.Models.PlayedGame;
 using UI.Models.Players;
 
 namespace UI.Controllers
@@ -22,57 +28,47 @@ namespace UI.Controllers
     {
 
         private readonly IPlayerAchievementRetriever _playerAchievementRetriever;
-        private readonly IPlayerRetriever _playerRetriever;
-        private readonly IRecentPlayerAchievementsUnlockedRetreiver _recentPlayerAchievementsUnlockedRetreiver;
+        private readonly IRecentPlayerAchievementsUnlockedRetriever _recentPlayerAchievementsUnlockedRetriever;
         private readonly IMapperFactory _mapperFactory;
+        private readonly IAchievementRetriever _achievementRetriever;
+        private readonly ITransformer _transformer;
 
         public AchievementController(IPlayerAchievementRetriever playerAchievementRetriever,
-            IPlayerRetriever playerRetriever,
-            IRecentPlayerAchievementsUnlockedRetreiver recentPlayerAchievementsUnlockedRetreiver,
-            IMapperFactory mapperFactory
-            )
+            IRecentPlayerAchievementsUnlockedRetriever recentPlayerAchievementsUnlockedRetriever,
+            IMapperFactory mapperFactory, 
+            IAchievementRetriever achievementRetriever, 
+            ITransformer transformer)
         {
             _playerAchievementRetriever = playerAchievementRetriever;
-            _playerRetriever = playerRetriever;
-            _recentPlayerAchievementsUnlockedRetreiver = recentPlayerAchievementsUnlockedRetreiver;
+            _recentPlayerAchievementsUnlockedRetriever = recentPlayerAchievementsUnlockedRetriever;
             _mapperFactory = mapperFactory;
+            _achievementRetriever = achievementRetriever;
+            _transformer = transformer;
         }
 
         [Route("")]
         [UserContext(RequiresGamingGroup = false)]
         public virtual ActionResult Index(ApplicationUser currentUser)
         {
-            var achievements = AchievementFactory.GetAchievements();
+            var achievements = _achievementRetriever.GetAllAchievementSummaries(currentUser);
             var model = new AchievementListViewModel
             {
                 CurrentUserId = currentUser?.Id,
-                Achievements = achievements.Select(a => _mapperFactory.GetMapper<IAchievement,AchievementViewModel>().Map(a)).OrderByDescending(a => a.Winners.Count).ThenBy(a => a.Name).ToList()
+                Achievements = _transformer.Transform<List<AchievementTileViewModel>>(achievements)
             };
 
             return View(MVC.Achievement.Views.Index, model);
-
         }
 
         [Route("{achievementId}/currentplayer")]
         [UserContext]
         public virtual ActionResult DetailsForCurrentUser(AchievementId achievementId, ApplicationUser currentUser)
         {
-            var playerId = _playerRetriever.GetPlayerIdForCurrentUser(currentUser.Id, currentUser.CurrentGamingGroupId);
+            var playerAchievementDetails = _playerAchievementRetriever.GetCurrentPlayerAchievementDetails(achievementId, currentUser);
+            var playerAchievementViewModel =
+                _transformer.Transform<PlayerAchievementViewModel>(playerAchievementDetails);
 
-            var playerAchievement = _playerAchievementRetriever.GetPlayerAchievement(playerId, achievementId);
-
-            if (playerAchievement != null)
-            {
-                return PlayerAchievement(achievementId, playerId);
-            }
-
-            playerAchievement = new PlayerAchievement
-            {
-                AchievementId = achievementId,
-                PlayerId = playerId
-            };
-            var model = _mapperFactory.GetMapper<PlayerAchievement, PlayerAchievementViewModel>().Map(playerAchievement);
-            return View(MVC.Achievement.Views.Details, model);
+            return View(MVC.Achievement.Views.Details, playerAchievementViewModel);
         }
 
         [Route("{achievementId}")]
@@ -84,39 +80,39 @@ namespace UI.Controllers
                 return DetailsForCurrentUser(achievementId, currentUser);
             }
 
-            var playerAchievement = new PlayerAchievement
-            {
-                AchievementId = achievementId,
-                PlayerId = 0
-            };
-            var model = _mapperFactory.GetMapper<PlayerAchievement, PlayerAchievementViewModel>().Map(playerAchievement);
-            return View(MVC.Achievement.Views.Details, model);
+            var playerAchievemenDetails = _playerAchievementRetriever.GetCurrentPlayerAchievementDetails(achievementId, currentUser);
+
+            var viewModel = _transformer.Transform<PlayerAchievementViewModel>(playerAchievemenDetails);
+            return View(MVC.Achievement.Views.Details, viewModel);
         }
 
         [Route("{achievementId}/player/{playerId}")]
         public virtual ActionResult PlayerAchievement(AchievementId achievementId, int playerId)
         {
-            var playerAchievement = _playerAchievementRetriever.GetPlayerAchievement(playerId, achievementId);
-            if (playerAchievement == null)
+            var query = new PlayerAchievementQuery(achievementId, playerId);
+            var playerAchievementDetails = _playerAchievementRetriever.GetPlayerAchievement(query);
+            if (playerAchievementDetails == null)
             {
                 return new HttpNotFoundResult();
             }
 
-            var model = _mapperFactory.GetMapper<PlayerAchievement, PlayerAchievementViewModel>().Map(playerAchievement);
-            return View(MVC.Achievement.Views.Details, model);
+            var playerAchievementViewModel =
+                _transformer.Transform<PlayerAchievementViewModel>(playerAchievementDetails);
+
+            return View(MVC.Achievement.Views.Details, playerAchievementViewModel);
         }
 
         [Route("recent-unlocks/{page}")]
         public virtual ActionResult RecentAchievementsUnlocked(int page = 1)
         {
             var recentUnlocks =
-                _recentPlayerAchievementsUnlockedRetreiver.GetResults(new GetRecentPlayerAchievementsUnlockedQuery
+                _recentPlayerAchievementsUnlockedRetriever.GetResults(new GetRecentPlayerAchievementsUnlockedQuery
                 {
                     PageSize = 25,
                     Page = page
                 });
 
-            var model = recentUnlocks.ToMappedPagedList(_mapperFactory.GetMapper<PlayerAchievement, PlayerAchievementWinnerViewModel>());
+            var model = recentUnlocks.ToTransformedPagedList<PlayerAchievementWinner, PlayerAchievementWinnerViewModel>(_transformer);
 
             return View(MVC.Achievement.Views.RecentAchievementsUnlocked, model);
         }

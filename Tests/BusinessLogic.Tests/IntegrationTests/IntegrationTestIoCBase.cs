@@ -1,4 +1,7 @@
-﻿using NemeStats.IoC;
+﻿using System.Data.Entity;
+using BusinessLogic.DataAccess;
+using BusinessLogic.Logic.Users;
+using NemeStats.IoC;
 using StructureMap;
 
 namespace BusinessLogic.Tests.IntegrationTests
@@ -13,7 +16,13 @@ namespace BusinessLogic.Tests.IntegrationTests
         private static readonly IContainer RootContainer = new Container(c =>
         {
             c.AddRegistry<CommonRegistry>();
-            c.AddRegistry<DatabaseRegistry>();
+
+            //--instead of using the HybridHttpOrThreadLocalScoped (from DatabaseRegistry), need to make these classes transient so we can create and dispose
+            //  tons of them during unit tests
+            //c.AddRegistry<DatabaseRegistry>();
+            c.For<DbContext>().Use<NemeStatsDbContext>();
+            c.For<IDataContext>().Use<NemeStatsDataContext>();
+            c.For<ApplicationUserManager>().Use<ApplicationUserManager>();
         });
 
         private readonly IContainer _nestedContainer
