@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using BusinessLogic.DataAccess;
 using BusinessLogic.Logic.Achievements;
@@ -28,14 +27,6 @@ namespace BusinessLogic.Logic.PlayerAchievements
             _achievementRetriever = achievementRetriever;
             _boardGameGeekGameDefinitionInfoRetriever = boardGameGeekGameDefinitionInfoRetriever;
             _playerRetriever = playerRetriever;
-        }
-
-        public virtual PlayerAchievement GetPlayerAchievement(int playerId, AchievementId achievementId)
-        {
-            return _dataContext
-                .GetQueryable<PlayerAchievement>()
-                .Include(pa => pa.Player)
-                .FirstOrDefault(pa => pa.AchievementId == achievementId && pa.PlayerId == playerId);
         }
 
         [Obsolete("will replace all calls with a call to GetPlayerAchievement()")]
@@ -170,7 +161,15 @@ namespace BusinessLogic.Logic.PlayerAchievements
             result.NumberOfPlayersWithThisAchievement = _dataContext.GetQueryable<PlayerAchievement>().Count(y => y.AchievementId == achievementId);
 
 
-            var player = _dataContext.FindById<Player>(playerAchievementQuery.PlayerId);
+            Player player;
+            if (playerAchievementQuery.PlayerId.HasValue)
+            {
+                player = _dataContext.FindById<Player>(playerAchievementQuery.PlayerId);
+            }
+            else
+            {
+                player = _playerRetriever.GetPlayerForCurrentUser(playerAchievementQuery.ApplicationUserId, playerAchievementQuery.GamingGroupId.Value);
+            }
 
             if (player != null)
             {

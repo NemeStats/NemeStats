@@ -5,10 +5,12 @@ using BusinessLogic.DataAccess;
 using BusinessLogic.Logic.Achievements;
 using BusinessLogic.Logic.BoardGameGeekGameDefinitions;
 using BusinessLogic.Logic.PlayerAchievements;
+using BusinessLogic.Logic.Players;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Achievements;
 using BusinessLogic.Models.Games;
 using BusinessLogic.Models.PlayedGames;
+using BusinessLogic.Models.User;
 using NUnit.Framework;
 using Rhino.Mocks;
 using Shouldly;
@@ -157,6 +159,34 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayerAchievementTests
             result.PlayerName.ShouldBe(_expectedPlayer.Name);
             result.PlayerId.ShouldBe(_expectedPlayer.Id);
         }
+
+        [Test]
+        public void It_Uses_The_Player_Information_For_The_Users_Current_Gaming_Group_Related_Player_If_ApplicationUserId_Is_Passed_Instead_Of_Player_Id()
+        {
+            //--arrange
+            var currentUser = new ApplicationUser
+            {
+                Id = "some user id",
+                CurrentGamingGroupId = 718
+            };
+            var expectedPlayer = new Player
+            {
+                Id = 14,
+                Name = "player name"
+            };
+            _autoMocker.Get<IPlayerRetriever>()
+                .Expect(mock => mock.GetPlayerForCurrentUser(currentUser.Id, currentUser.CurrentGamingGroupId))
+                .Return(expectedPlayer);
+
+            //--act
+            var query = new PlayerAchievementQuery(_achievementId, currentUser.Id, currentUser.CurrentGamingGroupId);
+            var result = _autoMocker.ClassUnderTest.GetPlayerAchievement(query);
+
+            //--assert
+            result.PlayerName.ShouldBe(expectedPlayer.Name);
+            result.PlayerId.ShouldBe(expectedPlayer.Id);
+        }
+
 
         [Test]
         public void It_Sets_The_Players_Achievement_Progress_Information()
