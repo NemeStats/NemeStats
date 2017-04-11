@@ -24,6 +24,7 @@ using BusinessLogic.Models.User;
 using NUnit.Framework;
 using System.Linq;
 using System.Data.Entity;
+using BusinessLogic.DataAccess.Security;
 using BusinessLogic.Models.Achievements;
 using Shouldly;
 
@@ -365,7 +366,7 @@ namespace BusinessLogic.Tests.IntegrationTests
         [Test]
         public void It_Wraps_Updates_In_A_Transaction_Implicitly()
         {
-            var dataContext = GetInstance<IDataContext>();
+            var dataContext = new NemeStatsDataContext(new NemeStatsDbContext(), new SecuredEntityValidatorFactory());
             var firstPlayedGame = dataContext.GetQueryable<PlayedGame>().First();
             var applicationUserWhoCanSave = new ApplicationUser
             {
