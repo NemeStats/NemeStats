@@ -63,10 +63,15 @@ namespace BusinessLogic.Events.Handlers
 
         private void ProcessAchievement(Player player, IAchievement achievement)
         {
+            if (player.PlayerAchievements == null)
+            {
+                return;
+            }
+
             var currentPlayerAchievement = player.PlayerAchievements.FirstOrDefault(pa => pa.AchievementId == achievement.Id);
 
             if (currentPlayerAchievement == null ||
-                (int) (currentPlayerAchievement.AchievementLevel) <
+                (int) currentPlayerAchievement.AchievementLevel <
                 (int) achievement.LevelThresholds.OrderByDescending(al => al.Key).First().Key)
             {
                 var achievementAwarded = achievement.IsAwardedForThisPlayer(player.Id);
@@ -76,7 +81,6 @@ namespace BusinessLogic.Events.Handlers
                 {
                     CreateOrUpdateAchievement(player, achievement, currentPlayerAchievement, achievementAwarded);
                 }
-                DataContext.CommitAllChanges();
             }
         }
 
@@ -89,7 +93,6 @@ namespace BusinessLogic.Events.Handlers
                 {
                     DateCreated = DateTime.UtcNow,
                     LastUpdatedDate = DateTime.UtcNow,
-                    Player = player,
                     PlayerId = player.Id,
                     AchievementId = achievement.Id,
                     AchievementLevel = achievementAwarded.LevelAwarded.Value,
@@ -97,7 +100,7 @@ namespace BusinessLogic.Events.Handlers
                 };
 
                 DataContext.Save(playerAchievement, new AnonymousApplicationUser());
-
+                DataContext.CommitAllChanges();
 
                 NotifyPlayer(player, achievement, achievementAwarded.LevelAwarded);
             }

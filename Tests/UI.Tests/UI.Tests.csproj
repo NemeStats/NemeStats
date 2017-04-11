@@ -180,10 +180,6 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
-    <Reference Include="System.Configuration.Abstractions, Version=2.0.2.26, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\System.Configuration.Abstractions.2.0.2.26\lib\net45\System.Configuration.Abstractions.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System.Core" />
     <Reference Include="System.Net" />
     <Reference Include="System.Net.Http" />
@@ -225,9 +221,9 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="UniversalAnalyticsHttpWrapper, Version=1.2.0.29307, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\UniversalAnalyticsMeasurementProtocolWrapper.1.3.1\lib\net40\UniversalAnalyticsHttpWrapper.dll</HintPath>
+    <Reference Include="UniversalAnalyticsHttpWrapper, Version=1.2.0.13248, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\UniversalAnalyticsMeasurementProtocolWrapper.1.4.1\lib\net40\UniversalAnalyticsHttpWrapper.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="X.PagedList, Version=1.24.1.31653, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
       <HintPath>..\..\packages\X.PagedList.1.24.1.320\lib\net451\X.PagedList.dll</HintPath>

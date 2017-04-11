@@ -37,7 +37,7 @@ namespace BusinessLogic.Logic.Achievements
                 AchievementId = Id
             };
 
-            var thisPlayerEarnedTheAchievement = DataContext.GetQueryable<PlayerAchievement>().Any(x => x.PlayerId == playerId);
+            var thisPlayerEarnedTheAchievement = DataContext.GetQueryable<PlayerAchievement>().Any(x => x.PlayerId == playerId && x.AchievementId == AchievementId.Collaborator);
             if (thisPlayerEarnedTheAchievement)
             {
                 result.PlayerProgress = 1;

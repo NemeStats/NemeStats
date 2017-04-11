@@ -16,8 +16,7 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 using System;
-using System.Configuration.Abstractions;
-using System.Linq;
+using System.Configuration;
 
 namespace UI.App_Start
 {
@@ -40,8 +39,7 @@ namespace UI.App_Start
                 {
                     if (googleAnalyticsTrackingCode == null)
                     {
-                        ConfigurationManager configManager = new ConfigurationManager();
-                        googleAnalyticsTrackingCode = configManager.AppSettings[UNIVERSAL_ANALYTICS_TRACKING_ID_APP_KEY];
+                        googleAnalyticsTrackingCode = ConfigurationManager.AppSettings[UNIVERSAL_ANALYTICS_TRACKING_ID_APP_KEY];
                     }
                 }
             }
@@ -57,8 +55,7 @@ namespace UI.App_Start
                 {
                     if (googleTagManagerTrackingCode == null)
                     {
-                        ConfigurationManager configManager = new ConfigurationManager();
-                        googleTagManagerTrackingCode = configManager.AppSettings[GOOGLE_TAG_MANAGER_TRACKING_ID_APP_KEY];
+                        googleTagManagerTrackingCode = ConfigurationManager.AppSettings[GOOGLE_TAG_MANAGER_TRACKING_ID_APP_KEY];
                     }
                 }
             }

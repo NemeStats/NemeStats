@@ -1,8 +1,6 @@
 ﻿using System.Linq;
-using BusinessLogic.Caching;
 using BusinessLogic.DataAccess;
 using BusinessLogic.Logic.Achievements;
-using BusinessLogic.Logic.Utilities;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Achievements;
 using BusinessLogic.Paging;
@@ -10,24 +8,20 @@ using PagedList;
 
 namespace BusinessLogic.Logic.PlayerAchievements
 {
-    public class RecentPlayerAchievementsUnlockedRetriever : Cacheable<GetRecentPlayerAchievementsUnlockedQuery, IPagedList<PlayerAchievementWinner>>, IRecentPlayerAchievementsUnlockedRetriever
+    public class RecentPlayerAchievementsUnlockedRetriever : IRecentPlayerAchievementsUnlockedRetriever
     {
-        public const int CACHE_EXPIRATION_IN_SECONDS = 60 * 60;
-
         private readonly IDataContext _dataContext;
         private readonly IAchievementRetriever _achievementRetriever;
 
         public RecentPlayerAchievementsUnlockedRetriever(
-            IDateUtilities dateUtilities, 
-            ICacheService cacheService, 
             IDataContext dataContext, 
-            IAchievementRetriever achievementRetriever) : base(dateUtilities, cacheService)
+            IAchievementRetriever achievementRetriever)
         {
             _dataContext = dataContext;
             _achievementRetriever = achievementRetriever;
         }
 
-        public override IPagedList<PlayerAchievementWinner> GetFromSource(GetRecentPlayerAchievementsUnlockedQuery query)
+        public IPagedList<PlayerAchievementWinner> GetResults(GetRecentPlayerAchievementsUnlockedQuery query)
         {
             var playerAchievementWinnersQueryable =
                 _dataContext.GetQueryable<PlayerAchievement>()
@@ -60,11 +54,6 @@ namespace BusinessLogic.Logic.PlayerAchievements
             }
 
             return pagedList;
-        }
-
-        public override int GetCacheExpirationInSeconds()
-        {
-            return CACHE_EXPIRATION_IN_SECONDS;
         }
     }
 }

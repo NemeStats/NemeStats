@@ -33,6 +33,7 @@ using StructureMap;
 using StructureMap.Graph;
 using UniversalAnalyticsHttpWrapper;
 using X.Web.Sitemap;
+using ConfigurationManager = System.Configuration.ConfigurationManager;
 
 namespace NemeStats.IoC
 {
@@ -80,8 +81,9 @@ namespace NemeStats.IoC
             For<IEventTracker>().Use<EventTracker>();
             For<INemeStatsEventTracker>().Use<UniversalAnalyticsNemeStatsEventTracker>();
 
-            For<IConfigurationManager>().Use(() => ConfigurationManager.Instance);
-        
+            For<IConfigurationManager>().Use(() => System.Configuration.Abstractions.ConfigurationManager.Instance);
+
+
             For<IIdentityMessageService>().Use<EmailService>();
 
             For(typeof(ISecuredEntityValidator)).Use(typeof(SecuredEntityValidator));

@@ -2,6 +2,7 @@
 using BusinessLogic.Logic;
 using BusinessLogic.Logic.PlayerAchievements;
 using BusinessLogic.Models.Achievements;
+using NemeStats.TestingHelpers.NemeStatsTestingExtensions;
 using NUnit.Framework;
 using Rhino.Mocks;
 using Shouldly;
@@ -18,7 +19,7 @@ namespace UI.Tests.UnitTests.ControllerTests.AchievementControllerTests
             //--arrange
             var achievementId = AchievementId.BusyBee;
             var expectedPlayerAchievementDetails = new PlayerAchievementDetails();
-            AutoMocker.Get<IPlayerAchievementRetriever>().Expect(mock => mock.GetCurrentPlayerAchievementDetails(achievementId, CurrentUser))
+            AutoMocker.Get<IPlayerAchievementRetriever>().Expect(mock => mock.GetPlayerAchievement(Arg<PlayerAchievementQuery>.Is.Anything))
                 .Return(expectedPlayerAchievementDetails);
             var expectedPlayerAchievementViewModel = new PlayerAchievementViewModel();
             AutoMocker.Get<ITransformer>().Expect(mock => mock.Transform<PlayerAchievementViewModel>(expectedPlayerAchievementDetails))
@@ -30,6 +31,13 @@ namespace UI.Tests.UnitTests.ControllerTests.AchievementControllerTests
             //--assert
             viewResult.ShouldNotBeNull();
             viewResult.ViewName.ShouldBe(MVC.Achievement.Views.Details);
+            var firstCall =
+                AutoMocker.Get<IPlayerAchievementRetriever>()
+                    .GetArgumentsForCallsMadeOn(x => x.GetPlayerAchievement(Arg<PlayerAchievementQuery>.Is.Anything));
+            var query = firstCall.AssertFirstCallIsType<PlayerAchievementQuery>();
+            query.AchievementId.ShouldBe(achievementId);
+            query.ApplicationUserId.ShouldBe(CurrentUser.Id);
+            query.GamingGroupId.ShouldBe(CurrentUser.CurrentGamingGroupId);
             var playerAchievementViewModel = viewResult.Model as PlayerAchievementViewModel;
             playerAchievementViewModel.ShouldBe(expectedPlayerAchievementViewModel);
         }
