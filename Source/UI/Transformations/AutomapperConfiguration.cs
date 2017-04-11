@@ -20,6 +20,7 @@ using System;
 using System.Linq;
 using System.Globalization;
 using AutoMapper;
+using BusinessLogic.Logic.Achievements;
 using BusinessLogic.Logic.BoardGameGeek;
 using BusinessLogic.Logic.GameDefinitions;
 using BusinessLogic.Logic.GamingGroups;
@@ -160,6 +161,12 @@ namespace UI.Transformations
             Mapper.CreateMap<AchievementWinner, AchievementWinnerViewModel>();
 
             Mapper.CreateMap<PlayerAchievementDetails, PlayerAchievementViewModel>();
+
+            Mapper.CreateMap<IAchievement, PlayerAchievementViewModel>(MemberList.Source)
+                .ForMember(m => m.AchievementId, opt => opt.MapFrom(achievement => achievement.Id))
+                .ForMember(m => m.AchievementName, opt => opt.MapFrom(achievement => achievement.Name))
+                .ForSourceMember(m => m.DescriptionFormat, opt => opt.Ignore())
+                .ForSourceMember(m => m.Group, opt => opt.Ignore());
 
             Mapper.CreateMap<AggregateAchievementSummary, AchievementTileViewModel>();
 

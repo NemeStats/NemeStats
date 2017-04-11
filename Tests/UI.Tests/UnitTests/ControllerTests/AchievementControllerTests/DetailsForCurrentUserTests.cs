@@ -37,6 +37,7 @@ namespace UI.Tests.UnitTests.ControllerTests.AchievementControllerTests
             var query = firstCall.AssertFirstCallIsType<PlayerAchievementQuery>();
             query.AchievementId.ShouldBe(achievementId);
             query.ApplicationUserId.ShouldBe(CurrentUser.Id);
+            query.GamingGroupId.ShouldBe(CurrentUser.CurrentGamingGroupId);
             var playerAchievementViewModel = viewResult.Model as PlayerAchievementViewModel;
             playerAchievementViewModel.ShouldBe(expectedPlayerAchievementViewModel);
         }

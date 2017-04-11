@@ -64,7 +64,7 @@ namespace UI.Controllers
         [UserContext]
         public virtual ActionResult DetailsForCurrentUser(AchievementId achievementId, ApplicationUser currentUser)
         {
-            var achievementQuery = new PlayerAchievementQuery(achievementId, currentUser.Id);
+            var achievementQuery = new PlayerAchievementQuery(achievementId, currentUser.Id, currentUser.CurrentGamingGroupId);
             var playerAchievementDetails = _playerAchievementRetriever.GetPlayerAchievement(achievementQuery);
             var playerAchievementViewModel =
                 _transformer.Transform<PlayerAchievementViewModel>(playerAchievementDetails);
@@ -81,9 +81,9 @@ namespace UI.Controllers
                 return DetailsForCurrentUser(achievementId, currentUser);
             }
 
-            var playerAchievemenDetails = _playerAchievementRetriever.GetCurrentPlayerAchievementDetails(achievementId, currentUser);
+            var achievement = _achievementRetriever.GetAchievement(achievementId);
 
-            var viewModel = _transformer.Transform<PlayerAchievementViewModel>(playerAchievemenDetails);
+            var viewModel = _transformer.Transform<PlayerAchievementViewModel>(achievement);
             return View(MVC.Achievement.Views.Details, viewModel);
         }
 

@@ -12,9 +12,6 @@ namespace UI.Models.Achievements
         public List<GameDefinitionSummaryListViewModel> RelatedGameDefinitions { get; set; } = new List<GameDefinitionSummaryListViewModel>();
         public List<PlayedGameQuickStatsViewModel> RelatedPlayedGames { get; set; } = new List<PlayedGameQuickStatsViewModel>();
         public List<PlayerListSummaryViewModel> RelatedPlayers { get; set; } = new List<PlayerListSummaryViewModel>();
-        public List<AchievementWinnerViewModel> Winners { get; set; } = new List<AchievementWinnerViewModel>();
         public IEnumerable<KeyValuePair<AchievementLevel, int>> LevelThresholds { get; set; }
-        public int NumberOfPlayersWithThisAchievement { get; set; }
-        public AchievementId AchievementId { get; set; }
     }
 }
