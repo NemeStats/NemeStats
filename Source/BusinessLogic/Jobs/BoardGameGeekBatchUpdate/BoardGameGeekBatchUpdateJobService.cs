@@ -11,6 +11,7 @@ using BusinessLogic.DataAccess;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
 using BusinessLogic.Models.User;
+using Exceptionless;
 using RollbarSharp;
 
 namespace BusinessLogic.Jobs.BoardGameGeekBatchUpdate
@@ -93,6 +94,7 @@ namespace BusinessLogic.Jobs.BoardGameGeekBatchUpdate
             {
                 result.Success = false;
                 RollbarClient.SendException(ex);
+                ex.ToExceptionless();
             }
 
             stopwatch.Stop();
