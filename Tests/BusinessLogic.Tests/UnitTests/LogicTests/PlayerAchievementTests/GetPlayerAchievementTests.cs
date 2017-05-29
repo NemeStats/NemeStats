@@ -325,7 +325,9 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayerAchievementTests
                     GameDefinition = new GameDefinition
                     {
                         Id = 102,
-                        Name = "game 2 name"
+                        Name = "game 2 name",
+                        //--have to do this because entity framework can handle the null relationship, but pure LINQ cannot :(
+                        BoardGameGeekGameDefinition = new BoardGameGeekGameDefinition()
                     },
                     PlayerGameResults = new List<PlayerGameResult>
                     {
@@ -377,7 +379,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayerAchievementTests
                     GamingGroupId = 4,
                     Name = "zzz some game definition name",
                     Description = "some game definition description",
-                    BoardGameGeekGameDefinitionId = 53
+                    BoardGameGeekGameDefinitionId = 53,
+                    BoardGameGeekGameDefinition = new BoardGameGeekGameDefinition()
                 };
                 _expectedGameDefinitionWithNoBoardGameGeekGameDefinitionId = new GameDefinition
                 {
@@ -385,7 +388,9 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayerAchievementTests
                     GamingGroupId = 4,
                     Name = "aaa some game definition name 2",
                     Description = "some game definition description 2",
-                    BoardGameGeekGameDefinitionId = null
+                    BoardGameGeekGameDefinitionId = null,
+                    //--have to do this because entity framework can handle the null relationship, but pure LINQ cannot :(
+                    BoardGameGeekGameDefinition = new BoardGameGeekGameDefinition()
                 };
                 var gameDefinitionQueryable = new List<GameDefinition>
                 {
@@ -394,7 +399,9 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayerAchievementTests
                     _expectedGameDefinitionWithNoBoardGameGeekGameDefinitionId,
                     new GameDefinition
                     {
-                        Id = -1
+                        Id = -1,
+                        //--have to do this because entity framework can handle the null relationship, but pure LINQ cannot :(
+                        BoardGameGeekGameDefinition = new BoardGameGeekGameDefinition()
                     }
                 }.AsQueryable();
 
