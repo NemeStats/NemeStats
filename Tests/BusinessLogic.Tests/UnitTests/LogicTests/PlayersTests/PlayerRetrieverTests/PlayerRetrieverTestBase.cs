@@ -89,9 +89,38 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
             };
             List<Player> players = new List<Player>()
             {
-                new Player(){ GamingGroupId = gamingGroupId, Name = "2", PlayerGameResults = new List<PlayerGameResult>(), ChampionedGames = new List<Champion>()},
-                new Player(){ GamingGroupId = gamingGroupId, Name = "3", PlayerGameResults = new List<PlayerGameResult>(), ChampionedGames = new List<Champion>() },
-                new Player(){ GamingGroupId = -1, Name = "not in gaming group", PlayerGameResults = new List<PlayerGameResult>(), ChampionedGames = new List<Champion>() },
+                new Player
+                {
+                    GamingGroupId = gamingGroupId,
+                    Name = "2",
+                    PlayerGameResults = new List<PlayerGameResult>(), ChampionedGames = new List<Champion>(),
+                    Nemesis = new Nemesis
+                    {
+                        NemesisPlayer = new Player()
+                    },
+                    PreviousNemesis = new Nemesis
+                    {
+                        NemesisPlayer = new Player()
+                    }
+                },
+                new Player(){ GamingGroupId = gamingGroupId, Name = "3", PlayerGameResults = new List<PlayerGameResult>(), ChampionedGames = new List<Champion>(),
+                    Nemesis = new Nemesis
+                    {
+                        NemesisPlayer = new Player()
+                    },
+                    PreviousNemesis = new Nemesis
+                    {
+                        NemesisPlayer = new Player()
+                    } },
+                new Player(){ GamingGroupId = -1, Name = "not in gaming group", PlayerGameResults = new List<PlayerGameResult>(), ChampionedGames = new List<Champion>(),
+                    Nemesis = new Nemesis
+                    {
+                        NemesisPlayer = new Player()
+                    },
+                    PreviousNemesis = new Nemesis
+                    {
+                        NemesisPlayer = new Player()
+                    } },
                 new Player()
                 {
                     Id = playerId,
@@ -101,12 +130,29 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
                     ChampionedGames = new List<Champion>
                     {
                         champion
+                    },
+                    Nemesis = new Nemesis
+                    {
+                        NemesisPlayer = new Player()
+                    },
+                    PreviousNemesis = new Nemesis
+                    {
+                        NemesisPlayer = new Player()
                     }
                 },
                 new Player()
                 {
                     //player that will be last because she's inactive
-                    GamingGroupId = gamingGroupId, Name = "0", PlayerGameResults = new List<PlayerGameResult>(), ChampionedGames = new List<Champion>(), Active = false 
+                    GamingGroupId = gamingGroupId, Name = "0", PlayerGameResults = new List<PlayerGameResult>(), ChampionedGames = new List<Champion>(), Active = false ,
+                    Nemesis = new Nemesis()
+                    {
+                        NemesisPlayerId = 2,
+                        NemesisPlayer = new Player() { Id = 93995 }
+                    },
+                    PreviousNemesis = new Nemesis
+                    {
+                        NemesisPlayer = new Player()
+                    }
                 }
             };
             players[3].NemesisId = 1;

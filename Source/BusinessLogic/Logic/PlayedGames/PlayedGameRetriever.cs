@@ -111,8 +111,7 @@ namespace BusinessLogic.Logic.PlayedGames
                      WinnerType = playedGame.WinnerType,
                      WinningPlayer = playedGame.PlayerGameResults.FirstOrDefault(player => player.GameRank == 1).Player,
                      DatePlayed = playedGame.DatePlayed,
-                     ThumbnailImageUrl = playedGame.GameDefinition.BoardGameGeekGameDefinition == null
-                                              ? null : playedGame.GameDefinition.BoardGameGeekGameDefinition.Thumbnail,
+                     ThumbnailImageUrl = playedGame.GameDefinition.BoardGameGeekGameDefinition.Thumbnail,
                      BoardGameGeekObjectId = playedGame.GameDefinition.BoardGameGeekGameDefinitionId
                  } 
                  by playedGame.GamingGroupId

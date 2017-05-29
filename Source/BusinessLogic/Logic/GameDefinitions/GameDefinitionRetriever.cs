@@ -113,8 +113,8 @@ namespace BusinessLogic.Logic.GameDefinitions
                 Name = g.Name,
                 PlayedTimes = g.PlayedGames.Count,
                 LastDatePlayed = g.PlayedGames.Select(p => p.DatePlayed).OrderByDescending(d => d).FirstOrDefault(),
-                ThumbnailImageUrl = g.BoardGameGeekGameDefinition != null ? g.BoardGameGeekGameDefinition.Thumbnail : "",
-                ImageUrl = g.BoardGameGeekGameDefinition != null ? g.BoardGameGeekGameDefinition.Image : "",
+                ThumbnailImageUrl = g.BoardGameGeekGameDefinition.Thumbnail ?? "",
+                ImageUrl = g.BoardGameGeekGameDefinition.Image ?? "",
                 BoardGameGeekGameDefinitionId = g.BoardGameGeekGameDefinitionId
             };
         }
