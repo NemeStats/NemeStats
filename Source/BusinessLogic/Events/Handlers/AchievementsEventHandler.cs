@@ -114,6 +114,8 @@ namespace BusinessLogic.Events.Handlers
                 {
                     currentPlayerAchievement.AchievementLevel = achievementAwarded.LevelAwarded.Value;
                     currentPlayerAchievement.LastUpdatedDate = DateTime.UtcNow;
+                    DataContext.Save(currentPlayerAchievement, new AnonymousApplicationUser());
+                    DataContext.CommitAllChanges();
 
                     NotifyPlayer(player, achievement, achievementAwarded.LevelAwarded);
                 }
