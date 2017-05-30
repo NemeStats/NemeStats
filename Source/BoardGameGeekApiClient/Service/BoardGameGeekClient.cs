@@ -10,6 +10,7 @@ using System.Xml.Linq;
 using BoardGameGeekApiClient.Helpers;
 using BoardGameGeekApiClient.Interfaces;
 using BoardGameGeekApiClient.Models;
+using Exceptionless;
 using RollbarSharp;
 
 namespace BoardGameGeekApiClient.Service
@@ -49,6 +50,7 @@ namespace BoardGameGeekApiClient.Service
             catch (Exception ex)
             {
                 _rollbar.SendException(ex);
+                ex.ToExceptionless();
             }
 
             return thumbnail;
@@ -125,6 +127,7 @@ namespace BoardGameGeekApiClient.Service
             catch (Exception ex)
             {
                 _rollbar.SendException(ex);
+                ex.ToExceptionless();
             }
 
             return details;
@@ -168,6 +171,7 @@ namespace BoardGameGeekApiClient.Service
             catch (Exception ex)
             {
                 _rollbar.SendException(ex);
+                ex.ToExceptionless();
             }
 
             return details;
@@ -202,6 +206,7 @@ namespace BoardGameGeekApiClient.Service
             catch (Exception ex)
             {
                 _rollbar.SendException(ex);
+                ex.ToExceptionless();
             }
 
             return new List<GameDetails>();
@@ -245,6 +250,7 @@ namespace BoardGameGeekApiClient.Service
             catch (Exception ex)
             {
                 _rollbar.SendException(ex);
+                ex.ToExceptionless();
                 return new List<SearchBoardGameResult>();
             }
         }

@@ -86,14 +86,10 @@ namespace BusinessLogic.Logic.Players
                                           PlayerName = player.Name,
                                           PlayerActive = player.Active,
                                           PlayerRegistered = !string.IsNullOrEmpty(player.ApplicationUserId),
-                                          NemesisPlayerId = player.Nemesis == null ? (int?)null : player.Nemesis.NemesisPlayerId,
-                                          NemesisPlayerName = player.Nemesis != null && player.Nemesis.NemesisPlayer != null
-                                                                  ? player.Nemesis.NemesisPlayer.Name
-                                                                  : null,
-                                          PreviousNemesisPlayerId = player.PreviousNemesis == null ? (int?)null : player.PreviousNemesis.NemesisPlayerId,
-                                          PreviousNemesisPlayerName = player.PreviousNemesis != null && player.PreviousNemesis.NemesisPlayer != null
-                                                                          ? player.PreviousNemesis.NemesisPlayer.Name
-                                                                          : null,
+                                          NemesisPlayerId = player.Nemesis.NemesisPlayerId,
+                                          NemesisPlayerName = player.Nemesis.NemesisPlayer.Name,
+                                          PreviousNemesisPlayerId =  player.PreviousNemesis.NemesisPlayerId,
+                                          PreviousNemesisPlayerName = player.PreviousNemesis.NemesisPlayer.Name,
                                           GamingGroupId = player.GamingGroupId,
                                           GamesWon =
                                               player.PlayerGameResults.Where(

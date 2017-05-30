@@ -118,10 +118,7 @@ namespace BusinessLogic.Logic.PlayerAchievements
                             BoardGameGeekGameDefinitionId = x.GameDefinition.BoardGameGeekGameDefinitionId,
                             GameDefinitionName = x.GameDefinition.Name,
                             PlayedGameId = x.Id,
-                            ThumbnailImageUrl =
-                                x.GameDefinition.BoardGameGeekGameDefinition == null
-                                    ? null
-                                    : x.GameDefinition.BoardGameGeekGameDefinition.Thumbnail,
+                            ThumbnailImageUrl = x.GameDefinition.BoardGameGeekGameDefinition.Thumbnail,
                             WinningPlayerName = x.PlayerGameResults.FirstOrDefault(y => y.GameRank == 1).Player.Name,
                             WinningPlayerId = x.PlayerGameResults.FirstOrDefault(y => y.GameRank == 1).PlayerId
                         })

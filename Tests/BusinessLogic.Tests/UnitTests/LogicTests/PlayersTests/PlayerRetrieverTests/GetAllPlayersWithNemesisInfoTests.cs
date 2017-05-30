@@ -92,6 +92,15 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
                             NemeStatsPointsAwarded = expectedNemePointsAwardedForEachGame
                         }
                     },
+                    //--have to do this because entity framework can handle the null relationship, but pure LINQ cannot :(
+                    Nemesis = new Nemesis
+                    {
+                        NemesisPlayer = new Player()
+                    },
+                    PreviousNemesis = new Nemesis
+                    {
+                        NemesisPlayer = new Player()
+                    },
                     ChampionedGames = new List<Champion>()
                 }
             }.AsQueryable();
@@ -146,6 +155,15 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerRetrieverT
                             },
                             NemeStatsPointsAwarded = expectedNemePointsAwardedForEachGame
                         }
+                    },
+                    //--have to do this because entity framework can handle the null relationship, but pure LINQ cannot :(
+                    Nemesis = new Nemesis
+                    {
+                        NemesisPlayer = new Player()
+                    },
+                    PreviousNemesis = new Nemesis
+                    {
+                        NemesisPlayer = new Player()
                     },
                     ChampionedGames = new List<Champion>()
                 }

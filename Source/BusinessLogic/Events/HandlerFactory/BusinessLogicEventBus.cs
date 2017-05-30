@@ -1,6 +1,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using BusinessLogic.Events.Interfaces;
+using Exceptionless;
 using RollbarSharp;
 
 namespace BusinessLogic.Events.HandlerFactory
@@ -31,6 +32,7 @@ namespace BusinessLogic.Events.HandlerFactory
                     catch (System.Exception ex)
                     {
                         _rollbar.SendException(ex);
+                        ex.ToExceptionless();
                     }
                 }                
             });

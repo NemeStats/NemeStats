@@ -11,6 +11,7 @@ using BusinessLogic.Logic.Achievements;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Achievements;
 using BusinessLogic.Models.User;
+using Exceptionless;
 using Microsoft.AspNet.SignalR;
 using NemeStats.Hubs;
 using RollbarSharp;
@@ -52,6 +53,7 @@ namespace BusinessLogic.Events.Handlers
                         catch (Exception ex)
                         {
                             _rollbarClient.SendException(ex);
+                            ex.ToExceptionless();
                             noExceptions = false;
                         }
                     }
