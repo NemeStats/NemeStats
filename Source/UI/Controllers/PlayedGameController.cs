@@ -294,7 +294,8 @@ namespace UI.Controllers
                 EndDateGameLastUpdated = filter.DatePlayedEnd?.ToString("yyyy-MM-dd"),
                 GamingGroupId = currentUser.CurrentGamingGroupId,
                 StartDateGameLastUpdated = filter.DatePlayedStart?.ToString("yyyy-MM-dd"),
-                GameDefinitionId = filter.GameDefinitionId
+                GameDefinitionId = filter.GameDefinitionId,
+                PlayerId = filter.IncludedPlayerId
             };
             var searchResults = _playedGameRetriever.SearchPlayedGames(playedGameFilter);
 
