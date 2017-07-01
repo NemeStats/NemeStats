@@ -1,4 +1,4 @@
-﻿#region LICENSE
+﻿﻿﻿#region LICENSE
 // NemeStats is a free website for tracking the results of board games.
 //     Copyright (C) 2015 Jacob Gordon
 //
@@ -294,7 +294,8 @@ namespace UI.Controllers
                 EndDateGameLastUpdated = filter.DatePlayedEnd?.ToString("yyyy-MM-dd"),
                 GamingGroupId = currentUser.CurrentGamingGroupId,
                 StartDateGameLastUpdated = filter.DatePlayedStart?.ToString("yyyy-MM-dd"),
-                GameDefinitionId = filter.GameDefinitionId
+                GameDefinitionId = filter.GameDefinitionId,
+                PlayerId = filter.IncludedPlayerId
             };
             var searchResults = _playedGameRetriever.SearchPlayedGames(playedGameFilter);
 
@@ -324,6 +325,13 @@ namespace UI.Controllers
                 }).ToList()
             }).ToList();
 
+            var players = _playerRetriever.GetAllPlayers(currentUser.CurrentGamingGroupId, false);
+            var playerSelectListItems = players.Select(player => new SelectListItem
+            {
+                Text = player.Name,
+                Value = player.Id.ToString()
+            }).ToList();
+
             var viewModel = new SearchViewModel
             {
                 Filter =
@@ -339,7 +347,8 @@ namespace UI.Controllers
                     UserCanEdit = true,
                     GamingGroupId = currentUser.CurrentGamingGroupId,
                     ShowSearchLinkInResultsHeader = false
-                }
+                },
+                Players = new SelectList(playerSelectListItems)
             };
             return View(MVC.PlayedGame.Views.Search, viewModel);
         }

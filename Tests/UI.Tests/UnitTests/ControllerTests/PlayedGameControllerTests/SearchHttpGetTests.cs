@@ -6,6 +6,8 @@ using BusinessLogic.Logic.GameDefinitions;
 using NUnit.Framework;
 using Rhino.Mocks;
 using UI.Models.PlayedGame;
+using BusinessLogic.Logic.Players;
+using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
 
 namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
@@ -35,6 +37,16 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
                 }
             };
             AutoMocker.Get<IGameDefinitionRetriever>().Expect(mock => mock.GetAllGameDefinitionNames(this.CurrentUser.CurrentGamingGroupId)).Return(gameDefinitionNames);
+
+            var players = new List<Player>
+            {
+                new Player
+                {
+                    Name = "Test Player",
+                    Id = 1
+                }
+            };
+            AutoMocker.Get<IPlayerRetriever>().Expect(mock => mock.GetAllPlayers(this.CurrentUser.CurrentGamingGroupId, false)).Return(players);
         }
 
         [Test]
