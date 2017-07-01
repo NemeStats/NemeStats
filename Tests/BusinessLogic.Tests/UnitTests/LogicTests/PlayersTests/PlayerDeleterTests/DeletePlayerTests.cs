@@ -6,7 +6,6 @@ using BusinessLogic.Logic.Champions;
 using BusinessLogic.Logic.Nemeses;
 using BusinessLogic.Logic.Players;
 using BusinessLogic.Models;
-using BusinessLogic.Models.Achievements;
 using BusinessLogic.Models.User;
 using NUnit.Framework;
 using Rhino.Mocks;
@@ -185,10 +184,29 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerDeleterTes
         private int _gameDefinitionId = 200;
         private int _gameDefinitionId2 = 201;
 
+        private int _gameDefinitionIdForPreviousChampion = 202;
+        private int _playerIdForPreviousChampion = 99;
+        private int _championIdForPreviousChamption = 52;
+
         public override void SetUp()
         {
             base.SetUp();
-            SetupDefaultExpectations(setupChampions: false);
+            SetupDefaultExpectations(setupChampions: false, setupPlayer: false);
+
+            var players = new List<Player>
+            {
+                new Player
+                {
+                    Id = PlayerId,
+                    PlayerGameResults = new List<PlayerGameResult>()
+                },
+                new Player
+                {
+                    Id = _playerIdForPreviousChampion,
+                    PlayerGameResults = new List<PlayerGameResult>()
+                }
+            };
+            AutoMocker.Get<IDataContext>().Expect(m => m.GetQueryable<Player>()).Return(players.AsQueryable());
 
             var champions = new List<Champion>
             {
@@ -205,6 +223,11 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerDeleterTes
                 new Champion
                 {
                     PlayerId = -1
+                },
+                new Champion
+                {
+                    PlayerId = _playerIdForPreviousChampion,
+                    Id = _championIdForPreviousChamption
                 }
             };
             AutoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<Champion>()).Return(champions.AsQueryable());
@@ -220,6 +243,11 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerDeleterTes
                 {
                     Id = _gameDefinitionId2,
                     ChampionId = _championId2
+                },
+                new GameDefinition
+                {
+                    PreviousChampionId = _championIdForPreviousChamption,
+                    Id = _gameDefinitionIdForPreviousChampion
                 }
             };
             AutoMocker.Get<IDataContext>()
@@ -251,6 +279,19 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayersTests.PlayerDeleterTes
             //--assert
             AutoMocker.Get<IChampionRecalculator>().AssertWasCalled(mock => mock.RecalculateChampion(_gameDefinitionId, CurrentUser, AutoMocker.Get<IDataContext>()));
             AutoMocker.Get<IChampionRecalculator>().AssertWasCalled(mock => mock.RecalculateChampion(_gameDefinitionId2, CurrentUser, AutoMocker.Get<IDataContext>()));
+        }
+
+        [Test]
+        public void Then_Clears_Out_The_Previous_Champion_Of_All_Players_Who_Had_This_Previous_Nemesis()
+        {
+            //--arrange
+
+            //--act
+            AutoMocker.ClassUnderTest.DeletePlayer(_playerIdForPreviousChampion, CurrentUser);
+
+            //--assert
+            AutoMocker.Get<IDataContext>().AssertWasCalled(mock => mock.Save(
+                Arg<GameDefinition>.Matches(p => p.Id == _gameDefinitionIdForPreviousChampion && p.PreviousChampionId == null), Arg<ApplicationUser>.Is.Same(CurrentUser)));
         }
     }
 
