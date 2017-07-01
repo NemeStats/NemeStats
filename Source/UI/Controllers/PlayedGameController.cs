@@ -277,9 +277,17 @@ namespace UI.Controllers
         [System.Web.Mvc.HttpGet]
         public virtual ActionResult Search(ApplicationUser currentUser)
         {
+            var players = _playerRetriever.GetAllPlayers(currentUser.CurrentGamingGroupId, false);
+            var playerSelectListItems = players.Select(player => new SelectListItem
+            {
+                Text = player.Name,
+                Value = player.Id.ToString()
+            }).ToList();
+
             var viewModel = new SearchViewModel
             {
-                GameDefinitions = GetAllGameDefinitionsForCurrentGamingGroup(currentUser.CurrentGamingGroupId)
+                GameDefinitions = GetAllGameDefinitionsForCurrentGamingGroup(currentUser.CurrentGamingGroupId),
+                Players = playerSelectListItems
             };
             return View(MVC.PlayedGame.Views.Search, viewModel);
         }
@@ -348,7 +356,7 @@ namespace UI.Controllers
                     GamingGroupId = currentUser.CurrentGamingGroupId,
                     ShowSearchLinkInResultsHeader = false
                 },
-                Players = new SelectList(playerSelectListItems)
+                Players = playerSelectListItems
             };
             return View(MVC.PlayedGame.Views.Search, viewModel);
         }
