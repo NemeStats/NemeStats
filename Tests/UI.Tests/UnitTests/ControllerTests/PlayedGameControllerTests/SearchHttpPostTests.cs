@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Web.Mvc;
 using BusinessLogic.Logic.GameDefinitions;
 using BusinessLogic.Logic.PlayedGames;
@@ -11,8 +10,6 @@ using Rhino.Mocks;
 using UI.Models.PlayedGame;
 using UI.Models.Points;
 using UI.Transformations;
-using BusinessLogic.Logic.Players;
-using BusinessLogic.Models;
 
 namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 {
@@ -48,16 +45,22 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
             };
             AutoMocker.Get<IGameDefinitionRetriever>().Expect(mock => mock.GetAllGameDefinitionNames(this.CurrentUser.CurrentGamingGroupId)).Return(gameDefinitionNames);
 
-            var players = new List<Player>
-            {
-                new Player
-                {
-                    Name = "TestPlayer",
-                    Id = 1
-                }
-            };
-            AutoMocker.Get<IPlayerRetriever>().Expect(mock => mock.GetAllPlayers(this.CurrentUser.CurrentGamingGroupId, false)).Return(players);
+            AutoMocker.ClassUnderTest.Expect(mock => mock.AddPlayersToViewModel(Arg<int>.Is.Anything, Arg<SearchViewModel>.Is.Anything));
         }
+
+        [Test]
+        public void ItAddsTheListOfPlayersToTheViewModel()
+        {
+            //--arrange
+            AutoMocker.Get<IPlayedGameRetriever>().Expect(mock => mock.SearchPlayedGames(Arg<PlayedGameFilter>.Is.Anything)).Return(new List<PlayedGameSearchResult>());
+
+            //--act
+            AutoMocker.ClassUnderTest.Search(new PlayedGamesFilterViewModel(), CurrentUser);
+
+            //--assert
+            AutoMocker.ClassUnderTest.AssertWasCalled(mock => mock.AddPlayersToViewModel(Arg<int>.Is.Equal(CurrentUser.CurrentGamingGroupId), Arg<SearchViewModel>.Is.Anything));
+        }
+
 
         [Test]
         public void ItReturnsTheCorrectView()

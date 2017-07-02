@@ -50,6 +50,7 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 		public virtual void TestSetUp()
 		{
             AutoMocker = new RhinoAutoMocker<PlayedGameController>();
+            AutoMocker.PartialMockTheClassUnderTest();
 
             AutoMocker.Inject<IMapperFactory>(new MapperFactory(new Container(c =>
             {

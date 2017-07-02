@@ -277,18 +277,14 @@ namespace UI.Controllers
         [System.Web.Mvc.HttpGet]
         public virtual ActionResult Search(ApplicationUser currentUser)
         {
-            var players = _playerRetriever.GetAllPlayers(currentUser.CurrentGamingGroupId, false);
-            var playerSelectListItems = players.Select(player => new SelectListItem
-            {
-                Text = player.Name,
-                Value = player.Id.ToString()
-            }).ToList();
-
             var viewModel = new SearchViewModel
             {
-                GameDefinitions = GetAllGameDefinitionsForCurrentGamingGroup(currentUser.CurrentGamingGroupId),
-                Players = playerSelectListItems
+                GameDefinitions = GetAllGameDefinitionsForCurrentGamingGroup(currentUser.CurrentGamingGroupId)
             };
+
+            AddPlayersToViewModel(currentUser.CurrentGamingGroupId, viewModel);
+
+
             return View(MVC.PlayedGame.Views.Search, viewModel);
         }
 
@@ -333,13 +329,6 @@ namespace UI.Controllers
                 }).ToList()
             }).ToList();
 
-            var players = _playerRetriever.GetAllPlayers(currentUser.CurrentGamingGroupId, false);
-            var playerSelectListItems = players.Select(player => new SelectListItem
-            {
-                Text = player.Name,
-                Value = player.Id.ToString()
-            }).ToList();
-
             var viewModel = new SearchViewModel
             {
                 Filter =
@@ -355,9 +344,11 @@ namespace UI.Controllers
                     UserCanEdit = true,
                     GamingGroupId = currentUser.CurrentGamingGroupId,
                     ShowSearchLinkInResultsHeader = false
-                },
-                Players = playerSelectListItems
+                }
             };
+
+            AddPlayersToViewModel(currentUser.CurrentGamingGroupId, viewModel, filter.IncludedPlayerId);
+
             return View(MVC.PlayedGame.Views.Search, viewModel);
         }
 
@@ -384,6 +375,19 @@ namespace UI.Controllers
                 }).ToList());
 
             return selectListItems;
+        }
+
+        internal virtual void AddPlayersToViewModel(int currentGamingGroupId, SearchViewModel searchViewModel, int? selectedPlayerId = null)
+        {
+            var players = _playerRetriever.GetAllPlayers(currentGamingGroupId, false);
+            var playerSelectListItems = players.Select(player => new SelectListItem
+            {
+                Text = player.Name,
+                Value = player.Id.ToString(),
+                Selected = player.Id == selectedPlayerId
+            }).ToList();
+
+            searchViewModel.Players = playerSelectListItems;
         }
     }
 }
