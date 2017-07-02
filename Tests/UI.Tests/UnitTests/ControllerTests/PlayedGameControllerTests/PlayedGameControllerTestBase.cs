@@ -24,11 +24,11 @@ using NUnit.Framework;
 using Rhino.Mocks;
 using System.Collections.Generic;
 using System.Web.Mvc;
-using StructureMap;
+using PagedList;
 using StructureMap.AutoMocking;
 using UI.Controllers;
-using UI.Mappers;
 using UI.Mappers.Interfaces;
+using UI.Models.GameDefinitionModels;
 using UI.Models.PlayedGame;
 
 namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
@@ -62,6 +62,18 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 				.Return(GameDefinitionSummaries);
 
 		    AutoMocker.ClassUnderTest.Url = MockRepository.GenerateMock<UrlHelper>();
-		}
+
+            var expectedMapper = MockRepository.GenerateMock<ICustomMapper<SavePlayedGameRequest, NewlyCompletedGame>>();
+            AutoMocker.Get<IMapperFactory>()
+                .Expect(mock => mock.GetMapper<SavePlayedGameRequest, NewlyCompletedGame>())
+                .Return(expectedMapper);
+            expectedMapper.Expect(mock => mock.Map(Arg<SavePlayedGameRequest>.Is.Anything)).Return(new NewlyCompletedGame());
+
+            var expectedUpdateGameMapper = MockRepository.GenerateMock<ICustomMapper<SavePlayedGameRequest, UpdatedGame>>();
+            AutoMocker.Get<IMapperFactory>()
+                .Expect(mock => mock.GetMapper<SavePlayedGameRequest, UpdatedGame>())
+                .Return(expectedUpdateGameMapper);
+            expectedUpdateGameMapper.Expect(mock => mock.Map(Arg<SavePlayedGameRequest>.Is.Anything)).Return(new UpdatedGame());
+        }
 	}
 }
