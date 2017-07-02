@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Web.Mvc;
 using BusinessLogic.Logic.GameDefinitions;
 using BusinessLogic.Logic.PlayedGames;
@@ -45,7 +44,27 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
                 }
             };
             AutoMocker.Get<IGameDefinitionRetriever>().Expect(mock => mock.GetAllGameDefinitionNames(this.CurrentUser.CurrentGamingGroupId)).Return(gameDefinitionNames);
+
+            AutoMocker.ClassUnderTest.Expect(mock => mock.AddPlayersToViewModel(Arg<int>.Is.Anything, Arg<SearchViewModel>.Is.Anything, Arg<int?>.Is.Anything));
         }
+
+        [Test]
+        public void ItAddsTheListOfPlayersToTheViewModelAndSelectsThePlayerThatIsBeingFiltered()
+        {
+            //--arrange
+            AutoMocker.Get<IPlayedGameRetriever>().Expect(mock => mock.SearchPlayedGames(Arg<PlayedGameFilter>.Is.Anything)).Return(new List<PlayedGameSearchResult>());
+            var filter = new PlayedGamesFilterViewModel
+            {
+                IncludedPlayerId = 17
+            };
+
+            //--act
+            AutoMocker.ClassUnderTest.Search(filter, CurrentUser);
+
+            //--assert
+            AutoMocker.ClassUnderTest.AssertWasCalled(mock => mock.AddPlayersToViewModel(Arg<int>.Is.Equal(CurrentUser.CurrentGamingGroupId), Arg<SearchViewModel>.Is.Anything, Arg<int?>.Is.Equal(filter.IncludedPlayerId)));
+        }
+
 
         [Test]
         public void ItReturnsTheCorrectView()

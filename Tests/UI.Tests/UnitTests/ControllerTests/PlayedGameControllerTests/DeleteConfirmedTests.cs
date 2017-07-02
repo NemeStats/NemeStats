@@ -19,7 +19,6 @@
 using BusinessLogic.Logic.PlayedGames;
 using NUnit.Framework;
 using Rhino.Mocks;
-using System.Linq;
 
 namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
 {

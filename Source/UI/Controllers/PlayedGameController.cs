@@ -1,4 +1,4 @@
-﻿#region LICENSE
+﻿﻿﻿#region LICENSE
 // NemeStats is a free website for tracking the results of board games.
 //     Copyright (C) 2015 Jacob Gordon
 //
@@ -281,6 +281,10 @@ namespace UI.Controllers
             {
                 GameDefinitions = GetAllGameDefinitionsForCurrentGamingGroup(currentUser.CurrentGamingGroupId)
             };
+
+            AddPlayersToViewModel(currentUser.CurrentGamingGroupId, viewModel, null);
+
+
             return View(MVC.PlayedGame.Views.Search, viewModel);
         }
 
@@ -294,7 +298,8 @@ namespace UI.Controllers
                 EndDateGameLastUpdated = filter.DatePlayedEnd?.ToString("yyyy-MM-dd"),
                 GamingGroupId = currentUser.CurrentGamingGroupId,
                 StartDateGameLastUpdated = filter.DatePlayedStart?.ToString("yyyy-MM-dd"),
-                GameDefinitionId = filter.GameDefinitionId
+                GameDefinitionId = filter.GameDefinitionId,
+                PlayerId = filter.IncludedPlayerId
             };
             var searchResults = _playedGameRetriever.SearchPlayedGames(playedGameFilter);
 
@@ -341,6 +346,9 @@ namespace UI.Controllers
                     ShowSearchLinkInResultsHeader = false
                 }
             };
+
+            AddPlayersToViewModel(currentUser.CurrentGamingGroupId, viewModel, filter.IncludedPlayerId);
+
             return View(MVC.PlayedGame.Views.Search, viewModel);
         }
 
@@ -367,6 +375,19 @@ namespace UI.Controllers
                 }).ToList());
 
             return selectListItems;
+        }
+
+        internal virtual void AddPlayersToViewModel(int currentGamingGroupId, SearchViewModel searchViewModel, int? selectedPlayerId)
+        {
+            var players = _playerRetriever.GetAllPlayers(currentGamingGroupId, false);
+            var playerSelectListItems = players.Select(player => new SelectListItem
+            {
+                Text = player.Name,
+                Value = player.Id.ToString(),
+                Selected = player.Id == selectedPlayerId
+            }).ToList();
+
+            searchViewModel.Players = playerSelectListItems;
         }
     }
 }

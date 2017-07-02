@@ -18,7 +18,6 @@
 
 using BusinessLogic.Logic.PlayedGames;
 using NUnit.Framework;
-using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using Rhino.Mocks;
