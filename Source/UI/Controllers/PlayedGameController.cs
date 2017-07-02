@@ -282,7 +282,7 @@ namespace UI.Controllers
                 GameDefinitions = GetAllGameDefinitionsForCurrentGamingGroup(currentUser.CurrentGamingGroupId)
             };
 
-            AddPlayersToViewModel(currentUser.CurrentGamingGroupId, viewModel);
+            AddPlayersToViewModel(currentUser.CurrentGamingGroupId, viewModel, null);
 
 
             return View(MVC.PlayedGame.Views.Search, viewModel);
@@ -377,7 +377,7 @@ namespace UI.Controllers
             return selectListItems;
         }
 
-        internal virtual void AddPlayersToViewModel(int currentGamingGroupId, SearchViewModel searchViewModel, int? selectedPlayerId = null)
+        internal virtual void AddPlayersToViewModel(int currentGamingGroupId, SearchViewModel searchViewModel, int? selectedPlayerId)
         {
             var players = _playerRetriever.GetAllPlayers(currentGamingGroupId, false);
             var playerSelectListItems = players.Select(player => new SelectListItem

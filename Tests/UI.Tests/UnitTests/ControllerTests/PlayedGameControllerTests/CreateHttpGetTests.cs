@@ -26,6 +26,8 @@ using System.Web.Mvc;
 using BusinessLogic.Models.Players;
 using BusinessLogic.Paging;
 using PagedList;
+using UI.Mappers.Interfaces;
+using UI.Models.GameDefinitionModels;
 using UI.Models.PlayedGame;
 
 namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
@@ -47,6 +49,12 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
             AutoMocker.Get<IGameDefinitionRetriever>().Expect(x => x.GetMostPlayedGames(Arg<GetMostPlayedGamesQuery>.Is.Anything)).Repeat.Once().Return(new PagedList<GameDefinitionDisplayInfo>(new List<GameDefinitionDisplayInfo>(), 1, 1));
             AutoMocker.Get<IGameDefinitionRetriever>().Expect(x => x.GetRecentGames(Arg<GetRecentPlayedGamesQuery>.Is.Anything)).Repeat.Once().Return(new PagedList<GameDefinitionDisplayInfo>(new List<GameDefinitionDisplayInfo>(), 1, 1));
             AutoMocker.Get<IPlayerRetriever>().Expect(x => x.GetPlayersToCreate(CurrentUser.Id, CurrentUser.CurrentGamingGroupId)).Repeat.Once().Return(_players);
+
+            var expectedMapper = MockRepository.GenerateMock<ICustomMapper<GameDefinitionDisplayInfo, GameDefinitionDisplayInfoViewModel>>();
+            AutoMocker.Get<IMapperFactory>()
+                .Expect(mock => mock.GetMapper<GameDefinitionDisplayInfo, GameDefinitionDisplayInfoViewModel>())
+                .Return(expectedMapper);
+            expectedMapper.Expect(mock => mock.Map(Arg<IPagedList<GameDefinitionDisplayInfo>>.Is.Anything)).Return(new List<GameDefinitionDisplayInfoViewModel>());
         }
 
         [Test]

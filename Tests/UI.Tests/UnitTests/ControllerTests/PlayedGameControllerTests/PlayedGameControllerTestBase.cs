@@ -52,11 +52,6 @@ namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests
             AutoMocker = new RhinoAutoMocker<PlayedGameController>();
             AutoMocker.PartialMockTheClassUnderTest();
 
-            AutoMocker.Inject<IMapperFactory>(new MapperFactory(new Container(c =>
-            {
-                c.AddRegistry<TestRegistry>();
-            })));
-
             CurrentUser = new ApplicationUser()
 			{
 				CurrentGamingGroupId = 1
