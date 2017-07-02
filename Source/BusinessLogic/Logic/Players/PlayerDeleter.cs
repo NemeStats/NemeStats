@@ -89,6 +89,17 @@ namespace BusinessLogic.Logic.Players
                     gameDefinitionIdsThatNeedChampionRecalculated.Add(gameDef.Id);
                 }
 
+                var gameDefinitionsWithPreviousChampionToDelete = _dataContext.GetQueryable<GameDefinition>()
+                    .Where(p => p.PreviousChampionId == championId)
+                    .ToList();
+
+                foreach (var gameDef in gameDefinitionsWithPreviousChampionToDelete)
+                {
+                    //--clear out the previous champion
+                    gameDef.PreviousChampionId = null;
+                    _dataContext.Save(gameDef, currentUser);
+                }
+
                 _dataContext.DeleteById<Champion>(championId, currentUser);
             }
 
