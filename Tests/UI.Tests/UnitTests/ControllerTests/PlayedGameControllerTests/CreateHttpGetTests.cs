@@ -26,7 +26,6 @@ using System.Web.Mvc;
 using BusinessLogic.Models.Players;
 using BusinessLogic.Paging;
 using PagedList;
-using UI.Mappers.Interfaces;
 using UI.Models.PlayedGame;
 
 namespace UI.Tests.UnitTests.ControllerTests.PlayedGameControllerTests

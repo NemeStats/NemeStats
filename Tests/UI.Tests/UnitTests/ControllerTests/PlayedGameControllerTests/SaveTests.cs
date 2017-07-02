@@ -25,7 +25,6 @@ using Rhino.Mocks;
 using System.Collections.Generic;
 using System.Net;
 using System.Web.Mvc;
-using BusinessLogic.Logic.GameDefinitions;
 using BusinessLogic.Logic.Players;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Players;
