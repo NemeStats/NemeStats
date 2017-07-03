@@ -275,6 +275,7 @@
     <Compile Include="UnitTests\JobsTests\SitemapGeneratorTests\GamingGroupsSitemapGeneratorTests\GamingGroupsSitemapGeneratorTests.cs" />
     <Compile Include="UnitTests\JobsTests\SitemapGeneratorTests\UniversalGameSitemapGeneratorTests\BuildUniversalGamesSitemapsTests.cs" />
     <Compile Include="UnitTests\LogicTests\AchievementTests\AchievementRetrieverTests\GetAllAchievementSummariesTests.cs" />
+    <Compile Include="UnitTests\LogicTests\AchievementTests\UsurperAchievementTests.cs" />
     <Compile Include="UnitTests\LogicTests\AchievementTests\HolidayGamerAchievementTests.cs" />
     <Compile Include="UnitTests\LogicTests\AchievementTests\SoCloseAchievementTests.cs" />
     <Compile Include="UnitTests\LogicTests\BoardGameGeekGameDefinitionsTests\BoardGameGeekGameDefinitionInfoRetrieverTests\GetFromSourceTests.cs" />
