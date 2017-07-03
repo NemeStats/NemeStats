@@ -50,21 +50,6 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.AchievementTests
         }
 
         [Test]
-        public void ItDoesNotCountGameDefinitionsThatHaveHadNoPreviousNemesis()
-        {
-            //--arrange
-            var champions = SetupGamesForPlayer(_playerId, _autoMocker.ClassUnderTest.LevelThresholds[AchievementLevel.Bronze], false);
-            champions[0].GameDefinition.PreviousChampion = null;
-            _autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<Champion>()).Return(champions.AsQueryable());
-
-            //--act
-            var results = _autoMocker.ClassUnderTest.IsAwardedForThisPlayer(_playerId);
-
-            //--assert
-            Assert.That(results.LevelAwarded, Is.EqualTo(AchievementLevel.None));
-        }
-
-        [Test]
         public void ItAwardsSilverWhenPlayerHasExactlySilverNumberOfPlayedGames()
         {
             //--arrange
