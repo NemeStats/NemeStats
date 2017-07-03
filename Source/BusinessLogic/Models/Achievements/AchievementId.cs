@@ -35,6 +35,7 @@
         HolidayGamer = 31,
         SoClose = 32,
         BoardGameGeek2017_10x10 = 33,
+        Usurper = 34
     }
 
     public enum AchievementGroup

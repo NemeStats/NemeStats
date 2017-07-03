@@ -249,6 +249,7 @@
     <Compile Include="Logic\Achievements\AchievementRetriever.cs" />
     <Compile Include="Logic\Achievements\BoardGameGeek2017_10x10Achievement.cs" />
     <Compile Include="Logic\Achievements\BoardGameGeek_10x10Achievement.cs" />
+    <Compile Include="Logic\Achievements\UsurperAchievement.cs" />
     <Compile Include="Logic\Achievements\HolidayGamerAchievement.cs" />
     <Compile Include="Logic\Achievements\IAchievementRetriever.cs" />
     <Compile Include="Logic\Achievements\SoCloseAchievement.cs" />
