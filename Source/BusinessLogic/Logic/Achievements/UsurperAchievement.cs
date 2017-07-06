@@ -39,7 +39,7 @@ namespace BusinessLogic.Logic.Achievements
             var gamesPlayed =
                 DataContext
                     .GetQueryable<Champion>()
-                    .Where(champ => champ.PlayerId == playerId && champ.GameDefinition.PreviousChampion.PlayerId != playerId)
+                    .Where(champ => champ.PlayerId == playerId && champ.GameDefinition.PreviousChampionId != null && champ.GameDefinition.PreviousChampion.PlayerId != playerId)
                     .GroupBy(x => new { x.PlayerId, x.GameDefinitionId })
                     .Select(group => group.Key);
 

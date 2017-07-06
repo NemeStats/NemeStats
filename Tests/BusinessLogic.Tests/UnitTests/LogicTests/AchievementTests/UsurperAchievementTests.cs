@@ -87,6 +87,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.AchievementTests
                         GameDefinitionId = j,
                         GameDefinition = new GameDefinition
                         {
+                            PreviousChampionId = 999,
                             PreviousChampion = new Champion
                             {
                                 PlayerId = -1
