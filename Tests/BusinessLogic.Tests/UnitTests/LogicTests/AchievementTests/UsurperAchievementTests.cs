@@ -1,11 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using BusinessLogic.DataAccess;
+using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.Logic.Achievements;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Achievements;
 using BusinessLogic.Models.Games;
 using NUnit.Framework;
+using NUnit.VisualStudio.TestAdapter;
 using Rhino.Mocks;
 using StructureMap.AutoMocking;
 
@@ -23,12 +25,22 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.AchievementTests
             _autoMocker = new RhinoAutoMocker<UsurperAchievement>();
         }
 
+        private List<int> MakeGameDefinitionIds(int numberOfElementsInList)
+        {
+            var list = new List<int>();
+            for (int i = 0; i < numberOfElementsInList; i++)
+            {
+                list.Add(i);
+            }
+            return list;
+        }
+
         [Test]
         public void ItDoesNotAwardTheAchievementWhenThePlayerDoesNotReachTheBronzeThreshold()
         {
             //--arrange
-            SetupGamesForPlayer(_playerId, _autoMocker.ClassUnderTest.LevelThresholds[AchievementLevel.Bronze] - 1);
-
+            _autoMocker.Get<IChampionRepository>().Expect(mock => mock.GetUsurperAchievementData(_playerId))
+                .Return(MakeGameDefinitionIds(_autoMocker.ClassUnderTest.LevelThresholds[AchievementLevel.Bronze] - 1));
             //--act
             var results = _autoMocker.ClassUnderTest.IsAwardedForThisPlayer(_playerId);
 
@@ -40,7 +52,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.AchievementTests
         public void ItAwardsBronzeWhenPlayerHasExactlyBronzeNumberOfPlayedGames()
         {
             //--arrange
-            SetupGamesForPlayer(_playerId, _autoMocker.ClassUnderTest.LevelThresholds[AchievementLevel.Bronze]);
+            _autoMocker.Get<IChampionRepository>().Expect(mock => mock.GetUsurperAchievementData(_playerId))
+                .Return(MakeGameDefinitionIds(_autoMocker.ClassUnderTest.LevelThresholds[AchievementLevel.Bronze]));
 
             //--act
             var results = _autoMocker.ClassUnderTest.IsAwardedForThisPlayer(_playerId);
@@ -53,8 +66,8 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.AchievementTests
         public void ItAwardsSilverWhenPlayerHasExactlySilverNumberOfPlayedGames()
         {
             //--arrange
-            SetupGamesForPlayer(_playerId, _autoMocker.ClassUnderTest.LevelThresholds[AchievementLevel.Silver]);
-
+            _autoMocker.Get<IChampionRepository>().Expect(mock => mock.GetUsurperAchievementData(_playerId))
+                .Return(MakeGameDefinitionIds(_autoMocker.ClassUnderTest.LevelThresholds[AchievementLevel.Silver]));
             //--act
             var results = _autoMocker.ClassUnderTest.IsAwardedForThisPlayer(_playerId);
 
@@ -66,42 +79,13 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.AchievementTests
         public void ItAwardsGoldWhenPlayerHasExactlyGoldNumberOfPlayedGames()
         {
             //--arrange
-            SetupGamesForPlayer(_playerId, _autoMocker.ClassUnderTest.LevelThresholds[AchievementLevel.Gold]);
-
+            _autoMocker.Get<IChampionRepository>().Expect(mock => mock.GetUsurperAchievementData(_playerId))
+                .Return(MakeGameDefinitionIds(_autoMocker.ClassUnderTest.LevelThresholds[AchievementLevel.Gold]));
             //--act
             var results = _autoMocker.ClassUnderTest.IsAwardedForThisPlayer(_playerId);
 
             //--assert
             Assert.That(results.LevelAwarded, Is.EqualTo(AchievementLevel.Gold));
-        }
-
-        private List<Champion> SetupGamesForPlayer(int playerId, int numberofUniqueGamesToSetup, bool setQueryableExpectation = true)
-        {
-            var results = new List<Champion>();
-            for (int j = 0; j < numberofUniqueGamesToSetup; j++)
-            {
-                results.Add(
-                    new Champion
-                    {
-                        PlayerId = playerId,
-                        GameDefinitionId = j,
-                        GameDefinition = new GameDefinition
-                        {
-                            PreviousChampionId = 999,
-                            PreviousChampion = new Champion
-                            {
-                                PlayerId = -1
-                            }
-                        }
-                    });
-            }
-
-            if (setQueryableExpectation)
-            {
-                _autoMocker.Get<IDataContext>().Expect(mock => mock.GetQueryable<Champion>()).Return(results.AsQueryable());
-            }
-
-            return results;
         }
     }
 }

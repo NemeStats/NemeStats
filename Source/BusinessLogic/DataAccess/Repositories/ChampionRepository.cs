@@ -17,7 +17,6 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Data.Entity.Infrastructure;
 using System.Data.SqlClient;
 using System.Linq;
 using BusinessLogic.Models.Champions;
@@ -56,17 +55,17 @@ namespace BusinessLogic.DataAccess.Repositories
 
         public ChampionData GetChampionData(int gameDefinitionId)
         {
-            DbRawSqlQuery<ChampionStatistics> championStatisticsData = dataContext.MakeRawSqlQuery<ChampionStatistics>(CHAMPION_SQL,
+            var championStatisticsData = dataContext.MakeRawSqlQuery<ChampionStatistics>(CHAMPION_SQL,
                 new SqlParameter("GameDefinitionId", gameDefinitionId));
 
-            List<ChampionStatistics> championStatistics = championStatisticsData.ToList();
+            var championStatistics = championStatisticsData.ToList();
 
             if (ThereIsATieForChampion(championStatistics))
             {
                 return new NullChampionData();
             }
 
-            ChampionData championData = (from x in championStatistics
+            var championData = (from x in championStatistics
                                         select new ChampionData
                                         {
                                             PlayerId = x.PlayerId,
@@ -92,6 +91,28 @@ namespace BusinessLogic.DataAccess.Repositories
             }
             return !championStatistics[0].IsCurrentChampion && championStatistics[0].NumberOfGames == championStatistics[1].NumberOfGames
                    && championStatistics[0].NumberOfWins == championStatistics[1].NumberOfWins;
+        }
+
+        private const string USURPER_SQL =
+           //--grab the top 2 so we can see if there is a tie... in which case nothing should change
+           @"SELECT GameDefinitionId
+                FROM Champion
+                WHERE Champion.PlayerId = @PlayerId
+                AND EXISTS 
+                (
+	                SELECT TOP 1 1 FROM Champion OtherChampionRecord 
+	                WHERE OtherChampionRecord.GameDefinitionId = Champion.GameDefinitionId 
+	                AND OtherChampionRecord.DateCreated < Champion.DateCreated 
+	                AND OtherChampionRecord.PlayerId <> Champion.PlayerId
+                )
+                GROUP BY GameDefinitionId;";
+
+        public List<int> GetUsurperAchievementData(int playerId)
+        {
+            var championStatisticsData = dataContext.MakeRawSqlQuery<int>(USURPER_SQL,
+                new SqlParameter("PlayerId", playerId));
+
+            return championStatisticsData.ToList();
         }
     }
 }

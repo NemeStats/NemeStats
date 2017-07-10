@@ -1,15 +1,17 @@
 ﻿using System.Collections.Generic;
 using BusinessLogic.DataAccess;
-using BusinessLogic.Models;
 using BusinessLogic.Models.Achievements;
-using System.Linq;
+using BusinessLogic.DataAccess.Repositories;
 
 namespace BusinessLogic.Logic.Achievements
 {
     public class UsurperAchievement : BaseAchievement
     {
-        public UsurperAchievement(IDataContext dataContext) : base(dataContext)
+        private readonly IChampionRepository _championRepository;
+
+        public UsurperAchievement(IDataContext dataContext, IChampionRepository championRepository) : base(dataContext)
         {
+            _championRepository = championRepository;
         }
 
         public override AchievementId Id => AchievementId.Usurper;
@@ -36,15 +38,10 @@ namespace BusinessLogic.Logic.Achievements
                 AchievementId = Id
             };
 
-            var gamesPlayed =
-                DataContext
-                    .GetQueryable<Champion>()
-                    .Where(champ => champ.PlayerId == playerId && champ.GameDefinition.PreviousChampionId != null && champ.GameDefinition.PreviousChampion.PlayerId != playerId)
-                    .GroupBy(x => new { x.PlayerId, x.GameDefinitionId })
-                    .Select(group => group.Key);
+            var gamesForUsurperAchievement = _championRepository.GetUsurperAchievementData(playerId);
 
-            result.RelatedEntities = gamesPlayed.Select(x => x.GameDefinitionId).ToList();
-            result.PlayerProgress = gamesPlayed.Count();
+            result.RelatedEntities = gamesForUsurperAchievement;
+            result.PlayerProgress = gamesForUsurperAchievement.Count;
 
             if (result.PlayerProgress < LevelThresholds[AchievementLevel.Bronze])
             {
