@@ -24,7 +24,6 @@ namespace BusinessLogic.Tests.UnitTests.FacadesTests
         public void ItPullsFromPlayedGameRetrieverIfTheResultsArentAlreadyInTheCache()
         {
             //--arrange
-            int gamesToRetrieve = 1;
             var expectedResults = new List<PublicGameSummary>();
             var recentlyPlayedGamesFilter = new RecentlyPlayedGamesFilter();
             _autoMocker.Get<IPlayedGameRetriever>().Expect(mock => mock.GetRecentPublicGames(Arg<RecentlyPlayedGamesFilter>.Is.Equal(recentlyPlayedGamesFilter)))

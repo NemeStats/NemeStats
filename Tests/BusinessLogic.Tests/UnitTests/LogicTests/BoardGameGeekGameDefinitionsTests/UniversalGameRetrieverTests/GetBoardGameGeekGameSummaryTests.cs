@@ -25,7 +25,6 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.BoardGameGeekGameDefinitionsT
 
         private int _boardGameGeekGameDefinitionId = 1;
         private ApplicationUser _currentUser;
-        private BoardGameGeekGameSummary _expectedBoardGameGeekGameSummary;
         private GameDefinitionSummary _expectedGameDefinitionSummary;
         private GameDefinition _expectedGameDefinition;
         private UniversalGameStats _expectedUniversalStats;
