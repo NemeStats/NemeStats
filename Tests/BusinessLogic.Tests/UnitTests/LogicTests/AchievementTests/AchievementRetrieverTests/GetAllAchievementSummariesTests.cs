@@ -20,7 +20,6 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.AchievementTests.AchievementR
         private List<PlayerAchievement> _playerAchievements;
         private List<IAchievement> _allAchievements;
         private ApplicationUser _currentUser;
-        private int _currentUserPlayerId = 10;
         private IAchievement _achievement1;
         private IAchievement _achievement2;
         private IAchievement _achievementNoOneHas;

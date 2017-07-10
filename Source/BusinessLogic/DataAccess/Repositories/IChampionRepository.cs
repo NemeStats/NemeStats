@@ -16,7 +16,7 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #endregion
 
-using System.Linq;
+using System.Collections.Generic;
 using BusinessLogic.Models.Champions;
 
 namespace BusinessLogic.DataAccess.Repositories
@@ -24,5 +24,6 @@ namespace BusinessLogic.DataAccess.Repositories
     public interface IChampionRepository
     {
         ChampionData GetChampionData(int gameDefinitionId);
+        List<int> GetUsurperAchievementData(int playerId);
     }
 }

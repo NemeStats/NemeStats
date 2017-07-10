@@ -17,7 +17,6 @@
 #endregion
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
 using BusinessLogic.DataAccess;
 
 namespace BusinessLogic.Models
@@ -26,22 +25,22 @@ namespace BusinessLogic.Models
     {
         protected bool Equals(Champion other)
         {
-            return this.GameDefinitionId == other.GameDefinitionId 
-                && this.PlayerId == other.PlayerId 
-                && this.WinPercentage.Equals(other.WinPercentage) 
-                && this.NumberOfWins == other.NumberOfWins 
-                && this.NumberOfGames == other.NumberOfGames;
+            return GameDefinitionId == other.GameDefinitionId 
+                && PlayerId == other.PlayerId 
+                && WinPercentage.Equals(other.WinPercentage) 
+                && NumberOfWins == other.NumberOfWins 
+                && NumberOfGames == other.NumberOfGames;
         }
 
         public override int GetHashCode()
         {
             unchecked
             {
-                int hashCode = this.GameDefinitionId;
-                hashCode = (hashCode * 397) ^ this.PlayerId;
-                hashCode = (hashCode * 397) ^ this.WinPercentage.GetHashCode();
-                hashCode = (hashCode * 397) ^ this.NumberOfWins;
-                hashCode = (hashCode * 397) ^ this.NumberOfGames;
+                int hashCode = GameDefinitionId;
+                hashCode = (hashCode * 397) ^ PlayerId;
+                hashCode = (hashCode * 397) ^ WinPercentage.GetHashCode();
+                hashCode = (hashCode * 397) ^ NumberOfWins;
+                hashCode = (hashCode * 397) ^ NumberOfGames;
                 return hashCode;
             }
         }
@@ -68,7 +67,7 @@ namespace BusinessLogic.Models
         public bool SameChampion(Champion otherChampion)
         {
             return otherChampion != null 
-                && otherChampion.PlayerId == this.PlayerId;
+                && otherChampion.PlayerId == PlayerId;
         }
 
         public override bool Equals(object obj)
@@ -78,11 +77,11 @@ namespace BusinessLogic.Models
             {
                 return false;
             }
-            return this.GameDefinitionId == championToCompare.GameDefinitionId
-                   && this.PlayerId == championToCompare.PlayerId
-                   && this.WinPercentage == championToCompare.WinPercentage
-                   && this.NumberOfGames == championToCompare.NumberOfGames
-                   && this.NumberOfWins == championToCompare.NumberOfWins;
+            return GameDefinitionId == championToCompare.GameDefinitionId
+                   && PlayerId == championToCompare.PlayerId
+                   && WinPercentage == championToCompare.WinPercentage
+                   && NumberOfGames == championToCompare.NumberOfGames
+                   && NumberOfWins == championToCompare.NumberOfWins;
         }
     }
 }
