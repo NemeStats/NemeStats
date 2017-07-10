@@ -4,8 +4,9 @@
 @model IPagedList<UI.Models.Players.PlayerAchievementWinnerViewModel>
 
     @{
-    ViewBag.Title = "Recently Unlocked Achievements";
-    Layout = MVC.Shared.Views._BaseLayout;
+        ViewBag.Title = "Recently Unlocked Achievements";
+        ViewBag.Description = $"View the most recently awarded Achievements on the website -- across all Gaming Groups.";
+        Layout = MVC.Shared.Views._BaseLayout;
     }
 
 <div class="container">
