@@ -394,7 +394,7 @@ namespace BusinessLogic.Tests.IntegrationTests
                     TransactionSource = TransactionSource.WebApplication
             };
 
-            return createdPlayedGameComponent.Execute(newlyCompletedGame, currentUser, _dataContext);
+            return createdPlayedGameComponent.ExecuteTransaction(newlyCompletedGame, currentUser, _dataContext);
         }
 
         private void CleanUpTestData()

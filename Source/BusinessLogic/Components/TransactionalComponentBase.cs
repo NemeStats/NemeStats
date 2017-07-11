@@ -6,18 +6,23 @@ namespace BusinessLogic.Components
 {
     public abstract class TransactionalComponentBase<TInput, TOutput> : DbComponentBase<TInput, TOutput>
     {
-        public TOutput ExecuteTransaction(TInput inputParameter, ApplicationUser currentUser, IDataContext dataContext)
+        internal virtual Action PostExecuteAction { get; set; }
+
+        public virtual TOutput ExecuteTransaction(TInput inputParameter, ApplicationUser currentUser, IDataContext dataContext)
         {
             if (dataContext.CurrentTransaction() != null)
             {
                 return Execute(inputParameter, currentUser, dataContext);
             }
+
             using (var transaction = dataContext.BeginTransaction())
             {
                 try
                 {
                     var result = Execute(inputParameter, currentUser, dataContext);
                     transaction.Commit();
+                    PostExecuteAction?.Invoke();
+
                     return result;
                 }
                 catch (Exception)

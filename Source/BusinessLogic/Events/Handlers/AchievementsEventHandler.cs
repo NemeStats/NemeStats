@@ -31,6 +31,13 @@ namespace BusinessLogic.Events.Handlers
 
         public bool Handle(PlayedGameCreatedEvent @event)
         {
+            //--process badges
+
+            //--process achievements
+
+            //--process analytics
+
+
             bool noExceptions = true;
 
             //--this is a weak solution to duplicate key exceptions getting logged when multiple games are recorded in quick succession. A better solution

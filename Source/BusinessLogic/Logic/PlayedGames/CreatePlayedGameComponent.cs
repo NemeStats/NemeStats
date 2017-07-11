@@ -1,4 +1,5 @@
-﻿using BusinessLogic.Components;
+﻿using System;
+using BusinessLogic.Components;
 using BusinessLogic.DataAccess;
 using BusinessLogic.DataAccess.Security;
 using BusinessLogic.Logic.Security;
@@ -51,7 +52,11 @@ namespace BusinessLogic.Logic.PlayedGames
 
             _playedGameSaver.CreateApplicationLinkages(newlyCompletedGame.ApplicationLinkages, playedGame.Id, dataContext);
 
-            _playedGameSaver.DoPostSaveStuff(newlyCompletedGame.TransactionSource, currentUser, playedGame.Id, playedGame.GameDefinitionId, playerGameResults,
+            PostExecuteAction = () => _playedGameSaver.DoPostSaveStuff(
+                newlyCompletedGame.TransactionSource, 
+                currentUser, playedGame.Id, 
+                playedGame.GameDefinitionId, 
+                playerGameResults,
                 dataContext);
 
             return playedGame;
