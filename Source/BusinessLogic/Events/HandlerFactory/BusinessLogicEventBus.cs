@@ -1,3 +1,4 @@
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using BusinessLogic.Events.Interfaces;
@@ -29,15 +30,15 @@ namespace BusinessLogic.Events.HandlerFactory
                     {
                         handlerInstance.Handle(@event);
                     }
-                    catch (System.Exception ex)
+                    catch (Exception ex)
                     {
                         _rollbar.SendException(ex);
                         ex.ToExceptionless();
                     }
-                }                
-            });
+                }
 
-            
+                @event.TriggerEventHandledAction();          
+            });
         }
     }
 }

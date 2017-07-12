@@ -123,25 +123,24 @@ namespace BusinessLogic.Tests.IntegrationTests
             testUserWithOtherGamingGroup = SaveApplicationUser(testApplicationUserNameForUserWithOtherGamingGroup, "b@mailinator.com");
             testUserWithThirdGamingGroup = SaveApplicationUser(testApplicationUserNameForUserWithThirdGamingGroup, "c@mailinator.com");
 
+            testGamingGroup = SaveGamingGroup(testGamingGroup1Name, testUserWithDefaultGamingGroup);
+            testUserWithDefaultGamingGroup = UpdateDatefaultGamingGroupOnUser(testUserWithDefaultGamingGroup, testGamingGroup);
+            testOtherGamingGroup = SaveGamingGroup(testGamingGroup2Name, testUserWithOtherGamingGroup);
+            testUserWithOtherGamingGroup = UpdateDatefaultGamingGroupOnUser(testUserWithOtherGamingGroup, testOtherGamingGroup);
+            testThirdGamingGroup = SaveGamingGroup(testGamingGroup3Name, testUserWithThirdGamingGroup);
+            testUserWithThirdGamingGroup = UpdateDatefaultGamingGroupOnUser(testUserWithThirdGamingGroup, testThirdGamingGroup);
 
-                testGamingGroup = SaveGamingGroup(testGamingGroup1Name, testUserWithDefaultGamingGroup);
-                testUserWithDefaultGamingGroup = UpdateDatefaultGamingGroupOnUser(testUserWithDefaultGamingGroup, testGamingGroup);
-                testOtherGamingGroup = SaveGamingGroup(testGamingGroup2Name, testUserWithOtherGamingGroup);
-                testUserWithOtherGamingGroup = UpdateDatefaultGamingGroupOnUser(testUserWithOtherGamingGroup, testOtherGamingGroup);
-                testThirdGamingGroup = SaveGamingGroup(testGamingGroup3Name, testUserWithThirdGamingGroup);
-                testUserWithThirdGamingGroup = UpdateDatefaultGamingGroupOnUser(testUserWithThirdGamingGroup, testThirdGamingGroup);
+            testBoardGameGeekGameDefinition = SaveBoardGameGeekGameDefinition();
 
-                testBoardGameGeekGameDefinition = SaveBoardGameGeekGameDefinition();
+            testGameDefinition = SaveGameDefinition(testGamingGroup.Id, testGameName, testBoardGameGeekGameDefinition.Id);
+            testGameDefinition2 = SaveGameDefinition(testGamingGroup.Id, testGameName2);
+            testGameDefinitionWithOtherGamingGroupId = SaveGameDefinition(testOtherGamingGroup.Id, testGameNameForGameWithOtherGamingGroupId);
+            gameDefinitionWithNoChampion = SaveGameDefinition(testThirdGamingGroup.Id,
+                gameDefinitionWithNoChampionName);
+            anotherTestGameDefinitionWithOtherGamingGroupId = SaveGameDefinition(testOtherGamingGroup.Id, testGameNameForAnotherGameWithOtherGamingGroupId);
+            SavePlayers(testGamingGroup.Id, testOtherGamingGroup.Id);
 
-                testGameDefinition = SaveGameDefinition(testGamingGroup.Id, testGameName, testBoardGameGeekGameDefinition.Id);
-                testGameDefinition2 = SaveGameDefinition(testGamingGroup.Id, testGameName2);
-                testGameDefinitionWithOtherGamingGroupId = SaveGameDefinition(testOtherGamingGroup.Id, testGameNameForGameWithOtherGamingGroupId);
-                gameDefinitionWithNoChampion = SaveGameDefinition(testThirdGamingGroup.Id,
-                    gameDefinitionWithNoChampionName);
-                anotherTestGameDefinitionWithOtherGamingGroupId = SaveGameDefinition(testOtherGamingGroup.Id, testGameNameForAnotherGameWithOtherGamingGroupId);
-                SavePlayers(testGamingGroup.Id, testOtherGamingGroup.Id);
-
-                CreatePlayedGames();
+            CreatePlayedGames();
         }
 
         [OneTimeTearDown]

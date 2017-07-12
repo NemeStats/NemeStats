@@ -1,7 +1,11 @@
 ﻿using System;
+using System.Linq;
 using BusinessLogic.Components;
 using BusinessLogic.DataAccess;
 using BusinessLogic.DataAccess.Security;
+using BusinessLogic.Events;
+using BusinessLogic.Events.HandlerFactory;
+using BusinessLogic.Events.Interfaces;
 using BusinessLogic.Logic.Security;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
@@ -14,15 +18,18 @@ namespace BusinessLogic.Logic.PlayedGames
         private readonly ILinkedPlayedGameValidator _linkedPlayedGameValidator;
         private readonly ISecuredEntityValidator _securedEntityValidator;
         private readonly IPlayedGameSaver _playedGameSaver;
+        private readonly IBusinessLogicEventSender _businessLogicEventSender;
 
         public CreatePlayedGameComponent(
             ISecuredEntityValidator securedEntityValidator,
             ILinkedPlayedGameValidator linkedPlayedGameValidator, 
-            IPlayedGameSaver playedGameSaver)
+            IPlayedGameSaver playedGameSaver, 
+            IBusinessLogicEventSender businessLogicEventSender)
         {
             _securedEntityValidator = securedEntityValidator;
             _linkedPlayedGameValidator = linkedPlayedGameValidator;
             _playedGameSaver = playedGameSaver;
+            _businessLogicEventSender = businessLogicEventSender;
         }
 
         public override PlayedGame Execute(NewlyCompletedGame newlyCompletedGame, ApplicationUser currentUser, IDataContext dataContext)
@@ -52,12 +59,14 @@ namespace BusinessLogic.Logic.PlayedGames
 
             _playedGameSaver.CreateApplicationLinkages(newlyCompletedGame.ApplicationLinkages, playedGame.Id, dataContext);
 
-            PostExecuteAction = () => _playedGameSaver.DoPostSaveStuff(
-                newlyCompletedGame.TransactionSource, 
-                currentUser, playedGame.Id, 
+            PostExecuteAction = () => _businessLogicEventSender.SendEvents(new IBusinessLogicEvent[]
+            {
+                new PlayedGameCreatedEvent(playedGame.Id, 
                 playedGame.GameDefinitionId, 
-                playerGameResults,
-                dataContext);
+                    playerGameResults.Select(x => x.PlayerId).ToList(), 
+                    newlyCompletedGame.TransactionSource,
+                    currentUser)
+            });
 
             return playedGame;
         }

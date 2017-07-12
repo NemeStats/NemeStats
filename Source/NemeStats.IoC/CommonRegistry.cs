@@ -76,7 +76,7 @@ namespace NemeStats.IoC
             For<IUserStore<ApplicationUser>>()
                 .Use<UserStore<ApplicationUser>>();
 
-
+            //TODO this seems funky. Why should a consumer of a 3rd party NuGet package have to do this?
             For<IUniversalAnalyticsEventFactory>().Use<UniversalAnalyticsEventFactory>();
             For<IEventTracker>().Use<EventTracker>();
             For<INemeStatsEventTracker>().Use<UniversalAnalyticsNemeStatsEventTracker>();

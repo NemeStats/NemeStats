@@ -157,25 +157,6 @@ namespace BusinessLogic.Logic.PlayedGames
             }
         }
 
-        public virtual void DoPostSaveStuff(
-            TransactionSource transactionSource,
-            ApplicationUser currentUser, 
-            int playedGameId, 
-            int gameDefinitionId, 
-            List<PlayerGameResult> playerGameResults, 
-            IDataContext dataContext)
-        {
-            _playedGameTracker.TrackPlayedGame(currentUser, transactionSource);
-
-            foreach (var result in playerGameResults)
-            {
-                _nemesisRecalculator.RecalculateNemesis(result.PlayerId, currentUser, dataContext);
-            }
-            _championRecalculator.RecalculateChampion(gameDefinitionId, currentUser, dataContext, false);
-
-            _businessLogicEventSender.SendEvents(new IBusinessLogicEvent[] {new PlayedGameCreatedEvent() {TriggerEntityId = playedGameId}});
-        }
-
         public PlayedGame UpdatePlayedGame(UpdatedGame updatedGame, TransactionSource transactionSource, ApplicationUser currentUser)
         {
             if (updatedGame.GamingGroupId.HasValue)
@@ -220,7 +201,13 @@ namespace BusinessLogic.Logic.PlayedGames
 
             CreateApplicationLinkages(updatedGame.ApplicationLinkages, updatedGame.PlayedGameId, _dataContext);
 
-            DoPostSaveStuff(transactionSource, currentUser, playedGameWithStuff.Id, playedGameWithStuff.GameDefinitionId, playerGameResults, _dataContext);
+            var playerIds = playerGameResults.Select(x => x.PlayerId).ToList();
+            _businessLogicEventSender.SendEvents(new IBusinessLogicEvent[] { new PlayedGameCreatedEvent(
+                updatedGame.PlayedGameId,
+                updatedGame.GameDefinitionId, 
+                playerIds, 
+                transactionSource,
+                currentUser) });
 
             return returnPlayedGame;
         }
