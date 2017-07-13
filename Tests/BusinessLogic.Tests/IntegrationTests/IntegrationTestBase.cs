@@ -293,7 +293,8 @@ namespace BusinessLogic.Tests.IntegrationTests
 
             players = new List<Player> { testPlayer9UndefeatedWith5Games, testPlayer7WithOtherGamingGroupId };
             playerRanks = new List<int> { 1, 2 };
-            playedGame = CreateTestPlayedGame(anotherTestGameDefinitionWithOtherGamingGroupId.Id, players, playerRanks, testUserWithOtherGamingGroup, createPlayedGameComponent, _dataContext);
+            //--this last one should pause to finish all of the post-update processing
+            playedGame = CreateTestPlayedGame(anotherTestGameDefinitionWithOtherGamingGroupId.Id, players, playerRanks, testUserWithOtherGamingGroup, createPlayedGameComponent, _dataContext, true);
             testPlayedGames.Add(playedGame);
         }
 
@@ -373,7 +374,8 @@ namespace BusinessLogic.Tests.IntegrationTests
             List<int> correspondingPlayerRanks,
             ApplicationUser currentUser,
             CreatePlayedGameComponent createdPlayedGameComponent,
-            IDataContext _dataContext)
+            IDataContext _dataContext,
+            bool waitForAllPostSaveEventHandlingToFinish = false)
         {
             List<PlayerRank> playerRanks = new List<PlayerRank>();
 
@@ -393,7 +395,14 @@ namespace BusinessLogic.Tests.IntegrationTests
                     TransactionSource = TransactionSource.WebApplication
             };
 
-            return createdPlayedGameComponent.ExecuteTransaction(newlyCompletedGame, currentUser, _dataContext);
+            var playedGame = createdPlayedGameComponent.ExecuteTransaction(newlyCompletedGame, currentUser, _dataContext);
+
+            if (waitForAllPostSaveEventHandlingToFinish)
+            {
+                createdPlayedGameComponent.PostSaveTask.Wait();
+            }
+
+            return playedGame;
         }
 
         private void CleanUpTestData()

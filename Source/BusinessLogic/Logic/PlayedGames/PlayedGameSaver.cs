@@ -202,12 +202,12 @@ namespace BusinessLogic.Logic.PlayedGames
             CreateApplicationLinkages(updatedGame.ApplicationLinkages, updatedGame.PlayedGameId, _dataContext);
 
             var playerIds = playerGameResults.Select(x => x.PlayerId).ToList();
-            _businessLogicEventSender.SendEvents(new IBusinessLogicEvent[] { new PlayedGameCreatedEvent(
+            _businessLogicEventSender.SendEvent(new PlayedGameCreatedEvent(
                 updatedGame.PlayedGameId,
                 updatedGame.GameDefinitionId, 
                 playerIds, 
                 transactionSource,
-                currentUser) });
+                currentUser));
 
             return returnPlayedGame;
         }

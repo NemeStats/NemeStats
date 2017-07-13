@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using BusinessLogic.Components;
 using BusinessLogic.DataAccess;
 using BusinessLogic.DataAccess.Security;
@@ -9,6 +10,7 @@ using BusinessLogic.Events.Interfaces;
 using BusinessLogic.Logic.Security;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
+using BusinessLogic.Models.PlayedGames;
 using BusinessLogic.Models.User;
 
 namespace BusinessLogic.Logic.PlayedGames
@@ -59,14 +61,15 @@ namespace BusinessLogic.Logic.PlayedGames
 
             _playedGameSaver.CreateApplicationLinkages(newlyCompletedGame.ApplicationLinkages, playedGame.Id, dataContext);
 
-            PostExecuteAction = () => _businessLogicEventSender.SendEvents(new IBusinessLogicEvent[]
+            PostExecuteAction = () =>
             {
-                new PlayedGameCreatedEvent(playedGame.Id, 
-                playedGame.GameDefinitionId, 
-                    playerGameResults.Select(x => x.PlayerId).ToList(), 
-                    newlyCompletedGame.TransactionSource,
-                    currentUser)
-            });
+                _businessLogicEventSender.SendEvent(
+                        new PlayedGameCreatedEvent(playedGame.Id,
+                            playedGame.GameDefinitionId,
+                            playerGameResults.Select(x => x.PlayerId).ToList(),
+                            newlyCompletedGame.TransactionSource,
+                            currentUser));
+            };
 
             return playedGame;
         }

@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System.Threading.Tasks;
 using BusinessLogic.Events.Interfaces;
 
 namespace BusinessLogic.Events.HandlerFactory
 {
     public interface IBusinessLogicEventSender
     {
-        void SendEvents(IList<IBusinessLogicEvent> events);
+        Task SendEvent(IBusinessLogicEvent businessLogicEvent);
     }
 }

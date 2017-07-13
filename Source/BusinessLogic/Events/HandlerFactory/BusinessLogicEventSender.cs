@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Threading.Tasks;
 using BusinessLogic.Events.Interfaces;
 
 namespace BusinessLogic.Events.HandlerFactory
@@ -13,15 +12,15 @@ namespace BusinessLogic.Events.HandlerFactory
             _eventBus = eventBus;
         }
 
-        public virtual void SendEvents(IList<IBusinessLogicEvent> events)
+        public virtual Task SendEvent(IBusinessLogicEvent businessLogicEvent)
         {
-            if (events.Any())
+            Task task = null;
+            if (businessLogicEvent != null)
             {
-                foreach (var @event in events)
-                {
-                    _eventBus.SendEvent(@event);
-                }
+                task =  _eventBus.SendEvent(businessLogicEvent);
             }
+
+            return task;
         }
     }
 }

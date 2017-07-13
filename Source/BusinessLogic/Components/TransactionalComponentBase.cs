@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using BusinessLogic.DataAccess;
 using BusinessLogic.Models.User;
 
@@ -6,7 +7,9 @@ namespace BusinessLogic.Components
 {
     public abstract class TransactionalComponentBase<TInput, TOutput> : DbComponentBase<TInput, TOutput>
     {
-        internal virtual Action PostExecuteAction { get; set; }
+        public virtual Action PostExecuteAction { get; set; }
+
+        public virtual Task PostSaveTask { get; set; }
 
         public virtual TOutput ExecuteTransaction(TInput inputParameter, ApplicationUser currentUser, IDataContext dataContext)
         {
@@ -21,7 +24,11 @@ namespace BusinessLogic.Components
                 {
                     var result = Execute(inputParameter, currentUser, dataContext);
                     transaction.Commit();
-                    PostExecuteAction?.Invoke();
+
+                    if (PostExecuteAction != null)
+                    {
+                        PostSaveTask = Task.Run(() => PostExecuteAction.Invoke());
+                    }
 
                     return result;
                 }

@@ -18,10 +18,10 @@ namespace BusinessLogic.Events.HandlerFactory
             _rollbar = rollbar;
         }
 
-        public virtual void SendEvent(IBusinessLogicEvent @event)
+        public virtual Task SendEvent(IBusinessLogicEvent @event)
         {
 
-            Task.Factory.StartNew(() =>
+            return Task.Factory.StartNew(() =>
             {
                 var eventHandlers = this._handlerFactory.GetHandlers(@event.GetType());
                 foreach (var handlerInstance in eventHandlers)
@@ -36,8 +36,6 @@ namespace BusinessLogic.Events.HandlerFactory
                         ex.ToExceptionless();
                     }
                 }
-
-                @event.TriggerEventHandledAction();          
             });
         }
     }

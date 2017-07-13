@@ -34,7 +34,8 @@ namespace BusinessLogic.Tests.UnitTests.EventsTests
         {
             //--arrange
             var playersInGame = new List<int> {10, 11};
-            var playedGameEvent = new PlayedGameCreatedEvent(1, 2, playersInGame, TransactionSource.RestApi);
+            
+            var playedGameEvent = new PlayedGameCreatedEvent(1, 2, playersInGame, TransactionSource.RestApi, new AnonymousApplicationUser());
 
             var anonymousApplicationUser = new AnonymousApplicationUser();
 

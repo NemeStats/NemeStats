@@ -379,13 +379,11 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameSa
 
             //--assert
             var args = AutoMocker.Get<IBusinessLogicEventSender>().GetArgumentsForCallsMadeOn(
-                mock => mock.SendEvents(
-                Arg<IList<IBusinessLogicEvent>>.Is.Anything));
+                mock => mock.SendEvent(
+                Arg<IBusinessLogicEvent>.Is.Anything));
 
-            var listOfEvents = args.AssertFirstCallIsType<IList<IBusinessLogicEvent>>();
-            listOfEvents.ShouldNotBeNull();
-            listOfEvents.Count.ShouldBe(1);
-            var businessLogicEvent = listOfEvents[0];
+            var businessLogicEvent = args.AssertFirstCallIsType<IBusinessLogicEvent>();
+
             businessLogicEvent.ShouldNotBeNull();
             businessLogicEvent.ShouldBeOfType<PlayedGameCreatedEvent>();
             var playedGameCreatedEvent = (PlayedGameCreatedEvent)businessLogicEvent;
