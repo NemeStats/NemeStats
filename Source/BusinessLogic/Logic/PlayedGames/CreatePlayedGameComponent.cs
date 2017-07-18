@@ -63,7 +63,7 @@ namespace BusinessLogic.Logic.PlayedGames
 
             PostExecuteAction = () =>
             {
-                _businessLogicEventSender.SendEvent(
+                return _businessLogicEventSender.SendEvent(
                         new PlayedGameCreatedEvent(playedGame.Id,
                             playedGame.GameDefinitionId,
                             playerGameResults.Select(x => x.PlayerId).ToList(),

@@ -50,7 +50,8 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.EventsTests
                     MockRepository.GenerateMock<INemeStatsEventTracker>(),
                     MockRepository.GenerateMock<IAchievementProcessor>(),
                     MockRepository.GenerateMock<IChampionRecalculator>(),
-                    MockRepository.GenerateMock<INemesisRecalculator>());
+                    MockRepository.GenerateMock<INemesisRecalculator>(),
+                    MockRepository.GenerateMock<IRollbarClient>());
 
                 var lastTask = new Task<bool>(() => achievementsEventHandler.Handle(playedGameEvent));
                 lastTask.Start();

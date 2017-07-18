@@ -7,7 +7,7 @@ namespace BusinessLogic.Components
 {
     public abstract class TransactionalComponentBase<TInput, TOutput> : DbComponentBase<TInput, TOutput>
     {
-        public virtual Action PostExecuteAction { get; set; }
+        public virtual Func<Task> PostExecuteAction { get; set; }
 
         public virtual Task PostSaveTask { get; set; }
 
@@ -25,10 +25,7 @@ namespace BusinessLogic.Components
                     var result = Execute(inputParameter, currentUser, dataContext);
                     transaction.Commit();
 
-                    if (PostExecuteAction != null)
-                    {
-                        PostSaveTask = Task.Run(() => PostExecuteAction.Invoke());
-                    }
+                    PostSaveTask = PostExecuteAction?.Invoke();
 
                     return result;
                 }
