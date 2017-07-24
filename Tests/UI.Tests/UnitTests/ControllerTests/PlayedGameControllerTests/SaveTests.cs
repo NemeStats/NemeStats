@@ -27,6 +27,7 @@ using System.Net;
 using System.Web.Mvc;
 using BusinessLogic.Logic.Players;
 using BusinessLogic.Models;
+using BusinessLogic.Models.PlayedGames;
 using BusinessLogic.Models.Players;
 using Shouldly;
 

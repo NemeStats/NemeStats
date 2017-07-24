@@ -36,8 +36,5 @@ namespace BusinessLogic.Logic.PlayedGames
         List<PlayerGameResult> MakePlayerGameResults(SaveableGameBase savedGame, int? boardGameGeekGameDefinitionId, IDataContext dataContext);
 
         PlayedGame TransformNewlyCompletedGameIntoPlayedGame(SaveableGameBase savedGame, int gamingGroupId, string applicationUserId, List<PlayerGameResult> playerGameResults);
-
-        void DoPostSaveStuff(TransactionSource transactionSource, ApplicationUser currentUser, int playedGameId, int gameDefinitionId,
-            List<PlayerGameResult> playerGameResults, IDataContext dataContext);
     }
 }

@@ -227,6 +227,7 @@ namespace BusinessLogic.Logic.GameDefinitions
                 Id = gameDefinition.Id,
                 TotalNumberOfGamesPlayed = gameDefinition.PlayedGames.Count,
                 AveragePlayersPerGame = gameDefinition.PlayedGames.Select(item => (decimal)item.NumberOfPlayers).DefaultIfEmpty(0M).Average(),
+                ChampionId = gameDefinition.ChampionId,
                 Champion = gameDefinition.Champion ?? new NullChampion(),
                 PreviousChampion = gameDefinition.PreviousChampion ?? new NullChampion(),
                 BoardGameGeekInfo = boardGameGeekInfo

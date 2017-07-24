@@ -1,9 +1,16 @@
-﻿using BusinessLogic.Components;
+﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
+using BusinessLogic.Components;
 using BusinessLogic.DataAccess;
 using BusinessLogic.DataAccess.Security;
+using BusinessLogic.Events;
+using BusinessLogic.Events.HandlerFactory;
+using BusinessLogic.Events.Interfaces;
 using BusinessLogic.Logic.Security;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
+using BusinessLogic.Models.PlayedGames;
 using BusinessLogic.Models.User;
 
 namespace BusinessLogic.Logic.PlayedGames
@@ -13,15 +20,18 @@ namespace BusinessLogic.Logic.PlayedGames
         private readonly ILinkedPlayedGameValidator _linkedPlayedGameValidator;
         private readonly ISecuredEntityValidator _securedEntityValidator;
         private readonly IPlayedGameSaver _playedGameSaver;
+        private readonly IBusinessLogicEventSender _businessLogicEventSender;
 
         public CreatePlayedGameComponent(
             ISecuredEntityValidator securedEntityValidator,
             ILinkedPlayedGameValidator linkedPlayedGameValidator, 
-            IPlayedGameSaver playedGameSaver)
+            IPlayedGameSaver playedGameSaver, 
+            IBusinessLogicEventSender businessLogicEventSender)
         {
             _securedEntityValidator = securedEntityValidator;
             _linkedPlayedGameValidator = linkedPlayedGameValidator;
             _playedGameSaver = playedGameSaver;
+            _businessLogicEventSender = businessLogicEventSender;
         }
 
         public override PlayedGame Execute(NewlyCompletedGame newlyCompletedGame, ApplicationUser currentUser, IDataContext dataContext)
@@ -51,8 +61,15 @@ namespace BusinessLogic.Logic.PlayedGames
 
             _playedGameSaver.CreateApplicationLinkages(newlyCompletedGame.ApplicationLinkages, playedGame.Id, dataContext);
 
-            _playedGameSaver.DoPostSaveStuff(newlyCompletedGame.TransactionSource, currentUser, playedGame.Id, playedGame.GameDefinitionId, playerGameResults,
-                dataContext);
+            PostExecuteAction = () =>
+            {
+                return _businessLogicEventSender.SendEvent(
+                        new PlayedGameCreatedEvent(playedGame.Id,
+                            playedGame.GameDefinitionId,
+                            playerGameResults.Select(x => x.PlayerId).ToList(),
+                            newlyCompletedGame.TransactionSource,
+                            currentUser));
+            };
 
             return playedGame;
         }

@@ -123,25 +123,24 @@ namespace BusinessLogic.Tests.IntegrationTests
             testUserWithOtherGamingGroup = SaveApplicationUser(testApplicationUserNameForUserWithOtherGamingGroup, "b@mailinator.com");
             testUserWithThirdGamingGroup = SaveApplicationUser(testApplicationUserNameForUserWithThirdGamingGroup, "c@mailinator.com");
 
+            testGamingGroup = SaveGamingGroup(testGamingGroup1Name, testUserWithDefaultGamingGroup);
+            testUserWithDefaultGamingGroup = UpdateDatefaultGamingGroupOnUser(testUserWithDefaultGamingGroup, testGamingGroup);
+            testOtherGamingGroup = SaveGamingGroup(testGamingGroup2Name, testUserWithOtherGamingGroup);
+            testUserWithOtherGamingGroup = UpdateDatefaultGamingGroupOnUser(testUserWithOtherGamingGroup, testOtherGamingGroup);
+            testThirdGamingGroup = SaveGamingGroup(testGamingGroup3Name, testUserWithThirdGamingGroup);
+            testUserWithThirdGamingGroup = UpdateDatefaultGamingGroupOnUser(testUserWithThirdGamingGroup, testThirdGamingGroup);
 
-                testGamingGroup = SaveGamingGroup(testGamingGroup1Name, testUserWithDefaultGamingGroup);
-                testUserWithDefaultGamingGroup = UpdateDatefaultGamingGroupOnUser(testUserWithDefaultGamingGroup, testGamingGroup);
-                testOtherGamingGroup = SaveGamingGroup(testGamingGroup2Name, testUserWithOtherGamingGroup);
-                testUserWithOtherGamingGroup = UpdateDatefaultGamingGroupOnUser(testUserWithOtherGamingGroup, testOtherGamingGroup);
-                testThirdGamingGroup = SaveGamingGroup(testGamingGroup3Name, testUserWithThirdGamingGroup);
-                testUserWithThirdGamingGroup = UpdateDatefaultGamingGroupOnUser(testUserWithThirdGamingGroup, testThirdGamingGroup);
+            testBoardGameGeekGameDefinition = SaveBoardGameGeekGameDefinition();
 
-                testBoardGameGeekGameDefinition = SaveBoardGameGeekGameDefinition();
+            testGameDefinition = SaveGameDefinition(testGamingGroup.Id, testGameName, testBoardGameGeekGameDefinition.Id);
+            testGameDefinition2 = SaveGameDefinition(testGamingGroup.Id, testGameName2);
+            testGameDefinitionWithOtherGamingGroupId = SaveGameDefinition(testOtherGamingGroup.Id, testGameNameForGameWithOtherGamingGroupId);
+            gameDefinitionWithNoChampion = SaveGameDefinition(testThirdGamingGroup.Id,
+                gameDefinitionWithNoChampionName);
+            anotherTestGameDefinitionWithOtherGamingGroupId = SaveGameDefinition(testOtherGamingGroup.Id, testGameNameForAnotherGameWithOtherGamingGroupId);
+            SavePlayers(testGamingGroup.Id, testOtherGamingGroup.Id);
 
-                testGameDefinition = SaveGameDefinition(testGamingGroup.Id, testGameName, testBoardGameGeekGameDefinition.Id);
-                testGameDefinition2 = SaveGameDefinition(testGamingGroup.Id, testGameName2);
-                testGameDefinitionWithOtherGamingGroupId = SaveGameDefinition(testOtherGamingGroup.Id, testGameNameForGameWithOtherGamingGroupId);
-                gameDefinitionWithNoChampion = SaveGameDefinition(testThirdGamingGroup.Id,
-                    gameDefinitionWithNoChampionName);
-                anotherTestGameDefinitionWithOtherGamingGroupId = SaveGameDefinition(testOtherGamingGroup.Id, testGameNameForAnotherGameWithOtherGamingGroupId);
-                SavePlayers(testGamingGroup.Id, testOtherGamingGroup.Id);
-
-                CreatePlayedGames();
+            CreatePlayedGames();
         }
 
         [OneTimeTearDown]
@@ -294,7 +293,8 @@ namespace BusinessLogic.Tests.IntegrationTests
 
             players = new List<Player> { testPlayer9UndefeatedWith5Games, testPlayer7WithOtherGamingGroupId };
             playerRanks = new List<int> { 1, 2 };
-            playedGame = CreateTestPlayedGame(anotherTestGameDefinitionWithOtherGamingGroupId.Id, players, playerRanks, testUserWithOtherGamingGroup, createPlayedGameComponent, _dataContext);
+            //--this last one should pause to finish all of the post-update processing
+            playedGame = CreateTestPlayedGame(anotherTestGameDefinitionWithOtherGamingGroupId.Id, players, playerRanks, testUserWithOtherGamingGroup, createPlayedGameComponent, _dataContext, true);
             testPlayedGames.Add(playedGame);
         }
 
@@ -374,7 +374,8 @@ namespace BusinessLogic.Tests.IntegrationTests
             List<int> correspondingPlayerRanks,
             ApplicationUser currentUser,
             CreatePlayedGameComponent createdPlayedGameComponent,
-            IDataContext _dataContext)
+            IDataContext _dataContext,
+            bool waitForAllPostSaveEventHandlingToFinish = false)
         {
             List<PlayerRank> playerRanks = new List<PlayerRank>();
 
@@ -394,7 +395,14 @@ namespace BusinessLogic.Tests.IntegrationTests
                     TransactionSource = TransactionSource.WebApplication
             };
 
-            return createdPlayedGameComponent.Execute(newlyCompletedGame, currentUser, _dataContext);
+            var playedGame = createdPlayedGameComponent.ExecuteTransaction(newlyCompletedGame, currentUser, _dataContext);
+
+            if (waitForAllPostSaveEventHandlingToFinish)
+            {
+                createdPlayedGameComponent.PostSaveTask.Wait();
+            }
+
+            return playedGame;
         }
 
         private void CleanUpTestData()

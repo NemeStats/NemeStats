@@ -3,12 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using BusinessLogic.DataAccess;
 using BusinessLogic.DataAccess.Security;
+using BusinessLogic.Events;
+using BusinessLogic.Events.HandlerFactory;
+using BusinessLogic.Events.Interfaces;
 using BusinessLogic.Exceptions;
 using BusinessLogic.Logic;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
 using BusinessLogic.Models.PlayedGames;
 using BusinessLogic.Models.User;
+using NemeStats.TestingHelpers.NemeStatsTestingExtensions;
 using NUnit.Framework;
 using Rhino.Mocks;
 using Shouldly;
@@ -90,9 +94,9 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameSa
 
             _expectedNewPlayerGameResults = new List<PlayerGameResult>
             {
-                new PlayerGameResult(),
-                new PlayerGameResult(),
-                new PlayerGameResult()
+                new PlayerGameResult { PlayerId = 10 },
+                new PlayerGameResult { PlayerId = 11 },
+                new PlayerGameResult { PlayerId = 12 }
             };
 
             AutoMocker.ClassUnderTest.Expect(
@@ -110,14 +114,6 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameSa
                         partialMock.TransformNewlyCompletedGameIntoPlayedGame(Arg<SaveableGameBase>.Is.Anything, Arg<int>.Is.Anything,
                             Arg<string>.Is.Anything, Arg<List<PlayerGameResult>>.Is.Anything))
                 .Return(_expectedTransformedPlayedGame);
-
-            AutoMocker.ClassUnderTest.Expect(partialMock => partialMock.DoPostSaveStuff(
-                Arg<TransactionSource>.Is.Anything, 
-                Arg<ApplicationUser>.Is.Anything, 
-                Arg<int>.Is.Anything, 
-                Arg<int>.Is.Anything, 
-                Arg<List<PlayerGameResult>>.Is.Anything,
-                Arg<IDataContext>.Is.Anything));
 
             _expectedSavedPlayedGame = new PlayedGame();
             AutoMocker.Get<IDataContext>()
@@ -382,33 +378,24 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.PlayedGamesTests.PlayedGameSa
             AutoMocker.ClassUnderTest.UpdatePlayedGame(updatedGame, transactionSource, CurrentUser);
 
             //--assert
-            var args = AutoMocker.ClassUnderTest.GetArgumentsForCallsMadeOn(
-                mock => mock.DoPostSaveStuff(
-                Arg<TransactionSource>.Is.Anything,
-                Arg<ApplicationUser>.Is.Anything,
-                Arg<int>.Is.Anything,
-                Arg<int>.Is.Anything,
-                Arg<List<PlayerGameResult>>.Is.Anything,
-                Arg<IDataContext>.Is.Anything));
+            var args = AutoMocker.Get<IBusinessLogicEventSender>().GetArgumentsForCallsMadeOn(
+                mock => mock.SendEvent(
+                Arg<IBusinessLogicEvent>.Is.Anything));
 
-            args.ShouldNotBeNull();
-            args.Count.ShouldBe(1);
-            var firstCall = args[0];
+            var businessLogicEvent = args.AssertFirstCallIsType<IBusinessLogicEvent>();
 
-            var actualTransactionSource = (TransactionSource)firstCall[0];
-            actualTransactionSource.ShouldBe(transactionSource);
+            businessLogicEvent.ShouldNotBeNull();
+            businessLogicEvent.ShouldBeOfType<PlayedGameCreatedEvent>();
+            var playedGameCreatedEvent = (PlayedGameCreatedEvent)businessLogicEvent;
 
-            var actualUser = firstCall[1] as ApplicationUser;
-            actualUser.ShouldBeSameAs(CurrentUser);
+            playedGameCreatedEvent.TransactionSource.ShouldBe(transactionSource);
 
-            var actualPlayedGameId = (int)firstCall[2];
-            actualPlayedGameId.ShouldBe(_existingPlayedGameId);
+            playedGameCreatedEvent.TriggerEntityId.ShouldBe(_existingPlayedGameId);
 
-            var actualGameDefinitionId = (int) firstCall[3];
-            actualGameDefinitionId.ShouldBe(_existingGameDefinitionId);
+            playedGameCreatedEvent.GameDefinitionId.ShouldBe(_existingGameDefinitionId);
 
-            var actualPlayerGameResults = firstCall[4] as List<PlayerGameResult>;
-            actualPlayerGameResults.ShouldBeSameAs(_expectedNewPlayerGameResults);
+            var expectedListOfPlayerIds = _expectedNewPlayerGameResults.Select(x => x.PlayerId).ToList();
+            playedGameCreatedEvent.ParticipatingPlayerIds.ShouldBe(expectedListOfPlayerIds);
         }
 
         [Test]

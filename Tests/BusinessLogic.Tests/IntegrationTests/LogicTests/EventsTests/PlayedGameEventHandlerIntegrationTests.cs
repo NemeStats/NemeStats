@@ -5,14 +5,18 @@ using System.Threading.Tasks;
 using BusinessLogic.DataAccess;
 using BusinessLogic.Events;
 using BusinessLogic.Events.Handlers;
-using BusinessLogic.Models;
+using BusinessLogic.EventTracking;
+using BusinessLogic.Logic;
+using BusinessLogic.Logic.Achievements;
+using BusinessLogic.Logic.Champions;
+using BusinessLogic.Logic.Nemeses;
 using NUnit.Framework;
 using Rhino.Mocks;
 using RollbarSharp;
 
 namespace BusinessLogic.Tests.IntegrationTests.LogicTests.EventsTests
 {
-    public class AchievementsEventHandlerIntegrationTests : IntegrationTestBase
+    public class PlayedGameEventHandlerIntegrationTests : IntegrationTestBase
     {
         [Test]
         [Category("Integration")]
@@ -22,11 +26,14 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.EventsTests
             //--arrange
 
             //--act
-            var playedGameEvent = new PlayedGameCreatedEvent
-            {
-                //--any playedGame from the integration test base should be sufficient to generate at least one achievement
-                TriggerEntityId = testPlayedGames[0].Id
-            };
+            //--any playedGame from the integration test base should be sufficient to generate at least one achievement
+            var playedGameEvent = new PlayedGameCreatedEvent(
+                testPlayedGames[0].Id, 
+                testPlayedGames[0].GameDefinitionId, 
+                testPlayedGames[0].PlayerGameResults.Select(x => x.PlayerId).ToList(), 
+                TransactionSource.RestApi,
+                testUserWithDefaultGamingGroup);
+
             var taskList = new List<Task<bool>>();
             var dataContexts = new List<NemeStatsDataContext>();
             int NUMBER_OF_CALLS = 3;
@@ -35,9 +42,16 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.EventsTests
                 var dataContext = new NemeStatsDataContext();
                 dataContexts.Add(dataContext);
             }
+
             for (int i = 0; i < NUMBER_OF_CALLS; i++)
             {
-                var achievementsEventHandler = new AchievementsEventHandler(dataContexts[i], MockRepository.GenerateMock<IRollbarClient>());
+                var achievementsEventHandler = new PlayedGameEventHandler(
+                    dataContexts[i], 
+                    MockRepository.GenerateMock<INemeStatsEventTracker>(),
+                    MockRepository.GenerateMock<IAchievementProcessor>(),
+                    MockRepository.GenerateMock<IChampionRecalculator>(),
+                    MockRepository.GenerateMock<INemesisRecalculator>(),
+                    MockRepository.GenerateMock<IRollbarClient>());
 
                 var lastTask = new Task<bool>(() => achievementsEventHandler.Handle(playedGameEvent));
                 lastTask.Start();

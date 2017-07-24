@@ -29,6 +29,24 @@ namespace BusinessLogic.Models.User
 {
     public class ApplicationUser : IdentityUser, ISingleColumnTechnicalKey<string>, IEntityWithTechnicalKey
     {
+        protected bool Equals(ApplicationUser other)
+        {
+            return string.Equals(UserName, other.UserName);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((ApplicationUser) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return UserName?.GetHashCode() ?? 0;
+        }
+
         public ApplicationUser()
         {
             DateCreated = DateTime.UtcNow;

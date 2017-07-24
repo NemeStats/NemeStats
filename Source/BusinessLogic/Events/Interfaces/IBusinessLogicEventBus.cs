@@ -1,7 +1,9 @@
+using System.Threading.Tasks;
+
 namespace BusinessLogic.Events.Interfaces
 {
     public interface IBusinessLogicEventBus
     {
-        void SendEvent(IBusinessLogicEvent @event);
+        Task SendEvent(IBusinessLogicEvent @event);
     }
 }

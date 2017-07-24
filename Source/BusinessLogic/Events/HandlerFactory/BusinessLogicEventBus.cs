@@ -1,3 +1,4 @@
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using BusinessLogic.Events.Interfaces;
@@ -17,10 +18,10 @@ namespace BusinessLogic.Events.HandlerFactory
             _rollbar = rollbar;
         }
 
-        public virtual void SendEvent(IBusinessLogicEvent @event)
+        public virtual Task SendEvent(IBusinessLogicEvent @event)
         {
 
-            Task.Factory.StartNew(() =>
+            return Task.Factory.StartNew(() =>
             {
                 var eventHandlers = this._handlerFactory.GetHandlers(@event.GetType());
                 foreach (var handlerInstance in eventHandlers)
@@ -29,15 +30,13 @@ namespace BusinessLogic.Events.HandlerFactory
                     {
                         handlerInstance.Handle(@event);
                     }
-                    catch (System.Exception ex)
+                    catch (Exception ex)
                     {
                         _rollbar.SendException(ex);
                         ex.ToExceptionless();
                     }
-                }                
+                }
             });
-
-            
         }
     }
 }

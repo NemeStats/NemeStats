@@ -6,6 +6,7 @@ using BusinessLogic.Models.User;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System.Net.Http;
+using BusinessLogic.Models.PlayedGames;
 using NemeStats.TestingHelpers.NemeStatsTestingExtensions;
 using Shouldly;
 using UI.Areas.Api.Controllers;

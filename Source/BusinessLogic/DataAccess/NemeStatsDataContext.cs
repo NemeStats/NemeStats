@@ -171,5 +171,14 @@ namespace BusinessLogic.DataAccess
 
             return entity;
         }
+
+        public void DetachEntities<TEntity>() where TEntity : class, IEntityWithTechnicalKey
+        {
+            var trackedEntities = nemeStatsDbContext.ChangeTracker.Entries<TEntity>().ToList();
+            foreach (var entity in trackedEntities)
+            {
+                entity.State = EntityState.Detached;
+            }
+        }
     }
 }

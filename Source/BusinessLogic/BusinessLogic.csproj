@@ -210,7 +210,7 @@
     <Compile Include="Events\HandlerFactory\HandlerInstance.cs" />
     <Compile Include="Events\HandlerFactory\HandlerMetaInfo.cs" />
     <Compile Include="Events\HandlerFactory\IBusinessLogicEventSender.cs" />
-    <Compile Include="Events\Handlers\AchievementsEventHandler.cs" />
+    <Compile Include="Events\Handlers\PlayedGameEventHandler.cs" />
     <Compile Include="Events\Handlers\BaseEventHandler.cs" />
     <Compile Include="Events\Interfaces\IBusinessLogicEventBus.cs" />
     <Compile Include="Events\Interfaces\IHandlerFactory.cs" />
@@ -246,9 +246,11 @@
     <Compile Include="Jobs\SitemapGenerator\SitemapGeneratorService.cs" />
     <Compile Include="Jobs\SitemapGenerator\StaticPagesSitemapGenerator.cs" />
     <Compile Include="Jobs\SitemapGenerator\UniversalGameSitemapGenerator.cs" />
+    <Compile Include="Logic\Achievements\AchievementProcessor.cs" />
     <Compile Include="Logic\Achievements\AchievementRetriever.cs" />
     <Compile Include="Logic\Achievements\BoardGameGeek2017_10x10Achievement.cs" />
     <Compile Include="Logic\Achievements\BoardGameGeek_10x10Achievement.cs" />
+    <Compile Include="Logic\Achievements\IAchievementProcessor.cs" />
     <Compile Include="Logic\Achievements\UsurperAchievement.cs" />
     <Compile Include="Logic\Achievements\HolidayGamerAchievement.cs" />
     <Compile Include="Logic\Achievements\IAchievementRetriever.cs" />

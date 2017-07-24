@@ -3,11 +3,13 @@ using System.Data.Entity;
 using System.Threading;
 using BusinessLogic.DataAccess;
 using BusinessLogic.Events.Interfaces;
+using BusinessLogic.EventTracking;
 using BusinessLogic.Logic.Achievements;
 using BusinessLogic.Logic.Users;
 using RollbarSharp;
 using StructureMap;
 using StructureMap.Web;
+using UniversalAnalyticsHttpWrapper;
 
 namespace BusinessLogic.Events.HandlerFactory
 {
@@ -32,6 +34,10 @@ namespace BusinessLogic.Events.HandlerFactory
                         .AddMessageAssembly(typeof(IBusinessLogicEvent).Assembly)));
 
                 x.For<IRollbarClient>().Use(new RollbarClient()).Singleton();
+
+                x.For<IUniversalAnalyticsEventFactory>().Use<UniversalAnalyticsEventFactory>();
+                x.For<IEventTracker>().Use<EventTracker>();
+                x.For<INemeStatsEventTracker>().Use<UniversalAnalyticsNemeStatsEventTracker>();
 
                 x.Scan(s =>
                 {
