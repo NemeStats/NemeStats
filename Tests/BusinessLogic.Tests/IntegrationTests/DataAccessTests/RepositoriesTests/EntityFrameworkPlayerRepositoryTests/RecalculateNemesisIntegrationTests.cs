@@ -35,7 +35,9 @@ namespace BusinessLogic.Tests.IntegrationTests.DataAccessTests.RepositoriesTests
         public override void FixtureSetUp()
         {
             base.FixtureSetUp();
-
+            var dataContext = GetInstance<IDataContext>();
+            //--detach these because the Champion data could be out of sync
+            dataContext.DetachEntities<Player>();
             _playerRetriever = GetInstance<PlayerRetriever>();
             _player1Details = _playerRetriever.GetPlayerDetails(testPlayer1.Id, 0);
             _player5Details = _playerRetriever.GetPlayerDetails(testPlayer5.Id, 0);

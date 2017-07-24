@@ -18,13 +18,9 @@
 
 using System;
 using System.Linq;
-using BusinessLogic.Caching;
 using BusinessLogic.DataAccess;
-using BusinessLogic.DataAccess.Repositories;
 using BusinessLogic.Exceptions;
-using BusinessLogic.Logic.BoardGameGeekGameDefinitions;
 using BusinessLogic.Logic.GameDefinitions;
-using BusinessLogic.Logic.Utilities;
 using BusinessLogic.Models;
 using BusinessLogic.Models.Games;
 using NUnit.Framework;
@@ -44,6 +40,8 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.GameDefinitionsTests.G
             base.FixtureSetUp();
 
             var gameDefinitionRetriever = GetInstance<GameDefinitionRetriever>();
+            GetInstance<IDataContext>().DetachEntities<GameDefinition>();
+
             _gameDefinitionSummary = gameDefinitionRetriever.GetGameDefinitionDetails(
                 testGameDefinition.Id, 
                 _numberOfGamesToRetrieve);
@@ -87,6 +85,7 @@ namespace BusinessLogic.Tests.IntegrationTests.LogicTests.GameDefinitionsTests.G
         [Test]
         public void ItRetrievesChampionInfoForTheGameDefinition()
         {
+            Assert.That(_gameDefinitionSummary.ChampionId, Is.Not.Null);
             Assert.That(_gameDefinitionSummary.Champion, Is.Not.Null);
         }
 
