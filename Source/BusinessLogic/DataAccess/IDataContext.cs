@@ -35,5 +35,10 @@ namespace BusinessLogic.DataAccess
         void DeleteById<TEntity>(object id, ApplicationUser currentUser) where TEntity : class, IEntityWithTechnicalKey;
         DbContextTransaction CurrentTransaction();
         DbContextTransaction BeginTransaction(IsolationLevel isolationLevel = IsolationLevel.ReadCommitted);
+        /// <summary>
+        /// Makes sure that the data context clears out any cache of entities of type TEntity so that the next query will pull them from the database.
+        /// </summary>
+        /// <typeparam name="TEntity"></typeparam>
+        void DetachEntities<TEntity>() where TEntity : class, IEntityWithTechnicalKey;
     }
 }
