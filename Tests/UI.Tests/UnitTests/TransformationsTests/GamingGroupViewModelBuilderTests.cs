@@ -149,6 +149,13 @@ namespace UI.Tests.UnitTests.TransformationsTests
         }
 
         [Test]
+        public void ItSetsTheCurrentUser()
+        {
+            Assert.AreSame(currentUser, viewModel.CurrentUser);
+        }
+
+
+        [Test]
         public void ItSetsThePlayers()
         {
             foreach(PlayerWithNemesis player in players)

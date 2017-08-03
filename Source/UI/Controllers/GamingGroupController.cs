@@ -15,6 +15,7 @@
 
 #endregion LICENSE
 
+using System.Collections.Generic;
 using AutoMapper;
 using BusinessLogic.Logic;
 using BusinessLogic.Logic.GamingGroups;
@@ -24,9 +25,11 @@ using BusinessLogic.Models.User;
 using BusinessLogic.Models.Utility;
 using System.Linq;
 using System.Web.Mvc;
+using BusinessLogic.Logic.Players;
 using UI.Attributes.Filters;
 using UI.Controllers.Helpers;
 using UI.Models.GamingGroup;
+using UI.Models.Players;
 using UI.Transformations;
 using UI.Transformations.PlayerTransformations;
 
@@ -46,6 +49,7 @@ namespace UI.Controllers
         internal IPlayerWithNemesisViewModelBuilder playerWithNemesisViewModelBuilder;
         internal IGameDefinitionSummaryViewModelBuilder gameDefinitionSummaryViewModelBuilder;
         internal IGamingGroupContextSwitcher gamingGroupContextSwitcher;
+        internal IPlayerRetriever playerRetriever;
 
         public GamingGroupController(
             IGamingGroupViewModelBuilder gamingGroupViewModelBuilder,
@@ -53,7 +57,8 @@ namespace UI.Controllers
             IGamingGroupRetriever gamingGroupRetriever,
             IPlayerWithNemesisViewModelBuilder playerWithNemesisViewModelBuilder,
             IGameDefinitionSummaryViewModelBuilder gameDefinitionSummaryViewModelBuilder,
-            IGamingGroupContextSwitcher gamingGroupContextSwitcher)
+            IGamingGroupContextSwitcher gamingGroupContextSwitcher,
+            IPlayerRetriever playerRetriever)
         {
             this.gamingGroupViewModelBuilder = gamingGroupViewModelBuilder;
             this.gamingGroupSaver = gamingGroupSaver;
@@ -61,6 +66,7 @@ namespace UI.Controllers
             this.playerWithNemesisViewModelBuilder = playerWithNemesisViewModelBuilder;
             this.gameDefinitionSummaryViewModelBuilder = gameDefinitionSummaryViewModelBuilder;
             this.gamingGroupContextSwitcher = gamingGroupContextSwitcher;
+            this.playerRetriever = playerRetriever;
         }
 
         // GET: /GamingGroup
@@ -119,7 +125,15 @@ namespace UI.Controllers
             return gamingGroupRetriever.GetGamingGroupDetails(filter);
         }
 
-        // GET: /GamingGroup/Details
+        [HttpGet]
+        [UserContext(RequiresGamingGroup = false)]
+        public virtual ActionResult GetGamingGroupPlayers(int id, ApplicationUser currentUser, [System.Web.Http.FromUri]BasicDateRangeFilter dateRangeFilter = null)
+        {
+            var playersWithNemesis = playerRetriever.GetAllPlayersWithNemesisInfo(id, dateRangeFilter)
+                .Select(player => playerWithNemesisViewModelBuilder.Build(player, currentUser))
+                .ToList();
+            return View(MVC.Player.Views._PlayersPartial, playersWithNemesis);
+        }
 
         [HttpGet]
         public virtual ActionResult GetTopGamingGroups()

@@ -18,6 +18,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using BusinessLogic.Models.User;
 using BusinessLogic.Models.Utility;
 using UI.Models.GameDefinitionModels;
 using UI.Models.PlayedGame;
@@ -54,5 +55,7 @@ namespace UI.Models.GamingGroup
         [DisplayName("Invitee Email")]
         [Required(ErrorMessage = "Please enter an e-mail!", AllowEmptyStrings = false)]
         public string InviteeEmail { get; set; }
+
+        public ApplicationUser CurrentUser { get; set; }
     }
 }

@@ -57,7 +57,7 @@ namespace UI.Transformations
                 OwningUserId = gamingGroupSummary.OwningUserId,
                 Name = gamingGroupSummary.Name,
                 OwningUserName = gamingGroupSummary.OwningUser.UserName,
-
+                CurrentUser = currentUser,
                 Players = playerWithNemesisList,
                 GameDefinitionSummaries = gamingGroupSummary.GameDefinitionSummaries
                     .Select(game => gameDefinitionSummaryViewModelBuilder.Build(game, currentUser))
