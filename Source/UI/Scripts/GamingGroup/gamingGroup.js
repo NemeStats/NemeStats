@@ -7,7 +7,7 @@ Views.GamingGroup.GamingGroupView = function () {
     this.$title = null;
     this.$fromDatePicker = null;
     this.$toDatePicker = null;
-    this.$settings = {
+    this._settings = {
         fromDate: null,
         toDate: new Date()
     };
@@ -24,11 +24,11 @@ Views.GamingGroup.GamingGroupView.prototype = {
         this._googleAnalytics = gaObject;
 
         if (options.fromDate != null) {
-            this.$settings.fromDate = options.fromDate;
+            this._settings.fromDate = options.fromDate;
         }
 
         if (options.toDate != null) {
-            this.$settings.toDate = options.toDate;
+            this._settings.toDate = options.toDate;
         }
         this.$fromDatePicker = $("#from-date-picker");
         this.$toDatePicker = $("#to-date-picker");
@@ -38,7 +38,7 @@ Views.GamingGroup.GamingGroupView.prototype = {
 
         if (Modernizr.inputtypes.date) {
             //if supports HTML5 then use native date picker
-            var toDateIso8601 = new moment(this.$settings.toDate).format("YYYY-MM-DD");
+            var toDateIso8601 = new moment(this._settings.toDate).format("YYYY-MM-DD");
             this.$toDatePicker.attr("value", toDateIso8601);
             var minDateIso8601 = minDate.toISOString().split("T")[0];
             this.$fromDatePicker.attr("max", currentMoment.add("days", 1).format("YYYY-MM-DD"));
@@ -56,7 +56,7 @@ Views.GamingGroup.GamingGroupView.prototype = {
                 onClose: function (selectedDate) {
                     $("#to-date-picker").datepicker("option", "minDate", selectedDate);
                 }
-            }).datepicker("setDate", this.$settings.fromDate)
+            }).datepicker("setDate", this._settings.fromDate)
                 .datepicker("option", "dateFormat", "yy-mm-dd");
 
             this.$toDatePicker.datepicker({
@@ -68,7 +68,7 @@ Views.GamingGroup.GamingGroupView.prototype = {
                 onClose: function (selectedDate) {
                     $("#from-date-picker").datepicker("option", "minDate", selectedDate);
                 }
-            }).datepicker("setDate", this.$settings.toDate)
+            }).datepicker("setDate", this._settings.toDate)
               .datepicker("option", "dateFormat", "yy-mm-dd");
         }
 
