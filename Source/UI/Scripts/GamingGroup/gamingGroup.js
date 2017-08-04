@@ -7,12 +7,21 @@ Views.GamingGroup.GamingGroupView = function () {
     this.$title = null;
     this.$fromDatePicker = null;
     this.$toDatePicker = null;
+
     this._settings = {
         fromDate: null,
-        toDate: new Date()
+        toDate: new Date(),
+        gamingGroupId : null,
+        playersTabId : null,
+        playersDivId : null
     };
-    this._serviceAddress = "/GamingGroup/UpdateGamingGroupName";
+//TODO NOT SURE THIS IS WORKING AT THE MOMENT
+    this._updateGamingGroupNameServiceAddress = "/GamingGroup/UpdateGamingGroupName";
+    this._getGamingGroupPlayersServiceAddress = "/GamingGroup/GetGamingGroupPlayers";
     this._googleAnalytics = null;
+    this._playersTabLoaded = false;
+    this._gamesTabLoaded = false;
+    this._playedGamesTabLoaded = false;
 };
 
 //Implementation
@@ -23,6 +32,23 @@ Views.GamingGroup.GamingGroupView.prototype = {
         this.$title.toEditBox({ onFocusOut: $.proxy(parent.renameGamingGroup, this), cssClass: "gaming-group-name" });
         this._googleAnalytics = gaObject;
 
+        if (options.gamingGroupId == null) {
+            throw "gamingGroupId is required for panels to be able to load.";
+        }
+        this._settings.gamingGroupId = options.gamingGroupId;
+
+        if (options.playersTabId == null) {
+            throw "playersTabId is required.";
+        }
+        this._settings.playersTabId = options.playersTabId;
+
+        if (options.playersDivId == null) {
+            throw "playersDivId is required.";
+        }
+        this._settings.playersDivId = options.playersDivId;
+
+        this._settings.gamingGroupId = options.gamingGroupId;
+
         if (options.fromDate != null) {
             this._settings.fromDate = options.fromDate;
         }
@@ -30,11 +56,11 @@ Views.GamingGroup.GamingGroupView.prototype = {
         if (options.toDate != null) {
             this._settings.toDate = options.toDate;
         }
+
         this.$fromDatePicker = $("#from-date-picker");
         this.$toDatePicker = $("#to-date-picker");
         var minDate = new Date(2000, 0, 1);
         var currentMoment = moment();
-        var currentLocalIso8601Date = currentMoment.format("YYYY-MM-DD");
 
         if (Modernizr.inputtypes.date) {
             //if supports HTML5 then use native date picker
@@ -72,6 +98,25 @@ Views.GamingGroup.GamingGroupView.prototype = {
               .datepicker("option", "dateFormat", "yy-mm-dd");
         }
 
+        var fromDateYYYYMMDD = this._settings.fromDate.toISOString().split("T")[0];
+        var toDateYYYYMMDD = this._settings.toDate.toISOString().split("T")[0];
+        this.renderNemeStatsPointsLineGraph("/api/v2/PlayedGames/?gamingGroupId=" + this._settings.gamingGroupId + "&datePlayedFrom=" + fromDateYYYYMMDD + "&datePlayedTo=" + toDateYYYYMMDD);
+
+        $("#" + this._settings.playersTabId).click((function () {
+            return function() {
+                getPlayers(this._settings.gamingGroupId, fromDateYYYYMMDD, toDateYYYYMMDD, this._settings.playersDivId);
+            }
+        }));
+
+        var defaultTab = window.location.hash;
+
+        switch (defaultTab) {
+            case "":
+            case this._settings.playersTabId:
+                this.getPlayers(this._settings.gamingGroupId, fromDateYYYYMMDD, toDateYYYYMMDD, this._settings.playersDivId);
+                break;
+        }
+
         this.initListJs();
 
     },
@@ -93,11 +138,34 @@ Views.GamingGroup.GamingGroupView.prototype = {
         }
 
     },
+    getPlayers: function (gamingGroupId, fromDateYYYYMMDD, toDateYYYYMMDD, divIdForRenderingResults) {
+        if (!parent._playersTabLoaded) {
+            $.ajax({
+                url: "/GamingGroup/GetGamingGroupPlayers/",
+                data: {
+                    "id": gamingGroupId,
+                    "datePlayedFrom": fromDateYYYYMMDD,
+                    "datePlayedTo": toDateYYYYMMDD
+                },
+                cache: false,
+                type: "GET",
+                success: function(html) {
+                    $("#" + divIdForRenderingResults).append(html);
+                    var players = new window.Views.Player.Players();
+                    players.init();
+
+                    var createOrUpdatePlayer = new window.Views.Player.CreateOrUpdate();
+                    createOrUpdatePlayer.init($.proxy(players.onPlayerSaved, players));
+                    parent._playersTabLoaded = true;
+                }
+            });
+        }
+    },
     renameGamingGroup: function (element) {
         var parent = this;
         $.ajax({
             type: "POST",
-            url: parent._serviceAddress,
+            url: parent._updateGamingGroupNameServiceAddress,
             data: { "gamingGroupName": element.value },
             success: function (data) {
 

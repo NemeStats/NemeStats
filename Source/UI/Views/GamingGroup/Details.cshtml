@@ -55,39 +55,54 @@
     }
 </div>
 
-<a name="@ViewBag.PlayerSectionAnchorText"></a>
 
-    @Html.Partial(MVC.Player.Views._PlayersPartial, Model.Players, new ViewDataDictionary { { "canEdit", Model.UserCanEdit } })
+<div id="neme-tab" class="container">
+    <ul class="nav nav-pills">
+        <li class="active"><a href="#playersListDivId" data-toggle="tab" id="playersTab">Players</a></li>
+        <li><a href="#2a" data-toggle="tab" id="gamesTab">Games</a></li>
+        <li><a href="#3a" data-toggle="tab" id="playedGamesTab">Plays</a></li>
+    </ul>
 
-
-<a name="@ViewBag.GameDefinitionSectionAnchorText"></a>
-
-    @Html.Partial(MVC.GameDefinition.Views._GameDefinitionsPartial, Model.GameDefinitionSummaries, new ViewDataDictionary { { "canEdit", Model.UserCanEdit } })
-
-
-<a name="@ViewBag.RecentGamesSectionAnchorText"></a>
-
-    @Html.Partial(MVC.PlayedGame.Views._PlayedGamesPartial, Model.PlayedGames, new ViewDataDictionary { { "canEdit", Model.UserCanEdit }, { "gamingGroupId", Model.Id} })
-
-
-<div id="NemeStatsPointsLineGraph">
-    <svg style='height:500px;'> </svg>
+    <div class="tab-content clearfix">
+        <div class="tab-pane active" id="playersListDivId">
+            @*@Html.Partial(MVC.Player.Views._PlayersPartial, Model.Players, new ViewDataDictionary { { "canEdit", Model.UserCanEdit } })*@
+        </div>
+        <div class="tab-pane" id="2a">
+            @Html.Partial(MVC.GameDefinition.Views._GameDefinitionsPartial, Model.GameDefinitionSummaries, new ViewDataDictionary {{"canEdit", Model.UserCanEdit}})
+        </div>
+        <div class="tab-pane" id="3a">
+            @Html.Partial(MVC.PlayedGame.Views._PlayedGamesPartial, Model.PlayedGames, new ViewDataDictionary { { "canEdit", Model.UserCanEdit }, { "gamingGroupId", Model.Id } })
+        </div>
+    </div>
 </div>
 
-@section Scripts {
+    @*<a name="@ViewBag.PlayerSectionAnchorText"></a>
+
+        @Html.Partial(MVC.Player.Views._PlayersPartial, Model.Players, new ViewDataDictionary { { "canEdit", Model.UserCanEdit } })
+
+
+        <a name="@ViewBag.GameDefinitionSectionAnchorText"></a>
+
+        @Html.Partial(MVC.GameDefinition.Views._GameDefinitionsPartial, Model.GameDefinitionSummaries, new ViewDataDictionary { { "canEdit", Model.UserCanEdit } })
+
+
+        <a name="@ViewBag.RecentGamesSectionAnchorText"></a>
+
+        @Html.Partial(MVC.PlayedGame.Views._PlayedGamesPartial, Model.PlayedGames, new ViewDataDictionary { { "canEdit", Model.UserCanEdit }, { "gamingGroupId", Model.Id } })*@
+
+
+    <div id="NemeStatsPointsLineGraph">
+        <svg style='height:500px;'> </svg>
+    </div>
+
+    @section Scripts {
         @Scripts.Render("~/bundles/d3")
         @Styles.Render("~/bundles/d3/css")
         @Scripts.Render("~/bundles/moment")
 
-<script type="text/javascript">
+        <script type="text/javascript">
             //Creation
             $(document).ready(function () {
-                var players = new window.Views.Player.Players();
-                players.init();
-
-                var createOrUpdatePlayer = new window.Views.Player.CreateOrUpdate();
-                createOrUpdatePlayer.init($.proxy(players.onPlayerSaved, players));
-
                 var gameDefinition = new window.Views.GameDefinition.CreateGameDefinitionPartial();
                 gameDefinition.init();
                 gameDefinition.configureViewModel();
@@ -101,30 +116,56 @@
                 var toDate;
                 var toDateYYYYMMDD;
                 @if(Model.DateRangeFilter.HasCustomDate)
-                    {
-                        @:toDate = new Date(@Model.DateRangeFilter.ToDate.Year, (@Model.DateRangeFilter.ToDate.Month - 1), @Model.DateRangeFilter.ToDate.Day);
-                                        @:toDateYYYYMMDD = moment(toDate).format('YYYY-MM-DD');
-                                    }
-                    else
-                    {
-                        @:toDate = new moment().toDate();
-                                        @:toDateYYYYMMDD = moment().format('YYYY-MM-DD');
-                                    }
+                {
+                    @:toDate = new Date(@Model.DateRangeFilter.ToDate.Year, (@Model.DateRangeFilter.ToDate.Month - 1), @Model.DateRangeFilter.ToDate.Day);
+                    @:toDateYYYYMMDD = moment(toDate).format('YYYY-MM-DD');
+                }
+                else
+                {
+                    @:toDate = new moment().toDate();
+                    @:toDateYYYYMMDD = moment().format('YYYY-MM-DD');
+                }
 
                 var gamingGroupView = new Views.GamingGroup.GamingGroupView();
-                var fromDateYYYYMMDD = fromDate.toISOString().split("T")[0];
-                gamingGroupView.renderNemeStatsPointsLineGraph("/api/v2/PlayedGames/?gamingGroupId=" + @Model.Id + "&datePlayedFrom=" + fromDateYYYYMMDD + "&datePlayedTo=" + toDateYYYYMMDD);
 
                 var googleAnalyticsObject = new window.Views.Shared.GoogleAnalytics();
 
                 var options = {
                     fromDate : fromDate,
-                    toDate : toDate
+                    toDate : toDate,
+                    gamingGroupId : @Model.Id,
+                    playersTabId : "playersTab",
+                    playersDivId : "playersListDivId"
                 };
                 gamingGroupView.init(googleAnalyticsObject, options);
 
                 var recordexceldownload = new window.Views._PlayedGamesPartial.EventTracking();
                 recordexceldownload.init(googleAnalyticsObject);
+
+                @* var defaultTab = window.location.hash;
+
+               switch(defaultTab) {
+                    case "":
+                    case "playersTab":
+                        getPlayers("@Url.Action(MVC.GamingGroup.GetGamingGroupPlayers(Model.Id, null))", fromDateYYYYMMDD, toDateYYYYMMDD, "playersListDivId");
+                        break;
+                }*@
+
+                //TODO move this to gamingGroupView.init()
+                @*$("#playersTab").click(function() {
+                    $.ajax({
+                        url: "@Url.Action(MVC.GamingGroup.GetGamingGroupPlayers(Model.Id, null))",
+                        data: {
+                            "datePlayedFrom" : fromDateYYYYMMDD,
+                            "datePlayedTo" : toDateYYYYMMDD
+                        },
+                        cache: false,
+                        type: "GET",
+                        success: function (html) {
+                            $("#gamesTab").append(html);
+                        }
+                    });
+                });*@
             });
-</script>
+        </script>
     }
