@@ -98,13 +98,17 @@ Views.GamingGroup.GamingGroupView.prototype = {
               .datepicker("option", "dateFormat", "yy-mm-dd");
         }
 
-        var fromDateYYYYMMDD = this._settings.fromDate.toISOString().split("T")[0];
-        var toDateYYYYMMDD = this._settings.toDate.toISOString().split("T")[0];
+        var fromDateYYYYMMDD = this.$fromDatePicker.val();
+        var toDateYYYYMMDD = this.$toDatePicker.val();
         this.renderNemeStatsPointsLineGraph("/api/v2/PlayedGames/?gamingGroupId=" + this._settings.gamingGroupId + "&datePlayedFrom=" + fromDateYYYYMMDD + "&datePlayedTo=" + toDateYYYYMMDD);
+
+        //var getPlayersClosure = function() {
+        //    getPlayers(this._settings.gamingGroupId, $fromDatePicker, $toDatePicker, this._settings.playersDivId);
+        //};
 
         $("#" + this._settings.playersTabId).click((function () {
             return function() {
-                getPlayers(this._settings.gamingGroupId, fromDateYYYYMMDD, toDateYYYYMMDD, this._settings.playersDivId);
+                getPlayers(this._settings.gamingGroupId, parent.$fromDatePicker, parent.$toDatePicker, this._settings.playersDivId);
             }
         }));
 
@@ -112,10 +116,12 @@ Views.GamingGroup.GamingGroupView.prototype = {
 
         switch (defaultTab) {
             case "#" + this._settings.playersTabId:
-                this.getPlayers(this._settings.gamingGroupId, fromDateYYYYMMDD, toDateYYYYMMDD, this._settings.playersDivId);
+                //getPlayersClosure();
+                this.getPlayers(this._settings.gamingGroupId, this.$fromDatePicker, this.$toDatePicker, this._settings.playersDivId);
                 break;
             default:
-                this.getPlayers(this._settings.gamingGroupId, fromDateYYYYMMDD, toDateYYYYMMDD, this._settings.playersDivId);
+                //getPlayersClosure();
+                this.getPlayers(this._settings.gamingGroupId, this.$fromDatePicker, this.$toDatePicker, this._settings.playersDivId);
                 break;
             
         }
@@ -141,14 +147,14 @@ Views.GamingGroup.GamingGroupView.prototype = {
         }
 
     },
-    getPlayers: function (gamingGroupId, fromDateYYYYMMDD, toDateYYYYMMDD, divIdForRenderingResults) {
+    getPlayers: function (gamingGroupId, fromDatePicker, toDatePicker, divIdForRenderingResults) {
         if (!parent._playersTabLoaded) {
             $.ajax({
                 url: "/GamingGroup/GetGamingGroupPlayers/",
                 data: {
                     "id": gamingGroupId,
-                    "datePlayedFrom": fromDateYYYYMMDD,
-                    "datePlayedTo": toDateYYYYMMDD
+                    "datePlayedFrom": fromDatePicker.val(),
+                    "datePlayedTo": toDatePicker.val()
                 },
                 cache: false,
                 type: "GET",
