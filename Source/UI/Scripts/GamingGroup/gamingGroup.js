@@ -111,10 +111,13 @@ Views.GamingGroup.GamingGroupView.prototype = {
         var defaultTab = window.location.hash;
 
         switch (defaultTab) {
-            case "":
-            case this._settings.playersTabId:
+            case "#" + this._settings.playersTabId:
                 this.getPlayers(this._settings.gamingGroupId, fromDateYYYYMMDD, toDateYYYYMMDD, this._settings.playersDivId);
                 break;
+            default:
+                this.getPlayers(this._settings.gamingGroupId, fromDateYYYYMMDD, toDateYYYYMMDD, this._settings.playersDivId);
+                break;
+            
         }
 
         this.initListJs();
