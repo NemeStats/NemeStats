@@ -13,7 +13,9 @@ Views.GamingGroup.GamingGroupView = function () {
         toDate: new Date(),
         gamingGroupId : null,
         playersTabId : null,
-        playersDivId : null
+        playersDivId: null,
+        gamesTabId: null,
+        gamesDivId: null
     };
 //TODO NOT SURE THIS IS WORKING AT THE MOMENT
     this._updateGamingGroupNameServiceAddress = "/GamingGroup/UpdateGamingGroupName";
@@ -46,6 +48,16 @@ Views.GamingGroup.GamingGroupView.prototype = {
             throw "playersDivId is required.";
         }
         this._settings.playersDivId = options.playersDivId;
+
+        if (options.gamesTabId == null) {
+            throw "gamesTabId is required.";
+        }
+        this._settings.gamesTabId = options.gamesTabId;
+
+        if (options.gamesDivId == null) {
+            throw "gamesDivId is required.";
+        }
+        this._settings.gamesDivId = options.gamesDivId;
 
         this._settings.gamingGroupId = options.gamingGroupId;
 
@@ -107,23 +119,35 @@ Views.GamingGroup.GamingGroupView.prototype = {
         //};
 
         $("#" + this._settings.playersTabId).click((function () {
-            return function() {
-                getPlayers(this._settings.gamingGroupId, parent.$fromDatePicker, parent.$toDatePicker, this._settings.playersDivId);
-            }
+            return getPlayers(this._settings.gamingGroupId, parent.$fromDatePicker, parent.$toDatePicker, this._settings.playersDivId);
+        }));
+
+        $("#" + this._settings.gamesTabId).click((function () {
+            return getGameDefinitions(this._settings.gamingGroupId, parent.$fromDatePicker, parent.$toDatePicker, this._settings.gamesDivId);
         }));
 
         var defaultTab = window.location.hash;
 
         switch (defaultTab) {
+            case "#" + this._settings.gamesTabId:
+                this.getGameDefinitions(this._settings.gamingGroupId,
+                    this.$fromDatePicker,
+                    this.$toDatePicker,
+                    this._settings.gamesDivId);
             case "#" + this._settings.playersTabId:
                 //getPlayersClosure();
-                this.getPlayers(this._settings.gamingGroupId, this.$fromDatePicker, this.$toDatePicker, this._settings.playersDivId);
+                this.getPlayers(this._settings.gamingGroupId,
+                    this.$fromDatePicker,
+                    this.$toDatePicker,
+                    this._settings.playersDivId);
                 break;
             default:
                 //getPlayersClosure();
-                this.getPlayers(this._settings.gamingGroupId, this.$fromDatePicker, this.$toDatePicker, this._settings.playersDivId);
+                this.getPlayers(this._settings.gamingGroupId,
+                    this.$fromDatePicker,
+                    this.$toDatePicker,
+                    this._settings.playersDivId);
                 break;
-            
         }
 
         this.initListJs();
@@ -166,6 +190,33 @@ Views.GamingGroup.GamingGroupView.prototype = {
                     var createOrUpdatePlayer = new window.Views.Player.CreateOrUpdate();
                     createOrUpdatePlayer.init($.proxy(players.onPlayerSaved, players));
                     parent._playersTabLoaded = true;
+                }
+            });
+        }
+    },
+    getGameDefinitions: function (gamingGroupId, fromDatePicker, toDatePicker, divIdForRenderingResults) {
+        if (!parent._gamesTabLoaded) {
+            $.ajax({
+                url: "/GamingGroup/GetGamingGroupGameDefinitions/",
+                data: {
+                    "id": gamingGroupId,
+                    "datePlayedFrom": fromDatePicker.val(),
+                    "datePlayedTo": toDatePicker.val()
+                },
+                cache: false,
+                type: "GET",
+                success: function (html) {
+                    $("#" + divIdForRenderingResults).append(html);
+
+                    var gameDefinition = new window.Views.GameDefinition.CreateGameDefinitionPartial();
+                    gameDefinition.init();
+                    gameDefinition.configureViewModel();
+
+                    var gameDefinitions = new window.Views.GameDefinition.GameDefinitions();
+                    gameDefinitions.init();
+                    gameDefinition.onDefinitionCreated = $.proxy(gameDefinitions.onGameCreated, gameDefinitions);
+
+                    parent._gamesTabLoaded = true;
                 }
             });
         }

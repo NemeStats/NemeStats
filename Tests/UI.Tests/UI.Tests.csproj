@@ -275,6 +275,7 @@
     <Compile Include="UnitTests\ControllerTests\GamingGroupControllerTests\EditGetTests.cs" />
     <Compile Include="UnitTests\ControllerTests\GamingGroupControllerTests\EditPostTests.cs" />
     <Compile Include="UnitTests\ControllerTests\GamingGroupControllerTests\GamingGroupControllerTestBase.cs" />
+    <Compile Include="UnitTests\ControllerTests\GamingGroupControllerTests\GetGamingGroupGameDefinitionsTests.cs" />
     <Compile Include="UnitTests\ControllerTests\GamingGroupControllerTests\GetGamingGroupPlayersTests.cs" />
     <Compile Include="UnitTests\ControllerTests\GamingGroupControllerTests\GetGamingGroupSummaryTests.cs" />
     <Compile Include="UnitTests\ControllerTests\GamingGroupControllerTests\GetTopGamingGroupsTests.cs" />

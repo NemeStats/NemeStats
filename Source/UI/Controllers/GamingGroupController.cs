@@ -25,6 +25,7 @@ using BusinessLogic.Models.User;
 using BusinessLogic.Models.Utility;
 using System.Linq;
 using System.Web.Mvc;
+using BusinessLogic.Logic.GameDefinitions;
 using BusinessLogic.Logic.Players;
 using UI.Attributes.Filters;
 using UI.Controllers.Helpers;
@@ -50,6 +51,7 @@ namespace UI.Controllers
         internal IGameDefinitionSummaryViewModelBuilder gameDefinitionSummaryViewModelBuilder;
         internal IGamingGroupContextSwitcher gamingGroupContextSwitcher;
         internal IPlayerRetriever playerRetriever;
+        internal IGameDefinitionRetriever gameDefinitionRetriever;
 
         public GamingGroupController(
             IGamingGroupViewModelBuilder gamingGroupViewModelBuilder,
@@ -58,7 +60,8 @@ namespace UI.Controllers
             IPlayerWithNemesisViewModelBuilder playerWithNemesisViewModelBuilder,
             IGameDefinitionSummaryViewModelBuilder gameDefinitionSummaryViewModelBuilder,
             IGamingGroupContextSwitcher gamingGroupContextSwitcher,
-            IPlayerRetriever playerRetriever)
+            IPlayerRetriever playerRetriever, 
+            IGameDefinitionRetriever gameDefinitionRetriever)
         {
             this.gamingGroupViewModelBuilder = gamingGroupViewModelBuilder;
             this.gamingGroupSaver = gamingGroupSaver;
@@ -67,6 +70,7 @@ namespace UI.Controllers
             this.gameDefinitionSummaryViewModelBuilder = gameDefinitionSummaryViewModelBuilder;
             this.gamingGroupContextSwitcher = gamingGroupContextSwitcher;
             this.playerRetriever = playerRetriever;
+            this.gameDefinitionRetriever = gameDefinitionRetriever;
         }
 
         // GET: /GamingGroup
@@ -133,6 +137,17 @@ namespace UI.Controllers
                 .Select(player => playerWithNemesisViewModelBuilder.Build(player, currentUser))
                 .ToList();
             return View(MVC.Player.Views._PlayersPartial, playersWithNemesis);
+        }
+
+        [HttpGet]
+        [UserContext(RequiresGamingGroup = false)]
+        public virtual ActionResult GetGamingGroupGameDefinitions(int id, ApplicationUser currentUser, [System.Web.Http.FromUri]BasicDateRangeFilter dateRangeFilter = null)
+        {
+            var games =
+                gameDefinitionRetriever.GetAllGameDefinitions(id, dateRangeFilter)
+                    .Select(gameDefinition => gameDefinitionSummaryViewModelBuilder.Build(gameDefinition, currentUser))
+                    .ToList();
+            return View(MVC.GameDefinition.Views._GameDefinitionsPartial, games);
         }
 
         [HttpGet]
