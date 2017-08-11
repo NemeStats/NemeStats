@@ -1,22 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.Web.Mvc;
 using BusinessLogic.Logic.GameDefinitions;
-using BusinessLogic.Logic.Players;
 using BusinessLogic.Models.Games;
-using BusinessLogic.Models.Players;
 using BusinessLogic.Models.User;
 using BusinessLogic.Models.Utility;
 using NUnit.Framework;
 using Rhino.Mocks;
 using Shouldly;
 using UI.Models.GameDefinitionModels;
-using UI.Models.Players;
 using UI.Transformations;
-using UI.Transformations.PlayerTransformations;
 
 namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
 {
