@@ -46,11 +46,7 @@ namespace UI.Models.GamingGroup
         public IList<PlayerWithNemesisViewModel> Players { get; set; }
         public PlayedGamesViewModel PlayedGames { get; set; }
         public BasicDateRangeFilter DateRangeFilter { get; set; }
-
-
-        public string OwningUserId { get; set; }
-        [DisplayName("Owning User Name")]
-        public string OwningUserName { get; set; }
+ 
         [DataType(DataType.EmailAddress)]
         [DisplayName("Invitee Email")]
         [Required(ErrorMessage = "Please enter an e-mail!", AllowEmptyStrings = false)]

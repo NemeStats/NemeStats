@@ -85,48 +85,7 @@ namespace BusinessLogic.Tests.UnitTests.LogicTests.GamingGroupsTests.GamingGroup
 
             Assert.AreEqual(expectedGamingGroup.Id, actualGamingGroup.Id);
             Assert.AreEqual(expectedGamingGroup.Name, actualGamingGroup.Name);
-            Assert.AreEqual(expectedGamingGroup.OwningUserId, actualGamingGroup.OwningUserId);
             Assert.AreEqual(expectedGamingGroup.DateCreated, actualGamingGroup.DateCreated);
-        }
-
-        [Test]
-        public void ItReturnsTheOwningUserOnTheGameDefinition()
-        {
-            GamingGroupSummary actualGamingGroup = AutoMocker.ClassUnderTest.GetGamingGroupDetails(filter);
-
-            Assert.NotNull(actualGamingGroup.OwningUser);
-        }
-
-        [Test]
-        public void ItReturnsAllActivePlayersInTheGamingGroup()
-        {
-            List<PlayerWithNemesis> expectedPlayers = new List<PlayerWithNemesis>();
-            AutoMocker.Get<IPlayerRetriever>().Expect(mock => mock.GetAllPlayersWithNemesisInfo(gamingGroupId, filter.DateRangeFilter))
-                .Return(expectedPlayers);
-
-            GamingGroupSummary actualGamingGroup = AutoMocker.ClassUnderTest.GetGamingGroupDetails(filter);
-
-            Assert.AreSame(expectedPlayers, actualGamingGroup.Players);
-        }
-
-        [Test]
-        public void ItReturnsAllGameDefinitionsForTheGamingGroup()
-        {
-            GamingGroupSummary actualGamingGroup = AutoMocker.ClassUnderTest.GetGamingGroupDetails(filter);
-
-            Assert.AreSame(gameDefinitionSummaries, actualGamingGroup.GameDefinitionSummaries);
-        }
-
-        [Test]
-        public void ItReturnsTheSpecifiedNumberOfPlayedGamesForTheGamingGroup()
-        {
-            List<PlayedGame> playedGames = new List<PlayedGame>();
-            AutoMocker.Get<IPlayedGameRetriever>().Expect(mock => mock.GetRecentGames(filter.NumberOfRecentGamesToShow, filter.GamingGroupId, filter.DateRangeFilter))
-                .Return(playedGames);
-
-            GamingGroupSummary actualGamingGroup = AutoMocker.ClassUnderTest.GetGamingGroupDetails(filter);
-
-            Assert.AreSame(playedGames, actualGamingGroup.PlayedGames);
         }
     }
 }

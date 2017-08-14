@@ -485,8 +485,6 @@
     <Compile Include="Transformations\GameDefinitionDetailsViewModelBuilder.cs" />
     <Compile Include="Transformations\IGamingGroupInvitationViewModelBuilder.cs" />
     <Compile Include="Transformations\GamingGroupInvitationViewModelBuilder.cs" />
-    <Compile Include="Transformations\IGamingGroupViewModelBuilder.cs" />
-    <Compile Include="Transformations\GamingGroupViewModelBuilder.cs" />
     <Compile Include="Transformations\INemesisChangeViewModelBuilder.cs" />
     <Compile Include="Transformations\NemesisChangeViewModelBuilder.cs" />
     <Compile Include="Transformations\TransformationsHelper.cs" />

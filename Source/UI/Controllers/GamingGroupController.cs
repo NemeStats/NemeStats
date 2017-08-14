@@ -42,11 +42,10 @@ namespace UI.Controllers
     {
         public const int MAX_NUMBER_OF_RECENT_GAMES = 10;
         public const int NUMBER_OF_TOP_GAMING_GROUPS_TO_SHOW = 25;
-        public const string SECTION_ANCHOR_PLAYERS = "Players";
-        public const string SECTION_ANCHOR_GAMEDEFINITIONS = "GameDefinitions";
-        public const string SECTION_ANCHOR_RECENT_GAMES = "RecentGames";
+        public const string SECTION_ANCHOR_PLAYERS = "playersListDivId";
+        public const string SECTION_ANCHOR_GAMEDEFINITIONS = "gamesListDivId";
+        public const string SECTION_ANCHOR_RECENT_GAMES = "playedGamesListDivId";
 
-        internal IGamingGroupViewModelBuilder gamingGroupViewModelBuilder;
         internal IGamingGroupSaver gamingGroupSaver;
         internal IGamingGroupRetriever gamingGroupRetriever;
         internal IPlayerWithNemesisViewModelBuilder playerWithNemesisViewModelBuilder;
@@ -58,7 +57,6 @@ namespace UI.Controllers
         internal IPlayedGameDetailsViewModelBuilder playedGameDetailsViewModelBuilder;
 
         public GamingGroupController(
-            IGamingGroupViewModelBuilder gamingGroupViewModelBuilder,
             IGamingGroupSaver gamingGroupSaver,
             IGamingGroupRetriever gamingGroupRetriever,
             IPlayerWithNemesisViewModelBuilder playerWithNemesisViewModelBuilder,
@@ -69,7 +67,6 @@ namespace UI.Controllers
             IPlayedGameRetriever playedGameRetriever, 
             IPlayedGameDetailsViewModelBuilder playedGameDetailsViewModelBuilder)
         {
-            this.gamingGroupViewModelBuilder = gamingGroupViewModelBuilder;
             this.gamingGroupSaver = gamingGroupSaver;
             this.gamingGroupRetriever = gamingGroupRetriever;
             this.playerWithNemesisViewModelBuilder = playerWithNemesisViewModelBuilder;
@@ -103,14 +100,14 @@ namespace UI.Controllers
             }
 
             var gamingGroupSummary = GetGamingGroupSummary(id, dateRangeFilter);
-            var viewModel = gamingGroupViewModelBuilder.Build(gamingGroupSummary, currentUser);
+            var viewModel = new GamingGroupViewModel
+            {
+                Id = id
+            };
+            //var viewModel = gamingGroupViewModelBuilder.Build(gamingGroupSummary, currentUser);
             viewModel.PlayedGames.ShowSearchLinkInResultsHeader = true;
             viewModel.DateRangeFilter = dateRangeFilter;
             viewModel.UserCanEdit = currentUser.CurrentGamingGroupId == id;
-
-            ViewBag.RecentGamesSectionAnchorText = SECTION_ANCHOR_RECENT_GAMES;
-            ViewBag.PlayerSectionAnchorText = SECTION_ANCHOR_PLAYERS;
-            ViewBag.GameDefinitionSectionAnchorText = SECTION_ANCHOR_GAMEDEFINITIONS;
 
             return View(MVC.GamingGroup.Views.Details, viewModel);
         }
@@ -188,8 +185,7 @@ namespace UI.Controllers
         [UserContext]
         public virtual ActionResult GetCurrentUserGamingGroupGameDefinitions(int id, ApplicationUser currentUser)
         {
-            var model = GetGamingGroupSummary(id)
-                .GameDefinitionSummaries
+            var model = gameDefinitionRetriever.GetAllGameDefinitions(id)
                 .Select(summary => gameDefinitionSummaryViewModelBuilder.Build(summary, currentUser)).ToList();
 
             ViewData["canEdit"] = true;

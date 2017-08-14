@@ -62,18 +62,9 @@ namespace BusinessLogic.Logic.GamingGroups
                 Id = gamingGroup.Id,
                 DateCreated = gamingGroup.DateCreated,
                 Name = gamingGroup.Name,
-                OwningUserId = gamingGroup.OwningUserId,
                 PublicDescription = gamingGroup.PublicDescription,
                 PublicGamingGroupWebsite = gamingGroup.PublicGamingGroupWebsite
             };
-
-            summary.PlayedGames = playedGameRetriever.GetRecentGames(filter.NumberOfRecentGamesToShow, filter.GamingGroupId, filter.DateRangeFilter);
-
-            summary.Players = playerRetriever.GetAllPlayersWithNemesisInfo(filter.GamingGroupId, filter.DateRangeFilter);
-
-            summary.GameDefinitionSummaries = gameDefinitionRetriever.GetAllGameDefinitions(filter.GamingGroupId, filter.DateRangeFilter);
-
-            summary.OwningUser = dataContext.GetQueryable<ApplicationUser>().First(user => user.Id == gamingGroup.OwningUserId);
 
             return summary;
         }

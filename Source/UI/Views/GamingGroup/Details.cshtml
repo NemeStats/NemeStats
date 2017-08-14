@@ -65,78 +65,57 @@
 
     <div class="tab-content clearfix">
         <div class="tab-pane active" id="playersListDivId">
-            @*@Html.Partial(MVC.Player.Views._PlayersPartial, Model.Players, new ViewDataDictionary { { "canEdit", Model.UserCanEdit } })*@
         </div>
         <div class="tab-pane" id="gamesListDivId">
-            @*@Html.Partial(MVC.GameDefinition.Views._GameDefinitionsPartial, Model.GameDefinitionSummaries, new ViewDataDictionary {{"canEdit", Model.UserCanEdit}})*@
         </div>
         <div class="tab-pane" id="playedGamesListDivId">
-            @*@Html.Partial(MVC.PlayedGame.Views._PlayedGamesPartial, Model.PlayedGames, new ViewDataDictionary { { "canEdit", Model.UserCanEdit }, { "gamingGroupId", Model.Id } })*@
         </div>
     </div>
 </div>
 
-    @*<a name="@ViewBag.PlayerSectionAnchorText"></a>
+<div id="NemeStatsPointsLineGraph">
+    <svg style='height:500px;'> </svg>
+</div>
 
-        @Html.Partial(MVC.Player.Views._PlayersPartial, Model.Players, new ViewDataDictionary { { "canEdit", Model.UserCanEdit } })
+@section Scripts {
+    @Scripts.Render("~/bundles/d3")
+    @Styles.Render("~/bundles/d3/css")
+    @Scripts.Render("~/bundles/moment")
 
+    <script type="text/javascript">
+        //Creation
+        $(document).ready(function () {
+            var fromDate = new Date(@Model.DateRangeFilter.FromDate.Year, (@Model.DateRangeFilter.FromDate.Month - 1), @Model.DateRangeFilter.FromDate.Day);
 
-        <a name="@ViewBag.GameDefinitionSectionAnchorText"></a>
+            var toDate;
+            @if(Model.DateRangeFilter.HasCustomDate)
+            {
+                @:toDate = new Date(@Model.DateRangeFilter.ToDate.Year, (@Model.DateRangeFilter.ToDate.Month - 1), @Model.DateRangeFilter.ToDate.Day);
+            }
+            else
+            {
+                @:toDate = new moment().toDate();
+            }
 
-        @Html.Partial(MVC.GameDefinition.Views._GameDefinitionsPartial, Model.GameDefinitionSummaries, new ViewDataDictionary { { "canEdit", Model.UserCanEdit } })
+            var gamingGroupView = new Views.GamingGroup.GamingGroupView();
 
+            var googleAnalyticsObject = new window.Views.Shared.GoogleAnalytics();
 
-        <a name="@ViewBag.RecentGamesSectionAnchorText"></a>
+            var options = {
+                fromDate : fromDate,
+                toDate : toDate,
+                gamingGroupId : @Model.Id,
+                playersTabId : "playersTab",
+                playersDivId : "playersListDivId",
+                gamesTabId: "gamesTab",
+                gamesDivId: "gamesListDivId",
+                playedGamesTabId: "playedGamesTab",
+                playedGamesDivId: "playedGamesListDivId"
+            };
+            gamingGroupView.init(googleAnalyticsObject, options);
 
-        @Html.Partial(MVC.PlayedGame.Views._PlayedGamesPartial, Model.PlayedGames, new ViewDataDictionary { { "canEdit", Model.UserCanEdit }, { "gamingGroupId", Model.Id } })*@
-
-
-    <div id="NemeStatsPointsLineGraph">
-        <svg style='height:500px;'> </svg>
-    </div>
-
-    @section Scripts {
-        @Scripts.Render("~/bundles/d3")
-        @Styles.Render("~/bundles/d3/css")
-        @Scripts.Render("~/bundles/moment")
-
-        <script type="text/javascript">
-            //Creation
-            $(document).ready(function () {
-                var fromDate = new Date(@Model.DateRangeFilter.FromDate.Year, (@Model.DateRangeFilter.FromDate.Month - 1), @Model.DateRangeFilter.FromDate.Day);
-
-                var toDate;
-                var toDateYYYYMMDD;
-                @if(Model.DateRangeFilter.HasCustomDate)
-                {
-                    @:toDate = new Date(@Model.DateRangeFilter.ToDate.Year, (@Model.DateRangeFilter.ToDate.Month - 1), @Model.DateRangeFilter.ToDate.Day);
-                    @:toDateYYYYMMDD = moment(toDate).format('YYYY-MM-DD');
-                }
-                else
-                {
-                    @:toDate = new moment().toDate();
-                    @:toDateYYYYMMDD = moment().format('YYYY-MM-DD');
-                }
-
-                var gamingGroupView = new Views.GamingGroup.GamingGroupView();
-
-                var googleAnalyticsObject = new window.Views.Shared.GoogleAnalytics();
-
-                var options = {
-                    fromDate : fromDate,
-                    toDate : toDate,
-                    gamingGroupId : @Model.Id,
-                    playersTabId : "playersTab",
-                    playersDivId : "playersListDivId",
-                    gamesTabId: "gamesTab",
-                    gamesDivId: "gamesListDivId",
-                    playedGamesTabId: "playedGamesTab",
-                    playedGamesDivId: "playedGamesListDivId"
-                };
-                gamingGroupView.init(googleAnalyticsObject, options);
-
-                var recordexceldownload = new window.Views._PlayedGamesPartial.EventTracking();
-                recordexceldownload.init(googleAnalyticsObject);
-            });
-        </script>
-    }
+            var recordexceldownload = new window.Views._PlayedGamesPartial.EventTracking();
+            recordexceldownload.init(googleAnalyticsObject);
+        });
+    </script>
+}

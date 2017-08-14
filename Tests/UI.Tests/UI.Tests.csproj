@@ -315,7 +315,6 @@
     <Compile Include="UnitTests\TransformationsTests\GameDefinitionSummaryViewModelBuilderTests.cs" />
     <Compile Include="UnitTests\TransformationsTests\GameDefinitionDetailsViewModelBuilderTests.cs" />
     <Compile Include="UnitTests\TransformationsTests\GamingGroupInvitationViewModelBuilderTests.cs" />
-    <Compile Include="UnitTests\TransformationsTests\GamingGroupViewModelBuilderTests.cs" />
     <Compile Include="UnitTests\TransformationsTests\PlayedGameDetailsViewModelBuilderTests.cs" />
     <Compile Include="UnitTests\TransformationsTests\GameResultViewModelBuilderTests\BuildTests.cs" />
     <Compile Include="UnitTests\TransformationsTests\PlayerTransformationTests\MinionViewModelBuilderTests.cs" />

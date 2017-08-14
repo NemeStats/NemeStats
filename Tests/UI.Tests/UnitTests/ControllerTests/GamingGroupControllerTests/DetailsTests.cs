@@ -22,6 +22,7 @@ using NUnit.Framework;
 using Rhino.Mocks;
 using System.Collections.Generic;
 using System.Web.Mvc;
+using Shouldly;
 using UI.Models.GamingGroup;
 using UI.Transformations;
 
@@ -39,10 +40,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
         {
             base.SetUp();
 
-            gamingGroupSummary = new GamingGroupSummary()
-            {
-                PlayedGames = new List<PlayedGame>()
-            };
+            gamingGroupSummary = new GamingGroupSummary();
             _gamingGroupViewModel = new GamingGroupViewModel();
             dateRangeFilter = new BasicDateRangeFilter();
 
@@ -51,9 +49,6 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
                 Arg<IDateRangeFilter>.Is.Anything))
                 .Repeat.Once()
                 .Return(gamingGroupSummary);
-
-            autoMocker.Get<IGamingGroupViewModelBuilder>().Expect(mock => mock.Build(gamingGroupSummary, currentUser))
-                .Return(_gamingGroupViewModel);
         }
 
         [Test]
@@ -69,7 +64,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
         {
             var viewResult = autoMocker.ClassUnderTest.Details(currentUser.CurrentGamingGroupId, currentUser, dateRangeFilter) as ViewResult;
 
-            Assert.AreSame(_gamingGroupViewModel, viewResult.Model);
+            viewResult.Model.ShouldBeOfType(typeof(GamingGroupViewModel));
         }
 
         [Test]

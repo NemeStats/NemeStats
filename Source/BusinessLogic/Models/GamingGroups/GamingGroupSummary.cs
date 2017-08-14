@@ -29,14 +29,6 @@ namespace BusinessLogic.Models.GamingGroups
         public string Name { get; set; }
         public string PublicGamingGroupWebsite { get; set; }
         public string PublicDescription { get; set; }
-
-        public string OwningUserId { get; set; }
         public DateTime DateCreated { get; set; }
-
-        public virtual ApplicationUser OwningUser { get; set; }
-        public virtual IList<PlayerWithNemesis> Players { get; set; }
-        public virtual IList<GameDefinitionSummary> GameDefinitionSummaries { get; set; }
-        public virtual IList<PlayedGame> PlayedGames { get; set; }
-        public virtual IList<GamingGroupInvitation> GamingGroupInvitations { get; set; }
     }
 }
