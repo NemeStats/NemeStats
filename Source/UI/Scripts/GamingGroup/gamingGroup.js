@@ -15,7 +15,9 @@ Views.GamingGroup.GamingGroupView = function () {
         playersTabId : null,
         playersDivId: null,
         gamesTabId: null,
-        gamesDivId: null
+        gamesDivId: null,
+        playedGamesTabId: null,
+        playedGamesDivId: null
     };
 //TODO NOT SURE THIS IS WORKING AT THE MOMENT
     this._updateGamingGroupNameServiceAddress = "/GamingGroup/UpdateGamingGroupName";
@@ -58,6 +60,16 @@ Views.GamingGroup.GamingGroupView.prototype = {
             throw "gamesDivId is required.";
         }
         this._settings.gamesDivId = options.gamesDivId;
+
+        if (options.playedGamesTabId == null) {
+            throw "playedGamesTabId is required.";
+        }
+        this._settings.playedGamesTabId = options.playedGamesTabId;
+
+        if (options.playedGamesDivId == null) {
+            throw "playedGamesDivId is required.";
+        }
+        this._settings.playedGamesDivId = options.playedGamesDivId;
 
         this._settings.gamingGroupId = options.gamingGroupId;
 
@@ -118,12 +130,18 @@ Views.GamingGroup.GamingGroupView.prototype = {
         //    getPlayers(this._settings.gamingGroupId, $fromDatePicker, $toDatePicker, this._settings.playersDivId);
         //};
 
+        var owner = this;
+
         $("#" + this._settings.playersTabId).click((function () {
-            return getPlayers(this._settings.gamingGroupId, parent.$fromDatePicker, parent.$toDatePicker, this._settings.playersDivId);
+            return owner.getPlayers(owner._settings.gamingGroupId, owner.$fromDatePicker, parent.$toDatePicker, owner._settings.playersDivId);
         }));
 
         $("#" + this._settings.gamesTabId).click((function () {
-            return getGameDefinitions(this._settings.gamingGroupId, parent.$fromDatePicker, parent.$toDatePicker, this._settings.gamesDivId);
+            return owner.getGameDefinitions(owner._settings.gamingGroupId, owner.$fromDatePicker, owner.$toDatePicker, owner._settings.gamesDivId);
+        }));
+
+        $("#" + this._settings.playedGamesTabId).click((function () {
+            return owner.getPlayedGames(owner._settings.gamingGroupId, owner.$fromDatePicker, owner.$toDatePicker, owner._settings.playedGamesDivId);
         }));
 
         var defaultTab = window.location.hash;
@@ -135,14 +153,18 @@ Views.GamingGroup.GamingGroupView.prototype = {
                     this.$toDatePicker,
                     this._settings.gamesDivId);
             case "#" + this._settings.playersTabId:
-                //getPlayersClosure();
                 this.getPlayers(this._settings.gamingGroupId,
                     this.$fromDatePicker,
                     this.$toDatePicker,
                     this._settings.playersDivId);
                 break;
+            case "#" +this._settings.playedGamesTabId:
+                this.getPlayedgames(this._settings.gamingGroupId,
+                    this.$fromDatePicker,
+                    this.$toDatePicker,
+                    this._settings.playedGamesDivId);
+                break;
             default:
-                //getPlayersClosure();
                 this.getPlayers(this._settings.gamingGroupId,
                     this.$fromDatePicker,
                     this.$toDatePicker,
@@ -198,6 +220,33 @@ Views.GamingGroup.GamingGroupView.prototype = {
         if (!parent._gamesTabLoaded) {
             $.ajax({
                 url: "/GamingGroup/GetGamingGroupGameDefinitions/",
+                data: {
+                    "id": gamingGroupId,
+                    "datePlayedFrom": fromDatePicker.val(),
+                    "datePlayedTo": toDatePicker.val()
+                },
+                cache: false,
+                type: "GET",
+                success: function (html) {
+                    $("#" + divIdForRenderingResults).append(html);
+
+                    var gameDefinition = new window.Views.GameDefinition.CreateGameDefinitionPartial();
+                    gameDefinition.init();
+                    gameDefinition.configureViewModel();
+
+                    var gameDefinitions = new window.Views.GameDefinition.GameDefinitions();
+                    gameDefinitions.init();
+                    gameDefinition.onDefinitionCreated = $.proxy(gameDefinitions.onGameCreated, gameDefinitions);
+
+                    parent._gamesTabLoaded = true;
+                }
+            });
+        }
+    },
+    getPlayedGames: function (gamingGroupId, fromDatePicker, toDatePicker, divIdForRenderingResults) {
+        if (!parent._playedGamesTabLoaded) {
+            $.ajax({
+                url: "/GamingGroup/GetGamingGroupPlayedGames/",
                 data: {
                     "id": gamingGroupId,
                     "datePlayedFrom": fromDatePicker.val(),

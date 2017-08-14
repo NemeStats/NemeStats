@@ -16,7 +16,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
     public class GetGamingGroupGameDefinitionsTests : GamingGroupControllerTestBase
     {
         [Test]
-        public void It_Returns_The_Game_Definitions_In_The_Specific_Gaming_Group_With_The_Specified_Date_Filter()
+        public void It_Returns_The_Game_Definitions_In_The_Specific_Gaming_Group_With_The_Specified_Date_Filter_Ordered_By_Total_Games_Played_Descending()
         {
             //--arrange
             var gamingGroupId = 1;
@@ -27,8 +27,14 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
                 new GameDefinitionSummary(),
                 new GameDefinitionSummary()
             };
-            var expectedResult1 = new GameDefinitionSummaryViewModel();
-            var expectedResult2 = new GameDefinitionSummaryViewModel();
+            var expectedResult1 = new GameDefinitionSummaryViewModel
+            {
+                TotalNumberOfGamesPlayed = 1
+            };
+            var expectedResult2 = new GameDefinitionSummaryViewModel()
+            {
+                TotalNumberOfGamesPlayed = 2
+            };
 
             autoMocker.Get<IGameDefinitionRetriever>().Expect(mock => mock.GetAllGameDefinitions(gamingGroupId, dateRangeFilter)).Return(expectedResults);
             autoMocker.Get<IGameDefinitionSummaryViewModelBuilder>().Expect(mock => mock.Build(expectedResults[0], currentUser)).Return(expectedResult1);
@@ -44,8 +50,9 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
             var model = viewResult.Model as List<GameDefinitionSummaryViewModel>;
             model.ShouldNotBeNull();
             model.Count.ShouldBe(2);
-            model[0].ShouldBeSameAs(expectedResult1);
-            model[1].ShouldBeSameAs(expectedResult2);
+            //--the second result is the one that has more total games and should be first
+            model[0].ShouldBeSameAs(expectedResult2);
+            model[1].ShouldBeSameAs(expectedResult1);
         }
 
     }

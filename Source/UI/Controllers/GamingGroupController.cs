@@ -26,10 +26,12 @@ using BusinessLogic.Models.Utility;
 using System.Linq;
 using System.Web.Mvc;
 using BusinessLogic.Logic.GameDefinitions;
+using BusinessLogic.Logic.PlayedGames;
 using BusinessLogic.Logic.Players;
 using UI.Attributes.Filters;
 using UI.Controllers.Helpers;
 using UI.Models.GamingGroup;
+using UI.Models.PlayedGame;
 using UI.Models.Players;
 using UI.Transformations;
 using UI.Transformations.PlayerTransformations;
@@ -52,6 +54,8 @@ namespace UI.Controllers
         internal IGamingGroupContextSwitcher gamingGroupContextSwitcher;
         internal IPlayerRetriever playerRetriever;
         internal IGameDefinitionRetriever gameDefinitionRetriever;
+        internal IPlayedGameRetriever playedGameRetriever;
+        internal IPlayedGameDetailsViewModelBuilder playedGameDetailsViewModelBuilder;
 
         public GamingGroupController(
             IGamingGroupViewModelBuilder gamingGroupViewModelBuilder,
@@ -61,7 +65,9 @@ namespace UI.Controllers
             IGameDefinitionSummaryViewModelBuilder gameDefinitionSummaryViewModelBuilder,
             IGamingGroupContextSwitcher gamingGroupContextSwitcher,
             IPlayerRetriever playerRetriever, 
-            IGameDefinitionRetriever gameDefinitionRetriever)
+            IGameDefinitionRetriever gameDefinitionRetriever, 
+            IPlayedGameRetriever playedGameRetriever, 
+            IPlayedGameDetailsViewModelBuilder playedGameDetailsViewModelBuilder)
         {
             this.gamingGroupViewModelBuilder = gamingGroupViewModelBuilder;
             this.gamingGroupSaver = gamingGroupSaver;
@@ -71,6 +77,8 @@ namespace UI.Controllers
             this.gamingGroupContextSwitcher = gamingGroupContextSwitcher;
             this.playerRetriever = playerRetriever;
             this.gameDefinitionRetriever = gameDefinitionRetriever;
+            this.playedGameRetriever = playedGameRetriever;
+            this.playedGameDetailsViewModelBuilder = playedGameDetailsViewModelBuilder;
         }
 
         // GET: /GamingGroup
@@ -146,8 +154,25 @@ namespace UI.Controllers
             var games =
                 gameDefinitionRetriever.GetAllGameDefinitions(id, dateRangeFilter)
                     .Select(gameDefinition => gameDefinitionSummaryViewModelBuilder.Build(gameDefinition, currentUser))
+                    .OrderByDescending(x => x.TotalNumberOfGamesPlayed)
+                    .ThenBy(x => x.Name)
                     .ToList();
             return View(MVC.GameDefinition.Views._GameDefinitionsPartial, games);
+        }
+
+        [HttpGet]
+        [UserContext(RequiresGamingGroup = false)]
+        public virtual ActionResult GetGamingGroupPlayedGames(int id, ApplicationUser currentUser, [System.Web.Http.FromUri]BasicDateRangeFilter dateRangeFilter = null, [System.Web.Http.FromUri]int numberOfItems = 10)
+        {
+            var games = playedGameRetriever.GetRecentGames(numberOfItems, id, dateRangeFilter);
+            var viewModel = new PlayedGamesViewModel()
+            {
+                GamingGroupId = id,
+                ShowSearchLinkInResultsHeader = true,
+                PlayedGameDetailsViewModels = games.Select(playedGame => playedGameDetailsViewModelBuilder.Build(playedGame, currentUser)).ToList()
+            };
+
+            return View(MVC.PlayedGame.Views._PlayedGamesPartial, viewModel);
         }
 
         [HttpGet]
