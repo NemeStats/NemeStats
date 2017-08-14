@@ -91,9 +91,9 @@ Views.GamingGroup.GamingGroupView.prototype = {
             var toDateIso8601 = new moment(this._settings.toDate).format("YYYY-MM-DD");
             this.$toDatePicker.attr("value", toDateIso8601);
             var minDateIso8601 = minDate.toISOString().split("T")[0];
-            this.$fromDatePicker.attr("max", currentMoment.add("days", 1).format("YYYY-MM-DD"));
+            this.$fromDatePicker.attr("max", currentMoment.add(1, "days").format("YYYY-MM-DD"));
             this.$fromDatePicker.attr("min", minDateIso8601);
-            this.$toDatePicker.attr("max", currentMoment.add("days", 1).format("YYYY-MM-DD"));
+            this.$toDatePicker.attr("max", currentMoment.add(1, "days").format("YYYY-MM-DD"));
             this.$toDatePicker.attr("min", minDateIso8601);
         } else {
             // If not native HTML5 support, fallback to jQuery datePicker
