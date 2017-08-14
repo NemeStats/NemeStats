@@ -15,11 +15,7 @@
 
 #endregion LICENSE
 
-using BusinessLogic.Models.Games;
-using BusinessLogic.Models.Players;
-using BusinessLogic.Models.User;
 using System;
-using System.Collections.Generic;
 
 namespace BusinessLogic.Models.GamingGroups
 {
