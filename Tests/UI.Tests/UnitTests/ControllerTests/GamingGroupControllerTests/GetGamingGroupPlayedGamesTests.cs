@@ -1,15 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Web.Mvc;
-using BusinessLogic.Logic.GameDefinitions;
 using BusinessLogic.Logic.PlayedGames;
 using BusinessLogic.Models;
-using BusinessLogic.Models.Games;
 using BusinessLogic.Models.User;
 using BusinessLogic.Models.Utility;
 using NUnit.Framework;
 using Rhino.Mocks;
 using Shouldly;
-using UI.Models.GameDefinitionModels;
 using UI.Models.PlayedGame;
 using UI.Transformations;
 
