@@ -169,7 +169,11 @@ Views.GamingGroup.GamingGroupView.prototype = {
         }
     },
     getPlayers: function (gamingGroupId, fromDatePicker, toDatePicker, divIdForRenderingResults) {
-        if (!parent._playersTabLoaded) {
+        var fromDate = fromDatePicker.val();
+        var toDate = fromDatePicker.val();
+        this.updateUrl(this._settings.playersTabId, fromDate, toDate);
+
+        if (!this._playersTabLoaded) {
             $.ajax({
                 url: "/GamingGroup/GetGamingGroupPlayers/",
                 data: {
@@ -202,7 +206,7 @@ Views.GamingGroup.GamingGroupView.prototype = {
         }
     },
     getGameDefinitions: function (gamingGroupId, fromDatePicker, toDatePicker, divIdForRenderingResults) {
-        if (!parent._gamesTabLoaded) {
+        if (!this._gamesTabLoaded) {
             $.ajax({
                 url: "/GamingGroup/GetGamingGroupGameDefinitions/",
                 data: {
@@ -238,7 +242,7 @@ Views.GamingGroup.GamingGroupView.prototype = {
         }
     },
     getPlayedGames: function (gamingGroupId, fromDatePicker, toDatePicker, divIdForRenderingResults) {
-        if (!parent._playedGamesTabLoaded) {
+        if (!this._playedGamesTabLoaded) {
             $.ajax({
                 url: "/GamingGroup/GetGamingGroupPlayedGames/",
                 data: {
@@ -329,6 +333,31 @@ Views.GamingGroup.GamingGroupView.prototype = {
                 });
             }
         });
+    },
+    updateUrl: function(newHash, iso8601FromDate, iso8601ToDate) {
+        if (history.pushState) {
+            var newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
+            var params = new Object();
+
+            if (iso8601FromDate) {
+                params.Iso8601FromDate = iso8601FromDate;
+            }
+
+            if (iso8601ToDate) {
+                params.Iso8601ToDate = iso8601ToDate;
+            }
+
+            var queryString = jQuery.param(params);
+            if (queryString) {
+                newUrl += "?" + queryString;
+            }
+
+            if (newHash) {
+                newUrl += "#" + newHash;
+            }
+
+            window.history.pushState({ path: newUrl }, "", newUrl);
+        }
     }
 }
 
