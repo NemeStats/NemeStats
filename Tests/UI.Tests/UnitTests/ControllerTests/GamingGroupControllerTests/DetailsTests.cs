@@ -15,46 +15,49 @@
 
 #endregion LICENSE
 
-using BusinessLogic.Models;
+using System;
 using BusinessLogic.Models.GamingGroups;
 using BusinessLogic.Models.Utility;
 using NUnit.Framework;
 using Rhino.Mocks;
-using System.Collections.Generic;
 using System.Web.Mvc;
 using Shouldly;
 using UI.Models.GamingGroup;
-using UI.Transformations;
 
 namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
 {
     [TestFixture]
     public class DetailsTests : GamingGroupControllerTestBase
     {
-        private GamingGroupSummary gamingGroupSummary;
-        private GamingGroupViewModel _gamingGroupViewModel;
-        private BasicDateRangeFilter dateRangeFilter;
+        private GamingGroupSummary _gamingGroupSummary;
+        private BasicDateRangeFilter _dateRangeFilter;
 
         [Test]
         public override void SetUp()
         {
             base.SetUp();
 
-            gamingGroupSummary = new GamingGroupSummary();
-            _gamingGroupViewModel = new GamingGroupViewModel();
-            dateRangeFilter = new BasicDateRangeFilter();
+            _gamingGroupSummary = new GamingGroupSummary
+            {
+                Id = 1,
+                Name = "some gaming group name",
+                DateCreated = DateTime.MaxValue,
+                PublicDescription = "some public description",
+                PublicGamingGroupWebsite = "https://website.com"
+            };
+            _dateRangeFilter = new BasicDateRangeFilter();
 
             autoMocker.ClassUnderTest.Expect(mock => mock.GetGamingGroupSummary(
                 Arg<int>.Is.Anything,
                 Arg<IDateRangeFilter>.Is.Anything))
                 .Repeat.Once()
-                .Return(gamingGroupSummary);
+                .Return(_gamingGroupSummary);
         }
 
         [Test]
         public void ItReturnsTheDetailsView()
         {
-            var viewResult = autoMocker.ClassUnderTest.Details(currentUser.CurrentGamingGroupId , currentUser, dateRangeFilter) as ViewResult;
+            var viewResult = autoMocker.ClassUnderTest.Details(currentUser.CurrentGamingGroupId , currentUser, _dateRangeFilter) as ViewResult;
 
             Assert.AreEqual(MVC.GamingGroup.Views.Details, viewResult.ViewName);
         }
@@ -62,27 +65,23 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
         [Test]
         public void ItAddsAGamingGroupViewModelToTheView()
         {
-            var viewResult = autoMocker.ClassUnderTest.Details(currentUser.CurrentGamingGroupId, currentUser, dateRangeFilter) as ViewResult;
+            var viewResult = autoMocker.ClassUnderTest.Details(currentUser.CurrentGamingGroupId, currentUser, _dateRangeFilter) as ViewResult;
 
-            viewResult.Model.ShouldBeOfType(typeof(GamingGroupViewModel));
+            var viewModel = viewResult.Model as GamingGroupViewModel;
+            viewModel.ShouldNotBeNull();
+            viewModel.PublicDetailsView.GamingGroupId.ShouldBe(_gamingGroupSummary.Id);
+            viewModel.PublicDetailsView.GamingGroupName.ShouldBe(_gamingGroupSummary.Name);
+            viewModel.PublicDetailsView.PublicDescription.ShouldBe(_gamingGroupSummary.PublicDescription);
+            viewModel.PublicDetailsView.Website.ShouldBe(_gamingGroupSummary.PublicGamingGroupWebsite);
         }
 
         [Test]
         public void ItPreservesTheDateRangeFilter()
         {
-            var viewResult = autoMocker.ClassUnderTest.Details(currentUser.CurrentGamingGroupId, currentUser, dateRangeFilter) as ViewResult;
+            var viewResult = autoMocker.ClassUnderTest.Details(currentUser.CurrentGamingGroupId, currentUser, _dateRangeFilter) as ViewResult;
 
             var model = viewResult.Model as GamingGroupViewModel;
-            Assert.AreSame(dateRangeFilter, model.DateRangeFilter);
-        }
-
-        [Test]
-        public void ItShowsTheSearchPlayedGamesLinkInThePlayedGamePanelHeader()
-        {
-            var viewResult = autoMocker.ClassUnderTest.Details(currentUser.CurrentGamingGroupId, currentUser, dateRangeFilter) as ViewResult;
-
-            var viewModel = (GamingGroupViewModel)viewResult.Model;
-            Assert.That(viewModel.PlayedGames.ShowSearchLinkInResultsHeader, Is.True);
+            Assert.AreSame(_dateRangeFilter, model.DateRangeFilter);
         }
 
         [Test]

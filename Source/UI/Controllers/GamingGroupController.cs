@@ -102,12 +102,17 @@ namespace UI.Controllers
             var gamingGroupSummary = GetGamingGroupSummary(id, dateRangeFilter);
             var viewModel = new GamingGroupViewModel
             {
-                Id = id
+                PublicDetailsView = new GamingGroupPublicDetailsViewModel
+                {
+                    GamingGroupId = gamingGroupSummary.Id,
+                    GamingGroupName = gamingGroupSummary.Name,
+                    PublicDescription = gamingGroupSummary.PublicDescription,
+                    Website = gamingGroupSummary.PublicGamingGroupWebsite
+                }
             };
-            //var viewModel = gamingGroupViewModelBuilder.Build(gamingGroupSummary, currentUser);
-            viewModel.PlayedGames.ShowSearchLinkInResultsHeader = true;
             viewModel.DateRangeFilter = dateRangeFilter;
             viewModel.UserCanEdit = currentUser.CurrentGamingGroupId == id;
+            //viewModel.ShowResultsInHeader
 
             return View(MVC.GamingGroup.Views.Details, viewModel);
         }
@@ -162,7 +167,7 @@ namespace UI.Controllers
         public virtual ActionResult GetGamingGroupPlayedGames(int id, ApplicationUser currentUser, [System.Web.Http.FromUri]BasicDateRangeFilter dateRangeFilter = null, [System.Web.Http.FromUri]int numberOfItems = 10)
         {
             var games = playedGameRetriever.GetRecentGames(numberOfItems, id, dateRangeFilter);
-            var viewModel = new PlayedGamesViewModel()
+            var viewModel = new PlayedGamesViewModel
             {
                 GamingGroupId = id,
                 ShowSearchLinkInResultsHeader = true,

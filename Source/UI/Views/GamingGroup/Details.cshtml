@@ -2,16 +2,16 @@
 @using UI.HtmlHelpers
 @model UI.Models.GamingGroup.GamingGroupViewModel
 @{
-    ViewBag.Title = Model.Name;
-    ViewBag.Description = $"View stats, recent plays, and other details about the Gaming Group '{Model.Name}' on NemeStats.";
+    ViewBag.Title = Model.PublicDetailsView.GamingGroupName;
+    ViewBag.Description = $"View stats, recent plays, and other details about the Gaming Group '{Model.PublicDetailsView.GamingGroupName}' on NemeStats.";
     Layout = MVC.Shared.Views._BaseLayout;
 }
 
 <h2 class="page-header">
-    @Model.Name
+    @Model.PublicDetailsView.GamingGroupName
     @if (Model.UserCanEdit)
     {
-        <a href="@Url.Action(MVC.GamingGroup.Edit(Model.Id))" class="btn btn-xs btn-default">
+        <a href="@Url.Action(MVC.GamingGroup.Edit(Model.PublicDetailsView.GamingGroupId))" class="btn btn-xs btn-default">
             <span class="fa fa-pencil"></span>&nbsp;Edit
         </a>
     }
@@ -104,7 +104,7 @@
             var options = {
                 fromDate : fromDate,
                 toDate : toDate,
-                gamingGroupId : @Model.Id,
+                gamingGroupId : @Model.PublicDetailsView.GamingGroupId,
                 playersTabId : "playersTab",
                 playersDivId : "playersListDivId",
                 gamesTabId: "gamesTab",
