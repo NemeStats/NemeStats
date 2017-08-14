@@ -167,27 +167,6 @@ Views.GamingGroup.GamingGroupView.prototype = {
                     this._settings.playersDivId);
                 break;
         }
-
-        this.initListJs();
-
-    },
-    initListJs: function () {
-
-        var gamedefinitionsValues = ['name', 'plays-col', { name: 'champion-col', attr: 'data-champion' }];
-        var gameDefinitionTableId = "gameDefinitionsList";
-
-        var playersValues = [{ name: 'player-name-col', attr: 'data-name' }, { name: 'total-nemepoints-col', attr: 'data-nemepoints' }, 'played-games-col', 'avg-nemepoints-col', 'overall-win-col', 'championed-games-col', { name: 'nemesis-col', attr: 'data-nemesis' }, { name: 'achievements-col', attr: 'data-achievements' }];
-        var playersTableId = "playersList";
-
-
-        if (ResponsiveBootstrapToolkit.is('>=md')) {
-            new List(gameDefinitionTableId, { valueNames: gamedefinitionsValues, page: 10, plugins: [ListPagination({ innerWindow: 10 })] });
-            new List(playersTableId, { valueNames: playersValues, page: 10, plugins: [ListPagination({ innerWindow: 10 })] });
-        } else {
-            new List(gameDefinitionTableId, { valueNames: gamedefinitionsValues });
-            new List(playersTableId, { valueNames: playersValues });
-        }
-
     },
     getPlayers: function (gamingGroupId, fromDatePicker, toDatePicker, divIdForRenderingResults) {
         if (!parent._playersTabLoaded) {
@@ -201,12 +180,22 @@ Views.GamingGroup.GamingGroupView.prototype = {
                 cache: false,
                 type: "GET",
                 success: function(html) {
-                    $("#" + divIdForRenderingResults).append(html);
+                    $("#" + divIdForRenderingResults).html(html);
                     var players = new window.Views.Player.Players();
                     players.init();
 
                     var createOrUpdatePlayer = new window.Views.Player.CreateOrUpdate();
                     createOrUpdatePlayer.init($.proxy(players.onPlayerSaved, players));
+
+                    var playersValues = [{ name: 'player-name-col', attr: 'data-name' }, { name: 'total-nemepoints-col', attr: 'data-nemepoints' }, 'played-games-col', 'avg-nemepoints-col', 'overall-win-col', 'championed-games-col', { name: 'nemesis-col', attr: 'data-nemesis' }, { name: 'achievements-col', attr: 'data-achievements' }];
+                    var playersTableId = "playersList";
+
+                    if (ResponsiveBootstrapToolkit.is('>=md')) {
+                        new List(playersTableId, { valueNames: playersValues, page: 10, plugins: [ListPagination({ innerWindow: 10 })] });
+                    } else {
+                        new List(playersTableId, { valueNames: playersValues });
+                    }
+
                     parent._playersTabLoaded = true;
                 }
             });
@@ -224,7 +213,7 @@ Views.GamingGroup.GamingGroupView.prototype = {
                 cache: false,
                 type: "GET",
                 success: function (html) {
-                    $("#" + divIdForRenderingResults).append(html);
+                    $("#" + divIdForRenderingResults).html(html);
 
                     var gameDefinition = new window.Views.GameDefinition.CreateGameDefinitionPartial();
                     gameDefinition.init();
@@ -233,6 +222,15 @@ Views.GamingGroup.GamingGroupView.prototype = {
                     var gameDefinitions = new window.Views.GameDefinition.GameDefinitions();
                     gameDefinitions.init();
                     gameDefinition.onDefinitionCreated = $.proxy(gameDefinitions.onGameCreated, gameDefinitions);
+
+                    var gamedefinitionsValues = ['name', 'plays-col', { name: 'champion-col', attr: 'data-champion' }];
+                    var gameDefinitionTableId = "gameDefinitionsList";
+
+                    if (ResponsiveBootstrapToolkit.is('>=md')) {
+                        new List(gameDefinitionTableId, { valueNames: gamedefinitionsValues, page: 10, plugins: [ListPagination({ innerWindow: 10 })] });
+                    } else {
+                        new List(gameDefinitionTableId, { valueNames: gamedefinitionsValues });
+                    }
 
                     parent._gamesTabLoaded = true;
                 }
@@ -251,7 +249,7 @@ Views.GamingGroup.GamingGroupView.prototype = {
                 cache: false,
                 type: "GET",
                 success: function (html) {
-                    $("#" + divIdForRenderingResults).append(html);
+                    $("#" + divIdForRenderingResults).html(html);
 
                     var gameDefinition = new window.Views.GameDefinition.CreateGameDefinitionPartial();
                     gameDefinition.init();
