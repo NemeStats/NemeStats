@@ -126,10 +126,6 @@ Views.GamingGroup.GamingGroupView.prototype = {
         var toDateYYYYMMDD = this.$toDatePicker.val();
         this.renderNemeStatsPointsLineGraph("/api/v2/PlayedGames/?gamingGroupId=" + this._settings.gamingGroupId + "&datePlayedFrom=" + fromDateYYYYMMDD + "&datePlayedTo=" + toDateYYYYMMDD);
 
-        //var getPlayersClosure = function() {
-        //    getPlayers(this._settings.gamingGroupId, $fromDatePicker, $toDatePicker, this._settings.playersDivId);
-        //};
-
         var owner = this;
 
         $("#" + this._settings.playersTabId).click((function () {
@@ -265,7 +261,7 @@ Views.GamingGroup.GamingGroupView.prototype = {
                     gameDefinitions.init();
                     gameDefinition.onDefinitionCreated = $.proxy(gameDefinitions.onGameCreated, gameDefinitions);
 
-                    parent._gamesTabLoaded = true;
+                    parent._playedGamesTabLoaded = true;
                 }
             });
         }
