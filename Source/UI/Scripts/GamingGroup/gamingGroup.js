@@ -128,43 +128,34 @@ Views.GamingGroup.GamingGroupView.prototype = {
 
         var owner = this;
 
-        $("#" + this._settings.playersTabId).click((function () {
+        var $playersTab = $("#" + this._settings.playersTabId);
+        $playersTab.click((function () {
             return owner.getPlayers(owner._settings.gamingGroupId, owner.$fromDatePicker, parent.$toDatePicker, owner._settings.playersDivId);
         }));
 
-        $("#" + this._settings.gamesTabId).click((function () {
+        var $gamesTab = $("#" + this._settings.gamesTabId);
+        $gamesTab.click((function () {
             return owner.getGameDefinitions(owner._settings.gamingGroupId, owner.$fromDatePicker, owner.$toDatePicker, owner._settings.gamesDivId);
         }));
 
-        $("#" + this._settings.playedGamesTabId).click((function () {
+        var $playedGamesTab = $("#" + this._settings.playedGamesTabId);
+        $playedGamesTab.click((function () {
             return owner.getPlayedGames(owner._settings.gamingGroupId, owner.$fromDatePicker, owner.$toDatePicker, owner._settings.playedGamesDivId);
         }));
 
         var defaultTab = window.location.hash;
 
         switch (defaultTab) {
-            case "#" + this._settings.gamesTabId:
-                this.getGameDefinitions(this._settings.gamingGroupId,
-                    this.$fromDatePicker,
-                    this.$toDatePicker,
-                    this._settings.gamesDivId);
+            case "#" +this._settings.gamesTabId:
+                $gamesTab.trigger("click");
             case "#" + this._settings.playersTabId:
-                this.getPlayers(this._settings.gamingGroupId,
-                    this.$fromDatePicker,
-                    this.$toDatePicker,
-                    this._settings.playersDivId);
+                $playersTab.trigger("click");
                 break;
             case "#" +this._settings.playedGamesTabId:
-                this.getPlayedgames(this._settings.gamingGroupId,
-                    this.$fromDatePicker,
-                    this.$toDatePicker,
-                    this._settings.playedGamesDivId);
+                $playedGamesTab.trigger("click");
                 break;
             default:
-                this.getPlayers(this._settings.gamingGroupId,
-                    this.$fromDatePicker,
-                    this.$toDatePicker,
-                    this._settings.playersDivId);
+                $playersTab.trigger("click");
                 break;
         }
     },
@@ -179,8 +170,8 @@ Views.GamingGroup.GamingGroupView.prototype = {
                 url: "/GamingGroup/GetGamingGroupPlayers/",
                 data: {
                     "id": gamingGroupId,
-                    "datePlayedFrom": fromDatePicker.val(),
-                    "datePlayedTo": toDatePicker.val()
+                    "Iso8601FromDate": fromDate,
+                    "Iso8601ToDate": toDate
                 },
                 cache: false,
                 type: "GET",
@@ -217,8 +208,8 @@ Views.GamingGroup.GamingGroupView.prototype = {
                 url: "/GamingGroup/GetGamingGroupGameDefinitions/",
                 data: {
                     "id": gamingGroupId,
-                    "datePlayedFrom": fromDate,
-                    "datePlayedTo": toDate
+                    "Iso8601FromDate": fromDate,
+                    "Iso8601ToDate": toDate
                 },
                 cache: false,
                 type: "GET",
@@ -258,8 +249,8 @@ Views.GamingGroup.GamingGroupView.prototype = {
                 url: "/GamingGroup/GetGamingGroupPlayedGames/",
                 data: {
                     "id": gamingGroupId,
-                    "datePlayedFrom": fromDate,
-                    "datePlayedTo": toDate
+                    "Iso8601FromDate": fromDate,
+                    "Iso8601ToDate": toDate
                 },
                 cache: false,
                 type: "GET",
