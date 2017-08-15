@@ -170,10 +170,11 @@ Views.GamingGroup.GamingGroupView.prototype = {
     },
     getPlayers: function (gamingGroupId, fromDatePicker, toDatePicker, divIdForRenderingResults) {
         var fromDate = fromDatePicker.val();
-        var toDate = fromDatePicker.val();
+        var toDate = toDatePicker.val();
         this.updateUrl(this._settings.playersTabId, fromDate, toDate);
 
         if (!this._playersTabLoaded) {
+            var owner = this;
             $.ajax({
                 url: "/GamingGroup/GetGamingGroupPlayers/",
                 data: {
@@ -200,7 +201,7 @@ Views.GamingGroup.GamingGroupView.prototype = {
                         new List(playersTableId, { valueNames: playersValues });
                     }
 
-                    parent._playersTabLoaded = true;
+                    owner._playersTabLoaded = true;
                 }
             });
         }
@@ -236,7 +237,7 @@ Views.GamingGroup.GamingGroupView.prototype = {
                         new List(gameDefinitionTableId, { valueNames: gamedefinitionsValues });
                     }
 
-                    parent._gamesTabLoaded = true;
+                    this._gamesTabLoaded = true;
                 }
             });
         }
@@ -263,7 +264,7 @@ Views.GamingGroup.GamingGroupView.prototype = {
                     gameDefinitions.init();
                     gameDefinition.onDefinitionCreated = $.proxy(gameDefinitions.onGameCreated, gameDefinitions);
 
-                    parent._playedGamesTabLoaded = true;
+                    this._playedGamesTabLoaded = true;
                 }
             });
         }
