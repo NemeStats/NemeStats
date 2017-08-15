@@ -207,13 +207,18 @@ Views.GamingGroup.GamingGroupView.prototype = {
         }
     },
     getGameDefinitions: function (gamingGroupId, fromDatePicker, toDatePicker, divIdForRenderingResults) {
+        var fromDate = fromDatePicker.val();
+        var toDate = toDatePicker.val();
+        this.updateUrl(this._settings.gamesTabId, fromDate, toDate);
+
         if (!this._gamesTabLoaded) {
+            var owner = this;
             $.ajax({
                 url: "/GamingGroup/GetGamingGroupGameDefinitions/",
                 data: {
                     "id": gamingGroupId,
-                    "datePlayedFrom": fromDatePicker.val(),
-                    "datePlayedTo": toDatePicker.val()
+                    "datePlayedFrom": fromDate,
+                    "datePlayedTo": toDate
                 },
                 cache: false,
                 type: "GET",
@@ -237,19 +242,24 @@ Views.GamingGroup.GamingGroupView.prototype = {
                         new List(gameDefinitionTableId, { valueNames: gamedefinitionsValues });
                     }
 
-                    this._gamesTabLoaded = true;
+                    owner._gamesTabLoaded = true;
                 }
             });
         }
     },
     getPlayedGames: function (gamingGroupId, fromDatePicker, toDatePicker, divIdForRenderingResults) {
+        var fromDate = fromDatePicker.val();
+        var toDate = toDatePicker.val();
+        this.updateUrl(this._settings.playedGamesTabId, fromDate, toDate);
+
         if (!this._playedGamesTabLoaded) {
+            var owner = this;
             $.ajax({
                 url: "/GamingGroup/GetGamingGroupPlayedGames/",
                 data: {
                     "id": gamingGroupId,
-                    "datePlayedFrom": fromDatePicker.val(),
-                    "datePlayedTo": toDatePicker.val()
+                    "datePlayedFrom": fromDate,
+                    "datePlayedTo": toDate
                 },
                 cache: false,
                 type: "GET",
@@ -264,7 +274,7 @@ Views.GamingGroup.GamingGroupView.prototype = {
                     gameDefinitions.init();
                     gameDefinition.onDefinitionCreated = $.proxy(gameDefinitions.onGameCreated, gameDefinitions);
 
-                    this._playedGamesTabLoaded = true;
+                    owner._playedGamesTabLoaded = true;
                 }
             });
         }
