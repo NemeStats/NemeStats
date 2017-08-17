@@ -232,6 +232,15 @@ ul input[type=text] {
     background: #fff url('/Content/Images/spinner.gif') no-repeat right center;
 }
 
+.autocomplete-loading-big {
+    background: #fff url('/Content/Images/spinner.gif') no-repeat center;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    background-size: 20%;
+    min-height: 200px;
+}
+
 .leftItem {
     display: inline-block;
     /*max-width: 120px;*/
