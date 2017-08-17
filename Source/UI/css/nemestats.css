@@ -416,6 +416,14 @@ ul input[type=text] {
 .autocomplete-loading {
   background: #fff url("/Content/Images/spinner.gif") no-repeat right center; }
 
+.autocomplete-loading-big {
+  background: #fff url("/Content/Images/spinner.gif") no-repeat center;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  background-size: 20%;
+  min-height: 200px; }
+
 .leftItem {
   display: inline-block;
   /*max-width: 120px;*/
@@ -696,10 +704,13 @@ button > i.fa {
   .btn.btn-google:active, .btn.btn-google.active,
   .open > .btn.btn-google.dropdown-toggle {
     background-image: none; }
-  .btn.btn-google.disabled:hover, .btn.btn-google.disabled:focus, .btn.btn-google.disabled.focus, .btn.btn-google[disabled]:hover, .btn.btn-google[disabled]:focus, .btn.btn-google[disabled].focus,
+  .btn.btn-google.disabled, .btn.btn-google.disabled:hover, .btn.btn-google.disabled:focus, .btn.btn-google.disabled.focus, .btn.btn-google.disabled:active, .btn.btn-google.disabled.active, .btn.btn-google[disabled], .btn.btn-google[disabled]:hover, .btn.btn-google[disabled]:focus, .btn.btn-google[disabled].focus, .btn.btn-google[disabled]:active, .btn.btn-google[disabled].active,
+  fieldset[disabled] .btn.btn-google,
   fieldset[disabled] .btn.btn-google:hover,
   fieldset[disabled] .btn.btn-google:focus,
-  fieldset[disabled] .btn.btn-google.focus {
+  fieldset[disabled] .btn.btn-google.focus,
+  fieldset[disabled] .btn.btn-google:active,
+  fieldset[disabled] .btn.btn-google.active {
     background-color: #2196F3;
     border-color: #2196F3; }
   .btn.btn-google .badge {
@@ -734,10 +745,13 @@ button > i.fa {
   .btn.btn-action:active, .btn.btn-action.active,
   .open > .btn.btn-action.dropdown-toggle {
     background-image: none; }
-  .btn.btn-action.disabled:hover, .btn.btn-action.disabled:focus, .btn.btn-action.disabled.focus, .btn.btn-action[disabled]:hover, .btn.btn-action[disabled]:focus, .btn.btn-action[disabled].focus,
+  .btn.btn-action.disabled, .btn.btn-action.disabled:hover, .btn.btn-action.disabled:focus, .btn.btn-action.disabled.focus, .btn.btn-action.disabled:active, .btn.btn-action.disabled.active, .btn.btn-action[disabled], .btn.btn-action[disabled]:hover, .btn.btn-action[disabled]:focus, .btn.btn-action[disabled].focus, .btn.btn-action[disabled]:active, .btn.btn-action[disabled].active,
+  fieldset[disabled] .btn.btn-action,
   fieldset[disabled] .btn.btn-action:hover,
   fieldset[disabled] .btn.btn-action:focus,
-  fieldset[disabled] .btn.btn-action.focus {
+  fieldset[disabled] .btn.btn-action.focus,
+  fieldset[disabled] .btn.btn-action:active,
+  fieldset[disabled] .btn.btn-action.active {
     background-color: #3A9AD9;
     border-color: #354458; }
   .btn.btn-action .badge {
@@ -771,10 +785,13 @@ button > i.fa {
   .btn.btn-twitter:active, .btn.btn-twitter.active,
   .open > .btn.btn-twitter.dropdown-toggle {
     background-image: none; }
-  .btn.btn-twitter.disabled:hover, .btn.btn-twitter.disabled:focus, .btn.btn-twitter.disabled.focus, .btn.btn-twitter[disabled]:hover, .btn.btn-twitter[disabled]:focus, .btn.btn-twitter[disabled].focus,
+  .btn.btn-twitter.disabled, .btn.btn-twitter.disabled:hover, .btn.btn-twitter.disabled:focus, .btn.btn-twitter.disabled.focus, .btn.btn-twitter.disabled:active, .btn.btn-twitter.disabled.active, .btn.btn-twitter[disabled], .btn.btn-twitter[disabled]:hover, .btn.btn-twitter[disabled]:focus, .btn.btn-twitter[disabled].focus, .btn.btn-twitter[disabled]:active, .btn.btn-twitter[disabled].active,
+  fieldset[disabled] .btn.btn-twitter,
   fieldset[disabled] .btn.btn-twitter:hover,
   fieldset[disabled] .btn.btn-twitter:focus,
-  fieldset[disabled] .btn.btn-twitter.focus {
+  fieldset[disabled] .btn.btn-twitter.focus,
+  fieldset[disabled] .btn.btn-twitter:active,
+  fieldset[disabled] .btn.btn-twitter.active {
     background-color: #6cadde;
     border-color: #6cadde; }
   .btn.btn-twitter .badge {
