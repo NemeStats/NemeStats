@@ -26,33 +26,30 @@
 @Html.RenderTempDataMessage(TempMessageKeys.TEMP_MESSAGE_KEY_PLAYER_DELETED)
 
 <div class="well well-sm filter">
-    @using (Html.BeginForm(MVC.GamingGroup.Details(), FormMethod.Get))
-    {
-        <div class="control-block">
-            <div>
-                <label for="from-date-picker">Filter Data From:</label>
-                <i class="fa fa-question-circle" data-toggle="popover" data-placement="top" data-content="All data will be filtered to be on our after this date."></i>
-            </div>
-            <div>
-                @Html.ValidationMessage("Iso8601FromDate")
-                <input class="form-control input-sm" type="date" id="from-date-picker" name="Iso8601FromDate" value="@Model.DateRangeFilter.Iso8601FromDate"/>
-            </div>
+    <div class="control-block">
+        <div>
+            <label for="from-date-picker">Filter Data From:</label>
+            <i class="fa fa-question-circle" data-toggle="popover" data-placement="top" data-content="All data will be filtered to be on our after this date."></i>
         </div>
-        <div class="control-block">
-            <div>
-                <label for="to-date-picker">Ending Date:</label>
-                <i class="fa fa-question-circle" data-toggle="popover" data-placement="top" data-content="All data will be filtered to be on our before this date."></i>
-            </div>
-            <div>
-                @Html.ValidationMessage("Iso8601ToDate")
-                <input class="form-control input-sm" type="date" id="to-date-picker" name="Iso8601ToDate" value="@Model.DateRangeFilter.Iso8601ToDate"/>
-            </div>
+        <div>
+            @Html.ValidationMessage("Iso8601FromDate")
+            <input class="form-control input-sm" type="date" id="from-date-picker" name="Iso8601FromDate" value="@Model.DateRangeFilter.Iso8601FromDate"/>
         </div>
-        <div class="control-block">
-            <button class="btn btn-primary btn-sm" type="submit"><span class="fa fa-filter"></span> Filter Statistics</button>
-            @Html.ValidationMessage("dateRangeFilter")
+    </div>
+    <div class="control-block">
+        <div>
+            <label for="to-date-picker">Ending Date:</label>
+            <i class="fa fa-question-circle" data-toggle="popover" data-placement="top" data-content="All data will be filtered to be on our before this date."></i>
         </div>
-    }
+        <div>
+            @Html.ValidationMessage("Iso8601ToDate")
+            <input class="form-control input-sm" type="date" id="to-date-picker" name="Iso8601ToDate" value="@Model.DateRangeFilter.Iso8601ToDate"/>
+        </div>
+    </div>
+    <div class="control-block">
+        <button class="btn btn-primary btn-sm" id="dateFilterButton"><span class="fa fa-filter"></span> Filter Statistics</button>
+        @Html.ValidationMessage("dateRangeFilter")
+    </div>
 </div>
 
 
@@ -111,6 +108,7 @@
                 playersTabId : "playersTab",
                 playersDivId : "playersListDivId",
                 gamesTabId: "gamesTab",
+                dateFilterButtonId: "dateFilterButton",
                 gamesDivId: "gamesListDivId",
                 playedGamesTabId: "playedGamesTab",
                 playedGamesDivId: "playedGamesListDivId"
