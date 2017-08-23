@@ -128,9 +128,6 @@ Views.GamingGroup.GamingGroupView.prototype = {
               .datepicker("option", "dateFormat", "yy-mm-dd");
         }
 
-        var fromDateYYYYMMDD = this.$fromDatePicker.val();
-        var toDateYYYYMMDD = this.$toDatePicker.val();
-        this.renderNemeStatsPointsLineGraph("/api/v2/PlayedGames/?gamingGroupId=" + this._settings.gamingGroupId + "&datePlayedFrom=" + fromDateYYYYMMDD + "&datePlayedTo=" + toDateYYYYMMDD);
 
         var $playersTab = $("#" + this._settings.playersTabId);
         $playersTab.click((function () {
@@ -148,13 +145,13 @@ Views.GamingGroup.GamingGroupView.prototype = {
         }));
         var $dateFilteredButton = $("#" + this._settings.dateFilterButtonId);
         $dateFilteredButton.click(function () {
-            owner.reloadCurrentTabAndResetOthers($playersTab, $gamesTab, $playedGamesTab, owner._settings, owner);
+            owner.reloadCurrentTabAndResetOthers($playersTab, $gamesTab, $playedGamesTab, owner.$fromDatePicker, owner.$toDatePicker, owner._settings, owner);
         });
 
-        this.reloadCurrentTabAndResetOthers($playersTab, $gamesTab, $playedGamesTab, owner._settings, owner);
+        this.reloadCurrentTabAndResetOthers($playersTab, $gamesTab, $playedGamesTab, owner.$fromDatePicker, owner.$toDatePicker, owner._settings, owner);
     },
-    getPlayers: function (gamingGroupId, fromDatePicker, toDatePicker, divIdForRenderingResults, parent) {
-        var fromDate = fromDatePicker.val();
+    getPlayers: function (gamingGroupId, $fromDatePicker, toDatePicker, divIdForRenderingResults, parent) {
+        var fromDate = $fromDatePicker.val();
         var toDate = toDatePicker.val();
         parent.updateUrl(parent._settings.playersTabId, fromDate, toDate);
 
@@ -190,8 +187,8 @@ Views.GamingGroup.GamingGroupView.prototype = {
             });
         }
     },
-    getGameDefinitions: function (gamingGroupId, fromDatePicker, toDatePicker, divIdForRenderingResults, parent) {
-        var fromDate = fromDatePicker.val();
+    getGameDefinitions: function (gamingGroupId, $fromDatePicker, toDatePicker, divIdForRenderingResults, parent) {
+        var fromDate = $fromDatePicker.val();
         var toDate = toDatePicker.val();
         parent.updateUrl(this._settings.gamesTabId, fromDate, toDate);
 
@@ -230,8 +227,8 @@ Views.GamingGroup.GamingGroupView.prototype = {
             });
         }
     },
-    getPlayedGames: function (gamingGroupId, fromDatePicker, toDatePicker, divIdForRenderingResults, parent) {
-        var fromDate = fromDatePicker.val();
+    getPlayedGames: function (gamingGroupId, $fromDatePicker, toDatePicker, divIdForRenderingResults, parent) {
+        var fromDate = $fromDatePicker.val();
         var toDate = toDatePicker.val();
         parent.updateUrl(this._settings.playedGamesTabId, fromDate, toDate);
 
@@ -278,7 +275,7 @@ Views.GamingGroup.GamingGroupView.prototype = {
 
         this.trackGAEvent("GamingGroups", "GamingGroupRenamed", "GamingGroupRenamed");
     },
-    reloadCurrentTabAndResetOthers: function ($playersTab, $gamesTab, $playedGamesTab, settings, parent) {
+    reloadCurrentTabAndResetOthers: function ($playersTab, $gamesTab, $playedGamesTab, $fromDatePicker, $toDatePicker, settings, parent) {
         parent._playersTabLoaded = false;
         parent._gamesTabLoaded = false;
         parent._playedGamesTabLoaded = false;
@@ -298,6 +295,9 @@ Views.GamingGroup.GamingGroupView.prototype = {
                 $playersTab.trigger("click");
                 break;
         }
+        var fromDateYYYYMMDD = $fromDatePicker.val();
+        var toDateYYYYMMDD = $toDatePicker.val();
+        parent.renderNemeStatsPointsLineGraph("/api/v2/PlayedGames/?gamingGroupId=" + settings.gamingGroupId + "&datePlayedFrom=" + fromDateYYYYMMDD + "&datePlayedTo=" + toDateYYYYMMDD);
     },
     renderNemeStatsPointsLineGraph: function (url) {
         $.ajax({
