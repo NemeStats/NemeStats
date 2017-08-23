@@ -288,6 +288,7 @@ Views.GamingGroup.GamingGroupView.prototype = {
                 break;
             case "#" + settings.gamesTabId:
                 $gamesTab.trigger("click");
+                break;
             case "#" + settings.playedGamesTabId:
                 $playedGamesTab.trigger("click");
                 break;
