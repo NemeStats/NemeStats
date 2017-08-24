@@ -16,3 +16,6 @@ The following GitHub projects and corresponding NuGet packages were spawned as a
 If you are interested in contributing, check out [the contributors readme](https://github.com/NemeStats/NemeStats/blob/master/Contributors.md)
 
 Catch us @nemestats or @jakejgordon on Twitter, or via nemestats@gmail.com.
+
+### Manually Regenerating Sitemaps
+To manually regenerate sitemap.xml files, run the RegenerateSitemapsIntegrationTests.It_Regenerates_All_Of_The_Sitemaps_And_The_Sitemap_Index_Files() integration test with the BusinessLogic.Tests app.config pointed to the production database. Files will be placed in the designated location from the app.config sitemapLocationFilePath app setting. These files then need to be copied into the Web.UI/sitemaps/ folder to overwrite that is there. Make sure you don't check in the production database connection string!
