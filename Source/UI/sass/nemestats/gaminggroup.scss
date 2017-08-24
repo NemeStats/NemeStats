@@ -16,3 +16,29 @@
         }
     }
 }
+
+#neme-tab {
+    ul.nav.nav-pills {
+        a {
+            border-radius: 0;
+        }
+    }
+
+    .tab-content {
+        .tab-pane {
+            .panel {
+                border-radius: 0;
+                .panel-heading {
+                    border-top-left-radius: 0;
+                    border-top-right-radius: 0;
+                }
+            }
+
+            .loader {
+                margin-top: 200px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+        }
+    }
+}
