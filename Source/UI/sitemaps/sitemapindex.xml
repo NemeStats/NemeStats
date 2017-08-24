@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <sitemapindex xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <sitemap>
-    <loc>http://nemestats.com/sitemaps/staticpagessitemap-001.xml</loc>
-    <lastmod>2017-01-26</lastmod>
+    <loc>http://localhost:44300/sitemaps/staticpagessitemap-001.xml</loc>
+    <lastmod>2017-08-24</lastmod>
   </sitemap>
   <sitemap>
-    <loc>http://nemestats.com/sitemaps/universalgamessitemap-001.xml</loc>
-    <lastmod>2017-01-26</lastmod>
+    <loc>http://localhost:44300/sitemaps/universalgamessitemap-001.xml</loc>
+    <lastmod>2017-08-24</lastmod>
   </sitemap>
   <sitemap>
-    <loc>http://nemestats.com/sitemaps/gaminggroupssitemap-001.xml</loc>
-    <lastmod>2017-01-26</lastmod>
+    <loc>http://localhost:44300/sitemaps/gaminggroupssitemap-001.xml</loc>
+    <lastmod>2017-08-24</lastmod>
   </sitemap>
 </sitemapindex>
