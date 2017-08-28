@@ -112,7 +112,6 @@ namespace UI.Controllers
             };
             viewModel.DateRangeFilter = dateRangeFilter;
             viewModel.UserCanEdit = currentUser.CurrentGamingGroupId == id;
-            //viewModel.ShowResultsInHeader
 
             return View(MVC.GamingGroup.Views.Details, viewModel);
         }
@@ -146,6 +145,9 @@ namespace UI.Controllers
             var playersWithNemesis = playerRetriever.GetAllPlayersWithNemesisInfo(id, dateRangeFilter)
                 .Select(player => playerWithNemesisViewModelBuilder.Build(player, currentUser))
                 .ToList();
+
+            ViewBag.canEdit = currentUser.CurrentGamingGroupId == id;
+
             return View(MVC.Player.Views._PlayersPartial, playersWithNemesis);
         }
 
@@ -159,6 +161,9 @@ namespace UI.Controllers
                     .OrderByDescending(x => x.TotalNumberOfGamesPlayed)
                     .ThenBy(x => x.Name)
                     .ToList();
+
+            ViewBag.canEdit = currentUser.CurrentGamingGroupId == id;
+
             return View(MVC.GameDefinition.Views._GameDefinitionsPartial, games);
         }
 
@@ -171,7 +176,8 @@ namespace UI.Controllers
             {
                 GamingGroupId = id,
                 ShowSearchLinkInResultsHeader = true,
-                PlayedGameDetailsViewModels = games.Select(playedGame => playedGameDetailsViewModelBuilder.Build(playedGame, currentUser)).ToList()
+                PlayedGameDetailsViewModels = games.Select(playedGame => playedGameDetailsViewModelBuilder.Build(playedGame, currentUser)).ToList(),
+                UserCanEdit = currentUser.CurrentGamingGroupId == id
             };
 
             return View(MVC.PlayedGame.Views._PlayedGamesPartial, viewModel);

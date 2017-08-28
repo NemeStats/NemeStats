@@ -60,6 +60,7 @@ namespace UI.Tests.UnitTests.ControllerTests.GamingGroupControllerTests
             model.PlayedGameDetailsViewModels[1].ShouldBeSameAs(expectedResult2);
         }
 
+        [Test]
         public void Users_Can_Edit_If_This_Is_Their_Gaming_Group()
         {
             //--arrange
