@@ -21,6 +21,9 @@ Views.GameDefinition.CreateGameDefinitionPartial.prototype = {
         this.$container = $(".createGameDefinitionPartial");
         this.$form = this.$container.find("#js-createGameForm");
         this.$form.attr('action', this.formAction);
+        this.$form.removeData("validator")
+            .removeData("unobtrusiveValidation");
+        $.validator.unobtrusive.parse(this.$form);
         this.$gameNameInput = this.$form.find("#gameNameInput");
         this.$boardGameId = this.$form.find("input[type='hidden']");
         this.$createBtn = this.$form.find("button");

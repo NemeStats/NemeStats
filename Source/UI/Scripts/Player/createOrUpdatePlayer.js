@@ -29,6 +29,10 @@ Views.Player.CreateOrUpdate.prototype = {
             owner.preventDefaultSubmit(e);
         });
 
+        this.$form.removeData("validator")
+            .removeData("unobtrusiveValidation");
+        $.validator.unobtrusive.parse(this.$form);
+
         this.$playerNameInput = this.$form.find("#Name");
         this.onPlayerSaved = onPlayerSaved;
         
