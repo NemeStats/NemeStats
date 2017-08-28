@@ -416,14 +416,6 @@ ul input[type=text] {
 .autocomplete-loading {
   background: #fff url("/Content/Images/spinner.gif") no-repeat right center; }
 
-/*.autocomplete-loading-big {
-    background: #fff url('/Content/Images/spinner.gif') no-repeat center;
-    margin-left: auto;
-    margin-right: auto;
-    display: block;
-    background-size: 20%;
-    min-height: 200px;
-}*/
 .loader {
   border: 16px solid #f3f3f3;
   border-top: 16px solid #3498db;
@@ -1008,6 +1000,20 @@ button > i.fa {
         margin-top: 10px; } }
     .filter .control-block button {
       margin-top: 25px; }
+
+#neme-tab ul.nav.nav-pills a {
+  border-radius: 0; }
+
+#neme-tab .tab-content .tab-pane .panel {
+  border-radius: 0; }
+  #neme-tab .tab-content .tab-pane .panel .panel-heading {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0; }
+
+#neme-tab .tab-content .tab-pane .loader {
+  margin-top: 200px;
+  margin-left: auto;
+  margin-right: auto; }
 
 .bgguser-integration img {
   margin-right: 10px; }
