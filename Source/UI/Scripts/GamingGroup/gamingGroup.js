@@ -27,6 +27,11 @@ Views.GamingGroup.GamingGroupView = function () {
     this._playersTabLoaded = false;
     this._gamesTabLoaded = false;
     this._playedGamesTabLoaded = false;
+    this._tabEnum = {
+        PLAYERS : "players",
+        GAMES : "games",
+        PLAYS : "plays"
+    }
 };
 
 //Implementation
@@ -153,7 +158,7 @@ Views.GamingGroup.GamingGroupView.prototype = {
     getPlayers: function (gamingGroupId, $fromDatePicker, toDatePicker, divIdForRenderingResults, parent) {
         var fromDate = $fromDatePicker.val();
         var toDate = toDatePicker.val();
-        parent.updateUrl(parent._settings.playersTabId, fromDate, toDate);
+        parent.updateUrl(parent._tabEnum.PLAYERS, fromDate, toDate);
 
         if (!parent._playersTabLoaded) {
             $.ajax({
@@ -190,7 +195,7 @@ Views.GamingGroup.GamingGroupView.prototype = {
     getGameDefinitions: function (gamingGroupId, $fromDatePicker, toDatePicker, divIdForRenderingResults, parent) {
         var fromDate = $fromDatePicker.val();
         var toDate = toDatePicker.val();
-        parent.updateUrl(this._settings.gamesTabId, fromDate, toDate);
+        parent.updateUrl(parent._tabEnum.GAMES, fromDate, toDate);
 
         if (!parent._gamesTabLoaded) {
             $.ajax({
@@ -230,7 +235,7 @@ Views.GamingGroup.GamingGroupView.prototype = {
     getPlayedGames: function (gamingGroupId, $fromDatePicker, toDatePicker, divIdForRenderingResults, parent) {
         var fromDate = $fromDatePicker.val();
         var toDate = toDatePicker.val();
-        parent.updateUrl(this._settings.playedGamesTabId, fromDate, toDate);
+        parent.updateUrl(parent._tabEnum.PLAYS, fromDate, toDate);
 
         if (!parent._playedGamesTabLoaded) {
             $.ajax({
@@ -280,16 +285,16 @@ Views.GamingGroup.GamingGroupView.prototype = {
         parent._gamesTabLoaded = false;
         parent._playedGamesTabLoaded = false;
 
-        var defaultTab = window.location.hash;
+        var tabEnum = parent.getCurrentTab(parent);
 
-        switch (defaultTab) {
-            case "#" + settings.playersTabId:
+        switch (tabEnum) {
+            case parent._tabEnum.PLAYERS:
                 $playersTab.trigger("click");
                 break;
-            case "#" + settings.gamesTabId:
+            case parent._tabEnum.GAMES:
                 $gamesTab.trigger("click");
                 break;
-            case "#" + settings.playedGamesTabId:
+            case parent._tabEnum.PLAYS:
                 $playedGamesTab.trigger("click");
                 break;
             default:
@@ -299,6 +304,22 @@ Views.GamingGroup.GamingGroupView.prototype = {
         var fromDateYYYYMMDD = $fromDatePicker.val();
         var toDateYYYYMMDD = $toDatePicker.val();
         parent.renderNemeStatsPointsLineGraph("/api/v2/PlayedGames/?gamingGroupId=" + settings.gamingGroupId + "&datePlayedFrom=" + fromDateYYYYMMDD + "&datePlayedTo=" + toDateYYYYMMDD);
+    },
+    getCurrentTab : function(parent) {
+        var existingQueryString = window.location.search;
+        if (!existingQueryString || existingQueryString.indexOf("tab=" + parent._tabEnum.PLAYERS) !== -1) {
+            return parent._tabEnum.PLAYERS;
+        }
+
+        if (existingQueryString.indexOf("tab=" + parent._tabEnum.GAMES) !== -1) {
+            return parent._tabEnum.GAMES;
+        }
+
+        if (existingQueryString.indexOf("tab=" + parent._tabEnum.PLAYS) !== -1) {
+            return parent._tabEnum.PLAYS;
+        }
+
+        return parent._tabEnum.PLAYERS;
     },
     renderNemeStatsPointsLineGraph: function (url) {
         $.ajax({
@@ -349,7 +370,7 @@ Views.GamingGroup.GamingGroupView.prototype = {
             }
         });
     },
-    updateUrl: function(newHash, iso8601FromDate, iso8601ToDate) {
+    updateUrl: function (newTab, iso8601FromDate, iso8601ToDate) {
         if (history.pushState) {
             var newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
             var params = new Object();
@@ -362,13 +383,13 @@ Views.GamingGroup.GamingGroupView.prototype = {
                 params.Iso8601ToDate = iso8601ToDate;
             }
 
-            var queryString = jQuery.param(params);
-            if (queryString) {
-                newUrl += "?" + queryString;
+            if (newTab) {
+                params.tab = newTab;
             }
 
-            if (newHash) {
-                newUrl += "#" + newHash;
+            var newQueryString = jQuery.param(params);
+            if (newQueryString) {
+                newUrl += "?" + newQueryString;
             }
 
             window.history.pushState({ path: newUrl }, "", newUrl);
