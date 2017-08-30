@@ -135,19 +135,23 @@ Views.GamingGroup.GamingGroupView.prototype = {
 
 
         var $playersTab = $("#" + this._settings.playersTabId);
-        $playersTab.click((function () {
+        $playersTab.click((function (event) {
+            event.preventDefault();
             return owner.getPlayers(owner._settings.gamingGroupId, owner.$fromDatePicker, owner.$toDatePicker, owner._settings.playersDivId, owner);
         }));
 
         var $gamesTab = $("#" + this._settings.gamesTabId);
-        $gamesTab.click((function () {
+        $gamesTab.click((function (event) {
+            event.preventDefault();
             return owner.getGameDefinitions(owner._settings.gamingGroupId, owner.$fromDatePicker, owner.$toDatePicker, owner._settings.gamesDivId, owner);
         }));
 
         var $playedGamesTab = $("#" + this._settings.playedGamesTabId);
-        $playedGamesTab.click((function () {
+        $playedGamesTab.click((function (event) {
+            event.preventDefault();
             return owner.getPlayedGames(owner._settings.gamingGroupId, owner.$fromDatePicker, owner.$toDatePicker, owner._settings.playedGamesDivId, owner);
         }));
+
         var $dateFilteredButton = $("#" + this._settings.dateFilterButtonId);
         $dateFilteredButton.click(function () {
             owner.reloadCurrentTabAndResetOthers($playersTab, $gamesTab, $playedGamesTab, owner.$fromDatePicker, owner.$toDatePicker, owner._settings, owner);
