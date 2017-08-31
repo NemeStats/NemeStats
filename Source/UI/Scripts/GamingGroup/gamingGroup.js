@@ -184,7 +184,7 @@ Views.GamingGroup.GamingGroupView.prototype = {
                     var playersTableId = "playersList";
 
                     if (ResponsiveBootstrapToolkit.is('>=md')) {
-                        new List(playersTableId, { valueNames: playersValues, page: 10, plugins: [ListPagination({ innerWindow: 10 })] });
+                        new List(playersTableId, { valueNames: playersValues, page: 20, plugins: [ListPagination({ innerWindow: 20 })] });
                     } else {
                         new List(playersTableId, { valueNames: playersValues });
                     }
@@ -224,7 +224,7 @@ Views.GamingGroup.GamingGroupView.prototype = {
                     var gameDefinitionTableId = "gameDefinitionsList";
 
                     if (ResponsiveBootstrapToolkit.is('>=md')) {
-                        new List(gameDefinitionTableId, { valueNames: gamedefinitionsValues, page: 10, plugins: [ListPagination({ innerWindow: 10 })] });
+                        new List(gameDefinitionTableId, { valueNames: gamedefinitionsValues, page: 20, plugins: [ListPagination({ innerWindow: 20 })] });
                     } else {
                         new List(gameDefinitionTableId, { valueNames: gamedefinitionsValues });
                     }
