@@ -22,7 +22,10 @@ Views.GamingGroup.GamingGroupView = function () {
     };
 //TODO NOT SURE THIS IS WORKING AT THE MOMENT
     this._updateGamingGroupNameServiceAddress = "/GamingGroup/UpdateGamingGroupName";
-    this._getGamingGroupPlayersServiceAddress = "/GamingGroup/GetGamingGroupPlayers";
+    this._getGamingGroupPlayersServiceAddress = "/GamingGroup/GetGamingGroupPlayers/";
+    this._getGamingGroupGameDefinitionsServiceAddress = "/GamingGroup/GetGamingGroupGameDefinitions/";
+    this._getGamingGroupPlayedGamesServiceAddress = "/GamingGroup/GetGamingGroupPlayedGames/";
+
     this._googleAnalytics = null;
     this._playersTabLoaded = false;
     this._gamesTabLoaded = false;
@@ -107,16 +110,14 @@ Views.GamingGroup.GamingGroupView.prototype = {
             this.$toDatePicker.attr("max", currentMoment.add(1, "days").format("YYYY-MM-DD"));
             this.$toDatePicker.attr("min", minDateIso8601);
         } else {
+
             // If not native HTML5 support, fallback to jQuery datePicker
             this.$fromDatePicker.datepicker({
                 showOn: "button",
                 buttonText: "<i class='fa fa-calendar'></i>",
                 showButtonPanel: true,
                 maxDate: new Date(),
-                minDate: minDate,
-                onClose: function (selectedDate) {
-                    $("#to-date-picker").datepicker("option", "minDate", selectedDate);
-                }
+                minDate: minDate
             }).datepicker("setDate", this._settings.fromDate)
                 .datepicker("option", "dateFormat", "yy-mm-dd");
 
@@ -125,10 +126,7 @@ Views.GamingGroup.GamingGroupView.prototype = {
                 buttonText: "<i class='fa fa-calendar'></i>",
                 showButtonPanel: true,
                 maxDate: new Date(),
-                minDate: minDate,
-                onClose: function (selectedDate) {
-                    $("#from-date-picker").datepicker("option", "minDate", selectedDate);
-                }
+                minDate: minDate
             }).datepicker("setDate", this._settings.toDate)
               .datepicker("option", "dateFormat", "yy-mm-dd");
         }
@@ -166,7 +164,7 @@ Views.GamingGroup.GamingGroupView.prototype = {
 
         if (!parent._playersTabLoaded) {
             $.ajax({
-                url: "/GamingGroup/GetGamingGroupPlayers/",
+                url: parent._getGamingGroupPlayersServiceAddress,
                 data: {
                     "id": gamingGroupId,
                     "Iso8601FromDate": fromDate,
@@ -203,7 +201,7 @@ Views.GamingGroup.GamingGroupView.prototype = {
 
         if (!parent._gamesTabLoaded) {
             $.ajax({
-                url: "/GamingGroup/GetGamingGroupGameDefinitions/",
+                url: parent._getGamingGroupGameDefinitionsServiceAddress,
                 data: {
                     "id": gamingGroupId,
                     "Iso8601FromDate": fromDate,
@@ -243,7 +241,7 @@ Views.GamingGroup.GamingGroupView.prototype = {
 
         if (!parent._playedGamesTabLoaded) {
             $.ajax({
-                url: "/GamingGroup/GetGamingGroupPlayedGames/",
+                url: parent._getGamingGroupPlayedGamesServiceAddress,
                 data: {
                     "id": gamingGroupId,
                     "Iso8601FromDate": fromDate,
